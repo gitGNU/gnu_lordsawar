@@ -3,7 +3,7 @@
 // Copyright (C) 2003, 2004, 2005, 2006 Andrea Paternesi
 // Copyright (C) 2004 David Sterba
 // Copyright (C) 2005 Bryan Duff
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ const unsigned int MAX_PLAYERS=8;
 const unsigned int TEMPLE_TYPES=1; 
 const unsigned int RUIN_TYPES=2; 
 const unsigned int DIPLOMACY_TYPES=3; 
-const unsigned int ROAD_TYPES=16; 
+const unsigned int ROAD_TYPES=15; 
 const unsigned int FOG_TYPES=15; 
 const unsigned int BRIDGE_TYPES=4; 
 const unsigned int CURSOR_TYPES=12; 
@@ -74,6 +74,7 @@ const unsigned int PRODUCTION_SHIELD_TYPES = 8;
 const unsigned int MOVE_BONUS_WIDTH = 32;
 const unsigned int MOVE_BONUS_HEIGHT = 20;
 const unsigned int MOVE_BONUS_TYPES = 6;
+const unsigned int MEDAL_TYPES = 3;
 
 const unsigned int CITY_TILE_WIDTH = 2;
 const unsigned int RUIN_TILE_WIDTH = 1;

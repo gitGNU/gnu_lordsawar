@@ -144,28 +144,28 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
         void setSubDir(std::string dir) {d_dir = dir;}
 
 	//! Get the image of the stack in a ship (minus the mask).
-	SDL_Surface *getShipPic() const {return d_ship;}
+	Glib::RefPtr<Gdk::Pixbuf> getShipPic() const {return d_ship;}
 
 	//! Set the image of the stack in a ship
-	void setShipImage(SDL_Surface *ship) {d_ship = ship;};
+	void setShipImage(Glib::RefPtr<Gdk::Pixbuf> ship) {d_ship = ship;};
 
 	//! Get the mask portion of the image of the stack in a ship.
-	SDL_Surface *getShipMask() const {return d_shipmask;}
+	Glib::RefPtr<Gdk::Pixbuf> getShipMask() const {return d_shipmask;}
 
 	//! Set the mask portion of the image of the stack in a ship.
-	void setShipMask(SDL_Surface *shipmask) {d_shipmask = shipmask;};
+	void setShipMask(Glib::RefPtr<Gdk::Pixbuf> shipmask) {d_shipmask = shipmask;};
 
 	//! Get the image of the planted standard (minus the mask).
-	SDL_Surface *getStandardPic() const {return d_standard;}
+	Glib::RefPtr<Gdk::Pixbuf> getStandardPic() const {return d_standard;}
 
 	//! Set the image of the planted standard (minus the mask).
-	void setStandardImage(SDL_Surface *s) {d_standard = s;};
+	void setStandardPic(Glib::RefPtr<Gdk::Pixbuf> s) {d_standard = s;};
 
 	//! Get the mask portion of the image of the planted standard.
-	SDL_Surface *getStandardMask() const {return d_standard_mask;}
+	Glib::RefPtr<Gdk::Pixbuf> getStandardMask() const {return d_standard_mask;}
 
 	//! Set the mask portion of the image of the planted standard.
-	void setStandardMask(SDL_Surface *s) {d_standard_mask = s;};
+	void setStandardMask(Glib::RefPtr<Gdk::Pixbuf> s) {d_standard_mask = s;};
 
 	//! Find an army with a type in this armyset.
 	/**
@@ -226,16 +226,16 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	guint32 d_tilesize;
 
 	//! The unshaded picture of the stack when it's in a boat.
-	SDL_Surface *d_ship;
+	Glib::RefPtr<Gdk::Pixbuf> d_ship;
 
 	//! The mask of what to shade with the player's colour on the boat.
-	SDL_Surface *d_shipmask;
+	Glib::RefPtr<Gdk::Pixbuf> d_shipmask;
 
 	//! The unshaded picture of the planted standard.
-	SDL_Surface *d_standard;
+	Glib::RefPtr<Gdk::Pixbuf> d_standard;
 
 	//! The mask of what to shade with the player's colour on the standard.
-	SDL_Surface *d_standard_mask;
+	Glib::RefPtr<Gdk::Pixbuf> d_standard_mask;
 };
 
 #endif // ARMYSET_H

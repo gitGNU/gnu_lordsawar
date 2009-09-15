@@ -2,7 +2,7 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004, 2005 Bryan Duff
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -27,6 +27,7 @@
 #include <sigc++/trackable.h>
 #include <sigc++/connection.h>
 #include <string>
+#include <gtkmm.h>
 
 #include "vector.h"
 #include "input-events.h"
@@ -35,7 +36,8 @@
 
 class Stack;
 class MapRenderer;
-
+class Item;
+class MapBackpack;
 class City;
 class Ruin;
 class Signpost;
@@ -62,7 +64,7 @@ class BigMap: public sigc::trackable
 
     // view the rectangle, measured in tiles
     void set_view(Rectangle rect);
-    void screen_size_changed();
+    void screen_size_changed(Gtk::Allocation box);
 
     // return a good position of a map tip given that it should be close to the
     // tiles in tile_area without covering them
@@ -72,6 +74,11 @@ class BigMap: public sigc::trackable
     // emitted when the view has changed because of user interactions
     sigc::signal<void, Rectangle> view_changed;
 
+    // Emitted after a call to SmallMap::Draw.
+    /**
+     * Classes that use BigMap must catch this signal to display the map.
+     */
+    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > map_changed;
     void blank();
 
     //! Save the whole map as one big image (bmp file).
@@ -91,15 +98,18 @@ class BigMap: public sigc::trackable
     Rectangle view;		// approximate view of screen, in tiles
     Vector<int> view_pos; 	// precise position of view in pixels
 
-    SDL_Surface* buffer;	// the buffer we draw things in
-    SDL_Surface* magnified_buffer;	// the zoomed buffer;
+    Glib::RefPtr<Gdk::Pixmap> buffer;	// the buffer we draw things in
+    Glib::RefPtr<Gdk::Pixmap> outgoing; //goes out to the gtk::image
+    Glib::RefPtr<Gdk::GC> buffer_gc;
+    Glib::RefPtr<Gdk::Pixmap> magnified_buffer;	// the zoomed buffer;
     double magnification_factor; //how much we're zoomed
     Rectangle buffer_view;	// current view of the buffer, in tiles
 
     bool input_locked;
 
-    SDL_Surface* d_itempic;
+    Glib::RefPtr<Gdk::Pixbuf> d_itempic;
     bool d_grid_toggled;
+    Gtk::Allocation image;
 
     // helpers
     Vector<int> mouse_pos_to_tile(Vector<int> pos);
@@ -108,18 +118,21 @@ class BigMap: public sigc::trackable
     Vector<int> tile_to_buffer_pos(Vector<int> tile);
     Vector<int> get_view_pos_from_view();
     void draw_buffer();  
-    bool blit_if_inside_buffer(const Location &obj, SDL_Surface *image,
-			       Rectangle &map_view, SDL_Surface *surface);
-    void blit_object(const Location &obj, SDL_Surface *image, SDL_Surface *surface);
+    bool blit_if_inside_buffer(const Location &obj, Glib::RefPtr<Gdk::Pixbuf> image,
+			       Rectangle &map_view, Glib::RefPtr<Gdk::Pixmap> surface);
+    void blit_object(const Location &obj, Glib::RefPtr<Gdk::Pixbuf> image, Glib::RefPtr<Gdk::Pixmap> surface);
 
     virtual void after_draw() { }
 
  protected:
-    void draw_stack(Stack *s);
+    void draw_stack(Stack *s, Glib::RefPtr<Gdk::Pixmap> surface);
+    void draw_standard(Item *flag, Vector<int> pos, Glib::RefPtr<Gdk::Pixmap> surface);
+    void draw_dropped_backpack(MapBackpack *backpack, Vector<int> p, Glib::RefPtr<Gdk::Pixmap> surface);
  private:
     void drawFogTile(int x, int y);
-    void draw_buffer(Rectangle map_view, SDL_Surface *surface);
-    void magnify();
+    void draw_buffer(Rectangle map_view, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context);
+    Glib::RefPtr<Gdk::Pixmap> magnify(Glib::RefPtr<Gdk::Pixmap> orig);
+    void clip_viewable_buffer(Glib::RefPtr<Gdk::Pixmap> pixmap, Glib::RefPtr<Gdk::GC> gc, Vector<int> pos, Glib::RefPtr<Gdk::Pixmap> out);
 };
 
 #endif

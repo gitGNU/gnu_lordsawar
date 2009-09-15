@@ -21,6 +21,7 @@
 #include <iomanip>
 #include <assert.h>
 #include <libgen.h>
+#include <string.h>
 
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
@@ -29,7 +30,6 @@
 #include "armyset-window.h"
 #include "armyset-info-dialog.h"
 
-#include "gtksdl.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
 #include "error-utils.h"
@@ -50,7 +50,6 @@
 ArmySetWindow::ArmySetWindow()
 {
   d_armyset = NULL;
-    sdl_inited = false;
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/armyset-window.ui");
 
@@ -200,7 +199,6 @@ ArmySetWindow::ArmySetWindow()
     update_army_panel();
     update_armyset_buttons();
 
-    xml->get_widget("sdl_container", sdl_container);
     update_armyset_buttons();
     update_armyset_menuitems();
 }
@@ -294,41 +292,12 @@ ArmySetWindow::~ArmySetWindow()
 
 void ArmySetWindow::show()
 {
-  sdl_container->show_all();
   window->show();
 }
 
 void ArmySetWindow::hide()
 {
   window->hide();
-}
-
-namespace 
-{
-  void surface_attached_helper(GtkSDL *gtksdl, gpointer data)
-    {
-      static_cast<ArmySetWindow *>(data)->on_sdl_surface_changed();
-    }
-}
-
-void ArmySetWindow::init(int width, int height)
-{
-  sdl_widget
-    = Gtk::manage(Glib::wrap(gtk_sdl_new(width, height, 0, SDL_SWSURFACE)));
-
-  sdl_widget->set_flags(Gtk::CAN_FOCUS);
-
-  sdl_widget->grab_focus();
-  sdl_widget->add_events(Gdk::KEY_PRESS_MASK |
-			 Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
-			 Gdk::POINTER_MOTION_MASK | Gdk::LEAVE_NOTIFY_MASK);
-
-  // connect to the special signal that signifies that a new surface has been
-  // generated and attached to the widget
-  g_signal_connect(G_OBJECT(sdl_widget->gobj()), "surface-attached",
-		   G_CALLBACK(surface_attached_helper), this);
-
-  sdl_container->add(*sdl_widget);
 }
 
 bool ArmySetWindow::on_delete_event(GdkEventAny *e)
@@ -414,13 +383,13 @@ void ArmySetWindow::on_load_armyset_activated()
 	  exit(-1);
 	}
 
-      char *dir = strdup(current_save_filename.c_str());
+      char *dir = g_strdup(current_save_filename.c_str());
       dir = basename (dir);
       char *tmp = strchr (dir, '.');
       if (tmp)
 	tmp[0] = '\0';
       d_armyset->setSubDir(dir);
-      GraphicsLoader::instantiatePixmaps(d_armyset);
+      GraphicsLoader::instantiateImages(d_armyset);
       guint32 max = d_armyset->getSize();
       for (unsigned int i = 0; i < max; i++)
 	addArmyType(i);
@@ -510,8 +479,7 @@ void ArmySetWindow::on_help_about_activated()
   d->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
-  SDL_Surface *logo = GraphicsLoader::getMiscPicture("castle_icon.png");
-  dialog->set_logo(to_pixbuf(logo));
+  dialog->set_logo(GraphicsLoader::getMiscPicture("castle_icon.png"));
   dialog->show_all();
   dialog->run();
 
@@ -528,15 +496,6 @@ void ArmySetWindow::addArmyType(guint32 army_type)
   (*i)[armies_columns.army] = a;
 }
 
-void ArmySetWindow::on_sdl_surface_changed()
-{
-  if (!sdl_inited) {
-    GraphicsLoader::instantiatePixmaps(Armysetlist::getInstance());
-    sdl_inited = true;
-    sdl_initialized.emit();
-  }
-}
-
 void ArmySetWindow::on_army_selected()
 {
   update_army_panel();
@@ -547,7 +506,7 @@ void ArmySetWindow::fill_army_info(ArmyProto *army)
 {
   if (army->getImageName() != "")
     {
-      army_image->property_pixbuf() = to_pixbuf(army->getPixmap());
+      army_image->property_pixbuf() = army->getImage();
     
       std::string path = Configuration::s_dataPath + "/army/" +  
 	d_armyset->getSubDir() + "/" + army->getImageName() + ".png";
@@ -557,7 +516,8 @@ void ArmySetWindow::fill_army_info(ArmyProto *army)
     army_image->clear();
   name_entry->set_text(army->getName());
   description_textview->get_buffer()->set_text(army->getDescription());
-  production_spinbutton->set_value(army->getProduction());
+  double turns = army->getProduction();
+  production_spinbutton->set_value(turns);
   cost_spinbutton->set_value(army->getProductionCost());
   upkeep_spinbutton->set_value(army->getUpkeep());
   strength_spinbutton->set_value(army->getStrength());
@@ -659,7 +619,7 @@ void ArmySetWindow::on_image_changed()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      char *dir = strdup(image_filechooserbutton->get_filename().c_str());
+      char *dir = g_strdup(image_filechooserbutton->get_filename().c_str());
       dir = basename (dir);
       char *tmp = strchr (dir, '.');
       if (tmp)
@@ -669,8 +629,8 @@ void ArmySetWindow::on_image_changed()
       if (image_filechooserbutton->get_filename().substr(0, path.size()) !=path)
 	return;
       a->setImageName(dir);
-      GraphicsLoader::instantiatePixmaps(d_armyset);
-      army_image->property_pixbuf() = to_pixbuf(a->getPixmap());
+      GraphicsLoader::instantiateImages(d_armyset);
+      army_image->property_pixbuf() = a->getImage();
     }
   return;
 }

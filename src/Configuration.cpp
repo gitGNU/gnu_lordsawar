@@ -53,11 +53,9 @@ string Configuration::s_lang = "";
 int Configuration::s_displaySpeedDelay = 0;
 int Configuration::s_displayFightRoundDelayFast = 250;
 int Configuration::s_displayFightRoundDelaySlow = 500;
-guint32 Configuration::s_surfaceFlags = SDL_SWSURFACE;
 guint32 Configuration::s_cacheSize = 1000000;
 bool Configuration::s_zipfiles = false;
 int Configuration::s_autosave_policy = 1;
-bool Configuration::s_hardware = false;
 bool Configuration::s_ggz = false;
 bool Configuration::s_musicenable = true;
 guint32 Configuration::s_musicvolume = 64;
@@ -128,7 +126,6 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("savepath", s_savePath);
     retval &= helper.saveData("lang", s_lang);
     retval &= helper.saveData("cachesize", s_cacheSize);
-    retval &= helper.saveData("hardware", s_hardware);
     retval &= helper.saveData("zipfiles", s_zipfiles);
     retval &= helper.saveData("autosave_policy", s_autosave_policy);
     retval &= helper.saveData("speeddelay", s_displaySpeedDelay);
@@ -232,22 +229,6 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     retval = helper->getData(temp, "cachesize");
     if (retval)
         s_cacheSize = atoi(temp.c_str());
-
-    //parse surface flags
-    retval = helper->getData(s_hardware, "hardware");
-    if (retval)
-    {
-        if (s_hardware)
-        {
-            s_surfaceFlags &= ~(SDL_SWSURFACE);
-            s_surfaceFlags |= SDL_HWSURFACE;
-        }
-        else
-        {
-            s_surfaceFlags &= ~(SDL_HWSURFACE);
-            s_surfaceFlags |= SDL_SWSURFACE;
-        }
-    }
 
     //parse if savefiles should be zipped
     retval = helper->getData(zipping, "zipfiles");

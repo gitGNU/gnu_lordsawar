@@ -108,7 +108,7 @@ class HeroDialog: public Decorated
     void addHistoryEvent(History *event);
     void fill_in_info_labels();
 
-    void on_map_changed(SDL_Surface *map);
+    void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
     bool on_map_mouse_button_event(GdkEventButton *e);
     void show_hero();
     void update_buttons();

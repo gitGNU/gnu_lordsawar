@@ -52,7 +52,6 @@ int main(int argc, char* argv[])
 	Gtk::Main kit(argc, argv);
 
 	std::auto_ptr<ArmySetWindow> armyset_window(new ArmySetWindow);
-	armyset_window->init(64, 64);
 	armyset_window->show();
 	
 	kit.run(armyset_window->get_window());

@@ -52,7 +52,6 @@ int main(int argc, char* argv[])
 	Gtk::Main kit(argc, argv);
 
 	std::auto_ptr<TileSetWindow> tileset_window(new TileSetWindow);
-	tileset_window->init(64, 64);
 	tileset_window->show();
 	
 	kit.run(tileset_window->get_window());

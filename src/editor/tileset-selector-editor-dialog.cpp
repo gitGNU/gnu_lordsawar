@@ -144,12 +144,12 @@ void TilesetSelectorEditorDialog::show_preview_selectors(std::string filename)
 
 void TilesetSelectorEditorDialog::clearSelector()
 {
-  for (std::map< guint32, std::list<SDL_Surface*>* >::iterator it = selectors.begin();
+  for (std::map< guint32, std::list<Glib::RefPtr<Gdk::Pixbuf> >* >::iterator it = selectors.begin();
        it != selectors.end(); it++)
     {
-      for (std::list<SDL_Surface *>::iterator lit = (*it).second->begin(); lit != (*it).second->end(); lit++)
+      for (std::list<Glib::RefPtr<Gdk::Pixbuf> >::iterator lit = (*it).second->begin(); lit != (*it).second->end(); lit++)
 	{
-	  SDL_FreeSurface(*lit);
+	  (*lit).clear();
 	}
       (*it).second->clear();
       delete ((*it).second);
@@ -159,8 +159,8 @@ void TilesetSelectorEditorDialog::clearSelector()
 
 bool TilesetSelectorEditorDialog::loadSelector(std::string filename)
 {
-  std::vector<SDL_Surface *> images;
-  std::vector<SDL_Surface *> masks;
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > images;
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > masks;
   bool success = GraphicsCache::loadSelectorImages(d_tileset->getSubDir(), filename, d_tileset->getTileSize(), images, masks);
   if (success)
     {
@@ -170,28 +170,28 @@ bool TilesetSelectorEditorDialog::loadSelector(std::string filename)
 
       for (unsigned int i = 0; i < MAX_PLAYERS; i++)
 	{
-	  std::list<SDL_Surface *> *mylist = new std::list<SDL_Surface*>();
+	  std::list<Glib::RefPtr<Gdk::Pixbuf> > *mylist = new std::list<Glib::RefPtr<Gdk::Pixbuf> >();
 	  selectors[i] = mylist;
 	}
 
-      for (std::vector<SDL_Surface*>::iterator it = images.begin(), mit = masks.begin(); it != images.end(); it++, mit++)
+      for (std::vector<Glib::RefPtr<Gdk::Pixbuf> >::iterator it = images.begin(), mit = masks.begin(); it != images.end(); it++, mit++)
 	{
 	  for (Shieldset::iterator sit = shieldset->begin(); sit != shieldset->end(); sit++)
 	    {
 	      if ((*sit)->getOwner() == 8) //ignore neutral
 		continue;
-	      SDL_Surface *image = GraphicsCache::applyMask(*it, *mit, (*sit)->getMaskColor(), false);
-		selectors[(*sit)->getOwner()]->push_back(image);
+		selectors[(*sit)->getOwner()]->push_back
+		  (GraphicsCache::applyMask(*it, *mit, (*sit)->getMaskColorShifts(), false));
 		
 		frame[(*sit)->getOwner()] = selectors[(*sit)->getOwner()]->begin();
 	    }
 	}
 
-      for (std::vector<SDL_Surface*>::iterator it = images.begin(); it != images.end(); it++)
-	SDL_FreeSurface(*it);
+      for (std::vector<Glib::RefPtr<Gdk::Pixbuf> >::iterator it = images.begin(); it != images.end(); it++)
+	(*it).clear();
       images.clear();
-      for (std::vector<SDL_Surface*>::iterator it = masks.begin(); it != masks.end(); it++)
-	SDL_FreeSurface(*it);
+      for (std::vector<Glib::RefPtr<Gdk::Pixbuf> >::iterator it = masks.begin(); it != masks.end(); it++)
+	(*it).clear();
       masks.clear();
 
     }
@@ -241,7 +241,7 @@ void TilesetSelectorEditorDialog::on_heartbeat()
   int x = 0;
   int y = 0;
   int count = 0;
-  for (std::map< guint32, std::list<SDL_Surface*>* >::iterator it = selectors.begin();
+  for (std::map< guint32, std::list<Glib::RefPtr<Gdk::Pixbuf> >* >::iterator it = selectors.begin();
        it != selectors.end(); it++)
     {
       //make a pixbuf and attach it
@@ -256,7 +256,7 @@ void TilesetSelectorEditorDialog::on_heartbeat()
 	case 6: x = 1; y = 2; break;
 	case 7: x = 1; y = 3; break;
 	}
-      preview_table->attach(*manage(new Gtk::Image(to_pixbuf(*frame[count]))), y, y+1, x, x+1, Gtk::SHRINK, Gtk::SHRINK, 8, 8);
+      preview_table->attach(*manage(new Gtk::Image(*frame[count])), y, y+1, x, x+1, Gtk::SHRINK, Gtk::SHRINK, 8, 8);
   
       frame[count]++;
       if (frame[count] == selectors[count]->end())

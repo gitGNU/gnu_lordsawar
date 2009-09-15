@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2009 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -36,7 +36,7 @@ class NetworkPlayer : public Player
 {
     public:
         // CREATORS
-        NetworkPlayer(std::string name, guint32 armyset, SDL_Color color, int width, int height,
+        NetworkPlayer(std::string name, guint32 armyset, Gdk::Color color, int width, int height,
                    Player::Type type = Player::HUMAN, int player_no = -1);
         NetworkPlayer(const Player&);
         NetworkPlayer(XML_Helper* helper);

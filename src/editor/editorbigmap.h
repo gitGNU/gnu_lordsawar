@@ -1,5 +1,5 @@
-//  Copyright (C) 2007, Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007 Ole Laursen
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #include "input-events.h"
 #include "bigmap.h"
 #include "Tile.h"
+#include "GraphicsCache.h"
 
 class Stack;
 class MapRenderer;
@@ -47,10 +48,18 @@ class EditorBigMap: public BigMap
     ~EditorBigMap();
 
     enum Pointer {
-	POINTER, TERRAIN, STACK, CITY, RUIN, TEMPLE, SIGNPOST,
-	ROAD, ERASE, PORT, BRIDGE
+	POINTER = 0, 
+	TERRAIN, 
+	STACK, 
+	CITY, 
+	RUIN, 
+	TEMPLE, 
+	SIGNPOST,
+	ROAD, 
+	ERASE, 
+	PORT, 
+	BRIDGE
     };
-
     void set_pointer(Pointer pointer, int size, Tile::Type terrain, 
 		     int tile_style_id);
 
@@ -68,7 +77,7 @@ class EditorBigMap: public BigMap
     sigc::signal<void, Vector<int> > mouse_on_tile;
 
     // emitted when the map is changed by the user
-    sigc::signal<void, Rectangle> map_changed;
+    sigc::signal<void, Rectangle> map_tiles_changed;
 
     void smooth_view();
 

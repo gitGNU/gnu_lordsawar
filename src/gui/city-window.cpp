@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -180,10 +180,10 @@ void CityWindow::fill_in_production_toggles()
     Glib::RefPtr<Gdk::Pixbuf> pic;
     GraphicsCache *gc = GraphicsCache::getInstance();
 
-    SDL_Surface *s
+    Glib::RefPtr<Gdk::Pixbuf> s
 	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
     Glib::RefPtr<Gdk::Pixbuf> empty_pic
-	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->w, s->h);
+	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->get_width(), s->get_height());
     empty_pic->fill(0x00000000);
     
     ignore_toggles = true;
@@ -196,7 +196,7 @@ void CityWindow::fill_in_production_toggles()
         if (type != -1)
             // use GraphicsCache to load army pics because of player-specific
             // colors
-            pic = to_pixbuf(gc->getArmyPic(as, type, player, NULL));
+            pic = gc->getArmyPic(as, type, player, NULL);
 	else
 	    pic = empty_pic;
 	
@@ -251,10 +251,10 @@ void CityWindow::fill_in_production_info()
     Glib::RefPtr<Gdk::Pixbuf> pic;
     GraphicsCache *gc = GraphicsCache::getInstance();
     int slot = city->getActiveProductionSlot();
-    SDL_Surface *s
+    Glib::RefPtr<Gdk::Pixbuf> s
 	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
     Glib::RefPtr<Gdk::Pixbuf> empty_pic
-	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->w, s->h);
+	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->get_width(), s->get_height());
     empty_pic->fill(0x00000000);
     
 
@@ -298,7 +298,7 @@ void CityWindow::fill_in_production_info()
             s3 += String::ucompose(_(", then to %1"), 
                                    dest ? dest->getName() : "Standard");
           }
-      pic = to_pixbuf(gc->getArmyPic(as, a->getTypeId(), player, NULL));
+      pic = gc->getArmyPic(as, a->getTypeId(), player, NULL);
     }
     
     current_image->set(pic);
@@ -420,9 +420,9 @@ void CityWindow::on_destination_clicked()
     prodmap->draw(Playerlist::getActiveplayer());
 }
 
-void CityWindow::on_map_changed(SDL_Surface *map)
+void CityWindow::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
-    map_image->property_pixbuf() = to_pixbuf(map);
+    map_image->property_pixmap() = map;
 }
 
 void CityWindow::on_rename_clicked ()

@@ -20,6 +20,7 @@
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/bind.h>
 #include <errno.h>
+#include <string.h>
 
 #include "driver.h"
 

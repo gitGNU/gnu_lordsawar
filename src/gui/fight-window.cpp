@@ -96,12 +96,12 @@ FightWindow::FightWindow(Fight &fight)
     Gtk::Image *defender_shield_image;
     p = defenders.front()->getOwner();
     xml->get_widget("defender_shield_image", defender_shield_image);
-    defender_shield_image->property_pixbuf()=to_pixbuf(gc->getShieldPic(2, p));
+    defender_shield_image->property_pixbuf()=gc->getShieldPic(2, p);
 
     Gtk::Image *attacker_shield_image;
     p = attackers.front()->getOwner();
     xml->get_widget("attacker_shield_image", attacker_shield_image);
-    attacker_shield_image->property_pixbuf()=to_pixbuf(gc->getShieldPic(2, p));
+    attacker_shield_image->property_pixbuf()=gc->getShieldPic(2, p);
   
     actions = fight.getCourseOfEvents();
     d_quick = false;
@@ -235,14 +235,14 @@ void FightWindow::add_army(Army *army, int initial_hp,
     Gtk::VBox *army_box = manage(new Gtk::VBox);
 	
     // image
-    SDL_Surface *pic = gc->getArmyPic(army);
-    Gtk::Image *image = new Gtk::Image(to_pixbuf(pic));
+    Glib::RefPtr<Gdk::Pixbuf> pic = gc->getArmyPic(army);
+    Gtk::Image *image = new Gtk::Image(pic);
     army_box->add(*manage(image));
     
     // hit points graph
     Gtk::ProgressBar *progress = manage(new Gtk::ProgressBar);
     progress->set_fraction(double(initial_hp) / army->getStat(Army::HP));
-    progress->property_width_request() = pic->w;
+    progress->property_width_request() = pic->get_width();
     progress->property_height_request() = 12;
     army_box->pack_start(*progress, Gtk::PACK_SHRINK, 4);
 
@@ -277,7 +277,7 @@ void FightWindow::add_army(Army *army, int initial_hp,
 bool FightWindow::do_round()
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
-  SDL_Surface *expl = gc->getExplosionPic();
+  Glib::RefPtr<Gdk::Pixbuf> expl = gc->getExplosionPic();
 
   // first we clear out any explosions
   for (army_items_type::iterator i = army_items.begin(),
@@ -287,7 +287,7 @@ bool FightWindow::do_round()
       continue;
     
     Glib::RefPtr<Gdk::Pixbuf> empty_pic
-      = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, expl->w, expl->h);
+      = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, expl->get_width(), expl->get_height());
     empty_pic->fill(0x00000000);
     i->image->property_pixbuf() = empty_pic;
     i->exploding = false;
@@ -312,7 +312,7 @@ bool FightWindow::do_round()
         if (fraction == 0.0)
         {
           i->bar->hide();
-          i->image->property_pixbuf() = to_pixbuf(expl);
+          i->image->property_pixbuf() = expl;
           i->exploding = true;
         }
 		

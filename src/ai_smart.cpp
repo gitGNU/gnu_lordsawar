@@ -1,7 +1,7 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -43,7 +43,7 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 //#define debug(x)
 
-AI_Smart::AI_Smart(string name, unsigned int armyset, SDL_Color color, int width, int height, int player_no)
+AI_Smart::AI_Smart(string name, unsigned int armyset, Gdk::Color color, int width, int height, int player_no)
   :RealPlayer(name, armyset, color, width, height, Player::AI_SMART, player_no),
    d_mustmakemoney(0), d_abort_requested(false)
 {

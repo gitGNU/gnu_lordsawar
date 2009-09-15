@@ -1,5 +1,5 @@
-//  Copyright (C) 2007, Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007 Ole Laursen
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 
 #include <config.h>
 
-#include <SDL_image.h>
 #include <assert.h>
 #include <stdlib.h>
 
@@ -57,7 +56,7 @@ EditorBigMap::EditorBigMap()
 
     mouse_state = NONE;
     input_locked = false;
-    pointer = EditorBigMap::POINTER;
+    pointer = POINTER;
     pointer_size = 1;
     pointer_terrain = Tile::GRASS;
     pointer_tile_style_id = -1;
@@ -82,6 +81,7 @@ void EditorBigMap::set_pointer(Pointer p, int size, Tile::Type t,
 
     if (redraw)
       draw();
+    
 }
 
 void EditorBigMap::mouse_button_event(MouseButtonEvent e)
@@ -89,7 +89,8 @@ void EditorBigMap::mouse_button_event(MouseButtonEvent e)
     if (input_locked)
 	return;
     
-    Vector<int> tile = mouse_pos_to_tile(e.pos);
+    mouse_pos = e.pos;
+    Vector<int> tile = mouse_pos_to_tile(mouse_pos);
     
     if (e.button == MouseButtonEvent::LEFT_BUTTON
 	&& e.state == MouseButtonEvent::PRESSED)
@@ -97,7 +98,6 @@ void EditorBigMap::mouse_button_event(MouseButtonEvent e)
 	change_map_under_cursor();
     }
 
-	    
     else if (e.button == MouseButtonEvent::RIGHT_BUTTON
 	     && e.state == MouseButtonEvent::PRESSED)
     {
@@ -154,8 +154,7 @@ void EditorBigMap::mouse_motion_event(MouseMotionEvent e)
 	// FIXME: show a drag cursor
 	
 	int ts = GameMap::getInstance()->getTileset()->getTileSize();
-	SDL_Surface *screen = SDL_GetVideoSurface();
-	Vector<int> screen_dim(screen->w, screen->h);
+	Vector<int> screen_dim(image.get_width(), image.get_height());
 	view_pos = clip(Vector<int>(0, 0),
 			view_pos + delta,
 			GameMap::get_dim() * ts - screen_dim);
@@ -178,7 +177,7 @@ void EditorBigMap::mouse_motion_event(MouseMotionEvent e)
 	mouse_state = DRAGGING;
     }
 
-    if (redraw)
+    if (redraw && pointer != POINTER)
 	draw();
     
     prev_mouse_pos = mouse_pos;
@@ -231,103 +230,6 @@ std::vector<Vector<int> > EditorBigMap::get_cursor_tiles()
 }
 
 
-void EditorBigMap::after_draw()
-{
-    int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
-    std::vector<Vector<int> > tiles;
-
-    if (show_tile_types_instead_of_tile_styles)
-      {
-	tiles = get_screen_tiles();
-	for (std::vector<Vector<int> >::iterator i = tiles.begin(),
-	     end = tiles.end(); i != end; ++i)
-	  {
-	    Vector<int> pos = tile_to_buffer_pos(*i);
-	    SDL_Color tc = GameMap::getInstance()->getTile(*i)->getColor();
-	    const guint32 color = SDL_MapRGB(buffer->format, tc.r, tc.g, tc.b);
-	    draw_filled_rect(buffer, pos.x, pos.y,
-			     pos.x + tilesize, pos.y + tilesize, color);
-	  }
-      }
-
-    // we need to draw a drawing cursor on the map
-    tiles = get_cursor_tiles();
-    // draw each tile
-    for (std::vector<Vector<int> >::iterator i = tiles.begin(),
-	     end = tiles.end(); i != end; ++i)
-    {
-	Vector<int> pos = tile_to_buffer_pos(*i);
-
-	const guint32 outline = SDL_MapRGB(buffer->format, 200, 200, 200);
-	const guint32 red_outline = SDL_MapRGB(buffer->format, 200, 50, 50);
-
-	SDL_Rect r;
-	r.x = pos.x;
-	r.y = pos.y;
-	r.w = r.h = tilesize;
-	SDL_Surface *pic = 0;
-	
-	switch (pointer)
-	{
-	case POINTER:
-	    break;
-	    
-	case TERRAIN:
-	    draw_rect_clipped(buffer, pos.x + 1, pos.y + 1,
-			      pos.x + tilesize - 2, pos.y + tilesize - 2,
-			      outline);
-	    break;
-	    
-	case ERASE:
-	    draw_rect_clipped(buffer, pos.x + 1, pos.y + 1,
-			      pos.x + tilesize - 2, pos.y + tilesize - 2,
-			      red_outline);
-	    break;
-
-	case STACK:
-	    pic = GraphicsCache::getInstance()->getArmyPic(
-		Playerlist::getInstance()->getNeutral()->getArmyset(), 0,
-		Playerlist::getInstance()->getNeutral(), NULL);
-	    SDL_BlitSurface(pic, 0, buffer, &r);
-	    break;
-	    
-	case CITY:
-	    pic = GraphicsCache::getInstance()->getCityPic(
-		0, Playerlist::getInstance()->getNeutral());
-	    r.w = r.h = tilesize * 2;
-	    SDL_BlitSurface(pic, 0, buffer, &r);
-	    break;
-	    
-	case RUIN:
-	    pic = GraphicsCache::getInstance()->getRuinPic(0);
-	    SDL_BlitSurface(pic, 0, buffer, &r);
-	    break;
-	    
-	case TEMPLE:
-	    pic = GraphicsCache::getInstance()->getTemplePic(0);
-	    SDL_BlitSurface(pic, 0, buffer, &r);
-	    break;
-	    
-	case SIGNPOST:
-	    pic = GraphicsCache::getInstance()->getSignpostPic();
-	    SDL_BlitSurface(pic, 0, buffer, &r);
-	    break;
-	    
-	case ROAD:
-	    pic = GraphicsCache::getInstance()->getRoadPic(CreateScenario::calculateRoadType(*i));
-	    SDL_BlitSurface(pic, 0, buffer, &r);
-	    break;
-	case PORT:
-	    pic = GraphicsCache::getInstance()->getPortPic();
-	    SDL_BlitSurface(pic, 0, buffer, &r);
-	    break;
-	case BRIDGE:
-	    pic = GraphicsCache::getInstance()->getBridgePic(tile_to_bridge_type(*i));
-	    SDL_BlitSurface(pic, 0, buffer, &r);
-	    break;
-	}
-    }
-}
 
 int EditorBigMap::tile_to_bridge_type(Vector<int> t)
 {
@@ -769,7 +671,7 @@ void EditorBigMap::change_map_under_cursor()
 	}
 
 	if (changed_tiles.w > 0 && changed_tiles.h > 0)
-	    map_changed.emit(changed_tiles);
+	    map_tiles_changed.emit(changed_tiles);
     }
 
     draw();
@@ -780,4 +682,106 @@ void EditorBigMap::smooth_view()
   GameMap::getInstance()->applyTileStyles(view.y, view.x, view.y+view.h, 
 					  view.x+view.w, true);
   draw();
+}
+
+void EditorBigMap::after_draw()
+{
+    int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+    std::vector<Vector<int> > tiles;
+
+    if (show_tile_types_instead_of_tile_styles)
+      {
+	tiles = get_screen_tiles();
+	for (std::vector<Vector<int> >::iterator i = tiles.begin(),
+	     end = tiles.end(); i != end; ++i)
+	  {
+	    Vector<int> pos = tile_to_buffer_pos(*i);
+	    buffer_gc->set_rgb_fg_color(GameMap::getInstance()->getTile(*i)->getColor());
+	    int x = pos.x;
+	    int y = pos.y;
+	    int ts = tilesize;
+	    if (d_grid_toggled)
+	      {
+		x++;
+		y++;
+		ts--;
+	      }
+	    buffer->draw_rectangle (buffer_gc, true, x, y, ts, ts);
+	  }
+      }
+
+    // we need to draw a drawing cursor on the map
+    tiles = get_cursor_tiles();
+    // draw each tile
+	
+    Gdk::Color terrain_box_color = Gdk::Color();
+    terrain_box_color.set_rgb_p(200.0/255.0, 200.0/255.0, 200.0/255.0);
+    Gdk::Color erase_box_color = Gdk::Color();
+    erase_box_color.set_rgb_p(200.0/255.0, 50.0/255.0, 50.0/255.0);
+    for (std::vector<Vector<int> >::iterator i = tiles.begin(),
+	     end = tiles.end(); i != end; ++i)
+      {
+	Vector<int> pos = tile_to_buffer_pos(*i);
+
+	Glib::RefPtr<Gdk::Pixbuf> pic;
+
+
+	switch (pointer)
+	  {
+	  case POINTER:
+	    break;
+
+	  case TERRAIN:
+	    buffer_gc->set_rgb_fg_color (terrain_box_color);
+	    buffer->draw_rectangle (buffer_gc, false, pos.x + 1, pos.y + 1, 
+				    tilesize - 1, tilesize -1);
+	    break;
+
+	  case ERASE:
+	    buffer_gc->set_rgb_fg_color (erase_box_color);
+	    buffer->draw_rectangle (buffer_gc, false, pos.x + 1, pos.y + 1, 
+				    tilesize - 1, tilesize -1);
+	    break;
+
+	  case STACK:
+	    pic = GraphicsCache::getInstance()->getArmyPic
+	      (Playerlist::getInstance()->getNeutral()->getArmyset(), 0,
+	       Playerlist::getInstance()->getNeutral(), NULL);
+	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    break;
+
+	  case CITY:
+	    pic = GraphicsCache::getInstance()->getCityPic(0, Playerlist::getInstance()->getNeutral());
+	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    break;
+
+	  case RUIN:
+	    pic = GraphicsCache::getInstance()->getRuinPic(0);
+	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    break;
+
+	  case TEMPLE:
+	    pic = GraphicsCache::getInstance()->getTemplePic(0);
+	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    break;
+
+	  case SIGNPOST:
+	    pic = GraphicsCache::getInstance()->getSignpostPic();
+	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    break;
+
+	  case ROAD:
+	    pic = GraphicsCache::getInstance()->getRoadPic(CreateScenario::calculateRoadType(*i));
+	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    break;
+	  case PORT:
+	    pic = GraphicsCache::getInstance()->getPortPic();
+	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    break;
+	  case BRIDGE:
+	    pic = GraphicsCache::getInstance()->getBridgePic(tile_to_bridge_type(*i));
+	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    break;
+	  }
+      }
 }

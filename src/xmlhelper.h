@@ -80,7 +80,6 @@
 #include <map>
 #include <sigc++/slot.h>
 #include <expat.h>
-#include <SDL.h>
     
 class XML_Helper;
 

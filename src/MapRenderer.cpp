@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include <SDL.h>
 #include <string>
 
 #include "MapRenderer.h"
@@ -26,31 +25,32 @@
 
 using namespace std;
 
-MapRenderer::MapRenderer(SDL_Surface* surface)
+MapRenderer::MapRenderer(Glib::RefPtr<Gdk::Pixmap> surface)
 {
     d_surface = surface;
+    gc = Gdk::GC::create(surface);
 }
  
 bool MapRenderer::saveAsBitmap(std::string filename)
 {
   int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
-  SDL_PixelFormat *fmt = d_surface->format;
-  SDL_Surface *surf = SDL_CreateRGBSurface 
-    (SDL_SWSURFACE, 
-     GameMap::getWidth() * tilesize, GameMap::getHeight() * tilesize,
-     fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
-
-  render(0, 0, 0, 0, GameMap::getWidth(), GameMap::getHeight(), surf);
-  remove (filename.c_str());
-  SDL_SaveBMP(surf, filename.c_str());
-  SDL_FreeSurface(surf);
+  int width = GameMap::getWidth() * tilesize;
+  int height = GameMap::getHeight() * tilesize;
+  Glib::RefPtr<Gdk::Pixmap> surf = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(d_surface), width, height, 24);
+  render(0, 0, 0, 0, GameMap::getWidth(), GameMap::getHeight(), surf, Gdk::GC::create(surf));
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create(Glib::RefPtr<Gdk::Drawable>(surf), 0, 0, width, height);
+  pixbuf->save (filename, "png");
   return true;
 }
 
 bool MapRenderer::saveViewAsBitmap(std::string filename)
 {
+  int width;
+  int height;
+  d_surface->get_size(width, height);
   remove (filename.c_str());
-  SDL_SaveBMP(d_surface, filename.c_str());
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create(Glib::RefPtr<Gdk::Drawable>(d_surface), 0, 0, width, height);
+  pixbuf->save (filename, "png");
   return true;
 }
 
@@ -61,21 +61,20 @@ MapRenderer::~MapRenderer()
 void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 			 int columns, int rows)
 {
-  return render(x, y, tileStartX, tileStartY, columns, rows, d_surface);
+  return render(x, y, tileStartX, tileStartY, columns, rows, d_surface, gc);
 }
 
 void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
-			 int columns, int rows, SDL_Surface *surface)
+			 int columns, int rows, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context)
 {
-    SDL_Rect r;
     GameMap* map = GameMap::getInstance();
     int width = GameMap::getWidth();
     int height = GameMap::getHeight();
     int tilesize = map->getTileset()->getTileSize();
-    r.w = r.h = tilesize;
     int drawY = y;
 
-    guint32 background_color = SDL_MapRGB(surface->format, 0, 0, 0);
+    Gdk::Color background_color = Gdk::Color();
+    background_color.set_rgb_p(0,0,0);
     
     for (int tileY = tileStartY; tileY < (tileStartY + rows); tileY++)
     {
@@ -84,31 +83,28 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
         {
 	    // first check if we're out of the map bounds
 	    if (tileX >= width || tileY >= height) {
-		r.x = drawX;
-		r.y = drawY;
-		
-		SDL_FillRect(surface, &r, background_color);
+		context->set_rgb_fg_color(background_color);
+		surface->draw_rectangle(context, true, drawX, drawY, 
+					tilesize, tilesize);
 	    }
 	    else {
 		// get correct tile
 		Maptile *mtile = map->getTile(tileX,tileY);
 
-		r.x = drawX;
-		r.y = drawY;
 		TileStyle *style = mtile->getTileStyle();
 		if (style == NULL)
 		  printf ("style for tile %d at col=%d,row=%d is null\n",
 			  mtile->getMaptileType(), tileX, tileY);
 		else
 		  {
-		    if (style->getPixmap() == NULL)
+		    if (style->getImage() == false)
 		      {
 		  printf ("pic for style %d for tile %d at %d,%d is null\n",
 			  style->getType(),
 			  mtile->getMaptileType(), tileX, tileY);
 		      }
 		  }
-		SDL_BlitSurface(style->getPixmap(), 0, surface, &r);
+		surface->draw_pixbuf(style->getImage(), 0, 0, drawX, drawY, tilesize, tilesize, Gdk::RGB_DITHER_NONE, 0, 0);
 
 	    }
 	    

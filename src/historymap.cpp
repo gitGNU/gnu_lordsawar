@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,9 +21,11 @@
 #include <assert.h>
 
 #include "vector.h"
+#include "gui/image-helpers.h"
+#include <gtkmm.h>
+#include <gdkmm.h>
 
 #include "historymap.h"
-#include "sdl-draw.h"
 #include "GameMap.h"
 #include "GraphicsCache.h"
 
@@ -36,7 +38,7 @@ void HistoryMap::after_draw()
 {
     OverviewMap::after_draw();
     drawCities();
-    map_changed.emit(get_surface());
+    map_changed.emit(surface);
 }
 
 void HistoryMap::drawCities()
@@ -48,7 +50,7 @@ void HistoryMap::drawCities()
   LocationList<City*>::iterator it = d_clist->begin();
   for (; it != d_clist->end(); it++)
   {
-      SDL_Surface *tmp;
+    Glib::RefPtr<Gdk::Pixbuf> tmp;
       if ((*it)->isFogged(getViewingPlayer()))
         continue;
       if ((*it)->isBurnt() == true)
@@ -58,12 +60,13 @@ void HistoryMap::drawCities()
   
       Vector<int> pos = (*it)->getPos();
       pos = mapToSurface(pos);
-      SDL_Rect r;
-      r.x = pos.x - (tmp->w/2);
-      r.y = pos.y - (tmp->h/2);
-      r.w = tmp->w;
-      r.h = tmp->h;
-      SDL_BlitSurface(tmp, 0, surface, &r);
+      Glib::RefPtr<Gdk::Pixbuf> shield = tmp;
+      surface->draw_pixbuf(shield, 0, 0, 
+			   pos.x - (shield->get_width()/2), 
+			   pos.y - (shield->get_height()/2), 
+			   shield->get_width(),
+			   shield->get_height(),
+			   Gdk::RGB_DITHER_NONE, 0, 0);
   }
 }
 

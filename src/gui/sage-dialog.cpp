@@ -142,9 +142,9 @@ Reward *SageDialog::run()
     return reward;
 }
 
-void SageDialog::on_map_changed(SDL_Surface *map)
+void SageDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
-  map_image->property_pixbuf() = to_pixbuf(map);
+  map_image->property_pixmap() = map;
 }
 
 void SageDialog::addReward(Reward *reward)

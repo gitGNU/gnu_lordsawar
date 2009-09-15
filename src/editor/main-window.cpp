@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -28,7 +28,6 @@
 #include <gtkmm.h>
 #include "main-window.h"
 
-#include "gtksdl.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
 #include "error-utils.h"
@@ -84,8 +83,6 @@
 
 MainWindow::MainWindow()
 {
-    sdl_inited = false;
-    
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/main-window.ui");
 
@@ -97,20 +94,41 @@ MainWindow::MainWindow()
     w->signal_delete_event().connect(
 	sigc::mem_fun(*this, &MainWindow::on_delete_event));
 
-    xml->get_widget("sdl_container", sdl_container);
-
     // the map image
+    xml->get_widget("bigmap_image", bigmap_image);
+    bigmap_image->set_double_buffered(false);
+    bigmap_image->set_app_paintable(true);
+    bigmap_image->signal_expose_event().connect
+      (sigc::mem_fun(*this, &MainWindow::on_bigmap_exposed));
+    bigmap_image->signal_size_allocate().connect
+      (sigc::mem_fun(*this, &MainWindow::on_bigmap_surface_changed));
+    xml->get_widget("bigmap_eventbox", bigmap_eventbox);
+
+    bigmap_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | 
+				Gdk::BUTTON_RELEASE_MASK | 
+				Gdk::POINTER_MOTION_MASK |
+				Gdk::KEY_PRESS_MASK);
+    bigmap_eventbox->signal_button_press_event().connect(
+	sigc::mem_fun(*this, &MainWindow::on_bigmap_mouse_button_event));
+    bigmap_eventbox->signal_button_release_event().connect(
+	sigc::mem_fun(*this, &MainWindow::on_bigmap_mouse_button_event));
+    bigmap_eventbox->signal_motion_notify_event().connect(
+	sigc::mem_fun(*this, &MainWindow::on_bigmap_mouse_motion_event));
+    bigmap_eventbox->signal_key_press_event().connect(
+	sigc::mem_fun(*this, &MainWindow::on_bigmap_key_event));
+    bigmap_eventbox->signal_leave_notify_event().connect(
+	sigc::mem_fun(*this, &MainWindow::on_bigmap_leave_event));
     xml->get_widget("map_image", map_image);
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
 			     Gdk::POINTER_MOTION_MASK);
     map_eventbox->signal_button_press_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_map_mouse_button_event));
+	sigc::mem_fun(*this, &MainWindow::on_smallmap_mouse_button_event));
     map_eventbox->signal_button_release_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_map_mouse_button_event));
+	sigc::mem_fun(*this, &MainWindow::on_smallmap_mouse_button_event));
     map_eventbox->signal_motion_notify_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_map_mouse_motion_event));
+	sigc::mem_fun(*this, &MainWindow::on_smallmap_mouse_motion_event));
 
     xml->get_widget("terrain_tile_style_hbox", terrain_tile_style_hbox);
 
@@ -191,6 +209,9 @@ MainWindow::MainWindow()
     xml->get_widget("toggle_tile_graphics_menuitem", toggle_tile_graphics_menuitem);
     toggle_tile_graphics_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &MainWindow::on_tile_graphics_toggled));
+    xml->get_widget("toggle_grid_menuitem", toggle_grid_menuitem);
+    toggle_grid_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_grid_toggled));
     xml->get_widget("smooth_map_menuitem", smooth_map_menuitem);
     smooth_map_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &MainWindow::on_smooth_map_activated));
@@ -296,9 +317,8 @@ void MainWindow::setup_terrain_radiobuttons()
 	item.button->signal_toggled().connect(
 	    sigc::mem_fun(this, &MainWindow::on_terrain_radiobutton_toggled));
 
-	//SDL_Surface *surf = (*(*tile)[0])[0]->getPixmap();
-	SDL_Surface *surf = (*(*(*tile).begin())->begin())->getPixmap();
-	Glib::RefPtr<Gdk::Pixbuf> pic = to_pixbuf(surf)->scale_simple(20, 20, Gdk::INTERP_NEAREST);
+	Glib::RefPtr<Gdk::Pixbuf> pic;
+	pic = (*(*(*tile).begin())->begin())->getImage()->scale_simple(20, 20, Gdk::INTERP_NEAREST);
 	item.button->add(*manage(new Gtk::Image(pic)));
 
 	item.terrain = tile->getType();
@@ -310,52 +330,40 @@ void MainWindow::setup_terrain_radiobuttons()
 
 void MainWindow::show()
 {
-    sdl_container->show_all();
-    window->show();
+  window->show();
+}
+
+void MainWindow::on_bigmap_surface_changed(Gtk::Allocation box)
+{
+  if (!bigmap.get())
+    return;
+  static Gtk::Allocation last_box = Gtk::Allocation(0,0,1,1);
+
+  if (box.get_width() != last_box.get_width() || box.get_height() != last_box.get_height())
+    {
+      bigmap->screen_size_changed(bigmap_image->get_allocation());
+      bigmap->draw();
+      smallmap->draw(Playerlist::getActiveplayer());
+    }
+  last_box = box;
+}
+bool MainWindow::on_bigmap_exposed(GdkEventExpose *event)
+{
+  on_bigmap_surface_changed(Gtk::Allocation(event->area.x, event->area.y, event->area.width, event->area.height));
+  return false;
+}
+
+void MainWindow::init()
+{
+  GraphicsLoader::instantiateImages(Armysetlist::getInstance());
+  GraphicsLoader::instantiateImages(Tilesetlist::getInstance());
+  GraphicsLoader::instantiateImages(Shieldsetlist::getInstance());
+  show_initial_map();
 }
 
 void MainWindow::hide()
 {
     window->hide();
-}
-
-namespace 
-{
-    void surface_attached_helper(GtkSDL *gtksdl, gpointer data)
-    {
-	static_cast<MainWindow *>(data)->on_sdl_surface_changed();
-    }
-}
-
-void MainWindow::init(int width, int height)
-{
-    sdl_widget
-	= Gtk::manage(Glib::wrap(gtk_sdl_new(width, height, 0, SDL_SWSURFACE)));
-
-    sdl_widget->set_flags(Gtk::CAN_FOCUS);
-
-    sdl_widget->grab_focus();
-    sdl_widget->add_events(Gdk::KEY_PRESS_MASK |
-		  Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
-	          Gdk::POINTER_MOTION_MASK | Gdk::LEAVE_NOTIFY_MASK);
-
-    sdl_widget->signal_button_press_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_sdl_mouse_button_event));
-    sdl_widget->signal_button_release_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_sdl_mouse_button_event));
-    sdl_widget->signal_motion_notify_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_sdl_mouse_motion_event));
-    sdl_widget->signal_key_press_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_sdl_key_event));
-    sdl_widget->signal_leave_notify_event().connect(
-	sigc::mem_fun(*this, &MainWindow::on_sdl_leave_event));
-    
-    // connect to the special signal that signifies that a new surface has been
-    // generated and attached to the widget
-    g_signal_connect(G_OBJECT(sdl_widget->gobj()), "surface-attached",
-		     G_CALLBACK(surface_attached_helper), this);
-    
-    sdl_container->add(*sdl_widget);
 }
 
 bool MainWindow::on_delete_event(GdkEventAny *e)
@@ -536,11 +544,11 @@ void MainWindow::init_map_state()
 {
     pointer_radiobutton->set_active();
     init_maps();
-    bigmap->screen_size_changed();
+    //bigmap->screen_size_changed(Gtk::Allocation(0,0,640,480)); //fixme
 }
 
 
-bool MainWindow::on_sdl_mouse_button_event(GdkEventButton *e)
+bool MainWindow::on_bigmap_mouse_button_event(GdkEventButton *e)
 {
     if (e->type != GDK_BUTTON_PRESS && e->type != GDK_BUTTON_RELEASE)
 	return true;	// useless event
@@ -556,7 +564,7 @@ bool MainWindow::on_sdl_mouse_button_event(GdkEventButton *e)
     return true;
 }
 
-bool MainWindow::on_sdl_mouse_motion_event(GdkEventMotion *e)
+bool MainWindow::on_bigmap_mouse_motion_event(GdkEventMotion *e)
 {
   static guint prev = 0;
   if (bigmap.get())
@@ -565,7 +573,6 @@ bool MainWindow::on_sdl_mouse_motion_event(GdkEventMotion *e)
       if (delta > 40 || delta < 0)
 	{
 	  bigmap->mouse_motion_event(to_input_event(e));
-	  sdl_widget->grab_focus();
 	  prev = e->time;
 	}
     }
@@ -573,7 +580,7 @@ bool MainWindow::on_sdl_mouse_motion_event(GdkEventMotion *e)
     return true;
 }
 
-bool MainWindow::on_sdl_key_event(GdkEventKey *e)
+bool MainWindow::on_bigmap_key_event(GdkEventKey *e)
 {
 #if 0
     if (bigmap.get()) {
@@ -585,7 +592,7 @@ bool MainWindow::on_sdl_key_event(GdkEventKey *e)
     return true;
 }
 
-bool MainWindow::on_sdl_leave_event(GdkEventCrossing *e)
+bool MainWindow::on_bigmap_leave_event(GdkEventCrossing *e)
 {
     if (bigmap.get())
     {
@@ -595,7 +602,7 @@ bool MainWindow::on_sdl_leave_event(GdkEventCrossing *e)
     return true;
 }
 
-bool MainWindow::on_map_mouse_button_event(GdkEventButton *e)
+bool MainWindow::on_smallmap_mouse_button_event(GdkEventButton *e)
 {
     if (e->type != GDK_BUTTON_PRESS && e->type != GDK_BUTTON_RELEASE)
 	return true;	// useless event
@@ -606,31 +613,20 @@ bool MainWindow::on_map_mouse_button_event(GdkEventButton *e)
     return true;
 }
 
-bool MainWindow::on_map_mouse_motion_event(GdkEventMotion *e)
+bool MainWindow::on_smallmap_mouse_motion_event(GdkEventMotion *e)
 {
-    if (smallmap.get())
-	smallmap->mouse_motion_event(to_input_event(e));
+  static guint prev = 0;
+  if (smallmap.get())
+    {
+      guint delta = e->time - prev;
+      if (delta > 100 || delta < 0)
+	{
+	  smallmap->mouse_motion_event(to_input_event(e));
+	  prev = e->time;
+	}
+    }
     
     return true;
-}
-
-void MainWindow::on_sdl_surface_changed()
-{
-    if (!sdl_inited) {
-	GraphicsLoader::instantiatePixmaps(Armysetlist::getInstance());
-	GraphicsLoader::instantiatePixmaps(Tilesetlist::getInstance());
-	GraphicsLoader::instantiatePixmaps(Shieldsetlist::getInstance());
-	sdl_inited = true;
-	sdl_initialized.emit();
-    }
-
-    if (bigmap.get()) {
-	bigmap->screen_size_changed();
-	bigmap->draw();
-    }
-    
-    if (smallmap.get())
-	smallmap->draw(Playerlist::getActiveplayer());
 }
 
 void MainWindow::on_new_map_activated()
@@ -712,9 +708,10 @@ void MainWindow::on_export_as_bitmap_activated()
     Gtk::FileChooserDialog chooser(*window.get(), _("Choose a Name"),
 				   Gtk::FILE_CHOOSER_ACTION_SAVE);
     Gtk::FileFilter sav_filter;
-    sav_filter.add_pattern("*.bmp");
+    sav_filter.add_pattern("*.png");
     chooser.set_filter(sav_filter);
-    chooser.set_current_folder(Configuration::s_savePath);
+    chooser.set_current_folder(Glib::get_home_dir());
+    chooser.set_do_overwrite_confirmation();
 
     chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
@@ -739,9 +736,10 @@ void MainWindow::on_export_as_bitmap_no_game_objects_activated()
     Gtk::FileChooserDialog chooser(*window.get(), _("Choose a Name"),
 				   Gtk::FILE_CHOOSER_ACTION_SAVE);
     Gtk::FileFilter sav_filter;
-    sav_filter.add_pattern("*.bmp");
+    sav_filter.add_pattern("*.png");
     chooser.set_filter(sav_filter);
-    chooser.set_current_folder(Configuration::s_savePath);
+    chooser.set_current_folder(Glib::get_home_dir());
+    chooser.set_do_overwrite_confirmation();
 
     chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
@@ -825,6 +823,11 @@ void MainWindow::on_tile_graphics_toggled()
   bigmap->toggleViewStylesOrTypes();
   bigmap->draw();
 }
+void MainWindow::on_grid_toggled()
+{
+  bigmap->toggle_grid();
+}
+
 
 void MainWindow::remove_tile_style_buttons()
 {
@@ -884,8 +887,7 @@ void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
 	    (sigc::mem_fun(this, 
 			   &MainWindow::on_tile_style_radiobutton_toggled));
 
-	  SDL_Surface *surf = tilestyle->getPixmap();
-	  Glib::RefPtr<Gdk::Pixbuf> pic = to_pixbuf(surf);
+	  Glib::RefPtr<Gdk::Pixbuf> pic = tilestyle->getImage();
 	  item.button->add(*manage(new Gtk::Image(pic)));
 	  item.tile_style_id = tilestyle->getId();
 
@@ -1000,10 +1002,17 @@ int MainWindow::get_tile_style_id()
     return tile_style_id;
 }
 
-void MainWindow::on_smallmap_changed(SDL_Surface *map)
+void MainWindow::on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
-    map_image->property_pixbuf() = to_pixbuf(map);
+    bigmap_image->property_pixmap() = map; 
+    map.clear();
 }
+void MainWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
+{
+    map_image->property_pixmap() = map; 
+    map.clear();
+}
+
 
 void MainWindow::init_maps()
 {
@@ -1013,6 +1022,10 @@ void MainWindow::init_maps()
 	sigc::mem_fun(this, &MainWindow::on_mouse_on_tile));
     bigmap->objects_selected.connect(
 	sigc::mem_fun(this, &MainWindow::on_objects_selected));
+    bigmap->map_changed.connect(
+	sigc::mem_fun(this, &MainWindow::on_bigmap_changed));
+    // grid is on by default
+    bigmap->toggle_grid();
     
     // init the smallmap
     smallmap.reset(new SmallMap);
@@ -1022,7 +1035,7 @@ void MainWindow::init_maps()
     // connect the two maps
     bigmap->view_changed.connect(
 	sigc::mem_fun(smallmap.get(), &SmallMap::set_view));
-    bigmap->map_changed.connect(
+    bigmap->map_tiles_changed.connect(
 	sigc::mem_fun(smallmap.get(), &SmallMap::redraw_tiles));
     smallmap->view_changed.connect(
 	sigc::mem_fun(bigmap.get(), &EditorBigMap::set_view));
@@ -1279,8 +1292,7 @@ void MainWindow::on_help_about_activated()
   d->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
-  SDL_Surface *logo = GraphicsLoader::getMiscPicture("castle_icon.png");
-  dialog->set_logo(to_pixbuf(logo));
+  dialog->set_logo(GraphicsLoader::getMiscPicture("castle_icon.png"));
   dialog->show_all();
   dialog->run();
 

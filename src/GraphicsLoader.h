@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,8 +21,6 @@
 #include <string>
 #include <list>
 #include <gtkmm.h>
-#include <SDL.h>
-#include <SDL_image.h>
 
 class Shieldset;
 class Shieldsetlist;
@@ -40,14 +38,14 @@ class ArmyProto;
 class GraphicsLoader
 {
     public:
-	static void instantiatePixmaps(Shieldset *shieldset);
-	static void instantiatePixmaps(Shieldsetlist *ssl);
-	static void instantiatePixmaps(Shieldsetlist *ssl, std::string subdir);
-	static void instantiatePixmaps(Armyset *armyset);
-	static void instantiatePixmaps(Armysetlist *asl);
-	static void instantiatePixmaps(Tilesetlist *tsl);
-	static void instantiatePixmaps(Tileset *ts);
-	static void instantiatePixmaps(TileStyleSet *tss, guint32 tilesize);
+	static void instantiateImages(Shieldset *shieldset);
+	static void instantiateImages(Shieldsetlist *ssl);
+	static void instantiateImages(Shieldsetlist *ssl, std::string subdir);
+	static void instantiateImages(Armyset *armyset);
+	static void instantiateImages(Armysetlist *asl);
+	static void instantiateImages(Tilesetlist *tsl);
+	static void instantiateImages(Tileset *ts);
+	static void instantiateImages(TileStyleSet *tss, guint32 tilesize);
 
         /** Get the armyset picture file
           * 
@@ -57,7 +55,7 @@ class GraphicsLoader
 	  * @param pic               the name of the army picture.
           * @return the surface which contains the army pictures of this armyset
           */
-        static SDL_Surface* getArmyPicture(std::string armysetsubdir, std::string pic);
+        static Glib::RefPtr<Gdk::Pixbuf> getArmyPicture(std::string armysetsubdir, std::string pic);
         
         /** Get the shield picture file
           * 
@@ -67,7 +65,7 @@ class GraphicsLoader
 	  * @param pic                 the name of the shield picture.
           * @return the surface which contains the shield picture
           */
-        static SDL_Surface* getShieldsetPicture(std::string shieldsetsubdir, std::string pic);
+        static Glib::RefPtr<Gdk::Pixbuf> getShieldsetPicture(std::string shieldsetsubdir, std::string pic);
 
         /** Get a tileset picture
           * @param tilesetsubdir     the name of the tileset.  this is the
@@ -76,7 +74,7 @@ class GraphicsLoader
           * @param picname          the name of the picture.
           * @return the surface which contains the picture
           */
-        static SDL_Surface* getTilesetPicture(std::string tilesetsubdir, std::string picname);
+        static Glib::RefPtr<Gdk::Pixbuf> getTilesetPicture(std::string tilesetsubdir, std::string picname);
 
         /** Load misc pic
           * 
@@ -86,7 +84,7 @@ class GraphicsLoader
           *                 Especially for background images...
           * @return the surface which contains the image
           */
-        static SDL_Surface* getMiscPicture(std::string picname, bool alpha=true);
+        static Glib::RefPtr<Gdk::Pixbuf> getMiscPicture(std::string picname, bool alpha=true);
 
         /** Get a cityset picture
           * @param citysetsubdir     the name of the cityset.  this is the
@@ -95,10 +93,10 @@ class GraphicsLoader
           * @param picname          the name of the picture.
           * @return the surface which contains the picture
           */
-        static SDL_Surface* getCitysetPicture(std::string citysetsubdir, std::string picname);
+        static Glib::RefPtr<Gdk::Pixbuf> getCitysetPicture(std::string citysetsubdir, std::string picname);
 
     private:
-	static bool instantiatePixmaps(Armyset *set, ArmyProto *a);
+	static bool instantiateImages(Armyset *set, ArmyProto *a);
         /** Loads an image
           * 
           * This function loads an image, adjusts it to the current resolution etc.
@@ -114,16 +112,16 @@ class GraphicsLoader
           *                     will be marked as transparent in the returned image)
           * @return converted image or 0 if anything failed.
           */
-        static SDL_Surface* loadImage(std::string filename, bool alpha = true);
+        static Glib::RefPtr<Gdk::Pixbuf> loadImage(std::string filename, bool alpha = true);
 
 	static void loadShipPic(Armyset *armyset);
 	static void loadStandardPic(Armyset *armyset);
-	static void uninstantiatePixmaps(Armysetlist *asl);
-	static void uninstantiatePixmaps(Tilesetlist *ssl);
-	static void uninstantiatePixmaps(Shieldsetlist *ssl);
-	static void uninstantiatePixmaps(Shieldset *shieldset);
-	static void uninstantiatePixmaps(Tileset *ts);
-	static void uninstantiatePixmaps(Armyset *armyset);
+	static void uninstantiateImages(Armysetlist *asl);
+	static void uninstantiateImages(Tilesetlist *ssl);
+	static void uninstantiateImages(Shieldsetlist *ssl);
+	static void uninstantiateImages(Shieldset *shieldset);
+	static void uninstantiateImages(Tileset *ts);
+	static void uninstantiateImages(Armyset *armyset);
 };
 
 #endif //GRAPHICS_LOADER_H

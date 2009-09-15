@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -24,8 +24,6 @@
 
 #include "glade-helpers.h"
 #include "image-helpers.h"
-#include "gtksdl.h"
-#include <SDL_video.h>
 
 #include "ucompose.hpp"
 #include "vector.h"
@@ -53,7 +51,7 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, const Stack
 
     //fill up the hbox with images of the armies in the stack
     for (Stack::const_iterator it = stack->begin(); it != stack->end(); it++)
-      image_hbox->add(*manage(new Gtk::Image(to_pixbuf(gc->getArmyPic(*it)))));
+      image_hbox->add(*manage(new Gtk::Image(gc->getArmyPic(*it))));
 
     image_hbox->show_all();
 

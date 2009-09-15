@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify

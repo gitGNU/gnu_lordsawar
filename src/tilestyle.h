@@ -1,4 +1,4 @@
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #define TILESTYLE_H
 
 #include <gtkmm.h>
-#include <SDL.h>
 
 #include "xmlhelper.h"
 
@@ -285,7 +284,7 @@ ooooooo
 	void setType(Type type) {d_type = type;}
                 
         //! Get the picture for tile style.
-        SDL_Surface *getPixmap() const {return d_pixmap;}
+	Glib::RefPtr<Gdk::Pixbuf> getImage() const {return d_image;}
 
         //! Get the id for this tilestyle.
 	/*
@@ -308,14 +307,14 @@ ooooooo
 	//! Get the name of the another style.
 	static std::string getTypeName(Type type);
 
-	void setPixmap(SDL_Surface *pixmap) {d_pixmap = pixmap;};
+	void setImage(Glib::RefPtr<Gdk::Pixbuf> image) {d_image = image;};
 
 	//! Return the style type enumeration given the type name.
 	static TileStyle::Type typeNameToType(std::string name);
     private:
         // DATA
 	//! The image of this tilestyle.
-        SDL_Surface* d_pixmap; 
+	Glib::RefPtr<Gdk::Pixbuf> d_image; 
 
 	//! The type of the tilestyle.
         Type d_type;

@@ -19,7 +19,6 @@
 #define SHIELDSET_H
 
 #include <gtkmm.h>
-#include <SDL.h>
 #include <string>
 #include <map>
 #include <vector>
@@ -30,6 +29,7 @@
 
 #include "defs.h"
 
+struct rgbshift;
 //! A list of Shield graphic objects in a shield theme.
 /**
  * Every scenario has a shield set; it is the theme of the shield graphics 
@@ -116,8 +116,9 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 	 */
 	ShieldStyle * lookupShieldByTypeAndColour(guint32 type, guint32 colour);
 
-	SDL_Color getColor(guint32 owner);
-	SDL_Color getMaskColor(guint32 owner);
+	Gdk::Color getColor(guint32 owner);
+	Gdk::Color getMaskColor(guint32 owner);
+	struct rgb_shift getMaskColorShifts(guint32 owner);
     private:
 
         //! Callback function to load Shield objects into the Shieldset.

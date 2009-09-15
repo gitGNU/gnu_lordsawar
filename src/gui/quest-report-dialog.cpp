@@ -106,8 +106,8 @@ void QuestReportDialog::run()
     dialog->run();
 }
 
-void QuestReportDialog::on_map_changed(SDL_Surface *map)
+void QuestReportDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
-    map_image->property_pixbuf() = to_pixbuf(map);
+    map_image->property_pixmap() = map;
 }
 

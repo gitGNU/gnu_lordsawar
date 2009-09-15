@@ -1,4 +1,4 @@
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 #include "ruinmap.h"
 
-#include "sdl-draw.h"
+#include "gui/image-helpers.h"
 #include "playerlist.h"
 #include "GraphicsCache.h"
 #include "stacklist.h"
@@ -49,7 +49,7 @@ void RuinMap::draw_ruins (bool show_selected)
         continue;
       if ((*it)->isFogged(getViewingPlayer()) == true)
         continue;
-      SDL_Surface *tmp;
+      Glib::RefPtr<Gdk::Pixbuf> tmp;
       if ((*it)->isSearched())
         tmp = gc->getSmallRuinExploredPic();
       else
@@ -62,18 +62,22 @@ void RuinMap::draw_ruins (bool show_selected)
   
       Vector<int> pos = (*it)->getPos();
       pos = mapToSurface(pos);
-      SDL_Rect r;
-      r.x = pos.x - (tmp->w/2);
-      r.y = pos.y - (tmp->h/2);
-      r.w = tmp->w;
-      r.h = tmp->h;
-      SDL_BlitSurface(tmp, 0, surface, &r);
+      Glib::RefPtr<Gdk::Pixbuf> ruinpic = tmp;
+      surface->draw_pixbuf(ruinpic, 0, 0, 
+			 pos.x - (ruinpic->get_width()/2), 
+			 pos.y - (ruinpic->get_height()/2), 
+			 ruinpic->get_width(),
+			 ruinpic->get_height(),
+			 Gdk::RGB_DITHER_NONE, 0, 0);
       if (show_selected)
         {
           if ((*it)->getId() == ruin->getId()) //is this the selected ruin?
             {
-              guint32 raw = SDL_MapRGBA(surface->format,255, 255, 255, 255);
-              draw_rect(surface, r.x, r.y, r.x + r.w, r.y + r.h, raw);
+	      Gdk::Color box_color = Gdk::Color();
+	      box_color.set_rgb_p(100,100,100);
+              draw_rect(pos.x - (ruinpic->get_width()/2), 
+			pos.y - (ruinpic->get_height()/2), 
+			ruinpic->get_width(), ruinpic->get_height(), box_color);
             }
         }
   }
@@ -89,23 +93,26 @@ void RuinMap::draw_temples (bool show_selected)
   {
       if ((*it)->isFogged(getViewingPlayer()) == true)
         continue;
-      SDL_Surface *tmp;
-      tmp = gc->getSmallTemplePic();
   
       Vector<int> pos = (*it)->getPos();
       pos = mapToSurface(pos);
-      SDL_Rect r;
-      r.x = pos.x - (tmp->w/2);
-      r.y = pos.y - (tmp->h/2);
-      r.w = tmp->w;
-      r.h = tmp->h;
-      SDL_BlitSurface(tmp, 0, surface, &r);
+      Glib::RefPtr<Gdk::Pixbuf> templepic = gc->getSmallTemplePic();
+      surface->draw_pixbuf(templepic, 0, 0, 
+			   pos.x - (templepic->get_width()/2), 
+			   pos.y - (templepic->get_height()/2), 
+			   templepic->get_width(),
+			   templepic->get_height(),
+			   Gdk::RGB_DITHER_NONE, 0, 0);
       if (show_selected)
         {
           if ((*it)->getId() == ruin->getId()) //is this the selected ruin?
             {
-              guint32 raw = SDL_MapRGBA(surface->format,255, 255, 255, 255);
-              draw_rect(surface, r.x, r.y, r.x + r.w, r.y + r.h, raw);
+	      Gdk::Color box_color = Gdk::Color();
+	      box_color.set_rgb_p(100,100,100);
+              draw_rect(pos.x - (templepic->get_width()/2), 
+			pos.y - (templepic->get_height()/2), 
+			templepic->get_width(), templepic->get_height(), 
+			box_color);
             }
         }
   }

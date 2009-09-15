@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
  * @note This is called HistoryMap because it is used for the HistoryDialog.
  *
  */
-class HistoryMap: public OverviewMap, public sigc::trackable
+class HistoryMap: public OverviewMap
 {
  public:
      //! Default constructor.  Make a new HistoryMap.
@@ -45,7 +45,7 @@ class HistoryMap: public OverviewMap, public sigc::trackable
      /**
       * Classes that use HistoryMap must catch this signal to display the map.
       */
-     sigc::signal<void, SDL_Surface *> map_changed;
+     sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > map_changed;
         
      //! Change which cities are shown on the miniature map graphic.
      /**

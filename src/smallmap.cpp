@@ -2,7 +2,7 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
 // Copyright (C) 2004 Thomas Plonka
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -58,19 +58,23 @@ void SmallMap::draw_selection()
     int w = int(view.w * pixels_per_tile);
     int h = int(view.h * pixels_per_tile);
 
+    int width;
+    int height;
+    surface->get_size(width, height);
     // this is a bit unfortunate.  we require this catch-all
     // so that our selector box isn't too big for the smallmap
-    if (pos.x + w >= surface->w)
-      pos.x = surface->w - w - 1;
-    if (pos.y + h >= surface->h)
-      pos.y = surface->h - h - 1;
+    if (pos.x + w >= width)
+      pos.x = width - w - 1;
+    if (pos.y + h >= height)
+      pos.y = height - h - 1;
 
-    assert(pos.x >= 0 && pos.x + w < surface->w &&
-	   pos.y >= 0 && pos.y + h < surface->h);
+    assert(pos.x >= 0 && pos.x + w < width &&
+	   pos.y >= 0 && pos.y + h < height);
     
-    guint32 raw = SDL_MapRGB(surface->format, 255, 255, 255);
-    draw_rect(surface, pos.x, pos.y, pos.x + w, pos.y + h, raw);
-    draw_rect(surface, pos.x+1, pos.y+1, pos.x + w-1, pos.y + h-1, raw);
+    Gdk::Color box_color = Gdk::Color();
+    box_color.set_rgb_p(100,100,100);
+    draw_rect(pos.x, pos.y, w, h, box_color);
+    draw_rect(pos.x-1, pos.y-1, w+2,  h+2, box_color);
 }
 
 void SmallMap::center_view_on_tile(Vector<int> pos, bool slide)
@@ -119,7 +123,7 @@ void SmallMap::after_draw()
       draw_cities(false);
       draw_selection();
     }
-  map_changed.emit(get_surface());
+  map_changed.emit(surface);
 }
 
 void SmallMap::mouse_button_event(MouseButtonEvent e)
@@ -185,7 +189,8 @@ void SmallMap::slide_view(Rectangle new_view)
 
 void SmallMap::blank()
 {
-  guint32 fog_color = SDL_MapRGB(surface->format, 0, 0, 0);
+  Gdk::Color fog_color = Gdk::Color();
+  fog_color.set_rgb_p(0,0,0);
   int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
   //fog it up
   for (int i = 0; i < GameMap::getWidth(); i++)
@@ -195,9 +200,8 @@ void SmallMap::blank()
 	pos.x = i;
 	pos.y = j;
 	pos = mapToSurface(pos);
-	draw_filled_rect(surface, pos.x, pos.y,
-			 pos.x + size, pos.y + size, fog_color);
+	draw_filled_rect(pos.x, pos.y, size, size, fog_color);
       }
-  map_changed.emit(get_surface());
+  map_changed.emit(surface);
 }
 

@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 #include "questmap.h"
 
-#include "sdl-draw.h"
+#include "gui/image-helpers.h"
 #include "Quest.h"
 #include "QuestsManager.h"
 #include "playerlist.h"
@@ -39,8 +39,7 @@ QuestMap::QuestMap(Quest *q)
 
 void QuestMap::draw_stacks(Player *p, std::list< Vector<int> > targets)
 {
-  SDL_Color c = p->getColor();
-  guint32 outline = SDL_MapRGB(surface->format, c.r, c.g, c.b);
+  Gdk::Color cross_color = p->getColor();
   int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
         
   for (std::list< Vector<int> >::iterator it= targets.begin(); it != targets.end(); it++)
@@ -53,8 +52,8 @@ void QuestMap::draw_stacks(Player *p, std::list< Vector<int> > targets)
           continue;
 
       pos = mapToSurface(pos);
-      draw_hline(surface, pos.x - size, pos.x + size, pos.y, outline);
-      draw_vline(surface, pos.x, pos.y - size, pos.y + size, outline);
+      draw_line(pos.x - size, pos.y, pos.x + size, pos.y, cross_color);
+      draw_line(pos.x, pos.y - size, pos.x, pos.y + size, cross_color);
   }
 }
 void QuestMap::draw_target(Vector<int> start, Vector<int> target)
@@ -68,16 +67,17 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
 
   start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
   end += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
-  guint32 raw = SDL_MapRGBA(surface->format,252, 160, 0, 255);
+  Gdk::Color box_color = Gdk::Color();
+  box_color.set_rgb_p(252.0/255.0, 160.0/255.0, 0);
   int xsize = 8;
   int ysize = 8;
   //draw an 8 by 8 box, with a smaller box inside of it
-  draw_rect(surface, end.x - (xsize / 2), end.y - (ysize / 2), 
-	    end.x + ((xsize / 2) - 1), end.y + ((ysize / 2) - 1), raw);
+  draw_rect(end.x - (xsize / 2), end.y - (ysize / 2), 
+	    xsize, ysize, box_color);
   xsize = 4;
   ysize = 4;
-  draw_filled_rect(surface, end.x - (xsize / 2), end.y - (ysize / 2), 
-		   end.x + (xsize / 2), end.y + (ysize / 2), raw);
+  draw_filled_rect(end.x - (xsize / 2), end.y - (ysize / 2), 
+		   xsize, ysize, box_color);
 
   xsize = 8;
   ysize = 8;
@@ -110,7 +110,7 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
 	//connect to the northwestern corner of the box.
 	end += Vector<int>(-(xsize / 2), -(ysize / 2));
     }
-  draw_line(surface, start.x, start.y, end.x, end.y, raw);
+  draw_line(start.x, start.y, end.x, end.y, box_color);
 }
 
 void QuestMap::after_draw()
@@ -165,14 +165,13 @@ void QuestMap::after_draw()
 
   start += Vector<int>(int (pixels_per_tile / 2), int (pixels_per_tile / 2));
 
-  SDL_Surface *tmp = gc->getSmallHeroPic (true);
-    
-  SDL_Rect r;
-  r.x = start.x - (tmp->w / 2);
-  r.y = start.y - (tmp->h / 2);
-  r.w = tmp->w;
-  r.h = tmp->h;
-  SDL_BlitSurface (tmp, 0, surface, &r);
+  Glib::RefPtr<Gdk::Pixbuf> heropic = gc->getSmallHeroPic (true);
+  surface->draw_pixbuf(heropic, 0, 0, 
+		       start.x - (heropic->get_width()/2), 
+		       start.y - (heropic->get_height()/2), 
+		       heropic->get_width(),
+		       heropic->get_height(),
+		       Gdk::RGB_DITHER_NONE, 0, 0);
     map_changed.emit(surface);
 }
 

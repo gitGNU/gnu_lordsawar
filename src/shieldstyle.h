@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #define SHIELDSTYLE_H
 
 #include <gtkmm.h>
-#include <SDL.h>
 #include <string>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
@@ -75,13 +74,13 @@ class ShieldStyle : public sigc::trackable
         // Set functions:
         
         //! Set the basic image of the shield.
-        void setPixmap(SDL_Surface* pixmap);
+        void setImage(Glib::RefPtr<Gdk::Pixbuf> image) {d_image = image;};
 
         //! Set the mask of the shield.
-        void setMask(SDL_Surface* mask);
+        void setMask(Glib::RefPtr<Gdk::Pixbuf> mask) {d_mask = mask;}
 
 	//! Set the basename of the shield picture's filename.
-	void setImageName(std::string image) {d_image = image;}
+	void setImageName(std::string name) {d_image_name = name;}
         
         // Get functions
         
@@ -89,13 +88,13 @@ class ShieldStyle : public sigc::trackable
         guint32 getType() const {return d_type;}
 
         //! Get the image of the shield.
-        SDL_Surface* getPixmap() const;
+	Glib::RefPtr<Gdk::Pixbuf> getImage() {return d_image;}
 
         //! Returns the mask of the shield.
-        SDL_Surface* getMask() const {return d_mask;}
+	Glib::RefPtr<Gdk::Pixbuf> getMask() {return d_mask;}
 
 	//! Returns the basename of the picture's filename.
-	std::string getImageName() const {return d_image;}
+	std::string getImageName() const {return d_image_name;}
 
     protected:
 
@@ -108,14 +107,14 @@ class ShieldStyle : public sigc::trackable
         guint32 d_type;
 
 	//! The unshaded image portion of the shield's picture.
-        SDL_Surface* d_pixmap;
+	Glib::RefPtr<Gdk::Pixbuf> d_image;
 
 	//! The portion of the shield's image to shade in the player's colour.
 	/**
 	 * The mask appears to the right of the image in the shield's picture.
 	 * The colour that shades the mask is dictated by Player::d_colour.
 	 */
-        SDL_Surface* d_mask;
+	Glib::RefPtr<Gdk::Pixbuf> d_mask;
 
 	//! The basename of the shield's picture file.
 	/**
@@ -123,7 +122,7 @@ class ShieldStyle : public sigc::trackable
 	 * The filename does not have a path, and the filename does
 	 * not have an extension (e.g. .png).
 	 */
-	std::string d_image;
+	std::string d_image_name;
 };
 
 #endif // SHIELDSTYLE_H

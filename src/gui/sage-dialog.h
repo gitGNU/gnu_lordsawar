@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,7 +27,6 @@
 #include "player.h"
 #include "hero.h"
 
-struct SDL_Surface;
 
 #include "decorated.h"
 
@@ -66,7 +65,7 @@ class SageDialog: public Decorated
     Ruin *ruin;
 
     std::list<Reward*> common_rewards;
-    void on_map_changed(SDL_Surface *map);
+    void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
     void addReward(Reward *reward);
     Reward *grabSelectedReward();
     void on_reward_selected();

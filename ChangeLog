@@ -1,3 +1,9 @@
+2009-09-15  Ben Asselstine  <benasselstine@gmail.com>
+
+	* migrated all drawing and image code to use gtk+ instead of SDL.
+	* hitting space at the next turn dialog will now close the window.
+	* added tabs to the armyset editor.
+
 2009-09-05  Ben Asselstine  <benasselstine@gmail.com>
 
 	* expunging asprintf, snprintf.

@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -176,13 +176,13 @@ bool GamePreferencesDialog::run(std::string nickname)
   return false;
 }
 
-SDL_Surface *GamePreferencesDialog::getShieldPic(guint32 type, guint32 owner)
+Glib::RefPtr<Gdk::Pixbuf> GamePreferencesDialog::getShieldPic(guint32 type, guint32 owner)
 {
   Shieldsetlist *sl = Shieldsetlist::getInstance();
 
   ShieldStyle *sh= sl->getShield(d_shieldset, type, owner);
-  SDL_Color color = sl->getMaskColor(d_shieldset, owner);
-  return GraphicsCache::applyMask(sh->getPixmap(), sh->getMask(), color, false);
+  return GraphicsCache::applyMask(sh->getImage(), sh->getMask(), 
+				  sl->getMaskColorShifts(d_shieldset, owner), false);
 }
 
 void GamePreferencesDialog::add_player(GameParameters::Player::Type type,
@@ -246,14 +246,13 @@ void GamePreferencesDialog::update_shields()
 {
   if (dialog->is_realized() == false)
     return;
-  GraphicsLoader::instantiatePixmaps(Shieldsetlist::getInstance());
+  GraphicsLoader::instantiateImages(Shieldsetlist::getInstance());
 
   std::vector<Gtk::Widget*> list;
   list = players_vbox->get_children();
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
-      Gtk::Image *player_shield = new Gtk::Image
-	(to_pixbuf(getShieldPic(2, i)));
+      Gtk::Image *player_shield = new Gtk::Image (getShieldPic(2, i));
       player_shields.push_back(player_shield);
       Gtk::HBox *player_hbox = static_cast<Gtk::HBox*>(list[i+1]);
       player_hbox->pack_start(*manage(player_shield), Gtk::PACK_SHRINK, 10);

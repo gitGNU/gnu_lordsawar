@@ -1,5 +1,5 @@
-//  Copyright (C) 2007, Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007 Ole Laursen
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@
 #include <gtkmm.h>
 
 #include "game-parameters.h"
-#include <SDL.h>
 #include "game-options-dialog.h"
 #include "GameScenario.h"
 
@@ -85,7 +84,7 @@ class GamePreferencesDialog: public Decorated
     void update_difficulty_combobox();
     void update_difficulty_rating();
     void update_shields();
-    SDL_Surface *getShieldPic(guint32 type, guint32 owner);
+    Glib::RefPtr<Gdk::Pixbuf> getShieldPic(guint32 type, guint32 owner);
     std::string d_filename;
     std::string d_shieldset;
 };

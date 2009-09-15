@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -29,7 +29,6 @@
 #include "editorbigmap.h"
 #include "RenamableLocation.h"
 
-class SDL_Surface;
 class EditorBigMap;
 class SmallMap;
 class GameScenario;
@@ -47,18 +46,14 @@ class MainWindow: public sigc::trackable
     void show();
     void hide();
 
-    // initialize the SDL widget 
-    void init(int width, int height);
-
-    sigc::signal<void> sdl_initialized;
-    
+    void init();
     void show_initial_map();
     Gtk::Window &get_window() { return *window.get(); }
 
  private:
     std::auto_ptr<Gtk::Window> window;
-    Gtk::Container *sdl_container;
-    Gtk::Widget *sdl_widget;
+    Gtk::Image *bigmap_image;
+    Gtk::EventBox *bigmap_eventbox;
     Gtk::CheckMenuItem *fullscreen_menuitem;
     Gtk::MenuItem *new_map_menuitem;
     Gtk::MenuItem *load_map_menuitem;
@@ -71,6 +66,7 @@ class MainWindow: public sigc::trackable
     Gtk::MenuItem *edit_players_menuitem;
     Gtk::MenuItem *edit_map_info_menuitem;
     Gtk::MenuItem *toggle_tile_graphics_menuitem;
+    Gtk::MenuItem *toggle_grid_menuitem;
     Gtk::MenuItem *smooth_map_menuitem;
     Gtk::MenuItem *smooth_screen_menuitem;
     Gtk::MenuItem *edit_items_menuitem ;
@@ -95,21 +91,19 @@ class MainWindow: public sigc::trackable
     std::auto_ptr<EditorBigMap> bigmap;
     std::auto_ptr<SmallMap> smallmap;
     
-    bool sdl_inited;
-
     std::auto_ptr<GameScenario> game_scenario;
     std::auto_ptr<CreateScenarioRandomize> d_create_scenario_names;
     GdkEventButton *button_event;
 
     bool on_delete_event(GdkEventAny *e);
 
-    bool on_sdl_mouse_button_event(GdkEventButton *e);
-    bool on_sdl_mouse_motion_event(GdkEventMotion *e);
-    bool on_sdl_key_event(GdkEventKey *e);
-    bool on_sdl_leave_event(GdkEventCrossing *e);
+    bool on_bigmap_mouse_button_event(GdkEventButton *e);
+    bool on_bigmap_mouse_motion_event(GdkEventMotion *e);
+    bool on_bigmap_key_event(GdkEventKey *e);
+    bool on_bigmap_leave_event(GdkEventCrossing *e);
 
-    bool on_map_mouse_button_event(GdkEventButton *e);
-    bool on_map_mouse_motion_event(GdkEventMotion *e);
+    bool on_smallmap_mouse_button_event(GdkEventButton *e);
+    bool on_smallmap_mouse_motion_event(GdkEventMotion *e);
     
     void on_new_map_activated();
     void on_load_map_activated();
@@ -128,6 +122,7 @@ class MainWindow: public sigc::trackable
 
     void on_fullscreen_activated();
     void on_tile_graphics_toggled();
+    void on_grid_toggled();
 
     void on_random_all_cities_activated();
     void on_random_unnamed_cities_activated();
@@ -195,7 +190,8 @@ class MainWindow: public sigc::trackable
     void randomize_ruin(Ruin *ruin);
 
     // map callbacks
-    void on_smallmap_changed(SDL_Surface *map);
+    void on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    void on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map);
     void on_objects_selected(std::vector<UniquelyIdentified *> objects);
     void on_mouse_on_tile(Vector<int> tile);
     
@@ -203,12 +199,12 @@ class MainWindow: public sigc::trackable
 
     void auto_select_appropriate_pointer();
 
+    bool on_bigmap_exposed(GdkEventExpose *event);
+    void on_bigmap_surface_changed(Gtk::Allocation box);
+
     int d_width;
     int d_height;
     
-public:
-    // not part of the API, but for surface_attached_helper
-    void on_sdl_surface_changed();
 };
 
 #endif

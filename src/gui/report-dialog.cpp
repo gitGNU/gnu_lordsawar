@@ -145,24 +145,24 @@ void ReportDialog::run()
   dialog->run();
 }
 
-void ReportDialog::on_army_map_changed(SDL_Surface *map)
+void ReportDialog::on_army_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
   if (report_notebook->get_current_page() == ARMY)
-    map_image->property_pixbuf() = to_pixbuf(map);
+    map_image->property_pixmap() = map;
 }
 
-void ReportDialog::on_city_map_changed(SDL_Surface *map)
+void ReportDialog::on_city_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
   if (report_notebook->get_current_page() == CITY ||
       report_notebook->get_current_page() == GOLD ||
       report_notebook->get_current_page() == WINNING)
-    map_image->property_pixbuf() = to_pixbuf(map);
+    map_image->property_pixmap() = map;
 }
 
-void ReportDialog::on_vector_map_changed(SDL_Surface *map)
+void ReportDialog::on_vector_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
   if (report_notebook->get_current_page() == PRODUCTION)
-    map_image->property_pixbuf() = to_pixbuf(map);
+    map_image->property_pixmap() = map;
 }
 
 void ReportDialog::on_switch_page(GtkNotebookPage *page, guint number)
@@ -172,15 +172,15 @@ void ReportDialog::on_switch_page(GtkNotebookPage *page, guint number)
   switch (number)
     {
     case ARMY:
-      map_image->property_pixbuf() = to_pixbuf(armymap->get_surface());
+      map_image->property_pixmap() = armymap->get_surface();
       break;
     case CITY: 
     case GOLD: 
     case WINNING:
-      map_image->property_pixbuf() = to_pixbuf(citymap->get_surface());
+      map_image->property_pixmap() = citymap->get_surface();
       break;
     case PRODUCTION:
-      map_image->property_pixbuf() = to_pixbuf(vectormap->get_surface());
+      map_image->property_pixmap() = vectormap->get_surface();
       break;
     }
   fill_in_info();
@@ -225,8 +225,7 @@ void ReportDialog::updateArmyChart()
       total = 0;
       total = p->getStacklist()->countArmies();
       bars.push_back(total);
-      SDL_Color sdl = p->getColor();
-      colour.set_red(sdl.r * 255); colour.set_green(sdl.g * 255); colour.set_blue(sdl.b * 255);
+      colour = p->getColor();
       colours.push_back(colour);
       if (p == d_player)
 	{
@@ -258,8 +257,7 @@ void ReportDialog::updateCityChart()
       total = Citylist::getInstance()->countCities(p);
 
       bars.push_back(total);
-      SDL_Color sdl = p->getColor();
-      colour.set_red(sdl.r * 255); colour.set_green(sdl.g * 255); colour.set_blue(sdl.b * 255);
+      colour = p->getColor();
       colours.push_back(colour);
       if (p == d_player)
 	{
@@ -291,8 +289,7 @@ void ReportDialog::updateGoldChart()
 	continue;
       total = p->getGold();
       bars.push_back(total);
-      SDL_Color sdl = p->getColor();
-      colour.set_red(sdl.r * 255); colour.set_green(sdl.g * 255); colour.set_blue(sdl.b * 255);
+      colour = p->getColor();
       colours.push_back(colour);
       if (p == d_player)
 	{
@@ -340,8 +337,7 @@ void ReportDialog::updateWinningChart()
 	continue;
       score = p->getScore();
       bars.push_back(score);
-      SDL_Color sdl = p->getColor();
-      colour.set_red(sdl.r * 255); colour.set_green(sdl.g * 255); colour.set_blue(sdl.b * 255);
+      colour = p->getColor();
       colours.push_back(colour);
     }
   s = String::ucompose(_("You are coming %1"), calculateRank(bars, d_player->getScore()));
@@ -398,8 +394,7 @@ void ReportDialog::addProduction(const Action *action)
   const ArmyProto *a;
   a = Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);
   Gtk::TreeIter i = armies_list->append();
-  (*i)[armies_columns.image] = to_pixbuf(gc->getArmyPic(p->getArmyset(),
-							army_type,
-							p, NULL));
+  (*i)[armies_columns.image] = gc->getArmyPic(p->getArmyset(), army_type, p, 
+					      NULL);
   (*i)[armies_columns.desc] = s;
 }

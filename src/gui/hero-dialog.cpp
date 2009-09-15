@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -450,9 +450,9 @@ void HeroDialog::fill_in_info_labels()
     info_label2->set_text(s);
 }
 
-void HeroDialog::on_map_changed(SDL_Surface *map)
+void HeroDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
-    map_image->property_pixbuf() = to_pixbuf(map);
+    map_image->property_pixmap() = map;
 }
 
 bool HeroDialog::on_map_mouse_button_event(GdkEventButton *e)

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,13 +17,13 @@
 
 #include <iostream>
 #include <expat.h>
-#include <SDL.h>
 #include "rectangle.h"
 #include <sigc++/functors/mem_fun.h>
 
 #include "shieldset.h"
 #include "shieldstyle.h"
 #include "File.h"
+#include "rgb_shift.h"
 
 using namespace std;
 
@@ -84,27 +84,36 @@ ShieldStyle * Shieldset::lookupShieldByTypeAndColour(guint32 type, guint32 owner
   return NULL;
 }
 
-SDL_Color Shieldset::getColor(guint32 owner)
+Gdk::Color Shieldset::getColor(guint32 owner)
 {
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getOwner() == owner)
 	return (*it)->getColor();
     }
-  SDL_Color def;
-  memset (&def, 0, sizeof (def));
-  return def;
+  return Gdk::Color("black");
 }
 
-SDL_Color Shieldset::getMaskColor(guint32 owner)
+Gdk::Color Shieldset::getMaskColor(guint32 owner)
 {
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getOwner() == owner)
 	return (*it)->getMaskColor();
     }
-  SDL_Color def;
-  memset (&def, 0, sizeof (def));
-  return def;
+  return Gdk::Color("black");
 }
 
+struct rgb_shift Shieldset::getMaskColorShifts(guint32 owner)
+{
+  struct rgb_shift empty;
+  empty.r = 0;
+  empty.g = 0;
+  empty.b = 0;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getOwner() == owner)
+	return (*it)->getMaskColorShifts();
+    }
+  return empty;
+}

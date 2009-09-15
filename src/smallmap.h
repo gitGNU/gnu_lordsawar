@@ -2,7 +2,7 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
 // Copyright (C) 2004 Thomas Plonka
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -41,7 +41,7 @@
  * underlying map.  It draws an animation of the selection rectangle as it 
  * moves to the next selected region.
  */
-class SmallMap: public OverviewMap, public sigc::trackable
+class SmallMap: public OverviewMap
 {
 public:
     //! Default constructor.  Make a new SmallMap.
@@ -95,7 +95,7 @@ public:
     /**
      * Classes that use SmallMap must catch this signal to display the map.
      */
-    sigc::signal<void, SDL_Surface *> map_changed;
+    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > map_changed;
 
     //! Center the view on the given map position.
     /**

@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,7 +26,6 @@
 #include "ruinmap.h"
 #include "player.h"
 
-struct SDL_Surface;
 
 #include "decorated.h"
 class Reward_Ruin;
@@ -51,7 +50,7 @@ class RuinRewardedDialog: public Decorated
     
     Reward_Ruin *d_reward;
 
-    void on_map_changed(SDL_Surface *map);
+    void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
 };
 
 #endif

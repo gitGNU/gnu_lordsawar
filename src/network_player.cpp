@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2009 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -58,7 +58,7 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-NetworkPlayer::NetworkPlayer(string name, guint32 armyset, SDL_Color color, int width,
+NetworkPlayer::NetworkPlayer(string name, guint32 armyset, Gdk::Color color, int width,
 		       int height, Player::Type type, int player_no)
     :Player(name, armyset, color, width, height, type, player_no),
     d_connected(false), d_abort_requested(false)

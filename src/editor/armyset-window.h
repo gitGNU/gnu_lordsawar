@@ -37,16 +37,10 @@ class ArmySetWindow: public sigc::trackable
     void show();
     void hide();
 
-    // initialize the SDL widget 
-    void init(int width, int height);
-
-    sigc::signal<void> sdl_initialized;
     Gtk::Window &get_window() { return *window.get(); }
 
  private:
     std::auto_ptr<Gtk::Window> window;
-    Gtk::Container *sdl_container;
-    Gtk::Widget *sdl_widget;
     std::string current_save_filename;
     Armyset *d_armyset; //current armyset
     ArmyProto *d_army; //current army
@@ -86,7 +80,6 @@ class ArmySetWindow: public sigc::trackable
     Gtk::Button *add_army_button;
     Gtk::Button *remove_army_button;
     Gtk::VBox *army_vbox;
-    bool sdl_inited;
     Gtk::MenuItem *new_armyset_menuitem;
     Gtk::MenuItem *load_armyset_menuitem;
     Gtk::MenuItem *save_armyset_menuitem;
@@ -160,9 +153,6 @@ class ArmySetWindow: public sigc::trackable
     void on_suballherobonus_toggled();
     void on_add_army_clicked();
     void on_remove_army_clicked();
-public:
-    // not part of the API, but for surface_attached_helper
-    void on_sdl_surface_changed();
 };
 
 #endif

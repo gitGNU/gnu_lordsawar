@@ -1,6 +1,6 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 //  02110-1301, USA.
 
 #include <sigc++/functors/mem_fun.h>
+#include <string.h>
 
 #include "tileset.h"
 
@@ -44,10 +45,7 @@ Tileset::Tileset(std::string name)
   d_large_selector = "misc/selector.png";
   d_small_selector = "misc/small_selector.png";
   d_explosion = "misc/explosion.png";
-  d_road_color.r = 0;
-  d_road_color.g = 0;
-  d_road_color.b = 0;
-  d_road_color.unused = 0;
+  d_road_color.set_rgb_p(0,0,0);
 }
 
 Tileset::Tileset(XML_Helper *helper)
@@ -96,13 +94,11 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
 
     if (tag == Tileset::d_road_smallmap_tag)
       {
-	guint32 i;
-	SDL_Color color;
-	color.unused = 0;
-	helper->getData(i, "red");      color.r = i;
-	helper->getData(i, "green");    color.g = i;
-	helper->getData(i, "blue");     color.b = i;
-	d_road_color = color;
+	guint32 r, g, b;
+	helper->getData(r, "red");
+	helper->getData(g, "green");
+	helper->getData(b, "blue");
+	d_road_color.set_rgb_p((float)r/255.0,(float)g/255.0, (float)b/255.0);
 	return true;
       }
 
@@ -162,9 +158,9 @@ bool Tileset::save(XML_Helper *helper)
   retval &= helper->saveData("small_selector", d_small_selector);
   retval &= helper->saveData("explosion", d_explosion);
   retval &= helper->openTag(d_road_smallmap_tag);
-  retval &= helper->saveData("red", d_road_color.r);
-  retval &= helper->saveData("green", d_road_color.g);
-  retval &= helper->saveData("blue", d_road_color.b);
+  retval &= helper->saveData("red", int(d_road_color.get_red_p() *255));
+  retval &= helper->saveData("green", int(d_road_color.get_green_p()*255));
+  retval &= helper->saveData("blue", int(d_road_color.get_blue_p()*255));
   retval &= helper->closeTag();
   for (Tileset::iterator i = begin(); i != end(); ++i)
     retval &= (*i)->save(helper);

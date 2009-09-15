@@ -22,6 +22,7 @@
 #include <iomanip>
 #include <assert.h>
 #include <libgen.h>
+#include <string.h>
 
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
@@ -34,7 +35,6 @@
 #include "tileset-selector-editor-dialog.h"
 #include "tileset-explosion-picture-editor-dialog.h"
 
-#include "gtksdl.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
 #include "error-utils.h"
@@ -56,7 +56,6 @@
 TileSetWindow::TileSetWindow()
 {
   d_tileset = NULL;
-    sdl_inited = false;
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/tileset-window.ui");
 
@@ -192,15 +191,13 @@ TileSetWindow::TileSetWindow()
     update_tileset_buttons();
     update_tilestyleset_buttons();
 
-    xml->get_widget("sdl_container", sdl_container);
     update_tileset_buttons();
     update_tilestyleset_buttons();
     update_tileset_menuitems();
     update_tile_preview_menuitem();
 
-    tile_smallmap_surface = SDL_CreateRGBSurface(SDL_SWSURFACE, 32, 32, 24,
-						 0xFFu, 0xFFu << 8, 
-						 0xFFu << 16, 0);
+    tile_smallmap_surface = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), 32, 32, 24);
+    tile_smallmap_surface_gc = Gdk::GC::create(tile_smallmap_surface);
 
     inhibit_image_change = false;
 }
@@ -267,13 +264,10 @@ TileSetWindow::update_tilestyle_panel()
   if (t)
     {
       tilestyle_combobox->set_active(t->getType());
-      SDL_Surface *pixmap = t->getPixmap();
-      if (pixmap)
-	{
-	  tilestyle_image->clear();
-	  tilestyle_image->property_pixbuf() = to_pixbuf(pixmap);
-	  tilestyle_image->show_all();
-	}
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf= t->getImage();
+      tilestyle_image->clear();
+      tilestyle_image->property_pixbuf() = pixbuf;
+      tilestyle_image->show_all();
       int idx = t->getType();
       tilestyle_standard_image->property_pixbuf() = 
 	tilestyle_standard_images[idx];
@@ -310,7 +304,7 @@ void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
   if (height)
     {
       d_tileset->setTileSize(height);
-      GraphicsLoader::instantiatePixmaps(t, d_tileset->getTileSize());
+      GraphicsLoader::instantiateImages(t, d_tileset->getTileSize());
     }
   inhibit_image_change = true;
   image_filechooser_button->set_filename(n);
@@ -381,46 +375,17 @@ TileSetWindow::update_tile_panel()
 }
 TileSetWindow::~TileSetWindow()
 {
-  SDL_FreeSurface (tile_smallmap_surface);
+  tile_smallmap_surface.reset();
 }
 
 void TileSetWindow::show()
 {
-  sdl_container->show_all();
   window->show();
 }
 
 void TileSetWindow::hide()
 {
   window->hide();
-}
-
-namespace 
-{
-  void surface_attached_helper(GtkSDL *gtksdl, gpointer data)
-    {
-      static_cast<TileSetWindow *>(data)->on_sdl_surface_changed();
-    }
-}
-
-void TileSetWindow::init(int width, int height)
-{
-  sdl_widget
-    = Gtk::manage(Glib::wrap(gtk_sdl_new(width, height, 0, SDL_SWSURFACE)));
-
-  sdl_widget->set_flags(Gtk::CAN_FOCUS);
-
-  sdl_widget->grab_focus();
-  sdl_widget->add_events(Gdk::KEY_PRESS_MASK |
-			 Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
-			 Gdk::POINTER_MOTION_MASK | Gdk::LEAVE_NOTIFY_MASK);
-
-  // connect to the special signal that signifies that a new surface has been
-  // generated and attached to the widget
-  g_signal_connect(G_OBJECT(sdl_widget->gobj()), "surface-attached",
-		   G_CALLBACK(surface_attached_helper), this);
-
-  sdl_container->add(*sdl_widget);
 }
 
 bool TileSetWindow::on_delete_event(GdkEventAny *e)
@@ -511,7 +476,7 @@ void TileSetWindow::on_load_tileset_activated()
       //hackus horribilium
       std::string back = "../../../../../../../../../../../../../../../../";
       d_tileset->setSubDir(back + dir);
-      GraphicsLoader::instantiatePixmaps(d_tileset);
+      GraphicsLoader::instantiateImages(d_tileset);
       for (Tileset::iterator i = d_tileset->begin(); i != d_tileset->end(); ++i)
 	{
 	  Gtk::TreeIter l = tiles_list->append();
@@ -600,21 +565,11 @@ void TileSetWindow::on_help_about_activated()
   d->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
-  SDL_Surface *logo = GraphicsLoader::getMiscPicture("tileset_icon.png");
-  dialog->set_logo(to_pixbuf(logo));
+  dialog->set_logo(GraphicsLoader::getMiscPicture("tileset_icon.png"));
   dialog->show_all();
   dialog->run();
 
   return;
-}
-
-void TileSetWindow::on_sdl_surface_changed()
-{
-  if (!sdl_inited) {
-    GraphicsLoader::instantiatePixmaps(Tilesetlist::getInstance());
-    sdl_inited = true;
-    sdl_initialized.emit();
-  }
 }
 
 void TileSetWindow::update_tile_preview_menuitem()
@@ -722,13 +677,7 @@ void TileSetWindow::on_tile_first_color_changed()
     {
       Gtk::TreeModel::Row row = *iterrow;
       Tile *t = row[tiles_columns.tile];
-      Gdk::Color c = tile_smallmap_first_colorbutton->get_color();
-      SDL_Color sdl;
-      memset (&sdl, 0, sizeof (sdl));
-      sdl.r = c.get_red() / 255;
-      sdl.g = c.get_green() / 255;
-      sdl.b = c.get_blue() / 255;
-      t->getSmallTile()->setColor(sdl);
+      t->getSmallTile()->setColor(tile_smallmap_first_colorbutton->get_color());
       fill_tile_smallmap(t);
     }
 }
@@ -742,13 +691,7 @@ void TileSetWindow::on_tile_second_color_changed()
     {
       Gtk::TreeModel::Row row = *iterrow;
       Tile *t = row[tiles_columns.tile];
-      Gdk::Color c = tile_smallmap_second_colorbutton->get_color();
-      SDL_Color sdl;
-      memset (&sdl, 0, sizeof (sdl));
-      sdl.r = c.get_red() / 255;
-      sdl.g = c.get_green() / 255;
-      sdl.b = c.get_blue() / 255;
-      t->getSmallTile()->setSecondColor(sdl);
+      t->getSmallTile()->setSecondColor(tile_smallmap_second_colorbutton->get_color());
       fill_tile_smallmap(t);
     }
 }
@@ -762,13 +705,7 @@ void TileSetWindow::on_tile_third_color_changed()
     {
       Gtk::TreeModel::Row row = *iterrow;
       Tile *t = row[tiles_columns.tile];
-      Gdk::Color c = tile_smallmap_third_colorbutton->get_color();
-      SDL_Color sdl;
-      memset (&sdl, 0, sizeof (sdl));
-      sdl.r = c.get_red() / 255;
-      sdl.g = c.get_green() / 255;
-      sdl.b = c.get_blue() / 255;
-      t->getSmallTile()->setThirdColor(sdl);
+      t->getSmallTile()->setThirdColor(tile_smallmap_third_colorbutton->get_color());
       fill_tile_smallmap(t);
     }
 }
@@ -776,38 +713,25 @@ void TileSetWindow::on_tile_third_color_changed()
 void TileSetWindow::fill_colours(Tile *tile)
 {
   Gdk::Color c;
-  SDL_Color sdl;
   switch (tile->getSmallTile()->getPattern())
     {
     case SmallTile::SOLID:
       tile_smallmap_second_colorbutton->set_sensitive(false);
       tile_smallmap_third_colorbutton->set_sensitive(false);
-      sdl = tile->getSmallTile()->getColor();
-      c.set_red(sdl.r * 255); c.set_green(sdl.g * 255); c.set_blue(sdl.b * 255);
-      tile_smallmap_first_colorbutton->set_color(c);
+      tile_smallmap_first_colorbutton->set_color(tile->getSmallTile()->getColor());
       break;
     case SmallTile::STIPPLED: case SmallTile::SUNKEN:
       tile_smallmap_second_colorbutton->set_sensitive(true);
       tile_smallmap_third_colorbutton->set_sensitive(false);
-      sdl = tile->getSmallTile()->getColor();
-      c.set_red(sdl.r * 255); c.set_green(sdl.g * 255); c.set_blue(sdl.b * 255);
-      tile_smallmap_first_colorbutton->set_color(c);
-      sdl = tile->getSmallTile()->getSecondColor();
-      c.set_red(sdl.r * 255); c.set_green(sdl.g * 255); c.set_blue(sdl.b * 255);
-      tile_smallmap_second_colorbutton->set_color(c);
+      tile_smallmap_first_colorbutton->set_color(tile->getSmallTile()->getColor());
+      tile_smallmap_second_colorbutton->set_color(tile->getSmallTile()->getSecondColor());
       break;
     case SmallTile::RANDOMIZED: case SmallTile::TABLECLOTH: case SmallTile::DIAGONAL: case SmallTile::CROSSHATCH: case SmallTile::SUNKEN_STRIPED:
       tile_smallmap_second_colorbutton->set_sensitive(true);
       tile_smallmap_third_colorbutton->set_sensitive(true);
-      sdl = tile->getSmallTile()->getColor();
-      c.set_red(sdl.r * 255); c.set_green(sdl.g * 255); c.set_blue(sdl.b * 255);
-      tile_smallmap_first_colorbutton->set_color(c);
-      sdl = tile->getSmallTile()->getSecondColor();
-      c.set_red(sdl.r * 255); c.set_green(sdl.g * 255); c.set_blue(sdl.b * 255);
-      tile_smallmap_second_colorbutton->set_color(c);
-      sdl = tile->getSmallTile()->getThirdColor();
-      c.set_red(sdl.r * 255); c.set_green(sdl.g * 255); c.set_blue(sdl.b * 255);
-      tile_smallmap_third_colorbutton->set_color(c);
+      tile_smallmap_first_colorbutton->set_color(tile->getSmallTile()->getColor());
+      tile_smallmap_second_colorbutton->set_color(tile->getSmallTile()->getSecondColor());
+      tile_smallmap_third_colorbutton->set_color(tile->getSmallTile()->getThirdColor());
       break;
     }
 }
@@ -868,16 +792,17 @@ void TileSetWindow::fill_tile_smallmap(Tile *tile)
 	    shadowed = true;
 	  else if (j == 32 - 1)
 	    shadowed = true;
-	  OverviewMap::draw_tile_pixel (tile_smallmap_surface, 
-					tile->getSmallTile()->getPattern(),
-					tile->getSmallTile()->getColor(),
-					tile->getSmallTile()->getSecondColor(),
-					tile->getSmallTile()->getThirdColor(),
-					i, j, shadowed);
+	  OverviewMap::draw_terrain_tile (tile_smallmap_surface,
+					  tile_smallmap_surface_gc,
+					  tile->getSmallTile()->getPattern(),
+					  tile->getSmallTile()->getColor(),
+					  tile->getSmallTile()->getSecondColor(),
+					  tile->getSmallTile()->getThirdColor(),
+					  i, j, shadowed);
 	}
     }
 
-  tile_smallmap_image->property_pixbuf() = to_pixbuf(tile_smallmap_surface);
+  tile_smallmap_image->property_pixmap() = tile_smallmap_surface;
 }
 
 void TileSetWindow::on_add_tilestyleset_clicked()
@@ -1061,7 +986,7 @@ void TileSetWindow::on_image_chosen()
 void TileSetWindow::on_refresh_clicked()
 {
   TileStyleSet *set = get_selected_tilestyleset ();
-  GraphicsLoader::instantiatePixmaps(set, d_tileset->getTileSize());
+  GraphicsLoader::instantiateImages(set, d_tileset->getTileSize());
 }
 
 void TileSetWindow::on_preview_tile_activated()

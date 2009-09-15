@@ -21,7 +21,6 @@
 #include <gtkmm.h>
 #include <string>
 #include <map>
-#include <SDL.h>
 #include <vector>
 #include <sigc++/trackable.h>
 
@@ -29,6 +28,7 @@
 #include "shield.h"
 #include "shieldset.h"
 
+struct rgbshift;
 
 //! A list of Shieldset objects available to the game.
 /** 
@@ -82,8 +82,9 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	//! Return the Shieldset object that is in the given directory.
 	Shieldset *getShieldset(std::string dir) { return d_shieldsets[dir];}
 
-	SDL_Color getColor(std::string shieldset, guint32 owner);
-	SDL_Color getMaskColor(std::string shieldset, guint32 owner);
+	Gdk::Color getColor(std::string shieldset, guint32 owner);
+	Gdk::Color getMaskColor(std::string shieldset, guint32 owner);
+	struct rgb_shift getMaskColorShifts(std::string shieldset, guint32 owner);
 
     private:
         //! Default Constructor.

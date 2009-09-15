@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -65,7 +65,7 @@ PreferencesDialog::PreferencesDialog(bool readonly)
 	if (p == Playerlist::getInstance()->getNeutral())
 	  continue;
 	Gtk::HBox *player_hbox = new Gtk::HBox();
-	Gtk::Image *image = new Gtk::Image(to_pixbuf(gc->getShieldPic(2, p)));
+	Gtk::Image *image = new Gtk::Image(gc->getShieldPic(2, p));
 	Gtk::ComboBoxText *type = new Gtk::ComboBoxText();
 	type->signal_changed().connect
 	  (sigc::bind(sigc::mem_fun

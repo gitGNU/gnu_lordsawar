@@ -18,8 +18,6 @@
 #include <iostream>
 #include <algorithm>
 #include <expat.h>
-#include <SDL_image.h>
-#include <SDL.h>
 #include "rectangle.h"
 #include "ucompose.hpp"
 #include <sigc++/functors/mem_fun.h>

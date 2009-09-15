@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -23,7 +23,6 @@
 #define ARMY_PROTO_H
 
 #include <gtkmm.h>
-#include <SDL.h>
 #include <string>
 
 class XML_Helper;
@@ -51,13 +50,13 @@ class ArmyProto : public ArmyProtoBase
         // Set functions:
         
 	//! Sets the filename of the image.
-	void setImageName(std::string image) {d_image = image;}
+	void setImageName(std::string name) {d_image_name = name;}
 
         //! Set the basic image of the Army.
-        void setPixmap(SDL_Surface* pixmap) {d_pixmap = pixmap;};
+        void setImage(Glib::RefPtr<Gdk::Pixbuf> image) {d_image = image;};
 
         //! Set the image mask of the unit type (for player colours).
-        void setMask(SDL_Surface* mask) {d_mask = mask;};
+        void setMask(Glib::RefPtr<Gdk::Pixbuf> mask) {d_mask = mask;};
 
 	//! Sets whether or not this Army prototype can found in a ruin.
 	void setDefendsRuins(bool defends) {d_defends_ruins = defends; }
@@ -79,13 +78,13 @@ class ArmyProto : public ArmyProtoBase
 	 * The filename does not have a path, and the filename does
 	 * not have an extension (e.g. .png).
 	 */
-	std::string getImageName() const {return d_image;}
+	std::string getImageName() const {return d_image_name;}
 
         //! Get the image of the army prototype. 
-        SDL_Surface* getPixmap() const {return d_pixmap;};
+	Glib::RefPtr<Gdk::Pixbuf> getImage() const {return d_image;};
 
         //! Returns the mask (read-only) for player colors.
-        SDL_Surface* getMask() const {return d_mask;}
+	Glib::RefPtr<Gdk::Pixbuf> getMask() const {return d_mask;}
 
 	//! Gets whether or not this army type can found in a ruin.
 	bool getDefendsRuins() const {return d_defends_ruins; }
@@ -113,10 +112,10 @@ class ArmyProto : public ArmyProtoBase
     private:
 
 	//! The picture of the Army prototype.
-        SDL_Surface* d_pixmap;
+	Glib::RefPtr<Gdk::Pixbuf> d_image;
 
 	//! The mask portion of the Army prototype picture.
-        SDL_Surface* d_mask;
+	Glib::RefPtr<Gdk::Pixbuf> d_mask;
         
 	//! Whether or not the Army prototype can defend a Ruin.
 	/**
@@ -144,7 +143,7 @@ class ArmyProto : public ArmyProtoBase
 	 * This value does not contain a path, and does not contain an
 	 * extension (e.g. .png).
 	 */
-	std::string d_image;
+	std::string d_image_name;
 
 	bool d_hero;
 };

@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -48,7 +48,7 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a, bool show_sight_stat)
     
     Gtk::Image *image;
     xml->get_widget("image", image);
-    image->property_pixbuf() = to_pixbuf(gc->getArmyPic(army));
+    image->property_pixbuf() = gc->getArmyPic(army);
     
     Gtk::Label *label;
     xml->get_widget("label", label);

@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -130,9 +130,9 @@ void SelectArmyDialog::fill_in_army_toggles()
 	Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
 
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf
-	  = to_pixbuf(GraphicsCache::getInstance()->getArmyPic(armyset,
-							       selectable[i]->getTypeId(),
-							       player, NULL));
+	  = GraphicsCache::getInstance()->getArmyPic(armyset,
+						     selectable[i]->getTypeId(),
+						     player, NULL);
 
 	toggle->add(*manage(new Gtk::Image(pixbuf)));
 	army_toggles.push_back(toggle);

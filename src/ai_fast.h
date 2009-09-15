@@ -1,7 +1,7 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2004 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -57,7 +57,7 @@ class AI_Fast : public RealPlayer
 	 *                     the next free Id it used.
          */
 	//! Default constructor.
-        AI_Fast(std::string name, guint32 armyset, SDL_Color color, 
+        AI_Fast(std::string name, guint32 armyset, Gdk::Color color, 
 		int width, int height, int player_no = -1);
 
         //! Copy constructor.

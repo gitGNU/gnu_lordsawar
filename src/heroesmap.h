@@ -52,7 +52,7 @@ class HeroesMap : public OverviewMap
     /**
      * Classes that use HeroesMap must catch this signal to display the map.
      */
-    sigc::signal<void, SDL_Surface *> map_changed;
+    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > map_changed;
 
     //! Emitted when a hero is clicked on.
     sigc::signal<void, Hero* > hero_selected;

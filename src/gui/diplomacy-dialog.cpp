@@ -68,7 +68,7 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
 	continue;
       if (p == d_player)
 	continue;
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = to_pixbuf(gc->getShieldPic(2, p));
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = gc->getShieldPic(2, p);
       Gtk::Image *im = manage(new Gtk::Image(pixbuf));
       //im->set_padding(11, 0);
       d_proposals_table->attach(*im, i + 0, i + 1, 0, 1, 
@@ -77,8 +77,7 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
     }
   d_proposals_table->set_col_spacings (16);
     
-  d_player_shield_image->property_pixbuf() = 
-    to_pixbuf(gc->getShieldPic(2, d_player));
+  d_player_shield_image->property_pixbuf() = gc->getShieldPic(2, d_player);
 
   d_player_label->set_text(d_player->getName());
 
@@ -101,8 +100,7 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
 	}
       j = 0;
       Player::DiplomaticState state = d_player->getDiplomaticState (p);
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = to_pixbuf(gc->getDiplomacyPic(1, 
-								       state));
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = gc->getDiplomacyPic(1, state);
       Gtk::Image *im = manage(new Gtk::Image(pixbuf));
       d_proposals_table->attach(*im, i + 0, i + 1, j + 1, j + 2, 
 				Gtk::SHRINK, Gtk::SHRINK);
@@ -114,14 +112,13 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
 	  switch (proposal)
 	    {
 	    case Player::PROPOSE_PEACE:
-	      pixbuf2 = to_pixbuf(gc->getDiplomacyPic(1, Player::AT_PEACE));
+	      pixbuf2 = gc->getDiplomacyPic(1, Player::AT_PEACE);
 	      break;
 	    case Player::PROPOSE_WAR_IN_FIELD:
-	      pixbuf2 = 
-		to_pixbuf(gc->getDiplomacyPic(1, Player::AT_WAR_IN_FIELD));
+	      pixbuf2 = gc->getDiplomacyPic(1, Player::AT_WAR_IN_FIELD);
 	      break;
 	    case Player::PROPOSE_WAR:
-	      pixbuf2 = to_pixbuf(gc->getDiplomacyPic(1, Player::AT_WAR));
+	      pixbuf2 = gc->getDiplomacyPic(1, Player::AT_WAR);
 	      break;
 	    default:
 	      continue;
@@ -152,7 +149,7 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
       j = 0;
       Gtk::RadioButton *radio1= manage(new Gtk::RadioButton);
       Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
-	to_pixbuf(gc->getDiplomacyPic(1, Player::AT_PEACE));
+	gc->getDiplomacyPic(1, Player::AT_PEACE);
       radio1->add(*manage(new Gtk::Image(pixbuf)));
       radio1->set_mode(false);
       Gtk::RadioButtonGroup group = radio1->get_group();
@@ -171,7 +168,7 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
       j = 1;
       Gtk::RadioButton *radio2= manage(new Gtk::RadioButton);
       Glib::RefPtr<Gdk::Pixbuf> pixbuf2 = 
-	to_pixbuf(gc->getDiplomacyPic(1, Player::AT_WAR_IN_FIELD));
+	gc->getDiplomacyPic(1, Player::AT_WAR_IN_FIELD);
       radio2->add(*manage(new Gtk::Image(pixbuf2)));
       radio2->set_mode(false);
       radio2->set_group(group);
@@ -189,8 +186,8 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
 
       j = 2;
       Gtk::RadioButton *radio3= manage(new Gtk::RadioButton);
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf3 = 
-	to_pixbuf(gc->getDiplomacyPic(1, Player::AT_WAR));
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf3 = gc->getDiplomacyPic(1, 
+							      Player::AT_WAR);
       radio3->add(*manage(new Gtk::Image(pixbuf3)));
       radio3->set_mode(false);
       radio3->set_group(group);

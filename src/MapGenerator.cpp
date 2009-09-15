@@ -26,6 +26,7 @@
 #include <math.h>  
 #include <algorithm>
 #include <set>
+#include <string.h>
 
 //#include <boost/foreach.hpp>
 

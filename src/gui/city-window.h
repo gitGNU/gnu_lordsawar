@@ -1,5 +1,5 @@
-//  Copyright (C) 2007, Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007 Ole Laursen
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -79,7 +79,7 @@ class CityWindow: public Decorated
     void on_on_hold_clicked();
     void on_buy_clicked();
     void on_destination_clicked();
-    void on_map_changed(SDL_Surface *map);
+    void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
     bool on_map_mouse_button_event(GdkEventButton *e);
     void on_rename_clicked ();
     void on_raze_clicked ();

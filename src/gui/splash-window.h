@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -67,7 +67,7 @@ class SplashWindow: public Decorated
 	    
     bool sdl_inited;
     Gtk::Container *sdl_container;
-    Gtk::Widget *sdl_widget;
+    //Gtk::Widget *sdl_widget;
     bool on_delete_event(GdkEventAny *e);
     void on_window_closed();
   
@@ -98,7 +98,7 @@ class SplashWindow: public Decorated
 #endif
         
  public:
-    void on_sdl_surface_changed();
+    //void on_sdl_surface_changed();
 };
 
 #endif

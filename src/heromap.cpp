@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 #include "heromap.h"
 
-#include "sdl-draw.h"
+#include "gui/image-helpers.h"
 #include "city.h"
 #include "citylist.h"
 #include "playerlist.h"
@@ -40,18 +40,12 @@ void HeroMap::after_draw()
 
     start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
 
-    SDL_Surface *tmp = gc->getSmallHeroPic(true);
-    
-    SDL_Rect r;
-    r.x = start.x - (tmp->w/2);
-    if (r.x < 0)
-      r.x = 0;
-    r.y = start.y - (tmp->h/2);
-    if (r.y < 0)
-      r.y = 0;
-    r.w = tmp->w;
-    r.h = tmp->h;
-    SDL_BlitSurface(tmp, 0, surface, &r);
+    Glib::RefPtr<Gdk::Pixbuf> heropic = gc->getSmallHeroPic (true);
+    surface->draw_pixbuf(heropic, 0, 0, 
+			 start.x - (heropic->get_width()/2), 
+			 start.y - (heropic->get_height()/2), 
+			 heropic->get_width(), heropic->get_height(),
+			 Gdk::RGB_DITHER_NONE, 0, 0);
     map_changed.emit(surface);
 }
 

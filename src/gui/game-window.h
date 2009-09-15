@@ -1,5 +1,5 @@
-//  Copyright (C) 2007, 2008, Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008 Ole Laursen
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -42,7 +42,6 @@
 #include "GameScenario.h"
 
 class Game;
-class SDL_Surface;
 class Ruin;
 class Fight;
 class Hero;
@@ -72,7 +71,7 @@ class GameWindow: public Decorated
     void show();
     void hide();
 
-    // initialize the SDL widget 
+    // initialize the big map widget 
     void init(int width, int height);
 
     // setup a new game
@@ -102,9 +101,8 @@ class GameWindow: public Decorated
     std::auto_ptr<Gtk::Window> window;
     std::auto_ptr<Gtk::Window> map_tip;	// tooltip appears over the map
     std::auto_ptr<Gtk::Window> stack_tip;// tooltip appears over the map
-    Gtk::Container *sdl_container;
+    Gtk::Container *bigmap_container;
     Gtk::Container *map_container;
-    Gtk::Widget *sdl_widget;
     Gtk::MenuBar *menubar;
     Gtk::CheckMenuItem *fullscreen_menuitem;
     Gtk::MenuItem *load_game_menuitem;
@@ -158,6 +156,7 @@ class GameWindow: public Decorated
     Gtk::ProgressBar *turn_progressbar;
     Gtk::Label *progress_status_label;
     Gtk::Image *map_image;
+    Gtk::Image *bigmap_image;
 
     Gtk::Label *cities_stats_label;
     Gtk::Label *gold_stats_label;
@@ -193,6 +192,7 @@ class GameWindow: public Decorated
     typedef std::vector<Gtk::ToggleButton *> army_buttons_type;
     army_buttons_type army_buttons;
     Gtk::EventBox *map_eventbox;
+    Gtk::EventBox *bigmap_eventbox;
     Gtk::ToggleButton *group_ungroup_toggle;
 
     std::string current_save_filename;
@@ -203,13 +203,13 @@ class GameWindow: public Decorated
 
     bool on_delete_event(GdkEventAny *e);
 
-    bool on_sdl_mouse_button_event(GdkEventButton *e);
-    bool on_sdl_mouse_motion_event(GdkEventMotion *e);
-    bool on_sdl_key_event(GdkEventKey *e);
-    bool on_sdl_scroll_event(GdkEventScroll* event);
+    bool on_bigmap_mouse_button_event(GdkEventButton *e);
+    bool on_bigmap_mouse_motion_event(GdkEventMotion *e);
+    bool on_bigmap_key_event(GdkEventKey *e);
+    bool on_bigmap_scroll_event(GdkEventScroll* event);
 
-    bool on_map_mouse_button_event(GdkEventButton *e);
-    bool on_map_mouse_motion_event(GdkEventMotion *e);
+    bool on_smallmap_mouse_button_event(GdkEventButton *e);
+    bool on_smallmap_mouse_motion_event(GdkEventMotion *e);
     
     void on_load_game_activated();
     void on_save_game_activated();
@@ -275,11 +275,12 @@ class GameWindow: public Decorated
     void on_sidebar_stats_changed(SidebarStats s);
     void on_progress_status_changed(std::string status);
     void on_progress_changed();
-    void on_smallmap_changed(SDL_Surface *map);
+    void on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map);
     void on_smallmap_slid(Rectangle view);
     void on_bigmap_cursor_changed(GraphicsCache::CursorType cursor);
+    void on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map);
     void on_stack_info_changed(Stack *s);
-    void on_map_tip_changed(Glib::ustring tip, MapTipPosition pos);
+    void on_bigmap_tip_changed(Glib::ustring tip, MapTipPosition pos);
     void on_stack_tip_changed(Stack *s, MapTipPosition pos);
     void on_ruin_searched(Ruin *ruin, Stack *s, Reward *reward);
     void on_sage_visited(Ruin *ruin, Stack *s);
@@ -330,10 +331,10 @@ class GameWindow: public Decorated
     
     void setup_menuitem(Gtk::MenuItem*, sigc::slot<void> , sigc::signal<void, bool> &);
     void setup_button(Gtk::Button *, sigc::slot<void> slot, sigc::signal<void, bool> &);
+    void on_bigmap_surface_changed(Gtk::Allocation box);
+    bool on_bigmap_exposed(GdkEventExpose *event);
 
 public:
-    // not part of the API, but for surface_attached_helper
-    void on_sdl_surface_changed();
     std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_button_images;
     std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_arrow_images;
     bool d_quick_fights; //do we speed up fights for this player's turn?

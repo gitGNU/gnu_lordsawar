@@ -1,7 +1,7 @@
 // Copyright (C) 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,8 +22,6 @@
 #include <algorithm>
 #include <expat.h>
 #include <gtkmm.h>
-#include <SDL_image.h>
-#include <SDL.h>
 #include "rectangle.h"
 #include <sigc++/functors/mem_fun.h>
 
@@ -200,24 +198,24 @@ bool Armysetlist::loadArmyset(std::string name)
   return true;
 }
 	
-SDL_Surface * Armysetlist::getShipPic (guint32 id)
+Glib::RefPtr<Gdk::Pixbuf> Armysetlist::getShipPic (guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getId() == id)
 	return (*it)->getShipPic();
     }
-  return NULL;
+  return Glib::RefPtr<Gdk::Pixbuf>(0);
 }
 
-SDL_Surface * Armysetlist::getShipMask (guint32 id)
+Glib::RefPtr<Gdk::Pixbuf> Armysetlist::getShipMask (guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getId() == id)
 	return (*it)->getShipMask();
     }
-  return NULL;
+  return Glib::RefPtr<Gdk::Pixbuf>(0);
 }
 
 guint32 Armysetlist::getTileSize(guint32 id)
@@ -230,24 +228,24 @@ guint32 Armysetlist::getTileSize(guint32 id)
   return 0;
 }
 
-SDL_Surface * Armysetlist::getStandardPic (guint32 id)
+Glib::RefPtr<Gdk::Pixbuf> Armysetlist::getStandardPic (guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getId() == id)
 	return (*it)->getStandardPic();
     }
-  return NULL;
+  return Glib::RefPtr<Gdk::Pixbuf>(0);
 }
 
-SDL_Surface * Armysetlist::getStandardMask (guint32 id)
+Glib::RefPtr<Gdk::Pixbuf> Armysetlist::getStandardMask (guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getId() == id)
 	return (*it)->getStandardMask();
     }
-  return NULL;
+  return Glib::RefPtr<Gdk::Pixbuf>(0);
 }
 
 Armyset *Armysetlist::getArmyset(guint32 id)

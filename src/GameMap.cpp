@@ -25,6 +25,7 @@
 #include <iomanip>
 #include <assert.h>
 #include <sigc++/functors/mem_fun.h>
+#include <string.h>
 
 #include "ucompose.hpp"
 #include "GameMap.h"

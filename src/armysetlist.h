@@ -1,6 +1,6 @@
 // Copyright (C) 2001, 2002, 2003 Michael Bartl
-// Copyright (C) 2003, 2004, 2005  Ulf Lorenz
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2003, 2004, 2005 Ulf Lorenz
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -72,16 +72,16 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
         ArmyProto* getScout(guint32 id) const;
 
 	//! Get the unshaded ship image for the given Armyset.
-	SDL_Surface * getShipPic (guint32 id);
+	Glib::RefPtr<Gdk::Pixbuf> getShipPic (guint32 id);
 
 	//! Get the ship mask picture for the given Armyset.
-	SDL_Surface * getShipMask (guint32 id);
+	Glib::RefPtr<Gdk::Pixbuf> getShipMask (guint32 id);
 
 	//! Get the unshaded planted standard picture for the given Armyset.
-	SDL_Surface * getStandardPic (guint32 id);
+	Glib::RefPtr<Gdk::Pixbuf> getStandardPic (guint32 id);
 
 	//! Get the planted standard mask for the given Armyset.
-	SDL_Surface * getStandardMask (guint32 id);
+	Glib::RefPtr<Gdk::Pixbuf> getStandardMask (guint32 id);
         guint32 getTileSize(guint32 id);
 
 	//! Returns the size of a specific armyset.

@@ -31,27 +31,27 @@ std::string ArmyProto::d_tag = "armyproto";
 
 ArmyProto::ArmyProto(const ArmyProto& a)
     :ArmyProtoBase(a),
-    d_pixmap(0), d_mask(0),
+    d_image(0), d_mask(0),
      d_defends_ruins(a.d_defends_ruins), 
-     d_awardable(a.d_awardable), d_image(a.d_image),
+     d_awardable(a.d_awardable), d_image_name(a.d_image_name),
      d_hero(a.d_hero)
 {
 }
 
 ArmyProto::ArmyProto()
-  :ArmyProtoBase(), d_pixmap(0), d_mask(0), 
-    d_defends_ruins(false), d_awardable(false), d_image(""),
+  :ArmyProtoBase(), d_image(0), d_mask(0), 
+    d_defends_ruins(false), d_awardable(false), d_image_name(""),
     d_hero(false)
 {
 }
 
 ArmyProto::ArmyProto(XML_Helper* helper)
-  :ArmyProtoBase(helper), d_pixmap(0), d_mask(0), 
-    d_defends_ruins(false), d_awardable(false), d_image(""),
+  :ArmyProtoBase(helper), d_image(0), d_mask(0), 
+    d_defends_ruins(false), d_awardable(false), d_image_name(""),
     d_hero(false)
 {
 
-  helper->getData(d_image, "image");
+  helper->getData(d_image_name, "image");
   helper->getData(d_defends_ruins,"defends_ruins");
   helper->getData(d_awardable,"awardable");
   helper->getData(d_hero, "hero");
@@ -79,7 +79,7 @@ bool ArmyProto::saveData(XML_Helper* helper) const
   bool retval = true;
 
   retval &= ArmyProtoBase::saveData(helper);
-  retval &= helper->saveData("image", d_image);
+  retval &= helper->saveData("image", d_image_name);
   retval &= helper->saveData("awardable", d_awardable);
   retval &= helper->saveData("defends_ruins", d_defends_ruins);
   retval &= helper->saveData("hero", d_hero);

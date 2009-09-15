@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004 Ulf Lorenz
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 #define MAPRENDERER_H
 
 #include <gtkmm.h>
-#include <SDL.h>
 #include <string>
 
 /** Class which cares about rendering of the map.
@@ -39,7 +38,7 @@ class MapRenderer
           * 
           * @param surface      the surface which is rendered with render()
           */
-        MapRenderer(SDL_Surface* surface);
+        MapRenderer(Glib::RefPtr<Gdk::Pixmap> surface);
         ~MapRenderer();
 
         /** Render a portion of the map.
@@ -52,7 +51,8 @@ class MapRenderer
         void render(int x, int y, int tileX, int tileY, int columns, int rows);
 
 	void render(int x, int y, int tileStartX, int tileStartY,
-		    int columns, int rows, SDL_Surface *surface);
+		    int columns, int rows, Glib::RefPtr<Gdk::Pixmap> surface,
+		    Glib::RefPtr<Gdk::GC> context);
 
 	//! Save the current view of map tiles as an image (bmp file).
 	bool saveViewAsBitmap(std::string filename);
@@ -61,7 +61,8 @@ class MapRenderer
 	bool saveAsBitmap(std::string filename);
     private:
         //Data
-        SDL_Surface* d_surface;
+	Glib::RefPtr<Gdk::Pixmap> d_surface;
+	Glib::RefPtr<Gdk::GC> gc;
 
 };
 

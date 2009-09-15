@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -16,8 +16,8 @@
 //  02110-1301, USA.
 
 #include "vectormap.h"
+#include "gui/image-helpers.h"
 
-#include "sdl-draw.h"
 #include "city.h"
 #include "citylist.h"
 #include "playerlist.h"
@@ -38,23 +38,19 @@ void VectorMap::draw_planted_standard(Vector<int> flag)
 {
   //it can't possibly be fogged
   GraphicsCache *gc = GraphicsCache::getInstance();
-  SDL_Surface *tmp;
-  tmp = gc->getSmallHeroPic(true);
 
   Vector<int> start;
   
   start = flag;
   start = mapToSurface(start);
   start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
-  if (tmp)
-    {
-      SDL_Rect r;
-      r.x = start.x - (tmp->w/2);
-      r.y = start.y - (tmp->h/2);
-      r.w = tmp->w;
-      r.h = tmp->h;
-      SDL_BlitSurface(tmp, 0, surface, &r);
-    }
+      
+  Glib::RefPtr<Gdk::Pixbuf> heropic = gc->getSmallHeroPic(true);
+      
+  surface->draw_pixbuf(heropic, 0, 0, start.x - (heropic->get_width()/2), 
+		       start.y - (heropic->get_height()/2), 
+		       heropic->get_width(), heropic->get_height(),
+		       Gdk::RGB_DITHER_NONE, 0, 0);
 }
 
 void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
@@ -62,7 +58,7 @@ void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
   if (c->isFogged(getViewingPlayer()))
     return;
   GraphicsCache *gc = GraphicsCache::getInstance();
-  SDL_Surface *tmp;
+  Glib::RefPtr<Gdk::Pixbuf> tmp;
   if (c->isBurnt() == true)
     tmp = gc->getSmallRuinedCityPic ();
   //else if(type == 4 && prod == false)
@@ -85,12 +81,12 @@ void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
   start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
   if (tmp)
     {
-      SDL_Rect r;
-      r.x = start.x - (tmp->w/2);
-      r.y = start.y - (tmp->h/2);
-      r.w = tmp->w;
-      r.h = tmp->h;
-      SDL_BlitSurface(tmp, 0, surface, &r);
+      Glib::RefPtr<Gdk::Pixbuf> shieldpic = tmp;
+      surface->draw_pixbuf(shieldpic, 0, 0, 
+			   start.x - (shieldpic->get_width()/2), 
+			   start.y - (shieldpic->get_height()/2), 
+			   shieldpic->get_width(), shieldpic->get_height(),
+			   Gdk::RGB_DITHER_NONE, 0, 0);
     }
 }
 void VectorMap::draw_cities (std::list<City*> citylist, guint32 type)
@@ -130,18 +126,19 @@ void VectorMap::draw_cities (std::list<City*> citylist, guint32 type)
 
 void VectorMap::draw_vectoring_line(Vector<int> src, Vector<int> dest, bool to)
 {
-  guint32 color;
   Vector<int> start = src;
   Vector <int> end = dest;
   start = mapToSurface(start);
   end = mapToSurface(end);
   start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
   end += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
+  Gdk::Color line_color = Gdk::Color();
   if (to) //yellow
-    color = SDL_MapRGBA(surface->format, 252, 236, 32, 255);
+    line_color.set_rgb_p(252.0/255.0, 236.0/255.0, 
+			  32.0/255.0);
   else //orange
-    color = SDL_MapRGBA(surface->format, 252, 160, 0, 255);
-  draw_line(surface, start.x, start.y, end.x, end.y, color);
+    line_color.set_rgb_p(252.0/255.0, 160.0/255.0, 0);
+  draw_line(start.x, start.y, end.x, end.y, line_color);
 }
 void VectorMap::draw_vectoring_line_from_here_to (Vector<int> dest)
 {
@@ -321,8 +318,8 @@ void VectorMap::after_draw()
 
 void VectorMap::draw_square_around_active_city()
 {
-  guint32 white = SDL_MapRGBA(surface->format, 252, 255, 255, 255);
-
+  Gdk::Color box_color = Gdk::Color();
+  box_color.set_rgb_p(252.0/255.0, 1.0, 1.0);
   Vector<int> start = city->getPos();
   start = mapToSurface(start);
   start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
@@ -332,7 +329,7 @@ void VectorMap::draw_square_around_active_city()
   guint32 height = ss->getSmallHeight();
   start -= Vector<int>(width,height)/2;
   Vector<int> end = start + Vector<int>(width,height);
-  draw_rect (surface, start.x-3, start.y-3, end.x+2, end.y+2, white);
+  draw_rect (start.x-3, start.y-3, end.x-start.x+4, end.y-start.y+4, box_color);
 }
 
 void VectorMap::mouse_button_event(MouseButtonEvent e)

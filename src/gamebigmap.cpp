@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,6 @@
 
 #include <config.h>
 
-#include <SDL_image.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <glibmm/timeval.h>
@@ -48,6 +47,7 @@
 #include "FogMap.h"
 #include "LocationBox.h"
 #include "Configuration.h"
+#include "gui/image-helpers.h"
 
 #include "timing.h"
 
@@ -75,7 +75,7 @@ GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
   mouse_state = NONE;
   input_locked = false;
 
-  d_waypoints = GraphicsLoader::getMiscPicture("waypoints.png");
+  d_waypoint = disassemble_row(File::getMiscFile("various/waypoints.png"), 2);
   prev_mouse_pos = Vector<int>(0, 0);
 
   // setup timeout
@@ -89,7 +89,6 @@ GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
 
 GameBigMap::~GameBigMap()
 {
-  SDL_FreeSurface(d_waypoints);
 }
 
 void GameBigMap::select_active_stack()
@@ -515,12 +514,11 @@ void GameBigMap::zoom_in()
     return;
   if ((zoom_step / 100.0) + magnification_factor <= max_magnification_factor / 100.0)
     {
-      SDL_Surface *v = SDL_GetVideoSurface();
       int ts = GameMap::getInstance()->getTileset()->getTileSize();
       Rectangle new_view;
       double mag = magnification_factor + (zoom_step / 100.0);
-      new_view.w = v->w / (ts * mag) + 1;
-      new_view.h = v->h / (ts * mag) + 1;
+      new_view.w = image.get_width() / (ts * mag) + 1;
+      new_view.h = image.get_height() / (ts * mag) + 1;
       if (new_view.w <= GameMap::getWidth() && 
 	  new_view.h <= GameMap::getHeight() && 
 	  new_view.w >= 0 && new_view.h >= 0)
@@ -534,12 +532,11 @@ void GameBigMap::zoom_out()
     return;
   if (magnification_factor - (zoom_step / 100.0) >= min_magnification_factor / 100.0)
     {
-      SDL_Surface *v = SDL_GetVideoSurface();
       int ts = GameMap::getInstance()->getTileset()->getTileSize();
       Rectangle new_view;
       double mag = magnification_factor - (zoom_step / 100.0);
-      new_view.w = v->w / (ts * mag) + 1;
-      new_view.h = v->h / (ts * mag) + 1;
+      new_view.w = image.get_width() / (ts * mag) + 1;
+      new_view.h = image.get_height() / (ts * mag) + 1;
       if (new_view.w <= GameMap::getWidth() && 
 	  new_view.h <= GameMap::getHeight() && 
 	  new_view.w >= 0 && new_view.h >= 0)
@@ -736,8 +733,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	return;
 
       int ts = GameMap::getInstance()->getTileset()->getTileSize();
-      SDL_Surface *screen = SDL_GetVideoSurface();
-      Vector<int> screen_dim(screen->w, screen->h);
+      Vector<int> screen_dim(image.get_width(), image.get_height());
       view_pos = clip(Vector<int>(0, 0),
 		      view_pos + delta,
 		      GameMap::get_dim() * ts *magnification_factor - screen_dim);
@@ -816,7 +812,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 void GameBigMap::reset_zoom()
 {
   magnification_factor = 1.0;
-  screen_size_changed();
+  screen_size_changed(image);
   draw(true);
   view_changed.emit(view);
 }
@@ -829,7 +825,7 @@ void GameBigMap::zoom_view(double percent)
   //new_view.dim += Vector<int>(tiles, tiles);
   //new_view.pos += Vector<int>(tiles*-1/2, tiles*-1/2);
   //set_view (new_view);
-  screen_size_changed();
+  screen_size_changed(image);
   draw(true);
   view_changed.emit(view);
 }
@@ -846,8 +842,6 @@ void GameBigMap::after_draw()
       stack->getOwner()->getType() == Player::HUMAN)
     {
       Vector<int> pos;
-      SDL_Color c;
-      c.r = c.g = c.b = 0;
 
       // draw all waypoints
       guint32 pathcount = 0;
@@ -861,23 +855,16 @@ void GameBigMap::after_draw()
 	{
 	  size_t wpsize = 40; //waypoint images are always 40x40
 	  pos = tile_to_buffer_pos(**it);
-	  SDL_Rect r1, r2;
-	  r1.y = 0;
-	  r1.w = r1.h = wpsize; 
 	  int offset = (tilesize - wpsize) / 2;
 	  if (offset < 0)
 	    offset = 0;
-	  r2.x = pos.x + offset;
-	  r2.y = pos.y + offset;
-	  r2.w = r2.h = wpsize;
 
 	  canMoveThere = (pathcount < stack->getPath()->getMovesExhaustedAtPoint());
 	  if (canMoveThere)
-	    r1.x = 0;
+	    buffer->draw_pixbuf (d_waypoint[0], 0, 0, pos.x + offset, pos.y + offset, wpsize, wpsize, Gdk::RGB_DITHER_NONE, 0, 0);
 	  else
-	    r1.x = wpsize;
+	    buffer->draw_pixbuf (d_waypoint[1], 0, 0, pos.x + offset, pos.y + offset, wpsize, wpsize, Gdk::RGB_DITHER_NONE, 0, 0);
 
-	  SDL_BlitSurface(d_waypoints, &r1, buffer, &r2);
 	  pathcount++;
 
 	}
@@ -887,20 +874,13 @@ void GameBigMap::after_draw()
 	  list<Vector<int>*>::iterator it = stack->getPath()->end();
 	  it--;
 	  //this is where the ghosted army unit picture goes.
-	  Army *a = *stack->begin();
-	  SDL_Surface *tmp = gc->getArmyPic(a);
-	  size_t wpsize = tmp->w;
+	  Glib::RefPtr<Gdk::Pixbuf> armypic = gc->getArmyPic(*stack->begin());
+	  size_t wpsize = armypic->get_width();
 	  pos = tile_to_buffer_pos(**it);
-	  SDL_Rect r1, r2;
-	  r1.y = 0;
-	  r1.w = r1.h = tmp->w; 
-	  int offset = (tilesize - tmp->w) / 2;
+	  int offset = (tilesize - armypic->get_width()) / 2;
 	  if (offset < 0)
 	    offset = 0;
-	  r2.x = pos.x + offset;
-	  r2.y = pos.y + offset;
-	  r2.w = r2.h = wpsize;
-	  SDL_BlitSurface(tmp, 0, buffer, &r2);
+	  buffer->draw_pixbuf (armypic, 0, 0, pos.x + offset, pos.y + offset, wpsize, wpsize, Gdk::RGB_DITHER_NONE, 0, 0);
 	}
     }
 
@@ -923,11 +903,6 @@ void GameBigMap::after_draw()
 	    smallframe = 0;
 
 	  p = tile_to_buffer_pos(p);
-	  SDL_Rect r;
-	  r.x = p.x;
-	  r.y = p.y;
-	  r.w = r.h = tilesize;
-	  SDL_Surface *tmp;
 	  int num_selected = 0;
 	  for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
 	    {
@@ -935,15 +910,17 @@ void GameBigMap::after_draw()
 		num_selected++;
 	    }
 
-	  draw_stack (stack);
+	  draw_stack (stack, buffer);
 
 	  if (input_locked == false)
 	    {
+	      Glib::RefPtr<Gdk::Pixbuf> tmp;
 	      if (num_selected > 1)
 		tmp = gc->getSelectorPic(0, bigframe, stack->getOwner());
 	      else
 		tmp = gc->getSelectorPic(1, smallframe, stack->getOwner());
-	      SDL_BlitSurface(tmp, 0, buffer, &r);
+	      buffer->draw_pixbuf (tmp, 0, 0, p.x, p.y, tilesize, tilesize,
+				   Gdk::RGB_DITHER_NONE, 0, 0);
 	    }
 	}
     }
@@ -951,20 +928,16 @@ void GameBigMap::after_draw()
   if (d_fighting.getPos() != Vector<int>(-1,-1))
     {
       Vector<int> p = tile_to_buffer_pos(d_fighting.getPos());
-      SDL_Rect r;
-      r.x = p.x;
-      r.y = p.y;
-      r.w = r.h = tilesize * d_fighting.getSize();
-      SDL_Surface *tmp = gc->getExplosionPic();
-      SDL_SetAlpha(tmp, 0, 0);
-      SDL_PixelFormat* fmt = tmp->format;
-      SDL_Surface *explode = SDL_CreateRGBSurface
-	(SDL_SWSURFACE, d_fighting.getSize() * tilesize, 
-	 d_fighting.getSize() * tilesize,
-       fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
-      SDL_SoftStretch(tmp, 0, explode, 0);
-      SDL_BlitSurface(explode, 0, buffer, &r);
-      SDL_FreeSurface(explode);
+      Glib::RefPtr<Gdk::Pixbuf> tmp = gc->getExplosionPic();
+      if (d_fighting.getSize() > 1)
+	{
+	  tmp = tmp->scale_simple (d_fighting.getSize() * tilesize,
+				   d_fighting.getSize() * tilesize,
+				   Gdk::INTERP_BILINEAR);
+	}
+      buffer->draw_pixbuf(tmp, 0, 0, p.x, p.y, 
+			  tmp->get_width(), tmp->get_height(),
+			  Gdk::RGB_DITHER_NONE, 0, 0);
     }
 }
 

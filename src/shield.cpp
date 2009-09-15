@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #include "GraphicsCache.h"
 #include "xmlhelper.h"
 #include "ucompose.hpp"
+#include "rgb_shift.h"
 
 std::string Shield::d_tag = "shield";
 
@@ -34,11 +35,12 @@ Shield::Shield(XML_Helper* helper)
   helper->getData(d_owner, "owner");
   std::string s;
   helper->getData(s, "color");
-  int i;
+  guint32 r,g,b;
   std::istringstream scolor(s);
-  scolor >> i; d_color.r = i;
-  scolor >> i; d_color.g = i;
-  scolor >> i; d_color.b = i;
+  scolor >> r;
+  scolor >> g;
+  scolor >> b;
+  d_color.set_rgb_p(r/255.0,g/255.0,b/255.0);
 }
 
 Shield::~Shield()
@@ -47,34 +49,34 @@ Shield::~Shield()
       delete *it;
 }
 
-SDL_Color Shield::get_default_color_for_no(int player_no)
+Gdk::Color Shield::get_default_color_for_no(int player_no)
 {
-    SDL_Color color;
-    color.r = color.b = color.g = color.unused = 0;
-    switch (player_no % MAX_PLAYERS)
+  Gdk::Color c;
+  switch (player_no % MAX_PLAYERS)
     {
-    case Shield::WHITE: color.r = 252; color.b = 252; color.g = 252; break;
+    case Shield::WHITE: c.set_rgb_p(252.0/255.0,252.0/255.0,252.0/255.0); break;
     //case 1: color.r = 80; color.b = 28; color.g = 172; break;
-    case Shield::GREEN: color.r = 80; color.b = 28; color.g = 193; break;
-    case Shield::YELLOW: color.r = 252; color.b = 32; color.g = 236; break;
-    case Shield::LIGHT_BLUE: color.r = 0; color.b = 252; color.g = 252; break;
-    case Shield::RED: color.r = 252; color.b = 0; color.g = 160;break;
-    case Shield::DARK_BLUE: color.r = 44; color.b = 252; color.g = 184; break;
-    case Shield::ORANGE: color.r = 196; color.b = 0; color.g = 28; break;
-    case Shield::BLACK: color.r = color.g = color.b = 0; break;
+    case Shield::GREEN: c.set_rgb_p(80.0/255.0, 194.0/255.0, 28.0/255.0); break;
+    case Shield::YELLOW: c.set_rgb_p(252.0/255.0,236.0/255.0,32.0/255.0); break;
+    case Shield::LIGHT_BLUE: c.set_rgb_p(0,252.0/255.0,252.0/255.0); break;
+    case Shield::RED: c.set_rgb_p(252.0/255.0,160.0/255.0,0);break;
+    case Shield::DARK_BLUE: 
+		      c.set_rgb_p(44.0/255.0,184.0/255.0,252.0/255.0); break;
+    case Shield::ORANGE: c.set_rgb_p(196.0/255.0, 28.0/255.0, 0); break;
+    case Shield::BLACK: c.set_rgb_p(0,0,0); break;
     }
     
-    return color;
+    return c;
 }
 
-SDL_Color Shield::get_default_color_for_neutral()
+Gdk::Color Shield::get_default_color_for_neutral()
 {
-    SDL_Color color;
-    color.r = color.g = color.b = 204; color.unused = 0;
-    return color;
+  Gdk::Color color;
+  color.set_rgb_p(204.0/255.0,204.0/255.0,204.0/255.0);
+  return color;
 }
 
-SDL_Color Shield::getMaskColor() const
+struct rgb_shift Shield::getMaskColorShifts()
 {
     // This is a bit tricky. The color values we return here encode additional
     // shifts that are performed when getting the color. I.e. a color value for
@@ -82,14 +84,72 @@ SDL_Color Shield::getMaskColor() const
 
     // For each color component, find the n where 2^n best describes the color.
     // The mask value then is (8-n).
-    SDL_Color c;
-    c.r = c.g = c.b = 0;
+    struct rgb_shift shifts;
 
+    guint32 r,g,b;
+    guint8 target_red = guint8(d_color.get_red_p() * 255.0);
     for (int i = 8, diff = 257; i > 0; i--)
     {
         int color = 1<<i;
-        int tmp_diff = abs(d_color.r - color);
-        c.r = 8 - (i+1);
+        int tmp_diff = abs(target_red - color);
+
+	r = 8 - (i + 1);
+
+        if (diff < tmp_diff)
+            break;
+        else
+            diff = tmp_diff;
+    }
+        
+    guint8 target_green = guint8(d_color.get_green_p() * 255.0);
+    for (int i = 8, diff = 257; i > 0; i--)
+    {
+        int color = 1<<i;
+        int tmp_diff = abs(target_green - color);
+	g = 8 - (i + 1);
+
+        if (diff < tmp_diff)
+            break;
+        else
+            diff = tmp_diff;
+    }
+        
+    guint8 target_blue = guint8(d_color.get_blue_p() * 255.0);
+    for (int i = 8, diff = 257; i > 0; i--)
+    {
+        int color = 1<<i;
+        int tmp_diff = abs(target_blue - color);
+	b = 8 - (i + 1);
+
+        if (diff < tmp_diff)
+            break;
+        else
+            diff = tmp_diff;
+    }
+    //c.set_rgb_p(r,g,b);
+    shifts.r = r;
+    shifts.g = g;
+    shifts.b = b;
+    return shifts;
+}
+
+Gdk::Color Shield::getMaskColor() const
+{
+    // This is a bit tricky. The color values we return here encode additional
+    // shifts that are performed when getting the color. I.e. a color value for
+    // red of 8 means that the red color is completely ignored.
+
+    // For each color component, find the n where 2^n best describes the color.
+    // The mask value then is (8-n).
+    Gdk::Color c;
+
+    guint32 r,g,b;
+    for (int i = 8, diff = 257; i > 0; i--)
+    {
+        int color = 1<<i;
+        int tmp_diff = abs(int(d_color.get_red_p() *255.0) - color);
+
+	r = 8 - (i + 1);
 
         if (diff < tmp_diff)
             break;
@@ -100,8 +160,8 @@ SDL_Color Shield::getMaskColor() const
     for (int i = 8, diff = 257; i > 0; i--)
     {
         int color = 1<<i;
-        int tmp_diff = abs(d_color.g - color);
-        c.g = 8 - (i+1);
+        int tmp_diff = abs(int(d_color.get_green_p() *255.0) - color);
+	g = 8 - (i + 1);
 
         if (diff < tmp_diff)
             break;
@@ -112,8 +172,8 @@ SDL_Color Shield::getMaskColor() const
     for (int i = 8, diff = 257; i > 0; i--)
     {
         int color = 1<<i;
-        int tmp_diff = abs(d_color.b - color);
-        c.b = 8 - (i+1);
+        int tmp_diff = abs(int(d_color.get_blue_p()*255.0) - color);
+	b = 8 - (i + 1);
 
         if (diff < tmp_diff)
             break;
@@ -121,5 +181,6 @@ SDL_Color Shield::getMaskColor() const
             diff = tmp_diff;
     }
         
+    c.set_rgb_p(r/255.0,g/255.0,b/255.0);
     return c;
 }

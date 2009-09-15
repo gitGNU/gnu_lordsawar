@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -57,15 +57,13 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
     p = army->getOwner();
     armyset = army->getArmyset();
     GraphicsCache *gc = GraphicsCache::getInstance();
-    army_image->property_pixbuf() = to_pixbuf (gc->getArmyPic(armyset, 
-							      army->getTypeId(), 
-							      p, NULL));
+    army_image->property_pixbuf() = gc->getArmyPic(armyset, army->getTypeId(), 
+						   p, NULL);
 
     // fill in terrain image
     Gtk::Image *terrain_image;
     xml->get_widget("terrain_image", terrain_image);
-    SDL_Surface *terrain = gc->getMoveBonusPic(army->getMoveBonus(), false);
-    terrain_image->property_pixbuf() = to_pixbuf(terrain);
+    terrain_image->property_pixbuf() = gc->getMoveBonusPic(army->getMoveBonus(), false);
     //terrain_image->hide();
 
     // fill in info
@@ -124,15 +122,13 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army,
     int armyset;
     armyset = army->getArmyset();
     GraphicsCache *gc = GraphicsCache::getInstance();
-    army_image->property_pixbuf() = to_pixbuf (gc->getArmyPic(armyset, 
-							      army->getTypeId(), 
-							      p, NULL));
+    army_image->property_pixbuf() = gc->getArmyPic(armyset, army->getTypeId(), 
+						   p, NULL);
 
     // fill in terrain image
     Gtk::Image *terrain_image;
     xml->get_widget("terrain_image", terrain_image);
-    SDL_Surface *terrain = gc->getMoveBonusPic(army->getMoveBonus(), false);
-    terrain_image->property_pixbuf() = to_pixbuf(terrain);
+    terrain_image->property_pixbuf() = gc->getMoveBonusPic(army->getMoveBonus(), false);
     //terrain_image->hide();
 
     // fill in info
@@ -190,15 +186,13 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army)
     int armyset;
     armyset = army->getArmyset();
     GraphicsCache *gc = GraphicsCache::getInstance();
-    army_image->property_pixbuf() = to_pixbuf (gc->getArmyPic(armyset, 
-							      army->getTypeId(), 
-							      p, NULL));
+    army_image->property_pixbuf() = gc->getArmyPic(armyset, army->getTypeId(), 
+						   p, NULL);
 
     // fill in terrain image
     Gtk::Image *terrain_image;
     xml->get_widget("terrain_image", terrain_image);
-    SDL_Surface *terrain = gc->getMoveBonusPic(army->getMoveBonus(), false);
-    terrain_image->property_pixbuf() = to_pixbuf(terrain);
+    terrain_image->property_pixbuf() = gc->getMoveBonusPic(army->getMoveBonus(), false);
     //terrain_image->hide();
 
     // fill in info

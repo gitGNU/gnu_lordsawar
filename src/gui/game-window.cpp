@@ -20,8 +20,8 @@
 
 #include <iomanip>
 #include <queue>
-#include <SDL_video.h>
 #include <assert.h>
+#include <string.h>
 
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
@@ -32,7 +32,6 @@
 
 #include "game-window.h"
 
-#include "gtksdl.h"
 #include "glade-helpers.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
@@ -139,11 +138,27 @@ GameWindow::GameWindow()
       (sigc::mem_fun(*this, &GameWindow::on_delete_event));
 
     xml->get_widget("menubar", menubar);
-    xml->get_widget("sdl_container", sdl_container);
+    //xml->get_widget("bigmap_container", bigmap_container);
+    xml->get_widget("bigmap_eventbox", bigmap_eventbox);
+    bigmap_eventbox->add_events(Gdk::KEY_PRESS_MASK | 
+		  Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
+	          Gdk::POINTER_MOTION_MASK);
+    bigmap_eventbox->signal_key_press_event().connect(
+	sigc::mem_fun(*this, &GameWindow::on_bigmap_key_event));
+    bigmap_eventbox->signal_key_release_event().connect(
+	sigc::mem_fun(*this, &GameWindow::on_bigmap_key_event));
+    bigmap_eventbox->signal_button_press_event().connect
+     (sigc::mem_fun(*this, &GameWindow::on_bigmap_mouse_button_event));
+    bigmap_eventbox->signal_button_release_event().connect
+     (sigc::mem_fun(*this, &GameWindow::on_bigmap_mouse_button_event));
+    bigmap_eventbox->signal_motion_notify_event().connect
+     (sigc::mem_fun(*this, &GameWindow::on_bigmap_mouse_motion_event));
+    bigmap_eventbox->signal_scroll_event().connect
+       (sigc::mem_fun(*this, &GameWindow::on_bigmap_scroll_event));
     xml->get_widget("stack_info_box", stack_info_box);
     xml->get_widget("stack_info_container", stack_info_container);
     Gtk::Viewport *vp;
-    xml->get_widget("sdl_viewport", vp);
+    xml->get_widget("bigmap_viewport", vp);
     decorate_border(vp, 175);
     xml->get_widget("group_moves_label", group_moves_label);
     xml->get_widget("group_togglebutton", group_ungroup_toggle);
@@ -161,16 +176,22 @@ GameWindow::GameWindow()
 
     // the map image
     xml->get_widget("map_image", map_image);
+    xml->get_widget("bigmap_image", bigmap_image);
+    bigmap_image->set_double_buffered(false);
+    bigmap_image->signal_expose_event().connect
+      (sigc::mem_fun(*this, &GameWindow::on_bigmap_exposed));
+    //bigmap_image->signal_size_allocate().connect
+      //(sigc::mem_fun(*this, &GameWindow::on_bigmap_surface_changed));
     xml->get_widget("map_eventbox", map_eventbox);
     xml->get_widget("map_container", map_container);
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
 			     Gdk::POINTER_MOTION_MASK | Gdk::SCROLL_MASK);
       map_eventbox->signal_button_press_event().connect
-       (sigc::mem_fun(*this, &GameWindow::on_map_mouse_button_event));
+       (sigc::mem_fun(*this, &GameWindow::on_smallmap_mouse_button_event));
       map_eventbox->signal_button_release_event().connect
-       (sigc::mem_fun(*this, &GameWindow::on_map_mouse_button_event));
+       (sigc::mem_fun(*this, &GameWindow::on_smallmap_mouse_button_event));
       map_eventbox->signal_motion_notify_event().connect
-       (sigc::mem_fun(*this, &GameWindow::on_map_mouse_motion_event));
+       (sigc::mem_fun(*this, &GameWindow::on_smallmap_mouse_motion_event));
     Gtk::Viewport *mvp;
     xml->get_widget("map_viewport", mvp);
     decorate_border(mvp, 175);
@@ -403,9 +424,13 @@ void GameWindow::show()
     s_keypad_button->show_all();
     se_keypad_button->show_all();
     
-    sdl_container->show_all();
+    bigmap_image->show_all();
     window->show();
-    on_sdl_surface_changed();
+      
+    //seems unnecessary, but this is for starting up a second game after
+    //closing the first game window.
+    //fixme: find out why this line is necessary
+    on_bigmap_surface_changed(bigmap_image->get_allocation());
 }
 
 void GameWindow::hide()
@@ -413,45 +438,37 @@ void GameWindow::hide()
     window->hide();
 }
 
-namespace 
-{
-    void surface_attached_helper(GtkSDL *gtksdl, gpointer data)
-    {
-	static_cast<GameWindow *>(data)->on_sdl_surface_changed();
-    }
-}
-
 void GameWindow::init(int width, int height)
 {
-    sdl_widget
-	= Gtk::manage(Glib::wrap(gtk_sdl_new(width, height, 0, SDL_SWSURFACE)));
+    //sdl_widget
+	//= Gtk::manage(new Gtk::Image());
 
-    sdl_widget->set_flags(Gtk::CAN_FOCUS);
+    //sdl_widget->set_flags(Gtk::CAN_FOCUS);
 
-    sdl_widget->grab_focus();
-    sdl_widget->add_events(Gdk::KEY_PRESS_MASK | 
-		  Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
-	          Gdk::POINTER_MOTION_MASK);
+    //sdl_widget->grab_focus();
+    //sdl_widget->add_events(Gdk::KEY_PRESS_MASK | 
+		  //Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
+	          //Gdk::POINTER_MOTION_MASK);
 
-    sdl_widget->signal_key_press_event().connect(
-	sigc::mem_fun(*this, &GameWindow::on_sdl_key_event));
-    sdl_widget->signal_key_release_event().connect(
-	sigc::mem_fun(*this, &GameWindow::on_sdl_key_event));
-    sdl_widget->signal_button_press_event().connect(
-	sigc::mem_fun(*this, &GameWindow::on_sdl_mouse_button_event));
-    sdl_widget->signal_button_release_event().connect(
-	sigc::mem_fun(*this, &GameWindow::on_sdl_mouse_button_event));
-    sdl_widget->signal_motion_notify_event().connect(
-	sigc::mem_fun(*this, &GameWindow::on_sdl_mouse_motion_event));
-    sdl_widget->signal_scroll_event().connect
-       (sigc::mem_fun(*this, &GameWindow::on_sdl_scroll_event));
+    //sdl_widget->signal_key_press_event().connect(
+	//sigc::mem_fun(*this, &GameWindow::on_sdl_key_event));
+    //sdl_widget->signal_key_release_event().connect(
+	//sigc::mem_fun(*this, &GameWindow::on_sdl_key_event));
+    //sdl_widget->signal_button_press_event().connect(
+	//sigc::mem_fun(*this, &GameWindow::on_sdl_mouse_button_event));
+    //sdl_widget->signal_button_release_event().connect(
+	//sigc::mem_fun(*this, &GameWindow::on_sdl_mouse_button_event));
+    //sdl_widget->signal_motion_notify_event().connect(
+	//sigc::mem_fun(*this, &GameWindow::on_sdl_mouse_motion_event));
+    //sdl_widget->signal_scroll_event().connect
+       //(sigc::mem_fun(*this, &GameWindow::on_sdl_scroll_event));
     
     // connect to the special signal that signifies that a new surface has been
     // generated and attached to the widget
-    g_signal_connect(G_OBJECT(sdl_widget->gobj()), "surface-attached",
-		     G_CALLBACK(surface_attached_helper), this);
+    //g_signal_connect(G_OBJECT(sdl_widget->gobj()), "surface-attached",
+		     //G_CALLBACK(surface_attached_helper), this);
     
-    sdl_container->add(*sdl_widget);
+    //sdl_container->add(*sdl_widget);
 
 	    
 
@@ -675,6 +692,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
     (game->progress_changed.connect
      (sigc::mem_fun(*this, &GameWindow::on_progress_changed)));
   connections.push_back
+    (game->bigmap_changed.connect
+     (sigc::mem_fun(*this, &GameWindow::on_bigmap_changed)));
+  connections.push_back
     (game->smallmap_changed.connect
      (sigc::mem_fun(*this, &GameWindow::on_smallmap_changed)));
   connections.push_back
@@ -685,7 +705,7 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
      (sigc::mem_fun(*this, &GameWindow::on_stack_info_changed)));
   connections.push_back
     (game->map_tip_changed.connect
-     (sigc::mem_fun(*this, &GameWindow::on_map_tip_changed)));
+     (sigc::mem_fun(*this, &GameWindow::on_bigmap_tip_changed)));
   connections.push_back
     (game->stack_tip_changed.connect
      (sigc::mem_fun(*this, &GameWindow::on_stack_tip_changed)));
@@ -860,10 +880,10 @@ bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
   Armysetlist *al = Armysetlist::getInstance();
   for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
     if ((*i)->getType() != Player::NETWORKED)
-      GraphicsLoader::instantiatePixmaps(al->getArmyset((*i)->getArmyset()));
+      GraphicsLoader::instantiateImages(al->getArmyset((*i)->getArmyset()));
 
-  GraphicsLoader::instantiatePixmaps(GameMap::getInstance()->getTileset());
-  GraphicsLoader::instantiatePixmaps(GameMap::getInstance()->getShieldset());
+  GraphicsLoader::instantiateImages(GameMap::getInstance()->getTileset());
+  GraphicsLoader::instantiateImages(GameMap::getInstance()->getShieldset());
 
   Sound::getInstance()->haltMusic(false);
   Sound::getInstance()->enableBackground();
@@ -881,7 +901,7 @@ bool GameWindow::on_delete_event(GdkEventAny *e)
   return true;
 }
 
-bool GameWindow::on_sdl_mouse_button_event(GdkEventButton *e)
+bool GameWindow::on_bigmap_mouse_button_event(GdkEventButton *e)
 {
   if (e->type != GDK_BUTTON_PRESS && e->type != GDK_BUTTON_RELEASE)
     return true;	// useless event
@@ -892,7 +912,7 @@ bool GameWindow::on_sdl_mouse_button_event(GdkEventButton *e)
   return true;
 }
 
-bool GameWindow::on_sdl_mouse_motion_event(GdkEventMotion *e)
+bool GameWindow::on_bigmap_mouse_motion_event(GdkEventMotion *e)
 {
   static guint prev = 0;
   if (game.get())
@@ -901,14 +921,14 @@ bool GameWindow::on_sdl_mouse_motion_event(GdkEventMotion *e)
       if (delta > 40 || delta < 0)
 	{
 	  game->get_bigmap().mouse_motion_event(to_input_event(e));
-	  sdl_widget->grab_focus();
+	  bigmap_image->grab_focus();
 	  prev = e->time;
 	}
     }
   return true;
 }
     
-bool GameWindow::on_sdl_scroll_event(GdkEventScroll* event)
+bool GameWindow::on_bigmap_scroll_event(GdkEventScroll* event)
 {
   switch (event->direction) 
     {
@@ -927,13 +947,12 @@ bool GameWindow::on_sdl_scroll_event(GdkEventScroll* event)
 
 void GameWindow::on_bigmap_cursor_changed(GraphicsCache::CursorType cursor)
 {
-  sdl_widget->get_window()->set_cursor 
-    (Gdk::Cursor(Gdk::Display::get_default(), to_pixbuf
-		 (GraphicsCache::getInstance()->getCursorPic
-		  (cursor)), 4, 4));
+  bigmap_image->get_window()->set_cursor 
+    (Gdk::Cursor(Gdk::Display::get_default(), 
+		 GraphicsCache::getInstance()->getCursorPic (cursor), 4, 4));
 }
 
-bool GameWindow::on_sdl_key_event(GdkEventKey *e)
+bool GameWindow::on_bigmap_key_event(GdkEventKey *e)
 {
 
   if (e->keyval == GDK_Shift_L || e->keyval == GDK_Shift_R)
@@ -944,7 +963,7 @@ bool GameWindow::on_sdl_key_event(GdkEventKey *e)
   return true;
 }
 
-bool GameWindow::on_map_mouse_button_event(GdkEventButton *e)
+bool GameWindow::on_smallmap_mouse_button_event(GdkEventButton *e)
 {
   if (e->type != GDK_BUTTON_PRESS && e->type != GDK_BUTTON_RELEASE)
     return true;	// useless event
@@ -955,32 +974,48 @@ bool GameWindow::on_map_mouse_button_event(GdkEventButton *e)
   return true;
 }
 
-bool GameWindow::on_map_mouse_motion_event(GdkEventMotion *e)
+bool GameWindow::on_smallmap_mouse_motion_event(GdkEventMotion *e)
 {
+  static guint prev = 0;
   if (game.get())
     {
-      game->get_smallmap().mouse_motion_event(to_input_event(e));
+      guint delta = e->time - prev;
+      if (delta > 100 || delta < 0)
+	{
+	  game->get_smallmap().mouse_motion_event(to_input_event(e));
+	  prev = e->time;
+	}
 
       map_eventbox->get_window()->set_cursor 
-	(Gdk::Cursor(Gdk::Display::get_default(), to_pixbuf
-		     (GraphicsCache::getInstance()->getCursorPic
-		      (GraphicsCache::MAGNIFYING_GLASS)), 3, 3));
+	(Gdk::Cursor(Gdk::Display::get_default(), 
+		     GraphicsCache::getInstance()->getCursorPic
+		      (GraphicsCache::MAGNIFYING_GLASS), 3, 3));
     }
 
   return true;
 }
 
-void GameWindow::on_sdl_surface_changed()
+bool GameWindow::on_bigmap_exposed(GdkEventExpose *event)
 {
+  on_bigmap_surface_changed(Gtk::Allocation(event->area.x, event->area.y, event->area.width, event->area.height));
+  return false;
+}
+void GameWindow::on_bigmap_surface_changed(Gtk::Allocation box)
+{
+  static Gtk::Allocation last_box = Gtk::Allocation(0,0,1,1);
   if (!sdl_inited) {
     sdl_inited = true;
     sdl_initialized.emit();
   }
 
   if (game.get()) {
-    game->get_bigmap().screen_size_changed();
-    game->redraw();
+    if (box.get_width() != last_box.get_width() || box.get_height() != last_box.get_height())
+      {
+	game->get_bigmap().screen_size_changed(bigmap_image->get_allocation());
+	game->redraw();
+      }
   }
+  last_box = box;
 }
 
 void GameWindow::on_load_game_activated()
@@ -1560,8 +1595,7 @@ void GameWindow::on_help_about_activated()
   dialog->set_transient_for(*window.get());
 
   dialog->set_version(PACKAGE_VERSION);
-  SDL_Surface *logo = GraphicsLoader::getMiscPicture("castle_icon.png");
-  dialog->set_logo(to_pixbuf(logo));
+  dialog->set_logo(GraphicsLoader::getMiscPicture("castle_icon.png"));
   dialog->show_all();
   dialog->run();
   dialog->hide();
@@ -1619,11 +1653,7 @@ void GameWindow::on_game_over(Player *winner)
   Gtk::Image *image;
   xml->get_widget("image", image);
 
-  SDL_Surface *win = GraphicsLoader::getMiscPicture("win.png", false);
-
-  image->property_pixbuf() = to_pixbuf(win);
-
-  SDL_FreeSurface(win);
+  image->property_pixbuf() = GraphicsLoader::getMiscPicture("win.png", false);
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -1813,11 +1843,20 @@ void GameWindow::on_sidebar_stats_changed(SidebarStats s)
   upkeep_stats_label->set_tooltip_text(tip);
 }
 
-void GameWindow::on_smallmap_changed(SDL_Surface *map)
+void GameWindow::on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
-  map_container->property_height_request() = map->h;
-  map_container->property_width_request() = map->w;
-  map_image->property_pixbuf() = to_pixbuf(map);
+  bigmap_image->property_pixmap() = map;
+  map.clear();
+}
+void GameWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
+{
+  int width = 0;
+  int height = 0;
+  map->get_size(width, height);
+  map_container->property_width_request() = width;
+  map_container->property_height_request() = height;
+  map_image->property_pixmap() = map;
+  map.clear();
 }
 
 void GameWindow::on_smallmap_slid(Rectangle view)
@@ -1882,8 +1921,7 @@ void GameWindow::fill_in_group_info (Stack *s)
 {
   guint32 bonus = s->calculateMoveBonus();
   GraphicsCache *gc = GraphicsCache::getInstance();
-  SDL_Surface *terrain = gc->getMoveBonusPic(bonus, s->hasShip());
-  terrain_image->property_pixbuf() = to_pixbuf(terrain);
+  terrain_image->property_pixbuf() = gc->getMoveBonusPic(bonus, s->hasShip());
   if (Configuration::s_decorated == true)
     group_moves_label->set_markup(String::ucompose("<b>%1</b>",
 						   s->getGroupMoves()));
@@ -1915,7 +1953,7 @@ void GameWindow::show_stack(Stack *s)
       Gtk::VBox *toggle_box = manage(new Gtk::VBox);
 
       // image
-      toggle_box->add(*manage(new Gtk::Image(to_pixbuf(gc->getArmyPic(army)))));
+      toggle_box->add(*manage(new Gtk::Image(gc->getArmyPic(army))));
       // number of moves
       Glib::ustring moves_str = String::ucompose("%1", army->getMoves());
       toggle_box->add(*manage(new Gtk::Label(moves_str,
@@ -1953,11 +1991,11 @@ void GameWindow::on_stack_tip_changed(Stack *stack, MapTipPosition mpos)
   else
     {
       //_crapola
-      stack_info_tip.reset(new StackInfoTip(sdl_widget, mpos, stack));
+      stack_info_tip.reset(new StackInfoTip(bigmap_image, mpos, stack));
     }
 }
 
-void GameWindow::on_map_tip_changed(Glib::ustring tip, MapTipPosition pos)
+void GameWindow::on_bigmap_tip_changed(Glib::ustring tip, MapTipPosition pos)
 {
   if (tip.empty())
     hide_map_tip();
@@ -1985,7 +2023,7 @@ void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos)
 
   // get screen position
   Vector<int> p;
-  sdl_widget->get_window()->get_origin(p.x, p.y);
+  bigmap_image->get_window()->get_origin(p.x, p.y);
   p += pos.pos;
 
   Vector<int> size(0, 0);
@@ -2606,10 +2644,10 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
   xml->get_widget("pillaged_army_type_image", pillaged_army_type_image);
   if (gold == 0)
     {
-      SDL_Surface *s
+      Glib::RefPtr<Gdk::Pixbuf> s
 	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
       Glib::RefPtr<Gdk::Pixbuf> empty_pic
-	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->w, s->h);
+	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->get_width(), s->get_height());
       empty_pic->fill(0x00000000);
       pillaged_army_type_image->set(empty_pic);
       pillaged_army_type_cost_label->set_text("");
@@ -2617,7 +2655,7 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
   else
     {
       Glib::RefPtr<Gdk::Pixbuf> pic;
-      pic = to_pixbuf(gc->getArmyPic(as, pillaged_army_type, player, NULL));
+      pic = gc->getArmyPic(as, pillaged_army_type, player, NULL);
       pillaged_army_type_image->set(pic);
       pillaged_army_type_cost_label->set_text(String::ucompose("%1 gp", gold));
     }
@@ -2682,10 +2720,10 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<guint32> sacked_
   xml->get_widget("sacked_army_3_cost_label", sacked_army_3_cost_label);
 
   Glib::RefPtr<Gdk::Pixbuf> pic;
-  SDL_Surface *surf
+  Glib::RefPtr<Gdk::Pixbuf> surf
     = GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
   Glib::RefPtr<Gdk::Pixbuf> empty_pic
-    = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, surf->w, surf->h);
+    = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, surf->get_width(), surf->get_height());
   empty_pic->fill(0x00000000);
   int i = 0;
   Gtk::Label *sack_label = NULL;
@@ -2707,7 +2745,7 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<guint32> sacked_
 	  sack_image = sacked_army_3_image;
 	  break;
 	}
-      pic = to_pixbuf(gc->getArmyPic(as, *it, player, NULL));
+      pic = gc->getArmyPic(as, *it, player, NULL);
       sack_image->set(pic);
       const ArmyProto *a = 
 	Armysetlist::getInstance()->getArmy (player->getArmyset(), *it);
@@ -2804,9 +2842,9 @@ void GameWindow::show_shield_turn() //show turn indicator
 	  continue;
 	}
       if (*i == pl->getActiveplayer())
-	shield_image[c]->property_pixbuf()=to_pixbuf(gc->getShieldPic(1,(*i)));
+	shield_image[c]->property_pixbuf()=gc->getShieldPic(1,(*i));
       else
-	shield_image[c]->property_pixbuf()=to_pixbuf(gc->getShieldPic(0,(*i)));
+	shield_image[c]->property_pixbuf()=gc->getShieldPic(0,(*i));
       shield_image[c]->property_tooltip_text() = (*i)->getName();
       c++;
     }
@@ -2889,7 +2927,7 @@ void GameWindow::on_medal_awarded_to_army(Army *army)
 
   Gtk::Image *image;
   xml->get_widget("image", image);
-  image->property_pixbuf() = to_pixbuf(gc->getArmyPic(army));
+  image->property_pixbuf() = gc->getArmyPic(army);
 
   Gtk::Label *label;
   xml->get_widget("label", label);

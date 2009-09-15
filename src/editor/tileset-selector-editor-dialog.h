@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -56,9 +56,9 @@ class TilesetSelectorEditorDialog: public sigc::trackable
 
     bool loadSelector(std::string filename);
     void clearSelector();
-    std::map< guint32, std::list<SDL_Surface*>* > selectors;
+    std::map< guint32, std::list<Glib::RefPtr<Gdk::Pixbuf> >* > selectors;
     sigc::connection heartbeat;
-    std::map<guint32, std::list<SDL_Surface*>::iterator> frame;
+    std::map<guint32, std::list<Glib::RefPtr<Gdk::Pixbuf> >::iterator> frame;
 
     void on_heartbeat();
 

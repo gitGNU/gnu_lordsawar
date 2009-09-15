@@ -25,7 +25,6 @@
 
 #include <gtkmm.h>
 #include <string>
-#include <SDL_types.h>
 #include <sigc++/trackable.h>
 
 class XML_Helper;
@@ -81,10 +80,6 @@ class Configuration : public sigc::trackable
 
         // Language setting
         static std::string s_lang;
-
-        // if using hardware surfaces for pixmaps or not
-        static guint32 s_surfaceFlags;
-        static bool s_hardware;
 
         //the maximum size of the graphics cache
         static guint32 s_cacheSize;

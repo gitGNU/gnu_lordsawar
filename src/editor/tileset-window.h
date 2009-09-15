@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,16 +37,10 @@ class TileSetWindow: public sigc::trackable
     void show();
     void hide();
 
-    // initialize the SDL widget 
-    void init(int width, int height);
-
-    sigc::signal<void> sdl_initialized;
     Gtk::Window &get_window() { return *window.get(); }
 
  private:
     std::auto_ptr<Gtk::Window> window;
-    Gtk::Container *sdl_container;
-    Gtk::Widget *sdl_widget;
     std::string current_save_filename;
     Tileset *d_tileset; //current tileset
     Tile *d_tile; //current tile
@@ -67,7 +61,6 @@ class TileSetWindow: public sigc::trackable
     Gtk::Image *tile_smallmap_image;
     Gtk::Button *add_tilestyleset_button;
     Gtk::Button *remove_tilestyleset_button;
-    bool sdl_inited;
     Gtk::MenuItem *new_tileset_menuitem;
     Gtk::MenuItem *load_tileset_menuitem;
     Gtk::MenuItem *save_tileset_menuitem;
@@ -110,7 +103,8 @@ class TileSetWindow: public sigc::trackable
     };
     const TileStyleSetsColumns tilestylesets_columns;
     Glib::RefPtr<Gtk::ListStore> tilestylesets_list;
-    SDL_Surface *tile_smallmap_surface;
+    Glib::RefPtr<Gdk::Pixmap> tile_smallmap_surface;
+    Glib::RefPtr<Gdk::GC> tile_smallmap_surface_gc;
     Gtk::TreeView *tilestyles_treeview;
     class TileStylesColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -161,8 +155,6 @@ class TileSetWindow: public sigc::trackable
 
     bool load(std::string tag, XML_Helper *helper);
 
-
-
     //callbacks
     void on_tile_type_changed();
     void on_tile_name_changed();
@@ -180,10 +172,6 @@ class TileSetWindow: public sigc::trackable
     void on_remove_tilestyleset_clicked();
     void on_refresh_clicked();
 
-public:
-    // not part of the API, but for surface_attached_helper
-    void on_sdl_surface_changed();
-      
 };
 
 #endif

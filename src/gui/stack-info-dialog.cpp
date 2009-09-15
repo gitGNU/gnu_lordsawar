@@ -95,15 +95,14 @@ void StackInfoDialog::addArmy (Army *h, guint32 modified_strength, int idx)
     
   Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
-    to_pixbuf(gc->getArmyPic(player->getArmyset(), h->getTypeId(), player, 
-			     NULL));
+    gc->getArmyPic(player->getArmyset(), h->getTypeId(), player, NULL);
   
   Gtk::Image *image = NULL;
   guint32 move_bonus = h->getStat(Army::MOVE_BONUS);
   bool ship = h->getStat(Army::SHIP);
   if (ship || move_bonus == (Tile::GRASS | Tile::WATER | Tile::FOREST | 
 			     Tile::HILLS | Tile::SWAMP | Tile::MOUNTAIN))
-    image = new Gtk::Image(to_pixbuf(gc->getMoveBonusPic(move_bonus, ship)));
+    image = new Gtk::Image(gc->getMoveBonusPic(move_bonus, ship));
 
   armies.push_back(h);
   toggle->set_active(h->isGrouped());

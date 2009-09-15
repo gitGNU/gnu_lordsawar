@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -99,13 +99,12 @@ void ArmyBonusDialog::addArmyType(guint32 army_type)
       return; //we don't want to show heroes in this list
     Gtk::TreeIter i = armies_list->append();
     (*i)[armies_columns.name] = a->getName();
-    (*i)[armies_columns.image] = to_pixbuf(gc->getArmyPic(p->getArmyset(),
-                                           army_type,
-                                           p, NULL));
+    (*i)[armies_columns.image] = gc->getArmyPic(p->getArmyset(), army_type,
+						p, NULL);
     (*i)[armies_columns.str] = a->getStrength();
     (*i)[armies_columns.move] = a->getMaxMoves();
     guint32 b = a->getMoveBonus();
-    (*i)[armies_columns.move_image] = to_pixbuf(gc->getMoveBonusPic(b, false));
+    (*i)[armies_columns.move_image] = gc->getMoveBonusPic(b, false);
     (*i)[armies_columns.bonus] = "-";
 
     std::string s = a->getArmyBonusDescription();

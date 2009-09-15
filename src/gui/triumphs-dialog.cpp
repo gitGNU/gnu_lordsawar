@@ -126,7 +126,7 @@ void TriumphsDialog::fill_in_page(Player *p)
 	}
     }
   Gtk::Image *hero_image = new Gtk::Image
-    (to_pixbuf(gc->getArmyPic(p->getArmyset(), hero->getTypeId(), p, NULL)));
+    (gc->getArmyPic(p->getArmyset(), hero->getTypeId(), p, NULL));
   Gtk::HBox *hero_hbox = new Gtk::HBox();
   hero_hbox->pack_start(*manage(hero_image), Gtk::PACK_SHRINK, 10);
   hero_hbox->pack_start(*manage(hero_label), Gtk::PACK_SHRINK, 10);
@@ -141,7 +141,7 @@ void TriumphsDialog::fill_in_page(Player *p)
 				   "%1 navies rest with the fishes!",
 				   count), count);
   Gtk::Label *ship_label = new Gtk::Label(s);
-  Gtk::Image *ship_image = new Gtk::Image (to_pixbuf(gc->getShipPic(p)));
+  Gtk::Image *ship_image = new Gtk::Image (gc->getShipPic(p));
   Gtk::HBox *ship_hbox = new Gtk::HBox();
   ship_hbox->pack_start(*manage(ship_image), Gtk::PACK_SHRINK, 10);
   ship_hbox->pack_start(*manage(ship_label), Gtk::PACK_SHRINK, 10);
@@ -157,7 +157,7 @@ void TriumphsDialog::fill_in_page(Player *p)
 				   count), count);
   Gtk::Label *normal_label = new Gtk::Label(s);
   Gtk::Image *normal_image = new Gtk::Image
-    (to_pixbuf(gc->getArmyPic(p->getArmyset(), 0, p, NULL)));
+    (gc->getArmyPic(p->getArmyset(), 0, p, NULL));
   Gtk::HBox *normal_hbox = new Gtk::HBox();
   normal_hbox->pack_start(*manage(normal_image), Gtk::PACK_SHRINK, 10);
   normal_hbox->pack_start(*manage(normal_label), Gtk::PACK_SHRINK, 10);
@@ -185,8 +185,8 @@ void TriumphsDialog::fill_in_page(Player *p)
 	}
     }
   Gtk::Image *special_image = new Gtk::Image
-    (to_pixbuf(gc->getArmyPic(p->getArmyset(), 
-			      special->getTypeId(), p, NULL)));
+    (gc->getArmyPic(p->getArmyset(), 
+			      special->getTypeId(), p, NULL));
   Gtk::HBox *special_hbox = new Gtk::HBox();
   special_hbox->pack_start(*manage(special_image), Gtk::PACK_SHRINK, 10);
   special_hbox->pack_start(*manage(special_label), Gtk::PACK_SHRINK, 10);
@@ -202,8 +202,7 @@ void TriumphsDialog::fill_in_page(Player *p)
 			   "%1 standards wrested from a vanquished foe!",
 			   count), count);
   Gtk::Label *flag_label = new Gtk::Label(s);
-  Gtk::Image *flag_image = new Gtk::Image 
-    (to_pixbuf(gc->getPlantedStandardPic(p)));
+  Gtk::Image *flag_image = new Gtk::Image (gc->getPlantedStandardPic(p));
   Gtk::HBox *flag_hbox = new Gtk::HBox();
   flag_hbox->pack_start(*manage(flag_image), Gtk::PACK_SHRINK, 10);
   flag_hbox->pack_start(*manage(flag_label), Gtk::PACK_SHRINK, 10);
@@ -216,7 +215,7 @@ void TriumphsDialog::fill_in_page(Player *p)
   contents->add(*manage(flag_hbox));
   notebook->append_page 
     (*manage(contents), 
-     *manage(new Gtk::Image(to_pixbuf(gc->getShieldPic(2, p)))));
+     *manage(new Gtk::Image(gc->getShieldPic(2, p))));
 }
 
 void TriumphsDialog::fill_in_info()

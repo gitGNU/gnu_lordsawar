@@ -23,7 +23,6 @@
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
 
-struct SDL_Surface;
 
 #include "decorated.h"
 

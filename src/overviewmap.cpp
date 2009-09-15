@@ -1,5 +1,5 @@
 // Copyright (C) 2006, 2007 Ulf Lorenz
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,7 @@
 #include <assert.h>
 #include <math.h>
 #include <stdlib.h>
+#include "gui/image-helpers.h"
 
 #include "overviewmap.h"
 #include "stacklist.h"
@@ -32,23 +33,16 @@
 #include "playerlist.h"
 #include "player.h"
 #include "GameMap.h"
-#include "sdl-draw.h"
 #include "GraphicsCache.h"
 #include "FogMap.h"
 
 OverviewMap::OverviewMap()
 {
-    surface = 0;
-    static_surface = 0;
     d_player = Playerlist::getActiveplayer();
 }
 
 OverviewMap::~OverviewMap()
 {
-    if (surface)
-	SDL_FreeSurface(surface);
-    if (static_surface)
-	SDL_FreeSurface(static_surface);
 }
 
 bool OverviewMap::isShadowed(guint32 type, int i, int j)
@@ -114,155 +108,200 @@ drand(int i, int j)
   return (int) roundf(f) | (i  + i + j);
 }
 
-void OverviewMap::draw_tile_pixel(SDL_Surface *surface, 
-				  SmallTile::Pattern pattern,
-				  SDL_Color first_color, SDL_Color second_color,
-				  SDL_Color third_color,
-				  int i, int j, bool shadowed)
+
+void OverviewMap::choose_surface(bool front, Glib::RefPtr<Gdk::Pixmap> &surf,
+				 Glib::RefPtr<Gdk::GC> &gc)
 {
-  SDL_Color c = first_color;
-  
-  guint32 first = SDL_MapRGB(surface->format, c.r, c.g, c.b);
+  if (front)
+    {
+      gc = surface_gc;
+      surf = surface;
+    }
+  else
+    {
+      gc = static_surface_gc;
+      surf = static_surface;
+    }
+}
+void
+OverviewMap::draw_pixel(Glib::RefPtr<Gdk::Pixmap> surf, Glib::RefPtr<Gdk::GC> gc, int x, int y, Gdk::Color color)
+{
+  gc->set_rgb_fg_color(color);
+  surf->draw_point(gc, x, y);
+  return;
+}
+
+void
+OverviewMap::draw_filled_rect(int x, int y, int width, int height, Gdk::Color color)
+{
+  draw_filled_rect(true, x, y, width, height, color);
+}
+
+void
+OverviewMap::draw_filled_rect(bool front, int x, int y, int width, int height, Gdk::Color color)
+{
+  Glib::RefPtr<Gdk::Pixmap> surf;
+  Glib::RefPtr<Gdk::GC> gc;
+  choose_surface (front, surf, gc);
+  gc->set_rgb_fg_color(color);
+  surf->draw_rectangle(gc, true, x, y, width, height);
+}
+
+void
+OverviewMap::draw_line(int src_x, int src_y, int dst_x, int dst_y, Gdk::Color color)
+{
+  draw_line(true, src_x, src_y, dst_x, dst_y, color);
+}
+
+void
+OverviewMap::draw_line(bool front, int src_x, int src_y, int dst_x, int dst_y, Gdk::Color color)
+{
+  Glib::RefPtr<Gdk::Pixmap> surf;
+  Glib::RefPtr<Gdk::GC> gc;
+  choose_surface (front, surf, gc);
+  gc->set_rgb_fg_color(color);
+  surf->draw_line(gc, src_x, src_y, dst_x, dst_y);
+}
+
+void
+OverviewMap::draw_rect(int x, int y, int width, int height, Gdk::Color color)
+{
+  draw_rect (true, x, y, width, height, color);
+}
+
+void
+OverviewMap::draw_rect(bool front, int x, int y, int width, int height, Gdk::Color color)
+{
+  Glib::RefPtr<Gdk::Pixmap> surf;
+  Glib::RefPtr<Gdk::GC> gc;
+  choose_surface (front, surf, gc);
+  gc->set_rgb_fg_color(color);
+  surf->draw_rectangle(gc, false, x, y, width, height);
+}
+
+void OverviewMap::draw_terrain_tile(Glib::RefPtr<Gdk::Pixmap> surf,
+				    Glib::RefPtr<Gdk::GC> gc,
+				    SmallTile::Pattern pattern,
+				    Gdk::Color first, 
+				    Gdk::Color second,
+				    Gdk::Color third,
+				    int i, int j, bool shadowed)
+{
+
   switch (pattern)
     {
       case SmallTile::SOLID:
-        draw_pixel(surface, i, j, first);
+        draw_pixel(surf, gc, i, j, first);
         break;
       case SmallTile::STIPPLED:
         {
-          SDL_Color s = second_color;
-          guint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
-         
           if ((i+j) % 2 == 0)
-            draw_pixel(surface, i, j, first);
+            draw_pixel(surf, gc, i, j, first);
           else
-            draw_pixel(surface, i, j, second);
+            draw_pixel(surf, gc, i, j, second);
         }
         break;
       case SmallTile::RANDOMIZED:
         {
-          SDL_Color s = second_color;
-          guint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
-          SDL_Color th = third_color;
-          guint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
-
           int num = prand(i, j) % 3;
           if (num == 0)
-            draw_pixel(surface, i, j, first);
+            draw_pixel(surf, gc, i, j, first);
           else if (num == 1)
-            draw_pixel(surface, i, j, second);
+            draw_pixel(surf, gc, i, j, second);
           else
-            draw_pixel(surface, i, j, third);
+            draw_pixel(surf, gc, i, j, third);
         }
         break;
       case SmallTile::DIAGONAL:
         {
-          SDL_Color s = second_color;
-          guint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
-          SDL_Color th = third_color;
-          guint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
-
           int num = drand(i, j) % 3;
           if (num == 0)
-            draw_pixel(surface, i, j, first);
+            draw_pixel(surf, gc, i, j, first);
           else if (num == 1)
-            draw_pixel(surface, i, j, second);
+            draw_pixel(surf, gc, i, j, second);
           else
-            draw_pixel(surface, i, j, third);
+            draw_pixel(surf, gc, i, j, third);
         }
         break;
       case SmallTile::CROSSHATCH:
         {
-          SDL_Color s = second_color;
-          guint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
-          SDL_Color th = third_color;
-          guint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
-
           int num = crand(i, j) % 3;
           if (num == 0)
-            draw_pixel(surface, i, j, first);
+            draw_pixel(surf, gc, i, j, first);
           else if (num == 1)
-            draw_pixel(surface, i, j, second);
+            draw_pixel(surf, gc , i, j, second);
           else
-            draw_pixel(surface, i, j, third);
+            draw_pixel(surf, gc, i, j, third);
         }
         break;
       case SmallTile::SUNKEN:
         if (shadowed == false)
-          draw_pixel(surface, i, j, first);
+          draw_pixel(surf, gc, i, j, first);
         else
           {
-            SDL_Color s = second_color;
-            guint32 shadow_color = SDL_MapRGB(surface->format, s.r, s.g, s.b);
-            draw_pixel(surface, i, j, shadow_color);
+            draw_pixel(surf, gc, i, j, second);
           }
         break;
       case SmallTile::SUNKEN_STRIPED:
         if (shadowed == false)
 	  {
-            SDL_Color th = third_color;
-            guint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
 	    if (j % 1 == 0)
-	      draw_pixel(surface, i, j, first);
+	      draw_pixel(surf, gc, i, j, first);
 	    else
-	      draw_pixel(surface, i, j, third);
+	      draw_pixel(surf, gc, i, j, third);
 	  }
         else
           {
-            SDL_Color s = second_color;
-            guint32 shadow_color = SDL_MapRGB(surface->format, s.r, s.g, s.b);
-            draw_pixel(surface, i, j, shadow_color);
+            draw_pixel(surf, gc, i, j, second);
           }
         break;
       case SmallTile::TABLECLOTH:
           {
-            SDL_Color s = second_color;
-            guint32 second = SDL_MapRGB(surface->format, s.r, s.g, s.b);
-            SDL_Color th = third_color;
-            guint32 third = SDL_MapRGB(surface->format, th.r, th.g, th.b);
             if (i % 4 == 0 && j % 4 == 0)
-              draw_pixel(surface, i, j, first);
+              draw_pixel(surf, gc, i, j, first);
             else if (i % 4 == 0 && j % 4 == 1)
-              draw_pixel(surface, i, j, second);
+              draw_pixel(surf, gc, i, j, second);
             else if (i % 4 == 0 && j % 4 == 2)
-              draw_pixel(surface, i, j, first);
+              draw_pixel(surf, gc, i, j, first);
             else if (i % 4 == 0 && j % 4 == 3)
-              draw_pixel(surface, i, j, second);
+              draw_pixel(surf, gc, i, j, second);
             else if (i % 4 == 1 && j % 4 == 0)
-              draw_pixel(surface, i, j, second);
+              draw_pixel(surf, gc, i, j, second);
             else if (i % 4 == 1 && j % 4 == 1)
-              draw_pixel(surface, i, j, third);
+              draw_pixel(surf, gc, i, j, third);
             else if (i % 4 == 1 && j % 4 == 2)
-              draw_pixel(surface, i, j, second);
+              draw_pixel(surf, gc, i, j, second);
             else if (i % 4 == 1 && j % 4 == 3)
-              draw_pixel(surface, i, j, third);
+              draw_pixel(surf, gc, i, j, third);
             else if (i % 4 == 2 && j % 4 == 0)
-              draw_pixel(surface, i, j, first);
+              draw_pixel(surf, gc, i, j, first);
             else if (i % 4 == 2 && j % 4 == 1)
-              draw_pixel(surface, i, j, second);
+              draw_pixel(surf, gc, i, j, second);
             else if (i % 4 == 2 && j % 4 == 2)
-              draw_pixel(surface, i, j, first);
+              draw_pixel(surf, gc, i, j, first);
             else if (i % 4 == 2 && j % 4 == 3)
-              draw_pixel(surface, i, j, second);
+              draw_pixel(surf, gc, i, j, second);
             else if (i % 4 == 3 && j % 4 == 0)
-              draw_pixel(surface, i, j, second);
+              draw_pixel(surf, gc, i, j, second);
             else if (i % 4 == 3 && j % 4 == 1)
-              draw_pixel(surface, i, j, third);
+              draw_pixel(surf, gc, i, j, third);
             else if (i % 4 == 3 && j % 4 == 2)
-              draw_pixel(surface, i, j, second);
+              draw_pixel(surf, gc, i, j, second);
             else if (i % 4 == 3 && j % 4 == 3)
-              draw_pixel(surface, i, j, third);
+              draw_pixel(surf, gc, i, j, third);
           }
         break;
     }
 }
 
-void OverviewMap::draw_tile_pixel(Maptile *t, int i, int j)
+void OverviewMap::draw_terrain_tile(Maptile *t, int i, int j)
 {
   bool shadowed = isShadowed(t->getType(), i, j);
-  draw_tile_pixel(static_surface, t->getPattern(), 
-		  t->getColor(), t->getSecondColor(), t->getThirdColor(),
-		  i, j, shadowed);
+  draw_terrain_tile (static_surface, static_surface_gc, t->getPattern(), 
+		     t->getColor(), 
+		     t->getSecondColor(), 
+		     t->getThirdColor(),
+		     i, j, shadowed);
 }
 
 int OverviewMap::calculateResizeFactor()
@@ -285,8 +324,7 @@ void OverviewMap::resize()
 
 void OverviewMap::resize(Vector<int> max_dimensions)
 {
-    if (surface)
-        SDL_FreeSurface(surface);
+  surface.reset();
 
     // calculate the width and height relations between pixels and maptiles
     Vector<int> bigmap_dim = GameMap::get_dim();
@@ -306,12 +344,13 @@ void OverviewMap::resize(Vector<int> max_dimensions)
     }
 
     
-    static_surface = SDL_CreateRGBSurface(SDL_SWSURFACE, d.x, d.y, 24,
-					  0xFFu, 0xFFu << 8, 0xFFu << 16, 0);
-    surface = SDL_CreateRGBSurface(SDL_SWSURFACE, d.x, d.y, 24,
-				   0xFFu, 0xFFu << 8, 0xFFu << 16, 0);
+    static_surface = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), d.x, d.y, 24);
+    static_surface_gc = Gdk::GC::create(static_surface);
 
-    draw_terrain_pixels(Rectangle(0, 0, static_surface->w, static_surface->h));
+    draw_terrain_tiles(Rectangle(0, 0, d.x, d.y));
+    surface = Gdk::Pixmap::create(static_surface, d.x, d.y, 24);
+    surface_gc = Gdk::GC::create(surface);
+
 }
 
 void OverviewMap::redraw_tiles(Rectangle tiles)
@@ -327,9 +366,12 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
 	Vector<int> dim(int(round(tiles.w * pixels_per_tile)),
 			int(round(tiles.h * pixels_per_tile)));
 
+	int width;
+	int height;
+	static_surface->get_size(width, height);
 	// ensure we're within bounds
 	pos = clip(Vector<int>(0, 0), pos,
-		   Vector<int>(static_surface->w, static_surface->h) - Vector<int>(1, 1));
+		   Vector<int>(width, height) - Vector<int>(1, 1));
 
 	if (pos.x + dim.x >= int(GameMap::getWidth() * pixels_per_tile))
 	    dim.x = int(GameMap::getWidth() * pixels_per_tile) - pos.x;
@@ -337,18 +379,15 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
 	if (pos.y + dim.y >= int(GameMap::getHeight() * pixels_per_tile))
 	    dim.y = int(GameMap::getHeight() * pixels_per_tile) - pos.y;
 
-	draw_terrain_pixels(Rectangle(pos, dim));
+	draw_terrain_tiles(Rectangle(pos, dim));
     }
     draw(d_player);
 }
 
-void OverviewMap::draw_terrain_pixels(Rectangle r)
+void OverviewMap::draw_terrain_tiles(Rectangle r)
 {
     GameMap *gm = GameMap::getInstance();
-    // draw static map
-    SDL_Color rd = GameMap::getInstance()->getTileset()->getRoadColor();
-    guint32 road_color = SDL_MapRGB(static_surface->format, rd.r, rd.g, rd.b);
-    
+    Gdk::Color rd = GameMap::getInstance()->getTileset()->getRoadColor();
     for (int i = r.x; i < r.x + r.w; ++i)
         for (int j = r.y; j < r.y + r.h; ++j)
         {
@@ -357,10 +396,10 @@ void OverviewMap::draw_terrain_pixels(Rectangle r)
 
 	    if (gm->getTile(x,y)->getBuilding() == Maptile::ROAD ||
                      gm->getTile(x,y)->getBuilding() == Maptile::BRIDGE)
-		         draw_pixel(static_surface, i, j, road_color);
+		         draw_pixel(static_surface, static_surface_gc, i, j, rd);
 	    else
 	    {
-                draw_tile_pixel (GameMap::getInstance()->getTile(x,y), i, j);
+                draw_terrain_tile (GameMap::getInstance()->getTile(x,y), i, j);
 	    }
         }
     
@@ -373,7 +412,6 @@ void OverviewMap::after_draw()
 void OverviewMap::draw(Player *player)
 {
     d_player = player;
-    guint32 fog_color = SDL_MapRGB(surface->format, 0, 0, 0);
     int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
     assert(surface);
 
@@ -383,9 +421,17 @@ void OverviewMap::draw(Player *player)
     // of the surface when drawing. I will implcitely assume this during this
     // function.
     
-    SDL_BlitSurface(static_surface, 0, surface, 0);
+    //Gdk::Color black = Gdk::Color();
+    //black.set_rgb_p(0,0,0);
+    //surface_gc->set_rgb_fg_color(black);
+    //surface->draw_rectangle(surface_gc, true, 0, 0, -1, -1);
+    //Glib::RefPtr<Gdk::Pixbuf> buf = Gdk::Pixbuf::create(static_surface, 0, 0, -1, -1);
+    surface->draw_drawable(surface_gc, static_surface, 0, 0, 0, 0, -1, -1);
 
     // Draw ruins as a white dot
+	
+    Gdk::Color ruindotcolor = Gdk::Color();
+    ruindotcolor.set_rgb_p(100,100,100);
     for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
         it != Ruinlist::getInstance()->end(); it++)
     {
@@ -397,14 +443,12 @@ void OverviewMap::draw(Player *player)
         Vector<int> pos = r->getPos();
         pos = mapToSurface(pos);
 
-	guint32 raw;
-	raw = SDL_MapRGB(surface->format, 255, 255, 255);
-
-	draw_filled_rect(surface, pos.x, pos.y,
-			 pos.x + size, pos.y + size, raw);
+	draw_filled_rect(true, pos.x, pos.y, size, size, ruindotcolor);
     }
 
     // Draw temples as a white dot
+    Gdk::Color templedotcolor = Gdk::Color();
+    templedotcolor.set_rgb_p(100,100,100);
     for (Templelist::iterator it = Templelist::getInstance()->begin();
         it != Templelist::getInstance()->end(); it++)
     {
@@ -413,14 +457,13 @@ void OverviewMap::draw(Player *player)
           continue;
         Vector<int> pos = t->getPos();
         pos = mapToSurface(pos);
-	guint32 raw;
-	raw = SDL_MapRGB(surface->format, 255, 255, 255);
 
-	draw_filled_rect(surface, pos.x, pos.y,
-			 pos.x + size, pos.y + size, raw);
+	draw_filled_rect(true, pos.x, pos.y, size, size, templedotcolor);
     }
 
     //fog it up
+    Gdk::Color fog_color = Gdk::Color();
+    fog_color.set_rgb_p(0,0,0);
     for (int i = 0; i < GameMap::getWidth(); i++)
         for (int j = 0; j < GameMap::getHeight(); j++)
         {
@@ -430,8 +473,7 @@ void OverviewMap::draw(Player *player)
           if (FogMap::isFogged(pos, d_player) == true)
             {
               pos = mapToSurface(pos);
-              draw_filled_rect(surface, pos.x, pos.y,
-                               pos.x + size, pos.y + size, fog_color);
+              draw_filled_rect(true, pos.x, pos.y, size, size, fog_color);
             }
         }
 
@@ -439,7 +481,7 @@ void OverviewMap::draw(Player *player)
     after_draw();
 }
 
-SDL_Surface *OverviewMap::get_surface()
+Glib::RefPtr<Gdk::Pixmap> OverviewMap::get_surface()
 {
     return surface;
 }
@@ -493,7 +535,7 @@ void OverviewMap::draw_cities (bool all_razed)
       it != Citylist::getInstance()->end(); it++)
   {
       City *c = *it;
-      SDL_Surface *tmp;
+      Glib::RefPtr<Gdk::Pixbuf> tmp;
       if (c->isFogged(d_player))
         continue;
       if (c->isBurnt() == true || all_razed == true)
@@ -501,13 +543,15 @@ void OverviewMap::draw_cities (bool all_razed)
       else
         tmp = gc->getShieldPic(0, c->getOwner());
   
+      Glib::RefPtr<Gdk::Pixbuf> shield = tmp;
+
       Vector<int> pos = c->getPos();
       pos = mapToSurface(pos);
-      SDL_Rect r;
-      r.x = pos.x - (tmp->w/2);
-      r.y = pos.y - (tmp->h/2);
-      r.w = tmp->w;
-      r.h = tmp->h;
-      SDL_BlitSurface(tmp, 0, surface, &r);
+      surface->draw_pixbuf(shield, 0, 0, 
+			   pos.x - (shield->get_width()/2), 
+			   pos.y - (shield->get_height()/2), 
+			   shield->get_width(), shield->get_height(),
+			   Gdk::RGB_DITHER_NONE, 0, 0);
+
   }
 }

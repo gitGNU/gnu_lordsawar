@@ -45,11 +45,7 @@ TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset)
     description_textview->get_buffer()->set_text(tileset->getInfo());
 
     xml->get_widget("road_colorbutton", road_colorbutton);
-    Gdk::Color c;
-    SDL_Color sdl;
-    sdl = tileset->getRoadColor();
-    c.set_red(sdl.r * 255); c.set_green(sdl.g * 255); c.set_blue(sdl.b * 255);
-    road_colorbutton->set_color(c);
+    road_colorbutton->set_color(tileset->getRoadColor());
     d_tileset = tileset;
 }
 
@@ -68,13 +64,7 @@ bool TileSetInfoDialog::run()
     {
         d_tileset->setName(name_entry->get_text());
         d_tileset->setInfo(description_textview->get_buffer()->get_text());
-	Gdk::Color c = road_colorbutton->get_color();
-	SDL_Color sdl;
-	memset (&sdl, 0, sizeof (sdl));
-	sdl.r = c.get_red() / 255;
-	sdl.g = c.get_green() / 255;
-	sdl.b = c.get_blue() / 255;
-	d_tileset->setRoadColor(sdl);
+	d_tileset->setRoadColor(road_colorbutton->get_color());
 	return true;
     }
     return false;

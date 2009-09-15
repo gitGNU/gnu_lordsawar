@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <sigc++/functors/mem_fun.h>
+#include <string.h>
 
 #include "ucompose.hpp"
 #include "GameScenario.h"

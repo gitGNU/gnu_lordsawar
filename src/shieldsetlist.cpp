@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,8 +17,6 @@
 
 #include <iostream>
 #include <expat.h>
-#include <SDL_image.h>
-#include <SDL.h>
 #include "rectangle.h"
 #include <sigc++/functors/mem_fun.h>
 
@@ -26,6 +24,7 @@
 #include "armyset.h"
 #include "File.h"
 #include "defs.h"
+#include "rgb_shift.h"
 
 using namespace std;
 
@@ -109,28 +108,29 @@ bool Shieldsetlist::loadShieldset(std::string name)
   return true;
 }
         
-SDL_Color Shieldsetlist::getColor(std::string shieldset, guint32 owner)
+Gdk::Color Shieldsetlist::getColor(std::string shieldset, guint32 owner)
 {
   Shieldset *s = getShieldset(shieldset);
   if (!s)
-    {
-      SDL_Color def;
-      memset (&def, 0, sizeof (def));
-      return def;
-    }
+    return Gdk::Color("black");
   return s->getColor(owner);
 }
 
-SDL_Color Shieldsetlist::getMaskColor(std::string shieldset, guint32 owner)
+Gdk::Color Shieldsetlist::getMaskColor(std::string shieldset, guint32 owner)
 {
   Shieldset *s = getShieldset(shieldset);
   if (!s)
-    {
-      SDL_Color def;
-      memset (&def, 0, sizeof (def));
-      return def;
-    }
+    return Gdk::Color("black");
   return s->getMaskColor(owner);
+}
+struct rgb_shift Shieldsetlist::getMaskColorShifts(std::string shieldset, guint32 owner)
+{
+  struct rgb_shift empty;
+  empty.r = 0; empty.g = 0; empty.b = 0;
+  Shieldset *s = getShieldset(shieldset);
+  if (!s)
+    return empty;
+  return s->getMaskColorShifts(owner);
 }
 ShieldStyle *Shieldsetlist::getShield(std::string shieldset, guint32 type, guint32 colour)
 {

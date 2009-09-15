@@ -22,7 +22,6 @@
 #include <vector>
 #include <assert.h>
 #include <gtkmm.h>
-#include <SDL.h>
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/adaptors/bind.h>
 
@@ -187,16 +186,19 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
     smallmap->resize();
     smallmap->map_changed.connect(
 	sigc::mem_fun(smallmap_changed,
-		      &sigc::signal<void, SDL_Surface *>::emit));
+		      &sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> >::emit));
 
     // connect the two maps
     bigmap->view_changed.connect(
 	sigc::mem_fun(smallmap.get(), &SmallMap::set_view));
+    bigmap->map_changed.connect(
+	sigc::mem_fun(bigmap_changed,
+		      &sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> >::emit));
     smallmap->view_changed.connect(
 	sigc::mem_fun(bigmap.get(), &GameBigMap::set_view));
 
     // get the maps up and running
-    bigmap->screen_size_changed();
+    bigmap->screen_size_changed(Gtk::Allocation(0,0,320,200));
 
     // connect player callbacks
     Playerlist* pl = Playerlist::getInstance();
@@ -565,7 +567,8 @@ void Game::stackUpdate(Stack* s)
   update_control_panel();
 
   // sleep for a specified amount of time
-  SDL_Delay(Configuration::s_displaySpeedDelay);
+  //SDL_Delay(Configuration::s_displaySpeedDelay);
+  Glib::usleep(Configuration::s_displaySpeedDelay);
 }
 
 Army::Stat Game::newLevelArmy(Army* a)

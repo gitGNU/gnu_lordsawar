@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 
 #include <gtkmm.h>
 #include <string>
-#include <SDL.h>
 
 #include "xmlhelper.h"
 
@@ -126,10 +125,10 @@ oeeeeeee
         ~SmallTile();
 
         //! Get the colour associated with this tile for the smallmap.
-        SDL_Color getColor() const {return d_color;}
+	Gdk::Color getColor() const {return d_color;}
 
         //! Set the colour associated with this tile for the smallmap.
-	void setColor(SDL_Color clr) {d_color = clr;}
+	void setColor(Gdk::Color clr) {d_color = clr;}
 
         //! Get the pattern (solid, stippled, random) of this type.
         Pattern getPattern() const {return d_pattern;}
@@ -142,20 +141,20 @@ oeeeeeee
 	 * This "second" colour gets used when SmallTile::Pattern is
 	 * STIPPLED, RANDOMIZED, SUNKEN, or TABLECLOTH.
 	 */
-        SDL_Color getSecondColor() const {return d_second_color;}
+	Gdk::Color getSecondColor() const {return d_second_color;}
 
         //! Set the alternate colour associated with this tile's pattern.
-        void setSecondColor(SDL_Color color) {d_second_color = color;}
+        void setSecondColor(Gdk::Color color) {d_second_color = color;}
 
         //! Get another alternate colour associated with this tile's pattern.
 	/**
 	 * This "third" colour gets used when SmallTile::Pattern is
 	 * RANDOMIZED, DIAGONAL, CROSSHATCH, or TABLECLOTH.
 	 */
-        SDL_Color getThirdColor() const {return d_third_color;}
+	Gdk::Color getThirdColor() const {return d_third_color;}
 
         //! Set another alternate colour associated with this tile's pattern.
-        void setThirdColor(SDL_Color color) {d_third_color = color;}
+        void setThirdColor(Gdk::Color color) {d_third_color = color;}
 
 	//! Save a SmallTile to an opened tile configuration file.
 	/**
@@ -180,7 +179,7 @@ oeeeeeee
 	 * tileset.tile.smallmap.d_green
 	 * tileset.tile.smallmap.d_blue
 	 */
-        SDL_Color d_color;
+	Gdk::Color d_color;
 
 	//! Second colour.
 	/**
@@ -193,7 +192,7 @@ oeeeeeee
 	 * tileset.tile.smallmap.d_2nd_green
 	 * tileset.tile.smallmap.d_2nd_blue
 	 */
-        SDL_Color d_second_color;
+	Gdk::Color d_second_color;
 
 	//! Third colour.
 	/**
@@ -206,7 +205,7 @@ oeeeeeee
 	 * tileset.tile.smallmap.d_3rd_green
 	 * tileset.tile.smallmap.d_3rd_blue
 	 */
-        SDL_Color d_third_color;
+	Gdk::Color d_third_color;
 
 };
 

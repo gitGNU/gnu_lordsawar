@@ -3,7 +3,7 @@
 // Copyright (C) 2004, 2005 Andrea Paternesi
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2005 Bryan Duff
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -63,6 +63,7 @@
 #include "Triumphs.h"
 #include "Backpack.h"
 #include "MapBackpack.h"
+#include "rgb_shift.h"
 
 using namespace std;
 
@@ -74,7 +75,7 @@ std::string Player::d_tag = "player";
 // signal
 sigc::signal<void, Player::Type> sendingTurn;
 
-Player::Player(string name, guint32 armyset, SDL_Color color, int width,
+Player::Player(string name, guint32 armyset, Gdk::Color color, int width,
 	       int height, Type type, int player_no)
     :d_color(color), d_name(name), d_armyset(armyset), d_gold(1000),
     d_dead(false), d_immortal(false), d_type(type), d_upkeep(0), d_income(0),
@@ -173,11 +174,12 @@ Player::Player(XML_Helper* helper)
     string s;
     helper->getData(s, "color");
     
-    int i;
+    guint32 r,g,b;
     istringstream scolor(s);
-    scolor >> i; d_color.r = i;
-    scolor >> i; d_color.g = i;
-    scolor >> i; d_color.b = i;
+    scolor >> r;
+    scolor >> g;
+    scolor >> b;
+    d_color.set_rgb_p(r/255.0,g/255.0,b/255.0);
 
     helper->getData(d_armyset, "armyset");
 
@@ -254,7 +256,7 @@ Player::~Player()
     d_fight_order.clear();
 }
 
-Player* Player::create(std::string name, guint32 armyset, SDL_Color color, int width, int height, Type type)
+Player* Player::create(std::string name, guint32 armyset, Gdk::Color color, int width, int height, Type type)
 {
   switch(type)
   {
@@ -301,12 +303,12 @@ void Player::initTurn()
   addAction(action);
 }
 
-void Player::setColor(SDL_Color c)
+void Player::setColor(Gdk::Color c)
 {
     d_color = c;
 }
 
-SDL_Color Player::getMaskColor() const
+struct rgb_shift Player::getMaskColorShifts() const
 {
     // This is a bit tricky. The color values we return here encode additional
     // shifts that are performed when getting the color. I.e. a color value for
@@ -314,14 +316,72 @@ SDL_Color Player::getMaskColor() const
 
     // For each color component, find the n where 2^n best describes the color.
     // The mask value then is (8-n).
-    SDL_Color c;
-    c.r = c.g = c.b = 0;
+    struct rgb_shift shifts;
 
+    guint32 r,g,b;
+    guint8 target_red = guint8(d_color.get_red_p() * 255.0);
     for (int i = 8, diff = 257; i > 0; i--)
     {
         int color = 1<<i;
-        int tmp_diff = abs(d_color.r - color);
-        c.r = 8 - (i+1);
+        int tmp_diff = abs(target_red - color);
+
+	r = 8 - (i + 1);
+
+        if (diff < tmp_diff)
+            break;
+        else
+            diff = tmp_diff;
+    }
+        
+    guint8 target_green = guint8(d_color.get_green_p() * 255.0);
+    for (int i = 8, diff = 257; i > 0; i--)
+    {
+        int color = 1<<i;
+        int tmp_diff = abs(target_green - color);
+	g = 8 - (i + 1);
+
+        if (diff < tmp_diff)
+            break;
+        else
+            diff = tmp_diff;
+    }
+        
+    guint8 target_blue = guint8(d_color.get_blue_p() * 255.0);
+    for (int i = 8, diff = 257; i > 0; i--)
+    {
+        int color = 1<<i;
+        int tmp_diff = abs(target_blue - color);
+	b = 8 - (i + 1);
+
+        if (diff < tmp_diff)
+            break;
+        else
+            diff = tmp_diff;
+    }
+    //c.set_rgb_p(r,g,b);
+    shifts.r = r;
+    shifts.g = g;
+    shifts.b = b;
+    return shifts;
+}
+
+Gdk::Color Player::getMaskColor() const
+{
+    // This is a bit tricky. The color values we return here encode additional
+    // shifts that are performed when getting the color. I.e. a color value for
+    // red of 8 means that the red color is completely ignored.
+
+    // For each color component, find the n where 2^n best describes the color.
+    // The mask value then is (8-n).
+    Gdk::Color c;
+
+    guint32 r,g,b;
+    for (int i = 8, diff = 257; i > 0; i--)
+    {
+        int color = 1<<i;
+        int tmp_diff = abs(int(d_color.get_red_p() *255.0) - color);
+
+	r = 8 - (i + 1);
 
         if (diff < tmp_diff)
             break;
@@ -332,8 +392,8 @@ SDL_Color Player::getMaskColor() const
     for (int i = 8, diff = 257; i > 0; i--)
     {
         int color = 1<<i;
-        int tmp_diff = abs(d_color.g - color);
-        c.g = 8 - (i+1);
+        int tmp_diff = abs(int(d_color.get_green_p() *255.0) - color);
+	g = 8 - (i + 1);
 
         if (diff < tmp_diff)
             break;
@@ -344,8 +404,8 @@ SDL_Color Player::getMaskColor() const
     for (int i = 8, diff = 257; i > 0; i--)
     {
         int color = 1<<i;
-        int tmp_diff = abs(d_color.b - color);
-        c.b = 8 - (i+1);
+        int tmp_diff = abs(int(d_color.get_blue_p()*255.0) - color);
+	b = 8 - (i + 1);
 
         if (diff < tmp_diff)
             break;
@@ -353,6 +413,7 @@ SDL_Color Player::getMaskColor() const
             diff = tmp_diff;
     }
         
+    c.set_rgb_p(r/255.0,g/255.0,b/255.0);
     return c;
 }
 
@@ -472,9 +533,9 @@ bool Player::save(XML_Helper* helper) const
     // we do not want to have the character of the colors written out
     // (savefile is unicode encoded => may create problems)
     std::stringstream s;
-    s << static_cast<guint32>(d_color.r) <<" ";
-    s << static_cast<guint32>(d_color.g) <<" ";
-    s << static_cast<guint32>(d_color.b);
+    s << static_cast<guint32>(int(d_color.get_red_p() * 255.0)) <<" ";
+    s << static_cast<guint32>(int(d_color.get_green_p() * 255.0)) <<" ";
+    s << static_cast<guint32>(int(d_color.get_blue_p() * 255.0));
 
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("name", d_name);

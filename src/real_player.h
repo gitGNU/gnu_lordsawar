@@ -3,7 +3,7 @@
 // Copyright (C) 2004 Andrea Paternesi
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004 Bryan Duff
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -46,7 +46,7 @@ class RealPlayer : public Player
 {
     public:
         // CREATORS
-        RealPlayer(std::string name, guint32 armyset, SDL_Color color, 
+        RealPlayer(std::string name, guint32 armyset, Gdk::Color color, 
 		   int width, int height, Player::Type type = Player::HUMAN, 
 		   int player_no = -1);
         RealPlayer(const Player&);

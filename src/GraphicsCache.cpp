@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005, 2006, 2007 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 //  02110-1301, USA.
 
 #include <assert.h>
-#include <SDL_image.h>
+#include <string.h>
 
 #include "rectangle.h"
 
@@ -33,6 +33,8 @@
 #include "GameMap.h"
 #include "city.h"
 #include "stack.h"
+#include "rgb_shift.h"
+#include "gui/image-helpers.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -48,35 +50,35 @@ struct ArmyCacheItem
     guint32 index;
     guint32 player_id;
     bool medals[3];
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 //the structure to store ships in
 struct ShipCacheItem
 {
     guint32 player_id;
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 //the structure to store planted standard in
 struct PlantedStandardCacheItem
 {
     guint32 player_id;
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 //the structure to store temples in
 struct TempleCacheItem
 {
     int type;
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 //the structure to store ruins in
 struct RuinCacheItem
 {
     int type;
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 //the structure to store diplomacy icons in
@@ -84,35 +86,35 @@ struct DiplomacyCacheItem
 {
     int type;
     Player::DiplomaticState state;
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 //the structure to store roads in
 struct RoadCacheItem
 {
     int type;
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 //the structure to store fog patterns in
 struct FogCacheItem
 {
     int type;
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 //the structure to store bridges in
 struct BridgeCacheItem
 {
     int type;
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 //the structure to store cursors in
 struct CursorCacheItem
 {
     int type;
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 //the structure to store buildings in
@@ -120,14 +122,14 @@ struct CityCacheItem
 {
     int type;
     guint32 player_id;
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 //the structure to store towers in
 struct TowerCacheItem
 {
     guint32 player_id;
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 // the structure to store flags in
@@ -135,7 +137,7 @@ struct FlagCacheItem
 {
     guint32 size;
     guint32 player_id;
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 // the structure to store selector images in
@@ -144,7 +146,7 @@ struct SelectorCacheItem
     guint32 type;
     guint32 frame;
     guint32 player_id;
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 // the structure to store shield images in
@@ -153,7 +155,7 @@ struct ShieldCacheItem
     std::string shieldset;
     guint32 type;
     guint32 colour;
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 // the structure to store production shield images in
@@ -161,15 +163,16 @@ struct ProdShieldCacheItem
 {
     guint32 type;
     bool prod;
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
 
 // the structure to store movement bonus images in
 struct MoveBonusCacheItem
 {
     guint32 type; // 0=empty, 1=trees, 2=foothills, 3=hills+trees, 4=fly, 5=boat
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixbuf> surface;
 };
+
 //-----------------------------------------------------
 
 GraphicsCache* GraphicsCache::s_instance = 0;
@@ -206,20 +209,20 @@ GraphicsCache::GraphicsCache()
     loadFlags();
     for (unsigned int i = 0; i < d_selector.size(); i++)
       {
-        d_selector[i] = NULL;
-        d_selectormask[i] = NULL;
+        d_selector[i].clear();
+        d_selectormask[i].clear();
       }
 
     for (unsigned int i = 0; i < d_smallselector.size(); i++)
       {
-        d_smallselector[i] = NULL;
-        d_smallselectormask[i] = NULL;
+        d_smallselector[i].clear();
+        d_smallselectormask[i].clear();
       }
     loadSelectors();
     loadProdShields();
     loadMoveBonusPics();
+    loadMedalPics();
 
-    d_medalsmask = GraphicsLoader::getMiscPicture("medals_mask.png");
     d_smallruinedcity = GraphicsLoader::getMiscPicture("smallruinedcity.png");
     d_smallhero = GraphicsLoader::getMiscPicture("hero.png");
     d_smallinactivehero = GraphicsLoader::getMiscPicture("hero-inactive.png");
@@ -242,70 +245,69 @@ GraphicsCache::~GraphicsCache()
     for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
     {
         if (d_citypic[i])
-            SDL_FreeSurface(d_citypic[i]);
+	  d_citypic[i].clear();
 
         if (d_razedpic[i])
-            SDL_FreeSurface(d_razedpic[i]);
+	  d_razedpic[i].clear();
     }
 
     for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
         if (d_towerpic[i])
-            SDL_FreeSurface(d_towerpic[i]);
+	  d_towerpic[i].clear();
     }
 
     for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
     {
-        SDL_FreeSurface(d_flagpic[i]);
-        SDL_FreeSurface(d_flagmask[i]);
+        d_flagpic[i].clear();
+        d_flagmask[i].clear();
     }
 
     for (unsigned int i = 0; i < d_selector.size(); i++)
     {
-        SDL_FreeSurface(d_selector[i]);
-        SDL_FreeSurface(d_selectormask[i]);
+        d_selector[i].clear();
+        d_selectormask[i].clear();
     }
 
     for (unsigned int i = 0; i < d_smallselector.size(); i++)
     {
-        SDL_FreeSurface(d_smallselector[i]);
-        SDL_FreeSurface(d_smallselectormask[i]);
+        d_smallselector[i].clear();
+        d_smallselectormask[i].clear();
     }
 
     for (unsigned int i = 0; i < PRODUCTION_SHIELD_TYPES; i++)
     {
-        SDL_FreeSurface(d_prodshieldpic[i]);
+        d_prodshieldpic[i].clear();
     }
 
     for (unsigned int i = 0; i < MOVE_BONUS_TYPES; i++)
     {
-        SDL_FreeSurface(d_movebonuspic[i]);
+        d_movebonuspic[i].clear();
     }
 
     for (unsigned int i = 0; i < FOG_TYPES; i++)
     {
-        SDL_FreeSurface(d_fogpic[i]);
+        d_fogpic[i].clear();
     }
 
-    SDL_FreeSurface(d_medalsmask);
-    SDL_FreeSurface(d_smallruinedcity);
-    SDL_FreeSurface(d_smallhero);
-    SDL_FreeSurface(d_smallinactivehero);
-    SDL_FreeSurface(d_small_temple);
-    SDL_FreeSurface(d_small_ruin_unexplored);
-    SDL_FreeSurface(d_small_stronghold_unexplored);
-    SDL_FreeSurface(d_small_ruin_explored);
-    SDL_FreeSurface(d_port);
-    SDL_FreeSurface(d_explosion);
-    SDL_FreeSurface(d_signpost);
+    d_smallruinedcity.clear();
+    d_smallhero.clear();
+    d_smallinactivehero.clear();
+    d_small_temple.clear();
+    d_small_ruin_unexplored.clear();
+    d_small_stronghold_unexplored.clear();
+    d_small_ruin_explored.clear();
+    d_port.clear();
+    d_explosion.clear();
+    d_signpost.clear();
 }
 
-SDL_Surface* GraphicsCache::getSmallRuinedCityPic()
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getSmallRuinedCityPic()
 {
   return d_smallruinedcity;
 }
 
-SDL_Surface* GraphicsCache::getSmallHeroPic(bool active)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getSmallHeroPic(bool active)
 {
   if (active)
     return d_smallhero;
@@ -313,39 +315,39 @@ SDL_Surface* GraphicsCache::getSmallHeroPic(bool active)
     return d_smallinactivehero;
 }
 
-SDL_Surface* GraphicsCache::getSmallRuinExploredPic()
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getSmallRuinExploredPic()
 {
   return d_small_ruin_explored;
 }
-SDL_Surface* GraphicsCache::getSmallRuinUnexploredPic()
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getSmallRuinUnexploredPic()
 {
   return d_small_ruin_unexplored;
 }
-SDL_Surface* GraphicsCache::getSmallStrongholdUnexploredPic()
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getSmallStrongholdUnexploredPic()
 {
   return d_small_stronghold_unexplored;
 }
-SDL_Surface* GraphicsCache::getSmallTemplePic()
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getSmallTemplePic()
 {
   return d_small_temple;
 }
 
-SDL_Surface* GraphicsCache::getPortPic()
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getPortPic()
 {
   return d_port;
 }
 
-SDL_Surface* GraphicsCache::getExplosionPic()
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getExplosionPic()
 {
   return d_explosion;
 }
 
-SDL_Surface* GraphicsCache::getSignpostPic()
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getSignpostPic()
 {
   return d_signpost;
 }
 
-SDL_Surface* GraphicsCache::getMoveBonusPic(guint32 bonus, bool has_ship)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getMoveBonusPic(guint32 bonus, bool has_ship)
 {
   guint32 type;
   if (bonus == Tile::isFlying()) // show fly icon
@@ -385,7 +387,7 @@ SDL_Surface* GraphicsCache::getMoveBonusPic(guint32 bonus, bool has_ship)
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getShipPic(const Player* p)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getShipPic(const Player* p)
 {
     debug("getting ship pic " <<p->getName())
     std::list<ShipCacheItem*>::iterator it;
@@ -410,7 +412,7 @@ SDL_Surface* GraphicsCache::getShipPic(const Player* p)
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getPlantedStandardPic(const Player* p)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getPlantedStandardPic(const Player* p)
 {
     debug("getting planted standard pic " <<p->getName())
     std::list<PlantedStandardCacheItem*>::iterator it;
@@ -436,13 +438,13 @@ SDL_Surface* GraphicsCache::getPlantedStandardPic(const Player* p)
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getArmyPic(Army *a)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getArmyPic(Army *a)
 {
   return getArmyPic(a->getOwner()->getArmyset(), a->getTypeId(), 
 		    a->getOwner(), NULL);
 }
 
-SDL_Surface* GraphicsCache::getArmyPic(guint32 armyset, guint32 army, const Player* p,
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getArmyPic(guint32 armyset, guint32 army, const Player* p,
                                        const bool *medals)
 {
     debug("getting army pic " <<armyset <<" " <<army <<" " <<p->getName())
@@ -487,7 +489,7 @@ SDL_Surface* GraphicsCache::getArmyPic(guint32 armyset, guint32 army, const Play
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getShieldPic(std::string shieldset, 
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getShieldPic(std::string shieldset, 
 					 guint32 type, 
 					 guint32 colour)
 {
@@ -518,13 +520,13 @@ SDL_Surface* GraphicsCache::getShieldPic(std::string shieldset,
     return myitem->surface;
 }
         
-SDL_Surface* GraphicsCache::getShieldPic(guint32 type, Player *p)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getShieldPic(guint32 type, Player *p)
 {
   std::string shieldset = GameMap::getInstance()->getShieldset()->getSubDir();
   return getShieldPic(shieldset, type, p->getId());
 }
 
-SDL_Surface* GraphicsCache::getTemplePic(int type)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getTemplePic(int type)
 {
     debug("GraphicsCache::getTemplePic " <<type)
 
@@ -551,7 +553,7 @@ SDL_Surface* GraphicsCache::getTemplePic(int type)
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getRuinPic(int type)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getRuinPic(int type)
 {
     debug("GraphicsCache::getRuinPic " <<type)
 
@@ -578,7 +580,7 @@ SDL_Surface* GraphicsCache::getRuinPic(int type)
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getDiplomacyPic(int type, Player::DiplomaticState state)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getDiplomacyPic(int type, Player::DiplomaticState state)
 {
     debug("GraphicsCache::getDiplomaticPic " <<type << ", " << state)
 
@@ -605,7 +607,7 @@ SDL_Surface* GraphicsCache::getDiplomacyPic(int type, Player::DiplomaticState st
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getRoadPic(int type)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getRoadPic(int type)
 {
     debug("GraphicsCache::getRoadPic " <<type)
 
@@ -632,7 +634,7 @@ SDL_Surface* GraphicsCache::getRoadPic(int type)
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getFogPic(int type)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getFogPic(int type)
 {
     debug("GraphicsCache::getFogPic " <<type)
 
@@ -659,7 +661,7 @@ SDL_Surface* GraphicsCache::getFogPic(int type)
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getBridgePic(int type)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getBridgePic(int type)
 {
     debug("GraphicsCache::getBridgePic " <<type)
 
@@ -686,7 +688,7 @@ SDL_Surface* GraphicsCache::getBridgePic(int type)
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getCursorPic(int type)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getCursorPic(int type)
 {
     debug("GraphicsCache::getCursorPic " <<type)
 
@@ -713,17 +715,17 @@ SDL_Surface* GraphicsCache::getCursorPic(int type)
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getCityPic(const City* city)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getCityPic(const City* city)
 {
     if (!city)
-        return 0;
+        return Glib::RefPtr<Gdk::Pixbuf>(0);
     if (city->isBurnt())
       return d_razedpic[city->getOwner()->getId()];
     else
       return d_citypic[city->getOwner()->getId()];
 }
 
-SDL_Surface* GraphicsCache::getCityPic(int type, const Player* p)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getCityPic(int type, const Player* p)
 {
     debug("GraphicsCache::getCityPic " <<type <<", player " <<p->getName())
 
@@ -733,13 +735,13 @@ SDL_Surface* GraphicsCache::getCityPic(int type, const Player* p)
       return d_citypic[p->getId()];
 }
 
-SDL_Surface* GraphicsCache::getTowerPic(const Player* p)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getTowerPic(const Player* p)
 {
     debug("GraphicsCache::getTowerPic player " <<p->getName())
     return d_towerpic[p->getId()];
 }
 
-SDL_Surface* GraphicsCache::getFlagPic(const Stack* s)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getFlagPic(const Stack* s)
 {
     debug("GraphicsCache::getFlagPic " <<s->getId() <<", player" <<s->getOwner()->getName())
 
@@ -771,7 +773,7 @@ SDL_Surface* GraphicsCache::getFlagPic(const Stack* s)
     return myitem->surface;
 }
 
-SDL_Surface* GraphicsCache::getSelectorPic(guint32 type, guint32 frame, 
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getSelectorPic(guint32 type, guint32 frame, 
 					   const Player *p)
 {
     debug("GraphicsCache::getSelectorPic " <<type <<", " << frame << ", player" <<s->getOwner()->getName())
@@ -806,7 +808,7 @@ SDL_Surface* GraphicsCache::getSelectorPic(guint32 type, guint32 frame,
 }
 
 
-SDL_Surface* GraphicsCache::getProdShieldPic(guint32 type, bool prod)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::getProdShieldPic(guint32 type, bool prod)
 {
     debug("GraphicsCache::getProdShieldPic " <<type <<", " << ", prod " <<prod)
 
@@ -833,84 +835,54 @@ SDL_Surface* GraphicsCache::getProdShieldPic(guint32 type, bool prod)
 }
 
 
-SDL_Surface* GraphicsCache::applyMask(SDL_Surface* image, SDL_Surface* mask, SDL_Color mask_color, bool isNeutral)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::applyMask(Glib::RefPtr<Gdk::Pixbuf> image, Glib::RefPtr<Gdk::Pixbuf> mask, struct rgb_shift shifts, bool isNeutral)
 {
-    if (!mask || mask->w != image->w || mask->h != image->h)
+  Glib::RefPtr<Gdk::Pixbuf> result;
+  result = image->copy();
+  int width = image->get_width();
+  int height = image->get_height();
+  if (mask->get_width() != width || mask->get_height() != height)
     {
-        // we are expected to produce some output and a missing/wrong mask is no
-        // critical error, so just copy the original image.
-        std::cerr <<"Warning: mask and original image do not match\n";
-        return SDL_DisplayFormatAlpha(image);
+      std::cerr <<"Warning: mask and original image do not match\n";
+      return Glib::RefPtr<Gdk::Pixbuf>(0);
     }
-
-    SDL_Surface* s = SDL_DisplayFormatAlpha(image);
-
-    // Now copy the mask. The player's mask colors, that denote how important the
-    // corresponding color is, are used to additionally shift the colors for the pixels
-    // in the mask (see the code :) ). That way, if the player is e.g. blue, the red
-    // and green components of the mask are shifted by an additional 8 bits to the
-    // right so that in the end the mask pixels all only consist of different blue
-    // colors.
-        
-    SDL_Color c = mask_color;
-
-    if (!isNeutral)
+  if (isNeutral)
+    return image->copy();
+  
+  guint8 *data = mask->get_pixels();
+  guint8 *copy = (guint8*)  malloc (height * width * 4 * sizeof(guint8));
+  memcpy(copy, data, height * width * 4 * sizeof(guint8));
+  for (int i = 0; i < width; i++)
+    for (int j = 0; j < height; j++)
       {
-	mask->format->Rshift += c.r;
-	mask->format->Gshift += c.g;
-	mask->format->Bshift += c.b;
 
-	// copy the mask image over the original image
-	SDL_BlitSurface(mask, 0, s, 0);
+	const int base = (j * 4) + (i * height * 4);
 
-	// set everything back
-	mask->format->Rshift -= c.r;
-	mask->format->Gshift -= c.g;
-	mask->format->Bshift -= c.b;
+	if (data[base+3] != 0)
+	  {
+	    copy[base+0] >>= (shifts.r);
+	    copy[base+1] >>= (shifts.g);
+	    copy[base+2] >>= (shifts.b);
+	  }
       }
+  Glib::RefPtr<Gdk::Pixbuf> colouredmask = Gdk::Pixbuf::create_from_data(copy, Gdk::COLORSPACE_RGB, true, 8, width, height, width * 4);
+  free (copy);
+      
+  //result = Gdk::Pixbuf::create(Glib::RefPtr<Gdk::Drawable>(colouredmask), 0, 0, width, height);
+  colouredmask->composite(result, 0, 0, width, height, 0, 0, 1, 1, 
+			  Gdk::INTERP_NEAREST, 255);
+  //image->save("/tmp/image.png", "png");
+  //mask->save("/tmp/mask.png", "png");
+  //colouredmask->save("/tmp/colouredmask.png", "png");
+  //result->save("/tmp/result.png", "png");
 
-    return s;
+  return result;
 }
 
-SDL_Surface* GraphicsCache::applyMask(SDL_Surface* image, SDL_Surface* mask, const Player* p)
+Glib::RefPtr<Gdk::Pixbuf> GraphicsCache::applyMask(Glib::RefPtr<Gdk::Pixbuf> image, Glib::RefPtr<Gdk::Pixbuf> mask, const Player* p)
 {
-  applyMask(image, mask, p->getMaskColor(),
-	    Playerlist::getInstance()->getNeutral()->getId() == p->getId());
-    if (!mask || mask->w != image->w || mask->h != image->h)
-    {
-        // we are expected to produce some output and a missing/wrong mask is no
-        // critical error, so just copy the original image.
-        std::cerr <<"Warning: mask and original image do not match\n";
-        return SDL_DisplayFormatAlpha(image);
-    }
-
-    SDL_Surface* s = SDL_DisplayFormatAlpha(image);
-
-    // Now copy the mask. The player's mask colors, that denote how important the
-    // corresponding color is, are used to additionally shift the colors for the pixels
-    // in the mask (see the code :) ). That way, if the player is e.g. blue, the red
-    // and green components of the mask are shifted by an additional 8 bits to the
-    // right so that in the end the mask pixels all only consist of different blue
-    // colors.
-        
-    SDL_Color c = p->getMaskColor();
-
-    if (p != Playerlist::getInstance()->getNeutral())
-      {
-	mask->format->Rshift += c.r;
-	mask->format->Gshift += c.g;
-	mask->format->Bshift += c.b;
-
-	// copy the mask image over the original image
-	SDL_BlitSurface(mask, 0, s, 0);
-
-	// set everything back
-	mask->format->Rshift -= c.r;
-	mask->format->Gshift -= c.g;
-	mask->format->Bshift -= c.b;
-      }
-
-    return s;
+  return applyMask(image, mask, p->getMaskColorShifts(),
+		   Playerlist::getInstance()->getNeutral()->getId() == p->getId());
 }
 
 void GraphicsCache::checkPictures()
@@ -1012,6 +984,7 @@ void GraphicsCache::checkPictures()
   // still not enough? Erase army images
   while (d_armylist.size() > 40)
     eraseLastArmyItem();
+
 }
 
 ArmyCacheItem* GraphicsCache::addArmyPic(guint32 armyset, guint32 army,
@@ -1028,46 +1001,32 @@ ArmyCacheItem* GraphicsCache::addArmyPic(guint32 armyset, guint32 army,
   myitem->medals[1] = medalsbonus[1];
   myitem->medals[2] = medalsbonus[2];
 
-  //Now the most important part: load the army picture
-  //First, copy the army picture and change it to the display format
   const ArmyProto * basearmy = Armysetlist::getInstance()->getArmy(armyset, army);
 
   // copy the pixmap including player colors
-  myitem->surface = applyMask(basearmy->getPixmap(), basearmy->getMask(), p);
+  myitem->surface = applyMask(basearmy->getImage(), basearmy->getMask(), p);
 
-  if (d_medalsmask && medalsbonus != NULL)
+  if (medalsbonus != NULL)
     {
       debug("medalsbonus============= " << medalsbonus); 
       for(int i=0;i<3;i++)
 	{ 
 	  if (medalsbonus[i])
 	    {
-	      SDL_Surface* mask = SDL_CreateRGBSurface(SDL_SWSURFACE, 40, 40,
-						       d_medalsmask->format->BitsPerPixel,0,0,0,0);
-
-	      // a little hack while waiting for a complete medals picture
-	      SDL_Rect r;
-	      r.x = 40*i;
-	      r.y = 0;
-	      r.w = r.h = 40;
-	      SDL_BlitSurface(d_medalsmask, &r, mask, 0);
-
-	      //set the first pixel as alpha value
-	      SDL_SetColorKey(mask, SDL_SRCCOLORKEY, 0);
-
-	      //blit mask over the army pic
-	      SDL_BlitSurface(mask,0, myitem->surface, 0);
-
-	      //free the temporary surface
-	      SDL_FreeSurface(mask);
+	      d_medalpic[i]->composite(myitem->surface, 
+				       i * d_medalpic[i]->get_width(), 0, 
+				       d_medalpic[i]->get_width(), 
+				       d_medalpic[i]->get_height(), 
+				       i * d_medalpic[i]->get_width(), 0, 
+				       1, 1, Gdk::INTERP_BILINEAR, 255);
 	    }
 	}
     }
 
   //now the final preparation steps:
   //a) add the size
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize += myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize += myitem->surface->get_bits_per_sample()/8 * size;
 
   //b) add the entry to the list
   d_armylist.push_back(myitem);
@@ -1094,13 +1053,13 @@ ShieldCacheItem* GraphicsCache::addShieldPic(std::string shieldset,
 
   // copy the pixmap including player colors
   //lookup the shieldstyle
-  myitem->surface = applyMask(sh->getPixmap(), sh->getMask(), 
+  myitem->surface = applyMask(sh->getImage(), sh->getMask(), 
 			      Playerlist::getInstance()->getPlayer(colour));
 
   //now the final preparation steps:
   //a) add the size
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize += myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize += myitem->surface->get_bits_per_sample()/8 * size;
 
   //b) add the entry to the list
   d_shieldlist.push_back(myitem);
@@ -1120,19 +1079,16 @@ ShipCacheItem* GraphicsCache::addShipPic(const Player* p)
   ShipCacheItem* myitem = new ShipCacheItem();
   myitem->player_id = p->getId();
 
-  //Now the most important part: load the ship picture
-  //First, copy the ship picture and change it to the display format
-
   Armysetlist *al = Armysetlist::getInstance();
-  SDL_Surface *ship = al->getShipPic(p->getArmyset());
-  SDL_Surface *shipmask = al->getShipMask(p->getArmyset());
+  Glib::RefPtr<Gdk::Pixbuf>ship = al->getShipPic(p->getArmyset());
+  Glib::RefPtr<Gdk::Pixbuf>shipmask = al->getShipMask(p->getArmyset());
   // copy the pixmap including player colors
   myitem->surface = applyMask(ship, shipmask, p);
 
   //now the final preparation steps:
   //a) add the size
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize += myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize += myitem->surface->get_bits_per_sample()/8 * size;
 
   //b) add the entry to the list
   d_shiplist.push_back(myitem);
@@ -1151,20 +1107,17 @@ PlantedStandardCacheItem* GraphicsCache::addPlantedStandardPic(const Player* p)
     PlantedStandardCacheItem* myitem = new PlantedStandardCacheItem();
   myitem->player_id = p->getId();
 
-  //Now the most important part: load the planted standard picture
-  //First, copy the picture and change it to the display format
-
   Armysetlist *al = Armysetlist::getInstance();
-  SDL_Surface *standard = al->getStandardPic(p->getArmyset());
-  SDL_Surface *standard_mask = al->getStandardMask(p->getArmyset());
+  Glib::RefPtr<Gdk::Pixbuf>standard = al->getStandardPic(p->getArmyset());
+  Glib::RefPtr<Gdk::Pixbuf>standard_mask = al->getStandardMask(p->getArmyset());
 
   // copy the pixmap including player colors
   myitem->surface = applyMask(standard, standard_mask, p);
 
   //now the final preparation steps:
   //a) add the size
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize += myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize += myitem->surface->get_bits_per_sample()/8 * size;
 
   //b) add the entry to the list
   d_plantedstandardlist.push_back(myitem);
@@ -1181,7 +1134,7 @@ TempleCacheItem* GraphicsCache::addTemplePic(int type)
 {
   //    int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
-  SDL_Surface* mysurf = SDL_DisplayFormatAlpha(d_templepic[type]);
+  Glib::RefPtr<Gdk::Pixbuf> mysurf = d_templepic[type]->copy();
 
   //now create the cache item and add the size
   TempleCacheItem* myitem = new TempleCacheItem();
@@ -1191,8 +1144,8 @@ TempleCacheItem* GraphicsCache::addTemplePic(int type)
   d_templelist.push_back(myitem);
 
   //add the size
-  int size = mysurf->w * mysurf->h;
-  d_cachesize += size * mysurf->format->BytesPerPixel;
+  int size = mysurf->get_width() * mysurf->get_height();
+  d_cachesize += size * mysurf->get_bits_per_sample()/8;
 
   //and check the size of the cache
   checkPictures();
@@ -1202,7 +1155,7 @@ TempleCacheItem* GraphicsCache::addTemplePic(int type)
 
 RuinCacheItem* GraphicsCache::addRuinPic(int type)
 {
-  SDL_Surface* mysurf = SDL_DisplayFormatAlpha(d_ruinpic[type]);
+  Glib::RefPtr<Gdk::Pixbuf> mysurf = d_ruinpic[type]->copy();
 
   //now create the cache item and add the size
   RuinCacheItem* myitem = new RuinCacheItem();
@@ -1212,8 +1165,8 @@ RuinCacheItem* GraphicsCache::addRuinPic(int type)
   d_ruinlist.push_back(myitem);
 
   //add the size
-  int size = mysurf->w * mysurf->h;
-  d_cachesize += size * mysurf->format->BytesPerPixel;
+  int size = mysurf->get_width() * mysurf->get_height();
+  d_cachesize += size * mysurf->get_bits_per_sample()/8;
 
   //and check the size of the cache
   checkPictures();
@@ -1223,8 +1176,8 @@ RuinCacheItem* GraphicsCache::addRuinPic(int type)
 
 DiplomacyCacheItem* GraphicsCache::addDiplomacyPic(int type, Player::DiplomaticState state)
 {
-  SDL_Surface* mysurf = 
-    SDL_DisplayFormatAlpha(d_diplomacypic[type][state - Player::AT_PEACE]);
+  Glib::RefPtr<Gdk::Pixbuf> mysurf = 
+    d_diplomacypic[type][state - Player::AT_PEACE]->copy();
 
   //now create the cache item and add the size
   DiplomacyCacheItem* myitem = new DiplomacyCacheItem();
@@ -1235,8 +1188,8 @@ DiplomacyCacheItem* GraphicsCache::addDiplomacyPic(int type, Player::DiplomaticS
   d_diplomacylist.push_back(myitem);
 
   //add the size
-  int size = mysurf->w * mysurf->h;
-  d_cachesize += size * mysurf->format->BytesPerPixel;
+  int size = mysurf->get_width() * mysurf->get_height();
+  d_cachesize += size * mysurf->get_bits_per_sample()/8;
 
   //and check the size of the cache
   checkPictures();
@@ -1248,7 +1201,7 @@ RoadCacheItem* GraphicsCache::addRoadPic(int type)
 {
   //    int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
-  SDL_Surface* mysurf = SDL_DisplayFormatAlpha(d_roadpic[type]);
+  Glib::RefPtr<Gdk::Pixbuf> mysurf = d_roadpic[type]->copy();
 
   //now create the cache item and add the size
   RoadCacheItem* myitem = new RoadCacheItem();
@@ -1258,8 +1211,8 @@ RoadCacheItem* GraphicsCache::addRoadPic(int type)
   d_roadlist.push_back(myitem);
 
   //add the size
-  int size = mysurf->w * mysurf->h;
-  d_cachesize += size * mysurf->format->BytesPerPixel;
+  int size = mysurf->get_width() * mysurf->get_height();
+  d_cachesize += size * mysurf->get_bits_per_sample()/8;
 
   //and check the size of the cache
   checkPictures();
@@ -1270,7 +1223,7 @@ RoadCacheItem* GraphicsCache::addRoadPic(int type)
 FogCacheItem* GraphicsCache::addFogPic(int type)
 {
 
-  SDL_Surface* mysurf = SDL_DisplayFormatAlpha(d_fogpic[type]);
+  Glib::RefPtr<Gdk::Pixbuf> mysurf = d_fogpic[type]->copy();
 
   //now create the cache item and add the size
   FogCacheItem* myitem = new FogCacheItem();
@@ -1280,8 +1233,8 @@ FogCacheItem* GraphicsCache::addFogPic(int type)
   d_foglist.push_back(myitem);
 
   //add the size
-  int size = mysurf->w * mysurf->h;
-  d_cachesize += size * mysurf->format->BytesPerPixel;
+  int size = mysurf->get_width() * mysurf->get_height();
+  d_cachesize += size * mysurf->get_bits_per_sample()/8;
 
   //and check the size of the cache
   checkPictures();
@@ -1293,7 +1246,7 @@ BridgeCacheItem* GraphicsCache::addBridgePic(int type)
 {
   //    int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
-  SDL_Surface* mysurf = SDL_DisplayFormatAlpha(d_bridgepic[type]);
+  Glib::RefPtr<Gdk::Pixbuf> mysurf = d_bridgepic[type]->copy();
 
   //now create the cache item and add the size
   BridgeCacheItem* myitem = new BridgeCacheItem();
@@ -1303,8 +1256,8 @@ BridgeCacheItem* GraphicsCache::addBridgePic(int type)
   d_bridgelist.push_back(myitem);
 
   //add the size
-  int size = mysurf->w * mysurf->h;
-  d_cachesize += size * mysurf->format->BytesPerPixel;
+  int size = mysurf->get_width() * mysurf->get_height();
+  d_cachesize += size * mysurf->get_bits_per_sample()/8;
 
   //and check the size of the cache
   checkPictures();
@@ -1314,7 +1267,7 @@ BridgeCacheItem* GraphicsCache::addBridgePic(int type)
 
 CursorCacheItem* GraphicsCache::addCursorPic(int type)
 {
-  SDL_Surface* mysurf = SDL_DisplayFormatAlpha(d_cursorpic[type]);
+  Glib::RefPtr<Gdk::Pixbuf> mysurf = d_cursorpic[type]->copy();
 
   //now create the cache item and add the size
   CursorCacheItem* myitem = new CursorCacheItem();
@@ -1324,8 +1277,8 @@ CursorCacheItem* GraphicsCache::addCursorPic(int type)
   d_cursorlist.push_back(myitem);
 
   //add the size
-  int size = mysurf->w * mysurf->h;
-  d_cachesize += size * mysurf->format->BytesPerPixel;
+  int size = mysurf->get_width() * mysurf->get_height();
+  d_cachesize += size * mysurf->get_bits_per_sample()/8;
 
   //and check the size of the cache
   checkPictures();
@@ -1339,13 +1292,13 @@ CityCacheItem* GraphicsCache::addCityPic(int type, const Player* p)
   CityCacheItem* myitem = new CityCacheItem();
   myitem->player_id = p->getId();
   myitem->type = type;
-  myitem->surface = d_citypic[p->getId()];
+  myitem->surface = d_citypic[p->getId()]->copy();
 
   d_citylist.push_back(myitem);
 
   //add the size
-  int size = d_citypic[p->getId()]->w * d_citypic[p->getId()]->h;
-  d_cachesize += size * d_citypic[p->getId()]->format->BytesPerPixel;
+  int size = d_citypic[p->getId()]->get_width() * d_citypic[p->getId()]->get_height();
+  d_cachesize += size * d_citypic[p->getId()]->get_bits_per_sample()/8;
 
   //and check the size of the cache
   checkPictures();
@@ -1358,13 +1311,13 @@ TowerCacheItem* GraphicsCache::addTowerPic(const Player* p)
   //now create the cache item and add the size
   TowerCacheItem* myitem = new TowerCacheItem();
   myitem->player_id = p->getId();
-  myitem->surface = d_towerpic[p->getId()];
+  myitem->surface = d_towerpic[p->getId()]->copy();
 
   d_towerlist.push_back(myitem);
 
   //add the size
-  int size = d_towerpic[p->getId()]->w * d_towerpic[p->getId()]->h;
-  d_cachesize += size * d_towerpic[p->getId()]->format->BytesPerPixel;
+  int size = d_towerpic[p->getId()]->get_width() * d_towerpic[p->getId()]->get_height();
+  d_cachesize += size * d_towerpic[p->getId()]->get_bits_per_sample()/8;
 
   //and check the size of the cache
   checkPictures();
@@ -1379,7 +1332,7 @@ FlagCacheItem* GraphicsCache::addFlagPic(int size, const Player* p)
     // size is the size of the stack, but we need the index, which starts at 0
     size--;
 
-  SDL_Surface* mysurf = applyMask(d_flagpic[size], d_flagmask[size], p);
+  Glib::RefPtr<Gdk::Pixbuf> mysurf = applyMask(d_flagpic[size], d_flagmask[size], p);
 
   //now create the cache item and add the size
   FlagCacheItem* myitem = new FlagCacheItem();
@@ -1390,8 +1343,8 @@ FlagCacheItem* GraphicsCache::addFlagPic(int size, const Player* p)
   d_flaglist.push_back(myitem);
 
   //add the size
-  int picsize = mysurf->w * mysurf->h;
-  d_cachesize += picsize * mysurf->format->BytesPerPixel;
+  int picsize = mysurf->get_width() * mysurf->get_height();
+  d_cachesize += picsize * mysurf->get_bits_per_sample()/8;
 
   //and check the size of the cache
   checkPictures();
@@ -1406,7 +1359,7 @@ SelectorCacheItem* GraphicsCache::addSelectorPic(guint32 type, guint32 frame, co
     // frame is the frame of animation we're looking for.  starts at 0.
     // type is 0 for big, 1 for small
 
-    SDL_Surface* mysurf;
+    Glib::RefPtr<Gdk::Pixbuf> mysurf;
   if (type == 0)
     mysurf = applyMask(d_selector[frame], d_selectormask[frame], p);
   else
@@ -1422,8 +1375,8 @@ SelectorCacheItem* GraphicsCache::addSelectorPic(guint32 type, guint32 frame, co
   d_selectorlist.push_back(myitem);
 
   //add the size
-  int picsize = mysurf->w * mysurf->h;
-  d_cachesize += picsize * mysurf->format->BytesPerPixel;
+  int picsize = mysurf->get_width() * mysurf->get_height();
+  d_cachesize += picsize * mysurf->get_bits_per_sample()/8;
 
   //and check the size of the cache
   checkPictures();
@@ -1438,32 +1391,32 @@ ProdShieldCacheItem* GraphicsCache::addProdShieldPic(guint32 type, bool prod)
     // type is 0 for home, 1 for away, 2 for destination, 3 for source,
     // 4 for invalid
 
-    SDL_Surface* mysurf = NULL;
+    Glib::RefPtr<Gdk::Pixbuf> mysurf;
   switch (type)
     {
     case 0: //home city
       if (prod) //production
-	mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[1]);
+	mysurf = d_prodshieldpic[1]->copy();
       else //no production
-	mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[0]);
+	mysurf = d_prodshieldpic[0]->copy();
       break;
     case 1: //away city
       if (prod) //production
-	mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[3]);
+	mysurf = d_prodshieldpic[3]->copy();
       else //no production
-	mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[2]);
+	mysurf = d_prodshieldpic[2]->copy();
       break;
     case 2: //destination city
       if (prod) //production
-	mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[5]);
+	mysurf = d_prodshieldpic[5]->copy();
       else //no production
-	mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[4]);
+	mysurf = d_prodshieldpic[4]->copy();
       break;
     case 3: //source city
-      mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[6]);
+      mysurf = d_prodshieldpic[6]->copy();
       break;
     case 4: //invalid
-      mysurf = SDL_DisplayFormatAlpha(d_prodshieldpic[7]);
+      mysurf = d_prodshieldpic[7]->copy();
       break;
     }
 
@@ -1476,8 +1429,8 @@ ProdShieldCacheItem* GraphicsCache::addProdShieldPic(guint32 type, bool prod)
   d_prodshieldlist.push_back(myitem);
 
   //add the size
-  int picsize = mysurf->w * mysurf->h;
-  d_cachesize += picsize * mysurf->format->BytesPerPixel;
+  int picsize = mysurf->get_width() * mysurf->get_height();
+  d_cachesize += picsize * mysurf->get_bits_per_sample()/8;
 
   //and check the size of the cache
   checkPictures();
@@ -1491,8 +1444,8 @@ MoveBonusCacheItem* GraphicsCache::addMoveBonusPic(guint32 type)
 
     //type is 0=empty, 1=trees, 2=foothills, 3=hills+trees, 4=fly, 5=boat
 
-    SDL_Surface* mysurf = NULL;
-  mysurf = SDL_DisplayFormatAlpha(d_movebonuspic[type]);
+    Glib::RefPtr<Gdk::Pixbuf> mysurf;
+  mysurf = d_movebonuspic[type]->copy();
 
   //now create the cache item and add the size
   MoveBonusCacheItem* myitem = new MoveBonusCacheItem();
@@ -1502,8 +1455,8 @@ MoveBonusCacheItem* GraphicsCache::addMoveBonusPic(guint32 type)
   d_movebonuslist.push_back(myitem);
 
   //add the size
-  int picsize = mysurf->w * mysurf->h;
-  d_cachesize += picsize * mysurf->format->BytesPerPixel;
+  int picsize = mysurf->get_width() * mysurf->get_height();
+  d_cachesize += picsize * mysurf->get_bits_per_sample()/8;
 
   //and check the size of the cache
   checkPictures();
@@ -1578,10 +1531,10 @@ void GraphicsCache::eraseLastArmyItem()
   d_armylist.erase(d_armylist.begin());
 
   //don't forget to subtract the size from the size entry
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1593,10 +1546,10 @@ void GraphicsCache::eraseLastTempleItem()
   TempleCacheItem* myitem = *(d_templelist.begin());
   d_templelist.erase(d_templelist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1608,10 +1561,10 @@ void GraphicsCache::eraseLastRuinItem()
   RuinCacheItem* myitem = *(d_ruinlist.begin());
   d_ruinlist.erase(d_ruinlist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1623,10 +1576,10 @@ void GraphicsCache::eraseLastDiplomacyItem()
   DiplomacyCacheItem* myitem = *(d_diplomacylist.begin());
   d_diplomacylist.erase(d_diplomacylist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1638,10 +1591,10 @@ void GraphicsCache::eraseLastRoadItem()
   RoadCacheItem* myitem = *(d_roadlist.begin());
   d_roadlist.erase(d_roadlist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1653,10 +1606,10 @@ void GraphicsCache::eraseLastFogItem()
   FogCacheItem* myitem = *(d_foglist.begin());
   d_foglist.erase(d_foglist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1668,10 +1621,10 @@ void GraphicsCache::eraseLastBridgeItem()
   BridgeCacheItem* myitem = *(d_bridgelist.begin());
   d_bridgelist.erase(d_bridgelist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1683,10 +1636,10 @@ void GraphicsCache::eraseLastCursorItem()
   CursorCacheItem* myitem = *(d_cursorlist.begin());
   d_cursorlist.erase(d_cursorlist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1698,10 +1651,10 @@ void GraphicsCache::eraseLastCityItem()
   CityCacheItem* myitem = *(d_citylist.begin());
   d_citylist.erase(d_citylist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1713,10 +1666,10 @@ void GraphicsCache::eraseLastTowerItem()
   TowerCacheItem* myitem = *(d_towerlist.begin());
   d_towerlist.erase(d_towerlist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1728,10 +1681,10 @@ void GraphicsCache::eraseLastShipItem()
   ShipCacheItem* myitem = *(d_shiplist.begin());
   d_shiplist.erase(d_shiplist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1743,10 +1696,10 @@ void GraphicsCache::eraseLastPlantedStandardItem()
   PlantedStandardCacheItem* myitem = *(d_plantedstandardlist.begin());
   d_plantedstandardlist.erase(d_plantedstandardlist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1758,10 +1711,10 @@ void GraphicsCache::eraseLastFlagItem()
   FlagCacheItem* myitem = *(d_flaglist.begin());
   d_flaglist.erase(d_flaglist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1773,10 +1726,10 @@ void GraphicsCache::eraseLastSelectorItem()
   SelectorCacheItem* myitem = *(d_selectorlist.begin());
   d_selectorlist.erase(d_selectorlist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1788,10 +1741,10 @@ void GraphicsCache::eraseLastShieldItem()
   ShieldCacheItem* myitem = *(d_shieldlist.begin());
   d_shieldlist.erase(d_shieldlist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1803,10 +1756,10 @@ void GraphicsCache::eraseLastProdShieldItem()
   ProdShieldCacheItem* myitem = *(d_prodshieldlist.begin());
   d_prodshieldlist.erase(d_prodshieldlist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1818,10 +1771,10 @@ void GraphicsCache::eraseLastMoveBonusItem()
   MoveBonusCacheItem* myitem = *(d_movebonuslist.begin());
   d_movebonuslist.erase(d_movebonuslist.begin());
 
-  int size = myitem->surface->w * myitem->surface->h;
-  d_cachesize -= myitem->surface->format->BytesPerPixel * size;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_bits_per_sample()/8 * size;
 
-  SDL_FreeSurface(myitem->surface);
+  myitem->surface.clear();
   delete myitem;
 }
 
@@ -1832,34 +1785,15 @@ void GraphicsCache::loadTemplePics()
   int ts = GameMap::getInstance()->getCityset()->getTileSize();
 
   // load the temple pictures
-  SDL_Surface* templepics = GraphicsLoader::getCitysetPicture(cityset, "temples.png");
-
-  // copy alpha values, don't use them
-  SDL_SetAlpha(templepics, 0, 0);
-
-  for (unsigned int i = 0; i < TEMPLE_TYPES ; i++)
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > templepics;
+  templepics = disassemble_row(File::getCitysetFile(cityset, "temples.png"), 
+			       TEMPLE_TYPES);
+  for (unsigned int i = 0; i < TEMPLE_TYPES; i++)
     {
-      //copy the temple image...
-      SDL_Surface* tmp;
-      SDL_PixelFormat* fmt = templepics->format;
-
-      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, 
-				 ts * TEMPLE_TILE_WIDTH, ts * TEMPLE_TILE_WIDTH,
-				 fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, 
-				 fmt->Bmask, fmt->Amask);
-
-      SDL_Rect r;
-      r.x = i*(templepics->w/TEMPLE_TYPES);
-      r.y = 0;
-      r.w = r.h = templepics->w/TEMPLE_TYPES;
-      SDL_SoftStretch(templepics, &r, tmp, NULL);
-
-      d_templepic[i] = SDL_DisplayFormatAlpha(tmp);
-
-      SDL_FreeSurface(tmp);
+      if (templepics[i]->get_width() != ts)
+	templepics[i] = templepics[i]->scale_simple(ts, ts, Gdk::INTERP_BILINEAR);
+      d_templepic[i] = templepics[i];
     }
-
-  SDL_FreeSurface(templepics);
 }
 
 void GraphicsCache::loadRuinPics()
@@ -1869,94 +1803,42 @@ void GraphicsCache::loadRuinPics()
   int ts = GameMap::getInstance()->getCityset()->getTileSize();
 
   // load the ruin pictures
-  SDL_Surface* ruinpics = GraphicsLoader::getCitysetPicture(cityset, "ruin.png");
-
-  // copy alpha values, don't use them
-  SDL_SetAlpha(ruinpics, 0, 0);
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > ruinpics;
+  ruinpics = disassemble_row(File::getCitysetFile(cityset, "ruin.png"), 
+			     RUIN_TYPES);
 
   for (unsigned int i = 0; i < RUIN_TYPES ; i++)
     {
-      //copy the ruin image...
-      SDL_Surface* tmp;
-      SDL_PixelFormat* fmt = ruinpics->format;
-
-      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, 
-				 ts * RUIN_TILE_WIDTH, ts * RUIN_TILE_WIDTH, 
-				 fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask, 
-				 fmt->Bmask, fmt->Amask);
-
-      SDL_Rect r;
-      r.x = i*(ruinpics->w/RUIN_TYPES);
-      r.y = 0;
-      r.w = r.h = (ruinpics->w/RUIN_TYPES);
-      SDL_SoftStretch(ruinpics, &r, tmp, NULL);
-
-      d_ruinpic[i] = SDL_DisplayFormatAlpha(tmp);
-
-      SDL_FreeSurface(tmp);
+      if (ruinpics[i]->get_width() != ts)
+	ruinpics[i] = ruinpics[i]->scale_simple(ts, ts, Gdk::INTERP_BILINEAR);
+      d_ruinpic[i] = ruinpics[i];
     }
-
-  SDL_FreeSurface(ruinpics);
 }
 
 void GraphicsCache::loadDiplomacyPics()
 {
-  // load the diplomacy pictures
-  SDL_Surface* diplomacypics = GraphicsLoader::getMiscPicture("diplomacy-small.png");
-  guint32 ts = 30;
-
-  // copy alpha values, don't use them
-  SDL_SetAlpha(diplomacypics, 0, 0);
-
+  int ts = 30;
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > diplomacypics;
+  diplomacypics = disassemble_row(File::getMiscFile("various/diplomacy-small.png"), 
+			     DIPLOMACY_TYPES);
   for (unsigned int i = 0; i < DIPLOMACY_TYPES ; i++)
     {
-      //copy the ruin image...
-      SDL_Surface* tmp;
-      SDL_PixelFormat* fmt = diplomacypics->format;
+      if (diplomacypics[i]->get_width() != ts)
+	diplomacypics[i] = diplomacypics[i]->scale_simple(ts,ts,Gdk::INTERP_BILINEAR);
+      d_diplomacypic[0][i] = diplomacypics[i];
 
-      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
-				 fmt->Rmask, fmt->Gmask, 
-				 fmt->Bmask, fmt->Amask);
-
-      SDL_Rect r;
-      r.x = i*ts;
-      r.y = 0;
-      r.w = r.h = ts;
-      SDL_BlitSurface(diplomacypics, &r, tmp, NULL);
-
-      d_diplomacypic[0][i] = SDL_DisplayFormatAlpha(tmp);
-
-      SDL_FreeSurface(tmp);
     }
 
-  SDL_FreeSurface(diplomacypics);
   ts = 50;
-  diplomacypics = GraphicsLoader::getMiscPicture("diplomacy-large.png");
-  // copy alpha values, don't use them
-  SDL_SetAlpha(diplomacypics, 0, 0);
-
+  diplomacypics = disassemble_row(File::getMiscFile("various/diplomacy-large.png"), 
+			     DIPLOMACY_TYPES);
   for (unsigned int i = 0; i < DIPLOMACY_TYPES ; i++)
     {
-      //copy the ruin image...
-      SDL_Surface* tmp;
-      SDL_PixelFormat* fmt = diplomacypics->format;
+      if (diplomacypics[i]->get_width() != ts)
+	diplomacypics[i] = diplomacypics[i]->scale_simple(ts,ts,Gdk::INTERP_BILINEAR);
+      d_diplomacypic[1][i] = diplomacypics[i];
 
-      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
-				 fmt->Rmask, fmt->Gmask, 
-				 fmt->Bmask, fmt->Amask);
-
-      SDL_Rect r;
-      r.x = i*ts;
-      r.y = 0;
-      r.w = r.h = ts;
-      SDL_BlitSurface(diplomacypics, &r, tmp, NULL);
-
-      d_diplomacypic[1][i] = SDL_DisplayFormatAlpha(tmp);
-
-      SDL_FreeSurface(tmp);
     }
-
-  SDL_FreeSurface(diplomacypics);
 }
 
 void GraphicsCache::loadRoadPics()
@@ -1965,33 +1847,15 @@ void GraphicsCache::loadRoadPics()
   std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
   int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
-  // load the road pictures
-  SDL_Surface* roadpics = GraphicsLoader::getTilesetPicture(tileset, "misc/roads.png");
-
-  // copy alpha values, don't use them
-  SDL_SetAlpha(roadpics, 0, 0);
-
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > roadpics;
+  roadpics = disassemble_row(File::getTilesetFile(tileset, "misc/roads.png"), 
+			     ROAD_TYPES);
   for (unsigned int i = 0; i < ROAD_TYPES ; i++)
     {
-      //copy the road image...
-      SDL_Surface* tmp;
-      SDL_PixelFormat* fmt = roadpics->format;
-
-      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
-				 fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
-
-      SDL_Rect r;
-      r.x = i*ts;
-      r.y = 0;
-      r.w = r.h = ts;
-      SDL_BlitSurface(roadpics, &r, tmp, 0);
-
-      d_roadpic[i] = SDL_DisplayFormatAlpha(tmp);
-
-      SDL_FreeSurface(tmp);
+      if (roadpics[i]->get_width() != ts)
+	roadpics[i] = roadpics[i]->scale_simple(ts, ts, Gdk::INTERP_BILINEAR);
+      d_roadpic[i] = roadpics[i];
     }
-
-  SDL_FreeSurface(roadpics);
 }
 
 void GraphicsCache::loadFogPics()
@@ -2001,32 +1865,16 @@ void GraphicsCache::loadFogPics()
   std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
 
   // load the fog pictures
-  SDL_Surface* fogpics = GraphicsLoader::getTilesetPicture(tileset, "misc/fog.png");
-
-  // copy alpha values, don't use them
-  SDL_SetAlpha(fogpics, 0, 0);
-
-  for (unsigned int i = 0; i < FOG_TYPES; i++)
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > fogpics;
+  fogpics = disassemble_row(File::getTilesetFile(tileset, "misc/fog.png"),
+			     FOG_TYPES);
+  for (unsigned int i = 0; i < FOG_TYPES ; i++)
     {
-      //copy the fog image...
-      SDL_Surface* tmp;
-      SDL_PixelFormat* fmt = fogpics->format;
-
-      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
-				 fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
-
-      SDL_Rect r;
-      r.x = i*ts;
-      r.y = 0;
-      r.w = r.h = ts;
-      SDL_BlitSurface(fogpics, &r, tmp, 0);
-
-      d_fogpic[i] = SDL_DisplayFormatAlpha(tmp);
-
-      SDL_FreeSurface(tmp);
+      if (fogpics[i]->get_width() != ts)
+	fogpics[i] = fogpics[i]->scale_simple(ts, ts, Gdk::INTERP_BILINEAR);
+      d_fogpic[i] = fogpics[i];
     }
 
-  SDL_FreeSurface(fogpics);
 }
 
 void GraphicsCache::loadBridgePics()
@@ -2036,32 +1884,16 @@ void GraphicsCache::loadBridgePics()
   int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
   // load the bridge pictures
-  SDL_Surface* bridgepics = GraphicsLoader::getTilesetPicture(tileset, "misc/bridges.png");
-
-  // copy alpha values, don't use them
-  SDL_SetAlpha(bridgepics, 0, 0);
-
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > bridgepics;
+  bridgepics = disassemble_row(File::getTilesetFile(tileset, 
+						    "misc/bridges.png"),
+			       BRIDGE_TYPES);
   for (unsigned int i = 0; i < BRIDGE_TYPES ; i++)
     {
-      //copy the bridge image...
-      SDL_Surface* tmp;
-      SDL_PixelFormat* fmt = bridgepics->format;
-
-      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
-				 fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
-
-      SDL_Rect r;
-      r.x = i*ts;
-      r.y = 0;
-      r.w = r.h = ts;
-      SDL_BlitSurface(bridgepics, &r, tmp, 0);
-
-      d_bridgepic[i] = SDL_DisplayFormatAlpha(tmp);
-
-      SDL_FreeSurface(tmp);
+      if (bridgepics[i]->get_width() != ts)
+	bridgepics[i] = bridgepics[i]->scale_simple(ts, ts, Gdk::INTERP_BILINEAR);
+      d_bridgepic[i] = bridgepics[i];
     }
-
-  SDL_FreeSurface(bridgepics);
 }
 
 void GraphicsCache::loadCursorPics()
@@ -2069,191 +1901,83 @@ void GraphicsCache::loadCursorPics()
   int ts = 16;
 
   // load the cursor pictures
-  SDL_Surface* cursorpics = GraphicsLoader::getMiscPicture ("cursors.png");
-
-  SDL_PixelFormat* fmt = cursorpics->format;
-
-  // copy alpha values, don't use them
-  SDL_SetAlpha(cursorpics, 0, 0);
-
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > cursorpics;
+  cursorpics = disassemble_row(File::getMiscFile("various/cursors.png"),
+			       CURSOR_TYPES);
   for (unsigned int i = 0; i < CURSOR_TYPES ; i++)
     {
-      //copy the cursor image...
-      SDL_Surface* tmp;
-
-      tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, ts, ts, fmt->BitsPerPixel,
-				 fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
-
-      SDL_Rect r;
-      r.x = i*ts;
-      r.y = 0;
-      r.w = r.h = ts;
-      SDL_BlitSurface(cursorpics, &r, tmp, 0);
-
-      d_cursorpic[i] = SDL_DisplayFormatAlpha(tmp);
-
-      SDL_FreeSurface(tmp);
+      if (cursorpics[i]->get_width() != ts)
+	cursorpics[i] = cursorpics[i]->scale_simple(ts, ts, Gdk::INTERP_BILINEAR);
+      d_cursorpic[i] = cursorpics[i];
     }
-
-  SDL_FreeSurface(cursorpics);
 }
 
 void GraphicsCache::loadCityPics()
 {
-  SDL_Surface *tmp;
-  SDL_PixelFormat *fmt;
   // GameMap has the actual cityset stored
   std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
-  int size = GameMap::getInstance()->getTileset()->getTileSize() * CITY_TILE_WIDTH;
+  int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
-  // load the image for the razed city
-  SDL_Surface* razedpics = GraphicsLoader::getCitysetPicture(cityset, "castle_razed.png");
-  // copy alpha values, don't use them
-  SDL_SetAlpha(razedpics, 0, 0);
-
-  // temporary surface
-  fmt = razedpics->format;
-  tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, fmt->BitsPerPixel,
-			     fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
-
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > razedpics;
+  razedpics = disassemble_row(File::getCitysetFile(cityset, "castle_razed.png"),
+			      MAX_PLAYERS + 1);
   for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
     {
-      //copy the razed city image...
-
-      SDL_Rect r;
-      r.x = i * (razedpics->w/(MAX_PLAYERS +1));
-      r.y = 0;
-      r.w = r.h = (razedpics->w/(MAX_PLAYERS +1));
-      SDL_SoftStretch(razedpics, &r, tmp, 0);
-
-      d_razedpic[i] = SDL_DisplayFormatAlpha(tmp);
+      if (razedpics[i]->get_width() != ts)
+	razedpics[i] = razedpics[i]->scale_simple(ts * CITY_TILE_WIDTH, ts * CITY_TILE_WIDTH, Gdk::INTERP_BILINEAR);
+      d_razedpic[i] = razedpics[i];
     }
-
-  SDL_FreeSurface(tmp);
-  SDL_FreeSurface(razedpics);
 
   // load the city pictures
-  SDL_Surface* citypics = GraphicsLoader::getCitysetPicture(cityset, "castles.png");
-
-  // copy alpha values, don't use them
-  SDL_SetAlpha(citypics, 0, 0);
-
-  // temporary surface
-  fmt = citypics->format;
-  tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, fmt->BitsPerPixel,
-			     fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
-
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > citypics;
+  citypics = disassemble_row(File::getCitysetFile(cityset, "castles.png"),
+			      MAX_PLAYERS + 1);
   for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
     {
-      //copy the city image...
-
-      SDL_Rect r;
-      r.x = i*(citypics->w/(MAX_PLAYERS+1));
-      r.y = 0;
-      r.w = r.h = (citypics->w/(MAX_PLAYERS+1));
-      SDL_SoftStretch(citypics, &r, tmp, 0);
-
-      d_citypic[i] = SDL_DisplayFormatAlpha(tmp);
-#if 0
-
-      //...and copy the mask image
-      d_citymask[i] = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size,
-					   32, 0xFF000000, 0xFF0000, 0xFF00, 0xFF);
-
-      r.y = citypics->h/2;
-      SDL_SoftStretch(citypics, &r, d_citymask[i], 0);
-#endif
+      if (citypics[i]->get_width() != ts)
+	citypics[i] = citypics[i]->scale_simple(ts * CITY_TILE_WIDTH, ts * CITY_TILE_WIDTH, Gdk::INTERP_BILINEAR);
+      d_citypic[i] = citypics[i];
     }
-
-  SDL_FreeSurface(tmp);
-  SDL_FreeSurface(citypics);
 }
 
 void GraphicsCache::loadTowerPics()
 {
-  SDL_Surface *tmp;
-  SDL_PixelFormat *fmt;
   // GameMap has the actual cityset stored
   std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
-  int size = GameMap::getInstance()->getCityset()->getTileSize();
+  int ts = GameMap::getInstance()->getCityset()->getTileSize();
 
-  // load the image for the towers
-  SDL_Surface* towerpics = GraphicsLoader::getCitysetPicture(cityset, "towers.png");
-  // copy alpha values, don't use them
-  SDL_SetAlpha(towerpics, 0, 0);
-
-  // temporary surface
-  fmt = towerpics->format;
-  tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, fmt->BitsPerPixel,
-			     fmt->Rmask, fmt->Gmask, fmt->Bmask, fmt->Amask);
-
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > towerpics;
+  towerpics = disassemble_row(File::getCitysetFile(cityset, "towers.png"),
+			      MAX_PLAYERS);
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
-      //copy the tower image...
-
-      SDL_Rect r;
-      r.x = i * size;
-      r.y = 0;
-      r.w = r.h = size;
-      SDL_BlitSurface(towerpics, &r, tmp, 0);
-
-      d_towerpic[i] = SDL_DisplayFormatAlpha(tmp);
+      if (towerpics[i]->get_width() != ts)
+	towerpics[i] = towerpics[i]->scale_simple(ts, ts, Gdk::INTERP_BILINEAR);
+      d_towerpic[i] = towerpics[i];
     }
-
-  SDL_FreeSurface(tmp);
-  SDL_FreeSurface(towerpics);
-
 }
 
-bool GraphicsCache::loadSelectorImages(std::string tileset, std::string filename, guint32 size, std::vector<SDL_Surface*> &images, std::vector<SDL_Surface *> &masks)
+bool GraphicsCache::loadSelectorImages(std::string tileset, std::string filename, guint32 size, std::vector<Glib::RefPtr<Gdk::Pixbuf> > &images, std::vector<Glib::RefPtr<Gdk::Pixbuf> > &masks)
 {
   int num_frames;
-  // to build flags, we need these three images as basic blocks
-  SDL_Surface* selpics = GraphicsLoader::getTilesetPicture(tileset, filename);
-
-  if (!selpics)
-    return false;
-
-  num_frames = selpics->w / size;
-  if (selpics->w % size != 0)
-    {
-      SDL_FreeSurface (selpics);
-      return false;
-    }
-
-  if ((unsigned int) selpics->h != size * 2)
-    {
-      SDL_FreeSurface (selpics);
-      return false;
-    }
-
-  SDL_PixelFormat* fmt = selpics->format;
-
-  // copy alpha values, don't use them
-  SDL_SetAlpha(selpics, 0, 0);
+  num_frames = Gdk::Pixbuf::create_from_file 
+    (File::getTilesetFile(tileset, filename))->get_width() / size;
+  images = disassemble_row(File::getTilesetFile(tileset, filename),
+			      num_frames, true);
   for (int i = 0; i < num_frames; i++)
     {
-      SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 
-					      fmt->BitsPerPixel, fmt->Rmask, 
-					      fmt->Gmask, fmt->Bmask, 
-					      fmt->Amask);
-      SDL_Rect selrect;
-      selrect.x = i*size;
-      selrect.y = 0;
-      selrect.w = selrect.h = size;
-      SDL_BlitSurface(selpics, &selrect, tmp, 0);
-      images.push_back (SDL_DisplayFormatAlpha(tmp));
-      SDL_FreeSurface(tmp);
-
-      SDL_Surface *mask = SDL_CreateRGBSurface(SDL_SWSURFACE, size, size, 32,
-					       0xFF000000, 0xFF0000, 0xFF00, 
-					       0xFF);
-      selrect.y = size;
-      SDL_BlitSurface(selpics, &selrect, mask, 0);
-      masks.push_back(mask);
-
+      if (images[i]->get_width() != (int)size)
+	images[i] = images[i]->scale_simple (size, size, Gdk::INTERP_BILINEAR);
     }
-  SDL_FreeSurface(selpics);
+
+  masks = disassemble_row(File::getTilesetFile(tileset, filename),
+			      num_frames, false);
+  for (int i = 0; i < num_frames; i++)
+    {
+      if (masks[i]->get_width() != (int)size)
+	masks[i] = masks[i]->scale_simple (size, size, Gdk::INTERP_BILINEAR);
+    }
+
   return true;
 }
 
@@ -2264,8 +1988,8 @@ void GraphicsCache::loadSelectors()
   std::string large = GameMap::getInstance()->getTileset()->getLargeSelectorFilename();
 
   int size = GameMap::getInstance()->getTileset()->getTileSize();
-  std::vector<SDL_Surface*> images;
-  std::vector<SDL_Surface*> masks;
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > images;
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > masks;
   bool success = loadSelectorImages(tileset, large, size, images, masks);
   if (!success)
     {
@@ -2296,102 +2020,75 @@ void GraphicsCache::loadSelectors()
 void GraphicsCache::loadProdShields()
 {
   //load the production shieldset
-  unsigned int i;
-  SDL_Rect prodshieldrect;
-  SDL_Surface* prodshieldpics = GraphicsLoader::getMiscPicture("prodshieldset.png");
-  // copy alpha values, don't use them
-  SDL_SetAlpha(prodshieldpics, 0, 0);
-  SDL_PixelFormat* fmt = prodshieldpics->format;
   int xsize = PRODUCTION_SHIELD_WIDTH;
   int ysize = PRODUCTION_SHIELD_HEIGHT;
-  for (i = 0; i < PRODUCTION_SHIELD_TYPES; i++)
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > prodshieldpics;
+  prodshieldpics = disassemble_row
+    (File::getMiscFile("various/prodshieldset.png"), PRODUCTION_SHIELD_TYPES);
+  for (unsigned int i = 0; i < PRODUCTION_SHIELD_TYPES; i++)
     {
-      SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, xsize, ysize, 
-					      fmt->BitsPerPixel, fmt->Rmask, 
-					      fmt->Gmask, fmt->Bmask, 
-					      fmt->Amask);
-      prodshieldrect.x = i * xsize;
-      prodshieldrect.y = 0;
-      prodshieldrect.w = xsize;
-      prodshieldrect.h = ysize;
-      SDL_BlitSurface(prodshieldpics, &prodshieldrect, tmp, 0);
-      d_prodshieldpic[i] = SDL_DisplayFormatAlpha(tmp);
-      SDL_FreeSurface(tmp);
-
+      if (prodshieldpics[i]->get_width() != xsize)
+	prodshieldpics[i] = prodshieldpics[i]->scale_simple(xsize, ysize, 
+							    Gdk::INTERP_BILINEAR);
+      d_prodshieldpic[i] = prodshieldpics[i];
     }
-  SDL_FreeSurface(prodshieldpics);
+}
+
+void GraphicsCache::loadMedalPics()
+{
+  //load the medal icons
+  int ts = 40;
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > medalpics;
+  medalpics = disassemble_row(File::getMiscFile("various/medals_mask.png"),
+				  MEDAL_TYPES);
+  for (unsigned int i = 0; i < MEDAL_TYPES; i++)
+    {
+      if (medalpics[i]->get_width() != ts)
+	medalpics[i] = medalpics[i]->scale_simple(ts, ts, Gdk::INTERP_BILINEAR);
+      d_medalpic[i] = medalpics[i];
+    }
 }
 
 void GraphicsCache::loadMoveBonusPics()
 {
   //load the movement bonus icons
-  unsigned int i;
-  SDL_Rect movebonusrect;
-  SDL_Surface* movebonuspics = GraphicsLoader::getMiscPicture("movebonus.png");
-  // copy alpha values, don't use them
-  SDL_SetAlpha(movebonuspics, 0, 0);
-  SDL_PixelFormat* fmt = movebonuspics->format;
   int xsize = MOVE_BONUS_WIDTH;
   int ysize = MOVE_BONUS_HEIGHT;
-  for (i = 0; i < MOVE_BONUS_TYPES; i++)
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > movebonuspics;
+  movebonuspics = disassemble_row(File::getMiscFile("various/movebonus.png"),
+				  MOVE_BONUS_TYPES);
+  for (unsigned int i = 0; i < MOVE_BONUS_TYPES; i++)
     {
-      SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, xsize, ysize, 
-					      fmt->BitsPerPixel, fmt->Rmask, 
-					      fmt->Gmask, fmt->Bmask, 
-					      fmt->Amask);
-      movebonusrect.x = i * xsize;
-      movebonusrect.y = 0;
-      movebonusrect.w = xsize;
-      movebonusrect.h = ysize;
-      SDL_BlitSurface(movebonuspics, &movebonusrect, tmp, 0);
-      d_movebonuspic[i] = SDL_DisplayFormatAlpha(tmp);
-      SDL_FreeSurface(tmp);
-
+      if (movebonuspics[i]->get_width() != xsize)
+	movebonuspics[i] = movebonuspics[i]->scale_simple(xsize, ysize, 
+							 Gdk::INTERP_BILINEAR);
+      d_movebonuspic[i] = movebonuspics[i];
     }
-  SDL_FreeSurface(movebonuspics);
 }
 
 void GraphicsCache::loadFlags()
 {
   //GameMap has the actual tileset stored
   std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
+  int ts = GameMap::getInstance()->getTileset()->getTileSize();
 
-  // to build flags, we need these three images as basic blocks
-  SDL_Surface* flag = GraphicsLoader::getTilesetPicture(tileset, "misc/flags.png");
-  SDL_PixelFormat* fmt = flag->format;
-  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
-
-  // copy alpha values, don't use them!
-  SDL_SetAlpha(flag, 0, 0);
-
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > flagpics;
+  flagpics = disassemble_row(File::getTilesetFile(tileset, "misc/flags.png"),
+				  MAX_STACK_SIZE, true);
   for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
     {
-      // first, create the flag image; create a temporary surface...
-      SDL_Surface* tmp = SDL_CreateRGBSurface(SDL_SWSURFACE, tilesize, tilesize, 
-					      fmt->BitsPerPixel, fmt->Rmask, fmt->Gmask,
-					      fmt->Bmask, fmt->Amask);
+      if (flagpics[i]->get_width() != ts)
+	flagpics[i] = flagpics[i]->scale_simple(ts, ts, Gdk::INTERP_BILINEAR);
+      d_flagpic[i] = flagpics[i];
 
-      // blit the correct flag on the top of the image
-      SDL_Rect flagrect;
-      flagrect.x = i*tilesize;
-      flagrect.y = 0;
-      flagrect.w = flagrect.h = tilesize;
-      SDL_BlitSurface(flag, &flagrect, tmp, 0);
-
-      // convert the surface to screen resolution
-      d_flagpic[i] = SDL_DisplayFormatAlpha(tmp);
-
-      // free the temporary surface
-      SDL_FreeSurface(tmp);
-
-
-      // now create the masks
-      d_flagmask[i]=  SDL_CreateRGBSurface(SDL_SWSURFACE, tilesize, tilesize,
-					   32, 0xFF000000, 0xFF0000, 0xFF00, 0xFF);
-      flagrect.y = tilesize;
-      SDL_BlitSurface(flag, &flagrect, d_flagmask[i], 0);
     }
-
-  // free the temporary surfaces
-  SDL_FreeSurface(flag);
+  std::vector<Glib::RefPtr<Gdk::Pixbuf> > maskpics;
+  maskpics = disassemble_row(File::getTilesetFile(tileset, "misc/flags.png"),
+				  MAX_STACK_SIZE, false);
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+    {
+      if (maskpics[i]->get_width() != ts)
+	maskpics[i] = maskpics[i]->scale_simple(ts, ts, Gdk::INTERP_BILINEAR);
+      d_flagmask[i] = maskpics[i];
+    }
 }

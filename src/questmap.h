@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ class QuestMap : public OverviewMap
     /**
      * Classes that use QuestMap must catch this signal to display the map.
      */
-    sigc::signal<void, SDL_Surface *> map_changed;
+    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > map_changed;
     
     //! Point to another position on the miniature map graphic.
     /**

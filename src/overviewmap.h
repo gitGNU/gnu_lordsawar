@@ -1,5 +1,5 @@
 // Copyright (C) 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -20,8 +20,8 @@
 #ifndef OVERVIEWMAP_H
 #define OVERVIEWMAP_H
 
+#include <sigc++/trackable.h>
 #include <gtkmm.h>
-#include <SDL.h>
 #include "vector.h"
 #include "rectangle.h"
 #include "Tile.h"
@@ -33,7 +33,7 @@ class Player;
 //! Generates a miniature graphic of the game map.
 /**
  * This is a base class that draws the terrain, ruins, temples, and roads 
- * onto an SDL_Surface.
+ * onto a Gdk::Pixmap.
  * This class is responsible for drawing terrain features using the correct
  * pattern, as specified in Tile::Pattern.  Ruins and Temples are drawn as 
  * white dots, and roads are drawn as brown lines.
@@ -43,7 +43,7 @@ class Player;
  * Derived classes can add their own stuff to the map by overriding the 
  * after_draw method that is called by OverviewMap::draw.
  */
-class OverviewMap
+class OverviewMap : public sigc::trackable
 {
  public:
      //! Default constructor.
@@ -58,6 +58,7 @@ class OverviewMap
 
      //! Destructor.
      virtual ~OverviewMap();
+
 
     //! Draw and scale the miniature map graphic to the given size.
     /**
@@ -111,22 +112,37 @@ class OverviewMap
      * It only makes sense to get the surface after OverviewMap::resize and 
      * OverviewMap::draw have been called.
      */
-    SDL_Surface *get_surface();
+    Glib::RefPtr<Gdk::Pixmap> get_surface();
 
-    static void draw_tile_pixel(SDL_Surface *surface, SmallTile::Pattern pattern,
-				SDL_Color first_color, SDL_Color second_color,
-				SDL_Color third_color,
+
+    static void draw_terrain_tile (Glib::RefPtr<Gdk::Pixmap> surf,
+				Glib::RefPtr<Gdk::GC> gc,
+				SmallTile::Pattern pattern,
+				Gdk::Color first, 
+				Gdk::Color second,
+				Gdk::Color third,
 				int i, int j, bool shadowed);
 
     Player * getViewingPlayer() {return d_player;};
     void setViewingPlayer(Player *player) {d_player = player;};
+
+    static void draw_pixel(Glib::RefPtr<Gdk::Pixmap> surf, Glib::RefPtr<Gdk::GC> gc, int x, int y, Gdk::Color color);
+
+
+    void draw_filled_rect(int x, int y, int width, int height, Gdk::Color color);
+
+    void draw_rect(int x, int y, int width, int height, Gdk::Color color);
+
+    void draw_line( int src_x, int src_y, int dst_x, int dst_y, Gdk::Color color);
+
  private:
     //! An SDL surface of the terrain without the features.
     /**
      * This is the cached surface after the resize method was called.
      * It is cached so that we don't have recalculate it.
      */
-    SDL_Surface* static_surface;
+    Glib::RefPtr<Gdk::Pixmap> static_surface;
+    Glib::RefPtr<Gdk::GC> static_surface_gc;
 
     //! Returns whether or not the given pixel appears sunken (Tile::SUNKEN).
     /**
@@ -158,8 +174,16 @@ class OverviewMap
      * @param j     The pixel on the vertical axis of the map graphic.  This
      *              value must be a multiple of OverviewMap::pixels_per_tile.
      */
-    void draw_tile_pixel(Maptile *tile, int i, int j);
+    void draw_terrain_tile (Maptile *tile, int i, int j);
 
+
+    void choose_surface(bool front, Glib::RefPtr<Gdk::Pixmap> &surf,
+				 Glib::RefPtr<Gdk::GC> &gc);
+    void draw_filled_rect(bool front, int x, int y, int width, int height, Gdk::Color color);
+
+    void draw_rect(bool front, int x, int y, int width, int height, Gdk::Color color);
+
+    void draw_line(bool front, int src_x, int src_y, int dst_x, int dst_y, Gdk::Color color);
  protected:
 
     //! Every pixel on the graphic is this wide and tall.
@@ -186,14 +210,16 @@ class OverviewMap
     void draw_cities(bool all_razed);
 
     //! Redraw the specified region.
-    void draw_terrain_pixels(Rectangle r);
+    void draw_terrain_tiles(Rectangle r);
 
     int calculateResizeFactor();
 
     //! The surface containing the drawn map.
-    SDL_Surface* surface;
+    Glib::RefPtr<Gdk::Pixmap> surface;
+    Glib::RefPtr<Gdk::GC> surface_gc;
 
     Player *d_player;
+
 };
 
 #endif // OVERVIEWMAP_H

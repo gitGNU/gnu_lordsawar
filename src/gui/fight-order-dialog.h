@@ -23,7 +23,6 @@
 #include <sigc++/signal.h>
 #include <gtkmm.h>
 #include <list>
-#include <SDL.h>
 
 class Stack;
 class Player;

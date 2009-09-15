@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl This is useful to force using autoreconf 2.5.x
 AC_PREREQ(2.59)
-AC_INIT([lordsawar], [0.1.6-pre5], [http://sv.nongnu.org/bugs/?group=lordsawar], [lordsawar])
+AC_INIT([lordsawar], [0.1.6-pre6], [http://sv.nongnu.org/bugs/?group=lordsawar], [lordsawar])
 AC_CONFIG_SRCDIR([config.h.in])
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
@@ -29,24 +29,15 @@ AC_PROG_LIBTOOL
 dnl The minimum SDL version required
 SDL_VERSION=1.2.0
 
+ac_save_ldflags=$LDFLAGS
 dnl Check for SDL
 AM_PATH_SDL($SDL_VERSION,
             :,
 	    AC_MSG_ERROR([*** SDL version $SDL_VERSION not found!])
 )
 	
+LDFLAGS=$ac_save_ldflags
 AC_SUBST(SDL_CFLAGS)
-AC_SUBST(SDL_LIBS)
-
-
-SDLIMAGE_LIBS=
-dnl Now check for SDL_image
-AC_CHECK_LIB(SDL_image, IMG_Load, [SDLIMAGE_LIBS="-lSDL_image -ltiff -ljpeg -lpng -lz"],
-            AC_MSG_ERROR([*** SDL_image not found!]))
-AC_SUBST(SDLIMAGE_LIBS)
-AC_CHECK_HEADER(SDL_image.h, IMG_Load, [],
-            AC_MSG_ERROR([*** SDL_image not found!]))
-
 
 dnl And check for SDL_mixer. In detail, we need .ogg support
 dnl we need some extended cflags or get problems
@@ -117,7 +108,7 @@ fi
 dnl this is needed in cross-compile with mingw32
 AC_ARG_ENABLE(winlibs,             
               [  --enable-winlibs         enable windows cross-compiling libs],
-              LIBS="-lmingw32 -lws2_32 -lintl -lphysfs -lz -lSDL -lpthreadGC2 -lpthreadGCE2 $LIBS"
+              LIBS="-lmingw32 -lws2_32 -lintl -lz -lpthreadGC2 -lpthreadGCE2 $LIBS"
               flrc=true;
               ,flrc=false
              )
@@ -137,16 +128,6 @@ dnl Now check gettext.h
 AM_GNU_GETTEXT_VERSION([0.17])
 AM_GNU_GETTEXT([external])
 #fi
-
-AC_ARG_WITH(intl, [  --with-intl=<dir>      Use int from here],
-                      [
-                      LDFLAGS="$LDFLAGS -L$withval/intl"
-                      LIBS="$LIBS -lintl"
-                      LIBINTL=""
-		      INTLLIBS=""
-                      LTLIBINTL=""
-                      ]
-                      )
 
 dnl Check for glib
 

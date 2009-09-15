@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -35,18 +35,17 @@
 #include "playerlist.h"
 #include "network-game-selector-dialog.h"
 //#include "netggz.h"
-#include "gtksdl.h"
 #include "main-preferences-dialog.h"
 #include "timed-message-dialog.h"
 #include "new-random-map-dialog.h"
 
-namespace
-{
-  void surface_attached_helper(GtkSDL *gtksdl, gpointer data)
-    {
-      static_cast<SplashWindow*>(data)->on_sdl_surface_changed();
-    }
-}
+//namespace
+//{
+  //void surface_attached_helper(GtkSDL *gtksdl, gpointer data)
+    //{
+      //static_cast<SplashWindow*>(data)->on_sdl_surface_changed();
+    //}
+//}
 SplashWindow::SplashWindow()
 {
   network_game_nickname = "";
@@ -117,18 +116,18 @@ SplashWindow::SplashWindow()
 	  }
       }
 
-  sdl_widget = Gtk::manage(Glib::wrap(gtk_sdl_new(1,1,0,SDL_SWSURFACE)));
-  sdl_widget->grab_focus();
-  sdl_widget->add_events(Gdk::KEY_PRESS_MASK | Gdk::BUTTON_PRESS_MASK | 
-			 Gdk::BUTTON_RELEASE_MASK | Gdk::POINTER_MOTION_MASK | 
-			 Gdk::LEAVE_NOTIFY_MASK);
+  //sdl_widget = Gtk::manage(Glib::wrap(gtk_sdl_new(1,1,0,SDL_SWSURFACE)));
+  //sdl_widget->grab_focus();
+  //sdl_widget->add_events(Gdk::KEY_PRESS_MASK | Gdk::BUTTON_PRESS_MASK | 
+			 //Gdk::BUTTON_RELEASE_MASK | Gdk::POINTER_MOTION_MASK | 
+			 //Gdk::LEAVE_NOTIFY_MASK);
 
       // connect to the special signal that signifies that a new surface has been
       // generated and attached to the widget 
-  g_signal_connect(G_OBJECT(sdl_widget->gobj()), "surface-attached", 
-     G_CALLBACK(surface_attached_helper), this); 
+  //g_signal_connect(G_OBJECT(sdl_widget->gobj()), "surface-attached", 
+     //G_CALLBACK(surface_attached_helper), this); 
       
-      sdl_container->add(*sdl_widget); 
+      //sdl_container->add(*sdl_widget); 
       //Gtk::RC::add_default_file(File::getMiscFile("gtkrc"));
 	//Gtk::RC::reparse_all(Gtk::Settings::get_default(), true);
 }
@@ -344,15 +343,15 @@ void SplashWindow::on_game_started(GameParameters g)
   new_game_requested.emit(g);
 }
 
-void
-SplashWindow::on_sdl_surface_changed()
-{
-  if (!sdl_inited)
-    {
-      sdl_inited = true;
-      sdl_initialized.emit();
-    }
-}
+//void
+//SplashWindow::on_sdl_surface_changed()
+//{
+  //if (!sdl_inited)
+    //{
+      //sdl_inited = true;
+      //sdl_initialized.emit();
+    //}
+//}
 
 void SplashWindow::on_network_game_created(GameParameters g)
 {

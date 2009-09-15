@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@
 #include "player.h"
 class Citylist;
 
-struct SDL_Surface;
 class Player;
 #include "decorated.h"
 // dialog for showing all ruins and temples
@@ -95,7 +94,7 @@ class HistoryReportDialog: public Decorated
     Glib::RefPtr<Gtk::ListStore> events_list;
     void addHistoryEvent(NetworkHistory *event);
     void on_close_button();
-    void on_map_changed(SDL_Surface *map);
+    void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
     void on_turn_changed(Gtk::Scale *scale);
     void fill_in_turn_info(guint32 turn);
     void on_switch_page(GtkNotebookPage *page, guint number);

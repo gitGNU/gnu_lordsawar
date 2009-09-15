@@ -3,7 +3,7 @@
 // Copyright (C) 2003 Marek Publicewicz
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2005 Bryan Duff
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -30,13 +30,13 @@
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 #include <gtkmm.h>
-#include <SDL_video.h>
 
 #include "vector.h"
 #include "fight.h"
 #include "army.h"
 #include "defs.h"
 
+struct rgb_shift;
 class Stacklist;
 class XML_Helper;
 class Hero;
@@ -173,7 +173,7 @@ class Player: public sigc::trackable
 	 *                     the next free Id it used.
          */
 	//! Default constructor.
-        Player (std::string name, guint32 armyset, SDL_Color color, int width,
+        Player (std::string name, guint32 armyset, Gdk::Color color, int width,
 		int height, Type type, int player_no = -1);
 
         //! Copy constructor
@@ -198,7 +198,7 @@ class Player: public sigc::trackable
          */
 	//! Create a player.
         static Player* create(std::string name, guint32 armyset, 
-			      SDL_Color color, int width, int height, 
+			      Gdk::Color color, int width, int height, 
 			      Type type);
         
         /** 
@@ -223,7 +223,7 @@ class Player: public sigc::trackable
         void setType(Type type) {d_type = type;}
 
         //! Change the player's colour.
-        void setColor(SDL_Color c);
+        void setColor(Gdk::Color c);
 
         //! Makes a player unable to die, even when having no units or cities.
         void setMortality(bool ismortal) {d_immortal = !ismortal;}
@@ -401,10 +401,11 @@ class Player: public sigc::trackable
 				       Player::DiplomaticState state);
 
         //! Returns the colour of the player.
-        SDL_Color getColor() const {return d_color;}
+	Gdk::Color getColor() const {return d_color;}
 
         //! Returns the player's colour suitable for applying it to masks.
-        SDL_Color getMaskColor() const;
+	Gdk::Color getMaskColor() const;
+	struct rgb_shift getMaskColorShifts() const;
 
         //! Returns the amount of gold pieces the player has.
         int getGold() const {return d_gold;}
@@ -1328,7 +1329,7 @@ class Player: public sigc::trackable
 	/**
 	 * Mask portions of images are shaded in this colour.
 	 */
-        SDL_Color d_color;
+	Gdk::Color d_color;
 
 	//! The name of the Player.
         std::string d_name;

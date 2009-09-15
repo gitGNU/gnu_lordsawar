@@ -106,9 +106,9 @@ void RuinReportDialog::run()
   Sound::getInstance()->haltMusic();
 }
 
-void RuinReportDialog::on_map_changed(SDL_Surface *map)
+void RuinReportDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
-  map_image->property_pixbuf() = to_pixbuf(map);
+  map_image->property_pixmap() = map;
   fill_in_ruin_info();
 }
 

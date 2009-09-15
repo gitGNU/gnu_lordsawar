@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,38 +29,19 @@ std::string ShieldStyle::d_tag = "shieldstyle";
 #define debug(x)
 
 ShieldStyle::ShieldStyle(XML_Helper* helper)
-  :d_pixmap(0), d_mask(0)
+  :d_image(0), d_mask(0)
 {
   std::string type_str;
   helper->getData(type_str, "type");
   d_type = shieldStyleTypeFromString(type_str);
-  helper->getData(d_image, "image");
+  helper->getData(d_image_name, "image");
 }
 
 ShieldStyle::~ShieldStyle()
 {
 }
 
-SDL_Surface* ShieldStyle::getPixmap() const
-{
-    // if we already have a pixmap return it
-    if (d_pixmap)
-        return d_pixmap;
-    else
-      return NULL;
-}
-
-void ShieldStyle::setPixmap(SDL_Surface* pixmap)
-{
-  d_pixmap = pixmap;
-}
         
-void ShieldStyle::setMask(SDL_Surface* mask)
-{
-  d_mask = mask;
-}
-
-
 std::string ShieldStyle::shieldStyleTypeToString(const ShieldStyle::Type type)
 {
   switch (type)

@@ -5,13 +5,10 @@ Requirements:
 
 - libgtkmm, libglibmm >= 2.4
 
-- SDL >= 1.2.0	
+- SDL >= 1.2.0	 (used for sound)
 	to be found at http://www.libsdl.org
 
-- SDL_image >= 1.2.0
-    there should be a link on the sdl home page
-
-- SDL_mixer >= 1.2.6
+- SDL_mixer >= 1.2.6 (used for sound)
     there should be a link on the sdl home page
 
 - expat
@@ -32,6 +29,6 @@ Requirements:
 
 
 on Ubuntu 8.04, (Hardy Heron) you need the following packages:
-sudo apt-get install automake autoconf  libtool m4 autotools-dev g++ libsigc++-2.0-dev libglibmm-2.4-dev libgtkmm-2.4-dev gettext subversion libsdl1.2-dev libsdl-image1.2-dev libsdl-mixer1.2-dev libglademm-2.4-dev libgnet-dev libboost-dev uuid-dev intltool cvs
+sudo apt-get install automake autoconf  libtool m4 autotools-dev g++ libsigc++-2.0-dev libglibmm-2.4-dev libgtkmm-2.4-dev gettext subversion libsdl1.2-dev libsdl-mixer1.2-dev libgnet-dev libboost-dev intltool cvs
 
 

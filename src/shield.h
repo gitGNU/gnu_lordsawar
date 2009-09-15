@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,13 +19,13 @@
 #define SHIELD_H
 
 #include <gtkmm.h>
-#include <SDL.h>
 #include <string>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 
 #include "shieldstyle.h"
 
+struct rgb_shift;
 class Player;
 class XML_Helper;
 class Shieldset;
@@ -62,9 +62,11 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 	guint32 getOwner() const {return d_owner;}
 
         //! Returns the colour of the player.
-        SDL_Color getColor() const {return d_color;}
+	Gdk::Color getColor() const {return d_color;}
 
-	SDL_Color getMaskColor() const;
+	Gdk::Color getMaskColor() const;
+
+	struct rgb_shift getMaskColorShifts();
 
 	/**
 	 * Get the default colour for the Player with the given Id.
@@ -79,10 +81,10 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 	 * @return The default colour associated with the player.
 	 */
 	//! Get standard colour for a player.
-	static SDL_Color get_default_color_for_no(int player_no);
+	static Gdk::Color get_default_color_for_no(int player_no);
 
 	//! Get standard colour for the neutral player.
-	static SDL_Color get_default_color_for_neutral();
+	static Gdk::Color get_default_color_for_neutral();
     protected:
 
 	//! The player of the shield.
@@ -97,7 +99,7 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 	/**
 	 * Mask portions of images are shaded in this colour.
 	 */
-        SDL_Color d_color;
+	Gdk::Color d_color;
 };
 
 #endif // SHIELD_H

@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
 
 #include "armymap.h"
 
-#include "sdl-draw.h"
 #include "city.h"
 #include "citylist.h"
 #include "playerlist.h"
@@ -44,8 +43,7 @@ void ArmyMap::draw_stacks()
         pit != Playerlist::getInstance()->end(); pit++)
     {
         Stacklist* mylist = (*pit)->getStacklist();
-        SDL_Color c = (*pit)->getColor();
-	guint32 outline = SDL_MapRGB(surface->format, c.r, c.g, c.b);
+	Gdk::Color cross_color = (*pit)->getColor();
         
         for (Stacklist::iterator it= mylist->begin(); it != mylist->end(); it++)
         {
@@ -61,8 +59,8 @@ void ArmyMap::draw_stacks()
                 continue;
 
             pos = mapToSurface(pos);
-            draw_hline(surface, pos.x - size, pos.x + size, pos.y, outline);
-            draw_vline(surface, pos.x, pos.y - size, pos.y + size, outline);
+            draw_line(pos.x - size, pos.y, pos.x + size, pos.y, cross_color);
+            draw_line(pos.x, pos.y - size, pos.x, pos.y + size, cross_color);
         }
     }
 }

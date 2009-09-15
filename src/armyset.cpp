@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,19 +36,11 @@ using namespace std;
 Armyset::Armyset(guint32 id, std::string name)
 	: d_id(id), d_name(name), d_dir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE)
 {
-  d_ship = NULL;
-  d_shipmask = NULL;
-  d_standard = NULL;
-  d_standard_mask = NULL;
 }
 
 Armyset::Armyset(XML_Helper *helper)
     : d_id(0), d_name(""), d_dir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE)
 {
-  d_ship = NULL;
-  d_shipmask = NULL;
-  d_standard = NULL;
-  d_standard_mask = NULL;
   helper->getData(d_id, "id");
   helper->getData(d_name, "name");
   helper->getData(d_tilesize, "tilesize");

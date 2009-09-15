@@ -48,14 +48,16 @@
                     <child>
                       <object class="GtkMenuItem" id="export_as_bitmap_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">E_xport As Bitmap</property>
+                        <property name="tooltip_text" translatable="yes">Save a picture of the map.</property>
+                        <property name="label" translatable="yes">E_xport Map As Image</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="export_as_bitmap_no_game_objects_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Export As Bitmap (no game objects)</property>
+                        <property name="tooltip_text" translatable="yes">Save a picture of the map showing just the terrain.</property>
+                        <property name="label" translatable="yes">Export Terrain Map As Image</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -228,6 +230,13 @@
                         <accelerator key="space" signal="activate"/>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkMenuItem" id="toggle_grid_menuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Toggle _Grid</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -262,10 +271,15 @@
           <object class="GtkHBox" id="contents_hbox">
             <property name="visible">True</property>
             <child>
-              <object class="GtkAlignment" id="sdl_container">
+              <object class="GtkEventBox" id="bigmap_eventbox">
                 <property name="visible">True</property>
                 <child>
-                  <placeholder/>
+                  <object class="GtkImage" id="bigmap_image">
+                    <property name="width_request">640</property>
+                    <property name="height_request">642</property>
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-missing-image</property>
+                  </object>
                 </child>
               </object>
               <packing>

@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -27,7 +27,6 @@
 #include "vectormap.h"
 
 #include "decorated.h"
-struct SDL_Surface;
 
 // dialog for choosing the destination of the production of a city
 class DestinationDialog: public Decorated
@@ -64,7 +63,7 @@ class DestinationDialog: public Decorated
     
     City *city;
     
-    void on_map_changed(SDL_Surface *map);
+    void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
     bool on_map_mouse_button_event(GdkEventButton *e);
     void on_see_all_toggled(Gtk::ToggleButton *toggle);
     void on_vector_toggled(Gtk::ToggleButton *toggle);

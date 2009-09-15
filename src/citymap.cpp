@@ -17,7 +17,6 @@
 
 #include "citymap.h"
 
-#include "sdl-draw.h"
 #include "city.h"
 #include "citylist.h"
 #include "playerlist.h"

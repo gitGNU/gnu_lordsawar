@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -113,7 +113,7 @@ void DestinationDialog::run()
     dialog->run();
 }
 
-void DestinationDialog::on_map_changed(SDL_Surface *map)
+void DestinationDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
   if (vectormap->getClickAction() == VectorMap::CLICK_SELECTS &&
       vector_toggle->get_active() == true)
@@ -125,7 +125,7 @@ void DestinationDialog::on_map_changed(SDL_Surface *map)
       city = vectormap->getCity();
       fill_in_vectoring_info();
     }
-  map_image->property_pixbuf() = to_pixbuf(map);
+  map_image->property_pixmap() = map;
 }
 
 bool DestinationDialog::on_map_mouse_button_event(GdkEventButton *e)
@@ -198,10 +198,10 @@ void DestinationDialog::fill_in_vectoring_info()
   Glib::RefPtr<Gdk::Pixbuf> pic;
   GraphicsCache *gc = GraphicsCache::getInstance();
   int slot = city->getActiveProductionSlot();
-  SDL_Surface *s
+  Glib::RefPtr<Gdk::Pixbuf> s
     = GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
   Glib::RefPtr<Gdk::Pixbuf> empty_pic
-    = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->w, s->h);
+    = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->get_width(), s->get_height());
   empty_pic->fill(0x00000000);
 
   vector_toggle->set_sensitive(slot != -1 ? true : false);
@@ -232,7 +232,7 @@ void DestinationDialog::fill_in_vectoring_info()
   else
     {
       const ArmyProdBase* a = city->getProductionBase(slot);
-      pic = to_pixbuf(gc->getArmyPic(as, a->getTypeId(), player, NULL));
+      pic = gc->getArmyPic(as, a->getTypeId(), player, NULL);
       s1 = String::ucompose(_("%1t"), city->getDuration());
       turns_label->set_markup("<i>" + s1 + "</i>");
     }
@@ -247,12 +247,12 @@ void DestinationDialog::fill_in_vectoring_info()
       int armytype = (*it)->getArmy()->getTypeId();
       if ((*it)->getDuration() == 2)
         {
-          pic = to_pixbuf(gc->getArmyPic(as, armytype, player, NULL));
+          pic = gc->getArmyPic(as, armytype, player, NULL);
           one_turn_away_image->set(pic);
         }
       else if ((*it)->getDuration() == 1)
         {
-          pic = to_pixbuf(gc->getArmyPic(as, armytype, player, NULL));
+          pic = gc->getArmyPic(as, armytype, player, NULL);
           two_turns_away_image->set(pic);
         }
     }
@@ -274,7 +274,7 @@ void DestinationDialog::fill_in_vectoring_info()
           case 2: image = next_turn_3_image; break;
           case 3: image = next_turn_4_image; break;
         }
-      pic = to_pixbuf(gc->getArmyPic(as, (*it)->getArmy()->getTypeId(), player, NULL));
+      pic = gc->getArmyPic(as, (*it)->getArmy()->getTypeId(), player, NULL);
       image->set(pic);
       count++;
     }
@@ -290,7 +290,7 @@ void DestinationDialog::fill_in_vectoring_info()
           case 2: image = turn_after_3_image; break;
           case 3: image = turn_after_4_image; break;
         }
-      pic = to_pixbuf(gc->getArmyPic(as, (*it)->getArmy()->getTypeId(), player, NULL));
+      pic = gc->getArmyPic(as, (*it)->getArmy()->getTypeId(), player, NULL);
       image->set(pic);
       count++;
     }

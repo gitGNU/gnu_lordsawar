@@ -89,7 +89,7 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	 * cells where each cell is tilesize pixels high, and tilesize
 	 * pixels wide.  Each cell is another image of a tilestyle.  There is
 	 * one cell per TileStyle in this TileStyleSet.
-	 * The tilesize comes from the TileStyleSet::instantiatePixmaps
+	 * The tilesize comes from the TileStyleSet::instantiateImages
 	 * method.
 	 * The name does not contain a path, and does not contain an
 	 * extension (e.g. .png).  It must refer to a PNG file.

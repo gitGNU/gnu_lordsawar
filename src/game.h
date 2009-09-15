@@ -1,4 +1,4 @@
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -99,7 +99,8 @@ class Game
     
     // signals
     sigc::signal<void, Vector<int> > current_map_position;
-    sigc::signal<void, SDL_Surface *> smallmap_changed;
+    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > smallmap_changed;
+    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > bigmap_changed;
     sigc::signal<void, SidebarStats> sidebar_stats_changed;
     sigc::signal<void, std::string> progress_status_changed;
     sigc::signal<void> progress_changed;
@@ -187,7 +188,8 @@ class Game
     void on_stack_queried (Stack* s);
 
     // smallmap callbacks
-    void on_smallmap_changed(SDL_Surface *map);
+    void on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    void on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map);
     
     // misc. callbacks
     void invading_city(City* city, int gold);

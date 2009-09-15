@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
 //  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -78,8 +78,8 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 	Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
 	
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf
-	    = to_pixbuf(gc->getArmyPic(p->getArmyset(),
-                                       purchasables[i]->getTypeId(), p, NULL));
+	    = gc->getArmyPic(p->getArmyset(), purchasables[i]->getTypeId(), p, 
+			     NULL);
 	
 	toggle->add(*manage(new Gtk::Image(pixbuf)));
 	production_toggles.push_back(toggle);

@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 
 #ifndef MAPTILE_H
 #define MAPTILE_H
@@ -107,7 +107,7 @@ class Maptile
         guint32 getMoves() const;
 
         //! Get the smallmap color of this maptile.
-        SDL_Color getColor() const
+	Gdk::Color getColor() const
 	  {return (*d_tileSet)[d_index]->getSmallTile()->getColor();}
 
 	//! Get the pattern of this maptile on the smallmap.
@@ -115,11 +115,11 @@ class Maptile
 	  {return (*d_tileSet)[d_index]->getSmallTile()->getPattern();}
 
 	//! Get the associated colour with the pattern.
-        SDL_Color getSecondColor() const
+       Gdk::Color getSecondColor() const
 	  {return (*d_tileSet)[d_index]->getSmallTile()->getSecondColor();}
 
 	//! Get the associated colour with the pattern.
-        SDL_Color getThirdColor() const
+       Gdk::Color getThirdColor() const
 	  {return (*d_tileSet)[d_index]->getSmallTile()->getThirdColor();}
 
         //! Get the tile type (the type of the underlying terrain).

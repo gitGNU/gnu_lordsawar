@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -28,7 +28,6 @@
 #include <glibmm/convert.h>
 
 #include "File.h"
-#include <SDL_image.h>
 #include "Configuration.h"
 #include "defs.h"
 
@@ -280,6 +279,11 @@ std::list<std::string> File::scanShieldsets()
 std::string File::getShieldset(std::string shieldsetsubdir)
 {
   return getShieldsetDir() + shieldsetsubdir + "/" + shieldsetsubdir + ".xml";
+}
+
+std::string File::getArmysetFile(std::string armysetsubdir, std::string picname)
+{
+  return getArmysetDir() + armysetsubdir + "/" + picname;
 }
 
 // End of file

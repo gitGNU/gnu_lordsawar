@@ -1,5 +1,5 @@
-//  Copyright (C) 2007, Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007 Ole Laursen
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -60,12 +60,9 @@ int main(int argc, char* argv[])
 	Gtk::Main kit(argc, argv);
 
 	std::auto_ptr<MainWindow> main_window(new MainWindow);
-	main_window->init(640, 480);
-    
-	main_window->sdl_initialized.connect(
-	    sigc::mem_fun(main_window.get(), &MainWindow::show_initial_map));
 	main_window->show();
 	
+	main_window->init();
 	kit.run(main_window->get_window());
     }
     catch (const Glib::Error &ex) {

@@ -1,4 +1,5 @@
-//  Copyright (C) 2007, Ole Laursen
+//  Copyright (C) 2007 Ole Laursen
+//  Copyright (C) 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,15 +21,12 @@
 
 #include <vector>
 #include <gdkmm/pixbuf.h>
-#include <SDL_video.h>
-
-// convert surface to pixbuf - note that this will make a full copy of the
-// surface pixels
-Glib::RefPtr<Gdk::Pixbuf> to_pixbuf(SDL_Surface *surface);
 
 // convert a file containing one large image with subimages, each of the same
 // width, to an array of pixbufs corresponding to the subimages
 std::vector<Glib::RefPtr<Gdk::Pixbuf> >
 disassemble_row(const std::string &file, int no);
+std::vector<Glib::RefPtr<Gdk::Pixbuf> >
+disassemble_row(const std::string &file, int no, bool first_half_height);
 
 #endif

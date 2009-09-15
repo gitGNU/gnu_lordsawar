@@ -22,7 +22,6 @@
 
 #include <string>
 #include <vector>
-#include <SDL.h>
 #include <sigc++/trackable.h>
 
 #include "Tile.h"
@@ -149,8 +148,8 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	bool validate();
 
         //! Get the colour associated with the road on the smallmap.
-        SDL_Color getRoadColor() const {return d_road_color;};
-	void setRoadColor(SDL_Color color) {d_road_color = color;};
+	Gdk::Color getRoadColor() const {return d_road_color;};
+	void setRoadColor(Gdk::Color color) {d_road_color = color;};
     private:
         //! Callback to load Tile objects into the Tileset.
         bool loadTile(std::string, XML_Helper* helper);
@@ -198,7 +197,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	//! A map that provides a TileStyle when supplying a TileStyle id.
         TileStyleIdMap d_tilestyles;
 
-        SDL_Color d_road_color;
+	Gdk::Color d_road_color;
 };
 
 #endif // TILESET_H

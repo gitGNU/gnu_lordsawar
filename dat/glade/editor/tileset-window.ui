@@ -307,7 +307,6 @@
                                           <object class="GtkSpinButton" id="tile_moves_spinbutton">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <property name="adjustment"></property>
                                             <property name="climb_rate">1</property>
                                           </object>
                                           <packing>
@@ -350,19 +349,7 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkAlignment" id="sdl_container">
-                                            <property name="width_request">1</property>
-                                            <property name="height_request">1</property>
-                                            <property name="visible">True</property>
-                                            <child>
-                                              <placeholder/>
-                                            </child>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">False</property>
-                                            <property name="position">2</property>
-                                          </packing>
+                                          <placeholder/>
                                         </child>
                                       </object>
                                       <packing>
