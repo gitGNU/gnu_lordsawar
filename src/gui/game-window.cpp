@@ -175,13 +175,16 @@ GameWindow::GameWindow()
     progress_box->show();
 
     // the map image
-    xml->get_widget("map_image", map_image);
-    xml->get_widget("bigmap_image", bigmap_image);
-    bigmap_image->set_double_buffered(false);
-    bigmap_image->signal_expose_event().connect
+    xml->get_widget("map_drawingarea", map_drawingarea);
+    //map_drawingarea->set_double_buffered(false);
+    map_drawingarea->signal_expose_event().connect
+      (sigc::mem_fun(*this, &GameWindow::on_smallmap_exposed));
+    xml->get_widget("bigmap_drawingarea", bigmap_drawingarea);
+    //bigmap_drawingarea->set_double_buffered(false);
+    bigmap_drawingarea->signal_expose_event().connect
       (sigc::mem_fun(*this, &GameWindow::on_bigmap_exposed));
-    //bigmap_image->signal_size_allocate().connect
-      //(sigc::mem_fun(*this, &GameWindow::on_bigmap_surface_changed));
+    bigmap_drawingarea->signal_size_allocate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_bigmap_surface_changed));
     xml->get_widget("map_eventbox", map_eventbox);
     xml->get_widget("map_container", map_container);
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
@@ -424,13 +427,13 @@ void GameWindow::show()
     s_keypad_button->show_all();
     se_keypad_button->show_all();
     
-    bigmap_image->show_all();
+    bigmap_drawingarea->show_all();
     window->show();
       
     //seems unnecessary, but this is for starting up a second game after
     //closing the first game window.
     //fixme: find out why this line is necessary
-    on_bigmap_surface_changed(bigmap_image->get_allocation());
+    on_bigmap_surface_changed(bigmap_drawingarea->get_allocation());
 }
 
 void GameWindow::hide()
@@ -921,7 +924,7 @@ bool GameWindow::on_bigmap_mouse_motion_event(GdkEventMotion *e)
       if (delta > 40 || delta < 0)
 	{
 	  game->get_bigmap().mouse_motion_event(to_input_event(e));
-	  bigmap_image->grab_focus();
+	  bigmap_drawingarea->grab_focus();
 	  prev = e->time;
 	}
     }
@@ -947,7 +950,7 @@ bool GameWindow::on_bigmap_scroll_event(GdkEventScroll* event)
 
 void GameWindow::on_bigmap_cursor_changed(GraphicsCache::CursorType cursor)
 {
-  bigmap_image->get_window()->set_cursor 
+  bigmap_drawingarea->get_window()->set_cursor 
     (Gdk::Cursor(Gdk::Display::get_default(), 
 		 GraphicsCache::getInstance()->getCursorPic (cursor), 4, 4));
 }
@@ -995,10 +998,37 @@ bool GameWindow::on_smallmap_mouse_motion_event(GdkEventMotion *e)
   return true;
 }
 
+bool GameWindow::on_smallmap_exposed(GdkEventExpose *event)
+{
+  Glib::RefPtr<Gdk::Window> window = map_drawingarea->get_window();
+  if (window)
+    {
+      Glib::RefPtr<Gdk::Pixmap> surface = game->get_smallmap().get_surface();
+      int width = 0, height = 0;
+      surface->get_size(width, height);
+
+      window->draw_drawable(map_drawingarea->get_style()->get_white_gc(),
+			     surface, event->area.x, event->area.y, 
+			     event->area.x, event->area.y, 
+			     event->area.width, event->area.height);
+    }
+  return true;
+}
 bool GameWindow::on_bigmap_exposed(GdkEventExpose *event)
 {
-  on_bigmap_surface_changed(Gtk::Allocation(event->area.x, event->area.y, event->area.width, event->area.height));
-  return false;
+  Glib::RefPtr<Gdk::Window> window = bigmap_drawingarea->get_window();
+  if (window)
+    {
+      Glib::RefPtr<Gdk::Pixmap> surface = game->get_bigmap().get_surface();
+      int width = 0, height = 0;
+      surface->get_size(width, height);
+
+      window->draw_drawable(bigmap_drawingarea->get_style()->get_white_gc(),
+			     surface, event->area.x, event->area.y, 
+			     event->area.x, event->area.y, 
+			     event->area.width, event->area.height);
+    }
+  return true;
 }
 void GameWindow::on_bigmap_surface_changed(Gtk::Allocation box)
 {
@@ -1011,7 +1041,8 @@ void GameWindow::on_bigmap_surface_changed(Gtk::Allocation box)
   if (game.get()) {
     if (box.get_width() != last_box.get_width() || box.get_height() != last_box.get_height())
       {
-	game->get_bigmap().screen_size_changed(bigmap_image->get_allocation());
+	//bigmap_drawingarea->set_allocation(box);
+	game->get_bigmap().screen_size_changed(bigmap_drawingarea->get_allocation());
 	game->redraw();
       }
   }
@@ -1845,8 +1876,15 @@ void GameWindow::on_sidebar_stats_changed(SidebarStats s)
 
 void GameWindow::on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
-  bigmap_image->property_pixmap() = map;
-  map.clear();
+  int width = 0;
+  int height = 0;
+  map->get_size(width, height);
+  Glib::RefPtr<Gdk::Window> window = bigmap_drawingarea->get_window();
+  if (window)
+    {
+      Gdk::Rectangle r = Gdk::Rectangle(0, 0, width, height);
+      window->invalidate_rect(r, true);
+    }
 }
 void GameWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
@@ -1855,8 +1893,16 @@ void GameWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
   map->get_size(width, height);
   map_container->property_width_request() = width;
   map_container->property_height_request() = height;
-  map_image->property_pixmap() = map;
-  map.clear();
+      
+  Glib::RefPtr<Gdk::Window> window = map_drawingarea->get_window();
+  if (window)
+    {
+      Gdk::Rectangle r = Gdk::Rectangle(0, 0, width, height);
+      window->invalidate_rect(r, true);
+    }
+  //map_image->property_pixmap() = map;
+  //map.clear();
+  //still resides at smallmap->get_surface()
 }
 
 void GameWindow::on_smallmap_slid(Rectangle view)
@@ -1991,7 +2037,7 @@ void GameWindow::on_stack_tip_changed(Stack *stack, MapTipPosition mpos)
   else
     {
       //_crapola
-      stack_info_tip.reset(new StackInfoTip(bigmap_image, mpos, stack));
+      stack_info_tip.reset(new StackInfoTip(bigmap_drawingarea, mpos, stack));
     }
 }
 
@@ -2023,7 +2069,7 @@ void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos)
 
   // get screen position
   Vector<int> p;
-  bigmap_image->get_window()->get_origin(p.x, p.y);
+  bigmap_drawingarea->get_window()->get_origin(p.x, p.y);
   p += pos.pos;
 
   Vector<int> size(0, 0);

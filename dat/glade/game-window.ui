@@ -674,11 +674,8 @@
                               <object class="GtkEventBox" id="bigmap_eventbox">
                                 <property name="visible">True</property>
                                 <child>
-                                  <object class="GtkImage" id="bigmap_image">
-                                    <property name="width_request">580</property>
-                                    <property name="height_request">420</property>
+                                  <object class="GtkDrawingArea" id="bigmap_drawingarea">
                                     <property name="visible">True</property>
-                                    <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
                               </object>
@@ -1023,9 +1020,8 @@ XX</property>
                                   <object class="GtkEventBox" id="map_eventbox">
                                     <property name="visible">True</property>
                                     <child>
-                                      <object class="GtkImage" id="map_image">
+                                      <object class="GtkDrawingArea" id="map_drawingarea">
                                         <property name="visible">True</property>
-                                        <property name="stock">gtk-missing-image</property>
                                       </object>
                                     </child>
                                   </object>

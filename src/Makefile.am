@@ -103,7 +103,7 @@ liblordsawargfx_la_SOURCES = \
 	MapRenderer.cpp MapRenderer.h  \
 	GraphicsCache.cpp GraphicsCache.h \
 	GraphicsLoader.cpp GraphicsLoader.h \
-	input-events.h map-tip-position.h sdl-draw.h 
+	input-events.h map-tip-position.h 
 
 
 lordsawar_SOURCES = armymap.cpp armymap.h \

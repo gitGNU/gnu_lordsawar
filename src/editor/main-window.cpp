@@ -95,12 +95,12 @@ MainWindow::MainWindow()
 	sigc::mem_fun(*this, &MainWindow::on_delete_event));
 
     // the map image
-    xml->get_widget("bigmap_image", bigmap_image);
-    bigmap_image->set_double_buffered(false);
-    bigmap_image->set_app_paintable(true);
-    bigmap_image->signal_expose_event().connect
+    xml->get_widget("bigmap_drawingarea", bigmap_drawingarea);
+    //bigmap_drawingarea->set_double_buffered(false);
+    //bigmap_drawingarea->set_app_paintable(true);
+    bigmap_drawingarea->signal_expose_event().connect
       (sigc::mem_fun(*this, &MainWindow::on_bigmap_exposed));
-    bigmap_image->signal_size_allocate().connect
+    bigmap_drawingarea->signal_size_allocate().connect
       (sigc::mem_fun(*this, &MainWindow::on_bigmap_surface_changed));
     xml->get_widget("bigmap_eventbox", bigmap_eventbox);
 
@@ -118,7 +118,9 @@ MainWindow::MainWindow()
 	sigc::mem_fun(*this, &MainWindow::on_bigmap_key_event));
     bigmap_eventbox->signal_leave_notify_event().connect(
 	sigc::mem_fun(*this, &MainWindow::on_bigmap_leave_event));
-    xml->get_widget("map_image", map_image);
+    xml->get_widget("map_drawingarea", map_drawingarea);
+    map_drawingarea->signal_expose_event().connect
+      (sigc::mem_fun(*this, &MainWindow::on_smallmap_exposed));
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
@@ -330,7 +332,9 @@ void MainWindow::setup_terrain_radiobuttons()
 
 void MainWindow::show()
 {
+  bigmap_drawingarea->show_all();
   window->show();
+  on_bigmap_surface_changed(bigmap_drawingarea->get_allocation());
 }
 
 void MainWindow::on_bigmap_surface_changed(Gtk::Allocation box)
@@ -341,7 +345,7 @@ void MainWindow::on_bigmap_surface_changed(Gtk::Allocation box)
 
   if (box.get_width() != last_box.get_width() || box.get_height() != last_box.get_height())
     {
-      bigmap->screen_size_changed(bigmap_image->get_allocation());
+      bigmap->screen_size_changed(bigmap_drawingarea->get_allocation());
       bigmap->draw();
       smallmap->draw(Playerlist::getActiveplayer());
     }
@@ -349,8 +353,29 @@ void MainWindow::on_bigmap_surface_changed(Gtk::Allocation box)
 }
 bool MainWindow::on_bigmap_exposed(GdkEventExpose *event)
 {
-  on_bigmap_surface_changed(Gtk::Allocation(event->area.x, event->area.y, event->area.width, event->area.height));
-  return false;
+  Glib::RefPtr<Gdk::Window> window = bigmap_drawingarea->get_window();
+  if (window)
+    {
+      Glib::RefPtr<Gdk::Pixmap> surface = bigmap->get_surface();
+      window->draw_drawable(bigmap_drawingarea->get_style()->get_white_gc(),
+			     surface, event->area.x, event->area.y, 
+			     event->area.x, event->area.y, 
+			     event->area.width, event->area.height);
+    }
+  return true;
+}
+bool MainWindow::on_smallmap_exposed(GdkEventExpose *event)
+{
+  Glib::RefPtr<Gdk::Window> window = map_drawingarea->get_window();
+  if (window)
+    {
+      Glib::RefPtr<Gdk::Pixmap> surface = smallmap->get_surface();
+      window->draw_drawable(map_drawingarea->get_style()->get_white_gc(),
+			     surface, event->area.x, event->area.y, 
+			     event->area.x, event->area.y, 
+			     event->area.width, event->area.height);
+    }
+  return true;
 }
 
 void MainWindow::init()
@@ -1004,13 +1029,33 @@ int MainWindow::get_tile_style_id()
 
 void MainWindow::on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
-    bigmap_image->property_pixmap() = map; 
-    map.clear();
+  int width = 0;
+  int height = 0;
+  map->get_size(width, height);
+  Glib::RefPtr<Gdk::Window> window = bigmap_drawingarea->get_window();
+  if (window)
+    {
+      Gdk::Rectangle r = Gdk::Rectangle(0, 0, width, height);
+      window->invalidate_rect(r, true);
+    }
 }
 void MainWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
-    map_image->property_pixmap() = map; 
-    map.clear();
+  int width = 0;
+  int height = 0;
+  map->get_size(width, height);
+  map_drawingarea->property_width_request() = width;
+  map_drawingarea->property_height_request() = height;
+      
+  Glib::RefPtr<Gdk::Window> window = map_drawingarea->get_window();
+  if (window)
+    {
+      Gdk::Rectangle r = Gdk::Rectangle(0, 0, width, height);
+      window->invalidate_rect(r, true);
+    }
+  //map_image->property_pixmap() = map;
+  //map.clear();
+  //still resides at smallmap->get_surface()
 }
 
 

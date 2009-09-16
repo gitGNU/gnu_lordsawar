@@ -52,7 +52,7 @@ class MainWindow: public sigc::trackable
 
  private:
     std::auto_ptr<Gtk::Window> window;
-    Gtk::Image *bigmap_image;
+    Gtk::DrawingArea *bigmap_drawingarea;
     Gtk::EventBox *bigmap_eventbox;
     Gtk::CheckMenuItem *fullscreen_menuitem;
     Gtk::MenuItem *new_map_menuitem;
@@ -81,7 +81,7 @@ class MainWindow: public sigc::trackable
     Gtk::MenuItem *random_unnamed_signs_menuitem;
     Gtk::MenuItem *help_about_menuitem;
     Gtk::HBox *terrain_tile_style_hbox;
-    Gtk::Image *map_image;
+    Gtk::DrawingArea *map_drawingarea;
     std::string current_save_filename;
     Gtk::Table *terrain_type_table;
     Gtk::Label *mouse_position_label;
@@ -200,6 +200,7 @@ class MainWindow: public sigc::trackable
     void auto_select_appropriate_pointer();
 
     bool on_bigmap_exposed(GdkEventExpose *event);
+    bool on_smallmap_exposed(GdkEventExpose *event);
     void on_bigmap_surface_changed(Gtk::Allocation box);
 
     int d_width;

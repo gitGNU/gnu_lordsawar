@@ -155,8 +155,8 @@ class GameWindow: public Decorated
     Gtk::Box *progress_box;
     Gtk::ProgressBar *turn_progressbar;
     Gtk::Label *progress_status_label;
-    Gtk::Image *map_image;
-    Gtk::Image *bigmap_image;
+    Gtk::DrawingArea *map_drawingarea;
+    Gtk::DrawingArea *bigmap_drawingarea;
 
     Gtk::Label *cities_stats_label;
     Gtk::Label *gold_stats_label;
@@ -333,6 +333,7 @@ class GameWindow: public Decorated
     void setup_button(Gtk::Button *, sigc::slot<void> slot, sigc::signal<void, bool> &);
     void on_bigmap_surface_changed(Gtk::Allocation box);
     bool on_bigmap_exposed(GdkEventExpose *event);
+    bool on_smallmap_exposed(GdkEventExpose *event);
 
 public:
     std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_button_images;

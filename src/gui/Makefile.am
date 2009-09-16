@@ -61,7 +61,6 @@ liblwgui_la_SOURCES = \
     stack-info-dialog.cpp stack-info-dialog.h \
     splash-window.cpp splash-window.h \
     image-helpers.cpp image-helpers.h \
-    gtksdl.c gtksdl.h \
     glade-helpers.h \
     input-helpers.h \
     timed-message-dialog.cpp timed-message-dialog.h \

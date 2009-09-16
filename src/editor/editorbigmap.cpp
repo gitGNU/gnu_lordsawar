@@ -45,7 +45,6 @@
 #include "rewardlist.h"
 #include "GraphicsCache.h"
 #include "armysetlist.h"
-#include "sdl-draw.h"
 #include "MapRenderer.h"
 #include "CreateScenario.h"
 

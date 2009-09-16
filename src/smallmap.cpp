@@ -29,7 +29,6 @@
 
 #include "GameScenarioOptions.h"
 #include "smallmap.h"
-#include "sdl-draw.h"
 #include "timing.h"
 #include "GameMap.h"
 #include "Configuration.h"

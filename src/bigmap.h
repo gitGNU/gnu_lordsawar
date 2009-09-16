@@ -92,6 +92,8 @@ class BigMap: public sigc::trackable
     void toggle_grid();
     
     void debugFogTile (int x, int y);
+
+    Glib::RefPtr<Gdk::Pixmap> get_surface() const {return outgoing;}
  protected:
     MapRenderer* d_renderer;
 

@@ -1,3 +1,7 @@
+2009-09-16  Ben Asselstine  <benasselstine@gmail.com>
+
+	* modified code to not render big and small maps in the expose event.
+
 2009-09-15  Ben Asselstine  <benasselstine@gmail.com>
 
 	* migrated all drawing and image code to use gtk+ instead of SDL.
