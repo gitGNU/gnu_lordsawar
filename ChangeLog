@@ -1,6 +1,13 @@
+2009-09-23  Ben Asselstine  <benasselstine@gmail.com>
+
+	* added information to the manual about city bonus, and the statistics 
+	on the main game screen.  Suggested by Mikko V. Viinamäki.
+
 2009-09-16  Ben Asselstine  <benasselstine@gmail.com>
 
 	* modified code to not render big and small maps in the expose event.
+	* fixed the green player's colour.
+	* fixed the new random map dialog to center on the lordsawar window.
 
 2009-09-15  Ben Asselstine  <benasselstine@gmail.com>
 

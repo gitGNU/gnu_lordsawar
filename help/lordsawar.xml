@@ -4,7 +4,7 @@ http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
   <!ENTITY legal SYSTEM "legal.xml">
 <!ENTITY app "<application>LordsAWar!</application>">
 <!ENTITY appversion "0.1.6">
-<!ENTITY date "March 2009">
+<!ENTITY date "September 2009">
 <!ENTITY manrevision "0.1.6">
 ]>
 
@@ -253,7 +253,7 @@ Below the mini-map, there are a set of buttons that allow the player to control 
 <para>
 &app; games can contain a large number of stacks, and it's easy to forget about a stack.  These buttons help the player manage large numbers of stacks.
 Here is what each of the buttons do:
-<orderedlist>
+<itemizedlist>
 <listitem>
 <figure id="mainscreen-move-stack-button-fig">
 <screenshot>
@@ -426,7 +426,78 @@ Clicking this button causes the player to end her turn.  This means that the pla
 Clicking these buttons causes the stack to move in the given direction.  These buttons are tied to the keypad; pressing keys on the keypad activates these buttons.  Often it is preferrable to move stacks by clicking on the map instead of using these movement buttons.
 </para>
 </listitem>
-</orderedlist>
+</itemizedlist>
+</para>
+<para>
+Some statistics appear at the bottom of the screen when a stack is not selected.  The statistics look like this:
+<figure id="mainscreen-stat-icons-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_stat_icons.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot>
+</figure>
+<itemizedlist>
+<listitem>
+Here is what these four values mean:
+<para>
+<figure id="mainscreen-stat-icon-cities-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_stat_icon_cities.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot>
+</figure>
+The number beside this icon is the total number of cities you own.
+</para>
+</listitem>
+<listitem>
+<para>
+<figure id="mainscreen-stat-icon-treasury-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_stat_icon_treasury.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot>
+</figure>
+The number beside this icon is the number of gold pieces in your treasury.  You can use the gold pieces in your treasury to purchase a new army unit production capability in a city.
+</para>
+</listitem>
+<listitem>
+<para>
+<figure id="mainscreen-stat-icon-income-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_stat_icon_income.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot>
+</figure>
+The number beside this icon is the number of gold pieces that your player makes every turn through city taxes (and perhaps a magical item that has a gold bonus).
+</para>
+</listitem>
+<listitem>
+<para>
+<figure id="mainscreen-stat-icon-upkeep-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_stat_icon_upkeep.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot>
+</figure>
+The number beside this icon is the number of gold pieces that your player spends per turn on army unit maintenance (also called upkeep) costs.
+</para>
+</listitem>
+</itemizedlist>
 </para>
 </sect2>
 </sect1>
@@ -768,7 +839,7 @@ When the army unit is fighting in the hills, all of the army units it is fightin
 <listitem>
 <para>Cancel city bonus.</para>
 <para>
-The army unit nullfies the city bonus of any defenders.
+The city bonus is related to the natural defensive abilities of the city.  When a city produces more kinds of units (e.g. up to 4 different kinds), the city bonus is higher for that city.  The city bonus can be entirely nullified by bringing into battle a single army unit that has this particular fighting ability.
 </para>
 </listitem>
 <listitem>
