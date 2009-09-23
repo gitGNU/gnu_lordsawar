@@ -6,6 +6,8 @@
 	* fixed bug where the diplomacy dialog could be opened by a keypress 
 	even though diplomacy was turned off in the scenario.  Reported by 
 	Mikko V. Viinamäki.
+	* history report dialog is now resizable.  Suggested by Mikko V.
+	Viinamäki.
 
 2009-09-16  Ben Asselstine  <benasselstine@gmail.com>
 
