@@ -3,7 +3,7 @@
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
+//  the Free Software Foundation; either version 3 of the License, or
 //  (at your option) any later version.
 //
 //  This program is distributed in the hope that it will be useful,
@@ -99,7 +99,7 @@ class Game
     
     // signals
     sigc::signal<void, Vector<int> > current_map_position;
-    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > smallmap_changed;
+    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap>, Gdk::Rectangle> smallmap_changed;
     sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > bigmap_changed;
     sigc::signal<void, SidebarStats> sidebar_stats_changed;
     sigc::signal<void, std::string> progress_status_changed;

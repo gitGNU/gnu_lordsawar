@@ -2,6 +2,10 @@
 
 	* added information to the manual about city bonus, and the statistics 
 	on the main game screen.  Suggested by Mikko V. Viinamäki.
+	* gplv2 -> gplv3.
+	* fixed bug where the diplomacy dialog could be opened by a keypress 
+	even though diplomacy was turned off in the scenario.  Reported by 
+	Mikko V. Viinamäki.
 
 2009-09-16  Ben Asselstine  <benasselstine@gmail.com>
 

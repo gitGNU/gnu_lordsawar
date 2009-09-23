@@ -8,7 +8,7 @@
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
+//  the Free Software Foundation; either version 3 of the License, or
 //  (at your option) any later version.
 //
 //  This program is distributed in the hope that it will be useful,
@@ -363,58 +363,6 @@ struct rgb_shift Player::getMaskColorShifts() const
     shifts.g = g;
     shifts.b = b;
     return shifts;
-}
-
-Gdk::Color Player::getMaskColor() const
-{
-    // This is a bit tricky. The color values we return here encode additional
-    // shifts that are performed when getting the color. I.e. a color value for
-    // red of 8 means that the red color is completely ignored.
-
-    // For each color component, find the n where 2^n best describes the color.
-    // The mask value then is (8-n).
-    Gdk::Color c;
-
-    guint32 r,g,b;
-    for (int i = 8, diff = 257; i > 0; i--)
-    {
-        int color = 1<<i;
-        int tmp_diff = abs(int(d_color.get_red_p() *255.0) - color);
-
-	r = 8 - (i + 1);
-
-        if (diff < tmp_diff)
-            break;
-        else
-            diff = tmp_diff;
-    }
-        
-    for (int i = 8, diff = 257; i > 0; i--)
-    {
-        int color = 1<<i;
-        int tmp_diff = abs(int(d_color.get_green_p() *255.0) - color);
-	g = 8 - (i + 1);
-
-        if (diff < tmp_diff)
-            break;
-        else
-            diff = tmp_diff;
-    }
-        
-    for (int i = 8, diff = 257; i > 0; i--)
-    {
-        int color = 1<<i;
-        int tmp_diff = abs(int(d_color.get_blue_p()*255.0) - color);
-	b = 8 - (i + 1);
-
-        if (diff < tmp_diff)
-            break;
-        else
-            diff = tmp_diff;
-    }
-        
-    c.set_rgb_p(r/255.0,g/255.0,b/255.0);
-    return c;
 }
 
 void Player::addGold(int gold)

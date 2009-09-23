@@ -3,7 +3,7 @@
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
+//  the Free Software Foundation; either version 3 of the License, or
 //  (at your option) any later version.
 //
 //  This program is distributed in the hope that it will be useful,
@@ -1039,7 +1039,7 @@ void MainWindow::on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
       window->invalidate_rect(r, true);
     }
 }
-void MainWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
+void MainWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map, Gdk::Rectangle r)
 {
   int width = 0;
   int height = 0;
@@ -1050,8 +1050,7 @@ void MainWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
   Glib::RefPtr<Gdk::Window> window = map_drawingarea->get_window();
   if (window)
     {
-      Gdk::Rectangle r = Gdk::Rectangle(0, 0, width, height);
-      window->invalidate_rect(r, true);
+      window->invalidate_rect(r, false);
     }
   //map_image->property_pixmap() = map;
   //map.clear();

@@ -163,7 +163,7 @@
 		<player>
 			<d_id>1</d_id>
 			<d_name>The Greffians</d_name>
-			<d_color>80 193 28</d_color>
+			<d_color>80 195 28</d_color>
 			<d_armyset>1</d_armyset>
 			<d_gold>1000</d_gold>
 			<d_dead>false</d_dead>

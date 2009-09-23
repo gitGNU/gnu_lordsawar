@@ -3,7 +3,7 @@
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
+//  the Free Software Foundation; either version 3 of the License, or
 //  (at your option) any later version.
 //
 //  This program is distributed in the hope that it will be useful,
@@ -190,7 +190,7 @@ class MainWindow: public sigc::trackable
     void randomize_ruin(Ruin *ruin);
 
     // map callbacks
-    void on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    void on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map, Gdk::Rectangle r);
     void on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map);
     void on_objects_selected(std::vector<UniquelyIdentified *> objects);
     void on_mouse_on_tile(Vector<int> tile);

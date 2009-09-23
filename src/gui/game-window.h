@@ -3,7 +3,7 @@
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
+//  the Free Software Foundation; either version 3 of the License, or
 //  (at your option) any later version.
 //
 //  This program is distributed in the hope that it will be useful,
@@ -275,7 +275,7 @@ class GameWindow: public Decorated
     void on_sidebar_stats_changed(SidebarStats s);
     void on_progress_status_changed(std::string status);
     void on_progress_changed();
-    void on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    void on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map, Gdk::Rectangle r);
     void on_smallmap_slid(Rectangle view);
     void on_bigmap_cursor_changed(GraphicsCache::CursorType cursor);
     void on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map);

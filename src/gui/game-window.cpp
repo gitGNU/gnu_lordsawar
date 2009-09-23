@@ -3,7 +3,7 @@
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
+//  the Free Software Foundation; either version 3 of the License, or
 //  (at your option) any later version.
 //
 //  This program is distributed in the hope that it will be useful,
@@ -1638,6 +1638,8 @@ void GameWindow::on_diplomacy_report_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
+  if (GameScenario::s_diplomacy == false)
+    return;
   DiplomacyReportDialog d(Playerlist::getActiveplayer());
   d.set_parent_window(*window.get());
   d.run();
@@ -1886,7 +1888,7 @@ void GameWindow::on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
       window->invalidate_rect(r, true);
     }
 }
-void GameWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
+void GameWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map, Gdk::Rectangle r)
 {
   int width = 0;
   int height = 0;
@@ -1896,10 +1898,7 @@ void GameWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
       
   Glib::RefPtr<Gdk::Window> window = map_drawingarea->get_window();
   if (window)
-    {
-      Gdk::Rectangle r = Gdk::Rectangle(0, 0, width, height);
-      window->invalidate_rect(r, true);
-    }
+    window->invalidate_rect(r, true);
   //map_image->property_pixmap() = map;
   //map.clear();
   //still resides at smallmap->get_surface()
@@ -1907,7 +1906,8 @@ void GameWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
 
 void GameWindow::on_smallmap_slid(Rectangle view)
 {
-  on_smallmap_changed(game->get_smallmap().get_surface());
+  on_smallmap_changed(game->get_smallmap().get_surface(),
+		      Gdk::Rectangle(view.x, view.y, view.w, view.h));
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 }
 

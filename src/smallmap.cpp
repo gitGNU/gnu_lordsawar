@@ -7,7 +7,7 @@
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
+//  the Free Software Foundation; either version 3 of the License, or
 //  (at your option) any later version.
 //
 //  This program is distributed in the hope that it will be useful,
@@ -122,7 +122,9 @@ void SmallMap::after_draw()
       draw_cities(false);
       draw_selection();
     }
-  map_changed.emit(surface);
+    int width = 0, height = 0;
+    surface->get_size(width, height);
+    map_changed.emit(surface, Gdk::Rectangle(0, 0, width, height));
 }
 
 void SmallMap::mouse_button_event(MouseButtonEvent e)
@@ -201,6 +203,8 @@ void SmallMap::blank()
 	pos = mapToSurface(pos);
 	draw_filled_rect(pos.x, pos.y, size, size, fog_color);
       }
-  map_changed.emit(surface);
+  int width = 0, height = 0;
+  surface->get_size(width, height);
+  map_changed.emit(surface, Gdk::Rectangle(0, 0, width, height));
 }
 

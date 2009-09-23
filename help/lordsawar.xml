@@ -380,7 +380,7 @@ Clicking this button causes the stack to explore a ruin or temple.
 When exploring a temple, the stack needs to be on a tile that has a temple; and clicking this button will cause the stack to be blessed (all army units will receive a bonus of 1 strength point).
 </para>
 <para>
-When exploring a ruin, the stack must contain a hero.  Exploring a ruin means the hero will fight a monster in the ruin, and if successful will be given a reward.
+When exploring a ruin, the stack must contain a hero.  Exploring a ruin means the hero will fight a monster in the ruin, and if successful will be given a reward.  A hero's strength and the size of the accompanying stack that the hero attacks with are factors that determine success.
 </para>
 </para>
 </listitem>

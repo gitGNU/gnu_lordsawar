@@ -3,7 +3,7 @@
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
+//  the Free Software Foundation; either version 3 of the License, or
 //  (at your option) any later version.
 //
 //  This program is distributed in the hope that it will be useful,
@@ -246,6 +246,7 @@ void SplashWindow::on_new_network_game_clicked()
 	  if (filename == "random.map")
 	    {
 	      NewRandomMapDialog nrmd;
+	      nrmd.set_parent_window(*window.get());
 	      int res = nrmd.run();
 	      if (res == Gtk::RESPONSE_ACCEPT)
 		{
@@ -282,6 +283,7 @@ void SplashWindow::on_new_pbm_game_clicked()
   if (filename == "random.map")
     {
       NewRandomMapDialog nrmd;
+      nrmd.set_parent_window(*window.get());
       int res = nrmd.run();
       if (res == Gtk::RESPONSE_ACCEPT)
 	{
@@ -315,6 +317,7 @@ void SplashWindow::on_load_scenario_clicked()
       if (filename == "random.map")
 	{
 	  NewRandomMapDialog nrmd;
+	  nrmd.set_parent_window(*window.get());
 	  int res = nrmd.run();
 	  if (res == Gtk::RESPONSE_ACCEPT)
 	    {

@@ -25,7 +25,7 @@
     </shield>
     <shield>
         <d_owner>1</d_owner>
-        <d_color>80 193 28</d_color>
+        <d_color>80 195 28</d_color>
         <shieldstyle>
             <d_type>ShieldStyle::SMALL</d_type>
             <d_image>small-shield</d_image>

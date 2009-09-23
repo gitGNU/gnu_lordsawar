@@ -8,7 +8,7 @@
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or
+//  the Free Software Foundation; either version 3 of the License, or
 //  (at your option) any later version.
 //
 //  This program is distributed in the hope that it will be useful,
@@ -404,7 +404,6 @@ class Player: public sigc::trackable
 	Gdk::Color getColor() const {return d_color;}
 
         //! Returns the player's colour suitable for applying it to masks.
-	Gdk::Color getMaskColor() const;
 	struct rgb_shift getMaskColorShifts() const;
 
         //! Returns the amount of gold pieces the player has.

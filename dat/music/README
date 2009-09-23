@@ -5,7 +5,7 @@ hero.ogg - Copyright (C) 2007 Max Von Juntz
 intro.ogg - Copyright (C) 
 victory.ogg - Copyright (C) 2006 Max Von Juntz
 
-These music files are licensed under the GNU General Public License version 2 or later.  They were created as part of the Freelords project (sf.net/projects/freelords).
+These music files are licensed under the GNU General Public License version 3 or later.  They were created as part of the Freelords project (sf.net/projects/freelords).
 
 The authoritative copyright notices are held in the comments section of the music files.  Use the `ogginfo' program from the vorbis-tools software package located at downloads.xiph.org/releases/vorbis/ to read the comments in the music files.
 
