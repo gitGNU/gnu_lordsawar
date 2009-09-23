@@ -59,6 +59,9 @@ FightOrderDialog::FightOrderDialog(Player *theplayer)
         addArmyType(*it);
       }
     armies_treeview->set_reorderable(true);
+    xml->get_widget("reverse_button", reverse_button);
+    reverse_button->signal_clicked().connect
+      (sigc::mem_fun (*this, &FightOrderDialog::on_reverse_button_clicked));
 }
 
 void FightOrderDialog::set_parent_window(Gtk::Window &parent)
@@ -106,4 +109,13 @@ void FightOrderDialog::addArmyType(guint32 army_type)
     (*i)[armies_columns.image] = gc->getArmyPic(player->getArmyset(),
                                            army_type, player, NULL);
     (*i)[armies_columns.army_type] = a->getTypeId();
+}
+
+void FightOrderDialog::on_reverse_button_clicked()
+{
+  std::list<int> new_order;
+  Gtk::TreeModel::Children kids = armies_list->children();
+  for (unsigned int i = 0; i < kids.size(); i++)
+    new_order.push_back(kids.size() - i - 1);
+  armies_list->reorder(new_order);
 }

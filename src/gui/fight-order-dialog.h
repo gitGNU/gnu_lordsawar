@@ -47,6 +47,7 @@ class FightOrderDialog: public Decorated
 
     Player *player;
     Gtk::TreeView *armies_treeview;
+    Gtk::Button *reverse_button;
 
     class ArmiesColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -61,6 +62,7 @@ class FightOrderDialog: public Decorated
     Glib::RefPtr<Gtk::ListStore> armies_list;
  private:
     void addArmyType(guint32 army_type);
+    void on_reverse_button_clicked();
 };
 
 #endif
