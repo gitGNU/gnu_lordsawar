@@ -180,7 +180,7 @@ void Citylist::nextTurn(Player* p)
 
 static bool isFogged(void *object)
 {
-  return ((City*)object)->isFogged(Playerlist::getActiveplayer());
+  return ((City*)object)->isVisible(Playerlist::getActiveplayer()) == false;
 }
 
 static bool isBurnt(void *object)

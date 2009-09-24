@@ -51,7 +51,7 @@ void HistoryMap::drawCities()
   for (; it != d_clist->end(); it++)
   {
     Glib::RefPtr<Gdk::Pixbuf> tmp;
-      if ((*it)->isFogged(getViewingPlayer()))
+      if ((*it)->isVisible(getViewingPlayer()) == false)
         continue;
       if ((*it)->isBurnt() == true)
         tmp = gc->getSmallRuinedCityPic();

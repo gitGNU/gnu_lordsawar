@@ -75,11 +75,16 @@ class LocationBox : public Immovable
      */
     Stack *addArmy(Army *army) const;
 
-    //! Returns whether or not this location obscured from view on a hidden map.
+    //! Returns whether this location is at least partially viewable.
     /**
+     * This method returns true if the location has parts that are completely
+     * defogged.
+     * If the location is completely fogged or partially fogged then this 
+     * method returns false.
+     *
      * @param player The player whose map to query.
      */
-    bool isFogged(Player *player);
+    bool isVisible(Player *player);
 
     //! Unobscures the view of this location in the active player's FogMap.
     void deFog();

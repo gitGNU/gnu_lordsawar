@@ -438,7 +438,7 @@ void OverviewMap::draw(Player *player)
         Ruin *r = *it;
         if (r->isHidden() == true && r->getOwner() != d_player)
           continue;
-        if (r->isFogged(d_player))
+        if (r->isVisible(d_player) == false)
           continue;
         Vector<int> pos = r->getPos();
         pos = mapToSurface(pos);
@@ -453,7 +453,7 @@ void OverviewMap::draw(Player *player)
         it != Templelist::getInstance()->end(); it++)
     {
       Temple *t = *it;
-        if (t->isFogged(d_player))
+        if (t->isVisible(d_player) == false)
           continue;
         Vector<int> pos = t->getPos();
         pos = mapToSurface(pos);
@@ -536,7 +536,7 @@ void OverviewMap::draw_cities (bool all_razed)
   {
       City *c = *it;
       Glib::RefPtr<Gdk::Pixbuf> tmp;
-      if (c->isFogged(d_player))
+      if (c->isVisible(d_player) == false)
         continue;
       if (c->isBurnt() == true || all_razed == true)
         tmp = gc->getSmallRuinedCityPic();

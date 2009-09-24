@@ -238,6 +238,16 @@ bool FogMap::isFogged(Vector <int> pos, Player *player)
   return false;
 }
 
+bool FogMap::isClear(Vector <int> pos, Player *player)
+{
+  //is this tile visible, or not?
+  FogMap *fogmap = player->getFogMap();
+  if (fogmap->getFogTile(pos) == FogMap::OPEN)
+    return true;
+
+  return false;
+}
+
 void FogMap::alterFog(SightMap *sightmap)
 {
   return alterFogRectangle(sightmap->pos, sightmap->h, sightmap->w, OPEN);

@@ -47,7 +47,7 @@ void RuinMap::draw_ruins (bool show_selected)
       if ((*it)->isHidden() == true && 
           (*it)->getOwner() != Playerlist::getInstance()->getActiveplayer())
         continue;
-      if ((*it)->isFogged(getViewingPlayer()) == true)
+      if ((*it)->isVisible(getViewingPlayer()) == false)
         continue;
       Glib::RefPtr<Gdk::Pixbuf> tmp;
       if ((*it)->isSearched())
@@ -91,7 +91,7 @@ void RuinMap::draw_temples (bool show_selected)
   for (Templelist::iterator it = Templelist::getInstance()->begin();
       it != Templelist::getInstance()->end(); it++)
   {
-      if ((*it)->isFogged(getViewingPlayer()) == true)
+      if ((*it)->isVisible(getViewingPlayer()) == false)
         continue;
   
       Vector<int> pos = (*it)->getPos();

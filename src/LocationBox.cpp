@@ -106,7 +106,7 @@ Stack* LocationBox::getFreeStack(Player *p) const
     return NULL;
 }
 
-bool LocationBox::isFogged(Player *player)
+bool LocationBox::isVisible(Player *player)
 {
   for (unsigned int i = 0; i < d_size; i++)
     for (unsigned int j = 0; j < d_size; j++)
@@ -114,12 +114,11 @@ bool LocationBox::isFogged(Player *player)
         Vector<int> pos;
         pos.x = getPos().x + i;
         pos.y = getPos().y + j;
-	if (FogMap::isFogged(pos, player))
-          return true;
+	if (FogMap::isClear(pos, player))
+	  return true;
       }
   return false;
 }
-
 void LocationBox::deFog()
 {
   Player *p = Playerlist::getActiveplayer();

@@ -55,7 +55,7 @@ void VectorMap::draw_planted_standard(Vector<int> flag)
 
 void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
 {
-  if (c->isFogged(getViewingPlayer()))
+  if (c->isVisible(getViewingPlayer()) == false)
     return;
   GraphicsCache *gc = GraphicsCache::getInstance();
   Glib::RefPtr<Gdk::Pixbuf> tmp;
@@ -161,7 +161,7 @@ void VectorMap::draw_lines (std::list<City*> srcs, std::list<City*> dests)
     {
       if ((*it)->getVectoring() == Vector<int>(-1, -1))
 	continue;
-      if ((*it)->isFogged(getViewingPlayer()) == true)
+      if ((*it)->isVisible(getViewingPlayer()) == false)
         continue;
       City *c = cl->getNearestObjectBefore((*it)->getVectoring(), 2);
       if (c)
@@ -289,7 +289,7 @@ void VectorMap::after_draw()
       // draw lines from origination to city/planted standard
       for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
 	{
-	  if ((*it)->isFogged(getViewingPlayer()) == true)
+	  if ((*it)->isVisible(getViewingPlayer()) == false)
 	    continue;
 	  if ((*it)->getOwner() != city->getOwner())
 	    continue;
