@@ -1,3 +1,7 @@
+2009-09-24  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed bug #27509.  semi-fogged cities now appear on the mini map.
+
 2009-09-23  Ben Asselstine  <benasselstine@gmail.com>
 
 	* added information to the manual about city bonus, and the statistics 
@@ -8,6 +12,8 @@
 	Mikko V. Viinamäki.
 	* history report dialog is now resizable.  Suggested by Mikko V.
 	Viinamäki.
+	* added reverse order button to fight order dialog.  Suggested by
+	Mikko V.  Viinamäki.
 
 2009-09-16  Ben Asselstine  <benasselstine@gmail.com>
 
