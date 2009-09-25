@@ -6,6 +6,7 @@
 	when playing with a hidden map.
 	* fixed bug that prevented the game window from being closed when 
 	playing with random turns, and a human getting the first turn.
+	* added path-setting when pressing CTRL + left-click.
 
 2009-09-24  Ben Asselstine  <benasselstine@gmail.com>
 
