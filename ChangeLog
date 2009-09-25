@@ -1,6 +1,12 @@
+2009-09-25  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed bug #27508.  random cities now have unique names.  Reported by
+	Mikko V. Viinamäki.
+
 2009-09-24  Ben Asselstine  <benasselstine@gmail.com>
 
 	* fixed bug #27509.  semi-fogged cities now appear on the mini map.
+	Reported by Mikko V. Viinamäki.
 
 2009-09-23  Ben Asselstine  <benasselstine@gmail.com>
 
