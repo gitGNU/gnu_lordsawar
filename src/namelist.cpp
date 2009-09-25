@@ -66,6 +66,11 @@ std::string NameList::popRandomName()
     return "";
   int randno = rand() % size();
   name = (*this)[randno];
+
+  NameList::iterator it = std::find(begin(), end(), name);
+  if (it != end())
+    erase(it);
+
   return name;
 }
 

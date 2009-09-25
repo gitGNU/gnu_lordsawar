@@ -58,7 +58,10 @@ CreateScenarioRandomize::~CreateScenarioRandomize()
 
 std::string CreateScenarioRandomize::popRandomCityName()
 {
-  return _(d_citynames->popRandomName().c_str());
+  std::string name = d_citynames->popRandomName().c_str();
+  if (name == "")
+    return City::getDefaultName();
+  return name;
 }
 
 void CreateScenarioRandomize::pushRandomCityName(std::string name)
@@ -68,7 +71,10 @@ void CreateScenarioRandomize::pushRandomCityName(std::string name)
 
 std::string CreateScenarioRandomize::popRandomRuinName()
 {
-  return _(d_ruinnames->popRandomName().c_str());
+  std::string name = d_ruinnames->popRandomName().c_str();
+  if (name == "")
+    return Ruin::getDefaultName();
+  return name;
 }
 
 void CreateScenarioRandomize::pushRandomRuinName(std::string name)
@@ -78,7 +84,10 @@ void CreateScenarioRandomize::pushRandomRuinName(std::string name)
 
 std::string CreateScenarioRandomize::popRandomTempleName()
 {
-  return _(d_templenames->popRandomName().c_str());
+  std::string name = d_templenames->popRandomName().c_str();
+  if (name == "")
+    return Temple::getDefaultName();
+  return name;
 }
 
 void CreateScenarioRandomize::pushRandomTempleName(std::string name)
@@ -88,7 +97,7 @@ void CreateScenarioRandomize::pushRandomTempleName(std::string name)
 
 std::string CreateScenarioRandomize::popRandomSignpost()
 {
-  return _(d_signposts->popRandomName().c_str());
+  return d_signposts->popRandomName().c_str();
 }
 
 void CreateScenarioRandomize::pushRandomSignpost(std::string name)
