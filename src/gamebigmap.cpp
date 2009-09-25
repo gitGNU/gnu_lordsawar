@@ -211,6 +211,13 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		    }
 		}
 	    }
+	  else if (d_cursor == GraphicsCache::GOTO_ARROW)
+	    {
+	      //set in a course, mr crusher.
+	      stack->getPath()->calculate(stack, tile);
+	      draw();
+	      return;
+	    }
 	  Vector<int> p;
 	  p.x = tile.x; p.y = tile.y;
 
@@ -375,7 +382,13 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
   else if (e.button == MouseButtonEvent::LEFT_BUTTON
       && e.state == MouseButtonEvent::RELEASED)
     {
-      if (mouse_state == DRAGGING_STACK)
+      if (mouse_state == DRAGGING_ENDPOINT)
+	{
+	  mouse_state = NONE;
+	  d_cursor = GraphicsCache::FEET;
+	  cursor_changed.emit(d_cursor);
+	}
+      else if (mouse_state == DRAGGING_STACK)
 	{
 	  Stack* stack = Playerlist::getActiveplayer()->getActivestack();
 	  //march a dragged stack!
@@ -457,13 +470,6 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	  switch(mouse_state)
 	    {
 
-	    case DRAGGING_STACK:
-	      //no-op
-	      break;
-
-	    case DRAGGING_MAP:
-	      break;
-
 	    case SHOWING_CITY:
 	      city_queried.emit(0, true);
 	      break;
@@ -484,6 +490,9 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	      stack_queried.emit(0);
 	      break;
 
+	    case DRAGGING_ENDPOINT:
+	    case DRAGGING_STACK:
+	    case DRAGGING_MAP:
 	    case NONE:
 	      Stack* stack = Playerlist::getActiveplayer()->getActivestack();
 	      if (stack)
@@ -551,7 +560,8 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
     {
       d_cursor = GraphicsCache::HAND;
     }
-  else if (stack && mouse_state == DRAGGING_STACK)
+  else if (stack && 
+	   (mouse_state == DRAGGING_STACK || mouse_state == DRAGGING_ENDPOINT))
     {
       d_cursor = GraphicsCache::GOTO_ARROW;
     }
@@ -650,6 +660,8 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 		    }
 		}
 	    }
+	  if (d_cursor == GraphicsCache::FEET && is_control_key_down())
+	    d_cursor = GraphicsCache::GOTO_ARROW;
 	}
     }
   else
@@ -719,8 +731,14 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
       && (mouse_state == NONE || mouse_state == SHOWING_STACK) && 
       stack && stack->getPos() == tile && active->getFogMap()->isCompletelyObscuredFogTile(tile) == false && d_cursor != GraphicsCache::HAND)
     {
-      //initial drag
+      //initial dragging of stack from it's tile
       mouse_state = DRAGGING_STACK;
+    }
+  else if (e.pressed[MouseMotionEvent::LEFT_BUTTON] && stack &&
+	   d_cursor == GraphicsCache::GOTO_ARROW && mouse_state == NONE)
+    {
+      //initial dragging of endpoint from it's tile
+      mouse_state = DRAGGING_ENDPOINT;
     }
   else if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
 	   && (mouse_state == NONE || mouse_state == DRAGGING_MAP) && d_cursor == GraphicsCache::HAND)
@@ -764,7 +782,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 
   // drag stack with left mouse button
   if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
-      && (mouse_state == DRAGGING_STACK) && 
+      && (mouse_state == DRAGGING_STACK || mouse_state == DRAGGING_ENDPOINT) && 
       active->getFogMap()->isCompletelyObscuredFogTile(tile) == false)
     {
       //subsequent dragging
@@ -787,11 +805,13 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	  set_view (new_view);
 	  view_changed.emit(view);
 	}
+      mouse_state_enum orig_state = mouse_state;
       mouse_state = NONE;
       determine_mouse_cursor(stack, tile);
-      mouse_state = DRAGGING_STACK;
+      mouse_state = orig_state;
       if (d_cursor == GraphicsCache::FEET ||
 	  d_cursor == GraphicsCache::SHIP || 
+	  d_cursor == GraphicsCache::GOTO_ARROW || 
 	  d_cursor == GraphicsCache::TARGET)
 	{
 	  stack->getPath()->calculate(stack, tile);
@@ -848,7 +868,8 @@ void GameBigMap::after_draw()
       bool canMoveThere = true;
       list<Vector<int>*>::iterator end = stack->getPath()->end();
       //if we're dragging, we don't draw the last waypoint circle
-      if (stack->getPath()->size() > 0 && mouse_state == DRAGGING_STACK)
+      if (stack->getPath()->size() > 0 && 
+	  (mouse_state == DRAGGING_STACK || mouse_state == DRAGGING_ENDPOINT))
 	end--;
       for (list<Vector<int>*>::iterator it = stack->getPath()->begin();
 	   it != end; it++)
@@ -869,7 +890,8 @@ void GameBigMap::after_draw()
 
 	}
 
-      if (mouse_state == DRAGGING_STACK)
+      if (mouse_state == DRAGGING_STACK || mouse_state == DRAGGING_ENDPOINT 
+	  || d_cursor == GraphicsCache::GOTO_ARROW)
 	{
 	  list<Vector<int>*>::iterator it = stack->getPath()->end();
 	  it--;
@@ -947,39 +969,49 @@ void GameBigMap::set_control_key_down (bool down)
   Player *active = Playerlist::getActiveplayer();
   if (active->getFogMap()->isCompletelyObscuredFogTile(current_tile) == true)
     return;
-  if (GameMap::getInstance()->getTile(current_tile)->getBuilding() != 
-      Maptile::CITY)
-      return;
   Stack* active_stack = active->getActivestack();
-  if (active_stack)
-      return;
   //if the key has been released, just show what we'd normally show.
   if (control_key_is_down == false)
     {
       determine_mouse_cursor(active_stack, current_tile);
       return;
     }
-  Stack* stack;
-  stack = Playerlist::getActiveplayer()->getStacklist()->getObjectAt(current_tile);
-  if (!stack)
-    return;
-
-  if (d_cursor == GraphicsCache::TARGET)
+  if (!active_stack)
     {
-      City *city = Citylist::getInstance()->getObjectAt(current_tile);
-      if (city->isBurnt() == false)
+      if (GameMap::getInstance()->getTile(current_tile)->getBuilding() != 
+	  Maptile::CITY)
+	return;
+
+      Stack* stack;
+      stack = Playerlist::getActiveplayer()->getStacklist()->getObjectAt(current_tile);
+      if (!stack)
+	return;
+
+      if (d_cursor == GraphicsCache::TARGET)
 	{
-	  d_cursor = GraphicsCache::ROOK;
-	  cursor_changed.emit(d_cursor);
+	  City *city = Citylist::getInstance()->getObjectAt(current_tile);
+	  if (city->isBurnt() == false)
+	    {
+	      d_cursor = GraphicsCache::ROOK;
+	      cursor_changed.emit(d_cursor);
+	    }
+	}
+      else if (d_cursor == GraphicsCache::HAND && 
+	       d_see_opponents_production == true)
+	{
+	  City *city = Citylist::getInstance()->getObjectAt(current_tile);
+	  if (city->isBurnt() == false)
+	    {
+	      d_cursor = GraphicsCache::ROOK;
+	      cursor_changed.emit(d_cursor);
+	    }
 	}
     }
-  else if (d_cursor == GraphicsCache::HAND &&
-	   d_see_opponents_production == true)
+  else
     {
-      City *city = Citylist::getInstance()->getObjectAt(current_tile);
-      if (city->isBurnt() == false)
+      if (d_cursor == GraphicsCache::FEET)
 	{
-	  d_cursor = GraphicsCache::ROOK;
+	  d_cursor = GraphicsCache::GOTO_ARROW;
 	  cursor_changed.emit(d_cursor);
 	}
     }
@@ -1068,4 +1100,3 @@ void GameBigMap::set_shift_key_down (bool down)
 	}
     }
 }
-

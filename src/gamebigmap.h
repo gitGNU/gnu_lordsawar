@@ -89,10 +89,10 @@ class GameBigMap: public BigMap
     
     bool input_locked;
 	
-    enum {
+    enum mouse_state_enum {
 	NONE, DRAGGING_MAP, SHOWING_CITY, SHOWING_RUIN,
 	SHOWING_TEMPLE, SHOWING_SIGNPOST, SHOWING_STACK,
-	DRAGGING_STACK
+	DRAGGING_STACK, DRAGGING_ENDPOINT
     } mouse_state;
     bool shift_key_is_down;
     bool control_key_is_down;

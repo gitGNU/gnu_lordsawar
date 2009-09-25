@@ -138,7 +138,13 @@ GameWindow::GameWindow()
       (sigc::mem_fun(*this, &GameWindow::on_delete_event));
 
     xml->get_widget("menubar", menubar);
-    //xml->get_widget("bigmap_container", bigmap_container);
+    xml->get_widget("bigmap_drawingarea", bigmap_drawingarea);
+    //bigmap_drawingarea->set_double_buffered(false);
+    bigmap_drawingarea->signal_expose_event().connect
+      (sigc::mem_fun(*this, &GameWindow::on_bigmap_exposed));
+    bigmap_drawingarea->signal_size_allocate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_bigmap_surface_changed));
+    bigmap_drawingarea->grab_focus();
     xml->get_widget("bigmap_eventbox", bigmap_eventbox);
     bigmap_eventbox->add_events(Gdk::KEY_PRESS_MASK | 
 		  Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
@@ -179,12 +185,6 @@ GameWindow::GameWindow()
     //map_drawingarea->set_double_buffered(false);
     map_drawingarea->signal_expose_event().connect
       (sigc::mem_fun(*this, &GameWindow::on_smallmap_exposed));
-    xml->get_widget("bigmap_drawingarea", bigmap_drawingarea);
-    //bigmap_drawingarea->set_double_buffered(false);
-    bigmap_drawingarea->signal_expose_event().connect
-      (sigc::mem_fun(*this, &GameWindow::on_bigmap_exposed));
-    bigmap_drawingarea->signal_size_allocate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_bigmap_surface_changed));
     xml->get_widget("map_eventbox", map_eventbox);
     xml->get_widget("map_container", map_container);
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
@@ -443,38 +443,6 @@ void GameWindow::hide()
 
 void GameWindow::init(int width, int height)
 {
-    //sdl_widget
-	//= Gtk::manage(new Gtk::Image());
-
-    //sdl_widget->set_flags(Gtk::CAN_FOCUS);
-
-    //sdl_widget->grab_focus();
-    //sdl_widget->add_events(Gdk::KEY_PRESS_MASK | 
-		  //Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
-	          //Gdk::POINTER_MOTION_MASK);
-
-    //sdl_widget->signal_key_press_event().connect(
-	//sigc::mem_fun(*this, &GameWindow::on_sdl_key_event));
-    //sdl_widget->signal_key_release_event().connect(
-	//sigc::mem_fun(*this, &GameWindow::on_sdl_key_event));
-    //sdl_widget->signal_button_press_event().connect(
-	//sigc::mem_fun(*this, &GameWindow::on_sdl_mouse_button_event));
-    //sdl_widget->signal_button_release_event().connect(
-	//sigc::mem_fun(*this, &GameWindow::on_sdl_mouse_button_event));
-    //sdl_widget->signal_motion_notify_event().connect(
-	//sigc::mem_fun(*this, &GameWindow::on_sdl_mouse_motion_event));
-    //sdl_widget->signal_scroll_event().connect
-       //(sigc::mem_fun(*this, &GameWindow::on_sdl_scroll_event));
-    
-    // connect to the special signal that signifies that a new surface has been
-    // generated and attached to the widget
-    //g_signal_connect(G_OBJECT(sdl_widget->gobj()), "surface-attached",
-		     //G_CALLBACK(surface_attached_helper), this);
-    
-    //sdl_container->add(*sdl_widget);
-
-	    
-
 }
 
 void GameWindow::new_network_game(GameScenario *game_scenario, NextTurn *next_turn)
@@ -957,7 +925,6 @@ void GameWindow::on_bigmap_cursor_changed(GraphicsCache::CursorType cursor)
 
 bool GameWindow::on_bigmap_key_event(GdkEventKey *e)
 {
-
   if (e->keyval == GDK_Shift_L || e->keyval == GDK_Shift_R)
     game->get_bigmap().set_shift_key_down (e->type == GDK_KEY_PRESS);
   if (e->keyval == GDK_Control_L || e->keyval == GDK_Control_R)
