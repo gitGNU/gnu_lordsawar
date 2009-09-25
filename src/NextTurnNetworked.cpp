@@ -266,6 +266,9 @@ void NextTurnNetworked::finishRound()
     }
 
   if (d_random_turns)
-    plist->randomizeOrder();
+    {
+      plist->randomizeOrder();
+      nextPlayer();
+    }
 
 }

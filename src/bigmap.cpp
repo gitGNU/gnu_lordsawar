@@ -775,19 +775,23 @@ void BigMap::draw_buffer(Rectangle map_view, Glib::RefPtr<Gdk::Pixmap> surface, 
 void BigMap::blank ()
 {
   // fog it up
+  Gdk::Color blank_color = Gdk::Color();
+  blank_color.set_rgb_p(0,0,0);
+  buffer_gc->set_rgb_fg_color(blank_color);
+  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
   for (int x = buffer_view.x; x < buffer_view.x + buffer_view.w; x++)
     {
       for (int y = buffer_view.y; y < buffer_view.y + buffer_view.h; y++)
 	{
 	  if (x < GameMap::getWidth() && y < GameMap::getHeight())
 	    {
-	      Vector<int> pos;
-	      pos.x = x;
-	      pos.y = y;
-	      drawFogTile (x, y);
+	      Vector<int> p = tile_to_buffer_pos(Vector<int>(x, y));
+	      buffer->draw_rectangle(buffer_gc, true, p.x, p.y, 
+				     tilesize, tilesize);
 	    }
 	}
     }
+  draw (false);
 }
 
 //here we want to magnify the entire buffer, not a subset

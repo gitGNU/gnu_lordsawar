@@ -1076,6 +1076,7 @@ void Game::init_turn_for_player(Player* p)
       update_sidebar_stats();
       update_stack_info();
       update_control_panel();
+      redraw();
 
       // update the diplomacy icon if we've received a proposal
       bool proposal_received = false;

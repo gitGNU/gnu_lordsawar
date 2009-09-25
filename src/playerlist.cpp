@@ -563,7 +563,7 @@ bool Playerlist::inOrderOfId(const Player *lhs, const Player *rhs)
 void Playerlist::randomizeOrder()
 {
   sort(randomly);
-  d_activeplayer = getFirstLiving();
+  d_activeplayer = NULL;
 }
 
 void Playerlist::nextRound(bool diplomacy, bool *surrender_already_offered)

@@ -182,6 +182,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	/**
 	 * The purpose of randomzing the Playerlist is to implement
 	 * random turns.
+	 * Note: This method does not set the active player.
 	 */
 	//! Randomize the order of the players in the list.
 	void randomizeOrder();

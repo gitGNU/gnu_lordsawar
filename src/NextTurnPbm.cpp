@@ -231,6 +231,9 @@ void NextTurnPbm::finishRound()
     }
     
   if (d_random_turns)
-    plist->randomizeOrder();
+    {
+      plist->randomizeOrder();
+      nextPlayer();
+    }
 
 }
