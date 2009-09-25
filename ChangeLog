@@ -2,6 +2,10 @@
 
 	* fixed bug #27508.  random cities now have unique names.  Reported by
 	Mikko V. Viinamäki.
+	* fixed bigmap and smallmap to go blank prior to other players turns
+	when playing with a hidden map.
+	* fixed bug that prevented the game window from being closed when 
+	playing with random turns, and a human getting the first turn.
 
 2009-09-24  Ben Asselstine  <benasselstine@gmail.com>
 
