@@ -45,12 +45,8 @@ void VectorMap::draw_planted_standard(Vector<int> flag)
   start = mapToSurface(start);
   start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
       
-  Glib::RefPtr<Gdk::Pixbuf> heropic = gc->getSmallHeroPic(true);
-      
-  surface->draw_pixbuf(heropic, 0, 0, start.x - (heropic->get_width()/2), 
-		       start.y - (heropic->get_height()/2), 
-		       heropic->get_width(), heropic->get_height(),
-		       Gdk::RGB_DITHER_NONE, 0, 0);
+  PixMask *heropic = gc->getSmallHeroPic(true);
+  heropic->blit_centered(surface, start);
 }
 
 void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
@@ -58,7 +54,7 @@ void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
   if (c->isVisible(getViewingPlayer()) == false)
     return;
   GraphicsCache *gc = GraphicsCache::getInstance();
-  Glib::RefPtr<Gdk::Pixbuf> tmp;
+  PixMask *tmp;
   if (c->isBurnt() == true)
     tmp = gc->getSmallRuinedCityPic ();
   //else if(type == 4 && prod == false)
@@ -81,12 +77,7 @@ void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
   start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
   if (tmp)
     {
-      Glib::RefPtr<Gdk::Pixbuf> shieldpic = tmp;
-      surface->draw_pixbuf(shieldpic, 0, 0, 
-			   start.x - (shieldpic->get_width()/2), 
-			   start.y - (shieldpic->get_height()/2), 
-			   shieldpic->get_width(), shieldpic->get_height(),
-			   Gdk::RGB_DITHER_NONE, 0, 0);
+      tmp->blit_centered(surface, start);
     }
 }
 void VectorMap::draw_cities (std::list<City*> citylist, guint32 type)

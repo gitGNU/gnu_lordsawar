@@ -107,7 +107,7 @@ void FightOrderDialog::addArmyType(guint32 army_type)
     const ArmyProto *a = alist->getArmy(player->getArmyset(), army_type);
     (*i)[armies_columns.name] = a->getName();
     (*i)[armies_columns.image] = gc->getArmyPic(player->getArmyset(),
-                                           army_type, player, NULL);
+                                           army_type, player, NULL)->to_pixbuf();
     (*i)[armies_columns.army_type] = a->getTypeId();
 }
 

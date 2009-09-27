@@ -181,7 +181,7 @@ void CityWindow::fill_in_production_toggles()
     GraphicsCache *gc = GraphicsCache::getInstance();
 
     Glib::RefPtr<Gdk::Pixbuf> s
-	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
+	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL)->to_pixbuf();
     Glib::RefPtr<Gdk::Pixbuf> empty_pic
 	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->get_width(), s->get_height());
     empty_pic->fill(0x00000000);
@@ -196,11 +196,13 @@ void CityWindow::fill_in_production_toggles()
         if (type != -1)
             // use GraphicsCache to load army pics because of player-specific
             // colors
-            pic = gc->getArmyPic(as, type, player, NULL);
+            pic = gc->getArmyPic(as, type, player, NULL)->to_pixbuf();
 	else
 	    pic = empty_pic;
 	
-	toggle->add(*manage(new Gtk::Image(pic)));
+	Gtk::Image *image = new Gtk::Image();
+	image->property_pixbuf() = pic;
+	toggle->add(*manage(image));
 
 	toggle->set_active((int)i == production_index);
 	toggle->show_all();
@@ -252,13 +254,11 @@ void CityWindow::fill_in_production_info()
     GraphicsCache *gc = GraphicsCache::getInstance();
     int slot = city->getActiveProductionSlot();
     Glib::RefPtr<Gdk::Pixbuf> s
-	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
+	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL)->to_pixbuf();
     Glib::RefPtr<Gdk::Pixbuf> empty_pic
 	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->get_width(), s->get_height());
     empty_pic->fill(0x00000000);
     
-
-
     Glib::ustring s1, s2, s3;
     Glib::ustring s4 = _("Current:");
     
@@ -298,10 +298,10 @@ void CityWindow::fill_in_production_info()
             s3 += String::ucompose(_(", then to %1"), 
                                    dest ? dest->getName() : "Standard");
           }
-      pic = gc->getArmyPic(as, a->getTypeId(), player, NULL);
+      pic = gc->getArmyPic(as, a->getTypeId(), player, NULL)->to_pixbuf();
     }
     
-    current_image->set(pic);
+    current_image->property_pixbuf() = pic;
     production_info_label1->set_markup(s1);
     production_info_label2->set_markup(s2);
     turns_left_label->set_markup("<i>" + s3 + "</i>");

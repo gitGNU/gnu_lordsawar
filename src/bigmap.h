@@ -33,6 +33,7 @@
 #include "input-events.h"
 #include "map-tip-position.h"
 #include "rectangle.h"
+#include "PixMask.h"
 
 class Stack;
 class MapRenderer;
@@ -109,7 +110,7 @@ class BigMap: public sigc::trackable
 
     bool input_locked;
 
-    Glib::RefPtr<Gdk::Pixbuf> d_itempic;
+    PixMask *d_itempic;
     bool d_grid_toggled;
     Gtk::Allocation image;
 
@@ -120,16 +121,16 @@ class BigMap: public sigc::trackable
     Vector<int> tile_to_buffer_pos(Vector<int> tile);
     Vector<int> get_view_pos_from_view();
     void draw_buffer();  
-    bool blit_if_inside_buffer(const Location &obj, Glib::RefPtr<Gdk::Pixbuf> image,
-			       Rectangle &map_view, Glib::RefPtr<Gdk::Pixmap> surface);
-    void blit_object(const Location &obj, Glib::RefPtr<Gdk::Pixbuf> image, Glib::RefPtr<Gdk::Pixmap> surface);
+    bool blit_if_inside_buffer(const Location &obj, PixMask* image,
+			       Rectangle &map_view, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc);
+    void blit_object(const Location &obj, PixMask* image, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc);
 
     virtual void after_draw() { }
 
  protected:
-    void draw_stack(Stack *s, Glib::RefPtr<Gdk::Pixmap> surface);
-    void draw_standard(Item *flag, Vector<int> pos, Glib::RefPtr<Gdk::Pixmap> surface);
-    void draw_dropped_backpack(MapBackpack *backpack, Vector<int> p, Glib::RefPtr<Gdk::Pixmap> surface);
+    void draw_stack(Stack *s, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc);
+    void draw_standard(Item *flag, Vector<int> pos, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc);
+    void draw_dropped_backpack(MapBackpack *backpack, Vector<int> p, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc);
  private:
     void drawFogTile(int x, int y);
     void draw_buffer(Rectangle map_view, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context);

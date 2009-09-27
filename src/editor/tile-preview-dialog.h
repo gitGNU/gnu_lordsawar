@@ -43,7 +43,7 @@ class TilePreviewDialog: public sigc::trackable
     Gtk::Button *refresh_button;
     Gtk::Image *preview_image;
 
-    std::vector<Glib::RefPtr<Gdk::Pixbuf> > tilestyle_images;
+    std::vector<PixMask* > tilestyle_images;
 
     void on_next_clicked();
     void on_previous_clicked();

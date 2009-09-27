@@ -30,6 +30,7 @@
 #include "File.h"
 #include "defs.h"
 #include "ucompose.hpp"
+#include "PixMask.h"
 
 
 using namespace std;
@@ -198,24 +199,24 @@ bool Armysetlist::loadArmyset(std::string name)
   return true;
 }
 	
-Glib::RefPtr<Gdk::Pixbuf> Armysetlist::getShipPic (guint32 id)
+PixMask* Armysetlist::getShipPic (guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getId() == id)
 	return (*it)->getShipPic();
     }
-  return Glib::RefPtr<Gdk::Pixbuf>(0);
+  return NULL;
 }
 
-Glib::RefPtr<Gdk::Pixbuf> Armysetlist::getShipMask (guint32 id)
+PixMask* Armysetlist::getShipMask (guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getId() == id)
 	return (*it)->getShipMask();
     }
-  return Glib::RefPtr<Gdk::Pixbuf>(0);
+  return NULL;
 }
 
 guint32 Armysetlist::getTileSize(guint32 id)
@@ -228,24 +229,24 @@ guint32 Armysetlist::getTileSize(guint32 id)
   return 0;
 }
 
-Glib::RefPtr<Gdk::Pixbuf> Armysetlist::getStandardPic (guint32 id)
+PixMask* Armysetlist::getStandardPic (guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getId() == id)
 	return (*it)->getStandardPic();
     }
-  return Glib::RefPtr<Gdk::Pixbuf>(0);
+  return NULL;
 }
 
-Glib::RefPtr<Gdk::Pixbuf> Armysetlist::getStandardMask (guint32 id)
+PixMask* Armysetlist::getStandardMask (guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getId() == id)
 	return (*it)->getStandardMask();
     }
-  return Glib::RefPtr<Gdk::Pixbuf>(0);
+  return NULL;
 }
 
 Armyset *Armysetlist::getArmyset(guint32 id)

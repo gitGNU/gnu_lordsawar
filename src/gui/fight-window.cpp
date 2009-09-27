@@ -96,12 +96,12 @@ FightWindow::FightWindow(Fight &fight)
     Gtk::Image *defender_shield_image;
     p = defenders.front()->getOwner();
     xml->get_widget("defender_shield_image", defender_shield_image);
-    defender_shield_image->property_pixbuf()=gc->getShieldPic(2, p);
+    defender_shield_image->property_pixbuf()=gc->getShieldPic(2, p)->to_pixbuf();
 
     Gtk::Image *attacker_shield_image;
     p = attackers.front()->getOwner();
     xml->get_widget("attacker_shield_image", attacker_shield_image);
-    attacker_shield_image->property_pixbuf()=gc->getShieldPic(2, p);
+    attacker_shield_image->property_pixbuf()=gc->getShieldPic(2, p)->to_pixbuf();
   
     actions = fight.getCourseOfEvents();
     d_quick = false;
@@ -235,8 +235,9 @@ void FightWindow::add_army(Army *army, int initial_hp,
     Gtk::VBox *army_box = manage(new Gtk::VBox);
 	
     // image
-    Glib::RefPtr<Gdk::Pixbuf> pic = gc->getArmyPic(army);
-    Gtk::Image *image = new Gtk::Image(pic);
+    Glib::RefPtr<Gdk::Pixbuf> pic = gc->getArmyPic(army)->to_pixbuf();
+    Gtk::Image *image = new Gtk::Image();
+    image->property_pixbuf() = pic;
     army_box->add(*manage(image));
     
     // hit points graph
@@ -277,7 +278,7 @@ void FightWindow::add_army(Army *army, int initial_hp,
 bool FightWindow::do_round()
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
-  Glib::RefPtr<Gdk::Pixbuf> expl = gc->getExplosionPic();
+  Glib::RefPtr<Gdk::Pixbuf> expl = gc->getExplosionPic()->to_pixbuf();
 
   // first we clear out any explosions
   for (army_items_type::iterator i = army_items.begin(),

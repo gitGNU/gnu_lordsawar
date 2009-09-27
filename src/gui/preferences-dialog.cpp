@@ -65,7 +65,8 @@ PreferencesDialog::PreferencesDialog(bool readonly)
 	if (p == Playerlist::getInstance()->getNeutral())
 	  continue;
 	Gtk::HBox *player_hbox = new Gtk::HBox();
-	Gtk::Image *image = new Gtk::Image(gc->getShieldPic(2, p));
+	Gtk::Image *image = new Gtk::Image();
+	image->property_pixmap() = gc->getShieldPic(2, p)->get_pixmap();
 	Gtk::ComboBoxText *type = new Gtk::ComboBoxText();
 	type->signal_changed().connect
 	  (sigc::bind(sigc::mem_fun

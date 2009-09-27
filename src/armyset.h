@@ -144,28 +144,28 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
         void setSubDir(std::string dir) {d_dir = dir;}
 
 	//! Get the image of the stack in a ship (minus the mask).
-	Glib::RefPtr<Gdk::Pixbuf> getShipPic() const {return d_ship;}
+	PixMask* getShipPic() const {return d_ship;}
 
 	//! Set the image of the stack in a ship
-	void setShipImage(Glib::RefPtr<Gdk::Pixbuf> ship) {d_ship = ship;};
+	void setShipImage(PixMask* ship) {d_ship = ship;};
 
 	//! Get the mask portion of the image of the stack in a ship.
-	Glib::RefPtr<Gdk::Pixbuf> getShipMask() const {return d_shipmask;}
+	PixMask* getShipMask() const {return d_shipmask;}
 
 	//! Set the mask portion of the image of the stack in a ship.
-	void setShipMask(Glib::RefPtr<Gdk::Pixbuf> shipmask) {d_shipmask = shipmask;};
+	void setShipMask(PixMask* shipmask) {d_shipmask = shipmask;};
 
 	//! Get the image of the planted standard (minus the mask).
-	Glib::RefPtr<Gdk::Pixbuf> getStandardPic() const {return d_standard;}
+	PixMask* getStandardPic() const {return d_standard;}
 
 	//! Set the image of the planted standard (minus the mask).
-	void setStandardPic(Glib::RefPtr<Gdk::Pixbuf> s) {d_standard = s;};
+	void setStandardPic(PixMask* s) {d_standard = s;};
 
 	//! Get the mask portion of the image of the planted standard.
-	Glib::RefPtr<Gdk::Pixbuf> getStandardMask() const {return d_standard_mask;}
+	PixMask* getStandardMask() const {return d_standard_mask;}
 
 	//! Set the mask portion of the image of the planted standard.
-	void setStandardMask(Glib::RefPtr<Gdk::Pixbuf> s) {d_standard_mask = s;};
+	void setStandardMask(PixMask* s) {d_standard_mask = s;};
 
 	//! Find an army with a type in this armyset.
 	/**
@@ -226,16 +226,16 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	guint32 d_tilesize;
 
 	//! The unshaded picture of the stack when it's in a boat.
-	Glib::RefPtr<Gdk::Pixbuf> d_ship;
+	PixMask* d_ship;
 
 	//! The mask of what to shade with the player's colour on the boat.
-	Glib::RefPtr<Gdk::Pixbuf> d_shipmask;
+	PixMask* d_shipmask;
 
 	//! The unshaded picture of the planted standard.
-	Glib::RefPtr<Gdk::Pixbuf> d_standard;
+	PixMask* d_standard;
 
 	//! The mask of what to shade with the player's colour on the standard.
-	Glib::RefPtr<Gdk::Pixbuf> d_standard_mask;
+	PixMask* d_standard_mask;
 };
 
 #endif // ARMYSET_H

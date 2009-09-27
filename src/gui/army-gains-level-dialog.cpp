@@ -48,7 +48,7 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a, bool show_sight_stat)
     
     Gtk::Image *image;
     xml->get_widget("image", image);
-    image->property_pixbuf() = gc->getArmyPic(army);
+    image->property_pixbuf() = gc->getArmyPic(army)->to_pixbuf();
     
     Gtk::Label *label;
     xml->get_widget("label", label);

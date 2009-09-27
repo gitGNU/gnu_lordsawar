@@ -24,6 +24,7 @@
 
 #include <gtkmm.h>
 #include <string>
+#include "PixMask.h"
 
 class XML_Helper;
 
@@ -53,10 +54,10 @@ class ArmyProto : public ArmyProtoBase
 	void setImageName(std::string name) {d_image_name = name;}
 
         //! Set the basic image of the Army.
-        void setImage(Glib::RefPtr<Gdk::Pixbuf> image) {d_image = image;};
+        void setImage(PixMask* image) {d_image = image;};
 
         //! Set the image mask of the unit type (for player colours).
-        void setMask(Glib::RefPtr<Gdk::Pixbuf> mask) {d_mask = mask;};
+        void setMask(PixMask* mask) {d_mask = mask;};
 
 	//! Sets whether or not this Army prototype can found in a ruin.
 	void setDefendsRuins(bool defends) {d_defends_ruins = defends; }
@@ -81,10 +82,10 @@ class ArmyProto : public ArmyProtoBase
 	std::string getImageName() const {return d_image_name;}
 
         //! Get the image of the army prototype. 
-	Glib::RefPtr<Gdk::Pixbuf> getImage() const {return d_image;};
+	PixMask* getImage() const {return d_image;};
 
         //! Returns the mask (read-only) for player colors.
-	Glib::RefPtr<Gdk::Pixbuf> getMask() const {return d_mask;}
+	PixMask* getMask() const {return d_mask;}
 
 	//! Gets whether or not this army type can found in a ruin.
 	bool getDefendsRuins() const {return d_defends_ruins; }
@@ -112,10 +113,10 @@ class ArmyProto : public ArmyProtoBase
     private:
 
 	//! The picture of the Army prototype.
-	Glib::RefPtr<Gdk::Pixbuf> d_image;
+	PixMask* d_image;
 
 	//! The mask portion of the Army prototype picture.
-	Glib::RefPtr<Gdk::Pixbuf> d_mask;
+	PixMask* d_mask;
         
 	//! Whether or not the Army prototype can defend a Ruin.
 	/**

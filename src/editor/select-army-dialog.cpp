@@ -132,7 +132,7 @@ void SelectArmyDialog::fill_in_army_toggles()
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf
 	  = GraphicsCache::getInstance()->getArmyPic(armyset,
 						     selectable[i]->getTypeId(),
-						     player, NULL);
+						     player, NULL)->to_pixbuf();
 
 	toggle->add(*manage(new Gtk::Image(pixbuf)));
 	army_toggles.push_back(toggle);

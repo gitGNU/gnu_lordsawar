@@ -248,27 +248,63 @@ GameWindow::GameWindow()
 
     // fill in imagery
     d_button_images = disassemble_row(File::getMiscFile("various/buttons.png"), 11);
-    next_movable_button->add(*manage(new Gtk::Image(d_button_images[2])));
-    center_button->add(*manage(new Gtk::Image(d_button_images[5])));
-    diplomacy_button->add(*manage(new Gtk::Image(d_button_images[0])));
-    defend_button->add(*manage(new Gtk::Image(d_button_images[6])));
-    park_button->add(*manage(new Gtk::Image(d_button_images[1])));
-    deselect_button->add(*manage(new Gtk::Image(d_button_images[7])));
-    search_button->add(*manage(new Gtk::Image(d_button_images[9])));
-    move_button->add(*manage(new Gtk::Image(d_button_images[3])));
-    move_all_button->add(*manage(new Gtk::Image(d_button_images[4])));
-    end_turn_button->add(*manage(new Gtk::Image(d_button_images[10])));
+    Gtk::Image *button_image2 = new Gtk::Image();
+    button_image2->property_pixbuf() = d_button_images[2]->to_pixbuf();
+    next_movable_button->add(*manage(button_image2));
+    Gtk::Image *button_image5 = new Gtk::Image();
+    button_image5->property_pixbuf() = d_button_images[5]->to_pixbuf();
+    center_button->add(*manage(button_image5));
+    Gtk::Image *button_image0 = new Gtk::Image();
+    button_image0->property_pixbuf() = d_button_images[0]->to_pixbuf();
+    diplomacy_button->add(*manage(button_image0));
+    Gtk::Image *button_image6 = new Gtk::Image();
+    button_image6->property_pixbuf() = d_button_images[6]->to_pixbuf();
+    defend_button->add(*manage(button_image6));
+    Gtk::Image * button_image1 = new Gtk::Image();
+    button_image1->property_pixbuf() = d_button_images[1]->to_pixbuf();
+    park_button->add(*manage(button_image1));
+    Gtk::Image * button_image7 = new Gtk::Image();
+    button_image7->property_pixbuf() = d_button_images[7]->to_pixbuf();
+    deselect_button->add(*manage(button_image7));
+    Gtk::Image * button_image9 = new Gtk::Image();
+    button_image9->property_pixbuf() = d_button_images[9]->to_pixbuf();
+    search_button->add(*manage(button_image9));
+    Gtk::Image * button_image3 = new Gtk::Image();
+    button_image3->property_pixbuf() = d_button_images[3]->to_pixbuf();
+    move_button->add(*manage(button_image3));
+    Gtk::Image * button_image4 = new Gtk::Image();
+    button_image4->property_pixbuf() = d_button_images[4]->to_pixbuf();
+    move_all_button->add(*manage(button_image4));
+    Gtk::Image * button_image10 = new Gtk::Image();
+    button_image10->property_pixbuf() = d_button_images[10]->to_pixbuf();
+    end_turn_button->add(*manage(button_image10));
     
     d_arrow_images = disassemble_row(File::getMiscFile("various/arrows.png"), 
 				     8);
-    nw_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[0])));
-    n_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[1])));
-    ne_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[2])));
-    e_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[3])));
-    w_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[4])));
-    sw_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[5])));
-    s_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[6])));
-    se_keypad_button->add(*manage(new Gtk::Image(d_arrow_images[7])));
+    Gtk::Image * arrow_image0 = new Gtk::Image();
+    arrow_image0->property_pixbuf() = d_arrow_images[0]->to_pixbuf();
+    nw_keypad_button->add(*manage(arrow_image0));
+    Gtk::Image * arrow_image1 = new Gtk::Image();
+    arrow_image1->property_pixbuf() = d_arrow_images[1]->to_pixbuf();
+    n_keypad_button->add(*manage(arrow_image1));
+    Gtk::Image * arrow_image2 = new Gtk::Image();
+    arrow_image2->property_pixbuf() = d_arrow_images[2]->to_pixbuf();
+    ne_keypad_button->add(*manage(arrow_image2));
+    Gtk::Image * arrow_image3 = new Gtk::Image();
+    arrow_image3->property_pixbuf() = d_arrow_images[3]->to_pixbuf();
+    e_keypad_button->add(*manage(arrow_image3));
+    Gtk::Image * arrow_image4 = new Gtk::Image();
+    arrow_image4->property_pixbuf() = d_arrow_images[4]->to_pixbuf();
+    w_keypad_button->add(*manage(arrow_image4));
+    Gtk::Image * arrow_image5 = new Gtk::Image();
+    arrow_image5->property_pixbuf() = d_arrow_images[5]->to_pixbuf();
+    sw_keypad_button->add(*manage(arrow_image5));
+    Gtk::Image * arrow_image6 = new Gtk::Image();
+    arrow_image6->property_pixbuf() = d_arrow_images[6]->to_pixbuf();
+    s_keypad_button->add(*manage(arrow_image6));
+    Gtk::Image * arrow_image7 = new Gtk::Image();
+    arrow_image7->property_pixbuf() = d_arrow_images[7]->to_pixbuf();
+    se_keypad_button->add(*manage(arrow_image7));
 
     // connect callbacks for the menu
     xml->get_widget("load_game_menuitem", load_game_menuitem);
@@ -793,9 +829,17 @@ void GameWindow::change_diplomacy_button_image (bool proposals_present)
 {
   /* switch up the image. */
   if (proposals_present)
-    diplomacy_button->property_image() = new Gtk::Image(d_button_images[8]);
+    {
+      Gtk::Image *proposals_present_image = new Gtk::Image();
+      proposals_present_image->property_pixbuf() = d_button_images[8]->to_pixbuf();
+      diplomacy_button->property_image() = proposals_present_image;
+    }
   else
-    diplomacy_button->property_image() = new Gtk::Image(d_button_images[0]);
+    {
+      Gtk::Image *proposals_not_present_image = new Gtk::Image();
+      proposals_not_present_image->property_pixbuf() = d_button_images[0]->to_pixbuf();
+      diplomacy_button->property_image() = proposals_not_present_image;
+    }
 }
 
 void GameWindow::end_turn_play_by_mail ()
@@ -919,8 +963,9 @@ bool GameWindow::on_bigmap_scroll_event(GdkEventScroll* event)
 void GameWindow::on_bigmap_cursor_changed(GraphicsCache::CursorType cursor)
 {
   bigmap_drawingarea->get_window()->set_cursor 
-    (Gdk::Cursor(Gdk::Display::get_default(), 
-		 GraphicsCache::getInstance()->getCursorPic (cursor), 4, 4));
+    (Gdk::Cursor
+     (Gdk::Display::get_default(), 
+      GraphicsCache::getInstance()->getCursorPic (cursor)->to_pixbuf(), 4, 4));
 }
 
 bool GameWindow::on_bigmap_key_event(GdkEventKey *e)
@@ -957,9 +1002,10 @@ bool GameWindow::on_smallmap_mouse_motion_event(GdkEventMotion *e)
 	}
 
       map_eventbox->get_window()->set_cursor 
-	(Gdk::Cursor(Gdk::Display::get_default(), 
-		     GraphicsCache::getInstance()->getCursorPic
-		      (GraphicsCache::MAGNIFYING_GLASS), 3, 3));
+	(Gdk::Cursor
+	 (Gdk::Display::get_default(), 
+	  GraphicsCache::getInstance()->getCursorPic
+		      (GraphicsCache::MAGNIFYING_GLASS)->to_pixbuf(), 3, 3));
     }
 
   return true;
@@ -1593,7 +1639,7 @@ void GameWindow::on_help_about_activated()
   dialog->set_transient_for(*window.get());
 
   dialog->set_version(PACKAGE_VERSION);
-  dialog->set_logo(GraphicsLoader::getMiscPicture("castle_icon.png"));
+  dialog->set_logo(GraphicsLoader::getMiscPicture("castle_icon.png")->to_pixbuf());
   dialog->show_all();
   dialog->run();
   dialog->hide();
@@ -1653,7 +1699,7 @@ void GameWindow::on_game_over(Player *winner)
   Gtk::Image *image;
   xml->get_widget("image", image);
 
-  image->property_pixbuf() = GraphicsLoader::getMiscPicture("win.png", false);
+  image->property_pixbuf() = GraphicsLoader::getMiscPicture("win.png", false)->to_pixbuf();
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -1866,7 +1912,7 @@ void GameWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map, Gdk::Rectang
   Glib::RefPtr<Gdk::Window> window = map_drawingarea->get_window();
   if (window)
     window->invalidate_rect(r, true);
-  //map_image->property_pixmap() = map;
+  //map_image->property_pixbuf() = map;
   //map.clear();
   //still resides at smallmap->get_surface()
 }
@@ -1934,7 +1980,7 @@ void GameWindow::fill_in_group_info (Stack *s)
 {
   guint32 bonus = s->calculateMoveBonus();
   GraphicsCache *gc = GraphicsCache::getInstance();
-  terrain_image->property_pixbuf() = gc->getMoveBonusPic(bonus, s->hasShip());
+  terrain_image->property_pixbuf() = gc->getMoveBonusPic(bonus, s->hasShip())->to_pixbuf();
   if (Configuration::s_decorated == true)
     group_moves_label->set_markup(String::ucompose("<b>%1</b>",
 						   s->getGroupMoves()));
@@ -1966,7 +2012,9 @@ void GameWindow::show_stack(Stack *s)
       Gtk::VBox *toggle_box = manage(new Gtk::VBox);
 
       // image
-      toggle_box->add(*manage(new Gtk::Image(gc->getArmyPic(army))));
+      Gtk::Image *army_image = new Gtk::Image();
+      army_image->property_pixbuf() = gc->getArmyPic(army)->to_pixbuf();
+      toggle_box->add(*manage(army_image));
       // number of moves
       Glib::ustring moves_str = String::ucompose("%1", army->getMoves());
       toggle_box->add(*manage(new Gtk::Label(moves_str,
@@ -2658,7 +2706,7 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
   if (gold == 0)
     {
       Glib::RefPtr<Gdk::Pixbuf> s
-	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
+	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL)->to_pixbuf();
       Glib::RefPtr<Gdk::Pixbuf> empty_pic
 	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->get_width(), s->get_height());
       empty_pic->fill(0x00000000);
@@ -2668,8 +2716,8 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
   else
     {
       Glib::RefPtr<Gdk::Pixbuf> pic;
-      pic = gc->getArmyPic(as, pillaged_army_type, player, NULL);
-      pillaged_army_type_image->set(pic);
+      pic = gc->getArmyPic(as, pillaged_army_type, player, NULL)->to_pixbuf();
+      pillaged_army_type_image->property_pixbuf() = pic;
       pillaged_army_type_cost_label->set_text(String::ucompose("%1 gp", gold));
     }
   Gtk::Label *label;
@@ -2734,7 +2782,7 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<guint32> sacked_
 
   Glib::RefPtr<Gdk::Pixbuf> pic;
   Glib::RefPtr<Gdk::Pixbuf> surf
-    = GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL);
+    = GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL)->to_pixbuf();
   Glib::RefPtr<Gdk::Pixbuf> empty_pic
     = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, surf->get_width(), surf->get_height());
   empty_pic->fill(0x00000000);
@@ -2758,8 +2806,8 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<guint32> sacked_
 	  sack_image = sacked_army_3_image;
 	  break;
 	}
-      pic = gc->getArmyPic(as, *it, player, NULL);
-      sack_image->set(pic);
+      pic = gc->getArmyPic(as, *it, player, NULL)->to_pixbuf();
+      sack_image->property_pixbuf() = pic;
       const ArmyProto *a = 
 	Armysetlist::getInstance()->getArmy (player->getArmyset(), *it);
       s = String::ucompose("%1 gp", a->getProductionCost() / 2);
@@ -2855,9 +2903,9 @@ void GameWindow::show_shield_turn() //show turn indicator
 	  continue;
 	}
       if (*i == pl->getActiveplayer())
-	shield_image[c]->property_pixbuf()=gc->getShieldPic(1,(*i));
+	shield_image[c]->property_pixbuf()=gc->getShieldPic(1,(*i))->to_pixbuf();
       else
-	shield_image[c]->property_pixbuf()=gc->getShieldPic(0,(*i));
+	shield_image[c]->property_pixbuf()=gc->getShieldPic(0,(*i))->to_pixbuf();
       shield_image[c]->property_tooltip_text() = (*i)->getName();
       c++;
     }
@@ -2940,7 +2988,7 @@ void GameWindow::on_medal_awarded_to_army(Army *army)
 
   Gtk::Image *image;
   xml->get_widget("image", image);
-  image->property_pixbuf() = gc->getArmyPic(army);
+  image->property_pixbuf() = gc->getArmyPic(army)->to_pixbuf();
 
   Gtk::Label *label;
   xml->get_widget("label", label);

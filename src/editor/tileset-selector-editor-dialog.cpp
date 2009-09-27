@@ -159,8 +159,8 @@ void TilesetSelectorEditorDialog::clearSelector()
 
 bool TilesetSelectorEditorDialog::loadSelector(std::string filename)
 {
-  std::vector<Glib::RefPtr<Gdk::Pixbuf> > images;
-  std::vector<Glib::RefPtr<Gdk::Pixbuf> > masks;
+  std::vector<PixMask *> images;
+  std::vector<PixMask *> masks;
   bool success = GraphicsCache::loadSelectorImages(d_tileset->getSubDir(), filename, d_tileset->getTileSize(), images, masks);
   if (success)
     {
@@ -174,25 +174,23 @@ bool TilesetSelectorEditorDialog::loadSelector(std::string filename)
 	  selectors[i] = mylist;
 	}
 
-      for (std::vector<Glib::RefPtr<Gdk::Pixbuf> >::iterator it = images.begin(), mit = masks.begin(); it != images.end(); it++, mit++)
+      for (std::vector<PixMask*>::iterator it = images.begin(), mit = masks.begin(); it != images.end(); it++, mit++)
 	{
 	  for (Shieldset::iterator sit = shieldset->begin(); sit != shieldset->end(); sit++)
 	    {
 	      if ((*sit)->getOwner() == 8) //ignore neutral
 		continue;
 		selectors[(*sit)->getOwner()]->push_back
-		  (GraphicsCache::applyMask(*it, *mit, (*sit)->getMaskColorShifts(), false));
+		  (GraphicsCache::applyMask(*it, *mit, (*sit)->getMaskColorShifts(), false)->to_pixbuf());
 		
 		frame[(*sit)->getOwner()] = selectors[(*sit)->getOwner()]->begin();
 	    }
 	}
 
-      for (std::vector<Glib::RefPtr<Gdk::Pixbuf> >::iterator it = images.begin(); it != images.end(); it++)
-	(*it).clear();
-      images.clear();
-      for (std::vector<Glib::RefPtr<Gdk::Pixbuf> >::iterator it = masks.begin(); it != masks.end(); it++)
-	(*it).clear();
-      masks.clear();
+      for (std::vector<PixMask*>::iterator it = images.begin(); it != images.end(); it++)
+	delete *it;
+      for (std::vector<PixMask*>::iterator it = masks.begin(); it != masks.end(); it++)
+	delete *it;
 
     }
 

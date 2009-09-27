@@ -320,8 +320,10 @@ void MainWindow::setup_terrain_radiobuttons()
 	    sigc::mem_fun(this, &MainWindow::on_terrain_radiobutton_toggled));
 
 	Glib::RefPtr<Gdk::Pixbuf> pic;
-	pic = (*(*(*tile).begin())->begin())->getImage()->scale_simple(20, 20, Gdk::INTERP_NEAREST);
-	item.button->add(*manage(new Gtk::Image(pic)));
+	PixMask *pix = (*(*(*tile).begin())->begin())->getImage()->copy();
+	PixMask::scale(pix, 20, 20);
+	item.button->add(*manage(new Gtk::Image(pix->to_pixbuf())));
+	delete pix;
 
 	item.terrain = tile->getType();
 	terrain_items.push_back(item);
@@ -912,7 +914,7 @@ void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
 	    (sigc::mem_fun(this, 
 			   &MainWindow::on_tile_style_radiobutton_toggled));
 
-	  Glib::RefPtr<Gdk::Pixbuf> pic = tilestyle->getImage();
+	  Glib::RefPtr<Gdk::Pixbuf> pic = tilestyle->getImage()->to_pixbuf();
 	  item.button->add(*manage(new Gtk::Image(pic)));
 	  item.tile_style_id = tilestyle->getId();
 
@@ -1336,7 +1338,7 @@ void MainWindow::on_help_about_activated()
   d->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
-  dialog->set_logo(GraphicsLoader::getMiscPicture("castle_icon.png"));
+  dialog->set_logo(GraphicsLoader::getMiscPicture("castle_icon.png")->to_pixbuf());
   dialog->show_all();
   dialog->run();
 

@@ -74,10 +74,12 @@ DiplomacyReportDialog::DiplomacyReportDialog(Player *player)
 	continue;
       Player *p = pl->getPlayer(order[i]);
 
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = gc->getShieldPic(2, p);
-      Gtk::Image *im = manage(new Gtk::Image(pixbuf));
+      Glib::RefPtr<Gdk::Pixbuf> pix = gc->getShieldPic(2, p)->to_pixbuf();
+      Gtk::Image *im = manage(new Gtk::Image());
+      im->property_pixbuf() = pix;
       d_table->attach(*im, 1, 2, i + 1, i + 2, Gtk::SHRINK, Gtk::SHRINK);
-      Gtk::Image *im2 = manage(new Gtk::Image(pixbuf));
+      Gtk::Image *im2 = manage(new Gtk::Image());
+      im2->property_pixbuf() = pix;
       d_table->attach(*im2, i + 2, i + 3, 0, 0 + 1, Gtk::SHRINK, Gtk::SHRINK);
       Gtk::Label *label = manage(new Gtk::Label(p->getDiplomaticTitle()));
       d_table->attach(*label, 0, 1, i + 1, i + 2, Gtk::SHRINK, Gtk::SHRINK);
@@ -88,8 +90,9 @@ DiplomacyReportDialog::DiplomacyReportDialog(Player *player)
 	    continue;
 	  Player::DiplomaticState state;
 	  state = p->getDiplomaticState(pl->getPlayer(order[j]));
-	  Glib::RefPtr<Gdk::Pixbuf> pixbuf2 = gc->getDiplomacyPic(0, state);
-	  Gtk::Image *im3 = manage(new Gtk::Image(pixbuf2));
+	  Glib::RefPtr<Gdk::Pixbuf> pix2 = gc->getDiplomacyPic(0, state)->to_pixbuf();
+	  Gtk::Image *im3 = manage(new Gtk::Image());
+	  im3->property_pixbuf() = pix2;
 	  d_table->attach(*im3, i + 2, i + 3, j + 1, j + 2, 
 			  Gtk::SHRINK, Gtk::SHRINK);
 	}

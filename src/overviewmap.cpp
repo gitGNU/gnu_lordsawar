@@ -535,7 +535,7 @@ void OverviewMap::draw_cities (bool all_razed)
       it != Citylist::getInstance()->end(); it++)
   {
       City *c = *it;
-      Glib::RefPtr<Gdk::Pixbuf> tmp;
+      PixMask *tmp;
       if (c->isVisible(d_player) == false)
         continue;
       if (c->isBurnt() == true || all_razed == true)
@@ -543,15 +543,9 @@ void OverviewMap::draw_cities (bool all_razed)
       else
         tmp = gc->getShieldPic(0, c->getOwner());
   
-      Glib::RefPtr<Gdk::Pixbuf> shield = tmp;
-
       Vector<int> pos = c->getPos();
       pos = mapToSurface(pos);
-      surface->draw_pixbuf(shield, 0, 0, 
-			   pos.x - (shield->get_width()/2), 
-			   pos.y - (shield->get_height()/2), 
-			   shield->get_width(), shield->get_height(),
-			   Gdk::RGB_DITHER_NONE, 0, 0);
+      tmp->blit_centered(surface, pos);
 
   }
 }

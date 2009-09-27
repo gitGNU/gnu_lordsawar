@@ -27,10 +27,12 @@ std::string TileStyle::d_tag = "tilestyle";
 using namespace std;
 
 TileStyle::TileStyle()
+  : d_image(0)
 {
 }
 
 TileStyle::TileStyle(XML_Helper* helper)
+  : d_image(0)
 {
   int i;
   char *end = NULL;

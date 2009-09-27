@@ -72,16 +72,16 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
         ArmyProto* getScout(guint32 id) const;
 
 	//! Get the unshaded ship image for the given Armyset.
-	Glib::RefPtr<Gdk::Pixbuf> getShipPic (guint32 id);
+	PixMask* getShipPic (guint32 id);
 
 	//! Get the ship mask picture for the given Armyset.
-	Glib::RefPtr<Gdk::Pixbuf> getShipMask (guint32 id);
+	PixMask* getShipMask (guint32 id);
 
 	//! Get the unshaded planted standard picture for the given Armyset.
-	Glib::RefPtr<Gdk::Pixbuf> getStandardPic (guint32 id);
+	PixMask* getStandardPic (guint32 id);
 
 	//! Get the planted standard mask for the given Armyset.
-	Glib::RefPtr<Gdk::Pixbuf> getStandardMask (guint32 id);
+	PixMask* getStandardMask (guint32 id);
         guint32 getTileSize(guint32 id);
 
 	//! Returns the size of a specific armyset.

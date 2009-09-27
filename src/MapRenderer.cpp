@@ -104,7 +104,7 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 			  mtile->getMaptileType(), tileX, tileY);
 		      }
 		  }
-		surface->draw_pixbuf(style->getImage(), 0, 0, drawX, drawY, tilesize, tilesize, Gdk::RGB_DITHER_NONE, 0, 0);
+		style->getImage()->blit(surface, drawX, drawY);
 
 	    }
 	    

@@ -28,6 +28,7 @@
 #include "GraphicsCache.h"
 #include "bigmap.h"
 #include "LocationBox.h"
+#include "PixMask.h"
 
 class Stack;
 class City;
@@ -84,7 +85,7 @@ class GameBigMap: public BigMap
     static const double min_magnification_factor = 50.0;
 
  private:
-    std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_waypoint;
+    std::vector<PixMask*> d_waypoint;
     Vector<int> current_tile, prev_mouse_pos;
     
     bool input_locked;

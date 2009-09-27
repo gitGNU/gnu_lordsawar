@@ -94,15 +94,18 @@ void StackInfoDialog::addArmy (Army *h, guint32 modified_strength, int idx)
   Player *player = h->getOwner();
     
   Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
-    gc->getArmyPic(player->getArmyset(), h->getTypeId(), player, NULL);
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf= 
+    gc->getArmyPic(player->getArmyset(), h->getTypeId(), player, NULL)->to_pixbuf();
   
   Gtk::Image *image = NULL;
   guint32 move_bonus = h->getStat(Army::MOVE_BONUS);
   bool ship = h->getStat(Army::SHIP);
   if (ship || move_bonus == (Tile::GRASS | Tile::WATER | Tile::FOREST | 
 			     Tile::HILLS | Tile::SWAMP | Tile::MOUNTAIN))
-    image = new Gtk::Image(gc->getMoveBonusPic(move_bonus, ship));
+    {
+      image = new Gtk::Image();
+      image->property_pixbuf() = gc->getMoveBonusPic(move_bonus, ship)->to_pixbuf();
+    }
 
   armies.push_back(h);
   toggle->set_active(h->isGrouped());
@@ -117,7 +120,9 @@ void StackInfoDialog::addArmy (Army *h, guint32 modified_strength, int idx)
   toggle->signal_button_release_event().connect
     (sigc::bind(sigc::mem_fun(*this, &StackInfoDialog::on_army_button_event),
 		toggle), false);
-  toggle->add(*manage(new Gtk::Image(pixbuf)));
+  Gtk::Image *army_image = new Gtk::Image();
+  army_image->property_pixbuf() = pixbuf;
+  toggle->add(*manage(army_image));
 
   Gtk::Label *name = new Gtk::Label(h->getName());
   Glib::ustring s = "";

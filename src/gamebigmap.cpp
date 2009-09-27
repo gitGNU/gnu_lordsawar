@@ -874,17 +874,13 @@ void GameBigMap::after_draw()
       for (list<Vector<int>*>::iterator it = stack->getPath()->begin();
 	   it != end; it++)
 	{
-	  size_t wpsize = 40; //waypoint images are always 40x40
 	  pos = tile_to_buffer_pos(**it);
-	  int offset = (tilesize - wpsize) / 2;
-	  if (offset < 0)
-	    offset = 0;
 
 	  canMoveThere = (pathcount < stack->getPath()->getMovesExhaustedAtPoint());
 	  if (canMoveThere)
-	    buffer->draw_pixbuf (d_waypoint[0], 0, 0, pos.x + offset, pos.y + offset, wpsize, wpsize, Gdk::RGB_DITHER_NONE, 0, 0);
+	    d_waypoint[0]->blit_centered(buffer, pos);
 	  else
-	    buffer->draw_pixbuf (d_waypoint[1], 0, 0, pos.x + offset, pos.y + offset, wpsize, wpsize, Gdk::RGB_DITHER_NONE, 0, 0);
+	    d_waypoint[1]->blit_centered(buffer, pos);
 
 	  pathcount++;
 
@@ -896,13 +892,9 @@ void GameBigMap::after_draw()
 	  list<Vector<int>*>::iterator it = stack->getPath()->end();
 	  it--;
 	  //this is where the ghosted army unit picture goes.
-	  Glib::RefPtr<Gdk::Pixbuf> armypic = gc->getArmyPic(*stack->begin());
-	  size_t wpsize = armypic->get_width();
+	  PixMask *armypic = gc->getArmyPic(*stack->begin());
 	  pos = tile_to_buffer_pos(**it);
-	  int offset = (tilesize - armypic->get_width()) / 2;
-	  if (offset < 0)
-	    offset = 0;
-	  buffer->draw_pixbuf (armypic, 0, 0, pos.x + offset, pos.y + offset, wpsize, wpsize, Gdk::RGB_DITHER_NONE, 0, 0);
+	  armypic->blit_centered(buffer, pos);
 	}
     }
 
@@ -932,17 +924,16 @@ void GameBigMap::after_draw()
 		num_selected++;
 	    }
 
-	  draw_stack (stack, buffer);
+	  draw_stack (stack, buffer, buffer_gc);
 
 	  if (input_locked == false)
 	    {
-	      Glib::RefPtr<Gdk::Pixbuf> tmp;
+	      PixMask *tmp = NULL;
 	      if (num_selected > 1)
 		tmp = gc->getSelectorPic(0, bigframe, stack->getOwner());
 	      else
 		tmp = gc->getSelectorPic(1, smallframe, stack->getOwner());
-	      buffer->draw_pixbuf (tmp, 0, 0, p.x, p.y, tilesize, tilesize,
-				   Gdk::RGB_DITHER_NONE, 0, 0);
+	      tmp->blit(buffer, p);
 	    }
 	}
     }
@@ -950,16 +941,13 @@ void GameBigMap::after_draw()
   if (d_fighting.getPos() != Vector<int>(-1,-1))
     {
       Vector<int> p = tile_to_buffer_pos(d_fighting.getPos());
-      Glib::RefPtr<Gdk::Pixbuf> tmp = gc->getExplosionPic();
+      PixMask *tmp = gc->getExplosionPic();
       if (d_fighting.getSize() > 1)
 	{
-	  tmp = tmp->scale_simple (d_fighting.getSize() * tilesize,
-				   d_fighting.getSize() * tilesize,
-				   Gdk::INTERP_BILINEAR);
+	  PixMask::scale(tmp, d_fighting.getSize() * tilesize,
+			 d_fighting.getSize() * tilesize);
 	}
-      buffer->draw_pixbuf(tmp, 0, 0, p.x, p.y, 
-			  tmp->get_width(), tmp->get_height(),
-			  Gdk::RGB_DITHER_NONE, 0, 0);
+      tmp->blit(buffer, p);
     }
 }
 

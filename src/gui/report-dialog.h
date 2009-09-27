@@ -85,7 +85,7 @@ class ReportDialog: public Decorated
 	ArmiesColumns() 
         { add(image); add(desc);}
 	
-	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
+	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixmap> > image;
 	Gtk::TreeModelColumn<Glib::ustring> desc;
     };
     const ArmiesColumns armies_columns;

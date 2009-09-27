@@ -21,6 +21,7 @@
 #include <string>
 #include <list>
 #include <gtkmm.h>
+#include "PixMask.h"
 
 class Shieldset;
 class Shieldsetlist;
@@ -55,7 +56,7 @@ class GraphicsLoader
 	  * @param pic               the name of the army picture.
           * @return the surface which contains the army pictures of this armyset
           */
-        static Glib::RefPtr<Gdk::Pixbuf> getArmyPicture(std::string armysetsubdir, std::string pic);
+        static PixMask* getArmyPicture(std::string armysetsubdir, std::string pic);
         
         /** Get the shield picture file
           * 
@@ -65,7 +66,7 @@ class GraphicsLoader
 	  * @param pic                 the name of the shield picture.
           * @return the surface which contains the shield picture
           */
-        static Glib::RefPtr<Gdk::Pixbuf> getShieldsetPicture(std::string shieldsetsubdir, std::string pic);
+        static PixMask* getShieldsetPicture(std::string shieldsetsubdir, std::string pic);
 
         /** Get a tileset picture
           * @param tilesetsubdir     the name of the tileset.  this is the
@@ -74,7 +75,7 @@ class GraphicsLoader
           * @param picname          the name of the picture.
           * @return the surface which contains the picture
           */
-        static Glib::RefPtr<Gdk::Pixbuf> getTilesetPicture(std::string tilesetsubdir, std::string picname);
+        static PixMask* getTilesetPicture(std::string tilesetsubdir, std::string picname);
 
         /** Load misc pic
           * 
@@ -84,7 +85,7 @@ class GraphicsLoader
           *                 Especially for background images...
           * @return the surface which contains the image
           */
-        static Glib::RefPtr<Gdk::Pixbuf> getMiscPicture(std::string picname, bool alpha=true);
+        static PixMask* getMiscPicture(std::string picname, bool alpha=true);
 
         /** Get a cityset picture
           * @param citysetsubdir     the name of the cityset.  this is the
@@ -93,7 +94,7 @@ class GraphicsLoader
           * @param picname          the name of the picture.
           * @return the surface which contains the picture
           */
-        static Glib::RefPtr<Gdk::Pixbuf> getCitysetPicture(std::string citysetsubdir, std::string picname);
+        static PixMask* getCitysetPicture(std::string citysetsubdir, std::string picname);
 
     private:
 	static bool instantiateImages(Armyset *set, ArmyProto *a);
@@ -112,7 +113,7 @@ class GraphicsLoader
           *                     will be marked as transparent in the returned image)
           * @return converted image or 0 if anything failed.
           */
-        static Glib::RefPtr<Gdk::Pixbuf> loadImage(std::string filename, bool alpha = true);
+        static PixMask* loadImage(std::string filename, bool alpha = true);
 
 	static void loadShipPic(Armyset *armyset);
 	static void loadStandardPic(Armyset *armyset);

@@ -21,12 +21,19 @@
 
 #include <vector>
 #include <gdkmm/pixbuf.h>
+#include "PixMask.h"
 
 // convert a file containing one large image with subimages, each of the same
 // width, to an array of pixbufs corresponding to the subimages
-std::vector<Glib::RefPtr<Gdk::Pixbuf> >
+std::vector<PixMask*>
 disassemble_row(const std::string &file, int no);
-std::vector<Glib::RefPtr<Gdk::Pixbuf> >
+std::vector<PixMask*>
 disassemble_row(const std::string &file, int no, bool first_half_height);
 
+Glib::RefPtr<Gdk::Pixmap> to_pixmap(Glib::RefPtr<Gdk::Pixbuf> pixbuf);
+
+int get_pwidth(Glib::RefPtr<Gdk::Pixmap> pixmap);
+int get_pheight(Glib::RefPtr<Gdk::Pixmap> pixmap);
+Glib::RefPtr<Gdk::Pixbuf> to_pixbuf(Glib::RefPtr<Gdk::Pixmap> pixmap);
+Glib::RefPtr<Gdk::Pixmap> scale (Glib::RefPtr<Gdk::Pixmap> pixmap, int w, int h);
 #endif

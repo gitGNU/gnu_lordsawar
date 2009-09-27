@@ -50,16 +50,18 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, guint32 tileSize)
       (sigc::mem_fun(this, &TilePreviewDialog::on_refresh_clicked));
     xml->get_widget("preview_image", preview_image);
 
-    std::vector<Glib::RefPtr<Gdk::Pixbuf> > base_tilestyles;
+    std::vector<PixMask* > base_tilestyles;
     base_tilestyles = 
       disassemble_row(File::getMiscFile("various/editor/tilestyles.png"), 17);
 
     d_tileSize = tileSize;
-    std::vector<Glib::RefPtr<Gdk::Pixbuf> >::iterator it;
+    std::vector<PixMask* >::iterator it;
     for (it = base_tilestyles.begin(); it != base_tilestyles.end(); it++)
-      tilestyle_images.push_back((*it)->scale_simple((int)d_tileSize, 
-						     (int)d_tileSize, 
-						     Gdk::INTERP_BILINEAR));
+      {
+	PixMask *pix = (*it)->copy();
+	PixMask::scale(pix, d_tileSize, d_tileSize);
+	tilestyle_images.push_back(pix);
+      }
 
     std::string scene;
     TilePreviewScene *s;

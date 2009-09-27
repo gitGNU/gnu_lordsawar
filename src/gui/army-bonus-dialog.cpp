@@ -100,11 +100,11 @@ void ArmyBonusDialog::addArmyType(guint32 army_type)
     Gtk::TreeIter i = armies_list->append();
     (*i)[armies_columns.name] = a->getName();
     (*i)[armies_columns.image] = gc->getArmyPic(p->getArmyset(), army_type,
-						p, NULL);
+						p, NULL)->to_pixbuf();
     (*i)[armies_columns.str] = a->getStrength();
     (*i)[armies_columns.move] = a->getMaxMoves();
     guint32 b = a->getMoveBonus();
-    (*i)[armies_columns.move_image] = gc->getMoveBonusPic(b, false);
+    (*i)[armies_columns.move_image] = gc->getMoveBonusPic(b, false)->to_pixbuf();
     (*i)[armies_columns.bonus] = "-";
 
     std::string s = a->getArmyBonusDescription();

@@ -27,6 +27,7 @@
 #include "player.h"
 #include "defs.h"
 #include "rgb_shift.h"
+#include "PixMask.h"
 
 struct ArmyCacheItem;
 struct ShipCacheItem;
@@ -121,9 +122,9 @@ class GraphicsCache
           * @param player       the player owning the army
           * @return the image of the unit
           */
-        Glib::RefPtr<Gdk::Pixbuf> getArmyPic(guint32 armyset, guint32 army, const Player* p,
+        PixMask* getArmyPic(guint32 armyset, guint32 army, const Player* p,
                                 const bool* medals);
-	Glib::RefPtr<Gdk::Pixbuf> getArmyPic(Army *a);
+	PixMask* getArmyPic(Army *a);
 
         /** Function for getting the shield picture from the cache
           * 
@@ -140,15 +141,15 @@ class GraphicsCache
           * @param colour       which player the shield is for
           * @return the image of the shield
           */
-        Glib::RefPtr<Gdk::Pixbuf> getShieldPic(std::string shieldset, guint32 type, guint32 colour);
-        Glib::RefPtr<Gdk::Pixbuf> getShieldPic(guint32 type, Player *p);
+        PixMask* getShieldPic(std::string shieldset, guint32 type, guint32 colour);
+        PixMask* getShieldPic(guint32 type, Player *p);
 
         /** Function for getting a ruin picture
           *
           * @param type         the type of the ruin
           * @return image of the ruin 
           */
-        Glib::RefPtr<Gdk::Pixbuf> getRuinPic(int type);
+        PixMask* getRuinPic(int type);
 
         /** Function for getting a diplomacy icon
           *
@@ -156,42 +157,42 @@ class GraphicsCache
           * @param state        the diplomatic state.  e.g. peace, war, etc
           * @return image of the icon
           */
-        Glib::RefPtr<Gdk::Pixbuf> getDiplomacyPic(int type, Player::DiplomaticState state);
+        PixMask* getDiplomacyPic(int type, Player::DiplomaticState state);
 
         /** Function for getting a temple picture
           *
           * @param type         the type of the temple
           * @return image of the temple
           */
-        Glib::RefPtr<Gdk::Pixbuf> getTemplePic(int type);
+        PixMask* getTemplePic(int type);
 
         /** Function for getting a road picture
           *
           * @param type         the type of the road
           * @return image of the road
           */
-        Glib::RefPtr<Gdk::Pixbuf> getRoadPic(int type);
+        PixMask* getRoadPic(int type);
 
         /** Function for getting a fog picture
           *
           * @param type         the type of the fog
           * @return image of the fog
           */
-        Glib::RefPtr<Gdk::Pixbuf> getFogPic(int type);
+        PixMask* getFogPic(int type);
 
         /** Function for getting a bridge picture
           *
           * @param type         the type of the bridge 0=e/w 1=n/s
           * @return image of the bridge
           */
-        Glib::RefPtr<Gdk::Pixbuf> getBridgePic(int type);
+        PixMask* getBridgePic(int type);
 
         /** Function for getting a cursor picture
           *
           * @param type         the type of the cursor 
           * @return image of the cursor
           */
-        Glib::RefPtr<Gdk::Pixbuf> getCursorPic(int type);
+        PixMask* getCursorPic(int type);
 
         /** Function for getting a ship picture.  This is the picture
 	  * that appears when the stack goes into the water.
@@ -199,7 +200,7 @@ class GraphicsCache
           * @param p            the player to colour the ship as
           * @return image of the ship
           */
-        Glib::RefPtr<Gdk::Pixbuf> getShipPic(const Player* p);
+        PixMask* getShipPic(const Player* p);
 
         /** Function for getting a standard picture.  This is the picture
 	  * that appears when the hero plants a flag..
@@ -207,7 +208,7 @@ class GraphicsCache
           * @param p            the player to colour the flag as
           * @return image of the standard
           */
-        Glib::RefPtr<Gdk::Pixbuf> getPlantedStandardPic(const Player* p);
+        PixMask* getPlantedStandardPic(const Player* p);
 
         /** Function for getting a city picture
           * 
@@ -221,7 +222,7 @@ class GraphicsCache
           * @param player       the player owning the city
           * @return image of the described city
           */
-        Glib::RefPtr<Gdk::Pixbuf> getCityPic(int type, const Player* p);
+        PixMask* getCityPic(int type, const Player* p);
         /** Another function for getting a city picture
           *
           * Most often, we don't need such a sophisticated function. So just
@@ -230,7 +231,7 @@ class GraphicsCache
           * @param city     the city whose picture we want to get
           * @return image of the city
           */
-        Glib::RefPtr<Gdk::Pixbuf> getCityPic(const City* city);
+        PixMask* getCityPic(const City* city);
 
         /** Function for getting tower pictures.
           *
@@ -240,7 +241,7 @@ class GraphicsCache
           * @param p the player for which we want to get the tower
           * @return image for the tower
           */
-        Glib::RefPtr<Gdk::Pixbuf> getTowerPic(const Player *p);
+        PixMask* getTowerPic(const Player *p);
 
         /** Function for getting flag pictures.
           *
@@ -250,7 +251,7 @@ class GraphicsCache
           * @param stack    the stack for which we want to get the flag
           * @return image for the flag
           */
-        Glib::RefPtr<Gdk::Pixbuf> getFlagPic(const Stack* s);
+        PixMask* getFlagPic(const Stack* s);
 
         /** Function for getting selector pictures.
           *
@@ -261,7 +262,7 @@ class GraphicsCache
           * @param p the player to draw it for
           * @return image for the flag
           */
-        Glib::RefPtr<Gdk::Pixbuf> getSelectorPic(guint32 type, guint32 frame, const Player* p);
+        PixMask* getSelectorPic(guint32 type, guint32 frame, const Player* p);
 
         /** Function for getting shield pictures.
           *
@@ -272,20 +273,20 @@ class GraphicsCache
           * @param p the player to draw it for
           * @return image for the shield
           */
-        Glib::RefPtr<Gdk::Pixbuf> getShieldPic(guint32 type, const Player* p);
+        PixMask* getShieldPic(guint32 type, const Player* p);
 
 
-        Glib::RefPtr<Gdk::Pixbuf> getSmallRuinedCityPic();
+        PixMask* getSmallRuinedCityPic();
 	//! Return a small hero picture, either white (active==true) or black.
-        Glib::RefPtr<Gdk::Pixbuf> getSmallHeroPic(bool active);
-        Glib::RefPtr<Gdk::Pixbuf> getPortPic();
-        Glib::RefPtr<Gdk::Pixbuf> getExplosionPic();
-        Glib::RefPtr<Gdk::Pixbuf> getSignpostPic();
-        Glib::RefPtr<Gdk::Pixbuf> getMoveBonusPic(guint32 bonus, bool has_ship);
-        Glib::RefPtr<Gdk::Pixbuf>getSmallTemplePic();
-        Glib::RefPtr<Gdk::Pixbuf>getSmallRuinExploredPic();
-        Glib::RefPtr<Gdk::Pixbuf> getSmallRuinUnexploredPic();
-        Glib::RefPtr<Gdk::Pixbuf> getSmallStrongholdUnexploredPic();
+        PixMask* getSmallHeroPic(bool active);
+        PixMask* getPortPic();
+        PixMask* getExplosionPic();
+        PixMask* getSignpostPic();
+        PixMask* getMoveBonusPic(guint32 bonus, bool has_ship);
+        PixMask*getSmallTemplePic();
+        PixMask*getSmallRuinExploredPic();
+        PixMask* getSmallRuinUnexploredPic();
+        PixMask* getSmallStrongholdUnexploredPic();
 
         /** Function for getting production shield pictures.
           *
@@ -301,7 +302,7 @@ class GraphicsCache
 	  * note that type=invalid,production=true is used to show the symbol
 	  * that means no more units can be vectored to this city.
           */
-        Glib::RefPtr<Gdk::Pixbuf> getProdShieldPic(guint32 type, bool prod);
+        PixMask* getProdShieldPic(guint32 type, bool prod);
 
 
         /** Modify an image with player colors.
@@ -316,11 +317,11 @@ class GraphicsCache
           * @return a surface with player colors applied.
           */
 
-	Glib::RefPtr<Gdk::Pixbuf> applyMask(Glib::RefPtr<Gdk::Pixbuf> image, Glib::RefPtr<Gdk::Pixbuf> mask, const Player* p);
+	PixMask* applyMask(PixMask* image, PixMask* mask, const Player* p);
 
-	static Glib::RefPtr<Gdk::Pixbuf> applyMask(Glib::RefPtr<Gdk::Pixbuf> image, Glib::RefPtr<Gdk::Pixbuf> mask, struct rgb_shift shifts, bool isNeutral);
+	static PixMask* applyMask(PixMask* image, PixMask* mask, struct rgb_shift shifts, bool isNeutral);
         
-	static bool loadSelectorImages(std::string tileset, std::string filename, guint32 tilesize, std::vector<Glib::RefPtr<Gdk::Pixbuf> > &images, std::vector<Glib::RefPtr<Gdk::Pixbuf> > &masks);
+	static bool loadSelectorImages(std::string tileset, std::string filename, guint32 tilesize, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);
 
 	guint32 getNumberOfLargeSelectorFrames() {return d_selector.size();};
 	guint32 getNumberOfSmallSelectorFrames() {return d_smallselector.size();}
@@ -482,7 +483,7 @@ class GraphicsCache
           * @param picname          the name of the picture
           * @return the surface which contains the picture
           */
-        static Glib::RefPtr<Gdk::Pixbuf> getCitysetPicture(std::string citysetname, std::string picname);
+        static PixMask* getCitysetPicture(std::string citysetname, std::string picname);
 
         //the data
         static GraphicsCache* s_instance;
@@ -507,35 +508,35 @@ class GraphicsCache
         std::list<PlantedStandardCacheItem*> d_plantedstandardlist;
 
         //some private surfaces
-        Glib::RefPtr<Gdk::Pixbuf> d_citypic[MAX_PLAYERS + 1]; //+1 for neutral
-        Glib::RefPtr<Gdk::Pixbuf> d_towerpic[MAX_PLAYERS];
-        Glib::RefPtr<Gdk::Pixbuf> d_templepic[TEMPLE_TYPES];
-        Glib::RefPtr<Gdk::Pixbuf> d_ruinpic[RUIN_TYPES];
-        Glib::RefPtr<Gdk::Pixbuf> d_diplomacypic[2][DIPLOMACY_TYPES];
-        Glib::RefPtr<Gdk::Pixbuf> d_roadpic[ROAD_TYPES];
-        Glib::RefPtr<Gdk::Pixbuf> d_bridgepic[BRIDGE_TYPES];
-        Glib::RefPtr<Gdk::Pixbuf> d_cursorpic[CURSOR_TYPES];
-        Glib::RefPtr<Gdk::Pixbuf> d_razedpic[MAX_PLAYERS + 1]; //+1 for neutral
-        Glib::RefPtr<Gdk::Pixbuf> d_flagpic[MAX_STACK_SIZE];
-        Glib::RefPtr<Gdk::Pixbuf> d_flagmask[MAX_STACK_SIZE];
-	std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_selector;
-	std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_selectormask;
-	std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_smallselector;
-	std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_smallselectormask;
-        Glib::RefPtr<Gdk::Pixbuf> d_prodshieldpic[PRODUCTION_SHIELD_TYPES];
-	Glib::RefPtr<Gdk::Pixbuf> d_smallruinedcity;
-	Glib::RefPtr<Gdk::Pixbuf> d_smallhero;
-	Glib::RefPtr<Gdk::Pixbuf> d_smallinactivehero;
-        Glib::RefPtr<Gdk::Pixbuf> d_movebonuspic[MOVE_BONUS_TYPES];
-        Glib::RefPtr<Gdk::Pixbuf> d_medalpic[MEDAL_TYPES];
-	Glib::RefPtr<Gdk::Pixbuf> d_port;
-	Glib::RefPtr<Gdk::Pixbuf> d_explosion;
-	Glib::RefPtr<Gdk::Pixbuf> d_signpost;
-	Glib::RefPtr<Gdk::Pixbuf> d_small_ruin_unexplored;
-	Glib::RefPtr<Gdk::Pixbuf> d_small_stronghold_unexplored;
-	Glib::RefPtr<Gdk::Pixbuf> d_small_ruin_explored;
-	Glib::RefPtr<Gdk::Pixbuf> d_small_temple;
-	Glib::RefPtr<Gdk::Pixbuf>d_fogpic[FOG_TYPES];
+        PixMask* d_citypic[MAX_PLAYERS + 1]; //+1 for neutral
+        PixMask* d_towerpic[MAX_PLAYERS];
+        PixMask* d_templepic[TEMPLE_TYPES];
+        PixMask* d_ruinpic[RUIN_TYPES];
+        PixMask* d_diplomacypic[2][DIPLOMACY_TYPES];
+        PixMask* d_roadpic[ROAD_TYPES];
+        PixMask* d_bridgepic[BRIDGE_TYPES];
+        PixMask* d_cursorpic[CURSOR_TYPES];
+        PixMask* d_razedpic[MAX_PLAYERS + 1]; //+1 for neutral
+        PixMask* d_flagpic[MAX_STACK_SIZE];
+        PixMask* d_flagmask[MAX_STACK_SIZE];
+	std::vector<PixMask* > d_selector;
+	std::vector<PixMask* > d_selectormask;
+	std::vector<PixMask* > d_smallselector;
+	std::vector<PixMask* > d_smallselectormask;
+        PixMask* d_prodshieldpic[PRODUCTION_SHIELD_TYPES];
+	PixMask* d_smallruinedcity;
+	PixMask* d_smallhero;
+	PixMask* d_smallinactivehero;
+        PixMask* d_movebonuspic[MOVE_BONUS_TYPES];
+        PixMask* d_medalpic[MEDAL_TYPES];
+	PixMask* d_port;
+	PixMask* d_explosion;
+	PixMask* d_signpost;
+	PixMask* d_small_ruin_unexplored;
+	PixMask* d_small_stronghold_unexplored;
+	PixMask* d_small_ruin_explored;
+	PixMask* d_small_temple;
+	PixMask*d_fogpic[FOG_TYPES];
 };
 
 #endif

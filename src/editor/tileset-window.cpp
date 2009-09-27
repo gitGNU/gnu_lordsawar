@@ -264,13 +264,13 @@ TileSetWindow::update_tilestyle_panel()
   if (t)
     {
       tilestyle_combobox->set_active(t->getType());
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf= t->getImage();
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf= t->getImage()->to_pixbuf();
       tilestyle_image->clear();
       tilestyle_image->property_pixbuf() = pixbuf;
       tilestyle_image->show_all();
       int idx = t->getType();
       tilestyle_standard_image->property_pixbuf() = 
-	tilestyle_standard_images[idx];
+	tilestyle_standard_images[idx]->to_pixbuf();
     }
 }
 
@@ -565,7 +565,7 @@ void TileSetWindow::on_help_about_activated()
   d->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
-  dialog->set_logo(GraphicsLoader::getMiscPicture("tileset_icon.png"));
+  dialog->set_logo(GraphicsLoader::getMiscPicture("tileset_icon.png")->to_pixbuf());
   dialog->show_all();
   dialog->run();
 
@@ -913,7 +913,7 @@ void TileSetWindow::on_tilestyle_changed()
       t->setType(TileStyle::Type(tilestyle_combobox->get_active_row_number()));
       int idx = t->getType();
       tilestyle_standard_image->property_pixbuf() = 
-	tilestyle_standard_images[idx];
+	tilestyle_standard_images[idx]->to_pixbuf();
     }
 }
 

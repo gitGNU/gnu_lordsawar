@@ -30,7 +30,7 @@ class TilePreviewScene: public sigc::trackable
 {
 public:
   TilePreviewScene (Tile *tile, 
-		    std::vector<Glib::RefPtr<Gdk::Pixbuf> > standard_images, 
+		    std::vector<PixMask*> standard_images, 
 		    guint32 height, guint32 width, 
 		    std::string scene);
   void regenerate();
@@ -48,7 +48,7 @@ private:
     guint32 d_height;
     guint32 d_width;
     Tile *d_tile;
-    std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_standard_images;
+    std::vector<PixMask*> d_standard_images;
 };
 
 #endif

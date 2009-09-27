@@ -722,7 +722,7 @@ void EditorBigMap::after_draw()
       {
 	Vector<int> pos = tile_to_buffer_pos(*i);
 
-	Glib::RefPtr<Gdk::Pixbuf> pic;
+	PixMask *pic;
 
 
 	switch (pointer)
@@ -746,40 +746,40 @@ void EditorBigMap::after_draw()
 	    pic = GraphicsCache::getInstance()->getArmyPic
 	      (Playerlist::getInstance()->getNeutral()->getArmyset(), 0,
 	       Playerlist::getInstance()->getNeutral(), NULL);
-	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    pic->blit(buffer, pos);
 	    break;
 
 	  case CITY:
 	    pic = GraphicsCache::getInstance()->getCityPic(0, Playerlist::getInstance()->getNeutral());
-	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    pic->blit(buffer, pos);
 	    break;
 
 	  case RUIN:
 	    pic = GraphicsCache::getInstance()->getRuinPic(0);
-	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    pic->blit(buffer, pos);
 	    break;
 
 	  case TEMPLE:
 	    pic = GraphicsCache::getInstance()->getTemplePic(0);
-	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    pic->blit(buffer, pos);
 	    break;
 
 	  case SIGNPOST:
 	    pic = GraphicsCache::getInstance()->getSignpostPic();
-	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    pic->blit(buffer, pos);
 	    break;
 
 	  case ROAD:
 	    pic = GraphicsCache::getInstance()->getRoadPic(CreateScenario::calculateRoadType(*i));
-	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    pic->blit(buffer, pos);
 	    break;
 	  case PORT:
 	    pic = GraphicsCache::getInstance()->getPortPic();
-	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    pic->blit(buffer, pos);
 	    break;
 	  case BRIDGE:
 	    pic = GraphicsCache::getInstance()->getBridgePic(tile_to_bridge_type(*i));
-	    buffer->draw_pixbuf (pic, 0, 0, pos.x, pos.y, pic->get_width(), pic->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+	    pic->blit(buffer, pos);
 	    break;
 	  }
       }

@@ -182,7 +182,7 @@ Glib::RefPtr<Gdk::Pixbuf> GamePreferencesDialog::getShieldPic(guint32 type, guin
 
   ShieldStyle *sh= sl->getShield(d_shieldset, type, owner);
   return GraphicsCache::applyMask(sh->getImage(), sh->getMask(), 
-				  sl->getMaskColorShifts(d_shieldset, owner), false);
+				  sl->getMaskColorShifts(d_shieldset, owner), false)->to_pixbuf();
 }
 
 void GamePreferencesDialog::add_player(GameParameters::Player::Type type,
@@ -252,7 +252,8 @@ void GamePreferencesDialog::update_shields()
   list = players_vbox->get_children();
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
-      Gtk::Image *player_shield = new Gtk::Image (getShieldPic(2, i));
+      Gtk::Image *player_shield = new Gtk::Image ();
+      player_shield->property_pixbuf() = getShieldPic(2, i);
       player_shields.push_back(player_shield);
       Gtk::HBox *player_hbox = static_cast<Gtk::HBox*>(list[i+1]);
       player_hbox->pack_start(*manage(player_shield), Gtk::PACK_SHRINK, 10);

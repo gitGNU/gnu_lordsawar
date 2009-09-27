@@ -77,11 +77,13 @@ BuyProductionDialog::BuyProductionDialog(City *c)
     {
 	Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
 	
-	Glib::RefPtr<Gdk::Pixbuf> pixbuf
+	Glib::RefPtr<Gdk::Pixbuf> pix
 	    = gc->getArmyPic(p->getArmyset(), purchasables[i]->getTypeId(), p, 
-			     NULL);
+			     NULL)->to_pixbuf();
 	
-	toggle->add(*manage(new Gtk::Image(pixbuf)));
+	Gtk::Image *image = new Gtk::Image();
+	image->property_pixbuf() = pix;
+	toggle->add(*manage(image));
 	production_toggles.push_back(toggle);
 	int x = i % no_columns;
 	int y = i / no_columns;

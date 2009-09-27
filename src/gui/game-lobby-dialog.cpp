@@ -385,8 +385,8 @@ void GameLobbyDialog::add_player(const Glib::ustring &type,
   GraphicsCache *gc = GraphicsCache::getInstance();
   Gtk::TreeIter i = player_list->append();
   if (player == Playerlist::getInstance()->getActiveplayer())
-    (*i)[player_columns.turn] = gc->getCursorPic(GraphicsCache::SWORD);
-  (*i)[player_columns.shield] = gc->getShieldPic(1, player);
+    (*i)[player_columns.turn] = gc->getCursorPic(GraphicsCache::SWORD)->to_pixbuf();
+  (*i)[player_columns.shield] = gc->getShieldPic(1, player)->to_pixbuf();
   (*i)[player_columns.type] = type;
   (*i)[player_columns.name] = name;
   (*i)[player_columns.player_id] = player->getId();
@@ -504,7 +504,7 @@ void GameLobbyDialog::on_local_player_starts_turn(Player *p)
       Gtk::TreeModel::Row row = *i;
       Player *active = Playerlist::getActiveplayer();
       if (row[player_columns.player_id] == active->getId())
-	(*i)[player_columns.turn] = gc->getCursorPic(GraphicsCache::SWORD);
+	(*i)[player_columns.turn] = gc->getCursorPic(GraphicsCache::SWORD)->to_pixbuf();
     }
   update_scenario_details();
 }
@@ -532,7 +532,7 @@ void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
 	}
       Player *active = Playerlist::getActiveplayer();
       if (row[player_columns.player_id] == active->getId())
-	(*i)[player_columns.turn] = gc->getCursorPic(GraphicsCache::SWORD);
+	(*i)[player_columns.turn] = gc->getCursorPic(GraphicsCache::SWORD)->to_pixbuf();
     }
   update_scenario_details();
 }

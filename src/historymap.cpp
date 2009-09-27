@@ -50,7 +50,7 @@ void HistoryMap::drawCities()
   LocationList<City*>::iterator it = d_clist->begin();
   for (; it != d_clist->end(); it++)
   {
-    Glib::RefPtr<Gdk::Pixbuf> tmp;
+      PixMask *tmp;
       if ((*it)->isVisible(getViewingPlayer()) == false)
         continue;
       if ((*it)->isBurnt() == true)
@@ -60,13 +60,7 @@ void HistoryMap::drawCities()
   
       Vector<int> pos = (*it)->getPos();
       pos = mapToSurface(pos);
-      Glib::RefPtr<Gdk::Pixbuf> shield = tmp;
-      surface->draw_pixbuf(shield, 0, 0, 
-			   pos.x - (shield->get_width()/2), 
-			   pos.y - (shield->get_height()/2), 
-			   shield->get_width(),
-			   shield->get_height(),
-			   Gdk::RGB_DITHER_NONE, 0, 0);
+      tmp->blit_centered(surface, pos);
   }
 }
 

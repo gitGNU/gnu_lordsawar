@@ -40,12 +40,8 @@ void HeroMap::after_draw()
 
     start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
 
-    Glib::RefPtr<Gdk::Pixbuf> heropic = gc->getSmallHeroPic (true);
-    surface->draw_pixbuf(heropic, 0, 0, 
-			 start.x - (heropic->get_width()/2), 
-			 start.y - (heropic->get_height()/2), 
-			 heropic->get_width(), heropic->get_height(),
-			 Gdk::RGB_DITHER_NONE, 0, 0);
+    PixMask *heropic = gc->getSmallHeroPic(true);
+    heropic->blit_centered(surface, start);
     map_changed.emit(surface);
 }
 

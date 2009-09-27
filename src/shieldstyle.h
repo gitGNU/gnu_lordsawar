@@ -22,6 +22,7 @@
 #include <string>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
+#include "PixMask.h"
 
 
 class Player;
@@ -74,10 +75,10 @@ class ShieldStyle : public sigc::trackable
         // Set functions:
         
         //! Set the basic image of the shield.
-        void setImage(Glib::RefPtr<Gdk::Pixbuf> image) {d_image = image;};
+        void setImage(PixMask* image) {d_image = image;};
 
         //! Set the mask of the shield.
-        void setMask(Glib::RefPtr<Gdk::Pixbuf> mask) {d_mask = mask;}
+        void setMask(PixMask* mask) {d_mask = mask;}
 
 	//! Set the basename of the shield picture's filename.
 	void setImageName(std::string name) {d_image_name = name;}
@@ -88,10 +89,10 @@ class ShieldStyle : public sigc::trackable
         guint32 getType() const {return d_type;}
 
         //! Get the image of the shield.
-	Glib::RefPtr<Gdk::Pixbuf> getImage() {return d_image;}
+	PixMask* getImage() {return d_image;}
 
         //! Returns the mask of the shield.
-	Glib::RefPtr<Gdk::Pixbuf> getMask() {return d_mask;}
+	PixMask* getMask() {return d_mask;}
 
 	//! Returns the basename of the picture's filename.
 	std::string getImageName() const {return d_image_name;}
@@ -107,14 +108,14 @@ class ShieldStyle : public sigc::trackable
         guint32 d_type;
 
 	//! The unshaded image portion of the shield's picture.
-	Glib::RefPtr<Gdk::Pixbuf> d_image;
+	PixMask* d_image;
 
 	//! The portion of the shield's image to shade in the player's colour.
 	/**
 	 * The mask appears to the right of the image in the shield's picture.
 	 * The colour that shades the mask is dictated by Player::d_colour.
 	 */
-	Glib::RefPtr<Gdk::Pixbuf> d_mask;
+	PixMask* d_mask;
 
 	//! The basename of the shield's picture file.
 	/**

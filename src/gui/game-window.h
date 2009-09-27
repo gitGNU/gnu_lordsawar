@@ -336,8 +336,8 @@ class GameWindow: public Decorated
     bool on_smallmap_exposed(GdkEventExpose *event);
 
 public:
-    std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_button_images;
-    std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_arrow_images;
+    std::vector<PixMask* > d_button_images;
+    std::vector<PixMask* > d_arrow_images;
     bool d_quick_fights; //do we speed up fights for this player's turn?
     std::string stop_action; //hackhackhack
     std::string d_scenario;

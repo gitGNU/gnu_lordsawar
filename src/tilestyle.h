@@ -21,6 +21,7 @@
 #include <gtkmm.h>
 
 #include "xmlhelper.h"
+#include "PixMask.h"
 
 //! Describes the look of a Tile.
 /**
@@ -284,7 +285,7 @@ ooooooo
 	void setType(Type type) {d_type = type;}
                 
         //! Get the picture for tile style.
-	Glib::RefPtr<Gdk::Pixbuf> getImage() const {return d_image;}
+	PixMask* getImage() const {return d_image;}
 
         //! Get the id for this tilestyle.
 	/*
@@ -307,14 +308,14 @@ ooooooo
 	//! Get the name of the another style.
 	static std::string getTypeName(Type type);
 
-	void setImage(Glib::RefPtr<Gdk::Pixbuf> image) {d_image = image;};
+	void setImage(PixMask* image) {d_image = image;};
 
 	//! Return the style type enumeration given the type name.
 	static TileStyle::Type typeNameToType(std::string name);
     private:
         // DATA
 	//! The image of this tilestyle.
-	Glib::RefPtr<Gdk::Pixbuf> d_image; 
+	PixMask* d_image; 
 
 	//! The type of the tilestyle.
         Type d_type;

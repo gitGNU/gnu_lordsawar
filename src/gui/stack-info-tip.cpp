@@ -51,7 +51,11 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, const Stack
 
     //fill up the hbox with images of the armies in the stack
     for (Stack::const_iterator it = stack->begin(); it != stack->end(); it++)
-      image_hbox->add(*manage(new Gtk::Image(gc->getArmyPic(*it))));
+      {
+	Gtk::Image *image = new Gtk::Image();
+	image->property_pixbuf() = gc->getArmyPic(*it)->to_pixbuf();
+	image_hbox->add(*manage(image));
+      }
 
     image_hbox->show_all();
 

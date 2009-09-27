@@ -49,7 +49,7 @@ void GraphicsLoader::instantiateImages(Shieldset *shieldset)
 	  ShieldStyle *ss = *it;
 	  // The shield image consists of two halves. On the left is the shield 
 	  // image, on the right the mask.
-	  std::vector<Glib::RefPtr<Gdk::Pixbuf> > half;
+	  std::vector<PixMask* > half;
 	  half = disassemble_row(File::getShieldsetFile(shieldset->getSubDir(), 
 							ss->getImageName() 
 							+ ".png"), 2);
@@ -65,8 +65,8 @@ void GraphicsLoader::instantiateImages(Shieldset *shieldset)
 	    case ShieldStyle::LARGE:
 	      xsize = shieldset->getLargeWidth(); ysize = shieldset->getLargeHeight(); break;
 	    }
-	  half[0] = half[0]->scale_simple (xsize, ysize, Gdk::INTERP_BILINEAR);
-	  half[1] = half[1]->scale_simple (xsize, ysize, Gdk::INTERP_BILINEAR);
+	  PixMask::scale(half[0], xsize, ysize);
+	  PixMask::scale(half[1], xsize, ysize);
 	  ss->setImage(half[0]);
 	  ss->setMask(half[1]);
 	}
@@ -94,15 +94,15 @@ void GraphicsLoader::uninstantiateImages(Shieldset *shieldset)
       Shield *shield = *sit;
       for (Shield::iterator i = shield->begin(); i != shield->end(); i++)
 	{
-	  if ((*i)->getImage() == true)
+	  if ((*i)->getImage())
 	    {
-	      (*i)->getImage().clear();
-	      (*i)->setImage(Glib::RefPtr<Gdk::Pixbuf>(0));
+	      delete (*i)->getImage();
+	      (*i)->setImage(NULL);
 	    }
-	  if ((*i)->getMask() == true)
+	  if ((*i)->getMask())
 	    {
-	      (*i)->getMask().clear();
-	      (*i)->setMask(Glib::RefPtr<Gdk::Pixbuf>(0));
+	      delete (*i)->getMask();
+	      (*i)->setMask(NULL);
 	    }
 	}
     }
@@ -138,10 +138,10 @@ void GraphicsLoader::uninstantiateImages(Tileset *ts)
 	TileStyleSet *tss = (*i);
 	for (unsigned int j = 0; j < tss->size(); j++)
 	  {
-	    if ((*tss)[j]->getImage() == true)
+	    if ((*tss)[j]->getImage())
 	      {
-		(*tss)[j]->getImage().clear();
-		(*tss)[j]->setImage(Glib::RefPtr<Gdk::Pixbuf>(0));
+		delete (*tss)[j]->getImage();
+		(*tss)[j]->setImage(NULL);
 	      }
 	  }
       }
@@ -159,36 +159,36 @@ void GraphicsLoader::instantiateImages(Tileset *ts)
 
 void GraphicsLoader::instantiateImages(TileStyleSet *tss, guint32 tsize)
 {
-  std::vector<Glib::RefPtr<Gdk::Pixbuf> > styles;
+  std::vector<PixMask*> styles;
   styles = disassemble_row
     (File::getTilesetFile(tss->getSubDir(), tss->getName() + ".png"), 
      tss->size());
 
   for (unsigned int i=0; i < tss->size(); i++)
     {
-      styles[i] = styles[i]->scale_simple(tsize, tsize, Gdk::INTERP_BILINEAR);
+      PixMask::scale(styles[i], tsize, tsize);
       (*tss)[i]->setImage(styles[i]);
     }
 }
 
 void GraphicsLoader::loadShipPic(Armyset *armyset)
 {
-  std::vector<Glib::RefPtr<Gdk::Pixbuf> > half;
+  std::vector<PixMask*> half;
   half = disassemble_row(File::getArmysetFile(armyset->getSubDir(), "stackship.png"), 2);
   int size = armyset->getTileSize();
-  half[0] = half[0]->scale_simple(size, size, Gdk::INTERP_BILINEAR);
-  half[1] = half[1]->scale_simple(size, size, Gdk::INTERP_BILINEAR);
+  PixMask::scale(half[0], size, size);
+  PixMask::scale(half[1], size, size);
   armyset->setShipImage(half[0]);
   armyset->setShipMask(half[1]);
 }
 
 void GraphicsLoader::loadStandardPic(Armyset *armyset)
 {
-  std::vector<Glib::RefPtr<Gdk::Pixbuf> > half;
+  std::vector<PixMask*> half;
   half = disassemble_row(File::getArmysetFile(armyset->getSubDir(), "plantedstandard.png"), 2);
   int size = armyset->getTileSize();
-  half[0] = half[0]->scale_simple(size, size, Gdk::INTERP_BILINEAR);
-  half[1] = half[1]->scale_simple(size, size, Gdk::INTERP_BILINEAR);
+  PixMask::scale(half[0], size, size);
+  PixMask::scale(half[1], size, size);
   armyset->setStandardPic(half[0]);
   armyset->setStandardMask(half[1]);
 }
@@ -204,11 +204,11 @@ bool GraphicsLoader::instantiateImages(Armyset *armyset, ArmyProto *a)
   // game.
   // The army image consists of two halves. On the left is the army image, 
   // on the right the mask.
-  std::vector<Glib::RefPtr<Gdk::Pixbuf> > half;
+  std::vector<PixMask*> half;
   half = disassemble_row(File::getArmysetFile(armyset->getSubDir(), a->getImageName() + ".png"), 2);
   int size = armyset->getTileSize();
-  half[0] = half[0]->scale_simple(size, size, Gdk::INTERP_BILINEAR);
-  half[1] = half[1]->scale_simple(size, size, Gdk::INTERP_BILINEAR);
+  PixMask::scale(half[0], size, size);
+  PixMask::scale(half[1], size, size);
 
   a->setImage(half[0]);
   a->setMask(half[1]);
@@ -240,66 +240,65 @@ void GraphicsLoader::uninstantiateImages(Armyset *armyset)
 {
   for (Armyset::iterator i = armyset->begin(); i != armyset->end(); i++)
     {
-      if ((*i)->getImage() == true)
+      if ((*i)->getImage())
 	{
-	  (*i)->getImage().clear();
-	  (*i)->setImage(Glib::RefPtr<Gdk::Pixbuf>(0));
+	  delete (*i)->getImage();
+	  (*i)->setImage(NULL);
 	}
-      if ((*i)->getMask() == true)
+      if ((*i)->getMask())
 	{
-	  (*i)->getMask().clear();
-	  (*i)->setMask(Glib::RefPtr<Gdk::Pixbuf>(0));
+	  delete (*i)->getMask();
+	  (*i)->setMask(NULL);
 	}
     }
-  if (armyset->getShipPic() == true)
+  if (armyset->getShipPic())
     {
-      armyset->getShipPic().clear();
-      armyset->setShipImage(Glib::RefPtr<Gdk::Pixbuf>(0));
+      delete armyset->getShipPic();
+      armyset->setShipImage(NULL);
     }
-  if (armyset->getShipMask() == true)
+  if (armyset->getShipMask())
     {
-      armyset->getShipMask().clear();
-      armyset->setShipMask(Glib::RefPtr<Gdk::Pixbuf>(0));
+      delete armyset->getShipMask();
+      armyset->setShipMask(NULL);
     }
-  if (armyset->getStandardPic() == true)
+  if (armyset->getStandardPic())
     {
-      armyset->getStandardPic().clear();
-      armyset->setStandardPic(Glib::RefPtr<Gdk::Pixbuf>(0));
+      delete armyset->getStandardPic();
+      armyset->setStandardPic(NULL);
     }
   if (armyset->getStandardMask())
     {
-      armyset->getStandardMask().clear();
-      armyset->setStandardMask(Glib::RefPtr<Gdk::Pixbuf>(0));
+      delete armyset->getStandardMask();
+      armyset->setStandardMask(NULL);
     }
 }
 
-Glib::RefPtr<Gdk::Pixbuf> GraphicsLoader::loadImage(std::string filename, bool alpha)
+PixMask* GraphicsLoader::loadImage(std::string filename, bool alpha)
 {
-  return Gdk::Pixbuf::create_from_file(filename);
-
+  return PixMask::create(filename);
 }
 
-Glib::RefPtr<Gdk::Pixbuf> GraphicsLoader::getArmyPicture(std::string armysetdir, std::string pic)
+PixMask* GraphicsLoader::getArmyPicture(std::string armysetdir, std::string pic)
 {
   return loadImage(Configuration::s_dataPath + "/army/" + armysetdir + "/" + pic);
 }
 
-Glib::RefPtr<Gdk::Pixbuf> GraphicsLoader::getTilesetPicture(std::string tilesetdir, std::string picname)
+PixMask* GraphicsLoader::getTilesetPicture(std::string tilesetdir, std::string picname)
 {
   return loadImage(File::getTilesetFile(tilesetdir, picname));
 }
 
-Glib::RefPtr<Gdk::Pixbuf> GraphicsLoader::getMiscPicture(std::string picname, bool alpha)
+PixMask* GraphicsLoader::getMiscPicture(std::string picname, bool alpha)
 {
   return loadImage(Configuration::s_dataPath + "/various/" + picname,alpha);
 }
 
-Glib::RefPtr<Gdk::Pixbuf> GraphicsLoader::getShieldsetPicture(std::string shieldsetdir, std::string picname)
+PixMask* GraphicsLoader::getShieldsetPicture(std::string shieldsetdir, std::string picname)
 {
   return loadImage(File::getShieldsetFile(shieldsetdir, picname));
 }
 
-Glib::RefPtr<Gdk::Pixbuf> GraphicsLoader::getCitysetPicture(std::string citysetdir, std::string picname)
+PixMask* GraphicsLoader::getCitysetPicture(std::string citysetdir, std::string picname)
 {
   return loadImage(File::getCitysetFile(citysetdir, picname));
 }

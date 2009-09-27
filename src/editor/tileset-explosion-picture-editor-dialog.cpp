@@ -115,16 +115,18 @@ void TilesetExplosionPictureEditorDialog::update_panel()
 
 void TilesetExplosionPictureEditorDialog::show_explosion_image(std::string filename)
 {
-  std::vector<Glib::RefPtr<Gdk::Pixbuf> > tilestyle_images;
-  std::vector<Glib::RefPtr<Gdk::Pixbuf> > base_tilestyles;
+  std::vector<PixMask* > tilestyle_images;
+  std::vector<PixMask*> base_tilestyles;
   base_tilestyles = 
     disassemble_row(File::getMiscFile("various/editor/tilestyles.png"), 17);
 
   guint32 size = d_tileset->getTileSize();
-  std::vector<Glib::RefPtr<Gdk::Pixbuf> >::iterator it;
+  std::vector<PixMask*>::iterator it;
   for (it = base_tilestyles.begin(); it != base_tilestyles.end(); it++)
-    tilestyle_images.push_back((*it)->scale_simple((int)size, (int)size, 
-						   Gdk::INTERP_BILINEAR));
+    {
+      PixMask::scale(*it, size, size);
+      tilestyle_images.push_back(*it);
+    }
   TilePreviewScene *s;
   std::string scene;
   Tile *grass = (*d_tileset)[d_tileset->getIndex(Tile::GRASS)];

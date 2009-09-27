@@ -58,12 +58,12 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
     armyset = army->getArmyset();
     GraphicsCache *gc = GraphicsCache::getInstance();
     army_image->property_pixbuf() = gc->getArmyPic(armyset, army->getTypeId(), 
-						   p, NULL);
+						   p, NULL)->to_pixbuf();
 
     // fill in terrain image
     Gtk::Image *terrain_image;
     xml->get_widget("terrain_image", terrain_image);
-    terrain_image->property_pixbuf() = gc->getMoveBonusPic(army->getMoveBonus(), false);
+    terrain_image->property_pixbuf() = gc->getMoveBonusPic(army->getMoveBonus(), false)->to_pixbuf();
     //terrain_image->hide();
 
     // fill in info
@@ -123,12 +123,12 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army,
     armyset = army->getArmyset();
     GraphicsCache *gc = GraphicsCache::getInstance();
     army_image->property_pixbuf() = gc->getArmyPic(armyset, army->getTypeId(), 
-						   p, NULL);
+						   p, NULL)->to_pixbuf();
 
     // fill in terrain image
     Gtk::Image *terrain_image;
     xml->get_widget("terrain_image", terrain_image);
-    terrain_image->property_pixbuf() = gc->getMoveBonusPic(army->getMoveBonus(), false);
+    terrain_image->property_pixbuf() = gc->getMoveBonusPic(army->getMoveBonus(), false)->to_pixbuf();
     //terrain_image->hide();
 
     // fill in info
@@ -187,12 +187,12 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army)
     armyset = army->getArmyset();
     GraphicsCache *gc = GraphicsCache::getInstance();
     army_image->property_pixbuf() = gc->getArmyPic(armyset, army->getTypeId(), 
-						   p, NULL);
+						   p, NULL)->to_pixbuf();
 
     // fill in terrain image
     Gtk::Image *terrain_image;
     xml->get_widget("terrain_image", terrain_image);
-    terrain_image->property_pixbuf() = gc->getMoveBonusPic(army->getMoveBonus(), false);
+    terrain_image->property_pixbuf() = gc->getMoveBonusPic(army->getMoveBonus(), false)->to_pixbuf();
     //terrain_image->hide();
 
     // fill in info

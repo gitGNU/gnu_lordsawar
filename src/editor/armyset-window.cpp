@@ -479,7 +479,7 @@ void ArmySetWindow::on_help_about_activated()
   d->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
-  dialog->set_logo(GraphicsLoader::getMiscPicture("castle_icon.png"));
+  dialog->set_logo(GraphicsLoader::getMiscPicture("castle_icon.png")->to_pixbuf());
   dialog->show_all();
   dialog->run();
 
@@ -506,7 +506,7 @@ void ArmySetWindow::fill_army_info(ArmyProto *army)
 {
   if (army->getImageName() != "")
     {
-      army_image->property_pixbuf() = army->getImage();
+      army_image->property_pixbuf() = army->getImage()->to_pixbuf();
     
       std::string path = Configuration::s_dataPath + "/army/" +  
 	d_armyset->getSubDir() + "/" + army->getImageName() + ".png";
@@ -630,7 +630,7 @@ void ArmySetWindow::on_image_changed()
 	return;
       a->setImageName(dir);
       GraphicsLoader::instantiateImages(d_armyset);
-      army_image->property_pixbuf() = a->getImage();
+      army_image->property_pixbuf() = a->getImage()->to_pixbuf();
     }
   return;
 }

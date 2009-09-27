@@ -74,7 +74,7 @@ BigMap::BigMap()
 
 BigMap::~BigMap()
 {
-  d_itempic.clear();
+  delete d_itempic;
 
     if (buffer == true)
       buffer.clear();
@@ -292,21 +292,22 @@ MapTipPosition BigMap::map_tip_position(Rectangle tile_area)
     return m;
 }
 
-void BigMap::blit_object(const Location &obj, Glib::RefPtr<Gdk::Pixbuf> image, Glib::RefPtr<Gdk::Pixmap> surface)
+void BigMap::blit_object(const Location &obj, PixMask *image, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc)
 {
   int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
   Vector<int> p = tile_to_buffer_pos(obj.getPos());
-  surface->draw_pixbuf(image, 0, 0, p.x, p.y, obj.getSize() * tilesize, obj.getSize() * tilesize, Gdk::RGB_DITHER_NONE, 0, 0);
+  image->blit(surface, p);
 }
 
 bool BigMap::blit_if_inside_buffer(const Location &obj, 
-				   Glib::RefPtr<Gdk::Pixbuf> image,
+				   PixMask* image,
 				   Rectangle &map_view, 
-				   Glib::RefPtr<Gdk::Pixmap> surface)
+				   Glib::RefPtr<Gdk::Pixmap> surface,
+				   Glib::RefPtr<Gdk::GC> surface_gc)
 {
   if (is_overlapping(map_view, obj.get_area()))
     {
-      blit_object(obj, image, surface);
+      blit_object(obj, image, surface, surface_gc);
       return true;
     }
   return false;
@@ -501,8 +502,7 @@ void BigMap::drawFogTile (int x, int y)
 	}
       Vector<int> p = tile_to_buffer_pos(Vector<int>(x, y));
       int ts= GameMap::getInstance()->getTileset()->getTileSize();
-      buffer->draw_pixbuf (GraphicsCache::getInstance()->getFogPic(type - 1), 
-			   0, 0, p.x, p.y, ts, ts, Gdk::RGB_DITHER_NONE, 0, 0);
+      GraphicsCache::getInstance()->getFogPic(type - 1)->blit(buffer, p);
     }
   return;
 }
@@ -550,7 +550,7 @@ void BigMap::debugFogTile (int x, int y)
   printf (" = %d\n", idx);
 }
 
-void BigMap::draw_stack(Stack *s, Glib::RefPtr<Gdk::Pixmap> surface)
+void BigMap::draw_stack(Stack *s, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc)
 {
   GameMap *gm = GameMap::getInstance();
   GraphicsCache *gc = GraphicsCache::getInstance();
@@ -578,7 +578,7 @@ void BigMap::draw_stack(Stack *s, Glib::RefPtr<Gdk::Pixmap> surface)
       bool show_army = true;
       if (s->hasShip())
 	{
-	  surface->draw_pixbuf(gc->getShipPic(player), 0, 0, p.x, p.y, army_tilesize, army_tilesize, Gdk::RGB_DITHER_NONE, 0, 0);
+	  gc->getShipPic(player)->blit(surface, p);
 	}
       else
 	{
@@ -591,7 +591,7 @@ void BigMap::draw_stack(Stack *s, Glib::RefPtr<Gdk::Pixmap> surface)
 	      if (tile->getBuilding() != Maptile::CITY &&
 		  tile->getBuilding() != Maptile::RUIN &&
 		  tile->getBuilding() != Maptile::TEMPLE)
-	      surface->draw_pixbuf(gc->getTowerPic(player), 0, 0, p.x, p.y, army_tilesize, army_tilesize, Gdk::RGB_DITHER_NONE, 0, 0);
+		gc->getTowerPic(player)->blit(surface, p);
 	      else
 		show_army = true;
 	    }
@@ -599,7 +599,7 @@ void BigMap::draw_stack(Stack *s, Glib::RefPtr<Gdk::Pixmap> surface)
 	  if (show_army == true)
 	    {
 	      Army *a = *s->begin();
-	      surface->draw_pixbuf(gc->getArmyPic(a), 0, 0, p.x, p.y, army_tilesize, army_tilesize, Gdk::RGB_DITHER_NONE, 0, 0);
+	      gc->getArmyPic(a)->blit(surface, p);
 	    }
 	}
 
@@ -607,7 +607,7 @@ void BigMap::draw_stack(Stack *s, Glib::RefPtr<Gdk::Pixmap> surface)
       if (show_army)
 	{
 	  // draw flag
-	  surface->draw_pixbuf(gc->getFlagPic(s), 0, 0, p.x, p.y, tilesize, tilesize, Gdk::RGB_DITHER_NONE, 0, 0);
+	  gc->getFlagPic(s)->blit(surface, p);
 	}
     }
 }
@@ -667,35 +667,35 @@ void BigMap::draw_buffer(Rectangle map_view, Glib::RefPtr<Gdk::Pixmap> surface, 
 	   r->getOwner() == Playerlist::getActiveplayer()) ||
 	  r->isHidden() == false)
 	blit_if_inside_buffer(**i, gc->getRuinPic(r->getType()), map_view,
-			      surface);
+			      surface, context);
     }
 
   for (Signpostlist::iterator i = Signpostlist::getInstance()->begin();
        i != Signpostlist::getInstance()->end(); ++i)
-    blit_if_inside_buffer(**i, gc->getSignpostPic(), map_view, surface);
+    blit_if_inside_buffer(**i, gc->getSignpostPic(), map_view, surface, context);
 
   for (Templelist::iterator i = Templelist::getInstance()->begin();
        i != Templelist::getInstance()->end(); ++i)
     blit_if_inside_buffer(**i, gc->getTemplePic((*i)->getType()), map_view, 
-			  surface);
+			  surface, context);
 
   for (Roadlist::iterator i = Roadlist::getInstance()->begin();
        i != Roadlist::getInstance()->end(); ++i)
     blit_if_inside_buffer(**i, gc->getRoadPic((*i)->getType()), map_view, 
-			  surface);
+			  surface, context);
 
   for (Bridgelist::iterator i = Bridgelist::getInstance()->begin();
        i != Bridgelist::getInstance()->end(); ++i)
     blit_if_inside_buffer(**i, gc->getBridgePic((*i)->getType()), map_view, 
-			  surface);
+			  surface, context);
 
   for (Portlist::iterator i = Portlist::getInstance()->begin();
        i != Portlist::getInstance()->end(); ++i)
-    blit_if_inside_buffer(**i, gc->getPortPic(), map_view, surface);
+    blit_if_inside_buffer(**i, gc->getPortPic(), map_view, surface, context);
 
   for (Citylist::iterator i = Citylist::getInstance()->begin();
        i != Citylist::getInstance()->end(); ++i)
-    blit_if_inside_buffer(**i, gc->getCityPic(*i), map_view, surface);
+    blit_if_inside_buffer(**i, gc->getCityPic(*i), map_view, surface, context);
 
   GameMap *gm = GameMap::getInstance();
   // If there are any items lying around, blit the itempic as well
@@ -713,9 +713,9 @@ void BigMap::draw_buffer(Rectangle map_view, Glib::RefPtr<Gdk::Pixmap> surface, 
 	  //only show one of the bag or the flag
 	  Vector<int> p = tile_to_buffer_pos(Vector<int>(x, y));
 	  if (standard_planted && flag)
-	    draw_standard(flag, p, surface);
+	    draw_standard(flag, p, surface, context);
 	  else
-	    draw_dropped_backpack(backpack, p, surface);
+	    draw_dropped_backpack(backpack, p, surface, context);
 	}
 
   // Draw stacks
@@ -729,7 +729,7 @@ void BigMap::draw_buffer(Rectangle map_view, Glib::RefPtr<Gdk::Pixmap> surface, 
 	      *it == (*pit)->getStacklist()->getActivestack())
 	    ; //skip it.  the selected stack gets drawn in gamebigmap.
 	  else
-	    draw_stack (*it, surface);
+	    draw_stack (*it, surface, context);
 	}
     }
 
@@ -824,7 +824,7 @@ void BigMap::toggle_grid()
   draw(true);
 }
 
-void BigMap::draw_standard(Item *flag, Vector<int> p, Glib::RefPtr<Gdk::Pixmap> surface)
+void BigMap::draw_standard(Item *flag, Vector<int> p, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc)
 {
   Armysetlist *al = Armysetlist::getInstance();
   int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
@@ -832,20 +832,16 @@ void BigMap::draw_standard(Item *flag, Vector<int> p, Glib::RefPtr<Gdk::Pixmap> 
   int army_tilesize = al->getTileSize(player->getArmyset());
   int x= p.x+((tilesize/2)-(army_tilesize/2));
   int y = p.y+((tilesize/2)-(army_tilesize/2));
-  Glib::RefPtr<Gdk::Pixbuf> standard_image = 
-    GraphicsCache::getInstance()->getPlantedStandardPic(player);
-  surface->draw_pixbuf(standard_image, 0, 0, x, y, 
-		       army_tilesize, army_tilesize, 
-		       Gdk::RGB_DITHER_NONE, 0, 0);
+  GraphicsCache::getInstance()->getPlantedStandardPic(player)->blit(surface,x,y);
   return;
 }
 
-void BigMap::draw_dropped_backpack(MapBackpack *backpack, Vector<int> p, Glib::RefPtr<Gdk::Pixmap> surface)
+void BigMap::draw_dropped_backpack(MapBackpack *backpack, Vector<int> p, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc)
 {
   int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
   int x = p.x+(tilesize-18);
   int y = p.y+(tilesize-18);
   int ts = 16;
-  surface->draw_pixbuf (d_itempic, 0, 0, x, y, ts, ts, Gdk::RGB_DITHER_NONE, 0, 0);
+  d_itempic->blit(surface,x,y);
   return;
 }

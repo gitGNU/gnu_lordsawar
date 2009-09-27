@@ -395,6 +395,6 @@ void ReportDialog::addProduction(const Action *action)
   a = Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);
   Gtk::TreeIter i = armies_list->append();
   (*i)[armies_columns.image] = gc->getArmyPic(p->getArmyset(), army_type, p, 
-					      NULL);
+					      NULL)->get_pixmap();
   (*i)[armies_columns.desc] = s;
 }

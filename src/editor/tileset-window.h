@@ -26,6 +26,7 @@
 
 #include "Tile.h"
 #include "tileset.h"
+#include "PixMask.h"
 
 //! Tileset Editor.  Edit an Tileset.
 class TileSetWindow: public sigc::trackable
@@ -76,8 +77,8 @@ class TileSetWindow: public sigc::trackable
     Gtk::FileChooserButton *image_filechooser_button;
     Gtk::Button *refresh_button;
 
-    std::vector<Glib::RefPtr<Gdk::Pixbuf> > tilestyle_standard_images;
-    std::vector<Glib::RefPtr<Gdk::Pixbuf> > tilestyle_images;
+    std::vector<PixMask* > tilestyle_standard_images;
+    std::vector<PixMask* > tilestyle_images;
     Gtk::Image *tilestyle_standard_image;
 
     class TilesColumns: public Gtk::TreeModelColumnRecord {

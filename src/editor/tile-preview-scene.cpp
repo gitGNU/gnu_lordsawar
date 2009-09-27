@@ -29,7 +29,7 @@
 
 
 TilePreviewScene::TilePreviewScene (Tile *tile, 
-				    std::vector<Glib::RefPtr<Gdk::Pixbuf> > 
+				    std::vector<PixMask* > 
 				      standard_images, 
 				    guint32 height, guint32 width, 
 				    std::string scene)
@@ -71,9 +71,9 @@ void TilePreviewScene::regenerate()
       TileStyle *tilestyle = d_tile->getRandomTileStyle(type);
       d_tilestyles.push_back(tilestyle);
       if (tilestyle)
-	d_view.push_back(tilestyle->getImage());
+	d_view.push_back(tilestyle->getImage()->to_pixbuf());
       else
-	d_view.push_back(d_standard_images[type]);
+	d_view.push_back(d_standard_images[type]->to_pixbuf());
     }
 }
   

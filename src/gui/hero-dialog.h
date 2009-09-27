@@ -76,7 +76,7 @@ class HeroDialog: public Decorated
 	ItemColumns() 
         { add(image); add(name); add(attributes); add(status); add(item); }
 	
-	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
+	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixmap> > image;
 	Gtk::TreeModelColumn<Glib::ustring> name;
 	Gtk::TreeModelColumn<Glib::ustring> attributes;
 	Gtk::TreeModelColumn<Glib::ustring> status;
