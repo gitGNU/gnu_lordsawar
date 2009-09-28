@@ -941,13 +941,14 @@ void GameBigMap::after_draw()
   if (d_fighting.getPos() != Vector<int>(-1,-1))
     {
       Vector<int> p = tile_to_buffer_pos(d_fighting.getPos());
-      PixMask *tmp = gc->getExplosionPic();
+      PixMask *tmp = gc->getExplosionPic()->copy();
       if (d_fighting.getSize() > 1)
 	{
 	  PixMask::scale(tmp, d_fighting.getSize() * tilesize,
 			 d_fighting.getSize() * tilesize);
 	}
       tmp->blit(buffer, p);
+      delete tmp;
     }
 }
 
