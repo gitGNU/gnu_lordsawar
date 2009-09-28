@@ -1,3 +1,7 @@
+2009-09-28  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed up fog, ports, roads, and bridge graphics.
+
 2009-09-27  Ben Asselstine  <benasselstine@gmail.com>
 
 	* large changes to gain speed improvements to graphic redraws.
