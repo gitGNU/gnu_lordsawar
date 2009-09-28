@@ -878,9 +878,9 @@ void GameBigMap::after_draw()
 
 	  canMoveThere = (pathcount < stack->getPath()->getMovesExhaustedAtPoint());
 	  if (canMoveThere)
-	    d_waypoint[0]->blit_centered(buffer, pos);
+	    d_waypoint[0]->blit_centered(buffer, pos + (Vector<int>(tilesize,tilesize)/2));
 	  else
-	    d_waypoint[1]->blit_centered(buffer, pos);
+	    d_waypoint[1]->blit_centered(buffer, pos + (Vector<int>(tilesize,tilesize)/2));
 
 	  pathcount++;
 
@@ -894,7 +894,7 @@ void GameBigMap::after_draw()
 	  //this is where the ghosted army unit picture goes.
 	  PixMask *armypic = gc->getArmyPic(*stack->begin());
 	  pos = tile_to_buffer_pos(**it);
-	  armypic->blit_centered(buffer, pos);
+	  armypic->blit_centered(buffer, pos + (Vector<int>(tilesize,tilesize)/2));
 	}
     }
 
