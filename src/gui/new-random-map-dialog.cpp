@@ -170,6 +170,12 @@ NewRandomMapDialog::NewRandomMapDialog()
 
     xml->get_widget("cities_can_produce_allies_checkbutton", 
 		    cities_can_produce_allies_checkbutton);
+    grass_scale->set_value(78);
+    water_scale->set_value(7);
+    swamp_scale->set_value(2);
+    forest_scale->set_value(3);
+    hills_scale->set_value(5);
+    mountains_scale->set_value(5);
 }
 
 NewRandomMapDialog::~NewRandomMapDialog()
