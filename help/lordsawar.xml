@@ -502,6 +502,195 @@ The number beside this icon is the number of gold pieces that your player spends
 </sect2>
 </sect1>
 
+<!-- ============ Interacting with the Map ============= -->
+<sect1 id="lordsawar-map-interaction"> 
+	<title>Interacting with the Map Display</title> 
+<para>
+Knowing how to interact with the map is essential in playing this game.  These interactions are all mouse driven, and involve:
+<itemizedlist>
+<listitem>
+<para>Left-clicking:</para>
+<para>
+Pressing and releasing the leftmost button on the mouse or touchpad.
+</para>
+</listitem>
+<listitem>
+<para>Right-clicking:</para>
+<para>
+Pressing and releasing the rightmost button on the mouse or touchpad.
+</para>
+</listitem>
+<listitem>
+<para>Dragging:</para>
+<para>
+Pressing and holding down the leftmost button on the mouse or touchpad, while moving it.
+</para>
+</listitem>
+<listitem>
+<para>Wheeling up, and down:</para>
+<para>
+Using the scrollwheel on the mouse.  On a touchpad it is usually accessed by sliding a thumb vertically on the rightmost side of the touchpad.
+</para>
+</listitem>
+</itemizedlist>
+</para>
+<sect2 id="lordsawar-moving-the-map">
+	<title>Changing the Map View</title> 
+<para>
+It is useful to browse the map and take note of the features on the map.  There are two ways to pan your view of the map:
+<itemizedlist>
+<listitem>
+<para>
+Through the Miniature Map:
+</para>
+<para>
+Using the miniature map to browse the map is frequently used to quickly change the map to show one of your cities, or one of your enemy's cities.
+</para>
+<para>
+Move the mouse onto the miniature map.  The mouse pointer will become a magnifying glass that looks like:
+<figure id="mousecursormagnifyingglass-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/mousecursor_magnifying_glass.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot>
+</figure>
+When you left-click on the miniature map, the zoomed-in portion of the map will change to the new view.  You can also drag the view on the miniature map.
+</para>
+</listitem>
+<listitem>
+<para>
+Through the Main Map:
+</para>
+<para>
+Panning the map in this way is useful when you're interested in things that are nearby.
+</para>
+<para>
+When the pointer looks like a hand:
+<figure id="mousecursorhand-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/mousecursor_hand.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot>
+</figure>
+you can drag the map.  When you have a stack selected, you can hold down the Shift key on the keyabord to turn the mouse pointer back into a hand.
+</para>
+<para>
+You can also wheel-down to zoom the view out, and wheel-up to zoom in.  In this version, panning around in zoomed mode is less responsive.
+</para>
+</listitem>
+</itemizedlist>
+</para>
+</sect2>
+<sect2 id="lordsawar-inspecting-objects-on-the-map">
+	<title>Inspecting objects on the map</title> 
+<para>
+Right-clicking and holding down the mouse button while hovering over a stack, city, ruin, temple, or signpost will show extra information about that object.  The game option "View Enemies" prevents the inspection of enemy stacks.
+</para>
+<para>
+Querying these objects for information is useful in many contexts:
+<itemizedlist>
+<listitem>
+<para>
+When playing with a hidden map, inspecting signposts can be a big help in finding new cities.
+</para>
+</listitem>
+<listitem>
+<para>
+It is also handy to quickly query a nearby ruin to see if it is unexplored.
+</para>
+</listitem>
+<listitem>
+<para>
+When playing with the "View Enemies" game option turned on, it is essential to inspect your enemy's stacks so that you can better gauge the threat they pose.
+</para>
+</listitem>
+</itemizedlist>
+</para>
+</sect2>
+<sect2 id="lordsawar-commanding-objects-on-the-map">
+	<title>Commanding objects on the map</title> 
+<para>
+In order to work with either a stack or a city it must first be left-clicked.  
+</para>
+<sect3 id="lordsawar-commanding-stacks-on-the-map">
+	<title>Commanding stacks on the map</title> 
+<para>
+When hovering over a stack the mouse pointer will turn into a target symbol that looks like this:
+<figure id="mousecursortarget-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/mousecursor_target.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot>
+</figure>
+Left-clicking on the stack will make it become visibly selected, and the mouse pointer will change to a walk symbol when you are hovering over a place on the map that can be reached by the stack.  The walk symbol looks like this:
+<figure id="mousecursorwalk-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/mousecursor_walk.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot>
+</figure>
+When you are hovering over a reachable area of water the mouse pointer will change to a boat symbol that looks like this:
+<figure id="mousecursorboat-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/mousecursor_boat.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot>
+</figure>
+Left-clicking on the map with a mouse pointer that looks either like a boat or walking-feet will cause the selected stack to travel to that location (or use up all of it's movement points trying to get there.)
+</para>
+<para>
+When you press and hold down the Ctrl key on the keyboard while you have a boat symbol or a walking-feet symbol as a mouse pointer, a different mouse pointer symbol will appear that looks like a diagonal arrow:
+<figure id="mousecursorgoto-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/mousecursor_goto.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot>
+</figure>
+When you left-click on the map with this diagonal arrow, the path that the selected stack would use to get to that location will be shown.  The stack will not immediately move along the path.  Smart players use this feature a lot because it shows them if a particular stack can reach a given location in a single turn.
+</para>
+</sect3>
+<sect3 id="lordsawar-commanding-cities-on-the-map">
+	<title>Issuing orders to cities on the map</title> 
+<para>
+When hovering over a city the mouse pointer turns into a castle icon that looks like this:
+<figure id="mousecursorrook-fig">
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/mousecursor_rook.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot>
+</figure>
+Left-clicking on the city with this castle mouse pointer will bring up the city screen.  More information on the city screen appears in the next section of this manual.
+</para>
+<para>
+When the "View Production" game option is turned on, this castle icon will also appear when you hover over enemy cities.  Left-clicking on the enemy city will allow you to inspect the production capabilities of that city.
+</para>
+<para>
+Sometimes cities can get full and the mouse pointer doesn't turn into a castle icon because your stacks are in the way.  You can switch the target mouse pointer to a castle mouse pointer by pressing and holding the shift key on the keyboard.
+</para>
+</sect3>
+</sect2>
+</sect1>
 <!-- ============= Cities ============================== -->
 <sect1 id="lordsawar-cities"> 
 	<title>Cities</title> 
@@ -560,6 +749,9 @@ The most noticeable thing in the screen is the miniature map that only shows all
 <para>
 The screen contains information about the selected city.  The title of the screen is the name of the city.  To the right of the map the defense level is shown, along with the amount of money in gold pieces that this city provides.  Next is the army unit that is currently being produced, and how many more turns until it becomes available for use.  The set of buttons in the middle of the screen represent the set of army unit types that this city can produce.
 Below that are statistics about the army unit currently being produced.
+</para>
+<para>
+The army units can be right-clicked on to get extra information about them.
 </para>
 
 <para>

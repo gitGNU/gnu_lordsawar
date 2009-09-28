@@ -20,4 +20,17 @@ help_DATA = city_window.png conquer_city.png buy_production.png \
 	main_screen_move_all_stacks_button.png \
 	main_screen_end_turn_button.png \
 	main_screen_move_stack_dir_buttons.png \
-	game_lobby.png
+	game_lobby.png \
+	main_screen_stat_icon_cities.png \
+	main_screen_stat_icon_income.png \
+	main_screen_stat_icons.png \
+	main_screen_stat_icon_treasury.png \
+	main_screen_stat_icon_upkeep.png \
+	mousecursor_magnifyingglass.png \
+	mousecursor_hand.png \
+	mousecursor_target.png \
+	mousecursor_walk.png \
+	mousecursor_boat.png \
+	mousecursor_goto.png \
+	mousecursor_rook.png 
+
