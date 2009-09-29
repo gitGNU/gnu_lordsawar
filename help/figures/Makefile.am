@@ -26,7 +26,7 @@ help_DATA = city_window.png conquer_city.png buy_production.png \
 	main_screen_stat_icons.png \
 	main_screen_stat_icon_treasury.png \
 	main_screen_stat_icon_upkeep.png \
-	mousecursor_magnifyingglass.png \
+	mousecursor_magnifying_glass.png \
 	mousecursor_hand.png \
 	mousecursor_target.png \
 	mousecursor_walk.png \
