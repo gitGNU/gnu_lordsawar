@@ -1,6 +1,8 @@
 2009-10-07  Ben Asselstine  <benasselstine@gmail.com>
 
 	* now caching drawn tiles.
+	* fixed bad-looking bigmap after loading a game within a game.
+	* updated FogMap object to include tile shading from bigmap object.
 
 2009-10-05  Ben Asselstine  <benasselstine@gmail.com>
 

@@ -43,6 +43,24 @@ class FogMap
 	  //! Closed to view can be partially obscured.
 	  CLOSED = 1
 	};
+	enum ShadeType {
+	  NONE = 0,
+	  LIGHTLY_TO_SOUTH_AND_EAST = 1,
+	  LIGHTLY_TO_SOUTH_AND_WEST = 2,
+	  LIGHTLY_TO_NORTH_AND_WEST = 3,
+	  LIGHTLY_TO_NORTH_AND_EAST = 4,
+	  DARKLY_TO_NORTH_AND_WEST_LIGHTLY_TO_SOUTH_AND_EAST = 5,
+	  DARKLY_TO_NORTH_AND_EAST_LIGHTLY_TO_SOUTH_AND_WEST = 6,
+	  DARKLY_TO_SOUTH_AND_EAST_LIGHTLY_TO_NORTH_AND_WEST = 7,
+	  DARKLY_TO_SOUTH_AND_WEST_LIGHTLY_TO_NORTH_AND_EAST = 8,
+	  DARKLY_TO_SOUTH_LIGHTLY_TO_EAST_AND_WEST = 9,
+	  DARKLY_TO_NORTH_LIGHTLY_TO_EAST_AND_WEST = 10,
+	  DARKLY_TO_WEST_LIGHTLY_TO_NORTH_AND_SOUTH = 11,
+	  DARKLY_TO_EAST_LIGHTLY_TO_NORTH_AND_SOUTH = 12,
+	  ALL = 13,
+	  DARKLY_TO_SOUTH_AND_WEST_DARKLY_TO_NORTH_AND_EAST = 14,
+	  DARKLY_TO_NORTH_AND_WEST_DARKLY_TO_SOUTH_AND_EAST = 15,
+	};
         
         //! Standard constructor: create a given map
 	/**
@@ -83,6 +101,7 @@ class FogMap
 
         //! Get the foggedness of a given position.
         FogType getFogTile(Vector<int> pos) const;
+	ShadeType getShadeTile(Vector<int> pos) const;
 
 	//! Alter the fog around a given position in the fog map.
 	/** 
@@ -140,14 +159,19 @@ class FogMap
 	 * @return True if the position is obscured due to fog, false if not.
 	 */
 	static bool isFogged(Vector <int> pos, Player *player);
+	bool isFogged(Vector <int> pos);
 	static bool isClear(Vector <int> pos, Player *player) ;
 
 	bool isCompletelyObscuredFogTile(Vector<int> pos) const;
+
+	ShadeType calculateShade(Vector<int> tile);
 
     private:
 	bool calculateCompletelyObscuredFogTile(Vector<int> pos);
 
 	void updateCompletelyObscuredFogTiles();
+
+	void calculateShadeMap();
         // Data
 	//! The width of the fog map.
         int d_width;
@@ -157,6 +181,7 @@ class FogMap
 
 	//! An array of tiles that describe how a tile is fogged.
         FogType * d_fogmap;
+	ShadeType *shademap;
 
 	//! A list of tiles that are completely obscured.
 	std::list<Vector<int> > completely_obscured;

@@ -36,6 +36,7 @@
 #include "stack.h"
 #include "rgb_shift.h"
 #include "gui/image-helpers.h"
+#include "FogMap.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -1169,7 +1170,7 @@ TileCacheItem* GraphicsCache::addTilePic(int tile_style_id, int fog_type_id, boo
   myitem->fog_type_id = fog_type_id;
 
   //go get the tilestyle id for the given terrain type.
-  if (fog_type_id == 14) //14 means totally fogged
+  if (fog_type_id == FogMap::ALL)
     myitem->surface = getFogPic(fog_type_id - 1)->copy();
   else
     {

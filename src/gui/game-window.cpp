@@ -540,6 +540,7 @@ void GameWindow::load_game(GameScenario *game_scenario, NextTurn *next_turn)
   if (!success)
     return;
 
+  game->get_bigmap().screen_size_changed(bigmap_drawingarea->get_allocation());
   setup_signals(game_scenario);
   game->loadGame();
   //we don't get here until the game ends.

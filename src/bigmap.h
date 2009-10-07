@@ -92,8 +92,6 @@ class BigMap: public sigc::trackable
     bool saveViewAsBitmap(std::string filename);
     void toggle_grid();
     
-    void debugFogTile (int x, int y);
-
     Glib::RefPtr<Gdk::Pixmap> get_surface() const {return outgoing;}
  protected:
     MapRenderer* d_renderer;
@@ -127,7 +125,6 @@ class BigMap: public sigc::trackable
  protected:
     void draw_stack(Stack *s, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc);
  private:
-    void drawFogTile(int x, int y);
     void draw_buffer(Rectangle map_view, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context);
     void draw_buffer_tiles(Rectangle map_view, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context);
 
@@ -135,7 +132,6 @@ class BigMap: public sigc::trackable
     Glib::RefPtr<Gdk::Pixmap> magnify(Glib::RefPtr<Gdk::Pixmap> orig);
     void clip_viewable_buffer(Glib::RefPtr<Gdk::Pixmap> pixmap, Glib::RefPtr<Gdk::GC> gc, Vector<int> pos, Glib::RefPtr<Gdk::Pixmap> out);
 
-    int calculateFogType(Vector<int> tile);
 };
 
 #endif
