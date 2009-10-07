@@ -52,10 +52,10 @@ class PixMask
 
      //! draw this pixmask onto a pixmap.
      void blit(Glib::RefPtr<Gdk::Pixmap> pixmap, int dest_x, int dest_y);
-     void blit(Glib::RefPtr<Gdk::Pixmap> pixmap, Vector<int> pos);
+     void blit(Glib::RefPtr<Gdk::Pixmap> pixmap, Vector<int> pos = Vector<int>(0,0));
      void blit_centered(Glib::RefPtr<Gdk::Pixmap> pixmap, Vector<int> pos);
      // blit a tile's worth of imagery from this pixmask to a pixmap.
-     void blit(Vector<int> tile, int ts, Glib::RefPtr<Gdk::Pixmap> pixmap, Vector<int> dest);
+     void blit(Vector<int> tile, int ts, Glib::RefPtr<Gdk::Pixmap> pixmap, Vector<int> dest = Vector<int>(0,0));
 
      //! Destructor.
     ~PixMask();

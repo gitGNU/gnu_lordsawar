@@ -64,9 +64,6 @@ using namespace std;
 BigMap::BigMap()
     : d_renderer(0), buffer(0), magnified_buffer(0), magnification_factor(1.0)
 {
-    // load all pictures
-    d_itempic = GraphicsLoader::getMiscPicture("items.png");
-
     // note: we are not fully initialized before set_view is called
     view.x = view.y = 0;
 
@@ -77,8 +74,6 @@ BigMap::BigMap()
 
 BigMap::~BigMap()
 {
-  delete d_itempic;
-
     if (buffer == true)
       buffer.clear();
 
@@ -424,16 +419,16 @@ void BigMap::blit_object(const Location &obj, Vector<int> tile, PixMask *image, 
  *none of these sets contain a so-called "lone" tile.
  *a lone tile is a fogged tile surrounded by two unfogged tiles on either side.
 **/
-void BigMap::drawFogTile (int x, int y)
+int BigMap::calculateFogType(Vector<int> tile)
 {
   int idx = 0;
   int count = 0;
   bool foggyTile;
-  for (int i = x - 1; i <= x + 1; i++)
-    for (int j = y - 1; j <= y + 1; j++)
+  for (int i = tile.x - 1; i <= tile.x + 1; i++)
+    for (int j = tile.y - 1; j <= tile.y + 1; j++)
       {
 	foggyTile = false;
-	if (i == x && j == y)
+	if (i == tile.x && j == tile.y)
 	  continue;
 	if (i < 0 || j < 0 || 
 	    i >= GameMap::getWidth() || j >= GameMap::getHeight())
@@ -496,7 +491,17 @@ void BigMap::drawFogTile (int x, int y)
 	case 2: type = 4; break;
 	case 4: type = 2; break;
 	}
-      Vector<int> p = tile_to_buffer_pos(Vector<int>(x, y));
+    }
+  return type;
+}
+
+void BigMap::drawFogTile (int x, int y)
+{
+  Vector<int> tile = Vector<int>(x,y);
+  int type = calculateFogType(tile);
+  if (type)
+    {
+      Vector<int> p = tile_to_buffer_pos(tile);
       GraphicsCache::getInstance()->getFogPic(type - 1)->blit(buffer, p);
     }
   return;
@@ -646,73 +651,42 @@ bool BigMap::saveAsBitmap(std::string filename)
   return true;
 }
 
-void BigMap::draw_ruin(Ruin *r, Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context)
-{
-  GraphicsCache *gc = GraphicsCache::getInstance();
-  if ((r->isHidden() == true && 
-       r->getOwner() == Playerlist::getActiveplayer()) ||
-      r->isHidden() == false)
-    {
-      if (r->isCompletelyObscuredByFog(Playerlist::getActiveplayer()) == false)
-	blit_object(*r, tile, gc->getRuinPic(r->getType()), surface, context);
-    }
-}
-
-void BigMap::draw_building(Location *bldg, PixMask *pixmask, Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context)
-{
-  if (bldg->isCompletelyObscuredByFog(Playerlist::getActiveplayer()) == false)
-    blit_object(*bldg, tile, pixmask, surface, context);
-}
-
-void BigMap::draw_grid_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context)
-{
-  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
-  Vector<int> p = tile_to_buffer_pos(tile);
-  Gdk::Color line_color = Gdk::Color();
-  line_color.set_rgb_p(0,0,0);
-  context->set_rgb_fg_color(line_color);
-  surface->draw_rectangle(context, false, p.x, p.y, tilesize, tilesize);
-}
-
 void BigMap::draw_buffer_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context)
 {
+  guint32 tilesize = GameMap::getInstance()->getTileset()->getTileSize();
   Player *active = Playerlist::getActiveplayer();
   GraphicsCache *gc = GraphicsCache::getInstance();
-  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
-  Vector<int> draw = tile_to_buffer_pos(tile);
-  d_renderer->render(draw.x, draw.y, 
-		     tile.x, tile.y, 1, 1, surface, context);
-  Ruin *ruin = GameMap::getRuin(tile);
-  if (ruin)
-    draw_ruin(ruin, tile, surface, context);
+  GameMap *gm = GameMap::getInstance();
+  int tile_style_id = gm->getTile(tile)->getTileStyle()->getId();
+  int fog_type_id = 0;
+  if (FogMap::isFogged(tile, active) == true)
+    fog_type_id = calculateFogType(tile);
 
-  Signpost *signpost = GameMap::getSignpost(tile);
-  if (signpost)
-    draw_building(signpost, gc->getSignpostPic(), tile, surface, context);
+  bool has_bag = false;
+  bool has_standard = false;
+  guint32 player_standard_id = 0;
+  int stack_size = -1;
+  int stack_player_id = -1;
+  int army_type_id = -1;
+  bool has_ship = false;
+  bool has_tower = false;
+  Maptile::Building building_type = gm->getTile(tile)->getBuilding();
+  Vector<int> building_tile = Vector<int>(-1,-1);
+  int building_subtype = -1;
+  int building_player_id = -1;
 
-  Temple *temple = GameMap::getTemple(tile);
-  if (temple)
-    draw_building(temple, gc->getTemplePic(temple->getType()), tile, 
-		  surface, context);
-
-  Road *road = GameMap::getRoad(tile);
-  if (road)
-    draw_building(road, gc->getRoadPic(road->getType()), tile, 
-		  surface, context);
-
-  Bridge *bridge = GameMap::getBridge(tile);
-  if (bridge)
-    draw_building(bridge, gc->getBridgePic(bridge->getType()), tile, 
-		  surface, context);
-
-  Port *port = GameMap::getPort(tile);
-  if (port)
-    draw_building(port, gc->getPortPic(), tile, surface, context);
-
-  City *city = GameMap::getCity(tile);
-  if (city)
-    draw_building(city, gc->getCityPic(city), tile, surface, context);
-
+  if (fog_type_id == 14)
+    {
+      //short circuit.  the tile is completely fogged.
+      PixMask *pixmask = 
+	gc->getTilePic(tile_style_id, fog_type_id, has_bag, has_standard, 
+		       player_standard_id, stack_size, stack_player_id, 
+		       army_type_id, has_tower, has_ship, building_type, 
+		       building_subtype, building_tile, building_player_id, 
+		       tilesize, d_grid_toggled);
+      pixmask->blit(surface, tile_to_buffer_pos(tile));
+      return;
+    }
   MapBackpack *backpack = GameMap::getInstance()->getTile(tile)->getBackpack();
   if (backpack && backpack->empty() == false)
     {
@@ -723,9 +697,12 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surfac
 
       //only show one of the bag or the flag
       if (standard_planted && flag)
-	draw_standard(flag, tile, surface, context);
+	{
+	  has_standard = true;
+	  player_standard_id = flag->getPlantableOwner()->getId();
+	}
       else
-	draw_dropped_backpack(backpack, tile, surface, context);
+	has_bag = true;
     }
 
   Stack *stack = GameMap::getStack(tile);
@@ -735,17 +712,94 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surfac
 	{
 	  //selected stack gets drawn in gamebigmap
 	  if (active->getActivestack() != stack)
-	    draw_stack(stack, surface, context);
+	    {
+	      stack_player_id = stack->getOwner()->getId();
+	      Maptile *m = gm->getTile(tile);
+	      if (stack->getFortified() == true &&
+		  m->getBuilding() != Maptile::CITY &&
+		  m->getBuilding() != Maptile::RUIN &&
+		  m->getBuilding() != Maptile::TEMPLE)
+		has_tower = true;
+	      else if (stack->hasShip() == true)
+		{
+		  has_ship = true;
+		  stack_size = stack->size();
+		}
+	      else
+		{
+		  army_type_id = (*stack->begin())->getTypeId();
+		  stack_size = stack->size();
+		}
+	    }
 	}
     }
-  if (d_grid_toggled)
+
+  if (building_type != Maptile::NONE)
     {
-      if (active->getFogMap()->isCompletelyObscuredFogTile(tile) == false)
-	draw_grid_tile(tile, surface, context);
+      switch (building_type)
+	{
+	case Maptile::CITY:
+	    {
+	      City *city = GameMap::getCity(tile);
+	      building_player_id = city->getOwner()->getId();
+	      building_tile = tile - city->getPos();
+	      if (city->isBurnt())
+		building_subtype = -1;
+	      else
+		building_subtype = 0;
+	    }
+	  break;
+	case Maptile::RUIN:
+	    {
+	      Ruin *ruin = GameMap::getRuin(tile);
+	      building_tile = tile - ruin->getPos();
+	      building_subtype = ruin->getType();
+	    }
+	  break;
+	case Maptile::TEMPLE:
+	    {
+	      Temple *temple = GameMap::getTemple(tile);
+	      building_tile = tile - temple->getPos();
+	      building_subtype = temple->getType();
+	    }
+	  break;
+	case Maptile::SIGNPOST:
+	    {
+	      Signpost *signpost = GameMap::getSignpost(tile);
+	      building_tile = tile - signpost->getPos();
+	    }
+	  break;
+	case Maptile::ROAD:
+	    {
+	      Road *road = GameMap::getRoad(tile);
+	      building_tile = tile - road->getPos();
+	      building_subtype = road->getType();
+	    }
+	  break;
+	case Maptile::PORT:
+	    {
+	      Port *port = GameMap::getPort(tile);
+	      building_tile = tile - port->getPos();
+	    }
+	  break;
+	case Maptile::BRIDGE:
+	    {
+	      Bridge *bridge = GameMap::getBridge(tile);
+	      building_tile = tile - bridge->getPos();
+	      building_subtype = bridge->getType();
+	    }
+	  break;
+	case Maptile::NONE: default:
+	  break;
+	}
     }
-  //fog it up, homeboy.
-  if (FogMap::isFogged(tile, active) == true)
-    drawFogTile (tile.x, tile.y);
+  PixMask *pixmask = 
+    gc->getTilePic(tile_style_id, fog_type_id, has_bag, has_standard, 
+		   player_standard_id, stack_size, stack_player_id, 
+		   army_type_id, has_tower, has_ship, building_type, 
+		   building_subtype, building_tile, building_player_id, 
+		   tilesize, d_grid_toggled);
+  pixmask->blit(surface, tile_to_buffer_pos(tile));
 }
 
 void BigMap::draw_buffer_tiles(Rectangle map_view, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context)
@@ -813,25 +867,3 @@ void BigMap::toggle_grid()
   draw(true);
 }
 
-void BigMap::draw_standard(Item *flag, Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc)
-{
-  Vector<int> p = tile_to_buffer_pos(tile);
-  Armysetlist *al = Armysetlist::getInstance();
-  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
-  Player *player = flag->getPlantableOwner();
-  int army_tilesize = al->getTileSize(player->getArmyset());
-  int x= p.x+((tilesize/2)-(army_tilesize/2));
-  int y = p.y+((tilesize/2)-(army_tilesize/2));
-  GraphicsCache::getInstance()->getPlantedStandardPic(player)->blit(surface,x,y);
-  return;
-}
-
-void BigMap::draw_dropped_backpack(MapBackpack *backpack, Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc)
-{
-  Vector<int> p = tile_to_buffer_pos(tile);
-  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
-  int x = p.x+(tilesize-18);
-  int y = p.y+(tilesize-18);
-  d_itempic->blit(surface,x,y);
-  return;
-}

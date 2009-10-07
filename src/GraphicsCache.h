@@ -28,7 +28,7 @@
 #include "defs.h"
 #include "rgb_shift.h"
 #include "PixMask.h"
-#include "Tile.h"
+#include "maptile.h"
 
 struct ArmyCacheItem;
 struct ShipCacheItem;
@@ -128,7 +128,7 @@ class GraphicsCache
                                 const bool* medals);
 	PixMask* getArmyPic(Army *a);
 
-	PixMask* getTilePic(Tile::Type terrain_type, int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, guint32 standard_player_id, guint32 stack_size, guint32 stack_player_id, guint32 army_type_id);
+	PixMask* getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid);
 
         /** Function for getting the shield picture from the cache
           * 
@@ -256,6 +256,7 @@ class GraphicsCache
           * @return image for the flag
           */
         PixMask* getFlagPic(const Stack* s);
+        PixMask* getFlagPic(guint32 stack_size, const Player *p);
 
         /** Function for getting selector pictures.
           *
@@ -283,6 +284,7 @@ class GraphicsCache
         PixMask* getSmallRuinedCityPic();
 	//! Return a small hero picture, either white (active==true) or black.
         PixMask* getSmallHeroPic(bool active);
+        PixMask* getBagPic();
         PixMask* getPortPic();
         PixMask* getExplosionPic();
         PixMask* getSignpostPic();
@@ -360,7 +362,7 @@ class GraphicsCache
                                   const bool* medalsbonus);
 
 	//! Creates a new drawn tile with the given parameters.
-	TileCacheItem *addTilePic(Tile::Type terrain_type, int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, guint32 standard_player_id, guint32 stack_size, guint32 stack_player_id, guint32 army_type_id);
+	TileCacheItem* addTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid);
 
         //! Creates a new shield picture with the given parameters.
         ShieldCacheItem* addShieldPic(std::string shieldset, guint32 type, guint32 colour);
@@ -378,7 +380,7 @@ class GraphicsCache
         PlantedStandardCacheItem* addPlantedStandardPic(const Player* p);
 
         //! Creates a new flag picture with the given parameters.
-        FlagCacheItem* addFlagPic(int size, const Player* p);
+        FlagCacheItem* addFlagPic(int size, const Player *p);
 
         //! Creates a new selector picture with the given parameters.
         SelectorCacheItem* addSelectorPic(guint32 type, guint32 frame, 
@@ -495,6 +497,8 @@ class GraphicsCache
           */
         static PixMask* getCitysetPicture(std::string citysetname, std::string picname);
 
+	void drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid);
+
         //the data
         static GraphicsCache* s_instance;
 
@@ -541,6 +545,7 @@ class GraphicsCache
         PixMask* d_movebonuspic[MOVE_BONUS_TYPES];
         PixMask* d_medalpic[MEDAL_TYPES];
 	PixMask* d_port;
+	PixMask* d_bag;
 	PixMask* d_explosion;
 	PixMask* d_signpost;
 	PixMask* d_small_ruin_unexplored;

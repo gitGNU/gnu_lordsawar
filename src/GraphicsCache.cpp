@@ -26,6 +26,7 @@
 #include "GraphicsLoader.h"
 #include "armysetlist.h"
 #include "shieldsetlist.h"
+#include "citylist.h"
 #include "army.h"
 #include "playerlist.h"
 #include "Configuration.h"
@@ -176,15 +177,22 @@ struct MoveBonusCacheItem
 // the structure to store drawn bigmap tiles in
 struct TileCacheItem
 {
-  Tile::Type terrain_type;
   int tile_style_id;
   int fog_type_id;
   bool has_bag;
   bool has_standard;
-  guint32 standard_player_id;
-  guint32 stack_size; //flag size
-  guint32 stack_player_id;
-  guint32 army_type_id;
+  int standard_player_id;
+  int stack_size; //flag size
+  int stack_player_id;
+  int army_type_id;
+  bool has_tower;
+  bool has_ship;
+  Maptile::Building building_type;
+  int building_subtype;
+  Vector<int> building_tile;
+  int building_player_id;
+  guint32 tilesize;
+  bool has_grid;
   PixMask* surface;
 };
 //-----------------------------------------------------
@@ -248,6 +256,7 @@ GraphicsCache::GraphicsCache()
     std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
     std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
     d_port = GraphicsLoader::getCitysetPicture(cityset, "port.png");
+    d_bag = GraphicsLoader::getMiscPicture("items.png");
     d_explosion = GraphicsLoader::getTilesetPicture(tileset, "misc/explosion.png");
     d_signpost = GraphicsLoader::getCitysetPicture(cityset, "signpost.png");
 }
@@ -312,6 +321,7 @@ GraphicsCache::~GraphicsCache()
     delete d_small_stronghold_unexplored;
     delete d_small_ruin_explored;
     delete d_port;
+    delete d_bag;
     delete d_explosion;
     delete d_signpost;
 }
@@ -344,6 +354,11 @@ PixMask* GraphicsCache::getSmallStrongholdUnexploredPic()
 PixMask* GraphicsCache::getSmallTemplePic()
 {
   return d_small_temple;
+}
+
+PixMask* GraphicsCache::getBagPic()
+{
+  return d_bag;
 }
 
 PixMask* GraphicsCache::getPortPic()
@@ -503,27 +518,37 @@ PixMask* GraphicsCache::getArmyPic(guint32 armyset, guint32 army, const Player* 
     return myitem->surface;
 }
 
-PixMask* GraphicsCache::getTilePic(Tile::Type terrain_type, int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, guint32 standard_player_id, guint32 stack_size, guint32 stack_player_id, guint32 army_type_id)
+PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid)
 {
-    debug("getting tile pic " << terrain_type << " " << tile_style_id << " " <<
+    debug("getting tile pic " << tile_style_id << " " <<
 	  fog_type_id << " " << has_bag << " " << has_standard << " " <<
 	  standard_player_id << " " << stack_size << " " << stack_player_id <<
-	  " " << army_type_id);
+	  " " << army_type_id << " " << has_tower << " " << has_ship << " " << 
+	  building_type << " " << building_subtype << " " << building_tile.x 
+	  << "," << building_tile.y << " " << building_player_id << " " << 
+	  tilesize << " " << has_grid);
 
     std::list<TileCacheItem*>::iterator it;
     TileCacheItem* myitem;
 
     for (it =d_tilelist.begin(); it != d_tilelist.end(); it++)
     {
-      if ((*it)->terrain_type == terrain_type &&
-	  (*it)->tile_style_id == tile_style_id &&
+      if ((*it)->tile_style_id == tile_style_id &&
 	  (*it)->fog_type_id == fog_type_id &&
 	  (*it)->has_bag == has_bag &&
 	  (*it)->has_standard == has_standard &&
 	  (*it)->standard_player_id == standard_player_id &&
 	  (*it)->stack_size == stack_size &&
 	  (*it)->stack_player_id == stack_player_id &&
-	  (*it)->army_type_id == army_type_id)
+	  (*it)->army_type_id == army_type_id &&
+	  (*it)->has_tower == has_tower &&
+	  (*it)->has_ship == has_ship &&
+	  (*it)->building_type == building_type &&
+	  (*it)->building_subtype == building_subtype &&
+	  (*it)->building_tile == building_tile &&
+	  (*it)->building_player_id == building_player_id &&
+	  (*it)->tilesize == tilesize &&
+	  (*it)->has_grid == has_grid)
 	{
             myitem = (*it);
             
@@ -537,8 +562,11 @@ PixMask* GraphicsCache::getTilePic(Tile::Type terrain_type, int tile_style_id, i
 
     // We are still here, so the graphic is not in the cache. addTilePic calls
     // checkPictures on its own, so we can simply return the surface
-    debug("getTilepic============= " << my_medals) 
-    myitem = addTilePic(terrain_type, tile_style_id, fog_type_id, has_bag, has_standard, standard_player_id, stack_size, stack_player_id, army_type_id);
+    myitem = addTilePic(tile_style_id, fog_type_id, has_bag, has_standard, 
+			standard_player_id, stack_size, stack_player_id, 
+			army_type_id, has_tower, has_ship, building_type, 
+			building_subtype, building_tile, building_player_id, 
+			tilesize, has_grid);
 
     return myitem->surface;
 }
@@ -795,23 +823,17 @@ PixMask* GraphicsCache::getTowerPic(const Player* p)
     return d_towerpic[p->getId()];
 }
 
-PixMask* GraphicsCache::getFlagPic(const Stack* s)
+PixMask* GraphicsCache::getFlagPic(guint32 stack_size, const Player *p)
 {
-    debug("GraphicsCache::getFlagPic " <<s->getId() <<", player" <<s->getOwner()->getName())
+    debug("GraphicsCache::getFlagPic " <<stack_size <<", player" <<p->getId())
 
-    if (!s)
-    {
-        std::cerr << "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n";
-        exit(-1);
-    }
-    
     std::list<FlagCacheItem*>::iterator it;
     FlagCacheItem* myitem;
 
     for (it = d_flaglist.begin(); it != d_flaglist.end(); it++)
     {
         myitem = *it;
-        if (myitem->size == s->size() - 1 && myitem->player_id == s->getOwner()->getId())
+        if (myitem->size == stack_size && myitem->player_id == p->getId())
         {
             // put the item in last place (last touched)
             d_flaglist.erase(it);
@@ -822,9 +844,20 @@ PixMask* GraphicsCache::getFlagPic(const Stack* s)
     }
 
     // no item found => create a new one
-    myitem = addFlagPic(s->size(), s->getOwner());
+    myitem = addFlagPic(stack_size, p);
 
     return myitem->surface;
+}
+
+PixMask* GraphicsCache::getFlagPic(const Stack* s)
+{
+    if (!s)
+    {
+        std::cerr << "GraphicsCache::getFlagPic: no stack supplied! Exiting...\n";
+        exit(-1);
+    }
+    
+  return getFlagPic(s->size(), s->getOwner());
 }
 
 PixMask* GraphicsCache::getSelectorPic(guint32 type, guint32 frame, 
@@ -1040,26 +1073,116 @@ void GraphicsCache::checkPictures()
 
 }
 
-TileCacheItem* GraphicsCache::addTilePic(Tile::Type terrain_type, int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, guint32 standard_player_id, guint32 stack_size, guint32 stack_player_id, guint32 army_type_id)
+void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid)
+{
+  const Player *player;
+  Glib::RefPtr<Gdk::Pixmap> pixmap = surface->get_pixmap();
+
+  switch (building_type)
+    {
+    case Maptile::CITY:
+	{
+	  player = Playerlist::getInstance()->getPlayer(building_player_id);
+	  getCityPic(building_subtype, player)->blit(building_tile, ts, pixmap);
+	}
+      break;
+    case Maptile::RUIN:
+      getRuinPic(building_subtype)->blit(building_tile, ts, pixmap); break;
+    case Maptile::TEMPLE:
+      getTemplePic(building_subtype)->blit(building_tile, ts, pixmap); break;
+    case Maptile::SIGNPOST:
+      getSignpostPic()->blit(building_tile, ts, pixmap); break;
+    case Maptile::ROAD:
+      getRoadPic(building_subtype)->blit(building_tile, ts, pixmap); break;
+    case Maptile::PORT:
+      getPortPic()->blit(building_tile, ts, pixmap); break;
+    case Maptile::BRIDGE:
+      getBridgePic(building_subtype)->blit(building_tile, ts, pixmap); break;
+      break;
+    case Maptile::NONE: default:
+      break;
+    }
+
+  if (has_standard)
+    {
+      player = Playerlist::getInstance()->getPlayer(standard_player_id) ;
+      getPlantedStandardPic(player)->blit(pixmap);
+    }
+
+  if (has_bag)
+    getBagPic()->blit(pixmap, Vector<int>(ts - 18, ts - 18));
+
+  if (stack_player_id > -1)
+    {
+      player = Playerlist::getInstance()->getPlayer(stack_player_id);
+      if (has_tower)
+	getTowerPic(player)->blit(pixmap);
+      else
+	{
+	  if (stack_size > -1)
+	    getFlagPic(stack_size, player)->blit(pixmap);
+	  if (has_ship)
+	    getShipPic(player)->blit(pixmap);
+	  else
+	    getArmyPic(player->getArmyset(), army_type_id, player, NULL)->blit(pixmap);
+	}
+    }
+  if (has_grid)
+    {
+      Glib::RefPtr<Gdk::GC> context = surface->get_gc();
+      Gdk::Color line_color = Gdk::Color();
+      line_color.set_rgb_p(0,0,0);
+      context->set_rgb_fg_color(line_color);
+      pixmap->draw_rectangle(context, false, 0, 0, ts, ts);
+    }
+
+  if (fog_type_id)
+    getFogPic(fog_type_id - 1)->blit(pixmap);
+}
+
+TileCacheItem* GraphicsCache::addTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid)
 {
     
-  debug("ADD tile pic " << terrain_type << " " << tile_style_id << " " <<
+  debug("ADD tile pic " << " " << tile_style_id << " " <<
 	fog_type_id << " " << has_bag << " " << has_standard << " " <<
 	standard_player_id << " " << stack_size << " " << stack_player_id <<
-	" " << army_type_id);
+	" " << army_type_id << " " << has_tower << " " << has_ship << " " << 
+	building_type << " " << building_subtype << " " << building_tile.x << 
+	"," << building_tile.y << " " << building_player_id << " " << ts << " " << has_grid);
+
   TileCacheItem* myitem = new TileCacheItem();
-  myitem->terrain_type = terrain_type;
+  myitem->tilesize = ts;
   myitem->tile_style_id = tile_style_id;
-  myitem->fog_type_id = fog_type_id;
   myitem->has_bag = has_bag;
   myitem->has_standard = has_standard;
   myitem->standard_player_id = standard_player_id;
   myitem->stack_size = stack_size;
   myitem->stack_player_id = stack_player_id;
   myitem->army_type_id = army_type_id;
+  myitem->has_tower = has_tower;
+  myitem->has_ship = has_ship;
+  myitem->building_type= building_type;
+  myitem->building_subtype= building_subtype;
+  myitem->building_tile = building_tile;
+  myitem->building_player_id = building_player_id;
+  myitem->has_grid = has_grid;
+  myitem->fog_type_id = fog_type_id;
 
-  //fixme:
-  myitem->surface = NULL;
+  //go get the tilestyle id for the given terrain type.
+  if (fog_type_id == 14) //14 means totally fogged
+    myitem->surface = getFogPic(fog_type_id - 1)->copy();
+  else
+    {
+      Tileset *tileset = GameMap::getInstance()->getTileset();
+      myitem->surface = 
+	tileset->getTileStyle(tile_style_id)->getImage()->copy();
+    
+      drawTilePic(myitem->surface, fog_type_id, has_bag, has_standard, 
+		  standard_player_id, stack_size, stack_player_id, 
+		  army_type_id, has_tower, has_ship, building_type, 
+		  building_subtype, building_tile, building_player_id, ts, 
+		  has_grid);
+    }
 
   //now the final preparation steps:
   //a) add the size
@@ -1415,14 +1538,14 @@ TowerCacheItem* GraphicsCache::addTowerPic(const Player* p)
   return myitem;
 }
 
-FlagCacheItem* GraphicsCache::addFlagPic(int size, const Player* p)
+FlagCacheItem* GraphicsCache::addFlagPic(int size, const Player *p)
 {
-  debug("GraphicsCache::addFlagPic, player="<<p->getName()<<", size="<<size)
+  debug("GraphicsCache::addFlagPic, player="<<p->getId()<<", size="<<size)
 
     // size is the size of the stack, but we need the index, which starts at 0
     size--;
 
-  PixMask* mysurf = applyMask(d_flagpic[size], d_flagmask[size], p);
+  PixMask* mysurf = applyMask(d_flagpic[size], d_flagmask[size-1], p);
 
   //now create the cache item and add the size
   FlagCacheItem* myitem = new FlagCacheItem();

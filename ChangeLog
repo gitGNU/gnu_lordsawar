@@ -1,3 +1,7 @@
+2009-10-07  Ben Asselstine  <benasselstine@gmail.com>
+
+	* now caching drawn tiles.
+
 2009-10-05  Ben Asselstine  <benasselstine@gmail.com>
 
 	* made stack position lookup faster by adding a map.
