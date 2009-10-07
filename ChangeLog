@@ -3,6 +3,8 @@
 	* now caching drawn tiles.
 	* fixed bad-looking bigmap after loading a game within a game.
 	* updated FogMap object to include tile shading from bigmap object.
+	* fixed mouse pointer to not update while dragging map.
+	* fixed army listing in ruin keeper dialog of the scenario editor
 
 2009-10-05  Ben Asselstine  <benasselstine@gmail.com>
 

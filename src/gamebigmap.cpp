@@ -577,6 +577,8 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
     {
       d_cursor = GraphicsCache::HAND;
     }
+  else if (mouse_state == DRAGGING_MAP)
+    d_cursor = GraphicsCache::HAND;
   else if (stack && 
 	   (mouse_state == DRAGGING_STACK || mouse_state == DRAGGING_ENDPOINT))
     {
