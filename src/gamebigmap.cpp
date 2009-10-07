@@ -526,11 +526,11 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
     }
   else if (e.button == MouseButtonEvent::WHEEL_UP)
     {
-      zoom_in();
+      //zoom_in();
     }
   else if (e.button == MouseButtonEvent::WHEEL_DOWN)
     {
-      zoom_out();
+      //zoom_out();
     }
 }
 
