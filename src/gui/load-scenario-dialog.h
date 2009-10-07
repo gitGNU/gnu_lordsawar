@@ -33,6 +33,7 @@ class LoadScenarioDialog: public Decorated
 {
  public:
     LoadScenarioDialog();
+    ~LoadScenarioDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -42,7 +43,7 @@ class LoadScenarioDialog: public Decorated
     std::string get_scenario_filename();
 
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     Gtk::Button *load_button;
     Gtk::Label *name_label;
     Gtk::Label *description_label;

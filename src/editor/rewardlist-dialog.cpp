@@ -48,9 +48,7 @@ RewardlistDialog::RewardlistDialog()
 	= Gtk::Builder::create_from_file(get_glade_path() + 
 				    "/reward-list-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
 
     xml->get_widget("rewards_treeview", rewards_treeview);
     xml->get_widget("add_button", add_button);
@@ -105,6 +103,7 @@ RewardlistDialog::update_rewardlist_buttons()
 
 RewardlistDialog::~RewardlistDialog()
 {
+  delete dialog;
 }
 
 void RewardlistDialog::addReward(Reward *reward)

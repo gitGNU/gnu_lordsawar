@@ -1,6 +1,6 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005, 2006, 2007 Ulf Lorenz
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@
 #include "GameMap.h"
 #include "GameScenarioOptions.h"
 #include "Threatlist.h"
+#include "PathCalculator.h"
 
 using namespace std;
 
@@ -53,12 +54,19 @@ AI_Allocation::~AI_Allocation()
     s_instance = 0;
 }
 
+void AI_Allocation::deleteStack(guint32 id)
+{
+    // we need to remove collaterally eradicated stacks before they make
+    // trouble
+    if (s_instance)
+        s_instance->d_stacks->flRemove(id);
+}
 void AI_Allocation::deleteStack(Stack* s)
 {
     // we need to remove collaterally eradicated stacks before they make
     // trouble
     if (s_instance)
-        s_instance->d_stacks->remove(s);
+        s_instance->d_stacks->flRemove(s->getId());
 }
 
 int AI_Allocation::move()
@@ -84,7 +92,7 @@ int AI_Allocation::move()
 	if (d_stacks->size())
 	  count += defaultStackMovements();
 
-	d_stacks->clear();
+	//d_stacks->clear();
 	delete d_stacks;
 	d_stacks = 0;
       }
@@ -114,11 +122,11 @@ int AI_Allocation::allocateDefensiveStacks(Citylist *allCities)
       for (it = defenders.begin(); it != defenders.end(); it++)
 	{
 	  Stack *defender = *it;
-	  d_stacks->remove(defender);
 	  float stackStrength = d_analysis->assessStackStrength(defender);
 	  debug("assign stack " << defender->getId() << " with strength " << stackStrength
 		<< " to " << city->getName() << " because its danger is " << cityDanger)
 
+	  d_stacks->flRemove(defender->getId());
 	    totalDefenderStrength += stackStrength;
 	  if (totalDefenderStrength > cityDanger)
 	    break;
@@ -139,8 +147,9 @@ int AI_Allocation::allocateDefensiveStacks(Citylist *allCities)
 	  debug("Stack " << s->getId() << " should return to " << city->getName() << " to defend")
 	  Vector<int> dest = getFreeSpotInCity(city, s->size());
 
-	  d_stacks->remove(s);
-	  d_owner->getStacklist()->setActivestack(s);
+	  d_owner->getStacklist()->setActivestack(GameMap::getStack(s->getPos()));
+	  d_stacks->flRemove(s->getId());
+	  s = d_owner->getActivestack();
 
 	  int mp = s->getPath()->calculate(s, dest);
 	  if (mp >= 0 && d_owner->stackMove(s))
@@ -180,9 +189,10 @@ int AI_Allocation::allocateStacksToThreats()
 	    // if there is nobody to attack the threat, go onto the next one
 	    if (!attacker) break;
 
-	    d_stacks->remove(attacker);
 
-	    d_owner->getStacklist()->setActivestack(attacker);
+	    d_owner->getStacklist()->setActivestack(GameMap::getStack(attacker->getPos()));
+	    d_stacks->flRemove(attacker->getId());
+	    attacker = d_owner->getActivestack();
 	    Vector<int> dest = threat->getClosestPoint(attacker->getPos());
 
 	    int mp = attacker->getPath()->calculate(attacker, dest);
@@ -199,40 +209,21 @@ int AI_Allocation::allocateStacksToThreats()
 
 Vector<int> AI_Allocation::getFreeSpotInCity(City *city, int stackSize)
 {
-  // northwest
-  Vector<int> result(city->getPos());
-  Stack *s = Stacklist::getObjectAt(result);
-  if (!s)
-    return result;
-  else
-    if (s->size() + stackSize <= MAX_STACK_SIZE) return result;
-
-  // northeast
-  result.x++;
-  s = Stacklist::getObjectAt(result);
-  if (!s)
-    return result;
-  else
-    if (s->size() + stackSize <= MAX_STACK_SIZE) return result;
-
-  // southeast
-  result.y++;
-  s = Stacklist::getObjectAt(result);
-  if (!s)
-    return result;
-  else
-    if (s->size() + stackSize <= MAX_STACK_SIZE) return result;
-
-  // southwest
-  result.x--;
-  s = Stacklist::getObjectAt(result);
-  if (!s)
-    return result;
-  else
-    if (s->size() + stackSize <= MAX_STACK_SIZE) return result;
-
-  // no room
-  return Vector<int>(-1, -1);
+  for (unsigned int i = 0; i < city->getSize(); i++)
+    for (unsigned int j = 0; j < city->getSize(); j++)
+      {
+	Vector<int> pos = city->getPos() + Vector<int>(i,j);
+	Stack *s = Stacklist::getObjectAt(pos);
+	if (!s)
+	  return pos;
+	else
+	  {
+	    if (s->size() + stackSize < MAX_STACK_SIZE)
+	      return pos;
+	  }
+      }
+  //there's no room in the inn.
+  return Vector<int>(-1,-1);
 }
 
 Stack *AI_Allocation::findClosestStackToCity(City *city, int limitInMoves)
@@ -264,7 +255,8 @@ Stack *AI_Allocation::findClosestStackToCity(City *city, int limitInMoves)
       if (distToThreat > 20)
 	continue;
 
-      int mp = Stack::scout(s, dest);
+      PathCalculator pc(*s);
+      int mp = pc.calculate(dest);
       if (mp <= 0)
 	continue;
       if (mp < lowest_mp || lowest_mp == -1)
@@ -301,7 +293,8 @@ Stack *AI_Allocation::findBestAttackerFor(Threat *threat)
 	    continue;
 	}
 
-      int mp = Stack::scout(s, closestPoint);
+      PathCalculator pc(*s);
+      int mp = pc.calculate(closestPoint);
       if (mp <= 0)
 	continue;
       if (s->getGroupMoves() < (unsigned int) mp)
@@ -330,7 +323,8 @@ int AI_Allocation::defaultStackMovements()
     {
 	Stack* s = *it;
 	debug("thinking about stack " << s->getId() <<" at ("<<s->getPos().x<<","<<s->getPos().y<<")")
-	  d_owner->getStacklist()->setActivestack(s);
+	d_owner->getStacklist()->setActivestack(GameMap::getStack(s->getPos()));
+	s = d_owner->getActivestack();
 	if (s->size() >= MAX_STACK_SIZE)
 	  {
 	    bool moved = false;
@@ -344,9 +338,9 @@ int AI_Allocation::defaultStackMovements()
 		  {
 		    d_owner->getStacklist()->setActivestack(s);
 		    moved = d_owner->stackMove(s);
-		    if (s !=d_owner->getStacklist()->getActivestack())
+		    if (s->getId() !=d_owner->getActivestack()->getId())
 		      {
-			d_stacks->remove(s);
+			d_stacks->flRemove((*it)->getId());
 			break;
 		      }
 		    s = d_owner->getStacklist()->getActivestack();
@@ -367,9 +361,9 @@ int AI_Allocation::defaultStackMovements()
 		      {
 			d_owner->getStacklist()->setActivestack(s);
 			moved = d_owner->stackMove(s);
-			if (s != d_owner->getStacklist()->getActivestack())
+			if (s->getId() != d_owner->getStacklist()->getActivestack()->getId())
 			  {
-			    d_stacks->remove(s);
+			    d_stacks->flRemove((*it)->getId());
 			    break;
 			  }
 			s = d_owner->getStacklist()->getActivestack();
@@ -414,9 +408,9 @@ int AI_Allocation::defaultStackMovements()
 		
 	    if (moved)
 	      count++;
-	    if (s != d_owner->getStacklist()->getActivestack())
+	    if (s->getId() != d_owner->getActivestack()->getId())
 	      {
-		d_stacks->remove(s);
+		d_stacks->flRemove((*it)->getId());
 		break;
 	      }
 	  }

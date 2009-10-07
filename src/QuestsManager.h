@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2005 Ulf Lorenz
 // Copyright (C) 2004 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -48,16 +48,6 @@ class Reward;
  * file.
  *
  * This class is implemented as a singleton.
- *
- * @note There are some problems related to the signals emitted and received 
- *       by using the libsigc++ library.  If the QuestsManager detects that 
- *       some quest should be cancelled as a result of processing the 
- *       sdyingArmy signal, it cannot delete this Quest, nor can it disconnect 
- *       this quest, if this quest has connected itself to the same signal. 
- *       As a result when we want to delete a quest, we move it from the hash 
- *       of active quests to a vector of 'quests being marked to delete'.  
- *       Then we wait for someone to emit the signal sendingTurn and delete 
- *       all marked quests when processing this signal.
  *
  */
 class QuestsManager : public sigc::trackable

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ class TilePreviewDialog: public sigc::trackable
 {
  public:
     TilePreviewDialog(Tile *tile, guint32 tileSize);
+    ~TilePreviewDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -37,7 +38,7 @@ class TilePreviewDialog: public sigc::trackable
     
  private:
     Tile *d_tile;
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     Gtk::Button *next_button;
     Gtk::Button *previous_button;
     Gtk::Button *refresh_button;

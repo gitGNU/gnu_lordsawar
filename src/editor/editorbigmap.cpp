@@ -27,15 +27,18 @@
 #include "stacklist.h"
 #include "stack.h"
 #include "citylist.h"
+#include "city.h"
 #include "ruinlist.h"
-#include "signpostlist.h"
-#include "templelist.h"
-#include "bridgelist.h"
-#include "portlist.h"
-#include "roadlist.h"
 #include "ruin.h"
+#include "signpostlist.h"
 #include "signpost.h"
+#include "templelist.h"
 #include "temple.h"
+#include "bridgelist.h"
+#include "bridge.h"
+#include "portlist.h"
+#include "port.h"
+#include "roadlist.h"
 #include "road.h"
 #include "playerlist.h"
 #include "defs.h"
@@ -497,7 +500,7 @@ void EditorBigMap::change_map_under_cursor()
 	    // create the city
 	    City *c = new City(tile);
 	    c->setOwner(Playerlist::getInstance()->getNeutral());
-	    Citylist::getInstance()->push_back(c);
+	    Citylist::getInstance()->add(c);
 
 	    bool replaced_grass = false;
 	    // notify the maptiles that a city has been placed here
@@ -556,7 +559,7 @@ void EditorBigMap::change_map_under_cursor()
 		  replaced_grass = true;
 		maptile->setType(grass_index);
 		Ruin *ruin = new Ruin(tile);
-		Ruinlist::getInstance()->push_back(ruin);
+		Ruinlist::getInstance()->add(ruin);
 		if (replaced_grass)
 		  GameMap::getInstance()->applyTileStyles
 		    (0, 0, GameMap::getHeight(), GameMap::getWidth(), true);
@@ -572,7 +575,7 @@ void EditorBigMap::change_map_under_cursor()
 		if (maptile->getMaptileType() != Tile::GRASS)
 		  replaced_grass = true;
 		maptile->setType(grass_index);
-		Templelist::getInstance()->push_back(new Temple(tile));
+		Templelist::getInstance()->add(new Temple(tile));
 		if (replaced_grass)
 		  GameMap::getInstance()->applyTileStyles
 		    (0, 0, GameMap::getHeight(), GameMap::getWidth(), true);
@@ -584,7 +587,7 @@ void EditorBigMap::change_map_under_cursor()
 		&& maptile->getMaptileType() == Tile::GRASS)
 	    {
 		maptile->setBuilding(Maptile::SIGNPOST);
-		Signpostlist::getInstance()->push_back(new Signpost(tile));
+		Signpostlist::getInstance()->add(new Signpost(tile));
 	    }
 	    break;
 	    
@@ -594,7 +597,7 @@ void EditorBigMap::change_map_under_cursor()
 		maptile->getTileStyle()->getType() != TileStyle::INNERMIDDLECENTER)
 	    {
 		maptile->setBuilding(Maptile::PORT);
-		Portlist::getInstance()->push_back(new Port(tile));
+		Portlist::getInstance()->add(new Port(tile));
 		if (Stacklist::getObjectAt(tile))
 		  {
 		    Stack* s = Stacklist::getObjectAt(tile);
@@ -619,7 +622,7 @@ void EditorBigMap::change_map_under_cursor()
 		else
 		{
 		    maptile->setBuilding(Maptile::BRIDGE);
-		    Bridgelist::getInstance()->push_back(new Bridge(tile, type));
+		    Bridgelist::getInstance()->add(new Bridge(tile, type));
 		    if (Stacklist::getObjectAt(tile))
 		      {
 			Stack* s = Stacklist::getObjectAt(tile);
@@ -644,7 +647,7 @@ void EditorBigMap::change_map_under_cursor()
 		if (maptile->getBuilding() == Maptile::NONE)
 		{
 		    maptile->setBuilding(Maptile::ROAD);
-		    Roadlist::getInstance()->push_back(new Road(tile, type));
+		    Roadlist::getInstance()->add(new Road(tile, type));
 		}
 
 		// now reconfigure all roads in the surroundings

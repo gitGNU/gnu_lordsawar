@@ -31,6 +31,7 @@
 #include "playerlist.h"
 #include "stacklist.h"
 #include "citylist.h"
+#include "city.h"
 #include "herotemplates.h"
 #include "game.h"
 #include "xmlhelper.h"

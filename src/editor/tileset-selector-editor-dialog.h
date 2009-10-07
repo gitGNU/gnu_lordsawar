@@ -32,13 +32,14 @@ class TilesetSelectorEditorDialog: public sigc::trackable
 {
  public:
     TilesetSelectorEditorDialog(Tileset * tileset);
+    ~TilesetSelectorEditorDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
     void run();
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     Gtk::RadioButton *large_selector_radiobutton;
     Gtk::RadioButton *small_selector_radiobutton;
     Gtk::FileChooserButton *selector_filechooserbutton;

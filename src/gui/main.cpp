@@ -36,8 +36,8 @@
 
 struct Main::Impl: public sigc::trackable 
 {
-    std::auto_ptr<Gtk::Main> gtk_main;
-    std::auto_ptr<Driver> driver;
+    Gtk::Main* gtk_main;
+    Driver* driver;
 
     sigc::connection on_timer_registered(Timing::timer_slot s,
 					 int msecs_interval);
@@ -49,6 +49,7 @@ static Main *singleton;
 Main::Main(int &argc, char **&argv)
     : impl(new Impl)
 {
+  impl->driver = NULL;
     singleton = this;
 
     start_test_scenario = false;
@@ -61,7 +62,7 @@ Main::Main(int &argc, char **&argv)
     Glib::thread_init();
     try
     {
-	impl->gtk_main.reset(new Gtk::Main(argc, argv));
+	impl->gtk_main = new Gtk::Main(argc, argv);
 
 	g_set_application_name("LordsAWar!");
 
@@ -75,6 +76,8 @@ Main::Main(int &argc, char **&argv)
 
 Main::~Main()
 {
+    delete impl->driver;
+    delete impl->gtk_main;
     delete impl;
     singleton = 0;
 }
@@ -108,7 +111,12 @@ void Main::start_main_loop()
 
     try
     {
-	impl->driver.reset(new Driver(load_filename));
+      if (impl->driver != NULL)
+	{
+	  delete impl->driver;
+	  impl->driver = NULL;
+	}
+	impl->driver = new Driver(load_filename);
 	impl->gtk_main->run();
     }
     catch (const Glib::Error &ex) {

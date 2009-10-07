@@ -38,6 +38,7 @@
 
 BuyProductionDialog::BuyProductionDialog(City *c)
 {
+  army_info_tip = NULL;
     GraphicsCache *gc = GraphicsCache::getInstance();
     city = c;
     selected_army = NO_ARMY_SELECTED;
@@ -46,12 +47,10 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/buy-production-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
-    d->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
+    dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     
     xml->get_widget("production_info_label1", production_info_label1);
     xml->get_widget("production_info_label2", production_info_label2);
@@ -112,6 +111,12 @@ BuyProductionDialog::BuyProductionDialog(City *c)
     production_toggles[0]->set_active(true);
 }
 
+BuyProductionDialog::~BuyProductionDialog()
+{
+  if (army_info_tip)
+    delete army_info_tip;
+  delete dialog;
+}
 void BuyProductionDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
@@ -226,12 +231,22 @@ bool BuyProductionDialog::on_production_button_event(GdkEventButton *e, Gtk::Tog
 	const ArmyProto *army = purchasables[slot];
 
 	if (army)
-	    army_info_tip.reset(new ArmyInfoTip(toggle, army));
+	  {
+	    if (army_info_tip)
+	      delete army_info_tip;
+	    army_info_tip = new ArmyInfoTip(toggle, army);
+	  }
 	return true;
     }
     else if (event.button == MouseButtonEvent::RIGHT_BUTTON
 	     && event.state == MouseButtonEvent::RELEASED) {
-	army_info_tip.reset();
+	{
+	  if (army_info_tip)
+	    {
+	      delete army_info_tip;
+	      army_info_tip = NULL;
+	    }
+	}
 	return true;
     }
     

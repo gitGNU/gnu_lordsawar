@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -43,10 +43,10 @@ class Driver: public sigc::trackable
 						const GameParameters &g);
   
  private:
-    std::auto_ptr<GameWindow> game_window;
-    std::auto_ptr<GameLobbyDialog> game_lobby_dialog;
-    std::auto_ptr<SplashWindow> splash_window;
-    std::auto_ptr<NewNetworkGameDownloadWindow> download_window;
+    GameWindow* game_window;
+    GameLobbyDialog* game_lobby_dialog;
+    SplashWindow* splash_window;
+    NewNetworkGameDownloadWindow* download_window;
     std::string d_load_filename;
     sigc::connection heartbeat_conn;
     Player::Type robot_player_type;

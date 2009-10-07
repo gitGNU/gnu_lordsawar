@@ -38,17 +38,16 @@
 
 StackInfoDialog::StackInfoDialog(Stack *s)
 {
+  army_info_tip = NULL;
   stack = s;
     
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/stack-info-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     xml->get_widget("stack_table", stack_table);
 
@@ -62,6 +61,12 @@ StackInfoDialog::StackInfoDialog(Stack *s)
     fill_stack_info();
 }
 
+StackInfoDialog::~StackInfoDialog()
+{
+  if (army_info_tip != NULL)
+    delete army_info_tip;
+  delete dialog;
+}
 void StackInfoDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
@@ -231,13 +236,21 @@ bool StackInfoDialog::on_army_button_event(GdkEventButton *e, Gtk::ToggleButton 
       const Army *army = armies[slot];
 
       if (army)
-	army_info_tip.reset(new ArmyInfoTip(toggle, army));
+	{
+	  if (army_info_tip != NULL)
+	    delete army_info_tip;
+	  army_info_tip = new ArmyInfoTip(toggle, army);
+	}
       return true;
     }
   else if (event.button == MouseButtonEvent::RIGHT_BUTTON
 	   && event.state == MouseButtonEvent::RELEASED) 
     {
-      army_info_tip.reset();
+      if (army_info_tip != NULL)
+	{
+      	  delete army_info_tip;
+	  army_info_tip = NULL;
+	}
       return true;
     }
 

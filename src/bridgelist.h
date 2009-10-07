@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,9 @@
 
 #include <sigc++/trackable.h>
 #include "LocationList.h"
-#include "bridge.h"
+
+class Bridge;
+class XML_Helper;
 
 //! A list of Bridge objects located on the game map.
 /** 

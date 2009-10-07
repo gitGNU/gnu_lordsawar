@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <assert.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include "citylist.h"
@@ -389,7 +390,8 @@ bool Citylist::load(std::string tag, XML_Helper* helper)
 {
     if (tag == City::d_tag)
       {
-	push_back(new City(helper));
+	City *c = new City(helper);
+	add(c);
 	return true;
       }
     return false;
@@ -504,4 +506,5 @@ guint32 Citylist::countCitiesVectoringTo(City *dest)
 
   return count;
 }
+
 // End of file

@@ -3,7 +3,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -31,7 +31,6 @@
 #include "armysetlist.h"
 #include "counter.h"
 #include "army.h"
-#include "templelist.h"
 #include "hero.h"
 #include "GameMap.h"
 #include "vector.h"
@@ -62,12 +61,11 @@ Stack::Stack(guint32 id, Player* player, Vector<int> pos)
 
 Stack::Stack(const Stack& s)
     : UniquelyIdentified(s), Movable(s), Ownable(s), 
-    d_defending(s.d_defending), d_parked(s.d_parked), d_deleting(false)
+    d_defending(s.d_defending), d_parked(s.d_parked), 
+    d_deleting(false)
 {
-    clear();
-    d_path = new Path();
-    //deep copy the other stack's armies
-    
+    d_path = new Path(*s.d_path);
+
     for (const_iterator sit = s.begin(); sit != s.end(); sit++)
     {
 	if ((*sit)->isHero())
@@ -117,7 +115,7 @@ void Stack::moveOneStep(bool skipping)
 {
   debug("moveOneStep()");
 
-  Vector<int> dest = *getPath()->front();
+  Vector<int> dest = getFirstPointInPath();
   moveToDest(dest, skipping);
 
   //now remove first point of the path
@@ -205,7 +203,9 @@ void Stack::moveToDest(Vector<int> dest, bool skipping)
     }
 
   //update position and status
+  smoving.emit(this);
   setPos(dest);
+  smoved.emit(this);
 
   setFortified(false);
   setDefending(false);
@@ -362,6 +362,7 @@ void Stack::group()
     return;
   for (iterator it = begin(); it != end(); ++it)
     (*it)->setGrouped(true);
+  sgrouped.emit(this, true);
   return;
 }
 
@@ -374,6 +375,7 @@ void Stack::ungroup()
     (*it)->setGrouped(false);
   //set first army to be in the group
   (*(begin()))->setGrouped(true);
+  sgrouped.emit(this, false);
   return;
 }
 
@@ -412,7 +414,7 @@ int Stack::bless()
   int count = 0;
   for (iterator it = begin(); it != end(); it++)
     {
-      Temple *temple = Templelist::getInstance()->getObjectAt(getPos());
+      Temple *temple = GameMap::getTemple(getPos());
       if ((*it)->bless(temple))
 	count++;
     }
@@ -431,20 +433,45 @@ guint32 Stack::calculateTileMovementCost(Vector<int> pos) const
   return moves;
 }
 
+Vector<int> Stack::getFirstPointInPath() const
+{
+  Vector<int> p = *(d_path->begin());
+  return p;
+}
+
+Vector<int> Stack::getLastReachablePointInPath() const
+{
+  if (d_path->size() == 0)
+    return Vector<int>(-1,-1);
+  int count = 0;
+  for (Path::iterator it = d_path->begin(); it != d_path->end(); it++)
+    {
+      count++;
+      if (count == d_path->getMovesExhaustedAtPoint())
+	return (*it);
+    }
+  return Vector<int>(-1,-1);
+}
+Vector<int> Stack::getLastPointInPath() const
+{
+  if (d_path->size() == 0)
+    return Vector<int>(-1,-1);
+  Vector<int> p = d_path->back();
+  return p;
+}
+
 bool Stack::enoughMoves() const
 {
   if (d_path->size() == 0)
     return true; //we have enough moves to move nowhere!
 
-  Vector<int> p = **(d_path->begin());
+  Vector<int> p = getFirstPointInPath();
   guint32 needed = calculateTileMovementCost(p);
 
-  // now check if all armies fulfill this requirement
-  for (const_iterator it = begin(); it != end(); it++)
-    if ((*it)->getMoves() < needed)
-      return false;
+  if (getGroupMoves() >= needed)
+    return true;
 
-  return true;
+  return false;
 }
 
 bool Stack::canMove() const
@@ -513,7 +540,8 @@ void Stack::nextTurn()
     }
 
   //recalculate paths
-  getPath()->recalculate(this);
+
+  d_path->recalculate(this);
 
 }
 
@@ -822,38 +850,6 @@ guint32 Stack::countArmiesBlessedAtTemple(guint32 temple_id)
     return blessed;
 }
 	
-guint32 Stack::scout(Player *p, Vector<int> src, Vector<int> dest, 
-		    const ArmyProdBase *prodbase)
-{
-  Stack *stack = Stack::createNonUniqueStack(p, src);
-
-  Army *army;
-  if (!prodbase)
-    {
-      ArmyProto *proto = Armysetlist::getInstance()->getScout(p->getArmyset());
-      if (!proto)
-	return 0;
-      army = Army::createNonUniqueArmy (*proto, p);
-    }
-  else
-    army = Army::createNonUniqueArmy (*prodbase, p);
-
-  if (!army)
-    return 0;
-  stack->push_back(army);
-  guint32 mp = stack->getPath()->calculate(stack, dest);
-  delete stack;
-  return mp;
-}
-
-guint32 Stack::scout(Stack *stack, Vector<int> dest)
-{
-  Stack *scout_stack = new Stack(*stack);
-  guint32 mp = scout_stack->getPath()->calculate(scout_stack, dest);
-  delete scout_stack;
-  return mp;
-}
-
 Stack* Stack::createNonUniqueStack(Player *player, Vector<int> pos)
 {
   return new Stack(0, player, pos);
@@ -868,6 +864,7 @@ guint32 Stack::getMaxGroupLandMoves() const
 
   //copy the stack, reset the moves and return the group moves
   Stack *copy = new Stack (*this);
+  copy->getPath()->clear(); //this prevents triggering path recalc in nextTurn
   if (copy->countGroupedArmies() == 0)
     copy->group();
   copy->decrementMoves(copy->getGroupMoves());
@@ -900,6 +897,7 @@ guint32 Stack::getMaxGroupBoatMoves() const
 
   //copy the stack, reset the moves and return the group moves
   Stack *copy = new Stack (*this);
+  copy->getPath()->clear(); //this prevents triggering path recalc in nextTurn
   if (copy->countGroupedArmies() == 0)
     copy->group();
   copy->nextTurn();
@@ -924,5 +922,12 @@ guint32 Stack::getMaxGroupBoatMoves() const
   moves = copy->getGroupMoves();
   delete copy;
   return moves;
+}
+	
+void Stack::setPath(const Path p)
+{
+  if (d_path)
+    delete d_path;
+  d_path = new Path(p);
 }
 // End of file

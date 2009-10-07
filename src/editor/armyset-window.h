@@ -37,10 +37,10 @@ class ArmySetWindow: public sigc::trackable
     void show();
     void hide();
 
-    Gtk::Window &get_window() { return *window.get(); }
+    Gtk::Window &get_window() { return *window; }
 
  private:
-    std::auto_ptr<Gtk::Window> window;
+    Gtk::Window* window;
     std::string current_save_filename;
     Armyset *d_armyset; //current armyset
     ArmyProto *d_army; //current army

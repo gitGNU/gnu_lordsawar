@@ -25,6 +25,7 @@
 #include "overviewmap.h"
 #include "LocationList.h"
 
+class City;
 //! Draw the given cities on the map.
 /** 
  * Draw a set of cities onto the miniature map graphic.

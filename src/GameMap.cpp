@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 // Copyright (C) 2008 Janek Kozicki
 //
@@ -31,8 +31,11 @@
 #include "GameMap.h"
 #include "citylist.h"
 #include "bridgelist.h"
+#include "bridge.h"
 #include "portlist.h"
+#include "port.h"
 #include "roadlist.h"
+#include "road.h"
 #include "city.h"
 #include "ruin.h"
 #include "temple.h"
@@ -40,6 +43,7 @@
 #include "stacklist.h"
 #include "ruinlist.h"
 #include "templelist.h"
+#include "signpostlist.h"
 #include "xmlhelper.h"
 #include "MapGenerator.h"
 #include "tilesetlist.h"
@@ -104,6 +108,7 @@ GameMap::GameMap(std::string TilesetName, std::string ShieldsetName,
     d_shieldSet = Shieldsetlist::getInstance()->getShieldset(ShieldsetName);
     d_citySet = Citysetlist::getInstance()->getCityset(CitysetName);
 
+    Vector<int>::setMaximumWidth(s_width);
     d_map = new Maptile*[s_width*s_height];
     for (int j = 0; j < s_height; j++)
         for (int i = 0; i < s_width; i++)
@@ -172,6 +177,7 @@ GameMap::GameMap(XML_Helper* helper)
     d_shieldSet = Shieldsetlist::getInstance()->getShieldset(s_dir);
     d_citySet = Citysetlist::getInstance()->getCityset(c_dir);
 
+    Vector<int>::setMaximumWidth(s_width);
     //create the map
     d_map = new Maptile*[s_width*s_height];
 
@@ -359,7 +365,7 @@ Maptile* GameMap::getTile(int x, int y) const
 
 Stack* GameMap::addArmy(Vector<int> pos, Army *a)
 {
-  City *c = Citylist::getInstance()->getObjectAt(pos);
+  City *c = getCity(pos);
   if (c)
     {
       if (c->isBurnt())
@@ -367,10 +373,10 @@ Stack* GameMap::addArmy(Vector<int> pos, Army *a)
       else
         return addArmy(c, a);
     }
-  Temple *t = Templelist::getInstance()->getObjectAt(pos);
+  Temple *t = getTemple(pos);
   if (t)
     return addArmy(t, a);
-  Ruin *r = Ruinlist::getInstance()->getObjectAt(pos);
+  Ruin *r = getRuin(pos);
   if (r)
     return addArmy(r, a);
   return addArmyAtPos(pos, a);
@@ -420,7 +426,7 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
                   if (x >= s_width || y >= s_height)
                     continue;
                   //is there somebody else's city here?
-                  City *c = Citylist::getInstance()->getObjectAt(x, y);
+                  City *c = getCity(Vector<int>(x, y));
                   if (c && c->getOwner() != a->getOwner())
                     {
                       if (c->isBurnt() == false)
@@ -486,13 +492,13 @@ Stack* GameMap::addArmy(Location *l, Army *a)
   return addArmyAtPos(l->getPos(), a);
 }
 
-bool GameMap::isDock(int x, int y)
+bool GameMap::isDock(Vector<int> pos)
 {
-  if (Citylist::getInstance()->getObjectAt(x,y))
+  if (getTile(pos)->getBuilding() == Maptile::CITY)
     return true;
-  if (Portlist::getInstance()->getObjectAt(x,y))
+  if (getTile(pos)->getBuilding() == Maptile::PORT)
     return true;
-  if (Bridgelist::getInstance()->getObjectAt(x,y))
+  if (getTile(pos)->getBuilding() == Maptile::BRIDGE)
     return true;
   return false;
 }
@@ -510,8 +516,8 @@ bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
   if (diffx >= -1 && diffx <= 1 && diffy >= -1 && diffy <= 1)
     {
       assert (Citylist::getInstance()->size());
-      bool from_dock = isDock(x,y);
-      bool to_dock = isDock(destx,desty);
+      bool from_dock = isDock(Vector<int>(x,y));
+      bool to_dock = isDock(Vector<int>(destx,desty));
       Maptile *from = getTile(x, y);
       Maptile *to = getTile(destx, desty);
       if (from == to)
@@ -543,12 +549,12 @@ bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
 
       //is the tile i'm going to a mountain that doesn't have a road?
       if (to->getMaptileType() == Tile::MOUNTAIN &&
-	  Roadlist::getInstance()->getObjectAt(destx, desty) == NULL)
+	  getRoad(Vector<int>(destx, desty)) == NULL)
         return true;
 
       //am i on a mountain without a road?
       if (from->getMaptileType() == Tile::MOUNTAIN &&
-	  Roadlist::getInstance()->getObjectAt(x, y) == NULL)
+	  getRoad(Vector<int>(x, y)) == NULL)
         return true;
 
       if (from->getMaptileType() == Tile::VOID)
@@ -1004,4 +1010,36 @@ Vector<int> GameMap::findNearestObjectToTheWest(Vector<int> pos)
 {
   Vector<int> dir = Vector<int>(-1, 0);
   return findNearestObjectInDir(pos, dir);
+}
+City* GameMap::getCity(Vector<int> pos)
+{
+  return Citylist::getInstance()->getObjectAt(pos);
+}
+Ruin* GameMap::getRuin(Vector<int> pos)
+{
+  return Ruinlist::getInstance()->getObjectAt(pos);
+}
+Temple* GameMap::getTemple(Vector<int> pos)
+{
+  return Templelist::getInstance()->getObjectAt(pos);
+}
+Port* GameMap::getPort(Vector<int> pos)
+{
+  return Portlist::getInstance()->getObjectAt(pos);
+}
+Road* GameMap::getRoad(Vector<int> pos)
+{
+  return Roadlist::getInstance()->getObjectAt(pos);
+}
+Bridge* GameMap::getBridge(Vector<int> pos)
+{
+  return Bridgelist::getInstance()->getObjectAt(pos);
+}
+Signpost* GameMap::getSignpost(Vector<int> pos)
+{
+  return Signpostlist::getInstance()->getObjectAt(pos);
+}
+Stack* GameMap::getStack(Vector<int> pos)
+{
+  return Stacklist::getObjectAt(pos);
 }

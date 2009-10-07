@@ -1,5 +1,5 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -56,10 +56,9 @@ NextTurnHotseat::~NextTurnHotseat()
 void NextTurnHotseat::start()
 {
     //We need the playerlist a lot, so maintain a copy of it.
-    Playerlist* plist = Playerlist::getInstance();
 
     //set first player as active if no active player exists
-    if (!plist->getActiveplayer())
+    if (!Playerlist::getActiveplayer())
       nextPlayer();
 	
     while (!d_stop)
@@ -76,18 +75,20 @@ void NextTurnHotseat::start()
 	startTurn();
        
 	// inform everyone about the next turn 
-	snextTurn.emit(plist->getActiveplayer());
+	snextTurn.emit(Playerlist::getActiveplayer());
     
-	if (plist->getNoOfPlayers() <= 2)
+	if (Playerlist::getInstance()->getNoOfPlayers() <= 2)
 	  {
-	    if (plist->checkPlayers()) //end of game detected
+	    abort = srequestAbort.connect(sigc::mem_fun(Playerlist::getInstance()->getFirstLiving(), &Player::abortTurn));
+	    if (Playerlist::getInstance()->checkPlayers()) //end of game detected
 	      return;
 	  }
 
-	splayerStart.emit(plist->getActiveplayer());
+
+	splayerStart.emit(Playerlist::getActiveplayer());
 
 	// let the player do his or her duties...
-	bool continue_loop = plist->getActiveplayer()->startTurn();
+	bool continue_loop = Playerlist::getActiveplayer()->startTurn();
 	if (!continue_loop || d_stop)
 	  return;
 	
@@ -102,11 +103,11 @@ void NextTurnHotseat::start()
 	    Playerlist::getInstance()->getFirstLiving())
         
 	  {
-	    if (plist->checkPlayers() == true)
+	    if (Playerlist::getInstance()->checkPlayers() == true)
 	      {
-		if (plist->getNoOfPlayers() <= 1)
+		if (Playerlist::getInstance()->getNoOfPlayers() <= 1)
 		  break;
-		if (plist->getActiveplayer()->isDead())
+		if (Playerlist::getActiveplayer()->isDead())
 		  nextPlayer();
 	      }
 	    finishRound();

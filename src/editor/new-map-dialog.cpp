@@ -43,9 +43,7 @@ NewMapDialog::NewMapDialog()
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/new-map-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
 
     xml->get_widget("map_size_combobox", map_size_combobox);
     xml->get_widget("random_map_container", random_map_container);
@@ -154,6 +152,7 @@ NewMapDialog::NewMapDialog()
 
 NewMapDialog::~NewMapDialog()
 {
+  delete dialog;
 }
 
 void NewMapDialog::set_parent_window(Gtk::Window &parent)

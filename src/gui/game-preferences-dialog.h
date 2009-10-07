@@ -49,7 +49,7 @@ class GamePreferencesDialog: public Decorated
     
  private:
     void init(std::string filename);
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     GameScenario::PlayMode mode;
 
     Gtk::Button *start_game_button;

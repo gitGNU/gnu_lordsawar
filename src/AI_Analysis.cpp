@@ -1,6 +1,7 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2006 Andrea Paternesi
+// Copyright (C) 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -67,13 +68,22 @@ AI_Analysis::~AI_Analysis()
     }
 }
 
+void AI_Analysis::deleteStack(guint32 id)
+{
+  if (instance)
+    {
+        instance->d_threats->deleteStack(id);
+        instance->d_stacks->flRemove(id);
+    }
+}
+
 void AI_Analysis::deleteStack(Stack* s)
 {
     if (instance)
     {
         debug("delete stack from ai_analysis")
-        instance->d_threats->deleteStack(s);
-        instance->d_stacks->remove(s);
+        instance->d_threats->deleteStack(s->getId());
+        instance->d_stacks->flRemove(s->getId());
         debug("stack " << s << " died")
     }
 }

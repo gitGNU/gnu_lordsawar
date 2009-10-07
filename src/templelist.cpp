@@ -1,6 +1,6 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2003, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -85,7 +85,7 @@ bool Templelist::load(std::string tag, XML_Helper* helper)
     //what has happened?
         return false;
     
-    push_back(new Temple(helper));
+    add(new Temple(helper));
 
     return true;
 }

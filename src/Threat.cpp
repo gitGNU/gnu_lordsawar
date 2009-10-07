@@ -1,7 +1,7 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005 Ulf Lorenz
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ Threat::Threat(Stack *s)
     :Ownable(*s), d_city(0), d_ruin(0), d_danger(0)
 {
     d_stacks = new Stacklist();
-    d_stacks->push_front(s);
+    d_stacks->add(new Stack(*s));
 }
 
 Threat::Threat(Ruin *r)
@@ -96,7 +96,7 @@ bool Threat::Near(Vector<int> pos, Player *p) const
 
 void Threat::addStack(Stack *stack)
 {
-    d_stacks->push_back(stack);
+    d_stacks->add(new Stack (*stack));
 }
 
 // this is the strength of the threat to us
@@ -168,7 +168,11 @@ Vector<int> Threat::getClosestPoint(Vector<int> location) const
     return result;
 }
 
+void Threat::deleteStack(guint32 id)
+{
+    d_stacks->flRemove(id);
+}
 void Threat::deleteStack(Stack* s)
 {
-    d_stacks->remove(s);
+  d_stacks->flRemove(s);
 }

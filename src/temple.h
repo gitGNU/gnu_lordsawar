@@ -22,6 +22,7 @@
 #define TEMPLE_H
 
 #define DEFAULT_TEMPLE_NAME  "Shrine"
+#define TEMPLE_TILE_WIDTH 1
 
 #include <string>
 #include "NamedLocation.h"
@@ -77,6 +78,8 @@ class Temple : public NamedLocation
 	bool isUnnamed() {return getName() == getDefaultName() ? true : false;};
 
 	static std::string getDefaultName() {return _(DEFAULT_TEMPLE_NAME);};
+
+	static guint32 getWidth() {return TEMPLE_TILE_WIDTH;};
     protected:
 	
 	//! The type of the temple.

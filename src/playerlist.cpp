@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -536,7 +536,7 @@ void Playerlist::swap(Player *old_player, Player *new_player)
       d_activeplayer = new_player;
       d_activeplayer->getStacklist()->setActivestack(0);
     }
-  /* note, we don't have to change the player associate with flags
+  /* note, we don't have to change the player associated with flag graphics
      because it's stored as an id. */
 }
 

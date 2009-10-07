@@ -38,9 +38,7 @@ SelectItemDialog::SelectItemDialog()
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/select-item-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
     
     xml->get_widget("select_button", select_button);
 
@@ -65,6 +63,10 @@ SelectItemDialog::SelectItemDialog()
       }
 }
 
+SelectItemDialog::~SelectItemDialog()
+{
+  delete dialog;
+}
 void SelectItemDialog::addItemProto(ItemProto *item)
 {
   Gtk::TreeIter i = items_list->append();

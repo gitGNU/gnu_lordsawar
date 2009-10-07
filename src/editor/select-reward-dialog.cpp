@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -38,9 +38,7 @@ SelectRewardDialog::SelectRewardDialog()
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/select-reward-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
     
     xml->get_widget("select_button", select_button);
 
@@ -67,6 +65,10 @@ SelectRewardDialog::SelectRewardDialog()
       select_button->set_sensitive(false);
 }
 
+SelectRewardDialog::~SelectRewardDialog()
+{
+  delete dialog;
+}
 void SelectRewardDialog::addReward(Reward *reward)
 {
   Gtk::TreeIter i = rewards_list->append();

@@ -214,6 +214,9 @@ class Game
     void select_active_stack();
     bool recruitHero(HeroProto *hero, City *city, int gold);
 
+    void on_stack_grouped(Stack *stack, bool grouped);
+    void on_stack_halted(Stack *stack);
+
     GameScenario* d_gameScenario;
     NextTurn* d_nextTurn;
     std::auto_ptr<GameBigMap> bigmap;

@@ -40,12 +40,10 @@ ArmyBonusDialog::ArmyBonusDialog(Player *p)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/army-bonus-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
-    d->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
+    dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
 
     armies_list = Gtk::ListStore::create(armies_columns);
     xml->get_widget("treeview", armies_treeview);
@@ -63,6 +61,10 @@ ArmyBonusDialog::ArmyBonusDialog(Player *p)
       addArmyType(i);
 }
 
+ArmyBonusDialog::~ArmyBonusDialog()
+{
+  delete dialog;
+}
 void ArmyBonusDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);

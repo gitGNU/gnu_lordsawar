@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ class MainPreferencesDialog: public Decorated
 {
  public:
     MainPreferencesDialog();
+    ~MainPreferencesDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -39,7 +40,7 @@ class MainPreferencesDialog: public Decorated
     void hide();
 
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     Gtk::CheckButton *show_turn_popup_checkbutton;
     Gtk::CheckButton *play_music_checkbutton;
     Gtk::CheckButton *show_decorated_windows_checkbutton;

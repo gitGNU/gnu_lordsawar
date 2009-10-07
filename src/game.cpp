@@ -86,6 +86,7 @@ void Game::addPlayer(Player *p)
     (*it).disconnect();
   connections[p->getId()].clear();
 
+  //now setup the connections that are specific for human players
   if (p->getType() == Player::HUMAN)
     {
       connections[p->getId()].push_back
@@ -108,8 +109,15 @@ void Game::addPlayer(Player *p)
       connections[p->getId()].push_back
 	(p->advice_asked.connect
 	 (sigc::mem_fun(advice_asked, &sigc::signal<void, float>::emit)));
+      connections[p->getId()].push_back
+	(p->shaltedStack.connect
+	 (sigc::mem_fun(this, &Game::on_stack_halted)));
+      connections[p->getId()].push_back
+	(p->getStacklist()->sgrouped.connect
+	 (sigc::mem_fun(this, &Game::on_stack_grouped)));
     }
       
+  //now do all of the common connections
   connections[p->getId()].push_back
     (p->aborted_turn.connect (sigc::mem_fun
 	   (game_stopped, &sigc::signal<void>::emit)));
@@ -149,6 +157,19 @@ void Game::addPlayer(Player *p)
     unlock_inputs();
 }
 
+void Game::on_stack_halted(Stack *stack)
+{
+  if (stack == NULL)
+    return;
+  bigmap->reset_path_calculator(stack);
+  //tell gamebigmap that a stack just stopped
+}
+void Game::on_stack_grouped(Stack *stack, bool grouped)
+{
+  bigmap->reset_path_calculator(stack);
+  //tell gamebigmap that we just grouped/ungrouped a stack.
+  return;
+}
 #include "game-server.h"
 
 Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
@@ -333,17 +354,13 @@ void Game::move_selected_stack_dir(int diffx, int diffy)
     return;
   // Get rid of the old path if there is one
   if (stack->getPath()->size())
-    stack->getPath()->flClear();
+    stack->getPath()->clear();
   //See if we can move there
   Vector<int> dest = stack->getPos();
-  dest.x += diffx;
-  dest.y += diffy;
-  if (stack->getPath()->canMoveThere(stack, dest))
-    {
-      // Set in a new path
-      stack->getPath()->calculate(stack, dest);
-      move_selected_stack_along_path();
-    }
+  dest += Vector<int>(diffx, diffy);
+  int mp = stack->getPath()->calculate(stack, dest);
+  if (mp > 0)
+    move_selected_stack_along_path();
   else
     {
       Playerlist::getActiveplayer()->getStacklist()->setActivestack(0);
@@ -488,8 +505,8 @@ void Game::search_selected_stack()
   Player *player = Playerlist::getActiveplayer();
   Stack* stack = player->getActivestack();
 
-  Ruin* ruin = Ruinlist::getInstance()->getObjectAt(stack->getPos());
-  Temple* temple = Templelist::getInstance()->getObjectAt(stack->getPos());
+  Ruin* ruin = GameMap::getRuin(stack->getPos());
+  Temple* temple = GameMap::getTemple(stack->getPos());
 
   if (ruin && !ruin->isSearched() && stack->hasHero() &&
       stack->getFirstHero()->getMoves() > 0 &&
@@ -531,7 +548,7 @@ void Game::search_selected_stack()
       int blessCount;
       blessCount = player->stackVisitTemple(stack, temple);
       bool wants_quest = temple_searched.emit(stack->hasHero(), temple, blessCount);
-      if (wants_quest)
+      if (wants_quest && stack->hasHero())
 	{
 	  Quest *q = player->stackGetQuest
 	    (stack, temple, 
@@ -596,6 +613,7 @@ void Game::newMedalArmy(Army* a)
 
 void Game::on_stack_grouped_or_ungrouped(Stack *s)
 {
+  //this only happens when we double-click on a stack on the bigmap.
   update_stack_info();
   update_control_panel();
 }
@@ -882,14 +900,14 @@ void Game::update_control_panel()
       if (stack->getGroupMoves() > 0)
 	{
 	  Temple *temple;
-	  temple = Templelist::getInstance()->getObjectAt(stack->getPos());
+	  temple = GameMap::getTemple(stack->getPos());
 	  can_search_selected_stack.emit(temple);
 	  can_move_selected_stack.emit(true);
 	}
 
       if (stack->hasHero())
 	{
-	  Ruin *ruin = Ruinlist::getInstance()->getObjectAt(stack->getPos());
+	  Ruin *ruin = GameMap::getRuin(stack->getPos());
 	  if (stack->getFirstHero()->getMoves() > 0 && ruin)
 	    can_search_selected_stack.emit(!ruin->isSearched());
 
@@ -902,14 +920,10 @@ void Game::update_control_panel()
 		  if (hero->getBackpack()->getPlantableItem(player))
 		    {
 			  //can't plant on city/ruin/temple/signpost
-			  Citylist *cl = Citylist::getInstance();
-			  City *city = cl->getObjectAt(stack->getPos());
-			  Templelist *tl = Templelist::getInstance();
-			  Temple *temple = tl->getObjectAt(stack->getPos());
-			  Ruinlist *rl = Ruinlist::getInstance();
-			  Ruin *ruin = rl->getObjectAt(stack->getPos());
-			  Signpostlist *spl = Signpostlist::getInstance();
-			  Signpost *sign = spl->getObjectAt(stack->getPos());
+			  City *city = GameMap::getCity(stack->getPos());
+			  Temple *temple = GameMap::getTemple(stack->getPos());
+			  Ruin *ruin = GameMap::getRuin(stack->getPos());
+			  Signpost *sign = GameMap::getSignpost(stack->getPos());
 			  if (!city && !temple && !ruin && !sign)
 			    {
 			      GameMap *gm = GameMap::getInstance();
@@ -931,7 +945,7 @@ void Game::update_control_panel()
 	  can_plant_standard_selected_stack.emit(false);
 	}
 
-      if (Signpostlist::getInstance()->getObjectAt(stack->getPos()))
+      if (GameMap::getSignpost(stack->getPos()))
 	can_change_signpost.emit(true);
 
       can_disband_stack.emit(true);

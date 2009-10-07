@@ -40,7 +40,6 @@
 #include "armysetlist.h"
 #include "playerlist.h"
 #include "player.h"
-#include "stacklist.h"
 #include "citylist.h"
 #include "xmlhelper.h"
 #include "Configuration.h"
@@ -67,8 +66,12 @@
 
 Driver::Driver(std::string load_filename)
 {
+    game_window = NULL;
+    game_lobby_dialog = NULL;
+    splash_window = NULL;
+    download_window = NULL;
   game_scenario_downloaded = "";
-    splash_window.reset(new SplashWindow);
+    splash_window = new SplashWindow;
     splash_window->new_game_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_new_game_requested));
     splash_window->new_hosted_network_game_requested.connect(
@@ -178,7 +181,7 @@ void Driver::run()
 	  game_scenario->saveGame(d_load_filename);
 	  if (Playerlist::getActiveplayer()->getType() != Player::NETWORKED)
 	    {
-	      if (splash_window.get())
+	      if (splash_window)
 		splash_window->hide();
 
 	      init_game_window();
@@ -224,6 +227,14 @@ void Driver::run()
 
 Driver::~Driver()
 {
+  if (game_window)
+    delete game_window;
+  if (game_lobby_dialog)
+    delete game_lobby_dialog;
+  if (splash_window)
+    delete splash_window;
+  if (download_window)
+    delete download_window;
 }
 
 void Driver::on_hosted_player_sat_down(Player *player)
@@ -269,7 +280,7 @@ void Driver::on_client_player_chat(std::string message)
 void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
 						  std::string nick)
 {
-    if (splash_window.get())
+    if (splash_window)
 	splash_window->hide();
 
     NewGameProgressWindow pw(g, GameScenario::NETWORKED, 
@@ -294,12 +305,14 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
     next_turn->snextRound.connect (sigc::mem_fun(GameServer::getInstance(), 
 						 &GameServer::sendTurnOrder));
   next_turn->snextPlayerUnavailable.connect(sigc::mem_fun(this, &Driver::on_player_unavailable));
-  game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, next_turn, 
-					      game_server, true));
+  if (game_lobby_dialog)
+    delete game_lobby_dialog;
+  game_lobby_dialog = new GameLobbyDialog(game_scenario, next_turn, 
+					      game_server, true);
   game_server->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
   Playerlist::getInstance()->splayerDead.connect
     (sigc::mem_fun(GameServer::getInstance(), &GameServer::sendKillPlayer));
-  game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
+  game_lobby_dialog->set_parent_window(*splash_window->get_window());
   game_lobby_dialog->player_sat_down.connect
     (sigc::mem_fun(this, &Driver::on_hosted_player_sat_down));
   game_lobby_dialog->player_stood_up.connect
@@ -316,7 +329,7 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
     {
       GameServer::deleteInstance();
       delete game_scenario;
-      if (splash_window.get())
+      if (splash_window)
 	splash_window->show();
     }
 }
@@ -325,11 +338,11 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
 void Driver::on_server_went_away()
 {
   heartbeat_conn.disconnect();
-  if (game_lobby_dialog.get())
+  if (game_lobby_dialog)
     game_lobby_dialog->hide();
-  if (download_window.get())
+  if (download_window)
     download_window->hide();
-  if (splash_window.get())
+  if (splash_window)
     splash_window->show();
   GameClient::deleteInstance();
   TimedMessageDialog dialog(*splash_window->get_window(), 
@@ -341,11 +354,11 @@ void Driver::on_server_went_away()
 void Driver::on_client_could_not_connect()
 {
   heartbeat_conn.disconnect();
-  if (game_lobby_dialog.get())
+  if (game_lobby_dialog)
     game_lobby_dialog->hide();
-  if (download_window.get())
+  if (download_window)
     download_window->hide();
-  if (splash_window.get())
+  if (splash_window)
     splash_window->show();
   GameClient::deleteInstance();
   TimedMessageDialog dialog(*splash_window->get_window(), 
@@ -356,7 +369,7 @@ void Driver::on_client_could_not_connect()
 
 void Driver::on_new_remote_network_game_requested(std::string host, unsigned short port, std::string nick)
 {
-  if (splash_window.get())
+  if (splash_window)
     splash_window->hide();
   GameClient *game_client = GameClient::getInstance();
   game_client->game_scenario_received.connect
@@ -367,7 +380,9 @@ void Driver::on_new_remote_network_game_requested(std::string host, unsigned sho
     (sigc::mem_fun(this, &Driver::on_client_could_not_connect));
   game_scenario_received.connect
     (sigc::mem_fun(this, &Driver::on_game_scenario_received));
-  download_window.reset(new NewNetworkGameDownloadWindow());
+  if (download_window)
+    delete download_window;
+  download_window = new NewNetworkGameDownloadWindow();
   download_window->pulse();
   game_client->start(host, port, nick);
   heartbeat_conn = Glib::signal_timeout().connect
@@ -382,7 +397,7 @@ void Driver::heartbeat()
     return;
   if (game_scenario_downloaded == "")
     {
-      if (download_window.get())
+      if (download_window)
 	download_window->pulse();
       return;
     }
@@ -394,7 +409,7 @@ void Driver::heartbeat()
 void Driver::on_game_scenario_received(std::string path)
 {
   heartbeat_conn.disconnect();
-  if (download_window.get())
+  if (download_window)
     download_window->hide();
   GameScenario *game_scenario = load_game(path);
   GameClient *game_client = GameClient::getInstance();
@@ -406,9 +421,11 @@ void Driver::on_game_scenario_received(std::string path)
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   next_turn->snextPlayerUnavailable.connect(sigc::mem_fun(this, &Driver::on_player_unavailable));
   game_client->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
-  game_lobby_dialog.reset(new GameLobbyDialog(game_scenario, next_turn, 
-					      GameClient::getInstance(), false));
-  game_lobby_dialog->set_parent_window(*splash_window.get()->get_window());
+  if (game_lobby_dialog)
+    delete game_lobby_dialog;
+  game_lobby_dialog = new GameLobbyDialog(game_scenario, next_turn, 
+					      GameClient::getInstance(), false);
+  game_lobby_dialog->set_parent_window(*splash_window->get_window());
   game_lobby_dialog->player_sat_down.connect
     (sigc::mem_fun(this, &Driver::on_client_player_sat_down));
   game_lobby_dialog->player_stood_up.connect
@@ -423,7 +440,7 @@ void Driver::on_game_scenario_received(std::string path)
 
   if (response == false)
     {
-      if (splash_window.get())
+      if (splash_window)
 	splash_window->show();
     
       GameClient::deleteInstance();
@@ -475,7 +492,7 @@ void Driver::on_new_game_requested(GameParameters g)
 	return;
       }
 
-    if (splash_window.get())
+    if (splash_window)
 	splash_window->hide();
 
     NextTurn *next_turn = new NextTurnHotseat(game_scenario->getTurnmode(),
@@ -488,7 +505,7 @@ void Driver::on_new_game_requested(GameParameters g)
 
 void Driver::on_load_requested(std::string filename)
 {
-    if (splash_window.get())
+    if (splash_window)
 	splash_window->hide();
 
     GameScenario *game_scenario = load_game(filename);
@@ -520,10 +537,10 @@ void Driver::on_load_requested(std::string filename)
 
 void Driver::on_quit_requested()
 {
-    if (splash_window.get())
+    if (splash_window)
 	splash_window->hide();
     
-    if (game_window.get())
+    if (game_window)
 	game_window->hide();
 
     Main::instance().stop_main_loop();
@@ -531,10 +548,9 @@ void Driver::on_quit_requested()
 
 void Driver::on_game_ended()
 {
-  if (game_window.get())
+  if (game_window)
     {
       game_window->hide();
-      //game_window.reset();
     }
   GameClient::deleteInstance();
   PbmGameClient::deleteInstance();
@@ -548,7 +564,9 @@ void Driver::on_game_ended()
 
 void Driver::init_game_window()
 {
-    game_window.reset(new GameWindow);
+  if (game_window)
+    delete game_window;
+    game_window = new GameWindow;
 
     game_window->game_ended.connect(
 	sigc::mem_fun(*this, &Driver::on_game_ended));
@@ -760,6 +778,7 @@ void Driver::stress_test()
   g.map.mountains = 5;
   g.map.cities = 80;
   g.map.ruins = 15;
+  g.map.temples = 1;
   g.map_path = "";
   g.play_with_quests = false;
   g.hidden_map = false;
@@ -866,13 +885,13 @@ void Driver::on_game_scenario_received_for_robots(std::string path)
 
 void Driver::on_show_lobby_requested()
 {
-  if (game_lobby_dialog.get())
+  if (game_lobby_dialog)
     game_lobby_dialog->show();
 }
     
 void Driver::start_network_game_requested(GameScenario *game_scenario, NextTurnNetworked *next_turn)
 {
-  if (game_window.get())
+  if (game_window)
     {
   
       Player *active = Playerlist::getActiveplayer();
@@ -890,7 +909,7 @@ void Driver::start_network_game_requested(GameScenario *game_scenario, NextTurnN
     {
       init_game_window();
       player_replaced.connect
-	(sigc::mem_fun(game_window.get(), &GameWindow::on_player_replaced));
+	(sigc::mem_fun(game_window, &GameWindow::on_player_replaced));
       game_window->show();
 
       game_window->new_network_game (game_scenario, next_turn);

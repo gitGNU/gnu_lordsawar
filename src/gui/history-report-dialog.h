@@ -30,6 +30,7 @@
 #include "history.h"
 #include "player.h"
 class Citylist;
+class City;
 
 class Player;
 #include "decorated.h"
@@ -53,8 +54,8 @@ class HistoryReportDialog: public Decorated
     void hide();
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
-    std::auto_ptr<HistoryMap> historymap;
+    Gtk::Dialog* dialog;
+    HistoryMap* historymap;
 
     Player *d_player;
     Gtk::Scale *turn_scale;

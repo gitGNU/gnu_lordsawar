@@ -1,5 +1,6 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005, 2006 Ulf Lorenz
+// Copyright (C) 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,6 +20,7 @@
 #ifndef AI_ALLOCATION_H
 #define AI_ALLOCATION_H
 
+#include <gtkmm.h>
 #include <string>
 
 #include "MoveResult.h"
@@ -47,6 +49,7 @@ class AI_Allocation
         int move();
 
         static void deleteStack(Stack* s);
+        static void deleteStack(guint32 id);
 
     private:
         /** Assign stacks to defend cities

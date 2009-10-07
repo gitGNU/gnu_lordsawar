@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ class SelectItemDialog: public sigc::trackable
 {
  public:
     SelectItemDialog();
+    ~SelectItemDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -38,7 +39,7 @@ class SelectItemDialog: public sigc::trackable
     const ItemProto *get_selected_item() { return selected_item; }
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     Gtk::Button *select_button;
 
     const ItemProto *selected_item;

@@ -22,6 +22,8 @@
 
 #include "MapRenderer.h"
 #include "GameMap.h"
+#include "player.h"
+#include "FogMap.h"
 
 using namespace std;
 
@@ -64,6 +66,34 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
   return render(x, y, tileStartX, tileStartY, columns, rows, d_surface, gc);
 }
 
+void MapRenderer::render_tile(Vector<int> draw, Vector<int> tile,
+			      Glib::RefPtr<Gdk::Pixmap> surface, 
+			      Glib::RefPtr<Gdk::GC> context)
+{
+  Player *p = Playerlist::getActiveplayer();
+  if (p->getFogMap()->isCompletelyObscuredFogTile(tile) == true)
+    return;
+
+  // get correct tile
+  Maptile *mtile = GameMap::getInstance()->getTile(tile);
+
+  TileStyle *style = mtile->getTileStyle();
+  if (style == NULL)
+    printf ("style for tile %d at col=%d,row=%d is null\n",
+	    mtile->getMaptileType(), tile.x, tile.y);
+  else
+    {
+      if (style->getImage() == false)
+	{
+	  printf ("pic for style %d for tile %d at %d,%d is null\n",
+		  style->getType(),
+		  mtile->getMaptileType(), tile.x, tile.y);
+	}
+    }
+		
+  style->getImage()->blit(surface, draw.x, draw.y);
+}
+
 void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 			 int columns, int rows, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context)
 {
@@ -88,24 +118,8 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 					tilesize, tilesize);
 	    }
 	    else {
-		// get correct tile
-		Maptile *mtile = map->getTile(tileX,tileY);
-
-		TileStyle *style = mtile->getTileStyle();
-		if (style == NULL)
-		  printf ("style for tile %d at col=%d,row=%d is null\n",
-			  mtile->getMaptileType(), tileX, tileY);
-		else
-		  {
-		    if (style->getImage() == false)
-		      {
-		  printf ("pic for style %d for tile %d at %d,%d is null\n",
-			  style->getType(),
-			  mtile->getMaptileType(), tileX, tileY);
-		      }
-		  }
-		style->getImage()->blit(surface, drawX, drawY);
-
+	      render_tile(Vector<int>(drawX,drawY), Vector<int>(tileX,tileY),
+			  surface, context);
 	    }
 	    
             drawX += tilesize;
@@ -114,5 +128,6 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
     }
 
 }
+
 
 // End of file

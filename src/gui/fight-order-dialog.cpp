@@ -40,11 +40,9 @@ FightOrderDialog::FightOrderDialog(Player *theplayer)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/fight-order-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     armies_list = Gtk::ListStore::create(armies_columns);
     xml->get_widget("treeview", armies_treeview);
@@ -62,6 +60,10 @@ FightOrderDialog::FightOrderDialog(Player *theplayer)
     xml->get_widget("reverse_button", reverse_button);
     reverse_button->signal_clicked().connect
       (sigc::mem_fun (*this, &FightOrderDialog::on_reverse_button_clicked));
+}
+FightOrderDialog::~FightOrderDialog()
+{
+  delete dialog;
 }
 
 void FightOrderDialog::set_parent_window(Gtk::Window &parent)

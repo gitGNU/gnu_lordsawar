@@ -26,6 +26,7 @@
 #include <gdkmm.h>
 
 #include "historymap.h"
+#include "city.h"
 #include "GameMap.h"
 #include "GraphicsCache.h"
 

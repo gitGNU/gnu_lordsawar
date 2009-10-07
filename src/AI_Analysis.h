@@ -1,6 +1,7 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005 Ulf Lorenz
 // Copyright (C) 2006 Andrea Paternesi
+// Copyright (C) 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,6 +21,7 @@
 #ifndef AI_ANALYSIS_H
 #define AI_ANALYSIS_H
 
+#include <gtkmm.h>
 #include <string>
 #include <map>
 #include "vector.h"
@@ -61,6 +63,8 @@ class AI_Analysis
           * more or less callback.
           */
         static void deleteStack(Stack* s);
+
+	static void deleteStack(guint32 id);
 
         // guess the strength of the given stack. Note: next to useless outside
         // of computer turn.

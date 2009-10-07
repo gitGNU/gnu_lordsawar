@@ -1,7 +1,26 @@
+2009-10-05  Ben Asselstine  <benasselstine@gmail.com>
+
+	* made stack position lookup faster by adding a map.
+	* made location position lookup faster by adding a map.
+	* made stack id lookup faster by adding a map.
+	* added some stacklist accessors through player.
+	* added some path accessors through stack.
+	* added citylist, roadlist, portlist, etc accessors through gamemap.
+	* now deep copying the stack's path.
+	* changed stacklist to have a deep copy.
+	* changed path to hold a map position, and not a pointer to a position.
+	* removed all uses of auto_ptr.
+	* added a max map width parameter to static vector<int> template.
+	* fixed magnifying glass icon to have a better hotspot.
+	* fixed mouse pointer to update right away after right-click deselect.
+	* fixed grey border problem on bigmap.
+	* heroes now drop bags of stuff when their owning player is vanquished.
+
 2009-09-28  Ben Asselstine  <benasselstine@gmail.com>
 
 	* fixed up fog, ports, roads, and bridge graphics.
 	* added information to the user's manual about mouse pointers.
+	* using Ctrl + left-click now enables the walk button.
 
 2009-09-27  Ben Asselstine  <benasselstine@gmail.com>
 

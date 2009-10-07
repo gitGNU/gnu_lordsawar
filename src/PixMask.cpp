@@ -108,6 +108,25 @@ void PixMask::blit(Glib::RefPtr<Gdk::Pixmap> dest, int dest_x, int dest_y)
   dest->draw_drawable(gc, pixmap, 0, 0, dest_x, dest_y, width, height);
   gc->set_clip_mask(Glib::RefPtr<Gdk::Bitmap>(0));
 }
+     
+void PixMask::blit(Rectangle src, Glib::RefPtr<Gdk::Pixmap> p, Vector<int> dest)
+{
+  if (src.x + src.w > get_width())
+    return;
+  if (src.y + src.h > get_height())
+    return;
+  //here we cleverly set the clip origin
+  gc->set_clip_origin(dest.x - src.x,dest.y - src.y);
+  gc->set_clip_mask(mask);
+  p->draw_drawable(gc, pixmap, src.x, src.y, dest.x, dest.y, src.w, src.h);
+  gc->set_clip_mask(Glib::RefPtr<Gdk::Bitmap>(0));
+}
+
+void PixMask::blit(Vector<int> tile, int ts, Glib::RefPtr<Gdk::Pixmap> pixmap, Vector<int> dest)
+{
+  Vector<int> src = tile * ts;
+  blit (Rectangle(src.x, src.y, ts, ts), pixmap, dest);
+}
 
 void PixMask::scale(PixMask*& p, int xsize, int ysize, Gdk::InterpType interp)
 {

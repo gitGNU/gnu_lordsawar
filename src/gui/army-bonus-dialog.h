@@ -32,6 +32,7 @@ class ArmyBonusDialog: public Decorated
 {
  public:
     ArmyBonusDialog(Player *p);
+    ~ArmyBonusDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -39,7 +40,7 @@ class ArmyBonusDialog: public Decorated
     void hide();
 
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
 
     Gtk::TreeView *armies_treeview;
 

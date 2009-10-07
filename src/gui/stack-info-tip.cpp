@@ -41,11 +41,9 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, const Stack
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/stack-info-window.ui");
 
-    Gtk::Window *w = 0;
-    xml->get_widget("window", w);
-    window.reset(w);
+    xml->get_widget("window", window);
     Decorated decorator;
-    decorator.decorate(window.get(),File::getMiscFile("various/background.png"), 200);
+    decorator.decorate(window,File::getMiscFile("various/background.png"), 200);
 
     xml->get_widget("image_hbox", image_hbox);
 
@@ -93,4 +91,8 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, const Stack
 	
     window->move(p.x, p.y);
     window->show();
+}
+StackInfoTip::~StackInfoTip()
+{
+  delete window;
 }

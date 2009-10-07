@@ -1,7 +1,7 @@
 // Copyright (C) 2001, 2003 Michael Bartl
 // Copyright (C) 2004 Ulf Lorenz
 // Copyright (C) 2005, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -24,9 +24,8 @@
 
 #include <gtkmm.h>
 #include <list>
-#include "ruin.h"
-#include "temple.h"
-#include "city.h"
+#include <map>
+#include "vector.h"
 
 /** A list for object instances
   * 
@@ -35,6 +34,8 @@
   * the city list.
   */
 
+using namespace std;
+  
 template<class T> class LocationList : public std::list<T>
 {
  public:
@@ -44,22 +45,32 @@ template<class T> class LocationList : public std::list<T>
     {
       for (typename LocationList<T>::iterator it = this->begin(); it != this->end(); ++it)
 	delete *it;
+      d_object.clear();
+      d_id.clear();
     };
+
+  void add(T t)
+    {
+      push_back(t);
+      d_id[t->getId()] = t;
+      int size = t->getSize();
+      for (int i = 0; i < size; i++)
+	for (int j = 0; j < size; j++)
+	  {
+	    Vector<int> pos = t->getPos() + Vector<int>(i,j);
+	    d_object[pos] = t;
+	  }
+    }
 
   //! Returns the object at position (x,y).  
   T getObjectAt(int x, int y) 
     {
-      for (typename LocationList<T>::iterator it = this->begin(); it != this->end(); ++it)
-	{
-	  Vector<int> p = (*it)->getPos();
-	  int size = (*it)->getSize() - 1;
-
-	  if (p.x >= (x - size) && p.x <= x && p.y >= (y - size) && p.y <= y)
-	    {
-	      return (*it);
-	    }
-	}
-      return 0;
+      Vector<int> pos = Vector<int>(x,y);
+  
+      if (d_object.find(pos) == d_object.end())
+	return NULL;
+      else
+	return (*d_object.find(pos)).second;
     }
 
   //! Returns the object at position pos.  
@@ -195,11 +206,19 @@ template<class T> class LocationList : public std::list<T>
 
   T getById(guint32 id)
   {
-    for (typename LocationList<T>::iterator i = this->begin(); i != this->end(); ++i)
-      if ((*i)->getId() == id)
-        return (*i);
+      if (d_id.find(id) == d_id.end())
+	return NULL;
+      else
+	return (*d_id.find(id)).second;
     return 0;
   }
+	
+ protected:
+  typedef std::map<Vector<int>, T> PositionMap;
+  typedef std::map<guint32, T> IdMap;
+  PositionMap d_object;
+  IdMap d_id;
+
 };
 
 #endif // LOCATIONLIST_H

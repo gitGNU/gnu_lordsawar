@@ -46,11 +46,9 @@ DestinationDialog::DestinationDialog(City *c, bool *see_all)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/destination-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     xml->get_widget("map_image", map_image);
     xml->get_widget("see_all_togglebutton", see_all_toggle);
@@ -80,8 +78,7 @@ DestinationDialog::DestinationDialog(City *c, bool *see_all)
       sigc::bind(sigc::mem_fun(this, &DestinationDialog::on_change_toggled),
                                change_toggle));
 
-    vectormap.reset(new VectorMap(c, VectorMap::SHOW_ORIGIN_CITY_VECTORING,
-		    false));
+    vectormap = new VectorMap(c, VectorMap::SHOW_ORIGIN_CITY_VECTORING, false);
     vectormap->map_changed.connect(
 	sigc::mem_fun(this, &DestinationDialog::on_map_changed));
 
@@ -91,6 +88,12 @@ DestinationDialog::DestinationDialog(City *c, bool *see_all)
     map_eventbox->signal_button_press_event().connect(
 	sigc::mem_fun(*this, &DestinationDialog::on_map_mouse_button_event));
   fill_in_vectoring_info();
+}
+
+DestinationDialog::~DestinationDialog()
+{
+  delete dialog;
+  delete vectormap;
 }
 
 void DestinationDialog::set_parent_window(Gtk::Window &parent)

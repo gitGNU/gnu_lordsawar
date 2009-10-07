@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ class PreferencesDialog: public Decorated
 {
  public:
     PreferencesDialog(bool readonly);
+    ~PreferencesDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -42,7 +43,7 @@ class PreferencesDialog: public Decorated
     void hide();
 
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     Gtk::CheckButton *show_turn_popup_checkbutton;
     Gtk::CheckButton *play_music_checkbutton;
     Gtk::Scale *music_volume_scale;

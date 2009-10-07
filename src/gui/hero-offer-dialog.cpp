@@ -42,16 +42,14 @@ HeroOfferDialog::HeroOfferDialog(Player *player, HeroProto *h, City *c, int gold
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/hero-offer-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
 
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     xml->get_widget("map_image", map_image);
 
-    heromap.reset(new HeroMap(city));
+    heromap = new HeroMap(city);
     heromap->map_changed.connect(
 	sigc::mem_fun(this, &HeroOfferDialog::on_map_changed));
 
@@ -83,6 +81,11 @@ HeroOfferDialog::HeroOfferDialog(Player *player, HeroProto *h, City *c, int gold
     label->set_text(s);
 }
 
+HeroOfferDialog::~HeroOfferDialog()
+{
+  delete heromap;
+  delete dialog;
+}
 void HeroOfferDialog::on_male_toggled()
 {
     if (male_radiobutton->get_active())

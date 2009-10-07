@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
 // Copyright (C) 2004 John Farrell
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -21,14 +21,14 @@
 //  02110-1301, USA.
 
 #include <stdlib.h>
+#include <assert.h>
 #include <sstream>
 #include <queue>
 
+#include "PathCalculator.h"
 #include "path.h"
 #include "army.h"
 #include "GameMap.h"
-#include "Location.h"
-#include "citylist.h"
 #include "city.h"
 #include "stacklist.h"
 #include "xmlhelper.h"
@@ -38,12 +38,26 @@ std::string Path::d_tag = "path";
 
 using namespace std;
 
+  struct node
+    {
+      int moves;
+      int turns;
+      int moves_left;
+    };
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
 Path::Path()
 {
+  clear();
   d_moves_exhausted_at_point = 0;
+}
+
+Path::Path(const Path& p)
+ : d_bonus(p.d_bonus), d_moves_exhausted_at_point(p.d_moves_exhausted_at_point)
+{
+  for (const_iterator it = p.begin(); it != p.end(); it++)
+    push_back(Vector<int>((*it).x, (*it).y));
 }
 
 Path::Path(XML_Helper* helper)
@@ -62,17 +76,17 @@ Path::Path(XML_Helper* helper)
 
     for (; i > 0; i--)
     {
-        Vector<int> *p = new Vector<int>;
+        Vector<int> p = Vector<int>(-1,-1);
 
-        sx >> p->x;
-        sy >> p->y;
+        sx >> p.x;
+        sy >> p.y;
         push_back(p);
     }
 }
 
 Path::~Path()
 {
-    flClear();
+    clear();
 }
 
 bool Path::save(XML_Helper* helper) const
@@ -82,8 +96,8 @@ bool Path::save(XML_Helper* helper) const
     std::stringstream sx, sy;
     for (const_iterator it = begin(); it != end(); it++)
     {
-        sx <<(*it)->x <<" ";
-        sy <<(*it)->y <<" ";
+        sx <<(*it).x <<" ";
+        sy <<(*it).y <<" ";
     }
 
     retval &= helper->openTag(Path::d_tag);
@@ -97,64 +111,26 @@ bool Path::save(XML_Helper* helper) const
     return retval;
 }
 
-Path::iterator Path::flErase(Path::iterator it)
-{
-    delete (*it);
-    return erase (it);
-}
-
-void Path::flClear()
-{
-    for (iterator it = begin(); it != end(); it++)
-    {
-        delete (*it);
-    }
-    return clear();
-}
-
-bool Path::canMoveThere(const Stack* s, Vector<int> dest)
-{
-  d_bonus=s->calculateMoveBonus();
-  Vector<int> pos = s->getPos();
-  bool flying = s->isFlying();
-  if (flying && isBlockedDir(pos.x, pos.y, dest.x, dest.y) &&
-      GameMap::getInstance()->getTile(dest.x, dest.y)->getMaptileType()
-      == Tile::VOID)
-    return false;
-  if (isBlocked(s, pos.x, pos.y, dest.x, dest.y))
-    return false;
-  if (isBlockedDir(pos.x, pos.y, dest.x, dest.y) && !flying)
-    return false;
-  return true;
-}
-
 bool Path::checkPath(Stack* s)
 {
     if (empty())
         return true;
-    
-    Vector<int> dest = **(rbegin());
-    debug("check_path() " << dest.x << "," << dest.y)
-    bool blocked = false;
-    d_bonus=s->calculateMoveBonus();
+    bool valid = true;
+    if (size() > 1)
+      {
+	iterator secondlast = end();
+	secondlast--;
+	for (iterator it = begin(); it != secondlast; it++)
+	  {
+	    if (PathCalculator::isBlocked(s, *it) == false)
+	      {
+		valid = false;
+		break;
+	      }
+	  }
+      }
 
-    for (iterator it = begin(); it != end(); it++)
-    {
-        if (isBlocked(s, (*it)->x, (*it)->y, dest.x, dest.y))
-        {
-            blocked = true;
-            break;
-        }
-    }
-
-    if (blocked)
-    {
-        debug("recalculating blocked path dest = " << dest.x << "," << dest.y)
-        flClear();
-        blocked = calculate(s, dest);
-    }
-
-    return !blocked;
+    return valid;
 }
 
 //this is used to update the moves_exhausted_at_point variable
@@ -167,8 +143,8 @@ void Path::recalculate (Stack* s)
   reverse_iterator it = rbegin();
   for (; it != rend(); it++)
     {
-      Vector<int> dest = **it;
-      City *c = Citylist::getInstance()->getObjectAt(dest.x, dest.y);
+      Vector<int> dest = *it;
+      City *c = GameMap::getCity(dest);
       if (c && c->getOwner() != s->getOwner())
 	continue;
       else
@@ -178,24 +154,31 @@ void Path::recalculate (Stack* s)
     {
       //well, it looks like all of our points were in enemy cities
       setMovesExhaustedAtPoint(0);
-      flClear();
+      clear();
     }
   else
     {
-      Vector<int> dest = **it;
+      Vector<int> dest = *it;
       calculate(s, dest);
     }
   return;
 }
 
-guint32 Path::calculateToCity (Stack *s, Location *c, bool zigzag)
+guint32 Path::calculateToCity (Stack *s, City *c, bool zigzag)
 {
   int min_dist = -1;
   Vector<int> shortest = c->getPos();
+  bool checkJoin = s->getOwner() == c->getOwner();
 
   for (unsigned int i = 0; i < c->getSize(); i++)
     for (unsigned int j = 0; j < c->getSize(); j++)
       {
+	if (checkJoin == true)
+	  {
+	    Stack *other_stack = GameMap::getStack(c->getPos() + Vector<int>(i,j));
+	    if (other_stack && s->canJoin(other_stack) == false)
+	      continue;
+	  }
 	int distance = dist (s->getPos(), c->getPos() + Vector<int>(i, j));
 	if (distance > 0)
 	  {
@@ -214,6 +197,12 @@ guint32 Path::calculateToCity (Stack *s, Location *c, bool zigzag)
       for (unsigned int i = 0; i < c->getSize(); i++)
 	for (unsigned int j = 0; j < c->getSize(); j++)
 	  {
+	    if (checkJoin == true)
+	      {
+		Stack *other_stack = GameMap::getStack(c->getPos() + Vector<int>(i,j));
+		if (other_stack && s->canJoin(other_stack) == false)
+		  continue;
+	      }
 	    int dist = calculate(s, c->getPos() + Vector<int>(i, j), zigzag);
 	    if (dist > 0)
 	      {
@@ -229,47 +218,13 @@ guint32 Path::calculateToCity (Stack *s, Location *c, bool zigzag)
   return mp;
 }
 
-bool Path::load_or_unload(Stack *s, Vector<int> src, Vector<int> dest, bool &on_ship)
-{
-  //do we load or unload if we step from SRC to DEST?
-  Vector<int> old = s->getPos();
-  s->setPos(src);
-  bool retval = s->isMovingToOrFromAShip(dest, on_ship);
-  s->setPos(old);
-  return retval;
-}
-
 void Path::calculate (Stack* s, Vector<int> dest, guint32 &moves, guint32 &turns, bool zigzag)
 {
-  int mp;
-  Vector<int> start = s->getPos();
+  //int mp;
+  //Vector<int> start = s->getPos();
   debug("path from "<<start.x<<","<<start.y<<" to "<<dest.x<<","<<dest.y)
 
-    flClear();
-  //can we get there with one move?
-  if (dist(s->getPos(), dest) == 1 && canMoveThere(s, dest) == true)
-    {
-      Vector<int> *p = new Vector<int>(dest);
-      push_back(p);
-      if (s->canMove() == true)
-	setMovesExhaustedAtPoint(1);
-      else
-	setMovesExhaustedAtPoint(0);
-      moves = 1;
-      turns = 0;
-      return;
-    }
-  int width = GameMap::getWidth();
-  int height = GameMap::getHeight();
-  d_bonus = s->calculateMoveBonus();
-  int land_reset_moves = s->getMaxGroupLandMoves();
-  int boat_reset_moves = s->getMaxGroupBoatMoves();
-
-  //if (isBlocked(s, dest.x, dest.y, dest.x, dest.y))
-  //{
-  //s->setMovesExhaustedAtPoint(0);
-  //return 0;
-  //}
+  clear();
 
   // Some notes concerning the path finding algorithm. The algorithm
   // uses two different lists. There is a nodes array, which contains how
@@ -290,178 +245,13 @@ void Path::calculate (Stack* s, Vector<int> dest, guint32 &moves, guint32 &turns
   // Finally, all that is left is finding the minimum distance way from start
   // point to destination.
 
-  // the conversion between x/y coordinates and index is (size is map size)
-  // index = y*width + x    <=>    x = index % width;   y = index / width
-  int length = width*height;
-  struct node
+  PathCalculator pc = PathCalculator(s, zigzag);
+
+  Path *calculated_path = pc.calculate(dest, moves, turns, zigzag);
+  if (calculated_path->size())
     {
-      int moves;
-      int turns;
-      int moves_left;
-    };
-  struct node nodes[length];
-  std::queue<Vector<int> > process;
-  bool flying = s->isFlying();
-  bool on_ship = s->hasShip();
-
-  // initial filling of the nodes vector
-  for (int i = 0; i < width*height; i++)
-    {
-      // -1 means don't know yet
-      // -2 means can't go there at all
-      // 0 or more is number of movement points needed to get there
-      nodes[i].moves = -1;
-      nodes[i].moves_left = 0;
-      nodes[i].turns = 0;
-      if (isBlocked(s, i % width, i/width, dest.x, dest.y))
-	nodes[i].moves = -2;
-    }
-  nodes[start.y*width+start.x].moves = 0;
-  nodes[start.y*width+start.x].moves_left = s->getGroupMoves();
-  nodes[start.y*width+start.x].turns = 0;
-
-  // now the main loop
-  process.push(Vector<int>(start.x, start.y));
-  while (!process.empty())
-    {
-      Vector<int> pos = process.front();
-      process.pop();                          // remove the first item
-
-      int dxy = nodes[pos.y*width+pos.x].moves;   // always >= 0
-
-      for (int sx = pos.x-1; sx <= pos.x+1; sx++)
-	{
-	  if (sx < 0 || sx >= width)
-	    continue;
-
-	  for (int sy = pos.y-1; sy <= pos.y+1; sy++)
-	    {
-	      if (sy < 0 || sy >= height)
-		continue;
-
-	      if (sx == pos.x && sy == pos.y)
-		continue;
-
-	      //am i blocked from entering sx,sy from pos?
-	      if (!flying && isBlockedDir(pos.x, pos.y, sx, sy))
-		continue;
-	      //flyers can't go through the void
-	      if (flying && isBlockedDir(pos.x, pos.y, sx, sy) &&
-		  GameMap::getInstance()->getTile(sx, sy)->getMaptileType()
-		  == Tile::VOID)
-		continue;
-
-	      int dsxy = nodes[sy*width+sx].moves;
-	      if (dsxy < -1)
-		continue; // can't move there anyway
-
-	      if (zigzag == false)
-		{
-		  Vector<int> diff = pos - Vector<int>(sx, sy);
-		  if (diff.x && diff.y)
-		    continue;
-		}
-	      int newDsxy = dxy;
-	      mp = pointsToMoveTo(s, pos.x, pos.y, sx, sy);
-	      if (mp < 0)
-		mp = 0;
-	      if (!flying && load_or_unload(s, pos, Vector<int>(sx, sy), on_ship) == true)
-		mp = nodes[pos.y*width+pos.x].moves_left;
-	      newDsxy += mp;
-
-
-	      if (dsxy == -1 || dsxy > newDsxy)
-		{
-		  nodes[sy*width+sx].moves = newDsxy;
-		  nodes[sy*width+sx].moves_left = 
-		    nodes[pos.y*width+pos.x].moves_left - mp;
-		  nodes[sy*width+sx].turns = nodes[pos.y*width+pos.x].turns ;
-		  while (nodes[sy*width+sx].moves_left <= 0)
-		    {
-		      if (on_ship)
-			nodes[sy*width+sx].moves_left += boat_reset_moves;
-		      else
-			nodes[sy*width+sx].moves_left += land_reset_moves;
-		      nodes[sy*width+sx].turns++;
-		    }
-
-		  // append the item to the queue
-		  process.push(Vector<int>(sx, sy));
-		}
-	    }
-	}
-    }
-
-  // The nodes array is now completely populated.
-  // What we have to do now is find the shortest path to the destination.
-  // We do that by starting at the destination and moving at each step to
-  // the neighbour closest to the start.
-
-  int dist = nodes[dest.y * width + dest.x].moves;
-  if (dist < 0)
-    {
-      setMovesExhaustedAtPoint(0);
-      moves = 0;
-      turns = 0;
-      return;
-    }
-
-  // choose the order in which we process directions so as to favour
-  // diagonals over straight lines
-  std::list<Vector<int> > diffs;
-  if (zigzag)
-    {
-      diffs.push_back(Vector<int>(-1, -1));
-      diffs.push_back(Vector<int>(-1, 1));
-      diffs.push_back(Vector<int>(1, -1));
-      diffs.push_back(Vector<int>(1, 1));
-      diffs.push_back(Vector<int>(1, 0));
-      diffs.push_back(Vector<int>(-1, 0));
-      diffs.push_back(Vector<int>(0, -1));
-      diffs.push_back(Vector<int>(0, 1));
-    }
-  else
-    {
-      diffs.push_back(Vector<int>(1, 0));
-      diffs.push_back(Vector<int>(-1, 0));
-      diffs.push_back(Vector<int>(0, -1));
-      diffs.push_back(Vector<int>(0, 1));
-    }
-
-  int x = dest.x;
-  int y = dest.y;
-
-  while (dist > 0)
-    {
-      Vector<int> *p = new Vector<int>(x,y);
-      push_front(p);
-
-      int min = dist;
-      int rx = x;
-      int ry = y;
-      for (std::list<Vector<int> >::iterator it = diffs.begin();
-	   it != diffs.end(); it++)
-	{
-	  int newx = x + (*it).x;//diffs[i][0];
-	  int newy = y + (*it).y;//diffs[i][1];
-	  if (newx < 0 || newx == width || newy < 0 || newy == height)
-	    continue;
-	  //isBlockedDir is needed to catch crossings from land to sea when not thru a port/city
-	  if (!flying && isBlockedDir(x, y, newx, newy))
-	    continue;
-
-	  dist = nodes[newy*width+newx].moves;
-	  if (dist >= 0 && dist < min)
-	    {
-	      rx = newx;
-	      ry = newy;
-	      min = dist;
-	    }
-	}
-      // found the best spot to go to from
-      x = rx;
-      y = ry;
-      dist = min;
+      for(Path::iterator it = calculated_path->begin(); it!= calculated_path->end(); it++)
+	push_back(*it);
     }
 
   //calculate when the waypoints show no more movement possible
@@ -469,7 +259,7 @@ void Path::calculate (Stack* s, Vector<int> dest, guint32 &moves, guint32 &turns
   guint32 moves_left = s->getGroupMoves();
   for (iterator it = begin(); it != end(); it++)
     {
-      guint32 moves = s->calculateTileMovementCost(**it);
+      guint32 moves = s->calculateTileMovementCost(*it);
       if (moves_left >= moves)
 	moves_left -= moves;
       else
@@ -477,10 +267,8 @@ void Path::calculate (Stack* s, Vector<int> dest, guint32 &moves, guint32 &turns
       pathcount++;
     }
   setMovesExhaustedAtPoint(pathcount);
+  delete calculated_path;
 
-  debug("...done");
-  moves = nodes[dest.y * width + dest.x].moves;
-  turns = nodes[dest.y * width + dest.x].turns;
   return;
 }
 
@@ -501,104 +289,10 @@ guint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
 
 void Path::eraseFirstPoint()
 {
-  flErase(begin());
+  erase(begin());
 
   if (getMovesExhaustedAtPoint() > 0)
     setMovesExhaustedAtPoint(getMovesExhaustedAtPoint()-1);
-}
-
-
-
-//am i blocked from entering destx,desty from x,y when i'm not flying?
-bool Path::isBlockedDir(int x, int y, int destx, int desty) const
-{
-  int diffx = destx - x;
-  int diffy = desty - y;
-  if (diffx >= -1 && diffx <= 1 && diffy >= -1 && diffy <= 1) 
-    {
-      int idx = 0;
-      if (diffx == -1 && diffy == -1)
-	idx = 0;
-      else if (diffx == -1 && diffy == 0)
-	idx = 1;
-      else if (diffx == -1 && diffy == 1)
-	idx = 2;
-      else if (diffx == 0 && diffy == 1)
-	idx = 3;
-      else if (diffx == 0 && diffy == -1)
-	idx = 4;
-      else if (diffx == 1 && diffy == -1)
-	idx = 5;
-      else if (diffx == 1 && diffy == 0)
-	idx = 6;
-      else if (diffx == 1 && diffy == 1)
-	idx = 7;
-      else
-	return false;
-      return GameMap::getInstance()->getTile(x, y)->d_blocked[idx];
-    }
-
-  return false;
-}
-
-bool Path::isBlocked(const Stack* s, int x, int y, int destx, int desty) const
-{
-  const Maptile* tile = GameMap::getInstance()->getTile(x,y);
-
-  // Return true on every condition which may prevent the stack from
-  // entering the tile, which are...
-
-  // TODO: you can extract quite some amount of time here with a clever
-  // search algorithm for stacklist
-  Stack* target = Stacklist::getObjectAt(x,y);
-  if (target)
-    {
-      // ...enemy stacks which stand in the way...
-      if ((s->getOwner() != target->getOwner())
-	  && ((x != destx) || (y != desty)))
-	return true;
-
-      //the computer walks around any too-big stacks of it's own
-      //unless it's the final destination.
-      if (s->getOwner() == target->getOwner()
-	  && s->canJoin(target) == false && 
-	  s->getOwner()->getType() != Player::HUMAN) 
-	{
-	  if (Vector<int>(destx, desty) != Vector<int>(x,y))
-	    return true;
-	}
-
-    }
-
-  //...enemy cities
-  // saves some computation time here
-  if (tile->getBuilding() == Maptile::CITY)
-    {
-      City* c = Citylist::getInstance()->getObjectAt(x,y);
-      if (c && (c->getOwner() != s->getOwner())
-	  && ((x != destx) || (y != desty)))
-	return true;
-    }
-
-  //no obstacles??? well, then...
-  return false;
-}
-
-int Path::pointsToMoveTo(const Stack *s, int x, int y, int destx, int desty) const
-{
-  guint32 moves;
-  const Maptile* tile = GameMap::getInstance()->getTile(destx,desty);
-
-  if (x == destx && y == desty) //probably shouldn't happen
-    return 0;
-
-  moves = tile->getMoves();
-
-  // does everything in the stack have a bonus to move onto this square?
-  if (tile->getMaptileType() & d_bonus && moves != 1)
-    return 2;
-
-  return moves;
 }
 
 // End of file

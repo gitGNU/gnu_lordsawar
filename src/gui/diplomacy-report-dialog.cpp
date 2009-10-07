@@ -41,11 +41,9 @@ DiplomacyReportDialog::DiplomacyReportDialog(Player *player)
     = Gtk::Builder::create_from_file(get_glade_path() + 
 				"/diplomacy-report-dialog.ui");
 
-  Gtk::Dialog *d = 0;
-  xml->get_widget("dialog", d);
-  dialog.reset(d);
-  decorate(dialog.get());
-  window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+  xml->get_widget("dialog", dialog);
+  decorate(dialog);
+  window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
   xml->get_widget("diplomacy_table", d_table);
 
@@ -99,6 +97,10 @@ DiplomacyReportDialog::DiplomacyReportDialog(Player *player)
     }
 }
 
+DiplomacyReportDialog::~DiplomacyReportDialog()
+{
+  delete dialog;
+}
 void DiplomacyReportDialog::set_parent_window(Gtk::Window &parent)
 {
   dialog->set_transient_for(parent);

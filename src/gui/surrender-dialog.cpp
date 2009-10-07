@@ -35,11 +35,9 @@ SurrenderDialog::SurrenderDialog(int numEnemies)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/surrender-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     Gtk::Label *label;
     xml->get_widget("label", label);
@@ -56,6 +54,10 @@ SurrenderDialog::SurrenderDialog(int numEnemies)
       = File::getMiscFile("various/parley_offered.png");
 }
 
+SurrenderDialog::~SurrenderDialog()
+{
+  delete dialog;
+}
 
 void SurrenderDialog::set_parent_window(Gtk::Window &parent)
 {

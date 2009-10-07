@@ -35,9 +35,7 @@ ArmySetInfoDialog::ArmySetInfoDialog(Armyset *armyset)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/armyset-info-dialog.gtk");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
 
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(armyset->getName());
@@ -46,6 +44,10 @@ ArmySetInfoDialog::ArmySetInfoDialog(Armyset *armyset)
     id_spinbutton->set_value(armyset->getId());
 }
 
+ArmySetInfoDialog::~ArmySetInfoDialog()
+{
+  delete dialog;
+}
 void ArmySetInfoDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);

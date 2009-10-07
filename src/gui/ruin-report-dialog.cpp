@@ -40,11 +40,9 @@ RuinReportDialog::RuinReportDialog(Vector<int> pos)
     = Gtk::Builder::create_from_file(get_glade_path()
 				  + "/ruin-report-dialog.ui");
 
-  Gtk::Dialog *d = 0;
-  xml->get_widget("dialog", d);
-  dialog.reset(d);
-  decorate(dialog.get());
-  window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+  xml->get_widget("dialog", dialog);
+  decorate(dialog);
+  window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
   xml->get_widget("map_image", map_image);
 
@@ -64,7 +62,7 @@ RuinReportDialog::RuinReportDialog(Vector<int> pos)
   else
     l = ruin;
 
-  ruinmap.reset(new RuinMap(l));
+  ruinmap = new RuinMap(l);
   ruinmap->map_changed.connect(
     sigc::mem_fun(this, &RuinReportDialog::on_map_changed));
 
@@ -84,6 +82,11 @@ RuinReportDialog::RuinReportDialog(Vector<int> pos)
   fill_in_ruin_info();
 }
 
+RuinReportDialog::~RuinReportDialog()
+{
+  delete dialog;
+  delete ruinmap;
+}
 void RuinReportDialog::set_parent_window(Gtk::Window &parent)
 {
   dialog->set_transient_for(parent);
@@ -127,8 +130,8 @@ void RuinReportDialog::fill_in_ruin_info()
   NamedLocation *l = ruinmap->getNamedLocation();
   name_label->set_text(l->getName());
   description_label->set_text(l->getDescription());
-  Ruin *ruin = Ruinlist::getInstance()->getObjectAt(l->getPos());
-  Temple *temple = Templelist::getInstance()->getObjectAt(l->getPos());
+  Ruin *ruin = GameMap::getRuin(l->getPos());
+  Temple *temple = GameMap::getTemple(l->getPos());
   if (ruin)
     {
       if (ruin->getType() == Ruin::RUIN)

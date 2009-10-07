@@ -35,6 +35,7 @@ class RuinRewardedDialog: public Decorated
 {
  public:
     RuinRewardedDialog(Reward_Ruin *reward);
+    ~RuinRewardedDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -42,8 +43,8 @@ class RuinRewardedDialog: public Decorated
     void run();
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
-    std::auto_ptr<RuinMap> ruinmap;
+    Gtk::Dialog* dialog;
+    RuinMap* ruinmap;
 
     Gtk::Image *map_image;
     Gtk::Label *label;

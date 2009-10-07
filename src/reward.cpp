@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include "armysetlist.h"
 #include "playerlist.h"
 #include "ruinlist.h"
+#include "ruin.h"
 #include "rewardlist.h"
 #include "Itemlist.h"
 #include "Item.h"

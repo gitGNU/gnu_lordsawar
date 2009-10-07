@@ -27,7 +27,7 @@
 std::string Temple::d_tag = "temple";
 
 Temple::Temple(Vector<int> pos, std::string name, int type)
-:NamedLocation(pos, TEMPLE_TILE_WIDTH, name,
+:NamedLocation(pos, Temple::getWidth(), name,
 	       name + _(" can bless your armies or give you quests.")), 
     d_type(type)
 {
@@ -41,7 +41,7 @@ Temple::Temple(Vector<int> pos, std::string name, int type)
 }
 
 Temple::Temple(XML_Helper* helper)
-    :NamedLocation(helper, TEMPLE_TILE_WIDTH)
+    :NamedLocation(helper, Temple::getWidth())
 {
     //mark the location on the game map as occupied by a temple
     helper->getData(d_type, "type");

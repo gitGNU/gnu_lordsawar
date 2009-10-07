@@ -43,11 +43,9 @@ NewRandomMapDialog::NewRandomMapDialog()
 	= Gtk::Builder::create_from_file(get_glade_path() + 
 					 "/new-random-map-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    d->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
-    decorate(dialog.get());
+    xml->get_widget("dialog", dialog);
+    dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+    decorate(dialog);
 
     xml->get_widget("map_size_combobox", map_size_combobox);
     xml->get_widget("random_map_container", random_map_container);
@@ -60,7 +58,6 @@ NewRandomMapDialog::NewRandomMapDialog()
     xml->get_widget("cities_scale", cities_scale);
     xml->get_widget("ruins_scale", ruins_scale);
     xml->get_widget("temples_scale", temples_scale);
-    xml->get_widget("signposts_scale", signposts_scale);
     xml->get_widget("accept_button", accept_button);
     xml->get_widget("grass_random_togglebutton", grass_random_togglebutton);
     grass_random_togglebutton->signal_toggled().connect
@@ -163,11 +160,6 @@ NewRandomMapDialog::NewRandomMapDialog()
     ruins_label->set_sensitive(false);
     ruins_scale->set_sensitive(false);
 
-    Gtk::Label *signposts_label;
-    xml->get_widget("signposts_label", signposts_label);
-    signposts_label->set_sensitive(false);
-    signposts_scale->set_sensitive(false);
-
     xml->get_widget("cities_can_produce_allies_checkbutton", 
 		    cities_can_produce_allies_checkbutton);
     grass_scale->set_value(78);
@@ -180,6 +172,7 @@ NewRandomMapDialog::NewRandomMapDialog()
 
 NewRandomMapDialog::~NewRandomMapDialog()
 {
+  delete dialog;
 }
 
 void NewRandomMapDialog::set_parent_window(Gtk::Window &parent)
@@ -235,7 +228,7 @@ int NewRandomMapDialog::run()
       map.cities = int(cities_scale->get_value());
       map.ruins = int(ruins_scale->get_value());
       map.temples = int(temples_scale->get_value());
-      map.signposts = int(signposts_scale->get_value());
+      map.signposts = 0; //auto-set in driver
     }
   return response;
 }

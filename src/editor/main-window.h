@@ -48,10 +48,15 @@ class MainWindow: public sigc::trackable
 
     void init();
     void show_initial_map();
-    Gtk::Window &get_window() { return *window.get(); }
+    Gtk::Window &get_window() { return *window; }
 
  private:
-    std::auto_ptr<Gtk::Window> window;
+    Gtk::Window* window;
+    EditorBigMap* bigmap;
+    SmallMap* smallmap;
+    GameScenario* game_scenario;
+    CreateScenarioRandomize* d_create_scenario_names;
+
     Gtk::DrawingArea *bigmap_drawingarea;
     Gtk::EventBox *bigmap_eventbox;
     Gtk::CheckMenuItem *fullscreen_menuitem;
@@ -88,11 +93,7 @@ class MainWindow: public sigc::trackable
     Gtk::RadioButton *pointer_radiobutton;
     Gtk::Tooltips tooltips;
 
-    std::auto_ptr<EditorBigMap> bigmap;
-    std::auto_ptr<SmallMap> smallmap;
     
-    std::auto_ptr<GameScenario> game_scenario;
-    std::auto_ptr<CreateScenarioRandomize> d_create_scenario_names;
     GdkEventButton *button_event;
 
     bool on_delete_event(GdkEventAny *e);

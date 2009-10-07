@@ -38,9 +38,7 @@ TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Tileset *tileset)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/tileset-selector-editor-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
     d_tileset = tileset;
 
     Gtk::Box *box;
@@ -60,6 +58,10 @@ TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Tileset *tileset)
       (sigc::mem_fun(*this, &TilesetSelectorEditorDialog::on_small_toggled));
 
     on_large_toggled();
+}
+TilesetSelectorEditorDialog::~TilesetSelectorEditorDialog()
+{
+  delete dialog;
 }
 
 void TilesetSelectorEditorDialog::set_parent_window(Gtk::Window &parent)

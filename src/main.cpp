@@ -1,7 +1,7 @@
 // Copyright (C) 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 // Copyright (C) 2005, 2006 Josef Spillner
 //
@@ -39,11 +39,13 @@
 using namespace std;
 
 
+int max_vector_width;
 int main(int argc, char* argv[])
 {
   srand(time(NULL));         // set the random seed
 
   initialize_configuration();
+  Vector<int>::setMaximumWidth(1000);
   RecentlyPlayedGameList::getInstance()->loadFromFile(File::getSavePath() + "/recently-played.xml");
 
   #if ENABLE_NLS

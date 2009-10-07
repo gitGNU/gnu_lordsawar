@@ -121,7 +121,13 @@ class Configuration : public sigc::trackable
 	static std::string neutralCitiesToString(const GameParameters::NeutralCities neutrals);
 	static GameParameters::RazingCities razingCitiesFromString(const std::string str);
 	static std::string razingCitiesToString(const GameParameters::RazingCities razing);
-	//autos
+        enum SavingPolicy {
+	  NO_SAVING = 0,
+	  WRITE_UNNUMBERED_AUTOSAVE_FILE = 1,
+	  WRITE_NUMBERED_AUTOSAVE_FILE = 2,
+	};
+	static Configuration::SavingPolicy savingPolicyFromString(const std::string str);
+	static std::string savingPolicyToString(const Configuration::SavingPolicy policy);
     private:
         /** \brief The callback for the XML_Helper
           * 

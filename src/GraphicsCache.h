@@ -28,6 +28,7 @@
 #include "defs.h"
 #include "rgb_shift.h"
 #include "PixMask.h"
+#include "Tile.h"
 
 struct ArmyCacheItem;
 struct ShipCacheItem;
@@ -47,6 +48,7 @@ struct ProdShieldCacheItem;
 struct MoveBonusCacheItem;
 struct FogCacheItem;
 struct PlantedStandardCacheItem;
+struct TileCacheItem;
 class City;
 
 /** Soliton class for caching army and map images
@@ -125,6 +127,8 @@ class GraphicsCache
         PixMask* getArmyPic(guint32 armyset, guint32 army, const Player* p,
                                 const bool* medals);
 	PixMask* getArmyPic(Army *a);
+
+	PixMask* getTilePic(Tile::Type terrain_type, int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, guint32 standard_player_id, guint32 stack_size, guint32 stack_player_id, guint32 army_type_id);
 
         /** Function for getting the shield picture from the cache
           * 
@@ -355,6 +359,9 @@ class GraphicsCache
         ArmyCacheItem* addArmyPic(guint32 armyset, guint32 army, const Player* p,
                                   const bool* medalsbonus);
 
+	//! Creates a new drawn tile with the given parameters.
+	TileCacheItem *addTilePic(Tile::Type terrain_type, int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, guint32 standard_player_id, guint32 stack_size, guint32 stack_player_id, guint32 army_type_id);
+
         //! Creates a new shield picture with the given parameters.
         ShieldCacheItem* addShieldPic(std::string shieldset, guint32 type, guint32 colour);
 
@@ -389,6 +396,9 @@ class GraphicsCache
         
         //! Erases the oldest (least recently requested) army cache item.
         void eraseLastArmyItem();
+
+        //! Erases the oldest (least recently requested) army cache item.
+        void eraseLastTileItem();
 
         //! Erases the oldest (least recently requested) temple cache item.
         void eraseLastTempleItem();
@@ -490,6 +500,7 @@ class GraphicsCache
 
         guint32 d_cachesize;
         std::list<ArmyCacheItem*> d_armylist;
+        std::list<TileCacheItem*> d_tilelist;
         std::list<CityCacheItem*> d_citylist;
         std::list<TowerCacheItem*> d_towerlist;
         std::list<FlagCacheItem*> d_flaglist;

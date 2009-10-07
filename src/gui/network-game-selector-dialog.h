@@ -30,6 +30,7 @@ class NetworkGameSelectorDialog: public Decorated
 {
  public:
     NetworkGameSelectorDialog();
+    ~NetworkGameSelectorDialog();
 
     sigc::signal<void, std::string /*ip*/, unsigned short /*port*/> game_selected;
 
@@ -39,7 +40,7 @@ class NetworkGameSelectorDialog: public Decorated
     bool run();
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     Gtk::Entry *hostname_entry;
     Gtk::SpinButton *port_spinbutton;
     Gtk::Button *connect_button;

@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,8 +23,8 @@
 #include "QuestsManager.h"
 #include "playerlist.h"
 #include "stacklist.h"
-#include "citylist.h"
 #include "armysetlist.h"
+#include "GameMap.h"
 
 using namespace std;
 
@@ -36,7 +36,6 @@ int getVictimArmytype(Player *p, std::list<Vector<int> >&targets)
   Stacklist::const_iterator sit ;
   Stack::iterator it ;
   Stacklist *sl;
-  Citylist *cl = Citylist::getInstance();
   const Playerlist* pl = Playerlist::getInstance();
   for (Playerlist::const_iterator pit = pl->begin(); pit != pl->end(); pit++)
     {
@@ -46,7 +45,7 @@ int getVictimArmytype(Player *p, std::list<Vector<int> >&targets)
       for (sit = sl->begin(); sit != sl->end(); sit++)
         {
           //is this stack not in a city?  no?  it's a target.
-          if (cl->getObjectAt((*sit)->getPos()) == NULL)
+          if (GameMap::getCity((*sit)->getPos()) == NULL)
             targets.push_back((*sit)->getPos());
           for (it = (*sit)->begin(); it != (*sit)->end(); it++)
             {

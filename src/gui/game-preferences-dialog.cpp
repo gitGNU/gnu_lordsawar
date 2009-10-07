@@ -62,11 +62,9 @@ void GamePreferencesDialog::init(std::string filename)
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/game-preferences-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     xml->get_widget("start_game_button", start_game_button);
     xml->get_widget("difficulty_label", difficulty_label);
@@ -146,6 +144,7 @@ GamePreferencesDialog::GamePreferencesDialog(std::string filename, GameScenario:
 GamePreferencesDialog::~GamePreferencesDialog()
 {
   delete game_options_dialog;
+  delete dialog;
 }
 
 void GamePreferencesDialog::set_parent_window(Gtk::Window &parent)
@@ -220,7 +219,7 @@ void GamePreferencesDialog::add_player(GameParameters::Player::Type type,
 void GamePreferencesDialog::on_edit_options_clicked()
 {
   inhibit_difficulty_combobox = true;
-  game_options_dialog->set_parent_window(*dialog.get());
+  game_options_dialog->set_parent_window(*dialog);
   game_options_dialog->run();
 
   update_difficulty_rating();

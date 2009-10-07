@@ -28,16 +28,14 @@
 #include "path.h"
 #include "stacklist.h"
 #include "stack.h"
-#include "citylist.h"
-#include "ruinlist.h"
-#include "signpostlist.h"
-#include "templelist.h"
-#include "roadlist.h"
-#include "bridgelist.h"
+#include "city.h"
 #include "ruin.h"
 #include "signpost.h"
 #include "temple.h"
+#include "roadlist.h"
 #include "road.h"
+#include "bridgelist.h"
+#include "bridge.h"
 #include "playerlist.h"
 #include "File.h"
 #include "GameMap.h"
@@ -48,6 +46,7 @@
 #include "LocationBox.h"
 #include "Configuration.h"
 #include "gui/image-helpers.h"
+#include "PathCalculator.h"
 
 #include "timing.h"
 
@@ -66,6 +65,7 @@ GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
 		       bool see_opponents_stacks, bool military_advisor)
 :d_fighting(LocationBox(Vector<int>(-1,-1)))
 {
+  path_calculator = NULL;
   d_intense_combat = intense_combat;
   d_see_opponents_production = see_opponents_production;
   d_see_opponents_stacks = see_opponents_stacks;
@@ -89,6 +89,8 @@ GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
 
 GameBigMap::~GameBigMap()
 {
+  if (path_calculator)
+    delete path_calculator;
 }
 
 void GameBigMap::select_active_stack()
@@ -96,11 +98,14 @@ void GameBigMap::select_active_stack()
   Stack* stack = Playerlist::getActiveplayer()->getActivestack();
   if (!stack)
     return;
+  reset_path_calculator(stack);
 
-  if (!stack->getPath()->checkPath(stack))
+  if (stack->getPath()->checkPath(stack) == false)
     {
-      //error handling is required here, up to now we only barf on cerr
+      //original path was blocked, so let's find a new way there.
+      //this shouldn't happen because nextTurn of stack recalculates.
       cerr << "original path of stack was blocked\n";
+      stack->getPath()->recalculate(stack);
     }
 
   stack_selected.emit(stack);
@@ -110,6 +115,11 @@ void GameBigMap::unselect_active_stack()
 {
   draw();
   stack_selected.emit(0);
+  if (path_calculator)
+    {
+      delete path_calculator;
+      path_calculator = NULL;
+    }
 }
 
 bool GameBigMap::on_selection_timeout()
@@ -168,7 +178,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    }
 	  else if (d_cursor == GraphicsCache::RUIN)
 	    {
-	      if (Ruin *r = Ruinlist::getInstance()->getObjectAt(tile))
+	      if (Ruin *r = GameMap::getRuin(tile))
 		{
 		  if ((r->isHidden() == true && 
 		       r->getOwner() == Playerlist::getActiveplayer()) ||
@@ -178,7 +188,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		      ruin_queried (r, false);
 		    }
 		}
-	      else if (Temple *t = Templelist::getInstance()->getObjectAt(tile))
+	      else if (Temple *t = GameMap::getTemple(tile))
 		{
 		  temple_queried (t, false);
 		  set_shift_key_down (false);
@@ -187,7 +197,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    }
 	  else if (d_cursor == GraphicsCache::ROOK)
 	    {
-	      City* c = Citylist::getInstance()->getObjectAt(tile);
+	      City* c = GameMap::getCity(tile);
 	      if (c != NULL)
 		{
 		  if (!c->isBurnt())
@@ -215,6 +225,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    {
 	      //set in a course, mr crusher.
 	      stack->getPath()->calculate(stack, tile);
+	      path_set.emit();
 	      draw();
 	      return;
 	    }
@@ -230,6 +241,9 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		    stack->ungroup();
 		  else
 		    stack->group();
+		  if (path_calculator)
+		    delete path_calculator;
+		  path_calculator = new PathCalculator(stack);
 		  draw();
 		  stack_grouped_or_ungrouped.emit(stack);
 		  return;
@@ -237,7 +251,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	      else
 		{
 		  // clear the path
-		  stack->getPath()->flClear();
+		  stack->getPath()->clear();
 		  path_set.emit();
 		  draw();
 		  return;
@@ -245,7 +259,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    }
 
 	  //clicked on an enemy city that is too far away
-	  City *c = Citylist::getInstance()->getObjectAt(tile);
+	  City *c = GameMap::getCity(tile);
 	  if (c)
 	    {
 	      //restrict going into enemy cities unless they're only
@@ -267,11 +281,11 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	  if (dist == -2)
 	    cerr << "error calculating path!";
 
-	  Vector<int>* dest = 0;
+	  Vector<int> dest = Vector<int>(-1,-1);
 	  if (!stack->getPath()->empty())
-	    dest = *stack->getPath()->rbegin();
+	    dest = stack->getLastPointInPath();
 
-	  if (dest && dest->x == tile.x && dest->y == tile.y)
+	  if (dest.x == tile.x && dest.y == tile.y)
 	    {
 	      Playerlist::getActiveplayer()->stackMove(stack);
 	      if (!Playerlist::getActiveplayer()->getActivestack())
@@ -335,7 +349,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
       // Stack hasn't been active yet
       else
 	{
-	  stack = Stacklist::getObjectAt(tile.x, tile.y);
+	  stack = GameMap::getStack(tile);
 	  if (stack && stack->isFriend(Playerlist::getActiveplayer()) && 
 	      d_cursor == GraphicsCache::TARGET)
 	    {
@@ -344,7 +358,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    }
 	  else
 	    {
-	      City* c = Citylist::getInstance()->getObjectAt(tile);
+	      City* c = GameMap::getCity(tile);
 	      if (c != NULL && d_cursor == GraphicsCache::ROOK)
 		{
 		  if (!c->isBurnt())
@@ -365,14 +379,14 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 			}
 		    }
 		}
-	      else if (Ruin *r = Ruinlist::getInstance()->getObjectAt(tile))
+	      else if (Ruin *r = GameMap::getRuin(tile))
 		{
 		  if ((r->isHidden() == true && 
 		       r->getOwner() == Playerlist::getActiveplayer()) ||
 		      r->isHidden() == false)
 		    ruin_queried (r, false);
 		}
-	      else if (Temple *t = Templelist::getInstance()->getObjectAt(tile))
+	      else if (Temple *t = GameMap::getTemple(tile))
 		{
 		  temple_queried (t, false);
 		}
@@ -387,6 +401,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	  mouse_state = NONE;
 	  d_cursor = GraphicsCache::FEET;
 	  cursor_changed.emit(d_cursor);
+	  path_set.emit();
 	}
       else if (mouse_state == DRAGGING_STACK)
 	{
@@ -405,7 +420,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	      if (mouse_pos_to_tile(e.pos) != stack->getPos())
 		{
 		  int ts = GameMap::getInstance()->getTileset()->getTileSize();
-		  e.pos = tile_to_buffer_pos (*stack->getPath()->back());
+		  e.pos = tile_to_buffer_pos (stack->getLastPointInPath());
 		  e.pos.x -= ts/2;
 		  e.pos.y -= ts/2;
 		  mouse_button_event(e);
@@ -425,12 +440,12 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	{
 	  if (active->getFogMap()->isCompletelyObscuredFogTile(tile) == true)
 	    return;
-	  if (City* c = Citylist::getInstance()->getObjectAt(tile))
+	  if (City* c = GameMap::getCity(tile))
 	    {
 	      city_queried (c, true);
 	      mouse_state = SHOWING_CITY;
 	    }
-	  else if (Ruin* r = Ruinlist::getInstance()->getObjectAt(tile))
+	  else if (Ruin* r = GameMap::getRuin(tile))
 	    {
 	      if ((r->isHidden() == true && 
 		   r->getOwner() == Playerlist::getActiveplayer()) ||
@@ -440,17 +455,17 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		  mouse_state = SHOWING_RUIN;
 		}
 	    }
-	  else if (Signpost* s = Signpostlist::getInstance()->getObjectAt(tile))
+	  else if (Signpost* s = GameMap::getSignpost(tile))
 	    {
 	      signpost_queried (s);
 	      mouse_state = SHOWING_SIGNPOST;
 	    }
-	  else if (Temple* t = Templelist::getInstance()->getObjectAt(tile))
+	  else if (Temple* t = GameMap::getTemple(tile))
 	    {
 	      temple_queried.emit(t, true);
 	      mouse_state = SHOWING_TEMPLE;
 	    }
-	  else if (Stack *st = Stacklist::getObjectAt(tile))
+	  else if (Stack *st = GameMap::getStack(tile))
 	    {
 	      if (d_see_opponents_stacks == true)
 		{
@@ -499,6 +514,8 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		{
 		  Playerlist::getActiveplayer()->getStacklist()->setActivestack(0);
 		  unselect_active_stack();
+		  mouse_state = NONE;
+		  determine_mouse_cursor(NULL, current_tile);
 		}
 	      break;
 	    }
@@ -572,7 +589,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 	d_cursor = GraphicsCache::TARGET;
       else
 	{
-	  City *c = Citylist::getInstance()->getObjectAt(tile);
+	  City *c = GameMap::getCity(tile);
 	  if (c)
 	    {
 	      if (c->getOwner() == active)
@@ -613,7 +630,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 	  else
 	    {
 	      Maptile *t = GameMap::getInstance()->getTile(tile);
-	      Stack *st = Stacklist::getObjectAt(tile);
+	      Stack *st = GameMap::getStack(tile);
 	      if (st && st->getOwner() != active)
 		{
 		  int delta = abs(stack->getPos().x - st->getPos().x);
@@ -640,15 +657,20 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 		}
 	      else
 		{
-		  Path path;
-		  int moves = path.calculate(stack, tile);
-		  if (moves == 0)
+		  //Path path;
+		  //why is this slower than without a stack selected?
+		  //because we need to see if we can get there eventually!
+
+		  //int moves = path.calculate(stack, tile);
+		  if (path_calculator == NULL)
+		    path_calculator = new PathCalculator(stack);
+		  if (path_calculator->isReachable(tile) == false)
+		  //if (moves == 0)
 		    d_cursor = GraphicsCache::HAND;
 		  else
 		    {
-		      Bridgelist *bl = Bridgelist::getInstance();
 		      if (t->getMaptileType() == Tile::WATER &&
-			  bl->getObjectAt(tile) == NULL)
+			  GameMap::getBridge(tile) == NULL)
 			{
 			  if (stack->isFlying() == true)
 			    d_cursor = GraphicsCache::FEET;
@@ -682,7 +704,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 	  Maptile *t = GameMap::getInstance()->getTile(tile);
 	  if (t->getBuilding() == Maptile::CITY)
 	    {
-	      City *c = Citylist::getInstance()->getObjectAt(tile);
+	      City *c = GameMap::getCity(tile);
 	      if (c->isBurnt() == true)
 		d_cursor = GraphicsCache::HAND;
 	      else if (c->getOwner() == active)
@@ -692,7 +714,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 	    }
 	  else if (t->getBuilding() == Maptile::RUIN)
 	    {
-	      Ruin *ruin = Ruinlist::getInstance()->getObjectAt(tile);
+	      Ruin *ruin = GameMap::getRuin(tile);
 	      if (ruin->isHidden() == true && ruin->getOwner() == active)
 		d_cursor = GraphicsCache::RUIN;
 	      else if (ruin->isHidden() == false)
@@ -814,7 +836,13 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	  d_cursor == GraphicsCache::GOTO_ARROW || 
 	  d_cursor == GraphicsCache::TARGET)
 	{
-	  stack->getPath()->calculate(stack, tile);
+	  guint32 moves = 0, turns = 0;
+	  Path *new_path = path_calculator->calculate(tile, moves, turns, true);
+	  if (new_path->size())
+	    stack->setPath(*new_path);
+	  delete new_path;
+	  //stack->getPath()->calculate(stack, tile);
+	  path_set.emit();
 	  draw();
 	}
     }
@@ -866,15 +894,15 @@ void GameBigMap::after_draw()
       // draw all waypoints
       guint32 pathcount = 0;
       bool canMoveThere = true;
-      list<Vector<int>*>::iterator end = stack->getPath()->end();
+      Path::iterator end = stack->getPath()->end();
       //if we're dragging, we don't draw the last waypoint circle
       if (stack->getPath()->size() > 0 && 
 	  (mouse_state == DRAGGING_STACK || mouse_state == DRAGGING_ENDPOINT))
 	end--;
-      for (list<Vector<int>*>::iterator it = stack->getPath()->begin();
+      for (Path::iterator it = stack->getPath()->begin();
 	   it != end; it++)
 	{
-	  pos = tile_to_buffer_pos(**it);
+	  pos = tile_to_buffer_pos(*it);
 
 	  canMoveThere = (pathcount < stack->getPath()->getMovesExhaustedAtPoint());
 	  if (canMoveThere)
@@ -889,11 +917,11 @@ void GameBigMap::after_draw()
       if (mouse_state == DRAGGING_STACK || mouse_state == DRAGGING_ENDPOINT 
 	  || d_cursor == GraphicsCache::GOTO_ARROW)
 	{
-	  list<Vector<int>*>::iterator it = stack->getPath()->end();
+	  Path::iterator it = stack->getPath()->end();
 	  it--;
 	  //this is where the ghosted army unit picture goes.
 	  PixMask *armypic = gc->getArmyPic(*stack->begin());
-	  pos = tile_to_buffer_pos(**it);
+	  pos = tile_to_buffer_pos(*it);
 	  armypic->blit_centered(buffer, pos + (Vector<int>(tilesize,tilesize)/2));
 	}
     }
@@ -978,7 +1006,7 @@ void GameBigMap::set_control_key_down (bool down)
 
       if (d_cursor == GraphicsCache::TARGET)
 	{
-	  City *city = Citylist::getInstance()->getObjectAt(current_tile);
+	  City *city = GameMap::getCity(current_tile);
 	  if (city->isBurnt() == false)
 	    {
 	      d_cursor = GraphicsCache::ROOK;
@@ -988,7 +1016,7 @@ void GameBigMap::set_control_key_down (bool down)
       else if (d_cursor == GraphicsCache::HAND && 
 	       d_see_opponents_production == true)
 	{
-	  City *city = Citylist::getInstance()->getObjectAt(current_tile);
+	  City *city = GameMap::getCity(current_tile);
 	  if (city->isBurnt() == false)
 	    {
 	      d_cursor = GraphicsCache::ROOK;
@@ -1026,7 +1054,7 @@ void GameBigMap::set_shift_key_down (bool down)
   Maptile::Building b = GameMap::getInstance()->getTile(current_tile)->getBuilding();
   if (b == Maptile::RUIN)
     {
-      Ruin *r = Ruinlist::getInstance()->getObjectAt(current_tile);
+      Ruin *r = GameMap::getRuin(current_tile);
       if (r)
 	{
 	  if ((r->isHidden() == true && 
@@ -1088,4 +1116,11 @@ void GameBigMap::set_shift_key_down (bool down)
 	      cursor_changed.emit(d_cursor);
 	}
     }
+}
+    
+void GameBigMap::reset_path_calculator(Stack *s)
+{
+  if (path_calculator)
+    delete path_calculator;
+  path_calculator = new PathCalculator(s);
 }

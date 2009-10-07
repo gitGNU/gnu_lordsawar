@@ -44,11 +44,9 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/army-info-window.ui");
 
-    Gtk::Window *w = 0;
-    xml->get_widget("window", w);
-    window.reset(w);
+    xml->get_widget("window", window);
     Decorated decorator;
-    decorator.decorate(window.get(),File::getMiscFile("various/background.png"), 200);
+    decorator.decorate(window,File::getMiscFile("various/background.png"), 200);
 
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
@@ -110,11 +108,9 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army,
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/army-info-window.ui");
 
-    Gtk::Window *w = 0;
-    xml->get_widget("window", w);
-    window.reset(w);
+    xml->get_widget("window", window);
     Decorated decorator;
-    decorator.decorate(window.get(),File::getMiscFile("various/background.png"), 200);
+    decorator.decorate(window,File::getMiscFile("various/background.png"), 200);
 
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
@@ -174,11 +170,9 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/army-info-window.ui");
 
-    Gtk::Window *w = 0;
-    xml->get_widget("window", w);
-    window.reset(w);
+    xml->get_widget("window", window);
     Decorated decorator;
-    decorator.decorate(window.get(),File::getMiscFile("various/background.png"), 200);
+    decorator.decorate(window,File::getMiscFile("various/background.png"), 200);
 
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
@@ -230,4 +224,9 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army)
 
     window->move(pos.x, pos.y);
     window->show();
+}
+
+ArmyInfoTip::~ArmyInfoTip()
+{
+  delete window;
 }

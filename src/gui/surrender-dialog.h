@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ class SurrenderDialog: public Decorated
 {
  public:
     SurrenderDialog(int numPlayers);
+    ~SurrenderDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -38,7 +39,7 @@ class SurrenderDialog: public Decorated
     bool run();
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     Gtk::Image *image;
 
 };

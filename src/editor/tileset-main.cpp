@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,12 +31,13 @@
 
 #include "tileset-window.h"
 
-
+int max_vector_width;
 int main(int argc, char* argv[])
 {
     srand(time(NULL));         // set the random seed
 
     initialize_configuration();
+    Vector<int>::setMaximumWidth(1000);
 
     setlocale(LC_ALL, Configuration::s_lang.c_str());
     textdomain ("lordsawar");
@@ -47,11 +48,12 @@ int main(int argc, char* argv[])
     // init GUI stuff
     g_set_application_name(_("LordsAWar! Tileset Editor"));
 
+    TileSetWindow *tileset_window = NULL;
     try
     {
 	Gtk::Main kit(argc, argv);
 
-	std::auto_ptr<TileSetWindow> tileset_window(new TileSetWindow);
+	tileset_window = new TileSetWindow;
 	tileset_window->show();
 	
 	kit.run(tileset_window->get_window());
@@ -60,5 +62,6 @@ int main(int argc, char* argv[])
 	std::cerr << ex.what() << std::endl;
     }
     
+    delete tileset_window;
     return EXIT_SUCCESS;
 }

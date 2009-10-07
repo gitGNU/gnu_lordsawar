@@ -31,7 +31,6 @@
 #include "player.h"
 #include "army.h"
 #include "armysetlist.h"
-#include "stacklist.h"
 #include "stack.h"
 #include "hero.h"
 #include "GraphicsCache.h"
@@ -44,11 +43,9 @@ void HeroLevelsDialog::init(Player *theplayer)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/hero-levels-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     heroes_list = Gtk::ListStore::create(heroes_columns);
     xml->get_widget("treeview", heroes_treeview);
@@ -75,14 +72,15 @@ HeroLevelsDialog::HeroLevelsDialog(Player *theplayer)
 {
 
   init (theplayer);
-    const Stacklist* sl = theplayer->getStacklist();
-    for (Stacklist::const_iterator it = sl->begin(); it != sl->end(); it++)
-      for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
-        if ((*sit)->isHero()) 
-          addHero(dynamic_cast<Hero*>(*sit));
-     
+  std::list<Hero*> heroes = theplayer->getHeroes();
+  for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end(); it++)
+    addHero(*it);
 }
 
+HeroLevelsDialog::~HeroLevelsDialog()
+{
+  delete dialog;
+}
 void HeroLevelsDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);

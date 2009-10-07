@@ -48,9 +48,7 @@ RewardDialog::RewardDialog(Player *player, bool hidden_ruins, Reward *r)
     = Gtk::Builder::create_from_file(get_glade_path()
 				+ "/reward-dialog.ui");
 
-  Gtk::Dialog *d = 0;
-  xml->get_widget("dialog", d);
-  dialog.reset(d);
+  xml->get_widget("dialog", dialog);
 
   xml->get_widget("gold_hbox", gold_hbox);
   xml->get_widget("gold_radiobutton", gold_radiobutton);
@@ -151,6 +149,10 @@ RewardDialog::RewardDialog(Player *player, bool hidden_ruins, Reward *r)
     fill_in_reward_info();
 }
 
+RewardDialog::~RewardDialog()
+{
+  delete dialog;
+}
 void RewardDialog::fill_in_reward_info()
 {
   if (reward->getType() == Reward::GOLD)

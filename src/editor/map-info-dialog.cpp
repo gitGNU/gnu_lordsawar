@@ -37,9 +37,7 @@ MapInfoDialog::MapInfoDialog(GameScenario *g)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/map-info-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
 
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(game_scenario->getName());
@@ -48,6 +46,10 @@ MapInfoDialog::MapInfoDialog(GameScenario *g)
     description_textview->get_buffer()->set_text(game_scenario->getComment());
 }
 
+MapInfoDialog::~MapInfoDialog()
+{
+  delete dialog;
+}
 void MapInfoDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);

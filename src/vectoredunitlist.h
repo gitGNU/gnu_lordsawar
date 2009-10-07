@@ -199,7 +199,7 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	 * @param new_dest A position on the game map to change where the
 	 *                 VectoredUnit objects are going to.
 	 */
-	void changeDestination(City *city, Vector<int> new_dest);
+	bool changeDestination(City *city, Vector<int> new_dest);
 
 	void changeOwnership(Player *old_owner, Player *new_owner);
 

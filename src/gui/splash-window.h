@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ class SplashWindow: public Decorated
     void show();
     void hide();
         
-    Gtk::Window *get_window() {return window.get();}
+    Gtk::Window *get_window() {return window;}
 
     sigc::signal<void> sdl_initialized;
     sigc::signal<void, std::string, unsigned short, std::string> new_remote_network_game_requested;
@@ -56,7 +56,7 @@ class SplashWindow: public Decorated
     sigc::signal<void> quit_requested;
 
  private:
-    std::auto_ptr<Gtk::Window> window;
+    Gtk::Window* window;
     Gtk::Button *crash_button;
     Gtk::Button *load_game_button;
     Gtk::Button *load_scenario_button;

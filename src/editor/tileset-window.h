@@ -38,10 +38,10 @@ class TileSetWindow: public sigc::trackable
     void show();
     void hide();
 
-    Gtk::Window &get_window() { return *window.get(); }
+    Gtk::Window &get_window() { return *window; }
 
  private:
-    std::auto_ptr<Gtk::Window> window;
+    Gtk::Window* window;
     std::string current_save_filename;
     Tileset *d_tileset; //current tileset
     Tile *d_tile; //current tile

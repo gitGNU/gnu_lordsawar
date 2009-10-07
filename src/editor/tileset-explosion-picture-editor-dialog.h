@@ -32,13 +32,14 @@ class TilesetExplosionPictureEditorDialog: public sigc::trackable
 {
  public:
     TilesetExplosionPictureEditorDialog(Tileset * tileset);
+    ~TilesetExplosionPictureEditorDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
     void run();
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     Gtk::RadioButton *large_explosion_radiobutton;
     Gtk::RadioButton *small_explosion_radiobutton;
     Gtk::FileChooserButton *explosion_filechooserbutton;

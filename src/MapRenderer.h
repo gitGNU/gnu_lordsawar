@@ -23,6 +23,7 @@
 
 #include <gtkmm.h>
 #include <string>
+#include "vector.h"
 
 /** Class which cares about rendering of the map.
   * 
@@ -53,6 +54,10 @@ class MapRenderer
 	void render(int x, int y, int tileStartX, int tileStartY,
 		    int columns, int rows, Glib::RefPtr<Gdk::Pixmap> surface,
 		    Glib::RefPtr<Gdk::GC> context);
+
+	void render_tile(Vector<int> draw, Vector<int> tile,
+			 Glib::RefPtr<Gdk::Pixmap> surface, 
+			 Glib::RefPtr<Gdk::GC> context);
 
 	//! Save the current view of map tiles as an image (bmp file).
 	bool saveViewAsBitmap(std::string filename);

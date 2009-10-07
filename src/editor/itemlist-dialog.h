@@ -40,10 +40,10 @@ class ItemlistDialog: public sigc::trackable
     void show();
     void hide();
 
-    Gtk::Dialog &get_dialog() { return *dialog.get(); }
+    Gtk::Dialog &get_dialog() { return *dialog; }
 
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     std::string current_save_filename;
     Itemlist *d_itemlist; //current itemlist
     ItemProto *d_item; //current item

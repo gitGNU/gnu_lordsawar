@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -64,6 +64,7 @@ FogMap::FogMap(XML_Helper* helper)
             d_fogmap[y*d_width + x] = FogType(types[y*d_width + x] - '0');
         }
     }
+    updateCompletelyObscuredFogTiles();
 }
 
 FogMap::FogMap(const FogMap& fogmap)
@@ -79,6 +80,7 @@ FogMap::FogMap(const FogMap& fogmap)
             d_fogmap[y*d_width + x] = fogmap.d_fogmap[y*d_width + x];
         }
     }
+    updateCompletelyObscuredFogTiles();
 }
 
 FogMap::~FogMap()
@@ -157,7 +159,18 @@ void FogMap::alterFogRectangle(Vector<int> pt, int height, int width, FogType ne
     }
 }
 
-bool FogMap::isCompletelyObscuredFogTile(Vector<int> pos)
+bool FogMap::isCompletelyObscuredFogTile(Vector<int> pos) const
+{
+  for (std::list<Vector<int> >::const_iterator it = completely_obscured.begin();
+       it != completely_obscured.end(); it++)
+    {
+      if (it == completely_obscured.end())
+	return true;
+    }
+  return false;
+}
+
+bool FogMap::calculateCompletelyObscuredFogTile(Vector<int> pos)
 {
   bool foggyTile;
   for (int i = pos.x - 1; i <= pos.x + 1; i++)
@@ -172,7 +185,7 @@ bool FogMap::isCompletelyObscuredFogTile(Vector<int> pos)
 	else
 	  {
 	    Vector<int> pos = Vector<int>(i, j);
-	    foggyTile = FogMap::isFogged(pos, Playerlist::getActiveplayer());
+	    foggyTile = (getFogTile(pos) == FogMap::CLOSED);
 	  }
 	if (foggyTile == false)
 	  return false;
@@ -203,6 +216,19 @@ bool FogMap::isLoneFogTile(Vector<int> pos)
   return false;
 }
 
+void FogMap::updateCompletelyObscuredFogTiles()
+{
+    completely_obscured.clear();
+    for (int y = 0; y < d_height; y++)
+      {
+        for (int x = 0; x < d_width; x++)
+	  {
+	    Vector<int> pos = Vector<int>(x,y);
+	    if (calculateCompletelyObscuredFogTile (pos) == true)
+	      completely_obscured.push_back(pos);
+	  }
+      }
+}
 void FogMap::smooth()
 {
     for (int y = 0; y < d_height; y++)
@@ -219,7 +245,10 @@ void FogMap::smooth()
               }
         }
     }
+
+    updateCompletelyObscuredFogTiles();
 }
+
 
 bool FogMap::isFogged(Vector <int> pos, Player *player)
 {
@@ -227,6 +256,7 @@ bool FogMap::isFogged(Vector <int> pos, Player *player)
   FogMap *fogmap = player->getFogMap();
   if (fogmap->getFogTile(pos) == FogMap::CLOSED)
     return true;
+
   if (player)
     if (player->getType() != Player::HUMAN &&
 	GameScenarioOptions::s_hidden_map == true)

@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2000, 2001, 2002, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -106,7 +106,7 @@ Stack* LocationBox::getFreeStack(Player *p) const
     return NULL;
 }
 
-bool LocationBox::isVisible(Player *player)
+bool LocationBox::isVisible(Player *player) const
 {
   for (unsigned int i = 0; i < d_size; i++)
     for (unsigned int j = 0; j < d_size; j++)
@@ -144,3 +144,15 @@ bool LocationBox::contains(Vector<int> pos) const
       && (pos.y >= getPos().y) && (pos.y < getPos().y + (int) d_size);
 }
 
+    
+bool LocationBox::isCompletelyObscuredByFog(Player *p) const
+{
+  for (unsigned int i = 0; i < d_size; i++)
+    for (unsigned int j = 0; j < d_size; j++)
+      {
+	Vector<int> pos = Vector<int>(i,j);
+	if (p->getFogMap()->isCompletelyObscuredFogTile(pos) == false)
+	  return false;
+      }
+  return true;
+}

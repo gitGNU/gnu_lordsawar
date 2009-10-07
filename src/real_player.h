@@ -32,6 +32,7 @@
 
 class MoveResult;
 class XML_Helper;
+class City;
 
 //! A local human Player.
 /** 

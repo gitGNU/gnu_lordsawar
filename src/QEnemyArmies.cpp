@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -26,7 +26,7 @@
 #include "QuestsManager.h"
 #include "playerlist.h"
 #include "stacklist.h"
-#include "citylist.h"
+#include "GameMap.h"
 
 using namespace std;
 
@@ -51,12 +51,11 @@ void QuestEnemyArmies::update_targets()
 {
   Stacklist::const_iterator sit ;
   Stacklist *sl = d_victim_player->getStacklist();
-  Citylist *cl = Citylist::getInstance();
   d_targets.clear();
   for (sit = sl->begin(); sit != sl->end(); sit++)
     {
       //is this not a city location?  no?  then it's a target.
-      if (cl->getObjectAt((*sit)->getPos()) == NULL)
+      if (GameMap::getCity((*sit)->getPos()) == NULL)
         d_targets.push_back((*sit)->getPos());
     }
 }

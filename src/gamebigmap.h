@@ -35,6 +35,7 @@ class City;
 class Ruin;
 class Signpost;
 class Temple;
+class PathCalculator;
 
 /** Specialization of BigMap for the game (as opposed to the editor)
   */
@@ -84,6 +85,8 @@ class GameBigMap: public BigMap
     static const double max_magnification_factor = 200.0;
     static const double min_magnification_factor = 50.0;
 
+    void reset_path_calculator(Stack *s);
+
  private:
     std::vector<PixMask*> d_waypoint;
     Vector<int> current_tile, prev_mouse_pos;
@@ -112,6 +115,7 @@ class GameBigMap: public BigMap
     bool d_see_opponents_stacks;
     bool d_military_advisor;
     LocationBox d_fighting;
+    PathCalculator *path_calculator;
 };
 
 #endif

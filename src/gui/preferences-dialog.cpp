@@ -44,11 +44,9 @@ PreferencesDialog::PreferencesDialog(bool readonly)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/preferences-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     xml->get_widget("show_turn_popup_checkbutton", show_turn_popup_checkbutton);
     xml->get_widget("play_music_checkbutton", play_music_checkbutton);
@@ -66,7 +64,7 @@ PreferencesDialog::PreferencesDialog(bool readonly)
 	  continue;
 	Gtk::HBox *player_hbox = new Gtk::HBox();
 	Gtk::Image *image = new Gtk::Image();
-	image->property_pixmap() = gc->getShieldPic(2, p)->get_pixmap();
+	image->property_pixbuf() = gc->getShieldPic(2, p)->to_pixbuf();
 	Gtk::ComboBoxText *type = new Gtk::ComboBoxText();
 	type->signal_changed().connect
 	  (sigc::bind(sigc::mem_fun
@@ -120,6 +118,10 @@ PreferencesDialog::PreferencesDialog(bool readonly)
     
 }
 
+PreferencesDialog::~PreferencesDialog()
+{
+  delete dialog;
+}
 void PreferencesDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
@@ -196,9 +198,11 @@ void PreferencesDialog::run(Game *game)
 	      {
 		AI_Fast *new_player = new AI_Fast(*p);
 		Player *old_player = p;
+		printf ("swapping %p for %p\n", old_player, new_player);
 		Playerlist::getInstance()->swap(old_player, new_player);
 		//disconnect and connect game signals
 		game->addPlayer(new_player);
+		delete old_player;
 	      }
 	  }
 	else //changing computer to:
@@ -210,7 +214,7 @@ void PreferencesDialog::run(Game *game)
 		Playerlist::getInstance()->swap(old_player, new_player);
 		//disconnect and connect game signals
 		game->addPlayer(new_player);
-		
+		delete old_player;
 	      }
 	    else //computer, no change
 	      ;

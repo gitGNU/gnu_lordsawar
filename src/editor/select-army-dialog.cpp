@@ -36,6 +36,7 @@
 SelectArmyDialog::SelectArmyDialog(Player *p, bool defends_ruins,
 				   bool awardable)
 {
+  army_info_tip = NULL;
     d_defends_ruins = defends_ruins;
     player = p;
     d_awardable = awardable;
@@ -45,9 +46,7 @@ SelectArmyDialog::SelectArmyDialog(Player *p, bool defends_ruins,
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/select-army-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
     
     xml->get_widget("army_info_label1", army_info_label1);
     xml->get_widget("army_info_label2", army_info_label2);
@@ -58,6 +57,10 @@ SelectArmyDialog::SelectArmyDialog(Player *p, bool defends_ruins,
   fill_in_army_toggles();
 }
 
+SelectArmyDialog::~SelectArmyDialog()
+{
+  delete dialog;
+}
 void SelectArmyDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
@@ -210,12 +213,22 @@ bool SelectArmyDialog::on_army_button_event(GdkEventButton *e, Gtk::ToggleButton
     const ArmyProto *army = selectable[slot];
 
     if (army)
-      army_info_tip.reset(new ArmyInfoTip(toggle, army));
+      {
+	if (army_info_tip)
+	  delete army_info_tip;
+	army_info_tip = new ArmyInfoTip(toggle, army);
+      }
     return true;
   }
   else if (event.button == MouseButtonEvent::RIGHT_BUTTON
 	   && event.state == MouseButtonEvent::RELEASED) {
-    army_info_tip.reset();
+      {
+	if (army_info_tip)
+	  {
+	    delete army_info_tip;
+	    army_info_tip = NULL;
+	  }
+      }
     return true;
   }
 

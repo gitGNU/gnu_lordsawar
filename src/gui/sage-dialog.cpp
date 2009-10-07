@@ -42,11 +42,9 @@ SageDialog::SageDialog(Player *player, Hero *h, Ruin *r)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/sage-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     rewards_list = Gtk::ListStore::create(rewards_columns);
     xml->get_widget("rewardtreeview", rewards_treeview);
@@ -58,7 +56,7 @@ SageDialog::SageDialog(Player *player, Hero *h, Ruin *r)
     xml->get_widget("map_image", map_image);
     xml->get_widget("continue_button", continue_button);
 
-    ruinmap.reset(new RuinMap(ruin));
+    ruinmap = new RuinMap(ruin);
     ruinmap->map_changed.connect(
 	sigc::mem_fun(this, &SageDialog::on_map_changed));
 
@@ -89,6 +87,11 @@ SageDialog::SageDialog(Player *player, Hero *h, Ruin *r)
       addReward((*it));
   continue_button->set_sensitive(false);
 
+}
+SageDialog::~SageDialog()
+{
+  delete dialog;
+  delete ruinmap;
 }
 
 void SageDialog::set_parent_window(Gtk::Window &parent)

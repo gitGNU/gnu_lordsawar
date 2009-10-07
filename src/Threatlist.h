@@ -1,7 +1,7 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004, 2006 Andrea Paternesi
-// Copyright (C) 2007 Ben Asselstine
+// Copyright (C) 2007, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -47,6 +47,8 @@ class Threatlist : public std::list<Threat*>
 
         //! Searches through the threat list and deletes the stack
         void deleteStack(Stack* s);
+
+	void deleteStack(guint32 id);
 
 
         // how much danger does this set of threats pose to the given city?

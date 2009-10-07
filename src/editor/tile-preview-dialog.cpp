@@ -35,9 +35,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, guint32 tileSize)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/tile-preview-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
 
     xml->get_widget("next_button", next_button);
     next_button->signal_clicked().connect
@@ -154,6 +152,10 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, guint32 tileSize)
     update_buttons();
 }
 
+TilePreviewDialog::~TilePreviewDialog()
+{
+  delete dialog;
+}
 void TilePreviewDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);

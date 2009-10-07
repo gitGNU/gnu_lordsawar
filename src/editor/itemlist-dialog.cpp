@@ -48,9 +48,7 @@ ItemlistDialog::ItemlistDialog()
 	= Gtk::Builder::create_from_file(get_glade_path() + 
 				    "/itemlist-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
 
     xml->get_widget("name_entry", name_entry);
     name_entry->signal_changed().connect
@@ -166,6 +164,7 @@ ItemlistDialog::update_item_panel()
 
 ItemlistDialog::~ItemlistDialog()
 {
+  delete dialog;
 }
 
 void ItemlistDialog::show()

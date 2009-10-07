@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ class GameOptionsDialog: public Decorated
 {
  public:
     GameOptionsDialog(bool readonly);
+    ~GameOptionsDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -42,7 +43,7 @@ class GameOptionsDialog: public Decorated
     sigc::signal<void> difficulty_option_changed;
 
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     Gtk::Table *difficultoptionstable;
     Gtk::Table *notdifficultoptionstable;
     Gtk::CheckButton *quests_checkbutton;

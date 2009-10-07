@@ -53,10 +53,8 @@ ArmySetWindow::ArmySetWindow()
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/armyset-window.ui");
 
-    Gtk::Window *w = 0;
-    xml->get_widget("window", w);
-    window.reset(w);
-    w->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+    xml->get_widget("window", window);
+    window->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
 
     xml->get_widget("army_image", army_image);
     xml->get_widget("name_entry", name_entry);
@@ -185,7 +183,7 @@ ArmySetWindow::ArmySetWindow()
     help_about_menuitem->signal_activate().connect
        (sigc::mem_fun(this, &ArmySetWindow::on_help_about_activated));
 
-    w->signal_delete_event().connect(
+    window->signal_delete_event().connect(
 	sigc::mem_fun(*this, &ArmySetWindow::on_delete_event));
 
     armies_list = Gtk::ListStore::create(armies_columns);
@@ -288,6 +286,7 @@ ArmySetWindow::update_army_panel()
 }
 ArmySetWindow::~ArmySetWindow()
 {
+  delete window;
 }
 
 void ArmySetWindow::show()
@@ -328,7 +327,7 @@ void ArmySetWindow::on_new_armyset_activated()
   guint32 id = 0;
   d_armyset = new Armyset(id, name);
   ArmySetInfoDialog d(d_armyset);
-  d.set_parent_window(*window.get());
+  d.set_parent_window(*window);
   retval = d.run();
   if (retval == false)
     {
@@ -346,7 +345,7 @@ void ArmySetWindow::on_new_armyset_activated()
 
 void ArmySetWindow::on_load_armyset_activated()
 {
-  Gtk::FileChooserDialog chooser(*window.get(), 
+  Gtk::FileChooserDialog chooser(*window, 
 				 _("Choose an Armyset to Load"));
   Gtk::FileFilter sav_filter;
   sav_filter.add_pattern("*.xml");
@@ -427,7 +426,7 @@ void ArmySetWindow::on_save_armyset_activated()
 
 void ArmySetWindow::on_save_armyset_as_activated()
 {
-  Gtk::FileChooserDialog chooser(*window.get(), _("Choose a Name"),
+  Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
 				 Gtk::FILE_CHOOSER_ACTION_SAVE);
   Gtk::FileFilter sav_filter;
   sav_filter.add_pattern("*.xml");
@@ -461,22 +460,20 @@ void ArmySetWindow::on_quit_activated()
 void ArmySetWindow::on_edit_armyset_info_activated()
 {
   ArmySetInfoDialog d(d_armyset);
-  d.set_parent_window(*window.get());
+  d.set_parent_window(*window);
   d.run();
 }
 
 void ArmySetWindow::on_help_about_activated()
 {
-  std::auto_ptr<Gtk::AboutDialog> dialog;
+  Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path() + "/../about-dialog.ui");
 
-  Gtk::AboutDialog *d;
-  xml->get_widget("dialog", d);
-  dialog.reset(d);
-  dialog->set_transient_for(*window.get());
-  d->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+  xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(*window);
+  dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
   dialog->set_logo(GraphicsLoader::getMiscPicture("castle_icon.png")->to_pixbuf());

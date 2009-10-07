@@ -117,7 +117,7 @@ class NextTurn: public sigc::trackable
         // whether we're starting a turn again from loading a game
         bool continuing_turn;
 
-    private:
+    protected:
 
 	sigc::connection abort;
 };

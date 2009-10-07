@@ -33,6 +33,7 @@ class DestinationDialog: public Decorated
 {
  public:
     DestinationDialog(City *city, bool *see_all);
+    ~DestinationDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -40,8 +41,8 @@ class DestinationDialog: public Decorated
     void hide();
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
-    std::auto_ptr<VectorMap> vectormap;
+    Gtk::Dialog* dialog;
+    VectorMap* vectormap;
 
     Gtk::Image *map_image;
     Gtk::ToggleButton *see_all_toggle;

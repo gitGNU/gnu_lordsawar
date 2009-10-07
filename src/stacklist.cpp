@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
 // Copyright (C) 2004 John Farrell
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -21,7 +21,9 @@
 //  02110-1301, USA.
 
 #include "config.h"
+#include "signal.h"
 #include <sigc++/functors/mem_fun.h>
+#include <sigc++/adaptors/bind.h>
 #include <assert.h>
 #include <algorithm>
 
@@ -49,13 +51,15 @@ Stack* Stacklist::getObjectAt(int x, int y)
         pit != Playerlist::getInstance()->end(); pit++)
     {
         Stacklist* mylist = (*pit)->getStacklist();
-        for (const_iterator it = mylist->begin(); it !=mylist->end(); it++)
-            if (((*it)->getPos().x == x) && ((*it)->getPos().y == y))
-                return *it;
+	Stack *s1 = NULL;
+	Stack *s2 = NULL;
+	mylist->getObjectAt(Vector<int>(x,y), s1, s2);
+	if (s1)
+	  return s1;
+	else if (s2)
+	  return s2;
     }
-
     return 0;
-
 }
 
 Vector<int> Stacklist::getPosition(guint32 id)
@@ -76,16 +80,20 @@ Vector<int> Stacklist::getPosition(guint32 id)
 //We only expect one ambiguity at a time with stacks of the same player. This
 //never happens except when a stack comes to halt on another stack during
 //long movements
+//It also happens when two stacks fight.
 Stack* Stacklist::getAmbiguity(Stack* s)
 {
     for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
         pit != Playerlist::getInstance()->end(); pit++)
     {
         Stacklist* mylist = (*pit)->getStacklist();
-        for (const_iterator it = mylist->begin(); it != mylist->end();it++)
-            if ((s->getPos().x == (*it)->getPos().x)
-                && (s->getPos().y == (*it)->getPos().y) && (s != *it))
-                return (*it);
+	Stack *s1 = NULL;
+	Stack *s2 = NULL;
+	mylist->getObjectAt(s->getPos(), s1, s2);
+	if (s1 && s1->getId() != s->getId())
+	  return s1;
+	else if (s2 && s2->getId() != s->getId())
+	  return s2;
     }
 
     return 0;
@@ -101,6 +109,18 @@ bool Stacklist::deleteStack(Stack* s)
         for (const_iterator it = mylist->begin(); it != mylist->end(); it++)
             if ((*it) == s)
                 return mylist->flRemove(s);
+    }
+    return false;
+}
+bool Stacklist::deleteStack(guint32 id)
+{
+    for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
+        pit != Playerlist::getInstance()->end(); pit++)
+    {
+        Stacklist* mylist = (*pit)->getStacklist();
+        for (const_iterator it = mylist->begin(); it != mylist->end(); it++)
+            if ((*it)->getId() == id)
+                return mylist->flRemove(*it);
     }
     return false;
 }
@@ -191,7 +211,7 @@ Stacklist::Stacklist(Stacklist *stacklist)
 {
     for (iterator it = stacklist->begin(); it != stacklist->end(); it++)
     {
-        push_back(*it);
+        add(new Stack(**it));
     }
 }
 
@@ -205,6 +225,19 @@ Stacklist::Stacklist(XML_Helper* helper)
 
 Stacklist::~Stacklist()
 {
+  //disconnect the signals
+  for (ConnectionMap::iterator it = d_connections.begin(); 
+       it != d_connections.end(); it++)
+    {
+      std::list<sigc::connection> list = (*it).second;
+      for (std::list<sigc::connection>::iterator lit = list.begin(); lit != list.end(); lit++)
+	(*lit).disconnect();
+    }
+  for (Stacklist::iterator it = begin(); it != end(); it++)
+    {
+      it = flErase(it);
+    }
+
 }
 
 Stack* Stacklist::getNextMovable()
@@ -288,8 +321,18 @@ Stacklist::iterator Stacklist::flErase(iterator object)
     return erase(object);
 }
 
+bool Stacklist::flRemove(guint32 id)
+{
+  Stack *s = getStackById(id);
+  if (s == NULL)
+    return false;
+  return flRemove(s);
+}
+
 bool Stacklist::flRemove(Stack* object)
 {
+  if (object == NULL)
+    return false;
     debug("removing stack with id " << object->getId() << endl);
     iterator stackit = find(begin(), end(), object);
     if (stackit != end())
@@ -297,10 +340,12 @@ bool Stacklist::flRemove(Stack* object)
         if (d_activestack == object)
             d_activestack = 0;
 	assert (object->getId() == (*stackit)->getId());
+	deletePositionFromMap(object);
         delete object;
         erase(stackit);
         return true;
     }
+
     return false;
 }
 
@@ -353,7 +398,7 @@ bool Stacklist::load(string tag, XML_Helper* helper)
             d_activestack = s;
         }
 
-        push_back(s);
+        add(s);
         return true;
     }
 
@@ -404,11 +449,11 @@ bool Stacklist::canJumpOverTooLargeStack(Stack *s)
   guint32 mp = s->getGroupMoves();
   for (Path::iterator it = s->getPath()->begin(); it != s->getPath()->end(); it++)
     {
-      guint32 moves = s->calculateTileMovementCost(**it);
+      guint32 moves = s->calculateTileMovementCost(*it);
       if (moves > mp)
 	return false;
       mp -= moves;
-      Stack *another_stack = getObjectAt(**it);
+      Stack *another_stack = getObjectAt(*it);
       if (another_stack)
 	{
 	  if (another_stack->getOwner() != s->getOwner())
@@ -466,5 +511,118 @@ Hero *Stacklist::getNearestHero(Vector<int> pos, int dist)
 	}
     }
   return NULL;
+}
+
+bool Stacklist::addPositionToMap(Stack *stack)
+{
+  if (d_object1.find(stack->getPos()) == d_object1.end())
+    {
+      d_object1[stack->getPos()] = stack;
+      return true;
+    }
+
+  if (d_object2.find(stack->getPos()) == d_object2.end())
+    {
+      d_object2[stack->getPos()] = stack;
+      return true;
+    }
+  
+  return false;
+}
+
+bool Stacklist::deletePositionFromMap(Stack *stack)
+{
+  Stack *found = NULL;
+  PositionMap::iterator it = d_object1.find(stack->getPos());
+  if (it != d_object1.end())
+    {
+      found = (*it).second;
+      if (found->getId() == stack->getId())
+	{
+	  d_object1.erase(it);
+	  //d_object1[stack->getPos()] = NULL;
+	  return true;
+	}
+    }
+
+  it = d_object2.find(stack->getPos());
+  if (it != d_object2.end())
+    {
+      found = (*it).second;
+      if (found->getId() == stack->getId())
+	{
+	  //d_object2[stack->getPos()] = NULL;
+	  d_object2.erase(it);
+	  return true;
+	}
+    }
+  
+  return false;
+}
+
+void Stacklist::add(Stack *stack)
+{
+  push_back(stack);
+  if (stack->getPos() != Vector<int>(-1,-1))
+    {
+      bool added = addPositionToMap(stack);
+      if (!added)
+	assert(1 == 0);
+      std::list<sigc::connection> conn;
+      conn.push_back(stack->smoving.connect
+	 (sigc::mem_fun (this, &Stacklist::on_stack_starts_moving)));
+      conn.push_back(stack->smoved.connect
+	 (sigc::mem_fun (this, &Stacklist::on_stack_stops_moving)));
+      conn.push_back(stack->sdying.connect
+	 (sigc::mem_fun (this, &Stacklist::on_stack_died)));
+      conn.push_back(stack->sgrouped.connect
+	 (sigc::mem_fun (this, &Stacklist::on_stack_grouped)));
+      d_connections[stack] = conn;
+    }
+}
+
+void Stacklist::on_stack_grouped (Stack *stack, bool grouped)
+{
+  sgrouped.emit(stack, grouped);
+}
+void Stacklist::on_stack_died (Stack *stack)
+{
+  deletePositionFromMap(stack);
+  ConnectionMap::iterator it = d_connections.find(stack);
+  if (it != d_connections.end())
+    {
+      std::list<sigc::connection> list = (*it).second;
+      for (std::list<sigc::connection>::iterator lit = list.begin(); lit != list.end(); lit++)
+	(*lit).disconnect();
+    }
+  return;
+}
+void Stacklist::on_stack_starts_moving (Stack *stack)
+{
+  deletePositionFromMap(stack);
+  return;
+}
+void Stacklist::on_stack_stops_moving (Stack *stack)
+{
+  addPositionToMap(stack);
+  return;
+}
+void Stacklist::getObjectAt(Vector<int> pos, Stack *& s1, Stack *&s2)
+{
+  PositionMap::iterator it = d_object1.find(pos);
+  if (it == d_object1.end())
+    s1 = NULL;
+  else
+    s1 = (*it).second;
+  it = d_object2.find(pos);
+  if (it == d_object2.end())
+    s2 = NULL;
+  else
+    s2 = (*it).second;
+}
+        
+void Stacklist::setActivestack(Stack* activestack)
+{
+  d_activestack = activestack;
 }
 // End of file

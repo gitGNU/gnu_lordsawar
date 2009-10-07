@@ -58,9 +58,9 @@ class GameLobbyDialog: public Decorated
   sigc::signal<void, GameScenario *, NextTurnNetworked*> start_network_game;
 
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     //! The mini map that shows the scenario map
-    std::auto_ptr<CityMap> citymap;
+    CityMap* citymap;
     Gtk::Image *map_image;
 
     void initDialog(GameScenario *gamescenario, NextTurnNetworked *next_turn,

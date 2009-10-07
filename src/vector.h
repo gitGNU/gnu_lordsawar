@@ -1,3 +1,4 @@
+//  Copyright (C) 2009 Ben Asselstine
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 3 of the License, or
@@ -17,6 +18,7 @@
 #define VECTOR_H
 
 #include <cmath>
+#include <stdlib.h>
 
 /* A simple 2D vector structure.
  *
@@ -24,11 +26,13 @@
  * x is the axis in the left/right direction.
  * y is the axis in the up/down direction.
  */
+extern int max_vector_width;
 template <typename T>
 struct Vector
 {
   T x, y;
 
+  static void setMaximumWidth(int width) {max_vector_width = width;};
   Vector() { }
   template <typename OT>
   Vector(OT other_point_type): x(other_point_type.x), y(other_point_type.y)  { }
@@ -77,6 +81,13 @@ struct Vector
   {
     return Vector<T>(-x, -y);
   }
+
+    //size_t operator()(const Vector<T>&v) const
+      //{
+	//size_t size = v.x * max_vector_width + v.y;
+	//return size;
+      //};
+   T toIndex() {return y*max_vector_width+x; }
 };
 
 template <typename T>
@@ -126,6 +137,21 @@ inline bool operator ==(Vector<T> lhs, Vector<T> rhs)
 {
   return lhs.x == rhs.x && lhs.y == rhs.y;
 }  
+
+template <typename T>
+inline bool operator <(Vector<T> lhs, Vector<T> rhs)
+{
+  T l = lhs.y * max_vector_width + lhs.x;
+  T r = rhs.y * max_vector_width + rhs.x;
+  return r < l;
+  //char buf[15];
+  //fixme: this will break on really really large maps.
+  //snprintf (buf, sizeof buf, "%d.%d", lhs.x, lhs.y);
+  //float l = atof(buf);
+  //snprintf (buf, sizeof buf, "%d.%d", rhs.x, rhs.y);
+  //float r = atof(buf);
+  //return r < l;
+}
 
 template <>
 inline bool operator ==<double>(Vector<double> lhs, Vector<double> rhs)

@@ -26,6 +26,7 @@
 #include "armysetlist.h"
 #include "stacklist.h"
 #include "citylist.h"
+#include "city.h"
 #include <fstream>
 #include "path.h"
 #include "action.h"

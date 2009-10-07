@@ -48,9 +48,7 @@ CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/city-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
 
     xml->get_widget("capital_checkbutton", capital_checkbutton);
     capital_checkbutton->set_active(city->isCapital());
@@ -124,6 +122,10 @@ CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
 	    add_army(a);
     }
 }
+CityDialog::~CityDialog()
+{
+  delete dialog;
+}
 
 void CityDialog::set_parent_window(Gtk::Window &parent)
 {
@@ -158,7 +160,7 @@ void CityDialog::on_player_changed()
 		  //remove it from the old player's list of stacks
 		  s->getOwner()->getStacklist()->remove(s);
 		  //and give it to the new player list of stacks
-		  player->getStacklist()->push_back(s);
+		  player->getStacklist()->add(s);
 		  //change the ownership of the stack
 		  s->setPlayer(player);
 		  //and all of it's armies
@@ -230,7 +232,7 @@ void CityDialog::run()
 void CityDialog::on_add_clicked()
 {
   SelectArmyDialog d(city->getOwner());
-  d.set_parent_window(*dialog.get());
+  d.set_parent_window(*dialog);
   d.run();
 
   const ArmyProto *army = d.get_selected_army();

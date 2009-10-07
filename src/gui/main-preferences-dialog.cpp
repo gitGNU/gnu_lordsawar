@@ -36,11 +36,9 @@ MainPreferencesDialog::MainPreferencesDialog()
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/main-preferences-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     xml->get_widget("show_turn_popup_checkbutton", show_turn_popup_checkbutton);
     xml->get_widget("show_decorated_windows_checkbutton", show_decorated_windows_checkbutton);
@@ -64,6 +62,10 @@ MainPreferencesDialog::MainPreferencesDialog()
     
 }
 
+MainPreferencesDialog::~MainPreferencesDialog()
+{
+  delete dialog;
+}
 void MainPreferencesDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);

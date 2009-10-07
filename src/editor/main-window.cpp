@@ -51,17 +51,21 @@
 #include "ai_dummy.h"
 
 #include "stack.h"
-#include "city.h"
-#include "ruin.h"
 #include "signpost.h"
-#include "temple.h"
 #include "citylist.h"
+#include "city.h"
 #include "templelist.h"
+#include "temple.h"
 #include "ruinlist.h"
+#include "ruin.h"
 #include "signpostlist.h"
+#include "signpost.h"
 #include "roadlist.h"
+#include "road.h"
 #include "bridgelist.h"
+#include "bridge.h"
 #include "portlist.h"
+#include "port.h"
 #include "MapGenerator.h"
 #include "counter.h"
 
@@ -83,15 +87,17 @@
 
 MainWindow::MainWindow()
 {
+  bigmap = NULL;
+  smallmap = NULL;
+  game_scenario = NULL;
+  d_create_scenario_names = NULL;
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/main-window.ui");
 
-    Gtk::Window *w = 0;
-    xml->get_widget("window", w);
-    window.reset(w);
-    w->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
+    xml->get_widget("window", window);
+    window->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
-    w->signal_delete_event().connect(
+    window->signal_delete_event().connect(
 	sigc::mem_fun(*this, &MainWindow::on_delete_event));
 
     // the map image
@@ -263,6 +269,11 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
+  delete bigmap;
+  delete smallmap;
+  delete game_scenario;
+  delete d_create_scenario_names;
+  delete window;
 }
 
 void MainWindow::setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> xml,
@@ -341,7 +352,7 @@ void MainWindow::show()
 
 void MainWindow::on_bigmap_surface_changed(Gtk::Allocation box)
 {
-  if (!bigmap.get())
+  if (!bigmap)
     return;
   static Gtk::Allocation last_box = Gtk::Allocation(0,0,1,1);
 
@@ -421,9 +432,13 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
     GameMap::getInstance(tileset, shieldset, cityset);
     Itemlist::createStandardInstance();
 
+    if (game_scenario)
+      delete game_scenario;
     // sets up the lists
-    game_scenario.reset(new GameScenario(_("Untitled"), _("No description"), true));
-    d_create_scenario_names.reset(new CreateScenarioRandomize());
+    game_scenario = new GameScenario(_("Untitled"), _("No description"), true);
+    if (d_create_scenario_names)
+      delete d_create_scenario_names;
+    d_create_scenario_names = new CreateScenarioRandomize();
     //zip past the player IDs (+1 for neutral)
     for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
       fl_counter->getNextId();
@@ -519,8 +534,12 @@ void MainWindow::set_random_map(int width, int height,
 
     Itemlist::createStandardInstance();
     // sets up the lists
-    game_scenario.reset(new GameScenario(_("Untitled"), _("No description"), true));
-    d_create_scenario_names.reset(new CreateScenarioRandomize());
+    if (game_scenario)
+      delete game_scenario;
+    game_scenario = new GameScenario(_("Untitled"), _("No description"), true);
+    if (d_create_scenario_names)
+      delete d_create_scenario_names;
+    d_create_scenario_names = new CreateScenarioRandomize();
     
     // now fill the lists
     const Maptile::Building* build = gen.getBuildings(width, height);
@@ -529,27 +548,27 @@ void MainWindow::set_random_map(int width, int height,
 	    switch(build[j * width + i])
 	    {
 	    case Maptile::CITY:
-		Citylist::getInstance()->push_back(new City(Vector<int>(i,j)));
+		Citylist::getInstance()->add(new City(Vector<int>(i,j)));
 		(*Citylist::getInstance()->rbegin())->setOwner(
 		    Playerlist::getInstance()->getNeutral());
 		break;
 	    case Maptile::TEMPLE:
-		Templelist::getInstance()->push_back(new Temple(Vector<int>(i,j)));
+		Templelist::getInstance()->add(new Temple(Vector<int>(i,j)));
 		break;
 	    case Maptile::RUIN:
-		Ruinlist::getInstance()->push_back(new Ruin(Vector<int>(i,j)));
+		Ruinlist::getInstance()->add(new Ruin(Vector<int>(i,j)));
 		break;
 	    case Maptile::SIGNPOST:
-		Signpostlist::getInstance()->push_back(new Signpost(Vector<int>(i,j)));
+		Signpostlist::getInstance()->add(new Signpost(Vector<int>(i,j)));
 		break;
 	    case Maptile::ROAD:
-		Roadlist::getInstance()->push_back(new Road(Vector<int>(i,j)));
+		Roadlist::getInstance()->add(new Road(Vector<int>(i,j)));
 		break;
 	    case Maptile::BRIDGE:
-		Bridgelist::getInstance()->push_back(new Bridge(Vector<int>(i,j)));
+		Bridgelist::getInstance()->add(new Bridge(Vector<int>(i,j)));
 		break;
 	    case Maptile::PORT:
-		Portlist::getInstance()->push_back(new Port(Vector<int>(i,j)));
+		Portlist::getInstance()->add(new Port(Vector<int>(i,j)));
 		break;
 	    case Maptile::NONE:
 		break;
@@ -560,10 +579,26 @@ void MainWindow::set_random_map(int width, int height,
 
 void MainWindow::clear_map_state()
 {
-    bigmap.reset();
-    smallmap.reset();
-    game_scenario.reset();
-    d_create_scenario_names.reset();
+  if (bigmap)
+    {
+      delete bigmap;
+      bigmap = NULL;
+    }
+  if (smallmap)
+    {
+      delete smallmap;
+      smallmap = NULL;
+    }
+  if (game_scenario)
+    {
+      delete game_scenario;
+      game_scenario = NULL;
+    }
+  if (d_create_scenario_names)
+    {
+      delete d_create_scenario_names;
+      d_create_scenario_names = NULL;
+    }
     GraphicsCache::deleteInstance();
 }
 
@@ -571,7 +606,6 @@ void MainWindow::init_map_state()
 {
     pointer_radiobutton->set_active();
     init_maps();
-    //bigmap->screen_size_changed(Gtk::Allocation(0,0,640,480)); //fixme
 }
 
 
@@ -580,11 +614,11 @@ bool MainWindow::on_bigmap_mouse_button_event(GdkEventButton *e)
     if (e->type != GDK_BUTTON_PRESS && e->type != GDK_BUTTON_RELEASE)
 	return true;	// useless event
 
-    if (bigmap.get())
+    if (bigmap)
     {
 	button_event = e;	// save it for later use
 	bigmap->mouse_button_event(to_input_event(e));
-	if (smallmap.get())
+	if (smallmap)
 	  smallmap->draw(Playerlist::getActiveplayer());
     }
     
@@ -594,7 +628,7 @@ bool MainWindow::on_bigmap_mouse_button_event(GdkEventButton *e)
 bool MainWindow::on_bigmap_mouse_motion_event(GdkEventMotion *e)
 {
   static guint prev = 0;
-  if (bigmap.get())
+  if (bigmap)
     {
       guint delta = e->time - prev;
       if (delta > 40 || delta < 0)
@@ -610,7 +644,7 @@ bool MainWindow::on_bigmap_mouse_motion_event(GdkEventMotion *e)
 bool MainWindow::on_bigmap_key_event(GdkEventKey *e)
 {
 #if 0
-    if (bigmap.get()) {
+    if (bigmap) {
 	KeyPressEvent k;
 	bigmap->key_press_event(k);
     }
@@ -621,7 +655,7 @@ bool MainWindow::on_bigmap_key_event(GdkEventKey *e)
 
 bool MainWindow::on_bigmap_leave_event(GdkEventCrossing *e)
 {
-    if (bigmap.get())
+    if (bigmap)
     {
 	bigmap->mouse_leave_event();
     }
@@ -634,7 +668,7 @@ bool MainWindow::on_smallmap_mouse_button_event(GdkEventButton *e)
     if (e->type != GDK_BUTTON_PRESS && e->type != GDK_BUTTON_RELEASE)
 	return true;	// useless event
     
-    if (smallmap.get())
+    if (smallmap)
 	smallmap->mouse_button_event(to_input_event(e));
     
     return true;
@@ -643,7 +677,7 @@ bool MainWindow::on_smallmap_mouse_button_event(GdkEventButton *e)
 bool MainWindow::on_smallmap_mouse_motion_event(GdkEventMotion *e)
 {
   static guint prev = 0;
-  if (smallmap.get())
+  if (smallmap)
     {
       guint delta = e->time - prev;
       if (delta > 100 || delta < 0)
@@ -661,7 +695,7 @@ void MainWindow::on_new_map_activated()
     current_save_filename = "";
 
     NewMapDialog d;
-    d.set_parent_window(*window.get());
+    d.set_parent_window(*window);
     d.run();
 
     if (d.map_set)
@@ -682,7 +716,7 @@ void MainWindow::on_new_map_activated()
 
 void MainWindow::on_load_map_activated()
 {
-    Gtk::FileChooserDialog chooser(*window.get(), _("Choose Map to Load"));
+    Gtk::FileChooserDialog chooser(*window, _("Choose Map to Load"));
     Gtk::FileFilter sav_filter;
     sav_filter.add_pattern("*.map");
     chooser.set_filter(sav_filter);
@@ -703,8 +737,12 @@ void MainWindow::on_load_map_activated()
 	clear_map_state();
 
 	bool broken;
-	game_scenario.reset(new GameScenario(current_save_filename, broken));
-	d_create_scenario_names.reset(new CreateScenarioRandomize());
+	if (game_scenario)
+	  delete game_scenario;
+	game_scenario = new GameScenario(current_save_filename, broken);
+	if (d_create_scenario_names)
+	  delete d_create_scenario_names;
+	d_create_scenario_names = new CreateScenarioRandomize();
 
 	if (broken)
 	{
@@ -715,6 +753,7 @@ void MainWindow::on_load_map_activated()
 	}
 
 	init_map_state();
+	bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
     }
 }
 
@@ -732,7 +771,7 @@ void MainWindow::on_save_map_activated()
 
 void MainWindow::on_export_as_bitmap_activated()
 {
-    Gtk::FileChooserDialog chooser(*window.get(), _("Choose a Name"),
+    Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
 				   Gtk::FILE_CHOOSER_ACTION_SAVE);
     Gtk::FileFilter sav_filter;
     sav_filter.add_pattern("*.png");
@@ -760,7 +799,7 @@ void MainWindow::on_export_as_bitmap_activated()
 
 void MainWindow::on_export_as_bitmap_no_game_objects_activated()
 {
-    Gtk::FileChooserDialog chooser(*window.get(), _("Choose a Name"),
+    Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
 				   Gtk::FILE_CHOOSER_ACTION_SAVE);
     Gtk::FileFilter sav_filter;
     sav_filter.add_pattern("*.png");
@@ -788,7 +827,7 @@ void MainWindow::on_export_as_bitmap_no_game_objects_activated()
 
 void MainWindow::on_save_map_as_activated()
 {
-    Gtk::FileChooserDialog chooser(*window.get(), _("Choose a Name"),
+    Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
 				   Gtk::FILE_CHOOSER_ACTION_SAVE);
     Gtk::FileFilter sav_filter;
     sav_filter.add_pattern("*.map");
@@ -826,14 +865,14 @@ void MainWindow::on_quit_activated()
 void MainWindow::on_edit_players_activated()
 {
     PlayersDialog d(d_width, d_height);
-    d.set_parent_window(*window.get());
+    d.set_parent_window(*window);
     d.run();
 }
 
 void MainWindow::on_edit_map_info_activated()
 {
-    MapInfoDialog d(game_scenario.get());
-    d.set_parent_window(*window.get());
+    MapInfoDialog d(game_scenario);
+    d.set_parent_window(*window);
     d.run();
 }
 
@@ -990,7 +1029,7 @@ void MainWindow::on_pointer_radiobutton_toggled()
 	}
     }
     
-    if (bigmap.get())
+    if (bigmap)
 	bigmap->set_pointer(pointer, size, get_terrain(),
 			    get_tile_style_id());
     terrain_type_table->set_sensitive(pointer == EditorBigMap::TERRAIN);
@@ -1063,7 +1102,9 @@ void MainWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map, Gdk::Rectang
 void MainWindow::init_maps()
 {
     // init the bigmap
-    bigmap.reset(new EditorBigMap);
+    if (bigmap)
+      delete bigmap;
+    bigmap = new EditorBigMap;
     bigmap->mouse_on_tile.connect(
 	sigc::mem_fun(this, &MainWindow::on_mouse_on_tile));
     bigmap->objects_selected.connect(
@@ -1074,17 +1115,19 @@ void MainWindow::init_maps()
     bigmap->toggle_grid();
     
     // init the smallmap
-    smallmap.reset(new SmallMap);
+    if (smallmap)
+      delete smallmap;
+    smallmap =new SmallMap;
     smallmap->map_changed.connect(
 	sigc::mem_fun(this, &MainWindow::on_smallmap_changed));
 
     // connect the two maps
     bigmap->view_changed.connect(
-	sigc::mem_fun(smallmap.get(), &SmallMap::set_view));
+	sigc::mem_fun(smallmap, &SmallMap::set_view));
     bigmap->map_tiles_changed.connect(
-	sigc::mem_fun(smallmap.get(), &SmallMap::redraw_tiles));
+	sigc::mem_fun(smallmap, &SmallMap::redraw_tiles));
     smallmap->view_changed.connect(
-	sigc::mem_fun(bigmap.get(), &EditorBigMap::set_view));
+	sigc::mem_fun(bigmap, &EditorBigMap::set_view));
 
     smallmap->resize(GameMap::get_dim() * 2);
 }
@@ -1141,7 +1184,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
     if (Stack *o = dynamic_cast<Stack *>(object))
     {
 	StackDialog d(o);
-	d.set_parent_window(*window.get());
+	d.set_parent_window(*window);
 	d.run();
 
 	// we might have changed something visible
@@ -1150,8 +1193,8 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
     }
     else if (City *o = dynamic_cast<City *>(object))
     {
-	CityDialog d(o, d_create_scenario_names.get());
-	d.set_parent_window(*window.get());
+	CityDialog d(o, d_create_scenario_names);
+	d.set_parent_window(*window);
 	d.run();
 
 	// we might have changed something visible
@@ -1160,20 +1203,20 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
     }
     else if (Ruin *o = dynamic_cast<Ruin *>(object))
     {
-	RuinDialog d(o, d_create_scenario_names.get());
-	d.set_parent_window(*window.get());
+	RuinDialog d(o, d_create_scenario_names);
+	d.set_parent_window(*window);
 	d.run();
     }
     else if (Signpost *o = dynamic_cast<Signpost *>(object))
     {
-	SignpostDialog d(o, d_create_scenario_names.get());
-	d.set_parent_window(*window.get());
+	SignpostDialog d(o, d_create_scenario_names);
+	d.set_parent_window(*window);
 	d.run();
     }
     else if (Temple *o = dynamic_cast<Temple *>(object))
     {
-	TempleDialog d(o, d_create_scenario_names.get());
-	d.set_parent_window(*window.get());
+	TempleDialog d(o, d_create_scenario_names);
+	d.set_parent_window(*window);
 	d.run();
 
 	// we might have changed something visible
@@ -1196,14 +1239,14 @@ void MainWindow::on_smooth_screen_activated()
 void MainWindow::on_edit_items_activated()
 {
   ItemlistDialog d;
-  d.set_parent_window(*window.get());
+  d.set_parent_window(*window);
   d.run();
 }
 
 void MainWindow::on_edit_rewards_activated()
 {
   RewardlistDialog d;
-  d.set_parent_window(*window.get());
+  d.set_parent_window(*window);
   d.run();
 }
 
@@ -1326,21 +1369,20 @@ void MainWindow::on_random_unnamed_signs_activated()
 
 void MainWindow::on_help_about_activated()
 {
-  std::auto_ptr<Gtk::AboutDialog> dialog;
+  Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path() + "/../about-dialog.ui");
 
-  Gtk::AboutDialog *d;
-  xml->get_widget("dialog", d);
-  dialog.reset(d);
-  dialog->set_transient_for(*window.get());
-  d->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
+  xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(*window);
+  dialog->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
   dialog->set_logo(GraphicsLoader::getMiscPicture("castle_icon.png")->to_pixbuf());
   dialog->show_all();
   dialog->run();
+  delete dialog;
 
   return;
 }
@@ -1364,7 +1406,7 @@ void MainWindow::on_validate_activated()
     s += String::ucompose(ngettext("\nThere is %1 more error", "\nThere are %1 more errors", errors.size() - 1), errors.size() - 1);
   if (warnings.size())
     s += String::ucompose(ngettext("\nThere is %1 warning", "\nThere are %1 warnings", warnings.size()), warnings.size());
-  TimedMessageDialog dialog(*window.get(), s, 0);
+  TimedMessageDialog dialog(*window, s, 0);
   dialog.show_all();
   dialog.run();
   dialog.hide();

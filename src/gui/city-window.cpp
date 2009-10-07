@@ -46,22 +46,21 @@
 CityWindow::CityWindow(City *c, bool razing_possible, 
 		       bool see_opponents_production)
 {
+  army_info_tip = NULL;
     city = c;
     
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/city-window.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
     set_title(c->getName());
     
     xml->get_widget("map_image", map_image);
 
-    prodmap.reset(new VectorMap(c, VectorMap::SHOW_ORIGIN_CITY_VECTORING,
-		  see_opponents_production));
+    prodmap = new VectorMap(c, VectorMap::SHOW_ORIGIN_CITY_VECTORING,
+		  see_opponents_production);
     prodmap->map_changed.connect(
 	sigc::mem_fun(this, &CityWindow::on_map_changed));
 
@@ -116,6 +115,14 @@ CityWindow::CityWindow(City *c, bool razing_possible,
     fill_in_production_toggles();
 
     ignore_toggles = false;
+}
+
+CityWindow::~CityWindow()
+{
+  delete dialog;
+  delete prodmap;
+  if (army_info_tip != NULL)
+    delete army_info_tip;
 }
 
 bool CityWindow::on_map_mouse_button_event(GdkEventButton *e)
@@ -357,12 +364,22 @@ bool CityWindow::on_production_button_event(GdkEventButton *e, Gtk::ToggleButton
 	const ArmyProdBase *prodbase = city->getProductionBase(slot);
 
 	if (prodbase)
-	    army_info_tip.reset(new ArmyInfoTip(toggle, prodbase, city));
+	  {
+	    if (army_info_tip != NULL)
+		delete army_info_tip;
+	    army_info_tip = new ArmyInfoTip(toggle, prodbase, city);
+	  }
 	return true;
     }
     else if (event.button == MouseButtonEvent::RIGHT_BUTTON
 	     && event.state == MouseButtonEvent::RELEASED) {
-	army_info_tip.reset();
+	{
+	  if (army_info_tip != NULL)
+	    {
+	      delete army_info_tip;
+	      army_info_tip = NULL;
+	    }
+	}
 	return true;
     }
     
@@ -385,7 +402,7 @@ void CityWindow::on_on_hold_clicked() //stop button
 void CityWindow::on_buy_clicked()
 {
     BuyProductionDialog d(city);
-    d.set_parent_window(*dialog.get());
+    d.set_parent_window(*dialog);
     d.run();
 
     int army = d.get_selected_army();
@@ -414,7 +431,7 @@ void CityWindow::on_buy_clicked()
 void CityWindow::on_destination_clicked()
 {
     DestinationDialog d(city, &d_see_all);
-    d.set_parent_window(*dialog.get());
+    d.set_parent_window(*dialog);
     d.run();
     fill_in_production_info();
     prodmap->draw(Playerlist::getActiveplayer());
@@ -427,18 +444,16 @@ void CityWindow::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
 
 void CityWindow::on_rename_clicked ()
 {
-    std::auto_ptr<Gtk::Dialog> renamedialog;
+    Gtk::Dialog* subdialog;
     
     Glib::RefPtr<Gtk::Builder> renamexml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/city-rename-dialog.ui");
 	
-    Gtk::Dialog *d;
-    renamexml->get_widget("dialog", d);
-    renamedialog.reset(d);
+    renamexml->get_widget("dialog", subdialog);
     Decorated decorator;
-    decorator.decorate(renamedialog.get());
-    decorator.window_closed.connect(sigc::mem_fun(renamedialog.get(), &Gtk::Dialog::hide));
-    renamedialog->set_transient_for(*dialog.get());
+    decorator.decorate(subdialog);
+    decorator.window_closed.connect(sigc::mem_fun(subdialog, &Gtk::Dialog::hide));
+    subdialog->set_transient_for(*dialog);
     
     Glib::ustring s = _("Rename City");
 
@@ -452,37 +467,37 @@ void CityWindow::on_rename_clicked ()
     l->set_text(s);
 
     e->set_text(city->getName());
-    d->show_all();
-    int response = d->run();
+    subdialog->show_all();
+    int response = subdialog->run();
 
     if (response == Gtk::RESPONSE_ACCEPT)		// changed city name
       {
         Playerlist::getActiveplayer()->cityRename(city, e->get_text());
         fill_in_city_info();
       }
+    subdialog->hide();
+    delete subdialog;
   return;
 }
 
 void CityWindow::on_raze_clicked ()
 {
-  on_raze_clicked (city, dialog.get());
+  on_raze_clicked (city, dialog);
 }
 
 bool CityWindow::on_raze_clicked (City *city, Gtk::Dialog *parent)
 {
-    std::auto_ptr<Gtk::Dialog> razedialog;
+    Gtk::Dialog* subdialog;
     
     Glib::RefPtr<Gtk::Builder> razexml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/city-raze-dialog.ui");
 	
-    Gtk::Dialog *d;
-    razexml->get_widget("dialog", d);
-    razedialog.reset(d);
+    razexml->get_widget("dialog", subdialog);
     Decorated decorator;
-    decorator.decorate(razedialog.get());
-    decorator.window_closed.connect(sigc::mem_fun(razedialog.get(), &Gtk::Dialog::hide));
-    razedialog->set_transient_for(*parent);
-    d->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+    decorator.decorate(subdialog);
+    decorator.window_closed.connect(sigc::mem_fun(subdialog, &Gtk::Dialog::hide));
+    subdialog->set_transient_for(*parent);
+    subdialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     
     Glib::ustring s = _("Raze City");
 
@@ -496,8 +511,10 @@ bool CityWindow::on_raze_clicked (City *city, Gtk::Dialog *parent)
     s += _("You won't be popular!");
     l->set_text(s);
 
-    d->show_all();
-    int response = d->run();
+    subdialog->show_all();
+    int response = subdialog->run();
+    subdialog->hide();
+    delete subdialog;
 
     if (response == Gtk::RESPONSE_ACCEPT) // burn it to the ground ralphie boy!
       {

@@ -58,16 +58,14 @@ SplashWindow::SplashWindow()
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/splash-window.ui");
 
-    Gtk::Window *w = 0;
-    xml->get_widget("window", w);
-    window.reset(w);
+    xml->get_widget("window", window);
     window->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
-    decorate(window.get(), File::getMiscFile("various/back.bmp"));
+    decorate(window, File::getMiscFile("various/back.bmp"));
     window_closed.connect(sigc::mem_fun(this, &SplashWindow::on_window_closed));
 
     xml->get_widget("sdl_container", sdl_container);
-    w->signal_delete_event().connect(
-	sigc::mem_fun(*this, &SplashWindow::on_delete_event));
+    window->signal_delete_event().connect
+      (sigc::mem_fun(*this, &SplashWindow::on_delete_event));
     
     // load background
     Gtk::Image *splash_image
@@ -136,6 +134,7 @@ SplashWindow::~SplashWindow()
 {
     Sound::deleteInstance();
     //clearData();
+    delete window;
 }
 
 void SplashWindow::show()
@@ -178,7 +177,7 @@ void SplashWindow::on_rescue_crashed_game_clicked()
 
 void SplashWindow::on_load_game_clicked()
 {
-    Gtk::FileChooserDialog chooser(*window.get(), _("Choose Game to Load"));
+    Gtk::FileChooserDialog chooser(*window, _("Choose Game to Load"));
     Gtk::FileFilter sav_filter;
     sav_filter.add_pattern("*.sav");
     chooser.set_filter(sav_filter);
@@ -204,13 +203,11 @@ void SplashWindow::on_new_network_game_clicked()
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path() + 
 				"/new-network-game-dialog.ui");
-  std::auto_ptr<Gtk::Dialog> dialog;
-  Gtk::Dialog *d;
+  Gtk::Dialog* dialog;
   Gtk::RadioButton *client_radiobutton;
-  xml->get_widget("dialog", d);
-  dialog.reset(d);
+  xml->get_widget("dialog", dialog);
   xml->get_widget("client_radiobutton", client_radiobutton);
-  dialog->set_transient_for(*window.get());
+  dialog->set_transient_for(*window);
   Gtk::Entry *nick_entry;
   xml->get_widget("nick_entry", nick_entry);
   std::string nick;
@@ -224,6 +221,7 @@ void SplashWindow::on_new_network_game_clicked()
   nick_entry->set_activates_default(true);
   int response = dialog->run();
   dialog->hide();
+  delete dialog;
   if (response == Gtk::RESPONSE_ACCEPT) //we hit connect
     {
       network_game_nickname = nick_entry->get_text();
@@ -237,7 +235,7 @@ void SplashWindow::on_new_network_game_clicked()
 	{
 	  //okay, we're a server.
 	  LoadScenarioDialog d;
-	  d.set_parent_window(*window.get());
+	  d.set_parent_window(*window);
 	  d.run();
 	  std::string filename = d.get_scenario_filename();
 	  if (filename.empty())
@@ -246,7 +244,7 @@ void SplashWindow::on_new_network_game_clicked()
 	  if (filename == "random.map")
 	    {
 	      NewRandomMapDialog nrmd;
-	      nrmd.set_parent_window(*window.get());
+	      nrmd.set_parent_window(*window);
 	      int res = nrmd.run();
 	      if (res == Gtk::RESPONSE_ACCEPT)
 		{
@@ -259,7 +257,7 @@ void SplashWindow::on_new_network_game_clicked()
 
 	  GamePreferencesDialog gpd(filename, GameScenario::NETWORKED);
 
-	  gpd.set_parent_window(*window.get());
+	  gpd.set_parent_window(*window);
 	  gpd.set_title(_("New Networked Game"));
 	  gpd.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_network_game_created));
 	  gpd.run(network_game_nickname);
@@ -273,7 +271,7 @@ void SplashWindow::on_new_network_game_clicked()
 void SplashWindow::on_new_pbm_game_clicked()
 {
   LoadScenarioDialog d;
-  d.set_parent_window(*window.get());
+  d.set_parent_window(*window);
   d.run();
 
   std::string filename = d.get_scenario_filename();
@@ -283,7 +281,7 @@ void SplashWindow::on_new_pbm_game_clicked()
   if (filename == "random.map")
     {
       NewRandomMapDialog nrmd;
-      nrmd.set_parent_window(*window.get());
+      nrmd.set_parent_window(*window);
       int res = nrmd.run();
       if (res == Gtk::RESPONSE_ACCEPT)
 	{
@@ -295,7 +293,7 @@ void SplashWindow::on_new_pbm_game_clicked()
     }
   GamePreferencesDialog gpd(filename, GameScenario::PLAY_BY_MAIL);
 
-  gpd.set_parent_window(*window.get());
+  gpd.set_parent_window(*window);
   gpd.set_title(_("New Play By Mail game"));
   gpd.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_pbm_game_created));
   gpd.run();
@@ -306,7 +304,7 @@ void SplashWindow::on_load_scenario_clicked()
 {
   LoadScenarioDialog d;
 
-  d.set_parent_window(*window.get());
+  d.set_parent_window(*window);
 
   d.run();
 
@@ -317,7 +315,7 @@ void SplashWindow::on_load_scenario_clicked()
       if (filename == "random.map")
 	{
 	  NewRandomMapDialog nrmd;
-	  nrmd.set_parent_window(*window.get());
+	  nrmd.set_parent_window(*window);
 	  int res = nrmd.run();
 	  if (res == Gtk::RESPONSE_ACCEPT)
 	    {
@@ -328,7 +326,7 @@ void SplashWindow::on_load_scenario_clicked()
 	    return;
 	}
       GamePreferencesDialog gp(filename, GameScenario::HOTSEAT);
-      gp.set_parent_window(*window.get());
+      gp.set_parent_window(*window);
       gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_game_started));
 
       gp.run();
@@ -371,12 +369,12 @@ void SplashWindow::on_preferences_clicked()
 {
   bool saved = Configuration::s_decorated;
   MainPreferencesDialog d;
-  d.set_parent_window(*window.get());
+  d.set_parent_window(*window);
   d.run();
   d.hide();
   if (saved != Configuration::s_decorated)
     {
-      TimedMessageDialog dialog(*window.get(), _("Please exit the program and restart it for the changes to take effect."), 30);
+      TimedMessageDialog dialog(*window, _("Please exit the program and restart it for the changes to take effect."), 30);
       dialog.run();
     }
 }

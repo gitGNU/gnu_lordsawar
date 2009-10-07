@@ -32,6 +32,7 @@
 #include "File.h"
 #include "GameMap.h"
 #include "citylist.h"
+#include "city.h"
 #include "playerlist.h"
 #include "history.h"
 #include "network-history.h"
@@ -44,16 +45,14 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
     = Gtk::Builder::create_from_file(get_glade_path()
 				+ "/history-report-dialog.ui");
 
-  Gtk::Dialog *d = 0;
-  xml->get_widget("dialog", d);
-  dialog.reset(d);
-  decorate(dialog.get());
+  xml->get_widget("dialog", dialog);
+  decorate(dialog);
 
   generatePastCitylists();
   generatePastEventlists();
 
   xml->get_widget("map_image", map_image);
-  historymap.reset(new HistoryMap(Citylist::getInstance()));
+  historymap = new HistoryMap(Citylist::getInstance());
   historymap->map_changed.connect
     (sigc::mem_fun(this, &HistoryReportDialog::on_map_changed));
 
@@ -134,6 +133,8 @@ HistoryReportDialog::~HistoryReportDialog()
       for (; hit != hist.end(); hit++)
 	delete (*hit);
     }
+  delete dialog;
+  delete historymap;
 }
 
 void HistoryReportDialog::generatePastEventlists()

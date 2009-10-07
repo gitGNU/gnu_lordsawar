@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,14 +15,15 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <assert.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include "vectoredunitlist.h"
 #include "vectoredunit.h"
-#include "citylist.h"
 #include "city.h"
 #include "xmlhelper.h"
 #include "player.h"
+#include "GameMap.h"
 
 std::string VectoredUnitlist::d_tag = "vectoredunitlist";
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -106,12 +107,11 @@ bool VectoredUnitlist::load(std::string tag, XML_Helper* helper)
 
 void VectoredUnitlist::nextTurn(Player* p)
 {
-  Citylist *cl = Citylist::getInstance();
   debug("next_turn(" <<p->getName() <<")");
 
   for (VectoredUnitlist::iterator it = begin(); it != end(); it++)
     {
-      City *c = cl->getObjectAt((*it)->getPos());
+      City *c = GameMap::getCity((*it)->getPos());
       if (c)
 	{
 	  if (c->getOwner() == p)
@@ -135,6 +135,7 @@ void VectoredUnitlist::nextTurn(Player* p)
 bool VectoredUnitlist::removeVectoredUnitsGoingTo(Vector<int> pos)
 {
   bool found = false;
+  printf ("trying to remove vectored units going to %d,%d\n", pos.x, pos.y);
   for (VectoredUnitlist::iterator it = begin(); it != end();)
     {
       if ((*it)->getDestination() == pos)
@@ -145,6 +146,16 @@ bool VectoredUnitlist::removeVectoredUnitsGoingTo(Vector<int> pos)
 	}
       it++;
     }
+  /*
+  for (VectoredUnitlist::iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getDestination() == pos)
+	{
+	  printf ("crap.  it's still there!!\n");
+	  exit(0);
+	}
+    }
+  */
   return found;
 }
 
@@ -195,9 +206,11 @@ bool VectoredUnitlist::removeVectoredUnitsGoingTo(City *c)
 	}
       it++;
     }
-  printf ("got another %d\n", counter);
   if (counter)
+    {
+  printf ("got another %d\n", counter);
     exit(0);
+    }
     }
   return found;
 }
@@ -262,13 +275,19 @@ guint32 VectoredUnitlist::getNumberOfVectoredUnitsGoingTo(Vector<int> pos)
   return count;
 }
 
-void VectoredUnitlist::changeDestination(City *c, Vector<int> new_dest)
+bool VectoredUnitlist::changeDestination(City *c, Vector<int> new_dest)
 {
+  bool found = false;
   for (VectoredUnitlist::iterator it = begin(); it != end(); it++)
     {
       if (c->contains((*it)->getPos()))
-	(*it)->setDestination(new_dest);
+	{
+	  assert (c->getOwner() == (*it)->getOwner());
+	  (*it)->setDestination(new_dest);
+	  found = true;
+	}
     }
+  return found;
 }
 
 VectoredUnitlist::iterator VectoredUnitlist::flErase(iterator object)

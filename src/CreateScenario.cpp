@@ -32,14 +32,21 @@
 #include "playerlist.h"
 #include "stacklist.h"
 #include "citylist.h"
+#include "city.h"
 #include "ruinlist.h"
+#include "ruin.h"
 #include "rewardlist.h"
 #include "Itemlist.h"
 #include "templelist.h"
+#include "temple.h"
 #include "signpostlist.h"
+#include "signpost.h"
 #include "portlist.h"
+#include "port.h"
 #include "bridgelist.h"
+#include "bridge.h"
 #include "roadlist.h"
+#include "road.h"
 #include "armysetlist.h"
 
 #include "real_player.h"
@@ -407,27 +414,27 @@ bool CreateScenario::createMap()
             switch (map[y*d_width + x])
             {
                 case Maptile::SIGNPOST:
-                    Signpostlist::getInstance()->push_back(new Signpost(Vector<int>(x,y)));
+                    Signpostlist::getInstance()->add(new Signpost(Vector<int>(x,y)));
                     break;
                 case Maptile::TEMPLE:
-                    Templelist::getInstance()->push_back
+                    Templelist::getInstance()->add
 		      (new Temple(Vector<int>(x,y), popRandomTempleName()));
                     break;
                 case Maptile::RUIN:
-		    Ruinlist::getInstance()->push_back
+		    Ruinlist::getInstance()->add
 		      (new Ruin(Vector<int>(x,y), popRandomRuinName()));
 		    break;
                 case Maptile::CITY:
-                    Citylist::getInstance()->push_back(new City(Vector<int>(x,y)));
+                    Citylist::getInstance()->add(new City(Vector<int>(x,y)));
                     break;
                 case Maptile::ROAD:
-                    Roadlist::getInstance()->push_back(new Road(Vector<int>(x,y)));
+                    Roadlist::getInstance()->add(new Road(Vector<int>(x,y)));
                     break;
                 case Maptile::PORT:
-                    Portlist::getInstance()->push_back(new Port(Vector<int>(x,y)));
+                    Portlist::getInstance()->add(new Port(Vector<int>(x,y)));
                     break;
                 case Maptile::BRIDGE:
-                    Bridgelist::getInstance()->push_back(new Bridge(Vector<int>(x,y)));
+                    Bridgelist::getInstance()->add(new Bridge(Vector<int>(x,y)));
                     break;
                 case Maptile::NONE:
 		    break;

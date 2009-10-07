@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 #ifndef FOGMAP_H
 #define FOGMAP_H
 
+#include <list>
 #include "vector.h"
 
 class XML_Helper;
@@ -139,11 +140,14 @@ class FogMap
 	 * @return True if the position is obscured due to fog, false if not.
 	 */
 	static bool isFogged(Vector <int> pos, Player *player);
-	static bool isClear(Vector <int> pos, Player *player);
+	static bool isClear(Vector <int> pos, Player *player) ;
 
-	bool isCompletelyObscuredFogTile(Vector<int> pos);
+	bool isCompletelyObscuredFogTile(Vector<int> pos) const;
 
     private:
+	bool calculateCompletelyObscuredFogTile(Vector<int> pos);
+
+	void updateCompletelyObscuredFogTiles();
         // Data
 	//! The width of the fog map.
         int d_width;
@@ -153,6 +157,9 @@ class FogMap
 
 	//! An array of tiles that describe how a tile is fogged.
         FogType * d_fogmap;
+
+	//! A list of tiles that are completely obscured.
+	std::list<Vector<int> > completely_obscured;
 };
 
 #endif

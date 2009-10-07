@@ -38,7 +38,6 @@
 #include "Backpack.h"
 #include "MapBackpack.h"
 #include "history.h"
-#include "stacklist.h"
 
 HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 {
@@ -50,23 +49,21 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/hero-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
     xml->get_widget("map_image", map_image);
 
     std::list<Hero*> heroes;
-    heroes = Playerlist::getActiveplayer()->getStacklist()->getHeroes();
-    heroesmap.reset(new HeroesMap(heroes));
+    heroes = Playerlist::getActiveplayer()->getHeroes();
+    heroesmap = new HeroesMap(heroes);
     if (hero)
       heroesmap->setSelectedHero(hero);
     else
       {
 	Player *p = Playerlist::getActiveplayer();
 	hero = *heroes.begin();
-	pos = p->getStacklist()->getPosition(hero->getId());
+	pos = p->getPositionOfArmyById(hero->getId());
 	heroesmap->setSelectedHero(hero);
       }
     heroesmap->map_changed.connect(
@@ -141,6 +138,11 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
     on_item_selection_changed();
 }
 
+HeroDialog::~HeroDialog()
+{
+  delete heroesmap;
+  delete dialog;
+}
 void HeroDialog::addHistoryEvent(History *history)
 {
   Glib::ustring s = "";
@@ -259,7 +261,7 @@ void HeroDialog::update_hero_list()
 {
   inhibit_hero_changed = true;
     std::list<Hero*> heroes;
-    heroes = Playerlist::getActiveplayer()->getStacklist()->getHeroes();
+    heroes = Playerlist::getActiveplayer()->getHeroes();
     guint32 count = 0;
     for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end();
 	 it++)
@@ -286,7 +288,7 @@ void HeroDialog::on_hero_changed()
     {
       Gtk::TreeModel::Row row = *iterrow;
       hero = row[heroes_columns.hero];
-      pos = Playerlist::getActiveplayer()->getStacklist()->getPosition(hero->getId());
+      pos = Playerlist::getActiveplayer()->getPositionOfArmyById(hero->getId());
       heroesmap->setSelectedHero(hero);
       show_hero();
       heroesmap->draw(Playerlist::getActiveplayer());
@@ -326,7 +328,7 @@ void HeroDialog::on_drop_clicked()
 void HeroDialog::on_next_clicked()
 {
   std::list<Hero*> heroes;
-  heroes = Playerlist::getActiveplayer()->getStacklist()->getHeroes();
+  heroes = Playerlist::getActiveplayer()->getHeroes();
   std::list<Hero*>::iterator next;
   next = find (heroes.begin(), heroes.end(), hero);
   if (next != heroes.end())
@@ -344,7 +346,7 @@ void HeroDialog::on_next_clicked()
 void HeroDialog::on_prev_clicked()
 {
   std::list<Hero*> heroes;
-  heroes = Playerlist::getActiveplayer()->getStacklist()->getHeroes();
+  heroes = Playerlist::getActiveplayer()->getHeroes();
   std::list<Hero*>::reverse_iterator prev;
   prev = find (heroes.rbegin(), heroes.rend(), hero);
   if (prev != heroes.rend())
@@ -463,7 +465,7 @@ bool HeroDialog::on_map_mouse_button_event(GdkEventButton *e)
     heroesmap->mouse_button_event(to_input_event(e));
     
     hero = heroesmap->getSelectedHero();
-    pos = Playerlist::getActiveplayer()->getStacklist()->getPosition(hero->getId());
+    pos = Playerlist::getActiveplayer()->getPositionOfArmyById(hero->getId());
     show_hero();
     heroesmap->draw(Playerlist::getActiveplayer());
     update_hero_list();

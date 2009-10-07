@@ -43,9 +43,8 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
 
   Gtk::Dialog *d = 0;
   xml->get_widget("dialog", d);
-  dialog.reset(d);
-  decorate(dialog.get());
-  window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+  decorate(dialog);
+  window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
   xml->get_widget("proposals_table", d_proposals_table);
   xml->get_widget("offers_table", d_offers_table);
@@ -215,6 +214,10 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
     }
 }
 
+DiplomacyDialog::~DiplomacyDialog()
+{
+  delete dialog;
+}
 void DiplomacyDialog::on_proposal_toggled (Gtk::ToggleButton *toggle, 
 					   Player *player, 
 					   Player::DiplomaticProposal proposal)
@@ -233,7 +236,7 @@ void DiplomacyDialog::set_parent_window(Gtk::Window &parent)
 void DiplomacyDialog::on_report_clicked()
 {
   DiplomacyReportDialog d(d_player);
-  d.set_parent_window(*dialog.get());
+  d.set_parent_window(*dialog);
   d.run();
   d.hide();
 }

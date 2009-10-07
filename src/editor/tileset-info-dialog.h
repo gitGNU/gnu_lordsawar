@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ class TileSetInfoDialog: public sigc::trackable
 {
  public:
     TileSetInfoDialog(Tileset *tileset);
+    ~TileSetInfoDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -35,7 +36,7 @@ class TileSetInfoDialog: public sigc::trackable
     
  private:
     Tileset *d_tileset;
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     Gtk::Entry *name_entry;
     Gtk::TextView *description_textview;
     Gtk::ColorButton *road_colorbutton;

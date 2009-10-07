@@ -40,11 +40,9 @@ LoadScenarioDialog::LoadScenarioDialog()
     = Gtk::Builder::create_from_file(get_glade_path()
 				+ "/load-scenario-dialog.ui");
 
-  Gtk::Dialog *d = 0;
-  xml->get_widget("dialog", d);
-  dialog.reset(d);
-  decorate(dialog.get());
-  window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+  xml->get_widget("dialog", dialog);
+  decorate(dialog);
+  window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
   xml->get_widget("name_label", name_label);
   xml->get_widget("description_label", description_label);
@@ -83,6 +81,11 @@ LoadScenarioDialog::LoadScenarioDialog()
   row = scenarios_treeview->get_model()->children()[0];
   if(row)
     scenarios_treeview->get_selection()->select(row);
+}
+
+LoadScenarioDialog::~LoadScenarioDialog()
+{
+  delete dialog;
 }
 
 void LoadScenarioDialog::set_parent_window(Gtk::Window &parent)

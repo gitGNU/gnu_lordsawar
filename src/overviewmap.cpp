@@ -88,8 +88,6 @@ bool OverviewMap::isShadowed(guint32 type, int i, int j)
 static int 
 prand(int i, int j)
 {
-  unsigned int x = i;
-  unsigned int y = j;
   return (rand () % 3);
 }
 

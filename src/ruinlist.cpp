@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001 Michael Bartl
 // Copyright (C) 2001, 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004 John Farrell
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -87,7 +87,7 @@ bool Ruinlist::load(std::string tag, XML_Helper* helper)
     if (tag != Ruin::d_tag)
         return false;
 
-    push_front(new Ruin(helper));
+    add(new Ruin(helper));
 
     //! since the ruin has only now been copied to its final state, we need
     //to register the callback for the occupants here.

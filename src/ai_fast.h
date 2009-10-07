@@ -30,6 +30,7 @@
 #include "AI_Diplomacy.h"
 
 class XML_Helper;
+class City;
 
 
 //! A simple artificial intelligence Player.

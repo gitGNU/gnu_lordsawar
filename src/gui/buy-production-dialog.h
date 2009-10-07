@@ -35,6 +35,7 @@ class BuyProductionDialog: public Decorated
 {
  public:
     BuyProductionDialog(City *city);
+    ~BuyProductionDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -45,8 +46,8 @@ class BuyProductionDialog: public Decorated
     int get_selected_army() { return selected_army == NO_ARMY_SELECTED ? NO_ARMY_SELECTED : purchasables[selected_army]->getTypeId(); }
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
-    std::auto_ptr<ArmyInfoTip> army_info_tip;
+    Gtk::Dialog* dialog;
+    ArmyInfoTip* army_info_tip;
     Gtk::Label *production_info_label1;
     Gtk::Label *production_info_label2;
     Gtk::Button *buy_button;

@@ -1,6 +1,6 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -108,5 +108,61 @@ bool Maptile::isHillyTerrain()
   if ((getType() == Tile::HILLS || getType() == Tile::MOUNTAIN))
     return true;
   return false;
+}
+
+std::string Maptile::buildingToString(const Maptile::Building bldg)
+{
+  switch (bldg)
+    {
+    case Maptile::NONE:
+      return "Maptile::NONE";
+      break;
+    case Maptile::CITY:
+      return "Maptile::CITY";
+      break;
+    case Maptile::RUIN:
+      return "Maptile::RUIN";
+      break;
+    case Maptile::TEMPLE:
+      return "Maptile::TEMPLE";
+      break;
+    case Maptile::SIGNPOST:
+      return "Maptile::SIGNPOST";
+      break;
+    case Maptile::ROAD:
+      return "Maptile::ROAD";
+      break;
+    case Maptile::PORT:
+      return "Maptile::PORT";
+      break;
+    case Maptile::BRIDGE:
+      return "Maptile::BRIDGE";
+      break;
+    }
+  return "Maptile::NONE";
+}
+
+Maptile::Building Maptile::buildingFromString(std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return Maptile::Building(atoi(str.c_str()));
+  if (str == "Maptile::NONE")
+    return Maptile::NONE;
+  else if (str == "Maptile::CITY")
+    return Maptile::CITY;
+  else if (str == "Maptile::RUIN")
+    return Maptile::RUIN;
+  else if (str == "Maptile::TEMPLE")
+    return Maptile::TEMPLE;
+  else if (str == "Maptile::SIGNPOST")
+    return Maptile::SIGNPOST;
+  else if (str == "Maptile::ROAD")
+    return Maptile::ROAD;
+  else if (str == "Maptile::PORT")
+    return Maptile::PORT;
+  else if (str == "Maptile::BRIDGE")
+    return Maptile::BRIDGE;
+    
+  return Maptile::NONE;
 }
 // End of file

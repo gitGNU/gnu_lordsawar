@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -149,6 +149,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         
         //! Returns the Path object of the stack.
         Path* getPath() const {return d_path;}
+	void setPath(const Path p);
 
         //! Returns the minimum number of movement points of all Army units.
         guint32 getGroupMoves() const;
@@ -339,6 +340,12 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
 	//! Emitted when a stack dies.
         sigc::signal<void, Stack*> sdying;
+	//! Emitted when a stack is about to move one step
+	sigc::signal<void, Stack*> smoving;
+	//! Emitted when a stack has finished moving that one step
+	sigc::signal<void, Stack*> smoved;
+	//! Emitted when a stack is grouped or ungrouped
+	sigc::signal<void, Stack*, bool> sgrouped;
 
 	//! Return a list of army Ids in the stack that can reach the given 
 	//! destination.
@@ -347,16 +354,13 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! returns how many armies in the stack have visited the given temple.
 	guint32 countArmiesBlessedAtTemple(guint32 temple_id);
 
-	//! how many movement points is it for a scout to travel this line.
-	static guint32 scout(Player *p, Vector<int> src, Vector<int> dest, 
-			    const ArmyProdBase *proto = NULL);
-
-	//! how many movement points is it for the stack to travel this line
-	static guint32 scout(Stack *stack, Vector<int> dest);
-
 	void payUpkeep(Player *p);
 
 	bool isMovingToOrFromAShip(Vector<int> dest, bool &on_ship) const;
+
+	Vector<int> getFirstPointInPath() const;
+	Vector<int> getLastPointInPath() const;
+	Vector<int> getLastReachablePointInPath() const;
     private:    
 
 

@@ -35,6 +35,7 @@ class SageDialog: public Decorated
 {
  public:
     SageDialog(Player *player, Hero *hero, Ruin *r);
+    ~SageDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -42,8 +43,8 @@ class SageDialog: public Decorated
     Reward *run();
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
-    std::auto_ptr<RuinMap> ruinmap;
+    Gtk::Dialog* dialog;
+    RuinMap* ruinmap;
 
     Gtk::TreeView *rewards_treeview;
 

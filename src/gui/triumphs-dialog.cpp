@@ -40,11 +40,9 @@ TriumphsDialog::TriumphsDialog(Player *player)
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path() + "/triumphs-dialog.ui");
 
-  Gtk::Dialog *d = 0;
-  xml->get_widget("dialog", d);
-  dialog.reset(d);
-  decorate(dialog.get());
-  window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+  xml->get_widget("dialog", dialog);
+  decorate(dialog);
+  window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
   Gtk::HBox *contents;
   xml->get_widget("outer_hbox", contents);
@@ -55,6 +53,10 @@ TriumphsDialog::TriumphsDialog(Player *player)
   notebook->set_current_page(d_player->getId());
 }
 
+TriumphsDialog::~TriumphsDialog()
+{
+  delete dialog;
+}
 void TriumphsDialog::set_parent_window(Gtk::Window &parent)
 {
   dialog->set_transient_for(parent);

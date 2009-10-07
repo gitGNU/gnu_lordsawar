@@ -40,15 +40,13 @@ QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
       = Gtk::Builder::create_from_file(get_glade_path()
 				  + "/quest-assigned-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     xml->get_widget("map_image", map_image);
 
-    questmap.reset(new QuestMap(quest));
+    questmap = new QuestMap(quest);
     questmap->map_changed.connect(
 	sigc::mem_fun(this, &QuestCompletedDialog::on_map_changed));
 
@@ -125,6 +123,11 @@ QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
 
 }
 
+QuestCompletedDialog::~QuestCompletedDialog()
+{
+  delete dialog;
+  delete questmap;
+}
 void QuestCompletedDialog::set_parent_window(Gtk::Window &parent)
 {
   dialog->set_transient_for(parent);

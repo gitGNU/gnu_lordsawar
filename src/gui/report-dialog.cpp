@@ -32,7 +32,7 @@
 #include "GameMap.h"
 #include "playerlist.h"
 #include "citylist.h"
-#include "stacklist.h"
+#include "city.h"
 #include "action.h"
 #include "GraphicsCache.h"
 #include "armyprodbase.h"
@@ -44,21 +44,19 @@ ReportDialog::ReportDialog(Player *player, ReportType type)
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path() + "/report-dialog.ui");
 
-  Gtk::Dialog *d = 0;
-  xml->get_widget("dialog", d);
-  dialog.reset(d);
-  decorate(dialog.get());
-  window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+  xml->get_widget("dialog", dialog);
+  decorate(dialog);
+  window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
   xml->get_widget("map_image", map_image);
-  citymap.reset(new CityMap());
+  citymap = new CityMap();
   citymap->map_changed.connect
     (sigc::mem_fun(this, &ReportDialog::on_city_map_changed));
-  armymap.reset(new ArmyMap());
+  armymap = new ArmyMap();
   armymap->map_changed.connect
     (sigc::mem_fun(this, &ReportDialog::on_army_map_changed));
   City *c = Citylist::getInstance()->getFirstCity(d_player);
-  vectormap.reset(new VectorMap(c, VectorMap::SHOW_ALL_VECTORING, false));
+  vectormap = new VectorMap(c, VectorMap::SHOW_ALL_VECTORING, false);
   vectormap->map_changed.connect
     (sigc::mem_fun(this, &ReportDialog::on_vector_map_changed));
 
@@ -114,6 +112,13 @@ ReportDialog::ReportDialog(Player *player, ReportType type)
   closing = false;
 }
 
+ReportDialog::~ReportDialog()
+{
+    delete dialog;
+    delete vectormap;
+    delete armymap;
+    delete citymap;
+}
 void ReportDialog::on_close_button()
 {
   closing = true;
@@ -223,7 +228,7 @@ void ReportDialog::updateArmyChart()
       if (p == Playerlist::getInstance()->getNeutral())
 	continue;
       total = 0;
-      total = p->getStacklist()->countArmies();
+      total = p->countArmies();
       bars.push_back(total);
       colour = p->getColor();
       colours.push_back(colour);
@@ -375,7 +380,7 @@ void ReportDialog::addProduction(const Action *action)
       act = dynamic_cast<const Action_ProduceVectored*>(action);
       army_type = act->getArmy()->getTypeId();
       Vector<int> pos = act->getDestination();
-      City *c = Citylist::getInstance()->getObjectAt(pos);
+      City *c = GameMap::getCity(pos);
       s+="...";
       if (c)
 	s += c->getName();

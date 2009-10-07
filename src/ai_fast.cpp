@@ -30,6 +30,7 @@
 #include "armysetlist.h"
 #include "stacklist.h"
 #include "citylist.h"
+#include "city.h"
 #include "templelist.h"
 #include "ruinlist.h"
 #include "path.h"
@@ -42,6 +43,7 @@
 #include "GameScenarioOptions.h"
 #include "hero.h"
 #include "vectoredunitlist.h"
+#include "PathCalculator.h"
 
 using namespace std;
 
@@ -95,6 +97,8 @@ void AI_Fast::abortTurn()
   d_abort_requested = true;
   if (surrendered)
     aborted_turn.emit();
+  else if (Playerlist::getInstance()->countPlayersAlive() == 1)
+    aborted_turn.emit();
 }
 
 bool AI_Fast::startTurn()
@@ -144,7 +148,7 @@ bool AI_Fast::startTurn()
 	AI_setupVectoring(18, 3, 30);
 
     sbusy.emit();
-    // this is a recursively-programmed quite staightforward AI,we just call:
+
     while (computerTurn() == true)
       {
 	sbusy.emit();
@@ -156,18 +160,20 @@ bool AI_Fast::startTurn()
 	    Stack *s = (*it);
 	    if (s->getPath()->size() > 0 && s->enoughMoves())
 	      {
-		int mp = s->getPath()->calculate(s, *s->getPath()->back());
+		int mp = s->getPath()->calculate(s, s->getLastPointInPath());
 		if (mp <= 0)
 		  continue;
 		debug ("AI_FAST stack " << s->getId() << " can still potentially move");
 		debug ("moving from " << s->getPos().x << "," << s->getPos().y
-		       << ") to (" <<(*s->getPath()->begin())->x << "," <<
-		       (*s->getPath()->begin())->y << ") with " << s->getGroupMoves() <<" left");
+		       << ") to (" <<s->getFirstPointInPath().x << "," <<
+		       s->getFirstPointInPath().y << ") with " << s->getGroupMoves() <<" left");
 
 	    
 		found = true;
 	      }
 	  }
+	if (!found)
+	  break;
 	if (found)
 	  found = false;
 	if (d_abort_requested)
@@ -271,6 +277,7 @@ bool AI_Fast::computerTurn()
     // we are using reversed order because new stacks come behind old stacks
     // and we want the freshly created stacks join the veterans and not the other
     // way round.
+    //d_stacklist->dump();
     for (Stacklist::reverse_iterator it = d_stacklist->rbegin(); it != d_stacklist->rend(); it++)
     {
         d_stacklist->setActivestack(*it);
@@ -326,9 +333,8 @@ bool AI_Fast::computerTurn()
 
             if (target)
             {
-                debug("Joining with stack " <<target->getId() <<" at (" <<target->getPos().x
-                      <<"," <<target->getPos().y <<")")
-		s->getPath()->calculate(s, target->getPos());
+                debug("Joining with stack " <<target->getId() <<" at (" <<target->getPos().x <<"," <<target->getPos().y <<")")
+	       	s->getPath()->calculate(s, target->getPos());
                 stack_moved |= stackMove(s);
 		continue;
             }
@@ -346,21 +352,33 @@ bool AI_Fast::computerTurn()
 
 		if (target->contains(s->getPos()) == false)
 		  {
-		    s->getPath()->calculateToCity(s, target);
-		    stack_moved |= stackMove(s);
+		    int mp = s->getPath()->calculateToCity(s, target);
+		    if (mp > 0)
+		      {
+			stack_moved |= stackMove(s);
 
-		    // the stack could have joined another stack waiting there
-		    if (!d_stacklist->getActivestack())
-		      return true;
-		    continue;
+			// the stack could have joined another stack waiting there
+			if (!d_stacklist->getActivestack())
+			  return true;
+			continue;
+		      }
+		    else
+		      {
+			d_maniac = true;
+		      }
 		  }
 		else if (s->getPos() != target->getPos())
 		  {
 		    //if we're not in the upper right corner
-		    s->getPath()->calculate(s, target->getPos());
+		    int mp = s->getPath()->calculateToCity(s, target);
+		    if (mp)
+		      {
 		    //then try to go there
 		    stack_moved |= stackMove(s);
 		    continue;
+		      }
+		    else
+		      d_maniac = true;
 		  }
 		//otherwise just stay put in the city
 	    }
@@ -369,16 +387,23 @@ bool AI_Fast::computerTurn()
 	    else
 	      {
 		target = NULL;
-		Path *target1_path = new Path();
-		Path *target2_path = new Path();
+		PathCalculator pc(s);
+		guint32 moves1 = 0, turns1 = 0, moves2 = 0, turns2 = 0;
+		Path *target1_path = NULL;
+		Path *target2_path = NULL;
 		Citylist *cl = Citylist::getInstance();
 		City *target1 = cl->getNearestEnemyCity(s->getPos());
 		City *target2 = cl->getNearestForeignCity(s->getPos());
 		if (target1)
-		  target1_path->calculateToCity (s, target1);
+		  target1_path = pc.calculateToCity(target1, moves1, turns1);
+		else
+		  target1_path = new Path();
 		if (!target2)
-		  return false; //it's game over and we're still moving
-		target2_path->calculateToCity (s, target2);
+		  {
+		    delete target1_path;
+		    return false; //it's game over and we're still moving
+		  }
+		target2_path = pc.calculateToCity(target2, moves2, turns2);
 
 		//no enemies?  then go for the nearest foreign city.
 		//if diplomacy isn't on and we hit this, then it's game over
@@ -391,6 +416,8 @@ bool AI_Fast::computerTurn()
 		  target = target2;
 		else
 		  target = target1;
+		delete target1_path;
+		delete target2_path;
 
 		if (target == target2)
 		  {
@@ -404,8 +431,8 @@ bool AI_Fast::computerTurn()
 		if (!target)    // strange situation
 		  {
 		    cerr << "yet another bad situation!!\n";
-		    exit (1);
-		    return false;
+		    s->setParked(true);
+		    return true;
 		  }
 
 		debug("Attacking " << target->getName() << " (" << 
@@ -424,10 +451,11 @@ bool AI_Fast::computerTurn()
 			  {
 			    bool disbanded;
 			    bool killed = false;
+			    guint32 id = s->getId();
 			    disbanded = AI_maybeDisband(s, c, 3, 18, killed);
 			    if (disbanded)
 			      {
-				debug ("disbanded stack in " << c->getName() <<"\n");
+				debug ("disbanded stack " << id << " in " << c->getName() <<"\n");
 				return true;
 			      }
 			    if (killed)
@@ -447,7 +475,7 @@ bool AI_Fast::computerTurn()
 			//and the target city is empty
 			if (target->countDefenders() == 0)
 			  {
-			    //attack if if we can reach it.
+			    //attack it if we can reach it.
 			    int moved = stackSplitAndMove(s);
 			    stack_moved |=  moved;
 			  }
@@ -455,14 +483,14 @@ bool AI_Fast::computerTurn()
 		  }
 		else
 		  {
-		    cerr << "hit yet another bad spot." << moves << "\n";
-		    printf ("stack %d is at %d,%d, target is at %d,%d\n",
-			    s->getId(), s->getPos().x, s->getPos().y, target->getPos().x,
-			    target->getPos().y);
-		    printf ("this error means the map has an unreachable city on it, which is supposed to be impossible.\n");
-		    printf ("if an enemy city is completely surrouned by other stacks, this error message is possible.\n");
-		    printf ("fixme: the stack should try for somewhere else.\n");
-		    return false;
+		   // an enemy city is completely surrouned by other stacks, or the way is blocked by a signle enemy stack
+		    //let us presume this is temporary and just leave the stack here
+		    //for some reason we can't set parked on this thing
+		    //and have it realize it, after we return true.
+		    //why is that?
+		    printf("crap, it happened\n");
+		    stackDisband(s);
+		    return true;
 		  }
 
 		// a stack has died ->restart

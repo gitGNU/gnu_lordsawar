@@ -27,7 +27,6 @@
 #include "playerlist.h"
 #include "armysetlist.h"
 #include "stacklist.h"
-#include "citylist.h"
 #include "path.h"
 #include "AI_Analysis.h"
 #include "AI_Allocation.h"
@@ -37,6 +36,8 @@
 #include "armyprodbase.h"
 #include "armyproto.h"
 #include "history.h"
+#include "citylist.h"
+#include "city.h"
 
 using namespace std;
 
@@ -126,6 +127,8 @@ void AI_Smart::abortTurn()
 {
   d_abort_requested = true;
   if (surrendered)
+    aborted_turn.emit();
+  else if (Playerlist::getInstance()->countPlayersAlive() == 1)
     aborted_turn.emit();
 }
 

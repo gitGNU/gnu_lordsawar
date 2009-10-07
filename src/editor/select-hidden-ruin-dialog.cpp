@@ -39,9 +39,7 @@ SelectHiddenRuinDialog::SelectHiddenRuinDialog()
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/select-hidden-ruin-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
     
     xml->get_widget("select_button", select_button);
 
@@ -71,6 +69,10 @@ SelectHiddenRuinDialog::SelectHiddenRuinDialog()
 
 }
 
+SelectHiddenRuinDialog::~SelectHiddenRuinDialog()
+{
+  delete dialog;
+}
 void SelectHiddenRuinDialog::addHiddenRuin(Ruin *ruin)
 {
     

@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 #include <string.h>
 #include <xmlhelper.h>
 
-#include "citylist.h"
 #include "armysetlist.h"
 #include "playerlist.h"
 #include "army.h"
@@ -90,15 +89,17 @@ bool VectoredUnit::save(XML_Helper* helper) const
 
 Army *VectoredUnit::armyArrives()
 {
-  Citylist *cl = Citylist::getInstance();
-
   City *dest;
   // drop it in the destination city!
-  dest = cl->getObjectAt(d_destination);
+  dest = GameMap::getCity(d_destination);
   if (!dest)
     {
       if (d_destination == Vector<int>(-1,-1))
+	{
+	  printf ("destination is -1,-1??? why?\n");
 	return NULL;
+	}
+      printf ("uhh... no city at %d,%d?\n", d_destination.x, d_destination.y);
       Maptile *tile = GameMap::getInstance()->getTile(d_destination);
       if (tile)
 	{
@@ -121,6 +122,7 @@ Army *VectoredUnit::armyArrives()
 	  dest->addArmy(a);
 	  return a;
 	}
+      printf ("destination city is owned by `%s', but the vectored unit is owned by `%s'\n", dest->getOwner()->getName().c_str(), d_owner->getName().c_str());
     }
   return NULL;
 }

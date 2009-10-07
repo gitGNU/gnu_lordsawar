@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ class NewRandomMapDialog: public Decorated
     };
 
     Map map;
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
 
     Gtk::ComboBox *map_size_combobox;
     Gtk::Widget *random_map_container;
@@ -73,7 +73,6 @@ class NewRandomMapDialog: public Decorated
     Gtk::Scale *cities_scale;
     Gtk::Scale *ruins_scale;
     Gtk::Scale *temples_scale;
-    Gtk::Scale *signposts_scale;
     Gtk::Button *accept_button;
     Gtk::ToggleButton *grass_random_togglebutton;
     Gtk::ToggleButton *water_random_togglebutton;

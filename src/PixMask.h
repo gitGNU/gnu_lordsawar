@@ -19,6 +19,7 @@
 
 #include <gtkmm.h>
 #include "vector.h"
+#include "rectangle.h"
 
 
 //! A pixmap and bitmask pair.
@@ -53,6 +54,8 @@ class PixMask
      void blit(Glib::RefPtr<Gdk::Pixmap> pixmap, int dest_x, int dest_y);
      void blit(Glib::RefPtr<Gdk::Pixmap> pixmap, Vector<int> pos);
      void blit_centered(Glib::RefPtr<Gdk::Pixmap> pixmap, Vector<int> pos);
+     // blit a tile's worth of imagery from this pixmask to a pixmap.
+     void blit(Vector<int> tile, int ts, Glib::RefPtr<Gdk::Pixmap> pixmap, Vector<int> dest);
 
      //! Destructor.
     ~PixMask();
@@ -84,6 +87,8 @@ class PixMask
      //! return a stretched copy of this pixmask.
      PixMask* scale(int xsize, int ysize, 
 		    Gdk::InterpType interp = Gdk::INTERP_NEAREST);
+     
+     void blit(Rectangle src, Glib::RefPtr<Gdk::Pixmap> pixmap, Vector<int> dest);
 };
 
 #endif

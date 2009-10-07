@@ -28,7 +28,6 @@
 #include <gtkmm.h>
 
 #include "real_player.h"
-#include "citylist.h"
 
 class Threatlist;
 class Threat;
@@ -36,6 +35,8 @@ class AI_Analysis;
 class XML_Helper;
 class ArmyProdBase;
 class ArmyProto;
+class City;
+class Location;
 
 //! A more complex artificial intelligence Player.
 /** 

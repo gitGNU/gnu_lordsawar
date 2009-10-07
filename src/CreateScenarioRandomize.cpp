@@ -24,6 +24,9 @@
 
 #include "File.h"
 #include "citylist.h"
+#include "city.h"
+#include "ruin.h"
+#include "temple.h"
 #include "signpost.h"
 #include "armysetlist.h"
 #include "playerlist.h"

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ class Movable: private Positioned
     Vector<int> getPos() const {return d_pos;}
 
     //! Set the position of the object on the game map.
-    void setPos(Vector<int> pos) {d_pos = pos;}
+    void setPos(Vector<int> pos) {d_pos = pos;};
 
 };
 

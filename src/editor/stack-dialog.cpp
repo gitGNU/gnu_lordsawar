@@ -49,9 +49,7 @@ StackDialog::StackDialog(Stack *s, int m)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/stack-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
 
     if (stack->getOwner())
     {
@@ -106,6 +104,10 @@ StackDialog::StackDialog(Stack *s, int m)
 	add_army(*i);
 }
 
+StackDialog::~StackDialog()
+{
+  delete dialog;
+}
 void StackDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
@@ -183,7 +185,7 @@ void StackDialog::run()
 void StackDialog::on_add_clicked()
 {
     SelectArmyDialog d(stack->getOwner());
-    d.set_parent_window(*dialog.get());
+    d.set_parent_window(*dialog);
     d.run();
 
     const ArmyProto *army = d.get_selected_army();

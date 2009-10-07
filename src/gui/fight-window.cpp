@@ -45,9 +45,7 @@ FightWindow::FightWindow(Fight &fight)
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/fight-window.ui");
 
-    Gtk::Window *d = 0;
-    xml->get_widget("window", d);
-    window.reset(d);
+    xml->get_widget("window", window);
     
     window->signal_key_release_event().connect_notify(sigc::mem_fun(*this, &FightWindow::on_key_release_event));
 
@@ -114,6 +112,7 @@ FightWindow::FightWindow(Fight &fight)
 
 FightWindow::~FightWindow()
 {
+  delete window;
 }
 
 void FightWindow::set_parent_window(Gtk::Window &parent)

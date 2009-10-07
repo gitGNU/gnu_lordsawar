@@ -35,11 +35,9 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog()
 	= Gtk::Builder::create_from_file
 	(get_glade_path() + "/pick-network-game-to-join-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     xml->get_widget("hostname_entry", hostname_entry);
     xml->get_widget("port_spinbutton", port_spinbutton);
@@ -80,6 +78,11 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog()
     port_spinbutton->set_value(LORDSAWAR_PORT);
 }
 	    
+NetworkGameSelectorDialog::~NetworkGameSelectorDialog()
+{
+  delete dialog;
+}
+
 void NetworkGameSelectorDialog::addRecentlyJoinedGame(RecentlyPlayedNetworkedGame*recent)
 {
     Gtk::TreeIter i = recently_joined_games_list->append();

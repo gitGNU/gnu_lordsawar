@@ -21,6 +21,7 @@
 #define RUIN_H
 
 #define DEFAULT_RUIN_NAME  "Ruin"
+#define RUIN_TILE_WIDTH 1
 #include <string>
 #include <sigc++/trackable.h>
 #include "NamedLocation.h"
@@ -143,6 +144,7 @@ class Ruin : public NamedLocation, public sigc::trackable
 	bool isUnnamed() {return getName() == getDefaultName() ? true : false;};
 	
 	static std::string getDefaultName() {return _(DEFAULT_RUIN_NAME);};
+	static guint32 getWidth() {return RUIN_TILE_WIDTH;};
 
     private:
         // DATA

@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,11 +32,13 @@
 #include "armyset-window.h"
 
 
+int max_vector_width;
 int main(int argc, char* argv[])
 {
     srand(time(NULL));         // set the random seed
 
     initialize_configuration();
+    Vector<int>::setMaximumWidth(1000);
 
     setlocale(LC_ALL, Configuration::s_lang.c_str());
     textdomain ("lordsawar");
@@ -47,11 +49,13 @@ int main(int argc, char* argv[])
     // init GUI stuff
     g_set_application_name(_("LordsAWar! Armyset Editor"));
 
+    ArmySetWindow* armyset_window;
     try
     {
 	Gtk::Main kit(argc, argv);
 
-	std::auto_ptr<ArmySetWindow> armyset_window(new ArmySetWindow);
+
+	armyset_window = new ArmySetWindow;
 	armyset_window->show();
 	
 	kit.run(armyset_window->get_window());
@@ -59,6 +63,7 @@ int main(int argc, char* argv[])
     catch (const Glib::Error &ex) {
 	std::cerr << ex.what() << std::endl;
     }
+    delete armyset_window;
     
     return EXIT_SUCCESS;
 }

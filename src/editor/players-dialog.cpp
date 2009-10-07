@@ -64,9 +64,7 @@ PlayersDialog::PlayersDialog(int width, int height)
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path() + "/players-dialog.ui");
 
-  Gtk::Dialog *d = 0;
-  xml->get_widget("dialog", d);
-  dialog.reset(d);
+  xml->get_widget("dialog", dialog);
 
   // setup the player settings
   player_list = Gtk::ListStore::create(player_columns);
@@ -142,6 +140,7 @@ PlayersDialog::PlayersDialog(int width, int height)
 
 PlayersDialog::~PlayersDialog()
 {
+  delete dialog;
 }
 
 void PlayersDialog::set_parent_window(Gtk::Window &parent)

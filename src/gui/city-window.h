@@ -35,6 +35,8 @@ class CityWindow: public Decorated
  public:
     CityWindow(City *city, bool razing_possible, bool see_opponents_production);
 
+    ~CityWindow();
+
     void set_parent_window(Gtk::Window &parent);
 
     void run();
@@ -43,9 +45,9 @@ class CityWindow: public Decorated
     static bool on_raze_clicked (City *city, Gtk::Dialog *parent);
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
-    std::auto_ptr<VectorMap> prodmap;
-    std::auto_ptr<ArmyInfoTip> army_info_tip;
+    Gtk::Dialog* dialog;
+    VectorMap* prodmap;
+    ArmyInfoTip* army_info_tip;
     Gtk::Image *map_image;
     Gtk::Label *city_label;
     Gtk::Label *status_label;

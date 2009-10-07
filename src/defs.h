@@ -76,9 +76,6 @@ const unsigned int MOVE_BONUS_HEIGHT = 20;
 const unsigned int MOVE_BONUS_TYPES = 6;
 const unsigned int MEDAL_TYPES = 3;
 
-const unsigned int CITY_TILE_WIDTH = 2;
-const unsigned int RUIN_TILE_WIDTH = 1;
-const unsigned int TEMPLE_TILE_WIDTH = 1;
 const int MAX_GOLD_TO_CARRY_OVER_TO_NEXT_SCENARIO = 5000;
 const unsigned int MAX_ARMY_STRENGTH = 9;
 

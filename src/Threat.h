@@ -1,7 +1,7 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #ifndef THREAT_H
 #define THREAT_H
 
+#include <gtkmm.h>
 #include <string>
 #include "vector.h"
 #include "Ownable.h"
@@ -105,6 +106,7 @@ class Threat: public Ownable
 
         //! Removes the stack s from the threat
         void deleteStack(Stack* s);
+        void deleteStack(guint32 id);
 
         //! return the danger posed by this threat to the current player
         float getDanger() const { return d_danger; }

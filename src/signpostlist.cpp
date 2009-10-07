@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -81,7 +81,7 @@ bool Signpostlist::load(std::string tag, XML_Helper* helper)
     //what has happened?
         return false;
     
-    push_back(new Signpost(helper));
+    add(new Signpost(helper));
 
     return true;
 }

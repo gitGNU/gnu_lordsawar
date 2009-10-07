@@ -127,7 +127,8 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("lang", s_lang);
     retval &= helper.saveData("cachesize", s_cacheSize);
     retval &= helper.saveData("zipfiles", s_zipfiles);
-    retval &= helper.saveData("autosave_policy", s_autosave_policy);
+    std::string autosave_policy_str = savingPolicyToString(SavingPolicy(s_autosave_policy));
+    retval &= helper.saveData("autosave_policy", autosave_policy_str);
     retval &= helper.saveData("speeddelay", s_displaySpeedDelay);
     retval &= helper.saveData("fightrounddelayfast", s_displayFightRoundDelayFast);
     retval &= helper.saveData("fightrounddelayslow", s_displayFightRoundDelaySlow);
@@ -236,9 +237,9 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
         s_zipfiles = zipping;
 
     //parse when and how to save autosave files
-    retval = helper->getData(autosave_policy, "autosave_policy");
-    if (retval)
-        s_autosave_policy = autosave_policy;
+    std::string autosave_policy_str;
+    helper->getData(autosave_policy_str, "autosave_policy");
+    s_autosave_policy = savingPolicyFromString(autosave_policy_str);
 
     //parse the speed delays
     helper->getData(s_displaySpeedDelay, "speeddelay");
@@ -372,4 +373,35 @@ GameParameters::RazingCities Configuration::razingCitiesFromString(std::string s
     return GameParameters::ALWAYS;
     
   return GameParameters::ALWAYS;
+}
+
+std::string Configuration::savingPolicyToString(const Configuration::SavingPolicy policy)
+{
+  switch (policy)
+    {
+    case Configuration::NO_SAVING:
+      return "Configuration::NO_SAVING";
+      break;
+    case Configuration::WRITE_UNNUMBERED_AUTOSAVE_FILE:
+      return "Configuration::WRITE_UNNUMBERED_AUTOSAVE_FILE";
+      break;
+    case Configuration::WRITE_NUMBERED_AUTOSAVE_FILE:
+      return "Configuration::WRITE_NUMBERED_AUTOSAVE_FILE";
+      break;
+    }
+  return "Configuration::NO_SAVING";
+}
+
+Configuration::SavingPolicy Configuration::savingPolicyFromString(std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return Configuration::SavingPolicy(atoi(str.c_str()));
+  if (str == "Configuration::NO_SAVING")
+    return Configuration::NO_SAVING;
+  else if (str == "Configuration::WRITE_UNNUMBERED_AUTOSAVE_FILE")
+    return Configuration::WRITE_NUMBERED_AUTOSAVE_FILE;
+  else if (str == "Configuration::WRITE_NUMBERED_AUTOSAVE_FILE")
+    return Configuration::WRITE_NUMBERED_AUTOSAVE_FILE;
+    
+  return Configuration::WRITE_NUMBERED_AUTOSAVE_FILE;
 }

@@ -37,6 +37,7 @@ class HeroDialog: public Decorated
 {
  public:
     HeroDialog(Hero *hero, Vector<int> pos);
+    ~HeroDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -44,8 +45,8 @@ class HeroDialog: public Decorated
     void hide();
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
-    std::auto_ptr<HeroesMap> heroesmap;
+    Gtk::Dialog* dialog;
+    HeroesMap* heroesmap;
 
     Hero *hero;
     Vector<int> pos;

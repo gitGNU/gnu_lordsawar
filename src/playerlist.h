@@ -1,6 +1,6 @@
 // Copyright (C) 2000, 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -235,6 +235,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	  \brief Check to see if this is the end of the round or not.
 	  */
 	bool isEndOfRound();
+
     protected:
 	//! Default constructor.
         Playerlist();

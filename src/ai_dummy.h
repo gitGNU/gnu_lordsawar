@@ -28,6 +28,7 @@
 #include "real_player.h"
 
 class XML_Helper;
+class City;
 
 //! A simple artificial intelligence Player suitable to be the neutral Player.
 /** 

@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2008 Janek Kozicki
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -37,6 +37,12 @@
 
 class MapGenerator;
 class XML_Helper;
+class Port;
+class Road;
+class City;
+class Temple;
+class Bridge;
+class Ruin;
 
 /** Class representing the map in the game
   * 
@@ -117,6 +123,15 @@ class GameMap: public sigc::trackable
         //! Alternative setting
         void setTile(Vector<int> p, Maptile *t) {return setTile(p.x, p.y, t);}
 
+	static City* getCity(Vector<int> pos);
+	static Ruin* getRuin(Vector<int> pos);
+	static Temple* getTemple(Vector<int> pos);
+	static Port* getPort(Vector<int> pos);
+	static Road* getRoad(Vector<int> pos);
+	static Bridge* getBridge(Vector<int> pos);
+	static Signpost* getSignpost(Vector<int> pos);
+	static Stack* getStack(Vector<int> pos);
+
         //! Get the tile object at position (x,y)
         Maptile* getTile(int x, int y) const;
 
@@ -188,7 +203,7 @@ class GameMap: public sigc::trackable
         bool loadItems(std::string tag, XML_Helper* helper);
         Stack* addArmyAtPos(Vector<int> pos, Army *a);
         bool isBlockedAvenue(int x, int y, int destx, int desty);
-        bool isDock(int x, int y);
+        bool isDock(Vector<int> pos);
 	void close_circles (int minx, int miny, int maxx, int maxy);
 	void processStyles(std::string styles, int chars_per_style);
 	int determineCharsPerStyle(std::string styles);

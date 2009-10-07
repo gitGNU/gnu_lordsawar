@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,13 +28,14 @@ class ArmySetInfoDialog: public sigc::trackable
 {
  public:
     ArmySetInfoDialog(Armyset *armyset);
+    ~ArmySetInfoDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
     bool run();
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     Armyset *d_armyset;
     Gtk::Entry *name_entry;
     Gtk::SpinButton *id_spinbutton;

@@ -35,6 +35,7 @@ class QuestReportDialog: public Decorated
 {
  public:
     QuestReportDialog(Quest *quest);
+    ~QuestReportDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -43,8 +44,8 @@ class QuestReportDialog: public Decorated
     void hide();
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
-    std::auto_ptr<QuestMap> questmap;
+    Gtk::Dialog* dialog;
+    QuestMap* questmap;
 
     Gtk::Image *map_image;
     Gtk::Label *label;

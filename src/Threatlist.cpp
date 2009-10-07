@@ -1,7 +1,7 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005 Ulf Lorenz
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2007 Ben Asselstine
+// Copyright (C) 2007, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -186,6 +186,12 @@ void Threatlist::findThreats(AICityInfo *info) const
         // danger multiple times.
         threat->addDanger(dangerFromThisThreat);
     }
+}
+
+void Threatlist::deleteStack(guint32 id)
+{
+    for (Threatlist::iterator it = begin(); it != end(); it++)
+        (*it)->deleteStack(id);
 }
 
 void Threatlist::deleteStack(Stack* s)

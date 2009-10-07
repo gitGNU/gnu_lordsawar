@@ -173,6 +173,20 @@ struct MoveBonusCacheItem
     PixMask* surface;
 };
 
+// the structure to store drawn bigmap tiles in
+struct TileCacheItem
+{
+  Tile::Type terrain_type;
+  int tile_style_id;
+  int fog_type_id;
+  bool has_bag;
+  bool has_standard;
+  guint32 standard_player_id;
+  guint32 stack_size; //flag size
+  guint32 stack_player_id;
+  guint32 army_type_id;
+  PixMask* surface;
+};
 //-----------------------------------------------------
 
 GraphicsCache* GraphicsCache::s_instance = 0;
@@ -485,6 +499,46 @@ PixMask* GraphicsCache::getArmyPic(guint32 armyset, guint32 army, const Player* 
     // checkPictures on its own, so we can simply return the surface
     debug("getarmypic============= " << my_medals) 
     myitem = addArmyPic(armyset, army, p, my_medals);
+
+    return myitem->surface;
+}
+
+PixMask* GraphicsCache::getTilePic(Tile::Type terrain_type, int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, guint32 standard_player_id, guint32 stack_size, guint32 stack_player_id, guint32 army_type_id)
+{
+    debug("getting tile pic " << terrain_type << " " << tile_style_id << " " <<
+	  fog_type_id << " " << has_bag << " " << has_standard << " " <<
+	  standard_player_id << " " << stack_size << " " << stack_player_id <<
+	  " " << army_type_id);
+
+    std::list<TileCacheItem*>::iterator it;
+    TileCacheItem* myitem;
+
+    for (it =d_tilelist.begin(); it != d_tilelist.end(); it++)
+    {
+      if ((*it)->terrain_type == terrain_type &&
+	  (*it)->tile_style_id == tile_style_id &&
+	  (*it)->fog_type_id == fog_type_id &&
+	  (*it)->has_bag == has_bag &&
+	  (*it)->has_standard == has_standard &&
+	  (*it)->standard_player_id == standard_player_id &&
+	  (*it)->stack_size == stack_size &&
+	  (*it)->stack_player_id == stack_player_id &&
+	  (*it)->army_type_id == army_type_id)
+	{
+            myitem = (*it);
+            
+            // put the item on the last place (==last touched)
+            d_tilelist.erase(it);
+            d_tilelist.push_back(myitem);
+            
+            return myitem->surface;
+        }
+    }
+
+    // We are still here, so the graphic is not in the cache. addTilePic calls
+    // checkPictures on its own, so we can simply return the surface
+    debug("getTilepic============= " << my_medals) 
+    myitem = addTilePic(terrain_type, tile_style_id, fog_type_id, has_bag, has_standard, standard_player_id, stack_size, stack_player_id, army_type_id);
 
     return myitem->surface;
 }
@@ -976,10 +1030,50 @@ void GraphicsCache::checkPictures()
   if (d_cachesize < maxcache)
     return;
 
+  // still not enough? Erase tile images
+  while (d_tilelist.size() > 100)
+    eraseLastTileItem();
+
   // still not enough? Erase army images
   while (d_armylist.size() > 40)
     eraseLastArmyItem();
 
+}
+
+TileCacheItem* GraphicsCache::addTilePic(Tile::Type terrain_type, int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, guint32 standard_player_id, guint32 stack_size, guint32 stack_player_id, guint32 army_type_id)
+{
+    
+  debug("ADD tile pic " << terrain_type << " " << tile_style_id << " " <<
+	fog_type_id << " " << has_bag << " " << has_standard << " " <<
+	standard_player_id << " " << stack_size << " " << stack_player_id <<
+	" " << army_type_id);
+  TileCacheItem* myitem = new TileCacheItem();
+  myitem->terrain_type = terrain_type;
+  myitem->tile_style_id = tile_style_id;
+  myitem->fog_type_id = fog_type_id;
+  myitem->has_bag = has_bag;
+  myitem->has_standard = has_standard;
+  myitem->standard_player_id = standard_player_id;
+  myitem->stack_size = stack_size;
+  myitem->stack_player_id = stack_player_id;
+  myitem->army_type_id = army_type_id;
+
+  //fixme:
+  myitem->surface = NULL;
+
+  //now the final preparation steps:
+  //a) add the size
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize += myitem->surface->get_depth()/8 * size;
+
+  //b) add the entry to the list
+  d_tilelist.push_back(myitem);
+
+  //c) check if the cache size is too large
+  checkPictures();
+
+  //we are finished, so return the pic
+  return myitem;
 }
 
 ArmyCacheItem* GraphicsCache::addArmyPic(guint32 armyset, guint32 army,
@@ -1466,6 +1560,9 @@ void GraphicsCache::clear()
   while (!d_armylist.empty())
     eraseLastArmyItem();
 
+  while (!d_tilelist.empty())
+    eraseLastTileItem();
+
   while (!d_templelist.empty())
     eraseLastTempleItem();
 
@@ -1525,6 +1622,25 @@ void GraphicsCache::eraseLastArmyItem()
   //last item is the oldest and therefore propably most useless in the list.
   ArmyCacheItem* myitem = *(d_armylist.begin());
   d_armylist.erase(d_armylist.begin());
+
+  //don't forget to subtract the size from the size entry
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_depth()/8 * size;
+
+  delete myitem->surface;
+  delete myitem;
+}
+
+void GraphicsCache::eraseLastTileItem()
+{
+  if (d_tilelist.empty())
+    return;
+
+  //As the name suggests, this function erases the last item in the list.
+  //Whenever an item is requested, it moves to the first position, so the
+  //last item is the oldest and therefore propably most useless in the list.
+  TileCacheItem* myitem = *(d_tilelist.begin());
+  d_tilelist.erase(d_tilelist.begin());
 
   //don't forget to subtract the size from the size entry
   int size = myitem->surface->get_width() * myitem->surface->get_height();
@@ -1920,7 +2036,7 @@ void GraphicsCache::loadCityPics()
   for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
     {
       if (razedpics[i]->get_width() != ts)
-	PixMask::scale(razedpics[i], ts *CITY_TILE_WIDTH, ts *CITY_TILE_WIDTH);
+	PixMask::scale(razedpics[i], ts *City::getWidth() , ts * City::getWidth());
       d_razedpic[i] = razedpics[i];
     }
 
@@ -1931,7 +2047,7 @@ void GraphicsCache::loadCityPics()
   for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
     {
       if (citypics[i]->get_width() != ts)
-	PixMask::scale(citypics[i], ts *CITY_TILE_WIDTH, ts *CITY_TILE_WIDTH);
+	PixMask::scale(citypics[i], ts *City::getWidth(), ts * City::getWidth());
       d_citypic[i] = citypics[i];
     }
 }

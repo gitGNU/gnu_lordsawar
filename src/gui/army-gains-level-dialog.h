@@ -32,6 +32,7 @@ class ArmyGainsLevelDialog: public Decorated
 {
  public:
     ArmyGainsLevelDialog(Army *army, bool show_sight_stat);
+    ~ArmyGainsLevelDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -41,7 +42,7 @@ class ArmyGainsLevelDialog: public Decorated
     Army::Stat get_selected_stat() { return selected_stat; }
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     Gtk::VBox *stats_vbox;
 
     Army *army;

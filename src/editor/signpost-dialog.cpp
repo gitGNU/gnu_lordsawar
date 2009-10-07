@@ -38,9 +38,7 @@ SignpostDialog::SignpostDialog(Signpost *s, CreateScenarioRandomize *randomizer)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/signpost-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
 
     xml->get_widget("sign_textview", sign_textview);
     sign_textview->get_buffer()->set_text(s->getName());
@@ -50,6 +48,10 @@ SignpostDialog::SignpostDialog(Signpost *s, CreateScenarioRandomize *randomizer)
 	sigc::mem_fun(this, &SignpostDialog::on_randomize_clicked));
 }
 
+SignpostDialog::~SignpostDialog()
+{
+  delete dialog;
+}
 void SignpostDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);

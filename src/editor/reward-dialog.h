@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ class RewardDialog: public sigc::trackable
 {
  public:
     RewardDialog(Player *player, bool hidden_ruins, Reward *r);
+    ~RewardDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -41,7 +42,7 @@ class RewardDialog: public sigc::trackable
     Reward *get_reward() {return reward;}
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     Player *d_player;
     Reward *reward;
     Item *item;

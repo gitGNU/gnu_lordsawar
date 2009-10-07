@@ -38,11 +38,13 @@ sigc::connection on_timer_registered(Timing::timer_slot s, int msecs_interval)
     return Glib::signal_timeout().connect(s, msecs_interval);
 }
 
+int max_vector_width;
 int main(int argc, char* argv[])
 {
     srand(time(NULL));         // set the random seed
 
     initialize_configuration();
+    Vector<int>::setMaximumWidth(1000);
 
     setlocale(LC_ALL, Configuration::s_lang.c_str());
     textdomain ("lordsawar");
@@ -55,11 +57,13 @@ int main(int argc, char* argv[])
     Timing::instance().timer_registered.connect(
 	sigc::ptr_fun(on_timer_registered));
 
+	
+    MainWindow* main_window = NULL;
     try
     {
 	Gtk::Main kit(argc, argv);
 
-	std::auto_ptr<MainWindow> main_window(new MainWindow);
+	MainWindow* main_window = new MainWindow;
 	main_window->show();
 	
 	main_window->init();
@@ -68,6 +72,7 @@ int main(int argc, char* argv[])
     catch (const Glib::Error &ex) {
 	std::cerr << ex.what() << std::endl;
     }
+    delete main_window;
     
     return EXIT_SUCCESS;
 }

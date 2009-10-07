@@ -34,6 +34,7 @@ class RuinReportDialog: public Decorated
 {
  public:
     RuinReportDialog(Vector<int> pos);
+    ~RuinReportDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -41,8 +42,8 @@ class RuinReportDialog: public Decorated
     void run();
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
-    std::auto_ptr<RuinMap> ruinmap;
+    Gtk::Dialog* dialog;
+    RuinMap* ruinmap;
 
     Gtk::Image *map_image;
     

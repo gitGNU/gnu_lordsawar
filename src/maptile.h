@@ -180,6 +180,8 @@ class Maptile
 	//! Set the TileStyle associated with this Maptile.
 	void setTileStyle(TileStyle *style) {d_tileStyle = style;}
 
+	static Maptile::Building buildingFromString(const std::string str);
+	static std::string buildingToString(const Maptile::Building bldg);
     private:
 	//! The index of the Tile within the Tileset (Maptile::d_tileSet).
 	/**

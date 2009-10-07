@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ class StackInfoDialog: public Decorated
 {
  public:
     StackInfoDialog(Stack *s);
+    ~StackInfoDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -43,12 +44,12 @@ class StackInfoDialog: public Decorated
     void hide();
 
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
 
     Stack *stack;
     Gtk::Table *stack_table;
 
-    std::auto_ptr<ArmyInfoTip> army_info_tip;
+    ArmyInfoTip* army_info_tip;
     std::vector<Gtk::ToggleButton *> toggles;
     std::vector<const Army*> armies;
     Gtk::Button *group_button;

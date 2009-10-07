@@ -42,6 +42,7 @@ class ReportDialog: public Decorated
     enum ReportType {ARMY = 0, CITY, GOLD, PRODUCTION, WINNING};
 
     ReportDialog(Player *player, ReportType type);
+    ~ReportDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -50,10 +51,10 @@ class ReportDialog: public Decorated
     void hide();
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
-    std::auto_ptr<VectorMap> vectormap;
-    std::auto_ptr<ArmyMap> armymap;
-    std::auto_ptr<CityMap> citymap;
+    Gtk::Dialog* dialog;
+    VectorMap* vectormap;
+    ArmyMap* armymap;
+    CityMap* citymap;
 
     Gtk::Image *map_image;
     

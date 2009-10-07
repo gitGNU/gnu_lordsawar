@@ -36,6 +36,7 @@ class HeroOfferDialog: public Decorated
 {
  public:
     HeroOfferDialog(Player *player, HeroProto *hero, City *city, int gold);
+    ~HeroOfferDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -43,9 +44,9 @@ class HeroOfferDialog: public Decorated
     void hide();
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
     //! The smallmap that shows where the Hero is emerging.
-    std::auto_ptr<HeroMap> heromap;
+    HeroMap* heromap;
 
     Gtk::Image *map_image;
     Gtk::Image *hero_image;

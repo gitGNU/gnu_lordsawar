@@ -32,6 +32,7 @@ class DiplomacyReportDialog: public Decorated
 {
  public:
     DiplomacyReportDialog(Player *player);
+    ~DiplomacyReportDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -39,7 +40,7 @@ class DiplomacyReportDialog: public Decorated
     void hide();
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
 
     Player *d_player;
 

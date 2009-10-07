@@ -42,6 +42,7 @@ class Hero;
 
 #define DEFAULT_CITY_NAME "Noname"
 #define DEFAULT_CITY_INCOME 20
+#define CITY_TILE_WIDTH 2
 
 //! A City on the game map.
 /**
@@ -254,6 +255,8 @@ class City : public Ownable, public Location, public Renamable,
 	bool isUnnamed() {return getName() == getDefaultName() ? true : false;};
 
 	static std::string getDefaultName() {return _(DEFAULT_CITY_NAME);};
+
+	static guint32 getWidth() {return CITY_TILE_WIDTH;};
 
     private:
 

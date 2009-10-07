@@ -35,6 +35,7 @@ class FightOrderDialog: public Decorated
 {
  public:
     FightOrderDialog(Player *player);
+    ~FightOrderDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -43,7 +44,7 @@ class FightOrderDialog: public Decorated
     void run();
 
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
+    Gtk::Dialog* dialog;
 
     Player *player;
     Gtk::TreeView *armies_treeview;

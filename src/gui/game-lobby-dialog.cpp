@@ -59,7 +59,9 @@ void GameLobbyDialog::update_city_map()
 {
   if (d_game_scenario->s_hidden_map == false)
     {
-      citymap.reset(new CityMap());
+      if (citymap)
+	delete citymap;
+      citymap = new CityMap();
       citymap->map_changed.connect
 	(sigc::mem_fun(this, &GameLobbyDialog::on_map_changed));
       if (d_game_scenario->getRound() > 1)
@@ -83,15 +85,14 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
   d_game_scenario = gamescenario;
   d_game_station = game_station;
   d_next_turn = next_turn;
+  citymap = NULL;
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/game-lobby-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     xml->get_widget("player_treeview", player_treeview);
     player_treeview->get_selection()->signal_changed().connect
@@ -289,6 +290,9 @@ GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario,
 
 GameLobbyDialog::~GameLobbyDialog()
 {
+  if (citymap)
+    delete citymap;
+  delete dialog;
 }
 
 void GameLobbyDialog::update_scenario_details()

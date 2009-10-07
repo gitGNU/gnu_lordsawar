@@ -53,6 +53,8 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
 	NextTurnNetworked.cpp NextTurnNetworked.h \
         NextTurnPbm.cpp NextTurnPbm.h \
         Ownable.cpp Ownable.h path.cpp path.h \
+        PathCalculator.cpp PathCalculator.h \
+        RoadPathCalculator.cpp RoadPathCalculator.h \
         player.cpp player.h playerlist.cpp playerlist.h \
         port.cpp port.h portlist.cpp portlist.h \
         Positioned.cpp Positioned.h QCityOccupy.cpp QCityOccupy.h \

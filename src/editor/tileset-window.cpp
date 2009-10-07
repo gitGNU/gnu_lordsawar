@@ -59,10 +59,8 @@ TileSetWindow::TileSetWindow()
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/tileset-window.ui");
 
-    Gtk::Window *w = 0;
-    xml->get_widget("window", w);
-    window.reset(w);
-    w->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
+    xml->get_widget("window", window);
+    window->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
     xml->get_widget("tiles_treeview", tiles_treeview);
     xml->get_widget("tile_name_entry", tile_name_entry);
@@ -131,8 +129,8 @@ TileSetWindow::TileSetWindow()
        (sigc::mem_fun(this, &TileSetWindow::on_help_about_activated));
     xml->get_widget("tilestyle_image", tilestyle_image);
 
-    w->signal_delete_event().connect(
-	sigc::mem_fun(*this, &TileSetWindow::on_delete_event));
+    window->signal_delete_event().connect
+      (sigc::mem_fun(*this, &TileSetWindow::on_delete_event));
 
     tiles_list = Gtk::ListStore::create(tiles_columns);
     tiles_treeview->set_model(tiles_list);
@@ -376,6 +374,7 @@ TileSetWindow::update_tile_panel()
 TileSetWindow::~TileSetWindow()
 {
   tile_smallmap_surface.reset();
+  delete window;
 }
 
 void TileSetWindow::show()
@@ -415,7 +414,7 @@ void TileSetWindow::on_new_tileset_activated()
   std::string name = "";
   d_tileset = new Tileset(name);
   TileSetInfoDialog d(d_tileset);
-  d.set_parent_window(*window.get());
+  d.set_parent_window(*window);
   retval = d.run();
   if (retval == false)
     {
@@ -432,7 +431,7 @@ void TileSetWindow::on_new_tileset_activated()
 
 void TileSetWindow::on_load_tileset_activated()
 {
-  Gtk::FileChooserDialog chooser(*window.get(), 
+  Gtk::FileChooserDialog chooser(*window, 
 				 _("Choose a Tileset to Load"));
   Gtk::FileFilter sav_filter;
   sav_filter.add_pattern("*.xml");
@@ -512,7 +511,7 @@ void TileSetWindow::on_save_tileset_activated()
 
 void TileSetWindow::on_save_tileset_as_activated()
 {
-  Gtk::FileChooserDialog chooser(*window.get(), _("Choose a Name"),
+  Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
 				 Gtk::FILE_CHOOSER_ACTION_SAVE);
   Gtk::FileFilter sav_filter;
   sav_filter.add_pattern("*.xml");
@@ -547,27 +546,27 @@ void TileSetWindow::on_quit_activated()
 void TileSetWindow::on_edit_tileset_info_activated()
 {
   TileSetInfoDialog d(d_tileset);
-  d.set_parent_window(*window.get());
+  d.set_parent_window(*window);
   d.run();
 }
 
 void TileSetWindow::on_help_about_activated()
 {
-  std::auto_ptr<Gtk::AboutDialog> dialog;
+  Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path() + "/../about-dialog.ui");
 
-  Gtk::AboutDialog *d;
-  xml->get_widget("dialog", d);
-  dialog.reset(d);
-  dialog->set_transient_for(*window.get());
-  d->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
+  xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(*window);
+  dialog->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
   dialog->set_logo(GraphicsLoader::getMiscPicture("tileset_icon.png")->to_pixbuf());
   dialog->show_all();
   dialog->run();
+  dialog->hide();
+  delete dialog;
 
   return;
 }
@@ -808,7 +807,7 @@ void TileSetWindow::fill_tile_smallmap(Tile *tile)
 void TileSetWindow::on_add_tilestyleset_clicked()
 {
 
-  Gtk::FileChooserDialog chooser(*window.get(), _("Choose a Name"),
+  Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
 				 Gtk::FILE_CHOOSER_ACTION_OPEN);
   Gtk::FileFilter sav_filter;
   sav_filter.add_pattern("*.png");

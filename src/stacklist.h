@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
 // Copyright (C) 2004 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -30,6 +30,7 @@
 #include <gtkmm.h>
 #include "vector.h"
 #include <sstream>
+#include <sigc++/signal.h>
 
 class City;
 class Stack;
@@ -74,6 +75,7 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	 */
         //! Return the stack at position (x,y) or 0 if there is none.
         static Stack* getObjectAt(int x, int y);
+        void getObjectAt(Vector<int> pos, Stack *& s1, Stack *& s2);
 
 	/**
 	 * Scan through every player's Stacklist, for a stack that is located 
@@ -123,6 +125,7 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 
         //! Searches through the all players Stacklists and deletes the stack.
         static bool deleteStack(Stack* stack);
+	static bool deleteStack(guint32 id);
 
         /** 
 	 * Scan each tile occupied by the given city and return a list of
@@ -156,7 +159,7 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
          *
          * @param activestack      The stack currently selected by the player.
          */
-        void setActivestack(Stack* activestack) {d_activestack = activestack;}
+        void setActivestack(Stack* activestack);
 
 	/**
 	 * Scan through the list of stacks to find one that is not defending, 
@@ -188,6 +191,8 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
         //! Erase all stacks from the list, and their contents too.
         void flClear();
 
+	//! Add a stack to the list.
+	void add(Stack *stack);
         /** 
 	 * Erase a Stack from the list, and free the contents of the Stack.
 	 *
@@ -208,6 +213,7 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
          */
         //! Erase a stack from the list.
         bool flRemove(Stack* stack);
+        bool flRemove(guint32 id);
 
 	/**
 	 * Scan through the Stacklist, for a stack that is located at the 
@@ -241,14 +247,32 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	std::list<Hero*> getHeroes();
 
 	Hero *getNearestHero(Vector<int> pos, int dist);
+	
+	sigc::signal<void, Stack*, bool> sgrouped;
     private:
         //! Callback function for loading.
         bool load(std::string tag, XML_Helper* helper);
 
+	//! Callbacks for when things happen to stack in our list.
+	void on_stack_starts_moving (Stack *s);
+	void on_stack_stops_moving (Stack *s);
+	void on_stack_died (Stack *stack);
+	void on_stack_grouped (Stack *stack, bool grouped);
 
 	void getHeroes(std::vector<guint32>& dst);
 	//! A pointer to the currently selected Stack.
         Stack* d_activestack;
+
+	//! methods for managing the dual hash maps.
+	bool deletePositionFromMap(Stack *stack);
+	bool addPositionToMap(Stack *s);
+	//! a hash map of where the stacks are on the map.
+	typedef std::map<Vector<int>, Stack*> PositionMap;
+	PositionMap d_object1;
+	PositionMap d_object2;
+	typedef std::map<Stack *, std::list<sigc::connection> > ConnectionMap;
+	ConnectionMap d_connections;
+
 };
 
 #endif // STACKLIST_H

@@ -38,9 +38,7 @@ TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Tileset
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/tileset-explosion-picture-editor-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
     d_tileset = tileset;
 
     xml->get_widget("explosion_filechooserbutton", explosion_filechooserbutton);
@@ -58,6 +56,10 @@ TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Tileset
     on_large_toggled();
 }
 
+TilesetExplosionPictureEditorDialog::~TilesetExplosionPictureEditorDialog()
+{
+  delete dialog;
+}
 void TilesetExplosionPictureEditorDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);

@@ -418,9 +418,6 @@ class Player: public sigc::trackable
         //! Returns the list of stacks (Stacklist) owned by the player.
         Stacklist* getStacklist() const {return d_stacklist;}
 
-        //! A shortcut for getting the Stack marked as active.
-        Stack* getActivestack();
-
         //! Get the FogMap of the player.
         FogMap* getFogMap() const {return d_fogmap;}
 
@@ -1233,6 +1230,9 @@ class Player: public sigc::trackable
         //! Emitted whenever the stack's status has changed.
         sigc::signal<void, Stack*> supdatingStack;
 
+        //! Emitted whenever the active stack comes to a stop.
+        sigc::signal<void, Stack*> shaltedStack;
+
 	/**
 	 * Emitted whenever a city is conquered or razed.
 	 *
@@ -1300,6 +1300,7 @@ class Player: public sigc::trackable
 	bool conqueredCity(City *c);
 	std::list<Vector<int> > getStackTrack(Stack *s);
 	std::list<History *> getHistoryForHeroId(guint32 id);
+	std::list<History *> getHistoryForCityId(guint32 id);
 	//! Set whether or not this player has surrendered.
 	/*
 	 * computer players may surrender to a lone human player who has most
@@ -1310,6 +1311,12 @@ class Player: public sigc::trackable
 	 */
 	void setSurrendered(bool surr);
 	guint32 countEndTurnHistoryEntries() const;
+
+	//! accessor methods into encapsulated stacklist object
+	std::list<Hero*> getHeroes();
+	guint32 countArmies();
+	Stack * getActivestack();
+	Vector<int> getPositionOfArmyById(guint32 id);
     protected:
         // do some fight cleaning up, setting
         void cleanupAfterFight(std::list<Stack*> &attackers,

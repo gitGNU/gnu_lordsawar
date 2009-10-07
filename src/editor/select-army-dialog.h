@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ class SelectArmyDialog: public sigc::trackable
  public:
     SelectArmyDialog(Player *p, bool defends_ruins = false,
 		     bool rewardable = false);
+    ~SelectArmyDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -44,8 +45,8 @@ class SelectArmyDialog: public sigc::trackable
     const ArmyProto *get_selected_army() { return selected_army; }
     
  private:
-    std::auto_ptr<Gtk::Dialog> dialog;
-    std::auto_ptr<ArmyInfoTip> army_info_tip;
+    Gtk::Dialog* dialog;
+    ArmyInfoTip* army_info_tip;
     Gtk::Label *army_info_label1;
     Gtk::Label *army_info_label2;
     Gtk::Table *toggles_table;

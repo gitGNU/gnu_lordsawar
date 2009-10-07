@@ -49,7 +49,6 @@ void HeroesMap::draw_hero(Hero *hero, bool active)
 
 void HeroesMap::after_draw()
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
   OverviewMap::after_draw();
   draw_cities(false);
   for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end();

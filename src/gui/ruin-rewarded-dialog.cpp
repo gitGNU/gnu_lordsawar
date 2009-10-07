@@ -40,15 +40,13 @@ RuinRewardedDialog::RuinRewardedDialog(Reward_Ruin *reward)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/ruin-rewarded-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
-    decorate(dialog.get());
-    window_closed.connect(sigc::mem_fun(dialog.get(), &Gtk::Dialog::hide));
+    xml->get_widget("dialog", dialog);
+    decorate(dialog);
+    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     xml->get_widget("map_image", map_image);
 
-    ruinmap.reset(new RuinMap(reward->getRuin()));
+    ruinmap = new RuinMap(reward->getRuin());
     ruinmap->map_changed.connect(
 	sigc::mem_fun(this, &RuinRewardedDialog::on_map_changed));
 
@@ -59,6 +57,12 @@ RuinRewardedDialog::RuinRewardedDialog(Reward_Ruin *reward)
     set_title(_("A Sage!"));
 
     d_reward = reward;
+}
+
+RuinRewardedDialog::~RuinRewardedDialog()
+{
+  delete ruinmap;
+  delete dialog;
 }
 
 void RuinRewardedDialog::set_parent_window(Gtk::Window &parent)

@@ -55,9 +55,7 @@ RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/ruin-dialog.ui");
 
-    Gtk::Dialog *d = 0;
-    xml->get_widget("dialog", d);
-    dialog.reset(d);
+    xml->get_widget("dialog", dialog);
 
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(ruin->getName());
@@ -147,6 +145,10 @@ RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
     set_reward_name();
 }
 
+RuinDialog::~RuinDialog()
+{
+  delete dialog;
+}
 void RuinDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
@@ -238,7 +240,7 @@ void RuinDialog::on_clear_keeper_clicked()
 void RuinDialog::on_keeper_clicked()
 {
     SelectArmyDialog d(keeper->getOwner(), true);
-    d.set_parent_window(*dialog.get());
+    d.set_parent_window(*dialog);
     d.run();
 
     const ArmyProto *army = d.get_selected_army();
@@ -286,7 +288,7 @@ void RuinDialog::on_random_reward_toggled()
 void RuinDialog::on_reward_list_clicked()
 {
   SelectRewardDialog d;
-  d.set_parent_window(*dialog.get());
+  d.set_parent_window(*dialog);
   d.run();
   const Reward *picked_reward = d.get_selected_reward();
   if (picked_reward)

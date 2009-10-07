@@ -94,13 +94,13 @@ class GameWindow: public Decorated
 
     sigc::signal<void> sdl_initialized;
     
-    Gtk::Window *get_window() const {return window.get();};
+    Gtk::Window *get_window() const {return window;};
 
     void on_player_replaced(Player *p);
  private:
-    std::auto_ptr<Gtk::Window> window;
-    std::auto_ptr<Gtk::Window> map_tip;	// tooltip appears over the map
-    std::auto_ptr<Gtk::Window> stack_tip;// tooltip appears over the map
+    Gtk::Window* window;
+    Gtk::Window* map_tip;	// tooltip appears over the map
+    Gtk::Window* stack_tip;// tooltip appears over the map
     Gtk::Container *bigmap_container;
     Gtk::Container *map_container;
     Gtk::MenuBar *menubar;
@@ -187,8 +187,8 @@ class GameWindow: public Decorated
     Gtk::Button *se_keypad_button;
 
     Stack *currently_selected_stack;
-    std::auto_ptr<ArmyInfoTip> army_info_tip;
-    std::auto_ptr<StackInfoTip> stack_info_tip;
+    ArmyInfoTip* army_info_tip;
+    StackInfoTip* stack_info_tip;
     typedef std::vector<Gtk::ToggleButton *> army_buttons_type;
     army_buttons_type army_buttons;
     Gtk::EventBox *map_eventbox;
@@ -197,7 +197,7 @@ class GameWindow: public Decorated
 
     std::string current_save_filename;
 
-    std::auto_ptr<Game> game;
+    Game* game;
     
     bool sdl_inited;
 
