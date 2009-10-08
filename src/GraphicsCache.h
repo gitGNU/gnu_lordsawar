@@ -22,7 +22,9 @@
 
 #include <string>
 #include <list>
+#include <map>
 #include <vector>
+#include <string.h>
 
 #include "player.h"
 #include "defs.h"
@@ -349,7 +351,7 @@ class GraphicsCache
         RoadCacheItem* addRoadPic(int type);
 
         //! Creates a new fog picture with the given parameters.
-        FogCacheItem* addFogPic(int type);
+        FogCacheItem* addFogPic(FogCacheItem *item);
 
         //! Creates a new bridge picture with the given parameters.
         BridgeCacheItem* addBridgePic(int type);
@@ -358,11 +360,10 @@ class GraphicsCache
         CursorCacheItem* addCursorPic(int type);
 
         //! Creates a new army picture with the given parameters.
-        ArmyCacheItem* addArmyPic(guint32 armyset, guint32 army, const Player* p,
-                                  const bool* medalsbonus);
+        ArmyCacheItem* addArmyPic(ArmyCacheItem*item);
 
 	//! Creates a new drawn tile with the given parameters.
-	TileCacheItem* addTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid);
+	TileCacheItem* addTilePic(TileCacheItem*item);
 
         //! Creates a new shield picture with the given parameters.
         ShieldCacheItem* addShieldPic(std::string shieldset, guint32 type, guint32 colour);
@@ -504,7 +505,12 @@ class GraphicsCache
 
         guint32 d_cachesize;
         std::list<ArmyCacheItem*> d_armylist;
+	typedef std::map<ArmyCacheItem, std::list<ArmyCacheItem*>::iterator > ArmyMap;
+
+	ArmyMap	d_armymap;
         std::list<TileCacheItem*> d_tilelist;
+	typedef std::map<TileCacheItem, std::list<TileCacheItem*>::iterator > TileMap;
+	TileMap	d_tilemap;
         std::list<CityCacheItem*> d_citylist;
         std::list<TowerCacheItem*> d_towerlist;
         std::list<FlagCacheItem*> d_flaglist;
@@ -513,6 +519,9 @@ class GraphicsCache
         std::list<DiplomacyCacheItem*> d_diplomacylist;
         std::list<RoadCacheItem*> d_roadlist;
         std::list<FogCacheItem*> d_foglist;
+	typedef std::map<FogCacheItem, std::list<FogCacheItem*>::iterator > FogCacheMap;
+
+	FogCacheMap d_fogmap;
         std::list<BridgeCacheItem*> d_bridgelist;
         std::list<CursorCacheItem*> d_cursorlist;
         std::list<SelectorCacheItem*> d_selectorlist;
@@ -555,4 +564,7 @@ class GraphicsCache
 	PixMask*d_fogpic[FOG_TYPES];
 };
 
+bool operator <(ArmyCacheItem lhs, ArmyCacheItem rhs);
+bool operator <(TileCacheItem lhs, TileCacheItem rhs);
+bool operator <(FogCacheItem lhs, FogCacheItem rhs);
 #endif

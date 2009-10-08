@@ -144,13 +144,6 @@ inline bool operator <(Vector<T> lhs, Vector<T> rhs)
   T l = lhs.y * max_vector_width + lhs.x;
   T r = rhs.y * max_vector_width + rhs.x;
   return r < l;
-  //char buf[15];
-  //fixme: this will break on really really large maps.
-  //snprintf (buf, sizeof buf, "%d.%d", lhs.x, lhs.y);
-  //float l = atof(buf);
-  //snprintf (buf, sizeof buf, "%d.%d", rhs.x, rhs.y);
-  //float r = atof(buf);
-  //return r < l;
 }
 
 template <>

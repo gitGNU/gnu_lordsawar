@@ -783,17 +783,18 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
       // calculate new view position in tiles, rounding up
       Vector<int> new_view = (view_pos + Vector<int>(ts * magnification_factor - 1, ts * magnification_factor - 1)) / (ts * magnification_factor);
 
-      bool redraw_buffer = false;
-
       if (new_view != view.pos)
 	{
+	  //here we have a case of the new view overlapping with the view.
+	  //why redraw what we've already drawn?
+	  Rectangle old_view = view;
 	  view.x = new_view.x;
 	  view.y = new_view.y;
 	  view_changed.emit(view);
-	  redraw_buffer = true;
+	  draw(true);
 	}
-
-      draw(redraw_buffer);
+      else
+	draw(false);
       mouse_state = DRAGGING_MAP;
     }
 

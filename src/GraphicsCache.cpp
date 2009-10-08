@@ -49,11 +49,15 @@
 struct ArmyCacheItem
 {
     guint32 armyset;
-    guint32 index;
+    guint32 army_id;
     guint32 player_id;
     bool medals[3];
     PixMask* surface;
 };
+bool operator <(ArmyCacheItem lhs, ArmyCacheItem rhs)
+{
+  return memcmp(&lhs, &rhs, sizeof (ArmyCacheItem) - sizeof (PixMask*)) < 0;
+}
 
 //the structure to store ships in
 struct ShipCacheItem
@@ -104,6 +108,10 @@ struct FogCacheItem
     int type;
     PixMask* surface;
 };
+bool operator <(FogCacheItem lhs, FogCacheItem rhs)
+{
+  return memcmp(&lhs, &rhs, sizeof (FogCacheItem) - sizeof (PixMask*)) < 0;
+}
 
 //the structure to store bridges in
 struct BridgeCacheItem
@@ -196,6 +204,10 @@ struct TileCacheItem
   bool has_grid;
   PixMask* surface;
 };
+bool operator <(TileCacheItem lhs, TileCacheItem rhs)
+{
+  return memcmp(&lhs, &rhs, sizeof (TileCacheItem) - sizeof (PixMask*)) < 0;
+}
 //-----------------------------------------------------
 
 GraphicsCache* GraphicsCache::s_instance = 0;
@@ -474,10 +486,10 @@ PixMask* GraphicsCache::getArmyPic(Army *a)
 		    a->getOwner(), NULL);
 }
 
-PixMask* GraphicsCache::getArmyPic(guint32 armyset, guint32 army, const Player* p,
-                                       const bool *medals)
+PixMask* GraphicsCache::getArmyPic(guint32 armyset, guint32 army_id, 
+				   const Player* p, const bool *medals)
 {
-    debug("getting army pic " <<armyset <<" " <<army <<" " <<p->getName())
+  debug("getting army pic " <<armyset <<" " <<army <<" " <<p->getName())
 
     std::list<ArmyCacheItem*>::iterator it;
     ArmyCacheItem* myitem;
@@ -493,6 +505,27 @@ PixMask* GraphicsCache::getArmyPic(guint32 armyset, guint32 army, const Player* 
     if (!p)
         p = Playerlist::getInstance()->getNeutral();
     
+    ArmyCacheItem item = ArmyCacheItem();
+    item.armyset = armyset;
+    item.army_id = army_id;
+    item.player_id = p->getId();
+    item.medals[0] = my_medals[0];
+    item.medals[1] = my_medals[1];
+    item.medals[2] = my_medals[2];
+    ArmyMap::iterator mit = d_armymap.find(item);
+    if (mit != d_armymap.end())
+      {
+	std::list<ArmyCacheItem*>::iterator it = (*mit).second;
+	myitem = *it;
+	d_armylist.erase(it);
+	d_armylist.push_back(myitem);
+	it = d_armylist.end();
+	it--;
+	d_armymap[*myitem] = it;
+	return myitem->surface;
+      }
+
+    /*
     for (it =d_armylist.begin(); it != d_armylist.end(); it++)
     {
         if (((*it)->armyset == armyset) && ((*it)->index == army)
@@ -510,11 +543,12 @@ PixMask* GraphicsCache::getArmyPic(guint32 armyset, guint32 army, const Player* 
             return myitem->surface;
         }
     }
+    */
 
     // We are still here, so the graphic is not in the cache. addArmyPic calls
     // checkPictures on its own, so we can simply return the surface
     debug("getarmypic============= " << my_medals) 
-    myitem = addArmyPic(armyset, army, p, my_medals);
+    myitem = addArmyPic(&item);
 
     return myitem->surface;
 }
@@ -532,42 +566,39 @@ PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_
     std::list<TileCacheItem*>::iterator it;
     TileCacheItem* myitem;
 
-    for (it =d_tilelist.begin(); it != d_tilelist.end(); it++)
-    {
-      if ((*it)->tile_style_id == tile_style_id &&
-	  (*it)->fog_type_id == fog_type_id &&
-	  (*it)->has_bag == has_bag &&
-	  (*it)->has_standard == has_standard &&
-	  (*it)->standard_player_id == standard_player_id &&
-	  (*it)->stack_size == stack_size &&
-	  (*it)->stack_player_id == stack_player_id &&
-	  (*it)->army_type_id == army_type_id &&
-	  (*it)->has_tower == has_tower &&
-	  (*it)->has_ship == has_ship &&
-	  (*it)->building_type == building_type &&
-	  (*it)->building_subtype == building_subtype &&
-	  (*it)->building_tile == building_tile &&
-	  (*it)->building_player_id == building_player_id &&
-	  (*it)->tilesize == tilesize &&
-	  (*it)->has_grid == has_grid)
-	{
-            myitem = (*it);
-            
-            // put the item on the last place (==last touched)
-            d_tilelist.erase(it);
-            d_tilelist.push_back(myitem);
-            
-            return myitem->surface;
-        }
-    }
+    TileCacheItem item = TileCacheItem();
+    item.tilesize = tilesize;
+    item.tile_style_id = tile_style_id;
+    item.has_bag = has_bag;
+    item.has_standard = has_standard;
+    item.standard_player_id = standard_player_id;
+    item.stack_size = stack_size;
+    item.stack_player_id = stack_player_id;
+    item.army_type_id = army_type_id;
+    item.has_tower = has_tower;
+    item.has_ship = has_ship;
+    item.building_type= building_type;
+    item.building_subtype= building_subtype;
+    item.building_tile = building_tile;
+    item.building_player_id = building_player_id;
+    item.has_grid = has_grid;
+    item.fog_type_id = fog_type_id;
+    TileMap::iterator mit = d_tilemap.find(item);
+    if (mit != d_tilemap.end())
+      {
+	std::list<TileCacheItem*>::iterator it = (*mit).second;
+	myitem = *it;
+	d_tilelist.erase(it);
+	d_tilelist.push_back(myitem);
+	it = d_tilelist.end();
+	it--;
+	d_tilemap[*myitem] = it;
+	return myitem->surface;
+      }
 
     // We are still here, so the graphic is not in the cache. addTilePic calls
     // checkPictures on its own, so we can simply return the surface
-    myitem = addTilePic(tile_style_id, fog_type_id, has_bag, has_standard, 
-			standard_player_id, stack_size, stack_player_id, 
-			army_type_id, has_tower, has_ship, building_type, 
-			building_subtype, building_tile, building_player_id, 
-			tilesize, has_grid);
+    myitem = addTilePic(&item);
 
     return myitem->surface;
 }
@@ -724,22 +755,23 @@ PixMask* GraphicsCache::getFogPic(int type)
     std::list<FogCacheItem*>::iterator it;
     FogCacheItem* myitem;
 
-    for (it = d_foglist.begin(); it != d_foglist.end(); it++)
-    {
-        if ((*it)->type == type)
-        {
-            myitem = (*it);
-
-            //put the item in last place (last touched)
-            d_foglist.erase(it);
-            d_foglist.push_back(myitem);
-
-            return myitem->surface;
-        }
-    }
+    FogCacheItem item = FogCacheItem();
+    item.type = type;
+    FogCacheMap::iterator mit = d_fogmap.find(item);
+    if (mit != d_fogmap.end())
+      {
+	std::list<FogCacheItem*>::iterator it = (*mit).second;
+	myitem = *it;
+	d_foglist.erase(it);
+	d_foglist.push_back(myitem);
+	it = d_foglist.end();
+	it--;
+	d_fogmap[*myitem] = it;
+	return myitem->surface;
+      }
 
     //no item found -> create a new one
-    myitem = addFogPic(type);
+    myitem = addFogPic(&item);
 
     return myitem->surface;
 }
@@ -1013,10 +1045,10 @@ void GraphicsCache::checkPictures()
   while (d_diplomacylist.size() > 10)
     eraseLastDiplomacyItem();
 
-  while (d_roadlist.size() > 10)
+  while (d_roadlist.size() > 18)
     eraseLastRoadItem();
 
-  while (d_foglist.size() > 10)
+  while (d_foglist.size() > 16)
     eraseLastFogItem();
 
   while (d_bridgelist.size() > 10)
@@ -1065,7 +1097,7 @@ void GraphicsCache::checkPictures()
     return;
 
   // still not enough? Erase tile images
-  while (d_tilelist.size() > 100)
+  while (d_tilelist.size() > 200)
     eraseLastTileItem();
 
   // still not enough? Erase army images
@@ -1141,48 +1173,38 @@ void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag,
     getFogPic(fog_type_id - 1)->blit(pixmap);
 }
 
-TileCacheItem* GraphicsCache::addTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid)
+TileCacheItem* GraphicsCache::addTilePic(TileCacheItem *item)
 {
     
-  debug("ADD tile pic " << " " << tile_style_id << " " <<
-	fog_type_id << " " << has_bag << " " << has_standard << " " <<
-	standard_player_id << " " << stack_size << " " << stack_player_id <<
-	" " << army_type_id << " " << has_tower << " " << has_ship << " " << 
-	building_type << " " << building_subtype << " " << building_tile.x << 
-	"," << building_tile.y << " " << building_player_id << " " << ts << " " << has_grid);
+  debug("ADD tile pic " << " " << item->tile_style_id << " " <<
+	item->fog_type_id << " " << item->has_bag << " " << 
+	item->has_standard << " " << item->standard_player_id << " " << 
+	item->stack_size << " " << item->stack_player_id <<
+	" " << item->army_type_id << " " << item->has_tower << " " << 
+	item->has_ship << " " << item->building_type << " " << 
+	item->building_subtype << " " << item->building_tile.x << 
+	"," << item->building_tile.y << " " << item->building_player_id << 
+	" " << item->tilesize << " " << item->has_grid);
 
   TileCacheItem* myitem = new TileCacheItem();
-  myitem->tilesize = ts;
-  myitem->tile_style_id = tile_style_id;
-  myitem->has_bag = has_bag;
-  myitem->has_standard = has_standard;
-  myitem->standard_player_id = standard_player_id;
-  myitem->stack_size = stack_size;
-  myitem->stack_player_id = stack_player_id;
-  myitem->army_type_id = army_type_id;
-  myitem->has_tower = has_tower;
-  myitem->has_ship = has_ship;
-  myitem->building_type= building_type;
-  myitem->building_subtype= building_subtype;
-  myitem->building_tile = building_tile;
-  myitem->building_player_id = building_player_id;
-  myitem->has_grid = has_grid;
-  myitem->fog_type_id = fog_type_id;
+  *myitem = *item;
 
-  //go get the tilestyle id for the given terrain type.
-  if (fog_type_id == FogMap::ALL)
-    myitem->surface = getFogPic(fog_type_id - 1)->copy();
+  //short circuit the drawing sequence if the tile is completely obscured
+  if (myitem->fog_type_id == FogMap::ALL)
+    myitem->surface = getFogPic(myitem->fog_type_id - 1)->copy();
   else
     {
       Tileset *tileset = GameMap::getInstance()->getTileset();
       myitem->surface = 
-	tileset->getTileStyle(tile_style_id)->getImage()->copy();
+	tileset->getTileStyle(myitem->tile_style_id)->getImage()->copy();
     
-      drawTilePic(myitem->surface, fog_type_id, has_bag, has_standard, 
-		  standard_player_id, stack_size, stack_player_id, 
-		  army_type_id, has_tower, has_ship, building_type, 
-		  building_subtype, building_tile, building_player_id, ts, 
-		  has_grid);
+      drawTilePic(myitem->surface, myitem->fog_type_id, myitem->has_bag, 
+		  myitem->has_standard, myitem->standard_player_id, 
+		  myitem->stack_size, myitem->stack_player_id, 
+		  myitem->army_type_id, myitem->has_tower, myitem->has_ship, 
+		  myitem->building_type, myitem->building_subtype, 
+		  myitem->building_tile, myitem->building_player_id, 
+		  myitem->tilesize, myitem->has_grid);
     }
 
   //now the final preparation steps:
@@ -1192,6 +1214,9 @@ TileCacheItem* GraphicsCache::addTilePic(int tile_style_id, int fog_type_id, boo
 
   //b) add the entry to the list
   d_tilelist.push_back(myitem);
+  std::list<TileCacheItem*>::iterator it = d_tilelist.end();
+  it--;
+  d_tilemap[*myitem] = it;
 
   //c) check if the cache size is too large
   checkPictures();
@@ -1200,31 +1225,26 @@ TileCacheItem* GraphicsCache::addTilePic(int tile_style_id, int fog_type_id, boo
   return myitem;
 }
 
-ArmyCacheItem* GraphicsCache::addArmyPic(guint32 armyset, guint32 army,
-					 const Player* p, 
-					 const bool *medalsbonus)
+ArmyCacheItem* GraphicsCache::addArmyPic(ArmyCacheItem *item)
 {
-  debug("ADD army pic: " <<armyset <<"," <<army)
+  debug("ADD army pic: " <<item->armyset <<"," <<item->army_id)
 
-    ArmyCacheItem* myitem = new ArmyCacheItem();
-  myitem->armyset = armyset;
-  myitem->index = army;
-  myitem->player_id = p->getId();
-  myitem->medals[0] = medalsbonus[0];
-  myitem->medals[1] = medalsbonus[1];
-  myitem->medals[2] = medalsbonus[2];
+  ArmyCacheItem* myitem = new ArmyCacheItem();
+  *myitem = *item;
 
-  const ArmyProto * basearmy = Armysetlist::getInstance()->getArmy(armyset, army);
+  const ArmyProto * basearmy = 
+    Armysetlist::getInstance()->getArmy(myitem->armyset, myitem->army_id);
 
   // copy the pixmap including player colors
+  Player *p = Playerlist::getInstance()->getPlayer(myitem->player_id);
   myitem->surface = applyMask(basearmy->getImage(), basearmy->getMask(), p);
 
-  if (medalsbonus != NULL)
+  if (myitem->medals != NULL)
     {
       debug("medalsbonus============= " << medalsbonus); 
       for(int i=0;i<3;i++)
 	{ 
-	  if (medalsbonus[i])
+	  if (myitem->medals[i])
 	    {
 
 	      d_medalpic[i]->blit(myitem->surface->get_pixmap(), i * d_medalpic[i]->get_width(), 0);
@@ -1244,6 +1264,9 @@ ArmyCacheItem* GraphicsCache::addArmyPic(guint32 armyset, guint32 army,
 
   //b) add the entry to the list
   d_armylist.push_back(myitem);
+  std::list<ArmyCacheItem*>::iterator it = d_armylist.end();
+  it--;
+  d_armymap[*myitem] = it;
 
   //c) check if the cache size is too large
   checkPictures();
@@ -1434,17 +1457,19 @@ RoadCacheItem* GraphicsCache::addRoadPic(int type)
   return myitem;
 }
 
-FogCacheItem* GraphicsCache::addFogPic(int type)
+FogCacheItem* GraphicsCache::addFogPic(FogCacheItem *item)
 {
 
-  PixMask* mysurf = d_fogpic[type]->copy();
+  PixMask* mysurf = d_fogpic[item->type]->copy();
 
   //now create the cache item and add the size
   FogCacheItem* myitem = new FogCacheItem();
-  myitem->type = type;
-  myitem->surface = mysurf;
+  *myitem = *item;
 
   d_foglist.push_back(myitem);
+  std::list<FogCacheItem*>::iterator it = d_foglist.end();
+  it--;
+  d_fogmap[*myitem] = it;
 
   //add the size
   int size = mysurf->get_width() * mysurf->get_height();
@@ -1745,6 +1770,9 @@ void GraphicsCache::eraseLastArmyItem()
   //Whenever an item is requested, it moves to the first position, so the
   //last item is the oldest and therefore propably most useless in the list.
   ArmyCacheItem* myitem = *(d_armylist.begin());
+  ArmyMap::iterator it = d_armymap.find(*myitem);
+  if (it != d_armymap.end())
+    d_armymap.erase(it);
   d_armylist.erase(d_armylist.begin());
 
   //don't forget to subtract the size from the size entry
@@ -1764,6 +1792,9 @@ void GraphicsCache::eraseLastTileItem()
   //Whenever an item is requested, it moves to the first position, so the
   //last item is the oldest and therefore propably most useless in the list.
   TileCacheItem* myitem = *(d_tilelist.begin());
+  TileMap::iterator it = d_tilemap.find(*myitem);
+  if (it != d_tilemap.end()) //fixme, find out why this check is necessary.
+    d_tilemap.erase(it);
   d_tilelist.erase(d_tilelist.begin());
 
   //don't forget to subtract the size from the size entry
@@ -1840,6 +1871,9 @@ void GraphicsCache::eraseLastFogItem()
     return;
 
   FogCacheItem* myitem = *(d_foglist.begin());
+  FogCacheMap::iterator it = d_fogmap.find(*myitem);
+  if (it != d_fogmap.end())
+    d_fogmap.erase(it);
   d_foglist.erase(d_foglist.begin());
 
   int size = myitem->surface->get_width() * myitem->surface->get_height();

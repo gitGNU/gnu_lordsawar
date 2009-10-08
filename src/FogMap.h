@@ -167,9 +167,6 @@ class FogMap
 	ShadeType calculateShade(Vector<int> tile);
 
     private:
-	bool calculateCompletelyObscuredFogTile(Vector<int> pos);
-
-	void updateCompletelyObscuredFogTiles();
 
 	void calculateShadeMap();
         // Data

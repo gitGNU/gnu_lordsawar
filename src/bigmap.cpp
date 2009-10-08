@@ -150,6 +150,7 @@ void BigMap::clip_viewable_buffer(Glib::RefPtr<Gdk::Pixmap> pixmap, Glib::RefPtr
     out->draw_drawable(gc, pixmap, pos.x, pos.y, 0, 0, image.get_width(), image.get_height());
     return;
 }
+
 void BigMap::draw(bool redraw_buffer)
 {
     // no size and buffer yet, return
@@ -429,10 +430,10 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surfac
   int building_subtype = -1;
   int building_player_id = -1;
 
-  if (fog_type_id == 14)
+  if (fog_type_id == FogMap::ALL)
     {
       //short circuit.  the tile is completely fogged.
-      PixMask *pixmask = 
+      PixMask *pixmask =
 	gc->getTilePic(tile_style_id, fog_type_id, has_bag, has_standard, 
 		       player_standard_id, stack_size, stack_player_id, 
 		       army_type_id, has_tower, has_ship, building_type, 

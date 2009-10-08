@@ -63,6 +63,8 @@ class BigMap: public sigc::trackable
     // draw everything
     void draw(bool redraw_buffer = true);
 
+    void draw2(Rectangle old_view, bool redraw_buffer = true);
+
     // view the rectangle, measured in tiles
     void set_view(Rectangle rect);
     void screen_size_changed(Gtk::Allocation box);

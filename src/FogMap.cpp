@@ -67,7 +67,6 @@ FogMap::FogMap(XML_Helper* helper)
     }
     shademap = new ShadeType[d_width*d_height];
     calculateShadeMap();
-    updateCompletelyObscuredFogTiles();
 }
 
 FogMap::FogMap(const FogMap& fogmap)
@@ -91,7 +90,6 @@ FogMap::FogMap(const FogMap& fogmap)
             shademap[y*d_width + x] = fogmap.shademap[y*d_width + x];
         }
     }
-    updateCompletelyObscuredFogTiles();
 }
 
 FogMap::~FogMap()
@@ -106,7 +104,6 @@ bool FogMap::fill(FogType type)
         d_fogmap[i] = type;
 
     calculateShadeMap();
-    updateCompletelyObscuredFogTiles();
     return true;
 }
 
@@ -162,7 +159,6 @@ void FogMap::alterFogRadius(Vector<int> pt, int radius, FogType new_type)
         }
     }
     calculateShadeMap();
-    updateCompletelyObscuredFogTiles();
 }
 
 void FogMap::alterFogRectangle(Vector<int> pt, int height, int width, FogType new_type)
@@ -179,46 +175,15 @@ void FogMap::alterFogRectangle(Vector<int> pt, int height, int width, FogType ne
         }
     }
     calculateShadeMap();
-    updateCompletelyObscuredFogTiles();
 }
 
 bool FogMap::isCompletelyObscuredFogTile(Vector<int> pos) const
 {
-  for (std::list<Vector<int> >::const_iterator it = completely_obscured.begin();
-       it != completely_obscured.end(); it++)
-    {
-      if (it == completely_obscured.end())
-	return true;
-    }
+  if (shademap[pos.y * d_width + pos.x] == ALL)
+    return true;
+  else
+    return false;
   return false;
-}
-
-bool FogMap::calculateCompletelyObscuredFogTile(Vector<int> pos)
-{
-  bool foggyTile;
-  for (int i = pos.x - 1; i <= pos.x + 1; i++)
-    for (int j = pos.y - 1; j <= pos.y + 1; j++)
-      {
-	foggyTile = false;
-	if (i == pos.x && j == pos.y)
-	  continue;
-	if (i < 0 || j < 0 || 
-	    i >= FogMap::getWidth() || j >= FogMap::getHeight())
-	  foggyTile = true;
-	else
-	  {
-	    Vector<int> pos = Vector<int>(i, j);
-	    foggyTile = (getFogTile(pos) == FogMap::CLOSED);
-	  }
-	if (foggyTile == false)
-	  return false;
-      }
-  //alright, this seems to be completely obscured.
-  //but we're not really obscured in the diagonal fog case.
-  //if (getShadeTile(pos) == DARKLY_TO_SOUTH_AND_WEST_DARKLY_TO_NORTH_AND_EAST ||
-      //getShadeTile(pos) == DARKLY_TO_NORTH_AND_WEST_DARKLY_TO_SOUTH_AND_EAST)
-    //return false;
-  return true;
 }
 
 bool FogMap::isLoneFogTile(Vector<int> pos)
@@ -244,19 +209,6 @@ bool FogMap::isLoneFogTile(Vector<int> pos)
   return false;
 }
 
-void FogMap::updateCompletelyObscuredFogTiles()
-{
-    completely_obscured.clear();
-    for (int y = 0; y < d_height; y++)
-      {
-        for (int x = 0; x < d_width; x++)
-	  {
-	    Vector<int> pos = Vector<int>(x,y);
-	    if (calculateCompletelyObscuredFogTile (pos) == true)
-	      completely_obscured.push_back(pos);
-	  }
-      }
-}
 void FogMap::smooth()
 {
     for (int y = 0; y < d_height; y++)
@@ -274,7 +226,6 @@ void FogMap::smooth()
         }
     }
 
-    updateCompletelyObscuredFogTiles();
     calculateShadeMap();
 }
 
