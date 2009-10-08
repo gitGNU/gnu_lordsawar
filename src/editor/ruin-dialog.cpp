@@ -240,7 +240,7 @@ void RuinDialog::on_clear_keeper_clicked()
 void RuinDialog::on_keeper_clicked()
 {
     Player *neutral = Playerlist::getInstance()->getNeutral();
-    SelectArmyDialog d(neutral, true);
+    SelectArmyDialog d(neutral, false, true);
     d.set_parent_window(*dialog);
     d.run();
 

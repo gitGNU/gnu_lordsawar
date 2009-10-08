@@ -4,6 +4,7 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkDialog" id="dialog">
     <property name="border_width">6</property>
+    <property name="title" translatable="yes">Backpack Editor</property>
     <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>

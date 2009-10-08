@@ -336,7 +336,7 @@ void RewardDialog::set_item_name()
     
 void RewardDialog::on_ally_clicked()
 {
-  SelectArmyDialog d(d_player, false, true);
+  SelectArmyDialog d(d_player, false, false, true);
   d.run();
   if (d.get_selected_army())
     {

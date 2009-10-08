@@ -71,7 +71,7 @@ class EditorBigMap: public BigMap
     void toggleViewStylesOrTypes() { show_tile_types_instead_of_tile_styles = 
       !show_tile_types_instead_of_tile_styles;};
     // something was selected
-    typedef std::vector<UniquelyIdentified *> map_selection_seq;
+    typedef std::vector<UniquelyIdentified*> map_selection_seq;
     sigc::signal<void, map_selection_seq> objects_selected;
 
     // emitted whenever the user moves the mouse to a new tile

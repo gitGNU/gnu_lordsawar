@@ -33,10 +33,11 @@
 #include "GraphicsCache.h"
 #include "armysetlist.h"
 
-SelectArmyDialog::SelectArmyDialog(Player *p, bool defends_ruins,
-				   bool awardable)
+SelectArmyDialog::SelectArmyDialog(Player *p, bool hero_too, 
+				   bool defends_ruins, bool awardable)
 {
   army_info_tip = NULL;
+  d_hero_too = hero_too;
     d_defends_ruins = defends_ruins;
     player = p;
     d_awardable = awardable;
@@ -109,7 +110,7 @@ void SelectArmyDialog::fill_in_army_toggles()
     for (unsigned int j = 0; j < al->getSize(armyset); j++)
     {
 	const ArmyProto *a = al->getArmy(armyset, j);
-	if (a->isHero())
+	if (a->isHero() && d_hero_too == false)
 	  continue;
 	if ((d_defends_ruins && a->getDefendsRuins()) || 
 	    (!d_defends_ruins && !d_awardable))

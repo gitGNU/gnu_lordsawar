@@ -34,7 +34,8 @@ class Player;
 class SelectArmyDialog: public sigc::trackable
 {
  public:
-    SelectArmyDialog(Player *p, bool defends_ruins = false,
+    SelectArmyDialog(Player *p, bool hero_too = false,
+		     bool defends_ruins = false,
 		     bool rewardable = false);
     ~SelectArmyDialog();
 
@@ -57,6 +58,7 @@ class SelectArmyDialog: public sigc::trackable
     Player *player;
     bool d_defends_ruins;
     bool d_awardable;
+    bool d_hero_too;
 
     std::vector<Gtk::ToggleButton *> army_toggles;
     bool ignore_toggles;

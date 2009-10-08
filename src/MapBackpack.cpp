@@ -25,17 +25,17 @@ std::string MapBackpack::d_tag = "itemstack";
 #define debug(x)
 
 MapBackpack::MapBackpack(Vector<int> pos)
-  :Backpack(), Immovable(pos)
+  :Backpack(), Immovable(pos), UniquelyIdentified((guint32)0)
 {
 }
 
 MapBackpack::MapBackpack(const MapBackpack& object)
-  :Backpack(object), Immovable(object)
+  :Backpack(object), Immovable(object), UniquelyIdentified((guint32)0)
 {
 }
 
 MapBackpack::MapBackpack(XML_Helper* helper)
-  :Backpack(helper), Immovable(helper)
+  :Backpack(helper), Immovable(helper), UniquelyIdentified((guint32)0)
 {
 }
 

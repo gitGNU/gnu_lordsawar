@@ -184,7 +184,7 @@ void StackDialog::run()
 
 void StackDialog::on_add_clicked()
 {
-    SelectArmyDialog d(stack->getOwner());
+    SelectArmyDialog d(stack->getOwner(), true);
     d.set_parent_window(*dialog);
     d.run();
 

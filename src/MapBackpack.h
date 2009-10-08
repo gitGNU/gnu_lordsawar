@@ -21,6 +21,7 @@
 #include "vector.h"
 #include "Backpack.h"
 #include "Immovable.h"
+#include "UniquelyIdentified.h"
 
 class XML_Helper;
 class Item;
@@ -31,7 +32,7 @@ class Item;
  * game map.
  */
 
-class MapBackpack: public Backpack, public Immovable
+class MapBackpack: public Backpack, public Immovable, public UniquelyIdentified
 {
  public:
      //! The xml tag of this object in a saved-game file.

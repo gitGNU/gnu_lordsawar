@@ -118,6 +118,10 @@ void EditorBigMap::mouse_button_event(MouseButtonEvent e)
 	    seq.push_back(s);
 	if (Temple* t = Templelist::getInstance()->getObjectAt(tile))
 	    seq.push_back(t);
+	MapBackpack *b = GameMap::getInstance()->getTile(tile)->getBackpack();
+	if (b->empty() == false)
+	  seq.push_back(b);
+
 
 	if (!seq.empty())
 	    objects_selected.emit(seq);

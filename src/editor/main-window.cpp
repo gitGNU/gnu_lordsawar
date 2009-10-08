@@ -83,6 +83,8 @@
 #include "itemlist-dialog.h"
 #include "rewardlist-dialog.h"
 #include "timed-message-dialog.h"
+#include "backpack-editor-dialog.h"
+#include "MapBackpack.h"
 
 
 MainWindow::MainWindow()
@@ -1170,6 +1172,8 @@ void MainWindow::on_objects_selected(std::vector<UniquelyIdentified *> objects)
 		s = _("Signpost");
 	    else if (dynamic_cast<Temple *>(*i))
 		s = _("Temple");
+	    else if (dynamic_cast<MapBackpack*>(*i))
+		s = _("Bag");
 	    
 	    Gtk::MenuItem *item = manage(new Gtk::MenuItem(s));
 	    item->signal_activate().connect(
@@ -1224,6 +1228,11 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 	// we might have changed something visible
 	bigmap->draw();
     }
+    else if (MapBackpack *b = dynamic_cast<MapBackpack*>(object))
+      {
+	BackpackEditorDialog d(b);
+	d.run();
+      }
 }
 
 void MainWindow::on_smooth_map_activated()
