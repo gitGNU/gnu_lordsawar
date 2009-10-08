@@ -58,12 +58,14 @@ class StackDialog: public sigc::trackable
     Glib::RefPtr<Gtk::ListStore> army_list;
     Gtk::Button *add_button;
     Gtk::Button *remove_button;
+    Gtk::Button *edit_hero_button;
 
     Stack *stack;
     int min_size;
 
     void on_add_clicked();
     void on_remove_clicked();
+    void on_edit_hero_clicked();
     void on_selection_changed();
 
     void add_army(Army *a);

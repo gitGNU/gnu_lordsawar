@@ -207,4 +207,16 @@ bool Backpack::removeFromBackpack(Item* item)
 
   return false;
 }
+	
+void Backpack::removeAllFromBackpack()
+{
+  while (!empty())
+    removeFromBackpack(front());
+}
+	
+void Backpack::add(Backpack *backpack)
+{
+  for (Backpack::iterator it = backpack->begin(); it != backpack->end(); it++)
+    addToBackpack(new Item(**it));
+}
 // End of file

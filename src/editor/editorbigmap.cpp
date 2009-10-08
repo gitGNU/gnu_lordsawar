@@ -436,6 +436,8 @@ void EditorBigMap::change_map_under_cursor()
 	    remove_from_map(Signpostlist::getInstance(), tile);
 	    // ... or a city
 	    remove_from_map(Citylist::getInstance(), tile);
+	    // ... or a bag
+	    GameMap::getInstance()->getTile(tile)->getBackpack()->removeAllFromBackpack();
 	    break;
 
 	case STACK:

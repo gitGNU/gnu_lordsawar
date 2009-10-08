@@ -33,11 +33,12 @@ class BackpackEditorDialog
 
     void set_parent_window(Gtk::Window &parent);
 
-    void run();
+    int run();
     void hide();
     
  private:
-    Backpack *backpack;
+    Backpack *backpack; //destination backpack
+    Backpack *working; //the backpack we're going to work with before that
     Gtk::Dialog* dialog;
 
     Gtk::TreeView *item_treeview;

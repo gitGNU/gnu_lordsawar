@@ -34,6 +34,7 @@
 BackpackEditorDialog::BackpackEditorDialog(Backpack *pack)
 {
   backpack = pack;
+  working = new Backpack(*pack);
     
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path()
@@ -64,6 +65,7 @@ BackpackEditorDialog::BackpackEditorDialog(Backpack *pack)
 
 BackpackEditorDialog::~BackpackEditorDialog()
 {
+  delete working;
   delete dialog;
 }
 
@@ -78,12 +80,17 @@ void BackpackEditorDialog::hide()
   dialog->hide();
 }
 
-void BackpackEditorDialog::run()
+int BackpackEditorDialog::run()
 {
   dialog->show_all();
   fill_bag();
   on_item_selection_changed();
-  dialog->run();
+  int response = dialog->run();
+  if (response == Gtk::RESPONSE_ACCEPT)	// accepted
+    {
+      backpack->removeAllFromBackpack();
+      backpack->add(working);
+    }
 }
 
 void BackpackEditorDialog::on_item_selection_changed()
@@ -101,7 +108,7 @@ void BackpackEditorDialog::on_remove_item_clicked()
     if (i)
     {
 	Item *item = (*i)[item_columns.item];
-	backpack->removeFromBackpack(item);
+	working->removeFromBackpack(item);
 	item_list->erase(item_treeview->get_selection()->get_selected());
 	on_item_selection_changed();
     }
@@ -115,7 +122,7 @@ void BackpackEditorDialog::on_add_item_clicked()
   if (itemproto)
     {
       Item *item = new Item(*itemproto);
-      backpack->addToBackpack(item);
+      working->addToBackpack(item);
       add_item(item);
       on_item_selection_changed();
     }
@@ -138,7 +145,7 @@ void BackpackEditorDialog::fill_bag()
 	
     // populate the item list
     item_list->clear();
-    for (Backpack::iterator i = backpack->begin(); i != backpack->end(); ++i)
+    for (Backpack::iterator i = working->begin(); i != working->end(); ++i)
 	add_item(*i);
 
   return;

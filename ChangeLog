@@ -3,6 +3,8 @@
 	* cleaned up fogmap object.
 	* made fog, army, and tile lookups faster in graphicscache object.
 	* added add-backpack-to-map functionality into the scenario editor.
+	* added hero editor dialog to the stack editor of the scenario editor.
+	* bags of stuff can now be deleted from the map in the scenario editor.
 
 2009-10-07  Ben Asselstine  <benasselstine@gmail.com>
 

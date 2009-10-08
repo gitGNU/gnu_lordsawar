@@ -28,8 +28,12 @@
 #include "defs.h"
 #include "stack.h"
 #include "army.h"
+#include "armyproto.h"
+#include "hero.h"
+#include "heroproto.h"
 #include "playerlist.h"
 #include "stacklist.h"
+#include "hero-editor-dialog.h"
 
 #include "select-army-dialog.h"
 
@@ -91,11 +95,14 @@ StackDialog::StackDialog(Stack *s, int m)
 
     xml->get_widget("add_button", add_button);
     xml->get_widget("remove_button", remove_button);
+    xml->get_widget("edit_hero_button", edit_hero_button);
 
     add_button->signal_clicked().connect(
 	sigc::mem_fun(this, &StackDialog::on_add_clicked));
     remove_button->signal_clicked().connect(
 	sigc::mem_fun(this, &StackDialog::on_remove_clicked));
+    edit_hero_button->signal_clicked().connect(
+	sigc::mem_fun(this, &StackDialog::on_edit_hero_clicked));
 
     army_treeview->get_selection()->signal_changed()
 	.connect(sigc::mem_fun(this, &StackDialog::on_selection_changed));
@@ -190,10 +197,28 @@ void StackDialog::on_add_clicked()
 
     const ArmyProto *army = d.get_selected_army();
     if (army)
-	add_army(new Army(*army));
+      {
+	if (army->isHero() == true)
+	  add_army(new Hero(HeroProto(*army)));
+	else
+	  add_army(new Army(*army));
+      }
 }
     
 
+void StackDialog::on_edit_hero_clicked()
+{
+    Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
+    if (i)
+    {
+	Army *army = (*i)[army_columns.army];
+	Hero *hero = dynamic_cast<Hero*>(army);
+	HeroEditorDialog d(hero);
+	d.run();
+	(*i)[army_columns.name] = hero->getName();
+    }
+
+}
 void StackDialog::on_remove_clicked()
 {
     Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
@@ -234,5 +259,13 @@ void StackDialog::set_button_sensitivity()
     int armies = army_list->children().size();
     add_button->set_sensitive(armies < max_stack_size);
     remove_button->set_sensitive(armies > min_size && i);
+    if (i)
+      {
+	Army *army = (*i)[army_columns.army];
+	if (army->isHero())
+	  edit_hero_button->set_sensitive(true);
+	else
+	  edit_hero_button->set_sensitive(false);
+      }
 }
 
