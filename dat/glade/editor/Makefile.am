@@ -24,7 +24,8 @@ tileset-window.ui \
 tileset-info-dialog.ui \
 tile-preview-dialog.ui \
 tileset-selector-editor-dialog.ui \
-tileset-explosion-picture-editor-dialog.ui
+tileset-explosion-picture-editor-dialog.ui \
+backpack-editor-dialog.ui
 
 EXTRA_DIST = $(glade_DATA) \
 README

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,52 +15,55 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef SELECT_ITEM_DIALOG_H
-#define SELECT_ITEM_DIALOG_H
+#ifndef BACKPACK_EDITOR_DIALOG_H
+#define BACKPACK_EDITOR_DIALOG_H
 
-#include <memory>
-#include <vector>
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
 
-class ItemProto;
+class Item;
+class Backpack;
 
-//! Scenario editor.  Select an ItemProto object from the Itemlist.
-class SelectItemDialog: public sigc::trackable
+// dialog for showing info about a hero, esp. about the hero's items
+class BackpackEditorDialog
 {
  public:
-    SelectItemDialog();
-    ~SelectItemDialog();
+    BackpackEditorDialog(Backpack *backpack);
+    ~BackpackEditorDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
     void run();
-
-    const ItemProto *get_selected_item() { return selected_item; }
+    void hide();
     
  private:
+    Backpack *backpack;
     Gtk::Dialog* dialog;
-    Gtk::Button *select_button;
 
-    const ItemProto *selected_item;
+    Gtk::TreeView *item_treeview;
+    Gtk::Button *remove_button;
+    Gtk::Button *add_button;
 
-    Gtk::TreeView *items_treeview;
-    class ItemsColumns: public Gtk::TreeModelColumnRecord {
+    class ItemColumns: public Gtk::TreeModelColumnRecord {
     public:
-	ItemsColumns() 
-        { add(name); add(attributes);add(item);}
+	ItemColumns() 
+        { add(name); add(attributes); add(item); }
 	
 	Gtk::TreeModelColumn<Glib::ustring> name;
 	Gtk::TreeModelColumn<Glib::ustring> attributes;
-	Gtk::TreeModelColumn<ItemProto *> item;
+	Gtk::TreeModelColumn<Item *> item;
     };
-    const ItemsColumns items_columns;
-    Glib::RefPtr<Gtk::ListStore> items_list;
+    const ItemColumns item_columns;
+    Glib::RefPtr<Gtk::ListStore> item_list;
 
 
-    void addItemProto(ItemProto *item);
-    
-    void set_select_button_state();
+    void on_item_selection_changed();
+    void on_remove_item_clicked();
+    void on_add_item_clicked();
+
+    void add_item(Item *item);
+
+    void fill_bag();
 };
 
 #endif

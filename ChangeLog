@@ -2,6 +2,7 @@
 
 	* cleaned up fogmap object.
 	* made fog, army, and tile lookups faster in graphicscache object.
+	* added add-backpack-to-map functionality into the scenario editor.
 
 2009-10-07  Ben Asselstine  <benasselstine@gmail.com>
 

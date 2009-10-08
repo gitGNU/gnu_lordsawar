@@ -1,5 +1,5 @@
-#   Copyright (C) 2007, 2008, Ole Laursen
-#   Copyright (C) 2007, 2008 Ben Asselstine
+#   Copyright (C) 2007, 2008 Ole Laursen
+#   Copyright (C) 2007, 2008, 2009 Ben Asselstine
 #   Copyright (C) 2008 Barry deFreese
 # 
 #   This program is free software; you can redistribute it and/or modify
@@ -58,7 +58,8 @@ lordsawar_editor_SOURCES = \
 	select-reward-dialog.cpp select-reward-dialog.h \
 	rewardlist-dialog.cpp rewardlist-dialog.h \
 	select-hidden-ruin-dialog.cpp select-hidden-ruin-dialog.h \
-	RenamableLocation.cpp RenamableLocation.h 
+	RenamableLocation.cpp RenamableLocation.h  \
+	backpack-editor-dialog.cpp backpack-editor-dialog.h
 	
 if FL_RESRC
 lordsawar_editor_SOURCES += editor.rc

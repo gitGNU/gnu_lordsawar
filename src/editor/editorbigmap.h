@@ -58,7 +58,8 @@ class EditorBigMap: public BigMap
 	ROAD, 
 	ERASE, 
 	PORT, 
-	BRIDGE
+	BRIDGE,
+	BAG
     };
     void set_pointer(Pointer pointer, int size, Tile::Type terrain, 
 		     int tile_style_id);

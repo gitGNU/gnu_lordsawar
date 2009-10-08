@@ -46,6 +46,7 @@ SelectItemDialog::SelectItemDialog()
     items_list = Gtk::ListStore::create(items_columns);
     items_treeview->set_model(items_list);
     items_treeview->append_column("", items_columns.name);
+    items_treeview->append_column("", items_columns.attributes);
     items_treeview->set_headers_visible(false);
 
     Itemlist *itemlist = Itemlist::getInstance();
@@ -71,6 +72,7 @@ void SelectItemDialog::addItemProto(ItemProto *item)
 {
   Gtk::TreeIter i = items_list->append();
   (*i)[items_columns.name] = item->getName();
+  (*i)[items_columns.attributes] = item->getBonusDescription();
   (*i)[items_columns.item] = item;
 }
 

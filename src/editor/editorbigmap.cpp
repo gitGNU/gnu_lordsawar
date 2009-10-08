@@ -50,6 +50,9 @@
 #include "armysetlist.h"
 #include "MapRenderer.h"
 #include "CreateScenario.h"
+#include "Backpack.h"
+#include "MapBackpack.h"
+#include "backpack-editor-dialog.h"
 
 
 EditorBigMap::EditorBigMap()
@@ -670,6 +673,17 @@ void EditorBigMap::change_map_under_cursor()
 		changed_tiles.dim = Vector<int>(3, 3);
 	    }
 	    break;
+	case BAG:
+	    if (maptile->getMaptileType() != Tile::WATER)
+	    {
+	      //open the dialog
+	      MapBackpack *bag = 
+		GameMap::getInstance()->getTile(tile)->getBackpack();
+	      BackpackEditorDialog d(dynamic_cast<Backpack*>(bag));
+	      d.run();
+	    }
+	    break;
+	    
 	}
 
 	if (changed_tiles.w > 0 && changed_tiles.h > 0)
@@ -782,6 +796,10 @@ void EditorBigMap::after_draw()
 	    break;
 	  case BRIDGE:
 	    pic = GraphicsCache::getInstance()->getBridgePic(tile_to_bridge_type(*i));
+	    pic->blit(buffer, pos);
+	    break;
+	  case BAG:
+	    pic = GraphicsCache::getInstance()->getBagPic();
 	    pic->blit(buffer, pos);
 	    break;
 	  }

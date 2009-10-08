@@ -171,6 +171,8 @@ MainWindow::MainWindow()
 			      EditorBigMap::PORT, 1);
     setup_pointer_radiobutton(xml, "draw_bridge", "button_bridge",
 			      EditorBigMap::BRIDGE, 1);
+    setup_pointer_radiobutton(xml, "draw_bag", "button_bag",
+			      EditorBigMap::BAG, 1);
     on_pointer_radiobutton_toggled();
 
 
