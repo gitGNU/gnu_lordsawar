@@ -31,6 +31,7 @@
 #include "armyproto.h"
 #include "hero.h"
 #include "heroproto.h"
+#include "GraphicsCache.h"
 #include "playerlist.h"
 #include "stacklist.h"
 #include "hero-editor-dialog.h"
@@ -88,7 +89,7 @@ StackDialog::StackDialog(Stack *s, int m)
     xml->get_widget("army_treeview", army_treeview);
     army_treeview->set_model(army_list);
     
-    army_treeview->append_column(_("Name"), army_columns.name);
+    army_treeview->append_column("", army_columns.image);
 
     strength_renderer.property_editable() = true;
     strength_renderer.signal_edited()
@@ -113,6 +114,8 @@ StackDialog::StackDialog(Stack *s, int m)
 	      ( upkeep_renderer, 
 		sigc::mem_fun(*this, &StackDialog::cell_data_upkeep));
     army_treeview->append_column(upkeep_column);
+
+    army_treeview->append_column(_("Name"), army_columns.name);
 
     xml->get_widget("fortified_checkbutton", fortified_checkbutton);
     fortified_checkbutton->set_active(stack->getFortified());
@@ -214,15 +217,16 @@ void StackDialog::run()
 		}
 
 	    Player *stack_player = stack->getOwner();
+	    Stack *new_stack = new Stack(*stack);
 	    if (stack_player)
-		stack_player->getStacklist()->remove(stack);
+		stack_player->getStacklist()->flRemove(stack);
+	    stack = new_stack;
 	
 	    player->addStack(stack);
 	    stack->setPlayer(player);
 	    for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
 	      (*it)->setOwner(player);
 	}
-	stack->sortForViewing(false);
     }
 }
 
@@ -272,12 +276,16 @@ void StackDialog::on_remove_clicked()
 
 void StackDialog::add_army(Army *a)
 {
+    GraphicsCache *gc = GraphicsCache::getInstance();
     Gtk::TreeIter i = army_list->append();
     (*i)[army_columns.army] = a;
-    (*i)[army_columns.name] = a->getName();
+    (*i)[army_columns.image] = gc->getArmyPic(stack->getOwner()->getArmyset(),
+					      a->getTypeId(), stack->getOwner(),
+					      NULL)->to_pixbuf();
     (*i)[army_columns.strength] = a->getStat(Army::STRENGTH, false);
     (*i)[army_columns.moves] = a->getStat(Army::MOVES, false);
     (*i)[army_columns.upkeep] = a->getUpkeep();
+    (*i)[army_columns.name] = a->getName();
 
     army_treeview->get_selection()->select(i);
     
@@ -325,6 +333,7 @@ void StackDialog::on_fortified_toggled()
 	  
 void StackDialog::on_player_changed()
 {
+  GraphicsCache *gc = GraphicsCache::getInstance();
   int c = 0, row = player_combobox->get_active_row_number();
   Player *player = Playerlist::getInstance()->getNeutral();
   for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
@@ -337,6 +346,15 @@ void StackDialog::on_player_changed()
   if (player == Playerlist::getInstance()->getNeutral())
     fortified_checkbutton->set_active(false);
   set_button_sensitivity();
+	
+  for (Gtk::TreeIter j = army_list->children().begin(),
+       jend = army_list->children().end(); j != jend; ++j)
+    {
+      Army *a = (*j)[army_columns.army];
+      (*j)[army_columns.image] = gc->getArmyPic(player->getArmyset(),
+						a->getTypeId(), 
+						player, NULL)->to_pixbuf();
+    }
 }
 void StackDialog::cell_data_strength(Gtk::CellRenderer *renderer,
 				     const Gtk::TreeIter& i)

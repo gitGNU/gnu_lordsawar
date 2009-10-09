@@ -47,11 +47,13 @@ class StackDialog: public sigc::trackable
     class ArmyColumns: public Gtk::TreeModelColumnRecord {
     public:
 	ArmyColumns()
-	    { add(army); add(name); add(strength); add(moves); add(upkeep); }
+	    { add(army); add(image); add(strength); add(moves); add(upkeep); 
+	    add(name);}
 
 	Gtk::TreeModelColumn<Army *> army;
-	Gtk::TreeModelColumn<Glib::ustring> name;
+	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
 	Gtk::TreeModelColumn<int> strength, moves, upkeep;
+	Gtk::TreeModelColumn<Glib::ustring> name;
     };
     const ArmyColumns army_columns;
     Glib::RefPtr<Gtk::ListStore> army_list;
