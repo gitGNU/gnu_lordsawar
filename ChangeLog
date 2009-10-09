@@ -1,6 +1,7 @@
 2009-10-09  Ben Asselstine  <benasselstine@gmail.com>
 
 	* fixed flag colours.
+	* fixed the wrong mouse pointer after stack deselect.
 
 2009-10-08  Ben Asselstine  <benasselstine@gmail.com>
 
