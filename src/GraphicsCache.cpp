@@ -525,26 +525,6 @@ PixMask* GraphicsCache::getArmyPic(guint32 armyset, guint32 army_id,
 	return myitem->surface;
       }
 
-    /*
-    for (it =d_armylist.begin(); it != d_armylist.end(); it++)
-    {
-        if (((*it)->armyset == armyset) && ((*it)->index == army)
-            && ((*it)->player_id == p->getId())
-            && ((*it)->medals[0]==my_medals[0])
-            && ((*it)->medals[1]==my_medals[1])
-            && ((*it)->medals[2]==my_medals[2]))
-        {
-            myitem = (*it);
-            
-            // put the item on the last place (==last touched)
-            d_armylist.erase(it);
-            d_armylist.push_back(myitem);
-            
-            return myitem->surface;
-        }
-    }
-    */
-
     // We are still here, so the graphic is not in the cache. addArmyPic calls
     // checkPictures on its own, so we can simply return the surface
     debug("getarmypic============= " << my_medals) 
@@ -1245,15 +1225,7 @@ ArmyCacheItem* GraphicsCache::addArmyPic(ArmyCacheItem *item)
       for(int i=0;i<3;i++)
 	{ 
 	  if (myitem->medals[i])
-	    {
-
-	      d_medalpic[i]->blit(myitem->surface->get_pixmap(), i * d_medalpic[i]->get_width(), 0);
-	      //myitem->surface->draw_drawable(Gdk::GC::create(d_medalpic[i]),
-					     //d_medalpic[i], 0, 0, 
-					     //0, i * d_medalpic[i]->get_width(), 
-					     //d_medalpic[i]->get_width(), 
-					     //d_medalpic[i]->get_height());
-	    }
+	    d_medalpic[i]->blit(myitem->surface->get_pixmap());
 	}
     }
 

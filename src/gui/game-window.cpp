@@ -2040,7 +2040,9 @@ void GameWindow::show_stack(Stack *s)
 
       // image
       Gtk::Image *army_image = new Gtk::Image();
-      army_image->property_pixbuf() = gc->getArmyPic(army)->to_pixbuf();
+      army_image->property_pixbuf() = 
+	gc->getArmyPic(s->getOwner()->getArmyset(), army->getTypeId(),
+		       s->getOwner(), army->getMedalBonuses())->to_pixbuf();
       toggle_box->add(*manage(army_image));
       // number of moves
       Glib::ustring moves_str = String::ucompose("%1", army->getMoves());
@@ -3013,15 +3015,18 @@ void GameWindow::on_medal_awarded_to_army(Army *army)
   Gtk::Image *image;
   xml->get_widget("image", image);
   image->property_pixbuf() = gc->getArmyPic(army)->to_pixbuf();
+  Gtk::Image *medal_image;
+  xml->get_widget("medal_image", medal_image);
+  //medal_image->property_pixbuf() = gc->getMedalPic(army)->to_pixbuf();
 
   Gtk::Label *label;
   xml->get_widget("label", label);
   Glib::ustring s;
   s += String::ucompose(_("%1 is awarded a medal!"), army->getName());
   s += "\n\n";
-  s += String::ucompose(_("Experience: %1"), std::setprecision(3), army->getXP());
+  //s += String::ucompose(_("Experience: %1"), std::setprecision(3), army->getXP());
   s += "\n";
-  s += String::ucompose(_("Level: %1"), army->getLevel());
+  s += String::ucompose(_("Level: %1"), army->getLevel() + 1);
   label->set_text(s);
 
   dialog->show_all();

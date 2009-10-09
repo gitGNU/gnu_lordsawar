@@ -55,8 +55,9 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
     p = army->getOwner();
     armyset = army->getArmyset();
     GraphicsCache *gc = GraphicsCache::getInstance();
-    army_image->property_pixbuf() = gc->getArmyPic(armyset, army->getTypeId(), 
-						   p, NULL)->to_pixbuf();
+    army_image->property_pixbuf() = 
+      gc->getArmyPic(armyset, army->getTypeId(), p, 
+		     army->getMedalBonuses())->to_pixbuf();
 
     // fill in terrain image
     Gtk::Image *terrain_image;

@@ -27,6 +27,7 @@
 #include "defs.h"
 #include "hero.h"
 #include "backpack-editor-dialog.h"
+#include "Backpack.h"
 
 HeroEditorDialog::HeroEditorDialog(Hero *hero)
 {
@@ -64,6 +65,7 @@ void HeroEditorDialog::set_parent_window(Gtk::Window &parent)
 void HeroEditorDialog::run()
 {
   dialog->show_all();
+  Backpack *original_backpack = new Backpack(*d_hero->getBackpack());
   int response = dialog->run();
 
   if (response == Gtk::RESPONSE_ACCEPT)	// accepted
@@ -74,10 +76,16 @@ void HeroEditorDialog::run()
       else
 	d_hero->setGender(Hero::FEMALE);
     }
+  else
+    {
+      d_hero->getBackpack()->removeAllFromBackpack();
+      d_hero->getBackpack()->add(original_backpack);
+    }
 }
 
 void HeroEditorDialog::on_edit_backpack_clicked()
 {
   BackpackEditorDialog d(d_hero->getBackpack());
   d.run();
+  return;
 }

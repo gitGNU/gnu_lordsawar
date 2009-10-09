@@ -198,7 +198,6 @@ void PreferencesDialog::run(Game *game)
 	      {
 		AI_Fast *new_player = new AI_Fast(*p);
 		Player *old_player = p;
-		printf ("swapping %p for %p\n", old_player, new_player);
 		Playerlist::getInstance()->swap(old_player, new_player);
 		//disconnect and connect game signals
 		game->addPlayer(new_player);
