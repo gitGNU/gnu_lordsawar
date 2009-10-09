@@ -21,6 +21,13 @@
                     <child type="submenu">
                       <object class="GtkMenu" id="game_menuitem_menu">
                         <child>
+                          <object class="GtkMenuItem" id="new_game_menuitem">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">New Game</property>
+                            <property name="use_underline">True</property>
+                          </object>
+                        </child>
+                        <child>
                           <object class="GtkMenuItem" id="load_game_menuitem">
                             <property name="visible">True</property>
                             <property name="label" translatable="yes">Load Game</property>

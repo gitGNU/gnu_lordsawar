@@ -44,6 +44,9 @@ namespace
 }
 
 StackDialog::StackDialog(Stack *s, int m)
+	: strength_column(_("Strength"), strength_renderer),
+	moves_column(_("Max Moves"), moves_renderer),
+	upkeep_column(_("Upkeep"), upkeep_renderer)
 {
     stack = s;
     min_size = m;
@@ -86,14 +89,30 @@ StackDialog::StackDialog(Stack *s, int m)
     army_treeview->set_model(army_list);
     
     army_treeview->append_column(_("Name"), army_columns.name);
-    // note to translators: abbreviation of Strength
-    army_treeview->append_column(_("Str"), army_columns.strength);
-    // note to translators: abbreviation of Moves
-    army_treeview->append_column(_("Mov"), army_columns.moves);
-    // note to translators: abbreviation of Hitpoints
-    army_treeview->append_column(_("HP"), army_columns.hitpoints);
-    // note to translators: abbreviation of Upkeep
-    army_treeview->append_column(_("Upk"), army_columns.upkeep);
+
+    strength_renderer.property_editable() = true;
+    strength_renderer.signal_edited()
+      .connect(sigc::mem_fun(*this, &StackDialog::on_strength_edited));
+    strength_column.set_cell_data_func
+	      ( strength_renderer, 
+		sigc::mem_fun(*this, &StackDialog::cell_data_strength));
+    army_treeview->append_column(strength_column);
+
+    moves_renderer.property_editable() = true;
+    moves_renderer.signal_edited()
+      .connect(sigc::mem_fun(*this, &StackDialog::on_moves_edited));
+    moves_column.set_cell_data_func
+	      ( moves_renderer, 
+		sigc::mem_fun(*this, &StackDialog::cell_data_moves));
+    army_treeview->append_column(moves_column);
+
+    upkeep_renderer.property_editable() = true;
+    upkeep_renderer.signal_edited()
+      .connect(sigc::mem_fun(*this, &StackDialog::on_upkeep_edited));
+    upkeep_column.set_cell_data_func
+	      ( upkeep_renderer, 
+		sigc::mem_fun(*this, &StackDialog::cell_data_upkeep));
+    army_treeview->append_column(upkeep_column);
 
     xml->get_widget("fortified_checkbutton", fortified_checkbutton);
     fortified_checkbutton->set_active(stack->getFortified());
@@ -158,6 +177,15 @@ void StackDialog::run()
 	    }
 	}
 
+	//set the stats for all of the armies in our list
+	for (Gtk::TreeIter j = army_list->children().begin(),
+		 jend = army_list->children().end(); j != jend; ++j)
+	{
+	    Army *a = (*j)[army_columns.army];
+	    a->setStat(Army::STRENGTH, (*j)[army_columns.strength]);
+	    a->setStat(Army::MOVES, (*j)[army_columns.moves]);
+	    a->setUpkeep((*j)[army_columns.upkeep]);
+	}
 	stack->group();
 	bool ship = stack->hasShip();
 	// add added armies to stack
@@ -249,7 +277,6 @@ void StackDialog::add_army(Army *a)
     (*i)[army_columns.name] = a->getName();
     (*i)[army_columns.strength] = a->getStat(Army::STRENGTH, false);
     (*i)[army_columns.moves] = a->getStat(Army::MOVES, false);
-    (*i)[army_columns.hitpoints] = a->getStat(Army::HP, false);
     (*i)[army_columns.upkeep] = a->getUpkeep();
 
     army_treeview->get_selection()->select(i);
@@ -311,3 +338,57 @@ void StackDialog::on_player_changed()
     fortified_checkbutton->set_active(false);
   set_button_sensitivity();
 }
+void StackDialog::cell_data_strength(Gtk::CellRenderer *renderer,
+				     const Gtk::TreeIter& i)
+{
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
+          = new Gtk::Adjustment((*i)[army_columns.strength], 1, 9, 1);
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
+      String::ucompose("%1", (*i)[army_columns.strength]);
+}
+
+void StackDialog::on_strength_edited(const Glib::ustring &path,
+				   const Glib::ustring &new_text)
+{
+  int str = atoi(new_text.c_str());
+  if (str < 1 || str > 9)
+    return;
+  (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.strength] = str;
+}
+
+void StackDialog::cell_data_moves(Gtk::CellRenderer *renderer,
+				  const Gtk::TreeIter& i)
+{
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
+          = new Gtk::Adjustment((*i)[army_columns.moves], 6, 75, 1);
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
+      String::ucompose("%1", (*i)[army_columns.moves]);
+}
+
+void StackDialog::on_moves_edited(const Glib::ustring &path,
+				   const Glib::ustring &new_text)
+{
+  int moves = atoi(new_text.c_str());
+  if (moves < 6 || moves > 75)
+    return;
+  (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.moves] = moves;
+}
+
+void StackDialog::cell_data_upkeep(Gtk::CellRenderer *renderer,
+				   const Gtk::TreeIter& i)
+{
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
+          = new Gtk::Adjustment((*i)[army_columns.upkeep], 0, 20, 1);
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
+      String::ucompose("%1", (*i)[army_columns.upkeep]);
+}
+
+void StackDialog::on_upkeep_edited(const Glib::ustring &path,
+				   const Glib::ustring &new_text)
+{
+  int upkeep = atoi(new_text.c_str());
+  if (upkeep < 0 || upkeep > 20)
+    return;
+  (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.upkeep] = upkeep;
+}
+

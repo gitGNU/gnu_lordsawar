@@ -311,6 +311,9 @@ GameWindow::GameWindow()
     se_keypad_button->add(*manage(arrow_image7));
 
     // connect callbacks for the menu
+    xml->get_widget("new_game_menuitem", new_game_menuitem);
+    new_game_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_quit_activated));
     xml->get_widget("load_game_menuitem", load_game_menuitem);
     load_game_menuitem->signal_activate().connect
       (sigc::mem_fun(*this, &GameWindow::on_load_game_activated));

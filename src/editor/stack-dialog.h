@@ -47,15 +47,21 @@ class StackDialog: public sigc::trackable
     class ArmyColumns: public Gtk::TreeModelColumnRecord {
     public:
 	ArmyColumns()
-	    { add(army); add(name);
-	      add(strength); add(moves); add(hitpoints); add(upkeep); }
+	    { add(army); add(name); add(strength); add(moves); add(upkeep); }
 
 	Gtk::TreeModelColumn<Army *> army;
 	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<int> strength, moves, hitpoints, upkeep;
+	Gtk::TreeModelColumn<int> strength, moves, upkeep;
     };
     const ArmyColumns army_columns;
     Glib::RefPtr<Gtk::ListStore> army_list;
+
+    Gtk::CellRendererSpin strength_renderer;
+    Gtk::TreeViewColumn strength_column;
+    Gtk::CellRendererSpin moves_renderer;
+    Gtk::TreeViewColumn moves_column;
+    Gtk::CellRendererSpin upkeep_renderer;
+    Gtk::TreeViewColumn upkeep_column;
     Gtk::Button *add_button;
     Gtk::Button *remove_button;
     Gtk::Button *edit_hero_button;
@@ -73,6 +79,12 @@ class StackDialog: public sigc::trackable
 
     void add_army(Army *a);
     void set_button_sensitivity();
+    void cell_data_strength(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
+    void on_strength_edited(const Glib::ustring &path, const Glib::ustring &new_text);
+    void cell_data_moves(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
+    void on_moves_edited(const Glib::ustring &path, const Glib::ustring &new_text);
+    void cell_data_upkeep(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
+    void on_upkeep_edited(const Glib::ustring &path, const Glib::ustring &new_text);
 };
 
 #endif

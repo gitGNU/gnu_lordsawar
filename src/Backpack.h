@@ -87,7 +87,11 @@ class Backpack: public std::list<Item*>
 	 * @return True if the Item was found and removed.
 	 */
 	bool removeFromBackpack(Item* item);
+
+	//! Remove all items from the backpack.
 	void removeAllFromBackpack();
+
+	//! Add all of the items from the given backpack.
 	void add(Backpack *backpack);
 
 	//! Add an Item to the bottom of the hero's backpack. 

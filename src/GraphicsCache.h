@@ -216,6 +216,14 @@ class GraphicsCache
           * @return image of the standard
           */
         PixMask* getPlantedStandardPic(const Player* p);
+
+	/** Function for getting a new-level picture.  This is the picture
+	 * that appears when a hero gains a new level, and subsequently gets
+	 * to increase a stat.
+	 *
+	 * @param p the player to colour the image as.
+	 * @return new-level image.
+	 */
         PixMask* getNewLevelPic(const Player* p);
 
         /** Function for getting a city picture
@@ -383,6 +391,8 @@ class GraphicsCache
 
         //! Creates a new planted standard picture with the given parameters.
         PlantedStandardCacheItem* addPlantedStandardPic(const Player* p);
+
+	//! Creates a new new-level picture in the player's colour.
         NewLevelCacheItem* addNewLevelPic(const Player* p);
 
         //! Creates a new flag picture with the given parameters.

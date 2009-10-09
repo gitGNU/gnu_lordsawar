@@ -105,6 +105,7 @@ class GameWindow: public Decorated
     Gtk::Container *map_container;
     Gtk::MenuBar *menubar;
     Gtk::CheckMenuItem *fullscreen_menuitem;
+    Gtk::MenuItem *new_game_menuitem;
     Gtk::MenuItem *load_game_menuitem;
     Gtk::MenuItem *save_game_menuitem;
     Gtk::MenuItem *save_game_as_menuitem;
