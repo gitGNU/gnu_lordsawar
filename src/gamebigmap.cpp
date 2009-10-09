@@ -120,6 +120,7 @@ void GameBigMap::unselect_active_stack()
       delete path_calculator;
       path_calculator = NULL;
     }
+  determine_mouse_cursor(NULL, current_tile);
 }
 
 bool GameBigMap::on_selection_timeout()
