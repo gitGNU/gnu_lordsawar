@@ -73,6 +73,13 @@ struct PlantedStandardCacheItem
     PixMask* surface;
 };
 
+//the structure to store new level pictures in
+struct NewLevelCacheItem
+{
+    guint32 player_id;
+    PixMask* surface;
+};
+
 //the structure to store temples in
 struct TempleCacheItem
 {
@@ -257,6 +264,7 @@ GraphicsCache::GraphicsCache()
     loadProdShields();
     loadMoveBonusPics();
     loadMedalPics();
+    loadNewLevelPics();
 
     d_smallruinedcity = GraphicsLoader::getMiscPicture("smallruinedcity.png");
     d_smallhero = GraphicsLoader::getMiscPicture("hero.png");
@@ -337,6 +345,8 @@ GraphicsCache::~GraphicsCache()
     delete d_bag;
     delete d_explosion;
     delete d_signpost;
+    delete d_newlevel;
+    delete d_newlevelmask;
 }
 
 PixMask* GraphicsCache::getSmallRuinedCityPic()
@@ -450,6 +460,32 @@ PixMask* GraphicsCache::getShipPic(const Player* p)
     // We are still here, so the graphic is not in the cache. addShipPic calls
     // checkPictures on its own, so we can simply return the surface
     myitem = addShipPic(p);
+
+    return myitem->surface;
+}
+
+PixMask* GraphicsCache::getNewLevelPic(const Player* p)
+{
+    debug("getting new level pic " <<p->getName())
+    std::list<NewLevelCacheItem*>::iterator it;
+    NewLevelCacheItem* myitem;
+    for (it = d_newlevellist.begin(); it != d_newlevellist.end(); it++)
+    {
+        if ((*it)->player_id == p->getId())
+        {
+            myitem = (*it);
+            
+            // put the item on the last place (==last touched)
+            d_newlevellist.erase(it);
+            d_newlevellist.push_back(myitem);
+            
+            return myitem->surface;
+        }
+    }
+    // We are still here, so the graphic is not in the cache. 
+    // addNewLevelPic calls checkPictures on its own, so we can 
+    // simply return the surface
+    myitem = addNewLevelPic(p);
 
     return myitem->surface;
 }
@@ -1016,6 +1052,9 @@ void GraphicsCache::checkPictures()
   while (d_plantedstandardlist.size() > 10)
     eraseLastPlantedStandardItem();
 
+  while (d_newlevellist.size() > 10)
+    eraseLastNewLevelItem();
+
   while (d_templelist.size() > 10)
     eraseLastTempleItem();
 
@@ -1301,6 +1340,31 @@ ShipCacheItem* GraphicsCache::addShipPic(const Player* p)
 
   //b) add the entry to the list
   d_shiplist.push_back(myitem);
+
+  //c) check if the cache size is too large
+  checkPictures();
+
+  //we are finished, so return the pic
+  return myitem;
+}
+
+NewLevelCacheItem* GraphicsCache::addNewLevelPic(const Player* p)
+{
+  debug("ADD new level pic: " <<p->getName())
+
+  NewLevelCacheItem* myitem = new NewLevelCacheItem();
+  myitem->player_id = p->getId();
+
+  // copy the pixmap including player colors
+  myitem->surface = applyMask(d_newlevel, d_newlevelmask, p);
+
+  //now the final preparation steps:
+  //a) add the size
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize += myitem->surface->get_depth()/8 * size;
+
+  //b) add the entry to the list
+  d_newlevellist.push_back(myitem);
 
   //c) check if the cache size is too large
   checkPictures();
@@ -1929,6 +1993,21 @@ void GraphicsCache::eraseLastShipItem()
   delete myitem;
 }
 
+void GraphicsCache::eraseLastNewLevelItem()
+{
+  if (d_newlevellist.empty())
+    return;
+
+  NewLevelCacheItem* myitem = *(d_newlevellist.begin());
+  d_newlevellist.erase(d_newlevellist.begin());
+
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_depth()/8 * size;
+
+  delete myitem->surface;
+  delete myitem;
+}
+
 void GraphicsCache::eraseLastPlantedStandardItem()
 {
   if (d_plantedstandardlist.empty())
@@ -2291,6 +2370,14 @@ void GraphicsCache::loadMedalPics()
 			      MEDAL_TYPES);
   for (unsigned int i = 0; i < MEDAL_TYPES; i++)
     d_medalpic[1][i] = medalpics[i];
+}
+
+void GraphicsCache::loadNewLevelPics()
+{
+  std::vector<PixMask* > half;
+  half = disassemble_row(File::getMiscFile("various/hero-newlevel.png"), 2);
+  d_newlevel = half[0];
+  d_newlevelmask = half[1];
 }
 
 void GraphicsCache::loadMoveBonusPics()

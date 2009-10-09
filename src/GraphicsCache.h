@@ -50,6 +50,7 @@ struct ProdShieldCacheItem;
 struct MoveBonusCacheItem;
 struct FogCacheItem;
 struct PlantedStandardCacheItem;
+struct NewLevelCacheItem;
 struct TileCacheItem;
 class City;
 
@@ -215,6 +216,7 @@ class GraphicsCache
           * @return image of the standard
           */
         PixMask* getPlantedStandardPic(const Player* p);
+        PixMask* getNewLevelPic(const Player* p);
 
         /** Function for getting a city picture
           * 
@@ -381,6 +383,7 @@ class GraphicsCache
 
         //! Creates a new planted standard picture with the given parameters.
         PlantedStandardCacheItem* addPlantedStandardPic(const Player* p);
+        NewLevelCacheItem* addNewLevelPic(const Player* p);
 
         //! Creates a new flag picture with the given parameters.
         FlagCacheItem* addFlagPic(int size, const Player *p);
@@ -437,6 +440,7 @@ class GraphicsCache
 
         //! Erases the oldest planted standard cache item.
         void eraseLastPlantedStandardItem();
+        void eraseLastNewLevelItem();
 
         //! Erases the oldest flag cache item
         void eraseLastFlagItem();
@@ -491,6 +495,9 @@ class GraphicsCache
         //! Loads the images for the production shields
         void loadProdShields();
         
+	//! Loads the images associated with heroes gaining a new level.
+        void loadNewLevelPics();
+
         //! Loads the images for the movement bonuses
         void loadMoveBonusPics();
         /** Get a cityset picture
@@ -532,6 +539,7 @@ class GraphicsCache
         std::list<MoveBonusCacheItem*> d_movebonuslist;
         std::list<ShipCacheItem*> d_shiplist;
         std::list<PlantedStandardCacheItem*> d_plantedstandardlist;
+        std::list<NewLevelCacheItem*> d_newlevellist;
 
         //some private surfaces
         PixMask* d_citypic[MAX_PLAYERS + 1]; //+1 for neutral
@@ -564,6 +572,8 @@ class GraphicsCache
 	PixMask* d_small_ruin_explored;
 	PixMask* d_small_temple;
 	PixMask*d_fogpic[FOG_TYPES];
+	PixMask *d_newlevel;
+	PixMask *d_newlevelmask;
 };
 
 bool operator <(ArmyCacheItem lhs, ArmyCacheItem rhs);

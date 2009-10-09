@@ -443,7 +443,7 @@ Vector<int> Stack::getLastReachablePointInPath() const
 {
   if (d_path->size() == 0)
     return Vector<int>(-1,-1);
-  int count = 0;
+  unsigned int count = 0;
   for (Path::iterator it = d_path->begin(); it != d_path->end(); it++)
     {
       count++;

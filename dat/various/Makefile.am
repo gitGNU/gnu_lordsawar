@@ -40,7 +40,8 @@ various_DATA = \
     parley_offered.png \
     parley_refused.png \
     background.png \
-    back.bmp
+    back.bmp \
+    hero-newlevel.png
 
 EXTRA_DIST = \
     README \
@@ -50,6 +51,7 @@ EXTRA_DIST = \
     city_occupied.png \
     items.png \
     medals_mask.png \
+    bigmedals.png \
     ship.png \
     recruit_female.png \
     recruit_male.png \
@@ -79,4 +81,5 @@ EXTRA_DIST = \
     parley_offered.png \
     parley_refused.png \
     background.png \
-    back.bmp
+    back.bmp \
+    hero-newlevel.png
