@@ -3,6 +3,7 @@
 	* fixed flag colours.
 	* fixed the wrong mouse pointer after stack deselect.
 	* spruced up the medal awarded dialog.
+	* added support for stacks in fortified-mode in the scenario editor.
 
 2009-10-08  Ben Asselstine  <benasselstine@gmail.com>
 
