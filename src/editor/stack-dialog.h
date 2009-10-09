@@ -59,6 +59,7 @@ class StackDialog: public sigc::trackable
     Gtk::Button *add_button;
     Gtk::Button *remove_button;
     Gtk::Button *edit_hero_button;
+    Gtk::CheckButton *fortified_checkbutton;
 
     Stack *stack;
     int min_size;
@@ -67,6 +68,8 @@ class StackDialog: public sigc::trackable
     void on_remove_clicked();
     void on_edit_hero_clicked();
     void on_selection_changed();
+    void on_fortified_toggled();
+    void on_player_changed();
 
     void add_army(Army *a);
     void set_button_sensitivity();

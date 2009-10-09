@@ -71,6 +71,8 @@ StackDialog::StackDialog(Stack *s, int m)
 	}
 
 	player_combobox->set_active(player_no);
+	player_combobox->signal_changed().connect
+	  (sigc::mem_fun(*this, &StackDialog::on_player_changed));
 
 	Gtk::Box *box;
 	xml->get_widget("player_hbox", box);
@@ -93,6 +95,11 @@ StackDialog::StackDialog(Stack *s, int m)
     // note to translators: abbreviation of Upkeep
     army_treeview->append_column(_("Upk"), army_columns.upkeep);
 
+    xml->get_widget("fortified_checkbutton", fortified_checkbutton);
+    fortified_checkbutton->set_active(stack->getFortified());
+    fortified_checkbutton->signal_toggled().connect(
+	sigc::mem_fun(this, &StackDialog::on_fortified_toggled));
+
     xml->get_widget("add_button", add_button);
     xml->get_widget("remove_button", remove_button);
     xml->get_widget("edit_hero_button", edit_hero_button);
@@ -109,6 +116,7 @@ StackDialog::StackDialog(Stack *s, int m)
     
     for (Stack::iterator i = stack->begin(), end = stack->end(); i != end; ++i)
 	add_army(*i);
+  set_button_sensitivity();
 }
 
 StackDialog::~StackDialog()
@@ -186,6 +194,7 @@ void StackDialog::run()
 	    for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
 	      (*it)->setOwner(player);
 	}
+	stack->sortForViewing(false);
     }
 }
 
@@ -267,5 +276,38 @@ void StackDialog::set_button_sensitivity()
 	else
 	  edit_hero_button->set_sensitive(false);
       }
+  int c = 0, row = player_combobox->get_active_row_number();
+  Player *player = Playerlist::getInstance()->getNeutral();
+  for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
+       end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
+    if (c == row)
+      {
+	player = *i;
+	break;
+      }
+  if (player == Playerlist::getInstance()->getNeutral())
+    fortified_checkbutton->set_sensitive(false);
+  else
+    fortified_checkbutton->set_sensitive(true);
 }
 
+void StackDialog::on_fortified_toggled()
+{
+  stack->setFortified(fortified_checkbutton->get_active());
+}
+	  
+void StackDialog::on_player_changed()
+{
+  int c = 0, row = player_combobox->get_active_row_number();
+  Player *player = Playerlist::getInstance()->getNeutral();
+  for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
+       end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
+    if (c == row)
+      {
+	player = *i;
+	break;
+      }
+  if (player == Playerlist::getInstance()->getNeutral())
+    fortified_checkbutton->set_active(false);
+  set_button_sensitivity();
+}

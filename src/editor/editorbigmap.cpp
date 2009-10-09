@@ -53,6 +53,7 @@
 #include "Backpack.h"
 #include "MapBackpack.h"
 #include "backpack-editor-dialog.h"
+#include "stack-dialog.h"
 
 
 EditorBigMap::EditorBigMap()
@@ -483,6 +484,12 @@ void EditorBigMap::change_map_under_cursor()
 			  }
 	          }
 	    }
+	    else
+	      {
+		StackDialog d(Stacklist::getObjectAt(tile));
+		d.run();
+		draw();
+	      }
 
 	    break;
 	    
@@ -533,6 +540,10 @@ void EditorBigMap::change_map_under_cursor()
 						      c->getPos().y + y);
 		    if (s)
 		      {
+			if (c->getOwner() == 
+			    Playerlist::getInstance()->getNeutral() &&
+			    s->getFortified() == true)
+			  s->setFortified(false);
 			if (s->getOwner() != c->getOwner())
 			  {
 			    //remove it from the old player's list of stacks
