@@ -1,67 +1,43 @@
 <?xml version="1.0"?>
-<!--*- mode: xml -*-->
 <interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="window">
     <property name="title">LordsAWar!</property>
-    <property name="type">GTK_WINDOW_TOPLEVEL</property>
-    <property name="window_position">GTK_WIN_POS_NONE</property>
-    <property name="modal">False</property>
     <property name="default_height">575</property>
-    <property name="resizable">True</property>
-    <property name="destroy_with_parent">False</property>
-    <property name="decorated">True</property>
-    <property name="skip_taskbar_hint">False</property>
-    <property name="skip_pager_hint">False</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_NORMAL</property>
-    <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
-    <property name="focus_on_map">True</property>
-    <property name="urgency_hint">False</property>
     <child>
       <object class="GtkTable" id="table">
         <property name="visible">True</property>
         <property name="n_rows">2</property>
         <property name="n_columns">2</property>
-        <property name="homogeneous">False</property>
-        <property name="row_spacing">0</property>
-        <property name="column_spacing">0</property>
         <child>
           <object class="GtkHBox" id="dummy_box">
             <property name="visible">True</property>
-            <property name="homogeneous">False</property>
-            <property name="spacing">0</property>
             <child>
               <placeholder/>
             </child>
           </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="right_attach">1</property>
-            <property name="top_attach">0</property>
-            <property name="bottom_attach">1</property>
-          </packing>
         </child>
         <child>
           <object class="GtkVBox" id="button_box">
-            <property name="border_width">24</property>
             <property name="width_request">266</property>
             <property name="visible">True</property>
-            <property name="homogeneous">False</property>
-            <property name="spacing">0</property>
+            <property name="border_width">24</property>
             <child>
               <placeholder/>
             </child>
             <child>
               <object class="GtkButton" id="load_scenario_button">
-                <property name="visible">True</property>
                 <property name="label" translatable="yes">New _Game</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
                 <property name="use_underline">True</property>
-                <property name="relief">GTK_RELIEF_NORMAL</property>
-                <property name="focus_on_click">True</property>
               </object>
               <packing>
-                <property name="padding">3</property>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
+                <property name="padding">3</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child>
@@ -69,109 +45,74 @@
             </child>
             <child>
               <object class="GtkButton" id="new_network_game_button">
-                <property name="visible">True</property>
                 <property name="label" translatable="yes">New _Network Game</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
                 <property name="use_underline">True</property>
-                <property name="relief">GTK_RELIEF_NORMAL</property>
-                <property name="focus_on_click">True</property>
               </object>
               <packing>
-                <property name="padding">3</property>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
+                <property name="padding">3</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>
-              <object class="GtkAlignment" id="sdl_container">
+              <object class="GtkButton" id="new_pbm_game_button">
+                <property name="label" translatable="yes">New Play By _Mail Game</property>
                 <property name="visible">True</property>
-                <property name="xalign">0.5</property>
-                <property name="yalign">0.5</property>
-                <property name="xscale">1</property>
-                <property name="yscale">1</property>
-                <property name="top_padding">0</property>
-                <property name="bottom_padding">0</property>
-                <property name="left_padding">0</property>
-                <property name="right_padding">0</property>
-                <child>
-                  <object class="GtkButton" id="new_pbm_game_button">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="label" translatable="yes">New Play By _Mail Game</property>
-                    <property name="use_underline">True</property>
-                    <property name="relief">GTK_RELIEF_NORMAL</property>
-                    <property name="focus_on_click">True</property>
-                  </object>
-                </child>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_underline">True</property>
               </object>
               <packing>
-                <property name="padding">0</property>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child>
               <object class="GtkButton" id="load_game_button">
-                <property name="visible">True</property>
                 <property name="label" translatable="yes">L_oad Game</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
                 <property name="use_underline">True</property>
-                <property name="relief">GTK_RELIEF_NORMAL</property>
-                <property name="focus_on_click">True</property>
               </object>
               <packing>
-                <property name="padding">3</property>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
+                <property name="padding">3</property>
+                <property name="position">5</property>
               </packing>
             </child>
             <child>
               <object class="GtkButton" id="preferences_button">
-                <property name="visible">True</property>
                 <property name="label" translatable="yes">_Preferences</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
                 <property name="use_underline">True</property>
-                <property name="relief">GTK_RELIEF_NORMAL</property>
-                <property name="focus_on_click">True</property>
               </object>
               <packing>
-                <property name="padding">3</property>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
+                <property name="padding">3</property>
+                <property name="position">6</property>
               </packing>
             </child>
             <child>
               <object class="GtkButton" id="quit_button">
-                <property name="visible">True</property>
                 <property name="label" translatable="yes">_Quit</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="receives_default">False</property>
                 <property name="use_underline">True</property>
-                <property name="relief">GTK_RELIEF_NORMAL</property>
-                <property name="focus_on_click">True</property>
               </object>
               <packing>
-                <property name="padding">3</property>
                 <property name="expand">False</property>
-                <property name="fill">True</property>
+                <property name="padding">3</property>
+                <property name="position">7</property>
               </packing>
             </child>
             <child>
-              <object class="GtkAlignment" id="sdl_container">
-                <property name="height_request">1</property>
-                <property name="visible">True</property>
-                <property name="xalign">0.5</property>
-                <property name="yalign">0.5</property>
-                <property name="xscale">1</property>
-                <property name="yscale">1</property>
-                <property name="top_padding">0</property>
-                <property name="bottom_padding">0</property>
-                <property name="left_padding">0</property>
-                <property name="right_padding">0</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="padding">0</property>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-              </packing>
+              <placeholder/>
             </child>
           </object>
           <packing>
@@ -179,9 +120,15 @@
             <property name="right_attach">2</property>
             <property name="top_attach">1</property>
             <property name="bottom_attach">2</property>
-            <property name="x_options"/>
-            <property name="y_options"/>
+            <property name="x_options"></property>
+            <property name="y_options"></property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>

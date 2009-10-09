@@ -89,6 +89,8 @@
 [type: gettext/glade]/dat/glade/editor/tileset-selector-editor-dialog.ui
 [type: gettext/glade]/dat/glade/editor/tileset-explosion-picture-editor-dialog.ui
 [type: gettext/glade]/dat/glade/editor/tileset-window.ui
+[type: gettext/glade]/dat/glade/editor/hero-editor-dialog.ui
+[type: gettext/glade]/dat/glade/editor/backpack-editor-dialog.ui
 src/FogMap.cpp
 src/templelist.cpp
 src/network-connection.cpp
@@ -236,6 +238,8 @@ src/editor/reward-dialog.cpp
 src/editor/main.cpp
 src/editor/tileset-window.cpp
 src/editor/stack-dialog.cpp
+src/editor/hero-editor-dialog.cpp
+src/editor/backpack-editor-dialog.cpp
 src/NamedLocation.cpp
 src/herotemplates.cpp
 src/xmlhelper.cpp
