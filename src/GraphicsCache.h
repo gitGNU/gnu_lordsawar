@@ -312,6 +312,8 @@ class GraphicsCache
           */
         PixMask* getProdShieldPic(guint32 type, bool prod);
 
+        PixMask* getMedalPic(bool large, int type);
+
 
         /** Modify an image with player colors.
           * 
@@ -552,7 +554,7 @@ class GraphicsCache
 	PixMask* d_smallhero;
 	PixMask* d_smallinactivehero;
         PixMask* d_movebonuspic[MOVE_BONUS_TYPES];
-        PixMask* d_medalpic[MEDAL_TYPES];
+        PixMask* d_medalpic[2][MEDAL_TYPES];
 	PixMask* d_port;
 	PixMask* d_bag;
 	PixMask* d_explosion;

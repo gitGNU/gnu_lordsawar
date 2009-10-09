@@ -63,7 +63,6 @@ SplashWindow::SplashWindow()
     decorate(window, File::getMiscFile("various/back.bmp"));
     window_closed.connect(sigc::mem_fun(this, &SplashWindow::on_window_closed));
 
-    xml->get_widget("sdl_container", sdl_container);
     window->signal_delete_event().connect
       (sigc::mem_fun(*this, &SplashWindow::on_delete_event));
     
@@ -114,20 +113,6 @@ SplashWindow::SplashWindow()
 	  }
       }
 
-  //sdl_widget = Gtk::manage(Glib::wrap(gtk_sdl_new(1,1,0,SDL_SWSURFACE)));
-  //sdl_widget->grab_focus();
-  //sdl_widget->add_events(Gdk::KEY_PRESS_MASK | Gdk::BUTTON_PRESS_MASK | 
-			 //Gdk::BUTTON_RELEASE_MASK | Gdk::POINTER_MOTION_MASK | 
-			 //Gdk::LEAVE_NOTIFY_MASK);
-
-      // connect to the special signal that signifies that a new surface has been
-      // generated and attached to the widget 
-  //g_signal_connect(G_OBJECT(sdl_widget->gobj()), "surface-attached", 
-     //G_CALLBACK(surface_attached_helper), this); 
-      
-      //sdl_container->add(*sdl_widget); 
-      //Gtk::RC::add_default_file(File::getMiscFile("gtkrc"));
-	//Gtk::RC::reparse_all(Gtk::Settings::get_default(), true);
 }
 
 SplashWindow::~SplashWindow()
@@ -139,13 +124,11 @@ SplashWindow::~SplashWindow()
 
 void SplashWindow::show()
 {
-    sdl_container->show_all();
     window->show_all();
 }
 
 void SplashWindow::hide()
 {
-  sdl_container->hide();
     window->hide();
 }
 

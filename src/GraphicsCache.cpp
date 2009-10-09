@@ -1225,7 +1225,7 @@ ArmyCacheItem* GraphicsCache::addArmyPic(ArmyCacheItem *item)
       for(int i=0;i<3;i++)
 	{ 
 	  if (myitem->medals[i])
-	    d_medalpic[i]->blit(myitem->surface->get_pixmap());
+	    d_medalpic[0][i]->blit(myitem->surface->get_pixmap());
 	}
     }
 
@@ -2285,8 +2285,12 @@ void GraphicsCache::loadMedalPics()
     {
       if (medalpics[i]->get_width() != ts)
 	PixMask::scale(medalpics[i], ts, ts);
-      d_medalpic[i] = medalpics[i];
+      d_medalpic[0][i] = medalpics[i];
     }
+  medalpics = disassemble_row(File::getMiscFile("various/bigmedals.png"),
+			      MEDAL_TYPES);
+  for (unsigned int i = 0; i < MEDAL_TYPES; i++)
+    d_medalpic[1][i] = medalpics[i];
 }
 
 void GraphicsCache::loadMoveBonusPics()
@@ -2330,4 +2334,12 @@ void GraphicsCache::loadFlags()
 	PixMask::scale(maskpics[i], ts, ts);
       d_flagmask[i] = maskpics[i];
     }
+}
+        
+PixMask* GraphicsCache::getMedalPic(bool large, int type)
+{
+  if (large)
+    return d_medalpic[1][type];
+  else
+    return d_medalpic[0][type];
 }

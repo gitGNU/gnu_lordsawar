@@ -2998,7 +2998,7 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 
 }
 
-void GameWindow::on_medal_awarded_to_army(Army *army)
+void GameWindow::on_medal_awarded_to_army(Army *army, int medaltype)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   Gtk::Dialog* dialog;
@@ -3014,19 +3014,26 @@ void GameWindow::on_medal_awarded_to_army(Army *army)
 
   Gtk::Image *image;
   xml->get_widget("image", image);
-  image->property_pixbuf() = gc->getArmyPic(army)->to_pixbuf();
+  Player *active = Playerlist::getInstance()->getActiveplayer();
+  image->property_pixbuf() = 
+    gc->getArmyPic(active->getArmyset(), army->getTypeId(), active, 
+		   army->getMedalBonuses())->to_pixbuf();
   Gtk::Image *medal_image;
   xml->get_widget("medal_image", medal_image);
-  //medal_image->property_pixbuf() = gc->getMedalPic(army)->to_pixbuf();
+  medal_image->property_pixbuf() = 
+    gc->getMedalPic(true, medaltype)->to_pixbuf();
 
   Gtk::Label *label;
   xml->get_widget("label", label);
   Glib::ustring s;
-  s += String::ucompose(_("%1 is awarded a medal!"), army->getName());
-  s += "\n\n";
-  //s += String::ucompose(_("Experience: %1"), std::setprecision(3), army->getXP());
-  s += "\n";
-  s += String::ucompose(_("Level: %1"), army->getLevel() + 1);
+  if (medaltype == 0)
+    s += String::ucompose(_("Your unit of %1 is awarded the avenger's medal of valour!"), army->getName());
+  else if (medaltype == 1)
+    s += String::ucompose(_("Your unit of %1 is awarded the defender's medal of bravery!"), army->getName());
+  else if (medaltype == 2)
+    s += String::ucompose(_("Your unit of %1 is awarded the veteran's medal!"), army->getName());
+  else
+    s += String::ucompose(_("Your unit of %1 is awarded a medal!"), army->getName());
   label->set_text(s);
 
   dialog->show_all();

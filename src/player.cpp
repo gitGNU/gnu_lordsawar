@@ -2318,7 +2318,7 @@ void Player::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
 		      // We get the medal bonus here
 		      army->setStat(Army::STRENGTH, army->getStat(Army::STRENGTH, false)+1);
 		      // Emit signal
-		      snewMedalArmy.emit(army);
+		      snewMedalArmy.emit(army, 2);
 		    }
 
 		  debug("Army hits " <<  army->getNumberHasHit())
@@ -2337,7 +2337,7 @@ void Player::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
 			// We get the medal bonus here
 			army->setStat(Army::STRENGTH, army->getStat(Army::STRENGTH, false)+1);
 			// Emit signal
-			snewMedalArmy.emit(army);
+			snewMedalArmy.emit(army, 0);
 		      }
 
 		  debug("army being hit " <<  army->getNumberHasBeenHit())
@@ -2356,7 +2356,7 @@ void Player::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
 			// We get the medal bonus here
 			army->setStat(Army::STRENGTH, army->getStat(Army::STRENGTH, false)+1);
 			// Emit signal
-			snewMedalArmy.emit(army);
+			snewMedalArmy.emit(army, 1);
 		      }
 		  debug("Army hits " <<  army->getNumberHasHit())
 

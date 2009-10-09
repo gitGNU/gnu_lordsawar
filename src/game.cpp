@@ -599,7 +599,7 @@ Army::Stat Game::newLevelArmy(Army* a)
   return army_gains_level.emit(a);
 }
 
-void Game::newMedalArmy(Army* a)
+void Game::newMedalArmy(Army* a, int medaltype)
 {
   // We don't want to have medal awards of computer players displayed
   if (!a->getOwner()
@@ -607,7 +607,7 @@ void Game::newMedalArmy(Army* a)
       || a->getOwner() != Playerlist::getInstance()->getActiveplayer())
     return;
 
-  medal_awarded_to_army.emit(a);
+  medal_awarded_to_army.emit(a, medaltype);
   update_stack_info();
 }
 

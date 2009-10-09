@@ -66,8 +66,6 @@ class SplashWindow: public Decorated
     Gtk::Button *preferences_button;
 	    
     bool sdl_inited;
-    Gtk::Container *sdl_container;
-    //Gtk::Widget *sdl_widget;
     bool on_delete_event(GdkEventAny *e);
     void on_window_closed();
   

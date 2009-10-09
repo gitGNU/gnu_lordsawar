@@ -1152,7 +1152,7 @@ class Player: public sigc::trackable
 	 * @param army   The army that has gotten a medal.
 	 */
         //! Emitted whever a player's army gets a new medal.
-        sigc::signal<void, Army*> snewMedalArmy;
+        sigc::signal<void, Army*, int> snewMedalArmy;
 
 	/**
 	 * @param army         The army that has died.

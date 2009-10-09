@@ -10,6 +10,7 @@ various_DATA = \
     city_occupied.png \
     items.png \
     medals_mask.png \
+    bigmedals.png \
     ship.png \
     recruit_female.png \
     recruit_male.png \

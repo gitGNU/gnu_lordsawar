@@ -304,7 +304,7 @@ class GameWindow: public Decorated
     void on_next_player_turn(Player *player, unsigned int turn_number);
     void on_remote_next_player_turn();
     void on_hero_brings_allies(int alliesCount);
-    void on_medal_awarded_to_army(Army *army);
+    void on_medal_awarded_to_army(Army *army, int medaltype);
     Army::Stat on_army_gains_level(Army *army);
     void on_game_loaded(Player *player);
     void on_game_over(Player *winner);
