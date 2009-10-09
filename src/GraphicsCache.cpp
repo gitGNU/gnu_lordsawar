@@ -1568,10 +1568,9 @@ FlagCacheItem* GraphicsCache::addFlagPic(int size, const Player *p)
 {
   debug("GraphicsCache::addFlagPic, player="<<p->getId()<<", size="<<size)
 
-    // size of the stack starts at 1, but we need the index, which starts at 0
-    size--;
+  // size of the stack starts at 1, but we need the index, which starts at 0
 
-  PixMask* mysurf = applyMask(d_flagpic[size], d_flagmask[size], p);
+  PixMask* mysurf = applyMask(d_flagpic[size-1], d_flagmask[size-1], p);
 
   //now create the cache item and add the size
   FlagCacheItem* myitem = new FlagCacheItem();
