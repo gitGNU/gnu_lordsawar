@@ -4,6 +4,7 @@
 	* fixed the wrong mouse pointer after stack deselect.
 	* spruced up the medal awarded dialog.
 	* added support for stacks in fortified-mode in the scenario editor.
+	* spruced up the hero gains level dialog.
 
 2009-10-08  Ben Asselstine  <benasselstine@gmail.com>
 
