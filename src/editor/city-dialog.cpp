@@ -35,11 +35,16 @@
 #include "stacklist.h"
 #include "citylist.h"
 #include "CreateScenarioRandomize.h"
+#include "GraphicsCache.h"
 
 #include "select-army-dialog.h"
 
 
 CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
+	: strength_column(_("Strength"), strength_renderer),
+	moves_column(_("Max Moves"), moves_renderer),
+	duration_column(_("Turns"), duration_renderer),
+	upkeep_column(_("Upkeep"), upkeep_renderer)
 {
     city = cit;
     d_randomizer = randomizer;
@@ -75,9 +80,9 @@ CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
 	    player_no = c;
     }
 
+    player_combobox->set_active(player_no);
     player_combobox->signal_changed().connect
       (sigc::mem_fun(this, &CityDialog::on_player_changed));
-    player_combobox->set_active(player_no);
     Gtk::Alignment *alignment;
     xml->get_widget("player_alignment", alignment);
     alignment->add(*player_combobox);
@@ -89,11 +94,40 @@ CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
     xml->get_widget("army_treeview", army_treeview);
     army_treeview->set_model(army_list);
     
+    army_treeview->append_column("", army_columns.image);
+    strength_renderer.property_editable() = true;
+    strength_renderer.signal_edited()
+      .connect(sigc::mem_fun(*this, &CityDialog::on_strength_edited));
+    strength_column.set_cell_data_func
+	      ( strength_renderer, 
+		sigc::mem_fun(*this, &CityDialog::cell_data_strength));
+    army_treeview->append_column(strength_column);
+
+    moves_renderer.property_editable() = true;
+    moves_renderer.signal_edited()
+      .connect(sigc::mem_fun(*this, &CityDialog::on_moves_edited));
+    moves_column.set_cell_data_func
+	      ( moves_renderer, 
+		sigc::mem_fun(*this, &CityDialog::cell_data_moves));
+    army_treeview->append_column(moves_column);
+
+    upkeep_renderer.property_editable() = true;
+    upkeep_renderer.signal_edited()
+      .connect(sigc::mem_fun(*this, &CityDialog::on_upkeep_edited));
+    upkeep_column.set_cell_data_func
+	      ( upkeep_renderer, 
+		sigc::mem_fun(*this, &CityDialog::cell_data_upkeep));
+    army_treeview->append_column(upkeep_column);
+
+    duration_renderer.property_editable() = true;
+    duration_renderer.signal_edited()
+      .connect(sigc::mem_fun(*this, &CityDialog::on_turns_edited));
+    duration_column.set_cell_data_func
+	      ( duration_renderer, 
+		sigc::mem_fun(*this, &CityDialog::cell_data_turns));
+    army_treeview->append_column(strength_column);
+
     army_treeview->append_column(_("Name"), army_columns.name);
-    army_treeview->append_column_editable(_("Strength"), army_columns.strength);
-    army_treeview->append_column(_("Max Moves"), army_columns.moves);
-    army_treeview->append_column(_("Upkeep"), army_columns.upkeep);
-    army_treeview->append_column_editable(_("Turns"), army_columns.duration);
 
     xml->get_widget("add_button", add_button);
     xml->get_widget("remove_button", remove_button);
@@ -135,6 +169,7 @@ void CityDialog::set_parent_window(Gtk::Window &parent)
 
 void CityDialog::on_player_changed()
 {
+  GraphicsCache *gc = GraphicsCache::getInstance();
   // set allegiance
   int c = 0, row = player_combobox->get_active_row_number();
   Player *player = Playerlist::getInstance()->getNeutral();
@@ -169,6 +204,14 @@ void CityDialog::on_player_changed()
 		}
 	    }
 	}
+    }
+  for (Gtk::TreeIter j = army_list->children().begin(),
+       jend = army_list->children().end(); j != jend; ++j)
+    {
+      const ArmyProdBase *a = (*j)[army_columns.army];
+      (*j)[army_columns.image] = gc->getArmyPic(player->getArmyset(),
+						a->getTypeId(), 
+						player, NULL)->to_pixbuf();
     }
 }
 
@@ -287,14 +330,17 @@ void CityDialog::on_randomize_income_clicked()
 
 void CityDialog::add_army(const ArmyProdBase *a)
 {
+  GraphicsCache *gc = GraphicsCache::getInstance();
   Gtk::TreeIter i = army_list->append();
   (*i)[army_columns.army] = a;
-  (*i)[army_columns.name] = a->getName();
+  (*i)[army_columns.image] = gc->getArmyPic(city->getOwner()->getArmyset(),
+					    a->getTypeId(), city->getOwner(),
+					    NULL)->to_pixbuf();
   (*i)[army_columns.strength] = a->getStrength();
   (*i)[army_columns.moves] = a->getMaxMoves();
   (*i)[army_columns.upkeep] = a->getUpkeep();
   (*i)[army_columns.duration] = a->getProduction();
-
+  (*i)[army_columns.name] = a->getName();
   army_treeview->get_selection()->select(i);
 
   set_button_sensitivity();
@@ -311,5 +357,77 @@ void CityDialog::set_button_sensitivity()
   unsigned int armies = army_list->children().size();
   add_button->set_sensitive(armies < city->getMaxNoOfProductionBases());
   remove_button->set_sensitive(i);
+}
+
+void CityDialog::cell_data_strength(Gtk::CellRenderer *renderer,
+				     const Gtk::TreeIter& i)
+{
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
+          = new Gtk::Adjustment((*i)[army_columns.strength], 1, 9, 1);
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
+      String::ucompose("%1", (*i)[army_columns.strength]);
+}
+
+void CityDialog::on_strength_edited(const Glib::ustring &path,
+				   const Glib::ustring &new_text)
+{
+  int str = atoi(new_text.c_str());
+  if (str < 1 || str > 9)
+    return;
+  (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.strength] = str;
+}
+
+void CityDialog::cell_data_moves(Gtk::CellRenderer *renderer,
+				  const Gtk::TreeIter& i)
+{
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
+          = new Gtk::Adjustment((*i)[army_columns.moves], 6, 75, 1);
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
+      String::ucompose("%1", (*i)[army_columns.moves]);
+}
+
+void CityDialog::on_moves_edited(const Glib::ustring &path,
+				   const Glib::ustring &new_text)
+{
+  int moves = atoi(new_text.c_str());
+  if (moves < 6 || moves > 75)
+    return;
+  (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.moves] = moves;
+}
+
+void CityDialog::cell_data_turns(Gtk::CellRenderer *renderer,
+				   const Gtk::TreeIter& i)
+{
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
+          = new Gtk::Adjustment((*i)[army_columns.duration], 0, 5, 1);
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
+      String::ucompose("%1", (*i)[army_columns.duration]);
+}
+
+void CityDialog::on_turns_edited(const Glib::ustring &path,
+				   const Glib::ustring &new_text)
+{
+  int turns = atoi(new_text.c_str());
+  if (turns < 0 || turns > 5)
+    return;
+  (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.duration] = turns;
+}
+
+void CityDialog::cell_data_upkeep(Gtk::CellRenderer *renderer,
+				   const Gtk::TreeIter& i)
+{
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
+          = new Gtk::Adjustment((*i)[army_columns.upkeep], 0, 20, 1);
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
+      String::ucompose("%1", (*i)[army_columns.upkeep]);
+}
+
+void CityDialog::on_upkeep_edited(const Glib::ustring &path,
+				   const Glib::ustring &new_text)
+{
+  int upkeep = atoi(new_text.c_str());
+  if (upkeep < 0 || upkeep > 20)
+    return;
+  (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.upkeep] = upkeep;
 }
 

@@ -40,6 +40,8 @@ class CityDialog: public sigc::trackable
     void run();
     
  private:
+    City *city;
+    CreateScenarioRandomize *d_randomizer;
     Gtk::Dialog* dialog;
     Gtk::ComboBoxText *player_combobox;
     Gtk::CheckButton *capital_checkbutton;
@@ -52,12 +54,13 @@ class CityDialog: public sigc::trackable
     class ArmyColumns: public Gtk::TreeModelColumnRecord {
     public:
 	ArmyColumns()
-	    { add(army); add(name);
-	      add(strength); add(moves); add(upkeep); add(duration); }
+	    { add(army); add(image);
+	      add(strength); add(moves); add(upkeep); add(duration); add(name);}
 
 	Gtk::TreeModelColumn<const ArmyProdBase *> army;
-	Gtk::TreeModelColumn<Glib::ustring> name;
+	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
 	Gtk::TreeModelColumn<int> strength, moves, upkeep, duration;
+	Gtk::TreeModelColumn<Glib::ustring> name;
     };
     const ArmyColumns army_columns;
     Glib::RefPtr<Gtk::ListStore> army_list;
@@ -66,8 +69,15 @@ class CityDialog: public sigc::trackable
     Gtk::Button *randomize_armies_button;
     Gtk::Button *randomize_name_button;
     Gtk::Button *randomize_income_button;
+    Gtk::CellRendererSpin strength_renderer;
+    Gtk::TreeViewColumn strength_column;
+    Gtk::CellRendererSpin moves_renderer;
+    Gtk::TreeViewColumn moves_column;
+    Gtk::CellRendererSpin duration_renderer;
+    Gtk::TreeViewColumn duration_column;
+    Gtk::CellRendererSpin upkeep_renderer;
+    Gtk::TreeViewColumn upkeep_column;
 
-    City *city;
 
     void on_add_clicked();
     void on_remove_clicked();
@@ -79,7 +89,14 @@ class CityDialog: public sigc::trackable
 
     void add_army(const ArmyProdBase *a);
     void set_button_sensitivity();
-    CreateScenarioRandomize *d_randomizer;
+    void cell_data_strength(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
+    void on_strength_edited(const Glib::ustring &path, const Glib::ustring &new_text);
+    void cell_data_moves(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
+    void on_moves_edited(const Glib::ustring &path, const Glib::ustring &new_text);
+    void cell_data_turns(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
+    void on_turns_edited(const Glib::ustring &path, const Glib::ustring &new_text);
+    void cell_data_upkeep(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
+    void on_upkeep_edited(const Glib::ustring &path, const Glib::ustring &new_text);
 };
 
 #endif
