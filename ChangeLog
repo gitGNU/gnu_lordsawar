@@ -2,6 +2,13 @@
 
 	* added army images to city editor in scenario editor.
 	* changed input boxes to spinbuttons in the city editor.
+	* defaulted a few buttons related to starting a new random game.
+	* fixed graphics on buttons in diplomacy report.
+	* now only showing the rescue button on the splash screen when it was
+	a hotseat game.
+	* changed production report to show a white box around the city that
+	produced/vectored a particular army unit.
+	* beautified the load scenario dialog.
 
 2009-10-09  Ben Asselstine  <benasselstine@gmail.com>
 
