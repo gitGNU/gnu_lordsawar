@@ -74,7 +74,7 @@ void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
   
   start  = c->getPos();
   start = mapToSurface(start);
-  start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
+  //start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
   if (tmp)
     {
       tmp->blit_centered(surface, start);
@@ -313,7 +313,6 @@ void VectorMap::draw_square_around_active_city()
   box_color.set_rgb_p(252.0/255.0, 1.0, 1.0);
   Vector<int> start = city->getPos();
   start = mapToSurface(start);
-  start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
   std::string s = GameMap::getInstance()->getShieldset()->getSubDir();
   Shieldset *ss = Shieldsetlist::getInstance()->getShieldset(s);
   guint32 width = ss->getSmallWidth();
@@ -451,4 +450,10 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	}
     }
 
+}
+
+void VectorMap::setCity(City *c)
+{
+  city = c;
+  draw(Playerlist::getActiveplayer());
 }

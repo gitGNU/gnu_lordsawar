@@ -42,7 +42,6 @@ class DiplomacyDialog: public Decorated
  private:
     Gtk::Dialog* dialog;
 
-				     
     void on_report_clicked();
     void on_proposal_toggled (Gtk::ToggleButton *toggle, Player *p, Player::DiplomaticProposal proposal);
 

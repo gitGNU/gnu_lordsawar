@@ -208,11 +208,13 @@ ArmySetWindow::update_armyset_menuitems()
     {
       save_armyset_as_menuitem->set_sensitive(false);
       save_armyset_menuitem->set_sensitive(false);
+      edit_armyset_info_menuitem->set_sensitive(false);
     }
   else
     {
       save_armyset_as_menuitem->set_sensitive(true);
       save_armyset_menuitem->set_sensitive(true);
+      edit_armyset_info_menuitem->set_sensitive(true);
     }
 }
 
@@ -479,6 +481,7 @@ void ArmySetWindow::on_help_about_activated()
   dialog->set_logo(GraphicsLoader::getMiscPicture("castle_icon.png")->to_pixbuf());
   dialog->show_all();
   dialog->run();
+  delete dialog;
 
   return;
 }

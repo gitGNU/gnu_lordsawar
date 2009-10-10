@@ -91,6 +91,7 @@ int BackpackEditorDialog::run()
       backpack->removeAllFromBackpack();
       backpack->add(working);
     }
+  return response;
 }
 
 void BackpackEditorDialog::on_item_selection_changed()

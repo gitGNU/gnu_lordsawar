@@ -965,6 +965,36 @@ GameParameters GameScenario::loadGameParameters(std::string filename, bool &brok
   helper.close();
   return loader.game_params;
 }
+class PlayModeLoader
+{
+public:
+    bool loadParam(std::string tag, XML_Helper* helper)
+      {
+	if (tag == GameScenario::d_tag)
+	  {
+	    std::string playmode_str;
+	    helper->getData(playmode_str, "playmode");
+	    play_mode = GameScenario::playModeFromString(playmode_str);
+	    return true;
+	  }
+	return false;
+      };
+    GameScenario::PlayMode play_mode;
+};
+
+GameScenario::PlayMode GameScenario::loadPlayMode(std::string filename, bool &broken)
+{
+  PlayModeLoader loader;
+  
+  XML_Helper helper(filename, std::ios::in, Configuration::s_zipfiles);
+  helper.registerTag(GameScenario::d_tag, 
+		     sigc::mem_fun(loader, &PlayModeLoader::loadParam));
+  bool retval = helper.parse();
+
+  broken = !retval;
+  helper.close();
+  return loader.play_mode;
+}
 
 void GameScenario::startRecordingEventsToFile(std::string filename)
 {

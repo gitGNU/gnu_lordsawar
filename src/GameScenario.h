@@ -130,6 +130,8 @@ class GameScenario: public GameScenarioOptions
 
 	static GameParameters loadGameParameters(std::string filename, bool &broken);
 
+	static PlayMode loadPlayMode(std::string filename, bool &broken);
+
 	void startRecordingEventsToFile(std::string filename);
 	void stopRecordingEventsToFile();
 

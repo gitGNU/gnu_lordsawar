@@ -176,7 +176,6 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     
     string temp;
     bool retval,zipping;
-    int autosave_policy;
     
     if (helper->getVersion() != LORDSAWAR_CONFIG_VERSION)
     {
@@ -326,6 +325,9 @@ std::string Configuration::neutralCitiesToString(const GameParameters::NeutralCi
       case GameParameters::ACTIVE:
 	return "GameParameters::ACTIVE";
 	break;
+      case GameParameters::DEFENSIVE:
+	return "GameParameters::DEFENSIVE";
+	break;
     }
   return "GameParameters::AVERAGE";
 }
@@ -340,6 +342,8 @@ GameParameters::NeutralCities Configuration::neutralCitiesFromString(std::string
     return GameParameters::STRONG;
   else if (str == "GameParameters::ACTIVE")
     return GameParameters::ACTIVE;
+  else if (str == "GameParameters::DEFENSIVE")
+    return GameParameters::DEFENSIVE;
     
   return GameParameters::AVERAGE;
 }

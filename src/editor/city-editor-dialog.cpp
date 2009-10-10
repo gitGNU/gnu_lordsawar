@@ -374,7 +374,8 @@ void CityEditorDialog::on_strength_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int str = atoi(new_text.c_str());
-  if (str < MIN_STRENGTH_FOR_ARMY_UNITS || str > MAX_STRENGTH_FOR_ARMY_UNITS)
+  if (str < (int)MIN_STRENGTH_FOR_ARMY_UNITS || 
+      str > (int)MAX_STRENGTH_FOR_ARMY_UNITS)
     return;
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.strength] = str;
 }
@@ -394,7 +395,8 @@ void CityEditorDialog::on_moves_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int moves = atoi(new_text.c_str());
-  if (moves < MIN_MOVES_FOR_ARMY_UNITS || moves > MAX_MOVES_FOR_ARMY_UNITS)
+  if (moves < (int)MIN_MOVES_FOR_ARMY_UNITS || 
+      moves > (int)MAX_MOVES_FOR_ARMY_UNITS)
     return;
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.moves] = moves;
 }
@@ -414,8 +416,8 @@ void CityEditorDialog::on_turns_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int turns = atoi(new_text.c_str());
-  if (turns < MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS || 
-      turns > MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS)
+  if (turns < (int)MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS || 
+      turns > (int)MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS)
     return;
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.duration] = turns;
 }
@@ -433,7 +435,8 @@ void CityEditorDialog::on_upkeep_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int upkeep = atoi(new_text.c_str());
-  if (upkeep < 0 || upkeep > 20)
+  if (upkeep < (int) MIN_UPKEEP_FOR_ARMY_UNITS || 
+      upkeep > (int) MAX_UPKEEP_FOR_ARMY_UNITS)
     return;
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.upkeep] = upkeep;
 }

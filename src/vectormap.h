@@ -104,6 +104,9 @@ public:
     //! Return the currently selected City object.
     City* getCity() {return city;}
 
+    //! show vectoring from a different city.
+    void setCity(City *c);
+
     //! Change what happens when a City object is clicked on.
     void setClickAction (enum ClickAction a) { click_action = a;}
 

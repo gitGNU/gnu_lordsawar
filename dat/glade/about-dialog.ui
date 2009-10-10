@@ -1,26 +1,37 @@
 <?xml version="1.0"?>
-<!--*- mode: xml -*-->
 <interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkAboutDialog" id="dialog">
-    <property name="border_width">5</property>
     <property name="visible">True</property>
-    <property name="destroy_with_parent">False</property>
-    <property name="name">LordsAWar!</property>
-    <property name="copyright" translatable="yes"/>
+    <property name="border_width">5</property>
+    <property name="type_hint">normal</property>
     <property name="comments" translatable="yes">Freedom is the most important 
 feature of this game.</property>
-    <property name="license" translatable="yes">The GPL version 2 or later.</property>
-    <property name="wrap_license">False</property>
     <property name="website">www.lordsawar.com</property>
     <property name="website_label" translatable="yes">The LordsAWar Website</property>
+    <property name="license" translatable="yes">The GNU General Public License version 3 or later at your option.</property>
     <property name="authors">Ben Asselstine
 Ole Laursen
 Many other LordsAWar and Freelords contributors</property>
     <property name="documenters">Ben Asselstine
 Many other Freelords contributors</property>
+    <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">Joe Hansen</property>
     <property name="artists">Leon Harmon
 Sune Theodorsen
-Mark Jones</property>
-    <property comments="TRANSLATORS: Replace this string with your names, one name per line." name="translator_credits" translatable="yes">translator-credits</property>
+Mark Jones
+J. W. Bjerk</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox1">
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area1"/>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
   </object>
 </interface>

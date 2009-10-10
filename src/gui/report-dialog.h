@@ -84,9 +84,10 @@ class ReportDialog: public Decorated
     class ArmiesColumns: public Gtk::TreeModelColumnRecord {
     public:
 	ArmiesColumns() 
-        { add(image); add(desc);}
+        { add(city_id) ;add(image); add(desc);}
 	
-	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixmap> > image;
+	Gtk::TreeModelColumn<guint32> city_id;
+	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
 	Gtk::TreeModelColumn<Glib::ustring> desc;
     };
     const ArmiesColumns armies_columns;
@@ -99,6 +100,7 @@ class ReportDialog: public Decorated
     void updateCityChart();
     void updateGoldChart();
     void updateWinningChart();
+    void on_army_selected();
 };
 
 #endif

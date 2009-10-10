@@ -126,6 +126,9 @@ void GamePreferencesDialog::init(std::string filename)
       (*e)->set_sensitive(true);
       (*e)->set_text((*i).name);
     }
+  start_game_button->property_can_focus() = true;
+  start_game_button->property_has_focus() = true;
+  start_game_button->receives_default();
   return;
 }
 

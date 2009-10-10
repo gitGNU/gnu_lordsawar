@@ -81,8 +81,8 @@ Glib::RefPtr<Gdk::Pixbuf> TilePreviewScene::renderScene(guint32 tilesize)
 {
   Glib::RefPtr<Gdk::Pixbuf> dest;
   dest = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB,true, 8, (int)(d_height * tilesize), (int)(d_width * tilesize));
-  for (int i = 0; i < d_width; i++)
-    for (int j = 0; j < d_height; j++)
+  for (unsigned int i = 0; i < d_width; i++)
+    for (unsigned int j = 0; j < d_height; j++)
       {
 	getTileStylePixbuf(i,j)->copy_area (0, 0, tilesize, tilesize, dest, j * tilesize, i *tilesize);
       }

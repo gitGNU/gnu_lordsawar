@@ -104,12 +104,19 @@ SplashWindow::SplashWindow()
 	FILE *fileptr = fopen (filename.c_str(), "r");
 	if (fileptr)
 	  {
+	    bool broken = false;
 	    fclose (fileptr);
-	    crash_button = Gtk::manage(new Gtk::Button());
-	    crash_button->set_label(_("Rescue Crashed Game"));
-	    button_box->pack_start(*crash_button, true, true, 0);
-	    crash_button->signal_clicked().connect(sigc::mem_fun(*this, &SplashWindow::on_rescue_crashed_game_clicked));
-	    button_box->reorder_child(*crash_button, 0);
+	    GameScenario::PlayMode mode = 
+	      GameScenario::loadPlayMode(File::getSavePath() + "autosave.sav",
+					 broken);
+	    if (mode == GameScenario::HOTSEAT && broken == false)
+	      {
+		crash_button = Gtk::manage(new Gtk::Button());
+		crash_button->set_label(_("Rescue Crashed Game"));
+		button_box->pack_start(*crash_button, true, true, 0);
+		crash_button->signal_clicked().connect(sigc::mem_fun(*this, &SplashWindow::on_rescue_crashed_game_clicked));
+		button_box->reorder_child(*crash_button, 0);
+	      }
 	  }
       }
 

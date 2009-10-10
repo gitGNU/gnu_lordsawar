@@ -208,12 +208,16 @@ TileSetWindow::update_tileset_menuitems()
       save_tileset_as_menuitem->set_sensitive(false);
       save_tileset_menuitem->set_sensitive(false);
       army_unit_selector_menuitem->set_sensitive(false);
+      edit_tileset_info_menuitem->set_sensitive(false);
+      explosion_picture_menuitem->set_sensitive(false);
     }
   else
     {
       save_tileset_as_menuitem->set_sensitive(true);
       save_tileset_menuitem->set_sensitive(true);
       army_unit_selector_menuitem->set_sensitive(true);
+      edit_tileset_info_menuitem->set_sensitive(true);
+      explosion_picture_menuitem->set_sensitive(true);
     }
 }
 

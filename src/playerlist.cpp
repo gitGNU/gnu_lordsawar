@@ -304,7 +304,7 @@ bool compareDiplomaticScores (const struct rankable_t lhs,
 void Playerlist::calculateDiplomaticRankings()
 {
   unsigned int i = 0;
-  char* titles[MAX_PLAYERS] =
+  const char* titles[MAX_PLAYERS] =
     {
       _("Statesman"),
       _("Diplomat"),

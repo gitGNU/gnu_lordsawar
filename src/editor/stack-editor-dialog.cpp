@@ -371,7 +371,8 @@ void StackEditorDialog::on_strength_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int str = atoi(new_text.c_str());
-  if (str < MIN_STRENGTH_FOR_ARMY_UNITS || str > MAX_STRENGTH_FOR_ARMY_UNITS)
+  if (str < (int)MIN_STRENGTH_FOR_ARMY_UNITS || str > 
+      (int)MAX_STRENGTH_FOR_ARMY_UNITS)
     return;
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.strength] = str;
 }
@@ -391,7 +392,8 @@ void StackEditorDialog::on_moves_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int moves = atoi(new_text.c_str());
-  if (moves < MIN_MOVES_FOR_ARMY_UNITS || moves > MAX_MOVES_FOR_ARMY_UNITS)
+  if (moves < (int)MIN_MOVES_FOR_ARMY_UNITS || moves > 
+      (int)MAX_MOVES_FOR_ARMY_UNITS)
     return;
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.moves] = moves;
 }
@@ -411,7 +413,8 @@ void StackEditorDialog::on_upkeep_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int upkeep = atoi(new_text.c_str());
-  if (upkeep < MIN_UPKEEP_FOR_ARMY_UNITS || upkeep > MAX_UPKEEP_FOR_ARMY_UNITS)
+  if (upkeep < (int)MIN_UPKEEP_FOR_ARMY_UNITS || 
+      upkeep > (int)MAX_UPKEEP_FOR_ARMY_UNITS)
     return;
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.upkeep] = upkeep;
 }

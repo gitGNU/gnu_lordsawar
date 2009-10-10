@@ -41,8 +41,7 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path() + "/diplomacy-dialog.ui");
 
-  Gtk::Dialog *d = 0;
-  xml->get_widget("dialog", d);
+  xml->get_widget("dialog", dialog);
   decorate(dialog);
   window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
@@ -150,10 +149,9 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
       //show the peace radio buttons
       j = 0;
       Gtk::RadioButton *radio1= manage(new Gtk::RadioButton);
-      Glib::RefPtr<Gdk::Pixmap> pixmap = 
-	gc->getDiplomacyPic(1, Player::AT_PEACE)->get_pixmap();
       Gtk::Image *im3 = new Gtk::Image();
-      im3->property_pixmap() = pixmap;
+      im3->property_pixbuf() = 
+	gc->getDiplomacyPic(1, Player::AT_PEACE)->to_pixbuf();
       radio1->add(*manage(im3));
       radio1->set_mode(false);
       Gtk::RadioButtonGroup group = radio1->get_group();
@@ -171,10 +169,9 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
 
       j = 1;
       Gtk::RadioButton *radio2= manage(new Gtk::RadioButton);
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf2= 
-	gc->getDiplomacyPic(1, Player::AT_WAR_IN_FIELD)->to_pixbuf();
       Gtk::Image *im4 = new Gtk::Image();
-      im4->property_pixbuf() = pixbuf2;
+      im4->property_pixbuf() = 
+	gc->getDiplomacyPic(1, Player::AT_WAR_IN_FIELD)->to_pixbuf();
       radio2->add(*manage(im4));
       radio2->set_mode(false);
       radio2->set_group(group);
@@ -192,10 +189,9 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
 
       j = 2;
       Gtk::RadioButton *radio3= manage(new Gtk::RadioButton);
-      Glib::RefPtr<Gdk::Pixmap> pixmap3 = gc->getDiplomacyPic(1, 
-							      Player::AT_WAR)->get_pixmap();
       Gtk::Image *im5 = new Gtk::Image();
-      im4->property_pixmap() = pixmap3;
+      im5->property_pixbuf() = 
+	gc->getDiplomacyPic(1, Player::AT_WAR)->to_pixbuf();
       radio3->add(*manage(im5));
       radio3->set_mode(false);
       radio3->set_group(group);

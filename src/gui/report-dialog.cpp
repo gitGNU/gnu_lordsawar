@@ -89,6 +89,8 @@ ReportDialog::ReportDialog(Player *player, ReportType type)
 	total++;
     addProduction(*it);
     }
+    armies_treeview->get_selection()->signal_changed().connect
+      (sigc::mem_fun(*this, &ReportDialog::on_army_selected));
 
   Glib::ustring s;
   s = String::ucompose(ngettext("You produced %1 army this turn!",
@@ -357,6 +359,7 @@ void ReportDialog::addProduction(const Action *action)
   Player *p = d_player;
 
   int army_type = 0;
+  guint32 city_id = 0;
 
   Glib::ustring s = "";
   if (action->getType() == Action::PRODUCE_UNIT)
@@ -373,6 +376,7 @@ void ReportDialog::addProduction(const Action *action)
 	  }
       if (act->getVectored())
 	s += "...";
+      city_id = act->getCityId();
     }
   else if (action->getType() == Action::PRODUCE_VECTORED_UNIT)
     {
@@ -386,6 +390,7 @@ void ReportDialog::addProduction(const Action *action)
 	s += c->getName();
       else
 	s += _("Standard");
+      city_id = GameMap::getCity(act->getOrigination())->getId();
     }
   else if (action->getType() == Action::CITY_DESTITUTE)
     {
@@ -395,11 +400,26 @@ void ReportDialog::addProduction(const Action *action)
       City *c = Citylist::getInstance()->getById(act->getCityId());
       s = c->getName();
       s += " stops production!";
+      city_id = act->getCityId();
     }
   const ArmyProto *a;
   a = Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);
   Gtk::TreeIter i = armies_list->append();
+  (*i)[armies_columns.city_id] = city_id;
   (*i)[armies_columns.image] = gc->getArmyPic(p->getArmyset(), army_type, p, 
-					      NULL)->get_pixmap();
+					      NULL)->to_pixbuf();
   (*i)[armies_columns.desc] = s;
+}
+
+void ReportDialog::on_army_selected()
+{
+    Gtk::TreeIter i = armies_treeview->get_selection()->get_selected();
+    if (i)
+    {
+	City *c = 
+	  Citylist::getInstance()->getById((*i)[armies_columns.city_id]);
+	if (c)
+	  vectormap->setCity(c);
+    }
+
 }
