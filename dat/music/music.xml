@@ -25,6 +25,12 @@
         <d_alias></d_alias>
     </piece>
     <piece>
+        <d_name>battle</d_name>
+        <d_filename>battle.ogg</d_filename>
+        <d_background>false</d_background>
+        <d_alias></d_alias>
+    </piece>
+    <piece>
         <d_name>back1</d_name>
         <d_filename>back1.ogg</d_filename>
         <d_background>true</d_background>

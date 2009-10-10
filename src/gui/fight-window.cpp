@@ -39,6 +39,7 @@
 #include "army.h"
 #include "GraphicsCache.h"
 #include "Configuration.h"
+#include "sound.h"
 
 FightWindow::FightWindow(Fight &fight)
 {
@@ -108,10 +109,14 @@ FightWindow::FightWindow(Fight &fight)
       Configuration::s_displayFightRoundDelayFast; //milliseconds
     normal_round_speed = 
       Configuration::s_displayFightRoundDelaySlow; //milliseconds
+    Sound::getInstance()->disableBackground(true);
+    Sound::getInstance()->playMusic("battle", -1, true);
 }
 
 FightWindow::~FightWindow()
 {
+  Sound::getInstance()->haltMusic(true);
+  Sound::getInstance()->enableBackground();
   delete window;
 }
 

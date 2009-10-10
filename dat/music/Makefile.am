@@ -7,6 +7,7 @@ music_DATA = \
 	victory.ogg \
 	hero.ogg \
 	intro.ogg \
+	battle.ogg \
 	music.xml
 
 EXTRA_DIST = \
@@ -16,4 +17,5 @@ EXTRA_DIST = \
 	victory.ogg \
 	hero.ogg \
 	intro.ogg \
+	battle.ogg \
 	music.xml
