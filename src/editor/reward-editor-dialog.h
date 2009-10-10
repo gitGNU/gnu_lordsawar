@@ -15,8 +15,8 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef REWARD_DIALOG_H
-#define REWARD_DIALOG_H
+#ifndef REWARD_EDITOR_DIALOG_H
+#define REWARD_EDITOR_DIALOG_H
 
 #include <memory>
 #include <sigc++/trackable.h>
@@ -29,11 +29,11 @@ class Ruin;
 class Player;
 
 //! Scenario editor.  Edits rewards.
-class RewardDialog: public sigc::trackable
+class RewardEditorDialog: public sigc::trackable
 {
  public:
-    RewardDialog(Player *player, bool hidden_ruins, Reward *r);
-    ~RewardDialog();
+    RewardEditorDialog(Player *player, bool hidden_ruins, Reward *r);
+    ~RewardEditorDialog();
 
     void set_parent_window(Gtk::Window &parent);
 

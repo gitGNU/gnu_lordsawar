@@ -21,7 +21,7 @@
 #include <sigc++/functors/mem_fun.h>
 #include <gtkmm.h>
 
-#include "ruin-dialog.h"
+#include "ruin-editor-dialog.h"
 
 #include "glade-helpers.h"
 #include "ucompose.hpp"
@@ -35,10 +35,10 @@
 
 #include "select-army-dialog.h"
 #include "select-reward-dialog.h"
-#include "reward-dialog.h"
+#include "reward-editor-dialog.h"
 #include "RenamableLocation.h"
 
-RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
+RuinEditorDialog::RuinEditorDialog(Ruin *r, CreateScenarioRandomize *randomizer)
 {
     d_randomizer = randomizer;
     ruin = r;
@@ -53,7 +53,7 @@ RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
     
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/ruin-dialog.ui");
+				    + "/ruin-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
 
@@ -67,19 +67,19 @@ RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
 
     xml->get_widget("keeper_button", keeper_button);
     keeper_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinDialog::on_keeper_clicked));
+	sigc::mem_fun(this, &RuinEditorDialog::on_keeper_clicked));
 
     xml->get_widget("clear_keeper_button", clear_keeper_button);
     clear_keeper_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinDialog::on_clear_keeper_clicked));
+	sigc::mem_fun(this, &RuinEditorDialog::on_clear_keeper_clicked));
 
     xml->get_widget("randomize_name_button", randomize_name_button);
     randomize_name_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinDialog::on_randomize_name_clicked));
+	sigc::mem_fun(this, &RuinEditorDialog::on_randomize_name_clicked));
 
     xml->get_widget("randomize_keeper_button", randomize_keeper_button);
     randomize_keeper_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinDialog::on_randomize_keeper_clicked));
+	sigc::mem_fun(this, &RuinEditorDialog::on_randomize_keeper_clicked));
 
     set_keeper_name();
     xml->get_widget("sage_checkbutton", sage_button);
@@ -88,7 +88,7 @@ RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
     xml->get_widget("hidden_checkbutton", hidden_button);
     hidden_button->set_active(ruin->isHidden());
     hidden_button->signal_toggled().connect(
-	    sigc::mem_fun(this, &RuinDialog::on_hidden_toggled));
+	    sigc::mem_fun(this, &RuinEditorDialog::on_hidden_toggled));
     // setup the player combo
     player_combobox = manage(new Gtk::ComboBoxText);
 
@@ -113,26 +113,26 @@ RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
     xml->get_widget("new_reward_hbox", new_reward_hbox);
     xml->get_widget("new_reward_radiobutton", new_reward_radiobutton);
     new_reward_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &RuinDialog::on_new_reward_toggled));
+	sigc::mem_fun(*this, &RuinEditorDialog::on_new_reward_toggled));
     xml->get_widget("random_reward_radiobutton", random_reward_radiobutton);
     random_reward_radiobutton->signal_toggled().connect(
-	sigc::mem_fun(*this, &RuinDialog::on_random_reward_toggled));
+	sigc::mem_fun(*this, &RuinEditorDialog::on_random_reward_toggled));
 
     xml->get_widget("reward_button", reward_button);
     reward_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinDialog::on_reward_clicked));
+	sigc::mem_fun(this, &RuinEditorDialog::on_reward_clicked));
 
     xml->get_widget("clear_reward_button", clear_reward_button);
     clear_reward_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinDialog::on_clear_reward_clicked));
+	sigc::mem_fun(this, &RuinEditorDialog::on_clear_reward_clicked));
 
     xml->get_widget("randomize_reward_button", randomize_reward_button);
     randomize_reward_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinDialog::on_randomize_reward_clicked));
+	sigc::mem_fun(this, &RuinEditorDialog::on_randomize_reward_clicked));
 
     xml->get_widget("reward_list_button", reward_list_button);
     reward_list_button->signal_clicked().connect(
-	sigc::mem_fun(this, &RuinDialog::on_reward_list_clicked));
+	sigc::mem_fun(this, &RuinEditorDialog::on_reward_list_clicked));
 
     if (ruin->getReward() == NULL)
       random_reward_radiobutton->set_active(true);
@@ -145,17 +145,17 @@ RuinDialog::RuinDialog(Ruin *r, CreateScenarioRandomize *randomizer)
     set_reward_name();
 }
 
-RuinDialog::~RuinDialog()
+RuinEditorDialog::~RuinEditorDialog()
 {
   delete dialog;
 }
-void RuinDialog::set_parent_window(Gtk::Window &parent)
+void RuinEditorDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void RuinDialog::run()
+void RuinEditorDialog::run()
 {
     dialog->show_all();
     int response = dialog->run();
@@ -212,7 +212,7 @@ void RuinDialog::run()
     }
 }
 
-void RuinDialog::set_keeper_name()
+void RuinEditorDialog::set_keeper_name()
 {
     Glib::ustring name;
     if (keeper && !keeper->empty())
@@ -223,7 +223,7 @@ void RuinDialog::set_keeper_name()
     keeper_button->set_label(name);
 }
 
-void RuinDialog::on_hidden_toggled()
+void RuinEditorDialog::on_hidden_toggled()
 {
   if (hidden_button->get_active())
     player_combobox->set_sensitive (true);
@@ -231,13 +231,13 @@ void RuinDialog::on_hidden_toggled()
     player_combobox->set_sensitive (false);
 }
 
-void RuinDialog::on_clear_keeper_clicked()
+void RuinEditorDialog::on_clear_keeper_clicked()
 {
   keeper->flClear();
   set_keeper_name();
 }
 
-void RuinDialog::on_keeper_clicked()
+void RuinEditorDialog::on_keeper_clicked()
 {
     Player *neutral = Playerlist::getInstance()->getNeutral();
     SelectArmyDialog d(neutral, false, true);
@@ -255,7 +255,7 @@ void RuinDialog::on_keeper_clicked()
     set_keeper_name();
 }
 
-void RuinDialog::on_randomize_name_clicked()
+void RuinEditorDialog::on_randomize_name_clicked()
 {
   std::string existing_name = name_entry->get_text();
   if (existing_name == Ruin::getDefaultName())
@@ -267,7 +267,7 @@ void RuinDialog::on_randomize_name_clicked()
     }
 }
 
-void RuinDialog::on_randomize_keeper_clicked()
+void RuinEditorDialog::on_randomize_keeper_clicked()
 {
   keeper->flClear();
   Army *a = d_randomizer->getRandomRuinKeeper
@@ -276,17 +276,17 @@ void RuinDialog::on_randomize_keeper_clicked()
   set_keeper_name();
 }
 
-void RuinDialog::on_new_reward_toggled()
+void RuinEditorDialog::on_new_reward_toggled()
 {
   new_reward_hbox->set_sensitive(true);
 }
 
-void RuinDialog::on_random_reward_toggled()
+void RuinEditorDialog::on_random_reward_toggled()
 {
   new_reward_hbox->set_sensitive(false);
 }
 
-void RuinDialog::on_reward_list_clicked()
+void RuinEditorDialog::on_reward_list_clicked()
 {
   SelectRewardDialog d;
   d.set_parent_window(*dialog);
@@ -301,9 +301,9 @@ void RuinDialog::on_reward_list_clicked()
     set_reward_name();
 }
 
-void RuinDialog::on_reward_clicked()
+void RuinEditorDialog::on_reward_clicked()
 {
-  RewardDialog d(keeper->getOwner(), false, NULL);
+  RewardEditorDialog d(keeper->getOwner(), false, NULL);
   d.run();
   if (d.get_reward())
     {
@@ -313,7 +313,7 @@ void RuinDialog::on_reward_clicked()
     }
 }
 
-void RuinDialog::on_clear_reward_clicked()
+void RuinEditorDialog::on_clear_reward_clicked()
 {
   if (reward)
     {
@@ -323,14 +323,14 @@ void RuinDialog::on_clear_reward_clicked()
   set_reward_name();
 }
 
-void RuinDialog::on_randomize_reward_clicked()
+void RuinEditorDialog::on_randomize_reward_clicked()
 {
   on_clear_reward_clicked();
   reward = d_randomizer->getNewRandomReward(false);
   set_reward_name();
 }
 
-void RuinDialog::set_reward_name()
+void RuinEditorDialog::set_reward_name()
 {
   Glib::ustring name;
   if (reward)

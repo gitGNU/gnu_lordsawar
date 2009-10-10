@@ -399,7 +399,7 @@ Configuration::SavingPolicy Configuration::savingPolicyFromString(std::string st
   if (str == "Configuration::NO_SAVING")
     return Configuration::NO_SAVING;
   else if (str == "Configuration::WRITE_UNNUMBERED_AUTOSAVE_FILE")
-    return Configuration::WRITE_NUMBERED_AUTOSAVE_FILE;
+    return Configuration::WRITE_UNNUMBERED_AUTOSAVE_FILE;
   else if (str == "Configuration::WRITE_NUMBERED_AUTOSAVE_FILE")
     return Configuration::WRITE_NUMBERED_AUTOSAVE_FILE;
     

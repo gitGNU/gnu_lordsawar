@@ -21,7 +21,7 @@
 #include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 
-#include "temple-dialog.h"
+#include "temple-editor-dialog.h"
 
 #include "glade-helpers.h"
 #include "ucompose.hpp"
@@ -30,14 +30,14 @@
 #include "temple.h"
 #include "RenamableLocation.h"
 
-TempleDialog::TempleDialog(Temple *t, CreateScenarioRandomize *randomizer)
+TempleEditorDialog::TempleEditorDialog(Temple *t, CreateScenarioRandomize *randomizer)
 {
     d_randomizer = randomizer;
     temple = t;
     
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/temple-dialog.ui");
+				    + "/temple-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
 
@@ -51,20 +51,20 @@ TempleDialog::TempleDialog(Temple *t, CreateScenarioRandomize *randomizer)
     type_entry->set_value(temple->getType());
     xml->get_widget("randomize_name_button", randomize_name_button);
     randomize_name_button->signal_clicked().connect(
-	sigc::mem_fun(this, &TempleDialog::on_randomize_name_clicked));
+	sigc::mem_fun(this, &TempleEditorDialog::on_randomize_name_clicked));
 }
 
-TempleDialog::~TempleDialog()
+TempleEditorDialog::~TempleEditorDialog()
 {
   delete dialog;
 }
-void TempleDialog::set_parent_window(Gtk::Window &parent)
+void TempleEditorDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void TempleDialog::run()
+void TempleEditorDialog::run()
 {
     dialog->show_all();
     int response = dialog->run();
@@ -84,7 +84,7 @@ void TempleDialog::run()
       }
 }
 
-void TempleDialog::on_randomize_name_clicked()
+void TempleEditorDialog::on_randomize_name_clicked()
 {
   std::string existing_name = name_entry->get_text();
   if (existing_name == Temple::getDefaultName())

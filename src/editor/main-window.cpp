@@ -72,12 +72,12 @@
 #include "glade-helpers.h"
 #include "editorbigmap.h"
 
-#include "signpost-dialog.h"
-#include "temple-dialog.h"
-#include "ruin-dialog.h"
-#include "stack-dialog.h"
+#include "signpost-editor-dialog.h"
+#include "temple-editor-dialog.h"
+#include "ruin-editor-dialog.h"
+#include "stack-editor-dialog.h"
 #include "players-dialog.h"
-#include "city-dialog.h"
+#include "city-editor-dialog.h"
 #include "map-info-dialog.h"
 #include "new-map-dialog.h"
 #include "itemlist-dialog.h"
@@ -1189,7 +1189,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 {
     if (Stack *o = dynamic_cast<Stack *>(object))
     {
-	StackDialog d(o);
+	StackEditorDialog d(o);
 	d.set_parent_window(*window);
 	d.run();
 
@@ -1199,7 +1199,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
     }
     else if (City *o = dynamic_cast<City *>(object))
     {
-	CityDialog d(o, d_create_scenario_names);
+	CityEditorDialog d(o, d_create_scenario_names);
 	d.set_parent_window(*window);
 	d.run();
 
@@ -1209,19 +1209,19 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
     }
     else if (Ruin *o = dynamic_cast<Ruin *>(object))
     {
-	RuinDialog d(o, d_create_scenario_names);
+	RuinEditorDialog d(o, d_create_scenario_names);
 	d.set_parent_window(*window);
 	d.run();
     }
     else if (Signpost *o = dynamic_cast<Signpost *>(object))
     {
-	SignpostDialog d(o, d_create_scenario_names);
+	SignpostEditorDialog d(o, d_create_scenario_names);
 	d.set_parent_window(*window);
 	d.run();
     }
     else if (Temple *o = dynamic_cast<Temple *>(object))
     {
-	TempleDialog d(o, d_create_scenario_names);
+	TempleEditorDialog d(o, d_create_scenario_names);
 	d.set_parent_window(*window);
 	d.run();
 

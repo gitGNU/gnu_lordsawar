@@ -16,85 +16,75 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef CITY_DIALOG_H
-#define CITY_DIALOG_H
+#ifndef STACK_EDITOR_DIALOG_H
+#define STACK_EDITOR_DIALOG_H
 
 #include <memory>
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 
-class CreateScenarioRandomize;
-class City;
-class ArmyProdBase;
+class Stack;
+class Army;
 
-//! Scenario editor.  Edits a City object.
-class CityDialog: public sigc::trackable
+//! Scenario editor.  Change the contents of a Stack.
+class StackEditorDialog: public sigc::trackable
 {
  public:
-    CityDialog(City *city, CreateScenarioRandomize *randomizer);
-    ~CityDialog();
+    StackEditorDialog(Stack *stack, int min_size = 1);
+    ~StackEditorDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
     void run();
     
  private:
-    City *city;
-    CreateScenarioRandomize *d_randomizer;
     Gtk::Dialog* dialog;
     Gtk::ComboBoxText *player_combobox;
-    Gtk::CheckButton *capital_checkbutton;
-    Gtk::Entry *name_entry;
-    Gtk::SpinButton *income_spinbutton;
-    Gtk::CheckButton *burned_checkbutton;
 
     Gtk::TreeView *army_treeview;
     
     class ArmyColumns: public Gtk::TreeModelColumnRecord {
     public:
 	ArmyColumns()
-	    { add(army); add(image);
-	      add(strength); add(moves); add(upkeep); add(duration); add(name);}
+	    { add(army); add(image); add(strength); add(moves); add(upkeep); 
+	    add(name);}
 
-	Gtk::TreeModelColumn<const ArmyProdBase *> army;
+	Gtk::TreeModelColumn<Army *> army;
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
-	Gtk::TreeModelColumn<int> strength, moves, upkeep, duration;
+	Gtk::TreeModelColumn<int> strength, moves, upkeep;
 	Gtk::TreeModelColumn<Glib::ustring> name;
     };
     const ArmyColumns army_columns;
     Glib::RefPtr<Gtk::ListStore> army_list;
-    Gtk::Button *add_button;
-    Gtk::Button *remove_button;
-    Gtk::Button *randomize_armies_button;
-    Gtk::Button *randomize_name_button;
-    Gtk::Button *randomize_income_button;
+
     Gtk::CellRendererSpin strength_renderer;
     Gtk::TreeViewColumn strength_column;
     Gtk::CellRendererSpin moves_renderer;
     Gtk::TreeViewColumn moves_column;
-    Gtk::CellRendererSpin duration_renderer;
-    Gtk::TreeViewColumn duration_column;
     Gtk::CellRendererSpin upkeep_renderer;
     Gtk::TreeViewColumn upkeep_column;
+    Gtk::Button *add_button;
+    Gtk::Button *remove_button;
+    Gtk::Button *edit_hero_button;
+    Gtk::CheckButton *fortified_checkbutton;
 
+    Stack *stack;
+    int min_size;
 
     void on_add_clicked();
     void on_remove_clicked();
-    void on_randomize_armies_clicked();
-    void on_randomize_name_clicked();
-    void on_randomize_income_clicked();
+    void on_edit_hero_clicked();
     void on_selection_changed();
+    void on_fortified_toggled();
     void on_player_changed();
 
-    void add_army(const ArmyProdBase *a);
+    void add_army(Army *a);
     void set_button_sensitivity();
     void cell_data_strength(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
     void on_strength_edited(const Glib::ustring &path, const Glib::ustring &new_text);
     void cell_data_moves(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
     void on_moves_edited(const Glib::ustring &path, const Glib::ustring &new_text);
-    void cell_data_turns(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
-    void on_turns_edited(const Glib::ustring &path, const Glib::ustring &new_text);
     void cell_data_upkeep(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
     void on_upkeep_edited(const Glib::ustring &path, const Glib::ustring &new_text);
 };

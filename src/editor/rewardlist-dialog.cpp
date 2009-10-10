@@ -39,7 +39,7 @@
 #include "playerlist.h"
 
 #include "glade-helpers.h"
-#include "reward-dialog.h"
+#include "reward-editor-dialog.h"
 
 
 RewardlistDialog::RewardlistDialog()
@@ -121,7 +121,7 @@ void RewardlistDialog::on_reward_selected()
 void RewardlistDialog::on_add_clicked()
 {
   Player *neutral = Playerlist::getInstance()->getNeutral();
-  RewardDialog d(neutral, true, NULL);
+  RewardEditorDialog d(neutral, true, NULL);
   d.run();
   if (d.get_reward())
     {
@@ -161,7 +161,7 @@ void RewardlistDialog::on_edit_clicked()
       Gtk::TreeModel::Row row = *iterrow;
       Reward *reward = row[rewards_columns.reward];
       Player *neutral = Playerlist::getInstance()->getNeutral();
-      RewardDialog d(neutral, true, reward);
+      RewardEditorDialog d(neutral, true, reward);
       d.run();
       if (d.get_reward())
 	{

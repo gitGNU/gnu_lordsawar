@@ -3,19 +3,19 @@ MAINTAINERCLEANFILES= Makefile.in
 gladedir = $(datadir)/lordsawar/glade/editor
 glade_DATA = \
 main-window.ui \
-signpost-dialog.ui \
-temple-dialog.ui \
-ruin-dialog.ui \
-stack-dialog.ui \
+signpost-editor-dialog.ui \
+temple-editor-dialog.ui \
+ruin-editor-dialog.ui \
+stack-editor-dialog.ui \
 select-army-dialog.ui \
 players-dialog.ui \
-city-dialog.ui \
+city-editor-dialog.ui \
 map-info-dialog.ui \
 new-map-dialog.ui \
 armyset-window.ui \
 armyset-info-dialog.ui \
 itemlist-dialog.ui \
-reward-dialog.ui \
+reward-editor-dialog.ui \
 select-item-dialog.ui \
 select-reward-dialog.ui \
 reward-list-dialog.ui \

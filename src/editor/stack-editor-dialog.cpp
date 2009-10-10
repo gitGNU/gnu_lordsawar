@@ -21,7 +21,7 @@
 #include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 
-#include "stack-dialog.h"
+#include "stack-editor-dialog.h"
 
 #include "glade-helpers.h"
 #include "ucompose.hpp"
@@ -44,7 +44,7 @@ namespace
     int const max_stack_size = 8;
 }
 
-StackDialog::StackDialog(Stack *s, int m)
+StackEditorDialog::StackEditorDialog(Stack *s, int m)
 	: strength_column(_("Strength"), strength_renderer),
 	moves_column(_("Max Moves"), moves_renderer),
 	upkeep_column(_("Upkeep"), upkeep_renderer)
@@ -55,7 +55,7 @@ StackDialog::StackDialog(Stack *s, int m)
     
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/stack-dialog.ui");
+				    + "/stack-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
 
@@ -76,7 +76,7 @@ StackDialog::StackDialog(Stack *s, int m)
 
 	player_combobox->set_active(player_no);
 	player_combobox->signal_changed().connect
-	  (sigc::mem_fun(*this, &StackDialog::on_player_changed));
+	  (sigc::mem_fun(*this, &StackEditorDialog::on_player_changed));
 
 	Gtk::Box *box;
 	xml->get_widget("player_hbox", box);
@@ -93,26 +93,26 @@ StackDialog::StackDialog(Stack *s, int m)
 
     strength_renderer.property_editable() = true;
     strength_renderer.signal_edited()
-      .connect(sigc::mem_fun(*this, &StackDialog::on_strength_edited));
+      .connect(sigc::mem_fun(*this, &StackEditorDialog::on_strength_edited));
     strength_column.set_cell_data_func
 	      ( strength_renderer, 
-		sigc::mem_fun(*this, &StackDialog::cell_data_strength));
+		sigc::mem_fun(*this, &StackEditorDialog::cell_data_strength));
     army_treeview->append_column(strength_column);
 
     moves_renderer.property_editable() = true;
     moves_renderer.signal_edited()
-      .connect(sigc::mem_fun(*this, &StackDialog::on_moves_edited));
+      .connect(sigc::mem_fun(*this, &StackEditorDialog::on_moves_edited));
     moves_column.set_cell_data_func
 	      ( moves_renderer, 
-		sigc::mem_fun(*this, &StackDialog::cell_data_moves));
+		sigc::mem_fun(*this, &StackEditorDialog::cell_data_moves));
     army_treeview->append_column(moves_column);
 
     upkeep_renderer.property_editable() = true;
     upkeep_renderer.signal_edited()
-      .connect(sigc::mem_fun(*this, &StackDialog::on_upkeep_edited));
+      .connect(sigc::mem_fun(*this, &StackEditorDialog::on_upkeep_edited));
     upkeep_column.set_cell_data_func
 	      ( upkeep_renderer, 
-		sigc::mem_fun(*this, &StackDialog::cell_data_upkeep));
+		sigc::mem_fun(*this, &StackEditorDialog::cell_data_upkeep));
     army_treeview->append_column(upkeep_column);
 
     army_treeview->append_column(_("Name"), army_columns.name);
@@ -120,38 +120,38 @@ StackDialog::StackDialog(Stack *s, int m)
     xml->get_widget("fortified_checkbutton", fortified_checkbutton);
     fortified_checkbutton->set_active(stack->getFortified());
     fortified_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &StackDialog::on_fortified_toggled));
+	sigc::mem_fun(this, &StackEditorDialog::on_fortified_toggled));
 
     xml->get_widget("add_button", add_button);
     xml->get_widget("remove_button", remove_button);
     xml->get_widget("edit_hero_button", edit_hero_button);
 
     add_button->signal_clicked().connect(
-	sigc::mem_fun(this, &StackDialog::on_add_clicked));
+	sigc::mem_fun(this, &StackEditorDialog::on_add_clicked));
     remove_button->signal_clicked().connect(
-	sigc::mem_fun(this, &StackDialog::on_remove_clicked));
+	sigc::mem_fun(this, &StackEditorDialog::on_remove_clicked));
     edit_hero_button->signal_clicked().connect(
-	sigc::mem_fun(this, &StackDialog::on_edit_hero_clicked));
+	sigc::mem_fun(this, &StackEditorDialog::on_edit_hero_clicked));
 
     army_treeview->get_selection()->signal_changed()
-	.connect(sigc::mem_fun(this, &StackDialog::on_selection_changed));
+	.connect(sigc::mem_fun(this, &StackEditorDialog::on_selection_changed));
     
     for (Stack::iterator i = stack->begin(), end = stack->end(); i != end; ++i)
 	add_army(*i);
   set_button_sensitivity();
 }
 
-StackDialog::~StackDialog()
+StackEditorDialog::~StackEditorDialog()
 {
   delete dialog;
 }
-void StackDialog::set_parent_window(Gtk::Window &parent)
+void StackEditorDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void StackDialog::run()
+void StackEditorDialog::run()
 {
     dialog->show_all();
     int response = dialog->run();
@@ -230,7 +230,7 @@ void StackDialog::run()
     }
 }
 
-void StackDialog::on_add_clicked()
+void StackEditorDialog::on_add_clicked()
 {
     SelectArmyDialog d(stack->getOwner(), true);
     d.set_parent_window(*dialog);
@@ -247,7 +247,7 @@ void StackDialog::on_add_clicked()
 }
     
 
-void StackDialog::on_edit_hero_clicked()
+void StackEditorDialog::on_edit_hero_clicked()
 {
     Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
     if (i)
@@ -260,7 +260,7 @@ void StackDialog::on_edit_hero_clicked()
     }
 
 }
-void StackDialog::on_remove_clicked()
+void StackEditorDialog::on_remove_clicked()
 {
     Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
     if (i)
@@ -274,7 +274,7 @@ void StackDialog::on_remove_clicked()
     set_button_sensitivity();
 }
 
-void StackDialog::add_army(Army *a)
+void StackEditorDialog::add_army(Army *a)
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
     Gtk::TreeIter i = army_list->append();
@@ -292,12 +292,12 @@ void StackDialog::add_army(Army *a)
     set_button_sensitivity();
 }
 
-void StackDialog::on_selection_changed()
+void StackEditorDialog::on_selection_changed()
 {
     set_button_sensitivity();
 }
 
-void StackDialog::set_button_sensitivity()
+void StackEditorDialog::set_button_sensitivity()
 {
     Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
     int armies = army_list->children().size();
@@ -326,12 +326,12 @@ void StackDialog::set_button_sensitivity()
     fortified_checkbutton->set_sensitive(true);
 }
 
-void StackDialog::on_fortified_toggled()
+void StackEditorDialog::on_fortified_toggled()
 {
   stack->setFortified(fortified_checkbutton->get_active());
 }
 	  
-void StackDialog::on_player_changed()
+void StackEditorDialog::on_player_changed()
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   int c = 0, row = player_combobox->get_active_row_number();
@@ -356,7 +356,7 @@ void StackDialog::on_player_changed()
 						player, NULL)->to_pixbuf();
     }
 }
-void StackDialog::cell_data_strength(Gtk::CellRenderer *renderer,
+void StackEditorDialog::cell_data_strength(Gtk::CellRenderer *renderer,
 				     const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
@@ -367,7 +367,7 @@ void StackDialog::cell_data_strength(Gtk::CellRenderer *renderer,
       String::ucompose("%1", (*i)[army_columns.strength]);
 }
 
-void StackDialog::on_strength_edited(const Glib::ustring &path,
+void StackEditorDialog::on_strength_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int str = atoi(new_text.c_str());
@@ -376,7 +376,7 @@ void StackDialog::on_strength_edited(const Glib::ustring &path,
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.strength] = str;
 }
 
-void StackDialog::cell_data_moves(Gtk::CellRenderer *renderer,
+void StackEditorDialog::cell_data_moves(Gtk::CellRenderer *renderer,
 				  const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
@@ -387,7 +387,7 @@ void StackDialog::cell_data_moves(Gtk::CellRenderer *renderer,
       String::ucompose("%1", (*i)[army_columns.moves]);
 }
 
-void StackDialog::on_moves_edited(const Glib::ustring &path,
+void StackEditorDialog::on_moves_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int moves = atoi(new_text.c_str());
@@ -396,7 +396,7 @@ void StackDialog::on_moves_edited(const Glib::ustring &path,
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.moves] = moves;
 }
 
-void StackDialog::cell_data_upkeep(Gtk::CellRenderer *renderer,
+void StackEditorDialog::cell_data_upkeep(Gtk::CellRenderer *renderer,
 				   const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
@@ -407,7 +407,7 @@ void StackDialog::cell_data_upkeep(Gtk::CellRenderer *renderer,
       String::ucompose("%1", (*i)[army_columns.upkeep]);
 }
 
-void StackDialog::on_upkeep_edited(const Glib::ustring &path,
+void StackEditorDialog::on_upkeep_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int upkeep = atoi(new_text.c_str());

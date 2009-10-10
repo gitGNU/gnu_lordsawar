@@ -16,24 +16,23 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef RUIN_DIALOG_H
-#define RUIN_DIALOG_H
+#ifndef TEMPLE_EDITOR_DIALOG_H
+#define TEMPLE_EDITOR_DIALOG_H
 
 #include <memory>
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
 
-class Ruin;
-class Stack;
 class CreateScenarioRandomize;
-class Reward;
 
-//! Scenario editor.  Edits Ruin objects.
-class RuinDialog: public sigc::trackable
+class Temple;
+
+//! Scenario editor.  Edits a Temple object.
+class TempleEditorDialog: public sigc::trackable
 {
  public:
-    RuinDialog(Ruin *ruin, CreateScenarioRandomize *randomize);
-    ~RuinDialog();
+    TempleEditorDialog(Temple *temple, CreateScenarioRandomize *randomizer);
+    ~TempleEditorDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -44,39 +43,11 @@ class RuinDialog: public sigc::trackable
     Gtk::Entry *name_entry;
     Gtk::Entry *description_entry;
     Gtk::SpinButton *type_entry;
-    Gtk::Button *keeper_button;
+    Temple *temple;
     Gtk::Button *randomize_name_button;
-    Gtk::Button *clear_keeper_button;
-    Gtk::Button *randomize_keeper_button;
-    Gtk::CheckButton *sage_button;
-    Gtk::CheckButton *hidden_button;
-    Gtk::ComboBoxText *player_combobox;
-    Gtk::HBox *new_reward_hbox;
-    Gtk::RadioButton *new_reward_radiobutton;
-    Gtk::RadioButton *random_reward_radiobutton;
-    Gtk::Button *reward_button;
-    Gtk::Button *clear_reward_button;
-    Gtk::Button *randomize_reward_button;
-    Gtk::Button *reward_list_button;
-    Ruin *ruin;
-    Stack *keeper;
-    Reward *reward;
     CreateScenarioRandomize *d_randomizer;
 
-    void set_keeper_name();
-    void set_reward_name();
-
-    void on_keeper_clicked();
-    void on_clear_keeper_clicked();
-    void on_hidden_toggled();
     void on_randomize_name_clicked();
-    void on_randomize_keeper_clicked();
-    void on_new_reward_toggled();
-    void on_random_reward_toggled();
-    void on_clear_reward_clicked();
-    void on_randomize_reward_clicked();
-    void on_reward_list_clicked();
-    void on_reward_clicked();
 };
 
 #endif

@@ -21,7 +21,7 @@
 #include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 
-#include "signpost-dialog.h"
+#include "signpost-editor-dialog.h"
 
 #include "glade-helpers.h"
 #include "ucompose.hpp"
@@ -29,14 +29,14 @@
 #include "CreateScenarioRandomize.h"
 #include "signpost.h"
 
-SignpostDialog::SignpostDialog(Signpost *s, CreateScenarioRandomize *randomizer)
+SignpostEditorDialog::SignpostEditorDialog(Signpost *s, CreateScenarioRandomize *randomizer)
 {
     d_randomizer = randomizer;
     signpost = s;
     
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/signpost-dialog.ui");
+				    + "/signpost-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
 
@@ -45,20 +45,20 @@ SignpostDialog::SignpostDialog(Signpost *s, CreateScenarioRandomize *randomizer)
     
     xml->get_widget("randomize_button", randomize_button);
     randomize_button->signal_clicked().connect(
-	sigc::mem_fun(this, &SignpostDialog::on_randomize_clicked));
+	sigc::mem_fun(this, &SignpostEditorDialog::on_randomize_clicked));
 }
 
-SignpostDialog::~SignpostDialog()
+SignpostEditorDialog::~SignpostEditorDialog()
 {
   delete dialog;
 }
-void SignpostDialog::set_parent_window(Gtk::Window &parent)
+void SignpostEditorDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void SignpostDialog::run()
+void SignpostEditorDialog::run()
 {
   dialog->show_all();
   int response = dialog->run();
@@ -73,7 +73,7 @@ void SignpostDialog::run()
     }
 }
 
-void SignpostDialog::on_randomize_clicked()
+void SignpostEditorDialog::on_randomize_clicked()
 {
   std::string existing_name = sign_textview->get_buffer()->get_text();
   bool dynamic = ((rand() % d_randomizer->getNumSignposts()) == 0);

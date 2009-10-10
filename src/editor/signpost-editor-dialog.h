@@ -16,23 +16,22 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef TEMPLE_DIALOG_H
-#define TEMPLE_DIALOG_H
+#ifndef SIGNPOST_EDITOR_DIALOG_H
+#define SIGNPOST_EDITOR_DIALOG_H
 
 #include <memory>
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
 
+class Signpost;
 class CreateScenarioRandomize;
 
-class Temple;
-
-//! Scenario editor.  Edits a Temple object.
-class TempleDialog: public sigc::trackable
+//! Scenario editor.  Change the contents of a signpost.
+class SignpostEditorDialog: public sigc::trackable
 {
  public:
-    TempleDialog(Temple *temple, CreateScenarioRandomize *randomizer);
-    ~TempleDialog();
+    SignpostEditorDialog(Signpost *signpost, CreateScenarioRandomize *randomizer);
+    ~SignpostEditorDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -40,14 +39,12 @@ class TempleDialog: public sigc::trackable
     
  private:
     Gtk::Dialog* dialog;
-    Gtk::Entry *name_entry;
-    Gtk::Entry *description_entry;
-    Gtk::SpinButton *type_entry;
-    Temple *temple;
-    Gtk::Button *randomize_name_button;
+    Gtk::TextView *sign_textview;
+    Signpost *signpost;
+    Gtk::Button *randomize_button;
     CreateScenarioRandomize *d_randomizer;
-
-    void on_randomize_name_clicked();
+    
+    void on_randomize_clicked();
 };
 
 #endif

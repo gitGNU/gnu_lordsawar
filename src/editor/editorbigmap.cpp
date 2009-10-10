@@ -53,7 +53,6 @@
 #include "Backpack.h"
 #include "MapBackpack.h"
 #include "backpack-editor-dialog.h"
-#include "stack-dialog.h"
 
 
 EditorBigMap::EditorBigMap()
@@ -484,12 +483,6 @@ void EditorBigMap::change_map_under_cursor()
 			  }
 	          }
 	    }
-	    else
-	      {
-		StackDialog d(Stacklist::getObjectAt(tile));
-		d.run();
-		draw();
-	      }
 
 	    break;
 	    

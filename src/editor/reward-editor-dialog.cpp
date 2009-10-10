@@ -20,7 +20,7 @@
 #include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 
-#include "reward-dialog.h"
+#include "reward-editor-dialog.h"
 
 #include "glade-helpers.h"
 #include "ucompose.hpp"
@@ -35,7 +35,7 @@
 #include "select-hidden-ruin-dialog.h"
 #include "armyproto.h"
 
-RewardDialog::RewardDialog(Player *player, bool hidden_ruins, Reward *r)
+RewardEditorDialog::RewardEditorDialog(Player *player, bool hidden_ruins, Reward *r)
 {
   d_player = player;
   d_hidden_ruins = hidden_ruins;
@@ -46,56 +46,56 @@ RewardDialog::RewardDialog(Player *player, bool hidden_ruins, Reward *r)
 
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path()
-				+ "/reward-dialog.ui");
+				+ "/reward-editor-dialog.ui");
 
   xml->get_widget("dialog", dialog);
 
   xml->get_widget("gold_hbox", gold_hbox);
   xml->get_widget("gold_radiobutton", gold_radiobutton);
   gold_radiobutton->signal_toggled().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_gold_toggled));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_gold_toggled));
   xml->get_widget("item_hbox", item_hbox);
   xml->get_widget("item_radiobutton", item_radiobutton);
   item_radiobutton->signal_toggled().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_item_toggled));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_item_toggled));
   xml->get_widget("allies_hbox", allies_hbox);
   xml->get_widget("allies_radiobutton", allies_radiobutton);
   allies_radiobutton->signal_toggled().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_allies_toggled));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_allies_toggled));
   xml->get_widget("map_hbox", map_hbox);
   xml->get_widget("map_radiobutton", map_radiobutton);
   map_radiobutton->signal_toggled().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_map_toggled));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_map_toggled));
   xml->get_widget("hidden_ruin_hbox", hidden_ruin_hbox);
   xml->get_widget("hidden_ruin_radiobutton", hidden_ruin_radiobutton);
   hidden_ruin_radiobutton->signal_toggled().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_hidden_ruin_toggled));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_hidden_ruin_toggled));
   xml->get_widget("gold_spinbutton", gold_spinbutton);
   xml->get_widget("randomize_gold_button", randomize_gold_button);
   randomize_gold_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_randomize_gold_clicked));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_randomize_gold_clicked));
   on_gold_toggled();
   xml->get_widget("item_button", item_button);
   item_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_item_clicked));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_item_clicked));
   xml->get_widget("clear_item_button", clear_item_button);
   clear_item_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_clear_item_clicked));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_clear_item_clicked));
   xml->get_widget("randomize_item_button", randomize_item_button);
   randomize_item_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_randomize_item_clicked));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_randomize_item_clicked));
   set_item_name();
 
   xml->get_widget("num_allies_spinbutton", num_allies_spinbutton);
   xml->get_widget("ally_button", ally_button);
   ally_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_ally_clicked));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_ally_clicked));
   xml->get_widget("clear_ally_button", clear_ally_button);
   clear_ally_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_clear_ally_clicked));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_clear_ally_clicked));
   xml->get_widget("randomize_allies_button", randomize_allies_button);
   randomize_allies_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_randomize_allies_clicked));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_randomize_allies_clicked));
   set_ally_name();
 
   xml->get_widget("map_x_spinbutton", map_x_spinbutton);
@@ -104,7 +104,7 @@ RewardDialog::RewardDialog(Player *player, bool hidden_ruins, Reward *r)
   xml->get_widget("map_height_spinbutton", map_height_spinbutton);
   xml->get_widget("randomize_map_button", randomize_map_button);
   randomize_map_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_randomize_map_clicked));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_randomize_map_clicked));
   map_x_spinbutton->set_range (0, GameMap::getInstance()->getWidth() - 1);
   map_y_spinbutton->set_range (0, GameMap::getInstance()->getHeight() - 1);
   map_width_spinbutton->set_range (1, GameMap::getInstance()->getWidth());
@@ -112,13 +112,13 @@ RewardDialog::RewardDialog(Player *player, bool hidden_ruins, Reward *r)
 
   xml->get_widget("hidden_ruin_button", hidden_ruin_button);
   hidden_ruin_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_hidden_ruin_clicked));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_hidden_ruin_clicked));
   xml->get_widget("clear_hidden_ruin_button", clear_hidden_ruin_button);
   clear_hidden_ruin_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_clear_hidden_ruin_clicked));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_clear_hidden_ruin_clicked));
   xml->get_widget("randomize_hidden_ruin_button", randomize_hidden_ruin_button);
   randomize_hidden_ruin_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &RewardDialog::on_randomize_hidden_ruin_clicked));
+    (sigc::mem_fun(*this, &RewardEditorDialog::on_randomize_hidden_ruin_clicked));
   set_hidden_ruin_name();
   hidden_ruin_radiobutton->set_sensitive(hidden_ruins);
 
@@ -149,11 +149,11 @@ RewardDialog::RewardDialog(Player *player, bool hidden_ruins, Reward *r)
     fill_in_reward_info();
 }
 
-RewardDialog::~RewardDialog()
+RewardEditorDialog::~RewardEditorDialog()
 {
   delete dialog;
 }
-void RewardDialog::fill_in_reward_info()
+void RewardEditorDialog::fill_in_reward_info()
 {
   if (reward->getType() == Reward::GOLD)
     {
@@ -191,13 +191,13 @@ void RewardDialog::fill_in_reward_info()
   //reward holds a reward
 }
 
-void RewardDialog::set_parent_window(Gtk::Window &parent)
+void RewardEditorDialog::set_parent_window(Gtk::Window &parent)
 {
   dialog->set_transient_for(parent);
   //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void RewardDialog::run()
+void RewardEditorDialog::run()
 {
   dialog->show_all();
   int response = dialog->run();
@@ -244,7 +244,7 @@ void RewardDialog::run()
 }
 
 
-void RewardDialog::on_gold_toggled()
+void RewardEditorDialog::on_gold_toggled()
 {
   gold_hbox->set_sensitive(true);
   item_hbox->set_sensitive(false);
@@ -253,7 +253,7 @@ void RewardDialog::on_gold_toggled()
   hidden_ruin_hbox->set_sensitive(false);
 }
 
-void RewardDialog::on_item_toggled()
+void RewardEditorDialog::on_item_toggled()
 {
   gold_hbox->set_sensitive(false);
   item_hbox->set_sensitive(true);
@@ -262,7 +262,7 @@ void RewardDialog::on_item_toggled()
   hidden_ruin_hbox->set_sensitive(false);
 }
 
-void RewardDialog::on_allies_toggled()
+void RewardEditorDialog::on_allies_toggled()
 {
   gold_hbox->set_sensitive(false);
   item_hbox->set_sensitive(false);
@@ -271,7 +271,7 @@ void RewardDialog::on_allies_toggled()
   hidden_ruin_hbox->set_sensitive(false);
 }
 
-void RewardDialog::on_map_toggled()
+void RewardEditorDialog::on_map_toggled()
 {
   gold_hbox->set_sensitive(false);
   item_hbox->set_sensitive(false);
@@ -280,7 +280,7 @@ void RewardDialog::on_map_toggled()
   hidden_ruin_hbox->set_sensitive(false);
 }
 
-void RewardDialog::on_hidden_ruin_toggled()
+void RewardEditorDialog::on_hidden_ruin_toggled()
 {
   gold_hbox->set_sensitive(false);
   item_hbox->set_sensitive(false);
@@ -289,12 +289,12 @@ void RewardDialog::on_hidden_ruin_toggled()
   hidden_ruin_hbox->set_sensitive(true);
 }
 
-void RewardDialog::on_randomize_gold_clicked()
+void RewardEditorDialog::on_randomize_gold_clicked()
 {
   gold_spinbutton->set_value(Reward_Gold::getRandomGoldPieces());
 }
 
-void RewardDialog::on_item_clicked()
+void RewardEditorDialog::on_item_clicked()
 {
   SelectItemDialog d;
   d.run();
@@ -306,7 +306,7 @@ void RewardDialog::on_item_clicked()
     }
 }
 
-void RewardDialog::on_clear_item_clicked()
+void RewardEditorDialog::on_clear_item_clicked()
 {
   if (item)
     {
@@ -316,14 +316,14 @@ void RewardDialog::on_clear_item_clicked()
   set_item_name();
 }
 
-void RewardDialog::on_randomize_item_clicked()
+void RewardEditorDialog::on_randomize_item_clicked()
 {
   on_clear_item_clicked();
   item = Reward_Item::getRandomItem();
   set_item_name();
 }
 
-void RewardDialog::set_item_name()
+void RewardEditorDialog::set_item_name()
 {
   Glib::ustring name;
   if (item)
@@ -334,7 +334,7 @@ void RewardDialog::set_item_name()
   item_button->set_label(name);
 }
     
-void RewardDialog::on_ally_clicked()
+void RewardEditorDialog::on_ally_clicked()
 {
   SelectArmyDialog d(d_player, false, false, true);
   d.run();
@@ -346,7 +346,7 @@ void RewardDialog::on_ally_clicked()
     }
 }
 
-void RewardDialog::on_clear_ally_clicked()
+void RewardEditorDialog::on_clear_ally_clicked()
 {
   if (ally)
     {
@@ -356,7 +356,7 @@ void RewardDialog::on_clear_ally_clicked()
   set_ally_name();
 }
 
-void RewardDialog::on_randomize_allies_clicked()
+void RewardEditorDialog::on_randomize_allies_clicked()
 {
   const ArmyProto *a = Reward_Allies::randomArmyAlly();
   if (!a)
@@ -369,7 +369,7 @@ void RewardDialog::on_randomize_allies_clicked()
   set_ally_name();
 }
 
-void RewardDialog::set_ally_name()
+void RewardEditorDialog::set_ally_name()
 {
   Glib::ustring name;
   if (ally)
@@ -380,7 +380,7 @@ void RewardDialog::set_ally_name()
   ally_button->set_label(name);
 }
 
-void RewardDialog::on_randomize_map_clicked()
+void RewardEditorDialog::on_randomize_map_clicked()
 {
   int x, y, width, height;
   Reward_Map::getRandomMap(&x, &y, &width, &height);
@@ -390,7 +390,7 @@ void RewardDialog::on_randomize_map_clicked()
   map_height_spinbutton->set_value(height);
 }
 
-void RewardDialog::on_hidden_ruin_clicked()
+void RewardEditorDialog::on_hidden_ruin_clicked()
 {
   SelectHiddenRuinDialog d;
   d.run();
@@ -402,7 +402,7 @@ void RewardDialog::on_hidden_ruin_clicked()
     }
 }
 
-void RewardDialog::on_clear_hidden_ruin_clicked()
+void RewardEditorDialog::on_clear_hidden_ruin_clicked()
 {
   if (hidden_ruin)
     {
@@ -412,7 +412,7 @@ void RewardDialog::on_clear_hidden_ruin_clicked()
   set_hidden_ruin_name();
 }
 
-void RewardDialog::on_randomize_hidden_ruin_clicked()
+void RewardEditorDialog::on_randomize_hidden_ruin_clicked()
 {
   Ruin *ruin = Reward_Ruin::getRandomHiddenRuin();
   if (ruin)
@@ -423,7 +423,7 @@ void RewardDialog::on_randomize_hidden_ruin_clicked()
     }
 }
 
-void RewardDialog::set_hidden_ruin_name()
+void RewardEditorDialog::set_hidden_ruin_name()
 {
   Glib::ustring name;
   if (hidden_ruin)

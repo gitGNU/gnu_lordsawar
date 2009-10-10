@@ -41,19 +41,19 @@ lordsawar_tile_editor_SOURCES = \
 lordsawar_editor_SOURCES = \
 	main.cpp \
 	main-window.cpp main-window.h \
-	signpost-dialog.cpp signpost-dialog.h \
-	temple-dialog.cpp temple-dialog.h \
-	ruin-dialog.cpp ruin-dialog.h \
-	stack-dialog.cpp stack-dialog.h \
+	signpost-editor-dialog.cpp signpost-editor-dialog.h \
+	temple-editor-dialog.cpp temple-editor-dialog.h \
+	ruin-editor-dialog.cpp ruin-editor-dialog.h \
+	stack-editor-dialog.cpp stack-editor-dialog.h \
 	select-army-dialog.cpp select-army-dialog.h \
 	players-dialog.cpp players-dialog.h \
-	city-dialog.cpp city-dialog.h \
+	city-editor-dialog.cpp city-editor-dialog.h \
 	map-info-dialog.cpp map-info-dialog.h \
 	new-map-dialog.cpp new-map-dialog.h \
 	editorbigmap.cpp editorbigmap.h \
 	glade-helpers.h \
 	itemlist-dialog.cpp itemlist-dialog.h \
-	reward-dialog.cpp reward-dialog.h \
+	reward-editor-dialog.cpp reward-editor-dialog.h \
 	select-item-dialog.cpp select-item-dialog.h \
 	select-reward-dialog.cpp select-reward-dialog.h \
 	rewardlist-dialog.cpp rewardlist-dialog.h \

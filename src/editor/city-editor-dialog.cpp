@@ -21,7 +21,7 @@
 #include <sigc++/functors/mem_fun.h>
 #include <gtkmm.h>
 
-#include "city-dialog.h"
+#include "city-editor-dialog.h"
 
 #include "glade-helpers.h"
 #include "ucompose.hpp"
@@ -40,7 +40,7 @@
 #include "select-army-dialog.h"
 
 
-CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
+CityEditorDialog::CityEditorDialog(City *cit, CreateScenarioRandomize *randomizer)
 	: strength_column(_("Strength"), strength_renderer),
 	moves_column(_("Max Moves"), moves_renderer),
 	duration_column(_("Turns"), duration_renderer),
@@ -51,7 +51,7 @@ CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
     
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/city-dialog.ui");
+				    + "/city-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
 
@@ -82,7 +82,7 @@ CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
 
     player_combobox->set_active(player_no);
     player_combobox->signal_changed().connect
-      (sigc::mem_fun(this, &CityDialog::on_player_changed));
+      (sigc::mem_fun(this, &CityEditorDialog::on_player_changed));
     Gtk::Alignment *alignment;
     xml->get_widget("player_alignment", alignment);
     alignment->add(*player_combobox);
@@ -97,34 +97,34 @@ CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
     army_treeview->append_column("", army_columns.image);
     strength_renderer.property_editable() = true;
     strength_renderer.signal_edited()
-      .connect(sigc::mem_fun(*this, &CityDialog::on_strength_edited));
+      .connect(sigc::mem_fun(*this, &CityEditorDialog::on_strength_edited));
     strength_column.set_cell_data_func
 	      ( strength_renderer, 
-		sigc::mem_fun(*this, &CityDialog::cell_data_strength));
+		sigc::mem_fun(*this, &CityEditorDialog::cell_data_strength));
     army_treeview->append_column(strength_column);
 
     moves_renderer.property_editable() = true;
     moves_renderer.signal_edited()
-      .connect(sigc::mem_fun(*this, &CityDialog::on_moves_edited));
+      .connect(sigc::mem_fun(*this, &CityEditorDialog::on_moves_edited));
     moves_column.set_cell_data_func
 	      ( moves_renderer, 
-		sigc::mem_fun(*this, &CityDialog::cell_data_moves));
+		sigc::mem_fun(*this, &CityEditorDialog::cell_data_moves));
     army_treeview->append_column(moves_column);
 
     upkeep_renderer.property_editable() = true;
     upkeep_renderer.signal_edited()
-      .connect(sigc::mem_fun(*this, &CityDialog::on_upkeep_edited));
+      .connect(sigc::mem_fun(*this, &CityEditorDialog::on_upkeep_edited));
     upkeep_column.set_cell_data_func
 	      ( upkeep_renderer, 
-		sigc::mem_fun(*this, &CityDialog::cell_data_upkeep));
+		sigc::mem_fun(*this, &CityEditorDialog::cell_data_upkeep));
     army_treeview->append_column(upkeep_column);
 
     duration_renderer.property_editable() = true;
     duration_renderer.signal_edited()
-      .connect(sigc::mem_fun(*this, &CityDialog::on_turns_edited));
+      .connect(sigc::mem_fun(*this, &CityEditorDialog::on_turns_edited));
     duration_column.set_cell_data_func
 	      ( duration_renderer, 
-		sigc::mem_fun(*this, &CityDialog::cell_data_turns));
+		sigc::mem_fun(*this, &CityEditorDialog::cell_data_turns));
     army_treeview->append_column(strength_column);
 
     army_treeview->append_column(_("Name"), army_columns.name);
@@ -136,18 +136,18 @@ CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
     xml->get_widget("randomize_income_button", randomize_income_button);
 
     add_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CityDialog::on_add_clicked));
+	sigc::mem_fun(this, &CityEditorDialog::on_add_clicked));
     remove_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CityDialog::on_remove_clicked));
+	sigc::mem_fun(this, &CityEditorDialog::on_remove_clicked));
     randomize_armies_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CityDialog::on_randomize_armies_clicked));
+	sigc::mem_fun(this, &CityEditorDialog::on_randomize_armies_clicked));
     randomize_name_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CityDialog::on_randomize_name_clicked));
+	sigc::mem_fun(this, &CityEditorDialog::on_randomize_name_clicked));
     randomize_income_button->signal_clicked().connect(
-	sigc::mem_fun(this, &CityDialog::on_randomize_income_clicked));
+	sigc::mem_fun(this, &CityEditorDialog::on_randomize_income_clicked));
 
     army_treeview->get_selection()->signal_changed()
-	.connect(sigc::mem_fun(this, &CityDialog::on_selection_changed));
+	.connect(sigc::mem_fun(this, &CityEditorDialog::on_selection_changed));
 
     for (unsigned int i = 0; i < city->getMaxNoOfProductionBases(); i++)
     {
@@ -156,18 +156,18 @@ CityDialog::CityDialog(City *cit, CreateScenarioRandomize *randomizer)
 	    add_army(a);
     }
 }
-CityDialog::~CityDialog()
+CityEditorDialog::~CityEditorDialog()
 {
   delete dialog;
 }
 
-void CityDialog::set_parent_window(Gtk::Window &parent)
+void CityEditorDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void CityDialog::on_player_changed()
+void CityEditorDialog::on_player_changed()
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   // set allegiance
@@ -215,7 +215,7 @@ void CityDialog::on_player_changed()
     }
 }
 
-void CityDialog::run()
+void CityEditorDialog::run()
 {
   dialog->show_all();
   int response = dialog->run();
@@ -272,7 +272,7 @@ void CityDialog::run()
     }
 }
 
-void CityDialog::on_add_clicked()
+void CityEditorDialog::on_add_clicked()
 {
   SelectArmyDialog d(city->getOwner());
   d.set_parent_window(*dialog);
@@ -284,7 +284,7 @@ void CityDialog::on_add_clicked()
 }
 
 
-void CityDialog::on_remove_clicked()
+void CityEditorDialog::on_remove_clicked()
 {
   Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
   if (i)
@@ -295,7 +295,7 @@ void CityDialog::on_remove_clicked()
   set_button_sensitivity();
 }
 
-void CityDialog::on_randomize_armies_clicked()
+void CityEditorDialog::on_randomize_armies_clicked()
 {
   const ArmyProdBase *army;
   army_list->clear();
@@ -309,7 +309,7 @@ void CityDialog::on_randomize_armies_clicked()
   set_button_sensitivity();
 }
 
-void CityDialog::on_randomize_name_clicked()
+void CityEditorDialog::on_randomize_name_clicked()
 {
   std::string existing_name = name_entry->get_text();
   if (existing_name == City::getDefaultName())
@@ -321,14 +321,14 @@ void CityDialog::on_randomize_name_clicked()
     }
 }
 
-void CityDialog::on_randomize_income_clicked()
+void CityEditorDialog::on_randomize_income_clicked()
 {
   int gold;
   gold = d_randomizer->getRandomCityIncome(capital_checkbutton->get_active());
   income_spinbutton->set_value(gold);
 }
 
-void CityDialog::add_army(const ArmyProdBase *a)
+void CityEditorDialog::add_army(const ArmyProdBase *a)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   Gtk::TreeIter i = army_list->append();
@@ -346,12 +346,12 @@ void CityDialog::add_army(const ArmyProdBase *a)
   set_button_sensitivity();
 }
 
-void CityDialog::on_selection_changed()
+void CityEditorDialog::on_selection_changed()
 {
   set_button_sensitivity();
 }
 
-void CityDialog::set_button_sensitivity()
+void CityEditorDialog::set_button_sensitivity()
 {
   Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
   unsigned int armies = army_list->children().size();
@@ -359,7 +359,7 @@ void CityDialog::set_button_sensitivity()
   remove_button->set_sensitive(i);
 }
 
-void CityDialog::cell_data_strength(Gtk::CellRenderer *renderer,
+void CityEditorDialog::cell_data_strength(Gtk::CellRenderer *renderer,
 				     const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
@@ -370,7 +370,7 @@ void CityDialog::cell_data_strength(Gtk::CellRenderer *renderer,
       String::ucompose("%1", (*i)[army_columns.strength]);
 }
 
-void CityDialog::on_strength_edited(const Glib::ustring &path,
+void CityEditorDialog::on_strength_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int str = atoi(new_text.c_str());
@@ -379,7 +379,7 @@ void CityDialog::on_strength_edited(const Glib::ustring &path,
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.strength] = str;
 }
 
-void CityDialog::cell_data_moves(Gtk::CellRenderer *renderer,
+void CityEditorDialog::cell_data_moves(Gtk::CellRenderer *renderer,
 				  const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
@@ -390,7 +390,7 @@ void CityDialog::cell_data_moves(Gtk::CellRenderer *renderer,
       String::ucompose("%1", (*i)[army_columns.moves]);
 }
 
-void CityDialog::on_moves_edited(const Glib::ustring &path,
+void CityEditorDialog::on_moves_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int moves = atoi(new_text.c_str());
@@ -399,7 +399,7 @@ void CityDialog::on_moves_edited(const Glib::ustring &path,
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.moves] = moves;
 }
 
-void CityDialog::cell_data_turns(Gtk::CellRenderer *renderer,
+void CityEditorDialog::cell_data_turns(Gtk::CellRenderer *renderer,
 				   const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
@@ -410,7 +410,7 @@ void CityDialog::cell_data_turns(Gtk::CellRenderer *renderer,
       String::ucompose("%1", (*i)[army_columns.duration]);
 }
 
-void CityDialog::on_turns_edited(const Glib::ustring &path,
+void CityEditorDialog::on_turns_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int turns = atoi(new_text.c_str());
@@ -420,7 +420,7 @@ void CityDialog::on_turns_edited(const Glib::ustring &path,
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.duration] = turns;
 }
 
-void CityDialog::cell_data_upkeep(Gtk::CellRenderer *renderer,
+void CityEditorDialog::cell_data_upkeep(Gtk::CellRenderer *renderer,
 				   const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
@@ -429,7 +429,7 @@ void CityDialog::cell_data_upkeep(Gtk::CellRenderer *renderer,
       String::ucompose("%1", (*i)[army_columns.upkeep]);
 }
 
-void CityDialog::on_upkeep_edited(const Glib::ustring &path,
+void CityEditorDialog::on_upkeep_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int upkeep = atoi(new_text.c_str());
