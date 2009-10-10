@@ -68,22 +68,22 @@
 [type: gettext/glade]/dat/glade/new-random-map-dialog.ui
 [type: gettext/glade]/dat/glade/editor/armyset-info-dialog.ui
 [type: gettext/glade]/dat/glade/editor/armyset-window.ui
-[type: gettext/glade]/dat/glade/editor/city-dialog.ui
+[type: gettext/glade]/dat/glade/editor/city-editor-dialog.ui
 [type: gettext/glade]/dat/glade/editor/itemlist-dialog.ui
 [type: gettext/glade]/dat/glade/editor/main-window.ui
 [type: gettext/glade]/dat/glade/editor/map-info-dialog.ui
 [type: gettext/glade]/dat/glade/editor/new-map-dialog.ui
 [type: gettext/glade]/dat/glade/editor/players-dialog.ui
-[type: gettext/glade]/dat/glade/editor/reward-dialog.ui
+[type: gettext/glade]/dat/glade/editor/reward-editor-dialog.ui
 [type: gettext/glade]/dat/glade/editor/reward-list-dialog.ui
-[type: gettext/glade]/dat/glade/editor/ruin-dialog.ui
+[type: gettext/glade]/dat/glade/editor/ruin-editor-dialog.ui
 [type: gettext/glade]/dat/glade/editor/select-army-dialog.ui
 [type: gettext/glade]/dat/glade/editor/select-hidden-ruin-dialog.ui
 [type: gettext/glade]/dat/glade/editor/select-item-dialog.ui
 [type: gettext/glade]/dat/glade/editor/select-reward-dialog.ui
-[type: gettext/glade]/dat/glade/editor/signpost-dialog.ui
-[type: gettext/glade]/dat/glade/editor/stack-dialog.ui
-[type: gettext/glade]/dat/glade/editor/temple-dialog.ui
+[type: gettext/glade]/dat/glade/editor/signpost-editor-dialog.ui
+[type: gettext/glade]/dat/glade/editor/stack-editor-dialog.ui
+[type: gettext/glade]/dat/glade/editor/temple-editor-dialog.ui
 [type: gettext/glade]/dat/glade/editor/tile-preview-dialog.ui
 [type: gettext/glade]/dat/glade/editor/tileset-info-dialog.ui
 [type: gettext/glade]/dat/glade/editor/tileset-selector-editor-dialog.ui
@@ -212,7 +212,7 @@ src/gui/new-random-map-dialog.cpp
 src/CreateScenarioRandomize.cpp
 src/vectoredunitlist.cpp
 src/editor/itemlist-dialog.cpp
-src/editor/signpost-dialog.cpp
+src/editor/signpost-editor-dialog.cpp
 src/editor/select-hidden-ruin-dialog.cpp
 src/editor/armyset-info-dialog.cpp
 src/editor/armyset-window.cpp
@@ -222,22 +222,22 @@ src/editor/select-reward-dialog.cpp
 src/editor/players-dialog.cpp
 src/editor/editorbigmap.cpp
 src/editor/tileset-main.cpp
-src/editor/city-dialog.cpp
+src/editor/city-editor-dialog.cpp
 src/editor/main-window.cpp
 src/editor/armyset-main.cpp
-src/editor/temple-dialog.cpp
+src/editor/temple-editor-dialog.cpp
 src/editor/tileset-info-dialog.cpp
 src/editor/tile-preview-dialog.cpp
 src/editor/tile-preview-scene.cpp
 src/editor/RenamableLocation.cpp
-src/editor/ruin-dialog.cpp
+src/editor/ruin-editor-dialog.cpp
 src/editor/new-map-dialog.cpp
 src/editor/select-army-dialog.cpp
 src/editor/map-info-dialog.cpp
-src/editor/reward-dialog.cpp
+src/editor/reward-editor-dialog.cpp
 src/editor/main.cpp
 src/editor/tileset-window.cpp
-src/editor/stack-dialog.cpp
+src/editor/stack-editor-dialog.cpp
 src/editor/hero-editor-dialog.cpp
 src/editor/backpack-editor-dialog.cpp
 src/NamedLocation.cpp
