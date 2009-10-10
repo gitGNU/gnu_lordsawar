@@ -360,7 +360,9 @@ void StackDialog::cell_data_strength(Gtk::CellRenderer *renderer,
 				     const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
-          = new Gtk::Adjustment((*i)[army_columns.strength], 1, 9, 1);
+          = new Gtk::Adjustment((*i)[army_columns.strength], 
+				MIN_STRENGTH_FOR_ARMY_UNITS, 
+				MAX_STRENGTH_FOR_ARMY_UNITS, 1);
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
       String::ucompose("%1", (*i)[army_columns.strength]);
 }
@@ -369,7 +371,7 @@ void StackDialog::on_strength_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int str = atoi(new_text.c_str());
-  if (str < 1 || str > 9)
+  if (str < MIN_STRENGTH_FOR_ARMY_UNITS || str > MAX_STRENGTH_FOR_ARMY_UNITS)
     return;
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.strength] = str;
 }
@@ -378,7 +380,9 @@ void StackDialog::cell_data_moves(Gtk::CellRenderer *renderer,
 				  const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
-          = new Gtk::Adjustment((*i)[army_columns.moves], 6, 75, 1);
+          = new Gtk::Adjustment((*i)[army_columns.moves], 
+				MIN_MOVES_FOR_ARMY_UNITS, 
+				MAX_MOVES_FOR_ARMY_UNITS, 1);
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
       String::ucompose("%1", (*i)[army_columns.moves]);
 }
@@ -387,7 +391,7 @@ void StackDialog::on_moves_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int moves = atoi(new_text.c_str());
-  if (moves < 6 || moves > 75)
+  if (moves < MIN_MOVES_FOR_ARMY_UNITS || moves > MAX_MOVES_FOR_ARMY_UNITS)
     return;
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.moves] = moves;
 }
@@ -396,7 +400,9 @@ void StackDialog::cell_data_upkeep(Gtk::CellRenderer *renderer,
 				   const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
-          = new Gtk::Adjustment((*i)[army_columns.upkeep], 0, 20, 1);
+          = new Gtk::Adjustment((*i)[army_columns.upkeep], 
+				MIN_UPKEEP_FOR_ARMY_UNITS, 
+				MAX_UPKEEP_FOR_ARMY_UNITS, 1);
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
       String::ucompose("%1", (*i)[army_columns.upkeep]);
 }
@@ -405,7 +411,7 @@ void StackDialog::on_upkeep_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int upkeep = atoi(new_text.c_str());
-  if (upkeep < 0 || upkeep > 20)
+  if (upkeep < MIN_UPKEEP_FOR_ARMY_UNITS || upkeep > MAX_UPKEEP_FOR_ARMY_UNITS)
     return;
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.upkeep] = upkeep;
 }

@@ -91,4 +91,14 @@ const std::string TILESETDIR = "tilesets";
 const std::string CITYSETDIR = "citysets";
 const std::string SHIELDSETDIR = "shield";
 const std::string MAPDIR = "map";
+
+const unsigned int MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS = 1;
+const unsigned int MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS = 5;
+const unsigned int MIN_UPKEEP_FOR_ARMY_UNITS = 0;
+const unsigned int MAX_UPKEEP_FOR_ARMY_UNITS = 20;
+const unsigned int MIN_MOVES_FOR_ARMY_UNITS = 6;
+const unsigned int MAX_MOVES_FOR_ARMY_UNITS = 75;
+const unsigned int MIN_STRENGTH_FOR_ARMY_UNITS = 1;
+const unsigned int MAX_STRENGTH_FOR_ARMY_UNITS = 9;
 #endif // DEFINITIONS_H
+

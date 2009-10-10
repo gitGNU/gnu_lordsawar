@@ -641,7 +641,14 @@ void ArmySetWindow::on_production_changed()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      a->setProduction(int(production_spinbutton->get_value()));
+      if (production_spinbutton->get_value() < 
+	  MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS)
+	production_spinbutton->set_value(MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS);
+      else if (production_spinbutton->get_value() > 
+	       MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS)
+	production_spinbutton->set_value(MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS);
+      else
+	a->setProduction(int(production_spinbutton->get_value()));
     }
 }
 
@@ -667,7 +674,12 @@ void ArmySetWindow::on_upkeep_changed()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto  *a = row[armies_columns.army];
-      a->setUpkeep(int(upkeep_spinbutton->get_value()));
+      if (upkeep_spinbutton->get_value() < MIN_UPKEEP_FOR_ARMY_UNITS)
+	upkeep_spinbutton->set_value(MIN_UPKEEP_FOR_ARMY_UNITS);
+      else if (upkeep_spinbutton->get_value() > MAX_UPKEEP_FOR_ARMY_UNITS)
+	upkeep_spinbutton->set_value(MAX_UPKEEP_FOR_ARMY_UNITS);
+      else
+	a->setUpkeep(int(upkeep_spinbutton->get_value()));
     }
 }
 
@@ -680,7 +692,12 @@ void ArmySetWindow::on_strength_changed()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      a->setStrength(int(strength_spinbutton->get_value()));
+      if (strength_spinbutton->get_value() < MIN_STRENGTH_FOR_ARMY_UNITS)
+	strength_spinbutton->set_value(MIN_STRENGTH_FOR_ARMY_UNITS);
+      else if (strength_spinbutton->get_value() > MAX_STRENGTH_FOR_ARMY_UNITS)
+	strength_spinbutton->set_value(MAX_STRENGTH_FOR_ARMY_UNITS);
+      else
+	a->setStrength(int(strength_spinbutton->get_value()));
     }
 }
 
@@ -693,7 +710,12 @@ void ArmySetWindow::on_moves_changed()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      a->setMaxMoves(int(moves_spinbutton->get_value()));
+      if (moves_spinbutton->get_value() < MIN_MOVES_FOR_ARMY_UNITS)
+	moves_spinbutton->set_value(MIN_MOVES_FOR_ARMY_UNITS);
+      else if (moves_spinbutton->get_value() > MAX_MOVES_FOR_ARMY_UNITS)
+	moves_spinbutton->set_value(MAX_MOVES_FOR_ARMY_UNITS);
+      else
+	a->setMaxMoves(int(moves_spinbutton->get_value()));
     }
 }
 

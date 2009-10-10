@@ -57,11 +57,11 @@ int main(int argc, char* argv[])
 	tileset_window->show();
 	
 	kit.run(tileset_window->get_window());
+	delete tileset_window;
     }
     catch (const Glib::Error &ex) {
 	std::cerr << ex.what() << std::endl;
     }
     
-    delete tileset_window;
     return EXIT_SUCCESS;
 }

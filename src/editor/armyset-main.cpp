@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
     // init GUI stuff
     g_set_application_name(_("LordsAWar! Armyset Editor"));
 
-    ArmySetWindow* armyset_window;
+    ArmySetWindow* armyset_window = NULL;
     try
     {
 	Gtk::Main kit(argc, argv);
@@ -59,11 +59,11 @@ int main(int argc, char* argv[])
 	armyset_window->show();
 	
 	kit.run(armyset_window->get_window());
+	delete armyset_window;
     }
     catch (const Glib::Error &ex) {
 	std::cerr << ex.what() << std::endl;
     }
-    delete armyset_window;
     
     return EXIT_SUCCESS;
 }

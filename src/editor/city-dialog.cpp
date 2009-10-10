@@ -363,7 +363,9 @@ void CityDialog::cell_data_strength(Gtk::CellRenderer *renderer,
 				     const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
-          = new Gtk::Adjustment((*i)[army_columns.strength], 1, 9, 1);
+          = new Gtk::Adjustment((*i)[army_columns.strength], 
+				MIN_STRENGTH_FOR_ARMY_UNITS, 
+				MAX_STRENGTH_FOR_ARMY_UNITS, 1);
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
       String::ucompose("%1", (*i)[army_columns.strength]);
 }
@@ -372,7 +374,7 @@ void CityDialog::on_strength_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int str = atoi(new_text.c_str());
-  if (str < 1 || str > 9)
+  if (str < MIN_STRENGTH_FOR_ARMY_UNITS || str > MAX_STRENGTH_FOR_ARMY_UNITS)
     return;
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.strength] = str;
 }
@@ -381,7 +383,9 @@ void CityDialog::cell_data_moves(Gtk::CellRenderer *renderer,
 				  const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
-          = new Gtk::Adjustment((*i)[army_columns.moves], 6, 75, 1);
+          = new Gtk::Adjustment((*i)[army_columns.moves], 
+				MIN_MOVES_FOR_ARMY_UNITS, 
+				MAX_MOVES_FOR_ARMY_UNITS, 1);
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
       String::ucompose("%1", (*i)[army_columns.moves]);
 }
@@ -390,7 +394,7 @@ void CityDialog::on_moves_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int moves = atoi(new_text.c_str());
-  if (moves < 6 || moves > 75)
+  if (moves < MIN_MOVES_FOR_ARMY_UNITS || moves > MAX_MOVES_FOR_ARMY_UNITS)
     return;
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.moves] = moves;
 }
@@ -399,7 +403,9 @@ void CityDialog::cell_data_turns(Gtk::CellRenderer *renderer,
 				   const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
-          = new Gtk::Adjustment((*i)[army_columns.duration], 0, 5, 1);
+          = new Gtk::Adjustment((*i)[army_columns.duration], 
+				MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS, 
+				MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS, 1);
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
       String::ucompose("%1", (*i)[army_columns.duration]);
 }
@@ -408,7 +414,8 @@ void CityDialog::on_turns_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   int turns = atoi(new_text.c_str());
-  if (turns < 0 || turns > 5)
+  if (turns < MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS || 
+      turns > MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS)
     return;
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.duration] = turns;
 }
