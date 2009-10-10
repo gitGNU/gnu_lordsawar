@@ -1,3 +1,8 @@
+2009-10-10  Ben Asselstine  <benasselstine@gmail.com>
+
+	* added army images to city editor in scenario editor.
+	* changed input boxes to spinbuttons in the city editor.
+
 2009-10-09  Ben Asselstine  <benasselstine@gmail.com>
 
 	* fixed flag colours.
