@@ -23,9 +23,10 @@
 
 using namespace std;
 
-/** The result of a move by a stack.
+/** 
   * This is needed by the AI so it can tell when a stack dies.
   */
+//! The result of a move by a stack.
 class MoveResult
 {
     public:

@@ -44,8 +44,7 @@ LoadScenarioDialog::LoadScenarioDialog()
   decorate(dialog);
   window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
-  xml->get_widget("name_label", name_label);
-  xml->get_widget("description_label", description_label);
+  xml->get_widget("description_textview", description_textview);
   xml->get_widget("load_button", load_button);
   xml->get_widget("num_players_label", num_players_label);
   xml->get_widget("num_cities_label", num_cities_label);
@@ -162,11 +161,10 @@ void LoadScenarioDialog::on_selection_changed()
       if (filename == "random.map")
 	{
 	  load_button->set_sensitive(true);
-	  name_label->set_text(_("Random Scenario"));
-	  description_label->set_text(_("Play a new scenario with a random map."));
-	  num_players_label->set_text (_("?"));
-	  num_cities_label->set_text (_("?"));
-	  remove_scenario_button->set_sensitive(true);
+	  description_textview->get_buffer()->set_text(_("Play a new scenario with a random map.  You get to decide the number of players, and number of cities on the map.  You can also control the amount of the map that is covered in forest, water, swamps and mountains."));
+	  num_players_label->set_markup (String::ucompose("<b>--</b>", ""));
+	  num_cities_label->set_markup(String::ucompose("<b>--</b>", ""));
+	  remove_scenario_button->set_sensitive(false);
 	  load_button->set_sensitive(true);
 	  selected_filename = filename;
 	  return;
@@ -197,10 +195,12 @@ void LoadScenarioDialog::on_selection_changed()
 	{
 	  remove_scenario_button->set_sensitive(true);
 	  load_button->set_sensitive(true);
-	  num_players_label->set_text
-	    (String::ucompose("%1", loaded_scenario_player_count - 1));
-	  num_cities_label->set_text
-	    (String::ucompose("%1", loaded_scenario_city_count));
+	  num_players_label->set_markup
+	    ("<b>" + String::ucompose("%1", loaded_scenario_player_count - 1)
+	     + "</b>");
+	  num_cities_label->set_markup
+	    ("<b>" + String::ucompose("%1", loaded_scenario_city_count) + 
+	     "</b>");
 	}
     }
   else
@@ -224,8 +224,7 @@ bool LoadScenarioDialog::scan_scenario_details(std::string tag,
       helper->getData(name, "name");
       helper->getData(comment, "comment");
 
-      name_label->set_text(name);
-      description_label->set_text(comment);
+      description_textview->get_buffer()->set_text(comment);
     }
   else if (tag == "player")
     {
@@ -306,8 +305,7 @@ void LoadScenarioDialog::on_remove_scenario_clicked()
       if (remove (filename.c_str()) == 0)
 	{
 	  scenarios_list->erase(i);
-	  name_label->set_text("");
-	  description_label->set_text("");
+	  description_textview->get_buffer()->set_text("");
 	  num_players_label->set_text ("");
 	  num_cities_label->set_text ("");
 	}

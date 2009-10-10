@@ -23,8 +23,8 @@
 #include <sigc++/signal.h>
 #include <boost/noncopyable.hpp>
 
-/** A simple timing framework 
-  *
+//! A simple timing framework.
+/**
   * Main function is register_timer. The timer_registered signal hook is used
   * to do the actual work.
   */

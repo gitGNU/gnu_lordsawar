@@ -45,8 +45,7 @@ class LoadScenarioDialog: public Decorated
  private:
     Gtk::Dialog* dialog;
     Gtk::Button *load_button;
-    Gtk::Label *name_label;
-    Gtk::Label *description_label;
+    Gtk::TextView *description_textview;
     Gtk::Label *num_players_label;
     Gtk::Label *num_cities_label;
     Gtk::TreeView *scenarios_treeview;

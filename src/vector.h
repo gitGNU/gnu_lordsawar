@@ -20,8 +20,8 @@
 #include <cmath>
 #include <stdlib.h>
 
-/* A simple 2D vector structure.
- *
+//! A simple 2d point structure.
+/**
  * Implements a lot of overloaded operators to ease calculations.
  * x is the axis in the left/right direction.
  * y is the axis in the up/down direction.

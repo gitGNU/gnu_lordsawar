@@ -21,6 +21,7 @@
 #include "history.h"
 #include "Ownable.h"
 
+//! A history object that's owned by a player, to be sent to another player.
 class NetworkHistory: public Ownable
 {
 public:
