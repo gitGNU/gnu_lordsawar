@@ -47,18 +47,6 @@
   * background music fades out (maybe), the other music fades or pops in
   * and goes away again with the backgroun dmusic taking its place again
   * afterwards.
-  *
-  * @note: When migrating to Java, I think the best idea would be to put this
-  * whole code in a separate thread. As it is now, it is just an ugly hack. I 
-  * have done not too much to prevent race conditions, most of the code runs in
-  * the main thread and so on.
-  * 
-  * TODO: for the reason mentioned above (this is not really urgent, however), it
-  * may be interesting to specify aliases for some sounds, so if some sound file
-  * doesn't exist, another can be played.
-  *
-  * TODO: I'll put the settings (volume etc.) in the Configuration class, however,
-  * maybe in the medium run it would be nicer to strip this class a bit.
   */
 
 struct MusicItem
@@ -72,6 +60,7 @@ struct MusicItem
 };
 
 
+//! This class manages sound within the game.
 class Sound : public sigc::trackable
 {
     public:
