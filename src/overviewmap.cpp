@@ -385,6 +385,8 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
 void OverviewMap::draw_terrain_tiles(Rectangle r)
 {
     GameMap *gm = GameMap::getInstance();
+    unsigned int oldrand = rand();
+    srand((int)gm);
     Gdk::Color rd = GameMap::getInstance()->getTileset()->getRoadColor();
     for (int i = r.x; i < r.x + r.w; ++i)
         for (int j = r.y; j < r.y + r.h; ++j)
@@ -400,7 +402,7 @@ void OverviewMap::draw_terrain_tiles(Rectangle r)
                 draw_terrain_tile (GameMap::getInstance()->getTile(x,y), i, j);
 	    }
         }
-    
+    srand(oldrand);
 }
 
 void OverviewMap::after_draw()

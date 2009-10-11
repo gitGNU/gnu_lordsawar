@@ -43,7 +43,6 @@ void VectorMap::draw_planted_standard(Vector<int> flag)
   
   start = flag;
   start = mapToSurface(start);
-  start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
       
   PixMask *heropic = gc->getSmallHeroPic(true);
   heropic->blit_centered(surface, start);
@@ -74,7 +73,6 @@ void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
   
   start  = c->getPos();
   start = mapToSurface(start);
-  //start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
   if (tmp)
     {
       tmp->blit_centered(surface, start);
@@ -121,8 +119,6 @@ void VectorMap::draw_vectoring_line(Vector<int> src, Vector<int> dest, bool to)
   Vector <int> end = dest;
   start = mapToSurface(start);
   end = mapToSurface(end);
-  start += Vector<int>(int(pixels_per_tile/2),int(pixels_per_tile/2));
-  end += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
   Gdk::Color line_color = Gdk::Color();
   if (to) //yellow
     line_color.set_rgb_p(252.0/255.0, 236.0/255.0, 
