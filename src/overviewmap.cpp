@@ -386,7 +386,7 @@ void OverviewMap::draw_terrain_tiles(Rectangle r)
 {
     GameMap *gm = GameMap::getInstance();
     unsigned int oldrand = rand();
-    srand((int)gm);
+    srand(0);
     Gdk::Color rd = GameMap::getInstance()->getTileset()->getRoadColor();
     for (int i = r.x; i < r.x + r.w; ++i)
         for (int j = r.y; j < r.y + r.h; ++j)
