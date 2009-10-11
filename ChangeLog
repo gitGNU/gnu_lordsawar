@@ -1,3 +1,8 @@
+2009-10-11  Ben Asselstine  <benasselstine@gmail.com>
+
+	* now drawing random mountains in the same manner for each map.  So 
+	when we flip through maps in the reports dialog, they don't shift.
+
 2009-10-10  Ben Asselstine  <benasselstine@gmail.com>
 
 	* added army images to city editor in scenario editor.
@@ -9,6 +14,7 @@
 	* changed production report to show a white box around the city that
 	produced/vectored a particular army unit.
 	* beautified the load scenario dialog.
+	* added battle music.
 
 2009-10-09  Ben Asselstine  <benasselstine@gmail.com>
 
