@@ -3,6 +3,17 @@
 	* now drawing random mountains in the same manner for each map.  So 
 	when we flip through maps in the reports dialog, they don't shift.
 	* beautifying the new random map dialog.
+	* fixed bug #27663. reported by Frans de Jonge.  split stacks that can't
+	go anywhere no longer crash the game.
+	* fixed bug #27665.  adding some shields back to the events report.  
+	Reported by Frans de Jonge.
+	* fixed bug #27659.  stray underscore in continue button has been 
+	removed.  Reported by Frans de Jonge.
+	* fixed bug #27662.  visually unclear how many army units can go into
+	a stack.  now showing remaining army slots in the stack display.
+	Reported by Frans de Jonge.
+	* fixed bug #27657.  can't load autosave.sav file from within a loaded 
+	game.  Reported by Frans de Jonge.
 
 2009-10-10  Ben Asselstine  <benasselstine@gmail.com>
 
