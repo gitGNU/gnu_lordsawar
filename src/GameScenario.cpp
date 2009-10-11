@@ -73,7 +73,7 @@ using namespace std;
 GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
 			   GameScenario::PlayMode playmode)
     :d_name(name),d_comment(comment), d_turnmode(turnmode), 
-    d_playmode(playmode), recording_file("")
+    d_playmode(playmode), recording_file(""), inhibit_autosave_removal(false)
 {
     Armysetlist::getInstance();
     Tilesetlist::getInstance();
@@ -88,7 +88,8 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
 // savegame is a filename with absolute path!
 
 GameScenario::GameScenario(string savegame, bool& broken)
-  :d_turnmode(true), d_playmode(GameScenario::HOTSEAT), recording_file("")
+  :d_turnmode(true), d_playmode(GameScenario::HOTSEAT), recording_file(""), 
+    inhibit_autosave_removal(false)
 {
   XML_Helper helper(savegame, ios::in, Configuration::s_zipfiles);
   broken = loadWithHelper(helper);
@@ -96,7 +97,8 @@ GameScenario::GameScenario(string savegame, bool& broken)
 }
 
 GameScenario::GameScenario(XML_Helper &helper, bool& broken)
-  : d_turnmode(true), d_playmode(GameScenario::HOTSEAT), recording_file("")
+  : d_turnmode(true), d_playmode(GameScenario::HOTSEAT), recording_file(""),
+    inhibit_autosave_removal(false)
 {
   broken = loadWithHelper(helper);
 }
@@ -409,7 +411,8 @@ GameScenario::~GameScenario()
       delete fl_counter;
       fl_counter = 0;
     }
-  if (Configuration::s_autosave_policy == 1)
+  if (Configuration::s_autosave_policy == 1 && 
+      inhibit_autosave_removal == false)
     {
       std::string filename = File::getSavePath() + "autosave.sav";
       remove(filename.c_str());

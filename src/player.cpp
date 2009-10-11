@@ -848,10 +848,7 @@ bool Player::stackMove(Stack* s)
 
 MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 {
-  bool warportal = false;
   City *c = GameMap::getCity(dest);
-  if (c && c->getName() == "Warportal" && s->getId() == 2155)
-    warportal = true;
 
     debug("Player::stack_move()");
     //if follow is set to true, follow an already calculated way, else
@@ -870,8 +867,6 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
         return new MoveResult(false);        //way to destination blocked
     }
 
-    if (warportal)
-      printf("here we go, making for warportal\n");
     int stepCount = 0;
     int moves_left = s->getPath()->getMovesExhaustedAtPoint();
     while ((s->getPath()->size() > 1 && stackMoveOneStep(s)) ||
@@ -883,16 +878,12 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 	if (moves_left == 1)
 	  break;
       }
-    if (warportal)
-      {
-	printf("stepcount is %d, moves_left is %d\n", stepCount, moves_left);
-	printf("size of remaining path is %d\n", s->getPath()->size());
-      }
 
     //alright, we've walked up to the last place in the path.
     if (s->getPath()->size() >= 1 && s->enoughMoves())
     //now look for fight targets, joins etc.
     {
+    
         Vector<int> pos = s->getFirstPointInPath();
         City* city = GameMap::getCity(pos);
         Stack* target = Stacklist::getObjectAt(pos);
@@ -1028,28 +1019,39 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
     }
     else if (s->getPath()->size() >= 1 && s->enoughMoves() == false)
     {
+    
       /* if we can't attack a city, don't remember it in the stack's path. */
         Vector<int> pos = s->getFirstPointInPath();
         City* city = GameMap::getCity(pos);
 	if (city && city->getOwner() != this)
 	  s->getPath()->clear();
+    
+	//the stack may have been split before we started to walk
+	//and then when we didn't go anywhere we landed back on our
+	//original stack.
+	Stack *other_stack = Stacklist::getAmbiguity(s);
+	if (other_stack->getOwner() == s->getOwner())
+	  {
+	    bool success = stackJoin(other_stack, s, false);
+	    if (!success)
+	      {
+		printf("Crap.  \n");
+	      }
+	    supdatingStack.emit(0);
+	    shaltedStack.emit(d_stacklist->getActivestack());
+	    MoveResult *moveResult = new MoveResult(true);
+	    moveResult->setStepCount(stepCount);
+	    moveResult->setJoin(true);
+	    return moveResult;
+	  }
+	else
+	  {
+	    printf("crap.  there was another stack where we landed.\n");
+	    printf("this should be properly handled before this point.\n");
+	    exit(0);
+	  }
     }
 
-    //If there is another stack where we landed, join it. We can't have two
-    //stacks share the same maptile
-    if (Stacklist::getAmbiguity(s))
-    {
-      printf("crap.  there was another stack where we landed.\n");
-      printf("this should be properly handled before this point.\n");
-      exit(0);
-        stackJoin(Stacklist::getAmbiguity(s), s, false);
-        supdatingStack.emit(0);
-	shaltedStack.emit(d_stacklist->getActivestack());
-        MoveResult *moveResult = new MoveResult(true);
-        moveResult->setStepCount(stepCount);
-        moveResult->setJoin(true);
-        return moveResult;
-    }
 
     MoveResult *moveResult = new MoveResult(true);
     moveResult->setStepCount(stepCount);

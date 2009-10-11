@@ -157,6 +157,7 @@ class Game
     
     void addPlayer(Player *p);
 
+    void inhibitAutosaveRemoval(bool inhibit);
  private:
     static Game *current_game;
 

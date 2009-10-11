@@ -88,7 +88,7 @@ class HistoryReportDialog: public Decorated
 	EventsColumns() 
         { add(image); add(desc);}
 	
-	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixmap> > image;
+	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
 	Gtk::TreeModelColumn<Glib::ustring> desc;
     };
     const EventsColumns events_columns;

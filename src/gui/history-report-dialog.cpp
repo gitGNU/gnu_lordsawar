@@ -501,7 +501,7 @@ void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
 	  History_FoundSage *ev;
 	  ev = static_cast<History_FoundSage *>(history);
 	  s = String::ucompose(_("%1 finds a sage!"), ev->getHeroName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->get_pixmap();
+	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
 	  break;
 	}
     case History::HERO_EMERGES:
@@ -510,7 +510,7 @@ void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
 	  ev = static_cast<History_HeroEmerges *>(history);
 	  s = String::ucompose(_("%1 emerges in %2!"), ev->getHeroName(),
 			       ev->getCityName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->get_pixmap();
+	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
 	  break;
 	}
     case History::HERO_QUEST_STARTED:
@@ -518,7 +518,7 @@ void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
 	  History_HeroQuestStarted *ev;
 	  ev = static_cast<History_HeroQuestStarted*>(history);
 	  s = String::ucompose(_("%1 begins a quest!"), ev->getHeroName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->get_pixmap();
+	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
 	  break;
 	}
     case History::HERO_QUEST_COMPLETED:
@@ -526,7 +526,7 @@ void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
 	  History_HeroQuestCompleted *ev;
 	  ev = static_cast<History_HeroQuestCompleted *>(history);
 	  s = String::ucompose(_("%1 finishes a quest!"), ev->getHeroName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->get_pixmap();
+	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
 	  break;
 	}
     case History::HERO_KILLED_IN_CITY:
@@ -535,7 +535,7 @@ void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
 	  ev = static_cast<History_HeroKilledInCity *>(history);
 	  s = String::ucompose(_("%1 is killed in %2!"), ev->getHeroName(),
 			       ev->getCityName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->get_pixmap();
+	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
 	  break;
 	}
     case History::HERO_KILLED_IN_BATTLE:
@@ -543,7 +543,7 @@ void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
 	  History_HeroKilledInBattle *ev;
 	  ev = static_cast<History_HeroKilledInBattle *>(history);
 	  s = String::ucompose(_("%1 is killed in battle!"), ev->getHeroName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->get_pixmap();
+	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
 	  break;
 	}
     case History::HERO_KILLED_SEARCHING:
@@ -552,7 +552,7 @@ void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
 	  ev = static_cast<History_HeroKilledSearching *>(history);
 	  s = String::ucompose(_("%1 is killed while searching!"), 
 			       ev->getHeroName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->get_pixmap();
+	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
 	  break;
 	}
     case History::HERO_CITY_WON:
@@ -561,7 +561,7 @@ void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
 	  ev = static_cast<History_HeroCityWon *>(history);
 	  s = String::ucompose(_("%1 conquers %2!"), ev->getHeroName(), 
 			       ev->getCityName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->get_pixmap();
+	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
 	  break;
 	}
     case History::PLAYER_VANQUISHED:
@@ -569,7 +569,7 @@ void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
 	  History_PlayerVanquished *ev;
 	  ev = static_cast<History_PlayerVanquished*>(history);
 	  s = String::ucompose(_("%1 utterly vanquished!"), p->getName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->get_pixmap();
+	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
 	  break;
 	}
     case History::DIPLOMATIC_PEACE:
@@ -600,7 +600,7 @@ void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
 	  Player *opponent = pl->getPlayer(ev->getOpponentId());
 	  s = String::ucompose(_("Treachery by %1 on %2!"), p->getName(),
 			       opponent->getName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->get_pixmap();
+	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
 	  break;
 	}
     case History::HERO_FINDS_ALLIES:
@@ -608,7 +608,7 @@ void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
 	  History_HeroFindsAllies *ev;
 	  ev = static_cast<History_HeroFindsAllies*>(history);
 	  s = String::ucompose(_("%1 finds allies!"), ev->getHeroName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->get_pixmap();
+	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
 	  break;
 	}
     default:

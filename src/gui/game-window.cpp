@@ -977,10 +977,10 @@ bool GameWindow::on_bigmap_scroll_event(GdkEventScroll* event)
     case GDK_SCROLL_RIGHT:
       break;
     case GDK_SCROLL_UP:
-      game->get_bigmap().zoom_in();
+      //game->get_bigmap().zoom_in();
       break;
     case GDK_SCROLL_DOWN:
-      game->get_bigmap().zoom_out();
+      //game->get_bigmap().zoom_out();
       break;
     }
   return true;
@@ -1108,6 +1108,8 @@ void GameWindow::on_load_game_activated()
     {
       std::string filename = chooser.get_filename();
       current_save_filename = filename;
+      if (filename ==  (File::getSavePath() + "autosave.sav"))
+	game->inhibitAutosaveRemoval(true);
       d_load_filename = filename;
       stop_game("load-game");
       //now look at on_game_stopped.
@@ -2035,6 +2037,8 @@ void GameWindow::show_stack(Stack *s)
   progress_box->hide();
 
   army_buttons.clear(); 
+  int width = 0;
+  int height = 0;
   for (Stack::iterator i = s->begin(), end = s->end(); i != end; ++i)
     {
       // construct a toggle button
@@ -2043,9 +2047,12 @@ void GameWindow::show_stack(Stack *s)
 
       // image
       Gtk::Image *army_image = new Gtk::Image();
-      army_image->property_pixbuf() = 
+      Glib::RefPtr<Gdk::Pixbuf> army_icon = 
 	gc->getArmyPic(s->getOwner()->getArmyset(), army->getTypeId(),
 		       s->getOwner(), army->getMedalBonuses())->to_pixbuf();
+      army_image->property_pixbuf() = army_icon;
+      width = army_icon->get_width();
+      height = army_icon->get_height();
       toggle_box->add(*manage(army_image));
       // number of moves
       Glib::ustring moves_str = String::ucompose("%1", army->getMoves());
@@ -2070,6 +2077,31 @@ void GameWindow::show_stack(Stack *s)
       stack_info_box->pack_start(*toggle, Gtk::PACK_SHRINK);
       army_buttons.push_back(toggle);
 
+    }
+  for (unsigned int i = s->size() ; i < MAX_STACK_SIZE; i++)
+    {
+      // construct a toggle button
+      Gtk::VBox *toggle_box = manage(new Gtk::VBox);
+
+      // image
+      Gtk::Image *army_image = new Gtk::Image();
+      Glib::RefPtr<Gdk::Pixbuf> empty_pic
+	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, width, height);
+      empty_pic->fill(0x00000000);
+      army_image->property_pixbuf() = empty_pic;
+      toggle_box->add(*manage(army_image));
+      // number of moves
+      toggle_box->add(*manage
+		      (new Gtk::Label(" ", Gtk::ALIGN_CENTER, Gtk::ALIGN_TOP)));
+
+      // the button itself
+      Gtk::ToggleButton *toggle = new Gtk::ToggleButton;
+      toggle->add(*toggle_box);
+      toggle->set_sensitive(false);
+      // clicking on this button does nothing.
+      // add it
+      stack_info_box->pack_start(*toggle, Gtk::PACK_SHRINK);
+      army_buttons.push_back(toggle);
     }
 
   fill_in_group_info(s);

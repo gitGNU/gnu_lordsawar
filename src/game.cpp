@@ -1328,3 +1328,9 @@ bool Game::saveTurnFile(std::string turnfile)
     PbmGameServer::getInstance()->endTurn(turnfile, broken);
   return true;
 }
+
+void Game::inhibitAutosaveRemoval(bool inhibit)
+{
+  if (d_gameScenario)
+    d_gameScenario->inhibitAutosaveRemoval(inhibit);
+}

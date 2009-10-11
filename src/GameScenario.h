@@ -135,6 +135,7 @@ class GameScenario: public GameScenarioOptions
 	void startRecordingEventsToFile(std::string filename);
 	void stopRecordingEventsToFile();
 
+	void inhibitAutosaveRemoval(bool i) {inhibit_autosave_removal = i;}
     private:
 	  /** Callback function for loading a game. See XML_Helper for details.
 	   *
@@ -161,6 +162,7 @@ class GameScenario: public GameScenarioOptions
 	  guint32 d_playmode;
 	  std::string d_id; //globally unique id identifying the scenario
 	  std::string recording_file;
+	  bool inhibit_autosave_removal;
 };
 
 #endif // GAME_SCENARIO_H

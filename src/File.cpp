@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include <iostream>
+#include <string.h>
 #include <algorithm>
 #include <glibmm/fileutils.h>
 #include <glibmm/ustring.h>
@@ -177,6 +178,11 @@ std::string File::getMusicFile(std::string filename)
 
 std::string File::getSavePath()
 {
+  //do we add a / at the end or not?
+  const char *s = Configuration::s_savePath.c_str();
+  if (s[strlen(s)-1] == '/')
+    return Configuration::s_savePath;
+  else
     return Configuration::s_savePath + "/";
 }
 
