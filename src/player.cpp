@@ -1030,7 +1030,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 	//and then when we didn't go anywhere we landed back on our
 	//original stack.
 	Stack *other_stack = Stacklist::getAmbiguity(s);
-	if (other_stack->getOwner() == s->getOwner())
+	if (other_stack && other_stack->getOwner() == s->getOwner())
 	  {
 	    bool success = stackJoin(other_stack, s, false);
 	    if (!success)
@@ -1044,7 +1044,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 	    moveResult->setJoin(true);
 	    return moveResult;
 	  }
-	else
+	else if (other_stack)
 	  {
 	    printf("crap.  there was another stack where we landed.\n");
 	    printf("this should be properly handled before this point.\n");
