@@ -2,6 +2,7 @@
 
 	* now drawing random mountains in the same manner for each map.  So 
 	when we flip through maps in the reports dialog, they don't shift.
+	* beautifying the new random map dialog.
 
 2009-10-10  Ben Asselstine  <benasselstine@gmail.com>
 
