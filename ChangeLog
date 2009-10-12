@@ -1,3 +1,7 @@
+2009-10-12  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed #27674.  crash on hidden map.  Reported by Frans de Jonge.
+
 2009-10-11  Ben Asselstine  <benasselstine@gmail.com>
 
 	* now drawing random mountains in the same manner for each map.  So 
