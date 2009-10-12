@@ -1,6 +1,10 @@
 2009-10-12  Ben Asselstine  <benasselstine@gmail.com>
 
 	* fixed #27674.  crash on hidden map.  Reported by Frans de Jonge.
+	* fixed bug #27664.  end of game should show game history, and allow
+	the user to look around the map.  Suggested by Frans de Jonge.
+	* fixed bug #27671.  now allowing for player-based variation in army 
+	unit images.  Suggested by Frans de Jonge.
 
 2009-10-11  Ben Asselstine  <benasselstine@gmail.com>
 
