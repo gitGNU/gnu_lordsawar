@@ -43,6 +43,7 @@ void NextTurn::nextPlayer()
 {
   Playerlist::getInstance()->nextPlayer();
   Player *active = Playerlist::getActiveplayer();
+	    
   abort.disconnect();
   abort = srequestAbort.connect(sigc::mem_fun(active, &Player::abortTurn));
 }

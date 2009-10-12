@@ -35,6 +35,7 @@
 #include "GameMap.h"
 #include "GraphicsCache.h"
 #include "FogMap.h"
+#include "GameScenarioOptions.h"
 
 OverviewMap::OverviewMap()
 {
@@ -479,6 +480,15 @@ void OverviewMap::draw(Player *player)
 
     // let derived classes do their job
     after_draw();
+
+    if (d_player->getType() != Player::HUMAN &&
+	GameScenarioOptions::s_hidden_map)
+      {
+	int width = 0;
+	int height = 0;
+	surface->get_size(width, height);
+	draw_rect(true, 0, 0, width, height, fog_color);
+      }
 }
 
 Glib::RefPtr<Gdk::Pixmap> OverviewMap::get_surface()

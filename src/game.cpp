@@ -1072,7 +1072,7 @@ void Game::init_turn_for_player(Player* p)
 {
   Playerlist* pl = Playerlist::getInstance();
 
-  if (GameScenario::s_hidden_map && p->getType() == Player::HUMAN)
+  if (GameScenario::s_hidden_map)
     {
       smallmap->blank();
       bigmap->blank();
@@ -1333,4 +1333,24 @@ void Game::inhibitAutosaveRemoval(bool inhibit)
 {
   if (d_gameScenario)
     d_gameScenario->inhibitAutosaveRemoval(inhibit);
+}
+
+void Game::endOfGameRoaming(Player *winner)
+{
+  Playerlist* pl = Playerlist::getInstance();
+  pl->setWinningPlayer(winner);
+
+  winner->immobilize();
+  d_gameScenario->s_see_opponents_stacks = true;
+  d_gameScenario->s_see_opponents_production = true;
+  bigmap->d_see_opponents_stacks = true;
+  bigmap->d_see_opponents_production = true;
+  center_view_on_city();
+
+  unlock_inputs();
+
+  update_sidebar_stats();
+  update_stack_info();
+  update_control_panel();
+  redraw();
 }

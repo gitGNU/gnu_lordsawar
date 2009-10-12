@@ -336,6 +336,9 @@ class GameWindow: public Decorated
     bool on_bigmap_exposed(GdkEventExpose *event);
     bool on_smallmap_exposed(GdkEventExpose *event);
 
+    Player *game_winner;
+    void give_some_cheese(Player *game_winner);
+
 public:
     std::vector<PixMask* > d_button_images;
     std::vector<PixMask* > d_arrow_images;

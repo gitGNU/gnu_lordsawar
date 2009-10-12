@@ -249,6 +249,10 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	Hero *getNearestHero(Vector<int> pos, int dist);
 	
 	sigc::signal<void, Stack*, bool> sgrouped;
+
+	//! remove all movement points from every army in every stack.
+	void drainAllMovement();
+
     private:
         //! Callback function for loading.
         bool load(std::string tag, XML_Helper* helper);

@@ -248,11 +248,9 @@ bool FogMap::isFogged(Vector <int> pos, Player *player)
   if (fogmap->getFogTile(pos) == FogMap::CLOSED)
     return true;
 
-  if (player)
-    if (player->getType() != Player::HUMAN &&
-	GameScenarioOptions::s_hidden_map == true)
-      return true;
-                
+  if (player->getType() != Player::HUMAN && GameScenarioOptions::s_hidden_map)
+    return true;
+
   if (fogmap->isLoneFogTile(pos) == true)
     return false;
 

@@ -77,14 +77,6 @@ void NextTurnHotseat::start()
 	// inform everyone about the next turn 
 	snextTurn.emit(Playerlist::getActiveplayer());
     
-	if (Playerlist::getInstance()->getNoOfPlayers() <= 2)
-	  {
-	    abort = srequestAbort.connect(sigc::mem_fun(Playerlist::getInstance()->getFirstLiving(), &Player::abortTurn));
-	    if (Playerlist::getInstance()->checkPlayers()) //end of game detected
-	      return;
-	  }
-
-
 	splayerStart.emit(Playerlist::getActiveplayer());
 
 	// let the player do his or her duties...

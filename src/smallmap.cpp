@@ -192,19 +192,11 @@ void SmallMap::blank()
 {
   Gdk::Color fog_color = Gdk::Color();
   fog_color.set_rgb_p(0,0,0);
-  int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
-  //fog it up
-  for (int i = 0; i < GameMap::getWidth(); i++)
-    for (int j = 0; j < GameMap::getHeight(); j++)
-      {
-	Vector <int> pos;
-	pos.x = i;
-	pos.y = j;
-	pos = mapToSurface(pos);
-	draw_filled_rect(pos.x, pos.y, size, size, fog_color);
-      }
-  int width = 0, height = 0;
+  int width = 0;
+  int height = 0;
   surface->get_size(width, height);
+  surface_gc->set_rgb_fg_color(fog_color);
+  surface->draw_rectangle(surface_gc, true, 0,0,width, height);
   map_changed.emit(surface, Gdk::Rectangle(0, 0, width, height));
 }
 

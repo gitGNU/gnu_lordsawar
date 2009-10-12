@@ -84,7 +84,7 @@ PreferencesDialog::PreferencesDialog(bool readonly)
 	  }
 	else
 	  type->set_active(1);
-	if (p->isDead())
+	if (p->isDead() || Playerlist::getActiveplayer() == p)
 	  {
 	    type->set_sensitive(false);
 	    observe->set_sensitive(false);

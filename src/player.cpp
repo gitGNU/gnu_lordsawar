@@ -3623,4 +3623,9 @@ Vector<int> Player::getPositionOfArmyById(guint32 id)
 {
   return d_stacklist->getPosition(id);
 }
+
+void Player::immobilize()
+{
+  d_stacklist->drainAllMovement();
+}
 // End of file

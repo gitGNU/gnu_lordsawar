@@ -1317,6 +1317,8 @@ class Player: public sigc::trackable
 	guint32 countArmies();
 	Stack * getActivestack();
 	Vector<int> getPositionOfArmyById(guint32 id);
+	//! Remove movement points from all of the player's army units.
+	void immobilize();
     protected:
         // do some fight cleaning up, setting
         void cleanupAfterFight(std::list<Stack*> &attackers,

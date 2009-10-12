@@ -87,6 +87,10 @@ class GameBigMap: public BigMap
 
     void reset_path_calculator(Stack *s);
 
+    bool d_intense_combat; 
+    bool d_see_opponents_production;
+    bool d_see_opponents_stacks;
+    bool d_military_advisor;
  private:
     std::vector<PixMask*> d_waypoint;
     Vector<int> current_tile, prev_mouse_pos;
@@ -110,10 +114,6 @@ class GameBigMap: public BigMap
     void zoom_view(double percent);
 
     virtual void after_draw();
-    bool d_intense_combat; 
-    bool d_see_opponents_production;
-    bool d_see_opponents_stacks;
-    bool d_military_advisor;
     LocationBox d_fighting;
     PathCalculator *path_calculator;
 };

@@ -236,6 +236,8 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	  */
 	bool isEndOfRound();
 
+	void setWinningPlayer(Player *winner);
+
     protected:
 	//! Default constructor.
         Playerlist();

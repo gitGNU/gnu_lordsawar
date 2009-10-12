@@ -158,6 +158,8 @@ class Game
     void addPlayer(Player *p);
 
     void inhibitAutosaveRemoval(bool inhibit);
+
+    void endOfGameRoaming(Player *winner);
  private:
     static Game *current_game;
 

@@ -852,3 +852,8 @@ bool Playerlist::isEndOfRound()
     }
   return true;
 }
+void Playerlist::setWinningPlayer(Player *winner)
+{
+  //only for humans
+  d_activeplayer = winner;
+}

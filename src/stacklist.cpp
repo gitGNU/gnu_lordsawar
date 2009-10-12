@@ -625,4 +625,11 @@ void Stacklist::setActivestack(Stack* activestack)
 {
   d_activestack = activestack;
 }
+
+void Stacklist::drainAllMovement()
+{
+  for (iterator it = begin(); it != end(); it++)
+    for (Stack::iterator ait = (*it)->begin(); ait != (*it)->end(); ait++)
+      (*ait)->decrementMoves((*ait)->getMoves());
+}
 // End of file

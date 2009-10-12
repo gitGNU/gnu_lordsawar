@@ -115,10 +115,12 @@
 #include "NextTurnNetworked.h"
 #include "pbm-game-server.h"
 #include "network_player.h"
+#include "FogMap.h"
 
 
 GameWindow::GameWindow()
 {
+  game_winner = NULL;
   stack_info_tip = NULL;
   army_info_tip = NULL;
   map_tip = NULL;
@@ -546,7 +548,7 @@ void GameWindow::load_game(GameScenario *game_scenario, NextTurn *next_turn)
   game->get_bigmap().screen_size_changed(bigmap_drawingarea->get_allocation());
   setup_signals(game_scenario);
   game->loadGame();
-  //we don't get here until the game ends.
+  //we don't get here until the game ends, or a human player ends a turn.
   if (Playerlist::getInstance()->countPlayersAlive())
     game->redraw();
 }
@@ -1187,17 +1189,52 @@ void GameWindow::on_quit_activated()
 
 void GameWindow::on_game_stopped()
 {
-  if (game)
+  if (stop_action == "quit")
     {
-      delete game;
-      game = NULL;
-    }
-  if (stop_action == "quit" || stop_action == "game-over")
-    {
+      if (game)
+	{
+	  delete game;
+	  game = NULL;
+	}
       game_ended.emit();
+    }
+  else if (stop_action == "game-over")
+    {
+      if (game_winner)
+	{
+	  if (game_winner->getType() != Player::HUMAN)
+	    {
+	      if (game)
+		{
+		  delete game;
+		  game = NULL;
+		}
+	      game_ended.emit();
+	    }
+	  else
+	    {
+	      //we need to keep the game object around
+	      //so that we can give out some cheese
+	      give_some_cheese(game_winner);
+	    }
+	}
+      else
+	{
+	  if (game)
+	    {
+	      delete game;
+	      game = NULL;
+	    }
+	  game_ended.emit();
+	}
     }
   else if (stop_action == "load-game")
     {
+      if (game)
+	{
+	  delete game;
+	  game = NULL;
+	}
       bool broken = false;
       GameScenario* game_scenario = new GameScenario(d_load_filename, broken);
 
@@ -1735,6 +1772,7 @@ void GameWindow::on_game_over(Player *winner)
   dialog->run();
   dialog->hide();
 
+  game_winner = winner;
   stop_game("game-over");
   delete dialog;
 }
@@ -1766,6 +1804,8 @@ void GameWindow::on_message_requested(std::string msg)
 {
   // FIXME: this is a bit crude, maybe beef it up
   Gtk::MessageDialog dialog(*window, msg);
+  Decorated decorator;
+  decorator.decorate(dynamic_cast<Gtk::Dialog*>(&dialog));
   //TimedMessageDialog dialog(*window, msg, 30, 5);
   dialog.show_all();
   dialog.run();
@@ -3507,3 +3547,15 @@ void GameWindow::on_grid_toggled()
   game->get_bigmap().toggle_grid();
 }
 
+void GameWindow::give_some_cheese(Player *winner)
+{
+  game->endOfGameRoaming(winner);
+  end_turn_button->set_sensitive(false);
+  end_turn_menuitem->set_sensitive(false);
+  save_game_menuitem->set_sensitive(false);
+  save_game_as_menuitem->set_sensitive(false);
+  Playerlist::getActiveplayer()->getFogMap()->fill(FogMap::OPEN);
+  show_shield_turn();
+  game->redraw();
+  on_city_history_activated();
+}
