@@ -167,6 +167,18 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	//! Set the mask portion of the image of the planted standard.
 	void setStandardMask(PixMask* s) {d_standard_mask = s;};
 
+	//! Set the name of the file holding the image of the stack in a boat.
+	void setShipImageName(std::string n) {d_stackship_name = n;};
+
+	//! Get the name of the file holding the image of the stack in a boat.
+	std::string getShipImageName() {return d_stackship_name;};
+
+	//! Set the name of the file holding the image of the hero's flag.
+	void setStandardImageName(std::string n) {d_standard_name = n;};
+
+	//! Get the name of the file holding the image of the hero's flag.
+	std::string getStandardImageName() {return d_standard_name;};
+
 	//! Find an army with a type in this armyset.
 	/**
 	 * Scan the Army prototype objects in this Armyset and return it.
@@ -236,6 +248,12 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 
 	//! The mask of what to shade with the player's colour on the standard.
 	PixMask* d_standard_mask;
+
+	//! The name of the file that holds the picture of the hero's flag.
+	std::string d_standard_name;
+
+	//! The name of the file that holds the picture of stack on water.
+	std::string d_stackship_name;
 };
 
 #endif // ARMYSET_H

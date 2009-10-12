@@ -1258,7 +1258,8 @@ ArmyCacheItem* GraphicsCache::addArmyPic(ArmyCacheItem *item)
 
   // copy the pixmap including player colors
   Player *p = Playerlist::getInstance()->getPlayer(myitem->player_id);
-  myitem->surface = applyMask(basearmy->getImage(), basearmy->getMask(), p);
+  Shield::Colour c = Shield::Colour(p->getId());
+  myitem->surface = applyMask(basearmy->getImage(c), basearmy->getMask(c), p);
 
   if (myitem->medals != NULL)
     {

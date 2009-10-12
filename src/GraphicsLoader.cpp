@@ -33,11 +33,13 @@
 #include "defs.h"
 #include "gui/image-helpers.h"
 
+using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
 void GraphicsLoader::instantiateImages(Shieldset *shieldset)
 {
+  debug("Loading images for shieldset " << shieldset->getName());
   uninstantiateImages(shieldset);
   for (Shieldset::iterator sit = shieldset->begin(); sit != shieldset->end(); 
        sit++)
@@ -149,6 +151,7 @@ void GraphicsLoader::uninstantiateImages(Tileset *ts)
 
 void GraphicsLoader::instantiateImages(Tileset *ts)
 {
+  debug("Loading images for tileset " << ts->getName());
   uninstantiateImages(ts);
   for (Tileset::iterator it = ts->begin(); it != ts->end(); it++)
     {
@@ -174,7 +177,8 @@ void GraphicsLoader::instantiateImages(TileStyleSet *tss, guint32 tsize)
 void GraphicsLoader::loadShipPic(Armyset *armyset)
 {
   std::vector<PixMask*> half;
-  half = disassemble_row(File::getArmysetFile(armyset->getSubDir(), "stackship.png"), 2);
+  half = disassemble_row(File::getArmysetFile(armyset->getSubDir(), 
+					      armyset->getShipImageName()), 2);
   int size = armyset->getTileSize();
   PixMask::scale(half[0], size, size);
   PixMask::scale(half[1], size, size);
@@ -185,7 +189,9 @@ void GraphicsLoader::loadShipPic(Armyset *armyset)
 void GraphicsLoader::loadStandardPic(Armyset *armyset)
 {
   std::vector<PixMask*> half;
-  half = disassemble_row(File::getArmysetFile(armyset->getSubDir(), "plantedstandard.png"), 2);
+  half = 
+    disassemble_row(File::getArmysetFile(armyset->getSubDir(), 
+					 armyset->getStandardImageName()), 2);
   int size = armyset->getTileSize();
   PixMask::scale(half[0], size, size);
   PixMask::scale(half[1], size, size);
@@ -193,11 +199,11 @@ void GraphicsLoader::loadStandardPic(Armyset *armyset)
   armyset->setStandardMask(half[1]);
 }
 
-bool GraphicsLoader::instantiateImages(Armyset *armyset, ArmyProto *a)
+bool GraphicsLoader::instantiateImages(Armyset *armyset, ArmyProto *a, Shield::Colour c)
 {
   std::string s;
 
-  if (a->getImageName() == "")
+  if (a->getImageName(c) == "")
     return false;
   // load the army picture. This is done here to avoid confusion
   // since the armies are used as prototypes as well as actual units in the
@@ -205,21 +211,25 @@ bool GraphicsLoader::instantiateImages(Armyset *armyset, ArmyProto *a)
   // The army image consists of two halves. On the left is the army image, 
   // on the right the mask.
   std::vector<PixMask*> half;
-  half = disassemble_row(File::getArmysetFile(armyset->getSubDir(), a->getImageName() + ".png"), 2);
+  half = disassemble_row(File::getArmysetFile(armyset->getSubDir(), a->getImageName(c)), 2);
   int size = armyset->getTileSize();
   PixMask::scale(half[0], size, size);
   PixMask::scale(half[1], size, size);
 
-  a->setImage(half[0]);
-  a->setMask(half[1]);
+  a->setImage(c, half[0]);
+  a->setMask(c, half[1]);
 
   return true;
 }
 
 void GraphicsLoader::instantiateImages(Armyset *armyset)
 {
+  //have we already instantiated the images in this armyset?
+  if (armyset->getShipPic() != NULL)
+    return;
   for (Armyset::iterator it = armyset->begin(); it != armyset->end(); it++)
-    instantiateImages(armyset, *it);
+    for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
+      instantiateImages(armyset, *it, Shield::Colour(c));
   loadShipPic(armyset);
   loadStandardPic(armyset);
 }
@@ -227,7 +237,9 @@ void GraphicsLoader::instantiateImages(Armyset *armyset)
 void GraphicsLoader::instantiateImages(Armysetlist *asl)
 {
   for (Armysetlist::iterator it = asl->begin(); it != asl->end(); it++)
+    {
     instantiateImages(*it);
+    }
 }
 
 void GraphicsLoader::uninstantiateImages(Armysetlist *asl)
@@ -240,15 +252,19 @@ void GraphicsLoader::uninstantiateImages(Armyset *armyset)
 {
   for (Armyset::iterator i = armyset->begin(); i != armyset->end(); i++)
     {
-      if ((*i)->getImage())
+      for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
 	{
-	  delete (*i)->getImage();
-	  (*i)->setImage(NULL);
+	  Shield::Colour col = Shield::Colour(c);
+      if ((*i)->getImage(col))
+	{
+	  delete (*i)->getImage(col);
+	  (*i)->setImage(col, NULL);
 	}
-      if ((*i)->getMask())
+      if ((*i)->getMask(col))
 	{
-	  delete (*i)->getMask();
-	  (*i)->setMask(NULL);
+	  delete (*i)->getMask(col);
+	  (*i)->setMask(col, NULL);
+	}
 	}
     }
   if (armyset->getShipPic())

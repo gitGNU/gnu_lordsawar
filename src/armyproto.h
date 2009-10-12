@@ -25,6 +25,7 @@
 #include <gtkmm.h>
 #include <string>
 #include "PixMask.h"
+#include "shield.h"
 
 class XML_Helper;
 
@@ -51,13 +52,13 @@ class ArmyProto : public ArmyProtoBase
         // Set functions:
         
 	//! Sets the filename of the image.
-	void setImageName(std::string name) {d_image_name = name;}
+	void setImageName(Shield::Colour c,std::string name) {d_image_name[c] = name;}
 
         //! Set the basic image of the Army.
-        void setImage(PixMask* image) {d_image = image;};
+        void setImage(Shield::Colour c, PixMask* image) {d_image[c] = image;};
 
         //! Set the image mask of the unit type (for player colours).
-        void setMask(PixMask* mask) {d_mask = mask;};
+        void setMask(Shield::Colour c, PixMask* mask) {d_mask[c] = mask;};
 
 	//! Sets whether or not this Army prototype can found in a ruin.
 	void setDefendsRuins(bool defends) {d_defends_ruins = defends; }
@@ -79,13 +80,13 @@ class ArmyProto : public ArmyProtoBase
 	 * The filename does not have a path, and the filename does
 	 * not have an extension (e.g. .png).
 	 */
-	std::string getImageName() const {return d_image_name;}
+	std::string getImageName(Shield::Colour c) const {return d_image_name[c];}
 
         //! Get the image of the army prototype. 
-	PixMask* getImage() const {return d_image;};
+	PixMask* getImage(Shield::Colour c) const {return d_image[c];};
 
         //! Returns the mask (read-only) for player colors.
-	PixMask* getMask() const {return d_mask;}
+	PixMask* getMask(Shield::Colour c) const {return d_mask[c];}
 
 	//! Gets whether or not this army type can found in a ruin.
 	bool getDefendsRuins() const {return d_defends_ruins; }
@@ -113,10 +114,10 @@ class ArmyProto : public ArmyProtoBase
     private:
 
 	//! The picture of the Army prototype.
-	PixMask* d_image;
+	PixMask* d_image[MAX_PLAYERS + 1];
 
 	//! The mask portion of the Army prototype picture.
-	PixMask* d_mask;
+	PixMask* d_mask[MAX_PLAYERS + 1];
         
 	//! Whether or not the Army prototype can defend a Ruin.
 	/**
@@ -144,7 +145,7 @@ class ArmyProto : public ArmyProtoBase
 	 * This value does not contain a path, and does not contain an
 	 * extension (e.g. .png).
 	 */
-	std::string d_image_name;
+	std::string d_image_name[MAX_PLAYERS + 1];
 
 	bool d_hero;
 };

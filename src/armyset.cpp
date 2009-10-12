@@ -34,16 +34,20 @@ using namespace std;
 
 #define DEFAULT_ARMY_TILE_SIZE 40
 Armyset::Armyset(guint32 id, std::string name)
-	: d_id(id), d_name(name), d_dir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE)
+	: d_id(id), d_name(name), d_dir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE),
+	d_ship(0), d_shipmask(0), d_standard(0), d_standard_mask(0)
 {
 }
 
 Armyset::Armyset(XML_Helper *helper)
-    : d_id(0), d_name(""), d_dir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE)
+    : d_id(0), d_name(""), d_dir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE),
+	d_ship(0), d_shipmask(0), d_standard(0), d_standard_mask(0)
 {
   helper->getData(d_id, "id");
   helper->getData(d_name, "name");
   helper->getData(d_tilesize, "tilesize");
+  helper->getData(d_stackship_name, "stackship");
+  helper->getData(d_standard_name, "plantedstandard");
   helper->registerTag(ArmyProto::d_tag, 
 		      sigc::mem_fun((*this), &Armyset::loadArmyProto));
 }
@@ -76,6 +80,8 @@ bool Armyset::save(XML_Helper* helper)
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("name", d_name);
     retval &= helper->saveData("tilesize", d_tilesize);
+    retval &= helper->saveData("stackship", d_stackship_name);
+    retval &= helper->saveData("plantedstandard", d_standard_name);
 
     for (const_iterator it = begin(); it != end(); it++)
       (*it)->save(helper);

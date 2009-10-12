@@ -289,7 +289,7 @@ std::string File::getShieldset(std::string shieldsetsubdir)
 
 std::string File::getArmysetFile(std::string armysetsubdir, std::string picname)
 {
-  return getArmysetDir() + armysetsubdir + "/" + picname;
+  return getArmysetDir() + armysetsubdir + "/" + picname + ".png";
 }
 
 // End of file

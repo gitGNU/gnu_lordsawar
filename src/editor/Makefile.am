@@ -25,6 +25,7 @@ lordsawar_army_editor_SOURCES = \
 	armyset-main.cpp \
 	armyset-window.cpp armyset-window.h  \
 	armyset-info-dialog.cpp armyset-info-dialog.h \
+	masked-image-editor-dialog.cpp masked-image-editor-dialog.h \
 	glade-helpers.h
 
 lordsawar_tile_editor_SOURCES = \

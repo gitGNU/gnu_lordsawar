@@ -26,6 +26,7 @@
 
 #include "armyproto.h"
 #include "armyset.h"
+#include "shield.h"
 
 //! Armyset Editor.  Edit an Armyset.
 class ArmySetWindow: public sigc::trackable
@@ -44,11 +45,27 @@ class ArmySetWindow: public sigc::trackable
     std::string current_save_filename;
     Armyset *d_armyset; //current armyset
     ArmyProto *d_army; //current army
-    Gtk::Image *army_image;
+    Gtk::Image *white_image;
+    Gtk::Image *green_image;
+    Gtk::Image *yellow_image;
+    Gtk::Image *light_blue_image;
+    Gtk::Image *red_image;
+    Gtk::Image *dark_blue_image;
+    Gtk::Image *orange_image;
+    Gtk::Image *black_image;
+    Gtk::Image *neutral_image;
     Gtk::Entry *name_entry;
     Gtk::TreeView *armies_treeview;
     Gtk::TextView *description_textview;
-    Gtk::FileChooserButton *image_filechooserbutton;
+    Gtk::FileChooserButton *white_image_filechooserbutton;
+    Gtk::FileChooserButton *green_image_filechooserbutton;
+    Gtk::FileChooserButton *yellow_image_filechooserbutton;
+    Gtk::FileChooserButton *light_blue_image_filechooserbutton;
+    Gtk::FileChooserButton *red_image_filechooserbutton;
+    Gtk::FileChooserButton *dark_blue_image_filechooserbutton;
+    Gtk::FileChooserButton *orange_image_filechooserbutton;
+    Gtk::FileChooserButton *black_image_filechooserbutton;
+    Gtk::FileChooserButton *neutral_image_filechooserbutton;
     Gtk::SpinButton *production_spinbutton;
     Gtk::SpinButton *cost_spinbutton;
     Gtk::SpinButton *upkeep_spinbutton;
@@ -85,6 +102,8 @@ class ArmySetWindow: public sigc::trackable
     Gtk::MenuItem *save_armyset_menuitem;
     Gtk::MenuItem *save_armyset_as_menuitem;
     Gtk::MenuItem *edit_armyset_info_menuitem;
+    Gtk::MenuItem *edit_ship_picture_menuitem;
+    Gtk::MenuItem *edit_standard_picture_menuitem;
     Gtk::MenuItem *quit_menuitem;
     Gtk::MenuItem *help_about_menuitem;
 
@@ -112,8 +131,11 @@ class ArmySetWindow: public sigc::trackable
     void on_save_armyset_as_activated();
     void on_quit_activated();
     void on_edit_armyset_info_activated();
+    void on_edit_standard_picture_activated();
+    void on_edit_ship_picture_activated();
     void on_help_about_activated();
     void on_army_selected();
+    void fill_army_image(Gtk::FileChooserButton *button, Gtk::Image *image, Shield::Colour c, ArmyProto *army);
     void fill_army_info(ArmyProto *army);
 
     bool load(std::string tag, XML_Helper *helper);
@@ -121,7 +143,16 @@ class ArmySetWindow: public sigc::trackable
     //callbacks
     void on_name_changed();
     void on_description_changed();
-    void on_image_changed();
+    void on_image_changed(Gtk::FileChooserButton *button, Gtk::Image *image, Shield::Colour c);
+    void on_white_image_changed();
+    void on_green_image_changed();
+    void on_yellow_image_changed();
+    void on_light_blue_image_changed();
+    void on_red_image_changed();
+    void on_dark_blue_image_changed();
+    void on_orange_image_changed();
+    void on_black_image_changed();
+    void on_neutral_image_changed();
     void on_production_changed();
     void on_cost_changed();
     void on_upkeep_changed();

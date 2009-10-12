@@ -29,6 +29,7 @@
 #include <gtkmm.h>
 #include "armyset-window.h"
 #include "armyset-info-dialog.h"
+#include "masked-image-editor-dialog.h"
 
 #include "image-helpers.h"
 #include "input-helpers.h"
@@ -41,8 +42,11 @@
 #include "armysetlist.h"
 #include "Tile.h"
 #include "File.h"
+#include "shield.h"
+#include "shieldsetlist.h"
 
 #include "ucompose.hpp"
+#include "rgb_shift.h"
 
 #include "glade-helpers.h"
 
@@ -56,7 +60,15 @@ ArmySetWindow::ArmySetWindow()
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
 
-    xml->get_widget("army_image", army_image);
+    xml->get_widget("white_image", white_image);
+    xml->get_widget("green_image", green_image);
+    xml->get_widget("yellow_image", yellow_image);
+    xml->get_widget("light_blue_image", light_blue_image);
+    xml->get_widget("red_image", red_image);
+    xml->get_widget("dark_blue_image", dark_blue_image);
+    xml->get_widget("orange_image", orange_image);
+    xml->get_widget("black_image", black_image);
+    xml->get_widget("neutral_image", neutral_image);
     xml->get_widget("name_entry", name_entry);
     name_entry->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_name_changed));
@@ -64,9 +76,41 @@ ArmySetWindow::ArmySetWindow()
     xml->get_widget("description_textview", description_textview);
     description_textview->get_buffer()->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_description_changed));
-    xml->get_widget("image_filechooserbutton", image_filechooserbutton);
-    image_filechooserbutton->signal_selection_changed().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_image_changed));
+    xml->get_widget("white_image_filechooserbutton", 
+		    white_image_filechooserbutton);
+    white_image_filechooserbutton->signal_selection_changed().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_white_image_changed));
+    xml->get_widget("green_image_filechooserbutton", 
+		    green_image_filechooserbutton);
+    green_image_filechooserbutton->signal_selection_changed().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_green_image_changed));
+    xml->get_widget("yellow_image_filechooserbutton", 
+		    yellow_image_filechooserbutton);
+    yellow_image_filechooserbutton->signal_selection_changed().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_yellow_image_changed));
+    xml->get_widget("light_blue_image_filechooserbutton", 
+		    light_blue_image_filechooserbutton);
+    light_blue_image_filechooserbutton->signal_selection_changed().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_light_blue_image_changed));
+    xml->get_widget("red_image_filechooserbutton", red_image_filechooserbutton);
+    red_image_filechooserbutton->signal_selection_changed().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_red_image_changed));
+    xml->get_widget("dark_blue_image_filechooserbutton", 
+		    dark_blue_image_filechooserbutton);
+    dark_blue_image_filechooserbutton->signal_selection_changed().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_dark_blue_image_changed));
+    xml->get_widget("orange_image_filechooserbutton", 
+		    orange_image_filechooserbutton);
+    orange_image_filechooserbutton->signal_selection_changed().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_orange_image_changed));
+    xml->get_widget("black_image_filechooserbutton", 
+		    black_image_filechooserbutton);
+    black_image_filechooserbutton->signal_selection_changed().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_black_image_changed));
+    xml->get_widget("neutral_image_filechooserbutton", 
+		    neutral_image_filechooserbutton);
+    neutral_image_filechooserbutton->signal_selection_changed().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_neutral_image_changed));
     xml->get_widget("production_spinbutton", production_spinbutton);
     production_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_production_changed));
@@ -179,6 +223,13 @@ ArmySetWindow::ArmySetWindow()
     xml->get_widget("edit_armyset_info_menuitem", edit_armyset_info_menuitem);
     edit_armyset_info_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_edit_armyset_info_activated));
+    xml->get_widget("edit_standard_picture_menuitem", 
+		    edit_standard_picture_menuitem);
+    edit_standard_picture_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_edit_standard_picture_activated));
+    xml->get_widget("edit_ship_picture_menuitem", edit_ship_picture_menuitem);
+    edit_ship_picture_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_edit_ship_picture_activated));
     xml->get_widget ("help_about_menuitem", help_about_menuitem);
     help_about_menuitem->signal_activate().connect
        (sigc::mem_fun(this, &ArmySetWindow::on_help_about_activated));
@@ -209,12 +260,16 @@ ArmySetWindow::update_armyset_menuitems()
       save_armyset_as_menuitem->set_sensitive(false);
       save_armyset_menuitem->set_sensitive(false);
       edit_armyset_info_menuitem->set_sensitive(false);
+      edit_standard_picture_menuitem->set_sensitive(false);
+      edit_ship_picture_menuitem->set_sensitive(false);
     }
   else
     {
       save_armyset_as_menuitem->set_sensitive(true);
       save_armyset_menuitem->set_sensitive(true);
       edit_armyset_info_menuitem->set_sensitive(true);
+      edit_standard_picture_menuitem->set_sensitive(true);
+      edit_ship_picture_menuitem->set_sensitive(true);
     }
 }
 
@@ -269,7 +324,15 @@ ArmySetWindow::update_army_panel()
       add2stack_checkbutton->set_active(false);
       suballnonherobonus_checkbutton->set_active(false);
       suballherobonus_checkbutton->set_active(false);
-      army_image->clear();
+      white_image->clear();
+      green_image->clear();
+      yellow_image->clear();
+      light_blue_image->clear();
+      red_image->clear();
+      dark_blue_image->clear();
+      orange_image->clear();
+      black_image->clear();
+      neutral_image->clear();
       army_vbox->set_sensitive(false);
       return;
     }
@@ -339,7 +402,15 @@ void ArmySetWindow::on_new_armyset_activated()
 
       
   std::string imgpath = Configuration::s_dataPath + "/army/";
-  image_filechooserbutton->set_current_folder(imgpath);
+  white_image_filechooserbutton->set_current_folder(imgpath);
+  green_image_filechooserbutton->set_current_folder(imgpath);
+  yellow_image_filechooserbutton->set_current_folder(imgpath);
+  light_blue_image_filechooserbutton->set_current_folder(imgpath);
+  red_image_filechooserbutton->set_current_folder(imgpath);
+  dark_blue_image_filechooserbutton->set_current_folder(imgpath);
+  orange_image_filechooserbutton->set_current_folder(imgpath);
+  black_image_filechooserbutton->set_current_folder(imgpath);
+  neutral_image_filechooserbutton->set_current_folder(imgpath);
 
   update_armyset_buttons();
   update_armyset_menuitems();
@@ -402,7 +473,15 @@ void ArmySetWindow::on_load_armyset_activated()
 	    armies_treeview->get_selection()->select(row);
 	}
       std::string imgpath = Configuration::s_dataPath + "/army/" + dir + "/";
-      image_filechooserbutton->set_current_folder(imgpath);
+      white_image_filechooserbutton->set_current_folder(imgpath);
+      green_image_filechooserbutton->set_current_folder(imgpath);
+      yellow_image_filechooserbutton->set_current_folder(imgpath);
+      light_blue_image_filechooserbutton->set_current_folder(imgpath);
+      red_image_filechooserbutton->set_current_folder(imgpath);
+      dark_blue_image_filechooserbutton->set_current_folder(imgpath);
+      orange_image_filechooserbutton->set_current_folder(imgpath);
+      black_image_filechooserbutton->set_current_folder(imgpath);
+      neutral_image_filechooserbutton->set_current_folder(imgpath);
     }
   update_armyset_buttons();
   update_armyset_menuitems();
@@ -459,6 +538,46 @@ void ArmySetWindow::on_quit_activated()
   }
   window->hide();
 }
+void ArmySetWindow::on_edit_ship_picture_activated()
+{
+  MaskedImageEditorDialog d(File::getArmysetFile(d_armyset->getSubDir(), d_armyset->getShipImageName()));
+  d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+  d.run();
+  if (d.get_selected_filename() != "")
+    {
+      std::string filename = d.get_selected_filename();
+      char *dir = g_strdup(filename.c_str());
+      dir = basename (dir);
+      char *tmp = strchr (dir, '.');
+      if (tmp)
+	tmp[0] = '\0';
+      std::string path = Configuration::s_dataPath + "/army/" +  
+	d_armyset->getSubDir() +"/";
+      if (filename.substr(0, path.size()) !=path)
+	return;
+      d_armyset->setShipImageName(dir);
+    }
+}
+void ArmySetWindow::on_edit_standard_picture_activated()
+{
+  MaskedImageEditorDialog d(File::getArmysetFile(d_armyset->getSubDir(), d_armyset->getStandardImageName()));
+  d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+  d.run();
+  if (d.get_selected_filename() != "")
+    {
+      std::string filename = d.get_selected_filename();
+      char *dir = g_strdup(filename.c_str());
+      dir = basename (dir);
+      char *tmp = strchr (dir, '.');
+      if (tmp)
+	tmp[0] = '\0';
+      std::string path = Configuration::s_dataPath + "/army/" +  
+	d_armyset->getSubDir() +"/";
+      if (filename.substr(0, path.size()) !=path)
+	return;
+      d_armyset->setStandardImageName(dir);
+    }
+}
 void ArmySetWindow::on_edit_armyset_info_activated()
 {
   ArmySetInfoDialog d(d_armyset);
@@ -502,18 +621,39 @@ void ArmySetWindow::on_army_selected()
   update_armyset_buttons();
 }
 
-void ArmySetWindow::fill_army_info(ArmyProto *army)
+void ArmySetWindow::fill_army_image(Gtk::FileChooserButton *button, Gtk::Image *image, Shield::Colour c, ArmyProto *army)
 {
-  if (army->getImageName() != "")
+  if (army->getImageName(c) != "")
     {
-      army_image->property_pixbuf() = army->getImage()->to_pixbuf();
+      image->property_pixbuf() = army->getImage(c)->to_pixbuf();
     
       std::string path = Configuration::s_dataPath + "/army/" +  
-	d_armyset->getSubDir() + "/" + army->getImageName() + ".png";
-      image_filechooserbutton->set_filename(path);
+	d_armyset->getSubDir() + "/" + army->getImageName(c) + ".png";
+      button->set_filename(path);
     }
   else
-    army_image->clear();
+    image->clear();
+}
+
+void ArmySetWindow::fill_army_info(ArmyProto *army)
+{
+  fill_army_image(white_image_filechooserbutton, white_image, Shield::WHITE, 
+		  army);
+  fill_army_image(green_image_filechooserbutton, green_image, Shield::GREEN, 
+		  army);
+  fill_army_image(yellow_image_filechooserbutton, yellow_image, Shield::YELLOW,
+		  army);
+  fill_army_image(light_blue_image_filechooserbutton, light_blue_image, 
+		  Shield::LIGHT_BLUE, army);
+  fill_army_image(red_image_filechooserbutton, red_image, Shield::RED, army);
+  fill_army_image(dark_blue_image_filechooserbutton, dark_blue_image, 
+		  Shield::DARK_BLUE, army);
+  fill_army_image(orange_image_filechooserbutton, orange_image, Shield::ORANGE,
+		  army);
+  fill_army_image(black_image_filechooserbutton, black_image, Shield::BLACK,
+		  army);
+  fill_army_image(neutral_image_filechooserbutton, neutral_image, 
+		  Shield::NEUTRAL, army);
   name_entry->set_text(army->getName());
   description_textview->get_buffer()->set_text(army->getDescription());
   double turns = army->getProduction();
@@ -607,9 +747,9 @@ void ArmySetWindow::on_description_changed()
     }
 }
 
-void ArmySetWindow::on_image_changed()
+void ArmySetWindow::on_image_changed(Gtk::FileChooserButton *button, Gtk::Image *image, Shield::Colour c)
 {
-  if (image_filechooserbutton->get_filename().empty())
+  if (button->get_filename().empty())
     return;
 
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -619,20 +759,73 @@ void ArmySetWindow::on_image_changed()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      char *dir = g_strdup(image_filechooserbutton->get_filename().c_str());
+      char *dir = g_strdup(button->get_filename().c_str());
       dir = basename (dir);
       char *tmp = strchr (dir, '.');
       if (tmp)
 	tmp[0] = '\0';
       std::string path = Configuration::s_dataPath + "/army/" +  
 	d_armyset->getSubDir() +"/";
-      if (image_filechooserbutton->get_filename().substr(0, path.size()) !=path)
+      if (button->get_filename().substr(0, path.size()) !=path)
 	return;
-      a->setImageName(dir);
-      GraphicsLoader::instantiateImages(d_armyset);
-      army_image->property_pixbuf() = a->getImage()->to_pixbuf();
+      a->setImageName(c, dir);
+      struct rgb_shift shifts;
+      shifts = Shieldsetlist::getInstance()->getMaskColorShifts("default", c);
+      //GraphicsLoader::instantiateImages(d_armyset);
+      //fixme, this needs to be added back in somehow.
+      if (c != Shield::NEUTRAL)
+	{
+	  PixMask *army_image = GraphicsCache::applyMask(a->getImage(c), 
+							 a->getMask(c), 
+							 shifts, false);
+	  image->property_pixbuf() = army_image->to_pixbuf();
+	  delete army_image;
+	}
+      else
+	image->property_pixbuf() = a->getImage(c)->to_pixbuf();
     }
-  return;
+}
+void ArmySetWindow::on_white_image_changed()
+{
+  on_image_changed(white_image_filechooserbutton, white_image, Shield::WHITE);
+}
+void ArmySetWindow::on_green_image_changed()
+{
+  on_image_changed(green_image_filechooserbutton, green_image, Shield::GREEN);
+}
+void ArmySetWindow::on_yellow_image_changed()
+{
+  on_image_changed(yellow_image_filechooserbutton, yellow_image, 
+		   Shield::YELLOW);
+}
+void ArmySetWindow::on_light_blue_image_changed()
+{
+  on_image_changed(light_blue_image_filechooserbutton, light_blue_image, 
+		   Shield::LIGHT_BLUE);
+}
+void ArmySetWindow::on_red_image_changed()
+{
+  on_image_changed(red_image_filechooserbutton, red_image, Shield::RED);
+}
+void ArmySetWindow::on_dark_blue_image_changed()
+{
+  on_image_changed(dark_blue_image_filechooserbutton, dark_blue_image, 
+		   Shield::DARK_BLUE);
+}
+void ArmySetWindow::on_orange_image_changed()
+{
+  on_image_changed(orange_image_filechooserbutton, orange_image, 
+		   Shield::ORANGE);
+}
+void ArmySetWindow::on_black_image_changed()
+{
+  on_image_changed(black_image_filechooserbutton, black_image, 
+		   Shield::BLACK);
+}
+void ArmySetWindow::on_neutral_image_changed()
+{
+  on_image_changed(neutral_image_filechooserbutton, neutral_image, 
+		   Shield::NEUTRAL);
 }
 
 void ArmySetWindow::on_production_changed()

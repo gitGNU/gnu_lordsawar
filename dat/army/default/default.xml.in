@@ -2,9 +2,19 @@
 	<d_id>1</d_id>
 	<_d_name>Default</_d_name>
 	<d_tilesize>40</d_tilesize>
+	<d_stackship>stackship</d_stackship>
+	<d_plantedstandard>plantedstandard</d_plantedstandard>
 	<armyproto>
 		<_d_name>Scouts</_d_name>
-		<d_image>scouts</d_image>
+		<d_image_white>scouts</d_image_white>
+		<d_image_green>scouts</d_image_green>
+		<d_image_yellow>scouts</d_image_yellow>
+		<d_image_light_blue>scouts</d_image_light_blue>
+		<d_image_red>scouts</d_image_red>
+		<d_image_dark_blue>scouts</d_image_dark_blue>
+		<d_image_orange>scouts</d_image_orange>
+		<d_image_black>scouts</d_image_black>
+		<d_image_neutral>scouts</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>1</d_production>
 		<d_production_cost>10</d_production_cost>
@@ -22,7 +32,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Light Inf.</_d_name>
-		<d_image>lightinf</d_image>
+		<d_image_white>lightinf</d_image_white>
+		<d_image_green>lightinf</d_image_green>
+		<d_image_yellow>lightinf</d_image_yellow>
+		<d_image_light_blue>lightinf</d_image_light_blue>
+		<d_image_red>lightinf</d_image_red>
+		<d_image_dark_blue>lightinf</d_image_dark_blue>
+		<d_image_orange>lightinf</d_image_orange>
+		<d_image_black>lightinf</d_image_black>
+		<d_image_neutral>lightinf</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>1</d_production>
 		<d_production_cost>50</d_production_cost>
@@ -40,7 +58,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Orcish Mob</_d_name>
-		<d_image>orcishmob</d_image>
+		<d_image_white>orcishmob</d_image_white>
+		<d_image_green>orcishmob</d_image_green>
+		<d_image_yellow>orcishmob</d_image_yellow>
+		<d_image_light_blue>orcishmob</d_image_light_blue>
+		<d_image_red>orcishmob</d_image_red>
+		<d_image_dark_blue>orcishmob</d_image_dark_blue>
+		<d_image_orange>orcishmob</d_image_orange>
+		<d_image_black>orcishmob</d_image_black>
+		<d_image_neutral>orcishmob</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>100</d_production_cost>
@@ -58,7 +84,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Heavy Inf.</_d_name>
-		<d_image>heavyinf</d_image>
+		<d_image_white>heavyinf</d_image_white>
+		<d_image_green>heavyinf</d_image_green>
+		<d_image_yellow>heavyinf</d_image_yellow>
+		<d_image_light_blue>heavyinf</d_image_light_blue>
+		<d_image_red>heavyinf</d_image_red>
+		<d_image_dark_blue>heavyinf</d_image_dark_blue>
+		<d_image_orange>heavyinf</d_image_orange>
+		<d_image_black>heavyinf</d_image_black>
+		<d_image_neutral>heavyinf</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>300</d_production_cost>
@@ -76,7 +110,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Pikemen</_d_name>
-		<d_image>pikeman</d_image>
+		<d_image_white>pikeman</d_image_white>
+		<d_image_green>pikeman</d_image_green>
+		<d_image_yellow>pikeman</d_image_yellow>
+		<d_image_light_blue>pikeman</d_image_light_blue>
+		<d_image_red>pikeman</d_image_red>
+		<d_image_dark_blue>pikeman</d_image_dark_blue>
+		<d_image_orange>pikeman</d_image_orange>
+		<d_image_black>pikeman</d_image_black>
+		<d_image_neutral>pikeman</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>3</d_production>
 		<d_production_cost>400</d_production_cost>
@@ -94,7 +136,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Archers</_d_name>
-		<d_image>archers</d_image>
+		<d_image_white>archers</d_image_white>
+		<d_image_green>archers</d_image_green>
+		<d_image_yellow>archers</d_image_yellow>
+		<d_image_light_blue>archers</d_image_light_blue>
+		<d_image_red>archers</d_image_red>
+		<d_image_dark_blue>archers</d_image_dark_blue>
+		<d_image_orange>archers</d_image_orange>
+		<d_image_black>archers</d_image_black>
+		<d_image_neutral>archers</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>400</d_production_cost>
@@ -112,7 +162,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Dwarves</_d_name>
-		<d_image>dwarves</d_image>
+		<d_image_white>dwarves</d_image_white>
+		<d_image_green>dwarves</d_image_green>
+		<d_image_yellow>dwarves</d_image_yellow>
+		<d_image_light_blue>dwarves</d_image_light_blue>
+		<d_image_red>dwarves</d_image_red>
+		<d_image_dark_blue>dwarves</d_image_dark_blue>
+		<d_image_orange>dwarves</d_image_orange>
+		<d_image_black>dwarves</d_image_black>
+		<d_image_neutral>dwarves</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>400</d_production_cost>
@@ -130,7 +188,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Minotaurs</_d_name>
-		<d_image>minotaurs</d_image>
+		<d_image_white>minotaurs</d_image_white>
+		<d_image_green>minotaurs</d_image_green>
+		<d_image_yellow>minotaurs</d_image_yellow>
+		<d_image_light_blue>minotaurs</d_image_light_blue>
+		<d_image_red>minotaurs</d_image_red>
+		<d_image_dark_blue>minotaurs</d_image_dark_blue>
+		<d_image_orange>minotaurs</d_image_orange>
+		<d_image_black>minotaurs</d_image_black>
+		<d_image_neutral>minotaurs</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>800</d_production_cost>
@@ -148,7 +214,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Giants</_d_name>
-		<d_image>giants</d_image>
+		<d_image_white>giants</d_image_white>
+		<d_image_green>giants</d_image_green>
+		<d_image_yellow>giants</d_image_yellow>
+		<d_image_light_blue>giants</d_image_light_blue>
+		<d_image_red>giants</d_image_red>
+		<d_image_dark_blue>giants</d_image_dark_blue>
+		<d_image_orange>giants</d_image_orange>
+		<d_image_black>giants</d_image_black>
+		<d_image_neutral>giants</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>800</d_production_cost>
@@ -166,7 +240,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Spiders</_d_name>
-		<d_image>spiders</d_image>
+		<d_image_white>spiders</d_image_white>
+		<d_image_green>spiders</d_image_green>
+		<d_image_yellow>spiders</d_image_yellow>
+		<d_image_light_blue>spiders</d_image_light_blue>
+		<d_image_red>spiders</d_image_red>
+		<d_image_dark_blue>spiders</d_image_dark_blue>
+		<d_image_orange>spiders</d_image_orange>
+		<d_image_black>spiders</d_image_black>
+		<d_image_neutral>spiders</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>1000</d_production_cost>
@@ -184,7 +266,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Light Cav.</_d_name>
-		<d_image>lightcav</d_image>
+		<d_image_white>lightcav</d_image_white>
+		<d_image_green>lightcav</d_image_green>
+		<d_image_yellow>lightcav</d_image_yellow>
+		<d_image_light_blue>lightcav</d_image_light_blue>
+		<d_image_red>lightcav</d_image_red>
+		<d_image_dark_blue>lightcav</d_image_dark_blue>
+		<d_image_orange>lightcav</d_image_orange>
+		<d_image_black>lightcav</d_image_black>
+		<d_image_neutral>lightcav</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>300</d_production_cost>
@@ -202,7 +292,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Wolfriders</_d_name>
-		<d_image>wolfriders</d_image>
+		<d_image_white>wolfriders</d_image_white>
+		<d_image_green>wolfriders</d_image_green>
+		<d_image_yellow>wolfriders</d_image_yellow>
+		<d_image_light_blue>wolfriders</d_image_light_blue>
+		<d_image_red>wolfriders</d_image_red>
+		<d_image_dark_blue>wolfriders</d_image_dark_blue>
+		<d_image_orange>wolfriders</d_image_orange>
+		<d_image_black>wolfriders</d_image_black>
+		<d_image_neutral>wolfriders</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>2</d_production>
 		<d_production_cost>500</d_production_cost>
@@ -220,7 +318,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Heavy Cav.</_d_name>
-		<d_image>heavycav</d_image>
+		<d_image_white>heavycav</d_image_white>
+		<d_image_green>heavycav</d_image_green>
+		<d_image_yellow>heavycav</d_image_yellow>
+		<d_image_light_blue>heavycav</d_image_light_blue>
+		<d_image_red>heavycav</d_image_red>
+		<d_image_dark_blue>heavycav</d_image_dark_blue>
+		<d_image_orange>heavycav</d_image_orange>
+		<d_image_black>heavycav</d_image_black>
+		<d_image_neutral>heavycav</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>3</d_production>
 		<d_production_cost>500</d_production_cost>
@@ -238,7 +344,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Catapults</_d_name>
-		<d_image>catapults</d_image>
+		<d_image_white>catapults</d_image_white>
+		<d_image_green>catapults</d_image_green>
+		<d_image_yellow>catapults</d_image_yellow>
+		<d_image_light_blue>catapults</d_image_light_blue>
+		<d_image_red>catapults</d_image_red>
+		<d_image_dark_blue>catapults</d_image_dark_blue>
+		<d_image_orange>catapults</d_image_orange>
+		<d_image_black>catapults</d_image_black>
+		<d_image_neutral>catapults</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>500</d_production_cost>
@@ -256,7 +370,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Elephants</_d_name>
-		<d_image>elephants</d_image>
+		<d_image_white>elephants</d_image_white>
+		<d_image_green>elephants</d_image_green>
+		<d_image_yellow>elephants</d_image_yellow>
+		<d_image_light_blue>elephants</d_image_light_blue>
+		<d_image_red>elephants</d_image_red>
+		<d_image_dark_blue>elephants</d_image_dark_blue>
+		<d_image_orange>elephants</d_image_orange>
+		<d_image_black>elephants</d_image_black>
+		<d_image_neutral>elephants</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>1500</d_production_cost>
@@ -274,7 +396,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Giant Bats</_d_name>
-		<d_image>giantbats</d_image>
+		<d_image_white>giantbats</d_image_white>
+		<d_image_green>giantbats</d_image_green>
+		<d_image_yellow>giantbats</d_image_yellow>
+		<d_image_light_blue>giantbats</d_image_light_blue>
+		<d_image_red>giantbats</d_image_red>
+		<d_image_dark_blue>giantbats</d_image_dark_blue>
+		<d_image_orange>giantbats</d_image_orange>
+		<d_image_black>giantbats</d_image_black>
+		<d_image_neutral>giantbats</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>1</d_production>
 		<d_production_cost>30</d_production_cost>
@@ -292,7 +422,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Pegasi</_d_name>
-		<d_image>pegasi</d_image>
+		<d_image_white>pegasi</d_image_white>
+		<d_image_green>pegasi</d_image_green>
+		<d_image_yellow>pegasi</d_image_yellow>
+		<d_image_light_blue>pegasi</d_image_light_blue>
+		<d_image_red>pegasi</d_image_red>
+		<d_image_dark_blue>pegasi</d_image_dark_blue>
+		<d_image_orange>pegasi</d_image_orange>
+		<d_image_black>pegasi</d_image_black>
+		<d_image_neutral>pegasi</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>3</d_production>
 		<d_production_cost>1000</d_production_cost>
@@ -310,7 +448,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Griffins</_d_name>
-		<d_image>griffins</d_image>
+		<d_image_white>griffins</d_image_white>
+		<d_image_green>griffins</d_image_green>
+		<d_image_yellow>griffins</d_image_yellow>
+		<d_image_light_blue>griffins</d_image_light_blue>
+		<d_image_red>griffins</d_image_red>
+		<d_image_dark_blue>griffins</d_image_dark_blue>
+		<d_image_orange>griffins</d_image_orange>
+		<d_image_black>griffins</d_image_black>
+		<d_image_neutral>griffins</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>3</d_production>
 		<d_production_cost>1500</d_production_cost>
@@ -328,7 +474,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Giant Worms</_d_name>
-		<d_image>giantworms</d_image>
+		<d_image_white>giantworms</d_image_white>
+		<d_image_green>giantworms</d_image_green>
+		<d_image_yellow>giantworms</d_image_yellow>
+		<d_image_light_blue>giantworms</d_image_light_blue>
+		<d_image_red>giantworms</d_image_red>
+		<d_image_dark_blue>giantworms</d_image_dark_blue>
+		<d_image_orange>giantworms</d_image_orange>
+		<d_image_black>giantworms</d_image_black>
+		<d_image_neutral>giantworms</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
@@ -346,7 +500,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Ghosts</_d_name>
-		<d_image>ghosts</d_image>
+		<d_image_white>ghosts</d_image_white>
+		<d_image_green>ghosts</d_image_green>
+		<d_image_yellow>ghosts</d_image_yellow>
+		<d_image_light_blue>ghosts</d_image_light_blue>
+		<d_image_red>ghosts</d_image_red>
+		<d_image_dark_blue>ghosts</d_image_dark_blue>
+		<d_image_orange>ghosts</d_image_orange>
+		<d_image_black>ghosts</d_image_black>
+		<d_image_neutral>ghosts</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
@@ -364,7 +526,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Wizards</_d_name>
-		<d_image>wizards</d_image>
+		<d_image_white>wizards</d_image_white>
+		<d_image_green>wizards</d_image_green>
+		<d_image_yellow>wizards</d_image_yellow>
+		<d_image_light_blue>wizards</d_image_light_blue>
+		<d_image_red>wizards</d_image_red>
+		<d_image_dark_blue>wizards</d_image_dark_blue>
+		<d_image_orange>wizards</d_image_orange>
+		<d_image_black>wizards</d_image_black>
+		<d_image_neutral>wizards</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
@@ -382,7 +552,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Unicorns</_d_name>
-		<d_image>unicorns</d_image>
+		<d_image_white>unicorns</d_image_white>
+		<d_image_green>unicorns</d_image_green>
+		<d_image_yellow>unicorns</d_image_yellow>
+		<d_image_light_blue>unicorns</d_image_light_blue>
+		<d_image_red>unicorns</d_image_red>
+		<d_image_dark_blue>unicorns</d_image_dark_blue>
+		<d_image_orange>unicorns</d_image_orange>
+		<d_image_black>unicorns</d_image_black>
+		<d_image_neutral>unicorns</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>1500</d_production_cost>
@@ -400,7 +578,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Elementals</_d_name>
-		<d_image>elementals</d_image>
+		<d_image_white>elementals</d_image_white>
+		<d_image_green>elementals</d_image_green>
+		<d_image_yellow>elementals</d_image_yellow>
+		<d_image_light_blue>elementals</d_image_light_blue>
+		<d_image_red>elementals</d_image_red>
+		<d_image_dark_blue>elementals</d_image_dark_blue>
+		<d_image_orange>elementals</d_image_orange>
+		<d_image_black>elementals</d_image_black>
+		<d_image_neutral>elementals</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
@@ -418,7 +604,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Devils</_d_name>
-		<d_image>devils</d_image>
+		<d_image_white>devils</d_image_white>
+		<d_image_green>devils</d_image_green>
+		<d_image_yellow>devils</d_image_yellow>
+		<d_image_light_blue>devils</d_image_light_blue>
+		<d_image_red>devils</d_image_red>
+		<d_image_dark_blue>devils</d_image_dark_blue>
+		<d_image_orange>devils</d_image_orange>
+		<d_image_black>devils</d_image_black>
+		<d_image_neutral>devils</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
@@ -436,7 +630,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Demons</_d_name>
-		<d_image>daemons</d_image>
+		<d_image_white>daemons</d_image_white>
+		<d_image_green>daemons</d_image_green>
+		<d_image_yellow>daemons</d_image_yellow>
+		<d_image_light_blue>daemons</d_image_light_blue>
+		<d_image_red>daemons</d_image_red>
+		<d_image_dark_blue>daemons</d_image_dark_blue>
+		<d_image_orange>daemons</d_image_orange>
+		<d_image_black>daemons</d_image_black>
+		<d_image_neutral>daemons</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
@@ -454,7 +656,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Archons</_d_name>
-		<d_image>archons</d_image>
+		<d_image_white>archons</d_image_white>
+		<d_image_green>archons</d_image_green>
+		<d_image_yellow>archons</d_image_yellow>
+		<d_image_light_blue>archons</d_image_light_blue>
+		<d_image_red>archons</d_image_red>
+		<d_image_dark_blue>archons</d_image_dark_blue>
+		<d_image_orange>archons</d_image_orange>
+		<d_image_black>archons</d_image_black>
+		<d_image_neutral>archons</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
@@ -472,7 +682,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>Dragons</_d_name>
-		<d_image>dragons</d_image>
+		<d_image_white>dragons</d_image_white>
+		<d_image_green>dragons</d_image_green>
+		<d_image_yellow>dragons</d_image_yellow>
+		<d_image_light_blue>dragons</d_image_light_blue>
+		<d_image_red>dragons</d_image_red>
+		<d_image_dark_blue>dragons</d_image_dark_blue>
+		<d_image_orange>dragons</d_image_orange>
+		<d_image_black>dragons</d_image_black>
+		<d_image_neutral>dragons</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
@@ -490,7 +708,15 @@
 	</armyproto>
 	<armyproto>
 		<_d_name>hero</_d_name>
-		<d_image>hero</d_image>
+		<d_image_white>hero</d_image_white>
+		<d_image_green>hero</d_image_green>
+		<d_image_yellow>hero</d_image_yellow>
+		<d_image_light_blue>hero</d_image_light_blue>
+		<d_image_red>hero</d_image_red>
+		<d_image_dark_blue>hero</d_image_dark_blue>
+		<d_image_orange>hero</d_image_orange>
+		<d_image_black>hero</d_image_black>
+		<d_image_neutral>hero</d_image_neutral>
 		<_d_description></_d_description>
 		<d_production>0</d_production>
 		<d_production_cost>0</d_production_cost>
