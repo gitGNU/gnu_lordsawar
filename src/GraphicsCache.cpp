@@ -1189,7 +1189,7 @@ void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag,
     }
 
   if (fog_type_id)
-    getFogPic(fog_type_id - 1)->blit(pixmap);
+    d_fogpic[fog_type_id - 1]->blit(pixmap);
 }
 
 TileCacheItem* GraphicsCache::addTilePic(TileCacheItem *item)
@@ -1210,7 +1210,9 @@ TileCacheItem* GraphicsCache::addTilePic(TileCacheItem *item)
 
   //short circuit the drawing sequence if the tile is completely obscured
   if (myitem->fog_type_id == FogMap::ALL)
-    myitem->surface = getFogPic(myitem->fog_type_id - 1)->copy();
+    {
+      myitem->surface = d_fogpic[myitem->fog_type_id - 1]->copy();
+    }
   else
     {
       Tileset *tileset = GameMap::getInstance()->getTileset();
@@ -1496,7 +1498,7 @@ RoadCacheItem* GraphicsCache::addRoadPic(int type)
 FogCacheItem* GraphicsCache::addFogPic(FogCacheItem *item)
 {
 
-  PixMask* mysurf = d_fogpic[item->type]->copy();
+  PixMask* mysurf = d_fogpic[item->type - 1]->copy();
 
   //now create the cache item and add the size
   FogCacheItem* myitem = new FogCacheItem();
@@ -2194,7 +2196,6 @@ void GraphicsCache::loadFogPics()
 	PixMask::scale(fogpics[i], ts, ts);
       d_fogpic[i] = fogpics[i];
     }
-
 }
 
 void GraphicsCache::loadBridgePics()
