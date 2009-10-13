@@ -33,7 +33,7 @@ ArmySetInfoDialog::ArmySetInfoDialog(Armyset *armyset)
     
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/armyset-info-dialog.gtk");
+				    + "/armyset-info-dialog.ui");
 
     xml->get_widget("dialog", dialog);
 
