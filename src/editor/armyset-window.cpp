@@ -381,26 +381,23 @@ bool ArmySetWindow::load(std::string tag, XML_Helper *helper)
 
 void ArmySetWindow::on_new_armyset_activated()
 {
-  bool retval;
-  current_save_filename.clear();
-  if (d_armyset)
-    {
-      armies_list->clear();
-      delete d_armyset;
-    }
   std::string name = "";
   guint32 id = 0;
-  d_armyset = new Armyset(id, name);
-  ArmySetInfoDialog d(d_armyset);
+  Armyset *armyset = new Armyset(id, name);
+  ArmySetInfoDialog d(armyset);
   d.set_parent_window(*window);
-  retval = d.run();
-  if (retval == false)
+  int response = d.run();
+  if (response != Gtk::RESPONSE_ACCEPT)
     {
-      delete d_armyset;
-      d_armyset = NULL;
+      delete armyset;
+      return;
     }
+  if (d_armyset)
+    delete d_armyset;
+  d_armyset = armyset;
+  armies_list->clear();
+  current_save_filename.clear();
 
-      
   std::string imgpath = Configuration::s_dataPath + "/army/";
   white_image_filechooserbutton->set_current_folder(imgpath);
   green_image_filechooserbutton->set_current_folder(imgpath);
@@ -540,7 +537,11 @@ void ArmySetWindow::on_quit_activated()
 }
 void ArmySetWindow::on_edit_ship_picture_activated()
 {
-  MaskedImageEditorDialog d(File::getArmysetFile(d_armyset->getSubDir(), d_armyset->getShipImageName()));
+  std::string filename = "";
+  if (d_armyset->getShipImageName() != "")
+    filename = File::getArmysetFile(d_armyset->getSubDir(), 
+				    d_armyset->getShipImageName());
+  MaskedImageEditorDialog d(filename);
   d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
   d.run();
   if (d.get_selected_filename() != "")
@@ -560,7 +561,11 @@ void ArmySetWindow::on_edit_ship_picture_activated()
 }
 void ArmySetWindow::on_edit_standard_picture_activated()
 {
-  MaskedImageEditorDialog d(File::getArmysetFile(d_armyset->getSubDir(), d_armyset->getStandardImageName()));
+  std::string filename = "";
+  if (d_armyset->getStandardImageName() != "")
+    filename = File::getArmysetFile(d_armyset->getSubDir(), 
+				    d_armyset->getStandardImageName());
+  MaskedImageEditorDialog d(filename);
   d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
   d.run();
   if (d.get_selected_filename() != "")

@@ -54,7 +54,7 @@ void ArmySetInfoDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-bool ArmySetInfoDialog::run()
+int ArmySetInfoDialog::run()
 {
     dialog->show_all();
     int response = dialog->run();
@@ -63,8 +63,8 @@ bool ArmySetInfoDialog::run()
     {
       d_armyset->setName(name_entry->get_text());
       d_armyset->setId(int(id_spinbutton->get_value()));
-      return true;
+      return response;
     }
-    return false;
+    return response;
 }
 

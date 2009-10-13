@@ -32,7 +32,7 @@ class ArmySetInfoDialog: public sigc::trackable
 
     void set_parent_window(Gtk::Window &parent);
 
-    bool run();
+    int run();
     
  private:
     Gtk::Dialog* dialog;

@@ -91,11 +91,14 @@ void MaskedImageEditorDialog::on_image_chosen()
 
 void MaskedImageEditorDialog::update_panel()
 {
-  filechooserbutton->set_filename (target_filename);
+  if (target_filename != "")
+    filechooserbutton->set_filename (target_filename);
 }
 
 void MaskedImageEditorDialog::show_image(std::string filename)
 {
+  if (filename == "")
+    return;
   std::vector<PixMask*> half = disassemble_row(filename, 2);
   for (unsigned int i = Shield::WHITE; i <= Shield::NEUTRAL; i++)
     {
