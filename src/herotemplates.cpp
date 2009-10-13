@@ -111,6 +111,7 @@ bool HeroTemplates::load(std::string tag, XML_Helper *helper)
       HeroProto *newhero = new HeroProto (*herotype);
       newhero->setGender(gender);
       newhero->setGender(Hero::FEMALE);
+      newhero->setOwnerId(owner);
 
       newhero->setName (_(name.c_str()));
       d_herotemplates[owner].push_back (newhero);

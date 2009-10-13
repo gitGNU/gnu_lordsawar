@@ -56,12 +56,21 @@ class HeroProto : public ArmyProto
         //! Return the gender of the hero.
         guint32 getGender() const {return d_gender;}
         
+	//! Set the owner id for the hero prototype.
+	void setOwnerId(guint32 id) {d_owner_id = id;}
+
+	//! Return the id of the owner of the prototype.
+	guint32 getOwnerId() const {return d_owner_id;}
+
         //! Saves the hero prototype to an action
         virtual bool save(XML_Helper* helper) const;
     private:
 
 	//! Gender of the hero
 	Hero::Gender d_gender;
+
+	//! The player id that this prototype belongs to
+	guint32 d_owner_id;
 };
 
 #endif // HERO_PROTO_H

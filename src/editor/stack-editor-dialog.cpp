@@ -206,15 +206,7 @@ void StackEditorDialog::run()
 	// armies have been added
 	if (player_combobox)
 	{
-	    int c = 0, row = player_combobox->get_active_row_number();
-	    Player *player = Playerlist::getInstance()->getNeutral();
-	    for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
-		     end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
-		if (c == row)
-		{
-		    player = *i;
-		    break;
-		}
+	    Player *player = get_selected_player();
 
 	    Player *stack_player = stack->getOwner();
 	    Stack *new_stack = new Stack(*stack);
@@ -230,19 +222,39 @@ void StackEditorDialog::run()
     }
 }
 
+Player *StackEditorDialog::get_selected_player()
+{
+  int c = 0, row = player_combobox->get_active_row_number();
+  Player *player = Playerlist::getInstance()->getNeutral();
+  for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
+       end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
+    if (c == row)
+      {
+	player = *i;
+	break;
+      }
+  return player;
+}
+
 void StackEditorDialog::on_add_clicked()
 {
     SelectArmyDialog d(stack->getOwner(), true);
     d.set_parent_window(*dialog);
     d.run();
 
+    Player *player = get_selected_player();
     const ArmyProto *army = d.get_selected_army();
     if (army)
       {
 	if (army->isHero() == true)
-	  add_army(new Hero(HeroProto(*army)));
+	  {
+	    HeroProto *hp = new HeroProto(*army);
+	    hp->setOwnerId(player->getId());
+	    add_army(new Hero(*hp));
+	    delete hp;
+	  }
 	else
-	  add_army(new Army(*army));
+	  add_army(new Army(*army, player));
       }
 }
     
@@ -279,8 +291,8 @@ void StackEditorDialog::add_army(Army *a)
     GraphicsCache *gc = GraphicsCache::getInstance();
     Gtk::TreeIter i = army_list->append();
     (*i)[army_columns.army] = a;
-    (*i)[army_columns.image] = gc->getArmyPic(stack->getOwner()->getArmyset(),
-					      a->getTypeId(), stack->getOwner(),
+    (*i)[army_columns.image] = gc->getArmyPic(a->getOwner()->getArmyset(),
+					      a->getTypeId(), a->getOwner(),
 					      NULL)->to_pixbuf();
     (*i)[army_columns.strength] = a->getStat(Army::STRENGTH, false);
     (*i)[army_columns.moves] = a->getStat(Army::MOVES, false);
@@ -311,15 +323,7 @@ void StackEditorDialog::set_button_sensitivity()
 	else
 	  edit_hero_button->set_sensitive(false);
       }
-  int c = 0, row = player_combobox->get_active_row_number();
-  Player *player = Playerlist::getInstance()->getNeutral();
-  for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
-       end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
-    if (c == row)
-      {
-	player = *i;
-	break;
-      }
+  Player *player = get_selected_player();
   if (player == Playerlist::getInstance()->getNeutral())
     fortified_checkbutton->set_sensitive(false);
   else
@@ -334,15 +338,7 @@ void StackEditorDialog::on_fortified_toggled()
 void StackEditorDialog::on_player_changed()
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
-  int c = 0, row = player_combobox->get_active_row_number();
-  Player *player = Playerlist::getInstance()->getNeutral();
-  for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
-       end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
-    if (c == row)
-      {
-	player = *i;
-	break;
-      }
+  Player *player = get_selected_player();
   if (player == Playerlist::getInstance()->getNeutral())
     fortified_checkbutton->set_active(false);
   set_button_sensitivity();

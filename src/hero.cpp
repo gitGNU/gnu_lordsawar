@@ -30,6 +30,7 @@
 #include "counter.h"
 #include "Backpack.h"
 #include "xmlhelper.h"
+#include "playerlist.h"
 
 std::string Hero::d_tag = "hero";
 using namespace std;
@@ -40,6 +41,7 @@ Hero::Hero(const HeroProto& a)
 {
   d_level = 1;
   d_backpack = new Backpack();
+  d_owner = Playerlist::getInstance()->getPlayer(a.getOwnerId());
 }
 
 Hero::Hero(Hero& h)

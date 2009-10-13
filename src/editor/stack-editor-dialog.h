@@ -26,6 +26,7 @@
 
 class Stack;
 class Army;
+class Player;
 
 //! Scenario editor.  Change the contents of a Stack.
 class StackEditorDialog: public sigc::trackable
@@ -87,6 +88,8 @@ class StackEditorDialog: public sigc::trackable
     void on_moves_edited(const Glib::ustring &path, const Glib::ustring &new_text);
     void cell_data_upkeep(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
     void on_upkeep_edited(const Glib::ustring &path, const Glib::ustring &new_text);
+
+    Player *get_selected_player();
 };
 
 #endif
