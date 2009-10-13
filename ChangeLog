@@ -1,3 +1,9 @@
+2009-10-13  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed armyset info dialog so it can appear.  Reported by Frans de
+	Jonge.
+	* fixed up stack editor to handle adding armies properly.
+
 2009-10-12  Ben Asselstine  <benasselstine@gmail.com>
 
 	* fixed #27674.  crash on hidden map.  Reported by Frans de Jonge.
