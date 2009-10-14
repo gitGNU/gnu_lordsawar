@@ -35,14 +35,16 @@ using namespace std;
 #define DEFAULT_ARMY_TILE_SIZE 40
 Armyset::Armyset(guint32 id, std::string name)
 	: d_id(id), d_name(name), d_dir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE),
-	d_ship(0), d_shipmask(0), d_standard(0), d_standard_mask(0)
+	d_ship(0), d_shipmask(0), d_standard(0), d_standard_mask(0),
+	private_collection(true)
 {
 }
 
-Armyset::Armyset(XML_Helper *helper)
+Armyset::Armyset(XML_Helper *helper, bool from_private_collection)
     : d_id(0), d_name(""), d_dir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE),
 	d_ship(0), d_shipmask(0), d_standard(0), d_standard_mask(0)
 {
+  private_collection = from_private_collection;
   helper->getData(d_id, "id");
   helper->getData(d_name, "name");
   helper->getData(d_tilesize, "tilesize");
@@ -99,4 +101,164 @@ ArmyProto * Armyset::lookupArmyByType(guint32 army_type_id)
 	return *it;
     }
   return NULL;
+}
+	
+bool Armyset::validateSize()
+{
+  if (size() == 0)
+    return false;
+  return true;
+}
+
+bool Armyset::validateHero()
+{
+  bool found = false;
+  //do we have a hero?
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->isHero() == true)
+	{
+	  found = true;
+	  break;
+	}
+    }
+  if (!found)
+    return false;
+  return true;
+}
+bool Armyset::validatePurchasables()
+{
+  bool found = false;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getProductionCost() > 0 )
+	{
+	  found = true;
+	  break;
+	}
+    }
+  if (!found)
+    return false;
+  return true;
+}
+
+bool Armyset::validateRuinDefenders()
+{
+  bool found = false;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getDefendsRuins() == true)
+	{
+	  found = true;
+	  break;
+	}
+    }
+  if (!found)
+    return false;
+  return true;
+}
+
+bool Armyset::validateAwardables()
+{
+  bool found = false;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getAwardable() == true)
+	{
+	  found = true;
+	  break;
+	}
+    }
+  if (!found)
+    return false;
+  return true;
+}
+bool Armyset::validateShip()
+{
+  if (getShipImageName() == "")
+    return false;
+  return true;
+}
+
+bool Armyset::validateStandard()
+{
+  if (getStandardImageName() == "")
+    return false;
+  return true;
+}
+
+bool Armyset::validateArmyUnitImage(ArmyProto *army, Shield::Colour &c)
+{
+  for (unsigned int i = Shield::WHITE; i <= Shield::NEUTRAL; i++)
+    if (army->getImageName(Shield::Colour(i)) == "")
+      {
+	c = Shield::Colour(i);
+	return false;
+      }
+  return true;
+}
+bool Armyset::validateArmyUnitImages()
+{
+  Shield::Colour c;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if (validateArmyUnitImage(*it, c) == false)
+	return false;
+    }
+  return true;
+}
+
+bool Armyset::validateArmyUnitName(ArmyProto *army)
+{
+  if (army->getName() == "")
+    return false;
+  return true;
+}
+bool Armyset::validateArmyUnitNames()
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if (validateArmyUnitName(*it) == false)
+	return false;
+    }
+  return true;
+}
+bool Armyset::validate()
+{
+  bool valid = true;
+  valid = validateSize();
+  if (!valid)
+    return false;
+  valid = validateHero();
+  if (!valid)
+    return false;
+  valid = validatePurchasables();
+  if (!valid)
+    return false;
+  //do we have any units that defend ruins?
+  valid = validateRuinDefenders();
+  if (!valid)
+    return false;
+  //do we have any units that can be awarded?
+  valid = validateAwardables();
+  if (!valid)
+    return false;
+  //is the stackship set?
+  valid = validateShip();
+  if (!valid)
+    return false;
+  //is the standard set?
+  valid = validateStandard();
+  if (!valid)
+    return false;
+  //is there an image set for each army unit?
+  valid = validateArmyUnitImages();
+  if (!valid)
+    return false;
+  //is there a name set for each army unit?
+  valid = validateArmyUnitNames();
+  if (!valid)
+    return false;
+
+  return valid;
 }

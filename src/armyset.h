@@ -27,6 +27,7 @@
 #include "xmlhelper.h"
 #include "armyproto.h"
 #include "defs.h"
+#include "shield.h"
 
 
 //! A collection of Army prototype objects.
@@ -77,7 +78,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	/**
 	 * Load armyset XML entities from armyset configuration files.
 	 */
-        Armyset(XML_Helper* helper);
+        Armyset(XML_Helper* helper, bool private_collection = false);
 	//! Destructor.
         ~Armyset();
 
@@ -193,6 +194,24 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	 *         could be found.
 	 */
 	ArmyProto * lookupArmyByType(guint32 army_type);
+
+	//! Return whether this is an armyset in the user's personal collection.
+	bool fromPrivateCollection() {return private_collection;};
+
+
+	//! can this armyset be used within the game?
+	bool validate();
+	bool validateSize();
+	bool validateHero();
+	bool validatePurchasables();
+	bool validateRuinDefenders();
+	bool validateAwardables();
+	bool validateShip();
+	bool validateStandard();
+	bool validateArmyUnitImages();
+	bool validateArmyUnitImage(ArmyProto *a, Shield::Colour &c);
+	bool validateArmyUnitNames();
+	bool validateArmyUnitName(ArmyProto *a);
     private:
 
         //! Callback function for the army tag (see XML_Helper)
@@ -254,6 +273,9 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 
 	//! The name of the file that holds the picture of stack on water.
 	std::string d_stackship_name;
+
+	//! Whether this is a system armyset, or one that the user made.
+	bool private_collection;
 };
 
 #endif // ARMYSET_H

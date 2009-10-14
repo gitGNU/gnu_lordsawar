@@ -97,8 +97,8 @@ class GraphicsLoader
           */
         static PixMask* getCitysetPicture(std::string citysetsubdir, std::string picname);
 
-    private:
 	static bool instantiateImages(Armyset *set, ArmyProto *a, Shield::Colour c);
+    private:
         /** Loads an image
           * 
           * This function loads an image, adjusts it to the current resolution etc.

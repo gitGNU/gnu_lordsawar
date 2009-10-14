@@ -27,10 +27,17 @@
 #include <glibmm/fileutils.h>
 #include <glibmm/ustring.h>
 #include <glibmm/convert.h>
+#include <sys/types.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#ifndef __WIN32__
+#include <unistd.h>
+#endif
 
 #include "File.h"
 #include "Configuration.h"
 #include "defs.h"
+#include "armyset.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
@@ -56,7 +63,7 @@ namespace
 
     // returns a list of the XML file names in path with the ".xml" extension
     // stripped
-    std::list<std::string> get_xml_files(std::string path)
+    std::list<std::string> get_xml_files(std::string path, std::string ext)
     {
 	std::list<std::string> retlist;
 	Glib::Dir dir(path);
@@ -64,10 +71,10 @@ namespace
 	for (Glib::Dir::iterator i = dir.begin(), end = dir.end(); i != end; ++i)
 	{
 	    std::string entry = *i;
-	    std::string::size_type idx = entry.find(".xml");
+	    std::string::size_type idx = entry.find(ext);
 	    if (idx != std::string::npos)
 	    {
-		entry.replace(idx, 4, "");  //substitute the ".xml" with ""
+		entry.replace(idx, ext.length(), "");  //substitute the ".xml" with ""
 		retlist.push_back(Glib::filename_to_utf8(entry));
 	    }
 	}
@@ -76,13 +83,13 @@ namespace
     
     // returns a list of the XML file names in the immediate subdirs of path
     // with the ".xml" extension stripped
-    std::list<std::string> get_xml_files_in_immediate_subdirs(std::string path)
+    std::list<std::string> get_xml_files_in_immediate_subdirs(std::string path, std::string ext)
     {
 	std::list<std::string> retlist, dirlist = get_immediate_subdirs(path);
 	for (std::list<std::string>::iterator i = dirlist.begin(),
 		 end = dirlist.end(); i != end; ++i)
 	{
-	    std::list<std::string> files = get_xml_files(*i);
+	    std::list<std::string> files = get_xml_files(*i, ext);
 	
 	    retlist.insert(retlist.end(), files.begin(), files.end());
 	}
@@ -90,30 +97,51 @@ namespace
     }
 }
 
-std::string getArmysetDir()
+std::string File::getUserArmysetDir()
 {
-  return Configuration::s_dataPath + "/" + ARMYSETDIR + "/";
+  std::string dir =  getSavePath() + ARMYSETDIR + "/";
+  return dir;
+}
+
+std::string add_slash_if_necessary(std::string dir)
+{
+  if (dir.c_str()[strlen(dir.c_str())-1] == '/')
+    return dir;
+  else
+    return dir + "/";
+}
+
+std::string File::getArmysetDir()
+{
+  return add_slash_if_necessary(Configuration::s_dataPath) + ARMYSETDIR + "/";
 }
 
 std::string getTilesetDir()
 {
-  return Configuration::s_dataPath + "/" + TILESETDIR + "/";
+  return add_slash_if_necessary(Configuration::s_dataPath) + TILESETDIR + "/";
 }
 
 std::string getCitysetDir()
 {
-  return Configuration::s_dataPath + "/" + CITYSETDIR + "/";
+  return add_slash_if_necessary(Configuration::s_dataPath) + CITYSETDIR + "/";
 }
 
 std::string getShieldsetDir()
 {
-  return Configuration::s_dataPath + "/" + SHIELDSETDIR + "/";
+  return add_slash_if_necessary(Configuration::s_dataPath) + SHIELDSETDIR + "/";
 }
 
+std::list<std::string> File::scanUserArmysets()
+{
+    std::list<std::string> retlist = 
+      get_xml_files_in_immediate_subdirs(getUserArmysetDir(), ARMYSET_EXT);
+
+    return retlist;
+}
 std::list<std::string> File::scanArmysets()
 {
     std::list<std::string> retlist = 
-      get_xml_files_in_immediate_subdirs(getArmysetDir());
+      get_xml_files_in_immediate_subdirs(getArmysetDir(), ARMYSET_EXT);
 
     if (retlist.empty())
     {
@@ -126,14 +154,20 @@ std::list<std::string> File::scanArmysets()
     return retlist;
 }
 
+std::string File::getUserArmyset(std::string armysetsubdir)
+{
+  std::string dir =  getUserArmysetDir() + armysetsubdir;
+  return dir + "/" + armysetsubdir + ARMYSET_EXT;
+}
+
 std::string File::getArmyset(std::string armysetsubdir)
 {
-  return getArmysetDir() + armysetsubdir + "/" + armysetsubdir + ".xml";
+  return getArmysetDir() + armysetsubdir + "/" + armysetsubdir + ARMYSET_EXT;
 }
 
 std::string File::getTileset(std::string tilesetsubdir)
 {
-  return getTilesetDir() + tilesetsubdir + "/" + tilesetsubdir + ".xml";
+  return getTilesetDir() + tilesetsubdir + "/" + tilesetsubdir + TILESET_EXT;
 }
 
 std::string File::getTilesetFile(std::string tilesetsubdir, std::string picname)
@@ -153,7 +187,7 @@ std::string File::getMiscFile(std::string filename)
 
 std::string File::getCityset(std::string citysetdir)
 {
-  return getCitysetDir() + citysetdir + "/" + citysetdir + ".xml";
+  return getCitysetDir() + citysetdir + "/" + citysetdir + CITYSET_EXT;
 }
 
 std::string File::getCitysetFile(std::string citysetsubdir, std::string picname)
@@ -178,18 +212,13 @@ std::string File::getMusicFile(std::string filename)
 
 std::string File::getSavePath()
 {
-  //do we add a / at the end or not?
-  const char *s = Configuration::s_savePath.c_str();
-  if (s[strlen(s)-1] == '/')
-    return Configuration::s_savePath;
-  else
-    return Configuration::s_savePath + "/";
+  return add_slash_if_necessary(Configuration::s_savePath);
 }
 
 std::list<std::string> File::scanTilesets()
 {
     std::list<std::string> retlist = 
-      get_xml_files_in_immediate_subdirs(getTilesetDir());
+      get_xml_files_in_immediate_subdirs(getTilesetDir(), TILESET_EXT);
     
     if (retlist.empty())
     {
@@ -205,7 +234,7 @@ std::list<std::string> File::scanTilesets()
 std::list<std::string> File::scanCitysets()
 {
     std::list<std::string> retlist = 
-      get_xml_files_in_immediate_subdirs(getCitysetDir());
+      get_xml_files_in_immediate_subdirs(getCitysetDir(), CITYSET_EXT);
     
     if (retlist.empty())
     {
@@ -220,7 +249,7 @@ std::list<std::string> File::scanCitysets()
 
 std::list<std::string> File::scanUserMaps()
 {
-  std::string path = Configuration::s_savePath + "/";
+  std::string path = getSavePath();
     
     std::list<std::string> retlist;
     Glib::Dir dir(path);
@@ -269,7 +298,7 @@ std::list<std::string> File::scanMaps()
 std::list<std::string> File::scanShieldsets()
 {
     std::list<std::string> retlist = 
-      get_xml_files_in_immediate_subdirs(getShieldsetDir());
+      get_xml_files_in_immediate_subdirs(getShieldsetDir(), SHIELDSET_EXT);
 
     if (retlist.empty())
     {
@@ -284,12 +313,99 @@ std::list<std::string> File::scanShieldsets()
 
 std::string File::getShieldset(std::string shieldsetsubdir)
 {
-  return getShieldsetDir() + shieldsetsubdir + "/" + shieldsetsubdir + ".xml";
+  return getShieldsetDir() + shieldsetsubdir + "/" + shieldsetsubdir + SHIELDSET_EXT;
 }
 
-std::string File::getArmysetFile(std::string armysetsubdir, std::string picname)
+std::string File::getArmysetDir(Armyset *armyset)
 {
-  return getArmysetDir() + armysetsubdir + "/" + picname + ".png";
+  if (armyset->fromPrivateCollection() == false)
+    return getArmysetDir() + armyset->getSubDir() + "/";
+  else
+    return getUserArmysetDir() + armyset->getSubDir() + "/";
 }
 
+std::string File::getArmyset(Armyset *armyset)
+{
+  return getArmysetDir(armyset) + armyset->getSubDir() + ARMYSET_EXT;
+}
+
+std::string File::getArmysetFile(Armyset *armyset, std::string picname)
+{
+  if (armyset->fromPrivateCollection() == false)
+    return getArmysetDir() + armyset->getSubDir() + "/" + picname + ".png";
+  else
+    return getUserArmysetDir() + armyset->getSubDir() + "/" + picname + ".png";
+}
+
+std::string File::get_basename(std::string path, bool keep_ext)
+{
+  std::string file;
+  file = Glib::path_get_basename(path);
+  if (keep_ext)
+    return file;
+  //now strip everything past the last dot.
+  char *tmp = strrchr (file.c_str(), '.');
+  if (!tmp)
+    return file;
+  int npos = tmp - file.c_str() + 1;
+  file = file.substr(0, npos - 1);
+  return file;
+}
+//copy_file taken from ardour-2.0rc2, gplv2.
+int File::copy (Glib::ustring from, Glib::ustring to)
+{
+  std::ifstream in (from.c_str());
+  std::ofstream out (to.c_str());
+
+  if (!in)
+    return -1;
+
+  if (!out)
+    return -1;
+
+  out << in.rdbuf();
+
+  if (!in || !out) 
+    {
+      unlink (to.c_str());
+      return -1;
+    }
+
+  return 0;
+}
+bool File::create_dir(std::string dir)
+{
+    struct stat testdir;
+#ifndef __WIN32__
+    if (stat(dir.c_str(), &testdir) || !S_ISDIR(testdir.st_mode))
+    {
+        guint32 mask = 0755; //make directory only readable for user and group
+        if (mkdir(dir.c_str(), mask))
+	  return false;
+    }
+#else
+    return false;
+#endif
+    return true;
+}
+	
+bool File::is_writable(std::string file)
+{
+#ifndef __WIN32__
+  if (access (file.c_str(), W_OK) != 0)
+    return false;
+  else
+    return true;
+#endif
+  return false;
+}
+
+bool File::exists(std::string f)
+{
+  FILE *fileptr = fopen (f.c_str(), "r");
+  bool retval = fileptr != NULL;
+  if (fileptr)
+    fclose(fileptr);
+  return retval;
+}
 // End of file

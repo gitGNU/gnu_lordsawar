@@ -85,6 +85,8 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 
 	//! Get standard colour for the neutral player.
 	static Gdk::Color get_default_color_for_neutral();
+
+	static std::string colourToString(const Shield::Colour c);
     protected:
 
 	//! The player of the shield.

@@ -281,7 +281,7 @@ void LoadScenarioDialog::on_add_scenario_clicked()
       std::string filename = load_map_filechooser->get_filename();
       std::string mapname = Glib::path_get_basename (filename);
       // copy it into our ~/.lordsawar/ dir.
-      copy_file(filename, Configuration::s_savePath + "/" + mapname);
+      File::copy (filename, Configuration::s_savePath + "/" + mapname);
       // add it to the list
       add_scenario(Configuration::s_savePath + "/" + mapname);
     }
@@ -313,26 +313,4 @@ void LoadScenarioDialog::on_remove_scenario_clicked()
   return;
 }
 
-//copy_file taken from ardour-2.0rc2, gplv2.
-int LoadScenarioDialog::copy_file (Glib::ustring from, Glib::ustring to)
-{
-  std::ifstream in (from.c_str());
-  std::ofstream out (to.c_str());
-
-  if (!in)
-    return -1;
-
-  if (!out)
-    return -1;
-
-  out << in.rdbuf();
-
-  if (!in || !out) 
-    {
-      unlink (to.c_str());
-      return -1;
-    }
-
-  return 0;
-}
 

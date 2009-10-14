@@ -29,6 +29,8 @@
 #include "xmlhelper.h"
 #include "armyproto.h"
 #include "armyset.h"
+#include "File.h"
+using namespace std;
 
 
 //! A list of all Armyset objects available to the game.
@@ -142,6 +144,9 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
          */
 	std::string getArmysetDir(std::string name, guint32 tilesize);
 
+
+	//! Return an unused armyset number.
+	static int getNextAvailableId(int after = 0);
     private:
         //! Default Constructor.  Loads all armyset objects it can find.
 	/**
@@ -161,10 +166,19 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 * this list of armysets.
 	 *
 	 * @param name  The subdirectory name that the Armyset resides in.
+	 * @param private_collection Whether or not the armyset is one from
+	 * the user's personal collection.
 	 *
 	 * @return True if the Armyset could be loaded.  False otherwise.
 	 */
-        bool loadArmyset (std::string name);
+	bool loadArmyset(std::string name, bool private_collection);
+	  
+	//! Loads a bunch of armysets.
+	/**
+	 * Load a list of armysets from the system armyset directory, or the
+	 * user's personal collection.
+	 */
+	void loadArmysets(std::list<std::string> armysets, bool private_collection);
         
         typedef std::map<guint32, std::vector<ArmyProto*> > ArmyPrototypeMap;
         typedef std::map<guint32, std::string> NameMap;
@@ -185,6 +199,39 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 
         //! A static pointer for the singleton instance.
         static Armysetlist* s_instance;
+};
+
+class ArmysetLoader
+{
+public:
+    ArmysetLoader(std::string name, bool p) 
+      {
+	armyset = NULL;
+	private_collection = p;
+	std::string filename = "";
+	if (private_collection == false)
+	  filename = File::getArmyset(name);
+	else
+	  filename = File::getUserArmyset(name);
+	XML_Helper helper(filename, ios::in, false);
+	helper.registerTag(Armyset::d_tag, sigc::mem_fun((*this), &ArmysetLoader::load));
+	if (!helper.parse())
+	  {
+	    std::cerr << "Error, while loading an armyset. Armyset Name: ";
+	    std::cerr <<name <<std::endl <<std::flush;
+	  }
+      };
+    bool load(std::string tag, XML_Helper* helper)
+      {
+	if (tag == Armyset::d_tag)
+	  {
+	    armyset = new Armyset(helper, private_collection);
+	    return true;
+	  }
+	return false;
+      };
+    bool private_collection;
+    Armyset *armyset;
 };
 
 #endif // ARMYSETLIST_H

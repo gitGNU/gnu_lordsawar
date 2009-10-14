@@ -176,8 +176,10 @@ void GraphicsLoader::instantiateImages(TileStyleSet *tss, guint32 tsize)
 
 void GraphicsLoader::loadShipPic(Armyset *armyset)
 {
+  if (armyset->getShipImageName().empty() == true)
+    return;
   std::vector<PixMask*> half;
-  half = disassemble_row(File::getArmysetFile(armyset->getSubDir(), 
+  half = disassemble_row(File::getArmysetFile(armyset, 
 					      armyset->getShipImageName()), 2);
   int size = armyset->getTileSize();
   PixMask::scale(half[0], size, size);
@@ -188,9 +190,11 @@ void GraphicsLoader::loadShipPic(Armyset *armyset)
 
 void GraphicsLoader::loadStandardPic(Armyset *armyset)
 {
+  if (armyset->getStandardImageName().empty() == true)
+    return;
   std::vector<PixMask*> half;
   half = 
-    disassemble_row(File::getArmysetFile(armyset->getSubDir(), 
+    disassemble_row(File::getArmysetFile(armyset, 
 					 armyset->getStandardImageName()), 2);
   int size = armyset->getTileSize();
   PixMask::scale(half[0], size, size);
@@ -211,7 +215,7 @@ bool GraphicsLoader::instantiateImages(Armyset *armyset, ArmyProto *a, Shield::C
   // The army image consists of two halves. On the left is the army image, 
   // on the right the mask.
   std::vector<PixMask*> half;
-  half = disassemble_row(File::getArmysetFile(armyset->getSubDir(), a->getImageName(c)), 2);
+  half = disassemble_row(File::getArmysetFile(armyset, a->getImageName(c)), 2);
   int size = armyset->getTileSize();
   PixMask::scale(half[0], size, size);
   PixMask::scale(half[1], size, size);
@@ -237,9 +241,7 @@ void GraphicsLoader::instantiateImages(Armyset *armyset)
 void GraphicsLoader::instantiateImages(Armysetlist *asl)
 {
   for (Armysetlist::iterator it = asl->begin(); it != asl->end(); it++)
-    {
     instantiateImages(*it);
-    }
 }
 
 void GraphicsLoader::uninstantiateImages(Armysetlist *asl)
@@ -255,16 +257,16 @@ void GraphicsLoader::uninstantiateImages(Armyset *armyset)
       for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
 	{
 	  Shield::Colour col = Shield::Colour(c);
-      if ((*i)->getImage(col))
-	{
-	  delete (*i)->getImage(col);
-	  (*i)->setImage(col, NULL);
-	}
-      if ((*i)->getMask(col))
-	{
-	  delete (*i)->getMask(col);
-	  (*i)->setMask(col, NULL);
-	}
+	  if ((*i)->getImage(col))
+	    {
+	      delete (*i)->getImage(col);
+	      (*i)->setImage(col, NULL);
+	    }
+	  if ((*i)->getMask(col))
+	    {
+	      delete (*i)->getMask(col);
+	      (*i)->setMask(col, NULL);
+	    }
 	}
     }
   if (armyset->getShipPic())

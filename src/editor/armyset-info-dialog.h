@@ -27,7 +27,7 @@
 class ArmySetInfoDialog: public sigc::trackable
 {
  public:
-    ArmySetInfoDialog(Armyset *armyset);
+    ArmySetInfoDialog(Armyset *armyset, bool readonly = false);
     ~ArmySetInfoDialog();
 
     void set_parent_window(Gtk::Window &parent);
@@ -38,7 +38,15 @@ class ArmySetInfoDialog: public sigc::trackable
     Gtk::Dialog* dialog;
     Armyset *d_armyset;
     Gtk::Entry *name_entry;
+    Gtk::Entry *subdir_entry;
     Gtk::SpinButton *id_spinbutton;
+    Gtk::Button *accept_button;
+    Gtk::Label *status_label;
+
+    void on_name_changed();
+    void on_subdir_changed();
+
+    bool d_readonly;
 };
 
 #endif

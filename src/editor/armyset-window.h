@@ -100,7 +100,7 @@ class ArmySetWindow: public sigc::trackable
     Gtk::MenuItem *new_armyset_menuitem;
     Gtk::MenuItem *load_armyset_menuitem;
     Gtk::MenuItem *save_armyset_menuitem;
-    Gtk::MenuItem *save_armyset_as_menuitem;
+    Gtk::MenuItem *validate_armyset_menuitem;
     Gtk::MenuItem *edit_armyset_info_menuitem;
     Gtk::MenuItem *edit_ship_picture_menuitem;
     Gtk::MenuItem *edit_standard_picture_menuitem;
@@ -128,7 +128,7 @@ class ArmySetWindow: public sigc::trackable
     void on_new_armyset_activated();
     void on_load_armyset_activated();
     void on_save_armyset_activated();
-    void on_save_armyset_as_activated();
+    void on_validate_armyset_activated();
     void on_quit_activated();
     void on_edit_armyset_info_activated();
     void on_edit_standard_picture_activated();
@@ -184,6 +184,10 @@ class ArmySetWindow: public sigc::trackable
     void on_suballherobonus_toggled();
     void on_add_army_clicked();
     void on_remove_army_clicked();
+
+    void update_filechooserbutton(Gtk::FileChooserButton *b, ArmyProto *a, Shield::Colour c);
+
+    void on_white_all_checked();
 };
 
 #endif

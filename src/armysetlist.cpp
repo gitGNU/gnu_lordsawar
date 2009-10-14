@@ -56,17 +56,18 @@ void Armysetlist::deleteInstance()
     s_instance = 0;
 }
 
-Armysetlist::Armysetlist()
+void Armysetlist::loadArmysets(std::list<std::string> armysets, 
+			  bool private_collection)
 {
-    // load all armysets
-    std::list<std::string> armysets = File::scanArmysets();
-
     for (std::list<std::string>::const_iterator i = armysets.begin(); 
 	 i != armysets.end(); i++)
       {
-        loadArmyset(*i);
+        bool valid = loadArmyset(*i, private_collection);
+	if (!valid)
+	  continue;
 	iterator it = end();
 	it--;
+	//fill out the maps
 	for (Armyset::iterator ait = (*it)->begin(); ait != (*it)->end(); ait++)
 	  d_armies[(*it)->getId()].push_back(*ait);
 	d_names[(*it)->getId()] = (*it)->getName();
@@ -74,6 +75,16 @@ Armysetlist::Armysetlist()
 	(*it)->setSubDir(*i);
 	d_armysets[*i] = *it;
       }
+}
+
+Armysetlist::Armysetlist()
+{
+    // load all armysets
+    std::list<std::string> armysets = File::scanArmysets();
+    loadArmysets(armysets, false);
+    armysets = File::scanUserArmysets();
+    loadArmysets(armysets, true);
+
 }
 
 Armysetlist::~Armysetlist()
@@ -181,21 +192,15 @@ bool Armysetlist::load(std::string tag, XML_Helper *helper)
 }
 
 
-bool Armysetlist::loadArmyset(std::string name)
+bool Armysetlist::loadArmyset(std::string name, bool private_collection)
 {
   debug("Loading armyset " <<name);
-
-  XML_Helper helper(File::getArmyset(name), ios::in, false);
-
-  helper.registerTag(Armyset::d_tag, sigc::mem_fun((*this), &Armysetlist::load));
-
-  if (!helper.parse())
-    {
-      std::cerr << "Error, while loading an armyset. Armyset Name: ";
-      std::cerr <<name <<std::endl <<std::flush;
-      exit(-1);
-    }
-
+  ArmysetLoader loader(name, private_collection);
+  if (loader.armyset == NULL)
+    return false;
+  if (loader.armyset->validate() == false)
+    return false;
+  push_back(loader.armyset); 
   return true;
 }
 	
@@ -276,4 +281,38 @@ guint32 Armysetlist::getArmysetId(std::string armyset, guint32 tilesize)
 std::string Armysetlist::getArmysetDir(std::string name, guint32 tilesize)
 {
   return getArmyset(getArmysetId(name, tilesize))->getSubDir();
+}
+
+int Armysetlist::getNextAvailableId(int after)
+{
+  std::list<guint32> ids;
+  std::list<std::string> armysets = File::scanArmysets();
+  //there might be IDs in invalid armysets.
+  for (std::list<std::string>::const_iterator i = armysets.begin(); 
+       i != armysets.end(); i++)
+    {
+      ArmysetLoader loader(*i, false);
+      if (loader.armyset)
+	{
+	  ids.push_back(loader.armyset->getId());
+	  delete loader.armyset;
+	}
+    }
+  armysets = File::scanUserArmysets();
+  for (std::list<std::string>::const_iterator i = armysets.begin(); 
+       i != armysets.end(); i++)
+    {
+      ArmysetLoader loader(*i, true);
+      if (loader.armyset)
+	{
+	  ids.push_back(loader.armyset->getId());
+	  delete loader.armyset;
+	}
+    }
+  for (guint32 i = after + 1; i < 1000000; i++)
+    {
+      if (find(ids.begin(), ids.end(), i) == ids.end())
+	return i;
+    }
+  return -1;
 }

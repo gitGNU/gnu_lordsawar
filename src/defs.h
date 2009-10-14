@@ -91,6 +91,10 @@ const std::string TILESETDIR = "tilesets";
 const std::string CITYSETDIR = "citysets";
 const std::string SHIELDSETDIR = "shield";
 const std::string MAPDIR = "map";
+const std::string ARMYSET_EXT = ".xml";
+const std::string TILESET_EXT = ".xml";
+const std::string CITYSET_EXT = ".xml";
+const std::string SHIELDSET_EXT = ".xml";
 
 const unsigned int MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS = 1;
 const unsigned int MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS = 5;

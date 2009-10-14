@@ -438,9 +438,9 @@ void TileSetWindow::on_load_tileset_activated()
   Gtk::FileChooserDialog chooser(*window, 
 				 _("Choose a Tileset to Load"));
   Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*.xml");
+  sav_filter.add_pattern("*" + TILESET_EXT);
   chooser.set_filter(sav_filter);
-  chooser.set_current_folder(Configuration::s_savePath);
+  chooser.set_current_folder(File::getSavePath());
 
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
@@ -518,7 +518,7 @@ void TileSetWindow::on_save_tileset_as_activated()
   Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
 				 Gtk::FILE_CHOOSER_ACTION_SAVE);
   Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*.xml");
+  sav_filter.add_pattern("*" + TILESET_EXT);
   chooser.set_filter(sav_filter);
   chooser.set_current_folder(Configuration::s_dataPath + "/tilesets/");
 

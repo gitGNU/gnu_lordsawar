@@ -214,9 +214,9 @@ ArmySetWindow::ArmySetWindow()
     xml->get_widget("save_armyset_menuitem", save_armyset_menuitem);
     save_armyset_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_save_armyset_activated));
-    xml->get_widget("save_armyset_as_menuitem", save_armyset_as_menuitem);
-    save_armyset_as_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_save_armyset_as_activated));
+    xml->get_widget("validate_armyset_menuitem", validate_armyset_menuitem);
+    validate_armyset_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_validate_armyset_activated));
     xml->get_widget("quit_menuitem", quit_menuitem);
     quit_menuitem->signal_activate().connect
        (sigc::mem_fun(this, &ArmySetWindow::on_quit_activated));
@@ -257,19 +257,26 @@ ArmySetWindow::update_armyset_menuitems()
 {
   if (d_armyset == NULL)
     {
-      save_armyset_as_menuitem->set_sensitive(false);
       save_armyset_menuitem->set_sensitive(false);
+      validate_armyset_menuitem->set_sensitive(false);
       edit_armyset_info_menuitem->set_sensitive(false);
       edit_standard_picture_menuitem->set_sensitive(false);
       edit_ship_picture_menuitem->set_sensitive(false);
     }
   else
     {
-      save_armyset_as_menuitem->set_sensitive(true);
-      save_armyset_menuitem->set_sensitive(true);
+      std::string file = 
+	File::getArmysetDir(d_armyset) + d_armyset->getSubDir() + ARMYSET_EXT;
+      if (File::exists(file) == false)
+	save_armyset_menuitem->set_sensitive(true);
+      else if (File::is_writable(file) == false)
+	save_armyset_menuitem->set_sensitive(false);
+      else
+	save_armyset_menuitem->set_sensitive(true);
       edit_armyset_info_menuitem->set_sensitive(true);
       edit_standard_picture_menuitem->set_sensitive(true);
       edit_ship_picture_menuitem->set_sensitive(true);
+      validate_armyset_menuitem->set_sensitive(true);
     }
 }
 
@@ -296,11 +303,11 @@ ArmySetWindow::update_army_panel()
       //clear all values
       name_entry->set_text("");
       description_textview->get_buffer()->set_text("");
-      production_spinbutton->set_value(0);
+      production_spinbutton->set_value(MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS);
       cost_spinbutton->set_value(0);
-      upkeep_spinbutton->set_value(0);
-      strength_spinbutton->set_value(0);
-      moves_spinbutton->set_value(0);
+      upkeep_spinbutton->set_value(MIN_UPKEEP_FOR_ARMY_UNITS);
+      strength_spinbutton->set_value(MIN_STRENGTH_FOR_ARMY_UNITS);
+      moves_spinbutton->set_value(MIN_MOVES_FOR_ARMY_UNITS);
       exp_spinbutton->set_value(0);
       hero_checkbutton->set_active(false);
       awardable_checkbutton->set_active(false);
@@ -382,9 +389,9 @@ bool ArmySetWindow::load(std::string tag, XML_Helper *helper)
 void ArmySetWindow::on_new_armyset_activated()
 {
   std::string name = "";
-  guint32 id = 0;
+  int id = Armysetlist::getNextAvailableId();
   Armyset *armyset = new Armyset(id, name);
-  ArmySetInfoDialog d(armyset);
+  ArmySetInfoDialog d(armyset, false);
   d.set_parent_window(*window);
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
@@ -396,9 +403,11 @@ void ArmySetWindow::on_new_armyset_activated()
     delete d_armyset;
   d_armyset = armyset;
   armies_list->clear();
-  current_save_filename.clear();
+  current_save_filename = File::getArmyset(d_armyset);
 
-  std::string imgpath = Configuration::s_dataPath + "/army/";
+  File::create_dir(File::getUserArmysetDir() + "/" + d_armyset->getSubDir());
+  std::string imgpath = Glib::get_home_dir();
+  //we will copy an image from where the user points into the new armyset dir.
   white_image_filechooserbutton->set_current_folder(imgpath);
   green_image_filechooserbutton->set_current_folder(imgpath);
   yellow_image_filechooserbutton->set_current_folder(imgpath);
@@ -411,23 +420,35 @@ void ArmySetWindow::on_new_armyset_activated()
 
   update_armyset_buttons();
   update_armyset_menuitems();
+
+  XML_Helper helper(current_save_filename, std::ios::out, false);
+  d_armyset->save(&helper);
+  helper.close();
 }
 
+void ArmySetWindow::update_filechooserbutton(Gtk::FileChooserButton *b, ArmyProto *a, Shield::Colour c)
+{
+  std::string file = File::getArmysetFile (d_armyset, a->getImageName(c));
+  if (File::exists(file) == false)
+    b->set_sensitive(true);
+  else if (File::is_writable(file) == false)
+    b->set_sensitive(false);
+  else
+    b->set_sensitive(true);
+}
 void ArmySetWindow::on_load_armyset_activated()
 {
   Gtk::FileChooserDialog chooser(*window, 
 				 _("Choose an Armyset to Load"));
   Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*.xml");
+  sav_filter.add_pattern("*" + ARMYSET_EXT);
   chooser.set_filter(sav_filter);
-  chooser.set_current_folder(Configuration::s_savePath);
+  chooser.set_current_folder(File::getUserArmysetDir());
 
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
   chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
       
-  chooser.set_current_folder(Configuration::s_dataPath + "/army/");
-
   chooser.show_all();
   int res = chooser.run();
 
@@ -436,28 +457,34 @@ void ArmySetWindow::on_load_armyset_activated()
       current_save_filename = chooser.get_filename();
       chooser.hide();
 
+      bool priv = true;
+      std::string dir = Glib::path_get_dirname(chooser.get_filename());
+      dir = Glib::path_get_dirname(dir) + "/";
+      if (dir == File::getArmysetDir())
+	priv = false;
+      else if (dir == File::getUserArmysetDir())
+	priv = true;
+      else
+	{
+	  std::string msg;
+	  msg = "Armysets can only be loaded from:\n" + File::getArmysetDir() +
+	    "\n or \n" + File::getUserArmysetDir();
+	  Gtk::MessageDialog dialog(*window, msg);
+	  dialog.run();
+	  dialog.hide();
+	  return;
+	}
+      std::string name = File::get_basename(chooser.get_filename());
+
+      ArmysetLoader loader(name, priv);
       armies_list->clear();
       if (d_armyset)
 	delete d_armyset;
-      XML_Helper helper(current_save_filename, std::ios::in, false);
+      d_armyset = loader.armyset;
 
-      helper.registerTag(Armyset::d_tag, 
-			 sigc::mem_fun((*this), &ArmySetWindow::load));
-
-
-      if (!helper.parse())
-	{
-	  std::cerr <<_("Error, while loading an armyset. Armyset Name: ");
-	  std::cerr <<current_save_filename <<std::endl <<std::flush;
-	  exit(-1);
-	}
-
-      char *dir = g_strdup(current_save_filename.c_str());
-      dir = basename (dir);
-      char *tmp = strchr (dir, '.');
-      if (tmp)
-	tmp[0] = '\0';
-      d_armyset->setSubDir(dir);
+      //was this from the user's own private collection?
+    
+      d_armyset->setSubDir(name);
       GraphicsLoader::instantiateImages(d_armyset);
       guint32 max = d_armyset->getSize();
       for (unsigned int i = 0; i < max; i++)
@@ -469,7 +496,32 @@ void ArmySetWindow::on_load_armyset_activated()
 	  if(row)
 	    armies_treeview->get_selection()->select(row);
 	}
-      std::string imgpath = Configuration::s_dataPath + "/army/" + dir + "/";
+
+      Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
+      Gtk::TreeModel::iterator iterrow = selection->get_selected();
+      if (iterrow) 
+	{
+	  Gtk::TreeModel::Row row = *iterrow;
+	  ArmyProto *a = row[armies_columns.army];
+	  update_filechooserbutton(white_image_filechooserbutton, a,
+				   Shield::WHITE);
+	  update_filechooserbutton(yellow_image_filechooserbutton, a, 
+				   Shield::YELLOW);
+	  update_filechooserbutton(green_image_filechooserbutton, a, 
+				   Shield::GREEN);
+	  update_filechooserbutton(light_blue_image_filechooserbutton, a, 
+				   Shield::LIGHT_BLUE);
+	  update_filechooserbutton(red_image_filechooserbutton, a, Shield::RED);
+	  update_filechooserbutton(dark_blue_image_filechooserbutton, a, 
+				   Shield::DARK_BLUE);
+	  update_filechooserbutton(orange_image_filechooserbutton, a, 
+				   Shield::ORANGE);
+	  update_filechooserbutton(black_image_filechooserbutton, a, 
+				   Shield::BLACK);
+	  update_filechooserbutton(neutral_image_filechooserbutton, a, 
+				   Shield::NEUTRAL);
+	}
+      std::string imgpath = File::getArmysetDir(d_armyset);
       white_image_filechooserbutton->set_current_folder(imgpath);
       green_image_filechooserbutton->set_current_folder(imgpath);
       yellow_image_filechooserbutton->set_current_folder(imgpath);
@@ -485,45 +537,77 @@ void ArmySetWindow::on_load_armyset_activated()
   update_army_panel();
 }
 
+void ArmySetWindow::on_validate_armyset_activated()
+{
+  std::list<std::string> msgs;
+  if (d_armyset == NULL)
+    return;
+  bool valid;
+  valid = d_armyset->validateSize();
+  if (!valid)
+    msgs.push_back(_("There must be at least one army unit in the armyset."));
+  valid = d_armyset->validateHero();
+  if (!valid)
+    msgs.push_back(_("There must be at least one hero in the armyset."));
+  valid = d_armyset->validatePurchasables();
+  if (!valid)
+    msgs.push_back(_("There must be at least one army unit with a production cost of more than zero."));
+  valid = d_armyset->validateRuinDefenders();
+  if (!valid)
+    msgs.push_back(_("There must be at least one army unit than can defend a ruin."));
+  valid = d_armyset->validateAwardables();
+  if (!valid)
+    msgs.push_back(_("There must be at least one army unit than can be awarded to a hero."));
+  valid = d_armyset->validateShip();
+  if (!valid)
+    msgs.push_back(_("The ship image must be set."));
+  valid = d_armyset->validateStandard();
+  if (!valid)
+    msgs.push_back(_("The hero's standard (the flag) image must be set."));
+
+  for (Armyset::iterator it = d_armyset->begin(); it != d_armyset->end(); it++)
+    {
+      Shield::Colour c;
+      bool valid = d_armyset->validateArmyUnitImage(*it, c);
+      if (!valid)
+	{
+	  msgs.push_back(String::ucompose(_("%1 does not have an image set for the %2 player"), (*it)->getName(), Shield::colourToString(c)));
+	  break;
+	}
+    }
+
+  valid = d_armyset->validateArmyUnitNames();
+  if (!valid)
+    msgs.push_back(_("An army unit does not have a name."));
+
+  std::string msg = "";
+  for (std::list<std::string>::iterator it = msgs.begin(); it != msgs.end();
+       it++)
+    msg += (*it) + "\n";
+
+  if (msg != "")
+    {
+      Gtk::MessageDialog dialog(*window, msg);
+      dialog.run();
+      dialog.hide();
+    }
+
+  return;
+}
 void ArmySetWindow::on_save_armyset_activated()
 {
   if (current_save_filename.empty())
-    on_save_armyset_as_activated();
-  else
-    {
-      //Reorder the armyset according to the treeview
-      d_armyset->clear();
-      for (Gtk::TreeIter i = armies_list->children().begin(),
-	   end = armies_list->children().end(); i != end; ++i) 
-	d_armyset->push_back((*i)[armies_columns.army]);
-      XML_Helper helper(current_save_filename, std::ios::out, false);
-      d_armyset->save(&helper);
-      helper.close();
-    }
-}
+    current_save_filename = File::getUserArmyset(d_armyset->getSubDir());
+  
+  //Reorder the armyset according to the treeview
+  d_armyset->clear();
+  for (Gtk::TreeIter i = armies_list->children().begin(),
+       end = armies_list->children().end(); i != end; ++i) 
+    d_armyset->push_back((*i)[armies_columns.army]);
 
-void ArmySetWindow::on_save_armyset_as_activated()
-{
-  Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
-				 Gtk::FILE_CHOOSER_ACTION_SAVE);
-  Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*.xml");
-  chooser.set_filter(sav_filter);
-  chooser.set_current_folder(Configuration::s_dataPath + "/army/");
-
-  chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
-  chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
-
-  chooser.show_all();
-  int res = chooser.run();
-
-  if (res == Gtk::RESPONSE_ACCEPT)
-    {
-      current_save_filename = chooser.get_filename();
-      chooser.hide();
-      on_save_armyset_activated();
-    }
+  XML_Helper helper(current_save_filename, std::ios::out, false);
+  d_armyset->save(&helper);
+  helper.close();
 }
 
 void ArmySetWindow::on_quit_activated()
@@ -539,53 +623,45 @@ void ArmySetWindow::on_edit_ship_picture_activated()
 {
   std::string filename = "";
   if (d_armyset->getShipImageName() != "")
-    filename = File::getArmysetFile(d_armyset->getSubDir(), 
-				    d_armyset->getShipImageName());
+    filename = File::getArmysetFile(d_armyset, d_armyset->getShipImageName());
   MaskedImageEditorDialog d(filename);
   d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
   d.run();
   if (d.get_selected_filename() != "")
     {
-      std::string filename = d.get_selected_filename();
-      char *dir = g_strdup(filename.c_str());
-      dir = basename (dir);
-      char *tmp = strchr (dir, '.');
-      if (tmp)
-	tmp[0] = '\0';
-      std::string path = Configuration::s_dataPath + "/army/" +  
-	d_armyset->getSubDir() +"/";
-      if (filename.substr(0, path.size()) !=path)
-	return;
-      d_armyset->setShipImageName(dir);
+      std::string file = File::get_basename(d.get_selected_filename());
+      if (d.get_selected_filename() != File::getArmysetFile(d_armyset, file))
+	{
+	  //fixme:warn on overrwite.
+	  File::copy (d.get_selected_filename(), 
+		      File::getArmysetFile(d_armyset, file));
+	}
+      d_armyset->setShipImageName(file);
     }
 }
 void ArmySetWindow::on_edit_standard_picture_activated()
 {
   std::string filename = "";
   if (d_armyset->getStandardImageName() != "")
-    filename = File::getArmysetFile(d_armyset->getSubDir(), 
-				    d_armyset->getStandardImageName());
+    filename = File::getArmysetFile(d_armyset, d_armyset->getStandardImageName());
   MaskedImageEditorDialog d(filename);
   d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
   d.run();
   if (d.get_selected_filename() != "")
     {
-      std::string filename = d.get_selected_filename();
-      char *dir = g_strdup(filename.c_str());
-      dir = basename (dir);
-      char *tmp = strchr (dir, '.');
-      if (tmp)
-	tmp[0] = '\0';
-      std::string path = Configuration::s_dataPath + "/army/" +  
-	d_armyset->getSubDir() +"/";
-      if (filename.substr(0, path.size()) !=path)
-	return;
-      d_armyset->setStandardImageName(dir);
+      std::string file = File::get_basename(d.get_selected_filename());
+      if (d.get_selected_filename() != File::getArmysetFile(d_armyset, file))
+	{
+	  //fixme:warn on overrwite.
+	  File::copy (d.get_selected_filename(), 
+		      File::getArmysetFile(d_armyset, file));
+	}
+      d_armyset->setStandardImageName(file);
     }
 }
 void ArmySetWindow::on_edit_armyset_info_activated()
 {
-  ArmySetInfoDialog d(d_armyset);
+  ArmySetInfoDialog d(d_armyset, true);
   d.set_parent_window(*window);
   d.run();
 }
@@ -632,12 +708,16 @@ void ArmySetWindow::fill_army_image(Gtk::FileChooserButton *button, Gtk::Image *
     {
       image->property_pixbuf() = army->getImage(c)->to_pixbuf();
     
-      std::string path = Configuration::s_dataPath + "/army/" +  
-	d_armyset->getSubDir() + "/" + army->getImageName(c) + ".png";
+      std::string path = File::getArmysetFile(d_armyset, army->getImageName(c));
       button->set_filename(path);
     }
   else
-    image->clear();
+    {
+      std::string imgpath = File::getArmysetDir(d_armyset);
+      button->set_filename("");
+      button->set_current_folder(imgpath);
+      image->clear();
+    }
 }
 
 void ArmySetWindow::fill_army_info(ArmyProto *army)
@@ -755,7 +835,10 @@ void ArmySetWindow::on_description_changed()
 void ArmySetWindow::on_image_changed(Gtk::FileChooserButton *button, Gtk::Image *image, Shield::Colour c)
 {
   if (button->get_filename().empty())
-    return;
+    {
+      image->clear();
+      return;
+    }
 
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
   Gtk::TreeModel::iterator iterrow = selection->get_selected();
@@ -764,20 +847,19 @@ void ArmySetWindow::on_image_changed(Gtk::FileChooserButton *button, Gtk::Image 
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      char *dir = g_strdup(button->get_filename().c_str());
-      dir = basename (dir);
-      char *tmp = strchr (dir, '.');
-      if (tmp)
-	tmp[0] = '\0';
-      std::string path = Configuration::s_dataPath + "/army/" +  
-	d_armyset->getSubDir() +"/";
-      if (button->get_filename().substr(0, path.size()) !=path)
-	return;
-      a->setImageName(c, dir);
+      std::string file = File::get_basename(button->get_filename());
+      if (button->get_filename() != File::getArmysetFile(d_armyset, file))
+	{
+	  //fixme:warn on overrwite.
+	  File::copy (button->get_filename(), 
+		      File::getArmysetFile(d_armyset, file));
+	}
+      a->setImageName(c, file);
       struct rgb_shift shifts;
       shifts = Shieldsetlist::getInstance()->getMaskColorShifts("default", c);
       //GraphicsLoader::instantiateImages(d_armyset);
       //fixme, this needs to be added back in somehow.
+      GraphicsLoader::instantiateImages(d_armyset, a, c);
       if (c != Shield::NEUTRAL)
 	{
 	  PixMask *army_image = GraphicsCache::applyMask(a->getImage(c), 
@@ -788,6 +870,7 @@ void ArmySetWindow::on_image_changed(Gtk::FileChooserButton *button, Gtk::Image 
 	}
       else
 	image->property_pixbuf() = a->getImage(c)->to_pixbuf();
+
     }
 }
 void ArmySetWindow::on_white_image_changed()
@@ -1390,6 +1473,7 @@ void ArmySetWindow::on_add_army_clicked()
   a->setName("Untitled");
   (*i)[armies_columns.name] = a->getName();
   (*i)[armies_columns.army] = a;
+  d_armyset->push_back(a);
 
 }
 

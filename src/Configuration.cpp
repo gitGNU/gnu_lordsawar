@@ -31,6 +31,7 @@
 #include "string_tokenizer.h"
 #include "xmlhelper.h"
 #include "defs.h"
+#include "File.h"
 
 using namespace std;
 
@@ -293,23 +294,23 @@ void initialize_configuration()
 	    std::cerr << "Created the standard configuration file " << Configuration::configuration_file_path << std::endl;
     }
     
-#ifndef __WIN32__
     //Check if the save game directory exists. If not, try to create it.
-    struct stat testdir;
 
-    if (stat(Configuration::s_savePath.c_str(), &testdir)
-        || !S_ISDIR(testdir.st_mode))
+    if (File::create_dir(Configuration::s_savePath) == false)
     {
-        guint32 mask = 0755; //make directory only readable for user and group
-        if (mkdir(Configuration::s_savePath.c_str(), mask))
-        {
-            std::cerr << "Couldn't create save game directory ";
-            std::cerr << Configuration::s_savePath <<".\n";
-            std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
-            exit(-1);
-        }
+        std::cerr << "Couldn't create save game directory ";
+        std::cerr << Configuration::s_savePath <<".\n";
+        std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
+        exit(-1);
     }
-#endif
+    //Check if the personal armyset directory exists. If not, try to create it.
+    if (File::create_dir(File::getUserArmysetDir()) == false)
+    {
+        std::cerr << "Couldn't create personal armyset directory ";
+        std::cerr << File::getUserArmysetDir() <<".\n";
+        std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
+        exit(-1);
+    }
 }
 
 std::string Configuration::neutralCitiesToString(const GameParameters::NeutralCities neutrals)

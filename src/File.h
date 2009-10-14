@@ -26,6 +26,7 @@
 #include <list>
 
 #include "xmlhelper.h"
+class Armyset;
 
 /** \brief Miscellaneous functions for file access
   * 
@@ -45,6 +46,8 @@ class File
           */
         static std::list<std::string> scanArmysets();
 
+	// get the available armysets in the user's personal collection
+	static std::list<std::string> scanUserArmysets();
 
         /** Get the armyset description file
           *
@@ -52,6 +55,22 @@ class File
           * @return the full name of the description file
           */
         static std::string getArmyset(std::string armysetsubdir);
+
+        /** Get the armyset description file from the user's personal collection
+          *
+          * @param armysetsubdir    the name of the armyset.
+          * @return the full name of the description file
+          */
+	static std::string getUserArmyset(std::string armysetsubdir);
+
+	static std::string getUserArmysetDir();
+
+	static std::string getArmysetDir();
+
+	static std::string getArmysetDir(Armyset *armyset);
+
+	//! Gets the description file for the given armyset.
+	static std::string getArmyset(Armyset *armyset);
 
         /** Scan the data directories for shieldsets
           * 
@@ -90,7 +109,7 @@ class File
 	static std::string getCitysetFile(std::string citysetsubdir, std::string picname);
 
 	// get an armyset path
-	static std::string getArmysetFile(std::string armysetsubdir, std::string picname);
+	static std::string getArmysetFile(Armyset *armyset, std::string picname);
 	
         //! load misc file, e.g. hero names 
         static std::string getMiscFile(std::string filename);
@@ -118,6 +137,21 @@ class File
 
 	// get the available scenarios in the user's personal collection
 	static std::list<std::string> scanUserMaps();
+
+	//! Copy a file from one place to another.
+	static int copy (Glib::ustring from, Glib::ustring to);
+
+	//! make a directory if it doesn't already exist.
+	static bool create_dir(std::string dir);
+
+	//! simple basename routine, but also strips the file extension.
+	static std::string get_basename(std::string path, bool keep_ext=false);
+
+	//! is a file writable?
+	static bool is_writable(std::string path);
+
+	//! does a file exist?
+	static bool exists(std::string f);
 
 };
 
