@@ -296,11 +296,6 @@ PixMask* GraphicsLoader::loadImage(std::string filename, bool alpha)
   return PixMask::create(filename);
 }
 
-PixMask* GraphicsLoader::getArmyPicture(std::string armysetdir, std::string pic)
-{
-  return loadImage(Configuration::s_dataPath + "/army/" + armysetdir + "/" + pic);
-}
-
 PixMask* GraphicsLoader::getTilesetPicture(Tileset *tileset, std::string picname)
 {
   return loadImage(File::getTilesetFile(tileset, picname));
@@ -308,7 +303,7 @@ PixMask* GraphicsLoader::getTilesetPicture(Tileset *tileset, std::string picname
 
 PixMask* GraphicsLoader::getMiscPicture(std::string picname, bool alpha)
 {
-  return loadImage(Configuration::s_dataPath + "/various/" + picname,alpha);
+  return loadImage(File::getMiscFile("/various/" + picname), alpha);
 }
 
 PixMask* GraphicsLoader::getShieldsetPicture(std::string shieldsetdir, std::string picname)

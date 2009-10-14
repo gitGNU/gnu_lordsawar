@@ -68,12 +68,12 @@ LoadScenarioDialog::LoadScenarioDialog()
   std::list<std::string> lm = File::scanMaps();
   for (std::list<std::string>::iterator i = lm.begin(), end = lm.end();
        i != end; ++i)
-    add_scenario(Configuration::s_dataPath + "/" + MAPDIR + "/" + *i);
+    add_scenario(File::getMapFile(*i));
   lm.clear();
   lm = File::scanUserMaps();
   for (std::list<std::string>::iterator i = lm.begin(), end = lm.end();
        i != end; ++i)
-    add_scenario(Configuration::s_savePath + "/" + *i);
+    add_scenario(File::getUserMapFile(*i));
 
 
   Gtk::TreeModel::Row row;
@@ -281,9 +281,9 @@ void LoadScenarioDialog::on_add_scenario_clicked()
       std::string filename = load_map_filechooser->get_filename();
       std::string mapname = Glib::path_get_basename (filename);
       // copy it into our ~/.lordsawar/ dir.
-      File::copy (filename, Configuration::s_savePath + "/" + mapname);
+      File::copy (filename, File::getUserMapFile(mapname));
       // add it to the list
-      add_scenario(Configuration::s_savePath + "/" + mapname);
+      add_scenario(File::getUserMapFile(mapname));
     }
   delete load_map_filechooser;
 }

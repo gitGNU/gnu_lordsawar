@@ -98,6 +98,8 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
 	 * @return True if the Tileset could be loaded.  False otherwise.
 	 */
         bool loadTileset (std::string name, bool from_private_collection);
+
+	void loadTilesets(std::list<std::string> tilesets, bool priv);
         
         typedef std::map<std::string, std::string> DirMap;
         typedef std::map<std::string, Tileset*> TilesetMap;

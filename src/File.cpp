@@ -151,6 +151,11 @@ std::string File::getMusicFile(std::string filename)
   return std::string(Configuration::s_dataPath + "/music/" + filename.c_str());
 }
 
+std::string File::getDataPath()
+{
+  return add_slash_if_necessary(Configuration::s_dataPath);
+}
+
 std::string File::getSavePath()
 {
   return add_slash_if_necessary(Configuration::s_savePath);
@@ -172,9 +177,28 @@ std::list<std::string> File::scanCitysets()
     return retlist;
 }
 
+std::string File::getUserMapDir()
+{
+  return add_slash_if_necessary(Configuration::s_savePath) + MAPDIR + "/";
+}
+
+std::string File::getMapDir()
+{
+  return add_slash_if_necessary(Configuration::s_dataPath) + MAPDIR + "/";
+}
+
+std::string File::getUserMapFile(std::string file)
+{
+  return getUserMapDir() + file;
+}
+
+std::string File::getMapFile(std::string file)
+{
+  return getMapDir() + file;
+}
 std::list<std::string> File::scanUserMaps()
 {
-  std::string path = getSavePath();
+  std::string path = File::getUserMapDir();
     
     std::list<std::string> retlist;
     Glib::Dir dir(path);
@@ -196,7 +220,7 @@ std::list<std::string> File::scanUserMaps()
 
 std::list<std::string> File::scanMaps()
 {
-  std::string path = Configuration::s_dataPath + "/" + MAPDIR + "/";
+  std::string path = File::getMapDir();
     
     std::list<std::string> retlist;
     Glib::Dir dir(path);
@@ -449,4 +473,5 @@ std::string File::getTilesetFile(Tileset *tileset, std::string picname)
   else
     return getUserTilesetDir() + tileset->getSubDir() + "/" + picname;
 }
+
 // End of file

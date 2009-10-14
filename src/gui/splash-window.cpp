@@ -68,7 +68,7 @@ SplashWindow::SplashWindow()
     
     // load background
     Gtk::Image *splash_image
-	= manage(new Gtk::Image(Configuration::s_dataPath + "/various/splash_screen.jpg"));
+	= manage(new Gtk::Image(File::getMiscFile("/various/splash_screen.jpg")));
 
     // the table is a hack to get the image shown behind the buttons
     Gtk::Table *table = 0;

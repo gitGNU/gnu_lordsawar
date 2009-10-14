@@ -319,6 +319,15 @@ void initialize_configuration()
         std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
         exit(-1);
     }
+
+    //Check if the personal maps directory exists. If not, try to create it.
+    if (File::create_dir(File::getUserMapDir()) == false)
+    {
+        std::cerr << "Couldn't create personal map directory ";
+        std::cerr << File::getUserMapDir() <<".\n";
+        std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
+        exit(-1);
+    }
 }
 
 std::string Configuration::neutralCitiesToString(const GameParameters::NeutralCities neutrals)

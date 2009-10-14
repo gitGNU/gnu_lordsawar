@@ -52,30 +52,8 @@ void Tilesetlist::deleteInstance()
 Tilesetlist::Tilesetlist()
 {
     // load all tilesets
-    std::list<std::string> tilesets = File::scanTilesets();
-
-    for (std::list<std::string>::const_iterator i = tilesets.begin(); 
-	 i != tilesets.end(); i++)
-      {
-        if (loadTileset(*i, false) == true)
-	  {
-	    iterator it = end();
-	    it--;
-	    (*it)->setSubDir(*i);
-	    d_dirs[String::ucompose("%1 %2", (*it)->getName(), (*it)->getTileSize())] = *i;
-	    d_tilesets[*i] = *it;
-	  }
-	else
-	  {
-	    //we failed validation
-	    iterator it = end();
-	    it--;
-	    fprintf (stderr, "tileset `%s' fails validation. skipping.\n",
-		     (*it)->getName().c_str());
-	    delete *it;
-	    erase (it);
-	  }
-      }
+    loadTilesets(File::scanTilesets(), false);
+    loadTilesets(File::scanUserTilesets(), true);
 }
 
 Tilesetlist::~Tilesetlist()
@@ -136,3 +114,30 @@ std::string Tilesetlist::getTilesetDir(std::string name, guint32 tilesize)
 {
   return d_dirs[String::ucompose("%1 %2", name, tilesize)];
 }
+
+void Tilesetlist::loadTilesets(std::list<std::string> tilesets, bool priv)
+{
+  for (std::list<std::string>::const_iterator i = tilesets.begin(); 
+       i != tilesets.end(); i++)
+    {
+      if (loadTileset(*i, priv) == true)
+	{
+	  iterator it = end();
+	  it--;
+	  (*it)->setSubDir(*i);
+	  d_dirs[String::ucompose("%1 %2", (*it)->getName(), (*it)->getTileSize())] = *i;
+	  d_tilesets[*i] = *it;
+	}
+      else
+	{
+	  //we failed validation
+	  iterator it = end();
+	  it--;
+	  fprintf (stderr, "tileset `%s' fails validation. skipping.\n",
+		   (*it)->getName().c_str());
+	  delete *it;
+	  erase (it);
+	}
+    }
+}
+

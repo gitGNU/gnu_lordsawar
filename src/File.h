@@ -160,15 +160,30 @@ class File
         // get save game path
         static std::string getSavePath();
 
+	//! get game data path
+	static std::string getDataPath();
 
         // get the available citysets
         static std::list<std::string> scanCitysets();
+
+	//! the location of the system directory that holds scenario terrains.
+	static std::string getMapDir();
+
+	//! the location of the system directory that holds personal terrains.
+	static std::string getUserMapDir();
+
+	//! get the path of a system scenario file called file.
+	static std::string getMapFile(std::string file);
+
+	//! get the path of a personal scenario called file.
+	static std::string getUserMapFile(std::string file);
 
         // get the available scenarios
         static std::list<std::string> scanMaps();
 
 	// get the available scenarios in the user's personal collection
 	static std::list<std::string> scanUserMaps();
+
 
 	//! Copy a file from one place to another.
 	static int copy (Glib::ustring from, Glib::ustring to);
