@@ -38,6 +38,7 @@
 #include "Configuration.h"
 #include "defs.h"
 #include "armyset.h"
+#include "tileset.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
@@ -97,28 +98,12 @@ namespace
     }
 }
 
-std::string File::getUserArmysetDir()
-{
-  std::string dir =  getSavePath() + ARMYSETDIR + "/";
-  return dir;
-}
-
 std::string add_slash_if_necessary(std::string dir)
 {
   if (dir.c_str()[strlen(dir.c_str())-1] == '/')
     return dir;
   else
     return dir + "/";
-}
-
-std::string File::getArmysetDir()
-{
-  return add_slash_if_necessary(Configuration::s_dataPath) + ARMYSETDIR + "/";
-}
-
-std::string getTilesetDir()
-{
-  return add_slash_if_necessary(Configuration::s_dataPath) + TILESETDIR + "/";
 }
 
 std::string getCitysetDir()
@@ -129,50 +114,6 @@ std::string getCitysetDir()
 std::string getShieldsetDir()
 {
   return add_slash_if_necessary(Configuration::s_dataPath) + SHIELDSETDIR + "/";
-}
-
-std::list<std::string> File::scanUserArmysets()
-{
-    std::list<std::string> retlist = 
-      get_xml_files_in_immediate_subdirs(getUserArmysetDir(), ARMYSET_EXT);
-
-    return retlist;
-}
-std::list<std::string> File::scanArmysets()
-{
-    std::list<std::string> retlist = 
-      get_xml_files_in_immediate_subdirs(getArmysetDir(), ARMYSET_EXT);
-
-    if (retlist.empty())
-    {
-      std::cerr << "Couldn't find any armysets!" << std::endl;
-      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
-      std::cerr << "Exiting!" << std::endl;
-      exit(-1);
-    }
-
-    return retlist;
-}
-
-std::string File::getUserArmyset(std::string armysetsubdir)
-{
-  std::string dir =  getUserArmysetDir() + armysetsubdir;
-  return dir + "/" + armysetsubdir + ARMYSET_EXT;
-}
-
-std::string File::getArmyset(std::string armysetsubdir)
-{
-  return getArmysetDir() + armysetsubdir + "/" + armysetsubdir + ARMYSET_EXT;
-}
-
-std::string File::getTileset(std::string tilesetsubdir)
-{
-  return getTilesetDir() + tilesetsubdir + "/" + tilesetsubdir + TILESET_EXT;
-}
-
-std::string File::getTilesetFile(std::string tilesetsubdir, std::string picname)
-{
-  return getTilesetDir() + tilesetsubdir + "/" + picname;
 }
 
 std::string File::getShieldsetFile(std::string shieldsetsubdir, std::string picname)
@@ -213,22 +154,6 @@ std::string File::getMusicFile(std::string filename)
 std::string File::getSavePath()
 {
   return add_slash_if_necessary(Configuration::s_savePath);
-}
-
-std::list<std::string> File::scanTilesets()
-{
-    std::list<std::string> retlist = 
-      get_xml_files_in_immediate_subdirs(getTilesetDir(), TILESET_EXT);
-    
-    if (retlist.empty())
-    {
-      std::cerr << "Couldn't find any tilesets!" << std::endl;
-      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
-      std::cerr << "Exiting!" << std::endl;
-      exit(-1);
-    }
-    
-    return retlist;
 }
 
 std::list<std::string> File::scanCitysets()
@@ -316,27 +241,6 @@ std::string File::getShieldset(std::string shieldsetsubdir)
   return getShieldsetDir() + shieldsetsubdir + "/" + shieldsetsubdir + SHIELDSET_EXT;
 }
 
-std::string File::getArmysetDir(Armyset *armyset)
-{
-  if (armyset->fromPrivateCollection() == false)
-    return getArmysetDir() + armyset->getSubDir() + "/";
-  else
-    return getUserArmysetDir() + armyset->getSubDir() + "/";
-}
-
-std::string File::getArmyset(Armyset *armyset)
-{
-  return getArmysetDir(armyset) + armyset->getSubDir() + ARMYSET_EXT;
-}
-
-std::string File::getArmysetFile(Armyset *armyset, std::string picname)
-{
-  if (armyset->fromPrivateCollection() == false)
-    return getArmysetDir() + armyset->getSubDir() + "/" + picname + ".png";
-  else
-    return getUserArmysetDir() + armyset->getSubDir() + "/" + picname + ".png";
-}
-
 std::string File::get_basename(std::string path, bool keep_ext)
 {
   std::string file;
@@ -407,5 +311,142 @@ bool File::exists(std::string f)
   if (fileptr)
     fclose(fileptr);
   return retval;
+}
+
+std::list<std::string> File::scanArmysets()
+{
+    std::list<std::string> retlist = 
+      get_xml_files_in_immediate_subdirs(getArmysetDir(), ARMYSET_EXT);
+
+    if (retlist.empty())
+    {
+      std::cerr << "Couldn't find any armysets!" << std::endl;
+      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
+      std::cerr << "Exiting!" << std::endl;
+      exit(-1);
+    }
+
+    return retlist;
+}
+
+std::list<std::string> File::scanUserArmysets()
+{
+    std::list<std::string> retlist = 
+      get_xml_files_in_immediate_subdirs(getUserArmysetDir(), ARMYSET_EXT);
+
+    return retlist;
+}
+
+
+std::string File::getArmyset(std::string armysetsubdir)
+{
+  return getArmysetDir() + armysetsubdir + "/" + armysetsubdir + ARMYSET_EXT;
+}
+
+std::string File::getUserArmyset(std::string armysetsubdir)
+{
+  std::string dir =  getUserArmysetDir() + armysetsubdir;
+  return dir + "/" + armysetsubdir + ARMYSET_EXT;
+}
+
+std::string File::getArmysetDir()
+{
+  return add_slash_if_necessary(Configuration::s_dataPath) + ARMYSETDIR + "/";
+}
+
+std::string File::getUserArmysetDir()
+{
+  std::string dir =  getSavePath() + ARMYSETDIR + "/";
+  return dir;
+}
+
+std::string File::getArmysetDir(Armyset *armyset)
+{
+  if (armyset->fromPrivateCollection() == false)
+    return getArmysetDir() + armyset->getSubDir() + "/";
+  else
+    return getUserArmysetDir() + armyset->getSubDir() + "/";
+}
+
+std::string File::getArmyset(Armyset *armyset)
+{
+  return getArmysetDir(armyset) + armyset->getSubDir() + ARMYSET_EXT;
+}
+
+std::string File::getArmysetFile(Armyset *armyset, std::string picname)
+{
+  if (armyset->fromPrivateCollection() == false)
+    return getArmysetDir() + armyset->getSubDir() + "/" + picname + ".png";
+  else
+    return getUserArmysetDir() + armyset->getSubDir() + "/" + picname + ".png";
+}
+
+//tilesets
+std::list<std::string> File::scanTilesets()
+{
+    std::list<std::string> retlist = 
+      get_xml_files_in_immediate_subdirs(getTilesetDir(), TILESET_EXT);
+
+    if (retlist.empty())
+    {
+      std::cerr << "Couldn't find any tilesets!" << std::endl;
+      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
+      std::cerr << "Exiting!" << std::endl;
+      exit(-1);
+    }
+
+    return retlist;
+}
+
+std::list<std::string> File::scanUserTilesets()
+{
+    std::list<std::string> retlist = 
+      get_xml_files_in_immediate_subdirs(getUserTilesetDir(), TILESET_EXT);
+
+    return retlist;
+}
+
+
+std::string File::getTileset(std::string tilesetsubdir)
+{
+  return getTilesetDir() + tilesetsubdir + "/" + tilesetsubdir + TILESET_EXT;
+}
+
+std::string File::getUserTileset(std::string tilesetsubdir)
+{
+  std::string dir =  getUserTilesetDir() + tilesetsubdir;
+  return dir + "/" + tilesetsubdir + TILESET_EXT;
+}
+
+std::string File::getTilesetDir()
+{
+  return add_slash_if_necessary(Configuration::s_dataPath) + TILESETDIR + "/";
+}
+
+std::string File::getUserTilesetDir()
+{
+  std::string dir = getSavePath() + TILESETDIR + "/";
+  return dir;
+}
+
+std::string File::getTilesetDir(Tileset *tileset)
+{
+  if (tileset->fromPrivateCollection() == false)
+    return getTilesetDir() + tileset->getSubDir() + "/";
+  else
+    return getUserTilesetDir() + tileset->getSubDir() + "/";
+}
+
+std::string File::getTileset(Tileset *tileset)
+{
+  return getTilesetDir(tileset) + tileset->getSubDir() + TILESET_EXT;
+}
+
+std::string File::getTilesetFile(Tileset *tileset, std::string picname)
+{
+  if (tileset->fromPrivateCollection() == false)
+    return getTilesetDir() + tileset->getSubDir() + "/" + picname;
+  else
+    return getUserTilesetDir() + tileset->getSubDir() + "/" + picname;
 }
 // End of file

@@ -53,9 +53,9 @@ class TileSetWindow: public sigc::trackable
     Gtk::Button *remove_tile_button;
     Gtk::VBox *tile_vbox;
     Gtk::Entry *tile_name_entry;
-    Gtk::ComboBox *tile_type_combobox;
+    Gtk::ComboBoxText *tile_type_combobox;
     Gtk::SpinButton *tile_moves_spinbutton;
-    Gtk::ComboBox *tile_smallmap_pattern_combobox;
+    Gtk::ComboBoxText *tile_smallmap_pattern_combobox;
     Gtk::ColorButton *tile_smallmap_first_colorbutton;
     Gtk::ColorButton *tile_smallmap_second_colorbutton;
     Gtk::ColorButton *tile_smallmap_third_colorbutton;
@@ -72,7 +72,7 @@ class TileSetWindow: public sigc::trackable
     Gtk::MenuItem *preview_tile_menuitem;
     Gtk::MenuItem *quit_menuitem;
     Gtk::MenuItem *help_about_menuitem;
-    Gtk::ComboBox *tilestyle_combobox;
+    Gtk::ComboBoxText *tilestyle_combobox;
     Gtk::Image *tilestyle_image;
     Gtk::FileChooserButton *image_filechooser_button;
     Gtk::Button *refresh_button;

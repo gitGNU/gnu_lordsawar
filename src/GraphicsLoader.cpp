@@ -156,15 +156,15 @@ void GraphicsLoader::instantiateImages(Tileset *ts)
   for (Tileset::iterator it = ts->begin(); it != ts->end(); it++)
     {
       for (Tile::iterator i = (*it)->begin(); i != (*it)->end(); i++)
-	instantiateImages(*i, ts->getTileSize());
+	instantiateImages(ts, *i, ts->getTileSize());
     }
 }
 
-void GraphicsLoader::instantiateImages(TileStyleSet *tss, guint32 tsize)
+void GraphicsLoader::instantiateImages(Tileset *ts, TileStyleSet *tss, guint32 tsize)
 {
   std::vector<PixMask*> styles;
   styles = disassemble_row
-    (File::getTilesetFile(tss->getSubDir(), tss->getName() + ".png"), 
+    (File::getTilesetFile(ts, tss->getName() + ".png"), 
      tss->size());
 
   for (unsigned int i=0; i < tss->size(); i++)
@@ -301,9 +301,9 @@ PixMask* GraphicsLoader::getArmyPicture(std::string armysetdir, std::string pic)
   return loadImage(Configuration::s_dataPath + "/army/" + armysetdir + "/" + pic);
 }
 
-PixMask* GraphicsLoader::getTilesetPicture(std::string tilesetdir, std::string picname)
+PixMask* GraphicsLoader::getTilesetPicture(Tileset *tileset, std::string picname)
 {
-  return loadImage(File::getTilesetFile(tilesetdir, picname));
+  return loadImage(File::getTilesetFile(tileset, picname));
 }
 
 PixMask* GraphicsLoader::getMiscPicture(std::string picname, bool alpha)

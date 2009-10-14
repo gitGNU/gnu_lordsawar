@@ -26,6 +26,8 @@
 
 #include "Tile.h"
 #include "defs.h"
+#include "File.h"
+using namespace std;
 
 class XML_Helper;
 
@@ -71,7 +73,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	 * @param helper  The opened tileset configuration file to load the
 	 *                tileset from.
 	 */
-        Tileset(XML_Helper* helper);
+        Tileset(XML_Helper* helper, bool private_collection = false);
 	//! Destructor.
         ~Tileset();
 
@@ -150,6 +152,9 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
         //! Get the colour associated with the road on the smallmap.
 	Gdk::Color getRoadColor() const {return d_road_color;};
 	void setRoadColor(Gdk::Color color) {d_road_color = color;};
+
+	//! Return whether this is an tileset in the user's personal collection.
+	bool fromPrivateCollection() {return private_collection;};
     private:
         //! Callback to load Tile objects into the Tileset.
         bool loadTile(std::string, XML_Helper* helper);
@@ -198,8 +203,43 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
         TileStyleIdMap d_tilestyles;
 
 	Gdk::Color d_road_color;
+
+	//! Whether this is a system tileset, or one that the user made.
+	bool private_collection;
 };
 
+class TilesetLoader
+{
+public:
+    TilesetLoader(std::string name, bool p) 
+      {
+	tileset = NULL;
+	private_collection = p;
+	std::string filename = "";
+	if (private_collection == false)
+	  filename = File::getTileset(name);
+	else
+	  filename = File::getUserTileset(name);
+	XML_Helper helper(filename, ios::in, false);
+	helper.registerTag(Tileset::d_tag, sigc::mem_fun((*this), &TilesetLoader::load));
+	if (!helper.parse())
+	  {
+	    std::cerr << "Error, while loading an tileset. Tileset Name: ";
+	    std::cerr <<name <<std::endl <<std::flush;
+	  }
+      };
+    bool load(std::string tag, XML_Helper* helper)
+      {
+	if (tag == Tileset::d_tag)
+	  {
+	    tileset = new Tileset(helper, private_collection);
+	    return true;
+	  }
+	return false;
+      };
+    bool private_collection;
+    Tileset *tileset;
+};
 #endif // TILESET_H
 
 // End of file

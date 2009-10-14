@@ -57,7 +57,7 @@ Tilesetlist::Tilesetlist()
     for (std::list<std::string>::const_iterator i = tilesets.begin(); 
 	 i != tilesets.end(); i++)
       {
-        if (loadTileset(*i) == true)
+        if (loadTileset(*i, false) == true)
 	  {
 	    iterator it = end();
 	    it--;
@@ -120,26 +120,15 @@ bool Tilesetlist::load(std::string tag, XML_Helper *helper)
   return true;
 }
 
-bool Tilesetlist::loadTileset(std::string name)
+bool Tilesetlist::loadTileset(std::string name, bool from_private_collection)
 {
   debug("Loading tileset " <<name);
-
-  XML_Helper helper(File::getTileset(name), ios::in, false);
-
-  helper.registerTag(Tileset::d_tag, sigc::mem_fun((*this), &Tilesetlist::load));
-
-  if (!helper.parse())
-    {
-      std::cerr << "Error, while loading a tileset. Tileset Name: ";
-      std::cerr <<name <<std::endl <<std::flush;
-      exit(-1);
-    }
-
-  iterator it = end();
-  it--;
-  if ((*it)->validate() == false)
+  TilesetLoader loader(name, from_private_collection);
+  if (loader.tileset == NULL)
     return false;
-
+  if (loader.tileset->validate() == false)
+    return false;
+  push_back(loader.tileset); 
   return true;
 }
 

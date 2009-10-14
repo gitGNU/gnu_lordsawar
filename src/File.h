@@ -27,6 +27,7 @@
 
 #include "xmlhelper.h"
 class Armyset;
+class Tileset;
 
 /** \brief Miscellaneous functions for file access
   * 
@@ -40,7 +41,7 @@ class Armyset;
 class File
 {
     public:
-        /** Scan the data directories for armysets
+        /** Scan the system data directories for armysets
           * 
           * @return a list of available armysets
           */
@@ -63,20 +64,65 @@ class File
           */
 	static std::string getUserArmyset(std::string armysetsubdir);
 
+	//! Get the directory where personal armysets live.
 	static std::string getUserArmysetDir();
 
+	//! Get the directory where system armysets live.
 	static std::string getArmysetDir();
 
+	//! Get the director where the given armyset lives.
 	static std::string getArmysetDir(Armyset *armyset);
 
 	//! Gets the description file for the given armyset.
 	static std::string getArmyset(Armyset *armyset);
 
-        /** Scan the data directories for shieldsets
+	// get an path for a file belonging to the given armyset.
+	static std::string getArmysetFile(Armyset *armyset, std::string pic);
+
+
+        /** Scan the system data directories for tilesets
+          * 
+          * @return a list of available tilesets
+          */
+        static std::list<std::string> scanTilesets();
+
+	// get the available tilesets in the user's personal collection
+	static std::list<std::string> scanUserTilesets();
+
+        /** Get the tileset description file
+          *
+          * @param tilesetsubdir    the dir name of the tileset.
+          * @return the full name of the description file
+          */
+        static std::string getTileset(std::string tilesetsubdir);
+
+        /** Get the tileset description file from the user's personal collection
+          *
+          * @param tilesetsubdir    the name of the tileset.
+          * @return the full name of the description file
+          */
+	static std::string getUserTileset(std::string tilesetsubdir);
+
+	//! Get the directory where personal tilesets live.
+	static std::string getUserTilesetDir();
+
+	//! Get the directory where system tilesets live.
+	static std::string getTilesetDir();
+
+	//! Get the director where the given tileset lives.
+	static std::string getTilesetDir(Tileset *tileset);
+
+	//! Gets the description file for the given armyset.
+	static std::string getTileset(Tileset *tileset);
+
+	// get a path of a file in the given Tileset.
+	static std::string getTilesetFile(Tileset *tileset, std::string pic);
+
+        /** Scan the system data directories for shieldsets 
           * 
           * @return a list of available shieldsets
           */
-        static std::list<std::string> scanShieldsets();
+	static std::list<std::string> scanShieldsets();
 
         /** Get the shieldset description file
           *
@@ -84,16 +130,6 @@ class File
           * @return the full name of the shield description file
           */
         static std::string getShieldset(std::string shieldsetsubdir);
-
-        /** Get the description file for the tileset
-          * 
-          * @param tilesetsubdir     the name of the tileset
-          * @return the full name of the description file
-          */
-        static std::string getTileset(std::string tilesetsubdir);
-
-	// get a tileset path
-	static std::string getTilesetFile(std::string tilesetsubdir, std::string picname);
 
 	//get a shieldset path
 	static std::string getShieldsetFile(std::string shieldsetsubdir, std::string picname);
@@ -108,8 +144,6 @@ class File
 	// get a cityset path
 	static std::string getCitysetFile(std::string citysetsubdir, std::string picname);
 
-	// get an armyset path
-	static std::string getArmysetFile(Armyset *armyset, std::string picname);
 	
         //! load misc file, e.g. hero names 
         static std::string getMiscFile(std::string filename);
@@ -126,8 +160,6 @@ class File
         // get save game path
         static std::string getSavePath();
 
-        // get the available tilesets
-        static std::list<std::string> scanTilesets();
 
         // get the available citysets
         static std::list<std::string> scanCitysets();

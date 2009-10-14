@@ -111,7 +111,7 @@ void TilesetExplosionPictureEditorDialog::update_panel()
     explosion_filechooserbutton->set_filename (filename);
   else
     explosion_filechooserbutton->set_filename
-      (File::getTilesetFile(d_tileset->getSubDir(), filename));
+      (File::getTilesetFile(d_tileset, filename));
 
 }
 

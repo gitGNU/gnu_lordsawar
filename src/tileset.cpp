@@ -39,7 +39,8 @@ std::string Tileset::d_tag = "tileset";
 std::string Tileset::d_road_smallmap_tag = "road_smallmap";
 
 Tileset::Tileset(std::string name)
-	: d_name(name), d_tileSize(DEFAULT_TILE_SIZE), d_dir("")
+	: d_name(name), d_tileSize(DEFAULT_TILE_SIZE), d_dir(""), 
+	private_collection(true)
 {
   d_info = "";
   d_large_selector = "misc/selector.png";
@@ -48,8 +49,9 @@ Tileset::Tileset(std::string name)
   d_road_color.set_rgb_p(0,0,0);
 }
 
-Tileset::Tileset(XML_Helper *helper)
+Tileset::Tileset(XML_Helper *helper, bool from_private_collection)
 {
+    private_collection = from_private_collection;
     helper->getData(d_name, "name"); 
     helper->getData(d_info, "info");
     helper->getData(d_tileSize, "tilesize");

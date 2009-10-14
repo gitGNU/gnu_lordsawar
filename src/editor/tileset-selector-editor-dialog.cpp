@@ -163,7 +163,7 @@ bool TilesetSelectorEditorDialog::loadSelector(std::string filename)
 {
   std::vector<PixMask *> images;
   std::vector<PixMask *> masks;
-  bool success = GraphicsCache::loadSelectorImages(d_tileset->getSubDir(), filename, d_tileset->getTileSize(), images, masks);
+  bool success = GraphicsCache::loadSelectorImages(d_tileset, filename, d_tileset->getTileSize(), images, masks);
   if (success)
     {
       std::string subdir = Shieldsetlist::getInstance()->getShieldsetDir 
@@ -219,7 +219,7 @@ void TilesetSelectorEditorDialog::update_selector_panel()
 	selector_filechooserbutton->set_filename (filename);
       else
 	selector_filechooserbutton->set_filename
-	  (File::getTilesetFile(d_tileset->getSubDir(), filename));
+	  (File::getTilesetFile(d_tileset, filename));
     }
   else
     {
@@ -228,7 +228,7 @@ void TilesetSelectorEditorDialog::update_selector_panel()
 	selector_filechooserbutton->set_filename (filename);
       else
 	selector_filechooserbutton->set_filename
-	  (File::getTilesetFile(d_tileset->getSubDir(), filename));
+	  (File::getTilesetFile(d_tileset, filename));
     }
 
 }

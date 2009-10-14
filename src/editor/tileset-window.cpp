@@ -67,14 +67,63 @@ TileSetWindow::TileSetWindow()
     tile_name_entry->signal_changed().connect
       (sigc::mem_fun(this, &TileSetWindow::on_tile_name_changed));
 
-    xml->get_widget("tile_type_combobox", tile_type_combobox);
+    Gtk::HBox *type_combo_container;
+    xml->get_widget("type_combo_container", type_combo_container);
+    tile_type_combobox = new Gtk::ComboBoxText();
+    tile_type_combobox->append_text(_("Grass"));
+    tile_type_combobox->append_text(_("Water"));
+    tile_type_combobox->append_text(_("Forest"));
+    tile_type_combobox->append_text(_("Hills"));
+    tile_type_combobox->append_text(_("Mountains"));
+    tile_type_combobox->append_text(_("Swamp"));
+    tile_type_combobox->append_text(_("Void"));
+    type_combo_container->add(*manage(tile_type_combobox));
+    type_combo_container->show_all();
     tile_type_combobox->signal_changed().connect
       (sigc::mem_fun(this, &TileSetWindow::on_tile_type_changed));
-    xml->get_widget("tile_moves_spinbutton", tile_moves_spinbutton);
-    xml->get_widget("tile_smallmap_pattern_combobox", 
-		    tile_smallmap_pattern_combobox);
+
+    Gtk::HBox *tilestyle_combo_container;
+    xml->get_widget("tilestyle_combo_container", tilestyle_combo_container);
+    tilestyle_combobox = new Gtk::ComboBoxText();
+    tilestyle_combobox->append_text(_("Lone"));
+    tilestyle_combobox->append_text(_("Outer Top-Left"));
+    tilestyle_combobox->append_text(_("Outer Top-Center"));
+    tilestyle_combobox->append_text(_("Outer Top-Right"));
+    tilestyle_combobox->append_text(_("Outer Bottom-Left"));
+    tilestyle_combobox->append_text(_("Outer Bottom-Center"));
+    tilestyle_combobox->append_text(_("Outer Bottom-Right"));
+    tilestyle_combobox->append_text(_("Outer Middle-Left"));
+    tilestyle_combobox->append_text(_("Inner Middle-Center"));
+    tilestyle_combobox->append_text(_("Outer Middle-Right"));
+    tilestyle_combobox->append_text(_("Inner Top-Left"));
+    tilestyle_combobox->append_text(_("Inner Top-Right"));
+    tilestyle_combobox->append_text(_("Inner Bottom-Left"));
+    tilestyle_combobox->append_text(_("Inner Bottom-Right"));
+    tilestyle_combobox->append_text(_("Top-Left To Bottom-Right"));
+    tilestyle_combobox->append_text(_("Bottom-Left To Top-Right"));
+    tilestyle_combobox->append_text(_("Other"));
+    tilestyle_combo_container->add(*manage(tilestyle_combobox));
+    tilestyle_combo_container->show_all();
+    tilestyle_combobox->signal_changed().connect
+      (sigc::mem_fun(this, &TileSetWindow::on_tilestyle_changed));
+
+    Gtk::HBox *pattern_container;
+    xml->get_widget("pattern_container", pattern_container);
+    tile_smallmap_pattern_combobox = new Gtk::ComboBoxText();
+    tile_smallmap_pattern_combobox->append_text(_("Solid"));
+    tile_smallmap_pattern_combobox->append_text(_("Stippled"));
+    tile_smallmap_pattern_combobox->append_text(_("Randomized"));
+    tile_smallmap_pattern_combobox->append_text(_("Sunken"));
+    tile_smallmap_pattern_combobox->append_text(_("Tablecloth"));
+    tile_smallmap_pattern_combobox->append_text(_("Diagonal"));
+    tile_smallmap_pattern_combobox->append_text(_("Crosshatched"));
+    tile_smallmap_pattern_combobox->append_text(_("Sunken Striped"));
+    pattern_container->add(*manage(tile_smallmap_pattern_combobox));
+    pattern_container->show_all();
     tile_smallmap_pattern_combobox->signal_changed().connect
-    (sigc::mem_fun(this, &TileSetWindow::on_tile_pattern_changed));
+      (sigc::mem_fun(this, &TileSetWindow::on_tile_pattern_changed));
+
+    xml->get_widget("tile_moves_spinbutton", tile_moves_spinbutton);
     xml->get_widget("tile_smallmap_first_colorbutton", 
 		    tile_smallmap_first_colorbutton);
     tile_smallmap_first_colorbutton->signal_color_set().connect
@@ -163,9 +212,6 @@ TileSetWindow::TileSetWindow()
       (sigc::mem_fun(this, &TileSetWindow::on_remove_tilestyleset_clicked));
     xml->get_widget("tilestyleset_frame", tilestyleset_frame);
     xml->get_widget("tilestyle_frame", tilestyle_frame);
-    xml->get_widget("tilestyle_combobox", tilestyle_combobox);
-    tilestyle_combobox->signal_changed().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_tilestyle_changed));
     xml->get_widget("image_filechooser_button", image_filechooser_button);
     image_filechooser_button->signal_selection_changed().connect
       (sigc::mem_fun(*this, &TileSetWindow::on_image_chosen));
@@ -306,7 +352,7 @@ void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
   if (height)
     {
       d_tileset->setTileSize(height);
-      GraphicsLoader::instantiateImages(t, d_tileset->getTileSize());
+      GraphicsLoader::instantiateImages(d_tileset, t, d_tileset->getTileSize());
     }
   inhibit_image_change = true;
   image_filechooser_button->set_filename(n);
@@ -989,7 +1035,7 @@ void TileSetWindow::on_image_chosen()
 void TileSetWindow::on_refresh_clicked()
 {
   TileStyleSet *set = get_selected_tilestyleset ();
-  GraphicsLoader::instantiateImages(set, d_tileset->getTileSize());
+  GraphicsLoader::instantiateImages(d_tileset, set, d_tileset->getTileSize());
 }
 
 void TileSetWindow::on_preview_tile_activated()

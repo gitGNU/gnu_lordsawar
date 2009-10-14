@@ -274,10 +274,10 @@ GraphicsCache::GraphicsCache()
       GraphicsLoader::getMiscPicture("smallunexploredstronghold.png");
     d_small_ruin_explored = GraphicsLoader::getMiscPicture("smallexploredruin.png");
     d_small_temple = GraphicsLoader::getMiscPicture("smalltemple.png");
-    std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
     std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
     d_port = GraphicsLoader::getCitysetPicture(cityset, "port.png");
     d_bag = GraphicsLoader::getMiscPicture("items.png");
+    Tileset* tileset = GameMap::getInstance()->getTileset();
     d_explosion = GraphicsLoader::getTilesetPicture(tileset, "misc/explosion.png");
     d_signpost = GraphicsLoader::getCitysetPicture(cityset, "signpost.png");
 }
@@ -2167,8 +2167,8 @@ void GraphicsCache::loadDiplomacyPics()
 void GraphicsCache::loadRoadPics()
 {
   // GameMap has the actual tileset stored
-  std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
-  int ts = GameMap::getInstance()->getTileset()->getTileSize();
+  Tileset *tileset = GameMap::getInstance()->getTileset();
+  int ts = tileset->getTileSize();
 
   std::vector<PixMask* > roadpics;
   roadpics = disassemble_row(File::getTilesetFile(tileset, "misc/roads.png"), 
@@ -2184,8 +2184,8 @@ void GraphicsCache::loadRoadPics()
 void GraphicsCache::loadFogPics()
 {
   // GameMap has the actual tileset stored
-  int ts = GameMap::getInstance()->getTileset()->getTileSize();
-  std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
+  Tileset *tileset = GameMap::getInstance()->getTileset();
+  int ts = tileset->getTileSize();
 
   // load the fog pictures
   std::vector<PixMask* > fogpics;
@@ -2202,8 +2202,8 @@ void GraphicsCache::loadFogPics()
 void GraphicsCache::loadBridgePics()
 {
   // GameMap has the actual tileset stored
-  std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
-  int ts = GameMap::getInstance()->getTileset()->getTileSize();
+  Tileset *tileset = GameMap::getInstance()->getTileset();
+  int ts = tileset->getTileSize();
 
   // load the bridge pictures
   std::vector<PixMask* > bridgepics;
@@ -2279,7 +2279,7 @@ void GraphicsCache::loadTowerPics()
     }
 }
 
-bool GraphicsCache::loadSelectorImages(std::string tileset, std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks)
+bool GraphicsCache::loadSelectorImages(Tileset *tileset, std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks)
 {
   int num_frames;
   num_frames = Gdk::Pixbuf::create_from_file 
@@ -2305,11 +2305,11 @@ bool GraphicsCache::loadSelectorImages(std::string tileset, std::string filename
 
 void GraphicsCache::loadSelectors()
 {
-  std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
-  std::string small = GameMap::getInstance()->getTileset()->getSmallSelectorFilename();
-  std::string large = GameMap::getInstance()->getTileset()->getLargeSelectorFilename();
+  Tileset *tileset = GameMap::getInstance()->getTileset();
+  std::string small = tileset->getSmallSelectorFilename();
+  std::string large = tileset->getLargeSelectorFilename();
 
-  int size = GameMap::getInstance()->getTileset()->getTileSize();
+  int size = tileset->getTileSize();
   std::vector<PixMask* > images;
   std::vector<PixMask* > masks;
   bool success = loadSelectorImages(tileset, large, size, images, masks);
@@ -2401,8 +2401,8 @@ void GraphicsCache::loadMoveBonusPics()
 void GraphicsCache::loadFlags()
 {
   //GameMap has the actual tileset stored
-  std::string tileset = GameMap::getInstance()->getTileset()->getSubDir();
-  int ts = GameMap::getInstance()->getTileset()->getTileSize();
+  Tileset *tileset = GameMap::getInstance()->getTileset();
+  int ts = tileset->getTileSize();
 
   std::vector<PixMask* > flagpics;
   flagpics = disassemble_row(File::getTilesetFile(tileset, "misc/flags.png"),
