@@ -33,10 +33,7 @@
 #include "stacklist.h"
 #include "citylist.h"
 #include "player.h"
-//#include "real_player.h"
-//#include "ai_fast.h"
-//#include "ai_smart.h"
-//#include "ai_dummy.h"
+#include "ucompose.hpp"
 #include "game-parameters.h"
 
 
@@ -57,7 +54,9 @@ namespace
 }
 
 PlayersDialog::PlayersDialog(int width, int height)
-    : type_column(_("Type"), type_renderer)
+  : type_column(_("Type"), type_renderer),
+    gold_column(_("Gold"), gold_renderer),
+    name_column(_("Name"), name_renderer)
 {
   d_width = width;
   d_height = height;
@@ -95,20 +94,31 @@ PlayersDialog::PlayersDialog(int width, int height)
     ( type_renderer, sigc::mem_fun(*this, &PlayersDialog::cell_data_type));
   player_treeview->append_column(type_column);
 
+  // name column
+  name_renderer.property_editable() = true;
+  name_renderer.signal_edited().connect
+    (sigc::mem_fun(*this, &PlayersDialog::on_name_edited));
+  name_column.set_cell_data_func
+    (name_renderer, sigc::mem_fun(*this, &PlayersDialog::cell_data_name));
+  player_treeview->append_column(name_column);
 
-  // remaining columns
-  player_treeview->append_column_editable(_("Name"), player_columns.name);
-  player_treeview->append_column_editable(_("Gold"), player_columns.gold);
+  // gold column
+  gold_renderer.property_editable() = true;
+  gold_renderer.signal_edited().connect
+    (sigc::mem_fun(*this, &PlayersDialog::on_gold_edited));
+  gold_column.set_cell_data_func
+    (gold_renderer, sigc::mem_fun(*this, &PlayersDialog::cell_data_gold));
+  player_treeview->append_column(gold_column);
 
   // add default players
-  default_player_names.push_back("The Sirians");
-  default_player_names.push_back("Elvallie");
-  default_player_names.push_back("Storm Giants");
-  default_player_names.push_back("The Selentines");
-  default_player_names.push_back("Grey Dwarves");
-  default_player_names.push_back("Horse Lords");
-  default_player_names.push_back("Orcs of Kor");
-  default_player_names.push_back("Lord Bane");
+  default_player_names.push_back(_("The Sirians"));
+  default_player_names.push_back(_("Elvallie"));
+  default_player_names.push_back(_("Storm Giants"));
+  default_player_names.push_back(_("The Selentines"));
+  default_player_names.push_back(_("Grey Dwarves"));
+  default_player_names.push_back(_("Horse Lords"));
+  default_player_names.push_back(_("Orcs of Kor"));
+  default_player_names.push_back(_("Lord Bane"));
 
   Playerlist *pl = Playerlist::getInstance();
 
@@ -212,4 +222,33 @@ void PlayersDialog::add_player(const Glib::ustring &type,
   (*i)[player_columns.player] = player;
 
   player_treeview->get_selection()->select(i);
+}
+
+void PlayersDialog::cell_data_gold(Gtk::CellRenderer *renderer,
+				  const Gtk::TreeIter& i)
+{
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
+          = new Gtk::Adjustment((*i)[player_columns.gold], 0, 10000, 1);
+    dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
+      String::ucompose("%1", (*i)[player_columns.gold]);
+}
+
+void PlayersDialog::on_gold_edited(const Glib::ustring &path,
+				   const Glib::ustring &new_text)
+{
+  int gold = atoi(new_text.c_str());
+  (*player_list->get_iter(Gtk::TreePath(path)))[player_columns.gold] = gold;
+}
+
+void PlayersDialog::cell_data_name(Gtk::CellRenderer *renderer,
+				  const Gtk::TreeIter& i)
+{
+    dynamic_cast<Gtk::CellRendererText*>(renderer)->property_text() = 
+      String::ucompose("%1", (*i)[player_columns.name]);
+}
+
+void PlayersDialog::on_name_edited(const Glib::ustring &path,
+				   const Glib::ustring &new_text)
+{
+  (*player_list->get_iter(Gtk::TreePath(path)))[player_columns.name] = new_text;
 }

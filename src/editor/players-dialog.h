@@ -56,6 +56,10 @@ class PlayersDialog
     
     Gtk::CellRendererCombo type_renderer;
     Gtk::TreeViewColumn type_column;
+    Gtk::CellRendererSpin gold_renderer;
+    Gtk::TreeViewColumn gold_column;
+    Gtk::CellRendererText name_renderer;
+    Gtk::TreeViewColumn name_column;
     
     class PlayerTypeColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -73,6 +77,10 @@ class PlayersDialog
     void cell_data_type(Gtk::CellRenderer *renderer, const Gtk::TreeIter &i);
     void on_type_edited(const Glib::ustring &path,
 			const Glib::ustring &new_text);
+    void cell_data_gold(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
+    void on_gold_edited(const Glib::ustring &path, const Glib::ustring &new_text);
+    void cell_data_name(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
+    void on_name_edited(const Glib::ustring &path, const Glib::ustring &new_text);
     
     void add_player(const Glib::ustring &type, const Glib::ustring &name,
 		    int gold, Player *player);
