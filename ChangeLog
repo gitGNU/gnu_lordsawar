@@ -2,6 +2,7 @@
 
 	* fixing armyset editor to be able to edit user-generated armysets.
 	* random map can now use user-generated armysets.
+	* fixed the comboboxes in the tileset editor.
 
 2009-10-13  Ben Asselstine  <benasselstine@gmail.com>
 
