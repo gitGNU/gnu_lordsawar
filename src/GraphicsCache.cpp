@@ -278,7 +278,7 @@ GraphicsCache::GraphicsCache()
     d_port = GraphicsLoader::getCitysetPicture(cityset, "port.png");
     d_bag = GraphicsLoader::getMiscPicture("items.png");
     Tileset* tileset = GameMap::getInstance()->getTileset();
-    d_explosion = GraphicsLoader::getTilesetPicture(tileset, "misc/explosion.png");
+    d_explosion = GraphicsLoader::getTilesetPicture(tileset, tileset->getExplosionFilename());
     d_signpost = GraphicsLoader::getCitysetPicture(cityset, "signpost.png");
 }
 
@@ -2171,7 +2171,7 @@ void GraphicsCache::loadRoadPics()
   int ts = tileset->getTileSize();
 
   std::vector<PixMask* > roadpics;
-  roadpics = disassemble_row(File::getTilesetFile(tileset, "misc/roads.png"), 
+  roadpics = disassemble_row(File::getTilesetFile(tileset, tileset->getRoadsFilename()), 
 			     ROAD_TYPES);
   for (unsigned int i = 0; i < ROAD_TYPES ; i++)
     {
@@ -2189,7 +2189,7 @@ void GraphicsCache::loadFogPics()
 
   // load the fog pictures
   std::vector<PixMask* > fogpics;
-  fogpics = disassemble_row(File::getTilesetFile(tileset, "misc/fog.png"),
+  fogpics = disassemble_row(File::getTilesetFile(tileset, tileset->getFogFilename()),
 			     FOG_TYPES);
   for (unsigned int i = 0; i < FOG_TYPES ; i++)
     {
@@ -2208,7 +2208,7 @@ void GraphicsCache::loadBridgePics()
   // load the bridge pictures
   std::vector<PixMask* > bridgepics;
   bridgepics = disassemble_row(File::getTilesetFile(tileset, 
-						    "misc/bridges.png"),
+						    tileset->getBridgesFilename()),
 			       BRIDGE_TYPES);
   for (unsigned int i = 0; i < BRIDGE_TYPES ; i++)
     {
@@ -2402,7 +2402,7 @@ void GraphicsCache::loadFlags()
   int ts = tileset->getTileSize();
 
   std::vector<PixMask* > flagpics;
-  flagpics = disassemble_row(File::getTilesetFile(tileset, "misc/flags.png"),
+  flagpics = disassemble_row(File::getTilesetFile(tileset, tileset->getFlagsFilename()),
 				  MAX_STACK_SIZE, true);
   for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
     {
@@ -2412,7 +2412,7 @@ void GraphicsCache::loadFlags()
 
     }
   std::vector<PixMask* > maskpics;
-  maskpics = disassemble_row(File::getTilesetFile(tileset, "misc/flags.png"),
+  maskpics = disassemble_row(File::getTilesetFile(tileset, tileset->getFlagsFilename()),
 				  MAX_STACK_SIZE, false);
   for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
     {
