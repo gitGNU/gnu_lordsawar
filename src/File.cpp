@@ -72,8 +72,10 @@ namespace
 	for (Glib::Dir::iterator i = dir.begin(), end = dir.end(); i != end; ++i)
 	{
 	    std::string entry = *i;
-	    std::string::size_type idx = entry.find(ext);
-	    if (idx != std::string::npos)
+	    std::string::size_type idx = entry.rfind(ext);
+	    //if (idx != std::string::npos)
+	    if (idx != std::string::npos && 
+		idx == entry.length() - ext.length())
 	    {
 		entry.replace(idx, ext.length(), "");  //substitute the ".xml" with ""
 		retlist.push_back(Glib::filename_to_utf8(entry));
