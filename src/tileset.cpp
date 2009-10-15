@@ -43,9 +43,12 @@ Tileset::Tileset(std::string name)
 	private_collection(true)
 {
   d_info = "";
-  d_large_selector = "misc/selector.png";
-  d_small_selector = "misc/small_selector.png";
-  d_explosion = "misc/explosion.png";
+  d_large_selector = "";
+  d_small_selector = "";
+  d_fog = "";
+  d_roads = "";
+  d_bridges = "";
+  d_flags = "";
   d_road_color.set_rgb_p(0,0,0);
 }
 
@@ -58,6 +61,10 @@ Tileset::Tileset(XML_Helper *helper, bool from_private_collection)
     helper->getData(d_large_selector, "large_selector");
     helper->getData(d_small_selector, "small_selector");
     helper->getData(d_explosion, "explosion");
+    helper->getData(d_roads, "roads");
+    helper->getData(d_bridges, "bridges");
+    helper->getData(d_fog, "fog");
+    helper->getData(d_flags, "flags");
     helper->registerTag(Tile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
     helper->registerTag(Tileset::d_road_smallmap_tag, sigc::mem_fun((*this), &Tileset::loadTile));
     helper->registerTag(SmallTile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
@@ -159,6 +166,10 @@ bool Tileset::save(XML_Helper *helper)
   retval &= helper->saveData("large_selector", d_large_selector);
   retval &= helper->saveData("small_selector", d_small_selector);
   retval &= helper->saveData("explosion", d_explosion);
+  retval &= helper->saveData("roads", d_roads);
+  retval &= helper->saveData("bridges", d_bridges);
+  retval &= helper->saveData("fog", d_fog);
+  retval &= helper->saveData("flags", d_flags);
   retval &= helper->openTag(d_road_smallmap_tag);
   retval &= helper->saveData("red", int(d_road_color.get_red_p() *255));
   retval &= helper->saveData("green", int(d_road_color.get_green_p()*255));

@@ -1,4 +1,3 @@
-SUBDIRS = misc
 MAINTAINERCLEANFILES= Makefile.in
 
 map_starkdir = $(datadir)/lordsawar/tilesets/stark
@@ -12,7 +11,14 @@ map_stark_DATA = \
     forest.png \
     hills.png \
     mountains.png \
-    swamp.png 
+    swamp.png \
+    flags.png \
+    roads.png \
+    bridges.png \
+    fog.png \
+    selector.png \
+    small_selector.png \
+    explosion.png
 
 EXTRA_DIST = \
     stark.xml.in \
@@ -22,4 +28,11 @@ EXTRA_DIST = \
     forest.png \
     hills.png \
     mountains.png \
-    swamp.png 
+    swamp.png \
+    flags.png \
+    roads.png \
+    bridges.png \
+    fog.png \
+    selector.png \
+    small_selector.png \
+    explosion.png

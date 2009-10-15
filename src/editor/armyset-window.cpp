@@ -597,7 +597,7 @@ void ArmySetWindow::on_validate_armyset_activated()
 void ArmySetWindow::on_save_armyset_activated()
 {
   if (current_save_filename.empty())
-    current_save_filename = File::getUserArmyset(d_armyset->getSubDir());
+    current_save_filename = File::getArmysetDir(d_armyset);
   
   //Reorder the armyset according to the treeview
   d_armyset->clear();

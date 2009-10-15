@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,24 +23,30 @@
 #include <gtkmm.h>
 #include "tileset.h"
 
-//! Scenario editor.  Edits the description of the scenario.
+//! Tileset Editor.  Edit the description of the Tileset.
 class TileSetInfoDialog: public sigc::trackable
 {
  public:
-    TileSetInfoDialog(Tileset *tileset);
+    TileSetInfoDialog(Tileset *tileset, bool readonly = false);
     ~TileSetInfoDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
-    bool run();
+    int run();
     
  private:
-    Tileset *d_tileset;
     Gtk::Dialog* dialog;
+    Tileset *d_tileset;
     Gtk::Entry *name_entry;
+    Gtk::Entry *subdir_entry;
+    Gtk::Button *accept_button;
     Gtk::TextView *description_textview;
-    Gtk::ColorButton *road_colorbutton;
+    Gtk::Label *status_label;
 
+    void on_name_changed();
+    void on_subdir_changed();
+
+    bool d_readonly;
 };
 
 #endif

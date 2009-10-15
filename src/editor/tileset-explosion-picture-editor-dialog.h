@@ -36,7 +36,9 @@ class TilesetExplosionPictureEditorDialog: public sigc::trackable
 
     void set_parent_window(Gtk::Window &parent);
 
-    void run();
+    void set_icon_from_file(std::string name) {dialog->set_icon_from_file(name);};
+    std::string get_selected_filename() {return selected_filename;};
+    int run();
     
  private:
     Gtk::Dialog* dialog;
@@ -45,6 +47,7 @@ class TilesetExplosionPictureEditorDialog: public sigc::trackable
     Gtk::FileChooserButton *explosion_filechooserbutton;
     Gtk::Image *scene_image;
     Tileset *d_tileset;
+    std::string selected_filename;
 
     void on_image_chosen();
     void on_large_toggled();

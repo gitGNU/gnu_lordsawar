@@ -274,14 +274,14 @@ std::string File::get_basename(std::string path, bool keep_ext)
   if (keep_ext)
     return file;
   //now strip everything past the last dot.
-  char *tmp = strrchr (file.c_str(), '.');
+  const char *tmp = strrchr (file.c_str(), '.');
   if (!tmp)
     return file;
   int npos = tmp - file.c_str() + 1;
   file = file.substr(0, npos - 1);
   return file;
 }
-//copy_file taken from ardour-2.0rc2, gplv2.
+//copy_file taken from ardour-2.0rc2, gplv2+.
 int File::copy (Glib::ustring from, Glib::ustring to)
 {
   std::ifstream in (from.c_str());

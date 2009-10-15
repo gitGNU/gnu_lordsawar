@@ -116,6 +116,14 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	std::string getSmallSelectorFilename() {return d_small_selector;};
 	void setExplosionFilename(std::string p){d_explosion = p;};
 	std::string getExplosionFilename() {return d_explosion;};
+	void setRoadsFilename(std::string p){d_roads = p;};
+	std::string getRoadsFilename() {return d_roads;};
+	void setBridgesFilename(std::string p){d_bridges = p;};
+	std::string getBridgesFilename() {return d_bridges;};
+	void setFogFilename(std::string p){d_fog = p;};
+	std::string getFogFilename() {return d_fog;};
+	void setFlagsFilename(std::string p){d_flags = p;};
+	std::string getFlagsFilename() {return d_flags;};
 
 	//! Lookup tilestyle by it's id in this tileset.
 	TileStyle *getTileStyle(guint32 id) {return d_tilestyles[id];}
@@ -197,6 +205,10 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	std::string d_small_selector;
 	std::string d_large_selector;
 	std::string d_explosion;
+	std::string d_fog;
+	std::string d_roads;
+	std::string d_bridges;
+	std::string d_flags;
 
         typedef std::map<guint32, TileStyle*> TileStyleIdMap;
 	//! A map that provides a TileStyle when supplying a TileStyle id.

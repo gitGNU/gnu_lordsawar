@@ -2279,21 +2279,18 @@ void GraphicsCache::loadTowerPics()
     }
 }
 
-bool GraphicsCache::loadSelectorImages(Tileset *tileset, std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks)
+bool GraphicsCache::loadSelectorImages(std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks)
 {
   int num_frames;
-  num_frames = Gdk::Pixbuf::create_from_file 
-    (File::getTilesetFile(tileset, filename))->get_width() / size;
-  images = disassemble_row(File::getTilesetFile(tileset, filename),
-			      num_frames, true);
+  num_frames = Gdk::Pixbuf::create_from_file (filename)->get_width() / size;
+  images = disassemble_row(filename, num_frames, true);
   for (int i = 0; i < num_frames; i++)
     {
       if (images[i]->get_width() != (int)size)
 	PixMask::scale(images[i], size, size);
     }
 
-  masks = disassemble_row(File::getTilesetFile(tileset, filename),
-			      num_frames, false);
+  masks = disassemble_row(filename, num_frames, false);
   for (int i = 0; i < num_frames; i++)
     {
       if (masks[i]->get_width() != (int)size)
@@ -2312,7 +2309,7 @@ void GraphicsCache::loadSelectors()
   int size = tileset->getTileSize();
   std::vector<PixMask* > images;
   std::vector<PixMask* > masks;
-  bool success = loadSelectorImages(tileset, large, size, images, masks);
+  bool success = loadSelectorImages(File::getTilesetFile(tileset, large), size, images, masks);
   if (!success)
     {
       fprintf (stderr,"Selector file %s is malformed\n", large.c_str());
@@ -2326,7 +2323,7 @@ void GraphicsCache::loadSelectors()
 
   images.clear();
   masks.clear();
-  success = loadSelectorImages(tileset, small, size, images, masks);
+  success = loadSelectorImages(File::getTilesetFile(tileset,small), size, images, masks);
   if (!success)
     {
       fprintf (stderr,"Selector file %s is malformed\n", small.c_str());

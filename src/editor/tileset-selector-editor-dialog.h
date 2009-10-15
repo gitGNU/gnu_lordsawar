@@ -34,9 +34,13 @@ class TilesetSelectorEditorDialog: public sigc::trackable
     TilesetSelectorEditorDialog(Tileset * tileset);
     ~TilesetSelectorEditorDialog();
 
+    void set_icon_from_file(std::string name) {dialog->set_icon_from_file(name);};
+    std::string get_small_selector_filename() {return small_filename;};
+    std::string get_large_selector_filename() {return large_filename;};
+
     void set_parent_window(Gtk::Window &parent);
 
-    void run();
+    int run();
     
  private:
     Gtk::Dialog* dialog;
@@ -62,6 +66,8 @@ class TilesetSelectorEditorDialog: public sigc::trackable
     std::map<guint32, std::list<Glib::RefPtr<Gdk::Pixbuf> >::iterator> frame;
 
     void on_heartbeat();
+    std::string small_filename;
+    std::string large_filename;
 
 };
 

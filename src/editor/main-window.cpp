@@ -724,7 +724,7 @@ void MainWindow::on_load_map_activated()
     Gtk::FileFilter sav_filter;
     sav_filter.add_pattern("*.map");
     chooser.set_filter(sav_filter);
-    chooser.set_current_folder(File::getSavePath());
+    chooser.set_current_folder(File::getUserMapDir());
 
     chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
@@ -836,7 +836,7 @@ void MainWindow::on_save_map_as_activated()
     Gtk::FileFilter sav_filter;
     sav_filter.add_pattern("*.map");
     chooser.set_filter(sav_filter);
-    chooser.set_current_folder(File::getSavePath());
+    chooser.set_current_folder(File::getUserMapDir());
 
     chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);

@@ -343,7 +343,7 @@ class GraphicsCache
 
 	static PixMask* applyMask(PixMask* image, PixMask* mask, struct rgb_shift shifts, bool isNeutral);
         
-	static bool loadSelectorImages(Tileset *tileset, std::string filename, guint32 tilesize, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);
+	static bool loadSelectorImages(std::string filename, guint32 tilesize, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);
 
 	guint32 getNumberOfLargeSelectorFrames() {return d_selector.size();};
 	guint32 getNumberOfSmallSelectorFrames() {return d_smallselector.size();}

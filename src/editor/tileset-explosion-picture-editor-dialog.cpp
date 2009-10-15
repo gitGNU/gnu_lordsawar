@@ -34,6 +34,7 @@
 
 TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Tileset *tileset)
 {
+  selected_filename = "";
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/tileset-explosion-picture-editor-dialog.ui");
@@ -44,6 +45,7 @@ TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Tileset
     xml->get_widget("explosion_filechooserbutton", explosion_filechooserbutton);
     explosion_filechooserbutton->signal_selection_changed().connect
        (sigc::mem_fun(*this, &TilesetExplosionPictureEditorDialog::on_image_chosen));
+    explosion_filechooserbutton->set_current_folder(Glib::get_home_dir());
 
     xml->get_widget("large_explosion_radiobutton", large_explosion_radiobutton);
     large_explosion_radiobutton->signal_toggled().connect
@@ -66,31 +68,21 @@ void TilesetExplosionPictureEditorDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void TilesetExplosionPictureEditorDialog::run()
+int TilesetExplosionPictureEditorDialog::run()
 {
     dialog->show_all();
-    dialog->run();
+    int response = dialog->run();
 
-    return;
+    return response;
 }
 
 void TilesetExplosionPictureEditorDialog::on_image_chosen()
 {
-  std::string selected_filename = explosion_filechooserbutton->get_filename();
+  selected_filename = explosion_filechooserbutton->get_filename();
   if (selected_filename.empty())
     return;
 
-  std::string str = Configuration::s_dataPath + "/tilesets/" +  
-    d_tileset->getSubDir() +"/";
-  char mypath[PATH_MAX]; //god i hate path_max.  die die die
-  char *tmp = realpath(str.c_str(), mypath);
-  std::string path = tmp;
-  if (selected_filename.substr(0, path.size()) !=path)
-    return;
-  std::string filename = &selected_filename.c_str()[path.size() + 1];
-  d_tileset->setExplosionFilename(filename);
-
-  show_explosion_image(filename);
+  show_explosion_image(selected_filename);
 }
 
 void TilesetExplosionPictureEditorDialog::on_large_toggled()
@@ -106,13 +98,11 @@ void TilesetExplosionPictureEditorDialog::on_small_toggled()
 
 void TilesetExplosionPictureEditorDialog::update_panel()
 {
-  std::string filename = d_tileset->getExplosionFilename();
-  if (filename.c_str()[0] == '/')
+  std::string filename = 
+    File::getTilesetFile(d_tileset, d_tileset->getExplosionFilename());
+    
+  if (d_tileset->getExplosionFilename() != "")
     explosion_filechooserbutton->set_filename (filename);
-  else
-    explosion_filechooserbutton->set_filename
-      (File::getTilesetFile(d_tileset, filename));
-
 }
 
 void TilesetExplosionPictureEditorDialog::show_explosion_image(std::string filename)
@@ -142,7 +132,7 @@ void TilesetExplosionPictureEditorDialog::show_explosion_image(std::string filen
       scene += "aaaaaa";
       scene += "aaaaaa";
       s = new TilePreviewScene(grass, tilestyle_images, 6, 6, scene);
-      update_scene(s, d_tileset->getSubDir() + "/" + filename);
+      update_scene(s, filename);
     }
   else if (small_explosion_radiobutton->get_active() == true)
     {
@@ -154,7 +144,7 @@ void TilesetExplosionPictureEditorDialog::show_explosion_image(std::string filen
       scene += "aaaaaaa";
       scene += "aaaaaaa";
       s = new TilePreviewScene(grass, tilestyle_images, 7, 7, scene);
-      update_scene(s, d_tileset->getSubDir() + "/" + filename);
+      update_scene(s, filename);
     }
 }
 

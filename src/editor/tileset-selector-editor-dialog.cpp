@@ -40,6 +40,8 @@ TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Tileset *tileset)
 
     xml->get_widget("dialog", dialog);
     d_tileset = tileset;
+    small_filename = d_tileset->getSmallSelectorFilename();
+    large_filename = d_tileset->getLargeSelectorFilename();
 
     Gtk::Box *box;
     xml->get_widget("shieldset_box", box);
@@ -70,12 +72,12 @@ void TilesetSelectorEditorDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void TilesetSelectorEditorDialog::run()
+int TilesetSelectorEditorDialog::run()
 {
     dialog->show_all();
-    dialog->run();
+    int response = dialog->run();
 
-    return;
+    return response;
 }
 
 void TilesetSelectorEditorDialog::setup_shield_theme_combobox(Gtk::Box *box)
@@ -112,20 +114,7 @@ void TilesetSelectorEditorDialog::on_image_chosen()
   if (selected_filename.empty())
     return;
 
-  std::string str = Configuration::s_dataPath + "/tilesets/" +  
-    d_tileset->getSubDir() +"/";
-  char mypath[PATH_MAX]; //god i hate path_max.  die die die
-  char *tmp = realpath(str.c_str(), mypath);
-  std::string path = tmp;
-  if (selected_filename.substr(0, path.size()) !=path)
-    return;
-  std::string filename = &selected_filename.c_str()[path.size() + 1];
-  if (large_selector_radiobutton->get_active() == true)
-    d_tileset->setLargeSelectorFilename(filename);
-  else
-    d_tileset->setSmallSelectorFilename(filename);
-
-  show_preview_selectors(filename);
+  show_preview_selectors(selected_filename);
 }
 
 void TilesetSelectorEditorDialog::show_preview_selectors(std::string filename)
@@ -163,7 +152,7 @@ bool TilesetSelectorEditorDialog::loadSelector(std::string filename)
 {
   std::vector<PixMask *> images;
   std::vector<PixMask *> masks;
-  bool success = GraphicsCache::loadSelectorImages(d_tileset, filename, d_tileset->getTileSize(), images, masks);
+  bool success = GraphicsCache::loadSelectorImages(filename, d_tileset->getTileSize(), images, masks);
   if (success)
     {
       std::string subdir = Shieldsetlist::getInstance()->getShieldsetDir 
@@ -215,19 +204,13 @@ void TilesetSelectorEditorDialog::update_selector_panel()
   if (large_selector_radiobutton->get_active() == true)
     {
       std::string filename = d_tileset->getLargeSelectorFilename();
-      if (filename.c_str()[0] == '/')
-	selector_filechooserbutton->set_filename (filename);
-      else
-	selector_filechooserbutton->set_filename
+      selector_filechooserbutton->set_filename
 	  (File::getTilesetFile(d_tileset, filename));
     }
   else
     {
       std::string filename = d_tileset->getSmallSelectorFilename();
-      if (filename.c_str()[0] == '/')
-	selector_filechooserbutton->set_filename (filename);
-      else
-	selector_filechooserbutton->set_filename
+      selector_filechooserbutton->set_filename
 	  (File::getTilesetFile(d_tileset, filename));
     }
 

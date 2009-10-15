@@ -65,8 +65,11 @@ class TileSetWindow: public sigc::trackable
     Gtk::MenuItem *new_tileset_menuitem;
     Gtk::MenuItem *load_tileset_menuitem;
     Gtk::MenuItem *save_tileset_menuitem;
-    Gtk::MenuItem *save_tileset_as_menuitem;
     Gtk::MenuItem *edit_tileset_info_menuitem;
+    Gtk::MenuItem *roads_picture_menuitem;
+    Gtk::MenuItem *bridges_picture_menuitem;
+    Gtk::MenuItem *fog_picture_menuitem;
+    Gtk::MenuItem *flags_picture_menuitem;
     Gtk::MenuItem *army_unit_selector_menuitem;
     Gtk::MenuItem *explosion_picture_menuitem;
     Gtk::MenuItem *preview_tile_menuitem;
@@ -142,6 +145,10 @@ class TileSetWindow: public sigc::trackable
     void on_edit_tileset_info_activated();
     void on_army_unit_selector_activated();
     void on_explosion_picture_activated();
+    void on_roads_picture_activated();
+    void on_bridges_picture_activated();
+    void on_fog_picture_activated();
+    void on_flags_picture_activated();
     void on_preview_tile_activated();
     void on_help_about_activated();
     void on_tile_selected();
