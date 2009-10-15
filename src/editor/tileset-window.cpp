@@ -33,7 +33,9 @@
 #include "tileset-info-dialog.h"
 #include "tile-preview-dialog.h"
 #include "tileset-selector-editor-dialog.h"
+#include "tileset-flag-editor-dialog.h"
 #include "tileset-explosion-picture-editor-dialog.h"
+#include "image-editor-dialog.h"
 
 #include "image-helpers.h"
 #include "input-helpers.h"
@@ -1105,15 +1107,69 @@ void TileSetWindow::on_preview_tile_activated()
       
 void TileSetWindow::on_roads_picture_activated()
 {
+  ImageEditorDialog d(File::getTilesetFile(d_tileset, 
+					   d_tileset->getRoadsFilename()),
+		      ROAD_TYPES);
+  d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
+  d.set_parent_window(*window);
+  int response = d.run();
+  if (response == Gtk::RESPONSE_ACCEPT)
+    {
+      std::string filename = d.get_selected_filename();
+      std::string name = File::get_basename(filename, true);
+      File::copy(filename, File::getTilesetFile(d_tileset, name));
+      d_tileset->setRoadsFilename(name);
+    }
 }
 void TileSetWindow::on_bridges_picture_activated()
 {
+  ImageEditorDialog d(File::getTilesetFile(d_tileset, 
+					   d_tileset->getBridgesFilename()),
+		      BRIDGE_TYPES);
+  d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
+  d.set_parent_window(*window);
+  int response = d.run();
+  if (response == Gtk::RESPONSE_ACCEPT)
+    {
+      std::string filename = d.get_selected_filename();
+      std::string name = File::get_basename(filename, true);
+      File::copy(filename, File::getTilesetFile(d_tileset, name));
+      d_tileset->setBridgesFilename(name);
+    }
 }
 void TileSetWindow::on_fog_picture_activated()
 {
+  ImageEditorDialog d(File::getTilesetFile(d_tileset, 
+					   d_tileset->getFogFilename()),
+		      FOG_TYPES);
+  d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
+  d.set_parent_window(*window);
+  int response = d.run();
+  if (response == Gtk::RESPONSE_ACCEPT)
+    {
+      std::string filename = d.get_selected_filename();
+      std::string name = File::get_basename(filename, true);
+      File::copy(filename, File::getTilesetFile(d_tileset, name));
+      d_tileset->setFogFilename(name);
+    }
 }
 void TileSetWindow::on_flags_picture_activated()
 {
+  TilesetFlagEditorDialog d(d_tileset);
+  d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
+  d.set_parent_window(*window);
+  int response = d.run();
+  if (response == Gtk::RESPONSE_ACCEPT)
+    {
+      std::string filename= d.get_selected_filename();
+
+      //copy the file, and set the image name
+      std::string name = File::get_basename(filename, true);
+      if (filename != File::getTilesetFile(d_tileset, name))
+	File::copy(filename, File::getTilesetFile(d_tileset, name));
+
+      d_tileset->setFlagsFilename(name);
+    }
 }
 void TileSetWindow::on_army_unit_selector_activated()
 {

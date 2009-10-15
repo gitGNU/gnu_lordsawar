@@ -345,6 +345,8 @@ class GraphicsCache
         
 	static bool loadSelectorImages(std::string filename, guint32 tilesize, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);
 
+	static bool loadFlagImages(std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);
+
 	guint32 getNumberOfLargeSelectorFrames() {return d_selector.size();};
 	guint32 getNumberOfSmallSelectorFrames() {return d_smallselector.size();}
 

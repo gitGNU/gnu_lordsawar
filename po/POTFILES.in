@@ -87,8 +87,10 @@
 [type: gettext/glade]/dat/glade/editor/tile-preview-dialog.ui
 [type: gettext/glade]/dat/glade/editor/tileset-info-dialog.ui
 [type: gettext/glade]/dat/glade/editor/tileset-selector-editor-dialog.ui
+[type: gettext/glade]/dat/glade/editor/tileset-flag-editor-dialog.ui
 [type: gettext/glade]/dat/glade/editor/tileset-explosion-picture-editor-dialog.ui
 [type: gettext/glade]/dat/glade/editor/masked-image-editor-dialog.ui
+[type: gettext/glade]/dat/glade/editor/image-editor-dialog.ui
 [type: gettext/glade]/dat/glade/editor/tileset-window.ui
 [type: gettext/glade]/dat/glade/editor/hero-editor-dialog.ui
 [type: gettext/glade]/dat/glade/editor/backpack-editor-dialog.ui

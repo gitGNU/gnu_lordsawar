@@ -2395,31 +2395,37 @@ void GraphicsCache::loadMoveBonusPics()
     }
 }
 
+bool GraphicsCache::loadFlagImages(std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks)
+{
+  images = disassemble_row(filename, MAX_STACK_SIZE, true);
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+    {
+      if (images[i]->get_width() != (int)size)
+	PixMask::scale(images[i], size, size);
+
+    }
+  masks = disassemble_row(filename, MAX_STACK_SIZE, false);
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+    {
+      if (masks[i]->get_width() !=(int) size)
+	PixMask::scale(masks[i], size, size);
+    }
+  return true;
+}
+
 void GraphicsCache::loadFlags()
 {
   //GameMap has the actual tileset stored
   Tileset *tileset = GameMap::getInstance()->getTileset();
   int ts = tileset->getTileSize();
-
   std::vector<PixMask* > flagpics;
-  flagpics = disassemble_row(File::getTilesetFile(tileset, tileset->getFlagsFilename()),
-				  MAX_STACK_SIZE, true);
-  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
-    {
-      if (flagpics[i]->get_width() != ts)
-	PixMask::scale(flagpics[i], ts, ts);
-      d_flagpic[i] = flagpics[i];
-
-    }
   std::vector<PixMask* > maskpics;
-  maskpics = disassemble_row(File::getTilesetFile(tileset, tileset->getFlagsFilename()),
-				  MAX_STACK_SIZE, false);
-  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
-    {
-      if (maskpics[i]->get_width() != ts)
-	PixMask::scale(maskpics[i], ts, ts);
-      d_flagmask[i] = maskpics[i];
-    }
+  loadFlagImages(File::getTilesetFile(tileset, tileset->getFlagsFilename()), ts, flagpics, maskpics);
+  for (unsigned int i = 0; i < flagpics.size(); i++)
+    d_flagpic[i] = flagpics[i];
+  for (unsigned int i = 0; i < maskpics.size(); i++)
+    d_flagmask[i] = maskpics[i];
+
 }
         
 PixMask* GraphicsCache::getMedalPic(bool large, int type)

@@ -24,10 +24,12 @@ tileset-window.ui \
 tileset-info-dialog.ui \
 tile-preview-dialog.ui \
 tileset-selector-editor-dialog.ui \
+tileset-flag-editor-dialog.ui \
 tileset-explosion-picture-editor-dialog.ui \
 backpack-editor-dialog.ui \
 hero-editor-dialog.ui \
-masked-image-editor-dialog.ui
+masked-image-editor-dialog.ui \
+image-editor-dialog.ui
 
 EXTRA_DIST = $(glade_DATA) \
 README
