@@ -267,6 +267,7 @@ void NewRandomMapDialog::on_tile_size_changed()
   guint32 default_id = 0;
   guint32 counter = 0;
 
+  accept_button->set_sensitive(true);
   tile_theme_combobox->clear_items();
   Tilesetlist *tl = Tilesetlist::getInstance();
   std::list<std::string> tile_themes = tl->getNames(get_active_tile_size());
@@ -279,8 +280,9 @@ void NewRandomMapDialog::on_tile_size_changed()
       counter++;
     }
 
-  tile_theme_combobox->set_active(default_id);
-  if (tile_theme_combobox->get_children().size() == 0)
+  if (counter > 0)
+    tile_theme_combobox->set_active(default_id);
+  else
     accept_button->set_sensitive(false);
 
   army_theme_combobox->clear_items();
@@ -297,8 +299,9 @@ void NewRandomMapDialog::on_tile_size_changed()
       counter++;
     }
 
-  army_theme_combobox->set_active(default_id);
-  if (army_theme_combobox->get_children().size() == 0)
+  if (counter > 0)
+    army_theme_combobox->set_active(default_id);
+  else
     accept_button->set_sensitive(false);
 
   city_theme_combobox->clear_items();
@@ -315,8 +318,9 @@ void NewRandomMapDialog::on_tile_size_changed()
       counter++;
     }
 
-  city_theme_combobox->set_active(default_id);
-  if (city_theme_combobox->get_children().size() == 0)
+  if (counter > 0)
+    city_theme_combobox->set_active(default_id);
+  else
     accept_button->set_sensitive(false);
 }
 
