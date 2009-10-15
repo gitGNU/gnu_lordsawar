@@ -1,3 +1,8 @@
+2009-10-15  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixing up the tileset editor.
+	* fixed alpha artifact on selector images.
+
 2009-10-14  Ben Asselstine  <benasselstine@gmail.com>
 
 	* fixing armyset editor to be able to edit user-generated armysets.
