@@ -1,7 +1,8 @@
 2009-10-16  Ben Asselstine  <benasselstine@gmail.com>
 
 	* removing ".png" from the tileset description files.
-	* added ids to tilesets and shieldsets.
+	* added ids to tilesets and shieldsets, and citysets.
+	* updated the cityset file format to refer to it's member files.
 
 2009-10-15  Ben Asselstine  <benasselstine@gmail.com>
 
