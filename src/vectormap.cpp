@@ -62,7 +62,7 @@ void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
     {
       if (Playerlist::getInstance()->getActiveplayer() != c->getOwner())
 	{
-	  std::string s = GameMap::getInstance()->getShieldset()->getSubDir();
+	  guint32 s = GameMap::getInstance()->getShieldset()->getId();
 	  tmp = gc->getShieldPic (s, 0, c->getOwner()->getId());
 	}
       else

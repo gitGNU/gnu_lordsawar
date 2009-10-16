@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<shieldset version="0.3">
+<shieldset>
+    <d_id>3</d_id>
     <_d_name>Dol</_d_name>
     <d_small_width>8</d_small_width>
     <d_small_height>8</d_small_height>

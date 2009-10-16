@@ -75,6 +75,9 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	 *                tileset from.
 	 */
         Tileset(XML_Helper* helper, bool private_collection = false);
+
+	static Tileset *create(std::string file, bool private_collection = false);
+
 	//! Destructor.
         ~Tileset();
 
@@ -274,39 +277,6 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	std::vector<PixMask* > smallselectormask;
 	PixMask* explosion;
 	PixMask*fogpic[FOG_TYPES];
-};
-
-class TilesetLoader
-{
-public:
-    TilesetLoader(std::string name, bool p) 
-      {
-	tileset = NULL;
-	private_collection = p;
-	std::string filename = "";
-	if (private_collection == false)
-	  filename = File::getTileset(name);
-	else
-	  filename = File::getUserTileset(name);
-	XML_Helper helper(filename, ios::in, false);
-	helper.registerTag(Tileset::d_tag, sigc::mem_fun((*this), &TilesetLoader::load));
-	if (!helper.parse())
-	  {
-	    std::cerr << "Error, while loading an tileset. Tileset Name: ";
-	    std::cerr <<name <<std::endl <<std::flush;
-	  }
-      };
-    bool load(std::string tag, XML_Helper* helper)
-      {
-	if (tag == Tileset::d_tag)
-	  {
-	    tileset = new Tileset(helper, private_collection);
-	    return true;
-	  }
-	return false;
-      };
-    bool private_collection;
-    Tileset *tileset;
 };
 #endif // TILESET_H
 

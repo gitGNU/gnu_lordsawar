@@ -73,6 +73,7 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
 	 *             presumed to be found inside the tilesets/ directory.
 	 */
 	Tileset *getTileset(std::string dir) { return d_tilesets[dir];};
+
 	//! Return the Tileset object by the id.
 	/**
 	 * @param id   A unique numeric identifier that identifies the tileset

@@ -39,6 +39,7 @@
 #include "defs.h"
 #include "armyset.h"
 #include "tileset.h"
+#include "shieldset.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
@@ -111,16 +112,6 @@ std::string add_slash_if_necessary(std::string dir)
 std::string getCitysetDir()
 {
   return add_slash_if_necessary(Configuration::s_dataPath) + CITYSETDIR + "/";
-}
-
-std::string getShieldsetDir()
-{
-  return add_slash_if_necessary(Configuration::s_dataPath) + SHIELDSETDIR + "/";
-}
-
-std::string File::getShieldsetFile(std::string shieldsetsubdir, std::string picname)
-{
-  return getShieldsetDir() + shieldsetsubdir + "/" + picname;
 }
 
 std::string File::getMiscFile(std::string filename)
@@ -246,27 +237,6 @@ std::list<std::string> File::scanMaps()
     return retlist;
 }
 
-std::list<std::string> File::scanShieldsets()
-{
-    std::list<std::string> retlist = 
-      get_xml_files_in_immediate_subdirs(getShieldsetDir(), SHIELDSET_EXT);
-
-    if (retlist.empty())
-    {
-      std::cerr << "Couldn't find any shieldsets!" << std::endl;
-      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
-      std::cerr << "Exiting!" << std::endl;
-      exit(-1);
-    }
-
-    return retlist;
-}
-
-std::string File::getShieldset(std::string shieldsetsubdir)
-{
-  return getShieldsetDir() + shieldsetsubdir + "/" + shieldsetsubdir + SHIELDSET_EXT;
-}
-
 std::string File::get_basename(std::string path, bool keep_ext)
 {
   std::string file;
@@ -339,6 +309,7 @@ bool File::exists(std::string f)
   return retval;
 }
 
+//armysets 
 std::list<std::string> File::scanArmysets()
 {
     std::list<std::string> retlist = 
@@ -476,4 +447,71 @@ std::string File::getTilesetFile(Tileset *tileset, std::string picname)
     return getUserTilesetDir() + tileset->getSubDir() + "/" + picname + ".png";
 }
 
+//shieldsets
+std::list<std::string> File::scanShieldsets()
+{
+    std::list<std::string> retlist = 
+      get_xml_files_in_immediate_subdirs(getShieldsetDir(), SHIELDSET_EXT);
+
+    if (retlist.empty())
+    {
+      std::cerr << "Couldn't find any shieldsets!" << std::endl;
+      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
+      std::cerr << "Exiting!" << std::endl;
+      exit(-1);
+    }
+
+    return retlist;
+}
+
+std::list<std::string> File::scanUserShieldsets()
+{
+    std::list<std::string> retlist = 
+      get_xml_files_in_immediate_subdirs(getUserShieldsetDir(), SHIELDSET_EXT);
+
+    return retlist;
+}
+
+std::string File::getShieldset(std::string shieldsetsubdir)
+{
+  return getShieldsetDir() + shieldsetsubdir + "/" + shieldsetsubdir + SHIELDSET_EXT;
+}
+
+std::string File::getUserShieldset(std::string shieldsetsubdir)
+{
+  std::string dir =  getUserShieldsetDir() + shieldsetsubdir;
+  return dir + "/" + shieldsetsubdir + SHIELDSET_EXT;
+}
+
+std::string File::getShieldsetDir()
+{
+  return add_slash_if_necessary(Configuration::s_dataPath) + SHIELDSETDIR + "/";
+}
+
+std::string File::getUserShieldsetDir()
+{
+  std::string dir = getSavePath() + SHIELDSETDIR + "/";
+  return dir;
+}
+
+std::string File::getShieldsetDir(Shieldset *shieldset)
+{
+  if (shieldset->fromPrivateCollection() == false)
+    return getShieldsetDir() + shieldset->getSubDir() + "/";
+  else
+    return getUserShieldsetDir() + shieldset->getSubDir() + "/";
+}
+
+std::string File::getShieldset(Shieldset *shieldset)
+{
+  return getShieldsetDir(shieldset) + shieldset->getSubDir() + SHIELDSET_EXT;
+}
+
+std::string File::getShieldsetFile(Shieldset *shieldset, std::string picname)
+{
+  if (shieldset->fromPrivateCollection() == false)
+    return getShieldsetDir() + shieldset->getSubDir() + "/" + picname + ".png";
+  else
+    return getUserShieldsetDir() + shieldset->getSubDir() + "/" + picname + ".png";
+}
 // End of file

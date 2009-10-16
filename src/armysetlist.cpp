@@ -205,12 +205,17 @@ bool Armysetlist::load(std::string tag, XML_Helper *helper)
 bool Armysetlist::loadArmyset(std::string name, bool private_collection)
 {
   debug("Loading armyset " <<name);
-  ArmysetLoader loader(name, private_collection);
-  if (loader.armyset == NULL)
+  Armyset *armyset = Armyset::create(name, private_collection);
+  if (armyset == NULL)
     return false;
-  if (loader.armyset->validate() == false)
-    return false;
-  push_back(loader.armyset); 
+  if (armyset->validate() == false)
+    {
+      cerr << "Error!  armyset: `" << armyset->getName() << 
+	      "' is invalid." << endl;
+      delete armyset;
+      return false;
+    }
+  push_back(armyset); 
   return true;
 }
 	
@@ -291,22 +296,22 @@ int Armysetlist::getNextAvailableId(int after)
   for (std::list<std::string>::const_iterator i = armysets.begin(); 
        i != armysets.end(); i++)
     {
-      ArmysetLoader loader(*i, false);
-      if (loader.armyset)
+      Armyset *armyset = Armyset::create(*i, false);
+      if (armyset != NULL)
 	{
-	  ids.push_back(loader.armyset->getId());
-	  delete loader.armyset;
+	  ids.push_back(armyset->getId());
+	  delete armyset;
 	}
     }
   armysets = File::scanUserArmysets();
   for (std::list<std::string>::const_iterator i = armysets.begin(); 
        i != armysets.end(); i++)
     {
-      ArmysetLoader loader(*i, true);
-      if (loader.armyset)
+      Armyset *armyset = Armyset::create(*i, true);
+      if (armyset != NULL)
 	{
-	  ids.push_back(loader.armyset->getId());
-	  delete loader.armyset;
+	  ids.push_back(armyset->getId());
+	  delete armyset;
 	}
     }
   for (guint32 i = after + 1; i < 1000000; i++)

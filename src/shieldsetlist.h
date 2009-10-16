@@ -66,8 +66,8 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	/**
 	 * Scan the given shieldset for a Shield of the given type and colour.
 	 *
-	 * @param shieldset  The directory name of the shieldset.  This value
-	 *                   relates to the Shieldset::d_dir member.
+	 * @param shieldset  The id the shieldset.  This value relates to the 
+	 *                   Shieldset::d_id member.
 	 * @param type       The size of the shield to search for.  This value
 	 *                   relates to the Shield::ShieldType enumeration.
 	 * @param colour     The player of the shield.  This value relates to
@@ -77,13 +77,20 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	 *         the given parameters.  If no shield could be found, NULL
 	 *         is returned.
 	 */
-	ShieldStyle *getShield(std::string shieldset, guint32 type, guint32 colour);
+	ShieldStyle *getShield(guint32 shieldset, guint32 type, guint32 colour);
 
 	//! Return the Shieldset object that is in the given directory.
 	Shieldset *getShieldset(std::string dir) { return d_shieldsets[dir];}
 
-	Gdk::Color getColor(std::string shieldset, guint32 owner);
-	struct rgb_shift getMaskColorShifts(std::string shieldset, guint32 owner);
+	Gdk::Color getColor(guint32 shieldset, guint32 owner);
+	struct rgb_shift getMaskColorShifts(guint32 shieldset, guint32 owner);
+
+	//! Return the Shieldset object by the id.
+	/**
+	 * @param id   A unique numeric identifier that identifies the 
+	 *             shieldset among all shieldsets in the shieldsetlist.
+	 */
+	Shieldset *getShieldset(guint32 id) { return d_shieldsetids[id];};
 
     private:
         //! Default Constructor.
@@ -100,16 +107,21 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	bool load(std::string tag, XML_Helper *helper);
 
         //! Loads a specific shieldset by it's directory name.
-        bool loadShieldset (std::string name);
+	bool loadShieldset(std::string name, bool p);
+	void loadShieldsets(std::list<std::string> shieldsets, bool priv);
         
         typedef std::map<std::string, std::string> DirMap;
         typedef std::map<std::string, Shieldset*> ShieldsetMap;
+        typedef std::map<guint32, Shieldset*> ShieldsetIdMap;
 
 	//! A map that provides a subdirectory when supplying a Shieldset name.
         DirMap d_dirs;
 
 	//! A map that provides a Shieldset when supplying a subdirectory name.
         ShieldsetMap d_shieldsets;
+
+	//! A map that provides a Shieldset when supplying a shieldset id.
+        ShieldsetIdMap d_shieldsetids;
 
         //! A static pointer for the singleton instance.
         static Shieldsetlist* s_instance;

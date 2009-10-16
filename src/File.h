@@ -28,6 +28,7 @@
 #include "xmlhelper.h"
 class Armyset;
 class Tileset;
+class Shieldset;
 
 /** \brief Miscellaneous functions for file access
   * 
@@ -112,7 +113,7 @@ class File
 	//! Get the director where the given tileset lives.
 	static std::string getTilesetDir(Tileset *tileset);
 
-	//! Gets the description file for the given armyset.
+	//! Gets the description file for the given tileset.
 	static std::string getTileset(Tileset *tileset);
 
 	// get a path of a file in the given Tileset.
@@ -124,16 +125,43 @@ class File
           */
 	static std::list<std::string> scanShieldsets();
 
+        /** Scan the personal data directories for shieldsets 
+          * 
+          * @return a list of available shieldsets
+          */
+	static std::list<std::string> scanUserShieldsets();
+
         /** Get the shieldset description file
           *
-          * @param shieldsetsubdir    the name of the shieldset
-          * @return the full name of the shield description file
+          * @param shieldsetsubdir    the dir name of the shieldset.
+          * @return the full name of the description file
           */
         static std::string getShieldset(std::string shieldsetsubdir);
 
-	//get a shieldset path
-	static std::string getShieldsetFile(std::string shieldsetsubdir, std::string picname);
-	
+        /** Get the shieldset conf file from the user's personal collection
+          *
+          * @param shieldsetsubdir    the name of the shieldset.
+          * @return the full name of the description file
+          */
+	static std::string getUserShieldset(std::string shieldsetsubdir);
+
+	//! Get the directory where personal shieldsets live.
+	static std::string getUserShieldsetDir();
+
+	//! Get the directory where system shieldsets live.
+	static std::string getShieldsetDir();
+
+	//! Get the director where the given shieldset lives.
+	static std::string getShieldsetDir(Shieldset *shieldset);
+
+	//! Gets the description file for the given shieldset.
+	static std::string getShieldset(Shieldset *shieldset);
+
+	// get a path of a file in the given Shieldset.
+	static std::string getShieldsetFile(Shieldset *shieldset, std::string pic);
+
+
+
         /** Get the description file for the cityset
           * 
           * @param citysetsubdir     the name of the cityset

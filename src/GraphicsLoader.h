@@ -49,24 +49,6 @@ class GraphicsLoader
 	static void instantiateImages(Tileset *ts);
 	static void instantiateImages(Tileset *ts, TileStyleSet *tss, guint32 tilesize);
 
-        /** Get the shield picture file
-          * 
-          * @param shieldsetsubdir     the name of the shieldset.  this is the
-	  *                            subdirectory name of the shieldset
-	  *                            within the shieldset directory.
-	  * @param pic                 the name of the shield picture.
-          * @return the surface which contains the shield picture
-          */
-        static PixMask* getShieldsetPicture(std::string shieldsetsubdir, std::string pic);
-
-        /** Get a tileset picture
-          * @param tileset      A pointer to the tileset object that holds
-	  * 			the picture.
-          * @param picname          the name of the picture.
-          * @return the surface which contains the picture
-          */
-        static PixMask* getTilesetPicture(Tileset *tileset, std::string picname);
-
         /** Load misc pic
           * 
           * @param picname  the name of the image (including the suffix).

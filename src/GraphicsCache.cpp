@@ -175,7 +175,7 @@ struct SelectorCacheItem
 // the structure to store shield images in
 struct ShieldCacheItem
 {
-    std::string shieldset;
+    guint32 shieldset;
     guint32 type;
     guint32 colour;
     PixMask* surface;
@@ -592,9 +592,8 @@ PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_
     return myitem->surface;
 }
 
-PixMask* GraphicsCache::getShieldPic(std::string shieldset, 
-					 guint32 type, 
-					 guint32 colour)
+PixMask* GraphicsCache::getShieldPic(guint32 shieldset, guint32 type, 
+				     guint32 colour)
 {
     debug("getting shield pic " <<shieldset <<" " <<type <<" " <<colour)
 
@@ -625,7 +624,7 @@ PixMask* GraphicsCache::getShieldPic(std::string shieldset,
         
 PixMask* GraphicsCache::getShieldPic(guint32 type, Player *p)
 {
-  std::string shieldset = GameMap::getInstance()->getShieldset()->getSubDir();
+  guint32 shieldset = GameMap::getInstance()->getShieldset()->getId();
   return getShieldPic(shieldset, type, p->getId());
 }
 
@@ -1294,12 +1293,12 @@ ArmyCacheItem* GraphicsCache::addArmyPic(ArmyCacheItem *item)
   return myitem;
 }
 
-ShieldCacheItem* GraphicsCache::addShieldPic(std::string shieldset, 
-					     guint32 type, guint32 colour)
+ShieldCacheItem* GraphicsCache::addShieldPic(guint32 shieldset, guint32 type, 
+					     guint32 colour)
 {
   debug("ADD shield pic: " <<shieldset <<"," <<type <<"," <<colour)
 
-    ShieldCacheItem* myitem = new ShieldCacheItem();
+  ShieldCacheItem* myitem = new ShieldCacheItem();
   myitem->shieldset = shieldset;
   myitem->type = type;
   myitem->colour = colour;

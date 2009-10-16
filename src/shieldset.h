@@ -65,7 +65,9 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 	 * @param helper  The opened shieldset configuration file to load the
 	 *                Shieldset from.
 	 */
-        Shieldset(XML_Helper* helper);
+        Shieldset(XML_Helper* helper, bool private_collection = false);
+
+	static Shieldset *create(std::string filename, bool private_collection = false);
 	//! Destructor.
         ~Shieldset();
 
@@ -93,6 +95,16 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 	//! Return the name of the Shieldset.
         std::string getName() const {return _(d_name.c_str());}
 
+	//! Get the unique identifier for this shieldset.
+	/**
+	 * Analagous to the shieldset.d_id XML entity in the shieldset
+	 * configuration file.
+	 */
+        guint32 getId() const {return d_id;}
+
+	//! Set the unique identifier for this shieldset.
+        void setId(guint32 id) {d_id = id;}
+
 	//! Set the name of the Shieldset.
         void setName(std::string name) {d_name = name;}
 
@@ -118,10 +130,14 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 
 	Gdk::Color getColor(guint32 owner);
 	struct rgb_shift getMaskColorShifts(guint32 owner);
+
+	//! Return whether this is a shieldset in the user's personal dir.
+	bool fromPrivateCollection() {return private_collection;};
     private:
 
         //! Callback function to load Shield objects into the Shieldset.
         bool loadShield(std::string tag, XML_Helper* helper);
+
 
 	//! The name of the Shieldset.
 	/**
@@ -131,6 +147,9 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 	 * select a particular Shieldset.
 	 */
         std::string d_name;
+
+	//! A unique numeric identifier among all shieldset.
+	guint32 d_id;
 
 	//! The subdirectory of the Shieldset.
 	/**
@@ -181,6 +200,9 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 	 * configuration file.
 	 */
 	guint32 d_large_width;
+
+	//! Whether this is a system shieldset, or one that the user made.
+	bool private_collection;
 };
 
 #endif // SHIELDSET_H

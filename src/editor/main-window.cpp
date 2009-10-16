@@ -453,8 +453,9 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
     guint32 armyset_id = 
       Armysetlist::getInstance()->getArmyset(armyset)->getId();
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
+    Shieldset *ss = ssl->getShieldset(shieldset);
     Player* neutral = new AI_Dummy(_("Neutral"), armyset_id, 
-				   ssl->getColor(shieldset, MAX_PLAYERS), 
+				   ssl->getColor(ss->getId(), MAX_PLAYERS), 
 				   width, height, MAX_PLAYERS);
     neutral->setType(Player::AI_DUMMY);
     Playerlist::getInstance()->push_back(neutral);
@@ -500,8 +501,9 @@ void MainWindow::set_random_map(int width, int height,
     guint32 armyset_id = 
       Armysetlist::getInstance()->getArmyset(armyset)->getId();
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
+    Shieldset *ss = ssl->getShieldset(shieldset);
     Player* neutral = new AI_Dummy(_("Neutral"), armyset_id, 
-				   ssl->getColor(shieldset, MAX_PLAYERS), 
+				   ssl->getColor(ss->getId(), MAX_PLAYERS), 
 				   width, height, MAX_PLAYERS);
     neutral->setType(Player::AI_DUMMY);
     Playerlist::getInstance()->push_back(neutral);

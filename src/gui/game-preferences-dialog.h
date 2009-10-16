@@ -86,7 +86,7 @@ class GamePreferencesDialog: public Decorated
     void update_shields();
     Glib::RefPtr<Gdk::Pixbuf> getShieldPic(guint32 type, guint32 owner);
     std::string d_filename;
-    std::string d_shieldset;
+    guint32 d_shieldset;
 };
 
 #endif

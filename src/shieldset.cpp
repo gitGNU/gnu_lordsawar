@@ -32,9 +32,11 @@ std::string Shieldset::d_tag = "shieldset";
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
-Shieldset::Shieldset(XML_Helper *helper)
+Shieldset::Shieldset(XML_Helper *helper, bool from_private_collection)
     : d_dir("")
 {
+    private_collection = from_private_collection;
+  helper->getData(d_id, "id");
   helper->getData(d_name, "name");
   helper->getData(d_small_width, "small_width");
   helper->getData(d_small_height, "small_height");
@@ -106,4 +108,42 @@ struct rgb_shift Shieldset::getMaskColorShifts(guint32 owner)
 	return (*it)->getMaskColorShifts();
     }
   return empty;
+}
+
+class ShieldsetLoader
+{
+public:
+    ShieldsetLoader(std::string name, bool p) 
+      {
+	shieldset = NULL;
+	private_collection = p;
+	std::string filename = "";
+	if (private_collection == false)
+	  filename = File::getShieldset(name);
+	else
+	  filename = File::getUserShieldset(name);
+	XML_Helper helper(filename, ios::in, false);
+	helper.registerTag(Shieldset::d_tag, sigc::mem_fun((*this), &ShieldsetLoader::load));
+	if (!helper.parse())
+	  {
+	    std::cerr << "Error, while loading an shieldset. Shieldset Name: ";
+	    std::cerr <<name <<std::endl <<std::flush;
+	  }
+      };
+    bool load(std::string tag, XML_Helper* helper)
+      {
+	if (tag == Shieldset::d_tag)
+	  {
+	    shieldset = new Shieldset(helper, private_collection);
+	    return true;
+	  }
+	return false;
+      };
+    bool private_collection;
+    Shieldset *shieldset;
+};
+Shieldset *Shieldset::create(std::string file, bool private_collection)
+{
+  ShieldsetLoader d(file, private_collection);
+  return d.shieldset;
 }

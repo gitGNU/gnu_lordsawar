@@ -328,6 +328,15 @@ void initialize_configuration()
         std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
         exit(-1);
     }
+
+    //Check if the personal shieldset directory exists. If not, try to make it.
+    if (File::create_dir(File::getUserShieldsetDir()) == false)
+    {
+        std::cerr << "Couldn't create personal shieldset directory ";
+        std::cerr << File::getUserShieldsetDir() <<".\n";
+        std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
+        exit(-1);
+    }
 }
 
 std::string Configuration::neutralCitiesToString(const GameParameters::NeutralCities neutrals)

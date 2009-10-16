@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -102,12 +102,17 @@ bool Tilesetlist::load(std::string tag, XML_Helper *helper)
 bool Tilesetlist::loadTileset(std::string name, bool from_private_collection)
 {
   debug("Loading tileset " <<name);
-  TilesetLoader loader(name, from_private_collection);
-  if (loader.tileset == NULL)
+  Tileset *tileset = Tileset::create(name, from_private_collection);
+  if (tileset == NULL)
     return false;
-  if (loader.tileset->validate() == false)
-    return false;
-  push_back(loader.tileset); 
+  if (tileset->validate() == false)
+    {
+      cerr<< "Error!  Tileset: `" << File::getTileset(tileset) <<
+	"' fails validation.  Skipping.\n",
+      delete tileset;
+      return false;
+    }
+  push_back(tileset); 
   return true;
 }
 
@@ -138,16 +143,6 @@ void Tilesetlist::loadTilesets(std::list<std::string> tilesets, bool priv)
 	  d_tilesets[*i] = *it;
 	  d_tilesetids[(*it)->getId()] = *it;
 	}
-      else
-	{
-	  //we failed validation
-	  iterator it = end();
-	  it--;
-	  cerr<< "Error!  Tileset: `" << File::getTileset((*it)) <<
-	    "' fails validation.  Skipping.\n",
-	  delete *it;
-	  erase (it);
-	}
     }
 }
 
@@ -159,22 +154,22 @@ int Tilesetlist::getNextAvailableId(int after)
   for (std::list<std::string>::const_iterator i = tilesets.begin(); 
        i != tilesets.end(); i++)
     {
-      TilesetLoader loader(*i, false);
-      if (loader.tileset)
+      Tileset *tileset = Tileset::create(*i, false);
+      if (tileset != NULL)
 	{
-	  ids.push_back(loader.tileset->getId());
-	  delete loader.tileset;
+	  ids.push_back(tileset->getId());
+	  delete tileset;
 	}
     }
   tilesets = File::scanUserTilesets();
   for (std::list<std::string>::const_iterator i = tilesets.begin(); 
        i != tilesets.end(); i++)
     {
-      TilesetLoader loader(*i, true);
-      if (loader.tileset)
+      Tileset *tileset = Tileset::create(*i, true);
+      if (tileset != NULL)
 	{
-	  ids.push_back(loader.tileset->getId());
-	  delete loader.tileset;
+	  ids.push_back(tileset->getId());
+	  delete tileset;
 	}
     }
   for (guint32 i = after + 1; i < 1000000; i++)

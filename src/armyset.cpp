@@ -262,3 +262,40 @@ bool Armyset::validate()
 
   return valid;
 }
+class ArmysetLoader
+{
+public:
+    ArmysetLoader(std::string name, bool p) 
+      {
+	armyset = NULL;
+	private_collection = p;
+	std::string filename = "";
+	if (private_collection == false)
+	  filename = File::getArmyset(name);
+	else
+	  filename = File::getUserArmyset(name);
+	XML_Helper helper(filename, ios::in, false);
+	helper.registerTag(Armyset::d_tag, sigc::mem_fun((*this), &ArmysetLoader::load));
+	if (!helper.parse())
+	  {
+	    std::cerr << "Error, while loading an armyset. Armyset Name: ";
+	    std::cerr <<name <<std::endl <<std::flush;
+	  }
+      };
+    bool load(std::string tag, XML_Helper* helper)
+      {
+	if (tag == Armyset::d_tag)
+	  {
+	    armyset = new Armyset(helper, private_collection);
+	    return true;
+	  }
+	return false;
+      };
+    bool private_collection;
+    Armyset *armyset;
+};
+Armyset *Armyset::create(std::string filename, bool private_collection)
+{
+  ArmysetLoader d(filename, private_collection);
+  return d.armyset;
+}

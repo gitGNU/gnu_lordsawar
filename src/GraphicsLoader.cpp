@@ -53,9 +53,8 @@ void GraphicsLoader::instantiateImages(Shieldset *shieldset)
 	  // The shield image consists of two halves. On the left is the shield 
 	  // image, on the right the mask.
 	  std::vector<PixMask* > half;
-	  half = disassemble_row(File::getShieldsetFile(shieldset->getSubDir(), 
-							ss->getImageName() 
-							+ ".png"), 2);
+	  half = disassemble_row(File::getShieldsetFile(shieldset, 
+							ss->getImageName()), 2);
 
 	  int xsize = 0;
 	  int ysize = 0;
@@ -444,19 +443,9 @@ PixMask* GraphicsLoader::loadImage(std::string filename, bool alpha)
   return PixMask::create(filename);
 }
 
-PixMask* GraphicsLoader::getTilesetPicture(Tileset *tileset, std::string picname)
-{
-  return loadImage(File::getTilesetFile(tileset, picname));
-}
-
 PixMask* GraphicsLoader::getMiscPicture(std::string picname, bool alpha)
 {
   return loadImage(File::getMiscFile("/various/" + picname), alpha);
-}
-
-PixMask* GraphicsLoader::getShieldsetPicture(std::string shieldsetdir, std::string picname)
-{
-  return loadImage(File::getShieldsetFile(shieldsetdir, picname));
 }
 
 PixMask* GraphicsLoader::getCitysetPicture(std::string citysetdir, std::string picname)

@@ -595,6 +595,7 @@ Driver::create_and_dump_scenario(const std::string &file, const GameParameters &
     int c = 0;
     int army_id = Armysetlist::getInstance()->getArmyset(g.army_theme)->getId();
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
+    guint32 id = ssl->getShieldset(g.shield_theme)->getId();
     for (std::vector<GameParameters::Player>::const_iterator
 	     i = g.players.begin(), end = g.players.end();
 	 i != end; ++i, ++c) {
@@ -613,14 +614,13 @@ Driver::create_and_dump_scenario(const std::string &file, const GameParameters &
 	else
 	    type = Player::HUMAN;
 
-	creator.addPlayer(i->name, army_id, ssl->getColor(g.shield_theme, 
-							  c), type);
+	creator.addPlayer(i->name, army_id, ssl->getColor(id, c), type);
     }
 
+	
     // the neutral player must come last so it has the highest id among players
     creator.addNeutral(_("Neutral"), army_id, 
-		       ssl->getColor(g.shield_theme, MAX_PLAYERS),
-		       Player::AI_DUMMY);
+		       ssl->getColor(id, MAX_PLAYERS), Player::AI_DUMMY);
 
     // now fill in some map information
     creator.setMapTiles(g.tile_theme);

@@ -49,21 +49,30 @@ void Shieldsetlist::deleteInstance()
     s_instance = 0;
 }
 
-Shieldsetlist::Shieldsetlist()
-{
-    // load all shieldsets
-    std::list<std::string> shieldsets = File::scanShieldsets();
 
+void Shieldsetlist::loadShieldsets(std::list<std::string> shieldsets, bool priv)
+{
     for (std::list<std::string>::const_iterator i = shieldsets.begin(); 
 	 i != shieldsets.end(); i++)
       {
-        loadShieldset(*i);
+        loadShieldset(*i, priv);
 	iterator it = end();
 	it--;
 	(*it)->setSubDir(*i);
 	d_dirs[(*it)->getName()] = *i;
 	d_shieldsets[*i] = *it;
+	d_shieldsetids[(*it)->getId()] = *it;
       }
+}
+
+Shieldsetlist::Shieldsetlist()
+{
+    // load all shieldsets
+    std::list<std::string> shieldsets = File::scanShieldsets();
+    loadShieldsets(shieldsets, false);
+    shieldsets = File::scanUserShieldsets();
+    loadShieldsets(shieldsets, true);
+
 }
 
 Shieldsetlist::~Shieldsetlist()
@@ -90,25 +99,20 @@ bool Shieldsetlist::load(std::string tag, XML_Helper *helper)
   return true;
 }
 
-bool Shieldsetlist::loadShieldset(std::string name)
+bool Shieldsetlist::loadShieldset(std::string name, bool p)
 {
   debug("Loading shieldset " <<name);
 
-  XML_Helper helper(File::getShieldset(name), ios::in, false);
-
-  helper.registerTag(Shieldset::d_tag, sigc::mem_fun((*this), &Shieldsetlist::load));
-
-  if (!helper.parse())
-    {
-      std::cerr << "Error, while loading a shieldset. Shieldset Name: ";
-      std::cerr <<name <<std::endl <<std::flush;
-      exit(-1);
-    }
+  Shieldset *shieldset = Shieldset::create(name, p);
+  if (shieldset)
+    push_back(shieldset);
+  else
+    return false;
 
   return true;
 }
         
-Gdk::Color Shieldsetlist::getColor(std::string shieldset, guint32 owner)
+Gdk::Color Shieldsetlist::getColor(guint32 shieldset, guint32 owner)
 {
   Shieldset *s = getShieldset(shieldset);
   if (!s)
@@ -116,7 +120,7 @@ Gdk::Color Shieldsetlist::getColor(std::string shieldset, guint32 owner)
   return s->getColor(owner);
 }
 
-struct rgb_shift Shieldsetlist::getMaskColorShifts(std::string shieldset, guint32 owner)
+struct rgb_shift Shieldsetlist::getMaskColorShifts(guint32 shieldset, guint32 owner)
 {
   struct rgb_shift empty;
   empty.r = 0; empty.g = 0; empty.b = 0;
@@ -125,7 +129,7 @@ struct rgb_shift Shieldsetlist::getMaskColorShifts(std::string shieldset, guint3
     return empty;
   return s->getMaskColorShifts(owner);
 }
-ShieldStyle *Shieldsetlist::getShield(std::string shieldset, guint32 type, guint32 colour)
+ShieldStyle *Shieldsetlist::getShield(guint32 shieldset, guint32 type, guint32 colour)
 {
   Shieldset *s = getShieldset(shieldset);
   if (!s)

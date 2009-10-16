@@ -476,11 +476,20 @@ void ArmySetWindow::on_load_armyset_activated()
 	}
       std::string name = File::get_basename(chooser.get_filename());
 
-      ArmysetLoader loader(name, priv);
+      Armyset *armyset = Armyset::create(name, priv);
+      if (armyset == NULL)
+	{
+	  std::string msg;
+	  msg = "Error!  Armyset could not be loaded.";
+	  Gtk::MessageDialog dialog(*window, msg);
+	  dialog.run();
+	  dialog.hide();
+	  return;
+	}
       armies_list->clear();
       if (d_armyset)
 	delete d_armyset;
-      d_armyset = loader.armyset;
+      d_armyset = armyset;
 
       //was this from the user's own private collection?
     
@@ -856,7 +865,7 @@ void ArmySetWindow::on_image_changed(Gtk::FileChooserButton *button, Gtk::Image 
 	}
       a->setImageName(c, file);
       struct rgb_shift shifts;
-      shifts = Shieldsetlist::getInstance()->getMaskColorShifts("default", c);
+      shifts = Shieldsetlist::getInstance()->getMaskColorShifts(1, c);
       //GraphicsLoader::instantiateImages(d_armyset);
       //fixme, this needs to be added back in somehow.
       GraphicsLoader::instantiateImages(d_armyset, a, c);

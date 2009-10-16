@@ -609,11 +609,19 @@ void TileSetWindow::on_load_tileset_activated()
 	}
       std::string name = File::get_basename(chooser.get_filename());
 
-      TilesetLoader loader(name, priv);
+      Tileset *tileset = Tileset::create(name, priv);
+      if (tileset == NULL)
+	{
+	  std::string msg;
+	  msg = "The tileset could not be loaded.";
+	  Gtk::MessageDialog dialog(*window, msg);
+	  dialog.run();
+	  dialog.hide();
+	}
       tiles_list->clear();
       if (d_tileset)
 	delete d_tileset;
-      d_tileset = loader.tileset;
+      d_tileset = tileset;
 
       //was this from the user's own private collection?
     

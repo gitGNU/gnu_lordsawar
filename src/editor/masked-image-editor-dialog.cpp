@@ -118,7 +118,7 @@ void MaskedImageEditorDialog::show_image(std::string filename)
 	}
 
       struct rgb_shift shifts;
-      shifts = Shieldsetlist::getInstance()->getMaskColorShifts("default", i);
+      shifts = Shieldsetlist::getInstance()->getMaskColorShifts(1, i);
       PixMask *army_image = GraphicsCache::applyMask(half[0],  half[1],
 						     shifts, false);
       image->property_pixbuf() = army_image->to_pixbuf();

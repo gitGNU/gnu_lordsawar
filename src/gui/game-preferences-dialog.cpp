@@ -95,7 +95,9 @@ void GamePreferencesDialog::init(std::string filename)
   if (broken)
     start_game_button->set_sensitive(false);
 
-  d_shieldset = load_map_parameters.shield_theme;
+  Shieldsetlist *ssl = Shieldsetlist::getInstance();
+  Shieldset *shieldset = ssl->getShieldset(load_map_parameters.shield_theme);
+  d_shieldset = shieldset->getId();
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     add_player(GameParameters::Player::EASY, "");
 

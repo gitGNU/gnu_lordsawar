@@ -146,12 +146,12 @@ class GraphicsCache
           * The returned surface contains the correct player colors and some
           * icons displaying the level of the unit.
           *
-          * @param shieldset    the shieldset to be used
+          * @param shieldset    the id of the shieldset to be used
 	  * @param type         the size of the shield: 0=sm, 1=med, 2=lg
           * @param colour       which player the shield is for
           * @return the image of the shield
           */
-        PixMask* getShieldPic(std::string shieldset, guint32 type, guint32 colour);
+        PixMask* getShieldPic(guint32 shieldset, guint32 type, guint32 colour);
         PixMask* getShieldPic(guint32 type, Player *p);
 
         /** Function for getting a ruin picture
@@ -388,7 +388,7 @@ class GraphicsCache
 	TileCacheItem* addTilePic(TileCacheItem*item);
 
         //! Creates a new shield picture with the given parameters.
-        ShieldCacheItem* addShieldPic(std::string shieldset, guint32 type, guint32 colour);
+        ShieldCacheItem* addShieldPic(guint32 shieldset, guint32 type, guint32 colour);
 
         //! Creates a new city picture with the given parameters.
         CityCacheItem* addCityPic(int type, const Player* p);
