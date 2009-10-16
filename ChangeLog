@@ -1,3 +1,8 @@
+2009-10-16  Ben Asselstine  <benasselstine@gmail.com>
+
+	* removing ".png" from the tileset description files.
+	* added ids to tilesets.
+
 2009-10-15  Ben Asselstine  <benasselstine@gmail.com>
 
 	* fixing up the tileset editor.
