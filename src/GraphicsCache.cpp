@@ -27,6 +27,7 @@
 #include "armysetlist.h"
 #include "shieldsetlist.h"
 #include "tilesetlist.h"
+#include "citysetlist.h"
 #include "citylist.h"
 #include "army.h"
 #include "playerlist.h"
@@ -84,6 +85,7 @@ struct NewLevelCacheItem
 //the structure to store temples in
 struct TempleCacheItem
 {
+    guint32 cityset;
     int type;
     PixMask* surface;
 };
@@ -91,6 +93,7 @@ struct TempleCacheItem
 //the structure to store ruins in
 struct RuinCacheItem
 {
+    guint32 cityset;
     int type;
     PixMask* surface;
 };
@@ -141,6 +144,7 @@ struct CursorCacheItem
 //the structure to store buildings in
 struct CityCacheItem
 {
+    guint32 cityset;
     int type;
     guint32 player_id;
     PixMask* surface;
@@ -149,6 +153,7 @@ struct CityCacheItem
 //the structure to store towers in
 struct TowerCacheItem
 {
+    guint32 cityset;
     guint32 player_id;
     PixMask* surface;
 };
@@ -216,6 +221,7 @@ struct TileCacheItem
   guint32 tilesize;
   bool has_grid;
   guint32 tileset;
+  guint32 cityset;
   PixMask* surface;
 };
 bool operator <(TileCacheItem lhs, TileCacheItem rhs)
@@ -246,10 +252,6 @@ void GraphicsCache::deleteInstance()
 GraphicsCache::GraphicsCache()
     :d_cachesize(0)
 {
-    loadCityPics();
-    loadTowerPics();
-    loadTemplePics();
-    loadRuinPics();
     loadDiplomacyPics();
 
     loadCursorPics();
@@ -266,30 +268,12 @@ GraphicsCache::GraphicsCache()
       GraphicsLoader::getMiscPicture("smallunexploredstronghold.png");
     d_small_ruin_explored = GraphicsLoader::getMiscPicture("smallexploredruin.png");
     d_small_temple = GraphicsLoader::getMiscPicture("smalltemple.png");
-    std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
-    d_port = GraphicsLoader::getCitysetPicture(cityset, "port.png");
     d_bag = GraphicsLoader::getMiscPicture("items.png");
-    d_signpost = GraphicsLoader::getCitysetPicture(cityset, "signpost.png");
 }
 
 GraphicsCache::~GraphicsCache()
 {
     clear();
-
-    for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
-    {
-        if (d_citypic[i])
-	  delete d_citypic[i];
-
-        if (d_razedpic[i])
-	  delete d_razedpic[i];
-    }
-
-    for (unsigned int i = 0; i < MAX_PLAYERS; i++)
-    {
-        if (d_towerpic[i])
-	  delete d_towerpic[i];
-    }
 
     for (unsigned int i = 0; i < PRODUCTION_SHIELD_TYPES; i++)
     {
@@ -308,9 +292,7 @@ GraphicsCache::~GraphicsCache()
     delete d_small_ruin_unexplored;
     delete d_small_stronghold_unexplored;
     delete d_small_ruin_explored;
-    delete d_port;
     delete d_bag;
-    delete d_signpost;
     delete d_newlevel;
     delete d_newlevelmask;
 }
@@ -352,7 +334,7 @@ PixMask* GraphicsCache::getBagPic()
 
 PixMask* GraphicsCache::getPortPic()
 {
-  return d_port;
+  return GameMap::getInstance()->getCityset()->getPortImage();
 }
 
 PixMask* GraphicsCache::getExplosionPic()
@@ -362,7 +344,7 @@ PixMask* GraphicsCache::getExplosionPic()
 
 PixMask* GraphicsCache::getSignpostPic()
 {
-  return d_signpost;
+  return GameMap::getInstance()->getCityset()->getSignpostImage();
 }
 
 PixMask* GraphicsCache::getMoveBonusPic(guint32 bonus, bool has_ship)
@@ -538,10 +520,11 @@ PixMask* GraphicsCache::getArmyPic(guint32 armyset, guint32 army_id,
 PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid)
 {
   guint32 tileset = GameMap::getInstance()->getTileset()->getId();
-  return getTilePic(tile_style_id, fog_type_id, has_bag, has_standard, standard_player_id, stack_size, stack_player_id, army_type_id, has_tower, has_ship, building_type, building_subtype, building_tile, building_player_id, tilesize, has_grid, tileset);
+  guint32 cityset = GameMap::getInstance()->getCityset()->getId();
+  return getTilePic(tile_style_id, fog_type_id, has_bag, has_standard, standard_player_id, stack_size, stack_player_id, army_type_id, has_tower, has_ship, building_type, building_subtype, building_tile, building_player_id, tilesize, has_grid, tileset, cityset);
 }
 
-PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid, guint32 tileset)
+PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid, guint32 tileset, guint32 cityset)
 {
     debug("getting tile pic " << tile_style_id << " " <<
 	  fog_type_id << " " << has_bag << " " << has_standard << " " <<
@@ -572,6 +555,7 @@ PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_
     item.has_grid = has_grid;
     item.fog_type_id = fog_type_id;
     item.tileset = tileset;
+    item.cityset = cityset;
     TileMap::iterator mit = d_tilemap.find(item);
     if (mit != d_tilemap.end())
       {
@@ -630,6 +614,11 @@ PixMask* GraphicsCache::getShieldPic(guint32 type, Player *p)
 
 PixMask* GraphicsCache::getTemplePic(int type)
 {
+  guint32 cityset = GameMap::getInstance()->getCityset()->getId();
+  return getTemplePic(type, cityset);
+}
+PixMask* GraphicsCache::getTemplePic(int type, guint32 cityset)
+{
     debug("GraphicsCache::getTemplePic " <<type)
 
     std::list<TempleCacheItem*>::iterator it;
@@ -637,7 +626,7 @@ PixMask* GraphicsCache::getTemplePic(int type)
 
     for (it = d_templelist.begin(); it != d_templelist.end(); it++)
     {
-        if ((*it)->type == type)
+        if ((*it)->type == type && (*it)->cityset == cityset)
         {
             myitem = (*it);
 
@@ -650,12 +639,17 @@ PixMask* GraphicsCache::getTemplePic(int type)
     }
 
     //no item found -> create a new one
-    myitem = addTemplePic(type);
+    myitem = addTemplePic(type, cityset);
 
     return myitem->surface;
 }
 
 PixMask* GraphicsCache::getRuinPic(int type)
+{
+  guint32 cityset = GameMap::getInstance()->getCityset()->getId();
+  return getRuinPic(type, cityset);
+}
+PixMask* GraphicsCache::getRuinPic(int type, guint32 cityset)
 {
     debug("GraphicsCache::getRuinPic " <<type)
 
@@ -664,7 +658,7 @@ PixMask* GraphicsCache::getRuinPic(int type)
 
     for (it = d_ruinlist.begin(); it != d_ruinlist.end(); it++)
     {
-        if ((*it)->type == type)
+        if ((*it)->type == type && (*it)->cityset == cityset)
         {
             myitem = (*it);
 
@@ -677,7 +671,7 @@ PixMask* GraphicsCache::getRuinPic(int type)
     }
 
     //no item found -> create a new one
-    myitem = addRuinPic(type);
+    myitem = addRuinPic(type, cityset);
 
     return myitem->surface;
 }
@@ -832,30 +826,83 @@ PixMask* GraphicsCache::getCursorPic(int type)
     return myitem->surface;
 }
 
-PixMask* GraphicsCache::getCityPic(const City* city)
+PixMask* GraphicsCache::getCityPic(const City* city, guint32 cityset)
 {
-    if (!city)
-        return NULL;
-    if (city->isBurnt())
-      return d_razedpic[city->getOwner()->getId()];
-    else
-      return d_citypic[city->getOwner()->getId()];
+  if (!city)
+    return NULL;
+  int type;
+  if (city->isBurnt() == true)
+    type = -1;
+  else
+    type = 0;
+  return getCityPic(type, city->getOwner(), cityset);
 }
 
-PixMask* GraphicsCache::getCityPic(int type, const Player* p)
+PixMask* GraphicsCache::getCityPic(const City* city)
 {
-    debug("GraphicsCache::getCityPic " <<type <<", player " <<p->getName())
+  guint32 cityset = GameMap::getInstance()->getCityset()->getId();
+  return getCityPic(city, cityset);
+}
 
-    if (type == -1)
-      return d_razedpic[p->getId()];
-    else
-      return d_citypic[p->getId()];
+PixMask* GraphicsCache::getCityPic(int type, const Player* p, guint32 cityset)
+{
+    debug("GraphicsCache::getCityPic " <<type)
+
+    std::list<CityCacheItem*>::iterator it;
+    CityCacheItem* myitem;
+
+    for (it = d_citylist.begin(); it != d_citylist.end(); it++)
+    {
+        if ((*it)->type == type && (*it)->cityset == cityset &&
+	    (*it)->player_id == p->getId())
+        {
+            myitem = (*it);
+
+            //put the item in last place (last touched)
+            d_citylist.erase(it);
+            d_citylist.push_back(myitem);
+
+            return myitem->surface;
+        }
+    }
+
+    //no item found -> create a new one
+    myitem = addCityPic(type, p, cityset);
+
+    return myitem->surface;
 }
 
 PixMask* GraphicsCache::getTowerPic(const Player* p)
 {
+  guint32 cityset = GameMap::getInstance()->getCityset()->getId();
+  return getTowerPic(p, cityset);
+}
+
+PixMask* GraphicsCache::getTowerPic(const Player* p, guint32 cityset)
+{
     debug("GraphicsCache::getTowerPic player " <<p->getName())
-    return d_towerpic[p->getId()];
+
+    std::list<TowerCacheItem*>::iterator it;
+    TowerCacheItem* myitem;
+
+    for (it = d_towerlist.begin(); it != d_towerlist.end(); it++)
+    {
+        if ((*it)->cityset == cityset && (*it)->player_id == p->getId())
+        {
+            myitem = (*it);
+
+            //put the item in last place (last touched)
+            d_towerlist.erase(it);
+            d_towerlist.push_back(myitem);
+
+            return myitem->surface;
+        }
+    }
+
+    //no item found -> create a new one
+    myitem = addTowerPic(p, cityset);
+
+    return myitem->surface;
 }
 
 PixMask* GraphicsCache::getFlagPic(guint32 stack_size, const Player *p, guint32 tileset)
@@ -1127,7 +1174,7 @@ void GraphicsCache::checkPictures()
 
 }
 
-void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid, guint32 tileset)
+void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid, guint32 tileset, guint32 cityset)
 {
   const Player *player;
   Glib::RefPtr<Gdk::Pixmap> pixmap = surface->get_pixmap();
@@ -1137,13 +1184,13 @@ void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag,
     case Maptile::CITY:
 	{
 	  player = Playerlist::getInstance()->getPlayer(building_player_id);
-	  getCityPic(building_subtype, player)->blit(building_tile, ts, pixmap);
+	  getCityPic(building_subtype, player, cityset)->blit(building_tile, ts, pixmap);
 	}
       break;
     case Maptile::RUIN:
-      getRuinPic(building_subtype)->blit(building_tile, ts, pixmap); break;
+      getRuinPic(building_subtype, cityset)->blit(building_tile, ts, pixmap); break;
     case Maptile::TEMPLE:
-      getTemplePic(building_subtype)->blit(building_tile, ts, pixmap); break;
+      getTemplePic(building_subtype, cityset)->blit(building_tile, ts, pixmap); break;
     case Maptile::SIGNPOST:
       getSignpostPic()->blit(building_tile, ts, pixmap); break;
     case Maptile::ROAD:
@@ -1209,7 +1256,8 @@ TileCacheItem* GraphicsCache::addTilePic(TileCacheItem *item)
 	item->has_ship << " " << item->building_type << " " << 
 	item->building_subtype << " " << item->building_tile.x << 
 	"," << item->building_tile.y << " " << item->building_player_id << 
-	" " << item->tilesize << " " << item->has_grid << " " << item->tileset);
+	" " << item->tilesize << " " << item->has_grid << " " << item->tileset
+	" " << item->cityset);
 
   TileCacheItem* myitem = new TileCacheItem();
   *myitem = *item;
@@ -1229,7 +1277,8 @@ TileCacheItem* GraphicsCache::addTilePic(TileCacheItem *item)
 		  myitem->army_type_id, myitem->has_tower, myitem->has_ship, 
 		  myitem->building_type, myitem->building_subtype, 
 		  myitem->building_tile, myitem->building_player_id, 
-		  myitem->tilesize, myitem->has_grid, myitem->tileset);
+		  myitem->tilesize, myitem->has_grid, myitem->tileset,
+		  myitem->cityset);
     }
 
   //now the final preparation steps:
@@ -1410,13 +1459,15 @@ PlantedStandardCacheItem* GraphicsCache::addPlantedStandardPic(const Player* p)
 }
 
 
-TempleCacheItem* GraphicsCache::addTemplePic(int type)
+TempleCacheItem* GraphicsCache::addTemplePic(int type, guint32 cityset)
 {
-  PixMask* mysurf = d_templepic[type];
+  Cityset *cs = Citysetlist::getInstance()->getCityset(cityset);
+  PixMask* mysurf = cs->getTempleImage(type)->copy();
 
   //now create the cache item and add the size
   TempleCacheItem* myitem = new TempleCacheItem();
   myitem->type = type;
+  myitem->cityset = cityset;
   myitem->surface = mysurf;
 
   d_templelist.push_back(myitem);
@@ -1431,9 +1482,10 @@ TempleCacheItem* GraphicsCache::addTemplePic(int type)
   return myitem;
 }
 
-RuinCacheItem* GraphicsCache::addRuinPic(int type)
+RuinCacheItem* GraphicsCache::addRuinPic(int type, guint32 cityset)
 {
-  PixMask* mysurf = d_ruinpic[type];
+  Cityset *cs = Citysetlist::getInstance()->getCityset(cityset);
+  PixMask* mysurf = cs->getRuinImage(type)->copy();
 
   //now create the cache item and add the size
   RuinCacheItem* myitem = new RuinCacheItem();
@@ -1566,19 +1618,24 @@ CursorCacheItem* GraphicsCache::addCursorPic(int type)
   return myitem;
 }
 
-CityCacheItem* GraphicsCache::addCityPic(int type, const Player* p)
+CityCacheItem* GraphicsCache::addCityPic(int type, const Player* p, guint32 cityset)
 {
   //now create the cache item and add the size
   CityCacheItem* myitem = new CityCacheItem();
+  myitem->cityset = cityset;
   myitem->player_id = p->getId();
   myitem->type = type;
-  myitem->surface = d_citypic[p->getId()];
+  Cityset *cs = Citysetlist::getInstance()->getCityset(cityset);
+  if (type == -1)
+    myitem->surface = cs->getRazedCityImage(p->getId())->copy();
+  else
+    myitem->surface = cs->getCityImage(p->getId())->copy();
 
   d_citylist.push_back(myitem);
 
   //add the size
-  int size = d_citypic[p->getId()]->get_width() * d_citypic[p->getId()]->get_height();
-  d_cachesize += size * d_citypic[p->getId()]->get_depth()/8;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize += size * myitem->surface->get_depth()/8;
 
   //and check the size of the cache
   checkPictures();
@@ -1586,18 +1643,20 @@ CityCacheItem* GraphicsCache::addCityPic(int type, const Player* p)
   return myitem;
 }
 
-TowerCacheItem* GraphicsCache::addTowerPic(const Player* p)
+TowerCacheItem* GraphicsCache::addTowerPic(const Player* p, guint32 cityset)
 {
   //now create the cache item and add the size
   TowerCacheItem* myitem = new TowerCacheItem();
   myitem->player_id = p->getId();
-  myitem->surface = d_towerpic[p->getId()];
+  myitem->cityset = cityset;
+  Cityset *cs = Citysetlist::getInstance()->getCityset(cityset);
+  myitem->surface = cs->getTowerImage(p->getId());
 
   d_towerlist.push_back(myitem);
 
   //add the size
-  int size = d_towerpic[p->getId()]->get_width() * d_towerpic[p->getId()]->get_height();
-  d_cachesize += size * d_towerpic[p->getId()]->get_depth()/8;
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize += size * myitem->surface->get_depth()/8;
 
   //and check the size of the cache
   checkPictures();
@@ -2109,43 +2168,6 @@ void GraphicsCache::eraseLastMoveBonusItem()
   delete myitem;
 }
 
-void GraphicsCache::loadTemplePics()
-{
-  // GameMap has the actual cityset stored
-  std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
-  int ts = GameMap::getInstance()->getCityset()->getTileSize();
-
-  // load the temple pictures
-  std::vector<PixMask* > templepics;
-  templepics = disassemble_row(File::getCitysetFile(cityset, "temples.png"), 
-			       TEMPLE_TYPES);
-  for (unsigned int i = 0; i < TEMPLE_TYPES; i++)
-    {
-      if (templepics[i]->get_width() != ts)
-	PixMask::scale(templepics[i], ts, ts);
-      d_templepic[i] = templepics[i];
-    }
-}
-
-void GraphicsCache::loadRuinPics()
-{
-  // GameMap has the actual cityset stored
-  std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
-  int ts = GameMap::getInstance()->getCityset()->getTileSize();
-
-  // load the ruin pictures
-  std::vector<PixMask* > ruinpics;
-  ruinpics = disassemble_row(File::getCitysetFile(cityset, "ruin.png"), 
-			     RUIN_TYPES);
-
-  for (unsigned int i = 0; i < RUIN_TYPES ; i++)
-    {
-      if (ruinpics[i]->get_width() != ts)
-	PixMask::scale(ruinpics[i], ts, ts);
-      d_ruinpic[i] = ruinpics[i];
-    }
-}
-
 void GraphicsCache::loadDiplomacyPics()
 {
   int ts = 30;
@@ -2185,51 +2207,6 @@ void GraphicsCache::loadCursorPics()
       if (cursorpics[i]->get_width() != ts)
 	PixMask::scale(cursorpics[i], ts, ts);
       d_cursorpic[i] = cursorpics[i];
-    }
-}
-
-void GraphicsCache::loadCityPics()
-{
-  // GameMap has the actual cityset stored
-  std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
-  int ts = GameMap::getInstance()->getTileset()->getTileSize();
-
-  std::vector<PixMask* > razedpics;
-  razedpics = disassemble_row(File::getCitysetFile(cityset, "castle_razed.png"),
-			      MAX_PLAYERS + 1);
-  for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
-    {
-      if (razedpics[i]->get_width() != ts)
-	PixMask::scale(razedpics[i], ts *City::getWidth() , ts * City::getWidth());
-      d_razedpic[i] = razedpics[i];
-    }
-
-  // load the city pictures
-  std::vector<PixMask* > citypics;
-  citypics = disassemble_row(File::getCitysetFile(cityset, "castles.png"),
-			      MAX_PLAYERS + 1);
-  for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
-    {
-      if (citypics[i]->get_width() != ts)
-	PixMask::scale(citypics[i], ts *City::getWidth(), ts * City::getWidth());
-      d_citypic[i] = citypics[i];
-    }
-}
-
-void GraphicsCache::loadTowerPics()
-{
-  // GameMap has the actual cityset stored
-  std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
-  int ts = GameMap::getInstance()->getCityset()->getTileSize();
-
-  std::vector<PixMask* > towerpics;
-  towerpics = disassemble_row(File::getCitysetFile(cityset, "towers.png"),
-			      MAX_PLAYERS);
-  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
-    {
-      if (towerpics[i]->get_width() != ts)
-	PixMask::scale(towerpics[i], ts, ts);
-      d_towerpic[i] = towerpics[i];
     }
 }
 

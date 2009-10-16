@@ -925,6 +925,7 @@ bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
 
   GraphicsLoader::instantiateImages(GameMap::getInstance()->getTileset());
   GraphicsLoader::instantiateImages(GameMap::getInstance()->getShieldset());
+  GraphicsLoader::instantiateImages(GameMap::getInstance()->getCityset());
 
   Sound::getInstance()->haltMusic(false);
   Sound::getInstance()->enableBackground();

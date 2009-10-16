@@ -178,7 +178,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	Gdk::Color getRoadColor() const {return d_road_color;};
 	void setRoadColor(Gdk::Color color) {d_road_color = color;};
 
-	//! Return whether this is an tileset in the user's personal collection.
+	//! Return whether this is a tileset in the user's personal collection.
 	bool fromPrivateCollection() {return private_collection;};
 
 	void setExplosionImage(PixMask *p) {explosion = p;};

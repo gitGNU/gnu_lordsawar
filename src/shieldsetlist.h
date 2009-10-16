@@ -103,9 +103,6 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
         //! Destructor.
         ~Shieldsetlist();
 
-        //! Callback for loading Shieldsets into the Shieldsetlist.
-	bool load(std::string tag, XML_Helper *helper);
-
         //! Loads a specific shieldset by it's directory name.
 	bool loadShieldset(std::string name, bool p);
 	void loadShieldsets(std::list<std::string> shieldsets, bool priv);

@@ -72,6 +72,12 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
 	 */
 	Cityset *getCityset(std::string dir) { return d_citysets[dir];}
 
+	//! Return the Cityset object by the id.
+	/**
+	 * @param id   A unique numeric identifier that identifies the cityset
+	 *             among all tilesets in the citysetlist.
+	 */
+	Cityset *getCityset(guint32 id) { return d_citysetids[id];};
     private:
         //! Default constructor.  Loads all citysets it can find.
 	/**
@@ -81,9 +87,6 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
         
         //! Destructor.
         ~Citysetlist();
-
-        //! Callback for loading Cityset objects into the list.
-	bool load(std::string tag, XML_Helper *helper);
 
         //! Loads a specific Cityset.
 	/**
@@ -95,10 +98,12 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
 	 *
 	 * @return True if the Cityset could be loaded.  False otherwise.
 	 */
-        bool loadCityset (std::string name);
+        bool loadCityset (std::string name, bool p);
+        void loadCitysets (std::list<std::string> name, bool p);
         
         typedef std::map<std::string, std::string> DirMap;
         typedef std::map<std::string, Cityset*> CitysetMap;
+        typedef std::map<guint32, Cityset*> CitysetIdMap;
 
 	//! A map that provides a subdirectory when supplying a Cityset name.
 	/**
@@ -109,6 +114,9 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
 
 	//! A map that provides a Cityset when supplying a subdirectory name.
         CitysetMap d_citysets;
+
+	//! A map that provides a Cityset when supplying a cityset id.
+        CitysetIdMap d_citysetids;
 
         //! A static pointer for the singleton instance.
         static Citysetlist* s_instance;

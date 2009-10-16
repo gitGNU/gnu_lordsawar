@@ -133,7 +133,7 @@ class GraphicsCache
                                 const bool* medals);
 	PixMask* getArmyPic(Army *a);
 
-	PixMask* getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid, guint32 tileset);
+	PixMask* getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid, guint32 tileset, guint32 cityset);
 	PixMask* getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid);
 
         /** Function for getting the shield picture from the cache
@@ -160,6 +160,7 @@ class GraphicsCache
           * @return image of the ruin 
           */
         PixMask* getRuinPic(int type);
+        PixMask* getRuinPic(int type, guint32 cityset);
 
         /** Function for getting a diplomacy icon
           *
@@ -175,6 +176,7 @@ class GraphicsCache
           * @return image of the temple
           */
         PixMask* getTemplePic(int type);
+        PixMask* getTemplePic(int type, guint32 cityset);
 
         /** Function for getting a road picture
           *
@@ -242,9 +244,10 @@ class GraphicsCache
           * @param type         the level of the city; -1 returns the pic for
           *                     the razed city
           * @param player       the player owning the city
+	  * @param cityset      the cityset that has the city image
           * @return image of the described city
           */
-        PixMask* getCityPic(int type, const Player* p);
+        PixMask* getCityPic(int type, const Player* p, guint32 cityset);
         /** Another function for getting a city picture
           *
           * Most often, we don't need such a sophisticated function. So just
@@ -254,6 +257,7 @@ class GraphicsCache
           * @return image of the city
           */
         PixMask* getCityPic(const City* city);
+        PixMask* getCityPic(const City* city, guint32 cityset);
 
         /** Function for getting tower pictures.
           *
@@ -264,6 +268,7 @@ class GraphicsCache
           * @return image for the tower
           */
         PixMask* getTowerPic(const Player *p);
+	PixMask* getTowerPic(const Player* p, guint32 cityset);
 
         /** Function for getting flag pictures.
           *
@@ -361,10 +366,10 @@ class GraphicsCache
         ~GraphicsCache();
 
         //! Creates a new temple picture with the given parameters.
-        TempleCacheItem* addTemplePic(int type);
+        TempleCacheItem* addTemplePic(int type, guint32 cityset);
 
         //! Creates a new ruin picture with the given parameters.
-        RuinCacheItem* addRuinPic(int type);
+        RuinCacheItem* addRuinPic(int type, guint32 cityset);
 
         //! Creates a new diplomacy icon with the given parameters.
         DiplomacyCacheItem* addDiplomacyPic(int type, Player::DiplomaticState state);
@@ -391,10 +396,10 @@ class GraphicsCache
         ShieldCacheItem* addShieldPic(guint32 shieldset, guint32 type, guint32 colour);
 
         //! Creates a new city picture with the given parameters.
-        CityCacheItem* addCityPic(int type, const Player* p);
+        CityCacheItem* addCityPic(int type, const Player* p, guint32 cityset);
 
         //! Creates a new tower picture with the given parameters.
-        TowerCacheItem* addTowerPic(const Player* p);
+	TowerCacheItem* addTowerPic(const Player* p, guint32 cityset);
 
         //! Creates a new ship picture with the given parameters.
         ShipCacheItem* addShipPic(const Player* p);
@@ -506,14 +511,8 @@ class GraphicsCache
 
         //! Loads the images for the movement bonuses
         void loadMoveBonusPics();
-        /** Get a cityset picture
-          * @param citysetname       the name of the cityset
-          * @param picname          the name of the picture
-          * @return the surface which contains the picture
-          */
-        static PixMask* getCitysetPicture(std::string citysetname, std::string picname);
 
-	void drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid, guint32 tileset);
+	void drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid, guint32 tileset, guint32 cityset);
 
         //the data
         static GraphicsCache* s_instance;
@@ -548,23 +547,16 @@ class GraphicsCache
         std::list<NewLevelCacheItem*> d_newlevellist;
 
         //some private surfaces
-        PixMask* d_citypic[MAX_PLAYERS + 1]; //+1 for neutral
-        PixMask* d_towerpic[MAX_PLAYERS];
-        PixMask* d_templepic[TEMPLE_TYPES];
-        PixMask* d_ruinpic[RUIN_TYPES];
         PixMask* d_diplomacypic[2][DIPLOMACY_TYPES];
 
         PixMask* d_cursorpic[CURSOR_TYPES];
-        PixMask* d_razedpic[MAX_PLAYERS + 1]; //+1 for neutral
         PixMask* d_prodshieldpic[PRODUCTION_SHIELD_TYPES];
 	PixMask* d_smallruinedcity;
 	PixMask* d_smallhero;
 	PixMask* d_smallinactivehero;
         PixMask* d_movebonuspic[MOVE_BONUS_TYPES];
         PixMask* d_medalpic[2][MEDAL_TYPES];
-	PixMask* d_port;
 	PixMask* d_bag;
-	PixMask* d_signpost;
 	PixMask* d_small_ruin_unexplored;
 	PixMask* d_small_stronghold_unexplored;
 	PixMask* d_small_ruin_explored;

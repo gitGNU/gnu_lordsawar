@@ -68,14 +68,6 @@ void Armysetlist::loadArmysets(std::list<std::string> armysets,
 
 	iterator it = end();
 	it--;
-	if (d_armysetids.find((*it)->getId()) != d_armysetids.end())
-	  {
-	    Armyset *a = (*d_armysetids.find((*it)->getId())).second;
-	    cerr << "Error!  armyset: `" << (*it)->getName() << 
-	      "' has a duplicate armyset id with `" << File::getArmyset(a) << 
-	      "'.  Skipping." << endl;
-	    continue;
-	  }
 	//fill out the maps
 	for (Armyset::iterator ait = (*it)->begin(); ait != (*it)->end(); ait++)
 	  d_armies[(*it)->getId()].push_back(*ait);
@@ -212,6 +204,15 @@ bool Armysetlist::loadArmyset(std::string name, bool private_collection)
     {
       cerr << "Error!  armyset: `" << armyset->getName() << 
 	      "' is invalid." << endl;
+      delete armyset;
+      return false;
+    }
+  if (d_armysetids.find(armyset->getId()) != d_armysetids.end())
+    {
+      Armyset *a = (*d_armysetids.find(armyset->getId())).second;
+      cerr << "Error!  armyset: `" << armyset->getName() << 
+        "' shares a duplicate armyset id with `" << File::getArmyset(a) << 
+        "'.  Skipping." << endl;
       delete armyset;
       return false;
     }

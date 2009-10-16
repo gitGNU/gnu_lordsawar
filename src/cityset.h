@@ -23,6 +23,7 @@
 #include <gtkmm.h>
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
+#include "PixMask.h"
 
 #include "defs.h"
 
@@ -54,7 +55,9 @@ class Cityset : public sigc::trackable
 	 * @param helper  The opened cityset configuration file to load the
 	 *                Cityset from.
 	 */
-        Cityset(XML_Helper* helper);
+        Cityset(XML_Helper* helper, bool private_collection = false);
+
+	static Cityset *create(std::string file, bool private_collection = false);
 	//! Destructor.
         ~Cityset();
 
@@ -67,12 +70,53 @@ class Cityset : public sigc::trackable
         //! Returns the name of the cityset.
         std::string getName() const {return _(d_name.c_str());}
 
+	/**
+	 * Analagous to the cityset.d_id XML entity in the cityset
+	 * configuration file.
+	 */
+        guint32 getId() const {return d_id;}
+
+	//! Set the unique identifier for this cityset.
+        void setId(guint32 id) {d_id = id;}
+
         //! Returns the description of the cityset.
         std::string getInfo() const {return _(d_info.c_str());}
 
         //! Returns the width and height in pixels of the city images.
         guint32 getTileSize() const {return d_tileSize;}
 
+	void setCitiesFilename(std::string s) {d_cities_filename = s;};
+	std::string getCitiesFilename() {return d_cities_filename;};
+	void setRazedCitiesFilename(std::string s) {d_razedcities_filename = s;};
+	std::string getRazedCitiesFilename() {return d_razedcities_filename;};
+	void setPortFilename(std::string s) {d_port_filename = s;};
+	std::string getPortFilename() {return d_port_filename;};
+	void setSignpostFilename(std::string s) {d_signpost_filename = s;};
+	std::string getSignpostFilename() {return d_signpost_filename;};
+	void setRuinsFilename(std::string s) {d_ruins_filename = s;};
+	std::string getRuinsFilename() {return d_ruins_filename;};
+	void setTemplesFilename(std::string s) {d_temples_filename = s;};
+	std::string getTemplesFilename() {return d_temples_filename;};
+	void setTowersFilename(std::string s) {d_towers_filename = s;};
+	std::string getTowersFilename() {return d_towers_filename;};
+
+	void setCityImage(guint32 i, PixMask *p) {citypics[i] = p;};
+	PixMask *getCityImage(guint32 i) {return citypics[i];};
+	void setRazedCityImage(guint32 i, PixMask *p) {razedcitypics[i] = p;};
+	PixMask *getRazedCityImage(guint32 i) {return razedcitypics[i];};
+	PixMask *getPortImage() {return port;};
+	void setPortImage(PixMask *p) {port = p;};
+	PixMask *getSignpostImage() {return signpost;};
+	void setSignpostImage(PixMask *p) {signpost = p;};
+	void setRuinImage(guint32 i, PixMask *p) {ruinpics[i] = p;};
+	PixMask *getRuinImage(guint32 i) {return ruinpics[i];};
+	void setTempleImage(guint32 i, PixMask *p) {templepics[i] = p;};
+	PixMask *getTempleImage(guint32 i) {return templepics[i];};
+	void setTowerImage(guint32 i, PixMask *p) {towerpics[i] = p;};
+	PixMask *getTowerImage(guint32 i) {return towerpics[i];};
+
+	//! Return whether this is a cityset in the user's personal collection.
+	bool fromPrivateCollection() {return private_collection;};
     private:
 
         // DATA
@@ -84,6 +128,9 @@ class Cityset : public sigc::trackable
 	 * select a particular Cityset.
 	 */
         std::string d_name;
+
+	//! A unique numeric identifier among all citysets.
+	guint32 d_id;
 
 	//! The description of the cityset.
 	/**
@@ -109,6 +156,25 @@ class Cityset : public sigc::trackable
 	 * Cityset directories sit in the citysets/ directory.
 	 */
         std::string d_dir;
+
+
+	std::string d_cities_filename;
+	std::string d_razedcities_filename;
+	std::string d_port_filename;
+	std::string d_signpost_filename;
+	std::string d_ruins_filename;
+	std::string d_temples_filename;
+	std::string d_towers_filename;
+	PixMask *citypics[MAX_PLAYERS + 1];
+	PixMask *razedcitypics[MAX_PLAYERS + 1];
+	PixMask *port;
+	PixMask *signpost;
+	PixMask *ruinpics[RUIN_TYPES];
+	PixMask *templepics[TEMPLE_TYPES];
+	PixMask *towerpics[MAX_PLAYERS];
+
+	//! Whether this is a system cityset, or one that the user made.
+	bool private_collection;
 };
 
 #endif // CITYSET_H

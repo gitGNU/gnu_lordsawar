@@ -337,6 +337,15 @@ void initialize_configuration()
         std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
         exit(-1);
     }
+
+    //Check if the personal cityset directory exists. If not, try to make it.
+    if (File::create_dir(File::getUserCitysetDir()) == false)
+    {
+        std::cerr << "Couldn't create personal cityset directory ";
+        std::cerr << File::getUserCitysetDir() <<".\n";
+        std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
+        exit(-1);
+    }
 }
 
 std::string Configuration::neutralCitiesToString(const GameParameters::NeutralCities neutrals)

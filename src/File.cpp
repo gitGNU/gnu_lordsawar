@@ -40,6 +40,7 @@
 #include "armyset.h"
 #include "tileset.h"
 #include "shieldset.h"
+#include "cityset.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
@@ -109,24 +110,9 @@ std::string add_slash_if_necessary(std::string dir)
     return dir + "/";
 }
 
-std::string getCitysetDir()
-{
-  return add_slash_if_necessary(Configuration::s_dataPath) + CITYSETDIR + "/";
-}
-
 std::string File::getMiscFile(std::string filename)
 {
   return Configuration::s_dataPath + "/" + filename;
-}
-
-std::string File::getCityset(std::string citysetdir)
-{
-  return getCitysetDir() + citysetdir + "/" + citysetdir + CITYSET_EXT;
-}
-
-std::string File::getCitysetFile(std::string citysetsubdir, std::string picname)
-{
-  return getCitysetDir() + citysetsubdir + "/" + picname;
 }
 
 std::string File::getItemDescription()
@@ -152,22 +138,6 @@ std::string File::getDataPath()
 std::string File::getSavePath()
 {
   return add_slash_if_necessary(Configuration::s_savePath);
-}
-
-std::list<std::string> File::scanCitysets()
-{
-    std::list<std::string> retlist = 
-      get_xml_files_in_immediate_subdirs(getCitysetDir(), CITYSET_EXT);
-    
-    if (retlist.empty())
-    {
-      std::cerr << "Couldn't find any citysets!" << std::endl;
-      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
-      std::cerr << "Exiting!" << std::endl;
-        exit(-1);
-    }
-    
-    return retlist;
 }
 
 std::string File::getUserMapDir()
@@ -514,4 +484,74 @@ std::string File::getShieldsetFile(Shieldset *shieldset, std::string picname)
   else
     return getUserShieldsetDir() + shieldset->getSubDir() + "/" + picname + ".png";
 }
+
+//citysets
+std::list<std::string> File::scanCitysets()
+{
+    std::list<std::string> retlist = 
+      get_xml_files_in_immediate_subdirs(getCitysetDir(), CITYSET_EXT);
+
+    if (retlist.empty())
+    {
+      std::cerr << "Couldn't find any citysets!" << std::endl;
+      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
+      std::cerr << "Exiting!" << std::endl;
+      exit(-1);
+    }
+
+    return retlist;
+}
+
+std::list<std::string> File::scanUserCitysets()
+{
+    std::list<std::string> retlist = 
+      get_xml_files_in_immediate_subdirs(getUserCitysetDir(), CITYSET_EXT);
+
+    return retlist;
+}
+
+
+std::string File::getCityset(std::string citysetsubdir)
+{
+  return getCitysetDir() + citysetsubdir + "/" + citysetsubdir + CITYSET_EXT;
+}
+
+std::string File::getUserCityset(std::string citysetsubdir)
+{
+  std::string dir =  getUserCitysetDir() + citysetsubdir;
+  return dir + "/" + citysetsubdir + CITYSET_EXT;
+}
+
+std::string File::getCitysetDir()
+{
+  return add_slash_if_necessary(Configuration::s_dataPath) + CITYSETDIR + "/";
+}
+
+std::string File::getUserCitysetDir()
+{
+  std::string dir = getSavePath() + CITYSETDIR + "/";
+  return dir;
+}
+
+std::string File::getCitysetDir(Cityset *cityset)
+{
+  if (cityset->fromPrivateCollection() == false)
+    return getCitysetDir() + cityset->getSubDir() + "/";
+  else
+    return getUserCitysetDir() + cityset->getSubDir() + "/";
+}
+
+std::string File::getCityset(Cityset *cityset)
+{
+  return getCitysetDir(cityset) + cityset->getSubDir() + CITYSET_EXT;
+}
+
+std::string File::getCitysetFile(Cityset *cityset, std::string picname)
+{
+  if (cityset->fromPrivateCollection() == false)
+    return getCitysetDir() + cityset->getSubDir() + "/" + picname + ".png";
+  else
+    return getUserCitysetDir() + cityset->getSubDir() + "/" + picname + ".png";
+}
+
 // End of file

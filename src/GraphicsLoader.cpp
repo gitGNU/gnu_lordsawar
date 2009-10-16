@@ -31,7 +31,11 @@
 #include "shieldsetlist.h"
 #include "armyproto.h"
 #include "tilesetlist.h"
+#include "citysetlist.h"
 #include "defs.h"
+#include "city.h"
+#include "temple.h"
+#include "ruin.h"
 #include "gui/image-helpers.h"
 
 using namespace std;
@@ -448,9 +452,136 @@ PixMask* GraphicsLoader::getMiscPicture(std::string picname, bool alpha)
   return loadImage(File::getMiscFile("/various/" + picname), alpha);
 }
 
-PixMask* GraphicsLoader::getCitysetPicture(std::string citysetdir, std::string picname)
+void GraphicsLoader::instantiateImages(Citysetlist *csl)
 {
-  return loadImage(File::getCitysetFile(citysetdir, picname));
+  uninstantiateImages(csl);
+  for (Citysetlist::iterator it = csl->begin(); it != csl->end(); it++)
+    instantiateImages(*it);
+}
+
+void GraphicsLoader::uninstantiateImages(Citysetlist *csl)
+{
+  for (Citysetlist::iterator cit = csl->begin(); cit != csl->end(); cit++)
+    uninstantiateImages(*cit);
+}
+
+void GraphicsLoader::uninstantiateImages(Cityset *cs)
+{
+  if (cs->getPortImage() != NULL)
+    {
+      delete cs->getPortImage();
+      cs->setPortImage(NULL);
+    }
+  if (cs->getSignpostImage() != NULL)
+    {
+      delete cs->getSignpostImage();
+      cs->setSignpostImage(NULL);
+    }
+  for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
+    {
+      if (cs->getCityImage(i) != NULL)
+	{
+	  delete cs->getCityImage(i);
+	  cs->setCityImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
+    {
+      if (cs->getRazedCityImage(i) != NULL)
+	{
+	  delete cs->getRazedCityImage(i);
+	  cs->setRazedCityImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    {
+      if (cs->getTowerImage(i) != NULL)
+	{
+	  delete cs->getTowerImage(i);
+	  cs->setTowerImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < RUIN_TYPES; i++)
+    {
+      if (cs->getRuinImage(i) != NULL)
+	{
+	  delete cs->getRuinImage(i);
+	  cs->setRuinImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < TEMPLE_TYPES; i++)
+    {
+      if (cs->getTempleImage(i) != NULL)
+	{
+	  delete cs->getTempleImage(i);
+	  cs->setTempleImage(i, NULL);
+	}
+    }
+}
+
+void GraphicsLoader::instantiateImages(Cityset *cs)
+{
+  int size = cs->getTileSize();
+  debug("Loading images for cityset " << cs->getName());
+  uninstantiateImages(cs);
+  cs->setPortImage
+    (PixMask::create(File::getCitysetFile(cs, cs->getPortFilename())));
+  cs->setSignpostImage
+    (PixMask::create(File::getCitysetFile(cs, cs->getSignpostFilename())));
+
+  std::vector<PixMask* > citypics;
+  citypics = disassemble_row(File::getCitysetFile(cs, cs->getCitiesFilename()), 
+			     MAX_PLAYERS + 1);
+  int citysize = size * City::getWidth();
+  for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
+    {
+      if (citypics[i]->get_width() != citysize)
+	PixMask::scale(citypics[i], citysize, citysize);
+      cs->setCityImage(i, citypics[i]);
+    }
+  std::vector<PixMask* > razedcitypics;
+  razedcitypics = disassemble_row(File::getCitysetFile(cs, cs->getRazedCitiesFilename()), 
+			     MAX_PLAYERS + 1);
+  for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
+    {
+      if (razedcitypics[i]->get_width() != citysize)
+	PixMask::scale(razedcitypics[i], citysize, citysize);
+      cs->setRazedCityImage(i, razedcitypics[i]);
+    }
+
+  std::vector<PixMask* > towerpics;
+  towerpics = 
+    disassemble_row(File::getCitysetFile(cs, cs->getTowersFilename()),
+		    MAX_PLAYERS);
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    {
+      if (towerpics[i]->get_width() != size)
+	PixMask::scale(towerpics[i], size, size);
+      cs->setTowerImage(i, towerpics[i]);
+    }
+
+  std::vector<PixMask* > ruinpics;
+  ruinpics = disassemble_row(File::getCitysetFile(cs, cs->getRuinsFilename()),
+			    RUIN_TYPES);
+  int ruinsize = size * Ruin::getWidth();
+  for (unsigned int i = 0; i < RUIN_TYPES ; i++)
+    {
+      if (ruinpics[i]->get_width() != ruinsize)
+	PixMask::scale(ruinpics[i], ruinsize, ruinsize);
+      cs->setRuinImage(i, ruinpics[i]);
+    }
+
+  std::vector<PixMask* > templepics;
+  templepics = disassemble_row(File::getCitysetFile(cs, 
+						    cs->getTemplesFilename()),
+			    TEMPLE_TYPES);
+  int templesize = size * Temple::getWidth();
+  for (unsigned int i = 0; i < TEMPLE_TYPES ; i++)
+    {
+      if (templepics[i]->get_width() != templesize)
+	PixMask::scale(templepics[i], templesize, templesize);
+      cs->setTempleImage(i, templepics[i]);
+    }
 }
 
 // End of file

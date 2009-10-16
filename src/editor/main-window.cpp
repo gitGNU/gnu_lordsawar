@@ -48,6 +48,7 @@
 #include "Itemlist.h"
 #include "playerlist.h"
 #include "shieldsetlist.h"
+#include "citysetlist.h"
 #include "ai_dummy.h"
 
 #include "stack.h"
@@ -400,6 +401,7 @@ void MainWindow::init()
   GraphicsLoader::instantiateImages(Armysetlist::getInstance());
   GraphicsLoader::instantiateImages(Tilesetlist::getInstance());
   GraphicsLoader::instantiateImages(Shieldsetlist::getInstance());
+  GraphicsLoader::instantiateImages(Citysetlist::getInstance());
   show_initial_map();
 }
 

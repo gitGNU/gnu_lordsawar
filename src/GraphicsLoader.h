@@ -32,6 +32,8 @@ class TileStyleSet;
 class Armyset;
 class Armysetlist;
 class ArmyProto;
+class Cityset;
+class Citysetlist;
 
 /** \brief Loads images associated with armies, tiles and shields.
   * 
@@ -48,6 +50,8 @@ class GraphicsLoader
 	static void instantiateImages(Tilesetlist *tsl);
 	static void instantiateImages(Tileset *ts);
 	static void instantiateImages(Tileset *ts, TileStyleSet *tss, guint32 tilesize);
+	static void instantiateImages(Citysetlist *tsl);
+	static void instantiateImages(Cityset *ts);
 
         /** Load misc pic
           * 
@@ -59,14 +63,6 @@ class GraphicsLoader
           */
         static PixMask* getMiscPicture(std::string picname, bool alpha=true);
 
-        /** Get a cityset picture
-          * @param citysetsubdir     the name of the cityset.  this is the
-	  *                          subdirectory name of the cityset within
-	  *                          the cityset directory.
-          * @param picname          the name of the picture.
-          * @return the surface which contains the picture
-          */
-        static PixMask* getCitysetPicture(std::string citysetsubdir, std::string picname);
 
 	static bool instantiateImages(Armyset *set, ArmyProto *a, Shield::Colour c);
     private:
@@ -95,6 +91,8 @@ class GraphicsLoader
 	static void uninstantiateImages(Shieldset *shieldset);
 	static void uninstantiateImages(Tileset *ts);
 	static void uninstantiateImages(Armyset *armyset);
+	static void uninstantiateImages(Citysetlist *csl);
+	static void uninstantiateImages(Cityset *cs);
 };
 
 #endif //GRAPHICS_LOADER_H

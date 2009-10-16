@@ -3897,12 +3897,6 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 	</questlist>
 	<vectoredunitlist>
 	</vectoredunitlist>
-	<campaign>
-		<d_name></d_name>
-		<d_comment></d_comment>
-		<d_next_scenario></d_next_scenario>
-		<d_num_heroes>0</d_num_heroes>
-	</campaign>
 	<scenario>
 		<d_id>25b188da-f9bd-4659-81f0-ded43e296d54</d_id>
 		<d_name>The Second Punic War</d_name>

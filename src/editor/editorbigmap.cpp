@@ -777,17 +777,17 @@ void EditorBigMap::after_draw()
 	    break;
 
 	  case CITY:
-	    pic = GraphicsCache::getInstance()->getCityPic(0, Playerlist::getInstance()->getNeutral());
+	    pic = GraphicsCache::getInstance()->getCityPic(0, Playerlist::getInstance()->getNeutral(), 1);
 	    pic->blit(buffer, pos);
 	    break;
 
 	  case RUIN:
-	    pic = GraphicsCache::getInstance()->getRuinPic(0);
+	    pic = GraphicsCache::getInstance()->getRuinPic(0, 1);
 	    pic->blit(buffer, pos);
 	    break;
 
 	  case TEMPLE:
-	    pic = GraphicsCache::getInstance()->getTemplePic(0);
+	    pic = GraphicsCache::getInstance()->getTemplePic(0, 1);
 	    pic->blit(buffer, pos);
 	    break;
 

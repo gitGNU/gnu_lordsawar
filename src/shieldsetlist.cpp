@@ -89,25 +89,25 @@ std::list<std::string> Shieldsetlist::getNames()
   return names;
 }
 
-bool Shieldsetlist::load(std::string tag, XML_Helper *helper)
-{
-  if (tag == Shieldset::d_tag)
-    {
-      Shieldset *shieldset = new Shieldset(helper);
-      push_back(shieldset); 
-    }
-  return true;
-}
-
 bool Shieldsetlist::loadShieldset(std::string name, bool p)
 {
   debug("Loading shieldset " <<name);
 
   Shieldset *shieldset = Shieldset::create(name, p);
-  if (shieldset)
-    push_back(shieldset);
-  else
+  if (!shieldset)
     return false;
+
+  if (d_shieldsetids.find(shieldset->getId()) != d_shieldsetids.end())
+    {
+      Shieldset *s = (*d_shieldsetids.find(shieldset->getId())).second;
+      cerr << "Error!  shieldset: `" << shieldset->getName() << 
+	"' shares a duplicate shieldset id with `" << File::getShieldset(s) << 
+	"'.  Skipping." << endl;
+      delete shieldset;
+      return false;
+    }
+    
+  push_back(shieldset);
 
   return true;
 }

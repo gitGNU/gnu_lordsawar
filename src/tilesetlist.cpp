@@ -112,6 +112,15 @@ bool Tilesetlist::loadTileset(std::string name, bool from_private_collection)
       delete tileset;
       return false;
     }
+  if (d_tilesetids.find(tileset->getId()) != d_tilesetids.end())
+    {
+      Tileset *t = (*d_tilesetids.find(tileset->getId())).second;
+      cerr << "Error!  tileset: `" << tileset->getName() << 
+	"' shares a duplicate tileset id with `" << File::getTileset(t) << 
+	"'.  Skipping." << endl;
+      delete tileset;
+      return false;
+    }
   push_back(tileset); 
   return true;
 }
@@ -130,14 +139,6 @@ void Tilesetlist::loadTilesets(std::list<std::string> tilesets, bool priv)
 	{
 	  iterator it = end();
 	  it--;
-	  if (d_tilesetids.find((*it)->getId()) != d_tilesetids.end())
-	    {
-	      Tileset *t = (*d_tilesetids.find((*it)->getId())).second;
-	      cerr << "Error!  tileset: `" << (*it)->getName() << 
-		"' has a duplicate tileset id with `" << File::getTileset(t) << 
-		"'.  Skipping." << endl;
-	      continue;
-	    }
 	  (*it)->setSubDir(*i);
 	  d_dirs[String::ucompose("%1 %2", (*it)->getName(), (*it)->getTileSize())] = *i;
 	  d_tilesets[*i] = *it;

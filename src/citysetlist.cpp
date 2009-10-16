@@ -49,21 +49,39 @@ void Citysetlist::deleteInstance()
     s_instance = 0;
 }
 
+void Citysetlist::loadCitysets(std::list<std::string> citysets, bool p)
+{
+    for (std::list<std::string>::const_iterator i = citysets.begin(); 
+	 i != citysets.end(); i++)
+      {
+        if (loadCityset(*i, p) == true)
+	  {
+	    iterator it = end();
+	    it--;
+	    if (d_citysetids.find((*it)->getId()) != d_citysetids.end())
+	      {
+		Cityset *c = (*d_citysetids.find((*it)->getId())).second;
+		cerr << "Error!  cityset: `" << (*it)->getName() << 
+		  "' has a duplicate cityset id with `" << File::getCityset(c) << 
+		  "'.  Skipping." << endl;
+		continue;
+	      }
+	    (*it)->setSubDir(*i);
+	    d_dirs[String::ucompose("%1 %2", (*it)->getName(), (*it)->getTileSize())] = *i;
+	    d_citysets[*i] = *it;
+	    d_citysetids[(*it)->getId()] = *it;
+	  }
+      }
+}
+
 Citysetlist::Citysetlist()
 {
     // load all citysets
     std::list<std::string> citysets = File::scanCitysets();
+    loadCitysets(citysets, false);
+    citysets = File::scanUserCitysets();
+    loadCitysets(citysets, true);
 
-    for (std::list<std::string>::const_iterator i = citysets.begin(); 
-	 i != citysets.end(); i++)
-      {
-        loadCityset(*i);
-	iterator it = end();
-	it--;
-	(*it)->setSubDir(*i);
-	d_dirs[String::ucompose("%1 %2", (*it)->getName(), (*it)->getTileSize())] = *i;
-	d_citysets[*i] = *it;
-      }
 }
 
 Citysetlist::~Citysetlist()
@@ -89,30 +107,23 @@ std::list<std::string> Citysetlist::getNames(guint32 tilesize)
   return names;
 }
 
-bool Citysetlist::load(std::string tag, XML_Helper *helper)
-{
-  if (tag == Cityset::d_tag)
-    {
-      Cityset *cityset = new Cityset(helper);
-      push_back(cityset); 
-    }
-  return true;
-}
-
-bool Citysetlist::loadCityset(std::string name)
+bool Citysetlist::loadCityset(std::string name, bool p)
 {
   debug("Loading cityset " <<name);
 
-  XML_Helper helper(File::getCityset(name), ios::in, false);
-
-  helper.registerTag(Cityset::d_tag, sigc::mem_fun((*this), &Citysetlist::load));
-
-  if (!helper.parse())
+  Cityset *cityset = Cityset::create(name, p);
+  if (!cityset)
+    return false;
+  if (d_citysetids.find(cityset->getId()) != d_citysetids.end())
     {
-      std::cerr << "Error, while loading a cityset. Cityset Name: ";
-      std::cerr <<name <<std::endl <<std::flush;
-      exit(-1);
+      Cityset *c = (*d_citysetids.find(cityset->getId())).second;
+      cerr << "Error!  cityset: `" << cityset->getName() << 
+	"' shares a duplicate cityset id with `" << File::getCityset(c) << 
+	"'.  Skipping." << endl;
+      delete cityset;
+      return false;
     }
+  push_back(cityset);
 
   return true;
 }

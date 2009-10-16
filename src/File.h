@@ -29,6 +29,7 @@
 class Armyset;
 class Tileset;
 class Shieldset;
+class Cityset;
 
 /** \brief Miscellaneous functions for file access
   * 
@@ -162,16 +163,43 @@ class File
 
 
 
-        /** Get the description file for the cityset
+        /** Scan the system data directories for citysets
           * 
-          * @param citysetsubdir     the name of the cityset
+          * @return a list of available citysets
+          */
+        static std::list<std::string> scanCitysets();
+
+	// get the available citysets in the user's personal collection
+	static std::list<std::string> scanUserCitysets();
+
+        /** Get the cityset description file
+          *
+          * @param citysetsubdir    the dir name of the cityset.
           * @return the full name of the description file
           */
         static std::string getCityset(std::string citysetsubdir);
 
-	// get a cityset path
-	static std::string getCitysetFile(std::string citysetsubdir, std::string picname);
+        /** Get the cityset description file from the user's personal collection
+          *
+          * @param citysetsubdir    the name of the cityset.
+          * @return the full name of the description file
+          */
+	static std::string getUserCityset(std::string citysetsubdir);
 
+	//! Get the directory where personal citysets live.
+	static std::string getUserCitysetDir();
+
+	//! Get the directory where system citysets live.
+	static std::string getCitysetDir();
+
+	//! Get the director where the given cityset lives.
+	static std::string getCitysetDir(Cityset *cityset);
+
+	//! Gets the description file for the given cityset.
+	static std::string getCityset(Cityset *cityset);
+
+	// get a path of a file in the given cityset.
+	static std::string getCitysetFile(Cityset *cityset, std::string pic);
 	
         //! load misc file, e.g. hero names 
         static std::string getMiscFile(std::string filename);
@@ -190,9 +218,6 @@ class File
 
 	//! get game data path
 	static std::string getDataPath();
-
-        // get the available citysets
-        static std::list<std::string> scanCitysets();
 
 	//! the location of the system directory that holds scenario terrains.
 	static std::string getMapDir();

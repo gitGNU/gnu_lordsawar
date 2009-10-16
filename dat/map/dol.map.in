@@ -8181,12 +8181,6 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 	</questlist>
 	<vectoredunitlist>
 	</vectoredunitlist>
-	<campaign>
-		<d_name></d_name>
-		<d_comment></d_comment>
-		<d_next_scenario></d_next_scenario>
-		<d_num_heroes>0</d_num_heroes>
-	</campaign>
 	<scenario>
 		<d_id>e028d189-88f7-4a98-987d-b2e97624fc2e</d_id>
 		<d_name>Dol Campaign</d_name>
