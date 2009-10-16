@@ -3,6 +3,7 @@
 	* removing ".png" from the tileset description files.
 	* added ids to tilesets and shieldsets, and citysets.
 	* updated the cityset file format to refer to it's member files.
+	* allowing for female hero images.
 
 2009-10-15  Ben Asselstine  <benasselstine@gmail.com>
 
