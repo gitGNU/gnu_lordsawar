@@ -471,9 +471,9 @@ std::string File::getTileset(Tileset *tileset)
 std::string File::getTilesetFile(Tileset *tileset, std::string picname)
 {
   if (tileset->fromPrivateCollection() == false)
-    return getTilesetDir() + tileset->getSubDir() + "/" + picname;
+    return getTilesetDir() + tileset->getSubDir() + "/" + picname + ".png";
   else
-    return getUserTilesetDir() + tileset->getSubDir() + "/" + picname;
+    return getUserTilesetDir() + tileset->getSubDir() + "/" + picname + ".png";
 }
 
 // End of file

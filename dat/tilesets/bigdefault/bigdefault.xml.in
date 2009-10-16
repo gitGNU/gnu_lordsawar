@@ -3,13 +3,13 @@
     <_d_name>Default</_d_name>
     <_d_info>The doublesized tileset based on Wesnoth tileset</_d_info>
     <d_tilesize>80</d_tilesize>
-    <d_large_selector>selector.png</d_large_selector>
-    <d_small_selector>small_selector.png</d_small_selector>
-    <d_explosion>explosion.png</d_explosion>
-    <d_roads>roads.png</d_roads>
-    <d_bridges>bridges.png</d_bridges>
-    <d_fog>fog.png</d_fog>
-    <d_flags>flags.png</d_flags>
+    <d_large_selector>selector</d_large_selector>
+    <d_small_selector>small_selector</d_small_selector>
+    <d_explosion>explosion</d_explosion>
+    <d_roads>roads</d_roads>
+    <d_bridges>bridges</d_bridges>
+    <d_fog>fog</d_fog>
+    <d_flags>flags</d_flags>
     <road_smallmap>
         <d_red>164</d_red>
         <d_green>84</d_green>

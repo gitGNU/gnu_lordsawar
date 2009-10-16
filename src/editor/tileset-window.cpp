@@ -364,7 +364,7 @@ void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
     subdir = d_tileset->getSubDir();
   else
     subdir = t->getSubDir();
-  std::string n = File::getTilesetFile(d_tileset, t->getName() + ".png");
+  std::string n = File::getTilesetFile(d_tileset, t->getName());
   int height = get_image_height (n);
   if (height)
     {
@@ -1052,7 +1052,7 @@ void TileSetWindow::on_image_chosen()
   if ((width % height) != 0)
     return;
 
-  std::string file = File::get_basename(selected_filename, true);
+  std::string file = File::get_basename(selected_filename);
       
   if (selected_filename != File::getTilesetFile(d_tileset, file))
     File::copy (selected_filename, File::getTilesetFile(d_tileset, file));
@@ -1069,7 +1069,7 @@ void TileSetWindow::on_image_chosen()
   (*i)[tilestylesets_columns.subdir] = set->getSubDir();
 
 
-  set->setName(File::get_basename(selected_filename, false));
+  set->setName(File::get_basename(selected_filename));
   (*i)[tilestylesets_columns.name] = set->getName();
   (*i)[tilestylesets_columns.tilestyleset] = set;
   Tile *tile = get_selected_tile ();
@@ -1116,7 +1116,7 @@ void TileSetWindow::on_roads_picture_activated()
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       std::string filename = d.get_selected_filename();
-      std::string name = File::get_basename(filename, true);
+      std::string name = File::get_basename(filename);
       File::copy(filename, File::getTilesetFile(d_tileset, name));
       d_tileset->setRoadsFilename(name);
     }
@@ -1132,7 +1132,7 @@ void TileSetWindow::on_bridges_picture_activated()
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       std::string filename = d.get_selected_filename();
-      std::string name = File::get_basename(filename, true);
+      std::string name = File::get_basename(filename);
       File::copy(filename, File::getTilesetFile(d_tileset, name));
       d_tileset->setBridgesFilename(name);
     }
@@ -1148,7 +1148,7 @@ void TileSetWindow::on_fog_picture_activated()
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       std::string filename = d.get_selected_filename();
-      std::string name = File::get_basename(filename, true);
+      std::string name = File::get_basename(filename);
       File::copy(filename, File::getTilesetFile(d_tileset, name));
       d_tileset->setFogFilename(name);
     }
@@ -1164,7 +1164,7 @@ void TileSetWindow::on_flags_picture_activated()
       std::string filename= d.get_selected_filename();
 
       //copy the file, and set the image name
-      std::string name = File::get_basename(filename, true);
+      std::string name = File::get_basename(filename);
       if (filename != File::getTilesetFile(d_tileset, name))
 	File::copy(filename, File::getTilesetFile(d_tileset, name));
 
@@ -1182,12 +1182,12 @@ void TileSetWindow::on_army_unit_selector_activated()
       std::string large = d.get_large_selector_filename();
 
       //copy the files, and set the image names
-      std::string name = File::get_basename(small, true);
+      std::string name = File::get_basename(small);
       if (small != File::getTilesetFile(d_tileset, name))
 	File::copy(small, File::getTilesetFile(d_tileset, name));
       d_tileset->setSmallSelectorFilename(name);
 
-      name = File::get_basename(large, true);
+      name = File::get_basename(large);
       if (large != File::getTilesetFile(d_tileset, name))
 	File::copy(large, File::getTilesetFile(d_tileset, name));
       d_tileset->setLargeSelectorFilename(name);
@@ -1203,7 +1203,7 @@ void TileSetWindow::on_explosion_picture_activated()
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       std::string filename = d.get_selected_filename();
-      std::string name = File::get_basename(filename, true);
+      std::string name = File::get_basename(filename);
       if (filename != File::getTilesetFile(d_tileset, name))
 	{
 	  File::copy (filename, File::getTilesetFile(d_tileset, name));

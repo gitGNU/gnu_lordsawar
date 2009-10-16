@@ -164,7 +164,7 @@ void GraphicsLoader::instantiateImages(Tileset *ts, TileStyleSet *tss, guint32 t
 {
   std::vector<PixMask*> styles;
   styles = disassemble_row
-    (File::getTilesetFile(ts, tss->getName() + ".png"), 
+    (File::getTilesetFile(ts, tss->getName()), 
      tss->size());
 
   for (unsigned int i=0; i < tss->size(); i++)
