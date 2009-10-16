@@ -44,6 +44,9 @@ TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, bool readonly)
 
     xml->get_widget("accept_button", accept_button);
     xml->get_widget("status_label", status_label);
+    xml->get_widget("id_spinbutton", id_spinbutton);
+    id_spinbutton->set_value(tileset->getId());
+    id_spinbutton->set_sensitive(false);
 
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(tileset->getName());
@@ -131,6 +134,7 @@ int TileSetInfoDialog::run()
       d_tileset->setName(name_entry->get_text());
       if (d_readonly == false)
 	d_tileset->setSubDir(subdir_entry->get_text());
+      d_tileset->setId(int(id_spinbutton->get_value()));
       return response;
     }
     return response;

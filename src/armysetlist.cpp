@@ -65,8 +65,17 @@ void Armysetlist::loadArmysets(std::list<std::string> armysets,
         bool valid = loadArmyset(*i, private_collection);
 	if (!valid)
 	  continue;
+
 	iterator it = end();
 	it--;
+	if (d_armysetids.find((*it)->getId()) != d_armysetids.end())
+	  {
+	    Armyset *a = (*d_armysetids.find((*it)->getId())).second;
+	    cerr << "Error!  armyset: `" << (*it)->getName() << 
+	      "' has a duplicate armyset id with `" << File::getArmyset(a) << 
+	      "'.  Skipping." << endl;
+	    continue;
+	  }
 	//fill out the maps
 	for (Armyset::iterator ait = (*it)->begin(); ait != (*it)->end(); ait++)
 	  d_armies[(*it)->getId()].push_back(*ait);
@@ -74,6 +83,7 @@ void Armysetlist::loadArmysets(std::list<std::string> armysets,
 	d_ids[String::ucompose("%1 %2", (*it)->getName(), (*it)->getTileSize())] = (*it)->getId();
 	(*it)->setSubDir(*i);
 	d_armysets[*i] = *it;
+	d_armysetids[(*it)->getId()] = *it;
       }
 }
 
@@ -250,16 +260,6 @@ PixMask* Armysetlist::getStandardMask (guint32 id)
     {
       if ((*it)->getId() == id)
 	return (*it)->getStandardMask();
-    }
-  return NULL;
-}
-
-Armyset *Armysetlist::getArmyset(guint32 id)
-{
-  for (iterator it = begin(); it != end(); it++)
-    {
-      if ((*it)->getId() == id)
-	return (*it);
     }
   return NULL;
 }

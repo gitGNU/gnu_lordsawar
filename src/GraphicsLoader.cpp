@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include "GraphicsLoader.h"
+#include "GraphicsCache.h"
 #include "Configuration.h"
 #include "File.h"
 #include "armyset.h"
@@ -135,28 +136,174 @@ void GraphicsLoader::uninstantiateImages(Tilesetlist *tsl)
 void GraphicsLoader::uninstantiateImages(Tileset *ts)
 {
   for (Tileset::iterator it = ts->begin(); it != ts->end(); it++)
-    for (Tile::iterator i = (*it)->begin(); i != (*it)->end(); i++)
-      {
-	TileStyleSet *tss = (*i);
-	for (unsigned int j = 0; j < tss->size(); j++)
-	  {
-	    if ((*tss)[j]->getImage())
-	      {
-		delete (*tss)[j]->getImage();
-		(*tss)[j]->setImage(NULL);
-	      }
-	  }
-      }
+    {
+      for (Tile::iterator i = (*it)->begin(); i != (*it)->end(); i++)
+	{
+	  TileStyleSet *tss = (*i);
+	  for (unsigned int j = 0; j < tss->size(); j++)
+	    {
+	      if ((*tss)[j]->getImage())
+		{
+		  delete (*tss)[j]->getImage();
+		  (*tss)[j]->setImage(NULL);
+		}
+	    }
+	}
+    }
+  if (ts->getExplosionImage() != NULL)
+    {
+      delete ts->getExplosionImage();
+      ts->setExplosionImage(NULL);
+    }
+  for (unsigned int i = 0; i < ROAD_TYPES; i++)
+    {
+      if (ts->getRoadImage(i) != NULL)
+	{
+	  delete ts->getRoadImage(i);
+	  ts->setRoadImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < BRIDGE_TYPES; i++)
+    {
+      if (ts->getBridgeImage(i) != NULL)
+	{
+	  delete ts->getBridgeImage(i);
+	  ts->setBridgeImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < FOG_TYPES; i++)
+    {
+      if (ts->getFogImage(i) != NULL)
+	{
+	  delete ts->getFogImage(i);
+	  ts->setFogImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < ts->getNumberOfSelectorFrames(); i++)
+    {
+      if (ts->getSelectorImage(i) != NULL)
+	{
+	  delete ts->getSelectorImage(i);
+	  ts->setSelectorImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < ts->getNumberOfSelectorFrames(); i++)
+    {
+      if (ts->getSelectorMask(i) != NULL)
+	{
+	  delete ts->getSelectorMask(i);
+	  ts->setSelectorMask(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < ts->getNumberOfSmallSelectorFrames(); i++)
+    {
+      if (ts->getSmallSelectorImage(i) != NULL)
+	{
+	  delete ts->getSmallSelectorImage(i);
+	  ts->setSmallSelectorImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < ts->getNumberOfSmallSelectorFrames(); i++)
+    {
+      if (ts->getSmallSelectorMask(i) != NULL)
+	{
+	  delete ts->getSmallSelectorMask(i);
+	  ts->setSmallSelectorMask(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+    {
+      if (ts->getFlagImage(i) != NULL)
+	{
+	  delete ts->getFlagImage(i);
+	  ts->setFlagImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+    {
+      if (ts->getFlagMask(i) != NULL)
+	{
+	  delete ts->getFlagMask(i);
+	  ts->setFlagMask(i, NULL);
+	}
+    }
 }
 
 void GraphicsLoader::instantiateImages(Tileset *ts)
 {
+  int size = ts->getTileSize();
   debug("Loading images for tileset " << ts->getName());
   uninstantiateImages(ts);
   for (Tileset::iterator it = ts->begin(); it != ts->end(); it++)
     {
       for (Tile::iterator i = (*it)->begin(); i != (*it)->end(); i++)
 	instantiateImages(ts, *i, ts->getTileSize());
+    }
+  ts->setExplosionImage
+    (PixMask::create(File::getTilesetFile(ts, ts->getExplosionFilename())));
+
+  std::vector<PixMask* > roadpics;
+  roadpics = disassemble_row(File::getTilesetFile(ts, ts->getRoadsFilename()), 
+			     ROAD_TYPES);
+  for (unsigned int i = 0; i < ROAD_TYPES ; i++)
+    {
+      if (roadpics[i]->get_width() != size)
+	PixMask::scale(roadpics[i], size, size);
+      ts->setRoadImage(i, roadpics[i]);
+    }
+
+  std::vector<PixMask* > bridgepics;
+  bridgepics = 
+    disassemble_row(File::getTilesetFile(ts, ts->getBridgesFilename()),
+		    BRIDGE_TYPES);
+  for (unsigned int i = 0; i < BRIDGE_TYPES ; i++)
+    {
+      if (bridgepics[i]->get_width() != size)
+	PixMask::scale(bridgepics[i], size, size);
+      ts->setBridgeImage(i, bridgepics[i]);
+    }
+
+  std::vector<PixMask* > fogpics;
+  fogpics = disassemble_row(File::getTilesetFile(ts, ts->getFogFilename()),
+			    FOG_TYPES);
+  for (unsigned int i = 0; i < FOG_TYPES ; i++)
+    {
+      if (fogpics[i]->get_width() != size)
+	PixMask::scale(fogpics[i], size, size);
+      ts->setFogImage(i, fogpics[i]);
+    }
+
+  std::vector<PixMask* > flagpics;
+  std::vector<PixMask* > maskpics;
+  GraphicsCache::loadFlagImages
+    (File::getTilesetFile(ts, ts->getFlagsFilename()), size, flagpics, maskpics);
+  for (unsigned int i = 0; i < flagpics.size(); i++)
+    ts->setFlagImage(i, flagpics[i]);
+  for (unsigned int i = 0; i < maskpics.size(); i++)
+    ts->setFlagMask(i, maskpics[i]);
+
+  std::vector<PixMask* > images;
+  std::vector<PixMask* > masks;
+  GraphicsCache::loadSelectorImages
+    (File::getTilesetFile(ts, ts->getLargeSelectorFilename()), size, 
+     images, masks);
+  ts->setNumberOfSelectorFrames(images.size());
+  for (unsigned int i = 0; i < images.size(); i++)
+    {
+      ts->setSelectorImage(i, images[i]);
+      ts->setSelectorMask(i, masks[i]);
+    }
+
+  images.clear();
+  masks.clear();
+  GraphicsCache::loadSelectorImages
+    (File::getTilesetFile(ts, ts->getSmallSelectorFilename()), size, 
+     images, masks);
+  ts->setNumberOfSmallSelectorFrames(images.size());
+  for (unsigned int i = 0; i < images.size(); i++)
+    {
+      ts->setSmallSelectorImage(i, images[i]);
+      ts->setSmallSelectorMask(i, masks[i]);
     }
 }
 
@@ -178,6 +325,7 @@ void GraphicsLoader::loadShipPic(Armyset *armyset)
 {
   if (armyset->getShipImageName().empty() == true)
     return;
+  debug("Loading images for armyset " << armyset->getName());
   std::vector<PixMask*> half;
   half = disassemble_row(File::getArmysetFile(armyset, 
 					      armyset->getShipImageName()), 2);

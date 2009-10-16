@@ -26,6 +26,7 @@
 #include "GraphicsLoader.h"
 #include "armysetlist.h"
 #include "shieldsetlist.h"
+#include "tilesetlist.h"
 #include "citylist.h"
 #include "army.h"
 #include "playerlist.h"
@@ -105,6 +106,7 @@ struct DiplomacyCacheItem
 //the structure to store roads in
 struct RoadCacheItem
 {
+    guint32 tileset;
     int type;
     PixMask* surface;
 };
@@ -112,6 +114,7 @@ struct RoadCacheItem
 //the structure to store fog patterns in
 struct FogCacheItem
 {
+    guint32 tileset;
     int type;
     PixMask* surface;
 };
@@ -123,6 +126,7 @@ bool operator <(FogCacheItem lhs, FogCacheItem rhs)
 //the structure to store bridges in
 struct BridgeCacheItem
 {
+    guint32 tileset;
     int type;
     PixMask* surface;
 };
@@ -152,6 +156,7 @@ struct TowerCacheItem
 // the structure to store flags in
 struct FlagCacheItem
 {
+    guint32 tileset;
     guint32 size;
     guint32 player_id;
     PixMask* surface;
@@ -160,6 +165,7 @@ struct FlagCacheItem
 // the structure to store selector images in
 struct SelectorCacheItem
 {
+    guint32 tileset;
     guint32 type;
     guint32 frame;
     guint32 player_id;
@@ -209,6 +215,7 @@ struct TileCacheItem
   int building_player_id;
   guint32 tilesize;
   bool has_grid;
+  guint32 tileset;
   PixMask* surface;
 };
 bool operator <(TileCacheItem lhs, TileCacheItem rhs)
@@ -244,23 +251,8 @@ GraphicsCache::GraphicsCache()
     loadTemplePics();
     loadRuinPics();
     loadDiplomacyPics();
-    loadRoadPics();
-    loadFogPics();
-    loadBridgePics();
-    loadCursorPics();
-    loadFlags();
-    for (unsigned int i = 0; i < d_selector.size(); i++)
-      {
-        delete d_selector[i];
-        delete d_selectormask[i];
-      }
 
-    for (unsigned int i = 0; i < d_smallselector.size(); i++)
-      {
-        delete d_smallselector[i];
-        delete d_smallselectormask[i];
-      }
-    loadSelectors();
+    loadCursorPics();
     loadProdShields();
     loadMoveBonusPics();
     loadMedalPics();
@@ -277,8 +269,6 @@ GraphicsCache::GraphicsCache()
     std::string cityset = GameMap::getInstance()->getCityset()->getSubDir();
     d_port = GraphicsLoader::getCitysetPicture(cityset, "port.png");
     d_bag = GraphicsLoader::getMiscPicture("items.png");
-    Tileset* tileset = GameMap::getInstance()->getTileset();
-    d_explosion = GraphicsLoader::getTilesetPicture(tileset, tileset->getExplosionFilename());
     d_signpost = GraphicsLoader::getCitysetPicture(cityset, "signpost.png");
 }
 
@@ -301,24 +291,6 @@ GraphicsCache::~GraphicsCache()
 	  delete d_towerpic[i];
     }
 
-    for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
-    {
-        delete d_flagpic[i];
-        delete d_flagmask[i];
-    }
-
-    for (unsigned int i = 0; i < d_selector.size(); i++)
-    {
-        delete d_selector[i];
-        delete d_selectormask[i];
-    }
-
-    for (unsigned int i = 0; i < d_smallselector.size(); i++)
-    {
-        delete d_smallselector[i];
-        delete d_smallselectormask[i];
-    }
-
     for (unsigned int i = 0; i < PRODUCTION_SHIELD_TYPES; i++)
     {
         delete d_prodshieldpic[i];
@@ -327,11 +299,6 @@ GraphicsCache::~GraphicsCache()
     for (unsigned int i = 0; i < MOVE_BONUS_TYPES; i++)
     {
         delete d_movebonuspic[i];
-    }
-
-    for (unsigned int i = 0; i < FOG_TYPES; i++)
-    {
-        delete d_fogpic[i];
     }
 
     delete d_smallruinedcity;
@@ -343,7 +310,6 @@ GraphicsCache::~GraphicsCache()
     delete d_small_ruin_explored;
     delete d_port;
     delete d_bag;
-    delete d_explosion;
     delete d_signpost;
     delete d_newlevel;
     delete d_newlevelmask;
@@ -391,7 +357,7 @@ PixMask* GraphicsCache::getPortPic()
 
 PixMask* GraphicsCache::getExplosionPic()
 {
-  return d_explosion;
+  return GameMap::getInstance()->getTileset()->getExplosionImage();
 }
 
 PixMask* GraphicsCache::getSignpostPic()
@@ -571,13 +537,19 @@ PixMask* GraphicsCache::getArmyPic(guint32 armyset, guint32 army_id,
 
 PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid)
 {
+  guint32 tileset = GameMap::getInstance()->getTileset()->getId();
+  return getTilePic(tile_style_id, fog_type_id, has_bag, has_standard, standard_player_id, stack_size, stack_player_id, army_type_id, has_tower, has_ship, building_type, building_subtype, building_tile, building_player_id, tilesize, has_grid, tileset);
+}
+
+PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid, guint32 tileset)
+{
     debug("getting tile pic " << tile_style_id << " " <<
 	  fog_type_id << " " << has_bag << " " << has_standard << " " <<
 	  standard_player_id << " " << stack_size << " " << stack_player_id <<
 	  " " << army_type_id << " " << has_tower << " " << has_ship << " " << 
 	  building_type << " " << building_subtype << " " << building_tile.x 
 	  << "," << building_tile.y << " " << building_player_id << " " << 
-	  tilesize << " " << has_grid);
+	  tilesize << " " << has_grid << " " <<tileset);
 
     std::list<TileCacheItem*>::iterator it;
     TileCacheItem* myitem;
@@ -599,6 +571,7 @@ PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_
     item.building_player_id = building_player_id;
     item.has_grid = has_grid;
     item.fog_type_id = fog_type_id;
+    item.tileset = tileset;
     TileMap::iterator mit = d_tilemap.find(item);
     if (mit != d_tilemap.end())
       {
@@ -739,6 +712,10 @@ PixMask* GraphicsCache::getDiplomacyPic(int type, Player::DiplomaticState state)
 
 PixMask* GraphicsCache::getRoadPic(int type)
 {
+  return getRoadPic(type, GameMap::getInstance()->getTileset()->getId());
+}
+PixMask* GraphicsCache::getRoadPic(int type, guint32 tileset)
+{
     debug("GraphicsCache::getRoadPic " <<type)
 
     std::list<RoadCacheItem*>::iterator it;
@@ -746,7 +723,7 @@ PixMask* GraphicsCache::getRoadPic(int type)
 
     for (it = d_roadlist.begin(); it != d_roadlist.end(); it++)
     {
-        if ((*it)->type == type)
+        if ((*it)->type == type && (*it)->tileset == tileset)
         {
             myitem = (*it);
 
@@ -759,12 +736,17 @@ PixMask* GraphicsCache::getRoadPic(int type)
     }
 
     //no item found -> create a new one
-    myitem = addRoadPic(type);
+    myitem = addRoadPic(type, tileset);
 
     return myitem->surface;
 }
 
 PixMask* GraphicsCache::getFogPic(int type)
+{
+  return getFogPic(type, GameMap::getInstance()->getTileset()->getId());
+}
+
+PixMask* GraphicsCache::getFogPic(int type, guint32 tileset)
 {
     debug("GraphicsCache::getFogPic " <<type)
 
@@ -773,6 +755,7 @@ PixMask* GraphicsCache::getFogPic(int type)
 
     FogCacheItem item = FogCacheItem();
     item.type = type;
+    item.tileset = tileset;
     FogCacheMap::iterator mit = d_fogmap.find(item);
     if (mit != d_fogmap.end())
       {
@@ -794,6 +777,10 @@ PixMask* GraphicsCache::getFogPic(int type)
 
 PixMask* GraphicsCache::getBridgePic(int type)
 {
+  return getBridgePic(type, GameMap::getInstance()->getTileset()->getId());
+}
+PixMask* GraphicsCache::getBridgePic(int type, guint32 tileset)
+{
     debug("GraphicsCache::getBridgePic " <<type)
 
     std::list<BridgeCacheItem*>::iterator it;
@@ -801,7 +788,7 @@ PixMask* GraphicsCache::getBridgePic(int type)
 
     for (it = d_bridgelist.begin(); it != d_bridgelist.end(); it++)
     {
-        if ((*it)->type == type)
+        if ((*it)->type == type && (*it)->tileset == tileset)
         {
             myitem = (*it);
 
@@ -814,7 +801,7 @@ PixMask* GraphicsCache::getBridgePic(int type)
     }
 
     //no item found -> create a new one
-    myitem = addBridgePic(type);
+    myitem = addBridgePic(type, tileset);
 
     return myitem->surface;
 }
@@ -872,7 +859,7 @@ PixMask* GraphicsCache::getTowerPic(const Player* p)
     return d_towerpic[p->getId()];
 }
 
-PixMask* GraphicsCache::getFlagPic(guint32 stack_size, const Player *p)
+PixMask* GraphicsCache::getFlagPic(guint32 stack_size, const Player *p, guint32 tileset)
 {
     debug("GraphicsCache::getFlagPic " <<stack_size <<", player" <<p->getId())
 
@@ -882,7 +869,8 @@ PixMask* GraphicsCache::getFlagPic(guint32 stack_size, const Player *p)
     for (it = d_flaglist.begin(); it != d_flaglist.end(); it++)
     {
         myitem = *it;
-        if (myitem->size == stack_size && myitem->player_id == p->getId())
+        if (myitem->size == stack_size && myitem->player_id == p->getId() &&
+	    myitem->tileset == tileset)
         {
             // put the item in last place (last touched)
             d_flaglist.erase(it);
@@ -893,12 +881,21 @@ PixMask* GraphicsCache::getFlagPic(guint32 stack_size, const Player *p)
     }
 
     // no item found => create a new one
-    myitem = addFlagPic(stack_size, p);
+    myitem = addFlagPic(stack_size, p, tileset);
 
     return myitem->surface;
 }
+PixMask* GraphicsCache::getFlagPic(guint32 stack_size, const Player *p)
+{
+  return getFlagPic(stack_size, p, 
+		    GameMap::getInstance()->getTileset()->getId());
+}
 
 PixMask* GraphicsCache::getFlagPic(const Stack* s)
+{
+  return getFlagPic(s, GameMap::getInstance()->getTileset()->getId());
+}
+PixMask* GraphicsCache::getFlagPic(const Stack* s, guint32 tileset)
 {
     if (!s)
     {
@@ -906,11 +903,17 @@ PixMask* GraphicsCache::getFlagPic(const Stack* s)
         exit(-1);
     }
     
-  return getFlagPic(s->size(), s->getOwner());
+  return getFlagPic(s->size(), s->getOwner(), tileset);
 }
 
 PixMask* GraphicsCache::getSelectorPic(guint32 type, guint32 frame, 
 					   const Player *p)
+{
+  return getSelectorPic(type, frame, p, 
+			GameMap::getInstance()->getTileset()->getId());
+}
+PixMask* GraphicsCache::getSelectorPic(guint32 type, guint32 frame, 
+					   const Player *p, guint32 tileset)
 {
     debug("GraphicsCache::getSelectorPic " <<type <<", " << frame << ", player" <<s->getOwner()->getName())
 
@@ -927,7 +930,7 @@ PixMask* GraphicsCache::getSelectorPic(guint32 type, guint32 frame,
     {
         myitem = *it;
         if ((myitem->type == type) && (myitem->player_id == p->getId()) 
-	    && myitem->frame == frame)
+	    && myitem->frame == frame && myitem->tileset == tileset)
         {
             // put the item in last place (last touched)
             d_selectorlist.erase(it);
@@ -938,7 +941,7 @@ PixMask* GraphicsCache::getSelectorPic(guint32 type, guint32 frame,
     }
 
     // no item found => create a new one
-    myitem = addSelectorPic(type, frame, p);
+    myitem = addSelectorPic(type, frame, p, tileset);
 
     return myitem->surface;
 }
@@ -1125,7 +1128,7 @@ void GraphicsCache::checkPictures()
 
 }
 
-void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid)
+void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid, guint32 tileset)
 {
   const Player *player;
   Glib::RefPtr<Gdk::Pixmap> pixmap = surface->get_pixmap();
@@ -1189,7 +1192,11 @@ void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag,
     }
 
   if (fog_type_id)
-    d_fogpic[fog_type_id - 1]->blit(pixmap);
+    {
+      Tileset *t= 
+	Tilesetlist::getInstance()->getTileset(tileset);
+      t->getFogImage(fog_type_id - 1)->blit(pixmap);
+    }
 }
 
 TileCacheItem* GraphicsCache::addTilePic(TileCacheItem *item)
@@ -1203,21 +1210,19 @@ TileCacheItem* GraphicsCache::addTilePic(TileCacheItem *item)
 	item->has_ship << " " << item->building_type << " " << 
 	item->building_subtype << " " << item->building_tile.x << 
 	"," << item->building_tile.y << " " << item->building_player_id << 
-	" " << item->tilesize << " " << item->has_grid);
+	" " << item->tilesize << " " << item->has_grid << " " << item->tileset);
 
   TileCacheItem* myitem = new TileCacheItem();
   *myitem = *item;
 
   //short circuit the drawing sequence if the tile is completely obscured
+  Tileset *t = Tilesetlist::getInstance()->getTileset(item->tileset);
   if (myitem->fog_type_id == FogMap::ALL)
-    {
-      myitem->surface = d_fogpic[myitem->fog_type_id - 1]->copy();
-    }
+    myitem->surface = t->getFogImage(myitem->fog_type_id - 1)->copy();
   else
     {
-      Tileset *tileset = GameMap::getInstance()->getTileset();
       myitem->surface = 
-	tileset->getTileStyle(myitem->tile_style_id)->getImage()->copy();
+	t->getTileStyle(myitem->tile_style_id)->getImage()->copy();
     
       drawTilePic(myitem->surface, myitem->fog_type_id, myitem->has_bag, 
 		  myitem->has_standard, myitem->standard_player_id, 
@@ -1225,7 +1230,7 @@ TileCacheItem* GraphicsCache::addTilePic(TileCacheItem *item)
 		  myitem->army_type_id, myitem->has_tower, myitem->has_ship, 
 		  myitem->building_type, myitem->building_subtype, 
 		  myitem->building_tile, myitem->building_player_id, 
-		  myitem->tilesize, myitem->has_grid);
+		  myitem->tilesize, myitem->has_grid, myitem->tileset);
     }
 
   //now the final preparation steps:
@@ -1408,8 +1413,6 @@ PlantedStandardCacheItem* GraphicsCache::addPlantedStandardPic(const Player* p)
 
 TempleCacheItem* GraphicsCache::addTemplePic(int type)
 {
-  //    int ts = GameMap::getInstance()->getTileset()->getTileSize();
-
   PixMask* mysurf = d_templepic[type];
 
   //now create the cache item and add the size
@@ -1473,15 +1476,15 @@ DiplomacyCacheItem* GraphicsCache::addDiplomacyPic(int type, Player::DiplomaticS
   return myitem;
 }
 
-RoadCacheItem* GraphicsCache::addRoadPic(int type)
+RoadCacheItem* GraphicsCache::addRoadPic(int type, guint32 tileset)
 {
-  //    int ts = GameMap::getInstance()->getTileset()->getTileSize();
-
-  PixMask* mysurf = d_roadpic[type];
+  Tileset *ts = Tilesetlist::getInstance()->getTileset(tileset);
+  PixMask* mysurf = ts->getRoadImage(type)->copy();
 
   //now create the cache item and add the size
   RoadCacheItem* myitem = new RoadCacheItem();
   myitem->type = type;
+  myitem->tileset = tileset;
   myitem->surface = mysurf;
 
   d_roadlist.push_back(myitem);
@@ -1498,8 +1501,8 @@ RoadCacheItem* GraphicsCache::addRoadPic(int type)
 
 FogCacheItem* GraphicsCache::addFogPic(FogCacheItem *item)
 {
-
-  PixMask* mysurf = d_fogpic[item->type - 1]->copy();
+  Tileset *ts = Tilesetlist::getInstance()->getTileset(item->tileset);
+  PixMask* mysurf = ts->getFogImage(item->type - 1)->copy();
 
   //now create the cache item and add the size
   FogCacheItem* myitem = new FogCacheItem();
@@ -1520,15 +1523,15 @@ FogCacheItem* GraphicsCache::addFogPic(FogCacheItem *item)
   return myitem;
 }
 
-BridgeCacheItem* GraphicsCache::addBridgePic(int type)
+BridgeCacheItem* GraphicsCache::addBridgePic(int type, guint32 tileset)
 {
-  //    int ts = GameMap::getInstance()->getTileset()->getTileSize();
-
-  PixMask* mysurf = d_bridgepic[type];
+  Tileset *ts = Tilesetlist::getInstance()->getTileset(tileset);
+  PixMask* mysurf = ts->getBridgeImage(type)->copy();
 
   //now create the cache item and add the size
   BridgeCacheItem* myitem = new BridgeCacheItem();
   myitem->type = type;
+  myitem->tileset = tileset;
   myitem->surface = mysurf;
 
   d_bridgelist.push_back(myitem);
@@ -1603,18 +1606,21 @@ TowerCacheItem* GraphicsCache::addTowerPic(const Player* p)
   return myitem;
 }
 
-FlagCacheItem* GraphicsCache::addFlagPic(int size, const Player *p)
+FlagCacheItem* GraphicsCache::addFlagPic(int size, const Player *p, guint32 tileset)
 {
+  Tileset *ts = Tilesetlist::getInstance()->getTileset(tileset);
   debug("GraphicsCache::addFlagPic, player="<<p->getId()<<", size="<<size)
 
   // size of the stack starts at 1, but we need the index, which starts at 0
 
-  PixMask* mysurf = applyMask(d_flagpic[size-1], d_flagmask[size-1], p);
+  PixMask* mysurf = applyMask (ts->getFlagImage(size-1), 
+			       ts->getFlagMask(size-1), p);
 
   //now create the cache item and add the size
   FlagCacheItem* myitem = new FlagCacheItem();
   myitem->player_id = p->getId();
   myitem->size = size;
+  myitem->tileset = tileset;
   myitem->surface = mysurf;
 
   d_flaglist.push_back(myitem);
@@ -1629,23 +1635,26 @@ FlagCacheItem* GraphicsCache::addFlagPic(int size, const Player *p)
   return myitem;
 }
 
-SelectorCacheItem* GraphicsCache::addSelectorPic(guint32 type, guint32 frame, const Player* p)
+SelectorCacheItem* GraphicsCache::addSelectorPic(guint32 type, guint32 frame, const Player* p, guint32 tileset)
 {
+  Tileset *ts = Tilesetlist::getInstance()->getTileset(tileset);
   debug("GraphicsCache::addSelectorPic, player="<<p->getName()<<", type="<<type<< ", " << frame)
 
     // frame is the frame of animation we're looking for.  starts at 0.
     // type is 0 for big, 1 for small
 
-    PixMask* mysurf;
+  PixMask* mysurf;
   if (type == 0)
-    mysurf = applyMask(d_selector[frame], d_selectormask[frame], p);
+    mysurf = applyMask(ts->getSelectorImage(frame), ts->getSelectorMask(frame), p);
   else
-    mysurf = applyMask(d_smallselector[frame], d_smallselectormask[frame], p);
+    mysurf = applyMask(ts->getSmallSelectorImage(frame), 
+		       ts->getSmallSelectorMask(frame), p);
 
   //now create the cache item and add the size
   SelectorCacheItem* myitem = new SelectorCacheItem();
   myitem->player_id = p->getId();
   myitem->type = type;
+  myitem->tileset = tileset;
   myitem->frame = frame;
   myitem->surface = mysurf;
 
@@ -2164,60 +2173,6 @@ void GraphicsCache::loadDiplomacyPics()
     }
 }
 
-void GraphicsCache::loadRoadPics()
-{
-  // GameMap has the actual tileset stored
-  Tileset *tileset = GameMap::getInstance()->getTileset();
-  int ts = tileset->getTileSize();
-
-  std::vector<PixMask* > roadpics;
-  roadpics = disassemble_row(File::getTilesetFile(tileset, tileset->getRoadsFilename()), 
-			     ROAD_TYPES);
-  for (unsigned int i = 0; i < ROAD_TYPES ; i++)
-    {
-      if (roadpics[i]->get_width() != ts)
-	PixMask::scale(roadpics[i], ts, ts);
-      d_roadpic[i] = roadpics[i];
-    }
-}
-
-void GraphicsCache::loadFogPics()
-{
-  // GameMap has the actual tileset stored
-  Tileset *tileset = GameMap::getInstance()->getTileset();
-  int ts = tileset->getTileSize();
-
-  // load the fog pictures
-  std::vector<PixMask* > fogpics;
-  fogpics = disassemble_row(File::getTilesetFile(tileset, tileset->getFogFilename()),
-			     FOG_TYPES);
-  for (unsigned int i = 0; i < FOG_TYPES ; i++)
-    {
-      if (fogpics[i]->get_width() != ts)
-	PixMask::scale(fogpics[i], ts, ts);
-      d_fogpic[i] = fogpics[i];
-    }
-}
-
-void GraphicsCache::loadBridgePics()
-{
-  // GameMap has the actual tileset stored
-  Tileset *tileset = GameMap::getInstance()->getTileset();
-  int ts = tileset->getTileSize();
-
-  // load the bridge pictures
-  std::vector<PixMask* > bridgepics;
-  bridgepics = disassemble_row(File::getTilesetFile(tileset, 
-						    tileset->getBridgesFilename()),
-			       BRIDGE_TYPES);
-  for (unsigned int i = 0; i < BRIDGE_TYPES ; i++)
-    {
-      if (bridgepics[i]->get_width() != ts)
-	PixMask::scale(bridgepics[i], ts, ts);
-      d_bridgepic[i] = bridgepics[i];
-    }
-}
-
 void GraphicsCache::loadCursorPics()
 {
   int ts = 16;
@@ -2300,42 +2255,6 @@ bool GraphicsCache::loadSelectorImages(std::string filename, guint32 size, std::
   return true;
 }
 
-void GraphicsCache::loadSelectors()
-{
-  Tileset *tileset = GameMap::getInstance()->getTileset();
-  std::string small = tileset->getSmallSelectorFilename();
-  std::string large = tileset->getLargeSelectorFilename();
-
-  int size = tileset->getTileSize();
-  std::vector<PixMask* > images;
-  std::vector<PixMask* > masks;
-  bool success = loadSelectorImages(File::getTilesetFile(tileset, large), size, images, masks);
-  if (!success)
-    {
-      fprintf (stderr,"Selector file %s is malformed\n", large.c_str());
-      exit(1);
-    }
-  for (unsigned int i = 0; i < images.size(); i++)
-    {
-      d_selector.push_back(images[i]);
-      d_selectormask.push_back(masks[i]);
-    }
-
-  images.clear();
-  masks.clear();
-  success = loadSelectorImages(File::getTilesetFile(tileset,small), size, images, masks);
-  if (!success)
-    {
-      fprintf (stderr,"Selector file %s is malformed\n", small.c_str());
-      exit(1);
-    }
-  for (unsigned int i = 0; i < images.size(); i++)
-    {
-      d_smallselector.push_back(images[i]);
-      d_smallselectormask.push_back(masks[i]);
-    }
-}
-
 void GraphicsCache::loadProdShields()
 {
   //load the production shieldset
@@ -2413,21 +2332,6 @@ bool GraphicsCache::loadFlagImages(std::string filename, guint32 size, std::vect
   return true;
 }
 
-void GraphicsCache::loadFlags()
-{
-  //GameMap has the actual tileset stored
-  Tileset *tileset = GameMap::getInstance()->getTileset();
-  int ts = tileset->getTileSize();
-  std::vector<PixMask* > flagpics;
-  std::vector<PixMask* > maskpics;
-  loadFlagImages(File::getTilesetFile(tileset, tileset->getFlagsFilename()), ts, flagpics, maskpics);
-  for (unsigned int i = 0; i < flagpics.size(); i++)
-    d_flagpic[i] = flagpics[i];
-  for (unsigned int i = 0; i < maskpics.size(); i++)
-    d_flagmask[i] = maskpics[i];
-
-}
-        
 PixMask* GraphicsCache::getMedalPic(bool large, int type)
 {
   if (large)

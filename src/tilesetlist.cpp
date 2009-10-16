@@ -25,6 +25,7 @@
 #include "tilesetlist.h"
 #include "File.h"
 #include "defs.h"
+#include "tileset.h"
 
 using namespace std;
 
@@ -124,20 +125,62 @@ void Tilesetlist::loadTilesets(std::list<std::string> tilesets, bool priv)
 	{
 	  iterator it = end();
 	  it--;
+	  if (d_tilesetids.find((*it)->getId()) != d_tilesetids.end())
+	    {
+	      Tileset *t = (*d_tilesetids.find((*it)->getId())).second;
+	      cerr << "Error!  tileset: `" << (*it)->getName() << 
+		"' has a duplicate tileset id with `" << File::getTileset(t) << 
+		"'.  Skipping." << endl;
+	      continue;
+	    }
 	  (*it)->setSubDir(*i);
 	  d_dirs[String::ucompose("%1 %2", (*it)->getName(), (*it)->getTileSize())] = *i;
 	  d_tilesets[*i] = *it;
+	  d_tilesetids[(*it)->getId()] = *it;
 	}
       else
 	{
 	  //we failed validation
 	  iterator it = end();
 	  it--;
-	  fprintf (stderr, "tileset `%s' fails validation. skipping.\n",
-		   (*it)->getName().c_str());
+	  cerr<< "Error!  Tileset: `" << File::getTileset((*it)) <<
+	    "' fails validation.  Skipping.\n",
 	  delete *it;
 	  erase (it);
 	}
     }
 }
 
+int Tilesetlist::getNextAvailableId(int after)
+{
+  std::list<guint32> ids;
+  std::list<std::string> tilesets = File::scanTilesets();
+  //there might be IDs in invalid tilesets.
+  for (std::list<std::string>::const_iterator i = tilesets.begin(); 
+       i != tilesets.end(); i++)
+    {
+      TilesetLoader loader(*i, false);
+      if (loader.tileset)
+	{
+	  ids.push_back(loader.tileset->getId());
+	  delete loader.tileset;
+	}
+    }
+  tilesets = File::scanUserTilesets();
+  for (std::list<std::string>::const_iterator i = tilesets.begin(); 
+       i != tilesets.end(); i++)
+    {
+      TilesetLoader loader(*i, true);
+      if (loader.tileset)
+	{
+	  ids.push_back(loader.tileset->getId());
+	  delete loader.tileset;
+	}
+    }
+  for (guint32 i = after + 1; i < 1000000; i++)
+    {
+      if (find(ids.begin(), ids.end(), i) == ids.end())
+	return i;
+    }
+  return -1;
+}

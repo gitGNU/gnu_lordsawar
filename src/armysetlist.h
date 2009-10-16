@@ -29,8 +29,6 @@
 #include "xmlhelper.h"
 #include "armyproto.h"
 #include "armyset.h"
-#include "File.h"
-using namespace std;
 
 
 //! A list of all Armyset objects available to the game.
@@ -120,7 +118,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
           * @return the id of the armyset (0 on error)
           */
 	guint32 getArmysetId(std::string armyset, guint32 tilesize);
-	Armyset *getArmyset(guint32 id);
+	Armyset *getArmyset(guint32 id) {return d_armysetids[id];};
 
 	//! Return the Armyset object by the name of the subdir.
 	/**
@@ -184,6 +182,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
         typedef std::map<guint32, std::string> NameMap;
         typedef std::map<std::string, guint32> IdMap;
         typedef std::map<std::string, Armyset*> ArmysetMap;
+        typedef std::map<guint32, Armyset*> ArmysetIdMap;
         
 	//! A map that provides Army objects by their index.
         ArmyPrototypeMap d_armies;
@@ -197,41 +196,11 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	//! A map that provides an Armyset when supplying a subdirectory name.
         ArmysetMap d_armysets;
 
+	//! A map that provides an Armyset when supplying a subdirectory name.
+        ArmysetIdMap d_armysetids;
+
         //! A static pointer for the singleton instance.
         static Armysetlist* s_instance;
-};
-
-class ArmysetLoader
-{
-public:
-    ArmysetLoader(std::string name, bool p) 
-      {
-	armyset = NULL;
-	private_collection = p;
-	std::string filename = "";
-	if (private_collection == false)
-	  filename = File::getArmyset(name);
-	else
-	  filename = File::getUserArmyset(name);
-	XML_Helper helper(filename, ios::in, false);
-	helper.registerTag(Armyset::d_tag, sigc::mem_fun((*this), &ArmysetLoader::load));
-	if (!helper.parse())
-	  {
-	    std::cerr << "Error, while loading an armyset. Armyset Name: ";
-	    std::cerr <<name <<std::endl <<std::flush;
-	  }
-      };
-    bool load(std::string tag, XML_Helper* helper)
-      {
-	if (tag == Armyset::d_tag)
-	  {
-	    armyset = new Armyset(helper, private_collection);
-	    return true;
-	  }
-	return false;
-      };
-    bool private_collection;
-    Armyset *armyset;
 };
 
 #endif // ARMYSETLIST_H

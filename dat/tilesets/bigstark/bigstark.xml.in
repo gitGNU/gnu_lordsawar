@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <tileset>
+    <d_id>4</d_id>
     <_d_name>Stark</_d_name>
     <_d_info>The doublesized stark tileset</_d_info>
     <d_tilesize>80</d_tilesize>

@@ -61,9 +61,10 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	/**
 	 * Make a new Tileset.
 	 *
+	 * @param id    A unique numeric identifier among all tilesets.
 	 * @param name  The name of the Tileset.  Analagous to Tileset::d_name.
 	 */
-	Tileset(std::string name);
+	Tileset(guint32 id, std::string name);
 
 	//! Loading constructor.
 	/**
@@ -82,6 +83,19 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 
 	//! Set the subdirectory of where this Tileset resides on disk.
         void setSubDir(std::string dir);
+
+	//! Get the unique identifier for this tileset.
+	/**
+	 * Analagous to the tileset.d_id XML entity in the tileset 
+	 * configuration file.
+	 */
+        guint32 getId() const {return d_id;}
+
+	//! Set the unique identifier for this tileset.
+	/**
+	 * @note This method is only used in the tileset editor.  
+	 */
+        void setId(guint32 id) {d_id = id;}
 
         //! Returns the name of the tileset.
         std::string getName() const {return _(d_name.c_str());}
@@ -163,6 +177,31 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 
 	//! Return whether this is an tileset in the user's personal collection.
 	bool fromPrivateCollection() {return private_collection;};
+
+	void setExplosionImage(PixMask *p) {explosion = p;};
+	PixMask *getExplosionImage() {return explosion;};
+	void setRoadImage(guint32 i, PixMask *p) {roadpic[i] = p;};
+	PixMask *getRoadImage(guint32 i) {return roadpic[i];};
+	void setBridgeImage(guint32 i, PixMask *p) {bridgepic[i] = p;};
+	PixMask *getBridgeImage(guint32 i) {return bridgepic[i];};
+	void setFlagImage(guint32 i, PixMask *p) {flagpic[i] = p;};
+	PixMask *getFlagImage(guint32 i) {return flagpic[i];};
+	void setFlagMask(guint32 i, PixMask *p) {flagmask[i] = p;};
+	PixMask *getFlagMask(guint32 i) {return flagmask[i];};
+	void setFogImage(guint32 i, PixMask *p) {fogpic[i] = p;};
+	PixMask *getFogImage(guint32 i) {return fogpic[i];};
+	void setSelectorImage(guint32 i, PixMask *p) {selector[i] = p;};
+	PixMask *getSelectorImage(guint32 i) {return selector[i];};
+	void setSelectorMask(guint32 i, PixMask *p) {selectormask[i] = p;};
+	PixMask *getSelectorMask(guint32 i) {return selectormask[i];};
+	void setSmallSelectorImage(guint32 i, PixMask *p) {smallselector[i] = p;};
+	PixMask *getSmallSelectorImage(guint32 i) {return smallselector[i];};
+	void setSmallSelectorMask(guint32 i, PixMask *p) {smallselectormask[i] = p;};
+	PixMask *getSmallSelectorMask(guint32 i) {return smallselectormask[i];};
+	guint32 getNumberOfSelectorFrames() {return number_of_selector_frames;};
+	guint32 getNumberOfSmallSelectorFrames() {return number_of_small_selector_frames;};
+	void setNumberOfSelectorFrames(guint32 s) {selector.reserve(s); selectormask.reserve(s); number_of_selector_frames = s;};
+	void setNumberOfSmallSelectorFrames(guint32 s) {smallselector.reserve(s);smallselectormask.reserve(s); number_of_small_selector_frames = s;};
     private:
         //! Callback to load Tile objects into the Tileset.
         bool loadTile(std::string, XML_Helper* helper);
@@ -176,6 +215,9 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	 * a Tileset among all other Tileset objects available to the game.
 	 */
         std::string d_name;
+
+	//! A unique numeric identifier among all tilesets.
+	guint32 d_id;
 
 	//! The description of the Tileset.
 	/**
@@ -218,6 +260,20 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 
 	//! Whether this is a system tileset, or one that the user made.
 	bool private_collection;
+
+
+        PixMask* roadpic[ROAD_TYPES];
+        PixMask* bridgepic[BRIDGE_TYPES];
+        PixMask* flagpic[MAX_STACK_SIZE];
+        PixMask* flagmask[MAX_STACK_SIZE];
+	guint32 number_of_selector_frames;
+	std::vector<PixMask* > selector;
+	std::vector<PixMask* > selectormask;
+	guint32 number_of_small_selector_frames;
+	std::vector<PixMask* > smallselector;
+	std::vector<PixMask* > smallselectormask;
+	PixMask* explosion;
+	PixMask*fogpic[FOG_TYPES];
 };
 
 class TilesetLoader

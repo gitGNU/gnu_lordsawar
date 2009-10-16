@@ -71,6 +71,11 @@ ArmyProto::ArmyProto(XML_Helper* helper)
   helper->getData(d_defends_ruins,"defends_ruins");
   helper->getData(d_awardable,"awardable");
   helper->getData(d_hero, "hero");
+  for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
+    {
+      d_image[c] = NULL;
+      d_mask[c] = NULL;
+    }
 }
 
 ArmyProto::~ArmyProto()

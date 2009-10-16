@@ -848,7 +848,6 @@ bool Player::stackMove(Stack* s)
 
 MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 {
-  City *c = GameMap::getCity(dest);
 
     debug("Player::stack_move()");
     //if follow is set to true, follow an already calculated way, else

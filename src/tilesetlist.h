@@ -72,8 +72,16 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
 	 *             This value does not contain any slashes, and is
 	 *             presumed to be found inside the tilesets/ directory.
 	 */
-	Tileset *getTileset(std::string dir) { return d_tilesets[dir];}
+	Tileset *getTileset(std::string dir) { return d_tilesets[dir];};
+	//! Return the Tileset object by the id.
+	/**
+	 * @param id   A unique numeric identifier that identifies the tileset
+	 *             among all tilesets in the tilesetlist.
+	 */
+	Tileset *getTileset(guint32 id) { return d_tilesetids[id];};
 
+	//! Return an unused tileset number.
+	static int getNextAvailableId(int after = 0);
     private:
         //! Default constructor.  Loads all tilesets it can find.
 	/**
@@ -103,12 +111,16 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
         
         typedef std::map<std::string, std::string> DirMap;
         typedef std::map<std::string, Tileset*> TilesetMap;
+        typedef std::map<guint32, Tileset*> TilesetIdMap;
 
 	//! A map that provides a subdirectory when supplying a Tileset name.
         DirMap d_dirs;
 
 	//! A map that provides a Tileset when supplying a subdirectory name.
         TilesetMap d_tilesets;
+
+	//! A map that provides a Tileset when supplying a tileset id.
+        TilesetIdMap d_tilesetids;
 
         //! A static pointer for the singleton instance.
         static Tilesetlist* s_instance;

@@ -37,6 +37,7 @@ class TileSetInfoDialog: public sigc::trackable
  private:
     Gtk::Dialog* dialog;
     Tileset *d_tileset;
+    Gtk::SpinButton *id_spinbutton;
     Gtk::Entry *name_entry;
     Gtk::Entry *subdir_entry;
     Gtk::Button *accept_button;

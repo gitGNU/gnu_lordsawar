@@ -133,6 +133,7 @@ class GraphicsCache
                                 const bool* medals);
 	PixMask* getArmyPic(Army *a);
 
+	PixMask* getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid, guint32 tileset);
 	PixMask* getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid);
 
         /** Function for getting the shield picture from the cache
@@ -180,6 +181,7 @@ class GraphicsCache
           * @param type         the type of the road
           * @return image of the road
           */
+        PixMask* getRoadPic(int type, guint32 tileset);
         PixMask* getRoadPic(int type);
 
         /** Function for getting a fog picture
@@ -187,6 +189,7 @@ class GraphicsCache
           * @param type         the type of the fog
           * @return image of the fog
           */
+        PixMask* getFogPic(int type, guint32 tileset);
         PixMask* getFogPic(int type);
 
         /** Function for getting a bridge picture
@@ -194,6 +197,7 @@ class GraphicsCache
           * @param type         the type of the bridge 0=e/w 1=n/s
           * @return image of the bridge
           */
+        PixMask* getBridgePic(int type, guint32 tileset);
         PixMask* getBridgePic(int type);
 
         /** Function for getting a cursor picture
@@ -270,7 +274,9 @@ class GraphicsCache
           * @return image for the flag
           */
         PixMask* getFlagPic(const Stack* s);
-        PixMask* getFlagPic(guint32 stack_size, const Player *p);
+        PixMask* getFlagPic(const Stack* s, guint32 tileset);
+	PixMask* getFlagPic(guint32 stack_size, const Player *p);
+        PixMask* getFlagPic(guint32 stack_size, const Player *p, guint32 tileset);
 
         /** Function for getting selector pictures.
           *
@@ -281,7 +287,9 @@ class GraphicsCache
           * @param p the player to draw it for
           * @return image for the flag
           */
-        PixMask* getSelectorPic(guint32 type, guint32 frame, const Player* p);
+        PixMask* getSelectorPic(guint32 type, guint32 frame, const Player* p, guint32 tileset);
+
+	PixMask* getSelectorPic(guint32 type, guint32 frame, const Player *p);
 
         /** Function for getting shield pictures.
           *
@@ -347,8 +355,6 @@ class GraphicsCache
 
 	static bool loadFlagImages(std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);
 
-	guint32 getNumberOfLargeSelectorFrames() {return d_selector.size();};
-	guint32 getNumberOfSmallSelectorFrames() {return d_smallselector.size();}
 
     private:
         GraphicsCache();
@@ -364,13 +370,13 @@ class GraphicsCache
         DiplomacyCacheItem* addDiplomacyPic(int type, Player::DiplomaticState state);
 
         //! Creates a new road picture with the given parameters.
-        RoadCacheItem* addRoadPic(int type);
+        RoadCacheItem* addRoadPic(int type, guint32 tileset);
 
         //! Creates a new fog picture with the given parameters.
         FogCacheItem* addFogPic(FogCacheItem *item);
 
         //! Creates a new bridge picture with the given parameters.
-        BridgeCacheItem* addBridgePic(int type);
+        BridgeCacheItem* addBridgePic(int type, guint32 tileset);
 
         //! Creates a new cursor picture with the given parameters.
         CursorCacheItem* addCursorPic(int type);
@@ -400,11 +406,11 @@ class GraphicsCache
         NewLevelCacheItem* addNewLevelPic(const Player* p);
 
         //! Creates a new flag picture with the given parameters.
-        FlagCacheItem* addFlagPic(int size, const Player *p);
+        FlagCacheItem* addFlagPic(int size, const Player *p, guint32 tileset);
 
         //! Creates a new selector picture with the given parameters.
         SelectorCacheItem* addSelectorPic(guint32 type, guint32 frame, 
-					  const Player* p);
+					  const Player* p, guint32 tileset);
 
         //! Creates a new production shield picture with the given parameters.
         ProdShieldCacheItem* addProdShieldPic(guint32 type, bool prod);
@@ -486,25 +492,11 @@ class GraphicsCache
         //! Loads the images for the diplomacy pictures.
         void loadDiplomacyPics();
 
-        //! Loads the images for the road pictures.
-        void loadRoadPics();
-
-        //! Loads the images for the fog pictures.
-        void loadFogPics();
-
-        //! Loads the images for the bridge pictures.
-        void loadBridgePics();
-
         //! Loads the images for the cursor pictures.
         void loadCursorPics();
 
-        //! Loads the images for the flags
-        void loadFlags();
-
-        //! Loads the images for the two selectors
-        void loadSelectors();
+        //! Loads the images for the medals.
         void loadMedalPics();
-
         
         //! Loads the images for the production shields
         void loadProdShields();
@@ -521,7 +513,7 @@ class GraphicsCache
           */
         static PixMask* getCitysetPicture(std::string citysetname, std::string picname);
 
-	void drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid);
+	void drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid, guint32 tileset);
 
         //the data
         static GraphicsCache* s_instance;
@@ -561,16 +553,9 @@ class GraphicsCache
         PixMask* d_templepic[TEMPLE_TYPES];
         PixMask* d_ruinpic[RUIN_TYPES];
         PixMask* d_diplomacypic[2][DIPLOMACY_TYPES];
-        PixMask* d_roadpic[ROAD_TYPES];
-        PixMask* d_bridgepic[BRIDGE_TYPES];
+
         PixMask* d_cursorpic[CURSOR_TYPES];
         PixMask* d_razedpic[MAX_PLAYERS + 1]; //+1 for neutral
-        PixMask* d_flagpic[MAX_STACK_SIZE];
-        PixMask* d_flagmask[MAX_STACK_SIZE];
-	std::vector<PixMask* > d_selector;
-	std::vector<PixMask* > d_selectormask;
-	std::vector<PixMask* > d_smallselector;
-	std::vector<PixMask* > d_smallselectormask;
         PixMask* d_prodshieldpic[PRODUCTION_SHIELD_TYPES];
 	PixMask* d_smallruinedcity;
 	PixMask* d_smallhero;
@@ -579,13 +564,11 @@ class GraphicsCache
         PixMask* d_medalpic[2][MEDAL_TYPES];
 	PixMask* d_port;
 	PixMask* d_bag;
-	PixMask* d_explosion;
 	PixMask* d_signpost;
 	PixMask* d_small_ruin_unexplored;
 	PixMask* d_small_stronghold_unexplored;
 	PixMask* d_small_ruin_explored;
 	PixMask* d_small_temple;
-	PixMask*d_fogpic[FOG_TYPES];
 	PixMask *d_newlevel;
 	PixMask *d_newlevelmask;
 };

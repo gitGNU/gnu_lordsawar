@@ -38,8 +38,8 @@ using namespace std;
 std::string Tileset::d_tag = "tileset";
 std::string Tileset::d_road_smallmap_tag = "road_smallmap";
 
-Tileset::Tileset(std::string name)
-	: d_name(name), d_tileSize(DEFAULT_TILE_SIZE), d_dir(""), 
+Tileset::Tileset(guint32 id, std::string name)
+	: d_name(name), d_id(id), d_tileSize(DEFAULT_TILE_SIZE), d_dir(""), 
 	private_collection(true)
 {
   d_info = "";
@@ -50,11 +50,29 @@ Tileset::Tileset(std::string name)
   d_bridges = "";
   d_flags = "";
   d_road_color.set_rgb_p(0,0,0);
+  for (unsigned int i = 0; i < ROAD_TYPES; i++)
+    roadpic[i] = NULL;
+  for (unsigned int i = 0; i < BRIDGE_TYPES; i++)
+    bridgepic[i] = NULL;
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+    flagpic[i] = NULL;
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+    flagmask[i] = NULL;
+  number_of_selector_frames = 0;
+  selector.clear();
+  selectormask.clear();
+  number_of_small_selector_frames = 0;
+  smallselector.clear();
+  smallselectormask.clear();
+  explosion = NULL;
+  for (unsigned int i = 0; i < FOG_TYPES; i++)
+    fogpic[i] = NULL;
 }
 
 Tileset::Tileset(XML_Helper *helper, bool from_private_collection)
 {
     private_collection = from_private_collection;
+    helper->getData(d_id, "id"); 
     helper->getData(d_name, "name"); 
     helper->getData(d_info, "info");
     helper->getData(d_tileSize, "tilesize");
@@ -70,12 +88,58 @@ Tileset::Tileset(XML_Helper *helper, bool from_private_collection)
     helper->registerTag(SmallTile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
     helper->registerTag(TileStyle::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
     helper->registerTag(TileStyleSet::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
+  for (unsigned int i = 0; i < ROAD_TYPES; i++)
+    roadpic[i] = NULL;
+  for (unsigned int i = 0; i < BRIDGE_TYPES; i++)
+    bridgepic[i] = NULL;
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+    flagpic[i] = NULL;
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+    flagmask[i] = NULL;
+  number_of_selector_frames = 0;
+  selector.clear();
+  selectormask.clear();
+  number_of_small_selector_frames = 0;
+  smallselector.clear();
+  smallselectormask.clear();
+  explosion = NULL;
+  for (unsigned int i = 0; i < FOG_TYPES; i++)
+    fogpic[i] = NULL;
 }
 
 Tileset::~Tileset()
 {
     for (unsigned int i=0; i < size(); i++)
         delete (*this)[i];
+    if (explosion != NULL)
+      delete explosion;
+    for (unsigned int i = 0; i < ROAD_TYPES; i++)
+      if (roadpic[i] != NULL)
+	delete roadpic[i];
+    for (unsigned int i = 0; i < BRIDGE_TYPES; i++)
+      if (bridgepic[i] != NULL)
+	delete bridgepic[i];
+    for (unsigned int i = 0; i < FOG_TYPES; i++)
+      if (fogpic[i] != NULL)
+	delete fogpic[i];
+    for (unsigned int i = 0; i < selector.size(); i++)
+      if (selector[i] != NULL)
+	delete selector[i];
+    for (unsigned int i = 0; i < selectormask.size();i++)
+      if (selectormask[i] != NULL)
+	delete selectormask[i];
+    for (unsigned int i = 0; i < smallselector.size(); i++)
+      if (smallselector[i] != NULL)
+	delete smallselector[i];
+    for (unsigned int i = 0; i < smallselectormask.size(); i++)
+      if (smallselectormask[i] != NULL)
+	delete smallselectormask[i];
+    for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+      if (flagpic[i] != NULL)
+	delete flagpic[i];
+    for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+      if (flagmask[i] != NULL)
+	delete flagmask[i];
 }
 
 guint32 Tileset::getIndex(Tile::Type type) const

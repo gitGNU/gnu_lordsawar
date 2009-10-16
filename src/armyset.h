@@ -28,7 +28,9 @@
 #include "armyproto.h"
 #include "defs.h"
 #include "shield.h"
+#include "File.h"
 
+using namespace std;
 
 //! A collection of Army prototype objects.
 /**
@@ -99,14 +101,14 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	/**
 	 * The width and height of the Army graphic images as they appear
 	 * on the screen.
-	 * Analagous to the tileset.d_tilesize XML entity in the armyset 
+	 * Analagous to the armyset.d_tilesize XML entity in the armyset 
 	 * configuration file.
 	 */
         guint32 getTileSize() const {return d_tilesize;}
 
 	//! Get the unique identifier for this armyset.
 	/**
-	 * Analagous to the tileset.d_id XML entity in the armyset 
+	 * Analagous to the armyset.d_id XML entity in the armyset 
 	 * configuration file.
 	 */
         guint32 getId() const {return d_id;}
@@ -119,7 +121,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 
 	//! Returns the name of the armyset.
         /** 
-	 * Analagous to the tileset.d_name XML entity in the armyset 
+	 * Analagous to the armyset.d_name XML entity in the armyset 
 	 * configuration file.
 	 *
          * @return The name or an empty string on error.
@@ -226,14 +228,14 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	//! The unique Id of this armyset.
 	/**
 	 * This Id is unique among all other armysets.
-	 * It is analgous to tileset.d_id in the armyset configuration files.
+	 * It is analgous to armyset.d_id in the armyset configuration files.
 	 */
         guint32 d_id;
 
 	//! The name of the Armyset.
 	/**
 	 * This value appears in game configuration dialogs.
-	 * It is analgous to tileset.d_name in the armyset configuration files.
+	 * It is analgous to armyset.d_name in the armyset configuration files.
 	 */
         std::string d_name;
 
@@ -278,5 +280,38 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	bool private_collection;
 };
 
+
+class ArmysetLoader
+{
+public:
+    ArmysetLoader(std::string name, bool p) 
+      {
+	armyset = NULL;
+	private_collection = p;
+	std::string filename = "";
+	if (private_collection == false)
+	  filename = File::getArmyset(name);
+	else
+	  filename = File::getUserArmyset(name);
+	XML_Helper helper(filename, ios::in, false);
+	helper.registerTag(Armyset::d_tag, sigc::mem_fun((*this), &ArmysetLoader::load));
+	if (!helper.parse())
+	  {
+	    std::cerr << "Error, while loading an armyset. Armyset Name: ";
+	    std::cerr <<name <<std::endl <<std::flush;
+	  }
+      };
+    bool load(std::string tag, XML_Helper* helper)
+      {
+	if (tag == Armyset::d_tag)
+	  {
+	    armyset = new Armyset(helper, private_collection);
+	    return true;
+	  }
+	return false;
+      };
+    bool private_collection;
+    Armyset *armyset;
+};
 #endif // ARMYSET_H
 

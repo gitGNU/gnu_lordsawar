@@ -940,12 +940,13 @@ void GameBigMap::after_draw()
 	  static int bigframe = -1;
 	  static int smallframe = -1;
 
+	  Tileset *t = GameMap::getInstance()->getTileset();
 	  bigframe++;
-	  if (bigframe >= (int)gc->getNumberOfLargeSelectorFrames())
+	  if (bigframe >= (int)t->getNumberOfSelectorFrames())
 	    bigframe = 0;
 
 	  smallframe++;
-	  if (smallframe >= (int)gc->getNumberOfSmallSelectorFrames())
+	  if (smallframe >= (int)t->getNumberOfSmallSelectorFrames())
 	    smallframe = 0;
 
 	  p = tile_to_buffer_pos(p);

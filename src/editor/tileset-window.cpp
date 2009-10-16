@@ -474,7 +474,8 @@ bool TileSetWindow::load(std::string tag, XML_Helper *helper)
 void TileSetWindow::on_new_tileset_activated()
 {
   std::string name = "";
-  Tileset *tileset = new Tileset(name);
+  int id = Tilesetlist::getNextAvailableId(0);
+  Tileset *tileset = new Tileset(id, name);
   TileSetInfoDialog d(tileset, false);
   d.set_parent_window(*window);
   int response = d.run();
