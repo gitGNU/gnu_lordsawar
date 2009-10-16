@@ -120,10 +120,12 @@ bool HeroOfferDialog::run()
     if (response == Gtk::RESPONSE_ACCEPT)	// accepted
       {
         hero->setName(name_entry->get_text());
-        if (male_radiobutton->get_active())
+        if (male_radiobutton->get_active() == true && 
+	    hero->getGender() == Hero::FEMALE)
           hero->setGender(Hero::MALE);
-        else
-          hero->setGender(Hero::FEMALE);
+        else if (male_radiobutton->get_active() == false &&
+		 hero->getGender() == Hero::MALE)
+	  hero->setGender(Hero::FEMALE);
 	return true;
       }
     else

@@ -45,6 +45,7 @@
 #include "army.h"
 #include "hero.h"
 #include "heroproto.h"
+#include "herotemplates.h"
 #include "Configuration.h"
 #include "GameScenarioOptions.h"
 #include "action.h"
@@ -2421,11 +2422,18 @@ Hero* Player::doRecruitHero(HeroProto* herotemplate, City *city, int cost, int a
 
 void Player::recruitHero(HeroProto* heroproto, City *city, int cost, int alliesCount, const ArmyProto *ally)
 {
+  //alright, we may have picked another sex for the hero.
+  HeroProto *h;
+  std::string name = heroproto->getName();
+  Hero::Gender g = Hero::Gender(heroproto->getGender());
+  h = HeroTemplates::getInstance()->getRandomHero(g, getId());
+  h->setGender(g);
+  h->setName(name);
   Action_RecruitHero *action = new Action_RecruitHero();
-  action->fillData(heroproto, city, cost, alliesCount, ally);
+  action->fillData(h, city, cost, alliesCount, ally);
   addAction(action);
 
-  Hero *hero = doRecruitHero(heroproto, city, cost, alliesCount, ally);
+  Hero *hero = doRecruitHero(h, city, cost, alliesCount, ally);
   if (hero)
     {
       History_HeroEmerges *item = new History_HeroEmerges();

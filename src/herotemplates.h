@@ -21,6 +21,7 @@
 
 #include <vector>
 #include "defs.h"
+#include "hero.h"
 
 class ArmyProto;
 class HeroProto;
@@ -43,6 +44,8 @@ class HeroTemplates
         static void deleteInstance();
 
         HeroProto *getRandomHero(int player_id);
+
+	HeroProto *getRandomHero(Hero::Gender gender, int player_id);
         
     protected:
 	//! Default constructor. The function reads in the heronames file and produces a set of hero templates to be randomly selected from.
@@ -56,8 +59,10 @@ class HeroTemplates
         /* the contents of the heronames data file */
         std::vector<HeroProto*> d_herotemplates[MAX_PLAYERS];
 
-	//a list of hero prototypes contained in the the army set.  usually 1.
-	std::vector<const ArmyProto*> d_heroes;
+	//a list of male hero prototypes contained in the the army set.
+	std::vector<const ArmyProto*> d_male_heroes;
+	//a list of female hero prototypes contained in the the army set.
+	std::vector<const ArmyProto*> d_female_heroes;
 
         static HeroTemplates* d_instance;
 

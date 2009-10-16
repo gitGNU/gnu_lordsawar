@@ -72,7 +72,9 @@ class ArmySetWindow: public sigc::trackable
     Gtk::SpinButton *strength_spinbutton;
     Gtk::SpinButton *moves_spinbutton;
     Gtk::SpinButton *exp_spinbutton;
-    Gtk::CheckButton *hero_checkbutton;
+    Gtk::RadioButton *gender_none_radiobutton;
+    Gtk::RadioButton *gender_male_radiobutton;
+    Gtk::RadioButton *gender_female_radiobutton;
     Gtk::CheckButton *awardable_checkbutton;
     Gtk::CheckButton *defends_ruins_checkbutton;
     Gtk::SpinButton *sight_spinbutton;
@@ -160,7 +162,9 @@ class ArmySetWindow: public sigc::trackable
     void on_moves_changed();
     void on_exp_changed();
     void on_sight_changed();
-    void on_hero_toggled();
+    void on_gender_none_toggled();
+    void on_gender_male_toggled();
+    void on_gender_female_toggled();
     void on_awardable_toggled();
     void on_defends_ruins_toggled();
 

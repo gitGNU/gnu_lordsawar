@@ -58,6 +58,21 @@ HeroTemplates::~HeroTemplates()
       delete *j;
 }
 
+HeroProto *HeroTemplates::getRandomHero(Hero::Gender gender, int player_id)
+{
+  std::vector<HeroProto*> heroes;
+  for (unsigned int i = 0; i < d_herotemplates[player_id].size(); i++)
+    {
+      if (d_herotemplates[player_id][i]->getGender() == gender)
+	heroes.push_back (d_herotemplates[player_id][i]);
+    }
+  if (heroes.size() == 0)
+    return getRandomHero(player_id);
+
+  int num = rand() % heroes.size();
+  return heroes[num];
+}
+
 HeroProto *HeroTemplates::getRandomHero(int player_id)
 {
   int num = rand() % d_herotemplates[player_id].size();
@@ -68,7 +83,8 @@ int HeroTemplates::loadHeroTemplates()
 {
   const Armysetlist* al = Armysetlist::getInstance();
 
-  d_heroes.clear();
+  d_male_heroes.clear();
+  d_female_heroes.clear();
 
   // list all the army types that are heroes.
   Player *p = Playerlist::getInstance()->getNeutral();
@@ -76,7 +92,12 @@ int HeroTemplates::loadHeroTemplates()
     {
       const ArmyProto *a = al->getArmy (p->getArmyset(), j);
       if (a->isHero())
-	d_heroes.push_back(a);
+	{
+	  if (a->getGender() == Hero::FEMALE)
+	    d_female_heroes.push_back(a);
+	  else
+	    d_male_heroes.push_back(a);
+	}
     }
   XML_Helper helper(File::getMiscFile("heronames.xml"), std::ios::in, false);
 
@@ -92,6 +113,7 @@ int HeroTemplates::loadHeroTemplates()
   return 0;
 }
 
+      
 bool HeroTemplates::load(std::string tag, XML_Helper *helper)
 {
   if (tag == "herotemplate")
@@ -107,10 +129,27 @@ bool HeroTemplates::load(std::string tag, XML_Helper *helper)
       Hero::Gender gender;
       gender = Hero::genderFromString(gender_str);
 
-      const ArmyProto *herotype = d_heroes[rand() % d_heroes.size()];
+      const ArmyProto *herotype = NULL;
+      if (gender == Hero::MALE)
+	{
+	  if (d_male_heroes.size() > 0)
+	    herotype = d_male_heroes[rand() % d_male_heroes.size()];
+	}
+      else if (gender == Hero::FEMALE)
+	{
+	  if (d_female_heroes.size() > 0)
+	    herotype = d_female_heroes[rand() % d_female_heroes.size()];
+	}
+      if (herotype == NULL)
+	{
+	  if (d_male_heroes.size() > 0)
+	    herotype = d_male_heroes[rand() % d_male_heroes.size()];
+	  else if (d_female_heroes.size() > 0)
+	    herotype = d_female_heroes[rand() % d_female_heroes.size()];
+	}
+      if (herotype == NULL)
+	return false;
       HeroProto *newhero = new HeroProto (*herotype);
-      newhero->setGender(gender);
-      newhero->setGender(Hero::FEMALE);
       newhero->setOwnerId(owner);
 
       newhero->setName (_(name.c_str()));

@@ -129,9 +129,15 @@ ArmySetWindow::ArmySetWindow()
     xml->get_widget("exp_spinbutton", exp_spinbutton);
     exp_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_exp_changed));
-    xml->get_widget("hero_checkbutton", hero_checkbutton);
-    hero_checkbutton->signal_toggled().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_hero_toggled));
+    xml->get_widget("gender_none_radiobutton", gender_none_radiobutton);
+    gender_none_radiobutton->signal_toggled().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_gender_none_toggled));
+    xml->get_widget("gender_male_radiobutton", gender_male_radiobutton);
+    gender_male_radiobutton->signal_toggled().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_gender_male_toggled));
+    xml->get_widget("gender_female_radiobutton", gender_female_radiobutton);
+    gender_female_radiobutton->signal_toggled().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_gender_female_toggled));
     xml->get_widget("awardable_checkbutton", awardable_checkbutton);
     awardable_checkbutton->signal_toggled().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_awardable_toggled));
@@ -309,7 +315,9 @@ ArmySetWindow::update_army_panel()
       strength_spinbutton->set_value(MIN_STRENGTH_FOR_ARMY_UNITS);
       moves_spinbutton->set_value(MIN_MOVES_FOR_ARMY_UNITS);
       exp_spinbutton->set_value(0);
-      hero_checkbutton->set_active(false);
+      gender_none_radiobutton->set_active(true);
+      gender_male_radiobutton->set_active(false);
+      gender_female_radiobutton->set_active(false);
       awardable_checkbutton->set_active(false);
       defends_ruins_checkbutton->set_active(false);
       sight_spinbutton->set_value(0);
@@ -757,7 +765,12 @@ void ArmySetWindow::fill_army_info(ArmyProto *army)
   strength_spinbutton->set_value(army->getStrength());
   moves_spinbutton->set_value(army->getMaxMoves());
   exp_spinbutton->set_value(int(army->getXpReward()));
-  hero_checkbutton->set_active(army->isHero());
+  switch (army->getGender())
+    {
+    case Hero::NONE: gender_none_radiobutton->set_active(true); break;
+    case Hero::MALE: gender_male_radiobutton->set_active(true); break;
+    case Hero::FEMALE: gender_female_radiobutton->set_active(true); break;
+    }
   awardable_checkbutton->set_active(army->getAwardable());
   defends_ruins_checkbutton->set_active(army->getDefendsRuins());
   sight_spinbutton->set_value(army->getSight());
@@ -1038,7 +1051,7 @@ void ArmySetWindow::on_sight_changed()
     }
 }
 
-void ArmySetWindow::on_hero_toggled()
+void ArmySetWindow::on_gender_none_toggled()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
   Gtk::TreeModel::iterator iterrow = selection->get_selected();
@@ -1047,7 +1060,33 @@ void ArmySetWindow::on_hero_toggled()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      a->setHero(hero_checkbutton->get_active());
+      a->setGender(Hero::NONE);
+    }
+}
+
+void ArmySetWindow::on_gender_male_toggled()
+{
+  Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+
+  if (iterrow) 
+    {
+      Gtk::TreeModel::Row row = *iterrow;
+      ArmyProto *a = row[armies_columns.army];
+      a->setGender(Hero::MALE);
+    }
+}
+
+void ArmySetWindow::on_gender_female_toggled()
+{
+  Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+
+  if (iterrow) 
+    {
+      Gtk::TreeModel::Row row = *iterrow;
+      ArmyProto *a = row[armies_columns.army];
+      a->setGender(Hero::FEMALE);
     }
 }
 

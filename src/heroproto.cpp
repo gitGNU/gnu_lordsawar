@@ -33,12 +33,13 @@ HeroProto::HeroProto(const HeroProto& a)
 }
 
 HeroProto::HeroProto(const ArmyProto& a)
-    :ArmyProto(a), d_gender(Hero::NONE), d_owner_id(8)
+    :ArmyProto(a), d_owner_id(8)
 {
+  d_gender = a.getGender();
 }
 
 HeroProto::HeroProto()
-  :ArmyProto(), d_gender(Hero::NONE), d_owner_id(0)
+  :ArmyProto(), d_gender(Hero::FEMALE), d_owner_id(0)
 {
 }
 

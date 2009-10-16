@@ -26,6 +26,7 @@
 #include <string>
 #include "PixMask.h"
 #include "shield.h"
+#include "hero.h"
 
 class XML_Helper;
 
@@ -102,12 +103,14 @@ class ArmyProto : public ArmyProtoBase
         //! Saves the Army prototype to an opened armyset file.
         virtual bool save(XML_Helper* helper) const;
         
-	//! Set whether or not this is a hero army prototype.
-	void setHero(bool hero) {d_hero = hero;};
-
 	//! Returns whether or not the Army prototype is a Hero.
-	bool isHero() const {return d_hero;};
+	bool isHero() const {return d_gender != Hero::NONE;};
+	
+	//! Returns the gender of the army prototype.
+	Hero::Gender getGender() const {return d_gender;};
 
+	//! Sets the gender of the army prototype.
+	void setGender(Hero::Gender g) {d_gender = g;};
 	
     protected:
 	bool saveData(XML_Helper* helper) const;
@@ -147,7 +150,7 @@ class ArmyProto : public ArmyProtoBase
 	 */
 	std::string d_image_name[MAX_PLAYERS + 1];
 
-	bool d_hero;
+	Hero::Gender d_gender;
 };
 
 #endif // ARMY_PROTO_H

@@ -33,7 +33,7 @@ ArmyProto::ArmyProto(const ArmyProto& a)
     :ArmyProtoBase(a),
      d_defends_ruins(a.d_defends_ruins), 
      d_awardable(a.d_awardable), d_image_name(a.d_image_name),
-     d_hero(a.d_hero)
+     d_gender(Hero::NONE)
 {
   for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
     {
@@ -45,7 +45,7 @@ ArmyProto::ArmyProto(const ArmyProto& a)
 
 ArmyProto::ArmyProto()
   :ArmyProtoBase(),
-    d_defends_ruins(false), d_awardable(false), d_hero(false)
+    d_defends_ruins(false), d_awardable(false), d_gender(Hero::NONE)
 {
   for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
     {
@@ -56,8 +56,7 @@ ArmyProto::ArmyProto()
 }
 
 ArmyProto::ArmyProto(XML_Helper* helper)
-  :ArmyProtoBase(helper), d_defends_ruins(false), d_awardable(false),
-    d_hero(false)
+  :ArmyProtoBase(helper), d_defends_ruins(false), d_awardable(false)
 {
   helper->getData(d_image_name[Shield::WHITE], "image_white");
   helper->getData(d_image_name[Shield::GREEN], "image_green");
@@ -70,7 +69,11 @@ ArmyProto::ArmyProto(XML_Helper* helper)
   helper->getData(d_image_name[Shield::NEUTRAL], "image_neutral");
   helper->getData(d_defends_ruins,"defends_ruins");
   helper->getData(d_awardable,"awardable");
-  helper->getData(d_hero, "hero");
+  std::string gender_str;
+  if (!helper->getData(gender_str, "gender"))
+    d_gender = Hero::NONE;
+  else
+    d_gender = Hero::genderFromString(gender_str);
   for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
     {
       d_image[c] = NULL;
@@ -113,7 +116,8 @@ bool ArmyProto::saveData(XML_Helper* helper) const
   retval &= helper->saveData("image_neutral", d_image_name[Shield::NEUTRAL]);
   retval &= helper->saveData("awardable", d_awardable);
   retval &= helper->saveData("defends_ruins", d_defends_ruins);
-  retval &= helper->saveData("hero", d_hero);
+  std::string gender_str = Hero::genderToString(Hero::Gender(d_gender));
+  retval &= helper->saveData("gender", gender_str);
 
   return retval;
 }

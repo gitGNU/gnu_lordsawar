@@ -19,13 +19,12 @@
 		<d_production>1</d_production>
 		<d_production_cost>10</d_production_cost>
 		<d_upkeep>2</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 		<d_army_bonus></d_army_bonus>
 		<d_max_moves>16</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>1</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -45,13 +44,12 @@
 		<d_production>1</d_production>
 		<d_production_cost>50</d_production_cost>
 		<d_upkeep>3</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus></d_army_bonus>
 		<d_max_moves>12</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>2</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -71,13 +69,12 @@
 		<d_production>2</d_production>
 		<d_production_cost>100</d_production_cost>
 		<d_upkeep>4</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus> Tile::FOREST Tile::HILLS</d_move_bonus>
 		<d_army_bonus></d_army_bonus>
 		<d_max_moves>12</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>2</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -97,13 +94,12 @@
 		<d_production>2</d_production>
 		<d_production_cost>300</d_production_cost>
 		<d_upkeep>5</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus></d_army_bonus>
 		<d_max_moves>8</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>3</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -123,13 +119,12 @@
 		<d_production>3</d_production>
 		<d_production_cost>400</d_production_cost>
 		<d_upkeep>5</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 		<d_max_moves>8</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>4</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -149,13 +144,12 @@
 		<d_production>2</d_production>
 		<d_production_cost>400</d_production_cost>
 		<d_upkeep>7</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus> Tile::FOREST</d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 		<d_max_moves>12</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>3</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -175,13 +169,12 @@
 		<d_production>2</d_production>
 		<d_production_cost>400</d_production_cost>
 		<d_upkeep>7</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus> Tile::HILLS</d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STRINHILLS</d_army_bonus>
 		<d_max_moves>8</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>3</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -201,13 +194,12 @@
 		<d_production>2</d_production>
 		<d_production_cost>800</d_production_cost>
 		<d_upkeep>10</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STRINCITY</d_army_bonus>
 		<d_max_moves>12</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>5</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -227,13 +219,12 @@
 		<d_production>2</d_production>
 		<d_production_cost>800</d_production_cost>
 		<d_upkeep>10</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus> Tile::HILLS</d_move_bonus>
 		<d_army_bonus></d_army_bonus>
 		<d_max_moves>16</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>5</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -253,13 +244,12 @@
 		<d_production>2</d_production>
 		<d_production_cost>1000</d_production_cost>
 		<d_upkeep>12</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD2STRINCITY</d_army_bonus>
 		<d_max_moves>12</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>5</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -279,13 +269,12 @@
 		<d_production>2</d_production>
 		<d_production_cost>300</d_production_cost>
 		<d_upkeep>6</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STRINOPEN</d_army_bonus>
 		<d_max_moves>20</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>2</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -305,13 +294,12 @@
 		<d_production>2</d_production>
 		<d_production_cost>500</d_production_cost>
 		<d_upkeep>8</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STACKINHILLS</d_army_bonus>
 		<d_max_moves>16</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>4</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -331,13 +319,12 @@
 		<d_production>3</d_production>
 		<d_production_cost>500</d_production_cost>
 		<d_upkeep>8</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD2STRINOPEN</d_army_bonus>
 		<d_max_moves>16</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>4</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -357,13 +344,12 @@
 		<d_production>4</d_production>
 		<d_production_cost>500</d_production_cost>
 		<d_upkeep>16</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::SUBALLCITYBONUS</d_army_bonus>
 		<d_max_moves>16</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>2</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -383,13 +369,12 @@
 		<d_production>4</d_production>
 		<d_production_cost>1500</d_production_cost>
 		<d_upkeep>15</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::SUB1ENEMYSTACK</d_army_bonus>
 		<d_max_moves>16</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>8</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -409,13 +394,12 @@
 		<d_production>1</d_production>
 		<d_production_cost>30</d_production_cost>
 		<d_upkeep>5</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus> Tile::WATER Tile::FOREST Tile::HILLS Tile::MOUNTAIN Tile::SWAMP</d_move_bonus>
 		<d_army_bonus></d_army_bonus>
 		<d_max_moves>16</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>1</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -435,13 +419,12 @@
 		<d_production>3</d_production>
 		<d_production_cost>1000</d_production_cost>
 		<d_upkeep>12</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus> Tile::WATER Tile::FOREST Tile::HILLS Tile::MOUNTAIN Tile::SWAMP</d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STACK</d_army_bonus>
 		<d_max_moves>20</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>5</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -461,13 +444,12 @@
 		<d_production>3</d_production>
 		<d_production_cost>1500</d_production_cost>
 		<d_upkeep>15</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus> Tile::WATER Tile::FOREST Tile::HILLS Tile::MOUNTAIN Tile::SWAMP</d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD2STRINCITY</d_army_bonus>
 		<d_max_moves>20</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>6</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -487,13 +469,12 @@
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>true</d_awardable>
 		<d_defends_ruins>true</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STACK</d_army_bonus>
 		<d_max_moves>12</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>7</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>10</d_expvalue>
@@ -513,13 +494,12 @@
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>true</d_awardable>
 		<d_defends_ruins>true</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STACK</d_army_bonus>
 		<d_max_moves>16</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>7</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>10</d_expvalue>
@@ -539,13 +519,12 @@
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>true</d_awardable>
 		<d_defends_ruins>true</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STACK</d_army_bonus>
 		<d_max_moves>50</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>6</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>10</d_expvalue>
@@ -565,13 +544,12 @@
 		<d_production>4</d_production>
 		<d_production_cost>1500</d_production_cost>
 		<d_upkeep>15</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STACK</d_army_bonus>
 		<d_max_moves>16</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>7</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>1</d_expvalue>
@@ -591,13 +569,12 @@
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>true</d_awardable>
 		<d_defends_ruins>true</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STACK</d_army_bonus>
 		<d_max_moves>12</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>8</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>10</d_expvalue>
@@ -617,13 +594,12 @@
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>true</d_awardable>
 		<d_defends_ruins>true</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STACK ArmyBase::SUBALLHEROBONUS</d_army_bonus>
 		<d_max_moves>16</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>8</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>10</d_expvalue>
@@ -643,13 +619,12 @@
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>true</d_awardable>
 		<d_defends_ruins>true</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STACK</d_army_bonus>
 		<d_max_moves>20</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>7</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>10</d_expvalue>
@@ -669,13 +644,12 @@
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>true</d_awardable>
 		<d_defends_ruins>true</d_defends_ruins>
 		<d_move_bonus> Tile::WATER Tile::FOREST Tile::HILLS Tile::MOUNTAIN Tile::SWAMP</d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STACK ArmyBase::FORTIFY</d_army_bonus>
 		<d_max_moves>16</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>8</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>10</d_expvalue>
@@ -695,13 +669,12 @@
 		<d_production>4</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>5</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>true</d_awardable>
 		<d_defends_ruins>true</d_defends_ruins>
 		<d_move_bonus> Tile::WATER Tile::FOREST Tile::HILLS Tile::MOUNTAIN Tile::SWAMP</d_move_bonus>
 		<d_army_bonus> ArmyBase::SUBALLNONHEROBONUS</d_army_bonus>
 		<d_max_moves>22</d_max_moves>
-		<d_hero>false</d_hero>
+		<d_gender>Hero::NONE</d_gender>
 		<d_strength>9</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>10</d_expvalue>
@@ -721,13 +694,12 @@
 		<d_production>0</d_production>
 		<d_production_cost>0</d_production_cost>
 		<d_upkeep>0</d_upkeep>
-		<d_gender>ArmyBase::NONE</d_gender>
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
 		<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
 		<d_max_moves>14</d_max_moves>
-		<d_hero>true</d_hero>
+		<d_gender>Hero::MALE</d_gender>
 		<d_strength>5</d_strength>
 		<d_sight>1</d_sight>
 		<d_expvalue>10</d_expvalue>
