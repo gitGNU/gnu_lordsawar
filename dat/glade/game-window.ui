@@ -1350,7 +1350,7 @@ XX</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
-                                        <accelerator key="6" signal="clicked"/>
+                                        <accelerator key="KP_6" signal="clicked"/>
                                         <child>
                                           <placeholder/>
                                         </child>

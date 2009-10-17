@@ -49,11 +49,6 @@
 SplashWindow::SplashWindow()
 {
   network_game_nickname = "";
-  sdl_inited = false;
-#if 0
-    d_networkcancelled = false;
-    d_networkready = false;
-#endif
 
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/splash-window.ui");
@@ -333,16 +328,6 @@ void SplashWindow::on_game_started(GameParameters g)
 {
   new_game_requested.emit(g);
 }
-
-//void
-//SplashWindow::on_sdl_surface_changed()
-//{
-  //if (!sdl_inited)
-    //{
-      //sdl_inited = true;
-      //sdl_initialized.emit();
-    //}
-//}
 
 void SplashWindow::on_network_game_created(GameParameters g)
 {

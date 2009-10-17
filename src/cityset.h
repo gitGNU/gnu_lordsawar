@@ -169,7 +169,7 @@ class Cityset : public sigc::trackable
 	std::string d_temples_filename;
 	std::string d_towers_filename;
 	PixMask *citypics[MAX_PLAYERS + 1];
-	PixMask *razedcitypics[MAX_PLAYERS + 1];
+	PixMask *razedcitypics[MAX_PLAYERS];
 	PixMask *port;
 	PixMask *signpost;
 	PixMask *ruinpics[RUIN_TYPES];

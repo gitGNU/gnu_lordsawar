@@ -54,8 +54,11 @@ int main(int argc, char* argv[])
     {
 	Gtk::Main kit(argc, argv);
 
+	if (argc > 1)
+	  armyset_window = new ArmySetWindow (argv[1]);
+	else
+	  armyset_window = new ArmySetWindow;
 
-	armyset_window = new ArmySetWindow;
 	armyset_window->show();
 	
 	kit.run(armyset_window->get_window());

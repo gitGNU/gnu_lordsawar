@@ -119,6 +119,7 @@ public:
      */
     void center_view_on_pixel(Vector<int> pos, bool slide);
 
+    void move_map_in_dir(Vector<int> dir);
     //! Make the map go black.
     void blank();
 private:

@@ -165,6 +165,7 @@ class Game
 
     // move the selected stack one tile in a given direction
     void move_selected_stack_dir(int diffx, int diffy);
+    void move_map_dir(int diffx, int diffy);
 
     // centers the map on a city of the active player
     void center_view_on_city();

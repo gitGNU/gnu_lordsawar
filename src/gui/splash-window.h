@@ -47,7 +47,6 @@ class SplashWindow: public Decorated
         
     Gtk::Window *get_window() {return window;}
 
-    sigc::signal<void> sdl_initialized;
     sigc::signal<void, std::string, unsigned short, std::string> new_remote_network_game_requested;
     sigc::signal<void, GameParameters, int, std::string > new_hosted_network_game_requested;
     sigc::signal<void, GameParameters> new_pbm_game_requested;
@@ -65,7 +64,6 @@ class SplashWindow: public Decorated
     Gtk::Button *new_pbm_game_button;
     Gtk::Button *preferences_button;
 	    
-    bool sdl_inited;
     bool on_delete_event(GdkEventAny *e);
     void on_window_closed();
   

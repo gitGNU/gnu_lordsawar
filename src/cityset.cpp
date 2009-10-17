@@ -47,7 +47,7 @@ Cityset::Cityset(XML_Helper *helper, bool p)
     helper->getData(d_towers_filename, "towers");
     for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
       citypics[i] = NULL;
-    for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
+    for (unsigned int i = 0; i < MAX_PLAYERS; i++)
       razedcitypics[i] = NULL;
     for (unsigned int i = 0; i < RUIN_TYPES; i++)
       ruinpics[i] = NULL;

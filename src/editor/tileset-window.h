@@ -32,7 +32,7 @@
 class TileSetWindow: public sigc::trackable
 {
  public:
-    TileSetWindow();
+    TileSetWindow(std::string load_filename = "");
     ~TileSetWindow();
 
     void show();
@@ -179,6 +179,8 @@ class TileSetWindow: public sigc::trackable
     void on_add_tilestyleset_clicked();
     void on_remove_tilestyleset_clicked();
     void on_refresh_clicked();
+
+    void load_tileset(std::string filename);
 
 };
 

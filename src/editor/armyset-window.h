@@ -32,7 +32,7 @@
 class ArmySetWindow: public sigc::trackable
 {
  public:
-    ArmySetWindow();
+    ArmySetWindow(std::string load_filename = "");
     ~ArmySetWindow();
 
     void show();
@@ -192,6 +192,8 @@ class ArmySetWindow: public sigc::trackable
     void update_filechooserbutton(Gtk::FileChooserButton *b, ArmyProto *a, Shield::Colour c);
 
     void on_white_all_checked();
+
+    void load_armyset(std::string filename);
 };
 
 #endif

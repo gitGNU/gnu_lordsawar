@@ -625,28 +625,28 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
 		 game->can_end_turn);
   setup_button(nw_keypad_button,
 	       sigc::mem_fun(game, &Game::move_selected_stack_northwest),
-	       game->can_move_selected_stack);
+	       game->can_end_turn);
   setup_button(n_keypad_button,
 	       sigc::mem_fun(game, &Game::move_selected_stack_north),
-	       game->can_move_selected_stack);
+	       game->can_end_turn);
   setup_button(ne_keypad_button,
 	       sigc::mem_fun(game, &Game::move_selected_stack_northeast),
-	       game->can_move_selected_stack);
+	       game->can_end_turn);
   setup_button(e_keypad_button,
 	       sigc::mem_fun(game, &Game::move_selected_stack_east),
-	       game->can_move_selected_stack);
+	       game->can_end_turn);
   setup_button(w_keypad_button,
 	       sigc::mem_fun(game, &Game::move_selected_stack_west),
-	       game->can_move_selected_stack);
+	       game->can_end_turn);
   setup_button(sw_keypad_button,
 	       sigc::mem_fun(game, &Game::move_selected_stack_southwest),
-	       game->can_move_selected_stack);
+	       game->can_end_turn);
   setup_button(s_keypad_button,
 	       sigc::mem_fun(game, &Game::move_selected_stack_south),
-	       game->can_move_selected_stack);
+	       game->can_end_turn);
   setup_button(se_keypad_button,
 	       sigc::mem_fun(game, &Game::move_selected_stack_southeast),
-	       game->can_move_selected_stack);
+	       game->can_end_turn);
   setup_menuitem(move_all_menuitem,
 		 sigc::mem_fun(game, &Game::move_all_stacks),
 		 game->can_move_all_stacks);

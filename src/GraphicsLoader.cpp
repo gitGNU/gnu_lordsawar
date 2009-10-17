@@ -485,7 +485,7 @@ void GraphicsLoader::uninstantiateImages(Cityset *cs)
 	  cs->setCityImage(i, NULL);
 	}
     }
-  for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
       if (cs->getRazedCityImage(i) != NULL)
 	{
@@ -541,8 +541,8 @@ void GraphicsLoader::instantiateImages(Cityset *cs)
     }
   std::vector<PixMask* > razedcitypics;
   razedcitypics = disassemble_row(File::getCitysetFile(cs, cs->getRazedCitiesFilename()), 
-			     MAX_PLAYERS + 1);
-  for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
+			     MAX_PLAYERS);
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
       if (razedcitypics[i]->get_width() != citysize)
 	PixMask::scale(razedcitypics[i], citysize, citysize);

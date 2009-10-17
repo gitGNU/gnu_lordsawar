@@ -55,7 +55,7 @@
 #include "glade-helpers.h"
 
 
-TileSetWindow::TileSetWindow()
+TileSetWindow::TileSetWindow(std::string load_filename)
 {
   d_tileset = NULL;
     Glib::RefPtr<Gtk::Builder> xml
@@ -255,6 +255,8 @@ TileSetWindow::TileSetWindow()
     tile_smallmap_surface_gc = Gdk::GC::create(tile_smallmap_surface);
 
     inhibit_image_change = false;
+    if (load_filename.empty() == false)
+      load_tileset(load_filename);
 }
 
 void
@@ -503,72 +505,6 @@ void TileSetWindow::on_new_tileset_activated()
   helper.close();
 }
 
-/*
-void TileSetWindow::on_load_tileset_activated()
-{
-  Gtk::FileChooserDialog chooser(*window, 
-				 _("Choose a Tileset to Load"));
-  Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*" + TILESET_EXT);
-  chooser.set_filter(sav_filter);
-
-  chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
-  chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
-
-  chooser.set_current_folder(File::getUserTilesetDir());
-
-  chooser.show_all();
-  int res = chooser.run();
-
-  if (res == Gtk::RESPONSE_ACCEPT)
-    {
-      current_save_filename = chooser.get_filename();
-      chooser.hide();
-
-      tiles_list->clear();
-      if (d_tileset)
-	delete d_tileset;
-      XML_Helper helper(current_save_filename, std::ios::in, false);
-
-      helper.registerTag("tileset", 
-			 sigc::mem_fun((*this), &TileSetWindow::load));
-
-
-      if (!helper.parse())
-	{
-	  std::cerr <<_("Error, while loading an tileset. Tileset Name: ");
-	  std::cerr <<current_save_filename <<std::endl <<std::flush;
-	  exit(-1);
-	}
-
-      char *dir = g_strdup(current_save_filename.c_str());
-      char *tmp = strrchr (dir, '/');
-      if (tmp)
-	tmp[0] = '\0';
-      //hackus horribilium
-      std::string back = "../../../../../../../../../../../../../../../../";
-      d_tileset->setSubDir(back + dir);
-      GraphicsLoader::instantiateImages(d_tileset);
-      for (Tileset::iterator i = d_tileset->begin(); i != d_tileset->end(); ++i)
-	{
-	  Gtk::TreeIter l = tiles_list->append();
-	  (*l)[tiles_columns.name] = (*i)->getName();
-	  (*l)[tiles_columns.tile] = *i;
-	}
-      if (d_tileset->size())
-	tiles_treeview->set_cursor (Gtk::TreePath ("0"));
-
-      update_tileset_buttons();
-      update_tilestyleset_buttons();
-      update_tileset_menuitems();
-      update_tile_panel();
-      update_tilestyleset_panel();
-      update_tilestyle_panel();
-      update_tile_preview_menuitem();
-    }
-}
-*/
 void TileSetWindow::on_load_tileset_activated()
 {
   Gtk::FileChooserDialog chooser(*window, 
@@ -587,62 +523,8 @@ void TileSetWindow::on_load_tileset_activated()
 
   if (res == Gtk::RESPONSE_ACCEPT)
     {
-      current_save_filename = chooser.get_filename();
+      load_tileset(chooser.get_filename());
       chooser.hide();
-
-      bool priv = true;
-      std::string dir = Glib::path_get_dirname(chooser.get_filename());
-      dir = Glib::path_get_dirname(dir) + "/";
-      if (dir == File::getTilesetDir())
-	priv = false;
-      else if (dir == File::getUserTilesetDir())
-	priv = true;
-      else
-	{
-	  std::string msg;
-	  msg = "Tilesets can only be loaded from:\n" + File::getTilesetDir() +
-	    "\n or \n" + File::getUserTilesetDir();
-	  Gtk::MessageDialog dialog(*window, msg);
-	  dialog.run();
-	  dialog.hide();
-	  return;
-	}
-      std::string name = File::get_basename(chooser.get_filename());
-
-      Tileset *tileset = Tileset::create(name, priv);
-      if (tileset == NULL)
-	{
-	  std::string msg;
-	  msg = "The tileset could not be loaded.";
-	  Gtk::MessageDialog dialog(*window, msg);
-	  dialog.run();
-	  dialog.hide();
-	}
-      tiles_list->clear();
-      if (d_tileset)
-	delete d_tileset;
-      d_tileset = tileset;
-
-      //was this from the user's own private collection?
-    
-      d_tileset->setSubDir(name);
-      GraphicsLoader::instantiateImages(d_tileset);
-      for (Tileset::iterator i = d_tileset->begin(); i != d_tileset->end(); ++i)
-	{
-	  Gtk::TreeIter l = tiles_list->append();
-	  (*l)[tiles_columns.name] = (*i)->getName();
-	  (*l)[tiles_columns.tile] = *i;
-	}
-      if (d_tileset->size())
-	tiles_treeview->set_cursor (Gtk::TreePath ("0"));
-
-      update_tileset_buttons();
-      update_tilestyleset_buttons();
-      update_tileset_menuitems();
-      update_tile_panel();
-      update_tilestyleset_panel();
-      update_tilestyle_panel();
-      update_tile_preview_menuitem();
     }
 }
 
@@ -1219,4 +1101,63 @@ void TileSetWindow::on_explosion_picture_activated()
 	  d_tileset->setExplosionFilename(name);
 	}
     }
+}
+
+void TileSetWindow::load_tileset(std::string filename)
+{
+  current_save_filename = filename;
+
+  bool priv = true;
+  std::string dir = Glib::path_get_dirname(filename);
+  dir = Glib::path_get_dirname(dir) + "/";
+  if (dir == File::getTilesetDir())
+    priv = false;
+  else if (dir == File::getUserTilesetDir())
+    priv = true;
+  else
+    {
+      std::string msg;
+      msg = "Tilesets can only be loaded from:\n" + File::getTilesetDir() +
+	"\n or \n" + File::getUserTilesetDir();
+      Gtk::MessageDialog dialog(*window, msg);
+      dialog.run();
+      dialog.hide();
+      return;
+    }
+  std::string name = File::get_basename(filename);
+
+  Tileset *tileset = Tileset::create(name, priv);
+  if (tileset == NULL)
+    {
+      std::string msg;
+      msg = "The tileset could not be loaded.";
+      Gtk::MessageDialog dialog(*window, msg);
+      dialog.run();
+      dialog.hide();
+    }
+  tiles_list->clear();
+  if (d_tileset)
+    delete d_tileset;
+  d_tileset = tileset;
+
+  //was this from the user's own private collection?
+
+  d_tileset->setSubDir(name);
+  GraphicsLoader::instantiateImages(d_tileset);
+  for (Tileset::iterator i = d_tileset->begin(); i != d_tileset->end(); ++i)
+    {
+      Gtk::TreeIter l = tiles_list->append();
+      (*l)[tiles_columns.name] = (*i)->getName();
+      (*l)[tiles_columns.tile] = *i;
+    }
+  if (d_tileset->size())
+    tiles_treeview->set_cursor (Gtk::TreePath ("0"));
+
+  update_tileset_buttons();
+  update_tilestyleset_buttons();
+  update_tileset_menuitems();
+  update_tile_panel();
+  update_tilestyleset_panel();
+  update_tilestyle_panel();
+  update_tile_preview_menuitem();
 }

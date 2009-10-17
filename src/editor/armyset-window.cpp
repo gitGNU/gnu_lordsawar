@@ -51,7 +51,7 @@
 #include "glade-helpers.h"
 
 
-ArmySetWindow::ArmySetWindow()
+ArmySetWindow::ArmySetWindow(std::string load_filename)
 {
   d_armyset = NULL;
     Glib::RefPtr<Gtk::Builder> xml
@@ -256,6 +256,14 @@ ArmySetWindow::ArmySetWindow()
 
     update_armyset_buttons();
     update_armyset_menuitems();
+
+    if (load_filename.empty() == false)
+      {
+	load_armyset (load_filename);
+	update_armyset_buttons();
+	update_armyset_menuitems();
+	update_army_panel();
+      }
 }
 
 void
@@ -462,93 +470,10 @@ void ArmySetWindow::on_load_armyset_activated()
 
   if (res == Gtk::RESPONSE_ACCEPT)
     {
-      current_save_filename = chooser.get_filename();
+      load_armyset(chooser.get_filename());
       chooser.hide();
-
-      bool priv = true;
-      std::string dir = Glib::path_get_dirname(chooser.get_filename());
-      dir = Glib::path_get_dirname(dir) + "/";
-      if (dir == File::getArmysetDir())
-	priv = false;
-      else if (dir == File::getUserArmysetDir())
-	priv = true;
-      else
-	{
-	  std::string msg;
-	  msg = "Armysets can only be loaded from:\n" + File::getArmysetDir() +
-	    "\n or \n" + File::getUserArmysetDir();
-	  Gtk::MessageDialog dialog(*window, msg);
-	  dialog.run();
-	  dialog.hide();
-	  return;
-	}
-      std::string name = File::get_basename(chooser.get_filename());
-
-      Armyset *armyset = Armyset::create(name, priv);
-      if (armyset == NULL)
-	{
-	  std::string msg;
-	  msg = "Error!  Armyset could not be loaded.";
-	  Gtk::MessageDialog dialog(*window, msg);
-	  dialog.run();
-	  dialog.hide();
-	  return;
-	}
-      armies_list->clear();
-      if (d_armyset)
-	delete d_armyset;
-      d_armyset = armyset;
-
-      //was this from the user's own private collection?
-    
-      d_armyset->setSubDir(name);
-      GraphicsLoader::instantiateImages(d_armyset);
-      guint32 max = d_armyset->getSize();
-      for (unsigned int i = 0; i < max; i++)
-	addArmyType(i);
-      if (max)
-	{
-	  Gtk::TreeModel::Row row;
-	  row = armies_treeview->get_model()->children()[0];
-	  if(row)
-	    armies_treeview->get_selection()->select(row);
-	}
-
-      Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
-      Gtk::TreeModel::iterator iterrow = selection->get_selected();
-      if (iterrow) 
-	{
-	  Gtk::TreeModel::Row row = *iterrow;
-	  ArmyProto *a = row[armies_columns.army];
-	  update_filechooserbutton(white_image_filechooserbutton, a,
-				   Shield::WHITE);
-	  update_filechooserbutton(yellow_image_filechooserbutton, a, 
-				   Shield::YELLOW);
-	  update_filechooserbutton(green_image_filechooserbutton, a, 
-				   Shield::GREEN);
-	  update_filechooserbutton(light_blue_image_filechooserbutton, a, 
-				   Shield::LIGHT_BLUE);
-	  update_filechooserbutton(red_image_filechooserbutton, a, Shield::RED);
-	  update_filechooserbutton(dark_blue_image_filechooserbutton, a, 
-				   Shield::DARK_BLUE);
-	  update_filechooserbutton(orange_image_filechooserbutton, a, 
-				   Shield::ORANGE);
-	  update_filechooserbutton(black_image_filechooserbutton, a, 
-				   Shield::BLACK);
-	  update_filechooserbutton(neutral_image_filechooserbutton, a, 
-				   Shield::NEUTRAL);
-	}
-      std::string imgpath = File::getArmysetDir(d_armyset);
-      white_image_filechooserbutton->set_current_folder(imgpath);
-      green_image_filechooserbutton->set_current_folder(imgpath);
-      yellow_image_filechooserbutton->set_current_folder(imgpath);
-      light_blue_image_filechooserbutton->set_current_folder(imgpath);
-      red_image_filechooserbutton->set_current_folder(imgpath);
-      dark_blue_image_filechooserbutton->set_current_folder(imgpath);
-      orange_image_filechooserbutton->set_current_folder(imgpath);
-      black_image_filechooserbutton->set_current_folder(imgpath);
-      neutral_image_filechooserbutton->set_current_folder(imgpath);
     }
+
   update_armyset_buttons();
   update_armyset_menuitems();
   update_army_panel();
@@ -1539,4 +1464,92 @@ void ArmySetWindow::on_remove_army_clicked()
       armies_list->erase(iterrow);
       d_armyset->remove(a);
     }
+}
+void ArmySetWindow::load_armyset(std::string filename)
+{
+  current_save_filename = filename;
+
+  bool priv = true;
+  std::string dir = Glib::path_get_dirname(filename);
+  dir = Glib::path_get_dirname(dir) + "/";
+  if (dir == File::getArmysetDir())
+    priv = false;
+  else if (dir == File::getUserArmysetDir())
+    priv = true;
+  else
+    {
+      std::string msg;
+      msg = "Armysets can only be loaded from:\n" + File::getArmysetDir() +
+	"\n or \n" + File::getUserArmysetDir();
+      Gtk::MessageDialog dialog(*window, msg);
+      dialog.run();
+      dialog.hide();
+      return;
+    }
+  std::string name = File::get_basename(filename);
+
+  Armyset *armyset = Armyset::create(name, priv);
+  if (armyset == NULL)
+    {
+      std::string msg;
+      msg = "Error!  Armyset could not be loaded.";
+      Gtk::MessageDialog dialog(*window, msg);
+      dialog.run();
+      dialog.hide();
+      return;
+    }
+  armies_list->clear();
+  if (d_armyset)
+    delete d_armyset;
+  d_armyset = armyset;
+
+  //was this from the user's own private collection?
+
+  d_armyset->setSubDir(name);
+  GraphicsLoader::instantiateImages(d_armyset);
+  guint32 max = d_armyset->getSize();
+  for (unsigned int i = 0; i < max; i++)
+    addArmyType(i);
+  if (max)
+    {
+      Gtk::TreeModel::Row row;
+      row = armies_treeview->get_model()->children()[0];
+      if(row)
+	armies_treeview->get_selection()->select(row);
+    }
+
+  Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+  if (iterrow) 
+    {
+      Gtk::TreeModel::Row row = *iterrow;
+      ArmyProto *a = row[armies_columns.army];
+      update_filechooserbutton(white_image_filechooserbutton, a,
+			       Shield::WHITE);
+      update_filechooserbutton(yellow_image_filechooserbutton, a, 
+			       Shield::YELLOW);
+      update_filechooserbutton(green_image_filechooserbutton, a, 
+			       Shield::GREEN);
+      update_filechooserbutton(light_blue_image_filechooserbutton, a, 
+			       Shield::LIGHT_BLUE);
+      update_filechooserbutton(red_image_filechooserbutton, a, Shield::RED);
+      update_filechooserbutton(dark_blue_image_filechooserbutton, a, 
+			       Shield::DARK_BLUE);
+      update_filechooserbutton(orange_image_filechooserbutton, a, 
+			       Shield::ORANGE);
+      update_filechooserbutton(black_image_filechooserbutton, a, 
+			       Shield::BLACK);
+      update_filechooserbutton(neutral_image_filechooserbutton, a, 
+			       Shield::NEUTRAL);
+    }
+  std::string imgpath = File::getArmysetDir(d_armyset);
+  white_image_filechooserbutton->set_current_folder(imgpath);
+  green_image_filechooserbutton->set_current_folder(imgpath);
+  yellow_image_filechooserbutton->set_current_folder(imgpath);
+  light_blue_image_filechooserbutton->set_current_folder(imgpath);
+  red_image_filechooserbutton->set_current_folder(imgpath);
+  dark_blue_image_filechooserbutton->set_current_folder(imgpath);
+  orange_image_filechooserbutton->set_current_folder(imgpath);
+  black_image_filechooserbutton->set_current_folder(imgpath);
+  neutral_image_filechooserbutton->set_current_folder(imgpath);
 }

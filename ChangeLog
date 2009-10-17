@@ -3,6 +3,10 @@
 	* changed file extensions for tilesets, shieldsets, citysets and
 	armysets.
 	* added ghosting of army images.  Suggested by Frans de Jonge.
+	* removing razed neutral city image.  fixes bug #27733.
+	* fixed load from command-line on the game binary, tileset editor,
+	and armyset editor.  fixes bug #27736.
+	* can now move the map with the keypad.  fixes bug #27735.
 
 2009-10-16  Ben Asselstine  <benasselstine@gmail.com>
 

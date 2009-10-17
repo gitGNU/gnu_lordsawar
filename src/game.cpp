@@ -347,6 +347,11 @@ void Game::select_next_movable_stack()
   select_active_stack();
 }
 
+void Game::move_map_dir(int diffx, int diffy)
+{
+  smallmap->move_map_in_dir(Vector<int>(diffx, diffy));
+}
+
 void Game::move_selected_stack_dir(int diffx, int diffy)
 {
   Stack *stack = Playerlist::getActiveplayer()->getActivestack();
@@ -370,42 +375,66 @@ void Game::move_selected_stack_dir(int diffx, int diffy)
 
 void Game::move_selected_stack_northwest()
 {
-  move_selected_stack_dir(-1, -1);
+  if (Playerlist::getActiveplayer()->getActivestack() != NULL)
+    move_selected_stack_dir(-1, -1);
+  else
+    move_map_dir(-1,-1);
 }
 
 void Game::move_selected_stack_north()
 {
-  move_selected_stack_dir(0, -1);
+  if (Playerlist::getActiveplayer()->getActivestack() != NULL)
+    move_selected_stack_dir(0, -1);
+  else
+    move_map_dir(0, -1);
 }
 
 void Game::move_selected_stack_northeast()
 {
-  move_selected_stack_dir(1, -1);
+  if (Playerlist::getActiveplayer()->getActivestack() != NULL)
+    move_selected_stack_dir(1, -1);
+  else
+    move_map_dir(1, -1);
 }
 
 void Game::move_selected_stack_east()
 {
-  move_selected_stack_dir(1, 0);
+  if (Playerlist::getActiveplayer()->getActivestack() != NULL)
+    move_selected_stack_dir(1, 0);
+  else
+    move_map_dir(1, 0);
 }
 
 void Game::move_selected_stack_west()
 {
-  move_selected_stack_dir(-1, 0);
+  if (Playerlist::getActiveplayer()->getActivestack() != NULL)
+    move_selected_stack_dir(-1, 0);
+  else
+    move_map_dir(-1, 0);
 }
 
 void Game::move_selected_stack_southwest()
 {
-  move_selected_stack_dir(-1, 1);
+  if (Playerlist::getActiveplayer()->getActivestack() != NULL)
+    move_selected_stack_dir(-1, 1);
+  else
+    move_map_dir(-1, 1);
 }
 
 void Game::move_selected_stack_south()
 {
-  move_selected_stack_dir(0, 1);
+  if (Playerlist::getActiveplayer()->getActivestack() != NULL)
+    move_selected_stack_dir(0, 1);
+  else
+    move_map_dir(0, 1);
 }
 
 void Game::move_selected_stack_southeast()
 {
-  move_selected_stack_dir(1, 1);
+  if (Playerlist::getActiveplayer()->getActivestack() != NULL)
+    move_selected_stack_dir(1, 1);
+  else
+    move_map_dir(1, 1);
 }
 
 void Game::move_selected_stack_along_path()

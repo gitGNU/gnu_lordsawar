@@ -86,6 +86,8 @@ Driver::Driver(std::string load_filename)
 	sigc::mem_fun(*this, &Driver::on_quit_requested));
 
     d_load_filename = load_filename;
+
+    //here are the command-line options that don't bring up the splash screen:
     if (Main::instance().start_stress_test) 
       {
 	Sound::deleteInstance();
@@ -97,8 +99,9 @@ Driver::Driver(std::string load_filename)
 	run();
 	return;
       }
-    splash_window->sdl_initialized.connect(sigc::mem_fun(*this, &Driver::run));
     splash_window->show();
+    //here are the ones that do
+    run();
 }
 
 void Driver::run()

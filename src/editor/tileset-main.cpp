@@ -53,7 +53,10 @@ int main(int argc, char* argv[])
     {
 	Gtk::Main kit(argc, argv);
 
-	tileset_window = new TileSetWindow;
+	if (argc > 1)
+	  tileset_window = new TileSetWindow(argv[1]);
+	else
+	  tileset_window = new TileSetWindow;
 	tileset_window->show();
 	
 	kit.run(tileset_window->get_window());
