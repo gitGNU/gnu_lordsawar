@@ -2088,9 +2088,11 @@ void GameWindow::show_stack(Stack *s)
 
       // image
       Gtk::Image *army_image = new Gtk::Image();
+      bool greyed_out = !army->isGrouped();
       Glib::RefPtr<Gdk::Pixbuf> army_icon = 
 	gc->getArmyPic(s->getOwner()->getArmyset(), army->getTypeId(),
-		       s->getOwner(), army->getMedalBonuses())->to_pixbuf();
+		       s->getOwner(), army->getMedalBonuses(), 
+		       greyed_out)->to_pixbuf();
       army_image->property_pixbuf() = army_icon;
       width = army_icon->get_width();
       height = army_icon->get_height();

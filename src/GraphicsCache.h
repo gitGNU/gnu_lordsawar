@@ -127,11 +127,12 @@ class GraphicsCache
           * @param armyset      the armyset to be used
           * @param army         the index of the army to be used
           * @param player       the player owning the army
+	  * @param greyed       the image is greyed out; deselected/inactive.
           * @return the image of the unit
           */
         PixMask* getArmyPic(guint32 armyset, guint32 army, const Player* p,
-                                const bool* medals);
-	PixMask* getArmyPic(Army *a);
+                                const bool* medals, bool greyed = false);
+	PixMask* getArmyPic(Army *a, bool greyed = false);
 
 	PixMask* getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid, guint32 tileset, guint32 cityset);
 	PixMask* getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid);
@@ -354,8 +355,11 @@ class GraphicsCache
 
 	PixMask* applyMask(PixMask* image, PixMask* mask, const Player* p);
 
+
 	static PixMask* applyMask(PixMask* image, PixMask* mask, struct rgb_shift shifts, bool isNeutral);
         
+	static PixMask* greyOut(PixMask* image);
+
 	static bool loadSelectorImages(std::string filename, guint32 tilesize, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);
 
 	static bool loadFlagImages(std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);

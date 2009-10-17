@@ -54,6 +54,7 @@ struct ArmyCacheItem
     guint32 army_id;
     guint32 player_id;
     bool medals[3];
+    bool greyed;
     PixMask* surface;
 };
 bool operator <(ArmyCacheItem lhs, ArmyCacheItem rhs)
@@ -464,16 +465,18 @@ PixMask* GraphicsCache::getPlantedStandardPic(const Player* p)
     return myitem->surface;
 }
 
-PixMask* GraphicsCache::getArmyPic(Army *a)
+PixMask* GraphicsCache::getArmyPic(Army *a, bool greyed)
 {
   return getArmyPic(a->getOwner()->getArmyset(), a->getTypeId(), 
-		    a->getOwner(), NULL);
+		    a->getOwner(), NULL, greyed);
 }
 
 PixMask* GraphicsCache::getArmyPic(guint32 armyset, guint32 army_id, 
-				   const Player* p, const bool *medals)
+				   const Player* p, const bool *medals,
+				   bool greyed)
 {
-  debug("getting army pic " <<armyset <<" " <<army <<" " <<p->getName())
+  debug("getting army pic " <<armyset <<" " <<army <<" " <<p->getName() << 
+    " "  << greyed)
 
     std::list<ArmyCacheItem*>::iterator it;
     ArmyCacheItem* myitem;
@@ -496,6 +499,7 @@ PixMask* GraphicsCache::getArmyPic(guint32 armyset, guint32 army_id,
     item.medals[0] = my_medals[0];
     item.medals[1] = my_medals[1];
     item.medals[2] = my_medals[2];
+    item.greyed = greyed;
     ArmyMap::iterator mit = d_armymap.find(item);
     if (mit != d_armymap.end())
       {
@@ -1059,6 +1063,48 @@ PixMask* GraphicsCache::applyMask(PixMask* image, PixMask* mask, struct rgb_shif
   return result;
 }
 
+PixMask* GraphicsCache::greyOut(PixMask* image)
+{
+  int width = image->get_width();
+  int height = image->get_height();
+  PixMask* result = PixMask::create(image->to_pixbuf());
+  
+  guint8 *data = result->to_pixbuf()->get_pixels();
+  guint8 *copy = (guint8*)  malloc (height * width * 4 * sizeof(guint8));
+  memcpy(copy, data, height * width * 4 * sizeof(guint8));
+  for (int i = 0; i < width; i++)
+    for (int j = 0; j < height; j++)
+      {
+	const int base = (j * 4) + (i * height * 4);
+
+	if (data[base+3] != 0)
+	  {
+	    guint32 max = 0;
+	    if (copy[base+0] > max)
+	      max = copy[base+0];
+	    else if (copy[base+1] > max)
+	      max = copy[base+1];
+	    else if (copy[base+2] > max)
+	      max = copy[base+2];
+	    int x =  i % 2;
+	    int y = j % 2;
+	    if ((x == 0 && y == 0) || (x == 1 && y == 1))
+	      max = 88;
+	    copy[base+0] = max;
+	    copy[base+1] = max;
+	    copy[base+2] = max;
+	  }
+      }
+  Glib::RefPtr<Gdk::Pixbuf> greyed_out =  
+    Gdk::Pixbuf::create_from_data(copy, Gdk::COLORSPACE_RGB, true, 8, 
+				  width, height, width * 4);
+
+  result->draw_pixbuf(greyed_out, 0, 0, 0, 0, width, height);
+  free(copy);
+
+  return result;
+}
+
 PixMask* GraphicsCache::applyMask(PixMask* image, PixMask* mask, const Player* p)
 {
   return applyMask(image, mask, p->getMaskColorShifts(),
@@ -1312,7 +1358,15 @@ ArmyCacheItem* GraphicsCache::addArmyPic(ArmyCacheItem *item)
   // copy the pixmap including player colors
   Player *p = Playerlist::getInstance()->getPlayer(myitem->player_id);
   Shield::Colour c = Shield::Colour(p->getId());
-  myitem->surface = applyMask(basearmy->getImage(c), basearmy->getMask(c), p);
+  PixMask *coloured = applyMask(basearmy->getImage(c), basearmy->getMask(c), p);
+  if (myitem->greyed)
+    {
+      PixMask *greyed_out = greyOut(coloured);
+      myitem->surface = greyed_out;
+      delete coloured;
+    }
+  else
+      myitem->surface = coloured;
 
   if (myitem->medals != NULL)
     {

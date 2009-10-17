@@ -76,9 +76,15 @@ BuyProductionDialog::BuyProductionDialog(City *c)
     {
 	Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
 	
+	bool greyed_out = false;
+	if (city->hasProductionBase(purchasables[i]) == true)
+	  greyed_out = true;
+	else if ((int)purchasables[i]->getProductionCost() > 
+		 c->getOwner()->getGold())
+	  greyed_out = true;
 	Glib::RefPtr<Gdk::Pixbuf> pix
 	    = gc->getArmyPic(p->getArmyset(), purchasables[i]->getTypeId(), p, 
-			     NULL)->to_pixbuf();
+			     NULL, greyed_out)->to_pixbuf();
 	
 	Gtk::Image *image = new Gtk::Image();
 	image->property_pixbuf() = pix;
@@ -101,10 +107,10 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 	toggle->signal_button_release_event().connect(
 	    sigc::bind(sigc::mem_fun(*this, &BuyProductionDialog::on_production_button_event),
 		       toggle), false);
-	toggle->set_sensitive
-	  (city->hasProductionBase(purchasables[i]) == false);
-	if ((int)purchasables[i]->getProductionCost() > c->getOwner()->getGold())
-	  toggle->set_sensitive (false);
+	//toggle->set_sensitive
+	  //(city->hasProductionBase(purchasables[i]) == false);
+	//if ((int)purchasables[i]->getProductionCost() > c->getOwner()->getGold())
+	  //toggle->set_sensitive (false);
     }
 
     ignore_toggles = false;

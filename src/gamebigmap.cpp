@@ -924,7 +924,7 @@ void GameBigMap::after_draw()
 	  Path::iterator it = stack->getPath()->end();
 	  it--;
 	  //this is where the ghosted army unit picture goes.
-	  PixMask *armypic = gc->getArmyPic(*stack->begin());
+	  PixMask *armypic = gc->getArmyPic(*stack->begin(), true);
 	  pos = tile_to_buffer_pos(*it);
 	  armypic->blit_centered(buffer, pos + (Vector<int>(tilesize,tilesize)/2));
 	}
