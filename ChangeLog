@@ -1,3 +1,9 @@
+2009-10-17  Ben Asselstine  <benasselstine@gmail.com>
+
+	* changed file extensions for tilesets, shieldsets, citysets and
+	armysets.
+	* added ghosting of army images.  Suggested by Frans de Jonge.
+
 2009-10-16  Ben Asselstine  <benasselstine@gmail.com>
 
 	* removing ".png" from the tileset description files.
