@@ -2,10 +2,11 @@ MAINTAINERCLEANFILES= Makefile.in
 
 cityset_bigdoldir = $(datadir)/lordsawar/citysets/bigdol
 
-@INTLTOOL_XML_RULE@
+bigdol.lwc: bigdol.lwc.in
+	LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/bigdol.lwc.in $(builddir)/bigdol.lwc
 
 cityset_bigdol_DATA = \
-	bigdol.xml \
+	bigdol.lwc \
 	castle_razed.png \
 	castles.png \
 	port.png \
@@ -15,7 +16,7 @@ cityset_bigdol_DATA = \
 	towers.png
 
 EXTRA_DIST = \
-	bigdol.xml.in \
+	bigdol.lwc.in \
 	README \
 	castle_razed.png \
 	castles.png \

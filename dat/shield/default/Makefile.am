@@ -2,10 +2,11 @@ MAINTAINERCLEANFILES= Makefile.in
 
 lordsawarshielddefaultdir = $(datadir)/lordsawar/shield/default
 
-@INTLTOOL_XML_RULE@
+default.lws: default.lws.in
+	LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/default.lws.in $(builddir)/default.lws
 
 lordsawarshielddefault_DATA = \
-	default.xml \
+	default.lws \
 	small-white-shield.png \
 	small-green-shield.png \
 	small-yellow-shield.png \
@@ -36,7 +37,7 @@ lordsawarshielddefault_DATA = \
 
 EXTRA_DIST = \
 	README \
-	default.xml.in \
+	default.lws.in \
 	small-white-shield.png \
 	small-green-shield.png \
 	small-yellow-shield.png \

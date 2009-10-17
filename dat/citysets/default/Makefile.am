@@ -2,10 +2,11 @@ MAINTAINERCLEANFILES= Makefile.in
 
 cityset_defaultdir = $(datadir)/lordsawar/citysets/default
 
-@INTLTOOL_XML_RULE@
+default.lwc: default.lwc.in
+	LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/default.lwc.in $(builddir)/default.lwc
 
 cityset_default_DATA = \
-	default.xml \
+	default.lwc \
 	castle_razed.png \
 	castles.png \
 	port.png \
@@ -15,7 +16,7 @@ cityset_default_DATA = \
 	towers.png
 
 EXTRA_DIST = \
-	default.xml.in \
+	default.lwc.in \
 	README \
 	castle_razed.png \
 	castles.png \

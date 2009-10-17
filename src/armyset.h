@@ -216,6 +216,8 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	bool validateArmyUnitImage(ArmyProto *a, Shield::Colour &c);
 	bool validateArmyUnitNames();
 	bool validateArmyUnitName(ArmyProto *a);
+	//! get filenames in this armyset, excepting the configuration file.
+	void getFilenames(std::list<std::string> &files);
     private:
 
         //! Callback function for the army tag (see XML_Helper)

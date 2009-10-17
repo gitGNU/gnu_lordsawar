@@ -205,6 +205,8 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	guint32 getNumberOfSmallSelectorFrames() {return number_of_small_selector_frames;};
 	void setNumberOfSelectorFrames(guint32 s) {selector.reserve(s); selectormask.reserve(s); number_of_selector_frames = s;};
 	void setNumberOfSmallSelectorFrames(guint32 s) {smallselector.reserve(s);smallselectormask.reserve(s); number_of_small_selector_frames = s;};
+	//! get filenames in this tileset, excepting the configuration file.
+	void getFilenames(std::list<std::string> &files);
     private:
         //! Callback to load Tile objects into the Tileset.
         bool loadTile(std::string, XML_Helper* helper);

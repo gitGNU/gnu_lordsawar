@@ -117,6 +117,9 @@ class Cityset : public sigc::trackable
 
 	//! Return whether this is a cityset in the user's personal collection.
 	bool fromPrivateCollection() {return private_collection;};
+
+	//! get filenames in this cityset, excepting the configuration file.
+	void getFilenames(std::list<std::string> &files);
     private:
 
         // DATA

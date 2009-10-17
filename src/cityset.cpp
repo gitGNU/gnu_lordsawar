@@ -100,4 +100,14 @@ Cityset *Cityset::create(std::string file, bool private_collection)
   CitysetLoader d(file, private_collection);
   return d.cityset;
 }
+void Cityset::getFilenames(std::list<std::string> &files)
+{
+  files.push_back(d_cities_filename);
+  files.push_back(d_razedcities_filename);
+  files.push_back(d_port_filename);
+  files.push_back(d_signpost_filename);
+  files.push_back(d_ruins_filename);
+  files.push_back(d_temples_filename);
+  files.push_back(d_towers_filename);
+}
 // End of file

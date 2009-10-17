@@ -25,6 +25,7 @@
 #include "armyset.h"
 #include "File.h"
 #include "GraphicsCache.h"
+#include "shield.h"
 
 std::string Armyset::d_tag = "armyset";
 using namespace std;
@@ -298,4 +299,12 @@ Armyset *Armyset::create(std::string filename, bool private_collection)
 {
   ArmysetLoader d(filename, private_collection);
   return d.armyset;
+}
+void Armyset::getFilenames(std::list<std::string> &files)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      for (unsigned int i = Shield::WHITE; i <= Shield::NEUTRAL; i++)
+	files.push_back((*it)->getImageName(Shield::Colour(i)));
+    }
 }

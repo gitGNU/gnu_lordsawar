@@ -2,10 +2,11 @@ MAINTAINERCLEANFILES= Makefile.in
 
 lordsawararmydefaultdir = $(datadir)/lordsawar/army/bigdefault
 
-@INTLTOOL_XML_RULE@
+bigdefault.lwa: bigdefault.lwa.in
+	LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/bigdefault.lwa.in $(builddir)/bigdefault.lwa
 
 lordsawararmydefault_DATA = \
-	bigdefault.xml \
+	bigdefault.lwa \
 	archers.png \
 	archons.png \
 	catapults.png \
@@ -38,7 +39,7 @@ lordsawararmydefault_DATA = \
 	plantedstandard.png
 
 EXTRA_DIST = \
-	bigdefault.xml.in \
+	bigdefault.lwa.in \
 	README \
 	archers.png \
 	archons.png \

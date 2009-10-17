@@ -360,4 +360,14 @@ Tileset *Tileset::create(std::string file, bool private_collection)
   TilesetLoader d(file, private_collection);
   return d.tileset;
 }
+void Tileset::getFilenames(std::list<std::string> &files)
+{
+  files.push_back(d_small_selector);
+  files.push_back(d_large_selector);
+  files.push_back(d_explosion);
+  files.push_back(d_fog);
+  files.push_back(d_roads);
+  files.push_back(d_bridges);
+  files.push_back(d_flags);
+}
 // End of file

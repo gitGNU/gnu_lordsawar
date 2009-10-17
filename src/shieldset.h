@@ -133,6 +133,9 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 
 	//! Return whether this is a shieldset in the user's personal dir.
 	bool fromPrivateCollection() {return private_collection;};
+
+	//! get filenames in this shieldset, excepting the configuration file.
+	void getFilenames(std::list<std::string> &filenames);
     private:
 
         //! Callback function to load Shield objects into the Shieldset.

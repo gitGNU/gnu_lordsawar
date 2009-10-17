@@ -2,10 +2,11 @@ MAINTAINERCLEANFILES= Makefile.in
 
 map_defaultdir = $(datadir)/lordsawar/tilesets/default
 
-@INTLTOOL_XML_RULE@
+default.lwt: default.lwt.in
+	LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/default.lwt.in $(builddir)/default.lwt
 
 map_default_DATA = \
-    default.xml \
+    default.lwt \
     grass.png \
     water.png \
     forest.png \
@@ -21,7 +22,7 @@ map_default_DATA = \
     explosion.png
 
 EXTRA_DIST = \
-    default.xml.in \
+    default.lwt.in \
     README \
     grass.png \
     water.png \

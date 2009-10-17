@@ -2,10 +2,11 @@ MAINTAINERCLEANFILES= Makefile.in
 
 lordsawarshielddoldir = $(datadir)/lordsawar/shield/dol
 
-@INTLTOOL_XML_RULE@
+dol.lws: dol.lws.in
+	LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/dol.lws.in $(builddir)/dol.lws
 
 lordsawarshielddol_DATA = \
-	dol.xml \
+	dol.lws \
 	small-white-shield.png \
 	small-green-shield.png \
 	small-yellow-shield.png \
@@ -36,7 +37,7 @@ lordsawarshielddol_DATA = \
 
 EXTRA_DIST = \
 	README \
-	dol.xml.in \
+	dol.lws.in \
 	small-white-shield.png \
 	small-green-shield.png \
 	small-yellow-shield.png \
