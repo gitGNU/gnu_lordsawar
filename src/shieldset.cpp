@@ -147,9 +147,13 @@ Shieldset *Shieldset::create(std::string file, bool private_collection)
   ShieldsetLoader d(file, private_collection);
   return d.shieldset;
 }
-void Shieldset::getFilenames(std::list<std::string> &filenames)
+void Shieldset::getFilenames(std::list<std::string> &files)
 {
   for (iterator it = begin(); it != end(); it++)
     for (Shield::iterator i = (*it)->begin(); i != (*it)->end(); i++)
-      filenames.push_back((*i)->getImageName());
+      {
+	std::string file = (*i)->getImageName();
+	if (std::find(files.begin(), files.end(), file) == files.end())
+	  files.push_back(file);
+      }
 }

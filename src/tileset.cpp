@@ -362,6 +362,16 @@ Tileset *Tileset::create(std::string file, bool private_collection)
 }
 void Tileset::getFilenames(std::list<std::string> &files)
 {
+  for (iterator it = begin(); it != end(); it++)
+    {
+      Tile *t = *it;
+      for (Tile::iterator sit = t->begin(); sit != t->end(); sit++)
+	{
+	  std::string file = (*sit)->getName();
+	  if (std::find(files.begin(), files.end(), file) == files.end())
+	    files.push_back(file);
+	}
+    }
   files.push_back(d_small_selector);
   files.push_back(d_large_selector);
   files.push_back(d_explosion);

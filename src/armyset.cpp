@@ -305,6 +305,10 @@ void Armyset::getFilenames(std::list<std::string> &files)
   for (iterator it = begin(); it != end(); it++)
     {
       for (unsigned int i = Shield::WHITE; i <= Shield::NEUTRAL; i++)
-	files.push_back((*it)->getImageName(Shield::Colour(i)));
+	{
+	  std::string file = (*it)->getImageName(Shield::Colour(i));
+	  if (std::find(files.begin(), files.end(), file) == files.end())
+	    files.push_back(file);
+	}
     }
 }

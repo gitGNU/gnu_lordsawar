@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the lordsawar package.
 # Joe Hansen <joedalton2@yahoo.dk>, 2008, 2009.
 # Korrekturlæsning: Lars Christian Jensen, 2009.
+# Korrekturlæsning: Ask Hjort Larsen, 2009 (28).
 #
 # Konventioner
 # backpack -> oppakning
@@ -17,7 +18,7 @@ msgstr ""
 "Project-Id-Version: lordsawar 0.1.6-pre6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-09 08:02+0100\n"
-"PO-Revision-Date: 2009-10-11 21:55-0400\n"
+"PO-Revision-Date: 2009-10-17 21:55-0400\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -627,6 +628,7 @@ msgstr ""
 "Bevægelser\n"
 "XX"
 
+# Ask: her kunne jeg personligt godt bruger en gruppér.
 #: ..//dat/glade/game-window.ui.h:18
 msgid "Group or ungroup the army units into a single stack."
 msgstr "Grupper eller fjern gruppering på hærenheder i en enkelt stak."
@@ -642,7 +644,7 @@ msgstr "Grp"
 
 #: ..//dat/glade/game-window.ui.h:21
 msgid "Have all stacks move along their routes."
-msgstr "Lad alle stakke gå i gang med at bevæge sig via deres ruter."
+msgstr "Lad alle stakke bevæge sig via deres ruter."
 
 #: ..//dat/glade/game-window.ui.h:22
 msgid "Have the stack search the immediate area."
@@ -682,9 +684,10 @@ msgstr "Niveauer"
 msgid "Load Game"
 msgstr "Hent spil"
 
+# Efterlad stakken her.
 #: ..//dat/glade/game-window.ui.h:31
 msgid "Make the stack stay here."
-msgstr "Efterlad stakken her."
+msgstr "Lad stakken blive her."
 
 #: ..//dat/glade/game-window.ui.h:32
 msgid "Make the stack travel along its route."
@@ -741,6 +744,9 @@ msgstr "Gem spil som..."
 msgid "Search"
 msgstr "Søg"
 
+# Vælg en anden stak som skal flyttes.
+# Vælg en anden stak at flytte.
+# Bemærk, det er ikke et krav at flytte.
 #: ..//dat/glade/game-window.ui.h:46
 msgid "Select another stack to move."
 msgstr "Vælg en anden stak som kan flyttes."
@@ -1895,7 +1901,7 @@ msgstr "Rediger stak"
 
 #: ..//dat/glade/editor/stack-dialog.ui.h:3
 msgid "Edit _Hero Details"
-msgstr "Rediger _heltdetaljer"
+msgstr "Rediger _heltens detaljer"
 
 #: ..//dat/glade/editor/temple-dialog.ui.h:1
 msgid "<b>Temple</b>"
