@@ -1545,6 +1545,7 @@ RuinCacheItem* GraphicsCache::addRuinPic(int type, guint32 cityset)
   RuinCacheItem* myitem = new RuinCacheItem();
   myitem->type = type;
   myitem->surface = mysurf;
+  myitem->cityset = cityset;
 
   d_ruinlist.push_back(myitem);
 
