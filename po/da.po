@@ -15,10 +15,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: lordsawar 0.1.6-pre6\n"
+"Project-Id-Version: lordsawar 0.1.6-pre7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-09 08:02+0100\n"
-"PO-Revision-Date: 2009-10-17 21:55-0400\n"
+"POT-Creation-Date: 2009-10-18 11:17+0100\n"
+"PO-Revision-Date: 2009-10-20 21:55-0400\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -34,21 +34,18 @@ msgstr ""
 "Frihed er den vigtigste egenskab \n"
 "ved dette spil."
 
-#: ..//dat/glade/about-dialog.ui.h:3
-msgid "The GPL version 2 or later."
-msgstr "GPL version 2 eller senere."
-
+#. TRANSLATORS: Replace this string with your names, one name per line.
 #: ..//dat/glade/about-dialog.ui.h:4
-msgid "The LordsAWar Website"
-msgstr "Hjemmesiden for LordsAWar"
+msgid "Joe Hansen"
+msgstr "Joe Hansen"
 
 #: ..//dat/glade/about-dialog.ui.h:5
-msgid "translator-credits"
-msgstr ""
-"Joe Hansen <joedalton2@yahoo.dk>, 2008.\n"
-"\n"
-"Dansk-gruppen <dansk@dansk-gruppen.dk>\n"
-"Mere info: http://www.dansk-gruppen.dk"
+msgid "The GNU General Public License version 3 or later at your option."
+msgstr "GNU General Public License version 3 eller senere efter dit valg."
+
+#: ..//dat/glade/about-dialog.ui.h:6
+msgid "The LordsAWar Website"
+msgstr "Hjemmesiden for LordsAWar"
 
 #: ..//dat/glade/army-bonus-dialog.ui.h:1
 msgid "<b>Army Bonus</b>"
@@ -73,8 +70,9 @@ msgstr "Hærbonus"
 #: ..//dat/glade/editor/reward-list-dialog.ui.h:3
 #: ..//dat/glade/editor/tile-preview-dialog.ui.h:2
 #: ..//dat/glade/editor/tileset-selector-editor-dialog.ui.h:8
+#: ..//dat/glade/editor/tileset-flag-editor-dialog.ui.h:6
 #: ..//dat/glade/editor/tileset-explosion-picture-editor-dialog.ui.h:7
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2465
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2545
 msgid "_Close"
 msgstr "_Luk"
 
@@ -104,26 +102,28 @@ msgstr "_Køb"
 #: ..//dat/glade/fight-order-dialog.ui.h:3
 #: ..//dat/glade/game-lobby-dialog.ui.h:12
 #: ..//dat/glade/game-preferences-dialog.ui.h:12
-#: ..//dat/glade/load-scenario-dialog.ui.h:9
+#: ..//dat/glade/load-scenario-dialog.ui.h:7
 #: ..//dat/glade/new-network-game-dialog.ui.h:7
 #: ..//dat/glade/pick-network-game-to-join-dialog.ui.h:8
 #: ..//dat/glade/signpost-change-dialog.ui.h:2
 #: ..//dat/glade/new-random-map-dialog.ui.h:25
-#: ..//dat/glade/editor/armyset-info-dialog.ui.h:5
-#: ..//dat/glade/editor/city-dialog.ui.h:13
+#: ..//dat/glade/editor/armyset-info-dialog.ui.h:7
+#: ..//dat/glade/editor/city-editor-dialog.ui.h:13
 #: ..//dat/glade/editor/map-info-dialog.ui.h:5
 #: ..//dat/glade/editor/new-map-dialog.ui.h:24
 #: ..//dat/glade/editor/players-dialog.ui.h:3
-#: ..//dat/glade/editor/reward-dialog.ui.h:16
-#: ..//dat/glade/editor/ruin-dialog.ui.h:17
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:16
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:17
 #: ..//dat/glade/editor/select-army-dialog.ui.h:2
 #: ..//dat/glade/editor/select-hidden-ruin-dialog.ui.h:2
 #: ..//dat/glade/editor/select-item-dialog.ui.h:2
 #: ..//dat/glade/editor/select-reward-dialog.ui.h:2
-#: ..//dat/glade/editor/signpost-dialog.ui.h:4
-#: ..//dat/glade/editor/stack-dialog.ui.h:6
-#: ..//dat/glade/editor/temple-dialog.ui.h:7
-#: ..//dat/glade/editor/tileset-info-dialog.ui.h:6
+#: ..//dat/glade/editor/signpost-editor-dialog.ui.h:4
+#: ..//dat/glade/editor/stack-editor-dialog.ui.h:6
+#: ..//dat/glade/editor/temple-editor-dialog.ui.h:7
+#: ..//dat/glade/editor/tileset-info-dialog.ui.h:8
+#: ..//dat/glade/editor/masked-image-editor-dialog.ui.h:3
+#: ..//dat/glade/editor/image-editor-dialog.ui.h:3
 #: ..//dat/glade/editor/hero-editor-dialog.ui.h:5
 #: ..//dat/glade/editor/backpack-editor-dialog.ui.h:6
 msgid "_Cancel"
@@ -193,16 +193,18 @@ msgstr "Dine tropper har brændt byen ned!"
 #: ..//dat/glade/fight-order-dialog.ui.h:4
 #: ..//dat/glade/new-network-game-dialog.ui.h:8
 #: ..//dat/glade/signpost-change-dialog.ui.h:3
-#: ..//dat/glade/editor/armyset-info-dialog.ui.h:6
-#: ..//dat/glade/editor/city-dialog.ui.h:14
+#: ..//dat/glade/editor/armyset-info-dialog.ui.h:8
+#: ..//dat/glade/editor/city-editor-dialog.ui.h:14
 #: ..//dat/glade/editor/map-info-dialog.ui.h:6
 #: ..//dat/glade/editor/players-dialog.ui.h:4
-#: ..//dat/glade/editor/reward-dialog.ui.h:17
-#: ..//dat/glade/editor/ruin-dialog.ui.h:18
-#: ..//dat/glade/editor/signpost-dialog.ui.h:5
-#: ..//dat/glade/editor/stack-dialog.ui.h:7
-#: ..//dat/glade/editor/temple-dialog.ui.h:8
-#: ..//dat/glade/editor/tileset-info-dialog.ui.h:7
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:17
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:18
+#: ..//dat/glade/editor/signpost-editor-dialog.ui.h:5
+#: ..//dat/glade/editor/stack-editor-dialog.ui.h:7
+#: ..//dat/glade/editor/temple-editor-dialog.ui.h:8
+#: ..//dat/glade/editor/tileset-info-dialog.ui.h:9
+#: ..//dat/glade/editor/masked-image-editor-dialog.ui.h:4
+#: ..//dat/glade/editor/image-editor-dialog.ui.h:4
 #: ..//dat/glade/editor/hero-editor-dialog.ui.h:8
 #: ..//dat/glade/editor/backpack-editor-dialog.ui.h:7
 msgid "_OK"
@@ -211,17 +213,16 @@ msgstr "_O.k."
 #: ..//dat/glade/city-rename-dialog.ui.h:1
 #: ..//dat/glade/game-lobby-dialog.ui.h:6
 #: ..//dat/glade/hero-offer-dialog.ui.h:2
-#: ..//dat/glade/load-scenario-dialog.ui.h:4
 #: ..//dat/glade/ruin-report-dialog.ui.h:4
 #: ..//dat/glade/editor/armyset-info-dialog.ui.h:4
-#: ..//dat/glade/editor/armyset-window.ui.h:25
-#: ..//dat/glade/editor/city-dialog.ui.h:7
+#: ..//dat/glade/editor/armyset-window.ui.h:32
+#: ..//dat/glade/editor/city-editor-dialog.ui.h:7
 #: ..//dat/glade/editor/itemlist-dialog.ui.h:14
 #: ..//dat/glade/editor/map-info-dialog.ui.h:4
-#: ..//dat/glade/editor/ruin-dialog.ui.h:9
-#: ..//dat/glade/editor/temple-dialog.ui.h:4
-#: ..//dat/glade/editor/tileset-info-dialog.ui.h:4
-#: ..//dat/glade/editor/tileset-window.ui.h:10
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:9
+#: ..//dat/glade/editor/temple-editor-dialog.ui.h:4
+#: ..//dat/glade/editor/tileset-info-dialog.ui.h:5
+#: ..//dat/glade/editor/tileset-window.ui.h:15
 #: ..//dat/glade/editor/hero-editor-dialog.ui.h:4
 msgid "Name:"
 msgstr "Navn:"
@@ -527,6 +528,7 @@ msgid "Intermediate"
 msgstr "Mellem"
 
 #: ..//dat/glade/game-preferences-dialog.ui.h:10
+#: ..//dat/glade/game-window.ui.h:34
 msgid "New Game"
 msgstr "Nyt spil"
 
@@ -550,7 +552,7 @@ msgstr ""
 "dette spil, du store\n"
 "og modige kriger?"
 
-#: ..//dat/glade/game-quit-dialog.ui.h:5 ..//dat/glade/game-window.ui.h:39
+#: ..//dat/glade/game-quit-dialog.ui.h:5 ..//dat/glade/game-window.ui.h:40
 msgid "Quit"
 msgstr "Afslut"
 
@@ -576,19 +578,19 @@ msgstr "Byg"
 msgid "Center the map on the stack."
 msgstr "Centrer kortet på stakken."
 
-#: ..//dat/glade/game-window.ui.h:5
+#: ..//dat/glade/game-window.ui.h:5 ..//dat/glade/new-random-map-dialog.ui.h:3
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:109
 msgid "Cities"
 msgstr "Byer"
 
 #: ..//dat/glade/game-window.ui.h:6 ..//dat/glade/history-report-dialog.ui.h:1
 #: ..//dat/glade/report-dialog.ui.h:4
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1168
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1172
 msgid "City"
 msgstr "By"
 
 #: ..//dat/glade/game-window.ui.h:8
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1328
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1371
 msgid "Disband"
 msgstr "Opløs"
 
@@ -612,9 +614,9 @@ msgstr "Spil"
 #: ..//dat/glade/game-window.ui.h:14
 #: ..//dat/glade/history-report-dialog.ui.h:3
 #: ..//dat/glade/report-dialog.ui.h:5
-#: ..//dat/glade/editor/reward-dialog.ui.h:7
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:7
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/sage-dialog.cpp:159
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/players-dialog.cpp:101
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/players-dialog.cpp:58
 msgid "Gold"
 msgstr "Guld"
 
@@ -638,7 +640,7 @@ msgid "Group/Ungroup"
 msgstr "Grupper/afgrupper"
 
 #: ..//dat/glade/game-window.ui.h:20
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2023
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2069
 msgid "Grp"
 msgstr "Grp"
 
@@ -697,129 +699,129 @@ msgstr "Lad stakken rejse langs sin rute."
 msgid "Move All"
 msgstr "Flyt alle"
 
-#: ..//dat/glade/game-window.ui.h:34 ..//dat/glade/hero-dialog.ui.h:6
+#: ..//dat/glade/game-window.ui.h:35 ..//dat/glade/hero-dialog.ui.h:6
 msgid "Next"
 msgstr "Næste"
 
-#: ..//dat/glade/game-window.ui.h:35
+#: ..//dat/glade/game-window.ui.h:36
 msgid "Order"
 msgstr "Orden"
 
-#: ..//dat/glade/game-window.ui.h:36
+#: ..//dat/glade/game-window.ui.h:37
 msgid "Plant Flag"
 msgstr "Placer flag"
 
-#: ..//dat/glade/game-window.ui.h:37 ..//dat/glade/report-dialog.ui.h:8
+#: ..//dat/glade/game-window.ui.h:38 ..//dat/glade/report-dialog.ui.h:8
 msgid "Production"
 msgstr "Produktion"
 
-#: ..//dat/glade/game-window.ui.h:38
+#: ..//dat/glade/game-window.ui.h:39
 msgid "Quest"
 msgstr "Mission"
 
-#: ..//dat/glade/game-window.ui.h:40
+#: ..//dat/glade/game-window.ui.h:41
 msgid "Reports"
 msgstr "Rapporter"
 
-#: ..//dat/glade/game-window.ui.h:41
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1392
+#: ..//dat/glade/game-window.ui.h:42
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1435
 msgid "Resign"
 msgstr "Gå af"
 
-#: ..//dat/glade/game-window.ui.h:42
+#: ..//dat/glade/game-window.ui.h:43
 #: ..//dat/glade/new-random-map-dialog.ui.h:15
 #: ..//dat/glade/editor/new-map-dialog.ui.h:13
 msgid "Ruins"
 msgstr "Ruiner"
 
-#: ..//dat/glade/game-window.ui.h:43
+#: ..//dat/glade/game-window.ui.h:44
 msgid "Save Game"
 msgstr "Gem spil"
 
-#: ..//dat/glade/game-window.ui.h:44
+#: ..//dat/glade/game-window.ui.h:45
 msgid "Save Game As..."
 msgstr "Gem spil som..."
 
-#: ..//dat/glade/game-window.ui.h:45
+#: ..//dat/glade/game-window.ui.h:46
 msgid "Search"
 msgstr "Søg"
 
 # Vælg en anden stak som skal flyttes.
 # Vælg en anden stak at flytte.
 # Bemærk, det er ikke et krav at flytte.
-#: ..//dat/glade/game-window.ui.h:46
+#: ..//dat/glade/game-window.ui.h:47
 msgid "Select another stack to move."
 msgstr "Vælg en anden stak som kan flyttes."
 
-#: ..//dat/glade/game-window.ui.h:47
+#: ..//dat/glade/game-window.ui.h:48
 msgid "Show Lobby"
 msgstr "Vis lobby"
 
-#: ..//dat/glade/game-window.ui.h:48
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1271
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1172
+#: ..//dat/glade/game-window.ui.h:49
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1314
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1176
 msgid "Signpost"
 msgstr "Vejskilt"
 
-#: ..//dat/glade/game-window.ui.h:49
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1166
+#: ..//dat/glade/game-window.ui.h:50
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1170
 msgid "Stack"
 msgstr "Stak"
 
-#: ..//dat/glade/game-window.ui.h:50
+#: ..//dat/glade/game-window.ui.h:51
 msgid "Take diplomatic action."
 msgstr "Påbegynd diplomatisk handling."
 
-#: ..//dat/glade/game-window.ui.h:51 ..//dat/glade/editor/main-window.ui.h:12
+#: ..//dat/glade/game-window.ui.h:52 ..//dat/glade/editor/main-window.ui.h:12
 msgid "Toggle _Grid"
 msgstr "Slå _gitter til/fra"
 
-#: ..//dat/glade/game-window.ui.h:52 ..//dat/glade/triumphs-dialog.ui.h:2
+#: ..//dat/glade/game-window.ui.h:53 ..//dat/glade/triumphs-dialog.ui.h:2
 msgid "Triumphs"
 msgstr "Triumfer"
 
-#: ..//dat/glade/game-window.ui.h:54
+#: ..//dat/glade/game-window.ui.h:55
 #, no-c-format
 msgid "Turn: %6"
 msgstr "Runde: %6"
 
-#: ..//dat/glade/game-window.ui.h:55
+#: ..//dat/glade/game-window.ui.h:56
 msgid "Unselect the stack."
 msgstr "Fravælg stakken."
 
-#: ..//dat/glade/game-window.ui.h:56
+#: ..//dat/glade/game-window.ui.h:57
 msgid "Vectoring"
 msgstr "Vektoring"
 
-#: ..//dat/glade/game-window.ui.h:57
+#: ..//dat/glade/game-window.ui.h:58
 msgid "View"
 msgstr "Vis"
 
-#: ..//dat/glade/game-window.ui.h:58
+#: ..//dat/glade/game-window.ui.h:59
 #: ..//dat/glade/history-report-dialog.ui.h:4
 msgid "Winners"
 msgstr "Vindere"
 
-#: ..//dat/glade/game-window.ui.h:59 ..//dat/glade/report-dialog.ui.h:10
+#: ..//dat/glade/game-window.ui.h:60 ..//dat/glade/report-dialog.ui.h:10
 msgid "Winning"
 msgstr "Sejrherrer"
 
-#: ..//dat/glade/game-window.ui.h:60 ..//dat/glade/editor/main-window.ui.h:19
+#: ..//dat/glade/game-window.ui.h:61 ..//dat/glade/editor/main-window.ui.h:19
 msgid "_Fullscreen"
 msgstr "_Fuldskærm"
 
-#: ..//dat/glade/game-window.ui.h:61
-#: ..//dat/glade/editor/armyset-window.ui.h:41
+#: ..//dat/glade/game-window.ui.h:62
+#: ..//dat/glade/editor/armyset-window.ui.h:52
 #: ..//dat/glade/editor/main-window.ui.h:20
-#: ..//dat/glade/editor/tileset-window.ui.h:22
+#: ..//dat/glade/editor/tileset-window.ui.h:31
 msgid "_Help"
 msgstr "_Hjælp"
 
-#: ..//dat/glade/game-window.ui.h:62 ..//dat/glade/splash-window.ui.h:5
+#: ..//dat/glade/game-window.ui.h:63 ..//dat/glade/splash-window.ui.h:5
 msgid "_Preferences"
 msgstr "_Præferencer"
 
-#: ..//dat/glade/game-window.ui.h:63
+#: ..//dat/glade/game-window.ui.h:64
 msgid "_Turn"
 msgstr "_Runde"
 
@@ -896,32 +898,22 @@ msgid "Add Scenario"
 msgstr "Tilføj scenarie"
 
 #: ..//dat/glade/load-scenario-dialog.ui.h:3
-#: ..//dat/glade/ruin-report-dialog.ui.h:2
-#: ..//dat/glade/editor/armyset-window.ui.h:19
-#: ..//dat/glade/editor/map-info-dialog.ui.h:2
-#: ..//dat/glade/editor/ruin-dialog.ui.h:4
-#: ..//dat/glade/editor/temple-dialog.ui.h:2
-#: ..//dat/glade/editor/tileset-info-dialog.ui.h:2
-msgid "Description:"
-msgstr "Beskrivelse:"
-
-#: ..//dat/glade/load-scenario-dialog.ui.h:5
 msgid "Number of Cities:"
 msgstr "Antal byer:"
 
-#: ..//dat/glade/load-scenario-dialog.ui.h:6
+#: ..//dat/glade/load-scenario-dialog.ui.h:4
 msgid "Number of Players:"
 msgstr "Antal spillere:"
 
-#: ..//dat/glade/load-scenario-dialog.ui.h:7
+#: ..//dat/glade/load-scenario-dialog.ui.h:5
 msgid "Remove Scenario"
 msgstr "Fjern scenarie"
 
-#: ..//dat/glade/load-scenario-dialog.ui.h:8
+#: ..//dat/glade/load-scenario-dialog.ui.h:6
 msgid "Select Scenario To Play"
 msgstr "Vælg det scenarie du vil spille"
 
-#: ..//dat/glade/load-scenario-dialog.ui.h:10
+#: ..//dat/glade/load-scenario-dialog.ui.h:8
 #: ..//dat/glade/editor/select-army-dialog.ui.h:3
 #: ..//dat/glade/editor/select-hidden-ruin-dialog.ui.h:3
 #: ..//dat/glade/editor/select-item-dialog.ui.h:3
@@ -1083,13 +1075,22 @@ msgstr "Den og den møder et monster og..."
 msgid "<b>Details</b>"
 msgstr "<b>Detaljer</b>"
 
+#: ..//dat/glade/ruin-report-dialog.ui.h:2
+#: ..//dat/glade/editor/armyset-window.ui.h:21
+#: ..//dat/glade/editor/map-info-dialog.ui.h:2
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:4
+#: ..//dat/glade/editor/temple-editor-dialog.ui.h:2
+#: ..//dat/glade/editor/tileset-info-dialog.ui.h:2
+msgid "Description:"
+msgstr "Beskrivelse:"
+
 #: ..//dat/glade/ruin-report-dialog.ui.h:3
 msgid "Explored:"
 msgstr "Udforsket:"
 
 #: ..//dat/glade/ruin-report-dialog.ui.h:5
-#: ..//dat/glade/editor/temple-dialog.ui.h:6
-#: ..//dat/glade/editor/tileset-window.ui.h:18
+#: ..//dat/glade/editor/temple-editor-dialog.ui.h:6
+#: ..//dat/glade/editor/tileset-window.ui.h:23
 msgid "Type:"
 msgstr "Type:"
 
@@ -1130,14 +1131,14 @@ msgid "New _Network Game"
 msgstr "Nyt _netværksspil"
 
 #: ..//dat/glade/splash-window.ui.h:6
-#: ..//dat/glade/editor/armyset-window.ui.h:44
+#: ..//dat/glade/editor/armyset-window.ui.h:55
 #: ..//dat/glade/editor/main-window.ui.h:26
-#: ..//dat/glade/editor/tileset-window.ui.h:26
+#: ..//dat/glade/editor/tileset-window.ui.h:35
 msgid "_Quit"
 msgstr "_Afslut"
 
 #: ..//dat/glade/stack-info-dialog.ui.h:1
-#: ..//dat/glade/editor/stack-dialog.ui.h:1
+#: ..//dat/glade/editor/stack-editor-dialog.ui.h:1
 msgid "<b>Stack</b>"
 msgstr "<b>Stak</b>"
 
@@ -1145,10 +1146,8 @@ msgstr "<b>Stak</b>"
 msgid "Stack Info"
 msgstr "Stakinfo"
 
-#. note to translators: abbreviation of Strength
 #: ..//dat/glade/stack-info-dialog.ui.h:3
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/stack-info-dialog.cpp:203
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/stack-dialog.cpp:88
 msgid "Str"
 msgstr "St"
 
@@ -1195,18 +1194,12 @@ msgid "Continue"
 msgstr "Fortsæt"
 
 #: ..//dat/glade/new-random-map-dialog.ui.h:1
-#: ..//dat/glade/editor/new-map-dialog.ui.h:1
-msgid "   Cities"
-msgstr "   byer"
-
-#: ..//dat/glade/new-random-map-dialog.ui.h:2
-#: ..//dat/glade/editor/armyset-info-dialog.ui.h:1
 #: ..//dat/glade/editor/map-info-dialog.ui.h:1
 #: ..//dat/glade/editor/new-map-dialog.ui.h:2
 msgid "<b>Map</b>"
 msgstr "<b>Kort</b>"
 
-#: ..//dat/glade/new-random-map-dialog.ui.h:3
+#: ..//dat/glade/new-random-map-dialog.ui.h:2
 #: ..//dat/glade/editor/new-map-dialog.ui.h:3
 msgid "Army Set:"
 msgstr "Hærsæt:"
@@ -1227,28 +1220,22 @@ msgstr "Op_ret tilfældigt kort"
 
 #: ..//dat/glade/new-random-map-dialog.ui.h:7
 #: ..//dat/glade/editor/new-map-dialog.ui.h:7
-#: ../dat/tilesets/default/default.xml.in.h:3
-#: ../dat/tilesets/bigdefault/bigdefault.xml.in.h:2
-#: ../dat/tilesets/stark/stark.xml.in.h:2
-#: ../dat/tilesets/bigstark/bigstark.xml.in.h:1
+#: ..//dat/glade/editor/tileset-window.ui.h:8
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:77
 msgid "Forest"
 msgstr "Skov"
 
 #: ..//dat/glade/new-random-map-dialog.ui.h:8
 #: ..//dat/glade/editor/new-map-dialog.ui.h:8
-#: ../dat/tilesets/default/default.xml.in.h:4
-#: ../dat/tilesets/bigdefault/bigdefault.xml.in.h:3
-#: ../dat/tilesets/stark/stark.xml.in.h:3
-#: ../dat/tilesets/bigstark/bigstark.xml.in.h:2
+#: ..//dat/glade/editor/tileset-window.ui.h:9
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:75
 msgid "Grass"
 msgstr "Græs"
 
 #: ..//dat/glade/new-random-map-dialog.ui.h:9
 #: ..//dat/glade/editor/new-map-dialog.ui.h:9
-#: ../dat/tilesets/default/default.xml.in.h:5
-#: ../dat/tilesets/bigdefault/bigdefault.xml.in.h:4
-#: ../dat/tilesets/stark/stark.xml.in.h:4
-#: ../dat/tilesets/bigstark/bigstark.xml.in.h:3
+#: ..//dat/glade/editor/tileset-window.ui.h:10
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:78
 msgid "Hills"
 msgstr "Bakker"
 
@@ -1258,10 +1245,8 @@ msgstr "Lav et tilfældigt kort"
 
 #: ..//dat/glade/new-random-map-dialog.ui.h:11
 #: ..//dat/glade/editor/new-map-dialog.ui.h:10
-#: ../dat/tilesets/default/default.xml.in.h:6
-#: ../dat/tilesets/bigdefault/bigdefault.xml.in.h:5
-#: ../dat/tilesets/stark/stark.xml.in.h:5
-#: ../dat/tilesets/bigstark/bigstark.xml.in.h:4
+#: ..//dat/glade/editor/tileset-window.ui.h:13
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:79
 msgid "Mountains"
 msgstr "Bjerge"
 
@@ -1293,10 +1278,8 @@ msgstr "Lille"
 
 #: ..//dat/glade/new-random-map-dialog.ui.h:19
 #: ..//dat/glade/editor/new-map-dialog.ui.h:18
-#: ../dat/tilesets/default/default.xml.in.h:7
-#: ../dat/tilesets/bigdefault/bigdefault.xml.in.h:6
-#: ../dat/tilesets/stark/stark.xml.in.h:7
-#: ../dat/tilesets/bigstark/bigstark.xml.in.h:6
+#: ..//dat/glade/editor/tileset-window.ui.h:20
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:80
 msgid "Swamp"
 msgstr "Sump"
 
@@ -1322,20 +1305,32 @@ msgstr "Meget lille"
 
 #: ..//dat/glade/new-random-map-dialog.ui.h:24
 #: ..//dat/glade/editor/new-map-dialog.ui.h:23
-#: ../dat/tilesets/default/default.xml.in.h:8
-#: ../dat/tilesets/bigdefault/bigdefault.xml.in.h:8
-#: ../dat/tilesets/stark/stark.xml.in.h:8
-#: ../dat/tilesets/bigstark/bigstark.xml.in.h:8
+#: ..//dat/glade/editor/tileset-window.ui.h:25
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:76
 msgid "Water"
 msgstr "Vand"
+
+#: ..//dat/glade/editor/armyset-info-dialog.ui.h:1
+msgid "<b>Armyset</b>"
+msgstr "<b>Hærsæt</b>"
 
 #: ..//dat/glade/editor/armyset-info-dialog.ui.h:2
 msgid "Edit Armyset Info"
 msgstr "Rediger hærsætinfo"
 
 #: ..//dat/glade/editor/armyset-info-dialog.ui.h:3
+#: ..//dat/glade/editor/tileset-info-dialog.ui.h:4
 msgid "Id:"
 msgstr "Id:"
+
+#: ..//dat/glade/editor/armyset-info-dialog.ui.h:5
+#: ..//dat/glade/editor/tileset-info-dialog.ui.h:7
+msgid "SubDirectory:"
+msgstr "Undermappe:"
+
+#: ..//dat/glade/editor/armyset-info-dialog.ui.h:6
+msgid "The armyset will live in a directory with this name."
+msgstr "Hærsættet vil ligge i en mappe med dette navn."
 
 #: ..//dat/glade/editor/armyset-window.ui.h:1
 msgid "+1 Str in City"
@@ -1394,173 +1389,221 @@ msgid "Basic"
 msgstr "Grundlæggende"
 
 #: ..//dat/glade/editor/armyset-window.ui.h:16
+msgid "Black Picture:"
+msgstr "Sort billede:"
+
+#: ..//dat/glade/editor/armyset-window.ui.h:17
 msgid "Can Fly"
 msgstr "Kan flyve"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:17
+#: ..//dat/glade/editor/armyset-window.ui.h:18
 msgid "Cost:"
 msgstr "Pris:"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:18
+#: ..//dat/glade/editor/armyset-window.ui.h:19
+msgid "Dark Blue Picture:"
+msgstr "Mørkeblåt billede:"
+
+#: ..//dat/glade/editor/armyset-window.ui.h:20
 msgid "Defends Ruins?"
 msgstr "Forsvarer ruiner?"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:20
+#: ..//dat/glade/editor/armyset-window.ui.h:22
+msgid "Edit Hero Flag Picture"
+msgstr "Rediger billede for helteflag"
+
+#: ..//dat/glade/editor/armyset-window.ui.h:23
+msgid "Edit Ship Picture"
+msgstr "Rediger billede for skib"
+
+#: ..//dat/glade/editor/armyset-window.ui.h:24
 msgid "Exp Points:"
 msgstr "Erfaringspoint:"
 
+#: ..//dat/glade/editor/armyset-window.ui.h:25
+msgid "Female Hero"
+msgstr "Kvindelig helt"
+
+#: ..//dat/glade/editor/armyset-window.ui.h:26
+msgid "Green Picture:"
+msgstr "Grønt billede:"
+
 # ved ikke helt med den her.
-#: ..//dat/glade/editor/armyset-window.ui.h:21
+#: ..//dat/glade/editor/armyset-window.ui.h:27
 msgid "Is Awardable?"
 msgstr "Er belønningsfuld?"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:22
-msgid "Is Hero?"
-msgstr "Er helt?"
+#: ..//dat/glade/editor/armyset-window.ui.h:28
+msgid "Light Blue Picture:"
+msgstr "Lyseblåt billede:"
 
 #. init GUI stuff
-#: ..//dat/glade/editor/armyset-window.ui.h:23
+#: ..//dat/glade/editor/armyset-window.ui.h:29
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-main.cpp:50
 msgid "LordsAWar! Armyset Editor"
 msgstr "LordsAWar! Redigering af hærsæt"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:24
+#: ..//dat/glade/editor/armyset-window.ui.h:30
+msgid "Male Hero"
+msgstr "Mandlig helt"
+
+#: ..//dat/glade/editor/armyset-window.ui.h:31
 msgid "Max Moves:"
 msgstr "Maks bevægelse:"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:26
-msgid "Picture:"
-msgstr "Billede:"
+#: ..//dat/glade/editor/armyset-window.ui.h:33
+msgid "Neutral Picture:"
+msgstr "Neutralt billede:"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:27
-msgid "Save Armyset _As..."
-msgstr "Gem hærsæt _som..."
+#: ..//dat/glade/editor/armyset-window.ui.h:34
+msgid "Not A Hero"
+msgstr "Ikke en helt"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:28
+#: ..//dat/glade/editor/armyset-window.ui.h:35
+msgid "Orange Picture:"
+msgstr "Orange billede:"
+
+#: ..//dat/glade/editor/armyset-window.ui.h:36
+msgid "Red Picture:"
+msgstr "Rødt billede:"
+
+#: ..//dat/glade/editor/armyset-window.ui.h:37
 msgid "Sight:"
 msgstr "Synsvidde:"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:29
+#: ..//dat/glade/editor/armyset-window.ui.h:38
 msgid "Strength:"
 msgstr "Styrke:"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:30
+#: ..//dat/glade/editor/armyset-window.ui.h:39
 msgid "Subtract All City Bonus"
 msgstr "Fjern alle bybonusser"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:31
+#: ..//dat/glade/editor/armyset-window.ui.h:40
 msgid "Subtract All Non-Hero Bonuses"
 msgstr "Fjerne alle ikke-helte bonusser"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:32
+#: ..//dat/glade/editor/armyset-window.ui.h:41
 msgid "Subtract all Hero Bonuses"
 msgstr "Fjern alle helte bonusser"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:33
+#: ..//dat/glade/editor/armyset-window.ui.h:42
 msgid "Travels faster in forests"
 msgstr "Rejser hurtigere i skove"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:34
+#: ..//dat/glade/editor/armyset-window.ui.h:43
 msgid "Travels faster in hills"
 msgstr "Rejser hurtigere i bakker"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:35
+#: ..//dat/glade/editor/armyset-window.ui.h:44
 msgid "Travels faster in marshland"
 msgstr "Rejser hurtigere i marsk"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:36
+#: ..//dat/glade/editor/armyset-window.ui.h:45
 msgid "Travels faster in mountains"
 msgstr "Rejser hurtigere i bjerge"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:37
+#: ..//dat/glade/editor/armyset-window.ui.h:46
 msgid "Turns:"
 msgstr "Runder:"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:38
+#: ..//dat/glade/editor/armyset-window.ui.h:47
 msgid "Upkeep:"
 msgstr "Vedligeholdelse:"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:39
+#: ..//dat/glade/editor/armyset-window.ui.h:48
+msgid "White Picture:"
+msgstr "Hvidt billede:"
+
+#: ..//dat/glade/editor/armyset-window.ui.h:49
+msgid "Yellow Picture:"
+msgstr "Gult billede:"
+
+#: ..//dat/glade/editor/armyset-window.ui.h:50
 #: ..//dat/glade/editor/main-window.ui.h:17
 #: ..//dat/glade/editor/reward-list-dialog.ui.h:4
-#: ..//dat/glade/editor/tileset-window.ui.h:20
+#: ..//dat/glade/editor/tileset-window.ui.h:28
 msgid "_Edit"
 msgstr "_Rediger"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:40
+#: ..//dat/glade/editor/armyset-window.ui.h:51
 #: ..//dat/glade/editor/main-window.ui.h:18
-#: ..//dat/glade/editor/tileset-window.ui.h:21
+#: ..//dat/glade/editor/tileset-window.ui.h:29
 msgid "_File"
 msgstr "_Fil"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:42
+#: ..//dat/glade/editor/armyset-window.ui.h:53
 msgid "_Load Armyset"
 msgstr "_Hent hærsæt"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:43
+#: ..//dat/glade/editor/armyset-window.ui.h:54
 msgid "_New Armyset"
 msgstr "_Nyt hærsæt"
 
-#: ..//dat/glade/editor/armyset-window.ui.h:45
+#: ..//dat/glade/editor/armyset-window.ui.h:56
 msgid "_Save Armyset"
 msgstr "_Gem hærsæt"
 
-#: ..//dat/glade/editor/city-dialog.ui.h:1
+#: ..//dat/glade/editor/armyset-window.ui.h:57
+msgid "_Validate Armyset"
+msgstr "_Valider hærsæt"
+
+#: ..//dat/glade/editor/city-editor-dialog.ui.h:1
 msgid "<b>City</b>"
 msgstr "<b>By</b>"
 
-#: ..//dat/glade/editor/city-dialog.ui.h:2
+#: ..//dat/glade/editor/city-editor-dialog.ui.h:2
 msgid "<b>Production</b>"
 msgstr "<b>Produktion</b>"
 
-#: ..//dat/glade/editor/city-dialog.ui.h:3
+#: ..//dat/glade/editor/city-editor-dialog.ui.h:3
 msgid "Burned down"
 msgstr "Brændt ned"
 
-#: ..//dat/glade/editor/city-dialog.ui.h:4
+#: ..//dat/glade/editor/city-editor-dialog.ui.h:4
 msgid "Capital"
 msgstr "Hovedstad"
 
-#: ..//dat/glade/editor/city-dialog.ui.h:5
+#: ..//dat/glade/editor/city-editor-dialog.ui.h:5
 msgid "Edit City"
 msgstr "Rediger by"
 
-#: ..//dat/glade/editor/city-dialog.ui.h:6
+#: ..//dat/glade/editor/city-editor-dialog.ui.h:6
 msgid "Income:"
 msgstr "Indtægt:"
 
-#: ..//dat/glade/editor/city-dialog.ui.h:8
-#: ..//dat/glade/editor/stack-dialog.ui.h:4
-msgid "Player:"
-msgstr "Spiller:"
+#: ..//dat/glade/editor/city-editor-dialog.ui.h:8
+#: ..//dat/glade/editor/stack-editor-dialog.ui.h:4
+msgid "Owner:"
+msgstr "Ejer:"
 
-#: ..//dat/glade/editor/city-dialog.ui.h:9
-#: ..//dat/glade/editor/reward-dialog.ui.h:11
+#: ..//dat/glade/editor/city-editor-dialog.ui.h:9
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:11
 msgid "Ra_ndomize"
 msgstr "Ti_lfældiggør"
 
-#: ..//dat/glade/editor/city-dialog.ui.h:10
-#: ..//dat/glade/editor/ruin-dialog.ui.h:13
-#: ..//dat/glade/editor/signpost-dialog.ui.h:3
-#: ..//dat/glade/editor/temple-dialog.ui.h:5
+#: ..//dat/glade/editor/city-editor-dialog.ui.h:10
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:13
+#: ..//dat/glade/editor/signpost-editor-dialog.ui.h:3
+#: ..//dat/glade/editor/temple-editor-dialog.ui.h:5
 msgid "Randomi_ze"
 msgstr "Tilfældigg_ør"
 
-#: ..//dat/glade/editor/city-dialog.ui.h:11
-#: ..//dat/glade/editor/reward-dialog.ui.h:15
-#: ..//dat/glade/editor/ruin-dialog.ui.h:14
+#: ..//dat/glade/editor/city-editor-dialog.ui.h:11
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:15
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:14
 msgid "Randomiz_e"
 msgstr "Til_fældiggør"
 
-#: ..//dat/glade/editor/city-dialog.ui.h:12
+#: ..//dat/glade/editor/city-editor-dialog.ui.h:12
 #: ..//dat/glade/editor/reward-list-dialog.ui.h:2
-#: ..//dat/glade/editor/stack-dialog.ui.h:5
+#: ..//dat/glade/editor/stack-editor-dialog.ui.h:5
 msgid "_Add"
 msgstr "_Tilføj"
 
-#: ..//dat/glade/editor/city-dialog.ui.h:15
+#: ..//dat/glade/editor/city-editor-dialog.ui.h:15
 #: ..//dat/glade/editor/reward-list-dialog.ui.h:5
-#: ..//dat/glade/editor/stack-dialog.ui.h:8
+#: ..//dat/glade/editor/stack-editor-dialog.ui.h:8
 msgid "_Remove"
 msgstr "_Fjern"
 
@@ -1727,13 +1770,17 @@ msgid "_Validate"
 msgstr "_Valider"
 
 #: ..//dat/glade/editor/main-window.ui.h:33
-#: ..//dat/glade/editor/tileset-window.ui.h:28
+#: ..//dat/glade/editor/tileset-window.ui.h:38
 msgid "_View"
 msgstr "_Vis"
 
 #: ..//dat/glade/editor/map-info-dialog.ui.h:3
 msgid "Edit Map Info"
 msgstr "Rediger kortinfo"
+
+#: ..//dat/glade/editor/new-map-dialog.ui.h:1
+msgid "   Cities"
+msgstr "   byer"
 
 #: ..//dat/glade/editor/new-map-dialog.ui.h:6
 msgid "Fill style:"
@@ -1751,69 +1798,69 @@ msgstr "Vejskilte"
 msgid "Edit Players"
 msgstr "Rediger spillere"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:1
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:1
 msgid "<b>Reward</b>"
 msgstr "<b>Belønning</b>"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:2
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:2
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/sage-dialog.cpp:213
 msgid "Allies"
 msgstr "Allierede"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:3
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:3
 msgid "Clear Ally Type"
 msgstr "Fjern allierettype"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:4
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:4
 msgid "Clear Hidden Ruin"
 msgstr "Fjern skjult ruin"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:5
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:5
 msgid "Clear Item"
 msgstr "Fjern udstyr"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:6
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:6
 msgid "Edit Reward"
 msgstr "Rediger belønning"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:8
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:8
 msgid "Hidden Ruin"
 msgstr "Skjult ruin"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:9
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:9
 msgid "Item"
 msgstr "Udstyr"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:10
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:10
 msgid "Map"
 msgstr "Kort"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:12
-#: ..//dat/glade/editor/ruin-dialog.ui.h:11
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:12
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:11
 msgid "Ran_domize"
 msgstr "Tilfæl_diggør"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:13
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:13
 msgid "Rand_omize"
 msgstr "Tilfæl_diggør"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:14
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:14
 msgid "Random_ize"
 msgstr "Tilfæld_iggør"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:18
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:18
 msgid "h:"
 msgstr "h:"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:19
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:19
 msgid "w:"
 msgstr "w:"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:20
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:20
 msgid "x:"
 msgstr "x:"
 
-#: ..//dat/glade/editor/reward-dialog.ui.h:21
+#: ..//dat/glade/editor/reward-editor-dialog.ui.h:21
 msgid "y:"
 msgstr "y:"
 
@@ -1821,52 +1868,52 @@ msgstr "y:"
 msgid "Edit Rewards"
 msgstr "Rediger belønninger"
 
-#: ..//dat/glade/editor/ruin-dialog.ui.h:1
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:1
 msgid "<b>Ruin</b>"
 msgstr "<b>Ruin</b>"
 
-#: ..//dat/glade/editor/ruin-dialog.ui.h:2
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:2
 msgid "Cle_ar Keeper"
 msgstr "Fj_ern vogter"
 
-#: ..//dat/glade/editor/ruin-dialog.ui.h:3
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:3
 msgid "Clea_r Reward"
 msgstr "Fje_rn belønning"
 
-#: ..//dat/glade/editor/ruin-dialog.ui.h:5
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:5
 msgid "Edit Ruin"
 msgstr "Rediger ruin"
 
-#: ..//dat/glade/editor/ruin-dialog.ui.h:6
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:6
 msgid "Is Hidden?"
 msgstr "Er skjult?"
 
-#: ..//dat/glade/editor/ruin-dialog.ui.h:7
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:7
 msgid "Is a Sage?"
 msgstr "Er en vismand?"
 
-#: ..//dat/glade/editor/ruin-dialog.ui.h:8
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:8
 msgid "Keeper:"
 msgstr "Vogter:"
 
-#: ..//dat/glade/editor/ruin-dialog.ui.h:10
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:10
 msgid "New Reward:"
 msgstr "Ny belønning:"
 
-#: ..//dat/glade/editor/ruin-dialog.ui.h:12
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:12
 msgid "Random Reward"
 msgstr "Tilfældig belønning"
 
-#: ..//dat/glade/editor/ruin-dialog.ui.h:15
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:15
 msgid "Seen By:"
 msgstr "Set af:"
 
-#: ..//dat/glade/editor/ruin-dialog.ui.h:16
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/players-dialog.cpp:60
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:16
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/players-dialog.cpp:57
 msgid "Type"
 msgstr "Type"
 
-#: ..//dat/glade/editor/ruin-dialog.ui.h:19
+#: ..//dat/glade/editor/ruin-editor-dialog.ui.h:19
 msgid "_Pick From List"
 msgstr "_Vælg fra liste"
 
@@ -1886,28 +1933,31 @@ msgstr "Vælg udstyr"
 msgid "Select Reward"
 msgstr "Vælg belønning"
 
-#: ..//dat/glade/editor/signpost-dialog.ui.h:1
+#: ..//dat/glade/editor/signpost-editor-dialog.ui.h:1
 msgid "<b>Signpost</b>"
 msgstr "<b>Vejskilt</b>"
 
-#: ..//dat/glade/editor/signpost-dialog.ui.h:2
-#: ..//dat/glade/editor/hero-editor-dialog.ui.h:2
+#: ..//dat/glade/editor/signpost-editor-dialog.ui.h:2
 msgid "Edit Signpost"
 msgstr "Rediger vejskilt"
 
-#: ..//dat/glade/editor/stack-dialog.ui.h:2
+#: ..//dat/glade/editor/stack-editor-dialog.ui.h:2
 msgid "Edit Stack"
 msgstr "Rediger stak"
 
-#: ..//dat/glade/editor/stack-dialog.ui.h:3
+#: ..//dat/glade/editor/stack-editor-dialog.ui.h:3
 msgid "Edit _Hero Details"
 msgstr "Rediger _heltens detaljer"
 
-#: ..//dat/glade/editor/temple-dialog.ui.h:1
+#: ..//dat/glade/editor/stack-editor-dialog.ui.h:9
+msgid "is Fortified"
+msgstr "er befæstet"
+
+#: ..//dat/glade/editor/temple-editor-dialog.ui.h:1
 msgid "<b>Temple</b>"
 msgstr "<b>Tempel</b>"
 
-#: ..//dat/glade/editor/temple-dialog.ui.h:3
+#: ..//dat/glade/editor/temple-editor-dialog.ui.h:3
 msgid "Edit Temple"
 msgstr "Rediger tempel"
 
@@ -1923,7 +1973,7 @@ msgstr "<b>Feltsæt</b>"
 msgid "Edit Tileset Info"
 msgstr "Rediger feltsætinfo"
 
-#: ..//dat/glade/editor/tileset-info-dialog.ui.h:5
+#: ..//dat/glade/editor/tileset-info-dialog.ui.h:6
 msgid "Smallmap Road Color:"
 msgstr "Vejfarve på små kort:"
 
@@ -1932,12 +1982,16 @@ msgid "<b>Army Unit Selector</b>"
 msgstr "<b>Hærenhedsvælger</b>"
 
 #: ..//dat/glade/editor/tileset-selector-editor-dialog.ui.h:2
+#: ..//dat/glade/editor/tileset-flag-editor-dialog.ui.h:1
 #: ..//dat/glade/editor/tileset-explosion-picture-editor-dialog.ui.h:2
 msgid "<b>Preview</b>"
 msgstr "<b>Forhåndsvisning</b>"
 
 #: ..//dat/glade/editor/tileset-selector-editor-dialog.ui.h:3
+#: ..//dat/glade/editor/tileset-flag-editor-dialog.ui.h:4
 #: ..//dat/glade/editor/tileset-explosion-picture-editor-dialog.ui.h:4
+#: ..//dat/glade/editor/masked-image-editor-dialog.ui.h:2
+#: ..//dat/glade/editor/image-editor-dialog.ui.h:2
 msgid "Image:"
 msgstr "Billede:"
 
@@ -1951,8 +2005,17 @@ msgid "Selector Editor"
 msgstr "Udvælgelsesredigering"
 
 #: ..//dat/glade/editor/tileset-selector-editor-dialog.ui.h:6
+#: ..//dat/glade/editor/tileset-flag-editor-dialog.ui.h:5
 msgid "Shieldset:"
 msgstr "Skjoldsæt:"
+
+#: ..//dat/glade/editor/tileset-flag-editor-dialog.ui.h:2
+msgid "<b>Stack Flags</b>"
+msgstr "<b>Stakflag</b>"
+
+#: ..//dat/glade/editor/tileset-flag-editor-dialog.ui.h:3
+msgid "Flag Editor"
+msgstr "Flagredigering"
 
 #: ..//dat/glade/editor/tileset-explosion-picture-editor-dialog.ui.h:1
 msgid "<b>Explosion</b>"
@@ -1961,6 +2024,11 @@ msgstr "<b>Eksplosion</b>"
 #: ..//dat/glade/editor/tileset-explosion-picture-editor-dialog.ui.h:3
 msgid "Explosion Editor"
 msgstr "Eksplosionshåndtering"
+
+#: ..//dat/glade/editor/masked-image-editor-dialog.ui.h:1
+#: ..//dat/glade/editor/image-editor-dialog.ui.h:1
+msgid "Change Image"
+msgstr "Ændre billede"
 
 #: ..//dat/glade/editor/tileset-window.ui.h:1
 msgid "<b>Tile Style Set</b>"
@@ -1983,70 +2051,91 @@ msgid "E_xplosion Picture"
 msgstr "E_ksplosionsbillede"
 
 #: ..//dat/glade/editor/tileset-window.ui.h:6
+msgid "F_lag Picture"
+msgstr "F_lagbillede"
+
+#: ..//dat/glade/editor/tileset-window.ui.h:7
 msgid "First Colour:"
 msgstr "Første farve:"
 
-#: ..//dat/glade/editor/tileset-window.ui.h:7
+#: ..//dat/glade/editor/tileset-window.ui.h:11
 msgid "Image File:"
 msgstr "Billedfil:"
 
 #. init GUI stuff
-#: ..//dat/glade/editor/tileset-window.ui.h:8
+#: ..//dat/glade/editor/tileset-window.ui.h:12
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-main.cpp:49
 msgid "LordsAWar! Tileset Editor"
 msgstr "LordsAWar! Feltsætredigering"
 
-#: ..//dat/glade/editor/tileset-window.ui.h:9
+#: ..//dat/glade/editor/tileset-window.ui.h:14
 msgid "Moves:"
 msgstr "Bevægelser:"
 
-#: ..//dat/glade/editor/tileset-window.ui.h:11
+#: ..//dat/glade/editor/tileset-window.ui.h:16
 msgid "Pattern:"
 msgstr "Mønster:"
 
-#: ..//dat/glade/editor/tileset-window.ui.h:12
+#: ..//dat/glade/editor/tileset-window.ui.h:17
 msgid "Refresh Image from File"
 msgstr "Opdater billede fra fil"
 
-#: ..//dat/glade/editor/tileset-window.ui.h:13
-msgid "Save Tileset _As..."
-msgstr "Gem feltsæt _som..."
-
-#: ..//dat/glade/editor/tileset-window.ui.h:14
+#: ..//dat/glade/editor/tileset-window.ui.h:18
 msgid "Second Colour:"
 msgstr "Anden farve:"
 
-#: ..//dat/glade/editor/tileset-window.ui.h:15
+#: ..//dat/glade/editor/tileset-window.ui.h:19
 msgid "Smallmap Appearance:"
 msgstr "Udseende på små kort:"
 
-#: ..//dat/glade/editor/tileset-window.ui.h:16
+#: ..//dat/glade/editor/tileset-window.ui.h:21
 msgid "Third Colour:"
 msgstr "Tredje farve:"
 
-#: ..//dat/glade/editor/tileset-window.ui.h:17
+#: ..//dat/glade/editor/tileset-window.ui.h:22
 msgid "Tileset info"
 msgstr "Feltsætinfo"
 
-#: ..//dat/glade/editor/tileset-window.ui.h:19
+#: ..//dat/glade/editor/tileset-window.ui.h:24
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:81
+msgid "Void"
+msgstr "Tomrum"
+
+#: ..//dat/glade/editor/tileset-window.ui.h:26
 msgid "_Army Unit Selector"
 msgstr "_Hærenhedvælger"
 
-#: ..//dat/glade/editor/tileset-window.ui.h:23
+#: ..//dat/glade/editor/tileset-window.ui.h:27
+msgid "_Bridges Picture"
+msgstr "_Broerbillede"
+
+#: ..//dat/glade/editor/tileset-window.ui.h:30
+msgid "_Fog Picture"
+msgstr "_Tågebillede"
+
+#: ..//dat/glade/editor/tileset-window.ui.h:32
 msgid "_Load Tileset"
 msgstr "_Hent feltsæt"
 
-#: ..//dat/glade/editor/tileset-window.ui.h:24
+#: ..//dat/glade/editor/tileset-window.ui.h:33
 msgid "_New Tileset"
 msgstr "_Nyt feltsæt"
 
-#: ..//dat/glade/editor/tileset-window.ui.h:25
+#: ..//dat/glade/editor/tileset-window.ui.h:34
 msgid "_Preview Tile"
 msgstr "_Forhåndsvis felt"
 
-#: ..//dat/glade/editor/tileset-window.ui.h:27
+#: ..//dat/glade/editor/tileset-window.ui.h:36
+msgid "_Roads Picture"
+msgstr "_Vejebillede"
+
+#: ..//dat/glade/editor/tileset-window.ui.h:37
 msgid "_Save Tileset"
 msgstr "_Gem feltsæt"
+
+#: ..//dat/glade/editor/hero-editor-dialog.ui.h:2
+msgid "Edit Hero Details"
+msgstr "Rediger heltens detaljer"
 
 #: ..//dat/glade/editor/hero-editor-dialog.ui.h:3
 msgid "Edit _Backpack"
@@ -2074,11 +2163,13 @@ msgstr "_Fjern udstyr"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:79
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:136
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:90
 msgid "Lone"
 msgstr "Alene"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:82
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:138
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:91
 msgid "Outer Top-Left"
 msgstr "Ydre top-venstre"
 
@@ -2089,11 +2180,13 @@ msgstr "Ydre top-centrum"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:88
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:142
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:93
 msgid "Outer Top-Right"
 msgstr "Ydre top-højre"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:91
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:144
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:94
 msgid "Outer Bottom-Left"
 msgstr "Ydre bund-venstre"
 
@@ -2104,11 +2197,13 @@ msgstr "Ydre bund-centrum"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:97
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:148
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:96
 msgid "Outer Bottom-Right"
 msgstr "Ydre bund-højre"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:100
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:150
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:97
 msgid "Outer Middle-Left"
 msgstr "Ydre midt-venstre"
 
@@ -2119,26 +2214,31 @@ msgstr "Ydre midt-centrum"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:106
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:154
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:99
 msgid "Outer Middle-Right"
 msgstr "Ydre midt-højre"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:109
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:156
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:100
 msgid "Inner Top-Left"
 msgstr "Indre top-venstre"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:112
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:158
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:101
 msgid "Inner Top-Right"
 msgstr "Indre top-højre"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:115
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:160
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:102
 msgid "Inner Bottom-Left"
 msgstr "Indre bund-venstre"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:118
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:162
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:103
 msgid "Inner Bottom-Right"
 msgstr "Indre bund-højre"
 
@@ -2154,76 +2254,77 @@ msgstr "Bund-venstre til top-højre diagonal"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:127
 #: ../../lordsawar/lordsawar/trunk/po/../src/tilestyle.cpp:168
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:106
 msgid "Other"
 msgstr "Andre"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:186
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:188
 msgid "Northwestern map"
 msgstr "Nordvestlige kort"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:189
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:191
 msgid "Northern map"
 msgstr "Nordlige kort"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:192
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:194
 msgid "Northeastern map"
 msgstr "Nordøstlige kort"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:195
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:197
 msgid "Western map"
 msgstr "Vestlige kort"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:198
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:200
 msgid "Central map"
 msgstr "Centrale kort"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:201
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:203
 msgid "Eastern map"
 msgstr "Østlige kort"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:204
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:206
 msgid "Southwestern map"
 msgstr "Sydvestlige kort"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:207
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:209
 msgid "Southern map"
 msgstr "Sydlige kort"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:210
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:212
 msgid "Southeastern map"
 msgstr "Sydøstlige kort"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:762
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:765
 msgid "There must be at least 2 players in the scenario."
 msgstr "Der skal være mindst 2 spillere i scenariet."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:766
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:769
 msgid "There must be at least 2 cities in the scenario."
 msgstr "Der skal være mindst 2 byer i scenariet."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:777
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:780
 msgid "The player called `%1' lacks a starting city."
 msgstr "Spilleren med navn »%1« mangler en begyndelsesby."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:793
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:796
 msgid "There is %1 unnamed city"
 msgid_plural "There are %1 unnamed cities"
 msgstr[0] "Der er %1 unavngiven by"
 msgstr[1] "Der er %1 unavngivne byer"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:807
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:810
 msgid "There is %1 unnamed ruin"
 msgid_plural "There are %1 unnamed ruins"
 msgstr[0] "Der er %1 unavngiven ruin"
 msgstr[1] "Der er %1 unavngivne ruiner"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:821
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:824
 msgid "There is %1 unnamed temple"
 msgid_plural "There are %1 unnamed temples"
 msgstr[0] "Der er %1 unavngiven tempel"
 msgstr[1] "Der er %1 unavngivne templer"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:835
+#: ../../lordsawar/lordsawar/trunk/po/../src/GameScenario.cpp:838
 msgid "There is %1 neutral stack not in a city"
 msgid_plural "There are %1 neutral stacks not in cities"
 msgstr[0] "Der er %1 neutral stak ikke i en by"
@@ -2333,34 +2434,34 @@ msgstr "Besættelsen af byen »%1« kunne ikke opnås."
 msgid "You must take over the city \"%1\" and occupy it."
 msgstr "Du må overtage byen »%1« og besætte den."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/game.cpp:638
+#: ../../lordsawar/lordsawar/trunk/po/../src/game.cpp:667
 msgid "%1 (capital city)"
 msgstr "%1 (hovedstad)"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/game.cpp:644
+#: ../../lordsawar/lordsawar/trunk/po/../src/game.cpp:673
 msgid "Under rule of %1"
 msgstr "Under ledelse af %1"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/game.cpp:647
+#: ../../lordsawar/lordsawar/trunk/po/../src/game.cpp:676
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/city-window.cpp:177
 msgid "Income: %1"
 msgstr "Indtægt: %1"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/game.cpp:649
+#: ../../lordsawar/lordsawar/trunk/po/../src/game.cpp:678
 msgid "Defense: %1"
 msgstr "Forsvar: %1"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/game.cpp:653
+#: ../../lordsawar/lordsawar/trunk/po/../src/game.cpp:682
 msgid "Status: razed!"
 msgstr "Status: nedbrændt!"
 
 #. note to translators: whether a ruin has been searched
-#: ../../lordsawar/lordsawar/trunk/po/../src/game.cpp:683
+#: ../../lordsawar/lordsawar/trunk/po/../src/game.cpp:712
 msgid "Explored"
 msgstr "Udforsket"
 
 #. note to translators: whether a ruin has been searched
-#: ../../lordsawar/lordsawar/trunk/po/../src/game.cpp:686
+#: ../../lordsawar/lordsawar/trunk/po/../src/game.cpp:715
 msgid "Unexplored"
 msgstr "Ikke udforsket"
 
@@ -2434,20 +2535,13 @@ msgstr "bygge broer..."
 #: ../../lordsawar/lordsawar/trunk/po/../src/MapGenerator.cpp:1438
 #: ../../lordsawar/lordsawar/trunk/po/../src/MapGenerator.cpp:1467
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:134
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:276
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:294
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:312
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:277
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:296
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:315
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/new-map-dialog.cpp:112
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/new-map-dialog.cpp:282
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/new-map-dialog.cpp:300
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/new-map-dialog.cpp:318
-#: ../dat/army/default/default.xml.in.h:4
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:4
-#: ../dat/citysets/default/default.xml.in.h:1
-#: ../dat/citysets/bigdefault/bigdefault.xml.in.h:1
-#: ../dat/tilesets/default/default.xml.in.h:2
-#: ../dat/tilesets/bigdefault/bigdefault.xml.in.h:1
-#: ../dat/shield/default/default.xml.in.h:1
 msgid "Default"
 msgstr "Standard"
 
@@ -2464,15 +2558,15 @@ msgid "You shall slaughter %1 armies of the treacherous %2."
 msgstr "Du skal dræbe %1 hære fra den forræderiske %2."
 
 #. Initially give the first hero the player's standard.
-#: ../../lordsawar/lordsawar/trunk/po/../src/player.cpp:2411
+#: ../../lordsawar/lordsawar/trunk/po/../src/player.cpp:2413
 msgid "%1 Standard"
 msgstr "%1 standard"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/player.cpp:2472
+#: ../../lordsawar/lordsawar/trunk/po/../src/player.cpp:2481
 msgid "Peace negotiated with "
 msgstr "Fred forhandlet med "
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/player.cpp:2479
+#: ../../lordsawar/lordsawar/trunk/po/../src/player.cpp:2488
 msgid "War declared with "
 msgstr "Krig erklæret med "
 
@@ -2527,15 +2621,15 @@ msgid "Defence: %1"
 msgstr "Forsvar: %1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/city-window.cpp:275
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/buy-production-dialog.cpp:165
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/buy-production-dialog.cpp:171
 msgid "No production"
 msgstr "Ingen produktion"
 
 #. note to translators: %1/%2 is the no. of steps completed out of the
 #. total no. of steps in the production
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/city-window.cpp:289
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:143
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:205
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:144
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:206
 msgid "Time: %1"
 msgstr "Tid: %1"
 
@@ -2543,30 +2637,30 @@ msgstr "Tid: %1"
 #. note to translators: %1 is melee strength
 #. note to translators: %1 is melee strength, %2 is ranged strength
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/city-window.cpp:291
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:74
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:137
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:199
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/buy-production-dialog.cpp:179
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:75
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:138
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:200
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/buy-production-dialog.cpp:185
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:444
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-gains-level-dialog.cpp:67
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-gains-level-dialog.cpp:71
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/select-army-dialog.cpp:184
 msgid "Strength: %1"
 msgstr "Styrke: %1"
 
 #. note to translators: %1 is total moves
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/city-window.cpp:296
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:141
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/buy-production-dialog.cpp:185
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-gains-level-dialog.cpp:63
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:142
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/buy-production-dialog.cpp:191
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-gains-level-dialog.cpp:67
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/select-army-dialog.cpp:186
 msgid "Moves: %1"
 msgstr "Bevægelser: %1"
 
 #. fill in second column
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/city-window.cpp:298
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:145
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:207
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/buy-production-dialog.cpp:183
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:146
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:208
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/buy-production-dialog.cpp:189
 msgid "Cost: %1"
 msgstr "Pris: %1"
 
@@ -2611,7 +2705,7 @@ msgstr "Observer"
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/preferences-dialog.cpp:78
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/preferences-dialog.cpp:143
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/preferences-dialog.cpp:195
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/preferences-dialog.cpp:210
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/preferences-dialog.cpp:209
 msgid "Human"
 msgstr "Menneske"
 
@@ -2737,24 +2831,24 @@ msgid "Fatal error"
 msgstr "Fatal fejl"
 
 #. note to translators: %1 is remaining moves, %2 is total moves
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:79
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:80
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:448
 msgid "Moves: %1/%2"
 msgstr "Bevægelser: %1/%2"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:82
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/buy-production-dialog.cpp:187
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:83
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/buy-production-dialog.cpp:193
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:451
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/select-army-dialog.cpp:190
 msgid "Upkeep: %1"
 msgstr "Vedligeholdelse: %1"
 
 #. note to translators: %1 is remaining moves, %2 is total moves
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:203
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:204
 msgid "Movement: %1"
 msgstr "Bevægelse: %1"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/buy-production-dialog.cpp:176
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/buy-production-dialog.cpp:182
 msgid "Duration: %1"
 msgstr "Varighed: %1"
 
@@ -2765,7 +2859,7 @@ msgstr "Denne helt har allerede en mission."
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:109
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:114
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:119
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/city-dialog.cpp:96
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/city-editor-dialog.cpp:46
 msgid "Turns"
 msgstr "Runder"
 
@@ -2897,11 +2991,10 @@ msgstr "ukendt"
 msgid "A Sage!"
 msgstr "En vismand!"
 
-#. remaining columns
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:125
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/players-dialog.cpp:100
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/city-dialog.cpp:92
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/stack-dialog.cpp:86
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/players-dialog.cpp:59
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/city-editor-dialog.cpp:130
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/stack-editor-dialog.cpp:118
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/backpack-editor-dialog.cpp:57
 msgid "Name"
 msgstr "Navn"
@@ -2935,82 +3028,78 @@ msgid "Command: %1"
 msgstr "Kommando: %1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:435
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3024
 msgid "Level: %1"
 msgstr "Niveau: %1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:437
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3022
 msgid "Experience: %1"
 msgstr "Erfaring: %1"
 
 #. prompt to save the turn file!
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:869
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:874
 msgid "Save your Turn file and mail it back"
 msgstr "Gem din rundefil og send den tilbage"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1090
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/splash-window.cpp:180
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1096
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/splash-window.cpp:165
 msgid "Choose Game to Load"
 msgstr "Vælg spil til indlæsning"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1124
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1132
 msgid "Game was not saved!"
 msgstr "Spil blev ikke gemt!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1131
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:429
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:778
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:806
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:834
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:514
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:810
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1139
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:782
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:810
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:838
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:821
 msgid "Choose a Name"
 msgstr "Vælg et navn"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1156
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1164
 msgid "Error saving game!"
 msgstr "Fejl under gemning af spil!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1201
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:295
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:470
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:670
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:693
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1244
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:298
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:473
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:673
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:696
 msgid "Corrupted saved game file."
 msgstr "Korrupt gemt spilfil."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1281
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1324
 msgid "Change the message on this sign:"
 msgstr "Ændr beskeden på dette vejskilt:"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1335
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1378
 msgid "Are you sure you want to disband this group?"
 msgstr "Er du sikker på, at du ønsker at opløse denne gruppe?"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1339
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1382
 msgid "(It contains %1 hero)."
 msgid_plural "(It contains %1 heroes)."
 msgstr[0] "(Den indeholder %1 helt)."
 msgstr[1] "(Den indeholder %1 helte)."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1397
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1440
 msgid "Are you sure you want to resign?"
 msgstr "Er du sikker på, at du ønsker at trække dig tilbage?"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1509
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1552
 msgid "No ruins or temples to show!"
 msgstr "Ingen ruiner eller templer at vise!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1725
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1768
 msgid "Congratulations to %1 for conquering the world!"
 msgstr "Tillykke til %1 for at erobre verden!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1742
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1786
 msgid "The rule of %1 has permanently ended!"
 msgstr "%1s regime er afsluttet!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1748
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1792
 msgid ""
 "No further human resistance is possible\n"
 "but the battle will continue!"
@@ -3018,7 +3107,7 @@ msgstr ""
 "Ingen yderligere menneskelig modstand er mulig,\n"
 "men slaget vil fortsætte!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1750
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1794
 msgid ""
 "Press `CTRL-P' to stop the war\n"
 "and visit the sites of thy old battles."
@@ -3026,14 +3115,14 @@ msgstr ""
 "Tryk Control+P for at afslutte krigen\n"
 "og besøge stederne for de gamle slag."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1898
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:269
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1944
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:271
 msgid "You have %1 city!"
 msgid_plural "You have %1 cities!"
 msgstr[0] "Du har %1 by!"
 msgstr[1] "Du har %1 byer!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1903
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1949
 msgid "You have %1 gold piece in your treasury!"
 msgid_plural "You have %1 gold pieces in your treasury!"
 msgstr[0] "Du har %1 guldstykke i dit skatkammer!"
@@ -3041,157 +3130,157 @@ msgstr[1] "Du har %1 guldstykker i dit skatkammer!"
 
 # "Du tjener %1 guldstykke!" - måske.
 # "Du får %1 guldstykke i indtægt!" - måske.
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1908
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1954
 msgid "You earn %1 gold piece in income!"
 msgid_plural "You earn %1 gold pieces in income!"
 msgstr[0] "Du har %1 guldstykke i indtægt!"
 msgstr[1] "Du har %1 guldstykker i indtægt!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1913
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1959
 msgid "You pay %1 gold piece in upkeep!"
 msgid_plural "You pay %1 gold pieces in upkeep!"
 msgstr[0] "Du betaler %1 guldstykke i vedligeholdelse!"
 msgstr[1] "Du betaler %1 guldstykker i vedligeholdelse!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2021
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2067
 msgid "UnGrp"
 msgstr "AfGrp"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2201
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2281
 msgid "%1 finds "
 msgstr "%s finder "
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2205
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2285
 msgid "%1 gold pieces."
 msgstr "%1 guldstykker."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2210
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2290
 msgid "%1 allies!"
 msgstr "%1 allierede!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2215
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2295
 msgid "the %1!"
 msgstr "%1!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2220
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2300
 msgid "a map!"
 msgstr "et kort!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2245
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2325
 msgid "Searching"
 msgstr "Søger"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2274
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2354
 msgid "Hero Victorious"
 msgstr "Helt vinder"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2276
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2356
 msgid "Hero Defeated"
 msgstr "Helt besejret"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2283
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2363
 msgid "...and is victorious!"
 msgstr "...og vinder!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2285
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2365
 msgid "...and is slain by it!"
 msgstr "...og dræbes!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2325
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2405
 msgid "Hero brings allies!"
 msgstr "Helt medbringer allierede!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2331
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2411
 msgid "The hero brings %1 ally!"
 msgid_plural "The hero brings %1 allies!"
 msgstr[0] "Helten medbringer %1 allieret!"
 msgstr[1] "Helten medbringer %1 allierede!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2363
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2443
 msgid "You graciously and benevolently accept their offer."
 msgstr "Du accepterer nådigt og velvilligt deres tilbud."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2389
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2469
 msgid "Are you sure you want to attack %1?"
 msgstr "Er du sikker på, at du ønsker at angribe %1?"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2392
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2472
 msgid "Other players may not like this!"
 msgstr "Andre spillere vil måske ikke bryde sig om det!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2445
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2525
 msgid "%1 army has been blessed!"
 msgid_plural "%1 armies have been blessed!"
 msgstr[0] "%1 hær er blevet velsignet!"
 msgstr[1] "%1 hære er blevet velsignet!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2448
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2528
 msgid "We have already blessed thee!"
 msgstr "Vi har allerede velsignet jer!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2451
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2531
 msgid "Seek more blessings in far temples!"
 msgstr "Søg yderligere velsignelser i fjerne templer!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2456
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2536
 msgid "Do you seek a quest?"
 msgstr "Søger du en mission?"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2598
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2678
 msgid "%1, you have triumphed in the battle of %2."
 msgstr "%1, du har vundet i slaget %2."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2599
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2679
 msgid "%1, you have claimed victory in the battle of %2."
 msgstr "%1, du har opnået sejr i slaget %2."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2600
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2680
 msgid "%1, you have shown no mercy in the battle of %2."
 msgstr "%1, du har ikke vist nogen nåde i slaget %2."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2601
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2681
 msgid "%1, you have slain the foe in the battle of %2."
 msgstr "%1, du har besejret fjenden i slaget %2."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2698
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2778
 msgid "%1 Looted"
 msgstr "%1 plyndret"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2705
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2785
 msgid "Your armies loot %1 gold piece."
 msgid_plural "Your armies loot %1 gold pieces."
 msgstr[0] "Dine hære plyndrer %1 guldstykke."
 msgstr[1] "Dine hære plyndrer %1 guldstykker."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2731
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2811
 msgid "Pillaged %1"
 msgstr "Røvede %1"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2758
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2838
 msgid "The loot is worth %1 gold piece."
 msgid_plural "The loot is worth %1 gold pieces."
 msgstr[0] "Byttet er %1 guldstykke værd."
 msgstr[1] "Byttet er %2 guldstykker værd."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2785
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2865
 msgid "Sacked %1"
 msgstr "Plyndrede %1"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2793
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2873
 msgid "Ability to produce %1 unit has been lost"
 msgid_plural "Ability to produce %1 units has been lost"
 msgstr[0] "Muligheden for at producere %1 enhed er blevet tabt"
 msgstr[1] "Muligheden for at producere %1 enheder er blevet tabt"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2885
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2965
 msgid "Razed %1"
 msgstr "Brændte %1 ned"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2890
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2970
 msgid "The city of %1 is in ruins!"
 msgstr "Byen %1 er i ruiner!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2986
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3066
 msgid ""
 "%1\n"
 "Turn %2"
@@ -3199,323 +3288,329 @@ msgstr ""
 "%1\n"
 "Runde %2"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3020
-msgid "%1 is awarded a medal!"
-msgstr "%1 tildeles en medalje!"
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3108
+msgid "Your unit of %1 is awarded the avenger's medal of valour!"
+msgstr "Din enhed %1 tildeles hævnerens æresmedalje!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3060
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3110
+msgid "Your unit of %1 is awarded the defender's medal of bravery!"
+msgstr "Din enhed %1 tildeles forsvarens medalje for mod!"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3112
+msgid "Your unit of %1 is awarded the veteran's medal!"
+msgstr "Din enhed %1 tildeles veteranens medalje!"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3114
+msgid "Your unit of %1 is awarded a medal!"
+msgstr "Din enhed %1 tildeles en medalje!"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3150
 msgid "%1, your turn continues."
 msgstr "%1, din runde fortsætter."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3093
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3183
 msgid "%1 did not complete the quest."
 msgstr "%1 færdiggjorde ikke missionen."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3159
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3249
 msgid "Advisor!"
 msgstr "Rådgiver!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3167
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3257
 msgid "My Good Lord!"
 msgstr "Min fyrste!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3169
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3259
 msgid "Great and Worthy Lord!"
 msgstr "Storslået fyrste!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3171
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3261
 msgid "O Champion of Justice!"
 msgstr "Retfærdighedens mester!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3173
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3263
 msgid "O Mighty Leader!"
 msgstr "Store leder!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3175
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3265
 msgid "O Great Warlord!"
 msgstr "Store krigsherre!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3183
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3273
 msgid "This battle will surely be as simple as butchering sleeping cattle!"
 msgstr "Dette slag vil være så nemt som at slagte sovende kvæg!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3185
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3191
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3275
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3281
 msgid "A battle here would be as simple as butchering sleeping cattle!"
 msgstr "Et slag her vil være så nemt som at slagte sovende kvæg!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3187
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3277
 msgid "I believe this battle will surely be as simple as butchering sleeping cattle!"
 msgstr "Jeg tror, at dette slag vil være så nemt som at slagte sovende kvæg!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3189
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3279
 msgid "This battle would be as simple as butchering sleeping cattle!"
 msgstr "Dette slag vil være så nemt som at slagte sovende kvæg!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3193
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3283
 msgid "I believe this battle will be as simple as butchering sleeping cattle!"
 msgstr "Jeg tror, at dette slag vil være så nemt som at slagte sovende kvæg!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3195
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3285
 msgid "This battle shall be as simple as butchering sleeping cattle!"
 msgstr "Dette slag vil være så nemt som at slagte sovende kvæg!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3200
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3290
 msgid "This battle will surely be an easy victory!  We cannot lose!"
 msgstr "Dette slag bliver en nem sejr!  Vi kan ikke tabe!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3202
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3208
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3292
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3298
 msgid "A battle here would be an easy victory!  We cannot lose!"
 msgstr "Et slag her vil være en nem sejr!  Vi kan ikke tabe!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3204
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3294
 msgid "I believe this battle will surely be an easy victory!  We cannot lose!"
 msgstr "Jeg tror, at dette slag vil være en nem sejr!  Vi kan ikke tabe!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3206
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3296
 msgid "This battle would be an easy victory!  We cannot lose!"
 msgstr "Dette slag vil være en nem sejr!  Vi kan ikke tabe!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3210
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3300
 msgid "I believe this battle will be an easy victory!  We cannot lose!"
 msgstr "Jeg tror, at dette slag vil være en nem sejr!  Vi kan ikke tabe!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3212
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3302
 msgid "This battle shall be an easy victory!  We cannot lose!"
 msgstr "Dette slag vil være en nem sejr!  Vi kan ikke tabe!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3217
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3307
 msgid "This battle will surely be a comfortable victory"
 msgstr "Dette slag vil helt sikkert være en komfortabel sejr"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3219
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3225
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3309
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3315
 msgid "A battle here would be a comfortable victory"
 msgstr "Et slag her vil være en komfortabel sejr"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3221
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3311
 msgid "I believe this battle will surely be a comfortable victory"
 msgstr "Jeg tror, at dette slag vil være en komfortabel sejr"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3223
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3313
 msgid "This battle would be a comfortable victory"
 msgstr "Dette slag vil være en komfortabel sejr"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3227
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3317
 msgid "I believe this battle will be a comfortable victory"
 msgstr "Jeg tror, dette slag vil være en komfortabel sejr"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3229
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3319
 msgid "This battle shall be a comfortable victory"
 msgstr "Dette slag vil blive en komfortabel sejr"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3234
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3324
 msgid "This battle will surely be a hard fought victory! But we shall win!"
 msgstr "Dette slag vil blive en hårdt tilkæmpet sejr! Men vi vil vinde!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3236
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3242
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3326
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3332
 msgid "A battle here would be a hard fought victory! But we shall win!"
 msgstr "Et slag her vil være en hårdt tilkæmpet sejr! Men vi vil vinde!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3238
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3328
 msgid "I believe this battle will surely be a hard fought victory! But we shall win!"
 msgstr "Jeg tror, at dette slag vil være en hårdt tilkæmpet sejr! Men vi vil vinde!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3240
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3330
 msgid "This battle would be a hard fought victory! But we shall win!"
 msgstr "Dette slag vil være en hårdt tilkæmpet sejr! Men vi vil vinde!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3244
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3334
 msgid "I believe this battle will be a hard fought victory! But we shall win!"
 msgstr "Jeg tror, at dette slag vil være en hårdt tilkæmpet sejr! Men vi vil vinde!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3246
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3336
 msgid "This battle shall be a hard fought victory! But we shall win!"
 msgstr "Dette slag vil være en hårdt tilkæmpet sejr! Men vi vil vinde!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3251
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3341
 msgid "This battle will surely be very evenly matched!"
 msgstr "Dette slag vil helt sikkert være lige!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3253
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3259
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3343
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3349
 msgid "A battle here would be very evenly matched!"
 msgstr "Et slag her vil være meget lige!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3255
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3345
 msgid "I believe this battle will surely be very evenly matched!"
 msgstr "Jeg tror, at dette slag vil være meget lige!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3257
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3347
 msgid "This battle would be very evenly matched!"
 msgstr "Dette slag vil være meget lige!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3261
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3351
 msgid "I believe this battle will be very evenly matched!"
 msgstr "Jeg tror, at dette slag vil være meget lige!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3263
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3353
 msgid "This battle shall be very evenly matched!"
 msgstr "Dette slag vil være meget lige!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3268
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3358
 msgid "This battle will surely be difficult but not impossible to win!"
 msgstr "Dette slag vil helt sikkert være svært men ikke umulig at vinde!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3270
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3276
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3360
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3366
 msgid "A battle here would be difficult but not impossible to win!"
 msgstr "Et slag her vil være svært men ikke umulig at vinde!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3272
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3362
 msgid "I believe this battle will surely be difficult but not impossible to win!"
 msgstr "Jeg tror, at dette slag vil være svært men ikke umulig at vinde!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3274
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3364
 msgid "This battle would be difficult but not impossible to win!"
 msgstr "Dette slag vil være svært men ikke umulig at vinde!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3278
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3368
 msgid "I believe this battle will be difficult but not impossible to win!"
 msgstr "Jeg tror, at dette slag vil være svært men ikke umulig at vinde!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3280
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3370
 msgid "This battle shall be difficult but not impossible to win!"
 msgstr "Dette slag vil være svært men ikke umulig at vinde!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3285
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3375
 msgid "This battle will surely be a brave choice! I leave it to thee!"
 msgstr "Dette slag vil være et modigt valg! Jeg overlader det til dig!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3287
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3293
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3377
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3383
 msgid "A battle here would be a brave choice! I leave it to thee!"
 msgstr "Et slag her vil være et modigt valg! Jeg overlader det til dig!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3289
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3379
 msgid "I believe this battle will surely be a brave choice! I leave it to thee!"
 msgstr "Jeg tror, at dette slag vil være et modigt valg! Jeg overlader det til dig!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3291
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3381
 msgid "This battle would be a brave choice! I leave it to thee!"
 msgstr "Dette slag vil være et modigt valg! Jeg overlader det til dig!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3295
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3385
 msgid "I believe this battle will be a brave choice! I leave it to thee!"
 msgstr "Jeg tror, at dette slag vil være et modigt valg! Jeg overlader det til dig!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3297
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3387
 msgid "This battle shall be a brave choice! I leave it to thee!"
 msgstr "Dette slag vil være et modigt valg! Jeg overlader det til dig!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3302
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3392
 msgid "This battle will surely be a foolish decision!"
 msgstr "Dette slag vil helt sikkert være en tåbelig beslutning!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3304
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3310
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3394
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3400
 msgid "A battle here would be a foolish decision!"
 msgstr "Et slag her vil være en tåbelig beslutning!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3306
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3396
 msgid "I believe this battle will surely be a foolish decision!"
 msgstr "Jeg tror, at dette slag vil være en tåbelig beslutning!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3308
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3398
 msgid "This battle would be a foolish decision!"
 msgstr "Dette slag vil være en tåbelig beslutning!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3312
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3402
 msgid "I believe this battle will be a foolish decision!"
 msgstr "Jeg tror, dette slag vil være en tåbelig beslutning!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3314
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3404
 msgid "This battle shall be a foolish decision!"
 msgstr "Dette slag vil være en tåbelig beslutning!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3319
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3409
 msgid "This battle will surely be sheerest folly!  Thou shouldst not attack!"
 msgstr "Dette slag vil være den største tåbelighed!  Du skal ikke angribe!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3321
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3327
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3411
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3417
 msgid "A battle here would be sheerest folly!  Thou shouldst not attack!"
 msgstr "Et slag her vil være den største tåbelighed!  Du skal ikke angribe!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3323
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3413
 msgid "I believe this battle will surely be sheerest folly!  Thou shouldst not attack!"
 msgstr "Jeg tror, at dette slag vil være den største tåbelighed!  Du skal ikke angribe!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3325
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3415
 msgid "This battle would be sheerest folly!  Thou shouldst not attack!"
 msgstr "Dette slag vil være den største tåbelighed!  Du skal ikke angribe!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3329
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3419
 msgid "I believe this battle will be sheerest folly!  Thou shouldst not attack!"
 msgstr "Jeg tror, at dette slag vil være den største tåbelighed!  Du skal ikke angribe!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3331
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3421
 msgid "This battle shall be sheerest folly!  Thou shouldst not attack!"
 msgstr "Dette slag vil være den største tåbelighed!  Du skal ikke angribe!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3336
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3426
 msgid "This battle will surely be complete and utter suicide!"
 msgstr "Dette slag vil være det rene selvmord!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3338
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3344
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3428
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3434
 msgid "A battle here would be complete and utter suicide!"
 msgstr "Et slag her vil være det rene selvmord!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3340
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3430
 msgid "I believe this battle will surely be complete and utter suicide!"
 msgstr "Jeg tror, at dette slag vil være det rene selvmord!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3342
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3432
 msgid "This battle would be complete and utter suicide!"
 msgstr "Dette slag vil være det rene selvmord!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3346
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3436
 msgid "I believe this battle will be complete and utter suicide!"
 msgstr "Jeg tror, dette slag vil være det rene selvmord!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3348
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3438
 msgid "This battle shall be complete and utter suicide!"
 msgstr "Dette slag vil være det rene selvmord!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/load-scenario-dialog.cpp:129
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/load-scenario-dialog.cpp:165
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/load-scenario-dialog.cpp:128
 msgid "Random Scenario"
 msgstr "Tilfældigt scenarie"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/load-scenario-dialog.cpp:166
-msgid "Play a new scenario with a random map."
-msgstr "Spil et nyt scenarie med et tilfældigt kort."
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/load-scenario-dialog.cpp:164
+msgid "Play a new scenario with a random map.  You get to decide the number of players, and number of cities on the map.  You can also control the amount of the map that is covered in forest, water, swamps and mountains."
+msgstr "Spil et nyt scenarie med et tilfældigt kort.  Du må bestemme over antallet af spillere, og antallet af byer på kortet.  Du kan også kontrollere den andel af kortet, som er dækket af skov, vand, sumpe eller bjerge."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/load-scenario-dialog.cpp:167
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/load-scenario-dialog.cpp:168
-msgid "?"
-msgstr "?"
-
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/load-scenario-dialog.cpp:267
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/load-scenario-dialog.cpp:266
 msgid "Select a scenario file to add to the library"
 msgstr "Vælg en scenariefil som skal tilføjes til biblioteket"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/load-scenario-dialog.cpp:275
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/load-scenario-dialog.cpp:274
 msgid "LordsAWar map files (*.map)"
 msgstr "LordsAWar kortfiler (*.map)"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:349
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:352
 msgid "Server went away."
 msgstr "Server forsvandt."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:365
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:368
 msgid "Could not connect."
 msgstr "Kunne ikke forbinde."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:482
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:485
 msgid ""
 "Invalid map file.\n"
 "Please validate it in the scenario editor."
@@ -3524,30 +3619,30 @@ msgstr ""
 "Valider det venligst i scenarieredigeringen."
 
 #. the neutral player must come last so it has the highest id among players
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:621
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:456
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:503
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:625
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:459
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:507
 msgid "Neutral"
 msgstr "Neutral"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:704
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:707
 msgid "Save the scenario and mail it to the first player"
 msgstr "Gem scenariet og send det til den første spiller"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:727
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:730
 msgid "Error while trying to rename the temporary file to "
 msgstr "Fejl under forsøg på at omdøbe den midlertidige til til "
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:729
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:732
 msgid "Error: "
 msgstr "Fejl: "
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:732
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:735
 msgid "Now send the saved-game file to %1"
 msgstr "Send nu den gemte fil til %1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-levels-dialog.cpp:117
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:325
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:327
 msgid "%1"
 msgstr "%1"
 
@@ -3586,7 +3681,7 @@ msgid "Ruins and Temples"
 msgstr "Ruiner og templer"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-report-dialog.cpp:138
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1170
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1174
 msgid "Ruin"
 msgstr "Ruin"
 
@@ -3625,7 +3720,7 @@ msgid "It is guarded."
 msgstr "Den er bevogtet."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-report-dialog.cpp:178
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1174
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1178
 msgid "Temple"
 msgstr "Tempel"
 
@@ -3633,15 +3728,15 @@ msgstr "Tempel"
 msgid "Rescue Crashed Game"
 msgstr "Red nedbrudt spil"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/splash-window.cpp:261
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/splash-window.cpp:246
 msgid "New Networked Game"
 msgstr "Nyt netværksspil"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/splash-window.cpp:297
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/splash-window.cpp:282
 msgid "New Play By Mail game"
 msgstr "Nyt per e-post spil"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/splash-window.cpp:377
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/splash-window.cpp:352
 msgid "Please exit the program and restart it for the changes to take effect."
 msgstr "Forlad venligst programmet og genstart det for at ændringerne kan træde i kraft."
 
@@ -3661,94 +3756,94 @@ msgstr "Mission?  Hvilken mission?"
 msgid "Thou hast no quests!"
 msgstr "Du har ingen missioner!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:94
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:96
 msgid "You produced %1 army this turn!"
 msgid_plural "You produced %1 armies this turn!"
 msgstr[0] "Du producerede %1 hær denne runde!"
 msgstr[1] "Du producerede %1 hære denne runde!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:199
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:201
 msgid "Army Report"
 msgstr "Hærrapport"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:202
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:204
 msgid "City Report"
 msgstr "Byrapport"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:205
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:207
 msgid "Gold Report"
 msgstr "Guldrapport"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:208
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:210
 msgid "Production Report"
 msgstr "Produktionsrapport"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:211
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:213
 msgid "Winning Report"
 msgstr "Sejrsrapport"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:237
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:239
 msgid "You have %1 army!"
 msgid_plural "You have %1 armies!"
 msgstr[0] "Du har %1 hær!"
 msgstr[1] "Du har %1 hære!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:301
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:303
 msgid "You have %1 gold piece!"
 msgid_plural "You have %1 gold pieces!"
 msgstr[0] "Du har %1 guldstykke!"
 msgstr[1] "Du har %1 guldstykker!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:315
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:317
 msgid "first"
 msgstr "første"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:315
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:317
 msgid "second"
 msgstr "anden"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:315
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:317
 msgid "third"
 msgstr "tredje"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:315
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:317
 msgid "fourth"
 msgstr "fjerde"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:315
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:317
 msgid "fifth"
 msgstr "femte"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:316
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:318
 msgid "sixth"
 msgstr "sjette"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:316
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:318
 msgid "seventh"
 msgstr "syvende"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:316
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:318
 msgid "eighth"
 msgstr "ottende"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:348
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:350
 msgid "You are coming %1"
 msgstr "Du er %1"
 
 # det er ikke et flag/fane det her?
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:388
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:392
 msgid "Standard"
 msgstr "Standard"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-gains-level-dialog.cpp:54
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-gains-level-dialog.cpp:58
 msgid "%1 has advanced to level %2!"
 msgstr "%1 er forfremmet til niveau %2!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-gains-level-dialog.cpp:58
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-gains-level-dialog.cpp:62
 msgid "Choose an attribute to improve:"
 msgstr "Vælg et karaktertræk at forbedre:"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-gains-level-dialog.cpp:65
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-gains-level-dialog.cpp:69
 msgid "Sight: %1"
 msgstr "Synsvidde: %1"
 
@@ -3766,39 +3861,48 @@ msgstr[1] "En helt i %2 ønsker at slutte sig til dig for %1 guldstykker!"
 msgid "A hero in %1 wants to join you!"
 msgstr "En helt i %1 ønsker at slutte sig til dig!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:329
+#. add default players
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:333
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/players-dialog.cpp:114
 msgid "The Sirians"
 msgstr "Sirianeerne"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:332
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:336
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/players-dialog.cpp:115
 msgid "Elvallie"
 msgstr "Elvallie"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:335
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:339
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/players-dialog.cpp:116
 msgid "Storm Giants"
 msgstr "Stormkæmper"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:338
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:342
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/players-dialog.cpp:117
 msgid "The Selentines"
 msgstr "Selentinerne"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:341
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:345
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/players-dialog.cpp:118
 msgid "Grey Dwarves"
 msgstr "Grå dværge"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:344
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:348
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/players-dialog.cpp:119
 msgid "Horse Lords"
 msgstr "Hestefyrster"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:347
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:351
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/players-dialog.cpp:120
 msgid "Orcs of Kor"
 msgstr "Orker fra Kor"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:350
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:354
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/players-dialog.cpp:121
 msgid "Lord Bane"
 msgstr "Lensherre Bane"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:471
+#: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:475
 msgid "Autogenerated"
 msgstr "Autooprettet"
 
@@ -3834,74 +3938,114 @@ msgstr "vest"
 msgid "northwest"
 msgstr "nordvest"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:349
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-info-dialog.cpp:100
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-info-dialog.cpp:101
+msgid "That subdirectory is already in use."
+msgstr "Den undermappe er allerede i brug."
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:458
 msgid "Choose an Armyset to Load"
 msgstr "Vælg et hærsæt til indlæsning"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:380
-msgid "Error, while loading an armyset. Armyset Name: "
-msgstr "Fejl under indlæsning af hærsæt. Navn på hærsæt: "
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:490
+msgid "There must be at least one army unit in the armyset."
+msgstr "Der skal være mindst 1 hærenhed i hærsættet."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/city-dialog.cpp:93
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:493
+msgid "There must be at least one hero in the armyset."
+msgstr "Der skal være mindst 1 helt i hærsættet."
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:496
+msgid "There must be at least one army unit with a production cost of more than zero."
+msgstr "Der skal være mindst 1 hærenhed med en produktionspris større end nul."
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:499
+msgid "There must be at least one army unit than can defend a ruin."
+msgstr "Der skal være mindst 1 hærenhed som kan forsvare en ruin."
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:502
+msgid "There must be at least one army unit than can be awarded to a hero."
+msgstr "Der skal være mindst 1 hærenhed som kan forfremmes til helt."
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:505
+msgid "The ship image must be set."
+msgstr "Skibsbilledet skal angives."
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:508
+msgid "The hero's standard (the flag) image must be set."
+msgstr "Heltens bannerbillede (flagbillede) skal angives."
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:516
+msgid "%1 does not have an image set for the %2 player"
+msgstr "%1 har ikke et billedsæt for spilleren %2"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:523
+msgid "An army unit does not have a name."
+msgstr "En hærenhed mangler et navn."
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/city-editor-dialog.cpp:44
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/stack-editor-dialog.cpp:48
 msgid "Strength"
 msgstr "Styrke"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/city-dialog.cpp:94
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/city-editor-dialog.cpp:45
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/stack-editor-dialog.cpp:49
 msgid "Max Moves"
 msgstr "Maks bevægelser"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/city-dialog.cpp:95
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/city-editor-dialog.cpp:47
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/stack-editor-dialog.cpp:50
 msgid "Upkeep"
 msgstr "Vedligeholdelse"
 
 #. sets up the lists
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:442
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:543
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:444
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:547
 msgid "Untitled"
 msgstr "Intet navn"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:442
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:543
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:444
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:547
 msgid "No description"
 msgstr "Ingen beskrivelse"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:723
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:727
 msgid "Choose Map to Load"
 msgstr "Vælg kort til indlæsning"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:753
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:757
 msgid "Could not load map %1."
 msgstr "Kunne ikke indlæse kort %1."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:772
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:855
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:776
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:859
 msgid "Map was not saved!"
 msgstr "Kort blev ikke gemt!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:800
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:828
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:804
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:832
 msgid "Map was not exported!"
 msgstr "Kort blev ikke eksporteret!"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:929
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:933
 msgid "Auto"
 msgstr "Auto"
 
 # nogen grund til at den her skal oversættes?
 #. note to translators: this is a coordinate pair (x, y)
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1144
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1148
 msgid "(%1, %2)"
 msgstr "(%1, %2)"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1176
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1180
 msgid "Bag"
 msgstr "Sæk"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1414
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1418
 msgid "No errors."
 msgstr "Ingen fejl."
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1417
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1421
 msgid ""
 "\n"
 "There is %1 more error"
@@ -3915,7 +4059,7 @@ msgstr[1] ""
 "\n"
 "Der er %1 yderligere fejl"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1419
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1423
 msgid ""
 "\n"
 "There is %1 warning"
@@ -3929,11 +4073,11 @@ msgstr[1] ""
 "\n"
 "Der er %! advarsler"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/ruin-dialog.cpp:221
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/ruin-editor-dialog.cpp:221
 msgid "No keeper"
 msgstr "Ingen vogter"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/ruin-dialog.cpp:339
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/ruin-editor-dialog.cpp:339
 msgid "No reward"
 msgstr "Ingen belønning"
 
@@ -3941,40 +4085,73 @@ msgstr "Ingen belønning"
 msgid "No army"
 msgstr "Ingen hær"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/reward-dialog.cpp:332
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/reward-editor-dialog.cpp:332
 msgid "No item"
 msgstr "Intet udstyr"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/reward-dialog.cpp:378
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/reward-editor-dialog.cpp:378
 msgid "No ally"
 msgstr "Ingen allierede"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/reward-dialog.cpp:432
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/reward-editor-dialog.cpp:432
 msgid "No Ruin"
 msgstr "Ingen ruin"
 
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:435
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:92
+msgid "Outer Top-Center"
+msgstr "Ydre top-centrum"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:95
+msgid "Outer Bottom-Center"
+msgstr "Ydre bund-centrum"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:98
+msgid "Inner Middle-Center"
+msgstr "Indre midt-centrum"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:104
+msgid "Top-Left To Bottom-Right"
+msgstr "Top-venstre til bund-højre"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:105
+msgid "Bottom-Left To Top-Right"
+msgstr "Bund-venstre til top-højre"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:115
+msgid "Solid"
+msgstr "Ubrudt"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:116
+msgid "Stippled"
+msgstr "Prikket"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:117
+msgid "Randomized"
+msgstr "Tilfældigt"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:118
+msgid "Sunken"
+msgstr "Sænket"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:119
+msgid "Tablecloth"
+msgstr "Borddug"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:120
+msgid "Diagonal"
+msgstr "Diagonal"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:121
+msgid "Crosshatched"
+msgstr "Krydsskraveret"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:122
+msgid "Sunken Striped"
+msgstr "Sænket og prikket"
+
+#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:511
 msgid "Choose a Tileset to Load"
 msgstr "Vælg et feltsæt til indlæsning"
-
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:466
-msgid "Error, while loading an tileset. Tileset Name: "
-msgstr "Fejl under indlæsning af feltsæt. Navn på feltsæt: "
-
-#. note to translators: abbreviation of Moves
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/stack-dialog.cpp:90
-msgid "Mov"
-msgstr "Bev."
-
-#. note to translators: abbreviation of Hitpoints
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/stack-dialog.cpp:92
-msgid "HP"
-msgstr "L"
-
-#. note to translators: abbreviation of Upkeep
-#: ../../lordsawar/lordsawar/trunk/po/../src/editor/stack-dialog.cpp:94
-msgid "Upk"
-msgstr "Vedl."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/xmlhelper.cpp:360
 msgid "Saving game without obfuscation.\n"
@@ -4063,188 +4240,6 @@ msgstr "Nedbrændingen af »%1« kunne ikke gennemføres."
 #: ../../lordsawar/lordsawar/trunk/po/../src/QCitySack.cpp:116
 msgid "You must take over and sack the city of \"%1\"."
 msgstr "Du skal overtage og brænde byen »%1« ned."
-
-#: ../dat/army/default/default.xml.in.h:1
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:1
-msgid "Archers"
-msgstr "Bueskytter"
-
-#: ../dat/army/default/default.xml.in.h:2
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:2
-msgid "Archons"
-msgstr "Anførere"
-
-#: ../dat/army/default/default.xml.in.h:3
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:3
-msgid "Catapults"
-msgstr "Katapulter"
-
-#: ../dat/army/default/default.xml.in.h:5
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:5
-msgid "Demons"
-msgstr "Dæmoner"
-
-#: ../dat/army/default/default.xml.in.h:6
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:6
-msgid "Devils"
-msgstr "Djævle"
-
-#: ../dat/army/default/default.xml.in.h:7
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:7
-msgid "Dragons"
-msgstr "Drager"
-
-#: ../dat/army/default/default.xml.in.h:8
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:8
-msgid "Dwarves"
-msgstr "Dværge"
-
-#: ../dat/army/default/default.xml.in.h:9
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:9
-msgid "Elementals"
-msgstr "Elementer"
-
-#: ../dat/army/default/default.xml.in.h:10
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:10
-msgid "Elephants"
-msgstr "Elefanter"
-
-#: ../dat/army/default/default.xml.in.h:11
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:11
-msgid "Ghosts"
-msgstr "Spøgelser"
-
-#: ../dat/army/default/default.xml.in.h:12
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:12
-msgid "Giant Bats"
-msgstr "Kæmpe flagermus"
-
-#: ../dat/army/default/default.xml.in.h:13
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:13
-msgid "Giant Worms"
-msgstr "Kæmpe orme"
-
-#: ../dat/army/default/default.xml.in.h:14
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:14
-msgid "Giants"
-msgstr "Kæmper"
-
-#: ../dat/army/default/default.xml.in.h:15
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:15
-msgid "Griffins"
-msgstr "Griffer"
-
-#: ../dat/army/default/default.xml.in.h:16
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:16
-msgid "Heavy Cav."
-msgstr "Tungt kav."
-
-#: ../dat/army/default/default.xml.in.h:17
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:17
-msgid "Heavy Inf."
-msgstr "Tungt inf."
-
-#: ../dat/army/default/default.xml.in.h:18
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:18
-msgid "Light Cav."
-msgstr "Let kav."
-
-#: ../dat/army/default/default.xml.in.h:19
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:19
-msgid "Light Inf."
-msgstr "Let inf."
-
-#: ../dat/army/default/default.xml.in.h:20
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:20
-msgid "Minotaurs"
-msgstr "Minotaurer"
-
-#: ../dat/army/default/default.xml.in.h:21
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:21
-msgid "Orcish Mob"
-msgstr "Orkpøbel"
-
-#: ../dat/army/default/default.xml.in.h:22
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:22
-msgid "Pegasi"
-msgstr "Pegasuser"
-
-#: ../dat/army/default/default.xml.in.h:23
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:23
-msgid "Pikemen"
-msgstr "Pikenerer"
-
-#: ../dat/army/default/default.xml.in.h:24
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:24
-msgid "Scouts"
-msgstr "Spejdere"
-
-#: ../dat/army/default/default.xml.in.h:25
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:25
-msgid "Spiders"
-msgstr "Edderkopper"
-
-#: ../dat/army/default/default.xml.in.h:26
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:26
-msgid "Unicorns"
-msgstr "Enhjørninger"
-
-#: ../dat/army/default/default.xml.in.h:27
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:27
-msgid "Wizards"
-msgstr "Troldmænd"
-
-#: ../dat/army/default/default.xml.in.h:28
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:28
-msgid "Wolfriders"
-msgstr "Ulveryttere"
-
-#: ../dat/army/default/default.xml.in.h:29
-#: ../dat/army/bigdefault/bigdefault.xml.in.h:29
-msgid "hero"
-msgstr "helt"
-
-#: ../dat/citysets/default/default.xml.in.h:2
-msgid "The default cityset of LordsAWar"
-msgstr "Standardbysættet i LordsAWar"
-
-#: ../dat/citysets/bigdefault/bigdefault.xml.in.h:2
-msgid "The doublesized default cityset of LordsAWar"
-msgstr "Standbysættet med dobbelt størrelse i LordsAWar"
-
-#: ../dat/citysets/dol/dol.xml.in.h:1 ../dat/citysets/bigdol/bigdol.xml.in.h:2
-#: ../dat/shield/dol/dol.xml.in.h:1
-msgid "Dol"
-msgstr "Dol"
-
-#: ../dat/citysets/dol/dol.xml.in.h:2
-msgid "The cityset that goes with the Dol scenario of LordsAWar"
-msgstr "Bysættet som følger med scenariet Dol i LordsAWar"
-
-#: ../dat/citysets/bigdol/bigdol.xml.in.h:1
-msgid "A doublesized cityset that goes with the Dol scenario of LordsAWar"
-msgstr "Et bysæt med dobbelt størrelse som følger med scenariet Dol i LordsAWar"
-
-#: ../dat/tilesets/default/default.xml.in.h:1
-msgid "A tileset based on Wesnoth tileset"
-msgstr "Et feltsæt baseret på feltsættet Wesnoth"
-
-#: ../dat/tilesets/bigdefault/bigdefault.xml.in.h:7
-msgid "The doublesized tileset based on Wesnoth tileset"
-msgstr "Feltsættet med dobbelt størrelse baseret på feltsættet Wesnoth"
-
-#: ../dat/tilesets/stark/stark.xml.in.h:1
-msgid "A stark and simple tileset"
-msgstr "Et nøgent og simpelt feltsæt"
-
-#: ../dat/tilesets/stark/stark.xml.in.h:6
-#: ../dat/tilesets/bigstark/bigstark.xml.in.h:5
-msgid "Stark"
-msgstr "Nøgen"
-
-#: ../dat/tilesets/bigstark/bigstark.xml.in.h:7
-msgid "The doublesized stark tileset"
-msgstr "Det nøgne feltsæt med dobbelt størrelse"
 
 #: ../dat/various/items/items.xml.in.h:1
 msgid "Armour of Gods"
@@ -4397,11 +4392,6 @@ msgstr "Ørnens vinger"
 #: ../dat/various/items/items.xml.in.h:38
 msgid "Witch's Broom"
 msgstr "Heksestav"
-
-# ikke nem den her, men tror det er et enkelt skjold
-#: ../dat/shield/plain/plain.xml.in.h:1
-msgid "Plain"
-msgstr "Enkel"
 
 #: ../dat/citynames.xml.in.h:1
 msgid "Ankh-Morpok"
@@ -5455,8 +5445,163 @@ msgstr "Zorabadan"
 msgid "Zygashian"
 msgstr "Zygashian"
 
-#~ msgid "<b>Army</b>"
-#~ msgstr "<b>Hær</b>"
+#~ msgid "The GPL version 2 or later."
+#~ msgstr "GPL version 2 eller senere."
+
+#~ msgid "translator-credits"
+#~ msgstr ""
+#~ "Joe Hansen <joedalton2@yahoo.dk>, 2008.\n"
+#~ "\n"
+#~ "Dansk-gruppen <dansk@dansk-gruppen.dk>\n"
+#~ "Mere info: http://www.dansk-gruppen.dk"
+
+#~ msgid "Is Hero?"
+#~ msgstr "Er helt?"
+
+#~ msgid "Save Armyset _As..."
+#~ msgstr "Gem hærsæt _som..."
+
+#~ msgid "Player:"
+#~ msgstr "Spiller:"
+
+#~ msgid "Save Tileset _As..."
+#~ msgstr "Gem feltsæt _som..."
+
+#~ msgid "Play a new scenario with a random map."
+#~ msgstr "Spil et nyt scenarie med et tilfældigt kort."
+
+#~ msgid "?"
+#~ msgstr "?"
+
+#~ msgid "Error, while loading an armyset. Armyset Name: "
+#~ msgstr "Fejl under indlæsning af hærsæt. Navn på hærsæt: "
+
+#~ msgid "Error, while loading an tileset. Tileset Name: "
+#~ msgstr "Fejl under indlæsning af feltsæt. Navn på feltsæt: "
+
+#~ msgid "Mov"
+#~ msgstr "Bev."
+
+#~ msgid "HP"
+#~ msgstr "L"
+
+#~ msgid "Upk"
+#~ msgstr "Vedl."
+
+#~ msgid "Archers"
+#~ msgstr "Bueskytter"
+
+#~ msgid "Archons"
+#~ msgstr "Anførere"
+
+#~ msgid "Catapults"
+#~ msgstr "Katapulter"
+
+#~ msgid "Demons"
+#~ msgstr "Dæmoner"
+
+#~ msgid "Devils"
+#~ msgstr "Djævle"
+
+#~ msgid "Dwarves"
+#~ msgstr "Dværge"
+
+#~ msgid "Elementals"
+#~ msgstr "Elementer"
+
+#~ msgid "Elephants"
+#~ msgstr "Elefanter"
+
+#~ msgid "Ghosts"
+#~ msgstr "Spøgelser"
+
+#~ msgid "Giant Bats"
+#~ msgstr "Kæmpe flagermus"
+
+#~ msgid "Giant Worms"
+#~ msgstr "Kæmpe orme"
+
+#~ msgid "Giants"
+#~ msgstr "Kæmper"
+
+#~ msgid "Griffins"
+#~ msgstr "Griffer"
+
+#~ msgid "Heavy Cav."
+#~ msgstr "Tungt kav."
+
+#~ msgid "Heavy Inf."
+#~ msgstr "Tungt inf."
+
+#~ msgid "Light Cav."
+#~ msgstr "Let kav."
+
+#~ msgid "Light Inf."
+#~ msgstr "Let inf."
+
+#~ msgid "Minotaurs"
+#~ msgstr "Minotaurer"
+
+#~ msgid "Orcish Mob"
+#~ msgstr "Orkpøbel"
+
+#~ msgid "Pegasi"
+#~ msgstr "Pegasuser"
+
+#~ msgid "Pikemen"
+#~ msgstr "Pikenerer"
+
+#~ msgid "Scouts"
+#~ msgstr "Spejdere"
+
+#~ msgid "Spiders"
+#~ msgstr "Edderkopper"
+
+#~ msgid "Unicorns"
+#~ msgstr "Enhjørninger"
+
+#~ msgid "Wizards"
+#~ msgstr "Troldmænd"
+
+#~ msgid "Wolfriders"
+#~ msgstr "Ulveryttere"
+
+#~ msgid "hero"
+#~ msgstr "helt"
+
+#~ msgid "The default cityset of LordsAWar"
+#~ msgstr "Standardbysættet i LordsAWar"
+
+#~ msgid "The doublesized default cityset of LordsAWar"
+#~ msgstr "Standbysættet med dobbelt størrelse i LordsAWar"
+
+#~ msgid "Dol"
+#~ msgstr "Dol"
+
+#~ msgid "The cityset that goes with the Dol scenario of LordsAWar"
+#~ msgstr "Bysættet som følger med scenariet Dol i LordsAWar"
+
+#~ msgid "A doublesized cityset that goes with the Dol scenario of LordsAWar"
+#~ msgstr "Et bysæt med dobbelt størrelse som følger med scenariet Dol i LordsAWar"
+
+#~ msgid "A tileset based on Wesnoth tileset"
+#~ msgstr "Et feltsæt baseret på feltsættet Wesnoth"
+
+#~ msgid "The doublesized tileset based on Wesnoth tileset"
+#~ msgstr "Feltsættet med dobbelt størrelse baseret på feltsættet Wesnoth"
+
+#~ msgid "A stark and simple tileset"
+#~ msgstr "Et nøgent og simpelt feltsæt"
+
+#~ msgid "Stark"
+#~ msgstr "Nøgen"
+
+#~ msgid "The doublesized stark tileset"
+#~ msgstr "Det nøgne feltsæt med dobbelt størrelse"
+
+# ikke nem den her, men tror det er et enkelt skjold
+#~ msgid "Plain"
+#~ msgstr "Enkel"
 
 #~ msgid "Export As Bitmap (no game objects)"
 #~ msgstr "Eksporter som bitmap (ingen spilobjekter)"
