@@ -45,10 +45,10 @@ SurrenderDialog::SurrenderDialog(int numEnemies)
     
     Glib::ustring s;
     s = String::ucompose
-      (ngettext("Your final opponent comes on bended knee and offers surrender!",
-		"%1 opponents come on bended knee and offer surrender!",
-		numEnemies), numEnemies);
-    s += _("\nDo you accept?");
+      (ngettext("Your enemy grudgingly surrenders!\n",
+		"Your enemies respectfully surrender!\n",
+		numEnemies));
+    s += _("Do you accept?");
     label->set_text(s);
     image->property_file()
       = File::getMiscFile("various/parley_offered.png");
