@@ -25,8 +25,6 @@
 #include <sigc++/signal.h>
 #include <gtkmm.h>
 
-class XML_Helper;
-
 #include "decorated.h"
 // dialog for choosing a scenario
 class LoadScenarioDialog: public Decorated
@@ -65,13 +63,7 @@ class LoadScenarioDialog: public Decorated
     
     std::string selected_filename;
     
-    std::string loaded_scenario_name;
-    int loaded_scenario_player_count;
-    int loaded_scenario_city_count;
-
     void on_selection_changed();
-    bool scan_scenario_details(std::string tag, XML_Helper* helper);
-    bool scan_scenario_name(std::string tag, XML_Helper* helper);
     void add_scenario(std::string filename);
     void on_add_scenario_clicked();
     void on_remove_scenario_clicked();

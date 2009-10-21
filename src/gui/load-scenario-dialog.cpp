@@ -17,22 +17,18 @@
 //  02110-1301, USA.
 
 #include <config.h>
-
 #include <list>
-
 #include <fstream>
 #include <sigc++/functors/mem_fun.h>
 #include <gtkmm.h>
 
 #include "load-scenario-dialog.h"
-
 #include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "Configuration.h"
 #include "File.h"
-#include "xmlhelper.h"
-
+#include "GameScenario.h"
 
 LoadScenarioDialog::LoadScenarioDialog()
 {
@@ -128,28 +124,14 @@ void LoadScenarioDialog::add_scenario(std::string filename)
       (*i)[scenarios_columns.name] = _("Random Scenario");
       return;
     }
+  bool broken = false;
+  std::string name = "", comment = "";
+  guint32 player_count = 0, city_count = 0;
   selected_filename = std::string((*i)[scenarios_columns.filename]);
-
-  XML_Helper helper(selected_filename, std::ios::in, 
-		    Configuration::s_zipfiles);
-
-  helper.registerTag ("scenario", sigc::mem_fun
-		      (this, &LoadScenarioDialog::scan_scenario_name));
-
-  if (!helper.parse())
-    {
-      std::cerr << "Error: Could not parse " << selected_filename << std::endl;
-      (*i)[scenarios_columns.name] = filename;
-
-      return;
-    }
-  else
-    (*i)[scenarios_columns.name] = loaded_scenario_name;
-
-
-  helper.close();
+  GameScenario::loadDetails(selected_filename, broken, player_count, city_count, name, comment);
+  if (broken == false)
+    (*i)[scenarios_columns.name] = name;
 }
-
 
 void LoadScenarioDialog::on_selection_changed()
 {
@@ -171,92 +153,28 @@ void LoadScenarioDialog::on_selection_changed()
 	}
 
       selected_filename = filename;
+      bool broken = false;
+      std::string name, comment;
+      guint32 player_count = 0, city_count = 0;
+      GameScenario::loadDetails(filename, broken, player_count, city_count, name, comment);
 
-      XML_Helper helper(selected_filename, std::ios::in, 
-			Configuration::s_zipfiles);
-
-      loaded_scenario_player_count = 0;
-      loaded_scenario_city_count = 0;
-      helper.registerTag ("scenario", sigc::mem_fun
-			  (this, &LoadScenarioDialog::scan_scenario_details));
-      helper.registerTag ("player", sigc::mem_fun
-			  (this, &LoadScenarioDialog::scan_scenario_details));
-      helper.registerTag ("city", sigc::mem_fun
-			  (this, &LoadScenarioDialog::scan_scenario_details));
-
-      if (!helper.parse())
+      if (broken == true)
 	{
 	  std::cerr << "Error: Could not parse " << selected_filename << std::endl;
 	  load_button->set_sensitive(false);
 	  return;
 	}
-
-      helper.close();
-	{
-	  remove_scenario_button->set_sensitive(true);
-	  load_button->set_sensitive(true);
-	  num_players_label->set_markup
-	    ("<b>" + String::ucompose("%1", loaded_scenario_player_count - 1)
-	     + "</b>");
-	  num_cities_label->set_markup
-	    ("<b>" + String::ucompose("%1", loaded_scenario_city_count) + 
-	     "</b>");
-	}
+	  
+      remove_scenario_button->set_sensitive(true);
+      load_button->set_sensitive(true);
+      num_players_label->set_markup 
+	("<b>" + String::ucompose("%1", player_count - 1) + "</b>");
+      num_cities_label->set_markup 
+	("<b>" + String::ucompose("%1", city_count) + "</b>");
+      description_textview->get_buffer()->set_text(comment);
     }
   else
     load_button->set_sensitive(false);
-}
-
-bool LoadScenarioDialog::scan_scenario_details(std::string tag, 
-					       XML_Helper* helper)
-{
-  if (tag == "scenario")
-    {
-      if (helper->getVersion() != LORDSAWAR_SAVEGAME_VERSION)
-	{
-	  std::cerr << "scenario has wrong version, we want "
-	    << LORDSAWAR_SAVEGAME_VERSION <<",\n"
-	    << "scenario offers " << helper->getVersion() <<".\n";
-	  return false;
-	}
-
-      std::string name, comment;
-      helper->getData(name, "name");
-      helper->getData(comment, "comment");
-
-      description_textview->get_buffer()->set_text(comment);
-    }
-  else if (tag == "player")
-    {
-      loaded_scenario_player_count++;
-    }
-  else if (tag == "city")
-    {
-      loaded_scenario_city_count++;
-    }
-
-  return true;
-}
-
-bool LoadScenarioDialog::scan_scenario_name(std::string tag, XML_Helper* helper)
-{
-  if (tag == "scenario")
-    {
-      if (helper->getVersion() != LORDSAWAR_SAVEGAME_VERSION)
-	{
-	  std::cerr << "scenario has wrong version, we want "
-	    << LORDSAWAR_SAVEGAME_VERSION <<",\n"
-	    << "scenario offers " << helper->getVersion() <<".\n";
-	  return false;
-	}
-
-      std::string name;
-      helper->getData(name, "name");
-
-      loaded_scenario_name = name;
-    }
-
-  return true;
 }
 
 void LoadScenarioDialog::on_add_scenario_clicked() 
@@ -312,5 +230,3 @@ void LoadScenarioDialog::on_remove_scenario_clicked()
     }
   return;
 }
-
-

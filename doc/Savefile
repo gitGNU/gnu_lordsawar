@@ -1,12 +1,18 @@
 Copyright (C) 2003, 2004, 2005 Ulf Lorenz
 Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-Copyright (C) 2007 Ben Asselstine
+Copyright (C) 2007, 2009 Ben Asselstine
 This document describes the format of a lordsawar save game. 
 
 
-The save game files are in XML. The tags are displayed here as they appear 
-in the save game.  The text in between the tags are comments.  There are 
-two kinds of tags:
+The save game files are in uncompressed tar format. 
+The first file is the scenario file, which is an xml file.  It is this scenario file format that is described in this document.
+The rest of the files are in the tar file are: citysets, shieldsets, armysets, tilesets and their associated image (.png) files.
+
+
+The scenario file is known as a "savegame" in this document.
+
+The tags are displayed here as they appear in the save game.  
+The text in between the tags are comments.  There are two kinds of tags:
 
 - tags to structure the savefile
 - data tags

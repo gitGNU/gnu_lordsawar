@@ -74,7 +74,7 @@ using namespace std;
 GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
 			   GameScenario::PlayMode playmode)
     :d_name(name),d_comment(comment), d_turnmode(turnmode), 
-    d_playmode(playmode), recording_file(""), inhibit_autosave_removal(false)
+    d_playmode(playmode), inhibit_autosave_removal(false)
 {
     Armysetlist::getInstance();
     Tilesetlist::getInstance();
@@ -88,7 +88,7 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
 
 //savegame has an absolute path
 GameScenario::GameScenario(string savegame, bool& broken)
-  :d_turnmode(true), d_playmode(GameScenario::HOTSEAT), recording_file(""), 
+  :d_turnmode(true), d_playmode(GameScenario::HOTSEAT), 
     inhibit_autosave_removal(false)
 {
   Tar_Helper t(savegame, std::ios::in);
@@ -216,7 +216,7 @@ bool GameScenario::loadShieldsets(Tar_Helper *t)
 }
 
 GameScenario::GameScenario(XML_Helper &helper, bool& broken)
-  : d_turnmode(true), d_playmode(GameScenario::HOTSEAT), recording_file(""),
+  : d_turnmode(true), d_playmode(GameScenario::HOTSEAT),
     inhibit_autosave_removal(false)
 {
   broken = loadWithHelper(helper);
@@ -862,23 +862,7 @@ bool GameScenario::autoSave()
 void GameScenario::nextRound()
 {
   s_round++;
-
-  if (recording_file != "")
-    {
-      XML_Helper helper(recording_file, std::ios::app, 
-			Configuration::s_zipfiles);
-      //what do i do now?
-      Playerlist *pl = Playerlist::getInstance();
-      for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
-	{
-	  (*it)->saveNetworkActions(&helper);
-	  //somehow dump the action list of each player, while 
-	  //appending to recording file.
-	}
-      helper.close();
-    }
   autoSave();
-
 }
 
 std::string GameScenario::playModeToString(const GameScenario::PlayMode mode)
@@ -1023,6 +1007,24 @@ void GameScenario::initialize(GameParameters g)
 class ParamLoader
 {
 public:
+    ParamLoader(std::string filename, bool &broken) {
+      Tar_Helper t(filename, std::ios::in);
+      std::string tmpfile = t.getFirstFile(broken);
+      XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
+      helper.registerTag(GameMap::d_tag, 
+			 sigc::mem_fun(this, &ParamLoader::loadParam));
+      helper.registerTag(GameScenario::d_tag, 
+			 sigc::mem_fun(this, &ParamLoader::loadParam));
+      helper.registerTag(Playerlist::d_tag, 
+			 sigc::mem_fun(this, &ParamLoader::loadParam));
+      helper.registerTag(Player::d_tag, 
+			 sigc::mem_fun(this, &ParamLoader::loadParam));
+      bool retval = helper.parse();
+      File::erase(tmpfile);
+      if (broken == false)
+	broken = !retval;
+      helper.close();
+    }
     bool loadParam(std::string tag, XML_Helper* helper)
       {
 	if (tag == Playerlist::d_tag)
@@ -1111,29 +1113,28 @@ public:
 };
 GameParameters GameScenario::loadGameParameters(std::string filename, bool &broken)
 {
-  ParamLoader loader;
+  ParamLoader loader(filename, broken);
   
-  Tar_Helper t(filename, std::ios::in);
-  std::string tmpfile = t.getFirstFile(broken);
-  XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
-  helper.registerTag(GameMap::d_tag, 
-		     sigc::mem_fun(loader, &ParamLoader::loadParam));
-  helper.registerTag(GameScenario::d_tag, 
-		     sigc::mem_fun(loader, &ParamLoader::loadParam));
-  helper.registerTag(Playerlist::d_tag, 
-		     sigc::mem_fun(loader, &ParamLoader::loadParam));
-  helper.registerTag(Player::d_tag, 
-		     sigc::mem_fun(loader, &ParamLoader::loadParam));
-  bool retval = helper.parse();
-  File::erase(tmpfile);
-
-  broken = !retval;
-  helper.close();
   return loader.game_params;
 }
+
 class PlayModeLoader
 {
 public:
+    PlayModeLoader(std::string filename, bool broken) {
+      play_mode = GameScenario::HOTSEAT;
+      Tar_Helper t(filename, std::ios::in);
+      std::string file = File::get_basename(filename, true);
+      std::string tmpfile = t.getFirstFile(broken);
+      XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
+      helper.registerTag(GameScenario::d_tag, 
+			 sigc::mem_fun(this, &PlayModeLoader::loadParam));
+      bool retval = helper.parse();
+      File::erase(tmpfile);
+      if (broken == false)
+	broken = !retval;
+      helper.close();
+    }
     bool loadParam(std::string tag, XML_Helper* helper)
       {
 	if (tag == GameScenario::d_tag)
@@ -1150,29 +1151,64 @@ public:
 
 GameScenario::PlayMode GameScenario::loadPlayMode(std::string filename, bool &broken)
 {
-  PlayModeLoader loader;
-  
-  Tar_Helper t(filename, std::ios::in);
-  std::string file = File::get_basename(filename, true);
-  std::string tmpfile = t.getFirstFile(broken);
-  //t.Close();
-  XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
-  helper.registerTag(GameScenario::d_tag, 
-		     sigc::mem_fun(loader, &PlayModeLoader::loadParam));
-  bool retval = helper.parse();
-  File::erase(tmpfile);
-
-  broken = !retval;
-  helper.close();
+  PlayModeLoader loader(filename, broken);
   return loader.play_mode;
 }
 
-void GameScenario::startRecordingEventsToFile(std::string filename)
+class DetailsLoader
 {
-  recording_file = filename;
+public:
+    DetailsLoader(std::string filename, bool &broken) {
+      player_count = 0; city_count = 0; name = ""; comment = "";
+      Tar_Helper t(filename, std::ios::in);
+      std::string tmpfile = t.getFirstFile(broken);
+      XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
+      helper.registerTag(GameScenario::d_tag, 
+			 sigc::mem_fun(this, &DetailsLoader::loadDetails));
+      helper.registerTag(Player::d_tag, 
+			 sigc::mem_fun(this, &DetailsLoader::loadDetails));
+      helper.registerTag(City::d_tag, 
+		     sigc::mem_fun(this, &DetailsLoader::loadDetails));
+      bool retval = helper.parse();
+      if (!broken)
+	broken = !retval;
+      File::erase(tmpfile);
+    }
+
+    bool loadDetails(std::string tag, XML_Helper* helper)
+      {
+	if (tag == GameScenario::d_tag)
+	  {
+	    helper->getData(name, "name");
+	    helper->getData(comment, "comment");
+	    return true;
+	  }
+	if (tag == Player::d_tag)
+	  {
+	    player_count++;
+	    return true;
+	  }
+	if (tag == City::d_tag)
+	  {
+	    city_count++;
+	    return true;
+	  }
+	return false;
+      };
+    Tar_Helper *t;
+    std::string name, comment;
+    guint32 player_count, city_count;
+};
+void GameScenario::loadDetails(std::string filename, bool &broken, guint32 &player_count, guint32 &city_count, std::string &name, std::string &comment)
+{
+  DetailsLoader loader(filename, broken);
+  if (broken == false)
+    {
+      player_count = loader.player_count;
+      city_count = loader.city_count;
+      name = loader.name;
+      comment = loader.comment;
+    }
+  return;
 }
 
-void GameScenario::stopRecordingEventsToFile()
-{
-  recording_file = "";
-}

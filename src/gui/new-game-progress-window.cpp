@@ -26,8 +26,7 @@ Glib::StaticMutex mutex = GLIBMM_STATIC_MUTEX_INIT;
 NewGameProgressWindow *NewGameProgressWindow::s_instance = 0;
 
 NewGameProgressWindow::NewGameProgressWindow(GameParameters g, GameScenario::PlayMode mode, std::string recording_file)
-: game_params(g), m_end_thread(false), m_vbox(false,10), d_play_mode(mode),
-    d_recording_file(recording_file)
+: game_params(g), m_end_thread(false), m_vbox(false,10), d_play_mode(mode)
 {
   add(m_vbox);
   m_vbox.set_border_width(10);
@@ -84,8 +83,6 @@ void NewGameProgressWindow::thread_worker()
   if (broken)
     return;
 
-  if (d_recording_file != "")
-    game_scenario->startRecordingEventsToFile(d_recording_file);
   game_scenario->setName(game_params.name);
   game_scenario->setPlayMode(d_play_mode);
 

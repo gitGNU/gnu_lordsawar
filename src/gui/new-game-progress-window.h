@@ -71,7 +71,6 @@ class NewGameProgressWindow : public Gtk::Window, boost::noncopyable
     GameScenario *d_game_scenario;
 
     GameScenario::PlayMode d_play_mode;
-    std::string d_recording_file;
 
     static NewGameProgressWindow *s_instance;
 };

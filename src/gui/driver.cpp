@@ -675,8 +675,6 @@ GameScenario *Driver::load_game(std::string file_path)
 	dialog.hide();
 	return NULL;
       }
-    if (Main::instance().record != "")
-      game_scenario->startRecordingEventsToFile(Main::instance().record);
     return game_scenario;
 }
 
@@ -812,8 +810,6 @@ void Driver::stress_test()
   if (broken)
     return;
 
-  if (Main::instance().record != "")
-    game_scenario->startRecordingEventsToFile(Main::instance().record);
   NextTurnHotseat *nextTurn;
   nextTurn = new NextTurnHotseat(game_scenario->getTurnmode(),
 				 game_scenario->s_random_turns);

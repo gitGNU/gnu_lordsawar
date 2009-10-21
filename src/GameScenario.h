@@ -133,8 +133,7 @@ class GameScenario: public GameScenarioOptions
 
 	static PlayMode loadPlayMode(std::string filename, bool &broken);
 
-	void startRecordingEventsToFile(std::string filename);
-	void stopRecordingEventsToFile();
+	static void loadDetails(std::string filename, bool &broken, guint32 &player_count, guint32 &city_count, std::string &name, std::string &comment);
 
 	void inhibitAutosaveRemoval(bool i) {inhibit_autosave_removal = i;}
     private:
@@ -167,7 +166,6 @@ class GameScenario: public GameScenarioOptions
 	  bool d_turnmode; //see NextTurn for a description of this option
 	  guint32 d_playmode;
 	  std::string d_id; //globally unique id identifying the scenario
-	  std::string recording_file;
 	  bool inhibit_autosave_removal;
 };
 
