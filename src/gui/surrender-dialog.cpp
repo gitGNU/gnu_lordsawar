@@ -44,10 +44,9 @@ SurrenderDialog::SurrenderDialog(int numEnemies)
     xml->get_widget("image", image);
     
     Glib::ustring s;
-    s = String::ucompose
-      (ngettext("Your enemy grudgingly surrenders!\n",
-		"Your enemies respectfully surrender!\n",
-		numEnemies));
+    s = ngettext("Your enemy grudgingly surrenders!\n",
+		 "Your enemies respectfully surrender!\n",
+		 numEnemies);
     s += _("Do you accept?");
     label->set_text(s);
     image->property_file()
