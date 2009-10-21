@@ -507,8 +507,16 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surfac
 	case Maptile::RUIN:
 	    {
 	      Ruin *ruin = GameMap::getRuin(tile);
-	      building_tile = tile - ruin->getPos();
-	      building_subtype = ruin->getType();
+	      if (ruin->isHidden() == true && ruin->getOwner() == active)
+		{
+		  building_tile = tile - ruin->getPos();
+		  building_subtype = ruin->getType();
+		}
+	      else if (ruin->isHidden() == false)
+		{
+		  building_tile = tile - ruin->getPos();
+		  building_subtype = ruin->getType();
+		}
 	    }
 	  break;
 	case Maptile::TEMPLE:
