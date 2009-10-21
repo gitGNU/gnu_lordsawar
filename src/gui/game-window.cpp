@@ -114,7 +114,6 @@
 #include "NextTurnNetworked.h"
 #include "pbm-game-server.h"
 #include "network_player.h"
-#include "FogMap.h"
 
 
 GameWindow::GameWindow()
@@ -3556,7 +3555,7 @@ void GameWindow::give_some_cheese(Player *winner)
   end_turn_menuitem->set_sensitive(false);
   save_game_menuitem->set_sensitive(false);
   save_game_as_menuitem->set_sensitive(false);
-  Playerlist::getActiveplayer()->getFogMap()->fill(FogMap::OPEN);
+  Playerlist::getActiveplayer()->clearFogMap();
   show_shield_turn();
   game->redraw();
   on_city_history_activated();

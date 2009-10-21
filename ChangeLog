@@ -1,9 +1,11 @@
 2009-10-21  Ben Asselstine  <benasselstine@gmail.com>
 
 	* changing savefile format to be a tarball.
-	* moving graphicsloader routines back into their requisite objects
-	* added "new cost" to armyprototypes
-	* added "tile width" to cityset
+	* moving graphicsloader routines back into their requisite objects.
+	* added "new cost" to armyprototypes.
+	* added "tile width" to cityset.
+	* fixed scenario editor bug regarding creating new tiny maps.
+	* added ability to import saved games into the scenario editor.
 
 2009-10-21  Ben Asselstine  <benasselstine@gmail.com>
 

@@ -195,6 +195,9 @@ MainWindow::MainWindow()
     xml->get_widget("save_map_as_menuitem", save_map_as_menuitem);
     save_map_as_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &MainWindow::on_save_map_as_activated));
+    xml->get_widget("import_map_from_sav_menuitem", import_map_from_sav_menuitem);
+    import_map_from_sav_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_import_map_activated));
     xml->get_widget("export_as_bitmap_menuitem", export_as_bitmap_menuitem);
     export_as_bitmap_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &MainWindow::on_export_as_bitmap_activated));
@@ -1141,6 +1144,14 @@ void MainWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map, Gdk::Rectang
 
 void MainWindow::init_maps()
 {
+    // init the smallmap
+    if (smallmap)
+      delete smallmap;
+    smallmap =new SmallMap;
+    smallmap->resize();
+    smallmap->map_changed.connect(
+	sigc::mem_fun(this, &MainWindow::on_smallmap_changed));
+
     // init the bigmap
     if (bigmap)
       delete bigmap;
@@ -1151,16 +1162,10 @@ void MainWindow::init_maps()
 	sigc::mem_fun(this, &MainWindow::on_objects_selected));
     bigmap->map_changed.connect(
 	sigc::mem_fun(this, &MainWindow::on_bigmap_changed));
+
     // grid is on by default
     bigmap->toggle_grid();
     
-    // init the smallmap
-    if (smallmap)
-      delete smallmap;
-    smallmap =new SmallMap;
-    smallmap->map_changed.connect(
-	sigc::mem_fun(this, &MainWindow::on_smallmap_changed));
-
     // connect the two maps
     bigmap->view_changed.connect(
 	sigc::mem_fun(smallmap, &SmallMap::set_view));
@@ -1169,7 +1174,8 @@ void MainWindow::init_maps()
     smallmap->view_changed.connect(
 	sigc::mem_fun(bigmap, &EditorBigMap::set_view));
 
-    smallmap->resize(GameMap::get_dim() * 2);
+    //trigger the bigmap to resize the view box in the smallmap
+    bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
 }
 
 void MainWindow::on_mouse_on_tile(Vector<int> tile)
@@ -1481,4 +1487,66 @@ void MainWindow::on_validate_activated()
   dialog.show_all();
   dialog.run();
   dialog.hide();
+}
+      
+	
+void MainWindow::clear_save_file_of_scenario_specific_data()
+{
+  Playerlist *plist = Playerlist::getInstance();
+  for (Playerlist::iterator i = plist->begin(); i != plist->end(); i++)
+    {
+      (*i)->clearActionlist();
+      (*i)->clearHistorylist();
+      (*i)->clearStacklist();
+      (*i)->clearFogMap();
+      (*i)->setGold(1000);
+      (*i)->revive();
+    }
+}
+
+void MainWindow::on_import_map_activated()
+{
+    Gtk::FileChooserDialog chooser(*window, _("Choose Game to Load Map from"));
+    Gtk::FileFilter sav_filter;
+    sav_filter.add_pattern("*.sav");
+    chooser.set_filter(sav_filter);
+    chooser.set_current_folder(File::getSavePath());
+
+    chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
+    chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
+	
+    chooser.show_all();
+    int res = chooser.run();
+    
+    if (res == Gtk::RESPONSE_ACCEPT)
+    {
+        std::string filename = chooser.get_filename();
+	chooser.hide();
+
+	clear_map_state();
+
+	bool broken;
+	if (game_scenario)
+	  delete game_scenario;
+	game_scenario = new GameScenario(filename, broken);
+
+	if (broken)
+	{
+	    show_error(String::ucompose(_("Could not load game %1."),
+					filename));
+	    current_save_filename = "";
+	    return;
+	}
+
+	if (d_create_scenario_names)
+	  delete d_create_scenario_names;
+	d_create_scenario_names = new CreateScenarioRandomize();
+
+	//now lets get rid of stuff.
+	clear_save_file_of_scenario_specific_data();
+
+	init_map_state();
+	bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
+    }
 }

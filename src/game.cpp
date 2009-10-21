@@ -315,7 +315,7 @@ void Game::update_sidebar_stats()
     s.cities = Citylist::getInstance()->countCities(player);
 
     s.units = 0;
-    s.upkeep = player->getUpkeep();
+    s.upkeep = player->getUpkeep() + player->getCostOfUnitsProducedThisTurn();
     Stacklist *sl = player->getStacklist();
     for (Stacklist::iterator i = sl->begin(), iend = sl->end(); i != iend; ++i)
       s.units += (*i)->size();

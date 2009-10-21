@@ -41,7 +41,14 @@
                     <child>
                       <object class="GtkMenuItem" id="save_map_as_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Save Map _As...</property>
+                        <property name="label" translatable="yes">Save Map _As</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="import_map_from_sav_menuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Import Map from Saved Game</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>

@@ -64,6 +64,7 @@ class MainWindow: public sigc::trackable
     Gtk::MenuItem *load_map_menuitem;
     Gtk::MenuItem *save_map_menuitem;
     Gtk::MenuItem *save_map_as_menuitem;
+    Gtk::MenuItem *import_map_from_sav_menuitem;
     Gtk::MenuItem *export_as_bitmap_menuitem;
     Gtk::MenuItem *export_as_bitmap_no_game_objects_menuitem;
     Gtk::MenuItem *validate_menuitem;
@@ -110,6 +111,7 @@ class MainWindow: public sigc::trackable
     void on_new_map_activated();
     void on_load_map_activated();
     void on_save_map_activated();
+    void on_import_map_activated();
     void on_export_as_bitmap_activated();
     void on_export_as_bitmap_no_game_objects_activated();
     void on_validate_activated();
@@ -166,6 +168,8 @@ class MainWindow: public sigc::trackable
     void on_terrain_radiobutton_toggled();
     void on_tile_style_radiobutton_toggled();
     
+
+    void clear_save_file_of_scenario_specific_data();
     Tile::Type get_terrain();
     int get_tile_style_id();
     void setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> xml,

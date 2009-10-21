@@ -3639,4 +3639,25 @@ void Player::immobilize()
 {
   d_stacklist->drainAllMovement();
 }
+
+guint32 Player::getCostOfUnitsProducedThisTurn()
+{
+  guint32 gold = 0;
+  std::list<Action_Produce *> units = getUnitsProducedThisTurn();
+  for (std::list<Action_Produce *>::iterator it = units.begin(); it != units.end(); it++)
+    gold +=(*it)->getArmy()->getProductionCost();
+    
+  return gold;
+
+}
+	  
+void Player::clearStacklist()
+{
+  d_stacklist->flClear();
+}
+
+void Player::clearFogMap()
+{
+  d_fogmap->fill(FogMap::OPEN);
+}
 // End of file

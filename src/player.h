@@ -243,6 +243,12 @@ class Player: public sigc::trackable
         //! Remove every History element from the list of the player's events.
         void clearHistorylist();
 
+	//! Remove all stacks from the player's list.
+	void clearStacklist();
+
+	//! Remove all fog from the player's map.
+	void clearFogMap();
+
         //! Add a Stack to the player's Stacklist.
         void addStack(Stack* stack);
 
@@ -254,6 +260,8 @@ class Player: public sigc::trackable
 
 	//! Returns a list of the player's unit production actions for this turn.
 	std::list<Action_Produce *> getUnitsProducedThisTurn();
+
+	guint32 getCostOfUnitsProducedThisTurn();
 
 	//! Returns a list of the player's actions to show in a report.
 	std::list<Action *> getReportableActions();
