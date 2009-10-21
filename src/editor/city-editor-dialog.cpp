@@ -215,7 +215,7 @@ void CityEditorDialog::on_player_changed()
     }
 }
 
-void CityEditorDialog::run()
+int CityEditorDialog::run()
 {
   dialog->show_all();
   int response = dialog->run();
@@ -270,6 +270,7 @@ void CityEditorDialog::run()
       if (name_entry->get_text() != City::getDefaultName())
 	d_randomizer->pushRandomCityName(name_entry->get_text());
     }
+  return response;
 }
 
 void CityEditorDialog::on_add_clicked()

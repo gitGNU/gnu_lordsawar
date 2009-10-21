@@ -33,25 +33,27 @@ ArmyProtoBase::ArmyProtoBase(const ArmyProtoBase& a)
     :ArmyBase(a), d_name(a.d_name), 
     d_type_id(a.d_type_id),
      d_description(a.d_description), d_production_cost(a.d_production_cost),
+     d_new_production_cost(a.d_new_production_cost),
      d_production(a.d_production), d_armyset(a.d_armyset)
 {
 }
 
 ArmyProtoBase::ArmyProtoBase()
   :ArmyBase(), d_name(_("Untitled")), d_type_id(0),
-    d_description(""), d_production_cost(0), d_production(0), 
-    d_armyset(0)
+    d_description(""), d_production_cost(0), d_new_production_cost(0),
+    d_production(0), d_armyset(0)
 {
 }
 
 ArmyProtoBase::ArmyProtoBase(XML_Helper* helper)
   :ArmyBase(helper), d_name(""), d_type_id(0), 
-    d_description(""), d_production_cost(0), d_production(0), 
-    d_armyset(0)
+    d_description(""), d_production_cost(0), d_new_production_cost(0),
+    d_production(0), d_armyset(0)
 {
 
   helper->getData(d_name, "name");
   helper->getData(d_production_cost, "production_cost");
+  helper->getData(d_new_production_cost, "new_production_cost");
   helper->getData(d_production, "production");
   helper->getData(d_description, "description");
 }
@@ -67,6 +69,7 @@ bool ArmyProtoBase::saveData(XML_Helper* helper) const
   retval &= helper->saveData("name", d_name);
   retval &= helper->saveData("description", d_description);
   retval &= helper->saveData("production_cost", d_production_cost);
+  retval &= helper->saveData("new_production_cost", d_new_production_cost);
   retval &= helper->saveData("production", d_production);
   retval &= ArmyBase::saveData(helper);
   return retval;

@@ -25,8 +25,8 @@
 
 std::string Ruin::d_tag = "ruin";
 
-Ruin::Ruin(Vector<int> pos, std::string name, int type, Stack* occupant, bool searched, bool hidden, Player *owner, bool sage)
-:NamedLocation(pos, Ruin::getWidth(), name,
+Ruin::Ruin(Vector<int> pos, guint32 width, std::string name, int type, Stack* occupant, bool searched, bool hidden, Player *owner, bool sage)
+:NamedLocation(pos, width, name,
 	        name + _(" is inhabited by monsters and full of treasure!")), 
     d_searched(searched), 
     d_type(type), d_occupant(occupant), d_hidden(hidden), d_owner(owner), 
@@ -50,8 +50,8 @@ Ruin::Ruin(const Ruin& ruin)
 {
 }
 
-Ruin::Ruin(XML_Helper* helper)
-    :NamedLocation(helper, Ruin::getWidth()), d_type(0), d_occupant(0), 
+Ruin::Ruin(XML_Helper* helper, guint32 width)
+    :NamedLocation(helper, width), d_type(0), d_occupant(0), 
     d_hidden(0), d_owner(0), d_sage(0), d_reward(0)
 {
     guint32 ui;

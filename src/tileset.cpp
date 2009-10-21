@@ -26,6 +26,9 @@
 #include "File.h"
 #include "SmallTile.h"
 #include "xmlhelper.h"
+#include "gui/image-helpers.h"
+#include "GraphicsCache.h"
+#include "tilesetlist.h"
 
 using namespace std;
 
@@ -34,13 +37,13 @@ using namespace std;
 #define debug(x)
 
 #define DEFAULT_TILE_SIZE 40
-	
+
 std::string Tileset::d_tag = "tileset";
 std::string Tileset::d_road_smallmap_tag = "road_smallmap";
+std::string Tileset::file_extension = TILESET_EXT;
 
 Tileset::Tileset(guint32 id, std::string name)
-	: d_name(name), d_id(id), d_tileSize(DEFAULT_TILE_SIZE), d_dir(""), 
-	private_collection(true)
+	: Set(), d_name(name), d_id(id), d_tileSize(DEFAULT_TILE_SIZE), d_subdir("")
 {
   d_info = "";
   d_large_selector = "";
@@ -69,25 +72,26 @@ Tileset::Tileset(guint32 id, std::string name)
     fogpic[i] = NULL;
 }
 
-Tileset::Tileset(XML_Helper *helper, bool from_private_collection)
+Tileset::Tileset(XML_Helper *helper, std::string directory)
+	:Set()
 {
-    private_collection = from_private_collection;
-    helper->getData(d_id, "id"); 
-    helper->getData(d_name, "name"); 
-    helper->getData(d_info, "info");
-    helper->getData(d_tileSize, "tilesize");
-    helper->getData(d_large_selector, "large_selector");
-    helper->getData(d_small_selector, "small_selector");
-    helper->getData(d_explosion, "explosion");
-    helper->getData(d_roads, "roads");
-    helper->getData(d_bridges, "bridges");
-    helper->getData(d_fog, "fog");
-    helper->getData(d_flags, "flags");
-    helper->registerTag(Tile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
-    helper->registerTag(Tileset::d_road_smallmap_tag, sigc::mem_fun((*this), &Tileset::loadTile));
-    helper->registerTag(SmallTile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
-    helper->registerTag(TileStyle::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
-    helper->registerTag(TileStyleSet::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
+  setDirectory(directory);
+  helper->getData(d_id, "id"); 
+  helper->getData(d_name, "name"); 
+  helper->getData(d_info, "info");
+  helper->getData(d_tileSize, "tilesize");
+  helper->getData(d_large_selector, "large_selector");
+  helper->getData(d_small_selector, "small_selector");
+  helper->getData(d_explosion, "explosion");
+  helper->getData(d_roads, "roads");
+  helper->getData(d_bridges, "bridges");
+  helper->getData(d_fog, "fog");
+  helper->getData(d_flags, "flags");
+  helper->registerTag(Tile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
+  helper->registerTag(Tileset::d_road_smallmap_tag, sigc::mem_fun((*this), &Tileset::loadTile));
+  helper->registerTag(SmallTile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
+  helper->registerTag(TileStyle::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
+  helper->registerTag(TileStyleSet::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
   for (unsigned int i = 0; i < ROAD_TYPES; i++)
     roadpic[i] = NULL;
   for (unsigned int i = 0; i < BRIDGE_TYPES; i++)
@@ -109,52 +113,24 @@ Tileset::Tileset(XML_Helper *helper, bool from_private_collection)
 
 Tileset::~Tileset()
 {
-    for (unsigned int i=0; i < size(); i++)
-        delete (*this)[i];
-    if (explosion != NULL)
-      delete explosion;
-    for (unsigned int i = 0; i < ROAD_TYPES; i++)
-      if (roadpic[i] != NULL)
-	delete roadpic[i];
-    for (unsigned int i = 0; i < BRIDGE_TYPES; i++)
-      if (bridgepic[i] != NULL)
-	delete bridgepic[i];
-    for (unsigned int i = 0; i < FOG_TYPES; i++)
-      if (fogpic[i] != NULL)
-	delete fogpic[i];
-    for (unsigned int i = 0; i < selector.size(); i++)
-      if (selector[i] != NULL)
-	delete selector[i];
-    for (unsigned int i = 0; i < selectormask.size();i++)
-      if (selectormask[i] != NULL)
-	delete selectormask[i];
-    for (unsigned int i = 0; i < smallselector.size(); i++)
-      if (smallselector[i] != NULL)
-	delete smallselector[i];
-    for (unsigned int i = 0; i < smallselectormask.size(); i++)
-      if (smallselectormask[i] != NULL)
-	delete smallselectormask[i];
-    for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
-      if (flagpic[i] != NULL)
-	delete flagpic[i];
-    for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
-      if (flagmask[i] != NULL)
-	delete flagmask[i];
+  uninstantiateImages();
+  for (unsigned int i=0; i < size(); i++)
+    delete (*this)[i];
 }
 
 guint32 Tileset::getIndex(Tile::Type type) const
 {
-    for (guint32 i = 0; i < size(); i++)
-        if (type == (*this)[i]->getType())
-            return i;
+  for (guint32 i = 0; i < size(); i++)
+    if (type == (*this)[i]->getType())
+      return i;
 
-    // catch errors?
-    return 0;
+  // catch errors?
+  return 0;
 }
 
 bool Tileset::loadTile(string tag, XML_Helper* helper)
 {
-    debug("loadTile()")
+  debug("loadTile()")
 
     if (tag == Tile::d_tag)
       {
@@ -165,49 +141,49 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
 	return true;
       }
 
-    if (tag == Tileset::d_road_smallmap_tag)
-      {
-	guint32 r, g, b;
-	helper->getData(r, "red");
-	helper->getData(g, "green");
-	helper->getData(b, "blue");
-	d_road_color.set_rgb_p((float)r/255.0,(float)g/255.0, (float)b/255.0);
-	return true;
-      }
+  if (tag == Tileset::d_road_smallmap_tag)
+    {
+      guint32 r, g, b;
+      helper->getData(r, "red");
+      helper->getData(g, "green");
+      helper->getData(b, "blue");
+      d_road_color.set_rgb_p((float)r/255.0,(float)g/255.0, (float)b/255.0);
+      return true;
+    }
 
-    if (tag == SmallTile::d_tag)
-      {
-	Tile *tile = this->back();
-	SmallTile* smalltile = new SmallTile(helper);
-	tile->setSmallTile(smalltile);
-	return true;
-      }
+  if (tag == SmallTile::d_tag)
+    {
+      Tile *tile = this->back();
+      SmallTile* smalltile = new SmallTile(helper);
+      tile->setSmallTile(smalltile);
+      return true;
+    }
 
-    if (tag == TileStyle::d_tag)
-      {
-	Tile *tile = this->back();
-	TileStyleSet *tilestyleset = tile->back();
-	// create a new tile style with the information we got
-	// put it on the latest tilestyleset
-	TileStyle* tilestyle = new TileStyle(helper);
-	tilestyleset->push_back(tilestyle);
-	d_tilestyles[tilestyle->getId()] = tilestyle;
+  if (tag == TileStyle::d_tag)
+    {
+      Tile *tile = this->back();
+      TileStyleSet *tilestyleset = tile->back();
+      // create a new tile style with the information we got
+      // put it on the latest tilestyleset
+      TileStyle* tilestyle = new TileStyle(helper);
+      tilestyleset->push_back(tilestyle);
+      d_tilestyles[tilestyle->getId()] = tilestyle;
 
-	return true;
-      }
+      return true;
+    }
 
-    if (tag == TileStyleSet::d_tag)
-      {
-	Tile *tile = this->back();
-	// create a new tile style set with the information we got
-	// put it on the latest tile
-	TileStyleSet* tilestyleset = new TileStyleSet(helper);
-	tilestyleset->setSubDir(getSubDir());
-	tile->push_back(tilestyleset);
-	return true;
-      }
+  if (tag == TileStyleSet::d_tag)
+    {
+      Tile *tile = this->back();
+      // create a new tile style set with the information we got
+      // put it on the latest tile
+      TileStyleSet* tilestyleset = new TileStyleSet(helper);
+      tilestyleset->setSubDir(getSubDir());
+      tile->push_back(tilestyleset);
+      return true;
+    }
 
-    return false;
+  return false;
 }
 
 TileStyle *Tileset::getRandomTileStyle(guint32 index, TileStyle::Type style)
@@ -245,7 +221,7 @@ bool Tileset::save(XML_Helper *helper)
 
   return retval;
 }
-	
+
 Tile *Tileset::lookupTileByName(std::string name)
 {
   for (Tileset::iterator i = begin(); i != end(); ++i)
@@ -253,7 +229,7 @@ Tile *Tileset::lookupTileByName(std::string name)
       return *i;
   return NULL;
 }
-	
+
 int Tileset::getFreeTileStyleId()
 {
   int ids[65535];
@@ -296,7 +272,7 @@ int Tileset::getLargestTileStyleId()
 
 void Tileset::setSubDir(std::string dir)
 {
-  d_dir = dir;
+  d_subdir = dir;
   for (Tileset::iterator i = begin(); i != end(); ++i)
     for (Tile::iterator j = (*i)->begin(); j != (*i)->end(); j++)
       (*j)->setSubDir(dir);
@@ -326,38 +302,35 @@ bool Tileset::validate()
 class TilesetLoader
 {
 public:
-    TilesetLoader(std::string name, bool p) 
+    TilesetLoader(std::string filename) 
       {
 	tileset = NULL;
-	private_collection = p;
-	std::string filename = "";
-	if (private_collection == false)
-	  filename = File::getTileset(name);
-	else
-	  filename = File::getUserTileset(name);
+	dir = File::get_dirname(filename);
+	if (File::nameEndsWith(filename, Tileset::file_extension) == false)
+	  filename += Tileset::file_extension;
 	XML_Helper helper(filename, ios::in, false);
 	helper.registerTag(Tileset::d_tag, sigc::mem_fun((*this), &TilesetLoader::load));
 	if (!helper.parse())
 	  {
 	    std::cerr << "Error, while loading an tileset. Tileset Name: ";
-	    std::cerr <<name <<std::endl <<std::flush;
+	    std::cerr <<dir<<std::endl <<std::flush;
 	  }
       };
     bool load(std::string tag, XML_Helper* helper)
       {
 	if (tag == Tileset::d_tag)
 	  {
-	    tileset = new Tileset(helper, private_collection);
+	    tileset = new Tileset(helper, dir);
 	    return true;
 	  }
 	return false;
       };
-    bool private_collection;
+    std::string dir;
     Tileset *tileset;
 };
-Tileset *Tileset::create(std::string file, bool private_collection)
+Tileset *Tileset::create(std::string file)
 {
-  TilesetLoader d(file, private_collection);
+  TilesetLoader d(file);
   return d.tileset;
 }
 void Tileset::getFilenames(std::list<std::string> &files)
@@ -380,4 +353,193 @@ void Tileset::getFilenames(std::list<std::string> &files)
   files.push_back(d_bridges);
   files.push_back(d_flags);
 }
-// End of file
+
+void Tileset::uninstantiateImages()
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->uninstantiateImages();
+
+  if (getExplosionImage() != NULL)
+    {
+      delete getExplosionImage();
+      setExplosionImage(NULL);
+    }
+  for (unsigned int i = 0; i < ROAD_TYPES; i++)
+    {
+      if (getRoadImage(i) != NULL)
+	{
+	  delete getRoadImage(i);
+	  setRoadImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < BRIDGE_TYPES; i++)
+    {
+      if (getBridgeImage(i) != NULL)
+	{
+	  delete getBridgeImage(i);
+	  setBridgeImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < FOG_TYPES; i++)
+    {
+      if (getFogImage(i) != NULL)
+	{
+	  delete getFogImage(i);
+	  setFogImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < getNumberOfSelectorFrames(); i++)
+    {
+      if (getSelectorImage(i) != NULL)
+	{
+	  delete getSelectorImage(i);
+	  setSelectorImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < getNumberOfSmallSelectorFrames(); i++)
+    {
+      if (getSmallSelectorImage(i) != NULL)
+	{
+	  delete getSmallSelectorImage(i);
+	  setSmallSelectorImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < getNumberOfSmallSelectorFrames(); i++)
+    {
+      if (getSmallSelectorMask(i) != NULL)
+	{
+	  delete getSmallSelectorMask(i);
+	  setSmallSelectorMask(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+    {
+      if (getFlagImage(i) != NULL)
+	{
+	  delete getFlagImage(i);
+	  setFlagImage(i, NULL);
+	}
+    }
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+    {
+      if (getFlagMask(i) != NULL)
+	{
+	  delete getFlagMask(i);
+	  setFlagMask(i, NULL);
+	}
+    }
+}
+
+void Tileset::instantiateImages(std::string explosion_filename,
+				std::string roads_filename,
+				std::string bridges_filename,
+				std::string fog_filename,
+				std::string flags_filename,
+				std::string selector_filename,
+				std::string small_selector_filename)
+{
+  setExplosionImage (PixMask::create(explosion_filename));
+
+  std::vector<PixMask* > roadpics;
+  roadpics = disassemble_row(roads_filename, ROAD_TYPES);
+  for (unsigned int i = 0; i < ROAD_TYPES ; i++)
+    {
+      if (roadpics[i]->get_width() != (int)d_tileSize)
+	PixMask::scale(roadpics[i], d_tileSize, d_tileSize);
+      setRoadImage(i, roadpics[i]);
+    }
+
+  std::vector<PixMask* > bridgepics;
+  bridgepics = disassemble_row(bridges_filename, BRIDGE_TYPES);
+  for (unsigned int i = 0; i < BRIDGE_TYPES ; i++)
+    {
+      if (bridgepics[i]->get_width() != (int)d_tileSize)
+	PixMask::scale(bridgepics[i], d_tileSize, d_tileSize);
+      setBridgeImage(i, bridgepics[i]);
+    }
+
+  std::vector<PixMask* > fogpics;
+  fogpics = disassemble_row(fog_filename, FOG_TYPES);
+  for (unsigned int i = 0; i < FOG_TYPES ; i++)
+    {
+      if (fogpics[i]->get_width() != (int)d_tileSize)
+	PixMask::scale(fogpics[i], d_tileSize, d_tileSize);
+      setFogImage(i, fogpics[i]);
+    }
+
+  std::vector<PixMask* > flagpics;
+  std::vector<PixMask* > maskpics;
+  GraphicsCache::loadFlagImages (flags_filename, d_tileSize, 
+				 flagpics, maskpics);
+  for (unsigned int i = 0; i < flagpics.size(); i++)
+    setFlagImage(i, flagpics[i]);
+  for (unsigned int i = 0; i < maskpics.size(); i++)
+    setFlagMask(i, maskpics[i]);
+
+  std::vector<PixMask* > images;
+  std::vector<PixMask* > masks;
+  GraphicsCache::loadSelectorImages (selector_filename, d_tileSize, 
+				     images, masks);
+  setNumberOfSelectorFrames(images.size());
+  for (unsigned int i = 0; i < images.size(); i++)
+    {
+      setSelectorImage(i, images[i]);
+      setSelectorMask(i, masks[i]);
+    }
+
+  images.clear();
+  masks.clear();
+  GraphicsCache::loadSelectorImages (small_selector_filename, d_tileSize,
+				     images, masks);
+  setNumberOfSmallSelectorFrames(images.size());
+  for (unsigned int i = 0; i < images.size(); i++)
+    {
+      setSmallSelectorImage(i, images[i]);
+      setSmallSelectorMask(i, masks[i]);
+    }
+}
+
+void Tileset::instantiateImages()
+{
+  int size = getTileSize();
+  debug("Loading images for tileset " << getName());
+  uninstantiateImages();
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->instantiateImages(size, this);
+  std::string explosion_filename = getFile(getExplosionFilename());
+  std::string roads_filename = getFile(getRoadsFilename());
+  std::string bridges_filename = getFile(getBridgesFilename());
+  std::string fog_filename = getFile(getFogFilename());
+  std::string flags_filename = getFile(getFlagsFilename());
+  std::string selector_filename = getFile(getLargeSelectorFilename());
+  std::string small_selector_filename = getFile(getSmallSelectorFilename());
+  instantiateImages(explosion_filename, roads_filename, bridges_filename, 
+		    fog_filename, flags_filename, selector_filename, 
+		    small_selector_filename);
+}
+
+std::string Tileset::getConfigurationFile()
+{
+  return getDirectory() + d_subdir + file_extension;
+}
+
+std::list<std::string> Tileset::scanUserCollection()
+{
+  return File::scanFiles(File::getUserTilesetDir(), file_extension);
+}
+
+std::list<std::string> Tileset::scanSystemCollection()
+{
+  std::list<std::string> retlist = File::scanFiles(File::getTilesetDir(), 
+						   file_extension);
+  if (retlist.empty())
+    {
+      std::cerr << "Couldn't find any tilesets!" << std::endl;
+      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
+      std::cerr << "Exiting!" << std::endl;
+      exit(-1);
+    }
+
+  return retlist;
+}
+//End of file

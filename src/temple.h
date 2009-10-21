@@ -22,7 +22,6 @@
 #define TEMPLE_H
 
 #define DEFAULT_TEMPLE_NAME  "Shrine"
-#define TEMPLE_TILE_WIDTH 1
 
 #include <string>
 #include "NamedLocation.h"
@@ -44,11 +43,12 @@ class Temple : public NamedLocation
 	//! Default constructor.
         /**
          * @param pos          The location of the temple on the game map.
+	 * @param width        The span of tiles this temple covers.
          * @param name         The name of the temple.
 	 * @param type         The type of the temple.  This should always
 	 *                     be 0.
          */
-        Temple(Vector<int> pos, std::string name = DEFAULT_TEMPLE_NAME, 
+        Temple(Vector<int> pos, guint32 width, std::string name = DEFAULT_TEMPLE_NAME, 
 	       int type = 0);
 	//! Copy constructor.
         Temple(const Temple&);
@@ -56,7 +56,7 @@ class Temple : public NamedLocation
 	/**
 	 * @param helper  The opened saved-game file to load the temple from.
 	 */
-        Temple(XML_Helper* helper);
+        Temple(XML_Helper* helper, guint32 width);
 	//! Destructor.
         ~Temple();
 
@@ -79,7 +79,6 @@ class Temple : public NamedLocation
 
 	static std::string getDefaultName() {return _(DEFAULT_TEMPLE_NAME);};
 
-	static guint32 getWidth() {return TEMPLE_TILE_WIDTH;};
     protected:
 	
 	//! The type of the temple.

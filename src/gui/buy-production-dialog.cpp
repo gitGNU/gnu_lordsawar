@@ -66,7 +66,7 @@ BuyProductionDialog::BuyProductionDialog(City *c)
     for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
       {
         const ArmyProto *a = al->getArmy (p->getArmyset(), j);
-        if (a->getProductionCost() > 0)
+        if (a->getNewProductionCost() > 0)
           purchasables.push_back(a);
       }
 
@@ -79,7 +79,7 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 	bool greyed_out = false;
 	if (city->hasProductionBase(purchasables[i]) == true)
 	  greyed_out = true;
-	else if ((int)purchasables[i]->getProductionCost() > 
+	else if ((int)purchasables[i]->getNewProductionCost() > 
 		 c->getOwner()->getGold())
 	  greyed_out = true;
 	Glib::RefPtr<Gdk::Pixbuf> pix
@@ -107,10 +107,6 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 	toggle->signal_button_release_event().connect(
 	    sigc::bind(sigc::mem_fun(*this, &BuyProductionDialog::on_production_button_event),
 		       toggle), false);
-	//toggle->set_sensitive
-	  //(city->hasProductionBase(purchasables[i]) == false);
-	//if ((int)purchasables[i]->getProductionCost() > c->getOwner()->getGold())
-	  //toggle->set_sensitive (false);
     }
 
     ignore_toggles = false;
@@ -186,7 +182,7 @@ void BuyProductionDialog::fill_in_production_info()
 			      a->getStrength());
 	
 	// fill in second column
-	s2 += String::ucompose(_("Cost: %1"), a->getProductionCost());
+	s2 += String::ucompose(_("Cost: %1"), a->getNewProductionCost());
 	s2 += "\n";
 	s2 += String::ucompose(_("Moves: %1"), a->getMaxMoves());
 	s2 += "\n";
@@ -208,7 +204,7 @@ void BuyProductionDialog::set_buy_button_state()
 	int gold = city->getOwner()->getGold();
 	const ArmyProto *a = army_id_to_army();
 	
-	if (int(a->getProductionCost()) > gold ||
+	if (int(a->getNewProductionCost()) > gold ||
 	    city->hasProductionBase(selected_army, 
 				    city->getOwner()->getArmyset()))
 	    can_buy = false;

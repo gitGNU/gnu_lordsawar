@@ -143,7 +143,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army,
     s += "\n";
     s += String::ucompose(_("Time: %1"), army->getProduction());
     s += "\n";
-    s += String::ucompose(_("Cost: %1"), army->getUpkeep());
+    s += String::ucompose(_("Cost: %1"), army->getProductionCost());
     info_label->set_text(s);
 
     // move into correct position

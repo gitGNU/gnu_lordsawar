@@ -42,7 +42,6 @@ class Hero;
 
 #define DEFAULT_CITY_NAME "Noname"
 #define DEFAULT_CITY_INCOME 20
-#define CITY_TILE_WIDTH 2
 
 //! A City on the game map.
 /**
@@ -77,11 +76,13 @@ class City : public Ownable, public Location, public Renamable,
           * Make a new city object.
 	  *
           * @param pos       The location of the city on the game map.
+	  * @param width     The number of tiles this city spans.
           * @param name      The name of the city.
           * @param gold      The amount of gold the city produces each turn.
 	  * @param numslots  The number of production slots for this city.
           */
-        City(Vector<int> pos, std::string name = DEFAULT_CITY_NAME, 
+        City(Vector<int> pos, guint32 width, 
+	     std::string name = DEFAULT_CITY_NAME, 
 	     guint32 gold = DEFAULT_CITY_INCOME, 
 	     guint32 numslots = MAX_PRODUCTION_SLOTS_IN_A_CITY);
 	//! Copy constructor.
@@ -92,7 +93,7 @@ class City : public Ownable, public Location, public Renamable,
 	 *
 	 * @param helper The opened saved-game file to load the City from.
 	 */
-        City(XML_Helper* helper);
+        City(XML_Helper* helper, guint32 width);
 	//! Destructor.
         ~City();
 
@@ -255,8 +256,6 @@ class City : public Ownable, public Location, public Renamable,
 	bool isUnnamed() {return getName() == getDefaultName() ? true : false;};
 
 	static std::string getDefaultName() {return _(DEFAULT_CITY_NAME);};
-
-	static guint32 getWidth() {return CITY_TILE_WIDTH;};
 
     private:
 

@@ -30,6 +30,7 @@
 #include "armyproto.h"
 #include "armyset.h"
 
+class Tar_Helper;
 
 //! A list of all Armyset objects available to the game.
 /** 
@@ -118,7 +119,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
           * @return the id of the armyset (0 on error)
           */
 	guint32 getArmysetId(std::string armyset, guint32 tilesize);
-	Armyset *getArmyset(guint32 id) {return d_armysetids[id];};
+	Armyset *getArmyset(guint32 id);
 
 	//! Return the Armyset object by the name of the subdir.
 	/**
@@ -126,7 +127,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 *             This value does not contain any slashes, and is
 	 *             presumed to be found inside the army/ directory.
 	 */
-	Armyset *getArmyset(std::string dir) { return d_armysets[dir];}
+	Armyset *getArmyset(std::string dir);
 
 	//! Returns a list of all Armyset objects available to the game.
         std::vector<guint32> getArmysets() const;
@@ -145,7 +146,16 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 
 	//! Return an unused armyset number.
 	static int getNextAvailableId(int after = 0);
+
+	void add(Armyset *arymset);
+
+	void instantiateImages();
+	void uninstantiateImages();
+	
+
+	Armyset *import(Tar_Helper *t, std::string f, bool &broken);
     private:
+	bool addToPersonalCollection(Armyset *armyset, std::string &new_subdir, guint32 &new_id);
         //! Default Constructor.  Loads all armyset objects it can find.
 	/**
 	 * The army/ directory is scanned for armyset directories.
@@ -155,28 +165,23 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
         //! Destructor.
         ~Armysetlist();
 
-        //! Callback for loading an armyset.  See XML_Helper for details.
-	bool load(std::string tag, XML_Helper *helper);
-
         //! Loads a specific armyset.
 	/**
 	 * Load the armyset from an armyset configuration file and add it to 
 	 * this list of armysets.
 	 *
 	 * @param name  The subdirectory name that the Armyset resides in.
-	 * @param private_collection Whether or not the armyset is one from
-	 * the user's personal collection.
 	 *
-	 * @return True if the Armyset could be loaded.  False otherwise.
+	 * @return the Armyset.  NULL otherwise.
 	 */
-	bool loadArmyset(std::string name, bool private_collection);
+	Armyset* loadArmyset(std::string name);
 	  
 	//! Loads a bunch of armysets.
 	/**
 	 * Load a list of armysets from the system armyset directory, or the
 	 * user's personal collection.
 	 */
-	void loadArmysets(std::list<std::string> armysets, bool private_collection);
+	void loadArmysets(std::list<std::string> armysets);
         
         typedef std::map<guint32, std::vector<ArmyProto*> > ArmyPrototypeMap;
         typedef std::map<guint32, std::string> NameMap;

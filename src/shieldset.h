@@ -26,6 +26,7 @@
 
 #include "xmlhelper.h"
 #include "shield.h"
+#include "set.h"
 
 #include "defs.h"
 
@@ -48,14 +49,15 @@ struct rgbshift;
  *
  * The shieldset configuration file is a same named XML file inside the 
  * Shieldset's directory.  
- * E.g. shield/${Shieldset::d_dir}/${Shieldset::d_dir}.xml.
+ * E.g. shield/${Shieldset::d_subdir}/${Shieldset::d_subdir}.xml.
  */
-class Shieldset: public std::list<Shield *>, public sigc::trackable
+class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 {
     public:
 
 	//! The xml tag of this object in a shieldset configuration file.
 	static std::string d_tag; 
+	static std::string file_extension;
 
 	//! Load a Shieldset from a shieldset configuration file.
 	/**
@@ -65,11 +67,13 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 	 * @param helper  The opened shieldset configuration file to load the
 	 *                Shieldset from.
 	 */
-        Shieldset(XML_Helper* helper, bool private_collection = false);
+        Shieldset(XML_Helper* helper, std::string directory);
 
-	static Shieldset *create(std::string filename, bool private_collection = false);
+	static Shieldset *create(std::string filename);
 	//! Destructor.
         ~Shieldset();
+
+	bool save(XML_Helper *helper);
 
 	//! Return the number of pixels high the small shields are.
 	guint32 getSmallHeight() const {return d_small_height;}
@@ -109,10 +113,10 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
         void setName(std::string name) {d_name = name;}
 
 	//! Get the directory in which the shieldset configuration file resides.
-        std::string getSubDir() const {return d_dir;}
+        std::string getSubDir() const {return d_subdir;}
 
 	//! Set the direction where the shieldset configuration file resides.
-        void setSubDir(std::string dir) {d_dir = dir;}
+        void setSubDir(std::string dir) {d_subdir = dir;}
 
 	//! Find the shield of a given size and colour in this Shieldset.
 	/**
@@ -131,16 +135,19 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 	Gdk::Color getColor(guint32 owner);
 	struct rgb_shift getMaskColorShifts(guint32 owner);
 
-	//! Return whether this is a shieldset in the user's personal dir.
-	bool fromPrivateCollection() {return private_collection;};
-
 	//! get filenames in this shieldset, excepting the configuration file.
 	void getFilenames(std::list<std::string> &filenames);
+
+	void instantiateImages();
+	void uninstantiateImages();
+	std::string getConfigurationFile();
+
+	static std::list<std::string> scanSystemCollection();
+	static std::list<std::string> scanUserCollection();
     private:
 
-        //! Callback function to load Shield objects into the Shieldset.
-        bool loadShield(std::string tag, XML_Helper* helper);
-
+	//! Callback function to load Shield objects into the Shieldset.
+	bool loadShield(std::string tag, XML_Helper* helper);
 
 	//! The name of the Shieldset.
 	/**
@@ -160,7 +167,7 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 	 * residing in.  It does not contain a path (e.g. no slashes).
 	 * Shieldset directories sit in the shield/ directory.
 	 */
-        std::string d_dir;
+        std::string d_subdir;
 
 	//! The number of pixels high the small shield occupies onscreen.
 	/**
@@ -203,9 +210,6 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable
 	 * configuration file.
 	 */
 	guint32 d_large_width;
-
-	//! Whether this is a system shieldset, or one that the user made.
-	bool private_collection;
 };
 
 #endif // SHIELDSET_H

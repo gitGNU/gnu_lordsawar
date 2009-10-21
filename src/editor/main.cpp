@@ -29,6 +29,7 @@
 #include "File.h"
 #include "GraphicsCache.h"
 #include "timing.h"
+#include "armyset.h"
 
 #include "main-window.h"
 
@@ -50,7 +51,7 @@ int main(int argc, char* argv[])
     textdomain ("lordsawar");
 
     // Check if armysets are in the path (otherwise exit)
-    File::scanArmysets();
+    Armyset::scanSystemCollection();
 
     // init GUI stuff
     g_set_application_name(_("LordsAWar! Scenario Editor"));

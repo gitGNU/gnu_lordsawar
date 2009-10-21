@@ -24,6 +24,9 @@
 #include <algorithm>
 #include "armyproto.h"
 #include "xmlhelper.h"
+#include "armyset.h"
+#include "gui/image-helpers.h"
+#include "Tile.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -120,4 +123,58 @@ bool ArmyProto::saveData(XML_Helper* helper) const
   retval &= helper->saveData("gender", gender_str);
 
   return retval;
+}
+
+bool ArmyProto::instantiateImages(int tilesize, Shield::Colour c, std::string image_filename)
+{
+  std::string s;
+
+  if (image_filename == "")
+    return false;
+  // load the army picture. This is done here to avoid confusion
+  // since the armies are used as prototypes as well as actual units in the
+  // game.
+  // The army image consists of two halves. On the left is the army image, 
+  // on the right the mask.
+  std::vector<PixMask*> half;
+  half = disassemble_row(image_filename, 2);
+  PixMask::scale(half[0], tilesize, tilesize);
+  PixMask::scale(half[1], tilesize, tilesize);
+
+  setImage(c, half[0]);
+  setMask(c, half[1]);
+
+  return true;
+}
+
+void ArmyProto::instantiateImages(Armyset *armyset)
+{
+  for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
+    instantiateImages(armyset->getTileSize(), Shield::Colour(c), 
+		      armyset->getFile(getImageName(Shield::Colour(c))));
+}
+
+void ArmyProto::uninstantiateImages()
+{
+  for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
+    {
+      if (getImage(Shield::Colour(c)))
+	{
+	  delete getImage(Shield::Colour(c));
+	  setImage(Shield::Colour(c), NULL);
+	}
+      if (getMask(Shield::Colour(c)))
+	{
+	  delete getMask(Shield::Colour(c));
+	  setMask(Shield::Colour(c), NULL);
+	}
+    }
+}
+
+ArmyProto * ArmyProto::createScout()
+{
+  ArmyProto *basearmy = new ArmyProto(); 
+  basearmy->setMoveBonus(Tile::FOREST | Tile::HILLS);
+  basearmy->setMaxMoves(50);
+  return basearmy;
 }

@@ -51,6 +51,7 @@
 #include "army.h"
 #include "vector.h"
 #include "RoadPathCalculator.h"
+#include "cityset.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
@@ -304,13 +305,16 @@ void MapGenerator::makeBridges()
     for (int x = 0; x < d_width; x++)
       {
 	if (d_building[y*d_width + x] == Maptile::CITY)
-	  Citylist::getInstance()->add(new City(Vector<int>(x,y)));
+	  Citylist::getInstance()->add
+	    (new City(Vector<int>(x,y), cityset->getCityTileWidth()));
 	else if (d_building[y*d_width + x] == Maptile::ROAD)
 	  Roadlist::getInstance()->add(new Road(Vector<int>(x,y)));
 	else if (d_building[y*d_width + x] == Maptile::RUIN)
-	  Ruinlist::getInstance()->add(new Ruin(Vector<int>(x,y)));
+	  Ruinlist::getInstance()->add
+	    (new Ruin(Vector<int>(x,y), cityset->getRuinTileWidth()));
 	else if (d_building[y*d_width + x] == Maptile::TEMPLE)
-	  Templelist::getInstance()->add(new Temple(Vector<int>(x,y)));
+	  Templelist::getInstance()->add
+	    (new Temple(Vector<int>(x,y), cityset->getTempleTileWidth()));
 	else if (d_building[y*d_width + x] == Maptile::PORT)
 	  Portlist::getInstance()->add(new Port(Vector<int>(x,y)));
       }
@@ -1102,7 +1106,7 @@ void MapGenerator::makeCities(int cities)
     {
         int x = rand()%(d_width-2);
         int y = rand()%(d_height-2);
-        if (inhospitableTerrain(x, y, City::getWidth()) && (iterations < 1000))
+        if (inhospitableTerrain(x, y, cityset->getCityTileWidth()) && (iterations < 1000))
         {
             iterations++;
             continue;
@@ -1123,8 +1127,8 @@ void MapGenerator::makeCities(int cities)
 
 bool MapGenerator::canPutCity(int x,int y)
 {
-  for (unsigned int i = 0; i < City::getWidth(); i++)
-    for (unsigned int j = 0; j < City::getWidth(); j++)
+  for (unsigned int i = 0; i < cityset->getCityTileWidth(); i++)
+    for (unsigned int j = 0; j < cityset->getCityTileWidth(); j++)
       if (canPutBuilding(x+i,y+j) == false)
         return false;
         
@@ -1136,12 +1140,12 @@ void MapGenerator::putCity(int x, int y, int& city_count)
         d_building[y*d_width + x] = Maptile::CITY;
 
         //cities shall only sit on grass tiles
-	for (unsigned int i = 0; i < City::getWidth(); i++)
-	  for (unsigned int j = 0; j < City::getWidth(); j++)
+	for (unsigned int i = 0; i < cityset->getCityTileWidth(); i++)
+	  for (unsigned int j = 0; j < cityset->getCityTileWidth(); j++)
 	    d_terrain[(y+i)*d_width + (x+j)] = Tile::GRASS;
         //cities cannot neighbor with mountain tiles
-        for (int Y = -1; Y <= (int)City::getWidth(); ++Y )
-            for (int X = -1; X <= (int)City::getWidth(); ++X)
+        for (int Y = -1; Y <= (int)cityset->getCityTileWidth(); ++Y )
+            for (int X = -1; X <= (int)cityset->getCityTileWidth(); ++X)
                 if (d_terrain[(y+Y)*d_width + x+X] == Tile::MOUNTAIN)
                     d_terrain[(y+Y)*d_width + x+X] = Tile::HILLS;
 
@@ -1159,11 +1163,11 @@ void MapGenerator::makeBuildings(Maptile::Building b, int building)
     switch (b)
       {
       case Maptile::CITY:
-	width = City::getWidth(); break;
+	width = cityset->getCityTileWidth(); break;
       case Maptile::RUIN:
-	width = Ruin::getWidth(); break;
+	width = cityset->getRuinTileWidth(); break;
       case Maptile::TEMPLE:
-	width = Temple::getWidth(); break;
+	width = cityset->getTempleTileWidth(); break;
       case Maptile::NONE:
       case Maptile::SIGNPOST:
       case Maptile::ROAD:
@@ -1223,7 +1227,7 @@ bool MapGenerator::canPutBuilding(int x,int y)
     if ((x < 3) || (x > (d_width-3)) || (y < 3) || (y > (d_height-3)))
         return false;
 
-    int dist = (int)City::getWidth() + 1;
+    int dist = (int)cityset->getCityTileWidth() + 1;
     //if there is another building too close, return false
     for (int locx = x-dist; locx <= x+dist; locx++)
         for (int locy = y-dist; locy <= y+dist; locy++)
@@ -1359,11 +1363,9 @@ int MapGenerator::tryRoad(int src_x, int src_y, int dest_x, int dest_y)
   Path *p = new Path();
   Stack s(NULL, src);
 
-  Armysetlist *al = Armysetlist::getInstance();
-  guint32 armyset = al->getArmysetId(_("Default"), 
-				    Tileset::getDefaultTileSize());
-  const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 1);
+  ArmyProto *basearmy = ArmyProto::createScout();
   Army *a = Army::createNonUniqueArmy(*basearmy);
+  delete basearmy;
   s.push_back(a);
   // try to get there with a scout
   guint32 moves = p->calculate(&s, dest, false);
@@ -1434,11 +1436,9 @@ bool MapGenerator::isAccessible (int src_x, int src_y, int dest_x, int dest_y)
   Path *p = new Path();
   Stack s(NULL, src);
 
-  Armysetlist *al = Armysetlist::getInstance();
-  guint32 armyset = al->getArmysetId(_("Default"), 
-				    Tileset::getDefaultTileSize());
-  const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 1);
+  ArmyProto *basearmy = ArmyProto::createScout();
   Army *a = Army::createNonUniqueArmy(*basearmy);
+  delete basearmy;
   s.push_back(a);
   // try to get there with a scout
   if (p->calculate(&s, dest, true) == 0)
@@ -1463,11 +1463,9 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
   Path *p = new Path();
   Stack s(NULL, src);
 
-  Armysetlist *al = Armysetlist::getInstance();
-  guint32 armyset = al->getArmysetId(_("Default"), 
-				    Tileset::getDefaultTileSize());
-  const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 16);
+  ArmyProto *basearmy = ArmyProto::createScout();
   Army *a = Army::createNonUniqueArmy(*basearmy);
+  delete basearmy;
   s.push_back(a);
   // try to get there with a giant bat
   guint32 moves = p->calculate(&s, dest, false);
@@ -1628,7 +1626,7 @@ void MapGenerator::makeRoads()
 
   GameMap::setWidth(d_width);
   GameMap::setHeight(d_height);
-  GameMap::getInstance("default", "default", "default")->fill(this);
+  GameMap::getInstance("default", "default", cityset->getSubDir())->fill(this);
   Roadlist::getInstance();
   //the game map class smooths the map, so let's take what it smoothed.
   for (int y = 0; y < d_height; y++)
@@ -1640,7 +1638,8 @@ void MapGenerator::makeRoads()
     for (int x = 0; x < d_width; x++)
       {
 	if (d_building[y*d_width + x] == Maptile::CITY)
-	  Citylist::getInstance()->add(new City(Vector<int>(x,y)));
+	  Citylist::getInstance()->add
+	    (new City(Vector<int>(x,y), cityset->getCityTileWidth()));
       }
   GameMap::getInstance()->calculateBlockedAvenues();
 

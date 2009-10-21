@@ -61,9 +61,6 @@ class CreateScenario : public CreateScenarioRandomize
 
         // setters
 
-        //! Set the type of the map to be created
-        void setMaptype(MapType type);
-
         //! Set the terrain distribution; differences to 100% are grass; sum may exceed 100%
         void setPercentages(int pgrass, int pwater, int pforest, int pswamp,
                             int phills, int pmountains);

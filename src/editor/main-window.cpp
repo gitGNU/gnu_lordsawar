@@ -40,7 +40,6 @@
 #include "sound.h"
 #include "File.h"
 #include "GraphicsCache.h"
-#include "GraphicsLoader.h"
 #include "smallmap.h"
 #include "GameScenario.h"
 #include "CreateScenarioRandomize.h"
@@ -94,6 +93,7 @@ MainWindow::MainWindow()
   smallmap = NULL;
   game_scenario = NULL;
   d_create_scenario_names = NULL;
+  needs_saving = false;
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/main-window.ui");
 
@@ -398,10 +398,10 @@ bool MainWindow::on_smallmap_exposed(GdkEventExpose *event)
 
 void MainWindow::init()
 {
-  GraphicsLoader::instantiateImages(Armysetlist::getInstance());
-  GraphicsLoader::instantiateImages(Tilesetlist::getInstance());
-  GraphicsLoader::instantiateImages(Shieldsetlist::getInstance());
-  GraphicsLoader::instantiateImages(Citysetlist::getInstance());
+  Armysetlist::getInstance()->instantiateImages();
+  Tilesetlist::getInstance()->instantiateImages();
+  Shieldsetlist::getInstance()->instantiateImages();
+  Citysetlist::getInstance()->instantiateImages();
   show_initial_map();
 }
 
@@ -412,9 +412,7 @@ void MainWindow::hide()
 
 bool MainWindow::on_delete_event(GdkEventAny *e)
 {
-    hide();
-    
-    return true;
+  return !quit();
 }
 
 void MainWindow::show_initial_map()
@@ -549,6 +547,7 @@ void MainWindow::set_random_map(int width, int height,
       delete d_create_scenario_names;
     d_create_scenario_names = new CreateScenarioRandomize();
     
+    Cityset *cs = Citysetlist::getInstance()->getCityset(cityset);
     // now fill the lists
     const Maptile::Building* build = gen.getBuildings(width, height);
     for (int j = 0; j < height; j++)
@@ -556,15 +555,18 @@ void MainWindow::set_random_map(int width, int height,
 	    switch(build[j * width + i])
 	    {
 	    case Maptile::CITY:
-		Citylist::getInstance()->add(new City(Vector<int>(i,j)));
+		Citylist::getInstance()->add
+		  (new City(Vector<int>(i,j), cs->getCityTileWidth()));
 		(*Citylist::getInstance()->rbegin())->setOwner(
 		    Playerlist::getInstance()->getNeutral());
 		break;
 	    case Maptile::TEMPLE:
-		Templelist::getInstance()->add(new Temple(Vector<int>(i,j)));
+		Templelist::getInstance()->add
+		  (new Temple(Vector<int>(i,j), cs->getTempleTileWidth()));
 		break;
 	    case Maptile::RUIN:
-		Ruinlist::getInstance()->add(new Ruin(Vector<int>(i,j)));
+		Ruinlist::getInstance()->add
+		  (new Ruin(Vector<int>(i,j), cs->getRuinTileWidth()));
 		break;
 	    case Maptile::SIGNPOST:
 		Signpostlist::getInstance()->add(new Signpost(Vector<int>(i,j)));
@@ -628,6 +630,7 @@ bool MainWindow::on_bigmap_mouse_button_event(GdkEventButton *e)
 	bigmap->mouse_button_event(to_input_event(e));
 	if (smallmap)
 	  smallmap->draw(Playerlist::getActiveplayer());
+	needs_saving = true;
     }
     
     return true;
@@ -719,6 +722,7 @@ void MainWindow::on_new_map_activated()
 	    set_filled_map(d.map.width, d.map.height, d.map.fill_style, 
 			   d.map.tileset, d.map.shieldset, d.map.cityset,
 			   d.map.armyset);
+        needs_saving = true;
     }
 }
 
@@ -771,6 +775,7 @@ void MainWindow::on_save_map_activated()
 	on_save_map_as_activated();
     else
     {
+        needs_saving = false;
 	bool success = game_scenario->saveGame(current_save_filename, "map");
 	if (!success)
 	    show_error(_("Map was not saved!"));
@@ -857,31 +862,58 @@ void MainWindow::on_save_map_as_activated()
 	bool success = game_scenario->saveGame(current_save_filename, "map");
 	if (!success)
 	    show_error(_("Map was not saved!"));
+        needs_saving = false;
     }
+}
+
+bool MainWindow::quit()
+{
+  if (needs_saving)
+    {
+      Gtk::Dialog* dialog;
+      Glib::RefPtr<Gtk::Builder> xml
+	= Gtk::Builder::create_from_file(get_glade_path() + 
+					 "/editor-quit-dialog.ui");
+      xml->get_widget("dialog", dialog);
+      dialog->set_transient_for(*window);
+      int response = dialog->run();
+      dialog->hide();
+      delete dialog;
+      
+      if (response == Gtk::RESPONSE_CANCEL) //we don't want to quit
+	return false;
+
+      else if (response == Gtk::RESPONSE_ACCEPT) // save and quit
+	on_save_map_activated();
+      //else if (Response == Gtk::CLOSE) // don't save just quit
+      window->hide();
+    }
+  else
+    window->hide();
+  return true;
 }
 
 void MainWindow::on_quit_activated()
 {
-    // FIXME: ask
-    bool end = true;
-
-    if (end) {
-    }
-    window->hide();
+  quit();
 }
 
 void MainWindow::on_edit_players_activated()
 {
     PlayersDialog d(d_width, d_height);
     d.set_parent_window(*window);
-    d.run();
+    int response = d.run();
+    if (response == Gtk::RESPONSE_ACCEPT)
+      needs_saving = true;
 }
 
 void MainWindow::on_edit_map_info_activated()
 {
     MapInfoDialog d(game_scenario);
     d.set_parent_window(*window);
-    d.run();
+    int response = d.run();
+    if (response == Gtk::RESPONSE_ACCEPT)
+      needs_saving = true;
 }
 
 void MainWindow::on_fullscreen_activated()
@@ -1195,7 +1227,9 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
     {
 	StackEditorDialog d(o);
 	d.set_parent_window(*window);
-	d.run();
+	int response = d.run();
+	if (response == Gtk::RESPONSE_ACCEPT)
+	  needs_saving = true;
 
 	// we might have changed something visible
 	bigmap->draw();
@@ -1205,7 +1239,9 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
     {
 	CityEditorDialog d(o, d_create_scenario_names);
 	d.set_parent_window(*window);
-	d.run();
+	int response = d.run();
+	if (response == Gtk::RESPONSE_ACCEPT)
+	  needs_saving = true;
 
 	// we might have changed something visible
 	bigmap->draw();
@@ -1215,19 +1251,25 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
     {
 	RuinEditorDialog d(o, d_create_scenario_names);
 	d.set_parent_window(*window);
-	d.run();
+	int response = d.run();
+	if (response == Gtk::RESPONSE_ACCEPT)
+	  needs_saving = true;
     }
     else if (Signpost *o = dynamic_cast<Signpost *>(object))
     {
 	SignpostEditorDialog d(o, d_create_scenario_names);
 	d.set_parent_window(*window);
-	d.run();
+	int response = d.run();
+	if (response == Gtk::RESPONSE_ACCEPT)
+	  needs_saving = true;
     }
     else if (Temple *o = dynamic_cast<Temple *>(object))
     {
 	TempleEditorDialog d(o, d_create_scenario_names);
 	d.set_parent_window(*window);
-	d.run();
+	int response = d.run();
+	if (response == Gtk::RESPONSE_ACCEPT)
+	  needs_saving = true;
 
 	// we might have changed something visible
 	bigmap->draw();
@@ -1235,7 +1277,9 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
     else if (MapBackpack *b = dynamic_cast<MapBackpack*>(object))
       {
 	BackpackEditorDialog d(b);
-	d.run();
+	int response = d.run();
+	if (response == Gtk::RESPONSE_ACCEPT)
+	  needs_saving = true;
       }
 }
 
@@ -1255,14 +1299,18 @@ void MainWindow::on_edit_items_activated()
 {
   ItemlistDialog d;
   d.set_parent_window(*window);
-  d.run();
+  int response = d.run();
+  if (response == Gtk::RESPONSE_ACCEPT)
+    needs_saving = true;
 }
 
 void MainWindow::on_edit_rewards_activated()
 {
   RewardlistDialog d;
   d.set_parent_window(*window);
-  d.run();
+  int response = d.run();
+  if (response == Gtk::RESPONSE_ACCEPT)
+    needs_saving = true;
 }
 
 void MainWindow::randomize_city(City *c)
@@ -1278,6 +1326,7 @@ void MainWindow::on_random_all_cities_activated()
   Citylist *cl = Citylist::getInstance();
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     randomize_city(*it);
+  needs_saving = true;
 }
 
 void MainWindow::on_random_unnamed_cities_activated()
@@ -1288,6 +1337,7 @@ void MainWindow::on_random_unnamed_cities_activated()
       if ((*it)->isUnnamed() == true)
 	randomize_city(*it);
     }
+  needs_saving = true;
 }
 
 void MainWindow::randomize_ruin(Ruin *r)
@@ -1306,6 +1356,7 @@ void MainWindow::on_random_all_ruins_activated()
   Ruinlist *rl = Ruinlist::getInstance();
   for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
     randomize_ruin(*it);
+  needs_saving = true;
 }
 
 void MainWindow::on_random_unnamed_ruins_activated()
@@ -1316,6 +1367,7 @@ void MainWindow::on_random_unnamed_ruins_activated()
       if ((*it)->isUnnamed() == true)
 	randomize_ruin(*it);
     }
+  needs_saving = true;
 }
 
 void MainWindow::on_random_all_temples_activated()
@@ -1332,6 +1384,7 @@ void MainWindow::on_random_all_temples_activated()
 	  renamable_temple->setName(name);
 	}
     }
+  needs_saving = true;
 }
 
 void MainWindow::on_random_unnamed_temples_activated()
@@ -1351,6 +1404,7 @@ void MainWindow::on_random_unnamed_temples_activated()
 	    }
 	}
     }
+  needs_saving = true;
 }
 
 void MainWindow::randomize_signpost(Signpost *signpost)
@@ -1370,6 +1424,7 @@ void MainWindow::on_random_all_signs_activated()
   Signpostlist *sl = Signpostlist::getInstance();
   for (Signpostlist::iterator it = sl->begin(); it != sl->end(); it++)
     randomize_signpost(*it);
+  needs_saving = true;
 }
 
 void MainWindow::on_random_unnamed_signs_activated()
@@ -1380,6 +1435,7 @@ void MainWindow::on_random_unnamed_signs_activated()
       if ((*it)->getName() == DEFAULT_SIGNPOST)
 	randomize_signpost(*it);
     }
+  needs_saving = true;
 }
 
 void MainWindow::on_help_about_activated()
@@ -1394,7 +1450,7 @@ void MainWindow::on_help_about_activated()
   dialog->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
-  dialog->set_logo(GraphicsLoader::getMiscPicture("castle_icon.png")->to_pixbuf());
+  dialog->set_logo(GraphicsCache::getMiscPicture("castle_icon.png")->to_pixbuf());
   dialog->show_all();
   dialog->run();
   delete dialog;

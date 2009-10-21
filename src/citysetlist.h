@@ -70,14 +70,22 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
 	 *             This value does not contain any slashes, and is
 	 *             presumed to be found inside the citysets/ directory.
 	 */
-	Cityset *getCityset(std::string dir) { return d_citysets[dir];}
+	Cityset *getCityset(std::string dir);
 
 	//! Return the Cityset object by the id.
 	/**
 	 * @param id   A unique numeric identifier that identifies the cityset
 	 *             among all tilesets in the citysetlist.
 	 */
-	Cityset *getCityset(guint32 id) { return d_citysetids[id];};
+	Cityset *getCityset(guint32 id);
+
+	void add(Cityset *cityset);
+	void instantiateImages();
+	void uninstantiateImages();
+
+	bool addToPersonalCollection(Cityset *cityset, std::string &new_subdir, guint32 &new_id);
+
+	static int getNextAvailableId(int after);
     private:
         //! Default constructor.  Loads all citysets it can find.
 	/**
@@ -96,10 +104,10 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
 	 * @param name  The name of the subdirectory that the Cityset resides 
 	 *              in.
 	 *
-	 * @return True if the Cityset could be loaded.  False otherwise.
+	 * @return the Cityset.  NULL otherwise.
 	 */
-        bool loadCityset (std::string name, bool p);
-        void loadCitysets (std::list<std::string> name, bool p);
+        Cityset* loadCityset (std::string name);
+        void loadCitysets (std::list<std::string> name);
         
         typedef std::map<std::string, std::string> DirMap;
         typedef std::map<std::string, Cityset*> CitysetMap;

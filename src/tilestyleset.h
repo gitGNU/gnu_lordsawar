@@ -81,6 +81,9 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 
 	void getUniqueTileStyleTypes(std::list<TileStyle::Type> &types);
 	bool validate();
+
+	void instantiateImages(int tilesize, std::string image_filename);
+	void uninstantiateImages();
     private:
 
 	//! The name of the tilestyleset.

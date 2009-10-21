@@ -37,7 +37,7 @@ class RewardEditorDialog: public sigc::trackable
 
     void set_parent_window(Gtk::Window &parent);
 
-    void run();
+    int run();
 
     Reward *get_reward() {return reward;}
     

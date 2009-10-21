@@ -1610,14 +1610,14 @@ void Player::doCityPillage(City *c, int& gold, int* pillaged_army_type)
 	  const ArmyProdBase *a = c->getProductionBase(i);
 	  if (a != NULL)
 	    {
-	      if (a->getProductionCost() == 0)
+	      if (a->getNewProductionCost() == 0)
 		{
 		  slot = i;
 		  break;
 		}
-	      if (a->getProductionCost() > max_cost)
+	      if (a->getNewProductionCost() > max_cost)
 		{
-		  max_cost = a->getProductionCost();
+		  max_cost = a->getNewProductionCost();
 		  slot = i;
 		}
 	    }
@@ -1627,10 +1627,10 @@ void Player::doCityPillage(City *c, int& gold, int* pillaged_army_type)
 	  const ArmyProdBase *a = c->getProductionBase(slot);
 	  if (pillaged_army_type)
 	    *pillaged_army_type = a->getTypeId();
-	  if (a->getProductionCost() == 0)
+	  if (a->getNewProductionCost() == 0)
 	    gold += 1500;
 	  else
-	    gold += a->getProductionCost() / 2;
+	    gold += a->getNewProductionCost() / 2;
 	  c->removeProductionBase(slot);
 	}
   //*pillaged_army_type = 10;
@@ -1680,10 +1680,10 @@ void Player::doCitySack(City* c, int& gold, std::list<guint32> *sacked_types)
 	  if (a != NULL)
 	    {
 	      sacked_types->push_back(a->getTypeId());
-	      if (a->getProductionCost() == 0)
+	      if (a->getNewProductionCost() == 0)
 		gold += 1500;
 	      else
-		gold += a->getProductionCost() / 2;
+		gold += a->getNewProductionCost() / 2;
 	      c->removeProductionBase(i);
 	      max--;
 	    }
@@ -1744,7 +1744,7 @@ void Player::doCityBuyProduction(City* c, int slot, int type)
   c->addProductionBase(slot, new ArmyProdBase(*al->getArmy(as, type)));
 
   // and do the rest of the neccessary actions
-  withdrawGold(al->getArmy(as, type)->getProductionCost());
+  withdrawGold(al->getArmy(as, type)->getNewProductionCost());
 }
 
 bool Player::cityBuyProduction(City* c, int slot, int type)
@@ -1757,7 +1757,7 @@ bool Player::cityBuyProduction(City* c, int slot, int type)
     return false;
 
   // return if we don't have enough money
-  if ((type != -1) && ((int)al->getArmy(as, type)->getProductionCost() > d_gold))
+  if ((type != -1) && ((int)al->getArmy(as, type)->getNewProductionCost() > d_gold))
     return false;
 
   // return if the city already has the production
@@ -3107,6 +3107,10 @@ void Player::AI_setupVectoring(guint32 safe_mp, guint32 min_defenders,
 
 const Army * Player::doCityProducesArmy(City *city)
 {
+  int cost = city->getActiveProductionBase()->getProductionCost();
+  if (cost > d_gold)
+    return NULL;
+  withdrawGold(cost);
   const Army *a = city->armyArrives();
   return a;
 }

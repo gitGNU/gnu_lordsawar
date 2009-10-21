@@ -54,9 +54,13 @@ class ArmyProtoBase : public ArmyBase
         //! Sets the descriptive text for this Army.
         void setDescription(std::string text) {d_description = text;};
         
-        //! Set the gold pieces needed to add this Army to a city's production.
+        //! Set the gold pieces needed to make an Army unit of this kind.
         void setProductionCost(guint32 production_cost)
 	  {d_production_cost = production_cost;}
+
+        //! Set the gold pieces needed to add this Army to a city's production.
+        void setNewProductionCost(guint32 new_production_cost)
+	  {d_new_production_cost = new_production_cost;}
 
 	//! Sets the armyset id for this army.
 	void setArmyset(guint32 id) {d_armyset = id;};
@@ -69,12 +73,15 @@ class ArmyProtoBase : public ArmyBase
         //! Returns the descriptive text of this Army.
         std::string getDescription() const {return _(d_description.c_str());}
 
+	//! Returns how much gold making one of these army units costs.
+        guint32 getProductionCost() const {return d_production_cost;}
+
         //! Returns how much gold setting up the production costs
 	/**
 	 * @return The amount of gold pieces required to add this Army
 	 *         into the City's suite of 4 production slots.
 	 */
-        guint32 getProductionCost() const {return d_production_cost;}
+        guint32 getNewProductionCost() const {return d_new_production_cost;}
 
 	//! Returns the armyset id for this army.
 	guint32 getArmyset() const {return d_armyset;};
@@ -115,6 +122,13 @@ class ArmyProtoBase : public ArmyBase
 	//! The description of the Army unit.
         std::string d_description;
 
+	//! How many gold pieces needed to create an army of this kind.
+	/**
+	 * Every time an army unit is created of this kind, it costs the
+	 * player this many gold pieces.
+	 */
+        guint32 d_production_cost;
+
         //! How many gold pieces needed to add this Army to a city's production.
 	/**
 	 * If d_production_cost is over zero, then the Army can be purchased.
@@ -123,7 +137,7 @@ class ArmyProtoBase : public ArmyBase
 	 *
 	 * This value does not change during gameplay.
 	 */
-        guint32 d_production_cost;
+        guint32 d_new_production_cost;
 
 	//! How many turns the Army unit takes to be produced in a City.
 	/**

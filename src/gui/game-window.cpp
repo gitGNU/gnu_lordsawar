@@ -92,7 +92,6 @@
 #include "QuestsManager.h"
 #include "stack.h"
 #include "GraphicsCache.h"
-#include "GraphicsLoader.h"
 #include "QuestsManager.h"
 #include "Quest.h"
 #include "QCitySack.h"
@@ -921,11 +920,11 @@ bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
   Armysetlist *al = Armysetlist::getInstance();
   for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
     if ((*i)->getType() != Player::NETWORKED)
-      GraphicsLoader::instantiateImages(al->getArmyset((*i)->getArmyset()));
+      al->getArmyset((*i)->getArmyset())->instantiateImages();
 
-  GraphicsLoader::instantiateImages(GameMap::getInstance()->getTileset());
-  GraphicsLoader::instantiateImages(GameMap::getInstance()->getShieldset());
-  GraphicsLoader::instantiateImages(GameMap::getInstance()->getCityset());
+  GameMap::getInstance()->getTileset()->instantiateImages();
+  GameMap::getInstance()->getShieldset()->instantiateImages();
+  GameMap::getInstance()->getCityset()->instantiateImages();
 
   Sound::getInstance()->haltMusic(false);
   Sound::getInstance()->enableBackground();
@@ -1701,7 +1700,7 @@ void GameWindow::on_help_about_activated()
   dialog->set_transient_for(*window);
 
   dialog->set_version(PACKAGE_VERSION);
-  dialog->set_logo(GraphicsLoader::getMiscPicture("castle_icon.png")->to_pixbuf());
+  dialog->set_logo(GraphicsCache::getMiscPicture("castle_icon.png")->to_pixbuf());
   dialog->show_all();
   dialog->run();
   dialog->hide();
@@ -1760,7 +1759,7 @@ void GameWindow::on_game_over(Player *winner)
   Gtk::Image *image;
   xml->get_widget("image", image);
 
-  image->property_pixbuf() = GraphicsLoader::getMiscPicture("win.png", false)->to_pixbuf();
+  image->property_pixbuf() = GraphicsCache::getMiscPicture("win.png", false)->to_pixbuf();
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -2919,7 +2918,7 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<guint32> sacked_
       sack_image->property_pixbuf() = pic;
       const ArmyProto *a = 
 	Armysetlist::getInstance()->getArmy (player->getArmyset(), *it);
-      s = String::ucompose("%1 gp", a->getProductionCost() / 2);
+      s = String::ucompose("%1 gp", a->getNewProductionCost() / 2);
       sack_label->set_text(s);
       i++;
     }

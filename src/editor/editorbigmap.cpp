@@ -313,6 +313,7 @@ void EditorBigMap::change_map_under_cursor()
 {
     std::vector<Vector<int> > tiles = get_cursor_tiles();
     Tileset* ts = GameMap::getInstance()->getTileset();
+    Cityset* cs = GameMap::getInstance()->getCityset();
     
     // find the index of the "grass" tile
     unsigned int grass_index;
@@ -507,7 +508,7 @@ void EditorBigMap::change_map_under_cursor()
 		break;
 	    
 	    // create the city
-	    City *c = new City(tile);
+	    City *c = new City(tile, cs->getCityTileWidth());
 	    c->setOwner(Playerlist::getInstance()->getNeutral());
 	    Citylist::getInstance()->add(c);
 
@@ -571,7 +572,7 @@ void EditorBigMap::change_map_under_cursor()
 		if (maptile->getMaptileType() != Tile::GRASS)
 		  replaced_grass = true;
 		maptile->setType(grass_index);
-		Ruin *ruin = new Ruin(tile);
+		Ruin *ruin = new Ruin(tile, cs->getRuinTileWidth());
 		Ruinlist::getInstance()->add(ruin);
 		if (replaced_grass)
 		  GameMap::getInstance()->applyTileStyles
@@ -588,7 +589,8 @@ void EditorBigMap::change_map_under_cursor()
 		if (maptile->getMaptileType() != Tile::GRASS)
 		  replaced_grass = true;
 		maptile->setType(grass_index);
-		Templelist::getInstance()->add(new Temple(tile));
+		Templelist::getInstance()->add
+		  (new Temple(tile, cs->getTempleTileWidth()));
 		if (replaced_grass)
 		  GameMap::getInstance()->applyTileStyles
 		    (0, 0, GameMap::getHeight(), GameMap::getWidth(), true);

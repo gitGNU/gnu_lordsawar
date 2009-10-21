@@ -26,8 +26,10 @@
 #include "File.h"
 #include "GraphicsCache.h"
 #include "shield.h"
+#include "gui/image-helpers.h"
 
 std::string Armyset::d_tag = "armyset";
+std::string Armyset::file_extension = ARMYSET_EXT;
 using namespace std;
 
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -35,17 +37,17 @@ using namespace std;
 
 #define DEFAULT_ARMY_TILE_SIZE 40
 Armyset::Armyset(guint32 id, std::string name)
-	: d_id(id), d_name(name), d_dir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE),
-	d_ship(0), d_shipmask(0), d_standard(0), d_standard_mask(0),
-	private_collection(true)
+	: d_id(id), d_name(name), d_subdir(""), 
+	d_tilesize(DEFAULT_ARMY_TILE_SIZE), d_ship(0), d_shipmask(0), 
+	d_standard(0), d_standard_mask(0)
 {
 }
 
-Armyset::Armyset(XML_Helper *helper, bool from_private_collection)
-    : d_id(0), d_name(""), d_dir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE),
+Armyset::Armyset(XML_Helper *helper, std::string directory)
+    : d_id(0), d_name(""), d_subdir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE),
 	d_ship(0), d_shipmask(0), d_standard(0), d_standard_mask(0)
 {
-  private_collection = from_private_collection;
+  setDirectory(directory);
   helper->getData(d_id, "id");
   helper->getData(d_name, "name");
   helper->getData(d_tilesize, "tilesize");
@@ -57,8 +59,9 @@ Armyset::Armyset(XML_Helper *helper, bool from_private_collection)
 
 Armyset::~Armyset()
 {
+  uninstantiateImages();
   for (iterator it = begin(); it != end(); it++)
-      delete *it;
+    delete *it;
 }
 
 bool Armyset::loadArmyProto(string tag, XML_Helper* helper)
@@ -132,7 +135,7 @@ bool Armyset::validatePurchasables()
   bool found = false;
   for (iterator it = begin(); it != end(); it++)
     {
-      if ((*it)->getProductionCost() > 0 )
+      if ((*it)->getNewProductionCost() > 0 )
 	{
 	  found = true;
 	  break;
@@ -266,38 +269,35 @@ bool Armyset::validate()
 class ArmysetLoader
 {
 public:
-    ArmysetLoader(std::string name, bool p) 
+    ArmysetLoader(std::string filename)
       {
 	armyset = NULL;
-	private_collection = p;
-	std::string filename = "";
-	if (private_collection == false)
-	  filename = File::getArmyset(name);
-	else
-	  filename = File::getUserArmyset(name);
+	dir = File::get_dirname(filename);
+	if (File::nameEndsWith(filename, Armyset::file_extension) == false)
+	  filename += Armyset::file_extension;
 	XML_Helper helper(filename, ios::in, false);
 	helper.registerTag(Armyset::d_tag, sigc::mem_fun((*this), &ArmysetLoader::load));
 	if (!helper.parse())
 	  {
 	    std::cerr << "Error, while loading an armyset. Armyset Name: ";
-	    std::cerr <<name <<std::endl <<std::flush;
+	    std::cerr <<File::get_basename(File::get_dirname(filename)) <<std::endl <<std::flush;
 	  }
       };
     bool load(std::string tag, XML_Helper* helper)
       {
 	if (tag == Armyset::d_tag)
 	  {
-	    armyset = new Armyset(helper, private_collection);
+	    armyset = new Armyset(helper, dir);
 	    return true;
 	  }
 	return false;
       };
-    bool private_collection;
+    std::string dir;
     Armyset *armyset;
 };
-Armyset *Armyset::create(std::string filename, bool private_collection)
+Armyset *Armyset::create(std::string filename)
 {
-  ArmysetLoader d(filename, private_collection);
+  ArmysetLoader d(filename);
   return d.armyset;
 }
 void Armyset::getFilenames(std::list<std::string> &files)
@@ -312,3 +312,68 @@ void Armyset::getFilenames(std::list<std::string> &files)
 	}
     }
 }
+	
+void Armyset::instantiateImages()
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->instantiateImages(this);
+  loadShipPic(getFile(getShipImageName()));
+  loadStandardPic(getFile(getStandardImageName()));
+}
+
+void Armyset::uninstantiateImages()
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->uninstantiateImages();
+}
+
+void Armyset::loadShipPic(std::string image_filename)
+{
+  if (image_filename.empty() == true)
+    return;
+  std::vector<PixMask*> half;
+  half = disassemble_row(image_filename, 2);
+  int size = getTileSize();
+  PixMask::scale(half[0], size, size);
+  PixMask::scale(half[1], size, size);
+  setShipImage(half[0]);
+  setShipMask(half[1]);
+}
+
+void Armyset::loadStandardPic(std::string image_filename)
+{
+  if (image_filename.empty() == true)
+    return;
+  std::vector<PixMask*> half = disassemble_row(image_filename, 2);
+  int size = getTileSize();
+  PixMask::scale(half[0], size, size);
+  PixMask::scale(half[1], size, size);
+  setStandardPic(half[0]);
+  setStandardMask(half[1]);
+}
+
+std::string Armyset::getConfigurationFile()
+{
+  return getDirectory() + d_subdir + file_extension;
+}
+
+std::list<std::string> Armyset::scanUserCollection()
+{
+  return File::scanFiles(File::getUserArmysetDir(), file_extension);
+}
+
+std::list<std::string> Armyset::scanSystemCollection()
+{
+  std::list<std::string> retlist = File::scanFiles(File::getArmysetDir(), 
+						   file_extension);
+  if (retlist.empty())
+    {
+      std::cerr << "Couldn't find any armysets!" << std::endl;
+      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
+      std::cerr << "Exiting!" << std::endl;
+      exit(-1);
+    }
+
+  return retlist;
+}
+

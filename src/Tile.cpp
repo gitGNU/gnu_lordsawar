@@ -21,6 +21,8 @@
 #include "SmallTile.h"
 #include <iostream>
 #include <algorithm>
+#include "File.h"
+#include "tileset.h"
 
 std::string Tile::d_tag = "tile";
 
@@ -221,5 +223,18 @@ bool Tile::validate()
       break;
     }
   return true;
+}
+
+void Tile::uninstantiateImages()
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->uninstantiateImages();
+}
+
+void Tile::instantiateImages(int tilesize, Tileset *ts)
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->instantiateImages(tilesize, ts->getFile((*it)->getName()));
+
 }
 // End of file

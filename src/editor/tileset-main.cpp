@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
     textdomain ("lordsawar");
 
     // Check if tilesets are in the path (otherwise exit)
-    File::scanTilesets();
+    Tileset::scanSystemCollection();
 
     // init GUI stuff
     g_set_application_name(_("LordsAWar! Tileset Editor"));

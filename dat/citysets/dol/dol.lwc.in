@@ -11,4 +11,7 @@
     <d_signpost>signpost</d_signpost>
     <d_temples>temples</d_temples>
     <d_towers>towers</d_towers>
+    <d_city_tile_width>2</d_city_tile_width>
+    <d_temple_tile_width>1</d_temple_tile_width>
+    <d_ruin_tile_width>1</d_ruin_tile_width>
 </cityset>

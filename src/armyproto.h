@@ -31,6 +31,7 @@
 class XML_Helper;
 
 #include "armyprotobase.h"
+class Armyset;
 
 class ArmyProto : public ArmyProtoBase
 {
@@ -112,6 +113,11 @@ class ArmyProto : public ArmyProtoBase
 	//! Sets the gender of the army prototype.
 	void setGender(Hero::Gender g) {d_gender = g;};
 	
+	void instantiateImages(Armyset *armyset);
+	bool instantiateImages(int tilesize, Shield::Colour c, std::string image_filename);
+	void uninstantiateImages();
+
+	static ArmyProto * createScout();
     protected:
 	bool saveData(XML_Helper* helper) const;
     private:

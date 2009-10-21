@@ -197,7 +197,7 @@ void RewardEditorDialog::set_parent_window(Gtk::Window &parent)
   //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void RewardEditorDialog::run()
+int RewardEditorDialog::run()
 {
   dialog->show_all();
   int response = dialog->run();
@@ -241,6 +241,7 @@ void RewardEditorDialog::run()
       if (item)
 	delete item;
     }
+  return response;
 }
 
 

@@ -29,6 +29,7 @@
 #include "defs.h"
 #include "shield.h"
 #include "File.h"
+#include "set.h"
 
 using namespace std;
 
@@ -48,7 +49,7 @@ using namespace std;
  *
  * Armysets are most often referred to by their Id (Armyset::d_id), but may 
  * sometimes be referred to by their name (Armyset::d_name) or subdirectory 
- * name (Armyset::d_dir).
+ * name (Armyset::d_subdir).
  *
  * Armyset objects are loaded from an armyset configuration file.
  *
@@ -58,14 +59,15 @@ using namespace std;
  * player's forces, but in practise there is only one Armyset per scenario.
  *
  * The armyset configuration file is a same named XML file inside the Armyset's
- * directory.  E.g. army/${Armyset::d_dir}/${Armyset::d_dir}.xml.
+ * directory.  E.g. army/${Armyset::d_subdir}/${Armyset::d_subdir}.xml.
  */
-class Armyset: public std::list<ArmyProto *>, public sigc::trackable
+class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 {
     public:
 
 	//! The xml tag of this object in an armyset configuration file.
 	static std::string d_tag; 
+	static std::string file_extension; 
 
 	//! Default constructor.
 	/**
@@ -80,9 +82,10 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	/**
 	 * Load armyset XML entities from armyset configuration files.
 	 */
-        Armyset(XML_Helper* helper, bool private_collection = false);
+        Armyset(XML_Helper* helper, std::string directory);
 
-	static Armyset *create(std::string filename, bool private_collection = false);
+	static Armyset *create(std::string filename);
+
 	//! Destructor.
         ~Armyset();
 
@@ -116,9 +119,6 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
         guint32 getId() const {return d_id;}
 
 	//! Set the unique identifier for this armyset.
-	/**
-	 * @note This method is only used in the armyset editor.  
-	 */
         void setId(guint32 id) {d_id = id;}
 
 	//! Returns the name of the armyset.
@@ -143,10 +143,10 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	 *
 	 * @return The name of the subdirectory the Armyset is held in.
 	 */
-        std::string getSubDir() const {return d_dir;}
+        std::string getSubDir() const {return d_subdir;}
 
 	//! Set the subdirectory that the armyset is in.
-        void setSubDir(std::string dir) {d_dir = dir;}
+        void setSubDir(std::string dir) {d_subdir = dir;}
 
 	//! Get the image of the stack in a ship (minus the mask).
 	PixMask* getShipPic() const {return d_ship;}
@@ -199,10 +199,6 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	 */
 	ArmyProto * lookupArmyByType(guint32 army_type);
 
-	//! Return whether this is an armyset in the user's personal collection.
-	bool fromPrivateCollection() {return private_collection;};
-
-
 	//! can this armyset be used within the game?
 	bool validate();
 	bool validateSize();
@@ -218,16 +214,20 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	bool validateArmyUnitName(ArmyProto *a);
 	//! get filenames in this armyset, excepting the configuration file.
 	void getFilenames(std::list<std::string> &files);
+	void instantiateImages();
+	void uninstantiateImages();
+	void loadStandardPic(std::string image_filename);
+	void loadShipPic(std::string image_filename);
+
+	std::string getConfigurationFile();
+	static std::list<std::string> scanUserCollection();
+	static std::list<std::string> scanSystemCollection();
+
+
     private:
 
         //! Callback function for the army tag (see XML_Helper)
         bool loadArmyProto(std::string tag, XML_Helper* helper);
-
-	//! Load the image and mask of the stack's ship picture.
-	void loadShipPic();
-
-	//! Load the image and mask of the planted standard.
-	void loadStandardPic();
         
 	//! The unique Id of this armyset.
 	/**
@@ -249,7 +249,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 	 * residing in.  It does not contain a path (e.g. no slashes).
 	 * Armyset files sit in the army/ directory.
 	 */
-        std::string d_dir;
+        std::string d_subdir;
 
 	//! The size of each army tile as rendered in the game.
 	/**
@@ -279,9 +279,6 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable
 
 	//! The name of the file that holds the picture of stack on water.
 	std::string d_stackship_name;
-
-	//! Whether this is a system armyset, or one that the user made.
-	bool private_collection;
 };
 
 #endif // ARMYSET_H

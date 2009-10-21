@@ -45,6 +45,7 @@
 #include "File.h"
 #include "armysetlist.h"
 #include "tilesetlist.h"
+#include "citysetlist.h"
 #include "shieldsetlist.h"
 #include "stacklist.h"
 #include "stack.h"
@@ -58,11 +59,11 @@
 #include "army.h"
 #include "QuestsManager.h"
 #include "Itemlist.h"
-#include "string_tokenizer.h"
 #include "player.h"
 #include "vectoredunitlist.h"
 #include "history.h"
 #include "xmlhelper.h"
+#include "tarhelper.h"
 
 std::string GameScenario::d_tag = "scenario";
 using namespace std;
@@ -85,15 +86,133 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
     setNewRandomId();
 }
 
-// savegame is a filename with absolute path!
-
+//savegame has an absolute path
 GameScenario::GameScenario(string savegame, bool& broken)
   :d_turnmode(true), d_playmode(GameScenario::HOTSEAT), recording_file(""), 
     inhibit_autosave_removal(false)
 {
-  XML_Helper helper(savegame, ios::in, Configuration::s_zipfiles);
+  Tar_Helper t(savegame, std::ios::in);
+  loadArmysets(&t);
+  loadTilesets(&t);
+  loadCitysets(&t);
+  loadShieldsets(&t);
+  std::string filename = t.getFirstFile(broken);
+  XML_Helper helper(filename, std::ios::in, Configuration::s_zipfiles);
   broken = loadWithHelper(helper);
+  File::erase(filename);
   helper.close();
+  t.Close();
+}
+
+bool GameScenario::loadArmysets(Tar_Helper *t)
+{
+  bool broken = false;
+  std::list<std::string> armysets;
+  armysets = t->getFilenamesWithExtension(Armyset::file_extension);
+  for (std::list<std::string>::iterator it = armysets.begin(); 
+       it != armysets.end(); it++)
+    {
+      Armyset *armyset = Armysetlist::getInstance()->import(t, *it, broken);
+      if (armyset)
+	armyset->instantiateImages();
+    }
+  return !broken;
+}
+
+bool GameScenario::loadTilesets(Tar_Helper *t)
+{
+  bool broken = false;
+  std::list<std::string> tilesets;
+  tilesets = t->getFilenamesWithExtension(Tileset::file_extension);
+  for (std::list<std::string>::iterator it = tilesets.begin(); 
+       it != tilesets.end(); it++)
+    {
+      std::string filename = t->getFile(*it, broken);
+      Tileset *tileset = Tileset::create(filename);
+      tileset->setSubDir(File::get_basename(*it));
+
+      //extract all the files and remember where we extracted them
+      std::list<std::string> delfiles;
+      delfiles.push_back(filename);
+      std::list<std::string> files;
+      tileset->getFilenames(files);
+      for (std::list<std::string>::iterator i = files.begin(); i != files.end(); i++)
+	delfiles.push_back (t->getFile(*i + ".png", broken));
+
+      std::string subdir = "";
+      guint32 id = 0;
+      Tilesetlist::getInstance()->addToPersonalCollection(tileset, subdir, id);
+
+      for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
+	File::erase(*it);
+  
+      tileset->instantiateImages();
+    }
+  return !broken;
+}
+
+bool GameScenario::loadCitysets(Tar_Helper *t)
+{
+  bool broken = false;
+  std::list<std::string> citysets;
+  citysets = t->getFilenamesWithExtension(Cityset::file_extension);
+  for (std::list<std::string>::iterator it = citysets.begin(); 
+       it != citysets.end(); it++)
+    {
+      std::string filename = t->getFile(*it, broken);
+      Cityset *cityset = Cityset::create(filename);
+      cityset->setSubDir(File::get_basename(*it));
+
+      //extract all the files and remember where we extracted them
+      std::list<std::string> delfiles;
+      delfiles.push_back(filename);
+      std::list<std::string> files;
+      cityset->getFilenames(files);
+      for (std::list<std::string>::iterator i = files.begin(); i != files.end(); i++)
+	delfiles.push_back (t->getFile(*i + ".png", broken));
+
+      std::string subdir = "";
+      guint32 id = 0;
+      Citysetlist::getInstance()->addToPersonalCollection(cityset, subdir, id);
+
+      for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
+	File::erase(*it);
+  
+      cityset->instantiateImages();
+    }
+  return !broken;
+}
+
+bool GameScenario::loadShieldsets(Tar_Helper *t)
+{
+  bool broken = false;
+  std::list<std::string> shieldsets;
+  shieldsets = t->getFilenamesWithExtension(Shieldset::file_extension);
+  for (std::list<std::string>::iterator it = shieldsets.begin(); 
+       it != shieldsets.end(); it++)
+    {
+      std::string filename = t->getFile(*it, broken);
+      Shieldset *shieldset = Shieldset::create(filename);
+      shieldset->setSubDir(File::get_basename(*it));
+
+      //extract all the files and remember where we extracted them
+      std::list<std::string> delfiles;
+      delfiles.push_back(filename);
+      std::list<std::string> files;
+      shieldset->getFilenames(files);
+      for (std::list<std::string>::iterator i = files.begin(); i != files.end(); i++)
+	delfiles.push_back (t->getFile(*i + ".png", broken));
+
+      std::string subdir = "";
+      guint32 id = 0;
+      Shieldsetlist::getInstance()->addToPersonalCollection(shieldset, subdir, id);
+
+      for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
+	File::erase(*it);
+  
+      shieldset->instantiateImages();
+    }
+  return !broken;
 }
 
 GameScenario::GameScenario(XML_Helper &helper, bool& broken)
@@ -415,7 +534,7 @@ GameScenario::~GameScenario()
       inhibit_autosave_removal == false)
     {
       std::string filename = File::getSavePath() + "autosave.sav";
-      remove(filename.c_str());
+      File::erase(filename);
     }
   GameScenarioOptions::s_round = 0;
 } 
@@ -441,30 +560,71 @@ bool GameScenario::saveGame(string filename, string extension) const
   bool retval = true;
   string goodfilename=filename;
 
-  stringTokenizer * strtoken= new stringTokenizer(filename,"/.\\ ");
+  if (File::nameEndsWith(filename, extension) == false)
+    goodfilename += "." + extension;
 
-  if (strtoken->getLastToken() == extension)
-    {
-      debug("The Filename is well formed")
-	std::cerr <<"";  //dummy call if debug statement is commented out
-    }
-  else 
-    {
-      debug("The Filename lacks the extension --> " << extension)
-	goodfilename += "." + extension;
-    }
-
-  delete strtoken;
-
-  XML_Helper helper(goodfilename, ios::out, Configuration::s_zipfiles);
+  std::string tmpfile = "lw.XXXX";
+  int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
+  close(fd);
+  XML_Helper helper(tmpfile, ios::out, Configuration::s_zipfiles);
   retval &= saveWithHelper(helper);
   helper.close();
 
-  if (retval)
-    return true;
+  if (retval == false)
+    return false;
 
-  std::cerr << "GameScenario: Something went wrong with saving.\n";
-  return false;
+  Tar_Helper t(goodfilename, std::ios::out);
+  t.saveFile(tmpfile, File::get_basename(goodfilename, true));
+  File::erase(tmpfile);
+  std::list<std::string> files;
+
+  Cityset *cs = GameMap::getInstance()->getCityset();
+  cs->getFilenames(files);
+  t.saveFile(cs->getConfigurationFile());
+  for (std::list<std::string>::iterator it = files.begin(); it !=files.end();
+       it++)
+    t.saveFile(cs->getFile(*it));
+
+  files.clear();
+  Shieldset *ss = GameMap::getInstance()->getShieldset();
+  ss->getFilenames(files);
+  t.saveFile(ss->getConfigurationFile());
+  for (std::list<std::string>::iterator it = files.begin(); it !=files.end();
+       it++)
+    t.saveFile(ss->getFile(*it));
+
+  files.clear();
+  Tileset *ts = GameMap::getInstance()->getTileset();
+  ts->getFilenames(files);
+  t.saveFile(ts->getConfigurationFile());
+  for (std::list<std::string>::iterator it = files.begin(); it !=files.end();
+       it++)
+    t.saveFile(ts->getFile(*it));
+
+  Playerlist *plist = Playerlist::getInstance();
+  std::list<guint32> armysets;
+  for (Playerlist::iterator it = plist->begin(); it != plist->end(); it++)
+    {
+      guint32 armyset = (*it)->getArmyset();
+      if (std::find(armysets.begin(), armysets.end(), armyset) == 
+	  armysets.end())
+	armysets.push_back(armyset);
+    }
+  for (std::list<guint32>::iterator it = armysets.begin(); it!= armysets.end();
+       it++)
+    {
+      files.clear();
+      Armyset *as = Armysetlist::getInstance()->getArmyset(*it);
+      t.saveFile(as->getConfigurationFile());
+      as->getFilenames(files);
+      for (std::list<std::string>::iterator it = files.begin(); 
+	   it != files.end(); it++)
+	t.saveFile(as->getFile(*it));
+    }
+
+  t.Close();
+  return true;
+
 }
 
 bool GameScenario::saveWithHelper(XML_Helper &helper) const
@@ -953,7 +1113,9 @@ GameParameters GameScenario::loadGameParameters(std::string filename, bool &brok
 {
   ParamLoader loader;
   
-  XML_Helper helper(filename, std::ios::in, Configuration::s_zipfiles);
+  Tar_Helper t(filename, std::ios::in);
+  std::string tmpfile = t.getFirstFile(broken);
+  XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
   helper.registerTag(GameMap::d_tag, 
 		     sigc::mem_fun(loader, &ParamLoader::loadParam));
   helper.registerTag(GameScenario::d_tag, 
@@ -963,6 +1125,7 @@ GameParameters GameScenario::loadGameParameters(std::string filename, bool &brok
   helper.registerTag(Player::d_tag, 
 		     sigc::mem_fun(loader, &ParamLoader::loadParam));
   bool retval = helper.parse();
+  File::erase(tmpfile);
 
   broken = !retval;
   helper.close();
@@ -989,10 +1152,15 @@ GameScenario::PlayMode GameScenario::loadPlayMode(std::string filename, bool &br
 {
   PlayModeLoader loader;
   
-  XML_Helper helper(filename, std::ios::in, Configuration::s_zipfiles);
+  Tar_Helper t(filename, std::ios::in);
+  std::string file = File::get_basename(filename, true);
+  std::string tmpfile = t.getFirstFile(broken);
+  //t.Close();
+  XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
   helper.registerTag(GameScenario::d_tag, 
 		     sigc::mem_fun(loader, &PlayModeLoader::loadParam));
   bool retval = helper.parse();
+  File::erase(tmpfile);
 
   broken = !retval;
   helper.close();

@@ -58,7 +58,7 @@ void SignpostEditorDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void SignpostEditorDialog::run()
+int SignpostEditorDialog::run()
 {
   dialog->show_all();
   int response = dialog->run();
@@ -71,6 +71,7 @@ void SignpostEditorDialog::run()
 	d_randomizer->pushRandomSignpost
 	  (sign_textview->get_buffer()->get_text());
     }
+  return response;
 }
 
 void SignpostEditorDialog::on_randomize_clicked()

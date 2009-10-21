@@ -1,5 +1,4 @@
-//  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -16,31 +15,29 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef MAP_INFO_DIALOG_H
-#define MAP_INFO_DIALOG_H
+#ifndef SET_H
+#define SET_H
+#include <string>
+#include "File.h"
 
-#include <memory>
-#include <sigc++/trackable.h>
-#include <gtkmm.h>
-
-class GameScenario;
-
-//! Scenario editor.  Edits the description of the scenario.
-class MapInfoDialog: public sigc::trackable
+class Set
 {
- public:
-    MapInfoDialog(GameScenario *game_scenario);
-    ~MapInfoDialog();
+public:
+    enum Origin { SYSTEM, PERSONAL, SCENARIO, NONE};
+    Set();
+    ~Set();
 
-    void set_parent_window(Gtk::Window &parent);
+    Set::Origin getOrigin() {return origin;};
+    void setOrigin(Set::Origin origination) {origin = origination;};
 
-    int run();
-    
- private:
-    Gtk::Dialog* dialog;
-    Gtk::Entry *name_entry;
-    Gtk::TextView *description_textview;
-    GameScenario *game_scenario;
+    std::string getDirectory() {return dir;};
+    void setDirectory(std::string d) {dir = File::add_slash_if_necessary(d);};
+
+    std::string getFile(std::string file);
+private:
+
+    Origin origin;
+    std::string dir;
 };
 
 #endif

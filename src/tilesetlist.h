@@ -27,6 +27,7 @@
 #include "xmlhelper.h"
 #include "Tile.h"
 #include "tileset.h"
+#include "setlist.h"
 
 
 //! A list of all Tileset objects available to the game.
@@ -37,7 +38,7 @@
  * Tileset objects are usually referenced by the name of the subdirectory
  * in which they reside on disk (inside the tilesets/ directory).
  */
-class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
+class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public SetList
 {
     public:
         //! Return the singleton instance of this class.
@@ -72,17 +73,24 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
 	 *             This value does not contain any slashes, and is
 	 *             presumed to be found inside the tilesets/ directory.
 	 */
-	Tileset *getTileset(std::string dir) { return d_tilesets[dir];};
+	Tileset *getTileset(std::string dir);
 
 	//! Return the Tileset object by the id.
 	/**
 	 * @param id   A unique numeric identifier that identifies the tileset
 	 *             among all tilesets in the tilesetlist.
 	 */
-	Tileset *getTileset(guint32 id) { return d_tilesetids[id];};
+	Tileset *getTileset(guint32 id);
 
 	//! Return an unused tileset number.
 	static int getNextAvailableId(int after = 0);
+
+	void add(Tileset *tileset);
+
+	void uninstantiateImages();
+	void instantiateImages();
+
+	bool addToPersonalCollection(Tileset *tileset, std::string &new_subdir, guint32 &new_id);
     private:
         //! Default constructor.  Loads all tilesets it can find.
 	/**
@@ -93,9 +101,6 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
         //! Destructor.
         ~Tilesetlist();
 
-        //! Callback for loading Tileset objects into the Tilesetlist.
-	bool load(std::string tag, XML_Helper *helper);
-
         //! Loads a specific Tileset.
 	/**
 	 * Load the Tileset from an tileset configuration file and add it to 
@@ -104,11 +109,11 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable
 	 * @param name  The name of the subdirectory that the Tileset resides 
 	 *              in.
 	 *
-	 * @return True if the Tileset could be loaded.  False otherwise.
+	 * @return the Tileset.  NULL otherwise.
 	 */
-        bool loadTileset (std::string name, bool from_private_collection);
+        Tileset* loadTileset (std::string filename);
 
-	void loadTilesets(std::list<std::string> tilesets, bool priv);
+	void loadTilesets(std::list<std::string> tilesets);
         
         typedef std::map<std::string, std::string> DirMap;
         typedef std::map<std::string, Tileset*> TilesetMap;

@@ -155,7 +155,7 @@ void RuinEditorDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void RuinEditorDialog::run()
+int RuinEditorDialog::run()
 {
     dialog->show_all();
     int response = dialog->run();
@@ -210,6 +210,7 @@ void RuinEditorDialog::run()
 	delete keeper;
 	keeper = 0;
     }
+    return response;
 }
 
 void RuinEditorDialog::set_keeper_name()

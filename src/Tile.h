@@ -27,6 +27,7 @@
 
 #include "tilestyleset.h"
 
+class Tileset;
 class SmallTile;
 //! Describes a kind of tile that a Stack can traverse.
 /** 
@@ -130,6 +131,8 @@ class Tile : public std::list<TileStyleSet*>
 
 	bool consistsOnlyOfLoneAndOtherStyles();
 
+	void uninstantiateImages();
+	void instantiateImages(int tilesize, Tileset *ts);
     private:
         // DATA
 

@@ -20,7 +20,6 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include <assert.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include "citylist.h"
@@ -31,6 +30,8 @@
 #include "hero.h"
 #include "stack.h"
 #include "armyprodbase.h"
+#include "GameMap.h"
+#include "cityset.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -390,7 +391,8 @@ bool Citylist::load(std::string tag, XML_Helper* helper)
 {
     if (tag == City::d_tag)
       {
-	City *c = new City(helper);
+	Cityset *cs = GameMap::getInstance()->getCityset();
+	City *c = new City(helper, cs->getCityTileWidth());
 	add(c);
 	return true;
       }

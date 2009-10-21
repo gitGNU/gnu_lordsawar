@@ -30,11 +30,9 @@ RoadPathCalculator::RoadPathCalculator(Vector<int> starting_point)
 {
   stack = new Stack(NULL, starting_point);
 
-  Armysetlist *al = Armysetlist::getInstance();
-  guint32 armyset = al->getArmysetId(_("Default"), 
-				    Tileset::getDefaultTileSize());
-  const ArmyProto* basearmy = Armysetlist::getInstance()->getArmy(armyset, 1);
+  ArmyProto *basearmy = ArmyProto::createScout();
   Army *a = Army::createNonUniqueArmy(*basearmy);
+  delete basearmy;
   stack->push_back(a);
   path_calculator = new PathCalculator(stack, false);
 }

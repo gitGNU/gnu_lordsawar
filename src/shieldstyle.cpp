@@ -22,6 +22,7 @@
 #include "xmlhelper.h"
 #include "File.h"
 #include "shieldset.h"
+#include "gui/image-helpers.h"
 
 std::string ShieldStyle::d_tag = "shieldstyle";
 
@@ -70,4 +71,52 @@ ShieldStyle::Type ShieldStyle::shieldStyleTypeFromString(const std::string str)
   else if (str == "ShieldStyle::LARGE")
     return ShieldStyle::LARGE;
   return ShieldStyle::SMALL;
+}
+
+bool ShieldStyle::save(XML_Helper *helper)
+{
+  bool retval = true;
+
+  retval &= helper->openTag(d_tag);
+  std::string s = shieldStyleTypeToString(ShieldStyle::Type(d_type));
+  retval &= helper->saveData("type", s);
+  retval &= helper->saveData("image", d_image_name);
+  retval &= helper->closeTag();
+  return retval;
+}
+void ShieldStyle::instantiateImages(std::string filename, Shieldset *s)
+{
+  // The shield image consists of two halves. On the left is the shield 
+  // image, on the right the mask.
+  std::vector<PixMask* > half = disassemble_row(filename, 2);
+
+  int xsize = 0;
+  int ysize = 0;
+  switch (getType())
+    {
+    case ShieldStyle::SMALL:
+      xsize = s->getSmallWidth(); ysize = s->getSmallHeight(); break;
+    case ShieldStyle::MEDIUM:
+      xsize = s->getMediumWidth(); ysize = s->getMediumHeight(); break;
+    case ShieldStyle::LARGE:
+      xsize = s->getLargeWidth(); ysize = s->getLargeHeight(); break;
+    }
+  PixMask::scale(half[0], xsize, ysize);
+  PixMask::scale(half[1], xsize, ysize);
+  setImage(half[0]);
+  setMask(half[1]);
+}
+
+void ShieldStyle::uninstantiateImages()
+{
+  if (getImage())
+    {
+      delete getImage();
+      setImage(NULL);
+    }
+  if (getMask())
+    {
+      delete getMask();
+      setMask(NULL);
+    }
 }

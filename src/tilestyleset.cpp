@@ -22,6 +22,7 @@
 
 #include "GraphicsCache.h"
 #include "xmlhelper.h"
+#include "gui/image-helpers.h"
 
 std::string TileStyleSet::d_tag = "tilestyleset";
 using namespace std;
@@ -69,4 +70,24 @@ bool TileStyleSet::validate()
   return true;
 }
 
+void TileStyleSet::uninstantiateImages()
+{
+  for (unsigned int i = 0; i < size(); i++)
+    {
+      if ((*this)[i]->getImage() != NULL)
+	{
+	  delete (*this)[i]->getImage();
+	  (*this)[i]->setImage(NULL);
+	}
+    }
+}
+void TileStyleSet::instantiateImages(int tilesize, std::string filename)
+{
+  std::vector<PixMask *> styles = disassemble_row(filename, size());
+  for (unsigned int i = 0; i < size(); i++)
+    {
+      PixMask::scale(styles[i], tilesize, tilesize);
+      (*this)[i]->setImage(styles[i]);
+    }
+}
 // End of file

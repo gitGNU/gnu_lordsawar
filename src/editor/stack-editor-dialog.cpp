@@ -151,7 +151,7 @@ void StackEditorDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void StackEditorDialog::run()
+int StackEditorDialog::run()
 {
     dialog->show_all();
     int response = dialog->run();
@@ -220,6 +220,7 @@ void StackEditorDialog::run()
 	      (*it)->setOwner(player);
 	}
     }
+    return response;
 }
 
 Player *StackEditorDialog::get_selected_player()

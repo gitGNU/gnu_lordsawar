@@ -72,6 +72,7 @@ class ShieldStyle : public sigc::trackable
 	//! Destructor.
         virtual ~ShieldStyle();
 
+	bool save(XML_Helper *helper);
         // Set functions:
         
         //! Set the basic image of the shield.
@@ -97,6 +98,8 @@ class ShieldStyle : public sigc::trackable
 	//! Returns the basename of the picture's filename.
 	std::string getImageName() const {return d_image_name;}
 
+	void instantiateImages(std::string filename, Shieldset *s);
+	void uninstantiateImages();
     protected:
 
 	//! The size of the shield. (small, medium, or large)

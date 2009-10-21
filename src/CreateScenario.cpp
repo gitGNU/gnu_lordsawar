@@ -48,7 +48,7 @@
 #include "roadlist.h"
 #include "road.h"
 #include "armysetlist.h"
-
+#include "citysetlist.h"
 #include "real_player.h"
 #include "ai_fast.h"
 #include "ai_smart.h"
@@ -87,6 +87,9 @@ CreateScenario::CreateScenario(int width, int height)
 
     setWidth(width);
     setHeight(height);
+
+    d_generator = new MapGenerator();
+    d_generator->progress.connect (sigc::mem_fun(*this, &CreateScenario::on_progress));
 }
 
 CreateScenario::~CreateScenario()
@@ -100,21 +103,6 @@ CreateScenario::~CreateScenario()
         delete d_scenario;
 }
 
-void CreateScenario::setMaptype(MapType type)
-{
-    debug("CreateScenario::setMaptype")
-
-    //this function currently does almost nothing. It's purpose is to initialize
-    //the right MapGenerator (e.g. islands, mountain chains, normal etc.).
-    //Currently we have only a normal d_generator, so it is initialized here
-
-    if (d_generator)
-        delete d_generator;
-
-    d_generator = new MapGenerator();
-    d_generator->progress.connect (sigc::mem_fun(*this, &CreateScenario::on_progress));
-}
-    
 void CreateScenario::on_progress(double percent, std::string description)
 {
   progress.emit();
@@ -124,9 +112,6 @@ void CreateScenario::setPercentages(int pgrass, int pwater, int pforest,
                                     int pswamp, int phills, int pmountains)
 {
     debug("CreateScenario::setPercentages")
-
-    if (!d_generator)
-        setMaptype(NORMAL);
 
     //handle input with !=100% sum
     int sum = pgrass + pwater + pforest + pswamp +phills + pmountains;
@@ -153,10 +138,11 @@ void CreateScenario::setMapTiles(std::string tilesname)
     d_tilesname = tilesname;
 }
 
-void CreateScenario::setShieldset(std::string shieldsname)
+void CreateScenario::setShieldset(std::string shieldset)
 {
     debug("CreateScenario::setShieldset")
-    d_shieldsname = shieldsname;
+    d_shieldsname = shieldset;
+    d_generator->setCityset(Citysetlist::getInstance()->getCityset(shieldset));
 }
 
 void CreateScenario::setCityset(std::string citysetname)
@@ -169,18 +155,12 @@ void CreateScenario::setNoCities(int nocities)
 {
     debug("CreateScenario::setNoCities")
 
-    if (!d_generator)
-        setMaptype(NORMAL);
-
     d_generator->setNoCities(nocities);
 }
 
 void CreateScenario::setNoRuins(int noruins)
 {
     debug("CreateScenario::setNoRuins")
-
-    if (!d_generator)
-        setMaptype(NORMAL);
 
     d_generator->setNoRuins(noruins);
 }
@@ -189,18 +169,12 @@ void CreateScenario::setNoSignposts (int nosignposts)
 {
     debug("CreateScenario::setNoSignposts")
 
-    if (!d_generator)
-        setMaptype(NORMAL);
-
     d_generator->setNoSignposts(nosignposts);
 }
 
 void CreateScenario::setNoTemples(int notemples)
 {
     debug("CreateScenario::setNoTemples")
-
-    if (!d_generator)
-        setMaptype(NORMAL);
 
     d_generator->setNoTemples(notemples);
 }
@@ -407,6 +381,7 @@ bool CreateScenario::createMap()
 
     //...and create cities, temples, ruins ,signposts
     map = d_generator->getBuildings(d_width, d_height);
+    Cityset *cityset = Citysetlist::getInstance()->getCityset(d_citysetname);
     
     for (int y = 0; y < d_height; y++)
         for (int x = 0; x < d_width; x++)
@@ -418,14 +393,19 @@ bool CreateScenario::createMap()
                     break;
                 case Maptile::TEMPLE:
                     Templelist::getInstance()->add
-		      (new Temple(Vector<int>(x,y), popRandomTempleName()));
+		      (new Temple(Vector<int>(x,y), 
+				  cityset->getTempleTileWidth(),
+				  popRandomTempleName()));
                     break;
                 case Maptile::RUIN:
 		    Ruinlist::getInstance()->add
-		      (new Ruin(Vector<int>(x,y), popRandomRuinName()));
+		      (new Ruin(Vector<int>(x,y), 
+				cityset->getRuinTileWidth(),
+				popRandomRuinName()));
 		    break;
                 case Maptile::CITY:
-                    Citylist::getInstance()->add(new City(Vector<int>(x,y)));
+                    Citylist::getInstance()->add
+		      (new City(Vector<int>(x,y), cityset->getCityTileWidth()));
                     break;
                 case Maptile::ROAD:
                     Roadlist::getInstance()->add(new Road(Vector<int>(x,y)));

@@ -58,6 +58,8 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 	//! Destructor.
         virtual ~Shield();
 
+	bool save(XML_Helper *helper);
+
         //! Get the player that this shield will belong to.
 	guint32 getOwner() const {return d_owner;}
 
@@ -87,6 +89,9 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 	static Gdk::Color get_default_color_for_neutral();
 
 	static std::string colourToString(const Shield::Colour c);
+
+	void instantiateImages(Shieldset *s);
+	void uninstantiateImages();
     protected:
 
 	//! The player of the shield.

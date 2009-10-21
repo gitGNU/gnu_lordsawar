@@ -28,7 +28,6 @@
 
 #include "Configuration.h"
 
-#include "string_tokenizer.h"
 #include "xmlhelper.h"
 #include "defs.h"
 #include "File.h"

@@ -23,7 +23,6 @@
 #include "rectangle.h"
 
 #include "GraphicsCache.h"
-#include "GraphicsLoader.h"
 #include "armysetlist.h"
 #include "shieldsetlist.h"
 #include "tilesetlist.h"
@@ -261,15 +260,15 @@ GraphicsCache::GraphicsCache()
     loadMedalPics();
     loadNewLevelPics();
 
-    d_smallruinedcity = GraphicsLoader::getMiscPicture("smallruinedcity.png");
-    d_smallhero = GraphicsLoader::getMiscPicture("hero.png");
-    d_smallinactivehero = GraphicsLoader::getMiscPicture("hero-inactive.png");
-    d_small_ruin_unexplored = GraphicsLoader::getMiscPicture("smallunexploredruin.png");
+    d_smallruinedcity = getMiscPicture("smallruinedcity.png");
+    d_smallhero = getMiscPicture("hero.png");
+    d_smallinactivehero = getMiscPicture("hero-inactive.png");
+    d_small_ruin_unexplored = getMiscPicture("smallunexploredruin.png");
     d_small_stronghold_unexplored = 
-      GraphicsLoader::getMiscPicture("smallunexploredstronghold.png");
-    d_small_ruin_explored = GraphicsLoader::getMiscPicture("smallexploredruin.png");
-    d_small_temple = GraphicsLoader::getMiscPicture("smalltemple.png");
-    d_bag = GraphicsLoader::getMiscPicture("items.png");
+      getMiscPicture("smallunexploredstronghold.png");
+    d_small_ruin_explored = getMiscPicture("smallexploredruin.png");
+    d_small_temple = getMiscPicture("smalltemple.png");
+    d_bag = getMiscPicture("items.png");
 }
 
 GraphicsCache::~GraphicsCache()
@@ -1544,6 +1543,7 @@ RuinCacheItem* GraphicsCache::addRuinPic(int type, guint32 cityset)
   //now create the cache item and add the size
   RuinCacheItem* myitem = new RuinCacheItem();
   myitem->type = type;
+  myitem->cityset = cityset;
   myitem->surface = mysurf;
   myitem->cityset = cityset;
 
@@ -2370,3 +2370,14 @@ PixMask* GraphicsCache::getMedalPic(bool large, int type)
   else
     return d_medalpic[0][type];
 }
+
+PixMask* GraphicsCache::loadImage(std::string filename, bool alpha)
+{
+  return PixMask::create(filename);
+}
+
+PixMask* GraphicsCache::getMiscPicture(std::string picname, bool alpha)
+{
+  return loadImage(File::getMiscFile("/various/" + picname), alpha);
+}
+

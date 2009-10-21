@@ -56,7 +56,7 @@ void MapInfoDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void MapInfoDialog::run()
+int MapInfoDialog::run()
 {
     dialog->show_all();
     int response = dialog->run();
@@ -66,5 +66,6 @@ void MapInfoDialog::run()
         game_scenario->setName(name_entry->get_text());
         game_scenario->setComment(description_textview->get_buffer()->get_text());
     }
+    return response;
 }
 

@@ -63,7 +63,7 @@ HeroProto *HeroTemplates::getRandomHero(Hero::Gender gender, int player_id)
   std::vector<HeroProto*> heroes;
   for (unsigned int i = 0; i < d_herotemplates[player_id].size(); i++)
     {
-      if (d_herotemplates[player_id][i]->getGender() == gender)
+      if (Hero::Gender(d_herotemplates[player_id][i]->getGender()) == gender)
 	heroes.push_back (d_herotemplates[player_id][i]);
     }
   if (heroes.size() == 0)

@@ -158,7 +158,7 @@ void PlayersDialog::set_parent_window(Gtk::Window &parent)
   dialog->set_transient_for(parent);
 }
 
-void PlayersDialog::run()
+int PlayersDialog::run()
 {
   dialog->show_all();
   int response = dialog->run();
@@ -195,6 +195,7 @@ void PlayersDialog::run()
 	}
     }
 
+  return response;
 }
 
 void PlayersDialog::cell_data_type(Gtk::CellRenderer *renderer,

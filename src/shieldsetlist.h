@@ -80,7 +80,7 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	ShieldStyle *getShield(guint32 shieldset, guint32 type, guint32 colour);
 
 	//! Return the Shieldset object that is in the given directory.
-	Shieldset *getShieldset(std::string dir) { return d_shieldsets[dir];}
+	Shieldset *getShieldset(std::string dir);
 
 	Gdk::Color getColor(guint32 shieldset, guint32 owner);
 	struct rgb_shift getMaskColorShifts(guint32 shieldset, guint32 owner);
@@ -90,8 +90,17 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	 * @param id   A unique numeric identifier that identifies the 
 	 *             shieldset among all shieldsets in the shieldsetlist.
 	 */
-	Shieldset *getShieldset(guint32 id) { return d_shieldsetids[id];};
+	Shieldset *getShieldset(guint32 id);
 
+
+	void add(Shieldset *shieldset);
+
+	void uninstantiateImages();
+	void instantiateImages();
+
+	bool addToPersonalCollection(Shieldset *shieldset, std::string &new_subdir, guint32 &new_id);
+
+	static int getNextAvailableId(int after);
     private:
         //! Default Constructor.
 	/**
@@ -103,9 +112,9 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
         //! Destructor.
         ~Shieldsetlist();
 
-        //! Loads a specific shieldset by it's directory name.
-	bool loadShieldset(std::string name, bool p);
-	void loadShieldsets(std::list<std::string> shieldsets, bool priv);
+        //! Loads a specific shieldset.
+	Shieldset *loadShieldset(std::string name);
+	void loadShieldsets(std::list<std::string> shieldsets);
         
         typedef std::map<std::string, std::string> DirMap;
         typedef std::map<std::string, Shieldset*> ShieldsetMap;

@@ -23,6 +23,7 @@
 #include "GraphicsCache.h"
 #include "xmlhelper.h"
 #include "ucompose.hpp"
+#include "shieldset.h"
 #include "rgb_shift.h"
 
 std::string Shield::d_tag = "shield";
@@ -156,4 +157,32 @@ std::string Shield::colourToString(const Shield::Colour c)
       return "Shield::NEUTRAL"; break;
     }
   return "Shield::NEUTRAL";
+}
+
+bool Shield::save(XML_Helper *helper)
+{
+  bool retval = true;
+
+  retval &= helper->openTag(d_tag);
+  retval &= helper->saveData("owner", d_owner);
+  std::stringstream s;
+  s << static_cast<guint32>(int(d_color.get_red_p() * 255.0)) <<" ";
+  s << static_cast<guint32>(int(d_color.get_green_p() * 255.0)) <<" ";
+  s << static_cast<guint32>(int(d_color.get_blue_p() * 255.0));
+  retval &= helper->saveData("color", s);
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->save(helper);
+  retval &= helper->closeTag();
+  return retval;
+}
+	
+void Shield::instantiateImages(Shieldset *s)
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->instantiateImages(s->getFile((*it)->getImageName()), s);
+}
+void Shield::uninstantiateImages()
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->uninstantiateImages();
 }

@@ -46,8 +46,9 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-City::City(Vector<int> pos, string name, guint32 gold, guint32 numslots)
-    :Ownable((Player *)0), Location(pos, City::getWidth()), Renamable(name),
+City::City(Vector<int> pos, guint32 width, string name, guint32 gold, 
+	   guint32 numslots)
+    :Ownable((Player *)0), Location(pos, width), Renamable(name),
     ProdSlotlist(numslots), d_gold(gold), d_defense_level(1), d_burnt(false), 
     d_vectoring(false), d_vector(Vector<int>(-1,-1)), 
     d_capital(false), d_capital_owner(0)
@@ -62,8 +63,8 @@ City::City(Vector<int> pos, string name, guint32 gold, guint32 numslots)
       }
 }
 
-City::City(XML_Helper* helper)
-    :Ownable(helper), Location(helper, City::getWidth()), Renamable(helper),
+City::City(XML_Helper* helper, guint32 width)
+    :Ownable(helper), Location(helper, width), Renamable(helper),
     ProdSlotlist(helper)
 {
     //initialize the city

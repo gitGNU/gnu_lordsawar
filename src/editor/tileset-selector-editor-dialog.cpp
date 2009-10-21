@@ -205,13 +205,13 @@ void TilesetSelectorEditorDialog::update_selector_panel()
     {
       std::string filename = d_tileset->getLargeSelectorFilename();
       selector_filechooserbutton->set_filename
-	  (File::getTilesetFile(d_tileset, filename));
+	  (d_tileset->getFile(filename));
     }
   else
     {
       std::string filename = d_tileset->getSmallSelectorFilename();
       selector_filechooserbutton->set_filename
-	  (File::getTilesetFile(d_tileset, filename));
+	  (d_tileset->getFile(filename));
     }
 
 }

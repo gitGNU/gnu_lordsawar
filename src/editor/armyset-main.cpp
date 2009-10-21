@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
     textdomain ("lordsawar");
 
     // Check if armysets are in the path (otherwise exit)
-    File::scanArmysets();
+    Armyset::scanSystemCollection();
 
     // init GUI stuff
     g_set_application_name(_("LordsAWar! Armyset Editor"));

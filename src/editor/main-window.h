@@ -88,6 +88,7 @@ class MainWindow: public sigc::trackable
     Gtk::HBox *terrain_tile_style_hbox;
     Gtk::DrawingArea *map_drawingarea;
     std::string current_save_filename;
+    bool needs_saving;
     Gtk::Table *terrain_type_table;
     Gtk::Label *mouse_position_label;
     Gtk::RadioButton *pointer_radiobutton;
@@ -114,6 +115,7 @@ class MainWindow: public sigc::trackable
     void on_validate_activated();
     void on_save_map_as_activated();
     void on_quit_activated();
+    bool quit();
     void on_edit_map_info_activated();
     void on_edit_players_activated();
     void on_smooth_map_activated();

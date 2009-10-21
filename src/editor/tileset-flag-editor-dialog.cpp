@@ -186,7 +186,7 @@ void TilesetFlagEditorDialog::update_flag_panel()
   std::string filename = d_tileset->getFlagsFilename();
   if (filename != "")
     flag_filechooserbutton->set_filename
-      (File::getTilesetFile(d_tileset, filename));
+      (d_tileset->getFile(filename));
 }
 
 void TilesetFlagEditorDialog::on_heartbeat()

@@ -21,7 +21,6 @@
 #define RUIN_H
 
 #define DEFAULT_RUIN_NAME  "Ruin"
-#define RUIN_TILE_WIDTH 1
 #include <string>
 #include <sigc++/trackable.h>
 #include "NamedLocation.h"
@@ -62,6 +61,7 @@ class Ruin : public NamedLocation, public sigc::trackable
 	//! Default constructor.
         /** 
           * @param pos          The location of the ruin.
+	  * @param width        The span of tiles that the ruin covers.
           * @param name         The name of the ruin.
           * @param occupant     The monster occupying the ruin.
           * @param searched     Sets the searchedness flag of the ruin.
@@ -69,10 +69,10 @@ class Ruin : public NamedLocation, public sigc::trackable
 	  * @param owner        Who can see this hidden ruin.
 	  * @param sage         if this ruin contains a sage or not.
           */
-        Ruin(Vector<int> pos, std::string name = DEFAULT_RUIN_NAME, 
-	     int type = Ruin::RUIN, Stack* occupant = 0, 
-	     bool searched = false, bool hidden = false, Player *owner = 0, 
-	     bool sage = false);
+        Ruin(Vector<int> pos, guint32 width, 
+	     std::string name = DEFAULT_RUIN_NAME, int type = Ruin::RUIN, 
+	     Stack* occupant = 0, bool searched = false, bool hidden = false, 
+	     Player *owner = 0, bool sage = false);
 
         //! Copy constructor.
         Ruin(const Ruin&);
@@ -81,7 +81,7 @@ class Ruin : public NamedLocation, public sigc::trackable
 	/**
 	 * @param helper  The opened saved-game file to load the ruin from.
 	 */
-        Ruin(XML_Helper* helper);
+        Ruin(XML_Helper* helper, guint32 tile_width);
 	//!Destructor.
         ~Ruin();
 
@@ -144,7 +144,6 @@ class Ruin : public NamedLocation, public sigc::trackable
 	bool isUnnamed() {return getName() == getDefaultName() ? true : false;};
 	
 	static std::string getDefaultName() {return _(DEFAULT_RUIN_NAME);};
-	static guint32 getWidth() {return RUIN_TILE_WIDTH;};
 
     private:
         // DATA

@@ -35,7 +35,7 @@ class ItemlistDialog: public sigc::trackable
 
     void set_parent_window(Gtk::Window &parent);
 
-    void run();
+    int run();
 
     void show();
     void hide();

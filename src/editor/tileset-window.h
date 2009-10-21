@@ -45,6 +45,7 @@ class TileSetWindow: public sigc::trackable
     std::string current_save_filename;
     Tileset *d_tileset; //current tileset
     Tile *d_tile; //current tile
+    bool needs_saving;
     Gtk::Frame *tilestyleset_frame;
     Gtk::Frame *tilestyle_frame;
     Gtk::Entry *name_entry;
@@ -142,6 +143,8 @@ class TileSetWindow: public sigc::trackable
     void on_save_tileset_activated();
     void on_save_tileset_as_activated();
     void on_quit_activated();
+    bool on_window_closed(GdkEventAny *);
+    bool quit();
     void on_edit_tileset_info_activated();
     void on_army_unit_selector_activated();
     void on_explosion_picture_activated();
@@ -160,8 +163,6 @@ class TileSetWindow: public sigc::trackable
     void fill_colours(Tile *);
     void fill_tilestylesets();
     void fill_tilestyleset_info(TileStyleSet *t);
-
-    bool load(std::string tag, XML_Helper *helper);
 
     //callbacks
     void on_tile_type_changed();

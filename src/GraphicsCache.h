@@ -364,6 +364,15 @@ class GraphicsCache
 
 	static bool loadFlagImages(std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);
 
+        /** Load misc pic
+          * 
+          * @param picname  the name of the image (including the suffix).
+          * @param alpha    set this to false if you encounter transparent
+          *                 images that should be opaque. :)
+          *                 Especially for background images...
+          * @return the surface which contains the image
+          */
+        static PixMask* getMiscPicture(std::string picname, bool alpha=true);
 
     private:
         GraphicsCache();
@@ -518,6 +527,22 @@ class GraphicsCache
 
 	void drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid, guint32 tileset, guint32 cityset);
 
+        /** Loads an image
+          * 
+          * This function loads an image, adjusts it to the current resolution etc.
+          * to improve blitting performance.
+          *
+          * @note Some of the images (.jpg??) become transparent if the alpha
+          * channel is copied (they don't have transparent bits anyway), so they
+          * should be loaded with alpha set to false
+          *
+          * @param filename     full filename (with path) of the image to load
+          * @param alpha        if set to true, copy the alpha channel as well
+          *                     (i.e. if the file has transparent pixels, they
+          *                     will be marked as transparent in the returned image)
+          * @return converted image or 0 if anything failed.
+          */
+        static PixMask* loadImage(std::string filename, bool alpha = true);
         //the data
         static GraphicsCache* s_instance;
 

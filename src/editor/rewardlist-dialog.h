@@ -35,7 +35,7 @@ class RewardlistDialog: public sigc::trackable
 
     void set_parent_window(Gtk::Window &parent);
 
-    void run();
+    int run();
 
     Gtk::Dialog &get_dialog() { return *dialog; }
 

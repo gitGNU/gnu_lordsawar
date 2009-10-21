@@ -63,11 +63,18 @@
   */
 
 
+class Cityset;
 class MapGenerator
 {
     public :
         MapGenerator();
         ~MapGenerator();
+
+	//! Set the cityset that will be used to generate the map.
+	/**
+	 * the cityset tells us how many tiles a city takes up.
+	 */
+	void setCityset(Cityset *cs) {cityset = cs;};
 
         //! Set the number of cities
         int setNoCities(int nocities);
@@ -327,6 +334,7 @@ class MapGenerator
         int d_height;
         int d_pswamp, d_pwater, d_pforest, d_phills, d_pmountains;
         unsigned int d_nocities, d_notemples, d_noruins, d_nosignposts;
+	Cityset *cityset;
 };
 
 #endif

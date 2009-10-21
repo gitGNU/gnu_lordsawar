@@ -24,6 +24,7 @@
 #include "templelist.h"
 #include "playerlist.h"
 #include "stack.h"
+#include "GameMap.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -62,7 +63,7 @@ Templelist::Templelist()
 
 Templelist::Templelist(XML_Helper* helper)
 {
-    helper->registerTag(Temple::d_tag, sigc::mem_fun(this, &Templelist::load));
+  helper->registerTag(Temple::d_tag, sigc::mem_fun(this, &Templelist::load));
 }
 
 bool Templelist::save(XML_Helper* helper) const
@@ -85,7 +86,8 @@ bool Templelist::load(std::string tag, XML_Helper* helper)
     //what has happened?
         return false;
     
-    add(new Temple(helper));
+    guint32 width = GameMap::getInstance()->getCityset()->getTempleTileWidth();
+    add(new Temple(helper, width));
 
     return true;
 }

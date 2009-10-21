@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl This is useful to force using autoreconf 2.5.x
 AC_PREREQ(2.59)
-AC_INIT([lordsawar], [0.1.6-pre7], [http://sv.nongnu.org/bugs/?group=lordsawar], [lordsawar])
+AC_INIT([lordsawar], [0.1.7-pre1], [http://sv.nongnu.org/bugs/?group=lordsawar], [lordsawar])
 AC_CONFIG_SRCDIR([config.h.in])
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
@@ -103,6 +103,21 @@ AC_ARG_WITH(expat, [  --with-expat=<dir>      Use expat from here],
 if test $expat = 0 ; then
    AC_CHECK_HEADERS(expat.h,[],AC_MSG_ERROR([*** Expat not found!]))
    AC_CHECK_LIB(expat,XML_ParserCreate,[],[AC_MSG_ERROR([*** Expat not found!])])
+fi
+
+dnl Check for libtar
+libtar=0
+AC_ARG_WITH(libtar, [  --with-libtar=<dir>      Use libtar from here],
+                      [
+                      libtar=$withval
+                      CPPFLAGS="$CPPFLAGS -I$withval/include"
+                      LDFLAGS="$LDFLAGS -L$withval/lib"
+                      LIBS="$LIBS -ltar"
+                      ]
+                      )
+if test $libtar = 0 ; then
+   AC_CHECK_HEADERS(libtar.h,[],AC_MSG_ERROR([*** Libtar not found!]))
+   AC_CHECK_LIB(tar,tar_open,[],[AC_MSG_ERROR([*** Libtar not found!])])
 fi
 
 dnl this is needed in cross-compile with mingw32
@@ -247,7 +262,6 @@ LORDSAWAR_DATADIR=${LORDSAWAR_DATADIR/'${prefix}'/$prefix}
 AC_SUBST(LORDSAWAR_DATADIR)
 
 AC_CONFIG_FILES([
-	intltool-extract intltool-merge intltool-update
         dat/Makefile 
         dat/army/Makefile 
         dat/army/default/Makefile 

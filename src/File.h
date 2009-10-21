@@ -26,10 +26,6 @@
 #include <list>
 
 #include "xmlhelper.h"
-class Armyset;
-class Tileset;
-class Shieldset;
-class Cityset;
 
 /** \brief Miscellaneous functions for file access
   * 
@@ -43,67 +39,11 @@ class Cityset;
 class File
 {
     public:
-        /** Scan the system data directories for armysets
-          * 
-          * @return a list of available armysets
-          */
-        static std::list<std::string> scanArmysets();
-
-	// get the available armysets in the user's personal collection
-	static std::list<std::string> scanUserArmysets();
-
-        /** Get the armyset description file
-          *
-          * @param armysetsubdir    the name of the armyset.
-          * @return the full name of the description file
-          */
-        static std::string getArmyset(std::string armysetsubdir);
-
-        /** Get the armyset description file from the user's personal collection
-          *
-          * @param armysetsubdir    the name of the armyset.
-          * @return the full name of the description file
-          */
-	static std::string getUserArmyset(std::string armysetsubdir);
-
 	//! Get the directory where personal armysets live.
 	static std::string getUserArmysetDir();
 
 	//! Get the directory where system armysets live.
 	static std::string getArmysetDir();
-
-	//! Get the director where the given armyset lives.
-	static std::string getArmysetDir(Armyset *armyset);
-
-	//! Gets the description file for the given armyset.
-	static std::string getArmyset(Armyset *armyset);
-
-	// get an path for a file belonging to the given armyset.
-	static std::string getArmysetFile(Armyset *armyset, std::string pic);
-
-
-        /** Scan the system data directories for tilesets
-          * 
-          * @return a list of available tilesets
-          */
-        static std::list<std::string> scanTilesets();
-
-	// get the available tilesets in the user's personal collection
-	static std::list<std::string> scanUserTilesets();
-
-        /** Get the tileset description file
-          *
-          * @param tilesetsubdir    the dir name of the tileset.
-          * @return the full name of the description file
-          */
-        static std::string getTileset(std::string tilesetsubdir);
-
-        /** Get the tileset description file from the user's personal collection
-          *
-          * @param tilesetsubdir    the name of the tileset.
-          * @return the full name of the description file
-          */
-	static std::string getUserTileset(std::string tilesetsubdir);
 
 	//! Get the directory where personal tilesets live.
 	static std::string getUserTilesetDir();
@@ -111,80 +51,11 @@ class File
 	//! Get the directory where system tilesets live.
 	static std::string getTilesetDir();
 
-	//! Get the director where the given tileset lives.
-	static std::string getTilesetDir(Tileset *tileset);
-
-	//! Gets the description file for the given tileset.
-	static std::string getTileset(Tileset *tileset);
-
-	// get a path of a file in the given Tileset.
-	static std::string getTilesetFile(Tileset *tileset, std::string pic);
-
-        /** Scan the system data directories for shieldsets 
-          * 
-          * @return a list of available shieldsets
-          */
-	static std::list<std::string> scanShieldsets();
-
-        /** Scan the personal data directories for shieldsets 
-          * 
-          * @return a list of available shieldsets
-          */
-	static std::list<std::string> scanUserShieldsets();
-
-        /** Get the shieldset description file
-          *
-          * @param shieldsetsubdir    the dir name of the shieldset.
-          * @return the full name of the description file
-          */
-        static std::string getShieldset(std::string shieldsetsubdir);
-
-        /** Get the shieldset conf file from the user's personal collection
-          *
-          * @param shieldsetsubdir    the name of the shieldset.
-          * @return the full name of the description file
-          */
-	static std::string getUserShieldset(std::string shieldsetsubdir);
-
 	//! Get the directory where personal shieldsets live.
 	static std::string getUserShieldsetDir();
 
 	//! Get the directory where system shieldsets live.
 	static std::string getShieldsetDir();
-
-	//! Get the director where the given shieldset lives.
-	static std::string getShieldsetDir(Shieldset *shieldset);
-
-	//! Gets the description file for the given shieldset.
-	static std::string getShieldset(Shieldset *shieldset);
-
-	// get a path of a file in the given Shieldset.
-	static std::string getShieldsetFile(Shieldset *shieldset, std::string pic);
-
-
-
-        /** Scan the system data directories for citysets
-          * 
-          * @return a list of available citysets
-          */
-        static std::list<std::string> scanCitysets();
-
-	// get the available citysets in the user's personal collection
-	static std::list<std::string> scanUserCitysets();
-
-        /** Get the cityset description file
-          *
-          * @param citysetsubdir    the dir name of the cityset.
-          * @return the full name of the description file
-          */
-        static std::string getCityset(std::string citysetsubdir);
-
-        /** Get the cityset description file from the user's personal collection
-          *
-          * @param citysetsubdir    the name of the cityset.
-          * @return the full name of the description file
-          */
-	static std::string getUserCityset(std::string citysetsubdir);
 
 	//! Get the directory where personal citysets live.
 	static std::string getUserCitysetDir();
@@ -192,15 +63,6 @@ class File
 	//! Get the directory where system citysets live.
 	static std::string getCitysetDir();
 
-	//! Get the director where the given cityset lives.
-	static std::string getCitysetDir(Cityset *cityset);
-
-	//! Gets the description file for the given cityset.
-	static std::string getCityset(Cityset *cityset);
-
-	// get a path of a file in the given cityset.
-	static std::string getCitysetFile(Cityset *cityset, std::string pic);
-	
         //! load misc file, e.g. hero names 
         static std::string getMiscFile(std::string filename);
         
@@ -253,6 +115,22 @@ class File
 	//! does a file exist?
 	static bool exists(std::string f);
 
+	//! does filename end with extension?
+	static bool nameEndsWith(std::string filename, std::string extension);
+
+	//! delete a file from the filesystem.
+	static void erase(std::string filename);
+
+	//! delete an empty directory from the filesystem.
+	static void erase_dir(std::string filename);
+
+	static std::string add_slash_if_necessary(std::string dir);
+
+	static std::string getSetConfigurationFilename(std::string dir, std::string subdir, std::string ext);
+
+	static std::string get_dirname(std::string path);
+
+	static std::list<std::string> scanFiles(std::string dir, std::string ext);
 };
 
 #endif //FILE_H

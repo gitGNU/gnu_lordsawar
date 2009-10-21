@@ -25,6 +25,8 @@
 #include "xmlhelper.h"
 #include "playerlist.h"
 #include "reward.h"
+#include "GameMap.h"
+#include "cityset.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -87,7 +89,8 @@ bool Ruinlist::load(std::string tag, XML_Helper* helper)
     if (tag != Ruin::d_tag)
         return false;
 
-    add(new Ruin(helper));
+    guint32 width = GameMap::getInstance()->getCityset()->getRuinTileWidth();
+    add(new Ruin(helper, width));
 
     //! since the ruin has only now been copied to its final state, we need
     //to register the callback for the occupants here.

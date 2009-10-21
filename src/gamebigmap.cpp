@@ -40,7 +40,6 @@
 #include "File.h"
 #include "GameMap.h"
 #include "GraphicsCache.h"
-#include "GraphicsLoader.h"
 #include "game.h"
 #include "FogMap.h"
 #include "LocationBox.h"

@@ -94,6 +94,7 @@
 [type: gettext/glade]/dat/glade/editor/tileset-window.ui
 [type: gettext/glade]/dat/glade/editor/hero-editor-dialog.ui
 [type: gettext/glade]/dat/glade/editor/backpack-editor-dialog.ui
+[type: gettext/glade]/dat/glade/editor/editor-quit-dialog.ui
 src/FogMap.cpp
 src/templelist.cpp
 src/network-connection.cpp

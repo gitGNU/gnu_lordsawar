@@ -27,6 +27,7 @@
 #include "Tile.h"
 #include "defs.h"
 #include "File.h"
+#include "set.h"
 using namespace std;
 
 class XML_Helper;
@@ -39,20 +40,23 @@ class XML_Helper;
  * Tile and TileStyle objects.  It is implemented as a singleton because many 
  * classes use it for looking up Tile and TileStyle objects.
  * 
- * Tileset objects are often referred to by their subdirectory (Tileset::d_dir).
+ * Tileset objects are often referred to by their subdirectory 
+ * (Tileset::d_subdir).
  *
  * Tileset objects reside on disk in the tilesets/ directory, each of which is
  * inside it's own directory.
  *
  * The tileset configuration file is a same named XML file inside the Tileset's
- * directory.  E.g. tilesets/${Tileset::d_dir}/${Tileset::d_dir}.xml.
+ * directory.  E.g. tilesets/${Tileset::d_subdir}/${Tileset::d_subdir}.lwt.
  */
-class Tileset : public sigc::trackable, public std::vector<Tile*>
+class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 {
     public:
 	//! The xml tag of this object in a tileset configuration file.
 	static std::string d_tag; 
 	static std::string d_road_smallmap_tag; 
+	//! tilesets have this extension. e.g. ".lwt".
+	static std::string file_extension; 
 
 	//! Return the default height and width of a tile in the tileset.
 	static guint32 getDefaultTileSize();
@@ -74,15 +78,15 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	 * @param helper  The opened tileset configuration file to load the
 	 *                tileset from.
 	 */
-        Tileset(XML_Helper* helper, bool private_collection = false);
+        Tileset(XML_Helper* helper, std::string directory);
 
-	static Tileset *create(std::string file, bool private_collection = false);
+	static Tileset *create(std::string file);
 
 	//! Destructor.
         ~Tileset();
 
 	//! Return the subdirectory of this Tileset.
-        std::string getSubDir() const {return d_dir;}
+        std::string getSubDir() const {return d_subdir;}
 
 	//! Set the subdirectory of where this Tileset resides on disk.
         void setSubDir(std::string dir);
@@ -178,9 +182,6 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	Gdk::Color getRoadColor() const {return d_road_color;};
 	void setRoadColor(Gdk::Color color) {d_road_color = color;};
 
-	//! Return whether this is a tileset in the user's personal collection.
-	bool fromPrivateCollection() {return private_collection;};
-
 	void setExplosionImage(PixMask *p) {explosion = p;};
 	PixMask *getExplosionImage() {return explosion;};
 	void setRoadImage(guint32 i, PixMask *p) {roadpic[i] = p;};
@@ -207,10 +208,25 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	void setNumberOfSmallSelectorFrames(guint32 s) {smallselector.reserve(s);smallselectormask.reserve(s); number_of_small_selector_frames = s;};
 	//! get filenames in this tileset, excepting the configuration file.
 	void getFilenames(std::list<std::string> &files);
+
+	  
+	void uninstantiateImages();
+	void instantiateImages();
+
+	std::string getConfigurationFile();
+	static std::list<std::string> scanUserCollection();
+	static std::list<std::string> scanSystemCollection();
     private:
         //! Callback to load Tile objects into the Tileset.
         bool loadTile(std::string, XML_Helper* helper);
 
+	void instantiateImages(std::string explosion_filename,
+			       std::string roads_filename,
+			       std::string bridges_filename,
+			       std::string fog_filename,
+			       std::string flags_filename,
+			       std::string selector_filename,
+			       std::string small_selector_filename);
         // DATA
 	//! The name of the Tileset.
 	/**
@@ -247,7 +263,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
 	 * residing in.  It does not contain a path (e.g. no slashes).
 	 * Tileset directories sit in the tileset/ directory.
 	 */
-        std::string d_dir;
+        std::string d_subdir;
 
 	std::string d_small_selector;
 	std::string d_large_selector;
@@ -262,10 +278,6 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>
         TileStyleIdMap d_tilestyles;
 
 	Gdk::Color d_road_color;
-
-	//! Whether this is a system tileset, or one that the user made.
-	bool private_collection;
-
 
         PixMask* roadpic[ROAD_TYPES];
         PixMask* bridgepic[BRIDGE_TYPES];

@@ -45,6 +45,7 @@ class ArmySetWindow: public sigc::trackable
     std::string current_save_filename;
     Armyset *d_armyset; //current armyset
     ArmyProto *d_army; //current army
+    bool needs_saving;
     Gtk::Image *white_image;
     Gtk::Image *green_image;
     Gtk::Image *yellow_image;
@@ -68,6 +69,7 @@ class ArmySetWindow: public sigc::trackable
     Gtk::FileChooserButton *neutral_image_filechooserbutton;
     Gtk::SpinButton *production_spinbutton;
     Gtk::SpinButton *cost_spinbutton;
+    Gtk::SpinButton *new_cost_spinbutton;
     Gtk::SpinButton *upkeep_spinbutton;
     Gtk::SpinButton *strength_spinbutton;
     Gtk::SpinButton *moves_spinbutton;
@@ -132,6 +134,8 @@ class ArmySetWindow: public sigc::trackable
     void on_save_armyset_activated();
     void on_validate_armyset_activated();
     void on_quit_activated();
+    bool on_window_closed(GdkEventAny*);
+    bool quit();
     void on_edit_armyset_info_activated();
     void on_edit_standard_picture_activated();
     void on_edit_ship_picture_activated();
@@ -139,8 +143,6 @@ class ArmySetWindow: public sigc::trackable
     void on_army_selected();
     void fill_army_image(Gtk::FileChooserButton *button, Gtk::Image *image, Shield::Colour c, ArmyProto *army);
     void fill_army_info(ArmyProto *army);
-
-    bool load(std::string tag, XML_Helper *helper);
 
     //callbacks
     void on_name_changed();
@@ -157,6 +159,7 @@ class ArmySetWindow: public sigc::trackable
     void on_neutral_image_changed();
     void on_production_changed();
     void on_cost_changed();
+    void on_new_cost_changed();
     void on_upkeep_changed();
     void on_strength_changed();
     void on_moves_changed();

@@ -37,7 +37,7 @@ class RuinEditorDialog: public sigc::trackable
 
     void set_parent_window(Gtk::Window &parent);
 
-    void run();
+    int run();
     
  private:
     Gtk::Dialog* dialog;

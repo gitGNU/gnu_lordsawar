@@ -24,6 +24,7 @@
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
 #include "PixMask.h"
+#include "set.h"
 
 #include "defs.h"
 
@@ -39,13 +40,14 @@ class XML_Helper;
  * Citysets are referred to by their subdirectory name.
  *
  * The cityset configuration file is a same named XML file inside the 
- * cityset's directory.  E.g. cityset/${Cityset::d_dir}/${Cityset::d_dir}.xml.
+ * cityset's directory.  E.g. cityset/${Cityset::d_subdir}/${Cityset::d_subdir}.xml.
  */
-class Cityset : public sigc::trackable
+class Cityset : public sigc::trackable, public Set
 {
     public:
 	//! The xml tag of this object in a cityset configuration file.
 	static std::string d_tag; 
+	static std::string file_extension; 
 
 	//! Default constructor.
 	/**
@@ -55,17 +57,19 @@ class Cityset : public sigc::trackable
 	 * @param helper  The opened cityset configuration file to load the
 	 *                Cityset from.
 	 */
-        Cityset(XML_Helper* helper, bool private_collection = false);
+        Cityset(XML_Helper* helper, std::string directory);
 
-	static Cityset *create(std::string file, bool private_collection = false);
+	static Cityset *create(std::string file);
 	//! Destructor.
         ~Cityset();
 
+	bool save(XML_Helper *helper);
+
 	//! Get the directory in which the cityset configuration file resides.
-        std::string getSubDir() const {return d_dir;}
+        std::string getSubDir() const {return d_subdir;}
 
 	//! Set the direction where the shieldset configuration file resides.
-        void setSubDir(std::string dir) {d_dir = dir;}
+        void setSubDir(std::string dir) {d_subdir = dir;}
 
         //! Returns the name of the cityset.
         std::string getName() const {return _(d_name.c_str());}
@@ -115,11 +119,31 @@ class Cityset : public sigc::trackable
 	void setTowerImage(guint32 i, PixMask *p) {towerpics[i] = p;};
 	PixMask *getTowerImage(guint32 i) {return towerpics[i];};
 
-	//! Return whether this is a cityset in the user's personal collection.
-	bool fromPrivateCollection() {return private_collection;};
-
 	//! get filenames in this cityset, excepting the configuration file.
 	void getFilenames(std::list<std::string> &files);
+
+	void instantiateImages();
+	void instantiateImages(std::string port_filename,
+			       std::string signpost_filename,
+			       std::string cities_filename,
+			       std::string razed_cities_filename,
+			       std::string towers_filename,
+			       std::string ruins_filename,
+			       std::string temples_filename);
+	void uninstantiateImages();
+
+	std::string getConfigurationFile();
+
+	static std::list<std::string> scanSystemCollection();
+	static std::list<std::string> scanUserCollection();
+
+	guint32 getCityTileWidth() {return d_city_tile_width;};
+	void setCityTileWidth(guint32 tiles) {d_city_tile_width = tiles;};
+	guint32 getTempleTileWidth() {return d_temple_tile_width;};
+	void setTempleTileWidth(guint32 tiles) {d_temple_tile_width = tiles;};
+	guint32 getRuinTileWidth() {return d_ruin_tile_width;};
+	void setRuinTileWidth(guint32 tiles) {d_ruin_tile_width = tiles;};
+
     private:
 
         // DATA
@@ -158,7 +182,7 @@ class Cityset : public sigc::trackable
 	 * residing in.  It does not contain a path (e.g. no slashes).
 	 * Cityset directories sit in the citysets/ directory.
 	 */
-        std::string d_dir;
+        std::string d_subdir;
 
 
 	std::string d_cities_filename;
@@ -176,8 +200,9 @@ class Cityset : public sigc::trackable
 	PixMask *templepics[TEMPLE_TYPES];
 	PixMask *towerpics[MAX_PLAYERS];
 
-	//! Whether this is a system cityset, or one that the user made.
-	bool private_collection;
+	guint32 d_city_tile_width;
+	guint32 d_temple_tile_width;
+	guint32 d_ruin_tile_width;
 };
 
 #endif // CITYSET_H

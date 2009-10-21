@@ -22,15 +22,17 @@
 #include <algorithm>
 #include <expat.h>
 #include <gtkmm.h>
-#include "rectangle.h"
 #include <sigc++/functors/mem_fun.h>
+#include <assert.h>
 
+#include "rectangle.h"
 #include "armysetlist.h"
 #include "armyset.h"
 #include "File.h"
 #include "defs.h"
 #include "ucompose.hpp"
 #include "PixMask.h"
+#include "tarhelper.h"
 
 
 using namespace std;
@@ -42,50 +44,53 @@ Armysetlist* Armysetlist::s_instance = 0;
 
 Armysetlist* Armysetlist::getInstance()
 {
-    if (!s_instance)
-        s_instance = new Armysetlist();
+  if (!s_instance)
+    s_instance = new Armysetlist();
 
-    return s_instance;
+  return s_instance;
 }
 
 void Armysetlist::deleteInstance()
 {
-    if (s_instance)
-      delete s_instance;
+  if (s_instance)
+    delete s_instance;
 
-    s_instance = 0;
+  s_instance = 0;
 }
 
-void Armysetlist::loadArmysets(std::list<std::string> armysets, 
-			  bool private_collection)
+void Armysetlist::add(Armyset *armyset)
 {
-    for (std::list<std::string>::const_iterator i = armysets.begin(); 
-	 i != armysets.end(); i++)
-      {
-        bool valid = loadArmyset(*i, private_collection);
-	if (!valid)
-	  continue;
+  std::string subdir = File::get_basename(armyset->getDirectory());
+  push_back(armyset); 
+  for (Armyset::iterator ait = armyset->begin(); ait != armyset->end(); ait++)
+    d_armies[armyset->getId()].push_back(*ait);
+  d_names[armyset->getId()] = armyset->getName();
+  d_ids[String::ucompose("%1 %2", armyset->getName(), armyset->getTileSize())] = armyset->getId();
+  armyset->setSubDir(subdir);
+  d_armysets[subdir] = armyset;
+  d_armysetids[armyset->getId()] = armyset;
+}
 
-	iterator it = end();
-	it--;
-	//fill out the maps
-	for (Armyset::iterator ait = (*it)->begin(); ait != (*it)->end(); ait++)
-	  d_armies[(*it)->getId()].push_back(*ait);
-	d_names[(*it)->getId()] = (*it)->getName();
-	d_ids[String::ucompose("%1 %2", (*it)->getName(), (*it)->getTileSize())] = (*it)->getId();
-	(*it)->setSubDir(*i);
-	d_armysets[*i] = *it;
-	d_armysetids[(*it)->getId()] = *it;
-      }
+void Armysetlist::loadArmysets(std::list<std::string> armysets)
+{
+  for (std::list<std::string>::const_iterator i = armysets.begin(); 
+       i != armysets.end(); i++)
+    {
+      Armyset *armyset = loadArmyset(*i);
+      if (!armyset)
+	continue;
+
+      add(armyset);
+    }
 }
 
 Armysetlist::Armysetlist()
 {
-    // load all armysets
-    std::list<std::string> armysets = File::scanArmysets();
-    loadArmysets(armysets, false);
-    armysets = File::scanUserArmysets();
-    loadArmysets(armysets, true);
+  // load all armysets
+  std::list<std::string> armysets = Armyset::scanSystemCollection();
+  loadArmysets(armysets);
+  armysets = Armyset::scanUserCollection();
+  loadArmysets(armysets);
 
 }
 
@@ -94,52 +99,52 @@ Armysetlist::~Armysetlist()
   for (iterator it = begin(); it != end(); it++)
     delete (*it);
 
-    // remove all army entries
-    for (ArmyPrototypeMap::iterator it = d_armies.begin(); 
-	 it != d_armies.end(); it++)
-        while (!(*it).second.empty())
-            delete ((*it).second)[0];
+  // remove all army entries
+  for (ArmyPrototypeMap::iterator it = d_armies.begin(); 
+       it != d_armies.end(); it++)
+    while (!(*it).second.empty())
+      delete ((*it).second)[0];
 }
 
 ArmyProto* Armysetlist::getArmy(guint32 id, guint32 index) const
 {
-    // always use ArmyProtoMap::find for searching, else a default entry is 
-    // created, which can produce really bad results!!
-    ArmyPrototypeMap::const_iterator it = d_armies.find(id);
+  // always use ArmyProtoMap::find for searching, else a default entry is 
+  // created, which can produce really bad results!!
+  ArmyPrototypeMap::const_iterator it = d_armies.find(id);
 
-    // armyset does not exist
-    if (it == d_armies.end())
-        return 0;
+  // armyset does not exist
+  if (it == d_armies.end())
+    return 0;
 
-    // index too large
-    if (index >= (*it).second.size())
-        return 0;
+  // index too large
+  if (index >= (*it).second.size())
+    return 0;
 
-    return ((*it).second)[index];
+  return ((*it).second)[index];
 }
 
 ArmyProto* Armysetlist::getScout(guint32 id) const
 {
-    // always use ArmyProtoMap::find for searching, else a default entry is 
-    // created, which can produce really bad results!!
-    ArmyPrototypeMap::const_iterator it = d_armies.find(id);
+  // always use ArmyProtoMap::find for searching, else a default entry is 
+  // created, which can produce really bad results!!
+  ArmyPrototypeMap::const_iterator it = d_armies.find(id);
 
-    // armyset does not exist
-    if (it == d_armies.end())
-        return 0;
+  // armyset does not exist
+  if (it == d_armies.end())
+    return 0;
 
-    return ((*it).second)[0];
+  return ((*it).second)[0];
 }
 
 guint32 Armysetlist::getSize(guint32 id) const
 {
-    ArmyPrototypeMap::const_iterator it = d_armies.find(id);
+  ArmyPrototypeMap::const_iterator it = d_armies.find(id);
 
-    // armyset does not exist
-    if (it == d_armies.end())
-        return 0;
+  // armyset does not exist
+  if (it == d_armies.end())
+    return 0;
 
-    return (*it).second.size();
+  return (*it).second.size();
 }
 
 std::list<std::string> Armysetlist::getNames()
@@ -161,65 +166,54 @@ std::list<std::string> Armysetlist::getNames(guint32 tilesize)
 
 std::string Armysetlist::getName(guint32 id) const
 {
-    NameMap::const_iterator it = d_names.find(id);
+  NameMap::const_iterator it = d_names.find(id);
 
-    // armyset does not exist
-    if (it == d_names.end())
-        return 0;
+  // armyset does not exist
+  if (it == d_names.end())
+    return 0;
 
-    return (*it).second;
+  return (*it).second;
 }
 
 std::vector<guint32> Armysetlist::getArmysets() const
 {
-    std::vector<guint32> retlist;
-    
-    NameMap::const_iterator it;
-    for (it = d_names.begin(); it != d_names.end(); it++)
+  std::vector<guint32> retlist;
+
+  NameMap::const_iterator it;
+  for (it = d_names.begin(); it != d_names.end(); it++)
     {
-        retlist.push_back((*it).first);
+      retlist.push_back((*it).first);
     }
 
-    return retlist;
+  return retlist;
 }
 
-bool Armysetlist::load(std::string tag, XML_Helper *helper)
-{
-  if (tag == Armyset::d_tag)
-    {
-      Armyset *armyset = new Armyset(helper);
-      push_back(armyset); 
-    }
-  return true;
-}
-
-
-bool Armysetlist::loadArmyset(std::string name, bool private_collection)
+Armyset *Armysetlist::loadArmyset(std::string name)
 {
   debug("Loading armyset " <<name);
-  Armyset *armyset = Armyset::create(name, private_collection);
+  Armyset *armyset = Armyset::create(name);
   if (armyset == NULL)
-    return false;
+    return NULL;
   if (armyset->validate() == false)
     {
       cerr << "Error!  armyset: `" << armyset->getName() << 
-	      "' is invalid." << endl;
+	"' is invalid." << endl;
       delete armyset;
-      return false;
+      return NULL;
     }
   if (d_armysetids.find(armyset->getId()) != d_armysetids.end())
     {
       Armyset *a = (*d_armysetids.find(armyset->getId())).second;
       cerr << "Error!  armyset: `" << armyset->getName() << 
-        "' shares a duplicate armyset id with `" << File::getArmyset(a) << 
-        "'.  Skipping." << endl;
+	"' shares a duplicate armyset id with `" << 
+	a->getConfigurationFile() << "'.  Skipping." << endl;
       delete armyset;
+      return NULL;
       return false;
     }
-  push_back(armyset); 
-  return true;
+  return armyset;
 }
-	
+
 PixMask* Armysetlist::getShipPic (guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)
@@ -292,23 +286,23 @@ std::string Armysetlist::getArmysetDir(std::string name, guint32 tilesize)
 int Armysetlist::getNextAvailableId(int after)
 {
   std::list<guint32> ids;
-  std::list<std::string> armysets = File::scanArmysets();
+  std::list<std::string> armysets = Armyset::scanSystemCollection();
   //there might be IDs in invalid armysets.
   for (std::list<std::string>::const_iterator i = armysets.begin(); 
        i != armysets.end(); i++)
     {
-      Armyset *armyset = Armyset::create(*i, false);
+      Armyset *armyset = Armyset::create(*i);
       if (armyset != NULL)
 	{
 	  ids.push_back(armyset->getId());
 	  delete armyset;
 	}
     }
-  armysets = File::scanUserArmysets();
+  armysets = Armyset::scanUserCollection();
   for (std::list<std::string>::const_iterator i = armysets.begin(); 
        i != armysets.end(); i++)
     {
-      Armyset *armyset = Armyset::create(*i, true);
+      Armyset *armyset = Armyset::create(*i);
       if (armyset != NULL)
 	{
 	  ids.push_back(armyset->getId());
@@ -322,3 +316,122 @@ int Armysetlist::getNextAvailableId(int after)
     }
   return -1;
 }
+
+void Armysetlist::instantiateImages()
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->instantiateImages();
+}
+
+void Armysetlist::uninstantiateImages()
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->uninstantiateImages();
+}
+
+Armyset *Armysetlist::getArmyset(guint32 id) 
+{
+  if (d_armysetids.find(id) == d_armysetids.end())
+    return NULL;
+  return d_armysetids[id];
+}
+
+Armyset *Armysetlist::getArmyset(std::string dir) 
+{ 
+  if (d_armysets.find(dir) == d_armysets.end())
+    return NULL;
+  return d_armysets[dir];
+}
+bool Armysetlist::addToPersonalCollection(Armyset *armyset, std::string &new_subdir, guint32 &new_id)
+{
+  //do we already have this one?
+
+  if (getArmyset(armyset->getSubDir()) == getArmyset(armyset->getId()) &&
+      getArmyset(armyset->getSubDir()) != NULL)
+    {
+      armyset->setDirectory(getArmyset(armyset->getId())->getDirectory());
+      return true;
+    }
+
+  //if the subdir conflicts with any other subdir, then change it.
+  if (getArmyset(armyset->getSubDir()) != NULL)
+    {
+      bool found = false;
+      for (int count = 0; count < 100; count++)
+	{
+	  new_subdir = String::ucompose("%1%2", armyset->getSubDir(), count);
+	  if (getArmyset(new_subdir) == NULL)
+	    {
+	      found = true;
+	      break;
+	    }
+	}
+      if (found == false)
+	return false;
+      armyset->setSubDir(new_subdir);
+    }
+  else
+    new_subdir = armyset->getSubDir();
+
+  //if the id conflicts with any other id, then change it
+  if (getArmyset(armyset->getId()) != NULL)
+    {
+      new_id = Armysetlist::getNextAvailableId(armyset->getId());
+      armyset->setId(new_id);
+    }
+  else
+    new_id = armyset->getId();
+
+  //make the directory where the armyset is going to live.
+  std::string directory = 
+    File::getUserArmysetDir() + armyset->getSubDir() + "/";
+
+  if (File::create_dir(directory) == false)
+    return false;
+
+  //okay now we copy the image files into the new directory 
+  std::list<std::string> files;
+  armyset->getFilenames(files);
+  for (std::list<std::string>::iterator it = files.begin(); it != files.end();
+       it++)
+    File::copy(armyset->getFile(*it), directory + *it);
+
+  //save out the armyset file
+  armyset->setDirectory(directory);
+  XML_Helper helper(armyset->getConfigurationFile(), std::ios::out, false);
+  armyset->save(&helper);
+  helper.close();
+      
+  add(armyset);
+  return true;
+}
+
+Armyset *Armysetlist::import(Tar_Helper *t, std::string f, bool &broken)
+{
+  std::string filename = t->getFile(f, broken);
+  Armyset *armyset = Armyset::create(filename);
+  assert (armyset != NULL);
+  armyset->setSubDir(File::get_basename(f));
+
+  //extract all the files and remember where we extracted them
+  std::list<std::string> delfiles;
+  delfiles.push_back(filename);
+  std::list<std::string> files;
+  armyset->getFilenames(files);
+  for (std::list<std::string>::iterator i = files.begin(); i != files.end(); i++)
+    {
+      std::string b = *i + ".png";
+      std::string file = t->getFile(*i + ".png", broken);
+    delfiles.push_back (file);
+    }
+
+  std::string subdir = "";
+  guint32 id = 0;
+  addToPersonalCollection(armyset, subdir, id);
+
+  for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
+    File::erase(*it);
+  return armyset;
+
+}
+

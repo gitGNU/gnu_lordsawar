@@ -51,10 +51,11 @@ void Tilesetlist::deleteInstance()
 }
 
 Tilesetlist::Tilesetlist()
+	:SetList()
 {
     // load all tilesets
-    loadTilesets(File::scanTilesets(), false);
-    loadTilesets(File::scanUserTilesets(), true);
+    loadTilesets(Tileset::scanSystemCollection());
+    loadTilesets(Tileset::scanUserCollection());
 }
 
 Tilesetlist::~Tilesetlist()
@@ -89,40 +90,38 @@ std::list<std::string> Tilesetlist::getNames(guint32 tilesize)
   return names;
 }
 
-bool Tilesetlist::load(std::string tag, XML_Helper *helper)
+Tileset *Tilesetlist::loadTileset(std::string filename)
 {
-  if (tag == Tileset::d_tag)
-    {
-      Tileset *tileset = new Tileset(helper);
-	push_back(tileset); 
-    }
-  return true;
-}
-
-bool Tilesetlist::loadTileset(std::string name, bool from_private_collection)
-{
-  debug("Loading tileset " <<name);
-  Tileset *tileset = Tileset::create(name, from_private_collection);
+  Tileset *tileset = Tileset::create(filename);
   if (tileset == NULL)
-    return false;
+    return NULL;
   if (tileset->validate() == false)
     {
-      cerr<< "Error!  Tileset: `" << File::getTileset(tileset) <<
+      cerr<< "Error!  Tileset: `" << tileset->getConfigurationFile() <<
 	"' fails validation.  Skipping.\n",
       delete tileset;
-      return false;
+      return NULL;
     }
   if (d_tilesetids.find(tileset->getId()) != d_tilesetids.end())
     {
       Tileset *t = (*d_tilesetids.find(tileset->getId())).second;
       cerr << "Error!  tileset: `" << tileset->getName() << 
-	"' shares a duplicate tileset id with `" << File::getTileset(t) << 
-	"'.  Skipping." << endl;
+	"' shares a duplicate tileset id with `" << 
+	t->getConfigurationFile() << "'.  Skipping." << endl;
       delete tileset;
-      return false;
+      return NULL;
     }
+  return tileset;
+}
+
+void Tilesetlist::add(Tileset *tileset)
+{
+  std::string subdir = File::get_basename(tileset->getDirectory());
   push_back(tileset); 
-  return true;
+  tileset->setSubDir(subdir);
+  d_dirs[String::ucompose("%1 %2", tileset->getName(), tileset->getTileSize())] = subdir;
+  d_tilesets[subdir] = tileset;
+  d_tilesetids[tileset->getId()] = tileset;
 }
 
 std::string Tilesetlist::getTilesetDir(std::string name, guint32 tilesize)
@@ -130,43 +129,38 @@ std::string Tilesetlist::getTilesetDir(std::string name, guint32 tilesize)
   return d_dirs[String::ucompose("%1 %2", name, tilesize)];
 }
 
-void Tilesetlist::loadTilesets(std::list<std::string> tilesets, bool priv)
+void Tilesetlist::loadTilesets(std::list<std::string> tilesets)
 {
   for (std::list<std::string>::const_iterator i = tilesets.begin(); 
        i != tilesets.end(); i++)
     {
-      if (loadTileset(*i, priv) == true)
-	{
-	  iterator it = end();
-	  it--;
-	  (*it)->setSubDir(*i);
-	  d_dirs[String::ucompose("%1 %2", (*it)->getName(), (*it)->getTileSize())] = *i;
-	  d_tilesets[*i] = *it;
-	  d_tilesetids[(*it)->getId()] = *it;
-	}
+      Tileset *tileset = loadTileset(*i);
+      if (!tileset)
+	continue;
+      add(tileset);
     }
 }
 
 int Tilesetlist::getNextAvailableId(int after)
 {
   std::list<guint32> ids;
-  std::list<std::string> tilesets = File::scanTilesets();
+  std::list<std::string> tilesets = Tileset::scanSystemCollection();
   //there might be IDs in invalid tilesets.
   for (std::list<std::string>::const_iterator i = tilesets.begin(); 
        i != tilesets.end(); i++)
     {
-      Tileset *tileset = Tileset::create(*i, false);
+      Tileset *tileset = Tileset::create(*i);
       if (tileset != NULL)
 	{
 	  ids.push_back(tileset->getId());
 	  delete tileset;
 	}
     }
-  tilesets = File::scanUserTilesets();
+  tilesets = Tileset::scanUserCollection();
   for (std::list<std::string>::const_iterator i = tilesets.begin(); 
        i != tilesets.end(); i++)
     {
-      Tileset *tileset = Tileset::create(*i, true);
+      Tileset *tileset = Tileset::create(*i);
       if (tileset != NULL)
 	{
 	  ids.push_back(tileset->getId());
@@ -179,4 +173,91 @@ int Tilesetlist::getNextAvailableId(int after)
 	return i;
     }
   return -1;
+}
+
+void Tilesetlist::uninstantiateImages()
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->uninstantiateImages();
+}
+void Tilesetlist::instantiateImages()
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->instantiateImages();
+}
+	
+Tileset *Tilesetlist::getTileset(std::string dir) 
+{ 
+  if (d_tilesets.find(dir) == d_tilesets.end())
+    return NULL;
+  return d_tilesets[dir];
+}
+	
+Tileset *Tilesetlist::getTileset(guint32 id) 
+{ 
+  if (d_tilesetids.find(id) == d_tilesetids.end())
+    return NULL;
+  return d_tilesetids[id];
+}
+
+bool Tilesetlist::addToPersonalCollection(Tileset *tileset, std::string &new_subdir, guint32 &new_id)
+{
+  //do we already have this one?
+      
+  if (getTileset(tileset->getSubDir()) == getTileset(tileset->getId()) &&
+      getTileset(tileset->getSubDir()) != NULL)
+    {
+      tileset->setDirectory(getTileset(tileset->getId())->getDirectory());
+      return true;
+    }
+
+  //if the subdir conflicts with any other subdir, then change it.
+  if (getTileset(tileset->getSubDir()) != NULL)
+    {
+      bool found = false;
+      for (int count = 0; count < 100; count++)
+	{
+	  new_subdir = String::ucompose("%1%2", tileset->getSubDir(), count);
+	  if (getTileset(new_subdir) == NULL)
+	    {
+	      found = true;
+	      break;
+	    }
+	}
+      if (found == false)
+	return false;
+      tileset->setSubDir(new_subdir);
+    }
+  else
+    new_subdir = tileset->getSubDir();
+
+  //if the id conflicts with any other id, then change it
+  if (getTileset(tileset->getId()))
+    {
+      new_id = Tilesetlist::getNextAvailableId(tileset->getId());
+      tileset->setId(new_id);
+    }
+  else
+    new_id = tileset->getId();
+
+  //make the directory where the tileset is going to live.
+  std::string directory = 
+    File::getUserTilesetDir() + tileset->getSubDir() + "/";
+
+  if (File::create_dir(directory) == false)
+    return false;
+
+  //okay now we copy the image files into the new directory 
+  std::list<std::string> files;
+  tileset->getFilenames(files);
+  for (std::list<std::string>::iterator it = files.begin(); it != files.end();
+       it++)
+    File::copy(tileset->getFile(*it), directory + *it);
+
+  //save out the tileset file
+  tileset->setDirectory(directory);
+  XML_Helper helper(tileset->getConfigurationFile(), std::ios::out, false);
+  tileset->save(&helper);
+  helper.close();
+  return true;
 }

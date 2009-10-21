@@ -254,10 +254,10 @@ int AI_Smart::chooseArmyTypeToBuy(City *c)
 
         proto=al->getArmy(getArmyset(), i);
 
-	if (proto->getProductionCost() == 0)
+	if (proto->getNewProductionCost() == 0)
 	  continue;
 
-        if ((int)proto->getProductionCost() > d_gold)
+        if ((int)proto->getNewProductionCost() > d_gold)
 	{ 
    	    debug("The production cost is too high for army of index=" << i)   
             continue;

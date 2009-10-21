@@ -99,7 +99,7 @@ void TilesetExplosionPictureEditorDialog::on_small_toggled()
 void TilesetExplosionPictureEditorDialog::update_panel()
 {
   std::string filename = 
-    File::getTilesetFile(d_tileset, d_tileset->getExplosionFilename());
+    d_tileset->getFile(d_tileset->getExplosionFilename());
     
   if (d_tileset->getExplosionFilename() != "")
     explosion_filechooserbutton->set_filename (filename);

@@ -29,7 +29,7 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         armyprodbase.h army.cpp army.h armysetlist.cpp armysetlist.h \
         armyset.cpp armyset.h armyprotobase.cpp armyprotobase.h \
         bridge.cpp bridge.h bridgelist.cpp bridgelist.h \
-        city.cpp city.h citylist.cpp citylist.h \
+        city.cpp city.h citylist.cpp citylist.h set.h set.cpp\
         citysetlist.cpp citysetlist.h cityset.cpp cityset.h \
         Configuration.cpp Configuration.h counter.cpp counter.h \
         CreateScenario.cpp CreateScenario.h \
@@ -69,8 +69,7 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         shield.cpp shield.h shieldset.cpp shieldset.h rgb_shift.h \
         shieldsetlist.cpp shieldsetlist.h shieldstyle.cpp shieldstyle.h \
         signpost.cpp signpost.h signpostlist.cpp signpostlist.h \
-	stack.cpp stack.h \
-        stacklist.cpp stacklist.h string_tokenizer.cpp string_tokenizer.h \
+	stack.cpp stack.h stacklist.cpp stacklist.h  \
         temple.cpp temple.h templelist.cpp templelist.h \
         Threat.cpp Threat.h Threatlist.cpp Threatlist.h \
         Tile.cpp Tile.h tileset.cpp tileset.h tilesetlist.cpp tilesetlist.h \
@@ -78,12 +77,14 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         timing.cpp timing.h UniquelyIdentified.cpp UniquelyIdentified.h \
         vectoredunit.cpp vectoredunit.h \
         vectoredunitlist.cpp vectoredunitlist.h xmlhelper.cpp xmlhelper.h \
+        tarhelper.cpp tarhelper.h \
         rectangle.h vector.h ucompose.hpp \
 	SightMap.cpp SightMap.h SmallTile.cpp SmallTile.h \
 	Triumphs.cpp Triumphs.h Backpack.cpp Backpack.h \
 	MapBackpack.cpp MapBackpack.h prodslot.cpp prodslot.h \
 	prodslotlist.cpp prodslotlist.h namelist.cpp namelist.h \
-	PixMask.cpp PixMask.h
+	PixMask.cpp PixMask.h \
+	GraphicsCache.cpp GraphicsCache.h
 
 liblordsawarnet_la_SOURCES = \
 	game-client.cpp game-client.h \
@@ -104,8 +105,6 @@ liblordsawargfx_la_SOURCES = \
 	vectormap.cpp vectormap.h overviewmap.cpp overviewmap.h \
         smallmap.cpp smallmap.h \
 	MapRenderer.cpp MapRenderer.h  \
-	GraphicsCache.cpp GraphicsCache.h \
-	GraphicsLoader.cpp GraphicsLoader.h \
 	input-events.h map-tip-position.h 
 
 
@@ -136,7 +135,7 @@ lordsawar_LDADD = liblordsawar.la \
     $(SDLSOUND_LIBS) \
     $(GTKMM_LIBS) \
     $(LIBGNET_LIBS) \
-    $(LIBSIGC_LIBS) \
+    $(LIBSIGC_LIBS) -ltar \
     gui/liblwgui.la \
     @LIBINTL@
 

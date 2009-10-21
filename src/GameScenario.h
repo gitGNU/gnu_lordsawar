@@ -35,6 +35,7 @@
 #include "Configuration.h"
 
 class XML_Helper;
+class Tar_Helper;
 
 //! A class to hold several scenario options.
 /** 
@@ -154,6 +155,11 @@ class GameScenario: public GameScenarioOptions
 	  bool setupStacks(bool hidden_map);
 	  void setupDiplomacy(bool diplomacy);
 	  bool autoSave();
+
+	  bool loadArmysets(Tar_Helper *t);
+	  bool loadTilesets(Tar_Helper *t);
+	  bool loadCitysets(Tar_Helper *t);
+	  bool loadShieldsets(Tar_Helper *t);
 
 	  // DATA
 	  std::string d_name;

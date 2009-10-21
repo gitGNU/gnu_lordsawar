@@ -34,7 +34,6 @@
 #include "shieldsetlist.h"
 #include "GameScenario.h"
 #include "GraphicsCache.h"
-#include "GraphicsLoader.h"
 #include "tilesetlist.h"
 #include "citysetlist.h"
 #include "player.h"
@@ -250,7 +249,7 @@ void GamePreferencesDialog::update_shields()
 {
   if (dialog->is_realized() == false)
     return;
-  GraphicsLoader::instantiateImages(Shieldsetlist::getInstance());
+  Shieldsetlist::getInstance()->instantiateImages();
 
   std::vector<Gtk::Widget*> list;
   list = players_vbox->get_children();

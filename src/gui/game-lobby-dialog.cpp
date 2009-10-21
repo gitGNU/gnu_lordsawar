@@ -32,7 +32,6 @@
 #include "playerlist.h"
 #include "game-options-dialog.h"
 #include "GraphicsCache.h"
-#include "GraphicsLoader.h"
 #include "network_player.h"
 #include "game-client.h"
 #include "game-server.h"
@@ -81,7 +80,7 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
 				 NextTurnNetworked *next_turn,
 				 GameStation *game_station)
 {
-  GraphicsLoader::instantiateImages(Shieldsetlist::getInstance());
+  Shieldsetlist::getInstance()->instantiateImages();
   d_game_scenario = gamescenario;
   d_game_station = game_station;
   d_next_turn = next_turn;

@@ -64,7 +64,7 @@ void TempleEditorDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void TempleEditorDialog::run()
+int TempleEditorDialog::run()
 {
     dialog->show_all();
     int response = dialog->run();
@@ -82,6 +82,7 @@ void TempleEditorDialog::run()
 	if (name_entry->get_text() != Temple::getDefaultName())
 	  d_randomizer->pushRandomTempleName(name_entry->get_text());
       }
+    return response;
 }
 
 void TempleEditorDialog::on_randomize_name_clicked()

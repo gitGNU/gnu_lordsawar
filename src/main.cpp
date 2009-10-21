@@ -32,6 +32,10 @@
 #include "File.h"
 #include "GraphicsCache.h"
 #include "recently-played-game-list.h"
+#include "cityset.h"
+#include "tileset.h"
+#include "shieldset.h"
+#include "armyset.h"
 
 #include "gui/main.h"
 
@@ -161,10 +165,10 @@ int main(int argc, char* argv[])
 
 
   // Check if armysets are in the path (otherwise exit)
-  File::scanArmysets();
-  File::scanTilesets();
-  File::scanShieldsets();
-  File::scanCitysets();
+  Armyset::scanSystemCollection();
+  Tileset::scanSystemCollection();
+  Shieldset::scanSystemCollection();
+  Cityset::scanSystemCollection();
 
 
   kit.start_main_loop();
