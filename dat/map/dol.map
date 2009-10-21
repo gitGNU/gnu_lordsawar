@@ -8184,7 +8184,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 	<scenario>
 		<d_id>e028d189-88f7-4a98-987d-b2e97624fc2e</d_id>
 		<d_name>Dol Campaign</d_name>
-		<_d_comment>The Dol are a people surrounded by powerful enemies.  Only the most valiant warlord can rescue them from their fate of subjugation.</_d_comment>
+		<d_comment>The Dol are a people surrounded by powerful enemies.  Only the most valiant warlord can rescue them from their fate of subjugation.</d_comment>
 		<d_turn>0</d_turn>
 		<d_turnmode>true</d_turnmode>
 		<d_view_enemies>false</d_view_enemies>
