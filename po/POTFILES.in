@@ -169,7 +169,6 @@ src/temple.cpp
 src/Positioned.cpp
 src/smallmap.cpp
 src/real_player.cpp
-src/string_tokenizer.cpp
 src/Threat.cpp
 src/tileset.cpp
 src/gui/image-helpers.cpp
@@ -295,5 +294,3 @@ dat/templenames.xml.in
 dat/signposts.xml.in
 dat/ruinnames.xml.in
 dat/heronames.xml.in
-dat/map/dol.map.in
-dat/map/2ndPunic37.map.in
