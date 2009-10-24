@@ -116,24 +116,38 @@ ArmySetWindow::ArmySetWindow(std::string load_filename)
     xml->get_widget("production_spinbutton", production_spinbutton);
     production_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_production_changed));
+    production_spinbutton->signal_insert_text().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_production_text_changed));
     xml->get_widget("cost_spinbutton", cost_spinbutton);
     cost_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_cost_changed));
+    cost_spinbutton->signal_insert_text().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_cost_text_changed));
     xml->get_widget("new_cost_spinbutton", new_cost_spinbutton);
     new_cost_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_new_cost_changed));
+    new_cost_spinbutton->signal_insert_text().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_new_cost_text_changed));
     xml->get_widget("upkeep_spinbutton", upkeep_spinbutton);
     upkeep_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_upkeep_changed));
+    upkeep_spinbutton->signal_insert_text().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_upkeep_text_changed));
     xml->get_widget("strength_spinbutton", strength_spinbutton);
     strength_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_strength_changed));
+    strength_spinbutton->signal_insert_text().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_strength_text_changed));
     xml->get_widget("moves_spinbutton", moves_spinbutton);
     moves_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_moves_changed));
+    moves_spinbutton->signal_insert_text().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_moves_text_changed));
     xml->get_widget("exp_spinbutton", exp_spinbutton);
     exp_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_exp_changed));
+    exp_spinbutton->signal_insert_text().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_exp_text_changed));
     xml->get_widget("gender_none_radiobutton", gender_none_radiobutton);
     gender_none_radiobutton->signal_toggled().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_gender_none_toggled));
@@ -152,6 +166,8 @@ ArmySetWindow::ArmySetWindow(std::string load_filename)
     xml->get_widget("sight_spinbutton", sight_spinbutton);
     sight_spinbutton->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_sight_changed));
+    sight_spinbutton->signal_insert_text().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_sight_text_changed));
     xml->get_widget("move_forests_checkbutton", move_forests_checkbutton);
     move_forests_checkbutton->signal_toggled().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_move_forests_toggled));
@@ -859,6 +875,11 @@ void ArmySetWindow::on_neutral_image_changed()
 		   Shield::NEUTRAL);
 }
 
+void ArmySetWindow::on_production_text_changed(const Glib::ustring &s, int* p)
+{
+  production_spinbutton->set_value(atoi(production_spinbutton->get_text().c_str()));
+  on_production_changed();
+}
 void ArmySetWindow::on_production_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -880,6 +901,10 @@ void ArmySetWindow::on_production_changed()
     }
 }
 
+void ArmySetWindow::on_cost_text_changed(const Glib::ustring &s, int* p)
+{
+  on_cost_changed();
+}
 void ArmySetWindow::on_cost_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -894,6 +919,11 @@ void ArmySetWindow::on_cost_changed()
     }
 }
 
+void ArmySetWindow::on_new_cost_text_changed(const Glib::ustring &s, int* p)
+{
+  new_cost_spinbutton->set_value(atoi(new_cost_spinbutton->get_text().c_str()));
+  on_new_cost_changed();
+}
 void ArmySetWindow::on_new_cost_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -908,6 +938,11 @@ void ArmySetWindow::on_new_cost_changed()
     }
 }
 
+void ArmySetWindow::on_upkeep_text_changed(const Glib::ustring &s, int* p)
+{
+  upkeep_spinbutton->set_value(atoi(upkeep_spinbutton->get_text().c_str()));
+  on_upkeep_changed();
+}
 void ArmySetWindow::on_upkeep_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -927,6 +962,11 @@ void ArmySetWindow::on_upkeep_changed()
     }
 }
 
+void ArmySetWindow::on_strength_text_changed(const Glib::ustring &s, int* p)
+{
+  strength_spinbutton->set_value(atoi(strength_spinbutton->get_text().c_str()));
+  on_strength_changed();
+}
 void ArmySetWindow::on_strength_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -946,6 +986,11 @@ void ArmySetWindow::on_strength_changed()
     }
 }
 
+void ArmySetWindow::on_moves_text_changed(const Glib::ustring &s, int* p)
+{
+  moves_spinbutton->set_value(atoi(moves_spinbutton->get_text().c_str()));
+  on_moves_changed();
+}
 void ArmySetWindow::on_moves_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -965,6 +1010,11 @@ void ArmySetWindow::on_moves_changed()
     }
 }
 
+void ArmySetWindow::on_exp_text_changed(const Glib::ustring &s, int* p)
+{
+  exp_spinbutton->set_value(atoi(exp_spinbutton->get_text().c_str()));
+  on_exp_changed();
+}
 void ArmySetWindow::on_exp_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -979,6 +1029,11 @@ void ArmySetWindow::on_exp_changed()
     }
 }
 
+void ArmySetWindow::on_sight_text_changed(const Glib::ustring &s, int* p)
+{
+  sight_spinbutton->set_value(atoi(sight_spinbutton->get_text().c_str()));
+  on_sight_changed();
+}
 void ArmySetWindow::on_sight_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
