@@ -234,7 +234,12 @@ void Tile::uninstantiateImages()
 void Tile::instantiateImages(int tilesize, Tileset *ts)
 {
   for (iterator it = begin(); it != end(); it++)
-    (*it)->instantiateImages(tilesize, ts->getFile((*it)->getName()));
+    {
+      std::string file = "";
+      if ((*it)->getName().empty() == false)
+	file = ts->getFile((*it)->getName());
+      (*it)->instantiateImages(tilesize, file);
+    }
 
 }
 // End of file

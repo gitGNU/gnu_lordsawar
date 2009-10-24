@@ -83,11 +83,14 @@ void TileStyleSet::uninstantiateImages()
 }
 void TileStyleSet::instantiateImages(int tilesize, std::string filename)
 {
-  std::vector<PixMask *> styles = disassemble_row(filename, size());
-  for (unsigned int i = 0; i < size(); i++)
+  if (filename.empty() == false)
     {
-      PixMask::scale(styles[i], tilesize, tilesize);
-      (*this)[i]->setImage(styles[i]);
+      std::vector<PixMask *> styles = disassemble_row(filename, size());
+      for (unsigned int i = 0; i < size(); i++)
+	{
+	  PixMask::scale(styles[i], tilesize, tilesize);
+	  (*this)[i]->setImage(styles[i]);
+	}
     }
 }
 // End of file

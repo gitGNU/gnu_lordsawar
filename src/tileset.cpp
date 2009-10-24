@@ -200,6 +200,7 @@ bool Tileset::save(XML_Helper *helper)
   bool retval = true;
 
   retval &= helper->openTag(d_tag);
+  retval &= helper->saveData("id", d_id);
   retval &= helper->saveData("name", d_name);
   retval &= helper->saveData("info", d_info);
   retval &= helper->saveData("tilesize", d_tileSize);
@@ -438,64 +439,84 @@ void Tileset::instantiateImages(std::string explosion_filename,
 				std::string selector_filename,
 				std::string small_selector_filename)
 {
-  setExplosionImage (PixMask::create(explosion_filename));
+  if (explosion_filename.empty() == false)
+    setExplosionImage (PixMask::create(explosion_filename));
 
-  std::vector<PixMask* > roadpics;
-  roadpics = disassemble_row(roads_filename, ROAD_TYPES);
-  for (unsigned int i = 0; i < ROAD_TYPES ; i++)
+  if (roads_filename.empty() == false)
     {
-      if (roadpics[i]->get_width() != (int)d_tileSize)
-	PixMask::scale(roadpics[i], d_tileSize, d_tileSize);
-      setRoadImage(i, roadpics[i]);
+      std::vector<PixMask* > roadpics;
+      roadpics = disassemble_row(roads_filename, ROAD_TYPES);
+      for (unsigned int i = 0; i < ROAD_TYPES ; i++)
+	{
+	  if (roadpics[i]->get_width() != (int)d_tileSize)
+	    PixMask::scale(roadpics[i], d_tileSize, d_tileSize);
+	  setRoadImage(i, roadpics[i]);
+	}
     }
 
-  std::vector<PixMask* > bridgepics;
-  bridgepics = disassemble_row(bridges_filename, BRIDGE_TYPES);
-  for (unsigned int i = 0; i < BRIDGE_TYPES ; i++)
+  if (bridges_filename.empty() == false)
     {
-      if (bridgepics[i]->get_width() != (int)d_tileSize)
-	PixMask::scale(bridgepics[i], d_tileSize, d_tileSize);
-      setBridgeImage(i, bridgepics[i]);
+      std::vector<PixMask* > bridgepics;
+      bridgepics = disassemble_row(bridges_filename, BRIDGE_TYPES);
+      for (unsigned int i = 0; i < BRIDGE_TYPES ; i++)
+	{
+	  if (bridgepics[i]->get_width() != (int)d_tileSize)
+	    PixMask::scale(bridgepics[i], d_tileSize, d_tileSize);
+	  setBridgeImage(i, bridgepics[i]);
+	}
     }
 
-  std::vector<PixMask* > fogpics;
-  fogpics = disassemble_row(fog_filename, FOG_TYPES);
-  for (unsigned int i = 0; i < FOG_TYPES ; i++)
+  if (fog_filename.empty() == false)
     {
-      if (fogpics[i]->get_width() != (int)d_tileSize)
-	PixMask::scale(fogpics[i], d_tileSize, d_tileSize);
-      setFogImage(i, fogpics[i]);
+      std::vector<PixMask* > fogpics;
+      fogpics = disassemble_row(fog_filename, FOG_TYPES);
+      for (unsigned int i = 0; i < FOG_TYPES ; i++)
+	{
+	  if (fogpics[i]->get_width() != (int)d_tileSize)
+	    PixMask::scale(fogpics[i], d_tileSize, d_tileSize);
+	  setFogImage(i, fogpics[i]);
+	}
     }
 
-  std::vector<PixMask* > flagpics;
-  std::vector<PixMask* > maskpics;
-  GraphicsCache::loadFlagImages (flags_filename, d_tileSize, 
-				 flagpics, maskpics);
-  for (unsigned int i = 0; i < flagpics.size(); i++)
-    setFlagImage(i, flagpics[i]);
-  for (unsigned int i = 0; i < maskpics.size(); i++)
-    setFlagMask(i, maskpics[i]);
+  if (flags_filename.empty() == false)
+    {
+      std::vector<PixMask* > flagpics;
+      std::vector<PixMask* > maskpics;
+      GraphicsCache::loadFlagImages (flags_filename, d_tileSize, 
+				     flagpics, maskpics);
+      for (unsigned int i = 0; i < flagpics.size(); i++)
+	setFlagImage(i, flagpics[i]);
+      for (unsigned int i = 0; i < maskpics.size(); i++)
+	setFlagMask(i, maskpics[i]);
+    }
 
+      
   std::vector<PixMask* > images;
   std::vector<PixMask* > masks;
-  GraphicsCache::loadSelectorImages (selector_filename, d_tileSize, 
-				     images, masks);
-  setNumberOfSelectorFrames(images.size());
-  for (unsigned int i = 0; i < images.size(); i++)
+  if (selector_filename.empty() == false)
     {
-      setSelectorImage(i, images[i]);
-      setSelectorMask(i, masks[i]);
+      GraphicsCache::loadSelectorImages (selector_filename, d_tileSize, 
+					 images, masks);
+      setNumberOfSelectorFrames(images.size());
+      for (unsigned int i = 0; i < images.size(); i++)
+	{
+	  setSelectorImage(i, images[i]);
+	  setSelectorMask(i, masks[i]);
+	}
     }
 
   images.clear();
   masks.clear();
-  GraphicsCache::loadSelectorImages (small_selector_filename, d_tileSize,
-				     images, masks);
-  setNumberOfSmallSelectorFrames(images.size());
-  for (unsigned int i = 0; i < images.size(); i++)
+  if (small_selector_filename.empty() == false)
     {
-      setSmallSelectorImage(i, images[i]);
-      setSmallSelectorMask(i, masks[i]);
+      GraphicsCache::loadSelectorImages (small_selector_filename, d_tileSize,
+					 images, masks);
+      setNumberOfSmallSelectorFrames(images.size());
+      for (unsigned int i = 0; i < images.size(); i++)
+	{
+	  setSmallSelectorImage(i, images[i]);
+	  setSmallSelectorMask(i, masks[i]);
+	}
     }
 }
 
@@ -506,13 +527,28 @@ void Tileset::instantiateImages()
   uninstantiateImages();
   for (iterator it = begin(); it != end(); it++)
     (*it)->instantiateImages(size, this);
-  std::string explosion_filename = getFile(getExplosionFilename());
-  std::string roads_filename = getFile(getRoadsFilename());
-  std::string bridges_filename = getFile(getBridgesFilename());
-  std::string fog_filename = getFile(getFogFilename());
-  std::string flags_filename = getFile(getFlagsFilename());
-  std::string selector_filename = getFile(getLargeSelectorFilename());
-  std::string small_selector_filename = getFile(getSmallSelectorFilename());
+  std::string explosion_filename = "";
+  std::string roads_filename = "";
+  std::string bridges_filename = "";
+  std::string fog_filename = "";
+  std::string flags_filename = "";
+  std::string selector_filename = "";
+  std::string small_selector_filename = "";
+
+  if (getExplosionFilename().empty() == false)
+    explosion_filename = getFile(getExplosionFilename());
+  if (getRoadsFilename().empty() == false)
+    roads_filename = getFile(getRoadsFilename());
+  if (getBridgesFilename().empty() == false)
+    bridges_filename = getFile(getBridgesFilename());
+  if (getFogFilename().empty() == false)
+    fog_filename = getFile(getFogFilename());
+  if (getFlagsFilename().empty() == false)
+    flags_filename = getFile(getFlagsFilename());
+  if (getLargeSelectorFilename().empty() == false)
+    selector_filename = getFile(getLargeSelectorFilename());
+  if (getSmallSelectorFilename().empty() == false)
+    small_selector_filename = getFile(getSmallSelectorFilename());
   instantiateImages(explosion_filename, roads_filename, bridges_filename, 
 		    fog_filename, flags_filename, selector_filename, 
 		    small_selector_filename);

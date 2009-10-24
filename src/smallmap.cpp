@@ -182,6 +182,7 @@ void SmallMap::slide_view(Rectangle new_view)
 	  draw(Playerlist::getActiveplayer());
 	  view_slid.emit(view);
 
+	  Glib::usleep(8000);
 	  if (tmp_view.x == new_view.x && tmp_view.y == new_view.y)
 	    break;
 	}

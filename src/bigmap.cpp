@@ -414,7 +414,7 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surfac
   GameMap *gm = GameMap::getInstance();
   int tile_style_id = gm->getTile(tile)->getTileStyle()->getId();
   int fog_type_id = 0;
-  fog_type_id = int(active->getFogMap()->getShadeTile(tile));
+  fog_type_id = active->getFogMap()->getShadeTile(tile);
 
   bool has_bag = false;
   bool has_standard = false;
@@ -516,6 +516,8 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surfac
 		  building_tile = tile - ruin->getPos();
 		  building_subtype = ruin->getType();
 		}
+	      else
+		building_type = Maptile::NONE;
 	    }
 	  break;
 	case Maptile::TEMPLE:
