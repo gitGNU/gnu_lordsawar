@@ -317,8 +317,10 @@ void Armyset::instantiateImages()
 {
   for (iterator it = begin(); it != end(); it++)
     (*it)->instantiateImages(this);
-  loadShipPic(getFile(getShipImageName()));
-  loadStandardPic(getFile(getStandardImageName()));
+  if (getShipImageName().empty() == false)
+    loadShipPic(getFile(getShipImageName()));
+  if (getStandardImageName().empty() == false)
+    loadStandardPic(getFile(getStandardImageName()));
 }
 
 void Armyset::uninstantiateImages()

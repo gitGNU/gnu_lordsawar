@@ -86,6 +86,8 @@ bool ShieldStyle::save(XML_Helper *helper)
 }
 void ShieldStyle::instantiateImages(std::string filename, Shieldset *s)
 {
+  if (filename.empty() == true)
+    return;
   // The shield image consists of two halves. On the left is the shield 
   // image, on the right the mask.
   std::vector<PixMask* > half = disassemble_row(filename, 2);

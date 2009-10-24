@@ -179,7 +179,10 @@ bool Shield::save(XML_Helper *helper)
 void Shield::instantiateImages(Shieldset *s)
 {
   for (iterator it = begin(); it != end(); it++)
-    (*it)->instantiateImages(s->getFile((*it)->getImageName()), s);
+    {
+      if ((*it)->getImageName().empty() == false)
+	(*it)->instantiateImages(s->getFile((*it)->getImageName()), s);
+    }
 }
 void Shield::uninstantiateImages()
 {

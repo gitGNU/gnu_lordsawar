@@ -150,8 +150,12 @@ bool ArmyProto::instantiateImages(int tilesize, Shield::Colour c, std::string im
 void ArmyProto::instantiateImages(Armyset *armyset)
 {
   for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
-    instantiateImages(armyset->getTileSize(), Shield::Colour(c), 
-		      armyset->getFile(getImageName(Shield::Colour(c))));
+    {
+      std::string file = "";
+      if (getImageName(Shield::Colour(c)).empty() == false)
+	file = armyset->getFile(getImageName(Shield::Colour(c)));
+      instantiateImages(armyset->getTileSize(), Shield::Colour(c), file);
+    }
 }
 
 void ArmyProto::uninstantiateImages()
