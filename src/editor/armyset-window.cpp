@@ -338,7 +338,7 @@ ArmySetWindow::update_army_panel()
       name_entry->set_text("");
       description_textview->get_buffer()->set_text("");
       production_spinbutton->set_value(MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS);
-      cost_spinbutton->set_value(0);
+      cost_spinbutton->set_value(MIN_COST_FOR_ARMY_UNITS);
       new_cost_spinbutton->set_value(0);
       upkeep_spinbutton->set_value(MIN_UPKEEP_FOR_ARMY_UNITS);
       strength_spinbutton->set_value(MIN_STRENGTH_FOR_ARMY_UNITS);
@@ -903,6 +903,7 @@ void ArmySetWindow::on_production_changed()
 
 void ArmySetWindow::on_cost_text_changed(const Glib::ustring &s, int* p)
 {
+  cost_spinbutton->set_value(atoi(cost_spinbutton->get_text().c_str()));
   on_cost_changed();
 }
 void ArmySetWindow::on_cost_changed()
@@ -914,10 +915,16 @@ void ArmySetWindow::on_cost_changed()
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      a->setProductionCost(int(cost_spinbutton->get_value()));
+      if (cost_spinbutton->get_value() < MIN_COST_FOR_ARMY_UNITS)
+	cost_spinbutton->set_value(MIN_COST_FOR_ARMY_UNITS);
+      else if (strength_spinbutton->get_value() > MAX_COST_FOR_ARMY_UNITS)
+	cost_spinbutton->set_value(MAX_COST_FOR_ARMY_UNITS);
+      else
+	a->setProductionCost(int(cost_spinbutton->get_value()));
       needs_saving = true;
     }
 }
+
 
 void ArmySetWindow::on_new_cost_text_changed(const Glib::ustring &s, int* p)
 {

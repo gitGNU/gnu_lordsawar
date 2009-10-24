@@ -105,5 +105,7 @@ const unsigned int MIN_MOVES_FOR_ARMY_UNITS = 6;
 const unsigned int MAX_MOVES_FOR_ARMY_UNITS = 75;
 const unsigned int MIN_STRENGTH_FOR_ARMY_UNITS = 1;
 const unsigned int MAX_STRENGTH_FOR_ARMY_UNITS = 9;
+const unsigned int MIN_COST_FOR_ARMY_UNITS = 0;
+const unsigned int MAX_COST_FOR_ARMY_UNITS = 50;
 #endif // DEFINITIONS_H
 
