@@ -55,6 +55,9 @@ TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Tileset
       (sigc::mem_fun(*this, &TilesetExplosionPictureEditorDialog::on_small_toggled));
 
     xml->get_widget("scene_image", scene_image);
+    
+    if (d_tileset->getExplosionFilename().empty() == false)
+      selected_filename = d_tileset->getFile(d_tileset->getExplosionFilename());
     on_large_toggled();
 }
 
@@ -98,11 +101,8 @@ void TilesetExplosionPictureEditorDialog::on_small_toggled()
 
 void TilesetExplosionPictureEditorDialog::update_panel()
 {
-  std::string filename = 
-    d_tileset->getFile(d_tileset->getExplosionFilename());
-    
-  if (d_tileset->getExplosionFilename() != "")
-    explosion_filechooserbutton->set_filename (filename);
+  if (selected_filename.empty() == false)
+    explosion_filechooserbutton->set_filename (selected_filename);
 }
 
 void TilesetExplosionPictureEditorDialog::show_explosion_image(std::string filename)
@@ -121,7 +121,10 @@ void TilesetExplosionPictureEditorDialog::show_explosion_image(std::string filen
     }
   TilePreviewScene *s;
   std::string scene;
-  Tile *grass = (*d_tileset)[d_tileset->getIndex(Tile::GRASS)];
+  guint32 idx = d_tileset->getIndex(Tile::GRASS);
+  Tile *grass = NULL;
+  if (d_tileset->size() > 0)
+    grass = (*d_tileset)[idx];
   scene.clear();
   if (large_explosion_radiobutton->get_active() == true)
     {

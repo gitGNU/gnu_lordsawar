@@ -487,9 +487,11 @@ void TileSetWindow::on_new_tileset_activated()
     delete d_tileset;
   d_tileset = tileset;
   tiles_list->clear();
-  current_save_filename = d_tileset->getConfigurationFile();
 
-  File::create_dir(File::getUserTilesetDir() + "/" + d_tileset->getSubDir());
+  std::string dir = File::getUserTilesetDir() + d_tileset->getSubDir();
+  d_tileset->setDirectory(dir);
+  File::create_dir(dir);
+  current_save_filename = d_tileset->getConfigurationFile();
 
   //copy images??
   update_tileset_buttons();
@@ -1138,6 +1140,7 @@ void TileSetWindow::on_explosion_picture_activated()
     {
       std::string filename = d.get_selected_filename();
       std::string name = File::get_basename(filename);
+      std::string dest =d_tileset->getFile(name);
       if (filename != d_tileset->getFile(name))
 	{
 	  File::copy (filename, d_tileset->getFile(name));

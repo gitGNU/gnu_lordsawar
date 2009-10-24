@@ -432,9 +432,11 @@ void ArmySetWindow::on_new_armyset_activated()
     delete d_armyset;
   d_armyset = armyset;
   armies_list->clear();
+  std::string dir = File::getUserArmysetDir() + "/" + d_armyset->getSubDir();
+  d_armyset->setDirectory(dir);
+  File::create_dir(dir);
   current_save_filename = d_armyset->getConfigurationFile();
 
-  File::create_dir(File::getUserArmysetDir() + "/" + d_armyset->getSubDir());
   std::string imgpath = Glib::get_home_dir();
   //we will copy an image from where the user points into the new armyset dir.
   white_image_filechooserbutton->set_current_folder(imgpath);

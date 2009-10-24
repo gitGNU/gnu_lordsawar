@@ -68,8 +68,13 @@ void TilePreviewScene::regenerate()
        it != d_model.end(); it++)
     {
       TileStyle::Type type = *it;
-      TileStyle *tilestyle = d_tile->getRandomTileStyle(type);
-      d_tilestyles.push_back(tilestyle);
+      TileStyle *tilestyle = NULL;
+      if (d_tile)
+	{
+	  tilestyle = d_tile->getRandomTileStyle(type);
+	  d_tilestyles.push_back(tilestyle);
+	}
+
       if (tilestyle)
 	d_view.push_back(tilestyle->getImage()->to_pixbuf());
       else
