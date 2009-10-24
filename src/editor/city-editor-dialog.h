@@ -27,6 +27,7 @@
 class CreateScenarioRandomize;
 class City;
 class ArmyProdBase;
+class Player;
 
 //! Scenario editor.  Edits a City object.
 class CityEditorDialog: public sigc::trackable
@@ -86,6 +87,8 @@ class CityEditorDialog: public sigc::trackable
     void on_randomize_income_clicked();
     void on_selection_changed();
     void on_player_changed();
+    Player *get_selected_player();
+    void change_city_ownership();
 
     void add_army(const ArmyProdBase *a);
     void set_button_sensitivity();
@@ -97,6 +100,7 @@ class CityEditorDialog: public sigc::trackable
     void on_turns_edited(const Glib::ustring &path, const Glib::ustring &new_text);
     void cell_data_upkeep(Gtk::CellRenderer *renderer, const Gtk::TreeIter& i);
     void on_upkeep_edited(const Glib::ustring &path, const Glib::ustring &new_text);
+
 };
 
 #endif

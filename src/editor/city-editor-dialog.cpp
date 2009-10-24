@@ -71,6 +71,7 @@ CityEditorDialog::CityEditorDialog(City *cit, CreateScenarioRandomize *randomize
     // setup the player combo
     player_combobox = manage(new Gtk::ComboBoxText);
 
+
     int c = 0, player_no = 0;
     for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
 	     end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
@@ -168,19 +169,12 @@ void CityEditorDialog::set_parent_window(Gtk::Window &parent)
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
-void CityEditorDialog::on_player_changed()
+void CityEditorDialog::change_city_ownership()
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
   // set allegiance
-  int c = 0, row = player_combobox->get_active_row_number();
-  Player *player = Playerlist::getInstance()->getNeutral();
-  for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
-       end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
-    if (c == row)
-      {
-	player = *i;
-	break;
-      }
+  Player *player = get_selected_player();
+  if (player == city->getOwner()) //no change? do nothing.
+    return;
   city->setOwner(player);
   //look for stacks in the city, and set them to this player
   for (unsigned int x = 0; x < city->getSize(); x++)
@@ -191,14 +185,6 @@ void CityEditorDialog::on_player_changed()
 	  if (s)
 	    Stacklist::changeOwnership(s, player);
 	}
-    }
-  for (Gtk::TreeIter j = army_list->children().begin(),
-       jend = army_list->children().end(); j != jend; ++j)
-    {
-      const ArmyProdBase *a = (*j)[army_columns.army];
-      (*j)[army_columns.image] = gc->getArmyPic(player->getArmyset(),
-						a->getTypeId(), 
-						player, NULL)->to_pixbuf();
     }
 }
 
@@ -251,6 +237,8 @@ int CityEditorDialog::run()
 	}
       for (; c < city->getMaxNoOfProductionBases(); ++c)
 	city->removeProductionBase(c);
+      //set owner of the city
+      change_city_ownership();
     }
   else
     {
@@ -318,11 +306,12 @@ void CityEditorDialog::on_randomize_income_clicked()
 
 void CityEditorDialog::add_army(const ArmyProdBase *a)
 {
+  Player *player = get_selected_player();
   GraphicsCache *gc = GraphicsCache::getInstance();
   Gtk::TreeIter i = army_list->append();
   (*i)[army_columns.army] = a;
-  (*i)[army_columns.image] = gc->getArmyPic(city->getOwner()->getArmyset(),
-					    a->getTypeId(), city->getOwner(),
+  (*i)[army_columns.image] = gc->getArmyPic(player->getArmyset(),
+					    a->getTypeId(), player,
 					    NULL)->to_pixbuf();
   (*i)[army_columns.strength] = a->getStrength();
   (*i)[army_columns.moves] = a->getMaxMoves();
@@ -429,3 +418,32 @@ void CityEditorDialog::on_upkeep_edited(const Glib::ustring &path,
   (*army_list->get_iter(Gtk::TreePath(path)))[army_columns.upkeep] = upkeep;
 }
 
+      
+Player *CityEditorDialog::get_selected_player()
+{
+  int c = 0, row = player_combobox->get_active_row_number();
+  Player *player = Playerlist::getInstance()->getNeutral();
+  for (Playerlist::iterator i = Playerlist::getInstance()->begin(),
+       end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
+    if (c == row)
+      {
+	player = *i;
+	break;
+      }
+  return player;
+}
+
+void CityEditorDialog::on_player_changed()
+{
+  GraphicsCache *gc = GraphicsCache::getInstance();
+  // set allegiance
+  Player *player = get_selected_player();
+  for (Gtk::TreeIter j = army_list->children().begin(),
+       jend = army_list->children().end(); j != jend; ++j)
+    {
+      const ArmyProdBase *a = (*j)[army_columns.army];
+      (*j)[army_columns.image] = gc->getArmyPic(player->getArmyset(),
+						a->getTypeId(), 
+						player, NULL)->to_pixbuf();
+    }
+}
