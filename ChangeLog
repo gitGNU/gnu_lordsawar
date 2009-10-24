@@ -1,9 +1,26 @@
+2009-10-24  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed radiobuttons to look better in default ubuntu theme.
+	* fixed stack management to allow stacks to share a tile.
+	* fixed stack info dialog in the same way.
+	* removed the grouped member of army.  This changes the saved-game
+	schema.
+	* fixing scenario editor to not crash we try to put down stacks.
+	* fixing quick start to not crash on the 2ndpunic scenario.
+	* fixing quick start to change the allegience of stacks in cities.
+	* fixed the hero-brings-allies dialog to have a default ok button.
+	* fixed city editor in scenario editor to update the city owner when 
+	we click ok, instead of instantly when we change the player combobox.
+	* fixed spinbuttons in armyset editor to update immediately when the
+	spinbutton text changes.
+
 2009-10-21  Ben Asselstine  <benasselstine@gmail.com>
 
 	* changing savefile format to be a tarball.
 	* moving graphicsloader routines back into their requisite objects.
-	* added "new cost" to armyprototypes.
-	* added "tile width" to cityset.
+	* added "new cost" to armyprototypes.  This changes the saved-game
+	schema as well as the armyset schema.
+	* added "tile width" to cityset.  This changes the cityset schema.
 	* fixed scenario editor bug regarding creating new tiny maps.
 	* added ability to import saved games into the scenario editor.
 

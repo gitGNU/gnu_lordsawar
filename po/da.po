@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: lordsawar 0.1.6-pre7\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-10-18 11:17+0100\n"
-"PO-Revision-Date: 2009-10-20 21:55-0400\n"
+"PO-Revision-Date: 2009-10-24 21:55-0400\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -2028,7 +2028,7 @@ msgstr "Eksplosionshåndtering"
 #: ..//dat/glade/editor/masked-image-editor-dialog.ui.h:1
 #: ..//dat/glade/editor/image-editor-dialog.ui.h:1
 msgid "Change Image"
-msgstr "Ændre billede"
+msgstr "Ændr billede"
 
 #: ..//dat/glade/editor/tileset-window.ui.h:1
 msgid "<b>Tile Style Set</b>"
@@ -2107,7 +2107,7 @@ msgstr "_Hærenhedvælger"
 
 #: ..//dat/glade/editor/tileset-window.ui.h:27
 msgid "_Bridges Picture"
-msgstr "_Broerbillede"
+msgstr "_Billede af broer"
 
 #: ..//dat/glade/editor/tileset-window.ui.h:30
 msgid "_Fog Picture"
@@ -2127,7 +2127,7 @@ msgstr "_Forhåndsvis felt"
 
 #: ..//dat/glade/editor/tileset-window.ui.h:36
 msgid "_Roads Picture"
-msgstr "_Vejebillede"
+msgstr "_Billede af veje"
 
 #: ..//dat/glade/editor/tileset-window.ui.h:37
 msgid "_Save Tileset"
@@ -3294,7 +3294,7 @@ msgstr "Din enhed %1 tildeles hævnerens æresmedalje!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3110
 msgid "Your unit of %1 is awarded the defender's medal of bravery!"
-msgstr "Din enhed %1 tildeles forsvarens medalje for mod!"
+msgstr "Din enhed %1 tildeles forsvarerens medalje for mod!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3112
 msgid "Your unit of %1 is awarded the veteran's medal!"
@@ -3590,6 +3590,7 @@ msgstr "Dette slag vil være det rene selvmord!"
 msgid "Random Scenario"
 msgstr "Tilfældigt scenarie"
 
+# du kan også kontrollere hvor meget af kortet, der er dækket af ......
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/load-scenario-dialog.cpp:164
 msgid "Play a new scenario with a random map.  You get to decide the number of players, and number of cities on the map.  You can also control the amount of the map that is covered in forest, water, swamps and mountains."
 msgstr "Spil et nyt scenarie med et tilfældigt kort.  Du må bestemme over antallet af spillere, og antallet af byer på kortet.  Du kan også kontrollere den andel af kortet, som er dækket af skov, vand, sumpe eller bjerge."
@@ -3965,7 +3966,7 @@ msgstr "Der skal være mindst 1 hærenhed som kan forsvare en ruin."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:502
 msgid "There must be at least one army unit than can be awarded to a hero."
-msgstr "Der skal være mindst 1 hærenhed som kan forfremmes til helt."
+msgstr "Der skal være mindst 1 hærenhed der kan forfremmes til helt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:505
 msgid "The ship image must be set."
