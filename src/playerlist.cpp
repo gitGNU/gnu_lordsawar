@@ -196,14 +196,11 @@ Player* Playerlist::getPlayer(string name) const
 
 Player* Playerlist::getPlayer(guint32 id) const
 {
-    debug("getPlayer()");
-    for (const_iterator it = begin(); it != end(); it++)
-    {
-        if (id == (*it)->getId())
-            return (*it);
-    }
+  IdMap::const_iterator it = d_id.find(id);
 
-    return 0;
+  if (it == d_id.end())
+    return NULL;
+  return  (*it).second;
 }
 
 guint32 Playerlist::getNoOfPlayers() const
@@ -246,6 +243,11 @@ bool Playerlist::save(XML_Helper* helper) const
     return retval;
 }
 
+void Playerlist::add(Player *player)
+{
+  push_back(player);
+  d_id[player->getId()] = player;
+}
 bool Playerlist::load(string tag, XML_Helper* helper)
 {
     static guint32 active = 0;
@@ -266,7 +268,7 @@ bool Playerlist::load(string tag, XML_Helper* helper)
         return false;
 
     //insert player...
-    push_back(p);
+    add(p);
 
     //set neutral and active
     if (p->getId() == neutral)
@@ -534,8 +536,9 @@ void Playerlist::swap(Player *old_player, Player *new_player)
   if (old_player == d_activeplayer)
     {
       d_activeplayer = new_player;
-      d_activeplayer->getStacklist()->setActivestack(0);
+      d_activeplayer->setActivestack(0);
     }
+  d_id[new_player->getId()] = new_player;
   /* note, we don't have to change the player associated with flag graphics
      because it's stored as an id. */
 }
@@ -638,7 +641,7 @@ void Playerlist::syncPlayer(GameParameters::Player player)
       if (p)
 	{
 	  p->setGold(gold);
-	  push_back(p);
+	  add(p);
 
 	  sort(inOrderOfId);
 	  d_activeplayer = getFirstLiving();

@@ -176,7 +176,7 @@ guint32 Path::calculateToCity (Stack *s, City *c, bool zigzag)
 	if (checkJoin == true)
 	  {
 	    Stack *other_stack = GameMap::getStack(c->getPos() + Vector<int>(i,j));
-	    if (other_stack && s->canJoin(other_stack) == false)
+	    if (other_stack && GameMap::canJoin(s,other_stack) == false)
 	      continue;
 	  }
 	int distance = dist (s->getPos(), c->getPos() + Vector<int>(i, j));
@@ -200,7 +200,7 @@ guint32 Path::calculateToCity (Stack *s, City *c, bool zigzag)
 	    if (checkJoin == true)
 	      {
 		Stack *other_stack = GameMap::getStack(c->getPos() + Vector<int>(i,j));
-		if (other_stack && s->canJoin(other_stack) == false)
+		if (other_stack && GameMap::canJoin(s,other_stack) == false)
 		  continue;
 	      }
 	    int dist = calculate(s, c->getPos() + Vector<int>(i, j), zigzag);
@@ -256,7 +256,7 @@ void Path::calculate (Stack* s, Vector<int> dest, guint32 &moves, guint32 &turns
 
   //calculate when the waypoints show no more movement possible
   guint32 pathcount = 0;
-  guint32 moves_left = s->getGroupMoves();
+  guint32 moves_left = s->getMoves();
   for (iterator it = begin(); it != end(); it++)
     {
       guint32 moves = s->calculateTileMovementCost(*it);

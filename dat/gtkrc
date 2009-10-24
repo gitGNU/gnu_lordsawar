@@ -100,6 +100,11 @@ style "darkilouche-button" = "darkilouche-wider"
 style "darkilouche-radiobutton" = "darkilouche-wider"
 {
 	  bg[SELECTED]   = @selected_bg_color
+  base[NORMAL]      = shade(0.50,@selected_bg_color)
+  base[PRELIGHT]    = shade (0.55, @selected_bg_color) 
+  base[ACTIVE]      = shade (0.75, @selected_bg_color) 
+  base[SELECTED]    = shade (0.75, @selected_bg_color) 
+  base[INSENSITIVE] = shade (0.50, @selected_bg_color  )
 }
 
 style "darkilouche-notebook" = "darkilouche-wide"
@@ -258,7 +263,6 @@ class "GtkProgressBar" style "darkilouche-progressbar"
 class "GtkMenuBar" style "darkilouche-menubar"
 
 class "GtkCheckButton" style "darkilouche-radiobutton"
-class "GtkRadioButton" style "darkilouche-radiobutton"
 
 widget_class "*MenuItem.*" style "darkilouche-menu-item"
 #widget_class "*.GtkMenuBar.*MenuItem.*" style "darkilouche-menubar-item"

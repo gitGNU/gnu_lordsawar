@@ -25,6 +25,8 @@
 #include "stacklist.h"
 #include "stack.h"
 #include "FogMap.h"
+#include "GameMap.h"
+#include "stacktile.h"
 
 #include "xmlhelper.h"
 
@@ -74,9 +76,7 @@ Stack *LocationBox::addArmy(Army *a) const
       return NULL;
 
     // add army to stack
-    stack->push_back(a);
-    if (stack->countGroupedArmies() == 0)
-      stack->ungroup();
+    stack->add(a);
     if (stack->size() > 1)
       stack->sortForViewing(true);
     stack->setDefending(false);
@@ -86,22 +86,24 @@ Stack *LocationBox::addArmy(Army *a) const
 
 Stack* LocationBox::getFreeStack(Player *p) const
 {
-    for (unsigned int i = 0; i < d_size; i++)
-        for (unsigned int j = 0; j < d_size; j++)
-        {
-            Stack* stack = Stacklist::getObjectAt(getPos().x + j, 
-						  getPos().y + i);
-
-            if (stack == NULL)
-            {
-                Vector<int> temp;
-                temp.x = getPos().x + j;
-                temp.y = getPos().y + i;
-                stack = new Stack(p, temp);
-                p->addStack(stack);
-                return stack;
-            }
-            else if (stack->size() < MAX_STACK_SIZE) return stack;
+  for (unsigned int i = 0; i < d_size; i++)
+    for (unsigned int j = 0; j < d_size; j++)
+      {
+	Vector<int> pos = getPos() + Vector<int>(j,i);
+	StackTile *stile = GameMap::getInstance()->getTile(pos)->getStacks();
+	Stack *stack = stile->getFriendlyStack(p);
+	if (stack == NULL)
+	  {
+	    stack = new Stack(p, pos);
+	    p->addStack(stack);
+	    return stack;
+	  }
+	else 
+	  {
+	    Stack *enemy = stile->getEnemyStack(p);
+	    if (!enemy && stack->size() < MAX_STACK_SIZE) 
+	      return stack;
+	  }
         }
     return NULL;
 }

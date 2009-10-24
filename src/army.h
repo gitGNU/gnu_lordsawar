@@ -143,15 +143,6 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
         //! Set the current number of hitpoints of this army.
         void setHP(guint32 hp) {d_hp = hp;}
 
-        /** 
-         * When you select a stack on the map, you can toggle the armies 
-	 * which will be moved when you click somewhere else on the map.
-         * Grouped==true means that this army will be among the selected
-         * armies.
-         */
-	//!Set the grouped state of this Army.
-        void setGrouped(bool grouped){d_grouped = grouped;}
-
         //! Sets whether or not the Army has a particular medal.
         void setMedalBonus(guint32 index, bool value) 
 	  {d_medal_bonus[index]=value;}
@@ -207,9 +198,6 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 
         //! Get the current level of the Army.
         guint32 getLevel() const {return d_level;}
-
-        //! Returns the grouped state of the Army within a Stack.
-        bool isGrouped() const {return d_grouped;}
 
         //! Return which medals this Army unit has.
         bool* getMedalBonuses() const {return (bool*)&d_medal_bonus;}
@@ -438,18 +426,6 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	 * @note Only Hero units advance in levels.
 	 */
         guint32 d_level;
-
-	//! Whether or not the Army unit is grouped into it's parent Stack.
-	/**
-	 * When splitting stacks, it is necessary to know which Army units
-	 * are staying in the original Stack, and which ones are going into
-	 * the new Stack.
-	 *
-	 * If an Army is grouped, it is going into the new Stack.
-	 *
-	 * When attacking, only the grouped Army units in the Stack attack.
-	 */
-        bool d_grouped;
 
 	/**
 	 * There are three different medals that an Army unit can win.

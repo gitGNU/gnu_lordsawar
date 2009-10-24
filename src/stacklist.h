@@ -24,6 +24,7 @@
 #define STACKLIST_H
 
 #include <list>
+#include <map>
 #include <vector>
 #include <string>
 #include <sigc++/trackable.h>
@@ -74,8 +75,7 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	 *         Stack could be found.
 	 */
         //! Return the stack at position (x,y) or 0 if there is none.
-        static Stack* getObjectAt(int x, int y);
-        void getObjectAt(Vector<int> pos, Stack *& s1, Stack *& s2);
+        //static Stack* getObjectAt(int x, int y);
 
 	/**
 	 * Scan through every player's Stacklist, for a stack that is located 
@@ -88,8 +88,8 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	 *         Stack could be found.
 	 */
         //! Return stack at position pos or 0 if there is none.
-        static Stack* getObjectAt(Vector<int> point)
-	  { return getObjectAt(point.x, point.y);}
+        //static Stack* getObjectAt(Vector<int> point)
+	  //{ return getObjectAt(point.x, point.y);}
 
 	/**
 	 * Scan through all stacks in the list, and then through each Army 
@@ -249,6 +249,8 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	Hero *getNearestHero(Vector<int> pos, int dist);
 	
 	sigc::signal<void, Stack*, bool> sgrouped;
+	sigc::signal<void, Stack*, Vector<int> > snewpos;
+	sigc::signal<void, Stack*, Vector<int> > soldpos;
 
 	//! remove all movement points from every army in every stack.
 	void drainAllMovement();
@@ -271,11 +273,10 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	bool deletePositionFromMap(Stack *stack);
 	bool addPositionToMap(Stack *s);
 	//! a hash map of where the stacks are on the map.
-	typedef std::map<Vector<int>, Stack*> PositionMap;
-	PositionMap d_object1;
-	PositionMap d_object2;
 	typedef std::map<Stack *, std::list<sigc::connection> > ConnectionMap;
 	ConnectionMap d_connections;
+	typedef std::map<guint32, Stack*> IdMap;
+	IdMap d_id;
 
 };
 

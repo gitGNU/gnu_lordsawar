@@ -24,14 +24,14 @@
 #include <gtkmm.h>
 #include "map-tip-position.h"
 
-class Stack;
+class StackTile;
 
 // shows a tooltip like window with information about a stack 
 class StackInfoTip: public sigc::trackable
 {
  public:
     // the tip is shown above target, simply delete the object to hide it again
-    StackInfoTip(Gtk::Widget *target, MapTipPosition map, const Stack *stack);
+    StackInfoTip(Gtk::Widget *target, MapTipPosition map, StackTile *s);
     ~StackInfoTip();
 
  private:

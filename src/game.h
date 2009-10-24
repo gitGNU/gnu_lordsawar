@@ -51,6 +51,7 @@ class Fight;
 class Quest;
 class Stack;
 class Reward;
+class StackTile;
 
 /** Controls a game.
   * 
@@ -125,7 +126,7 @@ class Game
 	can_end_turn;
     sigc::signal<void, Stack *> stack_info_changed;
     sigc::signal<void, Glib::ustring, MapTipPosition> map_tip_changed;
-    sigc::signal<void, Stack *, MapTipPosition> stack_tip_changed;
+    sigc::signal<void, StackTile *, MapTipPosition> stack_tip_changed;
     sigc::signal<void, Ruin*, Stack*, Reward*> ruin_searched;
     sigc::signal<void, Ruin*, Stack*> sage_visited;
     sigc::signal<void, Fight &> fight_started;
@@ -189,7 +190,8 @@ class Game
     void on_ruin_queried (Ruin* r, bool brief);
     void on_temple_queried (Temple* t, bool brief);
     void on_signpost_queried (Signpost* s);
-    void on_stack_queried (Stack* s);
+    void on_stack_queried (Vector<int> tile);
+    void on_stack_unqueried ();
 
     // smallmap callbacks
     void on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map);
@@ -219,6 +221,8 @@ class Game
     bool recruitHero(HeroProto *hero, City *city, int gold);
 
     void on_stack_grouped(Stack *stack, bool grouped);
+    void stack_arrives_on_tile(Stack *stack, Vector<int> tile);
+    void stack_leaves_tile(Stack *stack, Vector<int> tile);
     void on_stack_halted(Stack *stack);
 
     GameScenario* d_gameScenario;

@@ -36,6 +36,7 @@
 #include "citylist.h"
 #include "CreateScenarioRandomize.h"
 #include "GraphicsCache.h"
+#include "GameMap.h"
 
 #include "select-army-dialog.h"
 
@@ -186,8 +187,7 @@ void CityEditorDialog::on_player_changed()
     {
       for (unsigned int y = 0; y < city->getSize(); y++)
 	{
-	  Stack *s = Stacklist::getObjectAt(city->getPos().x + x, 
-					    city->getPos().y + y);
+	  Stack *s = GameMap::getStack(city->getPos() + Vector<int>(x,y));
 	  if (s)
 	    {
 	      if (s->getOwner() != player)

@@ -65,7 +65,8 @@ class GameBigMap: public BigMap
     sigc::signal<void, City*, bool> city_queried; // true => show brief info
     sigc::signal<void, Ruin*, bool> ruin_queried; //true => show brief info
     sigc::signal<void, Signpost*> signpost_queried;
-    sigc::signal<void, Stack*> stack_queried;
+    sigc::signal<void, Vector<int> > stack_queried;
+    sigc::signal<void> stack_unqueried;
     sigc::signal<void, Temple*, bool> temple_queried; //true=>show brief info
 
     // emitted when a path for a stack is set

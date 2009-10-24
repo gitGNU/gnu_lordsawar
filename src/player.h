@@ -569,13 +569,11 @@ class Player: public sigc::trackable
          *
          * @param receiver     The receiving stack.
          * @param joining      The joining stack, destroyed after the join.
-         * @param grouped      Whether the armies of the other stacks are 
-	 *                     selected automatically or not.
 	 *
          * @return False if an error occured, else true.
          */
 	//! Callback to merge two stacks into one.
-        bool stackJoin(Stack* receiver, Stack* joining, bool grouped);
+        bool stackJoin(Stack* receiver, Stack* joining);
 
 	/**
 	 * Called to change the position of a Stack on the map.
@@ -1324,9 +1322,16 @@ class Player: public sigc::trackable
 	std::list<Hero*> getHeroes();
 	guint32 countArmies();
 	Stack * getActivestack();
+	void setActivestack(Stack *);
 	Vector<int> getPositionOfArmyById(guint32 id);
 	//! Remove movement points from all of the player's army units.
 	void immobilize();
+
+
+	Stack *stackSplitArmy(Stack *stack, Army *a);
+	Stack *stackSplitArmies(Stack *stack, std::list<guint32> armies);
+	Stack *stackSplitArmies(Stack *stack, std::list<Army*> armies);
+	
     protected:
         // do some fight cleaning up, setting
         void cleanupAfterFight(std::list<Stack*> &attackers,
@@ -1423,7 +1428,8 @@ class Player: public sigc::trackable
 
         // return the new stack if split succeeded
         Stack *doStackSplit(Stack *s);
-        void doStackJoin(Stack* receiver, Stack* joining, bool grouped);
+	bool doStackSplitArmy(Stack *s, Army *a, Stack *& new_stack);
+        void doStackJoin(Stack* receiver, Stack* joining);
         int doStackVisitTemple(Stack *s, Temple *t);
         void doCityOccupy(City *c);
         void doCityPillage(City *c, int& gold, int* pillaged_army_type);
@@ -1454,6 +1460,9 @@ class Player: public sigc::trackable
 	Army *doVectoredUnitArrives(VectoredUnit *unit);
 	bool doChangeVectorDestination(Vector<int> src, Vector<int> dest,
 				       std::list<City*> &vectored);
+
+	bool doStackSplitArmies(Stack *stack, std::list<guint32> armies,
+				Stack *&new_stack);
 
 	void AI_maybeBuyScout();
 

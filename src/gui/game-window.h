@@ -149,6 +149,7 @@ class GameWindow: public Decorated
     Gtk::MenuItem *quests_menuitem;
     Gtk::MenuItem *preferences_menuitem;
     Gtk::Box *stack_info_box;
+    Gtk::Table *stack_info_button_table; //not loaded from .ui
     Gtk::Box *stack_info_container;
     Gtk::Label *group_moves_label;
     Gtk::Image *terrain_image;
@@ -192,6 +193,8 @@ class GameWindow: public Decorated
     StackInfoTip* stack_info_tip;
     typedef std::vector<Gtk::ToggleButton *> army_buttons_type;
     army_buttons_type army_buttons;
+    typedef std::vector<Gtk::RadioButton*> stack_buttons_type;
+    stack_buttons_type stack_buttons;
     Gtk::EventBox *map_eventbox;
     Gtk::EventBox *bigmap_eventbox;
     Gtk::ToggleButton *group_ungroup_toggle;
@@ -259,15 +262,14 @@ class GameWindow: public Decorated
     // info pane at the bottom
     void show_stats();
     void show_progress();
-    void show_stack(Stack *s);
-    void fill_in_group_info (Stack *s);
-    void on_army_toggled(Gtk::ToggleButton *toggle, Army *army);
+    void show_stack(StackTile *s);
+    void fill_in_group_info (StackTile *stile, Stack *s);
+    void on_army_toggled(Gtk::ToggleButton *toggle, Stack *stack, Army *army);
+    void on_stack_toggled(Gtk::RadioButton *radio, Stack *stack);
     void on_group_toggled(Gtk::ToggleButton *toggle);
     bool on_army_button_event(GdkEventButton *e,
 			      Gtk::ToggleButton *toggle, Army *army);
     void clear_army_buttons();
-    void update_army_buttons();
-    void ensure_one_army_button_active();
 
     // shield set on the top
     void show_shield_turn();
@@ -282,7 +284,7 @@ class GameWindow: public Decorated
     void on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map);
     void on_stack_info_changed(Stack *s);
     void on_bigmap_tip_changed(Glib::ustring tip, MapTipPosition pos);
-    void on_stack_tip_changed(Stack *s, MapTipPosition pos);
+    void on_stack_tip_changed(StackTile *stile, MapTipPosition pos);
     void on_ruin_searched(Ruin *ruin, Stack *s, Reward *reward);
     void on_sage_visited(Ruin *ruin, Stack *s);
     void on_ruin_rewarded(Reward_Ruin *reward);

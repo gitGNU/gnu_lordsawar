@@ -22,6 +22,7 @@
 #define PLAYERLIST_H
 
 #include <list>
+#include <map>
 #include <string>
 #include <vector>
 #include <sigc++/trackable.h>
@@ -65,7 +66,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 
         //! Returns the active player (the Player whose turn it is).
         static Player* getActiveplayer() {return d_activeplayer;}
-        
+
         //! Sets the active player to the next player in the order.
         void nextPlayer();
 
@@ -238,6 +239,8 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 
 	void setWinningPlayer(Player *winner);
 
+
+	void add(Player *player);
     protected:
 	//! Default constructor.
         Playerlist();
@@ -271,6 +274,9 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 
 	//! The pointer to the neutral player in the list.
         Player* d_neutral;
+
+	typedef std::map<guint32, Player*> IdMap;
+	IdMap d_id;
 
         //! A static pointer for the singleton instance.
         static Playerlist* s_instance;

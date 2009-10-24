@@ -68,6 +68,7 @@
 #include "LocationBox.h"
 #include "Backpack.h"
 #include "MapBackpack.h"
+#include "stacktile.h"
 
 #include "herotemplates.h"
 #include "GameScenarioOptions.h"
@@ -118,6 +119,13 @@ void Game::addPlayer(Player *p)
     }
       
   //now do all of the common connections
+      
+  connections[p->getId()].push_back
+    (p->getStacklist()->snewpos.connect
+     (sigc::mem_fun(this, &Game::stack_arrives_on_tile)));
+  connections[p->getId()].push_back
+    (p->getStacklist()->soldpos.connect
+     (sigc::mem_fun(this, &Game::stack_leaves_tile)));
   connections[p->getId()].push_back
     (p->aborted_turn.connect (sigc::mem_fun
 	   (game_stopped, &sigc::signal<void>::emit)));
@@ -200,6 +208,8 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
 	sigc::mem_fun(this, &Game::on_temple_queried));
     bigmap->stack_queried.connect(
 	sigc::mem_fun(this, &Game::on_stack_queried));
+    bigmap->stack_unqueried.connect(
+	sigc::mem_fun(this, &Game::on_stack_unqueried));
 
     // init the smallmap
     smallmap.reset(new SmallMap);
@@ -368,7 +378,7 @@ void Game::move_selected_stack_dir(int diffx, int diffy)
     move_selected_stack_along_path();
   else
     {
-      Playerlist::getActiveplayer()->getStacklist()->setActivestack(0);
+      Playerlist::getActiveplayer()->setActivestack(0);
       unselect_active_stack();
     }
 }
@@ -440,8 +450,6 @@ void Game::move_selected_stack_southeast()
 void Game::move_selected_stack_along_path()
 {
   Stack *stack = Playerlist::getActiveplayer()->getActivestack();
-  if (stack->isGrouped() == false)
-    Playerlist::getActiveplayer()->stackSplit(stack);
 
   Playerlist::getActiveplayer()->stackMove(stack);
 
@@ -449,7 +457,7 @@ void Game::move_selected_stack_along_path()
   stack = Playerlist::getActiveplayer()->getActivestack();
   if (stack && stack->canMove() == false)
     {
-      Playerlist::getActiveplayer()->getStacklist()->setActivestack(0);
+      Playerlist::getActiveplayer()->setActivestack(0);
       unselect_active_stack();
     }
 }
@@ -466,8 +474,6 @@ void Game::move_all_stacks()
 	{
 	  sl->setActivestack(&s);
 	  select_active_stack();
-	  if (player->getActivestack()->isGrouped() == false)
-	    player->stackSplit(player->getActivestack());
 	  bool moved = player->stackMove(player->getActivestack());
 	  if (!moved)
 	    break;
@@ -477,7 +483,7 @@ void Game::move_all_stacks()
 
   if (sl->getActivestack()->canMove() == false)
     {
-      Playerlist::getActiveplayer()->getStacklist()->setActivestack(0);
+      Playerlist::getActiveplayer()->setActivestack(0);
       unselect_active_stack();
     }
 }
@@ -491,7 +497,7 @@ void Game::defend_selected_stack()
   stack->setDefending(true);
 
   stack = player->getStacklist()->getNextMovable();
-  player->getStacklist()->setActivestack(stack);
+  player->setActivestack(stack);
 
   if (stack)
     select_active_stack();
@@ -507,7 +513,7 @@ void Game::park_selected_stack()
   stack->setParked(true);
 
   stack = player->getStacklist()->getNextMovable();
-  player->getStacklist()->setActivestack(stack);
+  player->setActivestack(stack);
 
   if (stack)
     select_active_stack();
@@ -518,7 +524,7 @@ void Game::park_selected_stack()
 void Game::deselect_selected_stack()
 {
   Player *player = Playerlist::getActiveplayer();
-  player->getStacklist()->setActivestack(0);
+  player->setActivestack(0);
   unselect_active_stack();
 }
 
@@ -572,7 +578,7 @@ void Game::search_selected_stack()
 
       update_sidebar_stats();
     }
-  else if (temple && temple->searchable() && stack->getGroupMoves() > 0)
+  else if (temple && temple->searchable() && stack->getMoves() > 0)
     {
       int blessCount;
       blessCount = player->stackVisitTemple(stack, temple);
@@ -741,15 +747,14 @@ void Game::on_signpost_queried (Signpost* s)
     map_tip_changed.emit("", MapTipPosition());
 }
 
-void Game::on_stack_queried (Stack* s)
+void Game::on_stack_unqueried ()
 {
-  if (s)
-    {
-      MapTipPosition mpos = bigmap->map_tip_position(s->getPos());
-      stack_tip_changed.emit(s, mpos);
-    }
-  else
-    stack_tip_changed.emit(NULL, MapTipPosition());
+  stack_tip_changed.emit(NULL, MapTipPosition());
+}
+void Game::on_stack_queried (Vector<int> tile)
+{
+  MapTipPosition mpos = bigmap->map_tip_position(tile);
+  stack_tip_changed.emit(GameMap::getStacks(tile), mpos);
 }
 
 void Game::on_temple_queried (Temple* t, bool brief)
@@ -926,7 +931,7 @@ void Game::update_control_panel()
        * temples can be searched by any stack, when the stack has 
        * movement left.
        */
-      if (stack->getGroupMoves() > 0)
+      if (stack->getMoves() > 0)
 	{
 	  Temple *temple;
 	  temple = GameMap::getTemple(stack->getPos());
@@ -1043,7 +1048,7 @@ void Game::loadGame()
     {
       //human players want access to the controls and an info box
       unlock_inputs();
-      player->getStacklist()->setActivestack(0);
+      player->setActivestack(0);
       center_view_on_city();
       update_sidebar_stats();
       update_control_panel();
@@ -1058,7 +1063,7 @@ void Game::loadGame()
       if (player->hasAlreadyInitializedTurn())
 	{
 	  unlock_inputs();
-	  player->getStacklist()->setActivestack(0);
+	  player->setActivestack(0);
 	  center_view_on_city();
 	  update_sidebar_stats();
 	  update_control_panel();
@@ -1322,7 +1327,7 @@ void Game::on_city_fight_finished(City *city, Fight::Result result)
 	  //great, then let's turn on the production.
 	  //well, we already made a unit, and we want to produce more
 	  //of it.
-	  Stack *o = neu->getStacklist()->getObjectAt(city->getPos());
+	  Stack *o = GameMap::getStacks(city->getPos())->getFriendlyStack(neu);
 	  if (o)
 	    {
 	      int army_type = o->getStrongestArmy()->getTypeId();
@@ -1382,4 +1387,25 @@ void Game::endOfGameRoaming(Player *winner)
   update_stack_info();
   update_control_panel();
   redraw();
+}
+
+void Game::stack_arrives_on_tile(Stack *stack, Vector<int> tile)
+{
+  StackTile *stile = GameMap::getInstance()->getTile(tile)->getStacks();
+  stile->arriving(stack);
+}
+
+void Game::stack_leaves_tile(Stack *stack, Vector<int> tile)
+{
+  StackTile *stile = GameMap::getInstance()->getTile(tile)->getStacks();
+  bool left = stile->leaving(stack);
+  if (left == false)
+    {
+      if (stack == NULL)
+	{
+	  printf("stack is %p\n", stack);
+	  printf("WTFFF!!!!!!!!!!!!!!!!!!!!\n");
+	  return;
+	}
+    }
 }

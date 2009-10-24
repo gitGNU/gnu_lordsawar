@@ -114,7 +114,7 @@ Fight::Fight(Stack* attacker, Stack* defender, FightType type)
             tile = GameMap::getInstance()->getTile(x,y);
             
             // look for attackers
-            Stack* s = Stacklist::getObjectAt(x,y);
+            Stack* s = GameMap::getFriendlyStack(Vector<int>(x,y));
             Stack::const_iterator sit;
 
             if (!s)

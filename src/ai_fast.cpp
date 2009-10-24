@@ -166,7 +166,7 @@ bool AI_Fast::startTurn()
 		debug ("AI_FAST stack " << s->getId() << " can still potentially move");
 		debug ("moving from " << s->getPos().x << "," << s->getPos().y
 		       << ") to (" <<s->getFirstPointInPath().x << "," <<
-		       s->getFirstPointInPath().y << ") with " << s->getGroupMoves() <<" left");
+		       s->getFirstPointInPath().y << ") with " << s->getMoves() <<" left");
 
 	    
 		found = true;
@@ -282,7 +282,6 @@ bool AI_Fast::computerTurn()
     {
         d_stacklist->setActivestack(*it);
         Stack* s = *it;
-	s->group();
         
 	//go to a temple
 	if (!d_maniac)
@@ -292,7 +291,7 @@ bool AI_Fast::computerTurn()
 	    if (Citylist::getInstance()->getObjectAt(s->getPos()) == NULL)
 	      {
 		stack_moved = AI_maybeVisitTempleForBlessing
-		  (s, s->getGroupMoves(), s->getGroupMoves() + 7, 50.0, 
+		  (s, s->getMoves(), s->getMoves() + 7, 50.0, 
 		   blessed, stack_died);
 		if (stack_died)
 		  return true;
@@ -310,8 +309,8 @@ bool AI_Fast::computerTurn()
 	    bool stack_died = false;
 	    bool picked_up = false;
 
-	    stack_moved = AI_maybePickUpItems(s, s->getGroupMoves(), 
-					       s->getGroupMoves() + 7, 
+	    stack_moved = AI_maybePickUpItems(s, s->getMoves(), 
+					       s->getMoves() + 7, 
 					       picked_up, stack_died);
 	    if (stack_died)
 	      return true;
@@ -524,7 +523,7 @@ bool AI_Fast::computerTurn()
 		  continue;
 
 		guint32 mp = s->getPath()->calculate(s, threatpos);
-		if ((int)mp <= 0 || mp > s->getGroupMoves())
+		if ((int)mp <= 0 || mp > s->getMoves())
 		  continue;
 
 		target = *tit;
@@ -559,7 +558,7 @@ bool AI_Fast::computerTurn()
 	      {
 	      //printf ("stack %d at %d,%d moving %d with %d moves\n",
 		      //s->getId(), s->getPos().x, s->getPos().y,
-		      //mp, s->getGroupMoves());
+		      //mp, s->getMoves());
 		bool moved = stackMove(s);
 		//printf("result of move: %d\n", moved);
 		stack_moved |= moved;

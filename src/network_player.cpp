@@ -284,8 +284,6 @@ void NetworkPlayer::decodeActionSplit(const Action_Split *action)
   Stack *stack = d_stacklist->getStackById(stack_id);
   assert (stack != NULL);
   
-  for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
-    (*it)->setGrouped(true);
   for (unsigned int i = 0; i < MAX_STACK_SIZE; ++i) {
     guint32 army_id = action->getGroupedArmyId(i);
     if (army_id == 0)
@@ -302,7 +300,6 @@ void NetworkPlayer::decodeActionSplit(const Action_Split *action)
 	exit(0);
       }
     assert (army != NULL);
-    army->setGrouped(false);
   }
 
   Stack *new_stack = doStackSplit(stack);
@@ -350,7 +347,7 @@ void NetworkPlayer::decodeActionJoin(const Action_Join *action)
 
   assert (receiver != NULL);
   assert (joining != NULL);
-  doStackJoin(receiver, joining, false);
+  doStackJoin(receiver, joining);
   receiver->sortForViewing(true);
   supdatingStack.emit(0);
 }

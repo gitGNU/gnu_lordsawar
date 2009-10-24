@@ -47,8 +47,8 @@ Army::Army(const Army& a, Player* p)
      d_max_moves_multiplier(a.d_max_moves_multiplier),
      d_max_moves_rest_bonus(a.d_max_moves_rest_bonus),
      d_ship(a.d_ship), d_hp(a.d_hp), d_moves(a.d_moves), d_xp(a.d_xp),
-     d_level(a.d_level), d_grouped(a.d_grouped),
-     d_battles_number(a.d_battles_number), d_number_hashit(a.d_number_hashit),
+     d_level(a.d_level), d_battles_number(a.d_battles_number), 
+     d_number_hashit(a.d_number_hashit), 
      d_number_hasbeenhit(a.d_number_hasbeenhit), 
      d_visitedTemples(a.d_visitedTemples)
 {
@@ -61,8 +61,7 @@ Army::Army(const ArmyProto& a, Player* p)
     d_type_id(a.getTypeId()), d_armyset(a.getArmyset()), 
     d_max_hp(2), d_max_moves_multiplier(1), d_max_moves_rest_bonus(0),
     d_ship(false), d_hp(2), d_moves(a.getMaxMoves()), d_xp(0), d_level(0),
-    d_grouped(false), d_battles_number(0), d_number_hashit(0), 
-    d_number_hasbeenhit(0)
+    d_battles_number(0), d_number_hashit(0), d_number_hasbeenhit(0)
 {
   for(int i = 0; i < 3; i++)
     d_medal_bonus[i] = 0;
@@ -74,8 +73,7 @@ Army::Army(const ArmyProto& a, guint32 id, Player *p)
     d_type_id(a.getTypeId()), d_armyset(a.getArmyset()), 
     d_max_hp(2), d_max_moves_multiplier(1), d_max_moves_rest_bonus(0),
     d_ship(false), d_hp(2), d_moves(a.getMaxMoves()), d_xp(0), d_level(0),
-    d_grouped(false), d_battles_number(0), d_number_hashit(0), 
-    d_number_hasbeenhit(0)
+    d_battles_number(0), d_number_hashit(0), d_number_hasbeenhit(0)
 {
   for(int i = 0; i < 3; i++)
     d_medal_bonus[i] = 0;
@@ -87,8 +85,7 @@ Army::Army(const ArmyProdBase& a, guint32 id, Player *p)
     d_type_id(a.getTypeId()), d_armyset(a.getArmyset()), 
     d_max_hp(2), d_max_moves_multiplier(1), d_max_moves_rest_bonus(0),
     d_ship(false), d_hp(2), d_moves(a.getMaxMoves()), d_xp(0), d_level(0),
-    d_grouped(false), d_battles_number(0), d_number_hashit(0), 
-    d_number_hasbeenhit(0)
+    d_battles_number(0), d_number_hashit(0), d_number_hasbeenhit(0)
 {
   for(int i = 0; i < 3; i++)
     d_medal_bonus[i] = 0;
@@ -110,8 +107,7 @@ Army::Army(const ArmyProdBase& a, Player* p)
     d_type_id(a.getTypeId()), d_armyset(a.getArmyset()), 
     d_max_hp(2), d_max_moves_multiplier(1), d_max_moves_rest_bonus(0),
     d_ship(false), d_hp(2), d_moves(a.getMaxMoves()), d_xp(0), d_level(0),
-    d_grouped(false), d_battles_number(0), d_number_hashit(0), 
-    d_number_hasbeenhit(0)
+    d_battles_number(0), d_number_hashit(0), d_number_hasbeenhit(0)
 {
   for(int i = 0; i < 3; i++)
     d_medal_bonus[i] = 0;
@@ -122,8 +118,7 @@ Army::Army()
   :ArmyBase(), UniquelyIdentified(), Ownable((Player *)0),
     d_type_id(0), d_armyset(0), d_max_hp(2), d_max_moves_multiplier(1), 
     d_max_moves_rest_bonus(0), d_ship(false), d_hp(2), d_moves(0), d_xp(0),
-    d_level(0), d_grouped(false), d_battles_number(0), d_number_hashit(0), 
-    d_number_hasbeenhit(0)
+    d_level(0), d_battles_number(0), d_number_hashit(0), d_number_hasbeenhit(0)
 {
   d_visitedTemples.clear();
 }
@@ -132,8 +127,7 @@ Army::Army(XML_Helper* helper)
   :ArmyBase(helper), UniquelyIdentified(helper), Ownable((XML_Helper*) 0),
     d_type_id(0), d_armyset(0), d_max_hp(2), d_max_moves_multiplier(1), 
     d_max_moves_rest_bonus(0), d_ship(false), d_hp(2), d_moves(0), d_xp(0),
-    d_level(0), d_grouped(false), d_battles_number(0), d_number_hashit(0), 
-    d_number_hasbeenhit(0)
+    d_level(0), d_battles_number(0), d_number_hashit(0), d_number_hasbeenhit(0)
 {
   //d_owner is not read in here.  it is set to the owner of the stack
   //in stack.cpp
@@ -179,7 +173,6 @@ Army::Army(XML_Helper* helper)
       if (ival != -1)
 	d_visitedTemples.push_front(ival);
     }
-  helper->getData(d_grouped, "grouped");
 }
 
 Army::~Army()
@@ -443,7 +436,6 @@ bool Army::saveData(XML_Helper* helper) const
   for(;tit != tend;++tit)
     temples << (*tit) << " ";
   retval &= helper->saveData("visited_temples", temples.str());
-  retval &= helper->saveData("grouped", d_grouped);
 
   return retval;
 }
@@ -467,7 +459,6 @@ void  Army::printAllDebugInfo() const
   std::cerr << "type = "    << d_type_id    << std::endl;
   std::cerr << "level = "   << d_level   << std::endl;
   std::cerr << "xp = "      << d_xp      << std::endl;
-  std::cerr << "grouped = " << d_grouped << std::endl;
 
   std::cerr << "medal[0] = " << d_medal_bonus[0] << std::endl;
   std::cerr << "medal[1] = " << d_medal_bonus[1] << std::endl;

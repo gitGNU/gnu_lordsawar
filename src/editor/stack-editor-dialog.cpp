@@ -189,7 +189,6 @@ int StackEditorDialog::run()
 	    a->setStat(Army::MOVES, (*j)[army_columns.moves]);
 	    a->setUpkeep((*j)[army_columns.upkeep]);
 	}
-	stack->group();
 	bool ship = stack->hasShip();
 	// add added armies to stack
 	for (Gtk::TreeIter j = army_list->children().begin(),

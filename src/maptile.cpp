@@ -23,6 +23,7 @@
 #include <iostream>
 #include "tileset.h"
 #include "MapBackpack.h"
+#include "stacktile.h"
 
 Maptile::Maptile(Tileset* tileSet, int x, int y, guint32 type, TileStyle *tileStyle)
     :d_index(type), d_building(NONE) 
@@ -30,6 +31,7 @@ Maptile::Maptile(Tileset* tileSet, int x, int y, guint32 type, TileStyle *tileSt
     d_tileSet = tileSet;
     d_tileStyle = tileStyle;
     d_backpack = new MapBackpack(Vector<int>(x,y));
+    d_stacktile = new StackTile(Vector<int>(x,y));
 }
 
 Maptile::Maptile(Tileset* tileSet, int x, int y, Tile::Type type, TileStyle *tileStyle)
@@ -50,6 +52,7 @@ Maptile::Maptile(Tileset* tileSet, int x, int y, Tile::Type type, TileStyle *til
     if (found == false)
       d_index = 0;
     d_backpack = new MapBackpack(Vector<int>(x,y));
+    d_stacktile = new StackTile(Vector<int>(x,y));
 }
 
 Maptile::~Maptile()

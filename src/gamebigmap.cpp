@@ -26,7 +26,6 @@
 
 #include "army.h"
 #include "path.h"
-#include "stacklist.h"
 #include "stack.h"
 #include "city.h"
 #include "ruin.h"
@@ -46,6 +45,7 @@
 #include "Configuration.h"
 #include "gui/image-helpers.h"
 #include "PathCalculator.h"
+#include "stacktile.h"
 
 #include "timing.h"
 
@@ -237,10 +237,16 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    {
 	      if (double_clicked == true)
 		{
-		  if (stack->isGrouped() == true)
-		    stack->ungroup();
+		  StackTile *stile = GameMap::getStacks(stack->getPos());
+		  std::list<Stack *> stks= stile->getFriendlyStacks(active);
+		  if (stks.size() == 1)
+		    stile->ungroup(active);
 		  else
-		    stack->group();
+		    {
+		      stile->group(active);
+		      active->setActivestack(GameMap::getStack(tile));
+		      stack_selected.emit(GameMap::getStack(tile));
+		    }
 		  if (path_calculator)
 		    delete path_calculator;
 		  path_calculator = new PathCalculator(stack);
@@ -336,7 +342,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		  if (deselect)
 		    {
 		      Player *player = Playerlist::getActiveplayer();
-		      player->getStacklist()->setActivestack(0);
+		      player->setActivestack(0);
 		      unselect_active_stack();
 		    }
 		}
@@ -353,7 +359,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	  if (stack && stack->isFriend(Playerlist::getActiveplayer()) && 
 	      d_cursor == GraphicsCache::TARGET)
 	    {
-	      Playerlist::getActiveplayer()->getStacklist()->setActivestack(stack);
+	      Playerlist::getActiveplayer()->setActivestack(stack);
 	      select_active_stack();
 	    }
 	  else
@@ -469,13 +475,13 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    {
 	      if (d_see_opponents_stacks == true)
 		{
-		  stack_queried.emit(st);
+		  stack_queried.emit(tile);
 		  mouse_state = SHOWING_STACK;
 		}
 	      else if (st->getOwner() == Playerlist::getActiveplayer() && 
 		       d_see_opponents_stacks == false)
 		{
-		  stack_queried.emit(st);
+		  stack_queried.emit(tile);
 		  mouse_state = SHOWING_STACK;
 		}
 	    }
@@ -502,7 +508,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	      break;
 
 	    case SHOWING_STACK:
-	      stack_queried.emit(0);
+	      stack_unqueried.emit();
 	      break;
 
 	    case DRAGGING_ENDPOINT:
@@ -512,7 +518,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	      Stack* stack = Playerlist::getActiveplayer()->getActivestack();
 	      if (stack)
 		{
-		  Playerlist::getActiveplayer()->getStacklist()->setActivestack(0);
+		  Playerlist::getActiveplayer()->setActivestack(0);
 		  unselect_active_stack();
 		  mouse_state = NONE;
 		  determine_mouse_cursor(NULL, current_tile);
@@ -693,7 +699,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
       d_cursor = GraphicsCache::HAND;
       Stack *st;
 
-      st = active->getStacklist()->getObjectAt(tile);
+      st = GameMap::getStack(tile);
       if (st)
 	{
 	  if (st->getOwner() == active)
@@ -949,19 +955,13 @@ void GameBigMap::after_draw()
 	    smallframe = 0;
 
 	  p = tile_to_buffer_pos(p);
-	  int num_selected = 0;
-	  for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
-	    {
-	      if ((*it)->isGrouped())
-		num_selected++;
-	    }
 
 	  draw_stack (stack, buffer, buffer_gc);
 
 	  if (input_locked == false)
 	    {
 	      PixMask *tmp = NULL;
-	      if (num_selected > 1)
+	      if (stack->size() > 1)
 		tmp = gc->getSelectorPic(0, bigframe, stack->getOwner());
 	      else
 		tmp = gc->getSelectorPic(1, smallframe, stack->getOwner());
@@ -1004,7 +1004,7 @@ void GameBigMap::set_control_key_down (bool down)
 	return;
 
       Stack* stack;
-      stack = Playerlist::getActiveplayer()->getStacklist()->getObjectAt(current_tile);
+      stack = GameMap::getFriendlyStack(current_tile);
       if (!stack)
 	return;
 

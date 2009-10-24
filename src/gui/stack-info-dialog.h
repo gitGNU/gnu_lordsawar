@@ -29,37 +29,43 @@
 class Stack;
 class Army;
 
+#include "vector.h"
 #include "decorated.h"
 
 // dialog for showing hero information
 class StackInfoDialog: public Decorated
 {
  public:
-    StackInfoDialog(Stack *s);
+    StackInfoDialog(Vector<int> pos);
     ~StackInfoDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
     void run();
+    Stack * get_selected_stack() {return currently_selected_stack;};
     void hide();
 
  private:
     Gtk::Dialog* dialog;
 
-    Stack *stack;
+    Vector<int> tile;
     Gtk::Table *stack_table;
 
     ArmyInfoTip* army_info_tip;
     std::vector<Gtk::ToggleButton *> toggles;
     std::vector<const Army*> armies;
+    std::vector<Gtk::RadioButton *> radios;
     Gtk::Button *group_button;
     Gtk::Button *ungroup_button;
+    Stack *currently_selected_stack;
 
-    void addArmy (Army *a, guint32 modified_strength, int idx);
+    void addArmy (bool first, Stack *s, Army *a, guint32 modified_strength, int idx);
+    void addStack(Stack *s, guint32 &idx);
     void on_group_clicked();
     void on_ungroup_clicked();
     void fill_stack_info();
-    void on_army_toggled(Gtk::ToggleButton *toggle);
+    void on_stack_toggled(Gtk::RadioButton *radio, Stack *s);
+    void on_army_toggled(Gtk::ToggleButton *toggle, Stack *s, Army *a);
     bool on_army_button_event(GdkEventButton *e, Gtk::ToggleButton *toggle);
 };
 

@@ -108,15 +108,15 @@ void EditorBigMap::mouse_button_event(MouseButtonEvent e)
     {
 	map_selection_seq seq;
 	
-	if (Stack* s = Stacklist::getObjectAt(tile))
+	if (Stack* s = GameMap::getStack(tile))
 	    seq.push_back(s);
-	if (City* c = Citylist::getInstance()->getObjectAt(tile))
+	if (City* c = GameMap::getCity(tile))
 	    seq.push_back(c);
-	if (Ruin* r = Ruinlist::getInstance()->getObjectAt(tile))
+	if (Ruin* r = GameMap::getRuin(tile))
 	    seq.push_back(r);
-	if (Signpost* s = Signpostlist::getInstance()->getObjectAt(tile))
+	if (Signpost* s = GameMap::getSignpost(tile))
 	    seq.push_back(s);
-	if (Temple* t = Templelist::getInstance()->getObjectAt(tile))
+	if (Temple* t = GameMap::getTemple(tile))
 	    seq.push_back(t);
 	MapBackpack *b = GameMap::getInstance()->getTile(tile)->getBackpack();
 	if (b->empty() == false)
@@ -374,9 +374,9 @@ void EditorBigMap::change_map_under_cursor()
 	      }
 	    changed_tiles.dim = Vector<int>(1, 1);
 	    //change the boatedness of stacks that might be here.
-	    if (Stacklist::getObjectAt(tile))
+	    if (GameMap::getStack(tile))
 	      {
-		Stack* s = Stacklist::getObjectAt(tile);
+		Stack* s = GameMap::getStack(tile);
 		Port *port = Portlist::getInstance()->getObjectAt(tile);
 		Bridge *bridge = Bridgelist::getInstance()->getObjectAt(tile);
 		if (pointer_terrain == Tile::WATER && s->hasShip() == false && 
@@ -397,11 +397,11 @@ void EditorBigMap::change_map_under_cursor()
 	    // check if there is a building or a stack there and remove it
 
 	    // first stack, it's above everything else
-	    if (Stack* s = Stacklist::getObjectAt(tile))
-	    {
+	    while  (GameMap::getStack(tile) != NULL)
+	      {
+		Stack *s = GameMap::getStack(tile);
 		s->getOwner()->deleteStack(s);
-		break;
-	    }
+	      }
 	    
 	    maptile->setBuilding(Maptile::NONE);
 	    
@@ -442,7 +442,7 @@ void EditorBigMap::change_map_under_cursor()
 	    break;
 
 	case STACK:
-	    if (!Stacklist::getObjectAt(tile))
+	    if (!GameMap::getStack(tile))
 	    {
 		// Create a new dummy stack. As we don't want to have empty
 		// stacks hanging around, it's assumed that the default armyset
@@ -461,7 +461,6 @@ void EditorBigMap::change_map_under_cursor()
 		else
 		  a->setInShip(false);
 		s->push_back(a);
-		s->group();
 		p->addStack(s);
 		//if we're on a city, change the allegiance of the stack
 		//and it's armies to that of the city
@@ -530,8 +529,8 @@ void EditorBigMap::change_map_under_cursor()
 	      {
 		for (unsigned int y = 0; y < c->getSize(); y++)
 		  {
-		    Stack *s = Stacklist::getObjectAt(c->getPos().x + x, 
-						      c->getPos().y + y);
+		    Stack *s = 
+		      GameMap::getStack(c->getPos() + Vector<int>(x,y));
 		    if (s)
 		      {
 			if (c->getOwner() == 
@@ -613,9 +612,9 @@ void EditorBigMap::change_map_under_cursor()
 	    {
 		maptile->setBuilding(Maptile::PORT);
 		Portlist::getInstance()->add(new Port(tile));
-		if (Stacklist::getObjectAt(tile))
+		if (GameMap::getStack(tile))
 		  {
-		    Stack* s = Stacklist::getObjectAt(tile);
+		    Stack* s = GameMap::getStack(tile);
 		    if (s->hasShip() == true)
 		      {
 			for (Stack::iterator it = s->begin(); it != s->end(); 
@@ -638,9 +637,9 @@ void EditorBigMap::change_map_under_cursor()
 		{
 		    maptile->setBuilding(Maptile::BRIDGE);
 		    Bridgelist::getInstance()->add(new Bridge(tile, type));
-		    if (Stacklist::getObjectAt(tile))
+		    if (GameMap::getStack(tile))
 		      {
-			Stack* s = Stacklist::getObjectAt(tile);
+			Stack* s = GameMap::getStack(tile);
 			if (s->hasShip() == true)
 			  {
 			    for (Stack::iterator it = s->begin(); it != s->end(); 

@@ -152,16 +152,13 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	void setPath(const Path p);
 
         //! Returns the minimum number of movement points of all Army units.
-        guint32 getGroupMoves() const;
+        guint32 getMoves() const;
 
 	//! Returns the maximum MP the stack would have if it were on land
-        guint32 getMaxGroupLandMoves() const;
+        guint32 getMaxLandMoves() const;
 
 	//! Returns the max MP the stack would have if it were in the water
-        guint32 getMaxGroupBoatMoves() const;
-
-	//! Returns true if all Army units in the stack are grouped.
-	bool isGrouped();
+        guint32 getMaxBoatMoves() const;
 
 	//! Uncovers some of the hidden map around this stack.
 	void deFog();
@@ -288,15 +285,6 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Return the movement points it costs to travel to an adjacent tile.
 	guint32 calculateTileMovementCost(Vector<int> pos) const;
 
-	//! Set each Army unit in the Stack to a grouped state.
-	void group();
-
-	//! Set all armies in the Stack except the first one to be ungrouped.
-	void ungroup();
-
-	//! Count the number of armies in the stack that are selected.
-	guint32 countGroupedArmies() const;
-
 	//! Returns true if this stack can join the given stack.
 	/**
 	 * @pnote This is not a distance calculation.  It checks to see if
@@ -349,7 +337,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
 	//! Return a list of army Ids in the stack that can reach the given 
 	//! destination.
-	std::vector<guint32> determineReachableArmies(Vector<int> dest);
+	std::list<guint32> determineReachableArmies(Vector<int> dest);
 
 	//! returns how many armies in the stack have visited the given temple.
 	guint32 countArmiesBlessedAtTemple(guint32 temple_id);
@@ -361,6 +349,15 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	Vector<int> getFirstPointInPath() const;
 	Vector<int> getLastPointInPath() const;
 	Vector<int> getLastReachablePointInPath() const;
+
+	void join(Stack *join);
+
+	Stack *splitArmies(std::list<Army*> armies);
+	Stack *splitArmies(std::list<guint32> armies);
+	Stack *splitArmy(Army *army);
+	Stack *splitArmiesWithMovement(int mp = 1);
+
+	void add(Army *army);
     private:    
 
 

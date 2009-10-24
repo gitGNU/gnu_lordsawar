@@ -26,6 +26,7 @@
 #include "tileset.h"
 #include "Item.h"
 class MapBackpack;
+class StackTile;
 
 //! A single tile on the game map.
 /** 
@@ -142,6 +143,9 @@ class Maptile
 
         //! Get the list of Item objects on this maptile.
         MapBackpack *getBackpack() const {return d_backpack;};
+
+	//! Get the list of Stack objects on this maptile.
+	StackTile *getStacks() const {return d_stacktile;};
         
 	//! Whether or not this map tile considered to be "open terrain".
 	/**
@@ -197,6 +201,8 @@ class Maptile
         Building d_building;
 	//! The list of pointers to items on this maptile.
 	MapBackpack *d_backpack;
+	//! The list of pointers to stacks on this maptile.
+	StackTile *d_stacktile;
 };
 
 #endif // MAPTILE_H

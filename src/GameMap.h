@@ -131,6 +131,10 @@ class GameMap: public sigc::trackable
 	static Bridge* getBridge(Vector<int> pos);
 	static Signpost* getSignpost(Vector<int> pos);
 	static Stack* getStack(Vector<int> pos);
+	static StackTile* getStacks(Vector<int> pos);
+	static bool canJoin(Stack *src, Stack *dest);
+	static Stack* getFriendlyStack(Vector<int> pos);
+	static Stack* getEnemyStack(Vector<int> pos);
 
         //! Get the tile object at position (x,y)
         Maptile* getTile(int x, int y) const;
@@ -144,6 +148,9 @@ class GameMap: public sigc::trackable
 
 	//! Go find a player's planted standard on the map
         Vector<int> findPlantedStandard(Player *p);
+
+	//! go find the player's stack, the slow way.
+	Vector<int> findStack(guint32 id);
 
         /** Fill the map using the data supplied by a map generator
           * 
@@ -169,6 +176,7 @@ class GameMap: public sigc::trackable
 	//! figure out where a non-flying unit can't go
         void calculateBlockedAvenues();
 	void calculateBlockedAvenue(int i, int j);
+	void updateStackPositions();
 
 	/** Smooth a portion of the map.
 	 *

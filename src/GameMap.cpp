@@ -51,6 +51,7 @@
 #include "citysetlist.h"
 #include "GraphicsCache.h"
 #include "MapBackpack.h"
+#include "stacktile.h"
 
 std::string GameMap::d_tag = "map";
 std::string GameMap::d_itemstack_tag = "itemstack";
@@ -442,24 +443,26 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
                   if (land && getTile(x, y)->getType() == Tile::MOUNTAIN &&
 		      (a->getStat(Army::MOVE_BONUS) & Tile::MOUNTAIN) == 0)
                     continue;
-                  //is there somebody else's stack here?
-                  s = Stacklist::getObjectAt(x, y);
+		  //do we already have a nifty stack here?
+		  s = getFriendlyStack(Vector<int>(x,y));
                   if (s)
                     { 
-                      if (s->getOwner() != a->getOwner())
-                        continue;
-                      //is it our stack, but too full?
+                      //is our stack too full?
                       if (s->size() >= MAX_STACK_SIZE)
                         continue;
                     }
-                  //hey this looks like a good place for a stack
-                  else  //but there isn't a stack here
+                  else 
                     {
                       Vector<int> pos(x, y);
+		      //hmm. no nifty stacks here.  anybody else's?
+		      s = getEnemyStack(pos);
+		      if (s)
+			continue;
+		      //okay, no stacks here at all.  make one.
                       s = new Stack(a->getOwner(), pos);
                       a->getOwner()->addStack(s);
                     }
-                  s->push_front(a);
+                  s->add(a);
                   added_army = true;
                   break;
                 }
@@ -475,8 +478,6 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
     {
       s->setDefending(false);
       s->setParked(false);
-      if (s->countGroupedArmies() == 0)
-	s->ungroup();
       return s;
     }
   else
@@ -603,6 +604,26 @@ void GameMap::calculateBlockedAvenues()
   for (int i = 0; i < s_width; i++)
     for (int j = 0; j < s_height; j++)
       calculateBlockedAvenue(i, j);
+}
+
+Vector<int> GameMap::findStack(guint32 id)
+{
+    bool found = false;
+    Vector<int> pos = Vector<int>(-1,-1);
+    for (int x = 0; x < getWidth(); x++)
+      {
+        for (int y = 0; y < getHeight(); y++)
+          {
+	    StackTile *stile = getTile(x,y)->getStacks();
+	    if (stile->contains(id) == true)
+	      {
+		pos = Vector<int>(x,y);
+		found = true;
+		break;
+	      }
+          }
+      }
+  return pos;
 }
 
 Vector<int> GameMap::findPlantedStandard(Player *p)
@@ -1039,7 +1060,38 @@ Signpost* GameMap::getSignpost(Vector<int> pos)
 {
   return Signpostlist::getInstance()->getObjectAt(pos);
 }
+Stack* GameMap::getFriendlyStack(Vector<int> pos)
+{
+  return getStacks(pos)->getFriendlyStack(Playerlist::getActiveplayer());
+}
+	
+Stack* GameMap::getEnemyStack(Vector<int> pos)
+{
+  return getStacks(pos)->getEnemyStack(Playerlist::getActiveplayer());
+}
+	
 Stack* GameMap::getStack(Vector<int> pos)
 {
-  return Stacklist::getObjectAt(pos);
+  return getStacks(pos)->getStack();
+}
+	
+StackTile* GameMap::getStacks(Vector<int> pos)
+{
+  return getInstance()->getTile(pos)->getStacks();
+}
+  
+void GameMap::updateStackPositions()
+{
+  Playerlist *plist = Playerlist::getInstance();
+  for (Playerlist::iterator i = plist->begin(); i != plist->end(); i++)
+    {
+      Stacklist *sl = (*i)->getStacklist();
+      for (Stacklist::iterator s = sl->begin(); s != sl->end(); s++)
+	getStacks((*s)->getPos())->add(*s);
+    }
+}
+
+bool GameMap::canJoin(Stack *src, Stack *dest)
+{
+  return getStacks(dest->getPos())->canAdd(src);
 }

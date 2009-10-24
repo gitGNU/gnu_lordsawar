@@ -82,7 +82,7 @@ void PathCalculator::populateNodeMap()
     }
   int idx = start.toIndex();
   nodes[idx].moves = 0;
-  nodes[idx].moves_left = stack->getGroupMoves();
+  nodes[idx].moves_left = stack->getMoves();
   nodes[idx].turns = 0;
 
   // now the main loop
@@ -101,8 +101,8 @@ void PathCalculator::populateNodeMap()
 
 PathCalculator::PathCalculator(Stack *s, bool zig)
 :stack(s), flying(s->isFlying()), d_bonus(s->calculateMoveBonus()),
-    land_reset_moves(s->getMaxGroupLandMoves()),
-    boat_reset_moves(s->getMaxGroupBoatMoves()), zigzag(zig), on_ship(stack->hasShip()), delete_stack(false)
+    land_reset_moves(s->getMaxLandMoves()),
+    boat_reset_moves(s->getMaxBoatMoves()), zigzag(zig), on_ship(stack->hasShip()), delete_stack(false)
 {
   populateNodeMap();
 }
@@ -126,8 +126,8 @@ PathCalculator::PathCalculator(Player *p, Vector<int> src, const ArmyProdBase *p
   stack->push_back(army);
   flying = stack->isFlying();
   d_bonus = stack->calculateMoveBonus();
-  land_reset_moves = stack->getMaxGroupLandMoves();
-  boat_reset_moves = stack->getMaxGroupBoatMoves();
+  land_reset_moves = stack->getMaxLandMoves();
+  boat_reset_moves = stack->getMaxBoatMoves();
   zigzag = zig; 
   on_ship = stack->hasShip();
   delete_stack = true;
@@ -139,8 +139,8 @@ PathCalculator::PathCalculator(const Stack &s, bool zig)
   stack = new Stack(s);
   flying = stack->isFlying();
   d_bonus = stack->calculateMoveBonus();
-  land_reset_moves = stack->getMaxGroupLandMoves();
-  boat_reset_moves = stack->getMaxGroupBoatMoves();
+  land_reset_moves = stack->getMaxLandMoves();
+  boat_reset_moves = stack->getMaxBoatMoves();
   zigzag = zig; 
   on_ship = stack->hasShip();
   delete_stack = true;
@@ -409,22 +409,10 @@ bool PathCalculator::isBlocked(Stack *s, Vector<int> pos)
   // Return true on every condition which may prevent the stack from
   // entering the tile, which are...
 
-  Stack* target = Stacklist::getObjectAt(pos);
+  // ...enemy stacks which stand in the way...
+  Stack* target = GameMap::getEnemyStack(pos);
   if (target)
-    {
-      // ...enemy stacks which stand in the way...
-      if (s->getOwner() != target->getOwner())
-	return true;
-
-      //the computer walks around any too-big stacks of it's own.
-      //if (s->getOwner() == target->getOwner()
-	  //&& s->canJoin(target) == false && 
-	  //s->getOwner()->getType() != Player::HUMAN) 
-	//{
-	  //return true;
-	//}
-
-    }
+    return true;
 
   //...enemy cities
   // saves some computation time here
@@ -572,7 +560,7 @@ Path* PathCalculator::calculate(Vector<int> dest, guint32 &moves, guint32 &turns
 
   //calculate when the waypoints show no more movement possible
   guint32 pathcount = 0;
-  guint32 moves_left = stack->getGroupMoves();
+  guint32 moves_left = stack->getMoves();
   for (Path::iterator it = path->begin(); it != path->end(); it++)
     {
       guint32 moves = stack->calculateTileMovementCost(*it);
@@ -653,7 +641,7 @@ Path *PathCalculator::calculateToCity (City *c, guint32 &moves, guint32 &turns, 
 	if (checkJoin == true)
 	  {
 	    Stack *other_stack = GameMap::getStack(c->getPos() + Vector<int>(i,j));
-	    if (other_stack && stack->canJoin(other_stack) == false)
+	    if (other_stack && GameMap::canJoin(stack,other_stack) == false)
 	      continue;
 	  }
 	int distance = dist (stack->getPos(), c->getPos() + Vector<int>(i, j));
@@ -679,7 +667,7 @@ Path *PathCalculator::calculateToCity (City *c, guint32 &moves, guint32 &turns, 
 	if (checkJoin == true)
 	  {
 	    Stack *other_stack = GameMap::getStack(c->getPos() + Vector<int>(i,j));
-	    if (other_stack && stack->canJoin(other_stack) == false)
+	    if (other_stack && GameMap::canJoin(stack, other_stack) == false)
 	      continue;
 	  }
 	p = calculate(c->getPos() + Vector<int>(i,j), moves, turns, zigzag);

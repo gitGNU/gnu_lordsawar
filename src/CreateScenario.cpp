@@ -217,7 +217,7 @@ Player* CreateScenario::addPlayer(std::string name, guint32 armyset,
 
     Player* p = Player::create(name, armyset, color, d_width, d_height,
 			       Player::Type(type));
-    Playerlist::getInstance()->push_back(p);
+    Playerlist::getInstance()->add(p);
 
     return p;
 }

@@ -66,6 +66,7 @@
 #include "MapBackpack.h"
 #include "rgb_shift.h"
 #include "PathCalculator.h"
+#include "stacktile.h"
 
 using namespace std;
 
@@ -430,6 +431,7 @@ void Player::addStack(Stack* stack)
 {
     stack->setPlayer(this);
     d_stacklist->add(stack);
+    GameMap::getStacks(stack->getPos())->add(stack);
 }
 
 bool Player::deleteStack(Stack* stack)
@@ -675,6 +677,9 @@ void Player::setFightOrder(std::list<guint32> order)
 
 Stack *Player::doStackSplit(Stack* s)
 {
+  return NULL;
+  //fixme, figure out how to do stack splits now that groupedness is gone
+  /*
     debug("Player::doStackSplit("<<s->getId()<<")")
 
     Army* ungrouped = s->getFirstUngroupedArmy();
@@ -706,14 +711,65 @@ Stack *Player::doStackSplit(Stack* s)
     d_stacklist->add(new_stack);
     
     return new_stack;
+    */
 }
 
+bool Player::doStackSplitArmy(Stack *s, Army *a, Stack *& new_stack)
+{
+  new_stack = s->splitArmy(a);
+  if (new_stack != NULL)
+    {
+      addStack(new_stack);
+      return true;
+    }
+  return false;
+}
+
+
+bool Player::doStackSplitArmies(Stack *stack, std::list<guint32> armies,
+				Stack *& new_stack)
+{
+  new_stack = stack->splitArmies(armies);
+  if (new_stack != NULL)
+    {
+      addStack(new_stack);
+      return true;
+    }
+  return false;
+}
+
+Stack *Player::stackSplitArmies(Stack *stack, std::list<guint32> armies)
+{
+  Stack *new_stack = NULL;
+  bool retval = doStackSplitArmies(stack, armies, new_stack);
+  if (retval == true)
+    {
+      Action_Split* item = new Action_Split();
+      item->fillData(stack, new_stack);
+      addAction(item);
+    }
+  return new_stack;
+}
+
+Stack *Player::stackSplitArmy(Stack *stack, Army *a)
+{
+  Stack *new_stack = NULL;
+  bool retval = doStackSplitArmy(stack, a, new_stack);
+  if (retval == true)
+    {
+      Action_Split* item = new Action_Split();
+      item->fillData(stack, new_stack);
+      addAction(item);
+    }
+  return new_stack;
+}
 bool Player::stackSplit(Stack* s)
 {
   Stack *new_stack = doStackSplit(s);
 
   if (new_stack)
   {
+    printf("doing stacksplit!\n");
     Action_Split* item = new Action_Split();
     item->fillData(s, new_stack);
     addAction(item);
@@ -722,27 +778,17 @@ bool Player::stackSplit(Stack* s)
   return new_stack;
 }
 
-void Player::doStackJoin(Stack* receiver, Stack* joining, bool grouped)
+void Player::doStackJoin(Stack* receiver, Stack* joining)
 {
-    // Now if grouped is set to false, ungroup all the receiving stack's armies
-    // (by default, only the joining stacks armies will continue to move). 
-    for (Stack::iterator it = receiver->begin(); it != receiver->end(); it++)
-        (*it)->setGrouped(grouped);
-
-    for (Stack::iterator it = joining->begin(); it != joining->end(); it++)
-    {
-        receiver->push_front(*it);
-        (*it)->setGrouped(true);
-    }
-
-    joining->clear();    //clear only erases the pointers not the armies
+    receiver->join(joining);
     d_stacklist->flRemove(joining);
     
     d_stacklist->setActivestack(receiver);
 }
 
-bool Player::stackJoin(Stack* receiver, Stack* joining, bool grouped)
+bool Player::stackJoin(Stack* receiver, Stack* joining)
 {
+  printf("doing stackjoin!\n");
     debug("Player::stackJoin("<<receiver->getId()<<","<<joining->getId()<<")")
 
     if ((receiver == 0) || (joining == 0))
@@ -760,7 +806,7 @@ bool Player::stackJoin(Stack* receiver, Stack* joining, bool grouped)
     item->fillData(receiver, joining);
     addAction(item);
 
-    doStackJoin(receiver, joining, grouped);
+    doStackJoin(receiver, joining);
     
     return true;
 }
@@ -769,7 +815,10 @@ bool Player::stackSplitAndMove(Stack* s)
 {
   if (s->getPath()->size() == 0)
     return false;
-  Stack *join = getStacklist()->getObjectAt(s->getLastReachablePointInPath());
+  Vector<int> pos = s->getLastReachablePointInPath();
+  if (pos == Vector<int>(-1,-1))
+    return false;
+  Stack *join = GameMap::getFriendlyStack(pos);
   if (join)
     return stackSplitAndMoveToJoin(s, join);
   else
@@ -785,7 +834,7 @@ bool Player::stackSplitAndMoveToJoin(Stack* s, Stack *join)
   if (s->canJoin(join) == false)
     return false;
 
-  std::vector<guint32> ids;
+  std::list<guint32> ids;
   ids = s->determineReachableArmies(s->getLastPointInPath());
   if (ids.size() == 0)
     return false;
@@ -793,18 +842,13 @@ bool Player::stackSplitAndMoveToJoin(Stack* s, Stack *join)
   if (ids.size() == s->size())
     return stackMove(s);
 
-  for (Stack::iterator it = s->begin(); it != s->end(); it++)
+  Stack *new_stack = stackSplitArmies(s, ids);
+  if (new_stack)
     {
-      (*it)->setGrouped(false);
-      if (find(ids.begin(), ids.end(), (*it)->getId()) != ids.end())
-	{
-	  if (s->countGroupedArmies() + join->size() < MAX_STACK_SIZE)
-	    (*it)->setGrouped(true);
-	}
+      setActivestack(new_stack);
+      return stackMove(new_stack);
     }
-  //this splits the ungrouped armies into their own stack
-  stackSplit(s);
-  return stackMove(s);
+  return false;
 }
 
 bool Player::stackSplitAndMoveToAttack(Stack* s)
@@ -813,22 +857,20 @@ bool Player::stackSplitAndMoveToAttack(Stack* s)
   if (s->getPath()->empty())
     return false;
 
-  std::vector<guint32> ids;
+  std::list<guint32> ids;
   ids = s->determineReachableArmies(s->getLastPointInPath());
   if (ids.size() == 0)
     return false;
   if (ids.size() == s->size())
     return stackMove(s);
 
-  for (Stack::iterator it = s->begin(); it != s->end(); it++)
+  Stack *new_stack = stackSplitArmies(s, ids);
+  if (new_stack)
     {
-      (*it)->setGrouped(false);
-      if (find(ids.begin(), ids.end(), (*it)->getId()) != ids.end())
-	(*it)->setGrouped(true);
+      setActivestack(new_stack);
+      return stackMove(new_stack);
     }
-  //this splits the ungrouped armies into their own stack
-  stackSplit(s);
-  return stackMove(s);
+  return false;
 }
 
 bool Player::stackMove(Stack* s)
@@ -886,7 +928,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
     
         Vector<int> pos = s->getFirstPointInPath();
         City* city = GameMap::getCity(pos);
-        Stack* target = Stacklist::getObjectAt(pos);
+        Stack* target =GameMap::getStack(pos);
 
         //first fight_city to avoid ambiguity with fight_army
         if (city && (city->getOwner() != this) && (!city->isBurnt()))
@@ -947,8 +989,10 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
             return moveResult;
         }
         
-        //another friendly stack => join it
-        else if (target && target->getOwner() == this)
+        //another friendly stack => join it if we're AI
+        else if (target && target->getOwner() == this &&
+		( getType() == Player::AI_FAST || 
+		  getType() == Player::AI_SMART))
           {
 	    bool moved = false;
             if (stackMoveOneStep(s))
@@ -957,7 +1001,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
                 stepCount++;
 	      }
 	    Stack *other_stack = Stacklist::getAmbiguity(s);
-            stackJoin(other_stack, s, false);
+            stackJoin(other_stack, s);
 
 	    if (other_stack)
 	      d_stacklist->getActivestack()->sortForViewing(false);
@@ -968,8 +1012,24 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
             MoveResult *moveResult = new MoveResult(moved);
             moveResult->setStepCount(stepCount);
             moveResult->setJoin(moved);
-	    //if (moved == false)
-	      //d_stacklist->getActivestack()->getPath()->flClear();
+            return moveResult;
+         }
+        //another friendly stack => share the tile if we're human
+        else if (target && target->getOwner() == this && 
+		 getType() == Player::HUMAN)
+          {
+	    bool moved = false;
+            if (stackMoveOneStep(s))
+	      {
+		moved = true;
+                stepCount++;
+	      }
+	      
+	    supdatingStack.emit(0);
+	    shaltedStack.emit(d_stacklist->getActivestack());
+    
+            MoveResult *moveResult = new MoveResult(moved);
+            moveResult->setStepCount(stepCount);
             return moveResult;
          }
         
@@ -1029,6 +1089,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 	//the stack may have been split before we started to walk
 	//and then when we didn't go anywhere we landed back on our
 	//original stack.
+	/*
 	Stack *other_stack = Stacklist::getAmbiguity(s);
 	if (other_stack && other_stack->getOwner() == s->getOwner())
 	  {
@@ -1050,6 +1111,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 	    printf("this should be properly handled before this point.\n");
 	    exit(0);
 	  }
+	  */
     }
 
 
@@ -1071,7 +1133,7 @@ bool Player::stackMoveOneStepOverTooLargeFriendlyStacks(Stack *s)
     return false;
 
   Vector<int> dest = s->getFirstPointInPath();
-  Stack *another_stack = d_stacklist->getObjectAt(dest);
+  Stack *another_stack = GameMap::getStack(dest);
   if (!another_stack)
     return false;
 
@@ -1101,7 +1163,7 @@ bool Player::stackMoveOneStep(Stack* s)
 
   Vector<int> dest = s->getFirstPointInPath();
   
-  Stack *another_stack = d_stacklist->getObjectAt(dest);
+  Stack *another_stack = GameMap::getStack(dest);
   if (another_stack)
     {
       if (another_stack->getOwner() == s->getOwner())
@@ -1448,7 +1510,7 @@ float Player::stackFightAdvise(Stack* s, Vector<int> tile,
   float percent = 0.0;
         
   City* city = GameMap::getCity(tile);
-  Stack* target = Stacklist::getObjectAt(tile);
+  Stack* target = GameMap::getEnemyStack(tile);
                 
   if (!target && city)
     {
@@ -2899,67 +2961,24 @@ bool Player::AI_maybeDisband(Stack *s, City *city, guint32 min_defenders,
     }
 
   //okay, we need to disband part of our stack
-  //find a square to travel to
-  std::list<Vector<int> > diffs;
-  diffs.push_back(Vector<int>(0, 1));
-  diffs.push_back(Vector<int>(0, -1));
-  diffs.push_back(Vector<int>(-1, -1));
-  diffs.push_back(Vector<int>(-1, 1));
-  diffs.push_back(Vector<int>(1, -1));
-  diffs.push_back(Vector<int>(1, 1));
-  diffs.push_back(Vector<int>(1, 0));
-  diffs.push_back(Vector<int>(-1, 0));
-
-  Vector<int> found = Vector<int>(-1, -1);
-  for (std::list<Vector<int> >::iterator it = diffs.begin();
-       it != diffs.end(); it++)
-    {
-      Vector<int> dest = s->getPos() + (*it);
-      if (d_stacklist->getObjectAt(dest) == NULL)
-	{
-	  guint32 mp = s->getPath()->calculate(s, dest);
-	  if ((int)mp <= 0)
-	    continue;
-	  found = dest;
-	  break;
-	}
-    }
-
-  //no place to move to (strange)
-  if (found == Vector<int>(-1, -1))
-    return false;
 
   //before we move, ungroup the lucky ones not being disbanded
   unsigned int count = 0;
-  s->group();
   for (Stack::reverse_iterator i = s->rbegin(); i != s->rend(); i++)
     {
       if (count == min_defenders)
 	break;
       if ((*i)->isHero() == false)
 	{
-	  count++;
-	  (*i)->setGrouped(false);
+	  Stack *new_stack = stackSplitArmy(s, *i);
+	  if (new_stack)
+	    {
+	      count++;
+	      stackDisband(new_stack);
+	    }
 	}
     }
-
-  stackSplit(s);
-  s->getPath()->recalculate(s);
-  Vector<int> last_reachable_tile = s->getLastReachablePointInPath();
-  if (last_reachable_tile == Vector<int>(-1,-1))
-    stackJoin(s, d_stacklist->getAmbiguity(s), true);
-  else
-    stackMove(s);
-  s = d_stacklist->getActivestack();
-
-  if (d_stacklist->getActivestack() == 0) 
-    {
-      //maybe we got lucky and inadvertently attacked an enemy stack and lost.
-      stack_killed = true;
-      return false;
-    }
-
-  return stackDisband(s);
+  return true;
 }
 
 bool Player::AI_maybeVector(City *c, guint32 safe_mp, guint32 min_defenders,
@@ -3628,6 +3647,10 @@ guint32 Player::countArmies()
 Stack * Player::getActivestack()
 {
   return d_stacklist->getActivestack();
+}
+void Player::setActivestack(Stack *s)
+{
+  d_stacklist->setActivestack(s);
 }
 	
 Vector<int> Player::getPositionOfArmyById(guint32 id)

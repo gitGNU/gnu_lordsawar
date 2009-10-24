@@ -213,7 +213,7 @@ Vector<int> AI_Allocation::getFreeSpotInCity(City *city, int stackSize)
     for (unsigned int j = 0; j < city->getSize(); j++)
       {
 	Vector<int> pos = city->getPos() + Vector<int>(i,j);
-	Stack *s = Stacklist::getObjectAt(pos);
+	Stack *s = GameMap::getFriendlyStack(pos);
 	if (!s)
 	  return pos;
 	else
@@ -243,7 +243,7 @@ Stack *AI_Allocation::findClosestStackToCity(City *city, int limitInMoves)
       if (dest == Vector<int>(-1, -1))
 	continue;
       //don't consider the stack if it's in an endangered city
-      City *stack_city = Citylist::getInstance()->getObjectAt(s->getPos());
+      City *stack_city = GameMap::getCity(s->getPos());
       if (stack_city)
 	{
 	  if (Player::safeFromAttack(stack_city, 16, 3) == false)
@@ -286,7 +286,7 @@ Stack *AI_Allocation::findBestAttackerFor(Threat *threat)
 	continue;
 
       //don't consider the stack if it's in an endangered city
-      City *stack_city = Citylist::getInstance()->getObjectAt(s->getPos());
+      City *stack_city = GameMap::getCity(s->getPos());
       if (stack_city)
 	{
 	  if (Player::safeFromAttack(stack_city, 16, 3) == false)
@@ -297,7 +297,7 @@ Stack *AI_Allocation::findBestAttackerFor(Threat *threat)
       int mp = pc.calculate(closestPoint);
       if (mp <= 0)
 	continue;
-      if (s->getGroupMoves() < (unsigned int) mp)
+      if (s->getMoves() < (unsigned int) mp)
 	continue;
 
       //don't consider the stack if we're probably going to lose
@@ -506,7 +506,7 @@ bool AI_Allocation::shuffleStacksWithinCity(City *city, Stack *stack,
   int mp = stack->getPath()->calculate(stack, city->getPos() + diff);
   if (mp <= 0)
     return false;
-  Stack *join = Stacklist::getObjectAt(city->getPos() + diff);
+  Stack *join = GameMap::getFriendlyStack(city->getPos() + diff);
   if (!join)
     {
       return d_owner->stackMove(stack);

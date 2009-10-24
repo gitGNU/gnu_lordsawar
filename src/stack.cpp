@@ -222,20 +222,8 @@ void Stack::deFog()
   return;
 }
 
-bool Stack::isGrouped()
-{
-  if (empty())
-    return false;
-
-  for (const_iterator it = begin(); it != end(); ++it)
-    if ((*it)->isGrouped() == false)
-      return false;
-
-  return true;
-}
-
 // return the maximum moves of this stack by checking the moves of each army
-guint32 Stack::getGroupMoves() const
+guint32 Stack::getMoves() const
 {
   if (empty())
     return 0;
@@ -245,13 +233,12 @@ guint32 Stack::getGroupMoves() const
   int min = -1;
 
   for (const_iterator it = begin(); it != end(); ++it)
-    if ((*it)->isGrouped())
-      {
-	if (min == -1)
-	  min = int((*it)->getMoves());
-	else
-	  min = std::min(min, int((*it)->getMoves()));
-      }
+    {
+      if (min == -1)
+	min = int((*it)->getMoves());
+      else
+	min = std::min(min, int((*it)->getMoves()));
+    }
 
   if (min <= -1)
     return 0;
@@ -344,41 +331,6 @@ Army *Stack::getArmyById(guint32 id) const
   return 0;
 }
 
-guint32 Stack::countGroupedArmies() const
-{
-  guint32 count = 0;
-  if (empty())
-    return 0;
-  for (const_iterator it = begin(); it != end(); ++it)
-    if ((*it)->isGrouped() == true)
-      count++;
-  return count;
-}
-
-void Stack::group()
-{
-  debug("Stack::group()")
-  if (empty())
-    return;
-  for (iterator it = begin(); it != end(); ++it)
-    (*it)->setGrouped(true);
-  sgrouped.emit(this, true);
-  return;
-}
-
-void Stack::ungroup()
-{
-  debug("Stack::ungroup()")
-  if (empty())
-    return;
-  for (iterator it = begin(); it != end(); ++it)
-    (*it)->setGrouped(false);
-  //set first army to be in the group
-  (*(begin()))->setGrouped(true);
-  sgrouped.emit(this, false);
-  return;
-}
-
 bool Stack::hasHero() const
 {
   for (const_iterator it = begin(); it != end(); it++)
@@ -468,7 +420,7 @@ bool Stack::enoughMoves() const
   Vector<int> p = getFirstPointInPath();
   guint32 needed = calculateTileMovementCost(p);
 
-  if (getGroupMoves() >= needed)
+  if (getMoves() >= needed)
     return true;
 
   return false;
@@ -477,22 +429,10 @@ bool Stack::enoughMoves() const
 bool Stack::canMove() const
 {
   int tile_moves = getMinTileMoves();
-  int group_moves = getGroupMoves();
+  int group_moves = getMoves();
 
   assert (tile_moves != -1);
   return group_moves > 0 && tile_moves >= 0 && group_moves >= tile_moves;
-}
-
-Army* Stack::getFirstUngroupedArmy() const
-{
-  for (const_iterator it = begin(); it != end(); it++)
-    {
-      if (!(*it)->isGrouped())
-	{
-	  return *it;
-	}
-    }
-  return 0;
 }
 
 guint32 Stack::getMaxSight() const
@@ -628,11 +568,8 @@ guint32 Stack::calculateMoveBonus() const
   int num_landedother = 0;
   if (size() == 0)
     return 0;
-  bool grouped = countGroupedArmies() > 0;
   for (const_iterator it = this->begin(); it != this->end(); it++)
     {
-      if ((*it)->isGrouped() == false && grouped)
-	continue;
       bonus = (*it)->getStat(Army::MOVE_BONUS);
       if (bonus == Tile::GRASS || (bonus & Tile::WATER) == 0 || 
 	  (bonus & Tile::FOREST) == 0 || (bonus & Tile::HILLS) == 0 ||
@@ -673,8 +610,6 @@ guint32 Stack::calculateMoveBonus() const
   //calculate move bonuses for non-flying stacks
   for (Stack::const_iterator it = this->begin(); it != this->end(); it++)
     {
-      if ((*it)->isGrouped() == false)
-	continue;
       bonus = (*it)->getStat(Army::MOVE_BONUS);
 
       //only forest and hills extend to all other units in the stack
@@ -699,8 +634,6 @@ bool Stack::hasShip () const
 {
   for (Stack::const_iterator it = this->begin(); it != this->end(); it++)
     {
-      if ((*it)->isGrouped() == false)
-	continue;
       if ((*it)->getStat(Army::SHIP))
 	return true;
     }
@@ -729,16 +662,9 @@ bool Stack::armyCompareFightOrder (const Army *lhs, const Army *rhs)
   return lhs_rank < rhs_rank; 
 }
 
-bool armyCompareGrouped (const Army *lhs, const Army *rhs)  
-{
-  return lhs->isGrouped() < rhs->isGrouped(); 
-}
-
-
 void Stack::sortForViewing (bool reverse)
 {
   sort(armyCompareFightOrder);
-  sort(armyCompareGrouped);
   if (reverse)
     std::reverse(begin(), end());
 }
@@ -775,23 +701,16 @@ guint32 Stack::getUpkeep()
 
 bool Stack::canJoin(const Stack *stack) const
 {
-  guint32 joinSize = countGroupedArmies();
-  if (joinSize == 0)
-    joinSize = size();
-
-  /* this is necessary because human players "group" armies in stacks,
-   * while the computer player does not.
-   */
-  if ((stack->size() + joinSize) > MAX_STACK_SIZE)
+  if ((stack->size() + size()) > MAX_STACK_SIZE)
     return false;
 
   return true;
 
 }
 
-std::vector<guint32> Stack::determineReachableArmies(Vector<int> dest)
+std::list<guint32> Stack::determineReachableArmies(Vector<int> dest)
 {
-  std::vector<guint32> ids;
+  std::list<guint32> ids;
   //try each army individually to see if it reaches
   for (iterator it = begin(); it != end(); it++)
     {
@@ -799,7 +718,7 @@ std::vector<guint32> Stack::determineReachableArmies(Vector<int> dest)
 	{
 	  Stack *stack = Stack::createNonUniqueStack(getOwner(), getPos());
 	  stack->push_back(*it);
-	  if (stack->getGroupMoves() >= 
+	  if (stack->getMoves() >= 
 	      stack->getPath()->calculate(stack, dest))
 	    ids.push_back((*it)->getId());
 	  stack->clear();
@@ -821,14 +740,14 @@ std::vector<guint32> Stack::determineReachableArmies(Vector<int> dest)
 	  Stack *stack = Stack::createNonUniqueStack(getOwner(), getPos());
 	  stack->push_back(*it);
 	  //also push back the rest of the known reachables
-	  std::vector<guint32>::iterator iit = ids.begin();
+	  std::list<guint32>::iterator iit = ids.begin();
 	  for (; iit != ids.end(); iit++)
 	    {
 	      Army *army = getArmyById(*iit);
 	      if (army)
 		stack->push_back(army);
 	    }
-	  if (stack->getGroupMoves() >= 
+	  if (stack->getMoves() >= 
 	      stack->getPath()->calculate(stack, dest))
 	    ids.push_back((*it)->getId());
 	  stack->clear();
@@ -855,7 +774,7 @@ Stack* Stack::createNonUniqueStack(Player *player, Vector<int> pos)
   return new Stack(0, player, pos);
 }
 
-guint32 Stack::getMaxGroupLandMoves() const
+guint32 Stack::getMaxLandMoves() const
 {
   if (empty())
     return 0;
@@ -865,11 +784,9 @@ guint32 Stack::getMaxGroupLandMoves() const
   //copy the stack, reset the moves and return the group moves
   Stack *copy = new Stack (*this);
   copy->getPath()->clear(); //this prevents triggering path recalc in nextTurn
-  if (copy->countGroupedArmies() == 0)
-    copy->group();
-  copy->decrementMoves(copy->getGroupMoves());
+  copy->decrementMoves(copy->getMoves());
   copy->nextTurn();
-  guint32 moves = copy->getGroupMoves();
+  guint32 moves = copy->getMoves();
   if (isFlying() == true)
     {
       delete copy;
@@ -878,17 +795,17 @@ guint32 Stack::getMaxGroupLandMoves() const
 
   //alright, we're not flying.  what would our group moves be if we were on land
   //remove ship status from all army units
-  copy->decrementMoves(copy->getGroupMoves());
+  copy->decrementMoves(copy->getMoves());
   for (Stack::iterator it = copy->begin(); it != copy->end(); it++)
     (*it)->setInShip(false);
   copy->nextTurn();
 
-  moves = copy->getGroupMoves();
+  moves = copy->getMoves();
   delete copy;
   return moves;
 }
 
-guint32 Stack::getMaxGroupBoatMoves() const
+guint32 Stack::getMaxBoatMoves() const
 {
   if (empty())
     return 0;
@@ -898,17 +815,15 @@ guint32 Stack::getMaxGroupBoatMoves() const
   //copy the stack, reset the moves and return the group moves
   Stack *copy = new Stack (*this);
   copy->getPath()->clear(); //this prevents triggering path recalc in nextTurn
-  if (copy->countGroupedArmies() == 0)
-    copy->group();
   copy->nextTurn();
-  guint32 moves = copy->getGroupMoves();
+  guint32 moves = copy->getMoves();
   if (isFlying() == true)
     {
       delete copy;
       return moves;
     }
   //alright, we're not flying.  what would our group moves be if we were on water?
-  copy->decrementMoves(copy->getGroupMoves());
+  copy->decrementMoves(copy->getMoves());
 	      
   for (Stack::iterator it = copy->begin(); it != copy->end(); it++)
     {
@@ -919,7 +834,7 @@ guint32 Stack::getMaxGroupBoatMoves() const
     }
   copy->nextTurn();
 
-  moves = copy->getGroupMoves();
+  moves = copy->getMoves();
   delete copy;
   return moves;
 }
@@ -929,5 +844,88 @@ void Stack::setPath(const Path p)
   if (d_path)
     delete d_path;
   d_path = new Path(p);
+}
+
+void Stack::add(Army *army)
+{
+  push_back(army);
+}
+
+//! split the given army from this stack, into a brand new stack.
+Stack *Stack::splitArmy(Army *army)
+{
+  if (size() == 1) //we can't split the last army.
+    return NULL;
+
+  assert (army != NULL);
+  Stack *new_stack = NULL;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if (*it == army || (*it)->getId() == army->getId())
+	{
+	  new_stack = new Stack(getOwner(), getPos());
+	  new_stack->add(*it);
+	  it = erase(it);
+	  break;
+	}
+    }
+
+  return new_stack;
+}
+
+//! split the given armies from this stack, into a brand new stack.
+Stack *Stack::splitArmies(std::list<Army*> armies)
+{
+  std::list<guint32> ids;
+  for (std::list<Army*>::iterator i = armies.begin(); i != armies.end(); i++)
+    ids.push_back((*i)->getId());
+  return splitArmies(ids);
+}
+
+Stack *Stack::splitArmies(std::list<guint32> armies)
+{
+  if (armies.size() == 0) //we can't split 0 armies into a new stack.
+    return NULL;
+  if (armies.size() >= size()) //we can't split everyone into a new stack.
+    return NULL;
+  Stack *new_stack = NULL;
+  for (std::list<guint32>::iterator i = armies.begin(); i != armies.end(); i++)
+    {
+      bool found = false;
+      iterator found_army_it = end();
+      for (iterator it = begin(); it != end(); it++)
+	{
+	  if ((*it)->getId() == *i)
+	    {
+	      found = true;
+	      found_army_it = it;
+	      break;
+	    }
+	}
+      if (found)
+	{
+	  if (new_stack == NULL)
+	    new_stack = new Stack(getOwner(), getPos());
+	  new_stack->push_back(*found_army_it);
+	  erase(found_army_it);
+	}
+    }
+  return new_stack;
+}
+//! split the armies in the stack that this much mp or more into a new stack.
+Stack *Stack::splitArmiesWithMovement(int mp)
+{
+  std::list<Army*> armies;
+  for (iterator it = begin(); it != end(); it++)
+    if ((*it)->getMoves() >= mp)
+      armies.push_back(*it);
+  return splitArmies(armies);
+}
+
+void Stack::join(Stack *join)
+{
+  for (iterator i = join->begin(); i != join->end(); i++)
+    push_back(*i);
+  join->clear();
 }
 // End of file

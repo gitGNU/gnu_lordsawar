@@ -33,8 +33,9 @@
 #include "map-tip-position.h"
 #include "decorated.h"
 #include "File.h"
+#include "stacktile.h"
 
-StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, const Stack *stack)
+StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, StackTile *stile)
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
     Glib::RefPtr<Gtk::Builder> xml
@@ -48,12 +49,16 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, const Stack
     xml->get_widget("image_hbox", image_hbox);
 
     //fill up the hbox with images of the armies in the stack
-    for (Stack::const_iterator it = stack->begin(); it != stack->end(); it++)
-      {
-	Gtk::Image *image = new Gtk::Image();
-	image->property_pixbuf() = gc->getArmyPic(*it)->to_pixbuf();
-	image_hbox->add(*manage(image));
-      }
+
+    Player *active = Playerlist::getActiveplayer();
+    std::list<Stack *> stks = stile->getFriendlyStacks(active);
+    for (std::list<Stack *>::iterator i = stks.begin(); i != stks.end(); i++)
+      for (Stack::iterator it = (*i)->begin(); it != (*i)->end(); it++)
+	{
+	  Gtk::Image *image = new Gtk::Image();
+	  image->property_pixbuf() = gc->getArmyPic(*it)->to_pixbuf();
+	  image_hbox->add(*manage(image));
+	}
 
     image_hbox->show_all();
 

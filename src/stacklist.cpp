@@ -37,6 +37,8 @@
 #include "hero.h"
 #include "Backpack.h"
 #include "LocationList.h"
+#include "GameMap.h"
+#include "stacktile.h"
 
 std::string Stacklist::d_tag = "stacklist";
 using namespace std;
@@ -45,22 +47,10 @@ using namespace std;
 #define debug(x)
 
 //the static functions first
-Stack* Stacklist::getObjectAt(int x, int y)
-{
-    for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
-        pit != Playerlist::getInstance()->end(); pit++)
-    {
-        Stacklist* mylist = (*pit)->getStacklist();
-	Stack *s1 = NULL;
-	Stack *s2 = NULL;
-	mylist->getObjectAt(Vector<int>(x,y), s1, s2);
-	if (s1)
-	  return s1;
-	else if (s2)
-	  return s2;
-    }
-    return 0;
-}
+//Stack* Stacklist::getObjectAt(int x, int y)
+//{
+  //return GameMap::getStack(Vector<int>(x,y));
+//}
 
 Vector<int> Stacklist::getPosition(guint32 id)
 {
@@ -83,20 +73,7 @@ Vector<int> Stacklist::getPosition(guint32 id)
 //It also happens when two stacks fight.
 Stack* Stacklist::getAmbiguity(Stack* s)
 {
-    for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
-        pit != Playerlist::getInstance()->end(); pit++)
-    {
-        Stacklist* mylist = (*pit)->getStacklist();
-	Stack *s1 = NULL;
-	Stack *s2 = NULL;
-	mylist->getObjectAt(s->getPos(), s1, s2);
-	if (s1 && s1->getId() != s->getId())
-	  return s1;
-	else if (s2 && s2->getId() != s->getId())
-	  return s2;
-    }
-
-    return 0;
+  return GameMap::getInstance()->getTile(s->getPos())->getStacks()->getOtherStack(s);
 }
 
 //search all player's stacklists to find this stack
@@ -446,14 +423,14 @@ void Stacklist::collectTaxes(Player *p, guint32 num_cities)
 bool Stacklist::canJumpOverTooLargeStack(Stack *s)
 {
   bool found = false;
-  guint32 mp = s->getGroupMoves();
+  guint32 mp = s->getMoves();
   for (Path::iterator it = s->getPath()->begin(); it != s->getPath()->end(); it++)
     {
       guint32 moves = s->calculateTileMovementCost(*it);
       if (moves > mp)
 	return false;
       mp -= moves;
-      Stack *another_stack = getObjectAt(*it);
+      Stack *another_stack = GameMap::getStack(*it);
       if (another_stack)
 	{
 	  if (another_stack->getOwner() != s->getOwner())
@@ -515,54 +492,20 @@ Hero *Stacklist::getNearestHero(Vector<int> pos, int dist)
 
 bool Stacklist::addPositionToMap(Stack *stack)
 {
-  if (d_object1.find(stack->getPos()) == d_object1.end())
-    {
-      d_object1[stack->getPos()] = stack;
-      return true;
-    }
-
-  if (d_object2.find(stack->getPos()) == d_object2.end())
-    {
-      d_object2[stack->getPos()] = stack;
-      return true;
-    }
-  
-  return false;
+  snewpos.emit(stack, stack->getPos());
+  return true;
 }
 
 bool Stacklist::deletePositionFromMap(Stack *stack)
 {
-  Stack *found = NULL;
-  PositionMap::iterator it = d_object1.find(stack->getPos());
-  if (it != d_object1.end())
-    {
-      found = (*it).second;
-      if (found->getId() == stack->getId())
-	{
-	  d_object1.erase(it);
-	  //d_object1[stack->getPos()] = NULL;
-	  return true;
-	}
-    }
-
-  it = d_object2.find(stack->getPos());
-  if (it != d_object2.end())
-    {
-      found = (*it).second;
-      if (found->getId() == stack->getId())
-	{
-	  //d_object2[stack->getPos()] = NULL;
-	  d_object2.erase(it);
-	  return true;
-	}
-    }
-  
-  return false;
+  soldpos.emit(stack, stack->getPos());
+  return true;
 }
 
 void Stacklist::add(Stack *stack)
 {
   push_back(stack);
+  d_id[stack->getId()] = stack;
   if (stack->getPos() != Vector<int>(-1,-1))
     {
       bool added = addPositionToMap(stack);
@@ -595,6 +538,7 @@ void Stacklist::on_stack_died (Stack *stack)
       for (std::list<sigc::connection>::iterator lit = list.begin(); lit != list.end(); lit++)
 	(*lit).disconnect();
     }
+  d_id.erase(d_id.find(stack->getId()));
   return;
 }
 void Stacklist::on_stack_starts_moving (Stack *stack)
@@ -607,20 +551,6 @@ void Stacklist::on_stack_stops_moving (Stack *stack)
   addPositionToMap(stack);
   return;
 }
-void Stacklist::getObjectAt(Vector<int> pos, Stack *& s1, Stack *&s2)
-{
-  PositionMap::iterator it = d_object1.find(pos);
-  if (it == d_object1.end())
-    s1 = NULL;
-  else
-    s1 = (*it).second;
-  it = d_object2.find(pos);
-  if (it == d_object2.end())
-    s2 = NULL;
-  else
-    s2 = (*it).second;
-}
-        
 void Stacklist::setActivestack(Stack* activestack)
 {
   d_activestack = activestack;
