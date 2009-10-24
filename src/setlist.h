@@ -25,10 +25,8 @@ class SetList
 public:
   SetList(){};
   ~SetList(){};
-  static std::string getConfigurationFilename(std::string dir, std::string subdir, std::string ext)
-    {return File::add_slash_if_necessary(dir) + subdir + "/" + subdir + ext;};
+  static std::string getConfigurationFilename(std::string dir, std::string subdir, std::string ext) {return File::add_slash_if_necessary(dir) + subdir + "/" + subdir + ext;};
 
-private:
 };
 
 #endif

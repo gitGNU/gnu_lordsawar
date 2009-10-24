@@ -51,7 +51,6 @@
 #include "GameMap.h"
 #include "Configuration.h"
 #include "GraphicsCache.h"
-#include "GraphicsLoader.h"
 #include "MapRenderer.h"
 #include "FogMap.h"
 #include "MapBackpack.h"

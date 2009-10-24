@@ -802,7 +802,6 @@ void ArmySetWindow::on_image_changed(Gtk::FileChooserButton *button, Gtk::Image 
       shifts = Shieldsetlist::getInstance()->getMaskColorShifts(1, c);
       a->instantiateImages(d_armyset->getTileSize(), c, 
 			   d_armyset->getFile(a->getImageName(c)));
-      //GraphicsLoader::instantiateImages(d_armyset, a, c, a->getImageName(c));
       if (c != Shield::NEUTRAL)
 	{
 	  PixMask *army_image = GraphicsCache::applyMask(a->getImage(c), 
