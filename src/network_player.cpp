@@ -284,25 +284,12 @@ void NetworkPlayer::decodeActionSplit(const Action_Split *action)
   Stack *stack = d_stacklist->getStackById(stack_id);
   assert (stack != NULL);
   
-  for (unsigned int i = 0; i < MAX_STACK_SIZE; ++i) {
-    guint32 army_id = action->getGroupedArmyId(i);
-    if (army_id == 0)
-      continue;
+  std::list<guint32> armies;
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; ++i) 
+    armies.push_back(action->getGroupedArmyId(i));
 
-    Army *army = stack->getArmyById(army_id);
-    if (army == NULL)
-      {
-	printf ("couldn't find army with id %d in stack %d\n", army_id, stack_id);
-	printf ("available IDs are...\n");
-	for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
-	  printf ("%d ", (*it)->getId());
-	printf ("\n");
-	exit(0);
-      }
-    assert (army != NULL);
-  }
-
-  Stack *new_stack = doStackSplit(stack);
+  Stack *new_stack = NULL;
+  doStackSplitArmies(stack, armies, new_stack);
   assert (new_stack != NULL);
   if (new_stack->getId() != action->getNewStackId())
     {

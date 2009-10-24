@@ -64,6 +64,7 @@
 #include "history.h"
 #include "xmlhelper.h"
 #include "tarhelper.h"
+#include "stacktile.h"
 
 std::string GameScenario::d_tag = "scenario";
 using namespace std;
@@ -258,10 +259,29 @@ void GameScenario::quickStart()
 	    continue;
 	  pos = clist->getFirstCity(p)->getPos();
 	  City *c = clist->getNearestNeutralCity(pos);
-	  c->conquer(p);
-	  History_CityWon *item = new History_CityWon();
-	  item->fillData(c);
-	  p->addHistory(item);
+	  if (c)
+	    {
+	      //does the city contain any stacks yet?
+	      //change their allegience to us.
+	      for (unsigned int x = 0 ; x < c->getSize(); x++)
+		{
+		  for (unsigned int y = 0; y < c->getSize(); y++)
+		    {
+		      StackTile *stile = 
+			GameMap::getStacks(c->getPos() + Vector<int>(x,y));
+		      std::list<Stack*> stks = stile->getStacks();
+		      for (std::list<Stack *>::iterator i = stks.begin(); 
+			   i != stks.end(); i++)
+			Stacklist::changeOwnership(*i, p);
+		    }
+		}
+
+	      //now give the city to us.
+	      c->conquer(p);
+	      History_CityWon *item = new History_CityWon();
+	      item->fillData(c);
+	      p->addHistory(item);
+	    }
 	}
     }
 }

@@ -197,7 +197,7 @@ Armyset *Armysetlist::loadArmyset(std::string name)
   if (armyset->validate() == false)
     {
       cerr << "Error!  armyset: `" << armyset->getName() << 
-	"' is invalid." << endl;
+	"' is invalid.  Skipping." << endl;
       delete armyset;
       return NULL;
     }

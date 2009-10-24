@@ -544,22 +544,6 @@ class Player: public sigc::trackable
          */
 	//! Callback to advance an Army's level.
         virtual void levelArmy(Army* a) = 0;
-        
-        /** 
-	 * Called to split the stack in two stacks. You have to take great
-         * care that one of the created stacks moves away after that because 
-	 * there is code that assumes that there is only stack on a tile.
-	 * The Army units that are grouped are the units in the new stack.
-	 *
-	 * This callback must result in an Action_Split element being 
-	 * given to the addAction method.
-         *
-         * @param s        The stack to split.
-	 *
-         * @return False if there were any problems, else true.
-         */
-	//! Callback to split a Stack into two.
-        bool stackSplit(Stack* s);
 
         /** 
 	 * Called to merge two stacks into one.

@@ -57,36 +57,13 @@ void StackTile::arriving(Stack *stack)
 void StackTile::add(Stack *stack)
 {
   iterator it = findStack(stack);
-  if (it != end())
-    return;  //it's already here.
+  if (it != end()) //we replace existing entries, to make this work sans game.
+    erase(it);
   struct StackTileRecord rec;
   rec.stack_id = stack->getId();
   rec.player_id = stack->getOwner()->getId();
   push_back(rec);
   //i could stack->setpos here, but i prefer to let Stack::moveToDest do that because it's movement related, and this class is not movement related.
-}
-
-bool StackTile::removeDeadStack(Stack *s)
-{
-  iterator it = findStack(s);
-  if (it == end())
-    return false;
-  if (s->size() > 0)
-    return false; //stack not dead yet!
-  erase(it);
-  return true;
-}
-
-bool StackTile::removeLivingStack(Stack *s, StackTile *dest)
-{
-  iterator it = findStack(s);
-  if (it == end())
-    return false;
-  if (dest->canAdd(s) == false)
-    return false;
-  erase(it);
-  dest->add(s);
-  return true;
 }
 
 guint32 StackTile::countNumberOfArmies(Player *owner)
@@ -120,6 +97,22 @@ Stack *StackTile::getStack()
       return p->getStacklist()->getStackById(front().stack_id);
     }
   return NULL;
+}
+
+std::list<Stack *> StackTile::getStacks()
+{
+  std::list<Stack *> stacks;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      Playerlist *pl = Playerlist::getInstance();
+      for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
+	{
+	  Stack *stack = (*i)->getStacklist()->getStackById((*it).stack_id);
+	  if (stack)
+	    stacks.push_back(stack);
+	}
+    }
+  return stacks;
 }
 
 std::list<Stack *> StackTile::getFriendlyStacks(Player *owner)
@@ -166,6 +159,7 @@ Stack *StackTile::getEnemyStack(Player *owner)
 
 
 //! join all of the stacks located here that are owned by OWNER with S
+/*
 bool StackTile::join(Stack *receiver, Stack *joiner)
 {
   iterator it = findStack(receiver);
@@ -206,6 +200,7 @@ bool StackTile::join(Stack *receiver)
     }
   return true;
 }
+*/
     
 Stack *StackTile::getOtherStack(Stack *stack)
 {

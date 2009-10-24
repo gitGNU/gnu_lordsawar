@@ -59,23 +59,21 @@ public:
     bool leaving(Stack *stack);
     void arriving(Stack *stack);
     void add(Stack *stack);
-    bool removeDeadStack(Stack *stack);
-    bool removeLivingStack(Stack *stack, StackTile *dest);
     Stack *getFriendlyStack(Player *owner);
     std::list<Stack *> getFriendlyStacks(Player *owner);
+    std::list<Stack *> getStacks();
     Stack *getEnemyStack(Player *notowner);
     Stack *getStack();
     Stack *getOtherStack(Stack *stack);
 
-    bool join(Stack *receiver);
-    bool join(Stack *receiver, Stack *joiner);
     bool contains(guint32 stack_id);
 
-
-    Stack *group(Player *owner);
-    void ungroup(Player *owner);
     void setDefending(Player *owner, bool defending);
     void setParked(Player *owner, bool parked);
+
+    //these methods cause player to create actions:
+    Stack *group(Player *owner);
+    void ungroup(Player *owner);
 private:
     Vector<int> tile;
     guint32 countNumberOfArmies(Player *owner);

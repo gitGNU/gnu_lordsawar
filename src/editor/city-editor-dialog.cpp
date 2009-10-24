@@ -189,20 +189,7 @@ void CityEditorDialog::on_player_changed()
 	{
 	  Stack *s = GameMap::getStack(city->getPos() + Vector<int>(x,y));
 	  if (s)
-	    {
-	      if (s->getOwner() != player)
-		{
-		  //remove it from the old player's list of stacks
-		  s->getOwner()->getStacklist()->remove(s);
-		  //and give it to the new player list of stacks
-		  player->getStacklist()->add(s);
-		  //change the ownership of the stack
-		  s->setPlayer(player);
-		  //and all of it's armies
-		  for (Stack::iterator it = s->begin(); it != s->end(); it++)
-		    (*it)->setOwner(player);
-		}
-	    }
+	    Stacklist::changeOwnership(s, player);
 	}
     }
   for (Gtk::TreeIter j = army_list->children().begin(),

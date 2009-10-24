@@ -461,7 +461,7 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
 				   ssl->getColor(ss->getId(), MAX_PLAYERS), 
 				   width, height, MAX_PLAYERS);
     neutral->setType(Player::AI_DUMMY);
-    Playerlist::getInstance()->push_back(neutral);
+    Playerlist::getInstance()->add(neutral);
     Playerlist::getInstance()->setNeutral(neutral);
     Playerlist::getInstance()->nextPlayer();
 
@@ -509,7 +509,7 @@ void MainWindow::set_random_map(int width, int height,
 				   ssl->getColor(ss->getId(), MAX_PLAYERS), 
 				   width, height, MAX_PLAYERS);
     neutral->setType(Player::AI_DUMMY);
-    Playerlist::getInstance()->push_back(neutral);
+    Playerlist::getInstance()->add(neutral);
     Playerlist::getInstance()->setNeutral(neutral);
     Playerlist::getInstance()->nextPlayer();
     

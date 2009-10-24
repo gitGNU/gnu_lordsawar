@@ -280,9 +280,6 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		}
 	    }
 
-	  // split if ungrouped
-	  Playerlist::getActiveplayer()->stackSplit(stack); 
-
 	  int dist = stack->getPath()->calculate(stack, p);
 	  if (dist == -2)
 	    cerr << "error calculating path!";

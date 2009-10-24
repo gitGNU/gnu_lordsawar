@@ -255,6 +255,8 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	//! remove all movement points from every army in every stack.
 	void drainAllMovement();
 
+	static void changeOwnership(Stack *stack, Player *new_owner);
+
     private:
         //! Callback function for loading.
         bool load(std::string tag, XML_Helper* helper);

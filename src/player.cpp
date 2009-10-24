@@ -675,45 +675,6 @@ void Player::setFightOrder(std::list<guint32> order)
   addAction(item);
 }
 
-Stack *Player::doStackSplit(Stack* s)
-{
-  return NULL;
-  //fixme, figure out how to do stack splits now that groupedness is gone
-  /*
-    debug("Player::doStackSplit("<<s->getId()<<")")
-
-    Army* ungrouped = s->getFirstUngroupedArmy();
-    if (!ungrouped)        //no armies to split
-        return 0;
-
-    bool all_ungrouped = true;    //the whole stack would be split
-    for (Stack::iterator it = s->begin(); it != s->end(); it++)
-    {
-        if ((*it)->isGrouped())
-        {
-            all_ungrouped = false;
-        }
-    }
-    if (all_ungrouped)
-        return 0;
-
-    Stack* new_stack = new Stack(this, s->getPos());
-
-    while (ungrouped)
-    {
-        new_stack->push_back(ungrouped);
-        s->erase(find(s->begin(), s->end(), ungrouped));
-
-        ungrouped->setGrouped(true);
-        ungrouped = s->getFirstUngroupedArmy();
-    }
-
-    d_stacklist->add(new_stack);
-    
-    return new_stack;
-    */
-}
-
 bool Player::doStackSplitArmy(Stack *s, Army *a, Stack *& new_stack)
 {
   new_stack = s->splitArmy(a);
@@ -763,20 +724,6 @@ Stack *Player::stackSplitArmy(Stack *stack, Army *a)
     }
   return new_stack;
 }
-bool Player::stackSplit(Stack* s)
-{
-  Stack *new_stack = doStackSplit(s);
-
-  if (new_stack)
-  {
-    printf("doing stacksplit!\n");
-    Action_Split* item = new Action_Split();
-    item->fillData(s, new_stack);
-    addAction(item);
-  }
-  
-  return new_stack;
-}
 
 void Player::doStackJoin(Stack* receiver, Stack* joining)
 {
@@ -794,7 +741,7 @@ bool Player::stackJoin(Stack* receiver, Stack* joining)
     if ((receiver == 0) || (joining == 0))
         return false;
 
-    if (joining->canJoin(receiver) == false)
+    if (GameMap::canJoin(joining, receiver) == false)
       {
 	//fixme: this is a bad idea.  it seems recursively bad.
 	//Stack *already_there = Stacklist::getAmbiguity(joining);
@@ -831,7 +778,7 @@ bool Player::stackSplitAndMoveToJoin(Stack* s, Stack *join)
   if (s->getPath()->empty())
     return false;
 
-  if (s->canJoin(join) == false)
+  if (GameMap::canJoin(s,join) == false)
     return false;
 
   std::list<guint32> ids;
@@ -1168,7 +1115,7 @@ bool Player::stackMoveOneStep(Stack* s)
     {
       if (another_stack->getOwner() == s->getOwner())
 	{
-	  if (s->canJoin(another_stack) == false)
+	  if (GameMap::canJoin(s,another_stack) == false)
 	    return false;
 	}
       else
