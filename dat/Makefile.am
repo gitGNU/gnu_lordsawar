@@ -1,4 +1,4 @@
-SUBDIRS = army tilesets various map music glade shield citysets campaign
+SUBDIRS = army tilesets various map music glade shield citysets
 MANTAINERCLEANFILES= Makefile.in
 
 lordsawardatadir = $(datadir)/lordsawar

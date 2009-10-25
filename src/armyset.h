@@ -136,6 +136,18 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 */
         void setName(std::string name) {d_name = name;}
 
+	//! Get the copyright holders for this armyset.
+	std::string getCopyright() const {return d_copyright;};
+
+	//! Set the copyright holders on the armyset.
+	void setCopyright(std::string copy) {d_copyright = copy;};
+
+	//! Get the license of this armyset.
+	std::string getLicense() const {return d_license;};
+
+	//! Set the license for this armyset.
+	void setLicense(std::string license) {d_license = license;};
+
 	//! Get the subdirectory name of the armyset.
 	/**
 	 * This value does not contain a path (e.g. no slashes).  It is the
@@ -242,6 +254,12 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 * It is analgous to armyset.d_name in the armyset configuration files.
 	 */
         std::string d_name;
+
+	//! The armyset has these copyright holders.
+	std::string d_copyright;
+
+	//! The license of the armyset.
+	std::string d_license;
 
 	//! The subdirectory of the Armyset.
 	/**

@@ -2,6 +2,8 @@
 <shieldset>
     <d_id>3</d_id>
     <_d_name>Dol</_d_name>
+    <d_copyright>Copyright (C) 2007, 2009 Ben Asselstine</d_copyright>
+    <d_license>Licensed under the GPL Version 3 or later at your option.</d_license>
     <d_small_width>8</d_small_width>
     <d_small_height>8</d_small_height>
     <d_medium_width>11</d_medium_width>

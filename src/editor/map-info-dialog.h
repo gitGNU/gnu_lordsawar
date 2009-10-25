@@ -40,6 +40,8 @@ class MapInfoDialog: public sigc::trackable
     Gtk::Dialog* dialog;
     Gtk::Entry *name_entry;
     Gtk::TextView *description_textview;
+    Gtk::TextView *copyright_textview;
+    Gtk::TextView *license_textview;
     GameScenario *game_scenario;
 };
 

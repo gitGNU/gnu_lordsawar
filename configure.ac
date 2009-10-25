@@ -284,7 +284,6 @@ AC_CONFIG_FILES([
         dat/various/items/Makefile
         dat/various/editor/Makefile
         dat/map/Makefile 
-        dat/campaign/Makefile 
         dat/music/Makefile
         dat/glade/Makefile
         dat/glade/editor/Makefile

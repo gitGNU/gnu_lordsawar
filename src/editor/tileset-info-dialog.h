@@ -43,6 +43,8 @@ class TileSetInfoDialog: public sigc::trackable
     Gtk::Button *accept_button;
     Gtk::TextView *description_textview;
     Gtk::Label *status_label;
+    Gtk::TextView *copyright_textview;
+    Gtk::TextView *license_textview;
 
     void on_name_changed();
     void on_subdir_changed();

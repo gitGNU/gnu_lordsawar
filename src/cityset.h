@@ -74,6 +74,12 @@ class Cityset : public sigc::trackable, public Set
         //! Returns the name of the cityset.
         std::string getName() const {return _(d_name.c_str());}
 
+        //! Returns the copyright holders for the cityset.
+        std::string getCopyright() const {return d_copyright;};
+
+        //! Returns the license for the cityset.
+        std::string getLicense() const {return d_license;};
+
 	/**
 	 * Analagous to the cityset.d_id XML entity in the cityset
 	 * configuration file.
@@ -155,6 +161,12 @@ class Cityset : public sigc::trackable, public Set
 	 * select a particular Cityset.
 	 */
         std::string d_name;
+
+	//! The copyright holders for this cityset.
+	std::string d_copyright;
+
+	//! The license of this cityset.
+	std::string d_license;
 
 	//! A unique numeric identifier among all citysets.
 	guint32 d_id;

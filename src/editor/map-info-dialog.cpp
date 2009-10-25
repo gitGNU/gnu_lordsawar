@@ -44,6 +44,10 @@ MapInfoDialog::MapInfoDialog(GameScenario *g)
     
     xml->get_widget("description_textview", description_textview);
     description_textview->get_buffer()->set_text(game_scenario->getComment());
+    xml->get_widget("copyright_textview", copyright_textview);
+    copyright_textview->get_buffer()->set_text(game_scenario->getCopyright());
+    xml->get_widget("license_textview", license_textview);
+    license_textview->get_buffer()->set_text(game_scenario->getLicense());
 }
 
 MapInfoDialog::~MapInfoDialog()
@@ -65,6 +69,8 @@ int MapInfoDialog::run()
     {
         game_scenario->setName(name_entry->get_text());
         game_scenario->setComment(description_textview->get_buffer()->get_text());
+        game_scenario->setCopyright(copyright_textview->get_buffer()->get_text());
+        game_scenario->setLicense(license_textview->get_buffer()->get_text());
     }
     return response;
 }

@@ -1,3 +1,8 @@
+2009-10-25  Ben Asselstine  <benasselstine@gmail.com>
+
+	* adding copyright/license info to citysets, tilesets, armysets, 
+	shieldsets, and scenario file.  This changes their respective schemas.
+
 2009-10-24  Ben Asselstine  <benasselstine@gmail.com>
 
 	* fixed radiobuttons to look better in default ubuntu theme.

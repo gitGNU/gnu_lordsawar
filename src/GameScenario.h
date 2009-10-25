@@ -102,6 +102,12 @@ class GameScenario: public GameScenarioOptions
         //! Returns the comment for the scenario.
         std::string getComment(bool translate = true) const;
 
+        //! Returns the copyright for the scenario.
+        std::string getCopyright() const {return d_copyright; };
+
+        //! Returns the license of the scenario.
+        std::string getLicense() const {return d_license;};
+
         //! Increments the turn number and does an autosave. Called by NextTurn
         //! via a signal.
         void nextRound();
@@ -109,8 +115,14 @@ class GameScenario: public GameScenarioOptions
         //! Sets the name of the scenario.
         void setName(std::string name) {d_name = name;}
 
-        //! Sets the name of the scenario.
+        //! Sets the description of the scenario.
         void setComment(std::string comment) {d_comment = comment;}
+        
+        //! Sets the copyright of the scenario.
+        void setCopyright(std::string copy) {d_copyright = copy;}
+        
+        //! Sets the license of the scenario.
+        void setLicense(std::string license) {d_license = license;}
         
         /** Saves the game. See XML_Helper for further explanations.
           * 
@@ -163,6 +175,8 @@ class GameScenario: public GameScenarioOptions
 	  // DATA
 	  std::string d_name;
 	  std::string d_comment;
+	  std::string d_copyright;
+	  std::string d_license;
 	  bool d_turnmode; //see NextTurn for a description of this option
 	  guint32 d_playmode;
 	  std::string d_id; //globally unique id identifying the scenario

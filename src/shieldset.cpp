@@ -39,6 +39,8 @@ Shieldset::Shieldset(XML_Helper *helper, std::string directory)
   setDirectory(directory);
   helper->getData(d_id, "id");
   helper->getData(d_name, "name");
+  helper->getData(d_copyright, "copyright");
+  helper->getData(d_license, "license");
   helper->getData(d_small_width, "small_width");
   helper->getData(d_small_height, "small_height");
   helper->getData(d_medium_width, "medium_width");
@@ -165,6 +167,8 @@ bool Shieldset::save(XML_Helper *helper)
   retval &= helper->openTag(d_tag);
   retval &= helper->saveData("id", d_id);
   retval &= helper->saveData("name", d_name);
+  retval &= helper->saveData("copyright", d_copyright);
+  retval &= helper->saveData("license", d_license);
   retval &= helper->saveData("small_width", d_small_width);
   retval &= helper->saveData("small_height", d_small_height);
   retval &= helper->saveData("medium_width", d_medium_width);

@@ -2,6 +2,8 @@
 <tileset>
     <d_id>3</d_id>
     <_d_name>Stark</_d_name>
+    <d_copyright>Copyright (C) 2007, 2009 Ben Asselstine</d_copyright>
+    <d_license>Licensed under the GPL Version 3 or later at your option.</d_license>
     <_d_info>A stark and simple tileset</_d_info>
     <d_tilesize>40</d_tilesize>
     <d_large_selector>selector</d_large_selector>

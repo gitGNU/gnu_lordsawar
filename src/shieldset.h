@@ -99,6 +99,12 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	//! Return the name of the Shieldset.
         std::string getName() const {return _(d_name.c_str());}
 
+	//! Return the copyright holders of the shieldset.
+	std::string getCopyright() const {return d_copyright;};
+
+	//! Return the license of the shieldset.
+	std::string getLicense() const {return d_license;};
+
 	//! Get the unique identifier for this shieldset.
 	/**
 	 * Analagous to the shieldset.d_id XML entity in the shieldset
@@ -111,6 +117,12 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 
 	//! Set the name of the Shieldset.
         void setName(std::string name) {d_name = name;}
+
+	//! Set the copyright holders of the shieldset.
+	void setCopyright(std::string copy) {d_copyright = copy;};
+
+	//! Set the license of this shieldset.
+	void setLicense(std::string license) {d_license = license;};
 
 	//! Get the directory in which the shieldset configuration file resides.
         std::string getSubDir() const {return d_subdir;}
@@ -157,6 +169,12 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	 * select a particular Shieldset.
 	 */
         std::string d_name;
+
+	//! The copyright holders of the shieldset.
+	std::string d_copyright;
+
+	//! The license of the shieldset.
+	std::string d_license;
 
 	//! A unique numeric identifier among all shieldset.
 	guint32 d_id;

@@ -43,7 +43,8 @@ std::string Tileset::d_road_smallmap_tag = "road_smallmap";
 std::string Tileset::file_extension = TILESET_EXT;
 
 Tileset::Tileset(guint32 id, std::string name)
-	: Set(), d_name(name), d_id(id), d_tileSize(DEFAULT_TILE_SIZE), d_subdir("")
+	: Set(), d_name(name), d_copyright(""), d_license(""), d_id(id), 
+	d_tileSize(DEFAULT_TILE_SIZE), d_subdir("")
 {
   d_info = "";
   d_large_selector = "";
@@ -78,6 +79,8 @@ Tileset::Tileset(XML_Helper *helper, std::string directory)
   setDirectory(directory);
   helper->getData(d_id, "id"); 
   helper->getData(d_name, "name"); 
+  helper->getData(d_copyright, "copyright"); 
+  helper->getData(d_license, "license"); 
   helper->getData(d_info, "info");
   helper->getData(d_tileSize, "tilesize");
   helper->getData(d_large_selector, "large_selector");
@@ -202,6 +205,8 @@ bool Tileset::save(XML_Helper *helper)
   retval &= helper->openTag(d_tag);
   retval &= helper->saveData("id", d_id);
   retval &= helper->saveData("name", d_name);
+  retval &= helper->saveData("copyright", d_copyright);
+  retval &= helper->saveData("license", d_license);
   retval &= helper->saveData("info", d_info);
   retval &= helper->saveData("tilesize", d_tileSize);
   retval &= helper->saveData("large_selector", d_large_selector);

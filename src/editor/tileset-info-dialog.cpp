@@ -62,6 +62,10 @@ TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, bool readonly)
 
     xml->get_widget("description_textview", description_textview);
     description_textview->get_buffer()->set_text(tileset->getInfo());
+    xml->get_widget("copyright_textview", copyright_textview);
+    copyright_textview->get_buffer()->set_text(tileset->getCopyright());
+    xml->get_widget("license_textview", license_textview);
+    license_textview->get_buffer()->set_text(tileset->getLicense());
     if (readonly)
       subdir_entry->set_sensitive(false);
 }
@@ -135,6 +139,8 @@ int TileSetInfoDialog::run()
       if (d_readonly == false)
 	d_tileset->setSubDir(subdir_entry->get_text());
       d_tileset->setId(int(id_spinbutton->get_value()));
+      d_tileset->setCopyright(copyright_textview->get_buffer()->get_text());
+      d_tileset->setLicense(license_textview->get_buffer()->get_text());
       return response;
     }
     return response;

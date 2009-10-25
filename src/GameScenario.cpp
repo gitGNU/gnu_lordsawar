@@ -74,8 +74,8 @@ using namespace std;
 
 GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
 			   GameScenario::PlayMode playmode)
-    :d_name(name),d_comment(comment), d_turnmode(turnmode), 
-    d_playmode(playmode), inhibit_autosave_removal(false)
+    :d_name(name),d_comment(comment), d_copyright(""), d_license(""),
+    d_turnmode(turnmode), d_playmode(playmode), inhibit_autosave_removal(false)
 {
     Armysetlist::getInstance();
     Tilesetlist::getInstance();
@@ -678,6 +678,8 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
   retval &= helper.saveData("id", d_id);
   retval &= helper.saveData("name", d_name);
   retval &= helper.saveData("comment", d_comment);
+  retval &= helper.saveData("copyright", d_copyright);
+  retval &= helper.saveData("license", d_license);
   retval &= helper.saveData("turn", s_round);
   retval &= helper.saveData("turnmode", d_turnmode);
   retval &= helper.saveData("view_enemies", s_see_opponents_stacks);
@@ -723,6 +725,8 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
       helper->getData(d_turnmode, "turnmode");
       helper->getData(d_name, "name");
       helper->getData(d_comment, "comment");
+      helper->getData(d_copyright, "copyright");
+      helper->getData(d_license, "license");
       helper->getData(s_round, "turn");
       helper->getData(s_see_opponents_stacks, "view_enemies");
       helper->getData(s_see_opponents_production, "view_production");

@@ -113,6 +113,18 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 */
         void setName(std::string name) {d_name = name;}
 
+        //! Returns the copyright holders of the tileset.
+        std::string getCopyright () const {return d_copyright;};
+
+	//! Sets the copyright holders of the tileset.
+	void setCopyright(std::string copy) {d_copyright = copy;};
+
+        //! Returns the license of the tileset.
+        std::string getLicense() const {return d_license;};
+
+	//! Sets the license of the tileset.
+	void setLicense(std::string license) {d_license = license;};
+
         //! Returns the description of the tileset.
         std::string getInfo() const {return _(d_info.c_str());}
 
@@ -236,6 +248,12 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * a Tileset among all other Tileset objects available to the game.
 	 */
         std::string d_name;
+
+	//! The copyright holders of the tileset.
+        std::string d_copyright;
+
+	//! The license of the tileset.
+        std::string d_license;
 
 	//! A unique numeric identifier among all tilesets.
 	guint32 d_id;

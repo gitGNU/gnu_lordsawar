@@ -37,19 +37,22 @@ using namespace std;
 
 #define DEFAULT_ARMY_TILE_SIZE 40
 Armyset::Armyset(guint32 id, std::string name)
-	: d_id(id), d_name(name), d_subdir(""), 
+	: d_id(id), d_name(name), d_copyright(""), d_license(""), d_subdir(""), 
 	d_tilesize(DEFAULT_ARMY_TILE_SIZE), d_ship(0), d_shipmask(0), 
 	d_standard(0), d_standard_mask(0)
 {
 }
 
 Armyset::Armyset(XML_Helper *helper, std::string directory)
-    : d_id(0), d_name(""), d_subdir(""), d_tilesize(DEFAULT_ARMY_TILE_SIZE),
-	d_ship(0), d_shipmask(0), d_standard(0), d_standard_mask(0)
+    : d_id(0), d_name(""), d_copyright(""), d_license(""), d_subdir(""), 
+    d_tilesize(DEFAULT_ARMY_TILE_SIZE), d_ship(0), d_shipmask(0), 
+    d_standard(0), d_standard_mask(0)
 {
   setDirectory(directory);
   helper->getData(d_id, "id");
   helper->getData(d_name, "name");
+  helper->getData(d_copyright, "copyright");
+  helper->getData(d_license, "license");
   helper->getData(d_tilesize, "tilesize");
   helper->getData(d_stackship_name, "stackship");
   helper->getData(d_standard_name, "plantedstandard");
@@ -85,6 +88,8 @@ bool Armyset::save(XML_Helper* helper)
 
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("name", d_name);
+    retval &= helper->saveData("copyright", d_copyright);
+    retval &= helper->saveData("license", d_license);
     retval &= helper->saveData("tilesize", d_tilesize);
     retval &= helper->saveData("stackship", d_stackship_name);
     retval &= helper->saveData("plantedstandard", d_standard_name);

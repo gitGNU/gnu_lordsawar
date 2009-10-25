@@ -2,6 +2,8 @@
 <cityset>
     <d_id>2</d_id>
     <_d_name>Default</_d_name>
+    <d_copyright>Copyright (C) 2007, 2009 Ben Asselstine</d_copyright>
+    <d_license>Licensed under the GPL Version 3 or later at your option.</d_license>
     <_d_info>The doublesized default cityset of LordsAWar</_d_info>
     <d_tilesize>80</d_tilesize>
     <d_cities>castles</d_cities>

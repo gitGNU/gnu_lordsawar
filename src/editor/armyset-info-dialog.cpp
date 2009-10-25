@@ -61,6 +61,11 @@ ArmySetInfoDialog::ArmySetInfoDialog(Armyset *armyset, bool readonly)
     id_spinbutton->set_value(armyset->getId());
     id_spinbutton->set_sensitive(false);
 
+    xml->get_widget("copyright_textview", copyright_textview);
+    copyright_textview->get_buffer()->set_text(d_armyset->getCopyright());
+    xml->get_widget("license_textview", license_textview);
+    license_textview->get_buffer()->set_text(d_armyset->getLicense());
+
     if (readonly)
       subdir_entry->set_sensitive(false);
 }
@@ -133,6 +138,8 @@ int ArmySetInfoDialog::run()
       d_armyset->setId(int(id_spinbutton->get_value()));
       if (d_readonly == false)
 	d_armyset->setSubDir(subdir_entry->get_text());
+      d_armyset->setCopyright(copyright_textview->get_buffer()->get_text());
+      d_armyset->setLicense(license_textview->get_buffer()->get_text());
       return response;
     }
     return response;
