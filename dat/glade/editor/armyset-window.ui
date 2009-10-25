@@ -72,21 +72,28 @@
                     <child>
                       <object class="GtkMenuItem" id="edit_armyset_info_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Armyset Information</property>
+                        <property name="label" translatable="yes">Armyset _Information</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_ship_picture_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Edit Ship Picture</property>
+                        <property name="label" translatable="yes">Edit _Ship Picture</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_standard_picture_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Edit Hero Flag Picture</property>
+                        <property name="label" translatable="yes">Edit Hero _Flag Picture</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="edit_bag_picture_menuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Edit _Bag of Items Picture</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>

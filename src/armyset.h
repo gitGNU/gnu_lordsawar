@@ -172,6 +172,12 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	//! Set the mask portion of the image of the stack in a ship.
 	void setShipMask(PixMask* shipmask) {d_shipmask = shipmask;};
 
+	//! Get the image of the bag.
+	PixMask* getBagPic() const {return d_bag;}
+
+	//! Set the image of the bag.
+	void setBagPic(PixMask* s) {d_bag = s;};
+
 	//! Get the image of the planted standard (minus the mask).
 	PixMask* getStandardPic() const {return d_standard;}
 
@@ -195,6 +201,12 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 
 	//! Get the name of the file holding the image of the hero's flag.
 	std::string getStandardImageName() {return d_standard_name;};
+
+	//! Set the name of the file holding the image of the bag.
+	void setBagImageName(std::string n) {d_bag_name = n;};
+
+	//! Get the name of the file holding the image of the bag.
+	std::string getBagImageName() {return d_bag_name;};
 
 	//! Find an army with a type in this armyset.
 	/**
@@ -220,6 +232,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	bool validateAwardables();
 	bool validateShip();
 	bool validateStandard();
+	bool validateBag();
 	bool validateArmyUnitImages();
 	bool validateArmyUnitImage(ArmyProto *a, Shield::Colour &c);
 	bool validateArmyUnitNames();
@@ -230,6 +243,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	void uninstantiateImages();
 	void loadStandardPic(std::string image_filename);
 	void loadShipPic(std::string image_filename);
+	void loadBagPic(std::string image_filename);
 
 	std::string getConfigurationFile();
 	static std::list<std::string> scanUserCollection();
@@ -292,11 +306,17 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	//! The mask of what to shade with the player's colour on the standard.
 	PixMask* d_standard_mask;
 
+	//! The picture of an item when it's lying on the ground.
+	PixMask *d_bag;
+
 	//! The name of the file that holds the picture of the hero's flag.
 	std::string d_standard_name;
 
 	//! The name of the file that holds the picture of stack on water.
 	std::string d_stackship_name;
+
+	//! The name of the file that holds the picture of the sack of items.
+	std::string d_bag_name;
 };
 
 #endif // ARMYSET_H

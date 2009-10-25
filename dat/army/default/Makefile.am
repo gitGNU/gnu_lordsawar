@@ -37,7 +37,8 @@ lordsawararmydefault_DATA = \
 	wizards.png \
 	wolfriders.png \
 	stackship.png \
-	plantedstandard.png
+	plantedstandard.png \
+	items.png
 
 EXTRA_DIST = \
 	default.lwa.in \
@@ -71,4 +72,5 @@ EXTRA_DIST = \
 	wizards.png \
 	wolfriders.png \
 	stackship.png \
-	plantedstandard.png
+	plantedstandard.png \
+	items.png

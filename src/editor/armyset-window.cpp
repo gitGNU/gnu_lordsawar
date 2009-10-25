@@ -48,6 +48,7 @@
 #include "rgb_shift.h"
 
 #include "glade-helpers.h"
+#include "image-editor-dialog.h"
 
 
 ArmySetWindow::ArmySetWindow(std::string load_filename)
@@ -254,6 +255,9 @@ ArmySetWindow::ArmySetWindow(std::string load_filename)
 		    edit_standard_picture_menuitem);
     edit_standard_picture_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_edit_standard_picture_activated));
+    xml->get_widget("edit_bag_picture_menuitem", edit_bag_picture_menuitem);
+    edit_bag_picture_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_edit_bag_picture_activated));
     xml->get_widget("edit_ship_picture_menuitem", edit_ship_picture_menuitem);
     edit_ship_picture_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_edit_ship_picture_activated));
@@ -522,6 +526,9 @@ void ArmySetWindow::on_validate_armyset_activated()
   valid = d_armyset->validateStandard();
   if (!valid)
     msgs.push_back(_("The hero's standard (the flag) image must be set."));
+  valid = d_armyset->validateBag();
+  if (!valid)
+    msgs.push_back(_("The picture for the bag of items must be set."));
 
   for (Armyset::iterator it = d_armyset->begin(); it != d_armyset->end(); it++)
     {
@@ -608,6 +615,21 @@ void ArmySetWindow::on_edit_standard_picture_activated()
 		      d_armyset->getFile(file));
 	}
       d_armyset->setStandardImageName(file);
+      needs_saving = true;
+    }
+}
+void ArmySetWindow::on_edit_bag_picture_activated()
+{
+  ImageEditorDialog d(d_armyset->getFile(d_armyset->getBagImageName()), 1);
+  d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
+  d.set_parent_window(*window);
+  int response = d.run();
+  if (response == Gtk::RESPONSE_ACCEPT)
+    {
+      std::string filename = d.get_selected_filename();
+      std::string name = File::get_basename(filename);
+      File::copy(filename, d_armyset->getFile(name));
+      d_armyset->setBagImageName(name);
       needs_saving = true;
     }
 }

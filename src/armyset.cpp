@@ -39,14 +39,14 @@ using namespace std;
 Armyset::Armyset(guint32 id, std::string name)
 	: d_id(id), d_name(name), d_copyright(""), d_license(""), d_subdir(""), 
 	d_tilesize(DEFAULT_ARMY_TILE_SIZE), d_ship(0), d_shipmask(0), 
-	d_standard(0), d_standard_mask(0)
+	d_standard(0), d_standard_mask(0), d_bag(0)
 {
 }
 
 Armyset::Armyset(XML_Helper *helper, std::string directory)
     : d_id(0), d_name(""), d_copyright(""), d_license(""), d_subdir(""), 
     d_tilesize(DEFAULT_ARMY_TILE_SIZE), d_ship(0), d_shipmask(0), 
-    d_standard(0), d_standard_mask(0)
+    d_standard(0), d_standard_mask(0), d_bag(0)
 {
   setDirectory(directory);
   helper->getData(d_id, "id");
@@ -56,6 +56,7 @@ Armyset::Armyset(XML_Helper *helper, std::string directory)
   helper->getData(d_tilesize, "tilesize");
   helper->getData(d_stackship_name, "stackship");
   helper->getData(d_standard_name, "plantedstandard");
+  helper->getData(d_bag_name, "bag");
   helper->registerTag(ArmyProto::d_tag, 
 		      sigc::mem_fun((*this), &Armyset::loadArmyProto));
 }
@@ -93,6 +94,7 @@ bool Armyset::save(XML_Helper* helper)
     retval &= helper->saveData("tilesize", d_tilesize);
     retval &= helper->saveData("stackship", d_stackship_name);
     retval &= helper->saveData("plantedstandard", d_standard_name);
+    retval &= helper->saveData("bag", d_bag);
 
     for (const_iterator it = begin(); it != end(); it++)
       (*it)->save(helper);
@@ -189,6 +191,13 @@ bool Armyset::validateShip()
   return true;
 }
 
+bool Armyset::validateBag()
+{
+  if (getBagImageName() == "")
+    return false;
+  return true;
+}
+
 bool Armyset::validateStandard()
 {
   if (getStandardImageName() == "")
@@ -260,6 +269,10 @@ bool Armyset::validate()
   valid = validateStandard();
   if (!valid)
     return false;
+  //is the bag set?
+  valid = validateBag();
+  if (!valid)
+    return false;
   //is there an image set for each army unit?
   valid = validateArmyUnitImages();
   if (!valid)
@@ -326,6 +339,8 @@ void Armyset::instantiateImages()
     loadShipPic(getFile(getShipImageName()));
   if (getStandardImageName().empty() == false)
     loadStandardPic(getFile(getStandardImageName()));
+  if (getBagImageName().empty() == false)
+    loadBagPic(getFile(getBagImageName()));
 }
 
 void Armyset::uninstantiateImages()
@@ -347,6 +362,12 @@ void Armyset::loadShipPic(std::string image_filename)
   setShipMask(half[1]);
 }
 
+void Armyset::loadBagPic(std::string image_filename)
+{
+  if (image_filename.empty() == true)
+    return;
+  setBagPic(PixMask::create(image_filename));
+}
 void Armyset::loadStandardPic(std::string image_filename)
 {
   if (image_filename.empty() == true)

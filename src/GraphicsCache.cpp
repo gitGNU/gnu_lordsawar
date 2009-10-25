@@ -329,7 +329,9 @@ PixMask* GraphicsCache::getSmallTemplePic()
 
 PixMask* GraphicsCache::getBagPic()
 {
-  return d_bag;
+  Player *p = Playerlist::getActiveplayer();
+  Armyset *as = Armysetlist::getInstance()->getArmyset(p->getArmyset());
+  return as->getBagPic();
 }
 
 PixMask* GraphicsCache::getPortPic()
@@ -1256,7 +1258,11 @@ void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag,
     }
 
   if (has_bag)
-    getBagPic()->blit(pixmap, Vector<int>(ts - 18, ts - 18));
+    {
+      PixMask *pic = getBagPic();
+      Vector<int>bagsize = Vector<int>(pic->get_width(), pic->get_height());
+      pic->blit(pixmap, Vector<int>(ts,ts)-bagsize);
+    }
 
   if (stack_player_id > -1)
     {
