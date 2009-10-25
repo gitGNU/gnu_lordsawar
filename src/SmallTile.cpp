@@ -32,11 +32,7 @@ SmallTile::SmallTile()
 
 SmallTile::SmallTile(XML_Helper* helper)
 {
-  guint32 r, g, b;
-  helper->getData(r, "red");
-  helper->getData(g, "green");
-  helper->getData(b, "blue");
-  d_color.set_rgb_p((float)r/255.0,(float)g/255.0, (float)b/255.0);
+  helper->getData(d_color, "color");
 
   guint32 i;
   helper->getData(i, "pattern");
@@ -45,18 +41,9 @@ SmallTile::SmallTile(XML_Helper* helper)
 
   if (pattern != SOLID)
     {
-      helper->getData(r, "2nd_red");
-      helper->getData(g, "2nd_green");
-      helper->getData(b, "2nd_blue");
-      d_second_color.set_rgb_p((float)r/255.0,(float)g/255.0, (float)b/255.0);
+      helper->getData(d_second_color, "2nd_color");
       if (pattern != STIPPLED && pattern != SUNKEN)
-	{
-	  helper->getData(r, "3rd_red");
-	  helper->getData(g, "3rd_green");
-	  helper->getData(b, "3rd_blue");
-	  d_third_color.set_rgb_p((float)r/255.0,(float)g/255.0, 
-				  (float)b/255.0);
-	}
+	helper->getData(d_third_color, "3rd_color");
     }
 }
 
@@ -70,40 +57,19 @@ bool SmallTile::save(XML_Helper *helper)
     {
       //patterns with a single colour
     case SOLID:
-      retval &= helper->saveData("red", int(d_color.get_red_p() *255));
-      retval &= helper->saveData("green", int(d_color.get_green_p()*255));
-      retval &= helper->saveData("blue", int(d_color.get_blue_p()*255));
+      retval &= helper->saveData("color", d_color);
       break;
       //patterns with two colours
     case STIPPLED: case SUNKEN:
-      retval &= helper->saveData("red", int(d_color.get_red_p() *255));
-      retval &= helper->saveData("green", int(d_color.get_green_p()*255));
-      retval &= helper->saveData("blue", int(d_color.get_blue_p()*255));
-      retval &= helper->saveData("2nd_red", 
-				 int(d_second_color.get_red_p() *255));
-      retval &= helper->saveData("2nd_green", 
-				 int(d_second_color.get_green_p()*255));
-      retval &= helper->saveData("2nd_blue", 
-				 int(d_second_color.get_blue_p()*255));
+      retval &= helper->saveData("color", d_color);
+      retval &= helper->saveData("2nd_color", d_second_color);
       break;
       //patterns with three colours
     case RANDOMIZED: case TABLECLOTH: case DIAGONAL: case CROSSHATCH:
     case SUNKEN_STRIPED:
-      retval &= helper->saveData("red", int(d_color.get_red_p() *255));
-      retval &= helper->saveData("green", int(d_color.get_green_p()*255));
-      retval &= helper->saveData("blue", int(d_color.get_blue_p()*255));
-      retval &= helper->saveData("2nd_red", 
-				 int(d_second_color.get_red_p() *255));
-      retval &= helper->saveData("2nd_green", 
-				 int(d_second_color.get_green_p()*255));
-      retval &= helper->saveData("2nd_blue", 
-				 int(d_second_color.get_blue_p()*255));
-      retval &= helper->saveData("3rd_red", 
-				 int(d_third_color.get_red_p() *255));
-      retval &= helper->saveData("3rd_green", 
-				 int(d_third_color.get_green_p()*255));
-      retval &= helper->saveData("3rd_blue", 
-				 int(d_third_color.get_blue_p()*255));
+      retval &= helper->saveData("color", d_color);
+      retval &= helper->saveData("2nd_color", d_second_color);
+      retval &= helper->saveData("3rd_color", d_third_color);
       break;
     }
   retval &= helper->closeTag();

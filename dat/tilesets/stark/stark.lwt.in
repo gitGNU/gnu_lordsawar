@@ -14,18 +14,14 @@
     <d_fog>fog</d_fog>
     <d_flags>flags</d_flags>
     <road_smallmap>
-        <d_red>164</d_red>
-        <d_green>84</d_green>
-        <d_blue>0</d_blue>
+	<d_color>164 84 0</d_color>
     </road_smallmap>
     <tile>
         <_d_name>Grass</_d_name>
         <d_moves>2</d_moves>
         <d_type>Tile::GRASS</d_type>
         <smallmap>
-        	<d_red>80</d_red>
-        	<d_green>172</d_green>
-        	<d_blue>28</d_blue>
+		<d_color>80 172 28</d_color>
         	<d_pattern>0</d_pattern>
         </smallmap>
 	<tilestyleset>
@@ -47,13 +43,9 @@
         <d_moves>2</d_moves>
         <d_type>Tile::WATER</d_type>
 	<smallmap>
-        	<d_red>44</d_red>
-        	<d_green>184</d_green>
-        	<d_blue>252</d_blue>
+		<d_color>44 184 252</d_color>
         	<d_pattern>3</d_pattern>
-        	<d_2nd_red>0</d_2nd_red>
-        	<d_2nd_green>92</d_2nd_green>
-        	<d_2nd_blue>208</d_2nd_blue>
+		<d_2nd_color>0 92 208</d_2nd_color>
 	</smallmap>
 	<tilestyleset>
 		<d_name>water</d_name>
@@ -99,13 +91,9 @@
         <d_moves>3</d_moves>
         <d_type>Tile::FOREST</d_type>
 	<smallmap>
-        	<d_red>0</d_red>
-        	<d_green>140</d_green>
-        	<d_blue>0</d_blue>
+		<d_color>0 140 0</d_color>
         	<d_pattern>1</d_pattern>
-        	<d_2nd_red>0</d_2nd_red>
-        	<d_2nd_green>88</d_2nd_green>
-        	<d_2nd_blue>0</d_2nd_blue>
+		<d_2nd_color>0 88 0</d_2nd_color>
 	</smallmap>
 	<tilestyleset>
 		<d_name>forest</d_name>
@@ -175,9 +163,7 @@
         <d_moves>4</d_moves>
         <d_type>Tile::HILLS</d_type>
 	<smallmap>
-        	<d_red>0</d_red>
-        	<d_green>140</d_green>
-        	<d_blue>0</d_blue>
+		<d_color>0 140 0</d_color>
         	<d_pattern>0</d_pattern>
 	</smallmap>
 	<tilestyleset>
@@ -240,16 +226,10 @@
         <d_moves>6</d_moves>
         <d_type>Tile::MOUNTAIN</d_type>
 	<smallmap>
-        	<d_red>144</d_red>
-        	<d_green>144</d_green>
-        	<d_blue>144</d_blue>
+		<d_color>144 144 144</d_color>
         	<d_pattern>2</d_pattern>
-        	<d_2nd_red>80</d_2nd_red>
-        	<d_2nd_green>80</d_2nd_green>
-        	<d_2nd_blue>80</d_2nd_blue>
-        	<d_3rd_red>112</d_3rd_red>
-        	<d_3rd_green>112</d_3rd_green>
-        	<d_3rd_blue>112</d_3rd_blue>
+		<d_2nd_color>80 80 80</d_2nd_color>
+		<d_3rd_color>112 112 112</d_3rd_color>
 	</smallmap>
 	<tilestyleset>
 		<d_name>mountains</d_name>
@@ -318,16 +298,10 @@
         <d_moves>8</d_moves>
         <d_type>Tile::SWAMP</d_type>
 	<smallmap>
-        	<d_red>0</d_red>
-        	<d_green>92</d_green>
-        	<d_blue>208</d_blue>
+		<d_color>0 92 208</d_color>
         	<d_pattern>4</d_pattern>
-        	<d_2nd_red>44</d_2nd_red>
-        	<d_2nd_green>184</d_2nd_green>
-        	<d_2nd_blue>252</d_2nd_blue>
-        	<d_3rd_red>80</d_3rd_red>
-        	<d_3rd_green>172</d_3rd_green>
-        	<d_3rd_blue>28</d_3rd_blue>
+		<d_2nd_color>44 184 252</d_2nd_color>
+		<d_3rd_color>80 172 28</d_3rd_color>
 	</smallmap>
 	<tilestyleset>
 		<d_name>swamp</d_name>

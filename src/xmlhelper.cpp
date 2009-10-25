@@ -207,6 +207,40 @@ bool XML_Helper::closeTag()
     return true;
 }
 
+	
+bool XML_Helper::saveData(std::string name, const Gdk::Color value)
+{
+    //prepend a "d_" to show that this is a data tag
+    name = "d_" + name;
+
+    if (name.empty())
+    {
+        std::cerr << "XML_Helper: save_data with empty name\n";
+        return false;
+    }
+    if (!d_out)
+    {
+        std::cerr << "XML_Helper: no output stream given.\n";
+        return false;
+    }
+
+    addTabs();
+    char buf[3];
+    guint32 r, g, b;
+    r = value.get_red_p() * 255;
+    g = value.get_green_p() * 255;
+    b = value.get_blue_p() * 255;
+    snprintf(buf, sizeof(buf), "%02X", r);
+    std::string red = buf;
+    snprintf(buf, sizeof(buf), "%02X", g);
+    std::string green = buf;
+    snprintf(buf, sizeof(buf), "%02X", b);
+    std::string blue = buf;
+
+    (*d_out) <<"<" <<name <<">#" <<red <<green<<blue <<"</" <<name <<">\n";
+  return true;
+}
+
 bool XML_Helper::saveData(std::string name, std::string value)
 {
     //prepend a "d_" to show that this is a data tag
@@ -422,6 +456,53 @@ bool XML_Helper::unregisterTag(std::string tag)
     
     d_callbacks.erase(it);
     return true;
+}
+
+bool XML_Helper::getData(Gdk::Color& data, std::string name)
+{
+    //the data tags are stored with leading "d_", so prepend it here
+    name = "d_" + name;
+
+    std::map<std::string, std::string>::const_iterator it;
+
+    it = d_data.find(name);
+    
+    if (it == d_data.end())
+    {
+        data.set_rgb_p(0,0,0);
+        std::cerr<<"XML_Helper::getData(Gdk::Color, \"" <<name <<"\") failed\n";
+        d_failed = true;
+        return false;
+    }
+    
+    std::string value = (*it).second;
+    char buf[15];
+    int retval = sscanf(value.c_str(), "%s", buf);
+    if (retval == -1)
+      return false;
+    buf[14] = '\0';
+    int red = 0, green = 0, blue = 0;
+    if (buf[0] == '#')
+      {
+	char hash;
+	//must look like "#00FF33"
+	retval = sscanf(buf, "%c%02X%02X%02X", &hash, &red, &green, &blue);
+	if (retval != 4)
+	  return false;
+      }
+    else
+      {
+	//must look like "123 255 000"
+	retval = sscanf(value.c_str(), "%d%d%d", &red, &green, &blue);
+	if (retval != 3)
+	  return false;
+	if (red > 255 || red < 0 || green > 255 || green < 0 || 
+	    blue > 255 || blue < 0)
+	  return false;
+      }
+    data.set_rgb_p((float)red / 255.0, (float)green / 255.0,
+		   (float)blue / 255.0);
+  return true;
 }
 
 bool XML_Helper::getData(std::string& data, std::string name)

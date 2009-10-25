@@ -6,6 +6,8 @@
 	schema.
 	* added caching of bag, explosion, and port images.
 	* fixed colouring of masks to match the colours in a shieldset.
+	* fixed color representations in shieldsets, tilesets and scenario
+	files.  This changes the schema of the tileset file.
 
 2009-10-24  Ben Asselstine  <benasselstine@gmail.com>
 

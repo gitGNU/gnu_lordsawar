@@ -171,17 +171,7 @@ Player::Player(XML_Helper* helper)
     d_type = playerTypeFromString(type_str);
     helper->getData(d_upkeep, "upkeep");
     helper->getData(d_income, "income");
-
-    string s;
-    helper->getData(s, "color");
-    
-    guint32 r,g,b;
-    istringstream scolor(s);
-    scolor >> r;
-    scolor >> g;
-    scolor >> b;
-    d_color.set_rgb_p(r/255.0,g/255.0,b/255.0);
-
+    helper->getData(d_color, "color");
     helper->getData(d_armyset, "armyset");
 
     // Read in Fight Order.  One ranking per army type.
@@ -427,16 +417,9 @@ bool Player::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    // we do not want to have the character of the colors written out
-    // (savefile is unicode encoded => may create problems)
-    std::stringstream s;
-    s << static_cast<guint32>(int(d_color.get_red_p() * 255.0)) <<" ";
-    s << static_cast<guint32>(int(d_color.get_green_p() * 255.0)) <<" ";
-    s << static_cast<guint32>(int(d_color.get_blue_p() * 255.0));
-
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("name", d_name);
-    retval &= helper->saveData("color", s.str());
+    retval &= helper->saveData("color", d_color);
     retval &= helper->saveData("armyset", d_armyset);
     retval &= helper->saveData("gold", d_gold);
     retval &= helper->saveData("dead", d_dead);

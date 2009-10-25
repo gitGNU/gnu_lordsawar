@@ -146,6 +146,7 @@ class XML_Helper
         bool saveData(std::string identifier, const double value);
         /* amd64 fix, UL: still neccessary?*/
         bool saveData(std::string identifier, unsigned long int value);
+	bool saveData(std::string identifier, const Gdk::Color value);
 
         /** Closes the reading/writing stream.
           * @note As soon as you call this function, the object is dead with
@@ -190,6 +191,7 @@ class XML_Helper
         bool getData(int& data, std::string name);
         bool getData(guint32& data, std::string name);
         bool getData(double& data, std::string name);
+	bool getData(Gdk::Color& data, std::string name);
 
         //! Returns the version number of the save file
         std::string getVersion() const {return d_version;}

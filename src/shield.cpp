@@ -33,14 +33,7 @@ std::string Shield::d_tag = "shield";
 Shield::Shield(XML_Helper* helper)
 {
   helper->getData(d_owner, "owner");
-  std::string s;
-  helper->getData(s, "color");
-  guint32 r,g,b;
-  std::istringstream scolor(s);
-  scolor >> r;
-  scolor >> g;
-  scolor >> b;
-  d_color.set_rgb_p(r/255.0,g/255.0,b/255.0);
+  helper->getData(d_color, "color");
 }
 
 Shield::~Shield()
@@ -108,11 +101,7 @@ bool Shield::save(XML_Helper *helper)
 
   retval &= helper->openTag(d_tag);
   retval &= helper->saveData("owner", d_owner);
-  std::stringstream s;
-  s << static_cast<guint32>(int(d_color.get_red_p() * 255.0)) <<" ";
-  s << static_cast<guint32>(int(d_color.get_green_p() * 255.0)) <<" ";
-  s << static_cast<guint32>(int(d_color.get_blue_p() * 255.0));
-  retval &= helper->saveData("color", s);
+  retval &= helper->saveData("color", d_color);
   for (iterator it = begin(); it != end(); it++)
     (*it)->save(helper);
   retval &= helper->closeTag();

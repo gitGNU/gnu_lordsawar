@@ -45,7 +45,6 @@
 #include "shieldsetlist.h"
 
 #include "ucompose.hpp"
-#include "rgb_shift.h"
 
 #include "glade-helpers.h"
 #include "image-editor-dialog.h"

@@ -146,11 +146,7 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
 
   if (tag == Tileset::d_road_smallmap_tag)
     {
-      guint32 r, g, b;
-      helper->getData(r, "red");
-      helper->getData(g, "green");
-      helper->getData(b, "blue");
-      d_road_color.set_rgb_p((float)r/255.0,(float)g/255.0, (float)b/255.0);
+      helper->getData(d_road_color, "color");
       return true;
     }
 
@@ -217,9 +213,7 @@ bool Tileset::save(XML_Helper *helper)
   retval &= helper->saveData("fog", d_fog);
   retval &= helper->saveData("flags", d_flags);
   retval &= helper->openTag(d_road_smallmap_tag);
-  retval &= helper->saveData("red", int(d_road_color.get_red_p() *255));
-  retval &= helper->saveData("green", int(d_road_color.get_green_p()*255));
-  retval &= helper->saveData("blue", int(d_road_color.get_blue_p()*255));
+  retval &= helper->saveData("color", d_road_color);
   retval &= helper->closeTag();
   for (Tileset::iterator i = begin(); i != end(); ++i)
     retval &= (*i)->save(helper);
