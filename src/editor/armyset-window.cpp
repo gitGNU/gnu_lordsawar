@@ -637,7 +637,10 @@ void ArmySetWindow::on_edit_standard_picture_activated()
 }
 void ArmySetWindow::on_edit_bag_picture_activated()
 {
-  ImageEditorDialog d(d_armyset->getFile(d_armyset->getBagImageName()), 1);
+  std::string filename = "";
+  if (d_armyset->getBagImageName().empty() == false)
+    filename = d_armyset->getFile(d_armyset->getBagImageName());
+  ImageEditorDialog d(filename, 1);
   d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
   d.set_parent_window(*window);
   int response = d.run();

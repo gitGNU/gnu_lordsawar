@@ -41,6 +41,9 @@ Armyset::Armyset(guint32 id, std::string name)
 	d_tilesize(DEFAULT_ARMY_TILE_SIZE), d_ship(0), d_shipmask(0), 
 	d_standard(0), d_standard_mask(0), d_bag(0)
 {
+  d_bag_name = "";
+  d_stackship_name = "";
+  d_standard_name = "";
 }
 
 Armyset::Armyset(XML_Helper *helper, std::string directory)
@@ -48,6 +51,9 @@ Armyset::Armyset(XML_Helper *helper, std::string directory)
     d_tilesize(DEFAULT_ARMY_TILE_SIZE), d_ship(0), d_shipmask(0), 
     d_standard(0), d_standard_mask(0), d_bag(0)
 {
+  d_bag_name = "";
+  d_stackship_name = "";
+  d_standard_name = "";
   setDirectory(directory);
   helper->getData(d_id, "id");
   helper->getData(d_name, "name");
@@ -94,7 +100,7 @@ bool Armyset::save(XML_Helper* helper)
     retval &= helper->saveData("tilesize", d_tilesize);
     retval &= helper->saveData("stackship", d_stackship_name);
     retval &= helper->saveData("plantedstandard", d_standard_name);
-    retval &= helper->saveData("bag", d_bag);
+    retval &= helper->saveData("bag", d_bag_name);
 
     for (const_iterator it = begin(); it != end(); it++)
       (*it)->save(helper);
