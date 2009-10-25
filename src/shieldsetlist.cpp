@@ -24,7 +24,6 @@
 #include "shieldset.h"
 #include "File.h"
 #include "defs.h"
-#include "rgb_shift.h"
 #include "ucompose.hpp"
 
 using namespace std;
@@ -126,15 +125,6 @@ Gdk::Color Shieldsetlist::getColor(guint32 shieldset, guint32 owner)
   return s->getColor(owner);
 }
 
-struct rgb_shift Shieldsetlist::getMaskColorShifts(guint32 shieldset, guint32 owner)
-{
-  struct rgb_shift empty;
-  empty.r = 0; empty.g = 0; empty.b = 0;
-  Shieldset *s = getShieldset(shieldset);
-  if (!s)
-    return empty;
-  return s->getMaskColorShifts(owner);
-}
 ShieldStyle *Shieldsetlist::getShield(guint32 shieldset, guint32 type, guint32 colour)
 {
   Shieldset *s = getShieldset(shieldset);

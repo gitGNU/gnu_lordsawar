@@ -5,6 +5,7 @@
 	* adding bag-of-items picture to armyset.  this changes the armyset
 	schema.
 	* added caching of bag, explosion, and port images.
+	* fixed colouring of masks to match the colours in a shieldset.
 
 2009-10-24  Ben Asselstine  <benasselstine@gmail.com>
 

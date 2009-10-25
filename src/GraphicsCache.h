@@ -28,7 +28,6 @@
 
 #include "player.h"
 #include "defs.h"
-#include "rgb_shift.h"
 #include "PixMask.h"
 #include "maptile.h"
 
@@ -387,9 +386,8 @@ class GraphicsCache
 
 	PixMask* applyMask(PixMask* image, PixMask* mask, const Player* p);
 
+	static PixMask* applyMask(PixMask* image, PixMask* mask, Gdk::Color colour, bool isNeutral);
 
-	static PixMask* applyMask(PixMask* image, PixMask* mask, struct rgb_shift shifts, bool isNeutral);
-        
 	static PixMask* greyOut(PixMask* image);
 
 	static bool loadSelectorImages(std::string filename, guint32 tilesize, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);

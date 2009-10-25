@@ -64,7 +64,6 @@
 #include "Triumphs.h"
 #include "Backpack.h"
 #include "MapBackpack.h"
-#include "rgb_shift.h"
 #include "PathCalculator.h"
 #include "stacktile.h"
 
@@ -308,63 +307,6 @@ void Player::initTurn()
 void Player::setColor(Gdk::Color c)
 {
     d_color = c;
-}
-
-struct rgb_shift Player::getMaskColorShifts() const
-{
-    // This is a bit tricky. The color values we return here encode additional
-    // shifts that are performed when getting the color. I.e. a color value for
-    // red of 8 means that the red color is completely ignored.
-
-    // For each color component, find the n where 2^n best describes the color.
-    // The mask value then is (8-n).
-    struct rgb_shift shifts;
-
-    guint32 r,g,b;
-    guint8 target_red = guint8(d_color.get_red_p() * 255.0);
-    for (int i = 8, diff = 257; i > 0; i--)
-    {
-        int color = 1<<i;
-        int tmp_diff = abs(target_red - color);
-
-	r = 8 - (i + 1);
-
-        if (diff < tmp_diff)
-            break;
-        else
-            diff = tmp_diff;
-    }
-        
-    guint8 target_green = guint8(d_color.get_green_p() * 255.0);
-    for (int i = 8, diff = 257; i > 0; i--)
-    {
-        int color = 1<<i;
-        int tmp_diff = abs(target_green - color);
-	g = 8 - (i + 1);
-
-        if (diff < tmp_diff)
-            break;
-        else
-            diff = tmp_diff;
-    }
-        
-    guint8 target_blue = guint8(d_color.get_blue_p() * 255.0);
-    for (int i = 8, diff = 257; i > 0; i--)
-    {
-        int color = 1<<i;
-        int tmp_diff = abs(target_blue - color);
-	b = 8 - (i + 1);
-
-        if (diff < tmp_diff)
-            break;
-        else
-            diff = tmp_diff;
-    }
-    //c.set_rgb_p(r,g,b);
-    shifts.r = r;
-    shifts.g = g;
-    shifts.b = b;
-    return shifts;
 }
 
 void Player::addGold(int gold)

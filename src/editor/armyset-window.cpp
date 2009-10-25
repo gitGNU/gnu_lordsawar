@@ -858,15 +858,14 @@ void ArmySetWindow::on_image_changed(Gtk::FileChooserButton *button, Gtk::Image 
 	  File::copy (button->get_filename(), d_armyset->getFile(file));
 	}
       a->setImageName(c, file);
-      struct rgb_shift shifts;
-      shifts = Shieldsetlist::getInstance()->getMaskColorShifts(1, c);
+      Gdk::Color colour = Shieldsetlist::getInstance()->getColor(1, c);
       a->instantiateImages(d_armyset->getTileSize(), c, 
 			   d_armyset->getFile(a->getImageName(c)));
       if (c != Shield::NEUTRAL)
 	{
 	  PixMask *army_image = GraphicsCache::applyMask(a->getImage(c), 
 							 a->getMask(c), 
-							 shifts, false);
+							 colour, false);
 	  image->property_pixbuf() = army_image->to_pixbuf();
 	  delete army_image;
 	}

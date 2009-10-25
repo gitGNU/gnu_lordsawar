@@ -164,7 +164,7 @@ bool TilesetFlagEditorDialog::loadFlag(std::string filename)
 	      if ((*sit)->getOwner() == 8) //ignore neutral
 		continue;
 		flags[(*sit)->getOwner()]->push_back
-		  (GraphicsCache::applyMask(*it, *mit, (*sit)->getMaskColorShifts(), false)->to_pixbuf());
+		  (GraphicsCache::applyMask(*it, *mit, (*sit)->getColor(), false)->to_pixbuf());
 		
 		frame[(*sit)->getOwner()] = flags[(*sit)->getOwner()]->begin();
 	    }

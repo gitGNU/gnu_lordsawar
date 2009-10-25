@@ -66,7 +66,7 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         reward.h reward.cpp rewardlist.h rewardlist.cpp \
 	road.cpp road.h roadlist.cpp roadlist.h \
         ruin.cpp ruin.h ruinlist.cpp ruinlist.h \
-        shield.cpp shield.h shieldset.cpp shieldset.h rgb_shift.h \
+        shield.cpp shield.h shieldset.cpp shieldset.h \
         shieldsetlist.cpp shieldsetlist.h shieldstyle.cpp shieldstyle.h \
         signpost.cpp signpost.h signpostlist.cpp signpostlist.h \
 	stack.cpp stack.h stacklist.cpp stacklist.h  \

@@ -35,7 +35,6 @@
 #include "GameMap.h"
 #include "city.h"
 #include "stack.h"
-#include "rgb_shift.h"
 #include "gui/image-helpers.h"
 #include "FogMap.h"
 
@@ -1153,7 +1152,7 @@ PixMask* GraphicsCache::getProdShieldPic(guint32 type, bool prod)
 }
 
 
-PixMask* GraphicsCache::applyMask(PixMask* image, PixMask* mask, struct rgb_shift shifts, bool isNeutral)
+PixMask* GraphicsCache::applyMask(PixMask* image, PixMask* mask, Gdk::Color colour, bool isNeutral)
 {
   int width = image->get_width();
   int height = image->get_height();
@@ -1178,9 +1177,9 @@ PixMask* GraphicsCache::applyMask(PixMask* image, PixMask* mask, struct rgb_shif
 
 	if (copy[base+3] != 0)
 	  {
-	    copy[base+0] >>= (shifts.r);
-	    copy[base+1] >>= (shifts.g);
-	    copy[base+2] >>= (shifts.b);
+	    copy[base+0] = colour.get_red_p() *copy[base+0];
+	    copy[base+1] = colour.get_green_p() * copy[base+1];
+	    copy[base+2] = colour.get_blue_p() * copy[base+2];
 	  }
       }
   Glib::RefPtr<Gdk::Pixbuf> colouredmask = 
@@ -1236,7 +1235,7 @@ PixMask* GraphicsCache::greyOut(PixMask* image)
 
 PixMask* GraphicsCache::applyMask(PixMask* image, PixMask* mask, const Player* p)
 {
-  return applyMask(image, mask, p->getMaskColorShifts(),
+  return applyMask(image, mask, p->getColor(),
 		   Playerlist::getInstance()->getNeutral()->getId() == p->getId());
 }
 

@@ -28,7 +28,6 @@
 #include "shield.h"
 #include "shieldset.h"
 
-struct rgbshift;
 
 //! A list of Shieldset objects available to the game.
 /** 
@@ -83,7 +82,6 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	Shieldset *getShieldset(std::string dir);
 
 	Gdk::Color getColor(guint32 shieldset, guint32 owner);
-	struct rgb_shift getMaskColorShifts(guint32 shieldset, guint32 owner);
 
 	//! Return the Shieldset object by the id.
 	/**

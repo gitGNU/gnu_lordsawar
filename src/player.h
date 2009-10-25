@@ -36,7 +36,6 @@
 #include "army.h"
 #include "defs.h"
 
-struct rgb_shift;
 class Stacklist;
 class XML_Helper;
 class Hero;
@@ -410,9 +409,6 @@ class Player: public sigc::trackable
 
         //! Returns the colour of the player.
 	Gdk::Color getColor() const {return d_color;}
-
-        //! Returns the player's colour suitable for applying it to masks.
-	struct rgb_shift getMaskColorShifts() const;
 
         //! Returns the amount of gold pieces the player has.
         int getGold() const {return d_gold;}

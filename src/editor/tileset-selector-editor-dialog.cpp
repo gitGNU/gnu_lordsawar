@@ -191,7 +191,7 @@ bool TilesetSelectorEditorDialog::loadSelector(std::string filename)
 	      if ((*sit)->getOwner() == 8) //ignore neutral
 		continue;
 		selectors[(*sit)->getOwner()]->push_back
-		  (GraphicsCache::applyMask(*it, *mit, (*sit)->getMaskColorShifts(), false)->to_pixbuf());
+		  (GraphicsCache::applyMask(*it, *mit, (*sit)->getColor(), false)->to_pixbuf());
 		
 		frame[(*sit)->getOwner()] = selectors[(*sit)->getOwner()]->begin();
 	    }

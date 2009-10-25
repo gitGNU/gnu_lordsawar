@@ -23,7 +23,6 @@
 #include "shieldset.h"
 #include "shieldstyle.h"
 #include "File.h"
-#include "rgb_shift.h"
 
 using namespace std;
 
@@ -81,20 +80,6 @@ Gdk::Color Shieldset::getColor(guint32 owner)
 	return (*it)->getColor();
     }
   return Gdk::Color("black");
-}
-
-struct rgb_shift Shieldset::getMaskColorShifts(guint32 owner)
-{
-  struct rgb_shift empty;
-  empty.r = 0;
-  empty.g = 0;
-  empty.b = 0;
-  for (iterator it = begin(); it != end(); it++)
-    {
-      if ((*it)->getOwner() == owner)
-	return (*it)->getMaskColorShifts();
-    }
-  return empty;
 }
 
 bool Shieldset::loadShield(std::string tag, XML_Helper* helper)

@@ -185,7 +185,7 @@ Glib::RefPtr<Gdk::Pixbuf> GamePreferencesDialog::getShieldPic(guint32 type, guin
 
   ShieldStyle *sh= sl->getShield(d_shieldset, type, owner);
   return GraphicsCache::applyMask(sh->getImage(), sh->getMask(), 
-				  sl->getMaskColorShifts(d_shieldset, owner), false)->to_pixbuf();
+				  sl->getColor(d_shieldset, owner), false)->to_pixbuf();
 }
 
 void GamePreferencesDialog::add_player(GameParameters::Player::Type type,

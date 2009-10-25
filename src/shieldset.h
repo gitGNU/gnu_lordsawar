@@ -30,7 +30,6 @@
 
 #include "defs.h"
 
-struct rgbshift;
 //! A list of Shield graphic objects in a shield theme.
 /**
  * Every scenario has a shield set; it is the theme of the shield graphics 
@@ -145,7 +144,6 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	ShieldStyle * lookupShieldByTypeAndColour(guint32 type, guint32 colour);
 
 	Gdk::Color getColor(guint32 owner);
-	struct rgb_shift getMaskColorShifts(guint32 owner);
 
 	//! get filenames in this shieldset, excepting the configuration file.
 	void getFilenames(std::list<std::string> &filenames);

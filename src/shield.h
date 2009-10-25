@@ -25,7 +25,6 @@
 
 #include "shieldstyle.h"
 
-struct rgb_shift;
 class Player;
 class XML_Helper;
 class Shieldset;
@@ -65,10 +64,6 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 
         //! Returns the colour of the player.
 	Gdk::Color getColor() const {return d_color;}
-
-	Gdk::Color getMaskColor() const;
-
-	struct rgb_shift getMaskColorShifts();
 
 	/**
 	 * Get the default colour for the Player with the given Id.
