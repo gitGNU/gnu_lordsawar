@@ -244,6 +244,16 @@ guint32 Armysetlist::getTileSize(guint32 id)
   return 0;
 }
 
+PixMask* Armysetlist::getBagPic (guint32 id)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getId() == id)
+	return (*it)->getBagPic();
+    }
+  return NULL;
+}
+
 PixMask* Armysetlist::getStandardPic (guint32 id)
 {
   for (iterator it = begin(); it != end(); it++)

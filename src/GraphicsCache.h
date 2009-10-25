@@ -54,6 +54,10 @@ struct FogCacheItem;
 struct PlantedStandardCacheItem;
 struct NewLevelCacheItem;
 struct TileCacheItem;
+struct PortCacheItem;
+struct SignpostCacheItem;
+struct BagCacheItem;
+struct ExplosionCacheItem;
 class City;
 
 /** Soliton class for caching army and map images
@@ -226,6 +230,38 @@ class GraphicsCache
           */
         PixMask* getPlantedStandardPic(const Player* p);
 
+        /** Function for getting a port picture.  This is the picture
+	  * that appears often as an anchor on coastal regions.
+          *
+          * @return image of the port
+          */
+        PixMask* getPortPic();
+        PixMask* getPortPic(guint32 cityset);
+
+        /** Function for getting a signpost picture.  This is the picture
+	  * that appears as a little tiny sign on grassy tiles.
+          *
+          * @return image of the signpost
+          */
+        PixMask* getSignpostPic();
+        PixMask* getSignpostPic(guint32 cityset);
+
+        /** Function for getting a bag-of-items picture.  This is the picture
+	  * that shows when a hero drops one or more items on the ground.
+          *
+          * @return image of the sack of items
+          */
+        PixMask* getBagPic();
+        PixMask* getBagPic(guint32 armyset);
+
+        /** Function for getting an explosion picture.  This is the picture
+	  * that shows when stacks are fighting.
+          *
+          * @return image of the explosion.
+          */
+        PixMask* getExplosionPic();
+        PixMask* getExplosionPic(guint32 tileset);
+
 	/** Function for getting a new-level picture.  This is the picture
 	 * that appears when a hero gains a new level, and subsequently gets
 	 * to increase a stat.
@@ -312,10 +348,6 @@ class GraphicsCache
         PixMask* getSmallRuinedCityPic();
 	//! Return a small hero picture, either white (active==true) or black.
         PixMask* getSmallHeroPic(bool active);
-        PixMask* getBagPic();
-        PixMask* getPortPic();
-        PixMask* getExplosionPic();
-        PixMask* getSignpostPic();
         PixMask* getMoveBonusPic(guint32 bonus, bool has_ship);
         PixMask*getSmallTemplePic();
         PixMask*getSmallRuinExploredPic();
@@ -420,6 +452,18 @@ class GraphicsCache
         //! Creates a new planted standard picture with the given parameters.
         PlantedStandardCacheItem* addPlantedStandardPic(const Player* p);
 
+        //! Creates a new port picture with the given parameters.
+        PortCacheItem* addPortPic(guint32 cityset);
+
+        //! Creates a new port picture with the given parameters.
+        SignpostCacheItem* addSignpostPic(guint32 cityset);
+
+        //! Creates a new bag-of-items picture with the given parameters.
+        BagCacheItem* addBagPic(guint32 armyset);
+
+        //! Creates a new explosion picture with the given parameters.
+        ExplosionCacheItem* addExplosionPic(guint32 tileset);
+
 	//! Creates a new new-level picture in the player's colour.
         NewLevelCacheItem* addNewLevelPic(const Player* p);
 
@@ -478,6 +522,20 @@ class GraphicsCache
 
         //! Erases the oldest planted standard cache item.
         void eraseLastPlantedStandardItem();
+
+        //! Erases the oldest port cache item.
+        void eraseLastPortItem();
+
+        //! Erases the oldest bag-of-items cache item.
+        void eraseLastBagItem();
+
+        //! Erases the oldest explosion cache item.
+        void eraseLastExplosionItem();
+
+        //! Erases the oldest signpost cache item.
+        void eraseLastSignpostItem();
+
+	//! Erase the oldest picture of a hero gaining a level.
         void eraseLastNewLevelItem();
 
         //! Erases the oldest flag cache item
@@ -573,6 +631,10 @@ class GraphicsCache
         std::list<MoveBonusCacheItem*> d_movebonuslist;
         std::list<ShipCacheItem*> d_shiplist;
         std::list<PlantedStandardCacheItem*> d_plantedstandardlist;
+        std::list<PortCacheItem*> d_portlist;
+        std::list<SignpostCacheItem*> d_signpostlist;
+        std::list<BagCacheItem*> d_baglist;
+        std::list<ExplosionCacheItem*> d_explosionlist;
         std::list<NewLevelCacheItem*> d_newlevellist;
 
         //some private surfaces
@@ -585,7 +647,6 @@ class GraphicsCache
 	PixMask* d_smallinactivehero;
         PixMask* d_movebonuspic[MOVE_BONUS_TYPES];
         PixMask* d_medalpic[2][MEDAL_TYPES];
-	PixMask* d_bag;
 	PixMask* d_small_ruin_unexplored;
 	PixMask* d_small_stronghold_unexplored;
 	PixMask* d_small_ruin_explored;

@@ -65,6 +65,7 @@ bool operator <(ArmyCacheItem lhs, ArmyCacheItem rhs)
 struct ShipCacheItem
 {
     guint32 player_id;
+    guint32 armyset;
     PixMask* surface;
 };
 
@@ -72,6 +73,7 @@ struct ShipCacheItem
 struct PlantedStandardCacheItem
 {
     guint32 player_id;
+    guint32 armyset;
     PixMask* surface;
 };
 
@@ -224,6 +226,31 @@ struct TileCacheItem
   guint32 cityset;
   PixMask* surface;
 };
+
+struct PortCacheItem
+{
+  guint32 cityset;
+  PixMask *surface;
+};
+
+struct SignpostCacheItem
+{
+  guint32 cityset;
+  PixMask *surface;
+};
+
+struct BagCacheItem
+{
+  guint32 armyset;
+  PixMask *surface;
+};
+
+struct ExplosionCacheItem
+{
+  guint32 tileset;
+  PixMask *surface;
+};
+
 bool operator <(TileCacheItem lhs, TileCacheItem rhs)
 {
   return memcmp(&lhs, &rhs, sizeof (TileCacheItem) - sizeof (PixMask*)) < 0;
@@ -268,7 +295,6 @@ GraphicsCache::GraphicsCache()
       getMiscPicture("smallunexploredstronghold.png");
     d_small_ruin_explored = getMiscPicture("smallexploredruin.png");
     d_small_temple = getMiscPicture("smalltemple.png");
-    d_bag = getMiscPicture("items.png");
 }
 
 GraphicsCache::~GraphicsCache()
@@ -292,7 +318,6 @@ GraphicsCache::~GraphicsCache()
     delete d_small_ruin_unexplored;
     delete d_small_stronghold_unexplored;
     delete d_small_ruin_explored;
-    delete d_bag;
     delete d_newlevel;
     delete d_newlevelmask;
 }
@@ -325,28 +350,6 @@ PixMask* GraphicsCache::getSmallStrongholdUnexploredPic()
 PixMask* GraphicsCache::getSmallTemplePic()
 {
   return d_small_temple;
-}
-
-PixMask* GraphicsCache::getBagPic()
-{
-  Player *p = Playerlist::getActiveplayer();
-  Armyset *as = Armysetlist::getInstance()->getArmyset(p->getArmyset());
-  return as->getBagPic();
-}
-
-PixMask* GraphicsCache::getPortPic()
-{
-  return GameMap::getInstance()->getCityset()->getPortImage();
-}
-
-PixMask* GraphicsCache::getExplosionPic()
-{
-  return GameMap::getInstance()->getTileset()->getExplosionImage();
-}
-
-PixMask* GraphicsCache::getSignpostPic()
-{
-  return GameMap::getInstance()->getCityset()->getSignpostImage();
 }
 
 PixMask* GraphicsCache::getMoveBonusPic(guint32 bonus, bool has_ship)
@@ -396,7 +399,7 @@ PixMask* GraphicsCache::getShipPic(const Player* p)
     ShipCacheItem* myitem;
     for (it = d_shiplist.begin(); it != d_shiplist.end(); it++)
     {
-        if ((*it)->player_id == p->getId())
+        if ((*it)->player_id == p->getId() && (*it)->armyset == p->getArmyset())
         {
             myitem = (*it);
             
@@ -440,6 +443,131 @@ PixMask* GraphicsCache::getNewLevelPic(const Player* p)
     return myitem->surface;
 }
 
+PixMask* GraphicsCache::getPortPic()
+{
+  return getPortPic(GameMap::getInstance()->getCityset()->getId());
+}
+
+PixMask* GraphicsCache::getPortPic(guint32 cityset)
+{
+    debug("getting port pic " << cityset)
+    std::list<PortCacheItem*>::iterator it;
+    PortCacheItem* myitem;
+    for (it = d_portlist.begin(); it != d_portlist.end(); it++)
+    {
+        if ((*it)->cityset == cityset)
+        {
+            myitem = (*it);
+            
+            // put the item on the last place (==last touched)
+            d_portlist.erase(it);
+            d_portlist.push_back(myitem);
+            
+            return myitem->surface;
+        }
+    }
+    // We are still here, so the graphic is not in the cache. 
+    // addPortPic calls checkPictures on its own, so we can 
+    // simply return the surface
+    myitem = addPortPic(cityset);
+
+    return myitem->surface;
+}
+
+PixMask* GraphicsCache::getSignpostPic()
+{
+  return getSignpostPic(GameMap::getInstance()->getCityset()->getId());
+}
+
+PixMask* GraphicsCache::getSignpostPic(guint32 cityset)
+{
+    debug("getting signpost pic " << cityset)
+    std::list<SignpostCacheItem*>::iterator it;
+    SignpostCacheItem* myitem;
+    for (it = d_signpostlist.begin(); it != d_signpostlist.end(); it++)
+    {
+        if ((*it)->cityset == cityset)
+        {
+            myitem = (*it);
+            
+            // put the item on the last place (==last touched)
+            d_signpostlist.erase(it);
+            d_signpostlist.push_back(myitem);
+            
+            return myitem->surface;
+        }
+    }
+    // We are still here, so the graphic is not in the cache. 
+    // addSignpostPic calls checkPictures on its own, so we can 
+    // simply return the surface
+    myitem = addSignpostPic(cityset);
+
+    return myitem->surface;
+}
+
+PixMask* GraphicsCache::getBagPic()
+{
+  guint32 armyset = Playerlist::getActiveplayer()->getArmyset();
+  return getBagPic(armyset);
+}
+
+PixMask* GraphicsCache::getBagPic(guint32 armyset)
+{
+    debug("getting bag pic " << armyset)
+    std::list<BagCacheItem*>::iterator it;
+    BagCacheItem* myitem;
+    for (it = d_baglist.begin(); it != d_baglist.end(); it++)
+    {
+        if ((*it)->armyset == armyset)
+        {
+            myitem = (*it);
+            
+            // put the item on the last place (==last touched)
+            d_baglist.erase(it);
+            d_baglist.push_back(myitem);
+            
+            return myitem->surface;
+        }
+    }
+    // We are still here, so the graphic is not in the cache. 
+    // addBagPic calls checkPictures on its own, so we can 
+    // simply return the surface
+    myitem = addBagPic(armyset);
+
+    return myitem->surface;
+}
+
+PixMask* GraphicsCache::getExplosionPic()
+{
+  return getExplosionPic(GameMap::getInstance()->getTileset()->getId());
+}
+
+PixMask* GraphicsCache::getExplosionPic(guint32 tileset)
+{
+    debug("getting explosion pic " << tileset)
+    std::list<ExplosionCacheItem*>::iterator it;
+    ExplosionCacheItem* myitem;
+    for (it = d_explosionlist.begin(); it != d_explosionlist.end(); it++)
+    {
+        if ((*it)->tileset == tileset)
+        {
+            myitem = (*it);
+            
+            // put the item on the last place (==last touched)
+            d_explosionlist.erase(it);
+            d_explosionlist.push_back(myitem);
+            
+            return myitem->surface;
+        }
+    }
+    // We are still here, so the graphic is not in the cache. 
+    // addExplosionPic calls checkPictures on its own, so we can 
+    // simply return the surface
+    myitem = addExplosionPic(tileset);
+
+    return myitem->surface;
+}
+
 PixMask* GraphicsCache::getPlantedStandardPic(const Player* p)
 {
     debug("getting planted standard pic " <<p->getName())
@@ -447,7 +575,7 @@ PixMask* GraphicsCache::getPlantedStandardPic(const Player* p)
     PlantedStandardCacheItem* myitem;
     for (it = d_plantedstandardlist.begin(); it != d_plantedstandardlist.end(); it++)
     {
-        if ((*it)->player_id == p->getId())
+        if ((*it)->player_id == p->getId() && (*it)->armyset == p->getArmyset())
         {
             myitem = (*it);
             
@@ -1204,6 +1332,34 @@ void GraphicsCache::checkPictures()
   if (d_cachesize < maxcache)
     return;
 
+  // next, kill port pics
+  while (d_portlist.size() > 1)
+    eraseLastPortItem();
+
+  if (d_cachesize < maxcache)
+    return;
+
+  // next, kill signpost pics
+  while (d_signpostlist.size() > 1)
+    eraseLastSignpostItem();
+
+  if (d_cachesize < maxcache)
+    return;
+
+  // next, kill bag pics
+  while (d_baglist.size() > 1)
+    eraseLastBagItem();
+
+  if (d_cachesize < maxcache)
+    return;
+
+  // next, kill explosion pics
+  while (d_explosionlist.size() > 1)
+    eraseLastExplosionItem();
+
+  if (d_cachesize < maxcache)
+    return;
+
   // next, kill movement bonus pics
   while (d_movebonuslist.size() > 20)
     eraseLastMoveBonusItem();
@@ -1239,11 +1395,11 @@ void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag,
     case Maptile::TEMPLE:
       getTemplePic(building_subtype, cityset)->blit(building_tile, ts, pixmap); break;
     case Maptile::SIGNPOST:
-      getSignpostPic()->blit(building_tile, ts, pixmap); break;
+      getSignpostPic(cityset)->blit(building_tile, ts, pixmap); break;
     case Maptile::ROAD:
       getRoadPic(building_subtype)->blit(building_tile, ts, pixmap); break;
     case Maptile::PORT:
-      getPortPic()->blit(building_tile, ts, pixmap); break;
+      getPortPic(cityset)->blit(building_tile, ts, pixmap); break;
     case Maptile::BRIDGE:
       getBridgePic(building_subtype)->blit(building_tile, ts, pixmap); break;
       break;
@@ -1441,6 +1597,7 @@ ShipCacheItem* GraphicsCache::addShipPic(const Player* p)
 
   ShipCacheItem* myitem = new ShipCacheItem();
   myitem->player_id = p->getId();
+  myitem->armyset = p->getArmyset();
 
   Armysetlist *al = Armysetlist::getInstance();
   PixMask*ship = al->getShipPic(p->getArmyset());
@@ -1488,12 +1645,120 @@ NewLevelCacheItem* GraphicsCache::addNewLevelPic(const Player* p)
   return myitem;
 }
 
+PortCacheItem* GraphicsCache::addPortPic(guint32 cityset)
+{
+  debug("ADD port pic: " << cityset);
+
+  PortCacheItem* myitem = new PortCacheItem();
+  myitem->cityset = cityset;
+
+  Citysetlist *csl = Citysetlist::getInstance();
+  Cityset *cs = csl->getCityset(cityset);
+
+  // copy the pixmap
+  myitem->surface = cs->getPortImage()->copy();
+
+  //now the final preparation steps:
+  //a) add the size
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize += myitem->surface->get_depth()/8 * size;
+
+  //b) add the entry to the list
+  d_portlist.push_back(myitem);
+
+  //c) check if the cache size is too large
+  checkPictures();
+
+  //we are finished, so return the pic
+  return myitem;
+}
+
+ExplosionCacheItem* GraphicsCache::addExplosionPic(guint32 tileset)
+{
+  debug("ADD explosion pic: " << tileset);
+
+  ExplosionCacheItem* myitem = new ExplosionCacheItem();
+  myitem->tileset = tileset;
+
+  // copy the pixmap
+  myitem->surface = 
+    Tilesetlist::getInstance()->getTileset(tileset)->getExplosionImage()->copy();
+
+  //now the final preparation steps:
+  //a) add the size
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize += myitem->surface->get_depth()/8 * size;
+
+  //b) add the entry to the list
+  d_explosionlist.push_back(myitem);
+
+  //c) check if the cache size is too large
+  checkPictures();
+
+  //we are finished, so return the pic
+  return myitem;
+}
+
+BagCacheItem* GraphicsCache::addBagPic(guint32 armyset)
+{
+  debug("ADD bad pic: " << armyset);
+
+  BagCacheItem* myitem = new BagCacheItem();
+  myitem->armyset = armyset;
+
+  // copy the pixmap
+  myitem->surface = Armysetlist::getInstance()->getBagPic(armyset)->copy();
+
+  //now the final preparation steps:
+  //a) add the size
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize += myitem->surface->get_depth()/8 * size;
+
+  //b) add the entry to the list
+  d_baglist.push_back(myitem);
+
+  //c) check if the cache size is too large
+  checkPictures();
+
+  //we are finished, so return the pic
+  return myitem;
+}
+
+SignpostCacheItem* GraphicsCache::addSignpostPic(guint32 cityset)
+{
+  debug("ADD signpost pic: " << cityset);
+
+  SignpostCacheItem* myitem = new SignpostCacheItem();
+  myitem->cityset = cityset;
+
+  Citysetlist *csl = Citysetlist::getInstance();
+  Cityset *cs = csl->getCityset(cityset);
+
+  // copy the pixmap
+  myitem->surface = cs->getSignpostImage()->copy();
+
+  //now the final preparation steps:
+  //a) add the size
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize += myitem->surface->get_depth()/8 * size;
+
+  //b) add the entry to the list
+  d_signpostlist.push_back(myitem);
+
+  //c) check if the cache size is too large
+  checkPictures();
+
+  //we are finished, so return the pic
+  return myitem;
+}
+
 PlantedStandardCacheItem* GraphicsCache::addPlantedStandardPic(const Player* p)
 {
   debug("ADD planted standard pic: " <<p->getName())
 
     PlantedStandardCacheItem* myitem = new PlantedStandardCacheItem();
   myitem->player_id = p->getId();
+  myitem->armyset = p->getArmyset();
 
   Armysetlist *al = Armysetlist::getInstance();
   PixMask*standard = al->getStandardPic(p->getArmyset());
@@ -1911,6 +2176,18 @@ void GraphicsCache::clear()
   while (!d_plantedstandardlist.empty())
     eraseLastPlantedStandardItem();
 
+  while (!d_portlist.empty())
+    eraseLastPortItem();
+
+  while (!d_signpostlist.empty())
+    eraseLastSignpostItem();
+
+  while (!d_baglist.empty())
+    eraseLastBagItem();
+
+  while (!d_explosionlist.empty())
+    eraseLastExplosionItem();
+
   while (!d_flaglist.empty())
     eraseLastFlagItem();
 
@@ -2131,6 +2408,66 @@ void GraphicsCache::eraseLastNewLevelItem()
 
   NewLevelCacheItem* myitem = *(d_newlevellist.begin());
   d_newlevellist.erase(d_newlevellist.begin());
+
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_depth()/8 * size;
+
+  delete myitem->surface;
+  delete myitem;
+}
+
+void GraphicsCache::eraseLastExplosionItem()
+{
+  if (d_explosionlist.empty())
+    return;
+
+  ExplosionCacheItem* myitem = *(d_explosionlist.begin());
+  d_explosionlist.erase(d_explosionlist.begin());
+
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_depth()/8 * size;
+
+  delete myitem->surface;
+  delete myitem;
+}
+
+void GraphicsCache::eraseLastBagItem()
+{
+  if (d_baglist.empty())
+    return;
+
+  BagCacheItem* myitem = *(d_baglist.begin());
+  d_baglist.erase(d_baglist.begin());
+
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_depth()/8 * size;
+
+  delete myitem->surface;
+  delete myitem;
+}
+
+void GraphicsCache::eraseLastSignpostItem()
+{
+  if (d_signpostlist.empty())
+    return;
+
+  SignpostCacheItem* myitem = *(d_signpostlist.begin());
+  d_signpostlist.erase(d_signpostlist.begin());
+
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_depth()/8 * size;
+
+  delete myitem->surface;
+  delete myitem;
+}
+
+void GraphicsCache::eraseLastPortItem()
+{
+  if (d_portlist.empty())
+    return;
+
+  PortCacheItem* myitem = *(d_portlist.begin());
+  d_portlist.erase(d_portlist.begin());
 
   int size = myitem->surface->get_width() * myitem->surface->get_height();
   d_cachesize -= myitem->surface->get_depth()/8 * size;

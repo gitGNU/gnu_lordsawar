@@ -4,6 +4,7 @@
 	shieldsets, and scenario file.  This changes their respective schemas.
 	* adding bag-of-items picture to armyset.  this changes the armyset
 	schema.
+	* added caching of bag, explosion, and port images.
 
 2009-10-24  Ben Asselstine  <benasselstine@gmail.com>
 

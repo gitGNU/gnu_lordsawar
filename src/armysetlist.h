@@ -81,6 +81,9 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	//! Get the unshaded planted standard picture for the given Armyset.
 	PixMask* getStandardPic (guint32 id);
 
+	//! Get the bag of oitems picture for the given Armyset.
+	PixMask* getBagPic (guint32 id);
+
 	//! Get the planted standard mask for the given Armyset.
 	PixMask* getStandardMask (guint32 id);
         guint32 getTileSize(guint32 id);
