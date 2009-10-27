@@ -37,8 +37,8 @@ using namespace std;
 
 #define DEFAULT_CITY_TILE_SIZE 40
 Cityset::Cityset(guint32 id, std::string name)
-	: d_id(id), d_name(name), d_copyright(""), d_license(""), d_subdir(""), 
-	d_tileSize(DEFAULT_CITY_TILE_SIZE)
+	: d_id(id), d_name(name), d_copyright(""), d_license(""), 
+	d_tileSize(DEFAULT_CITY_TILE_SIZE), d_subdir("")
 {
 	d_cities_filename = "";
 	d_razedcities_filename = "";
@@ -361,4 +361,90 @@ std::list<std::string> Cityset::scanSystemCollection()
   return retlist;
 }
 
+	
+bool Cityset::validate()
+{
+  bool valid = true;
+  if (validateCitiesFilename() == false)
+    return false;
+  if (validateRazedCitiesFilename() == false)
+    return false;
+  if (validatePortFilename() == false)
+    return false;
+  if (validateSignpostFilename() == false)
+    return false;
+  if (validateRuinsFilename() == false)
+    return false;
+  if (validateTemplesFilename() == false)
+    return false;
+  if (validateTowersFilename() == false)
+    return false;
+  if (validateCityTileWidth() == false)
+    return false;
+  if (validateRuinTileWidth() == false)
+    return false;
+  if (validateTempleTileWidth() == false)
+    return false;
+  return valid;
+}
+bool Cityset::validateCitiesFilename()
+{
+  if (getCitiesFilename().empty() == true)
+    return false;
+  return true;
+}
+bool Cityset::validateRazedCitiesFilename()
+{
+  if (getRazedCitiesFilename().empty() == true)
+    return false;
+  return true;
+}
+bool Cityset::validateSignpostFilename()
+{
+  if (getSignpostFilename().empty() == true)
+    return false;
+  return true;
+}
+bool Cityset::validatePortFilename()
+{
+  if (getPortFilename().empty() == true)
+    return false;
+  return true;
+}
+bool Cityset::validateRuinsFilename()
+{
+  if (getRuinsFilename().empty() == true)
+    return false;
+  return true;
+}
+bool Cityset::validateTemplesFilename()
+{
+  if (getTemplesFilename().empty() == true)
+    return false;
+  return true;
+}
+bool Cityset::validateTowersFilename()
+{
+  if (getTowersFilename().empty() == true)
+    return false;
+  return true;
+}
+bool Cityset::validateCityTileWidth()
+{
+  if (getCityTileWidth() <= 0)
+    return false;
+  return true; 
+}
+bool Cityset::validateRuinTileWidth()
+{
+  if (getRuinTileWidth() <= 0)
+    return false;
+  return true; 
+}
+bool Cityset::validateTempleTileWidth()
+{
+  if (getTempleTileWidth() <= 0)
+    return false;
+  return true; 
+}
 // End of file

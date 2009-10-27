@@ -174,10 +174,24 @@ class Cityset : public sigc::trackable, public Set
 	void setTempleTileWidth(guint32 tiles) {d_temple_tile_width = tiles;};
 	guint32 getRuinTileWidth() {return d_ruin_tile_width;};
 	void setRuinTileWidth(guint32 tiles) {d_ruin_tile_width = tiles;};
+	bool validate();
+	bool validateCitiesFilename();
+	bool validateRazedCitiesFilename();
+	bool validateSignpostFilename();
+	bool validatePortFilename();
+	bool validateRuinsFilename();
+	bool validateTemplesFilename();
+	bool validateTowersFilename();
+	bool validateCityTileWidth();
+	bool validateRuinTileWidth();
+	bool validateTempleTileWidth();
 
     private:
 
         // DATA
+	//! A unique numeric identifier among all citysets.
+	guint32 d_id;
+
 	//! The name of the cityset.
 	/**
 	 * This equates to the cityset.d_name XML entity in the cityset
@@ -192,9 +206,6 @@ class Cityset : public sigc::trackable, public Set
 
 	//! The license of this cityset.
 	std::string d_license;
-
-	//! A unique numeric identifier among all citysets.
-	guint32 d_id;
 
 	//! The description of the cityset.
 	/**

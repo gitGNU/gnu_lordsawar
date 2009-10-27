@@ -294,6 +294,26 @@ void CitySetWindow::on_validate_cityset_activated()
   std::list<std::string> msgs;
   if (d_cityset == NULL)
     return;
+  if (d_cityset->validateCitiesFilename() == false)
+    msgs.push_back(_("The cities picture is not set."));
+  if (d_cityset->validateRazedCitiesFilename() == false)
+    msgs.push_back(_("The razed cities picture is not set."));
+  if (d_cityset->validatePortFilename() == false)
+    msgs.push_back(_("The port picture is not set."));
+  if (d_cityset->validateSignpostFilename() == false)
+    msgs.push_back(_("The signpost picture is not set."));
+  if (d_cityset->validateRuinsFilename() == false)
+    msgs.push_back(_("The ruins picture is not set."));
+  if (d_cityset->validateTemplesFilename() == false)
+    msgs.push_back(_("The temple picture is not set."));
+  if (d_cityset->validateTowersFilename() == false)
+    msgs.push_back(_("The towers picture is not set."));
+  if (d_cityset->validateCityTileWidth() == false)
+    msgs.push_back(_("The tile width for temples must be over zero."));
+  if (d_cityset->validateRuinTileWidth() == false)
+    msgs.push_back(_("The tile width for ruins must be over zero."));
+  if (d_cityset->validateTempleTileWidth() == false)
+    msgs.push_back(_("The tile width for temples must be over zero."));
   bool valid;
 
   std::string msg = "";

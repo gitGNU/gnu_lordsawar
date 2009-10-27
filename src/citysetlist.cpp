@@ -57,7 +57,7 @@ void Citysetlist::loadCitysets(std::list<std::string> citysets)
 	Cityset *cityset = loadCityset(*i);
 	if (!cityset)
 	  continue;
-	    
+
 	add(cityset);
       }
 }
@@ -102,6 +102,15 @@ Cityset *Citysetlist::loadCityset(std::string name)
   Cityset *cityset = Cityset::create(name);
   if (!cityset)
     return NULL;
+    
+  if (cityset->validate() == false)
+    {
+      cerr << "Error!  cityset: `" << cityset->getName() << 
+	"' is invalid.  Skipping." << endl;
+      delete cityset;
+      return NULL;
+    }
+
   if (d_citysetids.find(cityset->getId()) != d_citysetids.end())
     {
       Cityset *c = (*d_citysetids.find(cityset->getId())).second;
