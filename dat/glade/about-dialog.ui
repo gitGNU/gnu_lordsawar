@@ -13,9 +13,8 @@ feature of this game.</property>
     <property name="license" translatable="yes">The GNU General Public License version 3 or later at your option.</property>
     <property name="authors">Ben Asselstine
 Ole Laursen
-Many other LordsAWar and Freelords contributors</property>
-    <property name="documenters">Ben Asselstine
-Many other Freelords contributors</property>
+</property>
+    <property name="documenters">Ben Asselstine</property>
     <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">Joe Hansen</property>
     <property name="artists">Leon Harmon
 Sune Theodorsen

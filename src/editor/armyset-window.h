@@ -15,8 +15,8 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef GUI_ARMYLIST_WINDOW_H
-#define GUI_ARMYLIST_WINDOW_H
+#ifndef GUI_ARMYSET_WINDOW_H
+#define GUI_ARMYSET_WINDOW_H
 
 #include <memory>
 #include <vector>

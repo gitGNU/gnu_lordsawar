@@ -85,7 +85,7 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
 
 	bool addToPersonalCollection(Cityset *cityset, std::string &new_subdir, guint32 &new_id);
 
-	static int getNextAvailableId(int after);
+	static int getNextAvailableId(int after = 0);
     private:
         //! Default constructor.  Loads all citysets it can find.
 	/**

@@ -35,6 +35,36 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
+#define DEFAULT_CITY_TILE_SIZE 40
+Cityset::Cityset(guint32 id, std::string name)
+	: d_id(id), d_name(name), d_copyright(""), d_license(""), d_subdir(""), 
+	d_tileSize(DEFAULT_CITY_TILE_SIZE)
+{
+	d_cities_filename = "";
+	d_razedcities_filename = "";
+	d_port_filename = "";
+	d_signpost_filename = "";
+	d_ruins_filename = "";
+	d_temples_filename = "";
+	d_towers_filename = "";
+	for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
+	  citypics[i] = NULL;
+	for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+	  razedcitypics[i] = NULL;
+	port = NULL;
+	signpost = NULL;
+	for (unsigned int i = 0; i < RUIN_TYPES; i++)
+	  ruinpics[i] = NULL;
+	for (unsigned int i = 0; i < TEMPLE_TYPES; i++)
+	  templepics[i] = NULL;
+	for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+	  towerpics[i] = NULL;
+
+	d_city_tile_width = 2;
+	d_temple_tile_width = 1;
+	d_ruin_tile_width = 1;
+}
+
 Cityset::Cityset(XML_Helper *helper, std::string directory)
 	:Set()
 {

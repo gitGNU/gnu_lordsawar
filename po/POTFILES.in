@@ -95,6 +95,8 @@
 [type: gettext/glade]/dat/glade/editor/hero-editor-dialog.ui
 [type: gettext/glade]/dat/glade/editor/backpack-editor-dialog.ui
 [type: gettext/glade]/dat/glade/editor/editor-quit-dialog.ui
+[type: gettext/glade]/dat/glade/editor/cityset-window.ui
+[type: gettext/glade]/dat/glade/editor/cityset-info-dialog.ui
 src/FogMap.cpp
 src/templelist.cpp
 src/network-connection.cpp
@@ -218,7 +220,9 @@ src/editor/itemlist-dialog.cpp
 src/editor/signpost-editor-dialog.cpp
 src/editor/select-hidden-ruin-dialog.cpp
 src/editor/armyset-info-dialog.cpp
+src/editor/cityset-info-dialog.cpp
 src/editor/armyset-window.cpp
+src/editor/cityset-window.cpp
 src/editor/rewardlist-dialog.cpp
 src/editor/select-item-dialog.cpp
 src/editor/select-reward-dialog.cpp
@@ -227,6 +231,7 @@ src/editor/editorbigmap.cpp
 src/editor/tileset-main.cpp
 src/editor/city-editor-dialog.cpp
 src/editor/main-window.cpp
+src/editor/cityset-main.cpp
 src/editor/armyset-main.cpp
 src/editor/temple-editor-dialog.cpp
 src/editor/tileset-info-dialog.cpp

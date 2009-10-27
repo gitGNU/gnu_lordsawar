@@ -51,6 +51,16 @@ class Cityset : public sigc::trackable, public Set
 
 	//! Default constructor.
 	/**
+	 * Make a new Cityset.
+	 *
+	 * @param id    The unique Id of this Cityset among all other Cityset
+	 *              objects.  Must be more than 0.  
+	 * @param name  The name of the Cityset.  Analagous to Cityset::d_name.
+	 */
+	Cityset(guint32 id, std::string name);
+
+	//! Loading constructor.
+	/**
 	 * Make a new Cityset object by reading it in from the cityset
 	 * configuration file.
 	 *
@@ -89,8 +99,23 @@ class Cityset : public sigc::trackable, public Set
 	//! Set the unique identifier for this cityset.
         void setId(guint32 id) {d_id = id;}
 
+	//! Set the name of the cityset.
+	/**
+	 * @note This method is only used in the cityset editor.
+	 */
+        void setName(std::string name) {d_name = name;}
+
+	//! Set the copyright holders on the cityset.
+	void setCopyright(std::string copy) {d_copyright = copy;};
+
+	//! Set the license for this cityset.
+	void setLicense(std::string license) {d_license = license;};
+
         //! Returns the description of the cityset.
         std::string getInfo() const {return _(d_info.c_str());}
+
+	//! Sets the description of the cityset.
+	void setInfo(std::string description) {d_info = description;};
 
         //! Returns the width and height in pixels of the city images.
         guint32 getTileSize() const {return d_tileSize;}
