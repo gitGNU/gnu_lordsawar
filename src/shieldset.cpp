@@ -32,6 +32,12 @@ std::string Shieldset::file_extension = SHIELDSET_EXT;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
 
+Shieldset::Shieldset(guint32 id, std::string name)
+	: d_id(id), d_name(name), d_copyright(""), d_license(""), d_info(""), 
+	d_subdir("")
+{
+}
+
 Shieldset::Shieldset(XML_Helper *helper, std::string directory)
 	: d_subdir("")
 {
@@ -40,6 +46,7 @@ Shieldset::Shieldset(XML_Helper *helper, std::string directory)
   helper->getData(d_name, "name");
   helper->getData(d_copyright, "copyright");
   helper->getData(d_license, "license");
+  helper->getData(d_info, "info");
   helper->getData(d_small_width, "small_width");
   helper->getData(d_small_height, "small_height");
   helper->getData(d_medium_width, "medium_width");
@@ -116,6 +123,9 @@ public:
 	    std::cerr << "Error, while loading an shieldset. Shieldset Name: ";
 	    std::cerr <<File::get_basename(File::get_dirname(filename))<<
 	      std::endl <<std::flush;
+	    if (shieldset != NULL)
+	      delete shieldset;
+	    shieldset = NULL;
 	  }
       };
     bool load(std::string tag, XML_Helper* helper)
@@ -154,6 +164,7 @@ bool Shieldset::save(XML_Helper *helper)
   retval &= helper->saveData("name", d_name);
   retval &= helper->saveData("copyright", d_copyright);
   retval &= helper->saveData("license", d_license);
+  retval &= helper->saveData("info", d_info);
   retval &= helper->saveData("small_width", d_small_width);
   retval &= helper->saveData("small_height", d_small_height);
   retval &= helper->saveData("medium_width", d_medium_width);

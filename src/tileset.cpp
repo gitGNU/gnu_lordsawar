@@ -314,6 +314,9 @@ public:
 	  {
 	    std::cerr << "Error, while loading an tileset. Tileset Name: ";
 	    std::cerr <<dir<<std::endl <<std::flush;
+	    if (tileset != NULL)
+	      delete tileset;
+	    tileset = NULL;
 	  }
       };
     bool load(std::string tag, XML_Helper* helper)

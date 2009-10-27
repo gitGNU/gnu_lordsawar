@@ -305,6 +305,9 @@ public:
 	  {
 	    std::cerr << "Error, while loading an armyset. Armyset Name: ";
 	    std::cerr <<File::get_basename(File::get_dirname(filename)) <<std::endl <<std::flush;
+	    if (armyset != NULL)
+	      delete armyset;
+	    armyset = NULL;
 	  }
       };
     bool load(std::string tag, XML_Helper* helper)

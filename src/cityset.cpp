@@ -119,6 +119,9 @@ public:
 	  {
 	    std::cerr << "Error, while loading an cityset. Cityset Name: ";
 	    std::cerr <<File::get_basename(filename)<<std::endl <<std::flush;
+	    if (cityset != NULL)
+	      delete cityset;
+	    cityset = NULL;
 	  }
       };
     bool load(std::string tag, XML_Helper* helper)

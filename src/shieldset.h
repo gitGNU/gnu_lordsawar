@@ -58,6 +58,13 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	static std::string d_tag; 
 	static std::string file_extension;
 
+
+	//! Default constructor.
+	/**
+	 * Make a new shieldset given a unique id and a subdir name.
+	 */
+	Shieldset(guint32 id, std::string name);
+
 	//! Load a Shieldset from a shieldset configuration file.
 	/**
 	 * Make a new Shieldset object by reading it in from the shieldset
@@ -103,6 +110,12 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 
 	//! Return the license of the shieldset.
 	std::string getLicense() const {return d_license;};
+
+        //! Returns the description of the shieldset.
+        std::string getInfo() const {return _(d_info.c_str());}
+
+	//! Sets the description of the shieldset.
+	void setInfo(std::string description) {d_info = description;};
 
 	//! Get the unique identifier for this shieldset.
 	/**
@@ -159,6 +172,9 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	//! Callback function to load Shield objects into the Shieldset.
 	bool loadShield(std::string tag, XML_Helper* helper);
 
+	//! A unique numeric identifier among all shieldset.
+	guint32 d_id;
+
 	//! The name of the Shieldset.
 	/**
 	 * This equates to the shieldset.d_name XML entity in the shieldset
@@ -174,8 +190,12 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	//! The license of the shieldset.
 	std::string d_license;
 
-	//! A unique numeric identifier among all shieldset.
-	guint32 d_id;
+	//! The description of the shieldset.
+	/**
+	 * Equates to the shieldset.d_info XML entity in the shieldset 
+	 * configuration file.
+	 */
+        std::string d_info;
 
 	//! The subdirectory of the Shieldset.
 	/**
