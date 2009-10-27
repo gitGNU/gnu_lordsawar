@@ -1,3 +1,11 @@
+2009-10-26  Ben Asselstine  <benasselstine@gmail.com>
+
+	* added a cityset editor.
+	* added a comment xml entity to the shieldset configuration file.  This
+	changes the schema for the shieldset configuration file.
+	* now preventing broken city/tile/army/shieldsets from being presented
+	in the new random map dialog.
+
 2009-10-25  Ben Asselstine  <benasselstine@gmail.com>
 
 	* adding copyright/license info to citysets, tilesets, armysets, 
