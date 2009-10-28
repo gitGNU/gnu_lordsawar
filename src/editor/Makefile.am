@@ -19,7 +19,7 @@
 MAINTAINERCLEANFILES= Makefile.in
 
 if WANT_EDITOR
-bin_PROGRAMS = lordsawar-editor lordsawar-army-editor lordsawar-tile-editor lordsawar-city-editor
+bin_PROGRAMS = lordsawar-editor lordsawar-army-editor lordsawar-tile-editor lordsawar-city-editor lordsawar-shield-editor
 
 lordsawar_army_editor_SOURCES = \
 	armyset-main.cpp \
@@ -34,6 +34,13 @@ lordsawar_city_editor_SOURCES = \
 	cityset-window.cpp cityset-window.h  \
 	cityset-info-dialog.cpp cityset-info-dialog.h \
 	image-editor-dialog.cpp image-editor-dialog.h \
+	glade-helpers.h
+
+lordsawar_shield_editor_SOURCES = \
+	shieldset-main.cpp \
+	shieldset-window.cpp shieldset-window.h  \
+	shieldset-info-dialog.cpp shieldset-info-dialog.h \
+	masked-image-editor-dialog.cpp masked-image-editor-dialog.h \
 	glade-helpers.h
 
 lordsawar_tile_editor_SOURCES = \
@@ -85,6 +92,14 @@ lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(GTKMM_LIBS) \
                          $(SDL_LIBS) \
                          $(SDLIMAGE_LIBS) \
+                         @LIBINTL@ -L$(top_builddir)/src
+
+lordsawar_shield_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
+                         $(top_builddir)/src/liblordsawargfx.la \
+                         $(top_builddir)/src/liblordsawar.la \
+                         $(SDL_LIBS) \
+                         $(SDLIMAGE_LIBS) \
+                         $(GTKMM_LIBS) \
                          @LIBINTL@ -L$(top_builddir)/src
 
 lordsawar_city_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \

@@ -68,6 +68,10 @@ class ShieldStyle : public sigc::trackable
 	 *                shield object from.
          */
         ShieldStyle(XML_Helper* helper);
+
+
+	//! Default constructor.
+	ShieldStyle(ShieldStyle::Type type);
         
 	//! Destructor.
         virtual ~ShieldStyle();

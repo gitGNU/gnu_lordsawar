@@ -913,7 +913,7 @@ Stack *Stack::splitArmies(std::list<guint32> armies)
   return new_stack;
 }
 //! split the armies in the stack that this much mp or more into a new stack.
-Stack *Stack::splitArmiesWithMovement(int mp)
+Stack *Stack::splitArmiesWithMovement(guint32 mp)
 {
   std::list<Army*> armies;
   for (iterator it = begin(); it != end(); it++)

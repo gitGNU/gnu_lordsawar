@@ -29,6 +29,14 @@ std::string ShieldStyle::d_tag = "shieldstyle";
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
+ShieldStyle::ShieldStyle(ShieldStyle::Type type)
+{
+  d_type = type;
+  d_image_name = "";
+  d_image = NULL;
+  d_mask = NULL;
+}
+
 ShieldStyle::ShieldStyle(XML_Helper* helper)
   :d_image(0), d_mask(0)
 {
@@ -111,14 +119,15 @@ void ShieldStyle::instantiateImages(std::string filename, Shieldset *s)
 
 void ShieldStyle::uninstantiateImages()
 {
-  if (getImage())
+  if (getImage() != NULL)
     {
       delete getImage();
       setImage(NULL);
     }
-  if (getMask())
+  if (getMask() != NULL)
     {
       delete getMask();
       setMask(NULL);
     }
 }
+

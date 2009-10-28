@@ -20,6 +20,7 @@
 #include "rectangle.h"
 #include <sigc++/functors/mem_fun.h>
 
+#include <string.h>
 #include "shieldset.h"
 #include "shieldstyle.h"
 #include "File.h"
@@ -57,13 +58,14 @@ Shieldset::Shieldset(XML_Helper *helper, std::string directory)
 		      sigc::mem_fun((*this), &Shieldset::loadShield));
   helper->registerTag(ShieldStyle::d_tag, sigc::mem_fun((*this), 
 							&Shieldset::loadShield));
+  clear();
 }
 
 Shieldset::~Shieldset()
 {
+  uninstantiateImages();
   for (iterator it = begin(); it != end(); it++)
     delete *it;
-  uninstantiateImages();
 }
 
 ShieldStyle * Shieldset::lookupShieldByTypeAndColour(guint32 type, guint32 owner)
@@ -214,4 +216,77 @@ std::list<std::string> Shieldset::scanSystemCollection()
   return retlist;
 }
 
+	
+bool Shieldset::validate()
+{
+  bool valid = true;
+  if (validateNumberOfShields() == false)
+    return false;
+  for (unsigned int i = Shield::WHITE; i <= Shield::NEUTRAL; i++)
+    {
+      if (validateShieldImages(Shield::Colour(i)) == false)
+	return false;
+    }
+  return valid;
+}
+
+bool Shieldset::validateNumberOfShields()
+{
+  int players[MAX_PLAYERS + 1][3];
+  memset(players, 0, sizeof(players));
+  //need at least 3 complete player shields, one of which must be neutral.
+  for (iterator it = begin(); it != end(); it++)
+    {
+      for (Shield::iterator i = (*it)->begin(); i != (*it)->end(); i++)
+	{
+	  int idx = 0;
+	  switch ((*i)->getType())
+	    {
+	    case ShieldStyle::SMALL: idx = 0; break;
+	    case ShieldStyle::MEDIUM: idx = 1; break;
+	    case ShieldStyle::LARGE: idx = 2; break;
+	    }
+	  players[(*it)->getOwner()][idx]++;
+	}
+    }
+  int count = 0;
+  for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
+    {
+      if (players[i][0] > 0 && players[i][1] > 0 && players[i][2] > 0)
+	count++;
+    }
+  if (count <= 2)
+    return false;
+  if (players[MAX_PLAYERS][0] == 0 || players[MAX_PLAYERS][1] == 0 || players[MAX_PLAYERS][2] == 0)
+    return false;
+  return true;
+}
+
+bool Shieldset::validateShieldImages(Shield::Colour c)
+{
+  //if we have a shield, it should have all 3 sizes.
+  int player[3];
+  memset(player, 0, sizeof(player));
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getOwner() != guint32(c))
+	continue;
+      for (Shield::iterator i = (*it)->begin(); i != (*it)->end(); i++)
+	{
+	  int idx = 0;
+	  switch ((*i)->getType())
+	    {
+	    case ShieldStyle::SMALL: idx = 0; break;
+	    case ShieldStyle::MEDIUM: idx = 1; break;
+	    case ShieldStyle::LARGE: idx = 2; break;
+	    }
+	  if ((*i)->getImageName().empty() == false)
+	    player[idx]++;
+	}
+    }
+  int count = player[0] + player[1] + player[2];
+  if (count <= 2)
+    return false;
+  return true;
+}
 //End of file

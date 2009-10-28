@@ -164,6 +164,9 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	void instantiateImages();
 	void uninstantiateImages();
 	std::string getConfigurationFile();
+	bool validate();
+	bool validateNumberOfShields();
+	bool validateShieldImages(Shield::Colour c);
 
 	static std::list<std::string> scanSystemCollection();
 	static std::list<std::string> scanUserCollection();

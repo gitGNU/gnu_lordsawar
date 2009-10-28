@@ -355,7 +355,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	Stack *splitArmies(std::list<Army*> armies);
 	Stack *splitArmies(std::list<guint32> armies);
 	Stack *splitArmy(Army *army);
-	Stack *splitArmiesWithMovement(int mp = 1);
+	Stack *splitArmiesWithMovement(guint32 mp = 1);
 
 	void add(Army *army);
     private:    

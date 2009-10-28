@@ -96,7 +96,9 @@
 [type: gettext/glade]/dat/glade/editor/backpack-editor-dialog.ui
 [type: gettext/glade]/dat/glade/editor/editor-quit-dialog.ui
 [type: gettext/glade]/dat/glade/editor/cityset-window.ui
+[type: gettext/glade]/dat/glade/editor/shieldset-window.ui
 [type: gettext/glade]/dat/glade/editor/cityset-info-dialog.ui
+[type: gettext/glade]/dat/glade/editor/shieldset-info-dialog.ui
 src/FogMap.cpp
 src/templelist.cpp
 src/network-connection.cpp

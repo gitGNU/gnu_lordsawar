@@ -35,6 +35,12 @@ Shield::Shield(XML_Helper* helper)
   helper->getData(d_owner, "owner");
   helper->getData(d_color, "color");
 }
+	
+Shield::Shield(Shield::Colour owner, Gdk::Color color)
+{
+  d_owner = guint32(owner);
+  d_color = color;
+}
 
 Shield::~Shield()
 {
@@ -120,4 +126,14 @@ void Shield::uninstantiateImages()
 {
   for (iterator it = begin(); it != end(); it++)
     (*it)->uninstantiateImages();
+}
+
+ShieldStyle *Shield::get_first_shieldstyle(ShieldStyle::Type type)
+{
+  for (iterator i = begin(); i != end(); i++)
+    {
+      if ((*i)->getType() == type)
+	return *i;
+    }
+  return NULL;
 }

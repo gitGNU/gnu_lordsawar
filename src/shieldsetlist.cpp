@@ -94,6 +94,14 @@ Shieldset* Shieldsetlist::loadShieldset(std::string name)
   if (!shieldset)
     return NULL;
 
+  if (shieldset->validate() == false)
+    {
+      cerr << "Error!  shieldset: `" << shieldset->getName() << 
+	"' is invalid.  Skipping." << endl;
+      delete shieldset;
+      return NULL;
+    }
+
   if (d_shieldsetids.find(shieldset->getId()) != d_shieldsetids.end())
     {
       Shieldset *s = (*d_shieldsetids.find(shieldset->getId())).second;
@@ -224,7 +232,6 @@ int Shieldsetlist::getNextAvailableId(int after)
 {
   std::list<guint32> ids;
   std::list<std::string> shieldsets = Shieldset::scanSystemCollection();
-  //there might be IDs in invalid armysets.
   for (std::list<std::string>::const_iterator i = shieldsets.begin(); 
        i != shieldsets.end(); i++)
     {
