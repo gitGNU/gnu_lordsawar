@@ -1103,6 +1103,7 @@ bool GameMap::canJoin(Stack *src, Stack *dest)
 void GameMap::switchTileset(Tileset *tileset)
 {
   d_tileSet = tileset;
+  applyTileStyles (0, 0, s_width, s_height,  false);
 }
 
 void GameMap::switchShieldset(Shieldset *shieldset)

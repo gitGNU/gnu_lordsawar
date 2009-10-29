@@ -1565,6 +1565,7 @@ void MainWindow::on_switch_sets_activated()
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       needs_saving = true;
+      bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
       redraw();
     }
 }
