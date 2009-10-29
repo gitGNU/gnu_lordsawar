@@ -52,6 +52,7 @@ class ArmyProdBase: public ArmyProtoBase
         //! Saves the Army prototype to an opened armyset file.
         virtual bool save(XML_Helper* helper) const;
         
+	void morph(const ArmyProto *army);
     private:
 
 };

@@ -321,6 +321,9 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	bool getDefendsRuins() const;
 	virtual std::string getName() const;
 
+	void morph(const ArmyProto *armyproto);
+
+	void setArmyset(guint32 armyset_id) {d_armyset = armyset_id;};
     protected:
 
         //! Generic method for saving Army data.  Useful to the Hero class.

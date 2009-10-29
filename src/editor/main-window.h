@@ -75,6 +75,7 @@ class MainWindow: public sigc::trackable
     Gtk::MenuItem *toggle_grid_menuitem;
     Gtk::MenuItem *smooth_map_menuitem;
     Gtk::MenuItem *smooth_screen_menuitem;
+    Gtk::MenuItem *switch_armyset_menuitem;
     Gtk::MenuItem *edit_items_menuitem ;
     Gtk::MenuItem *edit_rewards_menuitem;
     Gtk::MenuItem *random_all_cities_menuitem;
@@ -122,6 +123,7 @@ class MainWindow: public sigc::trackable
     void on_edit_players_activated();
     void on_smooth_map_activated();
     void on_smooth_screen_activated();
+    void on_switch_armyset_activated();
     void on_edit_items_activated();
     void on_edit_rewards_activated();
 

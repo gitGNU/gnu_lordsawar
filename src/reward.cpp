@@ -175,24 +175,11 @@ const guint32 Reward_Allies::getRandomAmountOfAllies()
 
 const ArmyProto* Reward_Allies::randomArmyAlly()
 {
-  guint32 allytype;
-  // list all the army types that can be allies.
-  std::vector<const ArmyProto*> allytypes;
   Armysetlist *al = Armysetlist::getInstance();
   Player *p = Playerlist::getInstance()->getActiveplayer();
   if (!p)
     p = Playerlist::getInstance()->getNeutral();
-  for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
-    {
-      const ArmyProto *a = al->getArmy (p->getArmyset(), j);
-      if (a->getAwardable())
-        allytypes.push_back(a);
-    }
-  if (allytypes.empty())
-    return NULL;
-
-  allytype = rand() % allytypes.size();
-  return allytypes[allytype];
+  return al->getArmyset(p->getArmyset())->getRandomAwardableAlly();
 }
 
 bool Reward_Allies::addAllies(Player *p, Vector<int> pos, const ArmyProto *army, guint32 alliesCount)

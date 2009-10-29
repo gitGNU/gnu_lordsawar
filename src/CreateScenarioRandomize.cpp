@@ -118,21 +118,11 @@ guint32 CreateScenarioRandomize::getRandomCityIncome(bool capital)
 
 Army * CreateScenarioRandomize::getRandomRuinKeeper(Player *p)
 {
-  // list all the army types that can be a sentinel.
-  std::vector<const ArmyProto*> occupants;
   Armysetlist *al = Armysetlist::getInstance();
-  for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
-    {
-      const ArmyProto *a = al->getArmy (p->getArmyset(), j);
-      if (a->getDefendsRuins())
-	occupants.push_back(a);
-    }
-            
-  if (!occupants.empty())
-    {
-      const ArmyProto *a = occupants[rand() % occupants.size()];
-      return (new Army(*a, p));
-    }
+  const ArmyProto *a= al->getArmyset(p->getArmyset())->getRandomRuinKeeper();
+  if (a)
+    return (new Army(*a, p));
+
   return NULL;
 }
 

@@ -30,6 +30,7 @@
 #include "shield.h"
 #include "File.h"
 #include "set.h"
+#include "hero.h"
 
 using namespace std;
 
@@ -221,8 +222,15 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 * @return The Army with the given army type id, or NULL if none
 	 *         could be found.
 	 */
-	ArmyProto * lookupArmyByType(guint32 army_type);
+	ArmyProto * lookupArmyByType(guint32 army_type) const;
 
+	ArmyProto * lookupArmyByName(std::string name) const;
+
+	ArmyProto * lookupArmyByStrengthAndTurns(guint32 str, guint32 turns) const;
+
+	ArmyProto * lookupArmyByGender(Hero::Gender gender) const;
+
+	ArmyProto * lookupSimilarArmy(ArmyProto *army) const;
 	//! can this armyset be used within the game?
 	bool validate();
 	bool validateSize();
@@ -248,7 +256,11 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	std::string getConfigurationFile();
 	static std::list<std::string> scanUserCollection();
 	static std::list<std::string> scanSystemCollection();
-
+	static void switchArmyset(Army *army, const Armyset *armyset);
+	static void switchArmyset(ArmyProdBase *army, const Armyset *armyset);
+	static void switchArmysetForRuinKeeper(Army *army, const Armyset *armyset);
+	const ArmyProto * getRandomRuinKeeper() const;
+	const ArmyProto *getRandomAwardableAlly() const;
 
     private:
 

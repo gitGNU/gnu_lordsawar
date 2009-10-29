@@ -27,6 +27,8 @@
 #include "GraphicsCache.h"
 #include "shield.h"
 #include "gui/image-helpers.h"
+#include "armysetlist.h"
+#include "armyprodbase.h"
 
 std::string Armyset::d_tag = "armyset";
 std::string Armyset::file_extension = ARMYSET_EXT;
@@ -110,9 +112,86 @@ bool Armyset::save(XML_Helper* helper)
     return retval;
 }
 
-ArmyProto * Armyset::lookupArmyByType(guint32 army_type_id)
+ArmyProto * Armyset::lookupSimilarArmy(ArmyProto *army) const
 {
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getGender() == army->getGender() &&
+	  (*it)->getStrength() == army->getStrength() &&
+	  (*it)->getProduction() == army->getProduction() &&
+	  (*it)->getArmyBonus() == army->getArmyBonus() &&
+	  (*it)->getMoveBonus() == army->getMoveBonus() &&
+	  (*it)->getMaxMoves() == army->getMaxMoves() &&
+	  (*it)->getAwardable() == army->getAwardable() &&
+	  (*it)->getDefendsRuins() == army->getDefendsRuins())
+	return *it;
+    }
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getGender() == army->getGender() &&
+	  (*it)->getStrength() == army->getStrength() &&
+	  (*it)->getProduction() == army->getProduction() &&
+	  (*it)->getArmyBonus() == army->getArmyBonus() &&
+	  (*it)->getMoveBonus() == army->getMoveBonus() &&
+	  (*it)->getMaxMoves() == army->getMaxMoves())
+	return *it;
+    }
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getGender() == army->getGender() &&
+	  (*it)->getStrength() == army->getStrength() &&
+	  (*it)->getProduction() == army->getProduction() &&
+	  (*it)->getMaxMoves() == army->getMaxMoves())
+	return *it;
+    }
+  return NULL;
+}
+
+ArmyProto * Armyset::lookupArmyByGender(Hero::Gender gender) const
+{
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getGender() == gender)
+	return *it;
+    }
+  return  NULL;
+}
+ArmyProto * Armyset::lookupArmyByStrengthAndTurns(guint32 str, guint32 turns) const
+{
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if (str && turns)
+	{
+	  if ((*it)->getStrength() == str && (*it)->getProduction() == turns)
+	    return *it;
+	}
+      else if (str)
+	{
+	  if ((*it)->getStrength() == str)
+	    return *it;
+	}
+      else if (turns)
+	{
+	  if ((*it)->getProduction() == turns)
+	    return *it;
+	}
+    }
+  return NULL;
+}
+
+ArmyProto * Armyset::lookupArmyByName(std::string name) const
+{
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getName() == name)
+	return *it;
+    }
+  return NULL;
+}
+	
+ArmyProto * Armyset::lookupArmyByType(guint32 army_type_id) const
+{
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getTypeId() == army_type_id)
 	return *it;
@@ -414,3 +493,229 @@ std::list<std::string> Armyset::scanSystemCollection()
   return retlist;
 }
 
+void Armyset::switchArmysetForRuinKeeper(Army *army, const Armyset *armyset)
+{
+  //do our best to change the armyset for the given ruin keeper.
+ 
+  //go find an equivalent type in the new armyset.
+  Armyset *old_armyset
+    = Armysetlist::getInstance()->getArmyset(army->getOwner()->getArmyset());
+  ArmyProto *old_armyproto = old_armyset->lookupArmyByType(army->getTypeId());
+  const ArmyProto *new_armyproto = armyset->lookupArmyByType(army->getTypeId());
+
+  //try looking at the same id first
+  if (new_armyproto != NULL && 
+      old_armyproto->getName() == new_armyproto->getName() &&
+      old_armyproto->getDefendsRuins() == new_armyproto->getDefendsRuins())
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+  //try finding an army by the same name
+  new_armyproto = armyset->lookupArmyByName(old_armyproto->getName());
+  if (new_armyproto != NULL &&
+      old_armyproto->getDefendsRuins() == new_armyproto->getDefendsRuins())
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+  //failing that, any ruin keeper will do.
+  new_armyproto = armyset->getRandomRuinKeeper();
+  if (new_armyproto != NULL)
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+}
+
+void Armyset::switchArmyset(ArmyProdBase *army, const Armyset *armyset)
+{
+  //do our best to change the armyset for the given armyprodbase.
+
+  //go find an equivalent type in the new armyset.
+  Armyset *old_armyset
+    = Armysetlist::getInstance()->getArmyset(army->getArmyset());
+  ArmyProto *old_armyproto = old_armyset->lookupArmyByType(army->getTypeId());
+  ArmyProto *new_armyproto = armyset->lookupArmyByType(army->getTypeId());
+
+  //try looking at the same id first
+  if (new_armyproto != NULL && 
+      old_armyproto->getName() == new_armyproto->getName())
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+  //try finding an army by the same name
+  new_armyproto = armyset->lookupArmyByName(old_armyproto->getName());
+  if (new_armyproto != NULL)
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+  //failing that, any army with similar characteristics will do.
+  new_armyproto = armyset->lookupSimilarArmy(old_armyproto);
+  if (new_armyproto != NULL)
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+  //failing that, any army with the same strength and turns will do.
+  new_armyproto = 
+    armyset->lookupArmyByStrengthAndTurns(old_armyproto->getStrength(),
+					  old_armyproto->getProduction());
+  if (new_armyproto != NULL)
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+  //failing that, any army with the same strength will do.
+  new_armyproto = 
+    armyset->lookupArmyByStrengthAndTurns(old_armyproto->getStrength(), 0);
+  if (new_armyproto != NULL)
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+  //failing that, any army with the same turns will do.
+  new_armyproto = 
+    armyset->lookupArmyByStrengthAndTurns(0, old_armyproto->getProduction());
+  if (new_armyproto != NULL)
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+  //failing that, any army will do.
+  new_armyproto = armyset->lookupArmyByGender(old_armyproto->getGender());
+  if (new_armyproto != NULL)
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+}
+
+void Armyset::switchArmyset(Army *army, const Armyset *armyset)
+{
+  //do our best to change the armyset for the given army.
+
+  //go find an equivalent type in the new armyset.
+  Armyset *old_armyset
+    = Armysetlist::getInstance()->getArmyset(army->getOwner()->getArmyset());
+  ArmyProto *old_armyproto = old_armyset->lookupArmyByType(army->getTypeId());
+  ArmyProto *new_armyproto = armyset->lookupArmyByType(army->getTypeId());
+
+  //try looking at the same id first
+  if (new_armyproto != NULL && 
+      old_armyproto->getName() == new_armyproto->getName())
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+  //try finding an army by the same name
+  new_armyproto = armyset->lookupArmyByName(old_armyproto->getName());
+  if (new_armyproto != NULL)
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+  //failing that, an army with the same gender (heroes).
+  if (army->isHero() == true)
+    {
+      new_armyproto = armyset->lookupArmyByGender(old_armyproto->getGender());
+      if (new_armyproto != NULL)
+	{
+	  army->morph(new_armyproto);
+	  return;
+	}
+    }
+
+  //failing that, any army with similar characteristics will do.
+  new_armyproto = armyset->lookupSimilarArmy(old_armyproto);
+  if (new_armyproto != NULL)
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+  //failing that, any army with the same strength and turns will do.
+  new_armyproto = 
+    armyset->lookupArmyByStrengthAndTurns(old_armyproto->getStrength(),
+					  old_armyproto->getProduction());
+  if (new_armyproto != NULL)
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+  //failing that, any army with the same strength will do.
+  new_armyproto = 
+    armyset->lookupArmyByStrengthAndTurns(old_armyproto->getStrength(), 0);
+  if (new_armyproto != NULL)
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+  //failing that, any army with the same turns will do.
+  new_armyproto = 
+    armyset->lookupArmyByStrengthAndTurns(0, old_armyproto->getProduction());
+  if (new_armyproto != NULL)
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+  //failing that, any army will do.
+  new_armyproto = armyset->lookupArmyByGender(old_armyproto->getGender());
+  if (new_armyproto != NULL)
+    {
+      army->morph(new_armyproto);
+      return;
+    }
+
+}
+
+const ArmyProto * Armyset::getRandomRuinKeeper() const
+{
+  // list all the army types that can be a sentinel.
+  std::vector<const ArmyProto*> occupants;
+  for (const_iterator i = begin(); i != end(); i++)
+    {
+      const ArmyProto *a = *i;
+      if (a->getDefendsRuins())
+	occupants.push_back(a);
+    }
+            
+  if (!occupants.empty())
+    return occupants[rand() % occupants.size()];
+
+  return NULL;
+}
+
+const ArmyProto *Armyset::getRandomAwardableAlly() const
+{
+  // list all the army types that can be given out as a reward.
+  std::vector<const ArmyProto*> allies;
+  for (const_iterator i = begin(); i != end(); i++)
+    {
+      const ArmyProto *a = *i;
+      if (a->getAwardable() == true)
+	allies.push_back(a);
+    }
+            
+  if (!allies.empty())
+    return allies[rand() % allies.size()];
+
+  return NULL;
+}

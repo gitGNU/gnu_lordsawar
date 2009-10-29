@@ -68,3 +68,13 @@ bool ArmyProdBase::save(XML_Helper* helper) const
 
   return retval;
 }
+	
+void ArmyProdBase::morph(const ArmyProto *army)
+{
+  setStrength(army->getStrength());
+  setMaxMoves(army->getMaxMoves());
+  setMoveBonus(army->getMoveBonus());
+  setArmyBonus(army->getArmyBonus());
+  setTypeId(army->getTypeId());
+  setArmyset(army->getArmyset());
+}

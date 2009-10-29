@@ -536,3 +536,12 @@ std::string Army::getName() const
     return "";
 }
 
+void Army::morph(const ArmyProto *army)
+{
+  setStat(Army::STRENGTH, army->getStrength());
+  setStat(Army::MOVES, army->getMaxMoves());
+  setStat(Army::MOVE_BONUS, army->getMoveBonus());
+  setStat(Army::ARMY_BONUS, army->getArmyBonus());
+  d_type_id = army->getTypeId();
+  d_armyset = army->getArmyset();
+}

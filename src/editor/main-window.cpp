@@ -68,6 +68,8 @@
 #include "port.h"
 #include "MapGenerator.h"
 #include "counter.h"
+#include "stacklist.h"
+#include "armyprodbase.h"
 
 #include "glade-helpers.h"
 #include "editorbigmap.h"
@@ -84,6 +86,7 @@
 #include "rewardlist-dialog.h"
 #include "timed-message-dialog.h"
 #include "backpack-editor-dialog.h"
+#include "select-armyset-dialog.h"
 #include "MapBackpack.h"
 
 
@@ -231,6 +234,9 @@ MainWindow::MainWindow()
     xml->get_widget("smooth_map_menuitem", smooth_map_menuitem);
     smooth_map_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &MainWindow::on_smooth_map_activated));
+    xml->get_widget("switch_armyset_menuitem", switch_armyset_menuitem);
+    switch_armyset_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_switch_armyset_activated));
     xml->get_widget("smooth_screen_menuitem", smooth_screen_menuitem);
     smooth_screen_menuitem->signal_activate().connect
       (sigc::mem_fun (this, &MainWindow::on_smooth_screen_activated));
@@ -1548,5 +1554,58 @@ void MainWindow::on_import_map_activated()
 
 	init_map_state();
 	bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
+    }
+}
+      
+void MainWindow::on_switch_armyset_activated()
+{
+  SelectArmysetDialog d;
+  d.run();
+  if (d.get_selected_armyset() == NULL)
+    return;
+  const Armyset *armyset = d.get_selected_armyset();
+  Playerlist *pl= Playerlist::getInstance();
+  Ruinlist *rl= Ruinlist::getInstance();
+  Citylist *cl= Citylist::getInstance();
+  //change the keepers in ruins
+  for (Ruinlist::iterator i = rl->begin(); i != rl->end(); i++)
+    {
+      Stack *s = (*i)->getOccupant();
+      if (s == NULL)
+	continue;
+      for (Stack::iterator j = s->begin(); j != s->end(); j++)
+	Armyset::switchArmysetForRuinKeeper(*j, armyset);
+    }
+  for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
+    {
+      Armyset *a = 
+	Armysetlist::getInstance()->getArmyset((*i)->getArmyset());
+      if (armyset == a)
+	continue;
+
+      //change the armyprodbases in cities.
+      for (Citylist::iterator j = cl->begin(); j != cl->end(); j++)
+	{
+	  City *c = *j;
+	  for (unsigned int k = 0; c->getSize(); k++)
+	    {
+	      ArmyProdBase *prodbase = (*c)[k]->getArmyProdBase();
+	      if (prodbase)
+		Armyset::switchArmyset(prodbase, armyset);
+	    }
+	}
+
+      //change the armies in the stacklist
+      Stacklist *sl = (*i)->getStacklist();
+      for (Stacklist::iterator j = sl->begin(); j != sl->end(); j++)
+	{
+	  Stack *s = (*j);
+	  for (Stack::iterator k = s->begin(); k != s->end(); k++)
+	    Armyset::switchArmyset(*k,armyset);
+	}
+
+      //finally, change the player's armyset.
+      (*i)->setArmyset(armyset->getId());
+      //where else are armyset ids hanging around?
     }
 }
