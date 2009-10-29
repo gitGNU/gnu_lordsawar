@@ -68,8 +68,6 @@
 #include "port.h"
 #include "MapGenerator.h"
 #include "counter.h"
-#include "stacklist.h"
-#include "armyprodbase.h"
 
 #include "glade-helpers.h"
 #include "editorbigmap.h"
@@ -82,6 +80,7 @@
 #include "city-editor-dialog.h"
 #include "map-info-dialog.h"
 #include "new-map-dialog.h"
+#include "switch-sets-dialog.h"
 #include "itemlist-dialog.h"
 #include "rewardlist-dialog.h"
 #include "timed-message-dialog.h"
@@ -233,9 +232,9 @@ MainWindow::MainWindow()
     xml->get_widget("smooth_map_menuitem", smooth_map_menuitem);
     smooth_map_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &MainWindow::on_smooth_map_activated));
-    xml->get_widget("switch_armyset_menuitem", switch_armyset_menuitem);
-    switch_armyset_menuitem->signal_activate().connect
-      (sigc::mem_fun(this, &MainWindow::on_switch_armyset_activated));
+    xml->get_widget("switch_sets_menuitem", switch_sets_menuitem);
+    switch_sets_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_switch_sets_activated));
     xml->get_widget("smooth_screen_menuitem", smooth_screen_menuitem);
     smooth_screen_menuitem->signal_activate().connect
       (sigc::mem_fun (this, &MainWindow::on_smooth_screen_activated));
@@ -372,8 +371,7 @@ void MainWindow::on_bigmap_surface_changed(Gtk::Allocation box)
   if (box.get_width() != last_box.get_width() || box.get_height() != last_box.get_height())
     {
       bigmap->screen_size_changed(bigmap_drawingarea->get_allocation());
-      bigmap->draw();
-      smallmap->draw(Playerlist::getActiveplayer());
+      redraw();
     }
   last_box = box;
 }
@@ -1243,8 +1241,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 	  needs_saving = true;
 
 	// we might have changed something visible
-	bigmap->draw();
-	smallmap->draw(Playerlist::getActiveplayer());
+	redraw();
     }
     else if (City *o = dynamic_cast<City *>(object))
     {
@@ -1255,8 +1252,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 	  needs_saving = true;
 
 	// we might have changed something visible
-	bigmap->draw();
-	smallmap->draw(Playerlist::getActiveplayer());
+	redraw();
     }
     else if (Ruin *o = dynamic_cast<Ruin *>(object))
     {
@@ -1283,7 +1279,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 	  needs_saving = true;
 
 	// we might have changed something visible
-	bigmap->draw();
+	redraw();
     }
     else if (MapBackpack *b = dynamic_cast<MapBackpack*>(object))
       {
@@ -1298,7 +1294,7 @@ void MainWindow::on_smooth_map_activated()
 {
   GameMap::getInstance()->applyTileStyles(0, 0, GameMap::getHeight(), 
 					  GameMap::getWidth(), true);
-  bigmap->draw();
+  redraw();
 }
 
 void MainWindow::on_smooth_screen_activated()
@@ -1556,51 +1552,19 @@ void MainWindow::on_import_map_activated()
     }
 }
       
-void MainWindow::on_switch_armyset_activated()
+void MainWindow::redraw()
 {
-  const Armyset *armyset = NULL;
-  Playerlist *pl= Playerlist::getInstance();
-  Ruinlist *rl= Ruinlist::getInstance();
-  Citylist *cl= Citylist::getInstance();
-  //change the keepers in ruins
-  for (Ruinlist::iterator i = rl->begin(); i != rl->end(); i++)
+  bigmap->draw();
+  smallmap->draw(Playerlist::getActiveplayer());
+}
+
+void MainWindow::on_switch_sets_activated()
+{
+  SwitchSetsDialog d;
+  int response = d.run();
+  if (response == Gtk::RESPONSE_ACCEPT)
     {
-      Stack *s = (*i)->getOccupant();
-      if (s == NULL)
-	continue;
-      for (Stack::iterator j = s->begin(); j != s->end(); j++)
-	Armyset::switchArmysetForRuinKeeper(*j, armyset);
-    }
-  for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
-    {
-      Armyset *a = 
-	Armysetlist::getInstance()->getArmyset((*i)->getArmyset());
-      if (armyset == a)
-	continue;
-
-      //change the armyprodbases in cities.
-      for (Citylist::iterator j = cl->begin(); j != cl->end(); j++)
-	{
-	  City *c = *j;
-	  for (unsigned int k = 0; c->getSize(); k++)
-	    {
-	      ArmyProdBase *prodbase = (*c)[k]->getArmyProdBase();
-	      if (prodbase)
-		Armyset::switchArmyset(prodbase, armyset);
-	    }
-	}
-
-      //change the armies in the stacklist
-      Stacklist *sl = (*i)->getStacklist();
-      for (Stacklist::iterator j = sl->begin(); j != sl->end(); j++)
-	{
-	  Stack *s = (*j);
-	  for (Stack::iterator k = s->begin(); k != s->end(); k++)
-	    Armyset::switchArmyset(*k,armyset);
-	}
-
-      //finally, change the player's armyset.
-      (*i)->setArmyset(armyset->getId());
-      //where else are armyset ids hanging around?
+      needs_saving = true;
+      redraw();
     }
 }

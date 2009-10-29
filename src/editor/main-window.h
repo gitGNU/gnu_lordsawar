@@ -50,6 +50,7 @@ class MainWindow: public sigc::trackable
     void show_initial_map();
     Gtk::Window &get_window() { return *window; }
 
+
  private:
     Gtk::Window* window;
     EditorBigMap* bigmap;
@@ -75,7 +76,7 @@ class MainWindow: public sigc::trackable
     Gtk::MenuItem *toggle_grid_menuitem;
     Gtk::MenuItem *smooth_map_menuitem;
     Gtk::MenuItem *smooth_screen_menuitem;
-    Gtk::MenuItem *switch_armyset_menuitem;
+    Gtk::MenuItem *switch_sets_menuitem;
     Gtk::MenuItem *edit_items_menuitem ;
     Gtk::MenuItem *edit_rewards_menuitem;
     Gtk::MenuItem *random_all_cities_menuitem;
@@ -123,7 +124,7 @@ class MainWindow: public sigc::trackable
     void on_edit_players_activated();
     void on_smooth_map_activated();
     void on_smooth_screen_activated();
-    void on_switch_armyset_activated();
+    void on_switch_sets_activated();
     void on_edit_items_activated();
     void on_edit_rewards_activated();
 
@@ -211,6 +212,7 @@ class MainWindow: public sigc::trackable
     bool on_bigmap_exposed(GdkEventExpose *event);
     bool on_smallmap_exposed(GdkEventExpose *event);
     void on_bigmap_surface_changed(Gtk::Allocation box);
+    void redraw();
 
     int d_width;
     int d_height;

@@ -68,6 +68,7 @@ lordsawar_editor_SOURCES = \
 	city-editor-dialog.cpp city-editor-dialog.h \
 	map-info-dialog.cpp map-info-dialog.h \
 	new-map-dialog.cpp new-map-dialog.h \
+	switch-sets-dialog.cpp switch-sets-dialog.h \
 	editorbigmap.cpp editorbigmap.h \
 	glade-helpers.h \
 	itemlist-dialog.cpp itemlist-dialog.h \

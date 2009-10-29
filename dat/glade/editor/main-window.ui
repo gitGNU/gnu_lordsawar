@@ -142,10 +142,9 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkMenuItem" id="switch_armyset_menuitem">
+                      <object class="GtkMenuItem" id="switch_sets_menuitem">
                         <property name="visible">True</property>
-                        <property name="tooltip_text" translatable="yes">Switch _Armyset</property>
-                        <property name="label" translatable="yes">menuitem1</property>
+                        <property name="label" translatable="yes">S_witch Image Sets</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>

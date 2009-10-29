@@ -73,6 +73,7 @@
 [type: gettext/glade]/dat/glade/editor/main-window.ui
 [type: gettext/glade]/dat/glade/editor/map-info-dialog.ui
 [type: gettext/glade]/dat/glade/editor/new-map-dialog.ui
+[type: gettext/glade]/dat/glade/editor/switch-sets-dialog.ui
 [type: gettext/glade]/dat/glade/editor/players-dialog.ui
 [type: gettext/glade]/dat/glade/editor/reward-editor-dialog.ui
 [type: gettext/glade]/dat/glade/editor/reward-list-dialog.ui
@@ -242,6 +243,7 @@ src/editor/tile-preview-scene.cpp
 src/editor/RenamableLocation.cpp
 src/editor/ruin-editor-dialog.cpp
 src/editor/new-map-dialog.cpp
+src/editor/switch-sets-dialog.cpp
 src/editor/select-army-dialog.cpp
 src/editor/map-info-dialog.cpp
 src/editor/reward-editor-dialog.cpp

@@ -43,6 +43,7 @@ class City;
 class Temple;
 class Bridge;
 class Ruin;
+class Armyset;
 
 /** Class representing the map in the game
   * 
@@ -195,6 +196,11 @@ class GameMap: public sigc::trackable
 	Vector<int> findNearestObjectToTheSouth(Vector<int> pos);
 	Vector<int> findNearestObjectToTheEast(Vector<int> pos);
 	Vector<int> findNearestObjectToTheWest(Vector<int> pos);
+
+	void switchArmysets(Armyset *armyset);
+	void switchCityset(Cityset *cityset);
+	void switchShieldset(Shieldset *shieldset);
+	void switchTileset(Tileset *tileset);
 
     protected:
         //! Create the map with the given tileset

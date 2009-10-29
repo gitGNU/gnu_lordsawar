@@ -52,6 +52,10 @@
 #include "GraphicsCache.h"
 #include "MapBackpack.h"
 #include "stacktile.h"
+#include "armyprodbase.h"
+#include "stack.h"
+#include "armyset.h"
+#include "armysetlist.h"
 
 std::string GameMap::d_tag = "map";
 std::string GameMap::d_itemstack_tag = "itemstack";
@@ -1094,4 +1098,67 @@ void GameMap::updateStackPositions()
 bool GameMap::canJoin(Stack *src, Stack *dest)
 {
   return getStacks(dest->getPos())->canAdd(src);
+}
+
+void GameMap::switchTileset(Tileset *tileset)
+{
+  d_tileSet = tileset;
+}
+
+void GameMap::switchShieldset(Shieldset *shieldset)
+{
+  d_shieldSet = shieldset;
+}
+
+void GameMap::switchCityset(Cityset *cityset)
+{
+  d_citySet = cityset;
+}
+
+void GameMap::switchArmysets(Armyset *armyset)
+{
+  Playerlist *pl= Playerlist::getInstance();
+  Ruinlist *rl= Ruinlist::getInstance();
+  Citylist *cl= Citylist::getInstance();
+  //change the keepers in ruins
+  for (Ruinlist::iterator i = rl->begin(); i != rl->end(); i++)
+    {
+      Stack *s = (*i)->getOccupant();
+      if (s == NULL)
+	continue;
+      for (Stack::iterator j = s->begin(); j != s->end(); j++)
+	Armyset::switchArmysetForRuinKeeper(*j, armyset);
+    }
+  for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
+    {
+      Armyset *a = 
+	Armysetlist::getInstance()->getArmyset((*i)->getArmyset());
+      if (armyset == a)
+	continue;
+
+      //change the armyprodbases in cities.
+      for (Citylist::iterator j = cl->begin(); j != cl->end(); j++)
+	{
+	  City *c = *j;
+	  for (unsigned int k = 0; c->getSize(); k++)
+	    {
+	      ArmyProdBase *prodbase = (*c)[k]->getArmyProdBase();
+	      if (prodbase)
+		Armyset::switchArmyset(prodbase, armyset);
+	    }
+	}
+
+      //change the armies in the stacklist
+      Stacklist *sl = (*i)->getStacklist();
+      for (Stacklist::iterator j = sl->begin(); j != sl->end(); j++)
+	{
+	  Stack *s = (*j);
+	  for (Stack::iterator k = s->begin(); k != s->end(); k++)
+	    Armyset::switchArmyset(*k,armyset);
+	}
+
+      //finally, change the player's armyset.
+      (*i)->setArmyset(armyset->getId());
+      //where else are armyset ids hanging around?
+    }
 }
