@@ -86,7 +86,6 @@
 #include "rewardlist-dialog.h"
 #include "timed-message-dialog.h"
 #include "backpack-editor-dialog.h"
-#include "select-armyset-dialog.h"
 #include "MapBackpack.h"
 
 
@@ -1559,11 +1558,7 @@ void MainWindow::on_import_map_activated()
       
 void MainWindow::on_switch_armyset_activated()
 {
-  SelectArmysetDialog d;
-  d.run();
-  if (d.get_selected_armyset() == NULL)
-    return;
-  const Armyset *armyset = d.get_selected_armyset();
+  const Armyset *armyset = NULL;
   Playerlist *pl= Playerlist::getInstance();
   Ruinlist *rl= Ruinlist::getInstance();
   Citylist *cl= Citylist::getInstance();
