@@ -1424,7 +1424,7 @@ bool GameMap::removeRuin(Vector<int> pos)
   Ruin *r = GameMap::getRuin(pos);
   if (r)
     {
-      setBuilding(pos, Maptile::NONE);
+      removeBuilding(r);
       Ruinlist::getInstance()->subtract(r);
       return true;
     }
@@ -1443,7 +1443,7 @@ bool GameMap::removeTemple(Vector<int> pos)
   Temple *t = GameMap::getTemple(pos);
   if (t)
     {
-      setBuilding(pos, Maptile::NONE);
+      removeBuilding(t);
       Templelist::getInstance()->subtract(t);
       return true;
     }
@@ -1463,7 +1463,7 @@ bool GameMap::removePort(Vector<int> pos)
   Port *p = GameMap::getPort(pos);
   if (p)
     {
-      setBuilding(pos, Maptile::NONE);
+      removeBuilding(p);
       Portlist::getInstance()->subtract(p);
       return true;
     }
@@ -1485,7 +1485,7 @@ bool GameMap::removeSignpost(Vector<int> pos)
   Signpost *s = GameMap::getSignpost(pos);
   if (s)
     {
-      setBuilding(pos, Maptile::NONE);
+      removeBuilding(s);
       Signpostlist::getInstance()->subtract(s);
       return true;
     }
@@ -1505,7 +1505,7 @@ bool GameMap::removeRoad(Vector<int> pos)
   Road *r = GameMap::getRoad(pos);
   if (r)
     {
-      setBuilding(pos, Maptile::NONE);
+      removeBuilding(r);
       Roadlist::getInstance()->subtract(r);
       return true;
     }
@@ -1541,7 +1541,7 @@ bool GameMap::removeBridge(Vector<int> pos)
   Bridge *b = GameMap::getBridge(pos);
   if (b)
     {
-      setBuilding(pos, Maptile::NONE);
+      removeBuilding(b);
       Bridgelist::getInstance()->subtract(b);
       return true;
     }
@@ -1594,12 +1594,23 @@ void GameMap::putBuilding(LocationBox *b, Maptile::Building building)
       }
 }
 
+void GameMap::removeBuilding(LocationBox *b)
+{
+  Rectangle r = b->get_area();
+  for (int x = r.x; x < r.x + r.w; ++x)
+    for (int y = r.y; y < r.y + r.h; ++y)
+      {
+	Maptile* t = getTile(Vector<int>(x, y));
+	t->setBuilding(Maptile::NONE);
+      }
+}
+
 bool GameMap::removeCity(Vector<int> pos)
 {
   City *c = GameMap::getCity(pos);
   if (c)
     {
-      setBuilding(pos, Maptile::NONE);
+      removeBuilding(c);
       Citylist::getInstance()->subtract(c);
       return true;
     }

@@ -261,6 +261,7 @@ class GameMap: public sigc::trackable
 	bool are_those_tiles_similar(Tile::Type outer_tile,Tile::Type inner_tile, bool checking_loneliness);
 	Vector<int> findNearestObjectInDir(Vector<int> pos, Vector<int> dir);
 	void putBuilding(LocationBox *b, Maptile::Building building);
+	void removeBuilding(LocationBox *b);
 
 	bool putGrass(LocationBox *b);
 
