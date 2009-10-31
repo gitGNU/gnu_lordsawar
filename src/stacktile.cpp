@@ -21,6 +21,7 @@
 #include "player.h"
 #include "stacklist.h"
 #include "playerlist.h"
+#include "Tile.h"
 
 StackTile::StackTile(Vector<int> pos)
   :tile(pos)
@@ -33,19 +34,33 @@ StackTile::~StackTile()
 
 bool StackTile::canAdd(Stack *stack)
 {
-  if (stack->size() == 0)
+  return canAdd(stack->size(), stack->getOwner());
+}
+    
+bool StackTile::canAdd(guint32 size, Player *owner)
+{
+  if (size == 0)
     return false;
-  if (countNumberOfArmies(stack->getOwner()) + stack->size() > MAX_ARMIES_ON_A_SINGLE_TILE)
+  if (countNumberOfArmies(owner) + size > MAX_ARMIES_ON_A_SINGLE_TILE)
     return false;
   return true;
 }
 
 bool StackTile::leaving(Stack *stack)
 {
-  iterator it = findStack(stack);
-  if (it == end())
-    return false;
-  erase(it);
+  bool first = true;
+  while (1)
+    {
+      iterator it = findStack(stack);
+      if (it == end())
+	{
+	  if (first)
+	    return false;
+	  else
+	    break;
+	}
+      erase(it);
+    }
   return true;
 }
 
@@ -58,7 +73,7 @@ void StackTile::add(Stack *stack)
 {
   iterator it = findStack(stack);
   if (it != end()) //we replace existing entries, to make this work sans game.
-    erase(it);
+    leaving(stack);
   struct StackTileRecord rec;
   rec.stack_id = stack->getId();
   rec.player_id = stack->getOwner()->getId();
@@ -93,8 +108,9 @@ Stack *StackTile::getStack()
 {
   if (size() > 0)
     {
-      Player *p = Playerlist::getInstance()->getPlayer(front().player_id);
-      return p->getStacklist()->getStackById(front().stack_id);
+      StackTileRecord rec = front();
+      Player *p = Playerlist::getInstance()->getPlayer(rec.player_id);
+      return p->getStacklist()->getStackById(rec.stack_id);
     }
   return NULL;
 }

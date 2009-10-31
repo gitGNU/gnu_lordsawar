@@ -39,6 +39,11 @@ Port::Port(const Port& s)
 {
 }
 
+Port::Port(const Port& s, Vector<int> pos)
+  :Location(s, pos)
+{
+}
+
 Port::~Port()
 {
 }

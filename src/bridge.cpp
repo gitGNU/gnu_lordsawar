@@ -43,6 +43,11 @@ Bridge::Bridge(const Bridge& s)
 {
 }
 
+Bridge::Bridge(const Bridge& s, Vector<int> pos)
+  :Location(s, pos), d_type(s.d_type)
+{
+}
+
 Bridge::~Bridge()
 {
 }

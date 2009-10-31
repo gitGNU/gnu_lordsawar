@@ -23,6 +23,7 @@
 #define LOCATIONLIST_H
 
 #include <gtkmm.h>
+#include <algorithm>
 #include <list>
 #include <map>
 #include "vector.h"
@@ -60,6 +61,19 @@ template<class T> class LocationList : public std::list<T>
 	    Vector<int> pos = t->getPos() + Vector<int>(i,j);
 	    d_object[pos] = t;
 	  }
+    }
+  void subtract(T t)
+    {
+      this->erase(std::find(this->begin(), this->end(), t));
+      d_id.erase(d_id.find(t->getId()));
+      int size = t->getSize();
+      for (int i = 0; i < size; i++)
+	for (int j = 0; j < size; j++)
+	  {
+	    Vector<int> pos = t->getPos() + Vector<int>(i,j);
+	    d_object.erase(d_object.find(pos));
+	  }
+      delete t;
     }
 
   //! Returns the object at position (x,y).  

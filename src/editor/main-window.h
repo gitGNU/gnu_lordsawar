@@ -96,6 +96,7 @@ class MainWindow: public sigc::trackable
     Gtk::Label *mouse_position_label;
     Gtk::RadioButton *pointer_radiobutton;
     Gtk::Tooltips tooltips;
+    Gtk::Box *players_hbox;
 
     
     GdkEventButton *button_event;
@@ -213,6 +214,15 @@ class MainWindow: public sigc::trackable
     bool on_smallmap_exposed(GdkEventExpose *event);
     void on_bigmap_surface_changed(Gtk::Allocation box);
     void redraw();
+    void fill_players();
+
+    struct PlayerItem
+    {
+	Gtk::ToggleButton *button;
+	int player_id;
+    };
+    std::list<PlayerItem> player_buttons;
+    void on_player_toggled(PlayerItem item);
 
     int d_width;
     int d_height;

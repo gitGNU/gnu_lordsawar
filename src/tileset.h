@@ -141,7 +141,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	void setTileSize(guint32 tileSize) {d_tileSize = tileSize;}
 
         //! Returns the index to the given terrain type.
-        guint32 getIndex(Tile::Type type) const;
+        int getIndex(Tile::Type type) const;
 
 	void setLargeSelectorFilename(std::string p){d_large_selector = p;};
 	void setSmallSelectorFilename(std::string p){d_small_selector = p;};
@@ -228,6 +228,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	std::string getConfigurationFile();
 	static std::list<std::string> scanUserCollection();
 	static std::list<std::string> scanSystemCollection();
+	guint32 getGrassTileIndex();
     private:
         //! Callback to load Tile objects into the Tileset.
         bool loadTile(std::string, XML_Helper* helper);

@@ -45,6 +45,7 @@ class Signpost: public Location, public Renamable
         Signpost(Vector<int> pos, std::string name = "nowhere");
 	//! Copy constructor.
         Signpost(const Signpost&);
+        Signpost(const Signpost&, Vector<int> pos);
         //! Loading constructor.
 	/**
 	 * @param helper  The opened saved-game file to load the signpost from.

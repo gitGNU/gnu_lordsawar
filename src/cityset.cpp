@@ -450,4 +450,12 @@ bool Cityset::validateTempleTileWidth()
     return false;
   return true; 
 }
+bool Cityset::tileWidthsEqual(Cityset *cityset)
+{
+  if (getCityTileWidth() == cityset->getCityTileWidth() &&
+      getRuinTileWidth() == cityset->getRuinTileWidth() &&
+      getTempleTileWidth() == cityset->getTempleTileWidth())
+    return true;
+  return false;
+}
 // End of file

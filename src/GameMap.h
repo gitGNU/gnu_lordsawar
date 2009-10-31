@@ -136,6 +136,7 @@ class GameMap: public sigc::trackable
 	static bool canJoin(Stack *src, Stack *dest);
 	static Stack* getFriendlyStack(Vector<int> pos);
 	static Stack* getEnemyStack(Vector<int> pos);
+	static MapBackpack *getBackpack(Vector<int> pos);
 
         //! Get the tile object at position (x,y)
         Maptile* getTile(int x, int y) const;
@@ -184,6 +185,7 @@ class GameMap: public sigc::trackable
 	 * Give each tile in the prescribed area the preferred picture for 
 	 * the underlying terrain tile.
 	 */
+	void applyTileStyles (Rectangle r, bool smooth_terrain);
 	void applyTileStyles (int minx, int miny, int maxx, int maxy,
 			      bool smooth_terrain);
 	void applyTileStyle (int i, int j);
@@ -201,6 +203,34 @@ class GameMap: public sigc::trackable
 	void switchCityset(Cityset *cityset);
 	void switchShieldset(Shieldset *shieldset);
 	void switchTileset(Tileset *tileset);
+
+	bool moveBuilding(Vector<int> from, Vector<int> to);
+	bool canPutBuilding(Maptile::Building bldg, guint32 size, Vector<int> to, bool making_islands = true);
+	bool canPutStack(guint32 size, Player *p, Vector<int> to);
+	bool moveStack(Stack *stack, Vector<int> to);
+
+	void moveBackpack(Vector<int> from, Vector<int> to);
+	guint32 getBuildingSize(Vector<int> tile);
+	Maptile::Building getBuilding(Vector<int> tile);
+	Tile::Type getTerrainType(Vector<int> tile);
+	void setBuilding(Vector<int> tile, Maptile::Building building);
+
+	bool putCity(City *c);
+	bool removeCity(Vector<int> pos);
+	bool putRuin(Ruin *r);
+	bool removeRuin(Vector<int> pos);
+	bool putTemple(Temple *t);
+	bool removeTemple(Vector<int> pos);
+	bool putRoad(Road *r);
+	bool removeRoad(Vector<int> pos);
+	bool putBridge(Bridge *b);
+	bool removeBridge(Vector<int> pos);
+	bool putSignpost(Signpost *s);
+	bool removeSignpost(Vector<int> pos);
+	bool putPort(Port *p);
+	bool removePort(Vector<int> pos);
+	void updateShips(Vector<int> pos);
+
 
     protected:
         //! Create the map with the given tileset
@@ -230,6 +260,13 @@ class GameMap: public sigc::trackable
 						   int j);
 	bool are_those_tiles_similar(Tile::Type outer_tile,Tile::Type inner_tile, bool checking_loneliness);
 	Vector<int> findNearestObjectInDir(Vector<int> pos, Vector<int> dir);
+	void putBuilding(LocationBox *b, Maptile::Building building);
+
+	bool putGrass(LocationBox *b);
+
+	bool putTerrain(Rectangle r, Tile::Type type);
+
+	bool offmap(int x, int y);
 
         // Data
         static GameMap* s_instance;

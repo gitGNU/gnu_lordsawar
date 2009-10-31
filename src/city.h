@@ -85,8 +85,12 @@ class City : public Ownable, public Location, public Renamable,
 	     std::string name = DEFAULT_CITY_NAME, 
 	     guint32 gold = DEFAULT_CITY_INCOME, 
 	     guint32 numslots = MAX_PRODUCTION_SLOTS_IN_A_CITY);
+
 	//! Copy constructor.
         City(const City&);
+
+        City(const City&, Vector<int> pos);
+
         //! Loading constructor.
 	/**
 	 * Make a new city object by reading it from a saved-game file.

@@ -185,6 +185,7 @@ class Cityset : public sigc::trackable, public Set
 	bool validateCityTileWidth();
 	bool validateRuinTileWidth();
 	bool validateTempleTileWidth();
+	bool tileWidthsEqual(Cityset *cityset);
 
     private:
 

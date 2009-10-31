@@ -46,8 +46,12 @@ class Location : public UniquelyIdentified, public LocationBox
       * @param size    The number of tiles wide and high the feature is.
       */
      Location(Vector<int> pos, guint32 size = 1);
+
      //! Copy constructor.
      Location(const Location&);
+
+     Location(const Location&, Vector<int> pos);
+
      //! Loading constructor.
      /**
       * Load the location from an opened saved-game file.

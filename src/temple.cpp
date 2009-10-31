@@ -58,6 +58,11 @@ Temple::Temple(const Temple& t)
 {
 }
 
+Temple::Temple(const Temple& t, Vector<int> pos)
+  :NamedLocation(t, pos), d_type(t.d_type)
+{
+}
+
 Temple::~Temple()
 {
 }

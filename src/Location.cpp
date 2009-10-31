@@ -37,6 +37,11 @@ Location::Location(const Location& loc)
 {
 }
 
+Location::Location(const Location& loc, Vector<int> pos)
+  :UniquelyIdentified(loc), LocationBox(loc, pos)
+{
+}
+
 Location::Location(XML_Helper* helper, guint32 size)
     :UniquelyIdentified(helper), LocationBox(helper)
 {

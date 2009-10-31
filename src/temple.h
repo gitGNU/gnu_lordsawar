@@ -50,8 +50,12 @@ class Temple : public NamedLocation
          */
         Temple(Vector<int> pos, guint32 width, std::string name = DEFAULT_TEMPLE_NAME, 
 	       int type = 0);
+
 	//! Copy constructor.
         Temple(const Temple&);
+
+        Temple(const Temple&, Vector<int> pos);
+
         //! Loading constructor.
 	/**
 	 * @param helper  The opened saved-game file to load the temple from.

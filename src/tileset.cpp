@@ -121,14 +121,14 @@ Tileset::~Tileset()
     delete (*this)[i];
 }
 
-guint32 Tileset::getIndex(Tile::Type type) const
+int Tileset::getIndex(Tile::Type type) const
 {
   for (guint32 i = 0; i < size(); i++)
     if (type == (*this)[i]->getType())
       return i;
 
   // catch errors?
-  return 0;
+  return -1;
 }
 
 bool Tileset::loadTile(string tag, XML_Helper* helper)
@@ -579,5 +579,15 @@ std::list<std::string> Tileset::scanSystemCollection()
     }
 
   return retlist;
+}
+
+guint32 Tileset::getGrassTileIndex()
+{
+  unsigned int grass_index;
+  for (grass_index = 0; grass_index < size(); ++grass_index)
+    if ((*this)[grass_index]->getType() == Tile::GRASS)
+      break;
+
+  return grass_index;
 }
 //End of file

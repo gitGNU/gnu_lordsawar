@@ -239,6 +239,8 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 
 	void setWinningPlayer(Player *winner);
 
+	//! only the scenario editor should use this.
+	void setActiveplayer(Player *p) {d_activeplayer = p;};
 
 	void add(Player *player);
     protected:

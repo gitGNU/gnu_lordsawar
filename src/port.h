@@ -36,8 +36,12 @@ class Port: public Location
           * @param pos          The location of the port on the game map.
           */
         Port(Vector<int> pos);
+
 	//! Copy constructor.
         Port(const Port&);
+
+        Port(const Port&, Vector<int> pos);
+
         //! Loading constructor.
 	/**
 	 * Load the port object from the opened saved-game file.

@@ -30,6 +30,11 @@ NamedLocation::NamedLocation(const NamedLocation& object)
 {
 }
 
+NamedLocation::NamedLocation(const NamedLocation& object, Vector<int> pos)
+  :Location(object, pos), Namable(object), d_description(object.d_description)
+{
+}
+
 NamedLocation::NamedLocation(XML_Helper* helper, guint32 size)
   :Location(helper, size), Namable(helper)
 {

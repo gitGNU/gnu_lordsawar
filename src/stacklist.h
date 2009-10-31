@@ -193,6 +193,7 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 
 	//! Add a stack to the list.
 	void add(Stack *stack);
+
         /** 
 	 * Erase a Stack from the list, and free the contents of the Stack.
 	 *

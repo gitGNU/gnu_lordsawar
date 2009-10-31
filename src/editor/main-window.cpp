@@ -171,14 +171,17 @@ MainWindow::MainWindow()
 			      EditorBigMap::CITY, 1);
     setup_pointer_radiobutton(xml, "erase", "button_erase",
 			      EditorBigMap::ERASE, 1);
+    setup_pointer_radiobutton(xml, "move", "button_move",
+			      EditorBigMap::MOVE, 1);
     setup_pointer_radiobutton(xml, "draw_port", "button_port",
 			      EditorBigMap::PORT, 1);
     setup_pointer_radiobutton(xml, "draw_bridge", "button_bridge",
 			      EditorBigMap::BRIDGE, 1);
     setup_pointer_radiobutton(xml, "draw_bag", "button_bag",
 			      EditorBigMap::BAG, 1);
-    on_pointer_radiobutton_toggled();
 
+    xml->get_widget("players_hbox", players_hbox);
+    on_pointer_radiobutton_toggled();
 
     xml->get_widget("mouse_position_label", mouse_position_label);
     
@@ -409,6 +412,8 @@ void MainWindow::init()
   Shieldsetlist::getInstance()->instantiateImages();
   Citysetlist::getInstance()->instantiateImages();
   show_initial_map();
+  Playerlist::getInstance()->setActiveplayer(Playerlist::getInstance()->getNeutral());
+  fill_players();
 }
 
 void MainWindow::hide()
@@ -908,9 +913,15 @@ void MainWindow::on_edit_players_activated()
 {
     PlayersDialog d(d_width, d_height);
     d.set_parent_window(*window);
+    Player *active = Playerlist::getActiveplayer();
     int response = d.run();
     if (response == Gtk::RESPONSE_ACCEPT)
-      needs_saving = true;
+      {
+	if (Playerlist::getInstance()->getPlayer(active->getId()))
+	  Playerlist::getInstance()->setActiveplayer(active);
+	needs_saving = true;
+	fill_players();
+      }
 }
 
 void MainWindow::on_edit_map_info_activated()
@@ -1080,6 +1091,9 @@ void MainWindow::on_pointer_radiobutton_toggled()
 			    get_tile_style_id());
     terrain_type_table->set_sensitive(pointer == EditorBigMap::TERRAIN);
     terrain_tile_style_hbox->set_sensitive(pointer == EditorBigMap::TERRAIN);
+
+    players_hbox->set_sensitive (pointer == EditorBigMap::STACK || 
+				 pointer == EditorBigMap::CITY);
 }
 
 Tile::Type MainWindow::get_terrain()
@@ -1567,5 +1581,52 @@ void MainWindow::on_switch_sets_activated()
       needs_saving = true;
       bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
       redraw();
+      fill_players();
     }
+}
+    
+	
+void MainWindow::on_player_toggled(PlayerItem item)
+{
+  Player *p = Playerlist::getInstance()->getPlayer(item.player_id);
+  if (p)
+    Playerlist::getInstance()->setActiveplayer(p);
+  fill_players();
+}
+
+void MainWindow::fill_players()
+{
+  for (std::list<PlayerItem>::iterator it = player_buttons.begin();
+       it != player_buttons.end(); it++)
+    players_hbox->remove(dynamic_cast<Gtk::Widget&>(*(*it).button));
+  player_buttons.clear();
+  Playerlist *pl = Playerlist::getInstance();
+  bool sensitive = players_hbox->get_sensitive();
+  if (!sensitive)
+    players_hbox->set_sensitive(true);
+  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+    {
+      Gtk::ToggleButton *toggle = new Gtk::ToggleButton();
+      toggle->foreach(sigc::mem_fun(toggle, &Gtk::Container::remove));
+
+      Gtk::Image *image = new Gtk::Image();
+      image->property_pixbuf() = 
+	GraphicsCache::getInstance()->getShieldPic(1, *it)->to_pixbuf();
+      toggle->add(*manage(image));
+      toggle->show_all();
+      if (*it == pl->getActiveplayer())
+	toggle->set_active(true);
+
+      struct PlayerItem item;
+      item.button = toggle;
+      item.player_id = (*it)->getId();
+      player_buttons.push_back(item);
+      toggle->set_tooltip_text((*it)->getName());
+      players_hbox->pack_start(*manage(toggle), Gtk::PACK_SHRINK);
+      toggle->signal_toggled().connect
+	(sigc::bind(sigc::mem_fun(this, &MainWindow::on_player_toggled), item));
+    }
+  players_hbox->show_all();
+  if (!sensitive)
+    players_hbox->set_sensitive(false);
 }

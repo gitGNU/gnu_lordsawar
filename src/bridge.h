@@ -49,8 +49,12 @@ class Bridge: public Location
          * @param type         The type of bridge.  0=e,1=n, 2=w, 3=s.
          */
         Bridge(Vector<int> pos, int type = 0);
+
 	//! Copy constructor.
         Bridge(const Bridge&);
+
+        Bridge(const Bridge&, Vector<int> pos);
+
         //! Loading constructor.
 	/**
 	 * Load the bridge from the opened saved-game file.

@@ -54,6 +54,8 @@ class LocationBox : public Immovable
 
      //! Copy constructor.
      LocationBox(const LocationBox&);
+     LocationBox(const LocationBox&, Vector<int> pos);
+
      //! Loading constructor.
      /**
       * Load the location box from an opened saved-game file.

@@ -17,6 +17,7 @@
 #include <list>
 #include <gtkmm.h>
 #include "vector.h"
+#include "Tile.h"
 class Stack;
 class Player;
 /**
@@ -56,6 +57,7 @@ public:
     StackTile(Vector<int> pos);
     ~StackTile();
     bool canAdd(Stack *stack);
+    bool canAdd(guint32 size, Player *owner);
     bool leaving(Stack *stack);
     void arriving(Stack *stack);
     void add(Stack *stack);

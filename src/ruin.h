@@ -77,6 +77,8 @@ class Ruin : public NamedLocation, public sigc::trackable
         //! Copy constructor.
         Ruin(const Ruin&);
 
+        Ruin(const Ruin&, Vector<int> pos);
+
         //! Loading constructor.
 	/**
 	 * @param helper  The opened saved-game file to load the ruin from.

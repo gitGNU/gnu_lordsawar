@@ -50,6 +50,13 @@ Ruin::Ruin(const Ruin& ruin)
 {
 }
 
+Ruin::Ruin(const Ruin& ruin, Vector<int> pos)
+    :NamedLocation(ruin, pos), d_searched(ruin.d_searched), 
+    d_type(ruin.d_type), d_occupant(ruin.d_occupant), d_hidden(ruin.d_hidden), 
+    d_owner(ruin.d_owner), d_sage(ruin.d_sage), d_reward(ruin.d_reward)
+{
+}
+
 Ruin::Ruin(XML_Helper* helper, guint32 width)
     :NamedLocation(helper, width), d_type(0), d_occupant(0), 
     d_hidden(0), d_owner(0), d_sage(0), d_reward(0)

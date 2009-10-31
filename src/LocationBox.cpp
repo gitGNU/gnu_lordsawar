@@ -57,6 +57,11 @@ LocationBox::LocationBox(const LocationBox& loc)
 {
 }
 
+LocationBox::LocationBox(const LocationBox& loc, Vector<int> pos)
+  : Immovable(pos), d_size(loc.d_size)
+{
+}
+
 LocationBox::LocationBox(XML_Helper* helper, guint32 size)
     :Immovable(helper)
 {

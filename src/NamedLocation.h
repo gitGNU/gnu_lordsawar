@@ -39,6 +39,9 @@ class NamedLocation: public Location, public Namable
 		   std::string desc);
      //! Copy constructor.
      NamedLocation(const NamedLocation&);
+
+     NamedLocation(const NamedLocation&, Vector<int> pos);
+
      //! Loading constructor.
      NamedLocation(XML_Helper* helper, guint32 size);
      //! Destructor.

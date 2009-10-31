@@ -2019,10 +2019,7 @@ bool Player::doChangeVectorDestination(Vector<int> src, Vector<int> dest,
   //okay, do the vectoring changes.
   std::list<City*>::iterator it = sources.begin();
   for (; it != sources.end(); it++)
-    {
-      printf("here1\n");
     retval &= (*it)->changeVectorDestination(dest);
-    }
   vectored = sources;
   return retval;
 }

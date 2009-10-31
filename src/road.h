@@ -61,6 +61,9 @@ class Road: public Location
 
 	//! Copy constructor.
         Road(const Road&);
+
+        Road(const Road&, Vector<int> pos);
+
         //! Loading constructor.
 	/**
 	 * Make a new road object by reading lordsawar.roadlist.road XML 

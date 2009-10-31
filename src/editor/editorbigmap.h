@@ -57,6 +57,7 @@ class EditorBigMap: public BigMap
 	SIGNPOST,
 	ROAD, 
 	ERASE, 
+	MOVE, 
 	PORT, 
 	BRIDGE,
 	BAG
@@ -89,6 +90,8 @@ class EditorBigMap: public BigMap
     Tile::Type pointer_terrain;
     int pointer_size;
     int pointer_tile_style_id;
+    //! moving sets if we're moving objects on the map via the move button
+    Vector<int> moving_objects_from;
 
     enum {
 	NONE, DRAGGING
@@ -99,6 +102,7 @@ class EditorBigMap: public BigMap
     int tile_to_bridge_type(Vector<int> tile);
     void change_map_under_cursor();
     std::vector<Vector<int> > get_cursor_tiles();
+    Rectangle get_cursor_rectangle();
     std::vector<Vector<int> > get_screen_tiles();
     bool show_tile_types_instead_of_tile_styles;
 };

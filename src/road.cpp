@@ -43,6 +43,11 @@ Road::Road(const Road& s)
 {
 }
 
+Road::Road(const Road& s, Vector<int> pos)
+  :Location(s, pos), d_type(s.d_type)
+{
+}
+
 Road::~Road()
 {
 }

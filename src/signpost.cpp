@@ -38,6 +38,10 @@ Signpost::Signpost(const Signpost& s)
   :Location(s), Renamable(s)
 {
 }
+Signpost::Signpost(const Signpost& s, Vector<int> pos)
+  :Location(s, pos), Renamable(s)
+{
+}
 
 Signpost::~Signpost()
 {

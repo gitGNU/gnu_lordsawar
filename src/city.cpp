@@ -110,6 +110,14 @@ City::City(const City& c)
 {
 }
 
+City::City(const City& c, Vector<int> pos)
+    :Ownable(c), Location(c, pos), Renamable(c), ProdSlotlist(c),
+    d_gold(c.d_gold), d_defense_level(c.d_defense_level), d_burnt(c.d_burnt),
+    d_vectoring(c.d_vectoring),d_vector(c.d_vector), d_capital(c.d_capital), 
+    d_capital_owner(c.d_capital_owner)
+{
+}
+
 City::~City()
 {
 }

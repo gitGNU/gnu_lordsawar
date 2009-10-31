@@ -126,14 +126,14 @@ bool Stack::isMovingToOrFromAShip(Vector<int> dest, bool &on_ship) const
 {
   Vector<int> pos = getPos();
 
-  bool to_city = GameMap::getInstance()->getTile(dest)->getBuilding() == Maptile::CITY;
-  bool on_city = GameMap::getInstance()->getTile(pos)->getBuilding() == Maptile::CITY;
+  bool to_city = GameMap::getInstance()->getBuilding(dest) == Maptile::CITY;
+  bool on_city = GameMap::getInstance()->getBuilding(pos) == Maptile::CITY;
 
-  bool on_port = GameMap::getInstance()->getTile(pos)->getBuilding() == Maptile::PORT;
-  bool on_bridge = GameMap::getInstance()->getTile(pos)->getBuilding() == Maptile::BRIDGE;
-  bool to_bridge = GameMap::getInstance()->getTile(dest)->getBuilding() == Maptile::BRIDGE;
-  bool on_water = (GameMap::getInstance()->getTile(pos.x,pos.y)->getMaptileType() == Tile::WATER);
-  bool to_water = (GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType() == Tile::WATER);
+  bool on_port = GameMap::getInstance()->getBuilding(pos) == Maptile::PORT;
+  bool on_bridge = GameMap::getInstance()->getBuilding(pos) == Maptile::BRIDGE;
+  bool to_bridge = GameMap::getInstance()->getBuilding(dest) == Maptile::BRIDGE;
+  bool on_water = (GameMap::getInstance()->getTerrainType(pos) == Tile::WATER);
+  bool to_water = (GameMap::getInstance()->getTerrainType(dest) == Tile::WATER);
   //here we mark the armies as being on or off a boat
   /* skipping refers to when we have to move over another friendly stack
    * of a size that's too big to join with. */

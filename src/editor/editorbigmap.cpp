@@ -59,6 +59,7 @@ EditorBigMap::EditorBigMap()
 {
     mouse_pos = prev_mouse_pos = Vector<int>(0, 0);
 
+    moving_objects_from = Vector<int>(-1,-1);
     mouse_state = NONE;
     input_locked = false;
     pointer = POINTER;
@@ -84,6 +85,7 @@ void EditorBigMap::set_pointer(Pointer p, int size, Tile::Type t,
     pointer_size = size;
     pointer_tile_style_id = tile_style_id;
 
+    moving_objects_from = Vector<int>(-1,-1);
     if (redraw)
       draw();
     
@@ -238,7 +240,17 @@ std::vector<Vector<int> > EditorBigMap::get_cursor_tiles()
     return tiles;
 }
 
+Rectangle EditorBigMap::get_cursor_rectangle()
+{
+    // find out which cursor tiles are within bounds
+    std::vector<Vector<int> > tiles;
 
+    Vector<int> current_tile = mouse_pos_to_tile(mouse_pos);
+    int offset = (pointer_size - 1) / 2;
+    Vector<int> tile = current_tile - Vector<int>(offset, offset);
+
+    return Rectangle (tile.x, tile.y, pointer_size, pointer_size);
+}
 
 int EditorBigMap::tile_to_bridge_type(Vector<int> t)
 {
@@ -285,42 +297,14 @@ int EditorBigMap::tile_to_bridge_type(Vector<int> t)
     return type;
 }
 
-
-
-namespace
-{
-    template <typename T>
-    void remove_from_map(T *l, Vector<int> tile)
-    {
-	for (typename T::iterator i = l->begin(), end = l->end(); i != end; ++i)
-	    if ((*i)->contains(tile))
-	    {
-		// erase from map
-		GameMap *gamemap = GameMap::getInstance();
-		Rectangle r = (*i)->get_area();
-		for (int x = r.x; x < r.x + r.w; ++x)
-		    for (int y = r.y; y < r.y + r.h; ++y)
-			gamemap->getTile(Vector<int>(x, y))->setBuilding(Maptile::NONE);
-		
-		// erase from list
-		l->erase(i);
-		break;
-	    }
-    }
-}
-
 void EditorBigMap::change_map_under_cursor()
 {
+		
+  Player* active = Playerlist::getInstance()->getActiveplayer();
     std::vector<Vector<int> > tiles = get_cursor_tiles();
     Tileset* ts = GameMap::getInstance()->getTileset();
     Cityset* cs = GameMap::getInstance()->getCityset();
     
-    // find the index of the "grass" tile
-    unsigned int grass_index;
-    for (grass_index = 0; grass_index < ts->size(); ++grass_index)
-      if ((*ts)[grass_index]->getType() == Tile::GRASS)
-	break;
-        
     for (std::vector<Vector<int> >::iterator i = tiles.begin(),
 	     end = tiles.end(); i != end; ++i)
     {
@@ -393,6 +377,47 @@ void EditorBigMap::change_map_under_cursor()
 	      }
 	    break;
 	    
+	case MOVE:
+	    if (moving_objects_from == Vector<int>(-1,-1))
+	      {
+		if (GameMap::getInstance()->getBuilding(tile) != 
+		    Maptile::NONE || 
+		    GameMap::getStack(tile) != NULL ||
+		    GameMap::getBackpack(tile)->empty() == false)
+		  moving_objects_from = tile;
+	      }
+	    else
+	      {
+		//here we go with the move!
+		GameMap *gm = GameMap::getInstance();
+		if (gm->getBuilding(moving_objects_from) != Maptile::NONE)
+		  {
+		    guint32 s = gm->getBuildingSize(moving_objects_from);
+		    if (gm->canPutBuilding
+			(gm->getBuilding(moving_objects_from), s, tile, false) == true)
+		      {
+			gm->moveBuilding(moving_objects_from, tile);
+			moving_objects_from = Vector<int>(-1,-1);
+		      }
+		  }
+		else if (gm->getStack(moving_objects_from) != NULL)
+		  {
+		    Stack *s = gm->getFriendlyStack(moving_objects_from);
+		    if (!s)
+		      s = gm->getStack(moving_objects_from);
+		    if (gm->canPutStack(s->size(), s->getOwner(), tile) == true)
+		      {
+			gm->moveStack(s, tile);
+			moving_objects_from = Vector<int>(-1,-1);
+		      }
+		  }
+		else if (gm->getBackpack(moving_objects_from)->empty() == false)
+		  {
+		    gm->moveBackpack(moving_objects_from, tile);
+    		    moving_objects_from = Vector<int>(-1,-1);
+		  }
+	      }
+	    break;
 	case ERASE:
 	    // check if there is a building or a stack there and remove it
 
@@ -403,287 +428,159 @@ void EditorBigMap::change_map_under_cursor()
 		s->getOwner()->deleteStack(s);
 	      }
 	    
-	    maptile->setBuilding(Maptile::NONE);
-	    
 	    // ... or a temple ...
-	    remove_from_map(Templelist::getInstance(), tile);
+	    GameMap::getInstance()->removeTemple(tile);
+
 	    // ... or a port ...
-	    remove_from_map(Portlist::getInstance(), tile);
+	    GameMap::getInstance()->removePort(tile);
+
 	    // ... or a ruin ...
-	    {
-	      if (Ruinlist::getInstance()->getObjectAt(tile))
-		{
-		  Rewardlist *rl = Rewardlist::getInstance();
-		  for (Rewardlist::iterator it = rl->begin(); 
-		       it != rl->end(); it++)
-		    {
-		      if ((*it)->getType() == Reward::RUIN)
-			{
-			  Reward_Ruin *rr = static_cast<Reward_Ruin*>(*it);
-			  if (rr->getRuin()->getPos() == tile)
-			    {
-			      rl->remove(*it);
-			    }
-			}
-		    }
-		}
-	    }
-	    remove_from_map(Ruinlist::getInstance(), tile);
+	    if (GameMap::getRuin(tile) != NULL)
+	      {
+		Rewardlist *rl = Rewardlist::getInstance();
+		for (Rewardlist::iterator i = rl->begin(); i != rl->end(); i++)
+		  {
+		    if ((*i)->getType() == Reward::RUIN)
+		      {
+			Reward_Ruin *rr = static_cast<Reward_Ruin*>(*i);
+			if (rr->getRuin()->getPos() == tile)
+			  rl->remove(*i);
+		      }
+		  }
+	      }
+	    GameMap::getInstance()->removeRuin(tile);
+
 	    // ... or a road ...
-	    remove_from_map(Roadlist::getInstance(), tile);
+	    GameMap::getInstance()->removeRoad(tile);
+
 	    // ... or a bridge...
-	    remove_from_map(Bridgelist::getInstance(), tile);
+	    GameMap::getInstance()->removeBridge(tile);
+
 	    // ... or a signpost ...
-	    remove_from_map(Signpostlist::getInstance(), tile);
+	    GameMap::getInstance()->removeSignpost(tile);
+
 	    // ... or a city
-	    remove_from_map(Citylist::getInstance(), tile);
+	    GameMap::getInstance()->removeCity(tile);
+
 	    // ... or a bag
 	    GameMap::getInstance()->getTile(tile)->getBackpack()->removeAllFromBackpack();
 	    break;
 
 	case STACK:
-	    if (!GameMap::getStack(tile))
+	    if (GameMap::getInstance()->canPutStack(1, active, tile) == true)
 	    {
 		// Create a new dummy stack. As we don't want to have empty
 		// stacks hanging around, it's assumed that the default armyset
 		// has at least one entry.
-		Player* p = Playerlist::getInstance()->getNeutral();
-		Stack* s = new Stack(p, tile);
+		Stack* s = new Stack(active, tile);
 		const Armysetlist* al = Armysetlist::getInstance();
-		Army* a = new Army(*al->getArmy(p->getArmyset(), 0), p);
-		GameMap *gm = GameMap::getInstance();
-		if (gm->getTile(s->getPos())->getBuilding() == Maptile::PORT ||
-		    gm->getTile(s->getPos())->getBuilding() == Maptile::BRIDGE)
-		  a->setInShip(false);
-		else if (gm->getTile(s->getPos())->getMaptileType() == 
-			 Tile::WATER)
-		  a->setInShip(true);
-		else
-		  a->setInShip(false);
+		Army* a = new Army(*al->getArmy(active->getArmyset(), 0), 
+				   active);
 		s->push_back(a);
-		p->addStack(s);
+		active->addStack(s);
+		GameMap::getInstance()->updateShips(tile);
 		//if we're on a city, change the allegiance of the stack
 		//and it's armies to that of the city
-		if (gm->getTile(s->getPos())->getBuilding() == Maptile::CITY)
+		if (GameMap::getInstance()->getBuilding(s->getPos()) == Maptile::CITY)
 		  {
-		    Citylist *clist = Citylist::getInstance();
-		    City *c = clist->getNearestCity(s->getPos());
-			if (s->getOwner() != c->getOwner())
-			  {
-			    //remove it from the old player's list of stacks
-			    s->getOwner()->getStacklist()->remove(s);
-			    //and give it to the new player list of stacks
-			    c->getOwner()->getStacklist()->push_back(s);
-			    //change the ownership of the stack
-			    s->setOwner(c->getOwner());
-			    //and all of it's armies
-			    for (Stack::iterator it = s->begin(); 
-				 it != s->end(); it++)
-			      (*it)->setOwner(c->getOwner());
-			  }
+		    City *c = GameMap::getCity(s->getPos());
+		    Stacklist::changeOwnership(s, c->getOwner());
 	          }
 	    }
 
 	    break;
 	    
 	case CITY:
-	{
+	  {
 	    // check if we can place the city
-	    bool city_placeable = true;
+	    bool city_placeable =
+	      GameMap::getInstance()->canPutBuilding
+	      (Maptile::CITY,cs->getCityTileWidth(), tile);
 	    
-	    for (int x = tile.x; x <= tile.x + 1; ++x)
-		for (int y = tile.y; y <= tile.y + 1; ++y)
-		{
-		    if (x >= GameMap::getWidth() || y >= GameMap::getHeight()
-			|| GameMap::getInstance()->getTile(Vector<int>(x, y))->getBuilding() != Maptile::NONE)
-		    {
-			city_placeable = false;
-			break;
-		    }
-		    if (city_placeable == false)
-		      break;
-		}
 	    if (!city_placeable)
 		break;
 	    
-	    // create the city
 	    City *c = new City(tile, cs->getCityTileWidth());
-	    c->setOwner(Playerlist::getInstance()->getNeutral());
-	    Citylist::getInstance()->add(c);
-
-	    bool replaced_grass = false;
-	    // notify the maptiles that a city has been placed here
-	    Rectangle r = c->get_area();
-	    for (int x = r.x; x < r.x + r.w; ++x)
-		for (int y = r.y; y < r.y + r.h; ++y)
-		{
-		    Maptile* t = GameMap::getInstance()->getTile(Vector<int>(x, y));
-		    if (t->getMaptileType() != Tile::GRASS)
-		      replaced_grass = true;
-		    t->setBuilding(Maptile::CITY);
-		    t->setType(grass_index);
-		}
-
-	    //change allegiance of stacks under this city
-	    for (unsigned int x = 0; x < c->getSize(); x++)
-	      {
-		for (unsigned int y = 0; y < c->getSize(); y++)
-		  {
-		    Stack *s = 
-		      GameMap::getStack(c->getPos() + Vector<int>(x,y));
-		    if (s)
-		      {
-			if (c->getOwner() == 
-			    Playerlist::getInstance()->getNeutral() &&
-			    s->getFortified() == true)
-			  s->setFortified(false);
-			if (s->getOwner() != c->getOwner())
-			  {
-			    //remove it from the old player's list of stacks
-			    s->getOwner()->getStacklist()->remove(s);
-			    //and give it to the new player list of stacks
-			    c->getOwner()->getStacklist()->push_back(s);
-			    //change the ownership of the stack
-			    s->setOwner(c->getOwner());
-			    //and all of it's armies
-			    for (Stack::iterator it = s->begin(); 
-				 it != s->end(); it++)
-			      (*it)->setOwner(c->getOwner());
-			  }
-		      }
-		  }
-    
-	      }
-
-	    // finally, smooth the surrounding map
-	    if (replaced_grass)
-	      GameMap::getInstance()->applyTileStyles
-		(0, 0, GameMap::getHeight(), GameMap::getWidth(), true);
-	}
-	break;
+	    GameMap::getInstance()->putCity(c);
+	    break;
+	  }
 	    
 	case RUIN:
-	    if (maptile->getBuilding() == Maptile::NONE 
-		&& maptile->getMaptileType() != Tile::WATER)
-	    {
-		maptile->setBuilding(Maptile::RUIN);
-		bool replaced_grass = false;
-		if (maptile->getMaptileType() != Tile::GRASS)
-		  replaced_grass = true;
-		maptile->setType(grass_index);
-		Ruin *ruin = new Ruin(tile, cs->getRuinTileWidth());
-		Ruinlist::getInstance()->add(ruin);
-		if (replaced_grass)
-		  GameMap::getInstance()->applyTileStyles
-		    (0, 0, GameMap::getHeight(), GameMap::getWidth(), true);
-	    }
+	  {
+	    bool ruin_placeable = GameMap::getInstance()->canPutBuilding
+	      (Maptile::RUIN, cs->getRuinTileWidth(), tile);
+	    if (!ruin_placeable)
+	      break;
+	    Ruin *r = new Ruin(tile, cs->getRuinTileWidth());
+	    GameMap::getInstance()->putRuin(r);
 	    break;
+	  }
 	    
 	case TEMPLE:
-	    if (maptile->getBuilding() == Maptile::NONE 
-		&& maptile->getMaptileType() != Tile::WATER)
-	    {
-	        bool replaced_grass = false;
-		maptile->setBuilding(Maptile::TEMPLE);
-		if (maptile->getMaptileType() != Tile::GRASS)
-		  replaced_grass = true;
-		maptile->setType(grass_index);
-		Templelist::getInstance()->add
-		  (new Temple(tile, cs->getTempleTileWidth()));
-		if (replaced_grass)
-		  GameMap::getInstance()->applyTileStyles
-		    (0, 0, GameMap::getHeight(), GameMap::getWidth(), true);
-	    }
+	  {
+	    bool temple_placeable = GameMap::getInstance()->canPutBuilding
+	      (Maptile::TEMPLE, cs->getRuinTileWidth(), tile);
+	    if (!temple_placeable)
+	      break;
+	    Temple *t = new Temple(tile, cs->getTempleTileWidth());
+	    GameMap::getInstance()->putTemple(t);
 	    break;
+	  }
 	    
 	case SIGNPOST:
-	    if (maptile->getBuilding() == Maptile::NONE 
-		&& maptile->getMaptileType() == Tile::GRASS)
-	    {
-		maptile->setBuilding(Maptile::SIGNPOST);
-		Signpostlist::getInstance()->add(new Signpost(tile));
-	    }
+	  {
+	    bool signpost_placeable = GameMap::getInstance()->canPutBuilding
+	      (Maptile::SIGNPOST, 1, tile);
+	    if (!signpost_placeable)
+	      break;
+	    Signpost *s = new Signpost(tile);
+	    GameMap::getInstance()->putSignpost(s);
 	    break;
-	    
+	  }
+
 	case PORT:
-	    if (maptile->getBuilding() == Maptile::NONE 
-		&& maptile->getMaptileType() == Tile::WATER &&
-		maptile->getTileStyle()->getType() != TileStyle::INNERMIDDLECENTER)
-	    {
-		maptile->setBuilding(Maptile::PORT);
-		Portlist::getInstance()->add(new Port(tile));
-		if (GameMap::getStack(tile))
-		  {
-		    Stack* s = GameMap::getStack(tile);
-		    if (s->hasShip() == true)
-		      {
-			for (Stack::iterator it = s->begin(); it != s->end(); 
-			     it++)
-			  (*it)->setInShip(false);
-		      }
-		  }
-	    }
+	  {
+	    bool port_placeable = GameMap::getInstance()->canPutBuilding
+	      (Maptile::PORT, 1, tile);
+	    if (!port_placeable)
+	      break;
+	    Port *p = new Port(tile);
+	    GameMap::getInstance()->putPort(p);
 	    break;
+	  }
 	    
 	case BRIDGE:
-	    if ((maptile->getBuilding() == Maptile::NONE
-		 || maptile->getBuilding() == Maptile::BRIDGE)
-		&& maptile->getMaptileType() == Tile::WATER)
-	    {
-		int type = tile_to_bridge_type (tile);
-		if (maptile->getBuilding() == Maptile::BRIDGE)
-		    Bridgelist::getInstance()->getObjectAt(tile)->setType(type);
-		else
-		{
-		    maptile->setBuilding(Maptile::BRIDGE);
-		    Bridgelist::getInstance()->add(new Bridge(tile, type));
-		    if (GameMap::getStack(tile))
-		      {
-			Stack* s = GameMap::getStack(tile);
-			if (s->hasShip() == true)
-			  {
-			    for (Stack::iterator it = s->begin(); it != s->end(); 
-				 it++)
-			      (*it)->setInShip(false);
-			  }
-		      }
-		}
-	        changed_tiles.dim = Vector<int>(1, 1);
-	    }
+	  {
+	    bool bridge_placeable = GameMap::getInstance()->canPutBuilding
+	      (Maptile::BRIDGE, 1, tile);
+	    if (!bridge_placeable)
+	      break;
+	    Bridge *b = new Bridge(tile, tile_to_bridge_type (tile));
+	    GameMap::getInstance()->putBridge(b);
 	    break;
-	    
+	  }
+
 	case ROAD:
-	    if ((maptile->getBuilding() == Maptile::NONE
-		 || maptile->getBuilding() == Maptile::ROAD)
-		&& maptile->getMaptileType() != Tile::WATER)
 	    {
-		int type = CreateScenario::calculateRoadType(tile);
-		if (maptile->getBuilding() == Maptile::NONE)
+	      bool road_placeable = GameMap::getInstance()->canPutBuilding
+		(Maptile::ROAD, 1, tile);
+	      if (!road_placeable)
 		{
-		    maptile->setBuilding(Maptile::ROAD);
-		    Roadlist::getInstance()->add(new Road(tile, type));
+		  //overwrite existing roads
+		  if (GameMap::getRoad(tile) != NULL)
+		    GameMap::getInstance()->removeRoad(tile);
+		  else
+		    break;
 		}
 
-		// now reconfigure all roads in the surroundings
-		for (int x = tile.x - 1; x <= tile.x + 1; ++x)
-		    for (int y = tile.y - 1; y <= tile.y + 1; ++y)
-		    {
-			if ((x < 0 || x >= GameMap::getWidth()) &&
-			    (y < 0 || y >= GameMap::getHeight()))
-			    continue;
-
-			Vector<int> pos(x, y);
-			if (Road *r = Roadlist::getInstance()->getObjectAt(pos))
-			{
-			    int newtype = CreateScenario::calculateRoadType(pos);
-			    r->setType(newtype);
-			}
-		    }
+	      int type = CreateScenario::calculateRoadType(tile);
+	      Road *r = new Road(tile, type);
+	      GameMap::getInstance()->putRoad(r);
 		
-		changed_tiles.pos -= Vector<int>(1, 1);
-		changed_tiles.dim = Vector<int>(3, 3);
-	    }
+      	      changed_tiles.pos -= Vector<int>(1, 1);
+	      changed_tiles.dim = Vector<int>(3, 3);
 	    break;
+	    }
 	case BAG:
 	    if (maptile->getMaptileType() != Tile::WATER)
 	    {
@@ -701,6 +598,14 @@ void EditorBigMap::change_map_under_cursor()
 	    map_tiles_changed.emit(changed_tiles);
     }
 
+    if (pointer == TERRAIN)
+      {
+	Rectangle r = get_cursor_rectangle();
+	guint32 border = 1;
+	r.pos -= Vector<int>(border, border);
+	r.dim += Vector<int>(border * 2, border * 2);
+	GameMap::getInstance()->applyTileStyles(r, true);
+      }
     draw();
 }
 
@@ -745,6 +650,10 @@ void EditorBigMap::after_draw()
     terrain_box_color.set_rgb_p(200.0/255.0, 200.0/255.0, 200.0/255.0);
     Gdk::Color erase_box_color = Gdk::Color();
     erase_box_color.set_rgb_p(200.0/255.0, 50.0/255.0, 50.0/255.0);
+    Gdk::Color move_box_color = Gdk::Color();
+    move_box_color.set_rgb_p(50.0/255.0, 200.0/255.0, 50.0/255.0);
+    Gdk::Color moving_box_color = Gdk::Color();
+    moving_box_color.set_rgb_p(50.0/255.0, 50.0/255.0, 200.0/255.0);
     for (std::vector<Vector<int> >::iterator i = tiles.begin(),
 	     end = tiles.end(); i != end; ++i)
       {
@@ -770,25 +679,34 @@ void EditorBigMap::after_draw()
 				    tilesize - 1, tilesize -1);
 	    break;
 
+	  case MOVE:
+	    if (moving_objects_from != Vector<int>(-1,-1))
+	      buffer_gc->set_rgb_fg_color (moving_box_color);
+	    else
+	      buffer_gc->set_rgb_fg_color (move_box_color);
+	    buffer->draw_rectangle (buffer_gc, false, pos.x + 1, pos.y + 1, 
+				    tilesize - 1, tilesize -1);
+	    break;
+
 	  case STACK:
 	    pic = GraphicsCache::getInstance()->getArmyPic
-	      (Playerlist::getInstance()->getNeutral()->getArmyset(), 0,
-	       Playerlist::getInstance()->getNeutral(), NULL);
+	      (Playerlist::getInstance()->getActiveplayer()->getArmyset(), 0,
+	       Playerlist::getInstance()->getActiveplayer(), NULL);
 	    pic->blit(buffer, pos);
 	    break;
 
 	  case CITY:
-	    pic = GraphicsCache::getInstance()->getCityPic(0, Playerlist::getInstance()->getNeutral(), 1);
+	    pic = GraphicsCache::getInstance()->getCityPic(0, Playerlist::getInstance()->getActiveplayer(), GameMap::getInstance()->getCityset()->getId());
 	    pic->blit(buffer, pos);
 	    break;
 
 	  case RUIN:
-	    pic = GraphicsCache::getInstance()->getRuinPic(0, 1);
+	    pic = GraphicsCache::getInstance()->getRuinPic(0, GameMap::getInstance()->getCityset()->getId());
 	    pic->blit(buffer, pos);
 	    break;
 
 	  case TEMPLE:
-	    pic = GraphicsCache::getInstance()->getTemplePic(0, 1);
+	    pic = GraphicsCache::getInstance()->getTemplePic(0, GameMap::getInstance()->getCityset()->getId());
 	    pic->blit(buffer, pos);
 	    break;
 
