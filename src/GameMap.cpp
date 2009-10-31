@@ -1245,14 +1245,20 @@ bool GameMap::canPutBuilding(Maptile::Building bldg, guint32 size, Vector<int> t
 bool GameMap::moveBuilding(Vector<int> from, Vector<int> to)
 {
   //move a game object located at FROM, and move it to TO.
-  //just pick one
+  //watch out for overlaps.
   //return true if we moved something.
   bool moved = true;
     
   guint32 size = getBuildingSize(from);
+  if (size == 0)
+    return false;
 
   if (canPutBuilding(getBuilding(from), size, to) == false)
-    return false;
+    {
+      if (getLocation(from)->contains(to) == false &&
+	  LocationBox(to, size).contains(from) == false)
+	return false;
+    }
 	  
   switch (getBuilding(from))
     {
@@ -1260,77 +1266,61 @@ bool GameMap::moveBuilding(Vector<int> from, Vector<int> to)
       break;
     case Maptile::SIGNPOST:
 	{
-	  from = getSignpost(from)->getPos();
-	  Signpost *old_signpost = getSignpost(from);
+	  Signpost *old_signpost = getSignpost(getSignpost(from)->getPos());
 	  Signpost *new_signpost = new Signpost(*old_signpost, to);
-	  Signpostlist::getInstance()->subtract(old_signpost);
-	  Signpostlist::getInstance()->add(new_signpost);
+	  removeSignpost(old_signpost->getPos());
+	  putSignpost(new_signpost);
 	  break;
 	}
     case Maptile::PORT:
 	{
-	  from = getPort(from)->getPos();
-	  Port *old_port = getPort(from);
+	  Port *old_port = getPort(getPort(from)->getPos());
 	  Port *new_port = new Port(*old_port, to);
-	  Portlist::getInstance()->subtract(old_port);
-	  Portlist::getInstance()->add(new_port);
+	  removePort(old_port->getPos());
+	  putPort(new_port);
 	  break;
 	}
     case Maptile::BRIDGE:
 	{
-	  from = getBridge(from)->getPos();
-	  Bridge *old_bridge = getBridge(from);
+	  Bridge *old_bridge = getBridge(getBridge(from)->getPos());
 	  Bridge *new_bridge = new Bridge(*old_bridge, to);
-	  Bridgelist::getInstance()->subtract(old_bridge);
-	  Bridgelist::getInstance()->add(new_bridge);
+	  removeBridge(old_bridge->getPos());
+	  putBridge(new_bridge);
 	  break;
 	}
     case Maptile::ROAD:
 	{
-	  from = getRoad(from)->getPos();
-	  Road *old_road = getRoad(from);
+	  Road *old_road = getRoad(getRoad(from)->getPos());
 	  Road *new_road = new Road(*old_road, to);
-	  Roadlist::getInstance()->subtract(old_road);
-	  Roadlist::getInstance()->add(new_road);
+	  removeRoad(old_road->getPos());
+	  putRoad(new_road);
 	  break;
 	}
     case Maptile::RUIN:
 	{
-	  from = getRuin(from)->getPos();
-	  Ruin* old_ruin = getRuin(from);
+	  Ruin* old_ruin = getRuin(getRuin(from)->getPos());
 	  Ruin *new_ruin = new Ruin(*old_ruin, to);
-	  Ruinlist::getInstance()->subtract(old_ruin);
-	  Ruinlist::getInstance()->add(new_ruin);
+	  removeRuin(old_ruin->getPos());
+	  putRuin(new_ruin);
 	  break;
 	}
     case Maptile::TEMPLE:
 	{
-	  from = getTemple(from)->getPos();
-	  Temple* old_temple = getTemple(from);
+	  Temple* old_temple = getTemple(getTemple(from)->getPos());
 	  Temple* new_temple = new Temple(*old_temple, to);
-	  Templelist::getInstance()->subtract(old_temple);
-	  Templelist::getInstance()->add(new_temple);
+	  removeTemple(old_temple->getPos());
+	  putTemple(new_temple);
 	  break;
 	}
     case Maptile::CITY:
 	{
-	  from = getCity(from)->getPos();
-	  City* old_city = getCity(from);
+	  City* old_city = getCity(getCity(from)->getPos());
 	  City* new_city = new City(*old_city, to);
-	  Citylist::getInstance()->subtract(old_city);
-	  //Citylist::getInstance()->add(new_city);
+	  removeCity(old_city->getPos());
 	  putCity(new_city);
 	  break;
 	}
     }
-  for (unsigned int i = 0; i < size; i++)
-    for (unsigned int j = 0; j < size; j++)
-      {
-	Vector<int> src = from + Vector<int>(i,j);
-	Vector<int> dest = to + Vector<int>(i,j);
-	setBuilding(dest, getBuilding(src));
-	setBuilding(src, Maptile::NONE);
-      }
   return moved;
 }
 
@@ -1667,4 +1657,19 @@ void GameMap::updateShips(Vector<int> pos)
 
 	}
     }
+}
+Location *GameMap::getLocation(Vector<int> tile)
+{
+  switch (getBuilding(tile))
+    {
+    case Maptile::CITY: return getCity(tile);
+    case Maptile::RUIN: return getRuin(tile);
+    case Maptile::TEMPLE: return getTemple(tile);
+    case Maptile::ROAD: return getRoad(tile);
+    case Maptile::BRIDGE: return getBridge(tile);
+    case Maptile::SIGNPOST: return getSignpost(tile);
+    case Maptile::PORT: return getPort(tile);
+    case Maptile::NONE: break;
+    }
+  return NULL;
 }

@@ -231,6 +231,8 @@ class GameMap: public sigc::trackable
 	bool removePort(Vector<int> pos);
 	void updateShips(Vector<int> pos);
 
+	Location *getLocation(Vector<int> pos);
+
 
     protected:
         //! Create the map with the given tileset

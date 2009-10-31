@@ -388,32 +388,42 @@ void EditorBigMap::change_map_under_cursor()
 	      }
 	    else
 	      {
+		Vector<int> from = moving_objects_from;
 		//here we go with the move!
 		GameMap *gm = GameMap::getInstance();
-		if (gm->getBuilding(moving_objects_from) != Maptile::NONE)
+		if (gm->getBuilding(from) != Maptile::NONE)
 		  {
-		    guint32 s = gm->getBuildingSize(moving_objects_from);
+		    guint32 s = gm->getBuildingSize(from);
 		    if (gm->canPutBuilding
-			(gm->getBuilding(moving_objects_from), s, tile, false) == true)
+			(gm->getBuilding(from), s, tile, false) == true)
 		      {
-			gm->moveBuilding(moving_objects_from, tile);
+			gm->moveBuilding(from, tile);
 			moving_objects_from = Vector<int>(-1,-1);
 		      }
+		    else
+		      {
+			if (gm->getLocation(from)->contains(tile) ||
+			    LocationBox(tile, s).contains(from))
+			  {
+			    gm->moveBuilding(from, tile);
+			    moving_objects_from = Vector<int>(-1,-1);
+			  }
+		      }
 		  }
-		else if (gm->getStack(moving_objects_from) != NULL)
+		else if (gm->getStack(from) != NULL)
 		  {
-		    Stack *s = gm->getFriendlyStack(moving_objects_from);
+		    Stack *s = gm->getFriendlyStack(from);
 		    if (!s)
-		      s = gm->getStack(moving_objects_from);
+		      s = gm->getStack(from);
 		    if (gm->canPutStack(s->size(), s->getOwner(), tile) == true)
 		      {
 			gm->moveStack(s, tile);
 			moving_objects_from = Vector<int>(-1,-1);
 		      }
 		  }
-		else if (gm->getBackpack(moving_objects_from)->empty() == false)
+		else if (gm->getBackpack(from)->empty() == false)
 		  {
-		    gm->moveBackpack(moving_objects_from, tile);
+		    gm->moveBackpack(from, tile);
     		    moving_objects_from = Vector<int>(-1,-1);
 		  }
 	      }

@@ -29,6 +29,7 @@
 #include "defs.h"
 #include "army.h"
 #include "GraphicsCache.h"
+#include "hero.h"
 
 //give a hero some more abilities
 ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a, bool show_sight_stat)
@@ -50,7 +51,8 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a, bool show_sight_stat)
     Gtk::Image *hero_image;
     xml->get_widget("hero_image", hero_image);
     hero_image->property_pixbuf() = 
-      gc->getNewLevelPic(Playerlist::getActiveplayer())->to_pixbuf();
+      gc->getNewLevelPic(Playerlist::getActiveplayer(),
+			 dynamic_cast<Hero*>(a)->getGender())->to_pixbuf();
     
     Gtk::Label *label;
     xml->get_widget("label", label);

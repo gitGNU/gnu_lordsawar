@@ -268,7 +268,7 @@ class GraphicsCache
 	 * @param p the player to colour the image as.
 	 * @return new-level image.
 	 */
-        PixMask* getNewLevelPic(const Player* p);
+        PixMask* getNewLevelPic(const Player* p, guint32 gender);
 
         /** Function for getting a city picture
           * 
@@ -463,7 +463,7 @@ class GraphicsCache
         ExplosionCacheItem* addExplosionPic(guint32 tileset);
 
 	//! Creates a new new-level picture in the player's colour.
-        NewLevelCacheItem* addNewLevelPic(const Player* p);
+        NewLevelCacheItem* addNewLevelPic(const Player* p, guint32 gender);
 
         //! Creates a new flag picture with the given parameters.
         FlagCacheItem* addFlagPic(int size, const Player *p, guint32 tileset);
@@ -649,8 +649,10 @@ class GraphicsCache
 	PixMask* d_small_stronghold_unexplored;
 	PixMask* d_small_ruin_explored;
 	PixMask* d_small_temple;
-	PixMask *d_newlevel;
-	PixMask *d_newlevelmask;
+	PixMask *d_newlevel_male;
+	PixMask *d_newlevelmask_male;
+	PixMask *d_newlevel_female;
+	PixMask *d_newlevelmask_female;
 };
 
 bool operator <(ArmyCacheItem lhs, ArmyCacheItem rhs);

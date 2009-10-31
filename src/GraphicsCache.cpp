@@ -37,6 +37,7 @@
 #include "stack.h"
 #include "gui/image-helpers.h"
 #include "FogMap.h"
+#include "hero.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -80,6 +81,7 @@ struct PlantedStandardCacheItem
 struct NewLevelCacheItem
 {
     guint32 player_id;
+    guint32 gender;
     PixMask* surface;
 };
 
@@ -317,8 +319,10 @@ GraphicsCache::~GraphicsCache()
     delete d_small_ruin_unexplored;
     delete d_small_stronghold_unexplored;
     delete d_small_ruin_explored;
-    delete d_newlevel;
-    delete d_newlevelmask;
+    delete d_newlevel_male;
+    delete d_newlevel_female;
+    delete d_newlevelmask_male;
+    delete d_newlevelmask_female;
 }
 
 PixMask* GraphicsCache::getSmallRuinedCityPic()
@@ -416,14 +420,14 @@ PixMask* GraphicsCache::getShipPic(const Player* p)
     return myitem->surface;
 }
 
-PixMask* GraphicsCache::getNewLevelPic(const Player* p)
+PixMask* GraphicsCache::getNewLevelPic(const Player* p, guint32 gender)
 {
     debug("getting new level pic " <<p->getName())
     std::list<NewLevelCacheItem*>::iterator it;
     NewLevelCacheItem* myitem;
     for (it = d_newlevellist.begin(); it != d_newlevellist.end(); it++)
     {
-        if ((*it)->player_id == p->getId())
+        if ((*it)->player_id == p->getId() && (*it)->gender == gender)
         {
             myitem = (*it);
             
@@ -437,7 +441,7 @@ PixMask* GraphicsCache::getNewLevelPic(const Player* p)
     // We are still here, so the graphic is not in the cache. 
     // addNewLevelPic calls checkPictures on its own, so we can 
     // simply return the surface
-    myitem = addNewLevelPic(p);
+    myitem = addNewLevelPic(p, gender);
 
     return myitem->surface;
 }
@@ -1619,15 +1623,19 @@ ShipCacheItem* GraphicsCache::addShipPic(const Player* p)
   return myitem;
 }
 
-NewLevelCacheItem* GraphicsCache::addNewLevelPic(const Player* p)
+NewLevelCacheItem* GraphicsCache::addNewLevelPic(const Player* p, guint32 gender)
 {
   debug("ADD new level pic: " <<p->getName())
 
   NewLevelCacheItem* myitem = new NewLevelCacheItem();
   myitem->player_id = p->getId();
+  myitem->gender = gender;
 
   // copy the pixmap including player colors
-  myitem->surface = applyMask(d_newlevel, d_newlevelmask, p);
+  if (gender == Hero::FEMALE)
+    myitem->surface = applyMask(d_newlevel_female, d_newlevelmask_female, p);
+  else
+    myitem->surface = applyMask(d_newlevel_male, d_newlevelmask_male, p);
 
   //now the final preparation steps:
   //a) add the size
@@ -2667,8 +2675,11 @@ void GraphicsCache::loadNewLevelPics()
 {
   std::vector<PixMask* > half;
   half = disassemble_row(File::getMiscFile("various/hero-newlevel.png"), 2);
-  d_newlevel = half[0];
-  d_newlevelmask = half[1];
+  d_newlevel_male = half[0];
+  d_newlevelmask_male = half[1];
+  half = disassemble_row(File::getMiscFile("various/hero-newlevel.png"), 2);
+  d_newlevel_female = half[0];
+  d_newlevelmask_female = half[1];
 }
 
 void GraphicsCache::loadMoveBonusPics()
