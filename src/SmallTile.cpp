@@ -47,7 +47,7 @@ SmallTile::SmallTile(XML_Helper* helper)
     }
 }
 
-bool SmallTile::save(XML_Helper *helper)
+bool SmallTile::save(XML_Helper *helper) const
 {
   bool retval = true;
 

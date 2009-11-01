@@ -27,10 +27,9 @@
 #include "PixMask.h"
 #include "shield.h"
 #include "hero.h"
+#include "armyprotobase.h"
 
 class XML_Helper;
-
-#include "armyprotobase.h"
 class Armyset;
 
 class ArmyProto : public ArmyProtoBase
@@ -45,13 +44,14 @@ class ArmyProto : public ArmyProtoBase
 	//! Loading constructor.
         ArmyProto(XML_Helper* helper);
         
-	//! Create an empty army prototype.
+	//! Default constructor.  Create an empty army prototype.
 	ArmyProto();
 
 	//! Destructor.
         virtual ~ArmyProto();
 
-        // Set functions:
+
+        // Set Methods
         
 	//! Sets the filename of the image.
 	void setImageName(Shield::Colour c,std::string name) {d_image_name[c] = name;}
@@ -73,8 +73,11 @@ class ArmyProto : public ArmyProtoBase
 	//! Sets the awardable state of an Army prototype.
 	void setAwardable (bool awardable) {d_awardable = awardable; }
 
-        // Get functions
-        
+	//! Sets the gender of the army prototype.
+	void setGender(Hero::Gender g) {d_gender = g;};
+	
+
+        // Get Methods
         
 	//! Returns the basename of the picture's filename
 	/**
@@ -101,28 +104,44 @@ class ArmyProto : public ArmyProtoBase
 	//! Gets the awardable state of the Army.
 	bool getAwardable() const {return d_awardable; }
 
-        //! Saves the Army prototype to an opened armyset file.
-        virtual bool save(XML_Helper* helper) const;
-        
 	//! Returns whether or not the Army prototype is a Hero.
 	bool isHero() const {return d_gender != Hero::NONE;};
 	
 	//! Returns the gender of the army prototype.
 	Hero::Gender getGender() const {return d_gender;};
 
-	//! Sets the gender of the army prototype.
-	void setGender(Hero::Gender g) {d_gender = g;};
-	
+	// Methods that operate on class data and modify the class.
+
+	//! Load the pictures associated with this ArmyProto object.
 	void instantiateImages(Armyset *armyset);
+
+	//! Load the ArmyProto image in the given filename.
 	bool instantiateImages(int tilesize, Shield::Colour c, std::string image_filename);
+
+	//! Destroy the images associated with this ArmyProto object.
 	void uninstantiateImages();
 
+	// Methods that operate on class data and do not modify the class.
+
+        //! Saves the Army prototype to an opened armyset file.
+        virtual bool save(XML_Helper* helper) const;
+        
+	// Static Methods
+	
+	//! Create an ArmyProto object that can walk well in hills and forest.
 	static ArmyProto * createScout();
+
     protected:
+
+	//! Callback to read this object from an opened file.
 	bool saveData(XML_Helper* helper) const;
+
     private:
 
 	//! The picture of the Army prototype.
+	/**
+	 * There is an image for each player, plus the neutral player.
+	 */
 	PixMask* d_image[MAX_PLAYERS + 1];
 
 	//! The mask portion of the Army prototype picture.
@@ -153,9 +172,15 @@ class ArmyProto : public ArmyProtoBase
 	/**
 	 * This value does not contain a path, and does not contain an
 	 * extension (e.g. .png).
+	 *
+	 * There is an image filename for each player, plus the neutral player.
 	 */
 	std::string d_image_name[MAX_PLAYERS + 1];
 
+	//! The gender of this object.
+	/**
+	 * Heroes have genders, and regular armies do not.
+	 */
 	Hero::Gender d_gender;
 };
 

@@ -58,31 +58,40 @@ class RecentlyPlayedGame
 	//! Destructor.
         virtual ~RecentlyPlayedGame();
 
+	// Get Methods
+
         //! Get the scenario id of the recently played game entry.
 	std::string getId() const {return d_id;};
 
-	//! Get time of when this game was last played (seconds past the epoch)
+	//! Get time of when this game was last played (seconds past the epoch).
 	time_t getTimeOfLastPlay() const { return d_time;};
+
+	//! Get the round that we last saw this game at..
+	guint32 getRound() const { return d_round;};
+
+	//! Get the number of cities in the game.
+	guint32 getNumberOfCities() const {return d_number_of_cities;};
+
+	//! Get the number of players in the game.
+	guint32 getNumberOfPlayers() const {return d_number_of_players;};
+
+	//! Get the kind of game.
+	GameScenario::PlayMode getPlayMode() const {return d_playmode;};
+
+	//! Get the name of the scenario.
+	std::string getName() const {return d_name;};
+
+
+	// Set Methods
 
 	//! Set the last time we saw something happen in this game.
 	void setTimeOfLastPlay(time_t then) { d_time = then;};
 
-	//! Get the round that we last saw this game at.
-	guint32 getRound() const { return d_round;};
-
 	//! Set the round that we last saw this game at.
 	void setRound(guint32 round) { d_round = round;};
-	//! Get the number of cities in the game
-	guint32 getNumberOfCities() const {return d_number_of_cities;};
 
-	//! Get the number of players in the game
-	guint32 getNumberOfPlayers() const {return d_number_of_players;};
 
-	//! Get the kind of game
-	GameScenario::PlayMode getPlayMode() const {return d_playmode;};
-
-	//! Get the name of the scenario
-	std::string getName() const {return d_name;};
+	// Methods that operate on the class data but do not modify it.
 
 	//! Save the game entry to an opened file.
 	bool save(XML_Helper* helper) const;
@@ -90,6 +99,8 @@ class RecentlyPlayedGame
 	//! Save the game entry, but not the enclosing tags.
 	bool saveContents(XML_Helper *helper) const;
 
+
+	// Static Methods
 
 	/**
 	 * static load function (see XML_Helper)
@@ -101,15 +112,33 @@ class RecentlyPlayedGame
 	 * @param helper       the XML_Helper instance for the savegame
 	 */
 	static RecentlyPlayedGame* handle_load(XML_Helper *helper);
+
     protected:
+
+	//! Save the entry to an opened file.
 	virtual bool doSave(XML_Helper *helper) const = 0;
 
+	// DATA
+	
+	//! The id of the game.
 	std::string d_id;
+
+	//! When the game was last played.
 	time_t d_time;
+
+	//! What round the game was at.
 	guint32 d_round;
+
+	//! How many cities the game has.
 	guint32 d_number_of_cities;
+
+	//! How many players the game had at the start of the game.
 	guint32 d_number_of_players;
+
+	//! The kind of game.
 	GameScenario::PlayMode d_playmode;
+
+	//! The name of the game.
 	std::string d_name;
 
 };
@@ -119,13 +148,25 @@ class RecentlyPlayedHotseatGame : public RecentlyPlayedGame
     public:
 	//! Make a new hotseat game entry.
 	RecentlyPlayedHotseatGame(GameScenario *game_scenario);
-	//! Load a new hotseat game from an opened saved-game file.
+
+	//! Load a new hotseat game from an opened file.
 	RecentlyPlayedHotseatGame(XML_Helper *helper);
+
 	//! Destroy a hotseat game entry.
 	~RecentlyPlayedHotseatGame();
 
+
+	// Methods that operate on the class data but do not modify it.
+	
+	//! Save the hotseat game entry to an opened file.
 	virtual bool doSave(XML_Helper *helper) const;
+
+
+	// Methods that operate on the class data and modify it.
+
+	//! Assign the filename to the entry.
 	bool fillData(std::string filename);
+
     private:
 	std::string d_filename;
 };
@@ -135,14 +176,29 @@ class RecentlyPlayedPbmGame : public RecentlyPlayedGame
     public:
 	//! Make a new pbm game entry.
 	RecentlyPlayedPbmGame(GameScenario *game_scenario);
+
 	//! Load a new pbm game from an opened saved-game file.
 	RecentlyPlayedPbmGame(XML_Helper *helper);
+
 	//! Destroy a pbm game entry.
 	~RecentlyPlayedPbmGame();
 
+
+	// Methods that operate on the class data but do not modify it.
+	
+	//! Save the play-by-mail game entry to an opened file.
 	virtual bool doSave(XML_Helper *helper) const;
+
+
+	// Methods that operate on the class data and modify it.
+
+	//! Assign the filename to the entry.
 	bool fillData(std::string filename);
     private:
+
+	// DATA
+	
+	//! The filename of the play-by-mail game for this entry.
 	std::string d_filename;
 };
 
@@ -151,18 +207,41 @@ class RecentlyPlayedNetworkedGame : public RecentlyPlayedGame
     public:
 	//! Make a new networked game entry.
 	RecentlyPlayedNetworkedGame(GameScenario *game_scenario);
-	//! Load a new networked game from an opened saved-game file.
+
+	//! Load a new networked game from an opened file.
 	RecentlyPlayedNetworkedGame(XML_Helper *helper);
+
 	//! Destroy a networked game entry.
 	~RecentlyPlayedNetworkedGame();
 
+
+	// Get Methods
+	
+	//! Get the hostname associated with the game.
+	std::string getHost() const {return d_host;};
+
+	//! Get the port associated with the host, and game.
+	guint32 getPort() const {return d_port;};
+
+
+	// Methods that operate on the class data but do not modify it.
+
+	//! Save the networked game entry to an opened file.
 	virtual bool doSave(XML_Helper *helper) const;
+
+
+	// Methods that operate on the class data and modify it.
+
 	bool fillData(std::string host, guint32 port);
 
-	std::string getHost() const {return d_host;};
-	guint32 getPort() const {return d_port;};
     private:
+
+	// DATA
+	
+	//! The hostname that the network game was hosted at.
 	std::string d_host;
+
+	//! The port on the hostname that the network game was hosted at.
 	guint32 d_port;
 };
 

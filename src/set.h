@@ -30,10 +30,10 @@ public:
     Set::Origin getOrigin() {return origin;};
     void setOrigin(Set::Origin origination) {origin = origination;};
 
-    std::string getDirectory() {return dir;};
+    std::string getDirectory() const {return dir;};
     void setDirectory(std::string d) {dir = File::add_slash_if_necessary(d);};
 
-    std::string getFile(std::string file);
+    std::string getFile(std::string file) const;
 private:
 
     Origin origin;

@@ -50,6 +50,7 @@ class Location : public UniquelyIdentified, public LocationBox
      //! Copy constructor.
      Location(const Location&);
 
+     //! Alternative copying constructor to change the position of the object.
      Location(const Location&, Vector<int> pos);
 
      //! Loading constructor.
@@ -61,6 +62,7 @@ class Location : public UniquelyIdentified, public LocationBox
       *                from the saved-game file.
       */
      Location(XML_Helper* helper, guint32 size = 1);
+
      //! Destructor.
     ~Location();
 };

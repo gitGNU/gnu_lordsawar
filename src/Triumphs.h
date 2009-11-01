@@ -47,8 +47,6 @@ class Triumphs
 	};
 
         //! Standard constructor.
-	/**
-	 */
         Triumphs();
 
 	//! Loading constructor.
@@ -66,6 +64,9 @@ class Triumphs
 
 	//! Destructor.
         ~Triumphs();
+
+
+	// Methods that operate on the class data but do not modify the class.
 
 	//! Save the triumph tallies to a file.
         /**
@@ -89,11 +90,18 @@ class Triumphs
 	guint32 getTriumphTally(Player *player, TriumphType type) const
 	  {return d_triumph[player->getId()][type];}
 
+
+	// Methods the operate on the class data, and modify the class.
+	
+	//! Tally up a kill for the given player.
 	void tallyTriumph(Player *p, TriumphType type);
+
     private:
 
-	//! A set of tally statistics for frags of army units
-	// 5 is max TriumphType + 1
+	//! A set of tally statistics for frags of army units.
+	/**
+	 * 5 is max TriumphType + 1.
+	 */ 
 	guint32 d_triumph[MAX_PLAYERS][5]; 
 };
 

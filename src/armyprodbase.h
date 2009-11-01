@@ -49,10 +49,16 @@ class ArmyProdBase: public ArmyProtoBase
 	//! Destructor.
         ~ArmyProdBase();
 
+	// Methods that operate on the class data and modify the class.
+
+	//! Change the army production base to be just like another army.
+	void morph(const ArmyProto *army);
+
+	// Methods that operate on the class data and do not modify the class.
+
         //! Saves the Army prototype to an opened armyset file.
         virtual bool save(XML_Helper* helper) const;
         
-	void morph(const ArmyProto *army);
     private:
 
 };

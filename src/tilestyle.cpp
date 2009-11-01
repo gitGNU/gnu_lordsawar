@@ -66,7 +66,7 @@ bool TileStyle::save(XML_Helper *helper)
   return retval;
 }
 
-std::string TileStyle::getTypeName()
+std::string TileStyle::getTypeName() const
 {
   return getTypeName(d_type);
 }

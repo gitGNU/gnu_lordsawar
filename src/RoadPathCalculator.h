@@ -38,13 +38,23 @@ class RoadPathCalculator
      RoadPathCalculator(const RoadPathCalculator&);
 
      //! Destructor.
-    ~RoadPathCalculator();
+     ~RoadPathCalculator();
 
-    Path* calculate(Vector<int> dest);
+
+     // Methods that operate on the class data and modify the class.
  
+     //! Return a calculated path from the starting point to the given position.
+     Path* calculate(Vector<int> dest);
+
  private:
-  Stack *stack;
-  PathCalculator *path_calculator;
+
+     // DATA
+
+     //! The stack with the movement characteristics to make the road with.
+     Stack *stack;
+
+     //! The path calculator that does the hard work.
+     PathCalculator *path_calculator;
 
 };
 

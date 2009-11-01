@@ -44,46 +44,61 @@ class RuinMap : public OverviewMap
       */
      RuinMap(NamedLocation *ruin);
 
-    //! Change the Ruin or Temple object that is currently selected.
-    void setNamedLocation (NamedLocation *r) {ruin = r;}
+     // Set Methods
 
-    //! Obtain the Ruin or Temple object that is currently selected.
-    NamedLocation * getNamedLocation () const {return ruin;}
+     //! Change the Ruin or Temple object that is currently selected.
+     void setNamedLocation (NamedLocation *r) {ruin = r;}
 
-    //! Realize the given mouse button event.
-    void mouse_button_event(MouseButtonEvent e);
 
-    //! Emitted when a new Ruin or Temple object has been clicked.
-    sigc::signal<void, NamedLocation *> location_changed;
+     // Get Methods
+  
+     //! Return the Ruin or Temple object that is currently selected.
+     NamedLocation * getNamedLocation () const {return ruin;}
 
-    //! Emitted when the objects are finished being drawn on the map surface.
-    /**
-     * Classes that use RuinMap must catch this signal to display the map.
-     */
-    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > map_changed;
-    
+
+     // Methods that operate on the class data and modify the class.
+  
+     //! Realize the given mouse button event.
+     void mouse_button_event(MouseButtonEvent e);
+
+
+     // Signals
+
+     //! Emitted when a new Ruin or Temple object has been clicked.
+     sigc::signal<void, NamedLocation *> location_changed;
+
+     //! Emitted when the objects are finished being drawn on the map surface.
+     /**
+      * Classes that use RuinMap must catch this signal to display the map.
+      */
+     sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > map_changed;
+
  private:
-    //! The currently selected Ruin or Temple object.
-    NamedLocation *ruin;
+     //! Draw the Ruin objects on the map.
+     /**
+      * @param show_selected  Whether or not to draw a box around a Ruin object
+      *                       that is the selected object (RuinMap::ruin).
+      */
+     void draw_ruins (bool show_selected);
 
-    //! Draw the Ruin objects on the map.
-    /**
-     * @param show_selected  Whether or not to draw a box around a Ruin object
-     *                       that is the selected object (RuinMap::ruin).
-     */
-    void draw_ruins (bool show_selected);
-    //! Draw the Temple objects on the map.
-    /**
-     * @param show_selected  Whether or not to draw a box around a Temple object
-     *                       that is the selected object (RuinMap::ruin).
-     */
-    void draw_temples (bool show_selected);
-    
-    //! Draw the Ruin and Temple objects objects onto the miniature map graphic.
-    /**
-     * This method is automatically called by the RuinMap::draw method.
-     */
-    virtual void after_draw();
+     //! Draw the Temple objects on the map.
+     /**
+      * @param show_selected  Whether or not to draw a box around a Temple object
+      *                       that is the selected object (RuinMap::ruin).
+      */
+     void draw_temples (bool show_selected);
+
+     //! Draw the Ruin and Temple objects objects onto the miniature map graphic.
+     /**
+      * This method is automatically called by the RuinMap::draw method.
+      */
+     virtual void after_draw();
+
+     // DATA
+
+     //! The currently selected Ruin or Temple object.
+     NamedLocation *ruin;
+
 };
 
 #endif

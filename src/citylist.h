@@ -38,19 +38,12 @@ class XML_Helper;
 class Citylist : public LocationList<City*>, public sigc::trackable
 {
     public:
+
 	//! The xml tag of this object in a saved-game file.
 	static std::string d_tag; 
 
-        //! Returns the singleton instance.  Creates a new one if neccessary.
-        static Citylist* getInstance();
+	// Methods that operate on class data and modify the class.
 
-        //! Loads the singleton instance from an opened saved-game file.
-        static Citylist* getInstance(XML_Helper* helper);
-
-        //! Deletes the singleton instance.
-        static void deleteInstance();
-
-	//! Process all City objects for the next turn.
         /**
          * This function loops through all cities belonging to player p and
          * processes them.  This method adds the income of each city to
@@ -59,9 +52,57 @@ class Citylist : public LocationList<City*>, public sigc::trackable
          *
          * @param p        The player whose cities are processed.
          */
+	//! Process all City objects for the next turn.
         void nextTurn(Player* p);
 
-	void collectTaxes(Player* p);
+	//! Changes ownership of all cities owned by old owner, to a new owner.
+	void changeOwnership(Player *old_owner, Player *new_owner);
+
+	/**
+	 * Scan through all of the City objects who are vectoring to the given
+	 * city, and stop the vectoring.
+	 *
+	 * @param city  The city to search for vectoring to.
+	 */
+	//! Stops vectoring from any city to the specified city.
+	void stopVectoringTo(City *city);
+
+
+	// Methods that operate on class data and do not modify the class.
+
+	/**
+	 * Scan through the list of City objects for cities being owned by
+	 * the given player.  Average all the positions of those cities and
+	 * determine a centre point.
+	 *
+	 * @param player  The player we're trying to calculate the centre
+	 *                of territory for.
+	 *
+	 * @return The position on the map that is the centre of that player's
+	 *         cities.  If the player has no cities, this method returns
+	 *         a point of (INT_MAX/2, INT_MAX/2).
+	 */
+	//! Find the center point for all of the given player's cities.
+	Vector<int> calculateCenterOfTerritory (Player *player) const;
+
+	/**
+	 * Scan through all of the city objects for a city that is vectoring
+	 * to the given city.
+	 *
+	 * @param target  The city to check if any other cities are vectoring 
+	 *                to.
+	 *
+	 * @return True if another city is vectoring to the given city.
+	 *         Otherwise false.
+	 */
+	//! Return whether or not any cities are vectoring to the given city.
+	bool isVectoringTarget(City *target) const;
+
+	//! Return the amount of money that the given player will pay next turn.
+	guint32 calculateUpcomingUpkeep(Player *p) const;
+
+	//! Return the number of cities vectoring to the given city.
+	guint32 countCitiesVectoringTo(const City *dest) const;
 
         //! Save the list of City objects to an opened saved-game file.
         bool save(XML_Helper* helper) const;
@@ -71,6 +112,24 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 
 	//! Count the total number of inhabitable cities.
 	int countCities() const;
+
+	/**
+	 * Scans the list of city objects for the first one that is owned by
+	 * the given player.
+	 *
+	 * @param player  The owner of the City to search for.
+	 *
+	 * @return A pointer to a City object owned by the given player, or
+	 *         NULL if the given player doesn't own any city objects.
+	 */
+        //! Returns the first City object owned by the given player.
+        City* getFirstCity(Player* player) const;
+
+	//! Have each of the cities owned by the given player, pay gold pieces.
+	/**
+	 * This method increases the player's treasury.
+	 */
+	void collectTaxes(Player* p) const;
 
         //! Returns the closest city that is owned by an enemy player.
 	/**
@@ -85,7 +144,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 * @return A pointer to the nearest enemy-owned City object, or NULL 
 	 *         if there aren't any City objects owned by any enemies.
 	 */
-        City* getNearestEnemyCity(const Vector<int>& pos);
+        City* getNearestEnemyCity(const Vector<int>& pos) const;
 
         //! Returns the closest city that isn't owned by the active player.
 	/**
@@ -100,7 +159,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 * @return A pointer to the nearest foreign-owned City object, or NULL 
 	 *         if there aren't any City objects owned by any other Player.
 	 */
-	City* getNearestForeignCity(const Vector<int>& pos);
+	City* getNearestForeignCity(const Vector<int>& pos) const;
 
         //! Return the closest city owned by the active player.
 	/**
@@ -116,7 +175,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 *         active player, or returns NULL if the active player doesn't 
 	 *         own any City objects.
 	 */
-        City* getNearestFriendlyCity(const Vector<int>& pos);
+        City* getNearestFriendlyCity(const Vector<int>& pos) const;
 
         //! Find the closest city owned by the active player and isn't too far.
 	/**
@@ -135,7 +194,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 *         Returns NULL if the active player doesn't own any City 
 	 *         objects within of the prescribed number of tiles.
 	 */
-        City* getNearestFriendlyCity(const Vector<int>& pos, int dist);
+        City* getNearestFriendlyCity(const Vector<int>& pos, int dist) const;
 
         //! Find the closest city to the given position.
 	/**
@@ -148,7 +207,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 * @return A pointer to the nearest City object.  Returns NULL if there
 	 *        are not any City objects in the list.
 	 */
-        City* getNearestCity(const Vector<int>& pos);
+        City* getNearestCity(const Vector<int>& pos) const;
 
         //! Find the closest city that isn't too far away.
 	/**
@@ -164,7 +223,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 *         within the prescribed number of tiles.  Returns NULL if
 	 *         no city could be found.
 	 */
-        City* getNearestCity(const Vector<int>& pos, int dist);
+        City* getNearestCity(const Vector<int>& pos, int dist) const;
 
         //! Find the nearest city that is not obscured by fog.
 	/**
@@ -177,7 +236,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 *
 	 * @return A pointer to the nearest city that is not obscured by fog.
 	 */
-        City* getNearestVisibleCity(const Vector<int>& pos);
+        City* getNearestVisibleCity(const Vector<int>& pos) const;
 
 	//! Find the nearest city that is unobscured and is not too far away.
 	/**
@@ -194,7 +253,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 *         and is within the prescribed number of tiles.  Returns NULL 
 	 *         if no city could be found.
 	 */
-        City* getNearestVisibleCity(const Vector<int>& pos, int dist);
+        City* getNearestVisibleCity(const Vector<int>& pos, int dist) const;
 
         //! Return the closest city owned by the given player.
 	/**
@@ -212,7 +271,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 *         given player, or returns NULL if the given player doesn't 
 	 *         own any City objects.
 	 */
-	City* getNearestCity(const Vector<int>& pos, Player *player);
+	City* getNearestCity(const Vector<int>& pos, Player *player) const;
 
         //! Return the closest city owned by the neutral player.
 	/**
@@ -230,7 +289,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 *         neutral player, or returns NULL if the neutral player 
 	 *         doesn't own any City objects.
 	 */
-        City* getNearestNeutralCity(const Vector<int>& pos);
+        City* getNearestNeutralCity(const Vector<int>& pos) const;
 
         //! Find the nearest unobscured city that is owned by the active player.
 	/**
@@ -245,7 +304,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 * @return A pointer to the nearest city that is not obscured by fog,
 	 *         and is owned by the active player.
 	 */
-        City* getNearestVisibleFriendlyCity(const Vector<int>& pos);
+        City* getNearestVisibleFriendlyCity(const Vector<int>& pos) const;
 
         //! Get the nearest unfogged city of active player's that isn't too far.
 	/**
@@ -263,59 +322,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 *         prescribed number of tiles.  Returns NULL if no city 
 	 *         fitting those parameters could be found.
 	 */
-        City* getNearestVisibleFriendlyCity(const Vector<int>& pos, int dist);
-
-        //! Returns the first City object owned by the given player.
-	/**
-	 * Scans the list of city objects for the first one that is owned by
-	 * the given player.
-	 *
-	 * @param player  The owner of the City to search for.
-	 *
-	 * @return A pointer to a City object owned by the given player, or
-	 *         NULL if the given player doesn't own any city objects.
-	 */
-        City* getFirstCity(Player* player);
-
-	//! Changes ownership of all cities owned by old owner, to a new owner.
-	void changeOwnership(Player *old_owner, Player *new_owner);
-
-	//! Stops vectoring from any city to the specified city.
-	/**
-	 * Scan through all of the City objects who are vectoring to the given
-	 * city, and stop the vectoring.
-	 *
-	 * @param city  The city to search for vectoring to.
-	 */
-	void stopVectoringTo(City *city);
-
-	//! Find the center point for all of the given player's cities.
-	/**
-	 * Scan through the list of City objects for cities being owned by
-	 * the given player.  Average all the positions of those cities and
-	 * determine a centre point.
-	 *
-	 * @param player  The player we're trying to calculate the centre
-	 *                of territory for.
-	 *
-	 * @return The position on the map that is the centre of that player's
-	 *         cities.  If the player has no cities, this method returns
-	 *         a point of (INT_MAX/2, INT_MAX/2).
-	 */
-	Vector<int> calculateCenterOfTerritory (Player *player);
-
-	//! Return whether or not any cities are vectoring to the given city.
-	/**
-	 * Scan through all of the city objects for a city that is vectoring
-	 * to the given city.
-	 *
-	 * @param target  The city to check if any other cities are vectoring 
-	 *                to.
-	 *
-	 * @return True if another city is vectoring to the given city.
-	 *         Otherwise false.
-	 */
-	bool isVectoringTarget(City *target);
+        City* getNearestVisibleFriendlyCity(const Vector<int>& pos, int dist) const;
 
 	//! Return the list of cities vectoring to the given city.
 	/**
@@ -328,10 +335,10 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 * @return The list of pointers to city objects that are vectoring to
 	 *         the given city.
 	 */
-	std::list<City*> getCitiesVectoringTo(City *target);
+	std::list<City*> getCitiesVectoringTo(City *target) const;
 
 	//! Return the list of cities vectoring to the given spot on the map.
-	std::list<City*> getCitiesVectoringTo(Vector<int> target);
+	std::list<City*> getCitiesVectoringTo(Vector<int> target) const;
 
 	//! Get the nearest city that is farther than a given number tiles.
 	/**
@@ -347,20 +354,29 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 *         than the given distance.  Returns NULL if there are no 
 	 *         cities that are farther away than the given distance.
 	 */
-	City* getNearestCityPast(const Vector<int>& pos, int dist);
+	City* getNearestCityPast(const Vector<int>& pos, int dist) const;
 
 
 	//! Get the nearest city to POS that can be vectored to.
-	City* getNearestFriendlyVectorableCity(const Vector<int>& pos);
+	City* getNearestFriendlyVectorableCity(const Vector<int>& pos) const;
 
-	guint32 calculateUpcomingUpkeep(Player *p);
 
-	guint32 countCitiesVectoringTo(City *dest);
+	// Static Methods
+
+        //! Returns the singleton instance.  Creates a new one if neccessary.
+        static Citylist* getInstance();
+
+        //! Loads the singleton instance from an opened saved-game file.
+        static Citylist* getInstance(XML_Helper* helper);
+
+        //! Deletes the singleton instance.
+        static void deleteInstance();
 
     protected:
-        // CREATORS
+
 	//! Default constructor.
         Citylist();
+
 	//! Loading constructor.
 	/**
 	 * Make a new Citylist object by reading it from an opened saved-game 
@@ -370,6 +386,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 *                objects from.
 	 */
         Citylist(XML_Helper* helper);
+
 	//! Destructor.
         ~Citylist();
 

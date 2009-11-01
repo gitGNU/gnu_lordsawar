@@ -81,10 +81,10 @@ void StackTile::add(Stack *stack)
   //i could stack->setpos here, but i prefer to let Stack::moveToDest do that because it's movement related, and this class is not movement related.
 }
 
-guint32 StackTile::countNumberOfArmies(Player *owner)
+guint32 StackTile::countNumberOfArmies(Player *owner) const
 {
   guint32 count = 0;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if ((*it).player_id == owner->getId())
 	{
@@ -104,7 +104,15 @@ StackTile::iterator StackTile::findStack(Stack *s)
   return end();
 }
 
-Stack *StackTile::getStack()
+StackTile::const_iterator StackTile::findStack(Stack *s) const
+{
+  for (const_iterator it = begin(); it != end(); it++)
+    if (s->getId() == (*it).stack_id)
+      return it;
+  return end();
+}
+
+Stack *StackTile::getStack() const
 {
   if (size() > 0)
     {
@@ -115,10 +123,10 @@ Stack *StackTile::getStack()
   return NULL;
 }
 
-std::list<Stack *> StackTile::getStacks()
+std::list<Stack *> StackTile::getStacks() const
 {
   std::list<Stack *> stacks;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       Playerlist *pl = Playerlist::getInstance();
       for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
@@ -131,10 +139,10 @@ std::list<Stack *> StackTile::getStacks()
   return stacks;
 }
 
-std::list<Stack *> StackTile::getFriendlyStacks(Player *owner)
+std::list<Stack *> StackTile::getFriendlyStacks(Player *owner) const
 {
   std::list<Stack *> stacks;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if ((*it).player_id != owner->getId())
 	continue;
@@ -144,10 +152,10 @@ std::list<Stack *> StackTile::getFriendlyStacks(Player *owner)
     }
   return stacks;
 }
-Stack *StackTile::getFriendlyStack(Player *owner)
+Stack *StackTile::getFriendlyStack(Player *owner) const
 {
   //return just one of the stacks located here, but owned by OWNER
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if ((*it).player_id != owner->getId())
 	continue;
@@ -158,10 +166,10 @@ Stack *StackTile::getFriendlyStack(Player *owner)
   return NULL;
 }
 
-Stack *StackTile::getEnemyStack(Player *owner)
+Stack *StackTile::getEnemyStack(Player *owner) const
 {
   //return just one of the stacks located here, but not owned by OWNER
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if ((*it).player_id == owner->getId())
 	continue;
@@ -174,55 +182,11 @@ Stack *StackTile::getEnemyStack(Player *owner)
 }
 
 
-//! join all of the stacks located here that are owned by OWNER with S
-/*
-bool StackTile::join(Stack *receiver, Stack *joiner)
-{
-  iterator it = findStack(receiver);
-  if (it == end())
-    return false;
-  it = findStack(joiner);
-  if (it == end())
-    return false;
-  if (receiver->canJoin(joiner) == false)
-    return false;
-  receiver->join(joiner);
-  erase(findStack(joiner));
-  return true;
-}
-
-bool StackTile::join(Stack *receiver)
-{
-  iterator it = findStack(receiver);
-  if (it == end())
-    return false;
-  std::list<Stack *> joiner;
-  for (iterator it = begin(); it != end(); it++)
-    {
-      if (receiver->getId() == (*it).stack_id)
-	continue;
-      Stack *stack = 
-	receiver->getOwner()->getStacklist()->getStackById((*it).stack_id);
-      if (stack->getOwner() == receiver->getOwner())
-	joiner.push_back(stack);
-    }
-  for (std::list<Stack *>::iterator i = joiner.begin(); i != joiner.end(); i++)
-    {
-      if (receiver->canJoin(*i) == false)
-	return false;
-      else
-	receiver->join(*i);
-      erase(findStack(*i));
-    }
-  return true;
-}
-*/
-    
-Stack *StackTile::getOtherStack(Stack *stack)
+Stack *StackTile::getOtherStack(Stack *stack) const
 {
   if (findStack(stack) == end())
     return NULL;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if (stack->getId() != (*it).stack_id)
 	{
@@ -239,9 +203,9 @@ Stack *StackTile::getOtherStack(Stack *stack)
   return NULL;
 }
     
-bool StackTile::contains(guint32 id)
+bool StackTile::contains(guint32 id) const
 {
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     if ((*it).stack_id == id)
       return true;
   return false;

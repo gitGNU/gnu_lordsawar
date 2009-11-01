@@ -107,7 +107,7 @@ int Citylist::countCities(Player* player) const
     return cities;
 }
 
-void Citylist::collectTaxes(Player* p)
+void Citylist::collectTaxes(Player* p) const
 {
   // Collect the taxes
   for (const_iterator it = begin(); it != end(); it++)
@@ -117,7 +117,7 @@ void Citylist::collectTaxes(Player* p)
 }
 
 //calculate the amount of money new armies will cost in the upcoming turn.
-guint32 Citylist::calculateUpcomingUpkeep(Player *p)
+guint32 Citylist::calculateUpcomingUpkeep(Player *p) const
 {
   guint32 total = 0;
   for (const_iterator it = begin(); it != end(); it++)
@@ -130,6 +130,7 @@ guint32 Citylist::calculateUpcomingUpkeep(Player *p)
 	      continue;
 	    const ArmyProdBase *a = (*it)->getProductionBase(slot);
 	    total += a->getUpkeep();
+	    total += a->getProductionCost();
 	  }
       }
   return total;
@@ -145,12 +146,10 @@ void Citylist::nextTurn(Player* p)
     //we've already collected taxes this round, so hopefully our
     //treasury has enough money to pay our city upkeep.
 
-    //fixme: here we want the upkeep that we would pay out to all cities.
-    //and not the total upkeep.
-    guint32 upkeep_for_new_armies = calculateUpcomingUpkeep(p);
-    if (p->getGold() < (int)upkeep_for_new_armies)
+    guint32 cost_of_new_armies = calculateUpcomingUpkeep(p);
+    if (p->getGold() < (int)cost_of_new_armies)
       {
-	int diff = upkeep_for_new_armies - p->getGold();
+	int diff = cost_of_new_armies - p->getGold();
 	//then we have to turn off enough production to make up for diff
 	//gold pieces.
 	for (iterator it = begin(); it != end(); it++)
@@ -226,7 +225,7 @@ static bool canNotAcceptMoreVectoring(void *object)
   return true;
 }
 
-City* Citylist::getNearestEnemyCity(const Vector<int>& pos)
+City* Citylist::getNearestEnemyCity(const Vector<int>& pos) const
 {
   std::list<bool (*)(void *)> filters;
   filters.push_back(isBurnt);
@@ -235,7 +234,7 @@ City* Citylist::getNearestEnemyCity(const Vector<int>& pos)
 }
 
 
-City* Citylist::getNearestForeignCity(const Vector<int>& pos)
+City* Citylist::getNearestForeignCity(const Vector<int>& pos) const
 {
   std::list<bool (*)(void *)> filters;
   filters.push_back(isBurnt);
@@ -243,7 +242,7 @@ City* Citylist::getNearestForeignCity(const Vector<int>& pos)
   return getNearestObject(pos, &filters);
 }
 
-City* Citylist::getNearestCity(const Vector<int>& pos, int dist)
+City* Citylist::getNearestCity(const Vector<int>& pos, int dist) const
 {
   City *c = getNearestCity(pos);
   if (!c)
@@ -254,7 +253,7 @@ City* Citylist::getNearestCity(const Vector<int>& pos, int dist)
   return NULL;
 }
 
-City* Citylist::getNearestFriendlyCity(const Vector<int>& pos, int dist)
+City* Citylist::getNearestFriendlyCity(const Vector<int>& pos, int dist) const 
 {
   City *c = getNearestFriendlyCity(pos);
   if (!c)
@@ -265,18 +264,18 @@ City* Citylist::getNearestFriendlyCity(const Vector<int>& pos, int dist)
   return NULL;
 }
 
-City* Citylist::getNearestFriendlyCity(const Vector<int>& pos)
+City* Citylist::getNearestFriendlyCity(const Vector<int>& pos) const
 {
     Player* p = Playerlist::getInstance()->getActiveplayer();
     return getNearestCity (pos, p);
 }
 
-City* Citylist::getNearestCity(const Vector<int>& pos, Player *p)
+City* Citylist::getNearestCity(const Vector<int>& pos, Player *p) const
 {
     int diff = -1;
-    iterator diffit;
+    const_iterator diffit;
     
-    for (iterator it = begin(); it != end(); ++it)
+    for (const_iterator it = begin(); it != end(); ++it)
     {
         if ((*it)->isBurnt())
             continue;
@@ -300,14 +299,14 @@ City* Citylist::getNearestCity(const Vector<int>& pos, Player *p)
     return (*diffit);
 }
 
-City* Citylist::getNearestCity(const Vector<int>& pos)
+City* Citylist::getNearestCity(const Vector<int>& pos) const
 {
   std::list<bool (*)(void *)> filters;
   filters.push_back(isBurnt);
   return getNearestObject(pos, &filters);
 }
 
-City* Citylist::getNearestVisibleCity(const Vector<int>& pos)
+City* Citylist::getNearestVisibleCity(const Vector<int>& pos) const
 {
   std::list<bool (*)(void *)> filters;
   filters.push_back(isBurnt);
@@ -315,7 +314,7 @@ City* Citylist::getNearestVisibleCity(const Vector<int>& pos)
   return getNearestObject(pos, &filters);
 }
 
-City* Citylist::getNearestVisibleCity(const Vector<int>& pos, int dist)
+City* Citylist::getNearestVisibleCity(const Vector<int>& pos, int dist) const
 {
   City *c = getNearestVisibleCity(pos);
   if (!c)
@@ -326,7 +325,7 @@ City* Citylist::getNearestVisibleCity(const Vector<int>& pos, int dist)
   return NULL;
 }
 
-City* Citylist::getNearestVisibleFriendlyCity(const Vector<int>& pos, int dist)
+City* Citylist::getNearestVisibleFriendlyCity(const Vector<int>& pos, int dist) const
 {
   City *c = getNearestFriendlyCity(pos);
   if (!c)
@@ -338,7 +337,7 @@ City* Citylist::getNearestVisibleFriendlyCity(const Vector<int>& pos, int dist)
 }
 
 
-City* Citylist::getNearestVisibleFriendlyCity(const Vector<int>& pos)
+City* Citylist::getNearestVisibleFriendlyCity(const Vector<int>& pos) const
 {
   std::list<bool (*)(void *)> filters;
   filters.push_back(isBurnt);
@@ -347,7 +346,7 @@ City* Citylist::getNearestVisibleFriendlyCity(const Vector<int>& pos)
   return getNearestObject(pos, &filters);
 }
 
-City* Citylist::getNearestNeutralCity(const Vector<int>& pos)
+City* Citylist::getNearestNeutralCity(const Vector<int>& pos) const
 {
   std::list<bool (*)(void *)> filters;
   filters.push_back(isBurnt);
@@ -355,7 +354,7 @@ City* Citylist::getNearestNeutralCity(const Vector<int>& pos)
   return getNearestObject(pos, &filters);
 }
 
-City* Citylist::getNearestFriendlyVectorableCity(const Vector<int>& pos)
+City* Citylist::getNearestFriendlyVectorableCity(const Vector<int>& pos) const
 {
   std::list<bool (*)(void *)> filters;
   filters.push_back(isBurnt);
@@ -364,9 +363,9 @@ City* Citylist::getNearestFriendlyVectorableCity(const Vector<int>& pos)
   return getNearestObject(pos, &filters);
 }
 
-City* Citylist::getFirstCity(Player* p)
+City* Citylist::getFirstCity(Player* p) const
 {
-    for (iterator it = begin(); it != end(); it++)
+    for (const_iterator it = begin(); it != end(); it++)
         if ((*it)->getOwner() == p)
             return (*it);
 
@@ -425,14 +424,14 @@ void Citylist::stopVectoringTo(City *c)
   return;
 }
 
-Vector<int> Citylist::calculateCenterOfTerritory (Player *p)
+Vector<int> Citylist::calculateCenterOfTerritory (Player *p) const
 {
   int n = INT_MAX;
   int s = 0;
   int w = INT_MAX;
   int e = 0;
   int count = 0;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if (p && (*it)->getOwner() == p)
 	continue;
@@ -452,9 +451,9 @@ Vector<int> Citylist::calculateCenterOfTerritory (Player *p)
   return Vector<int>((s-n)/2, (e-w)/2);
 }
 
-bool Citylist::isVectoringTarget(City *target)
+bool Citylist::isVectoringTarget(City *target) const
 {
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getOwner() != target->getOwner())
 	continue;
@@ -464,20 +463,21 @@ bool Citylist::isVectoringTarget(City *target)
   return false;
 }
 
-std::list<City*> Citylist::getCitiesVectoringTo(Vector<int> target)
+std::list<City*> Citylist::getCitiesVectoringTo(Vector<int> target) const
 {
   std::list<City*> cities;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if (target == (*it)->getVectoring())
 	cities.push_back((*it));
     }
   return cities;
 }
-std::list<City*> Citylist::getCitiesVectoringTo(City *target)
+
+std::list<City*> Citylist::getCitiesVectoringTo(City *target) const
 {
   std::list<City*> cities;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getOwner() != target->getOwner())
 	continue;
@@ -487,17 +487,17 @@ std::list<City*> Citylist::getCitiesVectoringTo(City *target)
   return cities;
 }
 
-City* Citylist::getNearestCityPast(const Vector<int>& pos, int dist)
+City* Citylist::getNearestCityPast(const Vector<int>& pos, int dist) const
 {
   std::list<bool (*)(void *)> filters;
   filters.push_back(isBurnt);
   return getNearestObjectAfter(pos, dist, &filters);
 }
 
-guint32 Citylist::countCitiesVectoringTo(City *dest)
+guint32 Citylist::countCitiesVectoringTo(const City *dest) const
 {
   guint32 count = 0;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       City *c = *it;
       if (c->getOwner() != dest->getOwner())

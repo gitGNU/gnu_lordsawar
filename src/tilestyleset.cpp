@@ -45,27 +45,27 @@ TileStyleSet::~TileStyleSet()
     delete (*this)[i];
 }
 
-bool TileStyleSet::save(XML_Helper *helper)
+bool TileStyleSet::save(XML_Helper *helper) const
 {
   bool retval = true;
 
   retval &= helper->openTag(TileStyleSet::d_tag);
   retval &= helper->saveData("name", d_name);
-  for (TileStyleSet::iterator i = begin(); i != end(); ++i)
+  for (TileStyleSet::const_iterator i = begin(); i != end(); ++i)
     retval &= (*i)->save(helper);
   retval &= helper->closeTag();
 
   return retval;
 }
 
-void TileStyleSet::getUniqueTileStyleTypes(std::list<TileStyle::Type> &types)
+void TileStyleSet::getUniqueTileStyleTypes(std::list<TileStyle::Type> &types) const
 {
-  for (TileStyleSet::iterator i = begin(); i != end(); ++i)
+  for (TileStyleSet::const_iterator i = begin(); i != end(); ++i)
     if (find (types.begin(), types.end(), (*i)->getType()) == types.end())
       types.push_back((*i)->getType());
 }
 
-bool TileStyleSet::validate()
+bool TileStyleSet::validate() const
 {
   return true;
 }

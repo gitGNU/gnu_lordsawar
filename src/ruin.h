@@ -55,8 +55,6 @@ class Ruin : public NamedLocation, public sigc::trackable
 	  //! A stronghold ruin is a little stronger.
 	  STRONGHOLD = 1
 	};
-	static std::string ruinTypeToString(const Ruin::Type type);
-	static Ruin::Type ruinTypeFromString(const std::string str);
 
 	//! Default constructor.
         /** 
@@ -77,6 +75,7 @@ class Ruin : public NamedLocation, public sigc::trackable
         //! Copy constructor.
         Ruin(const Ruin&);
 
+	//! Alternative copying constructor that changes the ruin position.
         Ruin(const Ruin&, Vector<int> pos);
 
         //! Loading constructor.
@@ -84,11 +83,38 @@ class Ruin : public NamedLocation, public sigc::trackable
 	 * @param helper  The opened saved-game file to load the ruin from.
 	 */
         Ruin(XML_Helper* helper, guint32 tile_width);
+
 	//!Destructor.
         ~Ruin();
 
+
+	// Get Methods
+
         //! Returns the type of the ruin.
-        int getType() {return d_type;};
+        int getType() const {return d_type;};
+
+        //! Return whether or not the ruin has been searched already.
+        bool isSearched() const {return d_searched;}
+
+        //! Returns the keeper that guards the ruin from Hero units.
+        Stack* getOccupant() const {return d_occupant;}
+
+	//! Returns whether or not this is a "hidden" ruin.
+	bool isHidden() const {return d_hidden;}
+
+	//! Returns whether or not this ruin has a sage.
+	bool hasSage() const {return d_sage;}
+
+	//! Returns the player that owns this hidden ruin.
+	Player *getOwner() const {return d_owner;}
+
+	//! Returns the reward for this ruin.
+	Reward *getReward() const {return d_reward;}
+
+	//! Returns whether or not the ruin lacks a non-default name.
+	bool isUnnamed() const {return getName() == getDefaultName() ? true : false;};
+
+	// Set Methods
 
         //! Sets the type of the ruin.
         void setType(int type) {d_type = type;};
@@ -100,41 +126,20 @@ class Ruin : public NamedLocation, public sigc::trackable
         //! Set the keeper of the ruin.
         void setOccupant(Stack* occupant) {d_occupant = occupant;}
         
-        //! Return whether or not the ruin has been searched already.
-        bool isSearched() const {return d_searched;}
-
-        //! Returns the keeper that guards the ruin from Hero units.
-        Stack* getOccupant() const {return d_occupant;}
-
-	//! Returns whether or not this is a "hidden" ruin.
-	bool isHidden() const {return d_hidden;}
-
         //! Change the "hidden" flag of the ruin.
         void setHidden (bool hidden) {d_hidden = hidden;}
-
-	//! Returns whether or not this ruin has a sage.
-	bool hasSage() const {return d_sage;}
 
 	//! Sets whether or not this ruin has a sage.
 	void setSage(bool sage) {d_sage = sage;}
 
-	//! Returns the player that owns this hidden ruin.
-	Player *getOwner() const {return d_owner;}
-
 	//! Sets the player that owns this hidden ruin.
 	void setOwner(Player *owner) {d_owner = owner;}
-
-        //! Callback for loading the ruin data.
-        bool load(std::string tag, XML_Helper* helper);
-
-	//! Returns the reward for this ruin.
-	Reward *getReward() const {return d_reward;}
 
 	//! Sets the reward for this ruin.
 	void setReward(Reward *r) {d_reward = r;}
 
-        //! Saves the ruin data to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+
+	// Methods that operate on class data and modify the class.
 
 	//! Put a random reward in this ruin.
 	/**
@@ -143,12 +148,31 @@ class Ruin : public NamedLocation, public sigc::trackable
 	 */
 	void populateWithRandomReward();
 
-	bool isUnnamed() {return getName() == getDefaultName() ? true : false;};
+
+	// Methods that operate on class data and do not modify the class.
 	
+        //! Callback for loading the ruin data.
+        bool load(std::string tag, XML_Helper* helper);
+
+        //! Saves the ruin data to an opened saved-game file.
+        bool save(XML_Helper* helper) const;
+
+
+	// Static Methods
+
+	//! Get the default name of any ruin.
 	static std::string getDefaultName() {return _(DEFAULT_RUIN_NAME);};
 
+	//! Convert a Ruin::Type enumerated value to a string.
+	static std::string ruinTypeToString(const Ruin::Type type);
+
+	//! Convert a string containing a Ruin::Type to an enumerated value.
+	static Ruin::Type ruinTypeFromString(const std::string str);
+
     private:
+
         // DATA
+
 	//! Whether or not the Ruin has already successfully been searched.
         bool d_searched;
 

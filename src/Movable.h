@@ -32,12 +32,16 @@ class XML_Helper;
 class Movable: private Positioned
 {
  public:
+
      //! Default constructor.
      Movable(Vector<int> pos);
+
      //! Copy constructor.
      Movable(const Movable&);
+
      //! Loading constructor.
      Movable(XML_Helper* helper);
+
      //! Destructor.
     ~Movable();
     

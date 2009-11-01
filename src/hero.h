@@ -66,8 +66,6 @@ class Hero : public Army
 	  FEMALE = 2
 	};
 
-	static Hero::Gender genderFromString(const std::string str);
-	static std::string genderToString(const Hero::Gender gender);
         /**
 	 * Copies the prototype hero and creates a hero from it.
          */
@@ -89,9 +87,18 @@ class Hero : public Army
 	//! Destructor.
         ~Hero();
 
-        //! Saves the Hero to a saved-game file.
-        bool save(XML_Helper* helper) const;
-        
+
+	// Get Methods
+
+	//! Return the name of this hero.
+	virtual std::string getName() const {return d_name;};
+
+	//! Return that this object is a hero.
+	bool isHero() const {return true;};
+
+        //! Return the gender of the hero.
+        guint32 getGender() const {return d_gender;}
+
         /**
 	 * Returns a stat of the hero.  See Army::Stat, and Army::getStat.
          * 
@@ -104,6 +111,20 @@ class Hero : public Army
         //! Returns the backpack of the hero.
         Backpack* getBackpack() {return d_backpack;}
 
+	
+	// Set Methods
+
+	void setName(std::string name) {d_name = name;};
+
+        //! Set the gender of the hero.
+        void setGender(Gender gender){d_gender = gender;}
+
+
+	// Methods that operate on class data and do not modify the class.
+
+        //! Saves the Hero to a saved-game file.
+        bool save(XML_Helper* helper) const;
+        
 	//! Return the natural command of the hero.
 	/**
 	 * Natural command is used for bonus calculations during a Fight.
@@ -113,19 +134,18 @@ class Hero : public Army
 	 */
 	guint32 calculateNaturalCommand();
 
-	void setName(std::string name) {d_name = name;};
-	virtual std::string getName() const {return d_name;};
 
-	bool isHero() const {return true;};
+	// Static methods
 
-        //! Set the gender of the hero.
-        void setGender(Gender gender){d_gender = gender;}
+	//! Convert a Hero::Gender string to an enumerated value.
+	static Hero::Gender genderFromString(const std::string str);
 
-        //! Return the gender of the hero.
-        guint32 getGender() const {return d_gender;}
+	//! Convert a Hero::Gender enumerated value to a string.
+	static std::string genderToString(const Hero::Gender gender);
 
     private:
         
+	//! Callback for loading the backpack from a saved-game file.
 	bool loadBackpack(std::string tag, XML_Helper* helper);
 
 	//! The hero's backpack that holds any number of Item objects.

@@ -55,54 +55,37 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 
 	//! Default constructor.
         Stacklist();
+
 	//! Copy constructor.
         Stacklist(Stacklist *stacklist);
+
 	//! Loading constructor.
         Stacklist(XML_Helper* helper);
+
 	//! Destructor.
         ~Stacklist();
 
-	/**
-	 * Scan through every player's Stacklist, for a stack that is located 
-	 * at the given position on the game map.
-	 *
-	 * @param x   The number of tiles down in the vertical axis from the
-	 *            topmost edge of the map.
-	 * @param y   The number of tiles right in the horizontal axis from
-	 *            the leftmost edge of the map.
-	 *
-	 * @return A pointer to a stack at the given position, or NULL if no
-	 *         Stack could be found.
-	 */
-        //! Return the stack at position (x,y) or 0 if there is none.
-        //static Stack* getObjectAt(int x, int y);
+	// Set Methods
 
-	/**
-	 * Scan through every player's Stacklist, for a stack that is located 
-	 * at the given position on the game map.
-	 *
-	 * @param point    The point on the map that we're looking to see
-	 *                 if there is a Stack on.
-	 *
-	 * @return A pointer to a stack at the given position, or NULL if no
-	 *         Stack could be found.
-	 */
-        //! Return stack at position pos or 0 if there is none.
-        //static Stack* getObjectAt(Vector<int> point)
-	  //{ return getObjectAt(point.x, point.y);}
+	//!Set the stack the player is currently working with.
+        /** 
+	 * Sets the currently selected stack. The purpose of this method is 
+         * to designate a stack to be the one the player is currently touching.
+         * It is important to use this method because several functions
+	 * expect that there is an active stack.
+         *
+         * @param activestack      The stack currently selected by the player.
+         */
+        void setActivestack(Stack* activestack);
 
-	/**
-	 * Scan through all stacks in the list, and then through each Army 
-	 * unit of every Stack for an Army unit with a particular Id.
-	 *
-	 * @param id     The Id of the Army unit that we're looking for.
-	 *
-	 * @return The position of the Army unit.  If no Army unit could be
-	 *         found with the given Id, the position of (-1,-1) is
-	 *         returned.
-	 */
-        //! Return position of an Army.
-        static Vector<int> getPosition(guint32 id);
+
+	// Get Methods
+
+        //! Returns the currently selected stack.
+        Stack* getActivestack() const {return d_activestack;}
+
+
+	// Methods that operate on class data and do not modify the class.
 
         /** 
 	 * This method finds stacks which occupy the same tile.
@@ -123,43 +106,11 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	//! Get the other stack on a tile that has more than one stack on it.
         static Stack* getAmbiguity(Stack* stack);
 
-        //! Searches through the all players Stacklists and deletes the stack.
-        static bool deleteStack(Stack* stack);
-	static bool deleteStack(guint32 id);
-
-        /** 
-	 * Scan each tile occupied by the given city and return a list of
-	 * stacks who are in the city.
-         *
-         * When a city is attacked, all stacks which occupy a city tile are
-         * regarded as defenders.  The purpose of this function is to 
-	 * enumerate the defending stacks when a stack has attacked a city.
-         *
-         * @param city        The city to search for stacks in.
-	 *
-         * @return A list of all stacks defending the city.
-         */
-	//! Return a list of stacks defending a city.
-        static std::vector<Stack*> defendersInCity(City* city);
-
-        //! Returns the total number of stacks owned by all players.
-        static unsigned int getNoOfStacks();
-
         //! Returns the total number of armies in the list.
-        unsigned int countArmies();
+        unsigned int countArmies() const;
 
         //! Returns the total number of heroes in the list.
-        unsigned int countHeroes();
-
-        /** 
-	 * Sets the currently selected stack. The purpose of this method is 
-         * to designate a stack to be the one the player is currently touching.
-         * It is important to use this method because several functions
-	 * expect that there is an active stack.
-         *
-         * @param activestack      The stack currently selected by the player.
-         */
-        void setActivestack(Stack* activestack);
+        unsigned int countHeroes() const;
 
 	/**
 	 * Scan through the list of stacks to find one that is not defending, 
@@ -169,14 +120,7 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	 *         stacks can move.
 	 */
         //! Return the next moveable stack in the list.
-        Stack* getNextMovable();
-
-        //! Save the data to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
-
-        //! Callback method executed at the end of every turn.
-        void nextTurn();
-	void payUpkeep(Player *p);
+        Stack* getNextMovable() const;
 
 	/**
          * @return True if any stacks in the list have enough moves for 
@@ -185,8 +129,49 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	//! Returns whether or not any stacks can move.
         bool enoughMoves() const;
 
-        //! Returns the currently selected stack.
-        Stack* getActivestack() const {return d_activestack;}
+        //! Save the data to an opened saved-game file.
+        bool save(XML_Helper* helper) const;
+
+	//! Find a stack in this stacklist given this id.
+        Stack *getStackById(guint32 id) const;
+
+	//! Find the stack in this stacklist that contains an army with this id.
+        Stack *getArmyStackById(guint32 army) const;
+
+	//! Collect gold pieces from army units in the list that give money.
+	/**
+	 * Heroes in a stacklist can provide gold pieces by carrying items.
+	 * These items are +3 gold per city, etc so the number of cities
+	 * must be passed into this method.
+	 *
+	 * This method increases the given player's treasury.
+	 */
+	void collectTaxes(Player *p, guint32 num_cities) const;
+
+	//! Return a list of the heroes in the stacklist.
+	std::list<Hero*> getHeroes() const;
+
+	//! Return a hero from this stacklist that is closest to the given pos.
+	/**
+	 * The hero must be within a given distance, provided by the dist
+	 * parameter.  The distance is measured in tiles (not movement points).
+	 */
+	Hero *getNearestHero(Vector<int> pos, int dist) const;
+	
+
+	// Methods that operate on class data and modify the class.
+
+	//! remove all movement points from every army in every stack.
+	void drainAllMovement();
+
+        //! Callback method executed at the end of every turn.
+        void nextTurn();
+
+	//! Have everyone in this stacklist collect their upkeep from a player.
+	/**
+	 * This method decreases the given player's treasury.
+	 */
+	void payUpkeep(Player *p);
 
         //! Erase all stacks from the list, and their contents too.
         void flClear();
@@ -214,71 +199,119 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
          */
         //! Erase a stack from the list.
         bool flRemove(Stack* stack);
+
+	//! Erase a stack from the list, given the stack id.
         bool flRemove(guint32 id);
 
-	/**
-	 * Scan through the Stacklist, for a stack that is located at the 
-	 * given position on the game map.
-	 *
-	 * @note This method works only on this Stacklist, rather than all
-	 *       of the players Stacklists as in Stacklist::getObjectAt.
-	 *
-	 * @param x   The number of tiles down in the vertical axis from the
-	 *            topmost edge of the map.
-	 * @param y   The number of tiles right in the horizontal axis from
-	 *            the leftmost edge of the map.
-	 *
-	 * @return A pointer to a stack at the given position, or NULL if no
-	 *         Stack could be found.
-	 */
-        //! Return the stack at position (x,y) or 0 if there is none.
-        Stack* getOwnObjectAt(int x, int y);
-        Stack* getOwnObjectAt(Vector<int> point)
-	  { return getOwnObjectAt(point.x, point.y);}
 
-        Stack *getStackById(guint32 id);
-        Stack *getArmyStackById(guint32 army);
+	// Signals
 
-	void collectTaxes(Player *p, guint32 num_cities);
-
-	std::list<Hero*> getTopHeroes(int num);
-
-	static bool canJumpOverTooLargeStack(Stack *s);
-
-	std::list<Hero*> getHeroes();
-
-	Hero *getNearestHero(Vector<int> pos, int dist);
-	
+	//! The stack in the stacklist has been grouped or ungrouped.
 	sigc::signal<void, Stack*, bool> sgrouped;
+
+	//! The stack in the stacklist is arriving on a new tile.
 	sigc::signal<void, Stack*, Vector<int> > snewpos;
+
+	//! The stack in the stacklist is leaving an old tile.
 	sigc::signal<void, Stack*, Vector<int> > soldpos;
 
-	//! remove all movement points from every army in every stack.
-	void drainAllMovement();
 
+	// Static Methods
+
+        //! Searches through the all players Stacklists and deletes the stack.
+        static bool deleteStack(Stack* stack);
+
+	//! Searches for the stack id in all lists, and deletes it.
+	static bool deleteStack(guint32 id);
+
+        /** 
+	 * Scan each tile occupied by the given city and return a list of
+	 * stacks who are in the city.
+         *
+         * When a city is attacked, all stacks which occupy a city tile are
+         * regarded as defenders.  The purpose of this function is to 
+	 * enumerate the defending stacks when a stack has attacked a city.
+         *
+         * @param city        The city to search for stacks in.
+	 *
+         * @return A list of all stacks defending the city.
+         */
+	//! Return a list of stacks defending a city.
+        static std::vector<Stack*> defendersInCity(const City* city);
+
+        //! Returns the total number of stacks owned by all players.
+        static unsigned int getNoOfStacks();
+
+	/**
+	 * This method removes the given stack from it's owner's stacklist and
+	 * places it in the new owner's stacklist.
+	 */
+	//! Change allegience of the given stack to a new owner.
 	static void changeOwnership(Stack *stack, Player *new_owner);
 
+	//! Can this stack reach a point where it is not blocked by friendlies?
+	/**
+	 * The idea here is that the stack is blocked by a friendly stack on
+	 * it's path.  This method checks to see if the stack has enough 
+	 * movement points to proceed through the friendly stacks (that are
+	 * too big to join with), and land on a point in it's path beyond it.
+	 */
+	static bool canJumpOverTooLargeStack(Stack *s);
+
+        //! Return position of an Army with the given id in this stacklist.
+	/**
+	 * Scan through all stacks in the list, and then through each Army 
+	 * unit of every Stack for an Army unit with a particular Id.
+	 *
+	 * @param id     The Id of the Army unit that we're looking for.
+	 *
+	 * @return The position of the Army unit.  If no Army unit could be
+	 *         found with the given Id, the position of (-1,-1) is
+	 *         returned.
+	 */
+        static Vector<int> getPosition(guint32 id);
+
     private:
-        //! Callback function for loading.
+
+        //! Callback for loading this object from an opened saved-game file.
         bool load(std::string tag, XML_Helper* helper);
 
-	//! Callbacks for when things happen to stack in our list.
+	//! Callback for when a stack initiates movement after being stopped.
 	void on_stack_starts_moving (Stack *s);
+
+	//! Callback for when a stack halts.
 	void on_stack_stops_moving (Stack *s);
+
+	//! Callback for when a stack has been killed, or disbanded.
 	void on_stack_died (Stack *stack);
+
+	//! Callback for when a stack has been grouped or ungrouped.
 	void on_stack_grouped (Stack *stack, bool grouped);
 
-	void getHeroes(std::vector<guint32>& dst);
+	void getHeroes(std::vector<guint32>& dst) const;
+
+	//! Notify the game map that a stack is leaving it's tile.
+	bool deletePositionFromMap(Stack *stack);
+
+	//! Notify the game map that a stack is arriving on a tile.
+	bool addPositionToMap(Stack *s);
+
+	// DATA
+
 	//! A pointer to the currently selected Stack.
         Stack* d_activestack;
 
-	//! methods for managing the dual hash maps.
-	bool deletePositionFromMap(Stack *stack);
-	bool addPositionToMap(Stack *s);
-	//! a hash map of where the stacks are on the map.
 	typedef std::map<Stack *, std::list<sigc::connection> > ConnectionMap;
+	// A set of signal connections for each stack in our list.
+	/**
+	 * We can use this map to lookup the outstanding signals connections
+	 * that a given stack has.  This is so that we can destroy them
+	 * when the stack is deleted.
+	 */
 	ConnectionMap d_connections;
+	
 	typedef std::map<guint32, Stack*> IdMap;
+	//! A map to quickly lookup the stack by it's unique id.
 	IdMap d_id;
 
 };

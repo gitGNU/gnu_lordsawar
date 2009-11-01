@@ -60,19 +60,34 @@ class Threat: public Ownable
     public:
         // CREATORS
 
-        //! Our threat is an enemy city.
+        //! Constructor.  Our threat is an enemy city.
         Threat(City *c);
 
-        //! The threat is an enemy stack.
+        //! Constructor.  The threat is an enemy stack.
         Threat(Stack *s);
 
-        //! The "threat" is a ruin (the danger value is 0)
+        //! Constructor.  The "threat" is a ruin (the danger value is 0)
         Threat(Ruin *r);
+
+	//! Destructor.
         ~Threat();
 
-        
-        //! Can be used for some general debug output
-        std::string toString() const;
+	// Methods that operate on class data and modify the class.
+
+        //! Add a stack to this threat.
+        void addStack(Stack *stack);
+
+        //! Removes the stack s from the threat.
+        void deleteStack(Stack* s);
+
+	//! Removes the stack with the given id from the threat.
+        void deleteStack(guint32 id);
+
+        //! Increase the danger of this threat 
+        void addDanger(float danger) { d_danger += danger; }
+
+
+	// Methods that operate on class data and do not modify the class.
 
         /** Checks if a threat is close to a certain position and "belongs"
           * (i.e. is caused by) a certain player.
@@ -87,13 +102,10 @@ class Threat: public Ownable
           */
         bool Near(Vector<int> pos, Player *p) const;
 
-        //! add a stack to this threat
-        void addStack(Stack *stack);
-
-        //! how strong is this threat?
+        //! How strong is this threat?
         float strength() const;
 
-        //! how valuable is to us to destroy this threat?
+        //! How valuable is to us to destroy this threat?
         float value() const;
 
         /** Returns the closest point of a threat to a certain location
@@ -104,9 +116,6 @@ class Threat: public Ownable
           */
         Vector<int> getClosestPoint(Vector<int> location) const;
 
-        //! Removes the stack s from the threat
-        void deleteStack(Stack* s);
-        void deleteStack(guint32 id);
 
         //! return the danger posed by this threat to the current player
         float getDanger() const { return d_danger; }
@@ -117,13 +126,23 @@ class Threat: public Ownable
         //! Is this threat a ruin?
         bool isRuin() const { return d_ruin != 0; }
 
-        //! Increase the danger of this threat 
-        void addDanger(float danger) { d_danger += danger; }
+        //! Can be used for some general debug output
+        std::string toString() const;
 
     private:
+
+	// DATA
+
+	//! The city associated with this threat.
         City *d_city;
+
+	//! The ruin associated with this threat.
         Ruin *d_ruin;
+
+	//! The list of stacks associated with this threat.
         Stacklist *d_stacks;
+
+	//! The amount of danger this threat represents.
         float d_danger;
 };
 

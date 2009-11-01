@@ -41,8 +41,8 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 	static std::string d_tag; 
 
 	//! The notional player that the Shield goes with.
-	enum Colour {WHITE = 0, GREEN = 1, YELLOW = 2, LIGHT_BLUE = 3,
-	RED = 4, DARK_BLUE = 5, ORANGE = 6, BLACK = 7, NEUTRAL = 8};
+	enum Colour {WHITE = 0, GREEN = 1, YELLOW = 2, LIGHT_BLUE = 3, RED = 4,
+	  DARK_BLUE = 5, ORANGE = 6, BLACK = 7, NEUTRAL = 8};
 
 	//! Loading constructor.
         /**
@@ -54,22 +54,48 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
          */
         Shield(XML_Helper* helper);
         
-	//! Default constructor
+	//! Default constructor.
 	Shield(Shield::Colour owner, Gdk::Color color);
 
 	//! Destructor.
         virtual ~Shield();
 
-	bool save(XML_Helper *helper);
 
-        //! Get the player that this shield will belong to.
+	// Get Methods
+
+        //! Returns the player that this shield will belong to.
 	guint32 getOwner() const {return d_owner;}
 
         //! Returns the colour of the player shield.
 	Gdk::Color getColor() const {return d_color;}
 
+
+	// Set Methods
+
 	//! Sets the colour of the player shield.
 	void setColor(Gdk::Color c) {d_color = c;}
+
+
+	// Methods that operate on class data and do not modify the class.
+
+	//! Save the shield to an opened shieldset configuration file.
+	bool save(XML_Helper *helper) const;
+
+	//! Get the first shieldstyle in the shield with the given type.
+	ShieldStyle *getFirstShieldstyle(ShieldStyle::Type type);
+
+
+	// Methods that operate on class data and modify the class.
+
+	//! Load the images associated with this shield.
+	void instantiateImages(Shieldset *s);
+
+	//! Destroy the images associated with this shield.
+	void uninstantiateImages();
+
+
+	// Static Methods
+
 	/**
 	 * Get the default colour for the Player with the given Id.
 	 *
@@ -88,12 +114,8 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 	//! Get standard colour for the neutral player.
 	static Gdk::Color get_default_color_for_neutral();
 
+	//! Convert the Shield::Colour enumerated value to a string.
 	static std::string colourToString(const Shield::Colour c);
-
-	void instantiateImages(Shieldset *s);
-	void uninstantiateImages();
-
-	ShieldStyle *get_first_shieldstyle(ShieldStyle::Type type);
     protected:
 
 	//! The player of the shield.

@@ -120,7 +120,7 @@ static bool isSearched(void *r)
   return ((Ruin*)r)->isSearched();
 }
 
-Ruin* Ruinlist::getNearestUnsearchedRuin(const Vector<int>& pos)
+Ruin* Ruinlist::getNearestUnsearchedRuin(const Vector<int>& pos) const
 {
   std::list<bool (*)(void *)> filters;
   filters.push_back(isHiddenAndNotOwnedByActivePlayer);
@@ -128,13 +128,14 @@ Ruin* Ruinlist::getNearestUnsearchedRuin(const Vector<int>& pos)
   return getNearestObject(pos, &filters);
 }
 
-Ruin* Ruinlist::getNearestRuin(const Vector<int>& pos)
+Ruin* Ruinlist::getNearestRuin(const Vector<int>& pos) const
 {
   std::list<bool (*)(void *)> filters;
   filters.push_back(isHiddenAndNotOwnedByActivePlayer);
   return getNearestObject(pos, &filters);
 }
-Ruin* Ruinlist::getNearestRuin(const Vector<int>& pos, int dist)
+
+Ruin* Ruinlist::getNearestRuin(const Vector<int>& pos, int dist) const
 {
   Ruin *r = getNearestRuin(pos);
   if (r->getPos().x <= pos.x + dist && r->getPos().x >= pos.x - dist &&
@@ -143,14 +144,15 @@ Ruin* Ruinlist::getNearestRuin(const Vector<int>& pos, int dist)
   return NULL;
 }
 
-Ruin* Ruinlist::getNearestVisibleRuin(const Vector<int>& pos)
+Ruin* Ruinlist::getNearestVisibleRuin(const Vector<int>& pos) const
 {
   std::list<bool (*)(void *)> filters;
   filters.push_back(isFogged);
   filters.push_back(isHiddenAndNotOwnedByActivePlayer);
   return getNearestObject(pos, &filters);
 }
-Ruin* Ruinlist::getNearestVisibleRuin(const Vector<int>& pos, int dist)
+
+Ruin* Ruinlist::getNearestVisibleRuin(const Vector<int>& pos, int dist) const
 {
   Ruin *r = getNearestVisibleRuin(pos);
   if (r->getPos().x <= pos.x + dist && r->getPos().x >= pos.x - dist &&

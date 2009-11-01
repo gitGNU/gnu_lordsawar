@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,27 +30,40 @@ class XML_Helper;
 class Ownable
 {
  public:
+
      //! Default constructor.
      Ownable(Player *owner);
+
      //! Copy constructor.
      Ownable(const Ownable&);
+
      //! Loading constructor.
      Ownable(XML_Helper* helper);
+
      //! Destructor.
     ~Ownable();
     
-    static Ownable load(XML_Helper *helper);
+    // Get Methods
 
     //! Return a pointer to the Player who owns an object.
     Player *getOwner() const {return d_owner;}
 
+    //! Return true if the player parameter matches the owner.
+    bool isFriend (Player *player) const;
+
+    // Set Methods
+
     //! Set the Player who owns an object.
     void setOwner(Player *player){d_owner = player;}
 
-    //! Return true if the player parameter matches the owner.
-    bool isFriend (Player *player);
+    // Statics
+
+    //! Callback for loading an Ownable object from an opened saved-game file.
+    static Ownable load(XML_Helper *helper);
 
  protected:
+
+    // A pointer to the player owning this object.
     Player *d_owner;
 };
 

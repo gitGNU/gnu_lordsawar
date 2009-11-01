@@ -36,6 +36,14 @@ class Signpostlist : public LocationList<Signpost*>, public sigc::trackable
 	//! The xml tag of this object in a saved-game file.
 	static std::string d_tag; 
 
+	// Methods that operate on the class data but do not modify the class.
+
+        //! Saves the signpost list to the opened saved-game file.
+        bool save(XML_Helper* helper) const;
+
+
+	// Static Methods
+
         //! Return the singleton instance.  Create a new one if needed.
         static Signpostlist* getInstance();
 
@@ -44,9 +52,6 @@ class Signpostlist : public LocationList<Signpost*>, public sigc::trackable
 
         //! Explicitly delete the singleton instance.
         static void deleteInstance();
-
-        //! Saves the signpost list to the opened saved-game file.
-        bool save(XML_Helper* helper) const;
 
     protected:
         //! Default constructor.
@@ -61,6 +66,8 @@ class Signpostlist : public LocationList<Signpost*>, public sigc::trackable
     private:
         //! Callback for loading signpost objects into the list.
         bool load(std::string tag, XML_Helper* helper);
+
+	// DATA
 
         //! A static pointer for the singleton instance.
         static Signpostlist* s_instance;

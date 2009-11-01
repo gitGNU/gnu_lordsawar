@@ -688,7 +688,7 @@ void Game::on_city_queried (City* c, bool brief)
 	      str += _("Status: razed!");
 	    }
 
-	  MapTipPosition mpos = bigmap->map_tip_position(c->get_area());
+	  MapTipPosition mpos = bigmap->map_tip_position(c->getArea());
 	  map_tip_changed.emit(str, mpos);
 	}
       else
@@ -720,7 +720,7 @@ void Game::on_ruin_queried (Ruin* r, bool brief)
 	    // note to translators: whether a ruin has been searched
 	    str += _("Unexplored");
 
-	  MapTipPosition mpos = bigmap->map_tip_position(r->get_area());
+	  MapTipPosition mpos = bigmap->map_tip_position(r->getArea());
 	  map_tip_changed.emit(str, mpos);
 	}
       else
@@ -740,7 +740,7 @@ void Game::on_signpost_queried (Signpost* s)
 
       str = s->getName();
 
-      MapTipPosition mpos = bigmap->map_tip_position(s->get_area());
+      MapTipPosition mpos = bigmap->map_tip_position(s->getArea());
       map_tip_changed.emit(str, mpos);
     }
   else
@@ -767,7 +767,7 @@ void Game::on_temple_queried (Temple* t, bool brief)
 
 	  str = t->getName();
 
-	  MapTipPosition mpos = bigmap->map_tip_position(t->get_area());
+	  MapTipPosition mpos = bigmap->map_tip_position(t->getArea());
 	  map_tip_changed.emit(str, mpos);
 	}
       else

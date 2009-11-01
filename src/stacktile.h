@@ -54,30 +54,75 @@ struct StackTileRecord
 class StackTile: public std::list<StackTileRecord>
 {
 public:
+    //! Constructor.
     StackTile(Vector<int> pos);
+
+    //! Destructor.
     ~StackTile();
+
+    // Methods that operate on the class data and modify the class.
+
+    //! Check to see if the given stack can be added to this tile.
     bool canAdd(Stack *stack);
+
+    //! Check to see if a stack with the given size and owner can be added here.
     bool canAdd(guint32 size, Player *owner);
+
+    //! Remove the given stack from this stacktile.
     bool leaving(Stack *stack);
+
+    //! Add the given stack to this stacktile.
     void arriving(Stack *stack);
+
+    //! Add the given stack to this stacktile.
     void add(Stack *stack);
-    Stack *getFriendlyStack(Player *owner);
-    std::list<Stack *> getFriendlyStacks(Player *owner);
-    std::list<Stack *> getStacks();
-    Stack *getEnemyStack(Player *notowner);
-    Stack *getStack();
-    Stack *getOtherStack(Stack *stack);
 
-    bool contains(guint32 stack_id);
-
+    //! Set all stacks on this tile to be defending.
     void setDefending(Player *owner, bool defending);
+
+    //! Set all stacks on this tile to be parked.
     void setParked(Player *owner, bool parked);
 
-    //these methods cause player to create actions:
+    //! Merge all stacks on this tile belonging to the given player.
     Stack *group(Player *owner);
+
+    //! Split all army units belonging to the given player into stacks.
     void ungroup(Player *owner);
+
+
+    // Methods that operate on the class data and do not modify the class.
+
+    //! Return the first stack on this tile belonging to the given player.
+    Stack *getFriendlyStack(Player *owner) const;
+
+    //! Return all of the stacks on this tile belonging to the given player.
+    std::list<Stack *> getFriendlyStacks(Player *owner) const;
+
+    //! Return all stacks on this tile.
+    std::list<Stack *> getStacks() const;
+
+    //! Return the first stack on this tile not belonging to the given player.
+    Stack *getEnemyStack(Player *notowner) const;
+
+    //! Return the first stack on this tile.
+    Stack *getStack() const;
+
+    //! Get the next friendly stack on this tile that isn't the given stack.
+    Stack *getOtherStack(Stack *stack) const;
+
+    //! Return true if this tile contains the given stack id.
+    bool contains(guint32 stack_id) const;
+
 private:
-    Vector<int> tile;
-    guint32 countNumberOfArmies(Player *owner);
+    //! Return the number of army units on this tile owned by the given player.
+    guint32 countNumberOfArmies(Player *owner) const;
+
+    //! Return the position of the given stack in our list of records.
+    StackTile::const_iterator findStack(Stack *s) const;
     StackTile::iterator findStack(Stack *s);
+
+    // DATA
+
+    // Where on the game map this stack tile is.
+    Vector<int> tile;
 };

@@ -46,12 +46,6 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-//the static functions first
-//Stack* Stacklist::getObjectAt(int x, int y)
-//{
-  //return GameMap::getStack(Vector<int>(x,y));
-//}
-
 Vector<int> Stacklist::getPosition(guint32 id)
 {
     for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
@@ -125,7 +119,7 @@ void Stacklist::nextTurn()
 	    }
 }
 
-vector<Stack*> Stacklist::defendersInCity(City *city)
+vector<Stack*> Stacklist::defendersInCity(const City *city)
 {
     debug("defendersInCity()");
 
@@ -136,12 +130,11 @@ vector<Stack*> Stacklist::defendersInCity(City *city)
     {
         for (unsigned int j = pos.y; j < pos.y + city->getSize(); j++)
         {
+	    Vector<int> p = Vector<int>(i,j);
 	    Stack *stack;
-	    stack = city->getOwner()->getStacklist()->getOwnObjectAt(i, j);
+	    stack = GameMap::getStacks(p)->getFriendlyStack(city->getOwner());
             if (stack)
-            {
 	      stackvector.push_back(stack);
-            }
         }
     }
 
@@ -161,17 +154,17 @@ unsigned int Stacklist::getNoOfStacks()
     return mysize;
 }
 
-unsigned int Stacklist::countArmies()
+unsigned int Stacklist::countArmies() const
 {
     unsigned int mysize = 0;
 
-    for (iterator it = begin(); it != end(); it++)
+    for (const_iterator it = begin(); it != end(); it++)
       mysize += (*it)->size();
 
     return mysize;
 }
 
-unsigned int Stacklist::countHeroes()
+unsigned int Stacklist::countHeroes() const
 {
   std::vector<guint32> heroes;
   getHeroes(heroes);
@@ -217,11 +210,11 @@ Stacklist::~Stacklist()
 
 }
 
-Stack* Stacklist::getNextMovable()
+Stack* Stacklist::getNextMovable() const
 {
     Player *player = Playerlist::getInstance()->getActiveplayer();
     
-    iterator it = begin();
+    const_iterator it = begin();
     
     //first, if we already have an active stack, loop through until we meet it
     if (d_activestack)
@@ -260,18 +253,18 @@ Stack* Stacklist::getNextMovable()
 	return d_activestack;
 }
 
-Stack *Stacklist::getStackById(guint32 id)
+Stack *Stacklist::getStackById(guint32 id) const
 {
-  for (Stacklist::iterator i = begin(), e = end(); i != e; ++i)
-    if ((*i)->getId() == id)
-      return *i;
-    
-  return 0;
+  IdMap::const_iterator it = d_id.find(id);
+  if (it != d_id.end())
+    return (*it).second;
+  else
+    return NULL;
 }
 
-Stack *Stacklist::getArmyStackById(guint32 army)
+Stack *Stacklist::getArmyStackById(guint32 army) const
 {
-  for (Stacklist::iterator i = begin(), e = end(); i != e; ++i)
+  for (Stacklist::const_iterator i = begin(), e = end(); i != e; ++i)
     if ((*i)->getArmyById(army))
       return *i;
   
@@ -382,21 +375,13 @@ bool Stacklist::load(string tag, XML_Helper* helper)
     return false;
 }
 
-Stack* Stacklist::getOwnObjectAt(int x, int y)
+void Stacklist::getHeroes(std::vector<guint32>& dst) const
 {
-  for (const_iterator it = begin(); it != end(); it++)
-    if (((*it)->getPos().x == x) && ((*it)->getPos().y == y))
-      return *it;
-  return 0;
-}
-
-void Stacklist::getHeroes(std::vector<guint32>& dst)
-{
-  for (Stacklist::iterator it = begin(); it != end(); it++)
+  for (Stacklist::const_iterator it = begin(); it != end(); it++)
     (*it)->getHeroes(dst);
 }
 
-void Stacklist::collectTaxes(Player *p, guint32 num_cities)
+void Stacklist::collectTaxes(Player *p, guint32 num_cities) const
 {
   std::vector<guint32> hero_ids;
   getHeroes(hero_ids);
@@ -450,12 +435,12 @@ bool Stacklist::canJumpOverTooLargeStack(Stack *s)
   return found;
 }
 
-std::list<Hero*> Stacklist::getHeroes()
+std::list<Hero*> Stacklist::getHeroes() const
 {
   std::list<Hero*> heroes;
   std::vector<guint32> hero_ids;
   getHeroes(hero_ids);
-  for (std::vector<guint32>::iterator it = hero_ids.begin(); 
+  for (std::vector<guint32>::const_iterator it = hero_ids.begin(); 
        it != hero_ids.end(); it++)
     {
         Stack *s = getArmyStackById(*it);
@@ -469,7 +454,7 @@ std::list<Hero*> Stacklist::getHeroes()
   return heroes;
 }
 	
-Hero *Stacklist::getNearestHero(Vector<int> pos, int dist)
+Hero *Stacklist::getNearestHero(Vector<int> pos, int dist) const
 {
   std::list<Hero*> heroes = getHeroes();
   LocationList<Location*> hero_locales;

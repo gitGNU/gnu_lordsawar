@@ -101,14 +101,14 @@ std::string Shield::colourToString(const Shield::Colour c)
   return "Shield::NEUTRAL";
 }
 
-bool Shield::save(XML_Helper *helper)
+bool Shield::save(XML_Helper *helper) const
 {
   bool retval = true;
 
   retval &= helper->openTag(d_tag);
   retval &= helper->saveData("owner", d_owner);
   retval &= helper->saveData("color", d_color);
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     (*it)->save(helper);
   retval &= helper->closeTag();
   return retval;
@@ -128,7 +128,7 @@ void Shield::uninstantiateImages()
     (*it)->uninstantiateImages();
 }
 
-ShieldStyle *Shield::get_first_shieldstyle(ShieldStyle::Type type)
+ShieldStyle *Shield::getFirstShieldstyle(ShieldStyle::Type type)
 {
   for (iterator i = begin(); i != end(); i++)
     {

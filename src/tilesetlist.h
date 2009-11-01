@@ -41,20 +41,17 @@
 class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public SetList
 {
     public:
-        //! Return the singleton instance of this class.
-        static Tilesetlist* getInstance();
 
-        //! Explicitly delete the singleton instance of this class.
-        static void deleteInstance();
+	// Methods that operate on class data but do not modify the class.
 
         //! Returns the names of all tilesets available to the game.
-	std::list<std::string> getNames();
+	std::list<std::string> getNames() const;
 
         //! Returns the names of tilesets that have the given tile size.
-	std::list<std::string> getNames(guint32 tilesize);
+	std::list<std::string> getNames(guint32 tilesize) const;
 
         //! Returns the different tilesizes present in the tilesetlist.
-	void getSizes(std::list<guint32> &sizes);
+	void getSizes(std::list<guint32> &sizes) const;
 
 	//! Return the name of the subdirectory for a given tileset.
         /** 
@@ -65,7 +62,7 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 	 *         Tileset::d_dir for more information about the nature of 
 	 *         the return value.
          */
-	std::string getTilesetDir(std::string name, guint32 tilesize);
+	std::string getTilesetDir(std::string name, guint32 tilesize) const;
 
 	//! Return the Tileset object by the name of the subdir.
 	/**
@@ -73,24 +70,49 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 	 *             This value does not contain any slashes, and is
 	 *             presumed to be found inside the tilesets/ directory.
 	 */
-	Tileset *getTileset(std::string dir);
+	Tileset *getTileset(std::string dir) const;
 
 	//! Return the Tileset object by the id.
 	/**
 	 * @param id   A unique numeric identifier that identifies the tileset
 	 *             among all tilesets in the tilesetlist.
 	 */
-	Tileset *getTileset(guint32 id);
+	Tileset *getTileset(guint32 id) const;
+
+	// Methods that operate on the class data and modify the class.
+
+	//! Add a tileset to the list.  Use this instead of push_back.
+	void add(Tileset *tileset);
+
+	//! Destroy all of the tileset images in this list.
+	void uninstantiateImages();
+
+	//! Load the images for all tilesets in this list.
+	void instantiateImages();
+
+	//! Add the given tileset to the list, and copy files into place.
+	/**
+	 * This method tries hard to add the tileset to this list.  The subdir
+	 * name could be changed, or the id might also be changed so that it
+	 * doesn't conflict with any other tilesets in the list.
+	 *
+	 * @return Returns true if it was added successfully, and the
+	 *         new_subdir and new_id parameters updated to reflect the
+	 *         changed subdir and id.
+	 */
+	bool addToPersonalCollection(Tileset *tileset, std::string &new_subdir, guint32 &new_id);
+
+	// Static Methods
+
+        //! Return the singleton instance of this class.
+        static Tilesetlist* getInstance();
+
+        //! Explicitly delete the singleton instance of this class.
+        static void deleteInstance();
 
 	//! Return an unused tileset number.
 	static int getNextAvailableId(int after = 0);
 
-	void add(Tileset *tileset);
-
-	void uninstantiateImages();
-	void instantiateImages();
-
-	bool addToPersonalCollection(Tileset *tileset, std::string &new_subdir, guint32 &new_id);
     private:
         //! Default constructor.  Loads all tilesets it can find.
 	/**
@@ -113,8 +135,11 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 	 */
         Tileset* loadTileset (std::string filename);
 
+	//! Load the given tilesets into the list.
 	void loadTilesets(std::list<std::string> tilesets);
         
+	// DATA
+
         typedef std::map<std::string, std::string> DirMap;
         typedef std::map<std::string, Tileset*> TilesetMap;
         typedef std::map<guint32, Tileset*> TilesetIdMap;

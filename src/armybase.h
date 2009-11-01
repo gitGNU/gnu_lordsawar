@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -63,10 +63,6 @@ class ArmyBase
 	  //! Provides a +1 strength to all Army units in a fortified Stack.
 	  FORTIFY            = 0x00002000,
         };
-	static guint32 bonusFlagsFromString(const std::string str);
-	static std::string bonusFlagsToString(const guint32 bonus);
-	static ArmyBase::Bonus bonusFlagFromString(const std::string str);
-	static std::string bonusFlagToString(const ArmyBase::Bonus bonus);
         
 	//! Various kinds of statistics that an instance of Army unit has.
 	/**
@@ -92,9 +88,6 @@ class ArmyBase
 	  MOVES_MULTIPLIER = 9,
         };
 
-	static guint32 moveFlagsFromString(const std::string str);
-	static std::string moveFlagsToString(const guint32 move_bonus);
-
 	//! Copy constructor.
         ArmyBase(const ArmyBase& army);
 
@@ -107,7 +100,8 @@ class ArmyBase
 	//! Destructor.
         ~ArmyBase();
 
-        // Set functions:
+
+        // Set Methods
         
         //! Set how much gold this unit requires per turn.
         void setUpkeep(guint32 upkeep){d_upkeep = upkeep;}
@@ -115,7 +109,11 @@ class ArmyBase
         //! Set the strength of the army.
         void setStrength(guint32 strength) {d_strength = strength;}
 
-        // Get functions
+        //! Set how much XP this unit is worth when killed.
+        void setXpReward(double xp_value){d_xp_value = xp_value;}
+
+
+        // Get Methods
         
         //! Returns how many gold pieces this Army needs per turn.
         guint32 getUpkeep() const {return d_upkeep;}
@@ -140,15 +138,62 @@ class ArmyBase
         guint32 getStrength() const {return d_strength;}
 
         //! Get the distance this army can see on a hidden map.
+	/**
+	 * As this army walks on the map, it defogs the map with this radius.
+	 */
         guint32 getSight() const {return d_sight;}
 
+	//! Gets an easy to read string that represents the army's bonuses.
 	std::string getArmyBonusDescription() const;
-
-        //! Set how much XP this unit is worth when killed.
-        void setXpReward(double xp_value){d_xp_value = xp_value;}
 
         //! Returns the number of XP that killing this Army garners it's killer.
         double getXpReward() const {return d_xp_value;}
+
+	// Static Methods
+
+	//! Convert an ArmyBase::Bonus string to a bitwise OR'd value.
+	/**
+	 * Converts a string containing the string representations of one
+	 * or more ArmyBase::Bonus values to a bitwise OR'd value of those
+	 * ArmyBase::Bonus values.  The terms are separated with a pipe `|'.
+	 */
+	static guint32 bonusFlagsFromString(const std::string str);
+
+	//! Convert a series of ArmyBase::Bonus enum values to a string.
+	/**
+	 * Converts a bitwise OR'd value that represents many ArmyBase::Bonus
+	 * enumerated values into a string, where the terms are separated by a
+	 * pipe `|'.
+	 */
+	static std::string bonusFlagsToString(const guint32 bonus);
+
+	//! Convert an ArmyBase::Bonus string to it's enum value.
+	/**
+	 * Converts a string containing a string representation of an 
+	 * ArmyBase::Bonus enumerated value, and converts it to it's enumerated
+	 * value.
+	 */
+	static ArmyBase::Bonus bonusFlagFromString(const std::string str);
+
+	//! Convert an ArmyBase::Bonus enum value to a string.
+	static std::string bonusFlagToString(const ArmyBase::Bonus bonus);
+
+	//! Convert a Tile::Type string to a bitwise OR'd value.
+	/**
+	 * Converts a string containing the string representations of one
+	 * or more Tile::Type values to a bitwise OR'd value of those
+	 * Tile::Type values.  The terms are separated with a pipe `|'.
+	 */
+	static guint32 moveFlagsFromString(const std::string str);
+
+	//! Convert a series of Tile::Type enumerated values to a string.
+	/**
+	 * Converts a bitwise OR'd value that represents many Tile::Type
+	 * enumerated values into a string, where the terms are separated by a
+	 * pipe `|'.
+	 */
+	static std::string moveFlagsToString(const guint32 move_bonus);
+
     protected:
 
         //! Generic method for saving Army base data.

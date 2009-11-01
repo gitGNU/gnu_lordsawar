@@ -87,7 +87,7 @@ bool Roadlist::load(std::string tag, XML_Helper* helper)
     return true;
 }
 
-int Roadlist::calculateType (Vector<int> t)
+int Roadlist::calculateType (Vector<int> t) const
 {
     // examine neighbour tiles to discover whether there's a road on them
     bool u = false; //up

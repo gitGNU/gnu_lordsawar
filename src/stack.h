@@ -78,8 +78,28 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Destructor.
         ~Stack();
 
-	//! Create a stack with an id that isn't unique.
-	static Stack* createNonUniqueStack(Player *player, Vector<int> pos);
+	// Get Methods
+
+        //! Returns the minimum number of movement points of all Army units.
+        guint32 getMoves() const;
+
+	//! Returns the maximum MP the stack would have if it were on land
+        guint32 getMaxLandMoves() const;
+
+	//! Returns the max MP the stack would have if it were in the water
+        guint32 getMaxBoatMoves() const;
+
+        //! Returns the Path object of the stack.
+        Path* getPath() const {return d_path;}
+
+	//! Return true if any of the Army units in the stack are fortified.
+	bool getFortified() const;
+	
+	//! Calculate the number of gold pieces this stack costs this turn.
+	guint32 getUpkeep() const;
+
+
+	// Set Methods
 
         //! Change the loyalty of the stack.
         void setPlayer(Player* p);
@@ -103,9 +123,16 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Set the parked status of the stack.
         void setParked(bool parked){d_parked = parked;}
 
-        //! Save the stack to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+	//! Sets the path object for this stack.
+	void setPath(const Path p);
 
+	//! Set all Army units in the stack to have this fortified state.
+	void setFortified(bool fortified);
+
+
+
+	// Methods that operate on class data and modify the class
+	
 	/**
 	 * When the end of a turn occurs, this callback is used to calculate
 	 * stack bonuses, moves, paths, and it also charges the player the
@@ -132,6 +159,65 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Bless the Army units in the stack.
         int bless();
 
+	//! Uncovers some of the hidden map around this stack.
+	void deFog();
+
+        //! Erase the stack, deleting the Army units too.
+        void flClear();
+
+        /** 
+	 * Erase an Army unit from the Stack, and free the contents of 
+	 * the Army unit too (e.g. Items a Hero might be carrying).
+	 *
+	 * @param it   The place in the Stack to erase.
+	 *
+	 * @return The place in the stack that was erased.
+         */
+	//! Erase an Army unit from the list.
+        iterator flErase(iterator object);
+
+	/**
+	 * Alter the order of the Army units in the stack according to each
+	 * unit's groupedness, and fight order.
+	 *
+	 * The purpose of this sorting is to show the units in the stack
+	 * info window.
+	 *
+	 * @param reverse     Invert the sort.
+	 */
+	//! Sort the Army units in the stack.
+	void sortForViewing(bool reverse);
+
+	//! Have the stack collect it's upkeep from a given player (owner).
+	void payUpkeep(Player *p);
+
+	//! Merge the given stack with this stack.
+	void join(Stack *join);
+
+	//! Return a new stack that holds the given armies from this stack.
+	Stack *splitArmies(std::list<Army*> armies);
+
+	//! Return a new stack that holds the given armies from this stack.
+	Stack *splitArmies(std::list<guint32> armies);
+
+	// Return a new stack holds the given army from this stack.
+	Stack *splitArmy(Army *army);
+
+	//! Return a new stack that holds armies that have some mp.
+	Stack *splitArmiesWithMovement(guint32 mp = 1);
+
+	//! Add an army to this stack.
+	/**
+	 * This method should be used instead of push_back.
+	 */
+	void add(Army *army);
+
+
+	// Methods that operate on class and do not modify the class
+
+        //! Save the stack to an opened saved-game file.
+        bool save(XML_Helper* helper) const;
+
 	/**
          * @return True if the stack has enough moves to traverse to
 	 * the next step in it's Path.  Otherwise, false.
@@ -147,22 +233,6 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Returns whether the stack can move in any direction.
 	bool canMove() const;
         
-        //! Returns the Path object of the stack.
-        Path* getPath() const {return d_path;}
-	void setPath(const Path p);
-
-        //! Returns the minimum number of movement points of all Army units.
-        guint32 getMoves() const;
-
-	//! Returns the maximum MP the stack would have if it were on land
-        guint32 getMaxLandMoves() const;
-
-	//! Returns the max MP the stack would have if it were in the water
-        guint32 getMaxBoatMoves() const;
-
-	//! Uncovers some of the hidden map around this stack.
-	void deFog();
-
 	/**
 	 * Scan all adjacent tiles relative to the stack's position and 
 	 * see how much a move would cost in terms of movement points.
@@ -175,26 +245,13 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	 */
         int getMinTileMoves() const;
 
-        //! Get the next position in the stack's intended Path.
-        Vector<int> nextStep();
-
         //! Return the Army unit in the Stack that has the best strength value.
         Army* getStrongestArmy() const;
 
         //! Return the Hero unit in the Stack that has the best strength value.
         Army* getStrongestHero() const;
 
-	/**
-	 * Scan through the Army units in the stack and return the first
-	 * one that is ungrouped.  This method is used for splitting stacks.  
-	 * See Player::stackSplit for more information.
-	 *
-	 * @return A pointer to the first ungrouped army in the stack or NULL
-	 *         if an ungrouped Army unit could not be found.
-	 */
-        //! Get the first ungrouped Army unit in the Stack.
-        Army* getFirstUngroupedArmy() const;
-
+	//! Go find the army with this identifier in the stack and return it.
         Army* getArmyById(guint32 id) const;
         
         //! True if the stack contains a Hero unit.  Otherwise, false.
@@ -226,20 +283,6 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
         //! Return the maximum sight of the stack.
         guint32 getMaxSight() const;
-
-        //! Erase the stack, deleting the Army units too.
-        void flClear();
-
-        /** 
-	 * Erase an Army unit from the Stack, and free the contents of 
-	 * the Army unit too (e.g. Items a Hero might be carrying).
-	 *
-	 * @param it   The place in the Stack to erase.
-	 *
-	 * @return The place in the stack that was erased.
-         */
-	//! Erase an Army unit from the list.
-        iterator flErase(iterator object);
 
        /** 
 	* Determine which terrain kinds (Tile::Type) the Stack can travel 
@@ -287,32 +330,67 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
 	//! Returns true if this stack can join the given stack.
 	/**
-	 * @pnote This is not a distance calculation.  It checks to see if
+	 * @note This is not a distance calculation.  It checks to see if
 	 * the stack sizes are such that the amalgamated stack would be less
 	 * than 8.
 	 */
 	bool canJoin(const Stack *stack) const;
 
+	//! Return a list of army Ids in the stack that can reach the given 
+	//! destination.
+	std::list<guint32> determineReachableArmies(Vector<int> dest) const;
+
+	//! Returns how many armies in the stack have visited the given temple.
+	guint32 countArmiesBlessedAtTemple(guint32 temple_id) const;
+
+	//!If this stack were at the given pos, would it move in/out of a ship?
 	/**
-	 * Alter the order of the Army units in the stack according to each
-	 * unit's groupedness, and fight order.
-	 *
-	 * The purpose of this sorting is to show the units in the stack
-	 * info window.
-	 *
-	 * @param reverse     Invert the sort.
+	 * The on_ship paramater holds whether or not the stack is in a ship
+	 * at the given position.  This is an out-parameter so that we can
+	 * subsequently call this method for a series of points on a path.
 	 */
-	//! Sort the Army units in the stack.
-	void sortForViewing(bool reverse);
+	bool isMovingToOrFromAShip(Vector<int> dest, bool &on_ship) const;
 
-	//! Set all Army units in the stack to have this fortified state.
-	void setFortified(bool fortified);
+	//! Get the starting point in the stack's intended path.
+	/**
+	 * Returns a position of -1,-1 if there isn't a path.
+	 */
+	Vector<int> getFirstPointInPath() const;
 
-	//! Return true if any of the Army units in the stack are fortified.
-	bool getFortified();
-	
-	//! Calculate the number of gold pieces this stack costs this turn.
-	guint32 getUpkeep();
+	//! Get the final point in the stack's intended path.
+	/**
+	 * Returns a position of -1,-1 if there isn't a path.
+	 */
+	Vector<int> getLastPointInPath() const;
+
+	//! Gets the final point in the stack's path that we have mp to reach.
+	/**
+	 *
+	 * This method checks how many movement points the stack currently 
+	 * has, and calculates how far along it's intended path it can go.
+	 *
+	 * Returns the final reachable spot in the path, or returns a 
+	 * position of -1,-1 if there isn't a path, or none are reachable.
+	 */
+	Vector<int> getLastReachablePointInPath() const;
+
+
+	// Signals
+
+	//! Emitted when this stack dies.
+        sigc::signal<void, Stack*> sdying;
+
+	//! Emitted when this stack is about to move one step
+	sigc::signal<void, Stack*> smoving;
+
+	//! Emitted when this stack has finished moving that one step
+	sigc::signal<void, Stack*> smoved;
+
+	//! Emitted when this stack is grouped or ungrouped
+	sigc::signal<void, Stack*, bool> sgrouped;
+
+
+	// Static Methods
         
 	/**
 	 * This comparator function compares the fight order of two Army units.
@@ -326,54 +404,29 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Comparator function to assist in sorting the armies in the stack.
 	static bool armyCompareFightOrder (const Army *left, const Army *right);
 
-	//! Emitted when a stack dies.
-        sigc::signal<void, Stack*> sdying;
-	//! Emitted when a stack is about to move one step
-	sigc::signal<void, Stack*> smoving;
-	//! Emitted when a stack has finished moving that one step
-	sigc::signal<void, Stack*> smoved;
-	//! Emitted when a stack is grouped or ungrouped
-	sigc::signal<void, Stack*, bool> sgrouped;
+	//! Create a stack with an id that isn't unique.
+	static Stack* createNonUniqueStack(Player *player, Vector<int> pos);
 
-	//! Return a list of army Ids in the stack that can reach the given 
-	//! destination.
-	std::list<guint32> determineReachableArmies(Vector<int> dest);
-
-	//! returns how many armies in the stack have visited the given temple.
-	guint32 countArmiesBlessedAtTemple(guint32 temple_id);
-
-	void payUpkeep(Player *p);
-
-	bool isMovingToOrFromAShip(Vector<int> dest, bool &on_ship) const;
-
-	Vector<int> getFirstPointInPath() const;
-	Vector<int> getLastPointInPath() const;
-	Vector<int> getLastReachablePointInPath() const;
-
-	void join(Stack *join);
-
-	Stack *splitArmies(std::list<Army*> armies);
-	Stack *splitArmies(std::list<guint32> armies);
-	Stack *splitArmy(Army *army);
-	Stack *splitArmiesWithMovement(guint32 mp = 1);
-
-	void add(Army *army);
     private:    
 
 
+	//! Private constructor.
 	Stack(guint32 id, Player* player, Vector<int> pos);
 
-        //! Callback for loading the stack
+        //! Callback for loading the object from an opened saved-game file.
         bool load(std::string tag, XML_Helper* helper);
     
 	//! Helper method for returning strongest army.
 	Army* getStrongestArmy(bool hero) const;
 
         // DATA
+
 	//! The stack's intended path.
         Path* d_path;
+
 	//! Whether or not the stack is defending.
         bool d_defending;
+
 	//! Whether or not the stack is parked.
         bool d_parked;
         

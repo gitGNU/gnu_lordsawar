@@ -132,10 +132,14 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	static Army* createNonUniqueArmy(const ArmyProto& a, Player *p=NULL);
 	static Army* createNonUniqueArmy(const ArmyProdBase& a, Player *p=NULL);
 
-        // Set functions:
+
+        // Set Methods
         
         //! Set the Id of Armyset and type that this Army belongs to.
         void setArmyset(guint32 armyset, guint32 type);
+	
+	//! Change the armyset that the army type for this army belongs to.
+	void setArmyset(guint32 armyset_id) {d_armyset = armyset_id;};
 
         //! Set an Army statistic.
         void setStat(Stat stat, guint32 value);
@@ -162,7 +166,8 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	//! Sets whether or not this Army unit is in a tower.
 	void setFortified (bool f);
 
-        // Get functions
+
+        // Get Methods 
         
 	//! Get the Id of the Armyset to which the Army's type belongs.
         guint32 getArmyset() const {return d_armyset;}
@@ -215,11 +220,27 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
         double getNumberHasBeenHit() const {return d_number_hasbeenhit;}
 
 	//! Return whether or not the Army is in a tower.
-	bool getFortified ();
+	bool getFortified () const;
 
 	//! Returns how many experience points the next level requires.
         guint32 getXpNeededForNextLevel() const;
 
+	//! Is this army a hero?
+	/**
+	 * isHero is overridden by the Hero class.
+	 */
+	virtual bool isHero() const {return false;};
+
+	//! This army is of an army type that can be awarded as a reward.
+	bool getAwardable() const;
+
+	//! This army is of an army type that can be the keeper in a ruin.
+	bool getDefendsRuins() const;
+
+	//! This army is of an army type that has this name.
+	virtual std::string getName() const;
+
+	//Methods that operate on class data and modify the class data
         /** 
 	 * Regenerate an amount of the Army unit's hitpoints but not 
 	 * exceeding the maximum number of hitpoints.
@@ -271,9 +292,6 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
         //! Increases the experience points of the Army by the given amount.
         void gainXp(double n);
 
-        //! Checks whether or not the Army unit can advance a level.
-        bool canGainLevel() const;
-
         /** 
 	 * Increase the Army unit's level, and increase one of three stats;
 	 * Stat::STRENGTH, Stat::MOVES, or Stat::SIGHT.
@@ -286,6 +304,14 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	//! Increase the Army's level, and increase a given stat.
         int gainLevel(Stat stat);
 
+	//! Make this army look and behave like another one.
+	void morph(const ArmyProto *armyproto);
+
+	//Methods that operate on class data and do not modify the class data
+
+	//! Returns whether or not the army was blessed at the given temple.
+        bool blessedAtTemple(guint32 temple_id) const;
+
 	/**
 	 * Calculate how much a stat is increased because the Army unit
 	 * has increased it's level.
@@ -295,15 +321,17 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	 * @return The new value of the stat after it is increased.
 	 */
 	//! Return how much the stat would be boosted by gaining a level.
-        int computeLevelGain(Stat stat);
+        int computeLevelGain(Stat stat) const;
 
-	//! Returns whether or not the army was blessed at the given temple.
-        bool blessedAtTemple(guint32 temple_id);
+        //! Checks whether or not the Army unit can advance a level.
+        bool canGainLevel() const;
 
         void printAllDebugInfo() const;
 
         //! Saves the Army to an opened saved-game file.
         virtual bool save(XML_Helper* helper) const;
+
+	//signals
         
 	/**
 	 * @note This signal is static because sometimes the army doesn't 
@@ -314,16 +342,6 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	//! Emitted when an Army has died.
         static sigc::signal<void, Army*> sdying;
 
-	virtual bool isHero() const {return false;};
-
-	//take these values from the army type that the instance points to.
-	bool getAwardable() const;
-	bool getDefendsRuins() const;
-	virtual std::string getName() const;
-
-	void morph(const ArmyProto *armyproto);
-
-	void setArmyset(guint32 armyset_id) {d_armyset = armyset_id;};
     protected:
 
         //! Generic method for saving Army data.  Useful to the Hero class.

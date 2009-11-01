@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -70,19 +70,14 @@ class VectoredUnit: public Ownable, public LocationBox, public sigc::trackable
 	//! Destructor.
         ~VectoredUnit();
 
+	// Get Methods
+
 	//! Return the position of the destination for this vectored unit.
 	/**
 	 * @return The position of a tile on the game map where the vectored
 	 *         unit will show up (eventually).
 	 */
 	Vector<int>getDestination() const {return d_destination;};
-
-	//! Set the position of the destination target for this vectored unit.
-	/**
-	 * @param dest  The position of a tile on the game map to have the
-	 *              vectored unit show up at.
-	 */
-	void setDestination(Vector<int>dest) {d_destination = dest;};
 
 	//! Return how long it will take for the vectored unit to arrive.
 	/**
@@ -91,6 +86,22 @@ class VectoredUnit: public Ownable, public LocationBox, public sigc::trackable
 	 */
 	int getDuration () const { return d_duration; };
 
+	//! Return a pointer to the Army prototype that is being vectored.
+	/**
+	 * @return A pointer to an Army in an Armyset.
+	 */
+	ArmyProdBase *getArmy() const { return d_army; };
+
+
+	// Set Methods
+
+	//! Set the position of the destination target for this vectored unit.
+	/**
+	 * @param dest  The position of a tile on the game map to have the
+	 *              vectored unit show up at.
+	 */
+	void setDestination(Vector<int>dest) {d_destination = dest;};
+
 	//! Sets how long it will take for the vectored unit to arrive.
 	/**
 	 * @param duration  The number of turns to take before showing up at
@@ -98,17 +109,20 @@ class VectoredUnit: public Ownable, public LocationBox, public sigc::trackable
 	 */
 	void setDuration(int duration) {d_duration = duration;};
 
-	//! Return a pointer to the Army prototype that is being vectored.
-	/**
-	 * @return A pointer to an Army in an Armyset.
-	 */
-	ArmyProdBase *getArmy() const { return d_army; };
-
 	//! Set the Army prototype that is being vectored.
 	void setArmy(ArmyProdBase *army) {d_army = army;}
 
+
+	// Methods that operate on class data but do not modify the class
+
         //! Saves the vectored unit data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
+
+	//! Called when a vectored unit arrives at the destination.
+	Army *armyArrives() const;
+
+
+	// Methods that operate on class data and modify the class.
 
         //! Process the vectored unit at the start of a new turn.
 	/**
@@ -117,11 +131,10 @@ class VectoredUnit: public Ownable, public LocationBox, public sigc::trackable
 	 */
         bool nextTurn();
 
-	//! Called when a vectored unit arrives at the destination.
-	Army *armyArrives();
     private:
 
         // DATA
+
 	//!  The position on the game map that this vectored unit is going to.
 	Vector<int> d_destination;
 

@@ -133,7 +133,6 @@ class BigMap: public sigc::trackable
     void draw_buffer_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context);
     Glib::RefPtr<Gdk::Pixmap> magnify(Glib::RefPtr<Gdk::Pixmap> orig);
     void clip_viewable_buffer(Glib::RefPtr<Gdk::Pixmap> pixmap, Glib::RefPtr<Gdk::GC> gc, Vector<int> pos, Glib::RefPtr<Gdk::Pixmap> out);
-
 };
 
 #endif

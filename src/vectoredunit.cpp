@@ -87,7 +87,7 @@ bool VectoredUnit::save(XML_Helper* helper) const
     return retval;
 }
 
-Army *VectoredUnit::armyArrives()
+Army *VectoredUnit::armyArrives() const
 {
   City *dest;
   // drop it in the destination city!

@@ -64,27 +64,27 @@ Tilesetlist::~Tilesetlist()
     delete (*it);
 }
 
-void Tilesetlist::getSizes(std::list<guint32> &sizes)
+void Tilesetlist::getSizes(std::list<guint32> &sizes) const
 {
-  for (iterator i = begin(); i != end(); i++)
+  for (const_iterator i = begin(); i != end(); i++)
     {
       if (find (sizes.begin(), sizes.end(), (*i)->getTileSize()) == sizes.end())
 	sizes.push_back((*i)->getTileSize());
     }
 }
 
-std::list<std::string> Tilesetlist::getNames()
+std::list<std::string> Tilesetlist::getNames() const
 {
   std::list<std::string> names;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     names.push_back((*it)->getName());
   return names;
 }
 
-std::list<std::string> Tilesetlist::getNames(guint32 tilesize)
+std::list<std::string> Tilesetlist::getNames(guint32 tilesize) const
 {
   std::list<std::string> names;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->getTileSize() == tilesize)
       names.push_back((*it)->getName());
   return names;
@@ -124,9 +124,13 @@ void Tilesetlist::add(Tileset *tileset)
   d_tilesetids[tileset->getId()] = tileset;
 }
 
-std::string Tilesetlist::getTilesetDir(std::string name, guint32 tilesize)
+std::string Tilesetlist::getTilesetDir(std::string name, guint32 tilesize) const
 {
-  return d_dirs[String::ucompose("%1 %2", name, tilesize)];
+  DirMap::const_iterator it = d_dirs.find(String::ucompose("%1 %2", name, tilesize));
+  if (it == d_dirs.end())
+    return "";
+  else
+    return (*it).second;
 }
 
 void Tilesetlist::loadTilesets(std::list<std::string> tilesets)
@@ -186,18 +190,20 @@ void Tilesetlist::instantiateImages()
     (*it)->instantiateImages();
 }
 	
-Tileset *Tilesetlist::getTileset(std::string dir) 
+Tileset *Tilesetlist::getTileset(std::string dir) const
 { 
-  if (d_tilesets.find(dir) == d_tilesets.end())
+  TilesetMap::const_iterator it = d_tilesets.find(dir);
+  if (it == d_tilesets.end())
     return NULL;
-  return d_tilesets[dir];
+  return (*it).second;
 }
 	
-Tileset *Tilesetlist::getTileset(guint32 id) 
+Tileset *Tilesetlist::getTileset(guint32 id) const
 { 
-  if (d_tilesetids.find(id) == d_tilesetids.end())
+  TilesetIdMap::const_iterator it = d_tilesetids.find(id);
+  if (it == d_tilesetids.end())
     return NULL;
-  return d_tilesetids[id];
+  return (*it).second;
 }
 
 bool Tilesetlist::addToPersonalCollection(Tileset *tileset, std::string &new_subdir, guint32 &new_id)

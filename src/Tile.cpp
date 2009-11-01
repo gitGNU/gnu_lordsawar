@@ -45,7 +45,7 @@ Tile::Tile(XML_Helper* helper)
     d_type = tileTypeFromString(type_str);
 }
 
-bool Tile::save(XML_Helper *helper)
+bool Tile::save(XML_Helper *helper) const
 {
   bool retval = true;
 
@@ -55,7 +55,7 @@ bool Tile::save(XML_Helper *helper)
   std::string type_str = tileTypeToString(Tile::Type(d_type));
   retval &= helper->saveData("type", type_str);
   retval &= d_smalltile->save(helper);
-  for (Tile::iterator i = begin(); i != end(); ++i)
+  for (Tile::const_iterator i = begin(); i != end(); ++i)
     retval &= (*i)->save(helper);
   retval &= helper->closeTag();
 
@@ -81,6 +81,7 @@ void Tile::setTypeByIndex(int idx)
     case 6: setType(VOID); break;
     }
 }
+
 int Tile::getTypeIndexForType(Tile::Type type)
 {
   switch (type)
@@ -95,10 +96,11 @@ int Tile::getTypeIndexForType(Tile::Type type)
     }
   return 0;
 }
-TileStyle *Tile::getRandomTileStyle (TileStyle::Type style)
+
+TileStyle *Tile::getRandomTileStyle (TileStyle::Type style) const
 {
   std::vector<TileStyle*> tilestyles;
-  for (iterator it = begin(); it != end(); ++it)
+  for (const_iterator it = begin(); it != end(); ++it)
     {
       TileStyleSet *tilestyleset = *it;
       for (guint32 k = 0; k < tilestyleset->size(); k++)
@@ -158,7 +160,7 @@ Tile::Type Tile::tileTypeFromString(const std::string str)
 }
 
       
-bool Tile::validateGrass(std::list<TileStyle::Type> types)
+bool Tile::validateGrass(std::list<TileStyle::Type> types) const
 {
   //grass tiles only have lone styles and other styles.
   for (std::list<TileStyle::Type>::iterator it = types.begin(); 
@@ -170,7 +172,7 @@ bool Tile::validateGrass(std::list<TileStyle::Type> types)
   return true;
 }
 
-bool Tile::validateFeature(std::list<TileStyle::Type> types)
+bool Tile::validateFeature(std::list<TileStyle::Type> types) const
 {
   //forest, water and hill tiles have a full suite of styles
   //"other" styles are optional.
@@ -182,24 +184,24 @@ bool Tile::validateFeature(std::list<TileStyle::Type> types)
   return false;
 }
 
-bool Tile::consistsOnlyOfLoneAndOtherStyles()
+bool Tile::consistsOnlyOfLoneAndOtherStyles() const
 {
   std::list<TileStyle::Type> types;
-  for (Tile::iterator i = begin(); i != end(); ++i)
+  for (Tile::const_iterator i = begin(); i != end(); ++i)
     (*i)->getUniqueTileStyleTypes(types);
       return validateGrass(types);
 }
-bool Tile::validate()
+bool Tile::validate() const
 {
   if (size() == 0)
     return false;
 
-  for (Tile::iterator i = begin(); i != end(); ++i)
+  for (Tile::const_iterator i = begin(); i != end(); ++i)
     if ((*i)->validate() == false)
       return false;
 
   std::list<TileStyle::Type> types;
-  for (Tile::iterator i = begin(); i != end(); ++i)
+  for (Tile::const_iterator i = begin(); i != end(); ++i)
     (*i)->getUniqueTileStyleTypes(types);
 
   if (types.empty())

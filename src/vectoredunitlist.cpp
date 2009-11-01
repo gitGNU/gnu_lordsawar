@@ -231,9 +231,9 @@ bool VectoredUnitlist::removeVectoredUnitsComingFrom(City *c)
   return found;
 }
 
-void VectoredUnitlist::getVectoredUnitsGoingTo(City *c, std::list<VectoredUnit*>& vectored)
+void VectoredUnitlist::getVectoredUnitsGoingTo(City *c, std::list<VectoredUnit*>& vectored) const
 {
-  for (VectoredUnitlist::iterator it = begin(); it != end(); it++)
+  for (VectoredUnitlist::const_iterator it = begin(); it != end(); it++)
     {
       if (c->contains((*it)->getDestination()))
 	{
@@ -241,9 +241,9 @@ void VectoredUnitlist::getVectoredUnitsGoingTo(City *c, std::list<VectoredUnit*>
 	}
     }
 }
-void VectoredUnitlist::getVectoredUnitsGoingTo(Vector<int> pos, std::list<VectoredUnit*>& vectored)
+void VectoredUnitlist::getVectoredUnitsGoingTo(Vector<int> pos, std::list<VectoredUnit*>& vectored) const
 {
-  for (VectoredUnitlist::iterator it = begin(); it != end(); it++)
+  for (VectoredUnitlist::const_iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getDestination() == pos)
 	{
@@ -251,9 +251,9 @@ void VectoredUnitlist::getVectoredUnitsGoingTo(Vector<int> pos, std::list<Vector
 	}
     }
 }
-void VectoredUnitlist::getVectoredUnitsComingFrom(Vector<int> pos, std::list<VectoredUnit*>& vectored)
+void VectoredUnitlist::getVectoredUnitsComingFrom(Vector<int> pos, std::list<VectoredUnit*>& vectored) const
 {
-  for (VectoredUnitlist::iterator it = begin(); it != end(); it++)
+  for (VectoredUnitlist::const_iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getPos() == pos)
 	{
@@ -262,10 +262,10 @@ void VectoredUnitlist::getVectoredUnitsComingFrom(Vector<int> pos, std::list<Vec
     }
 }
 
-guint32 VectoredUnitlist::getNumberOfVectoredUnitsGoingTo(Vector<int> pos)
+guint32 VectoredUnitlist::getNumberOfVectoredUnitsGoingTo(Vector<int> pos) const
 {
   guint32 count = 0;
-  for (VectoredUnitlist::iterator it = begin(); it != end(); it++)
+  for (VectoredUnitlist::const_iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getDestination() == pos)
 	{

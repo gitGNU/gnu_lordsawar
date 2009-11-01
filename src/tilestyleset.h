@@ -57,34 +57,58 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	//! Destructor.
         ~TileStyleSet();
 
+
+	// Get Methods
+
 	//! Get the name of this tilestyleset.
 	/**
 	 * Returns the text loaded from a tileset.tile.tilestyles.d_name
 	 * XML entity of the tileset configuration flie.
+	 * This name refers to the filename that holds the imagery for this
+	 * tilestyleset.  It is a basename of the filename.  It doesn't
+	 * contain any slashes, or an ending file extension.  eg. ".png".
 	 */
 	std::string getName() const {return d_name;}
 
+	//! Return the subdirectory of this Tilestyleset.
+        std::string getSubDir() const {return d_dir;};
+
+
+	// Set Methods
+
 	//! Set the name of this tilestyleset.
 	void setName(std::string name) {d_name = name;}
+
+	//! Set the subdirectory of where this Tilestyleset resides on disk.
+        void setSubDir(std::string dir) {d_dir = dir;};
+
+
+	//Methods that operate on the class data but do not modify the class.
 
 	//! Save a TileStyleSet to an opened tile configuration file.
 	/**
 	 * @param  The opened XML tile configuration file.
 	 */
-	bool save(XML_Helper *helper);
+	bool save(XML_Helper *helper) const;
 
-	//! Return the subdirectory of this Tilestyleset.
-        std::string getSubDir() const {return d_dir;};
+	//! Return a list of all of the tilestyle types in this tilestyleset.
+	void getUniqueTileStyleTypes(std::list<TileStyle::Type> &types) const;
 
-	//! Set the subdirectory of where this Tilestyleset resides on disk.
-        void setSubDir(std::string dir) {d_dir = dir;};
+	//! Check to see if this tilestyleset is usable in the game.
+	bool validate() const;
 
-	void getUniqueTileStyleTypes(std::list<TileStyle::Type> &types);
-	bool validate();
 
+	//Methods that operate on the class data and modify the class.
+
+	//! Instantiate the tilestyleset's images from the given file.
 	void instantiateImages(int tilesize, std::string image_filename);
+
+	//! Destroy the images associated with this tilestyleset.
 	void uninstantiateImages();
+
     private:
+
+	// DATA
 
 	//! The name of the tilestyleset.
 	/**

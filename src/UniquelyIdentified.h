@@ -1,7 +1,7 @@
 // Copyright (C) 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -34,6 +34,7 @@ class UniquelyIdentified
  public:
     //! Default constructor.
     UniquelyIdentified();
+
     //! Copy constructor.
     UniquelyIdentified(const UniquelyIdentified&);
 
@@ -42,17 +43,31 @@ class UniquelyIdentified
 
     //! Loading constructor.
     UniquelyIdentified(XML_Helper* helper);
+
+    //! Destructor.
     virtual ~UniquelyIdentified();
 
-    //! Returns the id of the object.
+
+    // Get Methods
+
+    //! Returns the unique numeric identifer of this object.
     guint32 getId() const {return d_id;}
 
+
+    //Methods that operate on class data and modify the class.
+
+    //! Make the counter aware of this object by syncing it to one after this.
     void syncNewId();
 
+    //! Go get a new unique identifier for this object.
     void assignNewId();
         
  protected:
+
+    //! A unique numeric identifier for an object in the game.
     guint32 d_id;
+
+    //! Whether or not this id is actually unique.
     bool d_unique;
 };
 

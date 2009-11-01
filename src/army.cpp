@@ -341,7 +341,7 @@ guint32 Army::getXpNeededForNextLevel() const
   return xp_per_level * getLevel();
 }
 
-int Army::computeLevelGain(Stat stat)
+int Army::computeLevelGain(Stat stat) const
 {
   if (stat == MOVE_BONUS || stat == ARMY_BONUS || stat == SHIP)
     return -1;
@@ -494,12 +494,12 @@ void Army::setFortified (bool f)
 }
 
 //! get the fortify flag for this army
-bool Army::getFortified ()
+bool Army::getFortified () const
 {
   return (d_army_bonus & Army::FORTIFY) == Army::FORTIFY;
 }
 
-bool Army::blessedAtTemple(guint32 temple_id)
+bool Army::blessedAtTemple(guint32 temple_id) const
 {
   unsigned int id = temple_id;
   if (std::find (d_visitedTemples.begin(), d_visitedTemples.end(), id) ==

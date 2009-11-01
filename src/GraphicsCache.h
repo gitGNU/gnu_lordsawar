@@ -105,7 +105,7 @@ class GraphicsCache
       HEART,
       GOTO_ARROW
     };
-        //! Function for getting/creating the soliton instance.
+        //! Method for getting/creating the soliton instance.
         static GraphicsCache* getInstance();
 
         //! Explicitely deletes the soliton instance
@@ -117,10 +117,10 @@ class GraphicsCache
         //! Get the current cache size, the maximum is in Configuration::s_cacheSize
         guint32 getCacheSize() const {return d_cachesize;}
 
-        /** Function for getting the army picture from the cache
+        /** Method for getting the army picture from the cache
           * 
-          * This function returns either the cached image of the given type or
-          * creates a new one and caches it. Use this function to access
+          * This method returns either the cached image of the given type or
+          * creates a new one and caches it. Use this method to access
           * army images! And: Don't touch the returned surface!! For performance
           * reasons you get the original surface which is also in the cache.
           *
@@ -140,10 +140,10 @@ class GraphicsCache
 	PixMask* getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid, guint32 tileset, guint32 cityset);
 	PixMask* getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid);
 
-        /** Function for getting the shield picture from the cache
+        /** Method for getting the shield picture from the cache
           * 
-          * This function returns either the cached image of the given type or
-          * creates a new one and caches it. Use this function to access
+          * This method returns either the cached image of the given type or
+          * creates a new one and caches it. Use this method to access
           * army images! And: Don't touch the returned surface!! For performance
           * reasons you get the original surface which is also in the cache.
           *
@@ -158,7 +158,7 @@ class GraphicsCache
         PixMask* getShieldPic(guint32 shieldset, guint32 type, guint32 colour);
         PixMask* getShieldPic(guint32 type, Player *p);
 
-        /** Function for getting a ruin picture
+        /** Method for getting a ruin picture
           *
           * @param type         the type of the ruin
           * @return image of the ruin 
@@ -166,7 +166,7 @@ class GraphicsCache
         PixMask* getRuinPic(int type);
         PixMask* getRuinPic(int type, guint32 cityset);
 
-        /** Function for getting a diplomacy icon
+        /** Method for getting a diplomacy icon
           *
           * @param type         o = small, or 1 = large.
           * @param state        the diplomatic state.  e.g. peace, war, etc
@@ -174,7 +174,7 @@ class GraphicsCache
           */
         PixMask* getDiplomacyPic(int type, Player::DiplomaticState state);
 
-        /** Function for getting a temple picture
+        /** Method for getting a temple picture
           *
           * @param type         the type of the temple
           * @return image of the temple
@@ -182,7 +182,7 @@ class GraphicsCache
         PixMask* getTemplePic(int type);
         PixMask* getTemplePic(int type, guint32 cityset);
 
-        /** Function for getting a road picture
+        /** Method for getting a road picture
           *
           * @param type         the type of the road
           * @return image of the road
@@ -190,7 +190,7 @@ class GraphicsCache
         PixMask* getRoadPic(int type, guint32 tileset);
         PixMask* getRoadPic(int type);
 
-        /** Function for getting a fog picture
+        /** Method for getting a fog picture
           *
           * @param type         the type of the fog
           * @return image of the fog
@@ -198,7 +198,7 @@ class GraphicsCache
         PixMask* getFogPic(int type, guint32 tileset);
         PixMask* getFogPic(int type);
 
-        /** Function for getting a bridge picture
+        /** Method for getting a bridge picture
           *
           * @param type         the type of the bridge 0=e/w 1=n/s
           * @return image of the bridge
@@ -206,14 +206,14 @@ class GraphicsCache
         PixMask* getBridgePic(int type, guint32 tileset);
         PixMask* getBridgePic(int type);
 
-        /** Function for getting a cursor picture
+        /** Method for getting a cursor picture
           *
           * @param type         the type of the cursor 
           * @return image of the cursor
           */
         PixMask* getCursorPic(int type);
 
-        /** Function for getting a ship picture.  This is the picture
+        /** Method for getting a ship picture.  This is the picture
 	  * that appears when the stack goes into the water.
           *
           * @param p            the player to colour the ship as
@@ -221,7 +221,7 @@ class GraphicsCache
           */
         PixMask* getShipPic(const Player* p);
 
-        /** Function for getting a standard picture.  This is the picture
+        /** Method for getting a standard picture.  This is the picture
 	  * that appears when the hero plants a flag..
           *
           * @param p            the player to colour the flag as
@@ -229,7 +229,7 @@ class GraphicsCache
           */
         PixMask* getPlantedStandardPic(const Player* p);
 
-        /** Function for getting a port picture.  This is the picture
+        /** Method for getting a port picture.  This is the picture
 	  * that appears often as an anchor on coastal regions.
           *
           * @return image of the port
@@ -237,7 +237,7 @@ class GraphicsCache
         PixMask* getPortPic();
         PixMask* getPortPic(guint32 cityset);
 
-        /** Function for getting a signpost picture.  This is the picture
+        /** Method for getting a signpost picture.  This is the picture
 	  * that appears as a little tiny sign on grassy tiles.
           *
           * @return image of the signpost
@@ -245,7 +245,7 @@ class GraphicsCache
         PixMask* getSignpostPic();
         PixMask* getSignpostPic(guint32 cityset);
 
-        /** Function for getting a bag-of-items picture.  This is the picture
+        /** Method for getting a bag-of-items picture.  This is the picture
 	  * that shows when a hero drops one or more items on the ground.
           *
           * @return image of the sack of items
@@ -253,7 +253,7 @@ class GraphicsCache
         PixMask* getBagPic();
         PixMask* getBagPic(guint32 armyset);
 
-        /** Function for getting an explosion picture.  This is the picture
+        /** Method for getting an explosion picture.  This is the picture
 	  * that shows when stacks are fighting.
           *
           * @return image of the explosion.
@@ -261,7 +261,7 @@ class GraphicsCache
         PixMask* getExplosionPic();
         PixMask* getExplosionPic(guint32 tileset);
 
-	/** Function for getting a new-level picture.  This is the picture
+	/** Method for getting a new-level picture.  This is the picture
 	 * that appears when a hero gains a new level, and subsequently gets
 	 * to increase a stat.
 	 *
@@ -270,11 +270,11 @@ class GraphicsCache
 	 */
         PixMask* getNewLevelPic(const Player* p, guint32 gender);
 
-        /** Function for getting a city picture
+        /** Method for getting a city picture
           * 
           * For simplicity we have extended the basic_image/mask style to
           * cities as well, since it greatly reduces the number of images.
-          * Use this function solely to get city images, and don't touch the
+          * Use this method solely to get city images, and don't touch the
           * images!
           *
           * @param type         the level of the city; -1 returns the pic for
@@ -284,9 +284,9 @@ class GraphicsCache
           * @return image of the described city
           */
         PixMask* getCityPic(int type, const Player* p, guint32 cityset);
-        /** Another function for getting a city picture
+        /** Another method for getting a city picture
           *
-          * Most often, we don't need such a sophisticated function. So just
+          * Most often, we don't need such a sophisticated method. So just
           * supply the city instance and be happy. :)
           *
           * @param city     the city whose picture we want to get
@@ -295,9 +295,9 @@ class GraphicsCache
         PixMask* getCityPic(const City* city);
         PixMask* getCityPic(const City* city, guint32 cityset);
 
-        /** Function for getting tower pictures.
+        /** Method for getting tower pictures.
           *
-          * As with the other functions, use solely this function to get the tower 
+          * As with the other methods, use solely this method to get the tower 
           * images. And DON'T modify the images!
           *
           * @param p the player for which we want to get the tower
@@ -306,9 +306,9 @@ class GraphicsCache
         PixMask* getTowerPic(const Player *p);
 	PixMask* getTowerPic(const Player* p, guint32 cityset);
 
-        /** Function for getting flag pictures.
+        /** Method for getting flag pictures.
           *
-          * As with the other functions, use solely this function to get the flag
+          * As with the other methods, use solely this method to get the flag
           * images. And DON'T modify the images!
           *
           * @param stack    the stack for which we want to get the flag
@@ -319,9 +319,9 @@ class GraphicsCache
 	PixMask* getFlagPic(guint32 stack_size, const Player *p);
         PixMask* getFlagPic(guint32 stack_size, const Player *p, guint32 tileset);
 
-        /** Function for getting selector pictures.
+        /** Method for getting selector pictures.
           *
-          * As with the other functions, use solely this function to get the 
+          * As with the other methods, use solely this method to get the 
           * selector images. And DON'T modify the images!
           *
           * @param type the frame of the selector
@@ -332,9 +332,9 @@ class GraphicsCache
 
 	PixMask* getSelectorPic(guint32 type, guint32 frame, const Player *p);
 
-        /** Function for getting shield pictures.
+        /** Method for getting shield pictures.
           *
-          * As with the other functions, use solely this function to get the 
+          * As with the other methods, use solely this method to get the 
           * shield images. And DON'T modify the images!
           *
           * @param type small, medium or large shield size
@@ -353,9 +353,9 @@ class GraphicsCache
         PixMask* getSmallRuinUnexploredPic();
         PixMask* getSmallStrongholdUnexploredPic();
 
-        /** Function for getting production shield pictures.
+        /** Method for getting production shield pictures.
           *
-          * As with the other functions, use solely this function to get the 
+          * As with the other methods, use solely this method to get the 
           * shield images. And DON'T modify the images!
           *
           * @param type home/away/destination/source/invalid.  
@@ -585,7 +585,7 @@ class GraphicsCache
 
         /** Loads an image
           * 
-          * This function loads an image, adjusts it to the current resolution etc.
+          * This method loads an image, adjusts it to the current resolution etc.
           * to improve blitting performance.
           *
           * @note Some of the images (.jpg??) become transparent if the alpha

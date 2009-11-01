@@ -56,7 +56,7 @@ Ownable::~Ownable()
 {
 }
 
-bool Ownable::isFriend(Player *opponent)
+bool Ownable::isFriend(Player *opponent) const
 {
   return d_owner == opponent;
 }

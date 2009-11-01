@@ -30,26 +30,36 @@ class AICityInfo;
 
 using namespace std;
 
-/** List of threats + some neccessary AddOns.
+/** List of threats.
   */
 class Threatlist : public std::list<Threat*>
 {
     public:
+
+	//! Default Constructor.
         Threatlist();
+
+	//! Destructor.
         ~Threatlist();
 
-        // add a ruin as a threat
+
+	// Methods that operate on class data and modify the class.
+
+        //! Add a ruin as a threat
         void addRuin(Ruin *ruin);
         
-        // Adds a stack as a threat. If other threats posed by the owner of
-        // the stack are close by, they are merged to a single threat.
+        //! Adds a stack as a threat. 
+	/**
+	 * If other threats posed by the owner of the stack are close by, they 
+	 * are merged to a single threat.
+	 */
         void addStack(Stack *stack);
 
         //! Searches through the threat list and deletes the stack
         void deleteStack(Stack* s);
 
+	//! deletes the stack in the threat list that has the given id.
 	void deleteStack(guint32 id);
-
 
         // how much danger does this set of threats pose to the given city?
         void findThreats(AICityInfo *info) const;
@@ -60,10 +70,6 @@ class Threatlist : public std::list<Threat*>
         //! sort into list by closest first
         void sortByDistance(Vector<int> pos);
 
-        //! return some debugging information
-        string toString() const;
-        
-        
         //! Behaves like std::list::clear(), but frees pointers as well
         void flClear();
 
@@ -72,6 +78,12 @@ class Threatlist : public std::list<Threat*>
 
         //! Behaves like std::list::remove(), but frees pointers as well
         bool flRemove(Threat* object);
+
+	// Methods that operate on class data but do not modify the class
+
+        //! return some debugging information
+        string toString() const;
+        
 };
 
 #endif // THREATLIST_H

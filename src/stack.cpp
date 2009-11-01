@@ -387,6 +387,8 @@ guint32 Stack::calculateTileMovementCost(Vector<int> pos) const
 
 Vector<int> Stack::getFirstPointInPath() const
 {
+  if (d_path->size() == 0)
+    return Vector<int>(-1,-1);
   Vector<int> p = *(d_path->begin());
   return p;
 }
@@ -679,11 +681,11 @@ void Stack::setFortified(bool fortified)
   (*begin())->setFortified(fortified);
 }
 
-bool Stack::getFortified()
+bool Stack::getFortified() const
 {
   if (empty())
     return false;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getFortified())
 	return true;
@@ -691,10 +693,10 @@ bool Stack::getFortified()
   return false;
 }
 
-guint32 Stack::getUpkeep()
+guint32 Stack::getUpkeep() const
 {
   guint32 upkeep = 0;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     upkeep += (*it)->getUpkeep();
   return upkeep;
 }
@@ -708,11 +710,11 @@ bool Stack::canJoin(const Stack *stack) const
 
 }
 
-std::list<guint32> Stack::determineReachableArmies(Vector<int> dest)
+std::list<guint32> Stack::determineReachableArmies(Vector<int> dest) const
 {
   std::list<guint32> ids;
   //try each army individually to see if it reaches
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getMoves() > 0)
 	{
@@ -723,14 +725,13 @@ std::list<guint32> Stack::determineReachableArmies(Vector<int> dest)
 	    ids.push_back((*it)->getId());
 	  stack->clear();
 	  delete stack;
-	  //fixme: can't delete stacks like this because it deletes the army
 	}
     }
   if (ids.size() == 0)
     return ids;
 
   //now try to see if any army units can tag along
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       //skip over armies that are already known to be reachable
       if (find(ids.begin(), ids.end(), (*it)->getId()) != ids.end())
@@ -758,10 +759,10 @@ std::list<guint32> Stack::determineReachableArmies(Vector<int> dest)
   return ids;
 }
 
-guint32 Stack::countArmiesBlessedAtTemple(guint32 temple_id)
+guint32 Stack::countArmiesBlessedAtTemple(guint32 temple_id) const
 {
   guint32 blessed = 0;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if ((*it)->blessedAtTemple(temple_id))
 	blessed++;

@@ -30,12 +30,16 @@ class XML_Helper;
 class Positioned
 {
  public:
+
      //! Default constructor.
      Positioned(Vector<int> pos);
+
      //! Copy constructor.
      Positioned(const Positioned&);
+
      //! Loading constructor.
      Positioned(XML_Helper* helper);
+
      //! Destructor.
     ~Positioned();
     

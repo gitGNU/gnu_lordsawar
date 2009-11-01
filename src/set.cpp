@@ -22,7 +22,7 @@ Set::Set()
 Set::~Set()
 {
 }
-std::string Set::getFile(std::string file)
+std::string Set::getFile(std::string file) const
 {
   return getDirectory() +  file + ".png";
 }

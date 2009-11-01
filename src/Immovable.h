@@ -36,10 +36,13 @@ class Immovable: private Positioned
       *       altered.
       */
      Immovable(Vector<int> pos);
+
      //! Copy constructor.
      Immovable(const Immovable&);
+
      //! Loading constructor.
      Immovable(XML_Helper* helper);
+
      //! Destructor.
     ~Immovable();
     

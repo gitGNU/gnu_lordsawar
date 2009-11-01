@@ -67,8 +67,6 @@ class Reward
 	  //! A portion of the hidden map to expose to the rewarded player.
 	  MAP = 5
 	};
-	static std::string rewardTypeToString(const Reward::Type type);
-	static Reward::Type rewardTypeFromString(const std::string str);
 
         //! Default constructor.
 	/**
@@ -106,27 +104,33 @@ class Reward
 	 */
         Reward (const Reward& orig);
 
-	//! deep copy a reward into another one
-	static Reward* copy(const Reward* r);
-
 	//! Destructor.
         virtual ~Reward();
+
+
+	// Get Methods
 
         //! Get the type of the reward.
         Type getType() const { return d_type; }
 
+        //! Returns the name of the reward.
+        std::string getName() const {return d_name;}
+
+
+	// Set Methods
+
 	//! Sets the name of the reward.
 	void setName(std::string name) {d_name = name;}
 
-        //! Returns the name of the reward.
-        std::string getName() const {return d_name;}
+
+	// Methods that operate on the class data but do not modify the class.
 
 	//! Generates a description of this reward.
 	/**
 	 * This method inspects the underlying reward and generates an
 	 * appropriate description.
 	 */
-	std::string getDescription();
+	std::string getDescription() const;
 
 	//! Saves the data elements common to all rewards.
         /**
@@ -137,7 +141,10 @@ class Reward
 	 * @param helper  The opened saved-game file to save the Reward object
 	 *                to.
          */
-        virtual bool save(XML_Helper* helper)= 0;
+        virtual bool save(XML_Helper* helper) const = 0;
+
+
+	// Static Methods
 
 	//! Assist in the loading of Rewards of all kinds.
         /**
@@ -149,7 +156,18 @@ class Reward
          */
         static Reward* handle_load(XML_Helper* helper);
 
+	//! Convert a Reward::Type enumerated value to a string.
+	static std::string rewardTypeToString(const Reward::Type type);
+
+	//! Convert a Reward::Type string to an enumerated value.
+	static Reward::Type rewardTypeFromString(const std::string str);
+
+	//! deep copy a reward into another one
+	static Reward* copy(const Reward* r);
+
     protected:
+
+	// DATA
 
         //! Type of the reward.
         Type d_type;
@@ -171,12 +189,29 @@ class Reward_Gold : public Reward
 	 * @param gold  The number of gold pieces to award the Player.
 	 */
         Reward_Gold(guint32 gold);
+
 	//! Loading constructor.
 	Reward_Gold(XML_Helper *helper);
+
 	//! Copy constructor.
 	Reward_Gold(const Reward_Gold& orig);
+
 	//! Destructor.
         ~Reward_Gold();
+
+	// Get Methods
+
+	//! Return the number of gold pieces associated with this reward.
+	guint32 getGold() const {return d_gold;}
+
+
+	// Methods that operate on the class data but do not modify the class.
+
+	//! Save the gold reward to the opened saved-game file.
+        bool save(XML_Helper* helper) const;
+
+
+	// Static Methods
 
 	//! Return a random number of gold pieces.
 	/**
@@ -184,14 +219,10 @@ class Reward_Gold : public Reward
 	 * reward in the game.
 	 */
 	static guint32 getRandomGoldPieces();
-
-	//! Save the gold reward to the opened saved-game file.
-        bool save(XML_Helper* helper);
-
-	//! Return the number of gold pieces associated with this reward.
-	guint32 getGold() const {return d_gold;}
-
     private:
+
+	// DATA
+
 	//! The number of gold pieces to award the player.
         guint32 d_gold;
 };
@@ -211,7 +242,7 @@ class Reward_Allies: public Reward
 	 */
         Reward_Allies(const ArmyProto *army, guint32 count);
 
-	//! Secondary constructor.  Make a new reward of allies.
+	//! Alternative constructor.  Make a new reward of allies.
 	/**
 	 * @param army_type  The Id of the Army prototype to create allies from.
 	 * @param army_set   The Id of the Armyset that the type belongs to.
@@ -228,14 +259,22 @@ class Reward_Allies: public Reward
 	//! Destructor.
         ~Reward_Allies();
 
-	//! Save the allies reward to the opened saved-game file.
-        bool save(XML_Helper* helper);
+	// Get Methods
 
 	//! Return the army prototype of the allies associated with this reward.
 	const ArmyProto * getArmy() const {return d_army;}
 
 	//! Return the number allies that this reward will create.
 	guint32 getNoOfAllies() const {return d_count;}
+
+
+	// Methods that operate on the class data and do not modify the class.
+
+	//! Save the allies reward to the opened saved-game file.
+        bool save(XML_Helper* helper) const;
+
+
+	// Static Methods
 
 	//! A static method that returns a random awardable Army prototype.
         static const ArmyProto* randomArmyAlly();
@@ -279,12 +318,17 @@ class Reward_Allies: public Reward
         static bool addAllies(Player *p, Location *l, const Army *army, guint32 alliesCount);
 
     private:
+	// DATA
+
 	//! The Army prototype that represents the allies to give the Player.
         const ArmyProto *d_army;
+
 	//! The army type of the given prototype.
 	guint32 d_army_type;
+
 	//! The army set of the given prototype.
 	guint32 d_army_set;
+
 	//! The number of allies to give the Player.
         guint32 d_count;
 };
@@ -323,6 +367,24 @@ class Reward_Item: public Reward
 	//! Destructor.
         ~Reward_Item();
 
+
+	// Get Methods
+
+	//! Get the Item object associated with this reward.
+	Item *getItem() const {return d_item;}
+
+
+	// Methods that operate on the class data but do not modify the class.
+
+	//! Save the reward item to a file.
+	/**
+	 * @param helper  The opened saved-game file to save the reward item to.
+	 */
+        bool save(XML_Helper* helper) const;
+
+
+	// Static Methods
+
 	//! Return a random Item object.
 	/**
 	 * @note This method does not return an Reward_Item object.
@@ -333,18 +395,11 @@ class Reward_Item: public Reward
 	 */
 	static Item *getRandomItem();
 
-	//! Save the reward item to a file.
-	/**
-	 * @param helper  The opened saved-game file to save the reward item to.
-	 */
-        bool save(XML_Helper* helper);
-
-	//! Get the Item object associated with this reward.
-	Item *getItem() const {return d_item;}
-
     private:
 	//! Callback to load the Item object in the Reward_Item object.
         bool loadItem(std::string tag, XML_Helper* helper);
+
+	// DATA
 
 	//! A pointer to the Item object associated with this Reward_Item.
         Item *d_item;
@@ -388,6 +443,24 @@ class Reward_Ruin: public Reward
 	//! Destructor.
         ~Reward_Ruin();
 
+	// Get Methods
+
+	//! Return the Ruin object associated with this Reward_Ruin.
+	Ruin* getRuin() const 
+	  {return Ruinlist::getInstance()->getObjectAt(d_ruin_pos);}
+
+	// Methods that operate on the class data but do not modify the class.
+
+	//! Save the reward ruin to an opened saved-game file.
+	/**
+	 * @param helper  The opened saved-game file to write the ruin reward 
+	 *                to.
+	 */
+        bool save(XML_Helper* helper) const;
+
+
+	// Static Methods
+
 	//! Go get a random hidden ruin to give to the Player.
 	/**
 	 * Scan all of the Ruin objects in the game and find one that is
@@ -403,27 +476,11 @@ class Reward_Ruin: public Reward
 	 */
 	static Ruin *getRandomHiddenRuin();
 
-	//! Save the reward ruin to an opened saved-game file.
-	/**
-	 * @param helper  The opened saved-game file to write the ruin reward 
-	 *                to.
-	 */
-        bool save(XML_Helper* helper);
-
-	//! Return the Ruin object associated with this Reward_Ruin.
-	Ruin* getRuin() const 
-	  {return Ruinlist::getInstance()->getObjectAt(d_ruin_pos);}
-
     private:
+
+	// DATA
+
 	//! The position of the Ruin object associated with this reward.
-	/**
-	 * The ruin is saved as a position for a good reason, but I don't know
-	 * what that reason is.  Perhaps the Ruinlist was loaded after the
-	 * Rewardlist at one time (but isn't any longer).
-	 * Maybe it is because a Ruin can reference a Reward_Ruin which can
-	 * reference a (hidden) Ruin.
-	 */
-	//FIXME: verify that the ruin's position has to be used here.
 	Vector<int> d_ruin_pos;
 };
 
@@ -471,19 +528,45 @@ class Reward_Map: public Reward
         ~Reward_Map();
 
 
-	bool loadMap(std::string tag, XML_Helper* helper);
+	// Set Methods
 
-	//! Save the reward map to an opened saved-game file.
-	/**
-	 * @param helper  The opened saved-game file to write the ruin map to.
-	 */
-        bool save(XML_Helper* helper);
+	//! Set the name of the map in this reward.
+	void setMapName(std::string name) {d_sightmap->setName(name);};
+
+
+	// Get Methods
+
+	//! Return the top left corner of the map in this reward.
+	Vector<int> getLocation() const {return d_sightmap->pos;};
+
+	//! Return the map in this reward.
+	SightMap * getSightMap() {return d_sightmap;};
+
+	//! Return the name of the map in this reward.
+	std::string getMapName() const {return d_sightmap->getName();};
 
 	//! Get the height of the revealed portion of the game map.
 	guint32 getHeight() const {return d_sightmap->h;}
 
 	//! Get the width of the revealed portion of the game map.
 	guint32 getWidth() const {return d_sightmap->w;}
+
+
+	// Methods that operate on the class data and modify the class.
+
+	bool loadMap(std::string tag, XML_Helper* helper);
+
+
+	// Methods that operate on the class data and do not modify the class.
+
+	//! Save the reward map to an opened saved-game file.
+	/**
+	 * @param helper  The opened saved-game file to write the ruin map to.
+	 */
+        bool save(XML_Helper* helper) const;
+
+
+	// Static Methods
 
 	//! Return a description of a random map.
 	/**
@@ -499,14 +582,10 @@ class Reward_Map: public Reward
 	 */
 	static void getRandomMap(int *x, int *y, int *width, int *height);
 
-	Vector<int> getLocation() {return d_sightmap->pos;};
-
-	SightMap * getSightMap() {return d_sightmap;};
-
-	void setMapName(std::string name) {d_sightmap->setName(name);};
-	std::string getMapName() const {return d_sightmap->getName();};
 
     private:
+
+	// DATA
 	SightMap *d_sightmap;
 };
 

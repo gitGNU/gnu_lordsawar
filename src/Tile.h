@@ -68,8 +68,6 @@ class Tile : public std::list<TileStyleSet*>
 	  //! Terrain that no army units can cross, even when flying.
 	  VOID = 32
 	};
-	static std::string tileTypeToString(const Tile::Type type);
-	static Tile::Type tileTypeFromString(const std::string str);
 
 	//! Default constructor.
 	Tile();
@@ -84,31 +82,48 @@ class Tile : public std::list<TileStyleSet*>
 	//! Destructor.
         ~Tile();
 
+	// Get Methods
+
         //! Get the number of movement points needed to cross this tile
         guint32 getMoves() const {return d_moves;}
 
         //! Get the type (grass, hill,...) of this tile type.
         Type getType() const {return d_type;}
 
-	void setType(Type type) {d_type = type;}
-                
-	static int getTypeIndexForType(Tile::Type type);
-
-	int getTypeIndex() {return getTypeIndexForType(d_type);}
-
-	void setTypeByIndex(int idx);
-
 	//! Get the name of this kind of tile (used in the editor).
 	std::string getName() const {return d_name;}
 
+	int getTypeIndex() {return getTypeIndexForType(d_type);}
+
+	SmallTile * getSmallTile() {return d_smalltile;};
+
+
+	// Set Methods
+
+	void setType(Type type) {d_type = type;}
+
 	//! Set the name of this kind of tile (used in the editor).
 	void setName(std::string name) {d_name = name;}
+
+	void setTypeByIndex(int idx);
+
+	//! Set the SmallTile object associated with this tile.
+	void setSmallTile(SmallTile *smalltile) {d_smalltile = smalltile;};
+
+
+	// Methods the operate on the class data but do not modify the class
 
 	//! Save a Tile to an opened tile configuration file.
 	/**
 	 * @param  The opened XML tile configuration file.
 	 */
-	bool save(XML_Helper *helper);
+	bool save(XML_Helper *helper) const;
+
+	//! Check to see if this tile is suitable for use within the game.
+	bool validate() const;
+
+	//! Check to see if the tilestylesets only contain simple tilestyles.
+	bool consistsOnlyOfLoneAndOtherStyles() const;
 
 	//! Lookup a random tile style for this tile.
 	/**
@@ -121,19 +136,39 @@ class Tile : public std::list<TileStyleSet*>
 	 * @return A pointer to the matching TileStyle object, or NULL if no 
 	 *         TileStyle could be found with that given style.
 	 */
-	TileStyle *getRandomTileStyle (TileStyle::Type style);
-	SmallTile * getSmallTile() {return d_smalltile;};
-	void setSmallTile(SmallTile *smalltile) {d_smalltile = smalltile;};
-	bool validate();
+	TileStyle *getRandomTileStyle (TileStyle::Type style) const;
 
+	// Methods the operate on the class data and modify the class
+
+	//! Destroy the images associated with this tile.
+	void uninstantiateImages();
+
+	//! Load the images associated with this tile.
+	void instantiateImages(int tilesize, Tileset *ts);
+
+
+	// Static Methods
+
+	//! Convert a Tile::Type enumerated value to a string.
+	static std::string tileTypeToString(const Tile::Type type);
+
+	//! Convert a string represenation of a Tile::Type to an enum value.
+	static Tile::Type tileTypeFromString(const std::string str);
+
+	//! If an army unit can move on these kinds of terrains, it is flying.
 	static guint32 isFlying() 
 	  {return FOREST | HILLS | WATER | SWAMP | MOUNTAIN;};
 
-	bool consistsOnlyOfLoneAndOtherStyles();
+	static int getTypeIndexForType(Tile::Type type);
 
-	void uninstantiateImages();
-	void instantiateImages(int tilesize, Tileset *ts);
     private:
+
+	//! Check to see if the grass tilestyles are suitable for in-game use.
+	bool validateGrass(std::list<TileStyle::Type> types) const;
+
+	//! Check to see if the other tilestyles are suitable for in-game use.
+	bool validateFeature(std::list<TileStyle::Type> types) const;
+
         // DATA
 
 	//! The name of this kind of a tile.
@@ -163,10 +198,9 @@ class Tile : public std::list<TileStyleSet*>
 	 */
         Type d_type;
 
+	//! What this Tile looks like when it's shown on the miniature map.
 	SmallTile *d_smalltile;
 
-	bool validateGrass(std::list<TileStyle::Type> types);
-	bool validateFeature(std::list<TileStyle::Type> types);
 };
 
 #endif // TILE_H

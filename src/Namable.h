@@ -36,10 +36,13 @@ class Namable: private Named
       * @note After the name is set in the constructor, it cannot be altered.
       */
      Namable(std::string name);
+
      //! Copy constructor.
      Namable(const Namable&);
+
      //! Loading constructor.
      Namable(XML_Helper* helper);
+
      //! Destructor.
     ~Namable();
     

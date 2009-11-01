@@ -312,6 +312,7 @@ bool GameMap::save(XML_Helper* helper) const
 	  {
 	    Glib::ustring hexstr;
 	    TileStyle *style = getTile(j, i)->getTileStyle();
+	    assert (style != NULL);
 	    if (largest_style_id < 256)
 	      hexstr = String::ucompose ("%1", Glib::ustring::format(std::hex, std::setfill(L'0'), std::setw(2), style->getId()));
 	    else if (largest_style_id < 4096)
@@ -1423,7 +1424,7 @@ bool GameMap::removeRuin(Vector<int> pos)
 bool GameMap::putRuin(Ruin *r)
 {
   Ruinlist::getInstance()->add(r);
-  putTerrain(r->get_area(), Tile::GRASS);
+  putTerrain(r->getArea(), Tile::GRASS);
   putBuilding(r, Maptile::RUIN);
   return true;
 }
@@ -1443,7 +1444,7 @@ bool GameMap::removeTemple(Vector<int> pos)
 bool GameMap::putTemple(Temple *t)
 {
   Templelist::getInstance()->add(t);
-  putTerrain(t->get_area(), Tile::GRASS);
+  putTerrain(t->getArea(), Tile::GRASS);
   putBuilding(t, Maptile::TEMPLE);
   return true;
 }
@@ -1485,7 +1486,7 @@ bool GameMap::removeSignpost(Vector<int> pos)
 bool GameMap::putSignpost(Signpost *s)
 {
   Signpostlist::getInstance()->add(s);
-  putTerrain(s->get_area(), Tile::GRASS);
+  putTerrain(s->getArea(), Tile::GRASS);
   putBuilding(s, Maptile::SIGNPOST);
   return true;
 }
@@ -1575,7 +1576,7 @@ bool GameMap::putTerrain(Rectangle r, Tile::Type type)
 
 void GameMap::putBuilding(LocationBox *b, Maptile::Building building)
 {
-  Rectangle r = b->get_area();
+  Rectangle r = b->getArea();
   for (int x = r.x; x < r.x + r.w; ++x)
     for (int y = r.y; y < r.y + r.h; ++y)
       {
@@ -1586,7 +1587,7 @@ void GameMap::putBuilding(LocationBox *b, Maptile::Building building)
 
 void GameMap::removeBuilding(LocationBox *b)
 {
-  Rectangle r = b->get_area();
+  Rectangle r = b->getArea();
   for (int x = r.x; x < r.x + r.w; ++x)
     for (int y = r.y; y < r.y + r.h; ++y)
       {
@@ -1614,7 +1615,7 @@ bool GameMap::putCity(City *c)
   c->setOwner(active);
   Citylist::getInstance()->add(c);
 
-  putTerrain(c->get_area(), Tile::GRASS);
+  putTerrain(c->getArea(), Tile::GRASS);
   // notify the maptiles that a city has been placed here
   putBuilding(c, Maptile::CITY);
 

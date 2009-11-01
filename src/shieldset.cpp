@@ -68,22 +68,22 @@ Shieldset::~Shieldset()
     delete *it;
 }
 
-ShieldStyle * Shieldset::lookupShieldByTypeAndColour(guint32 type, guint32 owner)
+ShieldStyle * Shieldset::lookupShieldByTypeAndColour(guint32 type, guint32 colour) const
 {
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
-      for (Shield::iterator i = (*it)->begin(); i != (*it)->end(); i++)
+      for (Shield::const_iterator i = (*it)->begin(); i != (*it)->end(); i++)
 	{
-	  if ((*i)->getType() == type && (*it)->getOwner() == owner)
+	  if ((*i)->getType() == type && (*it)->getOwner() == colour)
 	    return *i;
 	}
     }
   return NULL;
 }
 
-Gdk::Color Shieldset::getColor(guint32 owner)
+Gdk::Color Shieldset::getColor(guint32 owner) const
 {
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getOwner() == owner)
 	return (*it)->getColor();
@@ -142,22 +142,25 @@ public:
     std::string dir;
     Shieldset *shieldset;
 };
+
 Shieldset *Shieldset::create(std::string filename)
 {
   ShieldsetLoader d(filename);
   return d.shieldset;
 }
-void Shieldset::getFilenames(std::list<std::string> &files)
+
+void Shieldset::getFilenames(std::list<std::string> &files) const
 {
-  for (iterator it = begin(); it != end(); it++)
-    for (Shield::iterator i = (*it)->begin(); i != (*it)->end(); i++)
+  for (const_iterator it = begin(); it != end(); it++)
+    for (Shield::const_iterator i = (*it)->begin(); i != (*it)->end(); i++)
       {
 	std::string file = (*i)->getImageName();
 	if (std::find(files.begin(), files.end(), file) == files.end())
 	  files.push_back(file);
       }
 }
-bool Shieldset::save(XML_Helper *helper)
+
+bool Shieldset::save(XML_Helper *helper) const
 {
   bool retval = true;
 
@@ -173,7 +176,7 @@ bool Shieldset::save(XML_Helper *helper)
   retval &= helper->saveData("medium_height", d_medium_height);
   retval &= helper->saveData("large_width", d_large_width);
   retval &= helper->saveData("large_height", d_large_height);
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     retval &= (*it)->save(helper);
   retval &= helper->closeTag();
   return retval;
@@ -191,7 +194,7 @@ void Shieldset::uninstantiateImages()
     (*it)->uninstantiateImages();
 }
 
-std::string Shieldset::getConfigurationFile()
+std::string Shieldset::getConfigurationFile() const
 {
   return getDirectory() + d_subdir + file_extension;
 }
@@ -217,7 +220,7 @@ std::list<std::string> Shieldset::scanSystemCollection()
 }
 
 	
-bool Shieldset::validate()
+bool Shieldset::validate() const
 {
   bool valid = true;
   if (validateNumberOfShields() == false)
@@ -230,14 +233,14 @@ bool Shieldset::validate()
   return valid;
 }
 
-bool Shieldset::validateNumberOfShields()
+bool Shieldset::validateNumberOfShields() const
 {
   int players[MAX_PLAYERS + 1][3];
   memset(players, 0, sizeof(players));
   //need at least 3 complete player shields, one of which must be neutral.
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
-      for (Shield::iterator i = (*it)->begin(); i != (*it)->end(); i++)
+      for (Shield::const_iterator i = (*it)->begin(); i != (*it)->end(); i++)
 	{
 	  int idx = 0;
 	  switch ((*i)->getType())
@@ -262,16 +265,16 @@ bool Shieldset::validateNumberOfShields()
   return true;
 }
 
-bool Shieldset::validateShieldImages(Shield::Colour c)
+bool Shieldset::validateShieldImages(Shield::Colour c) const
 {
   //if we have a shield, it should have all 3 sizes.
   int player[3];
   memset(player, 0, sizeof(player));
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getOwner() != guint32(c))
 	continue;
-      for (Shield::iterator i = (*it)->begin(); i != (*it)->end(); i++)
+      for (Shield::const_iterator i = (*it)->begin(); i != (*it)->end(); i++)
 	{
 	  int idx = 0;
 	  switch ((*i)->getType())

@@ -43,7 +43,7 @@ class SightMap: public Rectangle, public Renamable
 	//! Copy constructor.
         SightMap(const SightMap& orig);
 
-	//! Creates a new sightmap from scratch.
+	//! Default Constructor.  Creates a new sightmap from scratch.
 	/**
 	 * @param pos  The top-left corner of the sightmap on the game map.
 	 */
@@ -52,6 +52,9 @@ class SightMap: public Rectangle, public Renamable
         //! Destructor.
         ~SightMap();
         
+
+	// Methods that operate on class data but do not modify the class.
+
         //! Save the sightmap to the opened saved-game file.
         bool save(XML_Helper* helper) const;
 

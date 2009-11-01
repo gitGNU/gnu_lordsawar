@@ -35,15 +35,8 @@ class Roadlist : public LocationList<Road*>, public sigc::trackable
 	//! The xml tag of this object in a saved-game file.
 	static std::string d_tag; 
 
-        //! Return the singleton instance.  Create a new one if needed.
-        static Roadlist* getInstance();
+	// Methods that operate on the class data but do not modify the class.
 
-        //! Load the singleton instance from the opened saved-game file.
-        static Roadlist* getInstance(XML_Helper* helper);
-
-        //! Explicitly delete the singleton instance.
-        static void deleteInstance();
-        
         //! Saves the list of roads to the opened saved-game file.
         bool save(XML_Helper* helper) const;
 
@@ -56,8 +49,19 @@ class Roadlist : public LocationList<Road*>, public sigc::trackable
 	 *
 	 * @return The Road::Type that makes the most sense for the given tile.
 	 */
-	int calculateType (Vector<int> tile);
+	int calculateType (Vector<int> tile) const;
 
+	// Static Methods
+
+        //! Return the singleton instance.  Create a new one if needed.
+        static Roadlist* getInstance();
+
+        //! Load the singleton instance from the opened saved-game file.
+        static Roadlist* getInstance(XML_Helper* helper);
+
+        //! Explicitly delete the singleton instance.
+        static void deleteInstance();
+        
     protected:
         //! Default constructor.
         Roadlist();

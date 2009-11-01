@@ -124,17 +124,11 @@ oeeeeeee
 	//! Destructor.
         ~SmallTile();
 
+
+	// Get Methods
+
         //! Get the colour associated with this tile for the smallmap.
 	Gdk::Color getColor() const {return d_color;}
-
-        //! Set the colour associated with this tile for the smallmap.
-	void setColor(Gdk::Color clr) {d_color = clr;}
-
-        //! Get the pattern (solid, stippled, random) of this type.
-        Pattern getPattern() const {return d_pattern;}
-
-        //! set the pattern (solid, stippled, random) of this type.
-	void setPattern(Pattern pattern) {d_pattern = pattern;}
 
         //! Get the alternate colour associated with this tile's pattern.
 	/**
@@ -143,9 +137,6 @@ oeeeeeee
 	 */
 	Gdk::Color getSecondColor() const {return d_second_color;}
 
-        //! Set the alternate colour associated with this tile's pattern.
-        void setSecondColor(Gdk::Color color) {d_second_color = color;}
-
         //! Get another alternate colour associated with this tile's pattern.
 	/**
 	 * This "third" colour gets used when SmallTile::Pattern is
@@ -153,14 +144,32 @@ oeeeeeee
 	 */
 	Gdk::Color getThirdColor() const {return d_third_color;}
 
+        //! Get the pattern (solid, stippled, random) of this type.
+        Pattern getPattern() const {return d_pattern;}
+
+
+	// Set Methods
+
+        //! Set the colour associated with this tile for the smallmap.
+	void setColor(Gdk::Color clr) {d_color = clr;}
+
+        //! Set the alternate colour associated with this tile's pattern.
+        void setSecondColor(Gdk::Color color) {d_second_color = color;}
+
         //! Set another alternate colour associated with this tile's pattern.
         void setThirdColor(Gdk::Color color) {d_third_color = color;}
+
+        //! set the pattern (solid, stippled, random) of this type.
+	void setPattern(Pattern pattern) {d_pattern = pattern;}
+
+
+	// Methods that operate on class data but do not modify the class.
 
 	//! Save a SmallTile to an opened tile configuration file.
 	/**
 	 * @param  The opened XML tile configuration file.
 	 */
-	bool save(XML_Helper *helper);
+	bool save(XML_Helper *helper) const;
 
     private:
 

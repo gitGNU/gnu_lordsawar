@@ -40,6 +40,7 @@ class Port: public Location
 	//! Copy constructor.
         Port(const Port&);
 
+	//! Alternative copying constructor that gives the port a new position.
         Port(const Port&, Vector<int> pos);
 
         //! Loading constructor.
@@ -48,8 +49,11 @@ class Port: public Location
 	 * @param helper  The opened saved-game file to load the port from.
 	 */
         Port(XML_Helper* helper);
+
 	//! Destructor.
         ~Port();
+
+	// Methods that operate on the class data but do not modify the class.
 
         //! Save the port data to the opened saved-game file.
         bool save(XML_Helper* helper) const;

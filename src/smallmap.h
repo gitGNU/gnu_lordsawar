@@ -47,6 +47,18 @@ public:
     //! Default constructor.  Make a new SmallMap.
     SmallMap();
 
+    // Set Methods
+  
+    //! Set whether or not the map can be clicked on.
+    /**
+     * @note This is useful when it's not our turn and we want to prevent the
+     *       user from clicking on the SmallMap.
+     */
+    void set_input_locked(bool locked) { input_locked = locked; }
+
+
+    // Methods that operate on the class data and modify the class.
+ 
     //! Set the portion of the SmallMap that has a white box around it.
     /**
      * @note This method does not perform animation.  The white box disappears
@@ -70,33 +82,6 @@ public:
     //! Realize the given mouse motion event.
     void mouse_motion_event(MouseMotionEvent e);
 
-    //! Set whether or not the map can be clicked on.
-    /**
-     * @note This is useful when it's not our turn and we want to prevent the
-     *       user from clicking on the SmallMap.
-     */
-    void set_input_locked(bool locked) { input_locked = locked; }
-
-    // Emitted when the white box is redrawn after a call to SmallMap::set_view.
-    /**
-     * Classes that use SmallMap must catch this signal to display the change
-     * in position of the little white box.
-     */
-    sigc::signal<void, Rectangle> view_changed;
-
-    //! Emitted during sliding animation after a call to Smallmap::slide_view.
-    /**
-     * Classes that use SmallMap must catch this signal to display the 
-     * animation of the little white box.
-     */
-    sigc::signal<void, Rectangle> view_slid;
-
-    // Emitted after a call to SmallMap::Draw.
-    /**
-     * Classes that use SmallMap must catch this signal to display the map.
-     */
-    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap>, Gdk::Rectangle> map_changed;
-
     //! Center the view on the given map position.
     /**
      * @param pos        The position to move the little white box to.  The
@@ -119,11 +104,47 @@ public:
      */
     void center_view_on_pixel(Vector<int> pos, bool slide);
 
+    //! Move the view one tile in the given direction.
     void move_map_in_dir(Vector<int> dir);
+
     //! Make the map go black.
     void blank();
-private:
 
+
+    // Signals
+ 
+    // Emitted when the white box is redrawn after a call to SmallMap::set_view.
+    /**
+     * Classes that use SmallMap must catch this signal to display the change
+     * in position of the little white box.
+     */
+    sigc::signal<void, Rectangle> view_changed;
+
+    //! Emitted during sliding animation after a call to Smallmap::slide_view.
+    /**
+     * Classes that use SmallMap must catch this signal to display the 
+     * animation of the little white box.
+     */
+    sigc::signal<void, Rectangle> view_slid;
+
+    // Emitted after a call to SmallMap::Draw.
+    /**
+     * Classes that use SmallMap must catch this signal to display the map.
+     */
+    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap>, Gdk::Rectangle> map_changed;
+
+private:
+    //! Draw the selection rectangle that shows the viewed portion of the map.
+    void draw_selection();
+
+    //! Draw the City objects and little white box onto the mini-map graphic.
+    /**
+     * This method is automatically called by the SmallMap::draw method.
+     */
+    virtual void after_draw();
+
+    // DATA
+ 
     //! The position and size of the little white box.
     /**
      * This rectangle represents the selected portion of the map.
@@ -137,14 +158,6 @@ private:
      */
     bool input_locked;
 
-    //! Draw the selection rectangle that shows the viewed portion of the map.
-    void draw_selection();
-
-    //! Draw the City objects and little white box onto the mini-map graphic.
-    /**
-     * This method is automatically called by the SmallMap::draw method.
-     */
-    virtual void after_draw();
 };
 
 #endif

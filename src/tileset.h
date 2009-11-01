@@ -54,12 +54,12 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
     public:
 	//! The xml tag of this object in a tileset configuration file.
 	static std::string d_tag; 
+
+	//! The xml tag of the road smallmap section of the tileset.
 	static std::string d_road_smallmap_tag; 
+
 	//! tilesets have this extension. e.g. ".lwt".
 	static std::string file_extension; 
-
-	//! Return the default height and width of a tile in the tileset.
-	static guint32 getDefaultTileSize();
 
 	//! Default constructor.
 	/**
@@ -80,16 +80,11 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 */
         Tileset(XML_Helper* helper, std::string directory);
 
-	static Tileset *create(std::string file);
-
 	//! Destructor.
         ~Tileset();
 
-	//! Return the subdirectory of this Tileset.
-        std::string getSubDir() const {return d_subdir;}
 
-	//! Set the subdirectory of where this Tileset resides on disk.
-        void setSubDir(std::string dir);
+	// Get Methods
 
 	//! Get the unique identifier for this tileset.
 	/**
@@ -98,14 +93,99 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 */
         guint32 getId() const {return d_id;}
 
+	//! Return the subdirectory of this Tileset.
+        std::string getSubDir() const {return d_subdir;}
+
+        //! Returns the name of the tileset.
+        std::string getName() const {return _(d_name.c_str());}
+
+        //! Returns the copyright holders of the tileset.
+        std::string getCopyright () const {return d_copyright;};
+
+        //! Returns the license of the tileset.
+        std::string getLicense() const {return d_license;};
+
+        //! Returns the description of the tileset.
+        std::string getInfo() const {return _(d_info.c_str());}
+
+        //! Returns the tilesize of the tileset.
+        guint32 getTileSize() const {return d_tileSize;}
+
+	//! Returns the basename of the file containing big selector images.
+	std::string getLargeSelectorFilename() {return d_large_selector;};
+
+	//! Returns the basename of the file containing small selector images.
+	std::string getSmallSelectorFilename() {return d_small_selector;};
+
+	//! Returns the basename of the file containing the explosion image.
+	std::string getExplosionFilename() {return d_explosion;};
+
+	//! Returns the basename of the file containing the road images.
+	std::string getRoadsFilename() {return d_roads;};
+
+	//! Returns the basename of the file containing the bridge images.
+	std::string getBridgesFilename() {return d_bridges;};
+
+	//! Returns the basename of the file containing the fog images.
+	std::string getFogFilename() {return d_fog;};
+
+	//! Returns the basename of the file containing the flag images.
+	std::string getFlagsFilename() {return d_flags;};
+
+        //! Get the colour associated with the road on the smallmap.
+	Gdk::Color getRoadColor() const {return d_road_color;};
+
+	//! Get the explosion image.
+	PixMask *getExplosionImage() {return explosion;};
+
+	//! Get a road image.  Pass in the index.
+	PixMask *getRoadImage(guint32 i) {return roadpic[i];};
+
+	//! Get a bridge image.  Pass in the index.
+	PixMask *getBridgeImage(guint32 i) {return bridgepic[i];};
+
+	//! Get a flag image.  Pass in the index.
+	PixMask *getFlagImage(guint32 i) {return flagpic[i];};
+
+	//! Get the flag mask.  Pass in the index.
+	PixMask *getFlagMask(guint32 i) {return flagmask[i];};
+
+	//! Get the fog image.  Passin the index.
+	PixMask *getFogImage(guint32 i) {return fogpic[i];};
+
+	//! Get the big selector image.  Pass in the index.
+	PixMask *getSelectorImage(guint32 i) {return selector[i];};
+
+	//! Get the big selector mask.  Pass in the index.
+	PixMask *getSelectorMask(guint32 i) {return selectormask[i];};
+
+	//! Get the small selector image.  Pass in the index.
+	PixMask *getSmallSelectorImage(guint32 i) {return smallselector[i];};
+
+	//! Get the small selector mask.  Pass in the index.
+	PixMask *getSmallSelectorMask(guint32 i) {return smallselectormask[i];};
+
+	//! Get the number of animation frames in the big selector image.
+	guint32 getNumberOfSelectorFrames() {return number_of_selector_frames;};
+
+	//! Get the number of animation frames in the small selector image.
+	guint32 getNumberOfSmallSelectorFrames() {return number_of_small_selector_frames;};
+
+	//! Get filenames in this tileset, excepting the configuration file.
+	void getFilenames(std::list<std::string> &files);
+
+	std::string getConfigurationFile() const;
+
+	// Set Methods
+
+	//! Set the subdirectory of where this Tileset resides on disk.
+        void setSubDir(std::string dir);
+
 	//! Set the unique identifier for this tileset.
 	/**
 	 * @note This method is only used in the tileset editor.  
 	 */
         void setId(guint32 id) {d_id = id;}
-
-        //! Returns the name of the tileset.
-        std::string getName() const {return _(d_name.c_str());}
 
 	//! Set the name of the tileset.
 	/**
@@ -113,20 +193,11 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 */
         void setName(std::string name) {d_name = name;}
 
-        //! Returns the copyright holders of the tileset.
-        std::string getCopyright () const {return d_copyright;};
-
 	//! Sets the copyright holders of the tileset.
 	void setCopyright(std::string copy) {d_copyright = copy;};
 
-        //! Returns the license of the tileset.
-        std::string getLicense() const {return d_license;};
-
 	//! Sets the license of the tileset.
 	void setLicense(std::string license) {d_license = license;};
-
-        //! Returns the description of the tileset.
-        std::string getInfo() const {return _(d_info.c_str());}
 
 	//! Set the description of the tileset.
 	/**
@@ -134,32 +205,85 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 */
         void setInfo(std::string info) {d_info = info;}
 
-        //! Returns the tilesize of the tileset.
-        guint32 getTileSize() const {return d_tileSize;}
-
-	//! Sets the tilesize of the tileset.
+	//!  Sets the tilesize of the tileset.
 	void setTileSize(guint32 tileSize) {d_tileSize = tileSize;}
+
+	//! Sets the basename of the file containing the big selector images.
+	void setLargeSelectorFilename(std::string p){d_large_selector = p;};
+
+	//! Sets the basename of the file containing the small selector images.
+	void setSmallSelectorFilename(std::string p){d_small_selector = p;};
+
+	//! Sets the basename of the file containing the explosion image.
+	void setExplosionFilename(std::string p){d_explosion = p;};
+
+	//! Sets the basename of the file containing the road images.
+	void setRoadsFilename(std::string p){d_roads = p;};
+
+	//! Sets the basename of the file containing the bridge images.
+	void setBridgesFilename(std::string p){d_bridges = p;};
+
+	//! Sets the basename of the file containing the fog images.
+	void setFogFilename(std::string p){d_fog = p;};
+
+	//! Sets the basename of the file containing the flag images.
+	void setFlagsFilename(std::string p){d_flags = p;};
+
+	//! Sets the colour of the road on the smallmap.
+	void setRoadColor(Gdk::Color color) {d_road_color = color;};
+
+	//! Sets the explosion image.
+	void setExplosionImage(PixMask *p) {explosion = p;};
+
+	//! Sets a road image.
+	void setRoadImage(guint32 i, PixMask *p) {roadpic[i] = p;};
+
+	//! Sets a bridge image.
+	void setBridgeImage(guint32 i, PixMask *p) {bridgepic[i] = p;};
+
+	//! Sets a flag image.
+	void setFlagImage(guint32 i, PixMask *p) {flagpic[i] = p;};
+
+	//! Sets a flag mask.
+	void setFlagMask(guint32 i, PixMask *p) {flagmask[i] = p;};
+
+	//! Sets a fog image.
+	void setFogImage(guint32 i, PixMask *p) {fogpic[i] = p;};
+
+	//! Sets a big selector image.
+	void setSelectorImage(guint32 i, PixMask *p) {selector[i] = p;};
+
+	//! Sets a big selector mask.
+	void setSelectorMask(guint32 i, PixMask *p) {selectormask[i] = p;};
+
+	//! Sets a small selector image.
+	void setSmallSelectorImage(guint32 i, PixMask *p) {smallselector[i] = p;};
+	//! Sets a small selector mask.
+	void setSmallSelectorMask(guint32 i, PixMask *p) {smallselectormask[i] = p;};
+
+	//! Sets the number of animation frames in the big selector.
+	void setNumberOfSelectorFrames(guint32 s) {selector.reserve(s); selectormask.reserve(s); number_of_selector_frames = s;};
+
+	//! Sets the number of animation frames in the small selector.
+	void setNumberOfSmallSelectorFrames(guint32 s) {smallselector.reserve(s);smallselectormask.reserve(s); number_of_small_selector_frames = s;};
+
+
+	//Methods that operate on class data and modify the class data.
+
+	//! Destroy the images assoicated with this tileset.
+	void uninstantiateImages();
+
+	//! Load the images assoicated with this tileset.
+	void instantiateImages();
+
+
+	//Methods that operate on class data and do not modify the class data.
 
         //! Returns the index to the given terrain type.
         int getIndex(Tile::Type type) const;
 
-	void setLargeSelectorFilename(std::string p){d_large_selector = p;};
-	void setSmallSelectorFilename(std::string p){d_small_selector = p;};
-	std::string getLargeSelectorFilename() {return d_large_selector;};
-	std::string getSmallSelectorFilename() {return d_small_selector;};
-	void setExplosionFilename(std::string p){d_explosion = p;};
-	std::string getExplosionFilename() {return d_explosion;};
-	void setRoadsFilename(std::string p){d_roads = p;};
-	std::string getRoadsFilename() {return d_roads;};
-	void setBridgesFilename(std::string p){d_bridges = p;};
-	std::string getBridgesFilename() {return d_bridges;};
-	void setFogFilename(std::string p){d_fog = p;};
-	std::string getFogFilename() {return d_fog;};
-	void setFlagsFilename(std::string p){d_flags = p;};
-	std::string getFlagsFilename() {return d_flags;};
-
 	//! Lookup tilestyle by it's id in this tileset.
-	TileStyle *getTileStyle(guint32 id) {return d_tilestyles[id];}
+	TileStyle *getTileStyle(guint32 id) const;
 
 	//! Lookup a random tile style.
 	/**
@@ -174,65 +298,43 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * @return A pointer to the matching TileStyle object, or NULL if no 
 	 *         TileStyle could be found with that given style.
 	 */
-	TileStyle *getRandomTileStyle(guint32 index, TileStyle::Type style);
+	TileStyle *getRandomTileStyle(guint32 index, TileStyle::Type style) const;
 
 	//! Save a Tileset to an opened tile configuration file.
 	/**
 	 * @param  The opened XML tile configuration file.
 	 */
-	bool save(XML_Helper *helper);
+	bool save(XML_Helper *helper) const;
 
-	Tile *lookupTileByName(std::string name);
+	//! Get a unique tile style id among all tile syles in this tileset.
+	int getFreeTileStyleId() const;
 
-	int getFreeTileStyleId();
+	//! Get the largest tile style id of all tile styles in this tileset.
+	int getLargestTileStyleId() const;
 
-	int getLargestTileStyleId();
-
-	bool validate();
-
-        //! Get the colour associated with the road on the smallmap.
-	Gdk::Color getRoadColor() const {return d_road_color;};
-	void setRoadColor(Gdk::Color color) {d_road_color = color;};
-
-	void setExplosionImage(PixMask *p) {explosion = p;};
-	PixMask *getExplosionImage() {return explosion;};
-	void setRoadImage(guint32 i, PixMask *p) {roadpic[i] = p;};
-	PixMask *getRoadImage(guint32 i) {return roadpic[i];};
-	void setBridgeImage(guint32 i, PixMask *p) {bridgepic[i] = p;};
-	PixMask *getBridgeImage(guint32 i) {return bridgepic[i];};
-	void setFlagImage(guint32 i, PixMask *p) {flagpic[i] = p;};
-	PixMask *getFlagImage(guint32 i) {return flagpic[i];};
-	void setFlagMask(guint32 i, PixMask *p) {flagmask[i] = p;};
-	PixMask *getFlagMask(guint32 i) {return flagmask[i];};
-	void setFogImage(guint32 i, PixMask *p) {fogpic[i] = p;};
-	PixMask *getFogImage(guint32 i) {return fogpic[i];};
-	void setSelectorImage(guint32 i, PixMask *p) {selector[i] = p;};
-	PixMask *getSelectorImage(guint32 i) {return selector[i];};
-	void setSelectorMask(guint32 i, PixMask *p) {selectormask[i] = p;};
-	PixMask *getSelectorMask(guint32 i) {return selectormask[i];};
-	void setSmallSelectorImage(guint32 i, PixMask *p) {smallselector[i] = p;};
-	PixMask *getSmallSelectorImage(guint32 i) {return smallselector[i];};
-	void setSmallSelectorMask(guint32 i, PixMask *p) {smallselectormask[i] = p;};
-	PixMask *getSmallSelectorMask(guint32 i) {return smallselectormask[i];};
-	guint32 getNumberOfSelectorFrames() {return number_of_selector_frames;};
-	guint32 getNumberOfSmallSelectorFrames() {return number_of_small_selector_frames;};
-	void setNumberOfSelectorFrames(guint32 s) {selector.reserve(s); selectormask.reserve(s); number_of_selector_frames = s;};
-	void setNumberOfSmallSelectorFrames(guint32 s) {smallselector.reserve(s);smallselectormask.reserve(s); number_of_small_selector_frames = s;};
-	//! get filenames in this tileset, excepting the configuration file.
-	void getFilenames(std::list<std::string> &files);
+	//! Check to see if this tileset is suitable for use within the game.
+	bool validate() const;
 
 	  
-	void uninstantiateImages();
-	void instantiateImages();
+	// Static Methods
 
-	std::string getConfigurationFile();
+	//! Return the default height and width of a tile in the tileset.
+	static guint32 getDefaultTileSize();
+
+	//! Create a tileset from the given tileset configuration file.
+	static Tileset *create(std::string file);
+
+	//! Return a list of tileset subdirs in the user's personal collection.
 	static std::list<std::string> scanUserCollection();
+
+	//! Return a list of tileset subdirs in the system collection.
 	static std::list<std::string> scanSystemCollection();
-	guint32 getGrassTileIndex();
+	
     private:
         //! Callback to load Tile objects into the Tileset.
         bool loadTile(std::string, XML_Helper* helper);
 
+	//! Load the various images from the given filenames.
 	void instantiateImages(std::string explosion_filename,
 			       std::string roads_filename,
 			       std::string bridges_filename,
@@ -241,6 +343,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 			       std::string selector_filename,
 			       std::string small_selector_filename);
         // DATA
+
 	//! The name of the Tileset.
 	/**
 	 * Equates to the tileset.d_name XML entity in the tileset 
@@ -284,31 +387,139 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 */
         std::string d_subdir;
 
+	//! The basename of the small selector image.
+	/**
+	 * The small selector is the graphic that appears on the bigmap when
+	 * a stack is selected that only has one army unit in it.
+	 *
+	 * The image contains many animation frames, and is masked.
+	 *
+	 * This basename does not contain any slashes, and it does not contain
+	 * a file extension.  It refers to a png file in the directory of 
+	 * tileset.
+	 */
 	std::string d_small_selector;
+
+	//! The basename of the large selector image.
+	/**
+	 * The large selector is the graphic that appears on the bigmap when
+	 * a stack is selected that only has more than one army unit in it.
+	 *
+	 * The image contains many animation frames, and is masked.
+	 *
+	 * This basename does not contain any slashes, and it does not contain
+	 * a file extension.  It refers to a png file in the directory of 
+	 * tileset.
+	 */
 	std::string d_large_selector;
+
+	//! The basename of the explosion image.
+	/**
+	 * The explosion image appears on the bigmap when stacks are fighting,
+	 * and it also appears in the fight window when an army unit dies.
+	 *
+	 * This basename does not contain any slashes, and it does not contain
+	 * a file extension.  It refers to a png file in the directory of 
+	 * tileset.
+	 */
 	std::string d_explosion;
+
+	//! The basename of the fog image.
+	/**
+	 * The fog images appear on the bigmap when playing with a hidden map.
+	 *
+	 * The number and order of frames in the image correlates to the 
+	 * FogMap::ShadeType enumeration.
+	 *
+	 * This basename does not contain any slashes, and it does not contain
+	 * a file extension.  It refers to a png file in the directory of 
+	 * tileset.
+	 */
 	std::string d_fog;
+
+	//! The basename of the road image.
+	/**
+	 * The road images appear on the bigmap overlaid on top of all kinds
+	 * of tiles except for water.
+	 *
+	 * The number and order of frames in the image correlates to the 
+	 * Road::Type enumeration.
+	 *
+	 * This basename does not contain any slashes, and it does not contain
+	 * a file extension.  It refers to a png file in the directory of 
+	 * tileset.
+	 */
 	std::string d_roads;
+
+	//! The basename of the bridge image.
+	/**
+	 * The bridge images appear on the bigmap overlaid on top of certain
+	 * water tiles.
+	 *
+	 * The number and order of frames in the image correlates to the 
+	 * Bridge::Type enumeration.
+	 *
+	 * This basename does not contain any slashes, and it does not contain
+	 * a file extension.  It refers to a png file in the directory of 
+	 * tileset.
+	 */
 	std::string d_bridges;
+
+	//! The basename of the flag image.
+	/**
+	 * The flag images appear on the bigmap beside a stack to indicate the
+	 * number of army units in the stack.
+	 *
+	 * The number of frames in the image corresponds to the maximum number
+	 * of army units in a stack.  See the MAX_STACK_SIZE constant in defs.h.
+	 *
+	 * This basename does not contain any slashes, and it does not contain
+	 * a file extension.  It refers to a png file in the directory of 
+	 * tileset.
+	 */
 	std::string d_flags;
 
         typedef std::map<guint32, TileStyle*> TileStyleIdMap;
 	//! A map that provides a TileStyle when supplying a TileStyle id.
         TileStyleIdMap d_tilestyles;
 
+	//! The colour of roads on the smallmap.
 	Gdk::Color d_road_color;
 
+	//! The road images.
         PixMask* roadpic[ROAD_TYPES];
+
+	//! The bridge images.
         PixMask* bridgepic[BRIDGE_TYPES];
+
+	//! The flag images.
         PixMask* flagpic[MAX_STACK_SIZE];
+
+	//! The flag masks.
         PixMask* flagmask[MAX_STACK_SIZE];
+
+	//! The number of animation frames in the big selector.
 	guint32 number_of_selector_frames;
+
+	//! The image frames in the big selector.
 	std::vector<PixMask* > selector;
+
+	//! The mask frames of the big selector.
 	std::vector<PixMask* > selectormask;
+
+	//! The number of animation frames in the small selector.
 	guint32 number_of_small_selector_frames;
+
+	//! The image frames of the small selector.
 	std::vector<PixMask* > smallselector;
+
+	//! The mask frames of the small selector.
 	std::vector<PixMask* > smallselectormask;
+
+	//! The exposion image.
 	PixMask* explosion;
+
+	//! The fog images.
 	PixMask*fogpic[FOG_TYPES];
 };
 #endif // TILESET_H

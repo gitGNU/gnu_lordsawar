@@ -41,13 +41,13 @@ class ArmyProtoBase : public ArmyBase
 	//! Loading constructor.
         ArmyProtoBase(XML_Helper* helper);
         
-	//! Create an empty army prototype base.
+	//! Default constructor.  Create an empty army prototype base.
 	ArmyProtoBase();
 
 	//! Destructor.
         ~ArmyProtoBase();
 
-        // Set functions:
+        // Set Methods
         
         void setTypeId(guint32 type_id) {d_type_id = type_id;};
 
@@ -65,7 +65,26 @@ class ArmyProtoBase : public ArmyBase
 	//! Sets the armyset id for this army.
 	void setArmyset(guint32 id) {d_armyset = id;};
 
-        // Get functions
+        //! Set the army bonus of the army prototype.
+        void setArmyBonus(guint32 bonus) {d_army_bonus = bonus;};
+
+        //! Set the move bonus.
+        void setMoveBonus(guint32 bonus) {d_move_bonus = bonus;};
+
+        //! Set the movement points of the army.
+        void setMaxMoves(guint32 moves) {d_max_moves = moves;};
+
+        //! Set the sight of the army.
+        void setSight(guint32 sight) {d_sight = sight;};
+
+        //! Set the name of the Army.
+        void setName(std::string name){d_name = name;}
+
+        //! Set how many turns this unit type needs to be produced.
+        void setProduction(guint32 production){d_production = production;};
+
+
+        // Get Methods
         
 	//! Get the Id of the Armyset to which the Army's type belongs.
         guint32 getTypeId() const {return d_type_id;}
@@ -86,31 +105,14 @@ class ArmyProtoBase : public ArmyBase
 	//! Returns the armyset id for this army.
 	guint32 getArmyset() const {return d_armyset;};
 
-        //! Set the army bonus of the army prototype.
-        void setArmyBonus(guint32 bonus) {d_army_bonus = bonus;};
-
-        //! Set the move bonus.
-        void setMoveBonus(guint32 bonus) {d_move_bonus = bonus;};
-
-        //! Set the movement points of the army.
-        void setMaxMoves(guint32 moves) {d_max_moves = moves;};
-
-        //! Set the sight of the army.
-        void setSight(guint32 sight) {d_sight = sight;};
-
-        //! Set the name of the Army.
-        void setName(std::string name){d_name = name;}
-
         //! Returns the name of the Army.
         std::string getName() const {return _(d_name.c_str());};
 
         //! Returns how many turns this Army needs to be produced.
         guint32 getProduction() const {return d_production;};
 
-        //! Set how many turns this unit type needs to be produced.
-        void setProduction(guint32 production){d_production = production;};
-
     protected:
+	//! Callback method for loading this object from an opened file.
 	bool saveData(XML_Helper* helper) const;
 
 	//! The name of the Army unit.  e.g. Scouts.

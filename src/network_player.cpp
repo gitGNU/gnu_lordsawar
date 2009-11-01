@@ -266,7 +266,7 @@ void NetworkPlayer::decodeActionMove(const Action_Move *action)
 	for (int y = -1; y <= 1; y++)
 	  {
 	    Vector<int> dest = action->getEndingPosition() + Vector<int>(x,y);
-	    Stack *s = d_stacklist->getOwnObjectAt(dest);
+	    Stack *s = GameMap::getFriendlyStack(dest);
 	    printf ("stack at position %d,%d is %p\n", dest.x, dest.y, s);
 	    if (s)
 	      printf ("stack id is %d\n", s->getId());

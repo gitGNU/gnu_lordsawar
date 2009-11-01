@@ -1,3 +1,8 @@
+2009-10-31  Ben Asselstine  <benasselstine@gmail.com>
+
+	* can now set an active player in the scenario editor.
+	* added "move object" functionality in the scenario editor.
+
 2009-10-29  Ben Asselstine  <benasselstine@gmail.com>
 
 	* implementing switch-image-sets in scenario editor.

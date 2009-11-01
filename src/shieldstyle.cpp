@@ -81,7 +81,7 @@ ShieldStyle::Type ShieldStyle::shieldStyleTypeFromString(const std::string str)
   return ShieldStyle::SMALL;
 }
 
-bool ShieldStyle::save(XML_Helper *helper)
+bool ShieldStyle::save(XML_Helper *helper) const
 {
   bool retval = true;
 

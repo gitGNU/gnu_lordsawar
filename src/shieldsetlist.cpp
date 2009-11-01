@@ -78,12 +78,20 @@ Shieldsetlist::~Shieldsetlist()
     delete (*it);
 }
 
-std::list<std::string> Shieldsetlist::getNames()
+std::list<std::string> Shieldsetlist::getNames() const
 {
   std::list<std::string> names;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     names.push_back((*it)->getName());
   return names;
+}
+std::string Shieldsetlist::getShieldsetDir(std::string name) const
+{
+  DirMap::const_iterator it = d_dirs.find(name);
+  if (it == d_dirs.end())
+    return "";
+  else
+    return (*it).second;
 }
 
 Shieldset* Shieldsetlist::loadShieldset(std::string name)
@@ -125,7 +133,7 @@ void Shieldsetlist::add(Shieldset *shieldset)
   d_shieldsetids[shieldset->getId()] = shieldset;
 }
         
-Gdk::Color Shieldsetlist::getColor(guint32 shieldset, guint32 owner)
+Gdk::Color Shieldsetlist::getColor(guint32 shieldset, guint32 owner) const
 {
   Shieldset *s = getShieldset(shieldset);
   if (!s)
@@ -133,7 +141,7 @@ Gdk::Color Shieldsetlist::getColor(guint32 shieldset, guint32 owner)
   return s->getColor(owner);
 }
 
-ShieldStyle *Shieldsetlist::getShield(guint32 shieldset, guint32 type, guint32 colour)
+ShieldStyle *Shieldsetlist::getShield(guint32 shieldset, guint32 type, guint32 colour) const
 {
   Shieldset *s = getShieldset(shieldset);
   if (!s)
@@ -153,19 +161,22 @@ void Shieldsetlist::uninstantiateImages()
     (*it)->uninstantiateImages();
 }
 	
-Shieldset *Shieldsetlist::getShieldset(guint32 id) 
+Shieldset *Shieldsetlist::getShieldset(guint32 id)  const
 { 
-  if (d_shieldsetids.find(id) == d_shieldsetids.end())
+  ShieldsetIdMap::const_iterator it = d_shieldsetids.find(id);
+  if (it == d_shieldsetids.end())
     return NULL;
-  return d_shieldsetids[id];
+  return (*it).second;
 }
 
-Shieldset *Shieldsetlist::getShieldset(std::string dir) 
+Shieldset *Shieldsetlist::getShieldset(std::string dir) const
 { 
-  if (d_shieldsets.find(dir) == d_shieldsets.end())
+  ShieldsetMap::const_iterator it = d_shieldsets.find(dir);
+  if (it == d_shieldsets.end())
     return NULL;
-  return d_shieldsets[dir];
+  return (*it).second;
 }
+
 bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &new_subdir, guint32 &new_id)
 {
   //do we already have this one?

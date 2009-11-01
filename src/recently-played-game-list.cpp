@@ -42,7 +42,7 @@ RecentlyPlayedGameList* RecentlyPlayedGameList::getInstance()
   return s_instance;
 }
 
-bool RecentlyPlayedGameList::saveToFile(std::string filename)
+bool RecentlyPlayedGameList::saveToFile(std::string filename) const
 {
   bool retval = true;
   XML_Helper helper(filename, std::ios::out, false);

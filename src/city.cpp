@@ -370,12 +370,12 @@ Army *City::produceArmy()
   return a;
 }
 
-bool City::canAcceptMoreVectoring()
+bool City::canAcceptMoreVectoring() const
 {
   return canAcceptMoreVectoring(0);
 }
 
-bool City::canAcceptMoreVectoring(guint32 number_of_cities)
+bool City::canAcceptMoreVectoring(guint32 number_of_cities) const
 {
   //here we presume that it's one unit per city
   guint32 num = Citylist::getInstance()->countCitiesVectoringTo(this);
@@ -392,7 +392,7 @@ bool City::changeVectorDestination(Vector<int> dest)
   return true;
 }
 
-guint32 City::countDefenders()
+guint32 City::countDefenders() const
 {
   std::vector<Stack*> defenders;
   defenders = getOwner()->getStacklist()->defendersInCity(this);

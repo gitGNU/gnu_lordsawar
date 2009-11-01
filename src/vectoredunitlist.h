@@ -46,28 +46,12 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	//! The xml tag of this object in a saved-game file.
 	static std::string d_tag; 
 
-        //! Gets the singleton instance or creates a new one.
-        static VectoredUnitlist* getInstance();
 
-        //! Loads the VectoredUnitlist from a saved-game file.
-	/**
-	 * Load all VectoredUnit objects in the VectoredUnitlist from a 
-	 * saved-game file.
-	 *
-	 * @param helper     The opened saved-game file to read from.
-	 *
-	 * @return The loaded VectoredUnitlist.
-	 */
-        static VectoredUnitlist* getInstance(XML_Helper* helper);
+	// Methods that operate on the class data and modify the class.
 
-        //! Explicitly deletes the singleton instance.
-        static void deleteInstance();
-        
 	//! Processes all VectoredUnit objects belonging to the given Player.
         void nextTurn(Player* p);
 
-        //! Save the list of VectoredUnit objects to a saved-game file.
-        bool save(XML_Helper* helper) const;
 
 	//! Cull the list of VectoredUnit objects going to the given position.
 	/**
@@ -125,6 +109,35 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	 */
         bool removeVectoredUnitsComingFrom(City *city);
 
+	//! Change the destination of vectored units as they are "in the air".
+	/**
+	 * Scan through all of the VectoredUnit objects in the list for the
+	 * ones that are being vectored to the given city.  When found,
+	 * change the destination to be the given destination.
+	 *
+	 * @param city     A pointer to the city to change VectoredUnit objects
+	 *                 from going to.
+	 * @param new_dest A position on the game map to change where the
+	 *                 VectoredUnit objects are going to.
+	 */
+	bool changeDestination(City *city, Vector<int> new_dest);
+
+	//! Change the owner of all of the vectored units in the list.
+	/**
+	 * Change the vectored units belonging to the old_player, to the
+	 * new_player.
+	 */
+	void changeOwnership(Player *old_owner, Player *new_owner);
+
+	//! Remove a vectored unit from the list.  Also deletes it.
+	iterator flErase(iterator object);
+
+
+	// Methods that operate on the class data but do not modify the class.
+
+        //! Save the list of VectoredUnit objects to a saved-game file.
+        bool save(XML_Helper* helper) const;
+
 	//! Return the list of VectoredUnit objects with the given destination.
 	/**
 	 * Scan through the list of VectoredUnit objects for the ones that are
@@ -140,7 +153,7 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	 *                  being vectored to the given position.
 	 */
         void getVectoredUnitsGoingTo(Vector<int> pos, 
-				     std::list<VectoredUnit*>& vectored);
+				     std::list<VectoredUnit*>& vectored) const;
 
 	//! Return the list of VectoredUnit objects going to the given city.
 	/**
@@ -157,7 +170,7 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	 *                  being vectored to the given city.
 	 */
 	void getVectoredUnitsGoingTo(City *city, 
-				     std::list<VectoredUnit*>& vectored);
+				     std::list<VectoredUnit*>& vectored) const;
 
 	//! Return the list of VectoredUnit objects with the given source.
 	/**
@@ -174,7 +187,7 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	 *                  being vectored from the given position.
 	 */
         void getVectoredUnitsComingFrom(Vector<int> pos, 
-					std::list<VectoredUnit*>& vectored);
+					std::list<VectoredUnit*>& vectored) const;
 
 	//! Return the number of VectoredUnits being vectored to a given place.
 	/**
@@ -186,38 +199,44 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 	 * @return The number of VectoredUnit objects that are being vectored
 	 *         to the given position on the game map.
 	 */
-        guint32 getNumberOfVectoredUnitsGoingTo(Vector<int> pos);
+        guint32 getNumberOfVectoredUnitsGoingTo(Vector<int> pos) const;
 
-	//! Change the destination of vectored units as they are "in the air".
+	// Static Methods
+
+        //! Gets the singleton instance or creates a new one.
+        static VectoredUnitlist* getInstance();
+
+        //! Loads the VectoredUnitlist from a saved-game file.
 	/**
-	 * Scan through all of the VectoredUnit objects in the list for the
-	 * ones that are being vectored to the given city.  When found,
-	 * change the destination to be the given destination.
+	 * Load all VectoredUnit objects in the VectoredUnitlist from a 
+	 * saved-game file.
 	 *
-	 * @param city     A pointer to the city to change VectoredUnit objects
-	 *                 from going to.
-	 * @param new_dest A position on the game map to change where the
-	 *                 VectoredUnit objects are going to.
+	 * @param helper     The opened saved-game file to read from.
+	 *
+	 * @return The loaded VectoredUnitlist.
 	 */
-	bool changeDestination(City *city, Vector<int> new_dest);
+        static VectoredUnitlist* getInstance(XML_Helper* helper);
 
-	void changeOwnership(Player *old_owner, Player *new_owner);
-
-	iterator flErase(iterator object);
+        //! Explicitly deletes the singleton instance.
+        static void deleteInstance();
+        
     protected:
 
 	//! Default constructor.
         VectoredUnitlist();
+
 	//! Loading constructor.
         VectoredUnitlist(XML_Helper* helper);
+
 	//! Destructor.
         ~VectoredUnitlist();
 
     private:
 
-
         //! Callback for loading the VectoredUnitlist from a saved-game file.
         bool load(std::string tag, XML_Helper* helper);
+
+	// DATA
 
         //! A static pointer for the singleton instance.
         static VectoredUnitlist* s_instance;

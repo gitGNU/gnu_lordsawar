@@ -39,16 +39,19 @@ class Ruinlist : public LocationList<Ruin*>, public sigc::trackable
 	//! The xml tag of this object in a saved-game file.
 	static std::string d_tag; 
 
-        //! Returns the singleton instance.  Creates a new one if required.
-        static Ruinlist* getInstance();
 
-        //! Loads the singleton instance from the opened saved-game file.
-        static Ruinlist* getInstance(XML_Helper* helper);
+	// Methods that operate on class data and modify the class.
 
-        //! Explicitly deletes the singleton instance.
-        static void deleteInstance();
+	//! Change ownership of all Ruin objects in the list.
+	/**
+	 * Changes all ruins owned by old owner, to be owned by the new owner.
+	 */
+	void changeOwnership(Player *old_owner, Player *new_owner);
+
         
-        //! Save the list of Ruin objects to the opened saved-game file.
+	// Methods that operate on class data and do not modify the class.
+
+	//! Save the list of Ruin objects to the opened saved-game file.
         bool save(XML_Helper* helper) const;
 
         //! Find the nearest Ruin object that has not been searched.
@@ -66,7 +69,7 @@ class Ruinlist : public LocationList<Ruin*>, public sigc::trackable
 	 *         successfully searched already.  Returns NULL when all Ruin 
 	 *         objects have been searched.
 	 */
-        Ruin* getNearestUnsearchedRuin(const Vector<int>& pos);
+        Ruin* getNearestUnsearchedRuin(const Vector<int>& pos) const;
 
         //! Find the nearest ruin.
 	/**
@@ -81,7 +84,7 @@ class Ruinlist : public LocationList<Ruin*>, public sigc::trackable
 	 * @return A pointer to the nearest Ruin object.  Returns NULL when 
 	 *         there are no Ruin object in this list.
 	 */
-        Ruin* getNearestRuin(const Vector<int>& pos);
+        Ruin* getNearestRuin(const Vector<int>& pos) const;
 
         //! Find the nearest ruin that is not too far away.
 	/**
@@ -99,7 +102,7 @@ class Ruinlist : public LocationList<Ruin*>, public sigc::trackable
 	 *         away.  If all of the Ruin objects in the list are too far 
 	 *         away, this method returns NULL.
 	 */
-        Ruin* getNearestRuin(const Vector<int>& pos, int dist);
+        Ruin* getNearestRuin(const Vector<int>& pos, int dist) const;
 
         //! Find the nearest Ruin object that is not obscured by fog.
 	/**
@@ -113,7 +116,7 @@ class Ruinlist : public LocationList<Ruin*>, public sigc::trackable
 	 *
 	 * @return A pointer to the nearest ruin that is not obscured by fog.
 	 */
-        Ruin* getNearestVisibleRuin(const Vector<int>& pos);
+        Ruin* getNearestVisibleRuin(const Vector<int>& pos) const;
 
 	//! Find the nearest ruin that is unobscured and is not too far away.
 	/**
@@ -131,15 +134,22 @@ class Ruinlist : public LocationList<Ruin*>, public sigc::trackable
 	 *         and is within the prescribed number of tiles.  Returns NULL 
 	 *         if no ruin could be found.
 	 */
-        Ruin* getNearestVisibleRuin(const Vector<int>& pos, int dist);
+        Ruin* getNearestVisibleRuin(const Vector<int>& pos, int dist) const;
 
-	//! Change ownership of all Ruin objects in the list.
-	/**
-	 * Changes all ruins owned by old owner, to be owned by the new owner.
-	 */
-	void changeOwnership(Player *old_owner, Player *new_owner);
 
+	// Static Methods
+        
+	//! Returns the singleton instance.  Creates a new one if required.
+        static Ruinlist* getInstance();
+
+        //! Loads the singleton instance from the opened saved-game file.
+        static Ruinlist* getInstance(XML_Helper* helper);
+
+        //! Explicitly deletes the singleton instance.
+        static void deleteInstance();
+        
     protected:
+
 	//! Default constructor.
         Ruinlist();
 
@@ -156,6 +166,8 @@ class Ruinlist : public LocationList<Ruin*>, public sigc::trackable
     private:
         //! Loading callback for loading Ruin objects into the list.
         bool load(std::string tag, XML_Helper* helper);
+
+	// DATA
 
         //! A static pointer for the singleton instance.
         static Ruinlist* s_instance;

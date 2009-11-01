@@ -97,7 +97,7 @@ static bool isFogged(void *t)
   return ((Temple*)t)->isVisible(Playerlist::getActiveplayer()) == false;
 }
 
-Temple * Templelist::getNearestVisibleTemple(const Vector<int>& pos)
+Temple * Templelist::getNearestVisibleTemple(const Vector<int>& pos) const
 {
   std::list<bool (*)(void *)> filters;
   filters.push_back(isFogged);
@@ -105,13 +105,13 @@ Temple * Templelist::getNearestVisibleTemple(const Vector<int>& pos)
 }
 
 Temple* Templelist::getNearestVisibleAndUsefulTemple(Stack *s, 
-						     double percent_can_be_blessed)
+						     double percent_can_be_blessed) const
 {
   Vector<int> pos = s->getPos();
   int diff = -1;
-  iterator diffit;
+  const_iterator diffit;
 
-  for (iterator it = begin(); it != end(); ++it)
+  for (const_iterator it = begin(); it != end(); ++it)
     {
       Temple *temple = *it;
       if (isFogged(temple))
@@ -140,7 +140,7 @@ Temple* Templelist::getNearestVisibleAndUsefulTemple(Stack *s,
 
 Temple* Templelist::getNearestVisibleAndUsefulTemple(Stack *stack, 
 						     double percent_can_be_blessed, 
-						     int dist)
+						     int dist) const
 {
   Vector<int> pos = stack->getPos();
   Temple *t = getNearestVisibleAndUsefulTemple
@@ -153,7 +153,7 @@ Temple* Templelist::getNearestVisibleAndUsefulTemple(Stack *stack,
   return NULL;
 }
 
-Temple* Templelist::getNearestVisibleTemple(const Vector<int>& pos, int dist)
+Temple* Templelist::getNearestVisibleTemple(const Vector<int>& pos, int dist) const
 {
   Temple *t = getNearestVisibleTemple(pos);
   if (t->getPos().x <= pos.x + dist && t->getPos().x >= pos.x - dist &&

@@ -328,19 +328,19 @@ void ShieldSetWindow::fill_shield_info(Shield*shield)
       std::string none = _("no image set");
       player_colorbutton->set_color(shield->getColor());
       std::string s;
-      ShieldStyle* ss = shield->get_first_shieldstyle(ShieldStyle::SMALL);
+      ShieldStyle* ss = shield->getFirstShieldstyle(ShieldStyle::SMALL);
       if (ss && ss->getImageName().empty() == false)
 	s = ss->getImageName() + ".png";
       else
 	s = none;
       change_smallpic_button->set_label(s);
-      ss = shield->get_first_shieldstyle(ShieldStyle::MEDIUM);
+      ss = shield->getFirstShieldstyle(ShieldStyle::MEDIUM);
       if (ss && ss->getImageName().empty() == false)
 	s = ss->getImageName() + ".png";
       else
 	s = none;
       change_mediumpic_button->set_label(s);
-      ss = shield->get_first_shieldstyle(ShieldStyle::LARGE);
+      ss = shield->getFirstShieldstyle(ShieldStyle::LARGE);
       if (ss && ss->getImageName().empty() == false)
 	s = ss->getImageName() + ".png";
       else
@@ -430,7 +430,7 @@ void ShieldSetWindow::on_change_smallpic_clicked()
       Gtk::TreeModel::Row row = *iterrow;
       Shield *shield = row[shields_columns.shield];
       std::string filename = "";
-      ShieldStyle *ss = shield->get_first_shieldstyle(ShieldStyle::SMALL);
+      ShieldStyle *ss = shield->getFirstShieldstyle(ShieldStyle::SMALL);
       if (ss->getImageName() != "")
 	filename = d_shieldset->getFile(ss->getImageName());
       MaskedImageEditorDialog d(filename);
@@ -462,7 +462,7 @@ void ShieldSetWindow::on_change_mediumpic_clicked()
       Gtk::TreeModel::Row row = *iterrow;
       Shield *shield = row[shields_columns.shield];
       std::string filename = "";
-      ShieldStyle *ss = shield->get_first_shieldstyle(ShieldStyle::MEDIUM);
+      ShieldStyle *ss = shield->getFirstShieldstyle(ShieldStyle::MEDIUM);
       if (ss->getImageName() != "")
 	filename = d_shieldset->getFile(ss->getImageName());
       MaskedImageEditorDialog d(filename);
@@ -494,7 +494,7 @@ void ShieldSetWindow::on_change_largepic_clicked()
       Gtk::TreeModel::Row row = *iterrow;
       Shield *shield = row[shields_columns.shield];
       std::string filename = "";
-      ShieldStyle *ss = shield->get_first_shieldstyle(ShieldStyle::LARGE);
+      ShieldStyle *ss = shield->getFirstShieldstyle(ShieldStyle::LARGE);
       if (ss->getImageName() != "")
 	filename = d_shieldset->getFile(ss->getImageName());
       MaskedImageEditorDialog d(filename);

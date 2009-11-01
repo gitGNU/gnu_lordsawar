@@ -38,21 +38,8 @@ class Templelist : public LocationList<Temple*>, public sigc::trackable
 	//! The xml tag of this object in a saved-game file.
 	static std::string d_tag; 
 
-        //! Return the singleton instance.  Create a new one if needed.
-        static Templelist* getInstance();
-
-        //! Load the temple list from an opened saved-game file.
-	/**
-	 * @param helper  The opened saved-game file to load the list of 
-	 *                temples from.
-	 *
-	 * @return The list of temples.
-	 */
-        static Templelist* getInstance(XML_Helper* helper);
-
-        //! Explicitly delete the singleton instance.
-        static void deleteInstance();
-
+	// Methods that operate on class data but do not modify the class.
+	
         //! Saves the temple data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
 
@@ -65,7 +52,7 @@ class Templelist : public LocationList<Temple*>, public sigc::trackable
 	 *
 	 * @return A pointer to the nearest temple that is not obscured by fog.
 	 */
-        Temple* getNearestVisibleTemple(const Vector<int>& pos);
+        Temple* getNearestVisibleTemple(const Vector<int>& pos) const;
 
 	//! Find the nearest temple that is unobscured and is not too far away.
 	/**
@@ -80,11 +67,56 @@ class Templelist : public LocationList<Temple*>, public sigc::trackable
 	 *         and is within the prescribed number of tiles.  Returns NULL 
 	 *         if no temple could be found.
 	 */
-        Temple* getNearestVisibleTemple(const Vector<int>& pos, int dist);
+        Temple* getNearestVisibleTemple(const Vector<int>& pos, int dist) const;
 
-	Temple* getNearestVisibleAndUsefulTemple(Stack *stack, double percent_can_be_blessed);
+	//! Find the nearest temple that the given stack can get blessed at.
+	/**
+	 * @param stack  The stack that wants to get blessed at a temple.
+	 * @param percent_can_be_blessed  
+	 *               Consider temples where the minimum percentage of army 
+	 *               units in the stack that have not been blessed at a
+	 *               temple.
+	 * @return A pointer to the nearest temple that is not obscured by fog
+	 *         and has more than the given percentage of army units that
+	 *         can be blessed there.  Returns NULL if no temple could be
+	 *         found.
+	 */
+	Temple* getNearestVisibleAndUsefulTemple(Stack *stack, double percent_can_be_blessed) const;
 
-	Temple* getNearestVisibleAndUsefulTemple(Stack *stack, double percent_can_be_blessed, int dist);
+	//! Find the nearest temple that the given stack can get blessed at.
+	/**
+	 * @param stack  The stack that wants to get blessed at a temple.
+	 * @param percent_can_be_blessed  
+	 *               Consider temples where the minimum percentage of army 
+	 *               units in the stack that have not been blessed at a
+	 *               temple.
+	 * @param dist   Do not consider temples farther away than dist tiles.
+	 *
+	 * @return A pointer to the nearest temple that is not obscured by fog
+	 *         and has more than the given percentage of army units that
+	 *         can be blessed there, and is within a certain number of 
+	 *         tiles from the stack's position on the map.  Returns NULL if 
+	 *         no temple could be found.
+	 */
+	Temple* getNearestVisibleAndUsefulTemple(Stack *stack, double percent_can_be_blessed, int dist) const;
+
+
+	// Static Methods
+
+        //! Return the singleton instance.  Create a new one if needed.
+        static Templelist* getInstance();
+
+        //! Load the temple list from an opened saved-game file.
+	/**
+	 * @param helper  The opened saved-game file to load the list of 
+	 *                temples from.
+	 *
+	 * @return The list of temples.
+	 */
+        static Templelist* getInstance(XML_Helper* helper);
+
+        //! Explicitly delete the singleton instance.
+        static void deleteInstance();
 
     protected:
         //! Default constructor.

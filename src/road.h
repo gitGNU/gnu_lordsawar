@@ -49,19 +49,18 @@ class Road: public Location
 	  CONNECTS_EAST = 13,
 	  CONNECTS_SOUTH = 14,
 	};
-	static std::string roadTypeToString(const Road::Type type);
-	static Road::Type roadTypeFromString(const std::string str);
 
 	//! Default constructor.
         /**
           * @param pos          The location of the road.
           * @param type 	The type of road.
           */
-        Road(Vector<int> pos, int type = 7);
+        Road(Vector<int> pos, int type = CONNECTS_ALL_DIRECTIONS);
 
 	//! Copy constructor.
         Road(const Road&);
 
+	//! Alternative copy constructor that changes the road's position.
         Road(const Road&, Vector<int> pos);
 
         //! Loading constructor.
@@ -72,36 +71,47 @@ class Road: public Location
 	 * @param helper  The opened saved-game file to load the road from.
 	 */
         Road(XML_Helper* helper);
+
 	//! Destructor.
         ~Road();
 
+
+	// Get Methods
+
         //! Returns the type of the road.
-        int getType() {return d_type;};
+        int getType() const {return d_type;};
+
+
+	// Set Methods
 
         //! Sets the type of the road.
         void setType(int type) {d_type = type;};
 
+
+	// Methods that operate on class data but do not modify the class
+
         //! Save the road data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
 
+
+	// Static Methods
+
+	//! Convert a Road::Type enumerated value to a string.
+	static std::string roadTypeToString(const Road::Type type);
+
+	//! Convert a string containing a Road::Type to it's enumerated value.
+	static Road::Type roadTypeFromString(const std::string str);
+
     protected:
+
+	// DATA
+
 	//! The type of the road.
 	/**
 	 * The type of road refers to the look of the road on the map.  It 
-	 * can be any one of the following values:
-	 * 0 = a road that connects to other roads to the east and the west.
-	 * 1 = a road that connects to other roads to the north and the south.
-	 * 2 = a road that connects to other roads to all directions.
-	 * 3 = a road that connects to other roads to the north and the west.
-	 * 4 = a road that connects to other roads to the north and the east.
-	 * 5 = a road that connects to other roads to the south and the east.
-	 * 6 = a road that connects to other roads to the west and the south.
-	 * 7 = a road that connects to roads to the north, south and east.
-	 * 8 = a road that connects to roads to east, west and north.
-	 * 9 = a road that connects to roads to the east, west, and south.
-	 * 10 = a road that connects to roads to the north, south and west.
+	 * can be any one of the values found in Road::Type.
 	 *
-	 * The Roadlist::calculateType method can sometimes set this value.
+	 * The Roadlist::calculateType method can calculate this value.
 	 */
 	int d_type;
 

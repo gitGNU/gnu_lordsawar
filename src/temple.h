@@ -54,6 +54,7 @@ class Temple : public NamedLocation
 	//! Copy constructor.
         Temple(const Temple&);
 
+	//! Alternative copying constructor that changes the temple position.
         Temple(const Temple&, Vector<int> pos);
 
         //! Loading constructor.
@@ -61,30 +62,45 @@ class Temple : public NamedLocation
 	 * @param helper  The opened saved-game file to load the temple from.
 	 */
         Temple(XML_Helper* helper, guint32 width);
+
 	//! Destructor.
         ~Temple();
 
-        //! Returns the type of the temple.
-        int getType() {return d_type;};
-
-        //! Returns the type of the temple.
-        void setType(int type) {d_type=type;};
+	// Get Methods
+        
+	//! Returns the type of the temple.
+        int getType() const {return d_type;};
 
         //! Returns whether or not the temple can be searched.
 	/**
 	 * @note Temples can always be searched in this game.
 	 */
-        bool searchable() {return true;}
+        bool searchable() const {return true;}
+
+
+	// Set Methods
+
+        //! Returns the type of the temple.
+        void setType(int type) {d_type=type;};
+
+
+	// Methods that operate on class data but do not modify the class.
 
         //! Save the temple to the opened saved-game file.
         bool save(XML_Helper* helper) const;
 
-	bool isUnnamed() {return getName() == getDefaultName() ? true : false;};
+	//! Return true if the temple has the default temple name.
+	bool isUnnamed() const {return getName() == getDefaultName() ? true : false;};
 
+	// Static Methods
+
+	//! Return the default name of any temple.
 	static std::string getDefaultName() {return _(DEFAULT_TEMPLE_NAME);};
 
     protected:
 	
+	// DATA
+
 	//! The type of the temple.
 	/**
 	 * The temple always has a type of 0, because there is only one kind

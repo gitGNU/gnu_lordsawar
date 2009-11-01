@@ -36,14 +36,7 @@ class Bridgelist : public LocationList<Bridge*>, public sigc::trackable
 	//! The xml tag of this object in a saved-game file.
 	static std::string d_tag; 
 
-        //! Return the singleton instance.  Create a new one if needed.
-        static Bridgelist* getInstance();
-
-        //! Load the singleton instance from the opened saved-game file.
-        static Bridgelist* getInstance(XML_Helper* helper);
-
-        //! Explicitly delete the singleton instance.
-        static void deleteInstance();
+	// Methods that operate on the class data but do not modify the class.
 
         //! Saves the list of Bridge objects to the opened saved-game file.
         bool save(XML_Helper* helper) const;
@@ -58,7 +51,20 @@ class Bridgelist : public LocationList<Bridge*>, public sigc::trackable
 	 * @return The Bridge::Type that makes the most sense for the given 
 	 *         tile.
 	 */
-	int calculateType(Vector<int> t);
+	int calculateType(Vector<int> t) const;
+
+
+	// Static Methods
+
+        //! Return the singleton instance.  Create a new one if needed.
+        static Bridgelist* getInstance();
+
+        //! Load the singleton instance from the opened saved-game file.
+        static Bridgelist* getInstance(XML_Helper* helper);
+
+        //! Explicitly delete the singleton instance.
+        static void deleteInstance();
+
     protected:
         //! Default constructor.
         Bridgelist();
@@ -75,6 +81,8 @@ class Bridgelist : public LocationList<Bridge*>, public sigc::trackable
     private:
         //! Callback for loading Bridge objects into the list of bridges.
         bool load(std::string tag, XML_Helper* helper);
+
+	// DATA
 
         //! A static pointer for the singleton instance.
         static Bridgelist* s_instance;

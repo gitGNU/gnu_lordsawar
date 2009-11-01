@@ -19,7 +19,6 @@
 #define REWARDLIST_H
 
 #include <list>
-#include <vector>
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
 #include "reward.h"
@@ -39,15 +38,9 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
 	//! The xml tag of this object in a saved-game file.
 	static std::string d_tag; 
 
-        //! Returns the singleton instance. Creates a new one if required.
-        static Rewardlist* getInstance();
 
-        //! Loads the singleton instance with a savegame.
-        static Rewardlist* getInstance(XML_Helper* helper);
+	// Methods that operate on the class data and modify the class.
 
-        //! Explicitely deletes the singleton instance.
-        static void deleteInstance();
-        
         //! deletes a reward from the list
         void deleteReward(Reward* s);
 
@@ -60,9 +53,6 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
 	//! remove one ruin reward from the list and return it
 	Reward *popRandomMapReward();
 
-        //! Save the data. See XML_Helper for details
-        bool save(XML_Helper* helper) const;
-
         //! Behaves like std::list::clear(), but frees pointers as well
         void flClear();
 
@@ -72,16 +62,46 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
         //! Behaves like std::list::remove(), but frees pointers as well
         bool flRemove(Reward* object);
 
+
+	// Methods that operate on the class data and do not modify the class.
+
+        //! Save the data. See XML_Helper for details
+        bool save(XML_Helper* helper) const;
+
+
+	// Static Methods
+
+        //! Returns the singleton instance. Creates a new one if required.
+        static Rewardlist* getInstance();
+
+        //! Loads the singleton instance with a savegame.
+        static Rewardlist* getInstance(XML_Helper* helper);
+
+        //! Explicitely deletes the singleton instance.
+        static void deleteInstance();
+        
     protected:    
+
+	// Constructor.
         Rewardlist();
+
+	//! Copy constructor.
         Rewardlist(Rewardlist *rewardlist);
+
+	//! Loading constructor.
         Rewardlist(XML_Helper* helper);
+
+	//! Destructor.
         ~Rewardlist();
 
     private:
-        //! Callback function for loading
+        //! Callback function for loading rewards.
         bool load(std::string tag, XML_Helper* helper);
+
+	//! Return a random reward from the list of the given type.
         Reward *popRandomReward(Reward::Type type);
+
+	// DATA
 
         static Rewardlist* s_instance;
 };

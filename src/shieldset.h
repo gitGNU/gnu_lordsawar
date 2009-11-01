@@ -56,6 +56,8 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 
 	//! The xml tag of this object in a shieldset configuration file.
 	static std::string d_tag; 
+
+	//! The file extension for shieldset files.  It includes the dot.
 	static std::string file_extension;
 
 
@@ -75,11 +77,23 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	 */
         Shieldset(XML_Helper* helper, std::string directory);
 
-	static Shieldset *create(std::string filename);
 	//! Destructor.
         ~Shieldset();
 
-	bool save(XML_Helper *helper);
+	// Get Methods
+
+	//! Get the unique identifier for this shieldset.
+	/**
+	 * Analagous to the shieldset.d_id XML entity in the shieldset
+	 * configuration file.
+	 */
+        guint32 getId() const {return d_id;}
+
+	//! Get the directory in which the shieldset configuration file resides.
+        std::string getSubDir() const {return d_subdir;}
+
+	//! Return the mask colour for the given player.
+	Gdk::Color getColor(guint32 owner) const;
 
 	//! Return the number of pixels high the small shields are.
 	guint32 getSmallHeight() const {return d_small_height;}
@@ -114,15 +128,8 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
         //! Returns the description of the shieldset.
         std::string getInfo() const {return _(d_info.c_str());}
 
-	//! Sets the description of the shieldset.
-	void setInfo(std::string description) {d_info = description;};
 
-	//! Get the unique identifier for this shieldset.
-	/**
-	 * Analagous to the shieldset.d_id XML entity in the shieldset
-	 * configuration file.
-	 */
-        guint32 getId() const {return d_id;}
+	// Set Methods
 
 	//! Set the unique identifier for this shieldset.
         void setId(guint32 id) {d_id = id;}
@@ -130,17 +137,23 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	//! Set the name of the Shieldset.
         void setName(std::string name) {d_name = name;}
 
+	//! Sets the description of the shieldset.
+	void setInfo(std::string description) {d_info = description;};
+
 	//! Set the copyright holders of the shieldset.
 	void setCopyright(std::string copy) {d_copyright = copy;};
 
 	//! Set the license of this shieldset.
 	void setLicense(std::string license) {d_license = license;};
 
-	//! Get the directory in which the shieldset configuration file resides.
-        std::string getSubDir() const {return d_subdir;}
-
 	//! Set the direction where the shieldset configuration file resides.
         void setSubDir(std::string dir) {d_subdir = dir;}
+
+
+	// Methods that operate on the class data but do not modify the class.
+
+	bool save(XML_Helper *helper) const;
+
 
 	//! Find the shield of a given size and colour in this Shieldset.
 	/**
@@ -154,26 +167,50 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	 *         If no Shield object could be found that matches the given
 	 *         parameters, NULL is returned.
 	 */
-	ShieldStyle * lookupShieldByTypeAndColour(guint32 type, guint32 colour);
+	ShieldStyle * lookupShieldByTypeAndColour(guint32 type, guint32 colour) const;
 
-	Gdk::Color getColor(guint32 owner);
+	//! Get filenames in this shieldset, excepting the configuration file.
+	void getFilenames(std::list<std::string> &filenames) const;
 
-	//! get filenames in this shieldset, excepting the configuration file.
-	void getFilenames(std::list<std::string> &filenames);
+	//! Return the name of this shieldset's configuration file.
+	std::string getConfigurationFile() const;
+	
+	//! Check to see if this shieldset can be used in the game.
+	bool validate() const;
 
+	//! Check to see if the number of shields is sufficient.
+	bool validateNumberOfShields() const;
+
+	//! Check to see if the images for the shieldset are supplied.
+	bool validateShieldImages(Shield::Colour c) const;
+
+
+	// Methods that operate on the class data and also modify the class.
+
+	//! Load images associated with this shieldset.
 	void instantiateImages();
-	void uninstantiateImages();
-	std::string getConfigurationFile();
-	bool validate();
-	bool validateNumberOfShields();
-	bool validateShieldImages(Shield::Colour c);
 
+	//! Destroy images associated with this shieldset.
+	void uninstantiateImages();
+
+
+	// Static Methods
+
+	//! Create a shieldset from the given shieldset configuration file.
+	static Shieldset *create(std::string filename);
+
+	//! Return a list of shieldset subdirs in the system collection.
 	static std::list<std::string> scanSystemCollection();
+
+	//! Return a list of shieldset subdirs in the users personal collection.
 	static std::list<std::string> scanUserCollection();
+
     private:
 
 	//! Callback function to load Shield objects into the Shieldset.
 	bool loadShield(std::string tag, XML_Helper* helper);
+
+	// DATA
 
 	//! A unique numeric identifier among all shieldset.
 	guint32 d_id;

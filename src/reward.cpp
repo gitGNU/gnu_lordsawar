@@ -100,7 +100,7 @@ Reward_Gold::Reward_Gold (const Reward_Gold & orig)
 {
 }
 
-bool Reward_Gold::save(XML_Helper* helper)
+bool Reward_Gold::save(XML_Helper* helper) const
 {
   bool retval = true;
   retval &= helper->openTag(Reward::d_tag);
@@ -154,7 +154,7 @@ Reward_Allies::Reward_Allies (const Reward_Allies& orig)
 {
 }
 
-bool Reward_Allies::save(XML_Helper* helper)
+bool Reward_Allies::save(XML_Helper* helper) const
 {
   bool retval = true;
   retval &= helper->openTag(Reward::d_tag);
@@ -238,7 +238,7 @@ Reward_Item::Reward_Item (const Reward_Item& orig)
 {
 }
 
-bool Reward_Item::save(XML_Helper* helper)
+bool Reward_Item::save(XML_Helper* helper) const
 {
   bool retval = true;
   retval &= helper->openTag(Reward::d_tag);
@@ -284,7 +284,7 @@ Reward_Ruin::Reward_Ruin (const Reward_Ruin& orig)
 	:Reward(orig), d_ruin_pos(orig.d_ruin_pos)
 {
 }
-bool Reward_Ruin::save(XML_Helper* helper)
+bool Reward_Ruin::save(XML_Helper* helper) const
 {
   bool retval = true;
   retval &= helper->openTag(Reward::d_tag);
@@ -369,7 +369,7 @@ Reward_Map::Reward_Map (const Reward_Map& orig)
   d_sightmap = new SightMap(*orig.d_sightmap);
 }
 
-bool Reward_Map::save(XML_Helper* helper)
+bool Reward_Map::save(XML_Helper* helper) const
 {
   bool retval = true;
   retval &= helper->openTag(Reward::d_tag);
@@ -397,21 +397,21 @@ Reward_Map::~Reward_Map()
     delete d_sightmap;
 }
 
-std::string Reward::getDescription()
+std::string Reward::getDescription() const
 {
   Glib::ustring s = "";
   switch (getType())
     {
     case Reward::GOLD:
 	{
-	  Reward_Gold *g = dynamic_cast<Reward_Gold*>(this);
+	  const Reward_Gold *g = dynamic_cast<const Reward_Gold*>(this);
 	  s += String::ucompose(ngettext("%1 Gold Piece", "%1 Gold Pieces", 
 					 g->getGold()), g->getGold());
 	  return s;
 	}
     case Reward::ALLIES:
 	{
-	  Reward_Allies *a = dynamic_cast<Reward_Allies *>(this);
+	  const Reward_Allies *a = dynamic_cast<const Reward_Allies *>(this);
 	  if (a->getArmy())
 	    s += String::ucompose(_("Allies: %1 x %2"), a->getArmy()->getName(),
 				  a->getNoOfAllies());
@@ -419,21 +419,21 @@ std::string Reward::getDescription()
 	}
     case Reward::ITEM:
 	{
-	  Reward_Item *i = dynamic_cast<Reward_Item *>(this);
+	  const Reward_Item *i = dynamic_cast<const Reward_Item *>(this);
 	  if (i->getItem())
 	    s += String::ucompose(_("Item: %1"), i->getItem()->getName());
 	  return s;
 	}
     case Reward::RUIN:
 	{
-	  Reward_Ruin *r = dynamic_cast<Reward_Ruin *>(this);
+	  const Reward_Ruin *r = dynamic_cast<const Reward_Ruin *>(this);
 	  if (r->getRuin())
 	    s += String::ucompose(_("Site: %1"), r->getRuin()->getName());
 	  return s;
 	}
     case Reward::MAP:
 	{
-	  Reward_Map *m = dynamic_cast<Reward_Map *>(this);
+	  const Reward_Map *m = dynamic_cast<const Reward_Map *>(this);
 	  s += String::ucompose(_("Map: %1,%2 %3x%4"), 
 				  m->getLocation().x,
 				  m->getLocation().y,

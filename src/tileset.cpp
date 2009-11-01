@@ -185,7 +185,7 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
   return false;
 }
 
-TileStyle *Tileset::getRandomTileStyle(guint32 index, TileStyle::Type style)
+TileStyle *Tileset::getRandomTileStyle(guint32 index, TileStyle::Type style) const
 {
   Tile *tile = (*this)[index];
   if (tile)
@@ -194,7 +194,7 @@ TileStyle *Tileset::getRandomTileStyle(guint32 index, TileStyle::Type style)
     return NULL;
 }
 
-bool Tileset::save(XML_Helper *helper)
+bool Tileset::save(XML_Helper *helper) const
 {
   bool retval = true;
 
@@ -215,30 +215,22 @@ bool Tileset::save(XML_Helper *helper)
   retval &= helper->openTag(d_road_smallmap_tag);
   retval &= helper->saveData("color", d_road_color);
   retval &= helper->closeTag();
-  for (Tileset::iterator i = begin(); i != end(); ++i)
+  for (Tileset::const_iterator i = begin(); i != end(); ++i)
     retval &= (*i)->save(helper);
   retval &= helper->closeTag();
 
   return retval;
 }
 
-Tile *Tileset::lookupTileByName(std::string name)
-{
-  for (Tileset::iterator i = begin(); i != end(); ++i)
-    if ((*i)->getName() == name)
-      return *i;
-  return NULL;
-}
-
-int Tileset::getFreeTileStyleId()
+int Tileset::getFreeTileStyleId() const
 {
   int ids[65535];
   memset (ids, 0, sizeof (ids));
-  for (Tileset::iterator i = begin(); i != end(); ++i)
+  for (Tileset::const_iterator i = begin(); i != end(); ++i)
     {
-      for (std::list<TileStyleSet*>::iterator j = (*i)->begin(); j != (*i)->end(); j++)
+      for (std::list<TileStyleSet*>::const_iterator j = (*i)->begin(); j != (*i)->end(); j++)
 	{
-	  for (std::vector<TileStyle*>::iterator k = (*j)->begin(); k != (*j)->end(); k++)
+	  for (std::vector<TileStyle*>::const_iterator k = (*j)->begin(); k != (*j)->end(); k++)
 	    {
 	      ids[(*k)->getId()] = 1;
 	    }
@@ -253,14 +245,14 @@ int Tileset::getFreeTileStyleId()
   return -1;
 }
 
-int Tileset::getLargestTileStyleId()
+int Tileset::getLargestTileStyleId() const
 {
   unsigned int largest = 0;
-  for (Tileset::iterator i = begin(); i != end(); ++i)
+  for (Tileset::const_iterator i = begin(); i != end(); ++i)
     {
-      for (std::list<TileStyleSet*>::iterator j = (*i)->begin(); j != (*i)->end(); j++)
+      for (std::list<TileStyleSet*>::const_iterator j = (*i)->begin(); j != (*i)->end(); j++)
 	{
-	  for (std::vector<TileStyle*>::iterator k = (*j)->begin(); k != (*j)->end(); k++)
+	  for (std::vector<TileStyle*>::const_iterator k = (*j)->begin(); k != (*j)->end(); k++)
 	    {
 	      if ((*k)->getId() > largest)
 		largest = (*k)->getId();
@@ -283,11 +275,11 @@ guint32 Tileset::getDefaultTileSize()
   return DEFAULT_TILE_SIZE;
 }
 
-bool Tileset::validate()
+bool Tileset::validate() const
 {
   if (size() == 0)
     return false;
-  for (Tileset::iterator i = begin(); i != end(); i++)
+  for (Tileset::const_iterator i = begin(); i != end(); i++)
     {
       if ((*i)->validate() == false)
 	{
@@ -556,7 +548,7 @@ void Tileset::instantiateImages()
 		    small_selector_filename);
 }
 
-std::string Tileset::getConfigurationFile()
+std::string Tileset::getConfigurationFile() const
 {
   return getDirectory() + d_subdir + file_extension;
 }
@@ -581,13 +573,12 @@ std::list<std::string> Tileset::scanSystemCollection()
   return retlist;
 }
 
-guint32 Tileset::getGrassTileIndex()
+TileStyle *Tileset::getTileStyle(guint32 id) const
 {
-  unsigned int grass_index;
-  for (grass_index = 0; grass_index < size(); ++grass_index)
-    if ((*this)[grass_index]->getType() == Tile::GRASS)
-      break;
-
-  return grass_index;
+  TileStyleIdMap::const_iterator it = d_tilestyles.find(id);
+  if (it == d_tilestyles.end())
+    return NULL;
+  else
+    return (*it).second;
 }
 //End of file

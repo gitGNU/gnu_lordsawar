@@ -89,6 +89,10 @@ class City : public Ownable, public Location, public Renamable,
 	//! Copy constructor.
         City(const City&);
 
+	//! Alternative copy constructor.
+	/**
+	 * Make a city by copying another one, but it has a different position.
+	 */
         City(const City&, Vector<int> pos);
 
         //! Loading constructor.
@@ -98,12 +102,40 @@ class City : public Ownable, public Location, public Renamable,
 	 * @param helper The opened saved-game file to load the City from.
 	 */
         City(XML_Helper* helper, guint32 width);
+
 	//! Destructor.
         ~City();
 
-        //! Save the city to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
-        
+	//Get Methods
+	
+        //! Return the defense level of the city.
+        int getDefenseLevel() const {return d_defense_level;}
+
+        //! Return the income of the city per turn.
+        guint32 getGold() const {return d_gold;}
+
+        //! Returns whether or not the city has been destroyed.
+        bool isBurnt() const {return d_burnt;}
+
+        //! Returns whether or not the city is a capital city.
+        bool isCapital() const {return d_capital;}
+
+        //! Returns the original owner of this capital city.
+        Player *getCapitalOwner() const {return d_capital_owner;}
+
+        //! Get the position where the city will send produced armies.
+	/**
+	 * @return The position on the map where the city will send it's newly
+	 *         produced armies.  Returns (-1,-1) if the city is not
+	 *         vectoring.
+	 */
+        Vector<int> getVectoring() const {return d_vector;}
+
+	bool isUnnamed() const {return getName() == getDefaultName() ? true : false;};
+
+
+	//Set Methods
+
         //! Set the gold the city produces each turn.
         void setGold(guint32 gold){d_gold = gold;}
 
@@ -115,6 +147,20 @@ class City : public Ownable, public Location, public Renamable,
 
         //! Sets whether the city is a capital.
         void setCapitalOwner(Player *p) {d_capital_owner = p;}
+
+        //! Set the point where the city will send the produced armies.
+        /**
+	 * @note This method does not check to see if the destination point
+	 * can receive yet another vectored unit.
+	 *
+	 * @param pos  The position on the map to send the produced units to.
+	 *             The position must point to another city, or a planted
+	 *             standard.  Set to (-1,-1) if not vectoring.
+	 */
+        void setVectoring(Vector<int> pos);
+
+
+	// Methods that operate on class data and modify the class.
 
         //! Raise the defense level by one. Return true on success.
         bool raiseDefense();
@@ -165,76 +211,6 @@ class City : public Ownable, public Location, public Renamable,
 	 */
         void nextTurn();
 
-        //! Return the defense level of the city.
-        int getDefenseLevel() const {return d_defense_level;}
-
-	//! Returns the amount of gold needed to increase the defense level.
-	/**
-	 * @note This method isn't called.  Cities are not upgraded.
-	 *
-	 * Returns the number of gold pieces needed to increase the defense
-	 *         level, or -1 if city can't be upgraded.
-	 */
-	int getGoldNeededForUpgrade() const; 
-	
-        //! Return the income of the city per turn.
-        guint32 getGold() const {return d_gold;}
-
-        //! Returns whether or not the city has been destroyed.
-        bool isBurnt() const {return d_burnt;}
-
-        //! Returns whether or not the city is a capital city.
-        bool isCapital() const {return d_capital;}
-
-        //! Returns the original owner of this capital city.
-        Player *getCapitalOwner() const {return d_capital_owner;}
-
-        //! Set the point where the city will send the produced armies.
-        /**
-	 * @note This method does not check to see if the destination point
-	 * can receive yet another vectored unit.
-	 *
-	 * @param pos  The position on the map to send the produced units to.
-	 *             The position must point to another city, or a planted
-	 *             standard.  Set to (-1,-1) if not vectoring.
-	 */
-        void setVectoring(Vector<int> pos);
-
-        //! Get the position where the city will send produced armies.
-	/**
-	 * @return The position on the map where the city will send it's newly
-	 *         produced armies.  Returns (-1,-1) if the city is not
-	 *         vectoring.
-	 */
-        Vector<int> getVectoring() const {return d_vector;}
-
-	//! Returns true if the city isn't accepting too many vectored armies.
-	/**
-	 * Scans all of the cities vectoring to this city.  If vectoring
-	 * to this city would accrue the count to 
-	 * MAX_CITIES_VECTORED_TO_ONE_CITY, this method returns false.
-	 *
-	 * @return True if the city can have another city vectoring to it.
-	 *         Otherwise false.
-	 */
-	bool canAcceptMoreVectoring();
-
-	//! Returns true if the city can accept vectoring from a set of cities.
-	/**
-	 * Instead of checking to see if one unit can be vectored here like in 
-	 * City::canAcceptMoreVectoring, this method checks if the city can
-	 * receive multiple units (from an equal number of cities, because a
-	 * city can only produce and vector one army at a time).
-	 *
-	 * @param number_of_cities The number of cities to check to
-	 *                         see if this city can receive on top of what
-	 *                         it's already receiving.
-	 *
-	 * @return True if the city can have this many more cities vectoring 
-	 *         to it.  Otherwise false.
-	 */
-	bool canAcceptMoreVectoring(guint32 number_of_cities);
-
 	//! Changes the vectoring destination, but for en-route units too.
 	/**
 	 * This method acts like City::setVectoring but also changes the
@@ -251,18 +227,63 @@ class City : public Ownable, public Location, public Renamable,
 	 */
 	bool changeVectorDestination(Vector<int> dest);
 
-	//! Return how many armies are in the city.
-	guint32 countDefenders();
-
-	//! This makes the army show up.  called when it's time.
+	//! Callback that makes the army show up.
 	const Army *armyArrives();
 
-	bool isUnnamed() {return getName() == getDefaultName() ? true : false;};
+	
+	// Methods that operate on class data and do not modify the class.
 
+        //! Save the city to an opened saved-game file.
+        bool save(XML_Helper* helper) const;
+        
+	//! Returns the amount of gold needed to increase the defense level.
+	/**
+	 * @note This method isn't called.  Cities are not upgraded.
+	 *
+	 * Returns the number of gold pieces needed to increase the defense
+	 *         level, or -1 if city can't be upgraded.
+	 */
+	int getGoldNeededForUpgrade() const; 
+	
+	//! Returns true if the city isn't accepting too many vectored armies.
+	/**
+	 * Scans all of the cities vectoring to this city.  If vectoring
+	 * to this city would accrue the count to 
+	 * MAX_CITIES_VECTORED_TO_ONE_CITY, this method returns false.
+	 *
+	 * @return True if the city can have another city vectoring to it.
+	 *         Otherwise false.
+	 */
+	bool canAcceptMoreVectoring() const;
+
+	//! Returns true if the city can accept vectoring from a set of cities.
+	/**
+	 * Instead of checking to see if one unit can be vectored here like in 
+	 * City::canAcceptMoreVectoring, this method checks if the city can
+	 * receive multiple units (from an equal number of cities, because a
+	 * city can only produce and vector one army at a time).
+	 *
+	 * @param number_of_cities The number of cities to check to
+	 *                         see if this city can receive on top of what
+	 *                         it's already receiving.
+	 *
+	 * @return True if the city can have this many more cities vectoring 
+	 *         to it.  Otherwise false.
+	 */
+	bool canAcceptMoreVectoring(guint32 number_of_cities) const;
+
+	//! Return how many armies are in the city.
+	guint32 countDefenders() const;
+
+
+	// Static Methods
+	
+	//! Get the default name of any city.
 	static std::string getDefaultName() {return _(DEFAULT_CITY_NAME);};
 
     private:
 
+	//! Callback for loading city objects from a saved-game file.
 	bool load(std::string tag, XML_Helper *helper);
 
         //! Produces the currently active Army production base.

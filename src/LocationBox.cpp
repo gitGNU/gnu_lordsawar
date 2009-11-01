@@ -126,7 +126,8 @@ bool LocationBox::isVisible(Player *player) const
       }
   return false;
 }
-void LocationBox::deFog()
+
+void LocationBox::deFog() const
 {
   Player *p = Playerlist::getActiveplayer();
   if (!p)
@@ -135,7 +136,7 @@ void LocationBox::deFog()
   fogmap->alterFogRadius (getPos(), 3, FogMap::OPEN);
 }
 
-void LocationBox::deFog(Player *p)
+void LocationBox::deFog(Player *p) const
 {
   if (!p)
     return;

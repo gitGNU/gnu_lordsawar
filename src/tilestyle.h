@@ -273,19 +273,10 @@ ooooooo
 	 */
         TileStyle(XML_Helper* helper);
 
+	//! Destructor.
         ~TileStyle();
 
-        //! Get the style type of this tile style.
-        Type getType() const {return d_type;}
-
-	//! Set the style type of this tile style.
-	/**
-	 * @note This method is only used in the tileset editor.
-	 */
-	void setType(Type type) {d_type = type;}
-                
-        //! Get the picture for tile style.
-	PixMask* getImage() const {return d_image;}
+	// Get Methods
 
         //! Get the id for this tilestyle.
 	/*
@@ -293,27 +284,50 @@ ooooooo
 	 */
 	guint32 getId() const {return d_id;}
 
+        //! Get the style type of this tile style.
+        Type getType() const {return d_type;}
+
+        //! Get the picture for tile style.
+	PixMask* getImage() const {return d_image;}
+
+	//! Get the name of the current style.
+	std::string getTypeName() const;
+
+
+	// Set Methods
+
+	//! Set the style type of this tile style.
+	/**
+	 * @note This method is only used in the tileset editor.
+	 */
+	void setType(Type type) {d_type = type;}
+                
 	//! Set the id for this tilestyle.
 	void setId(guint32 id) {d_id = id;}
  
+	//! Set the image for the tilestyle.
+	void setImage(PixMask* image) {d_image = image;};
+
+
+	// Methods that operate on the class data but do not modify the class.
+
 	//! Save a TileStyle to an opened tile configuration file.
 	/**
 	 * @param  The opened XML tile configuration file.
 	 */
 	bool save(XML_Helper *helper);
 
-	//! Get the name of the current style.
-	std::string getTypeName();
+	// Static Methods
 
-	//! Get the name of the another style.
+	//! Get the name of the TileStyle::Type in string form.
 	static std::string getTypeName(Type type);
-
-	void setImage(PixMask* image) {d_image = image;};
 
 	//! Return the style type enumeration given the type name.
 	static TileStyle::Type typeNameToType(std::string name);
+
     private:
         // DATA
+
 	//! The image of this tilestyle.
 	PixMask* d_image; 
 

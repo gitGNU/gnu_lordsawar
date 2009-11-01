@@ -21,7 +21,6 @@
 #include <gtkmm.h>
 #include <string>
 #include <sigc++/trackable.h>
-#include <sigc++/signal.h>
 #include "PixMask.h"
 
 
@@ -56,8 +55,6 @@ class ShieldStyle : public sigc::trackable
 	  //! Large shields are shown in the DiplomacyDialog and FightWindow.
 	  LARGE = 2
 	};
-	static std::string shieldStyleTypeToString(const ShieldStyle::Type type);
-	static ShieldStyle::Type shieldStyleTypeFromString(const std::string str);
 
 	//! Loading constructor.
         /**
@@ -76,8 +73,23 @@ class ShieldStyle : public sigc::trackable
 	//! Destructor.
         virtual ~ShieldStyle();
 
-	bool save(XML_Helper *helper);
-        // Set functions:
+        
+        // Get Methods
+        
+        //! Get the size of this shield.
+        guint32 getType() const {return d_type;}
+
+        //! Get the image of the shield.
+	PixMask* getImage() const {return d_image;}
+
+        //! Returns the mask of the shield.
+	PixMask* getMask() const {return d_mask;}
+
+	//! Returns the basename of the picture's filename.
+	std::string getImageName() const {return d_image_name;}
+
+
+        // Set Methods
         
         //! Set the basic image of the shield.
         void setImage(PixMask* image) {d_image = image;};
@@ -87,23 +99,30 @@ class ShieldStyle : public sigc::trackable
 
 	//! Set the basename of the shield picture's filename.
 	void setImageName(std::string name) {d_image_name = name;}
-        
-        // Get functions
-        
-        //! Get the size of this shield.
-        guint32 getType() const {return d_type;}
 
-        //! Get the image of the shield.
-	PixMask* getImage() {return d_image;}
 
-        //! Returns the mask of the shield.
-	PixMask* getMask() {return d_mask;}
+	// Methods that operate on class data and modify the class.
 
-	//! Returns the basename of the picture's filename.
-	std::string getImageName() const {return d_image_name;}
-
+	//! Load the images for this shieldstyle from the given file.
 	void instantiateImages(std::string filename, Shieldset *s);
+
+	//! Destroy the images associated with this shieldstyle.
 	void uninstantiateImages();
+
+
+	// Methods that operate on class data but do not modify the class.
+	
+	//! Save the shieldstyle to an opened shieldset configuration file.
+	bool save(XML_Helper *helper) const;
+
+
+	// Static Methods
+	
+	//! Convert a ShieldStyle::Type enumerated value to a string.
+	static std::string shieldStyleTypeToString(const ShieldStyle::Type type);
+
+	//! Convert a ShieldStyle::Type string to an enumerated value.
+	static ShieldStyle::Type shieldStyleTypeFromString(const std::string str);
     protected:
 
 	//! The size of the shield. (small, medium, or large)

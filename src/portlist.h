@@ -36,6 +36,14 @@ class Portlist : public LocationList<Port*>, public sigc::trackable
 	//! The xml tag of this object in a saved-game file.
 	static std::string d_tag; 
 
+	// Methods that operate on the class data but do not modify the class.
+
+        //! Saves the list of Port objects to the opened saved-game file.
+        bool save(XML_Helper* helper) const;
+
+
+	// Static Methods
+
         //! Return the singleton instance.  Create a new one if needed.
         static Portlist* getInstance();
 
@@ -45,10 +53,8 @@ class Portlist : public LocationList<Port*>, public sigc::trackable
         //! Explicitly delete the singleton instance.
         static void deleteInstance();
 
-        //! Saves the list of Port objects to the opened saved-game file.
-        bool save(XML_Helper* helper) const;
-
     protected:
+
         //! Default constructor.
         Portlist();
 
@@ -63,6 +69,8 @@ class Portlist : public LocationList<Port*>, public sigc::trackable
     private:
         //! Callback for loading Port objects into the list of ports.
         bool load(std::string tag, XML_Helper* helper);
+
+	// DATA
 
         //! A static pointer for the singleton instance.
         static Portlist* s_instance;

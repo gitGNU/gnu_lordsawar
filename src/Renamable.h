@@ -34,24 +34,31 @@ class Renamable: private Named
  public:
      //! Default constructor.
      Renamable(std::string name);
+
      //! Copy constructor.
      Renamable(const Renamable&);
+
      //! Loading constructor.
      Renamable(XML_Helper* helper);
+
      //! Destructor.
-    ~Renamable();
-    
-    //! Return the name of the object on the game map.
-    std::string getName(bool translate = false) const 
-      {
-	if (translate == true) 
-	  return _(d_name.c_str());
-	else return d_name; 
-      }
+     ~Renamable();
+
+     // Get Methods
+
+     //! Return the name of the object on the game map.
+     std::string getName(bool translate = false) const 
+       {
+	 if (translate == true) 
+	   return _(d_name.c_str());
+	 else return d_name; 
+       }
 
 
-    //! Set the name of the object on the game map.
-    void setName(std::string name) {d_name = name;}
+     // Set Methods
+
+     //! Set the name of the object on the game map.
+     void setName(std::string name) {d_name = name;}
 
 };
 

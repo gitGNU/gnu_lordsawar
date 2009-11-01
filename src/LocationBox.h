@@ -38,6 +38,7 @@ class Army;
 class LocationBox : public Immovable
 {
  public:
+
      //! Default constructor.
      /**
       * @param pos     The top-right corner of the feature is located at this
@@ -54,6 +55,8 @@ class LocationBox : public Immovable
 
      //! Copy constructor.
      LocationBox(const LocationBox&);
+
+     //! Alternative copy constructor that gives the object a new position.
      LocationBox(const LocationBox&, Vector<int> pos);
 
      //! Loading constructor.
@@ -65,9 +68,22 @@ class LocationBox : public Immovable
       *                from the saved-game file.
       */
      LocationBox(XML_Helper* helper, guint32 size = 1);
+
      //! Destructor.
     ~LocationBox();
     
+    // Get Methods
+
+    //! Return the size of the location.
+    guint32 getSize() const {return d_size;}
+
+    //! Returns a rectangle that describes the location.
+    Rectangle getArea() const
+	{ return Rectangle(getPos().x, getPos().y, d_size, d_size); }
+
+
+    // Methods that operate on the class data and do not modify the class.
+   
     //! Add an army to a tile that is included in this location.
     /**
      * @param army    The army instance to add to a tile in the location.
@@ -90,21 +106,15 @@ class LocationBox : public Immovable
 
     bool isCompletelyObscuredByFog(Player *player) const;
 
-    //! Unobscures the view of this location in the active player's FogMap.
-    void deFog();
-
-    //! Unobscures the view of this location in the given player's FogMap.
-    void deFog(Player *p);
-
-    //! Return the size of the location.
-    guint32 getSize() const {return d_size;}
-
     //! Returns whether or not the Location contains the given point?
     bool contains(Vector<int> pos) const;
 
-    //! Returns a rectangle that describes the location.
-    Rectangle get_area() const
-	{ return Rectangle(getPos().x, getPos().y, d_size, d_size); }
+    //! Unobscures the view of this location in the active player's FogMap.
+    void deFog() const;
+
+    //! Unobscures the view of this location in the given player's FogMap.
+    void deFog(Player *p) const;
+
 
  protected:
 
@@ -122,6 +132,8 @@ class LocationBox : public Immovable
      *         an available stack could not be found this method returns NULL.
      */
     Stack* getFreeStack(Player *owner) const;
+
+    //DATA
 
     //! The size of the location.
     /**

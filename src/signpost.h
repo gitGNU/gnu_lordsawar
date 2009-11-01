@@ -24,7 +24,7 @@
 #include "Location.h"
 #include "Renamable.h"
 
-//!A signpost is a map feature where a human player can read a relevant message.
+//!A signpost is a map feature where a human player can read a message.
 /**
  * Signposts are generally useful on a hidden map, when they can direct a 
  * player to a nearby city that is obscured from view.
@@ -43,16 +43,23 @@ class Signpost: public Location, public Renamable
          * @param name         The contents of the sign.
          */
         Signpost(Vector<int> pos, std::string name = "nowhere");
+
 	//! Copy constructor.
         Signpost(const Signpost&);
+
+	//! Alternative copy constructor that changes the signpost's position.
         Signpost(const Signpost&, Vector<int> pos);
+
         //! Loading constructor.
 	/**
 	 * @param helper  The opened saved-game file to load the signpost from.
 	 */
         Signpost(XML_Helper* helper);
+
 	//! Destructor.
         ~Signpost();
+
+	// Methods that operate on the class data but do not modify the class
 
         //! Save the signpost data to an opened saved-game file.
         bool save(XML_Helper* helper) const;

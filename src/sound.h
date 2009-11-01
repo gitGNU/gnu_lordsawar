@@ -1,6 +1,6 @@
 // Copyright (C) 2006 Ulf Lorenz
 // Copyright (C) 2006 Andrea Paternesi
-// Copyright (C) 2007 Ben Asselstine
+// Copyright (C) 2007, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -64,14 +64,17 @@ struct MusicItem
 class Sound : public sigc::trackable
 {
     public:
-        //! Singleton getter
-        static Sound* getInstance();
-
-        //! Explicitely delete the singleton
-        static void deleteInstance();
-
-        // standard getters/setters
+	// Get Methods
         
+        //! Returns whether music is enabled
+        bool isMusicEnabled();
+
+        //! Returns the music volume in the range 0..128
+        int getMusicVolume();
+
+
+	// Set Methods
+
         /** Enables/disables music and sets volume. If the sound is disabled,
           * subsequent calls to play sounds will be silently ignored.
           *
@@ -82,14 +85,8 @@ class Sound : public sigc::trackable
           */
         bool setMusic(bool enable, int volume);
 
-        //! Returns whether music is enabled
-        bool isMusicEnabled();
 
-        //! Returns the music volume in the range 0..128
-        int getMusicVolume();
-
-
-        // Now the functions for playback
+	// Methods that operate on class data and modify the class.
 
         /** Plays a given music piece.
           *
@@ -132,16 +129,26 @@ class Sound : public sigc::trackable
         //! Activates the next background piece
         void nextPiece();
 
+
+	// Static Methods
+
+        //! Singleton getter
+        static Sound* getInstance();
+
+        //! Explicitely delete the singleton
+        static void deleteInstance();
+
     private:
-        //! Initializes the sound and loads the music data
+        //! Constructor.  Initializes the sound and loads the music data
         Sound();
 
-        //! Deinitializes sound
+        //! Destructor.  Deinitializes sound
         ~Sound();
 
         //! Callback for the music data, see XML_Helper
         bool loadMusic(std::string tag, XML_Helper* helper);
 
+	// DATA
         
         // music is stored here, access by d_musicMap[name]
         std::map<std::string, MusicItem*> d_musicMap;
@@ -154,8 +161,10 @@ class Sound : public sigc::trackable
 
         // if initialization failed, set this to true => no music/sound played
         bool d_broken;
+
         // if set to true, play background music
         bool d_background;
+
         // if set to true, don't continue with next piece
         bool d_block;
 
