@@ -132,8 +132,6 @@ class Player: public sigc::trackable
 	  //! Remote player.  See the NetworkPlayer class.
 	  NETWORKED = 8
 	};
-	static std::string playerTypeToString(const Player::Type type);
-	static Player::Type playerTypeFromString(const std::string str);
 
 	//! Every player has a diplomatic state with every other player.
 	enum DiplomaticState {
@@ -175,42 +173,17 @@ class Player: public sigc::trackable
         Player (std::string name, guint32 armyset, Gdk::Color color, int width,
 		int height, Type type, int player_no = -1);
 
-        //! Copy constructor
+        //! Copy constructor.
         Player(const Player&);
 
         //! Constructor for loading. See XML_Helper for documentation.
         Player(XML_Helper* helper);
+
+	//! Destructor.
         virtual ~Player();
 
-        /** 
-	 * Make a new player with the given parameters.
-         * 
-         * @note The neutral player must still be inserted as neutral player
-         * manually!
-         *
-         * @param name     The name of the player.
-         * @param armyset  The Id of the player's Armyset.
-         * @param color    The player's colour.
-         * @param width    The width of the player's FogMap.
-         * @param height   The height of the player's FogMap.
-         * @param type     The player's type (Player::Type).
-         */
-	//! Create a player.
-        static Player* create(std::string name, guint32 armyset, 
-			      Gdk::Color color, int width, int height, 
-			      Type type);
-        
-        /** 
-	 * Copies a player to a different type.
-         * 
-         * @note This method does not change ownerships! (e.g. of cities)
-         *
-         * @param player   The original player.
-         * @param type     The type we want to get out (Player::Type).
-         * @return A new player with the old player's data and the given type.
-         */
-	//! Create a new player from another player.
-        static Player* create(Player* orig, Type type);
+
+	// Set Methods
 
         //! Change the player's name.
         void setName(std::string name){d_name = name;}
@@ -230,41 +203,36 @@ class Player: public sigc::trackable
         //! Change the number of gold pieces of the player has.
         void setGold(int gold){d_gold = gold;}
 
-        //! Add some gold pieces to the player's treasury.
-        void addGold(int gold);
+	//! Set this player's rank in diplomatic matters.  Starts at 1.
+	void setDiplomaticRank (guint32 rank) {d_diplomatic_rank = rank;};
 
-        //! Subtract gold pieces from the player's treasury.
-        void withdrawGold(int gold);
+	//! Set the rank as a name.
+	void setDiplomaticTitle (std::string title) {d_diplomatic_title = title;};
+	//! Set if this player will be seen as it moves through visible terrain.
+	void setObservable(bool observable) {d_observable = observable;};
 
-        //! Remove every Action from the list of the player's actions.
-        void clearActionlist();
+        //! Revive the player, this does not provide any cities.
+        void revive() {d_dead = false;}
 
-        //! Remove every History element from the list of the player's events.
-        void clearHistorylist();
+	//! Set whether or not this player has surrendered.
+	/*
+	 * computer players may surrender to a lone human player who has most
+	 * of the cities on the board.
+	 * this method merely sets the surrendered member so that we can
+	 * quit properly. e.g. it triggers the aborted_Turn signal to be fired
+	 * at a different time in fast, smart and dummy players.
+	 */
+	void setSurrendered(bool surr);
 
-	//! Remove all stacks from the player's list.
-	void clearStacklist();
+        //! Set the fight order of the player.
+	void setFightOrder(std::list<guint32> order);
 
-	//! Remove all fog from the player's map.
-	void clearFogMap();
 
-        //! Add a Stack to the player's Stacklist.
-        void addStack(Stack* stack);
 
-        //! Remove a Stack from the player's Stacklist.
-        bool deleteStack(Stack* stack);
+	// Get Methods
 
         //! Returns the unique ID of the player.
         guint32 getId() const {return d_id;}
-
-	//! Returns a list of the players unit production actions for this turn.
-	std::list<Action_Produce *> getUnitsProducedThisTurn() const;
-
-	//! Return the amount of gold pieces for the newly produced armies.
-	guint32 getCostOfUnitsProducedThisTurn() const;
-
-	//! Returns a list of the player's actions to show in a report.
-	std::list<Action *> getReportableActions() const;
 
         //! Returns the list of player's events. 
         std::list<History*>* getHistorylist() {return &d_history;}
@@ -291,21 +259,124 @@ class Player: public sigc::trackable
 	//! Return the income from all of the player's cities.
         guint32 getIncome () const {return d_income;}
 
-	/**
-	 * Perform a summation of the upkeep value for every Army in the 
-	 * player's Stacklist.  This method sets d_upkeep.
-	 * The upkeep value is in gold pieces.
-	 */
-	//! Calculates the upkeep.
-	void calculateUpkeep();
+	//! What diplomatic rank does this player have?  Starts at 1.
+	guint32 getDiplomaticRank () const {return d_diplomatic_rank;};
 
-	/**
-	 * Perform a summation of the income value for every City in the 
-	 * player's Citylist.  This method sets d_income.
-	 * The income value is in gold pieces.
-	 */
-	//! Calculates the upkeep.
-	void calculateIncome();
+	//! What rank do we have?  As a name.
+	std::string getDiplomaticTitle() const {return d_diplomatic_title;};
+
+        //! Returns the colour of the player.
+	Gdk::Color getColor() const {return d_color;}
+
+        //! Returns the amount of gold pieces the player has in the treasury.
+        int getGold() const {return d_gold;}
+
+        //! Returns the name of the player.
+        std::string getName(bool translate = true) const;
+
+	//! Returns the player's current score.
+        guint32 getScore() const;
+
+        //! Returns the list of stacks owned by the player.
+        Stacklist* getStacklist() const {return d_stacklist;}
+
+        //! Get the FogMap of the player.
+        FogMap* getFogMap() const {return d_fogmap;}
+
+        //! Get the Triumphs of the player.
+        Triumphs* getTriumphs() const {return d_triumphs;}
+
+        //! Get the fight order of the player.
+	std::list<guint32> getFightOrder() const {return d_fight_order;}
+
+	bool isObservable() const {return d_observable;};
+
+
+	// Methods that operate on the player's action list.
+
+	//! Returns a list of the players unit production actions for this turn.
+	std::list<Action_Produce *> getUnitsProducedThisTurn() const;
+
+	//! Return the amount of gold pieces for the newly produced armies.
+	guint32 getCostOfUnitsProducedThisTurn() const;
+
+	//! Returns a list of the player's actions to show in a report.
+	std::list<Action *> getReportableActions() const;
+
+        //! Remove every Action from the list of the player's actions.
+        void clearActionlist();
+
+        //! Show debugging information for the player's Action list.
+        void dumpActionlist() const;
+
+	//! Wrap the player's actions for transport over the network.
+	void saveNetworkActions(XML_Helper *helper) const;
+
+	//! Check to see if it's our turn.
+	bool hasAlreadyInitializedTurn() const;
+
+	//! Check to see if we've ended our turn this round.
+	bool hasAlreadyEndedTurn() const;
+
+	//! Return the movement history of a given stack for this turn.
+	std::list<Vector<int> > getStackTrack(Stack *s) const;
+
+
+	// Methods that operate on the player's history list.
+
+        //! Remove every History element from the list of the player's events.
+        void clearHistorylist();
+
+        //! Show debugging information for the player's History list.
+        void dumpHistorylist() const;
+
+	//! Check the player's history to see if we've conquered the given city.
+	bool conqueredCity(City *c) const;
+	
+	//! Return a list of history events for the given hero.
+	std::list<History *> getHistoryForHeroId(guint32 id) const;
+
+	//! Return a list of history events for the given city.
+	std::list<History *> getHistoryForCityId(guint32 id) const;
+
+	//! Count the turns we've completed.
+	guint32 countEndTurnHistoryEntries() const;
+
+	//! Add a new history item to the player's history list.
+	void addHistory(History *history);
+
+
+	// Methods that operate on the player's stacklist
+
+	//! Return a list of the player's heroes.
+	std::list<Hero*> getHeroes() const;
+
+	//! Return the grand total of the player's armies.
+	guint32 countArmies() const;
+
+	//! Return the player's currently selected stack.
+	Stack * getActivestack() const;
+
+	//! Select this stack.
+	void setActivestack(Stack *);
+
+	//! Return the position on the map for the given army unit.
+	Vector<int> getPositionOfArmyById(guint32 id) const;
+
+	//! Remove movement points from all of the player's army units.
+	void immobilize();
+
+	//! Remove all stacks from the player's list.
+	void clearStacklist();
+
+        //! Add a Stack to the player's Stacklist.
+        void addStack(Stack* stack);
+
+        //! Remove a Stack from the player's Stacklist.
+        bool deleteStack(Stack* stack);
+
+
+	// Methods that operate on the player's diplomatic data members.
 
 	//! Declare a new diplomatic state with respect to an opponent.
 	void declareDiplomacy(DiplomaticState state, Player *player);
@@ -319,17 +390,6 @@ class Player: public sigc::trackable
 	//! Propose a new diplomatic state wrt another player
 	void proposeDiplomacy (DiplomaticProposal proposal, Player *player);
 
-	//! Set this player's rank in diplomatic matters.  Starts at 1.
-	void setDiplomaticRank (guint32 rank) {d_diplomatic_rank = rank;};
-
-	//! What diplomatic rank does this player have?  Starts at 1.
-	guint32 getDiplomaticRank () const {return d_diplomatic_rank;};
-
-	//! What rank do we have?  As a name.
-	std::string getDiplomaticTitle() const {return d_diplomatic_title;};
-
-	//! Set the rank as a name.
-	void setDiplomaticTitle (std::string title) {d_diplomatic_title = title;};
 	//! Negotiate diplomatic talks with an opponent, and return a new state.
 	DiplomaticState negotiateDiplomacy (Player *player);
 
@@ -408,44 +468,39 @@ class Player: public sigc::trackable
 	void improveAlliesRelationship(Player *player, guint32 amount, 
 				       Player::DiplomaticState state);
 
-        //! Returns the colour of the player.
-	Gdk::Color getColor() const {return d_color;}
+        void adjustDiplomacyFromConqueringCity(City *city);
 
-        //! Returns the amount of gold pieces the player has.
-        int getGold() const {return d_gold;}
 
-        //! Returns the name of the player has.
-        std::string getName(bool translate = true) const;
 
-	//! Returns the player's current score.
-        guint32 getScore() const;
+        //! Add some gold pieces to the player's treasury.
+        void addGold(int gold);
 
-        //! Returns the list of stacks (Stacklist) owned by the player.
-        Stacklist* getStacklist() const {return d_stacklist;}
+        //! Subtract gold pieces from the player's treasury.
+        void withdrawGold(int gold);
 
-        //! Get the FogMap of the player.
-        FogMap* getFogMap() const {return d_fogmap;}
+	/**
+	 * Perform a summation of the upkeep value for every Army in the 
+	 * player's Stacklist.  This method sets d_upkeep.
+	 * The upkeep value is in gold pieces.
+	 */
+	//! Calculates the upkeep.
+	void calculateUpkeep();
 
-        //! Get the Triumphs of the player.
-        Triumphs* getTriumphs() const {return d_triumphs;}
+	/**
+	 * Perform a summation of the income value for every City in the 
+	 * player's Citylist.  This method sets d_income.
+	 * The income value is in gold pieces.
+	 */
+	//! Calculates the upkeep.
+	void calculateIncome();
 
-        //! Get the fight order of the player.
-	std::list<guint32> getFightOrder() const {return d_fight_order;}
 
-        //! Set the fight order of the player.
-	void setFightOrder(std::list<guint32> order);
+	//! Remove all fog from the player's map.
+	void clearFogMap();
 
-        //! Show debugging information for the player's Action list.
-        void dumpActionlist() const;
-
-        //! Show debugging information for the player's History list.
-        void dumpHistorylist() const;
 
         //! Mark the player as dead. Kills all Army units in the Stacklist.
         void kill();
-
-        //! Revive the player, this does not provide any cities.
-        void revive() {d_dead = false;}
 
         /** 
 	 * Saves the player data to a file.
@@ -459,22 +514,6 @@ class Player: public sigc::trackable
 	//! Save the player to a saved-game file.
         virtual bool save(XML_Helper* helper) const;
 
-        /** 
-	 * Loads a player from a file.
-         *
-         * This is a bit inconsistent with other classes, but with players you
-         * have the problem that there are different types with different
-         * classes. So we need a static member function which looks which
-         * player type to load and calls the constructor of the appropriate
-         * class.
-         *
-         * @param helper       the opened saved-game file to read from.
-	 *
-	 * @return The loaded Player instance.
-         */
-        static Player* loadPlayer(XML_Helper* helper);
-
-	void saveNetworkActions(XML_Helper *helper);
 
         /** 
 	 * This function is called when a player's turn starts. 
@@ -1106,9 +1145,6 @@ class Player: public sigc::trackable
 
 	void cityTooPoorToProduce(City *city, int slot);
 
-	bool isObservable() const {return d_observable;};
-	void setObservable(bool observable) {d_observable = observable;};
-
 	/**
 	 * @param city   The city being invaded.
 	 * @param loot   The gold looted.
@@ -1277,42 +1313,66 @@ class Player: public sigc::trackable
         sigc::signal<void, NetworkAction *> acting;
         sigc::signal<void, NetworkHistory *> history_written;
         
-	//! is it safe to vector from the given city?
-	static bool safeFromAttack(City *c, guint32 safe_mp, guint32 min_defenders);
-	void addHistory(History *history);
-	bool hasAlreadyInitializedTurn() const;
-	bool hasAlreadyEndedTurn() const;
 	void loadPbmGame();
 	//! Check the history to see if we ever conquered the given city.
-	bool conqueredCity(City *c) const;
-	std::list<Vector<int> > getStackTrack(Stack *s) const;
-	std::list<History *> getHistoryForHeroId(guint32 id) const;
-	std::list<History *> getHistoryForCityId(guint32 id) const;
-	//! Set whether or not this player has surrendered.
-	/*
-	 * computer players may surrender to a lone human player who has most
-	 * of the cities on the board.
-	 * this method merely sets the surrendered member so that we can
-	 * quit properly. e.g. it triggers the aborted_Turn signal to be fired
-	 * at a different time in fast, smart and dummy players.
-	 */
-	void setSurrendered(bool surr);
-	guint32 countEndTurnHistoryEntries() const;
 
-	//! accessor methods into encapsulated stacklist object
-	std::list<Hero*> getHeroes() const;
-	guint32 countArmies() const;
-	Stack * getActivestack() const;
-	void setActivestack(Stack *);
-	Vector<int> getPositionOfArmyById(guint32 id) const;
-	//! Remove movement points from all of the player's army units.
-	void immobilize();
 
 
 	Stack *stackSplitArmy(Stack *stack, Army *a);
 	Stack *stackSplitArmies(Stack *stack, std::list<guint32> armies);
 	Stack *stackSplitArmies(Stack *stack, std::list<Army*> armies);
 	
+	// Static Methods
+
+	static std::string playerTypeToString(const Player::Type type);
+	static Player::Type playerTypeFromString(const std::string str);
+	//! is it safe to vector from the given city?
+	static bool safeFromAttack(City *c, guint32 safe_mp, guint32 min_defenders);
+        /** 
+	 * Make a new player with the given parameters.
+         * 
+         * @note The neutral player must still be inserted as neutral player
+         * manually!
+         *
+         * @param name     The name of the player.
+         * @param armyset  The Id of the player's Armyset.
+         * @param color    The player's colour.
+         * @param width    The width of the player's FogMap.
+         * @param height   The height of the player's FogMap.
+         * @param type     The player's type (Player::Type).
+         */
+	//! Create a player.
+        static Player* create(std::string name, guint32 armyset, 
+			      Gdk::Color color, int width, int height, 
+			      Type type);
+        
+        /** 
+	 * Copies a player to a different type.
+         * 
+         * @note This method does not change ownerships! (e.g. of cities)
+         *
+         * @param player   The original player.
+         * @param type     The type we want to get out (Player::Type).
+         * @return A new player with the old player's data and the given type.
+         */
+	//! Create a new player from another player.
+        static Player* create(Player* orig, Type type);
+
+        /** 
+	 * Loads a player from a file.
+         *
+         * This is a bit inconsistent with other classes, but with players you
+         * have the problem that there are different types with different
+         * classes. So we need a static member function which looks which
+         * player type to load and calls the constructor of the appropriate
+         * class.
+         *
+         * @param helper       the opened saved-game file to read from.
+	 *
+	 * @return The loaded Player instance.
+         */
+        static Player* loadPlayer(XML_Helper* helper);
+
     protected:
         // do some fight cleaning up, setting
         void cleanupAfterFight(std::list<Stack*> &attackers,
@@ -1541,7 +1601,6 @@ class Player: public sigc::trackable
 	//! update Army state after a Fight.
         void updateArmyValues(std::list<Stack*>& stacks, double xp_sum);
 
-        void adjustDiplomacyFromConqueringCity(City *city);
 
         void lootCity(City *city, Player *looted);
 	void calculateLoot(Player *looted, guint32 &added, guint32 &subtracted);

@@ -3317,7 +3317,7 @@ void Player::loadPbmGame()
     }
 }
 
-void Player::saveNetworkActions(XML_Helper *helper)
+void Player::saveNetworkActions(XML_Helper *helper) const
 {
   for (list<Action*>::const_iterator it = d_actions.begin();
        it != d_actions.end(); it++)
