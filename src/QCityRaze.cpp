@@ -33,36 +33,35 @@ using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-//=======================================================================
 QuestCityRaze::QuestCityRaze (QuestsManager& mgr, guint32 hero) 
-    : Quest(mgr, hero, Quest::CITYRAZE)
+  : Quest(mgr, hero, Quest::CITYRAZE)
 {
-    // find us a victim
-    City* c = chooseToRaze(getHero()->getOwner());
-    assert(c);      // should never fail because isFeasible is checked first
+  // find us a victim
+  City* c = chooseToRaze(getHero()->getOwner());
+  assert(c);      // should never fail because isFeasible is checked first
 
-    d_city = c->getId();
-    d_targets.push_back(c->getPos());
-    debug("city_id = " << d_city);
-    initDescription();
+  d_city = c->getId();
+  d_targets.push_back(c->getPos());
+  debug("city_id = " << d_city);
+  initDescription();
 }
-//=======================================================================
+
 QuestCityRaze::QuestCityRaze (QuestsManager& q_mgr, XML_Helper* helper) 
-     : Quest(q_mgr, helper)
+  : Quest(q_mgr, helper)
 {
-    helper->getData(d_city, "city");
-    d_targets.push_back(getCity()->getPos());
-    initDescription();
+  helper->getData(d_city, "city");
+  d_targets.push_back(getCity()->getPos());
+  initDescription();
 }
-//=======================================================================
+
 QuestCityRaze::QuestCityRaze (QuestsManager& mgr, guint32 hero, guint32 target) 
-    : Quest(mgr, hero, Quest::CITYRAZE)
+  : Quest(mgr, hero, Quest::CITYRAZE)
 {
-    d_city = target;
-    d_targets.push_back(getCity()->getPos());
-    initDescription();
+  d_city = target;
+  d_targets.push_back(getCity()->getPos());
+  initDescription();
 }
-//=======================================================================
+
 bool QuestCityRaze::isFeasible(guint32 heroId)
 {
   if (QuestCityRaze::chooseToRaze(getHeroById(heroId)->getOwner()))
@@ -70,72 +69,72 @@ bool QuestCityRaze::isFeasible(guint32 heroId)
 
   return false;
 }
-//=======================================================================
+
 bool QuestCityRaze::save(XML_Helper* helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag(Quest::d_tag);
-    retval &= Quest::save(helper);
-    retval &= helper->saveData("city", d_city);
-    retval &= helper->closeTag();
+  retval &= helper->openTag(Quest::d_tag);
+  retval &= Quest::save(helper);
+  retval &= helper->saveData("city", d_city);
+  retval &= helper->closeTag();
 
-    return retval;
+  return retval;
 }
-//=======================================================================
+
 std::string QuestCityRaze::getProgress() const
 {
-    return _("You aren't afraid of doing it, are you?");
+  return _("You aren't afraid of doing it, are you?");
 }
-//=======================================================================
+
 void QuestCityRaze::getSuccessMsg(std::queue<std::string>& msgs) const
 {
-    msgs.push(_("The priests thank you for razing this evil place."));
+  msgs.push(_("The priests thank you for razing this evil place."));
 }
-//=======================================================================
+
 void QuestCityRaze::getExpiredMsg(std::queue<std::string>& msgs) const
 {
-    const City* c = getCity();
-    msgs.push(String::ucompose
-	      (_("The razing of city \"%1\" could not be accomplished."), 
-	       c->getName()));
+  const City* c = getCity();
+  msgs.push(String::ucompose
+	    (_("The razing of city \"%1\" could not be accomplished."), 
+	     c->getName()));
 }
-//=======================================================================
+
 City* QuestCityRaze::getCity() const
 {
-    Citylist* cl = Citylist::getInstance();
-    for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
-        if ((*it)->getId() == d_city)
-            return (*it);
+  Citylist* cl = Citylist::getInstance();
+  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+    if ((*it)->getId() == d_city)
+      return (*it);
 
-    return 0;
+  return 0;
 }
-//=======================================================================
+
 void QuestCityRaze::initDescription()
 {
-    const City* c = getCity();
+  const City* c = getCity();
 
-    d_description = String::ucompose 
-      ( _("You must conquer the city \"%1\" and burn it to the ground."),
-	c->getName());
+  d_description = String::ucompose 
+    ( _("You must conquer the city \"%1\" and burn it to the ground."),
+      c->getName());
 }
-//=======================================================================
+
 City* QuestCityRaze::chooseToRaze(Player *p)
 {
-    std::vector<City*> cities;
+  std::vector<City*> cities;
 
-    // Collect all cities
-    Citylist* cl = Citylist::getInstance();
-    for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-        if (!(*it)->isBurnt() && (*it)->getOwner() != p &&
-	    (*it)->getOwner() != Playerlist::getInstance()->getNeutral())
-            cities.push_back((*it));
+  // Collect all cities
+  Citylist* cl = Citylist::getInstance();
+  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
+    if (!(*it)->isBurnt() && (*it)->getOwner() != p &&
+	(*it)->getOwner() != Playerlist::getInstance()->getNeutral())
+      cities.push_back((*it));
 
-    // Find a suitable city for us to raze 
-    if (cities.empty())
-        return 0;
+  // Find a suitable city for us to raze 
+  if (cities.empty())
+    return 0;
 
-    return cities[rand() % cities.size()];
+  return cities[rand() % cities.size()];
 }
 
 void QuestCityRaze::armyDied(Army *a, bool heroIsCulprit)
@@ -143,11 +142,18 @@ void QuestCityRaze::armyDied(Army *a, bool heroIsCulprit)
   ;
   //this quest does nothing when an army dies
 }
+
 void QuestCityRaze::cityAction(City *c, CityDefeatedAction action, 
 			       bool heroIsCulprit, int gold)
 {
-  if (!isActive())
+  if (!isPendingDeletion())
     return;
+  Hero *h = getHero();
+  if (!h || h->getHP() <= 0)
+    {
+      deactivate();
+      return;
+    }
   if (!c)
     return;
   if (c->getId() != d_city)

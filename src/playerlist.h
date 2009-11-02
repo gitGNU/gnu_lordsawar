@@ -48,24 +48,22 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	//! The xml tag of this object in a saved-game file.
 	static std::string d_tag; 
 
-        //! Gets the singleton instance or creates a new one.
-        static Playerlist* getInstance();
+	// Set Methods
 
-	/**
-	 * Load all Players in the Playerlist from a saved-game file.
-	 *
-	 * @param helper     The opened saved-game file to read from.
-	 *
-	 * @return The loaded Playerlist.
-	 */
-        //! Loads the playerlist from a saved-game file.
-        static Playerlist* getInstance(XML_Helper* helper);
+	//! Set the winning human player.
+	void setWinningPlayer(Player *winner);
 
-        //! Explicitly deletes the singleton instance.
-        static void deleteInstance();
+	//! only the scenario editor should use this.
+	void setActiveplayer(Player *p) {d_activeplayer = p;};
 
-        //! Returns the active player (the Player whose turn it is).
-        static Player* getActiveplayer() {return d_activeplayer;}
+
+	//! Get Methods
+
+        //! Returns the neutral player.
+        Player* getNeutral() const {return d_neutral;}
+
+
+	// Methods that operate on the class data and modify the class.
 
         //! Sets the active player to the next player in the order.
         void nextPlayer();
@@ -90,8 +88,98 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	//! Set the neutral player.
         void setNeutral(Player* neutral) {d_neutral = neutral;}
 
-        //! Returns the neutral player.
-        Player* getNeutral() const {return d_neutral;}
+	/** 
+	 * Swap out a player from the list and replace it with a new one.
+	 * Specical care is taken to remove all references to the original
+	 * player and replace it with a reference to the new player.
+	 *
+	 * The purpose of this method is to change a human player into a
+	 * computer player and vice-versa.
+	 *
+	 * @param old_player   A pointer to the player to replace.
+	 * @param new_player   A pointer to the new player to replace the 
+	 *                     original player.
+	 */
+	//! Replace a Player in the list with a new Player.
+	void swap(Player *old_player, Player *new_player);
+        
+        /** 
+	 * Erase a Player from the list, and free the contents of the Player.
+	 *
+	 * @param it   The place in the Playerlist to erase.
+	 *
+	 * @return The place in the list that was erased.
+         */
+	//! Erase a player from the list.
+        iterator flErase(iterator it);
+
+	/**
+	 * This method is called when a round starts.
+	 * The purpose of this method is to calculate who is winning, and 
+	 * it to negotiate diplomacy between players.  This method also 
+	 * implements the computer players collectively surrendering to a 
+	 * final human player.
+	 *
+	 * @param diplomacy     Whether or not we should negotiate diplomacy
+	 *                      between players.
+	 * @param surrender_already_offered Tells the method if surrender
+	 *                      has already been offered by the computer
+	 *                      players.  This needs to be kept track of
+	 *                      because the computer players only offer
+	 *                      surrender once.  The method will change this
+	 *                      value from false to true if it decided that 
+	 *                      the computer players collectively offer 
+	 *                      surrender.
+	 */
+	//! Callback method to process all players at the start of a round.
+	void nextRound(bool diplomacy, bool *surrender_already_offered);
+
+	/**
+	 * The purpose of randomzing the Playerlist is to implement
+	 * random turns.
+	 * Note: This method does not set the active player.
+	 */
+	//! Randomize the order of the players in the list.
+	void randomizeOrder();
+
+	/**
+	 * This method takes care of giving a player it's diplomatic
+	 * ranking among all other players.  The rank is determined by 
+	 * adding up all of the diplomatic scores, and then sorting them.
+	 * Each rank has a title.  There is always a Player who has the 
+	 * title of `Statesman', and there is always a Player who has the 
+	 * title of `Running Dog'.  The other titles disappear as the other 
+	 * players die off.
+	 */
+	//! Figure out who's winning diplomatically.
+        void calculateDiplomaticRankings();
+
+	//! Sync the playerlist.
+	/**
+	 * Sync the playerlist with the list of players given.
+	 */
+	void syncPlayers(std::vector<GameParameters::Player> players);
+
+	//! Sync the given player with the playerlist
+	void syncPlayer(GameParameters::Player player);
+
+	//! Converts all of the human players into network players.
+	void turnHumansIntoNetworkPlayers();
+
+	//! Converts a given number of the human players into a type of player.
+	void turnHumansInto(Player::Type type, int num_players = -1);
+
+	//! Reorder the list according to the given order.
+	void reorder(std::list<guint32> order);
+
+	//! Perform the surrender of all computer players.
+	void surrender();
+
+	//! Add a player to the list.  Use this instead of push_back.
+	void add(Player *player);
+
+
+	// Methods that operate on the class data but do not modify it.
 
 	/**
 	 * Scan the list of players for a Player with a given name.
@@ -125,89 +213,26 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	//! Return the first living Player in the list.
         Player* getFirstLiving() const;
 
-	/** 
-	 * Swap out a player from the list and replace it with a new one.
-	 * Specical care is taken to remove all references to the original
-	 * player and replace it with a reference to the new player.
-	 *
-	 * The purpose of this method is to change a human player into a
-	 * computer player and vice-versa.
-	 *
-	 * @param old_player   A pointer to the player to replace.
-	 * @param new_player   A pointer to the new player to replace the 
-	 *                     original player.
-	 */
-	//! Replace a Player in the list with a new Player.
-	void swap(Player *old_player, Player *new_player);
-        
         //! Saves the playerlist to an opened saved-game file.
         bool save(XML_Helper* helper) const;
 
-        /** 
-	 * Erase a Player from the list, and free the contents of the Player.
-	 *
-	 * @param it   The place in the Playerlist to erase.
-	 *
-	 * @return The place in the list that was erased.
-         */
-	//! Erase a player from the list.
-        iterator flErase(iterator it);
-
-	/**
-	 * This method is called when a round starts.
-	 * The purpose of this method is to calculate who is winning, and 
-	 * it to negotiate diplomacy between players.  This method also 
-	 * implements the computer players collectively surrendering to a 
-	 * final human player.
-	 *
-	 * @param diplomacy     Whether or not we should negotiate diplomacy
-	 *                      between players.
-	 * @param surrender_already_offered Tells the method if surrender
-	 *                      has already been offered by the computer
-	 *                      players.  This needs to be kept track of
-	 *                      because the computer players only offer
-	 *                      surrender once.  The method will change this
-	 *                      value from false to true if it decided that 
-	 *                      the computer players collectively offer 
-	 *                      surrender.
-	 */
-	//! Callback method to process all players at the start of a round.
-	void nextRound(bool diplomacy, bool *surrender_already_offered);
-
 	//! Return the number of human players left alive in the list.
-	guint32 countHumanPlayersAlive();
+	guint32 countHumanPlayersAlive() const;
 
 	//! Return the number of players left alive, not including neutral.
-	guint32 countPlayersAlive();
+	guint32 countPlayersAlive() const;
 
-	/**
-	 * The purpose of randomzing the Playerlist is to implement
-	 * random turns.
-	 * Note: This method does not set the active player.
-	 */
-	//! Randomize the order of the players in the list.
-	void randomizeOrder();
 
-	/**
-	 * This method takes care of giving a player it's diplomatic
-	 * ranking among all other players.  The rank is determined by 
-	 * adding up all of the diplomatic scores, and then sorting them.
-	 * Each rank has a title.  There is always a Player who has the 
-	 * title of `Statesman', and there is always a Player who has the 
-	 * title of `Running Dog'.  The other titles disappear as the other 
-	 * players die off.
-	 */
-	//! Figure out who's winning diplomatically.
-        void calculateDiplomaticRankings();
+	//! Return the list of activities that the given hero has accomplished.
+	std::list<History *>getHistoryForHeroId(guint32 id) const;
 
-	//! Sync the playerlist.
-	/**
-	 * Sync the playerlist with the list of players given.
-	 */
-	void syncPlayers(std::vector<GameParameters::Player> players);
+	/** 
+	  \brief Check to see if this is the end of the round or not.
+	  */
+	bool isEndOfRound() const;
 
-	//! Sync the given player with the playerlist
-	void syncPlayer(GameParameters::Player player);
+
+	// Signals
 
 	/**
 	 * @param player  The player who has died.
@@ -224,30 +249,36 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         //! Emitted when a surrender is offered.
         sigc::signal<void, Player*> ssurrender;
     
-	void turnHumansIntoNetworkPlayers();
-	void turnHumansInto(Player::Type type, int num_players = -1);
-	void reorder(std::list<guint32> order);
 
-	std::list<History *>getHistoryForHeroId(guint32 id);
+	// Static Methods
 
-	void surrender();
+        //! Gets the singleton instance or creates a new one.
+        static Playerlist* getInstance();
 
-	/** 
-	  \brief Check to see if this is the end of the round or not.
-	  */
-	bool isEndOfRound();
+	/**
+	 * Load all Players in the Playerlist from a saved-game file.
+	 *
+	 * @param helper     The opened saved-game file to read from.
+	 *
+	 * @return The loaded Playerlist.
+	 */
+        //! Loads the playerlist from a saved-game file.
+        static Playerlist* getInstance(XML_Helper* helper);
 
-	void setWinningPlayer(Player *winner);
+        //! Explicitly deletes the singleton instance.
+        static void deleteInstance();
 
-	//! only the scenario editor should use this.
-	void setActiveplayer(Player *p) {d_activeplayer = p;};
+        //! Returns the active player (the Player whose turn it is).
+        static Player* getActiveplayer() {return d_activeplayer;}
 
-	void add(Player *player);
     protected:
+
 	//! Default constructor.
         Playerlist();
+
 	//! Loading constructor.
         Playerlist(XML_Helper* helper);
+
 	//! Destructor.
         ~Playerlist();
         
@@ -271,6 +302,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	void negotiateDiplomacy();
 
         // DATA
+
 	//! The pointer to the player whose turn it is in the list.
         static Player* d_activeplayer;
 

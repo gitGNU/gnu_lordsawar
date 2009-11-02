@@ -1175,7 +1175,9 @@ Action_Quest::Action_Quest(XML_Helper* helper)
 {
 
   helper->getData(d_hero, "hero");
-  helper->getData(d_questtype, "quest");
+  std::string s;
+  helper->getData(s, "quest");
+  d_questtype = Quest::questTypeFromString(s);
   helper->getData(d_data, "data");
   helper->getData(d_victim_player, "victim_player");
 }
@@ -1199,7 +1201,8 @@ bool Action_Quest::doSave(XML_Helper* helper) const
   bool retval = true;
 
   retval &= helper->saveData("hero", d_hero);
-  retval &= helper->saveData("quest", d_questtype);
+  std::string s = Quest::questTypeToString(Quest::Type(d_questtype));
+  retval &= helper->saveData("quest", s);
   retval &= helper->saveData("data", d_data);
   retval &= helper->saveData("victim_player", d_victim_player);
 

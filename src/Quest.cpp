@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -44,7 +44,9 @@ Quest::Quest(QuestsManager& q_mgr, guint32 hero, Type type)
 Quest::Quest(QuestsManager& q_mgr, XML_Helper* helper)
     :d_q_mgr(q_mgr)
 {
-    helper->getData(d_type, "type");
+    std::string s;
+    helper->getData(s, "type");
+    d_type = questTypeFromString(s);
     helper->getData(d_hero, "hero");
     helper->getData(d_hero_name, "hero_name");
     helper->getData(d_pending, "pending_deletion");
@@ -60,7 +62,7 @@ Hero* Quest::getHeroById(guint32 hero, Stack** stack)
         Stacklist* sl = (*pit)->getStacklist();
         for (Stacklist::const_iterator it = sl->begin(); it != sl->end(); it++)
         {
-            for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
+            for (Stack::const_iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
             {
                 if ( ((*sit)->isHero()) && ((*sit)->getId() == hero) )
                 {
@@ -79,7 +81,9 @@ bool Quest::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    retval &= helper->saveData("type", d_type);
+    std::string s;
+    s = questTypeToString(Quest::Type(d_type));
+    retval &= helper->saveData("type", s);
     retval &= helper->saveData("hero", d_hero);
     retval &= helper->saveData("hero_name", d_hero_name);
     retval &= helper->saveData("pending_deletion", d_pending);
@@ -88,22 +92,7 @@ bool Quest::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Quest::isActive()
-{
-    if (d_pending)
-        return false;
-
-    Hero* h = getHero();
-    if (!h || (h->getHP() <= 0))
-    {
-        deactivate();
-        return false;
-    }
-
-    return true;
-}
-
-std::string Quest::getHeroNameForDeadHero()
+std::string Quest::getHeroNameForDeadHero() const
 {
   return getHeroNameForDeadHero(d_hero);
 }
@@ -117,4 +106,48 @@ std::string Quest::getHeroNameForDeadHero(guint32 id)
   History *history = events.front();
   History_HeroEmerges *event = dynamic_cast<History_HeroEmerges*>(history);
   return event->getHeroName();
+}
+
+std::string Quest::questTypeToString(const Quest::Type type)
+{
+  switch (type)
+    {
+    case Quest::KILLHERO:
+      return "Quest::KILLHERO";
+    case Quest::KILLARMIES:
+      return "Quest::KILLARMIES";
+    case Quest::CITYSACK:
+      return "Quest::CITYSACK";
+    case Quest::CITYRAZE:
+      return "Quest::CITYRAZE";
+    case Quest::CITYOCCUPY:
+      return "Quest::CITYOCCUPY";
+    case Quest::KILLARMYTYPE:
+      return "Quest::KILLARMYTYPE";
+    case Quest::PILLAGEGOLD:
+      return "Quest::PILLAGEGOLD";
+    }
+  return "Quest::KILLHERO";
+}
+
+Quest::Type Quest::questTypeFromString(std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return Quest::Type(atoi(str.c_str()));
+  if (str == "Quest::KILLHERO")
+    return Quest::KILLHERO;
+  else if (str == "Quest::KILLARMIES")
+    return Quest::KILLARMIES;
+  else if (str == "Quest::CITYSACK")
+    return Quest::CITYSACK;
+  else if (str == "Quest::CITYRAZE")
+    return Quest::CITYRAZE;
+  else if (str == "Quest::CITYOCCUPY")
+    return Quest::CITYOCCUPY;
+  else if (str == "Quest::KILLARMYTYPE")
+    return Quest::KILLARMYTYPE;
+  else if (str == "Quest::PILLAGEGOLD")
+    return Quest::PILLAGEGOLD;
+    
+  return Quest::KILLHERO;
 }

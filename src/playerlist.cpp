@@ -435,7 +435,7 @@ void Playerlist::calculateWinners()
     return;
 }
 
-guint32 Playerlist::countHumanPlayersAlive()
+guint32 Playerlist::countHumanPlayersAlive() const
 {
   guint32 retval = 0;
   for (const_iterator it = begin(); it != end(); it++)
@@ -444,7 +444,7 @@ guint32 Playerlist::countHumanPlayersAlive()
   return retval;
 }
 
-guint32 Playerlist::countPlayersAlive ()
+guint32 Playerlist::countPlayersAlive () const
 {
   guint32 numAlive = 0; 
 
@@ -815,10 +815,10 @@ void Playerlist::reorder(std::list<guint32> order)
   d_activeplayer = getFirstLiving();
 }
 
-std::list<History *>Playerlist::getHistoryForHeroId(guint32 id)
+std::list<History *>Playerlist::getHistoryForHeroId(guint32 id) const
 {
   std::list<History*> no_events;
-  for (iterator it = begin(); it != end(); ++it)
+  for (const_iterator it = begin(); it != end(); ++it)
     {
       std::list<History *>events = (*it)->getHistoryForHeroId(id);
       if (events.size() > 0)
@@ -839,14 +839,14 @@ void Playerlist::surrender()
     }
 }
 
-bool Playerlist::isEndOfRound()
+bool Playerlist::isEndOfRound() const
 {
   //check to see if all players have moved this round.
   //do all players have the same number of history:end_turn events?
   if (d_activeplayer == NULL)
     return false;
   guint32 count = d_activeplayer->countEndTurnHistoryEntries();
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     {
       if (*it == d_activeplayer)
 	continue;
@@ -855,6 +855,7 @@ bool Playerlist::isEndOfRound()
     }
   return true;
 }
+
 void Playerlist::setWinningPlayer(Player *winner)
 {
   //only for humans

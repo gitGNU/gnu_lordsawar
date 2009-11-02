@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -53,23 +53,8 @@ class QuestCityRaze: public Quest, public sigc::trackable
         // Construct from remote action.
         QuestCityRaze(QuestsManager& q_mgr, guint32 hero, guint32 target);
         
-	//! Returns whether or not this quest is impossible.
-        /**
-	 * Scans all City objects in the Citylist to see if there is one the 
-	 * active player can raze.
-	 *
-	 * @note This method is static because it is executed before the
-	 *       Quest is instantiated.  It is also called from within the
-	 *       instantiated Quest.
-	 *
-	 * @param heroId  The Id of the Hero responsible for the razing quest.
-	 *
-	 * @return Whether or not the quest is possible.
-         */
-        static bool isFeasible(guint32 heroId);
 
-        //! Saves the occupy quest data to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+	// Get Methods
 
         /**
          * \brief Get progress information 
@@ -87,8 +72,17 @@ class QuestCityRaze: public Quest, public sigc::trackable
         //! Returns the id of the City object to be razed.
         guint32 getCityId() const {return d_city;}
 
+
+	// Methods that operate on the class data but do not modify the class.
+
         //! Returns a pointer to the City object to be razed.
         City* getCity() const;
+
+        //! Saves the occupy quest data to an opened saved-game file.
+        bool save(XML_Helper* helper) const;
+
+
+	// Methods that need to be implemented from the superclass.
 
 	//! Callback for when an Army object is killed.
 	/**
@@ -117,6 +111,24 @@ class QuestCityRaze: public Quest, public sigc::trackable
 	 */
 	void cityAction(City *city, CityDefeatedAction action, 
 			bool heroIsCulprit, int gold);
+
+	// Static Methods
+
+	//! Returns whether or not this quest is impossible.
+        /**
+	 * Scans all City objects in the Citylist to see if there is one the 
+	 * active player can raze.
+	 *
+	 * @note This method is static because it is executed before the
+	 *       Quest is instantiated.  It is also called from within the
+	 *       instantiated Quest.
+	 *
+	 * @param heroId  The Id of the Hero responsible for the razing quest.
+	 *
+	 * @return Whether or not the quest is possible.
+         */
+        static bool isFeasible(guint32 heroId);
+
     private:
 
 	//! Make a quest description about the city that needs to be razed.

@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -46,14 +46,13 @@ using namespace std;
 #define debug(x)
 
 
-//======================================================================
 QuestsManager* QuestsManager::getInstance()
 {
     if (s_instance == 0)
         s_instance = new QuestsManager();
     return s_instance;
 }
-//======================================================================
+
 QuestsManager* QuestsManager::getInstance(XML_Helper* helper)
 {
     if (s_instance)
@@ -62,26 +61,26 @@ QuestsManager* QuestsManager::getInstance(XML_Helper* helper)
     s_instance = new QuestsManager(helper);
     return s_instance;
 }
-//=======================================================================
+
 void QuestsManager::deleteInstance()
 {
     debug("QuestsManager: deleteInstance")
     delete s_instance;
     s_instance = 0;
 }
-//======================================================================
+
 QuestsManager::QuestsManager()
 {
     sharedInit();
 }
-//======================================================================
+
 QuestsManager::QuestsManager(XML_Helper* helper)
 {
     sharedInit();
     debug("QuestsManager: registerTag!");
     helper->registerTag(Quest::d_tag, sigc::mem_fun((*this), &QuestsManager::load));
 }
-//======================================================================
+
 QuestsManager::~QuestsManager()
 {
     std::map<guint32,Quest*>::iterator it;
@@ -90,7 +89,7 @@ QuestsManager::~QuestsManager()
         delete (*it).second;
     cleanup();
 }
-//======================================================================
+
 Quest* QuestsManager::createNewQuest(guint32 heroId, bool razing_possible)
 {
     // don't let a hero have more than one quest
@@ -212,7 +211,6 @@ Quest* QuestsManager::createNewPillageGoldQuest(guint32 heroId, guint32 amount)
   return quest;
 }
 
-//========================================================================
 void QuestsManager::questCompleted(guint32 heroId)
 {
     Quest *quest = d_quests[heroId];
@@ -280,7 +278,6 @@ void QuestsManager::questCompleted(guint32 heroId)
     //debug("quest deactivated");
 }
 
-//========================================================================
 void QuestsManager::questExpired(guint32 heroId)
 {
     Quest *quest = d_quests[heroId];
@@ -294,142 +291,148 @@ void QuestsManager::questExpired(guint32 heroId)
     deactivateQuest(heroId);
     debug("quest deactivated");
 }
-//=========================================================================
-std::vector<Quest*> QuestsManager::getPlayerQuests(Player *player)
+
+std::vector<Quest*> QuestsManager::getPlayerQuests(Player *player) const
 {
-    std::vector<Quest*> res;
-    // loop through the player's units
-    // for every hero check any pending quests
-    const Stacklist* sl = player->getStacklist();
-    for (Stacklist::const_iterator it = sl->begin(); it != sl->end(); it++)
+  std::vector<Quest*> res;
+  // loop through the player's units
+  // for every hero check any pending quests
+  const Stacklist* sl = player->getStacklist();
+  for (Stacklist::const_iterator it = sl->begin(); it != sl->end(); it++)
     {
-        for (Stack::const_iterator sit = (*it)->begin();
-            sit != (*it)->end(); sit++)
+      for (Stack::const_iterator sit = (*it)->begin();
+	   sit != (*it)->end(); sit++)
+	{
+	  guint32 heroId = (*sit)->getId();
+
+	  if (((*sit)->isHero()) && (d_quests.count(heroId)))
 	    {
-            guint32 heroId = (*sit)->getId();
-            if (((*sit)->isHero()) && (d_quests.count(heroId)))
-            {
-                debug("heroId = " << heroId << " - has quest: " 
-                      << d_quests[heroId]);
-                res.push_back(d_quests[heroId]);
-            }
-        }
+	      std::map<guint32, Quest*>::const_iterator qit;
+	      qit = d_quests.find(heroId);
+	      if (qit == d_quests.end())
+		continue;
+	      Quest *q = (*qit).second;
+	      debug("heroId = " << heroId << " - has quest: " 
+		    << q);
+	      res.push_back(q);
+	    }
+	}
     }
-    return res;
+  return res;
 }
-//======================================================================
+
 bool QuestsManager::save(XML_Helper* helper) const
 {
-    debug("Saving quests\n");
+  debug("Saving quests\n");
 
-	bool retval = true;
-	retval &= helper->openTag(QuestsManager::d_tag);
-    
-    for (std::map<guint32,Quest*>::const_iterator it = d_quests.begin(); 
-	 it != d_quests.end(); it++) 
-      {
-	if ((*it).second == NULL)
-	  continue;
-	retval &= ((*it).second)->save(helper);
-      }
-    for (std::list<Quest *>::const_iterator it = d_inactive_quests.begin();
-	 it != d_inactive_quests.end(); it++)
-      retval &= (*it)->save(helper);
+  bool retval = true;
+  retval &= helper->openTag(QuestsManager::d_tag);
 
-    debug("Quests saved\n");
-	retval &= helper->closeTag();
-	return retval;
+  for (std::map<guint32,Quest*>::const_iterator it = d_quests.begin(); 
+       it != d_quests.end(); it++) 
+    {
+      if ((*it).second == NULL)
+	continue;
+      retval &= ((*it).second)->save(helper);
+    }
+  for (std::list<Quest *>::const_iterator it = d_inactive_quests.begin();
+       it != d_inactive_quests.end(); it++)
+    retval &= (*it)->save(helper);
+
+  debug("Quests saved\n");
+  retval &= helper->closeTag();
+  return retval;
 }
-//===========================================================================
+
 bool QuestsManager::load(string tag, XML_Helper* helper)
 {
-    debug("QuestsManager: load tag = " << tag);
+  debug("QuestsManager: load tag = " << tag);
 
-    if (tag == Quest::d_tag)
+  if (tag == Quest::d_tag)
     {
-        guint32  questType, hero;
-        helper->getData(questType, "type");
-        helper->getData(hero, "hero");
+      guint32  questType, hero;
+      helper->getData(questType, "type");
+      helper->getData(hero, "hero");
 
-        debug("quest load: type = " << questType << ", heroId = " << hero);
+      debug("quest load: type = " << questType << ", heroId = " << hero);
 
-        Quest *quest=0;
-        switch (static_cast<Quest::Type>(questType)) {
-            case Quest::KILLHERO:
-                quest = new QuestKillHero(*this, helper);
-                break;
-            case Quest::KILLARMIES:
-                quest = new QuestEnemyArmies(*this, helper);
-                break;
-            case Quest::CITYSACK:
-                quest = new QuestCitySack(*this, helper);
-                break;
-            case Quest::CITYRAZE:
-                quest = new QuestCityRaze(*this, helper);
-                break;
-            case Quest::CITYOCCUPY:
-                quest = new QuestCityOccupy(*this, helper);
-                break;
-            case Quest::KILLARMYTYPE:
-                quest = new QuestEnemyArmytype(*this, helper);
-                break;
-            case Quest::PILLAGEGOLD:
-                quest = new QuestPillageGold(*this, helper);
-                break;
-        }
-        
-        debug("quest created: q = " << quest);
-        if (quest)
-	  {
-	    if (quest->isPendingDeletion())
-	      d_inactive_quests.push_back(quest);
-	    else
-	      d_quests[hero] = quest;
-	  }
-        
-        return true;
+      Quest *quest=0;
+      switch (static_cast<Quest::Type>(questType)) {
+      case Quest::KILLHERO:
+	quest = new QuestKillHero(*this, helper);
+	break;
+      case Quest::KILLARMIES:
+	quest = new QuestEnemyArmies(*this, helper);
+	break;
+      case Quest::CITYSACK:
+	quest = new QuestCitySack(*this, helper);
+	break;
+      case Quest::CITYRAZE:
+	quest = new QuestCityRaze(*this, helper);
+	break;
+      case Quest::CITYOCCUPY:
+	quest = new QuestCityOccupy(*this, helper);
+	break;
+      case Quest::KILLARMYTYPE:
+	quest = new QuestEnemyArmytype(*this, helper);
+	break;
+      case Quest::PILLAGEGOLD:
+	quest = new QuestPillageGold(*this, helper);
+	break;
+      }
+
+      debug("quest created: q = " << quest);
+      if (quest)
+	{
+	  if (quest->isPendingDeletion())
+	    d_inactive_quests.push_back(quest);
+	  else
+	    d_quests[hero] = quest;
+	}
+
+      return true;
     }
 
-    return false;
+  return false;
 }
-//======================================================================
+
 void QuestsManager::sharedInit()
 {
-    debug("QuestsManager constructor")
+  debug("QuestsManager constructor")
 
     // now prepare the vector of pointers to the
     // functions (class static members) checking feasibility
     // for every quest
     d_questsFeasible.push_back(&(QuestKillHero::isFeasible));
-    d_questsFeasible.push_back(&(QuestEnemyArmies::isFeasible));
-    d_questsFeasible.push_back(&(QuestCitySack::isFeasible));
-    d_questsFeasible.push_back(&(QuestCityRaze::isFeasible));
-    d_questsFeasible.push_back(&(QuestCityOccupy::isFeasible));
-    d_questsFeasible.push_back(&(QuestEnemyArmytype::isFeasible));
-    d_questsFeasible.push_back(&(QuestPillageGold::isFeasible));
+  d_questsFeasible.push_back(&(QuestEnemyArmies::isFeasible));
+  d_questsFeasible.push_back(&(QuestCitySack::isFeasible));
+  d_questsFeasible.push_back(&(QuestCityRaze::isFeasible));
+  d_questsFeasible.push_back(&(QuestCityOccupy::isFeasible));
+  d_questsFeasible.push_back(&(QuestEnemyArmytype::isFeasible));
+  d_questsFeasible.push_back(&(QuestPillageGold::isFeasible));
 }
-//========================================================================
+
 void QuestsManager::deactivateQuest(guint32 heroId)
 {
-    Quest *q = d_quests[heroId];
-    q->deactivate();
-    d_inactive_quests.push_back(q);
-    // delete it from hash of active quests
-    d_quests.erase(heroId);
+  Quest *q = d_quests[heroId];
+  q->deactivate();
+  d_inactive_quests.push_back(q);
+  // delete it from hash of active quests
+  d_quests.erase(heroId);
 }
-//======================================================================
+
 void QuestsManager::cleanup(Player::Type type)
 {
-    debug("QuestsManager: cleanup!");
+  debug("QuestsManager: cleanup!");
 
-    std::list<Quest *>::iterator it = d_inactive_quests.begin();
-    while(it != d_inactive_quests.end())
-      {
-	Quest *q =(*it);
-	it = d_inactive_quests.erase(it);
-	if (q)
-	  delete q;
-      }
+  std::list<Quest *>::iterator it = d_inactive_quests.begin();
+  while(it != d_inactive_quests.end())
+    {
+      Quest *q =(*it);
+      it = d_inactive_quests.erase(it);
+      if (q)
+	delete q;
+    }
 }
 
 void QuestsManager::armyDied(Army *a, std::vector<guint32>& culprits)
@@ -497,18 +500,22 @@ void QuestsManager::cityRazed(City *c, Stack *s)
   cityAction(c, s, CITY_DEFEATED_RAZE, 0);
   //did we raze a city we care about in another quest?
 }
+
 void QuestsManager::citySacked(City *c, Stack *s, int gold)
 {
   cityAction(c, s, CITY_DEFEATED_SACK, gold);
 }
+
 void QuestsManager::cityPillaged(City *c, Stack *s, int gold)
 {
   cityAction(c, s, CITY_DEFEATED_PILLAGE, gold);
 }
+
 void QuestsManager::cityOccupied(City *c, Stack *s)
 {
   cityAction(c, s, CITY_DEFEATED_OCCUPY, 0);
 }
+
 void QuestsManager::nextTurn(Player *p)
 {
   // go through our inactive list and remove quests belonging to us

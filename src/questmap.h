@@ -37,18 +37,16 @@ class Quest;
 class QuestMap : public OverviewMap
 {
  public:
+
      //! Default constructor.  Make a new QuestMap.
      /**
       * @param quest  The quest to depict on the miniature map graphic.
       */
     QuestMap(Quest *quest);
 
-    //! Emitted when the quest is finished being drawn on the map surface.
-    /**
-     * Classes that use QuestMap must catch this signal to display the map.
-     */
-    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > map_changed;
-    
+
+    // Set Methods
+
     //! Point to another position on the miniature map graphic.
     /**
      * @note This is used to point to a hidden map Reward after a Quest has
@@ -56,9 +54,16 @@ class QuestMap : public OverviewMap
      */
     void set_target(Vector<int>target){ d_target = target;}
 
+
+    // Signals
+
+    //! Emitted when the quest is finished being drawn on the map surface.
+    /**
+     * Classes that use QuestMap must catch this signal to display the map.
+     */
+    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > map_changed;
+    
  private:
-    //! The Quest to depict on the miniature map graphic.
-    Quest *quest;
 
     //! Draw the given positions on the map in the colour of the given player.
     void draw_stacks(Player *p, std::list< Vector<int> > targets);
@@ -69,10 +74,6 @@ class QuestMap : public OverviewMap
     //! Draw a box around a target.
     void draw_target();
     
-    //! The new position to point to on the miniature map graphic.
-    Vector<int> d_target;
-
-    
     //! Draw the Quest onto the miniature map graphic.
     /**
      * This method is automatically called by the QuestMap::draw method.
@@ -80,6 +81,15 @@ class QuestMap : public OverviewMap
      * target, or nothing at all depending on the kind of Quest.
      */
     virtual void after_draw();
+
+    // DATA
+
+    //! The Quest to depict on the miniature map graphic.
+    Quest *quest;
+
+    //! The new position to point to on the miniature map graphic.
+    Vector<int> d_target;
+
 };
 
 #endif

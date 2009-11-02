@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -46,9 +46,6 @@ class Hero;
  * This object and the classes that derive from it equate to the 
  * lordsawar.questlist.quest XML entity in the saved-game file.
  *
- * @note The quest cannot disconnect itself when (during processing
- *       of the signal) it detects that it has been marked as 'not pending'
- *       anymore.
  */
 class Quest 
 {
@@ -98,19 +95,7 @@ class Quest
 	//! Destructor.
         virtual ~Quest() {};
         
-	//! Set the Quest as not mattering anymore.
-        void deactivate() {d_pending = true;}
-
-	//! Return the Stack and Hero of this Quest.
-        /**
-         * @param hero      The id of the Hero on this quest.
-         * @param stack     This pointer is filled with a pointer to the stack 
-	 *                  that the Hero is in.  If passed as NULL, it is not
-	 *                  calculated at all.
-	 *
-         * @return A pointer to the Hero object or NULL if the Hero is dead.
-         */
-        static Hero* getHeroById(guint32 hero, Stack** stack = NULL);
+	// Get Methods
 
 	//! Return the description of the Quest.
 	/** 
@@ -120,6 +105,62 @@ class Quest
          *  which is obtained by the Quest::getProgress method.
          */
         std::string getDescription() const { return d_description; }
+
+	//! Returns if the Quest will be deleted at the end of the round.
+        bool isPendingDeletion() const {return d_pending;}
+
+	//! Return the Id of the Hero object responsible for this Quest object.
+        guint32 getHeroId() const { return d_hero; }
+
+        //! Returns the name of the Hero responsible for this Quest.
+        std::string getHeroName() const {return d_hero_name;}
+
+        //! Return the type of the quest (one of values listed in Quest::Type).
+        guint32 getType() const { return d_type; }
+
+        //! Return the Player who owns the Hero of the Quest.
+        Player *getPlayer() const 
+	  { return Playerlist::getInstance()->getPlayer(d_player_id); }
+
+	//! Return the targets for this Quest.
+	/** 
+	 * This method provides a list of positions that the hero is seeking.
+	 * This method is called by the questmap object to assist in showing
+	 * the quest on a map.
+	 * Quest::PILLAGEGOLD does not have any targets.
+	 *
+	 * @return A list of positions on the map that the Hero is seeking.
+	 */
+	std::list< Vector<int> > getTargets() const {return d_targets;}
+
+
+	// Set Methods
+
+	//! Set the Quest as not mattering anymore.
+        void deactivate() {d_pending = true;}
+
+	
+	// Methods that operate on the class data but do not modify the class.
+
+        //! Return a pointer to the Hero object responsible for the Quest.
+        Hero* getHero() const { return getHeroById(d_hero); }
+
+	//! Determine the name of the hero, even if it's dead.
+	std::string getHeroNameForDeadHero() const;
+
+	//! Save the Quest to an opened saved-game file.
+        /** 
+          * @note This function is called by the actual quests and only saves
+          * the common data. It does NOT open/close tags etc. This has to be
+          * done by the derived classes.
+	  *
+	  * @param helper  The opened saved-game file to save the common Quest
+	  *                data to.
+          */
+        virtual bool save(XML_Helper* helper) const;
+
+
+	// Methods that need to be implemented by derived classes.
 
 	//! Return the description of the progress the Hero has made.
         virtual std::string getProgress() const = 0;
@@ -141,17 +182,6 @@ class Quest
 	 *              when the Quest has expired.
 	 */
         virtual void getExpiredMsg(std::queue<std::string>& msgs) const = 0;
-
-	//! Save the Quest to an opened saved-game file.
-        /** 
-          * @note This function is called by the actual quests and only saves
-          * the common data. It does NOT open/close tags etc. This has to be
-          * done by the derived classes.
-	  *
-	  * @param helper  The opened saved-game file to save the common Quest
-	  *                data to.
-          */
-        virtual bool save(XML_Helper* helper) const;
 
 	//! Callback whenever an Army dies.
 	/**
@@ -184,50 +214,32 @@ class Quest
 	virtual void cityAction(City *city, CityDefeatedAction action, 
 				bool heroIsCulprit, int gold)=0;
 
-	//! Return the targets for this Quest.
-	/** 
-	 * This method provides a list of positions that the hero is seeking.
-	 * This method is called by the questmap object to assist in showing
-	 * the quest on a map.
-	 * Quest::PILLAGEGOLD does not have any targets.
-	 *
-	 * @return A list of positions on the map that the Hero is seeking.
-	 */
-	std::list< Vector<int> > getTargets() {return d_targets;}
 
-	//! Return the Id of the Hero object responsible for this Quest object.
-        guint32 getHeroId() const { return d_hero; }
-
-        //! Return a pointer to the Hero object responsible for the Quest.
-        Hero* getHero() const { return getHeroById(d_hero); }
-
-        //! Returns the name of the Hero responsible for this Quest.
-        std::string getHeroName() const {return d_hero_name;}
-
-        //! Return the type of the quest (one of values listed in Quest::Type).
-        guint32 getType() const { return d_type; }
-
-        //! Return the Player who owns the Hero of the Quest.
-        Player *getPlayer() const 
-	  { return Playerlist::getInstance()->getPlayer(d_player_id); }
-
-	//! Returns whether or not the Quest is still in play.
-	/**
-	 * If the quest expires or is completed, this value is false.  
-	 * Otherwise it is true.
-	 */
-        bool isActive();
-
-	//! Returns if the Quest will be deleted at the end of the round.
-        bool isPendingDeletion() const {return d_pending;}
-
-	//! Determine the name of the hero, even if it's dead.
-	std::string getHeroNameForDeadHero();
+	// Static Methods
 
 	//! Determine the name of a hero, given the id.
 	static std::string getHeroNameForDeadHero(guint32 id);
 
+	//! Convert a Quest::Type string to an enumerated value.
+	static Quest::Type questTypeFromString(std::string str);
+
+	//! Convert a Quest::Type enumerated value to a string.
+	static std::string questTypeToString(const Quest::Type type);
+
+	//! Return the Stack and Hero of a Quest.
+        /**
+         * @param hero      The id of the Hero on this quest.
+         * @param stack     This pointer is filled with a pointer to the stack 
+	 *                  that the Hero is in.  If passed as NULL, it is not
+	 *                  calculated at all.
+	 *
+         * @return A pointer to the Hero object or NULL if the Hero is dead.
+         */
+        static Hero* getHeroById(guint32 hero, Stack** stack = NULL);
+
     protected:
+	// DATA
+
 	//! The QuestsManager object that this Quest object is associated with.
         QuestsManager& d_q_mgr;
 

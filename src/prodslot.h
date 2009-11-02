@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ class ArmyProdBase;
 
 //! A placeholder for an army production object.
 /** 
+ * Slots can either be empty or point to an army production object.
  */
 
 class ProdSlot
@@ -46,18 +47,37 @@ class ProdSlot
      //! Destructor.
     ~ProdSlot();
 
+    // Set Methods
+ 
+    //! Assign the armyprodbase associated with this object.
+    void setArmyProdBase(ArmyProdBase *prod) {d_armyprodbase = prod;};
+
+
+    // Get Methods
+
+    //! Return the armyprodbase associated with this object.
+    ArmyProdBase *getArmyProdBase() const {return d_armyprodbase;};
+
+
+    // Methods that operate on the class data but do not modify the class.
+
     //! Save the production slot to an opened saved-game file.
     bool save(XML_Helper *helper) const;
 
-    ArmyProdBase *getArmyProdBase() const {return d_armyprodbase;};
 
-    void setArmyProdBase(ArmyProdBase *prod) {d_armyprodbase = prod;};
-
+    // Methods that operate ont he class data and modify the class.
+ 
+    //! Delete and remove the armyprodbase from this object.
     void clear();
+
  private:
 
+    //! Callback to help in loading the armyprodbase into this object.
     bool load(std::string tag, XML_Helper *helper);
 
+    //DATA
+
+    //! The armyprodbase object that this slot contains.
     ArmyProdBase *d_armyprodbase;
 };
 

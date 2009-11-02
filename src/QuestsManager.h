@@ -57,22 +57,7 @@ class QuestsManager : public sigc::trackable
 	//! The xml tag of this object in a saved-game file.
 	static std::string d_tag; 
 
-        //! Gets the singleton instance or creates a new one.
-        static QuestsManager* getInstance();
-
-	/**
-	 * Make a new QuestsManager object by loading all Quest objects from
-	 * an opened saved-game file.
-	 *
-	 * @param helper     The opened saved-game file to read from.
-	 *
-	 * @return A pointer to the new QuestsManager object.
-	 */
-        //! Loads the questlist from a saved-game file.
-        static QuestsManager* getInstance(XML_Helper* helper);
-
-        //! Explicitly deletes the singleton instance.
-        static void deleteInstance();
+	// Methods that operate on the class data and modify it.
 
 	//! Create a new quest for the given hero.
 	/**
@@ -93,17 +78,23 @@ class QuestsManager : public sigc::trackable
 
         //! Create new kill hero quest from remote action. 
 	Quest* createNewKillHeroQuest(guint32 heroId, guint32 targetHeroId);
+
         //! Create new enemy armies quest from remote action. 
 	Quest* createNewEnemyArmiesQuest(guint32 heroId, guint32 num_armies, 
 					 guint32 victim_player_id);
+
         //! Create new city sacking quest from remote action. 
 	Quest* createNewCitySackQuest(guint32 heroId, guint32 cityId);
+
         //! Create new city razing quest from remote action. 
 	Quest* createNewCityRazeQuest(guint32 heroId, guint32 cityId);
+
         //! Create new city occupation quest from remote action. 
 	Quest* createNewCityOccupyQuest(guint32 heroId, guint32 cityId);
+
         //! Create new kill enemy army type quest from remote action. 
 	Quest* createNewEnemyArmytypeQuest(guint32 heroId, guint32 armyTypeId);
+
         //! Create new pillage gold quest from remote action. 
 	Quest* createNewPillageGoldQuest(guint32 heroId, guint32 amount);
         
@@ -197,11 +188,14 @@ class QuestsManager : public sigc::trackable
 	 */
 	void nextTurn(Player *player);
 
+
+	// Methods that operate on the class data and do not modify it.
+
 	//! Return a list of Quest objects that belong to the given player.
 	/**
 	 * @param player  The player to get Quest objects for.
 	 */
-        std::vector<Quest*> getPlayerQuests(Player *player);
+        std::vector<Quest*> getPlayerQuests(Player *player) const;
 
 	//! Save the quests to an opened saved-game file.
 	/**
@@ -211,6 +205,9 @@ class QuestsManager : public sigc::trackable
 	 *                to.
 	 */
         bool save(XML_Helper* helper) const;
+	
+
+	// Signals
 
 	//! Emitted when a Hero object completes a Quest.
 	/**
@@ -225,7 +222,27 @@ class QuestsManager : public sigc::trackable
 	 * @param quest  A pointer to the Ques tobject that was expired.
 	 */
 	sigc::signal<void, Quest *> quest_expired;
-	
+
+
+	// Static Methods
+
+        //! Gets the singleton instance or creates a new one.
+        static QuestsManager* getInstance();
+
+	/**
+	 * Make a new QuestsManager object by loading all Quest objects from
+	 * an opened saved-game file.
+	 *
+	 * @param helper     The opened saved-game file to read from.
+	 *
+	 * @return A pointer to the new QuestsManager object.
+	 */
+        //! Loads the questlist from a saved-game file.
+        static QuestsManager* getInstance(XML_Helper* helper);
+
+        //! Explicitly deletes the singleton instance.
+        static void deleteInstance();
+
     protected:
 
 	//! Default constructor.
@@ -281,7 +298,7 @@ class QuestsManager : public sigc::trackable
 	 */
 	void cityAction(City *c, Stack *s, CityDefeatedAction action, int gold);
 
-        // Data
+        // DATA
         
 	//! A hash of all Quests in this QuestsManager.  Lookup by HeroId.
         std::map<guint32,Quest*> d_quests;

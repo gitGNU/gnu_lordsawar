@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -37,96 +37,109 @@
  */
 class QuestEnemyArmies : public Quest, public sigc::trackable
 {
-    public:
-	//! Default constructor.
-	/**
-	 * Make a new kill-armies quest.
-	 *
-	 * @param q_mgr  The quests manager to associate this quest with.
-	 * @param hero   The Id of the Hero who is responsible for the quest.
-	 */
-        QuestEnemyArmies(QuestsManager& q_mgr, guint32 hero);
+public:
+    //! Default constructor.
+    /**
+     * Make a new kill-armies quest.
+     *
+     * @param q_mgr  The quests manager to associate this quest with.
+     * @param hero   The Id of the Hero who is responsible for the quest.
+     */
+    QuestEnemyArmies(QuestsManager& q_mgr, guint32 hero);
 
-        // Construct from remote action.
-        QuestEnemyArmies(QuestsManager& q_mgr, guint32 hero,
-                         guint32 armies_to_kill, guint32 victim_player);
-        
-	//! Loading constructor.
-	/**
-	 * @param q_mgr   The quests manager to associate this quest with.
-	 * @param helper  The opened saved-game file to load this quest from.
-	 */
-        QuestEnemyArmies(QuestsManager& q_mgr, XML_Helper* helper);
-     
-	//! Returns whether or not this quest is impossible.
-        /**
-	 * Scans all Player objects in the Playerlist to see if there is one 
-	 * that is alive that isn't the neutral player.
-	 *
-	 * @note This method is static because it is executed before the
-	 *       Quest is instantiated.  It is also called from within the
-	 *       instantiated Quest.
-	 *
-	 * @param heroId  The Id of the Hero responsible for the kill-armies 
-	 *                quest.
-	 *
-	 * @return Whether or not the quest is possible.
-         */
-        static bool isFeasible(guint32 heroId);
+    // Construct from remote action.
+    QuestEnemyArmies(QuestsManager& q_mgr, guint32 hero,
+		     guint32 armies_to_kill, guint32 victim_player);
 
-        //! Saves the kill-armies quest data to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+    //! Loading constructor.
+    /**
+     * @param q_mgr   The quests manager to associate this quest with.
+     * @param helper  The opened saved-game file to load this quest from.
+     */
+    QuestEnemyArmies(QuestsManager& q_mgr, XML_Helper* helper);
 
-	//! Return a description of how many armies have been killed so far.
-        std::string getProgress() const;
 
-	//! Return a queue of strings to show when the quest is compeleted.
-        void getSuccessMsg(std::queue<std::string>& msgs) const;
+    // Get Methods
 
-	//! Return a queue of strings to show when the quest has expired.
-        void getExpiredMsg(std::queue<std::string>& msgs) const;
+    //! Return a description of how many armies have been killed so far.
+    std::string getProgress() const;
 
-        //! Returns the number of Army objects to be killed in this Quest.
-        guint32 getArmiesToKill() {return d_to_kill;}
-         
-	//! Returns the enemy player whose Army objects are to be killed.
-	guint32 getVictimPlayerId() {return d_victim_player->getId();}
+    //! Return a queue of strings to show when the quest is compeleted.
+    void getSuccessMsg(std::queue<std::string>& msgs) const;
 
-	//! Callback for when an Army object is killed.
-	/**
-	 * This method is used to account for the number armies killed by the
-	 * Hero.
-	 *
-	 * @param army           A pointer to the Army object that has been
-	 *                       killed.
-	 * @param heroIsCulprit  Whether or not the Hero object responsible for
-	 *                       this Quest was involved with the killing of
-	 *                       the given Army object.
-	 */
-	void armyDied(Army *army, bool heroIsCulprit);
+    //! Return a queue of strings to show when the quest has expired.
+    void getExpiredMsg(std::queue<std::string>& msgs) const;
 
-	//! Callback for when a City is defeated.
-	/**
-	 * @note This method is not used.
-	 */
-	void cityAction(City *city, CityDefeatedAction action, 
-			bool heroIsCulprit, int gold);
-    private:
+    //! Returns the number of Army objects to be killed in this Quest.
+    guint32 getArmiesToKill() {return d_to_kill;}
 
-	//! Generate a description of the Quest.
-        void initDescription();
+    //! Returns the enemy player whose Army objects are to be killed.
+    guint32 getVictimPlayerId() {return d_victim_player->getId();}
 
-	//! Recalculate the positions on the map of the target Army objects.
-        void update_targets();
 
-	//! The number of Army objects the Hero must kill to succeed.
-        guint32 d_to_kill;
+    // Methods that operate on the class data but do not modify the class.
 
-	//! The number of Army objects the Hero has already killed.
-        guint32 d_killed;
+    //! Saves the kill-armies quest data to an opened saved-game file.
+    bool save(XML_Helper* helper) const;
 
-	//! The victim player who the Hero is targeting Army objects of.
-	Player *d_victim_player;
+
+    // Methods that need to be implemented from the superclass.
+
+    //! Callback for when an Army object is killed.
+    /**
+     * This method is used to account for the number armies killed by the
+     * Hero.
+     *
+     * @param army           A pointer to the Army object that has been
+     *                       killed.
+     * @param heroIsCulprit  Whether or not the Hero object responsible for
+     *                       this Quest was involved with the killing of
+     *                       the given Army object.
+     */
+    void armyDied(Army *army, bool heroIsCulprit);
+
+    //! Callback for when a City is defeated.
+    /**
+     * @note This method is not used.
+     */
+    void cityAction(City *city, CityDefeatedAction action, 
+		    bool heroIsCulprit, int gold);
+
+
+    // Static Methods
+
+    //! Returns whether or not this quest is impossible.
+    /**
+     * Scans all Player objects in the Playerlist to see if there is one 
+     * that is alive that isn't the neutral player.
+     *
+     * @note This method is static because it is executed before the
+     *       Quest is instantiated.  It is also called from within the
+     *       instantiated Quest.
+     *
+     * @param heroId  The Id of the Hero responsible for the kill-armies 
+     *                quest.
+     *
+     * @return Whether or not the quest is possible.
+     */
+    static bool isFeasible(guint32 heroId);
+
+private:
+
+    //! Generate a description of the Quest.
+    void initDescription();
+
+    //! Recalculate the positions on the map of the target Army objects.
+    void update_targets();
+
+    //! The number of Army objects the Hero must kill to succeed.
+    guint32 d_to_kill;
+
+    //! The number of Army objects the Hero has already killed.
+    guint32 d_killed;
+
+    //! The victim player who the Hero is targeting Army objects of.
+    Player *d_victim_player;
 };
 
 #endif

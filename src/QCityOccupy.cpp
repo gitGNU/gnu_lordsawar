@@ -146,8 +146,14 @@ void QuestCityOccupy::armyDied(Army *a, bool heroIsCulprit)
 void QuestCityOccupy::cityAction(City *c, CityDefeatedAction action, 
 				 bool heroIsCulprit, int gold)
 {
-  if (!isActive())
+  if (!isPendingDeletion())
     return;
+  Hero *h = getHero();
+  if (!h || h->getHP() <= 0)
+    {
+      deactivate();
+      return;
+    }
   if (!c)
     return;
   if (c->getId() != d_city)

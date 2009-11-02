@@ -67,6 +67,8 @@ void TileStyleSet::getUniqueTileStyleTypes(std::list<TileStyle::Type> &types) co
 
 bool TileStyleSet::validate() const
 {
+  if (getName().empty() == true)
+    return false;
   return true;
 }
 

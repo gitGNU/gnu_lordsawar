@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -54,12 +54,9 @@ class QuestPillageGold : public Quest, public sigc::trackable
      
         // Construct from remote action.
         QuestPillageGold(QuestsManager& q_mgr, guint32 hero, guint32 gold);
-        
-	//! Returns that this quest is feasible.
-        static bool isFeasible(guint32 heroId) {return true;}
 
-        //! Saves the sack and pillage quest data to an opened saved-game file.
-        bool save(XML_Helper* helper) const;
+
+	// Get Methods
 
 	//! Return a description of how many gold pieces have been accrued.
         std::string getProgress() const;
@@ -73,6 +70,15 @@ class QuestPillageGold : public Quest, public sigc::trackable
         //! Returns the amount of gold to be pillaged.
         guint32 getGoldToPillage() {return d_to_pillage;}
          
+
+	// Methods that operate on the class data and do not modify the class.
+        
+        //! Saves the sack and pillage quest data to an opened saved-game file.
+        bool save(XML_Helper* helper) const;
+
+
+	// Methods that need to be implemented from the superclass.
+
 	//! Callback for when an Army object is killed.
 	/**
 	 * @note This method is not used.
@@ -100,10 +106,18 @@ class QuestPillageGold : public Quest, public sigc::trackable
 	void cityAction(City *city, CityDefeatedAction action, 
 			bool heroIsCulprit, int gold);
 
+
+	// Static Methods
+
+	//! Returns that this quest is feasible.
+        static bool isFeasible(guint32 heroId) {return true;}
+
     private:
 
 	//! Generate a description of the Quest.
         void initDescription();
+
+	// DATA
 
         //! The amount of gold pieces to sack and pillage to succeed.
         guint32 d_to_pillage;

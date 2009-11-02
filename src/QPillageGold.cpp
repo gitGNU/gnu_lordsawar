@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,65 +27,64 @@ using namespace std;
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
-//=======================================================================
+
 QuestPillageGold::QuestPillageGold(QuestsManager& q_mgr, guint32 hero)
-    : Quest(q_mgr, hero, Quest::PILLAGEGOLD), d_pillaged(0)
+  : Quest(q_mgr, hero, Quest::PILLAGEGOLD), d_pillaged(0)
 {
-    //pick an amount of gold to sack and pillage
-    d_to_pillage = 850 + (rand() % 630);
+  //pick an amount of gold to sack and pillage
+  d_to_pillage = 850 + (rand() % 630);
 
-    initDescription();
+  initDescription();
 }
-//=======================================================================
+
 QuestPillageGold::QuestPillageGold(QuestsManager& q_mgr, XML_Helper* helper) 
-    : Quest(q_mgr, helper)
+  : Quest(q_mgr, helper)
 {
-    helper->getData(d_to_pillage, "to_pillage");
-    helper->getData(d_pillaged,  "pillaged");
+  helper->getData(d_to_pillage, "to_pillage");
+  helper->getData(d_pillaged,  "pillaged");
 
-    initDescription();
+  initDescription();
 }
-//=======================================================================
+
 QuestPillageGold::QuestPillageGold(QuestsManager& q_mgr, guint32 hero, guint32 gold)
-    : Quest(q_mgr, hero, Quest::PILLAGEGOLD), d_pillaged(0)
+  : Quest(q_mgr, hero, Quest::PILLAGEGOLD), d_pillaged(0)
 {
-    d_to_pillage = gold;
-
-    initDescription();
+  d_to_pillage = gold;
+  initDescription();
 }
-//=======================================================================
+
 bool QuestPillageGold::save(XML_Helper *helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag(Quest::d_tag);
-    retval &= Quest::save(helper);
-    retval &= helper->saveData("to_pillage", d_to_pillage);
-    retval &= helper->saveData("pillaged",  d_pillaged);
-    retval &= helper->closeTag();
+  retval &= helper->openTag(Quest::d_tag);
+  retval &= Quest::save(helper);
+  retval &= helper->saveData("to_pillage", d_to_pillage);
+  retval &= helper->saveData("pillaged",  d_pillaged);
+  retval &= helper->closeTag();
 
-    return retval;
+  return retval;
 }
-//=======================================================================
+
 std::string QuestPillageGold::getProgress() const
 {
-    return String::ucompose(_("You have already stolen %1 gold."), d_pillaged);
+  return String::ucompose(_("You have already stolen %1 gold."), d_pillaged);
 }
-//=======================================================================
+
 void QuestPillageGold::getSuccessMsg(std::queue<std::string>& msgs) const
 {
-    msgs.push(String::ucompose(_("You have managed to sack and pillage %1 gold."), d_pillaged));
-    msgs.push(_("Well done!"));
+  msgs.push(String::ucompose(_("You have managed to sack and pillage %1 gold."), d_pillaged));
+  msgs.push(_("Well done!"));
 }
-//=======================================================================
+
 void QuestPillageGold::getExpiredMsg(std::queue<std::string>& msgs) const
 {
     // This quest should never expire, so this is just a dummy function
 }
-//=======================================================================
+
 void QuestPillageGold::initDescription()
 {
-    d_description = String::ucompose(_("You shall sack and pillage %1 gold from thy mighty foes."), d_to_pillage);
+  d_description = String::ucompose(_("You shall sack and pillage %1 gold from thy mighty foes."), d_to_pillage);
 }
 	
 void QuestPillageGold::armyDied(Army *a, bool heroIsCulprit)
@@ -97,8 +96,14 @@ void QuestPillageGold::armyDied(Army *a, bool heroIsCulprit)
 void QuestPillageGold::cityAction(City *c, CityDefeatedAction action, 
 				  bool heroIsCulprit, int gold)
 {
-  if (!isActive())
+  if (!isPendingDeletion())
     return;
+  Hero *h = getHero();
+  if (!h || h->getHP() <= 0)
+    {
+      deactivate();
+      return;
+    }
   if (action == CITY_DEFEATED_SACK || action == CITY_DEFEATED_PILLAGE)
     {
       if (heroIsCulprit)

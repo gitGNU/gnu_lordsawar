@@ -46,24 +46,37 @@ class City;
 class RealPlayer : public Player
 {
     public:
-        // CREATORS
+
+	//! Default constructor.
         RealPlayer(std::string name, guint32 armyset, Gdk::Color color, 
 		   int width, int height, Player::Type type = Player::HUMAN, 
 		   int player_no = -1);
+
+	//! Copy constructor.
         RealPlayer(const Player&);
+
+	//! Loading constructor.
         RealPlayer(XML_Helper* helper);
+
+	//! Destructor.
         ~RealPlayer();
 
         virtual bool save(XML_Helper* helper) const;
 
 	virtual void abortTurn();
+
         virtual bool startTurn();
+
         virtual void endTurn();
+
         virtual void invadeCity(City* c);
+
         virtual void levelArmy(Army* a);
 
 	bool d_abort_requested;
+
     protected:
+
         bool maybeRecruitHero();
 };
 

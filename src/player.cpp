@@ -74,9 +74,6 @@ using namespace std;
 
 std::string Player::d_tag = "player";
 
-// signal
-sigc::signal<void, Player::Type> sendingTurn;
-
 Player::Player(string name, guint32 armyset, Gdk::Color color, int width,
 	       int height, Type type, int player_no)
     :d_color(color), d_name(name), d_armyset(armyset), d_gold(1000),
@@ -554,11 +551,11 @@ void Player::addHistory(History *history)
 }
 
 
-guint32 Player::getScore()
+guint32 Player::getScore() const
 {
   //go get our last published score in the history
   guint32 score = 0;
-  std::list<History*>::iterator it = d_history.begin();
+  std::list<History*>::const_iterator it = d_history.begin();
   for (; it != d_history.end(); it++)
     {
       if ((*it)->getType() == History::SCORE)
@@ -2495,7 +2492,7 @@ Player::DiplomaticState Player::negotiateDiplomacy (Player *player)
 
 }
 
-Player::DiplomaticState Player::getDiplomaticState (Player *player)
+Player::DiplomaticState Player::getDiplomaticState (Player *player) const
 {
   if (player == Playerlist::getInstance()->getNeutral())
     return AT_WAR;
@@ -2504,7 +2501,7 @@ Player::DiplomaticState Player::getDiplomaticState (Player *player)
   return d_diplomatic_state[player->getId()];
 }
 
-Player::DiplomaticProposal Player::getDiplomaticProposal (Player *player)
+Player::DiplomaticProposal Player::getDiplomaticProposal (Player *player) const
 {
   if (player == Playerlist::getInstance()->getNeutral())
     return PROPOSE_WAR;
@@ -2513,7 +2510,7 @@ Player::DiplomaticProposal Player::getDiplomaticProposal (Player *player)
   return d_diplomatic_proposal[player->getId()];
 }
 
-guint32 Player::getDiplomaticScore (Player *player)
+guint32 Player::getDiplomaticScore (Player *player) const
 {
   Playerlist *pl = Playerlist::getInstance();
   if (pl->getNeutral() == player)
@@ -3081,10 +3078,10 @@ bool Player::vectoredUnitArrives(VectoredUnit *unit)
   return true;
 }
 
-std::list<Action_Produce *> Player::getUnitsProducedThisTurn()
+std::list<Action_Produce *> Player::getUnitsProducedThisTurn() const
 {
   std::list<Action_Produce *> actions;
-  std::list<Action *>::reverse_iterator it = d_actions.rbegin();
+  std::list<Action *>::const_reverse_iterator it = d_actions.rbegin();
   for (; it != d_actions.rend(); it++)
     {
       if ((*it)->getType() == Action::PRODUCE_UNIT)
@@ -3094,10 +3091,10 @@ std::list<Action_Produce *> Player::getUnitsProducedThisTurn()
     }
   return actions;
 }
-std::list<Action *> Player::getReportableActions()
+std::list<Action *> Player::getReportableActions() const
 {
   std::list<Action *> actions;
-  std::list<Action *>::iterator it = d_actions.begin();
+  std::list<Action *>::const_iterator it = d_actions.begin();
   for (; it != d_actions.end(); it++)
     {
       if ((*it)->getType() == Action::PRODUCE_UNIT ||
@@ -3330,7 +3327,7 @@ void Player::saveNetworkActions(XML_Helper *helper)
     }
 }
 	
-bool Player::conqueredCity(City *c)
+bool Player::conqueredCity(City *c) const
 {
   if (!c)
     return false;
@@ -3347,7 +3344,7 @@ bool Player::conqueredCity(City *c)
   return false;
 }
 
-std::list<Vector<int> > Player::getStackTrack(Stack *s)
+std::list<Vector<int> > Player::getStackTrack(Stack *s) const
 {
   std::list<Vector<int> > points;
   Vector<int> delta = Vector<int>(0,0);
@@ -3374,7 +3371,7 @@ std::list<Vector<int> > Player::getStackTrack(Stack *s)
   return points;
 }
 	
-std::list<History *>Player::getHistoryForCityId(guint32 id)
+std::list<History *>Player::getHistoryForCityId(guint32 id) const
 {
   std::list<History*> events;
   std::list<History*>::const_iterator pit;
@@ -3410,7 +3407,7 @@ std::list<History *>Player::getHistoryForCityId(guint32 id)
   return events;
 }
 
-std::list<History *>Player::getHistoryForHeroId(guint32 id)
+std::list<History *>Player::getHistoryForHeroId(guint32 id) const
 {
   std::string hero_name = "";
   std::list<History*> events;
@@ -3505,15 +3502,15 @@ void Player::setSurrendered(bool surr)
 {
   surrendered = surr;
 }
-std::list<Hero*> Player::getHeroes()
+std::list<Hero*> Player::getHeroes() const
 {
   return d_stacklist->getHeroes();
 }
-guint32 Player::countArmies()
+guint32 Player::countArmies() const
 {
   return d_stacklist->countArmies();
 }
-Stack * Player::getActivestack()
+Stack * Player::getActivestack() const
 {
   return d_stacklist->getActivestack();
 }
@@ -3522,7 +3519,7 @@ void Player::setActivestack(Stack *s)
   d_stacklist->setActivestack(s);
 }
 	
-Vector<int> Player::getPositionOfArmyById(guint32 id)
+Vector<int> Player::getPositionOfArmyById(guint32 id) const
 {
   return d_stacklist->getPosition(id);
 }
@@ -3532,11 +3529,11 @@ void Player::immobilize()
   d_stacklist->drainAllMovement();
 }
 
-guint32 Player::getCostOfUnitsProducedThisTurn()
+guint32 Player::getCostOfUnitsProducedThisTurn() const
 {
   guint32 gold = 0;
   std::list<Action_Produce *> units = getUnitsProducedThisTurn();
-  for (std::list<Action_Produce *>::iterator it = units.begin(); it != units.end(); it++)
+  for (std::list<Action_Produce *>::const_iterator it = units.begin(); it != units.end(); it++)
     gold +=(*it)->getArmy()->getProductionCost();
     
   return gold;

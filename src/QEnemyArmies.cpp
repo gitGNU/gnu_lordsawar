@@ -39,7 +39,7 @@ Player* getVictimPlayer(Player *p)
   for (Playerlist::const_iterator it = pl->begin(); it != pl->end(); it++)
     {
       if ((*it) != p && (*it)->isDead() == false && (*it) != pl->getNeutral())
-        players.push_back((*it));
+	players.push_back((*it));
     }
   if (players.size() == 0)
     return NULL;
@@ -56,87 +56,86 @@ void QuestEnemyArmies::update_targets()
     {
       //is this not a city location?  no?  then it's a target.
       if (GameMap::getCity((*sit)->getPos()) == NULL)
-        d_targets.push_back((*sit)->getPos());
+	d_targets.push_back((*sit)->getPos());
     }
 }
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
-//=======================================================================
 QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, guint32 hero)
-    : Quest(q_mgr, hero, Quest::KILLARMIES), d_killed(0)
+  : Quest(q_mgr, hero, Quest::KILLARMIES), d_killed(0)
 {
-    // have us be informed when hostilities break out
-    d_victim_player = getVictimPlayer(getHero()->getOwner());
-    
-    /** we have to kill 14-20 units: 14 + rand(0..6) */
-    d_to_kill = 14 + (rand() % 7);
+  // have us be informed when hostilities break out
+  d_victim_player = getVictimPlayer(getHero()->getOwner());
 
-    update_targets();
-    initDescription();
+  /** we have to kill 14-20 units: 14 + rand(0..6) */
+  d_to_kill = 14 + (rand() % 7);
+
+  update_targets();
+  initDescription();
 }
-//=======================================================================
+
 QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, XML_Helper* helper) 
-    : Quest(q_mgr, helper)
+  : Quest(q_mgr, helper)
 {
-    guint32 ui;
-    
-    helper->getData(d_to_kill, "to_kill");
-    helper->getData(d_killed,  "killed");
-    helper->getData(ui, "victim_player");
+  guint32 ui;
 
-    d_victim_player = Playerlist::getInstance()->getPlayer(ui);
+  helper->getData(d_to_kill, "to_kill");
+  helper->getData(d_killed,  "killed");
+  helper->getData(ui, "victim_player");
 
-    update_targets();
-    initDescription();
+  d_victim_player = Playerlist::getInstance()->getPlayer(ui);
+
+  update_targets();
+  initDescription();
 }
-//=======================================================================
+
 QuestEnemyArmies::QuestEnemyArmies(QuestsManager& q_mgr, guint32 hero,
-                                   guint32 armies_to_kill, guint32 victim_player)
-    : Quest(q_mgr, hero, Quest::KILLARMIES), d_killed(0)
+				   guint32 armies_to_kill, guint32 victim_player)
+  : Quest(q_mgr, hero, Quest::KILLARMIES), d_killed(0)
 {
-    // have us be informed when hostilities break out
-    d_victim_player = Playerlist::getInstance()->getPlayer(victim_player);
-    d_to_kill = armies_to_kill;
+  // have us be informed when hostilities break out
+  d_victim_player = Playerlist::getInstance()->getPlayer(victim_player);
+  d_to_kill = armies_to_kill;
 
-    update_targets();
-    initDescription();
+  update_targets();
+  initDescription();
 }
-//=======================================================================
+
 bool QuestEnemyArmies::save(XML_Helper *helper) const
 {
-    bool retval = true;
+  bool retval = true;
 
-    retval &= helper->openTag(Quest::d_tag);
-    retval &= Quest::save(helper);
-    retval &= helper->saveData("to_kill", d_to_kill);
-    retval &= helper->saveData("killed",  d_killed);
-    retval &= helper->saveData("victim_player", d_victim_player->getId());
-    retval &= helper->closeTag();
+  retval &= helper->openTag(Quest::d_tag);
+  retval &= Quest::save(helper);
+  retval &= helper->saveData("to_kill", d_to_kill);
+  retval &= helper->saveData("killed",  d_killed);
+  retval &= helper->saveData("victim_player", d_victim_player->getId());
+  retval &= helper->closeTag();
 
-    return retval;
+  return retval;
 }
-//=======================================================================
+
 std::string QuestEnemyArmies::getProgress() const
 {
-    return String::ucompose (_("You have killed %1 so far."), d_killed);
+  return String::ucompose (_("You have killed %1 so far."), d_killed);
 }
-//=======================================================================
+
 void QuestEnemyArmies::getSuccessMsg(std::queue<std::string>& msgs) const
 {
-    msgs.push(String::ucompose(_("You have managed to slaughter %1 armies."), d_killed));
-    msgs.push(_("Well done!"));
+  msgs.push(String::ucompose(_("You have managed to slaughter %1 armies."), d_killed));
+  msgs.push(_("Well done!"));
 }
-//=======================================================================
+
 void QuestEnemyArmies::getExpiredMsg(std::queue<std::string>& msgs) const
 {
-    // This quest should never expire, so this is just a dummy function
+  // This quest should never expire, so this is just a dummy function
 }
-//=======================================================================
+
 void QuestEnemyArmies::initDescription()
 {
-    d_description = String::ucompose(_("You shall slaughter %1 armies of the treacherous %2."),
-				     d_to_kill, d_victim_player->getName());
+  d_description = String::ucompose(_("You shall slaughter %1 armies of the treacherous %2."),
+				   d_to_kill, d_victim_player->getName());
 }
 
 bool QuestEnemyArmies::isFeasible(guint32 heroId)
@@ -148,8 +147,14 @@ bool QuestEnemyArmies::isFeasible(guint32 heroId)
 
 void QuestEnemyArmies::armyDied(Army *a, bool heroIsCulprit)
 {
-  if (!isActive())
+  if (!isPendingDeletion())
     return;
+  Hero *h = getHero();
+  if (!h || h->getHP() <= 0)
+    {
+      deactivate();
+      return;
+    }
 
   if (heroIsCulprit == true && a->getOwner() == d_victim_player)
     {

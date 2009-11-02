@@ -101,7 +101,7 @@ bool ProdSlotlist::save(XML_Helper* helper) const
     return retval;
 }
 
-guint32 ProdSlotlist::getNoOfProductionBases()
+guint32 ProdSlotlist::getNoOfProductionBases() const
 {
   unsigned int max = 0;
   for (unsigned int i = 0; i < getMaxNoOfProductionBases(); i++)
@@ -134,7 +134,7 @@ void ProdSlotlist::setActiveProductionSlot(int index)
         d_duration = a->getProduction(); 
 }
 
-int ProdSlotlist::getFreeBasicSlot() 
+int ProdSlotlist::getFreeBasicSlot()  const
 {
      int index=-1;
 
@@ -152,7 +152,7 @@ int ProdSlotlist::getFreeBasicSlot()
      return index;
 }
 
-bool ProdSlotlist::hasProductionBase(const ArmyProto * army)
+bool ProdSlotlist::hasProductionBase(const ArmyProto * army) const
 {
   return hasProductionBase(army->getTypeId(), army->getArmyset());
 }
@@ -243,7 +243,7 @@ const ArmyProdBase *ProdSlotlist::getActiveProductionBase() const
   return getProductionBase(d_active_production_slot);
 }
 
-const ArmyProdBase *ProdSlotlist::getProductionBaseBelongingTo(const Army *army)
+const ArmyProdBase *ProdSlotlist::getProductionBaseBelongingTo(const Army *army) const
 {
   if (!army)
     return NULL;

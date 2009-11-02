@@ -257,13 +257,14 @@ class Player: public sigc::trackable
         //! Returns the unique ID of the player.
         guint32 getId() const {return d_id;}
 
-	//! Returns a list of the player's unit production actions for this turn.
-	std::list<Action_Produce *> getUnitsProducedThisTurn();
+	//! Returns a list of the players unit production actions for this turn.
+	std::list<Action_Produce *> getUnitsProducedThisTurn() const;
 
-	guint32 getCostOfUnitsProducedThisTurn();
+	//! Return the amount of gold pieces for the newly produced armies.
+	guint32 getCostOfUnitsProducedThisTurn() const;
 
 	//! Returns a list of the player's actions to show in a report.
-	std::list<Action *> getReportableActions();
+	std::list<Action *> getReportableActions() const;
 
         //! Returns the list of player's events. 
         std::list<History*>* getHistorylist() {return &d_history;}
@@ -278,17 +279,17 @@ class Player: public sigc::trackable
         bool isImmortal() const {return d_immortal;}
 
         //! Return the type of the player (Player::Type).
-        guint32 getType() {return d_type;}
+        guint32 getType() const {return d_type;}
 
         /**
 	 * Return the amount of upkeep in gold pieces that the player spent 
 	 * in the previous turn.  
 	 */
 	//! Return the upkeep.
-        guint32 getUpkeep() {return d_upkeep;}
+        guint32 getUpkeep() const {return d_upkeep;}
 
 	//! Return the income from all of the player's cities.
-        guint32 getIncome () {return d_income;}
+        guint32 getIncome () const {return d_income;}
 
 	/**
 	 * Perform a summation of the upkeep value for every Army in the 
@@ -310,10 +311,10 @@ class Player: public sigc::trackable
 	void declareDiplomacy(DiplomaticState state, Player *player);
 
 	//! Query the diplomatic state this player has with an opponent.
-	DiplomaticState getDiplomaticState (Player *player);
+	DiplomaticState getDiplomaticState (Player *player) const;
 
 	//! Query the diplomatic proposal we're making to an opponent.
-	DiplomaticProposal getDiplomaticProposal (Player *player);
+	DiplomaticProposal getDiplomaticProposal (Player *player) const;
 
 	//! Propose a new diplomatic state wrt another player
 	void proposeDiplomacy (DiplomaticProposal proposal, Player *player);
@@ -322,10 +323,10 @@ class Player: public sigc::trackable
 	void setDiplomaticRank (guint32 rank) {d_diplomatic_rank = rank;};
 
 	//! What diplomatic rank does this player have?  Starts at 1.
-	guint32 getDiplomaticRank () {return d_diplomatic_rank;};
+	guint32 getDiplomaticRank () const {return d_diplomatic_rank;};
 
 	//! What rank do we have?  As a name.
-	std::string getDiplomaticTitle() {return d_diplomatic_title;};
+	std::string getDiplomaticTitle() const {return d_diplomatic_title;};
 
 	//! Set the rank as a name.
 	void setDiplomaticTitle (std::string title) {d_diplomatic_title = title;};
@@ -333,7 +334,7 @@ class Player: public sigc::trackable
 	DiplomaticState negotiateDiplomacy (Player *player);
 
 	//! Get the diplomatic score with respect to an opponent.
-	guint32 getDiplomaticScore (Player *p);
+	guint32 getDiplomaticScore (Player *p) const;
 
 	/**
 	 * Change the player's opinion of an opponent for the better.
@@ -417,7 +418,7 @@ class Player: public sigc::trackable
         std::string getName(bool translate = true) const;
 
 	//! Returns the player's current score.
-        guint32 getScore();
+        guint32 getScore() const;
 
         //! Returns the list of stacks (Stacklist) owned by the player.
         Stacklist* getStacklist() const {return d_stacklist;}
@@ -1283,10 +1284,10 @@ class Player: public sigc::trackable
 	bool hasAlreadyEndedTurn() const;
 	void loadPbmGame();
 	//! Check the history to see if we ever conquered the given city.
-	bool conqueredCity(City *c);
-	std::list<Vector<int> > getStackTrack(Stack *s);
-	std::list<History *> getHistoryForHeroId(guint32 id);
-	std::list<History *> getHistoryForCityId(guint32 id);
+	bool conqueredCity(City *c) const;
+	std::list<Vector<int> > getStackTrack(Stack *s) const;
+	std::list<History *> getHistoryForHeroId(guint32 id) const;
+	std::list<History *> getHistoryForCityId(guint32 id) const;
 	//! Set whether or not this player has surrendered.
 	/*
 	 * computer players may surrender to a lone human player who has most
@@ -1299,11 +1300,11 @@ class Player: public sigc::trackable
 	guint32 countEndTurnHistoryEntries() const;
 
 	//! accessor methods into encapsulated stacklist object
-	std::list<Hero*> getHeroes();
-	guint32 countArmies();
-	Stack * getActivestack();
+	std::list<Hero*> getHeroes() const;
+	guint32 countArmies() const;
+	Stack * getActivestack() const;
 	void setActivestack(Stack *);
-	Vector<int> getPositionOfArmyById(guint32 id);
+	Vector<int> getPositionOfArmyById(guint32 id) const;
 	//! Remove movement points from all of the player's army units.
 	void immobilize();
 
@@ -1548,8 +1549,6 @@ class Player: public sigc::trackable
 	static void pruneCityVectorings(std::list<Action*> actions);
 	static void pruneCityProductions(std::list<Action*> actions);
 };
-
-extern sigc::signal<void, Player::Type>  sendingTurn;
 
 #endif // PLAYER_H
 

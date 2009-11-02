@@ -314,7 +314,6 @@ void CitySetWindow::on_validate_cityset_activated()
     msgs.push_back(_("The tile width for ruins must be over zero."));
   if (d_cityset->validateTempleTileWidth() == false)
     msgs.push_back(_("The tile width for temples must be over zero."));
-  bool valid;
 
   std::string msg = "";
   for (std::list<std::string>::iterator it = msgs.begin(); it != msgs.end();
