@@ -522,7 +522,7 @@ void QuestsManager::nextTurn(Player *p)
   for (std::list<Quest*>::iterator it = d_inactive_quests.begin();
        it != d_inactive_quests.end(); it++)
     {
-      if ((*it)->getPlayer() == p)
+      if ((*it)->getOwner() == p)
 	{
 	  Quest *q = *it;
 	  quest_expired.emit(q);

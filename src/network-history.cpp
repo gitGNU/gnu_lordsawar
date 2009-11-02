@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,14 +23,14 @@
 
 std::string NetworkHistory::d_tag = "networkhistory";
 
-NetworkHistory::NetworkHistory(History *history, Player *owner)
-     : Ownable(owner)
+NetworkHistory::NetworkHistory(History *history, guint32 owner)
+  :OwnerId(owner)
 {
   d_history = History::copy(history);
 }
 
 NetworkHistory::NetworkHistory(XML_Helper* helper)
-     : Ownable(helper)
+  : OwnerId(helper)
 {
 }
 
@@ -43,7 +43,7 @@ bool NetworkHistory::save(XML_Helper* helper) const
 {
   bool retval = true;
   retval &= helper->openTag(NetworkHistory::d_tag);
-  retval &= helper->saveData("owner", d_owner->getId());
+  retval &= OwnerId::save(helper);
   d_history->save(helper);
   retval &= helper->closeTag();
   return retval;

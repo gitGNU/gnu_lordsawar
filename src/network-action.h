@@ -19,9 +19,10 @@
 #define NETWORK_ACTION_H
 
 #include "action.h"
-#include "Ownable.h"
+#include "playerlist.h"
+#include "OwnerId.h"
 
-class NetworkAction: public Ownable
+class NetworkAction: public OwnerId
 {
 public:
 	
@@ -29,7 +30,7 @@ public:
     static std::string d_tag; 
 
      //! Default constructor.
-     NetworkAction(Action *action, Player *owner);
+     NetworkAction(Action *action, guint32 owner);
 
      //! Loading constructor.
      NetworkAction(XML_Helper* helper);
@@ -47,6 +48,7 @@ public:
      bool save(XML_Helper* helper) const;
 
      Action * getAction() const {return d_action;};
+
      void setAction (Action *action) {d_action = action;};
  private:
      Action *d_action;

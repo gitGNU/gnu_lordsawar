@@ -21,14 +21,14 @@
 
 std::string NetworkAction::d_tag = "networkaction";
 
-NetworkAction::NetworkAction(Action *action, Player *owner)
-     : Ownable(owner)
+NetworkAction::NetworkAction(Action *action, guint32 owner)
+  : OwnerId(owner)
 {
   d_action = Action::copy(action);
 }
 
 NetworkAction::NetworkAction(XML_Helper* helper)
-     : Ownable(helper)
+  : OwnerId(helper)
 {
 }
 
@@ -41,7 +41,7 @@ bool NetworkAction::save(XML_Helper* helper) const
 {
   bool retval = true;
   retval &= helper->openTag(NetworkAction::d_tag);
-  retval &= helper->saveData("owner", d_owner->getId());
+  retval &= OwnerId::save(helper);
   d_action->save(helper);
   retval &= helper->closeTag();
   return retval;
@@ -51,7 +51,7 @@ std::string NetworkAction::toString() const
 {
   std::stringstream s;
   std::string action= d_action->dump();
-  s <<"Player \""<< getOwner()->getName() << "\"--> ";
+  s <<"Player \""<< d_owner_id << "\"--> ";
   s <<action;
     
   return s.str();

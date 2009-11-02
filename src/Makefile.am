@@ -52,7 +52,7 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         network-history.cpp network-history.h \
         NextTurn.cpp NextTurn.h NextTurnHotseat.cpp NextTurnHotseat.h \
 	NextTurnNetworked.cpp NextTurnNetworked.h \
-        NextTurnPbm.cpp NextTurnPbm.h \
+        NextTurnPbm.cpp NextTurnPbm.h OwnerId.cpp OwnerId.h \
         Ownable.cpp Ownable.h path.cpp path.h \
         PathCalculator.cpp PathCalculator.h \
         RoadPathCalculator.cpp RoadPathCalculator.h \

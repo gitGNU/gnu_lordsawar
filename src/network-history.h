@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2009 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,17 +19,17 @@
 #define NETWORK_HISTORY_H
 
 #include "history.h"
-#include "Ownable.h"
+#include "OwnerId.h"
 
 //! A history object that's owned by a player, to be sent to another player.
-class NetworkHistory: public Ownable
+class NetworkHistory: public OwnerId
 {
 public:
     //! The xml tag of this object in a network stream.
     static std::string d_tag; 
 
      //! Default constructor.
-     NetworkHistory(History *history, Player *owner);
+     NetworkHistory(History *history, guint32 owner);
 
      //! Loading constructor.
      NetworkHistory(XML_Helper* helper);
@@ -48,6 +48,7 @@ public:
 
      History * getHistory() const {return d_history;};
      void setHistory (History *history) {d_history = history;};
+
  private:
      History *d_history;
 };

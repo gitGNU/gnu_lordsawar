@@ -37,12 +37,16 @@ Quest::Quest(QuestsManager& q_mgr, guint32 hero, Type type)
     :d_q_mgr(q_mgr), d_hero(hero), d_type(type), d_pending(false)
 {
   Hero *h = getHeroById(hero);
-  d_player_id = h->getOwner()->getId();
-  d_hero_name = h->getName();
+  if (h)
+    {
+      setOwnerId(h->getOwner()->getId());
+      d_hero_name = h->getName();
+    }
+
 }
 
 Quest::Quest(QuestsManager& q_mgr, XML_Helper* helper)
-    :d_q_mgr(q_mgr)
+    :d_q_mgr(q_mgr), OwnerId(helper)
 {
     std::string s;
     helper->getData(s, "type");
@@ -50,7 +54,6 @@ Quest::Quest(QuestsManager& q_mgr, XML_Helper* helper)
     helper->getData(d_hero, "hero");
     helper->getData(d_hero_name, "hero_name");
     helper->getData(d_pending, "pending_deletion");
-    helper->getData(d_player_id, "player");
 }
 
 Hero* Quest::getHeroById(guint32 hero, Stack** stack)
@@ -87,7 +90,7 @@ bool Quest::save(XML_Helper* helper) const
     retval &= helper->saveData("hero", d_hero);
     retval &= helper->saveData("hero_name", d_hero_name);
     retval &= helper->saveData("pending_deletion", d_pending);
-    retval &= helper->saveData("player", d_player_id);
+    retval &= OwnerId::save(helper);
 
     return retval;
 }

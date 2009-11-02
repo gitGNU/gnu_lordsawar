@@ -28,18 +28,18 @@ std::string HeroProto::d_tag = "heroproto";
 #define debug(x)
 
 HeroProto::HeroProto(const HeroProto& a)
-    :ArmyProto(a), d_gender(a.d_gender), d_owner_id(a.d_owner_id)
+    :ArmyProto(a), OwnerId(a), d_gender(a.d_gender)
 {
 }
 
 HeroProto::HeroProto(const ArmyProto& a)
-    :ArmyProto(a), d_owner_id(8)
+    :ArmyProto(a), OwnerId()
 {
   d_gender = a.getGender();
 }
 
 HeroProto::HeroProto()
-  :ArmyProto(), d_gender(Hero::FEMALE), d_owner_id(0)
+  :ArmyProto(), d_gender(Hero::FEMALE), OwnerId()
 {
 }
 
@@ -48,14 +48,13 @@ HeroProto::~HeroProto()
 }
 
 HeroProto::HeroProto(XML_Helper* helper)
-  :ArmyProto(helper)
+  :ArmyProto(helper), OwnerId(helper)
 {
   std::string gender_str;
   if (!helper->getData(gender_str, "gender"))
     d_gender = Hero::NONE;
   else
     d_gender = Hero::genderFromString(gender_str);
-  helper->getData(d_owner_id, "owner");
   helper->getData(d_type_id, "type");
   helper->getData(d_armyset, "armyset");
 }
@@ -69,7 +68,7 @@ bool HeroProto::save(XML_Helper* helper) const
   retval &= ArmyProto::saveData(helper);
   std::string gender_str = Hero::genderToString(Hero::Gender(d_gender));
   retval &= helper->saveData("gender", gender_str);
-  retval &= helper->saveData("owner", d_owner_id);
+  retval &= OwnerId::save(helper);
   retval &= helper->saveData("armyset", d_armyset);
   retval &= helper->saveData("type", d_type_id);
 

@@ -195,7 +195,7 @@ void HistoryReportDialog::generatePastEventlists()
 		case History::DIPLOMATIC_TREACHERY:
 		case History::DIPLOMATIC_WAR:
 		case History::DIPLOMATIC_PEACE:
-		  elist->push_back(new NetworkHistory(*hit[id], *pit));
+		  elist->push_back(new NetworkHistory(*hit[id], (*pit)->getId()));
 		  break;
 		case History::START_TURN:
 		case History::GOLD_TOTAL:

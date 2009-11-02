@@ -537,7 +537,7 @@ bool Player::load(string tag, XML_Helper* helper)
 void Player::addAction(Action *action)
 {
   d_actions.push_back(action);
-  NetworkAction *copy = new NetworkAction(action, this);
+  NetworkAction *copy = new NetworkAction(action, getId());
   acting.emit(copy);
   //free'd in game-server
 }
@@ -545,7 +545,7 @@ void Player::addAction(Action *action)
 void Player::addHistory(History *history)
 {
   d_history.push_back(history);
-  NetworkHistory *copy = new NetworkHistory(history, this);
+  NetworkHistory *copy = new NetworkHistory(history, getId());
   history_written.emit(copy);
   //free'd in game-server
 }
@@ -3305,14 +3305,14 @@ void Player::loadPbmGame()
   for (list<Action*>::const_iterator it = d_actions.begin();
        it != d_actions.end(); it++)
     {
-      NetworkAction *copy = new NetworkAction(*it, this);
+      NetworkAction *copy = new NetworkAction(*it, getId());
       acting.emit(copy);
     }
   std::list<History*> history = getHistoryForThisTurn();
   for (list<History*>::const_iterator it = history.begin();
        it != history.end(); it++)
     {
-      NetworkHistory *copy = new NetworkHistory(*it, this);
+      NetworkHistory *copy = new NetworkHistory(*it, getId());
       history_written.emit(copy);
     }
 }
@@ -3322,7 +3322,7 @@ void Player::saveNetworkActions(XML_Helper *helper)
   for (list<Action*>::const_iterator it = d_actions.begin();
        it != d_actions.end(); it++)
     {
-      NetworkAction *copy = new NetworkAction(*it, this);
+      NetworkAction *copy = new NetworkAction(*it, getId());
       copy->save(helper);
     }
 }

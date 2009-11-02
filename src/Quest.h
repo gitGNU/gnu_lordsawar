@@ -27,7 +27,7 @@
 #include "stack.h"
 #include "callback-enums.h"
 #include "city.h"
-#include "playerlist.h"
+#include "OwnerId.h"
 
 class QuestsManager;
 class Hero;
@@ -47,7 +47,7 @@ class Hero;
  * lordsawar.questlist.quest XML entity in the saved-game file.
  *
  */
-class Quest 
+class Quest: public OwnerId 
 {
     public:
 	//! The xml tag of this object in a saved-game file.
@@ -117,10 +117,6 @@ class Quest
 
         //! Return the type of the quest (one of values listed in Quest::Type).
         guint32 getType() const { return d_type; }
-
-        //! Return the Player who owns the Hero of the Quest.
-        Player *getPlayer() const 
-	  { return Playerlist::getInstance()->getPlayer(d_player_id); }
 
 	//! Return the targets for this Quest.
 	/** 
@@ -251,9 +247,6 @@ class Quest
 
 	//! The Id of the Hero object responsible for this Quest.
         guint32 d_hero;
-
-	//! The Id of the Player owning the Hero.
-	guint32 d_player_id;
 
         //! The type of the Quest (one of Quest::Type).
         guint32 d_type;
