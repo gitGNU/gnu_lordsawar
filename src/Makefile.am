@@ -106,7 +106,6 @@ liblordsawargfx_la_SOURCES = \
 	vectormap.cpp vectormap.h overviewmap.cpp overviewmap.h \
         smallmap.cpp smallmap.h \
 	MapRenderer.cpp MapRenderer.h  \
-	BigTile.cpp BigTile.h \
 	input-events.h map-tip-position.h 
 
 
