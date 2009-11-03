@@ -435,7 +435,7 @@ void EditorBigMap::change_map_under_cursor()
 	    while  (GameMap::getStack(tile) != NULL)
 	      {
 		Stack *s = GameMap::getStack(tile);
-		s->getOwner()->deleteStack(s);
+		GameMap::getInstance()->removeStack(s);
 	      }
 	    
 	    // ... or a temple ...
@@ -487,8 +487,7 @@ void EditorBigMap::change_map_under_cursor()
 		Army* a = new Army(*al->getArmy(active->getArmyset(), 0), 
 				   active);
 		s->push_back(a);
-		active->addStack(s);
-		GameMap::getInstance()->updateShips(tile);
+		GameMap::getInstance()->putStack(s);
 		//if we're on a city, change the allegiance of the stack
 		//and it's armies to that of the city
 		if (GameMap::getInstance()->getBuilding(s->getPos()) == Maptile::CITY)

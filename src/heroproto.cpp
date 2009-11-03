@@ -39,7 +39,7 @@ HeroProto::HeroProto(const ArmyProto& a)
 }
 
 HeroProto::HeroProto()
-  :ArmyProto(), d_gender(Hero::FEMALE), OwnerId()
+  :ArmyProto(), OwnerId(), d_gender(Hero::FEMALE)
 {
 }
 

@@ -1674,3 +1674,17 @@ Location *GameMap::getLocation(Vector<int> tile)
     }
   return NULL;
 }
+	
+bool GameMap::putStack(Stack *s)
+{
+  Playerlist::getActiveplayer()->addStack(s);
+  getStacks(s->getPos())->add(s);
+  updateShips(s->getPos());
+  return true;
+}
+
+void GameMap::removeStack(Stack *s)
+{
+  getStacks(s->getPos())->leaving(s);
+  Playerlist::getActiveplayer()->deleteStack(s);
+}

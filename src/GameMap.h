@@ -229,7 +229,8 @@ class GameMap: public sigc::trackable
 	bool removeSignpost(Vector<int> pos);
 	bool putPort(Port *p);
 	bool removePort(Vector<int> pos);
-	void updateShips(Vector<int> pos);
+	bool putStack(Stack *s);
+	void removeStack(Stack *s);
 
 	Location *getLocation(Vector<int> pos);
 
@@ -265,7 +266,7 @@ class GameMap: public sigc::trackable
 	void putBuilding(LocationBox *b, Maptile::Building building);
 	void removeBuilding(LocationBox *b);
 
-	bool putGrass(LocationBox *b);
+	void updateShips(Vector<int> pos);
 
 	bool putTerrain(Rectangle r, Tile::Type type);
 

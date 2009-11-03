@@ -41,6 +41,7 @@
 #include "ai_fast.h"
 #include "ai_smart.h"
 #include "network_player.h"
+#include "GameMap.h"
 #include "counter.h"
 #include "army.h"
 #include "hero.h"
@@ -56,7 +57,6 @@
 #include "AI_Allocation.h"
 #include "FogMap.h"
 #include "QuestsManager.h"
-#include "GameMap.h"
 #include "signpost.h"
 #include "vectoredunit.h"
 #include "ucompose.hpp"
@@ -360,13 +360,15 @@ void Player::addStack(Stack* stack)
 {
     stack->setPlayer(this);
     d_stacklist->add(stack);
-    GameMap::getStacks(stack->getPos())->add(stack);
 }
 
 bool Player::deleteStack(Stack* stack)
 {
-    AI_Analysis::deleteStack(stack->getId());
-    AI_Allocation::deleteStack(stack->getId());
+  if (getType() == AI_SMART || getType() == AI_FAST)
+    {
+      AI_Analysis::deleteStack(stack->getId());
+      AI_Allocation::deleteStack(stack->getId());
+    }
     return d_stacklist->flRemove(stack);
 }
 
