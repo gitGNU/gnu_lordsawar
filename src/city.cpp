@@ -200,8 +200,7 @@ void City::produceStrongestProductionBase()
   if (getNoOfProductionBases() == 0)
     return;
 
-  Stack* stack = getFreeStack(d_owner);
-  if (stack)
+  if (!isFull(d_owner))
     {
       unsigned int max_strength = 0;
       int strong_idx = -1;
@@ -243,8 +242,7 @@ void City::produceWeakestProductionBase()
   if (getNoOfProductionBases() == 0)
     return;
 
-  Stack* stack = getFreeStack(d_owner);
-  if (stack)
+  if (!isFull(d_owner))
     {
       unsigned int min_strength = 100;
       int weak_idx = -1;

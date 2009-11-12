@@ -89,6 +89,19 @@ Stack *LocationBox::addArmy(Army *a) const
     return stack;
 }
 
+bool LocationBox::isFull(Player *p) const
+{
+  for (unsigned int i = 0; i < d_size; i++)
+    for (unsigned int j = 0; j < d_size; j++)
+      {
+	Vector<int> pos = getPos() + Vector<int>(j,i);
+	StackTile *stile = GameMap::getInstance()->getTile(pos)->getStacks();
+	if (stile->canAdd(1, p) == true)
+	  return false;
+      }
+    return true;
+}
+
 Stack* LocationBox::getFreeStack(Player *p) const
 {
   for (unsigned int i = 0; i < d_size; i++)

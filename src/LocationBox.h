@@ -133,6 +133,9 @@ class LocationBox : public Immovable
      */
     Stack* getFreeStack(Player *owner) const;
 
+    //! Check the location to see if a player can fit another army unit here.
+    bool isFull(Player *owner) const;
+
     //DATA
 
     //! The size of the location.
