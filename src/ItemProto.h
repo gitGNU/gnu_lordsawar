@@ -89,7 +89,7 @@ class ItemProto: public Renamable
         ItemProto(std::string name, guint32 id);
 
         //! Destructor.
-        ~ItemProto();
+        virtual ~ItemProto();
         
         //! Save the item to the opened saved-game file.
         bool save(XML_Helper* helper) const;

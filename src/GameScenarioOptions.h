@@ -33,7 +33,7 @@ class GameScenarioOptions: public sigc::trackable
     public:
 
         GameScenarioOptions();
-        ~GameScenarioOptions();
+        virtual ~GameScenarioOptions();
 
 
         static bool s_see_opponents_stacks;

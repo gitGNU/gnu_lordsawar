@@ -59,7 +59,7 @@ class RealPlayer : public Player
         RealPlayer(XML_Helper* helper);
 
 	//! Destructor.
-        ~RealPlayer();
+        virtual ~RealPlayer();
 
         virtual bool save(XML_Helper* helper) const;
 
@@ -71,7 +71,7 @@ class RealPlayer : public Player
 
         virtual void invadeCity(City* c);
 
-        virtual void levelArmy(Army* a);
+        virtual void heroGainsLevel(Hero * a);
 
 	bool d_abort_requested;
 

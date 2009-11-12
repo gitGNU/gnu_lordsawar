@@ -108,7 +108,7 @@ guint32 Hero::getStat(Stat stat, bool modified) const
         return value;
 
     // Add item bonuses that affect only this hero
-    if (stat == Army::STRENGTH)
+    if (stat == STRENGTH)
       bonus += d_backpack->countStrengthBonuses();
 
     return value + bonus;
@@ -117,7 +117,7 @@ guint32 Hero::getStat(Stat stat, bool modified) const
 guint32 Hero::calculateNaturalCommand()
 {
   guint32 command = 0;
-  guint32 strength = getStat(Army::STRENGTH, true);
+  guint32 strength = getStat(STRENGTH, true);
   if (strength == 9)
     command += 3;
   else if (strength > 6)
@@ -157,3 +157,68 @@ Hero::Gender Hero::genderFromString(const std::string str)
     return Hero::FEMALE;
   return Hero::FEMALE;
 }
+
+bool Hero::canGainLevel() const
+{
+  return getXP() >= getXpNeededForNextLevel();
+}
+
+guint32 Hero::getXpNeededForNextLevel() const
+{
+  return xp_per_level * getLevel();
+}
+
+int Hero::computeLevelGain(Stat stat) const
+{
+  if (stat == MOVE_BONUS || stat == ARMY_BONUS || stat == SHIP)
+    return -1;
+
+  switch (stat)
+    {
+    case STRENGTH:
+    case SIGHT:
+      return 1;
+    case HP:
+    case MOVES:
+      return 4;
+    default:
+      return -1;
+    }
+}
+
+int Hero::gainLevel(Stat stat)
+{
+  if (!canGainLevel())
+    return -1;
+
+  if (stat == MOVE_BONUS || stat == ARMY_BONUS || stat == SHIP ||
+      stat == MOVES_MULTIPLIER)
+    return -1;
+
+  d_level++;
+  d_xp_value *= 1.2;
+
+  int delta = computeLevelGain(stat);
+  switch (stat)
+    {
+    case STRENGTH:
+      d_strength += delta;
+      if (d_strength > MAX_ARMY_STRENGTH)
+	d_strength = MAX_ARMY_STRENGTH;
+      break;
+    case HP:
+      d_max_hp += delta;
+      break;
+    case MOVES:
+      d_max_moves += delta;
+      break;
+    case SIGHT:
+      d_sight += delta;
+      break;
+    default:
+      break;
+    }
+
+  return delta;
+}
+

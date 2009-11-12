@@ -378,95 +378,15 @@ class Player: public sigc::trackable
 
 	// Methods that operate on the player's diplomatic data members.
 
-	//! Declare a new diplomatic state with respect to an opponent.
-	void declareDiplomacy(DiplomaticState state, Player *player);
-
 	//! Query the diplomatic state this player has with an opponent.
 	DiplomaticState getDiplomaticState (Player *player) const;
 
 	//! Query the diplomatic proposal we're making to an opponent.
 	DiplomaticProposal getDiplomaticProposal (Player *player) const;
 
-	//! Propose a new diplomatic state wrt another player
-	void proposeDiplomacy (DiplomaticProposal proposal, Player *player);
-
-	//! Negotiate diplomatic talks with an opponent, and return a new state.
-	DiplomaticState negotiateDiplomacy (Player *player);
-
 	//! Get the diplomatic score with respect to an opponent.
 	guint32 getDiplomaticScore (Player *p) const;
 
-	/**
-	 * Change the player's opinion of an opponent for the better.
-	 *
-	 * @param player    The player to improve our opinion by.
-	 * @param amount    The amount to improve by.  The minimum value 
-	 *                  is 1 and the maximum value is 15.
-	 *
-	 */
-	//! Make your diplomatic view of another player increase.
-	void improveDiplomaticRelationship (Player *p, guint32 amount);
-
-	/**
-	 * Change all players opinion of you for the better, except for 
-	 * possibly a single player.
-	 *
-	 * @param amount    The amount to improve.  The minimum value is 1
-	 *                  and the maximum value is 15.
-	 * @param except    Don't improve this player's view of the player.
-	 *
-	 * @note Pass except as NULL to not except a player.
-	 */
-	//! Make all other players diplomatic view of you increase.
-	void improveDiplomaticRelationship (guint32 amount, Player *except);
-
-	/**
-	 * Change the player's view of an opponent for the worse.
-	 *
-	 * @param player    The player to deteriorate our view of.
-	 * @param amount    The amount to deteriorate by.  The minimum value 
-	 *                  is 1 and the maximum value is 15.
-	 *
-	 */
-	//! Make your diplomatic view of another player decrease.
-	void deteriorateDiplomaticRelationship (Player *player, guint32 amount);
-
-	/**
-	 * Change all players opinion of you for the worse.
-	 *
-	 * @param amount    The amount to deterioriate by.  The minimum value 
-	 *                  is 1 and the maximum value is 15.
-	 */
-	//! Make all other players diplomatic view of you worsen
-	void deteriorateDiplomaticRelationship (guint32 amount);
-
-	/**
-	 * Change all players opinion of another player for the worse, 
-	 * who happen to have a diplomatic state of state with you.
-	 *
-	 * @param player    The target player.
-	 * @param amount    The amount to deterioriate by.  The minimum value 
-	 *                  is 1 and the maximum value is 15.
-	 * @param state     The state that an opponent has to be in with you,
-	 *                  to make the deterioration happen.
-	 */
-	//! Make players you are at state with you think less of player.
-	void deteriorateAlliesRelationship(Player *player, guint32 amount, 
-					   Player::DiplomaticState state);
-
-	/**
-	 * Change all players opinion of another player for the better, 
-	 * who happen to have a diplomatic state of state with you.
-	 *
-	 * @param player    The target player.
-	 * @param amount    The amount to improve by.  The minimum value 
-	 *                  is 1 and the maximum value is 15.
-	 * @param state     The state that an opponent has to be in with you,
-	 *                  to make the improvement happen.
-	 */
-	//! Make players who are at STATE with PLAYER think better of you.
-	void improveAlliesRelationship(Player *player, guint32 amount, 
-				       Player::DiplomaticState state);
 
         void adjustDiplomacyFromConqueringCity(City *city);
 
@@ -499,9 +419,6 @@ class Player: public sigc::trackable
 	void clearFogMap();
 
 
-        //! Mark the player as dead. Kills all Army units in the Stacklist.
-        void kill();
-
         /** 
 	 * Saves the player data to a file.
 	 *
@@ -515,71 +432,6 @@ class Player: public sigc::trackable
         virtual bool save(XML_Helper* helper) const;
 
 
-        /** 
-	 * This function is called when a player's turn starts. 
-	 * For AI players this function should start the algorithm.
-	 * Results in a History_StartTurn event going into the player's 
-	 * Historylist.
-         *
-         * @return True if everything went well.
-         */
-	//! Callback to start a Player's turn.
-        virtual bool startTurn() = 0;
-
-        virtual void abortTurn() = 0;
-
-        /** 
-	 * This function is called before a player's turn starts.
-         * The idea here is that it happens before heroes are recruited,
-         * and before new army units show up in cities.
-         */
-	//! Initialise a Player's turn.
-        void initTurn();
-
-        virtual void endTurn() = 0;
-        
-        /** 
-	 * Called so that the player can decide what to do with a newly
-	 * conquered city.  For human players this method presents the dialog
-	 * that asks the user what should be done (Razing, Pillaging, etc).
-	 * For the computer players this method is for deciding what to do.
-	 * The decision is made by emitting one of the following signals:
-	 * srazingCity, spillagingCity, ssackingCity, soccupyingCity.
-	 *
-         * @param  city   The newly conquered city.
-	 *
-         * @return True if everything went well.
-         */
-	//! Decision callback for what to do if a city is invaded.
-        virtual void invadeCity(City* city) = 0;
-
-        /** 
-	 * Called whenever a hero emerges in a city
-	 *
-         * @param  hero    The hero who has offered his or her service.
-         * @param  city    The city where the hero is emerging.
-         * @param  cost    The amount of gold pieces neccessary to recruit 
-	 *                 the hero.
-	 * 
-         * @note Only change the name and gender attributes of the Hero.
-         */
-        void recruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally);
-
-	void rename (std::string name);
-        /** 
-	 * Called whenever a hero advances a level.
-	 * For human players this method presents a dialog that allows the
-	 * user to select an Army::STAT to improve (HP, MOVES, or SIGHT if
-	 * a hidden map is in use).  For computer players this method is 
-	 * used to decide which stat should be improved.
-         * 
-	 * This callback must result in an Action_Level element being 
-	 * given to the addAction method.
-	 *
-         * @param army     The army to raise (is always a Hero.)
-         */
-	//! Callback to advance an Army's level.
-        virtual void levelArmy(Army* a) = 0;
 
         /** 
 	 * Called to merge two stacks into one.
@@ -676,25 +528,6 @@ class Player: public sigc::trackable
          */
 	//! Callback to adjudicate fights in ruins.
         Fight::Result stackRuinFight(Stack** attacker, Stack** defender);
-
-	/** 
-	 * Callback to decide if we perform treachery on a friendly player.
-	 *
-	 * For human players this method presents a dialog for the user
-	 * to confirm if treachery should happen or not.  For computer
-	 * players this method implements the decision to perform treachery
-	 * or not.
-	 *
-	 * @param stack             My stack considering the treachery.
-	 * @param player            The friendly player.
-	 * @param pos               The place on the map being targetted.
-	 * @param state             The state we end up in if we decide yes.
-	 *
-	 * @return True if we decided to be treacherous.  False otherwise.
-	 */
-	//! Decision callback for if we should perform trechery or not.
-	bool treachery (Stack *stack, Player *player, Vector <int> pos);
-
         /** 
 	 * A stack searches a ruin.  The stack must contain a hero.
 	 *
@@ -724,6 +557,168 @@ class Player: public sigc::trackable
          */
 	//! Callback to have a stack visit a temple.
         int stackVisitTemple(Stack* stack, Temple* temple);
+        
+        /** 
+	 * Called to ask the military advisor about what would happen 
+	 * if the stack attacked the tile.
+         *
+         * @param stack    The stack to attack with.
+	 * @param tile     The tile to attack (could be a city, or a stack).
+	 * @param intense_combat  If the intense combat game option is on or 
+	 *                        not.
+	 *
+         * @return The percent chance to win the fight.  The maximum value
+	 *         is 100.0, and the minimum value is 0.0.
+         */
+	//! Callback to calculate the odds of winning a fight.
+        float stackFightAdvise(Stack* stack, Vector<int> tile,
+                               bool intense_combat);
+
+	/**
+	 * Disbanding a player's stack removes it from the game.  Disbanding
+	 * stacks saves upkeep for unwanted Army units.
+	 *
+	 * This callback must result in an Action_Disband element being 
+	 * given to the addAction method.
+	 *
+	 * @param stack            The stack to disband.
+	 *
+         * @return False on error, true otherwise.
+	 */
+        //! Callback to disband a player's stack.
+        bool stackDisband(Stack* stack);
+
+	/**
+	 * Modifying a signpost entails changing the message on the sign.
+	 * When playing in a hidden map, the hope is that we change the
+	 * message on the sign before an opponent can read it.
+	 *
+	 * For this callback to make sense, you should only change
+	 * Signposts for which we have a Stack co-located.
+	 *
+	 * This callback must result in a Action_ModifySignpost element being
+	 * given to the addAction method.
+	 *
+	 * @param signpost         The signpost to modify.
+	 * @param message          The new text to inscribe onto the sign.
+	 *
+         * @return False on error, true otherwise.
+	 */
+        //! Change the text on a signpost.
+        bool signpostChange(Signpost *signpost, std::string message);
+
+
+
+
+	// Hero related actions the player can take.
+
+        /** 
+	 * Callback to plant the Player's flag Item on the ground.
+	 * Planting a standard entails taking the Item out of the Hero's
+	 * backpack and putting it on the ground so that Army units can
+	 * be vectored to that location.
+	 *
+	 * Computer players don't currently consider vectoring units, so
+	 * only human players use this method.
+	 *
+	 * This callback must result in an Action_Plant element being added
+	 * to the player's Action list (Player::d_actions).
+	 *
+	 * @param  stack  The Stack that contains the Hero who is holding
+	 *                the plantable Item.  Every player has exactly one 
+	 *                plantable Item.  The item is planted at the
+	 *                position of the Stack on the map.
+	 *
+         * @return False on error, true otherwise.
+         */
+        //! Callback to plant a player's standard.
+        bool heroPlantStandard(Stack *stack);
+
+	/**
+	 * Callback to drop an item at a particular position on the game map.
+	 * The item is removed from the Hero's backback and placed in a bag
+	 * at place on the map.
+	 * 
+	 * For this method to make sense, the Hero should be in a Stack
+	 * that is co-located with the drop position.  E.g. Heroes should
+	 * drop items here.
+	 *
+	 * This callback must result in an Action_Equip element being 
+	 * given to the addAction method.
+	 *
+	 * @param hero             The Hero that holds the item.
+	 * @param item             The Item to drop onto the ground.
+	 * @param pos              The position of the tile on the game map to 
+	 *                         drop the item onto.
+	 *
+         * @return False on error, true otherwise.
+	 */
+        //! Callback to have a Hero drop an Item.
+        bool heroDropItem(Hero *hero, Item *item, Vector<int> pos);
+
+	/**
+	 * Callback to drop a all items at a particular position on the 
+	 * game map.  All items in the Hero's backback are removed and placed 
+	 * into a bag at place on the map.
+	 *
+	 * For this method to make sense, the Hero should be in a Stack
+	 * that is co-located with the drop position.  E.g. Heroes should
+	 * drop items here.
+	 *
+	 * This callback must result in one or more Action_Equip elements 
+	 * being given to the addAction method.
+	 *
+	 * @param hero             The Hero that holds the items.
+	 * @param pos              The position of the tile on the game map to 
+	 *                         drop the item onto.
+	 *
+         * @return False on error, true otherwise.
+	 */
+        //! Callback to have a Hero drop all items.
+        bool heroDropAllItems(Hero *hero, Vector<int> pos);
+
+	/**
+	 * Callback to pickup an Item at a particular position on the game 
+	 * map.  The item is removed from a tile on the game map, and placed
+	 * into the Hero's backback.
+	 *
+	 * For this method to make sense, the Hero should be in a Stack
+	 * that is co-located with the pickup position.  E.g. Heroes should
+	 * pickup items from the tile they are on.
+	 *
+	 * This callback must result in an Action_Equip element being 
+	 * given to the addAction method.
+	 *
+	 * @param hero             The Hero that holds the item.
+	 * @param item             The Item to pickup off of the ground.
+	 * @param pos              The position of the tile on the game map to 
+	 *                         pickup the item from.
+	 *
+         * @return False on error, true otherwise.
+	 */
+        //! Callback to have a Hero pick up an Item.
+        bool heroPickupItem(Hero *hero, Item *item, Vector<int> pos);
+
+	//! Pick up all of the items at the given location on the game map.
+	bool heroPickupAllItems(Hero *h, Vector<int> pos);
+
+	/**
+	 * Completing a Quest entails that the Hero is going to receive a
+	 * reward, but that happens in Player::giveReward.
+	 * The QuestsManager class handles removal of expired or completed 
+	 * quests.
+	 * This callback doesn't do much except record the event for
+	 * posterity (see HistoryReportDialog).
+	 *
+	 * This callback must result in a History_QuestCompleted element being
+	 * added to the player's History list (Player::d_history).
+	 *
+	 * @param hero             The Hero completing the Quest.
+	 *
+         * @return False on error, true otherwise.
+	 */
+        //! Callback to have a Hero complete a quest.
+        bool heroCompletesQuest(Hero *hero);
 
         /** 
 	 * A stack visits a temple and a Hero in the Stack receives a Quest 
@@ -745,22 +740,96 @@ class Player: public sigc::trackable
          */
 	//! Callback to have a Hero get a new Quest from a temple.
         Quest* stackGetQuest(Stack* stack, Temple* temple, bool except_raze);
-        
+
         /** 
-	 * Called to ask the military advisor about what would happen 
-	 * if the stack attacked the tile.
-         *
-         * @param stack    The stack to attack with.
-	 * @param tile     The tile to attack (could be a city, or a stack).
-	 * @param intense_combat  If the intense combat game option is on or 
-	 *                        not.
+	 * Called whenever a hero emerges in a city
 	 *
-         * @return The percent chance to win the fight.  The maximum value
-	 *         is 100.0, and the minimum value is 0.0.
+         * @param  hero    The hero who has offered his or her service.
+         * @param  city    The city where the hero is emerging.
+         * @param  cost    The amount of gold pieces neccessary to recruit 
+	 *                 the hero.
+	 * 
+         * @note Only change the name and gender attributes of the Hero.
          */
-	//! Callback to calculate the odds of winning a fight.
-        float stackFightAdvise(Stack* stack, Vector<int> tile,
-                               bool intense_combat);
+        void recruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally);
+
+        /** 
+	 * Called whenever a hero advances a level.
+	 * For human players this method presents a dialog that allows the
+	 * user to select an Army::STAT to improve (HP, MOVES, or SIGHT if
+	 * a hidden map is in use).  For computer players this method is 
+	 * used to decide which stat should be improved.
+         * 
+	 * This callback must result in an Action_Level element being 
+	 * given to the addAction method.
+	 *
+         * @param army     The army to raise (is always a Hero.)
+         */
+	//! Callback to advance an Army's level.
+        virtual void heroGainsLevel(Hero * a) = 0;
+
+
+
+
+
+
+
+	// City related actions the player can take.
+
+	/**
+	 * Callback to have a Player rename a City.
+	 *
+	 * Only human players currently rename cities; computer players
+	 * do not consider doing so.
+	 *
+	 * This callback must result in a Action_RenameCity element being
+	 * given to the addAction method.
+	 *
+	 * @param city             The city to change the name of.
+	 * @param name             The new name of the city.
+	 *
+         * @return False on error, true otherwise.
+	 */
+        //! Callback to rename a city.
+        bool cityRename(City *city, std::string name);
+
+        /** 
+	 * Callback to initiate vectoring new units from a player's City to 
+	 * a destination point on the game map.
+	 *
+	 * Computer players don't currently consider vectoring units, so
+	 * only human players use this method.
+	 *
+	 * This callback must result in a Action_Vector element being
+	 * given to the addAction method.
+	 *
+         * @param  city   The city to vector from.
+         * @param  dest   The place on the map to vector the produced Army
+	 *                units to.  If the  destination is -1,-1 it means 
+	 *                to stop vectoring altogether.  The destination 
+	 *                point should be co-located with a City or a 
+	 *                planted standard Item.
+	 *
+         * @return False on error, true otherwise.
+         */
+	//! Callback to vector produced units from a city.
+        bool vectorFromCity(City* city, Vector<int> dest);
+
+        /** 
+	 * Callback to change the vectoring destination for all of the
+	 * player's cities that are vectoring to a particular city.
+	 *
+	 * SRC and DEST can both be the player's planted standard.
+	 *
+	 * @param  src    The place that we want to take all the vectoring from.
+         * @param  dest   The place on the map to vector to.  The destination 
+	 *                point should be co-located with a City or a 
+	 *                planted standard Item.
+	 *
+         * @return False on error, true otherwise.
+         */
+	//! Callback to make a mass change to vectoring.
+	bool changeVectorDestination(Vector<int> src, Vector<int> dest);
 
         /** 
 	 * Callback to have the active player occupy a given city.
@@ -909,6 +978,56 @@ class Player: public sigc::trackable
 	//! A player has a vectored army unit arrive somewhere.
 	bool vectoredUnitArrives(VectoredUnit *unit);
 
+	//! Shut down a city's production due to insufficent funds.
+	void cityTooPoorToProduce(City *city, int slot);
+
+        /** 
+	 * Called so that the player can decide what to do with a newly
+	 * conquered city.  For human players this method presents the dialog
+	 * that asks the user what should be done (Razing, Pillaging, etc).
+	 * For the computer players this method is for deciding what to do.
+	 * The decision is made by emitting one of the following signals:
+	 * srazingCity, spillagingCity, ssackingCity, soccupyingCity.
+	 *
+         * @param  city   The newly conquered city.
+	 *
+         * @return True if everything went well.
+         */
+	//! Decision callback for what to do if a city is invaded.
+        virtual void invadeCity(City* city) = 0;
+
+
+
+
+
+
+
+	// Player related actions the player can take.
+
+        /** 
+	 * This function is called when a player's turn starts. 
+	 * For AI players this function should start the algorithm.
+	 * Results in a History_StartTurn event going into the player's 
+	 * Historylist.
+         *
+         * @return True if everything went well.
+         */
+	//! Callback to start a Player's turn.
+        virtual bool startTurn() = 0;
+
+        virtual void abortTurn() = 0;
+
+        /** 
+	 * This function is called before a player's turn starts.
+         * The idea here is that it happens before heroes are recruited,
+         * and before new army units show up in cities.
+         */
+	//! Initialise a Player's turn.
+        void initTurn();
+
+        virtual void endTurn() = 0;
+        
+
         /** 
 	 * This method gives the player the specified Reward.  There are 
 	 * various possibilities when they player is being given a reward.
@@ -930,104 +1049,29 @@ class Player: public sigc::trackable
 	//! Callback to give a Reward to the Player or the player's Stack.
         bool giveReward (Stack *stack, Reward *reward);
 
-	/**
-	 * Disbanding a player's stack removes it from the game.  Disbanding
-	 * stacks saves upkeep for unwanted Army units.
-	 *
-	 * This callback must result in an Action_Disband element being 
-	 * given to the addAction method.
-	 *
-	 * @param stack            The stack to disband.
-	 *
-         * @return False on error, true otherwise.
-	 */
-        //! Callback to disband a player's stack.
-        bool stackDisband(Stack* stack);
+	//! Give the player a new name.
+	void rename (std::string name);
 
-	/**
-	 * Callback to drop an item at a particular position on the game map.
-	 * The item is removed from the Hero's backback and placed in a bag
-	 * at place on the map.
-	 * 
-	 * For this method to make sense, the Hero should be in a Stack
-	 * that is co-located with the drop position.  E.g. Heroes should
-	 * drop items here.
-	 *
-	 * This callback must result in an Action_Equip element being 
-	 * given to the addAction method.
-	 *
-	 * @param hero             The Hero that holds the item.
-	 * @param item             The Item to drop onto the ground.
-	 * @param pos              The position of the tile on the game map to 
-	 *                         drop the item onto.
-	 *
-         * @return False on error, true otherwise.
-	 */
-        //! Callback to have a Hero drop an Item.
-        bool heroDropItem(Hero *hero, Item *item, Vector<int> pos);
+        //! Mark the player as dead. Kills all Army units in the Stacklist.
+        void kill();
 
-	/**
-	 * Callback to drop a all items at a particular position on the 
-	 * game map.  All items in the Hero's backback are removed and placed 
-	 * into a bag at place on the map.
+	/** 
+	 * Callback to decide if we perform treachery on a friendly player.
 	 *
-	 * For this method to make sense, the Hero should be in a Stack
-	 * that is co-located with the drop position.  E.g. Heroes should
-	 * drop items here.
+	 * For human players this method presents a dialog for the user
+	 * to confirm if treachery should happen or not.  For computer
+	 * players this method implements the decision to perform treachery
+	 * or not.
 	 *
-	 * This callback must result in one or more Action_Equip elements 
-	 * being given to the addAction method.
+	 * @param stack             My stack considering the treachery.
+	 * @param player            The friendly player.
+	 * @param pos               The place on the map being targetted.
+	 * @param state             The state we end up in if we decide yes.
 	 *
-	 * @param hero             The Hero that holds the items.
-	 * @param pos              The position of the tile on the game map to 
-	 *                         drop the item onto.
-	 *
-         * @return False on error, true otherwise.
+	 * @return True if we decided to be treacherous.  False otherwise.
 	 */
-        //! Callback to have a Hero drop all items.
-        bool heroDropAllItems(Hero *hero, Vector<int> pos);
-
-	/**
-	 * Callback to pickup an Item at a particular position on the game 
-	 * map.  The item is removed from a tile on the game map, and placed
-	 * into the Hero's backback.
-	 *
-	 * For this method to make sense, the Hero should be in a Stack
-	 * that is co-located with the pickup position.  E.g. Heroes should
-	 * pickup items from the tile they are on.
-	 *
-	 * This callback must result in an Action_Equip element being 
-	 * given to the addAction method.
-	 *
-	 * @param hero             The Hero that holds the item.
-	 * @param item             The Item to pickup off of the ground.
-	 * @param pos              The position of the tile on the game map to 
-	 *                         pickup the item from.
-	 *
-         * @return False on error, true otherwise.
-	 */
-        //! Callback to have a Hero pick up an Item.
-        bool heroPickupItem(Hero *hero, Item *item, Vector<int> pos);
-
-	bool heroPickupAllItems(Hero *h, Vector<int> pos);
-
-	/**
-	 * Completing a Quest entails that the Hero is going to receive a
-	 * reward, but that happens in Player::giveReward.
-	 * The QuestsManager class handles removal of expired or completed 
-	 * quests.
-	 * This callback doesn't do much except record the event for
-	 * posterity (see HistoryReportDialog).
-	 *
-	 * This callback must result in a History_QuestCompleted element being
-	 * added to the player's History list (Player::d_history).
-	 *
-	 * @param hero             The Hero completing the Quest.
-	 *
-         * @return False on error, true otherwise.
-	 */
-        //! Callback to have a Hero complete a quest.
-        bool heroCompletesQuest(Hero *hero);
+	//! Decision callback for if we should perform trechery or not.
+	bool treachery (Stack *stack, Player *player, Vector <int> pos);
 
 	/**
 	 * Callback to have the Player resign.  This entails disbanding
@@ -1047,103 +1091,91 @@ class Player: public sigc::trackable
         //! Callback to disband all the player's stacks and raze all cities.
         void resign();
 
-	/**
-	 * Modifying a signpost entails changing the message on the sign.
-	 * When playing in a hidden map, the hope is that we change the
-	 * message on the sign before an opponent can read it.
-	 *
-	 * For this callback to make sense, you should only change
-	 * Signposts for which we have a Stack co-located.
-	 *
-	 * This callback must result in a Action_ModifySignpost element being
-	 * given to the addAction method.
-	 *
-	 * @param signpost         The signpost to modify.
-	 * @param message          The new text to inscribe onto the sign.
-	 *
-         * @return False on error, true otherwise.
-	 */
-        //! Change the text on a signpost.
-        bool signpostChange(Signpost *signpost, std::string message);
+	//! Declare a new diplomatic state with respect to an opponent.
+	void declareDiplomacy(DiplomaticState state, Player *player);
+
+	//! Negotiate diplomatic talks with an opponent, and return a new state.
+	DiplomaticState negotiateDiplomacy (Player *player);
 
 	/**
-	 * Callback to have a Player rename a City.
+	 * Change the player's opinion of an opponent for the better.
 	 *
-	 * Only human players currently rename cities; computer players
-	 * do not consider doing so.
+	 * @param player    The player to improve our opinion by.
+	 * @param amount    The amount to improve by.  The minimum value 
+	 *                  is 1 and the maximum value is 15.
 	 *
-	 * This callback must result in a Action_RenameCity element being
-	 * given to the addAction method.
-	 *
-	 * @param city             The city to change the name of.
-	 * @param name             The new name of the city.
-	 *
-         * @return False on error, true otherwise.
 	 */
-        //! Callback to rename a city.
-        bool cityRename(City *city, std::string name);
+	//! Make your diplomatic view of another player increase.
+	void improveDiplomaticRelationship (Player *p, guint32 amount);
 
-        /** 
-	 * Callback to initiate vectoring new units from a player's City to 
-	 * a destination point on the game map.
+	/**
+	 * Change all players opinion of you for the better, except for 
+	 * possibly a single player.
 	 *
-	 * Computer players don't currently consider vectoring units, so
-	 * only human players use this method.
+	 * @param amount    The amount to improve.  The minimum value is 1
+	 *                  and the maximum value is 15.
+	 * @param except    Don't improve this player's view of the player.
 	 *
-	 * This callback must result in a Action_Vector element being
-	 * given to the addAction method.
-	 *
-         * @param  city   The city to vector from.
-         * @param  dest   The place on the map to vector the produced Army
-	 *                units to.  If the  destination is -1,-1 it means 
-	 *                to stop vectoring altogether.  The destination 
-	 *                point should be co-located with a City or a 
-	 *                planted standard Item.
-	 *
-         * @return False on error, true otherwise.
-         */
-	//! Callback to vector produced units from a city.
-        bool vectorFromCity(City* city, Vector<int> dest);
+	 * @note Pass except as NULL to not except a player.
+	 */
+	//! Make all other players diplomatic view of you increase.
+	void improveDiplomaticRelationship (guint32 amount, Player *except);
 
-        /** 
-	 * Callback to change the vectoring destination for all of the
-	 * player's cities that are vectoring to a particular city.
+	/**
+	 * Change the player's view of an opponent for the worse.
 	 *
-	 * SRC and DEST can both be the player's planted standard.
+	 * @param player    The player to deteriorate our view of.
+	 * @param amount    The amount to deteriorate by.  The minimum value 
+	 *                  is 1 and the maximum value is 15.
 	 *
-	 * @param  src    The place that we want to take all the vectoring from.
-         * @param  dest   The place on the map to vector to.  The destination 
-	 *                point should be co-located with a City or a 
-	 *                planted standard Item.
-	 *
-         * @return False on error, true otherwise.
-         */
-	//! Callback to make a mass change to vectoring.
-	bool changeVectorDestination(Vector<int> src, Vector<int> dest);
+	 */
+	//! Make your diplomatic view of another player decrease.
+	void deteriorateDiplomaticRelationship (Player *player, guint32 amount);
 
-        /** 
-	 * Callback to plant the Player's flag Item on the ground.
-	 * Planting a standard entails taking the Item out of the Hero's
-	 * backpack and putting it on the ground so that Army units can
-	 * be vectored to that location.
+	/**
+	 * Change all players opinion of you for the worse.
 	 *
-	 * Computer players don't currently consider vectoring units, so
-	 * only human players use this method.
-	 *
-	 * This callback must result in an Action_Plant element being added
-	 * to the player's Action list (Player::d_actions).
-	 *
-	 * @param  stack  The Stack that contains the Hero who is holding
-	 *                the plantable Item.  Every player has exactly one 
-	 *                plantable Item.  The item is planted at the
-	 *                position of the Stack on the map.
-	 *
-         * @return False on error, true otherwise.
-         */
-        //! Callback to plant a player's standard.
-        bool heroPlantStandard(Stack *stack);
+	 * @param amount    The amount to deterioriate by.  The minimum value 
+	 *                  is 1 and the maximum value is 15.
+	 */
+	//! Make all other players diplomatic view of you worsen
+	void deteriorateDiplomaticRelationship (guint32 amount);
 
-	void cityTooPoorToProduce(City *city, int slot);
+	/**
+	 * Change all players opinion of another player for the worse, 
+	 * who happen to have a diplomatic state of state with you.
+	 *
+	 * @param player    The target player.
+	 * @param amount    The amount to deterioriate by.  The minimum value 
+	 *                  is 1 and the maximum value is 15.
+	 * @param state     The state that an opponent has to be in with you,
+	 *                  to make the deterioration happen.
+	 */
+	//! Make players you are at state with you think less of player.
+	void deteriorateAlliesRelationship(Player *player, guint32 amount, 
+					   Player::DiplomaticState state);
+
+	/**
+	 * Change all players opinion of another player for the better, 
+	 * who happen to have a diplomatic state of state with you.
+	 *
+	 * @param player    The target player.
+	 * @param amount    The amount to improve by.  The minimum value 
+	 *                  is 1 and the maximum value is 15.
+	 * @param state     The state that an opponent has to be in with you,
+	 *                  to make the improvement happen.
+	 */
+	//! Make players who are at STATE with PLAYER think better of you.
+	void improveAlliesRelationship(Player *player, guint32 amount, 
+				       Player::DiplomaticState state);
+
+	//! Propose a new diplomatic state wrt another player
+	void proposeDiplomacy (DiplomaticProposal proposal, Player *player);
+
+
+
+
+	// Signals
 
 	/**
 	 * @param city   The city being invaded.
@@ -1169,7 +1201,7 @@ class Player: public sigc::trackable
 	 *         Army::Stat::SIGHT.
 	 */
         //! Emitted when an Army advances a level; returns stat to raise.
-        sigc::signal<Army::Stat, Army*> snewLevelArmy;
+        sigc::signal<Army::Stat, Hero*> sheroGainsLevel;
 
 	/**
 	 * @param army   The army that has gotten a medal.
@@ -1482,7 +1514,7 @@ class Player: public sigc::trackable
         void doHeroDropItem(Hero *hero, Item *item, Vector<int> pos);
 	bool doHeroDropAllItems(Hero *h, Vector<int> pos);
         void doHeroPickupItem(Hero *hero, Item *item, Vector<int> pos);
-        void doLevelArmy(Army *army, Army::Stat stat);
+        void doHeroGainsLevel(Hero *hero, Army::Stat stat);
         bool doStackDisband(Stack *stack);
         void doSignpostChange(Signpost *signpost, std::string message);
         void doCityRename(City *c, std::string name);

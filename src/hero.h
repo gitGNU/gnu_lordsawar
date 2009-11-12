@@ -143,6 +143,35 @@ class Hero : public Army
 	//! Convert a Hero::Gender enumerated value to a string.
 	static std::string genderToString(const Hero::Gender gender);
 
+        /** 
+	 * Increase the Hero unit's level, and increase one of three stats;
+	 * Stat::STRENGTH, Stat::MOVES, or Stat::SIGHT.
+	 *
+         * @param stat     The stat to increase.
+	 *
+         * @return How much the statistic increases or -1 upon error 
+	 *         (e.g. because the XP is not enough).
+         */
+	//! Increase the Army's level, and increase a given stat.
+        int gainLevel(Stat stat);
+
+	/**
+	 * Calculate how much a stat is increased because the Hero unit
+	 * has increased it's level.
+	 *
+	 * @param stat  One of Stat::STRENGTH, Stat::MOVES, or Stat::SIGHT.
+	 *
+	 * @return The new value of the stat after it is increased.
+	 */
+	//! Return how much the stat would be boosted by gaining a level.
+        int computeLevelGain(Stat stat) const;
+
+        //! Checks whether or not the Hero unit can advance a level.
+        bool canGainLevel() const;
+
+	//! Returns how many experience points the next level requires.
+        guint32 getXpNeededForNextLevel() const;
+
     private:
         
 	//! Callback for loading the backpack from a saved-game file.

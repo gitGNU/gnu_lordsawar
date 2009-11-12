@@ -150,7 +150,7 @@ class Game
     sigc::signal<void> remote_next_player_turn;
     sigc::signal<void, int> hero_arrives;
     sigc::signal<void, Army *, int> medal_awarded_to_army;
-    sigc::signal<Army::Stat, Army *> army_gains_level;
+    sigc::signal<Army::Stat, Hero *> hero_gains_level;
     sigc::signal<void, Player *> game_loaded;
     sigc::signal<void, Player *> game_over;
     sigc::signal<void, Player *> player_died;
@@ -202,7 +202,7 @@ class Game
     void init_turn_for_player(Player* p);
     void on_player_died(Player *p);
     //! Callback when the army of a human player reaches a new level.
-    Army::Stat newLevelArmy(Army* a);
+    Army::Stat heroGainsLevel(Hero * a);
     //! Callback when an army gets a new medal.
     void newMedalArmy(Army* a, int medaltype);
     //! Called whenever a stack has changed, updates the map etc.

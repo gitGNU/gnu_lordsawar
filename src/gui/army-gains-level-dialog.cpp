@@ -32,10 +32,10 @@
 #include "hero.h"
 
 //give a hero some more abilities
-ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a, bool show_sight_stat)
+ArmyGainsLevelDialog::ArmyGainsLevelDialog(Hero *a, bool show_sight_stat)
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
-    army = a;
+    hero = a;
     
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
@@ -47,7 +47,7 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Army *a, bool show_sight_stat)
     
     Gtk::Image *image;
     xml->get_widget("image", image);
-    image->property_pixbuf() = gc->getArmyPic(army)->to_pixbuf();
+    image->property_pixbuf() = gc->getArmyPic(hero)->to_pixbuf();
     Gtk::Image *hero_image;
     xml->get_widget("hero_image", hero_image);
     hero_image->property_pixbuf() = 
@@ -137,10 +137,10 @@ void ArmyGainsLevelDialog::fill_in_descriptions()
     {
 	StatItem &item = stat_items[i];
 
-	int v = army->getStat(item.stat, false);
+	int v = hero->getStat(item.stat, false);
 
 	if (item.radio->get_active())
-	    v += army->computeLevelGain(item.stat);
+	    v += hero->computeLevelGain(item.stat);
 	    
 	item.radio->set_label(String::ucompose(item.desc, v));
     }

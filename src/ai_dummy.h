@@ -64,7 +64,7 @@ class AI_Dummy : public RealPlayer
         virtual void abortTurn();
         virtual bool startTurn();
         virtual void invadeCity(City* c);
-        virtual void levelArmy(Army* a);
+        virtual void heroGainsLevel(Hero * a);
 
 	void setDefensiveProduction(City *city);
 	void examineCities();

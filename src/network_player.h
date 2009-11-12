@@ -50,7 +50,7 @@ class NetworkPlayer : public Player
         virtual bool startTurn();
         virtual void endTurn();
         virtual void invadeCity(City* c);
-        virtual void levelArmy(Army* a);
+        virtual void heroGainsLevel(Hero * a);
 
 	void decodeAction(const Action *action);
 	void decodeActions(std::list<Action *> actions);

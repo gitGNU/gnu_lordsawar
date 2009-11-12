@@ -42,7 +42,7 @@ class OwnerId
      OwnerId(XML_Helper* helper);
 
      //! Destructor.
-    ~OwnerId();
+    virtual ~OwnerId();
     
     // Get Methods
 

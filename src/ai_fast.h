@@ -88,7 +88,7 @@ class AI_Fast : public RealPlayer
 	virtual void abortTurn();
         virtual bool startTurn();
         virtual void invadeCity(City* c);
-        virtual void levelArmy(Army* a);
+        virtual void heroGainsLevel(Hero * a);
 	virtual bool treachery (Stack *stack, Player *player, Vector <int> pos, 
 				DiplomaticState state);
 

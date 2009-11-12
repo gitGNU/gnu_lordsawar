@@ -175,19 +175,6 @@ std::string Armysetlist::getName(guint32 id) const
   return (*it).second;
 }
 
-std::vector<guint32> Armysetlist::getArmysets() const
-{
-  std::vector<guint32> retlist;
-
-  NameMap::const_iterator it;
-  for (it = d_names.begin(); it != d_names.end(); it++)
-    {
-      retlist.push_back((*it).first);
-    }
-
-  return retlist;
-}
-
 Armyset *Armysetlist::loadArmyset(std::string name)
 {
   debug("Loading armyset " <<name);

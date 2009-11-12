@@ -218,14 +218,14 @@ void AI_Fast::invadeCity(City* c)
     }
 }
 
-void AI_Fast::levelArmy(Army* a)
+void AI_Fast::heroGainsLevel(Hero * a)
 {
     debug("Army raised a level, id = " <<a->getId())
     
     //advancing a level
     // increase the strength attack (uninnovative, but enough here)
     Army::Stat stat = Army::STRENGTH;
-    doLevelArmy(a, stat);
+    doHeroGainsLevel(a, stat);
 
     Action_Level* item = new Action_Level();
     item->fillData(a, stat);

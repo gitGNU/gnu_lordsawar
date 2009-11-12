@@ -44,8 +44,9 @@ class NamedLocation: public Location, public Namable
 
      //! Loading constructor.
      NamedLocation(XML_Helper* helper, guint32 size);
+
      //! Destructor.
-    ~NamedLocation();
+    virtual ~NamedLocation();
 
     std::string getDescription() const {return d_description;};
  private:

@@ -26,7 +26,7 @@ class Decorated: public sigc::trackable
 {
  public:
     Decorated();
-    ~Decorated();
+    virtual ~Decorated();
 
     void decorate(Gtk::Window *window, std::string background_filename="", int alpha = 255);
 

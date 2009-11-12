@@ -94,7 +94,7 @@ class AI_Smart : public RealPlayer
 	virtual void abortTurn();
         virtual bool startTurn();
         virtual void invadeCity(City* c);
-        virtual void levelArmy(Army* a);
+        virtual void heroGainsLevel(Hero * a);
 
     private:
         // Choose a new type of army to buy production for.

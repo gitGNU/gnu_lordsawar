@@ -132,9 +132,6 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 */
 	Armyset *getArmyset(std::string dir);
 
-	//! Returns a list of all Armyset objects available to the game.
-        std::vector<guint32> getArmysets() const;
-
 	//! Return the name of the subdirectory for a given armyset.
         /** 
          * @param name          The name of the Armyset to get the subdir of.

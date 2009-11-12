@@ -115,7 +115,7 @@ void NetworkPlayer::invadeCity(City* c)
   assert(false);
 }
 
-void NetworkPlayer::levelArmy(Army* a)
+void NetworkPlayer::heroGainsLevel(Hero * a)
 {
   assert(false);
 }
@@ -240,15 +240,6 @@ Stack *findStackById(guint32 id)
     if (s)
       return s;
   }
-  return 0;
-}
-
-Item *findItemById(const std::list<Item *> &l, guint32 id) 
-{
-  for (std::list<Item *>::const_iterator i = l.begin(), end = l.end(); i != end; ++i)
-    if ((*i)->getId() == id)
-      return *i;
-  
   return 0;
 }
 
@@ -496,11 +487,11 @@ void NetworkPlayer::decodeActionEquip(const Action_Equip *action)
 void NetworkPlayer::decodeActionLevel(const Action_Level *action)
 {
   Stack *stack = d_stacklist->getArmyStackById(action->getArmyId());
-  Army *army = stack->getArmyById(action->getArmyId());
+  Hero*hero= dynamic_cast<Hero*>(stack->getArmyById(action->getArmyId()));
 
-  doLevelArmy(army, Army::Stat(action->getStatToIncrease()));
-  printf ("army is hero? %d\n", army->isHero());
-  printf ("new level is %d\n", army->getLevel());
+  doHeroGainsLevel(hero, Army::Stat(action->getStatToIncrease()));
+  printf ("army is hero? %d\n", hero->isHero());
+  printf ("new level is %d\n", hero->getLevel());
 }
 
 void NetworkPlayer::decodeActionDisband(const Action_Disband *action)

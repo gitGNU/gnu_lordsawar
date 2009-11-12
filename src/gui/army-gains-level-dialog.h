@@ -24,14 +24,14 @@
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
 
-#include "army.h"
+#include "hero.h"
 
 #include "decorated.h"
-// dialog for choosing what army stat to boost when a level is gained
+// dialog for choosing what hero stat to boost when a level is gained
 class ArmyGainsLevelDialog: public Decorated
 {
  public:
-    ArmyGainsLevelDialog(Army *army, bool show_sight_stat);
+    ArmyGainsLevelDialog(Hero *h, bool show_sight_stat);
     ~ArmyGainsLevelDialog();
 
     void set_parent_window(Gtk::Window &parent);
@@ -45,7 +45,7 @@ class ArmyGainsLevelDialog: public Decorated
     Gtk::Dialog* dialog;
     Gtk::VBox *stats_vbox;
 
-    Army *army;
+    Hero *hero;
     Army::Stat selected_stat;
 
     struct StatItem

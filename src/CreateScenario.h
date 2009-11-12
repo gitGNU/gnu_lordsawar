@@ -146,10 +146,6 @@ class CreateScenario : public CreateScenarioRandomize
         //! Get the number of temples
         int getNoTemples() const;
 
-        //! Get the tileset to be used for the map
-        std::string getMapTiles() const;
-        
-        
         /** Creates a map
           * 
           * Calling this function will initiate the creation process itself. The

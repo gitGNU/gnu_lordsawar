@@ -141,10 +141,10 @@ void AI_Dummy::invadeCity(City* c)
   cityOccupy(c);
 }
 
-void AI_Dummy::levelArmy(Army* a)
+void AI_Dummy::heroGainsLevel(Hero * a)
 {
   Army::Stat stat = Army::STRENGTH;
-  doLevelArmy(a, stat);
+  doHeroGainsLevel(a, stat);
 
   Action_Level* item = new Action_Level();
   item->fillData(a, stat);

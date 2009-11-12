@@ -808,8 +808,8 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
     (game->medal_awarded_to_army.connect
      (sigc::mem_fun(*this, &GameWindow::on_medal_awarded_to_army)));
   connections.push_back
-    (game->army_gains_level.connect
-     (sigc::mem_fun(*this, &GameWindow::on_army_gains_level)));
+    (game->hero_gains_level.connect
+     (sigc::mem_fun(*this, &GameWindow::on_hero_gains_level)));
   connections.push_back
     (game->game_loaded.connect
      (sigc::mem_fun(*this, &GameWindow::on_game_loaded)));
@@ -3186,9 +3186,9 @@ void GameWindow::on_medal_awarded_to_army(Army *army, int medaltype)
   delete dialog;
 }
 
-Army::Stat GameWindow::on_army_gains_level(Army *army)
+Army::Stat GameWindow::on_hero_gains_level(Hero *hero)
 {
-  ArmyGainsLevelDialog d(army, GameScenario::s_hidden_map);
+  ArmyGainsLevelDialog d(hero, GameScenario::s_hidden_map);
 
   d.set_parent_window(*window);
   d.run();

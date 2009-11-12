@@ -142,10 +142,10 @@ void AI_Smart::invadeCity(City* c)
     setBestProduction(c);
 }
 
-void AI_Smart::levelArmy(Army* a)
+void AI_Smart::heroGainsLevel(Hero * a)
 {
     Army::Stat stat = Army::STRENGTH;
-    doLevelArmy(a, stat);
+    doHeroGainsLevel(a, stat);
 
     Action_Level* item = new Action_Level();
     item->fillData(a, stat);

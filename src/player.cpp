@@ -2205,9 +2205,9 @@ double Player::removeDeadArmies(std::list<Stack*>& stacks,
     return total;
 }
 
-void Player::doLevelArmy(Army *army, Army::Stat stat)
+void Player::doHeroGainsLevel(Hero *hero, Army::Stat stat)
 {
-  army->gainLevel(stat);
+  hero->gainLevel(stat);
 }
 
 
@@ -2304,10 +2304,11 @@ void Player::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
 
 	    if (army->isHero() && getType() != Player::NETWORKED)
 	      {
-		while(army->canGainLevel())
+		Hero *h = dynamic_cast<Hero*>(army);
+		while(h->canGainLevel())
 		  {
 		    // Units not associated to a player never raise levels.
-		    if (army->getOwner() == 
+		    if (h->getOwner() == 
 			Playerlist::getInstance()->getNeutral())
 		      break;
 
@@ -2315,9 +2316,9 @@ void Player::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
 		    //levels per time depending on the XP and level itself
 
 		    debug("ADVANCING LEVEL "<< "CANGAINLEVEL== " << army->canGainLevel());
-		    army->getOwner()->levelArmy(army);
+		    h->getOwner()->heroGainsLevel(h);
 		  }
-		debug("Army new XP=" << army->getXP())
+		debug("Hero new XP=" << h->getXP())
 	      }
 	    sit++;
 	  }

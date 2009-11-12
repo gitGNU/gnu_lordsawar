@@ -34,7 +34,7 @@ class CreateScenarioRandomize
 {
     public:
         CreateScenarioRandomize();
-        ~CreateScenarioRandomize();
+        virtual ~CreateScenarioRandomize();
 
 	/** take a random city name
 	 */

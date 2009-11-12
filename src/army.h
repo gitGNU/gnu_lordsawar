@@ -222,9 +222,6 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	//! Return whether or not the Army is in a tower.
 	bool getFortified () const;
 
-	//! Returns how many experience points the next level requires.
-        guint32 getXpNeededForNextLevel() const;
-
 	//! Is this army a hero?
 	/**
 	 * isHero is overridden by the Hero class.
@@ -292,18 +289,6 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
         //! Increases the experience points of the Army by the given amount.
         void gainXp(double n);
 
-        /** 
-	 * Increase the Army unit's level, and increase one of three stats;
-	 * Stat::STRENGTH, Stat::MOVES, or Stat::SIGHT.
-	 *
-         * @param stat     The stat to increase.
-	 *
-         * @return How much the statistic increases or -1 upon error 
-	 *         (e.g. because the XP is not enough).
-         */
-	//! Increase the Army's level, and increase a given stat.
-        int gainLevel(Stat stat);
-
 	//! Make this army look and behave like another one.
 	void morph(const ArmyProto *armyproto);
 
@@ -311,20 +296,6 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 
 	//! Returns whether or not the army was blessed at the given temple.
         bool blessedAtTemple(guint32 temple_id) const;
-
-	/**
-	 * Calculate how much a stat is increased because the Army unit
-	 * has increased it's level.
-	 *
-	 * @param stat  One of Stat::STRENGTH, Stat::MOVES, or Stat::SIGHT.
-	 *
-	 * @return The new value of the stat after it is increased.
-	 */
-	//! Return how much the stat would be boosted by gaining a level.
-        int computeLevelGain(Stat stat) const;
-
-        //! Checks whether or not the Army unit can advance a level.
-        bool canGainLevel() const;
 
         void printAllDebugInfo() const;
 

@@ -91,7 +91,7 @@ void Game::addPlayer(Player *p)
   if (p->getType() == Player::HUMAN)
     {
       connections[p->getId()].push_back
-	(p->snewLevelArmy.connect(sigc::mem_fun(this, &Game::newLevelArmy)));
+	(p->sheroGainsLevel.connect(sigc::mem_fun(this, &Game::heroGainsLevel)));
       connections[p->getId()].push_back
 	(p->snewMedalArmy.connect(sigc::mem_fun(this, &Game::newMedalArmy)));
       connections[p->getId()].push_back
@@ -624,14 +624,14 @@ void Game::stackUpdate(Stack* s)
   Glib::usleep(Configuration::s_displaySpeedDelay);
 }
 
-Army::Stat Game::newLevelArmy(Army* a)
+Army::Stat Game::heroGainsLevel(Hero * h)
 {
   // don't show a dialog if computer or enemy's armies advance
-  if ((a->getOwner()->getType() != Player::HUMAN) ||
-      (a->getOwner() != Playerlist::getInstance()->getActiveplayer()))
+  if ((h->getOwner()->getType() != Player::HUMAN) ||
+      (h->getOwner() != Playerlist::getInstance()->getActiveplayer()))
     return Army::STRENGTH;
 
-  return army_gains_level.emit(a);
+  return hero_gains_level.emit(h);
 }
 
 void Game::newMedalArmy(Army* a, int medaltype)

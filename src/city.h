@@ -236,15 +236,6 @@ class City : public Ownable, public Location, public Renamable,
         //! Save the city to an opened saved-game file.
         bool save(XML_Helper* helper) const;
         
-	//! Returns the amount of gold needed to increase the defense level.
-	/**
-	 * @note This method isn't called.  Cities are not upgraded.
-	 *
-	 * Returns the number of gold pieces needed to increase the defense
-	 *         level, or -1 if city can't be upgraded.
-	 */
-	int getGoldNeededForUpgrade() const; 
-	
 	//! Returns true if the city isn't accepting too many vectored armies.
 	/**
 	 * Scans all of the cities vectoring to this city.  If vectoring

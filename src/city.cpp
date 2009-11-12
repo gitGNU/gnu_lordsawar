@@ -314,17 +314,6 @@ void City::nextTurn()
     }
 }
 
-int City::getGoldNeededForUpgrade() const
-{
-  if (d_defense_level == 1)
-    return 1000;
-  else if (d_defense_level == 2)
-    return 2000;
-  else if (d_defense_level == 3)
-    return 3000;
-  return -1;
-}
-
 void City::setVectoring(Vector<int> p) 
 {
   d_vector = p;

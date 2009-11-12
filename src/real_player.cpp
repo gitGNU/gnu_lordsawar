@@ -103,11 +103,11 @@ void RealPlayer::invadeCity(City* c)
     // player has to decide here what to do (occupy, raze, pillage)
 }
 
-void RealPlayer::levelArmy(Army* a)
+void RealPlayer::heroGainsLevel(Hero* a)
 {
     // the standard human player just asks the GUI what to do
-    Army::Stat stat = snewLevelArmy.emit(a);
-    doLevelArmy(a, stat);
+    Army::Stat stat = sheroGainsLevel.emit(a);
+    doHeroGainsLevel(a, stat);
 
     Action_Level* item = new Action_Level();
     item->fillData(a, stat);
@@ -143,7 +143,7 @@ bool RealPlayer::maybeRecruitHero ()
   //give the player a hero if it's the first round.
   //otherwise we get a hero based on chance
   //a hero costs a random number of gold pieces
-  if (GameScenarioOptions::s_round == 1 && d_stacklist->countHeroes() == 0)
+  if (GameScenarioOptions::s_round == 1 && getHeroes().size() == 0)
     gold_needed = 0;
   else
     {

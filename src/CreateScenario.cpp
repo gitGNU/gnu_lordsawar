@@ -277,12 +277,6 @@ int CreateScenario::getNoTemples() const
     return d_generator->getNoTemples();
 }
 
-std::string CreateScenario::getMapTiles() const
-{
-    debug("CreateScenario::getMapTiles")
-    return d_tilesname;
-}
-
 bool CreateScenario::create(const GameParameters &g)
 {
     debug("CreateScenario::create")

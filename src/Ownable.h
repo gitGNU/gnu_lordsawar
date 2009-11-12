@@ -41,7 +41,7 @@ class Ownable
      Ownable(XML_Helper* helper);
 
      //! Destructor.
-    ~Ownable();
+    virtual ~Ownable();
     
     // Get Methods
 

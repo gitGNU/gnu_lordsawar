@@ -638,9 +638,9 @@ bool GameScenario::saveGame(string filename, string extension) const
       Armyset *as = Armysetlist::getInstance()->getArmyset(*it);
       t.saveFile(as->getConfigurationFile());
       as->getFilenames(files);
-      for (std::list<std::string>::iterator it = files.begin(); 
-	   it != files.end(); it++)
-	t.saveFile(as->getFile(*it));
+      for (std::list<std::string>::iterator i = files.begin(); 
+	   i != files.end(); i++)
+	t.saveFile(as->getFile(*i));
     }
 
   t.Close();
