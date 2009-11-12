@@ -35,6 +35,7 @@
 #include "playerlist.h"
 #include "stacklist.h"
 #include "hero-editor-dialog.h"
+#include "GameMap.h"
 
 #include "select-army-dialog.h"
 
@@ -207,16 +208,14 @@ int StackEditorDialog::run()
 	{
 	    Player *player = get_selected_player();
 
-	    Player *stack_player = stack->getOwner();
+	    Player *old_active = Playerlist::getActiveplayer();
+	    Playerlist::getInstance()->setActiveplayer(player);
 	    Stack *new_stack = new Stack(*stack);
-	    if (stack_player)
-		stack_player->getStacklist()->flRemove(stack);
+	    GameMap::getInstance()->removeStack(stack);
 	    stack = new_stack;
-	
-	    player->addStack(stack);
 	    stack->setPlayer(player);
-	    for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
-	      (*it)->setOwner(player);
+	    GameMap::getInstance()->putStack(stack);
+	    Playerlist::getInstance()->setActiveplayer(old_active);
 	}
     }
     return response;
