@@ -74,19 +74,29 @@ LocationBox::~LocationBox()
 
 Stack *LocationBox::addArmy(Army *a) const
 {
-    Stack* stack = getFreeStack(a->getOwner());
+  Vector<int> pos = Vector<int>(-1,-1);
+  Stack* stack = getFreeStack(a->getOwner(), pos);
 
-    // No stack found in the entire location
-    if (!stack)
-      return NULL;
-
-    // add army to stack
+  //no stacks with enough room for one more army, found lets create one.
+  if (!stack)
+    {
+      // No stack found in the entire location
+      if (pos == Vector<int>(-1,-1))
+	return NULL;
+	    
+      Player *p = a->getOwner();
+      stack = new Stack(p, pos);
+      stack->add(a);
+      p->addStack(stack);
+    }
+  else
     stack->add(a);
-    if (stack->size() > 1)
-      stack->sortForViewing(true);
-    stack->setDefending(false);
-    stack->setParked(false);
-    return stack;
+
+  if (stack->size() > 1)
+    stack->sortForViewing(true);
+  stack->setDefending(false);
+  stack->setParked(false);
+  return stack;
 }
 
 bool LocationBox::isFull(Player *p) const
@@ -102,7 +112,7 @@ bool LocationBox::isFull(Player *p) const
     return true;
 }
 
-Stack* LocationBox::getFreeStack(Player *p) const
+Stack* LocationBox::getFreeStack(Player *p, Vector<int> &tile) const
 {
   for (unsigned int i = 0; i < d_size; i++)
     for (unsigned int j = 0; j < d_size; j++)
@@ -112,9 +122,8 @@ Stack* LocationBox::getFreeStack(Player *p) const
 	Stack *stack = stile->getFriendlyStack(p);
 	if (stack == NULL)
 	  {
-	    stack = new Stack(p, pos);
-	    p->addStack(stack);
-	    return stack;
+	    tile = pos;
+	    return NULL;
 	  }
 	else 
 	  {
@@ -123,7 +132,8 @@ Stack* LocationBox::getFreeStack(Player *p) const
 	      return stack;
 	  }
         }
-    return NULL;
+  tile = Vector<int>(-1,-1);
+  return NULL;
 }
 
 bool LocationBox::isVisible(Player *player) const

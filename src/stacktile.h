@@ -113,6 +113,8 @@ public:
     //! Return true if this tile contains the given stack id.
     bool contains(guint32 stack_id) const;
 
+    Vector<int> getTile() const {return tile;};
+
 private:
     //! Return the number of army units on this tile owned by the given player.
     guint32 countNumberOfArmies(Player *owner) const;

@@ -121,17 +121,21 @@ class LocationBox : public Immovable
     //! Obtains a stack in the location to put an Army unit in.
     /**
      * This method scans the tiles of the location for a place to put a new
-     * Army unit.  If the position is empty it makes a new stack in that
-     * position and returns that stack.  If a stack containing fewer than
-     * eight Army units is found, that stack is returned.  If no open spots 
-     * could be found, it returns NULL.
+     * Army unit.  If a stack containing fewer than eight Army units is found, 
+     * that stack is returned.  If there is an open spot in the location where
+     * no Stack exists already, then the TILE parameter is filled up with that
+     * location.  If no open spots could be found at all, and no stacks with 
+     * fewer than eight army units could be found, NULL is returned
      *
      * @param owner  The player to own the new stack if one needs to be created.
+     * @param tile   This position on the map is filled up if no stacks with
+     *               enough space for one more army unit could be found in the
+     *               location.
      *
      * @return The stack that has room for one Army unit in the Location.  If
-     *         an available stack could not be found this method returns NULL.
+     *         an available stack could not be found, NULL is returned.
      */
-    Stack* getFreeStack(Player *owner) const;
+    Stack* getFreeStack(Player *owner, Vector<int> &tile) const;
 
     //! Check the location to see if a player can fit another army unit here.
     bool isFull(Player *owner) const;

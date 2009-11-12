@@ -1027,6 +1027,7 @@ void GameScenario::initialize(GameParameters g)
     Playerlist::getInstance()->turnHumansIntoNetworkPlayers();
   else
     autoSave();
+  GameMap::getInstance()->updateStackPositions();
 }
 
 class ParamLoader

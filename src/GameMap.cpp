@@ -465,6 +465,7 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
                       //is our stack too full?
                       if (s->size() >= MAX_STACK_SIZE)
                         continue;
+		      s->add(a);
                     }
                   else 
                     {
@@ -475,9 +476,9 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
 			continue;
 		      //okay, no stacks here at all.  make one.
                       s = new Stack(a->getOwner(), pos);
+		      s->add(a);
                       a->getOwner()->addStack(s);
                     }
-                  s->add(a);
                   added_army = true;
                   break;
                 }
