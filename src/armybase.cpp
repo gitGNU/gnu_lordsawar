@@ -54,7 +54,6 @@ ArmyBase::ArmyBase(XML_Helper* helper)
   std::string army_bonus_str;
   helper->getData(army_bonus_str, "army_bonus");
   d_army_bonus = bonusFlagsFromString(army_bonus_str);
-
   helper->getData(d_max_moves, "max_moves");
   helper->getData(d_strength, "strength");
   helper->getData(d_sight, "sight");
@@ -279,5 +278,7 @@ ArmyBase::Bonus ArmyBase::bonusFlagFromString(const std::string str)
     return ArmyBase::SUBALLNONHEROBONUS;
   else if (str == "ArmyBase::SUBALLHEROBONUS")
     return ArmyBase::SUBALLHEROBONUS;
+  else if (str == "ArmyBase::FORTIFY")
+    return ArmyBase::FORTIFY;
   return ArmyBase::ADD1STRINOPEN;
 }
