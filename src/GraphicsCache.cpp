@@ -2674,10 +2674,12 @@ void GraphicsCache::loadMedalPics()
 void GraphicsCache::loadNewLevelPics()
 {
   std::vector<PixMask* > half;
-  half = disassemble_row(File::getMiscFile("various/hero-newlevel.png"), 2);
+  half = disassemble_row(File::getMiscFile("various/hero-newlevel-male.png"), 
+			 2);
   d_newlevel_male = half[0];
   d_newlevelmask_male = half[1];
-  half = disassemble_row(File::getMiscFile("various/hero-newlevel.png"), 2);
+  half = disassemble_row(File::getMiscFile("various/hero-newlevel-female.png"), 
+			 2);
   d_newlevel_female = half[0];
   d_newlevelmask_female = half[1];
 }

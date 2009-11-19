@@ -40,7 +40,8 @@ various_DATA = \
     parley_refused.png \
     background.png \
     back.bmp \
-    hero-newlevel.png
+    hero-newlevel-female.png \
+    hero-newlevel-male.png
 
 EXTRA_DIST = \
     README \
@@ -80,4 +81,5 @@ EXTRA_DIST = \
     parley_refused.png \
     background.png \
     back.bmp \
-    hero-newlevel.png
+    hero-newlevel-female.png \
+    hero-newlevel-male.png
