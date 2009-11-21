@@ -1,3 +1,22 @@
+2009-11-21  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed bug related to ai-smart stacks going away (after fight/join),
+	and crashing the game.
+	* fixed getfogpic method of graphic cache to work again.
+	* now refogging active stack in gamebigmap object.
+	* now complaining loudly when loading a game that has too many army
+	units in a stack.
+	* now blanking the maps when ai players move on a hidden map.
+	* added a copy button to the stack editor in the scenario editor.
+
+2009-11-19  Ben Asselstine  <benasselstine@gmail.com>
+
+	* added new hero level images for both male and female heroes.
+
+2009-11-02  Ben Asselstine  <benasselstine@gmail.com>
+
+	* added OwnerId object.  This changes the saved-game schema (quests).
+
 2009-10-31  Ben Asselstine  <benasselstine@gmail.com>
 
 	* can now set an active player in the scenario editor.
