@@ -8,6 +8,7 @@
 	units in a stack.
 	* now blanking the maps when ai players move on a hidden map.
 	* added a copy button to the stack editor in the scenario editor.
+	* fixed --stress-test to work again.
 
 2009-11-19  Ben Asselstine  <benasselstine@gmail.com>
 
