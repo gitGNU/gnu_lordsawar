@@ -338,7 +338,12 @@ int AI_Allocation::defaultStackMovements()
 		  {
 		    d_owner->getStacklist()->setActivestack(s);
 		    moved = d_owner->stackMove(s);
-		    if (s->getId() !=d_owner->getActivestack()->getId())
+		    if (d_owner->getActivestack() == NULL)
+		      {
+			d_stacks->flRemove((*it)->getId());
+			break;
+		      }
+		    else if (s->getId() !=d_owner->getActivestack()->getId())
 		      {
 			d_stacks->flRemove((*it)->getId());
 			break;
@@ -361,7 +366,12 @@ int AI_Allocation::defaultStackMovements()
 		      {
 			d_owner->getStacklist()->setActivestack(s);
 			moved = d_owner->stackMove(s);
-			if (s->getId() != d_owner->getStacklist()->getActivestack()->getId())
+			if (d_owner->getStacklist()->getActivestack() == NULL)
+			  {
+			    d_stacks->flRemove((*it)->getId());
+			    break;
+			  }
+			else if (s->getId() != d_owner->getStacklist()->getActivestack()->getId())
 			  {
 			    d_stacks->flRemove((*it)->getId());
 			    break;
@@ -408,7 +418,12 @@ int AI_Allocation::defaultStackMovements()
 		
 	    if (moved)
 	      count++;
-	    if (s->getId() != d_owner->getActivestack()->getId())
+	    if (d_owner->getActivestack() == NULL)
+	      {
+		d_stacks->flRemove((*it)->getId());
+		break;
+	      }
+	    else if (s->getId() != d_owner->getActivestack()->getId())
 	      {
 		d_stacks->flRemove((*it)->getId());
 		break;

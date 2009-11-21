@@ -50,7 +50,7 @@ void VectorMap::draw_planted_standard(Vector<int> flag)
 
 void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
 {
-  if (c->isVisible(getViewingPlayer()) == false)
+  if (c->isVisible(Playerlist::getViewingplayer()) == false)
     return;
   GraphicsCache *gc = GraphicsCache::getInstance();
   PixMask *tmp;
@@ -60,7 +60,7 @@ void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
     //tmp = gc->getProdShieldPic (type, prod);
   else
     {
-      if (Playerlist::getInstance()->getActiveplayer() != c->getOwner())
+      if (Playerlist::getInstance()->getViewingplayer() != c->getOwner())
 	{
 	  guint32 s = GameMap::getInstance()->getShieldset()->getId();
 	  tmp = gc->getShieldPic (s, 0, c->getOwner()->getId());
@@ -148,7 +148,7 @@ void VectorMap::draw_lines (std::list<City*> srcs, std::list<City*> dests)
     {
       if ((*it)->getVectoring() == Vector<int>(-1, -1))
 	continue;
-      if ((*it)->isVisible(getViewingPlayer()) == false)
+      if ((*it)->isVisible(Playerlist::getViewingplayer()) == false)
         continue;
       City *c = cl->getNearestObjectBefore((*it)->getVectoring(), 2);
       if (c)
@@ -194,7 +194,7 @@ void VectorMap::after_draw()
   // draw special shield for every city that player owns.
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {
-      if ((*it)->getOwner() == Playerlist::getActiveplayer())
+      if ((*it)->getOwner() == Playerlist::getViewingplayer())
         {
       
           if ((*it)->getActiveProductionSlot() == -1)
@@ -276,7 +276,7 @@ void VectorMap::after_draw()
       // draw lines from origination to city/planted standard
       for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
 	{
-	  if ((*it)->isVisible(getViewingPlayer()) == false)
+	  if ((*it)->isVisible(Playerlist::getViewingplayer()) == false)
 	    continue;
 	  if ((*it)->getOwner() != city->getOwner())
 	    continue;
@@ -365,14 +365,14 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	      if (active->vectorFromCity(city, dest) == true)
 		destination_chosen.emit(dest);
 	      setClickAction(CLICK_SELECTS);
-	      draw(active);
+	      draw(Playerlist::getViewingplayer());
 	    }
 	  else if (dest == Vector<int>(-1, -1)) //stop vectoring
 	    {
 	      if (active->vectorFromCity(city, dest) == true)
 		destination_chosen.emit(dest);
 	      setClickAction(CLICK_SELECTS);
-	      draw(active);
+	      draw(Playerlist::getViewingplayer());
 	    }
 	  break;
 	case CLICK_SELECTS:
@@ -383,7 +383,7 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	  if (nearestCity == NULL)
 	    return;
 	  city = nearestCity;
-	  draw(active);
+	  draw(Playerlist::getViewingplayer());
 	  break;
 	case CLICK_CHANGES_DESTINATION:
 	  nearestCity = cl->getNearestVisibleFriendlyCity(dest, 4);
@@ -416,7 +416,7 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	      //this is the same thing as a cancel.
 	      destination_chosen.emit(dest);
 	      setClickAction(CLICK_SELECTS);
-	      draw(active);
+	      draw(Playerlist::getViewingplayer());
 	      return;
 	    }
 	  bool is_source_city = false;
@@ -437,19 +437,18 @@ void VectorMap::mouse_button_event(MouseButtonEvent e)
 	      if (active->changeVectorDestination(city->getPos(), dest) == true)
 		destination_chosen.emit(dest);
 	      setClickAction(CLICK_SELECTS);
-	      draw(active);
+	      draw(Playerlist::getViewingplayer());
 	      if (dest != planted_standard)
 		city = nearestCity;
-	      draw(active);
+	      draw(Playerlist::getViewingplayer());
 	    }
 	  break;
 	}
     }
-
 }
 
 void VectorMap::setCity(City *c)
 {
   city = c;
-  draw(Playerlist::getActiveplayer());
+  draw(Playerlist::getViewingplayer());
 }

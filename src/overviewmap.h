@@ -126,9 +126,6 @@ class OverviewMap : public sigc::trackable
 				Gdk::Color third,
 				int i, int j, bool shadowed);
 
-    Player * getViewingPlayer() {return d_player;};
-    void setViewingPlayer(Player *player) {d_player = player;};
-
     static void draw_pixel(Glib::RefPtr<Gdk::Pixmap> surf, Glib::RefPtr<Gdk::GC> gc, int x, int y, Gdk::Color color);
 
 
@@ -137,6 +134,9 @@ class OverviewMap : public sigc::trackable
     void draw_rect(int x, int y, int width, int height, Gdk::Color color);
 
     void draw_line( int src_x, int src_y, int dst_x, int dst_y, Gdk::Color color);
+
+    //! Make the map go black.
+    void blank(bool on);
 
  private:
     //! An SDL surface of the terrain without the features.
@@ -221,8 +221,8 @@ class OverviewMap : public sigc::trackable
     Glib::RefPtr<Gdk::Pixmap> surface;
     Glib::RefPtr<Gdk::GC> surface_gc;
 
-    Player *d_player;
 
+    bool blank_screen;
 };
 
 #endif // OVERVIEWMAP_H

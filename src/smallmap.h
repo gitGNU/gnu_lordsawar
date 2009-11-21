@@ -107,10 +107,6 @@ public:
     //! Move the view one tile in the given direction.
     void move_map_in_dir(Vector<int> dir);
 
-    //! Make the map go black.
-    void blank();
-
-
     // Signals
  
     // Emitted when the white box is redrawn after a call to SmallMap::set_view.
@@ -157,7 +153,6 @@ private:
      * mouse drags.
      */
     bool input_locked;
-
 };
 
 #endif

@@ -45,9 +45,9 @@ void RuinMap::draw_ruins (bool show_selected)
       it != Ruinlist::getInstance()->end(); it++)
   {
       if ((*it)->isHidden() == true && 
-          (*it)->getOwner() != Playerlist::getInstance()->getActiveplayer())
+          (*it)->getOwner() != Playerlist::getInstance()->getViewingplayer())
         continue;
-      if ((*it)->isVisible(getViewingPlayer()) == false)
+      if ((*it)->isVisible(Playerlist::getViewingplayer()) == false)
         continue;
       PixMask *tmp;
       if ((*it)->isSearched())
@@ -85,7 +85,7 @@ void RuinMap::draw_temples (bool show_selected)
   for (Templelist::iterator it = Templelist::getInstance()->begin();
       it != Templelist::getInstance()->end(); it++)
   {
-      if ((*it)->isVisible(getViewingPlayer()) == false)
+      if ((*it)->isVisible(Playerlist::getViewingplayer()) == false)
         continue;
   
       Vector<int> pos = (*it)->getPos();
@@ -135,7 +135,7 @@ void RuinMap::mouse_button_event(MouseButtonEvent e)
 	{
 	  ruin = nearestRuin;
 	  location_changed.emit (ruin);
-          draw(Playerlist::getActiveplayer());
+          draw(Playerlist::getViewingplayer());
 	}
       else
 	{
@@ -144,7 +144,7 @@ void RuinMap::mouse_button_event(MouseButtonEvent e)
 	    {
 	      ruin = nearestTemple;
 	      location_changed.emit (ruin);
-              draw(Playerlist::getActiveplayer());
+              draw(Playerlist::getViewingplayer());
 	    }
 	}
     }

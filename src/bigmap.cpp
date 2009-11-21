@@ -54,6 +54,7 @@
 #include "MapRenderer.h"
 #include "FogMap.h"
 #include "MapBackpack.h"
+#include "GameScenarioOptions.h"
 
 #include <iostream>
 using namespace std;
@@ -68,6 +69,7 @@ BigMap::BigMap()
 
     d_grid_toggled = false;
 
+    blank_screen = false;
     image = Gtk::Allocation(0, 0, 320, 200);
 }
 
@@ -104,7 +106,7 @@ void BigMap::set_view(Rectangle new_view)
 	if (view_pos != new_view_pos)
 	{
 	    view_pos = new_view_pos;
-	    draw();
+	    draw(Playerlist::getViewingplayer());
 	}
 	
 	return;
@@ -150,11 +152,12 @@ void BigMap::clip_viewable_buffer(Glib::RefPtr<Gdk::Pixmap> pixmap, Glib::RefPtr
     return;
 }
 
-void BigMap::draw(bool redraw_buffer)
+void BigMap::draw(Player *player, bool redraw_buffer)
 {
     // no size and buffer yet, return
     if (!buffer)
         return;
+    Playerlist::getInstance()->setViewingplayer(player);
 
     int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
 
@@ -184,6 +187,17 @@ void BigMap::draw(bool redraw_buffer)
 	clip_viewable_buffer(buffer, buffer_gc, p, outgoing);
       }
 
+    if (blank_screen)
+      {
+	Gdk::Color fog_color = Gdk::Color();
+	fog_color.set_rgb_p(0.0,0.0,0.0);
+	int width = 0;
+	int height = 0;
+	outgoing->get_size(width, height);
+	Glib::RefPtr<Gdk::GC> outgoing_gc = Gdk::GC::create(outgoing);
+	outgoing_gc->set_rgb_fg_color(fog_color);
+	outgoing->draw_rectangle(outgoing_gc, true, 0, 0, width, height);
+      }
     map_changed.emit(outgoing);
 }
 
@@ -338,6 +352,7 @@ void BigMap::draw_stack(Stack *s, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPt
 	{
 	  if (s->getFortified() == true)
 	    {
+	      //We don't show the active stack here.
 	      if (player->getStacklist()->getActivestack() != s &&
 		  player == Playerlist::getActiveplayer())
 		show_army = false;
@@ -369,7 +384,23 @@ void BigMap::draw_stack(Stack *s, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPt
 void BigMap::draw_buffer()
 {
   draw_buffer (buffer_view, buffer, buffer_gc);
-  after_draw();
+    
+  //the idea here is that we want to show what happens when an AI-owned
+  //stack moves through our area.  in lieu of that, we just block everything
+  //if we're a computer player.
+  if (Playerlist::getViewingplayer()->getType() != Player::HUMAN &&
+      GameScenarioOptions::s_hidden_map == true)
+    {
+      int width = 0;
+      int height = 0;
+      buffer->get_size(width, height);
+      Gdk::Color fog_color = Gdk::Color();
+      fog_color.set_rgb_p(0,0,0);
+      buffer_gc->set_rgb_fg_color(fog_color);
+      buffer->draw_rectangle(buffer_gc, true, 0, 0, width, height);
+    }
+  else
+    after_draw();
 
 }
 
@@ -409,12 +440,12 @@ bool BigMap::saveAsBitmap(std::string filename)
 void BigMap::draw_buffer_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context)
 {
   guint32 tilesize = GameMap::getInstance()->getTileset()->getTileSize();
-  Player *active = Playerlist::getActiveplayer();
+  Player *viewing = Playerlist::getViewingplayer();
   GraphicsCache *gc = GraphicsCache::getInstance();
   GameMap *gm = GameMap::getInstance();
   int tile_style_id = gm->getTile(tile)->getTileStyle()->getId();
   int fog_type_id = 0;
-  fog_type_id = active->getFogMap()->getShadeTile(tile);
+  fog_type_id = viewing->getFogMap()->getShadeTile(tile);
 
   bool has_bag = false;
   bool has_standard = false;
@@ -462,10 +493,10 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surfac
   Stack *stack = GameMap::getStack(tile);
   if (stack)
     {
-      if (active->getFogMap()->isCompletelyObscuredFogTile(tile) == false)
+      if (viewing->getFogMap()->isCompletelyObscuredFogTile(tile) == false)
 	{
 	  //selected stack gets drawn in gamebigmap
-	  if (active->getActivestack() != stack)
+	  if (Playerlist::getActiveplayer()->getActivestack() != stack)
 	    {
 	      stack_player_id = stack->getOwner()->getId();
 	      Maptile *m = gm->getTile(tile);
@@ -506,7 +537,7 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surfac
 	case Maptile::RUIN:
 	    {
 	      Ruin *ruin = GameMap::getRuin(tile);
-	      if (ruin->isHidden() == true && ruin->getOwner() == active)
+	      if (ruin->isHidden() == true && ruin->getOwner() == viewing)
 		{
 		  building_tile = tile - ruin->getPos();
 		  building_subtype = ruin->getType();
@@ -579,28 +610,6 @@ void BigMap::draw_buffer(Rectangle map_view, Glib::RefPtr<Gdk::Pixmap> surface, 
   draw_buffer_tiles(map_view, surface, context);
 }
 
-void BigMap::blank ()
-{
-  // fog it up
-  Gdk::Color blank_color = Gdk::Color();
-  blank_color.set_rgb_p(0,0,0);
-  buffer_gc->set_rgb_fg_color(blank_color);
-  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
-  for (int x = buffer_view.x; x < buffer_view.x + buffer_view.w; x++)
-    {
-      for (int y = buffer_view.y; y < buffer_view.y + buffer_view.h; y++)
-	{
-	  if (x < GameMap::getWidth() && y < GameMap::getHeight())
-	    {
-	      Vector<int> p = tile_to_buffer_pos(Vector<int>(x, y));
-	      buffer->draw_rectangle(buffer_gc, true, p.x, p.y, 
-				     tilesize, tilesize);
-	    }
-	}
-    }
-  draw (false);
-}
-
 //here we want to magnify the entire buffer, not a subset
 Glib::RefPtr<Gdk::Pixmap> BigMap::magnify(Glib::RefPtr<Gdk::Pixmap> orig)
 {
@@ -628,6 +637,11 @@ Glib::RefPtr<Gdk::Pixmap> BigMap::magnify(Glib::RefPtr<Gdk::Pixmap> orig)
 void BigMap::toggle_grid()
 {
   d_grid_toggled = !d_grid_toggled;
-  draw(true);
+  draw(Playerlist::getViewingplayer(), true);
 }
 
+void BigMap::blank(bool on)
+{
+  blank_screen = on;
+  draw (Playerlist::getViewingplayer());
+}

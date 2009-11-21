@@ -87,7 +87,7 @@ void EditorBigMap::set_pointer(Pointer p, int size, Tile::Type t,
 
     moving_objects_from = Vector<int>(-1,-1);
     if (redraw)
-      draw();
+      draw(Playerlist::getViewingplayer());
     
 }
 
@@ -183,13 +183,13 @@ void EditorBigMap::mouse_motion_event(MouseMotionEvent e)
 	    redraw_buffer = true;
 	}
 
-	draw(redraw_buffer);
+	draw(Playerlist::getViewingplayer(),redraw_buffer);
 	redraw = false;
 	mouse_state = DRAGGING;
     }
 
     if (redraw && pointer != POINTER)
-	draw();
+	draw(Playerlist::getViewingplayer());
     
     prev_mouse_pos = mouse_pos;
 }
@@ -198,7 +198,7 @@ void EditorBigMap::mouse_leave_event()
 {
     mouse_pos.x = mouse_pos.y = -10000;
     mouse_on_tile.emit(Vector<int>(-100, -100));
-    draw();
+    draw(Playerlist::getViewingplayer());
 }
 
 std::vector<Vector<int> > EditorBigMap::get_screen_tiles()
@@ -615,14 +615,14 @@ void EditorBigMap::change_map_under_cursor()
 	r.dim += Vector<int>(border * 2, border * 2);
 	GameMap::getInstance()->applyTileStyles(r, true);
       }
-    draw();
+    draw(Playerlist::getViewingplayer());
 }
 
 void EditorBigMap::smooth_view()
 {
   GameMap::getInstance()->applyTileStyles(view.y, view.x, view.y+view.h, 
 					  view.x+view.w, true);
-  draw();
+  draw(Playerlist::getViewingplayer());
 }
 
 void EditorBigMap::after_draw()

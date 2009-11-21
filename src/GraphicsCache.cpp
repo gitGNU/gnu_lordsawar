@@ -1043,6 +1043,8 @@ PixMask* GraphicsCache::getTowerPic(const Player* p, guint32 cityset)
 
 PixMask* GraphicsCache::getFlagPic(guint32 stack_size, const Player *p, guint32 tileset)
 {
+  if (stack_size > MAX_STACK_SIZE || p == NULL || tileset == 0)
+    return NULL;
     debug("GraphicsCache::getFlagPic " <<stack_size <<", player" <<p->getId())
 
     std::list<FlagCacheItem*>::iterator it;
@@ -1891,6 +1893,7 @@ FogCacheItem* GraphicsCache::addFogPic(FogCacheItem *item)
   //now create the cache item and add the size
   FogCacheItem* myitem = new FogCacheItem();
   *myitem = *item;
+  myitem->surface = mysurf;
 
   d_foglist.push_back(myitem);
   std::list<FogCacheItem*>::iterator it = d_foglist.end();

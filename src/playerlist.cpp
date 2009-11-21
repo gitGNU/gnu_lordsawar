@@ -52,6 +52,7 @@ using namespace std;
 std::string Playerlist::d_tag = "playerlist";
 Playerlist* Playerlist::s_instance = 0;
 Player* Playerlist::d_activeplayer = 0;
+Player* Playerlist::viewingplayer = 0;
 
 Playerlist* Playerlist::getInstance()
 {
@@ -84,12 +85,14 @@ Playerlist::Playerlist()
     :d_neutral(0)
 {
     d_activeplayer = 0;
+    viewingplayer = 0;
 }
 
 Playerlist::Playerlist(XML_Helper* helper)
     :d_neutral(0)
 {
     d_activeplayer=0;
+    viewingplayer=0;
     //load data. This consists currently of two values: size (for checking
     //the size; we don't use it yet) and active(which player is active)
     //we do it by calling load with playerlist as string
@@ -181,6 +184,7 @@ void Playerlist::nextPlayer()
     }
 
     d_activeplayer = (*it);
+    viewingplayer = (*it);
     debug("got player: " <<d_activeplayer->getName())
 }
 
@@ -274,7 +278,9 @@ bool Playerlist::load(string tag, XML_Helper* helper)
     if (p->getId() == neutral)
         d_neutral = p;
     if (p->getId() == active)
-        d_activeplayer = p;
+      d_activeplayer = p;
+
+    viewingplayer = d_activeplayer;
 
     return true;
 }
@@ -538,6 +544,8 @@ void Playerlist::swap(Player *old_player, Player *new_player)
       d_activeplayer = new_player;
       d_activeplayer->setActivestack(0);
     }
+  if (old_player == viewingplayer)
+    viewingplayer = new_player;
   d_id[new_player->getId()] = new_player;
   /* note, we don't have to change the player associated with flag graphics
      because it's stored as an id. */
@@ -567,6 +575,7 @@ void Playerlist::randomizeOrder()
 {
   sort(randomly);
   d_activeplayer = NULL;
+  viewingplayer = NULL;
 }
 
 void Playerlist::nextRound(bool diplomacy, bool *surrender_already_offered)
@@ -645,6 +654,7 @@ void Playerlist::syncPlayer(GameParameters::Player player)
 
 	  sort(inOrderOfId);
 	  d_activeplayer = getFirstLiving();
+	  viewingplayer = d_activeplayer;
 	}
       return;
     }
@@ -694,6 +704,7 @@ void Playerlist::syncPlayer(GameParameters::Player player)
 
   sort(inOrderOfId);
   d_activeplayer = getFirstLiving();
+  viewingplayer = d_activeplayer;
   return;
 }
 
@@ -813,6 +824,7 @@ void Playerlist::reorder(std::list<guint32> order)
   sort(inGivenOrder);
   given_turn_order.clear();
   d_activeplayer = getFirstLiving();
+  viewingplayer = d_activeplayer;
 }
 
 std::list<History *>Playerlist::getHistoryForHeroId(guint32 id) const

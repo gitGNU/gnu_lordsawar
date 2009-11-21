@@ -1048,13 +1048,10 @@ bool GameWindow::on_smallmap_exposed(GdkEventExpose *event)
   if (window)
     {
       Glib::RefPtr<Gdk::Pixmap> surface = game->get_smallmap().get_surface();
-      int width = 0, height = 0;
-      surface->get_size(width, height);
-
       window->draw_drawable(map_drawingarea->get_style()->get_white_gc(),
-			     surface, event->area.x, event->area.y, 
-			     event->area.x, event->area.y, 
-			     event->area.width, event->area.height);
+			    surface, event->area.x, event->area.y, 
+			    event->area.x, event->area.y, 
+			    event->area.width, event->area.height);
     }
   return true;
 }
@@ -3104,13 +3101,13 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
   Gtk::Dialog* dialog;
 
   on_stack_info_changed(NULL);
-
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 
   d_quick_fights = false;
   show_shield_turn();
   if (player->getType() != Player::HUMAN)
     return;
+      
   if (Configuration::s_showNextPlayer == true)
     {
       Glib::RefPtr<Gtk::Builder> xml

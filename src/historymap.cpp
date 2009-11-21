@@ -52,7 +52,7 @@ void HistoryMap::drawCities()
   for (; it != d_clist->end(); it++)
   {
       PixMask *tmp;
-      if ((*it)->isVisible(getViewingPlayer()) == false)
+      if ((*it)->isVisible(Playerlist::getViewingplayer()) == false)
         continue;
       if ((*it)->isBurnt() == true)
         tmp = gc->getSmallRuinedCityPic();
@@ -68,6 +68,6 @@ void HistoryMap::drawCities()
 void HistoryMap::updateCities (LocationList<City*> *clist)
 {
   d_clist = clist;
-  draw(Playerlist::getActiveplayer());
+  draw(Playerlist::getViewingplayer());
   after_draw();
 }

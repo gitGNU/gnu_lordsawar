@@ -361,6 +361,11 @@ bool Stacklist::load(string tag, XML_Helper* helper)
             d_activestack = s;
         }
 
+	if (s->size() > MAX_STACK_SIZE)
+	  {
+	    cerr << "Stack Id " << s->getId() << " has " <<s->size() <<" army units (over " << MAX_STACK_SIZE << " units)" << endl;
+	  return false;
+	  }
         add(s);
         return true;
     }

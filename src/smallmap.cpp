@@ -45,7 +45,7 @@ void SmallMap::set_view(Rectangle new_view)
     if (view != new_view)
     {
 	view = new_view;
-	draw(Playerlist::getActiveplayer());
+	draw(Playerlist::getViewingplayer());
     }
 }
 
@@ -108,7 +108,14 @@ void SmallMap::center_view_on_pixel(Vector<int> pos, bool slide)
 
 void SmallMap::after_draw()
 {
-  Player *p = getViewingPlayer();
+  int width = 0, height = 0;
+  surface->get_size(width, height);
+  if (blank_screen == true)
+    {
+      map_changed.emit(surface, Gdk::Rectangle(0, 0, width, height));
+      return;
+    }
+  Player *p = Playerlist::getViewingplayer();
   OverviewMap::after_draw();
   if (p->getType() == Player::HUMAN ||
       GameScenarioOptions::s_hidden_map == false)
@@ -122,8 +129,6 @@ void SmallMap::after_draw()
       draw_cities(false);
       draw_selection();
     }
-    int width = 0, height = 0;
-    surface->get_size(width, height);
     map_changed.emit(surface, Gdk::Rectangle(0, 0, width, height));
 }
 
@@ -179,7 +184,7 @@ void SmallMap::slide_view(Rectangle new_view)
 	  tmp_view.y = slide(tmp_view.y, new_view.y);
 
 	  view = tmp_view;
-	  draw(Playerlist::getActiveplayer());
+	  draw(Playerlist::getViewingplayer());
 	  view_slid.emit(view);
 
 	  Glib::usleep(8000);
@@ -187,18 +192,6 @@ void SmallMap::slide_view(Rectangle new_view)
 	    break;
 	}
     }
-}
-
-void SmallMap::blank()
-{
-  Gdk::Color fog_color = Gdk::Color();
-  fog_color.set_rgb_p(0,0,0);
-  int width = 0;
-  int height = 0;
-  surface->get_size(width, height);
-  surface_gc->set_rgb_fg_color(fog_color);
-  surface->draw_rectangle(surface_gc, true, 0,0,width, height);
-  map_changed.emit(surface, Gdk::Rectangle(0, 0, width, height));
 }
 
 void SmallMap::move_map_in_dir(Vector<int> dir)

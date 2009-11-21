@@ -94,7 +94,7 @@ bool Templelist::load(std::string tag, XML_Helper* helper)
 
 static bool isFogged(void *t)
 {
-  return ((Temple*)t)->isVisible(Playerlist::getActiveplayer()) == false;
+  return ((Temple*)t)->isVisible(Playerlist::getViewingplayer()) == false;
 }
 
 Temple * Templelist::getNearestVisibleTemple(const Vector<int>& pos) const

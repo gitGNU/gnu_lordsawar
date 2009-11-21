@@ -35,6 +35,7 @@
 #include "rectangle.h"
 #include "PixMask.h"
 
+class Player;
 class Stack;
 class MapRenderer;
 class Item;
@@ -61,9 +62,7 @@ class BigMap: public sigc::trackable
     virtual ~BigMap();
 
     // draw everything
-    void draw(bool redraw_buffer = true);
-
-    void draw2(Rectangle old_view, bool redraw_buffer = true);
+    void draw(Player *player, bool redraw_buffer = true);
 
     // view the rectangle, measured in tiles
     void set_view(Rectangle rect);
@@ -82,7 +81,7 @@ class BigMap: public sigc::trackable
      * Classes that use BigMap must catch this signal to display the map.
      */
     sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > map_changed;
-    void blank();
+    void blank(bool on);
 
     //! Save the whole map as one big image (bmp file).
     bool saveAsBitmap(std::string filename);
@@ -109,6 +108,7 @@ class BigMap: public sigc::trackable
     Rectangle buffer_view;	// current view of the buffer, in tiles
 
     bool input_locked;
+    bool blank_screen;
 
     bool d_grid_toggled;
     Gtk::Allocation image;

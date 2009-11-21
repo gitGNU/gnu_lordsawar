@@ -112,7 +112,7 @@ void GameBigMap::select_active_stack()
 
 void GameBigMap::unselect_active_stack()
 {
-  draw();
+  draw(Playerlist::getViewingplayer());
   stack_selected.emit(0);
   if (path_calculator)
     {
@@ -126,7 +126,7 @@ bool GameBigMap::on_selection_timeout()
 {
   // redraw to update the selection
   if (Playerlist::getActiveplayer()->getActivestack())
-    draw();
+    draw(Playerlist::getViewingplayer());
 
   return Timing::CONTINUE;
 }
@@ -137,6 +137,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
     return;
 
   Player *active = Playerlist::getActiveplayer();
+  Player *viewing = Playerlist::getViewingplayer();
   Vector<int> tile = mouse_pos_to_tile(e.pos);
   current_tile = tile;
 
@@ -157,7 +158,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    double_clicked = true;
 	  last_clicked = clicked_now;
 	}
-      if (active->getFogMap()->isCompletelyObscuredFogTile(tile) == true)
+      if (viewing->getFogMap()->isCompletelyObscuredFogTile(tile) == true)
 	return;
 
       Stack* stack = Playerlist::getActiveplayer()->getActivestack();
@@ -181,7 +182,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	      if (Ruin *r = GameMap::getRuin(tile))
 		{
 		  if ((r->isHidden() == true && 
-		       r->getOwner() == Playerlist::getActiveplayer()) ||
+		       r->getOwner() == viewing) ||
 		      r->isHidden() == false)
 		    {
 		      set_shift_key_down (false);
@@ -226,7 +227,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	      //set in a course, mr crusher.
 	      stack->getPath()->calculate(stack, tile);
 	      path_set.emit();
-	      draw();
+	      draw(Playerlist::getViewingplayer());
 	      return;
 	    }
 	  Vector<int> p;
@@ -250,7 +251,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		  if (path_calculator)
 		    delete path_calculator;
 		  path_calculator = new PathCalculator(stack);
-		  draw();
+		  draw(Playerlist::getViewingplayer());
 		  stack_grouped_or_ungrouped.emit(stack);
 		  return;
 		}
@@ -259,7 +260,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		  // clear the path
 		  stack->getPath()->clear();
 		  path_set.emit();
-		  draw();
+		  draw(Playerlist::getViewingplayer());
 		  return;
 		}
 	    }
@@ -347,7 +348,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 
 	  path_set.emit();
 
-	  draw();
+	  draw(Playerlist::getViewingplayer());
 	}
       // Stack hasn't been active yet
       else
@@ -384,8 +385,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		}
 	      else if (Ruin *r = GameMap::getRuin(tile))
 		{
-		  if ((r->isHidden() == true && 
-		       r->getOwner() == Playerlist::getActiveplayer()) ||
+		  if ((r->isHidden() == true && r->getOwner() == viewing) ||
 		      r->isHidden() == false)
 		    ruin_queried (r, false);
 		}
@@ -441,7 +441,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
     {
       if (e.state == MouseButtonEvent::PRESSED)
 	{
-	  if (active->getFogMap()->isCompletelyObscuredFogTile(tile) == true)
+	  if (viewing->getFogMap()->isCompletelyObscuredFogTile(tile) == true)
 	    return;
 	  if (City* c = GameMap::getCity(tile))
 	    {
@@ -451,7 +451,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	  else if (Ruin* r = GameMap::getRuin(tile))
 	    {
 	      if ((r->isHidden() == true && 
-		   r->getOwner() == Playerlist::getActiveplayer()) ||
+		   r->getOwner() == Playerlist::getViewingplayer()) ||
 		  r->isHidden() == false)
 		{
 		  ruin_queried (r, true);
@@ -576,7 +576,8 @@ void GameBigMap::zoom_out()
 void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 {
   Player *active = Playerlist::getActiveplayer();
-  if (active->getFogMap()->isCompletelyObscuredFogTile(tile))
+  Player *viewing = Playerlist::getViewingplayer();
+  if (viewing->getFogMap()->isCompletelyObscuredFogTile(tile))
     {
       d_cursor = GraphicsCache::HAND;
     }
@@ -741,6 +742,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
     return;
 
   Player *active = Playerlist::getActiveplayer();
+  Player *viewing = Playerlist::getViewingplayer();
   Stack* stack = active->getActivestack();
   Vector<int> tile = mouse_pos_to_tile(e.pos);
   current_tile = tile;
@@ -756,7 +758,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 
   if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
       && (mouse_state == NONE || mouse_state == SHOWING_STACK) && 
-      stack && stack->getPos() == tile && active->getFogMap()->isCompletelyObscuredFogTile(tile) == false && d_cursor != GraphicsCache::HAND)
+      stack && stack->getPos() == tile && viewing->getFogMap()->isCompletelyObscuredFogTile(tile) == false && d_cursor != GraphicsCache::HAND)
     {
       //initial dragging of stack from it's tile
       mouse_state = DRAGGING_STACK;
@@ -794,10 +796,10 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	  view.x = new_view.x;
 	  view.y = new_view.y;
 	  view_changed.emit(view);
-	  draw(true);
+	  draw(Playerlist::getViewingplayer(),true);
 	}
       else
-	draw(false);
+	draw(Playerlist::getViewingplayer(), false);
       mouse_state = DRAGGING_MAP;
     }
 
@@ -811,7 +813,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
   // drag stack with left mouse button
   if (e.pressed[MouseMotionEvent::LEFT_BUTTON]
       && (mouse_state == DRAGGING_STACK || mouse_state == DRAGGING_ENDPOINT) && 
-      active->getFogMap()->isCompletelyObscuredFogTile(tile) == false)
+      viewing->getFogMap()->isCompletelyObscuredFogTile(tile) == false)
     {
       //subsequent dragging
       //alright.  calculate the path, and show it but don't move
@@ -849,7 +851,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	  delete new_path;
 	  //stack->getPath()->calculate(stack, tile);
 	  path_set.emit();
-	  draw();
+	  draw(Playerlist::getViewingplayer());
 	}
     }
 
@@ -867,7 +869,7 @@ void GameBigMap::reset_zoom()
 {
   magnification_factor = 1.0;
   screen_size_changed(image);
-  draw(true);
+  draw(Playerlist::getViewingplayer(), true);
   view_changed.emit(view);
 }
 
@@ -880,12 +882,14 @@ void GameBigMap::zoom_view(double percent)
   //new_view.pos += Vector<int>(tiles*-1/2, tiles*-1/2);
   //set_view (new_view);
   screen_size_changed(image);
-  draw(true);
+  draw(Playerlist::getViewingplayer(), true);
   view_changed.emit(view);
 }
 
 void GameBigMap::after_draw()
 {
+  if (blank_screen == true)
+    return;
   GraphicsCache *gc = GraphicsCache::getInstance();
   int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
 
@@ -934,10 +938,11 @@ void GameBigMap::after_draw()
 
   if (stack && d_fighting.getPos() == Vector<int>(-1,-1))
     {
+      Player *viewer = Playerlist::getViewingplayer();
       // draw the selection
       Vector<int> p = stack->getPos();
       if (is_inside(buffer_view, Vector<int>(p.x, p.y)) &&
-	  FogMap::isFogged(p, Playerlist::getActiveplayer()) == false)
+	  Playerlist::getViewingplayer()->getFogMap()->isFogged(p) == false)
 	{
 	  static int bigframe = -1;
 	  static int smallframe = -1;
@@ -964,6 +969,14 @@ void GameBigMap::after_draw()
 		tmp = gc->getSelectorPic(1, smallframe, stack->getOwner());
 	      tmp->blit(buffer, p);
 	    }
+	  //now re-fog it up because we just drew over the fog.
+	  if (viewer->getFogMap()->isFogged(stack->getPos()))
+	    {
+	      int fog_type_id = 
+		viewer->getFogMap()->getShadeTile(stack->getPos());
+	      PixMask *fog = gc->getFogPic(fog_type_id);
+	      fog->blit(buffer, p);
+	    }
 	}
     }
 
@@ -985,7 +998,8 @@ void GameBigMap::set_control_key_down (bool down)
 {
   control_key_is_down = down;
   Player *active = Playerlist::getActiveplayer();
-  if (active->getFogMap()->isCompletelyObscuredFogTile(current_tile) == true)
+  Player *viewing = Playerlist::getViewingplayer();
+  if (viewing->getFogMap()->isCompletelyObscuredFogTile(current_tile) == true)
     return;
   Stack* active_stack = active->getActivestack();
   //if the key has been released, just show what we'd normally show.
@@ -1039,7 +1053,8 @@ void GameBigMap::set_shift_key_down (bool down)
 {
   shift_key_is_down = down;
   Player *active = Playerlist::getActiveplayer();
-  if (active->getFogMap()->isCompletelyObscuredFogTile(current_tile) == true)
+  Player *viewing = Playerlist::getViewingplayer();
+  if (viewing->getFogMap()->isCompletelyObscuredFogTile(current_tile) == true)
       return;
 
   Stack* active_stack = active->getActivestack();

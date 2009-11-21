@@ -241,22 +241,6 @@ bool FogMap::isFogged(Vector <int> pos)
   return false;
 }
 
-bool FogMap::isFogged(Vector <int> pos, Player *player)
-{
-  //is this tile visible, or not?
-  FogMap *fogmap = player->getFogMap();
-  if (fogmap->getFogTile(pos) == FogMap::CLOSED)
-    return true;
-
-  if (player->getType() != Player::HUMAN && GameScenarioOptions::s_hidden_map)
-    return true;
-
-  if (fogmap->isLoneFogTile(pos) == true)
-    return false;
-
-  return false;
-}
-
 bool FogMap::isClear(Vector <int> pos, Player *player)
 {
   //is this tile visible, or not?

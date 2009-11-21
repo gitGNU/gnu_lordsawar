@@ -67,6 +67,7 @@ class Game
     ~Game();
 
     void redraw();
+    void blank(bool on);
 
     void select_next_movable_stack();
     void center_selected_stack();

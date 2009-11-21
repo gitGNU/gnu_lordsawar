@@ -279,9 +279,9 @@ GameScenario *Game::getScenario()
   return current_game->d_gameScenario;
 }
 
-
 void Game::end_turn()
 {
+  //only human players hit this.
     unselect_active_stack();
     clear_stack_info();
     update_control_panel();
@@ -339,13 +339,13 @@ void Game::redraw()
 {
     if (bigmap.get())
       {
-	bigmap->draw();
+	bigmap->draw(Playerlist::getViewingplayer());
       }
     if (smallmap.get())
       {
 	//if (Playerlist::getActiveplayer()->getType() == Player::HUMAN ||
 	    //GameScenario::s_hidden_map == false)
-	  smallmap->draw(Playerlist::getActiveplayer());
+	smallmap->draw(Playerlist::getActiveplayer());
       }
 }
 
@@ -1077,6 +1077,8 @@ void Game::loadGame()
 	  lock_inputs();
 	}
     }
+  else
+    lock_inputs();
 
   d_nextTurn->start();
 #if 0
@@ -1102,17 +1104,24 @@ bool Game::saveGame(std::string file)
   return d_gameScenario->saveGame(file);
 }
 
+void Game::blank(bool on)
+{
+  if (GameScenarioOptions::s_hidden_map == true)
+    {
+      bigmap->blank(on);
+      smallmap->blank(on);
+    }
+}
+
 void Game::init_turn_for_player(Player* p)
 {
   Playerlist* pl = Playerlist::getInstance();
 
-  if (GameScenario::s_hidden_map)
-    {
-      smallmap->blank();
-      bigmap->blank();
-    }
+  blank(true);
 
   next_player_turn.emit(p, d_gameScenario->getRound());
+
+  blank(false);
 
   if (p->isObservable() == true)
     center_view_on_city();
@@ -1201,10 +1210,10 @@ void Game::on_fight_started(Fight &fight)
 	smallmap->center_view_on_tile(pos, true);
       LocationBox box = Fight::calculateFightBox(fight);
       bigmap->setFighting(box);
-      bigmap->draw();
+      bigmap->draw(Playerlist::getViewingplayer());
       fight_started.emit(fight);
       bigmap->setFighting(LocationBox(Vector<int>(-1,-1)));
-      bigmap->draw();
+      bigmap->draw(Playerlist::getViewingplayer());
     }
 }
 

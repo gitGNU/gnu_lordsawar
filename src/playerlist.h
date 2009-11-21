@@ -53,9 +53,11 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	//! Set the winning human player.
 	void setWinningPlayer(Player *winner);
 
-	//! only the scenario editor should use this.
+	//! Set the player who's turn it is.  should only be used by the editor.
 	void setActiveplayer(Player *p) {d_activeplayer = p;};
 
+	//! set the player who is looking at the bigmap and smallmap.
+	void setViewingplayer(Player *p) {viewingplayer = p;};
 
 	//! Get Methods
 
@@ -271,6 +273,9 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         //! Returns the active player (the Player whose turn it is).
         static Player* getActiveplayer() {return d_activeplayer;}
 
+        //! Returns the viewing player (the Player who is looking at maps).
+	static Player *getViewingplayer() {return viewingplayer;}
+
     protected:
 
 	//! Default constructor.
@@ -305,6 +310,9 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 
 	//! The pointer to the player whose turn it is in the list.
         static Player* d_activeplayer;
+
+	//! The player that the smallmap and bigmap are being viewed as.
+	static Player *viewingplayer;
 
 	//! The pointer to the neutral player in the list.
         Player* d_neutral;

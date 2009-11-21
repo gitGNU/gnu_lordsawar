@@ -39,7 +39,7 @@
 
 OverviewMap::OverviewMap()
 {
-    d_player = Playerlist::getActiveplayer();
+  blank_screen = false;
 }
 
 OverviewMap::~OverviewMap()
@@ -380,7 +380,7 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
 
 	draw_terrain_tiles(Rectangle(pos, dim));
     }
-    draw(d_player);
+    draw(Playerlist::getViewingplayer());
 }
 
 void OverviewMap::draw_terrain_tiles(Rectangle r)
@@ -412,7 +412,7 @@ void OverviewMap::after_draw()
 
 void OverviewMap::draw(Player *player)
 {
-    d_player = player;
+    Playerlist::getInstance()->setViewingplayer(player);
     int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
     assert(surface);
 
@@ -437,9 +437,10 @@ void OverviewMap::draw(Player *player)
         it != Ruinlist::getInstance()->end(); it++)
     {
         Ruin *r = *it;
-        if (r->isHidden() == true && r->getOwner() != d_player)
+        if (r->isHidden() == true && 
+	    r->getOwner() != Playerlist::getViewingplayer())
           continue;
-        if (r->isVisible(d_player) == false)
+        if (r->isVisible(Playerlist::getViewingplayer()) == false)
           continue;
         Vector<int> pos = r->getPos();
         pos = mapToSurface(pos);
@@ -454,7 +455,7 @@ void OverviewMap::draw(Player *player)
         it != Templelist::getInstance()->end(); it++)
     {
       Temple *t = *it;
-        if (t->isVisible(d_player) == false)
+        if (t->isVisible(Playerlist::getViewingplayer()) == false)
           continue;
         Vector<int> pos = t->getPos();
         pos = mapToSurface(pos);
@@ -471,24 +472,38 @@ void OverviewMap::draw(Player *player)
           Vector <int> pos;
           pos.x = i;
           pos.y = j;
-          if (FogMap::isFogged(pos, d_player) == true)
+          if (Playerlist::getViewingplayer()->getFogMap()->isFogged(pos) == true)
             {
               pos = mapToSurface(pos);
               draw_filled_rect(true, pos.x, pos.y, size, size, fog_color);
             }
         }
 
-    // let derived classes do their job
-    after_draw();
-
-    if (d_player->getType() != Player::HUMAN &&
-	GameScenarioOptions::s_hidden_map)
+    //the idea here is that we want to show what happens when an AI-owned
+    //stack moves through our area.  so we block the view of computer
+    //players after the fact.
+    if (Playerlist::getViewingplayer()->getType() != Player::HUMAN &&
+       	GameScenarioOptions::s_hidden_map == true)
       {
 	int width = 0;
 	int height = 0;
 	surface->get_size(width, height);
-	draw_rect(true, 0, 0, width, height, fog_color);
+	draw_filled_rect(true, 0, 0, width, height, fog_color);
       }
+
+  if (blank_screen)
+    {
+      Gdk::Color fog_color = Gdk::Color();
+      fog_color.set_rgb_p(0.0,0.0,0.0);
+      int width = 0;
+      int height = 0;
+      surface->get_size(width, height);
+      surface_gc->set_rgb_fg_color(fog_color);
+      surface->draw_rectangle(surface_gc, true, 0,0,width, height);
+    }
+    // let derived classes do their job
+    after_draw();
+
 }
 
 Glib::RefPtr<Gdk::Pixmap> OverviewMap::get_surface()
@@ -546,7 +561,7 @@ void OverviewMap::draw_cities (bool all_razed)
   {
       City *c = *it;
       PixMask *tmp;
-      if (c->isVisible(d_player) == false)
+      if (c->isVisible(Playerlist::getViewingplayer()) == false)
         continue;
       if (c->isBurnt() == true || all_razed == true)
         tmp = gc->getSmallRuinedCityPic();
@@ -558,4 +573,10 @@ void OverviewMap::draw_cities (bool all_razed)
       tmp->blit_centered(surface, pos);
 
   }
+}
+
+void OverviewMap::blank(bool on)
+{
+  blank_screen = on;
+  draw(Playerlist::getViewingplayer());
 }

@@ -158,7 +158,7 @@ class FogMap
 	 *
 	 * @return True if the position is obscured due to fog, false if not.
 	 */
-	static bool isFogged(Vector <int> pos, Player *player);
+	//static bool isFogged(Vector <int> pos, Player *player);
 	bool isFogged(Vector <int> pos);
 	static bool isClear(Vector <int> pos, Player *player) ;
 

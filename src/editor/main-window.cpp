@@ -944,7 +944,7 @@ void MainWindow::on_fullscreen_activated()
 void MainWindow::on_tile_graphics_toggled()
 {
   bigmap->toggleViewStylesOrTypes();
-  bigmap->draw();
+  bigmap->draw(Playerlist::getViewingplayer());
 }
 void MainWindow::on_grid_toggled()
 {
@@ -1568,7 +1568,7 @@ void MainWindow::on_import_map_activated()
       
 void MainWindow::redraw()
 {
-  bigmap->draw();
+  bigmap->draw(Playerlist::getViewingplayer());
   smallmap->draw(Playerlist::getActiveplayer());
 }
 

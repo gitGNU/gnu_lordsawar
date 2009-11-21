@@ -659,7 +659,6 @@ void Player::doStackJoin(Stack* receiver, Stack* joining)
 
 bool Player::stackJoin(Stack* receiver, Stack* joining)
 {
-  printf("doing stackjoin!\n");
     debug("Player::stackJoin("<<receiver->getId()<<","<<joining->getId()<<")")
 
     if ((receiver == 0) || (joining == 0))
