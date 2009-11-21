@@ -322,8 +322,9 @@ int AI_Allocation::defaultStackMovements()
   for (Stacklist::iterator it = d_stacks->begin(); it != d_stacks->end(); ++it)
     {
 	Stack* s = *it;
-	debug("thinking about stack " << s->getId() <<" at ("<<s->getPos().x<<","<<s->getPos().y<<")")
-	d_owner->getStacklist()->setActivestack(GameMap::getStack(s->getPos()));
+	debug("thinking about stack " << s->getId() <<" at ("<<s->getPos().x<<","<<s->getPos().y<<")");
+	Stack *mapstack = GameMap::getStack(s->getPos());
+	d_owner->getStacklist()->setActivestack(mapstack);
 	s = d_owner->getActivestack();
 	if (s->size() >= MAX_STACK_SIZE)
 	  {
@@ -336,11 +337,12 @@ int AI_Allocation::defaultStackMovements()
 		      << mp << " movement points away")
 		if (mp > 0)
 		  {
+		    guint32 stack_id = s->getId();
 		    d_owner->getStacklist()->setActivestack(s);
 		    moved = d_owner->stackMove(s);
 		    if (d_owner->getActivestack() == NULL)
 		      {
-			d_stacks->flRemove((*it)->getId());
+			d_stacks->flRemove(stack_id);
 			break;
 		      }
 		    else if (s->getId() !=d_owner->getActivestack()->getId())
@@ -364,11 +366,12 @@ int AI_Allocation::defaultStackMovements()
 		    int mp = s->getPath()->calculateToCity(s, enemyCity);
 		    if (mp > 0)
 		      {
+			guint32 stack_id = s->getId();
 			d_owner->getStacklist()->setActivestack(s);
 			moved = d_owner->stackMove(s);
 			if (d_owner->getStacklist()->getActivestack() == NULL)
 			  {
-			    d_stacks->flRemove((*it)->getId());
+			    d_stacks->flRemove(stack_id);
 			    break;
 			  }
 			else if (s->getId() != d_owner->getStacklist()->getActivestack()->getId())

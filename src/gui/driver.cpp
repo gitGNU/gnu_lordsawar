@@ -63,6 +63,7 @@
 #include "city.h"
 #include "FogMap.h"
 #include "history.h"
+#include "game.h"
 
 Driver::Driver(std::string load_filename)
 {
@@ -824,9 +825,15 @@ void Driver::stress_test()
       game_scenario->initialize(g);
     }
 
+  //this is a bit unfortunate... we have to instantiate images just to get stack positions into the stack tiles.  is there a better way?
+  GameMap::getInstance()->getTileset()->instantiateImages();
+  GameMap::getInstance()->getShieldset()->instantiateImages();
+  GameMap::getInstance()->getCityset()->instantiateImages();
+  guint32 armyset = Playerlist::getInstance()->getNeutral()->getArmyset();
+  Armysetlist::getInstance()->getArmyset(armyset)->instantiateImages();
+  Game game(game_scenario, nextTurn);
   nextTurn->start();
-  delete nextTurn;
-  delete game_scenario;
+  //next turn and game_Scenario get deleted inside game.
 
 }
 	
