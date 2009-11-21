@@ -1,3 +1,3 @@
 MAINTAINERCLEANFILES = Makefile.in
 EXTRA_DIST =  \
-Savefile
+Savefile tile-transition.txt
