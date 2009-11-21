@@ -67,6 +67,7 @@ class StackEditorDialog: public sigc::trackable
     Gtk::TreeViewColumn upkeep_column;
     Gtk::Button *add_button;
     Gtk::Button *remove_button;
+    Gtk::Button *copy_button;
     Gtk::Button *edit_hero_button;
     Gtk::CheckButton *fortified_checkbutton;
 
@@ -75,6 +76,7 @@ class StackEditorDialog: public sigc::trackable
 
     void on_add_clicked();
     void on_remove_clicked();
+    void on_copy_clicked();
     void on_edit_hero_clicked();
     void on_selection_changed();
     void on_fortified_toggled();

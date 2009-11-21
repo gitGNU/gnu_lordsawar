@@ -125,12 +125,15 @@ StackEditorDialog::StackEditorDialog(Stack *s, int m)
 
     xml->get_widget("add_button", add_button);
     xml->get_widget("remove_button", remove_button);
+    xml->get_widget("copy_button", copy_button);
     xml->get_widget("edit_hero_button", edit_hero_button);
 
     add_button->signal_clicked().connect(
 	sigc::mem_fun(this, &StackEditorDialog::on_add_clicked));
     remove_button->signal_clicked().connect(
 	sigc::mem_fun(this, &StackEditorDialog::on_remove_clicked));
+    copy_button->signal_clicked().connect(
+	sigc::mem_fun(this, &StackEditorDialog::on_copy_clicked));
     edit_hero_button->signal_clicked().connect(
 	sigc::mem_fun(this, &StackEditorDialog::on_edit_hero_clicked));
 
@@ -235,6 +238,18 @@ Player *StackEditorDialog::get_selected_player()
   return player;
 }
 
+void StackEditorDialog::on_copy_clicked()
+{
+    Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
+    if (i)
+      {
+	Player *player = get_selected_player();
+	Army *army = (*i)[army_columns.army];
+	add_army(new Army(*army, player));
+      }
+
+    set_button_sensitivity();
+}
 void StackEditorDialog::on_add_clicked()
 {
     SelectArmyDialog d(stack->getOwner(), true);
@@ -313,12 +328,16 @@ void StackEditorDialog::set_button_sensitivity()
     Gtk::TreeIter i = army_treeview->get_selection()->get_selected();
     int armies = army_list->children().size();
     add_button->set_sensitive(armies < max_stack_size);
+    copy_button->set_sensitive(armies < max_stack_size);
     remove_button->set_sensitive(armies > min_size && i);
     if (i)
       {
 	Army *army = (*i)[army_columns.army];
 	if (army->isHero())
-	  edit_hero_button->set_sensitive(true);
+	  {
+	    edit_hero_button->set_sensitive(true);
+	    copy_button->set_sensitive(false);
+	  }
 	else
 	  edit_hero_button->set_sensitive(false);
       }
