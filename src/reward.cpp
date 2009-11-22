@@ -170,7 +170,25 @@ bool Reward_Allies::save(XML_Helper* helper) const
 	
 const guint32 Reward_Allies::getRandomAmountOfAllies()
 {
-  return (rand() % MAX_STACK_SIZE) + 1;
+  int percent = rand() % 100;
+  if (percent < 30)
+    return 1;
+  else if (percent < 50)
+    return 2;
+  else if (percent < 70)
+    return 3;
+  else if (percent < 80)
+    return 4;
+  else if (percent < 85)
+    return 5;
+  else if (percent < 90)
+    return 6;
+  else if (percent < 95)
+    return 7;
+  else if (percent < 100)
+    return 8;
+  else
+    return 1;
 }
 
 const ArmyProto* Reward_Allies::randomArmyAlly()
