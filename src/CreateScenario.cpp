@@ -641,7 +641,7 @@ bool CreateScenario::setupPlayers(bool random_turns,
 
     // Give players some gold to start with
     for (Playerlist::iterator pit = pl->begin(); pit != pl->end(); pit++)
-      (*pit)->setGold(base_gold + ((rand() % 8) * 50));
+      (*pit)->setGold(adjustBaseGold(base_gold));
 
 
     if (random_turns)
@@ -733,22 +733,6 @@ void CreateScenario::getCityDifficulty(int difficulty,
     *number_of_armies_factor = 0;
 }
     
-void CreateScenario::getBaseGold (int difficulty, int *base_gold)
-{
-  if (difficulty < 50)
-    *base_gold = 1600;
-  else if (difficulty < 60)
-    *base_gold = 1200;
-  else if (difficulty < 70)
-    *base_gold = 1000;
-  else if (difficulty < 80)
-    *base_gold = 900;
-  else if (difficulty < 90)
-    *base_gold = 800;
-  else
-    *base_gold = 700;
-}
-
 int CreateScenario::calculateRoadType (Vector<int> t)
 {
     Roadlist *rl = Roadlist::getInstance();

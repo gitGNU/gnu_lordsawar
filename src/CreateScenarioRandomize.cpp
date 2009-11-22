@@ -204,3 +204,63 @@ Reward *CreateScenarioRandomize::getNewRandomReward(bool hidden_ruins)
     reward->setName(reward->getDescription());
   return reward;
 }
+
+int CreateScenarioRandomize::adjustBaseGold (int base_gold)
+{
+  int gold = base_gold + ((rand() % 7) - 4);
+  if (gold < 0)
+    gold = 0;
+  return gold;
+}
+
+void CreateScenarioRandomize::getBaseGold (int difficulty, int *base_gold)
+{
+  if (difficulty < 50)
+    *base_gold = 131;
+  else if (difficulty < 60)
+    *base_gold = 129;
+  else if (difficulty < 70)
+    *base_gold = 127;
+  else if (difficulty < 80)
+    *base_gold = 125;
+  else if (difficulty < 90)
+    *base_gold = 123;
+  else
+    *base_gold = 121;
+}
+
+std::string CreateScenarioRandomize::getPlayerName(Shield::Colour id)
+{
+  std::string name = "";
+  switch (id)
+    {
+    case Shield::WHITE: 
+      name = _("The Sirians");
+      break;
+    case Shield::GREEN: 
+      name = _("Elvallie");
+      break;
+    case Shield::YELLOW: 
+      name = _("Storm Giants");
+      break;
+    case Shield::LIGHT_BLUE: 
+      name = _("The Selentines");
+      break;
+    case Shield::ORANGE: 
+      name = _("Grey Dwarves");
+      break;
+    case Shield::DARK_BLUE: 
+      name = _("Horse Lords");
+      break;
+    case Shield::RED:
+      name = _("Orcs of Kor");
+      break;
+    case Shield::BLACK:
+      name = _("Lord Bane");
+      break;
+    case Shield::NEUTRAL:
+      name = _("Neutrals");
+      break;
+    }
+  return name;
+}

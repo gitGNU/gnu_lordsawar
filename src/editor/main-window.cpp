@@ -465,7 +465,8 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
       Armysetlist::getInstance()->getArmyset(armyset)->getId();
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
     Shieldset *ss = ssl->getShieldset(shieldset);
-    Player* neutral = new AI_Dummy(_("Neutral"), armyset_id, 
+    std::string name = d_create_scenario_names->getPlayerName(Shield::NEUTRAL);
+    Player* neutral = new AI_Dummy(name, armyset_id, 
 				   ssl->getColor(ss->getId(), MAX_PLAYERS), 
 				   width, height, MAX_PLAYERS);
     neutral->setType(Player::AI_DUMMY);
@@ -513,7 +514,8 @@ void MainWindow::set_random_map(int width, int height,
       Armysetlist::getInstance()->getArmyset(armyset)->getId();
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
     Shieldset *ss = ssl->getShieldset(shieldset);
-    Player* neutral = new AI_Dummy(_("Neutral"), armyset_id, 
+    std::string name = d_create_scenario_names->getPlayerName(Shield::NEUTRAL);
+    Player* neutral = new AI_Dummy(name, armyset_id, 
 				   ssl->getColor(ss->getId(), MAX_PLAYERS), 
 				   width, height, MAX_PLAYERS);
     neutral->setType(Player::AI_DUMMY);
@@ -911,7 +913,7 @@ void MainWindow::on_quit_activated()
 
 void MainWindow::on_edit_players_activated()
 {
-    PlayersDialog d(d_width, d_height);
+    PlayersDialog d(d_create_scenario_names, d_width, d_height);
     d.set_parent_window(*window);
     Player *active = Playerlist::getActiveplayer();
     int response = d.run();

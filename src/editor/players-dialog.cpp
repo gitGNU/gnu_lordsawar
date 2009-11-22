@@ -35,12 +35,11 @@
 #include "player.h"
 #include "ucompose.hpp"
 #include "game-parameters.h"
+#include "CreateScenarioRandomize.h"
 
 
 namespace
 {
-    const int default_gold = 1000;
-
     Glib::ustring player_type_to_string(guint32 type)
     {
 	switch (type)
@@ -53,7 +52,7 @@ namespace
     }
 }
 
-PlayersDialog::PlayersDialog(int width, int height)
+PlayersDialog::PlayersDialog(CreateScenarioRandomize *random, int width, int height)
   : type_column(_("Type"), type_renderer),
     gold_column(_("Gold"), gold_renderer),
     name_column(_("Name"), name_renderer)
@@ -111,14 +110,14 @@ PlayersDialog::PlayersDialog(int width, int height)
   player_treeview->append_column(gold_column);
 
   // add default players
-  default_player_names.push_back(_("The Sirians"));
-  default_player_names.push_back(_("Elvallie"));
-  default_player_names.push_back(_("Storm Giants"));
-  default_player_names.push_back(_("The Selentines"));
-  default_player_names.push_back(_("Grey Dwarves"));
-  default_player_names.push_back(_("Horse Lords"));
-  default_player_names.push_back(_("Orcs of Kor"));
-  default_player_names.push_back(_("Lord Bane"));
+  default_player_names.push_back(random->getPlayerName(Shield::WHITE));
+  default_player_names.push_back(random->getPlayerName(Shield::GREEN));
+  default_player_names.push_back(random->getPlayerName(Shield::YELLOW));
+  default_player_names.push_back(random->getPlayerName(Shield::LIGHT_BLUE));
+  default_player_names.push_back(random->getPlayerName(Shield::ORANGE));
+  default_player_names.push_back(random->getPlayerName(Shield::DARK_BLUE));
+  default_player_names.push_back(random->getPlayerName(Shield::RED));
+  default_player_names.push_back(random->getPlayerName(Shield::BLACK));
 
   Playerlist *pl = Playerlist::getInstance();
 
@@ -143,7 +142,10 @@ PlayersDialog::PlayersDialog(int width, int height)
       }
     else
       {
-	add_player(NO_PLAYER_TYPE, *current_name, default_gold, 0);
+	int gold = 0;
+	random->getBaseGold(100, &gold);
+	gold = random->adjustBaseGold(gold);
+	add_player(NO_PLAYER_TYPE, *current_name, gold, 0);
 	++current_name;
       }
 }

@@ -35,6 +35,7 @@
 #include "ucompose.hpp"
 #include "GameMap.h"
 #include "GameScenarioOptions.h"
+#include "CreateScenarioRandomize.h"
 
 
 NewRandomMapDialog::NewRandomMapDialog()
@@ -326,33 +327,34 @@ void NewRandomMapDialog::on_tile_size_changed()
 
 GameParameters NewRandomMapDialog::getParams()
 {
+  CreateScenarioRandomize random;
   GameParameters g;
   GameParameters::Player p;
   p.type = GameParameters::Player::HUMAN;
   g.players.clear();
-  p.name = _("The Sirians");
-  p.id = 0;
+  p.name = random.getPlayerName(Shield::WHITE);
+  p.id = int(Shield::WHITE);
   g.players.push_back(p);
-  p.name = _("Elvallie");
-  p.id = 1;
+  p.id = int(Shield::GREEN);
+  p.name = random.getPlayerName(Shield::Colour(p.id));
   g.players.push_back(p);
-  p.name = _("Storm Giants");
-  p.id = 2;
+  p.id = int(Shield::YELLOW);
+  p.name = random.getPlayerName(Shield::Colour(p.id));
   g.players.push_back(p);
-  p.name = _("The Selentines");
-  p.id = 3;
+  p.id = int(Shield::LIGHT_BLUE);
+  p.name = random.getPlayerName(Shield::Colour(p.id));
   g.players.push_back(p);
-  p.name = _("Grey Dwarves");
-  p.id = 4;
+  p.id = int(Shield::ORANGE);
+  p.name = random.getPlayerName(Shield::Colour(p.id));
   g.players.push_back(p);
-  p.name = _("Horse Lords");
-  p.id = 5;
+  p.id = int(Shield::DARK_BLUE);
+  p.name = random.getPlayerName(Shield::Colour(p.id));
   g.players.push_back(p);
-  p.name = _("Orcs of Kor");
-  p.id = 6;
+  p.id = int(Shield::RED);
+  p.name = random.getPlayerName(Shield::Colour(p.id));
   g.players.push_back(p);
-  p.name = _("Lord Bane");
-  p.id = 7;
+  p.id = int(Shield::BLACK);
+  p.name = random.getPlayerName(Shield::Colour(p.id));
   g.players.push_back(p);
 
   g.map_path = "";

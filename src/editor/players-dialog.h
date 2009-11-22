@@ -25,12 +25,13 @@
 #include <gtkmm.h>
 
 class Player;
+class CreateScenarioRandomize;
 
 //! Scenario editor.  Edit Player objects in the scenario.
 class PlayersDialog
 {
  public:
-    PlayersDialog(int width, int height);
+    PlayersDialog(CreateScenarioRandomize *randomizer, int width, int height);
     ~PlayersDialog();
 
     void set_parent_window(Gtk::Window &parent);

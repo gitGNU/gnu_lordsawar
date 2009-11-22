@@ -24,6 +24,7 @@
 #include <gtkmm.h>
 #include "game-parameters.h"
 #include "namelist.h"
+#include "shield.h"
 
 class Signpost;
 class Army;
@@ -55,6 +56,16 @@ class CreateScenarioRandomize
 	int getNumSignposts() {return d_signposts->size();}
 	Army * getRandomRuinKeeper(Player *p);
 	Reward *getNewRandomReward(bool hidden_ruins);
+
+
+	//! Based on the difficulty, get how much gold each player should
+	//start with.
+	void getBaseGold (int difficulty, int *base_gold);
+
+	int adjustBaseGold (int base_gold);
+
+	//! Get the default player name for the given shield colour.
+	std::string getPlayerName(Shield::Colour id);
 
     private:
 

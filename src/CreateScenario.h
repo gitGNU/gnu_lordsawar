@@ -228,10 +228,6 @@ class CreateScenario : public CreateScenarioRandomize
 	//players do not have to pay for more armies.
 	void getCityDifficulty (int difficulty, int *number_of_armies_factor);
 
-	//! Based on the difficulty, get how much gold each player should
-	//start with.
-	void getBaseGold (int difficulty, int *base_gold);
-
 	void on_progress(double percent, std::string description);
 
         //data

@@ -622,8 +622,9 @@ Driver::create_and_dump_scenario(const std::string &file, const GameParameters &
     }
 
 	
+    CreateScenarioRandomize random;
     // the neutral player must come last so it has the highest id among players
-    creator.addNeutral(_("Neutral"), army_id, 
+    creator.addNeutral(random.getPlayerName(Shield::NEUTRAL), army_id, 
 		       ssl->getColor(id, MAX_PLAYERS), Player::AI_DUMMY);
 
     // now fill in some map information
