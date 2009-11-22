@@ -156,9 +156,10 @@ class GameScenario: public GameScenarioOptions
 	   * @return true if all went well, false otherwise.
 	   */
 	  bool load(std::string tag, XML_Helper* helper);
-	  void quickStart();
+	  void quickStartEvenlyDivided();
+	  void quickStartAIHeadStart();
 	  bool setupFog(bool hidden_map);
-	  bool setupCities(bool quick_start);
+	  bool setupCities(GameParameters::QuickStartPolicy quick_start);
 	  bool setupRewards(bool hidden_map);
 	  bool setupMapRewards();
 	  bool setupRuinRewards();

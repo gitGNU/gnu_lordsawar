@@ -223,7 +223,7 @@ GameScenario::GameScenario(XML_Helper &helper, bool& broken)
   broken = loadWithHelper(helper);
 }
 
-void GameScenario::quickStart()
+void GameScenario::quickStartEvenlyDivided()
 {
   Playerlist *plist = Playerlist::getInstance();
   Citylist *clist = Citylist::getInstance();
@@ -256,6 +256,58 @@ void GameScenario::quickStart()
 	  if (!p)
 	    continue;
 	  if (p == plist->getNeutral())
+	    continue;
+	  pos = clist->getFirstCity(p)->getPos();
+	  City *c = clist->getNearestNeutralCity(pos);
+	  if (c)
+	    {
+	      //does the city contain any stacks yet?
+	      //change their allegience to us.
+	      for (unsigned int x = 0 ; x < c->getSize(); x++)
+		{
+		  for (unsigned int y = 0; y < c->getSize(); y++)
+		    {
+		      StackTile *stile = 
+			GameMap::getStacks(c->getPos() + Vector<int>(x,y));
+		      std::list<Stack*> stks = stile->getStacks();
+		      for (std::list<Stack *>::iterator i = stks.begin(); 
+			   i != stks.end(); i++)
+			Stacklist::changeOwnership(*i, p);
+		    }
+		}
+
+	      //now give the city to us.
+	      c->conquer(p);
+	      History_CityWon *item = new History_CityWon();
+	      item->fillData(c);
+	      p->addHistory(item);
+	    }
+	}
+    }
+}
+
+void GameScenario::quickStartAIHeadStart()
+{
+  float head_start_factor = 0.05;
+  //each AI player gets this percent of total cities.
+
+  Playerlist *plist = Playerlist::getInstance();
+  Citylist *clist = Citylist::getInstance();
+  Vector <int> pos;
+
+  unsigned int citycount = clist->size() * head_start_factor;
+  if (citycount == 0)
+    citycount = 1;
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    {
+      for (unsigned int j = 0; j < citycount; j++)
+	{
+	  Player *p = plist->getPlayer(i);
+	  if (!p)
+	    continue;
+	  if (p == plist->getNeutral())
+	    continue;
+	  if (p->getType() == Player::HUMAN)
 	    continue;
 	  pos = clist->getFirstCity(p)->getPos();
 	  City *c = clist->getNearestNeutralCity(pos);
@@ -403,7 +455,7 @@ bool GameScenario::setupRewards(bool hidden_map)
   return true;
 }
 
-bool GameScenario::setupCities(bool quick_start)
+bool GameScenario::setupCities(GameParameters::QuickStartPolicy quick_start)
 {
   debug("GameScenario::setupCities")
 
@@ -422,8 +474,10 @@ bool GameScenario::setupCities(bool quick_start)
 	}
     }
 
-  if (quick_start)
-    quickStart();
+  if (quick_start == GameParameters::EVENLY_DIVIDED)
+    quickStartEvenlyDivided();
+  else if (quick_start == GameParameters::AI_HEAD_START)
+    quickStartAIHeadStart();
 
   for (Citylist::iterator it = Citylist::getInstance()->begin();
        it != Citylist::getInstance()->end(); it++)

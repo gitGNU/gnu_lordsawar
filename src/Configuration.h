@@ -111,7 +111,7 @@ class Configuration : public sigc::trackable
         static bool s_intense_combat;
         static bool s_military_advisor;
         static bool s_random_turns;
-        static bool s_quick_start;
+        static GameParameters::QuickStartPolicy s_quick_start;
         static bool s_cusp_of_war;
         static bool s_decorated;
         static bool s_remember_recent_games;
@@ -128,6 +128,8 @@ class Configuration : public sigc::trackable
 	};
 	static Configuration::SavingPolicy savingPolicyFromString(const std::string str);
 	static std::string savingPolicyToString(const Configuration::SavingPolicy policy);
+	static GameParameters::QuickStartPolicy quickStartPolicyFromString(const std::string str);
+	static std::string quickStartPolicyToString(const GameParameters::QuickStartPolicy policy);
     private:
         /** \brief The callback for the XML_Helper
           * 

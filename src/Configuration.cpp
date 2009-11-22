@@ -71,7 +71,7 @@ GameParameters::RazingCities Configuration::s_razing_cities = GameParameters::AL
 bool Configuration::s_intense_combat = false;
 bool Configuration::s_military_advisor = false;
 bool Configuration::s_random_turns = false;
-bool Configuration::s_quick_start = false;
+GameParameters::QuickStartPolicy Configuration::s_quick_start = GameParameters::NO_QUICK_START;
 bool Configuration::s_cusp_of_war = false;
 bool Configuration::s_decorated = true;
 bool Configuration::s_remember_recent_games = true;
@@ -148,7 +148,8 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("intense_combat", s_intense_combat);
     retval &= helper.saveData("military_advisor", s_military_advisor);
     retval &= helper.saveData("random_turns", s_random_turns);
-    retval &= helper.saveData("quick_start", s_quick_start);
+    std::string quick_start_str = quickStartPolicyToString(GameParameters::QuickStartPolicy(s_quick_start));
+    retval &= helper.saveData("quick_start", quick_start_str);
     retval &= helper.saveData("cusp_of_war", s_cusp_of_war);
     retval &= helper.saveData("decorated", s_decorated);
     retval &= helper.saveData("remember_recent_games", s_remember_recent_games);
@@ -267,7 +268,9 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     helper->getData(s_intense_combat, "intense_combat");
     helper->getData(s_military_advisor, "military_advisor");
     helper->getData(s_random_turns, "random_turns");
-    helper->getData(s_quick_start, "quick_start");
+    std::string quick_start_str;
+    helper->getData(quick_start_str, "quick_start");
+    s_quick_start = quickStartPolicyFromString(quick_start_str);
     helper->getData(s_cusp_of_war, "cusp_of_war");
     helper->getData(s_decorated, "decorated");
     helper->getData(s_remember_recent_games, "remember_recent_games");
@@ -443,4 +446,35 @@ Configuration::SavingPolicy Configuration::savingPolicyFromString(std::string st
     return Configuration::WRITE_NUMBERED_AUTOSAVE_FILE;
     
   return Configuration::WRITE_NUMBERED_AUTOSAVE_FILE;
+}
+
+std::string Configuration::quickStartPolicyToString(const GameParameters::QuickStartPolicy policy)
+{
+  switch (policy)
+    {
+    case GameParameters::NO_QUICK_START:
+      return "GameParameters::NO_QUICK_START";
+      break;
+    case GameParameters::EVENLY_DIVIDED:
+      return "GameParameters::EVENLY_DIVIDED";
+      break;
+    case GameParameters::AI_HEAD_START:
+      return "GameParameters::AI_HEAD_START";
+      break;
+    }
+  return "GameParameters::NO_QUICK_START";
+}
+
+GameParameters::QuickStartPolicy Configuration::quickStartPolicyFromString(std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return GameParameters::QuickStartPolicy(atoi(str.c_str()));
+  if (str == "GameParameters::NO_QUICK_START")
+    return GameParameters::NO_QUICK_START;
+  else if (str == "GameParameters::EVENLY_DIVIDED")
+    return GameParameters::EVENLY_DIVIDED;
+  else if (str == "GameParameters::AI_HEAD_START")
+    return GameParameters::AI_HEAD_START;
+    
+  return GameParameters::NO_QUICK_START;
 }

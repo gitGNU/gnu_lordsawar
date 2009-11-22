@@ -53,7 +53,7 @@ GameOptionsDialog::GameOptionsDialog(bool readonly)
     xml->get_widget("diplomacy_checkbutton", diplomacy_checkbutton);
     xml->get_widget("military_advisor_checkbutton", 
                     military_advisor_checkbutton);
-    xml->get_widget("quick_start_checkbutton", quick_start_checkbutton);
+    xml->get_widget("quick_start_combobox", quick_start_combobox);
     xml->get_widget("cusp_of_war_checkbutton", cusp_of_war_checkbutton);
     xml->get_widget("intense_combat_checkbutton", intense_combat_checkbutton);
     xml->get_widget("random_turns_checkbutton", random_turns_checkbutton);
@@ -78,7 +78,7 @@ void GameOptionsDialog::fill_in_options()
     razing_cities_combobox->set_active(int(GameScenarioOptions::s_razing_cities));
     diplomacy_checkbutton->set_active(GameScenarioOptions::s_diplomacy);
     military_advisor_checkbutton->set_active(GameScenarioOptions::s_military_advisor);
-    quick_start_checkbutton->set_active(Configuration::s_quick_start);
+    quick_start_combobox->set_active(Configuration::s_quick_start);
     cusp_of_war_checkbutton->set_active(GameScenarioOptions::s_cusp_of_war);
     cusp_of_war_checkbutton->set_sensitive(diplomacy_checkbutton->get_active());
     intense_combat_checkbutton->set_active(GameScenarioOptions::s_intense_combat);
@@ -142,9 +142,9 @@ bool GameOptionsDialog::run()
        (sigc::mem_fun
 	(this, &GameOptionsDialog::on_random_turns_checkbutton_clicked)));
     connections.push_back
-      (quick_start_checkbutton->signal_clicked().connect
+      (quick_start_combobox->signal_changed().connect
        (sigc::mem_fun
-	(this, &GameOptionsDialog::on_quick_start_checkbutton_clicked)));
+	(this, &GameOptionsDialog::on_quick_start_combobox_changed)));
     connections.push_back
       (intense_combat_checkbutton->signal_clicked().connect
        (sigc::mem_fun
@@ -181,7 +181,8 @@ bool GameOptionsDialog::run()
     GameScenarioOptions::s_diplomacy = g.diplomacy;
     g.random_turns = random_turns_checkbutton->get_active();
     GameScenarioOptions::s_random_turns = g.random_turns;
-    g.quick_start = quick_start_checkbutton->get_active();
+    g.quick_start = GameParameters::QuickStartPolicy(
+	quick_start_combobox->get_active_row_number());
     Configuration::s_quick_start = g.quick_start;
     g.cusp_of_war = cusp_of_war_checkbutton->get_active();
     GameScenarioOptions::s_cusp_of_war = g.cusp_of_war;
@@ -260,9 +261,11 @@ void GameOptionsDialog::on_random_turns_checkbutton_clicked()
 {
   GameScenarioOptions::s_random_turns = random_turns_checkbutton->get_active();
 }
-void GameOptionsDialog::on_quick_start_checkbutton_clicked()
+void GameOptionsDialog::on_quick_start_combobox_changed()
 {
-  Configuration::s_quick_start = quick_start_checkbutton->get_active();
+  Configuration::s_quick_start = GameParameters::QuickStartPolicy
+    (quick_start_combobox->get_active_row_number());
+  difficulty_option_changed.emit();
 }
 void GameOptionsDialog::on_intense_combat_checkbutton_clicked()
 {

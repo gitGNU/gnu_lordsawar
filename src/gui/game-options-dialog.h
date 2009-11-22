@@ -56,7 +56,7 @@ class GameOptionsDialog: public Decorated
     Gtk::CheckButton *intense_combat_checkbutton;
     Gtk::CheckButton *military_advisor_checkbutton;
     Gtk::CheckButton *random_turns_checkbutton;
-    Gtk::CheckButton *quick_start_checkbutton;
+    Gtk::ComboBox *quick_start_combobox;
     Gtk::CheckButton *cusp_of_war_checkbutton;
     void fill_in_options();
     void on_view_enemies_checkbutton_clicked();
@@ -68,7 +68,7 @@ class GameOptionsDialog: public Decorated
     void on_diplomacy_checkbutton_clicked();
     void on_cusp_of_war_checkbutton_clicked();
     void on_random_turns_checkbutton_clicked();
-    void on_quick_start_checkbutton_clicked();
+    void on_quick_start_combobox_changed();
     void on_intense_combat_checkbutton_clicked();
     void on_military_advisor_checkbutton_clicked();
     bool d_readonly;

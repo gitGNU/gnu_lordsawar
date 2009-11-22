@@ -144,7 +144,7 @@ void Driver::run()
       g.razing_cities = GameParameters::ALWAYS;
       g.diplomacy = false;
       g.random_turns = false;
-      g.quick_start = false;
+      g.quick_start = GameParameters::NO_QUICK_START;
       g.intense_combat = false;
       g.military_advisor = false;
       g.army_theme = "default";
@@ -789,7 +789,7 @@ void Driver::stress_test()
   g.razing_cities = GameParameters::ALWAYS;
   g.diplomacy = false;
   g.random_turns = false;
-  g.quick_start = false;
+  g.quick_start = GameParameters::NO_QUICK_START;
   g.intense_combat = false;
   g.military_advisor = false;
   g.army_theme = "default";
