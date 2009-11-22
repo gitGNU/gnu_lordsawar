@@ -21,6 +21,9 @@
 #include <cstring>
 #include <cstdlib>
 #include <gnet.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include "network-common.h"
 
@@ -60,6 +63,36 @@ void NetworkConnection::connectToHost(std::string host, int port)
   gnet_conn_connect(conn);
   gnet_conn_set_watch_error(conn, true);
   gnet_conn_timeout(conn, 30 * 1000);
+}
+
+void NetworkConnection::sendFile(MessageType type, const std::string filename)
+{
+  if (gnet_conn_is_connected(conn) == false)
+    return;
+  FILE *fileptr = fopen (filename.c_str(), "r");
+  if (fileptr == NULL)
+    return;
+
+  struct stat statbuf;
+  stat (filename.c_str(), &statbuf);
+  // write the preamble
+  gchar buf[MESSAGE_SIZE_BYTES + MESSAGE_PREAMBLE_EXTRA_BYTES];
+  guint32 l = g_htonl(MESSAGE_PREAMBLE_EXTRA_BYTES + statbuf.st_size);
+  memcpy(buf, &l, MESSAGE_SIZE_BYTES);
+  buf[MESSAGE_SIZE_BYTES] = MESSAGE_PROTOCOL_VERSION;
+  buf[MESSAGE_SIZE_BYTES + 1] = type;
+  
+  gnet_conn_write(conn, buf, MESSAGE_SIZE_BYTES + MESSAGE_PREAMBLE_EXTRA_BYTES);
+
+  std::cerr << "sending file " << type <<" of length " << MESSAGE_PREAMBLE_EXTRA_BYTES + statbuf.st_size << " to " << gnet_inetaddr_get_name(conn->inetaddr) << std::endl;
+  char buffer[1024];
+  size_t bytesread;
+  while (!feof(fileptr))
+    {
+      bytesread = fread (buffer, sizeof (buffer), 1, fileptr);
+      gnet_conn_write(conn, const_cast<gchar *>(buffer), bytesread);
+    }
+  fclose (fileptr);
 }
 
 void NetworkConnection::send(MessageType type, const std::string &payload)

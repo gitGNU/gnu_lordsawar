@@ -58,7 +58,10 @@ void NetworkServer::startListening(int port)
 void NetworkServer::send(void *c, MessageType type, const std::string &payload)
 {
   NetworkConnection *conn = static_cast<NetworkConnection *>(c);
-  conn->send(type, payload);
+  if (type == MESSAGE_TYPE_SENDING_MAP)
+    conn->sendFile(type, payload);
+  else
+    conn->send(type, payload);
 }
 
 

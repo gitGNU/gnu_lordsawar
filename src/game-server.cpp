@@ -645,12 +645,18 @@ void GameServer::sendMap(Participant *part)
     }
 
 
-  // send the map
-  std::ostringstream os;
-  XML_Helper helper(&os);
-  d_game_scenario->saveWithHelper(helper);
+  // send the map, and save it to a file somewhere temporarily
+  std::string tmpfile = "lw.XXXX";
+  int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
+  close(fd);
+  File::erase(tmpfile);
+  tmpfile += ".sav";
+
+  d_game_scenario->saveGame(tmpfile, "sav");
+
   std::cerr << "sending map" << std::endl;
-  network_server->send(part->conn, MESSAGE_TYPE_SENDING_MAP, os.str());
+  network_server->send(part->conn, MESSAGE_TYPE_SENDING_MAP, tmpfile);
+  File::erase (tmpfile);
 
   // unhack the players
   std::vector<Player*>::iterator j = players.begin();

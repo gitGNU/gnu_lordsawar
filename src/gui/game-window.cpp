@@ -123,6 +123,7 @@ GameWindow::GameWindow()
   game_winner = NULL;
   stack_info_tip = NULL;
   army_info_tip = NULL;
+  city_info_tip = NULL;
   map_tip = NULL;
   stack_tip = NULL;
   game = NULL;
@@ -454,6 +455,11 @@ GameWindow::~GameWindow()
 	delete army_info_tip;
 	army_info_tip = NULL;
       }
+    if (city_info_tip)
+      {
+	delete city_info_tip;
+	city_info_tip = NULL;
+      }
     if (stack_info_tip)
       {
 	delete stack_info_tip;
@@ -744,6 +750,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   connections.push_back
     (game->stack_tip_changed.connect
      (sigc::mem_fun(*this, &GameWindow::on_stack_tip_changed)));
+  connections.push_back
+    (game->city_tip_changed.connect
+     (sigc::mem_fun(*this, &GameWindow::on_city_tip_changed)));
   connections.push_back
     (game->ruin_searched.connect
      (sigc::mem_fun(*this, &GameWindow::on_ruin_searched)));
@@ -2214,6 +2223,19 @@ void GameWindow::show_stack(StackTile *s)
   fill_in_group_info(s, currently_selected_stack);
   //ensure_one_army_button_active(); 
   stack_info_container->show_all();
+}
+
+void GameWindow::on_city_tip_changed(City *city, MapTipPosition mpos)
+{
+  if (city == NULL)
+    {
+      delete city_info_tip;
+      city_info_tip = NULL;
+    }
+  else
+    {
+      city_info_tip = new CityInfoTip(bigmap_drawingarea, mpos, city);
+    }
 }
 
 void GameWindow::on_stack_tip_changed(StackTile *stile, MapTipPosition mpos)

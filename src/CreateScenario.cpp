@@ -509,8 +509,6 @@ bool CreateScenario::setupCities(bool cities_can_produce_allies,
         c->setRandomArmytypes(cities_can_produce_allies, 
 			      number_of_armies_factor);
 
-	if (rand() % 2 == 0)
-	  c->raiseDefense();
 	c->setGold(getRandomCityIncome(c->isCapital()));
     }
 

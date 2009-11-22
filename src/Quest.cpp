@@ -46,7 +46,7 @@ Quest::Quest(QuestsManager& q_mgr, guint32 hero, Type type)
 }
 
 Quest::Quest(QuestsManager& q_mgr, XML_Helper* helper)
-    :d_q_mgr(q_mgr), OwnerId(helper)
+    :OwnerId(helper), d_q_mgr(q_mgr)
 {
     std::string s;
     helper->getData(s, "type");

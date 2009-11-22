@@ -206,7 +206,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		      set_control_key_down (false);
 		      if (d_see_opponents_production == true)
 			{
-			  city_queried (c, false);
+			  city_visited.emit (c);
 			  set_shift_key_down (false);
 			  return;
 			}
@@ -214,7 +214,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 			{
 			  if (c->getOwner() == Playerlist::getActiveplayer())
 			    {
-			      city_queried (c, false);
+			      city_visited.emit(c);
 			      set_shift_key_down (false);
 			      return;
 			    }
@@ -370,14 +370,14 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		      set_control_key_down (false);
 		      if (d_see_opponents_production == true)
 			{
-			  city_queried (c, false);
+			  city_visited.emit (c);
 			  set_shift_key_down (false);
 			}
 		      else
 			{
 			  if (c->getOwner() == Playerlist::getActiveplayer())
 			    {
-			      city_queried (c, false);
+			      city_visited.emit (c);
 			      set_shift_key_down (false);
 			    }
 			}
@@ -445,7 +445,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    return;
 	  if (City* c = GameMap::getCity(tile))
 	    {
-	      city_queried (c, true);
+	      city_queried.emit (tile, c);
 	      mouse_state = SHOWING_CITY;
 	    }
 	  else if (Ruin* r = GameMap::getRuin(tile))
@@ -489,7 +489,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	    {
 
 	    case SHOWING_CITY:
-	      city_queried.emit(0, true);
+	      city_unqueried.emit();
 	      break;
 
 	    case SHOWING_RUIN:

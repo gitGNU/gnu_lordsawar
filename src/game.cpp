@@ -198,8 +198,12 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
 	sigc::mem_fun(this, &Game::on_stack_grouped_or_ungrouped));
     bigmap->path_set.connect(
 	sigc::mem_fun(this, &Game::update_control_panel));
+    bigmap->city_visited.connect(
+	sigc::mem_fun(this, &Game::on_city_visited));
     bigmap->city_queried.connect(
 	sigc::mem_fun(this, &Game::on_city_queried));
+    bigmap->city_unqueried.connect(
+	sigc::mem_fun(this, &Game::on_city_unqueried));
     bigmap->ruin_queried.connect(
 	sigc::mem_fun(this, &Game::on_ruin_queried));
     bigmap->signpost_queried.connect(
@@ -659,48 +663,25 @@ void Game::on_stack_selected(Stack* s)
   update_control_panel();
 }
 
-void Game::on_city_queried (City* c, bool brief)
+void Game::on_city_queried (Vector<int> tile, City *c)
+{
+  MapTipPosition mpos = bigmap->map_tip_position(tile);
+  city_tip_changed.emit(c, mpos);
+}
+
+void Game::on_city_unqueried ()
+{
+  city_tip_changed.emit(NULL, MapTipPosition());
+}
+
+void Game::on_city_visited(City* c)
 {
   if (c)
     {
-      Player *player = c->getOwner();
-
-      if (brief)
-	{
-	  Glib::ustring str;
-
-	  if (c->isCapital())
-	    str = String::ucompose(_("%1 (capital city)"), c->getName());
-	  else
-	    str = c->getName();
-	  str += "\n";
-	  if (player != Playerlist::getInstance()->getNeutral())
-	    {
-	      str += String::ucompose(_("Under rule of %1"), player->getName());
-	      str += "\n";
-	    }
-	  str += String::ucompose(_("Income: %1"), c->getGold());
-	  str += "\n";
-	  str += String::ucompose(_("Defense: %1"), c->getDefenseLevel());
-	  if (c->isBurnt())
-	    {
-	      str += "\n";
-	      str += _("Status: razed!");
-	    }
-
-	  MapTipPosition mpos = bigmap->map_tip_position(c->getArea());
-	  map_tip_changed.emit(str, mpos);
-	}
-      else
-	{
-	  city_visited.emit(c);
-
-	  // some visible city properties (razed) may have changed
-	  redraw();
-	}
+      city_visited.emit(c);
+      // some visible city properties (razed) may have changed
+      redraw();
     }
-  else
-    map_tip_changed.emit("", MapTipPosition());
 }
 
 void Game::on_ruin_queried (Ruin* r, bool brief)

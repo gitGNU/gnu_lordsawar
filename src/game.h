@@ -128,6 +128,7 @@ class Game
     sigc::signal<void, Stack *> stack_info_changed;
     sigc::signal<void, Glib::ustring, MapTipPosition> map_tip_changed;
     sigc::signal<void, StackTile *, MapTipPosition> stack_tip_changed;
+    sigc::signal<void,  City *, MapTipPosition> city_tip_changed;
     sigc::signal<void, Ruin*, Stack*, Reward*> ruin_searched;
     sigc::signal<void, Ruin*, Stack*> sage_visited;
     sigc::signal<void, Fight &> fight_started;
@@ -187,12 +188,15 @@ class Game
     // bigmap callbacks
     void on_stack_selected(Stack* s);
     void on_stack_grouped_or_ungrouped(Stack *s);
-    void on_city_queried (City* c, bool brief);
+    void on_city_visted (City* c);
     void on_ruin_queried (Ruin* r, bool brief);
     void on_temple_queried (Temple* t, bool brief);
     void on_signpost_queried (Signpost* s);
     void on_stack_queried (Vector<int> tile);
     void on_stack_unqueried ();
+    void on_city_visited(City *city); // for city window
+    void on_city_queried (Vector<int>, City *city); // for city info tip
+    void on_city_unqueried ();
 
     // smallmap callbacks
     void on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map);

@@ -5,6 +5,7 @@ gladedir = $(datadir)/lordsawar/glade
 glade_DATA = \
 army-gains-level-dialog.ui \
 army-info-window.ui \
+city-info-window.ui \
 stack-info-window.ui \
 buy-production-dialog.ui \
 city-defeated-dialog.ui \

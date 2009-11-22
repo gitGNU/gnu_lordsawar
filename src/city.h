@@ -109,7 +109,7 @@ class City : public Ownable, public Location, public Renamable,
 	//Get Methods
 	
         //! Return the defense level of the city.
-        int getDefenseLevel() const {return d_defense_level;}
+        int getDefenseLevel() const {return calculateDefenseLevel();}
 
         //! Return the income of the city per turn.
         guint32 getGold() const {return d_gold;}
@@ -161,15 +161,6 @@ class City : public Ownable, public Location, public Renamable,
 
 
 	// Methods that operate on class data and modify the class.
-
-        //! Raise the defense level by one. Return true on success.
-        bool raiseDefense();
-
-        //! Lower the defense level by one. Return true on success.
-	/**
-	 * This method is not used.
-	 */
-        bool reduceDefense();
 
         //! Changes the owner of the city and prepares it for takeover.
 	/**
@@ -296,6 +287,13 @@ class City : public Ownable, public Location, public Renamable,
 	 * @note Pnly use this prior to the start of game.
 	 */
 	void sortProduction();
+
+	//! Calculate defense level.
+	/**
+	 * The defense level is a function of how many production slots
+	 * the city has.
+	 */
+	guint32 calculateDefenseLevel() const;
 
         // DATA
 

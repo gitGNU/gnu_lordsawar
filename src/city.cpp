@@ -149,34 +149,6 @@ bool City::save(XML_Helper* helper) const
     return retval;
 }
 
-bool City::raiseDefense()
-{
-    if (d_defense_level == (int) CITY_LEVELS)
-    {
-        // no further progress possible
-        return false;
-    }
-
-    // increase the defense level, the income and the possible production
-    d_defense_level++;
-
-    return true;
-}
-
-bool City::reduceDefense()
-{
-    if (d_defense_level == 1)
-    {
-        // no further reduction possible
-        return false;
-    }
-
-    // the same as raiseDefense, but the other way round
-    d_defense_level--;
-
-    return true;
-}
-
 void City::conquer(Player* newowner)
 {
   Citylist::getInstance()->stopVectoringTo(this);
@@ -535,4 +507,20 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
   sortProduction();
 }
 
+guint32 City::calculateDefenseLevel() const
+{
+  int num_production_bases = getNoOfProductionBases();
+  if (isBurnt()) 
+    return 0;
+  else if (num_production_bases <= 2 && 
+	   getOwner() == Playerlist::getInstance()->getNeutral())
+    return 1;
+  else if (num_production_bases <= 2)
+    return 2;
+  else if (num_production_bases > 2 && 
+	   getOwner() == Playerlist::getInstance()->getNeutral())
+    return 2;
+  else if (num_production_bases > 2)
+    return 3;
+}
 // End of file

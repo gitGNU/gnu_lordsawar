@@ -27,6 +27,7 @@
 #include <gtkmm.h>
 
 #include "army-info-tip.h"
+#include "city-info-tip.h"
 #include "stack-info-tip.h"
 #include "decorated.h"
 
@@ -190,6 +191,7 @@ class GameWindow: public Decorated
 
     Stack *currently_selected_stack;
     ArmyInfoTip* army_info_tip;
+    CityInfoTip* city_info_tip;
     StackInfoTip* stack_info_tip;
     typedef std::vector<Gtk::ToggleButton *> army_buttons_type;
     army_buttons_type army_buttons;
@@ -285,6 +287,7 @@ class GameWindow: public Decorated
     void on_stack_info_changed(Stack *s);
     void on_bigmap_tip_changed(Glib::ustring tip, MapTipPosition pos);
     void on_stack_tip_changed(StackTile *stile, MapTipPosition pos);
+    void on_city_tip_changed(City *city, MapTipPosition pos);
     void on_ruin_searched(Ruin *ruin, Stack *s, Reward *reward);
     void on_sage_visited(Ruin *ruin, Stack *s);
     void on_ruin_rewarded(Reward_Ruin *reward);

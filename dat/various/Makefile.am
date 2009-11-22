@@ -30,6 +30,7 @@ various_DATA = \
     cursors.png \
     smallupkeep.png \
     smallincome.png \
+    smalldefense.png \
     smalltreasury.png \
     smallcity.png \
     diplomacy-small.png \
@@ -71,6 +72,7 @@ EXTRA_DIST = \
     cursors.png \
     smallupkeep.png \
     smallincome.png \
+    smalldefense.png \
     smalltreasury.png \
     smallcity.png \
     diplomacy-small.png \
