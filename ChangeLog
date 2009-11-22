@@ -1,6 +1,10 @@
 2009-11-22  Ben Asselstine  <benasselstine@gmail.com>
 
 	* lowering the default amount of gold that players get.
+	* adding new "enemy head start" quick-start game option.  Suggested by
+	spammeaccount@rogers.com.
+	* a city's defense level now reflect's it's fight bonus onscreen.
+	* added a city info tip object.
 
 2009-11-21  Ben Asselstine  <benasselstine@gmail.com>
 
