@@ -701,7 +701,7 @@ Cities have a name, a defense level, and they provide a number of gold pieces to
 The income is in the form of gold pieces, which happens to be exactly what army units require as their upkeep.  Conquering more cities gives the player more money and enables the upkeep of more army units.
 </para>
 <para>
-The defense level for the city is not important and is ignored by all battle calculations.
+The defense level for the city is related to the number of army units that the city can produce.  It has a maximum value of 3 and a minimum value of 0 (razed). Higher defense levels improve a city's chances in battle.
 </para>
 <para>
 Each city can produce one of up to four different army unit types.  After enough turns have passed the army unit shows up in the city and can be moved around the map as the player sees fit.  Changing a city's production of army units is one of the main ways that a player affects the outcome of the game.  The player can also choose to add a new army unit type to the suite of army unit types that the city can produce; which can cost a lot of gold pieces.
@@ -870,13 +870,13 @@ When the player clicks on the buy button in the city screen the following screen
 </mediaobject>
 </screenshot>
 </figure>
-A list of all army units that are available for the player to purchase are shown.  Some of these army units will likely be too costly for the player to afford!   Some of these army units will already be present within the city's production suite; these army units cannot be selected.  Left-clicking on the army unit type button will select it, and show the price at the bottom of the screen.  Army unit type buttons can also be right-clicked on to see the capabilities of that army unit type.
+A list of all army units that are available for the player to purchase are shown.  Some of these army units are too costly for the player to afford, so they are inactive and appear greyed-out.  Some of these army units will already be present within the city's production suite; and these army units are also inactive and greyed-out.  Left-clicking on the army unit type button will select it, and show the price at the bottom of the screen.  Right-clicking a button will display the capabilities of that army unit type.
 </para>
 <para>
 After making a selection, click on the buy button to purchase the unit.  Take special care because purchasing a new unit will replace the currently selected army unit type in the city screen!
 </para>
 <para>
-Some army units are not shown because they are not purchasable.  Special units like dragons or ghosts cannot be purchased, and instead must be awarded to a Hero, or already present as production in a city.
+Some army units are not shown in this screen because they are not purchasable at any price.  Special units like dragons or ghosts cannot be purchased, and instead must be awarded to a Hero, or already present as production in a city.
 </para>
 </sect2>
 </sect1>
@@ -1420,7 +1420,21 @@ Use a slightly different calculation for battles that makes gaps in strength les
 <listitem>
 <para>Quick Start</para>
 <para>
-Have each player start with many ciites (instead of just one), such that there are no unowned cities in the scenario.
+This option gives players some cities to start off with so that the early stages of the game can be skipped.  Quick Start has two modes:
+<itemizedlist>
+<listitem>
+<para>Evenly Divided</para>
+<para>
+Each player gets the same number of cities.  No neutral cities remain.
+</para>
+</listitem>
+<listitem>
+<para>Enemy Head Start</para>
+<para>
+Each computer player gets a few extra cities.  The number of extra cities depends on the total number of cities.  Human players keep a single city.
+</para>
+</listitem>
+</itemizedlist>
 </para>
 </listitem>
 <listitem>
