@@ -85,14 +85,11 @@ void NetworkConnection::sendFile(MessageType type, const std::string filename)
   gnet_conn_write(conn, buf, MESSAGE_SIZE_BYTES + MESSAGE_PREAMBLE_EXTRA_BYTES);
 
   std::cerr << "sending file " << type <<" of length " << MESSAGE_PREAMBLE_EXTRA_BYTES + statbuf.st_size << " to " << gnet_inetaddr_get_name(conn->inetaddr) << std::endl;
-  char buffer[1024];
-  size_t bytesread;
-  while (!feof(fileptr))
-    {
-      bytesread = fread (buffer, sizeof (buffer), 1, fileptr);
-      gnet_conn_write(conn, const_cast<gchar *>(buffer), bytesread);
-    }
+  char *buffer = (char*) malloc (statbuf.st_size);
+  size_t bytesread = fread (buffer, 1, statbuf.st_size, fileptr);
   fclose (fileptr);
+  gnet_conn_write(conn, const_cast<gchar *>(buffer), bytesread);
+  free (buffer);
 }
 
 void NetworkConnection::send(MessageType type, const std::string &payload)
