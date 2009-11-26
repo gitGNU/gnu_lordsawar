@@ -1,0 +1,67 @@
+Artificial Intelligence Notes for LordsAWar
+
+Copyright (C) 2009 Ben Asselstine
+
+This document is licensed under the terms of the GNU General Public License version 3 or later.
+
+The purpose of this document is to describe how the artificial intelligence routines operate.  The intended audience of this document is a C++ programmer.
+
+
+Introduction
+
+AI in lordsawar comes in the form of computer players who manage stacks[1] and cities[2] that they own.  There are three computer players:
+
+1. The Neutral Player
+  Implemented by the ai_dummy.cpp AI_Dummy class.  It simply stays still, waiting for the other players to take it over.  The neutral player does not venture stacks outside of it's walls, and does not collaborate with the other cities who might happen to be neutral.  
+
+
+2. The Easy Player
+  Implemented by the ai_fast.cpp AI_Fast class.  It tries to make stacks of eight army units to attack a nearby enemy city.  It does this by using the top-left tile of a city as a restocking point, knowing that this is where new armies show up as they are produced.  This player has very predictable stack behaviours.  It also does some somewhat sophisticated vectoring[3] of army units, and does things like visit temples if they are nearby.  Heroes will pick up items on the ground if they are nearby.
+
+
+3. The Hard Player
+  Implemented by the ai_hard.cpp AI_Hard class.  It tries to gauge the strength of enemy cities, and take a sufficient stack to conquer enemy cities.  It enumerates the threats and handles the worst threats first.  Like the easy player this player does vectoring, and temple visiting, and picks up bags of items.  For whatever reason the hard ai player isn't very difficult to beat.  This player uses the full knowledge of where stacks and cities are on the map, and the true strengths of army units to do it's job.  This is in contrast to other AI strategies that try to limit the inputs to the AI routines to be what the player should actually know.
+
+
+How these classes fit together:
+
+These classes are all inherited from the real_player.cpp RealPlayer class, that implements the human player, and is in turn inherited from the player.cpp Player class which implements the actions that can be taken by a player in the game.
+
+Perhaps the most important of these actions are:
+Player:stackMove and RealPlayer::cityChangeProduction.
+
+(This hints at a method naming scheme for the player class:  Player::<object><action>.)
+
+The former class will move a stack on the map, while the latter will signify to the given city to create a new kind of army unit.  These two actions are the most frequent actions that the AI players will make.
+
+All Players (including AI players) are saved and loaded in the saved-game file format.
+
+Players create *actions* that go over the wire to enable network play.
+
+Player objects are insulated from the gui by signals and callbacks.  This is what allows lordsawar to run in --stress-test mode where computer players play computer players until the game is won, and it does so without a gui.  This is a useful way to automatically test modified AI players.
+
+Look at the virtual functions in player.h to see which functions an AI player must implement.
+
+
+Understanding the Neutral Player
+
+The Neutral cities have game options that affect how the neutral player behaves.  There are actions that trigger certain behaviours in neutral cities -- like the production of army units, (this is related to the neutral city policy in the game options).  Sometimes these behaviours are in implemented in the AI_Dummy class, and sometimes they arent.  The "defensive" mode is implemented inside the class, while the "active" mode is implemented outside the class (inside Game::on_city_fight_finished).
+These different modes of playing AI might be better represented as new AI players, so that the code belonging to a particular behaviour is properly separated.
+
+
+Missing behaviours in the AI
+
+Heroes should go on quests.  Heroes should search ruins.
+
+
+Constraints
+
+Speed matters.
+
+
+1. http://www.nongnu.org/lordsawar/manual/0.1.6/lordsawar.html#lordsawar-movement
+
+2. http://www.nongnu.org/lordsawar/manual/0.1.6/lordsawar.html#lordsawar-cities
+
+3. http://www.nongnu.org/lordsawar/manual/0.1.6/lordsawar.html#lordsawar-cities-vectoring
+ (Fixme, fill in the vectoring section of the manual!)
