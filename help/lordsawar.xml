@@ -919,7 +919,7 @@ Army units can get medals for fighting with distinction in battle.  Each medal c
 Army units also have a fighting bonus that only take effect during battle.  For example, a unit of Giants fight more effectively in hills.  There are many varieties of fighting bonuses and they are all covered in more detail elsewhere in this manual.
 </para>
 <para>
-Army units can have a fortification bonus that is conferred after they are put into "defend" mode.  When the enemy sees a stack with the fortified bonus, it appears to be in a small tent or tower.  The fortification bonus is one point of strength per army unit during battle.  Fortification has the added feature of masking the true size of the stack in the field to the enemy.
+Army units can have a fortification bonus that is conferred after they are put into "defend" mode.  When the enemy sees a stack with the fortified bonus, it appears to be in a small tent or tower.  The fortification bonus is one point of strength per army unit during battle.  Fortification has the added feature of masking the true size of the stack in the field to the enemy (the stack's flag is not shown).
 </para>
 <para>
 Army units can visit temples and get blessed.  The blessing confers a single point of strength upon the army unit.  An army unit can only be blessed once by a temple, but may visit many different temples for many blessings.
@@ -927,6 +927,18 @@ Army units can visit temples and get blessed.  The blessing confers a single poi
 </sect2>
 <sect2 id="lordsawar-cities-vectoring">
 	<title>Vectoring</title> 
+<para>
+Vectoring is a mechanism that invisibly transports new army units from one city to another city.  This is a great convenience for quickly moving newly created army units across large distances.  The cost for this convenience is time; the new army unit remains off the map for two whole turns.
+</para>
+<para>
+Vectoring is limited to new units, and to cities that the player already owns.  This means that you can't vector army units that have already been created, which can sometimes be a great inconvenience.   Another limitation is that a maximum of 4 cities can be vectored to a single destination city.
+</para>
+<para>
+It is also possible to vector new units to a Hero's planted standard.  The flag in the ground acts like a mobile city.
+</para>
+<para>
+To initiate vectoring of new army units, go to the city screen for the city you want to vector from, and click on the "Vector..." button.  In the vectoring screen, click on the "Vector" button and then click on the destination city on the miniature map.
+</para>
 </sect2>
 </sect1>
 <!-- ============= Combat ============================== -->
