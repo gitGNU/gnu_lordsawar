@@ -49,6 +49,13 @@ The Neutral cities have game options that affect how the neutral player behaves.
 These different modes of playing AI might be better represented as new AI players, so that the code belonging to a particular behaviour is properly separated.
 
 
+Understanding the AI Fast Player
+
+Lots of different things can happen when the AI_Fast player calls stackMove.  A stack can follow a calculated path and land on another stack.  This makes these two stacks join and become one; it triggers a STACK_JOIN action.  This behaviour does not kick-in for human players (RealPlayer), but only for the AI players..  Perhaps this should not be the way the program acts!  An unfortunate consequence of this behaviour is that the moving stack can go away (be deleted), and resulting unwieldy code trying to deal with references to that stack that have become invalid. 
+
+Another thing that can happen when a stack is moved is a battle; the STACK_FIGHT action.  This can result in the moving stack going away entirely, and the same unwieldy checks after a call to stack move.  A battle automatically happens because there is an enemy city or stack on the stack's path.  Human players cannot set in a path that lands on an enemy city or stack, unless it is exactly one tile away.  AI players don't have this limitation.
+
+
 Missing behaviours in the AI
 
 Heroes should go on quests.  Heroes should search ruins.
