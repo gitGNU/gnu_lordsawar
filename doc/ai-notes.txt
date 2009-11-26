@@ -64,4 +64,3 @@ Speed matters.
 2. http://www.nongnu.org/lordsawar/manual/0.1.6/lordsawar.html#lordsawar-cities
 
 3. http://www.nongnu.org/lordsawar/manual/0.1.6/lordsawar.html#lordsawar-cities-vectoring
- (Fixme, fill in the vectoring section of the manual!)
