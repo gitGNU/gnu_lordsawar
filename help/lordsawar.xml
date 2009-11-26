@@ -928,7 +928,7 @@ Army units can visit temples and get blessed.  The blessing confers a single poi
 <sect2 id="lordsawar-cities-vectoring">
 	<title>Vectoring</title> 
 <para>
-Vectoring is a mechanism that invisibly transports new army units from one city to another city.  This is a great convenience for quickly moving newly created army units across large distances.  The cost for this convenience is time; the new army unit remains off the map for two whole turns.
+Vectoring is a mechanism that invisibly transports new army units from one city to another city.  This is a great convenience for quickly moving newly created army units across large distances.  The cost for this convenience is time; the new army unit remains off the map for two whole turns.  At the end of these two turns, the new unit pops up at the destination.
 </para>
 <para>
 Vectoring is limited to new units, and to cities that the player already owns.  This means that you can't vector army units that have already been created, which can sometimes be a great inconvenience.   Another limitation is that a maximum of 4 cities can be vectored to a single destination city.
