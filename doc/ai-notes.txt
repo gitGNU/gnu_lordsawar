@@ -66,8 +66,8 @@ Constraints
 Speed matters.
 
 
-1. http://www.nongnu.org/lordsawar/manual/0.1.6/lordsawar.html#lordsawar-movement
+1. http://www.nongnu.org/lordsawar/manual/0.1.7/lordsawar.html#lordsawar-movement
 
-2. http://www.nongnu.org/lordsawar/manual/0.1.6/lordsawar.html#lordsawar-cities
+2. http://www.nongnu.org/lordsawar/manual/0.1.7/lordsawar.html#lordsawar-cities
 
-3. http://www.nongnu.org/lordsawar/manual/0.1.6/lordsawar.html#lordsawar-cities-vectoring
+3. http://www.nongnu.org/lordsawar/manual/0.1.7/lordsawar.html#lordsawar-cities-vectoring
