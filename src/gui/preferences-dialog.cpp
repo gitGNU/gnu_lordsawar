@@ -84,7 +84,8 @@ PreferencesDialog::PreferencesDialog(bool readonly)
 	  }
 	else
 	  type->set_active(1);
-	if (p->isDead() || Playerlist::getActiveplayer() == p)
+	if (p->isDead() || (Playerlist::getActiveplayer() == p && 
+			    p->getType() != Player::HUMAN))
 	  {
 	    type->set_sensitive(false);
 	    observe->set_sensitive(false);
