@@ -1,3 +1,7 @@
+2009-11-27  Ben Asselstine  <benasselstine@gmail.com>
+
+	* re-allowing changing the active human player to an AI player.
+
 2009-11-22  Ben Asselstine  <benasselstine@gmail.com>
 
 	* lowering the default amount of gold that players get.
