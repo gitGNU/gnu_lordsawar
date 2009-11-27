@@ -55,6 +55,7 @@ Lots of different things can happen when the AI_Fast player calls stackMove.  A 
 
 Another thing that can happen when a stack is moved is a battle; the STACK_FIGHT action.  This can result in the moving stack going away entirely, and the same unwieldy checks after a call to stack move.  A battle automatically happens because there is an enemy city or stack on the stack's path.  Human players cannot set in a path that lands on an enemy city or stack, unless it is exactly one tile away.  AI players don't have this limitation.
 
+The AI_Fast player doesn't retain any state across turns.  Yes the stacks have paths, and the cities have vectoring setup, but there's no AI-related data saved anywhere to help in the next turn.
 
 Missing behaviours in the AI
 
