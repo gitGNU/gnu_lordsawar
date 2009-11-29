@@ -122,7 +122,7 @@ bool Path::checkPath(Stack* s)
 	secondlast--;
 	for (iterator it = begin(); it != secondlast; it++)
 	  {
-	    if (PathCalculator::isBlocked(s, *it) == false)
+	    if (PathCalculator::isBlocked(s, *it, true, true) == false)
 	      {
 		valid = false;
 		break;

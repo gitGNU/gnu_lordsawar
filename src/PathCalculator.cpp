@@ -77,7 +77,7 @@ void PathCalculator::populateNodeMap()
       nodes[i].moves = -1;
       nodes[i].moves_left = 0;
       nodes[i].turns = 0;
-      if (isBlocked(Vector<int>(i % width, i/width)))
+      if (isBlocked(Vector<int>(i % width, i / width)))
 	nodes[i].moves = -2;
     }
   int idx = start.toIndex();
@@ -99,15 +99,15 @@ void PathCalculator::populateNodeMap()
     }
 }
 
-PathCalculator::PathCalculator(Stack *s, bool zig)
+PathCalculator::PathCalculator(Stack *s, bool zig, bool avoid_cities, bool avoid_stacks)
 :stack(s), flying(s->isFlying()), d_bonus(s->calculateMoveBonus()),
     land_reset_moves(s->getMaxLandMoves()),
-    boat_reset_moves(s->getMaxBoatMoves()), zigzag(zig), on_ship(stack->hasShip()), delete_stack(false)
+    boat_reset_moves(s->getMaxBoatMoves()), zigzag(zig), on_ship(stack->hasShip()), avoid_enemy_cities(avoid_enemy_cities), avoid_enemy_stacks(avoid_stacks), delete_stack(false)
 {
   populateNodeMap();
 }
 
-PathCalculator::PathCalculator(Player *p, Vector<int> src, const ArmyProdBase *prodbase, bool zig)
+PathCalculator::PathCalculator(Player *p, Vector<int> src, const ArmyProdBase *prodbase, bool zig, bool avoid_cities, bool avoid_stacks)
 {
   stack = Stack::createNonUniqueStack(p, src);
   Army *army;
@@ -129,12 +129,14 @@ PathCalculator::PathCalculator(Player *p, Vector<int> src, const ArmyProdBase *p
   land_reset_moves = stack->getMaxLandMoves();
   boat_reset_moves = stack->getMaxBoatMoves();
   zigzag = zig; 
+  avoid_enemy_cities = avoid_cities;
+  avoid_enemy_stacks = avoid_stacks;
   on_ship = stack->hasShip();
   delete_stack = true;
   populateNodeMap();
 }
 
-PathCalculator::PathCalculator(const Stack &s, bool zig)
+PathCalculator::PathCalculator(const Stack &s, bool zig, bool avoid_cities, bool avoid_stacks)
 {
   stack = new Stack(s);
   flying = stack->isFlying();
@@ -142,6 +144,8 @@ PathCalculator::PathCalculator(const Stack &s, bool zig)
   land_reset_moves = stack->getMaxLandMoves();
   boat_reset_moves = stack->getMaxBoatMoves();
   zigzag = zig; 
+  avoid_enemy_cities = avoid_cities;
+  avoid_enemy_stacks = avoid_stacks;
   on_ship = stack->hasShip();
   delete_stack = true;
   populateNodeMap();
@@ -152,7 +156,8 @@ PathCalculator::PathCalculator(const PathCalculator &p)
 :stack(new Stack(*p.stack)), flying(p.flying), d_bonus(p.d_bonus),
     land_reset_moves(p.land_reset_moves),
     boat_reset_moves(p.boat_reset_moves), zigzag(p.zigzag), on_ship(p.on_ship),
-    delete_stack(p.delete_stack)
+    avoid_enemy_cities(p.avoid_enemy_cities), 
+    avoid_enemy_stacks(p.avoid_enemy_stacks), delete_stack(p.delete_stack)
 {
   int width = GameMap::getWidth();
   int height = GameMap::getHeight();
@@ -402,7 +407,7 @@ bool PathCalculator::isBlockedDir(Vector<int> pos, Vector<int> next)
   return false;
 }
 
-bool PathCalculator::isBlocked(Stack *s, Vector<int> pos)
+bool PathCalculator::isBlocked(Stack *s, Vector<int> pos, bool enemy_cities_block, bool enemy_stacks_block)
 {
   const Maptile* tile = GameMap::getInstance()->getTile(pos);
 
@@ -410,13 +415,16 @@ bool PathCalculator::isBlocked(Stack *s, Vector<int> pos)
   // entering the tile, which are...
 
   // ...enemy stacks which stand in the way...
-  Stack* target = GameMap::getEnemyStack(pos);
-  if (target)
-    return true;
+  if (enemy_stacks_block == true)
+    {
+      Stack* target = GameMap::getEnemyStack(pos);
+      if (target)
+	return true;
+    }
 
   //...enemy cities
   // saves some computation time here
-  if (tile->getBuilding() == Maptile::CITY)
+  if (tile->getBuilding() == Maptile::CITY && enemy_cities_block == true)
     {
       City* c = GameMap::getCity(pos);
       if (c && (c->getOwner() != s->getOwner()))
@@ -429,7 +437,7 @@ bool PathCalculator::isBlocked(Stack *s, Vector<int> pos)
 
 bool PathCalculator::isBlocked(Vector<int> pos)
 {
-  return isBlocked(stack, pos);
+  return isBlocked(stack, pos, avoid_enemy_cities, avoid_enemy_stacks);
 }
 
 bool PathCalculator::canMoveThere(Vector<int> dest)

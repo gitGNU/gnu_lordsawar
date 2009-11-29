@@ -34,13 +34,13 @@ class PathCalculator
 public:
 
     //! Default constructor.
-    PathCalculator(Stack *s, bool zigzag = true);
+    PathCalculator(Stack *s, bool zigzag = true, bool avoid_enemy_cities = true, bool avoid_enemy_stacks = true);
 
     //! Alternate constructor.  calculate with a copy of the stack.
-    PathCalculator(const Stack &s, bool zigzag = true);
+    PathCalculator(const Stack &s, bool zigzag = true, bool avoid_enemy_cities = true, bool avoid_enemy_stacks = true);
 
     //! Alternate constructor.  calculate with a new stack of one army.
-    PathCalculator(Player *p, Vector<int> src, const ArmyProdBase *prodbase = NULL, bool zigzag = true);
+    PathCalculator(Player *p, Vector<int> src, const ArmyProdBase *prodbase = NULL, bool zigzag = true, bool avoid_enemy_cities = true, bool avoid_enemy_stacks = true);
 
     //! Copy constructor.
     PathCalculator(const PathCalculator&);
@@ -55,7 +55,7 @@ public:
     Path* calculateToCity (City *c, guint32 &moves, guint32 &turns, bool zigzag = true);
     int calculate(Vector<int> dest, bool zigzag = true);
 
-    static bool isBlocked(Stack *s, Vector<int> pos);
+    static bool isBlocked(Stack *s, Vector<int> pos, bool enemy_cities_block, bool enemy_stacks_block);
 private:
     struct node
       {
@@ -71,6 +71,8 @@ private:
     int boat_reset_moves;
     bool zigzag;
     bool on_ship;
+    bool avoid_enemy_cities;
+    bool avoid_enemy_stacks;
 
     /** 
      * Checks how many movement points are needed to cross a tile from

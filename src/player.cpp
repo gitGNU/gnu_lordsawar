@@ -769,10 +769,6 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
     {
         s->getPath()->calculate(s, dest);
     }
-    else
-    {
-        s->getPath()->checkPath(s);
-    }
 
     if (s->getPath()->empty())
     {
