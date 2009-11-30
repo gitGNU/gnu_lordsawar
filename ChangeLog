@@ -1,3 +1,10 @@
+2009-11-30  Ben Asselstine  <benasselstine@gmail.com>
+
+	*  player objects now have a method that returns if they're computer 
+	players or not.
+	* improving ability for path calculator to pick paths through/around
+	enemy stacks and cities.
+
 2009-11-29  Ben Asselstine  <benasselstine@gmail.com>
 
 	* improved the bag-of-items graphic.

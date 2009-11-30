@@ -49,6 +49,8 @@ The Neutral cities have game options that affect how the neutral player behaves.
 These different modes of playing AI might be better represented as new AI players, so that the code belonging to a particular behaviour is properly separated.
 
 
+Having many neutral players in a game breaks a lot other code.  The playerlist thinks there's only one neutral player, and the MAX_PLAYERS constant only takes one neutral player into account.  It would be nice to change this limitation.
+
 Understanding the AI Fast Player
 
 Lots of different things can happen when the AI_Fast player calls stackMove.  A stack can follow a calculated path and land on another stack.  This makes these two stacks join and become one; it triggers a STACK_JOIN action.  This behaviour does not kick-in for human players (RealPlayer), but only for the AI players..  Perhaps this should not be the way the program acts!  An unfortunate consequence of this behaviour is that the moving stack can go away (be deleted), and resulting unwieldy code trying to deal with references to that stack that have become invalid. 
