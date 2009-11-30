@@ -28,6 +28,8 @@
 #include "armysetlist.h"
 #include "armyprodbase.h"
 
+#define ENEMY_CITY_WEIGHT 10
+#define ENEMY_STACK_WEIGHT 10
 using namespace std;
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 #define debug(x)
@@ -102,7 +104,7 @@ void PathCalculator::populateNodeMap()
 PathCalculator::PathCalculator(Stack *s, bool zig, bool avoid_cities, bool avoid_stacks)
 :stack(s), flying(s->isFlying()), d_bonus(s->calculateMoveBonus()),
     land_reset_moves(s->getMaxLandMoves()),
-    boat_reset_moves(s->getMaxBoatMoves()), zigzag(zig), on_ship(stack->hasShip()), avoid_enemy_cities(avoid_enemy_cities), avoid_enemy_stacks(avoid_stacks), delete_stack(false)
+    boat_reset_moves(s->getMaxBoatMoves()), zigzag(zig), on_ship(stack->hasShip()), avoid_enemy_cities(avoid_enemy_cities), avoid_enemy_stacks(avoid_stacks), enemy_city_avoidance(ENEMY_CITY_WEIGHT), enemy_stack_avoidance(ENEMY_STACK_WEIGHT), delete_stack(false)
 {
   populateNodeMap();
 }
@@ -131,6 +133,8 @@ PathCalculator::PathCalculator(Player *p, Vector<int> src, const ArmyProdBase *p
   zigzag = zig; 
   avoid_enemy_cities = avoid_cities;
   avoid_enemy_stacks = avoid_stacks;
+  enemy_city_avoidance = ENEMY_CITY_WEIGHT;
+  enemy_stack_avoidance = ENEMY_STACK_WEIGHT;
   on_ship = stack->hasShip();
   delete_stack = true;
   populateNodeMap();
@@ -146,6 +150,8 @@ PathCalculator::PathCalculator(const Stack &s, bool zig, bool avoid_cities, bool
   zigzag = zig; 
   avoid_enemy_cities = avoid_cities;
   avoid_enemy_stacks = avoid_stacks;
+  enemy_city_avoidance = ENEMY_CITY_WEIGHT;
+  enemy_stack_avoidance = ENEMY_STACK_WEIGHT;
   on_ship = stack->hasShip();
   delete_stack = true;
   populateNodeMap();
@@ -157,7 +163,7 @@ PathCalculator::PathCalculator(const PathCalculator &p)
     land_reset_moves(p.land_reset_moves),
     boat_reset_moves(p.boat_reset_moves), zigzag(p.zigzag), on_ship(p.on_ship),
     avoid_enemy_cities(p.avoid_enemy_cities), 
-    avoid_enemy_stacks(p.avoid_enemy_stacks), delete_stack(p.delete_stack)
+    avoid_enemy_stacks(p.avoid_enemy_stacks), enemy_city_avoidance(p.enemy_city_avoidance), enemy_stack_avoidance(p.enemy_stack_avoidance), delete_stack(p.delete_stack)
 {
   int width = GameMap::getWidth();
   int height = GameMap::getHeight();
@@ -361,6 +367,19 @@ int PathCalculator::pointsToMoveTo(Vector<int> pos, Vector<int> next) const
     return 0;
 
   moves = tile->getMoves();
+
+  if (avoid_enemy_cities == false)
+    {
+      //We will still try to avoid enemy cities a little.
+      if (GameMap::getEnemyCity(pos))
+	moves += enemy_city_avoidance;
+    }
+  if (avoid_enemy_stacks == false)
+    {
+      //We will still try to avoid enemy stacks a little.
+      if (GameMap::getEnemyStack(pos))
+	moves += enemy_stack_avoidance;
+    }
 
   // does everything in the stack have a bonus to move onto this square?
   if (tile->getMaptileType() & d_bonus && moves != 1)

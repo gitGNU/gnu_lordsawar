@@ -635,9 +635,7 @@ void GameServer::sendMap(Participant *part)
     {
       bool connected = false;
       players.push_back(*i);
-      if ((*i)->getType() == Player::AI_FAST ||
-	  (*i)->getType() == Player::AI_SMART ||
-	  (*i)->getType() == Player::AI_DUMMY)
+      if ((*i)->isComputer() == true)
 	connected = true;
       NetworkPlayer *new_p = new NetworkPlayer(**i);
       new_p->setConnected(connected);

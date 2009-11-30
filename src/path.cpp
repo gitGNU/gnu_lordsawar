@@ -111,7 +111,7 @@ bool Path::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Path::checkPath(Stack* s)
+bool Path::checkPath(Stack* s, bool enemy_cities_block, bool enemy_stacks_block)
 {
     if (empty())
         return true;
@@ -122,7 +122,8 @@ bool Path::checkPath(Stack* s)
 	secondlast--;
 	for (iterator it = begin(); it != secondlast; it++)
 	  {
-	    if (PathCalculator::isBlocked(s, *it, true, true) == false)
+	    if (PathCalculator::isBlocked(s, *it, enemy_cities_block, 
+					  enemy_stacks_block) == false)
 	      {
 		valid = false;
 		break;

@@ -55,9 +55,7 @@ void pbm::humanize_active_player()
 void pbm::playUntilFirstNetworkedPlayer(GameScenario *game_scenario)
 {
   //are we an ai player?
-  while (Playerlist::getActiveplayer()->getType() == Player::AI_FAST ||
-	 Playerlist::getActiveplayer()->getType() == Player::AI_SMART ||
-	 Playerlist::getActiveplayer()->getType() == Player::AI_DUMMY)
+  while (Playerlist::getActiveplayer()->isComputer())
     {
       NextTurnPbm *nextTurn;
       nextTurn = new NextTurnPbm(game_scenario->getTurnmode(),

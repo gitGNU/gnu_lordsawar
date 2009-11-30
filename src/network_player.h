@@ -44,6 +44,8 @@ class NetworkPlayer : public Player
 
         //! Saves the data
         virtual bool save(XML_Helper* helper) const;
+
+	virtual bool isComputer() const {return false;};
         
         //! Actions, see player.h for explanation
 	virtual void abortTurn();

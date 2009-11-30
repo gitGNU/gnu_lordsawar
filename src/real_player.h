@@ -61,6 +61,8 @@ class RealPlayer : public Player
 	//! Destructor.
         virtual ~RealPlayer();
 
+	virtual bool isComputer() const {return false;};
+
         virtual bool save(XML_Helper* helper) const;
 
 	virtual void abortTurn();

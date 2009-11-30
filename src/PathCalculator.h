@@ -48,6 +48,12 @@ public:
     //! Destructor.
     ~PathCalculator();
 
+    //! When *not* avoiding cities, we still avoid them by giving them a weight.
+    void setEnemyCityAvoidance(guint32 mp) {enemy_city_avoidance = mp;};
+
+    //! When *not* avoiding stacks, we still avoid them by giving them a weight.
+    void setEnemyStackAvoidance(guint32 mp) {enemy_stack_avoidance = mp;};
+
     bool isReachable(Vector<int> pos);
 
     Path* calculate(Vector<int> dest, guint32 &moves, guint32 &turns, bool zigzag = true);
@@ -73,6 +79,8 @@ private:
     bool on_ship;
     bool avoid_enemy_cities;
     bool avoid_enemy_stacks;
+    guint32 enemy_city_avoidance;
+    guint32 enemy_stack_avoidance;
 
     /** 
      * Checks how many movement points are needed to cross a tile from

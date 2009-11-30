@@ -125,6 +125,7 @@ class GameMap: public sigc::trackable
         void setTile(Vector<int> p, Maptile *t) {return setTile(p.x, p.y, t);}
 
 	static City* getCity(Vector<int> pos);
+	static City* getEnemyCity(Vector<int> pos);
 	static Ruin* getRuin(Vector<int> pos);
 	static Temple* getTemple(Vector<int> pos);
 	static Port* getPort(Vector<int> pos);

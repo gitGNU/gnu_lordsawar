@@ -231,6 +231,9 @@ class Player: public sigc::trackable
 
 	// Get Methods
 
+	//! Returns whether or not this is a computer player.
+	virtual bool isComputer() const = 0;
+
         //! Returns the unique ID of the player.
         guint32 getId() const {return d_id;}
 

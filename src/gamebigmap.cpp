@@ -99,8 +99,9 @@ void GameBigMap::select_active_stack()
     return;
   reset_path_calculator(stack);
 
-  if (stack->getPath()->checkPath(stack) == false)
+  if (stack->getPath()->checkPath(stack, true, true) == false)
     {
+      assert (Playerlist::getActiveplayer()->getType() == Player::HUMAN);
       //original path was blocked, so let's find a new way there.
       //this shouldn't happen because nextTurn of stack recalculates.
       cerr << "original path of stack was blocked\n";

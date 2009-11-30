@@ -70,6 +70,8 @@ class AI_Fast : public RealPlayer
 	//! Destructor.
         ~AI_Fast();
         
+	virtual bool isComputer() const {return true;};
+
         //! Saves data, the method is for saving additional data.
         bool save(XML_Helper* helper) const;
 

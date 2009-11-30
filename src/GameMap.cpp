@@ -1047,6 +1047,13 @@ City* GameMap::getCity(Vector<int> pos)
 {
   return Citylist::getInstance()->getObjectAt(pos);
 }
+City* GameMap::getEnemyCity(Vector<int> pos)
+{
+  City *c = Citylist::getInstance()->getObjectAt(pos);
+  if (c && c->getOwner() != Playerlist::getActiveplayer())
+    return c;
+  return NULL;
+}
 Ruin* GameMap::getRuin(Vector<int> pos)
 {
   return Ruinlist::getInstance()->getObjectAt(pos);

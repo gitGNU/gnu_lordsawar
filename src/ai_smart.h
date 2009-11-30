@@ -91,6 +91,7 @@ class AI_Smart : public RealPlayer
 	//! Destructor.
         ~AI_Smart();
 
+	virtual bool isComputer() const {return true;};
 	virtual void abortTurn();
         virtual bool startTurn();
         virtual void invadeCity(City* c);

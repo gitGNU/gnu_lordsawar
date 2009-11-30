@@ -785,6 +785,12 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
         supdatingStack.emit(0);
 	if (moves_left == 1)
 	  break;
+	// are we on an enemy city?
+	if (GameMap::getEnemyCity(s->getPos()) != NULL)
+	  break;
+	// are we on an enemy stack?
+	if (GameMap::getEnemyStack(s->getPos()) != NULL)
+	  break;
       }
 
     //alright, we've walked up to the last place in the path.

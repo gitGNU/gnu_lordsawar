@@ -61,6 +61,7 @@ class AI_Dummy : public RealPlayer
 	//! Destructor.
         ~AI_Dummy();
         
+	virtual bool isComputer() const {return true;};
         virtual void abortTurn();
         virtual bool startTurn();
         virtual void invadeCity(City* c);
