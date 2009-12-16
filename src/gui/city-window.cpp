@@ -410,7 +410,7 @@ void CityWindow::on_buy_clicked()
     if (army != BuyProductionDialog::NO_ARMY_SELECTED)
     {
 	int slot = -1;
-	slot = city->getFreeBasicSlot();
+	slot = city->getFreeSlot();
 	
 	if  (slot == -1)
 	  {

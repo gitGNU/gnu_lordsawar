@@ -88,8 +88,9 @@
 #include "MapBackpack.h"
 
 
-MainWindow::MainWindow()
+MainWindow::MainWindow(std::string load_filename)
 {
+  d_load_filename = load_filename;
   bigmap = NULL;
   smallmap = NULL;
   game_scenario = NULL;
@@ -428,11 +429,40 @@ bool MainWindow::on_delete_event(GdkEventAny *e)
 
 void MainWindow::show_initial_map()
 {
-    set_filled_map(112, 156, Tile::WATER, "default", "default", "default",
-		   "default");
-    setup_terrain_radiobuttons();
-    remove_tile_style_buttons();
-    setup_tile_style_buttons(Tile::GRASS);
+  if (d_load_filename.empty() == false)
+    {
+      clear_map_state();
+
+      bool broken;
+      if (game_scenario)
+	delete game_scenario;
+      current_save_filename = d_load_filename;
+      game_scenario = new GameScenario(current_save_filename, broken);
+      if (d_create_scenario_names)
+	delete d_create_scenario_names;
+      d_create_scenario_names = new CreateScenarioRandomize();
+      if (broken == false)
+	{
+	  init_map_state();
+	  bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
+          setup_terrain_radiobuttons();
+          remove_tile_style_buttons();
+          setup_tile_style_buttons(Tile::GRASS);
+	}
+      else
+	{
+	  d_load_filename = "";
+	  show_initial_map();
+	}
+    }
+  else
+    {
+      set_filled_map(112, 156, Tile::WATER, "default", "default", "default",
+		     "default");
+      setup_terrain_radiobuttons();
+      remove_tile_style_buttons();
+      setup_tile_style_buttons(Tile::GRASS);
+    }
 }
 
 void MainWindow::set_filled_map(int width, int height, int fill_style, std::string tileset, std::string shieldset, std::string cityset, std::string armyset)

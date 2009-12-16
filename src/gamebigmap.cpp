@@ -99,7 +99,7 @@ void GameBigMap::select_active_stack()
     return;
   reset_path_calculator(stack);
 
-  if (stack->getPath()->checkPath(stack, true, true) == false)
+  if (stack->getPath()->checkPath(stack) == false)
     {
       assert (Playerlist::getActiveplayer()->getType() == Player::HUMAN);
       //original path was blocked, so let's find a new way there.
@@ -961,15 +961,12 @@ void GameBigMap::after_draw()
 
 	  draw_stack (stack, buffer, buffer_gc);
 
-	  if (input_locked == false)
-	    {
-	      PixMask *tmp = NULL;
-	      if (stack->size() > 1)
-		tmp = gc->getSelectorPic(0, bigframe, stack->getOwner());
-	      else
-		tmp = gc->getSelectorPic(1, smallframe, stack->getOwner());
-	      tmp->blit(buffer, p);
-	    }
+	  PixMask *tmp = NULL;
+	  if (stack->size() > 1)
+	    tmp = gc->getSelectorPic(0, bigframe, stack->getOwner());
+	  else
+	    tmp = gc->getSelectorPic(1, smallframe, stack->getOwner());
+	  tmp->blit(buffer, p);
 	  //now re-fog it up because we just drew over the fog.
 	  if (viewer->getFogMap()->isFogged(stack->getPos()))
 	    {

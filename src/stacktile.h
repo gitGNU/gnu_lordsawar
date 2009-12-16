@@ -14,6 +14,8 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
+#ifndef STACKTILE_H
+#define STACKTILE_H
 #include <list>
 #include <gtkmm.h>
 #include "vector.h"
@@ -63,7 +65,7 @@ public:
     // Methods that operate on the class data and modify the class.
 
     //! Check to see if the given stack can be added to this tile.
-    bool canAdd(Stack *stack);
+    bool canAdd(const Stack *stack);
 
     //! Check to see if a stack with the given size and owner can be added here.
     bool canAdd(guint32 size, Player *owner);
@@ -86,6 +88,9 @@ public:
     //! Merge all stacks on this tile belonging to the given player.
     Stack *group(Player *owner);
 
+    //! Merge all stacks on this tile belonging to the given player into S.
+    void group(Player *owner, Stack *s);
+
     //! Split all army units belonging to the given player into stacks.
     void ungroup(Player *owner);
 
@@ -104,6 +109,9 @@ public:
     //! Return the first stack on this tile not belonging to the given player.
     Stack *getEnemyStack(Player *notowner) const;
 
+    //! Return all of the stacks on this tile not belonging to the given player.
+    std::list<Stack *> getEnemyStacks(Player *owner) const;
+
     //! Return the first stack on this tile.
     Stack *getStack() const;
 
@@ -115,12 +123,13 @@ public:
 
     Vector<int> getTile() const {return tile;};
 
-private:
     //! Return the number of army units on this tile owned by the given player.
     guint32 countNumberOfArmies(Player *owner) const;
+private:
 
+    Stack *groupStacks(Player *owner, Stack *s);
     //! Return the position of the given stack in our list of records.
-    StackTile::const_iterator findStack(Stack *s) const;
+    StackTile::const_iterator findStack(const Stack *s) const;
     StackTile::iterator findStack(Stack *s);
 
     // DATA
@@ -128,3 +137,4 @@ private:
     // Where on the game map this stack tile is.
     Vector<int> tile;
 };
+#endif

@@ -299,323 +299,265 @@ int EditorBigMap::tile_to_bridge_type(Vector<int> t)
 
 void EditorBigMap::change_map_under_cursor()
 {
-		
+
   Player* active = Playerlist::getInstance()->getActiveplayer();
-    std::vector<Vector<int> > tiles = get_cursor_tiles();
-    Tileset* ts = GameMap::getInstance()->getTileset();
-    Cityset* cs = GameMap::getInstance()->getCityset();
-    
-    for (std::vector<Vector<int> >::iterator i = tiles.begin(),
-	     end = tiles.end(); i != end; ++i)
+  std::vector<Vector<int> > tiles = get_cursor_tiles();
+  Tileset* ts = GameMap::getInstance()->getTileset();
+  Cityset* cs = GameMap::getInstance()->getCityset();
+
+  Vector<int> tile = tiles.front();
+  Rectangle changed_tiles(tile, Vector<int>(-1, -1));
+  Maptile* maptile = GameMap::getInstance()->getTile(tile);
+  switch (pointer)
     {
-	Vector<int> tile = *i;
-	Rectangle changed_tiles(tile, Vector<int>(-1, -1));
-	Maptile* maptile = GameMap::getInstance()->getTile(tile);
-	switch (pointer)
-	{
-	case POINTER:
-	    break;
-	    
-	case TERRAIN:
-        
-	    // don't change terrain to water if there is a building underneath
-	    if (maptile->getBuilding() != Maptile::NONE
-		&& pointer_terrain == Tile::WATER)
-		break;
-	    // don't change the terrain to anything else than grass if there is
-	    // a city
-	    if (maptile->getBuilding() == Maptile::CITY
-		&& pointer_terrain != Tile::GRASS)
-		break;
+    case POINTER:
+      break;
 
-	    if (pointer_terrain == maptile->getMaptileType() &&
-		pointer_tile_style_id == -1)
-	      break;
+    case TERRAIN:
 
-	    maptile->setType(ts->getIndex(pointer_terrain));
-	    if (pointer_tile_style_id == -1)
-	      {
-		if (pointer_terrain == Tile::MOUNTAIN)
-		  {
-		    GameMap *gm = GameMap::getInstance();
-		    gm->surroundMountains (tile.y-1, tile.x-1, 
-					   tile.y+2, tile.x+2);
-		    gm->applyTileStyles(tile.y-2, tile.x-2, 
-					tile.y+3, tile.x+3,
-					false);
-		  }
-		else
-		  GameMap::getInstance()->applyTileStyles(tile.y-1, tile.x-1, 
-							  tile.y+2, tile.x+2,
-							  false);
-	      }
-	    else
-	      {
-		Tileset *tileset = GameMap::getInstance()->getTileset();
-		TileStyle *tile_style;
-		tile_style = tileset->getTileStyle(pointer_tile_style_id);
-		maptile->setTileStyle (tile_style);
-	      }
-	    changed_tiles.dim = Vector<int>(1, 1);
-	    //change the boatedness of stacks that might be here.
-	    if (GameMap::getStack(tile))
-	      {
-		Stack* s = GameMap::getStack(tile);
-		Port *port = Portlist::getInstance()->getObjectAt(tile);
-		Bridge *bridge = Bridgelist::getInstance()->getObjectAt(tile);
-		if (pointer_terrain == Tile::WATER && s->hasShip() == false && 
-		    !port && !bridge)
-		  {
-		    for (Stack::iterator it = s->begin(); it != s->end(); it++)
-		      (*it)->setInShip(true);
-		  }
-		else if (pointer_terrain != Tile::WATER && s->hasShip() == true)
-		  {
-		    for (Stack::iterator it = s->begin(); it != s->end(); it++)
-		      (*it)->setInShip(false);
-		  }
-	      }
-	    break;
-	    
-	case MOVE:
-	    if (moving_objects_from == Vector<int>(-1,-1))
-	      {
-		if (GameMap::getInstance()->getBuilding(tile) != 
-		    Maptile::NONE || 
-		    GameMap::getStack(tile) != NULL ||
-		    GameMap::getBackpack(tile)->empty() == false)
-		  moving_objects_from = tile;
-	      }
-	    else
-	      {
-		Vector<int> from = moving_objects_from;
-		//here we go with the move!
-		GameMap *gm = GameMap::getInstance();
-		if (gm->getBuilding(from) != Maptile::NONE)
-		  {
-		    guint32 s = gm->getBuildingSize(from);
-		    if (gm->canPutBuilding
-			(gm->getBuilding(from), s, tile, false) == true)
-		      {
-			gm->moveBuilding(from, tile);
-			moving_objects_from = Vector<int>(-1,-1);
-		      }
-		    else
-		      {
-			if (gm->getLocation(from)->contains(tile) ||
-			    LocationBox(tile, s).contains(from))
-			  {
-			    gm->moveBuilding(from, tile);
-			    moving_objects_from = Vector<int>(-1,-1);
-			  }
-		      }
-		  }
-		else if (gm->getStack(from) != NULL)
-		  {
-		    Stack *s = gm->getFriendlyStack(from);
-		    if (!s)
-		      s = gm->getStack(from);
-		    if (gm->canPutStack(s->size(), s->getOwner(), tile) == true)
-		      {
-			gm->moveStack(s, tile);
-			moving_objects_from = Vector<int>(-1,-1);
-		      }
-		  }
-		else if (gm->getBackpack(from)->empty() == false)
-		  {
-		    gm->moveBackpack(from, tile);
-    		    moving_objects_from = Vector<int>(-1,-1);
-		  }
-	      }
-	    break;
-	case ERASE:
-	    // check if there is a building or a stack there and remove it
+      // don't change terrain to water if there is a building underneath
+      if (maptile->getBuilding() != Maptile::NONE && 
+          pointer_terrain == Tile::WATER)
+        break;
+      // don't change the terrain to anything else than grass if there is
+      // a city
+      if (maptile->getBuilding() == Maptile::CITY && 
+          pointer_terrain != Tile::GRASS)
+        break;
 
-	    // first stack, it's above everything else
-	    while  (GameMap::getStack(tile) != NULL)
-	      {
-		Stack *s = GameMap::getStack(tile);
-		GameMap::getInstance()->removeStack(s);
-	      }
-	    
-	    // ... or a temple ...
-	    GameMap::getInstance()->removeTemple(tile);
+      changed_tiles = GameMap::getInstance()->putTerrain(get_cursor_rectangle(), pointer_terrain, pointer_tile_style_id, true);
+      break;
 
-	    // ... or a port ...
-	    GameMap::getInstance()->removePort(tile);
+    case MOVE:
+      if (moving_objects_from == Vector<int>(-1,-1))
+        {
+          if (GameMap::getInstance()->getBuilding(tile) != 
+              Maptile::NONE || 
+              GameMap::getStack(tile) != NULL ||
+              GameMap::getBackpack(tile)->empty() == false)
+            moving_objects_from = tile;
+        }
+      else
+        {
+          Vector<int> from = moving_objects_from;
+          //here we go with the move!
+          GameMap *gm = GameMap::getInstance();
+          if (gm->getBuilding(from) != Maptile::NONE)
+            {
+              guint32 s = gm->getBuildingSize(from);
+              if (gm->canPutBuilding
+                  (gm->getBuilding(from), s, tile, false) == true)
+                {
+                  gm->moveBuilding(from, tile);
+                  moving_objects_from = Vector<int>(-1,-1);
+                }
+              else
+                {
+                  if (gm->getLocation(from)->contains(tile) ||
+                      LocationBox(tile, s).contains(from))
+                    {
+                      gm->moveBuilding(from, tile);
+                      moving_objects_from = Vector<int>(-1,-1);
+                    }
+                }
+            }
+          else if (gm->getStack(from) != NULL)
+            {
+              Stack *s = gm->getFriendlyStack(from);
+              if (!s)
+                s = gm->getStack(from);
+              if (gm->canPutStack(s->size(), s->getOwner(), tile) == true)
+                {
+                  gm->moveStack(s, tile);
+                  moving_objects_from = Vector<int>(-1,-1);
+                }
+            }
+          else if (gm->getBackpack(from)->empty() == false)
+            {
+              gm->moveBackpack(from, tile);
+              moving_objects_from = Vector<int>(-1,-1);
+            }
+        }
+      break;
+    case ERASE:
+      // check if there is a building or a stack there and remove it
 
-	    // ... or a ruin ...
-	    if (GameMap::getRuin(tile) != NULL)
-	      {
-		Rewardlist *rl = Rewardlist::getInstance();
-		for (Rewardlist::iterator i = rl->begin(); i != rl->end(); i++)
-		  {
-		    if ((*i)->getType() == Reward::RUIN)
-		      {
-			Reward_Ruin *rr = static_cast<Reward_Ruin*>(*i);
-			if (rr->getRuin()->getPos() == tile)
-			  rl->remove(*i);
-		      }
-		  }
-	      }
-	    GameMap::getInstance()->removeRuin(tile);
+      // first stack, it's above everything else
+      while  (GameMap::getStack(tile) != NULL)
+        {
+          Stack *s = GameMap::getStack(tile);
+          GameMap::getInstance()->removeStack(s);
+        }
 
-	    // ... or a road ...
-	    GameMap::getInstance()->removeRoad(tile);
+      // ... or a temple ...
+      GameMap::getInstance()->removeTemple(tile);
 
-	    // ... or a bridge...
-	    GameMap::getInstance()->removeBridge(tile);
+      // ... or a port ...
+      GameMap::getInstance()->removePort(tile);
 
-	    // ... or a signpost ...
-	    GameMap::getInstance()->removeSignpost(tile);
+      // ... or a ruin ...
+      if (GameMap::getRuin(tile) != NULL)
+        {
+          Rewardlist *rl = Rewardlist::getInstance();
+          for (Rewardlist::iterator i = rl->begin(); i != rl->end(); i++)
+            {
+              if ((*i)->getType() == Reward::RUIN)
+                {
+                  Reward_Ruin *rr = static_cast<Reward_Ruin*>(*i);
+                  if (rr->getRuin()->getPos() == tile)
+                    rl->remove(*i);
+                }
+            }
+        }
+      GameMap::getInstance()->removeRuin(tile);
 
-	    // ... or a city
-	    GameMap::getInstance()->removeCity(tile);
+      // ... or a road ...
+      GameMap::getInstance()->removeRoad(tile);
 
-	    // ... or a bag
-	    GameMap::getInstance()->getTile(tile)->getBackpack()->removeAllFromBackpack();
-	    break;
+      // ... or a bridge...
+      GameMap::getInstance()->removeBridge(tile);
 
-	case STACK:
-	    if (GameMap::getInstance()->canPutStack(1, active, tile) == true)
-	    {
-		// Create a new dummy stack. As we don't want to have empty
-		// stacks hanging around, it's assumed that the default armyset
-		// has at least one entry.
-		Stack* s = new Stack(active, tile);
-		const Armysetlist* al = Armysetlist::getInstance();
-		Army* a = new Army(*al->getArmy(active->getArmyset(), 0), 
-				   active);
-		s->push_back(a);
-		GameMap::getInstance()->putStack(s);
-		//if we're on a city, change the allegiance of the stack
-		//and it's armies to that of the city
-		if (GameMap::getInstance()->getBuilding(s->getPos()) == Maptile::CITY)
-		  {
-		    City *c = GameMap::getCity(s->getPos());
-		    Stacklist::changeOwnership(s, c->getOwner());
-	          }
-	    }
+      // ... or a signpost ...
+      GameMap::getInstance()->removeSignpost(tile);
 
-	    break;
-	    
-	case CITY:
-	  {
-	    // check if we can place the city
-	    bool city_placeable =
-	      GameMap::getInstance()->canPutBuilding
-	      (Maptile::CITY,cs->getCityTileWidth(), tile);
-	    
-	    if (!city_placeable)
-		break;
-	    
-	    City *c = new City(tile, cs->getCityTileWidth());
-	    GameMap::getInstance()->putCity(c);
-	    break;
-	  }
-	    
-	case RUIN:
-	  {
-	    bool ruin_placeable = GameMap::getInstance()->canPutBuilding
-	      (Maptile::RUIN, cs->getRuinTileWidth(), tile);
-	    if (!ruin_placeable)
-	      break;
-	    Ruin *r = new Ruin(tile, cs->getRuinTileWidth());
-	    GameMap::getInstance()->putRuin(r);
-	    break;
-	  }
-	    
-	case TEMPLE:
-	  {
-	    bool temple_placeable = GameMap::getInstance()->canPutBuilding
-	      (Maptile::TEMPLE, cs->getRuinTileWidth(), tile);
-	    if (!temple_placeable)
-	      break;
-	    Temple *t = new Temple(tile, cs->getTempleTileWidth());
-	    GameMap::getInstance()->putTemple(t);
-	    break;
-	  }
-	    
-	case SIGNPOST:
-	  {
-	    bool signpost_placeable = GameMap::getInstance()->canPutBuilding
-	      (Maptile::SIGNPOST, 1, tile);
-	    if (!signpost_placeable)
-	      break;
-	    Signpost *s = new Signpost(tile);
-	    GameMap::getInstance()->putSignpost(s);
-	    break;
-	  }
+      // ... or a city
+      GameMap::getInstance()->removeCity(tile);
 
-	case PORT:
-	  {
-	    bool port_placeable = GameMap::getInstance()->canPutBuilding
-	      (Maptile::PORT, 1, tile);
-	    if (!port_placeable)
-	      break;
-	    Port *p = new Port(tile);
-	    GameMap::getInstance()->putPort(p);
-	    break;
-	  }
-	    
-	case BRIDGE:
-	  {
-	    bool bridge_placeable = GameMap::getInstance()->canPutBuilding
-	      (Maptile::BRIDGE, 1, tile);
-	    if (!bridge_placeable)
-	      break;
-	    Bridge *b = new Bridge(tile, tile_to_bridge_type (tile));
-	    GameMap::getInstance()->putBridge(b);
-	    break;
-	  }
+      // ... or a bag
+      GameMap::getInstance()->getTile(tile)->getBackpack()->removeAllFromBackpack();
+      break;
 
-	case ROAD:
-	    {
-	      bool road_placeable = GameMap::getInstance()->canPutBuilding
-		(Maptile::ROAD, 1, tile);
-	      if (!road_placeable)
-		{
-		  //overwrite existing roads
-		  if (GameMap::getRoad(tile) != NULL)
-		    GameMap::getInstance()->removeRoad(tile);
-		  else
-		    break;
-		}
+    case STACK:
+      if (GameMap::getInstance()->canPutStack(1, active, tile) == true)
+        {
+          // Create a new dummy stack. As we don't want to have empty
+          // stacks hanging around, it's assumed that the default armyset
+          // has at least one entry.
+          Stack* s = new Stack(active, tile);
+          const Armysetlist* al = Armysetlist::getInstance();
+          Army* a = new Army(*al->getArmy(active->getArmyset(), 0), 
+                             active);
+          s->push_back(a);
+          GameMap::getInstance()->putStack(s);
+          //if we're on a city, change the allegiance of the stack
+          //and it's armies to that of the city
+          if (GameMap::getInstance()->getBuilding(s->getPos()) == Maptile::CITY)
+            {
+              City *c = GameMap::getCity(s->getPos());
+              Stacklist::changeOwnership(s, c->getOwner());
+            }
+        }
 
-	      int type = CreateScenario::calculateRoadType(tile);
-	      Road *r = new Road(tile, type);
-	      GameMap::getInstance()->putRoad(r);
-		
-      	      changed_tiles.pos -= Vector<int>(1, 1);
-	      changed_tiles.dim = Vector<int>(3, 3);
-	    break;
-	    }
-	case BAG:
-	    if (maptile->getMaptileType() != Tile::WATER)
-	    {
-	      //open the dialog
-	      MapBackpack *bag = 
-		GameMap::getInstance()->getTile(tile)->getBackpack();
-	      BackpackEditorDialog d(dynamic_cast<Backpack*>(bag));
-	      d.run();
-	    }
-	    break;
-	    
-	}
+      break;
 
-	if (changed_tiles.w > 0 && changed_tiles.h > 0)
-	    map_tiles_changed.emit(changed_tiles);
+    case CITY:
+        {
+          // check if we can place the city
+          bool city_placeable =
+            GameMap::getInstance()->canPutBuilding
+            (Maptile::CITY,cs->getCityTileWidth(), tile);
+
+          if (!city_placeable)
+            break;
+
+          City *c = new City(tile, cs->getCityTileWidth());
+          GameMap::getInstance()->putCity(c);
+          break;
+        }
+
+    case RUIN:
+        {
+          bool ruin_placeable = GameMap::getInstance()->canPutBuilding
+            (Maptile::RUIN, cs->getRuinTileWidth(), tile);
+          if (!ruin_placeable)
+            break;
+          Ruin *r = new Ruin(tile, cs->getRuinTileWidth());
+          GameMap::getInstance()->putRuin(r);
+          break;
+        }
+
+    case TEMPLE:
+        {
+          bool temple_placeable = GameMap::getInstance()->canPutBuilding
+            (Maptile::TEMPLE, cs->getRuinTileWidth(), tile);
+          if (!temple_placeable)
+            break;
+          Temple *t = new Temple(tile, cs->getTempleTileWidth());
+          GameMap::getInstance()->putTemple(t);
+          break;
+        }
+
+    case SIGNPOST:
+        {
+          bool signpost_placeable = GameMap::getInstance()->canPutBuilding
+            (Maptile::SIGNPOST, 1, tile);
+          if (!signpost_placeable)
+            break;
+          Signpost *s = new Signpost(tile);
+          GameMap::getInstance()->putSignpost(s);
+          break;
+        }
+
+    case PORT:
+        {
+          bool port_placeable = GameMap::getInstance()->canPutBuilding
+            (Maptile::PORT, 1, tile);
+          if (!port_placeable)
+            break;
+          Port *p = new Port(tile);
+          GameMap::getInstance()->putPort(p);
+          break;
+        }
+
+    case BRIDGE:
+        {
+          bool bridge_placeable = GameMap::getInstance()->canPutBuilding
+            (Maptile::BRIDGE, 1, tile);
+          if (!bridge_placeable)
+            break;
+          Bridge *b = new Bridge(tile, tile_to_bridge_type (tile));
+          GameMap::getInstance()->putBridge(b);
+          break;
+        }
+
+    case ROAD:
+        {
+          bool road_placeable = GameMap::getInstance()->canPutBuilding
+            (Maptile::ROAD, 1, tile);
+          if (!road_placeable)
+            {
+              //overwrite existing roads
+              if (GameMap::getRoad(tile) != NULL)
+                GameMap::getInstance()->removeRoad(tile);
+              else
+                break;
+            }
+
+          int type = CreateScenario::calculateRoadType(tile);
+          Road *r = new Road(tile, type);
+          GameMap::getInstance()->putRoad(r);
+
+          changed_tiles.pos -= Vector<int>(1, 1);
+          changed_tiles.dim = Vector<int>(3, 3);
+          break;
+        }
+    case BAG:
+      if (maptile->getMaptileType() != Tile::WATER)
+        {
+          //open the dialog
+          MapBackpack *bag = 
+            GameMap::getInstance()->getTile(tile)->getBackpack();
+          BackpackEditorDialog d(dynamic_cast<Backpack*>(bag));
+          d.run();
+        }
+      break;
+
     }
 
-    if (pointer == TERRAIN)
-      {
-	Rectangle r = get_cursor_rectangle();
-	guint32 border = 1;
-	r.pos -= Vector<int>(border, border);
-	r.dim += Vector<int>(border * 2, border * 2);
-	GameMap::getInstance()->applyTileStyles(r, true);
-      }
-    draw(Playerlist::getViewingplayer());
+  if (changed_tiles.w > 0 && changed_tiles.h > 0)
+    map_tiles_changed.emit(changed_tiles);
+
+  draw(Playerlist::getViewingplayer());
 }
 
 void EditorBigMap::smooth_view()

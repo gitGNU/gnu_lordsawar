@@ -111,7 +111,7 @@ bool Path::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Path::checkPath(Stack* s, bool enemy_cities_block, bool enemy_stacks_block)
+bool Path::checkPath(Stack* s, int enemy_city_avoidance, int enemy_stack_avoidance)
 {
     if (empty())
         return true;
@@ -122,8 +122,8 @@ bool Path::checkPath(Stack* s, bool enemy_cities_block, bool enemy_stacks_block)
 	secondlast--;
 	for (iterator it = begin(); it != secondlast; it++)
 	  {
-	    if (PathCalculator::isBlocked(s, *it, enemy_cities_block, 
-					  enemy_stacks_block) == false)
+	    if (PathCalculator::isBlocked(s, *it, enemy_city_avoidance, 
+					  enemy_stack_avoidance) == false)
 	      {
 		valid = false;
 		break;
@@ -246,7 +246,19 @@ void Path::calculate (Stack* s, Vector<int> dest, guint32 &moves, guint32 &turns
   // Finally, all that is left is finding the minimum distance way from start
   // point to destination.
 
-  PathCalculator pc = PathCalculator(s, zigzag);
+    
+  int enemy_city_avoidance = -1;
+  int enemy_stack_avoidance = -1;
+  if (s->getOwner() && s->getOwner()->isComputer())
+    {
+      //If we're a computer player we don't let enemy stacks and cities
+      //prevent us from reaching our destination.  When we encounter them
+      //we'll fight, but we try not to encounter them.
+      enemy_city_avoidance = 10;
+      enemy_stack_avoidance = 10;
+    }
+  PathCalculator pc = PathCalculator(s, zigzag, enemy_city_avoidance, 
+				     enemy_stack_avoidance);
 
   Path *calculated_path = pc.calculate(dest, moves, turns, zigzag);
   if (calculated_path->size())

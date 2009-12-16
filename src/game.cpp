@@ -544,8 +544,8 @@ void Game::search_selected_stack()
   Player *player = Playerlist::getActiveplayer();
   Stack* stack = player->getActivestack();
 
-  Ruin* ruin = GameMap::getRuin(stack->getPos());
-  Temple* temple = GameMap::getTemple(stack->getPos());
+  Ruin* ruin = GameMap::getRuin(stack);
+  Temple* temple = GameMap::getTemple(stack);
 
   if (ruin && !ruin->isSearched() && stack->hasHero() &&
       stack->getFirstHero()->getMoves() > 0 &&
@@ -915,14 +915,14 @@ void Game::update_control_panel()
       if (stack->getMoves() > 0)
 	{
 	  Temple *temple;
-	  temple = GameMap::getTemple(stack->getPos());
+	  temple = GameMap::getTemple(stack);
 	  can_search_selected_stack.emit(temple);
 	  can_move_selected_stack.emit(true);
 	}
 
       if (stack->hasHero())
 	{
-	  Ruin *ruin = GameMap::getRuin(stack->getPos());
+	  Ruin *ruin = GameMap::getRuin(stack);
 	  if (stack->getFirstHero()->getMoves() > 0 && ruin)
 	    can_search_selected_stack.emit(!ruin->isSearched());
 
@@ -936,9 +936,9 @@ void Game::update_control_panel()
 		    {
 			  //can't plant on city/ruin/temple/signpost
 			  City *city = GameMap::getCity(stack->getPos());
-			  Temple *temple = GameMap::getTemple(stack->getPos());
-			  Ruin *ruin = GameMap::getRuin(stack->getPos());
-			  Signpost *sign = GameMap::getSignpost(stack->getPos());
+			  Temple *temple = GameMap::getTemple(stack);
+			  Ruin *ruin = GameMap::getRuin(stack);
+			  Signpost *sign = GameMap::getSignpost(stack);
 			  if (!city && !temple && !ruin && !sign)
 			    {
 			      GameMap *gm = GameMap::getInstance();
@@ -960,7 +960,7 @@ void Game::update_control_panel()
 	  can_plant_standard_selected_stack.emit(false);
 	}
 
-      if (GameMap::getSignpost(stack->getPos()))
+      if (GameMap::getSignpost(stack))
 	can_change_signpost.emit(true);
 
       can_disband_stack.emit(true);

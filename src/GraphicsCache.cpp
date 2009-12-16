@@ -2705,15 +2705,15 @@ void GraphicsCache::loadMoveBonusPics()
 
 bool GraphicsCache::loadFlagImages(std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks)
 {
-  images = disassemble_row(filename, MAX_STACK_SIZE, true);
-  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+  images = disassemble_row(filename, FLAG_TYPES, true);
+  for (unsigned int i = 0; i < FLAG_TYPES; i++)
     {
       if (images[i]->get_width() != (int)size)
 	PixMask::scale(images[i], size, size);
 
     }
-  masks = disassemble_row(filename, MAX_STACK_SIZE, false);
-  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+  masks = disassemble_row(filename, FLAG_TYPES, false);
+  for (unsigned int i = 0; i < FLAG_TYPES; i++)
     {
       if (masks[i]->get_width() !=(int) size)
 	PixMask::scale(masks[i], size, size);

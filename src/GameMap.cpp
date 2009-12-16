@@ -461,10 +461,10 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
 		  //do we already have a nifty stack here?
 		  s = getFriendlyStack(Vector<int>(x,y));
                   if (s)
-                    { 
+                    {
+		      if (canAddArmy(Vector<int>(x,y)) == false)
+			continue;
                       //is our stack too full?
-                      if (s->size() >= MAX_STACK_SIZE)
-                        continue;
 		      s->add(a);
                     }
                   else 
@@ -1082,12 +1082,44 @@ Stack* GameMap::getFriendlyStack(Vector<int> pos)
 {
   return getStacks(pos)->getFriendlyStack(Playerlist::getActiveplayer());
 }
+
+//StackReflist GameMap::getFriendlyStacks(Vector<int> pos, Player *player)
+//{
+  //if (player == NULL)
+    //player = Playerlist::getActiveplayer();
+  //return StackReflist(getStacks(pos)->getFriendlyStacks(player));
+//}
+std::list<Stack*> GameMap::getFriendlyStacks(Vector<int> pos, Player *player)
+{
+  if (player == NULL)
+    player = Playerlist::getActiveplayer();
+  return getStacks(pos)->getFriendlyStacks(player);
+}
 	
 Stack* GameMap::getEnemyStack(Vector<int> pos)
 {
   return getStacks(pos)->getEnemyStack(Playerlist::getActiveplayer());
 }
 	
+std::list<Stack*> GameMap::getEnemyStacks(std::list<Vector<int> > positions)
+{
+  std::list<Stack*> enemy_stacks;
+  std::list<Vector<int> >::iterator it = positions.begin();
+  for (; it != positions.end(); it++)
+    {
+      Stack *enemy = getEnemyStack(*it);
+      if (enemy)
+	enemy_stacks.push_back(enemy);
+    }
+  return enemy_stacks;
+}
+
+std::list<Stack*> GameMap::getEnemyStacks(Vector<int> pos, Player *player)
+{
+  if (player == NULL)
+    player = Playerlist::getActiveplayer();
+  return getStacks(pos)->getEnemyStacks(player);
+}
 Stack* GameMap::getStack(Vector<int> pos)
 {
   return getStacks(pos)->getStack();
@@ -1096,6 +1128,15 @@ Stack* GameMap::getStack(Vector<int> pos)
 StackTile* GameMap::getStacks(Vector<int> pos)
 {
   return getInstance()->getTile(pos)->getStacks();
+}
+Stack *GameMap::groupStacks(Vector<int> pos)
+{
+  return getStacks(pos)->group(Playerlist::getActiveplayer());
+}
+  
+void GameMap::groupStacks(Stack *stack)
+{
+  getStacks(stack->getPos())->group(Playerlist::getActiveplayer(), stack);
 }
   
 void GameMap::updateStackPositions()
@@ -1109,9 +1150,26 @@ void GameMap::updateStackPositions()
     }
 }
 
-bool GameMap::canJoin(Stack *src, Stack *dest)
+bool GameMap::canJoin(const Stack *src, Vector<int> dest)
 {
-  return getStacks(dest->getPos())->canAdd(src);
+  return getStacks(dest)->canAdd(src);
+}
+bool GameMap::canJoin(const Stack *src, Stack *dest)
+{
+  return canJoin (src, dest->getPos());
+}
+
+bool GameMap::canAddArmy(Vector<int> dest)
+{
+  if (countArmyUnits(dest) < MAX_ARMIES_ON_A_SINGLE_TILE)
+    return true;
+  return false;
+}
+bool GameMap::canAddArmies(Vector<int> dest, guint32 stackSize)
+{
+  if (countArmyUnits(dest) + stackSize <= MAX_ARMIES_ON_A_SINGLE_TILE)
+    return true;
+  return false;
 }
 
 void GameMap::switchTileset(Tileset *tileset)
@@ -1556,12 +1614,12 @@ bool GameMap::putBridge(Bridge *b)
   return true;
 }
 
-bool GameMap::putTerrain(Rectangle r, Tile::Type type)
+Rectangle GameMap::putTerrain(Rectangle r, Tile::Type type, int tile_style_id, bool always_alter_tilestyles)
 {
   bool replaced = false;
   int index = getTileset()->getIndex(type);
   if (index == -1)
-    return false;
+    return r;
   for (int x = r.x; x < r.x + r.w; ++x)
     for (int y = r.y; y < r.y + r.h; ++y)
       {
@@ -1569,17 +1627,36 @@ bool GameMap::putTerrain(Rectangle r, Tile::Type type)
 	  continue;
 	Maptile* t = getTile(Vector<int>(x, y));
 	if (t->getMaptileType() != type)
-	  replaced = true;
-	t->setType(index);
+          {
+            t->setType(index);
+            calculateBlockedAvenue(x, y);
+            updateShips(Vector<int>(x,y));
+            replaced = true;
+          }
       }
-  if (replaced)
+  if (tile_style_id == -1)
     {
-      guint32 border = 1;
-      r.pos -= Vector<int>(border, border);
-      r.dim += Vector<int>(border * 2, border * 2);
-      applyTileStyles(r, true);
+      if (replaced || always_alter_tilestyles)
+        {
+          guint32 border = 1;
+          r.pos -= Vector<int>(border, border);
+          r.dim += Vector<int>(border * 2, border * 2);
+          applyTileStyles(r, true);
+        }
     }
-  return replaced;
+  else
+    {
+      for (int x = r.x; x < r.x + r.w; ++x)
+        for (int y = r.y; y < r.y + r.h; ++y)
+          {
+            if (offmap(x,y))
+              continue;
+	    TileStyle *style = getTileset()->getTileStyle(tile_style_id);
+	    getTile(x, y)->setTileStyle(style);
+          }
+    }
+
+  return r;
 }
 
 void GameMap::putBuilding(LocationBox *b, Maptile::Building building)
@@ -1590,6 +1667,9 @@ void GameMap::putBuilding(LocationBox *b, Maptile::Building building)
       {
 	Maptile* t = getTile(Vector<int>(x, y));
 	t->setBuilding(building);
+        if (building == Maptile::CITY || building == Maptile::PORT || 
+            building == Maptile::BRIDGE)
+          GameMap::getInstance()->calculateBlockedAvenue(x, y);
       }
 }
 
@@ -1696,3 +1776,103 @@ void GameMap::removeStack(Stack *s)
   getStacks(s->getPos())->leaving(s);
   Playerlist::getActiveplayer()->deleteStack(s);
 }
+	
+guint32 GameMap::countArmyUnits(Vector<int> pos)
+{
+  return getStacks(pos)->countNumberOfArmies(Playerlist::getActiveplayer());
+}
+
+std::list<Stack*> GameMap::getNearbyFriendlyStacks(Vector<int> pos, int dist)
+{
+  return getNearbyStacks(pos, dist, true);
+}
+
+std::list<Stack*> GameMap::getNearbyEnemyStacks(Vector<int> pos, int dist)
+{
+  return getNearbyStacks(pos, dist, false);
+}
+
+std::list<Stack*> GameMap::getNearbyStacks(Vector<int> pos, int dist, bool friendly)
+{
+  std::list<Stack *> stacks;
+  guint32 i, j;
+  guint32 d;
+  guint32 max = dist;
+  int x, y;
+
+  std::list<Stack*> stks;
+  if (friendly)
+    stks = GameMap::getFriendlyStacks(pos);
+  else
+    stks = GameMap::getEnemyStacks(pos);
+  stacks.merge(stks);
+
+  //d is the distance from Pos where our box starts
+  //instead of a regular loop around a box of dist large, we're going to add
+  //the nearer stacks first.
+  for (d = 1; d < max; d++)
+    {
+      for (i = 0; i < (d * 2) + 1; i++)
+        {
+          for (j = 0; j < (d * 2) + 1; j++)
+            {
+              if ((i == 0 || i == (d * 2) + 1) && 
+                  (j == 0 || j == (d * 2) + 1))
+                {
+                  x = pos.x + (i - d);
+                  y = pos.y + (j - d);
+                  if (x < 0 || y < 0)
+                    continue;
+		  if (offmap(x, y))
+		    continue;
+		  //are there any stacks here?
+		  if (friendly)
+		    stks = GameMap::getFriendlyStacks(Vector<int>(x,y));
+		  else
+		    stks = GameMap::getEnemyStacks(Vector<int>(x,y));
+		  stacks.merge(stks);
+                }
+            }
+        }
+    }
+
+  return stacks;
+}
+
+bool GameMap::checkCityAccessibility()
+{
+  //check to see if all cities are accessible
+  //check if all cities are accessible
+  Citylist *cl = Citylist::getInstance();
+  if (cl->size() <= 1)
+    return true;
+  Vector<int> pos = GameMap::getCenterOfMap();
+  City *center = Citylist::getInstance()->getNearestCity(pos);
+  Stack s(NULL, center->getPos());
+  ArmyProto *basearmy = ArmyProto::createScout();
+  Army *a = Army::createNonUniqueArmy(*basearmy);
+  delete basearmy;
+  s.push_back(a);
+  PathCalculator pc(&s, true, 10, 10);
+
+  for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
+    {
+      if (center == *it)
+	continue;
+
+      int mp = pc.calculate((*it)->getPos());
+      if (mp <= 0)
+	{
+	  printf("we made a map that has an inaccessible city (%d)\n", mp);
+	  printf("can't get from %s to %s\n", (*it)->getName().c_str(), center->getName().c_str());
+	  return false;
+	}
+    }
+  return true;
+}
+
+Vector<int> GameMap::getCenterOfMap()
+{
+  return Vector<int>(GameMap::s_width/2, GameMap::s_height/2);
+}
+

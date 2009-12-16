@@ -873,3 +873,19 @@ void Playerlist::setWinningPlayer(Player *winner)
   //only for humans
   d_activeplayer = winner;
 }
+
+int Playerlist::countFightsThisTurn() const
+{
+  int count = 0;
+  for (const_iterator it = begin(); it != end(); it++)
+    count += (*it)->countFightsThisTurn();
+  return count;
+}
+
+int Playerlist::countMovesThisTurn() const
+{
+  int count = 0;
+  for (const_iterator it = begin(); it != end(); it++)
+    count += (*it)->countMovesThisTurn();
+  return count;
+}

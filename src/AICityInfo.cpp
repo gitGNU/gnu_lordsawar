@@ -29,6 +29,7 @@ AICityInfo::AICityInfo(City *c)
     :d_danger(0), d_reinforcements(0), d_city(c)
 {
     d_threats = new Threatlist();
+    d_num_defenders = d_city->countDefenders();
 }
 
 AICityInfo::~AICityInfo()

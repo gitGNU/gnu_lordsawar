@@ -234,10 +234,13 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
          * @return A list of all stacks defending the city.
          */
 	//! Return a list of stacks defending a city.
-        static std::vector<Stack*> defendersInCity(const City* city);
+        static std::vector<Stack*> getDefendersInCity(const City* city);
 
         //! Returns the total number of stacks owned by all players.
         static unsigned int getNoOfStacks();
+
+        //! Returns the total number of armies owned by all players.
+        static unsigned int getNoOfArmies();
 
 	/**
 	 * This method removes the given stack from it's owner's stacklist and

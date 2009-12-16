@@ -1441,7 +1441,7 @@ bool MapGenerator::isAccessible (int src_x, int src_y, int dest_x, int dest_y)
   delete basearmy;
   s.push_back(a);
   // try to get there with a scout
-  if (p->calculate(&s, dest, true) == 0)
+  if (p->calculate(&s, dest, true) <= 0)
     retval = false;
   delete p;
 
@@ -1467,8 +1467,18 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
   Army *a = Army::createNonUniqueArmy(*basearmy);
   delete basearmy;
   s.push_back(a);
-  // try to get there with a giant bat
   guint32 moves = p->calculate(&s, dest, false);
+
+  if (moves <= 0)
+    {
+      s.clear();
+      delete a;
+      ArmyProto *basearmy = ArmyProto::createBat();
+      a = Army::createNonUniqueArmy(*basearmy);
+      delete basearmy;
+      s.push_back(a);
+      moves = p->calculate(&s, dest, false);
+    }
 
   if (moves != 0)
     {
@@ -1494,7 +1504,7 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
 	    {
 	      if (placePort(x, y) == true)
 		{
-		  if (isAccessible(x, y, dest.x, dest.y))
+		  if (isAccessible(src_x, src_y, dest.x, dest.y))
 		    {
 		      retval = true;
 		      break;
@@ -1506,7 +1516,7 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
 	    {
 	      if (placePort(nextx, nexty) == true)
 		{
-		  if (isAccessible(nextx, nexty, dest.x, dest.y))
+		  if (isAccessible(src_x, src_y, dest.x, dest.y))
 		    {
 		      retval = true;
 		      break;
@@ -1518,8 +1528,8 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
     }
   else
     retval = false;
-  delete p;
 
+  delete p;
   return retval;
 }
 
@@ -1659,16 +1669,18 @@ void MapGenerator::makeRoads()
       makeRoad(src, dest);
       progress.emit(.810, _("paving roads..."));
     }
-
+  
   //make all cities accessible by allowing movement to a central city
-  Vector<int> pos = cl->calculateCenterOfTerritory(NULL);
+  Vector<int> pos = GameMap::getCenterOfMap();
   City *center = cl->getNearestCity(pos);
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     {
       if (center == *it)
 	continue;
       if (isAccessible(center->getPos(), (*it)->getPos()) == false)
+	{
 	makeAccessible(center->getPos(), (*it)->getPos());
+	}
       progress.emit(.810, _("paving roads..."));
     }
 

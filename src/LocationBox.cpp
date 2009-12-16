@@ -118,6 +118,8 @@ Stack* LocationBox::getFreeStack(Player *p, Vector<int> &tile) const
     for (unsigned int j = 0; j < d_size; j++)
       {
 	Vector<int> pos = getPos() + Vector<int>(j,i);
+	if (GameMap::canAddArmy(pos) == false)
+	  continue;
 	StackTile *stile = GameMap::getInstance()->getTile(pos)->getStacks();
 	Stack *stack = stile->getFriendlyStack(p);
 	if (stack == NULL)
@@ -128,7 +130,7 @@ Stack* LocationBox::getFreeStack(Player *p, Vector<int> &tile) const
 	else 
 	  {
 	    Stack *enemy = stile->getEnemyStack(p);
-	    if (!enemy && stack->size() < MAX_STACK_SIZE) 
+	    if (!enemy && stack->isFull() == false)
 	      return stack;
 	  }
         }
@@ -186,4 +188,22 @@ bool LocationBox::isCompletelyObscuredByFog(Player *p) const
 	  return false;
       }
   return true;
+}
+
+Vector<int> LocationBox::getNearestPos(Vector<int> pos) const
+{
+  int min_dist = -1;
+  Vector<int> closest_tile = Vector<int>(-1,-1);
+  for (unsigned int i = 0; i < d_size; i++)
+    for (unsigned int j = 0; j < d_size; j++)
+      {
+        Vector<int> target = Vector<int>(i,j) + getPos();
+        int d = dist(pos, target);
+        if (d < min_dist || min_dist == -1)
+          {
+            min_dist = d;
+            closest_tile = target;
+          }
+      }
+  return closest_tile;
 }

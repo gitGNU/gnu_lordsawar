@@ -69,10 +69,12 @@ AI_Smart::~AI_Smart()
 bool AI_Smart::startTurn()
 {
   sbusy.emit();
-  AI_maybeBuyScout();
   maybeRecruitHero();
+  if (getStacklist()->getHeroes().size() == 0 &&
+      Citylist::getInstance()->countCities(this) == 1)
+    AI_maybeBuyScout(Citylist::getInstance()->getFirstCity(this));
   
-    debug(getName() << " start_turn")
+    debug("Player " << getName() << " starts a turn.")
 
     AI_Diplomacy diplomacy (this);
 
@@ -86,26 +88,36 @@ bool AI_Smart::startTurn()
     // the real stuff
     examineCities();
 
-    AI_setupVectoring(18, 2, 30);
+    AI_setupVectoring(10, 3, 20);
 
     sbusy.emit();
     //int loopCount = 0;
+        
+    AI_Analysis *analysis = new AI_Analysis(this);
+    const Threatlist *threats = analysis->getThreatsInOrder();
+    City *first_city = Citylist::getInstance()->getFirstCity(this);
+    bool build_capacity = false;
+    if (first_city)
+      {
+        Vector<int> pos = first_city->getPos();
+        City *first_neutral = 
+          Citylist::getInstance()->getNearestNeutralCity(pos);
+        if (first_neutral)
+          {
+            if (dist (pos, first_neutral->getPos()) <= 50)
+              build_capacity = true;
+          }
+      }
+    if (getGold() < 30)
+      build_capacity = true;
     while (true)
     {
         sbusy.emit();
-        // if the code is working, this loop will eventually terminate.
-        // However, in case there is a bug somewhere, we don't want the AI players to move forever,
-        // so loopCount is a safeguard to prevent that.
-        //loopCount++;
-        //if (loopCount >= 5)
-            //break;
         
-        AI_Analysis *analysis = new AI_Analysis(this);
-        AI_Allocation *allocation = new AI_Allocation(analysis, this);
-        int moveCount = allocation->move();
+        AI_Allocation *allocation = new AI_Allocation(analysis, threats, this);
+        int moveCount = allocation->move(first_city, build_capacity);
         
         // tidying up
-        delete analysis;
         delete allocation;
         
         // stop when no more stacks move
@@ -114,6 +126,8 @@ bool AI_Smart::startTurn()
 	if (d_abort_requested)
 	  break;
     }
+        
+    delete analysis;
     d_stacklist->setActivestack(0);
 
     diplomacy.makeProposals();
@@ -137,9 +151,11 @@ void AI_Smart::invadeCity(City* c)
     // always occupy an enemy city
     cityOccupy(c);
 
+    if (c->getNoOfProductionBases() == 0)
+      maybeBuyProduction(c, true);
+
     // Update its production
-    maybeBuyProduction(c);
-    setBestProduction(c);
+    setProduction(c);
 }
 
 void AI_Smart::heroGainsLevel(Hero * a)
@@ -152,89 +168,106 @@ void AI_Smart::heroGainsLevel(Hero * a)
     addAction(item);
 }
 
-int AI_Smart::maybeBuyProduction(City *c)
+int AI_Smart::maybeBuyProduction(City *c, bool quick)
 {
   Armysetlist *al = Armysetlist::getInstance();
-    int freebasicslot = -1;
-    int freeslot= -1;
+  int freeslot = -1;
 
-    int armytype = -1;
+  int armytype = -1;
 
-    freebasicslot=c->getFreeBasicSlot();
+  freeslot = c->getFreeSlot();
 
-    debug("AI gold " << d_gold);
-    debug("AI cityname " << c->getName());
-    debug("basic slot index " << freebasicslot);
+  if (freeslot==-1)
+    return -1;
 
-    if (freebasicslot==-1)
+  armytype = chooseArmyTypeToBuy(c, quick);
+  //does this armytype beat the one we're currently producing?
+  //is the one we're buying any better ?
+  if (armytype == -1)
+    return -1;
+
+  bool buy = false;
+  int slot = c->getActiveProductionSlot();
+  if (slot == -1)
+    buy = true;
+  else if (scoreBestArmyType(al->getArmy(getArmyset(), armytype)) > 
+           scoreBestArmyType(c->getProductionBase(slot)))
+    buy = true;
+
+  if (buy)
     {
-        debug("AI cannot buy a new production no slot available."); 
-        return -1;
+      debug("armytype i want to produce " << armytype);
+
+      bool couldbuy = cityBuyProduction(c, freeslot, armytype);
+
+      if (armytype >= 0 && couldbuy)
+        {
+          debug("YES I COULD BUY! type=" << armytype) 
+            return armytype;
+        }
+    }
+  return -1;
+}
+
+int AI_Smart::setQuickProduction(City *c)
+{
+  int select = -1;
+  int best_score = -1;
+
+  // we try to determine the most attractive basic production
+  for (guint32 i = 0; i < c->getMaxNoOfProductionBases(); i++)
+    {
+      if (c->getArmytype(i) == -1)    // no production in this slot
+        continue;
+
+      const ArmyProdBase *proto = c->getProductionBase(i);
+      int score = scoreQuickArmyType(proto);
+      if (score > best_score)
+        {
+          select = i;
+          best_score = score;
+        }
     }
 
-    freeslot=freebasicslot; 
-    armytype=chooseArmyTypeToBuy(c);
-    //does this armytype beat the one we're currently producing?
-    //is the one we're buying any better ?
-    if (armytype == -1)
-      return -1;
+  if (select != c->getActiveProductionSlot())
+    {
+      cityChangeProduction(c, select);
+      debug(getName() << " Set production to BASIC" << select << " in " << c->getName())
+    }
 
-    bool buy = false;
-    int slot = c->getActiveProductionSlot();
-    if (slot == -1)
-      buy = true;
-    else if (scoreArmyType(al->getArmy(getArmyset(), armytype)) > 
-	     scoreArmyType(c->getProductionBase(slot)))
-      buy = true;
-
-    if (buy)
-      {
-	debug("armytype i want to produce " << armytype)
-
-	bool couldbuy=cityBuyProduction(c, freeslot, armytype);
-
-	if (armytype >= 0 && couldbuy)
-	  {
-	    debug("YES I COULD BUY! type=" << armytype) 
-	    return armytype;
-	  }
-      }
-    return -1;
+  return c->getActiveProductionSlot();
 }
 
 int AI_Smart::setBestProduction(City *c)
 {
-    int selectbasic = -1;
-    int select = -1;
-    int scorebasic = -1;
+  int select = -1;
+  int best_score = -1;
 
-    // we try to determine the most attractive basic production
-    for (guint32 i = 0; i < c->getMaxNoOfProductionBases(); i++)
+  // we try to determine the most attractive basic production
+  for (guint32 i = 0; i < c->getMaxNoOfProductionBases(); i++)
     {
-        if (c->getArmytype(i) == -1)    // no production in this slot
-            continue;
+      if (c->getArmytype(i) == -1)    // no production in this slot
+        continue;
 
-        const ArmyProdBase *proto = c->getProductionBase(i);
-        if (scoreArmyType(proto) > scorebasic)
+      const ArmyProdBase *proto = c->getProductionBase(i);
+      int score = scoreBestArmyType(proto);
+      if (score > best_score)
         {
-            selectbasic = i;
-            scorebasic = scoreArmyType(proto);
+          select = i;
+          best_score = score;
         }
     }
 
-
-    select=selectbasic;
-
-    if (select != c->getActiveProductionSlot())
+  if (select != c->getActiveProductionSlot())
     {
-        cityChangeProduction(c, select);
-        debug(getName() << " Set production to BASIC" << select << " in " << c->getName())
+      cityChangeProduction(c, select);
+      debug(getName() << " Set production to slot " << select << " in " << c->getName())
     }
 
-    return c->getActiveProductionSlot();
+  return c->getActiveProductionSlot();
 }
 
-int AI_Smart::chooseArmyTypeToBuy(City *c)
+int AI_Smart::chooseArmyTypeToBuy(City *c, bool quick)
 {
     int bestScore, bestIndex;
     guint32 size = 0;
@@ -258,29 +291,73 @@ int AI_Smart::chooseArmyTypeToBuy(City *c)
 	  continue;
 
         if ((int)proto->getNewProductionCost() > d_gold)
-	{ 
-   	    debug("The production cost is too high for army of index=" << i)   
-            continue;
-	}
+          continue;
         
        if (c->hasProductionBase(proto->getTypeId(), getArmyset())==false)
        {
-         debug("I can buy it " << i)
-         int score = scoreArmyType(proto);
+         int score;
+         if (quick)
+           score = scoreQuickArmyType(proto);
+         else
+           score = scoreBestArmyType(proto);
          if (score >= bestScore)
          {
             bestIndex = i;
             bestScore = score;
          }
        }
-       else debug("It was already bought " << i) 
     }
 
-    debug("BEST INDEX=" << bestIndex)
     return bestIndex;
 }
 
-int AI_Smart::scoreArmyType(const ArmyProto *a)
+int AI_Smart::scoreQuickArmyType(const ArmyProdBase *a)
+{
+  //go get the best 1 turn army with the highest strength
+  int strength = a->getStrength();
+
+  int production = (5 - a->getProduction()) * 10;
+  return strength + production;
+}
+
+int AI_Smart::scoreQuickArmyType(const ArmyProto *a)
+{
+  //go get the best 1 turn army with the highest strength
+  int strength = a->getStrength();
+
+  int production = (5 - a->getProduction()) * 10;
+  return strength + production;
+}
+
+int AI_Smart::scoreBestArmyType(const ArmyProto *a)
+{
+  int production = a->getProduction();
+  if (production == 3)
+    production = 4;
+  //this treats armies with turns of 7 or higher unfairly
+  int max_strength = 60 / production * a->getStrength();
+
+  int city_bonus = 0;
+  switch (a->getArmyBonus())
+    {
+    case Army::ADD1STRINCITY: city_bonus += 5; break;
+    case Army::ADD2STRINCITY: city_bonus += 10; break;
+    }
+
+  int any_other_bonus = 0;
+  if (a->getArmyBonus() && city_bonus == 0)
+    any_other_bonus += 2;
+
+  int move_bonus = 0;
+  if (a->getMaxMoves() >  10)
+    move_bonus += 2;
+  if (a->getMaxMoves() >=  20)
+    move_bonus += 4;
+
+  return max_strength + city_bonus + move_bonus + any_other_bonus;
+}
+
+int AI_Smart::scoreBestArmyType(const ArmyProdBase *a)
 {
   //this treats armies with turns of 7 or higher unfairly
   int max_strength = 60 / a->getProduction() * a->getStrength();
@@ -305,44 +382,50 @@ int AI_Smart::scoreArmyType(const ArmyProto *a)
   return max_strength + city_bonus + move_bonus + any_other_bonus;
 }
 
-int AI_Smart::scoreArmyType(const ArmyProdBase *a)
+bool AI_Smart::cityNewlyTaken(City *city, guint32 turns) const
 {
-  //this treats armies with turns of 7 or higher unfairly
-  int max_strength = 60 / a->getProduction() * a->getStrength();
-
-  int city_bonus = 0;
-  switch (a->getArmyBonus())
+  guint count = 0;
+  std::list<History*> h = getHistoryForCityId(city->getId());
+  for (std::list<History*>::reverse_iterator i = h.rbegin(); i != h.rend(); i++)
     {
-    case Army::ADD1STRINCITY: city_bonus += 5; break;
-    case Army::ADD2STRINCITY: city_bonus += 10; break;
+      if ((*i)->getType() == History::START_TURN)
+        count++;
+      else if ((*i)->getType() == History::CITY_WON)
+        break;
     }
 
-  int any_other_bonus = 0;
-  if (a->getArmyBonus() && city_bonus == 0)
-    any_other_bonus += 2;
+  if (count >= turns)
+    return true;
+  return false;
+}
 
-  int move_bonus = 0;
-  if (a->getMaxMoves() >  10)
-    move_bonus += 2;
-  if (a->getMaxMoves() >=  20)
-    move_bonus += 4;
-
-  return max_strength + city_bonus + move_bonus + any_other_bonus;
+void AI_Smart::setProduction(City *city)
+{
+  if (city->countDefenders() < 3 || cityNewlyTaken(city) == true)
+    {
+      int slot = setQuickProduction(city);
+      if (slot == -1)
+        {
+          slot = maybeBuyProduction(city, true);
+          if (slot != -1)
+            cityChangeProduction(city, slot);
+        }
+    }
+  else
+    {
+      setBestProduction(city);
+    }
 }
 
 void AI_Smart::examineCities()
 {
-    debug("Examinating Cities to see what we can do")
+  debug("Examinating Cities to see what we can do")
     Citylist* cl = Citylist::getInstance();
-    for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
+  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
     {
-        City *city = (*it);
-        if ((city->isFriend(this)) && (city->isBurnt()==false))
-        {
-            // Here we wait to earn more money so we do not buy new productions
-            if (d_mustmakemoney==0) maybeBuyProduction(city);
-            setBestProduction(city);
-        }
+      City *city = (*it);
+      if (city->getOwner() == this && city->isBurnt() == false)
+        setProduction(city);
     }
 }
 

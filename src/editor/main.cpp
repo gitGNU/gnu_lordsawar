@@ -64,7 +64,11 @@ int main(int argc, char* argv[])
     {
 	Gtk::Main kit(argc, argv);
 
-	MainWindow* main_window = new MainWindow;
+	MainWindow* main_window;
+	if (argc > 1)
+	  main_window = new MainWindow (argv[1]);
+	else
+	  main_window = new MainWindow;
 	main_window->show();
 	
 	main_window->init();

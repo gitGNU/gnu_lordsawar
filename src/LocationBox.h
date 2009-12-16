@@ -115,6 +115,8 @@ class LocationBox : public Immovable
     //! Unobscures the view of this location in the given player's FogMap.
     void deFog(Player *p) const;
 
+    //! Which tile of the location is the fewest number of tiles away from pos.
+    Vector<int> getNearestPos(Vector<int> pos) const;
 
  protected:
 

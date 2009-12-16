@@ -66,6 +66,8 @@ BigMap::BigMap()
 {
     // note: we are not fully initialized before set_view is called
     view.x = view.y = 0;
+    view.w = 0;
+    view.h = 0;
 
     d_grid_toggled = false;
 

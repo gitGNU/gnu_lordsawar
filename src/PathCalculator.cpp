@@ -101,17 +101,17 @@ void PathCalculator::populateNodeMap()
     }
 }
 
-PathCalculator::PathCalculator(Stack *s, bool zig, bool avoid_cities, bool avoid_stacks)
+PathCalculator::PathCalculator(const Stack *s, bool zig, int city_avoidance, int stack_avoidance)
 :stack(s), flying(s->isFlying()), d_bonus(s->calculateMoveBonus()),
     land_reset_moves(s->getMaxLandMoves()),
-    boat_reset_moves(s->getMaxBoatMoves()), zigzag(zig), on_ship(stack->hasShip()), avoid_enemy_cities(avoid_enemy_cities), avoid_enemy_stacks(avoid_stacks), enemy_city_avoidance(ENEMY_CITY_WEIGHT), enemy_stack_avoidance(ENEMY_STACK_WEIGHT), delete_stack(false)
+    boat_reset_moves(s->getMaxBoatMoves()), zigzag(zig), on_ship(stack->hasShip()), enemy_city_avoidance(city_avoidance), enemy_stack_avoidance(stack_avoidance), delete_stack(false)
 {
   populateNodeMap();
 }
 
-PathCalculator::PathCalculator(Player *p, Vector<int> src, const ArmyProdBase *prodbase, bool zig, bool avoid_cities, bool avoid_stacks)
+PathCalculator::PathCalculator(Player *p, Vector<int> src, const ArmyProdBase *prodbase, bool zig, int city_avoidance, int stack_avoidance)
 {
-  stack = Stack::createNonUniqueStack(p, src);
+  Stack *new_stack = Stack::createNonUniqueStack(p, src);
   Army *army;
   if (!prodbase)
     {
@@ -125,22 +125,21 @@ PathCalculator::PathCalculator(Player *p, Vector<int> src, const ArmyProdBase *p
 
   if (!army)
     return;
-  stack->push_back(army);
+  new_stack->push_back(army);
+  stack = new_stack;
   flying = stack->isFlying();
   d_bonus = stack->calculateMoveBonus();
   land_reset_moves = stack->getMaxLandMoves();
   boat_reset_moves = stack->getMaxBoatMoves();
   zigzag = zig; 
-  avoid_enemy_cities = avoid_cities;
-  avoid_enemy_stacks = avoid_stacks;
-  enemy_city_avoidance = ENEMY_CITY_WEIGHT;
-  enemy_stack_avoidance = ENEMY_STACK_WEIGHT;
+  enemy_city_avoidance = city_avoidance;
+  enemy_stack_avoidance = stack_avoidance;
   on_ship = stack->hasShip();
   delete_stack = true;
   populateNodeMap();
 }
 
-PathCalculator::PathCalculator(const Stack &s, bool zig, bool avoid_cities, bool avoid_stacks)
+PathCalculator::PathCalculator(const Stack &s, bool zig, int city_avoidance, int stack_avoidance)
 {
   stack = new Stack(s);
   flying = stack->isFlying();
@@ -148,10 +147,8 @@ PathCalculator::PathCalculator(const Stack &s, bool zig, bool avoid_cities, bool
   land_reset_moves = stack->getMaxLandMoves();
   boat_reset_moves = stack->getMaxBoatMoves();
   zigzag = zig; 
-  avoid_enemy_cities = avoid_cities;
-  avoid_enemy_stacks = avoid_stacks;
-  enemy_city_avoidance = ENEMY_CITY_WEIGHT;
-  enemy_stack_avoidance = ENEMY_STACK_WEIGHT;
+  enemy_city_avoidance = city_avoidance;
+  enemy_stack_avoidance = stack_avoidance;
   on_ship = stack->hasShip();
   delete_stack = true;
   populateNodeMap();
@@ -162,8 +159,7 @@ PathCalculator::PathCalculator(const PathCalculator &p)
 :stack(new Stack(*p.stack)), flying(p.flying), d_bonus(p.d_bonus),
     land_reset_moves(p.land_reset_moves),
     boat_reset_moves(p.boat_reset_moves), zigzag(p.zigzag), on_ship(p.on_ship),
-    avoid_enemy_cities(p.avoid_enemy_cities), 
-    avoid_enemy_stacks(p.avoid_enemy_stacks), enemy_city_avoidance(p.enemy_city_avoidance), enemy_stack_avoidance(p.enemy_stack_avoidance), delete_stack(p.delete_stack)
+    enemy_city_avoidance(p.enemy_city_avoidance), enemy_stack_avoidance(p.enemy_stack_avoidance), delete_stack(p.delete_stack)
 {
   int width = GameMap::getWidth();
   int height = GameMap::getHeight();
@@ -351,11 +347,10 @@ std::list<Vector<int> > PathCalculator::calcMoves(Vector<int> pos)
 
 bool PathCalculator::load_or_unload(Vector<int> src, Vector<int> dest, bool &on_ship)
 {
+  Stack *new_stack = Stack::createNonUniqueStack(stack->getOwner(), src);
   //do we load or unload if we step from SRC to DEST?
-  Vector<int> old = stack->getPos();
-  stack->setPos(src);
-  bool retval = stack->isMovingToOrFromAShip(dest, on_ship);
-  stack->setPos(old);
+  bool retval = new_stack->isMovingToOrFromAShip(dest, on_ship);
+  delete new_stack;
   return retval;
 }
 int PathCalculator::pointsToMoveTo(Vector<int> pos, Vector<int> next) const
@@ -368,13 +363,13 @@ int PathCalculator::pointsToMoveTo(Vector<int> pos, Vector<int> next) const
 
   moves = tile->getMoves();
 
-  if (avoid_enemy_cities == false)
+  if (enemy_city_avoidance >= 1)
     {
       //We will still try to avoid enemy cities a little.
       if (GameMap::getEnemyCity(pos))
 	moves += enemy_city_avoidance;
     }
-  if (avoid_enemy_stacks == false)
+  if (enemy_stack_avoidance >= 1)
     {
       //We will still try to avoid enemy stacks a little.
       if (GameMap::getEnemyStack(pos))
@@ -426,7 +421,7 @@ bool PathCalculator::isBlockedDir(Vector<int> pos, Vector<int> next)
   return false;
 }
 
-bool PathCalculator::isBlocked(Stack *s, Vector<int> pos, bool enemy_cities_block, bool enemy_stacks_block)
+bool PathCalculator::isBlocked(const Stack *s, Vector<int> pos, bool enemy_cities_block, bool enemy_stacks_block)
 {
   const Maptile* tile = GameMap::getInstance()->getTile(pos);
 
@@ -456,7 +451,7 @@ bool PathCalculator::isBlocked(Stack *s, Vector<int> pos, bool enemy_cities_bloc
 
 bool PathCalculator::isBlocked(Vector<int> pos)
 {
-  return isBlocked(stack, pos, avoid_enemy_cities, avoid_enemy_stacks);
+  return isBlocked(stack, pos, enemy_city_avoidance < 0, enemy_stack_avoidance < 0);
 }
 
 bool PathCalculator::canMoveThere(Vector<int> dest)
@@ -712,3 +707,15 @@ Path *PathCalculator::calculateToCity (City *c, guint32 &moves, guint32 &turns, 
   return calculate(shortest, moves, turns, zigzag);
 }
 
+std::list<Vector<int> > PathCalculator::getReachablePositions(int mp)
+{
+  std::list<Vector<int> > positions;
+  int width = GameMap::getWidth();
+  int height = GameMap::getHeight();
+  for (int i = 0; i < width*height; i++)
+    {
+      if (nodes[i].moves < mp || mp == 0)
+	positions.push_back(Vector<int>(i % width, i / width));
+    }
+  return positions;
+}

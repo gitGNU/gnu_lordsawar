@@ -1180,11 +1180,15 @@ class Action_Produce: public Action
 	 * produced, the City in which it has arrived, and also whether
 	 * or not this unit was prevented from showing up here because
 	 * it is being vectored elsewhere.
+	 *
+	 * pos is the vectored location if we're vectoring
+	 * or it's the position on the map where the newly produced army ended 
+	 * up.
 	 */
 	//! Populate the action with pertinent data.
-        bool fillData(const ArmyProdBase *a, City *city, bool vectored);
+        bool fillData(const ArmyProdBase *a, City *city, bool vectored, Vector<int> pos, guint32 army_id);
 
-	//! Get the instance of the army that was produced.
+	//! Get the production details of the army that was produced.
 	ArmyProdBase * getArmy() const {return d_army;}
 
 	//! Get the Id of the City that produced the Army unit.
@@ -1192,10 +1196,18 @@ class Action_Produce: public Action
 
 	//! Get whether or not the Army unit is being vectored elsewhere.
 	bool getVectored() const {return d_vectored;}
+
+	//! Get where this army ends up on the map.
+	Vector<int> getDestination() const {return d_dest;}
+
+	//! Get the id of the army instance that was created.
+	guint32 getArmyId() const {return d_army_id;}
     private:
 	ArmyProdBase *d_army;
         guint32 d_city;
         bool d_vectored;
+	Vector<int> d_dest;
+	guint32 d_army_id;
 
 	bool load(std::string tag, XML_Helper *helper);
 };

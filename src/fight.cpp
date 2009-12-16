@@ -96,47 +96,22 @@ Fight::Fight(Stack* attacker, Stack* defender, FightType type)
     // defender gets any other stacks in the cities.
     //
 
-    Maptile* tile = GameMap::getInstance()->getTile(defender->getPos());
+    City *city = GameMap::getCity(defender->getPos());
     Vector<int> p = defender->getPos();
 
-    bool city = false;
-    
-    if (tile->getBuilding() == Maptile::CITY)
-        city = true;
 
-    for (int x = p.x - 1; x <= p.x + 1; x++)
-        for (int y = p.y - 1; y <= p.y + 1; y++)
-        {
-            if (x < 0 || x >= GameMap::getInstance()->getWidth()
-                || y < 0 || y >= GameMap::getInstance()->getHeight())
-                continue;
-
-            tile = GameMap::getInstance()->getTile(x,y);
-            
-            // look for attackers
-            Stack* s = GameMap::getFriendlyStack(Vector<int>(x,y));
-            Stack::const_iterator sit;
-
-            if (!s)
-                continue;
-            
-            if (s->getOwner() == defender->getOwner()
-                && s != (*d_defenders.begin()))
-            {
-                // check if stack may participate
-                bool valid = false;
-                if (city && tile->getBuilding() == Maptile::CITY)
-                  valid = true;
-
-                if (valid)
-                {
-                    debug("Adding stack " <<s->getId() <<" to defenders")
-                        
-                    d_defenders.push_back(s);
-                }
-            }
-        }
-
+    if (city)
+      {
+	std::vector<Stack*> stacks = city->getDefenders();
+	for (std::vector<Stack*>::iterator it = stacks.begin(); 
+	     it != stacks.end(); it++)
+	  {
+	    Stack *s = *it;
+	    if (s == d_defenders.front())
+	      continue;
+	    d_defenders.push_back(s);
+	  }
+      }
 	
     std::list<Stack*>::iterator it;
     

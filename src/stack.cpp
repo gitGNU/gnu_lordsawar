@@ -38,6 +38,7 @@
 #include "FogMap.h"
 #include "player.h"
 #include "Backpack.h"
+#include "AI_Analysis.h"
 
 std::string Stack::d_tag = "stack";
 using namespace std;
@@ -64,6 +65,10 @@ Stack::Stack(const Stack& s)
     d_defending(s.d_defending), d_parked(s.d_parked), 
     d_deleting(false)
 {
+  if (s.d_path == NULL)
+    {
+      printf("Stack %d has a null path!\n", d_id);
+    }
     d_path = new Path(*s.d_path);
 
     for (const_iterator sit = s.begin(); sit != s.end(); sit++)
@@ -366,7 +371,7 @@ int Stack::bless()
   int count = 0;
   for (iterator it = begin(); it != end(); it++)
     {
-      Temple *temple = GameMap::getTemple(getPos());
+      Temple *temple = GameMap::getTemple(this);
       if ((*it)->bless(temple))
 	count++;
     }
@@ -655,6 +660,11 @@ guint32 getFightOrder(std::list<guint32> values, guint32 value)
   return 0;
 }
 
+bool Stack::armyCompareStrength (const Army *lhs, const Army *rhs)  
+{
+  return lhs->getStat(Army::STRENGTH) < rhs->getStat(Army::STRENGTH);
+}
+
 bool Stack::armyCompareFightOrder (const Army *lhs, const Army *rhs)  
 {
   std::list<guint32> lhs_fight_order = lhs->getOwner()->getFightOrder();
@@ -662,6 +672,13 @@ bool Stack::armyCompareFightOrder (const Army *lhs, const Army *rhs)
   guint32 lhs_rank = getFightOrder (lhs_fight_order, lhs->getTypeId());
   guint32 rhs_rank = getFightOrder (rhs_fight_order, rhs->getTypeId());
   return lhs_rank < rhs_rank; 
+}
+
+void Stack::sortByStrength(bool reverse)
+{
+  sort(armyCompareStrength);
+  if (reverse)
+    std::reverse(begin(), end());
 }
 
 void Stack::sortForViewing (bool reverse)
@@ -701,6 +718,11 @@ guint32 Stack::getUpkeep() const
   return upkeep;
 }
 
+guint32 Stack::getMaxArmiesToJoin() const
+{
+  return MAX_STACK_SIZE - size();
+}
+
 bool Stack::canJoin(const Stack *stack) const
 {
   if ((stack->size() + size()) > MAX_STACK_SIZE)
@@ -710,27 +732,59 @@ bool Stack::canJoin(const Stack *stack) const
 
 }
 
+//take the weakest units where their strengths add up to strength.
+std::list<guint32> Stack::determineArmiesByStrength(bool strongest, float strength) const
+{
+  std::list<guint32> armies;
+  float remaining = strength; 
+  Stack *stack = new Stack(*this);
+  stack->sortByStrength(false);
+  for (iterator it = stack->begin(); it != stack->end(); it++)
+    {
+      float score = AI_Analysis::assessArmyStrength(*it);
+      if (score > remaining)
+        continue;
+      else
+        {
+          remaining -= score;
+          armies.push_back((*it)->getId());
+        }
+    }
+  delete stack;
+  return armies;
+}
+
+std::list<guint32> Stack::determineStrongArmies(float strength) const
+{
+  return determineArmiesByStrength(true, strength);
+}
+std::list<guint32> Stack::determineWeakArmies(float strength) const
+{
+  return determineArmiesByStrength(false, strength);
+}
+
 std::list<guint32> Stack::determineReachableArmies(Vector<int> dest) const
 {
   std::list<guint32> ids;
   //try each army individually to see if it reaches
+	  
+  Stack *stack = Stack::createNonUniqueStack(getOwner(), getPos());
   for (const_iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getMoves() > 0)
 	{
-	  Stack *stack = Stack::createNonUniqueStack(getOwner(), getPos());
 	  stack->push_back(*it);
-	  if (stack->getMoves() >= 
-	      stack->getPath()->calculate(stack, dest))
+	  if (stack->getMoves() >= stack->getPath()->calculate(stack, dest))
 	    ids.push_back((*it)->getId());
 	  stack->clear();
-	  delete stack;
 	}
     }
+  delete stack;
   if (ids.size() == 0)
     return ids;
 
   //now try to see if any army units can tag along
+  stack = Stack::createNonUniqueStack(getOwner(), getPos());
   for (const_iterator it = begin(); it != end(); it++)
     {
       //skip over armies that are already known to be reachable
@@ -738,7 +792,6 @@ std::list<guint32> Stack::determineReachableArmies(Vector<int> dest) const
 	continue;
       if ((*it)->getMoves() > 0)
 	{
-	  Stack *stack = Stack::createNonUniqueStack(getOwner(), getPos());
 	  stack->push_back(*it);
 	  //also push back the rest of the known reachables
 	  std::list<guint32>::iterator iit = ids.begin();
@@ -752,9 +805,9 @@ std::list<guint32> Stack::determineReachableArmies(Vector<int> dest) const
 	      stack->getPath()->calculate(stack, dest))
 	    ids.push_back((*it)->getId());
 	  stack->clear();
-	  delete stack;
 	}
     }
+  delete stack;
 
   return ids;
 }
@@ -928,5 +981,52 @@ void Stack::join(Stack *join)
   for (iterator i = join->begin(); i != join->end(); i++)
     push_back(*i);
   join->clear();
+}
+
+bool Stack::validate() const
+{
+  if (size() > MAX_STACK_SIZE)
+    return false;
+  if (size() == 0)
+    return false;
+  return true;
+}
+
+bool Stack::isFull() const
+{
+  if (size() >= MAX_STACK_SIZE)
+    return true;
+  return false;
+}
+
+bool Stack::clearPath()
+{
+  if (getPath())
+    {
+      if (getPath()->size() > 0)
+	{
+	  getPath()->clear();
+	  return true;
+	}
+      else
+	return false;
+    }
+  else
+    return false;
+  return true;
+}
+
+bool Stack::isOnCity() const
+{
+  if (GameMap::getInstance()->getBuilding(getPos()) == Maptile::CITY)
+    return true;
+  return false;
+}
+
+bool Stack::hasPath() const
+{
+  if (getPath() && getPath()->size() > 0)
+    return true;
+  return false;
 }
 // End of file

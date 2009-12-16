@@ -119,9 +119,9 @@ void Stacklist::nextTurn()
 	    }
 }
 
-vector<Stack*> Stacklist::defendersInCity(const City *city)
+vector<Stack*> Stacklist::getDefendersInCity(const City *city)
 {
-    debug("defendersInCity()");
+    debug("getDefendersInCity()");
 
     vector<Stack*> stackvector;
     Vector<int> pos = city->getPos();
@@ -131,10 +131,11 @@ vector<Stack*> Stacklist::defendersInCity(const City *city)
         for (unsigned int j = pos.y; j < pos.y + city->getSize(); j++)
         {
 	    Vector<int> p = Vector<int>(i,j);
-	    Stack *stack;
-	    stack = GameMap::getStacks(p)->getFriendlyStack(city->getOwner());
-            if (stack)
-	      stackvector.push_back(stack);
+	    std::list<Stack *>stacks = 
+	      GameMap::getFriendlyStacks(p, city->getOwner());
+	    for (std::list<Stack*>::iterator it = stacks.begin(); 
+		 it != stacks.end(); it++)
+		stackvector.push_back(*it);
         }
     }
 
@@ -149,6 +150,19 @@ unsigned int Stacklist::getNoOfStacks()
         pit != Playerlist::getInstance()->end(); pit++)
     {
         mysize += (*pit)->getStacklist()->size();
+    }
+
+    return mysize;
+}
+
+unsigned int Stacklist::getNoOfArmies()
+{
+    unsigned int mysize = 0;
+
+    for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
+        pit != Playerlist::getInstance()->end(); pit++)
+    {
+        mysize += (*pit)->getStacklist()->countArmies();
     }
 
     return mysize;
@@ -356,16 +370,9 @@ bool Stacklist::load(string tag, XML_Helper* helper)
     if (tag == Stack::d_tag)
     {
         Stack* s = new Stack(helper);
-        if ((active != 0) && (s->getId() == active))
-        {
-            d_activestack = s;
-        }
+        if (active != 0 && s->getId() == active)
+	  d_activestack = s;
 
-	if (s->size() > MAX_STACK_SIZE)
-	  {
-	    cerr << "Stack Id " << s->getId() << " has " <<s->size() <<" army units (over " << MAX_STACK_SIZE << " units)" << endl;
-	  return false;
-	  }
         add(s);
         return true;
     }
@@ -413,22 +420,12 @@ bool Stacklist::canJumpOverTooLargeStack(Stack *s)
       if (moves > mp)
 	return false;
       mp -= moves;
-      Stack *another_stack = GameMap::getStack(*it);
-      if (another_stack)
-	{
-	  if (another_stack->getOwner() != s->getOwner())
-	    return false;
-	  if (s->canJoin(another_stack) == true)
-	    {
-	      found = true;
-	      break;
-	    }
-	}
-      else
-	{
-	  found = true;
-	  break;
-	}
+      if (GameMap::getEnemyCity(*it) != NULL)
+        return false;
+      if (GameMap::getEnemyStack(*it) != NULL)
+        return false;
+      if (GameMap::canJoin(s, *it) == true)
+	return true;
     }
   return found;
 }

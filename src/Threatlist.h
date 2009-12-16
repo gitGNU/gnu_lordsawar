@@ -70,6 +70,9 @@ class Threatlist : public std::list<Threat*>
         //! sort into list by closest first
         void sortByDistance(Vector<int> pos);
 
+        //! sort into a list with value divded by distance.
+        void sortByDistanceAndValue(Vector<int> pos);
+
         //! Behaves like std::list::clear(), but frees pointers as well
         void flClear();
 
@@ -84,6 +87,9 @@ class Threatlist : public std::list<Threat*>
         //! return some debugging information
         string toString() const;
         
+    private:
+
+        static bool compareValue(const Threat *lhs, const Threat *rhs);
 };
 
 #endif // THREATLIST_H

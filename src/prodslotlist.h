@@ -121,7 +121,7 @@ class ProdSlotlist: public std::vector<ProdSlot*>
         bool hasProductionBase(const ArmyProto * army) const;
 
         //! Return the first slot that doesn't have a production base.
-	int getFreeBasicSlot() const;
+	int getFreeSlot() const;
 
         //! Return the number of production bases in the list.
 	/**

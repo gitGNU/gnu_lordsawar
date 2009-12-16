@@ -71,21 +71,6 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	// Methods that operate on class data and do not modify the class.
 
 	/**
-	 * Scan through the list of City objects for cities being owned by
-	 * the given player.  Average all the positions of those cities and
-	 * determine a centre point.
-	 *
-	 * @param player  The player we're trying to calculate the centre
-	 *                of territory for.
-	 *
-	 * @return The position on the map that is the centre of that player's
-	 *         cities.  If the player has no cities, this method returns
-	 *         a point of (INT_MAX/2, INT_MAX/2).
-	 */
-	//! Find the center point for all of the given player's cities.
-	Vector<int> calculateCenterOfTerritory (Player *player) const;
-
-	/**
 	 * Scan through all of the city objects for a city that is vectoring
 	 * to the given city.
 	 *
@@ -107,7 +92,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
         //! Save the list of City objects to an opened saved-game file.
         bool save(XML_Helper* helper) const;
        
-        //! Count the number of City objects that a given player owns. 
+        //! Count the number of functional cities that a given player owns. 
         int countCities(Player* p) const;
 
 	//! Count the total number of inhabitable cities.
@@ -134,7 +119,8 @@ class Citylist : public LocationList<City*>, public sigc::trackable
         //! Returns the closest city that is owned by an enemy player.
 	/**
 	 * Scans through all of the City objects in the list for the nearest
-	 * one that is at war with the active player.
+	 * one that is at war with the active player.  Nearness is determined
+         * by counting the tiles between POS and the enemy city.
 	 *
 	 * @note This method will not return a razed city.
 	 *
@@ -145,6 +131,8 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 *         if there aren't any City objects owned by any enemies.
 	 */
         City* getNearestEnemyCity(const Vector<int>& pos) const;
+
+        City* getClosestEnemyCity(const Stack *stack) const;
 
         //! Returns the closest city that isn't owned by the active player.
 	/**
@@ -161,6 +149,8 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 */
 	City* getNearestForeignCity(const Vector<int>& pos) const;
 
+        City* getClosestForeignCity(const Stack *stack) const;
+
         //! Return the closest city owned by the active player.
 	/**
 	 * Scans through all of the City objects in the list for the nearest
@@ -176,6 +166,8 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 *         own any City objects.
 	 */
         City* getNearestFriendlyCity(const Vector<int>& pos) const;
+
+        City* getClosestFriendlyCity(const Stack *stack) const;
 
         //! Find the closest city owned by the active player and isn't too far.
 	/**
@@ -208,6 +200,8 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 *        are not any City objects in the list.
 	 */
         City* getNearestCity(const Vector<int>& pos) const;
+
+        City* getClosestCity(const Stack *stack) const;
 
         //! Find the closest city that isn't too far away.
 	/**
@@ -272,6 +266,8 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	 *         own any City objects.
 	 */
 	City* getNearestCity(const Vector<int>& pos, Player *player) const;
+
+        City* getClosestCity(const Stack *stack, Player *p) const;
 
         //! Return the closest city owned by the neutral player.
 	/**
@@ -359,7 +355,6 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 
 	//! Get the nearest city to POS that can be vectored to.
 	City* getNearestFriendlyVectorableCity(const Vector<int>& pos) const;
-
 
 	// Static Methods
 

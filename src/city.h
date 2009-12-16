@@ -219,7 +219,7 @@ class City : public Ownable, public Location, public Renamable,
 	bool changeVectorDestination(Vector<int> dest);
 
 	//! Callback that makes the army show up.
-	const Army *armyArrives();
+	const Army *armyArrives(Vector<int> &pos);
 
 	
 	// Methods that operate on class data and do not modify the class.
@@ -257,6 +257,8 @@ class City : public Ownable, public Location, public Renamable,
 	//! Return how many armies are in the city.
 	guint32 countDefenders() const;
 
+	//! Return the stacks that are inside the city walls.
+	std::vector<Stack *> getDefenders() const;
 
 	// Static Methods
 	
@@ -269,7 +271,7 @@ class City : public Ownable, public Location, public Renamable,
 	bool load(std::string tag, XML_Helper *helper);
 
         //! Produces the currently active Army production base.
-        Army * produceArmy();
+        Army * produceArmy(Vector<int> &pos);
 
 	//! Makes an Army production base be a little different than expected.
 	/**

@@ -62,11 +62,14 @@ class AICityInfo
         //! Returns the location of the city
         Vector<int> getPos() const { return d_city->getPos(); }
         
+        //! Get the number of armies in the city
+        int getDefenderCount() const { return d_num_defenders; }
     private:
         float d_danger;
         float d_reinforcements;
         Threatlist *d_threats;
         City *d_city;
+        int d_num_defenders;
 };
 
 #endif // AICITYINFO_H

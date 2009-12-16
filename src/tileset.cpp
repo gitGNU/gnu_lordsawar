@@ -58,9 +58,9 @@ Tileset::Tileset(guint32 id, std::string name)
     roadpic[i] = NULL;
   for (unsigned int i = 0; i < BRIDGE_TYPES; i++)
     bridgepic[i] = NULL;
-  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+  for (unsigned int i = 0; i < FLAG_TYPES; i++)
     flagpic[i] = NULL;
-  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+  for (unsigned int i = 0; i < FLAG_TYPES; i++)
     flagmask[i] = NULL;
   number_of_selector_frames = 0;
   selector.clear();
@@ -99,9 +99,9 @@ Tileset::Tileset(XML_Helper *helper, std::string directory)
     roadpic[i] = NULL;
   for (unsigned int i = 0; i < BRIDGE_TYPES; i++)
     bridgepic[i] = NULL;
-  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+  for (unsigned int i = 0; i < FLAG_TYPES; i++)
     flagpic[i] = NULL;
-  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+  for (unsigned int i = 0; i < FLAG_TYPES; i++)
     flagmask[i] = NULL;
   number_of_selector_frames = 0;
   selector.clear();
@@ -407,7 +407,7 @@ void Tileset::uninstantiateImages()
 	  setSmallSelectorMask(i, NULL);
 	}
     }
-  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+  for (unsigned int i = 0; i < FLAG_TYPES; i++)
     {
       if (getFlagImage(i) != NULL)
 	{
@@ -415,7 +415,7 @@ void Tileset::uninstantiateImages()
 	  setFlagImage(i, NULL);
 	}
     }
-  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+  for (unsigned int i = 0; i < FLAG_TYPES; i++)
     {
       if (getFlagMask(i) != NULL)
 	{

@@ -24,10 +24,12 @@
 #include "Threatlist.h"
 #include "Threat.h"
 #include "playerlist.h"
+#include "stackreflist.h"
 #include "stacklist.h"
 #include "ruinlist.h"
 #include "army.h"
 #include "AICityInfo.h"
+#include "armysetlist.h"
 
 using namespace std;
 
@@ -43,7 +45,7 @@ AI_Analysis::AI_Analysis(Player *owner)
 {
     d_stacks = 0;
     d_threats = new Threatlist();
-    d_stacks = new Stacklist(owner->getStacklist());
+    d_stacks = new StackReflist(owner->getStacklist());
 
     examineCities();
     examineRuins();
@@ -73,7 +75,7 @@ void AI_Analysis::deleteStack(guint32 id)
   if (instance)
     {
         instance->d_threats->deleteStack(id);
-        instance->d_stacks->flRemove(id);
+        instance->d_stacks->removeStack(id);
     }
 }
 
@@ -83,15 +85,18 @@ void AI_Analysis::deleteStack(Stack* s)
     {
         debug("delete stack from ai_analysis")
         instance->d_threats->deleteStack(s->getId());
-        instance->d_stacks->flRemove(s->getId());
+        instance->d_stacks->removeStack(s->getId());
         debug("stack " << s << " died")
     }
 }
 
+float AI_Analysis::assessArmyStrength(const Army *army)
+{
+  return (float)army->getStat(Army::STRENGTH);
+}
+
 float AI_Analysis::assessStackStrength(const Stack *stack)
 {
-    debug("assessing stack with id "<<stack->getId())
-    
     if (!instance)
         return stack->size() * 5.0;
 
@@ -100,19 +105,26 @@ float AI_Analysis::assessStackStrength(const Stack *stack)
         // our stack, so we can look inside it
         float total = 0.0;
         for (Stack::const_iterator it = stack->begin(); it != stack->end(); it++)
-            total += (*it)->getStat(Army::STRENGTH);
+          total += assessArmyStrength(*it);
+            
 
         return total;
     }
     else
-    {
+      {
         // enemy stack, no cheating!
         // if we were smarter, we would remember all stacks we had seen before and return a better number here.
         // We don't assume a too high average strength
-        if (stack->getStrongestArmy()->getStat(Army::STRENGTH) < 5)
-            return stack->size() * stack->getStrongestArmy()->getStat(Army::STRENGTH);
+        guint32 as = stack->getOwner()->getArmyset();
+        guint32 type_id = stack->getStrongestArmy()->getTypeId();
+        ArmyProto *strongest = Armysetlist::getInstance()->getArmy(as, type_id);
+        //if the strongest army has a strength of 4 or less,
+        //we assume that all army units in the stack have the same strength.
+        if (strongest->getStrength() < 5)
+          return stack->size() * strongest->getStrength();
+        //otherwise we round everything down to an average of 5 strength.
         return stack->size() * 5.0;
-    }
+      }
 }
 
 const Threatlist* AI_Analysis::getThreatsInOrder()
@@ -161,32 +173,42 @@ void AI_Analysis::getCityWorstDangers(float dangers[3])
     return;
 }
 
+int AI_Analysis::getNumberOfDefendersInCity(City *city)
+{
+  AICityMap::iterator it = d_cityInfo.find(city->getName());
+  if (it == d_cityInfo.end())
+    return 0;
+
+  return (*it).second->getDefenderCount();
+}
+
 float AI_Analysis::getCityDanger(City *city)
 {
-    // city does not exist in the map
-    if (d_cityInfo.find(city->getName()) == d_cityInfo.end())
-        return 0.0;
-    
-    debug("Threats to " << city->getName() << " are " << d_cityInfo[city->getName()]->getThreats()->toString())
-    return d_cityInfo[city->getName()]->getDanger();
+  AICityMap::iterator it = d_cityInfo.find(city->getName());
+  // city does not exist in the map
+  if (it == d_cityInfo.end())
+    return 0.0;
+
+  debug("Threats to " << city->getName() << " are " << d_cityInfo[city->getName()]->getThreats()->toString())
+    return (*it).second->getDanger();
 }
 
 void AI_Analysis::reinforce(City *city, Stack *stack, int movesToArrive)
 {
-    if (d_cityInfo.find(city->getName()) == d_cityInfo.end())
-        return;
+  AICityMap::iterator it = d_cityInfo.find(city->getName()) ;
+  if (it == d_cityInfo.end())
+    return;
 
-    AICityInfo *info = d_cityInfo[city->getName()];
-    info->addReinforcements(assessStackStrength(stack) / (float) movesToArrive);
+  (*it).second->addReinforcements(assessStackStrength(stack) / (float) movesToArrive);
 }
 
 float AI_Analysis::reinforcementsNeeded(City *city)
 {
-    if (d_cityInfo.find(city->getName()) == d_cityInfo.end())
-        return -1000.0;
+  AICityMap::iterator it = d_cityInfo.find(city->getName());
+  if (it == d_cityInfo.end())
+    return -1000.0;
 
-    const AICityInfo* info = d_cityInfo[city->getName()];
-    return info->getDanger() - info->getReinforcements();
+  return (*it).second->getDanger() - (*it).second->getReinforcements();
 }
 
 void AI_Analysis::examineCities()
@@ -214,9 +236,7 @@ void AI_Analysis::examineStacks()
 
         Stacklist *sl = player->getStacklist();
         for (Stacklist::iterator sit = sl->begin(); sit != sl->end(); ++sit)
-        {
-            d_threats->addStack(*sit);
-        }
+          d_threats->addStack(*sit);
     }
 }
 

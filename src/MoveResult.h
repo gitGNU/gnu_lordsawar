@@ -22,6 +22,7 @@
 #include "fight.h"
 
 using namespace std;
+class Stack;
 
 /** 
   * This is needed by the AI so it can tell when a stack dies.
@@ -30,7 +31,7 @@ using namespace std;
 class MoveResult
 {
     public:
-        MoveResult(bool result);
+        MoveResult();
         ~MoveResult();
 
         //! set the result of any fight that happened
@@ -39,27 +40,40 @@ class MoveResult
         //! set how many steps were taken in this move
         void setStepCount(int stepCount) { d_stepCount = stepCount; }
 
-        //! set whether the move ended in a join to another stack
-        void setJoin(bool join) { d_join = join; }
-        
-
-        //! did the move succeed?
-        bool moveSucceeded() const { return d_result; }
-
-        //! did the stack go away as a result of this move?
-        bool stackVanished() const { return (d_fightResult == Fight::DEFENDER_WON) || d_join; }
-
         //! return the result of the fight, if there was one
         Fight::Result getFightResult() const { return d_fightResult; }
 
         //! did anything actually happen in this move?
-        bool didSomething() const { return (d_fight || (d_stepCount > 0) || d_join); }
+        bool didSomething() const { return (d_fight || (d_stepCount > 0) ); }
+
+	void setReachedEndOfPath(bool reached) {d_reached_end = reached;};
+	bool getRreachedEndOfPath() const {return d_reached_end;}
+
+	void setOutOfMoves(bool out) {d_out_of_moves = out;}
+	bool getOutOfMoves() const {return d_out_of_moves;}
+
+	void setTreachery(bool treachery) {d_treachery = treachery;}
+	bool getTreachery() const {return d_treachery;}
+
+	void setConsideredTreachery(bool considered) {d_considered_treachery = considered;}
+	bool getConsideredTreachery() const {return d_considered_treachery;}
+
+        void setTooLargeStackInTheWay(bool s) {d_too_large_stack_in_the_way=s;}
+        bool getTooLargeStackInTheWay() const {return d_too_large_stack_in_the_way;}
+
+	//! fill up d_out_of_moves, d_reached_end, and d_stepCount
+	void fillData(Stack *s, int stepCount);
 
     private:
         bool d_result;
         bool d_fight;
-        bool d_join;
         int d_stepCount;
+	bool d_out_of_moves;
+	bool d_reached_end;
+	bool d_treachery;
+	bool d_considered_treachery;
+        //this is when we can't jump over a friendly stack.
+        bool d_too_large_stack_in_the_way;
         Fight::Result d_fightResult;
 };
 

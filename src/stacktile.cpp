@@ -14,6 +14,7 @@
 //  along with this program; if not, write to the Free Software
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
+#include <assert.h>
 #include "stacktile.h"
 #include "stack.h"
 #include "defs.h"
@@ -32,8 +33,14 @@ StackTile::~StackTile()
 {
 }
 
-bool StackTile::canAdd(Stack *stack)
+bool StackTile::canAdd(const Stack *stack)
 {
+  //it's not a bug if the stack is already on this tile.
+  //two or more stacks have to be on the same stacktile to join.
+  //it's not a bug if more than MAX_ARMIES_ON_A_SINGLE_TILE is exceeded
+  //temporarily.  too large stacks can pass through, but not stay.
+  if (findStack(stack) != end())
+    return true;
   return canAdd(stack->size(), stack->getOwner());
 }
     
@@ -104,7 +111,7 @@ StackTile::iterator StackTile::findStack(Stack *s)
   return end();
 }
 
-StackTile::const_iterator StackTile::findStack(Stack *s) const
+StackTile::const_iterator StackTile::findStack(const Stack *s) const
 {
   for (const_iterator it = begin(); it != end(); it++)
     if (s->getId() == (*it).stack_id)
@@ -181,6 +188,20 @@ Stack *StackTile::getEnemyStack(Player *owner) const
   return NULL;
 }
 
+std::list<Stack *> StackTile::getEnemyStacks(Player *owner) const
+{
+  std::list<Stack *> stacks;
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it).player_id == owner->getId())
+	continue;
+      Player *p = Playerlist::getInstance()->getPlayer((*it).player_id);
+      Stack *stack = p->getStacklist()->getStackById((*it).stack_id);
+      if (stack)
+	stacks.push_back(stack);
+    }
+  return stacks;
+}
 
 Stack *StackTile::getOtherStack(Stack *stack) const
 {
@@ -211,18 +232,34 @@ bool StackTile::contains(guint32 id) const
   return false;
 }
 
-//! merge all of the armies owned by OWNER into a single stack
 Stack *StackTile::group(Player *owner)
 {
-  Stack *stack = NULL;
+  return groupStacks(owner, NULL);
+}
+
+void StackTile::group(Player *owner, Stack *stack)
+{
+  groupStacks(owner, stack);
+  return;
+}
+
+Stack *StackTile::groupStacks(Player *owner, Stack *stack)
+{
   std::list<Stack*> stacks = getFriendlyStacks(owner);
-  if (stacks.size() > 0)
-    stack = stacks.front();
+  if (stack == NULL)
+    {
+      if (stacks.size() > 0)
+	stack = stacks.front();
+    }
+  else if (findStack(stack) == end())
+    return NULL;
+
   for (std::list<Stack*>::iterator i = stacks.begin(); i != stacks.end(); i++)
     {
       if (*i == stack)
 	continue;
-      owner->stackJoin(stack, *i);
+      bool joined = owner->stackJoin(stack, *i);
+      assert (joined == true);
     }
   return stack;
 }

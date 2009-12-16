@@ -191,7 +191,8 @@ void City::produceStrongestProductionBase()
 
       int savep = d_active_production_slot;
       setActiveProductionSlot(strong_idx);
-      produceArmy();
+      Vector<int> pos;
+      produceArmy(pos);
       setActiveProductionSlot(savep);
       return;
     }
@@ -233,13 +234,14 @@ void City::produceWeakestProductionBase()
 
       int savep = d_active_production_slot;
       setActiveProductionSlot(weak_idx);
-      produceArmy();
+      Vector<int> pos;
+      produceArmy(pos);
       setActiveProductionSlot(savep);
       return;
     }
 }
 
-const Army *City::armyArrives()
+const Army *City::armyArrives(Vector<int> &pos)
 {
   // vector the army to the new spot
   if (d_vectoring)
@@ -257,7 +259,7 @@ const Army *City::armyArrives()
     }
   else //or make it here
     {
-      return produceArmy();
+      return produceArmy(pos);
     }
   return NULL;
 }
@@ -297,7 +299,7 @@ void City::setVectoring(Vector<int> p)
     }
 }
 
-Army *City::produceArmy()
+Army *City::produceArmy(Vector<int> &pos)
 {
   // add produced army to stack
   if (d_active_production_slot == -1)
@@ -312,7 +314,8 @@ Army *City::produceArmy()
     return NULL;
 
   Army *a = new Army(*(getProductionBase(d_active_production_slot)), d_owner);
-  GameMap::getInstance()->addArmy(this, a);
+  Stack *s = GameMap::getInstance()->addArmy(this, a);
+  pos = s->getPos();
 
   if (d_owner == Playerlist::getInstance()->getNeutral()) 
     {
@@ -351,10 +354,15 @@ bool City::changeVectorDestination(Vector<int> dest)
   return true;
 }
 
+std::vector<Stack *> City::getDefenders() const
+{
+  return getOwner()->getStacklist()->getDefendersInCity(this);
+}
+
 guint32 City::countDefenders() const
 {
   std::vector<Stack*> defenders;
-  defenders = getOwner()->getStacklist()->defendersInCity(this);
+  defenders = getDefenders();
 
   guint32 armies = 0;
   std::vector<Stack*>::iterator it = defenders.begin();
@@ -522,5 +530,6 @@ guint32 City::calculateDefenseLevel() const
     return 2;
   else if (num_production_bases > 2)
     return 3;
+  return 0;
 }
 // End of file

@@ -131,6 +131,9 @@ class ArmyProto : public ArmyProtoBase
 	//! Create an ArmyProto object that can walk well in hills and forest.
 	static ArmyProto * createScout();
 
+	//! Create an ArmyProto object that can fly.
+	static ArmyProto * createBat();
+
     protected:
 
 	//! Callback to read this object from an opened file.

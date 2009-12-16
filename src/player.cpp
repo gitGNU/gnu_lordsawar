@@ -364,10 +364,10 @@ void Player::addStack(Stack* stack)
 
 bool Player::deleteStack(Stack* stack)
 {
-  if (getType() == AI_SMART || getType() == AI_FAST)
+  if (isComputer() == true)
     {
       AI_Analysis::deleteStack(stack->getId());
-      AI_Allocation::deleteStack(stack->getId());
+      AI_Allocation::deleteStack(stack);
     }
     return d_stacklist->flRemove(stack);
 }
@@ -652,56 +652,51 @@ Stack *Player::stackSplitArmy(Stack *stack, Army *a)
 void Player::doStackJoin(Stack* receiver, Stack* joining)
 {
     receiver->join(joining);
-    d_stacklist->flRemove(joining);
+   deleteStack(joining); 
+    //d_stacklist->flRemove(joining);
     
     d_stacklist->setActivestack(receiver);
 }
 
 bool Player::stackJoin(Stack* receiver, Stack* joining)
 {
-    debug("Player::stackJoin("<<receiver->getId()<<","<<joining->getId()<<")")
 
     if ((receiver == 0) || (joining == 0))
         return false;
+    debug("Player::stackJoin("<<receiver->getId()<<","<<joining->getId()<<")");
 
+    assert (receiver->getPos() == joining->getPos());
     if (GameMap::canJoin(joining, receiver) == false)
-      {
-	//fixme: this is a bad idea.  it seems recursively bad.
-	//Stack *already_there = Stacklist::getAmbiguity(joining);
-	//doStackJoin(joining, already_there,  false);
-        return false;
-      }
+      return false;
     
     Action_Join* item = new Action_Join();
     item->fillData(receiver, joining);
     addAction(item);
 
     doStackJoin(receiver, joining);
-    
+ 
+    supdatingStack.emit(0);
     return true;
 }
 
-bool Player::stackSplitAndMove(Stack* s)
+bool Player::stackSplitAndMove(Stack* s, Stack *& new_stack)
 {
-  if (s->getPath()->size() == 0)
+  if (s->hasPath() == false)
     return false;
   Vector<int> pos = s->getLastReachablePointInPath();
   if (pos == Vector<int>(-1,-1))
     return false;
   Stack *join = GameMap::getFriendlyStack(pos);
   if (join)
-    return stackSplitAndMoveToJoin(s, join);
+    return stackSplitAndMoveToJoin(s, join, new_stack);
   else
-    return stackSplitAndMoveToAttack(s);
+    return stackSplitAndMoveToAttack(s, new_stack);
 }
 
-bool Player::stackSplitAndMoveToJoin(Stack* s, Stack *join)
+bool Player::stackSplitAndMoveToJoin(Stack* s, Stack *join, Stack *& new_stack)
 {
   //the stack can't get there, but maybe part of the stack can.
-  if (s->getPath()->empty())
-    return false;
-
-  if (GameMap::canJoin(s,join) == false)
+  if (s->hasPath() == false)
     return false;
 
   std::list<guint32> ids;
@@ -709,19 +704,32 @@ bool Player::stackSplitAndMoveToJoin(Stack* s, Stack *join)
   if (ids.size() == 0)
     return false;
   //if they're all reachable and we can join, just move them
-  if (ids.size() == s->size())
+  if (ids.size() == s->size() && GameMap::canJoin(s, join) == true)
     return stackMove(s);
 
-  Stack *new_stack = stackSplitArmies(s, ids);
+  //let's take who we can fit.
+  if (ids.size() > join->getMaxArmiesToJoin())
+    {
+      int diff = ids.size() - join->getMaxArmiesToJoin();
+      for (int i = 0; i < diff; i++)
+        ids.pop_front();
+    }
+
+  if (ids.size() == 0)
+    return false;
+  //okay, ids.size armies can make the move.  but can that tile accept it?
+  new_stack = stackSplitArmies(s, ids);
   if (new_stack)
     {
       setActivestack(new_stack);
       return stackMove(new_stack);
+      //if (getActivestack() != NULL)
+	//GameMap::groupStacks(new_stack);
     }
   return false;
 }
 
-bool Player::stackSplitAndMoveToAttack(Stack* s)
+bool Player::stackSplitAndMoveToAttack(Stack* s, Stack *& new_stack)
 {
   //the stack can't get there, but maybe part of the stack can.
   if (s->getPath()->empty())
@@ -734,7 +742,7 @@ bool Player::stackSplitAndMoveToAttack(Stack* s)
   if (ids.size() == s->size())
     return stackMove(s);
 
-  Stack *new_stack = stackSplitArmies(s, ids);
+  new_stack = stackSplitArmies(s, ids);
   if (new_stack)
     {
       setActivestack(new_stack);
@@ -759,6 +767,19 @@ bool Player::stackMove(Stack* s)
     return ret;
 }
 
+    
+bool Player::nextStepOnEnemyStackOrCity(Stack *s) const
+{
+  Vector<int> dest = s->getFirstPointInPath();
+  if (dest != Vector<int>(-1,-1))
+    {
+      if (GameMap::getEnemyStack(dest))
+	return true;
+      if (GameMap::getEnemyCity(dest))
+	return true;
+    }
+  return false;
+}
 MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 {
 
@@ -771,28 +792,43 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
     }
 
     if (s->getPath()->empty())
-    {
-        return new MoveResult(false);        //way to destination blocked
-    }
+      {
+	MoveResult *result = new MoveResult;
+	result->setReachedEndOfPath(true);
+	return result;
+      }
 
     int stepCount = 0;
     int moves_left = s->getPath()->getMovesExhaustedAtPoint();
-    while ((s->getPath()->size() > 1 && stackMoveOneStep(s)) ||
-	   stackMoveOneStepOverTooLargeFriendlyStacks(s))
+    while (1)
       {
-	stepCount++;
-	moves_left--;
-        supdatingStack.emit(0);
-	if (moves_left == 1)
+	if (s->getPath()->size() <= 1)
 	  break;
-	// are we on an enemy city?
-	if (GameMap::getEnemyCity(s->getPos()) != NULL)
+	if (nextStepOnEnemyStackOrCity(s) == true)
 	  break;
-	// are we on an enemy stack?
-	if (GameMap::getEnemyStack(s->getPos()) != NULL)
+
+        bool step = false;
+        step = stackMoveOneStep(s);
+        if (!step)
+          step = stackMoveOneStepOverTooLargeFriendlyStacks(s);
+        if (step)
+	  {
+	    stepCount++;
+	    moves_left--;
+	    supdatingStack.emit(0);
+	    if (moves_left == 1)
+	      break;
+	  }
+	else
 	  break;
       }
 
+    //the idea here is that we're one move away from our destination.
+    //but in some cases we've already reached the end of the path
+    //because a fight has to happen.
+
+    //did we jump over a too large friendly stack to an enemy stack or city?
+  
     //alright, we've walked up to the last place in the path.
     if (s->getPath()->size() >= 1 && s->enoughMoves())
     //now look for fight targets, joins etc.
@@ -802,9 +838,11 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
         City* city = GameMap::getCity(pos);
         Stack* target =GameMap::getStack(pos);
 
+
         //first fight_city to avoid ambiguity with fight_army
         if (city && (city->getOwner() != this) && (!city->isBurnt()))
-        {
+	  {
+	    bool treachery = false;
 	    if (this->getDiplomaticState (city->getOwner()) != AT_WAR)
 	      {
 		if (streacheryStack.emit (s, city->getOwner(), 
@@ -812,26 +850,31 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 		  {
 		    //we decided not to be treacherous
 		    s->getPath()->clear();
-		    MoveResult *moveResult = new MoveResult(false);
+		    MoveResult *moveResult = new MoveResult;
+		    moveResult->setConsideredTreachery(true);
+		    moveResult->fillData(s, stepCount);
 		    return moveResult;
 		  }
+		else
+		  treachery = true;
 	      }
-            MoveResult *moveResult = new MoveResult(true);
+	    MoveResult *moveResult = new MoveResult;
+	    moveResult->setTreachery(treachery);
+	    moveResult->setConsideredTreachery(treachery);
 	    if (stackMoveOneStep(s))
 	      {
 		stepCount++;
-		moveResult = new MoveResult(true);
 	      }
 	    else
 	      {
-		moveResult = new MoveResult(false);
-		moveResult->setStepCount(stepCount);
+		moveResult->fillData(s, stepCount);
 		shaltedStack.emit(s);
 		return moveResult;
 	      }
 
+	    moveResult->fillData(s, stepCount);
             Fight::Result result;
-            vector<Stack*> def_in_city = Stacklist::defendersInCity(city);
+            vector<Stack*> def_in_city = city->getDefenders();
             if (!def_in_city.empty())
             {
                 // This is a hack to circumvent the limitations of stackFight.
@@ -855,86 +898,67 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
             }
             
 	    cityfight_finished(city, result);
-            moveResult->setStepCount(stepCount);
             supdatingStack.emit(0);
             
             return moveResult;
         }
         
-        //another friendly stack => join it if we're AI
-        else if (target && target->getOwner() == this &&
-		( getType() == Player::AI_FAST || 
-		  getType() == Player::AI_SMART))
-          {
-	    bool moved = false;
-            if (stackMoveOneStep(s))
-	      {
-		moved = true;
-                stepCount++;
-	      }
-	    Stack *other_stack = Stacklist::getAmbiguity(s);
-            stackJoin(other_stack, s);
-
-	    if (other_stack)
-	      d_stacklist->getActivestack()->sortForViewing(false);
-	      
-	    supdatingStack.emit(0);
-	    shaltedStack.emit(d_stacklist->getActivestack());
-    
-            MoveResult *moveResult = new MoveResult(moved);
-            moveResult->setStepCount(stepCount);
-            moveResult->setJoin(moved);
-            return moveResult;
-         }
         //another friendly stack => share the tile if we're human
-        else if (target && target->getOwner() == this && 
-		 getType() == Player::HUMAN)
+        else if (target && target->getOwner() == this /*&& 
+		 getType() == Player::HUMAN*/)
           {
+            MoveResult *moveResult = new MoveResult;
 	    bool moved = false;
             if (stackMoveOneStep(s))
 	      {
 		moved = true;
                 stepCount++;
 	      }
+            else
+              moveResult->setTooLargeStackInTheWay(true);
 	      
 	    supdatingStack.emit(0);
 	    shaltedStack.emit(d_stacklist->getActivestack());
     
-            MoveResult *moveResult = new MoveResult(moved);
-            moveResult->setStepCount(stepCount);
+	    moveResult->fillData(s, stepCount);
             return moveResult;
          }
         
         //enemy stack => fight
         else if (target)
         {
+	  bool treachery = false;
 	  if (this->getDiplomaticState (target->getOwner()) == AT_PEACE)
 	    {
 	      if (streacheryStack.emit (s, target->getOwner(), 
 					target->getPos()) == false)
 		{
 		  s->getPath()->clear();
-		  MoveResult *moveResult = new MoveResult(false);
-		  moveResult->setStepCount(stepCount);
+		  MoveResult *moveResult = new MoveResult;
+		  moveResult->setConsideredTreachery(true);
+		  moveResult->fillData(s, stepCount);
 		  return moveResult;
 		}
+	      else
+		treachery = true;
 	    }
-            MoveResult *moveResult = new MoveResult(true);
+            MoveResult *moveResult = new MoveResult;
+	    moveResult->setTreachery(treachery);
+	    moveResult->setConsideredTreachery(treachery);
         
+	    moveResult->fillData(s, stepCount);
             Fight::Result result = stackFight(&s, &target);
             moveResult->setFightResult(result);
             if (!target)
-            {
+	      {
                 if (stackMoveOneStep(s))
-                    stepCount++;
-            }
-            else if (s)
-                s->decrementMoves(2);
+		  stepCount++;
+		moveResult->fillData(s, stepCount);
+	      }
             
             supdatingStack.emit(0);
             if (result == Fight::ATTACKER_WON)
 	      shaltedStack.emit(s);
-            moveResult->setStepCount(stepCount);
             return moveResult;
         }
         
@@ -945,49 +969,25 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
         supdatingStack.emit(0);
 	shaltedStack.emit(s);
     
-        MoveResult *moveResult = new MoveResult(true);
-        moveResult->setStepCount(stepCount);
+        MoveResult *moveResult = new MoveResult;
+	moveResult->fillData(s, stepCount);
         return moveResult;
     }
     else if (s->getPath()->size() >= 1 && s->enoughMoves() == false)
     {
     
+        MoveResult *moveResult = new MoveResult;
+	moveResult->fillData(s, stepCount);
       /* if we can't attack a city, don't remember it in the stack's path. */
         Vector<int> pos = s->getFirstPointInPath();
         City* city = GameMap::getCity(pos);
 	if (city && city->getOwner() != this)
-	  s->getPath()->clear();
+	  s->clearPath();
     
-	//the stack may have been split before we started to walk
-	//and then when we didn't go anywhere we landed back on our
-	//original stack.
-	/*
-	Stack *other_stack = Stacklist::getAmbiguity(s);
-	if (other_stack && other_stack->getOwner() == s->getOwner())
-	  {
-	    bool success = stackJoin(other_stack, s, false);
-	    if (!success)
-	      {
-		printf("Crap.  \n");
-	      }
-	    supdatingStack.emit(0);
-	    shaltedStack.emit(d_stacklist->getActivestack());
-	    MoveResult *moveResult = new MoveResult(true);
-	    moveResult->setStepCount(stepCount);
-	    moveResult->setJoin(true);
-	    return moveResult;
-	  }
-	else if (other_stack)
-	  {
-	    printf("crap.  there was another stack where we landed.\n");
-	    printf("this should be properly handled before this point.\n");
-	    exit(0);
-	  }
-	  */
+        return moveResult;
     }
 
-
-    MoveResult *moveResult = new MoveResult(true);
+    MoveResult *moveResult = new MoveResult;
     moveResult->setStepCount(stepCount);
     return moveResult;
 }
@@ -1114,7 +1114,7 @@ Fight::Result Player::stackFight(Stack** attacker, Stack** defender)
 
     std::list<Stack *> attackers = fight.getAttackers(),
       defenders = fight.getDefenders();
-    
+
     cleanupAfterFight(attackers, defenders);
     
     // Set the attacker and defender stack to 0 if neccessary. This is a great
@@ -1386,7 +1386,7 @@ float Player::stackFightAdvise(Stack* s, Vector<int> tile,
                 
   if (!target && city)
     {
-      vector<Stack*> def_in_city = Stacklist::defendersInCity(city);
+      vector<Stack*> def_in_city = city->getDefenders();
       if (def_in_city.empty())
 	return 100.0;
       target = def_in_city[0];
@@ -2316,7 +2316,6 @@ void Player::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
 		    //Here this for is to check if army must raise 2 or more 
 		    //levels per time depending on the XP and level itself
 
-		    debug("ADVANCING LEVEL "<< "CANGAINLEVEL== " << army->canGainLevel());
 		    h->getOwner()->heroGainsLevel(h);
 		  }
 		debug("Hero new XP=" << h->getXP())
@@ -2632,44 +2631,33 @@ void Player::improveAlliesRelationship(Player *player, guint32 amount,
     }
 }
 
-void Player::AI_maybeBuyScout()
+void Player::AI_maybeBuyScout(City *c)
 {
-  bool hero_exists = false;
-  for (Stacklist::iterator it = d_stacklist->begin(); 
-       it != d_stacklist->end(); it++)
-
-    if ((*it)->hasHero())
-      hero_exists = true; 
-
-  if (Citylist::getInstance()->countCities(this) == 1 && 
-      hero_exists == false)
+  bool one_turn_army_exists = false;
+  //do we already have something that can be produced in one turn?
+  for (unsigned int i = 0; i < c->getMaxNoOfProductionBases(); i++)
     {
-      bool one_turn_army_exists = false;
-      City *c = Citylist::getInstance()->getFirstCity(this);
-      //do we already have something that can be produced in one turn?
-      for (unsigned int i = 0; i < c->getMaxNoOfProductionBases(); i++)
-	{
-	  if (c->getArmytype(i) == -1)    // no production in this slot
-	    continue;
+      if (c->getArmytype(i) == -1)    // no production in this slot
+        continue;
 
-	  const ArmyProdBase *proto = c->getProductionBase(i);
-	  if (proto->getProduction() == 1)
-	    {
-	      one_turn_army_exists = true;
-	      break;
-	    }
-	}
-      if (one_turn_army_exists == false)
-	{
-	  const Armysetlist* al = Armysetlist::getInstance();
-	  int free_slot = c->getFreeBasicSlot();
-	  if (free_slot == -1)
-	    free_slot = 0;
-	  ArmyProto *scout = al->getScout(getArmyset());
-	  cityBuyProduction(c, free_slot, scout->getTypeId());
-	}
+      const ArmyProdBase *proto = c->getProductionBase(i);
+      if (proto->getProduction() == 1)
+        {
+          one_turn_army_exists = true;
+          break;
+        }
+    }
+  if (one_turn_army_exists == false)
+    {
+      const Armysetlist* al = Armysetlist::getInstance();
+      int free_slot = c->getFreeSlot();
+      if (free_slot == -1)
+        free_slot = 0;
+      ArmyProto *scout = al->getScout(getArmyset());
+      cityBuyProduction(c, free_slot, scout->getTypeId());
     }
 }
+
 bool Player::AI_maybePickUpItems(Stack *s, int max_dist, int max_mp, 
 				 bool &picked_up, bool &stack_died)
 {
@@ -2813,21 +2801,54 @@ bool Player::safeFromAttack(City *c, guint32 safe_mp, guint32 min_defenders)
   return false;
 }
 
+bool Player::AI_maybeDisband(Stack *s, int safe_mp, bool &stack_killed)
+{
+  bool disbanded = false;
+  //see if we're near to enemy stacks
+  PathCalculator pc(s);
+  if (GameMap::getEnemyStacks(pc.getReachablePositions(safe_mp)).size() > 0)
+    return false;
+
+  //upgroup the whole stack if it doesn't contain a hero
+  if (s->hasHero() == false)
+    {
+      stack_killed = stackDisband (s);
+      return stack_killed;
+    }
+
+  //ungroup the lucky ones not being disbanded
+  for (Stack::reverse_iterator i = s->rbegin(); i != s->rend(); i++)
+    {
+      if ((*i)->isHero() == false)
+	{
+	  Stack *new_stack = stackSplitArmy(s, *i);
+	  if (new_stack)
+	    {
+	    if (stackDisband(new_stack))
+	      disbanded = true;
+	    }
+	}
+    }
+  return disbanded;
+}
+
 bool Player::AI_maybeDisband(Stack *s, City *city, guint32 min_defenders, 
 			     int safe_mp, bool &stack_killed)
 {
-  //to prevent armies from piling up in far away places, 
-  //we disband some periodically.
-  if (s->size() != MAX_STACK_SIZE)
-    return false;
-
+  bool disbanded = false;
   //is the city in danger from a city?
   if (safeFromAttack(city, safe_mp, 0) == false)
     return false;
 
   if (city->countDefenders() - s->size() >= min_defenders)
     {
-      return stackDisband(s);
+      if (s->hasHero())
+	min_defenders = s->size() + 1;
+      else
+	{
+	  stack_killed = stackDisband(s);
+	  return stack_killed;
+	}
     }
 
   //okay, we need to disband part of our stack
@@ -2844,11 +2865,12 @@ bool Player::AI_maybeDisband(Stack *s, City *city, guint32 min_defenders,
 	  if (new_stack)
 	    {
 	      count++;
-	      stackDisband(new_stack);
+	      if (stackDisband(new_stack))
+		disbanded = true;
 	    }
 	}
     }
-  return true;
+  return disbanded;
 }
 
 bool Player::AI_maybeVector(City *c, guint32 safe_mp, guint32 min_defenders,
@@ -2994,13 +3016,13 @@ void Player::AI_setupVectoring(guint32 safe_mp, guint32 min_defenders,
     }
 }
 
-const Army * Player::doCityProducesArmy(City *city)
+const Army * Player::doCityProducesArmy(City *city, Vector<int> &pos)
 {
   int cost = city->getActiveProductionBase()->getProductionCost();
   if (cost > d_gold)
     return NULL;
   withdrawGold(cost);
-  const Army *a = city->armyArrives();
+  const Army *a = city->armyArrives(pos);
   return a;
 }
 
@@ -3008,15 +3030,16 @@ bool Player::cityProducesArmy(City *city)
 {
   assert(city->getOwner() == this);
   Action_Produce *item = new Action_Produce();
-  const Army *army = doCityProducesArmy(city);
+  Vector<int> pos;
+  const Army *army = doCityProducesArmy(city, pos);
   if (army)
     {
       const ArmyProdBase *source_army;
       source_army = city->getProductionBaseBelongingTo(army);
       if (city->getVectoring() == Vector<int>(-1, -1))
-	item->fillData(source_army, city, false);
+	item->fillData(source_army, city, false, pos, army->getId());
       else
-	item->fillData(source_army, city, true);
+	item->fillData(source_army, city, true, city->getVectoring(), army->getId());
       addAction(item);
     }
   return true;
@@ -3061,7 +3084,7 @@ bool Player::vectoredUnitArrives(VectoredUnit *unit)
 	    {
 	      History_CityWon *event;
 	      event = dynamic_cast<History_CityWon*>(*pit);
-	      printf("on turn %d, player %s took %s\n", turn, dest->getOwner()->getName().c_str(), dest->getName().c_str());
+	      //printf("on turn %d, player %s took %s\n", turn, dest->getOwner()->getName().c_str(), dest->getName().c_str());
 	      break;
 	    }
 	case History::CITY_RAZED:
@@ -3552,5 +3575,37 @@ void Player::clearStacklist()
 void Player::clearFogMap()
 {
   d_fogmap->fill(FogMap::OPEN);
+}
+
+
+std::list<Action *> Player::getActionsThisTurn(int type) const
+{
+  std::list<Action *> actions;
+  std::list<Action *>::const_iterator it = d_actions.begin();
+  for (; it != d_actions.end(); it++)
+    {
+      if ((*it)->getType() == Action::Type(type))
+	actions.push_back(*it);
+    }
+  return actions;
+}
+std::list<Action *> Player::getFightsThisTurn() const
+{
+  return getActionsThisTurn(Action::STACK_FIGHT);
+}
+
+int Player::countFightsThisTurn() const
+{
+  return getFightsThisTurn().size();
+}
+
+std::list<Action *> Player::getMovesThisTurn() const
+{
+  return getActionsThisTurn(Action::STACK_MOVE);
+}
+
+int Player::countMovesThisTurn() const
+{
+  return getMovesThisTurn().size();
 }
 // End of file

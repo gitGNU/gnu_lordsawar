@@ -101,6 +101,10 @@ class AI_Fast : public RealPlayer
 	//! search through our stacklist for a stack we can join
 	Stack *findNearOwnStackToJoin(Stack *s, int max_distance);
 
+        //! produce the best low-turn high strength army unit.
+        int setBestProduction(City *c);
+
+        int scoreArmyType(const ArmyProdBase *a);
 
 	//! Determines whether to join units or move them separately.
         bool d_join;

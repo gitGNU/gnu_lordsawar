@@ -64,6 +64,7 @@
 #include "FogMap.h"
 #include "history.h"
 #include "game.h"
+#include "stacklist.h"
 
 Driver::Driver(std::string load_filename)
 {
@@ -742,9 +743,30 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
 
 void Driver::stressTestNextRound()
 {
+  static time_t prev_round_start = time(NULL);
   static int count = 1;
+  if (count == 1)
+    {
+      FILE * fileptr = fopen("/tmp/crapola.csv", "w");
+      fclose(fileptr);
+    }
   count++;
+  time_t now = time(NULL);
   printf ("starting round %d!\n", count);
+  FILE * fileptr = fopen("/tmp/crapola.csv", "a");
+  int total_fights = Playerlist::getInstance()->countFightsThisTurn();
+  int total_moves = Playerlist::getInstance()->countMovesThisTurn();
+  fprintf(fileptr, "%d, %d, %d, %d, %d, %d, %d, %d\n", count, 
+          now - prev_round_start,
+          Stacklist::getNoOfStacks(), 
+          Stacklist::getNoOfArmies(), 
+          total_fights,
+          total_moves,
+          Citylist::getInstance()->countCities(Playerlist::getInstance()->getNeutral()), 
+          Playerlist::getInstance()->countPlayersAlive());
+  fclose(fileptr);
+      
+  prev_round_start = now;
   sleep (1);
 }
 
@@ -756,7 +778,7 @@ void Driver::stress_test()
   GameParameters::Player p;
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
-      p.type = GameParameters::Player::EASY;
+      p.type = GameParameters::Player::HARD;
       p.id = i;
       switch (p.id)
 	{
@@ -779,7 +801,7 @@ void Driver::stress_test()
   g.map.forest = 3;
   g.map.hills = 5;
   g.map.mountains = 5;
-  g.map.cities = 80;
+  g.map.cities = 40;
   g.map.ruins = 15;
   g.map.temples = 1;
   g.map_path = "";
@@ -803,10 +825,11 @@ void Driver::stress_test()
   g.see_opponents_stacks = true;
   g.see_opponents_production = true;
       
-  std::string path = create_and_dump_scenario("random.map", g);
+  bool broken = false;
+  std::string path;
+  path = create_and_dump_scenario("random.map", g);
   g.map_path = path;
 
-  bool broken = false;
   GameScenario* game_scenario = new GameScenario(g.map_path, broken);
 
   if (broken)
@@ -818,8 +841,6 @@ void Driver::stress_test()
     
   nextTurn->snextRound.connect
     (sigc::mem_fun(this, &Driver::stressTestNextRound));
-  nextTurn->snextRound.connect
-    (sigc::mem_fun(game_scenario, &GameScenario::nextRound));
   if (game_scenario->getRound() == 0)
     {
       Playerlist::getInstance()->syncPlayers(g.players);
@@ -833,8 +854,11 @@ void Driver::stress_test()
   guint32 armyset = Playerlist::getInstance()->getNeutral()->getArmyset();
   Armysetlist::getInstance()->getArmyset(armyset)->instantiateImages();
   Game game(game_scenario, nextTurn);
+  time_t start = time(NULL);
   nextTurn->start();
   //next turn and game_Scenario get deleted inside game.
+  size_t mins = (time(NULL) - start) / 60;
+  printf("duration: %d mins, turns: %d\n", mins, game_scenario->getRound());
 
 }
 	

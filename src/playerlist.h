@@ -276,6 +276,9 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         //! Returns the viewing player (the Player who is looking at maps).
 	static Player *getViewingplayer() {return viewingplayer;}
 
+
+        int countFightsThisTurn() const;
+        int countMovesThisTurn() const;
     protected:
 
 	//! Default constructor.

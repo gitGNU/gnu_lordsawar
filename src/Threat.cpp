@@ -19,7 +19,7 @@
 //  02110-1301, USA.
 
 #include "Threat.h"
-#include "stacklist.h"
+#include "stackreflist.h"
 #include <iostream>
 #include "city.h"
 #include "ruin.h"
@@ -30,27 +30,32 @@
 using namespace std;
 
 Threat::Threat(City *c)
-    :Ownable(*c), d_city(c), d_ruin(0), d_danger(0)
+    :Ownable(*c), d_city(c), d_ruin(0), d_danger(0), d_value(0), d_strength(0)
 {
-    d_stacks = new Stacklist();
+    d_stacks = new StackReflist();
+    calculateStrength();
 }
 
 Threat::Threat(Stack *s)
-    :Ownable(*s), d_city(0), d_ruin(0), d_danger(0)
+    :Ownable(*s), d_city(0), d_ruin(0), d_danger(0), d_value(0), d_strength(0)
 {
-    d_stacks = new Stacklist();
-    d_stacks->add(new Stack(*s));
+    d_stacks = new StackReflist();
+    d_stacks->addStack(new Stack(*s));
+    d_strength += AI_Analysis::assessStackStrength(s);
 }
 
 Threat::Threat(Ruin *r)
-    :Ownable((Player *)0), d_city(0), d_ruin(r), d_danger(0)
+    :Ownable((Player *)0), d_city(0), d_ruin(r), d_danger(0), d_value(0), d_strength(0)
 {
-    d_stacks = new Stacklist();
+    d_stacks = new StackReflist();
 }
 
 Threat::~Threat()
 {
-    delete d_stacks;
+  for (StackReflist::iterator i = d_stacks->begin(); i != d_stacks->end(); i++)
+    delete *i;
+  d_stacks->clear();
+  delete d_stacks;
 }
 
 std::string Threat::toString() const
@@ -83,7 +88,7 @@ bool Threat::Near(Vector<int> pos, Player *p) const
         return d_ruin->contains(pos);
     }
     else
-        for (Stacklist::const_iterator it = d_stacks->begin();
+        for (StackReflist::const_iterator it = d_stacks->begin();
             it != d_stacks->end(); ++it)
         {
             Vector<int> spos = (*it)->getPos();
@@ -96,83 +101,78 @@ bool Threat::Near(Vector<int> pos, Player *p) const
 
 void Threat::addStack(Stack *stack)
 {
-    d_stacks->add(new Stack (*stack));
+    d_stacks->addStack(new Stack (*stack));
+    if (d_city && d_city->getOwner() != Playerlist::getInstance()->getNeutral())
+      d_strength += AI_Analysis::assessStackStrength(stack);
 }
 
 // this is the strength of the threat to us
-float Threat::strength() const
+void Threat::calculateStrength()
 {
-    // neutral cities pose no threat
-    if (d_city)
-        if (d_city->getOwner() == Playerlist::getInstance()->getNeutral())
-            return 0.0;
-    float score = 0.0;
-    for (Stacklist::const_iterator it = d_stacks->begin();
-        it != d_stacks->end(); ++it)
-    {
-        score += AI_Analysis::assessStackStrength(*it);
-    }
+  // neutral cities poses a small threat
+  if (d_city)
+    if (d_city->getOwner() == Playerlist::getInstance()->getNeutral())
+      {
+        d_strength = 0.3;
+        return;
+      }
+  float score = 0.0;
+  for (StackReflist::const_iterator i = d_stacks->begin(); 
+       i != d_stacks->end(); ++i)
+    score += AI_Analysis::assessStackStrength(*i);
 
-    return score;
+  d_strength = score;
 }
 
-float Threat::value() const
+void Threat::calculateValue()
 {
-    float score = 0.0;
-    // if city has turned friendly, it is no longer a valuable target
-    if (d_city && d_city->getOwner() == d_owner && !d_city->isBurnt())
-            score += 10.0;
-    
-    // if ruin has become searched, it is no longer valuable
-    if (d_ruin && !d_ruin->isSearched())
-            score += 5.0;
-
-    score += d_danger;
-    return score;
+  float score = 0.0;
+  score += d_danger;
+  d_value = score;
 }
 
 Vector<int> Threat::getClosestPoint(Vector<int> location) const
 {
-    Vector<int> result(-1,-1);
-    if (d_city)
+  Vector<int> result(-1,-1);
+  if (d_city)
+    result = d_city->getNearestPos(location);
+  else if (d_ruin)
+    result = d_ruin->getPos();
+  else
     {
-        result.x = d_city->getPos().x;
-        result.y = d_city->getPos().y;
-        if (location.x > result.x)
-            result.x++;
-        if (location.y > result.y)
-            result.y++;
-    }
-    else if (d_ruin)
-    {
-        result.x = d_ruin->getPos().x;
-        result.y = d_ruin->getPos().y;
-    }
-    else
-    {
-        int min_dist = -1;
-        for (Stacklist::const_iterator it = d_stacks->begin();
-            it != d_stacks->end(); ++it)
+      int min_dist = -1;
+      for (StackReflist::const_iterator it = d_stacks->begin();
+           it != d_stacks->end(); ++it)
         {
-            Vector<int> spos = (*it)->getPos();
-            
-	    int distance = dist(spos, location);
-	    if (distance < min_dist || min_dist == -1)
-	      {
-		result = spos;
-		min_dist = distance;
-	      }
+          Vector<int> spos = (*it)->getPos();
+
+          int distance = dist(spos, location);
+          if (distance < min_dist || min_dist == -1)
+            {
+              result = spos;
+              min_dist = distance;
+            }
         }
     }
 
-    return result;
+  return result;
 }
 
 void Threat::deleteStack(guint32 id)
 {
-    d_stacks->flRemove(id);
+    d_stacks->removeStack(id);
+    if (d_city && d_city->getOwner() != Playerlist::getInstance()->getNeutral())
+      calculateStrength();
 }
 void Threat::deleteStack(Stack* s)
 {
-  d_stacks->flRemove(s);
+  d_stacks->removeStack(s->getId());
+  if (d_city && d_city->getOwner() != Playerlist::getInstance()->getNeutral())
+    calculateStrength();
+}
+          
+void Threat::addDanger(float danger)
+{ 
+  d_danger += danger; 
+  calculateValue();
 }

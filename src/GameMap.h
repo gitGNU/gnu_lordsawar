@@ -34,6 +34,7 @@
 #include "Location.h"
 #include "shieldset.h"
 #include "cityset.h"
+#include "stackreflist.h"
 
 class MapGenerator;
 class XML_Helper;
@@ -125,18 +126,35 @@ class GameMap: public sigc::trackable
         void setTile(Vector<int> p, Maptile *t) {return setTile(p.x, p.y, t);}
 
 	static City* getCity(Vector<int> pos);
+        static City* getCity(Movable *m) {return getCity(m->getPos());}
+
 	static City* getEnemyCity(Vector<int> pos);
 	static Ruin* getRuin(Vector<int> pos);
+        static Ruin* getRuin(Movable *m) {return getRuin(m->getPos());}
 	static Temple* getTemple(Vector<int> pos);
+        static Temple* getTemple(Movable *m) {return getTemple(m->getPos());}
 	static Port* getPort(Vector<int> pos);
 	static Road* getRoad(Vector<int> pos);
 	static Bridge* getBridge(Vector<int> pos);
 	static Signpost* getSignpost(Vector<int> pos);
+        static Signpost* getSignpost(Movable *m) {return getSignpost(m->getPos());}
 	static Stack* getStack(Vector<int> pos);
 	static StackTile* getStacks(Vector<int> pos);
-	static bool canJoin(Stack *src, Stack *dest);
+	static Stack *groupStacks(Vector<int> pos);
+	static void groupStacks(Stack *s);
+	static bool canJoin(const Stack *src, Stack *dest);
+	static bool canJoin(const Stack *stack, Vector<int> pos);
+	static bool canAddArmy(Vector<int> pos);
+	static bool canAddArmies(Vector<int> dest, guint32 stackSize);
 	static Stack* getFriendlyStack(Vector<int> pos);
+        //static StackReflist getFriendlyStacks(Vector<int> pos, Player *player = NULL);
+	static std::list<Stack*> getFriendlyStacks(Vector<int> pos, Player *player = NULL);
 	static Stack* getEnemyStack(Vector<int> pos);
+	static std::list<Stack*> getEnemyStacks(std::list<Vector<int> > posns);
+	static std::list<Stack*> getEnemyStacks(Vector<int> pos, Player *player = NULL);
+	static std::list<Stack*> getNearbyFriendlyStacks(Vector<int> pos, int dist);
+	static std::list<Stack*> getNearbyEnemyStacks(Vector<int> pos, int dist);
+	static guint32 countArmyUnits(Vector<int> pos);
 	static MapBackpack *getBackpack(Vector<int> pos);
 
         //! Get the tile object at position (x,y)
@@ -235,6 +253,13 @@ class GameMap: public sigc::trackable
 
 	Location *getLocation(Vector<int> pos);
 
+	bool checkCityAccessibility();
+
+        static Vector<int> getCenterOfMap();
+
+        Rectangle putTerrain(Rectangle r, Tile::Type type, 
+                             int tile_style_id = -1, 
+                             bool always_alter_tilestyles = false);
 
     protected:
         //! Create the map with the given tileset
@@ -269,9 +294,10 @@ class GameMap: public sigc::trackable
 
 	void updateShips(Vector<int> pos);
 
-	bool putTerrain(Rectangle r, Tile::Type type);
 
-	bool offmap(int x, int y);
+	static std::list<Stack*> getNearbyStacks(Vector<int> pos, int dist, bool friendly);
+
+	static bool offmap(int x, int y);
 
         // Data
         static GameMap* s_instance;

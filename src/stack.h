@@ -98,6 +98,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Calculate the number of gold pieces this stack costs this turn.
 	guint32 getUpkeep() const;
 
+        //! How many army units can be put into this stack?
+        guint32 getMaxArmiesToJoin() const;
+
 
 	// Set Methods
 
@@ -188,6 +191,8 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Sort the Army units in the stack.
 	void sortForViewing(bool reverse);
 
+        void sortByStrength(bool reverse);
+
 	//! Have the stack collect it's upkeep from a given player (owner).
 	void payUpkeep(Player *p);
 
@@ -212,6 +217,11 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	 */
 	void add(Army *army);
 
+	//! Remove this stack's path.  Return true if anything was cleared.
+	bool clearPath();
+
+        //! Returns true if the stack has any points in it's path.
+        bool hasPath() const;
 
 	// Methods that operate on class and do not modify the class
 
@@ -340,6 +350,10 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! destination.
 	std::list<guint32> determineReachableArmies(Vector<int> dest) const;
 
+        //! Return a list of army ids whose strength totals strength.
+        std::list<guint32> determineWeakArmies(float strength) const;
+        std::list<guint32> determineStrongArmies(float strength) const;
+
 	//! Returns how many armies in the stack have visited the given temple.
 	guint32 countArmiesBlessedAtTemple(guint32 temple_id) const;
 
@@ -374,6 +388,11 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	 */
 	Vector<int> getLastReachablePointInPath() const;
 
+	//! Does everything in this stack look okay?
+	bool validate() const;
+
+	//! Does this stack have 8 units in it?
+	bool isFull() const;
 
 	// Signals
 
@@ -403,12 +422,15 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	 */
 	//! Comparator function to assist in sorting the armies in the stack.
 	static bool armyCompareFightOrder (const Army *left, const Army *right);
+	static bool armyCompareStrength (const Army *left, const Army *right);
 
 	//! Create a stack with an id that isn't unique.
 	static Stack* createNonUniqueStack(Player *player, Vector<int> pos);
 
+        bool isOnCity() const;
     private:    
 
+        std::list<guint32> determineArmiesByStrength(bool strongest, float strength) const;
 
 	//! Private constructor.
 	Stack(guint32 id, Player* player, Vector<int> pos);

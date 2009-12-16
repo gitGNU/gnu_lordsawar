@@ -471,7 +471,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * number of army units in the stack.
 	 *
 	 * The number of frames in the image corresponds to the maximum number
-	 * of army units in a stack.  See the MAX_STACK_SIZE constant in defs.h.
+	 * of army units in a stack.  See the FLAG_TYPES constant in defs.h.
 	 *
 	 * This basename does not contain any slashes, and it does not contain
 	 * a file extension.  It refers to a png file in the directory of 
@@ -493,10 +493,10 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
         PixMask* bridgepic[BRIDGE_TYPES];
 
 	//! The flag images.
-        PixMask* flagpic[MAX_STACK_SIZE];
+        PixMask* flagpic[FLAG_TYPES];
 
 	//! The flag masks.
-        PixMask* flagmask[MAX_STACK_SIZE];
+        PixMask* flagmask[FLAG_TYPES];
 
 	//! The number of animation frames in the big selector.
 	guint32 number_of_selector_frames;

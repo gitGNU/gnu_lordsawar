@@ -556,6 +556,8 @@ void NetworkPlayer::decodeActionProduce(const Action_Produce *action)
   Army *army = new Army (*a, this);
   Stack *s = c->addArmy(army);
   printf ("created army id %d, in stack %d of size %d\n", army->getId(), s->getId(), s->size());
+  assert (s->getPos() == action->getDestination());
+  assert (army->getId() == action->getArmyId());
   s->sortForViewing(true);
 }
 

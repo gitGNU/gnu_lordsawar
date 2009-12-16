@@ -306,6 +306,16 @@ class Player: public sigc::trackable
 	//! Returns a list of the player's actions to show in a report.
 	std::list<Action *> getReportableActions() const;
 
+        //! Returns the number of times we fought so far this turn.
+        int countFightsThisTurn() const;
+        //! Returns the number of times we moved a stack this turn.
+        int countMovesThisTurn() const;
+
+        //! Returns the battle actions for this turn.
+        std::list<Action *> getFightsThisTurn() const;
+        //! Returns the movement actions for this turn.
+        std::list<Action *> getMovesThisTurn() const;
+
         //! Remove every Action from the list of the player's actions.
         void clearActionlist();
 
@@ -467,29 +477,9 @@ class Player: public sigc::trackable
 
 	//! Callback to take the armies from the stack that have at least
 	//! enough moves to reach the end of the stack's path.
-	bool stackSplitAndMove(Stack* s);
-	bool stackSplitAndMoveToAttack(Stack* s);
-	bool stackSplitAndMoveToJoin(Stack* s, Stack *join);
-
-        /** 
-	 * Called to move a Stack to a specified position.
-         *
-         * The Path is calculated on the fly unless follow is set to true. 
-	 * In this case, an existing path is checked and iterated over.  
-	 * This is useful if a stack didn't reach its target within one 
-	 * round and should continue the movement.
-         *
-	 * This callback must result in an Action_Move element being 
-	 * given to the addAction method.
-	 *
-         * @param s                The stack to be moved.
-         * @param dest             The destination of the move.
-         * @param follow           If set to false, calculate the path.
-	 *
-         * @return False on error, true otherwise.
-         */
-        //! Callback to move a stack on the map.
-        MoveResult *stackMove(Stack* s, Vector<int> dest, bool follow);
+	bool stackSplitAndMove(Stack* s, Stack *& new_stack);
+	bool stackSplitAndMoveToAttack(Stack* s, Stack *& new_stack);
+	bool stackSplitAndMoveToJoin(Stack* s, Stack *join, Stack *& new_stack);
 
         /** 
 	 * Called to adjudicate a fight between two lists of stacks.
@@ -1352,7 +1342,6 @@ class Player: public sigc::trackable
 	//! Check the history to see if we ever conquered the given city.
 
 
-
 	Stack *stackSplitArmy(Stack *stack, Army *a);
 	Stack *stackSplitArmies(Stack *stack, std::list<guint32> armies);
 	Stack *stackSplitArmies(Stack *stack, std::list<Army*> armies);
@@ -1407,6 +1396,7 @@ class Player: public sigc::trackable
 	 * @return The loaded Player instance.
          */
         static Player* loadPlayer(XML_Helper* helper);
+
 
     protected:
         // do some fight cleaning up, setting
@@ -1532,7 +1522,7 @@ class Player: public sigc::trackable
         Hero* doRecruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally);
         void doRename(std::string name);
 	void doKill();
-	const Army *doCityProducesArmy(City *city);
+	const Army *doCityProducesArmy(City *city, Vector<int> &pos);
 	Army *doVectoredUnitArrives(VectoredUnit *unit);
 	bool doChangeVectorDestination(Vector<int> src, Vector<int> dest,
 				       std::list<City*> &vectored);
@@ -1540,7 +1530,7 @@ class Player: public sigc::trackable
 	bool doStackSplitArmies(Stack *stack, std::list<guint32> armies,
 				Stack *&new_stack);
 
-	void AI_maybeBuyScout();
+	void AI_maybeBuyScout(City *c);
 
 	//! Go to a temple if we're near enough.
 	/**
@@ -1586,7 +1576,8 @@ class Player: public sigc::trackable
 			       guint32 mp_to_front);
 
 	bool AI_maybeDisband(Stack *s, City *city, guint32 min_defenders, 
-			     int safe_mp, bool &stack_died);
+			     int safe_mp, bool &stack_killed);
+	bool AI_maybeDisband(Stack *s, int safe_mp, bool &stack_killed);
 
 	void pruneActionlist();
 	static void pruneActionlist(std::list<Action*> actions);
@@ -1637,11 +1628,35 @@ class Player: public sigc::trackable
         void updateArmyValues(std::list<Stack*>& stacks, double xp_sum);
 
 
+        /** 
+	 * Called to move a Stack to a specified position.
+         *
+         * The Path is calculated on the fly unless follow is set to true. 
+	 * In this case, an existing path is checked and iterated over.  
+	 * This is useful if a stack didn't reach its target within one 
+	 * round and should continue the movement.
+         *
+	 * This callback must result in an Action_Move element being 
+	 * given to the addAction method.
+	 *
+         * @param s                The stack to be moved.
+         * @param dest             The destination of the move.
+         * @param follow           If set to false, calculate the path.
+	 *
+         * @return False on error, true otherwise.
+         */
+        //! Callback to move a stack on the map.
+        MoveResult *stackMove(Stack* s, Vector<int> dest, bool follow);
+
+	bool nextStepOnEnemyStackOrCity(Stack *s) const;
+
         void lootCity(City *city, Player *looted);
 	void calculateLoot(Player *looted, guint32 &added, guint32 &subtracted);
         void takeCityInPossession(City* c);
 	static void pruneCityVectorings(std::list<Action*> actions);
 	static void pruneCityProductions(std::list<Action*> actions);
+
+        std::list<Action *> getActionsThisTurn(int type) const;
 };
 
 #endif // PLAYER_H

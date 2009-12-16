@@ -40,8 +40,25 @@ Threatlist::~Threatlist()
 {
 }
 
+bool Threatlist::compareValue(const Threat *lhs, const Threat *rhs)  
+{
+  return lhs->getValue() > rhs->getValue(); 
+}
 void Threatlist::sortByValue()
 {
+  sort(compareValue);
+  /*
+  int count = 0;
+  for (Threatlist::iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->isCity())
+        {
+      printf ("%d. %f (%f)\n", count, (*it)->getValue(), (*it)->getStrength());
+              count++;
+                }
+    }
+  */
+  /*
     // bubble sort is the easiest thing I remember
     bool sorted = false;
 
@@ -67,6 +84,7 @@ void Threatlist::sortByValue()
                 it = insert(nextit, tmp);
             }
     }
+    */
 }
 
 void Threatlist::sortByDistance(Vector<int> pos)
@@ -166,13 +184,13 @@ void Threatlist::findThreats(AICityInfo *info) const
         debug("moves to " << threat->toString() << " is " << movesToThreat)
 
         //Ignore threats too far away
-        if (movesToThreat > 3.0)
+        if (movesToThreat > 10.0)
             continue;
 
-        if (movesToThreat == 0.0)
-            movesToThreat++;
+        if (movesToThreat <= 0.0)
+            movesToThreat = 1.0;
 
-        float strength = threat->strength();
+        float strength = threat->getStrength();
         if (strength == 0.0)
             continue;
 

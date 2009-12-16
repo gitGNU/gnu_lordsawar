@@ -134,7 +134,7 @@ void ProdSlotlist::setActiveProductionSlot(int index)
         d_duration = a->getProduction(); 
 }
 
-int ProdSlotlist::getFreeBasicSlot()  const
+int ProdSlotlist::getFreeSlot()  const
 {
      int index=-1;
 

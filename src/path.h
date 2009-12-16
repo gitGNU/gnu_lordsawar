@@ -62,17 +62,17 @@ class Path : public std::list<Vector<int> >
 	 * if necessary.
          *
          * @param stack        The Stack whose path we validate.
-	 * @param enemy_cities_block Return false if a path's point is on an
-	 * enemy city.
-	 * @param enemy_stacks_block Return false if a path's point is on an
-	 * enemy stack.
+	 * @param enemy_city_avoidance Return false if a path's point is on an
+	 * enemy city, or not if this value is non-negative.
+	 * @param enemy_stack_avoidance Return false if a path's point is on an
+	 * enemy stack, or not if this value is non-negative.
 	 *
          * @return True if path is valid, False if path is blocked and could
          *         not be recalculated, True if the path was invalid but was
 	 *         recalculated succesfully.
          */
 	//! Validate an existing path.
-        bool checkPath(Stack* stack, bool enemy_cities_block, bool enemy_stacks_nblock);
+        bool checkPath(Stack* stack, int enemy_city_avoidance = -1, int enemy_stack_avoidance = -1);
 
         /** 
 	 * Calculates the path from the stack's position to a destination.

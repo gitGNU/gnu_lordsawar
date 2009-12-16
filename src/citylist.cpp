@@ -32,6 +32,7 @@
 #include "armyprodbase.h"
 #include "GameMap.h"
 #include "cityset.h"
+#include "PathCalculator.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -233,6 +234,21 @@ City* Citylist::getNearestEnemyCity(const Vector<int>& pos) const
   return getNearestObject(pos, &filters);
 }
 
+City* Citylist::getClosestEnemyCity(const Stack *stack) const
+{
+  std::list<bool (*)(void *)> filters;
+  filters.push_back(isBurnt);
+  filters.push_back(isNotOwnedByEnemy);
+  return getClosestObject(stack, &filters);
+}
+
+City* Citylist::getClosestForeignCity(const Stack *stack) const
+{
+  std::list<bool (*)(void *)> filters;
+  filters.push_back(isBurnt);
+  filters.push_back(isOwnedByActivePlayer);
+  return getClosestObject(stack, &filters);
+}
 
 City* Citylist::getNearestForeignCity(const Vector<int>& pos) const
 {
@@ -297,6 +313,47 @@ City* Citylist::getNearestCity(const Vector<int>& pos, Player *p) const
     
     if (diff == -1) return 0;
     return (*diffit);
+}
+
+City* Citylist::getClosestCity(const Stack *stack, Player *p) const
+{
+    int diff = -1;
+    const_iterator diffit;
+    PathCalculator pc(stack, true, 0, 0);
+    
+    for (const_iterator it = begin(); it != end(); ++it)
+    {
+        if ((*it)->isBurnt())
+            continue;
+
+        if ((*it)->getOwner() == p)
+        {
+            int delta = pc.calculate((*it)->getPos());
+            if (delta <= 0)
+              continue;
+            
+            if ((diff > delta) || (diff == -1))
+            {
+                diff = delta;
+                diffit = it;
+            }
+        }
+    }
+    
+    if (diff == -1) return 0;
+    return (*diffit);
+}
+
+City* Citylist::getClosestFriendlyCity(const Stack *stack) const
+{
+    Player* p = Playerlist::getInstance()->getActiveplayer();
+    return getClosestCity (stack, p);
+}
+City* Citylist::getClosestCity(const Stack *stack) const
+{
+  std::list<bool (*)(void *)> filters;
+  filters.push_back(isBurnt);
+  return getClosestObject(stack, &filters);
 }
 
 City* Citylist::getNearestCity(const Vector<int>& pos) const
@@ -424,33 +481,6 @@ void Citylist::stopVectoringTo(City *c)
   return;
 }
 
-Vector<int> Citylist::calculateCenterOfTerritory (Player *p) const
-{
-  int n = INT_MAX;
-  int s = 0;
-  int w = INT_MAX;
-  int e = 0;
-  int count = 0;
-  for (const_iterator it = begin(); it != end(); it++)
-    {
-      if (p && (*it)->getOwner() == p)
-	continue;
-      Vector<int> pos = (*it)->getPos();
-      count++;
-      if (pos.x > e)
-	e = pos.x;
-      if (pos.x < w)
-	w = pos.x;
-      if (pos.y > s)
-	s = pos.y;
-      if (pos.y < n)
-	n = pos.y;
-    }
-  if (count == 0)
-    return Vector<int>(-1, -1);
-  return Vector<int>((s-n)/2, (e-w)/2);
-}
-
 bool Citylist::isVectoringTarget(City *target) const
 {
   for (const_iterator it = begin(); it != end(); it++)
@@ -508,5 +538,4 @@ guint32 Citylist::countCitiesVectoringTo(const City *dest) const
 
   return count;
 }
-
 // End of file

@@ -32,7 +32,8 @@ class City;
 class Citylist;
 class Threat;
 class Stack;
-class Stacklist;
+class Army;
+class StackReflist;
 class AICityInfo;
 
 using namespace std;
@@ -69,6 +70,7 @@ class AI_Analysis
         // guess the strength of the given stack. Note: next to useless outside
         // of computer turn.
         static float assessStackStrength(const Stack *stack);
+        static float assessArmyStrength(const Army *army);
 
         
         /** get an ordered list of threats (most dangerous first)
@@ -86,6 +88,9 @@ class AI_Analysis
 
         // get the danger that this friendly city is in
         float getCityDanger(City *city);
+
+        // get the number of army units in the city.
+        int getNumberOfDefendersInCity(City *city);
 
         // returns the City that is in the higher 
         void getCityWorstDangers(float dangers[3]);
@@ -117,7 +122,7 @@ class AI_Analysis
         // the threats to the AI
         Threatlist *d_threats;
         Player *d_owner;
-        Stacklist *d_stacks;
+        StackReflist *d_stacks;
         AICityMap d_cityInfo;
 };
 

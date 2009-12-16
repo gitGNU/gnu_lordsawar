@@ -26,7 +26,9 @@
 #include <algorithm>
 #include <list>
 #include <map>
+#include "PathCalculator.h"
 #include "vector.h"
+class Stack;
 
 /** A list for object instances
   * 
@@ -124,6 +126,48 @@ template<class T> class LocationList : public std::list<T>
         }
       if (diff == -1) return 0;
       return (*diffit);
+    }
+
+  T getClosestObject (const Stack *stack, std::list<bool (*)(void*)> *filters) const
+    {
+      int diff = -1;
+      typename LocationList<T>::const_iterator diffit;
+      PathCalculator pc(stack, true, 0, 0);
+      for (typename LocationList<T>::const_iterator it = this->begin(); it != this->end(); ++it)
+        {
+          int delta = pc.calculate((*it)->getPos());
+          if (delta <= 0)
+            continue;
+	  if (filters)
+	    {
+	      std::list<bool (*)(void*)>::iterator fit = filters->begin();
+	      bool filtered = false;
+	      for (; fit != filters->end(); fit++)
+	        {
+	          if ((*fit)(*it) == true)
+	            {
+		      filtered = true;
+		      break;
+	            }
+	            
+	        }
+	      if (filtered)
+	        continue;
+	    }
+
+          if ((diff > delta) || (diff == -1))
+            {
+              diff = delta;
+              diffit = it;
+            }
+        }
+      if (diff == -1) return 0;
+      return (*diffit);
+    }
+
+  T getClosestObject (const Stack *stack) const
+    {
+      return getClosestObject (stack, NULL);
     }
 
   T getNearestObject (const Vector<int>& pos, std::list<bool (*)(void*)> *filters) const

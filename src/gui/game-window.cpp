@@ -1881,14 +1881,14 @@ void GameWindow::on_group_toggled(Gtk::ToggleButton *toggle)
   StackTile *s = GameMap::getStacks(currently_selected_stack->getPos());
   if (active)
     {
-      Stack *stack = s->group(Playerlist::getActiveplayer());
-      stack->sortForViewing(true);
+      s->group(Playerlist::getActiveplayer(), currently_selected_stack);
+      currently_selected_stack->sortForViewing(true);
     }
   else
     s->ungroup(Playerlist::getActiveplayer());
-  Stack *stack = s->getFriendlyStacks(Playerlist::getActiveplayer()).front();
-  currently_selected_stack = stack;
-  Playerlist::getActiveplayer()->setActivestack(stack);
+  //Stack *stack = s->getFriendlyStacks(Playerlist::getActiveplayer()).front();
+  //currently_selected_stack = stack;
+  //Playerlist::getActiveplayer()->setActivestack(stack);
 
   on_stack_info_changed(currently_selected_stack);
   game->recalculate_moves_for_stack(currently_selected_stack);

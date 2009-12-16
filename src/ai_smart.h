@@ -99,17 +99,25 @@ class AI_Smart : public RealPlayer
 
     private:
         // Choose a new type of army to buy production for.
-        int chooseArmyTypeToBuy(City *c);
+        int chooseArmyTypeToBuy(City *c, bool quick);
 
         // Consider buying new production for this city
-        int maybeBuyProduction(City *c);
+        int maybeBuyProduction(City *c, bool quick);
         
         // Set the city to produce the best armies possible
+        void setProduction(City *c);
         int setBestProduction(City *c);
+        int setQuickProduction(City *c);
         
         // assign a score to an army type to try to figure out which is best
-        int scoreArmyType(const ArmyProto *proto);
-        int scoreArmyType(const ArmyProdBase *proto);
+        // which is best for buying
+        int scoreBestArmyType(const ArmyProto *proto);
+        //which is best for producing
+        int scoreBestArmyType(const ArmyProdBase *a);
+        //which is quickest for producing.
+        int scoreQuickArmyType(const ArmyProdBase *proto);
+        //which is quickest for buying
+        int scoreQuickArmyType(const ArmyProto *proto);
 
         // suggest somewhere that a hero stack might like to visit
         Location *getAlternateHeroTarget(Stack *s);
@@ -122,6 +130,8 @@ class AI_Smart : public RealPlayer
 
 	// buy a scout if we need to
 	void maybeBuyScout();
+
+        bool cityNewlyTaken(City *city, guint32 turns = 2) const;
 
         // DATA
         int d_mustmakemoney;  // used to avoid to buy new production 

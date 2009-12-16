@@ -182,3 +182,13 @@ ArmyProto * ArmyProto::createScout()
   basearmy->setMaxMoves(50);
   return basearmy;
 }
+
+ArmyProto * ArmyProto::createBat()
+{
+  //oh no, it's the bat!
+  ArmyProto *basearmy = new ArmyProto(); 
+  basearmy->setMoveBonus(Tile::FOREST | Tile::HILLS | Tile::SWAMP | 
+			 Tile::WATER | Tile::MOUNTAIN);
+  basearmy->setMaxMoves(50);
+  return basearmy;
+}

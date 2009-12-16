@@ -1,9 +1,39 @@
+2009-12-16  Ben Asselstine  <benasselstine@gmail.com>
+
+	* added getDefenders method to city object.
+	* added clearPath method to the stack object.
+	* added createBat method to ArmyProto object.
+	* added loading maps by command-line in the scenario editor.
+	* added checkCityAccessibility to the GameMap object.
+	* scenario editor now validates terrains wrt city accessibility.
+	* added getNearbyStacks methods to the GameMap object.
+	* removed calculateCenterOfTerritory method from Citymap.
+	* re-enabling the selector graphic on active ai stacks.
+	* ai_smart and ai_fast now explicitly join stacks.
+	* ai_fast now sets the production in newly conquered cities.
+	* updated the random city names to have more creative names.
+	* putTerrain method in GameMap object updates the blocked avenues.
+	* putBuilding method in GameMap object updates the blocked avenues.
+	* fixed bug that made too many stacks land on the same tile.
+	* fixed bug that made enemy stacks persist in cities after fights.
+	* ai_fast no longer disbands stacks when the destination is far away.
+	* MoveResult object now knows if we ran out of moves.
+	* MoveResult object now knows if we reached the end of our path.
+	* MoveResult object now knows if the ai considered treacherous action.
+	* added isFull method to Stack object.
+	* fixed bug that made the stress test double up on the round count.
+	* updated the bag button picture in the scenario editor.
+	* updated the ai smart player to work a little better.
+
+
 2009-11-30  Ben Asselstine  <benasselstine@gmail.com>
 
 	*  player objects now have a method that returns if they're computer 
 	players or not.
 	* improving ability for path calculator to pick paths through/around
 	enemy stacks and cities.
+	* computer players now automatically pick paths through enemy cities
+	and stacks when necessary.
 
 2009-11-29  Ben Asselstine  <benasselstine@gmail.com>
 

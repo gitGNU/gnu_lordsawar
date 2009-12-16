@@ -28,7 +28,6 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
 	armybase.cpp armybase.h armyproto.cpp armyproto.h armyprodbase.cpp \
         armyprodbase.h army.cpp army.h armysetlist.cpp armysetlist.h \
         armyset.cpp armyset.h armyprotobase.cpp armyprotobase.h \
-	armyindexed.cpp armyindexed.h \
         bridge.cpp bridge.h bridgelist.cpp bridgelist.h \
         city.cpp city.h citylist.cpp citylist.h set.h set.cpp setlist.h \
         citysetlist.cpp citysetlist.h cityset.cpp cityset.h \
@@ -42,6 +41,7 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         herotemplates.cpp herotemplates.h history.cpp history.h \
         Immovable.cpp Immovable.h Item.cpp Item.h \
 	ItemProto.cpp ItemProto.h stacktile.cpp stacktile.h \
+        stackreflist.cpp stackreflist.h \
         Itemlist.cpp Itemlist.h Location.cpp Location.h \
 	LocationBox.cpp LocationBox.h LocationList.h \
         MapGenerator.cpp MapGenerator.h \

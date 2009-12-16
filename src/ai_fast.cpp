@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include <algorithm>
 #include <fstream>
+#include <assert.h>
 
 #include "ai_fast.h"
 
@@ -44,6 +45,8 @@
 #include "hero.h"
 #include "vectoredunitlist.h"
 #include "PathCalculator.h"
+#include "stacktile.h"
+#include "armyprodbase.h"
 
 using namespace std;
 
@@ -104,13 +107,13 @@ void AI_Fast::abortTurn()
 bool AI_Fast::startTurn()
 {
     sbusy.emit();
-    AI_maybeBuyScout();
 
+    maybeRecruitHero();
     sbusy.emit();
-    // maniac AI's never recruit heroes, otherwise take everything we can get
-    if (!d_maniac)
-      maybeRecruitHero();
-    
+    if (getStacklist()->getHeroes().size() == 0 &&
+        Citylist::getInstance()->countCities(this) == 1)
+      AI_maybeBuyScout(Citylist::getInstance()->getFirstCity(this));
+    sbusy.emit();
 
     debug(getName() << ": AI_Fast::start_turn")
     debug("being in " <<(d_maniac?"maniac":"normal") <<" mode")
@@ -121,26 +124,20 @@ bool AI_Fast::startTurn()
 
     d_diplomacy->considerCuspOfWar();
     
-    if (getUpkeep() > getIncome() + getIncome())
+    d_maniac = false;
+    float ratio = 2.0;
+    if (getUpkeep() > getIncome() * ratio)
       d_maniac = true;
-    else
-      d_maniac = false;
 
     //setup production
-    if (getIncome() > getUpkeep())
+    Citylist *cl = Citylist::getInstance();
+    for (Citylist::iterator cit = cl->begin(); cit != cl->end(); ++cit)
       {
-	Citylist *cl = Citylist::getInstance();
-	for (Citylist::iterator cit = cl->begin(); cit != cl->end(); ++cit)
-	  {
-	    City *c = *cit;
-	    if (c->getOwner() != this || c->isBurnt())
-	      continue;
-	    if (c->getActiveProductionSlot() == -1)
-	      {
-		if (c->getProductionBase(0))
-		  c->setActiveProductionSlot(0);
-	      }
-	  }
+        City *c = *cit;
+        if (c->getOwner() != this || c->isBurnt())
+          continue;
+        if (c->getActiveProductionSlot() == -1)
+          setBestProduction(c);
       }
 
     //setup vectoring
@@ -164,13 +161,16 @@ bool AI_Fast::startTurn()
 		if (mp <= 0)
 		  continue;
 		debug ("AI_FAST stack " << s->getId() << " can still potentially move");
-		debug ("moving from " << s->getPos().x << "," << s->getPos().y
+		debug ("moving from (" << s->getPos().x << "," << s->getPos().y
 		       << ") to (" <<s->getFirstPointInPath().x << "," <<
 		       s->getFirstPointInPath().y << ") with " << s->getMoves() <<" left");
 
 	    
 		found = true;
 	      }
+	    //are there any stacks without paths that still have some moves?
+	    else if (s->getPath()->size() == 0 && s->getMoves() > 1)
+	      found = true;
 	  }
 	if (!found)
 	  break;
@@ -194,17 +194,85 @@ bool AI_Fast::startTurn()
     return true;
 }
 
+int AI_Fast::scoreArmyType(const ArmyProdBase *a)
+{
+  int max_strength = a->getStrength();
+
+  int production;
+  if (a->getProduction() == 1)
+    production = 6;
+  else if (a->getProduction() == 2)
+    production = 2;
+  else
+    production = 1;
+
+  int upkeep = 0;
+  if (a->getUpkeep() < 5)
+    upkeep = 6;
+  else if (a->getUpkeep() < 10)
+    upkeep = 2;
+  else 
+    upkeep = 1;
+
+  int newcost = 0;
+  if (a->getProductionCost() < 5)
+    newcost = 6;
+  else if (a->getProductionCost() < 10)
+    newcost = 2;
+  else
+    newcost = 1;
+
+  //we prefer armies that move farther
+  int move_bonus = 0;
+  if (a->getMaxMoves() >  10)
+    move_bonus += 2;
+  if (a->getMaxMoves() >=  20)
+    move_bonus += 4;
+
+  return max_strength + move_bonus + production + upkeep + newcost;
+}
+
+int AI_Fast::setBestProduction(City *c)
+{
+  int selectbasic = -1;
+  int select = -1;
+  int scorebasic = -1;
+
+  // we try to determine the most attractive basic production
+  for (guint32 i = 0; i < c->getMaxNoOfProductionBases(); i++)
+    {
+      if (c->getArmytype(i) == -1)    // no production in this slot
+        continue;
+
+      const ArmyProdBase *proto = c->getProductionBase(i);
+      if (scoreArmyType(proto) > scorebasic)
+        {
+          selectbasic = i;
+          scorebasic = scoreArmyType(proto);
+        }
+    }
+
+
+  select=selectbasic;
+
+  if (select != c->getActiveProductionSlot())
+    {
+      cityChangeProduction(c, select);
+      debug(getName() << " Set production to BASIC" << select << " in " << c->getName())
+    }
+
+  return c->getActiveProductionSlot();
+}
+
 void AI_Fast::invadeCity(City* c)
 {
   debug("Invaded city " <<c->getName());
 
-  // There are three modes: maniac razes all cities, non-maniac just
-  // occupies them...
-  // but even a maniac won't raze a city if money is needed
   if (getIncome() < getUpkeep())
     {
       debug("Occupying it");
       cityOccupy(c);
+      setBestProduction(c);
     }
   else if (d_maniac)
     {
@@ -215,6 +283,7 @@ void AI_Fast::invadeCity(City* c)
     {
       debug("Occupying it");
       cityOccupy(c);
+      setBestProduction(c);
     }
 }
 
@@ -234,19 +303,43 @@ void AI_Fast::heroGainsLevel(Hero * a)
 
 Stack *AI_Fast::findNearOwnStackToJoin(Stack *s, int max_distance)
 {
+  int min_mp = -1;
+  std::list<Stack*> stks;
+  stks = GameMap::getNearbyFriendlyStacks(s->getPos(), max_distance);
+  if (stks.size() <= 0)
+    return NULL;
+  PathCalculator pc(s);
   Stack* target = NULL;
-  for (Stacklist::iterator it2 = d_stacklist->begin(); it2 != d_stacklist->end(); it2++)
+  for (std::list<Stack*>::iterator it = stks.begin(); it != stks.end(); it++)
     {
-      if (s->size() + (*it2)->size() > MAX_STACK_SIZE || s == (*it2))
+      //is this us?
+      if (s == (*it))
+	continue;
+      //is this a stack that is co-located?
+      if (s->getPos() == (*it)->getPos())
+	return s;
+
+      //does the destination have few enough army units to join?
+      if (GameMap::canJoin(s, (*it)) == false)
 	continue;
 
-      int distance = dist(s->getPos(), (*it2)->getPos());
+      //is the tile distance under the threshold?
+      int distance = dist(s->getPos(), (*it)->getPos());
 
       if (distance <= max_distance)
 	{
-	  target = (*it2);
-	  break;
+	  //can we actually get there?
+	  int mp = pc.calculate((*it)->getPos());
+	  if (mp <= 0)
+	    continue;
+	  if (mp < min_mp || min_mp == -1)
+	    {
+	      target = (*it);
+	      min_mp = mp;
+	    }
 	}
+
+
     }
   return target;
 }
@@ -267,7 +360,6 @@ bool AI_Fast::computerTurn()
     //          resupply
     //      if (!maniac)
     //          find next enemy city
-    //          if it's too far away then disband
     //      else
     //          find next enemy unit with preference to cities
     //      attack
@@ -278,10 +370,12 @@ bool AI_Fast::computerTurn()
     // and we want the freshly created stacks join the veterans and not the other
     // way round.
     //d_stacklist->dump();
+ 
     for (Stacklist::reverse_iterator it = d_stacklist->rbegin(); it != d_stacklist->rend(); it++)
     {
-        d_stacklist->setActivestack(*it);
-        Stack* s = *it;
+        Stack *s = *it;
+
+        d_stacklist->setActivestack(s);
         
 	//go to a temple
 	if (!d_maniac)
@@ -325,7 +419,7 @@ bool AI_Fast::computerTurn()
 	       <<"," <<s->getPos().y <<") containing " <<s->size() << " armies ?")
 
         // join armies if close
-        if (d_join && s->size() < MAX_STACK_SIZE)
+        if (d_join && s->isFull() == false)
         {
             Stack* target = NULL;
 	    target = findNearOwnStackToJoin(s, 5);
@@ -335,6 +429,14 @@ bool AI_Fast::computerTurn()
                 debug("Joining with stack " <<target->getId() <<" at (" <<target->getPos().x <<"," <<target->getPos().y <<")")
 	       	s->getPath()->calculate(s, target->getPos());
                 stack_moved |= stackMove(s);
+		//in case we lost our stack
+		if (!d_stacklist->getActivestack())
+		  return true;
+		if (s->getPos() == target->getPos())
+		  {
+		    GameMap::groupStacks(s);
+		    continue;
+		  }
 		continue;
             }
         }
@@ -343,7 +445,7 @@ bool AI_Fast::computerTurn()
         if (!d_maniac)
         {
             City *target = Citylist::getInstance()->getNearestFriendlyCity(s->getPos());
-            if (s->size() < MAX_STACK_SIZE && target)
+            if (s->isFull() == false && target)
             {
                 debug("Restocking in " <<target->getName())
                 // try to move to the north west part of the city (where the units
@@ -351,6 +453,7 @@ bool AI_Fast::computerTurn()
 
 		if (target->contains(s->getPos()) == false)
 		  {
+		    debug("Stack is not in " << target->getName() << " yet" <<endl);
 		    int mp = s->getPath()->calculateToCity(s, target);
 		    if (mp > 0)
 		      {
@@ -359,34 +462,46 @@ bool AI_Fast::computerTurn()
 			// the stack could have joined another stack waiting there
 			if (!d_stacklist->getActivestack())
 			  return true;
-			continue;
-		      }
-		    else
-		      {
-			d_maniac = true;
+			if (stack_moved)
+			  {
+			    GameMap::groupStacks(s);
+			    s->clearPath();
+			    continue;
+			  }
 		      }
 		  }
 		else if (s->getPos() != target->getPos())
 		  {
+		    debug("Stack is inside " << target->getName() << endl);
 		    //if we're not in the upper right corner
-		    int mp = s->getPath()->calculateToCity(s, target);
-		    if (mp)
+		    s->getPath()->calculate(s, target->getPos());
+		    //go there, and take as many as we can
+                    Stack *new_stack = NULL;
+		    stack_moved |= stackSplitAndMove(s, new_stack);
+		    //in case we lost our stack
+		    if (!d_stacklist->getActivestack())
+		      return true;
+		    if (stack_moved)
 		      {
-		    //then try to go there
-		    stack_moved |= stackMove(s);
-		    continue;
+			    GameMap::groupStacks(s);
+			    s->clearPath();
+			    GameMap::groupStacks(target->getPos());
+			    return true;
 		      }
-		    else
-		      d_maniac = true;
 		  }
+		else
+		  {
 		//otherwise just stay put in the city
+		    GameMap::groupStacks(s);
+		    continue;
+		  }
 	    }
 
 	    // third step: non-maniac players attack only enemy cities
 	    else
 	      {
 		target = NULL;
-		PathCalculator pc(s);
+		PathCalculator pc(s, true, 10, -1);
 		guint32 moves1 = 0, turns1 = 0, moves2 = 0, turns2 = 0;
 		Path *target1_path = NULL;
 		Path *target2_path = NULL;
@@ -439,29 +554,6 @@ bool AI_Fast::computerTurn()
 		  int moves = s->getPath()->calculateToCity(s, target);
 		debug("Moves to enemy city: " << moves);
 
-		if (moves > 60)
-		  {
-		    //are we in a city?
-		    City *c = Citylist::getInstance()->getObjectAt(s->getPos());
-		    if (c)
-		      {
-			//is nearest friendly city to the enemy not our city?
-			if (cl->getNearestFriendlyCity(target->getPos()) != c)
-			  {
-			    bool disbanded;
-			    bool killed = false;
-			    guint32 id = s->getId();
-			    disbanded = AI_maybeDisband(s, c, 3, 18, killed);
-			    if (disbanded)
-			      {
-				debug ("disbanded stack " << id << " in " << c->getName() <<"\n");
-				return true;
-			      }
-			    if (killed)
-			      return true;
-			  }
-		      }
-		  }
 		if (moves >= 1)
 		  {
 		    stack_moved |= stackMove(s);
@@ -473,11 +565,19 @@ bool AI_Fast::computerTurn()
 		      {
 			//and the target city is empty
 			if (target->countDefenders() == 0)
-			  {
-			    //attack it if we can reach it.
-			    int moved = stackSplitAndMove(s);
-			    stack_moved |=  moved;
-			  }
+                          {
+                            //attack it if we can reach it.
+                            Stack *new_stack = NULL;
+                            int moved = stackSplitAndMove(s, new_stack);
+                            stack_moved |=  moved;
+                            if (moved)
+                              {
+                                GameMap::groupStacks(s);
+                                s->clearPath();
+                                GameMap::groupStacks(target->getPos());
+                                return true;
+                              }
+                          }
 		      }
 		  }
 		else
@@ -487,7 +587,9 @@ bool AI_Fast::computerTurn()
 		    //for some reason we can't set parked on this thing
 		    //and have it realize it, after we return true.
 		    //why is that?
-		    printf("crap, it happened\n");
+		    printf("crap, it happened with a stack at %d,%d\n", s->getPos().x, s->getPos().y);
+		    printf("moves is %d\n", moves);
+		    printf("Destination was %d,%d (%s)\n", target->getPos().x, target->getPos().y, target->getName().c_str());
 		    stackDisband(s);
 		    return true;
 		  }
@@ -562,6 +664,9 @@ bool AI_Fast::computerTurn()
 		bool moved = stackMove(s);
 		//printf("result of move: %d\n", moved);
 		stack_moved |= moved;
+		//in case we lost our stack
+		if (!d_stacklist->getActivestack())
+		  return true;
 		s = d_stacklist->getActivestack();
 	      }
 	    else
@@ -575,7 +680,12 @@ bool AI_Fast::computerTurn()
 		  {
 		    mp = s->getPath()->calculate(s, friendly_city->getPos());
 		    if (mp > 0)
+		      {
 		      stack_moved |= stackMove(s);
+		//in case we lost our stack
+		if (!d_stacklist->getActivestack())
+		  return true;
+		      }
 		    else
 		      stack_moved |= false;
 		  }

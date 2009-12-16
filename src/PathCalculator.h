@@ -34,25 +34,19 @@ class PathCalculator
 public:
 
     //! Default constructor.
-    PathCalculator(Stack *s, bool zigzag = true, bool avoid_enemy_cities = true, bool avoid_enemy_stacks = true);
+    PathCalculator(const Stack *s, bool zigzag = true, int enemy_city_avoidance = -1, int enemy_stack_avoidance = -1);
 
     //! Alternate constructor.  calculate with a copy of the stack.
-    PathCalculator(const Stack &s, bool zigzag = true, bool avoid_enemy_cities = true, bool avoid_enemy_stacks = true);
+    PathCalculator(const Stack &s, bool zigzag = true, int enemy_city_avoidance = -1, int enemy_stack_avoidance = -1);
 
     //! Alternate constructor.  calculate with a new stack of one army.
-    PathCalculator(Player *p, Vector<int> src, const ArmyProdBase *prodbase = NULL, bool zigzag = true, bool avoid_enemy_cities = true, bool avoid_enemy_stacks = true);
+    PathCalculator(Player *p, Vector<int> src, const ArmyProdBase *prodbase = NULL, bool zigzag = true, int enemy_city_avoidance = -1, int enemy_stack_avoidance = -1);
 
     //! Copy constructor.
     PathCalculator(const PathCalculator&);
 
     //! Destructor.
     ~PathCalculator();
-
-    //! When *not* avoiding cities, we still avoid them by giving them a weight.
-    void setEnemyCityAvoidance(guint32 mp) {enemy_city_avoidance = mp;};
-
-    //! When *not* avoiding stacks, we still avoid them by giving them a weight.
-    void setEnemyStackAvoidance(guint32 mp) {enemy_stack_avoidance = mp;};
 
     bool isReachable(Vector<int> pos);
 
@@ -61,7 +55,10 @@ public:
     Path* calculateToCity (City *c, guint32 &moves, guint32 &turns, bool zigzag = true);
     int calculate(Vector<int> dest, bool zigzag = true);
 
-    static bool isBlocked(Stack *s, Vector<int> pos, bool enemy_cities_block, bool enemy_stacks_block);
+    static bool isBlocked(const Stack *s, Vector<int> pos, bool enemy_cities_block, bool enemy_stacks_block);
+
+    //! Return the positions on the map that are reachable in MP or less.
+    std::list<Vector<int> > getReachablePositions(int mp = 0);
 private:
     struct node
       {
@@ -70,17 +67,15 @@ private:
 	int moves_left;
       };
     struct node *nodes;
-    Stack *stack;
+    const Stack *stack;
     bool flying;
     guint32 d_bonus;
     int land_reset_moves;
     int boat_reset_moves;
     bool zigzag;
     bool on_ship;
-    bool avoid_enemy_cities;
-    bool avoid_enemy_stacks;
-    guint32 enemy_city_avoidance;
-    guint32 enemy_stack_avoidance;
+    int enemy_city_avoidance;
+    int enemy_stack_avoidance;
 
     /** 
      * Checks how many movement points are needed to cross a tile from

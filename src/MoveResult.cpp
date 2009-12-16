@@ -19,20 +19,34 @@
 #include <iostream>
 #include "MoveResult.h"
 #include "fight.h"
+#include "stack.h"
+#include "path.h"
 
 using namespace std;
 
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 //#define debug(x)
 
-MoveResult::MoveResult(bool result)
-    :d_result(result), d_fight(false), d_join(false),
-    d_stepCount(0), d_fightResult(Fight::DRAW)
+MoveResult::MoveResult()
+    : d_fight(false), d_stepCount(0), d_out_of_moves(false), 
+    d_reached_end(false), d_treachery(false), d_considered_treachery(false),
+    d_too_large_stack_in_the_way(false), d_fightResult(Fight::DRAW)
 {
 }
 
 MoveResult::~MoveResult()
 {
+}
+
+void MoveResult::fillData(Stack *s, int stepCount)
+{
+  if (s->getPath()->size() == 0)
+    d_reached_end = true;
+
+  if (s->enoughMoves() == false)
+    d_out_of_moves = true;
+
+  d_stepCount = stepCount;
 }
 
 void MoveResult::setFightResult(Fight::Result fightResult)

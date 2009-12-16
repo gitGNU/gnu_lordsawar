@@ -27,7 +27,7 @@
 #include "Ownable.h"
 
 class City;
-class Stacklist;
+class StackReflist;
 class Stack;
 class Player;
 class Ruin;
@@ -84,8 +84,7 @@ class Threat: public Ownable
         void deleteStack(guint32 id);
 
         //! Increase the danger of this threat 
-        void addDanger(float danger) { d_danger += danger; }
-
+        void addDanger(float danger);
 
 	// Methods that operate on class data and do not modify the class.
 
@@ -103,10 +102,7 @@ class Threat: public Ownable
         bool Near(Vector<int> pos, Player *p) const;
 
         //! How strong is this threat?
-        float strength() const;
-
-        //! How valuable is to us to destroy this threat?
-        float value() const;
+        float getStrength() const {return d_strength;}
 
         /** Returns the closest point of a threat to a certain location
           * (remember that a threat can consist of several single threats
@@ -120,6 +116,8 @@ class Threat: public Ownable
         //! return the danger posed by this threat to the current player
         float getDanger() const { return d_danger; }
 
+        float getValue() const {return d_value;}
+
         //! Does this threat contain a city?
         bool isCity() const { return d_city != 0; }
 
@@ -131,6 +129,8 @@ class Threat: public Ownable
 
     private:
 
+        void calculateValue();
+        void calculateStrength();
 	// DATA
 
 	//! The city associated with this threat.
@@ -140,10 +140,15 @@ class Threat: public Ownable
         Ruin *d_ruin;
 
 	//! The list of stacks associated with this threat.
-        Stacklist *d_stacks;
+        StackReflist *d_stacks;
 
 	//! The amount of danger this threat represents.
         float d_danger;
+
+        //! Danger augmented by some other factors.
+        float d_value;
+
+        float d_strength;
 };
 
 #endif // THREAT_H

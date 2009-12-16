@@ -40,7 +40,7 @@ class CreateScenarioRandomize;
 class MainWindow: public sigc::trackable
 {
  public:
-    MainWindow();
+    MainWindow(std::string load_filename = "");
     ~MainWindow();
 
     void show();
@@ -226,6 +226,7 @@ class MainWindow: public sigc::trackable
 
     int d_width;
     int d_height;
+    std::string d_load_filename;// filename given on the command line.
     
 };
 

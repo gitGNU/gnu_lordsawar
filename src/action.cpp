@@ -420,10 +420,9 @@ bool Action_Split::doSave(XML_Helper* helper) const
 
 bool Action_Split::fillData(Stack* orig, Stack* added)
 {
-    if ((orig->size() > MAX_STACK_SIZE) ||(added->size() > MAX_STACK_SIZE)
-        || (orig->empty()) || (added->empty()))
+  if (orig->validate() == false || added->validate() == false)
     {
-        std::cerr <<"Action_Split::fillData(): wrong stack size\n";
+        std::cerr <<"Action_Split::fillData(): stacks don't validate\n";
 	std::cerr <<"Action_Split:: orig has " << orig->size() << 
 	  " and added has " <<added->size();
         return false;
@@ -1736,7 +1735,8 @@ Action_Produce::Action_Produce()
 }
 
 Action_Produce::Action_Produce(const Action_Produce &action)
-: Action(action), d_city(action.d_city), d_vectored(action.d_vectored)
+: Action(action), d_city(action.d_city), d_vectored(action.d_vectored),
+    d_dest(action.d_dest), d_army_id(action.d_army_id)
 {
   d_army = new ArmyProdBase (*action.d_army);
 }
@@ -1746,6 +1746,9 @@ Action_Produce::Action_Produce(XML_Helper* helper)
 {
   helper->getData(d_city, "city");
   helper->getData(d_vectored, "vectored");
+  helper->getData(d_dest.x, "dest_x");
+  helper->getData(d_dest.y, "dest_y");
+  helper->getData(d_army_id, "army_id");
   helper->registerTag(ArmyProdBase::d_tag, sigc::mem_fun(this, &Action_Produce::load));
 }
 
@@ -1769,9 +1772,11 @@ Action_Produce::~Action_Produce()
 std::string Action_Produce::dump() const
 {
   std::stringstream s;
-  s << "army of type " << d_army->getTypeId() << " shows up at city " << d_city;
+  s << "army id " << d_army_id << " of type " << d_army->getTypeId() << " shows up at city " << d_city;
   if (d_vectored)
-    s <<" but it is vectored to another city";
+    s <<" but it is vectored to another city at " << d_dest.x << "," << d_dest.y;
+  else
+    s <<" at position " << d_dest.x << "," << d_dest.y;
   s <<"\n";
 
   return s.str();
@@ -1783,16 +1788,21 @@ bool Action_Produce::doSave(XML_Helper* helper) const
 
   retval &= helper->saveData("city", d_city);
   retval &= helper->saveData("vectored", d_vectored);
+  retval &= helper->saveData("dest_x", d_dest.x);
+  retval &= helper->saveData("dest_y", d_dest.y);
+  retval &= helper->saveData("army_id", d_army_id);
   retval &= d_army->save(helper);
 
   return retval;
 }
 
-bool Action_Produce::fillData(const ArmyProdBase *army, City *city, bool vectored)
+bool Action_Produce::fillData(const ArmyProdBase *army, City *city, bool vectored, Vector<int> pos, guint32 army_id)
 {
   d_army = new ArmyProdBase(*army);
   d_city = city->getId();
   d_vectored = vectored;
+  d_dest = pos;
+  d_army_id = army_id;
   return true;
 }
 
