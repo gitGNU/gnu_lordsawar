@@ -87,6 +87,8 @@ class Threatlist : public std::list<Threat*>
         //! return some debugging information
         string toString() const;
         
+        void changeOwnership(Player *old_owner, Player *new_owner);
+
     private:
 
         static bool compareValue(const Threat *lhs, const Threat *rhs);

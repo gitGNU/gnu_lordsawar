@@ -1,3 +1,9 @@
+2009-12-17  Ben Asselstine  <benasselstine@gmail.com>
+
+	* added changeOwnership methods to AI_Analysis and Threatlist and
+	employed it in playerlist so that we don't crash when changing from
+	ai_smart to human via View->Preferences.
+
 2009-12-16  Ben Asselstine  <benasselstine@gmail.com>
 
 	* added getDefenders method to city object.

@@ -270,4 +270,10 @@ void AI_Analysis::calculateDanger()
     }
 }
 
+void AI_Analysis::changeOwnership (Player * old_player, Player * new_player)
+{
+  if (instance)
+    instance->d_threats->changeOwnership(old_player, new_player);
+}
+
 // End of file

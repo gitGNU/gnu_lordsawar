@@ -539,6 +539,7 @@ void Playerlist::swap(Player *old_player, Player *new_player)
   rlist->changeOwnership (old_player, new_player);
   VectoredUnitlist *vlist = VectoredUnitlist::getInstance();
   vlist->changeOwnership (old_player, new_player);
+  AI_Analysis::changeOwnership(old_player, new_player);
   if (old_player == d_activeplayer)
     {
       d_activeplayer = new_player;

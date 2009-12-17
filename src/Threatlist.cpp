@@ -264,4 +264,11 @@ bool Threatlist::flRemove(Threat* object)
     return false;
 }
 
+void Threatlist::changeOwnership(Player *old_owner, Player *new_owner)
+{
+  for (iterator it = begin(); it != end(); it++)
+    if ((*it)->getOwner() == old_owner)
+      (*it)->setOwner(new_owner);
+}
+
 // End of file

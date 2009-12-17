@@ -102,6 +102,7 @@ class AI_Analysis
         // city properly
         float reinforcementsNeeded(City *city);
         
+        static void changeOwnership (Player * old_player, Player * new_player);
     private:
         // identifies and evaluates enemy cities in the citylist as threats
         void examineCities();
