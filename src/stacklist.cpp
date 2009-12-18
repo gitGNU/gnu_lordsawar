@@ -552,4 +552,13 @@ void Stacklist::changeOwnership(Stack *stack, Player *new_owner)
       new_owner->addStack(new_stack);
     }
 }
+
+std::list<Vector<int> > Stacklist::getPositions() const
+{
+  std::list<Vector<int> > points;
+  for (const_iterator it = begin(); it != end(); it++)
+    points.push_back((*it)->getPos());
+  return points;
+
+}
 // End of file

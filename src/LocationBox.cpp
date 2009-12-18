@@ -190,6 +190,11 @@ bool LocationBox::isCompletelyObscuredByFog(Player *p) const
   return true;
 }
 
+Vector<int> LocationBox::getNearestPos(Movable *m) const
+{
+  return getNearestPos(m->getPos());
+}
+
 Vector<int> LocationBox::getNearestPos(Vector<int> pos) const
 {
   int min_dist = -1;

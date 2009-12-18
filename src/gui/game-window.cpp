@@ -1514,6 +1514,7 @@ void GameWindow::on_preferences_activated()
   d.set_parent_window(*window);
   d.run(game);
   d.hide();
+  game->get_bigmap().set_control_key_down (false);
   if (current != Playerlist::getInstance()->getActiveplayer())
     game->end_turn();
 }

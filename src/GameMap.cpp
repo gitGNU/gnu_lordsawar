@@ -1794,51 +1794,57 @@ std::list<Stack*> GameMap::getNearbyEnemyStacks(Vector<int> pos, int dist)
 
 std::list<Stack*> GameMap::getNearbyStacks(Vector<int> pos, int dist, bool friendly)
 {
-  std::list<Stack *> stacks;
-  guint32 i, j;
-  guint32 d;
-  guint32 max = dist;
-  int x, y;
-
+  std::list<Vector<int> > points = getNearbyPoints(pos, dist);
   std::list<Stack*> stks;
-  if (friendly)
-    stks = GameMap::getFriendlyStacks(pos);
-  else
-    stks = GameMap::getEnemyStacks(pos);
-  stacks.merge(stks);
-
-  //d is the distance from Pos where our box starts
-  //instead of a regular loop around a box of dist large, we're going to add
-  //the nearer stacks first.
-  for (d = 1; d < max; d++)
+  std::list<Stack *> stacks;
+  for (std::list<Vector<int> >::iterator it = points.begin(); 
+       it != points.end(); it++)
     {
-      for (i = 0; i < (d * 2) + 1; i++)
-        {
-          for (j = 0; j < (d * 2) + 1; j++)
-            {
-              if ((i == 0 || i == (d * 2) + 1) && 
-                  (j == 0 || j == (d * 2) + 1))
-                {
-                  x = pos.x + (i - d);
-                  y = pos.y + (j - d);
-                  if (x < 0 || y < 0)
-                    continue;
-		  if (offmap(x, y))
-		    continue;
-		  //are there any stacks here?
-		  if (friendly)
-		    stks = GameMap::getFriendlyStacks(Vector<int>(x,y));
-		  else
-		    stks = GameMap::getEnemyStacks(Vector<int>(x,y));
-		  stacks.merge(stks);
-                }
-            }
-        }
+      if (friendly)
+        stks = GameMap::getFriendlyStacks(*it);
+      else
+        stks = GameMap::getEnemyStacks(*it);
+      stacks.merge(stks);
     }
 
   return stacks;
 }
 
+
+std::list<Vector<int> > GameMap::getNearbyPoints(Vector<int> pos, int dist)
+{
+  std::list<Vector<int> > points;
+  guint32 i, j;
+  guint32 d;
+  guint32 max = dist;
+  int x, y;
+
+  points.push_back(pos);
+
+  //d is the distance from Pos where our box starts
+  //instead of a regular loop around a box of dist large, we're going to add
+  //the nearer stacks first.
+  for (d = 1; d <= max; d++)
+    {
+      for (i = 0; i < (d * 2) + 1; i++)
+        {
+          for (j = 0; j < (d * 2) + 1; j++)
+            {
+              if ((i == 0 || i == (d * 2)) ||
+                  (j == 0 || j == (d * 2)))
+                {
+                  x = pos.x + (i - d);
+                  y = pos.y + (j - d);
+		  if (offmap(x, y))
+		    continue;
+                  points.push_back(Vector<int>(x,y));
+                }
+            }
+        }
+    }
+
+  return points;
+}
 bool GameMap::checkCityAccessibility()
 {
   //check to see if all cities are accessible

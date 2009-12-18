@@ -232,7 +232,7 @@ int AI_Smart::setQuickProduction(City *c)
   if (select != c->getActiveProductionSlot())
     {
       cityChangeProduction(c, select);
-      debug(getName() << " Set production to BASIC" << select << " in " << c->getName())
+      debug(getName() << " Set production to " << select << " in " << c->getName())
     }
 
   return c->getActiveProductionSlot();
@@ -428,5 +428,11 @@ void AI_Smart::examineCities()
         setProduction(city);
     }
 }
+bool AI_Smart::treachery (Stack *stack, Player *player, Vector <int> pos)
+{
+  bool performTreachery = true;
+  return performTreachery;
+}
+
 
 // End of file

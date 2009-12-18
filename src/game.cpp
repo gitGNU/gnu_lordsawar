@@ -72,6 +72,8 @@
 
 #include "herotemplates.h"
 #include "GameScenarioOptions.h"
+#include "ai_fast.h"
+#include "ai_smart.h"
 
 Game *Game::current_game = 0;
 
@@ -1252,7 +1254,20 @@ void Game::unselect_active_stack()
 bool Game::maybeTreachery(Stack *stack, Player *them, Vector<int> pos)
 {
   Player *me = stack->getOwner();
-  bool treachery = me->treachery (stack, them, pos);
+  bool treachery = false;
+  if (me->isComputer())
+    {
+      if (me->getType() == Player::AI_FAST)
+        {
+          AI_Fast *ai = dynamic_cast<AI_Fast*>(me);
+        treachery = ai->treachery (stack, them, pos);
+        }
+      else if (me->getType() == Player::AI_SMART)
+        {
+          AI_Smart *ai = dynamic_cast<AI_Smart*>(me);
+        treachery = ai->treachery (stack, them, pos);
+        }
+    }
   if (treachery == false)
     return false;
   me->proposeDiplomacy (Player::NO_PROPOSAL, them);

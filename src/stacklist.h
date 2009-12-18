@@ -271,6 +271,8 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	 */
         static Vector<int> getPosition(guint32 id);
 
+
+        std::list<Vector<int> > getPositions() const;
     private:
 
         //! Callback for loading this object from an opened saved-game file.

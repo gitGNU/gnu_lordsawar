@@ -27,6 +27,7 @@
 #include "rectangle.h"
 
 
+class Movable;
 class Player;
 class Stack;
 class Army;
@@ -117,6 +118,8 @@ class LocationBox : public Immovable
 
     //! Which tile of the location is the fewest number of tiles away from pos.
     Vector<int> getNearestPos(Vector<int> pos) const;
+
+    Vector<int> getNearestPos(Movable *m) const;
 
  protected:
 

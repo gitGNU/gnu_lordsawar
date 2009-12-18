@@ -474,6 +474,7 @@ class Player: public sigc::trackable
 	 */
         //! Callback to move a stack on the map.
         bool stackMove(Stack* s);
+        MoveResult* stackMove(Stack* s, Vector<int> dest);
 
 	//! Callback to take the armies from the stack that have at least
 	//! enough moves to reach the end of the stack's path.

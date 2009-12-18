@@ -154,6 +154,8 @@ class GameMap: public sigc::trackable
 	static std::list<Stack*> getEnemyStacks(Vector<int> pos, Player *player = NULL);
 	static std::list<Stack*> getNearbyFriendlyStacks(Vector<int> pos, int dist);
 	static std::list<Stack*> getNearbyEnemyStacks(Vector<int> pos, int dist);
+
+        static std::list<Vector<int> > getNearbyPoints(Vector<int> pos, int dist);
 	static guint32 countArmyUnits(Vector<int> pos);
 	static MapBackpack *getBackpack(Vector<int> pos);
 

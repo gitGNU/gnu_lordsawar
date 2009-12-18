@@ -708,7 +708,7 @@ bool AI_Fast::computerTurn()
     return stack_moved;
 }
 
-bool AI_Fast::treachery (Stack *stack, Player *player, Vector <int> pos, DiplomaticState state)
+bool AI_Fast::treachery (Stack *stack, Player *player, Vector <int> pos)
 {
   bool performTreachery = true;
   return performTreachery;

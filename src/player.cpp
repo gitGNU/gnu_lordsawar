@@ -780,6 +780,15 @@ bool Player::nextStepOnEnemyStackOrCity(Stack *s) const
     }
   return false;
 }
+
+MoveResult *Player::stackMove(Stack* s, Vector<int> dest)
+{
+  if (dest == Vector<int>(-1,-1))
+    return stackMove(s, dest, true);
+  else
+    return stackMove(s, dest, false);
+}
+
 MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 {
 

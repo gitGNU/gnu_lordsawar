@@ -40,6 +40,8 @@ class MoveResult
         //! set how many steps were taken in this move
         void setStepCount(int stepCount) { d_stepCount = stepCount; }
 
+        int getStepCount() const {return d_stepCount;};
+
         //! return the result of the fight, if there was one
         Fight::Result getFightResult() const { return d_fightResult; }
 
@@ -47,7 +49,7 @@ class MoveResult
         bool didSomething() const { return (d_fight || (d_stepCount > 0) ); }
 
 	void setReachedEndOfPath(bool reached) {d_reached_end = reached;};
-	bool getRreachedEndOfPath() const {return d_reached_end;}
+	bool getReachedEndOfPath() const {return d_reached_end;}
 
 	void setOutOfMoves(bool out) {d_out_of_moves = out;}
 	bool getOutOfMoves() const {return d_out_of_moves;}

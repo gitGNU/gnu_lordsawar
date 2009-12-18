@@ -1,3 +1,11 @@
+2009-12-18  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed the get nearest stacks methods on the game map object.
+	* added get nearest points method to game map object.
+	* still improving ai_smart to do the right thing.
+	* added defaultedness for close button on the report dialog.
+	* added new stackmove method on player that returns moveresult.
+
 2009-12-17  Ben Asselstine  <benasselstine@gmail.com>
 
 	* added changeOwnership methods to AI_Analysis and Threatlist and

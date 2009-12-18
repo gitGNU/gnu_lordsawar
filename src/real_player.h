@@ -75,6 +75,7 @@ class RealPlayer : public Player
 
         virtual void heroGainsLevel(Hero * a);
 
+	virtual bool treachery (Stack *stack, Player *player, Vector <int> pos);
 	bool d_abort_requested;
 
     protected:

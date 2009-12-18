@@ -96,6 +96,7 @@ class AI_Smart : public RealPlayer
         virtual bool startTurn();
         virtual void invadeCity(City* c);
         virtual void heroGainsLevel(Hero * a);
+	virtual bool treachery (Stack *stack, Player *player, Vector <int> pos);
 
     private:
         // Choose a new type of army to buy production for.

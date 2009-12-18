@@ -219,5 +219,10 @@ bool RealPlayer::maybeRecruitHero ()
   return accepted;
 }
 
+bool RealPlayer::treachery (Stack *stack, Player *player, Vector <int> pos)
+{
+  bool performTreachery = true;
+  return performTreachery;
+}
 
 // End of file

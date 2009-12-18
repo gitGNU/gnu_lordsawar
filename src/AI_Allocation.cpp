@@ -28,6 +28,7 @@
 #include "stack.h"
 #include "city.h"
 #include "Threat.h"
+#include "MoveResult.h"
 #include "ruin.h"
 #include "path.h"
 #include "ruinlist.h"
@@ -189,10 +190,12 @@ int AI_Allocation::attackNearbyEnemies()
       City *city = *i;
       if (city->getOwner() == d_owner || city->isBurnt() == true)
         continue;
-      std::list<Stack*> f = GameMap::getNearbyFriendlyStacks(city->getPos(), 2);
-      for (std::list<Stack*>::iterator j = f.begin(); j != f.end(); j++)
+      std::list<Vector<int> > p = GameMap::getNearbyPoints(city->getPos(), 2);
+      for (std::list<Vector<int> >::iterator j = p.begin(); j != p.end(); j++)
         {
-          Stack *s = (*j);
+          Stack *s = GameMap::getFriendlyStack(*j);
+          if (!s)
+            continue;
           if (s->getParked() == false && s->getMoves() >= 4)
             {
               bool killed = false;
@@ -212,24 +215,29 @@ int AI_Allocation::attackNearbyEnemies()
               if (moved)
                 count++;
             }
-          break;
+          //break;
         }
     }
   return count;
   Stacklist *sl = d_owner->getStacklist();
-  for (Stacklist::iterator it = sl->begin(); it != sl->end(); it++)
+  std::list<Vector<int> > pos = sl->getPositions();
+  for (std::list<Vector<int> >::iterator i = pos.begin(); i != pos.end(); i++)
     {
-      Stack *s = *it;
+      Stack *s = GameMap::getFriendlyStack(*i);
+      if (!s)
+        continue;
       if (d_stacks->size() == 0)
         break;
       if (s->isOnCity() == true)
         continue;
       if (s->getParked() == true)
         continue;
-      std::list<Stack*> e = GameMap::getNearbyEnemyStacks(s->getPos(), 2);
-      for (std::list<Stack*>::iterator j = e.begin(); j != e.end(); j++)
+      std::list<Vector<int> > p = GameMap::getNearbyPoints(*i, 2);
+      for (std::list<Vector<int> >::iterator j = p.begin(); j != p.end(); j++)
         {
-          Stack *enemy = *j;
+          Stack *enemy = GameMap::getEnemyStack(*j);
+          if (!enemy)
+            continue;
           bool killed = false;
           bool moved;
           if (enemy->isOnCity() == true)
@@ -248,8 +256,6 @@ int AI_Allocation::attackNearbyEnemies()
                   deleteStack(s);
                 }
             }
-          else
-            it = d_stacks->begin();
         }
     }
   return count;
@@ -361,7 +367,7 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
   debug("Player " << d_owner->getName() << " still has " << d_stacks->size() << " stacks after allocating stacks to threats")
     debug("Player " << d_owner->getName() << " moved " << moved << " stacks in offensive mode.");
 
-  //printf("here3\n");
+ //printf("here3\n");
   checkAmbiguities();
   if (d_stacks->size() == 0)
     {
@@ -384,6 +390,8 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
   debug("Player " << d_owner->getName() << " alloc totals: " << attack_alloc << "," << capacity_alloc <<"," <<defensive_alloc<<"," << offensive_alloc <<"," << default_alloc <<" (" << total <<").");
   delete d_stacks;
 
+  //if (IIId_owner->getId() == 0)
+    //exit(0);
   return count;
 }
 
@@ -536,12 +544,21 @@ int AI_Allocation::allocateStacksToThreat(Threat *threat)
         break;
       guint32 num_city_defenders = 0;
       Stack *attacker = findBestAttackerFor(threat, num_city_defenders);
+      //if (attacker && attacker->getId() == 4207)
+        //{
+          //printf("4207 was chosen for threat: `%s'\n", threat->toString().c_str());
+        //}
       // if there is nobody to attack the threat, go onto the next one
       if (!attacker) 
         break;
       float score = d_analysis->assessStackStrength(attacker);
       bool killed = false;
       Vector<int> dest = threat->getClosestPoint(attacker->getPos());
+      //if (attacker->getId() == 4207)
+        //{
+          //printf("dest is %d,%d\n", dest.x, dest.y);
+          //exit(0);
+        //}
       if (num_city_defenders == 0 || num_city_defenders - attacker->size() > 3)
         {
 
@@ -800,7 +817,7 @@ int AI_Allocation::defaultStackMovements()
 	    City* enemyCity = allCities->getNearestEnemyCity(s->getPos());
 	    if (enemyCity)
 	      {
-		int mp = s->getPath()->calculateToCity(s, enemyCity);
+		int mp = s->getPath()->calculate(s, enemyCity->getNearestPos(s->getPos()));
 		debug("Player " << d_owner->getName() << " attacking " <<enemyCity->getName() << " that is " << mp << " movement points away");
 		if (mp > 0)
 		  {
@@ -825,7 +842,7 @@ int AI_Allocation::defaultStackMovements()
 		    s->getOwner()->proposeDiplomacy(Player::PROPOSE_WAR,
 						    enemyCity->getOwner());
 		    debug("Player " << d_owner->getName() << " attacking " <<enemyCity->getName())
-		    int mp = s->getPath()->calculateToCity(s, enemyCity);
+		    int mp = s->getPath()->calculate(s, enemyCity->getNearestPos(s->getPos()));
 		    if (mp > 0)
                       {
                         bool killed = false;
@@ -1080,7 +1097,16 @@ bool AI_Allocation::moveStack(Stack *stack, bool &stack_died)
   Vector<int> src = s->getPos();
   bool moved;
 
-  moved = d_owner->stackMove(s);
+  //printf("going in, size of path for stack: %d\n", s->getPath()->size());
+  MoveResult *moveResult = d_owner->stackMove(s, Vector<int>(-1,-1));
+  //printf("fight result is %d\n", moveResult->getFightResult());
+  //printf("took steps? %d\n", moveResult->getStepCount());
+  //printf("size of path for stack: %d\n", s->getPath()->size());
+  //printf("reached end of path? %d\n", moveResult->getReachedEndOfPath());
+  //printf("out of moves? %d\n", moveResult->getOutOfMoves());
+  //printf("too large stack in the way? %d\n", moveResult->getTooLargeStackInTheWay());
+  moved = moveResult->didSomething();
+  delete moveResult;
   if (d_owner->getActivestack() == NULL)
     {
       debug("stack id " << stack_id << " died")
@@ -1146,6 +1172,11 @@ bool AI_Allocation::groupStacks(Stack *stack)
 
 bool AI_Allocation::checkAmbiguities()
 {
+  //Stack *bobo = d_owner->getStacklist()->getStackById(4416);
+  //if (bobo)
+    //{
+      //printf ("stack 4416 parked? %d\n", bobo->getParked());
+    //}
   return false;
     int count = 0;
     Stacklist *sl = d_owner->getStacklist();
