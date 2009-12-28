@@ -114,10 +114,39 @@ void NetworkPlayer::invadeCity(City* c)
 {
   assert(false);
 }
+bool NetworkPlayer::chooseHero(HeroProto *hero, City *city, int gold)
+{
+  assert(false);
+  return true;
+}
+
+Reward *NetworkPlayer::chooseReward(Ruin *ruin, Sage *sage, Stack *stack)
+{
+  assert(false);
+  return NULL;
+}
 
 void NetworkPlayer::heroGainsLevel(Hero * a)
 {
   assert(false);
+}
+
+bool NetworkPlayer::chooseTreachery (Stack *stack, Player *player, Vector <int> pos)
+{
+  assert(false);
+  return true;
+}
+
+Army::Stat NetworkPlayer::chooseStat(Hero *hero)
+{
+  assert(false);
+  return Army::STRENGTH;
+}
+
+bool NetworkPlayer::chooseQuest(Hero *hero)
+{
+  assert(false);
+  return true;
 }
 
 void NetworkPlayer::decodeActions(std::list<Action *> actions)
@@ -364,6 +393,7 @@ void NetworkPlayer::decodeActionRuin(const Action_Ruin *action)
 
   r->setSearched(searched);
 
+  //the reward is given to the player via the decodeActionReward method.
   supdatingStack.emit(0);
 }
 

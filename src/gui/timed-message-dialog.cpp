@@ -110,3 +110,14 @@ bool TimedMessageDialog::tick()
 
   return Timing::STOP;
 }
+    
+void TimedMessageDialog::set_title(std::string title)
+{
+  window->set_title(title);
+}
+    
+void TimedMessageDialog::set_image(Glib::RefPtr<Gdk::Pixbuf> picture)
+{
+  Gtk::Image *image = new Gtk::Image(picture);
+  window->property_image() = image;
+}

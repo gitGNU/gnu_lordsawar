@@ -29,6 +29,7 @@
 
 class XML_Helper;
 class City;
+class HeroProto;
 
 //! A simple artificial intelligence Player suitable to be the neutral Player.
 /** 
@@ -65,14 +66,18 @@ class AI_Dummy : public RealPlayer
         virtual void abortTurn();
         virtual bool startTurn();
         virtual void invadeCity(City* c);
+        virtual bool chooseHero(HeroProto *hero, City* c, int gold);
+        virtual Reward *chooseReward(Ruin *ruin, Sage *sage, Stack *stack);
         virtual void heroGainsLevel(Hero * a);
+	virtual bool chooseTreachery (Stack *stack, Player *player, Vector <int> pos);
+        virtual Army::Stat chooseStat(Hero *hero);
+        virtual bool chooseQuest(Hero *hero);
 
 	void setDefensiveProduction(City *city);
 	void examineCities();
 
     private:
 	//DATA
-	bool d_abort_requested;
 };
 
 #endif // AI_DUMMY_H

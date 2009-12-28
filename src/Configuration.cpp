@@ -50,20 +50,20 @@ string Configuration::s_dataPath = "./data/";
 string Configuration::s_savePath = "./saves/";
 #endif
 string Configuration::s_lang = "";
-int Configuration::s_displaySpeedDelay = 0;
+int Configuration::s_displaySpeedDelay = 300000;
 int Configuration::s_displayFightRoundDelayFast = 250;
 int Configuration::s_displayFightRoundDelaySlow = 500;
+bool Configuration::s_displayCommentator = true;
 guint32 Configuration::s_cacheSize = 1000000;
 bool Configuration::s_zipfiles = false;
 int Configuration::s_autosave_policy = 1;
-bool Configuration::s_ggz = false;
 bool Configuration::s_musicenable = true;
 guint32 Configuration::s_musicvolume = 64;
 guint32 Configuration::s_musiccache = 10000000;
 string Configuration::s_filename = "";
 bool Configuration::s_see_opponents_stacks = false;
 bool Configuration::s_see_opponents_production = false;
-bool Configuration::s_play_with_quests = true;
+GameParameters::QuestPolicy Configuration::s_play_with_quests = GameParameters::ONE_QUEST_PER_PLAYER;
 bool Configuration::s_hidden_map = false;
 bool Configuration::s_diplomacy = false;
 GameParameters::NeutralCities Configuration::s_neutral_cities = GameParameters::AVERAGE;
@@ -132,13 +132,15 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("speeddelay", s_displaySpeedDelay);
     retval &= helper.saveData("fightrounddelayfast", s_displayFightRoundDelayFast);
     retval &= helper.saveData("fightrounddelayslow", s_displayFightRoundDelaySlow);
+    retval &= helper.saveData("commentator", s_displayCommentator);
     retval &= helper.saveData("shownextplayer", s_showNextPlayer);
     retval &= helper.saveData("musicenable", s_musicenable);
     retval &= helper.saveData("musicvolume", s_musicvolume);
     retval &= helper.saveData("musiccache", s_musiccache);
     retval &= helper.saveData("view_enemies", s_see_opponents_stacks);
     retval &= helper.saveData("view_production", s_see_opponents_production);
-    retval &= helper.saveData("quests", s_play_with_quests);
+    std::string quest_policy_str = questPolicyToString(GameParameters::QuestPolicy(s_play_with_quests));
+    retval &= helper.saveData("quests", quest_policy_str);
     retval &= helper.saveData("hidden_map", s_hidden_map);
     retval &= helper.saveData("diplomacy", s_diplomacy);
     std::string neutral_cities_str = neutralCitiesToString(GameParameters::NeutralCities(s_neutral_cities));
@@ -246,6 +248,9 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     helper->getData(s_displayFightRoundDelayFast, "fightrounddelayfast");
     helper->getData(s_displayFightRoundDelaySlow, "fightrounddelayslow");
 
+    //parse whether or not the commentator should be shown
+    helper->getData(s_displayCommentator, "commentator");
+
     //parse if nextplayer dialog should be enabled
     helper->getData(s_showNextPlayer, "shownextplayer");
 
@@ -256,7 +261,9 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     
     helper->getData(s_see_opponents_stacks, "view_enemies");
     helper->getData(s_see_opponents_production, "view_production");
-    helper->getData(s_play_with_quests, "quests");
+    std::string quest_policy_str;
+    helper->getData(quest_policy_str, "quests");
+    s_play_with_quests = questPolicyFromString(quest_policy_str);
     helper->getData(s_hidden_map, "hidden_map");
     helper->getData(s_diplomacy, "diplomacy");
     std::string neutral_cities_str;
@@ -478,3 +485,35 @@ GameParameters::QuickStartPolicy Configuration::quickStartPolicyFromString(std::
     
   return GameParameters::NO_QUICK_START;
 }
+
+std::string Configuration::questPolicyToString(const GameParameters::QuestPolicy quest)
+{
+  switch (quest)
+    {
+      case GameParameters::NO_QUESTING:
+	return "GameParameters::NO_QUESTING";
+	break;
+      case GameParameters::ONE_QUEST_PER_PLAYER:
+	return "GameParameters::ONE_QUEST_PER_PLAYER";
+	break;
+      case GameParameters::ONE_QUEST_PER_HERO:
+	return "GameParameters::ONE_QUEST_PER_HERO";
+	break;
+    }
+  return "GameParameters::NO_QUESTING";
+}
+
+GameParameters::QuestPolicy Configuration::questPolicyFromString(std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return GameParameters::QuestPolicy(atoi(str.c_str()));
+  if (str == "GameParameters::NO_QUESTING")
+    return GameParameters::NO_QUESTING;
+  else if (str == "GameParameters::ONE_QUEST_PER_PLAYER")
+    return GameParameters::ONE_QUEST_PER_PLAYER;
+  else if (str == "GameParameters::ONE_QUEST_PER_HERO")
+    return GameParameters::ONE_QUEST_PER_HERO;
+    
+  return GameParameters::NO_QUESTING;
+}
+

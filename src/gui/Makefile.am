@@ -67,7 +67,6 @@ liblwgui_la_SOURCES = \
     timed-message-dialog.cpp timed-message-dialog.h \
     game-lobby-dialog.cpp game-lobby-dialog.h \
     network-game-selector-dialog.cpp network-game-selector-dialog.h \
-    new-game-progress-window.cpp new-game-progress-window.h \
     new-network-game-download-window.cpp new-network-game-download-window.h \
     decorated.cpp decorated.h \
     new-random-map-dialog.cpp new-random-map-dialog.h

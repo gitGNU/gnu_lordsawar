@@ -29,6 +29,7 @@
 
 class Stack;
 class Reward;
+class Sage;
 
 //! A ruin on the game map.
 /** 
@@ -157,6 +158,8 @@ class Ruin : public NamedLocation, public sigc::trackable
         //! Saves the ruin data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
 
+        //! Create a sage object (a list of rewards).
+        Sage* generateSage() const;
 
 	// Static Methods
 

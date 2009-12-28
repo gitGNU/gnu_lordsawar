@@ -31,6 +31,8 @@ class TimedMessageDialog: public sigc::trackable
 		       int grace = 30);
     ~TimedMessageDialog();
 
+    void set_title(std::string title);
+    void set_image(Glib::RefPtr<Gdk::Pixbuf> picture);
     void show_all();
     void run();
     void hide();

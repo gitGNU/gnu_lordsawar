@@ -178,6 +178,18 @@ unsigned int Stacklist::countArmies() const
     return mysize;
 }
 
+unsigned int Stacklist::countAllies() const
+{
+    unsigned int mysize = 0;
+
+    for (const_iterator it = begin(); it != end(); it++)
+      {
+        mysize += (*it)->countAllies();
+      }
+
+    return mysize;
+}
+
 Stacklist::Stacklist()
     :d_activestack(0)
 {
@@ -557,7 +569,11 @@ std::list<Vector<int> > Stacklist::getPositions() const
 {
   std::list<Vector<int> > points;
   for (const_iterator it = begin(); it != end(); it++)
-    points.push_back((*it)->getPos());
+    {
+      if (std::find(points.begin(), points.end(), (*it)->getPos()) == 
+          points.end())
+        points.push_back((*it)->getPos());
+    }
   return points;
 
 }

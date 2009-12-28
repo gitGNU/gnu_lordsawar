@@ -56,6 +56,7 @@ public:
      */
     void set_input_locked(bool locked) { input_locked = locked; }
 
+    void set_slide_speed(guint32 interval) {sleep_interval = interval;};
 
     // Methods that operate on the class data and modify the class.
  
@@ -67,6 +68,8 @@ public:
      * @param new_view  The portion of the map graphic to highlight.
      */
     void set_view(Rectangle new_view);
+
+    Rectangle get_view() const {return view;};
 
     //! Zip to the selected portion of the SmallMap from the old position.
     /**
@@ -153,6 +156,9 @@ private:
      * mouse drags.
      */
     bool input_locked;
+
+    //! When sliding the box, it sleeps this long per frame (in microseconds).
+    guint32 sleep_interval;
 };
 
 #endif

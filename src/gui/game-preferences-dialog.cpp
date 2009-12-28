@@ -65,6 +65,7 @@ void GamePreferencesDialog::init(std::string filename)
     decorate(dialog);
     window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
+    xml->get_widget("dialog-vbox1", dialog_vbox);
     xml->get_widget("start_game_button", start_game_button);
     xml->get_widget("difficulty_label", difficulty_label);
     xml->get_widget("difficulty_combobox", difficulty_combobox);
@@ -316,6 +317,7 @@ void GamePreferencesDialog::update_difficulty_rating()
 
 void GamePreferencesDialog::on_start_game_clicked()
 {
+  dialog_vbox->set_sensitive(false);
   // read out the values in the widgets
   GameParameters g;
 
@@ -355,7 +357,7 @@ void GamePreferencesDialog::on_start_game_clicked()
 
   // and call callback
   dialog->hide();
-  game_started(g);
+  game_started.emit(g);
 }
 
 void GamePreferencesDialog::on_difficulty_changed()
@@ -366,7 +368,7 @@ void GamePreferencesDialog::on_difficulty_changed()
     case BEGINNER:
       GameScenarioOptions::s_see_opponents_stacks = true;
       GameScenarioOptions::s_see_opponents_production = true;
-      GameScenarioOptions::s_play_with_quests = false;
+      GameScenarioOptions::s_play_with_quests = GameParameters::NO_QUESTING;
       GameScenarioOptions::s_hidden_map = false;
       GameScenarioOptions::s_neutral_cities = GameParameters::AVERAGE;
       GameScenarioOptions::s_razing_cities = GameParameters::ALWAYS;
@@ -377,7 +379,8 @@ void GamePreferencesDialog::on_difficulty_changed()
     case INTERMEDIATE:
       GameScenarioOptions::s_see_opponents_stacks = false;
       GameScenarioOptions::s_see_opponents_production = true;
-      GameScenarioOptions::s_play_with_quests = true;
+      GameScenarioOptions::s_play_with_quests = 
+        GameParameters::ONE_QUEST_PER_PLAYER;
       GameScenarioOptions::s_hidden_map = false;
       GameScenarioOptions::s_neutral_cities = GameParameters::STRONG;
       GameScenarioOptions::s_razing_cities = GameParameters::ALWAYS;
@@ -388,7 +391,8 @@ void GamePreferencesDialog::on_difficulty_changed()
     case ADVANCED:
       GameScenarioOptions::s_see_opponents_stacks = false;
       GameScenarioOptions::s_see_opponents_production = false;
-      GameScenarioOptions::s_play_with_quests = true;
+      GameScenarioOptions::s_play_with_quests = 
+        GameParameters::ONE_QUEST_PER_PLAYER;
       GameScenarioOptions::s_hidden_map = true;
       GameScenarioOptions::s_neutral_cities = GameParameters::ACTIVE;
       GameScenarioOptions::s_razing_cities = GameParameters::ON_CAPTURE;
@@ -399,7 +403,8 @@ void GamePreferencesDialog::on_difficulty_changed()
     case I_AM_THE_GREATEST:
       GameScenarioOptions::s_see_opponents_stacks = false;
       GameScenarioOptions::s_see_opponents_production = false;
-      GameScenarioOptions::s_play_with_quests = true;
+      GameScenarioOptions::s_play_with_quests = 
+        GameParameters::ONE_QUEST_PER_PLAYER;
       GameScenarioOptions::s_hidden_map = true;
       GameScenarioOptions::s_neutral_cities = GameParameters::DEFENSIVE;
       GameScenarioOptions::s_razing_cities = GameParameters::NEVER;
@@ -430,7 +435,8 @@ bool GamePreferencesDialog::is_beginner()
 {
   return (GameScenarioOptions::s_see_opponents_stacks == true &&
 	  GameScenarioOptions::s_see_opponents_production == true &&
-	  GameScenarioOptions::s_play_with_quests == false &&
+	  GameScenarioOptions::s_play_with_quests == 
+          GameParameters::NO_QUESTING &&
 	  GameScenarioOptions::s_hidden_map == false &&
 	  GameScenarioOptions::s_neutral_cities == GameParameters::AVERAGE &&
 	  GameScenarioOptions::s_razing_cities == GameParameters::ALWAYS &&
@@ -442,7 +448,8 @@ bool GamePreferencesDialog::is_intermediate()
 {
   return (GameScenarioOptions::s_see_opponents_stacks == false &&
 	  GameScenarioOptions::s_see_opponents_production == true &&
-	  GameScenarioOptions::s_play_with_quests == true &&
+	  GameScenarioOptions::s_play_with_quests == 
+          GameParameters::ONE_QUEST_PER_PLAYER &&
 	  GameScenarioOptions::s_hidden_map == false &&
 	  GameScenarioOptions::s_neutral_cities == GameParameters::STRONG &&
 	  GameScenarioOptions::s_razing_cities == GameParameters::ALWAYS &&
@@ -454,7 +461,8 @@ bool GamePreferencesDialog::is_advanced()
 {
   return (GameScenarioOptions::s_see_opponents_stacks == false &&
 	  GameScenarioOptions::s_see_opponents_production == false &&
-	  GameScenarioOptions::s_play_with_quests == true &&
+	  GameScenarioOptions::s_play_with_quests == 
+          GameParameters::ONE_QUEST_PER_PLAYER &&
 	  GameScenarioOptions::s_hidden_map == true &&
 	  GameScenarioOptions::s_neutral_cities == GameParameters::ACTIVE &&
 	  GameScenarioOptions::s_razing_cities == GameParameters::ON_CAPTURE &&
@@ -466,7 +474,8 @@ bool GamePreferencesDialog::is_greatest()
 {
   return (GameScenarioOptions::s_see_opponents_stacks == false &&
 	  GameScenarioOptions::s_see_opponents_production == false &&
-	  GameScenarioOptions::s_play_with_quests == true &&
+	  GameScenarioOptions::s_play_with_quests == 
+          GameParameters::ONE_QUEST_PER_PLAYER &&
 	  GameScenarioOptions::s_hidden_map == true &&
 	  GameScenarioOptions::s_neutral_cities == GameParameters::ACTIVE &&
 	  GameScenarioOptions::s_razing_cities == GameParameters::NEVER &&
@@ -478,4 +487,3 @@ void GamePreferencesDialog::set_title(std::string text)
 {
   Decorated::set_title(text);
 }
-

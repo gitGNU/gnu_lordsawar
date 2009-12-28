@@ -46,7 +46,7 @@ class GameOptionsDialog: public Decorated
     Gtk::Dialog* dialog;
     Gtk::Table *difficultoptionstable;
     Gtk::Table *notdifficultoptionstable;
-    Gtk::CheckButton *quests_checkbutton;
+    Gtk::ComboBox *quests_combobox;
     Gtk::CheckButton *view_enemies_checkbutton;
     Gtk::CheckButton *view_production_checkbutton;
     Gtk::CheckButton *hidden_map_checkbutton;
@@ -61,7 +61,7 @@ class GameOptionsDialog: public Decorated
     void fill_in_options();
     void on_view_enemies_checkbutton_clicked();
     void on_view_production_checkbutton_clicked();
-    void on_quests_checkbutton_clicked();
+    void on_quests_combobox_changed();
     void on_hidden_map_checkbutton_clicked();
     void on_neutral_cities_combobox_changed();
     void on_razing_cities_combobox_changed();

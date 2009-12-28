@@ -1029,4 +1029,68 @@ bool Stack::hasPath() const
     return true;
   return false;
 }
+
+bool Stack::hasQuest() const
+{
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->isHero() == true)
+        {
+          Hero *hero = dynamic_cast<Hero*>(*it);
+          if (hero->hasQuest() == true)
+            return true;
+
+        }
+    }
+  return false;
+}
+
+bool Stack::hasArmyType(guint32 army_type) const
+{
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getTypeId() == army_type)
+        return true;
+    }
+  return false;
+}
+
+guint32 Stack::countAllies() const
+{
+  guint32 count = 0;
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getAwardable() == true)
+        count++;
+    }
+  return count;
+}
+
+Hero *Stack::getFirstHeroWithoutAQuest() const
+{
+  Hero *hero = NULL;
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->isHero() == false)
+        continue;
+      hero = dynamic_cast<Hero*>(*it);
+      if (hero->hasQuest() == false)
+        return hero;
+    }
+  return NULL;
+}
+
+Hero *Stack::getFirstHeroWithAQuest() const
+{
+  Hero *hero = NULL;
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->isHero() == false)
+        continue;
+      hero = dynamic_cast<Hero*>(*it);
+      if (hero->hasQuest() == true)
+        return hero;
+    }
+  return NULL;
+}
 // End of file

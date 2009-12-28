@@ -33,6 +33,10 @@
 class MoveResult;
 class XML_Helper;
 class City;
+class HeroProto;
+class Sage;
+class Ruin;
+class Stack;
 
 //! A local human Player.
 /** 
@@ -73,14 +77,19 @@ class RealPlayer : public Player
 
         virtual void invadeCity(City* c);
 
+        virtual bool chooseHero(HeroProto *hero, City* c, int gold);
+
+        virtual Reward *chooseReward(Ruin *ruin, Sage *sage, Stack *stack);
+
         virtual void heroGainsLevel(Hero * a);
 
-	virtual bool treachery (Stack *stack, Player *player, Vector <int> pos);
+	virtual bool chooseTreachery (Stack *stack, Player *player, Vector <int> pos);
+        virtual Army::Stat chooseStat(Hero *hero);
+        
+        virtual bool chooseQuest(Hero *hero);
+
 	bool d_abort_requested;
 
-    protected:
-
-        bool maybeRecruitHero();
 };
 
 #endif // REAL_PLAYER_H

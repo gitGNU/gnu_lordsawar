@@ -63,6 +63,9 @@ class MoveResult
         void setTooLargeStackInTheWay(bool s) {d_too_large_stack_in_the_way=s;}
         bool getTooLargeStackInTheWay() const {return d_too_large_stack_in_the_way;}
 
+        void setMoveAborted(bool a) {d_move_aborted = a;}
+        bool getMoveAborted() const {return d_move_aborted;}
+
 	//! fill up d_out_of_moves, d_reached_end, and d_stepCount
 	void fillData(Stack *s, int stepCount);
 
@@ -77,6 +80,7 @@ class MoveResult
         //this is when we can't jump over a friendly stack.
         bool d_too_large_stack_in_the_way;
         Fight::Result d_fightResult;
+        bool d_move_aborted;
 };
 
 #endif // MOVE_RESULT_H

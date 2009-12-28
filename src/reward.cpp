@@ -206,7 +206,7 @@ bool Reward_Allies::addAllies(Player *p, Vector<int> pos, const ArmyProto *army,
     {
       Army* ally = new Army(*army, p);
       ally->setUpkeep(0);
-      if (GameMap::getInstance()->addArmy(pos, ally) == NULL)
+      if (GameMap::getInstance()->addArmyAtPos(pos, ally) == NULL)
         return false;
     }
   return true;

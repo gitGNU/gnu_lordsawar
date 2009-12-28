@@ -602,6 +602,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   connections.push_back 
     (game->city_too_poor_to_produce.connect 
      (sigc::mem_fun(*this, &GameWindow::show_city_production_report)));
+  connections.push_back
+    (game->commentator_comments.connect
+     (sigc::mem_fun(*this, &GameWindow::on_commentator_comments)));
   connections.push_back 
     (game->can_end_turn.connect 
      (sigc::mem_fun(*this, &GameWindow::update_diplomacy_button)));
@@ -831,6 +834,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   connections.push_back
     (game->advice_asked.connect
      (sigc::mem_fun(*this, &GameWindow::on_advice_asked)));
+  connections.push_back
+    (game->stack_moves.connect
+     (sigc::mem_fun(*this, &GameWindow::on_stack_moves)));
 
   // misc callbacks
   QuestsManager *q = QuestsManager::getInstance();
@@ -928,6 +934,8 @@ void GameWindow::update_diplomacy_button (bool sensitive)
 bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
 {
   currently_selected_stack = NULL;
+  /*
+   * this is done in GameScenario now.
   Playerlist *pl = Playerlist::getInstance();
   Armysetlist *al = Armysetlist::getInstance();
   for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
@@ -937,6 +945,7 @@ bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
   GameMap::getInstance()->getTileset()->instantiateImages();
   GameMap::getInstance()->getShieldset()->instantiateImages();
   GameMap::getInstance()->getCityset()->instantiateImages();
+  */
 
   Sound::getInstance()->haltMusic(false);
   Sound::getInstance()->enableBackground();
@@ -1278,22 +1287,15 @@ void GameWindow::on_quests_activated()
   Player *player = Playerlist::getActiveplayer();
   std::vector<Quest*> quests
     = QuestsManager::getInstance()->getPlayerQuests(player);
-  if (quests.size() > 0)
-    {
-      QuestReportDialog d(quests[0]);
-      d.set_parent_window(*window);
-      d.run();
-      d.hide();
-      return;
-    }
-  else //no quest!
-    {
-      QuestReportDialog d(NULL);
-      d.set_parent_window(*window);
-      d.run();
-      d.hide();
-      return;
-    }
+  Stack *s = player->getActivestack();
+  Hero *hero = NULL;
+  if (s)
+    hero = s->getFirstHeroWithAQuest();
+  QuestReportDialog d(quests, hero);
+  d.set_parent_window(*window);
+  d.run();
+  d.hide();
+  return;
 }
 
 void GameWindow::on_fullscreen_activated()
@@ -1825,7 +1827,6 @@ void GameWindow::on_message_requested(std::string msg)
 
 void GameWindow::on_stack_toggled(Gtk::RadioButton *radio, Stack *stack)
 {
-  printf("stack %d toggled (state is %d)\n", stack->getId(), radio->get_active());
   if (radio->get_active() == true)
     {
       if (stack == currently_selected_stack)
@@ -1858,7 +1859,7 @@ void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Stack *stack, Army *
     }
   else
     {
-      printf("split army %d from stack %d, and make a new stack.\n", army->getId(), stack->getId());
+      //printf("split army %d from stack %d, and make a new stack.\n", army->getId(), stack->getId());
       p->stackSplitArmy(stack, army);
       stack->sortForViewing(true);
     }
@@ -2320,14 +2321,14 @@ void GameWindow::hide_map_tip()
     }
 }
 
-void GameWindow::on_sage_visited (Ruin *ruin, Stack *stack)
+Reward* GameWindow::on_sage_visited (Ruin *ruin, Sage *sage, Stack *stack)
 {
-  SageDialog d(stack->getFirstHero()->getOwner(), 
+  SageDialog d(sage, stack->getFirstHero()->getOwner(), 
 	       static_cast<Hero*>(stack->getFirstHero()), ruin);
   d.set_parent_window(*window);
   Reward *reward = d.run();
   d.hide();
-  ruin->setReward(reward);
+  return reward;
 }
 
 void GameWindow::on_ruin_rewarded (Reward_Ruin *reward)
@@ -2578,10 +2579,12 @@ void GameWindow::on_temple_visited(Temple *temple)
   d.hide();
 }
 
-bool GameWindow::on_temple_searched(bool hasHero, Temple *temple, int blessCount)
+bool GameWindow::on_temple_searched(Hero *hero, Temple *temple, int blessCount)
 {
   QuestsManager *qm = QuestsManager::getInstance();
   Gtk::Dialog* dialog;
+  bool hasHero = hero != NULL;
+  bool ask_quest = false;
 
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path() + "/temple-visit-dialog.ui");
@@ -2601,9 +2604,18 @@ bool GameWindow::on_temple_searched(bool hasHero, Temple *temple, int blessCount
   xml->get_widget("close_button", close_button);
   xml->get_widget("accept_button", accept_button);
 
-  if (qm->getPlayerQuests(Playerlist::getActiveplayer()).size() > 0 &&
-      hasHero)
-    accept_button->set_sensitive(false);
+  if (GameScenarioOptions::s_play_with_quests == 
+      GameParameters::ONE_QUEST_PER_PLAYER)
+    {
+      if (qm->getPlayerQuests(Playerlist::getActiveplayer()).size() == 0 &&
+          hasHero)
+        ask_quest = true;
+    }
+  else if (GameScenarioOptions::s_play_with_quests == GameParameters::ONE_QUEST_PER_HERO)
+    {
+      if (hasHero && hero->hasQuest() == false)
+        ask_quest = true;
+    }
 
   Glib::ustring s;
   if (blessCount > 0)
@@ -2616,16 +2628,15 @@ bool GameWindow::on_temple_searched(bool hasHero, Temple *temple, int blessCount
   l->set_text(s);
   s = l->get_text() + "\n" + _("Seek more blessings in far temples!");
   l->set_text(s);
-  if (GameScenario::s_play_with_quests == true)
+  if (ask_quest)
     {
-      if (hasHero)
-	s = l->get_text() + "\n\n" + _("Do you seek a quest?");
+      s = l->get_text() + "\n\n" + _("Do you seek a quest?");
       l->set_text(s);
     }
 
   dialog->show_all();
 
-  if (hasHero == false || GameScenario::s_play_with_quests == false)
+  if (ask_quest == false)
     {
       close_button->hide();
       s = _("_Close");
@@ -2636,7 +2647,7 @@ bool GameWindow::on_temple_searched(bool hasHero, Temple *temple, int blessCount
   dialog->hide();
   delete dialog;
 
-  if (hasHero == false || GameScenario::s_play_with_quests == false)
+  if (ask_quest == false)
     response = Gtk::RESPONSE_ACCEPT;
 
   if (response == Gtk::RESPONSE_ACCEPT)		// accepted a quest
@@ -2788,21 +2799,29 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 	  if (pillage)
 	    {
 	      xml->get_widget("pillage_button", button);
+              button->set_can_focus(true);
+              button->set_can_default(true);
 	      button->grab_default();
 	    }
 	  if (sack)
 	    {
 	      xml->get_widget("sack_button", button);
+              button->set_can_focus(true);
+              button->set_can_default(true);
 	      button->grab_default();
 	    }
 	  if (raze)
 	    {
 	      xml->get_widget("raze_button", button);
+              button->set_can_focus(true);
+              button->set_can_default(true);
 	      button->grab_default();
 	    }
 	  if (occupy)
 	    {
 	      xml->get_widget("occupy_button", button);
+              button->set_can_focus(true);
+              button->set_can_default(true);
 	      button->grab_default();
 	    }
 	}
@@ -3244,6 +3263,8 @@ void GameWindow::on_game_loaded(Player *player)
 
 void GameWindow::on_quest_completed(Quest *quest, Reward *reward)
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   QuestCompletedDialog d(quest, reward);
   d.set_parent_window(*window);
   d.run();
@@ -3252,6 +3273,8 @@ void GameWindow::on_quest_completed(Quest *quest, Reward *reward)
 
 void GameWindow::on_quest_expired(Quest *quest)
 {
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
   Gtk::Dialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
@@ -3315,6 +3338,25 @@ void GameWindow::on_plant_standard_activated ()
   Playerlist::getActiveplayer()->heroPlantStandard(NULL);
 }
     
+void GameWindow::on_stack_moves(Stack *stack, Vector<int> pos)
+{
+  if (GameMap::getEnemyCity(pos))
+    return;
+  if (GameMap::getEnemyStack(pos))
+    return;
+  if (stack->enoughMoves() == false)
+    return;
+  game->get_smallmap().center_view_on_tile (pos, false);
+  // sleep for a specified amount of time
+  int step = TIMER_BIGMAP_SELECTOR * 1000;
+  for (int i = 0; i < Configuration::s_displaySpeedDelay; i += step)
+    {
+      game->get_bigmap().draw(Playerlist::getViewingplayer());
+      while (g_main_context_iteration(NULL, FALSE)); //doEvents
+      Glib::usleep(step);
+    }
+}
+
 void GameWindow::on_advice_asked(float percent)
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
@@ -3647,4 +3689,17 @@ void GameWindow::give_some_cheese(Player *winner)
   show_shield_turn();
   game->redraw();
   on_city_history_activated();
+}
+
+void GameWindow::on_commentator_comments(std::string comment)
+{
+  TimedMessageDialog dialog (*window, comment, 0);
+  dialog.set_title(_("The Warlord Says..."));
+    
+  std::vector<PixMask* > buttons;
+  buttons = disassemble_row(File::getMiscFile("various/buttons.png"), 11);
+  PixMask::scale(buttons[0], 60, 60);
+  dialog.set_image(buttons[0]->to_pixbuf());
+  dialog.run();
+  dialog.hide();
 }

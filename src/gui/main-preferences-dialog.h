@@ -42,6 +42,7 @@ class MainPreferencesDialog: public Decorated
  private:
     Gtk::Dialog* dialog;
     Gtk::CheckButton *show_turn_popup_checkbutton;
+    Gtk::CheckButton *commentator_checkbutton;
     Gtk::CheckButton *play_music_checkbutton;
     Gtk::CheckButton *show_decorated_windows_checkbutton;
     Gtk::Scale *music_volume_scale;
@@ -49,6 +50,7 @@ class MainPreferencesDialog: public Decorated
     void on_show_turn_popup_toggled();
     void on_play_music_toggled();
     void on_show_decorated_windows_toggled();
+    void on_show_commentator_toggled();
     void on_music_volume_changed();
 };
 

@@ -65,6 +65,7 @@
 #include "xmlhelper.h"
 #include "tarhelper.h"
 #include "stacktile.h"
+#include "GraphicsCache.h"
 
 std::string GameScenario::d_tag = "scenario";
 using namespace std;
@@ -115,7 +116,7 @@ bool GameScenario::loadArmysets(Tar_Helper *t)
     {
       Armyset *armyset = Armysetlist::getInstance()->import(t, *it, broken);
       if (armyset)
-	armyset->instantiateImages();
+        Armysetlist::getInstance()->getArmyset(armyset->getId())->instantiateImages();
     }
   return !broken;
 }
@@ -147,7 +148,7 @@ bool GameScenario::loadTilesets(Tar_Helper *t)
       for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
 	File::erase(*it);
   
-      tileset->instantiateImages();
+      Tilesetlist::getInstance()->getTileset(tileset->getId())->instantiateImages();
     }
   return !broken;
 }
@@ -179,7 +180,7 @@ bool GameScenario::loadCitysets(Tar_Helper *t)
       for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
 	File::erase(*it);
   
-      cityset->instantiateImages();
+      Citysetlist::getInstance()->getCityset(cityset->getId())->instantiateImages();
     }
   return !broken;
 }
@@ -211,7 +212,8 @@ bool GameScenario::loadShieldsets(Tar_Helper *t)
       for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
 	File::erase(*it);
   
-      shieldset->instantiateImages();
+
+      Shieldsetlist::getInstance()->getShieldset(shieldset->getId())->instantiateImages();
     }
   return !broken;
 }
@@ -738,7 +740,8 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
   retval &= helper.saveData("turnmode", d_turnmode);
   retval &= helper.saveData("view_enemies", s_see_opponents_stacks);
   retval &= helper.saveData("view_production", s_see_opponents_production);
-  retval &= helper.saveData("quests", s_play_with_quests);
+  std::string quest_policy_str = Configuration::questPolicyToString(GameParameters::QuestPolicy(s_play_with_quests));
+  retval &= helper.saveData("quests", quest_policy_str);
   retval &= helper.saveData("hidden_map", s_hidden_map);
   retval &= helper.saveData("diplomacy", s_diplomacy);
   retval &= helper.saveData("cusp_of_war", s_cusp_of_war);
@@ -784,7 +787,9 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
       helper->getData(s_round, "turn");
       helper->getData(s_see_opponents_stacks, "view_enemies");
       helper->getData(s_see_opponents_production, "view_production");
-      helper->getData(s_play_with_quests, "quests");
+      std::string quest_policy_str;
+      helper->getData(quest_policy_str, "quests");
+      s_play_with_quests = Configuration::questPolicyFromString(quest_policy_str);
       helper->getData(s_hidden_map, "hidden_map");
       helper->getData(s_diplomacy, "diplomacy");
       helper->getData(s_cusp_of_war, "cusp_of_war");
@@ -1177,7 +1182,10 @@ public:
 			    "view_enemies");
 	    helper->getData(game_params.see_opponents_production, 
 			    "view_production");
-	    helper->getData(game_params.play_with_quests, "quests");
+	    std::string quest_policy_str;
+	    helper->getData(quest_policy_str, "quests");
+	    game_params.play_with_quests = 
+	      Configuration::questPolicyFromString(quest_policy_str);
 	    helper->getData(game_params.hidden_map, "hidden_map");
 	    helper->getData(game_params.diplomacy, "diplomacy");
 	    helper->getData(game_params.cusp_of_war, "cusp_of_war");

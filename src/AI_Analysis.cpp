@@ -142,7 +142,7 @@ const Threatlist* AI_Analysis::getThreatsInOrder(Vector<int> pos)
 
 void AI_Analysis::getCityWorstDangers(float dangers[3])
 {
-    std::map<string, AICityInfo *>::iterator it;
+    std::map<guint32, AICityInfo *>::iterator it;
 
 
     // i wanto to have a result array with the first worst dangers
@@ -175,7 +175,7 @@ void AI_Analysis::getCityWorstDangers(float dangers[3])
 
 int AI_Analysis::getNumberOfDefendersInCity(City *city)
 {
-  AICityMap::iterator it = d_cityInfo.find(city->getName());
+  AICityMap::iterator it = d_cityInfo.find(city->getId());
   if (it == d_cityInfo.end())
     return 0;
 
@@ -184,18 +184,18 @@ int AI_Analysis::getNumberOfDefendersInCity(City *city)
 
 float AI_Analysis::getCityDanger(City *city)
 {
-  AICityMap::iterator it = d_cityInfo.find(city->getName());
+  AICityMap::iterator it = d_cityInfo.find(city->getId());
   // city does not exist in the map
   if (it == d_cityInfo.end())
     return 0.0;
 
-  debug("Threats to " << city->getName() << " are " << d_cityInfo[city->getName()]->getThreats()->toString())
+  debug("Threats to " << city->getName() << " are " << d_cityInfo[city->getId()]->getThreats()->toString())
     return (*it).second->getDanger();
 }
 
 void AI_Analysis::reinforce(City *city, Stack *stack, int movesToArrive)
 {
-  AICityMap::iterator it = d_cityInfo.find(city->getName()) ;
+  AICityMap::iterator it = d_cityInfo.find(city->getId()) ;
   if (it == d_cityInfo.end())
     return;
 
@@ -204,7 +204,7 @@ void AI_Analysis::reinforce(City *city, Stack *stack, int movesToArrive)
 
 float AI_Analysis::reinforcementsNeeded(City *city)
 {
-  AICityMap::iterator it = d_cityInfo.find(city->getName());
+  AICityMap::iterator it = d_cityInfo.find(city->getId());
   if (it == d_cityInfo.end())
     return -1000.0;
 
@@ -265,7 +265,7 @@ void AI_Analysis::calculateDanger()
         {
             AICityInfo *info = new AICityInfo(city);
             d_threats->findThreats(info);
-            d_cityInfo[city->getName()] = info;
+            d_cityInfo[city->getId()] = info;
         }
     }
 }

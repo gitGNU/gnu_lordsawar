@@ -232,10 +232,7 @@ void SplashWindow::on_new_network_game_clicked()
 	      nrmd.set_parent_window(*window);
 	      int res = nrmd.run();
 	      if (res == Gtk::RESPONSE_ACCEPT)
-		{
-		  GameParameters g = nrmd.getParams();
-		  filename = Driver::create_and_dump_scenario("random.map", g);
-		}
+                filename = nrmd.getRandomMapFilename();
 	      else
 		return;
 	    }
@@ -269,10 +266,7 @@ void SplashWindow::on_new_pbm_game_clicked()
       nrmd.set_parent_window(*window);
       int res = nrmd.run();
       if (res == Gtk::RESPONSE_ACCEPT)
-	{
-	  GameParameters g = nrmd.getParams();
-	  filename = Driver::create_and_dump_scenario("random.map", g);
-	}
+        filename = nrmd.getRandomMapFilename();
       else
 	return;
     }
@@ -303,10 +297,7 @@ void SplashWindow::on_load_scenario_clicked()
 	  nrmd.set_parent_window(*window);
 	  int res = nrmd.run();
 	  if (res == Gtk::RESPONSE_ACCEPT)
-	    {
-	      GameParameters g = nrmd.getParams();
-	      filename = Driver::create_and_dump_scenario("random.map", g);
-	    }
+            filename = nrmd.getRandomMapFilename();
 	  else
 	    return;
 	}

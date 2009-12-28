@@ -57,7 +57,8 @@ using namespace std;
 
 namespace 
 {
-    int selection_timeout = 150;	// controls speed of selector rotation
+    // controls speed of selector rotation
+    int selection_timeout = TIMER_BIGMAP_SELECTOR;
 }
 
 GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
@@ -79,9 +80,9 @@ GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
 
   // setup timeout
   selection_timeout_handler = 
-    Timing::instance().register_timer(
-				      sigc::mem_fun(*this, &GameBigMap::on_selection_timeout),
-				      selection_timeout);
+    Timing::instance().register_timer
+    (sigc::mem_fun(*this, &GameBigMap::on_selection_timeout),
+     selection_timeout);
   shift_key_is_down = false;
   control_key_is_down = false;
 }
@@ -104,7 +105,7 @@ void GameBigMap::select_active_stack()
       assert (Playerlist::getActiveplayer()->getType() == Player::HUMAN);
       //original path was blocked, so let's find a new way there.
       //this shouldn't happen because nextTurn of stack recalculates.
-      cerr << "original path of stack was blocked\n";
+      //cerr << "original path of stack was blocked\n";
       stack->getPath()->recalculate(stack);
     }
 

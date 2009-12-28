@@ -156,6 +156,8 @@ Temple* Templelist::getNearestVisibleAndUsefulTemple(Stack *stack,
 Temple* Templelist::getNearestVisibleTemple(const Vector<int>& pos, int dist) const
 {
   Temple *t = getNearestVisibleTemple(pos);
+  if (!t)
+    return NULL;
   if (t->getPos().x <= pos.x + dist && t->getPos().x >= pos.x - dist &&
       t->getPos().y <= pos.y + dist && t->getPos().y >= pos.y - dist)
     return t;

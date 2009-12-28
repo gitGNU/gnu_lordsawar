@@ -36,6 +36,7 @@
 #include "game.h"
 #include "xmlhelper.h"
 #include "GameScenarioOptions.h"
+#include "Sage.h"
 
 using namespace std;
 
@@ -84,7 +85,6 @@ void RealPlayer::abortTurn()
 
 bool RealPlayer::startTurn()
 {
-  maybeRecruitHero();
   return false;
 }
 
@@ -103,6 +103,42 @@ void RealPlayer::invadeCity(City* c)
     // player has to decide here what to do (occupy, raze, pillage)
 }
 
+bool RealPlayer::chooseHero(HeroProto *hero, City* c, int gold)
+{
+    // For the realplayer, this function doesn't do a lot. However, an AI
+    // player has to decide here what to do (accept/deny hero)
+    return false;
+}
+
+Reward *RealPlayer::chooseReward(Ruin *ruin, Sage *sage, Stack *stack)
+{
+    // For the realplayer, this function doesn't do a lot. However, an AI
+    // player has to decide here what to do (pick a reward from sage)
+    return NULL;
+}
+
+bool RealPlayer::chooseTreachery (Stack *stack, Player *player, Vector <int> pos)
+{
+    // For the realplayer, this function doesn't do a lot. However, an AI
+    // player has to decide here what to do (fight a friend or not)
+  return true;
+}
+
+Army::Stat RealPlayer::chooseStat(Hero *hero)
+{
+    // For the realplayer, this function doesn't do a lot. However, an AI
+    // player has to decide here what to do (pick strength/moves/sight stat)
+  return Army::STRENGTH;
+}
+
+bool RealPlayer::chooseQuest(Hero *hero)
+{
+  //we decide interactively with the gui, not by this method.
+  // For the realplayer, this function doesn't do a lot. However, an AI
+  // player has to decide here what to do (get a quest for the hero or not)
+  return true;
+}
+
 void RealPlayer::heroGainsLevel(Hero* a)
 {
     // the standard human player just asks the GUI what to do
@@ -113,116 +149,4 @@ void RealPlayer::heroGainsLevel(Hero* a)
     item->fillData(a, stat);
     addAction(item);
 }
-
-/*
- *
- * what are the chances of a hero showing up?
- *
- * 1 in 6 if you have enough gold, where "enough gold" is...
- *
- * ... 1500 if the player already has a hero, then:  1500 is generally 
- * enough to buy all the heroes.  I forget the exact distribution of 
- * hero prices but memory says from 1000 to 1500.  (But, if you don't 
- * have 1500 gold, and the price is less, you still get the offer...  
- * So, calculate price, compare to available gold, then decided whether 
- * or not to offer...)
- *
- * ...500 if all your heroes are dead: then prices are cut by about 
- * a factor of 3.
- */
-bool RealPlayer::maybeRecruitHero ()
-{
-  bool accepted = false;
-  if (this == Playerlist::getInstance()->getNeutral())
-    return false;
-  
-  City *city = NULL;
-  int gold_needed = 0;
-  if (Citylist::getInstance()->countCities(this) == 0)
-    return false;
-  //give the player a hero if it's the first round.
-  //otherwise we get a hero based on chance
-  //a hero costs a random number of gold pieces
-  if (GameScenarioOptions::s_round == 1 && getHeroes().size() == 0)
-    gold_needed = 0;
-  else
-    {
-      bool exists = false;
-      for (Stacklist::iterator it = d_stacklist->begin(); 
-	   it != d_stacklist->end(); it++)
-	if ((*it)->hasHero())
-	  exists = true; 
-
-      gold_needed = (rand() % 500) + 1000;
-      if (exists == false)
-	gold_needed /= 2;
-    }
-
-  if (((((rand() % 6) == 0) && (gold_needed < getGold())) 
-       || gold_needed == 0))
-    {
-      HeroProto *heroproto=HeroTemplates::getInstance()->getRandomHero(getId());
-      if (gold_needed == 0)
-	{
-	  //we do it this way because maybe quickstart is on.
-	  Citylist* cl = Citylist::getInstance();
-	  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-	    if (!(*it)->isBurnt() && (*it)->getOwner() == this &&
-		(*it)->getCapitalOwner() == this && (*it)->isCapital())
-	      {
-		city = *it;
-		break;
-	      }
-	  if (!city) //no capital cities
-	    city = Citylist::getInstance()->getFirstCity(this);
-	}
-      else
-	{
-	  std::vector<City*> cities;
-	  Citylist* cl = Citylist::getInstance();
-	  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-	    if (!(*it)->isBurnt() && (*it)->getOwner() == this)
-	      cities.push_back((*it));
-	  if (cities.empty())
-	    return false;
-	  city = cities[rand() % cities.size()];
-	}
-
-      if (srecruitingHero.empty())
-        accepted = true;
-      else if (city)
-        accepted = srecruitingHero.emit(heroproto, city, gold_needed);
-
-      if (accepted) {
-        /* now maybe add a few allies */
-        int alliesCount;
-        if (gold_needed > 1300)
-          alliesCount = 3;
-        else if (gold_needed > 1000)
-          alliesCount = 2;
-        else if (gold_needed > 800)
-          alliesCount = 1;
-        else
-          alliesCount = 0;
-
-        const ArmyProto *ally = 0;
-        if (alliesCount > 0)
-        {
-          ally = Reward_Allies::randomArmyAlly();
-          if (!ally)
-            alliesCount = 0;
-        }
-        
-        recruitHero(heroproto, city, gold_needed, alliesCount, ally);
-      }
-    }
-  return accepted;
-}
-
-bool RealPlayer::treachery (Stack *stack, Player *player, Vector <int> pos)
-{
-  bool performTreachery = true;
-  return performTreachery;
-}
-
 // End of file

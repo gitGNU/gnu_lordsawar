@@ -1,3 +1,37 @@
+2009-12-27  Ben Asselstine  <benasselstine@gmail.com>
+
+	* added new Sage object.
+	* changed sage-dialog to use the new sage object.
+	* added generateSage method to the ruin object.
+	* ai_smart and ai_fast players now searching ruins.
+	* ai_smart and ai_fast players now obtaining quests at temples.
+	* ai_smart player now tries to fulfill quests.
+	* ai_smart player now tries to pick up items.
+	* renamed player decision callback method treachery to chooseTreachery.
+	* created player decision callback method called chooseReward.
+	* created player decision callback method called chooseHero.
+	* created player decision callback method called chooseStat.
+	* changed primary key of cityinfo in ai_analysis to be city id.
+	* added countAllies method to player, stacklist, and stack.
+	* setting smallmap and bigmap speed delays to 0 when doing stress test.
+	* added new method hasQuest to the stack object.
+	* added hasQuest method to the hero object.
+	* added new method hasArmyType method to the stack object.
+	* added getHeroQuest method to the QuestsManager object.
+	* added getNearestUnsearchedRuin method to ruinlist object.
+	* added getNearestFriendlyCities method to the citylist object.
+	* changed default bigmap speed delay to be 300000 microseconds.
+	* added movement speed slider in the preferences dialog.
+	* added new game option to play one quest per hero.
+	* added method getFirstHeroWithoutQuest to stack object.
+	* added method getFirstHeroWithQuest to stack object.
+	* fixed bug where quests not loading properly from a saved game.
+	* fixed bug where completed city quests weren't being rewarded.
+	* fixed smallmap centering on smaller than normal maps.
+	* added in-game commentator.
+	* added progress bar to new random map dialog.
+	* fixed crash in scenario editor when creating random maps.
+
 2009-12-18  Ben Asselstine  <benasselstine@gmail.com>
 
 	* fixed the get nearest stacks methods on the game map object.

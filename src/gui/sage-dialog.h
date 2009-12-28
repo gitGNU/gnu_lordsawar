@@ -26,6 +26,7 @@
 #include "ruinmap.h"
 #include "player.h"
 #include "hero.h"
+#include "Sage.h"
 
 
 #include "decorated.h"
@@ -34,7 +35,7 @@
 class SageDialog: public Decorated
 {
  public:
-    SageDialog(Player *player, Hero *hero, Ruin *r);
+    SageDialog(Sage *sage, Player *player, Hero *hero, Ruin *r);
     ~SageDialog();
 
     void set_parent_window(Gtk::Window &parent);

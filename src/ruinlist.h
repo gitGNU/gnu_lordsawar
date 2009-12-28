@@ -70,6 +70,7 @@ class Ruinlist : public LocationList<Ruin*>, public sigc::trackable
 	 *         objects have been searched.
 	 */
         Ruin* getNearestUnsearchedRuin(const Vector<int>& pos) const;
+        Ruin* getNearestUnsearchedRuin(const Vector<int>& pos, int dist) const;
 
         //! Find the nearest ruin.
 	/**

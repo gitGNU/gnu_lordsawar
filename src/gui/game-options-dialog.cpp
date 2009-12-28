@@ -46,7 +46,7 @@ GameOptionsDialog::GameOptionsDialog(bool readonly)
     xml->get_widget("notdifficultoptionstable", notdifficultoptionstable);
     xml->get_widget("view_enemies_checkbutton", view_enemies_checkbutton);
     xml->get_widget("view_production_checkbutton", view_production_checkbutton);
-    xml->get_widget("quests_checkbutton", quests_checkbutton);
+    xml->get_widget("quests_combobox", quests_combobox);
     xml->get_widget("hidden_map_checkbutton", hidden_map_checkbutton);
     xml->get_widget("neutral_combobox", neutral_cities_combobox);
     xml->get_widget("razing_combobox", razing_cities_combobox);
@@ -72,7 +72,7 @@ void GameOptionsDialog::fill_in_options()
 
     view_enemies_checkbutton->set_active(GameScenarioOptions::s_see_opponents_stacks);
     view_production_checkbutton->set_active(GameScenarioOptions::s_see_opponents_production);
-    quests_checkbutton->set_active(GameScenarioOptions::s_play_with_quests);
+    quests_combobox->set_active(int(GameScenarioOptions::s_play_with_quests));
     hidden_map_checkbutton->set_active(GameScenarioOptions::s_hidden_map);
     neutral_cities_combobox->set_active(int(GameScenarioOptions::s_neutral_cities));
     razing_cities_combobox->set_active(int(GameScenarioOptions::s_razing_cities));
@@ -114,9 +114,9 @@ bool GameOptionsDialog::run()
        (sigc::mem_fun
 	(this, &GameOptionsDialog::on_view_production_checkbutton_clicked)));
     connections.push_back
-      (quests_checkbutton->signal_clicked().connect
+      (quests_combobox->signal_changed().connect
        (sigc::mem_fun
-	(this, &GameOptionsDialog::on_quests_checkbutton_clicked)));
+	(this, &GameOptionsDialog::on_quests_combobox_changed)));
     connections.push_back
       (hidden_map_checkbutton->signal_clicked().connect
        (sigc::mem_fun
@@ -165,8 +165,10 @@ bool GameOptionsDialog::run()
     GameScenarioOptions::s_see_opponents_stacks = g.see_opponents_stacks;
     g.see_opponents_production = view_production_checkbutton->get_active();
     GameScenarioOptions::s_see_opponents_production = g.see_opponents_production;
-    g.play_with_quests = quests_checkbutton->get_active();
+    g.play_with_quests = GameParameters::QuestPolicy (
+	quests_combobox->get_active_row_number());
     GameScenarioOptions::s_play_with_quests = g.play_with_quests;
+
     g.hidden_map = hidden_map_checkbutton->get_active();
     GameScenarioOptions::s_hidden_map = g.hidden_map;
 
@@ -221,9 +223,10 @@ void GameOptionsDialog::on_view_production_checkbutton_clicked()
     view_production_checkbutton->get_active();
   difficulty_option_changed.emit();
 }
-void GameOptionsDialog::on_quests_checkbutton_clicked()
+void GameOptionsDialog::on_quests_combobox_changed()
 {
-  GameScenarioOptions::s_play_with_quests = quests_checkbutton->get_active();
+  GameScenarioOptions::s_play_with_quests = GameParameters::QuestPolicy
+    (quests_combobox->get_active_row_number());
   difficulty_option_changed.emit();
 }
 void GameOptionsDialog::on_hidden_map_checkbutton_clicked()

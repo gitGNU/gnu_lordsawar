@@ -22,6 +22,7 @@
 #include "GameMap.h"
 #include "rewardlist.h"
 #include <stdlib.h>
+#include "Sage.h"
 
 std::string Ruin::d_tag = "ruin";
 
@@ -205,5 +206,10 @@ Ruin::Type Ruin::ruinTypeFromString(const std::string str)
   else if (str == "Ruin::STRONGHOLD")
     return Ruin::STRONGHOLD;
   return Ruin::RUIN;
+}
+
+Sage* Ruin::generateSage() const
+{
+  return new Sage();
 }
 // End of file

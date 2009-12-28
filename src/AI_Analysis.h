@@ -38,7 +38,7 @@ class AICityInfo;
 
 using namespace std;
 
-typedef map<string, AICityInfo *> AICityMap;
+typedef map<guint32, AICityInfo *> AICityMap;
 
 /** An AI's analysis of the game situation.
   *

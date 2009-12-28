@@ -38,18 +38,17 @@
 //-----------------------------------------------------------------------------
 //some standard timers. They can easier be changed here than somewhere deep
 //within the code, and sometimes you have to tweak them a little bit.
-const unsigned int TIMER_BIGMAP_SELECTOR=500;
-const unsigned int TIMER_BIGMAP_SCROLLING=30;   //milliseconds
-const unsigned int TIMER_SMALLMAP_REFRESH=50;
-const unsigned int CITY_LEVELS=4; 
-const unsigned int MAX_PLAYERS=8;
-const unsigned int TEMPLE_TYPES=1; 
-const unsigned int RUIN_TYPES=2; 
-const unsigned int DIPLOMACY_TYPES=3; 
-const unsigned int ROAD_TYPES=15; 
-const unsigned int FOG_TYPES=15; 
-const unsigned int BRIDGE_TYPES=4; 
-const unsigned int CURSOR_TYPES=12; 
+const unsigned int TIMER_BIGMAP_SELECTOR = 150; //milliseconds
+const unsigned int TIMER_SMALLMAP_REFRESH = 8000; //microseconds
+const unsigned int CITY_LEVELS = 4;
+const unsigned int MAX_PLAYERS = 8;
+const unsigned int TEMPLE_TYPES = 1;
+const unsigned int RUIN_TYPES = 2;
+const unsigned int DIPLOMACY_TYPES = 3;
+const unsigned int ROAD_TYPES = 15;
+const unsigned int FOG_TYPES = 15;
+const unsigned int BRIDGE_TYPES = 4;
+const unsigned int CURSOR_TYPES = 12;
 const unsigned int MAX_CITIES_VECTORED_TO_ONE_CITY = 4;
 const unsigned int MAX_TURNS_FOR_VECTORING = 2;
 const unsigned int MAX_BOAT_MOVES = 18;
@@ -114,5 +113,8 @@ const unsigned int MIN_EXP_FOR_ARMY_UNITS = 0;
 const unsigned int MAX_EXP_FOR_ARMY_UNITS = 50000;
 const unsigned int MIN_SIGHT_FOR_ARMY_UNITS = 0;
 const unsigned int MAX_SIGHT_FOR_ARMY_UNITS = 25;
+
+const float SIGNPOST_FREQUENCY = 0.0030;
+
 #endif // DEFINITIONS_H
 

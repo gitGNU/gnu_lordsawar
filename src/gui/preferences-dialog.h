@@ -44,16 +44,18 @@ class PreferencesDialog: public Decorated
 
  private:
     Gtk::Dialog* dialog;
-    Gtk::CheckButton *show_turn_popup_checkbutton;
+    Gtk::CheckButton *commentator_checkbutton;
+    Gtk::Scale *speed_scale;
     Gtk::CheckButton *play_music_checkbutton;
     Gtk::Scale *music_volume_scale;
     Gtk::Box *music_volume_hbox;
     Gtk::VBox *players_vbox;
 
     bool d_readonly;
-    void on_show_turn_popup_toggled();
+    void on_show_commentator_toggled();
     void on_play_music_toggled();
     void on_music_volume_changed();
+    void on_speed_changed();
     void on_observe_toggled(Gtk::CheckButton *button);
     void on_type_changed(Gtk::ComboBoxText *combo);
 

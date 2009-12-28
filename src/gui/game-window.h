@@ -289,7 +289,7 @@ class GameWindow: public Decorated
     void on_stack_tip_changed(StackTile *stile, MapTipPosition pos);
     void on_city_tip_changed(City *city, MapTipPosition pos);
     void on_ruin_searched(Ruin *ruin, Stack *s, Reward *reward);
-    void on_sage_visited(Ruin *ruin, Stack *s);
+    Reward* on_sage_visited(Ruin *ruin, Sage *sage, Stack *s);
     void on_ruin_rewarded(Reward_Ruin *reward);
     void on_fight_started(Fight &fight);
     void on_ruinfight_started(Stack *attackers, Stack *defenders);
@@ -298,7 +298,7 @@ class GameWindow: public Decorated
     bool on_enemy_offers_surrender(int numEnemies);
     void on_surrender_answered (bool accepted);
     bool on_stack_considers_treachery (Player *me, Stack *stack, Player *them, Vector<int> pos);
-    bool on_temple_searched(bool hasHero, Temple *temple, int blessCount);
+    bool on_temple_searched(Hero *hero, Temple *temple, int blessCount);
     void on_quest_assigned(Hero *hero, Quest *quest);
     CityDefeatedAction on_city_defeated(City *city, int gold);
     void on_city_pillaged(City *city, int gold, int pillaged_army_type);
@@ -316,7 +316,9 @@ class GameWindow: public Decorated
     void on_game_over(Player *winner);
     void on_player_died(Player *player);
     void on_advice_asked(float percent);
+    void on_stack_moves(Stack *stack, Vector<int> pos);
     void end_turn_play_by_mail ();
+    void on_commentator_comments(std::string comment);
 
     // quest manager callbacks
     void on_quest_completed(Quest *quest, Reward *reward);

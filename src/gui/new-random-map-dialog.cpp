@@ -36,6 +36,9 @@
 #include "GameMap.h"
 #include "GameScenarioOptions.h"
 #include "CreateScenarioRandomize.h"
+#include "CreateScenario.h"
+#include "counter.h"
+#include "File.h"
 
 
 NewRandomMapDialog::NewRandomMapDialog()
@@ -48,6 +51,8 @@ NewRandomMapDialog::NewRandomMapDialog()
     dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     decorate(dialog);
 
+    xml->get_widget("dialog-vbox1", dialog_vbox);
+    xml->get_widget("dialog-action_area1", dialog_action_area);
     xml->get_widget("map_size_combobox", map_size_combobox);
     xml->get_widget("random_map_container", random_map_container);
     xml->get_widget("grass_scale", grass_scale);
@@ -59,7 +64,14 @@ NewRandomMapDialog::NewRandomMapDialog()
     xml->get_widget("cities_scale", cities_scale);
     xml->get_widget("ruins_scale", ruins_scale);
     xml->get_widget("temples_scale", temples_scale);
-    xml->get_widget("accept_button", accept_button);
+    xml->get_widget("signposts_scale", signposts_scale);
+    xml->get_widget("progressbar", progressbar);
+    xml->get_widget("accept2_button", accept_button);
+    accept_button->signal_clicked().connect
+      (sigc::mem_fun(*this, &NewRandomMapDialog::on_accept_clicked));
+    xml->get_widget("cancel2_button", cancel_button);
+    cancel_button->signal_clicked().connect
+      (sigc::mem_fun(*this, &NewRandomMapDialog::on_cancel_clicked));
     xml->get_widget("grass_random_togglebutton", grass_random_togglebutton);
     grass_random_togglebutton->signal_toggled().connect
       (sigc::mem_fun(*this, &NewRandomMapDialog::on_grass_random_toggled));
@@ -149,12 +161,16 @@ NewRandomMapDialog::NewRandomMapDialog()
     map_size_combobox->set_active(MAP_SIZE_NORMAL);
     map_size_combobox->signal_changed().connect(
 						sigc::mem_fun(*this, &NewRandomMapDialog::on_map_size_changed));
-    on_map_size_changed();
 
     Gtk::Label *temples_label;
     xml->get_widget("temples_label", temples_label);
     temples_label->set_sensitive(false);
     temples_scale->set_sensitive(false);
+
+    Gtk::Label *signposts_label;
+    xml->get_widget("signposts_label", signposts_label);
+    signposts_label->set_sensitive(false);
+    signposts_scale->set_sensitive(false);
 
     Gtk::Label *ruins_label;
     xml->get_widget("ruins_label", ruins_label);
@@ -169,6 +185,9 @@ NewRandomMapDialog::NewRandomMapDialog()
     forest_scale->set_value(3);
     hills_scale->set_value(5);
     mountains_scale->set_value(5);
+    on_map_size_changed();
+    grass_scale->signal_value_changed().connect(sigc::mem_fun(*this, &NewRandomMapDialog::on_grass_changed));
+    dialog_response = Gtk::RESPONSE_CANCEL;
 }
 
 NewRandomMapDialog::~NewRandomMapDialog()
@@ -184,66 +203,29 @@ void NewRandomMapDialog::set_parent_window(Gtk::Window &parent)
 int NewRandomMapDialog::run()
 {
   dialog->show_all();
-  int response = dialog->run();
-  if (response == Gtk::RESPONSE_ACCEPT) // accepted
-    {
-      switch (map_size_combobox->get_active_row_number()) {
-      case MAP_SIZE_SMALL:
-	map.width = MAP_SIZE_SMALL_WIDTH;
-	map.height = MAP_SIZE_SMALL_HEIGHT;
-	break;
-
-      case MAP_SIZE_TINY:
-	map.width = MAP_SIZE_TINY_WIDTH;
-	map.height = MAP_SIZE_TINY_HEIGHT;
-	break;
-
-      case MAP_SIZE_NORMAL:
-      default:
-	map.width = MAP_SIZE_NORMAL_WIDTH;
-	map.height = MAP_SIZE_NORMAL_HEIGHT;
-	break;
-      }
-
-      map.tileset = Tilesetlist::getInstance()->getTilesetDir
-	(Glib::filename_from_utf8(tile_theme_combobox->get_active_text()),
-	 get_active_tile_size());
-
-      map.shieldset = Shieldsetlist::getInstance()->getShieldsetDir
-	(Glib::filename_from_utf8(shield_theme_combobox->get_active_text()));
-
-      map.cityset = Citysetlist::getInstance()->getCitysetDir
-	(Glib::filename_from_utf8(city_theme_combobox->get_active_text()),
-	 get_active_tile_size());
-
-      map.armyset = Armysetlist::getInstance()->getArmysetDir
-	(Glib::filename_from_utf8(army_theme_combobox->get_active_text()),
-	 get_active_tile_size());
-
-      map.grass = int(grass_scale->get_value());
-      map.water = int(water_scale->get_value());
-      map.swamp = int(swamp_scale->get_value());
-      map.forest = int(forest_scale->get_value());
-      map.hills = int(hills_scale->get_value());
-      map.mountains = int(mountains_scale->get_value());
-      map.cities = int(cities_scale->get_value());
-      map.ruins = int(ruins_scale->get_value());
-      map.temples = int(temples_scale->get_value());
-      map.signposts = 0; //auto-set in driver
-    }
-  return response;
+  dialog_action_area->hide();
+  progressbar->hide();
+  //we're not using the buttons from the action area.
+  //we have our own buttons so that we can show a progress bar after the
+  //button is clicked.
+  dialog->run();
+  return dialog_response;
 }
 
 void NewRandomMapDialog::on_map_size_changed()
 {
   switch (map_size_combobox->get_active_row_number()) {
   case MAP_SIZE_SMALL:
+    map.width = MAP_SIZE_SMALL_WIDTH;
+    map.height = MAP_SIZE_SMALL_HEIGHT;
     cities_scale->set_value(15);
     ruins_scale->set_value(20);
     temples_scale->set_value(4);
     break;
 
   case MAP_SIZE_TINY:
+    map.width = MAP_SIZE_TINY_WIDTH;
+    map.height = MAP_SIZE_TINY_HEIGHT;
     cities_scale->set_value(10);
     ruins_scale->set_value(15);
     temples_scale->set_value(4);
@@ -251,11 +233,17 @@ void NewRandomMapDialog::on_map_size_changed()
 
   case MAP_SIZE_NORMAL:
   default:
+    map.width = MAP_SIZE_NORMAL_WIDTH;
+    map.height = MAP_SIZE_NORMAL_HEIGHT;
     cities_scale->set_value(20);
     ruins_scale->set_value(25);
     temples_scale->set_value(4);
     break;
   }
+  int num_signposts = 
+      CreateScenario::calculateNumberOfSignposts(map.width, map.height,
+                                                 int(grass_scale->get_value()));
+  signposts_scale->set_value(num_signposts);
 }
 
 guint32 NewRandomMapDialog::get_active_tile_size()
@@ -364,6 +352,7 @@ GameParameters NewRandomMapDialog::getParams()
     g.map.height = MAP_SIZE_SMALL_HEIGHT;
     g.map.ruins = int(ruins_scale->get_value());
     g.map.temples = int(temples_scale->get_value());
+    g.map.signposts = int(signposts_scale->get_value());
     break;
 
   case MAP_SIZE_TINY:
@@ -371,6 +360,7 @@ GameParameters NewRandomMapDialog::getParams()
     g.map.height = MAP_SIZE_TINY_HEIGHT;
     g.map.ruins = int(ruins_scale->get_value());
     g.map.temples = int(temples_scale->get_value());
+    g.map.signposts = int(signposts_scale->get_value());
     break;
 
   case MAP_SIZE_NORMAL:
@@ -379,6 +369,7 @@ GameParameters NewRandomMapDialog::getParams()
     g.map.height = MAP_SIZE_NORMAL_HEIGHT;
     g.map.ruins = int(ruins_scale->get_value());
     g.map.temples = int(temples_scale->get_value());
+    g.map.signposts = int(signposts_scale->get_value());
     break;
   }
 
@@ -511,4 +502,161 @@ void NewRandomMapDialog::on_mountains_random_toggled()
 void NewRandomMapDialog::on_cities_random_toggled()
 {
   cities_scale->set_sensitive(!cities_random_togglebutton->get_active());
+}
+
+std::string NewRandomMapDialog::create_and_dump_scenario(const std::string &file,
+                                                         const GameParameters &g, sigc::slot<void> *pulse)
+{
+  CreateScenario creator (g.map.width, g.map.height);
+
+  // then fill the other players
+  int c = 0;
+  int army_id = Armysetlist::getInstance()->getArmyset(g.army_theme)->getId();
+  Shieldsetlist *ssl = Shieldsetlist::getInstance();
+  guint32 id = ssl->getShieldset(g.shield_theme)->getId();
+  for (std::vector<GameParameters::Player>::const_iterator
+       i = g.players.begin(), end = g.players.end();
+       i != end; ++i, ++c) {
+
+    if (i->type == GameParameters::Player::OFF)
+      {
+        fl_counter->getNextId();
+        continue;
+      }
+
+    Player::Type type;
+    if (i->type == GameParameters::Player::EASY)
+      type = Player::AI_FAST;
+    else if (i->type == GameParameters::Player::HARD)
+      type = Player::AI_SMART;
+    else
+      type = Player::HUMAN;
+
+    creator.addPlayer(i->name, army_id, ssl->getColor(id, c), type);
+  }
+
+
+  CreateScenarioRandomize random;
+  // the neutral player must come last so it has the highest id among players
+  creator.addNeutral(random.getPlayerName(Shield::NEUTRAL), army_id, 
+                     ssl->getColor(id, MAX_PLAYERS), Player::AI_DUMMY);
+
+  // now fill in some map information
+  creator.setMapTiles(g.tile_theme);
+  creator.setShieldset(g.shield_theme);
+  creator.setCityset(g.city_theme);
+  creator.setNoCities(g.map.cities);
+  creator.setNoRuins(g.map.ruins);
+  creator.setNoTemples(g.map.temples);
+  int num_signposts = g.map.signposts;
+  if (num_signposts == -1)
+    num_signposts = CreateScenario::calculateNumberOfSignposts(g.map.width,
+                                                               g.map.height,
+                                                               g.map.grass);
+  creator.setNoSignposts(num_signposts);
+
+  // terrain: the scenario generator also accepts input with a sum of
+  // more than 100%, so the thing is rather easy here
+  creator.setPercentages(g.map.grass, g.map.water, g.map.forest, g.map.swamp,
+                         g.map.hills, g.map.mountains);
+
+  // and tell it the turn mode
+  if (g.process_armies == GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN)
+    creator.setTurnmode(true);
+  else
+    creator.setTurnmode(false);
+
+  // now create the map and dump the created map
+  std::string path = File::getSavePath();
+  path += file;
+
+  if (pulse)
+    //creator.progress.connect(sigc::mem_fun(this, &NewRandomMapDialog::pulse));
+    creator.progress.connect(*pulse);
+  
+  creator.create(g);
+  creator.dump(path);
+  return path;
+}
+
+void NewRandomMapDialog::on_accept_clicked()
+{
+  dialog_vbox->set_sensitive(false);
+  progressbar->show_all();
+  progressbar->pulse();
+  while (g_main_context_iteration(NULL, FALSE)); //doEvents
+
+  switch (map_size_combobox->get_active_row_number()) {
+  case MAP_SIZE_SMALL:
+    map.width = MAP_SIZE_SMALL_WIDTH;
+    map.height = MAP_SIZE_SMALL_HEIGHT;
+    break;
+
+  case MAP_SIZE_TINY:
+    map.width = MAP_SIZE_TINY_WIDTH;
+    map.height = MAP_SIZE_TINY_HEIGHT;
+    break;
+
+  case MAP_SIZE_NORMAL:
+  default:
+    map.width = MAP_SIZE_NORMAL_WIDTH;
+    map.height = MAP_SIZE_NORMAL_HEIGHT;
+    break;
+  }
+
+  map.tileset = Tilesetlist::getInstance()->getTilesetDir
+    (Glib::filename_from_utf8(tile_theme_combobox->get_active_text()),
+     get_active_tile_size());
+
+  map.shieldset = Shieldsetlist::getInstance()->getShieldsetDir
+    (Glib::filename_from_utf8(shield_theme_combobox->get_active_text()));
+
+  map.cityset = Citysetlist::getInstance()->getCitysetDir
+    (Glib::filename_from_utf8(city_theme_combobox->get_active_text()),
+     get_active_tile_size());
+
+  map.armyset = Armysetlist::getInstance()->getArmysetDir
+    (Glib::filename_from_utf8(army_theme_combobox->get_active_text()),
+     get_active_tile_size());
+
+  map.grass = int(grass_scale->get_value());
+  map.water = int(water_scale->get_value());
+  map.swamp = int(swamp_scale->get_value());
+  map.forest = int(forest_scale->get_value());
+  map.hills = int(hills_scale->get_value());
+  map.mountains = int(mountains_scale->get_value());
+  map.cities = int(cities_scale->get_value());
+  map.ruins = int(ruins_scale->get_value());
+  map.temples = int(temples_scale->get_value());
+  map.signposts = int(signposts_scale->get_value());
+
+  GameParameters g = getParams();
+  progressbar->pulse();
+  while (g_main_context_iteration(NULL, FALSE)); //doEvents
+
+    //creator.progress.connect(sigc::mem_fun(this, &NewRandomMapDialog::pulse));
+  sigc::slot<void> progress = sigc::mem_fun(this, &NewRandomMapDialog::pulse);
+  d_filename = create_and_dump_scenario("random.map", g, &progress);
+
+  dialog_response = Gtk::RESPONSE_ACCEPT;
+  dialog->hide();
+}
+
+void NewRandomMapDialog::on_cancel_clicked()
+{
+  dialog_response = Gtk::RESPONSE_CANCEL;
+  dialog->hide();
+}
+void NewRandomMapDialog::pulse()
+{
+  progressbar->pulse();
+  while (g_main_context_iteration(NULL, FALSE)); //doEvents
+}
+    
+void NewRandomMapDialog::on_grass_changed()
+{
+  int num_signposts = 
+      CreateScenario::calculateNumberOfSignposts(map.width, map.height,
+                                                 int(grass_scale->get_value()));
+  signposts_scale->set_value(num_signposts);
 }

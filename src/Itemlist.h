@@ -56,7 +56,7 @@ class Itemlist : public std::map<guint32, ItemProto*>, public sigc::trackable
 	//This list of items comes from loading the items.xml file.
         static void createStandardInstance();
 
-        //! Explicitely deletes the singleton instance.
+        //! Explicitly deletes the singleton instance.
         static void deleteInstance();
         
 	//! Save the item data.  See XML_Helper for details.

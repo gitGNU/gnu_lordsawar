@@ -116,7 +116,7 @@ void QuestKillHero::getExpiredMsg(std::queue<std::string>& msgs) const
 {
   msgs.push(String::ucompose(_("You could not slay the wicked hero %1"),
 			     getHeroNameForDeadHero(d_victim)));
-  msgs.push(_("The hero was slain by other fellows!"));
+  msgs.push(_("The hero was slain by someone else!"));
 }
 
 void QuestKillHero::initDescription()

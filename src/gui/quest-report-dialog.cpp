@@ -30,59 +30,119 @@
 #include "defs.h"
 #include "GameMap.h"
 
-QuestReportDialog::QuestReportDialog(Quest *q)
+QuestReportDialog::QuestReportDialog(std::vector<Quest *>q, Hero *hero)
+{
+  quests = q;
+
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path()
+                                     + "/quest-report-dialog.ui");
+
+  xml->get_widget("dialog", dialog);
+  decorate(dialog);
+  window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
+
+  xml->get_widget("map_image", map_image);
+
+  questmap = NULL;
+
+  Gtk::EventBox *map_eventbox;
+  xml->get_widget("map_eventbox", map_eventbox);
+
+  xml->get_widget("label", label);
+  xml->get_widget("hero_label", hero_label);
+
+
+  heroes_list = Gtk::ListStore::create(heroes_columns);
+  xml->get_widget("heroes_treeview", heroes_treeview);
+  heroes_treeview->set_model(heroes_list);
+  heroes_treeview->append_column(_("Hero"), heroes_columns.hero_name);
+  heroes_treeview->set_headers_visible(false);
+
+  heroes_list->clear();
+  guint32 count = 0;
+  heroes_treeview->get_selection()->signal_changed()
+    .connect(sigc::mem_fun(this, &QuestReportDialog::on_hero_changed));
+  for (std::vector<Quest*>::iterator it = quests.begin(); it != quests.end();
+       it++)
+    {
+      add_questing_hero (*it, (*it)->getHero());
+      if ((*it)->getHero() == hero || count == 0)
+        {
+          Gtk::TreeModel::Row row;
+          row = heroes_treeview->get_model()->children()[count];
+          heroes_treeview->get_selection()->select(row);
+        }
+      count++;
+    }
+
+  if (quests.size() == 0)
+    fill_quest_info(NULL);
+}
+
+void QuestReportDialog::add_questing_hero(Quest *quest, Hero *h)
+{
+    Gtk::TreeIter i = heroes_list->append();
+    (*i)[heroes_columns.hero_name] = h->getName();
+    (*i)[heroes_columns.quest] = quest;
+}
+
+void QuestReportDialog::fill_quest_info(Quest *q)
 {
   Glib::ustring s;
-  quest = q;
-    
-  Glib::RefPtr<Gtk::Builder> xml
-      = Gtk::Builder::create_from_file(get_glade_path()
-				  + "/quest-assigned-dialog.ui");
 
-    xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
+  if (questmap)
+    delete questmap;
+  questmap = new QuestMap(q);
+  questmap->map_changed.connect
+    (sigc::mem_fun(this, &QuestReportDialog::on_map_changed));
+  if (dialog->is_realized() == true)
+    {
+      questmap->resize();
+      questmap->draw(Playerlist::getActiveplayer());
+    }
 
-    xml->get_widget("map_image", map_image);
+  if (q)
+    {
+      set_title(String::ucompose(_("Quest for %1"), q->getHero()->getName()));
 
-    questmap = new QuestMap(quest);
-    questmap->map_changed.connect(
-	sigc::mem_fun(this, &QuestReportDialog::on_map_changed));
+      s = q->getDescription();
+      s += "\n\n";
+      s += q->getProgress();
+      label->set_text(s);
+    }
+  else
+    {
+      set_title(_("No Quest"));
+      int num = rand() % 3;
+      switch (num)
+        {
+        case 0:
+          s = _("Seek a quest in a temple!");
+          break;
+        case 1:
+          s = _("Quest?  What Quest?");
+          break;
+        case 2:
+          s = _("Thou hast no quests!");
+          break;
+        }
+      label->set_text(s);
+    }
+}
 
-    Gtk::EventBox *map_eventbox;
-    xml->get_widget("map_eventbox", map_eventbox);
+void QuestReportDialog::on_hero_changed()
+{
+  Glib::RefPtr<Gtk::TreeSelection> selection = heroes_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
 
-    xml->get_widget("label", label);
+  if (iterrow)
+    {
+      Gtk::TreeModel::Row row = *iterrow;
+      Quest *quest = row[heroes_columns.quest];
+      fill_quest_info(quest);
+    }
 
-    if (quest)
-      {
-        set_title(String::ucompose(_("Quest for %1"), 
-				   quest->getHero()->getName()));
-
-        s = quest->getDescription();
-        s += "\n\n";
-        s += quest->getProgress();
-        label->set_text(s);
-      }
-    else
-      {
-        set_title(_("No Quest"));
-        int num = rand() % 3;
-        switch (num)
-          {
-            case 0:
-              s = _("Seek a quest in a temple!");
-              break;
-            case 1:
-              s = _("Quest?  What Quest?");
-              break;
-            case 2:
-              s = _("Thou hast no quests!");
-              break;
-          }
-        label->set_text(s);
-      }
-    
 }
 QuestReportDialog::~QuestReportDialog()
 {
@@ -102,15 +162,20 @@ void QuestReportDialog::hide()
 }
 void QuestReportDialog::run()
 {
-    questmap->resize();
-    questmap->draw(Playerlist::getActiveplayer());
+  questmap->resize();
+  questmap->draw(Playerlist::getActiveplayer());
 
-    dialog->show_all();
-    dialog->run();
+  dialog->show_all();
+  if (quests.size() <= 1)
+    {
+      hero_label->hide();
+      heroes_treeview->hide();
+    }
+  dialog->run();
 }
 
 void QuestReportDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
 {
-    map_image->property_pixmap() = map;
+  map_image->property_pixmap() = map;
 }
 

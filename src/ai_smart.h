@@ -95,8 +95,12 @@ class AI_Smart : public RealPlayer
 	virtual void abortTurn();
         virtual bool startTurn();
         virtual void invadeCity(City* c);
+        virtual bool chooseHero(HeroProto *hero, City* c, int gold);
+        virtual Reward *chooseReward(Ruin *ruin, Sage *sage, Stack *stack);
         virtual void heroGainsLevel(Hero * a);
-	virtual bool treachery (Stack *stack, Player *player, Vector <int> pos);
+	virtual bool chooseTreachery (Stack *stack, Player *player, Vector <int> pos);
+        virtual Army::Stat chooseStat(Hero *hero);
+        virtual bool chooseQuest(Hero *hero);
 
     private:
         // Choose a new type of army to buy production for.
@@ -137,7 +141,6 @@ class AI_Smart : public RealPlayer
         // DATA
         int d_mustmakemoney;  // used to avoid to buy new production 
                               // and to reinforce cities to earn more money
-	bool d_abort_requested;
 
 };
 

@@ -32,6 +32,7 @@ report-dialog.ui \
 load-scenario-dialog.ui \
 medal-awarded-dialog.ui \
 quest-assigned-dialog.ui \
+quest-report-dialog.ui \
 quest-expired-dialog.ui \
 preferences-dialog.ui \
 main-preferences-dialog.ui \

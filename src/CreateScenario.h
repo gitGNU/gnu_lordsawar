@@ -170,6 +170,7 @@ class CreateScenario : public CreateScenarioRandomize
         //! Emitted when the generator generates something
 	sigc::signal<void> progress;
 
+        static int calculateNumberOfSignposts(int width, int height, int grass);
     private:
         //! Creates the map and distributes cities, temples and ruins
         bool createMap();

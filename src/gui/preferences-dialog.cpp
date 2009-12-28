@@ -48,7 +48,8 @@ PreferencesDialog::PreferencesDialog(bool readonly)
     decorate(dialog);
     window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
-    xml->get_widget("show_turn_popup_checkbutton", show_turn_popup_checkbutton);
+    xml->get_widget("commentator_checkbutton", commentator_checkbutton);
+    xml->get_widget("speed_scale", speed_scale);
     xml->get_widget("play_music_checkbutton", play_music_checkbutton);
     xml->get_widget("music_volume_scale", music_volume_scale);
     xml->get_widget("music_volume_hbox", music_volume_hbox);
@@ -105,14 +106,17 @@ PreferencesDialog::PreferencesDialog(bool readonly)
 	players_vbox->pack_start(*manage(player_hbox));
       }
     players_vbox->show_all_children();
-    show_turn_popup_checkbutton->signal_toggled().connect(
-	sigc::mem_fun(this, &PreferencesDialog::on_show_turn_popup_toggled));
+    commentator_checkbutton->signal_toggled().connect(
+	sigc::mem_fun(this, &PreferencesDialog::on_show_commentator_toggled));
+    speed_scale->set_value(Configuration::s_displaySpeedDelay);
+    speed_scale->signal_value_changed().connect(
+	sigc::mem_fun(this, &PreferencesDialog::on_speed_changed));
     play_music_checkbutton->signal_toggled().connect(
 	sigc::mem_fun(this, &PreferencesDialog::on_play_music_toggled));
     music_volume_scale->signal_value_changed().connect(
 	sigc::mem_fun(this, &PreferencesDialog::on_music_volume_changed));
 
-    show_turn_popup_checkbutton->set_active(Configuration::s_showNextPlayer);
+    commentator_checkbutton->set_active(Configuration::s_displayCommentator);
     play_music_checkbutton->set_active(Configuration::s_musicenable);
     music_volume_hbox->set_sensitive(Configuration::s_musicenable);
     music_volume_scale->set_value(Configuration::s_musicvolume * 100.0 / 128);
@@ -223,9 +227,9 @@ void PreferencesDialog::run(Game *game)
     dialog->hide();
 }
 
-void PreferencesDialog::on_show_turn_popup_toggled()
+void PreferencesDialog::on_show_commentator_toggled()
 {
-    Configuration::s_showNextPlayer = show_turn_popup_checkbutton->get_active();
+    Configuration::s_displayCommentator = commentator_checkbutton->get_active();
 }
 
 void PreferencesDialog::on_play_music_toggled()
@@ -244,6 +248,11 @@ void PreferencesDialog::on_play_music_toggled()
         Sound::getInstance()->disableBackground();
     }
     music_volume_hbox->set_sensitive(Configuration::s_musicenable);
+}
+
+void PreferencesDialog::on_speed_changed()
+{
+  Configuration::s_displaySpeedDelay = int(speed_scale->get_value());
 }
 
 void PreferencesDialog::on_music_volume_changed()

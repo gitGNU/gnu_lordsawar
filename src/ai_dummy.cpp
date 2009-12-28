@@ -33,6 +33,7 @@
 #include "xmlhelper.h"
 #include "history.h"
 #include "GameScenarioOptions.h"
+#include "Sage.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 //#define debug(x)
@@ -40,7 +41,7 @@
 using namespace std;
 
 AI_Dummy::AI_Dummy(std::string name, guint32 armyset, Gdk::Color color, int width, int height, int player_no)
-    :RealPlayer(name, armyset, color, width, height, Player::AI_DUMMY, player_no), d_abort_requested(false)
+    :RealPlayer(name, armyset, color, width, height, Player::AI_DUMMY, player_no)
 {
 }
 
@@ -48,11 +49,10 @@ AI_Dummy::AI_Dummy(const Player& player)
     :RealPlayer(player)
 {
     d_type = AI_DUMMY;
-    d_abort_requested = false;
 }
 
 AI_Dummy::AI_Dummy(XML_Helper* helper)
-    :RealPlayer(helper), d_abort_requested(false)
+    :RealPlayer(helper)
 {
 }
 
@@ -62,7 +62,7 @@ AI_Dummy::~AI_Dummy()
 
 void AI_Dummy::abortTurn()
 {
-  d_abort_requested = true;
+  abort_requested = true;
   if (surrendered)
     aborted_turn.emit();
 }
@@ -129,7 +129,7 @@ bool AI_Dummy::startTurn()
     }
   //this is a dummy AI (neutral player) so there is not much point in
   //doing anything
-  if (d_abort_requested)
+  if (abort_requested)
     aborted_turn.emit();
   return true;
 }
@@ -151,4 +151,34 @@ void AI_Dummy::heroGainsLevel(Hero * a)
   addAction(item);
 }
 
+bool AI_Dummy::chooseHero(HeroProto *hero, City *city, int gold)
+{
+  //neutral players never accept heroes.
+  return false;
+}
+        
+Reward *AI_Dummy::chooseReward(Ruin *ruin, Sage *sage, Stack *stack)
+{
+  //neutrals don't search ruins, but let's not return null.
+  return sage->front();
+}
+
+bool AI_Dummy::chooseTreachery (Stack *stack, Player *player, Vector <int> pos)
+{
+  //neutrals don't leave the castle.
+  bool performTreachery = true;
+  return performTreachery;
+}
+
+Army::Stat AI_Dummy::chooseStat(Hero *hero)
+{
+  //neutrals don't have heroes.
+  return Army::STRENGTH;
+}
+
+bool AI_Dummy::chooseQuest(Hero *hero)
+{
+  //neutrals don't have heroes.
+  return true;
+}
 // End of file

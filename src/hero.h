@@ -124,6 +124,9 @@ class Hero : public Army
 
         //! Saves the Hero to a saved-game file.
         bool save(XML_Helper* helper) const;
+
+        //! Is this hero on a quest?
+        bool hasQuest() const;
         
 	//! Return the natural command of the hero.
 	/**

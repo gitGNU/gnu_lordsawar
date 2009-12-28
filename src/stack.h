@@ -39,6 +39,7 @@ class Army;
 class ArmyProdBase;
 class XML_Helper;
 class Temple;
+class Hero;
 
 //! A set of up to eight Army units that move as a single entity on the map.
 /** 
@@ -101,6 +102,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         //! How many army units can be put into this stack?
         guint32 getMaxArmiesToJoin() const;
 
+        guint32 countAllies() const;
 
 	// Set Methods
 
@@ -220,10 +222,16 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Remove this stack's path.  Return true if anything was cleared.
 	bool clearPath();
 
+	// Methods that operate on class and do not modify the class
+
         //! Returns true if the stack has any points in it's path.
         bool hasPath() const;
 
-	// Methods that operate on class and do not modify the class
+        //! Is there at least one hero in this stack who has a quest?
+        bool hasQuest() const;
+
+        //! Does the stack contain this kind of army?
+        bool hasArmyType(guint32 army_type) const;
 
         //! Save the stack to an opened saved-game file.
         bool save(XML_Helper* helper) const;
@@ -269,6 +277,12 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
         //! Return the first Hero unit in the stack, or NULL if no Hero found.
         Army* getFirstHero() const;
+
+        //! Return the first hero unit in the stack that is on a quest.
+        Hero *getFirstHeroWithAQuest() const;
+
+        //! Return the first hero unit in the stack that isn't questing.
+        Hero *getFirstHeroWithoutAQuest() const;
 
         //! Returns the ids of all (living) heroes in the stack in the dst reference
 	/**

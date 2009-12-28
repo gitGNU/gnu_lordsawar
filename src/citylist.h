@@ -356,6 +356,12 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	//! Get the nearest city to POS that can be vectored to.
 	City* getNearestFriendlyVectorableCity(const Vector<int>& pos) const;
 
+        //! Get our nearest cities in order of distance from our capital.
+        std::list<City*> getNearestFriendlyCities(Player *player, Vector<int> pos = Vector<int>(-1,-1)) const;
+
+        //! Get the capital city of the given player.
+        City *getCapitalCity(Player *player) const;
+
 	// Static Methods
 
         //! Returns the singleton instance.  Creates a new one if neccessary.
@@ -366,6 +372,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 
         //! Deletes the singleton instance.
         static void deleteInstance();
+
 
     protected:
 

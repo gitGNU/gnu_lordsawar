@@ -39,9 +39,7 @@ class Driver: public sigc::trackable
     ~Driver();
 
     void run();
-    static std::string create_and_dump_scenario(const std::string &file, 
-						const GameParameters &g);
-  
+
  private:
     GameWindow* game_window;
     GameLobbyDialog* game_lobby_dialog;
@@ -96,6 +94,8 @@ class Driver: public sigc::trackable
 				      NextTurnNetworked *next_turn);
 
     void on_player_unavailable(Player *p);
+
+    GameScenario *create_new_scenario(GameParameters &g, GameScenario::PlayMode m);
 };
 
 

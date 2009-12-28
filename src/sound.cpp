@@ -129,8 +129,8 @@ Sound::~Sound()
 	d_music = NULL;
       }
     
-    if (!d_broken)
-        Mix_CloseAudio();
+    //if (!d_broken)
+        //Mix_CloseAudio();
 #endif
 }
 

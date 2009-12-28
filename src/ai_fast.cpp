@@ -47,6 +47,9 @@
 #include "PathCalculator.h"
 #include "stacktile.h"
 #include "armyprodbase.h"
+#include "QuestsManager.h"
+#include "Quest.h"
+#include "Sage.h"
 
 using namespace std;
 
@@ -55,7 +58,7 @@ using namespace std;
 
 AI_Fast::AI_Fast(string name, guint32 armyset, Gdk::Color color, int width, int height, int player_no)
     :RealPlayer(name, armyset, color, width, height, Player::AI_FAST, player_no), d_join(true),
-    d_maniac(false), d_analysis(0), d_diplomacy(0), d_abort_requested(false)
+    d_maniac(false), d_analysis(0), d_diplomacy(0)
 {
 }
 
@@ -64,11 +67,10 @@ AI_Fast::AI_Fast(const Player& player)
     d_diplomacy(0)
 {
     d_type = AI_FAST;
-    d_abort_requested = false;
 }
 
 AI_Fast::AI_Fast(XML_Helper* helper)
-    :RealPlayer(helper), d_analysis(0), d_diplomacy(0), d_abort_requested(false)
+    :RealPlayer(helper), d_analysis(0), d_diplomacy(0)
 {
     helper->getData(d_join, "join");
     helper->getData(d_maniac, "maniac");
@@ -97,7 +99,7 @@ bool AI_Fast::save(XML_Helper* helper) const
 
 void AI_Fast::abortTurn()
 {
-  d_abort_requested = true;
+  abort_requested = true;
   if (surrendered)
     aborted_turn.emit();
   else if (Playerlist::getInstance()->countPlayersAlive() == 1)
@@ -108,7 +110,6 @@ bool AI_Fast::startTurn()
 {
     sbusy.emit();
 
-    maybeRecruitHero();
     sbusy.emit();
     if (getStacklist()->getHeroes().size() == 0 &&
         Citylist::getInstance()->countCities(this) == 1)
@@ -130,6 +131,7 @@ bool AI_Fast::startTurn()
       d_maniac = true;
 
     //setup production
+    debug("examining cities");
     Citylist *cl = Citylist::getInstance();
     for (Citylist::iterator cit = cl->begin(); cit != cl->end(); ++cit)
       {
@@ -141,10 +143,32 @@ bool AI_Fast::startTurn()
       }
 
     //setup vectoring
+    debug("setting up vectoring");
     if (!d_maniac)
 	AI_setupVectoring(18, 3, 30);
 
     sbusy.emit();
+
+    debug("trying to complete quests");
+    //try to complete our quests
+    std::vector<Quest*> q = QuestsManager::getInstance()->getPlayerQuests(this);
+    for (std::vector<Quest*>::iterator it = q.begin(); it != q.end(); it++)
+      {
+        Quest *quest = *it;
+        if (quest->isPendingDeletion())
+          continue;
+        Stack *s = getStacklist()->getArmyStackById(quest->getHeroId());
+        if (!s)
+          continue;
+        Vector<int> dest = AI_getQuestDestination(quest, s);
+        if (dest == Vector<int>(-1,-1))
+            continue;
+        d_stacklist->setActivestack(s);
+        s->getPath()->calculate(s, dest);
+        bool stack_moved = stackMove(s);
+        if (d_stacklist->getActivestack() && stack_moved)
+          GameMap::groupStacks(s);
+      }
 
     while (computerTurn() == true)
       {
@@ -176,7 +200,7 @@ bool AI_Fast::startTurn()
 	  break;
 	if (found)
 	  found = false;
-	if (d_abort_requested)
+	if (abort_requested)
 	  break;
       }
 
@@ -189,7 +213,7 @@ bool AI_Fast::startTurn()
     if (GameScenarioOptions::s_diplomacy)
       d_diplomacy->makeProposals();
 
-    if (d_abort_requested)
+    if (abort_requested)
       aborted_turn.emit();
     return true;
 }
@@ -234,9 +258,8 @@ int AI_Fast::scoreArmyType(const ArmyProdBase *a)
 
 int AI_Fast::setBestProduction(City *c)
 {
-  int selectbasic = -1;
   int select = -1;
-  int scorebasic = -1;
+  int score = -1;
 
   // we try to determine the most attractive basic production
   for (guint32 i = 0; i < c->getMaxNoOfProductionBases(); i++)
@@ -245,20 +268,18 @@ int AI_Fast::setBestProduction(City *c)
         continue;
 
       const ArmyProdBase *proto = c->getProductionBase(i);
-      if (scoreArmyType(proto) > scorebasic)
+      if (scoreArmyType(proto) > score)
         {
-          selectbasic = i;
-          scorebasic = scoreArmyType(proto);
+          select = i;
+          score = scoreArmyType(proto);
         }
     }
 
 
-  select=selectbasic;
-
   if (select != c->getActiveProductionSlot())
     {
       cityChangeProduction(c, select);
-      debug(getName() << " Set production to BASIC" << select << " in " << c->getName())
+      debug(getName() << " Set production to slot " << select << " in " << c->getName())
     }
 
   return c->getActiveProductionSlot();
@@ -266,24 +287,41 @@ int AI_Fast::setBestProduction(City *c)
 
 void AI_Fast::invadeCity(City* c)
 {
+  CityDefeatedAction action = CITY_DEFEATED_OCCUPY;
+  bool quest_preference = AI_invadeCityQuestPreference(c, action);
   debug("Invaded city " <<c->getName());
 
-  if (getIncome() < getUpkeep())
+  if (quest_preference == false)
     {
-      debug("Occupying it");
+      if (getIncome() < getUpkeep())
+        action = CITY_DEFEATED_OCCUPY;
+      else if (d_maniac)
+        action = CITY_DEFEATED_RAZE;
+      else
+        action = CITY_DEFEATED_OCCUPY;
+    }
+  int gold = 0;
+  int pillaged_army_type = -1;
+  std::list<guint32> sacked_army_types;
+  switch (action)
+    {
+    case CITY_DEFEATED_OCCUPY:
       cityOccupy(c);
       setBestProduction(c);
-    }
-  else if (d_maniac)
-    {
-      debug ("Razing it");
+      break;
+    case CITY_DEFEATED_PILLAGE:
+      cityPillage(c, gold, &pillaged_army_type);
+      AI_maybeBuyScout(c);
+      setBestProduction(c);
+      break;
+    case CITY_DEFEATED_RAZE:
       cityRaze(c);
-    }
-  else
-    {
-      debug("Occupying it");
-      cityOccupy(c);
+      break;
+    case CITY_DEFEATED_SACK:
+      citySack(c, gold, &sacked_army_types);
+      AI_maybeBuyScout(c);
       setBestProduction(c);
+      break;
     }
 }
 
@@ -371,18 +409,22 @@ bool AI_Fast::computerTurn()
     // way round.
     //d_stacklist->dump();
  
-    for (Stacklist::reverse_iterator it = d_stacklist->rbegin(); it != d_stacklist->rend(); it++)
+  std::list<Vector<int> > points = d_stacklist->getPositions();
+    for (std::list<Vector<int> >::iterator it = points.begin(); 
+         it != points.end(); it++)
     {
-        Stack *s = *it;
+      Stack *s = GameMap::getFriendlyStack(*it);
+      if (!s)
+        continue;
 
         d_stacklist->setActivestack(s);
         
-	//go to a temple
+	//go to a temple or ruin
 	if (!d_maniac)
 	  {
 	    bool stack_died = false;
 	    bool blessed = false;
-	    if (Citylist::getInstance()->getObjectAt(s->getPos()) == NULL)
+	    if (s->isOnCity() == false && s->hasHero() == false)
 	      {
 		stack_moved = AI_maybeVisitTempleForBlessing
 		  (s, s->getMoves(), s->getMoves() + 7, 50.0, 
@@ -390,11 +432,34 @@ bool AI_Fast::computerTurn()
 		if (stack_died)
 		  return true;
 		s = d_stacklist->getActivestack();
-		if (blessed && stack_moved)
-		  stack_moved = false; //do this so we move it later on
-		else if (stack_moved)
-		  continue;
+		if (stack_moved)
+                  {
+                    GameMap::groupStacks(s);
+                    s->clearPath();
+                    continue;
+                  }
 	      }
+            else if (s->isOnCity() == false && s->hasHero() == true)
+              {
+		stack_moved = AI_maybeVisitTempleForQuest
+		  (s, s->getMoves(), s->getMoves() + 15, stack_died);
+		if (stack_died)
+		  return true;
+                if (!stack_moved)
+                  {
+                    stack_moved = AI_maybeVisitRuin
+                      (s, s->getMoves(), s->getMoves() + 15, stack_died);
+                    if (stack_died)
+                      return true;
+                  }
+		s = d_stacklist->getActivestack();
+		if (stack_moved)
+                  {
+                    GameMap::groupStacks(s);
+                    s->clearPath();
+                    continue;
+                  }
+              }
 	  }
 
 	//pick up items
@@ -573,7 +638,6 @@ bool AI_Fast::computerTurn()
                             if (moved)
                               {
                                 GameMap::groupStacks(s);
-                                s->clearPath();
                                 GameMap::groupStacks(target->getPos());
                                 return true;
                               }
@@ -702,17 +766,39 @@ bool AI_Fast::computerTurn()
 	    continue;
 
 	  }
-	if (d_abort_requested)
+	if (abort_requested)
 	  break;
     }
     return stack_moved;
 }
 
-bool AI_Fast::treachery (Stack *stack, Player *player, Vector <int> pos)
+bool AI_Fast::chooseTreachery (Stack *stack, Player *player, Vector <int> pos)
 {
   bool performTreachery = true;
   return performTreachery;
 }
 
+bool AI_Fast::chooseHero(HeroProto *hero, City *city, int gold)
+{
+  return true;
+}
 
+Reward *AI_Fast::chooseReward(Ruin *ruin, Sage *sage, Stack *stack)
+{
+  //always pick the money.
+  for (Sage::iterator it = sage->begin(); it != sage->end(); it++)
+    if ((*it)->getType() == Reward::GOLD)
+      return (*it);
+  return sage->front();
+}
+
+Army::Stat AI_Fast::chooseStat(Hero *hero)
+{
+  return Army::STRENGTH;
+}
+
+bool AI_Fast::chooseQuest(Hero *hero)
+{
+  return true;
+}
 // End of file

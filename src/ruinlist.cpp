@@ -127,6 +127,16 @@ Ruin* Ruinlist::getNearestUnsearchedRuin(const Vector<int>& pos) const
   filters.push_back(isSearched);
   return getNearestObject(pos, &filters);
 }
+Ruin* Ruinlist::getNearestUnsearchedRuin(const Vector<int>& pos, int dist) const
+{
+  Ruin *r = getNearestUnsearchedRuin(pos);
+  if (!r)
+    return NULL;
+  if (r->getPos().x <= pos.x + dist && r->getPos().x >= pos.x - dist &&
+      r->getPos().y <= pos.y + dist && r->getPos().y >= pos.y - dist)
+    return r;
+  return NULL;
+}
 
 Ruin* Ruinlist::getNearestRuin(const Vector<int>& pos) const
 {

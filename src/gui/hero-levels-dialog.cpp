@@ -51,12 +51,12 @@ void HeroLevelsDialog::init(Player *theplayer)
     xml->get_widget("treeview", heroes_treeview);
     heroes_treeview->set_model(heroes_list);
     heroes_treeview->append_column("", heroes_columns.image);
-    heroes_treeview->append_column("Hero", heroes_columns.name);
-    heroes_treeview->append_column("Level", heroes_columns.level);
-    heroes_treeview->append_column("Exp", heroes_columns.exp);
-    heroes_treeview->append_column("Needs", heroes_columns.needs);
-    heroes_treeview->append_column("Str", heroes_columns.str);
-    heroes_treeview->append_column("Move", heroes_columns.move);
+    heroes_treeview->append_column(_("Hero"), heroes_columns.name);
+    heroes_treeview->append_column(_("Level"), heroes_columns.level);
+    heroes_treeview->append_column(_("Exp"), heroes_columns.exp);
+    heroes_treeview->append_column(_("Needs"), heroes_columns.needs);
+    heroes_treeview->append_column(_("Str"), heroes_columns.str);
+    heroes_treeview->append_column(_("Move"), heroes_columns.move);
     heroes_treeview->set_headers_visible(true);
 }
 

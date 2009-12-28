@@ -46,7 +46,6 @@
 #include "ucompose.hpp"
 #include "sound.h"
 #include "timed-message-dialog.h"
-#include "new-game-progress-window.h"
 #include "game-preferences-dialog.h"
 
 #include "game-client.h"
@@ -65,6 +64,8 @@
 #include "history.h"
 #include "game.h"
 #include "stacklist.h"
+#include "smallmap.h"
+#include "new-random-map-dialog.h"
 
 Driver::Driver(std::string load_filename)
 {
@@ -139,7 +140,7 @@ void Driver::run()
       g.map.cities = 20;
       g.map.ruins = 25;
       g.map_path = "";
-      g.play_with_quests = false;
+      g.play_with_quests = GameParameters::NO_QUESTING;
       g.hidden_map = false;
       g.neutral_cities = GameParameters::STRONG;
       g.razing_cities = GameParameters::ALWAYS;
@@ -282,17 +283,61 @@ void Driver::on_client_player_chat(std::string message)
   game_client->chat(message);
 }
 
+GameScenario *Driver::create_new_scenario(GameParameters &g, GameScenario::PlayMode m)
+{
+  bool update_uuid = false;
+  if (g.map_path.empty()) 
+    {
+      // construct new random scenario if we're not going to load the game
+      std::string path = 
+        NewRandomMapDialog::create_and_dump_scenario("random.map", g, NULL);
+      g.map_path = path;
+    }
+  else
+    update_uuid = true;
+
+  bool broken = false;
+						 
+  GameScenario* game_scenario = new GameScenario(g.map_path, broken);
+
+  GameScenarioOptions::s_see_opponents_stacks = g.see_opponents_stacks;
+  GameScenarioOptions::s_see_opponents_production = g.see_opponents_production;
+  GameScenarioOptions::s_play_with_quests = g.play_with_quests;
+  GameScenarioOptions::s_hidden_map = g.hidden_map;
+  GameScenarioOptions::s_diplomacy = g.diplomacy;
+  GameScenarioOptions::s_cusp_of_war = g.cusp_of_war;
+  GameScenarioOptions::s_neutral_cities = g.neutral_cities;
+  GameScenarioOptions::s_razing_cities = g.razing_cities;
+  GameScenarioOptions::s_intense_combat = g.intense_combat;
+  GameScenarioOptions::s_military_advisor = g.military_advisor;
+  GameScenarioOptions::s_random_turns = g.random_turns;
+
+  if (broken)
+    return NULL;
+
+  game_scenario->setName(g.name);
+  game_scenario->setPlayMode(m);
+
+  if (game_scenario->getRound() == 0)
+    {
+      if (update_uuid)
+	game_scenario->setNewRandomId();
+
+      Playerlist::getInstance()->syncPlayers(g.players);
+
+      game_scenario->initialize(g);
+    }
+  return game_scenario;
+}
+
 void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
 						  std::string nick)
 {
     if (splash_window)
 	splash_window->hide();
 
-    NewGameProgressWindow pw(g, GameScenario::NETWORKED, 
-			     Main::instance().record);
-    pw.thread_worker();
-    //Gtk::Main::instance()->run(pw);
-    GameScenario *game_scenario = pw.getGameScenario();
+    GameScenario *game_scenario = 
+      create_new_scenario(g, GameScenario::NETWORKED);
 
     if (game_scenario == NULL)
       {
@@ -463,11 +508,7 @@ void Driver::on_game_scenario_downloaded(std::string path)
 
 void Driver::on_new_game_requested(GameParameters g)
 {
-    NewGameProgressWindow pw(g, GameScenario::HOTSEAT, 
-			     Main::instance().record);
-    pw.thread_worker();
-    //Gtk::Main::instance()->run(pw);
-    GameScenario *game_scenario = pw.getGameScenario();
+    GameScenario *game_scenario = create_new_scenario(g, GameScenario::HOTSEAT);
 
     if (game_scenario == NULL)
       {
@@ -591,80 +632,6 @@ void Driver::init_game_window()
 
 }
 
-std::string
-Driver::create_and_dump_scenario(const std::string &file, const GameParameters &g)
-{
-    CreateScenario creator (g.map.width, g.map.height);
-
-    // then fill the other players
-    int c = 0;
-    int army_id = Armysetlist::getInstance()->getArmyset(g.army_theme)->getId();
-    Shieldsetlist *ssl = Shieldsetlist::getInstance();
-    guint32 id = ssl->getShieldset(g.shield_theme)->getId();
-    for (std::vector<GameParameters::Player>::const_iterator
-	     i = g.players.begin(), end = g.players.end();
-	 i != end; ++i, ++c) {
-	
-	if (i->type == GameParameters::Player::OFF)
-	{
-            fl_counter->getNextId();
-	    continue;
-	}
-	
-	Player::Type type;
-	if (i->type == GameParameters::Player::EASY)
-	    type = Player::AI_FAST;
-	else if (i->type == GameParameters::Player::HARD)
-	    type = Player::AI_SMART;
-	else
-	    type = Player::HUMAN;
-
-	creator.addPlayer(i->name, army_id, ssl->getColor(id, c), type);
-    }
-
-	
-    CreateScenarioRandomize random;
-    // the neutral player must come last so it has the highest id among players
-    creator.addNeutral(random.getPlayerName(Shield::NEUTRAL), army_id, 
-		       ssl->getColor(id, MAX_PLAYERS), Player::AI_DUMMY);
-
-    // now fill in some map information
-    creator.setMapTiles(g.tile_theme);
-    creator.setShieldset(g.shield_theme);
-    creator.setCityset(g.city_theme);
-    creator.setNoCities(g.map.cities);
-    creator.setNoRuins(g.map.ruins);
-    creator.setNoTemples(g.map.temples);
-    creator.setNoSignposts(g.map.signposts);
-
-    // terrain: the scenario generator also accepts input with a sum of
-    // more than 100%, so the thing is rather easy here
-    creator.setPercentages(g.map.grass, g.map.water, g.map.forest, g.map.swamp,
-			   g.map.hills, g.map.mountains);
-
-    int area = g.map.width * g.map.height;
-    creator.setNoSignposts(int(area * (g.map.grass / 100.0) * 0.0030));
-
-    // and tell it the turn mode
-    if (g.process_armies == GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN)
-        creator.setTurnmode(true);
-    else
-	creator.setTurnmode(false);
-	
-    // now create the map and dump the created map
-    std::string path = File::getSavePath();
-    path += file;
-    
-    if (NewGameProgressWindow::getInstance())
-      {
-	creator.progress.connect(sigc::mem_fun(NewGameProgressWindow::getInstance(), &NewGameProgressWindow::pulse));
-      }
-    creator.create(g);
-    creator.dump(path);
-    
-    return path;
-}
-
 GameScenario *Driver::load_game(std::string file_path)
 {
     bool broken = false;
@@ -686,11 +653,8 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
   std::string filename;
   std::string temp_filename = File::getSavePath() + "pbmtmp.sav";
       
-  NewGameProgressWindow pw(g, GameScenario::PLAY_BY_MAIL,
-			   Main::instance().record);
-  pw.thread_worker();
-  //Gtk::Main::instance()->run(pw);
-  GameScenario *game_scenario = pw.getGameScenario();
+  GameScenario *game_scenario = 
+    create_new_scenario(g, GameScenario::PLAY_BY_MAIL);
   if (game_scenario == NULL)
     {
       TimedMessageDialog dialog(*splash_window->get_window(),
@@ -745,18 +709,21 @@ void Driver::stressTestNextRound()
 {
   static time_t prev_round_start = time(NULL);
   static int count = 1;
+  /*
   if (count == 1)
     {
       FILE * fileptr = fopen("/tmp/crapola.csv", "w");
       fclose(fileptr);
     }
+    */
   count++;
   time_t now = time(NULL);
   printf ("starting round %d!\n", count);
+  /*
   FILE * fileptr = fopen("/tmp/crapola.csv", "a");
   int total_fights = Playerlist::getInstance()->countFightsThisTurn();
   int total_moves = Playerlist::getInstance()->countMovesThisTurn();
-  fprintf(fileptr, "%d, %d, %d, %d, %d, %d, %d, %d\n", count, 
+  fprintf(fileptr, "%d, %d, %d, %d, %d, %d, %d, %d", count, 
           now - prev_round_start,
           Stacklist::getNoOfStacks(), 
           Stacklist::getNoOfArmies(), 
@@ -764,7 +731,21 @@ void Driver::stressTestNextRound()
           total_moves,
           Citylist::getInstance()->countCities(Playerlist::getInstance()->getNeutral()), 
           Playerlist::getInstance()->countPlayersAlive());
+  if (Playerlist::getInstance()->countPlayersAlive() == 2)
+    {
+      Playerlist *pl = Playerlist::getInstance();
+      for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+        {
+          if ((*it)->isDead() == true)
+            continue;
+          if ((*it) == pl->getNeutral())
+            continue;
+          fprintf(fileptr,", %d (%d)", Citylist::getInstance()->countCities(*it), (*it)->getHeroes().size() + (*it)->countAllies());
+        }
+    }
+  fprintf(fileptr,"\n");
   fclose(fileptr);
+  */
       
   prev_round_start = now;
   sleep (1);
@@ -804,8 +785,9 @@ void Driver::stress_test()
   g.map.cities = 40;
   g.map.ruins = 15;
   g.map.temples = 1;
+  g.map.signposts = 10;
   g.map_path = "";
-  g.play_with_quests = false;
+  g.play_with_quests = GameParameters::ONE_QUEST_PER_PLAYER;
   g.hidden_map = false;
   g.neutral_cities = GameParameters::STRONG;
   g.razing_cities = GameParameters::ALWAYS;
@@ -827,7 +809,7 @@ void Driver::stress_test()
       
   bool broken = false;
   std::string path;
-  path = create_and_dump_scenario("random.map", g);
+  path = NewRandomMapDialog::create_and_dump_scenario("random.map", g, NULL);
   g.map_path = path;
 
   GameScenario* game_scenario = new GameScenario(g.map_path, broken);
@@ -848,12 +830,16 @@ void Driver::stress_test()
     }
 
   //this is a bit unfortunate... we have to instantiate images just to get stack positions into the stack tiles.  is there a better way?
+  /*/
   GameMap::getInstance()->getTileset()->instantiateImages();
   GameMap::getInstance()->getShieldset()->instantiateImages();
   GameMap::getInstance()->getCityset()->instantiateImages();
   guint32 armyset = Playerlist::getInstance()->getNeutral()->getArmyset();
   Armysetlist::getInstance()->getArmyset(armyset)->instantiateImages();
+  */
   Game game(game_scenario, nextTurn);
+  game.get_smallmap().set_slide_speed(0);
+  Configuration::s_displaySpeedDelay = 0;
   time_t start = time(NULL);
   nextTurn->start();
   //next turn and game_Scenario get deleted inside game.

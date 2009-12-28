@@ -315,7 +315,7 @@ bool CreateScenario::create(const GameParameters &g)
 
     getRuinDifficulty (g.difficulty, &sage_factor, &no_guardian_factor,
 		       &stronghold_factor);
-    if (!setupRuins(GameScenario::s_play_with_quests, 20, 10, 6))
+    if (!setupRuins(GameScenario::s_play_with_quests != GameParameters::NO_QUESTING, 20, 10, 6))
         return false;
 
     int base_gold;
@@ -797,4 +797,10 @@ int CreateScenario::calculateRoadType (Vector<int> t)
     else if (!u && !b && !l && r)
 	type = Road::CONNECTS_EAST;
     return type;
+}
+
+int CreateScenario::calculateNumberOfSignposts(int width, int height, int grass)
+{
+  int area = width * height;
+  return int(area * (grass / 100.0) * SIGNPOST_FREQUENCY);
 }

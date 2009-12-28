@@ -39,9 +39,9 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
 	GameScenarioOptions.cpp GameScenarioOptions.h \
 	hero.cpp hero.h heroproto.cpp heroproto.h \
         herotemplates.cpp herotemplates.h history.cpp history.h \
-        Immovable.cpp Immovable.h Item.cpp Item.h \
+        Immovable.cpp Immovable.h Item.cpp Item.h Sage.cpp Sage.h \
 	ItemProto.cpp ItemProto.h stacktile.cpp stacktile.h \
-        stackreflist.cpp stackreflist.h \
+        stackreflist.cpp stackreflist.h Commentator.cpp Commentator.h \
         Itemlist.cpp Itemlist.h Location.cpp Location.h \
 	LocationBox.cpp LocationBox.h LocationList.h \
         MapGenerator.cpp MapGenerator.h \

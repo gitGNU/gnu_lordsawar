@@ -73,6 +73,7 @@ class Configuration : public sigc::trackable
         static int s_displaySpeedDelay;
         static int s_displayFightRoundDelayFast;
         static int s_displayFightRoundDelaySlow;
+        static bool s_displayCommentator;
         
         //the paths
         static std::string s_dataPath;
@@ -92,9 +93,6 @@ class Configuration : public sigc::trackable
 	// 2 = once a round not-overwriting
 	static int s_autosave_policy;
 
-        //run game in GGZ mode
-        static bool s_ggz;
-
         // music settings; the cache size is given in pieces instead of memory
         static bool s_musicenable;
         static guint32 s_musicvolume;
@@ -103,7 +101,7 @@ class Configuration : public sigc::trackable
 	// various default game settings
         static bool s_see_opponents_stacks;
         static bool s_see_opponents_production;
-        static bool s_play_with_quests;
+        static GameParameters::QuestPolicy s_play_with_quests;
         static bool s_hidden_map;
         static bool s_diplomacy;
         static GameParameters::NeutralCities s_neutral_cities;
@@ -129,7 +127,9 @@ class Configuration : public sigc::trackable
 	static Configuration::SavingPolicy savingPolicyFromString(const std::string str);
 	static std::string savingPolicyToString(const Configuration::SavingPolicy policy);
 	static GameParameters::QuickStartPolicy quickStartPolicyFromString(const std::string str);
-	static std::string quickStartPolicyToString(const GameParameters::QuickStartPolicy policy);
+        static std::string quickStartPolicyToString(const GameParameters::QuickStartPolicy policy);
+        static GameParameters::QuestPolicy questPolicyFromString(std::string str);
+        static std::string questPolicyToString(const GameParameters::QuestPolicy quest);
     private:
         /** \brief The callback for the XML_Helper
           * 

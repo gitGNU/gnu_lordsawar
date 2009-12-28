@@ -49,6 +49,7 @@
 [type: gettext/glade]/dat/glade/player-resign-dialog.ui
 [type: gettext/glade]/dat/glade/preferences-dialog.ui
 [type: gettext/glade]/dat/glade/quest-assigned-dialog.ui
+[type: gettext/glade]/dat/glade/quest-report-dialog.ui
 [type: gettext/glade]/dat/glade/quest-expired-dialog.ui
 [type: gettext/glade]/dat/glade/report-dialog.ui
 [type: gettext/glade]/dat/glade/ruinfight-finished-dialog.ui
@@ -285,6 +286,10 @@ src/Tile.cpp
 src/city.h
 src/ruin.h
 src/temple.h
+src/Commentator.cpp
+src/Commentator.h
+src/Sage.cpp
+src/Sage.h
 dat/army/default/default.lwa.in
 dat/army/bigdefault/bigdefault.lwa.in
 dat/citysets/default/default.lwc.in

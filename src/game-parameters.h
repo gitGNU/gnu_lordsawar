@@ -59,7 +59,10 @@ struct GameParameters
 
     bool see_opponents_stacks;
     bool see_opponents_production;
-    bool play_with_quests;
+    enum QuestPolicy {
+      NO_QUESTING = 0, ONE_QUEST_PER_PLAYER, ONE_QUEST_PER_HERO
+    };
+    QuestPolicy play_with_quests;
     bool hidden_map;
     bool diplomacy;
 

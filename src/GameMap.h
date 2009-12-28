@@ -168,6 +168,7 @@ class GameMap: public sigc::trackable
 	//! Add an army to this location on the map
 	Stack* addArmy(Location *l, Army *a);
         Stack* addArmy(Vector<int> pos, Army *a);
+        Stack* addArmyAtPos(Vector<int> pos, Army *a);
 
 	//! Go find a player's planted standard on the map
         Vector<int> findPlantedStandard(Player *p);
@@ -276,7 +277,6 @@ class GameMap: public sigc::trackable
     private:
         //! Callback for item loading used during loading.
         bool loadItems(std::string tag, XML_Helper* helper);
-        Stack* addArmyAtPos(Vector<int> pos, Army *a);
         bool isBlockedAvenue(int x, int y, int destx, int desty);
         bool isDock(Vector<int> pos);
 	void close_circles (int minx, int miny, int maxx, int maxy);

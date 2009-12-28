@@ -31,6 +31,7 @@
 #include "Backpack.h"
 #include "xmlhelper.h"
 #include "playerlist.h"
+#include "QuestsManager.h"
 
 std::string Hero::d_tag = "hero";
 using namespace std;
@@ -220,5 +221,10 @@ int Hero::gainLevel(Stat stat)
     }
 
   return delta;
+}
+
+bool Hero::hasQuest() const
+{
+  return QuestsManager::getInstance()->getHeroQuest(getId()) != NULL;
 }
 

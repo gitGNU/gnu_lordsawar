@@ -65,7 +65,7 @@ MapGenerator::MapGenerator()
     //set reasonable default values
     :d_terrain(0), d_building(0), d_pswamp(2), d_pwater(25), d_pforest(3),
     d_phills(5), d_pmountains(5), d_nocities(11), d_notemples(9), d_noruins(20),
-    d_nosignposts(30)
+    d_nosignposts(30), cityset(NULL)
 
 {
     d_xdir[0]=0;d_xdir[1]=-1;d_xdir[2]=-1;d_xdir[3]=-1;d_xdir[4]=0;d_xdir[5]=1;d_xdir[6]=1;d_xdir[7]=1;
@@ -219,8 +219,11 @@ void MapGenerator::makeMap(int width, int height, bool roads)
     progress.emit(.900, _("spawning temples..."));
     makeBuildings(Maptile::TEMPLE,d_notemples);
     debug("building bridges");
-    progress.emit(.950, _("building bridges..."));
-    makeBridges();
+    if (roads == true)
+      {
+        progress.emit(.950, _("building bridges..."));
+        makeBridges();
+      }
     debug("raising signs");
     progress.emit(.990, _("raising signs..."));
     makeBuildings(Maptile::SIGNPOST,d_nosignposts);

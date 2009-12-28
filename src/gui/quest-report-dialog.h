@@ -34,7 +34,7 @@
 class QuestReportDialog: public Decorated
 {
  public:
-    QuestReportDialog(Quest *quest);
+    QuestReportDialog(std::vector<Quest *>quests, Hero *preferred_hero);
     ~QuestReportDialog();
 
     void set_parent_window(Gtk::Window &parent);
@@ -49,10 +49,30 @@ class QuestReportDialog: public Decorated
 
     Gtk::Image *map_image;
     Gtk::Label *label;
+    Gtk::Label *hero_label;
     
+    std::vector<Quest*> quests;
     Quest *quest;
 
     void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    Gtk::TreeView *heroes_treeview;
+
+    class HeroesColumns: public Gtk::TreeModelColumnRecord {
+    public:
+	HeroesColumns() 
+        { add(hero_name); add(quest);}
+	
+	Gtk::TreeModelColumn<Glib::ustring> hero_name;
+	Gtk::TreeModelColumn<Quest*> quest;
+    };
+    const HeroesColumns heroes_columns;
+    Glib::RefPtr<Gtk::ListStore> heroes_list;
+
+    void fill_quest_info(Quest *q);
+
+    void add_questing_hero(Quest *quest, Hero *h);
+
+    void on_hero_changed();
 };
 
 #endif

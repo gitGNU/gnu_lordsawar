@@ -90,8 +90,12 @@ class AI_Fast : public RealPlayer
 	virtual void abortTurn();
         virtual bool startTurn();
         virtual void invadeCity(City* c);
+        virtual bool chooseHero(HeroProto *hero, City* c, int gold);
+        virtual Reward *chooseReward(Ruin *ruin, Sage *sage, Stack *stack);
         virtual void heroGainsLevel(Hero * a);
-	virtual bool treachery (Stack *stack, Player *player, Vector <int> pos);
+	virtual bool chooseTreachery (Stack *stack, Player *player, Vector <int> pos);
+        virtual Army::Stat chooseStat(Hero *hero);
+        virtual bool chooseQuest(Hero *hero);
 
     private:
         //! The actual core function of the ai's logic.
@@ -113,7 +117,6 @@ class AI_Fast : public RealPlayer
 
         AI_Analysis* d_analysis;
         AI_Diplomacy* d_diplomacy;
-	bool d_abort_requested;
 };
 
 #endif // AI_FAST_H

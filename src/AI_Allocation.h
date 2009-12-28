@@ -35,6 +35,7 @@ class Threat;
 class StackReflist;
 class Threatlist;
 class City;
+class Quest;
 
 using namespace std;
 
@@ -54,6 +55,9 @@ class AI_Allocation
         static void deleteStack(Stack* s);
         static void deleteStack(guint32 id);
         StackReflist::iterator eraseStack(StackReflist::iterator it);
+
+	//! Emitted whenever anything happens.
+	sigc::signal<void> sbusy;
 
     private:
         /** Assign stacks to defend cities
@@ -128,11 +132,20 @@ class AI_Allocation
 
         int continueAttacks();
 
+        int continueQuests();
+        bool continueQuest(Quest *quest, Stack *stack);
+
         int attackNearbyEnemies();
         
         bool checkAmbiguities();
 
         bool emptyOutCities();
+
+        int visitTemples(bool get_quests);
+
+        int pickupItems();
+
+        int visitRuins();
 
         static AI_Allocation* s_instance;
         
@@ -140,6 +153,7 @@ class AI_Allocation
         AI_Analysis *d_analysis;
         StackReflist *d_stacks;
         const Threatlist *d_threats;
+        bool *abort_turn;
 };
 
 #endif // AI_ALLOCATION_H

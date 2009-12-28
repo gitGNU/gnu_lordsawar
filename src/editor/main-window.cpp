@@ -542,6 +542,7 @@ void MainWindow::set_random_map(int width, int height,
     // creation...
     guint32 armyset_id = 
       Armysetlist::getInstance()->getArmyset(armyset)->getId();
+    Citysetlist::getInstance();
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
     Shieldset *ss = ssl->getShieldset(shieldset);
     std::string name = d_create_scenario_names->getPlayerName(Shield::NEUTRAL);
@@ -578,7 +579,12 @@ void MainWindow::set_random_map(int width, int height,
     
     gen.setPercentages(water, forest, swamp, hills, mountains);
     
+    gen.setCityset(GameMap::getInstance()->getCityset());
     gen.makeMap(width, height, false);
+    GameMap::deleteInstance();
+    GameMap::setWidth(width);
+    GameMap::setHeight(height);
+    GameMap::getInstance(tileset, shieldset, cityset);
     GameMap::getInstance()->fill(&gen);
 
     Itemlist::createStandardInstance();

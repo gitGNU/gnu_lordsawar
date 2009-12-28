@@ -52,6 +52,8 @@ class GamePreferencesDialog: public Decorated
     Gtk::Dialog* dialog;
     GameScenario::PlayMode mode;
 
+    Gtk::VBox *dialog_vbox;
+    Gtk::ProgressBar *progressbar;
     Gtk::Button *start_game_button;
     Gtk::Button *edit_options_button;
     Gtk::Label *game_name_label;

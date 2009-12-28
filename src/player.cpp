@@ -66,6 +66,17 @@
 #include "MapBackpack.h"
 #include "PathCalculator.h"
 #include "stacktile.h"
+#include "templelist.h"
+#include "temple.h"
+#include "QCityOccupy.h"
+#include "QCitySack.h"
+#include "QCityRaze.h"
+#include "QPillageGold.h"
+#include "Quest.h"
+#include "QKillHero.h"
+#include "QEnemyArmies.h"
+#include "QEnemyArmytype.h"
+#include "callback-enums.h"
 
 using namespace std;
 
@@ -78,7 +89,7 @@ Player::Player(string name, guint32 armyset, Gdk::Color color, int width,
 	       int height, Type type, int player_no)
     :d_color(color), d_name(name), d_armyset(armyset), d_gold(1000),
     d_dead(false), d_immortal(false), d_type(type), d_upkeep(0), d_income(0),
-    d_observable(true), surrendered(false)
+    d_observable(true), surrendered(false), abort_requested(false)
 {
     if (player_no != -1)
 	d_id = player_no;
@@ -115,7 +126,7 @@ Player::Player(const Player& player)
     d_type(player.d_type), d_id(player.d_id), 
     d_fight_order(player.d_fight_order), d_upkeep(player.d_upkeep), 
     d_income(player.d_income), d_observable(player.d_observable),
-    surrendered(player.surrendered)
+    surrendered(player.surrendered),abort_requested(player.abort_requested)
 {
     // as the other player is propably dumped somehow, we need to deep copy
     // everything.
@@ -156,7 +167,7 @@ Player::Player(const Player& player)
 }
 
 Player::Player(XML_Helper* helper)
-    :d_stacklist(0), d_fogmap(0), surrendered(false)
+    :d_stacklist(0), d_fogmap(0), surrendered(false), abort_requested(false)
 {
     helper->getData(d_id, "id");
     helper->getData(d_name, "name");
@@ -811,6 +822,13 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
     int moves_left = s->getPath()->getMovesExhaustedAtPoint();
     while (1)
       {
+        if (abortRequested())
+          {
+            MoveResult *result = new MoveResult;
+            result->fillData(s, stepCount);
+            result->setMoveAborted(true);
+            return result;
+          }
 	if (s->getPath()->size() <= 1)
 	  break;
 	if (nextStepOnEnemyStackOrCity(s) == true)
@@ -973,9 +991,11 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
         
         //else
         if (stackMoveOneStep(s))
+          {
+            supdatingStack.emit(0);
             stepCount++;
+          }
 
-        supdatingStack.emit(0);
 	shaltedStack.emit(s);
     
         MoveResult *moveResult = new MoveResult;
@@ -1309,7 +1329,6 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r)
   }
 
   retReward = r->getReward();
-  ssearchingRuin.emit(r, s, retReward);
 
   r->setSearched(true);
 
@@ -1326,7 +1345,6 @@ int Player::doStackVisitTemple(Stack *s, Temple *t)
   // you have your stack blessed (+1 strength)
   int count = s->bless();
 
-  svisitingTemple.emit(t, s);
   supdatingStack.emit(0);
   
   return count;
@@ -1345,33 +1363,33 @@ int Player::stackVisitTemple(Stack* s, Temple* t)
   return doStackVisitTemple(s, t);
 }
 
-Quest* Player::stackGetQuest(Stack* s, Temple* t, bool except_raze)
+Quest* Player::doHeroGetQuest(Hero *hero, Temple* t, bool except_raze)
 {
   QuestsManager *qm = QuestsManager::getInstance();
-  debug("Player::stackGetQuest")
-
-    // bail out in case of senseless data
-    if (!s || !t || (s->getPos().x != t->getPos().x) 
-	|| (s->getPos().y != t->getPos().y))
-      {
-	cerr << "Stack tried to visit temple at wrong location\n";
-	exit(-1);
-      }
 
   std::vector<Quest*> quests = qm->getPlayerQuests(Playerlist::getActiveplayer());
-  if (quests.size() > 0)
+  if (quests.size() > 0 && GameScenarioOptions::s_play_with_quests == GameParameters::ONE_QUEST_PER_PLAYER)
     return NULL;
 
   Quest* q=0;
-  if (s->getFirstHero())
+  if (hero)
     {
-      q = qm->createNewQuest
-	(s->getFirstHero()->getId(), except_raze);
+      q = qm->createNewQuest (hero->getId(), except_raze);
     }
 
   // couldn't assign a quest for various reasons
   if (!q)
     return 0;
+  return q;
+}
+
+Quest* Player::heroGetQuest(Hero *hero, Temple* t, bool except_raze)
+{
+  debug("Player::stackGetQuest")
+
+  Quest *q = doHeroGetQuest(hero, t, except_raze);
+  if (q == NULL)
+    return q;
 
   // Now fill the action item
   Action_Quest* action = new Action_Quest();
@@ -1380,7 +1398,7 @@ Quest* Player::stackGetQuest(Stack* s, Temple* t, bool except_raze)
 
   // and record it for posterity
   History_HeroQuestStarted * history = new History_HeroQuestStarted();
-  history->fillData(dynamic_cast<Hero *>(s->getFirstHero()));
+  history->fillData(hero);
   addHistory(history);
   return q;
 }
@@ -1637,7 +1655,9 @@ void Player::doCitySack(City* c, int& gold, std::list<guint32> *sacked_types)
   addGold(gold);
   Stack *s = getActivestack();
   ssackingCity.emit(c, s, gold, *sacked_types);
+  printf("notifying quests manager of city sacking!\n");
   QuestsManager::getInstance()->citySacked(c, s, gold);
+  printf("done\n");
   //takeCityInPossession(c);
 }
 
@@ -2740,6 +2760,106 @@ bool Player::AI_maybePickUpItems(Stack *s, int max_dist, int max_mp,
   return stack_moved;
 }
 
+bool Player::AI_maybeVisitTempleForQuest(Stack *s, int dist, int max_mp, 
+                                         bool &stack_died)
+{
+  bool stack_moved = false;
+  Templelist *tl = Templelist::getInstance();
+
+  //if this stack doesn't have a hero then we can't get a quest with this stack.
+  if (s->hasHero() == false)
+    return false;
+
+  //if the player already has a hero who has a quest, then we can't get a
+  //quest with this stack when playing one quest per player.
+  if (QuestsManager::getInstance()->getPlayerQuests(this).size() > 0 &&
+      GameScenarioOptions::s_play_with_quests == 
+      GameParameters::ONE_QUEST_PER_PLAYER)
+    return false;
+
+  Temple *temple = tl->getNearestVisibleTemple(s->getPos(), dist);
+  if (!temple)
+    return false;
+
+  //if we're not there yet
+  if (temple->contains(s->getPos()) == false)
+    {
+      //can we really reach it?
+      Vector<int> old_dest(-1,-1);
+      if (s->getPath()->size())
+	old_dest = s->getLastPointInPath();
+      guint32 mp = s->getPath()->calculate(s, temple->getPos());
+      if ((int)mp > max_mp)
+	{
+	  //nope.  unreachable.  set in our old path.
+	  if (old_dest != Vector<int>(-1,-1))
+	    s->getPath()->calculate(s, old_dest);
+	  return false;
+	}
+      stack_moved = stackMove(s);
+
+      //maybe we died -- an enemy stack was guarding the temple
+      if (!d_stacklist->getActivestack())
+	{
+	  stack_died = true;
+	  return true;
+	}
+      s = d_stacklist->getActivestack();
+    }
+
+  //are we there yet?
+  if (temple->contains(s->getPos()) == true)
+    svisitingTemple.emit(temple, s);
+
+  return stack_moved;
+}
+
+bool Player::AI_maybeVisitRuin(Stack *s, int dist, int max_mp, 
+                                         bool &stack_died)
+{
+  bool stack_moved = false;
+  Ruinlist *rl = Ruinlist::getInstance();
+
+  //if this stack doesn't have a hero then we can't search the ruin.
+  if (s->hasHero() == false)
+    return false;
+
+  Ruin *ruin = rl->getNearestUnsearchedRuin(s->getPos(), dist);
+  if (!ruin)
+    return false;
+
+  //if we're not there yet
+  if (ruin->contains(s->getPos()) == false)
+    {
+      //can we really reach it?
+      Vector<int> old_dest(-1,-1);
+      if (s->getPath()->size())
+	old_dest = s->getLastPointInPath();
+      guint32 mp = s->getPath()->calculate(s, ruin->getPos());
+      if ((int)mp > max_mp)
+	{
+	  //nope.  unreachable.  set in our old path.
+	  if (old_dest != Vector<int>(-1,-1))
+	    s->getPath()->calculate(s, old_dest);
+	  return false;
+	}
+      stack_moved = stackMove(s);
+
+      //maybe we died -- an enemy stack was guarding the temple
+      if (!d_stacklist->getActivestack())
+	{
+	  stack_died = true;
+	  return true;
+	}
+      s = d_stacklist->getActivestack();
+    }
+
+  //are we there yet?
+  if (ruin->contains(s->getPos()) == true)
+    ssearchingRuin.emit(ruin, s);
+
+  return stack_moved;
+}
 bool Player::AI_maybeVisitTempleForBlessing(Stack *s, int dist, int max_mp, 
 					    double percent_can_be_blessed, 
 					    bool &blessed, bool &stack_died)
@@ -2970,6 +3090,7 @@ void Player::AI_setupVectoring(guint32 safe_mp, guint32 min_defenders,
 
   for (Citylist::iterator cit = cl->begin(); cit != cl->end(); ++cit)
     {
+      sbusy.emit();
       City *c = *cit;
       if (c->getOwner() != this || c->isBurnt())
 	continue;
@@ -3007,6 +3128,7 @@ void Player::AI_setupVectoring(guint32 safe_mp, guint32 min_defenders,
 
   for (Citylist::iterator cit = cl->begin(); cit != cl->end(); ++cit)
     {
+      sbusy.emit();
       City *c = *cit;
       if (c->getOwner() != this || c->isBurnt())
 	continue;
@@ -3546,6 +3668,10 @@ guint32 Player::countArmies() const
 {
   return d_stacklist->countArmies();
 }
+guint32 Player::countAllies() const
+{
+  return d_stacklist->countAllies();
+}
 Stack * Player::getActivestack() const
 {
   return d_stacklist->getActivestack();
@@ -3616,5 +3742,228 @@ std::list<Action *> Player::getMovesThisTurn() const
 int Player::countMovesThisTurn() const
 {
   return getMovesThisTurn().size();
+}
+        
+int Player::countDestituteCitiesThisTurn() const
+{
+  return getActionsThisTurn(Action::CITY_DESTITUTE).size();
+}
+
+Vector<int> Player::AI_getQuestDestination(Quest *quest, Stack *stack) const
+{
+  Playerlist *pl = Playerlist::getInstance();
+  Vector<int> dest = Vector<int>(-1,-1);
+  switch (quest->getType())
+    {
+    case Quest::KILLHERO:
+        {
+          QuestKillHero *q = dynamic_cast<QuestKillHero*>(quest);
+          guint32 hero_id = q->getVictim();
+          Stack *enemy = NULL;
+          for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
+            {
+              if (*it == this)
+                continue;
+              enemy = (*it)->getStacklist()->getArmyStackById(hero_id);
+              if(enemy)
+                break;
+            }
+          if (enemy)
+            dest = enemy->getPos();
+
+        }
+      break;
+    case Quest::KILLARMYTYPE:
+        {
+          QuestEnemyArmytype *q = dynamic_cast<QuestEnemyArmytype*>(quest);
+          guint32 army_type = q->getArmytypeToKill();
+          std::list<Stack*> s = 
+            GameMap::getNearbyEnemyStacks(stack->getPos(), GameMap::getWidth());
+          for (std::list<Stack*>::iterator i = s.begin(); i != s.end(); i++)
+            {
+              if ((*i)->hasArmyType(army_type) == true)
+                {
+                  dest = (*i)->getPos();
+                  break;
+                }
+            }
+        }
+      break;
+    case Quest::KILLARMIES:
+        {
+          QuestEnemyArmies *q = dynamic_cast<QuestEnemyArmies*>(quest);
+          Player *enemy = pl->getPlayer(q->getVictimPlayerId());
+          std::list<Stack*> s = 
+            GameMap::getNearbyEnemyStacks(stack->getPos(), GameMap::getWidth());
+          for (std::list<Stack*>::iterator i = s.begin(); i != s.end(); i++)
+            {
+              if ((*i)->getOwner() != enemy)
+                continue;
+              dest = (*i)->getPos();
+            }
+        }
+      break;
+
+    case Quest::PILLAGEGOLD:
+    case Quest::CITYSACK:
+    case Quest::CITYRAZE:
+    case Quest::CITYOCCUPY:
+      //attack the nearest enemy city.
+        {
+          City *c = Citylist::getInstance()->getClosestEnemyCity(stack);
+          if (c)
+            dest = c->getNearestPos(stack->getPos());
+        }
+      break;
+    }
+  return dest;
+}
+
+bool Player::AI_invadeCityQuestPreference(City *c, CityDefeatedAction &action) const
+{
+  bool found = false;
+  std::vector<Quest*> q = QuestsManager::getInstance()->getPlayerQuests(this);
+  for (std::vector<Quest*>::iterator i = q.begin(); i != q.end(); i++)
+    {
+      switch ((*i)->getType())
+        {
+        case Quest::CITYOCCUPY:
+            {
+              QuestCityOccupy* qu = dynamic_cast<QuestCityOccupy*>(*i);
+              if (qu->getCityId() == c->getId())
+                {
+                  action = CITY_DEFEATED_OCCUPY;
+                  found = true;
+                }
+            }
+          break;
+        case Quest::CITYSACK:
+            {
+              QuestCitySack * qu = dynamic_cast<QuestCitySack*>(*i);
+              if (qu->getCityId() == c->getId())
+                {
+                  action = CITY_DEFEATED_SACK;
+                  found = true;
+                }
+            }
+          break;
+        case Quest::CITYRAZE:
+            {
+              QuestCityRaze* qu = dynamic_cast<QuestCityRaze*>(*i);
+              if (qu->getCityId() == c->getId())
+                {
+                  action = CITY_DEFEATED_RAZE;
+                  found = true;
+                }
+            }
+          break;
+        case Quest::PILLAGEGOLD:
+          action = CITY_DEFEATED_SACK;
+          found = true;
+          break;
+        }
+    }
+  return found;
+}
+
+/*
+ *
+ * what are the chances of a hero showing up?
+ *
+ * 1 in 6 if you have enough gold, where "enough gold" is...
+ *
+ * ... 1500 if the player already has a hero, then:  1500 is generally 
+ * enough to buy all the heroes.  I forget the exact distribution of 
+ * hero prices but memory says from 1000 to 1500.  (But, if you don't 
+ * have 1500 gold, and the price is less, you still get the offer...  
+ * So, calculate price, compare to available gold, then decided whether 
+ * or not to offer...)
+ *
+ * ...500 if all your heroes are dead: then prices are cut by about 
+ * a factor of 3.
+ */
+bool Player::maybeRecruitHero ()
+{
+  bool accepted = false;
+  
+  City *city = NULL;
+  int gold_needed = 0;
+  if (Citylist::getInstance()->countCities(this) == 0)
+    return false;
+  //give the player a hero if it's the first round.
+  //otherwise we get a hero based on chance
+  //a hero costs a random number of gold pieces
+  if (GameScenarioOptions::s_round == 1 && getHeroes().size() == 0)
+    gold_needed = 0;
+  else
+    {
+      bool exists = false;
+      if (getHeroes().size() > 0)
+	  exists = true; 
+
+      gold_needed = (rand() % 500) + 1000;
+      if (exists == false)
+	gold_needed /= 2;
+    }
+
+  if ((((rand() % 6) == 0 && gold_needed < getGold()) || gold_needed == 0))
+    {
+      HeroProto *heroproto = 
+        HeroTemplates::getInstance()->getRandomHero(getId());
+      if (gold_needed == 0)
+	{
+	  //we do it this way because maybe quickstart is on.
+	  Citylist* cl = Citylist::getInstance();
+	  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
+	    if (!(*it)->isBurnt() && (*it)->getOwner() == this &&
+		(*it)->getCapitalOwner() == this && (*it)->isCapital())
+	      {
+		city = *it;
+		break;
+	      }
+	  if (!city) //no capital cities
+	    city = Citylist::getInstance()->getFirstCity(this);
+	}
+      else
+	{
+	  std::vector<City*> cities;
+	  Citylist* cl = Citylist::getInstance();
+	  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
+	    if (!(*it)->isBurnt() && (*it)->getOwner() == this)
+	      cities.push_back((*it));
+	  if (cities.empty())
+	    return false;
+	  city = cities[rand() % cities.size()];
+	}
+
+      if (srecruitingHero.empty())
+        accepted = true;
+      else if (city)
+        accepted = srecruitingHero.emit(heroproto, city, gold_needed);
+
+      if (accepted) {
+        /* now maybe add a few allies */
+        int alliesCount;
+        if (gold_needed > 1300)
+          alliesCount = 3;
+        else if (gold_needed > 1000)
+          alliesCount = 2;
+        else if (gold_needed > 800)
+          alliesCount = 1;
+        else
+          alliesCount = 0;
+
+        const ArmyProto *ally = 0;
+        if (alliesCount > 0)
+        {
+          ally = Reward_Allies::randomArmyAlly();
+          if (!ally)
+            alliesCount = 0;
+        }
+        
+        recruitHero(heroproto, city, gold_needed, alliesCount, ally);
+      }
+    }
+  return accepted;
 }
 // End of file

@@ -98,7 +98,10 @@ void ShieldStyle::instantiateImages(std::string filename, Shieldset *s)
     return;
   // The shield image consists of two halves. On the left is the shield 
   // image, on the right the mask.
+  debug("loading shield file: " << filename);
   std::vector<PixMask* > half = disassemble_row(filename, 2);
+  if (half[0] == NULL)
+    debug("failed to load image file");
 
   int xsize = 0;
   int ysize = 0;

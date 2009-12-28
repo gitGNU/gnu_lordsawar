@@ -39,9 +39,16 @@ class NewRandomMapDialog: public Decorated
 
     int run();
 
-    GameParameters getParams();
+    std::string getRandomMapFilename() const {return d_filename;};
+
+    //std::string create_and_dump_scenario(const std::string &file, const GameParameters &g);
+static std::string create_and_dump_scenario(const std::string &file,
+                                                         const GameParameters &g, sigc::slot<void> *pulse);
     
  private:
+
+    void pulse();
+    GameParameters getParams();
     struct Map
     {
 	int width, height;
@@ -57,7 +64,10 @@ class NewRandomMapDialog: public Decorated
     Map map;
     Gtk::Dialog* dialog;
 
+    Gtk::VBox *dialog_vbox;
+    Gtk::HButtonBox *dialog_action_area;
     Gtk::ComboBox *map_size_combobox;
+    Gtk::ProgressBar *progressbar;
     Gtk::Widget *random_map_container;
     Gtk::ComboBoxText *tile_size_combobox;
     Gtk::ComboBoxText *tile_theme_combobox;
@@ -73,7 +83,9 @@ class NewRandomMapDialog: public Decorated
     Gtk::Scale *cities_scale;
     Gtk::Scale *ruins_scale;
     Gtk::Scale *temples_scale;
+    Gtk::Scale *signposts_scale;
     Gtk::Button *accept_button;
+    Gtk::Button *cancel_button;
     Gtk::ToggleButton *grass_random_togglebutton;
     Gtk::ToggleButton *water_random_togglebutton;
     Gtk::ToggleButton *swamp_random_togglebutton;
@@ -95,9 +107,14 @@ class NewRandomMapDialog: public Decorated
     void on_hills_random_toggled();
     void on_mountains_random_toggled();
     void on_cities_random_toggled();
+    void on_accept_clicked();
+    void on_cancel_clicked();
 
     guint32 get_active_tile_size();
     void on_tile_size_changed();
+    void on_grass_changed();
+    int dialog_response;
+    std::string d_filename;
 };
 
 #endif

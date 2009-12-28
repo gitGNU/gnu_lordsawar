@@ -38,6 +38,7 @@ SmallMap::SmallMap()
     input_locked = false;
     view.pos = Vector<int>(0, 0);
     view.dim = Vector<int>(3, 3);
+    sleep_interval = TIMER_SMALLMAP_REFRESH;
 }
 
 void SmallMap::set_view(Rectangle new_view)
@@ -78,8 +79,8 @@ void SmallMap::draw_selection()
 
 void SmallMap::center_view_on_tile(Vector<int> pos, bool slide)
 {
-  pos = clip(Vector<int>(0,0), pos - view.dim / calculateResizeFactor(), 
-	     GameMap::get_dim() - view.dim);
+  pos = clip(Vector<int>(0,0), pos - view.dim / 2, 
+             GameMap::get_dim() - view.dim);
 
   if (slide)
     slide_view(Rectangle(pos.x, pos.y, view.w, view.h));
@@ -185,9 +186,9 @@ void SmallMap::slide_view(Rectangle new_view)
 
 	  view = tmp_view;
 	  draw(Playerlist::getViewingplayer());
-	  view_slid.emit(view);
+          view_slid.emit(view);
+          Glib::usleep(sleep_interval);
 
-	  Glib::usleep(8000);
 	  if (tmp_view.x == new_view.x && tmp_view.y == new_view.y)
 	    break;
 	}

@@ -96,7 +96,7 @@ void QuestPillageGold::armyDied(Army *a, bool heroIsCulprit)
 void QuestPillageGold::cityAction(City *c, CityDefeatedAction action, 
 				  bool heroIsCulprit, int gold)
 {
-  if (!isPendingDeletion())
+  if (isPendingDeletion())
     return;
   Hero *h = getHero();
   if (!h || h->getHP() <= 0)

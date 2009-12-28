@@ -52,6 +52,7 @@ class Quest;
 class Stack;
 class Reward;
 class StackTile;
+class Sage;
 
 /** Controls a game.
   * 
@@ -75,6 +76,7 @@ class Game
     void park_selected_stack();
     void deselect_selected_stack();
     void search_selected_stack();
+    void search_stack(Stack *stack);
     void move_selected_stack_along_path();
     void move_selected_stack_northwest();
     void move_selected_stack_north();
@@ -130,7 +132,7 @@ class Game
     sigc::signal<void, StackTile *, MapTipPosition> stack_tip_changed;
     sigc::signal<void,  City *, MapTipPosition> city_tip_changed;
     sigc::signal<void, Ruin*, Stack*, Reward*> ruin_searched;
-    sigc::signal<void, Ruin*, Stack*> sage_visited;
+    sigc::signal<Reward*, Ruin*, Sage*, Stack*> sage_visited;
     sigc::signal<void, Fight &> fight_started;
     sigc::signal<void, Stack *, Stack *> ruinfight_started;
     sigc::signal<void, float> advice_asked;
@@ -139,7 +141,7 @@ class Game
     sigc::signal<bool, int > enemy_offers_surrender;
     sigc::signal<void, bool> surrender_answered;
     sigc::signal<bool, Player *, Stack *, Player *, Vector<int> > stack_considers_treachery;
-    sigc::signal<bool, bool, Temple *, int> temple_searched;
+    sigc::signal<bool, Hero *, Temple *, int> temple_searched;
     sigc::signal<void, Hero *, Quest *> quest_assigned;
     sigc::signal<CityDefeatedAction, City *, int> city_defeated;
     sigc::signal<void, City *, int, unsigned int> city_pillaged;
@@ -157,6 +159,8 @@ class Game
     sigc::signal<void, Player *> game_over;
     sigc::signal<void, Player *> player_died;
     sigc::signal<void> game_stopped;
+    sigc::signal<void, std::string> commentator_comments;
+    sigc::signal<void, Stack*, Vector<int> > stack_moves;
     
     void addPlayer(Player *p);
 
@@ -206,6 +210,9 @@ class Game
     void invading_city(City* city, int gold);
     void init_turn_for_player(Player* p);
     void on_player_died(Player *p);
+    void stack_searches_ruin(Ruin *ruin, Stack *stack);
+    void stack_searches_temple(Temple *temple, Stack *stack);
+
     //! Callback when the army of a human player reaches a new level.
     Army::Stat heroGainsLevel(Hero * a);
     //! Callback when an army gets a new medal.
@@ -229,6 +236,7 @@ class Game
     void stack_arrives_on_tile(Stack *stack, Vector<int> tile);
     void stack_leaves_tile(Stack *stack, Vector<int> tile);
     void on_stack_halted(Stack *stack);
+
 
     GameScenario* d_gameScenario;
     NextTurn* d_nextTurn;

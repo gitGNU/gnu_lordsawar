@@ -890,3 +890,23 @@ int Playerlist::countMovesThisTurn() const
     count += (*it)->countMovesThisTurn();
   return count;
 }
+
+Player *Playerlist::getWinningPlayer() const
+{
+  guint32 best_score = 0;
+  Player *winning_player = NULL;
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      Player *p = (*it);
+      if (p->isDead() == false)
+        continue;
+      if (p == getNeutral())
+        continue;
+      if (p->getScore() >= best_score)
+        {
+          best_score = p->getScore();
+          winning_player = p;
+        }
+    }
+  return winning_player;
+}

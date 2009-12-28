@@ -30,7 +30,7 @@ using namespace std;
 
 bool GameScenarioOptions::s_see_opponents_stacks = false;
 bool GameScenarioOptions::s_see_opponents_production = false;
-bool GameScenarioOptions::s_play_with_quests = true;
+GameParameters::QuestPolicy GameScenarioOptions::s_play_with_quests = GameParameters::ONE_QUEST_PER_PLAYER;
 bool GameScenarioOptions::s_hidden_map = false;
 bool GameScenarioOptions::s_diplomacy = false;
 bool GameScenarioOptions::s_cusp_of_war = false;

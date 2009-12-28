@@ -52,7 +52,13 @@ class NetworkPlayer : public Player
         virtual bool startTurn();
         virtual void endTurn();
         virtual void invadeCity(City* c);
+        virtual bool chooseHero(HeroProto *hero, City* c, int gold);
+
+        virtual Reward *chooseReward(Ruin *ruin, Sage *sage, Stack *stack);
         virtual void heroGainsLevel(Hero * a);
+	virtual bool chooseTreachery (Stack *stack, Player *player, Vector <int> pos);
+        virtual Army::Stat chooseStat(Hero *hero);
+        virtual bool chooseQuest(Hero *hero);
 
 	void decodeAction(const Action *action);
 	void decodeActions(std::list<Action *> actions);

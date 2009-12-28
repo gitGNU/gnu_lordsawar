@@ -191,11 +191,13 @@ class QuestsManager : public sigc::trackable
 
 	// Methods that operate on the class data and do not modify it.
 
-	//! Return a list of Quest objects that belong to the given player.
+	//! Return a list of active Quest objects that belong to the player.
 	/**
-	 * @param player  The player to get Quest objects for.
+	 * @param player  The player to get active Quest objects for.
 	 */
-        std::vector<Quest*> getPlayerQuests(Player *player) const;
+        std::vector<Quest*> getPlayerQuests(const Player *player) const;
+
+        Quest* getHeroQuest(guint32 hero_id) const;
 
 	//! Save the quests to an opened saved-game file.
 	/**

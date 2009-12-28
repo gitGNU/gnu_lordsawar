@@ -35,6 +35,7 @@
 #include "fight.h"
 #include "army.h"
 #include "defs.h"
+#include "callback-enums.h"
 
 class Stacklist;
 class XML_Helper;
@@ -59,6 +60,7 @@ class VectoredUnit;
 class ArmyProto;
 class Item;
 class Triumphs;
+class Sage;
 
 //! The abstract player class.
 /** 
@@ -294,6 +296,7 @@ class Player: public sigc::trackable
 
 	bool isObservable() const {return d_observable;};
 
+        bool abortRequested() const {return abort_requested;};
 
 	// Methods that operate on the player's action list.
 
@@ -310,6 +313,8 @@ class Player: public sigc::trackable
         int countFightsThisTurn() const;
         //! Returns the number of times we moved a stack this turn.
         int countMovesThisTurn() const;
+        //! Returns number of cities that were too poor to produce this turn.
+        int countDestituteCitiesThisTurn() const;
 
         //! Returns the battle actions for this turn.
         std::list<Action *> getFightsThisTurn() const;
@@ -366,6 +371,9 @@ class Player: public sigc::trackable
 
 	//! Return the grand total of the player's armies.
 	guint32 countArmies() const;
+
+        //! Return the number of the player's armies that are awardable.
+	guint32 countAllies() const;
 
 	//! Return the player's currently selected stack.
 	Stack * getActivestack() const;
@@ -715,16 +723,16 @@ class Player: public sigc::trackable
         bool heroCompletesQuest(Hero *hero);
 
         /** 
-	 * A stack visits a temple and a Hero in the Stack receives a Quest 
-	 * from the temple's priests.  If there is more than one hero in the 
-	 * stack, the quest is assigned to the first hero without a quest.
+	 * A hero visits a temple and receives a Quest from the temple's 
+         * priests.  If there is more than one hero in the stack, the quest is 
+         * assigned to the first hero without a quest.
          *
 	 * This callback must result in an Action_Quest element being 
 	 * given to the addAction method.
 	 * This callback must result in a History_QuestStarted element being
 	 * added to the player's History list (Player::d_history).
 	 *
-         * @param stack             The visiting stack.
+         * @param hero              The visiting hero.
          * @param temple            The visited temple.
          * @param except_raze       Don't give out a raze quest because it's
 	 *                          impossible to raze a city in this 
@@ -733,7 +741,7 @@ class Player: public sigc::trackable
          * @return The newly assigned Quest or 0 on error.
          */
 	//! Callback to have a Hero get a new Quest from a temple.
-        Quest* stackGetQuest(Stack* stack, Temple* temple, bool except_raze);
+        Quest* heroGetQuest(Hero *hero, Temple* temple, bool except_raze);
 
         /** 
 	 * Called whenever a hero emerges in a city
@@ -990,11 +998,20 @@ class Player: public sigc::trackable
 	//! Decision callback for what to do if a city is invaded.
         virtual void invadeCity(City* city) = 0;
 
+        //! Decision callback for what to do when a hero shows up.
+        virtual bool chooseHero(HeroProto *hero, City *city, int gold) = 0;
+        
+        //! Decision callback for what reward to pick when at a sage.
+        virtual Reward *chooseReward(Ruin *ruin, Sage *sage, Stack *stack) = 0;
 
+        //! Decision callback for if to commit treachery or not.
+	virtual bool chooseTreachery (Stack *stack, Player *player, Vector <int> pos) = 0;
 
+        //! Decision callback for when a hero gains a level.
+        virtual Army::Stat chooseStat(Hero *hero) = 0;
 
-
-
+        //! Decision callback for when a hero visits a temple.
+        virtual bool chooseQuest(Hero *hero) = 0;
 
 	// Player related actions the player can take.
 
@@ -1046,9 +1063,52 @@ class Player: public sigc::trackable
 	//! Give the player a new name.
 	void rename (std::string name);
 
+        //! have a hero show up, or not.
+        bool maybeRecruitHero ();
+
         //! Mark the player as dead. Kills all Army units in the Stacklist.
         void kill();
 
+	//! Go to a temple if we're near enough.
+	/**
+	 * Helper method to take a stack on a mission to get blessed.
+	 * If the method returns false initially, it means that the nearest 
+	 * temple is unsuitable.
+	 * @note The idea is that this method is called over subsequent turns, 
+	 * until the blessed parameter gets filled with a value of true.
+	 *
+	 * @param s            The stack to visit a temple.
+	 * @param dist         The maximum number of tiles that a temple
+	 *                     can be away from the stack, and be considered
+	 *                     for visiting.
+	 * @param mp           The maximum number of movement points that a
+	 *                     stack needs to have to reach the temple.
+	 * @param percent_can_be_blessed  If the stack has this many army 
+	 *                                units that have not been blessed
+	 *                                at the temple (expressed as a
+	 *                                percent), then the temple will be
+	 *                                considered for visiting.
+	 * @param blessed      Gets filled with false if the stack didn't get 
+	 *                     blessed.  Gets filled with true if the stack 
+	 *                     got blessed at the temple.
+	 * @param stack_died   Gets filled with true if the stack got killed
+	 *                     by an enemy stack on the same square as the
+	 *                     temple.
+	 *
+	 * Returns true if the stack moved, false if it stayed still.
+	 */
+	bool AI_maybeVisitTempleForBlessing(Stack *s, int dist, int mp, 
+					    double percent_can_be_blessed, 
+					    bool &blessed, bool &stack_died);
+
+        bool AI_maybeVisitTempleForQuest(Stack *s, int dist, int max_mp, 
+                                         bool &stack_died);
+
+        bool AI_maybeVisitRuin(Stack *s, int dist, int max_mp, 
+                               bool &stack_died);
+
+        Vector<int> AI_getQuestDestination(Quest *quest, Stack *stack) const;
+        bool AI_invadeCityQuestPreference(City *c, CityDefeatedAction &action) const;
 	/** 
 	 * Callback to decide if we perform treachery on a friendly player.
 	 *
@@ -1217,7 +1277,7 @@ class Player: public sigc::trackable
 	 * @param reward  The reward received.
 	 */
         //! Emitted whenever the player successfully searched a ruin.
-        sigc::signal<void, Ruin*, Stack*, Reward*> ssearchingRuin;
+        sigc::signal<void, Ruin*, Stack*> ssearchingRuin;
 
 	/**
 	 * @param temple  The temple being visited.
@@ -1398,6 +1458,7 @@ class Player: public sigc::trackable
          */
         static Player* loadPlayer(XML_Helper* helper);
 
+    
 
     protected:
         // do some fight cleaning up, setting
@@ -1488,6 +1549,9 @@ class Player: public sigc::trackable
 	//! Whether or not this player has surrendered.
 	bool surrendered;
 
+        //! Whether or not someone has closed the main game window.
+        bool abort_requested;
+
 	//! assists in scorekeeping for diplomacy
 	void alterDiplomaticRelationshipScore (Player *player, int amount);
 
@@ -1531,39 +1595,11 @@ class Player: public sigc::trackable
 	bool doStackSplitArmies(Stack *stack, std::list<guint32> armies,
 				Stack *&new_stack);
 
+        Quest* doHeroGetQuest(Hero *hero, Temple* t, bool except_raze);
+
 	void AI_maybeBuyScout(City *c);
 
-	//! Go to a temple if we're near enough.
-	/**
-	 * Helper method to take a stack on a mission to get blessed.
-	 * If the method returns false initially, it means that the nearest 
-	 * temple is unsuitable.
-	 * @note The idea is that this method is called over subsequent turns, 
-	 * until the blessed parameter gets filled with a value of true.
-	 *
-	 * @param s            The stack to visit a temple.
-	 * @param dist         The maximum number of tiles that a temple
-	 *                     can be away from the stack, and be considered
-	 *                     for visiting.
-	 * @param mp           The maximum number of movement points that a
-	 *                     stack needs to have to reach the temple.
-	 * @param percent_can_be_blessed  If the stack has this many army 
-	 *                                units that have not been blessed
-	 *                                at the temple (expressed as a
-	 *                                percent), then the temple will be
-	 *                                considered for visiting.
-	 * @param blessed      Gets filled with false if the stack didn't get 
-	 *                     blessed.  Gets filled with true if the stack 
-	 *                     got blessed at the temple.
-	 * @param stack_died   Gets filled with true if the stack got killed
-	 *                     by an enemy stack on the same square as the
-	 *                     temple.
-	 *
-	 * Returns true if the stack moved, false if it stayed still.
-	 */
-	bool AI_maybeVisitTempleForBlessing(Stack *s, int dist, int mp, 
-					    double percent_can_be_blessed, 
-					    bool &blessed, bool &stack_died);
+
 	bool AI_maybePickUpItems (Stack *s, int dist, int mp, bool &picked_up,
 				  bool &stack_died);
 

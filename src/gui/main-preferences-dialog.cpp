@@ -41,12 +41,15 @@ MainPreferencesDialog::MainPreferencesDialog()
     window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     xml->get_widget("show_turn_popup_checkbutton", show_turn_popup_checkbutton);
+    xml->get_widget("commentator_checkbutton", commentator_checkbutton);
     xml->get_widget("show_decorated_windows_checkbutton", show_decorated_windows_checkbutton);
     xml->get_widget("play_music_checkbutton", play_music_checkbutton);
     xml->get_widget("music_volume_scale", music_volume_scale);
     xml->get_widget("music_volume_hbox", music_volume_hbox);
     show_turn_popup_checkbutton->signal_toggled().connect(
 	sigc::mem_fun(this, &MainPreferencesDialog::on_show_turn_popup_toggled));
+    commentator_checkbutton->signal_toggled().connect(
+	sigc::mem_fun(this, &MainPreferencesDialog::on_show_commentator_toggled));
     show_decorated_windows_checkbutton->signal_toggled().connect(
 	sigc::mem_fun(this, &MainPreferencesDialog::on_show_decorated_windows_toggled));
     play_music_checkbutton->signal_toggled().connect(
@@ -55,6 +58,7 @@ MainPreferencesDialog::MainPreferencesDialog()
 	sigc::mem_fun(this, &MainPreferencesDialog::on_music_volume_changed));
 
     show_turn_popup_checkbutton->set_active(Configuration::s_showNextPlayer);
+    commentator_checkbutton->set_active(Configuration::s_displayCommentator);
     show_decorated_windows_checkbutton->set_active(!Configuration::s_decorated);
     play_music_checkbutton->set_active(Configuration::s_musicenable);
     music_volume_hbox->set_sensitive(Configuration::s_musicenable);
@@ -123,5 +127,10 @@ void MainPreferencesDialog::on_music_volume_changed()
 #endif
 
     Configuration::s_musicvolume = volume;
+}
+
+void MainPreferencesDialog::on_show_commentator_toggled()
+{
+  Configuration::s_displayCommentator = commentator_checkbutton->get_active();
 }
 

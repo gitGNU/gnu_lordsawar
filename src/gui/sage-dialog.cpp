@@ -33,7 +33,7 @@
 #include "ruin.h"
 #include "rewardlist.h"
 
-SageDialog::SageDialog(Player *player, Hero *h, Ruin *r)
+SageDialog::SageDialog(Sage *sage, Player *player, Hero *h, Ruin *r)
 {
     ruin = r;
     hero = h;
@@ -65,26 +65,9 @@ SageDialog::SageDialog(Player *player, Hero *h, Ruin *r)
 
     set_title(_("A Sage!"));
 
-    Rewardlist::iterator iter = Rewardlist::getInstance()->begin();
-    for (;iter != Rewardlist::getInstance()->end(); iter++)
-      {
-	if ((*iter)->getType() == Reward::ITEM)
-	  continue;
-	// we don't want items here, but we do want locations
-	// of items, within hidden ruins.
+    for(Sage::iterator it = sage->begin(); it != sage->end(); it++)
+      addReward(*it);
 
-	addReward(*iter);
-      }
-    //this covers, the one-time rewards of items and maps
-    //but now we put in gold too
-    Reward_Gold *gold = new Reward_Gold(500 + rand() % 1000);
-    common_rewards.push_back(gold);
-    //we don't add allies here because we don't want to give
-    //allies right away.  instead, we want to point the hero to a hidden
-    //ruin where allies can be found
-    std::list<Reward*>::iterator it = common_rewards.begin();
-    for (;it != common_rewards.end(); it++)
-      addReward((*it));
   continue_button->set_sensitive(false);
 
 }

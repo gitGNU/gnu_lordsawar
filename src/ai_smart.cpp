@@ -38,6 +38,7 @@
 #include "history.h"
 #include "citylist.h"
 #include "city.h"
+#include "Sage.h"
 
 using namespace std;
 
@@ -46,7 +47,7 @@ using namespace std;
 
 AI_Smart::AI_Smart(string name, unsigned int armyset, Gdk::Color color, int width, int height, int player_no)
   :RealPlayer(name, armyset, color, width, height, Player::AI_SMART, player_no),
-   d_mustmakemoney(0), d_abort_requested(false)
+   d_mustmakemoney(0)
 {
 }
 
@@ -54,11 +55,10 @@ AI_Smart::AI_Smart(const Player& player)
     :RealPlayer(player),d_mustmakemoney(0)
 {
     d_type = AI_SMART;
-    d_abort_requested = false;
 }
 
 AI_Smart::AI_Smart(XML_Helper* helper)
-    :RealPlayer(helper),d_mustmakemoney(0), d_abort_requested(false)
+    :RealPlayer(helper),d_mustmakemoney(0)
 {
 }
 
@@ -69,7 +69,7 @@ AI_Smart::~AI_Smart()
 bool AI_Smart::startTurn()
 {
   sbusy.emit();
-  maybeRecruitHero();
+
   if (getStacklist()->getHeroes().size() == 0 &&
       Citylist::getInstance()->countCities(this) == 1)
     AI_maybeBuyScout(Citylist::getInstance()->getFirstCity(this));
@@ -115,6 +115,8 @@ bool AI_Smart::startTurn()
         sbusy.emit();
         
         AI_Allocation *allocation = new AI_Allocation(analysis, threats, this);
+	allocation->sbusy.connect 
+          (sigc::mem_fun (sbusy, &sigc::signal<void>::emit));
         int moveCount = allocation->move(first_city, build_capacity);
         
         // tidying up
@@ -123,7 +125,7 @@ bool AI_Smart::startTurn()
         // stop when no more stacks move
         if (moveCount == 0)
             break;
-	if (d_abort_requested)
+	if (abort_requested)
 	  break;
     }
         
@@ -132,14 +134,14 @@ bool AI_Smart::startTurn()
 
     diplomacy.makeProposals();
     
-    if (d_abort_requested)
+    if (abort_requested)
       aborted_turn.emit();
     return true;
 }
 
 void AI_Smart::abortTurn()
 {
-  d_abort_requested = true;
+  abort_requested = true;
   if (surrendered)
     aborted_turn.emit();
   else if (Playerlist::getInstance()->countPlayersAlive() == 1)
@@ -148,14 +150,33 @@ void AI_Smart::abortTurn()
 
 void AI_Smart::invadeCity(City* c)
 {
-    // always occupy an enemy city
-    cityOccupy(c);
+  CityDefeatedAction action = CITY_DEFEATED_OCCUPY;
+  AI_invadeCityQuestPreference(c, action);
 
-    if (c->getNoOfProductionBases() == 0)
-      maybeBuyProduction(c, true);
+  int gold = 0;
+  int pillaged_army_type = -1;
+  std::list<guint32> sacked_army_types;
+  switch (action)
+    {
+    case CITY_DEFEATED_OCCUPY:
+      cityOccupy(c);
+      break;
+    case CITY_DEFEATED_PILLAGE:
+      cityPillage(c, gold, &pillaged_army_type);
+      break;
+    case CITY_DEFEATED_RAZE:
+      cityRaze(c);
+      break;
+    case CITY_DEFEATED_SACK:
+      citySack(c, gold, &sacked_army_types);
+      break;
+    }
 
-    // Update its production
-    setProduction(c);
+  if (c->getNoOfProductionBases() == 0)
+    maybeBuyProduction(c, true);
+
+  // Update its production
+  setProduction(c);
 }
 
 void AI_Smart::heroGainsLevel(Hero * a)
@@ -419,20 +440,67 @@ void AI_Smart::setProduction(City *city)
 
 void AI_Smart::examineCities()
 {
-  debug("Examinating Cities to see what we can do")
-    Citylist* cl = Citylist::getInstance();
+  debug("Examinating Cities to see what we can do");
+  Citylist* cl = Citylist::getInstance();
   for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
     {
       City *city = (*it);
       if (city->getOwner() == this && city->isBurnt() == false)
         setProduction(city);
     }
+  //do we have enough money to create all these new-fangled army units?
+  int profit = getIncome() - getUpkeep();
+  int total_gp_to_spend = getGold() + profit;
+  //now we get to spend this amount on the city production.
+  //we'll turn off the cities we can't afford.
+  std::list<City*> cities = cl->getNearestFriendlyCities(this);
+  for (std::list<City*>::iterator it = cities.begin(); it != cities.end(); it++)
+    {
+      City *c = *it;
+      if (total_gp_to_spend <= 0)
+        cityChangeProduction(c, -1);
+      else
+        {
+          const ArmyProdBase *prodbase = c->getActiveProductionBase();
+          if (prodbase)
+            {
+              total_gp_to_spend -= prodbase->getProductionCost();
+              if (total_gp_to_spend <= 0)
+                cityChangeProduction(c, -1);
+            }
+        }
+    }
 }
-bool AI_Smart::treachery (Stack *stack, Player *player, Vector <int> pos)
+
+bool AI_Smart::chooseTreachery (Stack *stack, Player *player, Vector <int> pos)
 {
   bool performTreachery = true;
   return performTreachery;
 }
 
+bool AI_Smart::chooseHero(HeroProto *hero, City *city, int gold)
+{
+  return true;
+}
 
+Reward *AI_Smart::chooseReward(Ruin *ruin, Sage *sage, Stack *stack)
+{
+  //always pick the money.
+  for (Sage::iterator it = sage->begin(); it != sage->end(); it++)
+    if ((*it)->getType() == Reward::GOLD)
+      return (*it);
+  return sage->front();
+}
+
+Army::Stat AI_Smart::chooseStat(Hero *hero)
+{
+  if (hero && hero->getStat(Army::STRENGTH)  > 7)
+    return Army::MOVES;
+  return Army::STRENGTH;
+}
+
+bool AI_Smart::chooseQuest(Hero *hero)
+{
+  return true;
+}
 // End of file

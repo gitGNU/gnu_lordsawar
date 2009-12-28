@@ -38,7 +38,7 @@ class GameScenarioOptions: public sigc::trackable
 
         static bool s_see_opponents_stacks;
         static bool s_see_opponents_production;
-        static bool s_play_with_quests;
+        static GameParameters::QuestPolicy s_play_with_quests;
         static bool s_hidden_map;
         static bool s_diplomacy;
         static bool s_cusp_of_war;

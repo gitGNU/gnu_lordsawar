@@ -74,6 +74,8 @@
 #include "GameScenarioOptions.h"
 #include "ai_fast.h"
 #include "ai_smart.h"
+#include "Sage.h"
+#include "Commentator.h"
 
 Game *Game::current_game = 0;
 
@@ -96,8 +98,6 @@ void Game::addPlayer(Player *p)
 	(p->sheroGainsLevel.connect(sigc::mem_fun(this, &Game::heroGainsLevel)));
       connections[p->getId()].push_back
 	(p->snewMedalArmy.connect(sigc::mem_fun(this, &Game::newMedalArmy)));
-      connections[p->getId()].push_back
-	(p->srecruitingHero.connect(sigc::mem_fun(this, &Game::recruitHero)));
 
       connections[p->getId()].push_back
 	(p->streachery.connect
@@ -120,8 +120,20 @@ void Game::addPlayer(Player *p)
 	 (sigc::mem_fun(this, &Game::on_stack_grouped)));
     }
       
+      
   //now do all of the common connections
       
+  connections[p->getId()].push_back
+    (p->getStacklist()->snewpos.connect
+     (sigc::mem_fun(stack_moves, &sigc::signal<void, Stack*, Vector<int> >::emit)));
+  connections[p->getId()].push_back
+    (p->srecruitingHero.connect(sigc::mem_fun(this, &Game::recruitHero)));
+  connections[p->getId()].push_back
+    (p->svisitingTemple.connect
+     (sigc::mem_fun(this, &Game::stack_searches_temple)));
+  connections[p->getId()].push_back
+    (p->ssearchingRuin.connect
+     (sigc::mem_fun(this, &Game::stack_searches_ruin)));
   connections[p->getId()].push_back
     (p->getStacklist()->snewpos.connect
      (sigc::mem_fun(this, &Game::stack_arrives_on_tile)));
@@ -541,11 +553,9 @@ void Game::center_selected_stack()
     select_active_stack();
 }
 
-void Game::search_selected_stack()
+void Game::search_stack(Stack *stack)
 {
   Player *player = Playerlist::getActiveplayer();
-  Stack* stack = player->getActivestack();
-
   Ruin* ruin = GameMap::getRuin(stack);
   Temple* temple = GameMap::getTemple(stack);
 
@@ -559,19 +569,22 @@ void Game::search_selected_stack()
       reward = player->stackSearchRuin(stack, ruin);
       if (ruin->hasSage() == true)
 	{
-	  sage_visited.emit(ruin, stack);
-	  reward = ruin->getReward();
+          Sage *sage = ruin->generateSage();
+          if (player->isComputer() == false)
+            reward = sage_visited.emit(ruin, sage, stack);
+          else
+            reward = player->chooseReward(ruin, sage, stack);
 	}
 	  
       if (reward)
 	{
-	  player->giveReward(Playerlist::getActiveplayer()->getActivestack(),
-			     reward);
+	  player->giveReward(stack, reward);
 	  //FIXME: delete this reward, but don't delete the item, or map
 	  redraw();
 	  update_stack_info();
 	  update_control_panel();
-	  ruin_searched.emit(ruin, stack, reward);
+          if (player->isComputer() == false)
+            ruin_searched.emit(ruin, stack, reward);
 	}
       else
 	{
@@ -580,32 +593,44 @@ void Game::search_selected_stack()
 	  update_control_panel();
 	}
 
-
-
       update_sidebar_stats();
     }
   else if (temple && temple->searchable() && stack->getMoves() > 0)
     {
       int blessCount;
       blessCount = player->stackVisitTemple(stack, temple);
-      bool wants_quest = temple_searched.emit(stack->hasHero(), temple, blessCount);
+      bool wants_quest;
+      Hero *hero = stack->getFirstHeroWithoutAQuest();
+      if (player->isComputer() == false)
+        wants_quest = temple_searched.emit(hero, temple, blessCount);
+      else
+        wants_quest = player->chooseQuest(hero);
       if (wants_quest && stack->hasHero())
 	{
-	  Quest *q = player->stackGetQuest
-	    (stack, temple, 
-	     GameScenario::s_razing_cities != GameParameters::NEVER);
-	  Hero* hero = dynamic_cast<Hero*>(stack->getFirstHero());
+	  Quest *q = player->heroGetQuest 
+            (hero, temple, 
+             GameScenario::s_razing_cities != GameParameters::NEVER);
 
 	  if (q)
-	    {
-	      for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
-		if ((*it)->getId() == q->getHeroId())
-		  hero = dynamic_cast<Hero*>(*it);
-
-	    }
-	  quest_assigned.emit(hero, q);
+            {
+              if (player->isComputer() == false)
+                {
+                  Hero *hero;
+                  Army *a = stack->getArmyById(q->getHeroId());
+                  if (a)
+                    hero = dynamic_cast<Hero*>(a);
+                  quest_assigned.emit(hero, q);
+                }
+            }
 	}
     }
+}
+
+void Game::search_selected_stack()
+{
+  Player *player = Playerlist::getActiveplayer();
+  Stack* stack = player->getActivestack();
+  return search_stack(stack);
 }
 
 void Game::stackUpdate(Stack* s)
@@ -620,22 +645,19 @@ void Game::stackUpdate(Stack* s)
   if (s)
     smallmap->center_view_on_tile(s->getPos(), true);
 
-  redraw();
+  //redraw();
 
   update_stack_info();
   update_control_panel();
 
-  // sleep for a specified amount of time
-  //SDL_Delay(Configuration::s_displaySpeedDelay);
-  Glib::usleep(Configuration::s_displaySpeedDelay);
 }
 
 Army::Stat Game::heroGainsLevel(Hero * h)
 {
   // don't show a dialog if computer or enemy's armies advance
-  if ((h->getOwner()->getType() != Player::HUMAN) ||
-      (h->getOwner() != Playerlist::getInstance()->getActiveplayer()))
-    return Army::STRENGTH;
+  if (h->getOwner()->isComputer() == true ||
+      h->getOwner() != Playerlist::getInstance()->getActiveplayer())
+    return Playerlist::getInstance()->getActiveplayer()->chooseStat(h);
 
   return hero_gains_level.emit(h);
 }
@@ -1111,6 +1133,19 @@ void Game::init_turn_for_player(Player* p)
 
   if (p->getType() == Player::HUMAN)
     {
+      if (Commentator::getInstance()->hasComment() == true)
+        {
+          std::vector<std::string> comments =
+            Commentator::getInstance()->getComments(p);
+          if (comments.size() > 0)
+            commentator_comments.emit(comments[rand() % comments.size()]);
+        }
+    }
+
+  p->maybeRecruitHero();
+
+  if (p->getType() == Player::HUMAN)
+    {
       unlock_inputs();
 
       update_sidebar_stats();
@@ -1137,16 +1172,8 @@ void Game::init_turn_for_player(Player* p)
       received_diplomatic_proposal.emit(proposal_received);
       //check to see if we've turned off production due to destitution.
       bool destitute = false;
-      std::list<Action*> actions = p->getReportableActions();
-      std::list<Action*>::iterator it = actions.begin();
-      for (;it != actions.end(); it++)
-	{
-	  if ((*it)->getType() == Action::CITY_DESTITUTE)
-	    {
-	      destitute = true;
-	      break;
-	    }
-	}
+      if (p->countDestituteCitiesThisTurn() > 0)
+        destitute = true;
       city_too_poor_to_produce.emit(destitute);
     }
   else
@@ -1195,6 +1222,21 @@ void Game::on_fight_started(Fight &fight)
       bigmap->setFighting(box);
       bigmap->draw(Playerlist::getViewingplayer());
       fight_started.emit(fight);
+      bigmap->setFighting(LocationBox(Vector<int>(-1,-1)));
+      bigmap->draw(Playerlist::getViewingplayer());
+    }
+  else if ((Playerlist::getActiveplayer()->isObservable() == true ||
+      attacking_observable_player) && ai_attacking_neutral &&
+      !ai_attacking_on_hidden_map)
+    {
+      Vector<int> pos = fight.getAttackers().front()->getPos();
+      if (GameScenario::s_hidden_map == false)
+	smallmap->center_view_on_tile(pos, true);
+      LocationBox box = Fight::calculateFightBox(fight);
+      bigmap->setFighting(box);
+      bigmap->draw(Playerlist::getViewingplayer());
+      while (g_main_context_iteration(NULL, FALSE)); //doEvents
+      Glib::usleep(TIMER_BIGMAP_SELECTOR * 1000);
       bigmap->setFighting(LocationBox(Vector<int>(-1,-1)));
       bigmap->draw(Playerlist::getViewingplayer());
     }
@@ -1260,12 +1302,12 @@ bool Game::maybeTreachery(Stack *stack, Player *them, Vector<int> pos)
       if (me->getType() == Player::AI_FAST)
         {
           AI_Fast *ai = dynamic_cast<AI_Fast*>(me);
-        treachery = ai->treachery (stack, them, pos);
+          treachery = ai->chooseTreachery (stack, them, pos);
         }
       else if (me->getType() == Player::AI_SMART)
         {
           AI_Smart *ai = dynamic_cast<AI_Smart*>(me);
-        treachery = ai->treachery (stack, them, pos);
+          treachery = ai->chooseTreachery (stack, them, pos);
         }
     }
   if (treachery == false)
@@ -1353,9 +1395,15 @@ void Game::on_city_fight_finished(City *city, Fight::Result result)
     
 bool Game::recruitHero(HeroProto *hero, City *city, int gold)
 {
-  bool retval = hero_offers_service.emit (city->getOwner(), hero, city, gold);
-  if (d_gameScenario->getRound() == 1)
-    city_visited.emit(city);
+  bool retval; 
+  if (city->getOwner()->isComputer())
+    retval = city->getOwner()->chooseHero (hero, city, gold);
+  else
+    {
+      retval = hero_offers_service.emit (city->getOwner(), hero, city, gold);
+      if (d_gameScenario->getRound() == 1)
+        city_visited.emit(city);
+    }
   return retval;
 }
     
@@ -1413,4 +1461,14 @@ void Game::stack_leaves_tile(Stack *stack, Vector<int> tile)
 	  return;
 	}
     }
+}
+    
+void Game::stack_searches_ruin(Ruin *ruin, Stack *stack)
+{
+  search_stack(stack);
+}
+    
+void Game::stack_searches_temple(Temple *temple, Stack *stack)
+{
+  search_stack(stack);
 }

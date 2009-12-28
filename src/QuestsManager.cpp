@@ -78,7 +78,7 @@ QuestsManager::QuestsManager(XML_Helper* helper)
 {
     sharedInit();
     debug("QuestsManager: registerTag!");
-    helper->registerTag(Quest::d_tag, sigc::mem_fun((*this), &QuestsManager::load));
+    helper->registerTag(Quest::d_tag, sigc::mem_fun(this, &QuestsManager::load));
 }
 
 QuestsManager::~QuestsManager()
@@ -292,33 +292,42 @@ void QuestsManager::questExpired(guint32 heroId)
     debug("quest deactivated");
 }
 
-std::vector<Quest*> QuestsManager::getPlayerQuests(Player *player) const
+std::vector<Quest*> QuestsManager::getPlayerQuests(const Player *player) const
 {
   std::vector<Quest*> res;
-  // loop through the player's units
+  // loop through the player's heroes 
   // for every hero check any pending quests
   const Stacklist* sl = player->getStacklist();
-  for (Stacklist::const_iterator it = sl->begin(); it != sl->end(); it++)
+  std::list<Hero*> heroes = sl->getHeroes();
+  for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end(); it++)
     {
-      for (Stack::const_iterator sit = (*it)->begin();
-	   sit != (*it)->end(); sit++)
-	{
-	  guint32 heroId = (*sit)->getId();
+      guint32 heroId = (*it)->getId();
 
-	  if (((*sit)->isHero()) && (d_quests.count(heroId)))
-	    {
-	      std::map<guint32, Quest*>::const_iterator qit;
-	      qit = d_quests.find(heroId);
-	      if (qit == d_quests.end())
-		continue;
-	      Quest *q = (*qit).second;
-	      debug("heroId = " << heroId << " - has quest: " 
-		    << q);
-	      res.push_back(q);
-	    }
-	}
+      if (d_quests.count(heroId) > 0)
+        {
+          std::map<guint32, Quest*>::const_iterator qit = d_quests.find(heroId);
+          if (qit == d_quests.end())
+            continue;
+          Quest *q = (*qit).second;
+          if (q && q->isPendingDeletion() == true)
+            continue;
+          debug("heroId = " << heroId << " - has quest: " << q);
+          res.push_back(q);
+        }
     }
   return res;
+}
+        
+Quest* QuestsManager::getHeroQuest(guint32 hero_id) const
+{
+  std::map<guint32, Quest*>::const_iterator qit;
+  qit = d_quests.find(hero_id);
+  if (qit == d_quests.end())
+    return NULL;
+  Quest *q = (*qit).second;
+  if (q && q->isPendingDeletion() == true)
+    return NULL;
+  return (*qit).second;
 }
 
 bool QuestsManager::save(XML_Helper* helper) const
@@ -351,7 +360,9 @@ bool QuestsManager::load(string tag, XML_Helper* helper)
   if (tag == Quest::d_tag)
     {
       guint32  questType, hero;
-      helper->getData(questType, "type");
+      std::string quest_type_str;
+      helper->getData(quest_type_str, "type");
+      questType = Quest::questTypeFromString(quest_type_str);
       helper->getData(hero, "hero");
 
       debug("quest load: type = " << questType << ", heroId = " << hero);

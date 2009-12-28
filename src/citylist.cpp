@@ -538,4 +538,72 @@ guint32 Citylist::countCitiesVectoringTo(const City *dest) const
 
   return count;
 }
+
+std::list<City*> Citylist::getNearestFriendlyCities(Player *player, Vector<int> pos) const
+{
+  std::list<City*> cities;
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      City *c = *it;
+      if (c->getOwner() != player)
+        continue;
+      if (c->isBurnt() == true)
+        continue;
+      cities.push_back(c);
+    }
+  if (cities.size() == 0)
+    return cities;
+  std::list<int> distances;
+
+  if (pos == Vector<int>(-1,-1))
+    pos = getFirstCity(player)->getPos();
+
+  for (std::list<City*>::iterator it = cities.begin(); it != cities.end(); it++)
+    distances.push_back(dist((*it)->getNearestPos(pos), pos));
+
+  bool sorted = false;
+
+  while (!sorted)
+    {
+      sorted = true;
+
+      // setup
+      std::list<int>::iterator dit = distances.begin();
+      std::list<int>::iterator dnextit = distances.begin();
+      dnextit++;
+
+      std::list<City*>::iterator it = cities.begin();
+      std::list<City*>::iterator nextit = it;
+      nextit++;
+
+      for (; nextit != cities.end(); it++, nextit++, dit++, dnextit++)
+        if ((*dit) > (*dnextit))
+          {
+            // exchange the items in both lists
+            sorted = false;
+
+            City* tmp = (*nextit);
+            cities.erase(nextit);
+            nextit = it;
+            it = cities.insert(nextit, tmp);
+
+            int val = (*dnextit);
+            distances.erase(dnextit);
+            dnextit = dit;
+            dit = distances.insert(dnextit, val);
+          }
+    }
+  return cities;
+}
+
+City *Citylist::getCapitalCity(Player *player) const
+{
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      City *c = *it;
+      if (c->getCapitalOwner() == player)
+        return c;
+    }
+  return NULL;
+}
 // End of file

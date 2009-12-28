@@ -1249,7 +1249,7 @@ Upon completing a quest, the hero is rewarded with a large number of gold pieces
 Some quests can expire, freeing the hero to obtain another quest.
 </para>
 <para>
-The player can only have one hero on a quest at any given time.
+There is a game option that controls how often a hero can obtain a quest from a temple.  If the "one quest per player" policy is chosen, it means that the player can only have one hero on a quest at any given time.  Every player could potentially have a questing hero, except for the neutral player who doesn't have heroes.  The alternative questing policy is to allow one quest per hero.  This means that each player can have many heroes on quests simultaneously.
 </para>
 </sect2>
 </sect1>
@@ -1349,7 +1349,27 @@ When this option is turned on, the player can right-click on enemy cities in the
 <listitem>
 <para>Quests</para>
 <para>
-When this option is turned on, heroes can visit temples to obtain quests.
+This option controls how often heroes can visit temples to obtain quests.  This option can have one of the following values:
+<itemizedlist>
+<listitem>
+<para>No Questing</para>
+<para>
+No heroes can obtain quests at temples.
+</para>
+</listitem>
+<listitem>
+<para>One Quest Per Player</para>
+<para>
+Only one hero can obtain a quest from a temple.  If one hero has a quest, another hero belonging to the same player cannot obtain a quest.
+</para>
+</listitem>
+<listitem>
+<para>One Quest Per Hero</para>
+<para>
+Each hero that the player owns can obtain a quest from a temple.  A single hero cannot have two or more quests.
+</para>
+</listitem>
+</itemizedlist>
 </para>
 </listitem>
 <listitem>
