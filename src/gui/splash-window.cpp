@@ -34,7 +34,6 @@
 #include "GameScenario.h"
 #include "playerlist.h"
 #include "network-game-selector-dialog.h"
-//#include "netggz.h"
 #include "main-preferences-dialog.h"
 #include "timed-message-dialog.h"
 #include "new-random-map-dialog.h"
@@ -90,10 +89,9 @@ SplashWindow::SplashWindow()
       (sigc::mem_fun(*this, &SplashWindow::on_preferences_clicked));
     Sound::getInstance()->playMusic("intro");
 
+    xml->get_widget("button_box", button_box);
     if (Configuration::s_autosave_policy == 1)
       {
-	Gtk::VBox *button_box;
-	xml->get_widget("button_box", button_box);
   
 	std::string filename = File::getSavePath() + "autosave.sav";
 	FILE *fileptr = fopen (filename.c_str(), "r");
@@ -150,7 +148,7 @@ bool SplashWindow::on_delete_event(GdkEventAny *e)
 
 void SplashWindow::on_quit_clicked()
 {
-    quit_requested.emit();
+  quit_requested.emit();
 }
 
 void SplashWindow::on_rescue_crashed_game_clicked()

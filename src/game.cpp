@@ -1218,12 +1218,7 @@ void Game::on_fight_started(Fight &fight)
       Vector<int> pos = fight.getAttackers().front()->getPos();
       if (GameScenario::s_hidden_map == false)
 	smallmap->center_view_on_tile(pos, true);
-      LocationBox box = Fight::calculateFightBox(fight);
-      bigmap->setFighting(box);
-      bigmap->draw(Playerlist::getViewingplayer());
-      fight_started.emit(fight);
-      bigmap->setFighting(LocationBox(Vector<int>(-1,-1)));
-      bigmap->draw(Playerlist::getViewingplayer());
+      fight_started.emit(Fight::calculateFightBox(fight), fight);
     }
   else if ((Playerlist::getActiveplayer()->isObservable() == true ||
       attacking_observable_player) && ai_attacking_neutral &&
@@ -1232,13 +1227,7 @@ void Game::on_fight_started(Fight &fight)
       Vector<int> pos = fight.getAttackers().front()->getPos();
       if (GameScenario::s_hidden_map == false)
 	smallmap->center_view_on_tile(pos, true);
-      LocationBox box = Fight::calculateFightBox(fight);
-      bigmap->setFighting(box);
-      bigmap->draw(Playerlist::getViewingplayer());
-      while (g_main_context_iteration(NULL, FALSE)); //doEvents
-      Glib::usleep(TIMER_BIGMAP_SELECTOR * 1000);
-      bigmap->setFighting(LocationBox(Vector<int>(-1,-1)));
-      bigmap->draw(Playerlist::getViewingplayer());
+      abbreviated_fight_started.emit(Fight::calculateFightBox(fight));
     }
 }
 

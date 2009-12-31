@@ -59,6 +59,9 @@ class NewMapDialog
     Gtk::Dialog* dialog;
 
     Gtk::ComboBox *map_size_combobox;
+    Gtk::Table *custom_size_table;
+    Gtk::SpinButton *width_spinbutton;
+    Gtk::SpinButton *height_spinbutton;
     Gtk::ComboBoxText *fill_style_combobox;
     Gtk::Widget *random_map_container;
     Gtk::ComboBoxText *tile_size_combobox;
@@ -78,7 +81,8 @@ class NewMapDialog
     Gtk::Scale *signposts_scale;
     Gtk::Button *accept_button;
 
-    enum { MAP_SIZE_NORMAL = 0, MAP_SIZE_SMALL, MAP_SIZE_TINY };
+    enum { MAP_SIZE_NORMAL = 0, MAP_SIZE_SMALL, MAP_SIZE_TINY, 
+      MAP_SIZE_CUSTOM };
 
     void on_fill_style_changed();
     void on_map_size_changed();

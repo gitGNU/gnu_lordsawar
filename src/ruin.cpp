@@ -69,7 +69,7 @@ Ruin::Ruin(XML_Helper* helper, guint32 width)
     helper->getData(d_searched, "searched");
     helper->getData(d_sage, "sage");
     helper->getData(d_hidden, "hidden");
-    if (d_hidden)
+    if (d_hidden || d_searched)
       {
         helper->getData(ui, "owner");
 	if (ui != MAX_PLAYERS)

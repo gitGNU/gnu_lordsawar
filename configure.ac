@@ -271,6 +271,8 @@ AC_CONFIG_FILES([
         dat/tilesets/bigdefault/Makefile
         dat/tilesets/stark/Makefile
         dat/tilesets/bigstark/Makefile
+        dat/tilesets/wesnoth/Makefile
+        dat/tilesets/bigwesnoth/Makefile
         dat/shield/Makefile 
         dat/shield/default/Makefile 
         dat/shield/plain/Makefile 

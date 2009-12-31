@@ -350,6 +350,9 @@ class Player: public sigc::trackable
 
 	//! Check the player's history to see if we've conquered the given city.
 	bool conqueredCity(City *c) const;
+
+        //! Check the player's history to see if we've explored the given ruin.
+        bool searchedRuin(Ruin *r) const;
 	
 	//! Return a list of history events for the given hero.
 	std::list<History *> getHistoryForHeroId(guint32 id) const;

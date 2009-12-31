@@ -27,6 +27,7 @@ class XML_Helper;
 class Hero;
 class HeroProto;
 class City;
+class Ruin;
 #include "army.h"
 
 //! A permanent record of an accomplishment during gameplay.
@@ -87,7 +88,11 @@ class History
 	  //! A Hero finds some powerful allies.
 	  HERO_FINDS_ALLIES = 18,
 	  //! The player has finished a turn.
-	  END_TURN = 19
+	  END_TURN = 19,
+          //! The player has explored a ruin.
+          HERO_RUIN_EXPLORED = 20,
+          //! The player has been told of the location of a hidden ruin.
+          HERO_REWARD_RUIN = 21,
         };
 	static std::string historyTypeToString(const History::Type type);
 	static History::Type historyTypeFromString(const std::string str);
@@ -761,6 +766,95 @@ class History_EndTurn : public History
     
     private:
 };
+//-----------------------------------------------------------------------------
 
+//! A permanent record of a ruin being successfully searched by a Hero.
+class History_HeroRuinExplored: public History
+{
+    public:
+	//! Default constructor.
+        History_HeroRuinExplored();
+	//! Copy constructor.
+	History_HeroRuinExplored(const History_HeroRuinExplored &history);
+	//! Load the historical event from an opened saved-game file.
+        History_HeroRuinExplored(XML_Helper* helper);
+	//! Destructor.
+        ~History_HeroRuinExplored();
+
+	//! Return some debug information about this historical event.
+        std::string dump() const;
+
+	//! Save the historical event to an opened saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! Populate the event with pertinent data.
+	/**
+	 * Populate the event with the Ruin that was searched and
+	 * the Hero that did the exploration.
+	 *
+	 * @param ruin    The Ruin that was explored.
+	 * @param hero    The Hero who did the exploration of the Ruin.
+	 */
+        bool fillData(Hero *hero, Ruin *ruin);
+
+	//! Get the name of the Hero who searched the Ruin.
+	std::string getHeroName() const {return d_hero;}
+
+	//! Get the id of the Ruin that was searched.
+	guint32 getRuinId() const {return d_ruin;}
+    
+    private:
+	//! The name of the Hero who explored the Ruin.
+	std::string d_hero;
+
+	//! The id of the Ruin that was searched.
+	guint32 d_ruin;
+};
+
+
+//-----------------------------------------------------------------------------
+
+//! A permanent record of the location of a ruin being given to a Hero.
+class History_HeroRewardRuin: public History
+{
+    public:
+	//! Default constructor.
+        History_HeroRewardRuin();
+	//! Copy constructor.
+	History_HeroRewardRuin(const History_HeroRewardRuin&history);
+	//! Load the historical event from an opened saved-game file.
+        History_HeroRewardRuin(XML_Helper* helper);
+	//! Destructor.
+        ~History_HeroRewardRuin();
+
+	//! Return some debug information about this historical event.
+        std::string dump() const;
+
+	//! Save the historical event to an opened saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! Populate the event with pertinent data.
+	/**
+	 * Populate the event with the Ruin that was exposed and
+	 * the Hero that received the location of the ruin.
+	 *
+	 * @param ruin    The Ruin that was exposed.
+	 * @param hero    The Hero who received the location of the Ruin.
+	 */
+        bool fillData(Hero *hero, Ruin *ruin);
+
+	//! Get the name of the Hero who was given the location of the Ruin.
+	std::string getHeroName() const {return d_hero;}
+
+	//! Get the id of the Ruin that was exposed.
+	guint32 getRuinId() const {return d_ruin;}
+    
+    private:
+	//! The name of the Hero who was told the location of the Ruin.
+	std::string d_hero;
+
+	//! The id of the Ruin that was exposed.
+	guint32 d_ruin;
+};
 
 #endif //HISTORY_H

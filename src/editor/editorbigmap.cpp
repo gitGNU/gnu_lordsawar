@@ -302,7 +302,6 @@ void EditorBigMap::change_map_under_cursor()
 
   Player* active = Playerlist::getInstance()->getActiveplayer();
   std::vector<Vector<int> > tiles = get_cursor_tiles();
-  Tileset* ts = GameMap::getInstance()->getTileset();
   Cityset* cs = GameMap::getInstance()->getCityset();
 
   Vector<int> tile = tiles.front();

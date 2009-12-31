@@ -1,11 +1,11 @@
 MAINTAINERCLEANFILES= Makefile.in
 
-lordsawartilebigdefaultdir = $(datadir)/lordsawar/tilesets/bigdefault
+map_bigdefaultdir = $(datadir)/lordsawar/tilesets/bigdefault
 
 bigdefault.lwt: bigdefault.lwt.in
 	LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/bigdefault.lwt.in $(builddir)/bigdefault.lwt
 
-lordsawartilebigdefault_DATA = \
+map_bigdefault_DATA = \
     bigdefault.lwt \
     grass.png \
     water.png \

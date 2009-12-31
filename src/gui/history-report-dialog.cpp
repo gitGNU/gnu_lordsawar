@@ -32,11 +32,14 @@
 #include "File.h"
 #include "GameMap.h"
 #include "citylist.h"
+#include "ruinlist.h"
 #include "city.h"
+#include "ruin.h"
 #include "playerlist.h"
 #include "history.h"
 #include "network-history.h"
 #include "GraphicsCache.h"
+#include "boxcompose.h"
 
 HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
 {
@@ -49,10 +52,11 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
   decorate(dialog);
 
   generatePastCitylists();
+  generatePastRuinlists();
   generatePastEventlists();
 
   xml->get_widget("map_image", map_image);
-  historymap = new HistoryMap(Citylist::getInstance());
+  historymap = new HistoryMap(Citylist::getInstance(), Ruinlist::getInstance());
   historymap->map_changed.connect
     (sigc::mem_fun(this, &HistoryReportDialog::on_map_changed));
 
@@ -71,15 +75,17 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
 	sigc::mem_fun(*this, &HistoryReportDialog::on_switch_page));
 
   xml->get_widget("city_label", city_label);
+  xml->get_widget("ruin_label", ruin_label);
   xml->get_widget("gold_label", gold_label);
   xml->get_widget("winner_label", winner_label);
 
-  events_list = Gtk::ListStore::create(events_columns);
-  xml->get_widget("treeview", events_treeview);
-  events_treeview->set_model(events_list);
-  events_treeview->append_column("", events_columns.image);
-  events_treeview->append_column("", events_columns.desc);
+  //events_list = Gtk::ListStore::create(events_columns);
+  //xml->get_widget("treeview", events_treeview);
+  //events_treeview->set_model(events_list);
+  //events_treeview->append_column("", events_columns.box);
+  //events_treeview->append_column("", events_columns.desc);
 
+  xml->get_widget("events_list_box", events_list_box);
   Gtk::Button *close_button;
   xml->get_widget("close_button", close_button);
   close_button->signal_clicked().connect
@@ -87,6 +93,7 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
   closing = false;
 
   xml->get_widget("city_alignment", city_alignment);
+  xml->get_widget("ruin_alignment", ruin_alignment);
   xml->get_widget("gold_alignment", gold_alignment);
   xml->get_widget("winner_alignment", winner_alignment);
 
@@ -108,6 +115,12 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
 			     Citylist::getInstance()->size(),
 			     _("Cities"), _("Turns"));
   city_alignment->add(*manage(city_chart));
+
+  generatePastRuinCounts();
+  ruin_chart = new LineChart(past_ruincounts, d_colours, 
+			     Ruinlist::getInstance()->size(),
+			     _("Explored Ruins"), _("Turns"));
+  ruin_alignment->add(*manage(ruin_chart));
 
   generatePastGoldCounts();
   gold_chart = new LineChart(past_goldcounts, d_colours, 0, 
@@ -195,6 +208,7 @@ void HistoryReportDialog::generatePastEventlists()
 		case History::DIPLOMATIC_TREACHERY:
 		case History::DIPLOMATIC_WAR:
 		case History::DIPLOMATIC_PEACE:
+		case History::HERO_RUIN_EXPLORED:
 		  elist->push_back(new NetworkHistory(*hit[id], (*pit)->getId()));
 		  break;
 		case History::START_TURN:
@@ -202,6 +216,7 @@ void HistoryReportDialog::generatePastEventlists()
 		case History::CITY_WON:
 		case History::CITY_RAZED:
 		case History::SCORE:
+		case History::HERO_REWARD_RUIN:
 		case History::END_TURN:
 		  break;
 		}
@@ -365,10 +380,11 @@ void HistoryReportDialog::on_turn_changed(Gtk::Scale *scale)
   //tell the historymap to show another set of cities
   guint32 turn = (guint32)turn_scale->get_value();
   if (turn > past_citylists.size() - 1)
-    historymap->updateCities(Citylist::getInstance());
+    historymap->updateCities(Citylist::getInstance(), Ruinlist::getInstance());
   else
-    historymap->updateCities(past_citylists[turn]);
+    historymap->updateCities(past_citylists[turn], past_ruinlists[turn]);
   city_chart->set_x_indicator(turn);
+  ruin_chart->set_x_indicator(turn);
   gold_chart->set_x_indicator(turn);
   rank_chart->set_x_indicator(turn);
   fill_in_turn_info(turn);
@@ -380,6 +396,9 @@ void HistoryReportDialog::update_window_title()
     {
     case CITY:
       set_title(_("City History"));
+      break;
+    case RUIN:
+      set_title(_("Ruin History"));
       break;
     case EVENTS: 
       set_title(_("Event History"));
@@ -400,7 +419,9 @@ void HistoryReportDialog::fill_in_turn_info(guint32 turn)
   update_window_title();
 
   //update the event list
-  events_list->clear();
+  //events_list->clear();
+  events_list_box->children().erase(events_list_box->children().begin(),
+                                    events_list_box->children().end());
   if (turn <= past_eventlists.size() - 1)
     {
       std::list<NetworkHistory*> hist = past_eventlists[turn];
@@ -452,6 +473,27 @@ void HistoryReportDialog::fill_in_turn_info(guint32 turn)
 				  count), turn, count);
   city_label->set_text(s);
 
+  //update the ruin chart
+  std::list<guint32> ruinlist = *past_ruincounts.begin();
+  it = ruinlist.begin();
+  count = 0;
+  for (; it != ruinlist.end(); it++, count++)
+    {
+      if (count == turn)
+	{
+	  count = *it;
+	  break;
+	}
+    }
+  turn == past_ruinlists.size() ?
+  s = String::ucompose(ngettext("By turn %1 you explored %2 ruin!",
+                                "By turn %1 you explored %2 ruins!",
+                                count), turn, count) :
+  s = String::ucompose(ngettext("By turn %1 you explored %2 ruin!",
+                                "By turn %1 you explored %2 ruins!",
+                                count), turn, count);
+  ruin_label->set_text(s);
+
   //on turn # you were coming #
   std::list<guint32> scores;
   std::list<std::list<guint32> >::iterator rit = past_rankcounts.begin();
@@ -487,138 +529,146 @@ void HistoryReportDialog::on_switch_page(GtkNotebookPage *page, guint number)
 void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
+  Playerlist *pl = Playerlist::getInstance();
   Player *p = event->getOwner();
 
   History *history = event->getHistory();
 
-  Glib::ustring s = "";
-  Gtk::TreeIter i = events_list->append();
+  Gtk::HBox *box = NULL;
 
+                              
+  Glib::RefPtr<Gdk::Pixbuf> shield = gc->getShieldPic(1, p)->to_pixbuf();
   switch (history->getType())
     {
     case History::FOUND_SAGE: 
 	{
-	  History_FoundSage *ev;
-	  ev = static_cast<History_FoundSage *>(history);
-	  s = String::ucompose(_("%1 finds a sage!"), ev->getHeroName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
+	  History_FoundSage *ev = static_cast<History_FoundSage *>(history);
+          box = Box::ucompose(_("%1 %2 finds a sage!"), shield,
+                              ev->getHeroName());
 	  break;
 	}
     case History::HERO_EMERGES:
 	{
 	  History_HeroEmerges *ev;
 	  ev = static_cast<History_HeroEmerges *>(history);
-	  s = String::ucompose(_("%1 emerges in %2!"), ev->getHeroName(),
-			       ev->getCityName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
+          box = Box::ucompose(_("%1 %2 emerges in %3"), shield,
+                              ev->getHeroName(), ev->getCityName());
 	  break;
 	}
     case History::HERO_QUEST_STARTED:
 	{
-	  History_HeroQuestStarted *ev;
-	  ev = static_cast<History_HeroQuestStarted*>(history);
-	  s = String::ucompose(_("%1 begins a quest!"), ev->getHeroName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
+	  History_HeroQuestStarted *ev = 
+            static_cast<History_HeroQuestStarted*>(history);
+          box = Box::ucompose(_("%1 %2 begins a quest!"), shield,
+                              ev->getHeroName());
 	  break;
 	}
     case History::HERO_QUEST_COMPLETED:
 	{
-	  History_HeroQuestCompleted *ev;
-	  ev = static_cast<History_HeroQuestCompleted *>(history);
-	  s = String::ucompose(_("%1 finishes a quest!"), ev->getHeroName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
+	  History_HeroQuestCompleted *ev
+            = static_cast<History_HeroQuestCompleted *>(history);
+          box = Box::ucompose(_("%1 %2 finishes a quest!"), shield,
+                              ev->getHeroName());
 	  break;
 	}
     case History::HERO_KILLED_IN_CITY:
 	{
-	  History_HeroKilledInCity *ev;
-	  ev = static_cast<History_HeroKilledInCity *>(history);
-	  s = String::ucompose(_("%1 is killed in %2!"), ev->getHeroName(),
-			       ev->getCityName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
+	  History_HeroKilledInCity *ev = 
+            static_cast<History_HeroKilledInCity *>(history);
+          box = Box::ucompose(_("%1 %2 is killed in %3!"), shield,
+                              ev->getHeroName(), ev->getCityName());
 	  break;
 	}
     case History::HERO_KILLED_IN_BATTLE:
 	{
-	  History_HeroKilledInBattle *ev;
-	  ev = static_cast<History_HeroKilledInBattle *>(history);
-	  s = String::ucompose(_("%1 is killed in battle!"), ev->getHeroName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
+	  History_HeroKilledInBattle *ev = 
+            static_cast<History_HeroKilledInBattle *>(history);
+          box = Box::ucompose(_("%1 %2 is killed in battle!"), shield,
+                              ev->getHeroName());
 	  break;
 	}
     case History::HERO_KILLED_SEARCHING:
 	{
-	  History_HeroKilledSearching *ev;
-	  ev = static_cast<History_HeroKilledSearching *>(history);
-	  s = String::ucompose(_("%1 is killed while searching!"), 
-			       ev->getHeroName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
+	  History_HeroKilledSearching *ev = 
+            static_cast<History_HeroKilledSearching *>(history);
+          box = Box::ucompose(_("%1 %2 is killed while searching!"), shield,
+                              ev->getHeroName());
 	  break;
 	}
     case History::HERO_CITY_WON:
 	{
-	  History_HeroCityWon *ev;
-	  ev = static_cast<History_HeroCityWon *>(history);
-	  s = String::ucompose(_("%1 conquers %2!"), ev->getHeroName(), 
-			       ev->getCityName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
+	  History_HeroCityWon *ev = 
+            static_cast<History_HeroCityWon *>(history);
+          box = Box::ucompose(_("%1 %2 conquers %3!"), shield,
+                              ev->getHeroName(), ev->getCityName());
 	  break;
 	}
     case History::PLAYER_VANQUISHED:
 	{
-	  History_PlayerVanquished *ev;
-	  ev = static_cast<History_PlayerVanquished*>(history);
-	  s = String::ucompose(_("%1 utterly vanquished!"), p->getName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
+          box = Box::ucompose(_("%1 %2 utterly vanquished!"), shield,
+                              p->getName());
 	  break;
 	}
     case History::DIPLOMATIC_PEACE:
 	{
-	  History_DiplomacyPeace *ev;
-	  ev = static_cast<History_DiplomacyPeace*>(history);
-	  Playerlist *pl = Playerlist::getInstance();
+	  History_DiplomacyPeace *ev = 
+            static_cast<History_DiplomacyPeace*>(history);
 	  Player *opponent = pl->getPlayer(ev->getOpponentId());
-	  s = String::ucompose(_("%1 at peace with %2!"), p->getName(), 
-			       opponent->getName());
+          box = Box::ucompose(_("%1 %2 at peace with %3 %4!"), shield,
+                              p->getName(), 
+                              gc->getShieldPic(1, opponent)->to_pixbuf(), 
+                              opponent->getName());
 	  break;
 	}
     case History::DIPLOMATIC_WAR:
 	{
-	  History_DiplomacyWar *ev;
-	  ev = static_cast<History_DiplomacyWar*>(history);
-	  Playerlist *pl = Playerlist::getInstance();
+	  History_DiplomacyWar *ev = 
+            static_cast<History_DiplomacyWar*>(history);
 	  Player *opponent = pl->getPlayer(ev->getOpponentId());
-	  s = String::ucompose(_("%1 at war with %2!"), p->getName(), 
-			       opponent->getName());
+          box = Box::ucompose(_("%1 %2 at war with %3 %4!"), shield,
+                              p->getName(), 
+                              gc->getShieldPic(1, opponent)->to_pixbuf(), 
+                              opponent->getName());
 	  break;
 	}
     case History::DIPLOMATIC_TREACHERY:
 	{
-	  History_DiplomacyTreachery *ev;
-	  ev = static_cast<History_DiplomacyTreachery*>(history);
-	  Playerlist *pl = Playerlist::getInstance();
+	  History_DiplomacyTreachery *ev = 
+            static_cast<History_DiplomacyTreachery*>(history);
 	  Player *opponent = pl->getPlayer(ev->getOpponentId());
-	  s = String::ucompose(_("Treachery by %1 on %2!"), p->getName(),
-			       opponent->getName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
+          box = Box::ucompose(_("%1 Treachery on %2 %3!"), shield,
+                              gc->getShieldPic(1, opponent)->to_pixbuf(), 
+                              opponent->getName());
 	  break;
 	}
     case History::HERO_FINDS_ALLIES:
 	{
-	  History_HeroFindsAllies *ev;
-	  ev = static_cast<History_HeroFindsAllies*>(history);
-	  s = String::ucompose(_("%1 finds allies!"), ev->getHeroName());
-	  (*i)[events_columns.image] = gc->getShieldPic(1, p)->to_pixbuf();
+	  History_HeroFindsAllies *ev = 
+            static_cast<History_HeroFindsAllies*>(history);
+          box = Box::ucompose(_("%1 %2 finds allies!"), shield, 
+                              ev->getHeroName());
+	  break;
+	}
+    case History::HERO_RUIN_EXPLORED:
+	{
+	  History_HeroRuinExplored *ev = 
+            static_cast<History_HeroRuinExplored *>(history);
+          Ruinlist *rl = Ruinlist::getInstance();
+          box = Box::ucompose(_("%1 %2 explores %3!"), shield, 
+                              ev->getHeroName(),
+                              rl->getById(ev->getRuinId())->getName());
 	  break;
 	}
     default:
-      s = _("unknown");
+      box = NULL;
       break;
     }
 
-  (*i)[events_columns.desc] = s;
-
-
+  if (box)
+    {
+      events_list_box->pack_start(*manage(box), Gtk::PACK_SHRINK, 0);
+      events_list_box->show_all();
+    }
 }
 void HistoryReportDialog::on_close_button()
 {
@@ -717,3 +767,160 @@ void HistoryReportDialog::generatePastGoldCounts()
     }
 }
 
+void HistoryReportDialog::generatePastRuinCounts()
+{
+  //how many ruins did the players search at each turn?
+
+  Playerlist::iterator pit = Playerlist::getInstance()->begin();
+  pit = Playerlist::getInstance()->begin();
+  for (; pit != Playerlist::getInstance()->end(); ++pit)
+    {
+      if (*pit == Playerlist::getInstance()->getNeutral())
+        continue;
+      std::list<guint32> line;
+      for (unsigned int i = 0; i < past_citylists.size(); i++)
+        {
+          guint32 total_ruins = 0;
+          LocationList<Ruin*>::iterator it = past_ruinlists[i]->begin();
+          for (; it != past_ruinlists[i]->end(); it++)
+            {
+              Ruin *ruin = *it;
+              if (ruin->isHidden() == true && ruin->getOwner() != *pit)
+                continue;
+              if (ruin->isSearched() == true && 
+                  (*pit)->searchedRuin(ruin) == true)
+                {
+                  ruin->setOwner(*pit);
+                  total_ruins++;
+                }
+            }
+          line.push_back(total_ruins);
+        }
+      line.push_back(Ruinlist::getInstance()->countExploredRuins(*pit));
+      if (*pit == d_player)
+	past_ruincounts.push_front(line);
+      else
+	past_ruincounts.push_back(line);
+    }
+}
+
+void HistoryReportDialog::generatePastRuinlists()
+{
+  //we don't do this per player
+  //we just count how many ruins are unexplored at every turn.
+  //how do we deal with hidden ruins?
+  //they should pop up when found.
+  bool last_turn = false;
+
+  //keep a set of pointers to remember how far we are into each player's history
+  std::list<History*> *hist[MAX_PLAYERS];
+  Playerlist::iterator pit = Playerlist::getInstance()->begin();
+  for (; pit != Playerlist::getInstance()->end(); ++pit)
+    {
+      if (*pit == Playerlist::getInstance()->getNeutral())
+	continue;
+      hist[(*pit)->getId()] = (*pit)->getHistorylist();
+    }
+  std::list<History*>::iterator hit[MAX_PLAYERS];
+  pit = Playerlist::getInstance()->begin();
+  for (; pit != Playerlist::getInstance()->end(); ++pit)
+    {
+      if (*pit == Playerlist::getInstance()->getNeutral())
+	continue;
+      hit[(*pit)->getId()] = hist[(*pit)->getId()]->begin();
+    }
+
+  //start off with an initial ruin list where all ruins are unexplored and hidden.
+  //all hidden ruins haven't been found yet, unless they started off that way.
+  LocationList<Ruin*> *rlist = new LocationList<Ruin*>();
+  Ruinlist *rl = Ruinlist::getInstance();
+  for (Ruinlist::iterator it = rl->begin(); it != rl->end(); ++it)
+    rlist->push_back(new Ruin(**it));
+  for (LocationList<Ruin*>::iterator it = rlist->begin(); it != rlist->end(); ++it)
+    {
+      //is the ruin searched to begin with?
+      bool no_ruin_history = true;
+      pit = Playerlist::getInstance()->begin();
+      for (; pit != Playerlist::getInstance()->end(); ++pit)
+	if ((*pit)->searchedRuin(*it) == true)
+	  no_ruin_history = false;
+      if ((*it)->isSearched() == true && no_ruin_history)
+        (*it)->setSearched(true);
+      else
+        {
+          (*it)->setSearched(false);
+          if ((*it)->isHidden())
+            (*it)->setOwner(NULL);
+        }
+    }
+
+  unsigned int count = 0;
+  while (1)
+    {
+      //now we see what ruins we took this turn
+      pit = Playerlist::getInstance()->begin();
+      for (; pit != Playerlist::getInstance()->end(); ++pit)
+	{
+	  if (*pit == Playerlist::getInstance()->getNeutral())
+	    continue;
+	  //dump everything up to the next turn
+	  guint32 id = (*pit)->getId();
+	  if (hit[id] == hist[id]->end())
+	    continue;
+	  for (; hit[id] != hist[id]->end(); hit[id]++)
+	    {
+	      if ((*hit[id])->getType() == History::START_TURN)
+		{
+		  hit[id]++;
+		  break;
+		}
+              //when a ruin becomes visible all of a sudden, we mark it as visible
+	      else if ((*hit[id])->getType() == History::HERO_REWARD_RUIN)
+                {
+		  guint32 ruin_id;
+		  ruin_id = 
+                    dynamic_cast<History_HeroRewardRuin*>(*hit[id])->getRuinId();
+		  //find ruin with this ruin id in rlist
+		  LocationList<Ruin*>::iterator rit = rlist->begin();
+		  for (; rit != rlist->end(); ++rit)
+		    if ((*rit)->getId() == ruin_id)
+		      {
+                        (*rit)->setOwner(*pit);
+			break;
+		      }
+                }
+	      else if ((*hit[id])->getType() == History::HERO_RUIN_EXPLORED)
+		{
+		  guint32 ruin_id;
+		  ruin_id = 
+                    dynamic_cast<History_HeroRuinExplored*>(*hit[id])->getRuinId();
+		  //find ruin with this ruin id in rlist
+		  LocationList<Ruin*>::iterator rit = rlist->begin();
+		  for (; rit != rlist->end(); ++rit)
+		    if ((*rit)->getId() == ruin_id)
+		      {
+			(*rit)->setSearched(true);
+			break;
+		      }
+		}
+	    }
+	  if (hit[id] == hist[id]->end())
+	    {
+	      count++;
+	      if (count == Playerlist::getInstance()->size() - 2)
+		last_turn = true;
+	    }
+	}
+      //and add it to the list
+      past_ruinlists.push_back(rlist);
+      LocationList<Ruin*> *new_rlist = new LocationList<Ruin*>();
+      for (LocationList<Ruin*>::iterator it = rlist->begin(); 
+	   it != rlist->end(); ++it)
+	new_rlist->push_back(new Ruin(**it));
+      rlist = new_rlist;
+      if (last_turn == true)
+	break;
+
+    }
+  past_ruinlists.erase(--past_ruinlists.end());
+}

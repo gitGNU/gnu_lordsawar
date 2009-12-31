@@ -416,6 +416,13 @@
                           </object>
                         </child>
                         <child>
+                          <object class="GtkMenuItem" id="ruin_history_menuitem">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Ruin</property>
+                            <property name="use_underline">True</property>
+                          </object>
+                        </child>
+                        <child>
                           <object class="GtkMenuItem" id="event_history_menuitem">
                             <property name="visible">True</property>
                             <property name="label" translatable="yes">Events</property>

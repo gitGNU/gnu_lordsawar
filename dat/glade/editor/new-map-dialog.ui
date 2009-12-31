@@ -28,7 +28,7 @@
   </object>
   <object class="GtkAdjustment" id="adjustment4">
     <property name="value">20</property>
-    <property name="upper">80</property>
+    <property name="upper">110</property>
     <property name="step_increment">1</property>
     <property name="page_increment">1</property>
   </object>
@@ -76,6 +76,9 @@
       </row>
       <row>
         <col id="0" translatable="yes">Tiny</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Custom</col>
       </row>
     </data>
   </object>
@@ -141,25 +144,59 @@
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkLabel" id="label21">
+                          <object class="GtkTable" id="custom_size_table">
                             <property name="visible">True</property>
-                            <property name="label" translatable="yes">Tile Size:</property>
+                            <property name="n_columns">4</property>
+                            <property name="column_spacing">8</property>
+                            <child>
+                              <object class="GtkLabel" id="width_label">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Width:</property>
+                              </object>
+                              <packing>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSpinButton" id="width_spinbutton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="invisible_char">&#x2022;</property>
+                                <property name="adjustment">adjustment11</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="right_attach">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="height_label">
+                                <property name="visible">True</property>
+                                <property name="label" translatable="yes">Height:</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">2</property>
+                                <property name="right_attach">3</property>
+                                <property name="y_options"></property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkSpinButton" id="height_spinbutton">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="invisible_char">&#x2022;</property>
+                                <property name="adjustment">adjustment12</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">3</property>
+                                <property name="right_attach">4</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">False</property>
                             <property name="position">2</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkHBox" id="tile_size_box">
-                            <property name="visible">True</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="position">3</property>
                           </packing>
                         </child>
                       </object>
@@ -317,6 +354,28 @@
                           </object>
                           <packing>
                             <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label21">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Tile Size:</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkHBox" id="tile_size_box">
+                            <property name="visible">True</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">3</property>
                           </packing>
                         </child>
                       </object>
@@ -687,5 +746,21 @@
       <action-widget response="-6">cancel_button</action-widget>
       <action-widget response="-3">accept_button</action-widget>
     </action-widgets>
+  </object>
+  <object class="GtkAdjustment" id="adjustment11">
+    <property name="value">112</property>
+    <property name="lower">50</property>
+    <property name="upper">500</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+    <property name="page_size">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment12">
+    <property name="value">156</property>
+    <property name="lower">75</property>
+    <property name="upper">500</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+    <property name="page_size">10</property>
   </object>
 </interface>

@@ -24,6 +24,7 @@
 #include "heroproto.h"
 #include "city.h"
 #include "xmlhelper.h"
+#include "ruin.h"
 
 std::string History::d_tag = "history";
 using namespace std;
@@ -86,6 +87,10 @@ History* History::handle_load(XML_Helper* helper)
       return (new History_HeroFindsAllies(helper));
     case END_TURN:
       return (new History_EndTurn(helper));
+    case HERO_RUIN_EXPLORED:
+      return (new History_HeroRuinExplored(helper));
+    case HERO_REWARD_RUIN:
+      return (new History_HeroRewardRuin(helper));
     }
 
   return 0;
@@ -162,6 +167,14 @@ History* History::copy(const History* a)
     case END_TURN:
       return 
 	(new History_EndTurn(*dynamic_cast<const History_EndTurn*>(a)));
+    case HERO_RUIN_EXPLORED:
+      return 
+	(new History_HeroRuinExplored
+         (*dynamic_cast<const History_HeroRuinExplored*>(a)));
+    case HERO_REWARD_RUIN:
+      return 
+	(new History_HeroRewardRuin
+         (*dynamic_cast<const History_HeroRewardRuin*>(a)));
     }
 
   return 0;
@@ -1090,6 +1103,109 @@ bool History_EndTurn::fillData()
 {
   return true;
 }
+//-----------------------------------------------------------------------------
+//History_HeroRuinExplored
+
+History_HeroRuinExplored::History_HeroRuinExplored()
+:History(History::HERO_RUIN_EXPLORED), d_hero(""), d_ruin(0)
+{
+}
+
+History_HeroRuinExplored::History_HeroRuinExplored(const History_HeroRuinExplored &history)
+:History(history), d_hero(history.d_hero), d_ruin(history.d_ruin)
+{
+}
+
+History_HeroRuinExplored::History_HeroRuinExplored(XML_Helper* helper)
+:History(helper)
+{
+  helper->getData(d_ruin, "ruin");
+  helper->getData(d_hero, "hero");
+}
+
+History_HeroRuinExplored::~History_HeroRuinExplored()
+{
+}
+
+std::string History_HeroRuinExplored::dump() const
+{
+  std::stringstream s;
+
+  s <<"ruin " << d_ruin << " has been searched";
+  s <<" by " << d_hero;
+  s <<"\n";
+
+  return s.str();
+}
+
+bool History_HeroRuinExplored::doSave(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->saveData("ruin", d_ruin);
+  retval &= helper->saveData("hero", d_hero);
+
+  return retval;
+}
+
+bool History_HeroRuinExplored::fillData(Hero *hero, Ruin *ruin)
+{
+  d_ruin = ruin->getId();
+  d_hero = hero->getName();
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+//History_HeroRewardRuin
+
+History_HeroRewardRuin::History_HeroRewardRuin()
+:History(History::HERO_REWARD_RUIN), d_hero(""), d_ruin(0)
+{
+}
+
+History_HeroRewardRuin::History_HeroRewardRuin(const History_HeroRewardRuin &history)
+:History(history), d_hero(history.d_hero), d_ruin(history.d_ruin)
+{
+}
+
+History_HeroRewardRuin::History_HeroRewardRuin(XML_Helper* helper)
+:History(helper)
+{
+  helper->getData(d_ruin, "ruin");
+  helper->getData(d_hero, "hero");
+}
+
+History_HeroRewardRuin::~History_HeroRewardRuin()
+{
+}
+
+std::string History_HeroRewardRuin::dump() const
+{
+  std::stringstream s;
+
+  s <<"the location of ruin " << d_ruin << " has been given ";
+  s <<"to " << d_hero;
+  s <<"\n";
+
+  return s.str();
+}
+
+bool History_HeroRewardRuin::doSave(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->saveData("ruin", d_ruin);
+  retval &= helper->saveData("hero", d_hero);
+
+  return retval;
+}
+
+bool History_HeroRewardRuin::fillData(Hero *hero, Ruin *ruin)
+{
+  d_ruin = ruin->getId();
+  d_hero = hero->getName();
+  return true;
+}
 
 std::string History::historyTypeToString(const History::Type type)
 {
@@ -1133,6 +1249,10 @@ std::string History::historyTypeToString(const History::Type type)
       return "History::HERO_FINDS_ALLIES";
     case History::END_TURN:
       return "History::END_TURN";
+    case History::HERO_RUIN_EXPLORED:
+      return "History::HERO_RUIN_EXPLORED";
+    case History::HERO_REWARD_RUIN:
+      return "History::HERO_REWARD_RUIN";
     }
   return "History::START_TURN";
 }
@@ -1179,5 +1299,9 @@ History::Type History::historyTypeFromString(const std::string str)
     return History::HERO_FINDS_ALLIES;
   else if (str == "History::END_TURN")
     return History::END_TURN;
+  else if (str == "History::HERO_RUIN_EXPLORED")
+    return History::HERO_RUIN_EXPLORED;
+  else if (str == "History::HERO_REWARD_RUIN")
+    return History::HERO_REWARD_RUIN;
   return History::START_TURN;
 }

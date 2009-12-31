@@ -298,6 +298,8 @@ dat/citysets/dol/dol.lwc.in
 dat/citysets/bigdol/bigdol.lwc.in
 dat/tilesets/default/default.lwt.in
 dat/tilesets/bigdefault/bigdefault.lwt.in
+dat/tilesets/wesnoth/wesnoth.lwt.in
+dat/tilesets/bigwesnoth/bigwesnoth.lwt.in
 dat/tilesets/stark/stark.lwt.in
 dat/tilesets/bigstark/bigstark.lwt.in
 dat/various/items/items.xml.in

@@ -63,6 +63,7 @@ class SplashWindow: public Decorated
     Gtk::Button *new_network_game_button;
     Gtk::Button *new_pbm_game_button;
     Gtk::Button *preferences_button;
+    Gtk::VBox *button_box; //crash button box
 	    
     bool on_delete_event(GdkEventAny *e);
     void on_window_closed();

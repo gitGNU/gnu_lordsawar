@@ -137,6 +137,8 @@ class Ruinlist : public LocationList<Ruin*>, public sigc::trackable
 	 */
         Ruin* getNearestVisibleRuin(const Vector<int>& pos, int dist) const;
 
+        guint32 countUnexploredRuins(Player *owner) const;
+        guint32 countExploredRuins(Player *owner) const;
 
 	// Static Methods
         

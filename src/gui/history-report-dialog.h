@@ -29,25 +29,27 @@
 #include "historymap.h"
 #include "history.h"
 #include "player.h"
+#include "decorated.h"
+
 class Citylist;
 class City;
 
 class Player;
-#include "decorated.h"
-// dialog for showing all ruins and temples
-// the stack parameter is used as a starting position for showing ruins
+
 class HistoryReportDialog: public Decorated
 {
  public:
-    enum HistoryReportType {CITY = 0, EVENTS, GOLD, WINNING};
+    enum HistoryReportType {CITY = 0, RUIN, EVENTS, GOLD, WINNING};
     HistoryReportDialog(Player *p, HistoryReportType type);
     ~HistoryReportDialog();
 
     void generatePastCitylists(); //data for map
     void generatePastCityCounts(); //data for chart
+    void generatePastRuinlists(); //data for map
+    void generatePastRuinCounts(); //data for chart
     void generatePastGoldCounts(); //data for chart
     void generatePastWinningCounts(); //data for chart
-    void generatePastEventlists(); //data for treeview
+    void generatePastEventlists(); //data for events list
     void set_parent_window(Gtk::Window &parent);
 
     void run();
@@ -61,9 +63,11 @@ class HistoryReportDialog: public Decorated
     Gtk::Scale *turn_scale;
     Gtk::Notebook *history_notebook;
     Gtk::Label *city_label;
+    Gtk::Label *ruin_label;
     Gtk::Label *gold_label;
     Gtk::Label *winner_label;
     Gtk::Alignment *city_alignment;
+    Gtk::Alignment *ruin_alignment;
     Gtk::Alignment *gold_alignment;
     Gtk::Alignment *winner_alignment;
 
@@ -71,6 +75,9 @@ class HistoryReportDialog: public Decorated
     LineChart *city_chart;
     std::vector<std::list<NetworkHistory *> > past_eventlists;
     std::list<std::list<guint32> > past_citycounts;
+    std::vector<LocationList<Ruin*>* > past_ruinlists;
+    LineChart *ruin_chart;
+    std::list<std::list<guint32> > past_ruincounts;
     std::list<std::list<guint32> > past_goldcounts;
     LineChart *gold_chart;
     std::list<std::list<guint32> > past_rankcounts;
@@ -80,19 +87,8 @@ class HistoryReportDialog: public Decorated
   
     std::list<Gdk::Color> d_colours; //player colours
     
-    Gtk::TreeView *events_treeview;
+    Gtk::VBox *events_list_box;
 
-
-    class EventsColumns: public Gtk::TreeModelColumnRecord {
-    public:
-	EventsColumns() 
-        { add(image); add(desc);}
-	
-	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
-	Gtk::TreeModelColumn<Glib::ustring> desc;
-    };
-    const EventsColumns events_columns;
-    Glib::RefPtr<Gtk::ListStore> events_list;
     void addHistoryEvent(NetworkHistory *event);
     void on_close_button();
     void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);

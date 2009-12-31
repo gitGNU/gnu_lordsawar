@@ -1331,10 +1331,14 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r)
   retReward = r->getReward();
 
   r->setSearched(true);
+  r->setOwner(s->getOwner());
 
-  // actualize the actionlist
   item->setSearched(true);
   addAction(item);
+
+  History_HeroRuinExplored *history_item = new History_HeroRuinExplored();
+  history_item->fillData(dynamic_cast<Hero*>(s->getFirstHero()), r);
+  addHistory(history_item);
 
   supdatingStack.emit(0);
   return retReward;
@@ -1803,6 +1807,14 @@ bool Player::giveReward(Stack *s, Reward *reward)
   Action_Reward* item = new Action_Reward();
   item->fillData(s, reward);
   addAction(item);
+
+  if (reward->getType() == Reward::RUIN)
+    {
+      Ruin *r = dynamic_cast<Reward_Ruin*>(reward)->getRuin();
+      History_HeroRewardRuin* history_item = new History_HeroRewardRuin();
+      history_item->fillData(dynamic_cast<Hero*>(s->getFirstHero()), r);
+      addHistory(history_item);
+    }
   //FIXME: get rid of this reward now that we're done with it
   //but we need to show it still... (in the case of quest completions)
 
@@ -3484,7 +3496,25 @@ void Player::saveNetworkActions(XML_Helper *helper) const
       copy->save(helper);
     }
 }
-	
+
+bool Player::searchedRuin(Ruin *r) const
+{
+  if (!r)
+    return false;
+  for (list<History*>::const_iterator it = d_history.begin();
+       it != d_history.end(); it++)
+    {
+      if ((*it)->getType() == History::HERO_RUIN_EXPLORED)
+	{
+	  History_HeroRuinExplored *event = 
+            dynamic_cast<History_HeroRuinExplored*>(*it);
+	  if (event->getRuinId() == r->getId())
+	    return true;
+	}
+    }    
+  return false;
+}
+
 bool Player::conqueredCity(City *c) const
 {
   if (!c)

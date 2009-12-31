@@ -85,7 +85,7 @@ CityInfoTip::CityInfoTip(Gtk::Widget *target, MapTipPosition mpos, const City *c
 			  
     if (city->isCapital())
       {
-	Glib::ustring s = "Capital of ";
+	Glib::ustring s = _("Capital of\n");
 	s += city->getCapitalOwner()->getName();
 	capital_label->set_text (s);
 	capital_image->property_pixbuf() = 

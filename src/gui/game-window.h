@@ -54,6 +54,7 @@ class City;
 class Reward;
 class Reward_Ruin;
 class NextTurn;
+class LocationBox;
 
 /** The main window in which all the game action is going on.
   *
@@ -119,6 +120,7 @@ class GameWindow: public Decorated
     Gtk::MenuItem *signpost_menuitem;
     Gtk::MenuItem *diplomacy_report_menuitem;
     Gtk::MenuItem *city_history_menuitem;
+    Gtk::MenuItem *ruin_history_menuitem;
     Gtk::MenuItem *event_history_menuitem;
     Gtk::MenuItem *gold_history_menuitem;
     Gtk::MenuItem *winner_history_menuitem;
@@ -252,6 +254,7 @@ class GameWindow: public Decorated
     void on_ruin_report_activated();
     void on_army_bonus_activated();
     void on_city_history_activated();
+    void on_ruin_history_activated();
     void on_event_history_activated();
     void on_gold_history_activated();
     void on_winner_history_activated();
@@ -291,7 +294,8 @@ class GameWindow: public Decorated
     void on_ruin_searched(Ruin *ruin, Stack *s, Reward *reward);
     Reward* on_sage_visited(Ruin *ruin, Sage *sage, Stack *s);
     void on_ruin_rewarded(Reward_Ruin *reward);
-    void on_fight_started(Fight &fight);
+    void on_fight_started(LocationBox box, Fight &fight);
+    void on_abbreviated_fight_started(LocationBox box);
     void on_ruinfight_started(Stack *attackers, Stack *defenders);
     void on_ruinfight_finished(Fight::Result result);
     bool on_hero_offers_service(Player *player, HeroProto *hero, City *city, int gold);

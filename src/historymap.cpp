@@ -27,19 +27,52 @@
 
 #include "historymap.h"
 #include "city.h"
+#include "ruin.h"
 #include "GameMap.h"
 #include "GraphicsCache.h"
 
-HistoryMap::HistoryMap(LocationList<City*> *clist)
+HistoryMap::HistoryMap(LocationList<City*> *clist, LocationList<Ruin*> *rlist)
 {
   d_clist = clist;
+  d_rlist = rlist;
 }
 
 void HistoryMap::after_draw()
 {
     OverviewMap::after_draw();
     drawCities();
+    drawRuins();
     map_changed.emit(surface);
+}
+
+void HistoryMap::drawRuins()
+{
+  GraphicsCache *gc = GraphicsCache::getInstance();
+
+  // Draw all cities as shields over the city location, in the colors of
+  // the players.
+  LocationList<Ruin*>::iterator it = d_rlist->begin();
+  for (; it != d_rlist->end(); it++)
+  {
+      Ruin *ruin = *it;
+      PixMask *tmp;
+      if (ruin->isVisible(Playerlist::getViewingplayer()) == false)
+        continue;
+      if (ruin->isSearched() == false)
+        continue;
+      if (ruin->isHidden() == true && ruin->getOwner() != 
+          Playerlist::getInstance()->getActiveplayer())
+        continue;
+
+      tmp = gc->getShieldPic(1, ruin->getOwner());
+      tmp = tmp->copy();
+      PixMask::scale(tmp, tmp->get_width()/2, tmp->get_height()/2);
+  
+      Vector<int> pos = (*it)->getPos();
+      pos = mapToSurface(pos);
+      tmp->blit_centered(surface, pos);
+      delete tmp;
+  }
 }
 
 void HistoryMap::drawCities()
@@ -65,9 +98,10 @@ void HistoryMap::drawCities()
   }
 }
 
-void HistoryMap::updateCities (LocationList<City*> *clist)
+void HistoryMap::updateCities (LocationList<City*> *clist, LocationList<Ruin*> *rlist)
 {
   d_clist = clist;
+  d_rlist = rlist;
   draw(Playerlist::getViewingplayer());
   after_draw();
 }

@@ -26,9 +26,10 @@
 #include "LocationList.h"
 
 class City;
-//! Draw the given cities on the map.
+class Ruin;
+//! Draw the given cities and ruins on the map.
 /** 
- * Draw a set of cities onto the miniature map graphic.
+ * Draw a set of cities and ruins onto the miniature map graphic.
  *
  * @note This is called HistoryMap because it is used for the HistoryDialog.
  *
@@ -40,7 +41,7 @@ class HistoryMap: public OverviewMap
      /**
       * @param clist  The list of the City objects to draw on the miniature map.
       */
-     HistoryMap(LocationList<City*> *clist);
+     HistoryMap(LocationList<City*> *clist, LocationList<Ruin*> *rlist);
  
      //! Emitted when the cities are finished being drawn on the map surface.
      /**
@@ -55,13 +56,18 @@ class HistoryMap: public OverviewMap
       *
       * @param clist  The new list of City objects to draw onto the miniature
       *               map graphic.
+      * @param rlist  The new list of Ruin objects to draw onto the miniature
+      *               map graphic.
       */
-     void updateCities (LocationList<City*> *clist);
+     void updateCities (LocationList<City*> *clist, LocationList<Ruin*> *rlist);
 
  private:
 
      //! The set of city objects to show on the miniature map graphic.
      LocationList<City*> *d_clist;
+
+     //! The set of ruin objects to show on the miniature map graphic.
+     LocationList<Ruin*> *d_rlist;
 
      //! Draw the City objects onto the miniature map graphic.
      /**
@@ -78,6 +84,9 @@ class HistoryMap: public OverviewMap
       * City objects of Citylist, and not the set of cities defined here.
       */
      void drawCities ();
+
+     //! Draw the ruins.
+     void drawRuins();
 };
 
 #endif

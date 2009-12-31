@@ -79,7 +79,7 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         vectoredunit.cpp vectoredunit.h \
         vectoredunitlist.cpp vectoredunitlist.h xmlhelper.cpp xmlhelper.h \
         tarhelper.cpp tarhelper.h \
-        rectangle.h vector.h ucompose.hpp \
+        rectangle.h vector.h ucompose.hpp boxcompose.h \
 	SightMap.cpp SightMap.h SmallTile.cpp SmallTile.h \
 	Triumphs.cpp Triumphs.h Backpack.cpp Backpack.h \
 	MapBackpack.cpp MapBackpack.h prodslot.cpp prodslot.h \

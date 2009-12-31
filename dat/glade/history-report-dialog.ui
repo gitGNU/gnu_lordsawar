@@ -66,7 +66,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <child>
-                      <object class="GtkVBox" id="vbox1">
+                      <object class="GtkVBox" id="city_box">
                         <property name="visible">True</property>
                         <child>
                           <object class="GtkAlignment" id="city_alignment">
@@ -93,7 +93,7 @@
                       </object>
                     </child>
                     <child type="tab">
-                      <object class="GtkLabel" id="label1">
+                      <object class="GtkLabel" id="city_tab_label">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">City</property>
                       </object>
@@ -102,18 +102,29 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkScrolledWindow" id="scrolledwindow1">
+                      <object class="GtkVBox" id="ruin_box">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
-                        <property name="shadow_type">in</property>
                         <child>
-                          <object class="GtkTreeView" id="treeview">
+                          <object class="GtkAlignment" id="ruin_alignment">
+                            <property name="height_request">175</property>
                             <property name="visible">True</property>
-                            <property name="can_focus">True</property>
-                            <property name="headers_visible">False</property>
+                            <child>
+                              <placeholder/>
+                            </child>
                           </object>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="ruin_label">
+                            <property name="visible">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
                         </child>
                       </object>
                       <packing>
@@ -121,9 +132,9 @@
                       </packing>
                     </child>
                     <child type="tab">
-                      <object class="GtkLabel" id="label2">
+                      <object class="GtkLabel" id="ruin_tab_label">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Events</property>
+                        <property name="label" translatable="yes">Ruin</property>
                       </object>
                       <packing>
                         <property name="position">1</property>
@@ -131,7 +142,69 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkVBox" id="vbox2">
+                      <object class="GtkVBox" id="events_box">
+                        <property name="visible">True</property>
+                        <child>
+                          <object class="GtkAlignment" id="events_alignment">
+                            <property name="height_request">175</property>
+                            <property name="visible">True</property>
+                            <child>
+                              <object class="GtkScrolledWindow" id="scrolledwindow1">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="hscrollbar_policy">automatic</property>
+                                <property name="vscrollbar_policy">automatic</property>
+                                <property name="shadow_type">in</property>
+                                <child>
+                                  <object class="GtkViewport" id="viewport1">
+                                    <property name="visible">True</property>
+                                    <property name="resize_mode">queue</property>
+                                    <child>
+                                      <object class="GtkVBox" id="events_list_box">
+                                        <property name="visible">True</property>
+                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">3</property>
+                                        <child>
+                                          <placeholder/>
+                                        </child>
+                                      </object>
+                                    </child>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="events_label">
+                            <property name="visible">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child type="tab">
+                      <object class="GtkLabel" id="events_tab_label">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Events</property>
+                      </object>
+                      <packing>
+                        <property name="position">2</property>
+                        <property name="tab_fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkVBox" id="gold_box">
                         <property name="visible">True</property>
                         <child>
                           <object class="GtkAlignment" id="gold_alignment">
@@ -157,22 +230,23 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="position">2</property>
+                        <property name="position">3</property>
                       </packing>
                     </child>
                     <child type="tab">
-                      <object class="GtkLabel" id="label3">
+                      <object class="GtkLabel" id="gold_tab_label">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Gold</property>
                       </object>
                       <packing>
-                        <property name="position">2</property>
+                        <property name="position">3</property>
                         <property name="tab_fill">False</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkVBox" id="vbox3">
+                      <object class="GtkVBox" id="winner_box">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkAlignment" id="winner_alignment">
                             <property name="height_request">175</property>
@@ -197,16 +271,16 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="position">3</property>
+                        <property name="position">4</property>
                       </packing>
                     </child>
                     <child type="tab">
-                      <object class="GtkLabel" id="label4">
+                      <object class="GtkLabel" id="winners_tab_label">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Winners</property>
                       </object>
                       <packing>
-                        <property name="position">3</property>
+                        <property name="position">4</property>
                         <property name="tab_fill">False</property>
                       </packing>
                     </child>

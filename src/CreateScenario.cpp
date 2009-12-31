@@ -142,13 +142,13 @@ void CreateScenario::setShieldset(std::string shieldset)
 {
     debug("CreateScenario::setShieldset")
     d_shieldsname = shieldset;
-    d_generator->setCityset(Citysetlist::getInstance()->getCityset(shieldset));
 }
 
 void CreateScenario::setCityset(std::string citysetname)
 {
     debug("CreateScenario::setCityset")
     d_citysetname = citysetname;
+    d_generator->setCityset(Citysetlist::getInstance()->getCityset(citysetname));
 }
 
 void CreateScenario::setNoCities(int nocities)

@@ -367,6 +367,7 @@ GameWindow::GameWindow()
     xml->get_widget("inspect_menuitem", inspect_menuitem);
     xml->get_widget("plant_standard_menuitem", plant_standard_menuitem);
     xml->get_widget("city_history_menuitem", city_history_menuitem);
+    xml->get_widget("ruin_history_menuitem", ruin_history_menuitem);
     xml->get_widget("event_history_menuitem", event_history_menuitem);
     xml->get_widget("gold_history_menuitem", gold_history_menuitem);
     xml->get_widget("winner_history_menuitem", winner_history_menuitem);
@@ -699,6 +700,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   setup_menuitem(city_history_menuitem,
 		 sigc::mem_fun(*this, &GameWindow::on_city_history_activated),
 		 game->can_see_history);
+  setup_menuitem(ruin_history_menuitem,
+		 sigc::mem_fun(*this, &GameWindow::on_ruin_history_activated),
+		 game->can_see_history);
   setup_menuitem(gold_history_menuitem,
 		 sigc::mem_fun(*this, &GameWindow::on_gold_history_activated),
 		 game->can_see_history);
@@ -765,6 +769,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   connections.push_back
     (game->fight_started.connect
      (sigc::mem_fun(*this, &GameWindow::on_fight_started)));
+  connections.push_back
+    (game->abbreviated_fight_started.connect
+     (sigc::mem_fun(*this, &GameWindow::on_abbreviated_fight_started)));
   connections.push_back
     (game->ruinfight_started.connect
      (sigc::mem_fun(*this, &GameWindow::on_ruinfight_started)));
@@ -1644,12 +1651,24 @@ void GameWindow::on_winning_report_activated()
   d.run();
   d.hide();
 }
+
 void GameWindow::on_city_history_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
   HistoryReportDialog d(Playerlist::getActiveplayer(), 
 			HistoryReportDialog::CITY);
+  d.set_parent_window(*window);
+  d.run();
+  d.hide();
+}
+
+void GameWindow::on_ruin_history_activated()
+{
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
+  HistoryReportDialog d(Playerlist::getActiveplayer(), 
+			HistoryReportDialog::RUIN);
   d.set_parent_window(*window);
   d.run();
   d.hide();
@@ -2465,13 +2484,17 @@ void GameWindow::on_ruinfight_finished(Fight::Result result)
   delete dialog;
 }
 
-void GameWindow::on_fight_started(Fight &fight)
+void GameWindow::on_fight_started(LocationBox box, Fight &fight)
 {
   FightWindow d(fight);
 
+  game->get_bigmap().setFighting(box);
+  game->get_bigmap().draw(Playerlist::getViewingplayer());
   d.set_parent_window(*window);
   d.run(&d_quick_fights);
   d.hide();
+  game->get_bigmap().setFighting(LocationBox(Vector<int>(-1,-1)));
+  game->get_bigmap().draw(Playerlist::getViewingplayer());
   if (Playerlist::getActiveplayer()->getType() == Player::HUMAN)
     d_quick_fights = false;
 }
@@ -3344,9 +3367,11 @@ void GameWindow::on_stack_moves(Stack *stack, Vector<int> pos)
     return;
   if (GameMap::getEnemyStack(pos))
     return;
-  if (stack->enoughMoves() == false)
-    return;
-  game->get_smallmap().center_view_on_tile (pos, false);
+  //assert (stack == Playerlist::getInstance()->getActiveplayer()->getActivestack());
+  Player *active = Playerlist::getInstance()->getActiveplayer();
+  Stack *old = active->getActivestack();
+  active->setActivestack(stack);
+  game->get_smallmap().center_view_on_tile (pos, true);
   // sleep for a specified amount of time
   int step = TIMER_BIGMAP_SELECTOR * 1000;
   for (int i = 0; i < Configuration::s_displaySpeedDelay; i += step)
@@ -3355,6 +3380,7 @@ void GameWindow::on_stack_moves(Stack *stack, Vector<int> pos)
       while (g_main_context_iteration(NULL, FALSE)); //doEvents
       Glib::usleep(step);
     }
+  active->setActivestack(old);
 }
 
 void GameWindow::on_advice_asked(float percent)
@@ -3702,4 +3728,14 @@ void GameWindow::on_commentator_comments(std::string comment)
   dialog.set_image(buttons[0]->to_pixbuf());
   dialog.run();
   dialog.hide();
+}
+      
+void GameWindow::on_abbreviated_fight_started(LocationBox box)
+{
+  game->get_bigmap().setFighting(box);
+  game->get_bigmap().draw(Playerlist::getViewingplayer());
+  while (g_main_context_iteration(NULL, FALSE)); //doEvents
+  Glib::usleep(TIMER_BIGMAP_SELECTOR * 1000);
+  game->get_bigmap().setFighting(LocationBox(Vector<int>(-1,-1)));
+  game->get_bigmap().draw(Playerlist::getViewingplayer());
 }

@@ -46,6 +46,10 @@ NewMapDialog::NewMapDialog()
     xml->get_widget("dialog", dialog);
 
     xml->get_widget("map_size_combobox", map_size_combobox);
+
+    xml->get_widget("custom_size_table", custom_size_table);
+    xml->get_widget("width_spinbutton", width_spinbutton);
+    xml->get_widget("height_spinbutton", height_spinbutton);
     xml->get_widget("random_map_container", random_map_container);
     xml->get_widget("grass_scale", grass_scale);
     xml->get_widget("water_scale", water_scale);
@@ -141,13 +145,23 @@ NewMapDialog::NewMapDialog()
 
     fill_style_combobox->signal_changed().connect(
 						  sigc::mem_fun(*this, &NewMapDialog::on_fill_style_changed));
-    fill_style_combobox->set_active(0);
+    fill_style_combobox->set_active(6);
 
     // map size
     map_size_combobox->set_active(MAP_SIZE_NORMAL);
     map_size_combobox->signal_changed().connect(
 						sigc::mem_fun(*this, &NewMapDialog::on_map_size_changed));
+    grass_scale->set_value(78);
+    water_scale->set_value(7);
+    swamp_scale->set_value(2);
+    forest_scale->set_value(3);
+    hills_scale->set_value(5);
+    signposts_scale->set_value(20);
+    mountains_scale->set_value(5);
     on_map_size_changed();
+	
+    width_spinbutton->set_value(MAP_SIZE_TINY_WIDTH);
+    height_spinbutton->set_value(MAP_SIZE_TINY_HEIGHT);
 }
 
 NewMapDialog::~NewMapDialog()
@@ -182,6 +196,11 @@ void NewMapDialog::run()
 	map.width = MAP_SIZE_NORMAL_WIDTH;
 	map.height = MAP_SIZE_NORMAL_HEIGHT;
 	break;
+
+      case MAP_SIZE_CUSTOM:
+	map.width = int(width_spinbutton->get_value());
+	map.height = int(height_spinbutton->get_value());
+        break;
       }
 
       int row = fill_style_combobox->get_active_row_number();
@@ -238,12 +257,14 @@ void NewMapDialog::on_map_size_changed()
     cities_scale->set_value(15);
     ruins_scale->set_value(20);
     temples_scale->set_value(20);
+    custom_size_table->set_sensitive(false);
     break;
 
   case MAP_SIZE_TINY:
     cities_scale->set_value(10);
     ruins_scale->set_value(15);
     temples_scale->set_value(15);
+    custom_size_table->set_sensitive(false);
     break;
 
   case MAP_SIZE_NORMAL:
@@ -251,6 +272,13 @@ void NewMapDialog::on_map_size_changed()
     cities_scale->set_value(20);
     ruins_scale->set_value(25);
     temples_scale->set_value(25);
+    custom_size_table->set_sensitive(false);
+    break;
+  case MAP_SIZE_CUSTOM:
+    cities_scale->set_value(20);
+    ruins_scale->set_value(25);
+    temples_scale->set_value(25);
+    custom_size_table->set_sensitive(true);
     break;
   }
 }
@@ -325,3 +353,4 @@ void NewMapDialog::on_tile_size_changed()
   if (city_theme_combobox->get_children().size() == 0)
     accept_button->set_sensitive(false);
 }
+

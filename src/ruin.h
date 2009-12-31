@@ -107,6 +107,10 @@ class Ruin : public NamedLocation, public sigc::trackable
 	bool hasSage() const {return d_sage;}
 
 	//! Returns the player that owns this hidden ruin.
+        /**
+         * When the ruin has been searched, the owner is the player whose
+         * hero searched it.
+         */
 	Player *getOwner() const {return d_owner;}
 
 	//! Returns the reward for this ruin.

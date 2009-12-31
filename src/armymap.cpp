@@ -33,34 +33,35 @@ ArmyMap::ArmyMap()
 
 void ArmyMap::draw_stacks()
 {
-    
-    // minimum size for typical features is 1
-    int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
-
-
-    // Draw stacks as crosses using the player color
-    for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
-        pit != Playerlist::getInstance()->end(); pit++)
+  GraphicsCache *gc = GraphicsCache::getInstance();
+  
+  // Draw stacks as tiny shields
+  for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
+       pit != Playerlist::getInstance()->end(); pit++)
     {
-        Stacklist* mylist = (*pit)->getStacklist();
-	Gdk::Color cross_color = (*pit)->getColor();
-        
-        for (Stacklist::iterator it= mylist->begin(); it != mylist->end(); it++)
+      Stacklist* mylist = (*pit)->getStacklist();
+      Gdk::Color cross_color = (*pit)->getColor();
+
+      for (Stacklist::iterator it= mylist->begin(); it != mylist->end(); it++)
         {
-            Vector<int> pos = (*it)->getPos();
+          Vector<int> pos = (*it)->getPos();
 
-            // don't draw stacks in cities, they could hardly be identified
-            Maptile* mytile = GameMap::getInstance()->getTile(pos.x, pos.y);
-            if (mytile->getBuilding() == Maptile::CITY)
-                continue;
+          // don't draw stacks in cities, they could hardly be identified
+          Maptile* mytile = GameMap::getInstance()->getTile(pos.x, pos.y);
+          if (mytile->getBuilding() == Maptile::CITY)
+            continue;
 
-            // don't draw stacks on tiles we can't see
-            if (Playerlist::getViewingplayer()->getFogMap()->isFogged (pos) == true)
-                continue;
+          // don't draw stacks on tiles we can't see
+          if (Playerlist::getViewingplayer()->getFogMap()->isFogged (pos) == true)
+            continue;
 
-            pos = mapToSurface(pos);
-            draw_line(pos.x - size, pos.y, pos.x + size, pos.y, cross_color);
-            draw_line(pos.x, pos.y - size, pos.x, pos.y + size, cross_color);
+          PixMask *tmp = gc->getShieldPic(1, (*it)->getOwner());
+          tmp = tmp->copy();
+          PixMask::scale(tmp, tmp->get_width()/2, tmp->get_height()/2);
+
+          pos = mapToSurface(pos);
+          tmp->blit_centered(surface, pos);
+          delete tmp;
         }
     }
 }

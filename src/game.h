@@ -133,7 +133,8 @@ class Game
     sigc::signal<void,  City *, MapTipPosition> city_tip_changed;
     sigc::signal<void, Ruin*, Stack*, Reward*> ruin_searched;
     sigc::signal<Reward*, Ruin*, Sage*, Stack*> sage_visited;
-    sigc::signal<void, Fight &> fight_started;
+    sigc::signal<void, LocationBox, Fight &> fight_started;
+    sigc::signal<void, LocationBox> abbreviated_fight_started;
     sigc::signal<void, Stack *, Stack *> ruinfight_started;
     sigc::signal<void, float> advice_asked;
     sigc::signal<void, Fight::Result> ruinfight_finished;

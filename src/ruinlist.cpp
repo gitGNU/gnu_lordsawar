@@ -178,3 +178,30 @@ void Ruinlist::changeOwnership(Player *old_owner, Player *new_owner)
       (*it)->setOwner(new_owner);
 }
 
+guint32 Ruinlist::countUnexploredRuins(Player *owner) const
+{
+  guint32 count = 0;
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      Ruin *ruin = *it;
+      if (ruin->isHidden() == true && ruin->getOwner() != owner)
+        continue;
+      if (ruin->isSearched() == false)
+        count++;
+    }
+  return count;
+}
+
+guint32 Ruinlist::countExploredRuins(Player *owner) const
+{
+  guint32 count = 0;
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      Ruin *ruin = *it;
+      if (ruin->isHidden() == true && ruin->getOwner() != owner)
+        continue;
+      if (ruin->isSearched() == true && ruin->getOwner() == owner)
+        count++;
+    }
+  return count;
+}

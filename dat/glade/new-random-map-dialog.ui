@@ -4,7 +4,7 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkAdjustment" id="adjustment1">
     <property name="value">11</property>
-    <property name="upper">80</property>
+    <property name="upper">99</property>
     <property name="step_increment">1</property>
     <property name="page_increment">5</property>
   </object>
@@ -695,12 +695,6 @@
                               </packing>
                             </child>
                             <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
                               <object class="GtkHScale" id="signposts_scale">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
@@ -716,6 +710,12 @@
                                 <property name="y_options">GTK_FILL</property>
                                 <property name="x_padding">8</property>
                               </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                            <child>
+                              <placeholder/>
                             </child>
                           </object>
                         </child>

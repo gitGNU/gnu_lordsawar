@@ -1,3 +1,22 @@
+2009-12-31  Ben Asselstine  <benasselstine@gmail.com>
+
+	* improved the events history report.
+
+2009-12-30  Ben Asselstine  <benasselstine@gmail.com>
+
+	* added new history of ruins report.  This changes the saved-game 
+	schema.
+	* fixed bug wrt not showing some active stacks when they're moving.
+	* changed army report to show stacks as tiny shields.
+
+2009-12-29  Ben Asselstine  <benasselstine@gmail.com>
+
+	* added sensible defaults to the new map dialog in the scenario editor.
+	* fixed crash when different shieldset is picked on a random map.
+	* added ability to make non-standard map sizes in the scenario editor.
+	* added more city names.
+	* raised the maximum number of cities possible on a random map.
+
 2009-12-27  Ben Asselstine  <benasselstine@gmail.com>
 
 	* added new Sage object.

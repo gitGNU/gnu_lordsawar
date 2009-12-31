@@ -92,6 +92,7 @@ std::list<std::string> Tilesetlist::getNames(guint32 tilesize) const
 
 Tileset *Tilesetlist::loadTileset(std::string filename)
 {
+  debug("Loading tileset " <<File::get_basename(File::get_dirname(filename)));
   Tileset *tileset = Tileset::create(filename);
   if (tileset == NULL)
     return NULL;
