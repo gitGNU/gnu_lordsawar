@@ -484,7 +484,8 @@ std::list<std::string> Armyset::scanSystemCollection()
 						   file_extension);
   if (retlist.empty())
     {
-      std::cerr << "Couldn't find any armysets!" << std::endl;
+      std::cerr << "Couldn't find any armysets (*" << file_extension << 
+        ") in directories below: " << File::getArmysetDir() << std::endl;
       std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
       std::cerr << "Exiting!" << std::endl;
       exit(-1);

@@ -355,7 +355,8 @@ std::list<std::string> Cityset::scanSystemCollection()
 						   file_extension);
   if (retlist.empty())
     {
-      std::cerr << "Couldn't find any citysets!" << std::endl;
+      std::cerr << "Couldn't find any citysets (*" << file_extension << 
+        ") in directories below: " << File::getCitysetDir() << std::endl;
       std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
       std::cerr << "Exiting!" << std::endl;
       exit(-1);

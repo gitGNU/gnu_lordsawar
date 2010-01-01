@@ -210,7 +210,8 @@ std::list<std::string> Shieldset::scanSystemCollection()
 						   file_extension);
   if (retlist.empty())
     {
-      std::cerr << "Couldn't find any shieldsets!" << std::endl;
+      std::cerr << "Couldn't find any shieldsets (*" << file_extension << 
+        ") in directories below: " << File::getShieldsetDir() << std::endl;
       std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
       std::cerr << "Exiting!" << std::endl;
       exit(-1);

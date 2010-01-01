@@ -564,7 +564,8 @@ std::list<std::string> Tileset::scanSystemCollection()
 						   file_extension);
   if (retlist.empty())
     {
-      std::cerr << "Couldn't find any tilesets!" << std::endl;
+      std::cerr << "Couldn't find any tilesets (*" << file_extension << 
+        ") in directories below: " << File::getTilesetDir() << std::endl;
       std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
       std::cerr << "Exiting!" << std::endl;
       exit(-1);

@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, 2008, Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -2665,6 +2665,9 @@ bool GameWindow::on_temple_searched(Hero *hero, Temple *temple, int blessCount)
       s = _("_Close");
       accept_button->set_label(s);
     }
+
+  if (blessCount > 0)
+    Sound::getInstance()->playMusic("bless", 1);
 
   int response = dialog->run();
   dialog->hide();
