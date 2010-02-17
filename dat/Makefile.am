@@ -13,6 +13,8 @@ lordsawardata_DATA = \
     signposts.xml \
     gtkrc
 
+DISTCLEANFILES = citynames.xml heronames.xml templenames.xml ruinnames.xml signposts.xml
+
 lwdesktopdir= $(datadir)/applications
 lwdesktop_DATA= lordsawar.desktop
 

@@ -4,6 +4,7 @@ map_bigstarkdir = $(datadir)/lordsawar/tilesets/bigstark
 
 bigstark.lwt: bigstark.lwt.in
 	LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/bigstark.lwt.in $(builddir)/bigstark.lwt
+DISTCLEANFILES = bigstark.lwt
 
 map_bigstark_DATA = \
     bigstark.lwt \

@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
 // Copyright (C) 2004 John Farrell
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -102,6 +102,37 @@ void Stacklist::payUpkeep(Player *p)
     (*it)->payUpkeep(p);
 }
 
+bool Stacklist::check()
+{
+  //printf("checking stacks of the current player.  the current player is %s\n", Playerlist::getActiveplayer()->getName().c_str());
+  //if (size())
+    //printf("stacklist stacks belong to %s\n", front()->getOwner()->getName().c_str());
+    for (iterator it = begin(); it != end(); it++)
+      {
+        if ((*it)->getOwner()->isComputer() == false)
+          continue;
+        std::list<Stack*> f = GameMap::getFriendlyStacks((*it)->getPos());
+        if (f.size() > 1)
+          {
+	      fprintf (stderr, "%d stacks found on %d,%d\n", f.size(),
+                       (*it)->getPos().x, (*it)->getPos().y);
+              for (std::list<Stack*>::iterator t = f.begin(); t != f.end(); t++)
+                {
+                  Stack *stack = *t;
+                  if (stack)
+                    {
+                    printf("stack id: %d\n", stack->getId());
+                    printf("\tsize is %d\n", stack->size());
+                    }
+                  else
+                    printf("null stack\n");
+                }
+              return false;
+          }
+      }
+    return true;
+}
+
 void Stacklist::nextTurn()
 {
     debug("nextTurn()");
@@ -117,6 +148,8 @@ void Stacklist::nextTurn()
 	      fprintf (stderr, "duplicate army id %d found\n", (*it)->getId());
 	      exit (1);
 	    }
+    //printf("checking at next-turn time\n");
+    //check();
 }
 
 vector<Stack*> Stacklist::getDefendersInCity(const City *city)

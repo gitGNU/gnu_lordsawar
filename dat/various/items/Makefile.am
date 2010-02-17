@@ -4,6 +4,8 @@ itemsdir = $(datadir)/lordsawar/various/items
 
 @INTLTOOL_XML_RULE@
 
+DISTCLEANFILES = items.xml
+
 items_DATA = \
 	items.xml 
 

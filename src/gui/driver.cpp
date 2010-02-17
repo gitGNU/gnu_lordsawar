@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, 2008, Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -137,7 +137,7 @@ void Driver::run()
       g.map.forest = 3;
       g.map.hills = 5;
       g.map.mountains = 5;
-      g.map.cities = 20;
+      g.map.cities = 40;
       g.map.ruins = 25;
       g.map_path = "";
       g.play_with_quests = GameParameters::NO_QUESTING;
@@ -709,17 +709,14 @@ void Driver::stressTestNextRound()
 {
   static time_t prev_round_start = time(NULL);
   static int count = 1;
-  /*
   if (count == 1)
     {
       FILE * fileptr = fopen("/tmp/crapola.csv", "w");
       fclose(fileptr);
     }
-    */
   count++;
   time_t now = time(NULL);
   printf ("starting round %d!\n", count);
-  /*
   FILE * fileptr = fopen("/tmp/crapola.csv", "a");
   int total_fights = Playerlist::getInstance()->countFightsThisTurn();
   int total_moves = Playerlist::getInstance()->countMovesThisTurn();
@@ -745,7 +742,6 @@ void Driver::stressTestNextRound()
     }
   fprintf(fileptr,"\n");
   fclose(fileptr);
-  */
       
   prev_round_start = now;
   sleep (1);
@@ -782,9 +778,9 @@ void Driver::stress_test()
   g.map.forest = 3;
   g.map.hills = 5;
   g.map.mountains = 5;
-  g.map.cities = 40;
+  g.map.cities = 110;
   g.map.ruins = 15;
-  g.map.temples = 1;
+  g.map.temples = 3;
   g.map.signposts = 10;
   g.map_path = "";
   g.play_with_quests = GameParameters::ONE_QUEST_PER_PLAYER;
@@ -844,7 +840,9 @@ void Driver::stress_test()
   nextTurn->start();
   //next turn and game_Scenario get deleted inside game.
   size_t mins = (time(NULL) - start) / 60;
-  printf("duration: %d mins, turns: %d\n", mins, game_scenario->getRound());
+  printf("duration: %d mins, turns: %d ", mins, game_scenario->getRound());
+  fflush(stdout);
+  printf("winner type: %s\n", Player::playerTypeToString(Player::Type(Playerlist::getInstance()->getFirstLiving()->getType())).c_str());
 
 }
 	

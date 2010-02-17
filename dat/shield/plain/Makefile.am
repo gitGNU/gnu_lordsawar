@@ -4,6 +4,7 @@ lordsawarshieldplaindir = $(datadir)/lordsawar/shield/plain
 
 plain.lws: plain.lws.in
 	LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/plain.lws.in $(builddir)/plain.lws
+DISTCLEANFILES = plain.lws
 
 lordsawarshieldplain_DATA = \
 	plain.lws \

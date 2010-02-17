@@ -4,6 +4,7 @@ lordsawartilebigwesnothdir = $(datadir)/lordsawar/tilesets/bigwesnoth
 
 bigwesnoth.lwt: bigwesnoth.lwt.in
 	LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/bigwesnoth.lwt.in $(builddir)/bigwesnoth.lwt
+DISTCLEANFILES = bigwesnoth.lwt
 
 lordsawartilebigwesnoth_DATA = \
     bigwesnoth.lwt \

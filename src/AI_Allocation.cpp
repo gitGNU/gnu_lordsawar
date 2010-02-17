@@ -1,6 +1,6 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005, 2006, 2007 Ulf Lorenz
-// Copyright (C) 2008, 2009 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -371,6 +371,7 @@ int AI_Allocation::visitTemples(bool get_quests)
         continue;
       if (s->hasHero() && get_quests)
         {
+          //debug("Player " << d_owner->getName() << " moving hero-laden stack " << s->getId() << " towards a temple");
           bool moved;
           bool killed = false;
           moved = d_owner->AI_maybeVisitTempleForQuest(s, s->getMoves(), 
@@ -378,21 +379,22 @@ int AI_Allocation::visitTemples(bool get_quests)
                                                        killed);
           if (moved)
             count++;
-          //if (!killed && moved && s->hasPath() == true)
-            //deleteStack(s);
+          if (!killed)
+            groupStacks(s);
         }
       else
         {
           bool moved;
           bool killed = false;
           bool blessed = false;
+          //debug("Player " << d_owner->getName() << " moving stack " << s->getId() << " towards a temple");
           moved = d_owner->AI_maybeVisitTempleForBlessing(s, s->getMoves(), 
                                                        s->getMoves() + 7, 
                                                        50.0, blessed, killed);
           if (moved)
             count++;
-          //if (!killed && moved && s->hasPath() == true)
-            //deleteStack(s);
+          if (!killed)
+            groupStacks(s);
         }
     }
   return count;
@@ -418,8 +420,8 @@ int AI_Allocation::visitRuins()
                                              s->getMoves() + 17, killed);
           if (moved)
             count++;
-          //if (!killed && moved && s->hasPath() == true)
-            //deleteStack(s);
+          if (!killed)
+            groupStacks(s);
         }
     }
   return count;
@@ -1263,6 +1265,19 @@ bool AI_Allocation::shuffleStacksWithinCity(City *city, Stack *stack,
     }
 
   std::list<Stack*> f = GameMap::getFriendlyStacks(target);
+  if (f.size() > 1)
+    {
+      printf("i am stack %d at %d,%d\n", stack->getId(), stack->getPos().x, stack->getPos().y);
+      printf("crap.  there are %d stacks at %d,%d\n", f.size(), target.x, target.y);
+      for (std::list<Stack*>::iterator it = f.begin(); it != f.end(); it++)
+        {
+          Stack *n = *it;
+          if (n)
+            printf("\tstack is %d\n", n->getId());
+          else
+            printf("\tstack is null\n");
+        }
+    }
   assert (f.size() <= 1);
   Stack *join = NULL;
   if (f.size() == 1)

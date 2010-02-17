@@ -1,5 +1,5 @@
 // Copyright (C) 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -71,9 +71,13 @@ class OverviewMap : public sigc::trackable
      * @param max_dimensions  Two integers; the first of which dictates the
      *                        width of the map graphic, and the second dictates
      *                        the height.
+     * @param scale A real number representing how zoomed out the graphic
+     *              should appear.  1.0 means not zoomed out at all.  2 means
+     *              zoomed out a little more.  this sets the map_tiles_per_tile
+     *              member.
      *
      */
-    void resize(Vector<int> max_dimensions);
+    void resize(Vector<int> max_dimensions, float scale = 1.0);
 
     //! Draw and scale the mini map graphic to the correct size of the game map.
     /**
@@ -138,6 +142,9 @@ class OverviewMap : public sigc::trackable
     //! Make the map go black.
     void blank(bool on);
 
+    static int calculatePixelsPerTile(int width, int height);
+    static int calculatePixelsPerTile();
+
  private:
     //! An SDL surface of the terrain without the features.
     /**
@@ -189,8 +196,21 @@ class OverviewMap : public sigc::trackable
     void draw_line(bool front, int src_x, int src_y, int dst_x, int dst_y, Gdk::Color color);
  protected:
 
-    //! Every pixel on the graphic is this wide and tall.
+    //! Every pixel on the graphic is this wide and tall.  2 is normal.
+    /**
+     * The minimum value for this variable is 2, so that we can draw stipples
+     * and other effects per terrain type.
+     */
     double pixels_per_tile;
+
+    //! The number of map tiles that each overview map tile represents.
+    /**
+     * Each tile on the graphic represents this many map tiles tall and wide.
+     * 1x1 is normal.  2x2 skips 1 row and column per tile. 
+     * 3x3 skips 2 rows and columns per tile.
+     * The minimum value for this variable is 1.
+     */
+    double map_tiles_per_tile;
 
     //! Maps the given point in graphic coordinates to a game map coordinate.
     Vector<int> mapFromScreen(Vector<int> pos);
@@ -215,7 +235,8 @@ class OverviewMap : public sigc::trackable
     //! Redraw the specified region.
     void draw_terrain_tiles(Rectangle r);
 
-    int calculateResizeFactor();
+    //! Returns a maptile, but takes map_tiles_per_tile into account.
+    Maptile* getTile(int x, int y);
 
     //! The surface containing the drawn map.
     Glib::RefPtr<Gdk::Pixmap> surface;

@@ -1,4 +1,4 @@
-#   Copyright (C) 2007, 2008 Ben Asselstine
+#   Copyright (C) 2007, 2008, 2010 Ben Asselstine
 #   Copyright (C) 2008 Barry deFreese
 # 
 #   This program is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@ bin_PROGRAMS = lordsawar-pbm
 lordsawar_pbm_SOURCES =  pbm.cpp main.cpp pbm.h ${top_srcdir}/src/pbm-game-client.cpp ${top_srcdir}/src/pbm-game-client.h ${top_srcdir}/src/game-client-decoder.cpp ${top_srcdir}/src/game-client-decoder.h ${top_srcdir}/src/chat-client.cpp ${top_srcdir}/src/chat-client.h
 
 
-lordsawar_pbm_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS)\
+lordsawar_pbm_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS) $(SDL_LIBS) -ltar \
                          $(top_builddir)/src/liblordsawar.la \
 			-lz \
                          @LIBINTL@ \

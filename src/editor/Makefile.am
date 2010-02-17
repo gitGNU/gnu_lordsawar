@@ -91,39 +91,34 @@ lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
                          $(top_builddir)/src/liblordsawar.la \
                          $(GTKMM_LIBS) \
-                         $(SDL_LIBS) \
-                         $(SDLIMAGE_LIBS) \
+                         $(SDL_LIBS) -ltar \
                          @LIBINTL@ -L$(top_builddir)/src
 
 lordsawar_shield_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
                          $(top_builddir)/src/liblordsawar.la \
-                         $(SDL_LIBS) \
-                         $(SDLIMAGE_LIBS) \
+                         $(SDL_LIBS) -ltar \
                          $(GTKMM_LIBS) \
                          @LIBINTL@ -L$(top_builddir)/src
 
 lordsawar_city_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
                          $(top_builddir)/src/liblordsawar.la \
-                         $(SDL_LIBS) \
-                         $(SDLIMAGE_LIBS) \
+                         $(SDL_LIBS) -ltar \
                          $(GTKMM_LIBS) \
                          @LIBINTL@ -L$(top_builddir)/src
 
 lordsawar_army_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
                          $(top_builddir)/src/liblordsawar.la \
-                         $(SDL_LIBS) \
-                         $(SDLIMAGE_LIBS) \
+                         $(SDL_LIBS) -ltar \
                          $(GTKMM_LIBS) \
                          @LIBINTL@ -L$(top_builddir)/src
 
 lordsawar_tile_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
                          $(top_builddir)/src/liblordsawar.la \
-                         $(SDL_LIBS) \
-                         $(SDLIMAGE_LIBS) \
+                         $(SDL_LIBS) -ltar \
                          $(GTKMM_LIBS) \
                          @LIBINTL@ -L$(top_builddir)/src
 endif

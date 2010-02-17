@@ -4,6 +4,7 @@ lordsawarshielddefaultdir = $(datadir)/lordsawar/shield/default
 
 default.lws: default.lws.in
 	LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/default.lws.in $(builddir)/default.lws
+DISTCLEANFILES = default.lws
 
 lordsawarshielddefault_DATA = \
 	default.lws \

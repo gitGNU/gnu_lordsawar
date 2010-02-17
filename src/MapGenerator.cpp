@@ -3,7 +3,7 @@
 // Copyright (C) 2004 David Barnsdale
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2008 Janek Kozicki
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -52,6 +52,7 @@
 #include "vector.h"
 #include "RoadPathCalculator.h"
 #include "cityset.h"
+#include "overviewmap.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
@@ -1225,12 +1226,16 @@ bool MapGenerator::canPutBuilding(int x,int y)
     // if the building is on water or mountains, return false
     if (d_terrain[y*d_width +x] != Tile::GRASS )
         return false;
-        
+
+    int tooclose;
+    tooclose = GameMap::calculateTilesPerOverviewMapTile(d_width, d_height);
+    tooclose++;
     //if the building is close to the map boundaries, return false
-    if ((x < 3) || (x > (d_width-3)) || (y < 3) || (y > (d_height-3)))
+    if (x <= tooclose || x >= (d_width - tooclose) || 
+        y <= tooclose || y >= (d_height - tooclose))
         return false;
 
-    int dist = (int)cityset->getCityTileWidth() + 1;
+    int dist = (int)cityset->getCityTileWidth() + tooclose;
     //if there is another building too close, return false
     for (int locx = x-dist; locx <= x+dist; locx++)
         for (int locy = y-dist; locy <= y+dist; locy++)

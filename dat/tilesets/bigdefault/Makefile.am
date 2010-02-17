@@ -4,6 +4,7 @@ map_bigdefaultdir = $(datadir)/lordsawar/tilesets/bigdefault
 
 bigdefault.lwt: bigdefault.lwt.in
 	LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/bigdefault.lwt.in $(builddir)/bigdefault.lwt
+DISTCLEANFILES = bigdefault.lwt
 
 map_bigdefault_DATA = \
     bigdefault.lwt \

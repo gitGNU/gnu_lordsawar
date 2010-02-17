@@ -1,5 +1,5 @@
 #   Copyright (C) 2008 Barry deFreese
-#   Copyright (C) 2009 Ben Asselstine
+#   Copyright (C) 2009, 2010 Ben Asselstine
 # 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -133,7 +133,7 @@ lordsawar_LDFLAGS =
 lordsawar_LDADD = liblordsawar.la \
     liblordsawarnet.la \
     liblordsawargfx.la \
-    $(SDLSOUND_LIBS) \
+    $(SDLSOUND_LIBS) $(SDL_LIBS) \
     $(GTKMM_LIBS) \
     $(LIBGNET_LIBS) \
     $(LIBSIGC_LIBS) -ltar \

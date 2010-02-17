@@ -2,7 +2,7 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
 // Copyright (C) 2004 Thomas Plonka
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -95,7 +95,7 @@ void SmallMap::center_view_on_pixel(Vector<int> pos, bool slide)
   pos.x = int(round(pos.x / pixels_per_tile));
   pos.y = int(round(pos.y / pixels_per_tile));
 
-  pos -= view.dim / calculateResizeFactor();
+  pos -= view.dim / pixels_per_tile;
 
   pos = clip(Vector<int>(0, 0), pos, GameMap::get_dim() - view.dim);
 

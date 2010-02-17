@@ -5,6 +5,7 @@ lordsawararmydefaultdir = $(datadir)/lordsawar/army/default
       
 default.lwa: default.lwa.in
 	LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/default.lwa.in $(builddir)/default.lwa
+DISTCLEANFILES = default.lwa
 
 lordsawararmydefault_DATA = \
 	default.lwa \

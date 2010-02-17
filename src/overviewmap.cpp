@@ -1,5 +1,5 @@
 // Copyright (C) 2006, 2007 Ulf Lorenz
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -40,6 +40,8 @@
 OverviewMap::OverviewMap()
 {
   blank_screen = false;
+  map_tiles_per_tile = GameMap::calculateTilesPerOverviewMapTile();
+  pixels_per_tile = 2.0;
 }
 
 OverviewMap::~OverviewMap()
@@ -303,25 +305,31 @@ void OverviewMap::draw_terrain_tile(Maptile *t, int i, int j)
 		     i, j, shadowed);
 }
 
-int OverviewMap::calculateResizeFactor()
+int OverviewMap::calculatePixelsPerTile(int width, int height)
 {
-  if (GameMap::getWidth() <= (int)MAP_SIZE_TINY_WIDTH && 
-      GameMap::getHeight() <= (int)MAP_SIZE_TINY_HEIGHT)
+  if (width <= (int)MAP_SIZE_TINY_WIDTH && 
+      height <= (int)MAP_SIZE_TINY_HEIGHT)
     return 4;
-  else if (GameMap::getWidth() <= (int)MAP_SIZE_SMALL_WIDTH && 
-	   GameMap::getHeight() <= (int)MAP_SIZE_SMALL_HEIGHT)
+  else if (width <= (int)MAP_SIZE_SMALL_WIDTH && 
+	   height <= (int)MAP_SIZE_SMALL_HEIGHT)
     return 3;
   else
     return 2;
 }
 
-void OverviewMap::resize()
+int OverviewMap::calculatePixelsPerTile()
 {
-  int factor = calculateResizeFactor();
-  resize(GameMap::get_dim() * factor);
+  return calculatePixelsPerTile(GameMap::getWidth(), GameMap::getHeight());
 }
 
-void OverviewMap::resize(Vector<int> max_dimensions)
+void OverviewMap::resize()
+{
+  int factor = calculatePixelsPerTile();
+  resize(GameMap::get_dim() * factor, 
+         GameMap::calculateTilesPerOverviewMapTile());
+}
+
+void OverviewMap::resize(Vector<int> max_dimensions, float scale)
 {
   surface.reset();
 
@@ -341,6 +349,7 @@ void OverviewMap::resize(Vector<int> max_dimensions)
 	d.x = int(round(bigmap_dim.x * pixels_per_tile));
 	d.y = max_dimensions.y;
     }
+    map_tiles_per_tile = scale;
 
     
     static_surface = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), d.x, d.y, 24);
@@ -383,27 +392,54 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
     draw(Playerlist::getViewingplayer());
 }
 
+Maptile* OverviewMap::getTile(int x, int y)
+{
+  //look for something interesting so we don't skip over important tiles.
+  GameMap *gm = GameMap::getInstance();
+  Maptile *favoured_tile = gm->getTile(x,y);
+  int xmax = x + map_tiles_per_tile - 1;
+  if (xmax >= GameMap::getWidth())
+    xmax = GameMap::getWidth() - 1;
+  int ymax = y + map_tiles_per_tile - 1;
+  if (ymax >= GameMap::getHeight())
+    ymax = GameMap::getHeight() - 1;
+  for (int i = x; i < xmax; i++)
+    for (int j = y; j < ymax; j++)
+      {
+        Vector<int> pos(i, j);
+        if (gm->getBuilding(pos) == Maptile::TEMPLE)
+          favoured_tile = gm->getTile(pos);
+        else if (gm->getBuilding(pos) == Maptile::RUIN)
+          favoured_tile = gm->getTile(pos);
+        else if (gm->getTerrainType(pos) == Tile::WATER)
+          favoured_tile = gm->getTile(pos);
+        else if (gm->getTerrainType(pos) == Tile::MOUNTAIN)
+          favoured_tile = gm->getTile(pos);
+        else if (gm->getTerrainType(pos) == Tile::VOID)
+          favoured_tile = gm->getTile(pos);
+      }
+  return favoured_tile;
+}
+
 void OverviewMap::draw_terrain_tiles(Rectangle r)
 {
     GameMap *gm = GameMap::getInstance();
     unsigned int oldrand = rand();
     srand(0);
     Gdk::Color rd = GameMap::getInstance()->getTileset()->getRoadColor();
-    for (int i = r.x; i < r.x + r.w; ++i)
-        for (int j = r.y; j < r.y + r.h; ++j)
+    for (int i = r.x; i < r.x + r.w; i+=int(map_tiles_per_tile))
+      for (int j = r.y; j < r.y + r.h; j+=int(map_tiles_per_tile))
         {
-            int x = int(i / pixels_per_tile);
-            int y = int(j / pixels_per_tile);
+          int x = int(i / pixels_per_tile);
+          int y = int(j / pixels_per_tile);
+          Maptile *mtile = getTile(x,y);
 
-	    if (gm->getTile(x,y)->getBuilding() == Maptile::ROAD ||
-                     gm->getTile(x,y)->getBuilding() == Maptile::BRIDGE)
-		         draw_pixel(static_surface, static_surface_gc, i, j, rd);
-	    else
-	    {
-                draw_terrain_tile (GameMap::getInstance()->getTile(x,y), i, j);
-	    }
+          if (mtile->isRoadTerrain())
+            draw_pixel(static_surface, static_surface_gc, i, j, rd);
+          else
+            draw_terrain_tile (mtile, i, j);
         }
-    srand(oldrand);
+    srand (oldrand);
 }
 
 void OverviewMap::after_draw()
@@ -513,8 +549,8 @@ Glib::RefPtr<Gdk::Pixmap> OverviewMap::get_surface()
 
 Vector<int> OverviewMap::mapFromScreen(Vector<int> pos)
 {
-    int x = int(pos.x / pixels_per_tile);
-    int y = int(pos.y / pixels_per_tile);
+    int x = int(pos.x / pixels_per_tile / map_tiles_per_tile);
+    int y = int(pos.y / pixels_per_tile / map_tiles_per_tile);
     
     if (x >= GameMap::getWidth())
         x = GameMap::getWidth() - 1;
@@ -537,8 +573,8 @@ Vector<int> OverviewMap::mapToSurface(Vector<int> pos)
     assert(pos.x >= 0 && pos.y >= 0
 	   && pos.x < GameMap::getWidth() && pos.y < GameMap::getHeight());
 
-    int x = int(round(pos.x * pixels_per_tile));
-    int y = int(round(pos.y * pixels_per_tile));
+    int x = int(round(pos.x * pixels_per_tile / map_tiles_per_tile));
+    int y = int(round(pos.y * pixels_per_tile / map_tiles_per_tile));
 
     if (pixels_per_tile > 2)
         // try to take the center position of the pixel

@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -172,6 +172,12 @@ class Maptile
 	 * defines if this maptile is `in a city' or not.
 	 */
         bool isCityTerrain();
+
+        //! Whether or not this map tile is considered to be a road.
+        /**
+         * includes roads and bridges.
+         */
+        bool isRoadTerrain();
 
         //! Prints some debug information about this maptile.
         void printDebugInfo() const;

@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2008 Janek Kozicki
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -263,6 +263,10 @@ class GameMap: public sigc::trackable
         Rectangle putTerrain(Rectangle r, Tile::Type type, 
                              int tile_style_id = -1, 
                              bool always_alter_tilestyles = false);
+
+
+        static int calculateTilesPerOverviewMapTile(int width, int height);
+        static int calculateTilesPerOverviewMapTile();
 
     protected:
         //! Create the map with the given tileset

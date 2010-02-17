@@ -4,6 +4,7 @@ map_wesnothdir = $(datadir)/lordsawar/tilesets/wesnoth
 
 wesnoth.lwt: wesnoth.lwt.in
 	LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/wesnoth.lwt.in $(builddir)/wesnoth.lwt
+DISTCLEANFILES = wesnoth.lwt
 
 map_wesnoth_DATA = \
     wesnoth.lwt \

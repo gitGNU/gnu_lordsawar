@@ -4,6 +4,7 @@ lordsawarshielddoldir = $(datadir)/lordsawar/shield/dol
 
 dol.lws: dol.lws.in
 	LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/dol.lws.in $(builddir)/dol.lws
+DISTCLEANFILES = dol.lws
 
 lordsawarshielddol_DATA = \
 	dol.lws \

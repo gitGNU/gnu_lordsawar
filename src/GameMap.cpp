@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 // Copyright (C) 2008 Janek Kozicki
 //
@@ -374,9 +374,13 @@ void GameMap::setTile(int x, int y, Maptile *tile)
 
 Maptile* GameMap::getTile(int x, int y) const
 {
-    assert(x >= 0 && x < s_width && y >= 0 && y < s_height);
+  if (x < 0 && x >= s_width && y < 0 && y >= s_height)
+    {
+      printf("%d,%d > or < %d,%d\n", x, y, s_width, s_height);
+    }
+  assert(x >= 0 && x < s_width && y >= 0 && y < s_height);
 
-    return d_map[y*s_width + x];
+  return d_map[y*s_width + x];
 }
 
 Stack* GameMap::addArmy(Vector<int> pos, Army *a)
@@ -1880,5 +1884,27 @@ bool GameMap::checkCityAccessibility()
 Vector<int> GameMap::getCenterOfMap()
 {
   return Vector<int>(GameMap::s_width/2, GameMap::s_height/2);
+}
+
+int GameMap::calculateTilesPerOverviewMapTile(int width, int height)
+{
+  if (width <= (int)MAP_SIZE_NORMAL_WIDTH && 
+      height <= (int)MAP_SIZE_NORMAL_HEIGHT)
+    return 1;
+  else if (width <= (int)(MAP_SIZE_NORMAL_WIDTH  * 2) && 
+      height <= (int)(MAP_SIZE_NORMAL_HEIGHT * 2))
+    return 2;
+  else if (width <= (int)(MAP_SIZE_NORMAL_WIDTH  * 3) && 
+      height <= (int)(MAP_SIZE_NORMAL_HEIGHT * 3))
+    return 3;
+  else if (width <= (int)(MAP_SIZE_NORMAL_WIDTH  * 4) && 
+      height <= (int)(MAP_SIZE_NORMAL_HEIGHT * 4))
+    return 4;
+  return 1;
+}
+
+int GameMap::calculateTilesPerOverviewMapTile()
+{
+  return calculateTilesPerOverviewMapTile(GameMap::getWidth(), GameMap::getHeight());
 }
 
