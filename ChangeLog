@@ -1,3 +1,25 @@
+2010-02-17  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed ai movement case where ai_smart left two ungrouped stacks on a
+	tile when going towards a temple.
+	* added a method check on stacklist object, to check for stacks
+	sharing a tile.
+	* ai_smart now calls this check method when finishing it's turn.
+	* trying to explicitly name all the libraries we're linking to.
+	* refactored the "how wide is a tile on the smallmap" into the
+	gamemap object with a new method called 
+	calculateTilesPerOverviewMapTile
+	* modified overviewmap and mapgenerator object to use it.
+	* mapgenerator object now checks the pixel size of the overviewmap
+	to know how close two cities can be to each other.
+	* added DISTCLEANFILES directives for all of our generated data files.
+	* added new isRoadTerrain method on maptile object.
+	* modified the overviewmap object to use the new isRoadTerrain method.
+
+2010-01-04  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed up build machinery for make distcheck.
+
 2010-01-01  Ben Asselstine  <benasselstine@gmail.com>
 
 	* added new sound for blessings.
