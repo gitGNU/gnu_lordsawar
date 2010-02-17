@@ -33,4 +33,6 @@ Requirements:
 on Ubuntu 9.10, (Karmic Koala) you need the following packages:
 sudo apt-get install automake autoconf libtool m4 autotools-dev g++ libsigc++-2.0-dev libglibmm-2.4-dev libgtkmm-2.4-dev gettext subversion libsdl1.2-dev libsdl-mixer1.2-dev libgnet-dev libboost-dev intltool cvs libtar-dev
 
+on Fedora Core 12 you need the following packages:
+yum install libglademm24-devel gtkmm24-devel gnet2-devel gettext desktop-file-utils SDL-devel SDL_mixer-devel expat-devel libsigc++20-devel boost-devel libtiff-devel libvorbis-devel libjpeg-devel intltool automake autoconf m4 subversion cvs libtar-devel glade3
 
