@@ -1,7 +1,7 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -127,6 +127,7 @@ class Threat: public Ownable
         //! Can be used for some general debug output
         std::string toString() const;
 
+        void changeOwnership(Player *old_owner, Player *new_owner);
     private:
 
         void calculateValue();

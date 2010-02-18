@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Ben Asselstine
+// Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #include <gtkmm.h>
 class Stacklist;
 class Stack;
+class Player;
 
 //! lightweight list of stacks.
 class StackReflist: public std::list<Stack*>
@@ -50,6 +51,10 @@ public:
 
     StackReflist::iterator eraseStack(StackReflist::iterator it);
     StackReflist::iterator eraseStack(StackReflist::iterator it, guint32 id);
+
+    void changeOwnership(Player *old_owner, Player *new_owner);
+
+    bool getIdOfStack(Stack *stack, guint32 &id);
 private:
 
     Stack *getStackById(guint32 id) const;

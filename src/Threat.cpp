@@ -1,7 +1,7 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005 Ulf Lorenz
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include "stack.h"
 #include "playerlist.h"
 #include "AI_Analysis.h"
+#include "player.h"
 
 using namespace std;
 
@@ -119,7 +120,15 @@ void Threat::calculateStrength()
   float score = 0.0;
   for (StackReflist::const_iterator i = d_stacks->begin(); 
        i != d_stacks->end(); ++i)
-    score += AI_Analysis::assessStackStrength(*i);
+    {
+      guint32 id = 0;
+      if (d_stacks->getIdOfStack(*i, id) == false)
+        continue;
+        //FIXME: why can't this id be found? find out why.
+        //it happens when we switch from computer to human and then fight a 
+        //city.
+      score += AI_Analysis::assessStackStrength(*i);
+    }
 
   d_strength = score;
 }
@@ -164,6 +173,7 @@ void Threat::deleteStack(guint32 id)
     if (d_city && d_city->getOwner() != Playerlist::getInstance()->getNeutral())
       calculateStrength();
 }
+
 void Threat::deleteStack(Stack* s)
 {
   d_stacks->removeStack(s->getId());
@@ -175,4 +185,12 @@ void Threat::addDanger(float danger)
 { 
   d_danger += danger; 
   calculateValue();
+}
+        
+void Threat::changeOwnership(Player *old_owner, Player *new_owner)
+{
+    if (getOwner() == old_owner)
+      setOwner(new_owner);
+    if (d_stacks)
+      d_stacks->changeOwnership(old_owner, new_owner);
 }

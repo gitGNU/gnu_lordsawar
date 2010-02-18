@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Ben Asselstine
+// Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@
 #include "stackreflist.h"
 #include "stack.h"
 #include "stacklist.h"
+#include "player.h"
 
 StackReflist::StackReflist()
 {
@@ -96,6 +97,7 @@ StackReflist::iterator StackReflist::eraseStack(StackReflist::iterator it)
     }
   return erase(it);
 }
+
 StackReflist::iterator StackReflist::eraseStack(StackReflist::iterator it, guint32 id)
 {
   if (it != end())
@@ -106,10 +108,35 @@ StackReflist::iterator StackReflist::eraseStack(StackReflist::iterator it, guint
     }
   return erase(it);
 }
+
 guint32 StackReflist::countArmies() const
 {
   guint32 count = 0;
   for (const_iterator it = begin(); it != end(); it++)
     count += (*it)->size();
   return count;
+}
+
+void StackReflist::changeOwnership(Player *old_player, Player *new_player)
+{
+  for (IdMap::iterator it = d_id.begin(); it != d_id.end(); it++)
+    {
+      guint32 id = (*it).first;
+      Stack *new_stack = new_player->getStacklist()->getStackById(id);
+      if (new_stack)
+        (*it).second = new_stack;
+    }
+}
+
+bool StackReflist::getIdOfStack(Stack *stack, guint32 &id)
+{
+  for (IdMap::iterator it = d_id.begin(); it != d_id.end(); it++)
+    {
+      if ((*it).second == stack)
+        {
+          id = (*it).first;
+          return true;
+        }
+    }
+  return false;
 }

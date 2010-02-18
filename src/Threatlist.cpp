@@ -1,7 +1,7 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005 Ulf Lorenz
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2007, 2009 Ben Asselstine
+// Copyright (C) 2007, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -267,8 +267,9 @@ bool Threatlist::flRemove(Threat* object)
 void Threatlist::changeOwnership(Player *old_owner, Player *new_owner)
 {
   for (iterator it = begin(); it != end(); it++)
-    if ((*it)->getOwner() == old_owner)
-      (*it)->setOwner(new_owner);
+    {
+      (*it)->changeOwnership(old_owner, new_owner);
+    }
 }
 
 // End of file
