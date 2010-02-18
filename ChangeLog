@@ -2,6 +2,8 @@
 
 	* fixed stackreflist in threat object to update the stacks it points
 	to when players are switched from human to computer or vice-versa.
+	* fixed crash where we were checking the stacklist for consistency 
+	when the player is aborting the turn.
 
 2010-02-17  Ben Asselstine  <benasselstine@gmail.com>
 
