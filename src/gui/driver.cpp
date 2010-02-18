@@ -139,6 +139,7 @@ void Driver::run()
       g.map.mountains = 5;
       g.map.cities = 40;
       g.map.ruins = 25;
+      g.map.temples = 3;
       g.map_path = "";
       g.play_with_quests = GameParameters::NO_QUESTING;
       g.hidden_map = false;
