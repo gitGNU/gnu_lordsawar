@@ -136,8 +136,11 @@ bool AI_Smart::startTurn()
     
     if (abort_requested)
       aborted_turn.emit();
-    if (getStacklist()->check() == false)
-      exit(1);
+    else
+      {
+        if (getStacklist()->check() == false)
+          exit(1);
+      }
     return true;
 }
 
