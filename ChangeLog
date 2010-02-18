@@ -1,3 +1,8 @@
+2010-02-18  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed stackreflist in threat object to update the stacks it points
+	to when players are switched from human to computer or vice-versa.
+
 2010-02-17  Ben Asselstine  <benasselstine@gmail.com>
 
 	* fixed ai movement case where ai_smart left two ungrouped stacks on a
