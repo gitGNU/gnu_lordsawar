@@ -1,3 +1,7 @@
+2010-02-27  Ben Asselstine  <benasselstine@gmail.com>
+
+	* updated default terrain artwork for 40x40 and 80x80 tile sizes.
+
 2010-02-18  Ben Asselstine  <benasselstine@gmail.com>
 
 	* fixed stackreflist in threat object to update the stacks it points
