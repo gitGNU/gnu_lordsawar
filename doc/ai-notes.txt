@@ -59,11 +59,6 @@ Another thing that can happen when a stack is moved is a battle; the STACK_FIGHT
 
 The AI_Fast player doesn't retain any state across turns.  Yes the stacks have paths, and the cities have vectoring setup, but there's no AI-related data saved anywhere to help in the next turn.
 
-Missing behaviours in the AI
-
-Heroes should go on quests.  Heroes should search ruins.
-
-
 Constraints
 
 Speed matters.
@@ -75,8 +70,10 @@ Speed matters.
 
 3. http://www.nongnu.org/lordsawar/manual/0.1.7/lordsawar.html#lordsawar-cities-vectoring
 
+---
 More notes by Quentin "Cygal" Pradet
                                                                      
+Copyright (C) 2009, 2010 Quentin Pradet
                                              
 Lordsawar strategies
 ====================
