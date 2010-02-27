@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <tileset>
-    <d_id>1</d_id>
+    <d_id>2</d_id>
     <_d_name>Default</_d_name>
     <d_copyright>Copyright (C) 2009 Ben Asselstine</d_copyright>
     <d_license>Licensed under the GPL Version 3 or later at your option.</d_license>
@@ -63,12 +63,12 @@
 		<tilestyle> <d_id>0x15</d_id> <d_type>0</d_type> </tilestyle>
 		<tilestyle> <d_id>0x16</d_id> <d_type>0</d_type> </tilestyle>
 		<tilestyle> <d_id>0x17</d_id> <d_type>0</d_type> </tilestyle>
-		<tilestyle> <d_id>0x18</d_id> <d_type>10</d_type> </tilestyle>
-		<tilestyle> <d_id>0x19</d_id> <d_type>10</d_type> </tilestyle>
+		<tilestyle> <d_id>0x18</d_id> <d_type>1</d_type> </tilestyle>
+		<tilestyle> <d_id>0x19</d_id> <d_type>1</d_type> </tilestyle>
 		<tilestyle> <d_id>0x1a</d_id> <d_type>2</d_type> </tilestyle>
 		<tilestyle> <d_id>0x1b</d_id> <d_type>2</d_type> </tilestyle>
-		<tilestyle> <d_id>0x1c</d_id> <d_type>11</d_type> </tilestyle>
-		<tilestyle> <d_id>0x1d</d_id> <d_type>11</d_type> </tilestyle>
+		<tilestyle> <d_id>0x1c</d_id> <d_type>3</d_type> </tilestyle>
+		<tilestyle> <d_id>0x1d</d_id> <d_type>3</d_type> </tilestyle>
 		<tilestyle> <d_id>0x1e</d_id> <d_type>4</d_type> </tilestyle>
 		<tilestyle> <d_id>0x1f</d_id> <d_type>4</d_type> </tilestyle>
 		<tilestyle> <d_id>0x20</d_id> <d_type>5</d_type> </tilestyle>
@@ -93,24 +93,24 @@
 		<tilestyle> <d_id>0x33</d_id> <d_type>8</d_type> </tilestyle>
 		<tilestyle> <d_id>0x34</d_id> <d_type>8</d_type> </tilestyle>
 		<tilestyle> <d_id>0x35</d_id> <d_type>8</d_type> </tilestyle>
-		<tilestyle> <d_id>0x36</d_id> <d_type>8</d_type> </tilestyle>
-		<tilestyle> <d_id>0x37</d_id> <d_type>8</d_type> </tilestyle>
-		<tilestyle> <d_id>0x38</d_id> <d_type>8</d_type> </tilestyle>
-		<tilestyle> <d_id>0x39</d_id> <d_type>8</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf2</d_id> <d_type>9</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf3</d_id> <d_type>9</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf4</d_id> <d_type>1</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf5</d_id> <d_type>1</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf6</d_id> <d_type>3</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf7</d_id> <d_type>3</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf8</d_id> <d_type>12</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf9</d_id> <d_type>12</d_type> </tilestyle>
-		<tilestyle> <d_id>0xfa</d_id> <d_type>13</d_type> </tilestyle>
-		<tilestyle> <d_id>0xfb</d_id> <d_type>13</d_type> </tilestyle>
-		<tilestyle> <d_id>0xfc</d_id> <d_type>14</d_type> </tilestyle>
-		<tilestyle> <d_id>0xfd</d_id> <d_type>14</d_type> </tilestyle>
-		<tilestyle> <d_id>0xfe</d_id> <d_type>15</d_type> </tilestyle>
-		<tilestyle> <d_id>0xff</d_id> <d_type>15</d_type> </tilestyle>
+		<tilestyle> <d_id>0x35</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0x35</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0x35</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0x35</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0xf5</d_id> <d_type>9</d_type> </tilestyle>
+		<tilestyle> <d_id>0xf6</d_id> <d_type>9</d_type> </tilestyle>
+		<tilestyle> <d_id>0xf7</d_id> <d_type>10</d_type> </tilestyle>
+		<tilestyle> <d_id>0xf8</d_id> <d_type>10</d_type> </tilestyle>
+		<tilestyle> <d_id>0xf9</d_id> <d_type>11</d_type> </tilestyle>
+		<tilestyle> <d_id>0xfa</d_id> <d_type>11</d_type> </tilestyle>
+		<tilestyle> <d_id>0xfb</d_id> <d_type>12</d_type> </tilestyle>
+		<tilestyle> <d_id>0xfc</d_id> <d_type>12</d_type> </tilestyle>
+		<tilestyle> <d_id>0xfe</d_id> <d_type>13</d_type> </tilestyle>
+		<tilestyle> <d_id>0xff</d_id> <d_type>13</d_type> </tilestyle>
+		<tilestyle> <d_id>0x36</d_id> <d_type>14</d_type> </tilestyle>
+		<tilestyle> <d_id>0x37</d_id> <d_type>14</d_type> </tilestyle>
+		<tilestyle> <d_id>0x38</d_id> <d_type>15</d_type> </tilestyle>
+		<tilestyle> <d_id>0x39</d_id> <d_type>15</d_type> </tilestyle>
 	</tilestyleset>
     </tile>
     <tile>
@@ -241,7 +241,6 @@
 		<tilestyle> <d_id>0xa0</d_id> <d_type>14</d_type> </tilestyle>
 		<tilestyle> <d_id>0xa1</d_id> <d_type>15</d_type> </tilestyle>
 		<tilestyle> <d_id>0xa2</d_id> <d_type>15</d_type> </tilestyle>
-
 	</tilestyleset>
     </tile>
     <tile>
@@ -256,6 +255,10 @@
 	</smallmap>
 	<tilestyleset>
 		<d_name>mountains</d_name>
+		<tilestyle> <d_id>0xc9</d_id> <d_type>0</d_type> </tilestyle>
+		<tilestyle> <d_id>0xca</d_id> <d_type>0</d_type> </tilestyle>
+		<tilestyle> <d_id>0xcb</d_id> <d_type>0</d_type> </tilestyle>
+		<tilestyle> <d_id>0xcc</d_id> <d_type>0</d_type> </tilestyle>
 		<tilestyle> <d_id>0xa3</d_id> <d_type>1</d_type> </tilestyle>
 		<tilestyle> <d_id>0xa4</d_id> <d_type>1</d_type> </tilestyle>
 		<tilestyle> <d_id>0xa5</d_id> <d_type>2</d_type> </tilestyle>
@@ -309,46 +312,46 @@
 	</smallmap>
 	<tilestyleset>
 		<d_name>swamp</d_name>
-		<tilestyle> <d_id>0xc9</d_id> <d_type>1</d_type> </tilestyle>
-		<tilestyle> <d_id>0xca</d_id> <d_type>2</d_type> </tilestyle>
-		<tilestyle> <d_id>0xcb</d_id> <d_type>2</d_type> </tilestyle>
-		<tilestyle> <d_id>0xcc</d_id> <d_type>2</d_type> </tilestyle>
-		<tilestyle> <d_id>0xcd</d_id> <d_type>2</d_type> </tilestyle>
-		<tilestyle> <d_id>0xce</d_id> <d_type>3</d_type> </tilestyle>
-		<tilestyle> <d_id>0xcf</d_id> <d_type>7</d_type> </tilestyle>
-		<tilestyle> <d_id>0xd0</d_id> <d_type>10</d_type> </tilestyle>
-		<tilestyle> <d_id>0xd1</d_id> <d_type>5</d_type> </tilestyle>
-		<tilestyle> <d_id>0xd2</d_id> <d_type>11</d_type> </tilestyle>
-		<tilestyle> <d_id>0xd3</d_id> <d_type>8</d_type> </tilestyle>
-		<tilestyle> <d_id>0xd4</d_id> <d_type>9</d_type> </tilestyle>
-		<tilestyle> <d_id>0xd5</d_id> <d_type>0</d_type> </tilestyle>
-		<tilestyle> <d_id>0xd6</d_id> <d_type>9</d_type> </tilestyle>
-		<tilestyle> <d_id>0xd7</d_id> <d_type>0</d_type> </tilestyle>
-		<tilestyle> <d_id>0xd8</d_id> <d_type>7</d_type> </tilestyle>
-		<tilestyle> <d_id>0xd9</d_id> <d_type>8</d_type> </tilestyle>
-		<tilestyle> <d_id>0xda</d_id> <d_type>9</d_type> </tilestyle>
+		<tilestyle> <d_id>0xcd</d_id> <d_type>0</d_type> </tilestyle>
+		<tilestyle> <d_id>0xce</d_id> <d_type>0</d_type> </tilestyle>
+		<tilestyle> <d_id>0xcf</d_id> <d_type>1</d_type> </tilestyle>
+		<tilestyle> <d_id>0xd0</d_id> <d_type>1</d_type> </tilestyle>
+		<tilestyle> <d_id>0xd1</d_id> <d_type>2</d_type> </tilestyle>
+		<tilestyle> <d_id>0xd2</d_id> <d_type>2</d_type> </tilestyle>
+		<tilestyle> <d_id>0xd3</d_id> <d_type>3</d_type> </tilestyle>
+		<tilestyle> <d_id>0xd4</d_id> <d_type>3</d_type> </tilestyle>
+		<tilestyle> <d_id>0xd5</d_id> <d_type>4</d_type> </tilestyle>
+		<tilestyle> <d_id>0xd6</d_id> <d_type>4</d_type> </tilestyle>
+		<tilestyle> <d_id>0xd7</d_id> <d_type>5</d_type> </tilestyle>
+		<tilestyle> <d_id>0xd8</d_id> <d_type>5</d_type> </tilestyle>
+		<tilestyle> <d_id>0xd9</d_id> <d_type>6</d_type> </tilestyle>
+		<tilestyle> <d_id>0xda</d_id> <d_type>6</d_type> </tilestyle>
 		<tilestyle> <d_id>0xdb</d_id> <d_type>7</d_type> </tilestyle>
-		<tilestyle> <d_id>0xdc</d_id> <d_type>12</d_type> </tilestyle>
-		<tilestyle> <d_id>0xdd</d_id> <d_type>2</d_type> </tilestyle>
-		<tilestyle> <d_id>0xde</d_id> <d_type>13</d_type> </tilestyle>
+		<tilestyle> <d_id>0xdc</d_id> <d_type>7</d_type> </tilestyle>
+		<tilestyle> <d_id>0xdd</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0xde</d_id> <d_type>8</d_type> </tilestyle>
 		<tilestyle> <d_id>0xdf</d_id> <d_type>8</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe0</d_id> <d_type>9</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe1</d_id> <d_type>4</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe2</d_id> <d_type>5</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe3</d_id> <d_type>0</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe4</d_id> <d_type>0</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe5</d_id> <d_type>5</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe6</d_id> <d_type>6</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe7</d_id> <d_type>14</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe8</d_id> <d_type>15</d_type> </tilestyle>
-		<tilestyle> <d_id>0xe9</d_id> <d_type>1</d_type> </tilestyle>
-		<tilestyle> <d_id>0xea</d_id> <d_type>3</d_type> </tilestyle>
-		<tilestyle> <d_id>0xeb</d_id> <d_type>4</d_type> </tilestyle>
-		<tilestyle> <d_id>0xec</d_id> <d_type>6</d_type> </tilestyle>
-		<tilestyle> <d_id>0xed</d_id> <d_type>10</d_type> </tilestyle>
-		<tilestyle> <d_id>0xee</d_id> <d_type>11</d_type> </tilestyle>
-		<tilestyle> <d_id>0xef</d_id> <d_type>12</d_type> </tilestyle>
-		<tilestyle> <d_id>0xf1</d_id> <d_type>13</d_type> </tilestyle>
+		<tilestyle> <d_id>0xe0</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0xe1</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0xe2</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0xe3</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0xe4</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0xe5</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0xe6</d_id> <d_type>8</d_type> </tilestyle>
+		<tilestyle> <d_id>0xe7</d_id> <d_type>9</d_type> </tilestyle>
+		<tilestyle> <d_id>0xe8</d_id> <d_type>9</d_type> </tilestyle>
+		<tilestyle> <d_id>0xe9</d_id> <d_type>10</d_type> </tilestyle>
+		<tilestyle> <d_id>0xea</d_id> <d_type>10</d_type> </tilestyle>
+		<tilestyle> <d_id>0xeb</d_id> <d_type>11</d_type> </tilestyle>
+		<tilestyle> <d_id>0xec</d_id> <d_type>11</d_type> </tilestyle>
+		<tilestyle> <d_id>0xed</d_id> <d_type>12</d_type> </tilestyle>
+		<tilestyle> <d_id>0xee</d_id> <d_type>12</d_type> </tilestyle>
+		<tilestyle> <d_id>0xef</d_id> <d_type>13</d_type> </tilestyle>
+		<tilestyle> <d_id>0xf0</d_id> <d_type>13</d_type> </tilestyle>
+		<tilestyle> <d_id>0xf1</d_id> <d_type>15</d_type> </tilestyle>
+		<tilestyle> <d_id>0xf2</d_id> <d_type>14</d_type> </tilestyle>
+		<tilestyle> <d_id>0xf3</d_id> <d_type>15</d_type> </tilestyle>
+		<tilestyle> <d_id>0xf4</d_id> <d_type>15</d_type> </tilestyle>
 	</tilestyleset>
     </tile>
 </tileset>
