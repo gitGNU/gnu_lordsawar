@@ -136,7 +136,7 @@ lordsawar_LDADD = liblordsawar.la \
     $(SDLSOUND_LIBS) $(SDL_LIBS) \
     $(GTKMM_LIBS) \
     $(LIBGNET_LIBS) \
-    $(LIBSIGC_LIBS) -ltar \
+    $(LIBSIGC_LIBS) -ltar -lz \
     gui/liblwgui.la \
     @LIBINTL@
 
