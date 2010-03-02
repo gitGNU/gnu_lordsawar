@@ -1,3 +1,9 @@
+2010-03-02  Ben Asselstine  <benasselstine@gmail.com>
+
+	* explicitly linking to zlib.
+	* using property_can_* instead of set_can_* in gtkmm widget methods.
+	* updated Danish translation.
+
 2010-02-27  Ben Asselstine  <benasselstine@gmail.com>
 
 	* updated default terrain artwork for 40x40 and 80x80 tile sizes.
