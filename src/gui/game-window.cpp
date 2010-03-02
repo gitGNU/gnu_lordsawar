@@ -2825,29 +2825,29 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 	  if (pillage)
 	    {
 	      xml->get_widget("pillage_button", button);
-              button->set_can_focus(true);
-              button->set_can_default(true);
+              button->property_can_focus() = true;
+              button->property_can_default() = true;
 	      button->grab_default();
 	    }
 	  if (sack)
 	    {
 	      xml->get_widget("sack_button", button);
-              button->set_can_focus(true);
-              button->set_can_default(true);
+              button->property_can_focus() = true;
+              button->property_can_default() = true;
 	      button->grab_default();
 	    }
 	  if (raze)
 	    {
 	      xml->get_widget("raze_button", button);
-              button->set_can_focus(true);
-              button->set_can_default(true);
+              button->property_can_focus() = true;
+              button->property_can_default() = true;
 	      button->grab_default();
 	    }
 	  if (occupy)
 	    {
 	      xml->get_widget("occupy_button", button);
-              button->set_can_focus(true);
-              button->set_can_default(true);
+              button->property_can_focus() = true;
+              button->property_can_default() = true;
 	      button->grab_default();
 	    }
 	}
