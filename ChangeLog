@@ -2,6 +2,8 @@
 
 	* added error for not finding a c++ compiler.  Reported by Blaine
 	Simpson.
+	* fixed crashing bug in the tileset editor wrt opening the tileset
+	info dialog.
 
 2010-03-02  Ben Asselstine  <benasselstine@gmail.com>
 
