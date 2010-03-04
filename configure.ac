@@ -24,6 +24,13 @@ AC_SUBST(PROGRAMNAME_LOCALEDIR)
     
 dnl Checks for programs.
 AC_PROG_CXX
+if test -n "$CXX"; then
+  gppver=`$CXX --version 2>/dev/null | sed -e '2,$d' -e 's@^\([[^0-9.]]*\) \([[0-9.]]*\)\(.*\)@\2@'`
+else
+  AC_MSG_ERROR([*** C++ compiler not found.])
+fi
+AC_SUBST([gppver])
+
 AC_PROG_LIBTOOL
 
 dnl The minimum SDL version required
