@@ -1,3 +1,8 @@
+2010-03-04  Ben Asselstine  <benasselstine@gmail.com>
+
+	* added error for not finding a c++ compiler.  Reported by Blaine
+	Simpson.
+
 2010-03-02  Ben Asselstine  <benasselstine@gmail.com>
 
 	* explicitly linking to zlib.
