@@ -1,3 +1,7 @@
+2010-03-05  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed default tileset id.  Reported by Blaine Simpson.
+
 2010-03-04  Ben Asselstine  <benasselstine@gmail.com>
 
 	* added error for not finding a c++ compiler.  Reported by Blaine
