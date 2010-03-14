@@ -134,9 +134,10 @@ class Backpack: public std::list<Item*>
 
 	//! Tally the items that let stacks fly.
 	guint32 countStackFlightGivers();
+    protected:
+	bool loadItem(std::string tag, XML_Helper* helper);
     private:
 
-	bool loadItem(std::string tag, XML_Helper* helper);
 };
 
 #endif

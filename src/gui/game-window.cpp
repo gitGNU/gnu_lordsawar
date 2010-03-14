@@ -66,6 +66,7 @@
 #include "timed-message-dialog.h"
 #include "destination-dialog.h"
 #include "decorated.h"
+#include "item-report-dialog.h"
 
 #include "ucompose.hpp"
 #include "defs.h"
@@ -115,6 +116,7 @@
 #include "pbm-game-server.h"
 #include "network_player.h"
 #include "stacktile.h"
+#include "MapBackpack.h"
 
 
 GameWindow::GameWindow()
@@ -335,6 +337,9 @@ GameWindow::GameWindow()
     xml->get_widget("army_report_menuitem", army_report_menuitem);
     army_report_menuitem->signal_activate().connect
       (sigc::mem_fun(*this, &GameWindow::on_army_report_activated));
+    xml->get_widget("item_report_menuitem", item_report_menuitem);
+    item_report_menuitem->signal_activate().connect
+      (sigc::mem_fun(*this, &GameWindow::on_item_report_activated));
     xml->get_widget("city_report_menuitem", city_report_menuitem);
     city_report_menuitem->signal_activate().connect
       (sigc::mem_fun(*this, &GameWindow::on_city_report_activated));
@@ -1607,6 +1612,18 @@ void GameWindow::on_army_report_activated()
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
   ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::ARMY);
+  d.set_parent_window(*window);
+  d.run();
+  d.hide();
+}
+
+void GameWindow::on_item_report_activated()
+{
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+    return;
+  std::list<Stack*> stacks = Playerlist::getActiveplayer()->getStacksWithItems();
+  std::list<MapBackpack*> bags = GameMap::getInstance()->getBackpacks();
+  ItemReportDialog d(stacks, bags);
   d.set_parent_window(*window);
   d.run();
   d.hide();

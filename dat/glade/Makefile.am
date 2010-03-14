@@ -27,6 +27,7 @@ surrender-refused-dialog.ui \
 sage-dialog.ui \
 ruin-rewarded-dialog.ui \
 ruin-report-dialog.ui \
+item-report-dialog.ui \
 history-report-dialog.ui \
 report-dialog.ui \
 load-scenario-dialog.ui \

@@ -119,6 +119,7 @@ class GameWindow: public Decorated
     Gtk::MenuItem *stack_info_menuitem;
     Gtk::MenuItem *signpost_menuitem;
     Gtk::MenuItem *diplomacy_report_menuitem;
+    Gtk::MenuItem *item_report_menuitem;
     Gtk::MenuItem *city_history_menuitem;
     Gtk::MenuItem *ruin_history_menuitem;
     Gtk::MenuItem *event_history_menuitem;
@@ -235,6 +236,7 @@ class GameWindow: public Decorated
     void on_plant_standard_activated();
     void on_item_bonus_activated();
     void on_army_report_activated();
+    void on_item_report_activated();
     void on_city_report_activated();
     void on_gold_report_activated();
     void on_production_report_activated();

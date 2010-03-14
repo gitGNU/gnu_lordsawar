@@ -35,8 +35,10 @@ MapBackpack::MapBackpack(const MapBackpack& object)
 }
 
 MapBackpack::MapBackpack(XML_Helper* helper)
-  :Backpack(helper), Immovable(helper), UniquelyIdentified((guint32)0)
+  :Immovable(helper), UniquelyIdentified((guint32)0)
 {
+  helper->registerTag(Backpack::d_tag, sigc::mem_fun(this, &MapBackpack::loadItem));
+  helper->registerTag(Item::d_tag, sigc::mem_fun(this, &MapBackpack::loadItem));
 }
 
 MapBackpack::~MapBackpack()
@@ -47,7 +49,7 @@ bool MapBackpack::save(XML_Helper* helper) const
 {
   bool retval = true;
 
-  retval &= helper->openTag(Backpack::d_tag);
+  retval &= helper->openTag(MapBackpack::d_tag);
   retval &= helper->saveData("x", getPos().x);
   retval &= helper->saveData("y", getPos().y);
   retval &= Backpack::saveData(helper);

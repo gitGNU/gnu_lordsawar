@@ -347,6 +347,7 @@ class GraphicsCache
         PixMask* getSmallRuinedCityPic();
 	//! Return a small hero picture, either white (active==true) or black.
         PixMask* getSmallHeroPic(bool active);
+        PixMask* getSmallBagPic();
         PixMask* getMoveBonusPic(guint32 bonus, bool has_ship);
         PixMask*getSmallTemplePic();
         PixMask*getSmallRuinExploredPic();
@@ -642,6 +643,7 @@ class GraphicsCache
         PixMask* d_prodshieldpic[PRODUCTION_SHIELD_TYPES];
 	PixMask* d_smallruinedcity;
 	PixMask* d_smallhero;
+	PixMask* d_bag;
 	PixMask* d_smallinactivehero;
         PixMask* d_movebonuspic[MOVE_BONUS_TYPES];
         PixMask* d_medalpic[2][MEDAL_TYPES];

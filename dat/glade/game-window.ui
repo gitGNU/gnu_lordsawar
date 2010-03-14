@@ -233,6 +233,13 @@
                             <accelerator key="equal" signal="activate"/>
                           </object>
                         </child>
+                        <child>
+                          <object class="GtkMenuItem" id="item_report_menuitem">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Items</property>
+                            <property name="use_underline">True</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>

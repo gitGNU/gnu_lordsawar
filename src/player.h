@@ -285,6 +285,9 @@ class Player: public sigc::trackable
         //! Returns the list of stacks owned by the player.
         Stacklist* getStacklist() const {return d_stacklist;}
 
+        //! Returns the list of stacks with items.
+        std::list<Stack*> getStacksWithItems() const;
+
         //! Get the FogMap of the player.
         FogMap* getFogMap() const {return d_fogmap;}
 

@@ -158,6 +158,7 @@ class GameMap: public sigc::trackable
         static std::list<Vector<int> > getNearbyPoints(Vector<int> pos, int dist);
 	static guint32 countArmyUnits(Vector<int> pos);
 	static MapBackpack *getBackpack(Vector<int> pos);
+        std::list<MapBackpack*> getBackpacks() const;
 
         //! Get the tile object at position (x,y)
         Maptile* getTile(int x, int y) const;

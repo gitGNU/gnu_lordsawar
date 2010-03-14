@@ -3996,4 +3996,10 @@ bool Player::maybeRecruitHero ()
     }
   return accepted;
 }
+        
+std::list<Stack*> Player::getStacksWithItems() const
+{
+  return getStacklist()->getStacksWithItems();
+}
+
 // End of file

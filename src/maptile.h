@@ -144,6 +144,9 @@ class Maptile
         //! Get the list of Item objects on this maptile.
         MapBackpack *getBackpack() const {return d_backpack;};
 
+        //! Set the backpack for this tile.
+        void setBackpack(MapBackpack *bag) {if (d_backpack) delete d_backpack; d_backpack = bag;};
+
 	//! Get the list of Stack objects on this maptile.
 	StackTile *getStacks() const {return d_stacktile;};
         

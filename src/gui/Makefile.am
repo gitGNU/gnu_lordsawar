@@ -45,6 +45,7 @@ liblwgui_la_SOURCES = \
     sage-dialog.cpp sage-dialog.h \
     ruin-rewarded-dialog.cpp ruin-rewarded-dialog.h \
     ruin-report-dialog.cpp ruin-report-dialog.h \
+    item-report-dialog.cpp item-report-dialog.h \
     history-report-dialog.cpp history-report-dialog.h \
     report-dialog.cpp report-dialog.h \
     triumphs-dialog.cpp triumphs-dialog.h \

@@ -1093,4 +1093,19 @@ Hero *Stack::getFirstHeroWithAQuest() const
     }
   return NULL;
 }
+
+guint32 Stack::countItems() const
+{
+  guint32 count = 0;
+  Hero *hero = NULL;
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->isHero() == false)
+        continue;
+      hero = dynamic_cast<Hero*>(*it);
+      Backpack *backpack = hero->getBackpack();
+      count += backpack->size();
+    }
+  return count;
+}
 // End of file

@@ -58,6 +58,9 @@ class MapBackpack: public Backpack, public Immovable, public UniquelyIdentified
 
     //! Return the plantable item owned by player that is planted here.
     Item *getPlantedItem(Player *player);
+ private:
+
+    bool loadBackpack(std::string tag, XML_Helper *helper);
 };
 
 #endif

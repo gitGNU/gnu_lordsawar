@@ -608,6 +608,16 @@ std::list<Vector<int> > Stacklist::getPositions() const
         points.push_back((*it)->getPos());
     }
   return points;
+}
 
+std::list<Stack*> Stacklist::getStacksWithItems() const
+{
+  std::list<Stack*> stacks;
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->countItems() > 0)
+        stacks.push_back((*it));
+    }
+  return stacks;
 }
 // End of file

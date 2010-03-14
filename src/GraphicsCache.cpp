@@ -290,6 +290,7 @@ GraphicsCache::GraphicsCache()
 
     d_smallruinedcity = getMiscPicture("smallruinedcity.png");
     d_smallhero = getMiscPicture("hero.png");
+    d_bag = getMiscPicture("bag.png");
     d_smallinactivehero = getMiscPicture("hero-inactive.png");
     d_small_ruin_unexplored = getMiscPicture("smallunexploredruin.png");
     d_small_stronghold_unexplored = 
@@ -314,6 +315,7 @@ GraphicsCache::~GraphicsCache()
 
     delete d_smallruinedcity;
     delete d_smallhero;
+    delete d_bag;
     delete d_smallinactivehero;
     delete d_small_temple;
     delete d_small_ruin_unexplored;
@@ -328,6 +330,11 @@ GraphicsCache::~GraphicsCache()
 PixMask* GraphicsCache::getSmallRuinedCityPic()
 {
   return d_smallruinedcity;
+}
+
+PixMask* GraphicsCache::getSmallBagPic()
+{
+  return d_bag;
 }
 
 PixMask* GraphicsCache::getSmallHeroPic(bool active)

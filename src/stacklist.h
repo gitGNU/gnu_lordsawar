@@ -277,6 +277,8 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 
         std::list<Vector<int> > getPositions() const;
 
+        std::list<Stack*> getStacksWithItems() const;
+
         bool check();
     private:
 

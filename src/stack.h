@@ -371,6 +371,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Returns how many armies in the stack have visited the given temple.
 	guint32 countArmiesBlessedAtTemple(guint32 temple_id) const;
 
+        //! Returns how many items this stack has.
+        guint32 countItems() const;
+
 	//!If this stack were at the given pos, would it move in/out of a ship?
 	/**
 	 * The on_ship paramater holds whether or not the stack is in a ship

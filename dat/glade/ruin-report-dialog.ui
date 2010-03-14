@@ -4,6 +4,7 @@
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkDialog" id="dialog">
     <property name="border_width">6</property>
+    <property name="title" translatable="yes">Ruin Report</property>
     <property name="type_hint">dialog</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">

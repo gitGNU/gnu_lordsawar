@@ -29,7 +29,6 @@
 #include "defs.h"
 #include "GameMap.h"
 #include "File.h"
-#include "sound.h"
 #include "ruin.h"
 #include "ruinlist.h"
 #include "templelist.h"
@@ -103,10 +102,8 @@ void RuinReportDialog::run()
   ruinmap->resize();
   ruinmap->draw(Playerlist::getActiveplayer());
 
-  Sound::getInstance()->playMusic("hero", 1);
   dialog->show_all();
   dialog->run();
-  Sound::getInstance()->haltMusic();
 }
 
 void RuinReportDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)

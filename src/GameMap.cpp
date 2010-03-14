@@ -222,9 +222,7 @@ GameMap::GameMap(XML_Helper* helper)
     processStyles(styles, chars_per_style);
 
     //add some callbacks for item loading
-    helper->registerTag(GameMap::d_itemstack_tag, 
-			sigc::mem_fun(this, &GameMap::loadItems));
-    helper->registerTag(Item::d_tag, sigc::mem_fun(this, &GameMap::loadItems));
+    helper->registerTag(MapBackpack::d_tag, sigc::mem_fun(this, &GameMap::loadItems));
 }
 
 
@@ -347,20 +345,12 @@ bool GameMap::save(XML_Helper* helper) const
 
 bool GameMap::loadItems(std::string tag, XML_Helper* helper)
 {
-    static int x = 0;
-    static int y = 0;
-    
-    if (tag == GameMap::d_itemstack_tag)
-    {
-        helper->getData(x, "x");
-        helper->getData(y, "y");
-    }
-
-    if (tag == Item::d_tag)
-    {
-        Item* item = new Item(helper);
-        getTile(x, y)->getBackpack()->addToBackpack(item);
-    }
+    if (tag == MapBackpack::d_tag)
+      {
+        MapBackpack* backpack = new MapBackpack(helper);
+        Vector<int> pos = backpack->getPos();
+        getTile(pos)->setBackpack(backpack);
+      }
 
     return true;
 }
@@ -661,6 +651,22 @@ Vector<int> GameMap::findPlantedStandard(Player *p)
       }
   return pos;
 }
+
+std::list<MapBackpack*> GameMap::getBackpacks() const
+{
+  std::list<MapBackpack*> bags;
+  for (int x = 0; x < getWidth(); x++)
+    {
+      for (int y = 0; y < getHeight(); y++)
+        {
+          MapBackpack *backpack = getTile(x, y)->getBackpack();
+          if (backpack->size() > 0)
+            bags.push_back(backpack);
+        }
+    }
+  return bags;
+}
+
 
 TileStyle *GameMap::calculatePreferredStyle(int i, int j)
 {
