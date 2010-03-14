@@ -1,3 +1,8 @@
+2010-03-14  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed bags of stuff to be loaded properly.
+	* added new Item Report to show where the bags of stuff are.
+
 2010-03-13  Ben Asselstine  <benasselstine@gmail.com>
 
 	* darkened the hill tiles for 40x40 and 80x80 in the default tileset.
