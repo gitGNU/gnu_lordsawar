@@ -2,6 +2,7 @@
 
 	* fixed bags of stuff to be loaded properly.
 	* added new Item Report to show where the bags of stuff are.
+	* bumped version of config file and map files to 0.1.8.
 
 2010-03-13  Ben Asselstine  <benasselstine@gmail.com>
 
