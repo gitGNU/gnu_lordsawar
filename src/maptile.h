@@ -25,7 +25,7 @@
 #include "SmallTile.h"
 #include "tileset.h"
 #include "Item.h"
-class MapBackpack;
+#include "MapBackpack.h"
 class StackTile;
 
 //! A single tile on the game map.

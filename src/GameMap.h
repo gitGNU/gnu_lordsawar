@@ -238,7 +238,7 @@ class GameMap: public sigc::trackable
 	Tile::Type getTerrainType(Vector<int> tile);
 	void setBuilding(Vector<int> tile, Maptile::Building building);
 
-	bool putCity(City *c);
+	bool putCity(City *c, bool keep_owner = false);
 	bool removeCity(Vector<int> pos);
 	bool putRuin(Ruin *r);
 	bool removeRuin(Vector<int> pos);

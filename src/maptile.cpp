@@ -57,6 +57,7 @@ Maptile::Maptile(Tileset* tileSet, int x, int y, Tile::Type type, TileStyle *til
 
 Maptile::~Maptile()
 {
+  if (d_backpack)
     delete d_backpack;
 }
 

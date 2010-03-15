@@ -1394,7 +1394,7 @@ bool GameMap::moveBuilding(Vector<int> from, Vector<int> to)
 	  City* old_city = getCity(getCity(from)->getPos());
 	  City* new_city = new City(*old_city, to);
 	  removeCity(old_city->getPos());
-	  putCity(new_city);
+	  putCity(new_city, true);
 	  break;
 	}
     }
@@ -1705,12 +1705,15 @@ bool GameMap::removeCity(Vector<int> pos)
     }
   return false;
 }
-bool GameMap::putCity(City *c)
+bool GameMap::putCity(City *c, bool keep_owner)
 {
   Player *active = Playerlist::getActiveplayer();
 
   // create the city
-  c->setOwner(active);
+  if (keep_owner == false)
+    c->setOwner(active);
+  else
+    active = c->getOwner();
   Citylist::getInstance()->add(c);
 
   putTerrain(c->getArea(), Tile::GRASS);
