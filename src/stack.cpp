@@ -210,14 +210,16 @@ void Stack::moveToDest(Vector<int> dest, bool skipping)
   //update position and status
   smoving.emit(this);
   setPos(dest);
+
+  //update fogmap
+  deFog();
+
   smoved.emit(this);
 
   setFortified(false);
   setDefending(false);
   setParked(false);
 
-  //update fogmap
-  deFog();
 }
 
 void Stack::deFog()
