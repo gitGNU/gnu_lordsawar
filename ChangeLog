@@ -1,3 +1,12 @@
+2010-03-16  Ben Asselstine  <benasselstine@gmail.com>
+
+	* improved the fog art for 40x40 and 80x80 default tileset.
+
+2010-03-15  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed move city bug in scenario editor that wasn't retaining owner.
+	* silencing some compiler warnings.
+
 2010-03-14  Ben Asselstine  <benasselstine@gmail.com>
 
 	* fixed bags of stuff to be loaded properly.
