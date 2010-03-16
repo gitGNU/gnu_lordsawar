@@ -2,6 +2,7 @@
 
 	* improved the fog art for 40x40 and 80x80 default tileset.
 	* fixed bug in 80x80 default tileset selector.
+	* fix bug wrt slow-updating fog on hidden maps.
 
 2010-03-15  Ben Asselstine  <benasselstine@gmail.com>
 
