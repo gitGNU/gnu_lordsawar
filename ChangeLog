@@ -1,6 +1,7 @@
 2010-03-16  Ben Asselstine  <benasselstine@gmail.com>
 
 	* improved the fog art for 40x40 and 80x80 default tileset.
+	* fixed bug in 80x80 default tileset selector.
 
 2010-03-15  Ben Asselstine  <benasselstine@gmail.com>
 
