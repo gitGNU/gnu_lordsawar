@@ -1908,12 +1908,8 @@ void GameWindow::on_group_toggled(Gtk::ToggleButton *toggle)
 {
   if (toggle->sensitive() == false)
     return;
-  printf("group/ungroup was clicked\n");
   bool active = toggle->get_active();
       
-  printf("active is %d so it means we are %s\n",
-	 active, active ? "grouped, and going to ungrouped"  :
-	 "ungrouped, and going to group");
   clear_army_buttons();
       
   StackTile *s = GameMap::getStacks(currently_selected_stack->getPos());

@@ -1659,9 +1659,7 @@ void Player::doCitySack(City* c, int& gold, std::list<guint32> *sacked_types)
   addGold(gold);
   Stack *s = getActivestack();
   ssackingCity.emit(c, s, gold, *sacked_types);
-  printf("notifying quests manager of city sacking!\n");
   QuestsManager::getInstance()->citySacked(c, s, gold);
-  printf("done\n");
   //takeCityInPossession(c);
 }
 
