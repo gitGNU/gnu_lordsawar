@@ -29,12 +29,15 @@
 class TilePreviewDialog: public sigc::trackable
 {
  public:
-    TilePreviewDialog(Tile *tile, guint32 tileSize);
+    TilePreviewDialog(Tile *tile, Tile *secondary, guint32 tileSize);
     ~TilePreviewDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
     void run();
+
+    void set_icon_from_file(std::string name) {dialog->set_icon_from_file(name);};
+
     
  private:
     Tile *d_tile;

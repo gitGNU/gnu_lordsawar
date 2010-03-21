@@ -29,7 +29,7 @@
 #include "File.h"
 
 
-TilePreviewDialog::TilePreviewDialog(Tile *tile, guint32 tileSize)
+TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
@@ -75,7 +75,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, guint32 tileSize)
 	scene += "aaaaa";
 	scene += "aaaaa";
 	scene += "aaaaa";
-	s = new TilePreviewScene(tile, tilestyle_images, 5, 5, scene);
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 5, 5, scene);
 	scenes.push_back(s);
 	break;
       case Tile::WATER:
@@ -83,7 +83,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, guint32 tileSize)
 	scene += "bcd";
 	scene += "hij";
 	scene += "efg";
-	s = new TilePreviewScene(tile, tilestyle_images, 3, 3, scene);
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 3, 3, scene);
 	scenes.push_back(s);
 	scene.clear();
 	scene += "iiiii";
@@ -91,7 +91,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, guint32 tileSize)
 	scene += "iiiii";
 	scene += "iiiii";
 	scene += "iiiii";
-	s = new TilePreviewScene(tile, tilestyle_images, 5, 5, scene);
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 5, 5, scene);
 	scenes.push_back(s);
 	scene.clear();
 	scene += "iiii";
@@ -99,7 +99,15 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, guint32 tileSize)
 	scene += "ijhi";
 	scene += "imni";
 	scene += "iiii";
-	s = new TilePreviewScene(tile, tilestyle_images, 5, 4, scene);
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 5, 4, scene);
+	scenes.push_back(s);
+	scene.clear();
+	scene += "ahiii";
+	scene += "cplkf";
+	scene += "ijhja";
+	scene += "ijeoc";
+	scene += "ijahi";
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 5, 5, scene);
 	scenes.push_back(s);
 	break;
       case Tile::FOREST:
@@ -107,7 +115,23 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, guint32 tileSize)
 	scene += "bcd";
 	scene += "hij";
 	scene += "efg";
-	s = new TilePreviewScene(tile, tilestyle_images, 3, 3, scene);
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 3, 3, scene);
+	scenes.push_back(s);
+	scene.clear();
+	scene += "iiiii";
+	scene += "iiiii";
+	scene += "iiiii";
+	scene += "iiiii";
+	scene += "iiiii";
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 5, 5, scene);
+	scenes.push_back(s);
+	scene.clear();
+	scene += "ahiii";
+	scene += "cplkf";
+	scene += "ijhja";
+	scene += "ijeoc";
+	scene += "ijahi";
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 5, 5, scene);
 	scenes.push_back(s);
 	break;
       case Tile::HILLS:
@@ -115,7 +139,23 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, guint32 tileSize)
 	scene += "bcd";
 	scene += "hij";
 	scene += "efg";
-	s = new TilePreviewScene(tile, tilestyle_images, 3, 3, scene);
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 3, 3, scene);
+	scenes.push_back(s);
+	scene.clear();
+	scene += "iiiii";
+	scene += "iiiii";
+	scene += "iiiii";
+	scene += "iiiii";
+	scene += "iiiii";
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 5, 5, scene);
+	scenes.push_back(s);
+	scene.clear();
+	scene += "ahiii";
+	scene += "cplkf";
+	scene += "ijhja";
+	scene += "ijeoc";
+	scene += "ijahi";
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 5, 5, scene);
 	scenes.push_back(s);
 	break;
       case Tile::MOUNTAIN:
@@ -123,7 +163,29 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, guint32 tileSize)
 	scene += "bcd";
 	scene += "hij";
 	scene += "efg";
-	s = new TilePreviewScene(tile, tilestyle_images, 3, 3, scene);
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 3, 3, scene);
+	scenes.push_back(s);
+	scene.clear();
+	scene += "iiiii";
+	scene += "iiiii";
+	scene += "iiiii";
+	scene += "iiiii";
+	scene += "iiiii";
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 5, 5, scene);
+	scenes.push_back(s);
+	scene.clear();
+	scene += "III";
+	scene += "IaI";
+	scene += "III";
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 3, 3, scene);
+	scenes.push_back(s);
+	scene.clear();
+	scene += "ahiii";
+	scene += "cplkf";
+	scene += "ijhja";
+	scene += "ijeoc";
+	scene += "ijahi";
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 5, 5, scene);
 	scenes.push_back(s);
 	break;
       case Tile::SWAMP:
@@ -132,7 +194,23 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, guint32 tileSize)
 	scene += "aaaaa";
 	scene += "aaaaa";
 	scene += "aaaaa";
-	s = new TilePreviewScene(tile, tilestyle_images, 5, 5, scene);
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 5, 5, scene);
+	scenes.push_back(s);
+	scene.clear();
+	scene += "ahiii";
+	scene += "cplkf";
+	scene += "ijhja";
+	scene += "ijeoc";
+	scene += "ijahi";
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 5, 5, scene);
+	scenes.push_back(s);
+	scene.clear();
+	scene = "iiiii";
+	scene += "iiiii";
+	scene += "iiiii";
+	scene += "iiiii";
+	scene += "iiiii";
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 5, 5, scene);
 	scenes.push_back(s);
 	break;
       case Tile::VOID:
@@ -140,7 +218,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, guint32 tileSize)
 	scene += "bcd";
 	scene += "hij";
 	scene += "efg";
-	s = new TilePreviewScene(tile, tilestyle_images, 3, 3, scene);
+	s = new TilePreviewScene(tile, sec, tilestyle_images, 3, 3, scene);
 	scenes.push_back(s);
 	break;
       }

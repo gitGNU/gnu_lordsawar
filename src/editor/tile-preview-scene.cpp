@@ -28,21 +28,33 @@
 #include "File.h"
 
 
-TilePreviewScene::TilePreviewScene (Tile *tile, 
+TilePreviewScene::TilePreviewScene (Tile *tile, Tile *secondary_tile,
 				    std::vector<PixMask* > 
 				      standard_images, 
 				    guint32 height, guint32 width, 
 				    std::string scene)
 {
-  std::list<TileStyle::Type> tilescene;
+  struct tile_model model;
+  std::list<struct tile_model> tilescene;
   for (const char *letter = scene.c_str(); *letter != '\0'; letter++)
     if (*letter - 'a' >=0 && *letter - 'a' <= TileStyle::OTHER)
-      tilescene.push_back(TileStyle::Type(*letter - 'a'));
+      {
+        model.tile = tile;
+        model.type = TileStyle::Type(*letter - 'a');
+        tilescene.push_back(model);
+      }
+    else if (*letter - 'A' >=0 && *letter - 'A' <= TileStyle::OTHER)
+      {
+        model.tile = secondary_tile;
+        model.type = TileStyle::Type(*letter - 'A');
+        tilescene.push_back(model);
+      }
 
   if (height * width != tilescene.size())
     return;
 
   d_tile = tile;
+  d_secondary_tile = secondary_tile;
   d_standard_images = standard_images;
   d_height = height;
   d_width = width;
@@ -64,21 +76,21 @@ void TilePreviewScene::regenerate()
 {
   //populate d_view
   d_view.clear();
-  for (std::list<TileStyle::Type>::iterator it = d_model.begin(); 
+  for (std::list<struct tile_model>::iterator it = d_model.begin(); 
        it != d_model.end(); it++)
     {
-      TileStyle::Type type = *it;
+      struct tile_model model = *it;
       TileStyle *tilestyle = NULL;
-      if (d_tile)
+      if (model.tile)
 	{
-	  tilestyle = d_tile->getRandomTileStyle(type);
+	  tilestyle = model.tile->getRandomTileStyle(model.type);
 	  d_tilestyles.push_back(tilestyle);
 	}
 
       if (tilestyle)
 	d_view.push_back(tilestyle->getImage()->to_pixbuf());
       else
-	d_view.push_back(d_standard_images[type]->to_pixbuf());
+	d_view.push_back(d_standard_images[model.type]->to_pixbuf());
     }
 }
   

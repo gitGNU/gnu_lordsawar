@@ -1034,7 +1034,17 @@ void TileSetWindow::on_preview_tile_activated()
   Tile *tile = get_selected_tile();
   if (tile)
     {
-      TilePreviewDialog d(tile, d_tileset->getTileSize());
+      //determine transition tile type
+      Tile *sec = NULL;
+      int idx = -1;
+      if (tile->getType() == Tile::MOUNTAIN)
+        idx = d_tileset->getIndex(Tile::HILLS);
+      else
+        idx = d_tileset->getIndex(Tile::GRASS);
+      if (idx > -1)
+        sec = (*d_tileset)[idx];
+      TilePreviewDialog d(tile, sec, d_tileset->getTileSize());
+      d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
       d.run();
     }
 }

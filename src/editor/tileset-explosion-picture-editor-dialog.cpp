@@ -134,7 +134,7 @@ void TilesetExplosionPictureEditorDialog::show_explosion_image(std::string filen
       scene += "aaaaaa";
       scene += "aaaaaa";
       scene += "aaaaaa";
-      s = new TilePreviewScene(grass, tilestyle_images, 6, 6, scene);
+      s = new TilePreviewScene(grass, NULL, tilestyle_images, 6, 6, scene);
       update_scene(s, filename);
     }
   else if (small_explosion_radiobutton->get_active() == true)
@@ -146,7 +146,7 @@ void TilesetExplosionPictureEditorDialog::show_explosion_image(std::string filen
       scene += "aaaaaaa";
       scene += "aaaaaaa";
       scene += "aaaaaaa";
-      s = new TilePreviewScene(grass, tilestyle_images, 7, 7, scene);
+      s = new TilePreviewScene(grass, NULL, tilestyle_images, 7, 7, scene);
       update_scene(s, filename);
     }
 }

@@ -26,10 +26,16 @@
 #include <vector>
 #include <string>
 
+struct tile_model
+{
+  Tile *tile;
+  TileStyle::Type type;
+};
+
 class TilePreviewScene: public sigc::trackable
 {
 public:
-  TilePreviewScene (Tile *tile, 
+  TilePreviewScene (Tile *tile, Tile *secondary_tile,
 		    std::vector<PixMask*> standard_images, 
 		    guint32 height, guint32 width, 
 		    std::string scene);
@@ -42,12 +48,13 @@ public:
   Glib::RefPtr<Gdk::Pixbuf> renderScene(guint32 tilesize);
 private:
   //data:
-    std::list<TileStyle::Type> d_model;
+    std::list<struct tile_model> d_model;
     std::vector<Glib::RefPtr<Gdk::Pixbuf> > d_view;
     std::vector<TileStyle*> d_tilestyles;
     guint32 d_height;
     guint32 d_width;
     Tile *d_tile;
+    Tile *d_secondary_tile;
     std::vector<PixMask*> d_standard_images;
 };
 
