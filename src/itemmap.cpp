@@ -49,24 +49,11 @@ void ItemMap::draw_bags()
     draw_bag((*it)->getPos());
 }
 
-void ItemMap::draw_hero(Vector<int> pos)
-{
-    GraphicsCache *gc = GraphicsCache::getInstance();
-    Vector<int> start = pos;
-
-    start = mapToSurface(start);
-
-    start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
-
-    PixMask *heropic = gc->getSmallHeroPic(true);
-    heropic->blit_centered(surface, start);
-}
-
 void ItemMap::draw_heroes()
 {
   for (std::list<Stack*>::iterator it = stacks.begin(); it != stacks.end();
        it++)
-    draw_hero((*it)->getPos());
+    draw_hero((*it)->getPos(), true);
 }
 
 void ItemMap::after_draw()

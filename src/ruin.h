@@ -54,7 +54,9 @@ class Ruin : public NamedLocation, public sigc::trackable
 	  //! A normal ruin.
 	  RUIN = 0, 
 	  //! A stronghold ruin is a little stronger.
-	  STRONGHOLD = 1
+	  STRONGHOLD = 1,
+          //! A Sage is a ruin without a keeper and provides choice of reward.
+          SAGE = 2
 	};
 
 	//! Default constructor.
@@ -104,7 +106,7 @@ class Ruin : public NamedLocation, public sigc::trackable
 	bool isHidden() const {return d_hidden;}
 
 	//! Returns whether or not this ruin has a sage.
-	bool hasSage() const {return d_sage;}
+	bool hasSage() const {return d_type == SAGE ? true : false;}
 
 	//! Returns the player that owns this hidden ruin.
         /**
@@ -135,7 +137,7 @@ class Ruin : public NamedLocation, public sigc::trackable
         void setHidden (bool hidden) {d_hidden = hidden;}
 
 	//! Sets whether or not this ruin has a sage.
-	void setSage(bool sage) {d_sage = sage;}
+	void setSage(bool sage) {if (sage) d_type = SAGE; else d_type = RUIN;}
 
 	//! Sets the player that owns this hidden ruin.
 	void setOwner(Player *owner) {d_owner = owner;}

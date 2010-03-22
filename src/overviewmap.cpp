@@ -616,3 +616,16 @@ void OverviewMap::blank(bool on)
   blank_screen = on;
   draw(Playerlist::getViewingplayer());
 }
+
+void OverviewMap::draw_hero(Vector<int> pos, bool white)
+{
+    GraphicsCache *gc = GraphicsCache::getInstance();
+    // draw the hero picture over top of the host city
+
+    Vector<int> start = mapToSurface(pos);
+
+    start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
+
+    PixMask *heropic = gc->getSmallHeroPic(white);
+    heropic->blit_centered(surface, start);
+}

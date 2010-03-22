@@ -242,6 +242,8 @@ class OverviewMap : public sigc::trackable
     Glib::RefPtr<Gdk::Pixmap> surface;
     Glib::RefPtr<Gdk::GC> surface_gc;
 
+    //! Draw a hero icon at the given location.  white or black.
+    void draw_hero(Vector<int> pos, bool white);
 
     bool blank_screen;
 };

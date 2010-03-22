@@ -30,18 +30,9 @@ HeroMap::HeroMap(City *c)
 
 void HeroMap::after_draw()
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
     OverviewMap::after_draw();
     draw_cities(false);
-    // draw the hero picture over top of the host city
-    Vector<int> start = city->getPos();
-
-    start = mapToSurface(start);
-
-    start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
-
-    PixMask *heropic = gc->getSmallHeroPic(true);
-    heropic->blit_centered(surface, start);
+    draw_hero(city->getPos(), true);
     map_changed.emit(surface);
 }
 

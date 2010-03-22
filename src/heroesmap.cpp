@@ -32,21 +32,6 @@ HeroesMap::HeroesMap(std::list<Hero*> h)
   active_hero = *(heroes.begin());
 }
 
-void HeroesMap::draw_hero(Hero *hero, bool active)
-{
-  Player *player = Playerlist::getActiveplayer();
-  Vector<int> start = player->getStacklist()->getPosition(hero->getId());
-
-  start = mapToSurface(start);
-
-  start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
-
-  PixMask *heropic = 
-    GraphicsCache::getInstance()->getSmallHeroPic(active);
- 
-  heropic->blit_centered(surface, start);
-}
-
 void HeroesMap::after_draw()
 {
   OverviewMap::after_draw();
@@ -54,10 +39,12 @@ void HeroesMap::after_draw()
   for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end();
        it++)
     {
+      Player *player = Playerlist::getActiveplayer();
+      Vector<int> pos = player->getStacklist()->getPosition((*it)->getId());
       if (*it == active_hero)
-	draw_hero(*it, true);
+	draw_hero(pos, true);
       else
-	draw_hero(*it, false);
+	draw_hero(pos, false);
     }
 
   map_changed.emit(surface);

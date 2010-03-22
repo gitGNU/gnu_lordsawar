@@ -65,9 +65,6 @@ class ItemMap : public OverviewMap
     //! Draw the hero icons on the miniature map graphic.
     void draw_heroes();
 
-    //! Draw a hero icon at the given tile on the miniature map graphic.
-    void draw_hero(Vector<int> pos);
-
     //! Draw the hero and bag icons onto the miniature map graphic.
     /**
      * This draws the shields for each city as well as icons to indicate

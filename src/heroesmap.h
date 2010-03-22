@@ -71,9 +71,6 @@ class HeroesMap : public OverviewMap
      */
     virtual void after_draw();
 
-    //! draw the given hero on the map, in white (Active ==true) or black.
-    void draw_hero(Hero *hero, bool active);
-
 };
 
 #endif
