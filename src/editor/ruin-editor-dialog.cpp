@@ -82,8 +82,6 @@ RuinEditorDialog::RuinEditorDialog(Ruin *r, CreateScenarioRandomize *randomizer)
 	sigc::mem_fun(this, &RuinEditorDialog::on_randomize_keeper_clicked));
 
     set_keeper_name();
-    xml->get_widget("sage_checkbutton", sage_button);
-    sage_button->set_active(ruin->hasSage());
    
     xml->get_widget("hidden_checkbutton", hidden_button);
     hidden_button->set_active(ruin->isHidden());
@@ -179,9 +177,6 @@ int RuinEditorDialog::run()
 	    keeper = 0;
 	}
 
-        ruin->setSage(sage_button->get_active());
-	if (sage_button->get_active() == false)
-	  ruin->setOccupant(keeper);
         ruin->setHidden(hidden_button->get_active());
         if (hidden_button->get_active())
           {

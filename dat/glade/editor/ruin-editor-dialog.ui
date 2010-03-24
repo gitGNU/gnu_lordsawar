@@ -3,7 +3,7 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkAdjustment" id="adjustment1">
-    <property name="upper">1</property>
+    <property name="upper">2</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
     <property name="page_size">10</property>
@@ -250,24 +250,6 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkCheckButton" id="sage_checkbutton">
-                        <property name="label" translatable="yes">Is a Sage?</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="use_underline">True</property>
-                        <property name="draw_indicator">True</property>
-                      </object>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
-                        <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkCheckButton" id="hidden_checkbutton">
                         <property name="label" translatable="yes">Is Hidden?</property>
                         <property name="visible">True</property>
@@ -421,6 +403,9 @@
                         <property name="x_options">GTK_FILL</property>
                         <property name="y_options"></property>
                       </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
                     </child>
                     <child>
                       <placeholder/>

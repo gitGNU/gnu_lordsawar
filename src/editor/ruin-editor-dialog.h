@@ -48,7 +48,6 @@ class RuinEditorDialog: public sigc::trackable
     Gtk::Button *randomize_name_button;
     Gtk::Button *clear_keeper_button;
     Gtk::Button *randomize_keeper_button;
-    Gtk::CheckButton *sage_button;
     Gtk::CheckButton *hidden_button;
     Gtk::ComboBoxText *player_combobox;
     Gtk::HBox *new_reward_hbox;

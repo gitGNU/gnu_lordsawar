@@ -1313,6 +1313,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
 	  needs_saving = true;
+	redraw();
     }
     else if (Signpost *o = dynamic_cast<Signpost *>(object))
     {
