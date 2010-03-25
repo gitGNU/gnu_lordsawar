@@ -382,6 +382,10 @@ void Game::move_map_dir(int diffx, int diffy)
 
 void Game::move_selected_stack_dir(int diffx, int diffy)
 {
+  static bool currently_moving = false;
+  if (currently_moving == true)
+    return;
+  currently_moving = true;
   Stack *stack = Playerlist::getActiveplayer()->getActivestack();
   if (!stack)
     return;
@@ -399,6 +403,7 @@ void Game::move_selected_stack_dir(int diffx, int diffy)
       Playerlist::getActiveplayer()->setActivestack(0);
       unselect_active_stack();
     }
+  currently_moving = false;
 }
 
 void Game::move_selected_stack_northwest()

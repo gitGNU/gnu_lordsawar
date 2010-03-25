@@ -394,7 +394,7 @@ guint32 Stack::calculateTileMovementCost(Vector<int> pos) const
 
 Vector<int> Stack::getFirstPointInPath() const
 {
-  if (d_path->size() == 0)
+  if (hasPath() == false)
     return Vector<int>(-1,-1);
   Vector<int> p = *(d_path->begin());
   return p;
@@ -423,7 +423,7 @@ Vector<int> Stack::getLastPointInPath() const
 
 bool Stack::enoughMoves() const
 {
-  if (d_path->size() == 0)
+  if (hasPath() == false)
     return true; //we have enough moves to move nowhere!
 
   Vector<int> p = getFirstPointInPath();
