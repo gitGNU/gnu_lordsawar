@@ -1,7 +1,16 @@
+2010-03-25  Ben Asselstine  <benasselstine@gmail.com>
+
+	* bumped version to 0.1.9.
+	* fixed dialog title of switch sets dialog in scenario editor.
+	* added better bridge artwork in the default tileset.
+	* added better 80x80 fog in the default tileset.
+	* updated scenario editor button images.
+
 2010-03-24  Ben Asselstine  <benasselstine@gmail.com>
 
 	* added new bridge artwork.
 	* fixed ruin editor in scenario editor wrt sages.
+	* released version 0.1.8.
 
 2010-03-23  Ben Asselstine  <benasselstine@gmail.com>
 
