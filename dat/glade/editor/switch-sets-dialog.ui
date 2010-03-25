@@ -81,7 +81,7 @@
   </object>
   <object class="GtkDialog" id="dialog">
     <property name="border_width">12</property>
-    <property name="title" translatable="yes">New Map</property>
+    <property name="title" translatable="yes">Switch Image Sets</property>
     <property name="modal">True</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>

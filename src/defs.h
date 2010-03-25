@@ -3,7 +3,7 @@
 // Copyright (C) 2003, 2004, 2005, 2006 Andrea Paternesi
 // Copyright (C) 2004 David Sterba
 // Copyright (C) 2005 Bryan Duff
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,9 +28,9 @@
 #include <string>
 #include <libintl.h>
 
-#define LORDSAWAR_SAVEGAME_VERSION "0.1.8"
-#define LORDSAWAR_CONFIG_VERSION "0.1.8"
-#define LORDSAWAR_RECENTLY_PLAYED_VERSION "0.1.8"
+#define LORDSAWAR_SAVEGAME_VERSION "0.1.9"
+#define LORDSAWAR_CONFIG_VERSION "0.1.9"
+#define LORDSAWAR_RECENTLY_PLAYED_VERSION "0.1.9"
 #define _(string) gettext(string) // Macro for the gettext
 #define __(astring) std::string(gettext(astring.c_str()))
 
