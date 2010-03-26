@@ -1,3 +1,8 @@
+2010-03-26  Ben Asselstine  <benasselstine@gmail.com>
+
+	* CTRL+double-click on a stack now sends it to the destination of the
+	previously moved stack, and brings the view back to where it started.
+
 2010-03-25  Ben Asselstine  <benasselstine@gmail.com>
 
 	* bumped version to 0.1.9.
