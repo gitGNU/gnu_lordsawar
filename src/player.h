@@ -36,8 +36,8 @@
 #include "army.h"
 #include "defs.h"
 #include "callback-enums.h"
+#include "stacklist.h"
 
-class Stacklist;
 class XML_Helper;
 class Hero;
 class HeroProto;
@@ -284,6 +284,9 @@ class Player: public sigc::trackable
 
         //! Returns the list of stacks owned by the player.
         Stacklist* getStacklist() const {return d_stacklist;}
+
+        //! Return the stack in the player's stacklist that has the given id.
+        Stack *getStackById(guint32 id) const {return d_stacklist->getStackById(id);};
 
         //! Returns the list of stacks with items.
         std::list<Stack*> getStacksWithItems() const;
