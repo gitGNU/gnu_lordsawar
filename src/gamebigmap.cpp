@@ -261,57 +261,18 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		}
               else if (double_clicked == true && is_control_key_down() == true)
                 {
-                  //okay we're going to set the path of this stack
-                  //to have the destination of the last stack we moved
-                  //and then we're going to move the view back to here.
-                  std::list<Action*>moves = stack->getOwner()->getMovesThisTurn();
-                  if (moves.size() > 0)
-                      {
-                        Vector<int> dest = Vector<int>(-1,-1);
-                        std::list<Action*>::const_reverse_iterator it = 
-                          moves.rbegin();
-                        for (;it != moves.rend(); it++)
-                          {
-                            if ((*it)->getType() != Action::STACK_MOVE)
-                              continue;
-                            Action_Move *move = dynamic_cast<Action_Move*>(*it);
-                            guint32 id = move->getStackId();
-                            if (id == stack->getId())
-                              continue;
-                            Stack *prev = stack->getOwner()->getStackById(id);
-                            if (!prev)
-                              dest = move->getEndingPosition();
-                            else
-                              {
-                                dest = prev->getLastPointInPath();
-                                if (dest == Vector<int>(-1,-1))
-                                  dest = move->getEndingPosition();
-                              }
-                            break;
-                          }
-                        if (dest != Vector<int>(-1,-1))
-                          {
-                            if (path_calculator)
-                              delete path_calculator;
-                            path_calculator = new PathCalculator(stack);
-                            guint32 moves = 0, turns = 0;
-                            Path *new_path =
-                              path_calculator->calculate(dest, moves, turns, 
-                                                         true);
-                            if (new_path->size())
-                              stack->setPath(*new_path);
-                            delete new_path;
-                            //now walk the stack
-
-                            Rectangle old_view = view;
-                            Playerlist::getActiveplayer()->stackMove(stack);
-                            if (!Playerlist::getActiveplayer()->getActivestack())
-                                unselect_active_stack();
-                            set_view (old_view);
-                            view_changed.emit(view);
-                            determine_mouse_cursor(Playerlist::getActiveplayer()->getActivestack(), tile);
-                          }
-                      }
+                  if (active->setPathOfStackToPreviousDestination(stack))
+                    {
+                      Rectangle old_view = view;
+                      active->stackMove(stack);
+                      if (!active->getActivestack())
+                        {
+                          unselect_active_stack();
+                          determine_mouse_cursor(NULL, tile);
+                        }
+                      set_view (old_view);
+                      view_changed.emit(view);
+                    }
                   return;
                 }
 	      else

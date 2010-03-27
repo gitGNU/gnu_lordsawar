@@ -4000,4 +4000,46 @@ std::list<Stack*> Player::getStacksWithItems() const
   return getStacklist()->getStacksWithItems();
 }
 
+bool Player::setPathOfStackToPreviousDestination(Stack *stack)
+{
+  std::list<Action*>moves = getMovesThisTurn();
+  if (moves.size() > 0)
+    {
+      Vector<int> dest = Vector<int>(-1,-1);
+      std::list<Action*>::const_reverse_iterator it = 
+        moves.rbegin();
+      for (;it != moves.rend(); it++)
+        {
+          if ((*it)->getType() != Action::STACK_MOVE)
+            continue;
+          Action_Move *move = dynamic_cast<Action_Move*>(*it);
+          guint32 id = move->getStackId();
+          if (id == stack->getId())
+            continue;
+          Stack *prev = d_stacklist->getStackById(id);
+          if (!prev)
+            dest = move->getEndingPosition();
+          else
+            {
+              dest = prev->getLastPointInPath();
+              if (dest == Vector<int>(-1,-1))
+                dest = move->getEndingPosition();
+            }
+          break;
+        }
+      if (dest != Vector<int>(-1,-1))
+        {
+          PathCalculator *path_calculator = new PathCalculator(stack);
+          guint32 moves = 0, turns = 0;
+          Path *new_path = path_calculator->calculate(dest, moves, turns, true);
+          if (new_path->size())
+            stack->setPath(*new_path);
+          delete new_path;
+          delete path_calculator;
+
+          return true;
+        }
+    }
+  return false;
+}
 // End of file

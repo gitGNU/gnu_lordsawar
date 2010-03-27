@@ -36,9 +36,9 @@
 #include "army.h"
 #include "defs.h"
 #include "callback-enums.h"
-#include "stacklist.h"
 
 class XML_Helper;
+class Stacklist;
 class Hero;
 class HeroProto;
 class Action;
@@ -229,6 +229,8 @@ class Player: public sigc::trackable
         //! Set the fight order of the player.
 	void setFightOrder(std::list<guint32> order);
 
+        //! Set path of the stack to the previously moved stack's destination.
+        bool setPathOfStackToPreviousDestination(Stack *stack);
 
 
 	// Get Methods
@@ -284,9 +286,6 @@ class Player: public sigc::trackable
 
         //! Returns the list of stacks owned by the player.
         Stacklist* getStacklist() const {return d_stacklist;}
-
-        //! Return the stack in the player's stacklist that has the given id.
-        Stack *getStackById(guint32 id) const {return d_stacklist->getStackById(id);};
 
         //! Returns the list of stacks with items.
         std::list<Stack*> getStacksWithItems() const;
