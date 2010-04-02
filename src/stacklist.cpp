@@ -588,14 +588,16 @@ void Stacklist::drainAllMovement()
       (*ait)->decrementMoves((*ait)->getMoves());
 }
 
-void Stacklist::changeOwnership(Stack *stack, Player *new_owner)
+Stack* Stacklist::changeOwnership(Stack *stack, Player *new_owner)
 {
   if (new_owner != stack->getOwner())
     {
       Stack *new_stack = new Stack(*stack);
       stack->getOwner()->getStacklist()->flRemove(stack);
       new_owner->addStack(new_stack);
+      return new_stack;
     }
+  return stack;
 }
 
 std::list<Vector<int> > Stacklist::getPositions() const

@@ -1463,7 +1463,7 @@ bool GameMap::moveStack(Stack *stack, Vector<int> to)
   //if we dropped it on a city, then change the ownership.
   City *c = GameMap::getCity(to);
   if (c != NULL && stack->getOwner() != c->getOwner())
-    Stacklist::changeOwnership(stack, c->getOwner());
+    stack = Stacklist::changeOwnership(stack, c->getOwner());
   getStacks(stack->getPos())->arriving(stack);
   bool ship = false;
   if (getTerrainType(stack->getPos()) == Tile::WATER &&

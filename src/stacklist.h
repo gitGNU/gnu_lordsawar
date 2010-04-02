@@ -250,7 +250,7 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	 * places it in the new owner's stacklist.
 	 */
 	//! Change allegience of the given stack to a new owner.
-	static void changeOwnership(Stack *stack, Player *new_owner);
+	static Stack* changeOwnership(Stack *stack, Player *new_owner);
 
 	//! Can this stack reach a point where it is not blocked by friendlies?
 	/**

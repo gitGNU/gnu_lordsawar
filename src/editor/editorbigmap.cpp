@@ -26,6 +26,7 @@
 #include "army.h"
 #include "stacklist.h"
 #include "stack.h"
+#include "stacktile.h"
 #include "citylist.h"
 #include "city.h"
 #include "ruinlist.h"
@@ -427,6 +428,7 @@ void EditorBigMap::change_map_under_cursor()
       break;
 
     case STACK:
+              
       if (GameMap::getInstance()->canPutStack(1, active, tile) == true)
         {
           // Create a new dummy stack. As we don't want to have empty
@@ -434,16 +436,20 @@ void EditorBigMap::change_map_under_cursor()
           // has at least one entry.
           Stack* s = new Stack(active, tile);
           const Armysetlist* al = Armysetlist::getInstance();
-          Army* a = new Army(*al->getArmy(active->getArmyset(), 0), 
-                             active);
-          s->push_back(a);
+          Army* a = new Army(*al->getArmy(active->getArmyset(), 0), active);
+          s->add(a);
           GameMap::getInstance()->putStack(s);
           //if we're on a city, change the allegiance of the stack
           //and it's armies to that of the city
           if (GameMap::getInstance()->getBuilding(s->getPos()) == Maptile::CITY)
             {
               City *c = GameMap::getCity(s->getPos());
-              Stacklist::changeOwnership(s, c->getOwner());
+              if (c->getOwner() != active)
+                {
+                  GameMap::getStacks(s->getPos())->leaving(s);
+                  s = Stacklist::changeOwnership(s, c->getOwner());
+                  GameMap::getStacks(s->getPos())->arriving(s);
+                }
             }
         }
 
