@@ -1,3 +1,8 @@
+2010-04-02  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed bug #29425.  can now put stacks on cities when the stack owner
+	is not the same as the city owner.
+
 2010-03-26  Ben Asselstine  <benasselstine@gmail.com>
 
 	* CTRL+double-click on a stack now sends it to the destination of the
