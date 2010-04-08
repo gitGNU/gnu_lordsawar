@@ -1,3 +1,8 @@
+2010-04-08  Ben Asselstine  <benasselstine@gmail.com>
+
+	* added support for usable items.  task #10303.
+	* fixed bug wrt dropping items in the water and network play.
+
 2010-04-02  Ben Asselstine  <benasselstine@gmail.com>
 
 	* fixed bug #29425.  can now put stacks on cities when the stack owner
