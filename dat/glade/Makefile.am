@@ -67,7 +67,9 @@ about-dialog.ui \
 new-network-game-dialog.ui \
 game-lobby-dialog.ui \
 pick-network-game-to-join-dialog.ui \
-new-random-map-dialog.ui
+new-random-map-dialog.ui \
+use-item-dialog.ui \
+use-item-on-player-dialog.ui
 
 EXTRA_DIST = $(glade_DATA) \
 README

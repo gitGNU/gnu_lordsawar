@@ -40,6 +40,7 @@ class ArmyProdBase;
 class XML_Helper;
 class Temple;
 class Hero;
+class Item;
 
 //! A set of up to eight Army units that move as a single entity on the map.
 /** 
@@ -149,6 +150,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         //! Reduces movement points of the Army units in the Stack.
         void decrementMoves(guint32 moves);
 
+        //! Increases movement points of the Army units in the Stack.
+        void incrementMoves(guint32 moves);
+
         //! Sets the stack's position to the next point in it's Path.
         void moveOneStep(bool skipping = false);
 
@@ -212,6 +216,13 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
 	//! Return a new stack that holds armies that have some mp.
 	Stack *splitArmiesWithMovement(guint32 mp = 1);
+
+        //! Drown the non-flying units over water.  sets hitpoints to zero.
+        bool killArmyUnitsInBoats();
+
+        //! Sets the hitpoints of all army units in the stack to zero.
+        void kill();
+
 
 	//! Add an army to this stack.
 	/**
@@ -338,6 +349,10 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Calculate if the Stack is in a boat.
         bool hasShip () const;
 
+        //! Check to see if the stack has any items that can be used.
+        bool hasUsableItem() const;
+
+        void getUsableItems(std::list<Item*> &items) const;
 	/**
 	 * Calculate the number of movement points it costs for the Stack
 	 * to move to an adjacent tile.
@@ -410,6 +425,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
 	//! Does this stack have 8 units in it?
 	bool isFull() const;
+
+        //! Return the hero that owns this given item.
+        Hero* getHeroWithItem(Item *item) const;
 
 	// Signals
 

@@ -209,6 +209,7 @@ void HistoryReportDialog::generatePastEventlists()
 		case History::DIPLOMATIC_WAR:
 		case History::DIPLOMATIC_PEACE:
 		case History::HERO_RUIN_EXPLORED:
+		case History::USE_ITEM:
 		  elist->push_back(new NetworkHistory(*hit[id], (*pit)->getId()));
 		  break;
 		case History::START_TURN:
@@ -657,6 +658,21 @@ void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
           box = Box::ucompose(_("%1 %2 explores %3!"), shield, 
                               ev->getHeroName(),
                               rl->getById(ev->getRuinId())->getName());
+	  break;
+	}
+    case History::USE_ITEM:
+	{
+	  History_HeroUseItem *ev = 
+            static_cast<History_HeroUseItem*>(history);
+	  Player *opponent = pl->getPlayer(ev->getOpponentId());
+          if (ev->getItemBonus() & ItemProto::USABLE)
+            box = Box::ucompose(_("%1 %2 uses the %3 against %4 %5!"), shield, 
+                                ev->getHeroName(), ev->getItemName(),
+                                gc->getShieldPic(1, opponent)->to_pixbuf(), 
+                                opponent->getName());
+          else
+            box = Box::ucompose(_("%1 %2 uses the %3!"), shield, 
+                                ev->getHeroName(), ev->getItemName());
 	  break;
 	}
     default:

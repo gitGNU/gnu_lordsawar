@@ -1,6 +1,6 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2010 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -174,6 +174,8 @@ Action* Action::handle_load(XML_Helper* helper)
           return (new Action_InitTurn(helper));
       case CITY_LOOT:
           return (new Action_Loot(helper));
+      case USE_ITEM:
+          return (new Action_UseItem(helper));
     }
 
   return 0;
@@ -278,6 +280,10 @@ Action* Action::copy(const Action* a)
             return 
               (new Action_Loot
                 (*dynamic_cast<const Action_Loot*>(a)));
+        case USE_ITEM:
+            return 
+              (new Action_UseItem
+                (*dynamic_cast<const Action_UseItem*>(a)));
     }
 
     return 0;
@@ -2418,6 +2424,63 @@ bool Action_Loot::fillData(Player *looter, Player *looted, guint32 amount_to_add
     return true;
 }
 
+//-----------------------------------------------------------------------------
+// Action_UseItem
+
+Action_UseItem::Action_UseItem()
+:Action(Action::USE_ITEM), d_hero(0), d_item(0), d_victim_player(0)
+{
+}
+
+Action_UseItem::Action_UseItem(const Action_UseItem &action)
+: Action(action), d_hero(action.d_hero), d_item(action.d_item),
+    d_victim_player(action.d_victim_player)
+{
+}
+
+Action_UseItem::Action_UseItem(XML_Helper* helper)
+:Action(helper)
+{
+
+  helper->getData(d_hero, "hero");
+  helper->getData(d_item, "item");
+  helper->getData(d_victim_player, "victim_player");
+}
+
+Action_UseItem::~Action_UseItem()
+{
+}
+
+std::string Action_UseItem::dump() const
+{
+  std::stringstream ss;
+
+  ss <<"Hero " <<d_hero <<" uses item " <<d_item << " and targets player << " << d_victim_player << "\n";
+
+  return ss.str();
+}
+
+bool Action_UseItem::doSave(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->saveData("hero", d_hero);
+  retval &= helper->saveData("item", d_item);
+  retval &= helper->saveData("victim_player", d_victim_player);
+
+  return retval;
+}
+
+bool Action_UseItem::fillData(Hero *hero, Item *item, Player *victim)
+{
+  d_hero = hero->getId();
+  d_item = item->getId();
+  if (victim)
+    d_victim_player = victim->getId();
+
+  return true;
+}
+
 std::string Action::actionTypeToString(Action::Type type)
 {
   switch (type)
@@ -2494,6 +2557,8 @@ std::string Action::actionTypeToString(Action::Type type)
       return "Action::INIT_TURN";
     case Action::CITY_LOOT:
       return "Action::CITY_LOOT";
+    case Action::USE_ITEM:
+      return "Action::USE_ITEM";
     }
       
   return "Action::MOVE";
@@ -2575,6 +2640,8 @@ Action::Type Action::actionTypeFromString(std::string str)
     return Action::INIT_TURN;
   else if (str == "Action::CITY_LOOT")
     return Action::CITY_LOOT;
+  else if (str == "Action::USE_ITEM")
+    return Action::USE_ITEM;
   return Action::STACK_MOVE;
 }
 

@@ -1100,12 +1100,15 @@ void Player::cleanupAfterFight(std::list<Stack*> &attackers,
 
   // here we calculate also the total XP to add when a player have a battle
   // clear dead defenders
+  //
+  double defender_xp = countXPFromDeadArmies(defenders);
   debug("clean dead defenders");
-  double defender_xp = removeDeadArmies(defenders, attackerHeroes);
+  removeDeadArmies(defenders, attackerHeroes);
 
   // and dead attackers
+  double attacker_xp = countXPFromDeadArmies(attackers);
   debug("clean dead attackers");
-  double attacker_xp = removeDeadArmies(attackers, defenderHeroes);
+  removeDeadArmies(attackers, defenderHeroes);
 
   debug("after fight: attackers empty? " << attackers.empty()
         << "(" << attackers.size() << ")");
@@ -1113,7 +1116,7 @@ void Player::cleanupAfterFight(std::list<Stack*> &attackers,
   if (!attackers.empty() && defender_xp != 0)
     updateArmyValues(attackers, defender_xp);
     
-  if (attacker_xp != 0)
+  if (!defenders.empty() && attacker_xp != 0)
     updateArmyValues(defenders, attacker_xp);
 
   supdatingStack.emit(0);
@@ -1381,6 +1384,7 @@ Quest* Player::doHeroGetQuest(Hero *hero, Temple* t, bool except_raze)
       q = qm->createNewQuest (hero->getId(), except_raze);
     }
 
+  supdatingStack.emit(0);
   // couldn't assign a quest for various reasons
   if (!q)
     return 0;
@@ -1822,9 +1826,10 @@ bool Player::giveReward(Stack *s, Reward *reward)
 bool Player::doStackDisband(Stack* s)
 {
     getStacklist()->setActivestack(0);
-    bool found = d_stacklist->flRemove(s);
+    s->kill();
+    removeDeadArmies(s);
     supdatingStack.emit(0);
-    return found;
+    return true;
 }
 
 bool Player::stackDisband(Stack* s)
@@ -1844,6 +1849,7 @@ void Player::doHeroDropItem(Hero *h, Item *i, Vector<int> pos)
 {
   GameMap::getInstance()->getTile(pos)->getBackpack()->addToBackpack(i);
   h->getBackpack()->removeFromBackpack(i);
+  supdatingStack.emit(0);
 }
 
 bool Player::heroDropItem(Hero *h, Item *i, Vector<int> pos)
@@ -1868,6 +1874,7 @@ bool Player::doHeroDropAllItems(Hero *h, Vector<int> pos)
 {
   while (h->getBackpack()->empty() == false)
     doHeroDropItem(h, h->getBackpack()->front(), pos);
+  supdatingStack.emit(0);
   return true;
 }
 
@@ -1876,6 +1883,7 @@ void Player::doHeroPickupItem(Hero *h, Item *i, Vector<int> pos)
   bool found = GameMap::getInstance()->getTile(pos)->getBackpack()->removeFromBackpack(i);
   if (found)
     h->getBackpack()->addToBackpack(i);
+  supdatingStack.emit(0);
 }
 
 bool Player::heroPickupItem(Hero *h, Item *i, Vector<int> pos)
@@ -1886,6 +1894,14 @@ bool Player::heroPickupItem(Hero *h, Item *i, Vector<int> pos)
   item->fillData(h, i, Action_Equip::BACKPACK, pos);
   addAction(item);
   
+  return true;
+}
+
+bool Player::doHeroPickupAllItems(Hero *h, Vector<int> pos)
+{
+  MapBackpack *backpack = GameMap::getInstance()->getTile(pos)->getBackpack();
+  while (backpack->empty() == false)
+    doHeroPickupItem(h, backpack->front(), pos);
   return true;
 }
 
@@ -1909,7 +1925,8 @@ bool Player::heroCompletesQuest(Hero *h)
 void Player::doResign()
 {
   //disband all stacks
-  getStacklist()->flClear();
+  std::list<Stack*> stacks = getStacklist()->kill();
+  removeDeadArmies(stacks);
 
   //raze all cities
   Citylist *cl = Citylist::getInstance();
@@ -2113,6 +2130,7 @@ void Player::doHeroPlantStandard(Hero *hero, Item *item, Vector<int> pos)
   GameMap *gm = GameMap::getInstance();
   gm->getTile(pos)->getBackpack()->addToBackpack(item);
   hero->getBackpack()->removeFromBackpack(item);
+  supdatingStack.emit(0);
 }
 
 void Player::getHeroes(const std::list<Stack*> stacks, std::vector<guint32>& dst)
@@ -2122,10 +2140,23 @@ void Player::getHeroes(const std::list<Stack*> stacks, std::vector<guint32>& dst
         (*it)->getHeroes(dst);
 }
 
-double Player::removeDeadArmies(std::list<Stack*>& stacks,
-                                std::vector<guint32>& culprits)
+guint32 Player::removeDeadArmies(Stack *stack)
 {
-    double total=0;
+  std::list<Stack*> stacks;
+  stacks.push_back(stack);
+  return removeDeadArmies(stacks);
+}
+
+guint32 Player::removeDeadArmies(std::list<Stack*>& stacks)
+{
+  std::vector<guint32> culprits;
+  return removeDeadArmies(stacks, culprits);
+}
+
+guint32 Player::removeDeadArmies(std::list<Stack*>& stacks, 
+                                 std::vector<guint32>& culprits)
+{
+    guint32 count = 0;
     Player *owner = NULL;
     if (stacks.empty() == 0)
     {
@@ -2138,6 +2169,11 @@ double Player::removeDeadArmies(std::list<Stack*>& stacks,
     for (unsigned int i = 0; i < culprits.size(); i++)
         debug("Culprit: " << culprits[i]);
 
+    tallyDeadArmyTriumphs(stacks);
+    handleDeadHeroes(stacks);
+    healInjuredArmies(stacks);
+    handleDeadArmiesForQuests(stacks, culprits);
+
     std::list<Stack*>::iterator it;
     for (it = stacks.begin(); it != stacks.end(); )
     {
@@ -2148,75 +2184,12 @@ double Player::removeDeadArmies(std::list<Stack*>& stacks,
             debug("Army: " << (*sit))
             if ((*sit)->getHP() <= 0)
             {
-		//Tally up the triumphs
-		if ((*sit)->getAwardable()) //hey a special died
-		  d_triumphs->tallyTriumph((*sit)->getOwner(), 
-					   Triumphs::TALLY_SPECIAL);
-		else if ((*sit)->isHero() == false)
-		  d_triumphs->tallyTriumph((*sit)->getOwner(), 
-					   Triumphs::TALLY_NORMAL);
-		if ((*sit)->getStat(Army::SHIP, false)) //hey it was on a boat
-		  d_triumphs->tallyTriumph((*sit)->getOwner(), 
-					   Triumphs::TALLY_SHIP);
                 debug("Army: " << (*sit)->getName())
-                debug("Army: " << (*sit)->getXpReward())
-                if ((*sit)->isHero())
-                {
-		  d_triumphs->tallyTriumph((*sit)->getOwner(), 
-					   Triumphs::TALLY_HERO);
-		  Hero *hero = dynamic_cast<Hero*>((*sit));
-		  guint32 count = hero->getBackpack()->countPlantableItems();
-		  for (guint32 i = 0; i < count; i++)
-		    d_triumphs->tallyTriumph((*sit)->getOwner(), 
-					     Triumphs::TALLY_FLAG);
 
-		  //one of our heroes died
-		  //drop hero's stuff
-		  Hero *h = static_cast<Hero *>(*sit);
-		  //now record the details of the death
-		  GameMap *gm = GameMap::getInstance();
-		  Maptile *tile = gm->getTile((*it)->getPos());
-		  if (tile->getBuilding() == Maptile::RUIN)
-		    {
-		      History_HeroKilledSearching* item;
-		      item = new History_HeroKilledSearching();
-		      item->fillData(h);
-		      h->getOwner()->addHistory(item);
-		      doHeroDropAllItems (h, (*it)->getPos());
-		    }
-		  else if (tile->getBuilding() == Maptile::CITY)
-		    {
-		      City* c = GameMap::getCity((*it)->getPos());
-		      History_HeroKilledInCity* item;
-		      item = new History_HeroKilledInCity();
-		      item->fillData(h, c);
-		      h->getOwner()->addHistory(item);
-		      doHeroDropAllItems (h, (*it)->getPos());
-		    }
-		  else //somewhere else
-		    {
-		      History_HeroKilledInBattle* item;
-		      item = new History_HeroKilledInBattle();
-		      item->fillData(h);
-		      h->getOwner()->addHistory(item);
-		      doHeroDropAllItems (h, (*it)->getPos());
-		    }
-		}
-		//Add the XP bonus to the total of the battle;
-		total+=(*sit)->getXpReward();
-		//tell the quest manager that someone died
-		//(maybe it was a hero, or a target that's an army)
-		QuestsManager::getInstance()->armyDied(*sit, culprits);
-		// here we destroy the army, so we send
-		// the signal containing the fight data
-		debug("sending sdyingArmy!")
-		  sdyingArmy.emit(*sit, culprits);
+                count++;
 		sit = (*it)->flErase(sit);
 		continue;
 	    }
-
-	    // heal this army to full hitpoints
-	    (*sit)->heal((*sit)->getStat(Army::HP));
 
 	    sit++;
 	}
@@ -2242,7 +2215,7 @@ double Player::removeDeadArmies(std::list<Stack*>& stacks,
 	    it++;
     }
     debug("after removeDead: size = " << stacks.size());
-    return total;
+    return count;
 }
 
 void Player::doHeroGainsLevel(Hero *hero, Army::Stat stat)
@@ -4041,5 +4014,213 @@ bool Player::setPathOfStackToPreviousDestination(Stack *stack)
         }
     }
   return false;
+}
+
+bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim)
+{
+  if (item->getBonus() & ItemProto::STEAL_GOLD)
+    {
+      assert (victim != NULL);
+      int gold = victim->getGold() / 2;
+      if (gold > 0)
+        {
+          victim->withdrawGold(gold);
+          addGold(gold);
+          stole_gold.emit(victim, gold);
+        }
+    }
+  if (item->getBonus() & ItemProto::SINK_SHIPS)
+    {
+      assert (victim != NULL);
+      std::list<Stack*> sunk = victim->getStacklist()->killArmyUnitsInBoats();
+      printf("sunk.size() is %d\n", sunk.size());
+      guint32 num_armies = removeDeadArmies(sunk);
+      sunk_ships.emit(victim, num_armies);
+    }
+  if (item->getBonus() & ItemProto::PICK_UP_BAGS)
+    {
+      guint32 num_bags = 0;
+      std::list<MapBackpack*> bags = GameMap::getInstance()->getBackpacks();
+      num_bags = bags.size();
+      std::list<MapBackpack*>::iterator it = bags.begin();
+      for (; it != bags.end(); it++)
+        doHeroPickupAllItems(hero, (*it)->getPos());
+      bags_picked_up.emit(hero, num_bags);
+    }
+  if (item->getBonus() & ItemProto::ADD_2MP_STACK)
+    {
+      guint32 mp = 2;
+      Stack *stack = getStacklist()->getArmyStackById(hero->getId());
+      stack->incrementMoves(mp);
+      mp_added_to_hero_stack.emit(hero, mp);
+    }
+
+  hero->getBackpack()->useItem(item);
+  supdatingStack.emit(0);
+  return true;
+}
+
+bool Player::heroUseItem(Hero *hero, Item *item, Player *victim)
+{
+  if (doHeroUseItem(hero, item, victim))
+    {
+      Action_UseItem * action = new Action_UseItem();
+      action->fillData(hero, item, victim);
+      addAction(action);
+      History_HeroUseItem * history = new History_HeroUseItem();
+      history->fillData(hero, item, victim);
+      addHistory (history);
+      return true;
+    }
+  return false;
+}
+
+std::list<Item*> Player::getUsableItems() const
+{
+  return d_stacklist->getUsableItems();
+}
+
+bool Player::hasUsableItem() const
+{
+  return d_stacklist->hasUsableItem();
+}
+
+bool Player::getItemHolder(Item *item, Stack **stack, Hero **hero) const
+{
+  return d_stacklist->getItemHolder(item, stack, hero);
+}
+
+void Player::tallyDeadArmyTriumphs(std::list<Stack*> &stacks)
+{
+  std::list<Stack*>::iterator it;
+  for (it = stacks.begin(); it != stacks.end(); it++)
+    {
+      if ((*it)->getOwner() == this)
+        continue;
+      for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
+        {
+          if ((*sit)->getHP() > 0)
+            continue;
+          //Tally up the triumphs
+          Player *enemy = (*sit)->getOwner();
+          if ((*sit)->getAwardable()) //hey a special ally died
+            d_triumphs->tallyTriumph(enemy, Triumphs::TALLY_SPECIAL);
+          else if ((*sit)->isHero() == false)
+            d_triumphs->tallyTriumph(enemy, Triumphs::TALLY_NORMAL);
+          else if ((*sit)->getStat(Army::SHIP, false)) //hey it was on a boat
+            d_triumphs->tallyTriumph(enemy, Triumphs::TALLY_SHIP);
+          else if ((*sit)->isHero())
+            {
+              d_triumphs->tallyTriumph(enemy, Triumphs::TALLY_HERO);
+              Hero *hero = dynamic_cast<Hero*>((*sit));
+              guint32 count = hero->getBackpack()->countPlantableItems();
+              for (guint32 i = 0; i < count; i++)
+                d_triumphs->tallyTriumph(enemy, Triumphs::TALLY_FLAG);
+            }
+        }
+    }
+  return;
+}
+
+void Player::handleDeadHeroes(std::list<Stack*> &stacks)
+{
+  std::list<Stack*>::iterator it;
+  for (it = stacks.begin(); it != stacks.end(); it++)
+    {
+      if ((*it)->getOwner() == this)
+        continue;
+      for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
+        {
+          if ((*sit)->getHP() > 0)
+            continue;
+          if ((*sit)->isHero() == false)
+            continue;
+          //one of our heroes died
+          //drop hero's stuff
+          Hero *h = static_cast<Hero *>(*sit);
+          //now record the details of the death
+          GameMap *gm = GameMap::getInstance();
+          Maptile *tile = gm->getTile((*it)->getPos());
+          if (tile->getBuilding() == Maptile::RUIN)
+            {
+              History_HeroKilledSearching* item;
+              item = new History_HeroKilledSearching();
+              item->fillData(h);
+              h->getOwner()->addHistory(item);
+              doHeroDropAllItems (h, (*it)->getPos());
+            }
+          else if (tile->getBuilding() == Maptile::CITY)
+            {
+              City* c = GameMap::getCity((*it)->getPos());
+              History_HeroKilledInCity* item;
+              item = new History_HeroKilledInCity();
+              item->fillData(h, c);
+              h->getOwner()->addHistory(item);
+              doHeroDropAllItems (h, (*it)->getPos());
+            }
+          else //somewhere else
+            {
+              History_HeroKilledInBattle* item;
+              item = new History_HeroKilledInBattle();
+              item->fillData(h);
+              h->getOwner()->addHistory(item);
+              doHeroDropAllItems (h, (*it)->getPos());
+            }
+        }
+    }
+  return;
+}
+
+void Player::healInjuredArmies(std::list<Stack*> &stacks)
+{
+  std::list<Stack*>::iterator it;
+  for (it = stacks.begin(); it != stacks.end(); it++)
+    {
+      if ((*it)->getOwner() == this)
+        continue;
+      for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
+        {
+          if ((*sit)->getHP() > 0)
+            (*sit)->heal((*sit)->getStat(Army::HP));
+        }
+    }
+  return;
+}
+
+void Player::handleDeadArmiesForQuests(std::list<Stack*> &stacks, 
+                                       std::vector<guint32> &culprits)
+{
+  std::list<Stack*>::iterator it;
+  for (it = stacks.begin(); it != stacks.end(); it++)
+    {
+      if ((*it)->getOwner() == this)
+        continue;
+      for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
+        {
+          if ((*sit)->getHP() == 0)
+            QuestsManager::getInstance()->armyDied(*sit, culprits);
+        }
+    }
+  return;
+}
+
+double Player::countXPFromDeadArmies(std::list<Stack*>& stacks)
+{
+  double total = 0.0;
+  std::list<Stack*>::iterator it;
+  for (it = stacks.begin(); it != stacks.end(); it++)
+    {
+      if ((*it)->getOwner() == this)
+        continue;
+      for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
+        {
+          if ((*sit)->getHP() > 0)
+            continue;
+		
+          //Add the XP bonus to the total of the battle;
+          total += (*sit)->getXpReward();
+        }
+    }
+  return total;
 }
 // End of file

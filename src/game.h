@@ -1,4 +1,4 @@
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -76,6 +76,7 @@ class Game
     void park_selected_stack();
     void deselect_selected_stack();
     void search_selected_stack();
+    void select_item_to_use();
     void search_stack(Stack *stack);
     void move_selected_stack_along_path();
     void move_selected_stack_northwest();
@@ -115,6 +116,7 @@ class Game
 	can_park_selected_stack,
 	can_deselect_selected_stack,
 	can_search_selected_stack,
+	can_use_item,
 	can_plant_standard_selected_stack,
 	can_move_selected_stack_along_path,
 	can_move_selected_stack,
@@ -162,6 +164,14 @@ class Game
     sigc::signal<void> game_stopped;
     sigc::signal<void, std::string> commentator_comments;
     sigc::signal<void, Stack*, Vector<int> > stack_moves;
+    sigc::signal<Item*, std::list<Item*> > select_item;
+    sigc::signal<Player*> select_item_victim_player;
+
+    //! Results of using items
+    sigc::signal<void, Player*, guint32> stole_gold;
+    sigc::signal<void, Player*, guint32> sunk_ships;
+    sigc::signal<void, Hero*, guint32> bags_picked_up;
+    sigc::signal<void, Hero *, guint32> mp_added_to_hero_stack;
     
     void addPlayer(Player *p);
 
@@ -213,6 +223,7 @@ class Game
     void on_player_died(Player *p);
     void stack_searches_ruin(Ruin *ruin, Stack *stack);
     void stack_searches_temple(Temple *temple, Stack *stack);
+    void on_use_item(Item *item);
 
     //! Callback when the army of a human player reaches a new level.
     Army::Stat heroGainsLevel(Hero * a);

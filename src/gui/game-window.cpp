@@ -67,6 +67,8 @@
 #include "destination-dialog.h"
 #include "decorated.h"
 #include "item-report-dialog.h"
+#include "use-item-dialog.h"
+#include "use-item-on-player-dialog.h"
 
 #include "ucompose.hpp"
 #include "defs.h"
@@ -369,6 +371,7 @@ GameWindow::GameWindow()
     xml->get_widget("stack_info_menuitem", stack_info_menuitem);
     xml->get_widget("signpost_menuitem", signpost_menuitem);
     xml->get_widget("search_menuitem", search_menuitem);
+    xml->get_widget("use_menuitem", use_menuitem);
     xml->get_widget("inspect_menuitem", inspect_menuitem);
     xml->get_widget("plant_standard_menuitem", plant_standard_menuitem);
     xml->get_widget("city_history_menuitem", city_history_menuitem);
@@ -698,6 +701,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   setup_menuitem(search_menuitem,
 		 sigc::mem_fun(game, &Game::search_selected_stack),
 		 game->can_search_selected_stack);
+  setup_menuitem(use_menuitem,
+		 sigc::mem_fun(game, &Game::select_item_to_use),
+		 game->can_use_item);
   setup_menuitem(plant_standard_menuitem,
 		 sigc::mem_fun(*this, 
 			       &GameWindow::on_plant_standard_activated),
@@ -847,8 +853,26 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
     (game->advice_asked.connect
      (sigc::mem_fun(*this, &GameWindow::on_advice_asked)));
   connections.push_back
+    (game->sunk_ships.connect
+     (sigc::mem_fun(*this, &GameWindow::on_ships_sunk)));
+  connections.push_back
+    (game->bags_picked_up.connect
+     (sigc::mem_fun(*this, &GameWindow::on_bags_picked_up)));
+  connections.push_back
+    (game->mp_added_to_hero_stack.connect
+     (sigc::mem_fun(*this, &GameWindow::on_mp_added_to_hero_stack)));
+  connections.push_back
+    (game->stole_gold.connect
+     (sigc::mem_fun(*this, &GameWindow::on_gold_stolen)));
+  connections.push_back
     (game->stack_moves.connect
      (sigc::mem_fun(*this, &GameWindow::on_stack_moves)));
+  connections.push_back
+    (game->select_item.connect
+     (sigc::mem_fun(*this, &GameWindow::on_select_item)));
+  connections.push_back
+    (game->select_item_victim_player.connect
+     (sigc::mem_fun(*this, &GameWindow::on_select_item_victim_player)));
 
   // misc callbacks
   QuestsManager *q = QuestsManager::getInstance();
@@ -3353,6 +3377,7 @@ void GameWindow::on_quest_expired(Quest *quest)
 
 void GameWindow::on_inspect_activated ()
 {
+  GameMap *gm = GameMap::getInstance();
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
   if (Playerlist::getActiveplayer()->getHeroes().size() == 0)
@@ -3369,6 +3394,18 @@ void GameWindow::on_inspect_activated ()
   d.set_parent_window(*window);
   d.run();
   d.hide();
+  //fixme: this needs to be a player action.
+  //activeplayer->sinkItems(pos);
+  if (gm->getTile(pos)->getBackpack()->size() > 0 && 
+      gm->getTile(pos)->getMaptileType() == Tile::WATER)
+    {
+      // splash, items lost forever
+      while (gm->getTile(pos)->getBackpack()->size())
+        {
+	  MapBackpack::iterator i = gm->getTile(pos)->getBackpack()->begin();
+          gm->getTile(pos)->getBackpack()->removeFromBackpack(*i);
+        }
+    }
 }
 void GameWindow::on_plant_standard_activated ()
 {
@@ -3754,4 +3791,85 @@ void GameWindow::on_abbreviated_fight_started(LocationBox box)
   Glib::usleep(TIMER_BIGMAP_SELECTOR * 1000);
   game->get_bigmap().setFighting(LocationBox(Vector<int>(-1,-1)));
   game->get_bigmap().draw(Playerlist::getViewingplayer());
+}
+
+Item* GameWindow::on_select_item(std::list<Item*> items)
+{
+  Item *item = NULL;
+  UseItemDialog d(items);
+  d.set_parent_window(*window);
+  d.run();
+  item = d.get_selected_item();
+  d.hide();
+  return item;
+}
+     
+Player *GameWindow::on_select_item_victim_player()
+{
+  Player *player = NULL;
+  UseItemOnPlayerDialog d;
+  d.set_parent_window(*window);
+  player = d.run();
+  d.hide();
+  return player;
+}
+    
+void GameWindow::on_gold_stolen(Player *victim, guint32 gold_pieces)
+{
+  std::string s = "";
+  s += 
+    String::ucompose(ngettext("%1 gold piece was stolen from %2!",
+                              "%1 gold pieces were stolen from %2!", 
+                              gold_pieces), gold_pieces, victim->getName());
+  TimedMessageDialog dialog(*window, s, 30);
+
+  dialog.show_all();
+  dialog.run();
+  dialog.hide();
+  return;
+}
+
+void GameWindow::on_ships_sunk(Player *victim, guint32 num_armies)
+{
+  std::string s = "";
+  s += 
+    String::ucompose(ngettext("%1 army unit was sunk to the watery depths!",
+                              "%1 army units were sunk to the watery depths!", 
+                              num_armies), num_armies);
+  TimedMessageDialog dialog(*window, s, 30);
+
+  dialog.show_all();
+  dialog.run();
+  dialog.hide();
+  return;
+}
+
+void GameWindow::on_bags_picked_up(Hero *hero, guint32 num_bags)
+{
+  std::string s = "";
+  s += 
+    String::ucompose(ngettext("%1 bag was retrieved by %2!",
+                              "%1 bags were retrieved by %2!", 
+                              num_bags), num_bags, hero->getName());
+  TimedMessageDialog dialog(*window, s, 30);
+
+  dialog.show_all();
+  dialog.run();
+  dialog.hide();
+  return;
+}
+
+void GameWindow::on_mp_added_to_hero_stack(Hero *hero, guint32 mp)
+{
+  std::string s = "";
+  s += 
+    String::ucompose(ngettext("%1 movement point was added to %2 and accompanying units!",
+                              "%1 movement points were added to %2 and accompanying units!", 
+                              mp), mp, hero->getName());
+  TimedMessageDialog dialog(*window, s, 30);
+
+  dialog.show_all();
+  dialog.run();
+  dialog.hide();
+  return;
 }

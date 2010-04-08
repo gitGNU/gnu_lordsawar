@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -218,5 +218,32 @@ void Backpack::add(Backpack *backpack)
 {
   for (Backpack::iterator it = backpack->begin(); it != backpack->end(); it++)
     addToBackpack(new Item(**it));
+}
+
+bool Backpack::hasUsableItem() const
+{
+  for (Backpack::const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->isUsable())
+        return true;
+    }
+  return false;
+}
+
+void Backpack::getUsableItems(std::list<Item*> &items) const
+{
+  for (Backpack::const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->isUsable())
+        items.push_back(*it);
+    }
+  return;
+}
+
+bool Backpack::useItem(Item *item)
+{
+  if (item->isUsable() && item->use())
+    return removeFromBackpack(item);
+  return false;
 }
 // End of file

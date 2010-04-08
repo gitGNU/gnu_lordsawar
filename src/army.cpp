@@ -326,6 +326,11 @@ void Army::decrementMoves(guint32 moves)
     d_moves -= moves;
 }
 
+void Army::incrementMoves(guint32 moves)
+{
+  d_moves += moves;
+}
+
 void Army::gainXp(double n)
 {
   d_xp += n;
@@ -413,7 +418,14 @@ void  Army::printAllDebugInfo() const
 
 void Army::setInShip (bool s)
 {
+  if (s == true && isFlyer() == true)
+    s = false;
   d_ship = s;
+}
+
+bool Army::isFlyer()
+{
+  return d_move_bonus == Tile::isFlying();
 }
 
 //! Sets this army as being fortified (+1 to stack)

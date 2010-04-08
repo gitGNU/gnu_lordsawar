@@ -104,6 +104,7 @@ class NetworkPlayer : public Player
 	void decodeActionCityTooPoorToProduce(const Action_CityTooPoorToProduce *action);
 	void decodeActionInitTurn(const Action_InitTurn*action);
 	void decodeActionLoot(const Action_Loot*action);
+	void decodeActionUseItem(const Action_UseItem*action);
 };
 
 #endif // NETWORK_PLAYER_H

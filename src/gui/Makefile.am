@@ -70,7 +70,9 @@ liblwgui_la_SOURCES = \
     network-game-selector-dialog.cpp network-game-selector-dialog.h \
     new-network-game-download-window.cpp new-network-game-download-window.h \
     decorated.cpp decorated.h \
-    new-random-map-dialog.cpp new-random-map-dialog.h
+    new-random-map-dialog.cpp new-random-map-dialog.h \
+    use-item-dialog.cpp use-item-dialog.h \
+    use-item-on-player-dialog.cpp use-item-on-player-dialog.h
 
 liblwgui_la_LIBADD = @LTLIBOBJS@
 

@@ -38,6 +38,7 @@ class Stack;
 class XML_Helper;
 class Player;
 class Hero;
+class Item;
 
 //! A list of Stack objects for a single player.
 /** 
@@ -158,6 +159,15 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	 */
 	Hero *getNearestHero(Vector<int> pos, int dist) const;
 	
+        //! Return a list of all usable items held by heroes in the stacklist.
+        std::list<Item*> getUsableItems() const;
+
+        //! Return whether or not the stacklist has heroes holding usable items.
+        bool hasUsableItem() const;
+        
+        //! Return which stack and hero the item belongs to.
+        bool getItemHolder(Item *item, Stack **stack, Hero **hero) const;
+
 
 	// Methods that operate on class data and modify the class.
 
@@ -178,6 +188,12 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 
 	//! Add a stack to the list.
 	void add(Stack *stack);
+
+        //! Army units in boats are disbanded.  return list of affected stacks.
+        std::list<Stack*> killArmyUnitsInBoats();
+
+        //! Kill all the army units in the stack list.
+        std::list<Stack*> kill();
 
         /** 
 	 * Erase a Stack from the list, and free the contents of the Stack.

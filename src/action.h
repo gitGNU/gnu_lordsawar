@@ -1,6 +1,6 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2010 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -138,6 +138,7 @@ class Action
 		CITY_DESTITUTE = 34,
 		INIT_TURN = 35,
 		CITY_LOOT = 36,
+                USE_ITEM = 37,
         };
 	static std::string actionTypeToString(Action::Type type);
 	static Action::Type actionTypeFromString(std::string str);
@@ -1614,6 +1615,44 @@ class Action_Loot : public Action
 	guint32 d_looted_player_id;
 	guint32 d_gold_added;
 	guint32 d_gold_removed;
+};
+
+//-----------------------------------------------------------------------------
+
+//! A temporary record of a Hero using an item.
+/**
+ * The purpose of the Action_UseItem class is to record when a Player's
+ * Hero has used an item.
+ */
+class Action_UseItem: public Action
+{
+    public:
+	//! Make a new use item action.
+        Action_UseItem();
+	//! Copy constructor
+	Action_UseItem(const Action_UseItem &action);
+	//! Load a new use item action from a saved-game file.
+        Action_UseItem(XML_Helper* helper);
+	//! Destroy a use item assigned action.
+        ~Action_UseItem();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this use item action to a saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! Populate the Action_UseItem with a hero and an item.
+        bool fillData(Hero *hero, Item *item, Player *victim);
+
+	guint32 getHeroId() const {return d_hero;};
+	guint32 getItemId() const {return d_item;};
+        guint32 getVictimPlayerId() const {return d_victim_player;};
+
+        private:
+        guint32 d_hero;
+        guint32 d_item;
+        guint32 d_victim_player;
 };
 
 #endif //ACTION_H

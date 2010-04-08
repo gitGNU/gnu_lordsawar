@@ -82,6 +82,9 @@ class Item: public ItemProto, public UniquelyIdentified
 	//! Set the planted status of the Item.
         void setPlanted(bool planted) {d_planted = planted;}
 
+        //! Decrement uses left, and pass true when empty.
+        bool use();
+
 	//! Get the planted status of the Item.
         bool getPlanted() const {return d_planted;}
 

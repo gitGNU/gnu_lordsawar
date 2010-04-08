@@ -25,6 +25,7 @@
 #include "city.h"
 #include "xmlhelper.h"
 #include "ruin.h"
+#include "Item.h"
 
 std::string History::d_tag = "history";
 using namespace std;
@@ -91,6 +92,8 @@ History* History::handle_load(XML_Helper* helper)
       return (new History_HeroRuinExplored(helper));
     case HERO_REWARD_RUIN:
       return (new History_HeroRewardRuin(helper));
+    case USE_ITEM:
+      return (new History_HeroUseItem(helper));
     }
 
   return 0;
@@ -175,6 +178,10 @@ History* History::copy(const History* a)
       return 
 	(new History_HeroRewardRuin
          (*dynamic_cast<const History_HeroRewardRuin*>(a)));
+    case USE_ITEM:
+      return 
+	(new History_HeroUseItem
+         (*dynamic_cast<const History_HeroUseItem*>(a)));
     }
 
   return 0;
@@ -1207,6 +1214,65 @@ bool History_HeroRewardRuin::fillData(Hero *hero, Ruin *ruin)
   return true;
 }
 
+//-----------------------------------------------------------------------------
+//History_HeroUseItem
+
+History_HeroUseItem::History_HeroUseItem()
+:History(History::USE_ITEM), d_hero_name(""), d_item_name(""), d_item_bonus(0), 
+    d_opponent_id(0)
+{
+}
+
+History_HeroUseItem::History_HeroUseItem(const History_HeroUseItem &history)
+:History(history), d_hero_name(history.d_hero_name), d_item_name(history.d_item_name), d_item_bonus(history.d_item_bonus), d_opponent_id(history.d_opponent_id)
+{
+}
+
+History_HeroUseItem::History_HeroUseItem(XML_Helper* helper)
+:History(helper)
+{
+  helper->getData(d_hero_name, "hero_name");
+  helper->getData(d_item_name, "item_name");
+  helper->getData(d_item_bonus, "item_bonus");
+  helper->getData(d_opponent_id, "opponent_id");
+}
+
+History_HeroUseItem::~History_HeroUseItem()
+{
+}
+
+std::string History_HeroUseItem::dump() const
+{
+  std::stringstream s;
+
+  s <<"hero " << d_hero_name << "uses " << d_item_name <<" on player " << d_opponent_id;
+  s <<"\n";
+
+  return s.str();
+}
+
+bool History_HeroUseItem::doSave(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->saveData("hero_name", d_hero_name);
+  retval &= helper->saveData("item_name", d_item_name);
+  retval &= helper->saveData("item_bonus", d_item_bonus);
+  retval &= helper->saveData("opponent_id", d_opponent_id);
+
+  return retval;
+}
+
+bool History_HeroUseItem::fillData(Hero *hero, Item *item, Player *opponent)
+{
+  d_hero_name = hero->getName();
+  d_item_name = item->getName();
+  d_item_bonus = item->getBonus();
+  if (opponent)
+    d_opponent_id = opponent->getId();
+  return true;
+}
+
 std::string History::historyTypeToString(const History::Type type)
 {
   switch (type)
@@ -1253,6 +1319,8 @@ std::string History::historyTypeToString(const History::Type type)
       return "History::HERO_RUIN_EXPLORED";
     case History::HERO_REWARD_RUIN:
       return "History::HERO_REWARD_RUIN";
+    case History::USE_ITEM:
+      return "History::USE_ITEM";
     }
   return "History::START_TURN";
 }
@@ -1303,5 +1371,7 @@ History::Type History::historyTypeFromString(const std::string str)
     return History::HERO_RUIN_EXPLORED;
   else if (str == "History::HERO_REWARD_RUIN")
     return History::HERO_REWARD_RUIN;
+  else if (str == "History::USE_ITEM")
+    return History::USE_ITEM;
   return History::START_TURN;
 }

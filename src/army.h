@@ -147,6 +147,9 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
         //! Set the current number of hitpoints of this army.
         void setHP(guint32 hp) {d_hp = hp;}
 
+        //! Set the current number of hitpoints of this army to zero.
+        void kill() {setHP(0);}
+
         //! Sets whether or not the Army has a particular medal.
         void setMedalBonus(guint32 index, bool value) 
 	  {d_medal_bonus[index]=value;}
@@ -165,7 +168,6 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 
 	//! Sets whether or not this Army unit is in a tower.
 	void setFortified (bool f);
-
 
         // Get Methods 
         
@@ -237,6 +239,9 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	//! This army is of an army type that has this name.
 	virtual std::string getName() const;
 
+        //! Does this army unit have wings?
+        bool isFlyer();
+
 	//Methods that operate on class data and modify the class data
         /** 
 	 * Regenerate an amount of the Army unit's hitpoints but not 
@@ -270,6 +275,17 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
          */
 	//! Consume some movement points.
         void decrementMoves(guint32 moves);
+
+        /** 
+	 * Add to the number of moves that the Army unit has.
+	 * @note This method doesn't increase the maximum number of movement 
+	 * points; it adds to the current number of movement points, which 
+	 * get restored at the start of the next turn.
+         * 
+         * @param moves      The number of movement points to add.
+         */
+	//! Add some movement points.
+        void incrementMoves(guint32 moves);
 
         //! Restores the number of movement points to the maximum level.
         void resetMoves();

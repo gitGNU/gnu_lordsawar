@@ -28,6 +28,7 @@ class Hero;
 class HeroProto;
 class City;
 class Ruin;
+class Item;
 #include "army.h"
 
 //! A permanent record of an accomplishment during gameplay.
@@ -93,6 +94,8 @@ class History
           HERO_RUIN_EXPLORED = 20,
           //! The player has been told of the location of a hidden ruin.
           HERO_REWARD_RUIN = 21,
+          //! The player has used an item
+          USE_ITEM = 22,
         };
 	static std::string historyTypeToString(const History::Type type);
 	static History::Type historyTypeFromString(const std::string str);
@@ -855,6 +858,62 @@ class History_HeroRewardRuin: public History
 
 	//! The id of the Ruin that was exposed.
 	guint32 d_ruin;
+};
+
+//-----------------------------------------------------------------------------
+
+//! A permanent record of the player using an item
+class History_HeroUseItem: public History
+{
+    public:
+	//! Default constructor.
+        History_HeroUseItem();
+	//! Copy constructor.
+	History_HeroUseItem(const History_HeroUseItem &history);
+	//! Load the historical event from an opened saved-game file.
+        History_HeroUseItem(XML_Helper* helper);
+	//! Destructor.
+        ~History_HeroUseItem();
+
+	//! Return some debug information about this historical event.
+        std::string dump() const;
+
+	//! Save the historical event to an opened saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! Populate the event with the hero name and the player we attacked.
+        bool fillData(Hero *hero, Item *item, Player *opponent);
+
+        //! Get the name of the hero that used the object.
+        std::string getHeroName() const {return d_hero_name;}
+        
+        //! Get the name of the item that was used by the hero.
+        std::string getItemName() const {return d_item_name;}
+
+        //! Get the reported capabilities of the item.
+        guint32 getItemBonus() const {return d_item_bonus;};
+
+	//! Get the Id of the Player object that we used the item on.
+	guint32 getOpponentId() const {return d_opponent_id;}
+    
+    private:
+
+        //! The name of the hero using an object.
+        std::string d_hero_name;
+        
+        //! The name of the item that was used.
+        std::string d_item_name;
+
+        //! The kind of item.
+        guint32 d_item_bonus;
+
+	//! The Id of the Player object that we peformed treachery on.
+        /**
+         * Whether or not the item is used against the player is a function
+         * of what kind of item it is.  As a result this field may sometimes 
+         * be 0, but not used against the white player.
+         */
+	guint32 d_opponent_id;
 };
 
 #endif //HISTORY_H

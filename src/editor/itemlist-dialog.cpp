@@ -116,6 +116,15 @@ ItemlistDialog::ItemlistDialog()
     xml->get_widget("add5goldpercity_checkbutton", add5goldpercity_checkbutton);
     add5goldpercity_checkbutton->signal_toggled().connect(
 	sigc::mem_fun(this, &ItemlistDialog::on_add5goldpercity_toggled));
+    xml->get_widget("steals_gold_checkbutton", steals_gold_checkbutton);
+    steals_gold_checkbutton->signal_toggled().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_steals_gold_toggled));
+    xml->get_widget("sinks_ships_checkbutton", sinks_ships_checkbutton);
+    sinks_ships_checkbutton->signal_toggled().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_sinks_ships_toggled));
+    xml->get_widget("uses_spinbutton", uses_spinbutton);
+    uses_spinbutton->signal_changed().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_uses_changed));
 
     update_item_panel();
     update_itemlist_buttons();
@@ -213,6 +222,9 @@ void ItemlistDialog::fill_item_info(ItemProto *item)
     (item->getBonus(ItemProto::ADD4GOLDPERCITY));
   add5goldpercity_checkbutton->set_active
     (item->getBonus(ItemProto::ADD5GOLDPERCITY));
+  steals_gold_checkbutton->set_active (item->getBonus(ItemProto::STEAL_GOLD));
+  sinks_ships_checkbutton->set_active (item->getBonus(ItemProto::SINK_SHIPS));
+  uses_spinbutton->set_value(double(item->getNumberOfUsesLeft()));
   inhibit_bonus_checkbuttons = 0;
 }
 
@@ -347,4 +359,33 @@ void ItemlistDialog::on_add4goldpercity_toggled()
 void ItemlistDialog::on_add5goldpercity_toggled()
 {
   on_checkbutton_toggled(add5goldpercity_checkbutton, ItemProto::ADD5GOLDPERCITY);
+}
+
+void ItemlistDialog::on_steals_gold_toggled()
+{
+  on_checkbutton_toggled(steals_gold_checkbutton, ItemProto::STEAL_GOLD);
+}
+
+void ItemlistDialog::on_sinks_ships_toggled()
+{
+  on_checkbutton_toggled(sinks_ships_checkbutton, ItemProto::SINK_SHIPS);
+}
+	
+void ItemlistDialog::on_uses_changed()
+{
+  if (inhibit_bonus_checkbuttons)
+    return;
+  Glib::RefPtr<Gtk::TreeSelection> selection = items_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+
+  if (iterrow) 
+    {
+      // Row selected
+      Gtk::TreeModel::Row row = *iterrow;
+      d_item = row[items_columns.item];
+  
+      d_item->setNumberOfUsesLeft(int(uses_spinbutton->get_value()));
+    }
+  else
+    return;
 }

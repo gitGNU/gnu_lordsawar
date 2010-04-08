@@ -64,6 +64,9 @@ class ItemlistDialog: public sigc::trackable
     Gtk::CheckButton *add3goldpercity_checkbutton;
     Gtk::CheckButton *add4goldpercity_checkbutton;
     Gtk::CheckButton *add5goldpercity_checkbutton;
+    Gtk::CheckButton *steals_gold_checkbutton;
+    Gtk::CheckButton *sinks_ships_checkbutton;
+    Gtk::SpinButton *uses_spinbutton;
 
     class ItemsColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -105,6 +108,9 @@ class ItemlistDialog: public sigc::trackable
     void on_add3goldpercity_toggled();
     void on_add4goldpercity_toggled();
     void on_add5goldpercity_toggled();
+    void on_steals_gold_toggled();
+    void on_sinks_ships_toggled();
+    void on_uses_changed();
 };
 
 #endif

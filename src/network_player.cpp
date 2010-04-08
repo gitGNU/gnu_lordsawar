@@ -254,6 +254,9 @@ void NetworkPlayer::decodeAction(const Action *a)
     case Action::CITY_LOOT:
       return decodeActionLoot
 	(dynamic_cast<const Action_Loot*>(a));
+    case Action::USE_ITEM:
+      return decodeActionUseItem
+	(dynamic_cast<const Action_UseItem*>(a));
     }
 
   return;
@@ -669,6 +672,22 @@ void NetworkPlayer::decodeActionLoot (const Action_Loot *action)
   guint32 player_id = action->getLootedPlayerId();
   Player *looted = Playerlist::getInstance()->getPlayer(player_id);
   doLootCity(looted, action->getAmountToAdd(), action->getAmountToSubtract());
+}
+
+void NetworkPlayer::decodeActionUseItem(const Action_UseItem *action)
+{
+  Stack *stack = d_stacklist->getArmyStackById(action->getHeroId());
+  if (stack == NULL)
+    {
+      printf ("couldn't find hero with id %d\n", action->getHeroId());
+    }
+  assert (stack != NULL);
+  Hero *hero = dynamic_cast<Hero *>(stack->getArmyById(action->getHeroId()));
+  assert (hero != NULL);
+  Item *item = hero->getBackpack()->getItemById(action->getItemId());
+  assert (item != NULL);
+  Player *victim = Playerlist::getInstance()->getPlayer(action->getVictimPlayerId());
+  doHeroUseItem(hero, item, victim);
 }
 
 // End of file

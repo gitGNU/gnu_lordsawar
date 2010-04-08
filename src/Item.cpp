@@ -1,6 +1,6 @@
 // Copyright (C) 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -115,6 +115,7 @@ bool Item::save(XML_Helper* helper) const
     }
   retval &= helper->saveData("id", d_id);
   retval &= helper->saveData("type", d_type);
+  retval &= helper->saveData("uses_left", d_uses_left);
 
   std::string bonus_str = ItemProto::bonusFlagsToString(d_bonus);
   retval &= helper->saveData("bonus", bonus_str);
@@ -128,4 +129,17 @@ Item* Item::createNonUniqueItem(std::string name, bool plantable,
 				Player *plantable_owner)
 {
   return new Item(name, plantable, plantable_owner, 0);
+}
+
+bool Item::use()
+{
+  if (d_uses_left)
+    {
+      d_uses_left--;
+      if (d_uses_left)
+        return false;
+      else
+        return true;
+    }
+  return true;
 }

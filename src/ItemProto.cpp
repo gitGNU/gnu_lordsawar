@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ ItemProto::ItemProto(XML_Helper* helper)
     helper->getData(bonus_str, "bonus");
     d_bonus = bonusFlagsFromString(bonus_str);
 
+    helper->getData(d_uses_left, "uses_left");
 }
 
 ItemProto::ItemProto(std::string name, guint32 id)
@@ -44,10 +45,12 @@ ItemProto::ItemProto(std::string name, guint32 id)
 {
   d_bonus = 0;
   d_type_id = id;
+  d_uses_left = 0;
 }
 
 ItemProto::ItemProto(const ItemProto& orig)
-:Renamable(orig), d_bonus(orig.d_bonus), d_type_id(orig.d_type_id)
+:Renamable(orig), d_bonus(orig.d_bonus), d_type_id(orig.d_type_id),
+    d_uses_left(orig.d_uses_left)
 {
 }
 
@@ -64,6 +67,7 @@ bool ItemProto::save(XML_Helper* helper) const
   retval &= helper->saveData("name", getName(false));
   std::string bonus_str = bonusFlagsToString(d_bonus);
   retval &= helper->saveData("bonus", bonus_str);
+  retval &= helper->saveData("uses_left", d_uses_left);
 
   retval &= helper->closeTag();
 
@@ -116,6 +120,14 @@ std::string ItemProto::getBonusDescription() const
     goldpercity+=4;
   if (getBonus(ItemProto::ADD5GOLDPERCITY))
     goldpercity+=5;
+  if (getBonus(ItemProto::STEAL_GOLD))
+    s.push_back(_("Steals Gold"));
+  if (getBonus(ItemProto::SINK_SHIPS))
+    s.push_back(_("Sink Ships"));
+  if (getBonus(ItemProto::PICK_UP_BAGS))
+    s.push_back(_("Picks Up Bags"));
+  if (getBonus(ItemProto::ADD_2MP_STACK))
+    s.push_back(_("+2 MP to stack"));
 
   if (battle > 0)
     s.push_back(String::ucompose(_("+%1 Battle"), battle));
@@ -166,6 +178,14 @@ std::string ItemProto::bonusFlagToString(ItemProto::Bonus bonus)
       return "ItemProto::ADD4GOLDPERCITY";
     case ItemProto::ADD5GOLDPERCITY:
       return "ItemProto::ADD5GOLDPERCITY";
+    case ItemProto::STEAL_GOLD:
+      return "ItemProto::STEAL_GOLD";
+    case ItemProto::SINK_SHIPS:
+      return "ItemProto::SINK_SHIPS";
+    case ItemProto::PICK_UP_BAGS:
+      return "ItemProto::PICK_UP_BAGS";
+    case ItemProto::ADD_2MP_STACK:
+      return "ItemProto::ADD_2MP_STACK";
     }
   return "ItemProto::ADD1STR";
 }
@@ -197,6 +217,14 @@ std::string ItemProto::bonusFlagsToString(guint32 bonus)
     bonuses += " " + bonusFlagToString(ItemProto::ADD4GOLDPERCITY);
   if (bonus & ItemProto::ADD5GOLDPERCITY)
     bonuses += " " + bonusFlagToString(ItemProto::ADD5GOLDPERCITY);
+  if (bonus & ItemProto::STEAL_GOLD)
+    bonuses += " " + bonusFlagToString(ItemProto::STEAL_GOLD);
+  if (bonus & ItemProto::SINK_SHIPS)
+    bonuses += " " + bonusFlagToString(ItemProto::SINK_SHIPS);
+  if (bonus & ItemProto::PICK_UP_BAGS)
+    bonuses += " " + bonusFlagToString(ItemProto::PICK_UP_BAGS);
+  if (bonus & ItemProto::ADD_2MP_STACK)
+    bonuses += " " + bonusFlagToString(ItemProto::ADD_2MP_STACK);
   return bonuses;
 }
 
@@ -245,5 +273,13 @@ ItemProto::Bonus ItemProto::bonusFlagFromString(std::string str)
     return ItemProto::ADD4GOLDPERCITY;
   else if (str == "ItemProto::ADD5GOLDPERCITY")
     return ItemProto::ADD5GOLDPERCITY;
+  else if (str == "ItemProto::STEAL_GOLD")
+    return ItemProto::STEAL_GOLD;
+  else if (str == "ItemProto::SINK_SHIPS")
+    return ItemProto::SINK_SHIPS;
+  else if (str == "ItemProto::PICK_UP_BAGS")
+    return ItemProto::PICK_UP_BAGS;
+  else if (str == "ItemProto::ADD_2MP_STACK")
+    return ItemProto::ADD_2MP_STACK;
   return ItemProto::ADD1STR;
 }

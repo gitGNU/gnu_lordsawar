@@ -288,6 +288,13 @@
                             <signal name="activate" handler="on_search_menuitem_activate"/>
                           </object>
                         </child>
+                        <child>
+                          <object class="GtkMenuItem" id="use_menuitem">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Use Item</property>
+                            <property name="use_underline">True</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>

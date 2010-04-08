@@ -1,4 +1,4 @@
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -118,6 +118,20 @@ void Game::addPlayer(Player *p)
       connections[p->getId()].push_back
 	(p->getStacklist()->sgrouped.connect
 	 (sigc::mem_fun(this, &Game::on_stack_grouped)));
+      connections[p->getId()].push_back
+	(p->stole_gold.connect
+	 (sigc::mem_fun(stole_gold, &sigc::signal<void, Player*, 
+                        guint32>::emit)));
+      connections[p->getId()].push_back
+	(p->sunk_ships.connect
+	 (sigc::mem_fun(sunk_ships, &sigc::signal<void, Player*, 
+                        guint32>::emit)));
+      connections[p->getId()].push_back
+	(p->bags_picked_up.connect
+	 (sigc::mem_fun(bags_picked_up, &sigc::signal<void, Hero*, guint32>::emit)));
+      connections[p->getId()].push_back
+	(p->mp_added_to_hero_stack.connect
+	 (sigc::mem_fun(mp_added_to_hero_stack, &sigc::signal<void, Hero*, guint32>::emit)));
     }
       
       
@@ -163,6 +177,8 @@ void Game::addPlayer(Player *p)
     (p->streacheryStack.connect(sigc::mem_fun(this, &Game::maybeTreachery)));
   connections[p->getId()].push_back
     (p->fight_started.connect (sigc::mem_fun(*this, &Game::on_fight_started)));
+  connections[p->getId()].push_back
+    (p->using_item.connect (sigc::mem_fun(*this, &Game::on_use_item)));
   connections[p->getId()].push_back
     (p->ruinfight_started.connect
      (sigc::mem_fun
@@ -631,6 +647,38 @@ void Game::search_stack(Stack *stack)
     }
 }
 
+void Game::select_item_to_use()
+{
+  Player *active = Playerlist::getActiveplayer();
+  //emit a signal that makes a dialog appear that lets us pick an item to use.
+  std::list<Item*> items = active->getUsableItems();
+  if (items.size() == 0)
+    return;
+  Item *item = select_item.emit(items);
+  if (item != NULL)
+    on_use_item(item);
+}
+
+void Game::on_use_item(Item *item)
+{
+  Player *active = Playerlist::getActiveplayer();
+  Stack *stack = NULL;
+  Hero *hero = NULL;
+  active->getItemHolder(item, &stack, &hero);
+  Player *victim = NULL;
+
+  //ask the user a series of questions on how to use the item
+  if (item->usableOnVictimPlayer())
+    victim = select_item_victim_player.emit();
+          
+  // now we act on the answers and execute the usage of the item
+  if (item->usableOnVictimPlayer() == true && victim)
+    active->heroUseItem(hero, item, victim);
+
+  if (item->usableOnVictimPlayer() == false)
+    active->heroUseItem(hero, item, NULL);
+}
+
 void Game::search_selected_stack()
 {
   Player *player = Playerlist::getActiveplayer();
@@ -882,6 +930,7 @@ void Game::update_control_panel()
       can_park_selected_stack.emit(false);
       can_deselect_selected_stack.emit(false);
       can_search_selected_stack.emit(false);
+      can_use_item.emit(false);
       can_plant_standard_selected_stack.emit(false);
       can_move_selected_stack.emit(false);
       can_move_selected_stack_along_path.emit(false);
@@ -988,6 +1037,8 @@ void Game::update_control_panel()
 	{
 	  can_plant_standard_selected_stack.emit(false);
 	}
+          
+      can_use_item.emit(player->hasUsableItem());
 
       if (GameMap::getSignpost(stack))
 	can_change_signpost.emit(true);

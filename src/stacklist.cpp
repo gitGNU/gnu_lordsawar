@@ -39,6 +39,7 @@
 #include "LocationList.h"
 #include "GameMap.h"
 #include "stacktile.h"
+#include "Item.h"
 
 std::string Stacklist::d_tag = "stacklist";
 using namespace std;
@@ -622,4 +623,65 @@ std::list<Stack*> Stacklist::getStacksWithItems() const
     }
   return stacks;
 }
+
+std::list<Stack*> Stacklist::kill()
+{
+  std::list<Stack*> stacks;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      (*it)->kill();
+      stacks.push_back(*it);
+    }
+  return stacks;
+}
+
+std::list<Stack*> Stacklist::killArmyUnitsInBoats()
+{
+  std::list<Stack*> stacks;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->hasShip())
+        {
+          if ((*it)->killArmyUnitsInBoats())
+            stacks.push_back(*it);
+        }
+    }
+  return stacks;
+}
+
+std::list<Item*> Stacklist::getUsableItems() const
+{
+  std::list<Item*> items;
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->hasUsableItem())
+        (*it)->getUsableItems(items);
+    }
+  return items;
+}
+
+bool Stacklist::hasUsableItem() const
+{
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->hasUsableItem())
+        return true;
+    }
+  return false;
+}
+        
+bool Stacklist::getItemHolder(Item *item, Stack **stack, Hero **hero) const
+{
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      *hero = (*it)->getHeroWithItem(item);
+      if (*hero != NULL)
+        {
+          *stack = *it;
+          return true;
+        }
+    }
+  return false;
+}
+
 // End of file

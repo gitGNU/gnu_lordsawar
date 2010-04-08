@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -111,6 +111,9 @@ class Backpack: public std::list<Item*>
 	 */
 	bool addToBackpack(Item* item, int position);
 
+        //! Use an item in the backpack.  removes it if it's spent.
+        bool useItem(Item *item);
+
 	//! Tally up the strength bonuses inferred by items in the backpack.
 	guint32 countStrengthBonuses();
 
@@ -128,6 +131,12 @@ class Backpack: public std::list<Item*>
 
 	//! Tally the plantable items in the backpack.
 	guint32 countPlantableItems();
+
+        //! Check if the backpack has any usable items.
+        bool hasUsableItem() const;
+
+        //! Get a list of all of the usable items in the backpack.
+        void getUsableItems(std::list<Item*> &items) const;
 
 	//! Return the item with the given id.
 	Item *getItemById(guint32 id);

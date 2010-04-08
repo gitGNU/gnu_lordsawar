@@ -290,9 +290,15 @@ void Stack::decrementMoves(guint32 moves)
   debug("decrement_moves()");
 
   for (iterator it = begin(); it != end(); it++)
-    {
-      (*it)->decrementMoves(moves);
-    }
+    (*it)->decrementMoves(moves);
+}
+
+void Stack::incrementMoves(guint32 moves)
+{
+  debug("increment_moves()");
+
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->incrementMoves(moves);
 }
 
 // Purpose: Return the strongest army of a group
@@ -1110,4 +1116,110 @@ guint32 Stack::countItems() const
     }
   return count;
 }
+
+bool Stack::hasUsableItem() const
+{
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->isHero() == false)
+        continue;
+      Hero *hero = dynamic_cast<Hero*>(*it);
+      Backpack *backpack = hero->getBackpack();
+      if (backpack->hasUsableItem() == true)
+        return true;
+    }
+  return false;
+}
+        
+void Stack::getUsableItems(std::list<Item*> &items) const
+{
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->isHero() == false)
+        continue;
+      Hero *hero = dynamic_cast<Hero*>(*it);
+      Backpack *backpack = hero->getBackpack();
+      backpack->getUsableItems(items);
+    }
+  return;
+}
+
+Hero* Stack::getHeroWithItem(Item *item) const
+{
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->isHero() == false)
+        continue;
+      Hero *hero = dynamic_cast<Hero*>(*it);
+      Backpack *backpack = hero->getBackpack();
+      if (backpack->getItemById(item->getId()) != NULL)
+        return hero;
+    }
+  return NULL;
+}
+
+void Stack::kill()
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->kill();
+}
+
+//! Sink the stack.  return true if we've sunk any part of the stack.
+bool Stack::killArmyUnitsInBoats()
+{
+  bool retval = false;
+  GameMap *gm = GameMap::getInstance();
+  if (gm->getTile(getPos())->getMaptileType() != Tile::WATER)
+    return retval;
+  if (isFlying())
+    return retval;
+  std::list<Army*> flyers;
+  std::list<Army*> landedother;
+  std::list<Army*> landedhero;
+  for (iterator it = this->begin(); it != this->end(); it++)
+    {
+      guint32 bonus = (*it)->getStat(Army::MOVE_BONUS);
+      if (bonus == Tile::GRASS || (bonus & Tile::WATER) == 0 || 
+	  (bonus & Tile::FOREST) == 0 || (bonus & Tile::HILLS) == 0 ||
+	  (bonus & Tile::MOUNTAIN) == 0 || (bonus & Tile::SWAMP) == 0)
+	{
+	  if ((*it)->isHero())
+            landedhero.push_back(*it);
+	  else
+            landedother.push_back(*it);
+	}
+      else
+        flyers.push_back(*it);
+    }
+  //sink the landed others.
+  for (std::list<Army*>::iterator it = landedother.begin(); 
+       it != landedother.end(); it++)
+    {
+      retval = true;
+      (*it)->kill();
+    }
+  int num_heroes_to_sink = landedhero.size() - flyers.size();
+  if (num_heroes_to_sink > 0)
+    {
+      //sink the unlucky heroes and any items they might have.
+      for (std::list<Army*>::reverse_iterator it = landedhero.rbegin();
+           it != landedhero.rend(); it++)
+        {
+          retval = true;
+          (*it)->kill();
+          num_heroes_to_sink--;
+          if (num_heroes_to_sink <= 0)
+            break;
+        }
+    }
+      
+  for (std::list<Army*>::iterator it = landedhero.begin(); 
+       it != landedhero.end(); it++)
+    {
+      if ((*it)->getHP() > 0)
+        (*it)->setInShip(false); //we're being carried by a flyer
+    }
+  return retval;
+}
+          
 // End of file

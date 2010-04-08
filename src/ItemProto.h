@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -74,8 +74,21 @@ class ItemProto: public Renamable
 	  ADD4GOLDPERCITY = 0x00000400,
 	  //! Add 5 gold to the Player's treasury per City it holds.
 	  ADD5GOLDPERCITY = 0x00000800, 
-
+          //! Steal half of a player's gold.
+          STEAL_GOLD      = 0x00001000, 
+          //! Sink all of a player's boats.
+          SINK_SHIPS      = 0x00002000, 
+          //! Pick up any bags of items that are on the ground.
+          PICK_UP_BAGS    = 0x00004000,
+          //! Provide 2 movement points to the stack.
+          ADD_2MP_STACK   = 0x00008000,
         };
+
+        enum UsableItems {
+          USABLE = STEAL_GOLD | SINK_SHIPS | PICK_UP_BAGS | ADD_2MP_STACK,
+        };
+
+
 	static guint32 bonusFlagsFromString(const std::string str);
 	static std::string bonusFlagsToString(const guint32 bonus);
         
@@ -115,6 +128,16 @@ class ItemProto: public Renamable
 	//! Return some text describing the item's special abilities.
         std::string getBonusDescription() const;
 
+        //! Return if the item is usable or not.
+        bool isUsable() const {return d_bonus & USABLE;};
+
+        guint32 getNumberOfUsesLeft() const {return d_uses_left;};
+
+        //! Set the number of uses left.
+        void setNumberOfUsesLeft(guint32 uses_left) {d_uses_left = uses_left;};
+
+        bool usableOnVictimPlayer() const { if (d_bonus & SINK_SHIPS || d_bonus & STEAL_GOLD) return true; else return false;};
+
     protected:
 	//! The item's bonus.
 	/**
@@ -122,7 +145,8 @@ class ItemProto: public Renamable
 	 */
         guint32 d_bonus;
         
-
+        //! The number of uses this item has before it is spent.
+        guint32 d_uses_left;
     private:
 
 	//! The Id of the Item.

@@ -68,6 +68,8 @@
 [type: gettext/glade]dat/glade/temple-visit-dialog.ui
 [type: gettext/glade]dat/glade/treachery-dialog.ui
 [type: gettext/glade]dat/glade/triumphs-dialog.ui
+[type: gettext/glade]dat/glade/use-item-dialog.ui
+[type: gettext/glade]dat/glade/use-item-on-player-dialog.ui
 [type: gettext/glade]dat/glade/new-random-map-dialog.ui
 [type: gettext/glade]dat/glade/editor/armyset-info-dialog.ui
 [type: gettext/glade]dat/glade/editor/armyset-window.ui

@@ -34,7 +34,7 @@ TimedMessageDialog::TimedMessageDialog(Gtk::Window &parent, std::string message,
   d_timer_count = 0;
   d_grace = grace;
     
-  window = new Gtk::MessageDialog(parent, message);
+  window = new Gtk::MessageDialog(message); 
   //Gtk::MessageDialog dialog(parent, message);
   //window.reset(&dialog);
   window->set_message(message);

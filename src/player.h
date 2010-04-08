@@ -404,6 +404,14 @@ class Player: public sigc::trackable
         //! Remove a Stack from the player's Stacklist.
         bool deleteStack(Stack* stack);
 
+        //! Return a list of all of the player's items that can be used.
+        std::list<Item*> getUsableItems() const;
+
+        //! Return whether or not the player has any items that can be used.
+        bool hasUsableItem() const;
+
+        //! Return which stack and hero the item belongs to.
+        bool getItemHolder(Item *item, Stack **stack, Hero **hero) const;
 
 	// Methods that operate on the player's diplomatic data members.
 
@@ -711,6 +719,9 @@ class Player: public sigc::trackable
 
 	//! Pick up all of the items at the given location on the game map.
 	bool heroPickupAllItems(Hero *h, Vector<int> pos);
+
+        //! Have the given hero use the given item, on the given player.
+        bool heroUseItem(Hero *h, Item *item, Player *player);
 
 	/**
 	 * Completing a Quest entails that the Hero is going to receive a
@@ -1234,7 +1245,12 @@ class Player: public sigc::trackable
 	//! Propose a new diplomatic state wrt another player
 	void proposeDiplomacy (DiplomaticProposal proposal, Player *player);
 
-
+        /**
+         * Account for the dead armies in the given list of stacks.  For
+         * each dead army we increment a counter for that kind of army unit.
+         */
+        //! Keeps stats of what kind of units we killed in a battle.
+        void tallyDeadArmyTriumphs(std::list<Stack*> &stacks);
 
 
 	// Signals
@@ -1270,14 +1286,6 @@ class Player: public sigc::trackable
 	 */
         //! Emitted whever a player's army gets a new medal.
         sigc::signal<void, Army*, int> snewMedalArmy;
-
-	/**
-	 * @param army         The army that has died.
-	 * @param culprit_ids  A std::vector of enemy Army Ids to have 
-	 *                     participated in the death of this player's Army.
-	 */
-        //! Emitted when a player's Army dies.
-        sigc::signal<void, Army*, std::vector<guint32> > sdyingArmy;
 
 	/**
 	 * @param ruin    The ruin being searched.
@@ -1404,8 +1412,16 @@ class Player: public sigc::trackable
 
         sigc::signal<void, int> hero_arrives_with_allies;
 
+        sigc::signal<void, Item*> using_item;
+
         sigc::signal<void, NetworkAction *> acting;
         sigc::signal<void, NetworkHistory *> history_written;
+
+        //! Results of using items
+        sigc::signal<void, Player*, guint32> stole_gold;
+        sigc::signal<void, Player*, guint32> sunk_ships;
+        sigc::signal<void, Hero *, guint32> bags_picked_up;
+        sigc::signal<void, Hero *, guint32> mp_added_to_hero_stack;
         
 	void loadPbmGame();
 	//! Check the history to see if we ever conquered the given city.
@@ -1579,7 +1595,9 @@ class Player: public sigc::trackable
         void doGiveReward(Stack *s, Reward *reward);
         void doHeroDropItem(Hero *hero, Item *item, Vector<int> pos);
 	bool doHeroDropAllItems(Hero *h, Vector<int> pos);
+        bool doHeroUseItem(Hero *h, Item *item, Player *victim);
         void doHeroPickupItem(Hero *hero, Item *item, Vector<int> pos);
+        bool doHeroPickupAllItems(Hero *h, Vector<int> pos);
         void doHeroGainsLevel(Hero *hero, Army::Stat stat);
         bool doStackDisband(Stack *stack);
         void doSignpostChange(Signpost *signpost, std::string message);
@@ -1642,6 +1660,7 @@ class Player: public sigc::trackable
         void getHeroes(const std::list<Stack*> stacks, 
 		       std::vector<guint32>& heroes);
 
+
         /** 
 	 * Goes through a list of stacks and removes all armies with less
          * than 1 hitpoint.  It also removes empty stacks. 
@@ -1651,11 +1670,23 @@ class Player: public sigc::trackable
          * @param culprits         The list of heroes responsible for killing
 	 *                         the armies.  This is needed for tracking
 	 *                         the progress of a Quest.
-         * @return The sum of the XP of the killed armies.
+         * @return The number of armies removed because they were killed.
          */
 	//! Remove dead Armies from a list of stacks after a fight.
-        double removeDeadArmies(std::list<Stack*>& stacks,
+        guint32 removeDeadArmies(std::list<Stack*>& stacks,
                                 std::vector<guint32>& culprits);
+
+        guint32 removeDeadArmies(std::list<Stack*>& stacks);
+
+        guint32 removeDeadArmies(Stack *stack);
+
+        double countXPFromDeadArmies(std::list<Stack*>& stacks);
+
+        void handleDeadHeroes(std::list<Stack*> &stacks);
+
+        void healInjuredArmies(std::list<Stack*> &stacks);
+
+        void handleDeadArmiesForQuests(std::list<Stack*> &stacks, std::vector<guint32> &culprits);
         
         /** 
 	 * Increases the number of experience points of a stack
