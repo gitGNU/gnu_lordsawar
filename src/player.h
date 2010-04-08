@@ -668,11 +668,13 @@ class Player: public sigc::trackable
 	 * @param item             The Item to drop onto the ground.
 	 * @param pos              The position of the tile on the game map to 
 	 *                         drop the item onto.
+         * @param splash           Whether or not the item sunk in the water
+         *                         after dropping it.
 	 *
          * @return False on error, true otherwise.
 	 */
         //! Callback to have a Hero drop an Item.
-        bool heroDropItem(Hero *hero, Item *item, Vector<int> pos);
+        bool heroDropItem(Hero *hero, Item *item, Vector<int> pos, bool &splash);
 
 	/**
 	 * Callback to drop a all items at a particular position on the 
@@ -689,11 +691,13 @@ class Player: public sigc::trackable
 	 * @param hero             The Hero that holds the items.
 	 * @param pos              The position of the tile on the game map to 
 	 *                         drop the item onto.
+         * @param splash           Whether or not the items sunk in the water
+         *                         after dropping them.
 	 *
          * @return False on error, true otherwise.
 	 */
         //! Callback to have a Hero drop all items.
-        bool heroDropAllItems(Hero *hero, Vector<int> pos);
+        bool heroDropAllItems(Hero *hero, Vector<int> pos, bool &splash);
 
 	/**
 	 * Callback to pickup an Item at a particular position on the game 
@@ -1593,8 +1597,8 @@ class Player: public sigc::trackable
         void doCityBuyProduction(City *c, int slot, int type);
         void doCityChangeProduction(City *c, int slot);
         void doGiveReward(Stack *s, Reward *reward);
-        void doHeroDropItem(Hero *hero, Item *item, Vector<int> pos);
-	bool doHeroDropAllItems(Hero *h, Vector<int> pos);
+        void doHeroDropItem(Hero *hero, Item *item, Vector<int> pos, bool &splash);
+	bool doHeroDropAllItems(Hero *h, Vector<int> pos, bool &splash);
         bool doHeroUseItem(Hero *h, Item *item, Player *victim);
         void doHeroPickupItem(Hero *hero, Item *item, Vector<int> pos);
         bool doHeroPickupAllItems(Hero *h, Vector<int> pos);

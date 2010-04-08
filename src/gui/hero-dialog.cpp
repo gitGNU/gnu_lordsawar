@@ -316,13 +316,18 @@ void HeroDialog::on_drop_clicked()
 {
     Gtk::TreeIter i = item_treeview->get_selection()->get_selected();
     if (i)
-    {
+      {
+        bool splash = false;
 	Item *item = (*i)[item_columns.item];
-	hero->getOwner()->heroDropItem (hero, item, pos);
-	(*i)[item_columns.status] = _("On the ground");
-	on_item_selection_changed();
+	hero->getOwner()->heroDropItem (hero, item, pos, splash);
+        if (splash == false)
+          (*i)[item_columns.status] = _("On the ground");
+        else
+          item_list->erase(i); //splash
+            
+        on_item_selection_changed();
 	fill_in_info_labels();
-    }
+      }
 }
 
 void HeroDialog::on_next_clicked()

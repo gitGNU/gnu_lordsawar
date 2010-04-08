@@ -503,6 +503,7 @@ void NetworkPlayer::decodeActionEquip(const Action_Equip *action)
   Hero *hero = dynamic_cast<Hero *>(stack->getArmyById(action->getHeroId()));
   Item *item = 0;
 
+  bool splash = false;
   switch (action->getToBackpackOrToGround())
   {
   case Action_Equip::BACKPACK:
@@ -512,7 +513,7 @@ void NetworkPlayer::decodeActionEquip(const Action_Equip *action)
 
   case Action_Equip::GROUND:
     item = hero->getBackpack()->getItemById(action->getItemId());
-    doHeroDropItem(hero, item, action->getItemPos());
+    doHeroDropItem(hero, item, action->getItemPos(), splash);
     break;
   }
 }

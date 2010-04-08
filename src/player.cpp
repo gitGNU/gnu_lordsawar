@@ -1845,16 +1845,26 @@ bool Player::stackDisband(Stack* s)
     return doStackDisband(s);
 }
 
-void Player::doHeroDropItem(Hero *h, Item *i, Vector<int> pos)
+void Player::doHeroDropItem(Hero *h, Item *i, Vector<int> pos, bool &splash)
 {
-  GameMap::getInstance()->getTile(pos)->getBackpack()->addToBackpack(i);
-  h->getBackpack()->removeFromBackpack(i);
+  if (GameMap::getInstance()->getTile(pos)->getMaptileType() == Tile::WATER)
+    {
+      h->getBackpack()->removeFromBackpack(i);
+      delete i;
+      splash = true;
+    }
+  else
+    {
+      GameMap::getInstance()->getTile(pos)->getBackpack()->addToBackpack(i);
+      h->getBackpack()->removeFromBackpack(i);
+      splash = false;
+    }
   supdatingStack.emit(0);
 }
 
-bool Player::heroDropItem(Hero *h, Item *i, Vector<int> pos)
+bool Player::heroDropItem(Hero *h, Item *i, Vector<int> pos, bool &splash)
 {
-  doHeroDropItem(h, i, pos);
+  doHeroDropItem(h, i, pos, splash);
   
   Action_Equip* item = new Action_Equip();
   item->fillData(h, i, Action_Equip::GROUND, pos);
@@ -1863,17 +1873,17 @@ bool Player::heroDropItem(Hero *h, Item *i, Vector<int> pos)
   return true;
 }
 
-bool Player::heroDropAllItems(Hero *h, Vector<int> pos)
+bool Player::heroDropAllItems(Hero *h, Vector<int> pos, bool &splash)
 {
   while (h->getBackpack()->empty() == false)
-    heroDropItem(h, h->getBackpack()->front(), pos);
+    heroDropItem(h, h->getBackpack()->front(), pos, splash);
   return true;
 }
 
-bool Player::doHeroDropAllItems(Hero *h, Vector<int> pos)
+bool Player::doHeroDropAllItems(Hero *h, Vector<int> pos, bool &splash)
 {
   while (h->getBackpack()->empty() == false)
-    doHeroDropItem(h, h->getBackpack()->front(), pos);
+    doHeroDropItem(h, h->getBackpack()->front(), pos, splash);
   supdatingStack.emit(0);
   return true;
 }
@@ -4141,13 +4151,14 @@ void Player::handleDeadHeroes(std::list<Stack*> &stacks)
           //now record the details of the death
           GameMap *gm = GameMap::getInstance();
           Maptile *tile = gm->getTile((*it)->getPos());
+          bool splash = false;
           if (tile->getBuilding() == Maptile::RUIN)
             {
               History_HeroKilledSearching* item;
               item = new History_HeroKilledSearching();
               item->fillData(h);
               h->getOwner()->addHistory(item);
-              doHeroDropAllItems (h, (*it)->getPos());
+              doHeroDropAllItems (h, (*it)->getPos(), splash);
             }
           else if (tile->getBuilding() == Maptile::CITY)
             {
@@ -4156,7 +4167,7 @@ void Player::handleDeadHeroes(std::list<Stack*> &stacks)
               item = new History_HeroKilledInCity();
               item->fillData(h, c);
               h->getOwner()->addHistory(item);
-              doHeroDropAllItems (h, (*it)->getPos());
+              doHeroDropAllItems (h, (*it)->getPos(), splash);
             }
           else //somewhere else
             {
@@ -4164,7 +4175,7 @@ void Player::handleDeadHeroes(std::list<Stack*> &stacks)
               item = new History_HeroKilledInBattle();
               item->fillData(h);
               h->getOwner()->addHistory(item);
-              doHeroDropAllItems (h, (*it)->getPos());
+              doHeroDropAllItems (h, (*it)->getPos(), splash);
             }
         }
     }

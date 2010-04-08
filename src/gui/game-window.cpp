@@ -3394,18 +3394,6 @@ void GameWindow::on_inspect_activated ()
   d.set_parent_window(*window);
   d.run();
   d.hide();
-  //fixme: this needs to be a player action.
-  //activeplayer->sinkItems(pos);
-  if (gm->getTile(pos)->getBackpack()->size() > 0 && 
-      gm->getTile(pos)->getMaptileType() == Tile::WATER)
-    {
-      // splash, items lost forever
-      while (gm->getTile(pos)->getBackpack()->size())
-        {
-	  MapBackpack::iterator i = gm->getTile(pos)->getBackpack()->begin();
-          gm->getTile(pos)->getBackpack()->removeFromBackpack(*i);
-        }
-    }
 }
 void GameWindow::on_plant_standard_activated ()
 {
