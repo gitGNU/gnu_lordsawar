@@ -1,3 +1,10 @@
+2010-04-09  Ben Asselstine  <benasselstine@gmail.com>
+
+	* fixed bug in stack editor of scenario editor that made armies with
+	identical ids.
+	* changed fight window to show if an army unit is fighting on water or
+	not.
+
 2010-04-08  Ben Asselstine  <benasselstine@gmail.com>
 
 	* added support for usable items.  task #10303.
