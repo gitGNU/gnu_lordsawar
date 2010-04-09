@@ -40,6 +40,10 @@
 #include "GraphicsCache.h"
 #include "Configuration.h"
 #include "sound.h"
+#include "GameMap.h"
+#include "tileset.h"
+#include "Tile.h"
+#include "SmallTile.h"
 
 FightWindow::FightWindow(Fight &fight)
 {
@@ -244,6 +248,19 @@ void FightWindow::add_army(Army *army, int initial_hp,
     image->property_pixbuf() = pic;
     army_box->add(*manage(image));
     
+    Gtk::EventBox *ebox = new Gtk::EventBox();
+    Gtk::DrawingArea *drawing_area = new Gtk::DrawingArea();
+    drawing_area->property_width_request() = pic->get_width();
+    drawing_area->property_height_request() = 3;
+    if (army->getStat(Army::SHIP, false))
+      {
+        Tileset *ts = GameMap::getInstance()->getTileset();
+        int water_id = ts->getIndex(Tile::WATER);
+        SmallTile *water = (*ts)[water_id]->getSmallTile();
+        drawing_area->modify_bg(Gtk::STATE_NORMAL, water->getColor());
+      }
+    ebox->add(*manage(drawing_area));
+    army_box->add(*manage(ebox));
     // hit points graph
     Gtk::ProgressBar *progress = manage(new Gtk::ProgressBar);
     progress->set_fraction(double(initial_hp) / army->getStat(Army::HP));
@@ -274,6 +291,7 @@ void FightWindow::add_army(Army *army, int initial_hp,
     item.army = army;
     item.hp = initial_hp;
     item.bar = progress;
+    item.box = ebox;
     item.image = image;
     item.exploding = false;
     army_items.push_back(item);
@@ -317,6 +335,7 @@ bool FightWindow::do_round()
         if (fraction == 0.0)
         {
           i->bar->hide();
+          i->box->hide();
           i->image->property_pixbuf() = expl;
           i->exploding = true;
         }
