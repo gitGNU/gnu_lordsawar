@@ -245,7 +245,9 @@ void StackEditorDialog::on_copy_clicked()
       {
 	Player *player = get_selected_player();
 	Army *army = (*i)[army_columns.army];
-	add_army(new Army(*army, player));
+        Army *new_army = new Army(*army, player);
+        new_army->assignNewId();
+	add_army(new_army);
       }
 
     set_button_sensitivity();
