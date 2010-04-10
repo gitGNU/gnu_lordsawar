@@ -44,6 +44,7 @@ class SplashWindow: public Decorated
 	
     void show();
     void hide();
+    void open_new_game_dialog();
         
     Gtk::Window *get_window() {return window;}
 

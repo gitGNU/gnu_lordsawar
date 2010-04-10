@@ -320,7 +320,7 @@ GameWindow::GameWindow()
     // connect callbacks for the menu
     xml->get_widget("new_game_menuitem", new_game_menuitem);
     new_game_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_quit_activated));
+      (sigc::mem_fun(*this, &GameWindow::on_new_game_activated));
     xml->get_widget("load_game_menuitem", load_game_menuitem);
     load_game_menuitem->signal_activate().connect
       (sigc::mem_fun(*this, &GameWindow::on_load_game_activated));
@@ -1219,6 +1219,28 @@ void GameWindow::on_save_game_as_activated()
     }
 }
 
+void GameWindow::on_new_game_activated()
+{
+  Gtk::Dialog* dialog;
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/game-quit-dialog.ui");
+  xml->get_widget("dialog", dialog);
+  Decorated decorator;
+  decorator.decorate(dialog);
+  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
+
+  dialog->set_transient_for(*window);
+
+  int response = dialog->run();
+  dialog->hide();
+
+  if (response == Gtk::RESPONSE_ACCEPT) //end the game
+    {
+      stop_game("new");
+    }
+  delete dialog;
+}
+
 void GameWindow::on_quit_activated()
 {
   Gtk::Dialog* dialog;
@@ -1251,6 +1273,15 @@ void GameWindow::on_game_stopped()
 	  game = NULL;
 	}
       game_ended.emit();
+    }
+  else if (stop_action == "new")
+    {
+      if (game)
+	{
+	  delete game;
+	  game = NULL;
+	}
+      game_ended_start_new.emit();
     }
   else if (stop_action == "game-over")
     {

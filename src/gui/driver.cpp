@@ -609,6 +609,12 @@ void Driver::on_game_ended()
   splash_window->show();
 }
 
+void Driver::on_game_ended_and_start_new()
+{
+  on_game_ended();
+  splash_window->open_new_game_dialog();
+}
+
 void Driver::init_game_window()
 {
   if (game_window)
@@ -617,6 +623,8 @@ void Driver::init_game_window()
 
     game_window->game_ended.connect(
 	sigc::mem_fun(*this, &Driver::on_game_ended));
+    game_window->game_ended_start_new.connect(
+	sigc::mem_fun(*this, &Driver::on_game_ended_and_start_new));
     game_window->show_lobby.connect(
 	sigc::mem_fun(*this, &Driver::on_show_lobby_requested));
     game_window->quit_requested.connect(

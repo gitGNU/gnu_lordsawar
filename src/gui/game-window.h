@@ -89,6 +89,9 @@ class GameWindow: public Decorated
 
     // emitted when the game has ended and it is time to show the splash again
     sigc::signal<void> game_ended;
+
+    // emitted when the game has ended and we want to start a new game.
+    sigc::signal<void> game_ended_start_new;
     
     sigc::signal<void> show_lobby;
 
@@ -226,6 +229,7 @@ class GameWindow: public Decorated
     void on_save_game_as_activated();
     void on_show_lobby_activated();
     void on_quit_activated();
+    void on_new_game_activated();
     void on_game_stopped();
     void on_quests_activated();
     void on_disband_activated();

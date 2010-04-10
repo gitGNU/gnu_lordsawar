@@ -63,6 +63,7 @@ class Driver: public sigc::trackable
     void on_quit_requested();
 
     void on_game_ended();
+    void on_game_ended_and_start_new();
 
     void init_game_window();
 

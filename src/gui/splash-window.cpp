@@ -342,3 +342,8 @@ void SplashWindow::on_preferences_clicked()
       dialog.run();
     }
 }
+    
+void SplashWindow::open_new_game_dialog()
+{
+  load_scenario_button->clicked();
+}
