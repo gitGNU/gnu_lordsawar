@@ -1,3 +1,8 @@
+2010-04-10  Ben Asselstine  <benasselstine@gmail.com>
+
+	* changed the "new game" menuitem in the game window to bring up the
+	new game dialog in the splash window.
+
 2010-04-09  Ben Asselstine  <benasselstine@gmail.com>
 
 	* fixed bug in stack editor of scenario editor that made armies with
