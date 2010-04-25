@@ -57,7 +57,7 @@ namespace
 void GamePreferencesDialog::init(std::string filename)
 {
   d_filename = filename;
-  bool broken;
+  bool broken = false;
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/game-preferences-dialog.ui");
 

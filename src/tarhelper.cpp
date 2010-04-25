@@ -10,6 +10,7 @@
 Tar_Helper::Tar_Helper(std::string file, std::ios::openmode mode, bool &broken)
 {
   t = NULL;
+  broken = false;
   if (is_tarfile (file) == false)
     {
       broken = true;
@@ -196,7 +197,7 @@ bool Tar_Helper::is_tarfile (std::string file)
 {
   char *filename = strdup(file.c_str());
 
-  FILE *f = fopen (filename, "r");
+  FILE *f = fopen (filename, "rb");
   free(filename);
   if (f == NULL)
     return false;
@@ -204,11 +205,11 @@ bool Tar_Helper::is_tarfile (std::string file)
   struct tar_header header;
   memset (&header, 0, sizeof (header));
   size_t bytesread = fread (&header, sizeof (header), 1, f);
-  if (bytesread != sizeof (header))
+  if (bytesread != 1)
     retval = false;
   else
     {
-      if (strcmp(header.magic, "ustar") != 0)
+      if (strcmp(header.magic, "ustar  ") != 0)
         retval = false;
     }
   fclose (f);
