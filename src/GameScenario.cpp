@@ -93,17 +93,20 @@ GameScenario::GameScenario(string savegame, bool& broken)
   :d_turnmode(true), d_playmode(GameScenario::HOTSEAT), 
     inhibit_autosave_removal(false)
 {
-  Tar_Helper t(savegame, std::ios::in);
-  loadArmysets(&t);
-  loadTilesets(&t);
-  loadCitysets(&t);
-  loadShieldsets(&t);
-  std::string filename = t.getFirstFile(broken);
-  XML_Helper helper(filename, std::ios::in, Configuration::s_zipfiles);
-  broken = loadWithHelper(helper);
-  File::erase(filename);
-  helper.close();
-  t.Close();
+  Tar_Helper t(savegame, std::ios::in, broken);
+  if (broken == false)
+    {
+      loadArmysets(&t);
+      loadTilesets(&t);
+      loadCitysets(&t);
+      loadShieldsets(&t);
+      std::string filename = t.getFirstFile(broken);
+      XML_Helper helper(filename, std::ios::in, Configuration::s_zipfiles);
+      broken = loadWithHelper(helper);
+      File::erase(filename);
+      helper.close();
+      t.Close();
+    }
 }
 
 bool GameScenario::loadArmysets(Tar_Helper *t)
@@ -650,7 +653,11 @@ bool GameScenario::saveGame(string filename, string extension) const
   if (retval == false)
     return false;
 
-  Tar_Helper t(goodfilename, std::ios::out);
+  bool broken = false;
+  Tar_Helper t(goodfilename, std::ios::out, broken);
+  if (broken == true)
+    return false;
+
   t.saveFile(tmpfile, File::get_basename(goodfilename, true));
   File::erase(tmpfile);
   std::list<std::string> files;
@@ -1103,7 +1110,9 @@ class ParamLoader
 {
 public:
     ParamLoader(std::string filename, bool &broken) {
-      Tar_Helper t(filename, std::ios::in);
+      Tar_Helper t(filename, std::ios::in, broken);
+      if (broken)
+        return;
       std::string tmpfile = t.getFirstFile(broken);
       XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
       helper.registerTag(GameMap::d_tag, 
@@ -1219,9 +1228,11 @@ GameParameters GameScenario::loadGameParameters(std::string filename, bool &brok
 class PlayModeLoader
 {
 public:
-    PlayModeLoader(std::string filename, bool broken) {
+    PlayModeLoader(std::string filename, bool &broken) {
       play_mode = GameScenario::HOTSEAT;
-      Tar_Helper t(filename, std::ios::in);
+      Tar_Helper t(filename, std::ios::in, broken);
+      if (broken)
+        return;
       std::string file = File::get_basename(filename, true);
       std::string tmpfile = t.getFirstFile(broken);
       XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
@@ -1250,6 +1261,8 @@ public:
 GameScenario::PlayMode GameScenario::loadPlayMode(std::string filename, bool &broken)
 {
   PlayModeLoader loader(filename, broken);
+  if (broken)
+    return HOTSEAT;
   return loader.play_mode;
 }
 
@@ -1258,7 +1271,9 @@ class DetailsLoader
 public:
     DetailsLoader(std::string filename, bool &broken) {
       player_count = 0; city_count = 0; name = ""; comment = "";
-      Tar_Helper t(filename, std::ios::in);
+      Tar_Helper t(filename, std::ios::in, broken);
+      if (broken)
+        return;
       std::string tmpfile = t.getFirstFile(broken);
       XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
       helper.registerTag(GameScenario::d_tag, 

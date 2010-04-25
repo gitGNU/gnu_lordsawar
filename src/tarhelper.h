@@ -7,7 +7,7 @@ class Tar_Helper
 public:
 
     //! Constructor
-    Tar_Helper(std::string file, std::ios::openmode mode);
+    Tar_Helper(std::string file, std::ios::openmode mode, bool &broken);
 
     //! Destructor
     ~Tar_Helper();
@@ -23,6 +23,8 @@ public:
     std::list<std::string> getFilenames();
 
     void Close();
+
+    static bool is_tarfile (std::string file);
 private:
 
     // DATA

@@ -7,8 +7,14 @@
 #include "File.h"
 #include "ucompose.hpp"
 
-Tar_Helper::Tar_Helper(std::string file, std::ios::openmode mode)
+Tar_Helper::Tar_Helper(std::string file, std::ios::openmode mode, bool &broken)
 {
+  t = NULL;
+  if (is_tarfile (file) == false)
+    {
+      broken = true;
+      return;
+    }
   int m;
   int perms = 0;
   openmode = mode;
@@ -25,8 +31,12 @@ Tar_Helper::Tar_Helper(std::string file, std::ios::openmode mode)
   char *f = strdup(file.c_str());
   int retval = tar_open (&t, f, NULL, m, perms, TAR_GNU);
   free(f);
-  if (retval == -1)
-    t = NULL;
+  if (retval < 0)
+    {
+      t = NULL;
+      broken = true;
+      return;
+    }
       
   if (mode & std::ios::in)
     {
@@ -182,3 +192,25 @@ Tar_Helper::~Tar_Helper()
     Close();
 }
 
+bool Tar_Helper::is_tarfile (std::string file)
+{
+  char *filename = strdup(file.c_str());
+
+  FILE *f = fopen (filename, "r");
+  free(filename);
+  if (f == NULL)
+    return false;
+  bool retval = true;
+  struct tar_header header;
+  memset (&header, 0, sizeof (header));
+  size_t bytesread = fread (&header, sizeof (header), 1, f);
+  if (bytesread != sizeof (header))
+    retval = false;
+  else
+    {
+      if (strcmp(header.magic, "ustar") != 0)
+        retval = false;
+    }
+  fclose (f);
+  return retval;
+}
