@@ -1,3 +1,8 @@
+2010-04-25  Ben Asselstine  <benasselstine@gmail.com>
+
+	* now checking for tarfileness before opening a saved game file.
+	fixes bug #29662.
+
 2010-04-10  Ben Asselstine  <benasselstine@gmail.com>
 
 	* changed the "new game" menuitem in the game window to bring up the
