@@ -66,7 +66,7 @@ The entire realm is holding its breath -- war is coming, and the citizens know w
 </para>
 
 	<para>
-Several factions will vie for total control of the realm.  Talented generals will be needed to lead forces against the enemy.  Plans will be made, and lands will be conquered.  Heroes will emerge to fight on behalf of their general.  Large seige engines will be constructed and rolled to distant cities.  Great ships of war will take to the seas.   Infantry units will be sent to the front line to face the enemy in battle.
+Several factions will vie for total control of the realm.  Talented generals will be needed to lead forces against the enemy.  Plans will be made, and lands will be conquered.  Heroes will emerge to fight on behalf of their general.  Large siege engines will be constructed and rolled to distant cities.  Great ships of war will take to the seas.   Infantry units will be sent to the front line to face the enemy in battle.
 	</para>
 
 	<para>
@@ -157,7 +157,7 @@ A Ruin is a place a Hero can go to risk life for valuable rewards.
 <listitem>
 G - Hills
 <para>
-Some army units can move switfly through hills, although most cannot.
+Some army units can move swiftly through hills, although most cannot.
 </para>
 </listitem>
 <listitem>
@@ -423,7 +423,7 @@ Clicking this button causes the player to end her turn.  This means that the pla
 </screenshot>
 </figure>
 <para>
-Clicking these buttons causes the stack to move in the given direction.  These buttons are tied to the keypad; pressing keys on the keypad activates these buttons.  Often it is preferrable to move stacks by clicking on the map instead of using these movement buttons.
+Clicking these buttons causes the stack to move in the given direction.  These buttons are tied to the keypad; pressing keys on the keypad activates these buttons.  Often it is preferable to move stacks by clicking on the map instead of using these movement buttons.
 </para>
 </listitem>
 </itemizedlist>
@@ -572,7 +572,7 @@ When the pointer looks like a hand:
 </mediaobject>
 </screenshot>
 </figure>
-you can drag the map.  When you have a stack selected, you can hold down the Shift key on the keyabord to turn the mouse pointer back into a hand.
+you can drag the map.  When you have a stack selected, you can hold down the Shift key on the keyboard to turn the mouse pointer back into a hand.
 </para>
 </listitem>
 </itemizedlist>
@@ -851,7 +851,7 @@ Don't take the city; destroy it instead.  This will make the city uninhabitable 
 The easiest cities to conquer are the ones that aren't defended at all.  The player can win the city with the weakest army unit.
 </para>
 <para>
-Neutral cities are typically the next easiest to conquer; they are the unowned cities on the map.  Neutral army units never stray from their castle; they never come to the aid of another neutral city nearby.  Athough neutral cities can be active in that they produce army units after an attempt to attack the city fails (this is a game option that can be turned on).
+Neutral cities are typically the next easiest to conquer; they are the unowned cities on the map.  Neutral army units never stray from their castle; they never come to the aid of another neutral city nearby.  Although neutral cities can be active in that they produce army units after an attempt to attack the city fails (this is a game option that can be turned on).
 </para>
 </sect2>
 <sect2 id="lordsawar-cities-buying-production">
@@ -950,13 +950,13 @@ Battles usually happen when attempting to capture a city, although it can also h
 <sect2 id="lordsawar-entering-combat">
 	<title>Entering combat</title> 
 <para>
-The player initiates combat by moving a stack to a tile immediately adjacent to a foreign city or a stack, and then attemping to move the stack onto the foreign city or stack.  The cursor will change from a pair of walking feet, into a sword or into a heart if the diplomacy game option is turned on, and the foreign stack or city is a friend).  More information about diplomacy can be found elsewhere in this manual.
+The player initiates combat by moving a stack to a tile immediately adjacent to a foreign city or a stack, and then attempting to move the stack onto the foreign city or stack.  The cursor will change from a pair of walking feet, into a sword or into a heart if the diplomacy game option is turned on, and the foreign stack or city is a friend).  More information about diplomacy can be found elsewhere in this manual.
 </para>
 <para>
 When attacking a city, the player needs to attack one of the four corners of the city; it doesn't make a difference if that corner contains an enemy stack or not.  All of the army units in the city will fight as a single force against the attacking stack.  When an army unit attacks another stack from a city, it only attacks with the other army units in it's stack, and not that of the entire city.
 </para>
 <para>
-There is a military advisor that can help the player decide if a given combat should be entered into or not.  After the stack has moved adjacent to it's target, and the cursor icon is a sword (or a heart), press the shift key; the cursor will change to a question mark.  When the player left-clicks when the question mark is being shown, the military advisor will prognosticate on the outcome.  Beware that the military advisor doesn't see the future, and is offfering advice that the player can choose to accept or ignore.
+There is a military advisor that can help the player decide if a given combat should be entered into or not.  After the stack has moved adjacent to it's target, and the cursor icon is a sword (or a heart), press the shift key; the cursor will change to a question mark.  When the player left-clicks when the question mark is being shown, the military advisor will prognosticate on the outcome.  Beware that the military advisor doesn't see the future, and is offering advice that the player can choose to accept or ignore.
 The military advisor is a game option that has to be turned on when the game is created to be available in the game.
 </para>
 </sect2>
@@ -1053,13 +1053,13 @@ When the army unit is fighting, all of the army units it is fighting with have o
 <listitem>
 <para>cancel hero.</para>
 <para>
-This army unit nullifies any fighting bonuses an ememy Hero brings to the battle.
+This army unit nullifies any fighting bonuses an enemy Hero brings to the battle.
 </para>
 </listitem>
 <listitem>
 <para>cancel non-hero.</para>
 <para>
-This army unit nullifies any fighting bonuses an ememy army unit (except for a hero) brings to the battle.
+This army unit nullifies any fighting bonuses an enemy army unit (except for a hero) brings to the battle.
 </para>
 </listitem>
 </itemizedlist>
@@ -1101,10 +1101,10 @@ The yellow player commits to the battle by left-clicking on the red army unit wi
 </mediaobject>
 </screenshot>
 </figure>
-Here is the fight screen.  The attacker is always depicted on the bottom of the fight window, while the defender is always shown on the top.  The shields of both players is shown, along with the army units fighting.  The progress bar indicates how many hitpoints each of the army units have left.  Every army unit has precisely two hitpoints, and strength is used as the main determinator if the aunit is hit or not.  In this battle the Orcish Mob is unscathed as it dispatches the single unit of Light Infantry.
+Here is the fight screen.  The attacker is always depicted on the bottom of the fight window, while the defender is always shown on the top.  The shields of both players is shown, along with the army units fighting.  The progress bar indicates how many hitpoints each of the army units have left.  Every army unit has precisely two hitpoints, and strength is used as the main determinator if the unit is hit or not.  In this battle the Orcish Mob is unscathed as it dispatches the single unit of Light Infantry.
 </para>
 <para>
-The battle finishes, and the yellow unit of Orcish Mob succeds in killing the unit of red's Light infantry.  The red player loses the unit of Light Infantry:
+The battle finishes, and the yellow unit of Orcish Mob succeeds in killing the unit of red's Light infantry.  The red player loses the unit of Light Infantry:
 <figure id="fought-one-on-one-fig">
 <screenshot>
 <mediaobject>
@@ -1256,7 +1256,7 @@ There is a game option that controls how often a hero can obtain a quest from a 
 <sect1 id="lordsawar-movement"> 
 	<title>Movement</title> 
 <para>
-Every army unit has a number of movement points that get replenished every turn.  These army units are arranged into stacks, and they move over various kinds of terrain on the map.  The army unit in the stack that has the lowest number of movement points governs how far the stack can move.  Army units can have terrain bonsues that help the stack move more effectively over a specific kind of terrain.
+Every army unit has a number of movement points that get replenished every turn.  These army units are arranged into stacks, and they move over various kinds of terrain on the map.  The army unit in the stack that has the lowest number of movement points governs how far the stack can move.  Army units can have terrain bonuses that help the stack move more effectively over a specific kind of terrain.
 </para>
 <sect2 id="lordsawar-movement-over-land">
 	<title>Traveling over land</title> 
@@ -1312,7 +1312,7 @@ There is a resting bonus that gives a stack more movement points if it didn't us
 <sect1 id="lordsawar-diplomacy"> 
 	<title>Diplomacy</title> 
 <sect2 id="lordsawar-diplomacy-advantages">
-	<title>Using Dimplomacy to your advantage</title> 
+	<title>Using Diplomacy to your advantage</title> 
 </sect2>
 <sect2 id="lordsawar-diplomacy-explaining-the-report">
 	<title>Explanation of the Diplomatic Report</title> 
@@ -1732,7 +1732,7 @@ The number keys on the keypad will move the selected stack in the given directio
 <sect2 id="lordsawar-hot-seat">
 	<title>Hot-seat Play</title> 
 <para>
-Playing a game in hostseat mode is the traditional way to play &app;.  The idea here is that there are two or more human players, and when it's their turn they are said to be in the "hot-seat"; they get to move their stacks.  The other players are usually not allowed to watch the player in the hot-seat make their moves, although it certainly can be fun to do so.  When the player is finished the turn, the "end-turn" button is pressed and the next player is notified that it is now their turn.
+Playing a game in hotseat mode is the traditional way to play &app;.  The idea here is that there are two or more human players, and when it's their turn they are said to be in the "hot-seat"; they get to move their stacks.  The other players are usually not allowed to watch the player in the hot-seat make their moves, although it certainly can be fun to do so.  When the player is finished the turn, the "end-turn" button is pressed and the next player is notified that it is now their turn.
 </para>
 <para>
 A hotseat game begins with all players agreeing on the scenario options, and then conducting their turns in order until there's a winner.
