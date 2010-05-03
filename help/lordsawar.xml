@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "
-http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
   <!ENTITY legal SYSTEM "legal.xml">
 <!ENTITY app "<application>LordsAWar!</application>">
 <!ENTITY appversion "0.1.9">
@@ -19,7 +18,6 @@ http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 	<publisher> 
 		<publishername>Ben Asselstine</publishername> 
 	</publisher> 
-	&legal; 
 	<authorgroup> 
 		<author> 
 			<firstname>Ben</firstname> 
@@ -34,10 +32,11 @@ http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
 	</authorgroup> 
 	<releaseinfo> This manual describes version &appversion; of &app; and is licensed under the terms of the GNU Free Documentation License version 1.2.
 	</releaseinfo> 
+
 	<legalnotice id="feedback"> 
 		<title>Feedback Information</title> 
 		<para>
-			To report a bug or make a suggestion regarding this application or this documentation, see the <ulink type="help" url="ghelp:gnome-feedback">GNOME Feedback Page</ulink>.
+                        To report a bug or make a suggestion regarding this application or this documentation, see the <ulink type="help" url="http://sv.gnu.org/p/lordsawar">LordsAWar! Project Page</ulink>.
 		</para>
 	</legalnotice>
 </articleinfo>
@@ -1812,5 +1811,9 @@ Players can choose to leave this lobby window can stay open for the duration of 
 </para>
 </para>
 </sect2>
+</sect1>
+<sect1 id="copying-this-manual"> 
+        <title>Copying This Manual</title> 
+        &legal;
 </sect1>
 </article>
