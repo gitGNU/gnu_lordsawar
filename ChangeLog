@@ -1,3 +1,7 @@
+2010-05-03  Ben Asselstine  <benasselstine@hushmail.com>
+
+	* fixed typos in the manual.  reported by Mikko V. Viinamäki.
+
 2010-04-25  Ben Asselstine  <benasselstine@gmail.com>
 
 	* now checking for tarfileness before opening a saved game file.
