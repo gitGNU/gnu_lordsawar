@@ -43,6 +43,7 @@
 #include "ai_dummy.h"
 #include "network_player.h"
 #include "GameMap.h"
+#include "shieldset.h"
 
 using namespace std;
 
@@ -909,4 +910,24 @@ Player *Playerlist::getWinningPlayer() const
         }
     }
   return winning_player;
+}
+
+bool Playerlist::hasArmyset(guint32 id) const
+{
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      Player *p = (*it);
+      if (p->getArmyset() == id)
+        return true;
+    }
+  return false;
+}
+
+void Playerlist::setNewColours(Shieldset *shieldset)
+{
+  for (iterator it = begin(); it != end(); it++)
+    {
+      Player *p = (*it);
+      p->setColor(shieldset->getColor(p->getId()));
+    }
 }

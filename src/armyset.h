@@ -262,6 +262,8 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	const ArmyProto * getRandomRuinKeeper() const;
 	const ArmyProto *getRandomAwardableAlly() const;
 
+        //! Load the armyset again.
+        void reload();
     private:
 
         //! Callback function for the army tag (see XML_Helper)

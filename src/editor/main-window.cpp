@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -86,6 +86,10 @@
 #include "timed-message-dialog.h"
 #include "backpack-editor-dialog.h"
 #include "MapBackpack.h"
+#include "shieldset-window.h"
+#include "cityset-window.h"
+#include "armyset-window.h"
+#include "tileset-window.h"
 
 
 MainWindow::MainWindow(std::string load_filename)
@@ -223,6 +227,18 @@ MainWindow::MainWindow(std::string load_filename)
     xml->get_widget("edit_map_info_menuitem", edit_map_info_menuitem);
     edit_map_info_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &MainWindow::on_edit_map_info_activated));
+    xml->get_widget("edit_shieldset_menuitem", edit_shieldset_menuitem);
+    edit_shieldset_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_edit_shieldset_activated));
+    xml->get_widget("edit_armyset_menuitem", edit_armyset_menuitem);
+    edit_armyset_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_edit_armyset_activated));
+    xml->get_widget("edit_cityset_menuitem", edit_cityset_menuitem);
+    edit_cityset_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_edit_cityset_activated));
+    xml->get_widget("edit_tileset_menuitem", edit_tileset_menuitem);
+    edit_tileset_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_edit_tileset_activated));
     
     xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
     fullscreen_menuitem->signal_activate().connect
@@ -971,6 +987,112 @@ void MainWindow::on_edit_map_info_activated()
       needs_saving = true;
 }
 
+void MainWindow::on_edit_shieldset_activated()
+{
+  Gtk::Main *kit = Gtk::Main::instance();;
+  ShieldSetWindow* shieldset_window;
+  GameMap *gm = GameMap::getInstance();
+  std::string file = gm->getShieldset()->getConfigurationFile();
+  shieldset_window = new ShieldSetWindow (file);
+  shieldset_window->shieldset_saved.connect
+    (sigc::mem_fun(this, &MainWindow::on_shieldset_saved));
+  kit->run(shieldset_window->get_window());
+  delete shieldset_window;
+}
+
+void MainWindow::on_shieldset_saved(guint32 id)
+{
+  //did we save the active shieldset?
+  Shieldset *shieldset = GameMap::getInstance()->getShieldset();
+  if (id == shieldset->getId())
+    {
+      GraphicsCache::getInstance()->reset();
+      GameMap::getInstance()->reloadShieldset();
+      fill_players();
+      bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
+      redraw();
+      needs_saving = true;
+    }
+}
+
+void MainWindow::on_edit_armyset_activated()
+{
+  Gtk::Main *kit = Gtk::Main::instance();;
+  guint32 army_set_id = Playerlist::getActiveplayer()->getArmyset();
+  Armyset *armyset = Armysetlist::getInstance()->getArmyset(army_set_id);
+  std::string file = armyset->getConfigurationFile();
+  ArmySetWindow* armyset_window = new ArmySetWindow (file);
+  armyset_window->armyset_saved.connect
+    (sigc::mem_fun(this, &MainWindow::on_armyset_saved));
+  kit->run(armyset_window->get_window());
+  delete armyset_window;
+}
+
+void MainWindow::on_armyset_saved(guint32 id)
+{
+  //did we save any of the active armysets?
+  if (Playerlist::getInstance()->hasArmyset(id) == true)
+    {
+      GraphicsCache::getInstance()->reset();
+      Armyset *armyset = Armysetlist::getInstance()->getArmyset(id);
+      GameMap::getInstance()->reloadArmyset(armyset);
+      bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
+      redraw();
+      needs_saving = true;
+    }
+}
+
+void MainWindow::on_edit_cityset_activated()
+{
+  Gtk::Main *kit = Gtk::Main::instance();;
+  GameMap *gm = GameMap::getInstance();
+  std::string file = gm->getCityset()->getConfigurationFile();
+  CitySetWindow* cityset_window = new CitySetWindow (file);
+  cityset_window->cityset_saved.connect
+    (sigc::mem_fun(this, &MainWindow::on_cityset_saved));
+  kit->run(cityset_window->get_window());
+  delete cityset_window;
+}
+
+void MainWindow::on_cityset_saved(guint32 id)
+{
+  //did we save the active cityset?
+  if (id == GameMap::getInstance()->getCityset()->getId())
+    {
+      GraphicsCache::getInstance()->reset();
+      GameMap::getInstance()->reloadCityset();
+      bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
+      redraw();
+      needs_saving = true;
+    }
+}
+
+void MainWindow::on_edit_tileset_activated()
+{
+  Gtk::Main *kit = Gtk::Main::instance();;
+  GameMap *gm = GameMap::getInstance();
+  std::string file = gm->getTileset()->getConfigurationFile();
+  TileSetWindow* tileset_window = new TileSetWindow (file);
+  tileset_window->tileset_saved.connect
+    (sigc::mem_fun(this, &MainWindow::on_tileset_saved));
+  kit->run(tileset_window->get_window());
+  delete tileset_window;
+}
+
+void MainWindow::on_tileset_saved(guint32 id)
+{
+  //did we save the active tileset?
+  if (id == GameMap::getInstance()->getTileset()->getId())
+    {
+      GraphicsCache::getInstance()->reset();
+      GameMap::getInstance()->reloadTileset();
+      bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
+      redraw();
+      needs_saving = true;
+    }
+}
+
+
 void MainWindow::on_fullscreen_activated()
 {
     if (fullscreen_menuitem->get_active())
@@ -978,12 +1100,13 @@ void MainWindow::on_fullscreen_activated()
     else
 	window->unfullscreen();
 }
-			 
+
 void MainWindow::on_tile_graphics_toggled()
 {
   bigmap->toggleViewStylesOrTypes();
   bigmap->draw(Playerlist::getViewingplayer());
 }
+
 void MainWindow::on_grid_toggled()
 {
   bigmap->toggle_grid();
@@ -1618,13 +1741,13 @@ void MainWindow::on_switch_sets_activated()
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       needs_saving = true;
+      GraphicsCache::getInstance()->reset();
       bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
       redraw();
       fill_players();
     }
 }
-    
-	
+
 void MainWindow::on_player_toggled(PlayerItem item)
 {
   Player *p = Playerlist::getInstance()->getPlayer(item.player_id);

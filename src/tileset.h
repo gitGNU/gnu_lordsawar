@@ -276,6 +276,8 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	//! Load the images assoicated with this tileset.
 	void instantiateImages();
 
+        //! Load the tileset again.
+        void reload();
 
 	//Methods that operate on class data and do not modify the class data.
 

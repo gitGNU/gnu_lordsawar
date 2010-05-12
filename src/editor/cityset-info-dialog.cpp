@@ -31,7 +31,7 @@
 #include "File.h"
 
 
-CitySetInfoDialog::CitySetInfoDialog(Cityset *cityset, bool readonly)
+CitySetInfoDialog::CitySetInfoDialog(Cityset *cityset, std::string dir, bool readonly)
 {
   d_cityset = cityset;
   d_readonly = readonly;
@@ -44,6 +44,7 @@ CitySetInfoDialog::CitySetInfoDialog(Cityset *cityset, bool readonly)
 
     xml->get_widget("accept_button", accept_button);
     xml->get_widget("status_label", status_label);
+    xml->get_widget("dir_label", dir_label);
 
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(cityset->getName());
@@ -68,39 +69,17 @@ CitySetInfoDialog::CitySetInfoDialog(Cityset *cityset, bool readonly)
     xml->get_widget("description_textview", description_textview);
     description_textview->get_buffer()->set_text(cityset->getInfo());
 
+    dir_label->set_text (dir);
     if (readonly)
       subdir_entry->set_sensitive(false);
-}
-
-//remove spaces and lowercase the text
-char *sanify(const char *string)
-{
-  char *result = NULL;
-  size_t resultlen = 1;
-  size_t len = strlen(string);
-  result = (char*) malloc (resultlen);
-  result[0] = '\0';
-  for (unsigned int i = 0; i < len; i++)
-    {
-      int letter = tolower(string[i]);
-      if (strchr("abcdefghijklmnopqrstuvwxyz0123456789-", letter) == NULL)
-	continue;
-
-      resultlen++;
-      result = (char *) realloc (result, resultlen);
-      if (result)
-	{
-	  result[resultlen-2] = char(letter);
-	  result[resultlen-1] = '\0';
-	}
-    }
-  return result;
+    else
+      accept_button->set_sensitive(false);
 }
 
 void CitySetInfoDialog::on_subdir_changed()
 {
   std::string dir = File::getUserCitysetDir() + subdir_entry->get_text();
-  if (File::exists(dir) == true)
+  if (File::exists(dir) == true && subdir_entry->get_text() != "")
     {
       accept_button->set_sensitive(false);
       status_label->set_markup(String::ucompose("<b>%1</b>", 
@@ -111,10 +90,17 @@ void CitySetInfoDialog::on_subdir_changed()
       accept_button->set_sensitive(true);
       status_label->set_markup("");
     }
+  if (subdir_entry->get_text() != "")
+    dir_label->set_text(dir + "/");
+  else
+    {
+      dir_label->set_text(File::getUserCitysetDir() + "<subdir>/");
+      accept_button->set_sensitive(false);
+    }
 }
 void CitySetInfoDialog::on_name_changed()
 {
-  char *s = sanify(name_entry->get_text().c_str());
+  char *s = File::sanify(name_entry->get_text().c_str());
   subdir_entry->set_text(s);
   free (s);
 }

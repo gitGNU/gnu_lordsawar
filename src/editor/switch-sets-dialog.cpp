@@ -46,6 +46,7 @@ SwitchSetsDialog::SwitchSetsDialog()
 	= Gtk::Builder::create_from_file(get_glade_path() + "/switch-sets-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
     xml->get_widget("accept_button", accept_button);
 
@@ -183,7 +184,7 @@ void SwitchSetsDialog::on_tile_size_changed()
       //only append it if the tile widths are identical.
       Cityset *cityset = 
 	cl->getCityset(cl->getCitysetDir(*i, get_active_tile_size()));
-      if (active->tileWidthsEqual(cityset) == true)
+      //if (active->tileWidthsEqual(cityset) == true)
 	city_theme_combobox->append_text(Glib::filename_to_utf8(*i));
       counter++;
     }

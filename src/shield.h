@@ -41,8 +41,8 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 	static std::string d_tag; 
 
 	//! The notional player that the Shield goes with.
-	enum Colour {WHITE = 0, GREEN = 1, YELLOW = 2, LIGHT_BLUE = 3, RED = 4,
-	  DARK_BLUE = 5, ORANGE = 6, BLACK = 7, NEUTRAL = 8};
+	enum Colour {WHITE = 0, GREEN = 1, YELLOW = 2, DARK_BLUE = 3, ORANGE = 4,
+	  LIGHT_BLUE = 5, RED = 6, BLACK = 7, NEUTRAL = 8};
 
 	//! Loading constructor.
         /**

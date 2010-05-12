@@ -149,11 +149,12 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	//! Set the direction where the shieldset configuration file resides.
         void setSubDir(std::string dir) {d_subdir = dir;}
 
+        //! Load the shieldset again.
+        void reload();
 
 	// Methods that operate on the class data but do not modify the class.
 
 	bool save(XML_Helper *helper) const;
-
 
 	//! Find the shield of a given size and colour in this Shieldset.
 	/**
@@ -167,7 +168,7 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	 *         If no Shield object could be found that matches the given
 	 *         parameters, NULL is returned.
 	 */
-	ShieldStyle * lookupShieldByTypeAndColour(guint32 type, guint32 colour) const;
+	ShieldStyle* lookupShieldByTypeAndColour(guint32 type, guint32 colour) const;
 
 	//! Get filenames in this shieldset, excepting the configuration file.
 	void getFilenames(std::list<std::string> &filenames) const;

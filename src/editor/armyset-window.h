@@ -40,6 +40,8 @@ class ArmySetWindow: public sigc::trackable
 
     Gtk::Window &get_window() { return *window; }
 
+    sigc::signal<void, guint32> armyset_saved;
+
  private:
     Gtk::Window* window;
     std::string current_save_filename;

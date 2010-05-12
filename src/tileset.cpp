@@ -582,4 +582,20 @@ TileStyle *Tileset::getTileStyle(guint32 id) const
   else
     return (*it).second;
 }
+
+void Tileset::reload()
+{
+  TilesetLoader d(getConfigurationFile());
+  if (d.tileset && d.tileset->validate())
+    {
+      //steal the values from d.tileset and then don't delete it.
+      uninstantiateImages();
+      for (iterator it = begin(); it != end(); it++)
+        delete *it;
+      std::string subdir = d_subdir;
+      *this = *d.tileset;
+      instantiateImages();
+      d_subdir = subdir;
+    }
+}
 //End of file

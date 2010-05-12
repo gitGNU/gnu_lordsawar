@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -72,6 +72,10 @@ class MainWindow: public sigc::trackable
     Gtk::MenuItem *quit_menuitem;
     Gtk::MenuItem *edit_players_menuitem;
     Gtk::MenuItem *edit_map_info_menuitem;
+    Gtk::MenuItem *edit_shieldset_menuitem;
+    Gtk::MenuItem *edit_armyset_menuitem;
+    Gtk::MenuItem *edit_cityset_menuitem;
+    Gtk::MenuItem *edit_tileset_menuitem;
     Gtk::MenuItem *toggle_tile_graphics_menuitem;
     Gtk::MenuItem *toggle_grid_menuitem;
     Gtk::MenuItem *smooth_map_menuitem;
@@ -123,6 +127,14 @@ class MainWindow: public sigc::trackable
     bool quit();
     void on_edit_map_info_activated();
     void on_edit_players_activated();
+    void on_edit_shieldset_activated();
+    void on_shieldset_saved(guint32 id);
+    void on_edit_armyset_activated();
+    void on_armyset_saved(guint32 id);
+    void on_edit_tileset_activated();
+    void on_tileset_saved(guint32 id);
+    void on_edit_cityset_activated();
+    void on_cityset_saved(guint32 id);
     void on_smooth_map_activated();
     void on_smooth_screen_activated();
     void on_switch_sets_activated();

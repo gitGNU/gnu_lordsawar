@@ -73,6 +73,11 @@ class LocationBox : public Immovable
      //! Destructor.
     virtual ~LocationBox();
     
+    // Set Methods
+
+    void setSize(guint32 size) {d_size = size;}
+
+
     // Get Methods
 
     //! Return the size of the location.

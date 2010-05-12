@@ -200,7 +200,7 @@ void ShieldSetWindow::on_new_shieldset_activated()
   std::string name = "";
   int id = Shieldsetlist::getNextAvailableId(0);
   Shieldset *shieldset = new Shieldset(id, name);
-  ShieldSetInfoDialog d(shieldset, false);
+  ShieldSetInfoDialog d(shieldset, File::getUserShieldsetDir() + "<subdir>/", false);
   d.set_parent_window(*window);
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
@@ -276,6 +276,7 @@ void ShieldSetWindow::on_validate_shieldset_activated()
 
   return;
 }
+
 void ShieldSetWindow::on_save_shieldset_activated()
 {
   if (current_save_filename.empty())
@@ -285,11 +286,12 @@ void ShieldSetWindow::on_save_shieldset_activated()
   d_shieldset->save(&helper);
   helper.close();
   needs_saving = false;
+  shieldset_saved.emit(d_shieldset->getId());
 }
 
 void ShieldSetWindow::on_edit_shieldset_info_activated()
 {
-  ShieldSetInfoDialog d(d_shieldset, true);
+  ShieldSetInfoDialog d(d_shieldset, File::get_dirname(current_save_filename), true);
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
@@ -394,6 +396,9 @@ bool ShieldSetWindow::quit()
 	= Gtk::Builder::create_from_file(get_glade_path() + 
 					 "/editor-quit-dialog.ui");
       xml->get_widget("dialog", dialog);
+      Gtk::Button *save_button;
+      xml->get_widget("save_button", save_button);
+      save_button->set_sensitive(File::is_writable(d_shieldset->getConfigurationFile()));
       dialog->set_transient_for(*window);
       int response = dialog->run();
       dialog->hide();

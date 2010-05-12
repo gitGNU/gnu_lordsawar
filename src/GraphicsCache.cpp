@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005, 2006, 2007 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -225,6 +225,7 @@ struct TileCacheItem
   bool has_grid;
   guint32 tileset;
   guint32 cityset;
+  guint32 shieldset;
   PixMask* surface;
 };
 
@@ -664,10 +665,11 @@ PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_
 {
   guint32 tileset = GameMap::getInstance()->getTileset()->getId();
   guint32 cityset = GameMap::getInstance()->getCityset()->getId();
-  return getTilePic(tile_style_id, fog_type_id, has_bag, has_standard, standard_player_id, stack_size, stack_player_id, army_type_id, has_tower, has_ship, building_type, building_subtype, building_tile, building_player_id, tilesize, has_grid, tileset, cityset);
+  guint32 shieldset = GameMap::getInstance()->getShieldset()->getId();
+  return getTilePic(tile_style_id, fog_type_id, has_bag, has_standard, standard_player_id, stack_size, stack_player_id, army_type_id, has_tower, has_ship, building_type, building_subtype, building_tile, building_player_id, tilesize, has_grid, tileset, cityset, shieldset);
 }
 
-PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid, guint32 tileset, guint32 cityset)
+PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid, guint32 tileset, guint32 cityset, guint32 shieldset)
 {
     debug("getting tile pic " << tile_style_id << " " <<
 	  fog_type_id << " " << has_bag << " " << has_standard << " " <<
@@ -675,7 +677,8 @@ PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_
 	  " " << army_type_id << " " << has_tower << " " << has_ship << " " << 
 	  building_type << " " << building_subtype << " " << building_tile.x 
 	  << "," << building_tile.y << " " << building_player_id << " " << 
-	  tilesize << " " << has_grid << " " <<tileset);
+	  tilesize << " " << has_grid << " " <<tileset << " " << cityset <<
+          " " << shieldset);
 
     std::list<TileCacheItem*>::iterator it;
     TileCacheItem* myitem;
@@ -699,6 +702,7 @@ PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_
     item.fog_type_id = fog_type_id;
     item.tileset = tileset;
     item.cityset = cityset;
+    item.shieldset = shieldset;
     TileMap::iterator mit = d_tilemap.find(item);
     if (mit != d_tilemap.end())
       {
@@ -1175,8 +1179,8 @@ PixMask* GraphicsCache::applyMask(PixMask* image, PixMask* mask, Gdk::Color colo
       std::cerr <<"Warning: mask and original image do not match\n";
       return NULL;
     }
-  if (isNeutral)
-    return result;
+  //if (isNeutral)
+    //return result;
   
   Glib::RefPtr<Gdk::Pixbuf> maskbuf = mask->to_pixbuf();
 
@@ -1389,7 +1393,7 @@ void GraphicsCache::checkPictures()
 
 }
 
-void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid, guint32 tileset, guint32 cityset)
+void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid, guint32 tileset, guint32 cityset, guint32 shieldset)
 {
   const Player *player;
   Glib::RefPtr<Gdk::Pixmap> pixmap = surface->get_pixmap();
@@ -1476,7 +1480,7 @@ TileCacheItem* GraphicsCache::addTilePic(TileCacheItem *item)
 	item->building_subtype << " " << item->building_tile.x << 
 	"," << item->building_tile.y << " " << item->building_player_id << 
 	" " << item->tilesize << " " << item->has_grid << " " << item->tileset
-	" " << item->cityset);
+	" " << item->cityset << " " << item->shieldset);
 
   TileCacheItem* myitem = new TileCacheItem();
   *myitem = *item;
@@ -1497,7 +1501,7 @@ TileCacheItem* GraphicsCache::addTilePic(TileCacheItem *item)
 		  myitem->building_type, myitem->building_subtype, 
 		  myitem->building_tile, myitem->building_player_id, 
 		  myitem->tilesize, myitem->has_grid, myitem->tileset,
-		  myitem->cityset);
+		  myitem->cityset, myitem->shieldset);
     }
 
   //now the final preparation steps:
@@ -2746,3 +2750,77 @@ PixMask* GraphicsCache::getMiscPicture(std::string picname, bool alpha)
   return loadImage(File::getMiscFile("/various/" + picname), alpha);
 }
 
+void GraphicsCache::reset()
+{
+
+  while (d_citylist.size())
+    eraseLastCityItem();
+
+  while (d_towerlist.size())
+    eraseLastTowerItem();
+
+  while (d_shiplist.size())
+    eraseLastShipItem();
+
+  while (d_plantedstandardlist.size())
+    eraseLastPlantedStandardItem();
+
+  while (d_newlevellist.size())
+    eraseLastNewLevelItem();
+
+  while (d_templelist.size())
+    eraseLastTempleItem();
+
+  while (d_ruinlist.size())
+    eraseLastRuinItem();
+
+  while (d_diplomacylist.size())
+    eraseLastDiplomacyItem();
+
+  while (d_roadlist.size())
+    eraseLastRoadItem();
+
+  while (d_foglist.size())
+    eraseLastFogItem();
+
+  while (d_bridgelist.size())
+    eraseLastBridgeItem();
+
+  while (d_cursorlist.size())
+    eraseLastCursorItem();
+
+  while (d_flaglist.size())
+    eraseLastFlagItem();
+
+  while (d_selectorlist.size())
+    eraseLastSelectorItem();
+
+  while (d_shieldlist.size())
+    eraseLastShieldItem();
+
+  while (d_prodshieldlist.size())
+    eraseLastProdShieldItem();
+
+  while (d_portlist.size())
+    eraseLastPortItem();
+
+  while (d_signpostlist.size())
+    eraseLastSignpostItem();
+
+  while (d_baglist.size())
+    eraseLastBagItem();
+
+  while (d_explosionlist.size())
+    eraseLastExplosionItem();
+
+  while (d_movebonuslist.size())
+    eraseLastMoveBonusItem();
+
+  while (d_tilelist.size())
+    eraseLastTileItem();
+
+  while (d_armylist.size())
+    eraseLastArmyItem();
+
+  return;
+}

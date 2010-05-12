@@ -35,6 +35,7 @@
 #include "shieldset.h"
 #include "cityset.h"
 #include "stackreflist.h"
+#include "LocationList.h"
 
 class MapGenerator;
 class XML_Helper;
@@ -227,7 +228,12 @@ class GameMap: public sigc::trackable
 	void switchShieldset(Shieldset *shieldset);
 	void switchTileset(Tileset *tileset);
 
-	bool moveBuilding(Vector<int> from, Vector<int> to);
+        void reloadShieldset();
+        void reloadTileset();
+        void reloadCityset();
+        void reloadArmyset(Armyset *armyset);
+
+	bool moveBuilding(Vector<int> from, Vector<int> to, guint32 new_width = 0);
 	bool canPutBuilding(Maptile::Building bldg, guint32 size, Vector<int> to, bool making_islands = true);
 	bool canPutStack(guint32 size, Player *p, Vector<int> to);
 	bool moveStack(Stack *stack, Vector<int> to);
@@ -235,6 +241,7 @@ class GameMap: public sigc::trackable
 	void moveBackpack(Vector<int> from, Vector<int> to);
 	guint32 getBuildingSize(Vector<int> tile);
 	Maptile::Building getBuilding(Vector<int> tile);
+        guint32 countBuildings(Maptile::Building building_type);
 	Tile::Type getTerrainType(Vector<int> tile);
 	void setBuilding(Vector<int> tile, Maptile::Building building);
 
@@ -254,6 +261,7 @@ class GameMap: public sigc::trackable
 	bool removePort(Vector<int> pos);
 	bool putStack(Stack *s);
 	void removeStack(Stack *s);
+        bool removeLocation (Vector<int> pos);
 
 	Location *getLocation(Vector<int> pos);
 
@@ -269,6 +277,7 @@ class GameMap: public sigc::trackable
         static int calculateTilesPerOverviewMapTile(int width, int height);
         static int calculateTilesPerOverviewMapTile();
 
+        Vector<int> findNearestAreaForBuilding(Maptile::Building building_type, Vector<int> pos, guint32 width);
     protected:
         //! Create the map with the given tileset
         GameMap(std::string TilesetName, std::string ShieldsetName,
@@ -297,15 +306,21 @@ class GameMap: public sigc::trackable
 	bool are_those_tiles_similar(Tile::Type outer_tile,Tile::Type inner_tile, bool checking_loneliness);
 	Vector<int> findNearestObjectInDir(Vector<int> pos, Vector<int> dir);
 	void putBuilding(LocationBox *b, Maptile::Building building);
+        void clearBuilding(Vector<int> pos, guint32 width);
 	void removeBuilding(LocationBox *b);
 
 	void updateShips(Vector<int> pos);
 
 
+        static void changeFootprintToSmallerCityset(Location *location, Maptile::Building building_type, guint32 old_tile_width);
+
+        static void relocateLocation(Location *location, Maptile::Building building_type, guint32 tile_width);
+
 	static std::list<Stack*> getNearbyStacks(Vector<int> pos, int dist, bool friendly);
 
 	static bool offmap(int x, int y);
 
+        //void resizeLocations(LocationList<Location*> *list, Maptile::Building building_type, guint32 tile_width);
         // Data
         static GameMap* s_instance;
         static int s_width;

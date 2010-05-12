@@ -21,30 +21,28 @@ MAINTAINERCLEANFILES= Makefile.in
 if WANT_EDITOR
 bin_PROGRAMS = lordsawar-editor lordsawar-army-editor lordsawar-tile-editor lordsawar-city-editor lordsawar-shield-editor
 
-lordsawar_army_editor_SOURCES = \
-	armyset-main.cpp \
+noinst_LTLIBRARIES = libshieldsetwindow.la libarmysetwindow.la libcitysetwindow.la libtilesetwindow.la
+
+libshieldsetwindow_la_SOURCES = \
+	shieldset-window.cpp shieldset-window.h \
+	shieldset-info-dialog.cpp shieldset-info-dialog.h \
+	masked-image-editor-dialog.cpp masked-image-editor-dialog.h \
+	glade-helpers.h
+
+libarmysetwindow_la_SOURCES = \
 	armyset-window.cpp armyset-window.h  \
 	armyset-info-dialog.cpp armyset-info-dialog.h \
 	masked-image-editor-dialog.cpp masked-image-editor-dialog.h \
 	image-editor-dialog.cpp image-editor-dialog.h \
 	glade-helpers.h
 
-lordsawar_city_editor_SOURCES = \
-	cityset-main.cpp \
+libcitysetwindow_la_SOURCES = \
 	cityset-window.cpp cityset-window.h  \
 	cityset-info-dialog.cpp cityset-info-dialog.h \
 	image-editor-dialog.cpp image-editor-dialog.h \
 	glade-helpers.h
 
-lordsawar_shield_editor_SOURCES = \
-	shieldset-main.cpp \
-	shieldset-window.cpp shieldset-window.h  \
-	shieldset-info-dialog.cpp shieldset-info-dialog.h \
-	masked-image-editor-dialog.cpp masked-image-editor-dialog.h \
-	glade-helpers.h
-
-lordsawar_tile_editor_SOURCES = \
-	tileset-main.cpp \
+libtilesetwindow_la_SOURCES = \
 	tileset-window.cpp tileset-window.h \
 	tileset-info-dialog.cpp tileset-info-dialog.h \
 	tile-preview-dialog.cpp tile-preview-dialog.h \
@@ -55,6 +53,18 @@ lordsawar_tile_editor_SOURCES = \
 	tileset-explosion-picture-editor-dialog.h \
 	image-editor-dialog.cpp image-editor-dialog.h \
 	glade-helpers.h
+
+lordsawar_army_editor_SOURCES = \
+	armyset-main.cpp 
+
+lordsawar_city_editor_SOURCES = \
+	cityset-main.cpp
+
+lordsawar_shield_editor_SOURCES = \
+	shieldset-main.cpp
+
+lordsawar_tile_editor_SOURCES = \
+	tileset-main.cpp
 
 lordsawar_editor_SOURCES = \
 	main.cpp \
@@ -90,32 +100,44 @@ endif
 lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
                          $(top_builddir)/src/liblordsawar.la \
+			 libshieldsetwindow.la \
+			 libarmysetwindow.la \
+			 libcitysetwindow.la \
+			 libtilesetwindow.la \
                          $(GTKMM_LIBS) \
                          $(SDL_LIBS) -ltar -lz \
                          @LIBINTL@ -L$(top_builddir)/src
 
-lordsawar_shield_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
+lordsawar_shield_editor_LDADD =  \
+			 libshieldsetwindow.la \
+                         $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
                          $(top_builddir)/src/liblordsawar.la \
                          $(SDL_LIBS) -ltar -lz \
                          $(GTKMM_LIBS) \
                          @LIBINTL@ -L$(top_builddir)/src
 
-lordsawar_city_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
+lordsawar_city_editor_LDADD = \
+			 libcitysetwindow.la \
+                         $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
                          $(top_builddir)/src/liblordsawar.la \
                          $(SDL_LIBS) -ltar -lz \
                          $(GTKMM_LIBS) \
                          @LIBINTL@ -L$(top_builddir)/src
 
-lordsawar_army_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
+lordsawar_army_editor_LDADD = \
+			 libarmysetwindow.la \
+                         $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
                          $(top_builddir)/src/liblordsawar.la \
                          $(SDL_LIBS) -ltar -lz \
                          $(GTKMM_LIBS) \
                          @LIBINTL@ -L$(top_builddir)/src
 
-lordsawar_tile_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
+lordsawar_tile_editor_LDADD = \
+			 libtilesetwindow.la \
+			 $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
                          $(top_builddir)/src/liblordsawar.la \
                          $(SDL_LIBS) -ltar -lz \

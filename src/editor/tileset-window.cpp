@@ -277,7 +277,13 @@ TileSetWindow::update_tileset_menuitems()
     }
   else
     {
-      save_tileset_menuitem->set_sensitive(true);
+      std::string file = d_tileset->getConfigurationFile();
+      if (File::exists(file) == false)
+	save_tileset_menuitem->set_sensitive(true);
+      else if (File::is_writable(file) == false)
+	save_tileset_menuitem->set_sensitive(false);
+      else
+	save_tileset_menuitem->set_sensitive(true);
       army_unit_selector_menuitem->set_sensitive(true);
       edit_tileset_info_menuitem->set_sensitive(true);
       explosion_picture_menuitem->set_sensitive(true);
@@ -475,7 +481,7 @@ void TileSetWindow::on_new_tileset_activated()
   std::string name = "";
   int id = Tilesetlist::getNextAvailableId(0);
   Tileset *tileset = new Tileset(id, name);
-  TileSetInfoDialog d(tileset, false);
+  TileSetInfoDialog d(tileset, File::getUserTilesetDir() + "<subdir>/", false);
   d.set_parent_window(*window);
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
@@ -543,6 +549,7 @@ void TileSetWindow::on_save_tileset_activated()
   XML_Helper helper(current_save_filename, std::ios::out, false);
   d_tileset->save(&helper);
   helper.close();
+  tileset_saved.emit(d_tileset->getId());
 }
 
 bool TileSetWindow::quit()
@@ -554,6 +561,9 @@ bool TileSetWindow::quit()
 	= Gtk::Builder::create_from_file(get_glade_path() + 
 					 "/editor-quit-dialog.ui");
       xml->get_widget("dialog", dialog);
+      Gtk::Button *save_button;
+      xml->get_widget("save_button", save_button);
+      save_button->set_sensitive(File::is_writable(d_tileset->getConfigurationFile()));
       dialog->set_transient_for(*window);
       int response = dialog->run();
       dialog->hide();
@@ -584,7 +594,8 @@ void TileSetWindow::on_quit_activated()
 
 void TileSetWindow::on_edit_tileset_info_activated()
 {
-  TileSetInfoDialog d(d_tileset, true);
+  TileSetInfoDialog d(d_tileset, File::get_dirname(current_save_filename), 
+                      true);
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)

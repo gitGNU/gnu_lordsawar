@@ -28,6 +28,7 @@
 #include <map>
 #include "PathCalculator.h"
 #include "vector.h"
+#include "GameMap.h"
 class Stack;
 
 /** A list for object instances
@@ -73,7 +74,8 @@ template<class T> class LocationList : public std::list<T>
 	for (int j = 0; j < size; j++)
 	  {
 	    Vector<int> pos = t->getPos() + Vector<int>(i,j);
-	    d_object.erase(d_object.find(pos));
+            if (d_object.find(pos) != d_object.end())
+              d_object.erase(d_object.find(pos));
 	  }
       delete t;
     }
@@ -94,6 +96,22 @@ template<class T> class LocationList : public std::list<T>
     {
       return getObjectAt(pos.x, pos.y);
     }
+
+void resizeLocations(Maptile::Building building_type, guint32 tile_width, guint32 old_tile_width, void (*func1)(T, Maptile::Building, guint32), void (*func2)(T, Maptile::Building, guint32))
+{
+  if (old_tile_width > tile_width)
+    {
+      for (typename LocationList<T>::iterator it = this->begin(); it != this->end(); ++it)
+        func1((*it), building_type, old_tile_width);
+    }
+  std::list<T> objs;
+  for (typename LocationList<T>::iterator it = this->begin(); it != this->end(); ++it)
+    objs.push_back(*it);
+
+  for (typename std::list<T>::iterator i = objs.begin(); i != objs.end(); ++i)
+  //for (typename LocationList<T>::iterator it = this->begin(); it != this->end(); ++it)
+    func2((*i), building_type, tile_width);
+}
 
   T getNearestObjectInDir(const Vector<int> &pos, const Vector<int> dir) const
     {

@@ -54,14 +54,13 @@ Gdk::Color Shield::get_default_color_for_no(int player_no)
   switch (player_no % MAX_PLAYERS)
     {
     case Shield::WHITE: c.set_rgb_p(252.0/255.0,252.0/255.0,252.0/255.0); break;
-    //case 1: color.r = 80; color.b = 28; color.g = 172; break;
     case Shield::GREEN: c.set_rgb_p(80.0/255.0, 195.0/255.0, 28.0/255.0); break;
     case Shield::YELLOW: c.set_rgb_p(252.0/255.0,236.0/255.0,32.0/255.0); break;
-    case Shield::LIGHT_BLUE: c.set_rgb_p(0,252.0/255.0,252.0/255.0); break;
-    case Shield::RED: c.set_rgb_p(252.0/255.0,160.0/255.0,0);break;
-    case Shield::DARK_BLUE: 
+    case Shield::DARK_BLUE: c.set_rgb_p(0,252.0/255.0,252.0/255.0); break;
+    case Shield::ORANGE: c.set_rgb_p(252.0/255.0,160.0/255.0,0);break;
+    case Shield::LIGHT_BLUE: 
 		      c.set_rgb_p(44.0/255.0,184.0/255.0,252.0/255.0); break;
-    case Shield::ORANGE: c.set_rgb_p(196.0/255.0, 28.0/255.0, 0); break;
+    case Shield::RED: c.set_rgb_p(196.0/255.0, 28.0/255.0, 0); break;
     case Shield::BLACK: c.set_rgb_p(0,0,0); break;
     }
     

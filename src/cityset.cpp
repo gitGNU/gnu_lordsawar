@@ -459,4 +459,18 @@ bool Cityset::tileWidthsEqual(Cityset *cityset)
     return true;
   return false;
 }
+
+void Cityset::reload()
+{
+  CitysetLoader d(getConfigurationFile());
+  if (d.cityset && d.cityset->validate())
+    {
+      //steal the values from d.cityset and then don't delete it.
+      uninstantiateImages();
+      std::string subdir = d_subdir;
+      *this = *d.cityset;
+      instantiateImages();
+      d_subdir = subdir;
+    }
+}
 // End of file

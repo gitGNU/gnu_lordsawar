@@ -359,3 +359,26 @@ std::string File::getSetConfigurationFilename(std::string dir, std::string subdi
 {
   return add_slash_if_necessary(dir) + subdir + "/" + subdir + ext;
 }
+char *File::sanify(const char *string)
+{
+  char *result = NULL;
+  size_t resultlen = 1;
+  size_t len = strlen(string);
+  result = (char*) malloc (resultlen);
+  result[0] = '\0';
+  for (unsigned int i = 0; i < len; i++)
+    {
+      int letter = tolower(string[i]);
+      if (strchr("abcdefghijklmnopqrstuvwxyz0123456789-", letter) == NULL)
+	continue;
+
+      resultlen++;
+      result = (char *) realloc (result, resultlen);
+      if (result)
+	{
+	  result[resultlen-2] = char(letter);
+	  result[resultlen-1] = '\0';
+	}
+    }
+  return result;
+}

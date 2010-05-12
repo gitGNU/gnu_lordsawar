@@ -131,6 +131,8 @@ class File
 	static std::string get_dirname(std::string path);
 
 	static std::list<std::string> scanFiles(std::string dir, std::string ext);
+
+        static char *sanify(const char *string);
 };
 
 #endif //FILE_H

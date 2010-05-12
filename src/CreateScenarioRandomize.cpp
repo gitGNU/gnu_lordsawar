@@ -243,14 +243,14 @@ std::string CreateScenarioRandomize::getPlayerName(Shield::Colour id)
     case Shield::YELLOW: 
       name = _("Storm Giants");
       break;
-    case Shield::LIGHT_BLUE: 
-      name = _("The Selentines");
+    case Shield::DARK_BLUE: 
+      name = _("Horse Lords");
       break;
     case Shield::ORANGE: 
       name = _("Grey Dwarves");
       break;
-    case Shield::DARK_BLUE: 
-      name = _("Horse Lords");
+    case Shield::LIGHT_BLUE: 
+      name = _("The Selentines");
       break;
     case Shield::RED:
       name = _("Orcs of Kor");

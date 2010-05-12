@@ -329,13 +329,13 @@ GameParameters NewRandomMapDialog::getParams()
   p.id = int(Shield::YELLOW);
   p.name = random.getPlayerName(Shield::Colour(p.id));
   g.players.push_back(p);
-  p.id = int(Shield::LIGHT_BLUE);
+  p.id = int(Shield::DARK_BLUE);
   p.name = random.getPlayerName(Shield::Colour(p.id));
   g.players.push_back(p);
   p.id = int(Shield::ORANGE);
   p.name = random.getPlayerName(Shield::Colour(p.id));
   g.players.push_back(p);
-  p.id = int(Shield::DARK_BLUE);
+  p.id = int(Shield::LIGHT_BLUE);
   p.name = random.getPlayerName(Shield::Colour(p.id));
   g.players.push_back(p);
   p.id = int(Shield::RED);
@@ -510,13 +510,12 @@ std::string NewRandomMapDialog::create_and_dump_scenario(const std::string &file
   CreateScenario creator (g.map.width, g.map.height);
 
   // then fill the other players
-  int c = 0;
   int army_id = Armysetlist::getInstance()->getArmyset(g.army_theme)->getId();
   Shieldsetlist *ssl = Shieldsetlist::getInstance();
   guint32 id = ssl->getShieldset(g.shield_theme)->getId();
   for (std::vector<GameParameters::Player>::const_iterator
        i = g.players.begin(), end = g.players.end();
-       i != end; ++i, ++c) {
+       i != end; ++i) {
 
     if (i->type == GameParameters::Player::OFF)
       {
@@ -532,7 +531,7 @@ std::string NewRandomMapDialog::create_and_dump_scenario(const std::string &file
     else
       type = Player::HUMAN;
 
-    creator.addPlayer(i->name, army_id, ssl->getColor(id, c), type);
+    creator.addPlayer(i->name, army_id, ssl->getColor(id, i->id), type);
   }
 
 

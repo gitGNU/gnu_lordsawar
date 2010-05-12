@@ -26,6 +26,7 @@
 #include <assert.h>
 #include <sigc++/functors/mem_fun.h>
 #include <string.h>
+#include <math.h>
 
 #include "ucompose.hpp"
 #include "GameMap.h"
@@ -1188,14 +1189,95 @@ void GameMap::switchTileset(Tileset *tileset)
   applyTileStyles (0, 0, s_width, s_height,  false);
 }
 
+void GameMap::reloadTileset()
+{
+  d_tileSet->reload();
+}
+
+void GameMap::reloadShieldset()
+{
+  d_shieldSet->reload();
+  Playerlist::getInstance()->setNewColours(d_shieldSet);
+}
+
 void GameMap::switchShieldset(Shieldset *shieldset)
 {
+  Playerlist::getInstance()->setNewColours(shieldset);
   d_shieldSet = shieldset;
+}
+
+Vector<int> GameMap::findNearestAreaForBuilding(Maptile::Building building_type, Vector<int> pos, guint32 width)
+{
+  std::list<Vector<int> > points = getNearbyPoints(pos, -1);
+  std::list<Vector<int> >::iterator it = points.begin();
+  for (;it != points.end(); it++)
+    {
+      if (canPutBuilding (building_type, width, *it, true))
+        return *it;
+    }
+  return Vector<int>(-1,-1);
 }
 
 void GameMap::switchCityset(Cityset *cityset)
 {
   d_citySet = cityset;
+
+  if (Templelist::getInstance()->size())
+    {
+      guint32 tiles = 
+        GameMap::getInstance()->countBuildings(Maptile::TEMPLE) / 
+        Templelist::getInstance()->size();
+      double old_tile_width = sqrt ((double)tiles);
+      if (old_tile_width != cityset->getTempleTileWidth())
+        Templelist::getInstance()->resizeLocations
+          (Maptile::TEMPLE, cityset->getTempleTileWidth(), old_tile_width, 
+           (void (*)(Temple*, Maptile::Building, guint32)) changeFootprintToSmallerCityset, 
+           (void (*)(Temple*, Maptile::Building, guint32)) relocateLocation);
+    }
+    
+  if (Ruinlist::getInstance()->size())
+    {
+      guint32 tiles = GameMap::getInstance()->countBuildings(Maptile::RUIN) / 
+        Ruinlist::getInstance()->size();
+      double old_tile_width = sqrt ((double)tiles);
+      if (old_tile_width != cityset->getRuinTileWidth())
+        Ruinlist::getInstance()->resizeLocations
+          (Maptile::RUIN, cityset->getRuinTileWidth(), old_tile_width, 
+           (void (*)(Ruin*, Maptile::Building, guint32)) changeFootprintToSmallerCityset, 
+           (void (*)(Ruin*, Maptile::Building, guint32)) relocateLocation);
+    }
+  if (Citylist::getInstance()->size())
+    {
+      guint32 tiles = GameMap::getInstance()->countBuildings(Maptile::CITY) / 
+        Citylist::getInstance()->size();
+      double old_tile_width = sqrt ((double)tiles);
+      if (old_tile_width != cityset->getCityTileWidth())
+        Citylist::getInstance()->resizeLocations
+          (Maptile::CITY, cityset->getCityTileWidth(), old_tile_width, 
+           (void (*)(City*, Maptile::Building, guint32)) changeFootprintToSmallerCityset, 
+           (void (*)(City*, Maptile::Building, guint32)) relocateLocation);
+    }
+}
+
+guint32 GameMap::countBuildings(Maptile::Building building_type)
+{
+  guint32 count = 0;
+  for (int x = 0; x < getWidth(); x++)
+    {
+      for (int y = 0; y < getHeight(); y++)
+        {
+          Vector<int> pos = Vector<int>(x, y);
+          if (getBuilding(pos) == building_type)
+            count++;
+        }
+    }
+  return count;
+}
+
+void GameMap::reloadCityset()
+{
+  d_citySet->reload();
+  switchCityset(d_citySet);
 }
 
 void GameMap::switchArmysets(Armyset *armyset)
@@ -1244,6 +1326,11 @@ void GameMap::switchArmysets(Armyset *armyset)
       (*i)->setArmyset(armyset->getId());
       //where else are armyset ids hanging around?
     }
+}
+
+void GameMap::reloadArmyset(Armyset *armyset)
+{
+  armyset->reload();
 }
 
 bool GameMap::canPutBuilding(Maptile::Building bldg, guint32 size, Vector<int> to, bool making_islands)
@@ -1319,13 +1406,13 @@ bool GameMap::canPutBuilding(Maptile::Building bldg, guint32 size, Vector<int> t
   return can_move;
 }
 
-bool GameMap::moveBuilding(Vector<int> from, Vector<int> to)
+bool GameMap::moveBuilding(Vector<int> from, Vector<int> to, guint32 new_width)
 {
   //move a game object located at FROM, and move it to TO.
   //watch out for overlaps.
   //return true if we moved something.
   bool moved = true;
-    
+ 
   guint32 size = getBuildingSize(from);
   if (size == 0)
     return false;
@@ -1346,6 +1433,8 @@ bool GameMap::moveBuilding(Vector<int> from, Vector<int> to)
 	  Signpost *old_signpost = getSignpost(getSignpost(from)->getPos());
 	  Signpost *new_signpost = new Signpost(*old_signpost, to);
 	  removeSignpost(old_signpost->getPos());
+          if (new_width)
+            new_signpost->setSize(new_width);
 	  putSignpost(new_signpost);
 	  break;
 	}
@@ -1354,6 +1443,8 @@ bool GameMap::moveBuilding(Vector<int> from, Vector<int> to)
 	  Port *old_port = getPort(getPort(from)->getPos());
 	  Port *new_port = new Port(*old_port, to);
 	  removePort(old_port->getPos());
+          if (new_width)
+            new_port->setSize(new_width);
 	  putPort(new_port);
 	  break;
 	}
@@ -1362,6 +1453,8 @@ bool GameMap::moveBuilding(Vector<int> from, Vector<int> to)
 	  Bridge *old_bridge = getBridge(getBridge(from)->getPos());
 	  Bridge *new_bridge = new Bridge(*old_bridge, to);
 	  removeBridge(old_bridge->getPos());
+          if (new_width)
+            new_bridge->setSize(new_width);
 	  putBridge(new_bridge);
 	  break;
 	}
@@ -1370,6 +1463,8 @@ bool GameMap::moveBuilding(Vector<int> from, Vector<int> to)
 	  Road *old_road = getRoad(getRoad(from)->getPos());
 	  Road *new_road = new Road(*old_road, to);
 	  removeRoad(old_road->getPos());
+          if (new_width)
+            new_road->setSize(new_width);
 	  putRoad(new_road);
 	  break;
 	}
@@ -1378,6 +1473,8 @@ bool GameMap::moveBuilding(Vector<int> from, Vector<int> to)
 	  Ruin* old_ruin = getRuin(getRuin(from)->getPos());
 	  Ruin *new_ruin = new Ruin(*old_ruin, to);
 	  removeRuin(old_ruin->getPos());
+          if (new_width)
+            new_ruin->setSize(new_width);
 	  putRuin(new_ruin);
 	  break;
 	}
@@ -1386,6 +1483,8 @@ bool GameMap::moveBuilding(Vector<int> from, Vector<int> to)
 	  Temple* old_temple = getTemple(getTemple(from)->getPos());
 	  Temple* new_temple = new Temple(*old_temple, to);
 	  removeTemple(old_temple->getPos());
+          if (new_width)
+            new_temple->setSize(new_width);
 	  putTemple(new_temple);
 	  break;
 	}
@@ -1394,6 +1493,8 @@ bool GameMap::moveBuilding(Vector<int> from, Vector<int> to)
 	  City* old_city = getCity(getCity(from)->getPos());
 	  City* new_city = new City(*old_city, to);
 	  removeCity(old_city->getPos());
+          if (new_width)
+            new_city->setSize(new_width);
 	  putCity(new_city, true);
 	  break;
 	}
@@ -1504,6 +1605,23 @@ bool GameMap::putRuin(Ruin *r)
   putBuilding(r, Maptile::RUIN);
   return true;
 }
+
+bool GameMap::removeLocation (Vector<int> pos)
+{
+  switch (getBuilding(pos))
+    {
+    case Maptile::CITY: return removeCity(pos);
+    case Maptile::RUIN: return removeRuin(pos);
+    case Maptile::TEMPLE: return removeTemple(pos);
+    case Maptile::ROAD: return removeRoad(pos);
+    case Maptile::BRIDGE: return removeBridge(pos);
+    case Maptile::SIGNPOST: return removeSignpost(pos);
+    case Maptile::PORT: return removePort(pos);
+    case Maptile::NONE: break;
+    }
+  return false;
+}
+
 
 bool GameMap::removeTemple(Vector<int> pos)
 {
@@ -1669,6 +1787,18 @@ Rectangle GameMap::putTerrain(Rectangle r, Tile::Type type, int tile_style_id, b
   return r;
 }
 
+void GameMap::clearBuilding(Vector<int> pos, guint32 width)
+{
+  for (unsigned int x = pos.x; x < pos.x + width; ++x)
+    for (unsigned int y = pos.y; y < pos.y + width; ++y)
+      {
+        if (offmap(x,y))
+          continue;
+	Maptile* t = getTile(Vector<int>(x, y));
+	t->setBuilding(Maptile::NONE);
+      }
+}
+
 void GameMap::putBuilding(LocationBox *b, Maptile::Building building)
 {
   Rectangle r = b->getArea();
@@ -1823,7 +1953,6 @@ std::list<Stack*> GameMap::getNearbyStacks(Vector<int> pos, int dist, bool frien
   return stacks;
 }
 
-
 std::list<Vector<int> > GameMap::getNearbyPoints(Vector<int> pos, int dist)
 {
   std::list<Vector<int> > points;
@@ -1834,6 +1963,13 @@ std::list<Vector<int> > GameMap::getNearbyPoints(Vector<int> pos, int dist)
 
   points.push_back(pos);
 
+  if (dist == -1)
+    {
+      if (getWidth() > getHeight())
+        max = getWidth();
+      else
+        max = getHeight();
+    }
   //d is the distance from Pos where our box starts
   //instead of a regular loop around a box of dist large, we're going to add
   //the nearer stacks first.
@@ -1917,3 +2053,22 @@ int GameMap::calculateTilesPerOverviewMapTile()
   return calculateTilesPerOverviewMapTile(GameMap::getWidth(), GameMap::getHeight());
 }
 
+void GameMap::changeFootprintToSmallerCityset(Location *location, Maptile::Building building_type, guint32 old_tile_width)
+{
+  GameMap::getInstance()->clearBuilding(location->getPos(), (guint32)old_tile_width);
+  GameMap::getInstance()->putBuilding (location, building_type);
+}
+
+void GameMap::relocateLocation(Location *location, Maptile::Building building_type, guint32 tile_width)
+{
+  //look for a suitable place for this building
+  //remove our buildingness so it can find where we are now.
+  GameMap::getInstance()->removeBuilding(location);
+  Vector<int> dest = 
+    GameMap::getInstance()->findNearestAreaForBuilding(building_type, location->getPos(), tile_width);
+  GameMap::getInstance()->putBuilding (location, building_type);
+  if (dest == Vector<int>(-1, -1))
+    GameMap::getInstance()->removeLocation (location->getPos());
+  else
+    GameMap::getInstance()->moveBuilding (location->getPos(), dest, tile_width);
+}

@@ -440,7 +440,7 @@ void ArmySetWindow::on_new_armyset_activated()
   std::string name = "";
   int id = Armysetlist::getNextAvailableId();
   Armyset *armyset = new Armyset(id, name);
-  ArmySetInfoDialog d(armyset, false);
+  ArmySetInfoDialog d(armyset, File::getUserArmysetDir() + "<subdir>/", false);
   d.set_parent_window(*window);
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
@@ -590,6 +590,7 @@ void ArmySetWindow::on_save_armyset_activated()
   d_armyset->save(&helper);
   helper.close();
   needs_saving = false;
+  armyset_saved.emit(d_armyset->getId());
 }
 
 void ArmySetWindow::on_edit_ship_picture_activated()
@@ -654,7 +655,8 @@ void ArmySetWindow::on_edit_bag_picture_activated()
 }
 void ArmySetWindow::on_edit_armyset_info_activated()
 {
-  ArmySetInfoDialog d(d_armyset, true);
+  ArmySetInfoDialog d(d_armyset, File::get_dirname(current_save_filename), 
+                      true);
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
@@ -1690,6 +1692,9 @@ bool ArmySetWindow::quit()
 	= Gtk::Builder::create_from_file(get_glade_path() + 
 					 "/editor-quit-dialog.ui");
       xml->get_widget("dialog", dialog);
+      Gtk::Button *save_button;
+      xml->get_widget("save_button", save_button);
+      save_button->set_sensitive(File::is_writable(d_armyset->getConfigurationFile()));
       dialog->set_transient_for(*window);
       int response = dialog->run();
       dialog->hide();

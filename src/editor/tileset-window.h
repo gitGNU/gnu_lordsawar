@@ -40,6 +40,8 @@ class TileSetWindow: public sigc::trackable
 
     Gtk::Window &get_window() { return *window; }
 
+    sigc::signal<void, guint32> tileset_saved;
+
  private:
     Gtk::Window* window;
     std::string current_save_filename;

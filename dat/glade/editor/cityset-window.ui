@@ -3,6 +3,7 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="window">
+    <property name="title" translatable="yes">LordsAWar! Cityset Editor</property>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
@@ -54,7 +55,7 @@
                     <child>
                       <object class="GtkMenuItem" id="quit_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">gtk-quit</property>
+                        <property name="label" translatable="yes">_Quit</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -92,7 +93,7 @@
                     <child>
                       <object class="GtkMenuItem" id="help_about_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">gtk-about</property>
+                        <property name="label" translatable="yes">_About</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -123,7 +124,7 @@
                       <object class="GtkFrame" id="frame3">
                         <property name="visible">True</property>
                         <property name="label_xalign">0</property>
-                        <property name="shadow_type">in</property>
+                        <property name="shadow_type">none</property>
                         <child>
                           <object class="GtkAlignment" id="alignment3">
                             <property name="visible">True</property>
@@ -194,7 +195,7 @@ black.</property>
                                     <property name="visible">True</property>
                                     <property name="tooltip_text" translatable="yes">normal ruin, and a "stronghold" ruin.</property>
                                     <property name="xalign">1</property>
-                                    <property name="label" translatable="yes">&lt;b&gt;(2 pics)&lt;/b&gt; Ruins Picture:</property>
+                                    <property name="label" translatable="yes">&lt;b&gt;(3 pics)&lt;/b&gt; Ruins Picture:</property>
                                     <property name="use_markup">True</property>
                                   </object>
                                   <packing>
@@ -355,7 +356,7 @@ black.</property>
                       <object class="GtkFrame" id="frame2">
                         <property name="visible">True</property>
                         <property name="label_xalign">0</property>
-                        <property name="shadow_type">in</property>
+                        <property name="shadow_type">none</property>
                         <child>
                           <object class="GtkAlignment" id="alignment2">
                             <property name="visible">True</property>
@@ -399,6 +400,7 @@ black.</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">&#x2022;</property>
+                                    <property name="adjustment">adjustment3</property>
                                     <property name="numeric">True</property>
                                   </object>
                                   <packing>
@@ -413,6 +415,7 @@ black.</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">&#x2022;</property>
+                                    <property name="adjustment">adjustment2</property>
                                     <property name="numeric">True</property>
                                   </object>
                                   <packing>
@@ -427,6 +430,7 @@ black.</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">&#x2022;</property>
+                                    <property name="adjustment">adjustment1</property>
                                     <property name="numeric">True</property>
                                   </object>
                                   <packing>
@@ -469,5 +473,23 @@ black.</property>
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkAdjustment" id="adjustment1">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+    <property name="page_size">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment2">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+    <property name="page_size">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment3">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+    <property name="page_size">10</property>
   </object>
 </interface>

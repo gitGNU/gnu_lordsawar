@@ -238,7 +238,7 @@ void CitySetWindow::on_new_cityset_activated()
   std::string name = "";
   int id = Citysetlist::getNextAvailableId();
   Cityset *cityset = new Cityset(id, name);
-  CitySetInfoDialog d(cityset, false);
+  CitySetInfoDialog d(cityset, File::getUserCitysetDir() + "<subdir>/", false);
   d.set_parent_window(*window);
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
@@ -339,11 +339,12 @@ void CitySetWindow::on_save_cityset_activated()
   d_cityset->save(&helper);
   helper.close();
   needs_saving = false;
+  cityset_saved.emit(d_cityset->getId());
 }
 
 void CitySetWindow::on_edit_cityset_info_activated()
 {
-  CitySetInfoDialog d(d_cityset, true);
+  CitySetInfoDialog d(d_cityset, File::get_dirname(current_save_filename), true);
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
@@ -403,6 +404,9 @@ bool CitySetWindow::quit()
 	= Gtk::Builder::create_from_file(get_glade_path() + 
 					 "/editor-quit-dialog.ui");
       xml->get_widget("dialog", dialog);
+      Gtk::Button *save_button;
+      xml->get_widget("save_button", save_button);
+      save_button->set_sensitive(File::is_writable(d_cityset->getConfigurationFile()));
       dialog->set_transient_for(*window);
       int response = dialog->run();
       dialog->hide();

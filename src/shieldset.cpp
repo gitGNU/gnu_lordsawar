@@ -293,4 +293,20 @@ bool Shieldset::validateShieldImages(Shield::Colour c) const
     return false;
   return true;
 }
+
+void Shieldset::reload()
+{
+  ShieldsetLoader d(getConfigurationFile());
+  if (d.shieldset && d.shieldset->validate())
+    {
+      //steal the values from d.shieldset and then don't delete it.
+      uninstantiateImages();
+      for (iterator it = begin(); it != end(); it++)
+        delete *it;
+      std::string subdir = d_subdir;
+      *this = *d.shieldset;
+      instantiateImages();
+      d_subdir = subdir;
+    }
+}
 //End of file

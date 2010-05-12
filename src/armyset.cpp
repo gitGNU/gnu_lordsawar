@@ -720,3 +720,19 @@ const ArmyProto *Armyset::getRandomAwardableAlly() const
 
   return NULL;
 }
+
+void Armyset::reload()
+{
+  ArmysetLoader d(getConfigurationFile());
+  if (d.armyset && d.armyset->validate())
+    {
+      //steal the values from d.armyset and then don't delete it.
+      uninstantiateImages();
+      for (iterator it = begin(); it != end(); it++)
+        delete *it;
+      std::string subdir = d_subdir;
+      *this = *d.armyset;
+      instantiateImages();
+      d_subdir = subdir;
+    }
+}

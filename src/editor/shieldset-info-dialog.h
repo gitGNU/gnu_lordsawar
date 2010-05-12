@@ -27,7 +27,8 @@
 class ShieldSetInfoDialog: public sigc::trackable
 {
  public:
-    ShieldSetInfoDialog(Shieldset *shieldset, bool readonly = false);
+    ShieldSetInfoDialog(Shieldset *shieldset, std::string dir,
+                        bool readonly = false);
     ~ShieldSetInfoDialog();
 
     void set_parent_window(Gtk::Window &parent);
@@ -45,6 +46,7 @@ class ShieldSetInfoDialog: public sigc::trackable
     Gtk::Button *accept_button;
     Gtk::Label *status_label;
     Gtk::TextView *description_textview;
+    Gtk::Label *dir_label;
 
     void on_name_changed();
     void on_subdir_changed();

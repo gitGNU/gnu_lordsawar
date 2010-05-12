@@ -30,6 +30,7 @@
 #include "game-parameters.h"
 
 class History;
+class Shieldset;
 
 #include "player.h"
 
@@ -183,6 +184,8 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	//! Add a player to the list.  Use this instead of push_back.
 	void add(Player *player);
 
+        //! Reassign player colours.
+        void setNewColours(Shieldset *shieldset);
 
 	// Methods that operate on the class data but do not modify it.
 
@@ -236,6 +239,9 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	  */
 	bool isEndOfRound() const;
 
+
+        //! Return true if any of the players use the given armyset.
+        bool hasArmyset(guint32 id) const;
 
 	// Signals
 
