@@ -1,3 +1,10 @@
+2010-05-12  Ben Asselstine  <benasselstine@hushmail.com>
+
+	* added edit shieldset/cityset/tileset/armyset in scenario editor.
+	* now handling changing tile widths in citysets in the scenario editor.
+	* changed shieldset/cityset/tileset/armyset info dialogs to show the
+	directory that the objects are in.
+
 2010-05-03  Ben Asselstine  <benasselstine@hushmail.com>
 
 	* fixed typos in the manual.  reported by Mikko V. Viinamäki.
