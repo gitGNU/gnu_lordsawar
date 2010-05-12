@@ -62,6 +62,8 @@ ArmySetInfoDialog::ArmySetInfoDialog(Armyset *armyset, std::string dir, bool rea
     id_spinbutton->set_value(armyset->getId());
     id_spinbutton->set_sensitive(false);
 
+    xml->get_widget("description_textview", description_textview);
+    description_textview->get_buffer()->set_text(d_armyset->getInfo());
     xml->get_widget("copyright_textview", copyright_textview);
     copyright_textview->get_buffer()->set_text(d_armyset->getCopyright());
     xml->get_widget("license_textview", license_textview);
@@ -125,6 +127,7 @@ int ArmySetInfoDialog::run()
       d_armyset->setId(int(id_spinbutton->get_value()));
       if (d_readonly == false)
 	d_armyset->setSubDir(subdir_entry->get_text());
+      d_armyset->setInfo(description_textview->get_buffer()->get_text());
       d_armyset->setCopyright(copyright_textview->get_buffer()->get_text());
       d_armyset->setLicense(license_textview->get_buffer()->get_text());
       return response;

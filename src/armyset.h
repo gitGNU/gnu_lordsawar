@@ -146,8 +146,17 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	//! Get the license of this armyset.
 	std::string getLicense() const {return d_license;};
 
+        //! Returns the description of the armyset.
+        std::string getInfo() const {return _(d_info.c_str());}
+
 	//! Set the license for this armyset.
 	void setLicense(std::string license) {d_license = license;};
+
+	//! Set the description of the armyset.
+	/**
+	 * @note This method is only used in the armyset editor.
+	 */
+        void setInfo(std::string info) {d_info = info;}
 
 	//! Get the subdirectory name of the armyset.
 	/**
@@ -296,6 +305,14 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 * Armyset files sit in the army/ directory.
 	 */
         std::string d_subdir;
+
+	//! The description of the Armyset.
+	/**
+	 * Equates to the armyset.d_info XML entity in the armyset
+	 * configuration file.
+	 * This value is not used.
+	 */
+        std::string d_info;
 
 	//! The size of each army tile as rendered in the game.
 	/**

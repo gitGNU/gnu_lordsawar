@@ -43,6 +43,7 @@ Armyset::Armyset(guint32 id, std::string name)
 	d_tilesize(DEFAULT_ARMY_TILE_SIZE), d_ship(0), d_shipmask(0), 
 	d_standard(0), d_standard_mask(0), d_bag(0)
 {
+  d_info = "";
   d_bag_name = "";
   d_stackship_name = "";
   d_standard_name = "";
@@ -61,6 +62,7 @@ Armyset::Armyset(XML_Helper *helper, std::string directory)
   helper->getData(d_name, "name");
   helper->getData(d_copyright, "copyright");
   helper->getData(d_license, "license");
+  helper->getData(d_info, "info");
   helper->getData(d_tilesize, "tilesize");
   helper->getData(d_stackship_name, "stackship");
   helper->getData(d_standard_name, "plantedstandard");
@@ -99,6 +101,7 @@ bool Armyset::save(XML_Helper* helper)
     retval &= helper->saveData("name", d_name);
     retval &= helper->saveData("copyright", d_copyright);
     retval &= helper->saveData("license", d_license);
+    retval &= helper->saveData("info", d_info);
     retval &= helper->saveData("tilesize", d_tilesize);
     retval &= helper->saveData("stackship", d_stackship_name);
     retval &= helper->saveData("plantedstandard", d_standard_name);

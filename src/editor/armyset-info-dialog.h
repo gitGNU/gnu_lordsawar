@@ -38,6 +38,7 @@ class ArmySetInfoDialog: public sigc::trackable
     Gtk::Dialog* dialog;
     Armyset *d_armyset;
     Gtk::Entry *name_entry;
+    Gtk::TextView *description_textview;
     Gtk::TextView *copyright_textview;
     Gtk::TextView *license_textview;
     Gtk::Entry *subdir_entry;
