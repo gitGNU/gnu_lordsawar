@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -78,10 +78,10 @@ Citysetlist::~Citysetlist()
     delete (*it);
 }
 
-std::list<std::string> Citysetlist::getNames()
+std::list<std::string> Citysetlist::getNames() const
 {
   std::list<std::string> names;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     names.push_back((*it)->getName());
   return names;
 }
@@ -284,4 +284,15 @@ int Citysetlist::getNextAvailableId(int after)
 	return i;
     }
   return -1;
+}
+
+bool Citysetlist::contains(std::string name) const
+{
+  std::list<std::string> n = getNames();
+  for (std::list<std::string>::iterator it = n.begin(); it != n.end(); it++)
+    {
+      if (*it == name)
+        return true;
+    }
+  return false;
 }

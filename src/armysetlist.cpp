@@ -1,7 +1,7 @@
 // Copyright (C) 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -147,10 +147,10 @@ guint32 Armysetlist::getSize(guint32 id) const
   return (*it).second.size();
 }
 
-std::list<std::string> Armysetlist::getNames()
+std::list<std::string> Armysetlist::getNames() const
 {
   std::list<std::string> names;
-  for (iterator it = begin(); it != end(); it++)
+  for (const_iterator it = begin(); it != end(); it++)
     names.push_back((*it)->getName());
   return names;
 }
@@ -443,3 +443,13 @@ Armyset *Armysetlist::import(Tar_Helper *t, std::string f, bool &broken)
 
 }
 
+bool Armysetlist::contains(std::string name) const
+{
+  std::list<std::string> n = getNames();
+  for (std::list<std::string>::iterator it = n.begin(); it != n.end(); it++)
+    {
+      if (*it == name)
+        return true;
+    }
+  return false;
+}

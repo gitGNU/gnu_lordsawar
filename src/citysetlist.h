@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -45,7 +45,10 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
         static void deleteInstance();
 
         //! Returns the names of all citysets available to the game.
-	std::list<std::string> getNames();
+	std::list<std::string> getNames() const;
+
+        //! Returns whether the given name is in our list of citysets.
+        bool contains(std::string name) const;
 
         //! Returns the names of citysets that have the given tile size.
 	std::list<std::string> getNames(guint32 tilesize);

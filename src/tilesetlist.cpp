@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -279,4 +279,15 @@ bool Tilesetlist::addToPersonalCollection(Tileset *tileset, std::string &new_sub
   helper.close();
   add (tileset);
   return true;
+}
+
+bool Tilesetlist::contains(std::string name) const
+{
+  std::list<std::string> n = getNames();
+  for (std::list<std::string>::iterator it = n.begin(); it != n.end(); it++)
+    {
+      if (*it == name)
+        return true;
+    }
+  return false;
 }

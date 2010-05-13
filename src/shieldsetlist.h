@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -44,6 +44,9 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 
         //! Returns the names of all Shieldset objects available to the game.
 	std::list<std::string> getNames() const;
+
+        //! Returns whether the given name is our list of shieldset objects.
+        bool contains(std::string name) const;
 
 	//! Return the directory of a specific Shieldset by name.
         /**

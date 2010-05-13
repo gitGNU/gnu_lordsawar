@@ -29,6 +29,7 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
+#include "tilesetlist.h"
 
 
 TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, std::string dir, 
@@ -71,33 +72,17 @@ TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, std::string dir,
     dir_label->set_text (dir);
     if (readonly)
       subdir_entry->set_sensitive(false);
-    else if (File::exists(dir) == true || subdir_entry->get_text() == "")
-      accept_button->set_sensitive(false);
-    else
-      accept_button->set_sensitive(true);
+    update_buttons();
 }
 
 void TileSetInfoDialog::on_subdir_changed()
 {
   std::string dir = File::getUserTilesetDir() + subdir_entry->get_text();
-  if (File::exists(dir) == true && subdir_entry->get_text() != "")
-    {
-      accept_button->set_sensitive(false);
-      status_label->set_markup(String::ucompose("<b>%1</b>", 
-						_("That subdirectory is already in use.")));
-    }
-  else
-    {
-      accept_button->set_sensitive(true);
-      status_label->set_markup("");
-    }
   if (subdir_entry->get_text() != "")
     dir_label->set_text(dir + "/");
   else
-    {
-      dir_label->set_text(File::getUserTilesetDir() + "<subdir>/");
-      accept_button->set_sensitive(false);
-    }
+    dir_label->set_text(File::getUserTilesetDir() + "<subdir>/");
+  update_buttons();
 }
 void TileSetInfoDialog::on_name_changed()
 {
@@ -135,3 +120,40 @@ int TileSetInfoDialog::run()
     return response;
 }
 
+void TileSetInfoDialog::update_buttons()
+{
+  if (d_readonly)
+    {
+      accept_button->set_sensitive(true);
+      return;
+    }
+
+  std::string dir = File::getUserTilesetDir() + subdir_entry->get_text();
+  if (File::exists(dir) == true && subdir_entry->get_text() != "")
+    {
+      accept_button->set_sensitive(false);
+      
+      status_label->set_markup(String::ucompose("<b>%1</b>", 
+						_("That subdirectory is already in use.")));
+    }
+  else if (Tilesetlist::getInstance()->getTileset(subdir_entry->get_text()))
+    {
+      accept_button->set_sensitive(false);
+      status_label->set_markup(String::ucompose("<b>%1</b>", 
+						_("That subdirectory is already used in the system tileset collection.")));
+    }
+  else if (Tilesetlist::getInstance()->contains(name_entry->get_text()) && 
+           name_entry->get_text() != "")
+    {
+      status_label->set_markup(String::ucompose("<b>%1</b>", 
+						_("That name is already in use.")));
+      accept_button->set_sensitive(false);
+    }
+  else if (subdir_entry->get_text() == "" || name_entry->get_text() == "")
+    accept_button->set_sensitive(false);
+  else
+    {
+      status_label->set_text("");
+      accept_button->set_sensitive(true);
+    }
+}

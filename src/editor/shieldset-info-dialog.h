@@ -50,6 +50,7 @@ class ShieldSetInfoDialog: public sigc::trackable
 
     void on_name_changed();
     void on_subdir_changed();
+    void update_buttons();
 
     bool d_readonly;
 };

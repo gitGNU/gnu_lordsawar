@@ -1,6 +1,6 @@
 // Copyright (C) 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -109,7 +109,10 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	void getSizes(std::list<guint32> &sizes);
 
         //! Returns the names of all Armyset objects available to the game.
-	std::list<std::string> getNames();
+	std::list<std::string> getNames() const;
+
+        //! Returns whether the given name is also in our list of armysets.
+        bool contains(std::string name) const;
 
         //! Returns the names of armysets that have the given tile size.
 	std::list<std::string> getNames(guint32 tilesize);
