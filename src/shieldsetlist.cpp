@@ -239,7 +239,7 @@ bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &n
   shieldset->getFilenames(files);
   for (std::list<std::string>::iterator it = files.begin(); it != files.end();
        it++)
-    File::copy(shieldset->getFile(*it), directory + *it);
+    File::copy(shieldset->getFile(*it), directory + *it + ".png");
 
   //save out the shieldset file
   shieldset->setDirectory(directory);

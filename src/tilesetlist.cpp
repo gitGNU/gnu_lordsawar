@@ -270,7 +270,7 @@ bool Tilesetlist::addToPersonalCollection(Tileset *tileset, std::string &new_sub
   tileset->getFilenames(files);
   for (std::list<std::string>::iterator it = files.begin(); it != files.end();
        it++)
-    File::copy(tileset->getFile(*it), directory + *it);
+    File::copy(tileset->getFile(*it), directory + *it + ".png");
 
   //save out the tileset file
   tileset->setDirectory(directory);

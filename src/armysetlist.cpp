@@ -402,7 +402,7 @@ bool Armysetlist::addToPersonalCollection(Armyset *armyset, std::string &new_sub
   armyset->getFilenames(files);
   for (std::list<std::string>::iterator it = files.begin(); it != files.end();
        it++)
-    File::copy(armyset->getFile(*it), directory + *it);
+    File::copy(armyset->getFile(*it), directory + *it + ".png");
 
   //save out the armyset file
   armyset->setDirectory(directory);

@@ -241,7 +241,7 @@ bool Citysetlist::addToPersonalCollection(Cityset *cityset, std::string &new_sub
   cityset->getFilenames(files);
   for (std::list<std::string>::iterator it = files.begin(); it != files.end();
        it++)
-    File::copy(cityset->getFile(*it), directory + *it);
+    File::copy(cityset->getFile(*it), directory + *it + ".png");
 
   //save out the cityset file
   cityset->setDirectory(directory);
