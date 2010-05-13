@@ -1,3 +1,12 @@
+2010-05-13  Ben Asselstine  <benasselstine@hushmail.com>
+
+	* added the filename to the window title of the city/shield/army/tile
+	set editors.
+	* added a "Save A Copy" menu item to the city/shield/army/tile set
+	editors.
+	* improved shieldset/cityset/tileset/armyset info dialogs to have
+	error checking on name.
+
 2010-05-12  Ben Asselstine  <benasselstine@hushmail.com>
 
 	* added edit shieldset/cityset/tileset/armyset in scenario editor.
