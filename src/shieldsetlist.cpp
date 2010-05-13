@@ -191,19 +191,24 @@ bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &n
   //if the subdir conflicts with any other subdir, then change it.
   if (getShieldset(shieldset->getSubDir()) != NULL)
     {
-      bool found = false;
-      for (int count = 0; count < 100; count++)
-	{
-	  new_subdir = String::ucompose("%1%2", shieldset->getSubDir(), count);
-	  if (getShieldset(new_subdir) == NULL)
-	    {
-	      found = true;
-	      break;
-	    }
-	}
-      if (found == false)
-	return false;
-      shieldset->setSubDir(new_subdir);
+      if (new_subdir != "" && getShieldset(new_subdir) == NULL)
+        shieldset->setSubDir(new_subdir);
+      else
+        {
+          bool found = false;
+          for (int count = 0; count < 100; count++)
+            {
+              new_subdir = String::ucompose("%1%2", shieldset->getSubDir(), count);
+              if (getShieldset(new_subdir) == NULL)
+                {
+                  found = true;
+                  break;
+                }
+            }
+          if (found == false)
+            return false;
+          shieldset->setSubDir(new_subdir);
+        }
     }
   else
     new_subdir = shieldset->getSubDir();
@@ -211,8 +216,13 @@ bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &n
   //if the id conflicts with any other id, then change it
   if (getShieldset(shieldset->getId()) != NULL)
     {
-      new_id = Shieldsetlist::getNextAvailableId(shieldset->getId());
-      shieldset->setId(new_id);
+      if (new_id != 0 && getShieldset(new_id) == NULL)
+        shieldset->setId(new_id);
+      else
+        {
+          new_id = Shieldsetlist::getNextAvailableId(shieldset->getId());
+          shieldset->setId(new_id);
+        }
     }
   else
     new_id = shieldset->getId();
@@ -236,6 +246,7 @@ bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &n
   XML_Helper helper(shieldset->getConfigurationFile(), std::ios::out, false);
   shieldset->save(&helper);
   helper.close();
+  add (shieldset);
   return true;
 }
 

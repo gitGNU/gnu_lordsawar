@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -258,6 +258,9 @@ ArmySetWindow::ArmySetWindow(std::string load_filename)
     xml->get_widget("save_armyset_menuitem", save_armyset_menuitem);
     save_armyset_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_save_armyset_activated));
+    xml->get_widget("save_as_menuitem", save_as_menuitem);
+    save_as_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_save_as_activated));
     xml->get_widget("validate_armyset_menuitem", validate_armyset_menuitem);
     validate_armyset_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_validate_armyset_activated));
@@ -476,6 +479,7 @@ void ArmySetWindow::on_new_armyset_activated()
   d_armyset->save(&helper);
   helper.close();
   needs_saving = true;
+  update_window_title();
 }
 
 void ArmySetWindow::update_filechooserbutton(Gtk::FileChooserButton *b, ArmyProto *a, Shield::Colour c)
@@ -575,6 +579,30 @@ void ArmySetWindow::on_validate_armyset_activated()
 
   return;
 }
+
+void ArmySetWindow::on_save_as_activated()
+{
+  guint32 orig_id = d_armyset->getId();
+  d_armyset->setId(Armysetlist::getNextAvailableId(orig_id));
+  ArmySetInfoDialog d(d_armyset, File::getUserArmysetDir() + d_armyset->getSubDir() +"/", false);
+  d.set_parent_window(*window);
+  int response = d.run();
+  if (response == Gtk::RESPONSE_ACCEPT)
+    {
+      std::string new_subdir = "";
+      guint32 new_id = 0;
+      Armysetlist::getInstance()->addToPersonalCollection(d_armyset, new_subdir, new_id);
+      save_armyset_menuitem->set_sensitive(true);
+      current_save_filename = d_armyset->getConfigurationFile();
+      needs_saving = false;
+      update_window_title();
+    }
+  else
+    {
+      d_armyset->setId(orig_id);
+    }
+}
+
 void ArmySetWindow::on_save_armyset_activated()
 {
   if (current_save_filename.empty())
@@ -590,6 +618,7 @@ void ArmySetWindow::on_save_armyset_activated()
   d_armyset->save(&helper);
   helper.close();
   needs_saving = false;
+  update_window_title();
   armyset_saved.emit(d_armyset->getId());
 }
 
@@ -612,6 +641,7 @@ void ArmySetWindow::on_edit_ship_picture_activated()
 	}
       d_armyset->setShipImageName(file);
       needs_saving = true;
+      update_window_title();
     }
 }
 void ArmySetWindow::on_edit_standard_picture_activated()
@@ -633,6 +663,7 @@ void ArmySetWindow::on_edit_standard_picture_activated()
 	}
       d_armyset->setStandardImageName(file);
       needs_saving = true;
+      update_window_title();
     }
 }
 void ArmySetWindow::on_edit_bag_picture_activated()
@@ -651,6 +682,7 @@ void ArmySetWindow::on_edit_bag_picture_activated()
       File::copy(filename, d_armyset->getFile(name));
       d_armyset->setBagImageName(name);
       needs_saving = true;
+      update_window_title();
     }
 }
 void ArmySetWindow::on_edit_armyset_info_activated()
@@ -660,7 +692,10 @@ void ArmySetWindow::on_edit_armyset_info_activated()
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
-    needs_saving = true;
+    {
+      needs_saving = true;
+      update_window_title();
+    }
 }
 
 void ArmySetWindow::on_help_about_activated()
@@ -820,6 +855,7 @@ void ArmySetWindow::on_name_changed()
       a->setName(name_entry->get_text());
       row[armies_columns.name] = name_entry->get_text();
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -834,6 +870,7 @@ void ArmySetWindow::on_description_changed()
       ArmyProto *a = row[armies_columns.army];
       a->setDescription(description_textview->get_buffer()->get_text());
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -874,6 +911,7 @@ void ArmySetWindow::on_image_changed(Gtk::FileChooserButton *button, Gtk::Image 
 	image->property_pixbuf() = a->getImage(c)->to_pixbuf();
 
       needs_saving = true;
+      update_window_title();
     }
 }
 void ArmySetWindow::on_white_image_changed()
@@ -942,6 +980,7 @@ void ArmySetWindow::on_production_changed()
       else
 	a->setProduction(int(production_spinbutton->get_value()));
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -966,6 +1005,7 @@ void ArmySetWindow::on_cost_changed()
       else
 	a->setProductionCost(int(cost_spinbutton->get_value()));
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -986,6 +1026,7 @@ void ArmySetWindow::on_new_cost_changed()
       ArmyProto *a = row[armies_columns.army];
       a->setNewProductionCost(int(new_cost_spinbutton->get_value()));
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1010,6 +1051,7 @@ void ArmySetWindow::on_upkeep_changed()
       else
 	a->setUpkeep(int(upkeep_spinbutton->get_value()));
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1034,6 +1076,7 @@ void ArmySetWindow::on_strength_changed()
       else
 	a->setStrength(int(strength_spinbutton->get_value()));
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1058,6 +1101,7 @@ void ArmySetWindow::on_moves_changed()
       else
 	a->setMaxMoves(int(moves_spinbutton->get_value()));
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1077,6 +1121,7 @@ void ArmySetWindow::on_exp_changed()
       ArmyProto *a = row[armies_columns.army];
       a->setXpReward(int(exp_spinbutton->get_value()));
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1096,6 +1141,7 @@ void ArmySetWindow::on_sight_changed()
       ArmyProto *a = row[armies_columns.army];
       a->setSight(int(sight_spinbutton->get_value()));
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1110,6 +1156,7 @@ void ArmySetWindow::on_gender_none_toggled()
       ArmyProto *a = row[armies_columns.army];
       a->setGender(Hero::NONE);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1124,6 +1171,7 @@ void ArmySetWindow::on_gender_male_toggled()
       ArmyProto *a = row[armies_columns.army];
       a->setGender(Hero::MALE);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1138,6 +1186,7 @@ void ArmySetWindow::on_gender_female_toggled()
       ArmyProto *a = row[armies_columns.army];
       a->setGender(Hero::FEMALE);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1152,6 +1201,7 @@ void ArmySetWindow::on_awardable_toggled()
       ArmyProto *a = row[armies_columns.army];
       a->setAwardable(awardable_checkbutton->get_active());
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1166,6 +1216,7 @@ void ArmySetWindow::on_defends_ruins_toggled()
       ArmyProto *a = row[armies_columns.army];
       a->setDefendsRuins(defends_ruins_checkbutton->get_active());
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1192,6 +1243,7 @@ void ArmySetWindow::on_move_forests_toggled()
 	}
       a->setMoveBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1218,6 +1270,7 @@ void ArmySetWindow::on_move_marshes_toggled()
 	}
       a->setMoveBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1244,6 +1297,7 @@ void ArmySetWindow::on_move_hills_toggled()
 	}
       a->setMoveBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1270,6 +1324,7 @@ void ArmySetWindow::on_move_mountains_toggled()
 	}
       a->setMoveBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1294,6 +1349,7 @@ void ArmySetWindow::on_can_fly_toggled()
 	}
       a->setMoveBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1316,6 +1372,7 @@ void ArmySetWindow::on_add1strinopen_toggled()
 	}
       a->setArmyBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1338,6 +1395,7 @@ void ArmySetWindow::on_add2strinopen_toggled()
 	}
       a->setArmyBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1360,6 +1418,7 @@ void ArmySetWindow::on_add1strinforest_toggled()
 	}
       a->setArmyBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1382,6 +1441,7 @@ void ArmySetWindow::on_add1strinhills_toggled()
 	}
       a->setArmyBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1404,6 +1464,7 @@ void ArmySetWindow::on_add1strincity_toggled()
 	}
       a->setArmyBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1426,6 +1487,7 @@ void ArmySetWindow::on_add2strincity_toggled()
 	}
       a->setArmyBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1448,6 +1510,7 @@ void ArmySetWindow::on_add1stackinhills_toggled()
 	}
       a->setArmyBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1470,6 +1533,7 @@ void ArmySetWindow::on_suballcitybonus_toggled()
 	}
       a->setArmyBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1492,6 +1556,7 @@ void ArmySetWindow::on_sub1enemystack_toggled()
 	}
       a->setArmyBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1514,6 +1579,7 @@ void ArmySetWindow::on_add1stack_toggled()
 	}
       a->setArmyBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1536,6 +1602,7 @@ void ArmySetWindow::on_add2stack_toggled()
 	}
       a->setArmyBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1558,6 +1625,7 @@ void ArmySetWindow::on_suballnonherobonus_toggled()
 	}
       a->setArmyBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1580,6 +1648,7 @@ void ArmySetWindow::on_suballherobonus_toggled()
 	}
       a->setArmyBonus(bonus);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1594,6 +1663,7 @@ void ArmySetWindow::on_add_army_clicked()
   (*i)[armies_columns.army] = a;
   d_armyset->push_back(a);
   needs_saving = true;
+  update_window_title();
 
 }
 
@@ -1611,6 +1681,7 @@ void ArmySetWindow::on_remove_army_clicked()
       armies_list->erase(iterrow);
       d_armyset->remove(a);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1682,6 +1753,9 @@ void ArmySetWindow::load_armyset(std::string filename)
   orange_image_filechooserbutton->set_current_folder(imgpath);
   black_image_filechooserbutton->set_current_folder(imgpath);
   neutral_image_filechooserbutton->set_current_folder(imgpath);
+      
+  needs_saving = false;
+  update_window_title();
 }
 bool ArmySetWindow::quit()
 {
@@ -1719,4 +1793,15 @@ bool ArmySetWindow::on_window_closed(GdkEventAny*)
 void ArmySetWindow::on_quit_activated()
 {
   quit();
+}
+
+void ArmySetWindow::update_window_title()
+{
+  std::string title = "";
+  if (needs_saving)
+    title += "*";
+  title += File::get_basename(current_save_filename, true);
+  title += " - ";
+  title += _("LordsAWar! Armyset Editor");
+  window->set_title(title);
 }

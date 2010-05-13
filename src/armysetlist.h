@@ -154,8 +154,8 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	
 
 	Armyset *import(Tar_Helper *t, std::string f, bool &broken);
-    private:
 	bool addToPersonalCollection(Armyset *armyset, std::string &new_subdir, guint32 &new_id);
+    private:
         //! Default Constructor.  Loads all armyset objects it can find.
 	/**
 	 * The army/ directory is scanned for armyset directories.

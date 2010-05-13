@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -106,6 +106,7 @@ class ArmySetWindow: public sigc::trackable
     Gtk::MenuItem *new_armyset_menuitem;
     Gtk::MenuItem *load_armyset_menuitem;
     Gtk::MenuItem *save_armyset_menuitem;
+    Gtk::MenuItem *save_as_menuitem;
     Gtk::MenuItem *validate_armyset_menuitem;
     Gtk::MenuItem *edit_armyset_info_menuitem;
     Gtk::MenuItem *edit_ship_picture_menuitem;
@@ -135,6 +136,7 @@ class ArmySetWindow: public sigc::trackable
     void on_new_armyset_activated();
     void on_load_armyset_activated();
     void on_save_armyset_activated();
+    void on_save_as_activated();
     void on_validate_armyset_activated();
     void on_quit_activated();
     bool on_window_closed(GdkEventAny*);
@@ -209,6 +211,7 @@ class ArmySetWindow: public sigc::trackable
     void on_white_all_checked();
 
     void load_armyset(std::string filename);
+    void update_window_title();
 };
 
 #endif

@@ -72,8 +72,10 @@ ShieldSetInfoDialog::ShieldSetInfoDialog(Shieldset *shieldset, std::string dir, 
     dir_label->set_text (dir);
     if (readonly)
       subdir_entry->set_sensitive(false);
-    else
+    else if (File::exists(dir) == true || subdir_entry->get_text() == "")
       accept_button->set_sensitive(false);
+    else
+      accept_button->set_sensitive(true);
 }
 
 void ShieldSetInfoDialog::on_subdir_changed()

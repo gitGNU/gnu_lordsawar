@@ -353,19 +353,25 @@ bool Armysetlist::addToPersonalCollection(Armyset *armyset, std::string &new_sub
   //if the subdir conflicts with any other subdir, then change it.
   if (getArmyset(armyset->getSubDir()) != NULL)
     {
-      bool found = false;
-      for (int count = 0; count < 100; count++)
-	{
-	  new_subdir = String::ucompose("%1%2", armyset->getSubDir(), count);
-	  if (getArmyset(new_subdir) == NULL)
-	    {
-	      found = true;
-	      break;
-	    }
-	}
-      if (found == false)
-	return false;
-      armyset->setSubDir(new_subdir);
+      if (new_subdir != "" && getArmyset(new_subdir) == NULL)
+        armyset->setSubDir(new_subdir);
+      else
+        {
+          bool found = false;
+          for (int count = 0; count < 100; count++)
+            {
+              new_subdir = String::ucompose("%1%2", armyset->getSubDir(), 
+                                            count);
+              if (getArmyset(new_subdir) == NULL)
+                {
+                  found = true;
+                  break;
+                }
+            }
+          if (found == false)
+            return false;
+          armyset->setSubDir(new_subdir);
+        }
     }
   else
     new_subdir = armyset->getSubDir();
@@ -373,8 +379,13 @@ bool Armysetlist::addToPersonalCollection(Armyset *armyset, std::string &new_sub
   //if the id conflicts with any other id, then change it
   if (getArmyset(armyset->getId()) != NULL)
     {
-      new_id = Armysetlist::getNextAvailableId(armyset->getId());
-      armyset->setId(new_id);
+      if (new_id != 0 && getArmyset(new_id) == NULL)
+        armyset->setId(new_id);
+      else
+        {
+          new_id = Armysetlist::getNextAvailableId(armyset->getId());
+          armyset->setId(new_id);
+        }
     }
   else
     new_id = armyset->getId();

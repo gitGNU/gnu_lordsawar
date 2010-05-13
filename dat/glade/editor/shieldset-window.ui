@@ -23,28 +23,35 @@
                     <child>
                       <object class="GtkMenuItem" id="new_shieldset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">New Shieldset</property>
+                        <property name="label" translatable="yes">_New Shieldset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="load_shieldset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Load Shieldset</property>
+                        <property name="label" translatable="yes">_Load Shieldset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="save_shieldset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Save Shieldset</property>
+                        <property name="label" translatable="yes">_Save Shieldset</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="save_as_menuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Save A _Copy</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="validate_shieldset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Validate Shieldset</property>
+                        <property name="label" translatable="yes">_Validate Shieldset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>

@@ -221,19 +221,25 @@ bool Tilesetlist::addToPersonalCollection(Tileset *tileset, std::string &new_sub
   //if the subdir conflicts with any other subdir, then change it.
   if (getTileset(tileset->getSubDir()) != NULL)
     {
-      bool found = false;
-      for (int count = 0; count < 100; count++)
-	{
-	  new_subdir = String::ucompose("%1%2", tileset->getSubDir(), count);
-	  if (getTileset(new_subdir) == NULL)
-	    {
-	      found = true;
-	      break;
-	    }
-	}
-      if (found == false)
-	return false;
-      tileset->setSubDir(new_subdir);
+      if (new_subdir != "" && getTileset(new_subdir) == NULL)
+        tileset->setSubDir(new_subdir);
+      else
+        {
+          bool found = false;
+          for (int count = 0; count < 100; count++)
+            {
+              new_subdir = String::ucompose("%1%2", tileset->getSubDir(), 
+                                            count);
+              if (getTileset(new_subdir) == NULL)
+                {
+                  found = true;
+                  break;
+                }
+            }
+          if (found == false)
+            return false;
+          tileset->setSubDir(new_subdir);
+        }
     }
   else
     new_subdir = tileset->getSubDir();
@@ -241,8 +247,13 @@ bool Tilesetlist::addToPersonalCollection(Tileset *tileset, std::string &new_sub
   //if the id conflicts with any other id, then change it
   if (getTileset(tileset->getId()))
     {
-      new_id = Tilesetlist::getNextAvailableId(tileset->getId());
-      tileset->setId(new_id);
+      if (new_id != 0 && getTileset(new_id) == NULL)
+        tileset->setId(new_id);
+      else
+        {
+          new_id = Tilesetlist::getNextAvailableId(tileset->getId());
+          tileset->setId(new_id);
+        }
     }
   else
     new_id = tileset->getId();
@@ -266,5 +277,6 @@ bool Tilesetlist::addToPersonalCollection(Tileset *tileset, std::string &new_sub
   XML_Helper helper(tileset->getConfigurationFile(), std::ios::out, false);
   tileset->save(&helper);
   helper.close();
+  add (tileset);
   return true;
 }

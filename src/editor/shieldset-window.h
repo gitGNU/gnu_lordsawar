@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -52,6 +52,7 @@ class ShieldSetWindow: public sigc::trackable
     Gtk::MenuItem *new_shieldset_menuitem;
     Gtk::MenuItem *load_shieldset_menuitem;
     Gtk::MenuItem *save_shieldset_menuitem;
+    Gtk::MenuItem *save_as_menuitem;
     Gtk::MenuItem *validate_shieldset_menuitem;
     Gtk::MenuItem *edit_shieldset_info_menuitem;
     Gtk::MenuItem *quit_menuitem;
@@ -76,6 +77,7 @@ class ShieldSetWindow: public sigc::trackable
     void on_new_shieldset_activated();
     void on_load_shieldset_activated();
     void on_save_shieldset_activated();
+    void on_save_as_activated();
     void on_validate_shieldset_activated();
     void on_quit_activated();
     bool on_delete_event(GdkEventAny *e);
@@ -96,6 +98,7 @@ class ShieldSetWindow: public sigc::trackable
     
     void addNewShield(Shield::Colour owner, Gdk::Color colour);
     void loadShield(Shield *shield);
+    void update_window_title();
 };
 
 #endif

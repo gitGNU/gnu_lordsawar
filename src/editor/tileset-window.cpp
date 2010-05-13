@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -159,6 +159,9 @@ TileSetWindow::TileSetWindow(std::string load_filename)
     xml->get_widget("save_tileset_menuitem", save_tileset_menuitem);
     save_tileset_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &TileSetWindow::on_save_tileset_activated));
+    xml->get_widget("save_as_menuitem", save_as_menuitem);
+    save_as_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &TileSetWindow::on_save_as_activated));
     xml->get_widget("quit_menuitem", quit_menuitem);
     quit_menuitem->signal_activate().connect
        (sigc::mem_fun(this, &TileSetWindow::on_quit_activated));
@@ -509,6 +512,7 @@ void TileSetWindow::on_new_tileset_activated()
   d_tileset->save(&helper);
   helper.close();
   needs_saving = true;
+  update_window_title();
 }
 
 void TileSetWindow::on_load_tileset_activated()
@@ -531,6 +535,31 @@ void TileSetWindow::on_load_tileset_activated()
     {
       load_tileset(chooser.get_filename());
       chooser.hide();
+      needs_saving = false;
+    }
+  update_window_title();
+}
+
+void TileSetWindow::on_save_as_activated()
+{
+  guint32 orig_id = d_tileset->getId();
+  d_tileset->setId(Tilesetlist::getNextAvailableId(orig_id));
+  TileSetInfoDialog d(d_tileset, File::getUserTilesetDir() + d_tileset->getSubDir() +"/", false);
+  d.set_parent_window(*window);
+  int response = d.run();
+  if (response == Gtk::RESPONSE_ACCEPT)
+    {
+      std::string new_subdir = "";
+      guint32 new_id = 0;
+      Tilesetlist::getInstance()->addToPersonalCollection(d_tileset, new_subdir, new_id);
+      save_tileset_menuitem->set_sensitive(true);
+      current_save_filename = d_tileset->getConfigurationFile();
+      needs_saving = false;
+      update_window_title();
+    }
+  else
+    {
+      d_tileset->setId(orig_id);
     }
 }
 
@@ -550,6 +579,7 @@ void TileSetWindow::on_save_tileset_activated()
   d_tileset->save(&helper);
   helper.close();
   tileset_saved.emit(d_tileset->getId());
+  update_window_title();
 }
 
 bool TileSetWindow::quit()
@@ -599,7 +629,10 @@ void TileSetWindow::on_edit_tileset_info_activated()
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
-    needs_saving = true;
+    {
+      needs_saving = true;
+      update_window_title();
+    }
 }
 
 void TileSetWindow::on_help_about_activated()
@@ -693,6 +726,7 @@ void TileSetWindow::on_add_tile_clicked()
   tiles_treeview->set_cursor (Gtk::TreePath (String::ucompose("%1", d_tileset->size() - 1)));
   update_tile_preview_menuitem();
   needs_saving = true;
+  update_window_title();
 }
 
 void TileSetWindow::on_remove_tile_clicked()
@@ -718,6 +752,7 @@ void TileSetWindow::on_remove_tile_clicked()
 	}
   
       needs_saving = true;
+      update_window_title();
     }
   update_tile_preview_menuitem();
 }
@@ -734,6 +769,7 @@ void TileSetWindow::on_tile_first_color_changed()
       t->getSmallTile()->setColor(tile_smallmap_first_colorbutton->get_color());
       fill_tile_smallmap(t);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -749,6 +785,7 @@ void TileSetWindow::on_tile_second_color_changed()
       t->getSmallTile()->setSecondColor(tile_smallmap_second_colorbutton->get_color());
       fill_tile_smallmap(t);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -764,6 +801,7 @@ void TileSetWindow::on_tile_third_color_changed()
       t->getSmallTile()->setThirdColor(tile_smallmap_third_colorbutton->get_color());
       fill_tile_smallmap(t);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -808,6 +846,7 @@ void TileSetWindow::on_tile_pattern_changed()
       fill_colours(t);
       fill_tile_smallmap(t);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -823,6 +862,7 @@ void TileSetWindow::on_tile_type_changed()
       Tile *t = row[tiles_columns.tile];
       t->setTypeByIndex(idx);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -838,6 +878,7 @@ void TileSetWindow::on_tile_name_changed()
       Tile *t = row[tiles_columns.tile];
       t->setName(tile_name_entry->get_text());
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -899,6 +940,7 @@ void TileSetWindow::on_add_tilestyleset_clicked()
       tilestylesets_treeview->set_cursor (Gtk::TreePath (String::ucompose("%1", tile->size() - 1)));
       image_filechooser_button->set_filename(filename);
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -964,6 +1006,7 @@ void TileSetWindow::on_remove_tilestyleset_clicked()
 	    }
 	}
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1032,6 +1075,7 @@ void TileSetWindow::on_image_chosen()
     }
       
   needs_saving = true;
+  update_window_title();
 }
 
 void TileSetWindow::on_refresh_clicked()
@@ -1074,8 +1118,10 @@ void TileSetWindow::on_roads_picture_activated()
       File::copy(filename, d_tileset->getFile(name));
       d_tileset->setRoadsFilename(name);
       needs_saving = true;
+      update_window_title();
     }
 }
+
 void TileSetWindow::on_bridges_picture_activated()
 {
   ImageEditorDialog d(d_tileset->getFile(d_tileset->getBridgesFilename()),
@@ -1090,6 +1136,7 @@ void TileSetWindow::on_bridges_picture_activated()
       File::copy(filename, d_tileset->getFile(name));
       d_tileset->setBridgesFilename(name);
       needs_saving = true;
+      update_window_title();
     }
 }
 void TileSetWindow::on_fog_picture_activated()
@@ -1106,6 +1153,7 @@ void TileSetWindow::on_fog_picture_activated()
       File::copy(filename, d_tileset->getFile(name));
       d_tileset->setFogFilename(name);
       needs_saving = true;
+      update_window_title();
     }
 }
 void TileSetWindow::on_flags_picture_activated()
@@ -1125,6 +1173,7 @@ void TileSetWindow::on_flags_picture_activated()
 
       d_tileset->setFlagsFilename(name);
       needs_saving = true;
+      update_window_title();
     }
 }
 void TileSetWindow::on_army_unit_selector_activated()
@@ -1149,6 +1198,7 @@ void TileSetWindow::on_army_unit_selector_activated()
       d_tileset->setLargeSelectorFilename(name);
 
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1168,6 +1218,7 @@ void TileSetWindow::on_explosion_picture_activated()
 	  d_tileset->setExplosionFilename(name);
 	}
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1207,4 +1258,16 @@ void TileSetWindow::load_tileset(std::string filename)
   update_tilestyleset_panel();
   update_tilestyle_panel();
   update_tile_preview_menuitem();
+  update_window_title();
+}
+
+void TileSetWindow::update_window_title()
+{
+  std::string title = "";
+  if (needs_saving)
+    title += "*";
+  title += File::get_basename(current_save_filename, true);
+  title += " - ";
+  title += _("LordsAWar! Tileset Editor");
+  window->set_title(title);
 }

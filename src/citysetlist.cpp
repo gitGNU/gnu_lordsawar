@@ -193,19 +193,24 @@ bool Citysetlist::addToPersonalCollection(Cityset *cityset, std::string &new_sub
   //if the subdir conflicts with any other subdir, then change it.
   if (getCityset(cityset->getSubDir()) != NULL)
     {
-      bool found = false;
-      for (int count = 0; count < 100; count++)
-	{
-	  new_subdir = String::ucompose("%1%2", cityset->getSubDir(), count);
-	  if (getCityset(new_subdir) == NULL)
-	    {
-	      found = true;
-	      break;
-	    }
-	}
-      if (found == false)
-	return false;
-      cityset->setSubDir(new_subdir);
+      if (new_subdir != "" && getCityset(new_subdir) == NULL)
+        cityset->setSubDir(new_subdir);
+      else
+        {
+          bool found = false;
+          for (int count = 0; count < 100; count++)
+            {
+              new_subdir = String::ucompose("%1%2", cityset->getSubDir(), count);
+              if (getCityset(new_subdir) == NULL)
+                {
+                  found = true;
+                  break;
+                }
+            }
+          if (found == false)
+            return false;
+          cityset->setSubDir(new_subdir);
+        }
     }
   else
     new_subdir = cityset->getSubDir();
@@ -213,8 +218,13 @@ bool Citysetlist::addToPersonalCollection(Cityset *cityset, std::string &new_sub
   //if the id conflicts with any other id, then change it
   if (getCityset(cityset->getId()) != NULL)
     {
-      new_id = Citysetlist::getNextAvailableId(cityset->getId());
-      cityset->setId(new_id);
+      if (new_id != 0 && getCityset(new_id) == NULL)
+        cityset->setId(new_id);
+      else
+        {
+          new_id = Citysetlist::getNextAvailableId(cityset->getId());
+          cityset->setId(new_id);
+        }
     }
   else
     new_id = cityset->getId();
@@ -238,6 +248,7 @@ bool Citysetlist::addToPersonalCollection(Cityset *cityset, std::string &new_sub
   XML_Helper helper(cityset->getConfigurationFile(), std::ios::out, false);
   cityset->save(&helper);
   helper.close();
+  add (cityset);
   return true;
 }
 

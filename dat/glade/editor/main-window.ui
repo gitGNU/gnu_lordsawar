@@ -151,28 +151,28 @@
                     <child>
                       <object class="GtkMenuItem" id="edit_armyset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Edit _Armyset</property>
+                        <property name="label" translatable="yes">_Armyset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_cityset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Edit _Cityset</property>
+                        <property name="label" translatable="yes">_Cityset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_shieldset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Edit S_hieldset</property>
+                        <property name="label" translatable="yes">S_hieldset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_tileset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Edit _Tileset</property>
+                        <property name="label" translatable="yes">_Tileset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>

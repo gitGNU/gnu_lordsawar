@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -71,8 +71,10 @@ TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, std::string dir,
     dir_label->set_text (dir);
     if (readonly)
       subdir_entry->set_sensitive(false);
-    else
+    else if (File::exists(dir) == true || subdir_entry->get_text() == "")
       accept_button->set_sensitive(false);
+    else
+      accept_button->set_sensitive(true);
 }
 
 void TileSetInfoDialog::on_subdir_changed()

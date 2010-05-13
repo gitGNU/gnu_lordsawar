@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -71,6 +71,9 @@ ShieldSetWindow::ShieldSetWindow(std::string load_filename)
     xml->get_widget("load_shieldset_menuitem", load_shieldset_menuitem);
     load_shieldset_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &ShieldSetWindow::on_load_shieldset_activated));
+    xml->get_widget("save_as_menuitem", save_as_menuitem);
+    save_as_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &ShieldSetWindow::on_save_as_activated));
     xml->get_widget("save_shieldset_menuitem", save_shieldset_menuitem);
     save_shieldset_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &ShieldSetWindow::on_save_shieldset_activated));
@@ -227,6 +230,7 @@ void ShieldSetWindow::on_new_shieldset_activated()
   helper.close();
   update_shield_panel();
   needs_saving = true;
+  update_window_title();
 }
 
 void ShieldSetWindow::on_load_shieldset_activated()
@@ -249,10 +253,12 @@ void ShieldSetWindow::on_load_shieldset_activated()
     {
       load_shieldset(chooser.get_filename());
       chooser.hide();
+      needs_saving = false;
     }
 
   update_shieldset_menuitems();
   update_shield_panel();
+  update_window_title();
 }
 
 void ShieldSetWindow::on_validate_shieldset_activated()
@@ -277,6 +283,29 @@ void ShieldSetWindow::on_validate_shieldset_activated()
   return;
 }
 
+void ShieldSetWindow::on_save_as_activated()
+{
+  guint32 orig_id = d_shieldset->getId();
+  d_shieldset->setId(Shieldsetlist::getNextAvailableId(orig_id));
+  ShieldSetInfoDialog d(d_shieldset, File::getUserShieldsetDir() + d_shieldset->getSubDir() +"/", false);
+  d.set_parent_window(*window);
+  int response = d.run();
+  if (response == Gtk::RESPONSE_ACCEPT)
+    {
+      std::string new_subdir = "";
+      guint32 new_id = 0;
+      Shieldsetlist::getInstance()->addToPersonalCollection(d_shieldset, new_subdir, new_id);
+      save_shieldset_menuitem->set_sensitive(true);
+      current_save_filename = d_shieldset->getConfigurationFile();
+      needs_saving = false;
+      update_window_title();
+    }
+  else
+    {
+      d_shieldset->setId(orig_id);
+    }
+}
+
 void ShieldSetWindow::on_save_shieldset_activated()
 {
   if (current_save_filename.empty())
@@ -286,6 +315,7 @@ void ShieldSetWindow::on_save_shieldset_activated()
   d_shieldset->save(&helper);
   helper.close();
   needs_saving = false;
+  update_window_title();
   shieldset_saved.emit(d_shieldset->getId());
 }
 
@@ -295,7 +325,10 @@ void ShieldSetWindow::on_edit_shieldset_info_activated()
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
-    needs_saving = true;
+    {
+      needs_saving = true;
+      update_window_title();
+    }
 }
 
 void ShieldSetWindow::on_help_about_activated()
@@ -385,6 +418,7 @@ void ShieldSetWindow::load_shieldset(std::string filename)
 	shields_treeview->get_selection()->select(row);
     }
   update_shield_panel();
+  update_window_title();
 
 }
 bool ShieldSetWindow::quit()
@@ -452,6 +486,7 @@ void ShieldSetWindow::on_change_smallpic_clicked()
 	    }
 	  ss->setImageName(file);
 	  needs_saving = true;
+          update_window_title();
 	  update_shield_panel();
 	}
     }
@@ -484,6 +519,7 @@ void ShieldSetWindow::on_change_mediumpic_clicked()
 	    }
 	  ss->setImageName(file);
 	  needs_saving = true;
+          update_window_title();
 	  update_shield_panel();
 	}
     }
@@ -516,6 +552,7 @@ void ShieldSetWindow::on_change_largepic_clicked()
 	    }
 	  ss->setImageName(file);
 	  needs_saving = true;
+          update_window_title();
 	  update_shield_panel();
 	}
 
@@ -533,6 +570,7 @@ void ShieldSetWindow::on_player_color_changed()
       Shield *s = row[shields_columns.shield];
       s->setColor(player_colorbutton->get_color());
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -557,4 +595,15 @@ void ShieldSetWindow::loadShield(Shield *shield)
   Gtk::TreeIter i = shields_list->append();
   (*i)[shields_columns.name] = name;
   (*i)[shields_columns.shield] = shield;
+}
+
+void ShieldSetWindow::update_window_title()
+{
+  std::string title = "";
+  if (needs_saving)
+    title += "*";
+  title += File::get_basename(current_save_filename, true);
+  title += " - ";
+  title += _("LordsAWar! Shieldset Editor");
+  window->set_title(title);
 }

@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -48,6 +48,7 @@ class CitySetWindow: public sigc::trackable
     Gtk::MenuItem *new_cityset_menuitem;
     Gtk::MenuItem *load_cityset_menuitem;
     Gtk::MenuItem *save_cityset_menuitem;
+    Gtk::MenuItem *save_as_menuitem;
     Gtk::MenuItem *validate_cityset_menuitem;
     Gtk::MenuItem *edit_cityset_info_menuitem;
     Gtk::MenuItem *quit_menuitem;
@@ -75,6 +76,7 @@ class CitySetWindow: public sigc::trackable
     void on_new_cityset_activated();
     void on_load_cityset_activated();
     void on_save_cityset_activated();
+    void on_save_as_activated();
     void on_validate_cityset_activated();
     void on_quit_activated();
     bool on_window_closed(GdkEventAny*);
@@ -94,6 +96,7 @@ class CitySetWindow: public sigc::trackable
     void on_change_ruinpics_clicked();
     void on_change_templepic_clicked();
     void on_change_towerpics_clicked();
+    void update_window_title();
 };
 
 #endif

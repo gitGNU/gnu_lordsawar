@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -68,6 +68,7 @@ class TileSetWindow: public sigc::trackable
     Gtk::MenuItem *new_tileset_menuitem;
     Gtk::MenuItem *load_tileset_menuitem;
     Gtk::MenuItem *save_tileset_menuitem;
+    Gtk::MenuItem *save_as_menuitem;
     Gtk::MenuItem *edit_tileset_info_menuitem;
     Gtk::MenuItem *roads_picture_menuitem;
     Gtk::MenuItem *bridges_picture_menuitem;
@@ -143,7 +144,7 @@ class TileSetWindow: public sigc::trackable
     void on_new_tileset_activated();
     void on_load_tileset_activated();
     void on_save_tileset_activated();
-    void on_save_tileset_as_activated();
+    void on_save_as_activated();
     void on_quit_activated();
     bool on_window_closed(GdkEventAny *);
     bool quit();
@@ -184,6 +185,7 @@ class TileSetWindow: public sigc::trackable
     void on_refresh_clicked();
 
     void load_tileset(std::string filename);
+    void update_window_title();
 
 };
 

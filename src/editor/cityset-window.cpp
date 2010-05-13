@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -67,6 +67,9 @@ CitySetWindow::CitySetWindow(std::string load_filename)
     xml->get_widget("save_cityset_menuitem", save_cityset_menuitem);
     save_cityset_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &CitySetWindow::on_save_cityset_activated));
+    xml->get_widget("save_as_menuitem", save_as_menuitem);
+    save_as_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &CitySetWindow::on_save_as_activated));
     xml->get_widget("validate_cityset_menuitem", validate_cityset_menuitem);
     validate_cityset_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &CitySetWindow::on_validate_cityset_activated));
@@ -261,6 +264,7 @@ void CitySetWindow::on_new_cityset_activated()
   d_cityset->save(&helper);
   helper.close();
   needs_saving = true;
+  update_window_title();
 }
 
 void CitySetWindow::on_load_cityset_activated()
@@ -283,10 +287,12 @@ void CitySetWindow::on_load_cityset_activated()
     {
       load_cityset(chooser.get_filename());
       chooser.hide();
+      needs_saving = false;
     }
 
   update_cityset_menuitems();
   update_cityset_panel();
+  update_window_title();
 }
 
 void CitySetWindow::on_validate_cityset_activated()
@@ -330,6 +336,29 @@ void CitySetWindow::on_validate_cityset_activated()
   return;
 }
 
+void CitySetWindow::on_save_as_activated()
+{
+  guint32 orig_id = d_cityset->getId();
+  d_cityset->setId(Citysetlist::getNextAvailableId(orig_id));
+  CitySetInfoDialog d(d_cityset, File::getUserCitysetDir() + d_cityset->getSubDir() +"/", false);
+  d.set_parent_window(*window);
+  int response = d.run();
+  if (response == Gtk::RESPONSE_ACCEPT)
+    {
+      std::string new_subdir = "";
+      guint32 new_id = 0;
+      Citysetlist::getInstance()->addToPersonalCollection(d_cityset, new_subdir, new_id);
+      save_cityset_menuitem->set_sensitive(true);
+      current_save_filename = d_cityset->getConfigurationFile();
+      needs_saving = false;
+      update_window_title();
+    }
+  else
+    {
+      d_cityset->setId(orig_id);
+    }
+}
+
 void CitySetWindow::on_save_cityset_activated()
 {
   if (current_save_filename.empty())
@@ -339,6 +368,7 @@ void CitySetWindow::on_save_cityset_activated()
   d_cityset->save(&helper);
   helper.close();
   needs_saving = false;
+  update_window_title();
   cityset_saved.emit(d_cityset->getId());
 }
 
@@ -348,7 +378,10 @@ void CitySetWindow::on_edit_cityset_info_activated()
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
-    needs_saving = true;
+    {
+      needs_saving = true;
+      update_window_title();
+    }
 }
 
 void CitySetWindow::on_help_about_activated()
@@ -393,6 +426,7 @@ void CitySetWindow::load_cityset(std::string filename)
 
   d_cityset->setSubDir(name);
   d_cityset->instantiateImages();
+  update_window_title();
 }
 
 bool CitySetWindow::quit()
@@ -447,6 +481,7 @@ void CitySetWindow::on_city_tile_width_changed()
     return;
   d_cityset->setCityTileWidth(city_tile_width_spinbutton->get_value());
   needs_saving = true;
+  update_window_title();
 }
 
 void CitySetWindow::on_ruin_tile_width_text_changed(const Glib::ustring &s, int* p)
@@ -461,6 +496,7 @@ void CitySetWindow::on_ruin_tile_width_changed()
     return;
   d_cityset->setRuinTileWidth(ruin_tile_width_spinbutton->get_value());
   needs_saving = true;
+  update_window_title();
 }
 
 void CitySetWindow::on_temple_tile_width_text_changed(const Glib::ustring &s, int* p)
@@ -475,6 +511,7 @@ void CitySetWindow::on_temple_tile_width_changed()
     return;
   d_cityset->setTempleTileWidth(temple_tile_width_spinbutton->get_value());
   needs_saving = true;
+  update_window_title();
 }
 
 void CitySetWindow::on_change_citypics_clicked()
@@ -496,6 +533,7 @@ void CitySetWindow::on_change_citypics_clicked()
       d_cityset->setCitiesFilename
 	(File::get_basename(d.get_selected_filename()));
       needs_saving = true;
+      update_window_title();
       update_cityset_panel();
     }
 }
@@ -518,6 +556,7 @@ void CitySetWindow::on_change_razedcitypics_clicked()
       d_cityset->setRazedCitiesFilename
 	(File::get_basename(d.get_selected_filename()));
       needs_saving = true;
+      update_window_title();
       update_cityset_panel();
     }
 }
@@ -539,6 +578,7 @@ void CitySetWindow::on_change_portpic_clicked()
 
       d_cityset->setPortFilename(File::get_basename(d.get_selected_filename()));
       needs_saving = true;
+      update_window_title();
       update_cityset_panel();
     }
 }
@@ -561,6 +601,7 @@ void CitySetWindow::on_change_signpostpic_clicked()
       d_cityset->setSignpostFilename
 	(File::get_basename(d.get_selected_filename()));
       needs_saving = true;
+      update_window_title();
       update_cityset_panel();
     }
 }
@@ -583,6 +624,7 @@ void CitySetWindow::on_change_ruinpics_clicked()
       d_cityset->setRuinsFilename
 	(File::get_basename(d.get_selected_filename()));
       needs_saving = true;
+      update_window_title();
       update_cityset_panel();
     }
 }
@@ -605,6 +647,7 @@ void CitySetWindow::on_change_templepic_clicked()
       d_cityset->setTemplesFilename
 	(File::get_basename(d.get_selected_filename()));
       needs_saving = true;
+      update_window_title();
       update_cityset_panel();
     }
 }
@@ -627,6 +670,18 @@ void CitySetWindow::on_change_towerpics_clicked()
       d_cityset->setTowersFilename
 	(File::get_basename(d.get_selected_filename()));
       needs_saving = true;
+      update_window_title();
       update_cityset_panel();
     }
+}
+
+void CitySetWindow::update_window_title()
+{
+  std::string title = "";
+  if (needs_saving)
+    title += "*";
+  title += File::get_basename(current_save_filename, true);
+  title += " - ";
+  title += _("LordsAWar! Cityset Editor");
+  window->set_title(title);
 }

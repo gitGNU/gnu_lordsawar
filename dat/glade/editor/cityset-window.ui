@@ -22,28 +22,35 @@
                     <child>
                       <object class="GtkMenuItem" id="new_cityset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">New Cityset</property>
+                        <property name="label" translatable="yes">_New Cityset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="load_cityset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Load Cityset</property>
+                        <property name="label" translatable="yes">_Load Cityset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="save_cityset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Save Cityset</property>
+                        <property name="label" translatable="yes">_Save Cityset</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="save_as_menuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Save A _Copy</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="validate_cityset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Validate Cityset</property>
+                        <property name="label" translatable="yes">_Validate Cityset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
