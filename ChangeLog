@@ -6,6 +6,8 @@
 	editors.
 	* improved shieldset/cityset/tileset/armyset info dialogs to have
 	error checking on name.
+	* fixed bug that prevented shield/city/tile/armysets from being copied
+	properly.
 
 2010-05-12  Ben Asselstine  <benasselstine@hushmail.com>
 
