@@ -238,7 +238,7 @@ void ShieldSetWindow::on_load_shieldset_activated()
   Gtk::FileChooserDialog chooser(*window, 
 				 _("Choose an Shieldset to Load"));
   Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*" + ARMYSET_EXT);
+  sav_filter.add_pattern("*" + SHIELDSET_EXT);
   chooser.set_filter(sav_filter);
   chooser.set_current_folder(File::getUserShieldsetDir());
 
