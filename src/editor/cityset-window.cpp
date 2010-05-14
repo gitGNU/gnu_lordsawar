@@ -288,11 +288,11 @@ void CitySetWindow::on_load_cityset_activated()
       load_cityset(chooser.get_filename());
       chooser.hide();
       needs_saving = false;
+      update_window_title();
     }
 
   update_cityset_menuitems();
   update_cityset_panel();
-  update_window_title();
 }
 
 void CitySetWindow::on_validate_cityset_activated()

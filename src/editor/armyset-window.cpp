@@ -514,6 +514,8 @@ void ArmySetWindow::on_load_armyset_activated()
     {
       load_armyset(chooser.get_filename());
       chooser.hide();
+      needs_saving = false;
+      update_window_title();
     }
 
   update_armyset_buttons();

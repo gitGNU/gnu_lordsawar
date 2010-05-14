@@ -254,11 +254,11 @@ void ShieldSetWindow::on_load_shieldset_activated()
       load_shieldset(chooser.get_filename());
       chooser.hide();
       needs_saving = false;
+      update_window_title();
     }
 
   update_shieldset_menuitems();
   update_shield_panel();
-  update_window_title();
 }
 
 void ShieldSetWindow::on_validate_shieldset_activated()

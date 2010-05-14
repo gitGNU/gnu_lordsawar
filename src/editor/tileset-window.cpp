@@ -536,8 +536,9 @@ void TileSetWindow::on_load_tileset_activated()
       load_tileset(chooser.get_filename());
       chooser.hide();
       needs_saving = false;
+      update_window_title();
     }
-  update_window_title();
+  update_tile_panel();
 }
 
 void TileSetWindow::on_save_as_activated()
