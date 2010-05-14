@@ -320,6 +320,7 @@ ArmySetWindow::update_armyset_menuitems()
       edit_armyset_info_menuitem->set_sensitive(false);
       edit_standard_picture_menuitem->set_sensitive(false);
       edit_ship_picture_menuitem->set_sensitive(false);
+      edit_bag_picture_menuitem->set_sensitive(false);
     }
   else
     {
@@ -333,6 +334,7 @@ ArmySetWindow::update_armyset_menuitems()
       edit_armyset_info_menuitem->set_sensitive(true);
       edit_standard_picture_menuitem->set_sensitive(true);
       edit_ship_picture_menuitem->set_sensitive(true);
+      edit_bag_picture_menuitem->set_sensitive(true);
       validate_armyset_menuitem->set_sensitive(true);
     }
 }
