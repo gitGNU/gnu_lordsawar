@@ -696,6 +696,7 @@ bool MainWindow::on_bigmap_mouse_button_event(GdkEventButton *e)
 	if (smallmap)
 	  smallmap->draw(Playerlist::getActiveplayer());
 	needs_saving = true;
+        update_window_title();
     }
     
     return true;
@@ -788,6 +789,7 @@ void MainWindow::on_new_map_activated()
 			   d.map.tileset, d.map.shieldset, d.map.cityset,
 			   d.map.armyset);
         needs_saving = true;
+        update_window_title();
     }
 }
 
@@ -831,6 +833,8 @@ void MainWindow::on_load_map_activated()
 
 	init_map_state();
 	bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
+        needs_saving = false;
+        update_window_title();
     }
 }
 
@@ -840,10 +844,17 @@ void MainWindow::on_save_map_activated()
 	on_save_map_as_activated();
     else
     {
-        needs_saving = false;
 	bool success = game_scenario->saveGame(current_save_filename, "map");
 	if (!success)
+          {
 	    show_error(_("Map was not saved!"));
+            on_validate_activated();
+          }
+        else
+          {
+            needs_saving = false;
+            update_window_title();
+          }
     }
 }
 
@@ -921,13 +932,22 @@ void MainWindow::on_save_map_as_activated()
     
     if (res == Gtk::RESPONSE_ACCEPT)
     {
+        std::string old_save_filename = current_save_filename;
 	current_save_filename = chooser.get_filename();
 	chooser.hide();
 
 	bool success = game_scenario->saveGame(current_save_filename, "map");
 	if (!success)
-	    show_error(_("Map was not saved!"));
-        needs_saving = false;
+          {
+            show_error(_("Map was not saved!"));
+            on_validate_activated();
+            current_save_filename = old_save_filename;
+          }
+        else
+          {
+            needs_saving = false;
+            update_window_title();
+          }
     }
 }
 
@@ -974,6 +994,7 @@ void MainWindow::on_edit_players_activated()
 	if (Playerlist::getInstance()->getPlayer(active->getId()))
 	  Playerlist::getInstance()->setActiveplayer(active);
 	needs_saving = true;
+        update_window_title();
 	fill_players();
       }
 }
@@ -984,7 +1005,10 @@ void MainWindow::on_edit_map_info_activated()
     d.set_parent_window(*window);
     int response = d.run();
     if (response == Gtk::RESPONSE_ACCEPT)
-      needs_saving = true;
+      {
+        needs_saving = true;
+        update_window_title();
+      }
 }
 
 void MainWindow::on_edit_shieldset_activated()
@@ -1012,6 +1036,7 @@ void MainWindow::on_shieldset_saved(guint32 id)
       bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
       redraw();
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1039,6 +1064,7 @@ void MainWindow::on_armyset_saved(guint32 id)
       bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
       redraw();
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1064,6 +1090,7 @@ void MainWindow::on_cityset_saved(guint32 id)
       bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
       redraw();
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1089,6 +1116,7 @@ void MainWindow::on_tileset_saved(guint32 id)
       bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
       redraw();
       needs_saving = true;
+      update_window_title();
     }
 }
 
@@ -1413,7 +1441,10 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 	d.set_parent_window(*window);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
-	  needs_saving = true;
+          {
+            needs_saving = true;
+            update_window_title();
+          }
 
 	// we might have changed something visible
 	redraw();
@@ -1424,7 +1455,10 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 	d.set_parent_window(*window);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
-	  needs_saving = true;
+          {
+            needs_saving = true;
+            update_window_title();
+          }
 
 	// we might have changed something visible
 	redraw();
@@ -1435,7 +1469,10 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 	d.set_parent_window(*window);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
-	  needs_saving = true;
+          {
+            needs_saving = true;
+            update_window_title();
+          }
 	redraw();
     }
     else if (Signpost *o = dynamic_cast<Signpost *>(object))
@@ -1444,7 +1481,10 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 	d.set_parent_window(*window);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
-	  needs_saving = true;
+          {
+            needs_saving = true;
+            update_window_title();
+          }
     }
     else if (Temple *o = dynamic_cast<Temple *>(object))
     {
@@ -1452,7 +1492,10 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 	d.set_parent_window(*window);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
-	  needs_saving = true;
+          {
+            needs_saving = true;
+            update_window_title();
+          }
 
 	// we might have changed something visible
 	redraw();
@@ -1462,7 +1505,10 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 	BackpackEditorDialog d(b);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
-	  needs_saving = true;
+          {
+            needs_saving = true;
+            update_window_title();
+          }
       }
 }
 
@@ -1484,7 +1530,10 @@ void MainWindow::on_edit_items_activated()
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
-    needs_saving = true;
+    {
+      needs_saving = true;
+      update_window_title();
+    }
 }
 
 void MainWindow::on_edit_rewards_activated()
@@ -1493,7 +1542,10 @@ void MainWindow::on_edit_rewards_activated()
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
-    needs_saving = true;
+    {
+      needs_saving = true;
+      update_window_title();
+    }
 }
 
 void MainWindow::randomize_city(City *c)
@@ -1510,6 +1562,7 @@ void MainWindow::on_random_all_cities_activated()
   for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
     randomize_city(*it);
   needs_saving = true;
+  update_window_title();
 }
 
 void MainWindow::on_random_unnamed_cities_activated()
@@ -1521,6 +1574,7 @@ void MainWindow::on_random_unnamed_cities_activated()
 	randomize_city(*it);
     }
   needs_saving = true;
+  update_window_title();
 }
 
 void MainWindow::randomize_ruin(Ruin *r)
@@ -1540,6 +1594,7 @@ void MainWindow::on_random_all_ruins_activated()
   for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
     randomize_ruin(*it);
   needs_saving = true;
+  update_window_title();
 }
 
 void MainWindow::on_random_unnamed_ruins_activated()
@@ -1551,6 +1606,7 @@ void MainWindow::on_random_unnamed_ruins_activated()
 	randomize_ruin(*it);
     }
   needs_saving = true;
+  update_window_title();
 }
 
 void MainWindow::on_random_all_temples_activated()
@@ -1568,6 +1624,7 @@ void MainWindow::on_random_all_temples_activated()
 	}
     }
   needs_saving = true;
+  update_window_title();
 }
 
 void MainWindow::on_random_unnamed_temples_activated()
@@ -1588,6 +1645,7 @@ void MainWindow::on_random_unnamed_temples_activated()
 	}
     }
   needs_saving = true;
+  update_window_title();
 }
 
 void MainWindow::randomize_signpost(Signpost *signpost)
@@ -1608,6 +1666,7 @@ void MainWindow::on_random_all_signs_activated()
   for (Signpostlist::iterator it = sl->begin(); it != sl->end(); it++)
     randomize_signpost(*it);
   needs_saving = true;
+  update_window_title();
 }
 
 void MainWindow::on_random_unnamed_signs_activated()
@@ -1619,6 +1678,7 @@ void MainWindow::on_random_unnamed_signs_activated()
 	randomize_signpost(*it);
     }
   needs_saving = true;
+  update_window_title();
 }
 
 void MainWindow::on_help_about_activated()
@@ -1741,6 +1801,7 @@ void MainWindow::on_switch_sets_activated()
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       needs_saving = true;
+      update_window_title();
       GraphicsCache::getInstance()->reset();
       bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
       redraw();
@@ -1791,4 +1852,18 @@ void MainWindow::fill_players()
   players_hbox->show_all();
   if (!sensitive)
     players_hbox->set_sensitive(false);
+}
+
+void MainWindow::update_window_title()
+{
+  std::string title = "";
+  if (current_save_filename != "")
+    {
+      if (needs_saving == true)
+        title +="*";
+      title += File::get_basename(current_save_filename, true);
+      title += " - ";
+    }
+  title += _("LordsAWar! Scenario Editor");
+  window->set_title(title);
 }
