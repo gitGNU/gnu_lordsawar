@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2010 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -129,33 +129,34 @@ bool GameScenario::loadTilesets(Tar_Helper *t)
   bool broken = false;
   std::list<std::string> tilesets;
   tilesets = t->getFilenamesWithExtension(Tileset::file_extension);
+  Tilesetlist *tlist = Tilesetlist::getInstance();
   for (std::list<std::string>::iterator it = tilesets.begin(); 
        it != tilesets.end(); it++)
     {
-      std::string filename = t->getFile(*it, broken);
-      Tileset *tileset = Tileset::create(filename);
-      tileset->setSubDir(File::get_basename(*it));
-
-      //extract all the files and remember where we extracted them
-      std::list<std::string> delfiles;
-      delfiles.push_back(filename);
-      std::list<std::string> files;
-      tileset->getFilenames(files);
-      for (std::list<std::string>::iterator i = files.begin(); i != files.end(); i++)
-	delfiles.push_back (t->getFile(*i + ".png", broken));
-
-      std::string subdir = "";
-      guint32 id = 0;
-      Tilesetlist::getInstance()->addToPersonalCollection(tileset, subdir, id);
-
-      for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
-	File::erase(*it);
-  
-      Tilesetlist::getInstance()->getTileset(tileset->getId())->instantiateImages();
+      Tileset *tileset = tlist->import(t, *it, broken);
+      if (tileset)
+        tlist->getTileset(tileset->getId())->instantiateImages();
     }
   return !broken;
 }
 
+bool GameScenario::loadCitysets(Tar_Helper *t)
+{
+  bool broken = false;
+  std::list<std::string> citysets;
+  citysets = t->getFilenamesWithExtension(Cityset::file_extension);
+  Citysetlist *clist = Citysetlist::getInstance();
+  for (std::list<std::string>::iterator it = citysets.begin(); 
+       it != citysets.end(); it++)
+    {
+      Cityset *cityset = clist->import(t, *it, broken);
+      if (cityset)
+        clist->getCityset(cityset->getId())->instantiateImages();
+    }
+  return !broken;
+}
+
+/*
 bool GameScenario::loadCitysets(Tar_Helper *t)
 {
   bool broken = false;
@@ -187,7 +188,25 @@ bool GameScenario::loadCitysets(Tar_Helper *t)
     }
   return !broken;
 }
+*/
 
+bool GameScenario::loadShieldsets(Tar_Helper *t)
+{
+  bool broken = false;
+  std::list<std::string> shieldsets;
+  shieldsets = t->getFilenamesWithExtension(Shieldset::file_extension);
+  Shieldsetlist *slist = Shieldsetlist::getInstance();
+  for (std::list<std::string>::iterator it = shieldsets.begin(); 
+       it != shieldsets.end(); it++)
+    {
+      Shieldset *shieldset = slist->import(t, *it, broken);
+      if (shieldset)
+        slist->getShieldset(shieldset->getId())->instantiateImages();
+    }
+  return !broken;
+}
+
+/*
 bool GameScenario::loadShieldsets(Tar_Helper *t)
 {
   bool broken = false;
@@ -220,6 +239,7 @@ bool GameScenario::loadShieldsets(Tar_Helper *t)
     }
   return !broken;
 }
+*/
 
 GameScenario::GameScenario(XML_Helper &helper, bool& broken)
   : d_turnmode(true), d_playmode(GameScenario::HOTSEAT),

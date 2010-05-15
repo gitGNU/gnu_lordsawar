@@ -18,6 +18,7 @@
 #include <iostream>
 #include <algorithm>
 #include <expat.h>
+#include <assert.h>
 #include "rectangle.h"
 #include <sigc++/functors/mem_fun.h>
 
@@ -25,6 +26,7 @@
 #include "ucompose.hpp"
 #include "File.h"
 #include "defs.h"
+#include "tarhelper.h"
 
 using namespace std;
 
@@ -180,6 +182,35 @@ Cityset *Citysetlist::getCityset(std::string dir)
     return NULL;
   return d_citysets[dir];
 }
+
+Cityset *Citysetlist::import(Tar_Helper *t, std::string f, bool &broken)
+{
+  std::string filename = t->getFile(f, broken);
+  Cityset *cityset = Cityset::create(filename);
+  assert (cityset != NULL);
+  cityset->setSubDir(File::get_basename(f));
+
+  //extract all the files and remember where we extracted them
+  std::list<std::string> delfiles;
+  delfiles.push_back(filename);
+  std::list<std::string> files;
+  cityset->getFilenames(files);
+  for (std::list<std::string>::iterator i = files.begin(); i != files.end(); i++)
+    {
+      std::string file = t->getFile(*i + ".png", broken);
+      delfiles.push_back (file);
+    }
+
+  std::string subdir = "";
+  guint32 id = 0;
+  addToPersonalCollection(cityset, subdir, id);
+
+  for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
+    File::erase(*it);
+  return cityset;
+
+}
+
 bool Citysetlist::addToPersonalCollection(Cityset *cityset, std::string &new_subdir, guint32 &new_id)
 {
   //do we already have this one?
@@ -256,7 +287,7 @@ int Citysetlist::getNextAvailableId(int after)
 {
   std::list<guint32> ids;
   std::list<std::string> citysets = Cityset::scanSystemCollection();
-  //there might be IDs in invalid armysets.
+  //there might be IDs in invalid citysets.
   for (std::list<std::string>::const_iterator i = citysets.begin(); 
        i != citysets.end(); i++)
     {

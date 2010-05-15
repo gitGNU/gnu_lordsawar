@@ -28,6 +28,7 @@
 #include "shield.h"
 #include "shieldset.h"
 
+class Tar_Helper;
 
 //! A list of Shieldset objects available to the game.
 /** 
@@ -113,6 +114,7 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	 *         changed subdir and id.
 	 */
 	bool addToPersonalCollection(Shieldset *shieldset, std::string &new_subdir, guint32 &new_id);
+	Shieldset *import(Tar_Helper *t, std::string f, bool &broken);
 
 
 	// Static Methods

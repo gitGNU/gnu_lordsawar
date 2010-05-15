@@ -26,6 +26,7 @@
 #include "xmlhelper.h"
 #include "cityset.h"
 
+class Tar_Helper;
 
 //! A list of all Cityset objects available to the game.
 /**
@@ -87,6 +88,7 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
 	void uninstantiateImages();
 
 	bool addToPersonalCollection(Cityset *cityset, std::string &new_subdir, guint32 &new_id);
+	Cityset *import(Tar_Helper *t, std::string f, bool &broken);
 
 	static int getNextAvailableId(int after = 0);
     private:

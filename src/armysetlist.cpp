@@ -428,9 +428,8 @@ Armyset *Armysetlist::import(Tar_Helper *t, std::string f, bool &broken)
   armyset->getFilenames(files);
   for (std::list<std::string>::iterator i = files.begin(); i != files.end(); i++)
     {
-      std::string b = *i + ".png";
       std::string file = t->getFile(*i + ".png", broken);
-    delfiles.push_back (file);
+      delfiles.push_back (file);
     }
 
   std::string subdir = "";

@@ -29,6 +29,7 @@
 #include "tileset.h"
 #include "setlist.h"
 
+class Tar_Helper;
 
 //! A list of all Tileset objects available to the game.
 /**
@@ -104,6 +105,7 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 	 *         changed subdir and id.
 	 */
 	bool addToPersonalCollection(Tileset *tileset, std::string &new_subdir, guint32 &new_id);
+	Tileset *import(Tar_Helper *t, std::string f, bool &broken);
 
 	// Static Methods
 

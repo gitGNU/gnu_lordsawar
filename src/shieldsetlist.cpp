@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include <expat.h>
+#include <assert.h>
 #include "rectangle.h"
 #include <sigc++/functors/mem_fun.h>
 
@@ -25,6 +26,7 @@
 #include "File.h"
 #include "defs.h"
 #include "ucompose.hpp"
+#include "tarhelper.h"
 
 using namespace std;
 
@@ -175,6 +177,34 @@ Shieldset *Shieldsetlist::getShieldset(std::string dir) const
   if (it == d_shieldsets.end())
     return NULL;
   return (*it).second;
+}
+
+Shieldset *Shieldsetlist::import(Tar_Helper *t, std::string f, bool &broken)
+{
+  std::string filename = t->getFile(f, broken);
+  Shieldset *shieldset = Shieldset::create(filename);
+  assert (shieldset != NULL);
+  shieldset->setSubDir(File::get_basename(f));
+
+  //extract all the files and remember where we extracted them
+  std::list<std::string> delfiles;
+  delfiles.push_back(filename);
+  std::list<std::string> files;
+  shieldset->getFilenames(files);
+  for (std::list<std::string>::iterator i = files.begin(); i != files.end(); i++)
+    {
+      std::string file = t->getFile(*i + ".png", broken);
+      delfiles.push_back (file);
+    }
+
+  std::string subdir = "";
+  guint32 id = 0;
+  addToPersonalCollection(shieldset, subdir, id);
+
+  for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
+    File::erase(*it);
+  return shieldset;
+
 }
 
 bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &new_subdir, guint32 &new_id)
