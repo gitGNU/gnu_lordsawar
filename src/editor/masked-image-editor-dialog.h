@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,11 +30,14 @@
  * This class doesn't actually edit the image, instead it shows the image
  * being edited in each player colour.  The user can pick a new file to be
  * the new image.
+ *
+ * the shieldset is required to define the mask colours.
  */
+class Shieldset;
 class MaskedImageEditorDialog: public sigc::trackable
 {
  public:
-    MaskedImageEditorDialog(std::string filename);
+    MaskedImageEditorDialog(std::string filename, Shieldset *shieldset = NULL);
     ~MaskedImageEditorDialog();
 
     void set_parent_window(Gtk::Window &parent);
@@ -58,6 +61,7 @@ class MaskedImageEditorDialog: public sigc::trackable
     Gtk::Image *image_orange;
     Gtk::Image *image_black;
     Gtk::Image *image_neutral;
+    Shieldset * d_shieldset;
     void on_image_chosen();
     void show_image(std::string filename);
     void update_panel();

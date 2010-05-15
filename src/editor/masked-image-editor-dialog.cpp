@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,11 +29,13 @@
 #include "defs.h"
 #include "File.h"
 #include "shieldsetlist.h"
+#include "shieldset.h"
 #include "GraphicsCache.h"
 
 
-MaskedImageEditorDialog::MaskedImageEditorDialog(std::string filename)
+MaskedImageEditorDialog::MaskedImageEditorDialog(std::string filename, Shieldset *shieldset)
 {
+  d_shieldset = shieldset;
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/masked-image-editor-dialog.ui");
@@ -117,7 +119,9 @@ void MaskedImageEditorDialog::show_image(std::string filename)
 	default : break;
 	}
 
-      Gdk::Color colour = Shieldsetlist::getInstance()->getColor(1, i);
+      if (d_shieldset == NULL)
+        d_shieldset = Shieldsetlist::getInstance()->getShieldset(1);
+      Gdk::Color colour = d_shieldset->getColor(i);
       PixMask *army_image = GraphicsCache::applyMask(half[0],  half[1],
 						     colour, false);
       image->property_pixbuf() = army_image->to_pixbuf();
