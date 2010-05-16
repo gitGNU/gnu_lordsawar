@@ -22,9 +22,18 @@ public:
 
     std::list<std::string> getFilenames();
 
+
+    bool removeFile(std::string filename);
+    bool replaceFile(std::string old_filename, std::string new_filename);
+
+    bool Open(std::string file, std::ios::openmode mode);
     void Close();
 
     static bool is_tarfile (std::string file);
+
+    static std::string getFile(TAR *t, std::string filename, bool &broken, std::string tmpoutdir);
+    static std::list<std::string> getFilenames(TAR *t);
+    static bool saveFile(TAR *t, std::string filename, std::string destfile = "");
 private:
 
     // DATA
