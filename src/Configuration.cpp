@@ -75,6 +75,7 @@ GameParameters::QuickStartPolicy Configuration::s_quick_start = GameParameters::
 bool Configuration::s_cusp_of_war = false;
 bool Configuration::s_decorated = true;
 bool Configuration::s_remember_recent_games = true;
+bool Configuration::s_remember_recently_edited_files = true;
 guint32 Configuration::s_double_click_threshold = 400; //milliseconds
 
 Configuration::Configuration()
@@ -155,6 +156,7 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("cusp_of_war", s_cusp_of_war);
     retval &= helper.saveData("decorated", s_decorated);
     retval &= helper.saveData("remember_recent_games", s_remember_recent_games);
+    retval &= helper.saveData("remember_recently_edited_files", s_remember_recently_edited_files);
     retval &= helper.saveData("double_click_threshold", 
 			      s_double_click_threshold);
     retval &= helper.closeTag();
@@ -281,6 +283,7 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     helper->getData(s_cusp_of_war, "cusp_of_war");
     helper->getData(s_decorated, "decorated");
     helper->getData(s_remember_recent_games, "remember_recent_games");
+    helper->getData(s_remember_recently_edited_files, "remember_recently_edited_files");
     helper->getData(s_double_click_threshold, "double_click_threshold");
     return true;
 }

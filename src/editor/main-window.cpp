@@ -844,7 +844,7 @@ void MainWindow::on_save_map_activated()
 	on_save_map_as_activated();
     else
     {
-	bool success = game_scenario->saveGame(current_save_filename, "map");
+	bool success = game_scenario->saveGame(current_save_filename, MAP_EXT);
 	if (!success)
           {
 	    show_error(_("Map was not saved!"));
@@ -919,7 +919,7 @@ void MainWindow::on_save_map_as_activated()
     Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
 				   Gtk::FILE_CHOOSER_ACTION_SAVE);
     Gtk::FileFilter sav_filter;
-    sav_filter.add_pattern("*.map");
+    sav_filter.add_pattern("*" + MAP_EXT);
     chooser.set_filter(sav_filter);
     chooser.set_current_folder(File::getUserMapDir());
 
@@ -936,7 +936,7 @@ void MainWindow::on_save_map_as_activated()
 	current_save_filename = chooser.get_filename();
 	chooser.hide();
 
-	bool success = game_scenario->saveGame(current_save_filename, "map");
+	bool success = game_scenario->saveGame(current_save_filename, MAP_EXT);
 	if (!success)
           {
             show_error(_("Map was not saved!"));
@@ -1745,7 +1745,7 @@ void MainWindow::on_import_map_activated()
 {
     Gtk::FileChooserDialog chooser(*window, _("Choose Game to Load Map from"));
     Gtk::FileFilter sav_filter;
-    sav_filter.add_pattern("*.sav");
+    sav_filter.add_pattern("*" + SAVE_EXT);
     chooser.set_filter(sav_filter);
     chooser.set_current_folder(File::getSavePath());
 

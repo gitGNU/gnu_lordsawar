@@ -42,7 +42,7 @@ GameClientDecoder::~GameClientDecoder()
 
 void GameClientDecoder::gotScenario(const std::string &payload)
 {
-  std::string file = "clientnetwork.sav";
+  std::string file = "clientnetwork" + SAVE_EXT;
   std::string path = File::getSavePath();
   path += file;
   

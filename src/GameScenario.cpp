@@ -633,7 +633,7 @@ GameScenario::~GameScenario()
   if (Configuration::s_autosave_policy == 1 && 
       inhibit_autosave_removal == false)
     {
-      std::string filename = File::getSavePath() + "autosave.sav";
+      std::string filename = File::getSavePath() + "autosave" + SAVE_EXT;
       File::erase(filename);
     }
   GameScenarioOptions::s_round = 0;
@@ -944,9 +944,9 @@ bool GameScenario::autoSave()
 {
   Glib::ustring filename = "";
   if (Configuration::s_autosave_policy == 2)
-    filename = String::ucompose("autosave-%1.sav", Glib::ustring::format(std::setfill(L'0'), std::setw(3), s_round - 1));
+    filename = String::ucompose("autosave-%1%2", Glib::ustring::format(std::setfill(L'0'), std::setw(3), s_round - 1), SAVE_EXT);
   else if (Configuration::s_autosave_policy == 1)
-    filename = "autosave.sav";
+    filename = "autosave" + SAVE_EXT;
   else
     return true;
   // autosave to the file "autosave.sav". This is crude, but should work
@@ -954,12 +954,12 @@ bool GameScenario::autoSave()
   // As a more enhanced version: autosave to a temporary file, then rename
   // the file. Avoids screwing up the autosave if something goes wrong
   // (and we have a savefile for debugging)
-  if (!saveGame(File::getSavePath() + "tmp.sav"))
+  if (!saveGame(File::getSavePath() + "tmp" + SAVE_EXT))
     {
       std::cerr<< "Autosave failed.\n";
       return false;
     }
-  if (rename(std::string(File::getSavePath() + "tmp.sav").c_str(),
+  if (rename(std::string(File::getSavePath() + "tmp" + SAVE_EXT).c_str(),
 	     std::string(File::getSavePath() + filename).c_str()))
     {
       char* err = strerror(errno);

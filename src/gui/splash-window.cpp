@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -93,14 +93,14 @@ SplashWindow::SplashWindow()
     if (Configuration::s_autosave_policy == 1)
       {
   
-	std::string filename = File::getSavePath() + "autosave.sav";
+	std::string filename = File::getSavePath() + "autosave" + SAVE_EXT;
 	FILE *fileptr = fopen (filename.c_str(), "r");
 	if (fileptr)
 	  {
 	    bool broken = false;
 	    fclose (fileptr);
 	    GameScenario::PlayMode mode = 
-	      GameScenario::loadPlayMode(File::getSavePath() + "autosave.sav",
+	      GameScenario::loadPlayMode(File::getSavePath() + "autosave" + SAVE_EXT,
 					 broken);
 	    if (mode == GameScenario::HOTSEAT && broken == false)
 	      {
@@ -154,7 +154,7 @@ void SplashWindow::on_quit_clicked()
 void SplashWindow::on_rescue_crashed_game_clicked()
 {
   delete crash_button;
-  std::string filename = File::getSavePath() + "autosave.sav";
+  std::string filename = File::getSavePath() + "autosave" + SAVE_EXT;
   load_requested.emit(filename);
 }
 
@@ -162,7 +162,7 @@ void SplashWindow::on_load_game_clicked()
 {
     Gtk::FileChooserDialog chooser(*window, _("Choose Game to Load"));
     Gtk::FileFilter sav_filter;
-    sav_filter.add_pattern("*.sav");
+    sav_filter.add_pattern("*" + SAVE_EXT);
     chooser.set_filter(sav_filter);
     chooser.set_current_folder(Configuration::s_savePath);
 

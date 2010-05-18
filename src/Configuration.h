@@ -2,7 +2,7 @@
 //  Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 //  Copyright (C) 2004, 2005 Andrea Paternesi
 //  Copyright (C) 2005 Josef Spillner
-//  Copyright (C) 2006 Ben Asselstine
+//  Copyright (C) 2006, 2010 Ben Asselstine
 //  Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -113,6 +113,7 @@ class Configuration : public sigc::trackable
         static bool s_cusp_of_war;
         static bool s_decorated;
         static bool s_remember_recent_games;
+        static bool s_remember_recently_edited_files;
 	static guint32 s_double_click_threshold;
 
 	static GameParameters::NeutralCities neutralCitiesFromString(const std::string str);

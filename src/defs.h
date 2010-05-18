@@ -31,6 +31,7 @@
 #define LORDSAWAR_SAVEGAME_VERSION "0.1.9"
 #define LORDSAWAR_CONFIG_VERSION "0.1.9"
 #define LORDSAWAR_RECENTLY_PLAYED_VERSION "0.1.9"
+#define LORDSAWAR_RECENTLY_EDITED_VERSION "0.1.9"
 #define _(string) gettext(string) // Macro for the gettext
 #define __(astring) std::string(gettext(astring.c_str()))
 
@@ -96,6 +97,8 @@ const std::string ARMYSET_EXT = ".lwa";
 const std::string TILESET_EXT = ".lwt";
 const std::string CITYSET_EXT = ".lwc";
 const std::string SHIELDSET_EXT = ".lws";
+const std::string MAP_EXT = ".map";
+const std::string SAVE_EXT = ".sav";
 
 const unsigned int MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS = 1;
 const unsigned int MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS = 5;

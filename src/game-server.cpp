@@ -648,7 +648,7 @@ void GameServer::sendMap(Participant *part)
   int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
   close(fd);
   File::erase(tmpfile);
-  tmpfile += ".sav";
+  tmpfile += SAVE_EXT;
 
   d_game_scenario->saveGame(tmpfile, "sav");
 

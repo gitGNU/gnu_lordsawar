@@ -1148,7 +1148,7 @@ void GameWindow::on_load_game_activated()
 {
   Gtk::FileChooserDialog chooser(*window, _("Choose Game to Load"));
   Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*.sav");
+  sav_filter.add_pattern("*" + SAVE_EXT);
   chooser.set_filter(sav_filter);
   chooser.set_current_folder(Configuration::s_savePath);
 
@@ -1164,7 +1164,7 @@ void GameWindow::on_load_game_activated()
     {
       std::string filename = chooser.get_filename();
       current_save_filename = filename;
-      if (filename ==  (File::getSavePath() + "autosave.sav"))
+      if (filename ==  (File::getSavePath() + "autosave" + SAVE_EXT))
 	game->inhibitAutosaveRemoval(true);
       d_load_filename = filename;
       stop_game("load-game");
@@ -1192,7 +1192,7 @@ void GameWindow::on_save_game_as_activated()
   Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
 				 Gtk::FILE_CHOOSER_ACTION_SAVE);
   Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*.sav");
+  sav_filter.add_pattern("*" + SAVE_EXT);
   chooser.set_filter(sav_filter);
   chooser.set_current_folder(Configuration::s_savePath);
 

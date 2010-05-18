@@ -221,7 +221,7 @@ void Driver::run()
 	    }
 	  else
 	    {
-	      found = d_load_filename.find(".sav");
+	      found = d_load_filename.find(SAVE_EXT);
 	      if (found != std::string::npos)
 		on_load_requested(d_load_filename);
 	      else
@@ -660,7 +660,7 @@ GameScenario *Driver::load_game(std::string file_path)
 void Driver::on_new_pbm_game_requested(GameParameters g)
 {
   std::string filename;
-  std::string temp_filename = File::getSavePath() + "pbmtmp.sav";
+  std::string temp_filename = File::getSavePath() + "pbmtmp" + SAVE_EXT;
       
   GameScenario *game_scenario = 
     create_new_scenario(g, GameScenario::PLAY_BY_MAIL);
@@ -681,7 +681,7 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
   Gtk::FileChooserDialog chooser(*splash_window->get_window(), _("Save the scenario and mail it to the first player"),
 				 Gtk::FILE_CHOOSER_ACTION_SAVE);
   Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*.sav");
+  sav_filter.add_pattern("*" + SAVE_EXT);
   chooser.set_filter(sav_filter);
   chooser.set_current_folder(Glib::get_home_dir());
 
