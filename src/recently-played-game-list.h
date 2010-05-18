@@ -108,7 +108,7 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 	//! Remove the old games from the list.
 	void pruneOldGames(int stale = TWO_WEEKS_OLD);
 
-	//! Remove extraneous games form the list.
+	//! Remove extraneous games from the list.
 	void pruneTooManyGames(int too_many = 10);
 
 	// DATA
