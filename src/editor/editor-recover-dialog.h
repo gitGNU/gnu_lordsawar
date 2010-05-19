@@ -15,45 +15,28 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include <config.h>
+#ifndef EDITOR_RECOVER_DIALOG_H
+#define EDITOR_RECOVER_DIALOG_H
 
-#include <sigc++/functors/mem_fun.h>
+#include <memory>
+#include <sigc++/trackable.h>
+#include <gtkmm.h>
 
-#include "editor-quit-dialog.h"
-
-#include "glade-helpers.h"
-#include "ucompose.hpp"
-#include "File.h"
-#include "defs.h"
-
-
-EditorQuitDialog::EditorQuitDialog()
+class EditorRecoverDialog: public sigc::trackable
 {
+ public:
+    EditorRecoverDialog(std::string question);
+    ~EditorRecoverDialog();
+
+    void set_parent_window(Gtk::Window &parent);
+
+    int run();
+
+    void hide();
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/editor-quit-dialog.ui");
+ private:
+    Gtk::Dialog* dialog;
+    Gtk::Label* label;
+};
 
-    xml->get_widget("dialog", dialog);
-    dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
-}
-
-EditorQuitDialog::~EditorQuitDialog()
-{
-  delete dialog;
-}
-void EditorQuitDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-}
-
-int EditorQuitDialog::run()
-{
-    dialog->show_all();
-    return dialog->run();
-}
-
-void EditorQuitDialog::hide()
-{
-  dialog->hide();
-}
+#endif

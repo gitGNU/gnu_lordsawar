@@ -264,6 +264,7 @@ src/editor/shieldset-window.cpp
 src/editor/tileset-flag-editor-dialog.cpp
 src/editor/tileset-selector-editor-dialog.cpp
 src/editor/editor-quit-dialog.cpp
+src/editor/editor-recover-dialog.cpp
 src/gui/city-info-tip.cpp
 src/gui/decorated.cpp
 src/gui/game-lobby-dialog.cpp

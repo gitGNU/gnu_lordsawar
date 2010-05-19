@@ -19,41 +19,42 @@
 
 #include <sigc++/functors/mem_fun.h>
 
-#include "editor-quit-dialog.h"
+#include "editor-recover-dialog.h"
 
 #include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "File.h"
 #include "defs.h"
 
-
-EditorQuitDialog::EditorQuitDialog()
+EditorRecoverDialog::EditorRecoverDialog(std::string question)
 {
     
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/editor-quit-dialog.ui");
+				    + "/editor-recover-dialog.ui");
 
     xml->get_widget("dialog", dialog);
     dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+    xml->get_widget("label", label);
+    label->set_text(question);
 }
 
-EditorQuitDialog::~EditorQuitDialog()
+EditorRecoverDialog::~EditorRecoverDialog()
 {
   delete dialog;
 }
-void EditorQuitDialog::set_parent_window(Gtk::Window &parent)
+void EditorRecoverDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
 }
 
-int EditorQuitDialog::run()
+int EditorRecoverDialog::run()
 {
     dialog->show_all();
     return dialog->run();
 }
 
-void EditorQuitDialog::hide()
+void EditorRecoverDialog::hide()
 {
   dialog->hide();
 }

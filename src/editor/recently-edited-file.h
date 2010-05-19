@@ -126,6 +126,7 @@ class RecentlyEditedShieldsetFile : public RecentlyEditedFile
 	//! Save the shieldset file entry to an opened file.
 	virtual bool doSave(XML_Helper *helper) const;
 
+        std::string getName() const {return d_name;};
 
 	// Methods that operate on the class data and modify it.
 
@@ -154,6 +155,7 @@ class RecentlyEditedTilesetFile : public RecentlyEditedFile
 	//! Save the tileset file entry to an opened file.
 	virtual bool doSave(XML_Helper *helper) const;
 
+        std::string getName() const {return d_name;};
 
 	// Methods that operate on the class data and modify it.
 
@@ -185,6 +187,7 @@ class RecentlyEditedArmysetFile : public RecentlyEditedFile
 	//! Save the armyset file entry to an opened file.
 	virtual bool doSave(XML_Helper *helper) const;
 
+        std::string getName() const {return d_name;};
 
 	// Methods that operate on the class data and modify it.
 
@@ -216,6 +219,7 @@ class RecentlyEditedCitysetFile : public RecentlyEditedFile
 	//! Save the cityset file entry to an opened file.
 	virtual bool doSave(XML_Helper *helper) const;
 
+        std::string getName() const {return d_name;};
 
 	// Methods that operate on the class data and modify it.
 
@@ -247,6 +251,7 @@ class RecentlyEditedMapFile : public RecentlyEditedFile
 	//! Save the cityset file entry to an opened file.
 	virtual bool doSave(XML_Helper *helper) const;
 
+        std::string getName() const {return d_name;};
 
 	// Methods that operate on the class data and modify it.
 
