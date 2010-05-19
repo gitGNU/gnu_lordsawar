@@ -17,7 +17,7 @@ bool Tar_Helper::Open(std::string file, std::ios::openmode mode)
 {
   t = NULL;
   bool broken = false;
-  if (is_tarfile (file) == false)
+  if (mode == std::ios::in && is_tarfile (file) == false)
     {
       broken = true;
       return broken;
@@ -53,16 +53,6 @@ bool Tar_Helper::Open(std::string file, std::ios::openmode mode)
   else
     tmpoutdir = "";
   return broken;
-}
-
-bool Tar_Helper::replaceFile(std::string old_filename, std::string new_filename)
-{
-  bool retval;
-  //remove old_filename, and then add new_filename.
-  retval = removeFile(old_filename);
-  if (retval == true)
-    retval = saveFile(new_filename);
-  return retval;
 }
 
 bool Tar_Helper::saveFile(TAR *t, std::string filename, std::string destfile)
@@ -247,6 +237,11 @@ bool Tar_Helper::is_tarfile (std::string file)
 
 bool Tar_Helper::removeFile(std::string filename)
 {
+  return replaceFile(filename, "");
+}
+
+bool Tar_Helper::replaceFile(std::string filename, std::string newfilename)
+{
   bool broken = false;
   //copy all files except this one into a new file
   int m;
@@ -267,7 +262,7 @@ bool Tar_Helper::removeFile(std::string filename)
     {
       if (*it == filename) //here we skip over the one we want to remove
         continue;
-      std::string extracted_file = getFile(new_tar, *it, broken, newtmpoutdir);
+      std::string extracted_file = getFile(t, *it, broken, newtmpoutdir);
       delfiles.push_back(extracted_file);
       if (broken)
         break;
@@ -275,19 +270,25 @@ bool Tar_Helper::removeFile(std::string filename)
   for (std::list<std::string>::iterator it = delfiles.begin(); 
        it != delfiles.end(); it++)
     {
-      saveFile(new_tar, *it);
+      if (!broken)
+        saveFile(new_tar, *it);
       File::erase(*it);
     }
+  if (broken)
+    return false;
+  //now add the new file, if we specified one at all.
+  if (newfilename != "")
+    saveFile(new_tar, newfilename);
   //okay, now we get rid of the old tar file and put the new one in it's place.
   std::string orig_tar_file = t->pathname;
+
+  tar_close(new_tar);
+  Close();
+
   File::copy(new_tar_file, orig_tar_file);
   File::erase(new_tar_file);
   File::erase_dir(newtmpoutdir);
-
-  //now we close the old one and sneakily open up this new one
-  free (new_tar->pathname);
-  free (new_tar);
-  Close();
-  return Open (orig_tar_file, std::ios::in);
+  broken = Open (orig_tar_file, std::ios::in);
+  return !broken;
 }
 
