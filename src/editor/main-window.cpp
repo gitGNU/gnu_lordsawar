@@ -90,6 +90,7 @@
 #include "cityset-window.h"
 #include "armyset-window.h"
 #include "tileset-window.h"
+#include "editor-quit-dialog.h"
 
 
 MainWindow::MainWindow(std::string load_filename)
@@ -955,15 +956,10 @@ bool MainWindow::quit()
 {
   if (needs_saving)
     {
-      Gtk::Dialog* dialog;
-      Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + 
-					 "/editor-quit-dialog.ui");
-      xml->get_widget("dialog", dialog);
-      dialog->set_transient_for(*window);
-      int response = dialog->run();
-      dialog->hide();
-      delete dialog;
+      EditorQuitDialog d;
+      d.set_parent_window(*window);
+      int response = d.run();
+      d.hide();
       
       if (response == Gtk::RESPONSE_CANCEL) //we don't want to quit
 	return false;

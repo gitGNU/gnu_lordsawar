@@ -101,6 +101,7 @@
 [type: gettext/glade]dat/glade/editor/hero-editor-dialog.ui
 [type: gettext/glade]dat/glade/editor/backpack-editor-dialog.ui
 [type: gettext/glade]dat/glade/editor/editor-quit-dialog.ui
+[type: gettext/glade]dat/glade/editor/editor-recover-dialog.ui
 [type: gettext/glade]dat/glade/editor/cityset-window.ui
 [type: gettext/glade]dat/glade/editor/shieldset-window.ui
 [type: gettext/glade]dat/glade/editor/cityset-info-dialog.ui
@@ -262,6 +263,7 @@ src/editor/shieldset-main.cpp
 src/editor/shieldset-window.cpp
 src/editor/tileset-flag-editor-dialog.cpp
 src/editor/tileset-selector-editor-dialog.cpp
+src/editor/editor-quit-dialog.cpp
 src/gui/city-info-tip.cpp
 src/gui/decorated.cpp
 src/gui/game-lobby-dialog.cpp

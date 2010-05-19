@@ -99,6 +99,8 @@ const std::string CITYSET_EXT = ".lwc";
 const std::string SHIELDSET_EXT = ".lws";
 const std::string MAP_EXT = ".map";
 const std::string SAVE_EXT = ".sav";
+const std::string RECENTLY_PLAYED_LIST = "recently-played.xml";
+const std::string RECENTLY_EDITED_LIST = "recently-edited.xml";
 
 const unsigned int MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS = 1;
 const unsigned int MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS = 5;

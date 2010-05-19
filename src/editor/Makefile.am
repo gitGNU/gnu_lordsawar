@@ -1,5 +1,5 @@
 #   Copyright (C) 2007, 2008 Ole Laursen
-#   Copyright (C) 2007, 2008, 2009 Ben Asselstine
+#   Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 #   Copyright (C) 2008 Barry deFreese
 # 
 #   This program is free software; you can redistribute it and/or modify
@@ -21,26 +21,29 @@ MAINTAINERCLEANFILES= Makefile.in
 if WANT_EDITOR
 bin_PROGRAMS = lordsawar-editor lordsawar-army-editor lordsawar-tile-editor lordsawar-city-editor lordsawar-shield-editor
 
-noinst_LTLIBRARIES = libshieldsetwindow.la libarmysetwindow.la libcitysetwindow.la libtilesetwindow.la
+noinst_LTLIBRARIES = libshieldsetwindow.la libarmysetwindow.la libcitysetwindow.la libtilesetwindow.la libeditutil.la
+
+libeditutil_la_SOURCES = \
+	recently-edited-file.cpp recently-edited-file.h \
+	recently-edited-file-list.cpp recently-edited-file-list.h \
+	editor-quit-dialog.cpp editor-quit-dialog.h
+	glade-helpers.h
 
 libshieldsetwindow_la_SOURCES = \
 	shieldset-window.cpp shieldset-window.h \
 	shieldset-info-dialog.cpp shieldset-info-dialog.h \
-	masked-image-editor-dialog.cpp masked-image-editor-dialog.h \
-	glade-helpers.h
+	masked-image-editor-dialog.cpp masked-image-editor-dialog.h
 
 libarmysetwindow_la_SOURCES = \
 	armyset-window.cpp armyset-window.h  \
 	armyset-info-dialog.cpp armyset-info-dialog.h \
 	masked-image-editor-dialog.cpp masked-image-editor-dialog.h \
-	image-editor-dialog.cpp image-editor-dialog.h \
-	glade-helpers.h
+	image-editor-dialog.cpp image-editor-dialog.h 
 
 libcitysetwindow_la_SOURCES = \
 	cityset-window.cpp cityset-window.h  \
 	cityset-info-dialog.cpp cityset-info-dialog.h \
-	image-editor-dialog.cpp image-editor-dialog.h \
-	glade-helpers.h
+	image-editor-dialog.cpp image-editor-dialog.h 
 
 libtilesetwindow_la_SOURCES = \
 	tileset-window.cpp tileset-window.h \
@@ -51,8 +54,7 @@ libtilesetwindow_la_SOURCES = \
 	tileset-flag-editor-dialog.cpp tileset-flag-editor-dialog.h \
 	tileset-explosion-picture-editor-dialog.cpp \
 	tileset-explosion-picture-editor-dialog.h \
-	image-editor-dialog.cpp image-editor-dialog.h \
-	glade-helpers.h
+	image-editor-dialog.cpp image-editor-dialog.h
 
 lordsawar_army_editor_SOURCES = \
 	armyset-main.cpp 
@@ -80,7 +82,6 @@ lordsawar_editor_SOURCES = \
 	new-map-dialog.cpp new-map-dialog.h \
 	switch-sets-dialog.cpp switch-sets-dialog.h \
 	editorbigmap.cpp editorbigmap.h \
-	glade-helpers.h \
 	itemlist-dialog.cpp itemlist-dialog.h \
 	reward-editor-dialog.cpp reward-editor-dialog.h \
 	select-item-dialog.cpp select-item-dialog.h \
@@ -104,6 +105,7 @@ lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
 			 libarmysetwindow.la \
 			 libcitysetwindow.la \
 			 libtilesetwindow.la \
+			 libeditutil.la \
                          $(GTKMM_LIBS) \
                          $(SDL_LIBS) -ltar -lz \
                          @LIBINTL@ -L$(top_builddir)/src
@@ -115,9 +117,11 @@ lordsawar_shield_editor_LDADD =  \
                          $(top_builddir)/src/liblordsawar.la \
                          $(SDL_LIBS) -ltar -lz \
                          $(GTKMM_LIBS) \
+			 libeditutil.la \
                          @LIBINTL@ -L$(top_builddir)/src
 
 lordsawar_city_editor_LDADD = \
+			 libeditutil.la \
 			 libcitysetwindow.la \
                          $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
@@ -127,6 +131,7 @@ lordsawar_city_editor_LDADD = \
                          @LIBINTL@ -L$(top_builddir)/src
 
 lordsawar_army_editor_LDADD = \
+			 libeditutil.la \
 			 libarmysetwindow.la \
                          $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
@@ -136,6 +141,7 @@ lordsawar_army_editor_LDADD = \
                          @LIBINTL@ -L$(top_builddir)/src
 
 lordsawar_tile_editor_LDADD = \
+			 libeditutil.la \
 			 libtilesetwindow.la \
 			 $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
