@@ -98,7 +98,7 @@ std::string Shieldsetlist::getShieldsetDir(std::string name) const
 
 Shieldset* Shieldsetlist::loadShieldset(std::string name)
 {
-  debug("Loading shieldset " <<File::get_basename(File::get_dirname(name)));
+  debug("Loading shieldset " <<File::get_basename(name));
 
   Shieldset *shieldset = Shieldset::create(name);
   if (!shieldset)
@@ -207,6 +207,22 @@ Shieldset *Shieldsetlist::import(Tar_Helper *t, std::string f, bool &broken)
 
 }
 
+std::string Shieldsetlist::findFreeSubDir(std::string subdir, guint32 max, guint32 &num) const
+{
+  std::string new_subdir;
+  for (unsigned int count = 1; count < max; count++)
+    {
+      new_subdir = String::ucompose("%1%2", subdir, count);
+      if (getShieldset(new_subdir) == NULL)
+        {
+          num = count;
+          break;
+        }
+      else
+        new_subdir = "";
+    }
+  return new_subdir;
+}
 bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &new_subdir, guint32 &new_id)
 {
   //do we already have this one?
@@ -225,17 +241,9 @@ bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &n
         shieldset->setSubDir(new_subdir);
       else
         {
-          bool found = false;
-          for (int count = 0; count < 100; count++)
-            {
-              new_subdir = String::ucompose("%1%2", shieldset->getSubDir(), count);
-              if (getShieldset(new_subdir) == NULL)
-                {
-                  found = true;
-                  break;
-                }
-            }
-          if (found == false)
+          guint32 num = 0;
+          std::string new_subdir = findFreeSubDir(shieldset->getSubDir(), 100, num);
+          if (new_subdir == "")
             return false;
           shieldset->setSubDir(new_subdir);
         }

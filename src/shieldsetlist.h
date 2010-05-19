@@ -128,6 +128,7 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	//! Return a unique id for a shieldset.
 	static int getNextAvailableId(int after);
 
+        std::string findFreeSubDir(std::string subdir, guint32 max, guint32 &num) const;
     private:
         //! Default Constructor.
 	/**
