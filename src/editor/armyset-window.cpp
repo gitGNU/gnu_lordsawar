@@ -316,6 +316,7 @@ ArmySetWindow::update_armyset_menuitems()
   if (d_armyset == NULL)
     {
       save_armyset_menuitem->set_sensitive(false);
+      save_as_menuitem->set_sensitive(false);
       validate_armyset_menuitem->set_sensitive(false);
       edit_armyset_info_menuitem->set_sensitive(false);
       edit_standard_picture_menuitem->set_sensitive(false);
@@ -331,6 +332,7 @@ ArmySetWindow::update_armyset_menuitems()
 	save_armyset_menuitem->set_sensitive(false);
       else
 	save_armyset_menuitem->set_sensitive(true);
+      save_as_menuitem->set_sensitive(true);
       edit_armyset_info_menuitem->set_sensitive(true);
       edit_standard_picture_menuitem->set_sensitive(true);
       edit_ship_picture_menuitem->set_sensitive(true);

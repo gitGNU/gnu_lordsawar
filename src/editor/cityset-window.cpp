@@ -142,6 +142,7 @@ CitySetWindow::update_cityset_menuitems()
   if (d_cityset == NULL)
     {
       save_cityset_menuitem->set_sensitive(false);
+      save_as_menuitem->set_sensitive(false);
       validate_cityset_menuitem->set_sensitive(false);
       edit_cityset_info_menuitem->set_sensitive(false);
     }
@@ -154,6 +155,7 @@ CitySetWindow::update_cityset_menuitems()
 	save_cityset_menuitem->set_sensitive(false);
       else
 	save_cityset_menuitem->set_sensitive(true);
+      save_as_menuitem->set_sensitive(true);
       edit_cityset_info_menuitem->set_sensitive(true);
       validate_cityset_menuitem->set_sensitive(true);
     }
