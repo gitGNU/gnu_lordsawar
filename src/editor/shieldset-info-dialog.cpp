@@ -61,8 +61,8 @@ ShieldSetInfoDialog::ShieldSetInfoDialog(Shieldset *shieldset, std::string file,
     else
       {
         guint32 num = 0;
-        std::string subdir = Shieldsetlist::getInstance()->findFreeSubDir(_("untitled"), 100, num);
-        filename_entry->set_text(subdir);
+        std::string basename = Shieldsetlist::getInstance()->findFreeBaseName(_("untitled"), 100, num);
+        filename_entry->set_text(basename);
 
         std::string name = String::ucompose("%1 %2", _("Untitled"), num);
         name_entry->set_text(name);
@@ -122,7 +122,7 @@ int ShieldSetInfoDialog::run()
       d_shieldset->setName(name_entry->get_text());
       d_shieldset->setId(int(id_spinbutton->get_value()));
       if (d_readonly == false)
-	d_shieldset->setSubDir(filename_entry->get_text());
+	d_shieldset->setBaseName(filename_entry->get_text());
       d_shieldset->setCopyright(copyright_textview->get_buffer()->get_text());
       d_shieldset->setLicense(license_textview->get_buffer()->get_text());
       d_shieldset->setInfo(description_textview->get_buffer()->get_text());

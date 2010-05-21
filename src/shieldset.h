@@ -44,11 +44,12 @@
  *
  * The Shieldset dictates the dimensions of these three sizes of shields.
  *
- * Shieldsets are referred to by their subdirectory name.
+ * Shieldsets are referred to by their basename.  This is the last part of the
+ * filename, minus the file extension.
  *
  * The shieldset configuration file is a same named XML file inside the 
  * Shieldset's directory.  
- * E.g. shield/${Shieldset::d_subdir}/${Shieldset::d_subdir}.xml.
+ * E.g. shield/${Shieldset::d_basename}/${Shieldset::d_basename}.xml.
  */
 class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 {
@@ -63,7 +64,7 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 
 	//! Default constructor.
 	/**
-	 * Make a new shieldset given a unique id and a subdir name.
+	 * Make a new shieldset given a unique id and a basename name.
 	 */
 	Shieldset(guint32 id, std::string name);
 
@@ -94,7 +95,7 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
         guint32 getId() const {return d_id;}
 
 	//! Get the directory in which the shieldset configuration file resides.
-        std::string getSubDir() const {return d_subdir;}
+        std::string getBaseName() const {return d_basename;}
 
 	//! Return the mask colour for the given player.
 	Gdk::Color getColor(guint32 owner) const;
@@ -151,7 +152,7 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	void setLicense(std::string license) {d_license = license;};
 
 	//! Set the direction where the shieldset configuration file resides.
-        void setSubDir(std::string dir) {d_subdir = dir;}
+        void setBaseName(std::string dir) {d_basename = dir;}
 
         //! Load the shieldset again.
         void reload();
@@ -207,10 +208,10 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	//! Create a shieldset from the given shieldset configuration file.
 	static Shieldset *create(std::string filename);
 
-	//! Return a list of shieldset subdirs in the system collection.
+	//! Return a list of shieldset basenames in the system collection.
 	static std::list<std::string> scanSystemCollection();
 
-	//! Return a list of shieldset subdirs in the users personal collection.
+	//! Return a list of shieldset basenames in the users personal collection.
 	static std::list<std::string> scanUserCollection();
 
     private:
@@ -245,13 +246,13 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	 */
         std::string d_info;
 
-	//! The subdirectory of the Shieldset.
+	//! The basename of the Shieldset.
 	/**
-	 * This is the name of the subdirectory that the Shieldset files are
+	 * This is the basename of the file that the Shieldset files are
 	 * residing in.  It does not contain a path (e.g. no slashes).
-	 * Shieldset directories sit in the shield/ directory.
+	 * Shieldset files sit in the shield/ directory.
 	 */
-        std::string d_subdir;
+        std::string d_basename;
 
 	//! The number of pixels high the small shield occupies onscreen.
 	/**

@@ -331,9 +331,9 @@ void ShieldSetWindow::on_save_as_activated()
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string new_subdir = "";
+      std::string new_basename = "";
       guint32 new_id = 0;
-      bool success = Shieldsetlist::getInstance()->addToPersonalCollection(d_shieldset, new_subdir, new_id);
+      bool success = Shieldsetlist::getInstance()->addToPersonalCollection(d_shieldset, new_basename, new_id);
       if (success)
         {
           save_shieldset_menuitem->set_sensitive(true);
@@ -493,7 +493,7 @@ bool ShieldSetWindow::load_shieldset(std::string filename)
     delete d_shieldset;
   d_shieldset = shieldset;
 
-  d_shieldset->setSubDir(File::get_basename(autosave));
+  d_shieldset->setBaseName(File::get_basename(autosave));
   d_shieldset->instantiateImages();
   for(Shieldset::iterator i = d_shieldset->begin(); 
       i != d_shieldset->end(); i++)

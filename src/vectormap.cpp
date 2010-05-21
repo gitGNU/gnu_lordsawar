@@ -309,7 +309,7 @@ void VectorMap::draw_square_around_active_city()
   box_color.set_rgb_p(252.0/255.0, 1.0, 1.0);
   Vector<int> start = city->getPos();
   start = mapToSurface(start);
-  std::string s = GameMap::getInstance()->getShieldset()->getSubDir();
+  std::string s = GameMap::getInstance()->getShieldset()->getBaseName();
   Shieldset *ss = Shieldsetlist::getInstance()->getShieldset(s);
   guint32 width = ss->getSmallWidth();
   guint32 height = ss->getSmallHeight();

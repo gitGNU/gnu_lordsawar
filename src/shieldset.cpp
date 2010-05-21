@@ -37,7 +37,7 @@ std::string Shieldset::file_extension = SHIELDSET_EXT;
 
 Shieldset::Shieldset(guint32 id, std::string name)
 	: d_id(id), d_name(name), d_copyright(""), d_license(""), d_info(""), 
-	d_subdir("")
+	d_basename("")
 {
 }
 
@@ -47,7 +47,7 @@ Shieldset::Shieldset(std::string filename, bool &broken)
 }
 
 Shieldset::Shieldset(XML_Helper *helper, std::string directory)
-	: d_subdir("")
+	: d_basename("")
 {
   setDirectory(directory);
   helper->getData(d_id, "id");
@@ -151,7 +151,7 @@ public:
 	if (tag == Shieldset::d_tag)
 	  {
 	    shieldset = new Shieldset(helper, dir);
-            shieldset->setSubDir(file);
+            shieldset->setBaseName(file);
 	    return true;
 	  }
 	return false;
@@ -277,7 +277,7 @@ void Shieldset::uninstantiateImages()
 
 std::string Shieldset::getConfigurationFile() const
 {
-  return getDirectory() + d_subdir + file_extension;
+  return getDirectory() + d_basename + file_extension;
 }
 
 std::list<std::string> Shieldset::scanUserCollection()
@@ -384,10 +384,10 @@ void Shieldset::reload()
       uninstantiateImages();
       for (iterator it = begin(); it != end(); it++)
         delete *it;
-      std::string subdir = d_subdir;
+      std::string basename = d_basename;
       *this = *d.shieldset;
       instantiateImages();
-      d_subdir = subdir;
+      d_basename = basename;
     }
 }
 

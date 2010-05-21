@@ -120,11 +120,11 @@ Shieldset* Shieldsetlist::loadShieldset(std::string name)
       return NULL;
     }
 
-  if (d_shieldsets.find(shieldset->getSubDir()) != d_shieldsets.end())
+  if (d_shieldsets.find(shieldset->getBaseName()) != d_shieldsets.end())
     {
-      Shieldset *s = (*d_shieldsets.find(shieldset->getSubDir())).second;
+      Shieldset *s = (*d_shieldsets.find(shieldset->getBaseName())).second;
       cerr << "Error!  shieldset: `" << shieldset->getConfigurationFile() << 
-	"' shares a duplicate shieldset subdir `" << s->getSubDir() << "' with `" << s->getConfigurationFile() 
+	"' shares a duplicate shieldset basename `" << s->getBaseName() << "' with `" << s->getConfigurationFile() 
 	<< "'.  Skipping." << endl;
       delete shieldset;
       return NULL;
@@ -132,10 +132,10 @@ Shieldset* Shieldsetlist::loadShieldset(std::string name)
     
   if (d_dirs.find(shieldset->getName()) != d_dirs.end())
     {
-      std::string subdir = (*d_dirs.find(shieldset->getName())).second;
-      if (subdir != "")
+      std::string basename = (*d_dirs.find(shieldset->getName())).second;
+      if (basename != "")
         {
-          Shieldset *s = (*d_shieldsets.find(subdir)).second;
+          Shieldset *s = (*d_shieldsets.find(basename)).second;
           cerr << "Error!  shieldset: `" << shieldset->getConfigurationFile() 
             << "' shares a duplicate shieldset name `" << s->getName() << 
             "' with `" << s->getConfigurationFile() << "'.  Skipping." << endl;
@@ -159,11 +159,11 @@ Shieldset* Shieldsetlist::loadShieldset(std::string name)
 
 void Shieldsetlist::add(Shieldset *shieldset, std::string name)
 {
-  std::string subdir = File::get_basename(name);
+  std::string basename = File::get_basename(name);
   push_back(shieldset);
-  shieldset->setSubDir(subdir);
-  d_dirs[shieldset->getName()] = subdir;
-  d_shieldsets[subdir] = shieldset;
+  shieldset->setBaseName(basename);
+  d_dirs[shieldset->getName()] = basename;
+  d_shieldsets[basename] = shieldset;
   d_shieldsetids[shieldset->getId()] = shieldset;
 }
         
@@ -216,59 +216,59 @@ Shieldset *Shieldsetlist::import(Tar_Helper *t, std::string f, bool &broken)
   std::string filename = t->getFile(f, broken);
   Shieldset *shieldset = Shieldset::create(filename);
   assert (shieldset != NULL);
-  shieldset->setSubDir(File::get_basename(f));
+  shieldset->setBaseName(File::get_basename(f));
 
-  std::string subdir = "";
+  std::string basename = "";
   guint32 id = 0;
-  addToPersonalCollection(shieldset, subdir, id);
+  addToPersonalCollection(shieldset, basename, id);
 
   return shieldset;
 
 }
 
-std::string Shieldsetlist::findFreeSubDir(std::string subdir, guint32 max, guint32 &num) const
+std::string Shieldsetlist::findFreeBaseName(std::string basename, guint32 max, guint32 &num) const
 {
-  std::string new_subdir;
+  std::string new_basename;
   for (unsigned int count = 1; count < max; count++)
     {
-      new_subdir = String::ucompose("%1%2", subdir, count);
-      if (getShieldset(new_subdir) == NULL)
+      new_basename = String::ucompose("%1%2", basename, count);
+      if (getShieldset(new_basename) == NULL)
         {
           num = count;
           break;
         }
       else
-        new_subdir = "";
+        new_basename = "";
     }
-  return new_subdir;
+  return new_basename;
 }
-bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &new_subdir, guint32 &new_id)
+bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &new_basename, guint32 &new_id)
 {
   //do we already have this one?
       
-  if (getShieldset(shieldset->getSubDir()) == getShieldset(shieldset->getId()) 
-      && getShieldset(shieldset->getSubDir()) != NULL)
+  if (getShieldset(shieldset->getBaseName()) == getShieldset(shieldset->getId()) 
+      && getShieldset(shieldset->getBaseName()) != NULL)
     {
       shieldset->setDirectory(getShieldset(shieldset->getId())->getDirectory());
       return true;
     }
 
-  //if the subdir conflicts with any other subdir, then change it.
-  if (getShieldset(shieldset->getSubDir()) != NULL)
+  //if the basename conflicts with any other basename, then change it.
+  if (getShieldset(shieldset->getBaseName()) != NULL)
     {
-      if (new_subdir != "" && getShieldset(new_subdir) == NULL)
-        shieldset->setSubDir(new_subdir);
+      if (new_basename != "" && getShieldset(new_basename) == NULL)
+        shieldset->setBaseName(new_basename);
       else
         {
           guint32 num = 0;
-          std::string new_subdir = findFreeSubDir(shieldset->getSubDir(), 100, num);
-          if (new_subdir == "")
+          std::string new_basename = findFreeBaseName(shieldset->getBaseName(), 100, num);
+          if (new_basename == "")
             return false;
-          shieldset->setSubDir(new_subdir);
+          shieldset->setBaseName(new_basename);
         }
     }
   else
-    new_subdir = shieldset->getSubDir();
+    new_basename = shieldset->getBaseName();
 
   //if the id conflicts with any other id, then change it
   if (getShieldset(shieldset->getId()) != NULL)
@@ -285,7 +285,7 @@ bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &n
     new_id = shieldset->getId();
 
   //make the directory where the shieldset is going to live.
-  std::string file = File::getUserShieldsetDir() + shieldset->getSubDir() + Shieldset::file_extension;
+  std::string file = File::getUserShieldsetDir() + shieldset->getBaseName() + Shieldset::file_extension;
 
   shieldset->save(file, Shieldset::file_extension);
 

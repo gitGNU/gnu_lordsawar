@@ -106,14 +106,14 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	//! Add the given shieldset to the list, and copy files into place.
 	/**
 	 * This method tries hard to add the shieldset to this list.  The 
-	 * subdir name could be changed, or the id might also be changed so 
+	 * basename could be changed, or the id might also be changed so 
 	 * that it doesn't conflict with any other shieldsets in the list.
 	 *
 	 * @return Returns true if it was added successfully, and the
-	 *         new_subdir and new_id parameters updated to reflect the
-	 *         changed subdir and id.
+	 *         new_basename and new_id parameters updated to reflect the
+	 *         changed basename and id.
 	 */
-	bool addToPersonalCollection(Shieldset *shieldset, std::string &new_subdir, guint32 &new_id);
+	bool addToPersonalCollection(Shieldset *shieldset, std::string &new_basename, guint32 &new_id);
 	Shieldset *import(Tar_Helper *t, std::string f, bool &broken);
 
 
@@ -128,7 +128,7 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	//! Return a unique id for a shieldset.
 	static int getNextAvailableId(int after);
 
-        std::string findFreeSubDir(std::string subdir, guint32 max, guint32 &num) const;
+        std::string findFreeBaseName(std::string basename, guint32 max, guint32 &num) const;
     private:
         //! Default Constructor.
 	/**
@@ -154,10 +154,10 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
         typedef std::map<std::string, Shieldset*> ShieldsetMap;
         typedef std::map<guint32, Shieldset*> ShieldsetIdMap;
 
-	//! A map that provides a subdirectory when supplying a Shieldset name.
+	//! A map that provides a basename when supplying a Shieldset name.
         DirMap d_dirs;
 
-	//! A map that provides a Shieldset when supplying a subdirectory name.
+	//! A map that provides a Shieldset when supplying a basename name.
         ShieldsetMap d_shieldsets;
 
 	//! A map that provides a Shieldset when supplying a shieldset id.
