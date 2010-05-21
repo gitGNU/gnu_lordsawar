@@ -4,7 +4,7 @@ CLEANFILES = *~
 
 lordsawarconfigdir = $(LORDSAWAR_DATADIR)
 
-EXTRA_DIST = DEPENDENCIES README ${top_builddir}/po/lordsawar.pot
+EXTRA_DIST = DEPENDENCIES README ${top_builddir}/po/lordsawar.pot intltool-tarmerge
 
 DISTCLEANFILES = po/.intltool-merge-cache
 

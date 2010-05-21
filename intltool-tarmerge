@@ -1,0 +1,37 @@
+#!/bin/bash 
+
+INTLTOOL_MERGE=$1
+INTLTOOL_MERGE_CACHE=$2
+INTLTOOL_CACHE=$3
+TAR_INPUT=$4
+TAR_OUTPUT=$5
+
+tmpdir=`mktemp --quiet --directory /tmp/tarmerge.XXXXX `
+orig=`pwd`
+cp $TAR_INPUT $tmpdir
+tarfile=`basename $TAR_INPUT`
+cd $tmpdir
+tar -xvf $tarfile > $tmpdir/files
+files=`ls $tmpdir/files`
+newfiles=""
+for f in `cat $tmpdir/files`; do
+        retval=`echo $f | grep ".in$"`
+        if [ "x$retval" != "x" ]; then
+                dest=`echo $f | sed -e 's/\.in$//g'`
+                cd $orig
+                LC_ALL=C ${INTLTOOL_MERGE} -x -u -c ${INTLTOOL_MERGE_CACHE} ${INTLTOOL_CACHE} $tmpdir/$f $tmpdir/$dest
+                cd $tmpdir
+                rm $f
+                newfiles="${newfiles} $dest"
+        else
+                newfiles="${newfiles} $f"
+        fi 
+done
+rm $tmpdir/files
+
+cd $orig
+tar --directory=$tmpdir -cvf $TAR_OUTPUT $newfiles >/dev/null
+cd $tmpdir
+rm $newfiles
+rmdir $tmpdir
+

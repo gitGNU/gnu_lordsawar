@@ -1,3 +1,8 @@
+2010-05-21  Ben Asselstine  <benasselstine@hushmail.com>
+
+	* the shieldset configuration file is now a tar file.
+	* improved shieldset editor.
+
 2010-05-15  Ben Asselstine  <benasselstine@hushmail.com>
 	
 	* fixed shieldset editor to draw shields in the colour of the 

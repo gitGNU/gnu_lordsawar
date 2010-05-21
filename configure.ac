@@ -281,9 +281,6 @@ AC_CONFIG_FILES([
         dat/tilesets/wesnoth/Makefile
         dat/tilesets/bigwesnoth/Makefile
         dat/shield/Makefile 
-        dat/shield/default/Makefile 
-        dat/shield/plain/Makefile 
-        dat/shield/dol/Makefile 
         dat/citysets/Makefile 
         dat/citysets/default/Makefile 
         dat/citysets/bigdefault/Makefile 
