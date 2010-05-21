@@ -46,13 +46,13 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 	// Methods that operate on class data but do not modify the class.
 
         //! Returns the names of all tilesets available to the game.
-	std::list<std::string> getNames() const;
+	std::list<std::string> getValidNames() const;
 
         //! Returns whether the given name is in the list of tilesets.
         bool contains(std::string name) const;
 
         //! Returns the names of tilesets that have the given tile size.
-	std::list<std::string> getNames(guint32 tilesize) const;
+	std::list<std::string> getValidNames(guint32 tilesize) const;
 
         //! Returns the different tilesizes present in the tilesetlist.
 	void getSizes(std::list<guint32> &sizes) const;
@@ -143,6 +143,8 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 	//! Load the given tilesets into the list.
 	void loadTilesets(std::list<std::string> tilesets);
         
+	std::list<std::string> getNames() const;
+	std::list<std::string> getNames(guint32 tilesize) const;
 	// DATA
 
         typedef std::map<std::string, std::string> DirMap;

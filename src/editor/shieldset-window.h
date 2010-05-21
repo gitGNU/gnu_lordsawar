@@ -45,6 +45,7 @@ class ShieldSetWindow: public sigc::trackable
  private:
     Gtk::Window* window;
     std::string current_save_filename;
+    std::string autosave; //filename
     Shieldset *d_shieldset; //current shieldset
     Shield *d_shield; //current shield
     bool needs_saving;
@@ -91,7 +92,7 @@ class ShieldSetWindow: public sigc::trackable
     void on_player_color_changed();
 
     void fill_shield_info(Shield *shield);
-    void load_shieldset(std::string filename);
+    bool load_shieldset(std::string filename);
     void update_shield_panel();
     void update_shieldset_menuitems();
     bool quit();

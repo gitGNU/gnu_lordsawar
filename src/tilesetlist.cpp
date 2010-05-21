@@ -31,8 +31,8 @@
 
 using namespace std;
 
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
-//#define debug(x)
+//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+#define debug(x)
 
 Tilesetlist* Tilesetlist::s_instance = 0;
 
@@ -75,6 +75,24 @@ void Tilesetlist::getSizes(std::list<guint32> &sizes) const
     }
 }
 
+std::list<std::string> Tilesetlist::getValidNames() const
+{
+  std::list<std::string> names;
+  for (const_iterator it = begin(); it != end(); it++)
+    if ((*it)->validate() == true)
+      names.push_back((*it)->getName());
+  return names;
+}
+
+std::list<std::string> Tilesetlist::getValidNames(guint32 tilesize) const
+{
+  std::list<std::string> names;
+  for (const_iterator it = begin(); it != end(); it++)
+    if ((*it)->getTileSize() == tilesize && (*it)->validate() == true)
+      names.push_back((*it)->getName());
+  return names;
+}
+
 std::list<std::string> Tilesetlist::getNames() const
 {
   std::list<std::string> names;
@@ -92,23 +110,30 @@ std::list<std::string> Tilesetlist::getNames(guint32 tilesize) const
   return names;
 }
 
-Tileset *Tilesetlist::loadTileset(std::string filename)
+Tileset *Tilesetlist::loadTileset(std::string name)
 {
-  debug("Loading tileset " <<File::get_basename(File::get_dirname(filename)));
-  Tileset *tileset = Tileset::create(filename);
+  debug("Loading tileset " <<File::get_basename(name));
+  Tileset *tileset = Tileset::create(name);
   if (tileset == NULL)
-    return NULL;
-  if (tileset->validate() == false)
     {
-      cerr<< "Error!  Tileset: `" << tileset->getConfigurationFile() <<
-	"' fails validation.  Skipping.\n",
+      cerr<< "Error!  Tileset: `" << File::get_basename(name, true) <<
+	"' is malformed.  Skipping.\n";
+        return NULL;
+    }
+  if (d_tilesets.find(tileset->getSubDir()) != d_tilesets.end())
+    {
+      Tileset *t = (*d_tilesets.find(tileset->getSubDir())).second;
+      cerr << "Error!  tileset: `" << tileset->getConfigurationFile() << 
+	"' shares a duplicate tileset subdir `" << t->getSubDir() << "' with `" << t->getConfigurationFile() 
+	<< "'.  Skipping." << endl;
       delete tileset;
       return NULL;
     }
+    
   if (d_tilesetids.find(tileset->getId()) != d_tilesetids.end())
     {
       Tileset *t = (*d_tilesetids.find(tileset->getId())).second;
-      cerr << "Error!  tileset: `" << tileset->getName() << 
+      cerr << "Error!  tileset: `" << tileset->getConfigurationFile() << 
 	"' shares a duplicate tileset id with `" << 
 	t->getConfigurationFile() << "'.  Skipping." << endl;
       delete tileset;

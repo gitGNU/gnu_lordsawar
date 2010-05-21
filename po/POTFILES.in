@@ -269,6 +269,7 @@ src/gui/city-info-tip.cpp
 src/gui/decorated.cpp
 src/gui/game-lobby-dialog.cpp
 src/gui/new-network-game-download-window.cpp
+src/gui/item-report-dialog.cpp
 src/NamedLocation.cpp
 src/herotemplates.cpp
 src/xmlhelper.cpp
@@ -321,9 +322,6 @@ dat/tilesets/bigwesnoth/bigwesnoth.lwt.in
 dat/tilesets/stark/stark.lwt.in
 dat/tilesets/bigstark/bigstark.lwt.in
 dat/various/items/items.xml.in
-dat/shield/plain/plain.lws.in
-dat/shield/default/default.lws.in
-dat/shield/dol/dol.lws.in
 dat/citynames.xml.in
 dat/templenames.xml.in
 dat/signposts.xml.in

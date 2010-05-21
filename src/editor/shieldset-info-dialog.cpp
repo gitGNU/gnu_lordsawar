@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 #include "File.h"
 
 
-ShieldSetInfoDialog::ShieldSetInfoDialog(Shieldset *shieldset, std::string dir, bool readonly)
+ShieldSetInfoDialog::ShieldSetInfoDialog(Shieldset *shieldset, std::string file, bool readonly, std::string title)
 {
   d_shieldset = shieldset;
   d_readonly = readonly;
@@ -42,6 +42,8 @@ ShieldSetInfoDialog::ShieldSetInfoDialog(Shieldset *shieldset, std::string dir, 
 				    + "/shieldset-info-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    if (title != "")
+      dialog->set_title(title);
 
     xml->get_widget("accept_button", accept_button);
     xml->get_widget("status_label", status_label);
@@ -53,11 +55,21 @@ ShieldSetInfoDialog::ShieldSetInfoDialog(Shieldset *shieldset, std::string dir, 
       name_entry->signal_changed().connect
 	(sigc::mem_fun(this, &ShieldSetInfoDialog::on_name_changed));
     
-    xml->get_widget("subdir_entry", subdir_entry);
-    subdir_entry->set_text(shieldset->getSubDir());
+    xml->get_widget("filename_entry", filename_entry);
+    if (File::nameEndsWith(file, Shieldset::file_extension) == true)
+      filename_entry->set_text(File::get_basename(file, false));
+    else
+      {
+        guint32 num = 0;
+        std::string subdir = Shieldsetlist::getInstance()->findFreeSubDir(_("untitled"), 100, num);
+        filename_entry->set_text(subdir);
+
+        std::string name = String::ucompose("%1 %2", _("Untitled"), num);
+        name_entry->set_text(name);
+      }
     if (readonly == false)
-      subdir_entry->signal_changed().connect
-	(sigc::mem_fun(this, &ShieldSetInfoDialog::on_subdir_changed));
+      filename_entry->signal_changed().connect
+	(sigc::mem_fun(this, &ShieldSetInfoDialog::on_filename_changed));
 
     xml->get_widget("id_spinbutton", id_spinbutton);
     id_spinbutton->set_value(shieldset->getId());
@@ -70,27 +82,22 @@ ShieldSetInfoDialog::ShieldSetInfoDialog(Shieldset *shieldset, std::string dir, 
     xml->get_widget("description_textview", description_textview);
     description_textview->get_buffer()->set_text(shieldset->getInfo());
 
-    dir_label->set_text (dir);
+    dir_label->set_text (File::get_dirname(file));
     if (readonly)
-      subdir_entry->set_sensitive(false);
+      filename_entry->set_sensitive(false);
 
     update_buttons();
 }
 
-void ShieldSetInfoDialog::on_subdir_changed()
+void ShieldSetInfoDialog::on_filename_changed()
 {
-  std::string dir = File::getUserShieldsetDir() + subdir_entry->get_text();
-  if (subdir_entry->get_text() != "")
-    dir_label->set_text(dir + "/");
-  else
-    dir_label->set_text(File::getUserShieldsetDir() + "<subdir>/");
   update_buttons();
 }
 
 void ShieldSetInfoDialog::on_name_changed()
 {
   char *s = File::sanify(name_entry->get_text().c_str());
-  subdir_entry->set_text(s);
+  filename_entry->set_text(s);
   free (s);
   update_buttons();
 }
@@ -115,7 +122,7 @@ int ShieldSetInfoDialog::run()
       d_shieldset->setName(name_entry->get_text());
       d_shieldset->setId(int(id_spinbutton->get_value()));
       if (d_readonly == false)
-	d_shieldset->setSubDir(subdir_entry->get_text());
+	d_shieldset->setSubDir(filename_entry->get_text());
       d_shieldset->setCopyright(copyright_textview->get_buffer()->get_text());
       d_shieldset->setLicense(license_textview->get_buffer()->get_text());
       d_shieldset->setInfo(description_textview->get_buffer()->get_text());
@@ -132,19 +139,12 @@ void ShieldSetInfoDialog::update_buttons()
       return;
     }
 
-  std::string dir = File::getUserShieldsetDir() + subdir_entry->get_text();
-  if (File::exists(dir) == true && subdir_entry->get_text() != "")
-    {
-      accept_button->set_sensitive(false);
-      
-      status_label->set_markup(String::ucompose("<b>%1</b>", 
-						_("That subdirectory is already in use.")));
-    }
-  else if (Shieldsetlist::getInstance()->getShieldset(subdir_entry->get_text()))
+  std::string dir = File::getUserShieldsetDir() + filename_entry->get_text();
+  if (Shieldsetlist::getInstance()->getShieldset(filename_entry->get_text()))
     {
       accept_button->set_sensitive(false);
       status_label->set_markup(String::ucompose("<b>%1</b>", 
-						_("That subdirectory is already used in the system shieldset collection.")));
+						_("That filename is already used.")));
     }
   else if (Shieldsetlist::getInstance()->contains(name_entry->get_text()) && 
            name_entry->get_text() != "")
@@ -153,7 +153,7 @@ void ShieldSetInfoDialog::update_buttons()
 						_("That name is already in use.")));
       accept_button->set_sensitive(false);
     }
-  else if (subdir_entry->get_text() == "" || name_entry->get_text() == "")
+  else if (filename_entry->get_text() == "" || name_entry->get_text() == "")
     accept_button->set_sensitive(false);
   else
     {

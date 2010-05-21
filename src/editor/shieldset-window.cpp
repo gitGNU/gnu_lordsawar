@@ -43,15 +43,20 @@
 #include "File.h"
 #include "shield.h"
 #include "shieldsetlist.h"
+#include "recently-edited-file-list.h"
 
 #include "ucompose.hpp"
 
 #include "glade-helpers.h"
 #include "masked-image-editor-dialog.h"
+#include "recently-edited-file.h"
+#include "editor-quit-dialog.h"
+#include "editor-recover-dialog.h"
 
 
 ShieldSetWindow::ShieldSetWindow(std::string load_filename)
 {
+  autosave = File::getSavePath() + "autosave" + Shieldset::file_extension;
   needs_saving = false;
   d_shieldset = NULL;
     Glib::RefPtr<Gtk::Builder> xml
@@ -114,13 +119,49 @@ ShieldSetWindow::ShieldSetWindow(std::string load_filename)
 
     update_shield_panel();
 
+    if (load_filename != "")
+      current_save_filename = load_filename;
     update_shieldset_menuitems();
+
+    if (File::exists(autosave))
+      {
+        std::string m;
+        std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Shieldset::file_extension);
+        if (files.size() == 0)
+          m = _("Do you want to recover the session?");
+        else
+          {
+            RecentlyEditedShieldsetFile *r = dynamic_cast<RecentlyEditedShieldsetFile*>(files.front());
+            if (r->getName() == "")
+              m = String::ucompose(_("Do you want to recover %1?"),
+                                   File::get_basename(r->getFileName(), true));
+            else
+              m = String::ucompose(_("Do you want to recover %1 (%2)?"),
+                                   File::get_basename(r->getFileName(), true),
+                                   r->getName());
+          }
+        EditorRecoverDialog d(m);
+        int response = d.run();
+        d.hide();
+        //ask if we want to recover the autosave.
+        if (response == Gtk::RESPONSE_ACCEPT)
+          {
+            load_shieldset (autosave);
+            update_shieldset_menuitems();
+            update_shield_panel();
+            return;
+          }
+      }
 
     if (load_filename.empty() == false)
       {
-	load_shieldset (load_filename);
-	update_shieldset_menuitems();
-	update_shield_panel();
+	bool success = load_shieldset (load_filename);
+        if (success)
+          {
+            update_shieldset_menuitems();
+            update_shield_panel();
+            update_window_title();
+          }
       }
 }
 
@@ -130,18 +171,14 @@ ShieldSetWindow::update_shieldset_menuitems()
   if (d_shieldset == NULL)
     {
       save_shieldset_menuitem->set_sensitive(false);
+      save_as_menuitem->set_sensitive(false);
       validate_shieldset_menuitem->set_sensitive(false);
       edit_shieldset_info_menuitem->set_sensitive(false);
     }
   else
     {
-      std::string file = d_shieldset->getConfigurationFile();
-      if (File::exists(file) == false)
-	save_shieldset_menuitem->set_sensitive(true);
-      else if (File::is_writable(file) == false)
-	save_shieldset_menuitem->set_sensitive(false);
-      else
-	save_shieldset_menuitem->set_sensitive(true);
+      save_shieldset_menuitem->set_sensitive(true);
+      save_as_menuitem->set_sensitive(true);
       edit_shieldset_info_menuitem->set_sensitive(true);
       validate_shieldset_menuitem->set_sensitive(true);
     }
@@ -203,7 +240,8 @@ void ShieldSetWindow::on_new_shieldset_activated()
   std::string name = "";
   int id = Shieldsetlist::getNextAvailableId(0);
   Shieldset *shieldset = new Shieldset(id, name);
-  ShieldSetInfoDialog d(shieldset, File::getUserShieldsetDir() + "<subdir>/", false);
+  ShieldSetInfoDialog d(shieldset, File::getUserShieldsetDir(), false,
+                        _("Make a New Shieldset"));
   d.set_parent_window(*window);
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
@@ -215,9 +253,8 @@ void ShieldSetWindow::on_new_shieldset_activated()
     delete d_shieldset;
   d_shieldset = shieldset;
   shields_list->clear();
-  std::string dir = File::getUserShieldsetDir() + "/" + d_shieldset->getSubDir();
+  std::string dir = File::getUserShieldsetDir();
   d_shieldset->setDirectory(dir);
-  File::create_dir(dir);
   current_save_filename = d_shieldset->getConfigurationFile();
 
   //populate the list with initial entries.
@@ -225,9 +262,7 @@ void ShieldSetWindow::on_new_shieldset_activated()
     addNewShield(Shield::Colour(i), Shield::get_default_color_for_no(i));
   update_shieldset_menuitems();
 
-  XML_Helper helper(current_save_filename, std::ios::out, false);
-  d_shieldset->save(&helper);
-  helper.close();
+  d_shieldset->save(current_save_filename, Shieldset::file_extension);
   update_shield_panel();
   needs_saving = true;
   update_window_title();
@@ -251,10 +286,13 @@ void ShieldSetWindow::on_load_shieldset_activated()
 
   if (res == Gtk::RESPONSE_ACCEPT)
     {
-      load_shieldset(chooser.get_filename());
+      bool success = load_shieldset(chooser.get_filename());
       chooser.hide();
-      needs_saving = false;
-      update_window_title();
+      if (success)
+        {
+          needs_saving = false;
+          update_window_title();
+        }
     }
 
   update_shieldset_menuitems();
@@ -287,18 +325,34 @@ void ShieldSetWindow::on_save_as_activated()
 {
   guint32 orig_id = d_shieldset->getId();
   d_shieldset->setId(Shieldsetlist::getNextAvailableId(orig_id));
-  ShieldSetInfoDialog d(d_shieldset, File::getUserShieldsetDir() + d_shieldset->getSubDir() +"/", false);
+  ShieldSetInfoDialog d(d_shieldset, File::getUserShieldsetDir() + File::get_basename(current_save_filename, true), false,
+                        _("Save a Copy of a Shieldset"));
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       std::string new_subdir = "";
       guint32 new_id = 0;
-      Shieldsetlist::getInstance()->addToPersonalCollection(d_shieldset, new_subdir, new_id);
-      save_shieldset_menuitem->set_sensitive(true);
-      current_save_filename = d_shieldset->getConfigurationFile();
-      needs_saving = false;
-      update_window_title();
+      bool success = Shieldsetlist::getInstance()->addToPersonalCollection(d_shieldset, new_subdir, new_id);
+      if (success)
+        {
+          save_shieldset_menuitem->set_sensitive(true);
+          current_save_filename = d_shieldset->getConfigurationFile();
+          RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
+          refl->updateEntry(current_save_filename);
+          refl->save();
+          needs_saving = false;
+          update_window_title();
+        }
+      else
+        {
+          std::string msg;
+          msg = _("Error!  Shieldset could not be saved.");
+          Gtk::MessageDialog dialog(*window, msg);
+          dialog.run();
+          dialog.hide();
+          d_shieldset->setId(orig_id);
+        }
     }
   else
     {
@@ -311,17 +365,35 @@ void ShieldSetWindow::on_save_shieldset_activated()
   if (current_save_filename.empty())
     current_save_filename = d_shieldset->getConfigurationFile();
   
-  XML_Helper helper(current_save_filename, std::ios::out, false);
-  d_shieldset->save(&helper);
-  helper.close();
-  needs_saving = false;
-  update_window_title();
-  shieldset_saved.emit(d_shieldset->getId());
+  bool success = d_shieldset->save(autosave, Shieldset::file_extension);
+  if (success)
+    {
+      RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
+      RecentlyEditedFileList::getInstance()->save();
+      int retval = File::copy (autosave, current_save_filename);
+      if (retval != 0)
+        success = false;
+      else
+        {
+          needs_saving = false;
+          update_window_title();
+          shieldset_saved.emit(d_shieldset->getId());
+        }
+    }
+  if (!success)
+    {
+      std::string msg;
+      msg = _("Error!  Shieldset could not be saved.");
+      Gtk::MessageDialog dialog(*window, msg);
+      dialog.run();
+      dialog.hide();
+    }
 }
 
 void ShieldSetWindow::on_edit_shieldset_info_activated()
 {
-  ShieldSetInfoDialog d(d_shieldset, File::get_dirname(current_save_filename), true);
+  ShieldSetInfoDialog d(d_shieldset, current_save_filename, true, 
+                        _("Edit Shieldset Information"));
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
@@ -384,28 +456,44 @@ void ShieldSetWindow::fill_shield_info(Shield*shield)
     }
 }
 
-void ShieldSetWindow::load_shieldset(std::string filename)
+bool ShieldSetWindow::load_shieldset(std::string filename)
 {
+  std::string old_current_save_filename = current_save_filename;
   current_save_filename = filename;
+  if (filename != autosave)
+    File::copy(current_save_filename, autosave);
+  else
+    {
+      //go get the real name of the file
+      std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Shieldset::file_extension);
+      if (files.size() > 0)
+        current_save_filename = files.front()->getFileName();
+    }
 
   std::string name = File::get_basename(filename);
 
-  Shieldset *shieldset = Shieldset::create(filename);
+  Shieldset *shieldset = Shieldset::create(autosave);
   if (shieldset == NULL)
     {
       std::string msg;
-      msg = "Error!  Shieldset could not be loaded.";
+      msg = _("Error!  Shieldset could not be loaded.");
       Gtk::MessageDialog dialog(*window, msg);
+      current_save_filename = old_current_save_filename;
       dialog.run();
       dialog.hide();
-      return;
+      return false;
+    }
+  if (File::nameEndsWith(current_save_filename, "/autosave" + Shieldset::file_extension) == false)
+    {
+      RecentlyEditedFileList::getInstance()->addEntry(current_save_filename);
+      RecentlyEditedFileList::getInstance()->save();
     }
   shields_list->clear();
   if (d_shieldset)
     delete d_shieldset;
   d_shieldset = shieldset;
 
-  d_shieldset->setSubDir(name);
+  d_shieldset->setSubDir(File::get_basename(autosave));
   d_shieldset->instantiateImages();
   for(Shieldset::iterator i = d_shieldset->begin(); 
       i != d_shieldset->end(); i++)
@@ -419,24 +507,17 @@ void ShieldSetWindow::load_shieldset(std::string filename)
     }
   update_shield_panel();
   update_window_title();
+  return true;
 
 }
 bool ShieldSetWindow::quit()
 {
   if (needs_saving == true)
     {
-      Gtk::Dialog* dialog;
-      Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + 
-					 "/editor-quit-dialog.ui");
-      xml->get_widget("dialog", dialog);
-      Gtk::Button *save_button;
-      xml->get_widget("save_button", save_button);
-      save_button->set_sensitive(File::is_writable(d_shieldset->getConfigurationFile()));
-      dialog->set_transient_for(*window);
-      int response = dialog->run();
-      dialog->hide();
-      delete dialog;
+      EditorQuitDialog d;
+      int response = d.run();
+      d.set_parent_window(*window);
+      d.hide();
       
       if (response == Gtk::RESPONSE_CANCEL) //we don't want to quit
 	return false;
@@ -448,6 +529,7 @@ bool ShieldSetWindow::quit()
     }
   else
     window->hide();
+  File::erase(autosave);
   return true;
 }
 bool ShieldSetWindow::on_window_closed(GdkEventAny*)
@@ -471,22 +553,22 @@ void ShieldSetWindow::on_change_smallpic_clicked()
       std::string filename = "";
       ShieldStyle *ss = shield->getFirstShieldstyle(ShieldStyle::SMALL);
       if (ss->getImageName() != "")
-	filename = d_shieldset->getFile(ss->getImageName());
+	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
       MaskedImageEditorDialog d(filename, d_shieldset);
       d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
       d.run();
+      if (filename != "")
+        File::erase(filename);
       if (d.get_selected_filename() != "")
 	{
 	  std::string file = File::get_basename(d.get_selected_filename());
-	  if (d.get_selected_filename() != d_shieldset->getFile(file))
+	  if (d.get_selected_filename() != filename)
 	    {
-	      //fixme:warn on overrwite.
-	      File::copy (d.get_selected_filename(), 
-			  d_shieldset->getFile(file));
+              d_shieldset->replaceFileInConfigurationFile(ss->getImageName()+".png", d.get_selected_filename());
+              ss->setImageName(file);
+              needs_saving = true;
+              update_window_title();
 	    }
-	  ss->setImageName(file);
-	  needs_saving = true;
-          update_window_title();
 	  update_shield_panel();
 	}
     }
@@ -504,7 +586,7 @@ void ShieldSetWindow::on_change_mediumpic_clicked()
       std::string filename = "";
       ShieldStyle *ss = shield->getFirstShieldstyle(ShieldStyle::MEDIUM);
       if (ss->getImageName() != "")
-	filename = d_shieldset->getFile(ss->getImageName());
+	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
       MaskedImageEditorDialog d(filename, d_shieldset);
       d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
       d.run();
@@ -512,14 +594,12 @@ void ShieldSetWindow::on_change_mediumpic_clicked()
 	{
 	  std::string file = File::get_basename(d.get_selected_filename());
 	  if (d.get_selected_filename() != d_shieldset->getFile(file))
-	    {
-	      //fixme:warn on overrwite.
-	      File::copy (d.get_selected_filename(), 
-			  d_shieldset->getFile(file));
-	    }
-	  ss->setImageName(file);
-	  needs_saving = true;
-          update_window_title();
+            {
+              d_shieldset->replaceFileInConfigurationFile(ss->getImageName()+".png", d.get_selected_filename());
+              ss->setImageName(file);
+              needs_saving = true;
+              update_window_title();
+            }
 	  update_shield_panel();
 	}
     }
@@ -537,7 +617,7 @@ void ShieldSetWindow::on_change_largepic_clicked()
       std::string filename = "";
       ShieldStyle *ss = shield->getFirstShieldstyle(ShieldStyle::LARGE);
       if (ss->getImageName() != "")
-	filename = d_shieldset->getFile(ss->getImageName());
+	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
       MaskedImageEditorDialog d(filename, d_shieldset);
       d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
       d.run();
@@ -545,14 +625,12 @@ void ShieldSetWindow::on_change_largepic_clicked()
 	{
 	  std::string file = File::get_basename(d.get_selected_filename());
 	  if (d.get_selected_filename() != d_shieldset->getFile(file))
-	    {
-	      //fixme:warn on overrwite.
-	      File::copy (d.get_selected_filename(), 
-			  d_shieldset->getFile(file));
-	    }
-	  ss->setImageName(file);
-	  needs_saving = true;
-          update_window_title();
+            {
+              d_shieldset->replaceFileInConfigurationFile(ss->getImageName()+".png", d.get_selected_filename());
+              ss->setImageName(file);
+              needs_saving = true;
+              update_window_title();
+            }
 	  update_shield_panel();
 	}
 
@@ -586,6 +664,7 @@ void ShieldSetWindow::addNewShield(Shield::Colour owner, Gdk::Color colour)
       Gtk::TreeIter i = shields_list->append();
       (*i)[shields_columns.name] = name;
       (*i)[shields_columns.shield] = shield;
+      d_shieldset->push_back(shield);
     }
 }
 

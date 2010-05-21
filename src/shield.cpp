@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include "xmlhelper.h"
 #include "ucompose.hpp"
 #include "shieldset.h"
+#include "tarhelper.h"
 
 std::string Shield::d_tag = "shield";
 
@@ -115,11 +116,26 @@ bool Shield::save(XML_Helper *helper) const
 	
 void Shield::instantiateImages(Shieldset *s)
 {
+  bool broken = false;
+  Tar_Helper t(s->getConfigurationFile(), std::ios::in, broken);
+  if (broken)
+    return;
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getImageName().empty() == false)
-	(*it)->instantiateImages(s->getFile((*it)->getImageName()), s);
+        {
+          std::string pngfile = t.getFile((*it)->getImageName() + ".png", 
+                                          broken);
+          if (broken == false)
+            {
+              (*it)->instantiateImages(pngfile, s);
+              File::erase(pngfile);
+            }
+          else
+            return;
+        }
     }
+  t.Close();
 }
 void Shield::uninstantiateImages()
 {

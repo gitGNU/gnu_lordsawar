@@ -37,8 +37,8 @@
 
 using namespace std;
 
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
-//#define debug(x)
+//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+#define debug(x)
 
 Armysetlist* Armysetlist::s_instance = 0;
 
@@ -147,6 +147,24 @@ guint32 Armysetlist::getSize(guint32 id) const
   return (*it).second.size();
 }
 
+std::list<std::string> Armysetlist::getValidNames() const
+{
+  std::list<std::string> names;
+  for (const_iterator it = begin(); it != end(); it++)
+    if ((*it)->validate() == true)
+      names.push_back((*it)->getName());
+  return names;
+}
+
+std::list<std::string> Armysetlist::getValidNames(guint32 tilesize)
+{
+  std::list<std::string> names;
+  for (iterator it = begin(); it != end(); it++)
+    if ((*it)->getTileSize() == tilesize && (*it)->validate() == true)
+      names.push_back((*it)->getName());
+  return names;
+}
+
 std::list<std::string> Armysetlist::getNames() const
 {
   std::list<std::string> names;
@@ -177,21 +195,28 @@ std::string Armysetlist::getName(guint32 id) const
 
 Armyset *Armysetlist::loadArmyset(std::string name)
 {
-  debug("Loading armyset " <<name);
+  debug("Loading armyset " <<File::get_basename(name));
   Armyset *armyset = Armyset::create(name);
   if (armyset == NULL)
-    return NULL;
-  if (armyset->validate() == false)
     {
-      cerr << "Error!  armyset: `" << armyset->getName() << 
-	"' is invalid.  Skipping." << endl;
+      cerr << "Error!  armyset: `" << File::get_basename(name, true) << 
+	"' is malformed.  Skipping." << endl;
+      return NULL;
+    }
+  if (d_armysets.find(armyset->getSubDir()) != d_armysets.end())
+    {
+      Armyset *a = (*d_armysets.find(armyset->getSubDir())).second;
+      cerr << "Error!  armyset: `" << armyset->getConfigurationFile() << 
+	"' shares a duplicate armyset subdir `" << a->getSubDir() << "' with `" << a->getConfigurationFile() 
+	<< "'.  Skipping." << endl;
       delete armyset;
       return NULL;
     }
+    
   if (d_armysetids.find(armyset->getId()) != d_armysetids.end())
     {
       Armyset *a = (*d_armysetids.find(armyset->getId())).second;
-      cerr << "Error!  armyset: `" << armyset->getName() << 
+      cerr << "Error!  armyset: `" << armyset->getConfigurationFile() << 
 	"' shares a duplicate armyset id with `" << 
 	a->getConfigurationFile() << "'.  Skipping." << endl;
       delete armyset;

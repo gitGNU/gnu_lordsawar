@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -78,7 +78,7 @@ void TilesetFlagEditorDialog::setup_shield_theme_combobox(Gtk::Box *box)
   shield_theme_combobox = manage(new Gtk::ComboBoxText);
 
   Shieldsetlist *sl = Shieldsetlist::getInstance();
-  std::list<std::string> shield_themes = sl->getNames();
+  std::list<std::string> shield_themes = sl->getValidNames();
   int counter = 0;
   int default_id = 0;
   for (std::list<std::string>::iterator i = shield_themes.begin(),

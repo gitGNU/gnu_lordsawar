@@ -46,13 +46,13 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
         static void deleteInstance();
 
         //! Returns the names of all citysets available to the game.
-	std::list<std::string> getNames() const;
+	std::list<std::string> getValidNames() const;
+
+        //! Returns the names of citysets that have the given tile size.
+	std::list<std::string> getValidNames(guint32 tilesize);
 
         //! Returns whether the given name is in our list of citysets.
         bool contains(std::string name) const;
-
-        //! Returns the names of citysets that have the given tile size.
-	std::list<std::string> getNames(guint32 tilesize);
 
         //! Returns the different tilesizes present in the citysetlist.
 	void getSizes(std::list<guint32> &sizes);
@@ -114,6 +114,12 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
         Cityset* loadCityset (std::string name);
         void loadCitysets (std::list<std::string> name);
         
+        //! Returns the names of all citysets available to the game.
+	std::list<std::string> getNames() const;
+
+        //! Returns the names of citysets that have the given tile size.
+	std::list<std::string> getNames(guint32 tilesize);
+
         typedef std::map<std::string, std::string> DirMap;
         typedef std::map<std::string, Cityset*> CitysetMap;
         typedef std::map<guint32, Cityset*> CitysetIdMap;

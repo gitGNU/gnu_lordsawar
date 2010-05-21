@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ class ShieldSetInfoDialog: public sigc::trackable
 {
  public:
     ShieldSetInfoDialog(Shieldset *shieldset, std::string dir,
-                        bool readonly = false);
+                        bool readonly = false, std::string title = "");
     ~ShieldSetInfoDialog();
 
     void set_parent_window(Gtk::Window &parent);
@@ -41,7 +41,7 @@ class ShieldSetInfoDialog: public sigc::trackable
     Gtk::Entry *name_entry;
     Gtk::TextView *copyright_textview;
     Gtk::TextView *license_textview;
-    Gtk::Entry *subdir_entry;
+    Gtk::Entry *filename_entry;
     Gtk::SpinButton *id_spinbutton;
     Gtk::Button *accept_button;
     Gtk::Label *status_label;
@@ -49,7 +49,7 @@ class ShieldSetInfoDialog: public sigc::trackable
     Gtk::Label *dir_label;
 
     void on_name_changed();
-    void on_subdir_changed();
+    void on_filename_changed();
     void update_buttons();
 
     bool d_readonly;

@@ -44,7 +44,7 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	// Methods that operate on the class data but do not modify the class.
 
         //! Returns the names of all Shieldset objects available to the game.
-	std::list<std::string> getNames() const;
+	std::list<std::string> getValidNames() const;
 
         //! Returns whether the given name is our list of shieldset objects.
         bool contains(std::string name) const;
@@ -95,7 +95,7 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	// Methods that operate on the class data and modify the class.
 
 	//! Add a shieldset to the list.  Use this instead of push_back.
-	void add(Shieldset *shieldset);
+	void add(Shieldset *shieldset, std::string filename);
 
 	//! Destroy all of the images associated with shieldsets in this list.
 	void uninstantiateImages();
@@ -145,6 +145,8 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 
 	//! Loads a bunch of shieldsets and puts them in this list.
 	void loadShieldsets(std::list<std::string> shieldsets);
+	
+        std::list<std::string> getNames() const;
         
 	// DATA
 

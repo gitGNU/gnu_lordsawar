@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -67,7 +67,11 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	 */
 	Shieldset(guint32 id, std::string name);
 
-	//! Load a Shieldset from a shieldset configuration file.
+
+        //! Load a Shieldset from a shieldset configuration file.
+        Shieldset(std::string filename, bool &broken);
+
+	//! Load a Shieldset from an opened shieldset configuration file.
 	/**
 	 * Make a new Shieldset object by reading it in from the shieldset
 	 * configuration file.
@@ -156,6 +160,8 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 
 	bool save(XML_Helper *helper) const;
 
+        bool save(std::string filename, std::string extension) const;
+
 	//! Find the shield of a given size and colour in this Shieldset.
 	/**
 	 * Scan through all Shield objects in this set for first one that is 
@@ -185,6 +191,8 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	//! Check to see if the images for the shieldset are supplied.
 	bool validateShieldImages(Shield::Colour c) const;
 
+        std::string getFileFromConfigurationFile(std::string file);
+        bool replaceFileInConfigurationFile(std::string file, std::string new_file);
 
 	// Methods that operate on the class data and also modify the class.
 
@@ -193,7 +201,6 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 
 	//! Destroy images associated with this shieldset.
 	void uninstantiateImages();
-
 
 	// Static Methods
 

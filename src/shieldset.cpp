@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@
 #include "shieldset.h"
 #include "shieldstyle.h"
 #include "File.h"
+#include "Configuration.h"
+#include "tarhelper.h"
 
 using namespace std;
 
@@ -37,6 +39,11 @@ Shieldset::Shieldset(guint32 id, std::string name)
 	: d_id(id), d_name(name), d_copyright(""), d_license(""), d_info(""), 
 	d_subdir("")
 {
+}
+
+Shieldset::Shieldset(std::string filename, bool &broken)
+{
+  *this = *Shieldset::create(filename);
 }
 
 Shieldset::Shieldset(XML_Helper *helper, std::string directory)
@@ -112,40 +119,54 @@ bool Shieldset::loadShield(std::string tag, XML_Helper* helper)
 class ShieldsetLoader
 {
 public:
-    ShieldsetLoader(std::string filename)
+    ShieldsetLoader(std::string filename, bool &broken)
       {
 	shieldset = NULL;
 	dir = File::get_dirname(filename);
+        file = File::get_basename(filename);
 	if (File::nameEndsWith(filename, Shieldset::file_extension) == false)
 	  filename += Shieldset::file_extension;
-	XML_Helper helper(filename, ios::in, false);
+        Tar_Helper t(filename, std::ios::in, broken);
+        if (broken)
+          return;
+        std::string lwsfilename = t.getFirstFile(broken);
+        if (broken)
+          return;
+	XML_Helper helper(lwsfilename, ios::in, false);
 	helper.registerTag(Shieldset::d_tag, sigc::mem_fun((*this), &ShieldsetLoader::load));
 	if (!helper.parse())
 	  {
-	    std::cerr << "Error, while loading an shieldset. Shieldset Name: ";
-	    std::cerr <<File::get_basename(File::get_dirname(filename))<<
-	      std::endl <<std::flush;
+	    std::cerr << "Error, while loading an shieldset. Shieldset File: ";
+	    std::cerr << filename << std::endl <<std::flush;
 	    if (shieldset != NULL)
 	      delete shieldset;
 	    shieldset = NULL;
 	  }
+        File::erase(lwsfilename);
+        helper.close();
+        t.Close();
       };
     bool load(std::string tag, XML_Helper* helper)
       {
 	if (tag == Shieldset::d_tag)
 	  {
 	    shieldset = new Shieldset(helper, dir);
+            shieldset->setSubDir(file);
 	    return true;
 	  }
 	return false;
       };
     std::string dir;
+    std::string file;
     Shieldset *shieldset;
 };
 
 Shieldset *Shieldset::create(std::string filename)
 {
-  ShieldsetLoader d(filename);
+  bool broken = false;
+  ShieldsetLoader d(filename, broken);
+  if (broken)
+    return NULL;
   return d.shieldset;
 }
 
@@ -158,6 +179,66 @@ void Shieldset::getFilenames(std::list<std::string> &files) const
 	if (std::find(files.begin(), files.end(), file) == files.end())
 	  files.push_back(file);
       }
+}
+
+bool Shieldset::save(std::string filename, std::string extension) const
+{
+  bool broken = false;
+  std::string goodfilename = filename;
+  if (File::nameEndsWith(filename, extension) == false)
+    goodfilename += "." + extension;
+  std::string tmpfile = "lw.XXXX";
+  int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
+  close (fd);
+  XML_Helper helper(tmpfile, std::ios::out, Configuration::s_zipfiles);
+  broken = !save(&helper);
+  helper.close();
+  if (broken == true)
+    return false;
+  std::string tmptar = tmpfile + ".tar";
+  Tar_Helper t(tmptar, std::ios::out, broken);
+  if (broken == true)
+    return false;
+  t.saveFile(tmpfile, File::get_basename(goodfilename, true));
+  File::erase(tmpfile);
+  //now the images, go get 'em from the tarball we were made from.
+  std::list<std::string> delfiles;
+  Tar_Helper orig(getConfigurationFile(), std::ios::in, broken);
+  if (broken == false)
+    {
+      std::list<std::string> files = orig.getFilenamesWithExtension(".png");
+      for (std::list<std::string>::iterator it = files.begin(); 
+           it != files.end(); it++)
+        {
+          std::string pngfile = orig.getFile(*it, broken);
+          if (broken == false)
+            {
+              t.saveFile(pngfile);
+              delfiles.push_back(pngfile);
+            }
+          else
+            break;
+        }
+      orig.Close();
+    }
+  else
+    {
+      FILE *fileptr = fopen (getConfigurationFile().c_str(), "r");
+      if (fileptr)
+        fclose (fileptr);
+      else
+        broken = false;
+    }
+  t.Close();
+  for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
+    File::erase(*it);
+  if (broken == false)
+    {
+      if (File::copy(tmptar, goodfilename) == 0)
+        File::erase(tmptar);
+    }
+
+  return !broken;
 }
 
 bool Shieldset::save(XML_Helper *helper) const
@@ -201,22 +282,21 @@ std::string Shieldset::getConfigurationFile() const
 
 std::list<std::string> Shieldset::scanUserCollection()
 {
-  return File::scanFiles(File::getUserShieldsetDir(), file_extension);
+  return File::scanForFiles(File::getUserShieldsetDir(), file_extension);
 }
 
 std::list<std::string> Shieldset::scanSystemCollection()
 {
-  std::list<std::string> retlist = File::scanFiles(File::getShieldsetDir(), 
-						   file_extension);
+  std::list<std::string> retlist = File::scanForFiles(File::getShieldsetDir(), 
+                                                      file_extension);
   if (retlist.empty())
     {
       std::cerr << "Couldn't find any shieldsets (*" << file_extension << 
-        ") in directories below: " << File::getShieldsetDir() << std::endl;
+        ") in : " << File::getShieldsetDir() << std::endl;
       std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
       std::cerr << "Exiting!" << std::endl;
       exit(-1);
     }
-
   return retlist;
 }
 
@@ -296,8 +376,9 @@ bool Shieldset::validateShieldImages(Shield::Colour c) const
 
 void Shieldset::reload()
 {
-  ShieldsetLoader d(getConfigurationFile());
-  if (d.shieldset && d.shieldset->validate())
+  bool broken = false;
+  ShieldsetLoader d(getConfigurationFile(), broken);
+  if (broken == false && d.shieldset && d.shieldset->validate())
     {
       //steal the values from d.shieldset and then don't delete it.
       uninstantiateImages();
@@ -308,5 +389,31 @@ void Shieldset::reload()
       instantiateImages();
       d_subdir = subdir;
     }
+}
+
+std::string Shieldset::getFileFromConfigurationFile(std::string file)
+{
+  bool broken = false;
+  Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
+  if (broken == false)
+    {
+      std::string filename = t.getFile(file, broken);
+      t.Close();
+  
+      if (broken == false)
+        return filename;
+    }
+  return "";
+}
+bool Shieldset::replaceFileInConfigurationFile(std::string file, std::string new_file)
+{
+  bool broken = false;
+  Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
+  if (broken == false)
+    {
+      broken = t.replaceFile(file, new_file);
+      t.Close();
+    }
+  return broken;
 }
 //End of file

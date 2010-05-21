@@ -30,8 +30,8 @@
 
 using namespace std;
 
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
-//#define debug(x)
+//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+#define debug(x)
 
 Citysetlist* Citysetlist::s_instance = 0;
 
@@ -80,6 +80,24 @@ Citysetlist::~Citysetlist()
     delete (*it);
 }
 
+std::list<std::string> Citysetlist::getValidNames() const
+{
+  std::list<std::string> names;
+  for (const_iterator it = begin(); it != end(); it++)
+    if ((*it)->validate() == true)
+      names.push_back((*it)->getName());
+  return names;
+}
+
+std::list<std::string> Citysetlist::getValidNames(guint32 tilesize)
+{
+  std::list<std::string> names;
+  for (iterator it = begin(); it != end(); it++)
+    if ((*it)->getTileSize() == tilesize && (*it)->validate() == true)
+      names.push_back((*it)->getName());
+  return names;
+}
+
 std::list<std::string> Citysetlist::getNames() const
 {
   std::list<std::string> names;
@@ -99,24 +117,30 @@ std::list<std::string> Citysetlist::getNames(guint32 tilesize)
 
 Cityset *Citysetlist::loadCityset(std::string name)
 {
-  debug("Loading cityset " <<File::get_basename(File::get_dirname(name)));
+  debug("Loading cityset " <<File::get_basename(name));
 
   Cityset *cityset = Cityset::create(name);
   if (!cityset)
-    return NULL;
-    
-  if (cityset->validate() == false)
     {
-      cerr << "Error!  cityset: `" << cityset->getName() << 
-	"' is invalid.  Skipping." << endl;
+      cerr << "Error!  cityset: `" << File::get_basename(name, true) << 
+	"' is malformed.  Skipping." << endl;
+      return NULL;
+    }
+    
+  if (d_citysets.find(cityset->getSubDir()) != d_citysets.end())
+    {
+      Cityset *c = (*d_citysets.find(cityset->getSubDir())).second;
+      cerr << "Error!  cityset: `" << cityset->getConfigurationFile() << 
+	"' shares a duplicate cityset subdir `" << c->getSubDir() << "' with `" << c->getConfigurationFile() 
+	<< "'.  Skipping." << endl;
       delete cityset;
       return NULL;
     }
-
+    
   if (d_citysetids.find(cityset->getId()) != d_citysetids.end())
     {
       Cityset *c = (*d_citysetids.find(cityset->getId())).second;
-      cerr << "Error!  cityset: `" << cityset->getName() << 
+      cerr << "Error!  cityset: `" << cityset->getConfigurationFile() << 
 	"' shares a duplicate cityset id with `" << c->getConfigurationFile() 
 	<< "'.  Skipping." << endl;
       delete cityset;

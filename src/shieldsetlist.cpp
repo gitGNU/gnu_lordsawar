@@ -30,8 +30,8 @@
 
 using namespace std;
 
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
-//#define debug(x)
+//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+#define debug(x)
 
 Shieldsetlist* Shieldsetlist::s_instance = 0;
 
@@ -60,7 +60,7 @@ void Shieldsetlist::loadShieldsets(std::list<std::string> shieldsets)
         Shieldset *shieldset = loadShieldset(*i);
 	if (!shieldset)
 	  continue;
-	add(shieldset);
+	add(shieldset, *i);
       }
 }
 
@@ -87,6 +87,18 @@ std::list<std::string> Shieldsetlist::getNames() const
     names.push_back((*it)->getName());
   return names;
 }
+
+std::list<std::string> Shieldsetlist::getValidNames() const
+{
+  std::list<std::string> names;
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->validate() == true)
+        names.push_back((*it)->getName());
+    }
+  return names;
+}
+
 std::string Shieldsetlist::getShieldsetDir(std::string name) const
 {
   DirMap::const_iterator it = d_dirs.find(name);
@@ -102,20 +114,40 @@ Shieldset* Shieldsetlist::loadShieldset(std::string name)
 
   Shieldset *shieldset = Shieldset::create(name);
   if (!shieldset)
-    return NULL;
-
-  if (shieldset->validate() == false)
     {
-      cerr << "Error!  shieldset: `" << shieldset->getName() << 
-	"' is invalid.  Skipping." << endl;
-      delete shieldset;
+      cerr << "Error!  shieldset: `" << File::get_basename(name, true) << 
+	"' is malformed.  Skipping." << endl;
       return NULL;
     }
 
+  if (d_shieldsets.find(shieldset->getSubDir()) != d_shieldsets.end())
+    {
+      Shieldset *s = (*d_shieldsets.find(shieldset->getSubDir())).second;
+      cerr << "Error!  shieldset: `" << shieldset->getConfigurationFile() << 
+	"' shares a duplicate shieldset subdir `" << s->getSubDir() << "' with `" << s->getConfigurationFile() 
+	<< "'.  Skipping." << endl;
+      delete shieldset;
+      return NULL;
+    }
+    
+  if (d_dirs.find(shieldset->getName()) != d_dirs.end())
+    {
+      std::string subdir = (*d_dirs.find(shieldset->getName())).second;
+      if (subdir != "")
+        {
+          Shieldset *s = (*d_shieldsets.find(subdir)).second;
+          cerr << "Error!  shieldset: `" << shieldset->getConfigurationFile() 
+            << "' shares a duplicate shieldset name `" << s->getName() << 
+            "' with `" << s->getConfigurationFile() << "'.  Skipping." << endl;
+          delete shieldset;
+        }
+      return NULL;
+    }
+    
   if (d_shieldsetids.find(shieldset->getId()) != d_shieldsetids.end())
     {
       Shieldset *s = (*d_shieldsetids.find(shieldset->getId())).second;
-      cerr << "Error!  shieldset: `" << shieldset->getName() << 
+      cerr << "Error!  shieldset: `" << shieldset->getConfigurationFile() << 
 	"' shares a duplicate shieldset id with `" << s->getConfigurationFile() 
 	<< "'.  Skipping." << endl;
       delete shieldset;
@@ -125,9 +157,9 @@ Shieldset* Shieldsetlist::loadShieldset(std::string name)
   return shieldset;
 }
 
-void Shieldsetlist::add(Shieldset *shieldset)
+void Shieldsetlist::add(Shieldset *shieldset, std::string name)
 {
-  std::string subdir = File::get_basename(shieldset->getDirectory());
+  std::string subdir = File::get_basename(name);
   push_back(shieldset);
   shieldset->setSubDir(subdir);
   d_dirs[shieldset->getName()] = subdir;
@@ -186,23 +218,10 @@ Shieldset *Shieldsetlist::import(Tar_Helper *t, std::string f, bool &broken)
   assert (shieldset != NULL);
   shieldset->setSubDir(File::get_basename(f));
 
-  //extract all the files and remember where we extracted them
-  std::list<std::string> delfiles;
-  delfiles.push_back(filename);
-  std::list<std::string> files;
-  shieldset->getFilenames(files);
-  for (std::list<std::string>::iterator i = files.begin(); i != files.end(); i++)
-    {
-      std::string file = t->getFile(*i + ".png", broken);
-      delfiles.push_back (file);
-    }
-
   std::string subdir = "";
   guint32 id = 0;
   addToPersonalCollection(shieldset, subdir, id);
 
-  for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
-    File::erase(*it);
   return shieldset;
 
 }
@@ -266,25 +285,11 @@ bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &n
     new_id = shieldset->getId();
 
   //make the directory where the shieldset is going to live.
-  std::string directory = 
-    File::getUserShieldsetDir() + shieldset->getSubDir() + "/";
+  std::string file = File::getUserShieldsetDir() + shieldset->getSubDir() + Shieldset::file_extension;
 
-  if (File::create_dir(directory) == false)
-    return false;
+  shieldset->save(file, Shieldset::file_extension);
 
-  //okay now we copy the image files into the new directory 
-  std::list<std::string> files;
-  shieldset->getFilenames(files);
-  for (std::list<std::string>::iterator it = files.begin(); it != files.end();
-       it++)
-    File::copy(shieldset->getFile(*it), directory + *it + ".png");
-
-  //save out the shieldset file
-  shieldset->setDirectory(directory);
-  XML_Helper helper(shieldset->getConfigurationFile(), std::ios::out, false);
-  shieldset->save(&helper);
-  helper.close();
-  add (shieldset);
+  add (shieldset, file);
   return true;
 }
 

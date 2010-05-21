@@ -132,6 +132,8 @@ class File
 
 	static std::list<std::string> scanFiles(std::string dir, std::string ext);
 
+        static std::list<std::string> scanForFiles(std::string dir, std::string extension);
+
         static char *sanify(const char *string);
 };
 

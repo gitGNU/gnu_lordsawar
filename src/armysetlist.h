@@ -108,14 +108,16 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
         //! Returns the different tilesizes present in the armysetlist.
 	void getSizes(std::list<guint32> &sizes);
 
-        //! Returns the names of all Armyset objects available to the game.
-	std::list<std::string> getNames() const;
-
         //! Returns whether the given name is also in our list of armysets.
         bool contains(std::string name) const;
 
         //! Returns the names of armysets that have the given tile size.
-	std::list<std::string> getNames(guint32 tilesize);
+	std::list<std::string> getValidNames(guint32 tilesize);
+
+        //! Returns the names of all Armyset objects available to the game.
+	std::list<std::string> getValidNames() const;
+
+
 
         /** Returns the Id of a specific armyset by name
           * 
@@ -185,6 +187,13 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 * user's personal collection.
 	 */
 	void loadArmysets(std::list<std::string> armysets);
+
+        //! Returns the names of armysets that have the given tile size.
+	std::list<std::string> getNames(guint32 tilesize);
+
+        //! Returns the names of all Armyset objects available to the game.
+	std::list<std::string> getNames() const;
+
         
         typedef std::map<guint32, std::vector<ArmyProto*> > ArmyPrototypeMap;
         typedef std::map<guint32, std::string> NameMap;
@@ -204,7 +213,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	//! A map that provides an Armyset when supplying a subdirectory name.
         ArmysetMap d_armysets;
 
-	//! A map that provides an Armyset when supplying a subdirectory name.
+	//! A map that provides an Armyset when supplying an Armyset::d_id.
         ArmysetIdMap d_armysetids;
 
         //! A static pointer for the singleton instance.

@@ -66,7 +66,7 @@ namespace
 
     // returns a list of the XML file names in path with the ".xml" extension
     // stripped
-    std::list<std::string> get_xml_files(std::string path, std::string ext)
+    std::list<std::string> get_xml_files(std::string path, std::string ext, bool keep_ext)
     {
 	std::list<std::string> retlist;
 	Glib::Dir dir(path);
@@ -78,23 +78,41 @@ namespace
 	    if (idx != std::string::npos && 
 		idx == entry.length() - ext.length())
 	    {
+              if (keep_ext == false)
 		entry.replace(idx, ext.length(), "");  //substitute the ".xml" with ""
 		retlist.push_back(Glib::filename_to_utf8(path + entry));
 	    }
 	}
 	return retlist;
     }
+
+    std::list<std::string> get_files(std::string path, std::string ext)
+    {
+	std::list<std::string> retlist;
+	Glib::Dir dir(path);
+    
+	for (Glib::Dir::iterator i = dir.begin(), end = dir.end(); i != end; ++i)
+          {
+	    std::string entry = *i;
+	    std::string::size_type idx = entry.rfind(ext);
+	    if (idx != std::string::npos && 
+                idx == entry.length() - ext.length())
+              retlist.push_back(Glib::filename_to_utf8(path + entry));
+          }
+	return retlist;
+    }
+    
     
     // returns a list of the XML file names in the immediate subdirs of path
     // with the ".xml" extension stripped
-    std::list<std::string> get_xml_files_in_immediate_subdirs(std::string path, std::string ext)
+    std::list<std::string> get_xml_files_in_immediate_subdirs(std::string path, std::string ext, bool keep_ext)
     {
 	std::list<std::string> retlist, dirlist = get_immediate_subdirs(path);
 	for (std::list<std::string>::iterator i = dirlist.begin(),
 		 end = dirlist.end(); i != end; ++i)
 	{
 	    std::list<std::string> files = 
-	      get_xml_files(File::add_slash_if_necessary(*i), ext);
+	      get_xml_files(File::add_slash_if_necessary(*i), ext, keep_ext);
 	
 	    retlist.insert(retlist.end(), files.begin(), files.end());
 	}
@@ -298,8 +316,13 @@ std::string File::getUserArmysetDir()
 
 std::list<std::string> File::scanFiles(std::string dir, std::string extension)
 {
-  return get_xml_files_in_immediate_subdirs(dir, extension);
+  return get_xml_files_in_immediate_subdirs(dir, extension, false);
 }
+std::list<std::string> File::scanForFiles(std::string dir, std::string extension)
+{
+  return get_files (dir, extension);
+}
+
 
 std::string File::getTilesetDir()
 {
