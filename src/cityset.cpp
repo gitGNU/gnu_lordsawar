@@ -600,4 +600,39 @@ bool Cityset::replaceFileInConfigurationFile(std::string file, std::string new_f
     }
   return broken;
 }
+
+guint32 Cityset::calculate_preferred_tile_size() const
+{
+  guint32 tilesize = 0;
+  std::map<guint32, guint32> sizecounts;
+
+  if (citypics[0])
+    sizecounts[citypics[0]->get_width() / d_city_tile_width]++;
+  if (razedcitypics[0])
+    sizecounts[razedcitypics[0]->get_width() / d_city_tile_width]++;
+  if (port)
+    sizecounts[port->get_width()]++;
+  if (signpost)
+    sizecounts[signpost->get_width()]++;
+  if (ruinpics[0])
+    sizecounts[ruinpics[0]->get_width() / d_ruin_tile_width]++;
+  if (templepics[0])
+    sizecounts[templepics[0]->get_width() / d_temple_tile_width]++;
+  if (towerpics[0])
+    sizecounts[towerpics[0]->get_width()]++;
+
+  guint32 maxcount = 0;
+  for (std::map<guint32, guint32>::iterator it = sizecounts.begin(); 
+       it != sizecounts.end(); it++)
+    {
+      if ((*it).second > maxcount)
+        {
+          maxcount = (*it).second;
+          tilesize = (*it).first;
+        }
+    }
+  if (tilesize == 0)
+    tilesize = DEFAULT_CITY_TILE_SIZE;
+  return tilesize;
+}
 // End of file

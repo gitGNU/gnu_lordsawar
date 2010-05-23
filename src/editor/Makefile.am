@@ -28,6 +28,7 @@ libeditutil_la_SOURCES = \
 	recently-edited-file-list.cpp recently-edited-file-list.h \
 	editor-quit-dialog.cpp editor-quit-dialog.h \
 	editor-recover-dialog.cpp editor-recover-dialog.h \
+	tile-size-editor-dialog.cpp tile-size-editor-dialog.h \
 	glade-helpers.h
 
 libshieldsetwindow_la_SOURCES = \

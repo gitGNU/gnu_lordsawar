@@ -45,6 +45,7 @@
 #include "citysetlist.h"
 #include "recently-edited-file.h"
 #include "recently-edited-file-list.h"
+#include "tile-size-editor-dialog.h"
 #include "editor-quit-dialog.h"
 #include "editor-recover-dialog.h"
 
@@ -418,6 +419,14 @@ void CitySetWindow::on_save_cityset_activated()
   if (current_save_filename.empty())
     current_save_filename = d_cityset->getConfigurationFile();
 
+  guint32 suggested_tile_size = d_cityset->calculate_preferred_tile_size();
+  if (suggested_tile_size != d_cityset->getTileSize())
+    {
+      TileSizeEditorDialog d(d_cityset->getTileSize(), suggested_tile_size);
+      int response = d.run();
+      if (response == Gtk::RESPONSE_ACCEPT)
+        d_cityset->setTileSize(d.get_selected_tilesize());
+    }
   bool success = d_cityset->save(autosave, Cityset::file_extension);
   if (success)
     {

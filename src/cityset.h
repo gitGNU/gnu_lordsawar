@@ -120,8 +120,10 @@ class Cityset : public sigc::trackable, public Set
 	//! Sets the description of the cityset.
 	void setInfo(std::string description) {d_info = description;};
 
-        //! Returns the width and height in pixels of the city images.
+        //! Returns the width and height in pixels of a square on the map.
         guint32 getTileSize() const {return d_tileSize;}
+
+        void setTileSize(guint32 tile_size) {d_tileSize = tile_size;}
 
 	void setCitiesFilename(std::string s) {d_cities_filename = s;};
 	std::string getCitiesFilename() {return d_cities_filename;};
@@ -194,6 +196,7 @@ class Cityset : public sigc::trackable, public Set
 
         //! Load the cityset again.
         void reload();
+        guint32 calculate_preferred_tile_size() const;
     private:
 
         // DATA
