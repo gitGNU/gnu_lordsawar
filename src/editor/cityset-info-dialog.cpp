@@ -146,15 +146,15 @@ void CitySetInfoDialog::update_buttons()
       status_label->set_markup(String::ucompose("<b>%1</b>", 
 						_("That filename is already used.")));
     }
+  else if (filename_entry->get_text() == "" || name_entry->get_text() == "")
+    accept_button->set_sensitive(false);
   else if (Citysetlist::getInstance()->contains(name_entry->get_text()) && 
            name_entry->get_text() != "")
     {
       status_label->set_markup(String::ucompose("<b>%1</b>", 
 						_("That name is already in use.")));
-      accept_button->set_sensitive(false);
+      accept_button->set_sensitive(true);
     }
-  else if (filename_entry->get_text() == "" || name_entry->get_text() == "")
-    accept_button->set_sensitive(false);
   else
     {
       status_label->set_text("");
