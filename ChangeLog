@@ -1,6 +1,7 @@
 2010-05-23  Ben Asselstine  <benasselstine@hushmail.com>
 
 	* the cityset configuration file is now a tar file.
+	* added automagic tile size detection and editing in cityset editor.
 
 2010-05-21  Ben Asselstine  <benasselstine@hushmail.com>
 
