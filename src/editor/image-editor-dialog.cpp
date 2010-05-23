@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -58,6 +58,7 @@ ImageEditorDialog::~ImageEditorDialog()
 void ImageEditorDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
+    dialog->property_icon() = parent.property_icon().get_value()->copy();
     //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 

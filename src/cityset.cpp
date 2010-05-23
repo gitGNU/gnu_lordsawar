@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@
 #include "city.h"
 #include "ruin.h"
 #include "temple.h"
+#include "tarhelper.h"
+#include "Configuration.h"
 
 std::string Cityset::d_tag = "cityset";
 std::string Cityset::file_extension = CITYSET_EXT;
@@ -38,7 +40,7 @@ using namespace std;
 #define DEFAULT_CITY_TILE_SIZE 40
 Cityset::Cityset(guint32 id, std::string name)
 	: d_id(id), d_name(name), d_copyright(""), d_license(""), 
-	d_tileSize(DEFAULT_CITY_TILE_SIZE), d_subdir("")
+	d_tileSize(DEFAULT_CITY_TILE_SIZE), d_basename("")
 {
 	d_cities_filename = "";
 	d_razedcities_filename = "";
@@ -107,40 +109,57 @@ Cityset::~Cityset()
 class CitysetLoader
 {
 public:
-    CitysetLoader(std::string filename)
+    CitysetLoader(std::string filename, bool &broken)
       {
 	cityset = NULL;
 	dir = File::get_dirname(filename);
+        file = File::get_basename(filename);
 	if (File::nameEndsWith(filename, Cityset::file_extension) == false)
 	  filename += Cityset::file_extension;
-	XML_Helper helper(filename, ios::in, false);
+        Tar_Helper t(filename, std::ios::in, broken);
+        if (broken)
+          return;
+        std::string lwcfilename = t.getFirstFile(broken);
+        if (broken)
+          return;
+	XML_Helper helper(lwcfilename, ios::in, false);
 	helper.registerTag(Cityset::d_tag, sigc::mem_fun((*this), &CitysetLoader::load));
 	if (!helper.parse())
 	  {
-	    std::cerr << "Error, while loading an cityset. Cityset Name: ";
-	    std::cerr <<File::get_basename(filename)<<std::endl <<std::flush;
+	    std::cerr << "Error, while loading an cityset. Cityset File: ";
+	    std::cerr << filename << std::endl <<std::flush;
 	    if (cityset != NULL)
 	      delete cityset;
 	    cityset = NULL;
 	  }
+        File::erase(lwcfilename);
+        helper.close();
+        t.Close();
       };
     bool load(std::string tag, XML_Helper* helper)
       {
 	if (tag == Cityset::d_tag)
 	  {
 	    cityset = new Cityset(helper, dir);
+            cityset->setBaseName(file);
 	    return true;
 	  }
 	return false;
       };
     std::string dir;
+    std::string file;
     Cityset *cityset;
 };
+
 Cityset *Cityset::create(std::string file)
 {
-  CitysetLoader d(file);
+  bool broken = false;
+  CitysetLoader d(file, broken);
+  if (broken)
+    return NULL;
   return d.cityset;
 }
+
 void Cityset::getFilenames(std::list<std::string> &files)
 {
   files.push_back(d_cities_filename);
@@ -152,7 +171,67 @@ void Cityset::getFilenames(std::list<std::string> &files)
   files.push_back(d_towers_filename);
 }
 
-bool Cityset::save(XML_Helper *helper)
+bool Cityset::save(std::string filename, std::string extension) const
+{
+  bool broken = false;
+  std::string goodfilename = filename;
+  if (File::nameEndsWith(filename, extension) == false)
+    goodfilename += "." + extension;
+  std::string tmpfile = "lw.XXXX";
+  int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
+  close (fd);
+  XML_Helper helper(tmpfile, std::ios::out, Configuration::s_zipfiles);
+  broken = !save(&helper);
+  helper.close();
+  if (broken == true)
+    return false;
+  std::string tmptar = tmpfile + ".tar";
+  Tar_Helper t(tmptar, std::ios::out, broken);
+  if (broken == true)
+    return false;
+  t.saveFile(tmpfile, File::get_basename(goodfilename, true));
+  File::erase(tmpfile);
+  //now the images, go get 'em from the tarball we were made from.
+  std::list<std::string> delfiles;
+  Tar_Helper orig(getConfigurationFile(), std::ios::in, broken);
+  if (broken == false)
+    {
+      std::list<std::string> files = orig.getFilenamesWithExtension(".png");
+      for (std::list<std::string>::iterator it = files.begin(); 
+           it != files.end(); it++)
+        {
+          std::string pngfile = orig.getFile(*it, broken);
+          if (broken == false)
+            {
+              t.saveFile(pngfile);
+              delfiles.push_back(pngfile);
+            }
+          else
+            break;
+        }
+      orig.Close();
+    }
+  else
+    {
+      FILE *fileptr = fopen (getConfigurationFile().c_str(), "r");
+      if (fileptr)
+        fclose (fileptr);
+      else
+        broken = false;
+    }
+  t.Close();
+  for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
+    File::erase(*it);
+  if (broken == false)
+    {
+      if (File::copy(tmptar, goodfilename) == 0)
+        File::erase(tmptar);
+    }
+
+  return !broken;
+}
+
+bool Cityset::save(XML_Helper *helper) const
 {
   bool retval = true;
 
@@ -312,6 +391,10 @@ void Cityset::instantiateImages()
 {
   debug("Loading images for cityset " << getName());
   uninstantiateImages();
+  bool broken = false;
+  Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
+  if (broken)
+    return;
   std::string port_filename = "";
   std::string signpost_filename = "";
   std::string cities_filename = "";
@@ -320,44 +403,60 @@ void Cityset::instantiateImages()
   std::string ruins_filename = "";
   std::string temples_filename = "";
 
-  if (getPortFilename().empty() == false)
-    port_filename = getFile(getPortFilename());
-  if (getSignpostFilename().empty() == false)
-    signpost_filename = getFile(getSignpostFilename());
-  if (getCitiesFilename().empty() == false)
-    cities_filename = getFile(getCitiesFilename());
-  if (getRazedCitiesFilename().empty() == false)
-    razed_cities_filename = getFile(getRazedCitiesFilename());
-  if (getTowersFilename().empty() == false)
-    towers_filename = getFile(getTowersFilename());
-  if (getRuinsFilename().empty() == false)
-    ruins_filename = getFile(getRuinsFilename());
-  if (getTemplesFilename().empty() == false)
-    temples_filename = getFile(getTemplesFilename());
-  instantiateImages(port_filename, signpost_filename, cities_filename,
-		    razed_cities_filename, towers_filename, ruins_filename,
-		    temples_filename);
+  if (getPortFilename().empty() == false && !broken)
+    port_filename = t.getFile(getPortFilename() + ".png", broken);
+  if (getSignpostFilename().empty() == false && !broken)
+    signpost_filename = t.getFile(getSignpostFilename() + ".png", broken);
+  if (getCitiesFilename().empty() == false && !broken)
+    cities_filename = t.getFile(getCitiesFilename() + ".png", broken);
+  if (getRazedCitiesFilename().empty() == false && !broken)
+    razed_cities_filename = t.getFile(getRazedCitiesFilename() + ".png", broken);
+  if (getTowersFilename().empty() == false && !broken)
+    towers_filename = t.getFile(getTowersFilename() + ".png", broken);
+  if (getRuinsFilename().empty() == false && !broken)
+    ruins_filename = t.getFile(getRuinsFilename() + ".png", broken);
+  if (getTemplesFilename().empty() == false && !broken)
+    temples_filename = t.getFile(getTemplesFilename() + ".png", broken);
+  if (!broken)
+    instantiateImages(port_filename, signpost_filename, cities_filename,
+                      razed_cities_filename, towers_filename, ruins_filename,
+                      temples_filename);
+  if (port_filename != "")
+    File::erase(port_filename);
+  if (signpost_filename != "")
+    File::erase(signpost_filename);
+  if (cities_filename != "")
+    File::erase(cities_filename);
+  if (razed_cities_filename != "")
+    File::erase(razed_cities_filename);
+  if (towers_filename != "")
+    File::erase(towers_filename);
+  if (ruins_filename != "")
+    File::erase(ruins_filename);
+  if (temples_filename != "")
+    File::erase(temples_filename);
+  t.Close();
 }
 
-std::string Cityset::getConfigurationFile()
+std::string Cityset::getConfigurationFile() const
 {
-  return getDirectory() + d_subdir + file_extension;
+  return getDirectory() + d_basename + file_extension;
 }
 
 std::list<std::string> Cityset::scanUserCollection()
 {
-  return File::scanFiles(File::getUserCitysetDir(), file_extension);
+  return File::scanForFiles(File::getUserCitysetDir(), file_extension);
 }
 
 std::list<std::string> Cityset::scanSystemCollection()
 {
-  std::list<std::string> retlist = File::scanFiles(File::getCitysetDir(), 
-						   file_extension);
+  std::list<std::string> retlist = File::scanForFiles(File::getCitysetDir(), 
+						      file_extension);
   if (retlist.empty())
     {
       std::cerr << "Couldn't find any citysets (*" << file_extension << 
-        ") in directories below: " << File::getCitysetDir() << std::endl;
-      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
+        ") in : " << File::getCitysetDir() << std::endl;
+      std::cerr << "Please check the path settings in ~/.lordsawarrc" << std::endl;
       std::cerr << "Exiting!" << std::endl;
       exit(-1);
     }
@@ -462,15 +561,43 @@ bool Cityset::tileWidthsEqual(Cityset *cityset)
 
 void Cityset::reload()
 {
-  CitysetLoader d(getConfigurationFile());
-  if (d.cityset && d.cityset->validate())
+  bool broken = false;
+  CitysetLoader d(getConfigurationFile(), broken);
+  if (!broken && d.cityset && d.cityset->validate())
     {
       //steal the values from d.cityset and then don't delete it.
       uninstantiateImages();
-      std::string subdir = d_subdir;
+      std::string basename = d_basename;
       *this = *d.cityset;
       instantiateImages();
-      d_subdir = subdir;
+      d_basename = basename;
     }
+}
+
+std::string Cityset::getFileFromConfigurationFile(std::string file)
+{
+  bool broken = false;
+  Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
+  if (broken == false)
+    {
+      std::string filename = t.getFile(file, broken);
+      t.Close();
+  
+      if (broken == false)
+        return filename;
+    }
+  return "";
+}
+
+bool Cityset::replaceFileInConfigurationFile(std::string file, std::string new_file)
+{
+  bool broken = false;
+  Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
+  if (broken == false)
+    {
+      broken = t.replaceFile(file, new_file);
+      t.Close();
+    }
+  return broken;
 }
 // End of file

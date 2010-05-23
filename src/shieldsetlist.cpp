@@ -157,9 +157,9 @@ Shieldset* Shieldsetlist::loadShieldset(std::string name)
   return shieldset;
 }
 
-void Shieldsetlist::add(Shieldset *shieldset, std::string name)
+void Shieldsetlist::add(Shieldset *shieldset, std::string file)
 {
-  std::string basename = File::get_basename(name);
+  std::string basename = File::get_basename(file);
   push_back(shieldset);
   shieldset->setBaseName(basename);
   d_dirs[shieldset->getName()] = basename;
@@ -203,9 +203,9 @@ Shieldset *Shieldsetlist::getShieldset(guint32 id)  const
   return (*it).second;
 }
 
-Shieldset *Shieldsetlist::getShieldset(std::string dir) const
+Shieldset *Shieldsetlist::getShieldset(std::string bname) const
 { 
-  ShieldsetMap::const_iterator it = d_shieldsets.find(dir);
+  ShieldsetMap::const_iterator it = d_shieldsets.find(bname);
   if (it == d_shieldsets.end())
     return NULL;
   return (*it).second;
@@ -242,6 +242,7 @@ std::string Shieldsetlist::findFreeBaseName(std::string basename, guint32 max, g
     }
   return new_basename;
 }
+
 bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &new_basename, guint32 &new_id)
 {
   //do we already have this one?
@@ -257,17 +258,16 @@ bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &n
   if (getShieldset(shieldset->getBaseName()) != NULL)
     {
       if (new_basename != "" && getShieldset(new_basename) == NULL)
-        shieldset->setBaseName(new_basename);
+        ;
       else
         {
           guint32 num = 0;
           std::string new_basename = findFreeBaseName(shieldset->getBaseName(), 100, num);
           if (new_basename == "")
             return false;
-          shieldset->setBaseName(new_basename);
         }
     }
-  else
+  else if (new_basename == "")
     new_basename = shieldset->getBaseName();
 
   //if the id conflicts with any other id, then change it
@@ -285,10 +285,13 @@ bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &n
     new_id = shieldset->getId();
 
   //make the directory where the shieldset is going to live.
-  std::string file = File::getUserShieldsetDir() + shieldset->getBaseName() + Shieldset::file_extension;
+  std::string file = File::getUserShieldsetDir() + new_basename + Shieldset::file_extension;
 
   shieldset->save(file, Shieldset::file_extension);
 
+  if (new_basename != shieldset->getBaseName())
+    shieldset->setBaseName(new_basename);
+  shieldset->setDirectory(File::get_dirname(file));
   add (shieldset, file);
   return true;
 }

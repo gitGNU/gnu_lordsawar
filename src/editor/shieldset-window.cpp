@@ -323,6 +323,7 @@ void ShieldSetWindow::on_validate_shieldset_activated()
 
 void ShieldSetWindow::on_save_as_activated()
 {
+  std::string orig_basename = d_shieldset->getBaseName();
   guint32 orig_id = d_shieldset->getId();
   d_shieldset->setId(Shieldsetlist::getNextAvailableId(orig_id));
   ShieldSetInfoDialog d(d_shieldset, File::getUserShieldsetDir() + File::get_basename(current_save_filename, true), false,
@@ -331,8 +332,10 @@ void ShieldSetWindow::on_save_as_activated()
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string new_basename = "";
-      guint32 new_id = 0;
+      std::string new_basename = d_shieldset->getBaseName();
+      guint32 new_id = d_shieldset->getId();
+      d_shieldset->setId(orig_id);
+      d_shieldset->setBaseName(orig_basename);
       bool success = Shieldsetlist::getInstance()->addToPersonalCollection(d_shieldset, new_basename, new_id);
       if (success)
         {
@@ -341,6 +344,7 @@ void ShieldSetWindow::on_save_as_activated()
           RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
           refl->updateEntry(current_save_filename);
           refl->save();
+          load_shieldset(current_save_filename);
           needs_saving = false;
           update_window_title();
         }
@@ -510,6 +514,7 @@ bool ShieldSetWindow::load_shieldset(std::string filename)
   return true;
 
 }
+
 bool ShieldSetWindow::quit()
 {
   if (needs_saving == true)
@@ -532,10 +537,12 @@ bool ShieldSetWindow::quit()
   File::erase(autosave);
   return true;
 }
+
 bool ShieldSetWindow::on_window_closed(GdkEventAny*)
 {
   return !quit();
 }
+
 void ShieldSetWindow::on_quit_activated()
 {
   quit();

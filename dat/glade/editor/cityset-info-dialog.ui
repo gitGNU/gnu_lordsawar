@@ -11,7 +11,7 @@
   </object>
   <object class="GtkDialog" id="dialog">
     <property name="border_width">6</property>
-    <property name="title" translatable="yes">Edit Cityset Info</property>
+    <property name="title" translatable="yes">Edit Shieldset Info</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
     <property name="has_separator">False</property>
@@ -105,7 +105,7 @@
                 <child>
                   <object class="GtkHBox" id="hbox1">
                     <property name="visible">True</property>
-                    <property name="spacing">6</property>
+                    <property name="spacing">5</property>
                     <child>
                       <object class="GtkLabel" id="label1">
                         <property name="visible">True</property>
@@ -134,7 +134,7 @@
                       <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">SubDirectory:</property>
+                        <property name="label" translatable="yes">Filename:</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -142,15 +142,34 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="subdir_entry">
+                      <object class="GtkHBox" id="hbox2">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="tooltip_text" translatable="yes">The armyset will live in a directory with this name.</property>
-                        <property name="invisible_char">&#x25CF;</property>
+                        <child>
+                          <object class="GtkEntry" id="filename_entry">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="invisible_char">&#x25CF;</property>
+                          </object>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="label3">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">.lws</property>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="position">3</property>
                       </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
                     </child>
                   </object>
                   <packing>

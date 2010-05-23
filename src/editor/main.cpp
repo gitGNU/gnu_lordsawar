@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #include "GraphicsCache.h"
 #include "timing.h"
 #include "armyset.h"
+#include "recently-edited-file-list.h"
 
 #include "main-window.h"
 
@@ -58,6 +59,7 @@ int main(int argc, char* argv[])
     Timing::instance().timer_registered.connect(
 	sigc::ptr_fun(on_timer_registered));
 
+    RecentlyEditedFileList::getInstance()->loadFromFile();
 	
     MainWindow* main_window = NULL;
     try

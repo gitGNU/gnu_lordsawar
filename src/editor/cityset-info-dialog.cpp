@@ -21,6 +21,7 @@
 #include <sigc++/functors/mem_fun.h>
 
 #include "cityset-info-dialog.h"
+#include "citysetlist.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -29,10 +30,9 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
-#include "citysetlist.h"
 
 
-CitySetInfoDialog::CitySetInfoDialog(Cityset *cityset, std::string dir, bool readonly)
+CitySetInfoDialog::CitySetInfoDialog(Cityset *cityset, std::string file, bool readonly, std::string title)
 {
   d_cityset = cityset;
   d_readonly = readonly;
@@ -42,6 +42,8 @@ CitySetInfoDialog::CitySetInfoDialog(Cityset *cityset, std::string dir, bool rea
 				    + "/cityset-info-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    if (title != "")
+      dialog->set_title(title);
 
     xml->get_widget("accept_button", accept_button);
     xml->get_widget("status_label", status_label);
@@ -53,11 +55,21 @@ CitySetInfoDialog::CitySetInfoDialog(Cityset *cityset, std::string dir, bool rea
       name_entry->signal_changed().connect
 	(sigc::mem_fun(this, &CitySetInfoDialog::on_name_changed));
     
-    xml->get_widget("subdir_entry", subdir_entry);
-    subdir_entry->set_text(cityset->getSubDir());
+    xml->get_widget("filename_entry", filename_entry);
+    if (File::nameEndsWith(file, Cityset::file_extension) == true)
+      filename_entry->set_text(File::get_basename(file, false));
+    else
+      {
+        guint32 num = 0;
+        std::string basename = Citysetlist::getInstance()->findFreeBaseName(_("untitled"), 100, num);
+        filename_entry->set_text(basename);
+
+        std::string name = String::ucompose("%1 %2", _("Untitled"), num);
+        name_entry->set_text(name);
+      }
     if (readonly == false)
-      subdir_entry->signal_changed().connect
-	(sigc::mem_fun(this, &CitySetInfoDialog::on_subdir_changed));
+      filename_entry->signal_changed().connect
+	(sigc::mem_fun(this, &CitySetInfoDialog::on_filename_changed));
 
     xml->get_widget("id_spinbutton", id_spinbutton);
     id_spinbutton->set_value(cityset->getId());
@@ -70,27 +82,22 @@ CitySetInfoDialog::CitySetInfoDialog(Cityset *cityset, std::string dir, bool rea
     xml->get_widget("description_textview", description_textview);
     description_textview->get_buffer()->set_text(cityset->getInfo());
 
-    dir_label->set_text (dir);
+    dir_label->set_text (File::get_dirname(file));
     if (readonly)
-      subdir_entry->set_sensitive(false);
+      filename_entry->set_sensitive(false);
 
     update_buttons();
 }
 
-void CitySetInfoDialog::on_subdir_changed()
+void CitySetInfoDialog::on_filename_changed()
 {
-  std::string dir = File::getUserCitysetDir() + subdir_entry->get_text();
-  if (subdir_entry->get_text() != "")
-    dir_label->set_text(dir + "/");
-  else
-    dir_label->set_text(File::getUserCitysetDir() + "<subdir>/");
   update_buttons();
 }
 
 void CitySetInfoDialog::on_name_changed()
 {
   char *s = File::sanify(name_entry->get_text().c_str());
-  subdir_entry->set_text(s);
+  filename_entry->set_text(s);
   free (s);
   update_buttons();
 }
@@ -115,7 +122,7 @@ int CitySetInfoDialog::run()
       d_cityset->setName(name_entry->get_text());
       d_cityset->setId(int(id_spinbutton->get_value()));
       if (d_readonly == false)
-	d_cityset->setSubDir(subdir_entry->get_text());
+	d_cityset->setBaseName(filename_entry->get_text());
       d_cityset->setCopyright(copyright_textview->get_buffer()->get_text());
       d_cityset->setLicense(license_textview->get_buffer()->get_text());
       d_cityset->setInfo(description_textview->get_buffer()->get_text());
@@ -132,19 +139,12 @@ void CitySetInfoDialog::update_buttons()
       return;
     }
 
-  std::string dir = File::getUserCitysetDir() + subdir_entry->get_text();
-  if (File::exists(dir) == true && subdir_entry->get_text() != "")
-    {
-      accept_button->set_sensitive(false);
-      
-      status_label->set_markup(String::ucompose("<b>%1</b>", 
-						_("That subdirectory is already in use.")));
-    }
-  else if (Citysetlist::getInstance()->getCityset(subdir_entry->get_text()))
+  std::string dir = File::getUserCitysetDir() + filename_entry->get_text();
+  if (Citysetlist::getInstance()->getCityset(filename_entry->get_text()))
     {
       accept_button->set_sensitive(false);
       status_label->set_markup(String::ucompose("<b>%1</b>", 
-						_("That subdirectory is already used in the system cityset collection.")));
+						_("That filename is already used.")));
     }
   else if (Citysetlist::getInstance()->contains(name_entry->get_text()) && 
            name_entry->get_text() != "")
@@ -153,7 +153,7 @@ void CitySetInfoDialog::update_buttons()
 						_("That name is already in use.")));
       accept_button->set_sensitive(false);
     }
-  else if (subdir_entry->get_text() == "" || name_entry->get_text() == "")
+  else if (filename_entry->get_text() == "" || name_entry->get_text() == "")
     accept_button->set_sensitive(false);
   else
     {

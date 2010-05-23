@@ -60,7 +60,7 @@ void Citysetlist::loadCitysets(std::list<std::string> citysets)
 	if (!cityset)
 	  continue;
 
-	add(cityset);
+	add(cityset, *i);
       }
 }
 
@@ -127,11 +127,11 @@ Cityset *Citysetlist::loadCityset(std::string name)
       return NULL;
     }
     
-  if (d_citysets.find(cityset->getSubDir()) != d_citysets.end())
+  if (d_citysets.find(cityset->getBaseName()) != d_citysets.end())
     {
-      Cityset *c = (*d_citysets.find(cityset->getSubDir())).second;
+      Cityset *c = (*d_citysets.find(cityset->getBaseName())).second;
       cerr << "Error!  cityset: `" << cityset->getConfigurationFile() << 
-	"' shares a duplicate cityset subdir `" << c->getSubDir() << "' with `" << c->getConfigurationFile() 
+	"' shares a duplicate cityset basename `" << c->getBaseName() << "' with `" << c->getConfigurationFile() 
 	<< "'.  Skipping." << endl;
       delete cityset;
       return NULL;
@@ -159,13 +159,13 @@ Cityset *Citysetlist::loadCityset(std::string name)
   return cityset;
 }
 
-void Citysetlist::add(Cityset *cityset)
+void Citysetlist::add(Cityset *cityset, std::string file)
 {
-  std::string subdir = File::get_basename(cityset->getDirectory());
+  std::string basename = File::get_basename(file);
   push_back(cityset);
-  cityset->setSubDir(subdir);
-  d_dirs[String::ucompose("%1 %2", cityset->getName(), cityset->getTileSize())] = subdir;
-  d_citysets[subdir] = cityset;
+  cityset->setBaseName(basename);
+  d_dirs[String::ucompose("%1 %2", cityset->getName(), cityset->getTileSize())] = basename;
+  d_citysets[basename] = cityset;
   d_citysetids[cityset->getId()] = cityset;
 }
 
@@ -178,9 +178,14 @@ void Citysetlist::getSizes(std::list<guint32> &sizes)
     }
 }
 
-std::string Citysetlist::getCitysetDir(std::string name, guint32 tilesize)
+std::string Citysetlist::getCitysetDir(std::string name, guint32 tilesize) const
 {
-  return d_dirs[String::ucompose("%1 %2", name, tilesize)];
+  std::string name_and_size = String::ucompose("%1 %2", name, tilesize);
+  DirMap::const_iterator it = d_dirs.find(name_and_size);
+  if (it == d_dirs.end())
+    return "";
+  else
+    return (*it).second;
 }
 void Citysetlist::instantiateImages()
 {
@@ -193,82 +198,81 @@ void Citysetlist::uninstantiateImages()
     (*it)->uninstantiateImages();
 }
 	
-Cityset *Citysetlist::getCityset(guint32 id) 
+Cityset *Citysetlist::getCityset(guint32 id) const
 { 
-  if (d_citysetids.find(id) == d_citysetids.end())
+  CitysetIdMap::const_iterator it = d_citysetids.find(id);
+  if (it == d_citysetids.end())
     return NULL;
-  return d_citysetids[id];
+  return (*it).second;
 }
 	
-Cityset *Citysetlist::getCityset(std::string dir) 
+Cityset *Citysetlist::getCityset(std::string bname) const
 { 
-  if (d_citysets.find(dir) == d_citysets.end())
+  CitysetMap::const_iterator it = d_citysets.find(bname);
+  if (it == d_citysets.end())
     return NULL;
-  return d_citysets[dir];
+  return (*it).second;
 }
 
 Cityset *Citysetlist::import(Tar_Helper *t, std::string f, bool &broken)
 {
   std::string filename = t->getFile(f, broken);
+  if (broken)
+    return NULL;
   Cityset *cityset = Cityset::create(filename);
   assert (cityset != NULL);
-  cityset->setSubDir(File::get_basename(f));
+  cityset->setBaseName(File::get_basename(f));
 
-  //extract all the files and remember where we extracted them
-  std::list<std::string> delfiles;
-  delfiles.push_back(filename);
-  std::list<std::string> files;
-  cityset->getFilenames(files);
-  for (std::list<std::string>::iterator i = files.begin(); i != files.end(); i++)
-    {
-      std::string file = t->getFile(*i + ".png", broken);
-      delfiles.push_back (file);
-    }
-
-  std::string subdir = "";
+  std::string basename = "";
   guint32 id = 0;
-  addToPersonalCollection(cityset, subdir, id);
+  addToPersonalCollection(cityset, basename, id);
 
-  for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
-    File::erase(*it);
   return cityset;
-
 }
 
-bool Citysetlist::addToPersonalCollection(Cityset *cityset, std::string &new_subdir, guint32 &new_id)
+std::string Citysetlist::findFreeBaseName(std::string basename, guint32 max, guint32 &num) const
+{
+  std::string new_basename;
+  for (unsigned int count = 1; count < max; count++)
+    {
+      new_basename = String::ucompose("%1%2", basename, count);
+      if (getCityset(new_basename) == NULL)
+        {
+          num = count;
+          break;
+        }
+      else
+        new_basename = "";
+    }
+  return new_basename;
+}
+
+bool Citysetlist::addToPersonalCollection(Cityset *cityset, std::string &new_basename, guint32 &new_id)
 {
   //do we already have this one?
-  if (getCityset(cityset->getSubDir()) == getCityset(cityset->getId()) &&
-      getCityset(cityset->getSubDir()) != NULL)
+      
+  if (getCityset(cityset->getBaseName()) == getCityset(cityset->getId()) 
+      && getCityset(cityset->getBaseName()) != NULL)
     {
       cityset->setDirectory(getCityset(cityset->getId())->getDirectory());
       return true;
     }
 
-  //if the subdir conflicts with any other subdir, then change it.
-  if (getCityset(cityset->getSubDir()) != NULL)
+  //if the basename conflicts with any other basename, then change it.
+  if (getCityset(cityset->getBaseName()) != NULL)
     {
-      if (new_subdir != "" && getCityset(new_subdir) == NULL)
-        cityset->setSubDir(new_subdir);
+      if (new_basename != "" && getCityset(new_basename) == NULL)
+        ;
       else
         {
-          bool found = false;
-          for (int count = 0; count < 100; count++)
-            {
-              new_subdir = String::ucompose("%1%2", cityset->getSubDir(), count);
-              if (getCityset(new_subdir) == NULL)
-                {
-                  found = true;
-                  break;
-                }
-            }
-          if (found == false)
+          guint32 num = 0;
+          std::string new_basename = findFreeBaseName(cityset->getBaseName(), 100, num);
+          if (new_basename == "")
             return false;
-          cityset->setSubDir(new_subdir);
         }
     }
-  else
-    new_subdir = cityset->getSubDir();
+  else if (new_basename == "")
+    new_basename = cityset->getBaseName();
 
   //if the id conflicts with any other id, then change it
   if (getCityset(cityset->getId()) != NULL)
@@ -285,25 +289,14 @@ bool Citysetlist::addToPersonalCollection(Cityset *cityset, std::string &new_sub
     new_id = cityset->getId();
 
   //make the directory where the cityset is going to live.
-  std::string directory = 
-    File::getUserCitysetDir() + cityset->getSubDir() + "/";
+  std::string file = File::getUserCitysetDir() + new_basename + Cityset::file_extension;
 
-  if (File::create_dir(directory) == false)
-    return false;
+  cityset->save(file, Cityset::file_extension);
 
-  //okay now we copy the image files into the new directory 
-  std::list<std::string> files;
-  cityset->getFilenames(files);
-  for (std::list<std::string>::iterator it = files.begin(); it != files.end();
-       it++)
-    File::copy(cityset->getFile(*it), directory + *it + ".png");
-
-  //save out the cityset file
-  cityset->setDirectory(directory);
-  XML_Helper helper(cityset->getConfigurationFile(), std::ios::out, false);
-  cityset->save(&helper);
-  helper.close();
-  add (cityset);
+  if (new_basename != cityset->getBaseName())
+    cityset->setBaseName(new_basename);
+  cityset->setDirectory(File::get_dirname(file));
+  add (cityset, file);
   return true;
 }
 

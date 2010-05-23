@@ -43,6 +43,7 @@ class CitySetWindow: public sigc::trackable
  private:
     Gtk::Window* window;
     std::string current_save_filename;
+    std::string autosave; //filename
     Cityset *d_cityset; //current cityset
     bool needs_saving;
     Gtk::MenuItem *new_cityset_menuitem;
@@ -70,7 +71,7 @@ class CitySetWindow: public sigc::trackable
     void update_cityset_panel();
     void update_cityset_menuitems();
 
-    void load_cityset(std::string filename);
+    bool load_cityset(std::string filename);
 
     //callbacks
     void on_new_cityset_activated();

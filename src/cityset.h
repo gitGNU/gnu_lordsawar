@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,10 +37,11 @@ class XML_Helper;
  *
  * The Cityset dictates the size of city images.
  *
- * Citysets are referred to by their subdirectory name.
+ * Citysets are referred to by their base name.  The base name is the last
+ * part of the file's path minus the file extension.
  *
- * The cityset configuration file is a same named XML file inside the 
- * cityset's directory.  E.g. cityset/${Cityset::d_subdir}/${Cityset::d_subdir}.xml.
+ * The cityset configuration file is an XML file inside the cityset directory.
+ * E.g. cityset/${Cityset::d_basename}.lwc.
  */
 class Cityset : public sigc::trackable, public Set
 {
@@ -73,13 +74,15 @@ class Cityset : public sigc::trackable, public Set
 	//! Destructor.
         ~Cityset();
 
-	bool save(XML_Helper *helper);
+	bool save(XML_Helper *helper) const;
 
-	//! Get the directory in which the cityset configuration file resides.
-        std::string getSubDir() const {return d_subdir;}
+        bool save(std::string filename, std::string extension) const;
 
-	//! Set the direction where the shieldset configuration file resides.
-        void setSubDir(std::string dir) {d_subdir = dir;}
+	//! Get the base name of the file holding the cityset configuration file.
+        std::string getBaseName() const {return d_basename;}
+
+	//! Set the base name of the shieldset configuration file.
+        void setBaseName(std::string base) {d_basename = base;}
 
         //! Returns the name of the cityset.
         std::string getName() const {return _(d_name.c_str());}
@@ -163,7 +166,7 @@ class Cityset : public sigc::trackable, public Set
 			       std::string temples_filename);
 	void uninstantiateImages();
 
-	std::string getConfigurationFile();
+	std::string getConfigurationFile() const;
 
 	static std::list<std::string> scanSystemCollection();
 	static std::list<std::string> scanUserCollection();
@@ -186,6 +189,8 @@ class Cityset : public sigc::trackable, public Set
 	bool validateRuinTileWidth();
 	bool validateTempleTileWidth();
 	bool tileWidthsEqual(Cityset *cityset);
+        std::string getFileFromConfigurationFile(std::string file);
+        bool replaceFileInConfigurationFile(std::string file, std::string new_file);
 
         //! Load the cityset again.
         void reload();
@@ -227,13 +232,13 @@ class Cityset : public sigc::trackable, public Set
 	 */
         guint32 d_tileSize;
 
-	//! The subdirectory of the cityset.
+	//! The base name of the cityset.
 	/**
-	 * This is the name of the subdirectory that the Cityset files are
-	 * residing in.  It does not contain a path (e.g. no slashes).
+         * The basename is the final portion of the file's path, but with the
+         * file extension removed.
 	 * Cityset directories sit in the citysets/ directory.
 	 */
-        std::string d_subdir;
+        std::string d_basename;
 
 
 	std::string d_cities_filename;

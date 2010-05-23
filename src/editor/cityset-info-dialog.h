@@ -27,7 +27,8 @@
 class CitySetInfoDialog: public sigc::trackable
 {
  public:
-    CitySetInfoDialog(Cityset *cityset, std::string dir, bool readonly = false);
+    CitySetInfoDialog(Cityset *cityset, std::string dir,
+                        bool readonly = false, std::string title = "");
     ~CitySetInfoDialog();
 
     void set_parent_window(Gtk::Window &parent);
@@ -40,15 +41,15 @@ class CitySetInfoDialog: public sigc::trackable
     Gtk::Entry *name_entry;
     Gtk::TextView *copyright_textview;
     Gtk::TextView *license_textview;
-    Gtk::Entry *subdir_entry;
+    Gtk::Entry *filename_entry;
     Gtk::SpinButton *id_spinbutton;
     Gtk::Button *accept_button;
     Gtk::Label *status_label;
-    Gtk::Label *dir_label;
     Gtk::TextView *description_textview;
+    Gtk::Label *dir_label;
 
     void on_name_changed();
-    void on_subdir_changed();
+    void on_filename_changed();
     void update_buttons();
 
     bool d_readonly;

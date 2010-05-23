@@ -43,10 +43,15 @@
 #include "image-editor-dialog.h"
 #include "GraphicsCache.h"
 #include "citysetlist.h"
+#include "recently-edited-file.h"
+#include "recently-edited-file-list.h"
+#include "editor-quit-dialog.h"
+#include "editor-recover-dialog.h"
 
 
 CitySetWindow::CitySetWindow(std::string load_filename)
 {
+  autosave = File::getSavePath() + "autosave" + Cityset::file_extension;
   needs_saving = false;
   d_cityset = NULL;
     Glib::RefPtr<Gtk::Builder> xml
@@ -126,12 +131,45 @@ CitySetWindow::CitySetWindow(std::string load_filename)
     change_towerpics_button->signal_clicked().connect(
 	sigc::mem_fun(this, &CitySetWindow::on_change_towerpics_clicked));
 
+    if (load_filename != "")
+      current_save_filename = load_filename;
     update_cityset_panel();
+
+    if (File::exists(autosave))
+      {
+        std::string m;
+        std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Cityset::file_extension);
+        if (files.size() == 0)
+          m = _("Do you want to recover the session?");
+        else
+          {
+            RecentlyEditedCitysetFile *r = dynamic_cast<RecentlyEditedCitysetFile*>(files.front());
+            if (r->getName() == "")
+              m = String::ucompose(_("Do you want to recover %1?"),
+                                   File::get_basename(r->getFileName(), true));
+            else
+              m = String::ucompose(_("Do you want to recover %1 (%2)?"),
+                                   File::get_basename(r->getFileName(), true),
+                                   r->getName());
+          }
+        EditorRecoverDialog d(m);
+        int response = d.run();
+        d.hide();
+        //ask if we want to recover the autosave.
+        if (response == Gtk::RESPONSE_ACCEPT)
+          {
+            load_cityset (autosave);
+            update_cityset_menuitems();
+            update_cityset_panel();
+            return;
+          }
+      }
 
     if (load_filename.empty() == false)
       {
 	load_cityset (load_filename);
 	update_cityset_panel();
+        update_window_title();
       }
     update_cityset_menuitems();
 }
@@ -241,9 +279,10 @@ bool CitySetWindow::on_delete_event(GdkEventAny *e)
 void CitySetWindow::on_new_cityset_activated()
 {
   std::string name = "";
-  int id = Citysetlist::getNextAvailableId();
+  int id = Citysetlist::getNextAvailableId(0);
   Cityset *cityset = new Cityset(id, name);
-  CitySetInfoDialog d(cityset, File::getUserCitysetDir() + "<subdir>/", false);
+  CitySetInfoDialog d(cityset, File::getUserCitysetDir(), false,
+                      _("Make a New Cityset"));
   d.set_parent_window(*window);
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
@@ -254,17 +293,13 @@ void CitySetWindow::on_new_cityset_activated()
   if (d_cityset)
     delete d_cityset;
   d_cityset = cityset;
-  std::string dir = File::getUserCitysetDir() + "/" + d_cityset->getSubDir();
+  std::string dir = File::getUserCitysetDir();
   d_cityset->setDirectory(dir);
-  File::create_dir(dir);
   current_save_filename = d_cityset->getConfigurationFile();
 
+  d_cityset->save(current_save_filename, Cityset::file_extension);
   update_cityset_panel();
   update_cityset_menuitems();
-
-  XML_Helper helper(current_save_filename, std::ios::out, false);
-  d_cityset->save(&helper);
-  helper.close();
   needs_saving = true;
   update_window_title();
 }
@@ -340,25 +375,42 @@ void CitySetWindow::on_validate_cityset_activated()
 
 void CitySetWindow::on_save_as_activated()
 {
+  std::string orig_basename = d_cityset->getBaseName();
   guint32 orig_id = d_cityset->getId();
   d_cityset->setId(Citysetlist::getNextAvailableId(orig_id));
-  CitySetInfoDialog d(d_cityset, File::getUserCitysetDir() + d_cityset->getSubDir() +"/", false);
+  CitySetInfoDialog d(d_cityset, File::getUserCitysetDir() + File::get_basename(current_save_filename, true), false,
+                        _("Save a Copy of a Cityset"));
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string new_subdir = "";
-      guint32 new_id = 0;
-      Citysetlist::getInstance()->addToPersonalCollection(d_cityset, new_subdir, new_id);
-      save_cityset_menuitem->set_sensitive(true);
-      current_save_filename = d_cityset->getConfigurationFile();
-      needs_saving = false;
-      update_window_title();
+      std::string new_basename = d_cityset->getBaseName();
+      guint32 new_id = d_cityset->getId();
+      d_cityset->setId(orig_id);
+      d_cityset->setBaseName(orig_basename);
+      bool success = Citysetlist::getInstance()->addToPersonalCollection(d_cityset, new_basename, new_id);
+      if (success)
+        {
+          save_cityset_menuitem->set_sensitive(true);
+          current_save_filename = d_cityset->getConfigurationFile();
+          RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
+          refl->updateEntry(current_save_filename);
+          refl->save();
+          load_cityset(current_save_filename);
+          needs_saving = false;
+          update_window_title();
+        }
+      else
+        {
+          std::string msg;
+          msg = _("Error!  Cityset could not be saved.");
+          Gtk::MessageDialog dialog(*window, msg);
+          dialog.run();
+          dialog.hide();
+        }
     }
   else
-    {
-      d_cityset->setId(orig_id);
-    }
+    d_cityset->setId(orig_id);
 }
 
 void CitySetWindow::on_save_cityset_activated()
@@ -366,17 +418,35 @@ void CitySetWindow::on_save_cityset_activated()
   if (current_save_filename.empty())
     current_save_filename = d_cityset->getConfigurationFile();
 
-  XML_Helper helper(current_save_filename, std::ios::out, false);
-  d_cityset->save(&helper);
-  helper.close();
-  needs_saving = false;
-  update_window_title();
-  cityset_saved.emit(d_cityset->getId());
+  bool success = d_cityset->save(autosave, Cityset::file_extension);
+  if (success)
+    {
+      RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
+      RecentlyEditedFileList::getInstance()->save();
+      int retval = File::copy (autosave, current_save_filename);
+      if (retval != 0)
+        success = false;
+      else
+        {
+          needs_saving = false;
+          update_window_title();
+          cityset_saved.emit(d_cityset->getId());
+        }
+    }
+  if (!success)
+    {
+      std::string msg;
+      msg = _("Error!  Cityset could not be saved.");
+      Gtk::MessageDialog dialog(*window, msg);
+      dialog.run();
+      dialog.hide();
+    }
 }
 
 void CitySetWindow::on_edit_cityset_info_activated()
 {
-  CitySetInfoDialog d(d_cityset, File::get_dirname(current_save_filename), true);
+  CitySetInfoDialog d(d_cityset, current_save_filename, true, 
+                        _("Edit Cityset Information"));
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
@@ -406,47 +476,56 @@ void CitySetWindow::on_help_about_activated()
   return;
 }
 
-void CitySetWindow::load_cityset(std::string filename)
+bool CitySetWindow::load_cityset(std::string filename)
 {
+  std::string old_current_save_filename = current_save_filename;
   current_save_filename = filename;
+  if (filename != autosave)
+    File::copy(current_save_filename, autosave);
+  else
+    {
+      //go get the real name of the file
+      std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Cityset::file_extension);
+      if (files.size() > 0)
+        current_save_filename = files.front()->getFileName();
+    }
 
   std::string name = File::get_basename(filename);
 
-  Cityset *cityset = Cityset::create(filename);
+  Cityset *cityset = Cityset::create(autosave);
   if (cityset == NULL)
     {
       std::string msg;
-      msg = "Error!  Cityset could not be loaded.";
+      msg = _("Error!  Cityset could not be loaded.");
       Gtk::MessageDialog dialog(*window, msg);
+      current_save_filename = old_current_save_filename;
       dialog.run();
       dialog.hide();
-      return;
+      return false;
+    }
+  if (File::nameEndsWith(current_save_filename, "/autosave" + Cityset::file_extension) == false)
+    {
+      RecentlyEditedFileList::getInstance()->addEntry(current_save_filename);
+      RecentlyEditedFileList::getInstance()->save();
     }
   if (d_cityset)
     delete d_cityset;
   d_cityset = cityset;
 
-  d_cityset->setSubDir(name);
+  d_cityset->setBaseName(File::get_basename(autosave));
   d_cityset->instantiateImages();
   update_window_title();
+  return true;
 }
 
 bool CitySetWindow::quit()
 {
   if (needs_saving == true)
     {
-      Gtk::Dialog* dialog;
-      Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + 
-					 "/editor-quit-dialog.ui");
-      xml->get_widget("dialog", dialog);
-      Gtk::Button *save_button;
-      xml->get_widget("save_button", save_button);
-      save_button->set_sensitive(File::is_writable(d_cityset->getConfigurationFile()));
-      dialog->set_transient_for(*window);
-      int response = dialog->run();
-      dialog->hide();
-      delete dialog;
+      EditorQuitDialog d;
+      int response = d.run();
+      d.set_parent_window(*window);
+      d.hide();
 
       if (response == Gtk::RESPONSE_CANCEL) //we don't want to quit
 	return false;
@@ -458,6 +537,7 @@ bool CitySetWindow::quit()
     }
   else
     window->hide();
+  File::erase(autosave);
   return true;
 }
 
@@ -520,159 +600,160 @@ void CitySetWindow::on_change_citypics_clicked()
 {
   std::string filename = "";
   if (d_cityset->getCitiesFilename().empty() == false)
-    filename = d_cityset->getFile(d_cityset->getCitiesFilename());
+    filename = d_cityset->getFileFromConfigurationFile(d_cityset->getCitiesFilename() +".png");
   ImageEditorDialog d(filename, MAX_PLAYERS + 1);
   int response = d.run();
+  if (filename != "")
+    File::erase(filename);
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      if (d_cityset->getFile(d_cityset->getCitiesFilename()) != 
-	  d.get_selected_filename())
-	{
-	  File::copy(d.get_selected_filename(), 
-		     d_cityset->getFile(d_cityset->getCitiesFilename()));
-	}
+      if (d.get_selected_filename() != filename)
+        {
+          d_cityset->replaceFileInConfigurationFile(d_cityset->getCitiesFilename()+".png", d.get_selected_filename());
 
-      d_cityset->setCitiesFilename
-	(File::get_basename(d.get_selected_filename()));
-      needs_saving = true;
-      update_window_title();
+          d_cityset->setCitiesFilename
+            (File::get_basename(d.get_selected_filename()));
+          needs_saving = true;
+          update_window_title();
+        }
       update_cityset_panel();
     }
 }
+
 void CitySetWindow::on_change_razedcitypics_clicked()
 {
   std::string filename = "";
   if (d_cityset->getRazedCitiesFilename().empty() == false)
-    filename = d_cityset->getFile(d_cityset->getRazedCitiesFilename());
+    filename = d_cityset->getFileFromConfigurationFile(d_cityset->getRazedCitiesFilename() +".png");
   ImageEditorDialog d(filename, MAX_PLAYERS);
   int response = d.run();
+  if (filename != "")
+    File::erase(filename);
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      if (d_cityset->getFile(d_cityset->getRazedCitiesFilename()) != 
-	  d.get_selected_filename())
-	{
-	  File::copy(d.get_selected_filename(), 
-		     d_cityset->getFile(d_cityset->getRazedCitiesFilename()));
-	}
-
-      d_cityset->setRazedCitiesFilename
-	(File::get_basename(d.get_selected_filename()));
-      needs_saving = true;
-      update_window_title();
+      if (d.get_selected_filename() != filename)
+        {
+          d_cityset->replaceFileInConfigurationFile(d_cityset->getRazedCitiesFilename()+".png", d.get_selected_filename());
+          d_cityset->setRazedCitiesFilename
+            (File::get_basename(d.get_selected_filename()));
+          needs_saving = true;
+          update_window_title();
+        }
       update_cityset_panel();
     }
 }
+
 void CitySetWindow::on_change_portpic_clicked()
 {
   std::string filename = "";
   if (d_cityset->getPortFilename().empty() == false)
-    filename = d_cityset->getFile(d_cityset->getPortFilename());
+    filename = d_cityset->getFileFromConfigurationFile(d_cityset->getPortFilename() +".png");
   ImageEditorDialog d(filename, 1);
   int response = d.run();
+  if (filename != "")
+    File::erase(filename);
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      if (d_cityset->getFile(d_cityset->getPortFilename()) != 
-	  d.get_selected_filename())
-	{
-	  File::copy(d.get_selected_filename(), 
-		     d_cityset->getFile(d_cityset->getPortFilename()));
-	}
-
-      d_cityset->setPortFilename(File::get_basename(d.get_selected_filename()));
-      needs_saving = true;
-      update_window_title();
+      if (d.get_selected_filename() != filename)
+        {
+          d_cityset->replaceFileInConfigurationFile(d_cityset->getPortFilename()+".png", d.get_selected_filename());
+          d_cityset->setPortFilename(File::get_basename(d.get_selected_filename()));
+          needs_saving = true;
+          update_window_title();
+        }
       update_cityset_panel();
     }
 }
+
 void CitySetWindow::on_change_signpostpic_clicked()
 {
   std::string filename = "";
   if (d_cityset->getSignpostFilename().empty() == false)
-    filename = d_cityset->getFile(d_cityset->getSignpostFilename());
+    filename = d_cityset->getFileFromConfigurationFile(d_cityset->getSignpostFilename() +".png");
   ImageEditorDialog d(filename, 1);
   int response = d.run();
+  if (filename != "")
+    File::erase(filename);
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      if (d_cityset->getFile(d_cityset->getSignpostFilename()) != 
-	  d.get_selected_filename())
-	{
-	  File::copy(d.get_selected_filename(), 
-		     d_cityset->getFile(d_cityset->getSignpostFilename()));
-	}
+      if (d.get_selected_filename() != filename)
+        {
+          d_cityset->replaceFileInConfigurationFile(d_cityset->getSignpostFilename()+".png", d.get_selected_filename());
 
-      d_cityset->setSignpostFilename
-	(File::get_basename(d.get_selected_filename()));
-      needs_saving = true;
-      update_window_title();
+          d_cityset->setSignpostFilename
+            (File::get_basename(d.get_selected_filename()));
+          needs_saving = true;
+          update_window_title();
+        }
       update_cityset_panel();
     }
 }
+
 void CitySetWindow::on_change_ruinpics_clicked()
 {
   std::string filename = "";
   if (d_cityset->getRuinsFilename().empty() == false)
-    filename = d_cityset->getFile(d_cityset->getRuinsFilename());
+    filename = d_cityset->getFileFromConfigurationFile(d_cityset->getRuinsFilename() +".png");
   ImageEditorDialog d(filename, RUIN_TYPES);
   int response = d.run();
+  if (filename != "")
+    File::erase(filename);
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      if (d_cityset->getFile(d_cityset->getRuinsFilename()) != 
-	  d.get_selected_filename())
-	{
-	  File::copy(d.get_selected_filename(), 
-		     d_cityset->getFile(d_cityset->getRuinsFilename()));
-	}
-
-      d_cityset->setRuinsFilename
-	(File::get_basename(d.get_selected_filename()));
-      needs_saving = true;
-      update_window_title();
+      if (d.get_selected_filename() != filename)
+        {
+          d_cityset->replaceFileInConfigurationFile(d_cityset->getRuinsFilename()+".png", d.get_selected_filename());
+          d_cityset->setRuinsFilename
+            (File::get_basename(d.get_selected_filename()));
+          needs_saving = true;
+          update_window_title();
+        }
       update_cityset_panel();
     }
 }
+
 void CitySetWindow::on_change_templepic_clicked()
 {
   std::string filename = "";
   if (d_cityset->getTemplesFilename().empty() == false)
-    filename = d_cityset->getFile(d_cityset->getTemplesFilename());
+    filename = d_cityset->getFileFromConfigurationFile(d_cityset->getTemplesFilename() +".png");
   ImageEditorDialog d(filename, TEMPLE_TYPES);
   int response = d.run();
+  if (filename != "")
+    File::erase(filename);
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      if (d_cityset->getFile(d_cityset->getTemplesFilename()) != 
-	  d.get_selected_filename())
-	{
-	  File::copy(d.get_selected_filename(), 
-		     d_cityset->getFile(d_cityset->getTemplesFilename()));
-	}
-
-      d_cityset->setTemplesFilename
-	(File::get_basename(d.get_selected_filename()));
-      needs_saving = true;
-      update_window_title();
+      if (d.get_selected_filename() != filename)
+        {
+          d_cityset->replaceFileInConfigurationFile(d_cityset->getTemplesFilename()+".png", d.get_selected_filename());
+          d_cityset->setTemplesFilename
+            (File::get_basename(d.get_selected_filename()));
+          needs_saving = true;
+          update_window_title();
+        }
       update_cityset_panel();
     }
 }
+
 void CitySetWindow::on_change_towerpics_clicked()
 {
   std::string filename = "";
   if (d_cityset->getTowersFilename().empty() == false)
-    filename = d_cityset->getFile(d_cityset->getTowersFilename());
+    filename = d_cityset->getFileFromConfigurationFile(d_cityset->getTowersFilename() +".png");
   ImageEditorDialog d(filename, MAX_PLAYERS);
   int response = d.run();
+  if (filename != "")
+    File::erase(filename);
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      if (d_cityset->getFile(d_cityset->getTowersFilename()) != 
-	  d.get_selected_filename())
-	{
-	  File::copy(d.get_selected_filename(), 
-		     d_cityset->getFile(d_cityset->getTowersFilename()));
-	}
-
-      d_cityset->setTowersFilename
-	(File::get_basename(d.get_selected_filename()));
-      needs_saving = true;
-      update_window_title();
+      if (d.get_selected_filename() != filename)
+        {
+          d_cityset->replaceFileInConfigurationFile(d_cityset->getTowersFilename()+".png", d.get_selected_filename());
+          d_cityset->setTowersFilename
+            (File::get_basename(d.get_selected_filename()));
+          needs_saving = true;
+          update_window_title();
+        }
       update_cityset_panel();
     }
 }

@@ -293,7 +293,7 @@ std::list<std::string> Shieldset::scanSystemCollection()
     {
       std::cerr << "Couldn't find any shieldsets (*" << file_extension << 
         ") in : " << File::getShieldsetDir() << std::endl;
-      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
+      std::cerr << "Please check the path settings in ~/.lordsawarrc" << std::endl;
       std::cerr << "Exiting!" << std::endl;
       exit(-1);
     }

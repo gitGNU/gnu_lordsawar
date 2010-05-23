@@ -156,40 +156,6 @@ bool GameScenario::loadCitysets(Tar_Helper *t)
   return !broken;
 }
 
-/*
-bool GameScenario::loadCitysets(Tar_Helper *t)
-{
-  bool broken = false;
-  std::list<std::string> citysets;
-  citysets = t->getFilenamesWithExtension(Cityset::file_extension);
-  for (std::list<std::string>::iterator it = citysets.begin(); 
-       it != citysets.end(); it++)
-    {
-      std::string filename = t->getFile(*it, broken);
-      Cityset *cityset = Cityset::create(filename);
-      cityset->setSubDir(File::get_basename(*it));
-
-      //extract all the files and remember where we extracted them
-      std::list<std::string> delfiles;
-      delfiles.push_back(filename);
-      std::list<std::string> files;
-      cityset->getFilenames(files);
-      for (std::list<std::string>::iterator i = files.begin(); i != files.end(); i++)
-	delfiles.push_back (t->getFile(*i + ".png", broken));
-
-      std::string subdir = "";
-      guint32 id = 0;
-      Citysetlist::getInstance()->addToPersonalCollection(cityset, subdir, id);
-
-      for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
-	File::erase(*it);
-  
-      Citysetlist::getInstance()->getCityset(cityset->getId())->instantiateImages();
-    }
-  return !broken;
-}
-*/
-
 bool GameScenario::loadShieldsets(Tar_Helper *t)
 {
   bool broken = false;
@@ -205,41 +171,6 @@ bool GameScenario::loadShieldsets(Tar_Helper *t)
     }
   return !broken;
 }
-
-/*
-bool GameScenario::loadShieldsets(Tar_Helper *t)
-{
-  bool broken = false;
-  std::list<std::string> shieldsets;
-  shieldsets = t->getFilenamesWithExtension(Shieldset::file_extension);
-  for (std::list<std::string>::iterator it = shieldsets.begin(); 
-       it != shieldsets.end(); it++)
-    {
-      std::string filename = t->getFile(*it, broken);
-      Shieldset *shieldset = Shieldset::create(filename);
-      shieldset->setSubDir(File::get_basename(*it));
-
-      //extract all the files and remember where we extracted them
-      std::list<std::string> delfiles;
-      delfiles.push_back(filename);
-      std::list<std::string> files;
-      shieldset->getFilenames(files);
-      for (std::list<std::string>::iterator i = files.begin(); i != files.end(); i++)
-	delfiles.push_back (t->getFile(*i + ".png", broken));
-
-      std::string subdir = "";
-      guint32 id = 0;
-      Shieldsetlist::getInstance()->addToPersonalCollection(shieldset, subdir, id);
-
-      for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
-	File::erase(*it);
-  
-
-      Shieldsetlist::getInstance()->getShieldset(shieldset->getId())->instantiateImages();
-    }
-  return !broken;
-}
-*/
 
 GameScenario::GameScenario(XML_Helper &helper, bool& broken)
   : d_turnmode(true), d_playmode(GameScenario::HOTSEAT),
