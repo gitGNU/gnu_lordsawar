@@ -48,6 +48,7 @@ class ArmySetWindow: public sigc::trackable
     Armyset *d_armyset; //current armyset
     ArmyProto *d_army; //current army
     bool needs_saving;
+    bool inhibit_needs_saving;
     Gtk::Image *white_image;
     Gtk::Image *green_image;
     Gtk::Image *yellow_image;
@@ -153,7 +154,7 @@ class ArmySetWindow: public sigc::trackable
     //callbacks
     void on_name_changed();
     void on_description_changed();
-    void on_image_changed(Gtk::FileChooserButton *button, Gtk::Image *image, Shield::Colour c);
+    void on_image_changed(std::string button_filename, Gtk::Image *image, Shield::Colour c);
     void on_white_image_changed();
     void on_green_image_changed();
     void on_yellow_image_changed();

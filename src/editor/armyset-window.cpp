@@ -53,6 +53,7 @@
 ArmySetWindow::ArmySetWindow(std::string load_filename)
 {
   needs_saving = false;
+  inhibit_needs_saving = false;
   d_armyset = NULL;
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/armyset-window.ui");
@@ -80,38 +81,38 @@ ArmySetWindow::ArmySetWindow(std::string load_filename)
       (sigc::mem_fun(this, &ArmySetWindow::on_description_changed));
     xml->get_widget("white_image_filechooserbutton", 
 		    white_image_filechooserbutton);
-    white_image_filechooserbutton->signal_selection_changed().connect
+    white_image_filechooserbutton->signal_file_set().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_white_image_changed));
     xml->get_widget("green_image_filechooserbutton", 
 		    green_image_filechooserbutton);
-    green_image_filechooserbutton->signal_selection_changed().connect
+    green_image_filechooserbutton->signal_file_set().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_green_image_changed));
     xml->get_widget("yellow_image_filechooserbutton", 
 		    yellow_image_filechooserbutton);
-    yellow_image_filechooserbutton->signal_selection_changed().connect
+    yellow_image_filechooserbutton->signal_file_set().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_yellow_image_changed));
     xml->get_widget("light_blue_image_filechooserbutton", 
 		    light_blue_image_filechooserbutton);
-    light_blue_image_filechooserbutton->signal_selection_changed().connect
+    light_blue_image_filechooserbutton->signal_file_set().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_light_blue_image_changed));
     xml->get_widget("red_image_filechooserbutton", red_image_filechooserbutton);
-    red_image_filechooserbutton->signal_selection_changed().connect
+    red_image_filechooserbutton->signal_file_set().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_red_image_changed));
     xml->get_widget("dark_blue_image_filechooserbutton", 
 		    dark_blue_image_filechooserbutton);
-    dark_blue_image_filechooserbutton->signal_selection_changed().connect
+    dark_blue_image_filechooserbutton->signal_file_set().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_dark_blue_image_changed));
     xml->get_widget("orange_image_filechooserbutton", 
 		    orange_image_filechooserbutton);
-    orange_image_filechooserbutton->signal_selection_changed().connect
+    orange_image_filechooserbutton->signal_file_set().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_orange_image_changed));
     xml->get_widget("black_image_filechooserbutton", 
 		    black_image_filechooserbutton);
-    black_image_filechooserbutton->signal_selection_changed().connect
+    black_image_filechooserbutton->signal_file_set().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_black_image_changed));
     xml->get_widget("neutral_image_filechooserbutton", 
 		    neutral_image_filechooserbutton);
-    neutral_image_filechooserbutton->signal_selection_changed().connect
+    neutral_image_filechooserbutton->signal_file_set().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_neutral_image_changed));
     xml->get_widget("production_spinbutton", production_spinbutton);
     production_spinbutton->set_range
@@ -362,6 +363,7 @@ ArmySetWindow::update_army_panel()
   if (armies_treeview->get_selection()->get_selected() == 0)
     {
       //clear all values
+      inhibit_needs_saving = true;
       name_entry->set_text("");
       description_textview->get_buffer()->set_text("");
       production_spinbutton->set_value(MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS);
@@ -405,6 +407,7 @@ ArmySetWindow::update_army_panel()
       black_image->clear();
       neutral_image->clear();
       army_vbox->set_sensitive(false);
+      inhibit_needs_saving = false;
       return;
     }
   army_vbox->set_sensitive(true);
@@ -417,7 +420,9 @@ ArmySetWindow::update_army_panel()
       Gtk::TreeModel::Row row = *iterrow;
 
       ArmyProto *a = row[armies_columns.army];
+      inhibit_needs_saving = true;
       fill_army_info(a);
+      inhibit_needs_saving = false;
     }
 }
 ArmySetWindow::~ArmySetWindow()
@@ -496,6 +501,7 @@ void ArmySetWindow::update_filechooserbutton(Gtk::FileChooserButton *b, ArmyProt
   else
     b->set_sensitive(true);
 }
+
 void ArmySetWindow::on_load_armyset_activated()
 {
   Gtk::FileChooserDialog chooser(*window, 
@@ -744,7 +750,14 @@ void ArmySetWindow::fill_army_image(Gtk::FileChooserButton *button, Gtk::Image *
 {
   if (army->getImageName(c) != "")
     {
-      image->property_pixbuf() = army->getImage(c)->to_pixbuf();
+      Gdk::Color colour = Shieldsetlist::getInstance()->getColor(1, c);
+      army->instantiateImages(d_armyset->getTileSize(), c, 
+                              d_armyset->getFile(army->getImageName(c)));
+      PixMask *army_image = GraphicsCache::applyMask(army->getImage(c), 
+                                                     army->getMask(c), 
+                                                     colour, false);
+      image->property_pixbuf() = army_image->to_pixbuf();
+      delete army_image;
     
       std::string path = d_armyset->getFile(army->getImageName(c));
       button->set_filename(path);
@@ -860,8 +873,11 @@ void ArmySetWindow::on_name_changed()
       ArmyProto *a = row[armies_columns.army];
       a->setName(name_entry->get_text());
       row[armies_columns.name] = name_entry->get_text();
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -875,14 +891,17 @@ void ArmySetWindow::on_description_changed()
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
       a->setDescription(description_textview->get_buffer()->get_text());
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
-void ArmySetWindow::on_image_changed(Gtk::FileChooserButton *button, Gtk::Image *image, Shield::Colour c)
+void ArmySetWindow::on_image_changed(std::string button_filename, Gtk::Image *image, Shield::Colour c)
 {
-  if (button->get_filename().empty())
+  if (button_filename.empty())
     {
       image->clear();
       return;
@@ -895,71 +914,71 @@ void ArmySetWindow::on_image_changed(Gtk::FileChooserButton *button, Gtk::Image 
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      std::string file = File::get_basename(button->get_filename());
-      if (button->get_filename() != d_armyset->getFile(file))
+      std::string file = File::get_basename(button_filename);
+      if (button_filename != d_armyset->getFile(file))
 	{
 	  //fixme:warn on overrwite.
-	  File::copy (button->get_filename(), d_armyset->getFile(file));
+	  File::copy (button_filename, d_armyset->getFile(file));
 	}
       a->setImageName(c, file);
       Gdk::Color colour = Shieldsetlist::getInstance()->getColor(1, c);
       a->instantiateImages(d_armyset->getTileSize(), c, 
-			   d_armyset->getFile(a->getImageName(c)));
-      if (c != Shield::NEUTRAL)
-	{
-	  PixMask *army_image = GraphicsCache::applyMask(a->getImage(c), 
-							 a->getMask(c), 
-							 colour, false);
-	  image->property_pixbuf() = army_image->to_pixbuf();
-	  delete army_image;
-	}
-      else
-	image->property_pixbuf() = a->getImage(c)->to_pixbuf();
+                           d_armyset->getFile(a->getImageName(c)));
+         
+      PixMask *army_image = GraphicsCache::applyMask(a->getImage(c), 
+                                                     a->getMask(c), 
+                                                     colour, false);
+      image->property_pixbuf() = army_image->to_pixbuf();
+      delete army_image;
 
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
+
 void ArmySetWindow::on_white_image_changed()
 {
-  on_image_changed(white_image_filechooserbutton, white_image, Shield::WHITE);
+  on_image_changed(white_image_filechooserbutton->get_filename(), white_image, Shield::WHITE);
 }
 void ArmySetWindow::on_green_image_changed()
 {
-  on_image_changed(green_image_filechooserbutton, green_image, Shield::GREEN);
+  on_image_changed(green_image_filechooserbutton->get_filename(), green_image, Shield::GREEN);
 }
 void ArmySetWindow::on_yellow_image_changed()
 {
-  on_image_changed(yellow_image_filechooserbutton, yellow_image, 
+  on_image_changed(yellow_image_filechooserbutton->get_filename(), yellow_image, 
 		   Shield::YELLOW);
 }
 void ArmySetWindow::on_light_blue_image_changed()
 {
-  on_image_changed(light_blue_image_filechooserbutton, light_blue_image, 
+  on_image_changed(light_blue_image_filechooserbutton->get_filename(), light_blue_image, 
 		   Shield::LIGHT_BLUE);
 }
 void ArmySetWindow::on_red_image_changed()
 {
-  on_image_changed(red_image_filechooserbutton, red_image, Shield::RED);
+  on_image_changed(red_image_filechooserbutton->get_filename(), red_image, Shield::RED);
 }
 void ArmySetWindow::on_dark_blue_image_changed()
 {
-  on_image_changed(dark_blue_image_filechooserbutton, dark_blue_image, 
+  on_image_changed(dark_blue_image_filechooserbutton->get_filename(), dark_blue_image, 
 		   Shield::DARK_BLUE);
 }
 void ArmySetWindow::on_orange_image_changed()
 {
-  on_image_changed(orange_image_filechooserbutton, orange_image, 
+  on_image_changed(orange_image_filechooserbutton->get_filename(), orange_image, 
 		   Shield::ORANGE);
 }
 void ArmySetWindow::on_black_image_changed()
 {
-  on_image_changed(black_image_filechooserbutton, black_image, 
+  on_image_changed(black_image_filechooserbutton->get_filename(), black_image, 
 		   Shield::BLACK);
 }
 void ArmySetWindow::on_neutral_image_changed()
 {
-  on_image_changed(neutral_image_filechooserbutton, neutral_image, 
+  on_image_changed(neutral_image_filechooserbutton->get_filename(), neutral_image, 
 		   Shield::NEUTRAL);
 }
 
@@ -985,8 +1004,11 @@ void ArmySetWindow::on_production_changed()
 	production_spinbutton->set_value(MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS);
       else
 	a->setProduction(int(production_spinbutton->get_value()));
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1010,8 +1032,11 @@ void ArmySetWindow::on_cost_changed()
 	cost_spinbutton->set_value(MAX_COST_FOR_ARMY_UNITS);
       else
 	a->setProductionCost(int(cost_spinbutton->get_value()));
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1031,8 +1056,11 @@ void ArmySetWindow::on_new_cost_changed()
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
       a->setNewProductionCost(int(new_cost_spinbutton->get_value()));
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1056,8 +1084,11 @@ void ArmySetWindow::on_upkeep_changed()
 	upkeep_spinbutton->set_value(MAX_UPKEEP_FOR_ARMY_UNITS);
       else
 	a->setUpkeep(int(upkeep_spinbutton->get_value()));
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1081,8 +1112,11 @@ void ArmySetWindow::on_strength_changed()
 	strength_spinbutton->set_value(MAX_STRENGTH_FOR_ARMY_UNITS);
       else
 	a->setStrength(int(strength_spinbutton->get_value()));
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1106,8 +1140,11 @@ void ArmySetWindow::on_moves_changed()
 	moves_spinbutton->set_value(MAX_MOVES_FOR_ARMY_UNITS);
       else
 	a->setMaxMoves(int(moves_spinbutton->get_value()));
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1126,8 +1163,11 @@ void ArmySetWindow::on_exp_changed()
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
       a->setXpReward(int(exp_spinbutton->get_value()));
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1146,8 +1186,11 @@ void ArmySetWindow::on_sight_changed()
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
       a->setSight(int(sight_spinbutton->get_value()));
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1161,8 +1204,11 @@ void ArmySetWindow::on_gender_none_toggled()
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
       a->setGender(Hero::NONE);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1176,8 +1222,11 @@ void ArmySetWindow::on_gender_male_toggled()
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
       a->setGender(Hero::MALE);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1191,8 +1240,11 @@ void ArmySetWindow::on_gender_female_toggled()
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
       a->setGender(Hero::FEMALE);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1206,8 +1258,11 @@ void ArmySetWindow::on_awardable_toggled()
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
       a->setAwardable(awardable_checkbutton->get_active());
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1221,8 +1276,11 @@ void ArmySetWindow::on_defends_ruins_toggled()
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
       a->setDefendsRuins(defends_ruins_checkbutton->get_active());
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1248,8 +1306,11 @@ void ArmySetWindow::on_move_forests_toggled()
 	    bonus ^= Tile::FOREST;
 	}
       a->setMoveBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1275,8 +1336,11 @@ void ArmySetWindow::on_move_marshes_toggled()
 	    bonus ^= Tile::SWAMP;
 	}
       a->setMoveBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1302,8 +1366,11 @@ void ArmySetWindow::on_move_hills_toggled()
 	    bonus ^= Tile::HILLS;
 	}
       a->setMoveBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1329,8 +1396,11 @@ void ArmySetWindow::on_move_mountains_toggled()
 	    bonus ^= Tile::MOUNTAIN;
 	}
       a->setMoveBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1354,8 +1424,11 @@ void ArmySetWindow::on_can_fly_toggled()
 	  bonus = 0;
 	}
       a->setMoveBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1377,8 +1450,11 @@ void ArmySetWindow::on_add1strinopen_toggled()
 	    bonus ^= Army::ADD1STRINOPEN;
 	}
       a->setArmyBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1400,8 +1476,11 @@ void ArmySetWindow::on_add2strinopen_toggled()
 	    bonus ^= Army::ADD2STRINOPEN;
 	}
       a->setArmyBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1423,8 +1502,11 @@ void ArmySetWindow::on_add1strinforest_toggled()
 	    bonus ^= Army::ADD1STRINFOREST;
 	}
       a->setArmyBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1446,8 +1528,11 @@ void ArmySetWindow::on_add1strinhills_toggled()
 	    bonus ^= Army::ADD1STRINHILLS;
 	}
       a->setArmyBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1469,8 +1554,11 @@ void ArmySetWindow::on_add1strincity_toggled()
 	    bonus ^= Army::ADD1STRINCITY;
 	}
       a->setArmyBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1492,8 +1580,12 @@ void ArmySetWindow::on_add2strincity_toggled()
 	    bonus ^= Army::ADD2STRINCITY;
 	}
       a->setArmyBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
+
     }
 }
 
@@ -1515,8 +1607,11 @@ void ArmySetWindow::on_add1stackinhills_toggled()
 	    bonus ^= Army::ADD1STACKINHILLS;
 	}
       a->setArmyBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1538,8 +1633,11 @@ void ArmySetWindow::on_suballcitybonus_toggled()
 	    bonus ^= Army::SUBALLCITYBONUS;
 	}
       a->setArmyBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1561,8 +1659,11 @@ void ArmySetWindow::on_sub1enemystack_toggled()
 	    bonus ^= Army::SUB1ENEMYSTACK;
 	}
       a->setArmyBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1584,8 +1685,11 @@ void ArmySetWindow::on_add1stack_toggled()
 	    bonus ^= Army::ADD1STACK;
 	}
       a->setArmyBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1607,8 +1711,11 @@ void ArmySetWindow::on_add2stack_toggled()
 	    bonus ^= Army::ADD2STACK;
 	}
       a->setArmyBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1630,8 +1737,11 @@ void ArmySetWindow::on_suballnonherobonus_toggled()
 	    bonus ^= Army::SUBALLNONHEROBONUS;
 	}
       a->setArmyBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -1653,8 +1763,11 @@ void ArmySetWindow::on_suballherobonus_toggled()
 	    bonus ^= Army::SUBALLHEROBONUS;
 	}
       a->setArmyBonus(bonus);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
