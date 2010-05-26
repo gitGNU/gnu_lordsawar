@@ -119,14 +119,15 @@ public:
         Tar_Helper t(filename, std::ios::in, broken);
         if (broken)
           return;
-        std::string lwcfilename = t.getFirstFile(broken);
+        std::string lwcfilename = 
+          t.getFirstFile(Cityset::file_extension, broken);
         if (broken)
           return;
 	XML_Helper helper(lwcfilename, ios::in, false);
 	helper.registerTag(Cityset::d_tag, sigc::mem_fun((*this), &CitysetLoader::load));
 	if (!helper.parse())
 	  {
-	    std::cerr << "Error, while loading an cityset. Cityset File: ";
+	    std::cerr << "Error, while loading a cityset. Cityset File: ";
 	    std::cerr << filename << std::endl <<std::flush;
 	    if (cityset != NULL)
 	      delete cityset;
@@ -190,7 +191,6 @@ bool Cityset::save(std::string filename, std::string extension) const
   if (broken == true)
     return false;
   t.saveFile(tmpfile, File::get_basename(goodfilename, true));
-  File::erase(tmpfile);
   //now the images, go get 'em from the tarball we were made from.
   std::list<std::string> delfiles;
   Tar_Helper orig(getConfigurationFile(), std::ios::in, broken);
@@ -222,6 +222,7 @@ bool Cityset::save(std::string filename, std::string extension) const
   t.Close();
   for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
     File::erase(*it);
+  File::erase(tmpfile);
   if (broken == false)
     {
       if (File::copy(tmptar, goodfilename) == 0)
@@ -607,19 +608,19 @@ guint32 Cityset::calculate_preferred_tile_size() const
   std::map<guint32, guint32> sizecounts;
 
   if (citypics[0])
-    sizecounts[citypics[0]->get_width() / d_city_tile_width]++;
+    sizecounts[citypics[0]->get_unscaled_width() / d_city_tile_width]++;
   if (razedcitypics[0])
-    sizecounts[razedcitypics[0]->get_width() / d_city_tile_width]++;
+    sizecounts[razedcitypics[0]->get_unscaled_width() / d_city_tile_width]++;
   if (port)
-    sizecounts[port->get_width()]++;
+    sizecounts[port->get_unscaled_width()]++;
   if (signpost)
-    sizecounts[signpost->get_width()]++;
+    sizecounts[signpost->get_unscaled_width()]++;
   if (ruinpics[0])
-    sizecounts[ruinpics[0]->get_width() / d_ruin_tile_width]++;
+    sizecounts[ruinpics[0]->get_unscaled_width() / d_ruin_tile_width]++;
   if (templepics[0])
-    sizecounts[templepics[0]->get_width() / d_temple_tile_width]++;
+    sizecounts[templepics[0]->get_unscaled_width() / d_temple_tile_width]++;
   if (towerpics[0])
-    sizecounts[towerpics[0]->get_width()]++;
+    sizecounts[towerpics[0]->get_unscaled_width()]++;
 
   guint32 maxcount = 0;
   for (std::map<guint32, guint32>::iterator it = sizecounts.begin(); 

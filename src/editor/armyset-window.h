@@ -45,6 +45,7 @@ class ArmySetWindow: public sigc::trackable
  private:
     Gtk::Window* window;
     std::string current_save_filename;
+    std::string autosave; //filename
     Armyset *d_armyset; //current armyset
     ArmyProto *d_army; //current army
     bool needs_saving;
@@ -61,15 +62,15 @@ class ArmySetWindow: public sigc::trackable
     Gtk::Entry *name_entry;
     Gtk::TreeView *armies_treeview;
     Gtk::TextView *description_textview;
-    Gtk::FileChooserButton *white_image_filechooserbutton;
-    Gtk::FileChooserButton *green_image_filechooserbutton;
-    Gtk::FileChooserButton *yellow_image_filechooserbutton;
-    Gtk::FileChooserButton *light_blue_image_filechooserbutton;
-    Gtk::FileChooserButton *red_image_filechooserbutton;
-    Gtk::FileChooserButton *dark_blue_image_filechooserbutton;
-    Gtk::FileChooserButton *orange_image_filechooserbutton;
-    Gtk::FileChooserButton *black_image_filechooserbutton;
-    Gtk::FileChooserButton *neutral_image_filechooserbutton;
+    Gtk::Button *white_image_button;
+    Gtk::Button *green_image_button;
+    Gtk::Button *yellow_image_button;
+    Gtk::Button *light_blue_image_button;
+    Gtk::Button *red_image_button;
+    Gtk::Button *dark_blue_image_button;
+    Gtk::Button *orange_image_button;
+    Gtk::Button *black_image_button;
+    Gtk::Button *neutral_image_button;
     Gtk::SpinButton *production_spinbutton;
     Gtk::SpinButton *cost_spinbutton;
     Gtk::SpinButton *new_cost_spinbutton;
@@ -148,22 +149,22 @@ class ArmySetWindow: public sigc::trackable
     void on_edit_ship_picture_activated();
     void on_help_about_activated();
     void on_army_selected();
-    void fill_army_image(Gtk::FileChooserButton *button, Gtk::Image *image, Shield::Colour c, ArmyProto *army);
+    void fill_army_image(Gtk::Button *button, Gtk::Image *image, Shield::Colour c, ArmyProto *army);
     void fill_army_info(ArmyProto *army);
 
     //callbacks
     void on_name_changed();
     void on_description_changed();
-    void on_image_changed(std::string button_filename, Gtk::Image *image, Shield::Colour c);
-    void on_white_image_changed();
-    void on_green_image_changed();
-    void on_yellow_image_changed();
-    void on_light_blue_image_changed();
-    void on_red_image_changed();
-    void on_dark_blue_image_changed();
-    void on_orange_image_changed();
-    void on_black_image_changed();
-    void on_neutral_image_changed();
+    void on_image_changed(Gtk::Button *button, Gtk::Image *image, Shield::Colour c);
+    void on_white_image_clicked();
+    void on_green_image_clicked();
+    void on_yellow_image_clicked();
+    void on_light_blue_image_clicked();
+    void on_red_image_clicked();
+    void on_dark_blue_image_clicked();
+    void on_orange_image_clicked();
+    void on_black_image_clicked();
+    void on_neutral_image_clicked();
     void on_production_changed();
     void on_production_text_changed(const Glib::ustring &s, int* p);
     void on_cost_changed();
@@ -207,11 +208,9 @@ class ArmySetWindow: public sigc::trackable
     void on_add_army_clicked();
     void on_remove_army_clicked();
 
-    void update_filechooserbutton(Gtk::FileChooserButton *b, ArmyProto *a, Shield::Colour c);
-
     void on_white_all_checked();
 
-    void load_armyset(std::string filename);
+    bool load_armyset(std::string filename);
     void update_window_title();
 };
 

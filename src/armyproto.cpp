@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -27,6 +27,7 @@
 #include "armyset.h"
 #include "gui/image-helpers.h"
 #include "Tile.h"
+#include "tarhelper.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -149,13 +150,21 @@ bool ArmyProto::instantiateImages(int tilesize, Shield::Colour c, std::string im
 
 void ArmyProto::instantiateImages(Armyset *armyset)
 {
+  bool broken = false;
+  Tar_Helper t(armyset->getConfigurationFile(), std::ios::in, broken);
+  if (broken)
+    return;
   for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
     {
       std::string file = "";
       if (getImageName(Shield::Colour(c)).empty() == false)
-	file = armyset->getFile(getImageName(Shield::Colour(c)));
-      instantiateImages(armyset->getTileSize(), Shield::Colour(c), file);
+	file = t.getFile(getImageName(Shield::Colour(c)) + ".png", broken);
+      if (!broken && file.empty() == false)
+        instantiateImages(armyset->getTileSize(), Shield::Colour(c), file);
+      if (file.empty() == false)
+        File::erase(file);
     }
+  t.Close();
 }
 
 void ArmyProto::uninstantiateImages()

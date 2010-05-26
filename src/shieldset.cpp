@@ -129,7 +129,8 @@ public:
         Tar_Helper t(filename, std::ios::in, broken);
         if (broken)
           return;
-        std::string lwsfilename = t.getFirstFile(broken);
+        std::string lwsfilename = 
+          t.getFirstFile(Shieldset::file_extension, broken);
         if (broken)
           return;
 	XML_Helper helper(lwsfilename, ios::in, false);
@@ -200,7 +201,6 @@ bool Shieldset::save(std::string filename, std::string extension) const
   if (broken == true)
     return false;
   t.saveFile(tmpfile, File::get_basename(goodfilename, true));
-  File::erase(tmpfile);
   //now the images, go get 'em from the tarball we were made from.
   std::list<std::string> delfiles;
   Tar_Helper orig(getConfigurationFile(), std::ios::in, broken);
@@ -232,6 +232,7 @@ bool Shieldset::save(std::string filename, std::string extension) const
   t.Close();
   for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
     File::erase(*it);
+  File::erase(tmpfile);
   if (broken == false)
     {
       if (File::copy(tmptar, goodfilename) == 0)
@@ -405,6 +406,7 @@ std::string Shieldset::getFileFromConfigurationFile(std::string file)
     }
   return "";
 }
+
 bool Shieldset::replaceFileInConfigurationFile(std::string file, std::string new_file)
 {
   bool broken = false;

@@ -27,7 +27,8 @@
 class ArmySetInfoDialog: public sigc::trackable
 {
  public:
-    ArmySetInfoDialog(Armyset *armyset, std::string dir, bool readonly = false);
+    ArmySetInfoDialog(Armyset *armyset, std::string dir,
+                        bool readonly = false, std::string title = "");
     ~ArmySetInfoDialog();
 
     void set_parent_window(Gtk::Window &parent);
@@ -38,17 +39,17 @@ class ArmySetInfoDialog: public sigc::trackable
     Gtk::Dialog* dialog;
     Armyset *d_armyset;
     Gtk::Entry *name_entry;
-    Gtk::TextView *description_textview;
     Gtk::TextView *copyright_textview;
     Gtk::TextView *license_textview;
-    Gtk::Entry *subdir_entry;
+    Gtk::Entry *filename_entry;
     Gtk::SpinButton *id_spinbutton;
     Gtk::Button *accept_button;
     Gtk::Label *status_label;
+    Gtk::TextView *description_textview;
     Gtk::Label *dir_label;
 
     void on_name_changed();
-    void on_subdir_changed();
+    void on_filename_changed();
     void update_buttons();
 
     bool d_readonly;

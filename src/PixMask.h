@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Ben Asselstine
+// Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,6 +33,8 @@ class PixMask
      Glib::RefPtr<Gdk::GC> get_gc() {return gc;};
      int get_width() {return width;};
      int get_height() {return height;};
+     int get_unscaled_width() {return unscaled_width;};
+     int get_unscaled_height() {return unscaled_height;};
      int get_depth();
 
      static PixMask* create(std::string file);
@@ -76,6 +78,8 @@ class PixMask
       */
      PixMask(std::string filename);
 
+     void set_unscaled_width(guint32 width) {unscaled_width = width;};
+     void set_unscaled_height(guint32 height) {unscaled_height = height;};
     
  private:
     Glib::RefPtr<Gdk::Pixmap> pixmap;
@@ -83,6 +87,8 @@ class PixMask
     Glib::RefPtr<Gdk::GC> gc;
     int width;
     int height;
+    int unscaled_width;
+    int unscaled_height;
 
      //! return a stretched copy of this pixmask.
      PixMask* scale(int xsize, int ysize, 

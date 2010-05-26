@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -41,16 +41,17 @@ using namespace std;
  * map).  See the Army class for more information about what an Army prototype
  * is.  The Armyset describes the size of the graphic tiles that each Army 
  * graphic occupies on the screen (Army::d_tilesize).
- * Two special images are kept with the Armyset:  the ship picture, and the
- * planted standard picture.
+ * There special images are kept with the Armyset:  the ship picture, the
+ * planted standard picture, and the bag of items picture.
  *
  * The ship picture is what the Stack looks like when it is in a boat.
  * The planted standard is what the player's standard looks like when it has
- * been planted in the ground.
+ * been planted in the ground.  The bag of items picture is what it looks like
+ * when a hero has dropped an item on the ground.
  *
  * Armysets are most often referred to by their Id (Armyset::d_id), but may 
- * sometimes be referred to by their name (Armyset::d_name) or subdirectory 
- * name (Armyset::d_subdir).
+ * sometimes be referred to by their name (Armyset::d_name) or basename 
+ * name (Armyset::d_basename).
  *
  * Armyset objects are loaded from an armyset configuration file.
  *
@@ -59,8 +60,9 @@ using namespace std;
  * Every Player has an Armyset that dictates the characteristics of the
  * player's forces, but in practise there is only one Armyset per scenario.
  *
- * The armyset configuration file is a same named XML file inside the Armyset's
- * directory.  E.g. army/${Armyset::d_subdir}/${Armyset::d_subdir}.xml.
+ * The armyset configuration file is a tar file that contains an XML file, 
+ * and a set of png files.  Filenames have the following form:
+ * army/${Armyset::d_basename}.lwa.
  */
 class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 {
@@ -94,7 +96,9 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 * @param helper  An opened armyset configuration file.
 	 */
 	//! Save the Armyset to an Armyset configuration file.
-	bool save(XML_Helper* helper);
+	bool save(XML_Helper* helper) const;
+        
+        bool save(std::string filename, std::string extension) const;
 
 	//! Returns the size of this armyset.
         /** 
@@ -111,6 +115,8 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 * configuration file.
 	 */
         guint32 getTileSize() const {return d_tilesize;}
+
+        void setTileSize(guint32 tile_size) {d_tilesize = tile_size;}
 
 	//! Get the unique identifier for this armyset.
 	/**
@@ -158,17 +164,17 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 */
         void setInfo(std::string info) {d_info = info;}
 
-	//! Get the subdirectory name of the armyset.
+	//! Get the base name of the armyset.
 	/**
 	 * This value does not contain a path (e.g. no slashes).  It is the
 	 * name of an armyset directory inside army/.
 	 *
-	 * @return The name of the subdirectory the Armyset is held in.
+	 * @return The basename of the file that the Armyset is held in.
 	 */
-        std::string getSubDir() const {return d_subdir;}
+        std::string getBaseName() const {return d_basename;}
 
-	//! Set the subdirectory that the armyset is in.
-        void setSubDir(std::string dir) {d_subdir = dir;}
+	//! Set the base name of the file that the armyset is in.
+        void setBaseName(std::string bname) {d_basename = bname;}
 
 	//! Get the image of the stack in a ship (minus the mask).
 	PixMask* getShipPic() const {return d_ship;}
@@ -242,7 +248,6 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	ArmyProto * lookupSimilarArmy(ArmyProto *army) const;
 	//! can this armyset be used within the game?
 	bool validate();
-	bool validateSize();
 	bool validateHero();
 	bool validatePurchasables();
 	bool validateRuinDefenders();
@@ -262,7 +267,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	void loadShipPic(std::string image_filename);
 	void loadBagPic(std::string image_filename);
 
-	std::string getConfigurationFile();
+	std::string getConfigurationFile() const;
 	static std::list<std::string> scanUserCollection();
 	static std::list<std::string> scanSystemCollection();
 	static void switchArmyset(Army *army, const Armyset *armyset);
@@ -271,8 +276,12 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	const ArmyProto * getRandomRuinKeeper() const;
 	const ArmyProto *getRandomAwardableAlly() const;
 
+        std::string getFileFromConfigurationFile(std::string file);
+        bool replaceFileInConfigurationFile(std::string file, std::string new_file);
         //! Load the armyset again.
         void reload();
+        guint32 calculate_preferred_tile_size() const;
+
     private:
 
         //! Callback function for the army tag (see XML_Helper)
@@ -298,13 +307,13 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	//! The license of the armyset.
 	std::string d_license;
 
-	//! The subdirectory of the Armyset.
+	//! The basename of the Armyset.
 	/**
-	 * This is the name of the subdirectory that the Armyset files are
+	 * This is the base name of the file that the Armyset files are
 	 * residing in.  It does not contain a path (e.g. no slashes).
 	 * Armyset files sit in the army/ directory.
 	 */
-        std::string d_subdir;
+        std::string d_basename;
 
 	//! The description of the Armyset.
 	/**

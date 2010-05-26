@@ -40,8 +40,9 @@ class XML_Helper;
  * Citysets are referred to by their base name.  The base name is the last
  * part of the file's path minus the file extension.
  *
- * The cityset configuration file is an XML file inside the cityset directory.
- * E.g. cityset/${Cityset::d_basename}.lwc.
+ * The cityset configuration file is a tar file that contains an XML file, 
+ * and a set of png files.  Filenames have the following form:
+ * cityset/${Cityset::d_basename}.lwc.
  */
 class Cityset : public sigc::trackable, public Set
 {

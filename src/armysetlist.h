@@ -126,8 +126,8 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	  *
           * @return the id of the armyset (0 on error)
           */
-	guint32 getArmysetId(std::string armyset, guint32 tilesize);
-	Armyset *getArmyset(guint32 id);
+	guint32 getArmysetId(std::string armyset, guint32 tilesize) const;
+	Armyset *getArmyset(guint32 id) const;
 
 	//! Return the Armyset object by the name of the subdir.
 	/**
@@ -135,7 +135,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 *             This value does not contain any slashes, and is
 	 *             presumed to be found inside the army/ directory.
 	 */
-	Armyset *getArmyset(std::string dir);
+	Armyset *getArmyset(std::string dir) const;
 
 	//! Return the name of the subdirectory for a given armyset.
         /** 
@@ -146,13 +146,13 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 *         Armyset::d_dir for more information about the nature of 
 	 *         the return value.
          */
-	std::string getArmysetDir(std::string name, guint32 tilesize);
+	std::string getArmysetDir(std::string name, guint32 tilesize) const;
 
 
 	//! Return an unused armyset number.
 	static int getNextAvailableId(int after = 0);
 
-	void add(Armyset *arymset);
+	void add(Armyset *arymset, std::string file);
 
 	void instantiateImages();
 	void uninstantiateImages();
@@ -160,6 +160,8 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 
 	Armyset *import(Tar_Helper *t, std::string f, bool &broken);
 	bool addToPersonalCollection(Armyset *armyset, std::string &new_subdir, guint32 &new_id);
+
+        std::string findFreeBaseName(std::string basename, guint32 max, guint32 &num) const;
     private:
         //! Default Constructor.  Loads all armyset objects it can find.
 	/**

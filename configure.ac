@@ -271,8 +271,6 @@ AC_SUBST(LORDSAWAR_DATADIR)
 AC_CONFIG_FILES([
         dat/Makefile 
         dat/army/Makefile 
-        dat/army/default/Makefile 
-        dat/army/bigdefault/Makefile 
         dat/tilesets/Makefile
         dat/tilesets/default/Makefile
         dat/tilesets/bigdefault/Makefile

@@ -58,16 +58,16 @@ void Armysetlist::deleteInstance()
   s_instance = 0;
 }
 
-void Armysetlist::add(Armyset *armyset)
+void Armysetlist::add(Armyset *armyset, std::string file)
 {
-  std::string subdir = File::get_basename(armyset->getDirectory());
+  std::string basename = File::get_basename(file);
   push_back(armyset); 
   for (Armyset::iterator ait = armyset->begin(); ait != armyset->end(); ait++)
     d_armies[armyset->getId()].push_back(*ait);
   d_names[armyset->getId()] = armyset->getName();
   d_ids[String::ucompose("%1 %2", armyset->getName(), armyset->getTileSize())] = armyset->getId();
-  armyset->setSubDir(subdir);
-  d_armysets[subdir] = armyset;
+  armyset->setBaseName(basename);
+  d_armysets[basename] = armyset;
   d_armysetids[armyset->getId()] = armyset;
 }
 
@@ -80,7 +80,7 @@ void Armysetlist::loadArmysets(std::list<std::string> armysets)
       if (!armyset)
 	continue;
 
-      add(armyset);
+      add(armyset, *i);
     }
 }
 
@@ -203,11 +203,11 @@ Armyset *Armysetlist::loadArmyset(std::string name)
 	"' is malformed.  Skipping." << endl;
       return NULL;
     }
-  if (d_armysets.find(armyset->getSubDir()) != d_armysets.end())
+  if (d_armysets.find(armyset->getBaseName()) != d_armysets.end())
     {
-      Armyset *a = (*d_armysets.find(armyset->getSubDir())).second;
+      Armyset *a = (*d_armysets.find(armyset->getBaseName())).second;
       cerr << "Error!  armyset: `" << armyset->getConfigurationFile() << 
-	"' shares a duplicate armyset subdir `" << a->getSubDir() << "' with `" << a->getConfigurationFile() 
+	"' shares a duplicate armyset basename `" << a->getBaseName() << "' with `" << a->getConfigurationFile() 
 	<< "'.  Skipping." << endl;
       delete armyset;
       return NULL;
@@ -295,14 +295,18 @@ void Armysetlist::getSizes(std::list<guint32> &sizes)
     }
 }
 
-guint32 Armysetlist::getArmysetId(std::string armyset, guint32 tilesize)
+guint32 Armysetlist::getArmysetId(std::string armyset, guint32 tilesize) const
 {
-  return d_ids[String::ucompose("%1 %2", armyset, tilesize)];
+  IdMap::const_iterator it = 
+    d_ids.find(String::ucompose("%1 %2", armyset, tilesize));
+  if (it == d_ids.end())
+    return NULL;
+  return (*it).second;
 }
 
-std::string Armysetlist::getArmysetDir(std::string name, guint32 tilesize)
+std::string Armysetlist::getArmysetDir(std::string name, guint32 tilesize) const
 {
-  return getArmyset(getArmysetId(name, tilesize))->getSubDir();
+  return getArmyset(getArmysetId(name, tilesize))->getBaseName();
 }
 
 int Armysetlist::getNextAvailableId(int after)
@@ -351,55 +355,65 @@ void Armysetlist::uninstantiateImages()
     (*it)->uninstantiateImages();
 }
 
-Armyset *Armysetlist::getArmyset(guint32 id) 
+Armyset *Armysetlist::getArmyset(guint32 id) const
 {
-  if (d_armysetids.find(id) == d_armysetids.end())
+  ArmysetIdMap::const_iterator it = d_armysetids.find(id);
+  if (it == d_armysetids.end())
     return NULL;
-  return d_armysetids[id];
+  return (*it).second;
 }
 
-Armyset *Armysetlist::getArmyset(std::string dir) 
+Armyset *Armysetlist::getArmyset(std::string bname) const
 { 
-  if (d_armysets.find(dir) == d_armysets.end())
+  ArmysetMap::const_iterator it = d_armysets.find(bname);
+  if (it == d_armysets.end())
     return NULL;
-  return d_armysets[dir];
+  return (*it).second;
 }
-bool Armysetlist::addToPersonalCollection(Armyset *armyset, std::string &new_subdir, guint32 &new_id)
+
+std::string Armysetlist::findFreeBaseName(std::string basename, guint32 max, guint32 &num) const
+{
+  std::string new_basename;
+  for (unsigned int count = 1; count < max; count++)
+    {
+      new_basename = String::ucompose("%1%2", basename, count);
+      if (getArmyset(new_basename) == NULL)
+        {
+          num = count;
+          break;
+        }
+      else
+        new_basename = "";
+    }
+  return new_basename;
+}
+
+bool Armysetlist::addToPersonalCollection(Armyset *armyset, std::string &new_basename, guint32 &new_id)
 {
   //do we already have this one?
-
-  if (getArmyset(armyset->getSubDir()) == getArmyset(armyset->getId()) &&
-      getArmyset(armyset->getSubDir()) != NULL)
+      
+  if (getArmyset(armyset->getBaseName()) == getArmyset(armyset->getId())
+      && getArmyset(armyset->getBaseName()) != NULL)
     {
       armyset->setDirectory(getArmyset(armyset->getId())->getDirectory());
       return true;
     }
 
-  //if the subdir conflicts with any other subdir, then change it.
-  if (getArmyset(armyset->getSubDir()) != NULL)
+  //if the basename conflicts with any other basename, then change it.
+  if (getArmyset(armyset->getBaseName()) != NULL)
     {
-      if (new_subdir != "" && getArmyset(new_subdir) == NULL)
-        armyset->setSubDir(new_subdir);
+      if (new_basename != "" && getArmyset(new_basename) == NULL)
+        ;
       else
         {
-          bool found = false;
-          for (int count = 0; count < 100; count++)
-            {
-              new_subdir = String::ucompose("%1%2", armyset->getSubDir(), 
-                                            count);
-              if (getArmyset(new_subdir) == NULL)
-                {
-                  found = true;
-                  break;
-                }
-            }
-          if (found == false)
+          guint32 num = 0;
+          std::string new_basename = findFreeBaseName(armyset->getBaseName(), 100, num);
+          if (new_basename == "")
             return false;
-          armyset->setSubDir(new_subdir);
         }
     }
-  else
-    new_subdir = armyset->getSubDir();
+  else if (new_basename == "")
+    new_basename = armyset->getBaseName();
 
   //if the id conflicts with any other id, then change it
   if (getArmyset(armyset->getId()) != NULL)
@@ -416,55 +430,32 @@ bool Armysetlist::addToPersonalCollection(Armyset *armyset, std::string &new_sub
     new_id = armyset->getId();
 
   //make the directory where the armyset is going to live.
-  std::string directory = 
-    File::getUserArmysetDir() + armyset->getSubDir() + "/";
+  std::string file = File::getUserArmysetDir() + new_basename + Armyset::file_extension;
 
-  if (File::create_dir(directory) == false)
-    return false;
+  armyset->save(file, Armyset::file_extension);
 
-  //okay now we copy the image files into the new directory 
-  std::list<std::string> files;
-  armyset->getFilenames(files);
-  for (std::list<std::string>::iterator it = files.begin(); it != files.end();
-       it++)
-    File::copy(armyset->getFile(*it), directory + *it + ".png");
-
-  //save out the armyset file
-  armyset->setDirectory(directory);
-  XML_Helper helper(armyset->getConfigurationFile(), std::ios::out, false);
-  armyset->save(&helper);
-  helper.close();
-      
-  add(armyset);
+  if (new_basename != armyset->getBaseName())
+    armyset->setBaseName(new_basename);
+  armyset->setDirectory(File::get_dirname(file));
+  add (armyset, file);
   return true;
 }
+
 
 Armyset *Armysetlist::import(Tar_Helper *t, std::string f, bool &broken)
 {
   std::string filename = t->getFile(f, broken);
+  if (broken)
+    return NULL;
   Armyset *armyset = Armyset::create(filename);
   assert (armyset != NULL);
-  armyset->setSubDir(File::get_basename(f));
+  armyset->setBaseName(File::get_basename(f));
 
-  //extract all the files and remember where we extracted them
-  std::list<std::string> delfiles;
-  delfiles.push_back(filename);
-  std::list<std::string> files;
-  armyset->getFilenames(files);
-  for (std::list<std::string>::iterator i = files.begin(); i != files.end(); i++)
-    {
-      std::string file = t->getFile(*i + ".png", broken);
-      delfiles.push_back (file);
-    }
-
-  std::string subdir = "";
+  std::string basename = "";
   guint32 id = 0;
-  addToPersonalCollection(armyset, subdir, id);
+  addToPersonalCollection(armyset, basename, id);
 
-  for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
-    File::erase(*it);
   return armyset;
-
 }
 
 bool Armysetlist::contains(std::string name) const

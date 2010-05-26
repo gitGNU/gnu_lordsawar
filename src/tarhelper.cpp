@@ -91,6 +91,12 @@ void Tar_Helper::Close()
     }
 }
     
+std::string Tar_Helper::getFirstFile(std::string extension, bool &broken)
+{
+  std::list<std::string> files = getFilenamesWithExtension(extension);
+  return getFile(files.front(), broken);
+}
+
 std::string Tar_Helper::getFirstFile(bool &broken)
 {
   std::list<std::string> files = getFilenames();
@@ -145,8 +151,16 @@ std::string Tar_Helper::getFile(TAR *t, std::string filename, bool &broken, std:
     }
   std::string outfile = tmpoutdir + filename;
   FILE *fileptr = fopen(outfile.c_str(), "w");
-  fwrite(data, 1, size, fileptr);
-  fclose(fileptr);
+  if (!fileptr)
+    {
+      broken = true;
+      outfile = "";
+    }
+  else
+    {
+      fwrite(data, 1, size, fileptr);
+      fclose(fileptr);
+    }
 
   broken = false;
   return outfile;

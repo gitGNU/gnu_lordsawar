@@ -1124,7 +1124,7 @@ public:
 		helper->getData(armyset_id, "armyset");
 		Armysetlist *al = Armysetlist::getInstance();
 		Armyset *armyset = al->getArmyset(armyset_id);
-		game_params.army_theme = armyset->getSubDir();
+		game_params.army_theme = armyset->getBaseName();
 	      }
 
 	    return true;

@@ -47,8 +47,9 @@
  * Shieldsets are referred to by their basename.  This is the last part of the
  * filename, minus the file extension.
  *
- * The shieldset configuration file is a file inside the Shieldset directory.  
- * E.g. shield/${Shieldset::d_basename}.lws.
+ * The shieldset configuration file is a tar file that contains an XML file, 
+ * and a set of png files.  Filenames have the following form:
+ * shield/${Shieldset::d_basename}.lws.
  */
 class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 {

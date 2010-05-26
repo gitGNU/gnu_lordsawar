@@ -187,13 +187,7 @@ CitySetWindow::update_cityset_menuitems()
     }
   else
     {
-      std::string file = d_cityset->getConfigurationFile();
-      if (File::exists(file) == false)
-	save_cityset_menuitem->set_sensitive(true);
-      else if (File::is_writable(file) == false)
-	save_cityset_menuitem->set_sensitive(false);
-      else
-	save_cityset_menuitem->set_sensitive(true);
+      save_cityset_menuitem->set_sensitive(true);
       save_as_menuitem->set_sensitive(true);
       edit_cityset_info_menuitem->set_sensitive(true);
       validate_cityset_menuitem->set_sensitive(true);
@@ -297,8 +291,13 @@ void CitySetWindow::on_new_cityset_activated()
   std::string dir = File::getUserCitysetDir();
   d_cityset->setDirectory(dir);
   current_save_filename = d_cityset->getConfigurationFile();
+  RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
+  refl->updateEntry(current_save_filename);
+  refl->save();
+  d_cityset->setDirectory(File::get_dirname(autosave));
+  d_cityset->setBaseName(File::get_basename(autosave));
 
-  d_cityset->save(current_save_filename, Cityset::file_extension);
+  d_cityset->save(autosave, Cityset::file_extension);
   update_cityset_panel();
   update_cityset_menuitems();
   needs_saving = true;
@@ -364,12 +363,12 @@ void CitySetWindow::on_validate_cityset_activated()
        it++)
     msg += (*it) + "\n";
 
-  if (msg != "")
-    {
-      Gtk::MessageDialog dialog(*window, msg);
-      dialog.run();
-      dialog.hide();
-    }
+  if (msg == "")
+    msg = _("The cityset is valid.");
+      
+  Gtk::MessageDialog dialog(*window, msg);
+  dialog.run();
+  dialog.hide();
 
   return;
 }

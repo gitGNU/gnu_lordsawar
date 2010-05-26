@@ -13,7 +13,7 @@ default.lwc: default.lwc.in
 dol.lwc: dol.lwc.in
 	LC_ALL=C $(top_srcdir)/intltool-tarmerge $(INTLTOOL_MERGE) $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $(srcdir)/dol.lwc.in $(builddir)/dol.lwc
 
-DISTCLEANFILES = default.lwc dol.lwc bigdefault.lwc default.lwc
+DISTCLEANFILES = default.lwc dol.lwc bigdefault.lwc bigdol.lwc
 lordsawarcityset_DATA = \
 	default.lwc \
 	bigdefault.lwc \

@@ -256,13 +256,18 @@ void ShieldSetWindow::on_new_shieldset_activated()
   std::string dir = File::getUserShieldsetDir();
   d_shieldset->setDirectory(dir);
   current_save_filename = d_shieldset->getConfigurationFile();
+  RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
+  refl->updateEntry(current_save_filename);
+  refl->save();
+  d_shieldset->setDirectory(File::get_dirname(autosave));
+  d_shieldset->setBaseName(File::get_basename(autosave));
 
   //populate the list with initial entries.
   for (unsigned int i = Shield::WHITE; i <= Shield::NEUTRAL; i++)
     addNewShield(Shield::Colour(i), Shield::get_default_color_for_no(i));
   update_shieldset_menuitems();
 
-  d_shieldset->save(current_save_filename, Shieldset::file_extension);
+  d_shieldset->save(autosave, Shieldset::file_extension);
   update_shield_panel();
   needs_saving = true;
   update_window_title();
@@ -304,19 +309,34 @@ void ShieldSetWindow::on_validate_shieldset_activated()
   std::list<std::string> msgs;
   if (d_shieldset == NULL)
     return;
-  //bool valid;
+  bool valid = d_shieldset->validateNumberOfShields();
+  if (!valid)
+    msgs.push_back(_("The shieldset must have 9 shields in it."));
+
+  for (unsigned int i = Shield::WHITE; i <= Shield::NEUTRAL; i++)
+    {
+      valid = d_shieldset->validateShieldImages(Shield::Colour(i));
+      if (!valid)
+        {
+          std::string s;
+          s = String::ucompose(_("%1 must have all three images specified."),
+                               Shield::colourToString(Shield::Colour(i)));
+          msgs.push_back(s);
+          break;
+        }
+    }
 
   std::string msg = "";
   for (std::list<std::string>::iterator it = msgs.begin(); it != msgs.end();
        it++)
     msg += (*it) + "\n";
 
-  if (msg != "")
-    {
-      Gtk::MessageDialog dialog(*window, msg);
-      dialog.run();
-      dialog.hide();
-    }
+  if (msg == "")
+    msg = _("The shieldset is valid.");
+      
+  Gtk::MessageDialog dialog(*window, msg);
+  dialog.run();
+  dialog.hide();
 
   return;
 }

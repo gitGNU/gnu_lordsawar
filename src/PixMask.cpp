@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Ben Asselstine
+// Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 #include <string.h>
 
 PixMask::PixMask(Glib::RefPtr<Gdk::Pixbuf> pixbuf)
-     : width(0), height(0)
+     : width(0), height(0), unscaled_width(0), unscaled_height(0)
 {
   pixbuf->render_pixmap_and_mask(pixmap, mask, 1);
   pixmap->get_size(width, height);
@@ -41,6 +41,8 @@ PixMask::PixMask(Glib::RefPtr<Gdk::Pixmap> p, Glib::RefPtr<Gdk::Bitmap> m)
       mask->get_size(width, height);
       gc = Gdk::GC::create(mask);
     }
+  unscaled_width = width;
+  unscaled_height = height;
 }
 
 PixMask::PixMask(const PixMask&p)
@@ -59,6 +61,8 @@ PixMask::PixMask(const PixMask&p)
 
   width = p.width;
   height = p.height;
+  unscaled_width = p.unscaled_width;
+  unscaled_height = p.unscaled_height;
 }
 
 PixMask::PixMask(std::string filename)
@@ -68,6 +72,8 @@ PixMask::PixMask(std::string filename)
   pixbuf->render_pixmap_and_mask(pixmap, mask, 1);
   pixmap->get_size(width, height);
   gc = Gdk::GC::create(pixmap);
+  unscaled_width = width;
+  unscaled_height = height;
 }
 
 
@@ -96,11 +102,13 @@ void PixMask::blit_centered(Glib::RefPtr<Gdk::Pixmap> dest, Vector<int> pos)
   blit (dest, pos.x - (width/2), pos.y - (height/2));
   return;
 }
+
 void PixMask::blit(Glib::RefPtr<Gdk::Pixmap> dest, Vector<int> pos)
 {
   blit (dest, pos.x, pos.y);
   return;
 }
+
 void PixMask::blit(Glib::RefPtr<Gdk::Pixmap> dest, int dest_x, int dest_y)
 {
   gc->set_clip_origin(dest_x,dest_y);
@@ -133,14 +141,20 @@ void PixMask::scale(PixMask*& p, int xsize, int ysize, Gdk::InterpType interp)
   PixMask *scaled = p->scale(xsize, ysize, interp);
   delete p;
   p = scaled;
+  p->set_unscaled_width(p->get_unscaled_width());
+  p->set_unscaled_height(p->get_unscaled_height());
   return;
 }
 
 PixMask * PixMask::scale(int xsize, int ysize, Gdk::InterpType interp)
 {
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = to_pixbuf();
-  return PixMask::create(pixbuf->scale_simple(xsize, ysize, interp));
+  PixMask *pix = PixMask::create(pixbuf->scale_simple(xsize, ysize, interp));
+  pix->set_unscaled_width(get_unscaled_width());
+  pix->set_unscaled_height(get_unscaled_height());
+  return pix;
 }
+
 Glib::RefPtr<Gdk::Pixbuf> PixMask::to_pixbuf()
 {
   Glib::RefPtr<Gdk::Pixmap> result = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), width, height, 24);

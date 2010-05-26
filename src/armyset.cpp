@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@
 #include "gui/image-helpers.h"
 #include "armysetlist.h"
 #include "armyprodbase.h"
+#include "tarhelper.h"
+#include "Configuration.h"
 
 std::string Armyset::d_tag = "armyset";
 std::string Armyset::file_extension = ARMYSET_EXT;
@@ -39,7 +41,7 @@ using namespace std;
 
 #define DEFAULT_ARMY_TILE_SIZE 40
 Armyset::Armyset(guint32 id, std::string name)
-	: d_id(id), d_name(name), d_copyright(""), d_license(""), d_subdir(""), 
+	: d_id(id), d_name(name), d_copyright(""), d_license(""), d_basename(""), 
 	d_tilesize(DEFAULT_ARMY_TILE_SIZE), d_ship(0), d_shipmask(0), 
 	d_standard(0), d_standard_mask(0), d_bag(0)
 {
@@ -50,7 +52,7 @@ Armyset::Armyset(guint32 id, std::string name)
 }
 
 Armyset::Armyset(XML_Helper *helper, std::string directory)
-    : d_id(0), d_name(""), d_copyright(""), d_license(""), d_subdir(""), 
+    : d_id(0), d_name(""), d_copyright(""), d_license(""), d_basename(""), 
     d_tilesize(DEFAULT_ARMY_TILE_SIZE), d_ship(0), d_shipmask(0), 
     d_standard(0), d_standard_mask(0), d_bag(0)
 {
@@ -91,7 +93,69 @@ bool Armyset::loadArmyProto(string tag, XML_Helper* helper)
     return true;
 }
 
-bool Armyset::save(XML_Helper* helper)
+bool Armyset::save(std::string filename, std::string extension) const
+{
+  bool broken = false;
+  std::string goodfilename = filename;
+  if (File::nameEndsWith(filename, extension) == false)
+    goodfilename += "." + extension;
+  std::string tmpfile = "lw.XXXX";
+  int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
+  close (fd);
+  XML_Helper helper(tmpfile, std::ios::out, Configuration::s_zipfiles);
+  broken = !save(&helper);
+  helper.close();
+  if (broken == true)
+    return false;
+  std::string tmptar = tmpfile + ".tar";
+  Tar_Helper t(tmptar, std::ios::out, broken);
+  if (broken == true)
+    return false;
+  t.saveFile(tmpfile, File::get_basename(goodfilename, true));
+  //now the images, go get 'em from the tarball we were made from.
+  std::list<std::string> delfiles;
+  Tar_Helper orig(getConfigurationFile(), std::ios::in, broken);
+  if (broken == false)
+    {
+      std::list<std::string> files = orig.getFilenamesWithExtension(".png");
+      for (std::list<std::string>::iterator it = files.begin(); 
+           it != files.end(); it++)
+        {
+          std::string pngfile = orig.getFile(*it, broken);
+          if (broken == false)
+            {
+              bool success = t.saveFile(pngfile);
+              if (!success)
+                  broken = true;
+              delfiles.push_back(pngfile);
+            }
+          else
+            break;
+        }
+      orig.Close();
+    }
+  else
+    {
+      FILE *fileptr = fopen (getConfigurationFile().c_str(), "r");
+      if (fileptr)
+        fclose (fileptr);
+      else
+        broken = false;
+    }
+  for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
+    File::erase(*it);
+  File::erase(tmpfile);
+  t.Close();
+  if (broken == false)
+    {
+      if (File::copy(tmptar, goodfilename) == 0)
+        File::erase(tmptar);
+    }
+
+  return !broken;
+}
+
+bool Armyset::save(XML_Helper* helper) const
 {
     bool retval = true;
 
@@ -202,13 +266,6 @@ ArmyProto * Armyset::lookupArmyByType(guint32 army_type_id) const
   return NULL;
 }
 	
-bool Armyset::validateSize()
-{
-  if (size() == 0)
-    return false;
-  return true;
-}
-
 bool Armyset::validateHero()
 {
   bool found = false;
@@ -332,9 +389,6 @@ bool Armyset::validateArmyUnitNames()
 bool Armyset::validate()
 {
   bool valid = true;
-  valid = validateSize();
-  if (!valid)
-    return false;
   valid = validateHero();
   if (!valid)
     return false;
@@ -372,43 +426,62 @@ bool Armyset::validate()
 
   return valid;
 }
+
 class ArmysetLoader
 {
 public:
-    ArmysetLoader(std::string filename)
+    ArmysetLoader(std::string filename, bool &broken)
       {
 	armyset = NULL;
 	dir = File::get_dirname(filename);
+        file = File::get_basename(filename);
 	if (File::nameEndsWith(filename, Armyset::file_extension) == false)
 	  filename += Armyset::file_extension;
-	XML_Helper helper(filename, ios::in, false);
+        Tar_Helper t(filename, std::ios::in, broken);
+        if (broken)
+          return;
+        std::string lwafilename = 
+          t.getFirstFile(Armyset::file_extension, broken);
+        if (broken)
+          return;
+	XML_Helper helper(lwafilename, ios::in, false);
 	helper.registerTag(Armyset::d_tag, sigc::mem_fun((*this), &ArmysetLoader::load));
 	if (!helper.parse())
 	  {
-	    std::cerr << "Error, while loading an armyset. Armyset Name: ";
-	    std::cerr <<File::get_basename(File::get_dirname(filename)) <<std::endl <<std::flush;
+	    std::cerr << "Error, while loading an armyset. Armyset File: ";
+	    std::cerr << filename << std::endl <<std::flush;
 	    if (armyset != NULL)
 	      delete armyset;
 	    armyset = NULL;
 	  }
+        File::erase(lwafilename);
+        helper.close();
+        t.Close();
       };
     bool load(std::string tag, XML_Helper* helper)
       {
 	if (tag == Armyset::d_tag)
 	  {
 	    armyset = new Armyset(helper, dir);
+            armyset->setBaseName(file);
 	    return true;
 	  }
 	return false;
       };
     std::string dir;
+    std::string file;
     Armyset *armyset;
 };
+
 Armyset *Armyset::create(std::string filename)
 {
-  ArmysetLoader d(filename);
+  bool broken = false;
+  ArmysetLoader d(filename, broken);
+  if (broken)
+    return NULL;
   return d.armyset;
 }
+
 void Armyset::getFilenames(std::list<std::string> &files)
 {
   for (iterator it = begin(); it != end(); it++)
@@ -424,14 +497,40 @@ void Armyset::getFilenames(std::list<std::string> &files)
 	
 void Armyset::instantiateImages()
 {
+  uninstantiateImages();
+  bool broken = false;
+  Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
+  if (broken)
+    return;
   for (iterator it = begin(); it != end(); it++)
     (*it)->instantiateImages(this);
-  if (getShipImageName().empty() == false)
-    loadShipPic(getFile(getShipImageName()));
-  if (getStandardImageName().empty() == false)
-    loadStandardPic(getFile(getStandardImageName()));
-  if (getBagImageName().empty() == false)
-    loadBagPic(getFile(getBagImageName()));
+  std::string ship_filename = "";
+  std::string flag_filename = "";
+  std::string bag_filename = "";
+  if (getShipImageName().empty() == false && !broken)
+    ship_filename = t.getFile(getShipImageName() + ".png", broken);
+  if (getStandardImageName().empty() == false && !broken)
+    flag_filename = t.getFile(getStandardImageName() + ".png", broken);
+  if (getBagImageName().empty() == false && !broken)
+    bag_filename = t.getFile(getBagImageName() + ".png", broken);
+
+  if (!broken)
+    {
+      if (ship_filename.empty() == false)
+        loadShipPic(ship_filename);
+      if (flag_filename.empty() == false)
+        loadStandardPic(flag_filename);
+      if (bag_filename.empty() == false)
+        loadBagPic(bag_filename);
+    }
+
+  if (ship_filename.empty() == false)
+    File::erase(ship_filename);
+  if (flag_filename.empty() == false)
+    File::erase(flag_filename);
+  if (bag_filename.empty() == false)
+    File::erase(bag_filename);
+  t.Close();
 }
 
 void Armyset::uninstantiateImages()
@@ -471,25 +570,25 @@ void Armyset::loadStandardPic(std::string image_filename)
   setStandardMask(half[1]);
 }
 
-std::string Armyset::getConfigurationFile()
+std::string Armyset::getConfigurationFile() const
 {
-  return getDirectory() + d_subdir + file_extension;
+  return getDirectory() + d_basename + file_extension;
 }
 
 std::list<std::string> Armyset::scanUserCollection()
 {
-  return File::scanFiles(File::getUserArmysetDir(), file_extension);
+  return File::scanForFiles(File::getUserArmysetDir(), file_extension);
 }
 
 std::list<std::string> Armyset::scanSystemCollection()
 {
-  std::list<std::string> retlist = File::scanFiles(File::getArmysetDir(), 
-						   file_extension);
+  std::list<std::string> retlist = File::scanForFiles(File::getArmysetDir(), 
+                                                      file_extension);
   if (retlist.empty())
     {
       std::cerr << "Couldn't find any armysets (*" << file_extension << 
-        ") in directories below: " << File::getArmysetDir() << std::endl;
-      std::cerr << "Please check the path settings in /etc/lordsawarrc or ~/.lordsawarrc" << std::endl;
+        ") in : " << File::getArmysetDir() << std::endl;
+      std::cerr << "Please check the path settings in ~/.lordsawarrc" << std::endl;
       std::cerr << "Exiting!" << std::endl;
       exit(-1);
     }
@@ -726,16 +825,76 @@ const ArmyProto *Armyset::getRandomAwardableAlly() const
 
 void Armyset::reload()
 {
-  ArmysetLoader d(getConfigurationFile());
-  if (d.armyset && d.armyset->validate())
+  bool broken = false;
+  ArmysetLoader d(getConfigurationFile(), broken);
+  if (!broken && d.armyset && d.armyset->validate())
     {
       //steal the values from d.armyset and then don't delete it.
       uninstantiateImages();
       for (iterator it = begin(); it != end(); it++)
         delete *it;
-      std::string subdir = d_subdir;
+      std::string basename = d_basename;
       *this = *d.armyset;
       instantiateImages();
-      d_subdir = subdir;
+      d_basename = basename;
     }
+}
+
+std::string Armyset::getFileFromConfigurationFile(std::string file)
+{
+  bool broken = false;
+  Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
+  if (broken == false)
+    {
+      std::string filename = t.getFile(file, broken);
+      t.Close();
+  
+      if (broken == false)
+        return filename;
+    }
+  return "";
+}
+
+bool Armyset::replaceFileInConfigurationFile(std::string file, std::string new_file)
+{
+  bool broken = false;
+  Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
+  if (broken == false)
+    {
+      broken = t.replaceFile(file, new_file);
+      t.Close();
+    }
+  return broken;
+}
+
+guint32 Armyset::calculate_preferred_tile_size() const
+{
+  guint32 tilesize = 0;
+  std::map<guint32, guint32> sizecounts;
+
+  if (d_ship)
+    sizecounts[d_ship->get_unscaled_width()]++;
+  if (d_standard)
+    sizecounts[d_standard->get_unscaled_width()]++;
+  if (d_bag)
+    sizecounts[d_bag->get_unscaled_width()]++;
+  for (const_iterator it = begin(); it != end(); it++)
+    {
+      ArmyProto *a = (*it);
+      sizecounts[a->getImage(Shield::NEUTRAL)->get_unscaled_width()]++;
+    }
+
+  guint32 maxcount = 0;
+  for (std::map<guint32, guint32>::iterator it = sizecounts.begin(); 
+       it != sizecounts.end(); it++)
+    {
+      if ((*it).second > maxcount)
+        {
+          maxcount = (*it).second;
+          tilesize = (*it).first;
+        }
+    }
+  if (tilesize == 0)
+    tilesize = DEFAULT_ARMY_TILE_SIZE;
+  return tilesize;
 }

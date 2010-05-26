@@ -133,13 +133,13 @@ lordsawar_city_editor_LDADD = \
                          @LIBINTL@ -L$(top_builddir)/src
 
 lordsawar_army_editor_LDADD = \
-			 libeditutil.la \
 			 libarmysetwindow.la \
                          $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
                          $(top_builddir)/src/liblordsawar.la \
                          $(SDL_LIBS) -ltar -lz \
                          $(GTKMM_LIBS) \
+			 libeditutil.la \
                          @LIBINTL@ -L$(top_builddir)/src
 
 lordsawar_tile_editor_LDADD = \

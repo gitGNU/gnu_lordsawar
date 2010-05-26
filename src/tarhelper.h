@@ -17,6 +17,7 @@ public:
     std::string getFile(std::string filename, bool &broken);
 
     std::string getFirstFile(bool &broken);
+    std::string getFirstFile(std::string extension, bool &broken);
 
     std::list<std::string> getFilenamesWithExtension(std::string ext);
 
