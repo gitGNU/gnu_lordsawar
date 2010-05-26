@@ -4,6 +4,8 @@
 	* fixed new shieldset/cityset/armyset to work in the editors.
 	* added a successful validation message to shield/city/armyset editors.
 	* added automagic tile size detection for the armyset editor.
+	* now renaming the city/shield/army set file inside the tar file when
+	copying files.
 
 2010-05-23  Ben Asselstine  <benasselstine@hushmail.com>
 

@@ -266,6 +266,7 @@ src/editor/tileset-flag-editor-dialog.cpp
 src/editor/tileset-selector-editor-dialog.cpp
 src/editor/editor-quit-dialog.cpp
 src/editor/editor-recover-dialog.cpp
+src/editor/tile-size-editor-dialog.cpp
 src/gui/city-info-tip.cpp
 src/gui/decorated.cpp
 src/gui/game-lobby-dialog.cpp
@@ -310,8 +311,6 @@ src/Commentator.cpp
 src/Commentator.h
 src/Sage.cpp
 src/Sage.h
-dat/army/default/default.lwa.in
-dat/army/bigdefault/bigdefault.lwa.in
 dat/tilesets/default/default.lwt.in
 dat/tilesets/bigdefault/bigdefault.lwt.in
 dat/tilesets/wesnoth/wesnoth.lwt.in
