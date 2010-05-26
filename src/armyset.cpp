@@ -898,3 +898,8 @@ guint32 Armyset::calculate_preferred_tile_size() const
     tilesize = DEFAULT_ARMY_TILE_SIZE;
   return tilesize;
 }
+
+bool Armyset::copy(std::string src, std::string dest)
+{
+  return Tar_Helper::copy(src, dest);
+}

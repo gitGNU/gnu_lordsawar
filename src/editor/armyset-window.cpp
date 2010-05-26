@@ -661,10 +661,8 @@ void ArmySetWindow::on_save_armyset_activated()
     {
       RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
       RecentlyEditedFileList::getInstance()->save();
-      int retval = File::copy (autosave, current_save_filename);
-      if (retval != 0)
-        success = false;
-      else
+      bool success = Armyset::copy (autosave, current_save_filename);
+      if (success == true)
         {
           needs_saving = false;
           update_window_title();
@@ -1858,7 +1856,7 @@ bool ArmySetWindow::load_armyset(std::string filename)
   std::string old_current_save_filename = current_save_filename;
   current_save_filename = filename;
   if (filename != autosave)
-    File::copy(current_save_filename, autosave);
+    Armyset::copy(current_save_filename, autosave);
   else
     {
       //go get the real name of the file

@@ -173,6 +173,7 @@ class Cityset : public sigc::trackable, public Set
 
 	static std::list<std::string> scanSystemCollection();
 	static std::list<std::string> scanUserCollection();
+        static bool copy(std::string src, std::string dest);
 
 	guint32 getCityTileWidth() {return d_city_tile_width;};
 	void setCityTileWidth(guint32 tiles) {d_city_tile_width = tiles;};

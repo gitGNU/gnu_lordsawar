@@ -214,6 +214,8 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	//! Return a list of shieldset basenames in the users personal collection.
 	static std::list<std::string> scanUserCollection();
 
+        static bool copy(std::string src, std::string dest);
+
     private:
 
 	//! Callback function to load Shield objects into the Shieldset.

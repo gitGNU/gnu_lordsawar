@@ -636,4 +636,9 @@ guint32 Cityset::calculate_preferred_tile_size() const
     tilesize = DEFAULT_CITY_TILE_SIZE;
   return tilesize;
 }
+
+bool Cityset::copy(std::string src, std::string dest)
+{
+  return Tar_Helper::copy(src, dest);
+}
 // End of file

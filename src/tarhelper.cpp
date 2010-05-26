@@ -306,3 +306,45 @@ bool Tar_Helper::replaceFile(std::string filename, std::string newfilename)
   return !broken;
 }
 
+bool Tar_Helper::copy(std::string oldfilename, std::string newfilename)
+{
+  bool broken = false;
+  Tar_Helper in(oldfilename, std::ios::in, broken);
+  if (broken)
+    return false;
+  Tar_Helper out(newfilename, std::ios::out, broken);
+  if (broken)
+    {
+      in.Close();
+      return false;
+    }
+  std::list<std::string> delfiles;
+  std::list<std::string> files = in.getFilenames();
+  for (std::list<std::string>::iterator i = files.begin(); i != files.end(); 
+       i++)
+    {
+      std::string filename = in.getFile (*i, broken);
+      if (broken)
+        break;
+      delfiles.push_back(filename);
+      bool success = false;
+      if (*i == File::get_basename(oldfilename, true))
+        success = out.saveFile(filename, File::get_basename(newfilename, true));
+      else
+        success = out.saveFile(filename, File::get_basename(filename, true));
+      if (success == false)
+        {
+          broken = true;
+          break;
+        }
+    }
+  for (std::list<std::string>::iterator i = delfiles.begin(); 
+       i != delfiles.end(); i++)
+    File::erase(*i);
+  in.Close();
+  out.Close();
+  if (broken)
+    return false;
+  return true;
+}
+

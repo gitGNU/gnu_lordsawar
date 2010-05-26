@@ -35,6 +35,8 @@ public:
     static std::string getFile(TAR *t, std::string filename, bool &broken, std::string tmpoutdir);
     static std::list<std::string> getFilenames(TAR *t);
     static bool saveFile(TAR *t, std::string filename, std::string destfile = "");
+    //copies a tar file to another place, renaming one of the files inside.
+    static bool copy(std::string filename, std::string newfilename);
 private:
 
     // DATA

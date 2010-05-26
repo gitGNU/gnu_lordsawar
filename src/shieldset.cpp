@@ -418,4 +418,9 @@ bool Shieldset::replaceFileInConfigurationFile(std::string file, std::string new
     }
   return broken;
 }
+
+bool Shieldset::copy(std::string src, std::string dest)
+{
+  return Tar_Helper::copy(src, dest);
+}
 //End of file

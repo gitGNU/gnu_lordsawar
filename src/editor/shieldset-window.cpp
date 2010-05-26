@@ -394,10 +394,8 @@ void ShieldSetWindow::on_save_shieldset_activated()
     {
       RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
       RecentlyEditedFileList::getInstance()->save();
-      int retval = File::copy (autosave, current_save_filename);
-      if (retval != 0)
-        success = false;
-      else
+      success = Shieldset::copy (autosave, current_save_filename);
+      if (success == true)
         {
           needs_saving = false;
           update_window_title();
@@ -485,7 +483,7 @@ bool ShieldSetWindow::load_shieldset(std::string filename)
   std::string old_current_save_filename = current_save_filename;
   current_save_filename = filename;
   if (filename != autosave)
-    File::copy(current_save_filename, autosave);
+    Shieldset::copy(current_save_filename, autosave);
   else
     {
       //go get the real name of the file

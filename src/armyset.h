@@ -273,6 +273,8 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	static void switchArmyset(Army *army, const Armyset *armyset);
 	static void switchArmyset(ArmyProdBase *army, const Armyset *armyset);
 	static void switchArmysetForRuinKeeper(Army *army, const Armyset *armyset);
+        static bool copy(std::string src, std::string dest);
+
 	const ArmyProto * getRandomRuinKeeper() const;
 	const ArmyProto *getRandomAwardableAlly() const;
 
