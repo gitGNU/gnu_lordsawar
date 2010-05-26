@@ -1,3 +1,10 @@
+2010-05-26  Ben Asselstine  <benasselstine@hushmail.com>
+
+	* the armyset configuration file is now a tar file.
+	* fixed new shieldset/cityset/armyset to work in the editors.
+	* added a successful validation message to shield/city/armyset editors.
+	* added automagic tile size detection for the armyset editor.
+
 2010-05-23  Ben Asselstine  <benasselstine@hushmail.com>
 
 	* the cityset configuration file is now a tar file.
