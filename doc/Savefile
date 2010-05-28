@@ -1,13 +1,18 @@
 Copyright (C) 2003, 2004, 2005 Ulf Lorenz
 Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-Copyright (C) 2007, 2009 Ben Asselstine
+Copyright (C) 2007, 2009, 2010 Ben Asselstine
 This document describes the format of a lordsawar save game. 
 
 
 The save game files are in uncompressed tar format. 
 The first file is the scenario file, which is an xml file.  It is this scenario file format that is described in this document.
-The rest of the files are in the tar file are: citysets, shieldsets, armysets, tilesets and their associated image (.png) files.
+The rest of the files are in the tar file are: 
+a .lwc file: a lordsawar cityset, 
+a .lws file: a lordsawar shieldset
+a .lwa file: a lordsawar armyset, 
+a .lwt file: a lordsawar tileset
 
+Each of these accompanying files is also an uncompressed tar file containing an xml file and associated .png image files.
 
 The scenario file is known as a "savegame" in this document.
 
@@ -53,6 +58,21 @@ The version of the savegame is encoded in the first opening "lordsawar" tag.
                     objects, and this value holds the next Id to assign.
         </d_curID>
     </counter>
+    <itemlist>
+      This is a list of item prototypes that can be used to make actual items 
+      on demand.  e.g. for a reward.
+      <itemproto>
+        <d_name> The name of the item </d_name>
+        <d_bonus> The capabilities this item has.  The format of this field
+                  is string based, and has strings of the form described in 
+                  ItemProto::Bonus of ItemProto.h.  An example value is:
+                  ItemProto::ADD1STR |  ItemPRoto::ADD2GOLDPERCITY
+        </d_bonus>
+        <d_uses_left> How many this item can be used.  Most items can't be
+                      explicitly used.
+        </d_uses_left>
+      </itemproto>
+    </itemlist>
     
     <playerlist>
         <d_active> the Id of the active player </d_active>
@@ -61,11 +81,10 @@ The version of the savegame is encoded in the first opening "lordsawar" tag.
             <d_id>      the Id of the player      	        </d_id>
             <d_name>    the name of the player                  </d_name>
             <d_immortal> (boolean) player lives on after losing all cities</d_immortal>
-            <d_color>   the rgb values for the player separated 
-                        by spaces; e.g. "255 0 152"                       
+            <d_color>   the hex value for the colour.  e.g. #FCFCFC
             </d_color>
             <d_armyset> Id of the player's armyset
-                        Lines up with <d_id> in army/<name>/<name>.xml
+                        Lines up with <d_id> in army/file.lwa->file.lwa
                                                                 </d_armyset>
             <d_gold>    the gold owned by the player            </d_gold>
             <d_dead>    true, if player is dead, false if not   </d_dead>
@@ -80,11 +99,36 @@ The version of the savegame is encoded in the first opening "lordsawar" tag.
             <d_maniac>  if d_type=1 (boolean) the ai razes all cities it occupies   </d_maniac>
             <d_upkeep>  number of gold pieces paid this turn for upkeep
                                                                 </d_upkeep>
+            <d_income>  number of gold pieces given to us in taxes </d_income>
             <d_fight_order> a space separated list of army type Ids that
                             determine the order in which armies fight
                             in battle.                          
                             These Ids line up with order of armies in
                             the armyset.                </d_fight_order>
+            <d_diplomatic_states>
+              If we're at peace (=1), war in the field (=2), or full war (=3).  
+              One numeric value for each other player (excluding us).  Values 
+              relate to the DiplomaticState enumeration in player.h.
+            </d_diplomatic_states>
+            <d_diplomatic_rank>
+              Where we are in the listing of diplomacy.  Lower values are 
+              better here.  Lowest is 1.  Maximum is the number of alive 
+              players.
+            </d_diplomatic_rank>
+            <d_diplomatic_title>  A textual representation of the diplomatic 
+                                  rank.
+            </d_diplomatic_title>
+            <d_diplomatic_proposals>
+              If we're offering peace, war in the field, or full war.  One
+              numeric value for each other player (excluding us).  Values 
+              relate to the DiplomaticProposal enumeration in player.h
+            </d_diplomatic_proposals>
+            <d_diplomatic_scores>
+               How bad we feel about each other player.  One numeric value for
+               every other player.  Lower is better.  (FIXME: confirm)
+            </d_diplomatic_scores>
+            <d_observable> Whether or not to show the movements of this player. 
+            </d_observable>
             <history>
                 The only tag common to all history types is the tag "type".
                 Everything else depends on the type of the history event. 
@@ -149,6 +193,45 @@ The version of the savegame is encoded in the first opening "lordsawar" tag.
             </history>
             <history>
                 <d_type>14</d_type> (player is vanquished)
+            </history>
+            <history>
+                <d_type>15</d_type> (player declares peace with another player)
+                <d_opponent_id>the player we're at peace with.</d_opponent_id>
+            </history>
+            <history>
+                <d_type>16</d_type> (player declares war with another player)
+                <d_opponent_id>the player we're at war with.</d_opponent_id>
+            </history>
+            <history>
+                <d_type>17</d_type> (player declares war via treachery)
+                <d_opponent_id>the player we've treacherously attacked.
+                </d_opponent_id>
+            </history>
+            <history>
+                <d_type>18</d_type> (player's hero finds allies)
+                <d_hero> id of the hero </d_hero>
+            </history>
+            <history>
+                <d_type>19</d_type> (player has ended a turn)
+            </history>
+            <history>
+                <d_type>20</d_type> (player's hero explores a ruin)
+                <d_hero> name of the hero </d_hero>
+                <d_ruin> id of the ruin searched </d_ruin>
+            </history>
+            <history>
+                <d_type>21</d_type> (hero has been told where a ruin is)
+                <d_hero> name of the hero </d_hero>
+                <d_hero> id of the ruin</d_hero>
+            </history>
+            <history>
+                <d_type>22</d_type> (hero has used an item)
+                <d_hero_name> name of the hero </d_hero_name>
+                <d_item_name> name of the item </d_item_name>
+                <d_item_bonus> what the item can do (ItemProto::Bonus) 
+                </d_item_bonus>
+                <d_opponent_id> id of the player we used it against 
+                </d_opponent_id>
             </history>
 
             <stacklist>
@@ -473,13 +556,56 @@ The version of the savegame is encoded in the first opening "lordsawar" tag.
             </action>
 
             <action>
-                <d_type>25</d_type> (.. vector army ..) 
+                <d_type>26</d_type> (.. vector army ..) 
                 <d_army_type > the id of the army type </d_army_type>
 		<d_x> the x position being vectored to </d_x>
                 <d_y> the y position being vectored to </d_y>
             </action>
 
-               
+            <action>
+                <d_type>27</d_type> (.. new diplomatic states ..)
+            </action>
+
+            <action>
+                <d_type>28</d_type> (.. new diplomatic proposals ..)
+            </action>
+
+            <action>
+                <d_type>29</d_type> (.. new diplomatic scores ..)
+            </action>
+
+            <action>
+                <d_type>30</d_type> (.. end a turn ..)
+            </action>
+
+            <action>
+                <d_type>31</d_type> (.. conquer a city ..)
+            </action>
+
+            <action>
+                <d_type>32</d_type> (.. recruit a hero ..)
+            </action>
+
+            <action>
+                <d_type>33</d_type> (.. rename a player ..)
+            </action>
+
+            <action>
+                <d_type>34</d_type> (.. city destitute, stop production ..)
+            </action>
+
+            <action>
+                <d_type>35</d_type> (.. initialize a turn ..)
+            </action>
+
+            <action>
+                <d_type>36</d_type> (.. loot a city ..)
+            </action>
+
+            <action>
+                <d_type>37</d_type> (.. use an item ..)
+            </action>
+
         </player>
 
         ...more players...
@@ -533,8 +659,12 @@ The version of the savegame is encoded in the first opening "lordsawar" tag.
             </d_y> 
             <d_owner>       Id of the city's owning player
             </d_owner>
-            <d_production>  The index of the current production slot
-            </d_production>
+            <d_active_production_slot>  The index of the current production 
+                                        slot, or -1
+            </d_active_production_slot>
+            <d_duration> the number of turns until the army units shows up, or
+                         if not producing, this value is -1.
+            </d_duration>
             <d_gold>        the amount of gold the city provides each turn
             </d_gold>
             <d_burnt>       true if the city has been razed
@@ -554,10 +684,14 @@ The version of the savegame is encoded in the first opening "lordsawar" tag.
 
             Now up to 4 armies appear.  These aren't armies like they appear
             in stacks.  These are army *templates* to be used to produce
-            new armies in cities.
-            <army>
-            </army>
-            ...more armies...
+            new armies in cities. armyprodbase stands for Army Production Base.
+            <slot>
+              <armyprodbase>
+              </armyprodbase>
+            </slot>
+            <slot/>
+            <slot/>
+            <slot/>
         </city>
 
         ...more cities...
