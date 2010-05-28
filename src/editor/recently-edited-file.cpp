@@ -98,6 +98,7 @@ RecentlyEditedShieldsetFile::RecentlyEditedShieldsetFile(XML_Helper *helper)
 	:RecentlyEditedFile(helper)
 {
   helper->getData(d_name, "name");
+  helper->getData(d_images_needed, "images_needed");
 }
 
 RecentlyEditedShieldsetFile::~RecentlyEditedShieldsetFile()
@@ -108,12 +109,14 @@ bool RecentlyEditedShieldsetFile::doSave(XML_Helper *helper) const
 {
   bool retval = true;
   retval &= helper->saveData("name", d_name);
+  retval &= helper->saveData("images_needed", d_images_needed);
   return retval;
 }
 
 bool RecentlyEditedShieldsetFile::fillData(Shieldset *shieldset)
 {
   d_name = shieldset->getName();
+  d_images_needed = shieldset->countEmptyImageNames();
   return true;
 }
 
@@ -129,6 +132,7 @@ RecentlyEditedTilesetFile::RecentlyEditedTilesetFile(XML_Helper *helper)
 	:RecentlyEditedFile(helper)
 {
   helper->getData(d_name, "name");
+  helper->getData(d_num_tiles, "num_tiles");
 }
 
 RecentlyEditedTilesetFile::~RecentlyEditedTilesetFile()
@@ -139,12 +143,14 @@ bool RecentlyEditedTilesetFile::doSave(XML_Helper *helper) const
 {
   bool retval = true;
   retval &= helper->saveData("name", d_name);
+  retval &= helper->saveData("num_tiles", d_num_tiles);
   return retval;
 }
 
 bool RecentlyEditedTilesetFile::fillData(Tileset *tileset)
 {
   d_name = tileset->getName();
+  d_num_tiles = tileset->size();
   return true;
 }
 
@@ -160,6 +166,7 @@ RecentlyEditedArmysetFile::RecentlyEditedArmysetFile(XML_Helper *helper)
 	:RecentlyEditedFile(helper)
 {
   helper->getData(d_name, "name");
+  helper->getData(d_num_armies, "num_armies");
 }
 
 RecentlyEditedArmysetFile::~RecentlyEditedArmysetFile()
@@ -170,12 +177,14 @@ bool RecentlyEditedArmysetFile::doSave(XML_Helper *helper) const
 {
   bool retval = true;
   retval &= helper->saveData("name", d_name);
+  retval &= helper->saveData("num_armies", d_num_armies);
   return retval;
 }
 
 bool RecentlyEditedArmysetFile::fillData(Armyset *armyset)
 {
   d_name = armyset->getName();
+  d_num_armies = armyset->size();
   return true;
 }
 
@@ -191,6 +200,7 @@ RecentlyEditedCitysetFile::RecentlyEditedCitysetFile(XML_Helper *helper)
 	:RecentlyEditedFile(helper)
 {
   helper->getData(d_name, "name");
+  helper->getData(d_images_needed, "images_needed");
 }
 
 RecentlyEditedCitysetFile::~RecentlyEditedCitysetFile()
@@ -201,12 +211,14 @@ bool RecentlyEditedCitysetFile::doSave(XML_Helper *helper) const
 {
   bool retval = true;
   retval &= helper->saveData("name", d_name);
+  retval &= helper->saveData("images_needed", d_images_needed);
   return retval;
 }
 
 bool RecentlyEditedCitysetFile::fillData(Cityset *cityset)
 {
   d_name = cityset->getName();
+  d_images_needed = cityset->countEmptyImageNames();
   return true;
 }
 

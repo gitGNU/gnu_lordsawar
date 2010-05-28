@@ -27,7 +27,8 @@
 class TileSetInfoDialog: public sigc::trackable
 {
  public:
-    TileSetInfoDialog(Tileset *tileset, std::string dir, bool readonly = false);
+    TileSetInfoDialog(Tileset *tileset, std::string dir,
+                        bool readonly = false, std::string title = "");
     ~TileSetInfoDialog();
 
     void set_parent_window(Gtk::Window &parent);
@@ -37,18 +38,18 @@ class TileSetInfoDialog: public sigc::trackable
  private:
     Gtk::Dialog* dialog;
     Tileset *d_tileset;
-    Gtk::SpinButton *id_spinbutton;
     Gtk::Entry *name_entry;
-    Gtk::Entry *subdir_entry;
-    Gtk::Button *accept_button;
-    Gtk::TextView *description_textview;
-    Gtk::Label *status_label;
-    Gtk::Label *dir_label;
     Gtk::TextView *copyright_textview;
     Gtk::TextView *license_textview;
+    Gtk::Entry *filename_entry;
+    Gtk::SpinButton *id_spinbutton;
+    Gtk::Button *accept_button;
+    Gtk::Label *status_label;
+    Gtk::TextView *description_textview;
+    Gtk::Label *dir_label;
 
     void on_name_changed();
-    void on_subdir_changed();
+    void on_filename_changed();
     void update_buttons();
 
     bool d_readonly;

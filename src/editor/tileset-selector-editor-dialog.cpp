@@ -42,12 +42,18 @@ TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Tileset *tileset)
     d_tileset = tileset;
     small_filename = "";
     if (d_tileset->getSmallSelectorFilename().empty() == false)
-      small_filename = 
-	d_tileset->getFile(d_tileset->getSmallSelectorFilename());
+      {
+        small_filename = 
+          d_tileset->getFileFromConfigurationFile(d_tileset->getSmallSelectorFilename() + ".png");
+        delfiles.push_back(small_filename);
+      }
     large_filename = "";
     if (d_tileset->getLargeSelectorFilename().empty() == false)
-      large_filename = 
-	d_tileset->getFile(d_tileset->getLargeSelectorFilename());
+      {
+        large_filename = 
+          d_tileset->getFileFromConfigurationFile(d_tileset->getLargeSelectorFilename() + ".png");
+        delfiles.push_back(large_filename);
+      }
 
     Gtk::Box *box;
     xml->get_widget("shieldset_box", box);
@@ -87,6 +93,21 @@ int TilesetSelectorEditorDialog::run()
     dialog->show_all();
     int response = dialog->run();
 
+    if (std::find(delfiles.begin(), delfiles.end(), small_filename)
+        == delfiles.end() && response == Gtk::RESPONSE_ACCEPT)
+      {
+        d_tileset->replaceFileInConfigurationFile(d_tileset->getSmallSelectorFilename()+".png", small_filename);
+        d_tileset->setSmallSelectorFilename(File::get_basename(small_filename));
+      }
+    if (std::find(delfiles.begin(), delfiles.end(), large_filename)
+        == delfiles.end() && response == Gtk::RESPONSE_ACCEPT)
+      {
+        d_tileset->replaceFileInConfigurationFile(d_tileset->getLargeSelectorFilename()+".png", large_filename);
+        d_tileset->setLargeSelectorFilename(File::get_basename(large_filename));
+      }
+    for (std::list<std::string>::iterator it = delfiles.begin(); 
+         it != delfiles.end(); it++)
+      File::erase(*it);
     return response;
 }
 
@@ -118,6 +139,7 @@ void TilesetSelectorEditorDialog::setup_shield_theme_combobox(Gtk::Box *box)
 void TilesetSelectorEditorDialog::shieldset_changed()
 {
 }
+
 void TilesetSelectorEditorDialog::on_image_chosen()
 {
   std::string selected_filename = selector_filechooserbutton->get_filename();
@@ -217,7 +239,6 @@ void TilesetSelectorEditorDialog::on_small_toggled()
   update_selector_panel();
 }
 
-
 void TilesetSelectorEditorDialog::update_selector_panel()
 {
   if (large_selector_radiobutton->get_active() == true)
@@ -233,9 +254,7 @@ void TilesetSelectorEditorDialog::update_selector_panel()
 	selector_filechooserbutton->set_filename (small_filename);
       else
 	clearSelector();
-
     }
-
 }
 
 void TilesetSelectorEditorDialog::on_heartbeat()

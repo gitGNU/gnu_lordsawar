@@ -185,9 +185,7 @@ void Shieldset::getFilenames(std::list<std::string> &files) const
 bool Shieldset::save(std::string filename, std::string extension) const
 {
   bool broken = false;
-  std::string goodfilename = filename;
-  if (File::nameEndsWith(filename, extension) == false)
-    goodfilename += "." + extension;
+  std::string goodfilename = File::add_ext_if_necessary(filename, extension);
   std::string tmpfile = "lw.XXXX";
   int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
   close (fd);
@@ -422,5 +420,19 @@ bool Shieldset::replaceFileInConfigurationFile(std::string file, std::string new
 bool Shieldset::copy(std::string src, std::string dest)
 {
   return Tar_Helper::copy(src, dest);
+}
+
+guint32 Shieldset::countEmptyImageNames() const
+{
+  guint32 count = 0;
+  for (Shieldset::const_iterator i = begin(); i != end(); i++)
+    {
+      for (std::list<ShieldStyle*>::const_iterator j = (*i)->begin(); j != (*i)->end(); j++)
+        {
+          if ((*j)->getImageName().empty() == true)
+            count++;
+        }
+    }
+  return count;
 }
 //End of file

@@ -130,9 +130,9 @@ class File
 
 	static std::string get_dirname(std::string path);
 
-	static std::list<std::string> scanFiles(std::string dir, std::string ext);
-
         static std::list<std::string> scanForFiles(std::string dir, std::string extension);
+
+        static std::string add_ext_if_necessary(std::string file, std::string ext);
 
         static char *sanify(const char *string);
 };

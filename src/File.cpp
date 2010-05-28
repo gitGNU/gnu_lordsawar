@@ -47,45 +47,6 @@
 
 namespace
 {
-    // returns a list of full paths of the immediate subdirs of path
-    std::list<std::string> get_immediate_subdirs(std::string path)
-    {
-	Glib::Dir dir(path);
-	std::list<std::string> dirlist;
-
-	for (Glib::Dir::iterator i = dir.begin(), end = dir.end();
-	     i != end; ++i)
-	{
-	    std::string entry = path + *i;
-	    if (Glib::file_test(entry, Glib::FILE_TEST_IS_DIR))
-		dirlist.push_back(entry);
-	}
-
-	return dirlist;
-    }
-
-    // returns a list of the XML file names in path with the ".xml" extension
-    // stripped
-    std::list<std::string> get_xml_files(std::string path, std::string ext, bool keep_ext)
-    {
-	std::list<std::string> retlist;
-	Glib::Dir dir(path);
-    
-	for (Glib::Dir::iterator i = dir.begin(), end = dir.end(); i != end; ++i)
-	{
-	    std::string entry = *i;
-	    std::string::size_type idx = entry.rfind(ext);
-	    if (idx != std::string::npos && 
-		idx == entry.length() - ext.length())
-	    {
-              if (keep_ext == false)
-		entry.replace(idx, ext.length(), "");  //substitute the ".xml" with ""
-		retlist.push_back(Glib::filename_to_utf8(path + entry));
-	    }
-	}
-	return retlist;
-    }
-
     std::list<std::string> get_files(std::string path, std::string ext)
     {
 	std::list<std::string> retlist;
@@ -101,23 +62,14 @@ namespace
           }
 	return retlist;
     }
-    
-    
-    // returns a list of the XML file names in the immediate subdirs of path
-    // with the ".xml" extension stripped
-    std::list<std::string> get_xml_files_in_immediate_subdirs(std::string path, std::string ext, bool keep_ext)
-    {
-	std::list<std::string> retlist, dirlist = get_immediate_subdirs(path);
-	for (std::list<std::string>::iterator i = dirlist.begin(),
-		 end = dirlist.end(); i != end; ++i)
-	{
-	    std::list<std::string> files = 
-	      get_xml_files(File::add_slash_if_necessary(*i), ext, keep_ext);
-	
-	    retlist.insert(retlist.end(), files.begin(), files.end());
-	}
-	return retlist;
-    }
+}
+
+std::string File::add_ext_if_necessary(std::string file, std::string ext)
+{
+  if (nameEndsWith(file, ext) == true)
+    return file;
+  else
+    return file + ext;
 }
 
 std::string File::add_slash_if_necessary(std::string dir)
@@ -314,10 +266,6 @@ std::string File::getUserArmysetDir()
   return dir;
 }
 
-std::list<std::string> File::scanFiles(std::string dir, std::string extension)
-{
-  return get_xml_files_in_immediate_subdirs(dir, extension, false);
-}
 std::list<std::string> File::scanForFiles(std::string dir, std::string extension)
 {
   return get_files (dir, extension);

@@ -21,6 +21,7 @@
 #include <sigc++/functors/mem_fun.h>
 
 #include "tileset-info-dialog.h"
+#include "tilesetlist.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -29,11 +30,9 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
-#include "tilesetlist.h"
 
 
-TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, std::string dir, 
-                                     bool readonly)
+TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, std::string file, bool readonly, std::string title)
 {
   d_tileset = tileset;
   d_readonly = readonly;
@@ -43,13 +42,12 @@ TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, std::string dir,
 				    + "/tileset-info-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    if (title != "")
+      dialog->set_title(title);
 
     xml->get_widget("accept_button", accept_button);
     xml->get_widget("status_label", status_label);
     xml->get_widget("dir_label", dir_label);
-    xml->get_widget("id_spinbutton", id_spinbutton);
-    id_spinbutton->set_value(tileset->getId());
-    id_spinbutton->set_sensitive(false);
 
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(tileset->getName());
@@ -57,38 +55,51 @@ TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, std::string dir,
       name_entry->signal_changed().connect
 	(sigc::mem_fun(this, &TileSetInfoDialog::on_name_changed));
     
-    xml->get_widget("subdir_entry", subdir_entry);
-    subdir_entry->set_text(tileset->getSubDir());
-    if (readonly == false)
-      subdir_entry->signal_changed().connect
-	(sigc::mem_fun(this, &TileSetInfoDialog::on_subdir_changed));
+    xml->get_widget("filename_entry", filename_entry);
+    if (File::nameEndsWith(file, Tileset::file_extension) == true)
+      filename_entry->set_text(File::get_basename(file, false));
+    else
+      {
+        guint32 num = 0;
+        std::string basename = Tilesetlist::getInstance()->findFreeBaseName(_("untitled"), 100, num);
+        filename_entry->set_text(basename);
 
+        std::string name = String::ucompose("%1 %2", _("Untitled"), num);
+        name_entry->set_text(name);
+      }
+    if (readonly == false)
+      filename_entry->signal_changed().connect
+	(sigc::mem_fun(this, &TileSetInfoDialog::on_filename_changed));
+
+    xml->get_widget("id_spinbutton", id_spinbutton);
+    id_spinbutton->set_value(tileset->getId());
+    id_spinbutton->set_sensitive(false);
+
+    xml->get_widget("copyright_textview", copyright_textview);
+    copyright_textview->get_buffer()->set_text(d_tileset->getCopyright());
+    xml->get_widget("license_textview", license_textview);
+    license_textview->get_buffer()->set_text(d_tileset->getLicense());
     xml->get_widget("description_textview", description_textview);
     description_textview->get_buffer()->set_text(tileset->getInfo());
-    xml->get_widget("copyright_textview", copyright_textview);
-    copyright_textview->get_buffer()->set_text(tileset->getCopyright());
-    xml->get_widget("license_textview", license_textview);
-    license_textview->get_buffer()->set_text(tileset->getLicense());
-    dir_label->set_text (dir);
+
+    dir_label->set_text (File::get_dirname(file));
     if (readonly)
-      subdir_entry->set_sensitive(false);
+      filename_entry->set_sensitive(false);
+
     update_buttons();
 }
 
-void TileSetInfoDialog::on_subdir_changed()
+void TileSetInfoDialog::on_filename_changed()
 {
-  std::string dir = File::getUserTilesetDir() + subdir_entry->get_text();
-  if (subdir_entry->get_text() != "")
-    dir_label->set_text(dir + "/");
-  else
-    dir_label->set_text(File::getUserTilesetDir() + "<subdir>/");
   update_buttons();
 }
+
 void TileSetInfoDialog::on_name_changed()
 {
   char *s = File::sanify(name_entry->get_text().c_str());
-  subdir_entry->set_text(s);
+  filename_entry->set_text(s);
   free (s);
+  update_buttons();
 }
 
 TileSetInfoDialog::~TileSetInfoDialog()
@@ -108,13 +119,13 @@ int TileSetInfoDialog::run()
 
     if (response == Gtk::RESPONSE_ACCEPT)	// accepted
     {
-      d_tileset->setInfo(description_textview->get_buffer()->get_text());
       d_tileset->setName(name_entry->get_text());
-      if (d_readonly == false)
-	d_tileset->setSubDir(subdir_entry->get_text());
       d_tileset->setId(int(id_spinbutton->get_value()));
+      if (d_readonly == false)
+	d_tileset->setBaseName(filename_entry->get_text());
       d_tileset->setCopyright(copyright_textview->get_buffer()->get_text());
       d_tileset->setLicense(license_textview->get_buffer()->get_text());
+      d_tileset->setInfo(description_textview->get_buffer()->get_text());
       return response;
     }
     return response;
@@ -128,29 +139,22 @@ void TileSetInfoDialog::update_buttons()
       return;
     }
 
-  std::string dir = File::getUserTilesetDir() + subdir_entry->get_text();
-  if (File::exists(dir) == true && subdir_entry->get_text() != "")
-    {
-      accept_button->set_sensitive(false);
-      
-      status_label->set_markup(String::ucompose("<b>%1</b>", 
-						_("That subdirectory is already in use.")));
-    }
-  else if (Tilesetlist::getInstance()->getTileset(subdir_entry->get_text()))
+  std::string dir = File::getUserTilesetDir() + filename_entry->get_text();
+  if (Tilesetlist::getInstance()->getTileset(filename_entry->get_text()))
     {
       accept_button->set_sensitive(false);
       status_label->set_markup(String::ucompose("<b>%1</b>", 
-						_("That subdirectory is already used in the system tileset collection.")));
+						_("That filename is already used.")));
     }
+  else if (filename_entry->get_text() == "" || name_entry->get_text() == "")
+    accept_button->set_sensitive(false);
   else if (Tilesetlist::getInstance()->contains(name_entry->get_text()) && 
            name_entry->get_text() != "")
     {
       status_label->set_markup(String::ucompose("<b>%1</b>", 
 						_("That name is already in use.")));
-      accept_button->set_sensitive(false);
+      accept_button->set_sensitive(true);
     }
-  else if (subdir_entry->get_text() == "" || name_entry->get_text() == "")
-    accept_button->set_sensitive(false);
   else
     {
       status_label->set_text("");

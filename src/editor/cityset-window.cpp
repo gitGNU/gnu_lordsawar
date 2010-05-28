@@ -148,10 +148,21 @@ CitySetWindow::CitySetWindow(std::string load_filename)
             if (r->getName() == "")
               m = String::ucompose(_("Do you want to recover %1?"),
                                    File::get_basename(r->getFileName(), true));
-            else
-              m = String::ucompose(_("Do you want to recover %1 (%2)?"),
-                                   File::get_basename(r->getFileName(), true),
-                                   r->getName());
+            else if (r->getName() != "" && r->getImagesNeeded() > 0)
+              {
+                m = String::ucompose
+                  (_("Do you want to recover %1 (%2, %3 more images needed)?"),
+                                         File::get_basename(r->getFileName(), 
+                                                            true),
+                                         r->getName(),
+                                         r->getImagesNeeded());
+              }
+            else if (r->getName() != "" && r->getImagesNeeded() == 0)
+              {
+                m = String::ucompose(_("Do you want to recover %1 (%2)?"),
+                                     File::get_basename(r->getFileName(), true),
+                                     r->getName());
+              }
           }
         EditorRecoverDialog d(m);
         int response = d.run();
@@ -608,6 +619,7 @@ void CitySetWindow::on_change_citypics_clicked()
   if (d_cityset->getCitiesFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getCitiesFilename() +".png");
   ImageEditorDialog d(filename, MAX_PLAYERS + 1);
+  d.set_parent_window(*window);
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -632,6 +644,7 @@ void CitySetWindow::on_change_razedcitypics_clicked()
   if (d_cityset->getRazedCitiesFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getRazedCitiesFilename() +".png");
   ImageEditorDialog d(filename, MAX_PLAYERS);
+  d.set_parent_window(*window);
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -655,6 +668,7 @@ void CitySetWindow::on_change_portpic_clicked()
   if (d_cityset->getPortFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getPortFilename() +".png");
   ImageEditorDialog d(filename, 1);
+  d.set_parent_window(*window);
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -677,6 +691,7 @@ void CitySetWindow::on_change_signpostpic_clicked()
   if (d_cityset->getSignpostFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getSignpostFilename() +".png");
   ImageEditorDialog d(filename, 1);
+  d.set_parent_window(*window);
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -701,6 +716,7 @@ void CitySetWindow::on_change_ruinpics_clicked()
   if (d_cityset->getRuinsFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getRuinsFilename() +".png");
   ImageEditorDialog d(filename, RUIN_TYPES);
+  d.set_parent_window(*window);
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -724,6 +740,7 @@ void CitySetWindow::on_change_templepic_clicked()
   if (d_cityset->getTemplesFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getTemplesFilename() +".png");
   ImageEditorDialog d(filename, TEMPLE_TYPES);
+  d.set_parent_window(*window);
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -747,6 +764,7 @@ void CitySetWindow::on_change_towerpics_clicked()
   if (d_cityset->getTowersFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getTowersFilename() +".png");
   ImageEditorDialog d(filename, MAX_PLAYERS);
+  d.set_parent_window(*window);
   int response = d.run();
   if (filename != "")
     File::erase(filename);

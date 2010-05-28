@@ -1,6 +1,6 @@
 // Copyright (C) 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2002, 2003, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #include <algorithm>
 #include "File.h"
 #include "tileset.h"
+#include "tarhelper.h"
 
 std::string Tile::d_tag = "tile";
 
@@ -61,11 +62,13 @@ bool Tile::save(XML_Helper *helper) const
 
   return retval;
 }
-    
+
 Tile::~Tile()
 {
   for (iterator it = begin(); it != end(); it++)
       delete *it;
+  if (d_smalltile)
+    delete d_smalltile;
 }
 
 void Tile::setTypeByIndex(int idx)
@@ -235,13 +238,21 @@ void Tile::uninstantiateImages()
 
 void Tile::instantiateImages(int tilesize, Tileset *ts)
 {
+  bool broken = false;
+  Tar_Helper t(ts->getConfigurationFile(), std::ios::in, broken);
+  if (broken)
+    return;
   for (iterator it = begin(); it != end(); it++)
     {
       std::string file = "";
       if ((*it)->getName().empty() == false)
-	file = ts->getFile((*it)->getName());
-      (*it)->instantiateImages(tilesize, file);
+	file = t.getFile((*it)->getName() + ".png", broken);
+      if (!broken)
+        (*it)->instantiateImages(tilesize, file);
+      if (file.empty() == false)
+        File::erase(file);
     }
+  t.Close();
 
 }
 // End of file

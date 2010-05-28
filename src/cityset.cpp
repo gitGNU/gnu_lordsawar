@@ -175,9 +175,7 @@ void Cityset::getFilenames(std::list<std::string> &files)
 bool Cityset::save(std::string filename, std::string extension) const
 {
   bool broken = false;
-  std::string goodfilename = filename;
-  if (File::nameEndsWith(filename, extension) == false)
-    goodfilename += "." + extension;
+  std::string goodfilename = File::add_ext_if_necessary(filename, extension);
   std::string tmpfile = "lw.XXXX";
   int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
   close (fd);
@@ -640,5 +638,25 @@ guint32 Cityset::calculate_preferred_tile_size() const
 bool Cityset::copy(std::string src, std::string dest)
 {
   return Tar_Helper::copy(src, dest);
+}
+
+guint32 Cityset::countEmptyImageNames() const
+{
+  guint32 count = 0;
+  if (d_cities_filename.empty() == true)
+    count++;
+  if (d_razedcities_filename.empty() == true)
+    count++;
+  if (d_port_filename.empty() == true)
+    count++;
+  if (d_signpost_filename.empty() == true)
+    count++;
+  if (d_ruins_filename.empty() == true)
+    count++;
+  if (d_temples_filename.empty() == true)
+    count++;
+  if (d_towers_filename.empty() == true)
+    count++;
+  return count;
 }
 // End of file

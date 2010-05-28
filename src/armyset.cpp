@@ -96,9 +96,7 @@ bool Armyset::loadArmyProto(string tag, XML_Helper* helper)
 bool Armyset::save(std::string filename, std::string extension) const
 {
   bool broken = false;
-  std::string goodfilename = filename;
-  if (File::nameEndsWith(filename, extension) == false)
-    goodfilename += "." + extension;
+  std::string goodfilename = File::add_ext_if_necessary(filename, extension);
   std::string tmpfile = "lw.XXXX";
   int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
   close (fd);

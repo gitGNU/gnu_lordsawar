@@ -328,7 +328,7 @@ bool GameMap::save(XML_Helper* helper) const
     retval &= helper->openTag(GameMap::d_tag);
     retval &= helper->saveData("width", s_width);
     retval &= helper->saveData("height", s_height);
-    retval &= helper->saveData("tileset", d_tileSet->getSubDir());
+    retval &= helper->saveData("tileset", d_tileSet->getBaseName());
     retval &= helper->saveData("shieldset", d_shieldSet->getBaseName());
     retval &= helper->saveData("cityset", d_citySet->getBaseName());
     retval &= helper->saveData("types", types.str());

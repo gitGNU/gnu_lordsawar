@@ -83,16 +83,19 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 	 */
 	Tileset *getTileset(guint32 id) const;
 
+        std::string findFreeBaseName(std::string basename, guint32 max, guint32 &num) const;
+
 	// Methods that operate on the class data and modify the class.
 
 	//! Add a tileset to the list.  Use this instead of push_back.
-	void add(Tileset *tileset);
+	void add(Tileset *tileset, std::string file);
 
 	//! Destroy all of the tileset images in this list.
 	void uninstantiateImages();
 
 	//! Load the images for all tilesets in this list.
 	void instantiateImages();
+
 
 	//! Add the given tileset to the list, and copy files into place.
 	/**

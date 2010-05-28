@@ -194,6 +194,7 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 
         std::string getFileFromConfigurationFile(std::string file);
         bool replaceFileInConfigurationFile(std::string file, std::string new_file);
+        guint32 countEmptyImageNames() const;
 
 	// Methods that operate on the class data and also modify the class.
 

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #include "File.h"
 #include "GraphicsCache.h"
 #include "timing.h"
+#include "recently-edited-file-list.h"
 
 #include "tileset-window.h"
 
@@ -47,6 +48,8 @@ int main(int argc, char* argv[])
 
     // init GUI stuff
     g_set_application_name(_("LordsAWar! Tileset Editor"));
+
+    RecentlyEditedFileList::getInstance()->loadFromFile();
 
     TileSetWindow *tileset_window = NULL;
     try

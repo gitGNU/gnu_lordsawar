@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -48,6 +48,7 @@ class TilesetExplosionPictureEditorDialog: public sigc::trackable
     Gtk::Image *scene_image;
     Tileset *d_tileset;
     std::string selected_filename;
+    std::list<std::string> delfiles;
 
     void on_image_chosen();
     void on_large_toggled();

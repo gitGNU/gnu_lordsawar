@@ -45,9 +45,11 @@ class TileSetWindow: public sigc::trackable
  private:
     Gtk::Window* window;
     std::string current_save_filename;
+    std::string autosave; //filename
     Tileset *d_tileset; //current tileset
     Tile *d_tile; //current tile
     bool needs_saving;
+    bool inhibit_needs_saving;
     Gtk::Frame *tilestyleset_frame;
     Gtk::Frame *tilestyle_frame;
     Gtk::Entry *name_entry;
@@ -81,8 +83,7 @@ class TileSetWindow: public sigc::trackable
     Gtk::MenuItem *help_about_menuitem;
     Gtk::ComboBoxText *tilestyle_combobox;
     Gtk::Image *tilestyle_image;
-    Gtk::FileChooserButton *image_filechooser_button;
-    Gtk::Button *refresh_button;
+    Gtk::Button *image_button;
 
     std::vector<PixMask* > tilestyle_standard_images;
     std::vector<PixMask* > tilestyle_images;
@@ -103,10 +104,10 @@ class TileSetWindow: public sigc::trackable
     class TileStyleSetsColumns: public Gtk::TreeModelColumnRecord {
     public:
 	TileStyleSetsColumns() 
-        { add(name); add(subdir); add(tilestyleset);}
+        { add(name); add(bname); add(tilestyleset);}
 	
 	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<Glib::ustring> subdir;
+	Gtk::TreeModelColumn<Glib::ustring> bname;
 	Gtk::TreeModelColumn<TileStyleSet *> tilestyleset;
     };
     const TileStyleSetsColumns tilestylesets_columns;
@@ -128,8 +129,6 @@ class TileSetWindow: public sigc::trackable
     Tile * get_selected_tile ();
     TileStyleSet * get_selected_tilestyleset ();
     TileStyle * get_selected_tilestyle ();
-
-    bool inhibit_image_change;
 
     bool on_delete_event(GdkEventAny *e);
 
@@ -182,9 +181,8 @@ class TileSetWindow: public sigc::trackable
     void on_remove_tile_clicked();
     void on_add_tilestyleset_clicked();
     void on_remove_tilestyleset_clicked();
-    void on_refresh_clicked();
 
-    void load_tileset(std::string filename);
+    bool load_tileset(std::string filename);
     void update_window_title();
 
 };

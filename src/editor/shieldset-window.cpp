@@ -135,10 +135,16 @@ ShieldSetWindow::ShieldSetWindow(std::string load_filename)
             if (r->getName() == "")
               m = String::ucompose(_("Do you want to recover %1?"),
                                    File::get_basename(r->getFileName(), true));
-            else
+            else if (r->getName() != "" & r->getImagesNeeded() == 0)
               m = String::ucompose(_("Do you want to recover %1 (%2)?"),
                                    File::get_basename(r->getFileName(), true),
                                    r->getName());
+            else if (r->getName() != "" && r->getImagesNeeded() > 0)
+              m = String::ucompose
+                (_("Do you want to recover %1 (%2, %3 images needed)?"),
+                 File::get_basename(r->getFileName(), true),
+                 r->getName(),
+                 r->getImagesNeeded());
           }
         EditorRecoverDialog d(m);
         int response = d.run();

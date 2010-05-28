@@ -1,6 +1,6 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2004, 2005, 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -40,14 +40,11 @@ class XML_Helper;
  * Tile and TileStyle objects.  It is implemented as a singleton because many 
  * classes use it for looking up Tile and TileStyle objects.
  * 
- * Tileset objects are often referred to by their subdirectory 
- * (Tileset::d_subdir).
+ * Tileset objects are often referred to by their base name 
+ * (Tileset::d_basename).
  *
  * Tileset objects reside on disk in the tilesets/ directory, each of which is
- * inside it's own directory.
- *
- * The tileset configuration file is a same named XML file inside the Tileset's
- * directory.  E.g. tilesets/${Tileset::d_subdir}/${Tileset::d_subdir}.lwt.
+ * it's own .lwt file.
  */
 class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 {
@@ -93,8 +90,8 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 */
         guint32 getId() const {return d_id;}
 
-	//! Return the subdirectory of this Tileset.
-        std::string getSubDir() const {return d_subdir;}
+	//! Return the basename of this Tileset.
+        std::string getBaseName() const {return d_basename;}
 
         //! Returns the name of the tileset.
         std::string getName() const {return _(d_name.c_str());}
@@ -178,8 +175,8 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 
 	// Set Methods
 
-	//! Set the subdirectory of where this Tileset resides on disk.
-        void setSubDir(std::string dir);
+	//! Set the basename of where this Tileset resides on disk.
+        void setBaseName(std::string dir);
 
 	//! Set the unique identifier for this tileset.
 	/**
@@ -267,6 +264,8 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	//! Sets the number of animation frames in the small selector.
 	void setNumberOfSmallSelectorFrames(guint32 s) {smallselector.reserve(s);smallselectormask.reserve(s); number_of_small_selector_frames = s;};
 
+        std::string getFileFromConfigurationFile(std::string file);
+        bool replaceFileInConfigurationFile(std::string file, std::string new_file);
 
 	//Methods that operate on class data and modify the class data.
 
@@ -308,6 +307,8 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 */
 	bool save(XML_Helper *helper) const;
 
+        bool save(std::string filename, std::string extension) const;
+
 	//! Get a unique tile style id among all tile syles in this tileset.
 	int getFreeTileStyleId() const;
 
@@ -317,6 +318,8 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	//! Check to see if this tileset is suitable for use within the game.
 	bool validate() const;
 
+        //! Determine the most common tile size in the graphic files.
+        guint32 calculate_preferred_tile_size() const;
 	  
 	// Static Methods
 
@@ -326,11 +329,14 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	//! Create a tileset from the given tileset configuration file.
 	static Tileset *create(std::string file);
 
-	//! Return a list of tileset subdirs in the user's personal collection.
+	//! Return a list of tileset basenames in the user's personal collection.
 	static std::list<std::string> scanUserCollection();
 
-	//! Return a list of tileset subdirs in the system collection.
+	//! Return a list of tileset basenames in the system collection.
 	static std::list<std::string> scanSystemCollection();
+
+        //! Copy a tileset file from one place to another.
+        static bool copy(std::string src, std::string dest);
 	
     private:
         //! Callback to load Tile objects into the Tileset.
@@ -381,13 +387,13 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 */
         guint32 d_tileSize;
 
-	//! The subdirectory of the Tileset.
+	//! The base name of the Tileset.
 	/**
-	 * This is the name of the subdirectory that the Tileset files are
+	 * This is the base name of the file that the Tileset files are
 	 * residing in.  It does not contain a path (e.g. no slashes).
-	 * Tileset directories sit in the tileset/ directory.
+	 * Tileset files sit in the tileset/ directory.
 	 */
-        std::string d_subdir;
+        std::string d_basename;
 
 	//! The basename of the small selector image.
 	/**

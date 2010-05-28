@@ -589,10 +589,7 @@ std::string GameScenario::getComment(bool translate) const
 bool GameScenario::saveGame(string filename, string extension) const
 {
   bool retval = true;
-  string goodfilename=filename;
-
-  if (File::nameEndsWith(filename, extension) == false)
-    goodfilename += "." + extension;
+  string goodfilename = File::add_ext_if_necessary(filename, extension);
 
   std::string tmpfile = "lw.XXXX";
   int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");

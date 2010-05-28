@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -48,6 +48,7 @@ class TilesetFlagEditorDialog: public sigc::trackable
     Gtk::Table *preview_table;
     Tileset *d_tileset;
     std::string selected_filename;
+    std::list<std::string> delfiles;
 
     void setup_shield_theme_combobox(Gtk::Box *box);
     void shieldset_changed();

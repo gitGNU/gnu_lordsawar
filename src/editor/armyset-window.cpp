@@ -311,12 +311,14 @@ ArmySetWindow::ArmySetWindow(std::string load_filename)
           {
             RecentlyEditedArmysetFile *r = dynamic_cast<RecentlyEditedArmysetFile*>(files.front());
             if (r->getName() == "")
-              m = String::ucompose(_("Do you want to recover %1?"),
-                                   File::get_basename(r->getFileName(), true));
-            else
-              m = String::ucompose(_("Do you want to recover %1 (%2)?"),
+              m = String::ucompose(_("Do you want to recover %1 (%2 armies)?"),
                                    File::get_basename(r->getFileName(), true),
-                                   r->getName());
+                                   r->getNumberOfArmies());
+            else
+              m = String::ucompose
+                (_("Do you want to recover %1 (%2, %3 armies)?"),
+                 File::get_basename(r->getFileName(), true),
+                 r->getName(), r->getNumberOfArmies());
           }
         EditorRecoverDialog d(m);
         int response = d.run();

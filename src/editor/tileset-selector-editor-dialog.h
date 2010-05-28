@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -50,6 +50,7 @@ class TilesetSelectorEditorDialog: public sigc::trackable
     Gtk::ComboBoxText *shield_theme_combobox;
     Gtk::Table *preview_table;
     Tileset *d_tileset;
+    std::list<std::string> delfiles;
 
     void setup_shield_theme_combobox(Gtk::Box *box);
     void shieldset_changed();

@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ class XML_Helper;
  * All of the TileStyles describe one of the many looks of a particular kind
  * of Tile.  e.g. `Forest'.
  * Every TileStyleSet belongs to a Tile.
- * The TileStyleSet images are located in on disk in the Tileset's directory.
+ * The TileStyleSet images are located in .lwt files in the Tileset's directory.
  */
 //! This class manages a set of TileStyle objects.
 class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
@@ -70,8 +70,8 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	 */
 	std::string getName() const {return d_name;}
 
-	//! Return the subdirectory of this Tilestyleset.
-        std::string getSubDir() const {return d_dir;};
+	//! Return the basename of this Tilestyleset.
+        std::string getBaseName() const {return d_basename;};
 
 
 	// Set Methods
@@ -79,8 +79,8 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	//! Set the name of this tilestyleset.
 	void setName(std::string name) {d_name = name;}
 
-	//! Set the subdirectory of where this Tilestyleset resides on disk.
-        void setSubDir(std::string dir) {d_dir = dir;};
+	//! Set the basename of where this Tilestyleset resides on disk.
+        void setBaseName(std::string bname) {d_basename = bname;};
 
 
 	//Methods that operate on the class data but do not modify the class.
@@ -123,11 +123,11 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	 */
         std::string d_name;
 
-	//! The directory of where the image file lives.
+	//! The basename of where the image file lives.
 	/**
 	 * @param This is a hack used for the tileset editor.
 	 */
-	std::string d_dir;
+	std::string d_basename;
 };
 
 #endif // TILESTYLESET_H

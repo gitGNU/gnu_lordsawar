@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #include "File.h"
 #include "GraphicsCache.h"
 #include "tile-preview-scene.h"
+#include "tarhelper.h"
 
 
 TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Tileset *tileset)
@@ -57,7 +58,10 @@ TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Tileset
     xml->get_widget("scene_image", scene_image);
     
     if (d_tileset->getExplosionFilename().empty() == false)
-      selected_filename = d_tileset->getFile(d_tileset->getExplosionFilename());
+      {
+        selected_filename = d_tileset->getFileFromConfigurationFile(d_tileset->getExplosionFilename() +".png");
+        delfiles.push_back(selected_filename);
+      }
     on_large_toggled();
 }
 
@@ -76,6 +80,17 @@ int TilesetExplosionPictureEditorDialog::run()
     dialog->show_all();
     int response = dialog->run();
 
+    if (std::find(delfiles.begin(), delfiles.end(), selected_filename)
+        == delfiles.end() && response == Gtk::RESPONSE_ACCEPT)
+      {
+        d_tileset->replaceFileInConfigurationFile(d_tileset->getExplosionFilename()+".png", selected_filename);
+        d_tileset->setExplosionFilename(File::get_basename(selected_filename));
+      }
+    else if (response == Gtk::RESPONSE_ACCEPT)
+      response = Gtk::RESPONSE_CANCEL;
+    for (std::list<std::string>::iterator it = delfiles.begin(); 
+         it != delfiles.end(); it++)
+      File::erase(*it);
     return response;
 }
 

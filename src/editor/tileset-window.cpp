@@ -48,6 +48,11 @@
 #include "File.h"
 #include "overviewmap.h"
 #include "GraphicsCache.h"
+#include "recently-edited-file.h"
+#include "recently-edited-file-list.h"
+#include "tile-size-editor-dialog.h"
+#include "editor-quit-dialog.h"
+#include "editor-recover-dialog.h"
 
 #include "ucompose.hpp"
 
@@ -56,7 +61,9 @@
 
 TileSetWindow::TileSetWindow(std::string load_filename)
 {
+  autosave = File::getSavePath() + "autosave" + Tileset::file_extension;
   needs_saving = false;
+  inhibit_needs_saving = false;
   d_tileset = NULL;
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/tileset-window.ui");
@@ -229,22 +236,16 @@ TileSetWindow::TileSetWindow(std::string load_filename)
       (sigc::mem_fun(this, &TileSetWindow::on_remove_tilestyleset_clicked));
     xml->get_widget("tilestyleset_frame", tilestyleset_frame);
     xml->get_widget("tilestyle_frame", tilestyle_frame);
-    xml->get_widget("image_filechooser_button", image_filechooser_button);
-    image_filechooser_button->signal_selection_changed().connect
+    xml->get_widget("image_button", image_button);
+    image_button->signal_clicked().connect
       (sigc::mem_fun(*this, &TileSetWindow::on_image_chosen));
-    xml->get_widget("refresh_button", refresh_button);
-    refresh_button->signal_clicked().connect
-      (sigc::mem_fun(this, &TileSetWindow::on_refresh_clicked));
-
-    Gtk::FileFilter sav_filter;
-    sav_filter.add_pattern("*.png");
-    image_filechooser_button->set_filter(sav_filter);
-    image_filechooser_button->set_current_folder (File::getUserTilesetDir());
 
     xml->get_widget("tilestyle_standard_image", tilestyle_standard_image);
     tilestyle_standard_images = 
       disassemble_row(File::getMiscFile("various/editor/tilestyles.png"), 17);
 
+    if (load_filename != "")
+      current_save_filename = load_filename;
     update_tile_panel();
     update_tilestyleset_panel();
     update_tilestyle_panel();
@@ -259,7 +260,36 @@ TileSetWindow::TileSetWindow(std::string load_filename)
     tile_smallmap_surface = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), 32, 32, 24);
     tile_smallmap_surface_gc = Gdk::GC::create(tile_smallmap_surface);
 
-    inhibit_image_change = false;
+    if (File::exists(autosave))
+      {
+        std::string m;
+        std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Tileset::file_extension);
+        if (files.size() == 0)
+          m = _("Do you want to recover the session?");
+        else
+          {
+            RecentlyEditedTilesetFile *r = dynamic_cast<RecentlyEditedTilesetFile*>(files.front());
+            if (r->getName() == "")
+              m = String::ucompose(_("Do you want to recover %1 (%2 tiles)?"),
+                                   File::get_basename(r->getFileName(), true),
+                                   r->getNumberOfTiles());
+            else
+              m = String::ucompose
+                (_("Do you want to recover %1 (%2, %3 tiles)?"),
+                                   File::get_basename(r->getFileName(), true),
+                                   r->getName(), r->getNumberOfTiles());
+          }
+        EditorRecoverDialog d(m);
+        int response = d.run();
+        d.hide();
+        //ask if we want to recover the autosave.
+        if (response == Gtk::RESPONSE_ACCEPT)
+          {
+            load_tileset (autosave);
+            return;
+          }
+      }
+
     if (load_filename.empty() == false)
       load_tileset(load_filename);
 }
@@ -281,13 +311,7 @@ TileSetWindow::update_tileset_menuitems()
     }
   else
     {
-      std::string file = d_tileset->getConfigurationFile();
-      if (File::exists(file) == false)
-	save_tileset_menuitem->set_sensitive(true);
-      else if (File::is_writable(file) == false)
-	save_tileset_menuitem->set_sensitive(false);
-      else
-	save_tileset_menuitem->set_sensitive(true);
+      save_tileset_menuitem->set_sensitive(true);
       save_as_menuitem->set_sensitive(true);
       army_unit_selector_menuitem->set_sensitive(true);
       edit_tileset_info_menuitem->set_sensitive(true);
@@ -374,23 +398,27 @@ int get_image_width (std::string filename)
 
 void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
 {
-  std::string subdir;
-  if (t->getSubDir() == "")
-    subdir = d_tileset->getSubDir();
-  else
-    subdir = t->getSubDir();
-  std::string n = d_tileset->getFile(t->getName());
+  if (t->getName() == "")
+    {
+      tilestyles_list->clear();
+      image_button->set_label(_("no image set"));
+      update_tilestyle_panel();
+      return;
+    }
+
+  std::string n = d_tileset->getFileFromConfigurationFile(t->getName() + ".png");
   int height = get_image_height (n);
   if (height)
     {
       d_tileset->setTileSize(height);
       TileStyleSet *set = get_selected_tilestyleset ();
-      set->instantiateImages(d_tileset->getTileSize(), 
-			     d_tileset->getFile(set->getName()));
+      set->instantiateImages(d_tileset->getTileSize(), n);
     }
-  inhibit_image_change = true;
-  image_filechooser_button->set_filename(n);
-  refresh_button->set_sensitive(true);
+  File::erase(n);
+  if (t->getName().empty() == false)
+    image_button->set_label(File::get_basename(t->getName() + ".png", true));
+  else
+    image_button->set_label(_("no image set"));
   //add the tilestyles to the tilestyles_treeview
   tilestyles_list->clear();
   for (unsigned int i = 0; i < t->size(); i++)
@@ -400,29 +428,16 @@ void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
 	String::ucompose("0x%1", Glib::ustring::format(std::hex, std::setfill(L'0'), std::setw(2), (*t)[i]->getId()));
       (*l)[tilestyles_columns.tilestyle] = (*t)[i];
     }
+  tilestyles_treeview->set_cursor (Gtk::TreePath ("0"));
 }
 
 void
 TileSetWindow::update_tilestyleset_panel()
 {
-  if (tilestylesets_treeview->get_selection()->get_selected() == 0)
-    {
-      //clear all values
-      tilestyleset_frame->set_sensitive(false);
-      if (d_tileset)
-	image_filechooser_button->set_current_folder(d_tileset->getDirectory());
-      else
-	image_filechooser_button->set_current_folder(File::getUserTilesetDir());
-      tilestyles_list->clear();
-      refresh_button->set_sensitive(false);
-      return;
-    }
   tilestyleset_frame->set_sensitive(true);
   TileStyleSet *t = get_selected_tilestyleset ();
-  if (t && t->getName() != "")
-    {
-      fill_tilestyleset_info(t);
-    }
+  if (t)
+    fill_tilestyleset_info(t);
 }
 
 void
@@ -431,9 +446,12 @@ TileSetWindow::update_tile_panel()
   Gdk::Color black("black");
   //if nothing selected in the treeview, then we don't show anything in
   //the tile panel
-  if (tiles_treeview->get_selection()->get_selected() == 0)
+  Tile *t = get_selected_tile ();
+      
+  if (t == NULL)
     {
       //clear all values
+      inhibit_needs_saving = true;
       tile_smallmap_image->clear();
       tile_vbox->set_sensitive(false);
       tile_type_combobox->set_active(0);
@@ -444,19 +462,17 @@ TileSetWindow::update_tile_panel()
       tile_smallmap_second_colorbutton->set_color(black);
       tile_smallmap_third_colorbutton->set_color(black);
       tilestylesets_list->clear();
+      inhibit_needs_saving = false;
       return;
     }
-  tile_vbox->set_sensitive(true);
-  Tile *t = get_selected_tile ();
 
-  if (t)
-    {
-      tile_smallmap_first_colorbutton->set_color(black);
-      tile_smallmap_second_colorbutton->set_color(black);
-      tile_smallmap_third_colorbutton->set_color(black);
-      fill_tile_info(t);
-    }
+  tile_vbox->set_sensitive(true);
+  tile_smallmap_first_colorbutton->set_color(black);
+  tile_smallmap_second_colorbutton->set_color(black);
+  tile_smallmap_third_colorbutton->set_color(black);
+  fill_tile_info(t);
 }
+
 TileSetWindow::~TileSetWindow()
 {
   tile_smallmap_surface.reset();
@@ -480,13 +496,13 @@ bool TileSetWindow::on_delete_event(GdkEventAny *e)
   return true;
 }
 
-
 void TileSetWindow::on_new_tileset_activated()
 {
   std::string name = "";
   int id = Tilesetlist::getNextAvailableId(0);
   Tileset *tileset = new Tileset(id, name);
-  TileSetInfoDialog d(tileset, File::getUserTilesetDir() + "<subdir>/", false);
+  TileSetInfoDialog d(tileset, File::getUserTilesetDir(), false,
+                      _("Make a New Tileset"));
   d.set_parent_window(*window);
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
@@ -497,12 +513,15 @@ void TileSetWindow::on_new_tileset_activated()
   if (d_tileset)
     delete d_tileset;
   d_tileset = tileset;
-  tiles_list->clear();
-
-  std::string dir = File::getUserTilesetDir() + d_tileset->getSubDir();
+  std::string dir = File::getUserTilesetDir();
   d_tileset->setDirectory(dir);
-  File::create_dir(dir);
   current_save_filename = d_tileset->getConfigurationFile();
+  RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
+  refl->updateEntry(current_save_filename);
+  refl->save();
+  d_tileset->setDirectory(File::get_dirname(autosave));
+  d_tileset->setBaseName(File::get_basename(autosave));
+  d_tileset->save(autosave, Tileset::file_extension);
 
   //copy images??
   update_tileset_buttons();
@@ -510,9 +529,6 @@ void TileSetWindow::on_new_tileset_activated()
   update_tileset_menuitems();
   update_tile_preview_menuitem();
 
-  XML_Helper helper(current_save_filename, std::ios::out, false);
-  d_tileset->save(&helper);
-  helper.close();
   needs_saving = true;
   update_window_title();
 }
@@ -529,7 +545,7 @@ void TileSetWindow::on_load_tileset_activated()
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
   chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
-      
+
   chooser.show_all();
   int res = chooser.run();
 
@@ -545,62 +561,93 @@ void TileSetWindow::on_load_tileset_activated()
 
 void TileSetWindow::on_save_as_activated()
 {
+  std::string orig_basename = d_tileset->getBaseName();
   guint32 orig_id = d_tileset->getId();
   d_tileset->setId(Tilesetlist::getNextAvailableId(orig_id));
-  TileSetInfoDialog d(d_tileset, File::getUserTilesetDir() + d_tileset->getSubDir() +"/", false);
+  TileSetInfoDialog d(d_tileset, File::getUserTilesetDir() + File::get_basename(current_save_filename, true), false,
+                        _("Save a Copy of a Tileset"));
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string new_subdir = "";
-      guint32 new_id = 0;
-      Tilesetlist::getInstance()->addToPersonalCollection(d_tileset, new_subdir, new_id);
-      save_tileset_menuitem->set_sensitive(true);
-      current_save_filename = d_tileset->getConfigurationFile();
-      needs_saving = false;
-      update_window_title();
+      std::string new_basename = d_tileset->getBaseName();
+      guint32 new_id = d_tileset->getId();
+      d_tileset->setId(orig_id);
+      d_tileset->setBaseName(orig_basename);
+      bool success = Tilesetlist::getInstance()->addToPersonalCollection(d_tileset, new_basename, new_id);
+      if (success)
+        {
+          save_tileset_menuitem->set_sensitive(true);
+          current_save_filename = d_tileset->getConfigurationFile();
+          RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
+          refl->updateEntry(current_save_filename);
+          refl->save();
+          load_tileset(current_save_filename);
+          needs_saving = false;
+          update_window_title();
+        }
+      else
+        {
+          std::string msg;
+          msg = _("Error!  Tileset could not be saved.");
+          Gtk::MessageDialog dialog(*window, msg);
+          dialog.run();
+          dialog.hide();
+        }
     }
   else
-    {
-      d_tileset->setId(orig_id);
-    }
+    d_tileset->setId(orig_id);
 }
 
 void TileSetWindow::on_save_tileset_activated()
 {
   if (current_save_filename.empty())
     current_save_filename = d_tileset->getConfigurationFile();
-  needs_saving = false;
-  
+
+  guint32 suggested_tile_size = d_tileset->calculate_preferred_tile_size();
+  if (suggested_tile_size != d_tileset->getTileSize())
+    {
+      TileSizeEditorDialog d(d_tileset->getTileSize(), suggested_tile_size);
+      int response = d.run();
+      if (response == Gtk::RESPONSE_ACCEPT)
+        d_tileset->setTileSize(d.get_selected_tilesize());
+    }
   //Reorder the tileset according to the treeview
   d_tileset->clear();
   for (Gtk::TreeIter i = tiles_list->children().begin(),
        end = tiles_list->children().end(); i != end; ++i) 
     d_tileset->push_back((*i)[tiles_columns.tile]);
-
-  XML_Helper helper(current_save_filename, std::ios::out, false);
-  d_tileset->save(&helper);
-  helper.close();
-  tileset_saved.emit(d_tileset->getId());
-  update_window_title();
+  bool success = d_tileset->save(autosave, Tileset::file_extension);
+  if (success)
+    {
+      RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
+      RecentlyEditedFileList::getInstance()->save();
+      success = Tileset::copy (autosave, current_save_filename);
+      if (success == true)
+        {
+          needs_saving = false;
+          update_window_title();
+          tileset_saved.emit(d_tileset->getId());
+        }
+    }
+  if (!success)
+    {
+      std::string msg;
+      msg = _("Error!  Tileset could not be saved.");
+      Gtk::MessageDialog dialog(*window, msg);
+      dialog.run();
+      dialog.hide();
+    }
 }
 
 bool TileSetWindow::quit()
 {
   if (needs_saving)
     {
-      Gtk::Dialog* dialog;
-      Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + 
-					 "/editor-quit-dialog.ui");
-      xml->get_widget("dialog", dialog);
-      Gtk::Button *save_button;
-      xml->get_widget("save_button", save_button);
-      save_button->set_sensitive(File::is_writable(d_tileset->getConfigurationFile()));
-      dialog->set_transient_for(*window);
-      int response = dialog->run();
-      dialog->hide();
-      delete dialog;
+      EditorQuitDialog d;
+      int response = d.run();
+      d.set_parent_window(*window);
+      d.hide();
       
       if (response == Gtk::RESPONSE_CANCEL) //we don't want to quit
 	return false;
@@ -612,6 +659,7 @@ bool TileSetWindow::quit()
     }
   else
     window->hide();
+  File::erase(autosave);
   return true;
 }
 
@@ -699,13 +747,15 @@ void TileSetWindow::fill_tilestylesets()
     {
       Gtk::TreeIter l = tilestylesets_list->append();
       (*l)[tilestylesets_columns.name] = (*it)->getName();
-      (*l)[tilestylesets_columns.subdir] = (*it)->getSubDir();
+      (*l)[tilestylesets_columns.bname] = (*it)->getBaseName();
       (*l)[tilestylesets_columns.tilestyleset] = *it;
     }
+  tilestylesets_treeview->set_cursor (Gtk::TreePath ("0"));
 }
 
 void TileSetWindow::fill_tile_info(Tile *tile)
 {
+  inhibit_needs_saving = true;
   tile_name_entry->set_text(tile->getName());
   tile_type_combobox->set_active(tile->getTypeIndex());
   tile_moves_spinbutton->set_value(tile->getMoves());
@@ -714,6 +764,7 @@ void TileSetWindow::fill_tile_info(Tile *tile)
   fill_tilestylesets();
   fill_colours(tile);
   fill_tile_smallmap(tile);
+  inhibit_needs_saving = false;
 }
 
 void TileSetWindow::on_add_tile_clicked()
@@ -771,8 +822,11 @@ void TileSetWindow::on_tile_first_color_changed()
       Tile *t = row[tiles_columns.tile];
       t->getSmallTile()->setColor(tile_smallmap_first_colorbutton->get_color());
       fill_tile_smallmap(t);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -787,8 +841,11 @@ void TileSetWindow::on_tile_second_color_changed()
       Tile *t = row[tiles_columns.tile];
       t->getSmallTile()->setSecondColor(tile_smallmap_second_colorbutton->get_color());
       fill_tile_smallmap(t);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -803,8 +860,11 @@ void TileSetWindow::on_tile_third_color_changed()
       Tile *t = row[tiles_columns.tile];
       t->getSmallTile()->setThirdColor(tile_smallmap_third_colorbutton->get_color());
       fill_tile_smallmap(t);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -848,8 +908,11 @@ void TileSetWindow::on_tile_pattern_changed()
       t->getSmallTile()->setPattern(pattern);
       fill_colours(t);
       fill_tile_smallmap(t);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -864,8 +927,11 @@ void TileSetWindow::on_tile_type_changed()
       Gtk::TreeModel::Row row = *iterrow;
       Tile *t = row[tiles_columns.tile];
       t->setTypeByIndex(idx);
-      needs_saving = true;
-      update_window_title();
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -880,8 +946,12 @@ void TileSetWindow::on_tile_name_changed()
       row[tiles_columns.name] = tile_name_entry->get_text();
       Tile *t = row[tiles_columns.tile];
       t->setName(tile_name_entry->get_text());
-      needs_saving = true;
-      update_window_title();
+
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
@@ -912,7 +982,7 @@ void TileSetWindow::fill_tile_smallmap(Tile *tile)
 void TileSetWindow::on_add_tilestyleset_clicked()
 {
 
-  Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
+  Gtk::FileChooserDialog chooser(*window, _("Choose an Image"),
 				 Gtk::FILE_CHOOSER_ACTION_OPEN);
   Gtk::FileFilter sav_filter;
   sav_filter.add_pattern("*.png");
@@ -941,7 +1011,7 @@ void TileSetWindow::on_add_tilestyleset_clicked()
       Tile *tile = get_selected_tile ();
       tile->push_back(t);
       tilestylesets_treeview->set_cursor (Gtk::TreePath (String::ucompose("%1", tile->size() - 1)));
-      image_filechooser_button->set_filename(filename);
+      image_button->set_label(File::get_basename(filename, true));
       needs_saving = true;
       update_window_title();
     }
@@ -1027,14 +1097,26 @@ void TileSetWindow::on_tilestyle_changed()
 
 void TileSetWindow::on_image_chosen()
 {
-  std::string selected_filename = image_filechooser_button->get_filename();
+  Gtk::FileChooserDialog chooser(*window, _("Choose an Image"),
+				 Gtk::FILE_CHOOSER_ACTION_OPEN);
+  Gtk::FileFilter sav_filter;
+  sav_filter.add_pattern("*.png");
+  chooser.set_filter(sav_filter);
+  chooser.set_current_folder(Glib::get_home_dir());
+
+  chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
+  chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
+
+  chooser.show_all();
+  int res = chooser.run();
+
+  if (res != Gtk::RESPONSE_ACCEPT)
+    return;
+
+  std::string selected_filename = chooser.get_filename();
   if (selected_filename.empty())
     return;
-  if (inhibit_image_change == true)
-    {
-      inhibit_image_change = false;
-      return;
-    }
 
   unsigned int height = get_image_height (selected_filename);
   unsigned int width = get_image_width (selected_filename);
@@ -1042,9 +1124,6 @@ void TileSetWindow::on_image_chosen()
     return;
 
   std::string file = File::get_basename(selected_filename);
-      
-  if (selected_filename != d_tileset->getFile(file))
-    File::copy (selected_filename, d_tileset->getFile(file));
 
   d_tileset->setTileSize(height);
 
@@ -1054,10 +1133,10 @@ void TileSetWindow::on_image_chosen()
   TileStyleSet *set = new TileStyleSet();
   Gtk::TreeIter i = tilestylesets_list->append();
 
-  set->setSubDir(d_tileset->getSubDir());
-  (*i)[tilestylesets_columns.subdir] = set->getSubDir();
+  set->setBaseName(d_tileset->getBaseName());
+  (*i)[tilestylesets_columns.bname] = set->getBaseName();
 
-
+  d_tileset->replaceFileInConfigurationFile(set->getName() + ".png", selected_filename);
   set->setName(File::get_basename(selected_filename));
   (*i)[tilestylesets_columns.name] = set->getName();
   (*i)[tilestylesets_columns.tilestyleset] = set;
@@ -1079,12 +1158,6 @@ void TileSetWindow::on_image_chosen()
       
   needs_saving = true;
   update_window_title();
-}
-
-void TileSetWindow::on_refresh_clicked()
-{
-  TileStyleSet *set = get_selected_tilestyleset ();
-  set->instantiateImages(d_tileset->getTileSize(), d_tileset->getFile(set->getName()));
 }
 
 void TileSetWindow::on_preview_tile_activated()
@@ -1109,56 +1182,78 @@ void TileSetWindow::on_preview_tile_activated()
       
 void TileSetWindow::on_roads_picture_activated()
 {
-  ImageEditorDialog d(d_tileset->getFile(d_tileset->getRoadsFilename()),
-		      ROAD_TYPES);
+  std::string filename = "";
+  if (d_tileset->getRoadsFilename().empty() == false)
+    filename = d_tileset->getFileFromConfigurationFile(d_tileset->getRoadsFilename() +".png");
+  ImageEditorDialog d(filename, ROAD_TYPES);
   d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
   d.set_parent_window(*window);
   int response = d.run();
+  if (filename.empty() == false)
+    File::erase(filename);
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string filename = d.get_selected_filename();
-      std::string name = File::get_basename(filename);
-      File::copy(filename, d_tileset->getFile(name));
-      d_tileset->setRoadsFilename(name);
-      needs_saving = true;
-      update_window_title();
+      if (d.get_selected_filename() != filename)
+        {
+          d_tileset->replaceFileInConfigurationFile(d_tileset->getRoadsFilename()+".png", d.get_selected_filename());
+
+          d_tileset->setRoadsFilename
+            (File::get_basename(d.get_selected_filename()));
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 
 void TileSetWindow::on_bridges_picture_activated()
 {
-  ImageEditorDialog d(d_tileset->getFile(d_tileset->getBridgesFilename()),
-		      BRIDGE_TYPES);
+  std::string filename = "";
+  if (d_tileset->getBridgesFilename().empty() == false)
+    filename = d_tileset->getFileFromConfigurationFile(d_tileset->getBridgesFilename() +".png");
+  ImageEditorDialog d(filename, BRIDGE_TYPES);
   d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
   d.set_parent_window(*window);
   int response = d.run();
+  if (filename.empty() == false)
+    File::erase(filename);
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string filename = d.get_selected_filename();
-      std::string name = File::get_basename(filename);
-      File::copy(filename, d_tileset->getFile(name));
-      d_tileset->setBridgesFilename(name);
-      needs_saving = true;
-      update_window_title();
+      if (d.get_selected_filename() != filename)
+        {
+          d_tileset->replaceFileInConfigurationFile(d_tileset->getBridgesFilename()+".png", d.get_selected_filename());
+
+          d_tileset->setBridgesFilename
+            (File::get_basename(d.get_selected_filename()));
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
 void TileSetWindow::on_fog_picture_activated()
 {
-  ImageEditorDialog d(d_tileset->getFile(d_tileset->getFogFilename()),
-		      FOG_TYPES);
+  std::string filename = "";
+  if (d_tileset->getFogFilename().empty() == false)
+    filename = d_tileset->getFileFromConfigurationFile(d_tileset->getFogFilename() +".png");
+  ImageEditorDialog d(filename, FOG_TYPES);
   d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
   d.set_parent_window(*window);
   int response = d.run();
+  if (filename.empty() == false)
+    File::erase(filename);
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string filename = d.get_selected_filename();
-      std::string name = File::get_basename(filename);
-      File::copy(filename, d_tileset->getFile(name));
-      d_tileset->setFogFilename(name);
-      needs_saving = true;
-      update_window_title();
+      if (d.get_selected_filename() != filename)
+        {
+          d_tileset->replaceFileInConfigurationFile(d_tileset->getFogFilename()+".png", d.get_selected_filename());
+
+          d_tileset->setFogFilename
+            (File::get_basename(d.get_selected_filename()));
+          needs_saving = true;
+          update_window_title();
+        }
     }
 }
+
 void TileSetWindow::on_flags_picture_activated()
 {
   TilesetFlagEditorDialog d(d_tileset);
@@ -1167,18 +1262,11 @@ void TileSetWindow::on_flags_picture_activated()
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string filename= d.get_selected_filename();
-
-      //copy the file, and set the image name
-      std::string name = File::get_basename(filename);
-      if (filename != d_tileset->getFile(name))
-	File::copy(filename, d_tileset->getFile(name));
-
-      d_tileset->setFlagsFilename(name);
       needs_saving = true;
       update_window_title();
     }
 }
+
 void TileSetWindow::on_army_unit_selector_activated()
 {
   TilesetSelectorEditorDialog d(d_tileset);
@@ -1186,20 +1274,6 @@ void TileSetWindow::on_army_unit_selector_activated()
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string small = d.get_small_selector_filename();
-      std::string large = d.get_large_selector_filename();
-
-      //copy the files, and set the image names
-      std::string name = File::get_basename(small);
-      if (small != d_tileset->getFile(name))
-	File::copy(small, d_tileset->getFile(name));
-      d_tileset->setSmallSelectorFilename(name);
-
-      name = File::get_basename(large);
-      if (large != d_tileset->getFile(name))
-	File::copy(large, d_tileset->getFile(name));
-      d_tileset->setLargeSelectorFilename(name);
-
       needs_saving = true;
       update_window_title();
     }
@@ -1212,39 +1286,51 @@ void TileSetWindow::on_explosion_picture_activated()
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string filename = d.get_selected_filename();
-      std::string name = File::get_basename(filename);
-      std::string dest =d_tileset->getFile(name);
-      if (filename != d_tileset->getFile(name))
-	{
-	  File::copy (filename, d_tileset->getFile(name));
-	  d_tileset->setExplosionFilename(name);
-	}
       needs_saving = true;
       update_window_title();
     }
 }
 
-void TileSetWindow::load_tileset(std::string filename)
+bool TileSetWindow::load_tileset(std::string filename)
 {
+  std::string old_current_save_filename = current_save_filename;
   current_save_filename = filename;
+  if (filename != autosave)
+    Tileset::copy(current_save_filename, autosave);
+  else
+    {
+      //go get the real name of the file
+      std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Tileset::file_extension);
+      if (files.size() > 0)
+        current_save_filename = files.front()->getFileName();
+    }
 
-  Tileset *tileset = Tileset::create(filename);
+  Tileset *tileset = Tileset::create(autosave);
   if (tileset == NULL)
     {
       std::string msg;
-      msg = "The tileset could not be loaded.";
+      msg = _("Error!  Tileset could not be loaded.");
       Gtk::MessageDialog dialog(*window, msg);
+      current_save_filename = old_current_save_filename;
       dialog.run();
       dialog.hide();
+      return false;
     }
-  tiles_list->clear();
+  if (File::nameEndsWith(current_save_filename, "/autosave" + Tileset::file_extension) == false)
+    {
+      RecentlyEditedFileList::getInstance()->addEntry(current_save_filename);
+      RecentlyEditedFileList::getInstance()->save();
+    }
   if (d_tileset)
     delete d_tileset;
   d_tileset = tileset;
 
-  d_tileset->setSubDir(File::get_basename(filename));
+  d_tileset->setBaseName(File::get_basename(autosave));
   d_tileset->instantiateImages();
+
+  tilestyles_list->clear();
+  tilestylesets_list->clear();
+  tiles_list->clear();
   for (Tileset::iterator i = d_tileset->begin(); i != d_tileset->end(); ++i)
     {
       Gtk::TreeIter l = tiles_list->append();
@@ -1262,6 +1348,7 @@ void TileSetWindow::load_tileset(std::string filename)
   update_tilestyle_panel();
   update_tile_preview_menuitem();
   update_window_title();
+  return true;
 }
 
 void TileSetWindow::update_window_title()

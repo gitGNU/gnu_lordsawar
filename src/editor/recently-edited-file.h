@@ -128,6 +128,8 @@ class RecentlyEditedShieldsetFile : public RecentlyEditedFile
 
         std::string getName() const {return d_name;};
 
+        guint32 getImagesNeeded() const {return d_images_needed;};
+
 	// Methods that operate on the class data and modify it.
 
 	//! Assign the shieldset info to the entry.
@@ -135,6 +137,8 @@ class RecentlyEditedShieldsetFile : public RecentlyEditedFile
 
     private:
 	std::string d_name;
+        //! The number of image filenames required to make this shieldset valid.
+        guint32 d_images_needed;
 };
 
 class RecentlyEditedTilesetFile : public RecentlyEditedFile
@@ -156,6 +160,7 @@ class RecentlyEditedTilesetFile : public RecentlyEditedFile
 	virtual bool doSave(XML_Helper *helper) const;
 
         std::string getName() const {return d_name;};
+        guint32 getNumberOfTiles() const {return d_num_tiles;};
 
 	// Methods that operate on the class data and modify it.
 
@@ -167,6 +172,9 @@ class RecentlyEditedTilesetFile : public RecentlyEditedFile
 	
 	//! The name of the tileset for this entry.
         std::string d_name;
+
+        //! The number of tiles in this tileset.
+        guint32 d_num_tiles;
 };
 
 class RecentlyEditedArmysetFile : public RecentlyEditedFile
@@ -188,6 +196,7 @@ class RecentlyEditedArmysetFile : public RecentlyEditedFile
 	virtual bool doSave(XML_Helper *helper) const;
 
         std::string getName() const {return d_name;};
+        guint32 getNumberOfArmies() const {return d_num_armies;};
 
 	// Methods that operate on the class data and modify it.
 
@@ -199,6 +208,9 @@ class RecentlyEditedArmysetFile : public RecentlyEditedFile
 	
 	//! The name of the armyset.
 	std::string d_name;
+
+        //! How many armies are in this armyset.
+        guint32 d_num_armies;
 };
 
 class RecentlyEditedCitysetFile : public RecentlyEditedFile
@@ -221,6 +233,8 @@ class RecentlyEditedCitysetFile : public RecentlyEditedFile
 
         std::string getName() const {return d_name;};
 
+        guint32 getImagesNeeded() const {return d_images_needed;};
+
 	// Methods that operate on the class data and modify it.
 
 	//! Assign the cityset info to the entry.
@@ -231,6 +245,9 @@ class RecentlyEditedCitysetFile : public RecentlyEditedFile
 	
 	//! The name of the cityset.
 	std::string d_name;
+
+        //! The number of image filenames required to make this cityset valid.
+        guint32 d_images_needed;
 };
 
 class RecentlyEditedMapFile : public RecentlyEditedFile

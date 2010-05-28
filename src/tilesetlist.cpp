@@ -120,11 +120,11 @@ Tileset *Tilesetlist::loadTileset(std::string name)
 	"' is malformed.  Skipping.\n";
         return NULL;
     }
-  if (d_tilesets.find(tileset->getSubDir()) != d_tilesets.end())
+  if (d_tilesets.find(tileset->getBaseName()) != d_tilesets.end())
     {
-      Tileset *t = (*d_tilesets.find(tileset->getSubDir())).second;
+      Tileset *t = (*d_tilesets.find(tileset->getBaseName())).second;
       cerr << "Error!  tileset: `" << tileset->getConfigurationFile() << 
-	"' shares a duplicate tileset subdir `" << t->getSubDir() << "' with `" << t->getConfigurationFile() 
+	"' shares a duplicate tileset subdir `" << t->getBaseName() << "' with `" << t->getConfigurationFile() 
 	<< "'.  Skipping." << endl;
       delete tileset;
       return NULL;
@@ -142,13 +142,13 @@ Tileset *Tilesetlist::loadTileset(std::string name)
   return tileset;
 }
 
-void Tilesetlist::add(Tileset *tileset)
+void Tilesetlist::add(Tileset *tileset, std::string file)
 {
-  std::string subdir = File::get_basename(tileset->getDirectory());
+  std::string basename = File::get_basename(file);
   push_back(tileset); 
-  tileset->setSubDir(subdir);
-  d_dirs[String::ucompose("%1 %2", tileset->getName(), tileset->getTileSize())] = subdir;
-  d_tilesets[subdir] = tileset;
+  tileset->setBaseName(basename);
+  d_dirs[String::ucompose("%1 %2", tileset->getName(), tileset->getTileSize())] = basename;
+  d_tilesets[basename] = tileset;
   d_tilesetids[tileset->getId()] = tileset;
 }
 
@@ -169,7 +169,7 @@ void Tilesetlist::loadTilesets(std::list<std::string> tilesets)
       Tileset *tileset = loadTileset(*i);
       if (!tileset)
 	continue;
-      add(tileset);
+      add(tileset, *i);
     }
 }
 
@@ -237,70 +237,65 @@ Tileset *Tilesetlist::getTileset(guint32 id) const
 Tileset *Tilesetlist::import(Tar_Helper *t, std::string f, bool &broken)
 {
   std::string filename = t->getFile(f, broken);
+  if (broken)
+    return NULL;
   Tileset *tileset = Tileset::create(filename);
   assert (tileset != NULL);
-  tileset->setSubDir(File::get_basename(f));
+  tileset->setBaseName(File::get_basename(f));
 
-  //extract all the files and remember where we extracted them
-  std::list<std::string> delfiles;
-  delfiles.push_back(filename);
-  std::list<std::string> files;
-  tileset->getFilenames(files);
-  for (std::list<std::string>::iterator i = files.begin(); i != files.end(); i++)
-    {
-      std::string file = t->getFile(*i + ".png", broken);
-      delfiles.push_back (file);
-    }
-
-  std::string subdir = "";
+  std::string basename = "";
   guint32 id = 0;
-  addToPersonalCollection(tileset, subdir, id);
+  addToPersonalCollection(tileset, basename, id);
 
-  for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
-    File::erase(*it);
   return tileset;
-
 }
 
-bool Tilesetlist::addToPersonalCollection(Tileset *tileset, std::string &new_subdir, guint32 &new_id)
+std::string Tilesetlist::findFreeBaseName(std::string basename, guint32 max, guint32 &num) const
+{
+  std::string new_basename;
+  for (unsigned int count = 1; count < max; count++)
+    {
+      new_basename = String::ucompose("%1%2", basename, count);
+      if (getTileset(new_basename) == NULL)
+        {
+          num = count;
+          break;
+        }
+      else
+        new_basename = "";
+    }
+  return new_basename;
+}
+
+bool Tilesetlist::addToPersonalCollection(Tileset *tileset, std::string &new_basename, guint32 &new_id)
 {
   //do we already have this one?
       
-  if (getTileset(tileset->getSubDir()) == getTileset(tileset->getId()) &&
-      getTileset(tileset->getSubDir()) != NULL)
+  if (getTileset(tileset->getBaseName()) == getTileset(tileset->getId()) 
+      && getTileset(tileset->getBaseName()) != NULL)
     {
       tileset->setDirectory(getTileset(tileset->getId())->getDirectory());
       return true;
     }
 
-  //if the subdir conflicts with any other subdir, then change it.
-  if (getTileset(tileset->getSubDir()) != NULL)
+  //if the basename conflicts with any other basename, then change it.
+  if (getTileset(tileset->getBaseName()) != NULL)
     {
-      if (new_subdir != "" && getTileset(new_subdir) == NULL)
-        tileset->setSubDir(new_subdir);
+      if (new_basename != "" && getTileset(new_basename) == NULL)
+        ;
       else
         {
-          bool found = false;
-          for (int count = 0; count < 100; count++)
-            {
-              new_subdir = String::ucompose("%1%2", tileset->getSubDir(), 
-                                            count);
-              if (getTileset(new_subdir) == NULL)
-                {
-                  found = true;
-                  break;
-                }
-            }
-          if (found == false)
+          guint32 num = 0;
+          std::string new_basename = findFreeBaseName(tileset->getBaseName(), 100, num);
+          if (new_basename == "")
             return false;
-          tileset->setSubDir(new_subdir);
         }
     }
-  else
-    new_subdir = tileset->getSubDir();
+  else if (new_basename == "")
+    new_basename = tileset->getBaseName();
 
   //if the id conflicts with any other id, then change it
-  if (getTileset(tileset->getId()))
+  if (getTileset(tileset->getId()) != NULL)
     {
       if (new_id != 0 && getTileset(new_id) == NULL)
         tileset->setId(new_id);
@@ -314,25 +309,14 @@ bool Tilesetlist::addToPersonalCollection(Tileset *tileset, std::string &new_sub
     new_id = tileset->getId();
 
   //make the directory where the tileset is going to live.
-  std::string directory = 
-    File::getUserTilesetDir() + tileset->getSubDir() + "/";
+  std::string file = File::getUserTilesetDir() + new_basename + Tileset::file_extension;
 
-  if (File::create_dir(directory) == false)
-    return false;
+  tileset->save(file, Tileset::file_extension);
 
-  //okay now we copy the image files into the new directory 
-  std::list<std::string> files;
-  tileset->getFilenames(files);
-  for (std::list<std::string>::iterator it = files.begin(); it != files.end();
-       it++)
-    File::copy(tileset->getFile(*it), directory + *it + ".png");
-
-  //save out the tileset file
-  tileset->setDirectory(directory);
-  XML_Helper helper(tileset->getConfigurationFile(), std::ios::out, false);
-  tileset->save(&helper);
-  helper.close();
-  add (tileset);
+  if (new_basename != tileset->getBaseName())
+    tileset->setBaseName(new_basename);
+  tileset->setDirectory(File::get_dirname(file));
+  add (tileset, file);
   return true;
 }
 

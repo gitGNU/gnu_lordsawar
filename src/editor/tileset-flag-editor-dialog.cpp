@@ -69,6 +69,17 @@ int TilesetFlagEditorDialog::run()
     dialog->show_all();
     int response = dialog->run();
 
+    if (std::find(delfiles.begin(), delfiles.end(), selected_filename)
+        == delfiles.end() && response == Gtk::RESPONSE_ACCEPT)
+      {
+        d_tileset->replaceFileInConfigurationFile(d_tileset->getFlagsFilename()+".png", selected_filename);
+        d_tileset->setFlagsFilename(File::get_basename(selected_filename));
+      }
+    else if (response == Gtk::RESPONSE_ACCEPT)
+      response = Gtk::RESPONSE_CANCEL;
+    for (std::list<std::string>::iterator it = delfiles.begin(); 
+         it != delfiles.end(); it++)
+      File::erase(*it);
     return response;
 }
 
@@ -180,13 +191,14 @@ bool TilesetFlagEditorDialog::loadFlag(std::string filename)
   return success;
 }
 
-
 void TilesetFlagEditorDialog::update_flag_panel()
 {
-  std::string filename = d_tileset->getFlagsFilename();
-  if (filename != "")
-    flag_filechooserbutton->set_filename
-      (d_tileset->getFile(filename));
+  if (d_tileset->getFlagsFilename() != "")
+    {
+      std::string filename = d_tileset->getFileFromConfigurationFile(d_tileset->getFlagsFilename() + ".png");
+      delfiles.push_back(filename);
+      flag_filechooserbutton->set_filename (filename);
+    }
 }
 
 void TilesetFlagEditorDialog::on_heartbeat()
