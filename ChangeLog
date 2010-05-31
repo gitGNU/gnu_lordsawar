@@ -1,3 +1,9 @@
+2010-05-31  Ben Asselstine  <benasselstine@hushmail.com>
+
+	* added default tile style pictures to the graphics cache.
+	* refactored tile style id stringification.
+	* added a hover indicator of tile style id in the tile preview dialog.
+
 2010-05-28  Ben Asselstine  <benasselstine@hushmail.com>
 
 	* the tileset configuration file is now a tar file.
