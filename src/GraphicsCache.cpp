@@ -85,6 +85,14 @@ struct NewLevelCacheItem
     PixMask* surface;
 };
 
+//the structure to store default tile style pictures in
+struct DefaultTileStyleCacheItem
+{
+    guint32 tilestyle_type;
+    guint32 tilesize;
+    PixMask* surface;
+};
+
 //the structure to store temples in
 struct TempleCacheItem
 {
@@ -288,6 +296,7 @@ GraphicsCache::GraphicsCache()
     loadMoveBonusPics();
     loadMedalPics();
     loadNewLevelPics();
+    loadDefaultTileStylePics();
 
     d_smallruinedcity = getMiscPicture("smallruinedcity.png");
     d_smallhero = getMiscPicture("hero.png");
@@ -424,6 +433,34 @@ PixMask* GraphicsCache::getShipPic(const Player* p)
     // We are still here, so the graphic is not in the cache. addShipPic calls
     // checkPictures on its own, so we can simply return the surface
     myitem = addShipPic(p);
+
+    return myitem->surface;
+}
+
+PixMask* GraphicsCache::getDefaultTileStylePic(guint32 type, guint32 size)
+{
+    debug("getting default tile style pic " <type)
+    std::list<DefaultTileStyleCacheItem*>::iterator it;
+    DefaultTileStyleCacheItem* myitem;
+    for (it = d_defaulttilestylelist.begin(); 
+         it != d_defaulttilestylelist.end(); it++)
+    {
+        if ((*it)->tilestyle_type == type &&
+            (*it)->tilesize == size)
+        {
+            myitem = (*it);
+            
+            // put the item on the last place (==last touched)
+            d_defaulttilestylelist.erase(it);
+            d_defaulttilestylelist.push_back(myitem);
+            
+            return myitem->surface;
+        }
+    }
+    // We are still here, so the graphic is not in the cache. 
+    // addDefaultTileStylePic calls checkPictures on its own, so we can 
+    // simply return the surface
+    myitem = addDefaultTileStylePic(type, size);
 
     return myitem->surface;
 }
@@ -1295,6 +1332,9 @@ void GraphicsCache::checkPictures()
   while (d_newlevellist.size() > 10)
     eraseLastNewLevelItem();
 
+  while (d_defaulttilestylelist.size() > 3)
+    eraseLastDefaultTileStyleItem();
+
   while (d_templelist.size() > 10)
     eraseLastTempleItem();
 
@@ -1657,6 +1697,34 @@ NewLevelCacheItem* GraphicsCache::addNewLevelPic(const Player* p, guint32 gender
 
   //b) add the entry to the list
   d_newlevellist.push_back(myitem);
+
+  //c) check if the cache size is too large
+  checkPictures();
+
+  //we are finished, so return the pic
+  return myitem;
+}
+
+DefaultTileStyleCacheItem* GraphicsCache::addDefaultTileStylePic(guint32 type,
+                                                                 guint32 tilesize)
+{
+  debug("ADD default tile style pic: " <<type ", size " << size)
+
+  DefaultTileStyleCacheItem* myitem = new DefaultTileStyleCacheItem();
+  myitem->tilestyle_type = type;
+  myitem->tilesize = tilesize;
+          
+  PixMask *img = d_default_tilestyles[type]->copy();
+  PixMask::scale(img, tilesize, tilesize);
+  myitem->surface = img;
+
+  //now the final preparation steps:
+  //a) add the size
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize += myitem->surface->get_depth()/8 * size;
+
+  //b) add the entry to the list
+  d_defaulttilestylelist.push_back(myitem);
 
   //c) check if the cache size is too large
   checkPictures();
@@ -2437,6 +2505,21 @@ void GraphicsCache::eraseLastNewLevelItem()
   delete myitem;
 }
 
+void GraphicsCache::eraseLastDefaultTileStyleItem()
+{
+  if (d_defaulttilestylelist.empty())
+    return;
+
+  DefaultTileStyleCacheItem* myitem = *(d_defaulttilestylelist.begin());
+  d_defaulttilestylelist.erase(d_defaulttilestylelist.begin());
+
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_depth()/8 * size;
+
+  delete myitem->surface;
+  delete myitem;
+}
+
 void GraphicsCache::eraseLastExplosionItem()
 {
   if (d_explosionlist.empty())
@@ -2683,6 +2766,21 @@ void GraphicsCache::loadMedalPics()
 			      MEDAL_TYPES);
   for (unsigned int i = 0; i < MEDAL_TYPES; i++)
     d_medalpic[1][i] = medalpics[i];
+}
+
+void GraphicsCache::loadDefaultTileStylePics()
+{
+  std::vector<PixMask* > tilestyle_images;
+  tilestyle_images = 
+    disassemble_row(File::getMiscFile("various/tilestyles.png"), 
+                    DEFAULT_TILESTYLE_TYPES);
+  int count = 0;
+  for (std::vector<PixMask*>::iterator it = tilestyle_images.begin();
+       it != tilestyle_images.end(); it++)
+    {
+      d_default_tilestyles[count] = *it;
+      count++;
+    }
 }
 
 void GraphicsCache::loadNewLevelPics()

@@ -305,6 +305,7 @@ bool GameMap::save(XML_Helper* helper) const
     styles <<endl;
 	    
     int largest_style_id = d_tileSet->getLargestTileStyleId();
+    guint32 num_digits = TileStyle::calculateHexDigits(largest_style_id);
     for (int i = 0; i < s_height; i++)
     {
         for (int j = 0; j < s_width; j++)
@@ -312,13 +313,7 @@ bool GameMap::save(XML_Helper* helper) const
 	    Glib::ustring hexstr;
 	    TileStyle *style = getTile(j, i)->getTileStyle();
 	    assert (style != NULL);
-	    if (largest_style_id < 256)
-	      hexstr = String::ucompose ("%1", Glib::ustring::format(std::hex, std::setfill(L'0'), std::setw(2), style->getId()));
-	    else if (largest_style_id < 4096)
-	      hexstr = String::ucompose ("%1", Glib::ustring::format(std::hex, std::setfill(L'0'), std::setw(3), style->getId()));
-	    else if (largest_style_id < 65536)
-	      hexstr = String::ucompose ("%1", Glib::ustring::format(std::hex, std::setfill(L'0'), std::setw(4), style->getId()));
-
+            hexstr = TileStyle::idToString(style->getId(), num_digits);
 	    styles << hexstr;
 	  }
         styles <<endl;

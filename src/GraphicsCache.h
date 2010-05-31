@@ -52,6 +52,7 @@ struct MoveBonusCacheItem;
 struct FogCacheItem;
 struct PlantedStandardCacheItem;
 struct NewLevelCacheItem;
+struct DefaultTileStyleCacheItem;
 struct TileCacheItem;
 struct PortCacheItem;
 struct SignpostCacheItem;
@@ -270,6 +271,12 @@ class GraphicsCache
 	 */
         PixMask* getNewLevelPic(const Player* p, guint32 gender);
 
+        /** Method for getting a picture that represents a type of tile style.
+         *  The parameter is related to tilestyle.h:TileStyle::Type.
+         */
+        PixMask* getDefaultTileStylePic(guint32 tilestyle_type, 
+                                        guint32 tilesize);
+
         /** Method for getting a city picture
           * 
           * For simplicity we have extended the basic_image/mask style to
@@ -469,6 +476,10 @@ class GraphicsCache
 	//! Creates a new new-level picture in the player's colour.
         NewLevelCacheItem* addNewLevelPic(const Player* p, guint32 gender);
 
+        //! Creates a new default tile style picture.
+        DefaultTileStyleCacheItem* addDefaultTileStylePic(guint32 type,
+                                                          guint32 tilesize);
+
         //! Creates a new flag picture with the given parameters.
         FlagCacheItem* addFlagPic(int size, const Player *p, guint32 tileset);
 
@@ -540,6 +551,9 @@ class GraphicsCache
 	//! Erase the oldest picture of a hero gaining a level.
         void eraseLastNewLevelItem();
 
+        //! Erase the oldest picture of a default tile style.
+        void eraseLastDefaultTileStyleItem();
+
         //! Erases the oldest flag cache item
         void eraseLastFlagItem();
 
@@ -581,6 +595,9 @@ class GraphicsCache
         
 	//! Loads the images associated with heroes gaining a new level.
         void loadNewLevelPics();
+
+        //! Loads the images associated with default tile styles.
+        void loadDefaultTileStylePics();
 
         //! Loads the images for the movement bonuses
         void loadMoveBonusPics();
@@ -638,6 +655,7 @@ class GraphicsCache
         std::list<BagCacheItem*> d_baglist;
         std::list<ExplosionCacheItem*> d_explosionlist;
         std::list<NewLevelCacheItem*> d_newlevellist;
+        std::list<DefaultTileStyleCacheItem*> d_defaulttilestylelist;
 
         //some private surfaces
         PixMask* d_diplomacypic[2][DIPLOMACY_TYPES];
@@ -658,6 +676,7 @@ class GraphicsCache
 	PixMask *d_newlevelmask_male;
 	PixMask *d_newlevel_female;
 	PixMask *d_newlevelmask_female;
+        PixMask *d_default_tilestyles[DEFAULT_TILESTYLE_TYPES];
 };
 
 bool operator <(ArmyCacheItem lhs, ArmyCacheItem rhs);

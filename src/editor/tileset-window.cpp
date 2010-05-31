@@ -113,6 +113,7 @@ TileSetWindow::TileSetWindow(std::string load_filename)
     tilestyle_combobox->append_text(_("Top-Left To Bottom-Right"));
     tilestyle_combobox->append_text(_("Bottom-Left To Top-Right"));
     tilestyle_combobox->append_text(_("Other"));
+    tilestyle_combobox->append_text(_("Unknown"));
     tilestyle_combo_container->add(*manage(tilestyle_combobox));
     tilestyle_combo_container->show_all();
     tilestyle_combobox->signal_changed().connect
@@ -241,8 +242,6 @@ TileSetWindow::TileSetWindow(std::string load_filename)
       (sigc::mem_fun(*this, &TileSetWindow::on_image_chosen));
 
     xml->get_widget("tilestyle_standard_image", tilestyle_standard_image);
-    tilestyle_standard_images = 
-      disassemble_row(File::getMiscFile("various/editor/tilestyles.png"), 17);
 
     if (load_filename != "")
       current_save_filename = load_filename;
@@ -367,14 +366,14 @@ TileSetWindow::update_tilestyle_panel()
   TileStyle *t = get_selected_tilestyle ();
   if (t)
     {
-      tilestyle_combobox->set_active(t->getType());
+      int idx = t->getType();
+      tilestyle_combobox->set_active(idx);
       Glib::RefPtr<Gdk::Pixbuf> pixbuf= t->getImage()->to_pixbuf();
       tilestyle_image->clear();
       tilestyle_image->property_pixbuf() = pixbuf;
       tilestyle_image->show_all();
-      int idx = t->getType();
       tilestyle_standard_image->property_pixbuf() = 
-	tilestyle_standard_images[idx]->to_pixbuf();
+        GraphicsCache::getInstance()->getDefaultTileStylePic(idx, d_tileset->getTileSize())->to_pixbuf();
     }
 }
 
@@ -1004,7 +1003,8 @@ void TileSetWindow::on_add_tilestyleset_clicked()
       TileStyleSet *t = new TileStyleSet();
       //add it to the treeview
       Gtk::TreeIter i = tilestylesets_list->append();
-      t->setName("");
+      t->setName(File::get_basename(filename));
+      d_tileset->addFileInConfigurationFile(filename);
       (*i)[tilestylesets_columns.name] = t->getName();
       (*i)[tilestylesets_columns.tilestyleset] = t;
 
@@ -1091,7 +1091,7 @@ void TileSetWindow::on_tilestyle_changed()
       t->setType(TileStyle::Type(tilestyle_combobox->get_active_row_number()));
       int idx = t->getType();
       tilestyle_standard_image->property_pixbuf() = 
-	tilestyle_standard_images[idx]->to_pixbuf();
+        GraphicsCache::getInstance()->getDefaultTileStylePic(idx, d_tileset->getTileSize())->to_pixbuf();
     }
 }
 

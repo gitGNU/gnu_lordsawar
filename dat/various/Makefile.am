@@ -43,7 +43,8 @@ various_DATA = \
     background.png \
     back.bmp \
     hero-newlevel-female.png \
-    hero-newlevel-male.png
+    hero-newlevel-male.png \
+    tilestyles.png
 
 EXTRA_DIST = \
     README \
@@ -86,4 +87,5 @@ EXTRA_DIST = \
     background.png \
     back.bmp \
     hero-newlevel-female.png \
-    hero-newlevel-male.png
+    hero-newlevel-male.png \
+    tilestyles.png

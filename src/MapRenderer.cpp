@@ -24,6 +24,7 @@
 #include "GameMap.h"
 #include "player.h"
 #include "FogMap.h"
+#include "GraphicsCache.h"
 
 using namespace std;
 
@@ -78,9 +79,13 @@ void MapRenderer::render_tile(Vector<int> draw, Vector<int> tile,
   Maptile *mtile = GameMap::getInstance()->getTile(tile);
 
   TileStyle *style = mtile->getTileStyle();
+  bool use_default_pic = false;
   if (style == NULL)
-    printf ("style for tile %d at col=%d,row=%d is null\n",
-	    mtile->getMaptileType(), tile.x, tile.y);
+    {
+      printf ("style for tile %d at col=%d,row=%d is null\n",
+              mtile->getMaptileType(), tile.x, tile.y);
+      use_default_pic = true;
+    }
   else
     {
       if (style->getImage() == false)
@@ -88,10 +93,24 @@ void MapRenderer::render_tile(Vector<int> draw, Vector<int> tile,
 	  printf ("pic for style %d for tile %d at %d,%d is null\n",
 		  style->getType(),
 		  mtile->getMaptileType(), tile.x, tile.y);
+          use_default_pic = true;
 	}
     }
 		
-  style->getImage()->blit(surface, draw.x, draw.y);
+  if (use_default_pic == true)
+    {
+      guint32 type = TileStyle::OTHER;
+      if (style)
+        type = style->getType();
+      int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+      PixMask *img = 
+        GraphicsCache::getInstance()->getDefaultTileStylePic(type,
+                                                             tilesize);
+      if (img)
+        img->blit(surface, draw.x, draw.y);
+    }
+  else
+    style->getImage()->blit(surface, draw.x, draw.y);
 }
 
 void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,

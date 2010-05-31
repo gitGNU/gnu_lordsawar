@@ -1,4 +1,4 @@
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -261,6 +261,7 @@ ooooooo
            */
 	  BOTTOMLEFTTOTOPRIGHTDIAGONAL = 15,
 	  OTHER = 16,
+          UNKNOWN = 17,
 	};
 
 	//! Default constructor.
@@ -324,6 +325,20 @@ ooooooo
 
 	//! Return the style type enumeration given the type name.
 	static TileStyle::Type typeNameToType(std::string name);
+
+        //! Return how many digits the hex number should be for an id this big.
+        /**
+         * It returns 2, 3, 4 or 5.  e.g. 0x12345
+         */
+        static guint32 calculateHexDigits(guint32 id);
+
+        //! Return the string representation of a tile style id.
+        /**
+         * This is a bit trickier than expected because the GameMap object
+         * wants to save a series of tile style ids with the same width (in 
+         * characters).
+         */
+        static std::string idToString(guint32 id, guint32 digits = 0);
 
     private:
         // DATA

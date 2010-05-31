@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,16 +23,15 @@
 
 #include "glade-helpers.h"
 #include "gui/image-helpers.h"
+#include "gui/input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
-
+#include "GraphicsCache.h"
 
 TilePreviewScene::TilePreviewScene (Tile *tile, Tile *secondary_tile,
-				    std::vector<PixMask* > 
-				      standard_images, 
 				    guint32 height, guint32 width, 
-				    std::string scene)
+				    std::string scene, guint32 tilesize)
 {
   struct tile_model model;
   std::list<struct tile_model> tilescene;
@@ -55,10 +54,10 @@ TilePreviewScene::TilePreviewScene (Tile *tile, Tile *secondary_tile,
 
   d_tile = tile;
   d_secondary_tile = secondary_tile;
-  d_standard_images = standard_images;
   d_height = height;
   d_width = width;
   d_model = tilescene;
+  d_tilesize = tilesize;
   regenerate();
 }
 
@@ -90,7 +89,10 @@ void TilePreviewScene::regenerate()
       if (tilestyle)
 	d_view.push_back(tilestyle->getImage()->to_pixbuf());
       else
-	d_view.push_back(d_standard_images[model.type]->to_pixbuf());
+        {
+          PixMask *img = GraphicsCache::getInstance()->getDefaultTileStylePic(model.type, d_tilesize);
+          d_view.push_back(img->to_pixbuf());
+        }
     }
 }
   
@@ -104,4 +106,24 @@ Glib::RefPtr<Gdk::Pixbuf> TilePreviewScene::renderScene(guint32 tilesize)
 	getTileStylePixbuf(i,j)->copy_area (0, 0, tilesize, tilesize, dest, j * tilesize, i *tilesize);
       }
   return dest;
+}
+    
+Vector<int> TilePreviewScene::mouse_pos_to_tile(Vector<int> pos)
+{
+  return pos / d_tilesize;
+}
+
+TileStyle * TilePreviewScene::get_tilestyle(Vector<int> tile)
+{
+  guint32 idx = (tile.x * d_width) + tile.y;
+  return d_tilestyles[idx];
+}
+
+void TilePreviewScene::mouse_motion_event(MouseMotionEvent e)
+{
+  Vector<int> pos = mouse_pos_to_tile(e.pos);
+  current_tile = pos;
+  TileStyle *tilestyle =  get_tilestyle(pos);
+  selected_tilestyle_id.emit(tilestyle->getId());
+  return;
 }

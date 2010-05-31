@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -46,6 +46,8 @@ class TilePreviewDialog: public sigc::trackable
     Gtk::Button *previous_button;
     Gtk::Button *refresh_button;
     Gtk::Image *preview_image;
+    Gtk::EventBox *eventbox;
+    Gtk::Label *selected_tilestyle_label;
 
     std::vector<PixMask* > tilestyle_images;
 
@@ -54,6 +56,9 @@ class TilePreviewDialog: public sigc::trackable
     void on_refresh_clicked();
     void update_buttons();
     void update_scene(TilePreviewScene *scene);
+    bool on_mouse_button_event(GdkEventButton *e);
+    bool on_mouse_motion_event(GdkEventMotion *e);
+    void on_tilestyle_id_hovered(guint32 id);
     std::list<TilePreviewScene*> scenes;
     std::list<TilePreviewScene*>::iterator current_scene;
     guint32 d_tileSize;

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include <list>
 #include <vector>
 #include <string>
+#include "gui/input-helpers.h"
 
 struct tile_model
 {
@@ -36,9 +37,8 @@ class TilePreviewScene: public sigc::trackable
 {
 public:
   TilePreviewScene (Tile *tile, Tile *secondary_tile,
-		    std::vector<PixMask*> standard_images, 
 		    guint32 height, guint32 width, 
-		    std::string scene);
+		    std::string scene, guint32 tilesize);
   void regenerate();
   Glib::RefPtr<Gdk::Pixbuf> getTileStylePixbuf(int x, int y);
   TileStyle* getTileStyle(int x, int y);
@@ -46,6 +46,11 @@ public:
   int getHeight() {return d_height;}
   Tile *getTile() {return d_tile;}
   Glib::RefPtr<Gdk::Pixbuf> renderScene(guint32 tilesize);
+  void mouse_motion_event(MouseMotionEvent e);
+
+  Vector<int> mouse_pos_to_tile(Vector<int> pos);
+
+  sigc::signal<void, guint32> selected_tilestyle_id;
 private:
   //data:
     std::list<struct tile_model> d_model;
@@ -55,7 +60,12 @@ private:
     guint32 d_width;
     Tile *d_tile;
     Tile *d_secondary_tile;
-    std::vector<PixMask*> d_standard_images;
+    guint32 d_tilesize;
+    Vector<int> current_tile;
+
+    struct tile_model* get_tile_model(Vector<int> tile);
+
+    TileStyle * get_tilestyle(Vector<int> tile);
 };
 
 #endif

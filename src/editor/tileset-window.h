@@ -85,7 +85,6 @@ class TileSetWindow: public sigc::trackable
     Gtk::Image *tilestyle_image;
     Gtk::Button *image_button;
 
-    std::vector<PixMask* > tilestyle_standard_images;
     std::vector<PixMask* > tilestyle_images;
     Gtk::Image *tilestyle_standard_image;
 

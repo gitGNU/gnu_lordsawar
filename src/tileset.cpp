@@ -716,6 +716,10 @@ std::string Tileset::getFileFromConfigurationFile(std::string file)
   return "";
 }
 
+bool Tileset::addFileInConfigurationFile(std::string new_file)
+{
+  return replaceFileInConfigurationFile("", new_file);
+}
 bool Tileset::replaceFileInConfigurationFile(std::string file, std::string new_file)
 {
   bool broken = false;

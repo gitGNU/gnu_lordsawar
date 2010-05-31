@@ -266,6 +266,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 
         std::string getFileFromConfigurationFile(std::string file);
         bool replaceFileInConfigurationFile(std::string file, std::string new_file);
+        bool addFileInConfigurationFile(std::string new_file);
 
 	//Methods that operate on class data and modify the class data.
 

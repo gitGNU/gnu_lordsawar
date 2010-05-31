@@ -1,4 +1,4 @@
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ bool TileStyle::save(XML_Helper *helper)
   retval &= helper->openTag(d_tag);
   Glib::ustring idstr;
   
-  idstr = String::ucompose ("0x%1", Glib::ustring::format(std::hex, std::setfill(L'0'), std::setw(2), d_id));
+  idstr = String::ucompose ("0x%1", idToString(d_id));
   retval &= helper->saveData("id", idstr);
   retval &= helper->saveData("type", d_type);
   retval &= helper->closeTag();
@@ -76,99 +76,126 @@ std::string TileStyle::getTypeName(Type type)
   switch (type)
     {
     case LONE:
-      return _("Lone");
+      return "Lone";
       break;
     case OUTERTOPLEFT:
-      return _("Outer Top-Left");
+      return "Outer Top-Left";
       break;
     case OUTERTOPCENTER:
-      return _("Outer Top-Centre");
+      return "Outer Top-Centre";
       break;
     case OUTERTOPRIGHT:
-      return _("Outer Top-Right");
+      return "Outer Top-Right";
       break;
     case OUTERBOTTOMLEFT:
-      return _("Outer Bottom-Left");
+      return "Outer Bottom-Left";
       break;
     case OUTERBOTTOMCENTER:
-      return _("Outer Bottom-Centre");
+      return "Outer Bottom-Centre";
       break;
     case OUTERBOTTOMRIGHT:
-      return _("Outer Bottom-Right");
+      return "Outer Bottom-Right";
       break;
     case OUTERMIDDLELEFT:
-      return _("Outer Middle-Left");
+      return "Outer Middle-Left";
       break;
     case INNERMIDDLECENTER:
-      return _("Outer Middle-Centre");
+      return "Outer Middle-Centre";
       break;
     case OUTERMIDDLERIGHT:
-      return _("Outer Middle-Right");
+      return "Outer Middle-Right";
       break;
     case INNERTOPLEFT:
-      return _("Inner Top-Left");
+      return "Inner Top-Left";
       break;
     case INNERTOPRIGHT:
-      return _("Inner Top-Right");
+      return "Inner Top-Right";
       break;
     case INNERBOTTOMLEFT:
-      return _("Inner Bottom-Left");
+      return "Inner Bottom-Left";
       break;
     case INNERBOTTOMRIGHT:
-      return _("Inner Bottom-Right");
+      return "Inner Bottom-Right";
       break;
     case TOPLEFTTOBOTTOMRIGHTDIAGONAL:
-      return _("Top-Left To Bottom-Right Diagonal");
+      return "Top-Left To Bottom-Right Diagonal";
       break;
     case BOTTOMLEFTTOTOPRIGHTDIAGONAL:
-      return _("Bottom-Left to Top-Right Diagonal");
+      return "Bottom-Left to Top-Right Diagonal";
       break;
     case OTHER:
-      return _("Other");
+      return "Other";
+      break;
+    case UNKNOWN:
+      return "Unknown";
       break;
     default:
-      return "unknown";
+      return "Unknown";
     }
 }
 	
 TileStyle::Type TileStyle::typeNameToType(std::string name)
 {
-  if (name == _("Lone"))
+  if (name == "Lone")
     return LONE;
-  else if (name == _("Outer Top-Left"))
+  else if (name == "Outer Top-Left")
     return OUTERTOPLEFT;
-  else if (name == _("Outer Top-Centre"))
+  else if (name == "Outer Top-Centre")
     return OUTERTOPCENTER;
-  else if (name == _("Outer Top-Right"))
+  else if (name == "Outer Top-Right")
     return OUTERTOPRIGHT;
-  else if (name == _("Outer Bottom-Left"))
+  else if (name == "Outer Bottom-Left")
     return OUTERBOTTOMLEFT;
-  else if (name == _("Outer Bottom-Centre"))
+  else if (name == "Outer Bottom-Centre")
     return OUTERBOTTOMCENTER;
-  else if (name == _("Outer Bottom-Right"))
+  else if (name == "Outer Bottom-Right")
     return OUTERBOTTOMRIGHT;
-  else if (name == _("Outer Middle-Left"))
+  else if (name == "Outer Middle-Left")
     return OUTERMIDDLELEFT;
-  else if (name == _("Outer Middle-Centre"))
+  else if (name == "Outer Middle-Centre")
     return INNERMIDDLECENTER;
-  else if (name == _("Outer Middle-Right"))
+  else if (name == "Outer Middle-Right")
     return OUTERMIDDLERIGHT;
-  else if (name == _("Inner Top-Left"))
+  else if (name == "Inner Top-Left")
     return INNERTOPLEFT;
-  else if (name == _("Inner Top-Right"))
+  else if (name == "Inner Top-Right")
     return INNERTOPRIGHT;
-  else if (name == _("Inner Bottom-Left"))
+  else if (name == "Inner Bottom-Left")
     return INNERBOTTOMLEFT;
-  else if (name == _("Inner Bottom-Right"))
+  else if (name == "Inner Bottom-Right")
     return INNERBOTTOMRIGHT;
-  else if (name == _("Top-Left To Bottom-Right Diagonal"))
+  else if (name == "Top-Left To Bottom-Right Diagonal")
     return TOPLEFTTOBOTTOMRIGHTDIAGONAL;
-  else if (name == _("Bottom-Left to Top-Right Diagonal"))
+  else if (name == "Bottom-Left to Top-Right Diagonal")
     return BOTTOMLEFTTOTOPRIGHTDIAGONAL;
-  else if (name == _("Other"))
+  else if (name == "Other")
     return OTHER;
+  else if (name == "Unknown")
+    return UNKNOWN;
   else
-    return OTHER;
+    return UNKNOWN;
 }
 
+guint32 TileStyle::calculateHexDigits(guint32 id)
+{
+  if (id < 256)
+    return 2;
+  else if (id < 4096)
+    return 3;
+  else if (id < 65536)
+    return 4;
+  else
+    return 5;
+}
+
+std::string TileStyle::idToString(guint32 id, guint32 digits)
+{
+  guint32 num_digits;
+  if (digits != 0)
+    num_digits = digits;
+  else
+    num_digits = calculateHexDigits(id);
+
+  return String::ucompose ("%1", Glib::ustring::format(std::hex, std::setfill(L'0'), std::setw(num_digits), id));
+}
 // End of file

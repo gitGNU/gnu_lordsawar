@@ -50,6 +50,7 @@ const unsigned int ROAD_TYPES = 15;
 const unsigned int FOG_TYPES = 15;
 const unsigned int BRIDGE_TYPES = 4;
 const unsigned int CURSOR_TYPES = 12;
+const unsigned int DEFAULT_TILESTYLE_TYPES = 18;
 const unsigned int MAX_CITIES_VECTORED_TO_ONE_CITY = 4;
 const unsigned int MAX_TURNS_FOR_VECTORING = 2;
 const unsigned int MAX_BOAT_MOVES = 18;

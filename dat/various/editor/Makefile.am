@@ -17,7 +17,6 @@ editor_DATA = button_selector.png \
 			button_bridge.png \
 			button_port.png \
 			button_bag.png \
-			button_move.png \
-			tilestyles.png
+			button_move.png
 
 EXTRA_DIST = $(editor_DATA) README

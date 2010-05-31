@@ -122,18 +122,7 @@ void TilesetExplosionPictureEditorDialog::update_panel()
 
 void TilesetExplosionPictureEditorDialog::show_explosion_image(std::string filename)
 {
-  std::vector<PixMask* > tilestyle_images;
-  std::vector<PixMask*> base_tilestyles;
-  base_tilestyles = 
-    disassemble_row(File::getMiscFile("various/editor/tilestyles.png"), 17);
-
   guint32 size = d_tileset->getTileSize();
-  std::vector<PixMask*>::iterator it;
-  for (it = base_tilestyles.begin(); it != base_tilestyles.end(); it++)
-    {
-      PixMask::scale(*it, size, size);
-      tilestyle_images.push_back(*it);
-    }
   TilePreviewScene *s;
   std::string scene;
   guint32 idx = d_tileset->getIndex(Tile::GRASS);
@@ -149,7 +138,7 @@ void TilesetExplosionPictureEditorDialog::show_explosion_image(std::string filen
       scene += "aaaaaa";
       scene += "aaaaaa";
       scene += "aaaaaa";
-      s = new TilePreviewScene(grass, NULL, tilestyle_images, 6, 6, scene);
+      s = new TilePreviewScene(grass, NULL, 6, 6, scene, size);
       update_scene(s, filename);
     }
   else if (small_explosion_radiobutton->get_active() == true)
@@ -161,7 +150,7 @@ void TilesetExplosionPictureEditorDialog::show_explosion_image(std::string filen
       scene += "aaaaaaa";
       scene += "aaaaaaa";
       scene += "aaaaaaa";
-      s = new TilePreviewScene(grass, NULL, tilestyle_images, 7, 7, scene);
+      s = new TilePreviewScene(grass, NULL, 7, 7, scene, size);
       update_scene(s, filename);
     }
 }
