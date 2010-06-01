@@ -1,3 +1,7 @@
+2010-06-01  Ben Asselstine  <benasselstine@hushmail.com>
+
+	* fixed adding/removing/replacing tilestylesets in the tileset editor.
+
 2010-05-31  Ben Asselstine  <benasselstine@hushmail.com>
 
 	* added default tile style pictures to the graphics cache.
