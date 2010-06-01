@@ -267,6 +267,9 @@ ooooooo
 	//! Default constructor.
 	TileStyle();
 
+        //! Make a new tilestyle from an id, and a type.
+        TileStyle(guint32 id, TileStyle::Type type);
+
         //! Loading constructor.
 	/**
 	 * Load the tileset.tile.tilestyles.tilestyle XML entities from the

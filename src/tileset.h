@@ -278,6 +278,9 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 
         //! Load the tileset again.
         void reload();
+        
+        //! make a new tilestyleset from an image and add it to the tile's list.
+        bool addTileStyleSet(Tile *tile, std::string filename);
 
 	//Methods that operate on class data and do not modify the class data.
 

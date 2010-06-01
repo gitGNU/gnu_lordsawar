@@ -377,27 +377,9 @@ TileSetWindow::update_tilestyle_panel()
     }
 }
 
-int get_image_height(std::string filename)
-{
-  Glib::RefPtr<Gdk::Pixbuf> row = Gdk::Pixbuf::create_from_file(filename);
-  if (row)
-    return row->get_height();
-  else
-    return 0;
-}
-
-int get_image_width (std::string filename)
-{
-  Glib::RefPtr<Gdk::Pixbuf> row = Gdk::Pixbuf::create_from_file(filename);
-  if (row)
-    return row->get_width();
-  else
-    return 0;
-}
-
 void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
 {
-  if (t->getName() == "")
+  if (!t || t->getName() == "")
     {
       tilestyles_list->clear();
       image_button->set_label(_("no image set"));
@@ -406,13 +388,8 @@ void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
     }
 
   std::string n = d_tileset->getFileFromConfigurationFile(t->getName() + ".png");
-  int height = get_image_height (n);
-  if (height)
-    {
-      d_tileset->setTileSize(height);
-      TileStyleSet *set = get_selected_tilestyleset ();
-      set->instantiateImages(d_tileset->getTileSize(), n);
-    }
+  TileStyleSet *set = get_selected_tilestyleset ();
+  set->instantiateImages(d_tileset->getTileSize(), n);
   File::erase(n);
   if (t->getName().empty() == false)
     image_button->set_label(File::get_basename(t->getName() + ".png", true));
@@ -424,7 +401,7 @@ void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
     {
       Gtk::TreeIter l = tilestyles_list->append();
       (*l)[tilestyles_columns.name] = 
-	String::ucompose("0x%1", Glib::ustring::format(std::hex, std::setfill(L'0'), std::setw(2), (*t)[i]->getId()));
+        "0x" + TileStyle::idToString((*t)[i]->getId());
       (*l)[tilestyles_columns.tilestyle] = (*t)[i];
     }
   tilestyles_treeview->set_cursor (Gtk::TreePath ("0"));
@@ -469,7 +446,7 @@ TileSetWindow::update_tile_panel()
   tile_smallmap_first_colorbutton->set_color(black);
   tile_smallmap_second_colorbutton->set_color(black);
   tile_smallmap_third_colorbutton->set_color(black);
-  fill_tile_info(t);
+  fill_tilestylesets();
 }
 
 TileSetWindow::~TileSetWindow()
@@ -746,7 +723,6 @@ void TileSetWindow::fill_tilestylesets()
     {
       Gtk::TreeIter l = tilestylesets_list->append();
       (*l)[tilestylesets_columns.name] = (*it)->getName();
-      (*l)[tilestylesets_columns.bname] = (*it)->getBaseName();
       (*l)[tilestylesets_columns.tilestyleset] = *it;
     }
   tilestylesets_treeview->set_cursor (Gtk::TreePath ("0"));
@@ -978,9 +954,8 @@ void TileSetWindow::fill_tile_smallmap(Tile *tile)
   tile_smallmap_image->property_pixmap() = tile_smallmap_surface;
 }
 
-void TileSetWindow::on_add_tilestyleset_clicked()
+void TileSetWindow::choose_and_add_or_replace_tilestyleset(std::string replace_filename)
 {
-
   Gtk::FileChooserDialog chooser(*window, _("Choose an Image"),
 				 Gtk::FILE_CHOOSER_ACTION_OPEN);
   Gtk::FileFilter sav_filter;
@@ -995,26 +970,46 @@ void TileSetWindow::on_add_tilestyleset_clicked()
   chooser.show_all();
   int res = chooser.run();
 
-  if (res == Gtk::RESPONSE_ACCEPT)
-    {
-      std::string filename = chooser.get_filename();
-      chooser.hide();
-      //add a new empty tile to the tileset
-      TileStyleSet *t = new TileStyleSet();
-      //add it to the treeview
-      Gtk::TreeIter i = tilestylesets_list->append();
-      t->setName(File::get_basename(filename));
-      d_tileset->addFileInConfigurationFile(filename);
-      (*i)[tilestylesets_columns.name] = t->getName();
-      (*i)[tilestylesets_columns.tilestyleset] = t;
+  if (res != Gtk::RESPONSE_ACCEPT)
+    return;
 
-      Tile *tile = get_selected_tile ();
-      tile->push_back(t);
-      tilestylesets_treeview->set_cursor (Gtk::TreePath (String::ucompose("%1", tile->size() - 1)));
-      image_button->set_label(File::get_basename(filename, true));
-      needs_saving = true;
-      update_window_title();
-    }
+  std::string selected_filename = chooser.get_filename();
+  if (selected_filename.empty())
+    return;
+
+  if (TileStyleSet::validate_image(selected_filename) == false)
+    return;
+
+  if (replace_filename.empty() == false)
+    on_remove_tilestyleset_clicked();
+  
+  Tile *tile = get_selected_tile();
+  bool success = d_tileset->addTileStyleSet(tile, selected_filename);
+  if (!success)
+    return;
+
+  if (replace_filename.empty() == true)
+    d_tileset->replaceFileInConfigurationFile(replace_filename, 
+                                              selected_filename);
+  else
+    d_tileset->addFileInConfigurationFile(selected_filename);
+
+  //now make a new one
+  TileStyleSet *set = tile->back();
+  Gtk::TreeIter i = tilestylesets_list->append();
+  (*i)[tilestylesets_columns.name] = set->getName();
+  (*i)[tilestylesets_columns.tilestyleset] = set;
+
+  tilestylesets_treeview->set_cursor (Gtk::TreePath (String::ucompose("%1", tile->size() - 1)));
+
+  needs_saving = true;
+  update_window_title();
+}
+
+void TileSetWindow::on_add_tilestyleset_clicked()
+{
+  choose_and_add_or_replace_tilestyleset("");
+  return;
 }
 
 TileStyle * TileSetWindow::get_selected_tilestyle ()
@@ -1079,6 +1074,7 @@ void TileSetWindow::on_remove_tilestyleset_clicked()
 	    }
 	}
       needs_saving = true;
+      fill_tilestyleset_info(NULL);
       update_window_title();
     }
 }
@@ -1097,67 +1093,10 @@ void TileSetWindow::on_tilestyle_changed()
 
 void TileSetWindow::on_image_chosen()
 {
-  Gtk::FileChooserDialog chooser(*window, _("Choose an Image"),
-				 Gtk::FILE_CHOOSER_ACTION_OPEN);
-  Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*.png");
-  chooser.set_filter(sav_filter);
-  chooser.set_current_folder(Glib::get_home_dir());
+  TileStyleSet *set = get_selected_tilestyleset();
 
-  chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
-  chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
+  choose_and_add_or_replace_tilestyleset(set->getName() + ".png");
 
-  chooser.show_all();
-  int res = chooser.run();
-
-  if (res != Gtk::RESPONSE_ACCEPT)
-    return;
-
-  std::string selected_filename = chooser.get_filename();
-  if (selected_filename.empty())
-    return;
-
-  unsigned int height = get_image_height (selected_filename);
-  unsigned int width = get_image_width (selected_filename);
-  if ((width % height) != 0)
-    return;
-
-  std::string file = File::get_basename(selected_filename);
-
-  d_tileset->setTileSize(height);
-
-  on_remove_tilestyleset_clicked();
-
-  //now make a new one
-  TileStyleSet *set = new TileStyleSet();
-  Gtk::TreeIter i = tilestylesets_list->append();
-
-  set->setBaseName(d_tileset->getBaseName());
-  (*i)[tilestylesets_columns.bname] = set->getBaseName();
-
-  d_tileset->replaceFileInConfigurationFile(set->getName() + ".png", selected_filename);
-  set->setName(File::get_basename(selected_filename));
-  (*i)[tilestylesets_columns.name] = set->getName();
-  (*i)[tilestylesets_columns.tilestyleset] = set;
-  Tile *tile = get_selected_tile ();
-  tile->push_back(set);
-
-  int no = width / height;
-  for (int j = 0; j < no; j++)
-    {
-      int id = d_tileset->getFreeTileStyleId();
-      if (id >= 0)
-	{
-	  TileStyle *style = new TileStyle();
-	  style->setId(id);
-	  style->setType(TileStyle::LONE);
-	  set->push_back(style);
-	}
-    }
-      
-  needs_saving = true;
-  update_window_title();
 }
 
 void TileSetWindow::on_preview_tile_activated()

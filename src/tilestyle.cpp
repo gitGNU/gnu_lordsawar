@@ -30,6 +30,11 @@ TileStyle::TileStyle()
   : d_image(0)
 {
 }
+        
+TileStyle::TileStyle(guint32 id, TileStyle::Type type)
+        : d_image(0), d_type(type), d_id(id)
+{
+}
 
 TileStyle::TileStyle(XML_Helper* helper)
   : d_image(0)

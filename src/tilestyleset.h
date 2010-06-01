@@ -45,6 +45,13 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	//! The default constructor.
         TileStyleSet();
 
+        //! Make a new tilestyleset from an image.
+        /**
+         * convenience constructor.
+         * tile style ids will be overlapping and need to be given values.
+         * */
+        TileStyleSet(std::string pngfilename, guint32 tilesize, bool &success, TileStyle::Type type = TileStyle::UNKNOWN);
+
 	//! The loading constuctor loads the TileStyleSet from the config file.
 	/**
 	 * Read the tileset.tile.tilestyleset XML entities in the tileset
@@ -70,17 +77,11 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	 */
 	std::string getName() const {return d_name;}
 
-	//! Return the basename of this Tilestyleset.
-        std::string getBaseName() const {return d_basename;};
-
 
 	// Set Methods
 
 	//! Set the name of this tilestyleset.
 	void setName(std::string name) {d_name = name;}
-
-	//! Set the basename of where this Tilestyleset resides on disk.
-        void setBaseName(std::string bname) {d_basename = bname;};
 
 
 	//Methods that operate on the class data but do not modify the class.
@@ -106,6 +107,8 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	//! Destroy the images associated with this tilestyleset.
 	void uninstantiateImages();
 
+        static bool validate_image(std::string filename);
+
     private:
 
 	// DATA
@@ -123,11 +126,6 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	 */
         std::string d_name;
 
-	//! The basename of where the image file lives.
-	/**
-	 * @param This is a hack used for the tileset editor.
-	 */
-	std::string d_basename;
 };
 
 #endif // TILESTYLESET_H

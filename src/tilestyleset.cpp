@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,6 +32,39 @@ using namespace std;
         
 TileStyleSet::TileStyleSet()
 {
+}
+        
+bool TileStyleSet::validate_image(std::string filename)
+{
+  bool success = true;
+
+  Glib::RefPtr<Gdk::Pixbuf> row = Gdk::Pixbuf::create_from_file(filename);
+  if (row == false)
+    return false;
+    
+  guint32 width = row->get_width();
+  guint32 height = row->get_height();
+
+  if ((width % height) != 0)
+    return false;
+  return success;
+}
+
+TileStyleSet::TileStyleSet(std::string file, guint32 tilesize, bool &success, TileStyle::Type type)
+{
+  success = validate_image(file);
+  if (success == false)
+    return;
+    
+  Glib::RefPtr<Gdk::Pixbuf> row = Gdk::Pixbuf::create_from_file(file);
+  guint32 width = row->get_width();
+  guint32 height = row->get_height();
+  d_name = File::get_basename(file);
+  guint32 num_tilestyles = width / height;
+  for (guint32 i = 0; i < num_tilestyles; i++)
+    push_back(new TileStyle(0, type));
+  instantiateImages(tilesize, file);
+  success = true;
 }
 
 TileStyleSet::TileStyleSet(XML_Helper *helper)

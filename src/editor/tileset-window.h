@@ -103,10 +103,9 @@ class TileSetWindow: public sigc::trackable
     class TileStyleSetsColumns: public Gtk::TreeModelColumnRecord {
     public:
 	TileStyleSetsColumns() 
-        { add(name); add(bname); add(tilestyleset);}
+        { add(name); add(tilestyleset);}
 	
 	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<Glib::ustring> bname;
 	Gtk::TreeModelColumn<TileStyleSet *> tilestyleset;
     };
     const TileStyleSetsColumns tilestylesets_columns;
@@ -183,6 +182,8 @@ class TileSetWindow: public sigc::trackable
 
     bool load_tileset(std::string filename);
     void update_window_title();
+
+    void choose_and_add_or_replace_tilestyleset(std::string replace_filename);
 
 };
 

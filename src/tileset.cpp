@@ -179,7 +179,6 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
       // create a new tile style set with the information we got
       // put it on the latest tile
       TileStyleSet* tilestyleset = new TileStyleSet(helper);
-      tilestyleset->setBaseName(getBaseName());
       tile->push_back(tilestyleset);
       return true;
     }
@@ -282,7 +281,6 @@ bool Tileset::save(std::string filename, std::string extension) const
   return !broken;
 }
 
-
 int Tileset::getFreeTileStyleId() const
 {
   int ids[65535];
@@ -293,7 +291,7 @@ int Tileset::getFreeTileStyleId() const
 	{
 	  for (std::vector<TileStyle*>::const_iterator k = (*j)->begin(); k != (*j)->end(); k++)
 	    {
-	      ids[(*k)->getId()] = 1;
+	      ids[(*k)->getId()]++;
 	    }
 	}
     }
@@ -326,9 +324,6 @@ int Tileset::getLargestTileStyleId() const
 void Tileset::setBaseName(std::string bname)
 {
   d_basename = bname;
-  for (Tileset::iterator i = begin(); i != end(); ++i)
-    for (Tile::iterator j = (*i)->begin(); j != (*i)->end(); j++)
-      (*j)->setBaseName(bname);
 }
 
 guint32 Tileset::getDefaultTileSize()
@@ -780,5 +775,29 @@ guint32 Tileset::calculate_preferred_tile_size() const
 bool Tileset::copy(std::string src, std::string dest)
 {
   return Tar_Helper::copy(src, dest);
+}
+        
+bool Tileset::addTileStyleSet(Tile *tile, std::string filename)
+{
+  bool success = true;
+  TileStyle::Type tilestyle_type;
+  if (tile->getType() == Tile::GRASS)
+    tilestyle_type = TileStyle::LONE;
+  else
+    tilestyle_type = TileStyle::UNKNOWN;
+  TileStyleSet *set = 
+    new TileStyleSet(filename, d_tileSize, success, tilestyle_type);
+  if (!success)
+    {
+      delete set;
+      return success;
+    }
+  guint32 first_free_id = getFreeTileStyleId();
+  for (TileStyleSet::iterator it = set->begin(); it != set->end(); it++)
+    (*it)->setId(first_free_id);
+
+  tile->push_back(set);
+  for (TileStyleSet::iterator it = ++set->begin(); it != set->end(); it++)
+    (*it)->setId(getFreeTileStyleId());
 }
 //End of file
