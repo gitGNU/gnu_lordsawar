@@ -20,6 +20,7 @@
 
 #include <memory>
 #include <sigc++/trackable.h>
+#include <sigc++/signal.h>
 #include <gtkmm.h>
 #include "Tile.h"
 #include "tile-preview-scene.h"
@@ -38,6 +39,7 @@ class TilePreviewDialog: public sigc::trackable
 
     void set_icon_from_file(std::string name) {dialog->set_icon_from_file(name);};
 
+    sigc::signal<void, guint32> tilestyle_selected;
     
  private:
     Tile *d_tile;
@@ -59,6 +61,7 @@ class TilePreviewDialog: public sigc::trackable
     bool on_mouse_button_event(GdkEventButton *e);
     bool on_mouse_motion_event(GdkEventMotion *e);
     void on_tilestyle_id_hovered(guint32 id);
+    void add_scene(TilePreviewScene *s);
     std::list<TilePreviewScene*> scenes;
     std::list<TilePreviewScene*>::iterator current_scene;
     guint32 d_tileSize;

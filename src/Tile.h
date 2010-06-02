@@ -138,6 +138,12 @@ class Tile : public std::list<TileStyleSet*>
 	 */
 	TileStyle *getRandomTileStyle (TileStyle::Type style) const;
 
+        guint32 countTileStyles(TileStyle::Type type) const;
+
+        std::list<TileStyle*> getTileStyles(TileStyle::Type type) const;
+
+        TileStyle* getTileStyle(guint32 id) const;
+
 	// Methods the operate on the class data and modify the class
 
 	//! Destroy the images associated with this tile.

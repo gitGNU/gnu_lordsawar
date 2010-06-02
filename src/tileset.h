@@ -324,6 +324,9 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 
         //! Determine the most common tile size in the graphic files.
         guint32 calculate_preferred_tile_size() const;
+
+        //! Where does the given tile style live?
+        bool getTileStyle(guint32 id, Tile **tile, TileStyleSet **set, TileStyle ** style) const;
 	  
 	// Static Methods
 

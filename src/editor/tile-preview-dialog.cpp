@@ -78,9 +78,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "aaaaa";
 	scene += "aaaaa";
 	s = new TilePreviewScene(tile, sec, 5, 5, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	break;
       case Tile::WATER:
 	scene.clear();
@@ -88,9 +86,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "hij";
 	scene += "efg";
 	s = new TilePreviewScene(tile, sec, 3, 3, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	scene.clear();
 	scene += "iiiii";
 	scene += "iiiii";
@@ -98,9 +94,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "iiiii";
 	scene += "iiiii";
 	s = new TilePreviewScene(tile, sec, 5, 5, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	scene.clear();
 	scene += "iiii";
 	scene += "ikli";
@@ -108,9 +102,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "imni";
 	scene += "iiii";
 	s = new TilePreviewScene(tile, sec, 5, 4, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	scene.clear();
 	scene += "ahiii";
 	scene += "cplkf";
@@ -118,9 +110,6 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "ijeoc";
 	scene += "ijahi";
 	s = new TilePreviewScene(tile, sec, 5, 5, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
 	break;
       case Tile::FOREST:
 	scene.clear();
@@ -128,9 +117,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "hij";
 	scene += "efg";
 	s = new TilePreviewScene(tile, sec, 3, 3, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	scene.clear();
 	scene += "iiiii";
 	scene += "iiiii";
@@ -138,9 +125,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "iiiii";
 	scene += "iiiii";
 	s = new TilePreviewScene(tile, sec, 5, 5, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	scene.clear();
 	scene += "ahiii";
 	scene += "cplkf";
@@ -148,9 +133,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "ijeoc";
 	scene += "ijahi";
 	s = new TilePreviewScene(tile, sec, 5, 5, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	break;
       case Tile::HILLS:
 	scene.clear();
@@ -158,9 +141,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "hij";
 	scene += "efg";
 	s = new TilePreviewScene(tile, sec, 3, 3, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	scene.clear();
 	scene += "iiiii";
 	scene += "iiiii";
@@ -168,9 +149,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "iiiii";
 	scene += "iiiii";
 	s = new TilePreviewScene(tile, sec, 5, 5, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	scene.clear();
 	scene += "ahiii";
 	scene += "cplkf";
@@ -178,9 +157,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "ijeoc";
 	scene += "ijahi";
 	s = new TilePreviewScene(tile, sec, 5, 5, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	break;
       case Tile::MOUNTAIN:
 	scene.clear();
@@ -188,9 +165,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "hij";
 	scene += "efg";
 	s = new TilePreviewScene(tile, sec, 3, 3, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	scene.clear();
 	scene += "iiiii";
 	scene += "iiiii";
@@ -198,17 +173,13 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "iiiii";
 	scene += "iiiii";
 	s = new TilePreviewScene(tile, sec, 5, 5, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	scene.clear();
 	scene += "III";
 	scene += "IaI";
 	scene += "III";
 	s = new TilePreviewScene(tile, sec, 3, 3, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	scene.clear();
 	scene += "ahiii";
 	scene += "cplkf";
@@ -216,9 +187,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "ijeoc";
 	scene += "ijahi";
 	s = new TilePreviewScene(tile, sec, 5, 5, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	break;
       case Tile::SWAMP:
 	scene = "aaaaa";
@@ -227,9 +196,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "aaaaa";
 	scene += "aaaaa";
 	s = new TilePreviewScene(tile, sec, 5, 5, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	scene.clear();
 	scene += "ahiii";
 	scene += "cplkf";
@@ -237,9 +204,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "ijeoc";
 	scene += "ijahi";
 	s = new TilePreviewScene(tile, sec, 5, 5, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	scene.clear();
 	scene = "iiiii";
 	scene += "iiiii";
@@ -247,9 +212,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "iiiii";
 	scene += "iiiii";
 	s = new TilePreviewScene(tile, sec, 5, 5, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	break;
       case Tile::VOID:
 	scene.clear();
@@ -257,9 +220,7 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
 	scene += "hij";
 	scene += "efg";
 	s = new TilePreviewScene(tile, sec, 3, 3, scene, tileSize);
-        s->selected_tilestyle_id.connect
-          (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
-	scenes.push_back(s);
+        add_scene(s);
 	break;
       }
     d_tile = tile;
@@ -269,6 +230,15 @@ TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
       update_scene(*current_scene);
 
     update_buttons();
+}
+
+void TilePreviewDialog::add_scene(TilePreviewScene *s)
+{
+  s->hovered_tilestyle_id.connect
+    (sigc::mem_fun(this, &TilePreviewDialog::on_tilestyle_id_hovered));
+  s->selected_tilestyle_id.connect
+    (sigc::mem_fun (tilestyle_selected, &sigc::signal<void, guint32>::emit));
+  scenes.push_back(s);
 }
 
 void TilePreviewDialog::on_tilestyle_id_hovered(guint32 id)
@@ -340,29 +310,10 @@ void TilePreviewDialog::update_scene(TilePreviewScene *scene)
 {
   if (!scene)
     return;
-  /*
-  scene_table = new Gtk::Table(scene->getHeight(), scene->getWidth());
-  scene_box->add(*manage(scene_table));
-  for (int i = 0; i < scene->getHeight(); i++)
-    {
-      for (int j = 0; j < scene->getWidth(); j++)
-	{
-	  Glib::RefPtr<Gdk::Pixbuf> pixbuf = scene->getTileStylePixbuf(i, j);
-	  Gtk::Image *image = new Gtk::Image(pixbuf);
-	  TileStyle *style = scene->getTileStyle(i, j);
-	  if (style)
-	    {
-	      char buf[20];
-	      snprintf (buf, sizeof (buf), "0x%02x", style->getId());
-	      image->set_tooltip_text(buf);
-	    }
-	  scene_table->attach(*image, j, j + 1, i, i + 1, 
-			      Gtk::SHRINK, Gtk::SHRINK);
-	  image->show();
-	}
-    }
-    */
   preview_image->property_pixbuf() = scene->renderScene(d_tileSize);
+  guint32 width = scene->getWidth();
+  guint32 height = scene->getHeight();
+  eventbox->set_size_request(width * d_tileSize, height * d_tileSize);
   preview_image->show_all();
 }
 
@@ -375,6 +326,7 @@ void TilePreviewDialog::update_buttons()
     
 bool TilePreviewDialog::on_mouse_button_event(GdkEventButton *e)
 {
+  (*current_scene)->mouse_button_event(to_input_event(e));
   return true;
 }
 

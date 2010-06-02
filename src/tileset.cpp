@@ -800,4 +800,25 @@ bool Tileset::addTileStyleSet(Tile *tile, std::string filename)
   for (TileStyleSet::iterator it = ++set->begin(); it != set->end(); it++)
     (*it)->setId(getFreeTileStyleId());
 }
+
+bool Tileset::getTileStyle(guint32 id, Tile **tile, TileStyleSet **set, TileStyle ** style) const
+{
+  for (const_iterator t = begin(); t != end(); t++)
+    for (std::list<TileStyleSet*>::const_iterator i = (*t)->begin(); 
+         i != (*t)->end(); i++)
+      for (std::vector<TileStyle*>::const_iterator j = (*i)->begin(); 
+           j != (*i)->end(); j++)
+        if ((*j)->getId() == id)
+          {
+            if (tile)
+              *tile = *t;
+            if (set)
+              *set = *i;
+            if (style)
+              *style = *j;
+            return true;
+          }
+  return false;
+}
+
 //End of file

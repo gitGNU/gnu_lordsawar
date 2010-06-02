@@ -53,6 +53,7 @@
 #include "tile-size-editor-dialog.h"
 #include "editor-quit-dialog.h"
 #include "editor-recover-dialog.h"
+#include "tilestyle-organizer-dialog.h"
 
 #include "ucompose.hpp"
 
@@ -198,6 +199,9 @@ TileSetWindow::TileSetWindow(std::string load_filename)
     xml->get_widget("preview_tile_menuitem", preview_tile_menuitem);
     preview_tile_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &TileSetWindow::on_preview_tile_activated));
+    xml->get_widget("organize_tilestyles_menuitem", organize_tilestyles_menuitem);
+    organize_tilestyles_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &TileSetWindow::on_organize_tilestyles_activated));
     xml->get_widget ("help_about_menuitem", help_about_menuitem);
     help_about_menuitem->signal_activate().connect
        (sigc::mem_fun(this, &TileSetWindow::on_help_about_activated));
@@ -307,6 +311,7 @@ TileSetWindow::update_tileset_menuitems()
       bridges_picture_menuitem->set_sensitive(false);
       fog_picture_menuitem->set_sensitive(false);
       flags_picture_menuitem->set_sensitive(false);
+      organize_tilestyles_menuitem->set_sensitive(false);
     }
   else
     {
@@ -319,6 +324,7 @@ TileSetWindow::update_tileset_menuitems()
       bridges_picture_menuitem->set_sensitive(true);
       fog_picture_menuitem->set_sensitive(true);
       flags_picture_menuitem->set_sensitive(true);
+      organize_tilestyles_menuitem->set_sensitive(true);
     }
 }
 
@@ -443,9 +449,7 @@ TileSetWindow::update_tile_panel()
     }
 
   tile_vbox->set_sensitive(true);
-  tile_smallmap_first_colorbutton->set_color(black);
-  tile_smallmap_second_colorbutton->set_color(black);
-  tile_smallmap_third_colorbutton->set_color(black);
+  fill_tile_info(t);
   fill_tilestylesets();
 }
 
@@ -1099,6 +1103,79 @@ void TileSetWindow::on_image_chosen()
 
 }
 
+void TileSetWindow::on_organize_tilestyles_activated()
+{
+  TileStyleOrganizerDialog d(get_selected_tile());
+  d.tilestyle_selected.connect
+    (sigc::mem_fun(this, &TileSetWindow::on_tilestyle_id_selected));
+  d.set_parent_window(*window);
+  d.run();
+}
+    
+void TileSetWindow::on_tilestyle_id_selected(guint32 id)
+{
+  Tile *t = NULL;
+  TileStyleSet *s = NULL;
+  TileStyle *style = NULL;
+  bool found = d_tileset->getTileStyle(id, &t, &s, &style);
+  if (found)
+    {
+      select_tile(t);
+      select_tilestyleset(s);
+      select_tilestyle(style);
+    }
+}
+
+void TileSetWindow::select_tile(Tile *tile)
+{
+  for (guint32 i = 0; i < tiles_list->children().size(); i++)
+    {
+      Gtk::TreeIter iter = tiles_list->children()[i];
+      Gtk::TreeModel::Row row = *iter;
+      Tile *t = row[tiles_columns.tile];
+      if (tile == t)
+        {
+          Glib::RefPtr<Gtk::TreeSelection> s = tiles_treeview->get_selection();
+          s->select(row);
+          return;
+        }
+    }
+}
+
+void TileSetWindow::select_tilestyleset(TileStyleSet *set)
+{
+  for (guint32 i = 0; i < tilestylesets_list->children().size(); i++)
+    {
+      Gtk::TreeIter iter = tilestylesets_list->children()[i];
+      Gtk::TreeModel::Row row = *iter;
+      TileStyleSet *t = row[tilestylesets_columns.tilestyleset];
+      if (set == t)
+        {
+          Glib::RefPtr<Gtk::TreeSelection> s = 
+            tilestylesets_treeview->get_selection();
+          s->select(row);
+          return;
+        }
+    }
+}
+
+void TileSetWindow::select_tilestyle(TileStyle *style)
+{
+  for (guint32 i = 0; i < tilestyles_list->children().size(); i++)
+    {
+      Gtk::TreeIter iter = tilestyles_list->children()[i];
+      Gtk::TreeModel::Row row = *iter;
+      TileStyle *t = row[tilestyles_columns.tilestyle];
+      if (style == t)
+        {
+          Glib::RefPtr<Gtk::TreeSelection> s = 
+            tilestyles_treeview->get_selection();
+          s->select(row);
+          return;
+        }
+    }
+}
+
 void TileSetWindow::on_preview_tile_activated()
 {
   Tile *tile = get_selected_tile();
@@ -1114,6 +1191,8 @@ void TileSetWindow::on_preview_tile_activated()
       if (idx > -1)
         sec = (*d_tileset)[idx];
       TilePreviewDialog d(tile, sec, d_tileset->getTileSize());
+      d.tilestyle_selected.connect
+        (sigc::mem_fun(this, &TileSetWindow::on_tilestyle_id_selected));
       d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
       d.run();
     }

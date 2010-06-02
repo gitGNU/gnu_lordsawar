@@ -255,4 +255,33 @@ void Tile::instantiateImages(int tilesize, Tileset *ts)
   t.Close();
 
 }
+
+guint32 Tile::countTileStyles(TileStyle::Type type) const
+{
+  guint32 count = 0;
+  for (const_iterator i = begin(); i != end(); i++)
+    for (std::vector<TileStyle*>::const_iterator j = (*i)->begin(); j != (*i)->end(); j++)
+      if ((*j)->getType() == type)
+        count++;
+  return count;
+}
+
+TileStyle* Tile::getTileStyle(guint32 id) const
+{
+  for (const_iterator i = begin(); i != end(); i++)
+    for (std::vector<TileStyle*>::const_iterator j = (*i)->begin(); j != (*i)->end(); j++)
+      if ((*j)->getId() == id)
+        return *j;
+  return NULL;
+}
+
+std::list<TileStyle*> Tile::getTileStyles(TileStyle::Type type) const
+{
+  std::list<TileStyle*> styles;
+  for (const_iterator i = begin(); i != end(); i++)
+    for (std::vector<TileStyle*>::const_iterator j = (*i)->begin(); j != (*i)->end(); j++)
+      if ((*j)->getType() == type)
+        styles.push_back((*j));
+  return styles;
+}
 // End of file

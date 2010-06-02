@@ -47,10 +47,12 @@ public:
   Tile *getTile() {return d_tile;}
   Glib::RefPtr<Gdk::Pixbuf> renderScene(guint32 tilesize);
   void mouse_motion_event(MouseMotionEvent e);
+  void mouse_button_event(MouseButtonEvent e);
 
   Vector<int> mouse_pos_to_tile(Vector<int> pos);
 
   sigc::signal<void, guint32> selected_tilestyle_id;
+  sigc::signal<void, guint32> hovered_tilestyle_id;
 private:
   //data:
     std::list<struct tile_model> d_model;

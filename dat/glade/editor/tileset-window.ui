@@ -147,6 +147,13 @@
                         <property name="use_underline">True</property>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkMenuItem" id="organize_tilestyles_menuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Organize TileStyles</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>

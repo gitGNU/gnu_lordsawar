@@ -37,6 +37,7 @@ editor-recover-dialog.ui \
 cityset-info-dialog.ui \
 cityset-window.ui \
 shieldset-info-dialog.ui \
+tilestyle-organizer-dialog.ui \
 shieldset-window.ui
 
 EXTRA_DIST = $(glade_DATA) \

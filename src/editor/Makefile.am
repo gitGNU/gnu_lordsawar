@@ -56,6 +56,7 @@ libtilesetwindow_la_SOURCES = \
 	tileset-flag-editor-dialog.cpp tileset-flag-editor-dialog.h \
 	tileset-explosion-picture-editor-dialog.cpp \
 	tileset-explosion-picture-editor-dialog.h \
+	tilestyle-organizer-dialog.cpp tilestyle-organizer-dialog.h \
 	image-editor-dialog.cpp image-editor-dialog.h
 
 lordsawar_army_editor_SOURCES = \

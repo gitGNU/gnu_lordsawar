@@ -98,6 +98,7 @@
 [type: gettext/glade]dat/glade/editor/masked-image-editor-dialog.ui
 [type: gettext/glade]dat/glade/editor/image-editor-dialog.ui
 [type: gettext/glade]dat/glade/editor/tileset-window.ui
+[type: gettext/glade]dat/glade/editor/tilestyle-organizer-dialog.ui
 [type: gettext/glade]dat/glade/editor/hero-editor-dialog.ui
 [type: gettext/glade]dat/glade/editor/backpack-editor-dialog.ui
 [type: gettext/glade]dat/glade/editor/editor-quit-dialog.ui
@@ -256,6 +257,7 @@ src/editor/map-info-dialog.cpp
 src/editor/reward-editor-dialog.cpp
 src/editor/main.cpp
 src/editor/tileset-window.cpp
+src/editor/tilestyle-organizer-dialog.cpp
 src/editor/stack-editor-dialog.cpp
 src/editor/hero-editor-dialog.cpp
 src/editor/backpack-editor-dialog.cpp

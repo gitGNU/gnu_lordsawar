@@ -115,8 +115,21 @@ Vector<int> TilePreviewScene::mouse_pos_to_tile(Vector<int> pos)
 
 TileStyle * TilePreviewScene::get_tilestyle(Vector<int> tile)
 {
-  guint32 idx = (tile.x * d_width) + tile.y;
+  guint32 idx = (tile.y * d_width) + tile.x;
   return d_tilestyles[idx];
+}
+
+void TilePreviewScene::mouse_button_event(MouseButtonEvent e)
+{
+  if (e.button == MouseButtonEvent::LEFT_BUTTON
+      && e.state == MouseButtonEvent::PRESSED)
+    {
+      Vector<int> pos = mouse_pos_to_tile(e.pos);
+      current_tile = pos;
+      TileStyle *tilestyle =  get_tilestyle(pos);
+      selected_tilestyle_id.emit(tilestyle->getId());
+    }
+  return;
 }
 
 void TilePreviewScene::mouse_motion_event(MouseMotionEvent e)
@@ -124,6 +137,6 @@ void TilePreviewScene::mouse_motion_event(MouseMotionEvent e)
   Vector<int> pos = mouse_pos_to_tile(e.pos);
   current_tile = pos;
   TileStyle *tilestyle =  get_tilestyle(pos);
-  selected_tilestyle_id.emit(tilestyle->getId());
+  hovered_tilestyle_id.emit(tilestyle->getId());
   return;
 }
