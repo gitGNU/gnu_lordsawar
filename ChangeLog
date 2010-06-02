@@ -1,3 +1,8 @@
+2010-06-02  Ben Asselstine  <benasselstine@hushmail.com>
+
+	* added a tile style organizer to the tileset editor.
+	* fixed a crashing bug in the tile preview dialog.
+
 2010-06-01  Ben Asselstine  <benasselstine@hushmail.com>
 
 	* fixed adding/removing/replacing tilestylesets in the tileset editor.
