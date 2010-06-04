@@ -1,3 +1,8 @@
+2010-06-04  Ben Asselstine  <benasselstine@hushmail.com>
+
+	* fixed tile/army/city/shield set info dialogs to show the right
+	filename when editing details.
+
 2010-06-02  Ben Asselstine  <benasselstine@hushmail.com>
 
 	* added a tile style organizer to the tileset editor.
