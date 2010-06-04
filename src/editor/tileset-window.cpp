@@ -420,6 +420,11 @@ TileSetWindow::update_tilestyleset_panel()
   TileStyleSet *t = get_selected_tilestyleset ();
   if (t)
     fill_tilestyleset_info(t);
+  else
+    {
+      fill_tilestyleset_info(NULL);
+      tilestyleset_frame->set_sensitive(false);
+    }
 }
 
 void

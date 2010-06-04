@@ -90,7 +90,7 @@ void TilePreviewScene::regenerate()
 	d_view.push_back(tilestyle->getImage()->to_pixbuf());
       else
         {
-          PixMask *img = GraphicsCache::getInstance()->getDefaultTileStylePic(model.type, d_tilesize);
+          PixMask *img = GraphicsCache::getInstance()->getDefaultTileStylePic(model.type, d_tilesize)->copy();
           d_view.push_back(img->to_pixbuf());
         }
     }

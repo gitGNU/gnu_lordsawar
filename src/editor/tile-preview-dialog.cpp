@@ -29,7 +29,6 @@
 #include "defs.h"
 #include "File.h"
 #include "tilestyle.h"
-#include "GraphicsCache.h"
 
 
 TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
