@@ -32,7 +32,7 @@
 #include "File.h"
 
 
-CitySetInfoDialog::CitySetInfoDialog(Cityset *cityset, std::string file, bool readonly, std::string title)
+CitySetInfoDialog::CitySetInfoDialog(Cityset *cityset, std::string dir, std::string file, bool readonly, std::string title)
 {
   d_cityset = cityset;
   d_readonly = readonly;
@@ -56,8 +56,8 @@ CitySetInfoDialog::CitySetInfoDialog(Cityset *cityset, std::string file, bool re
 	(sigc::mem_fun(this, &CitySetInfoDialog::on_name_changed));
     
     xml->get_widget("filename_entry", filename_entry);
-    if (File::nameEndsWith(file, Cityset::file_extension) == true)
-      filename_entry->set_text(File::get_basename(file, false));
+    if (file != "")
+      filename_entry->set_text(file);
     else
       {
         guint32 num = 0;
@@ -82,7 +82,7 @@ CitySetInfoDialog::CitySetInfoDialog(Cityset *cityset, std::string file, bool re
     xml->get_widget("description_textview", description_textview);
     description_textview->get_buffer()->set_text(cityset->getInfo());
 
-    dir_label->set_text (File::get_dirname(file));
+    dir_label->set_text (dir);
     if (readonly)
       filename_entry->set_sensitive(false);
 

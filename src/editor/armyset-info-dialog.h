@@ -27,7 +27,7 @@
 class ArmySetInfoDialog: public sigc::trackable
 {
  public:
-    ArmySetInfoDialog(Armyset *armyset, std::string dir,
+    ArmySetInfoDialog(Armyset *armyset, std::string dir, std::string file,
                         bool readonly = false, std::string title = "");
     ~ArmySetInfoDialog();
 

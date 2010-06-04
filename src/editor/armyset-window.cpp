@@ -478,7 +478,7 @@ void ArmySetWindow::on_new_armyset_activated()
   std::string name = "";
   int id = Armysetlist::getNextAvailableId(0);
   Armyset *armyset = new Armyset(id, name);
-  ArmySetInfoDialog d(armyset, File::getUserArmysetDir(), false,
+  ArmySetInfoDialog d(armyset, File::getUserArmysetDir(), "", false,
                       _("Make a New Armyset"));
   d.set_parent_window(*window);
   int response = d.run();
@@ -604,7 +604,7 @@ void ArmySetWindow::on_save_as_activated()
   std::string orig_basename = d_armyset->getBaseName();
   guint32 orig_id = d_armyset->getId();
   d_armyset->setId(Armysetlist::getNextAvailableId(orig_id));
-  ArmySetInfoDialog d(d_armyset, File::getUserArmysetDir() + File::get_basename(current_save_filename, true), false,
+  ArmySetInfoDialog d(d_armyset, File::getUserArmysetDir(), "", false,
                         _("Save a Copy of a Armyset"));
   d.set_parent_window(*window);
   int response = d.run();
@@ -750,8 +750,9 @@ void ArmySetWindow::on_edit_bag_picture_activated()
 
 void ArmySetWindow::on_edit_armyset_info_activated()
 {
-  ArmySetInfoDialog d(d_armyset, current_save_filename, 
-                      true, _("Edit Armyset Information"));
+  ArmySetInfoDialog d(d_armyset, File::get_dirname(current_save_filename), 
+                      File::get_basename(current_save_filename), true, 
+                      _("Edit Armyset Information"));
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)

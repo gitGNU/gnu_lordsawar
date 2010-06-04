@@ -27,7 +27,7 @@
 class ShieldSetInfoDialog: public sigc::trackable
 {
  public:
-    ShieldSetInfoDialog(Shieldset *shieldset, std::string dir,
+    ShieldSetInfoDialog(Shieldset *shieldset, std::string dir, std::string file,
                         bool readonly = false, std::string title = "");
     ~ShieldSetInfoDialog();
 

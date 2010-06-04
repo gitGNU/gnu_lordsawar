@@ -481,7 +481,7 @@ void TileSetWindow::on_new_tileset_activated()
   std::string name = "";
   int id = Tilesetlist::getNextAvailableId(0);
   Tileset *tileset = new Tileset(id, name);
-  TileSetInfoDialog d(tileset, File::getUserTilesetDir(), false,
+  TileSetInfoDialog d(tileset, File::getUserTilesetDir(), "", false,
                       _("Make a New Tileset"));
   d.set_parent_window(*window);
   int response = d.run();
@@ -544,7 +544,7 @@ void TileSetWindow::on_save_as_activated()
   std::string orig_basename = d_tileset->getBaseName();
   guint32 orig_id = d_tileset->getId();
   d_tileset->setId(Tilesetlist::getNextAvailableId(orig_id));
-  TileSetInfoDialog d(d_tileset, File::getUserTilesetDir() + File::get_basename(current_save_filename, true), false,
+  TileSetInfoDialog d(d_tileset, File::getUserTilesetDir(), "", false,
                         _("Save a Copy of a Tileset"));
   d.set_parent_window(*window);
   int response = d.run();
@@ -656,7 +656,7 @@ void TileSetWindow::on_quit_activated()
 void TileSetWindow::on_edit_tileset_info_activated()
 {
   TileSetInfoDialog d(d_tileset, File::get_dirname(current_save_filename), 
-                      true);
+                      File::get_basename(current_save_filename), true);
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)

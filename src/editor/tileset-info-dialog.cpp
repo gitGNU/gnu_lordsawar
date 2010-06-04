@@ -32,7 +32,7 @@
 #include "File.h"
 
 
-TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, std::string file, bool readonly, std::string title)
+TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, std::string dir, std::string file, bool readonly, std::string title)
 {
   d_tileset = tileset;
   d_readonly = readonly;
@@ -56,8 +56,9 @@ TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, std::string file, bool re
 	(sigc::mem_fun(this, &TileSetInfoDialog::on_name_changed));
     
     xml->get_widget("filename_entry", filename_entry);
-    if (File::nameEndsWith(file, Tileset::file_extension) == true)
-      filename_entry->set_text(File::get_basename(file, false));
+    printf("file is `%s'\n", tileset->getBaseName().c_str());
+    if (file != "")
+      filename_entry->set_text(file);
     else
       {
         guint32 num = 0;
@@ -82,7 +83,7 @@ TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, std::string file, bool re
     xml->get_widget("description_textview", description_textview);
     description_textview->get_buffer()->set_text(tileset->getInfo());
 
-    dir_label->set_text (File::get_dirname(file));
+    dir_label->set_text (dir);
     if (readonly)
       filename_entry->set_sensitive(false);
 

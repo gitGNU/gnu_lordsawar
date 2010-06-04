@@ -287,7 +287,7 @@ void CitySetWindow::on_new_cityset_activated()
   std::string name = "";
   int id = Citysetlist::getNextAvailableId(0);
   Cityset *cityset = new Cityset(id, name);
-  CitySetInfoDialog d(cityset, File::getUserCitysetDir(), false,
+  CitySetInfoDialog d(cityset, File::getUserCitysetDir(), "", false,
                       _("Make a New Cityset"));
   d.set_parent_window(*window);
   int response = d.run();
@@ -389,7 +389,7 @@ void CitySetWindow::on_save_as_activated()
   std::string orig_basename = d_cityset->getBaseName();
   guint32 orig_id = d_cityset->getId();
   d_cityset->setId(Citysetlist::getNextAvailableId(orig_id));
-  CitySetInfoDialog d(d_cityset, File::getUserCitysetDir() + File::get_basename(current_save_filename, true), false,
+  CitySetInfoDialog d(d_cityset, File::getUserCitysetDir(), "", false,
                         _("Save a Copy of a Cityset"));
   d.set_parent_window(*window);
   int response = d.run();
@@ -462,8 +462,9 @@ void CitySetWindow::on_save_cityset_activated()
 
 void CitySetWindow::on_edit_cityset_info_activated()
 {
-  CitySetInfoDialog d(d_cityset, current_save_filename, true, 
-                        _("Edit Cityset Information"));
+  CitySetInfoDialog d(d_cityset, File::get_dirname(current_save_filename), 
+                      File::get_basename(current_save_filename), true, 
+                      _("Edit Cityset Information"));
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)

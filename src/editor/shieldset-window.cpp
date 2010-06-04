@@ -135,7 +135,7 @@ ShieldSetWindow::ShieldSetWindow(std::string load_filename)
             if (r->getName() == "")
               m = String::ucompose(_("Do you want to recover %1?"),
                                    File::get_basename(r->getFileName(), true));
-            else if (r->getName() != "" & r->getImagesNeeded() == 0)
+            else if (r->getName() != "" && r->getImagesNeeded() == 0)
               m = String::ucompose(_("Do you want to recover %1 (%2)?"),
                                    File::get_basename(r->getFileName(), true),
                                    r->getName());
@@ -246,7 +246,7 @@ void ShieldSetWindow::on_new_shieldset_activated()
   std::string name = "";
   int id = Shieldsetlist::getNextAvailableId(0);
   Shieldset *shieldset = new Shieldset(id, name);
-  ShieldSetInfoDialog d(shieldset, File::getUserShieldsetDir(), false,
+  ShieldSetInfoDialog d(shieldset, File::getUserShieldsetDir(), "", false,
                         _("Make a New Shieldset"));
   d.set_parent_window(*window);
   int response = d.run();
@@ -352,7 +352,7 @@ void ShieldSetWindow::on_save_as_activated()
   std::string orig_basename = d_shieldset->getBaseName();
   guint32 orig_id = d_shieldset->getId();
   d_shieldset->setId(Shieldsetlist::getNextAvailableId(orig_id));
-  ShieldSetInfoDialog d(d_shieldset, File::getUserShieldsetDir() + File::get_basename(current_save_filename, true), false,
+  ShieldSetInfoDialog d(d_shieldset, File::getUserShieldsetDir(), "", false,
                         _("Save a Copy of a Shieldset"));
   d.set_parent_window(*window);
   int response = d.run();
@@ -420,7 +420,8 @@ void ShieldSetWindow::on_save_shieldset_activated()
 
 void ShieldSetWindow::on_edit_shieldset_info_activated()
 {
-  ShieldSetInfoDialog d(d_shieldset, current_save_filename, true, 
+  ShieldSetInfoDialog d(d_shieldset, File::get_dirname(current_save_filename), 
+                        File::get_basename(current_save_filename), true, 
                         _("Edit Shieldset Information"));
   d.set_parent_window(*window);
   int response = d.run();

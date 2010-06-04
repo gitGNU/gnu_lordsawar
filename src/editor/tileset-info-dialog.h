@@ -27,7 +27,7 @@
 class TileSetInfoDialog: public sigc::trackable
 {
  public:
-    TileSetInfoDialog(Tileset *tileset, std::string dir,
+    TileSetInfoDialog(Tileset *tileset, std::string dir, std::string file,
                         bool readonly = false, std::string title = "");
     ~TileSetInfoDialog();
 

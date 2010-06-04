@@ -32,7 +32,7 @@
 #include "File.h"
 
 
-ShieldSetInfoDialog::ShieldSetInfoDialog(Shieldset *shieldset, std::string file, bool readonly, std::string title)
+ShieldSetInfoDialog::ShieldSetInfoDialog(Shieldset *shieldset, std::string dir, std::string file, bool readonly, std::string title)
 {
   d_shieldset = shieldset;
   d_readonly = readonly;
@@ -56,8 +56,8 @@ ShieldSetInfoDialog::ShieldSetInfoDialog(Shieldset *shieldset, std::string file,
 	(sigc::mem_fun(this, &ShieldSetInfoDialog::on_name_changed));
     
     xml->get_widget("filename_entry", filename_entry);
-    if (File::nameEndsWith(file, Shieldset::file_extension) == true)
-      filename_entry->set_text(File::get_basename(file, false));
+    if (file != "")
+      filename_entry->set_text(file);
     else
       {
         guint32 num = 0;
@@ -82,7 +82,7 @@ ShieldSetInfoDialog::ShieldSetInfoDialog(Shieldset *shieldset, std::string file,
     xml->get_widget("description_textview", description_textview);
     description_textview->get_buffer()->set_text(shieldset->getInfo());
 
-    dir_label->set_text (File::get_dirname(file));
+    dir_label->set_text (dir);
     if (readonly)
       filename_entry->set_sensitive(false);
 

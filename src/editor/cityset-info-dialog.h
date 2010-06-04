@@ -27,7 +27,7 @@
 class CitySetInfoDialog: public sigc::trackable
 {
  public:
-    CitySetInfoDialog(Cityset *cityset, std::string dir,
+    CitySetInfoDialog(Cityset *cityset, std::string dir, std::string file,
                         bool readonly = false, std::string title = "");
     ~CitySetInfoDialog();
 
