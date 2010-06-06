@@ -645,6 +645,8 @@ bool TileSetWindow::quit()
   else
     window->hide();
   File::erase(autosave);
+  if (d_tileset)
+    d_tileset->clean_tmp_dir();
   return true;
 }
 
@@ -1316,6 +1318,8 @@ void TileSetWindow::on_explosion_picture_activated()
 
 bool TileSetWindow::load_tileset(std::string filename)
 {
+  if (d_tileset)
+    d_tileset->clean_tmp_dir();
   std::string old_current_save_filename = current_save_filename;
   current_save_filename = filename;
   if (filename != autosave)

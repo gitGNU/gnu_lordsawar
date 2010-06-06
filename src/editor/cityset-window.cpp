@@ -496,6 +496,8 @@ void CitySetWindow::on_help_about_activated()
 
 bool CitySetWindow::load_cityset(std::string filename)
 {
+  if (d_cityset)
+    d_cityset->clean_tmp_dir();
   std::string old_current_save_filename = current_save_filename;
   current_save_filename = filename;
   if (filename != autosave)
@@ -556,6 +558,8 @@ bool CitySetWindow::quit()
   else
     window->hide();
   File::erase(autosave);
+  if (d_cityset)
+    d_cityset->clean_tmp_dir();
   return true;
 }
 

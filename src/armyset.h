@@ -261,6 +261,9 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	bool validateArmyUnitName(ArmyProto *a);
 	//! get filenames in this armyset, excepting the configuration file.
 	void getFilenames(std::list<std::string> &files);
+        //! Delete the armyset's temporary directory.
+        void clean_tmp_dir() const;
+
 	void instantiateImages();
 	void uninstantiateImages();
 	void loadStandardPic(std::string image_filename);

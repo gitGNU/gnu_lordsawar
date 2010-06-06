@@ -435,4 +435,9 @@ guint32 Shieldset::countEmptyImageNames() const
     }
   return count;
 }
+
+void Shieldset::clean_tmp_dir() const
+{
+  return Tar_Helper::clean_tmp_dir(getConfigurationFile());
+}
 //End of file

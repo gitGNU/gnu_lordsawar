@@ -821,4 +821,8 @@ bool Tileset::getTileStyle(guint32 id, Tile **tile, TileStyleSet **set, TileStyl
   return false;
 }
 
+void Tileset::clean_tmp_dir() const
+{
+  return Tar_Helper::clean_tmp_dir(getConfigurationFile());
+}
 //End of file

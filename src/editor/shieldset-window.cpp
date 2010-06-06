@@ -487,6 +487,8 @@ void ShieldSetWindow::fill_shield_info(Shield*shield)
 
 bool ShieldSetWindow::load_shieldset(std::string filename)
 {
+  if (d_shieldset)
+    d_shieldset->clean_tmp_dir();
   std::string old_current_save_filename = current_save_filename;
   current_save_filename = filename;
   if (filename != autosave)
@@ -537,7 +539,6 @@ bool ShieldSetWindow::load_shieldset(std::string filename)
   update_shield_panel();
   update_window_title();
   return true;
-
 }
 
 bool ShieldSetWindow::quit()
@@ -560,6 +561,8 @@ bool ShieldSetWindow::quit()
   else
     window->hide();
   File::erase(autosave);
+  if (d_shieldset)
+    d_shieldset->clean_tmp_dir();
   return true;
 }
 

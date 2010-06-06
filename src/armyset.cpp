@@ -901,3 +901,8 @@ bool Armyset::copy(std::string src, std::string dest)
 {
   return Tar_Helper::copy(src, dest);
 }
+
+void Armyset::clean_tmp_dir() const
+{
+  return Tar_Helper::clean_tmp_dir(getConfigurationFile());
+}

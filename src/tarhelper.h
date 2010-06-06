@@ -37,6 +37,7 @@ public:
     static bool saveFile(TAR *t, std::string filename, std::string destfile = "");
     //copies a tar file to another place, renaming one of the files inside.
     static bool copy(std::string filename, std::string newfilename);
+    static void clean_tmp_dir(std::string filename);
 private:
 
     // DATA

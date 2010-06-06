@@ -159,6 +159,9 @@ class Cityset : public sigc::trackable, public Set
 	//! get filenames in this cityset, excepting the configuration file.
 	void getFilenames(std::list<std::string> &files);
 
+        //! Delete the cityset's temporary directory.
+        void clean_tmp_dir() const;
+
 	void instantiateImages();
 	void instantiateImages(std::string port_filename,
 			       std::string signpost_filename,

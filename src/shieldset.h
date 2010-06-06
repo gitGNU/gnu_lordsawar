@@ -196,6 +196,9 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
         bool replaceFileInConfigurationFile(std::string file, std::string new_file);
         guint32 countEmptyImageNames() const;
 
+        //! Delete the shieldset's temporary directory.
+        void clean_tmp_dir() const;
+
 	// Methods that operate on the class data and also modify the class.
 
 	//! Load images associated with this shieldset.
@@ -216,6 +219,7 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	static std::list<std::string> scanUserCollection();
 
         static bool copy(std::string src, std::string dest);
+
 
     private:
 

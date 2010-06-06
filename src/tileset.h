@@ -268,6 +268,9 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
         bool replaceFileInConfigurationFile(std::string file, std::string new_file);
         bool addFileInConfigurationFile(std::string new_file);
 
+        //! Delete the tileset's temporary directory.
+        void clean_tmp_dir() const;
+
 	//Methods that operate on class data and modify the class data.
 
 	//! Destroy the images assoicated with this tileset.

@@ -659,4 +659,9 @@ guint32 Cityset::countEmptyImageNames() const
     count++;
   return count;
 }
+
+void Cityset::clean_tmp_dir() const
+{
+  return Tar_Helper::clean_tmp_dir(getConfigurationFile());
+}
 // End of file

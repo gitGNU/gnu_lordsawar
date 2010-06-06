@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -326,6 +326,21 @@ void File::erase_dir(std::string filename)
 {
   rmdir(filename.c_str());
 }
+
+void File::clean_dir(std::string filename)
+{
+  if (File::exists(filename) == false)
+    return;
+  Glib::Dir dir(filename);
+  for (Glib::DirIterator it = dir.begin(); it != dir.end(); it++)
+    {
+      std::string file = dir.read_name();
+      File::erase(file);
+    }
+  dir.close();
+  File::erase_dir(filename);
+}
+
 std::string File::getSetConfigurationFilename(std::string dir, std::string subdir, std::string ext)
 {
   return add_slash_if_necessary(dir) + subdir + "/" + subdir + ext;

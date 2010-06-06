@@ -348,3 +348,10 @@ bool Tar_Helper::copy(std::string oldfilename, std::string newfilename)
   return true;
 }
 
+void Tar_Helper::clean_tmp_dir(std::string filename)
+{
+  std::string tmpoutdir = 
+    String::ucompose("%1/%2.%3/", Glib::get_tmp_dir(), 
+                     File::get_basename(filename, true), getpid());
+  File::clean_dir(tmpoutdir);
+}
