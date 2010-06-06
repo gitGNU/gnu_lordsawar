@@ -139,6 +139,8 @@ class GameScenario: public GameScenarioOptions
 
 	bool validate(std::list<std::string> &errors, std::list<std::string> &warnings);
 
+        void clean_tmp_dir() const;
+
 	void initialize(GameParameters g);
 
 	static GameParameters loadGameParameters(std::string filename, bool &broken);
@@ -182,6 +184,7 @@ class GameScenario: public GameScenarioOptions
 	  guint32 d_playmode;
 	  std::string d_id; //globally unique id identifying the scenario
 	  bool inhibit_autosave_removal;
+          std::string loaded_game_filename;
 };
 
 #endif // GAME_SCENARIO_H

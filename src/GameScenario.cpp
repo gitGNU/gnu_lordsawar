@@ -76,7 +76,8 @@ using namespace std;
 GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
 			   GameScenario::PlayMode playmode)
     :d_name(name),d_comment(comment), d_copyright(""), d_license(""),
-    d_turnmode(turnmode), d_playmode(playmode), inhibit_autosave_removal(false)
+    d_turnmode(turnmode), d_playmode(playmode), inhibit_autosave_removal(false),
+    loaded_game_filename("")
 {
     Armysetlist::getInstance();
     Tilesetlist::getInstance();
@@ -91,11 +92,12 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
 //savegame has an absolute path
 GameScenario::GameScenario(string savegame, bool& broken)
   :d_turnmode(true), d_playmode(GameScenario::HOTSEAT), 
-    inhibit_autosave_removal(false)
+    inhibit_autosave_removal(false), loaded_game_filename("")
 {
   Tar_Helper t(savegame, std::ios::in, broken);
   if (broken == false)
     {
+      loaded_game_filename = savegame;
       loadArmysets(&t);
       loadTilesets(&t);
       loadCitysets(&t);
@@ -174,7 +176,7 @@ bool GameScenario::loadShieldsets(Tar_Helper *t)
 
 GameScenario::GameScenario(XML_Helper &helper, bool& broken)
   : d_turnmode(true), d_playmode(GameScenario::HOTSEAT),
-    inhibit_autosave_removal(false)
+    inhibit_autosave_removal(false), loaded_game_filename("")
 {
   broken = loadWithHelper(helper);
 }
@@ -567,6 +569,7 @@ GameScenario::~GameScenario()
       std::string filename = File::getSavePath() + "autosave" + SAVE_EXT;
       File::erase(filename);
     }
+  clean_tmp_dir();
   GameScenarioOptions::s_round = 0;
 } 
 
@@ -1273,3 +1276,8 @@ void GameScenario::loadDetails(std::string filename, bool &broken, guint32 &play
   return;
 }
 
+void GameScenario::clean_tmp_dir() const
+{
+  if (loaded_game_filename != "")
+    Tar_Helper::clean_tmp_dir(loaded_game_filename);
+}

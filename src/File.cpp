@@ -327,18 +327,15 @@ void File::erase_dir(std::string filename)
   rmdir(filename.c_str());
 }
 
-void File::clean_dir(std::string filename)
+void File::clean_dir(std::string dirname)
 {
-  if (File::exists(filename) == false)
+  if (File::exists(dirname) == false)
     return;
-  Glib::Dir dir(filename);
+  Glib::Dir dir(dirname);
   for (Glib::DirIterator it = dir.begin(); it != dir.end(); it++)
-    {
-      std::string file = dir.read_name();
-      File::erase(file);
-    }
+    File::erase(File::add_slash_if_necessary(dirname) + *it);
   dir.close();
-  File::erase_dir(filename);
+  File::erase_dir(dirname);
 }
 
 std::string File::getSetConfigurationFilename(std::string dir, std::string subdir, std::string ext)
