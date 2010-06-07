@@ -2,7 +2,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -49,6 +49,8 @@
 #include "road.h"
 #include "armysetlist.h"
 #include "citysetlist.h"
+#include "tilesetlist.h"
+#include "shieldsetlist.h"
 #include "real_player.h"
 #include "ai_fast.h"
 #include "ai_smart.h"
@@ -136,19 +138,24 @@ void CreateScenario::setMapTiles(std::string tilesname)
 {
     debug("CreateScenario::setMapTiles")
     d_tilesname = tilesname;
+    Tileset *ts = Tilesetlist::getInstance()->getTileset(tilesname);
+    GameMap::getInstance()->setTileset(ts);
 }
 
 void CreateScenario::setShieldset(std::string shieldset)
 {
     debug("CreateScenario::setShieldset")
     d_shieldsname = shieldset;
+    GameMap::getInstance()->setShieldset(Shieldsetlist::getInstance()->getShieldset(shieldset));
 }
 
 void CreateScenario::setCityset(std::string citysetname)
 {
     debug("CreateScenario::setCityset")
     d_citysetname = citysetname;
-    d_generator->setCityset(Citysetlist::getInstance()->getCityset(citysetname));
+    Cityset *cs = Citysetlist::getInstance()->getCityset(citysetname);
+    d_generator->setCityset(cs);
+    GameMap::getInstance()->setCityset(cs);
 }
 
 void CreateScenario::setNoCities(int nocities)

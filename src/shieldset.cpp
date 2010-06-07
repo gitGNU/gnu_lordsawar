@@ -73,6 +73,7 @@ Shieldset::~Shieldset()
   uninstantiateImages();
   for (iterator it = begin(); it != end(); it++)
     delete *it;
+  clean_tmp_dir();
 }
 
 ShieldStyle * Shieldset::lookupShieldByTypeAndColour(guint32 type, guint32 colour) const

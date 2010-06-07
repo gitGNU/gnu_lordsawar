@@ -285,6 +285,9 @@ bool MapGenerator::canPlaceBridge(Vector<int> pos, int type, Vector<int> &src, V
 
 void MapGenerator::makeBridges()
 {
+  std::string orig_tileset = GameMap::getInstance()->getTileset()->getBaseName();
+  std::string orig_shieldset = GameMap::getInstance()->getShieldset()->getBaseName();
+  std::string orig_cityset = GameMap::getInstance()->getCityset()->getBaseName();
   GameMap::deleteInstance();
   Citylist::deleteInstance();
   Roadlist::deleteInstance();
@@ -374,6 +377,7 @@ void MapGenerator::makeBridges()
   Citylist::deleteInstance();
   Portlist::deleteInstance();
   Bridgelist::deleteInstance();
+  GameMap::getInstance(orig_tileset, orig_shieldset, orig_cityset);
 }
 
 void MapGenerator::printMap(int j, int i)
@@ -1637,6 +1641,9 @@ std::vector<pair<int , Vector<int> > > MapGenerator::findBridgePlaces()
 
 void MapGenerator::makeRoads()
 {
+  std::string orig_tileset = GameMap::getInstance()->getTileset()->getBaseName();
+  std::string orig_shieldset = GameMap::getInstance()->getShieldset()->getBaseName();
+  std::string orig_cityset = GameMap::getInstance()->getCityset()->getBaseName();
   GameMap::deleteInstance();
   Citylist::deleteInstance();
   Roadlist::deleteInstance();
@@ -1696,6 +1703,7 @@ void MapGenerator::makeRoads()
   GameMap::deleteInstance();
   Citylist::deleteInstance();
   Portlist::deleteInstance();
+  GameMap::getInstance(orig_tileset, orig_shieldset, orig_cityset);
 }
 
 void MapGenerator::rescueLoneTiles(Tile::Type FIND_THIS, Tile::Type REPLACE, bool grow)

@@ -544,7 +544,6 @@ bool GameScenario::loadWithHelper(XML_Helper& helper)
 GameScenario::~GameScenario()
 {
   // GameMap is a Singleton so we need a function to delete it
-  GameMap::deleteInstance();
   Itemlist::deleteInstance();
   Playerlist::deleteInstance();
   Citylist::deleteInstance();
@@ -557,6 +556,7 @@ GameScenario::~GameScenario()
   Roadlist::deleteInstance();
   QuestsManager::deleteInstance();
   VectoredUnitlist::deleteInstance();
+  GameMap::deleteInstance();
 
   if (fl_counter)
     {

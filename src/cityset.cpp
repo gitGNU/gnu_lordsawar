@@ -104,6 +104,7 @@ Cityset::Cityset(XML_Helper *helper, std::string directory)
 Cityset::~Cityset()
 {
   uninstantiateImages();
+  clean_tmp_dir();
 }
 
 class CitysetLoader

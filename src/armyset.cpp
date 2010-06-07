@@ -78,6 +78,7 @@ Armyset::~Armyset()
   uninstantiateImages();
   for (iterator it = begin(); it != end(); it++)
     delete *it;
+  clean_tmp_dir();
 }
 
 bool Armyset::loadArmyProto(string tag, XML_Helper* helper)

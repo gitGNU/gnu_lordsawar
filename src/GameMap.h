@@ -114,11 +114,17 @@ class GameMap: public sigc::trackable
         //! Returns the tileset in use
         Tileset* getTileset() const {return d_tileSet;}
 
+        void setTileset(Tileset *tileset) {d_tileSet = tileset;}
+
         //! Returns the shieldset in use
         Shieldset* getShieldset() const {return d_shieldSet;}
 
+        void setShieldset(Shieldset *shieldset) {d_shieldSet = shieldset;}
+
         //! Returns the tileset in use
         Cityset* getCityset() const {return d_citySet;}
+
+        void setCityset(Cityset *cityset) {d_citySet = cityset;}
 
 	//! Sets the tile object at position (x, y)
 	void setTile(int x, int y, Maptile *tile);
@@ -280,8 +286,8 @@ class GameMap: public sigc::trackable
         Vector<int> findNearestAreaForBuilding(Maptile::Building building_type, Vector<int> pos, guint32 width);
     protected:
         //! Create the map with the given tileset
-        GameMap(std::string TilesetName, std::string ShieldsetName,
-		std::string Citysetname);
+        GameMap(std::string TilesetName = "", std::string ShieldsetName = "",
+		std::string Citysetname = "");
 
         //! Load the map using the given XML_Helper
         GameMap(XML_Helper* helper);

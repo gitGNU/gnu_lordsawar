@@ -121,6 +121,7 @@ Tileset::~Tileset()
   uninstantiateImages();
   for (unsigned int i=0; i < size(); i++)
     delete (*this)[i];
+  clean_tmp_dir();
 }
 
 int Tileset::getIndex(Tile::Type type) const
@@ -339,8 +340,8 @@ bool Tileset::validate() const
     {
       if ((*i)->validate() == false)
 	{
-	  fprintf (stderr, "`%s' fails validation\n", 
-		   (*i)->getName().c_str());
+	  fprintf (stderr, "`%s' tile fails validation in %s\n", 
+		   (*i)->getName().c_str(), getConfigurationFile().c_str());
 	  return false;
 	}
     }

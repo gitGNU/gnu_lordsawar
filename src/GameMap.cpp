@@ -75,7 +75,8 @@ GameMap* GameMap::getInstance()
 {
     if (s_instance != 0)
       return s_instance;
-    else return 0;
+    else
+      return getInstance("", "", "");
 }
 
 
@@ -111,8 +112,14 @@ void GameMap::deleteInstance()
 GameMap::GameMap(std::string TilesetName, std::string ShieldsetName,
 		 std::string CitysetName)
 {
+  d_tileSet = NULL;
+  d_shieldSet = NULL;
+  d_citySet = NULL;
+  if (TilesetName != "")
     d_tileSet = Tilesetlist::getInstance()->getTileset(TilesetName);
+  if (ShieldsetName != "")
     d_shieldSet = Shieldsetlist::getInstance()->getShieldset(ShieldsetName);
+  if (CitysetName != "")
     d_citySet = Citysetlist::getInstance()->getCityset(CitysetName);
 
     Vector<int>::setMaximumWidth(s_width);
@@ -229,8 +236,6 @@ GameMap::GameMap(XML_Helper* helper)
 
 GameMap::~GameMap()
 {
-    //delete d_tileSet;
-
     for (int i = 0; i < s_width; i++)
     {
         for (int j = 0; j < s_height; j++)
@@ -241,16 +246,17 @@ GameMap::~GameMap()
     }
 
     delete[] d_map;
+    //we don't delete d_tileSet, d_citySet, and d_shieldSet here.
+    //they belong to their respective setlists.
 }
 
 bool GameMap::fill(MapGenerator* generator)
 //basically, this does the same as the former random function, but you don't
 //need to go the whole way via dumping the map in a file etc.
 {
-    int width;
-    int height;
+    int width = 0;
+    int height = 0;
     const Tile::Type* terrain = generator->getMap(width, height);
-
 
     //the sizes should definitely match, else we have a problem here
     if (width != s_width || height != s_height)

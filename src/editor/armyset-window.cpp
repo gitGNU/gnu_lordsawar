@@ -1856,8 +1856,6 @@ void ArmySetWindow::on_remove_army_clicked()
 
 bool ArmySetWindow::load_armyset(std::string filename)
 {
-  if (d_armyset)
-    d_armyset->clean_tmp_dir();
   std::string old_current_save_filename = current_save_filename;
   current_save_filename = filename;
   if (filename != autosave)
@@ -1932,7 +1930,7 @@ bool ArmySetWindow::quit()
     window->hide();
   File::erase(autosave);
   if (d_armyset)
-    d_armyset->clean_tmp_dir();
+    delete d_armyset;
   return true;
 }
 
