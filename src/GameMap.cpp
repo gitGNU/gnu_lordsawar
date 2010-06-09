@@ -58,6 +58,8 @@
 #include "armyset.h"
 #include "armysetlist.h"
 #include "CreateScenario.h"
+#include "reward.h"
+#include "rewardlist.h"
 
 std::string GameMap::d_tag = "map";
 std::string GameMap::d_itemstack_tag = "itemstack";
@@ -112,15 +114,12 @@ void GameMap::deleteInstance()
 GameMap::GameMap(std::string TilesetName, std::string ShieldsetName,
 		 std::string CitysetName)
 {
-  d_tileSet = NULL;
-  d_shieldSet = NULL;
-  d_citySet = NULL;
   if (TilesetName != "")
-    d_tileSet = Tilesetlist::getInstance()->getTileset(TilesetName);
+    d_tileset = TilesetName;
   if (ShieldsetName != "")
-    d_shieldSet = Shieldsetlist::getInstance()->getShieldset(ShieldsetName);
+    d_shieldset = ShieldsetName;
   if (CitysetName != "")
-    d_citySet = Citysetlist::getInstance()->getCityset(CitysetName);
+    d_cityset = CitysetName;
 
     Vector<int>::setMaximumWidth(s_width);
     d_map = new Maptile*[s_width*s_height];
@@ -139,6 +138,7 @@ bool GameMap::offmap(int x, int y)
 
 void GameMap::processStyles(std::string styles, int chars_per_style)
 {
+  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
   int c = chars_per_style;
     int offset = 0;
     for (int j = 0; j < s_height; j++)
@@ -165,9 +165,9 @@ void GameMap::processStyles(std::string styles, int chars_per_style)
 	    char *end = NULL;
 	    val = strtoul (hexstr, &end, 16);
 	    guint32 id = (guint32) val;
-	    TileStyle *style = d_tileSet->getTileStyle(id);
+	    TileStyle *style = tileset->getTileStyle(id);
 	    if (!style)
-	      style = d_tileSet->getTileStyle(0);
+	      style = tileset->getTileStyle(0);
 	    d_map[j*s_width + i]->setTileStyle(style);
         }
     }
@@ -194,10 +194,11 @@ GameMap::GameMap(XML_Helper* helper)
     helper->getData(types, "types");
     helper->getData(styles, "styles");
 
-    d_tileSet = Tilesetlist::getInstance()->getTileset(t_dir);
-    d_shieldSet = Shieldsetlist::getInstance()->getShieldset(s_dir);
-    d_citySet = Citysetlist::getInstance()->getCityset(c_dir);
+    d_tileset = t_dir;
+    d_shieldset = s_dir;
+    d_cityset = c_dir;
 
+    Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
     Vector<int>::setMaximumWidth(s_width);
     //create the map
     d_map = new Maptile*[s_width*s_height];
@@ -222,7 +223,7 @@ GameMap::GameMap(XML_Helper* helper)
             //the chars now hold the ascii representation of the numbers, which
             //we don't want
             type -= '0';
-            d_map[j*s_width + i] = new Maptile(d_tileSet, i, j, type, NULL);
+            d_map[j*s_width + i] = new Maptile(tileset, i, j, type, NULL);
         }
     }
 
@@ -246,8 +247,6 @@ GameMap::~GameMap()
     }
 
     delete[] d_map;
-    //we don't delete d_tileSet, d_citySet, and d_shieldSet here.
-    //they belong to their respective setlists.
 }
 
 bool GameMap::fill(MapGenerator* generator)
@@ -257,6 +256,7 @@ bool GameMap::fill(MapGenerator* generator)
     int width = 0;
     int height = 0;
     const Tile::Type* terrain = generator->getMap(width, height);
+    Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
 
     //the sizes should definitely match, else we have a problem here
     if (width != s_width || height != s_height)
@@ -271,9 +271,9 @@ bool GameMap::fill(MapGenerator* generator)
     for (int j = 0; j < height; j++)
         for (int i = 0; i < width; i++)
         {
-            int index = d_tileSet->getIndex(terrain[j*width + i]);
+            int index = tileset->getIndex(terrain[j*width + i]);
 	    if (index != -1)
-	      d_map[j*s_width + i] = new Maptile(d_tileSet, i, j, 
+	      d_map[j*s_width + i] = new Maptile(tileset, i, j, 
 						 (guint32)index, NULL);
         }
 
@@ -283,10 +283,11 @@ bool GameMap::fill(MapGenerator* generator)
 
 bool GameMap::fill(guint32 type)
 {
+    Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
     for (int i = 0; i < s_width; i++)
         for (int j = 0; j < s_height; j++)
 	  {
-            d_map[j*s_width + i] = new Maptile(d_tileSet, i, j, type, NULL);
+            d_map[j*s_width + i] = new Maptile(tileset, i, j, type, NULL);
 	  }
 
     applyTileStyles(0, 0, s_height, s_width, false);
@@ -295,6 +296,7 @@ bool GameMap::fill(guint32 type)
 
 bool GameMap::save(XML_Helper* helper) const
 {
+    Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
     bool retval = true;
 
     std::stringstream types;
@@ -303,14 +305,14 @@ bool GameMap::save(XML_Helper* helper) const
     for (int i = 0; i < s_height; i++)
     {
         for (int j = 0; j < s_width; j++)
-            types << getTile(j, i)->getType();
+            types << getTile(j, i)->getIndex();
         types <<endl;
     }
 
     std::stringstream styles;
     styles <<endl;
 	    
-    int largest_style_id = d_tileSet->getLargestTileStyleId();
+    int largest_style_id = tileset->getLargestTileStyleId();
     guint32 num_digits = TileStyle::calculateHexDigits(largest_style_id);
     for (int i = 0; i < s_height; i++)
     {
@@ -329,9 +331,9 @@ bool GameMap::save(XML_Helper* helper) const
     retval &= helper->openTag(GameMap::d_tag);
     retval &= helper->saveData("width", s_width);
     retval &= helper->saveData("height", s_height);
-    retval &= helper->saveData("tileset", d_tileSet->getBaseName());
-    retval &= helper->saveData("shieldset", d_shieldSet->getBaseName());
-    retval &= helper->saveData("cityset", d_citySet->getBaseName());
+    retval &= helper->saveData("tileset", d_tileset);
+    retval &= helper->saveData("shieldset", d_shieldset);
+    retval &= helper->saveData("cityset", d_cityset);
     retval &= helper->saveData("types", types.str());
     retval &= helper->saveData("styles", styles.str());
 
@@ -534,43 +536,41 @@ bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
       if (from == to)
         return false;
       //am i on land, going towards water that has a port on it?
-      //if (from->getMaptileType() != Tile::WATER &&
-          //to->getMaptileType() == Tile::WATER &&
+      //if (from->getType() != Tile::WATER &&
+          //to->getType() == Tile::WATER &&
           //to_dock)
         //return false;
       //am i on water going towards land from a port?
-      //if (from->getMaptileType() == Tile::WATER &&
-          //to->getMaptileType() != Tile::WATER &&
+      //if (from->getType() == Tile::WATER &&
+          //to->getType() != Tile::WATER &&
           //from_dock)
         //return false;
 
       //am i on water going towards land that isn't a city,
       //and i'm not coming from a port
-      if (from->getMaptileType() == Tile::WATER &&
-          to->getMaptileType() != Tile::WATER &&
+      if (from->getType() == Tile::WATER && to->getType() != Tile::WATER &&
           !to_dock && !from_dock)
         return true;
 
       //am i on land, going towards water from a tile that isn't a
       //city, or a port and i'm not going to a port?
-      if (from->getMaptileType() != Tile::WATER &&
-          to->getMaptileType() == Tile::WATER &&
+      if (from->getType() != Tile::WATER && to->getType() == Tile::WATER &&
           !from_dock && !to_dock)
         return true;
 
       //is the tile i'm going to a mountain that doesn't have a road?
-      if (to->getMaptileType() == Tile::MOUNTAIN &&
-	  getRoad(Vector<int>(destx, desty)) == NULL)
+      if (to->getType() == Tile::MOUNTAIN && 
+          getRoad(Vector<int>(destx, desty)) == NULL)
         return true;
 
       //am i on a mountain without a road?
-      if (from->getMaptileType() == Tile::MOUNTAIN &&
+      if (from->getType() == Tile::MOUNTAIN &&
 	  getRoad(Vector<int>(x, y)) == NULL)
         return true;
 
-      if (from->getMaptileType() == Tile::VOID)
+      if (from->getType() == Tile::VOID)
 	return true;
-      if (to->getMaptileType() == Tile::VOID)
+      if (to->getType() == Tile::VOID)
 	return true;
     }
  return false;
@@ -672,7 +672,7 @@ std::list<MapBackpack*> GameMap::getBackpacks() const
 
 TileStyle *GameMap::calculatePreferredStyle(int i, int j)
 {
-  Tileset *tileset = getTileset();
+  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
   Maptile *mtile = getTile(j, i);
   int box[3][3];
   for (int k = -1; k <= +1; k++)
@@ -681,89 +681,91 @@ TileStyle *GameMap::calculatePreferredStyle(int i, int j)
 	box[k+1][l+1] = 1;
 	if (offmap(j+l, i+k))
 	  continue;
-	box[k+1][l+1] = are_those_tiles_similar(getTile(j+l, i+k)->getMaptileType(), mtile->getMaptileType(), false);
+	box[k+1][l+1] = 
+          are_those_tiles_similar(getTile(j+l, i+k)->getType(),
+                                  mtile->getType(), false);
       }
   if (box[0][0] && box[0][1] && box[0][2] &&
       box[1][0] && box[1][1] && box[1][2] &&
       box[2][0] && box[2][1] && box[2][2])
-    return tileset->getRandomTileStyle(mtile->getType(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(), 
 				       TileStyle::INNERMIDDLECENTER);
   else if (box[0][0] && box[0][1] && !box[0][2] && 
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   !box[2][0] && box[2][1] && box[2][2])
-    return tileset->getRandomTileStyle(mtile->getType(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(), 
 				       TileStyle::TOPLEFTTOBOTTOMRIGHTDIAGONAL);
   else if (!box[0][0] && box[0][1] && box[0][2] && 
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   box[2][0] && box[2][1] && !box[2][2])
-    return tileset->getRandomTileStyle(mtile->getType(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(), 
 				       TileStyle::BOTTOMLEFTTOTOPRIGHTDIAGONAL);
   else if (/*box[0][0] &&*/ !box[0][1] && /*box[0][2] &&*/
 	   !box[1][0] && box[1][1] && box[1][2] &&
 	   /*!box[2][0] &&*/ box[2][1] && box[2][2])
-    return tileset->getRandomTileStyle(mtile->getType(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(), 
 				       TileStyle::OUTERTOPLEFT);
   else if (/*box[0][0] &&*/ !box[0][1] && /*box[0][2] &&*/
 	   box[1][0] && box[1][1] && !box[1][2] &&
 	   box[2][0] && box[2][1] /*&& !box[2][2] */)
-    return tileset->getRandomTileStyle(mtile->getType(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(), 
 				       TileStyle::OUTERTOPRIGHT);
   else if (/*box[0][0] &&*/ box[0][1] && box[0][2] &&
 	   !box[1][0] && box[1][1] && box[1][2] &&
 	   /*box[2][0] &&*/ !box[2][1] /*&& box[2][2]*/)
-    return tileset->getRandomTileStyle(mtile->getType(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(), 
 				       TileStyle::OUTERBOTTOMLEFT);
   else if (box[0][0] && box[0][1] && /*!box[0][2] &&*/
 	   box[1][0] && box[1][1] && !box[1][2] && 
 	   /*box[2][0] &&*/ !box[2][1] /*&& box[2][2]*/)
-    return tileset->getRandomTileStyle(mtile->getType(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(), 
 				       TileStyle::OUTERBOTTOMRIGHT);
   else if (/*box[0][0] &&*/ box[0][1] && /*box[0][2] && */
 	   !box[1][0] && box[1][1] && box[1][2] &&
 	   /*box[2][0] &&*/ box[2][1] /*&& box[2][2]*/)
-    return tileset->getRandomTileStyle(mtile->getType(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(), 
 				       TileStyle::OUTERMIDDLELEFT);
   else if (/*box[0][0] &&*/ box[0][1] && /*box[0][2] && */
 	   box[1][0] && box[1][1] && !box[1][2] &&
 	   /*box[2][0] &&*/ box[2][1] /*&& box[2][2] */)
-    return tileset->getRandomTileStyle(mtile->getType(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(), 
 				       TileStyle::OUTERMIDDLERIGHT);
   else if (box[0][0] && box[0][1] && /*box[0][2] && */
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   box[2][0] && box[2][1] && !box[2][2])
-    return tileset->getRandomTileStyle(mtile->getType(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(), 
 				       TileStyle::INNERTOPLEFT);
   else if (/*box[0][0] &&*/ box[0][1] && box[0][2] && 
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   !box[2][0] && box[2][1] && box[2][2])
-    return tileset->getRandomTileStyle(mtile->getType(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(), 
 				       TileStyle::INNERTOPRIGHT);
   else if (box[0][0] && box[0][1] && !box[0][2] && 
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   box[2][0] && box[2][1] /*&& box[2][2]*/)
-    return tileset->getRandomTileStyle(mtile->getType(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(), 
 				       TileStyle::INNERBOTTOMLEFT);
   else if (!box[0][0] && box[0][1] && box[0][2] && 
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   /*box[2][0] &&*/ box[2][1] && box[2][2])
-    return tileset->getRandomTileStyle(mtile->getType(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(), 
 				       TileStyle::INNERBOTTOMRIGHT);
   else if (/*!box[0][0] &&*/ !box[0][1] && /*!box[0][2] &&*/
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   /*!box[2][0] &&*/ box[2][1] /*&& box[2][2]*/)
-    return tileset->getRandomTileStyle(mtile->getType(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(), 
 				       TileStyle::OUTERTOPCENTER);
   else if (/*box[0][0] &&*/ box[0][1] && /*box[0][2] &&*/
 	   box[1][0] && box[1][1] && box[1][2] &&
 	   /*!box[2][0] &&*/ !box[2][1] /*&& !box[2][2]*/)
-    return tileset->getRandomTileStyle(mtile->getType(), 
+    return tileset->getRandomTileStyle(mtile->getIndex(), 
 				       TileStyle::OUTERBOTTOMCENTER);
   return NULL;
 }
 
 void GameMap::close_circles (int minx, int miny, int maxx, int maxy)
 {
-  Tileset *tileset = getTileset();
+  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
   for (int i = minx; i < maxx; i++)
     {
       for (int j = miny; j < maxy; j++)
@@ -780,10 +782,10 @@ void GameMap::close_circles (int minx, int miny, int maxx, int maxy)
 		  nextstyle->getType() == TileStyle::OUTERBOTTOMCENTER)
 		{
 		  TileStyle *style;
-		  style = tileset->getRandomTileStyle(tile->getType(),
+		  style = tileset->getRandomTileStyle(tile->getIndex(),
 						      TileStyle::OUTERTOPRIGHT);
 		  tile->setTileStyle(style);
-		  style = tileset->getRandomTileStyle(nexttile->getType(),
+		  style = tileset->getRandomTileStyle(nexttile->getIndex(),
 						      TileStyle::OUTERBOTTOMLEFT);
 		  nexttile->setTileStyle(style);
 		}
@@ -791,10 +793,10 @@ void GameMap::close_circles (int minx, int miny, int maxx, int maxy)
 		  nextstyle->getType() == TileStyle::OUTERTOPCENTER)
 		{
 		  TileStyle *style;
-		  style = tileset->getRandomTileStyle(tile->getType(),
+		  style = tileset->getRandomTileStyle(tile->getIndex(),
 						      TileStyle::OUTERBOTTOMRIGHT);
 		  tile->setTileStyle(style);
-		  style = tileset->getRandomTileStyle(nexttile->getType(),
+		  style = tileset->getRandomTileStyle(nexttile->getIndex(),
 						      TileStyle::OUTERTOPLEFT);
 		  nexttile->setTileStyle(style);
 		}
@@ -807,10 +809,10 @@ void GameMap::close_circles (int minx, int miny, int maxx, int maxy)
 		  nextstyle->getType() == TileStyle::OUTERMIDDLELEFT)
 		{
 		  TileStyle *style;
-		  style = tileset->getRandomTileStyle(tile->getType(),
+		  style = tileset->getRandomTileStyle(tile->getIndex(),
 						      TileStyle::OUTERBOTTOMRIGHT);
 		  tile->setTileStyle(style);
-		  style = tileset->getRandomTileStyle(nexttile->getType(),
+		  style = tileset->getRandomTileStyle(nexttile->getIndex(),
 						      TileStyle::OUTERTOPLEFT);
 		  nexttile->setTileStyle(style);
 		}
@@ -818,10 +820,10 @@ void GameMap::close_circles (int minx, int miny, int maxx, int maxy)
 		  nextstyle->getType() == TileStyle::OUTERMIDDLERIGHT)
 		{
 		  TileStyle *style;
-		  style = tileset->getRandomTileStyle(tile->getType(),
+		  style = tileset->getRandomTileStyle(tile->getIndex(),
 						      TileStyle::OUTERBOTTOMLEFT);
 		  tile->setTileStyle(style);
-		  style = tileset->getRandomTileStyle(nexttile->getType(),
+		  style = tileset->getRandomTileStyle(nexttile->getIndex(),
 						      TileStyle::OUTERTOPRIGHT);
 		  nexttile->setTileStyle(style);
 		}
@@ -861,7 +863,8 @@ int GameMap::tile_is_connected_to_other_like_tiles (Tile::Type tile, int i, int 
       {
 	if (offmap(j+l,i+k))
 	  continue;
-	box[k+1][l+1] = are_those_tiles_similar(getTile(j+l, i+k)->getMaptileType(), tile, true);
+	box[k+1][l+1] = are_those_tiles_similar(getTile(j+l, i+k)->getType(), 
+                                                tile, true);
       }
   if (box[0][0] && box[0][1] && box[1][0] && box[1][1])
     return 1;
@@ -877,6 +880,7 @@ int GameMap::tile_is_connected_to_other_like_tiles (Tile::Type tile, int i, int 
 void GameMap::demote_lone_tile(int minx, int miny, int maxx, int maxy, 
 			       Tile::Type intype, Tile::Type outtype)
 {
+  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
   int i;
   int j;
   for (i = minx; i < maxx; i++)
@@ -884,7 +888,7 @@ void GameMap::demote_lone_tile(int minx, int miny, int maxx, int maxy,
       {
 	if (offmap(j, i))
 	  continue;
-	Tile::Type tile = getTile(j, i)->getMaptileType();
+	Tile::Type tile = getTile(j, i)->getType();
 	if (tile == intype)
 	  {
 	    //if we're not connected in a square of
@@ -893,14 +897,13 @@ void GameMap::demote_lone_tile(int minx, int miny, int maxx, int maxy,
 	      {
 		//okay, this is a lone tile.
 		//downgrade it
-		int idx = d_tileSet->getIndex(outtype);
+		int idx = tileset->getIndex(outtype);
 		if (idx != -1)
-		  setTile(j, i, new Maptile (d_tileSet, j, i, 
-					     (guint32)idx, NULL));
+		  setTile(j, i, new Maptile (tileset, j, i, 
+                                             (guint32)idx, NULL));
 	      }
 	  }
       }
-
 }
 
 void GameMap::applyTileStyles (Rectangle r, bool smooth_terrain)
@@ -950,23 +953,24 @@ std::vector<Vector<int> > GameMap::getItems()
 
 void GameMap::surroundMountains(int minx, int miny, int maxx, int maxy)
 {
+  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
   for(int j = miny; j < maxy; j++)
     for(int i = minx; i < maxx; i++)
       {
 	if (offmap(j, i))
 	  continue;
-	if(getTile(j, i)->getMaptileType() == Tile::MOUNTAIN)
+	if(getTile(j, i)->getType() == Tile::MOUNTAIN)
 	  for(int J = -1; J <= +1; ++J)
 	    for(int I = -1; I <= +1; ++I)
 	      if((!(offmap(j+J,i+I))) &&
-		 (getTile((j+J),(i+I))->getMaptileType() != Tile::MOUNTAIN))
+		 (getTile((j+J),(i+I))->getType() != Tile::MOUNTAIN))
 		{
-		  int idx = d_tileSet->getIndex(Tile::HILLS);
-		  if(getTile((j+J), (i+I))->getMaptileType() != Tile::WATER)
+		  int idx = tileset->getIndex(Tile::HILLS);
+		  if(getTile((j+J), (i+I))->getType() != Tile::WATER)
 		    {
 		      if (idx != -1)
 			setTile(j+J, i+I, 
-				new Maptile (d_tileSet, j+J, i+I, 
+				new Maptile (tileset, j+J, i+I, 
 					     (guint32)idx, NULL));
 		    }
 		  else 
@@ -974,7 +978,7 @@ void GameMap::surroundMountains(int minx, int miny, int maxx, int maxy)
 		    // water has priority here, there was some work done to conenct bodies of water
 		    // so don't break those connections.
 		      setTile(j, i, 
-			    new Maptile (d_tileSet, j, i, (guint32)idx, NULL));
+			    new Maptile (tileset, j, i, (guint32)idx, NULL));
 		    }
 		}
       }
@@ -983,17 +987,18 @@ void GameMap::surroundMountains(int minx, int miny, int maxx, int maxy)
 void GameMap::applyTileStyle (int i, int j)
 {
   Maptile *mtile = getTile(j, i);
-  Tileset *tileset = getTileset();
+  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+
   TileStyle *style = calculatePreferredStyle(i, j);
   if (!style)
-    style = tileset->getRandomTileStyle(mtile->getType(), 
+    style = tileset->getRandomTileStyle(mtile->getIndex(), 
 					TileStyle::LONE);
   if (!style)
-    style = tileset->getRandomTileStyle(mtile->getType(), 
+    style = tileset->getRandomTileStyle(mtile->getIndex(), 
 					TileStyle::INNERMIDDLECENTER);
   if (!style)
     printf ("applying null tile style at %d,%d for tile of kind %d\n", i, j,
-	    mtile->getMaptileType());
+	    mtile->getType());
   mtile->setTileStyle(style);
 }
 
@@ -1186,25 +1191,28 @@ bool GameMap::canAddArmies(Vector<int> dest, guint32 stackSize)
 
 void GameMap::switchTileset(Tileset *tileset)
 {
-  d_tileSet = tileset;
+  d_tileset = tileset->getBaseName();
   applyTileStyles (0, 0, s_width, s_height,  false);
 }
 
 void GameMap::reloadTileset()
 {
-  d_tileSet->reload();
+  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+  tileset->reload();
 }
 
 void GameMap::reloadShieldset()
 {
-  d_shieldSet->reload();
-  Playerlist::getInstance()->setNewColours(d_shieldSet);
+  Shieldset *shieldset = 
+    Shieldsetlist::getInstance()->getShieldset(d_shieldset);
+  shieldset->reload();
+  Playerlist::getInstance()->setNewColours(shieldset);
 }
 
 void GameMap::switchShieldset(Shieldset *shieldset)
 {
   Playerlist::getInstance()->setNewColours(shieldset);
-  d_shieldSet = shieldset;
+  d_shieldset = shieldset->getBaseName();
 }
 
 Vector<int> GameMap::findNearestAreaForBuilding(Maptile::Building building_type, Vector<int> pos, guint32 width)
@@ -1221,7 +1229,7 @@ Vector<int> GameMap::findNearestAreaForBuilding(Maptile::Building building_type,
 
 void GameMap::switchCityset(Cityset *cityset)
 {
-  d_citySet = cityset;
+  d_cityset = cityset->getBaseName();
 
   if (Templelist::getInstance()->size())
     {
@@ -1277,8 +1285,9 @@ guint32 GameMap::countBuildings(Maptile::Building building_type)
 
 void GameMap::reloadCityset()
 {
-  d_citySet->reload();
-  switchCityset(d_citySet);
+  Cityset *cityset = Citysetlist::getInstance()->getCityset(d_cityset);
+  cityset->reload();
+  switchCityset(cityset);
 }
 
 void GameMap::switchArmysets(Armyset *armyset)
@@ -1505,8 +1514,7 @@ bool GameMap::moveBuilding(Vector<int> from, Vector<int> to, guint32 new_width)
 
 Tile::Type GameMap::getTerrainType(Vector<int> tile)
 {
-  guint32 idx = getTile(tile)->getType();
-  return (*d_tileSet)[idx]->getType();
+  return getTile(tile)->getType();
 }
 
 Maptile::Building GameMap::getBuilding(Vector<int> tile)
@@ -1746,7 +1754,8 @@ bool GameMap::putBridge(Bridge *b)
 Rectangle GameMap::putTerrain(Rectangle r, Tile::Type type, int tile_style_id, bool always_alter_tilestyles)
 {
   bool replaced = false;
-  int index = getTileset()->getIndex(type);
+  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+  int index = tileset->getIndex(type);
   if (index == -1)
     return r;
   for (int x = r.x; x < r.x + r.w; ++x)
@@ -1755,7 +1764,7 @@ Rectangle GameMap::putTerrain(Rectangle r, Tile::Type type, int tile_style_id, b
 	if (offmap(x,y))
 	  continue;
 	Maptile* t = getTile(Vector<int>(x, y));
-	if (t->getMaptileType() != type)
+	if (t->getType() != type)
           {
             t->setType(index);
             calculateBlockedAvenue(x, y);
@@ -1780,7 +1789,7 @@ Rectangle GameMap::putTerrain(Rectangle r, Tile::Type type, int tile_style_id, b
           {
             if (offmap(x,y))
               continue;
-	    TileStyle *style = getTileset()->getTileStyle(tile_style_id);
+	    TileStyle *style = tileset->getTileStyle(tile_style_id);
 	    getTile(x, y)->setTileStyle(style);
           }
     }
@@ -1836,6 +1845,49 @@ bool GameMap::removeCity(Vector<int> pos)
     }
   return false;
 }
+
+bool GameMap::putNewCity(Vector<int> tile)
+{
+  Cityset *cs = Citysetlist::getInstance()->getCityset(getCityset());
+  // check if we can place the city
+  bool city_placeable =
+    canPutBuilding (Maptile::CITY, cs->getCityTileWidth(), tile);
+
+  if (!city_placeable)
+    return false;
+
+  City *c = new City(tile, cs->getCityTileWidth());
+  return putCity(c);
+}
+
+bool GameMap::putNewRuin(Vector<int> tile)
+{
+  Cityset *cs = Citysetlist::getInstance()->getCityset(getCityset());
+  // check if we can place the city
+  bool ruin_placeable =
+    canPutBuilding (Maptile::RUIN, cs->getRuinTileWidth(), tile);
+
+  if (!ruin_placeable)
+    return false;
+
+  Ruin *r = new Ruin(tile, cs->getRuinTileWidth());
+  return putRuin(r);
+}
+
+bool GameMap::putNewTemple(Vector<int> tile)
+{
+  Cityset *cs = Citysetlist::getInstance()->getCityset(getCityset());
+  // check if we can place the city
+  bool temple_placeable =
+    canPutBuilding (Maptile::TEMPLE, cs->getTempleTileWidth(), tile);
+
+  if (!temple_placeable)
+    return false;
+
+  Temple *t = new Temple(tile, cs->getTempleTileWidth());
+  return putTemple(t);
+}
+
 bool GameMap::putCity(City *c, bool keep_owner)
 {
   Player *active = Playerlist::getActiveplayer();
@@ -2072,4 +2124,99 @@ void GameMap::relocateLocation(Location *location, Maptile::Building building_ty
     GameMap::getInstance()->removeLocation (location->getPos());
   else
     GameMap::getInstance()->moveBuilding (location->getPos(), dest, tile_width);
+}
+        
+guint32 GameMap::getTileSize() const
+{
+  Tileset *ts = Tilesetlist::getInstance()->getTileset(d_tileset);
+  return ts->getTileSize();
+}
+
+guint32 GameMap::getTilesetId() const
+{
+  return Tilesetlist::getInstance()->getTilesetId(d_tileset);
+}
+
+guint32 GameMap::getCitysetId() const
+{
+  return Citysetlist::getInstance()->getCitysetId(d_cityset);
+}
+
+guint32 GameMap::getShieldsetId() const
+{
+  return Shieldsetlist::getInstance()->getShieldsetId(d_shieldset);
+}
+
+std::string GameMap::getTilesetName() const
+{
+  Tileset *ts = Tilesetlist::getInstance()->getTileset(d_tileset);
+  if (!ts)
+    return "";
+  else
+    ts->getName();
+}
+
+std::string GameMap::getCitysetName() const
+{
+  Cityset *cs = Citysetlist::getInstance()->getCityset(d_cityset);
+  if (!cs)
+    return "";
+  else
+    cs->getName();
+}
+
+std::string GameMap::getShieldsetName() const
+{
+  Shieldset *ss = Shieldsetlist::getInstance()->getShieldset(d_shieldset);
+  if (!ss)
+    return "";
+  else
+    return ss->getName();
+}
+
+void GameMap::eraseTile(Vector<int> tile) 
+{
+      // first stack, it's above everything else
+      while  (getStack(tile) != NULL)
+        {
+          Stack *s = getStack(tile);
+          removeStack(s);
+        }
+
+      // ... or a temple ...
+      removeTemple(tile);
+
+      // ... or a port ...
+      removePort(tile);
+
+      // ... or a ruin ...
+      if (getRuin(tile) != NULL)
+        {
+          Rewardlist *rl = Rewardlist::getInstance();
+          for (Rewardlist::iterator i = rl->begin(); i != rl->end(); i++)
+            {
+              if ((*i)->getType() == Reward::RUIN)
+                {
+                  Reward_Ruin *rr = static_cast<Reward_Ruin*>(*i);
+                  if (rr->getRuin()->getPos() == tile)
+                    rl->remove(*i);
+                }
+            }
+        }
+      removeRuin(tile);
+
+      // ... or a road ...
+      removeRoad(tile);
+
+      // ... or a bridge...
+      removeBridge(tile);
+
+      // ... or a signpost ...
+      removeSignpost(tile);
+
+      // ... or a city
+      removeCity(tile);
+
+      // ... or a bag
+      getTile(tile)->getBackpack()->removeAllFromBackpack();
 }

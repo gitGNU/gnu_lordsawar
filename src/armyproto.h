@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -31,6 +31,7 @@
 
 class XML_Helper;
 class Armyset;
+class Tar_Helper;
 
 class ArmyProto : public ArmyProtoBase
 {
@@ -113,7 +114,7 @@ class ArmyProto : public ArmyProtoBase
 	// Methods that operate on class data and modify the class.
 
 	//! Load the pictures associated with this ArmyProto object.
-	void instantiateImages(Armyset *armyset);
+	void instantiateImages(guint32 tilesize, Tar_Helper *t);
 
 	//! Load the ArmyProto image in the given filename.
 	bool instantiateImages(int tilesize, Shield::Colour c, std::string image_filename);

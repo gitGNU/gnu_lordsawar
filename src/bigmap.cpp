@@ -2,7 +2,7 @@
 // Copyright (C) 2003, 2004, 2005, 2006, 2007 Ulf Lorenz
 // Copyright (C) 2004, 2005 Bryan Duff
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -88,7 +88,7 @@ BigMap::~BigMap()
 
 void BigMap::set_view(Rectangle new_view)
 {
-    int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+    int tilesize = GameMap::getInstance()->getTileSize();
     
     int width = 0;
     int height = 0;
@@ -161,7 +161,7 @@ void BigMap::draw(Player *player, bool redraw_buffer)
         return;
     Playerlist::getInstance()->setViewingplayer(player);
 
-    int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+    int tilesize = GameMap::getInstance()->getTileSize();
 
     // align the buffer view
     Vector<int> new_buffer_view = clip(
@@ -205,7 +205,7 @@ void BigMap::draw(Player *player, bool redraw_buffer)
 
 void BigMap::screen_size_changed(Gtk::Allocation box)
 {
-    int ts = GameMap::getInstance()->getTileset()->getTileSize();
+    int ts = GameMap::getInstance()->getTileSize();
 
     Rectangle new_view = view;
     
@@ -233,7 +233,7 @@ void BigMap::screen_size_changed(Gtk::Allocation box)
 Vector<int> BigMap::get_view_pos_from_view()
 {
     Vector<int> screen_dim(image.get_width(), image.get_height());
-    int ts = GameMap::getInstance()->getTileset()->getTileSize();
+    int ts = GameMap::getInstance()->getTileSize();
 
     // clip to make sure we don't see a black border at the bottom and right
     return clip(Vector<int>(0, 0), view.pos * ts * magnification_factor,
@@ -242,20 +242,20 @@ Vector<int> BigMap::get_view_pos_from_view()
 
 Vector<int> BigMap::tile_to_buffer_pos(Vector<int> tile)
 {
-    int ts = GameMap::getInstance()->getTileset()->getTileSize();
+    int ts = GameMap::getInstance()->getTileSize();
     return (tile - buffer_view.pos) * ts;
 }
 
 Vector<int> BigMap::mouse_pos_to_tile(Vector<int> pos)
 {
-    int ts = GameMap::getInstance()->getTileset()->getTileSize();
+    int ts = GameMap::getInstance()->getTileSize();
 
     return (view_pos + pos) / (ts * magnification_factor);
 }
 
 Vector<int> BigMap::mouse_pos_to_tile_offset(Vector<int> pos)
 {
-    int ts = GameMap::getInstance()->getTileset()->getTileSize();
+    int ts = GameMap::getInstance()->getTileSize();
 
     return (view_pos + pos) % (int)rint(ts * magnification_factor);
 }
@@ -268,7 +268,7 @@ MapTipPosition BigMap::map_tip_position(Vector<int> tile)
 MapTipPosition BigMap::map_tip_position(Rectangle tile_area)
 {
     // convert area to pixels on the screen
-    int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+    int tilesize = GameMap::getInstance()->getTileSize();
 
     Rectangle area(tile_area.pos * tilesize * magnification_factor - view_pos,
 		   tile_area.dim * tilesize * magnification_factor);
@@ -316,7 +316,7 @@ MapTipPosition BigMap::map_tip_position(Rectangle tile_area)
 void BigMap::blit_object(const Location &obj, Vector<int> tile, PixMask *image, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc)
 {
   Vector<int> diff = tile - obj.getPos();
-  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+  int tilesize = GameMap::getInstance()->getTileSize();
   Vector<int> p = tile_to_buffer_pos(tile);
   image->blit(diff, tilesize, surface, p);
 }
@@ -424,7 +424,7 @@ bool BigMap::saveUnderlyingMapAsBitmap(std::string filename)
 
 bool BigMap::saveAsBitmap(std::string filename)
 {
-  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+  int tilesize = GameMap::getInstance()->getTileSize();
   int width = GameMap::getWidth() * tilesize;
   int height = GameMap::getHeight() * tilesize;
   Glib::RefPtr<Gdk::Pixmap> surf = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), width, height, 24);
@@ -441,7 +441,7 @@ bool BigMap::saveAsBitmap(std::string filename)
 
 void BigMap::draw_buffer_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context)
 {
-  guint32 tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+  guint32 tilesize = GameMap::getInstance()->getTileSize();
   Player *viewing = Playerlist::getViewingplayer();
   GraphicsCache *gc = GraphicsCache::getInstance();
   GameMap *gm = GameMap::getInstance();

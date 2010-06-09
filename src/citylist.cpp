@@ -32,6 +32,7 @@
 #include "armyprodbase.h"
 #include "GameMap.h"
 #include "cityset.h"
+#include "citysetlist.h"
 #include "PathCalculator.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -447,7 +448,8 @@ bool Citylist::load(std::string tag, XML_Helper* helper)
 {
     if (tag == City::d_tag)
       {
-	Cityset *cs = GameMap::getInstance()->getCityset();
+        std::string cityset = GameMap::getInstance()->getCityset();
+        Cityset *cs = Citysetlist::getInstance()->getCityset(cityset);
 	City *c = new City(helper, cs->getCityTileWidth());
 	add(c);
 	return true;

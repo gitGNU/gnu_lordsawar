@@ -48,6 +48,7 @@
 #include "bridgelist.h"
 #include "bridge.h"
 #include "armysetlist.h"
+#include "tilesetlist.h"
 #include "army.h"
 #include "vector.h"
 #include "RoadPathCalculator.h"
@@ -285,9 +286,9 @@ bool MapGenerator::canPlaceBridge(Vector<int> pos, int type, Vector<int> &src, V
 
 void MapGenerator::makeBridges()
 {
-  std::string orig_tileset = GameMap::getInstance()->getTileset()->getBaseName();
-  std::string orig_shieldset = GameMap::getInstance()->getShieldset()->getBaseName();
-  std::string orig_cityset = GameMap::getInstance()->getCityset()->getBaseName();
+  std::string orig_tileset = GameMap::getInstance()->getTileset();
+  std::string orig_shieldset = GameMap::getInstance()->getShieldset();
+  std::string orig_cityset = GameMap::getInstance()->getCityset();
   GameMap::deleteInstance();
   Citylist::deleteInstance();
   Roadlist::deleteInstance();
@@ -304,7 +305,7 @@ void MapGenerator::makeBridges()
   for (int y = 0; y < d_height; y++)
     for (int x = 0; x < d_width; x++)
       d_terrain[y*d_width + x] = 
-	GameMap::getInstance()->getTile(x, y)->getMaptileType();
+        GameMap::getInstance()->getTile(x, y)->getType();
 
   //load up the roadlist, and stuff.
 
@@ -1408,7 +1409,7 @@ bool MapGenerator::makeRoad(int src_x, int src_y, int dest_x, int dest_y)
 	{
 	  int x = (*it).x;
 	  int y = (*it).y;
-	  if (gm->getTile(x, y)->getMaptileType() == Tile::WATER &&
+	  if (gm->getTile(x, y)->getType() == Tile::WATER &&
 	      gm->getTile(x, y)->getBuilding() != Maptile::BRIDGE)
 	    {
 	      retval = false;
@@ -1469,6 +1470,7 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
 {
   bool retval = true;
   GameMap *gm = GameMap::getInstance();
+  Tileset *ts = Tilesetlist::getInstance()->getTileset(gm->getTileset());
   Vector<int> src(src_x, src_y);
   Vector<int> dest(dest_x, dest_y);
 
@@ -1506,8 +1508,7 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
 	  if (d_terrain[y*d_width + x] == Tile::MOUNTAIN)
 	    {
 	      d_terrain[y*d_width +x] = Tile::HILLS;
-	      Maptile *t = new Maptile(gm->getTileset(), 
-				       x, y, Tile::HILLS, NULL);
+	      Maptile *t = new Maptile(ts, x, y, Tile::HILLS, NULL);
 	      gm->setTile(x, y, t);
 	      calculateBlockedAvenue(x, y);
 	    }
@@ -1641,9 +1642,9 @@ std::vector<pair<int , Vector<int> > > MapGenerator::findBridgePlaces()
 
 void MapGenerator::makeRoads()
 {
-  std::string orig_tileset = GameMap::getInstance()->getTileset()->getBaseName();
-  std::string orig_shieldset = GameMap::getInstance()->getShieldset()->getBaseName();
-  std::string orig_cityset = GameMap::getInstance()->getCityset()->getBaseName();
+  std::string orig_tileset = GameMap::getInstance()->getTileset();
+  std::string orig_shieldset = GameMap::getInstance()->getShieldset();
+  std::string orig_cityset = GameMap::getInstance()->getCityset();
   GameMap::deleteInstance();
   Citylist::deleteInstance();
   Roadlist::deleteInstance();
@@ -1657,7 +1658,7 @@ void MapGenerator::makeRoads()
   for (int y = 0; y < d_height; y++)
     for (int x = 0; x < d_width; x++)
       d_terrain[y*d_width + x] = 
-	GameMap::getInstance()->getTile(x, y)->getMaptileType();
+	GameMap::getInstance()->getTile(x, y)->getType();
 
   for (int y = 0; y < d_height; y++)
     for (int x = 0; x < d_width; x++)

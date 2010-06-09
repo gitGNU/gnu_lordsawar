@@ -112,19 +112,28 @@ class GameMap: public sigc::trackable
 	    { return Rectangle(0, 0, s_width, s_height); }
 
         //! Returns the tileset in use
-        Tileset* getTileset() const {return d_tileSet;}
+        std::string getTileset() const {return d_tileset;}
 
-        void setTileset(Tileset *tileset) {d_tileSet = tileset;}
+        void setTileset(std::string tileset) {d_tileset = tileset;}
+
+        guint32 getTileSize() const;
+
+        guint32 getTilesetId() const;
+        guint32 getCitysetId() const;
+        guint32 getShieldsetId() const;
+        std::string getTilesetName() const;
+        std::string getCitysetName() const;
+        std::string getShieldsetName() const;
 
         //! Returns the shieldset in use
-        Shieldset* getShieldset() const {return d_shieldSet;}
+        std::string getShieldset() const {return d_shieldset;}
 
-        void setShieldset(Shieldset *shieldset) {d_shieldSet = shieldset;}
+        void setShieldset(std::string shieldset) {d_shieldset = shieldset;}
 
         //! Returns the tileset in use
-        Cityset* getCityset() const {return d_citySet;}
+        std::string getCityset() const {return d_cityset;}
 
-        void setCityset(Cityset *cityset) {d_citySet = cityset;}
+        void setCityset(std::string cityset) {d_cityset = cityset;}
 
 	//! Sets the tile object at position (x, y)
 	void setTile(int x, int y, Maptile *tile);
@@ -251,11 +260,15 @@ class GameMap: public sigc::trackable
 	Tile::Type getTerrainType(Vector<int> tile);
 	void setBuilding(Vector<int> tile, Maptile::Building building);
 
+
+        bool putNewCity(Vector<int> tile);
 	bool putCity(City *c, bool keep_owner = false);
 	bool removeCity(Vector<int> pos);
 	bool putRuin(Ruin *r);
+        bool putNewRuin(Vector<int> tile);
 	bool removeRuin(Vector<int> pos);
 	bool putTemple(Temple *t);
+        bool putNewTemple(Vector<int> tile);
 	bool removeTemple(Vector<int> pos);
 	bool putRoad(Road *r);
 	bool removeRoad(Vector<int> pos);
@@ -268,6 +281,7 @@ class GameMap: public sigc::trackable
 	bool putStack(Stack *s);
 	void removeStack(Stack *s);
         bool removeLocation (Vector<int> pos);
+        void eraseTile(Vector<int> pos);
 
 	Location *getLocation(Vector<int> pos);
 
@@ -331,6 +345,10 @@ class GameMap: public sigc::trackable
         static GameMap* s_instance;
         static int s_width;
         static int s_height;
+
+        std::string d_tileset;
+        std::string d_shieldset;
+        std::string d_cityset;
 
         Tileset* d_tileSet;
         Shieldset* d_shieldSet;

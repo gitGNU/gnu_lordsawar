@@ -493,7 +493,7 @@ PixMask* GraphicsCache::getNewLevelPic(const Player* p, guint32 gender)
 
 PixMask* GraphicsCache::getPortPic()
 {
-  return getPortPic(GameMap::getInstance()->getCityset()->getId());
+  return getPortPic(GameMap::getInstance()->getCitysetId());
 }
 
 PixMask* GraphicsCache::getPortPic(guint32 cityset)
@@ -524,7 +524,7 @@ PixMask* GraphicsCache::getPortPic(guint32 cityset)
 
 PixMask* GraphicsCache::getSignpostPic()
 {
-  return getSignpostPic(GameMap::getInstance()->getCityset()->getId());
+  return getSignpostPic(GameMap::getInstance()->getCitysetId());
 }
 
 PixMask* GraphicsCache::getSignpostPic(guint32 cityset)
@@ -587,7 +587,7 @@ PixMask* GraphicsCache::getBagPic(guint32 armyset)
 
 PixMask* GraphicsCache::getExplosionPic()
 {
-  return getExplosionPic(GameMap::getInstance()->getTileset()->getId());
+  return getExplosionPic(GameMap::getInstance()->getTilesetId());
 }
 
 PixMask* GraphicsCache::getExplosionPic(guint32 tileset)
@@ -700,9 +700,9 @@ PixMask* GraphicsCache::getArmyPic(guint32 armyset, guint32 army_id,
 
 PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid)
 {
-  guint32 tileset = GameMap::getInstance()->getTileset()->getId();
-  guint32 cityset = GameMap::getInstance()->getCityset()->getId();
-  guint32 shieldset = GameMap::getInstance()->getShieldset()->getId();
+  guint32 tileset = GameMap::getInstance()->getTilesetId();
+  guint32 cityset = GameMap::getInstance()->getCitysetId();
+  guint32 shieldset = GameMap::getInstance()->getShieldsetId();
   return getTilePic(tile_style_id, fog_type_id, has_bag, has_standard, standard_player_id, stack_size, stack_player_id, army_type_id, has_tower, has_ship, building_type, building_subtype, building_tile, building_player_id, tilesize, has_grid, tileset, cityset, shieldset);
 }
 
@@ -792,13 +792,13 @@ PixMask* GraphicsCache::getShieldPic(guint32 shieldset, guint32 type,
         
 PixMask* GraphicsCache::getShieldPic(guint32 type, Player *p)
 {
-  guint32 shieldset = GameMap::getInstance()->getShieldset()->getId();
+  guint32 shieldset = GameMap::getInstance()->getShieldsetId();
   return getShieldPic(shieldset, type, p->getId());
 }
 
 PixMask* GraphicsCache::getTemplePic(int type)
 {
-  guint32 cityset = GameMap::getInstance()->getCityset()->getId();
+  guint32 cityset = GameMap::getInstance()->getCitysetId();
   return getTemplePic(type, cityset);
 }
 PixMask* GraphicsCache::getTemplePic(int type, guint32 cityset)
@@ -830,7 +830,7 @@ PixMask* GraphicsCache::getTemplePic(int type, guint32 cityset)
 
 PixMask* GraphicsCache::getRuinPic(int type)
 {
-  guint32 cityset = GameMap::getInstance()->getCityset()->getId();
+  guint32 cityset = GameMap::getInstance()->getCitysetId();
   return getRuinPic(type, cityset);
 }
 PixMask* GraphicsCache::getRuinPic(int type, guint32 cityset)
@@ -889,7 +889,7 @@ PixMask* GraphicsCache::getDiplomacyPic(int type, Player::DiplomaticState state)
 
 PixMask* GraphicsCache::getRoadPic(int type)
 {
-  return getRoadPic(type, GameMap::getInstance()->getTileset()->getId());
+  return getRoadPic(type, GameMap::getInstance()->getTilesetId());
 }
 PixMask* GraphicsCache::getRoadPic(int type, guint32 tileset)
 {
@@ -920,7 +920,7 @@ PixMask* GraphicsCache::getRoadPic(int type, guint32 tileset)
 
 PixMask* GraphicsCache::getFogPic(int type)
 {
-  return getFogPic(type, GameMap::getInstance()->getTileset()->getId());
+  return getFogPic(type, GameMap::getInstance()->getTilesetId());
 }
 
 PixMask* GraphicsCache::getFogPic(int type, guint32 tileset)
@@ -954,7 +954,7 @@ PixMask* GraphicsCache::getFogPic(int type, guint32 tileset)
 
 PixMask* GraphicsCache::getBridgePic(int type)
 {
-  return getBridgePic(type, GameMap::getInstance()->getTileset()->getId());
+  return getBridgePic(type, GameMap::getInstance()->getTilesetId());
 }
 PixMask* GraphicsCache::getBridgePic(int type, guint32 tileset)
 {
@@ -1024,7 +1024,7 @@ PixMask* GraphicsCache::getCityPic(const City* city, guint32 cityset)
 
 PixMask* GraphicsCache::getCityPic(const City* city)
 {
-  guint32 cityset = GameMap::getInstance()->getCityset()->getId();
+  guint32 cityset = GameMap::getInstance()->getCitysetId();
   return getCityPic(city, cityset);
 }
 
@@ -1058,7 +1058,7 @@ PixMask* GraphicsCache::getCityPic(int type, const Player* p, guint32 cityset)
 
 PixMask* GraphicsCache::getTowerPic(const Player* p)
 {
-  guint32 cityset = GameMap::getInstance()->getCityset()->getId();
+  guint32 cityset = GameMap::getInstance()->getCitysetId();
   return getTowerPic(p, cityset);
 }
 
@@ -1120,12 +1120,12 @@ PixMask* GraphicsCache::getFlagPic(guint32 stack_size, const Player *p, guint32 
 PixMask* GraphicsCache::getFlagPic(guint32 stack_size, const Player *p)
 {
   return getFlagPic(stack_size, p, 
-		    GameMap::getInstance()->getTileset()->getId());
+		    GameMap::getInstance()->getTilesetId());
 }
 
 PixMask* GraphicsCache::getFlagPic(const Stack* s)
 {
-  return getFlagPic(s, GameMap::getInstance()->getTileset()->getId());
+  return getFlagPic(s, GameMap::getInstance()->getTilesetId());
 }
 PixMask* GraphicsCache::getFlagPic(const Stack* s, guint32 tileset)
 {
@@ -1142,7 +1142,7 @@ PixMask* GraphicsCache::getSelectorPic(guint32 type, guint32 frame,
 					   const Player *p)
 {
   return getSelectorPic(type, frame, p, 
-			GameMap::getInstance()->getTileset()->getId());
+			GameMap::getInstance()->getTilesetId());
 }
 PixMask* GraphicsCache::getSelectorPic(guint32 type, guint32 frame, 
 					   const Player *p, guint32 tileset)

@@ -36,6 +36,7 @@
 #include "GraphicsCache.h"
 #include "FogMap.h"
 #include "GameScenarioOptions.h"
+#include "tilesetlist.h"
 
 OverviewMap::OverviewMap()
 {
@@ -48,7 +49,7 @@ OverviewMap::~OverviewMap()
 {
 }
 
-bool OverviewMap::isShadowed(guint32 type, int i, int j)
+bool OverviewMap::isShadowed(Tile::Type type, int i, int j)
 {
   GameMap *gm = GameMap::getInstance();
   int x = int(i / pixels_per_tile);
@@ -423,10 +424,10 @@ Maptile* OverviewMap::getTile(int x, int y)
 
 void OverviewMap::draw_terrain_tiles(Rectangle r)
 {
-    GameMap *gm = GameMap::getInstance();
     unsigned int oldrand = rand();
     srand(0);
-    Gdk::Color rd = GameMap::getInstance()->getTileset()->getRoadColor();
+    Tileset *ts = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTileset());
+    Gdk::Color rd = ts->getRoadColor();
     for (int i = r.x; i < r.x + r.w; i+=int(map_tiles_per_tile))
       for (int j = r.y; j < r.y + r.h; j+=int(map_tiles_per_tile))
         {
@@ -448,6 +449,7 @@ void OverviewMap::after_draw()
 
 void OverviewMap::draw(Player *player)
 {
+    Tileset *ts = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTileset());
     Playerlist::getInstance()->setViewingplayer(player);
     int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
     assert(surface);
@@ -467,8 +469,7 @@ void OverviewMap::draw(Player *player)
 
     // Draw ruins as a white dot
 	
-    Gdk::Color ruindotcolor = Gdk::Color();
-    ruindotcolor.set_rgb_p(100,100,100);
+    Gdk::Color ruindotcolor = ts->getRuinColor();
     for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
         it != Ruinlist::getInstance()->end(); it++)
     {
@@ -485,8 +486,7 @@ void OverviewMap::draw(Player *player)
     }
 
     // Draw temples as a white dot
-    Gdk::Color templedotcolor = Gdk::Color();
-    templedotcolor.set_rgb_p(100,100,100);
+    Gdk::Color templedotcolor = ts->getTempleColor();
     for (Templelist::iterator it = Templelist::getInstance()->begin();
         it != Templelist::getInstance()->end(); it++)
     {

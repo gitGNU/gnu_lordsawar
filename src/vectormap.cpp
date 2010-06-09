@@ -62,7 +62,7 @@ void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
     {
       if (Playerlist::getInstance()->getViewingplayer() != c->getOwner())
 	{
-	  guint32 s = GameMap::getInstance()->getShieldset()->getId();
+	  guint32 s = GameMap::getInstance()->getShieldsetId();
 	  tmp = gc->getShieldPic (s, 0, c->getOwner()->getId());
 	}
       else
@@ -309,7 +309,7 @@ void VectorMap::draw_square_around_active_city()
   box_color.set_rgb_p(252.0/255.0, 1.0, 1.0);
   Vector<int> start = city->getPos();
   start = mapToSurface(start);
-  std::string s = GameMap::getInstance()->getShieldset()->getBaseName();
+  std::string s = GameMap::getInstance()->getShieldset();
   Shieldset *ss = Shieldsetlist::getInstance()->getShieldset(s);
   guint32 width = ss->getSmallWidth();
   guint32 height = ss->getSmallHeight();

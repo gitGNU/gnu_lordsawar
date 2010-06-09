@@ -103,6 +103,7 @@
 [type: gettext/glade]dat/glade/editor/backpack-editor-dialog.ui
 [type: gettext/glade]dat/glade/editor/editor-quit-dialog.ui
 [type: gettext/glade]dat/glade/editor/tile-size-editor-dialog.ui
+[type: gettext/glade]dat/glade/editor/tileset-smallmap-building-colors-dialog.ui
 [type: gettext/glade]dat/glade/editor/editor-recover-dialog.ui
 [type: gettext/glade]dat/glade/editor/cityset-window.ui
 [type: gettext/glade]dat/glade/editor/shieldset-window.ui
@@ -239,6 +240,7 @@ src/editor/select-item-dialog.cpp
 src/editor/select-reward-dialog.cpp
 src/editor/players-dialog.cpp
 src/editor/editorbigmap.cpp
+src/editor/editablesmallmap.h
 src/editor/tileset-main.cpp
 src/editor/city-editor-dialog.cpp
 src/editor/main-window.cpp

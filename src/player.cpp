@@ -1847,7 +1847,7 @@ bool Player::stackDisband(Stack* s)
 
 void Player::doHeroDropItem(Hero *h, Item *i, Vector<int> pos, bool &splash)
 {
-  if (GameMap::getInstance()->getTile(pos)->getMaptileType() == Tile::WATER)
+  if (GameMap::getInstance()->getTile(pos)->getType() == Tile::WATER)
     {
       h->getBackpack()->removeFromBackpack(i);
       delete i;

@@ -47,6 +47,8 @@
 #include "PathCalculator.h"
 #include "stacktile.h"
 #include "action.h"
+#include "tileset.h"
+#include "tilesetlist.h"
 
 #include "timing.h"
 
@@ -442,7 +444,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	      //check if we dropped on the same tile that the stack lives on.
 	      if (mouse_pos_to_tile(e.pos) != stack->getPos())
 		{
-		  int ts = GameMap::getInstance()->getTileset()->getTileSize();
+		  int ts = GameMap::getInstance()->getTileSize();
 		  e.pos = tile_to_buffer_pos (stack->getLastPointInPath());
 		  e.pos.x -= ts/2;
 		  e.pos.y -= ts/2;
@@ -563,7 +565,7 @@ void GameBigMap::zoom_in()
     return;
   if ((zoom_step / 100.0) + magnification_factor <= max_magnification_factor / 100.0)
     {
-      int ts = GameMap::getInstance()->getTileset()->getTileSize();
+      int ts = GameMap::getInstance()->getTileSize();
       Rectangle new_view;
       double mag = magnification_factor + (zoom_step / 100.0);
       new_view.w = image.get_width() / (ts * mag) + 1;
@@ -581,7 +583,7 @@ void GameBigMap::zoom_out()
     return;
   if (magnification_factor - (zoom_step / 100.0) >= min_magnification_factor / 100.0)
     {
-      int ts = GameMap::getInstance()->getTileset()->getTileSize();
+      int ts = GameMap::getInstance()->getTileSize();
       Rectangle new_view;
       double mag = magnification_factor - (zoom_step / 100.0);
       new_view.w = image.get_width() / (ts * mag) + 1;
@@ -695,7 +697,7 @@ void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 		    d_cursor = GraphicsCache::HAND;
 		  else
 		    {
-		      if (t->getMaptileType() == Tile::WATER &&
+		      if (t->getType() == Tile::WATER &&
 			  GameMap::getBridge(tile) == NULL)
 			{
 			  if (stack->isFlying() == true)
@@ -799,7 +801,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
       if (mouse_state == NONE && length(delta) <= 2)
 	return;
 
-      int ts = GameMap::getInstance()->getTileset()->getTileSize();
+      int ts = GameMap::getInstance()->getTileSize();
       Vector<int> screen_dim(image.get_width(), image.get_height());
       view_pos = clip(Vector<int>(0, 0),
 		      view_pos + delta,
@@ -911,7 +913,7 @@ void GameBigMap::after_draw()
   if (blank_screen == true)
     return;
   GraphicsCache *gc = GraphicsCache::getInstance();
-  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+  int tilesize = GameMap::getInstance()->getTileSize();
 
   Stack* stack = Playerlist::getActiveplayer()->getActivestack();
 
@@ -967,7 +969,7 @@ void GameBigMap::after_draw()
 	  static int bigframe = -1;
 	  static int smallframe = -1;
 
-	  Tileset *t = GameMap::getInstance()->getTileset();
+	  Tileset *t = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTileset());
 	  bigframe++;
 	  if (bigframe >= (int)t->getNumberOfSelectorFrames())
 	    bigframe = 0;

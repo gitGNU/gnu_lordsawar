@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include "File.h"
+#include <errno.h>
 #include "ucompose.hpp"
 
 Tar_Helper::Tar_Helper(std::string file, std::ios::openmode mode, bool &broken)
@@ -160,11 +161,12 @@ std::string Tar_Helper::getFile(TAR *t, std::string filename, bool &broken, std:
     {
       fwrite(data, 1, size, fileptr);
       fclose(fileptr);
+      broken = false;
     }
 
-  broken = false;
   return outfile;
 }
+
 std::string Tar_Helper::getFile(std::string filename, bool &broken)
 {
   return getFile(t, filename, broken, tmpoutdir);

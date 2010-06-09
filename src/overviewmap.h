@@ -169,7 +169,7 @@ class OverviewMap : public sigc::trackable
      *
      * @return True if the given pixel location should be shaded, false if not.
      */
-    bool isShadowed(guint32 type, int i, int j);
+    bool isShadowed(Tile::Type type, int i, int j);
 
     //! Draw the given tile at the given pixel location on the map.
     /**

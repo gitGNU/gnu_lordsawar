@@ -613,7 +613,9 @@ bool GameScenario::saveGame(string filename, string extension) const
   File::erase(tmpfile);
   std::list<std::string> files;
 
-  Cityset *cs = GameMap::getInstance()->getCityset();
+
+  std::string cs_basename = GameMap::getInstance()->getCityset();
+  Cityset *cs = Citysetlist::getInstance()->getCityset(cs_basename);
   cs->getFilenames(files);
   t.saveFile(cs->getConfigurationFile());
   for (std::list<std::string>::iterator it = files.begin(); it !=files.end();
@@ -621,7 +623,8 @@ bool GameScenario::saveGame(string filename, string extension) const
     t.saveFile(cs->getFile(*it));
 
   files.clear();
-  Shieldset *ss = GameMap::getInstance()->getShieldset();
+  std::string ss_basename = GameMap::getInstance()->getShieldset();
+  Shieldset *ss = Shieldsetlist::getInstance()->getShieldset(ss_basename);
   ss->getFilenames(files);
   t.saveFile(ss->getConfigurationFile());
   for (std::list<std::string>::iterator it = files.begin(); it !=files.end();
@@ -629,7 +632,8 @@ bool GameScenario::saveGame(string filename, string extension) const
     t.saveFile(ss->getFile(*it));
 
   files.clear();
-  Tileset *ts = GameMap::getInstance()->getTileset();
+  std::string ts_basename = GameMap::getInstance()->getTileset();
+  Tileset *ts = Tilesetlist::getInstance()->getTileset(ts_basename);
   ts->getFilenames(files);
   t.saveFile(ts->getConfigurationFile());
   for (std::list<std::string>::iterator it = files.begin(); it !=files.end();

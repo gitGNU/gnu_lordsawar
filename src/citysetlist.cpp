@@ -344,3 +344,12 @@ bool Citysetlist::contains(std::string name) const
     }
   return false;
 }
+
+guint32 Citysetlist::getCitysetId(std::string basename) const
+{
+  Cityset *cs = getCityset(basename);
+  if (cs)
+    return cs->getId();
+  else
+    return 0;
+}

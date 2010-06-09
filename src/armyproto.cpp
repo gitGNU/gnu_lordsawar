@@ -148,23 +148,19 @@ bool ArmyProto::instantiateImages(int tilesize, Shield::Colour c, std::string im
   return true;
 }
 
-void ArmyProto::instantiateImages(Armyset *armyset)
+void ArmyProto::instantiateImages(guint32 tilesize, Tar_Helper *t)
 {
   bool broken = false;
-  Tar_Helper t(armyset->getConfigurationFile(), std::ios::in, broken);
-  if (broken)
-    return;
   for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
     {
       std::string file = "";
       if (getImageName(Shield::Colour(c)).empty() == false)
-	file = t.getFile(getImageName(Shield::Colour(c)) + ".png", broken);
+	file = t->getFile(getImageName(Shield::Colour(c)) + ".png", broken);
       if (!broken && file.empty() == false)
-        instantiateImages(armyset->getTileSize(), Shield::Colour(c), file);
+        instantiateImages(tilesize, Shield::Colour(c), file);
       if (file.empty() == false)
         File::erase(file);
     }
-  t.Close();
 }
 
 void ArmyProto::uninstantiateImages()

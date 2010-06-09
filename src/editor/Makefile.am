@@ -57,6 +57,8 @@ libtilesetwindow_la_SOURCES = \
 	tileset-explosion-picture-editor-dialog.cpp \
 	tileset-explosion-picture-editor-dialog.h \
 	tilestyle-organizer-dialog.cpp tilestyle-organizer-dialog.h \
+	tileset-smallmap-building-colors-dialog.cpp \
+	tileset-smallmap-building-colors-dialog.h\
 	image-editor-dialog.cpp image-editor-dialog.h
 
 lordsawar_army_editor_SOURCES = \
@@ -85,6 +87,7 @@ lordsawar_editor_SOURCES = \
 	new-map-dialog.cpp new-map-dialog.h \
 	switch-sets-dialog.cpp switch-sets-dialog.h \
 	editorbigmap.cpp editorbigmap.h \
+	editablesmallmap.cpp editablesmallmap.h \
 	itemlist-dialog.cpp itemlist-dialog.h \
 	reward-editor-dialog.cpp reward-editor-dialog.h \
 	select-item-dialog.cpp select-item-dialog.h \

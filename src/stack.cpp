@@ -3,7 +3,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -170,8 +170,8 @@ void Stack::moveToDest(Vector<int> dest, bool skipping)
 	      ship_load_unload = true;
 	      Vector<int> pos = getPos();
 	      GameMap *gm = GameMap::getInstance();
-	      bool to_water = (gm->getTile(dest.x,dest.y)->getMaptileType() 
-			       == Tile::WATER);
+	      bool to_water = (gm->getTile(dest.x,dest.y)->getType() 
+                               == Tile::WATER);
 	      for (Stack::iterator it = begin(); it != end(); it++)
 		{
 		  if (to_water && 
@@ -189,7 +189,7 @@ void Stack::moveToDest(Vector<int> dest, bool skipping)
 	(*it)->setInShip(false);
     }
 
-  guint32 maptype = GameMap::getInstance()->getTile(dest.x,dest.y)->getMaptileType();
+  guint32 maptype = GameMap::getInstance()->getTile(dest.x,dest.y)->getType();
   //how many moves does the stack need to travel to dest?
   int needed_moves = calculateTileMovementCost(dest);
 
@@ -391,7 +391,7 @@ guint32 Stack::calculateTileMovementCost(Vector<int> pos) const
   Maptile* tile = GameMap::getInstance()->getTile(pos);
   guint32 moves = tile->getMoves();
   guint32 bonus = calculateMoveBonus();
-  if (bonus & tile->getMaptileType() && moves > 1)
+  if (bonus & tile->getType() && moves > 1)
     moves = 2;
   else if (isFlying() && moves > 1)
     moves = 2;
@@ -1169,7 +1169,7 @@ bool Stack::killArmyUnitsInBoats()
 {
   bool retval = false;
   GameMap *gm = GameMap::getInstance();
-  if (gm->getTile(getPos())->getMaptileType() != Tile::WATER)
+  if (gm->getTile(getPos())->getType() != Tile::WATER)
     return retval;
   if (isFlying())
     return retval;

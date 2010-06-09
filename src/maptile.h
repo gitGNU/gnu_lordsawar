@@ -106,7 +106,7 @@ class Maptile
         void setBuilding(Building building){d_building = building;}
 
         //! Get the index of the tile type in the tileset.
-        guint32 getType() const {return d_index;}
+        guint32 getIndex() const {return d_index;}
 
         //! Get which building is on the maptile.
         Building getBuilding() const {return d_building;}
@@ -121,25 +121,20 @@ class Maptile
 	 */
         guint32 getMoves() const;
 
-        //! Get the smallmap color of this maptile.
-	Gdk::Color getColor() const
-	  {return (*d_tileSet)[d_index]->getSmallTile()->getColor();}
+        //! Get the smalltile color of this maptile.
+	Gdk::Color getColor() const {return d_smalltile->getColor();}
 
-	//! Get the pattern of this maptile on the smallmap.
-       SmallTile::Pattern getPattern() const
-	  {return (*d_tileSet)[d_index]->getSmallTile()->getPattern();}
+	//! Get the pattern of this maptile on the smalltile.
+       SmallTile::Pattern getPattern() const {return d_smalltile->getPattern();}
 
 	//! Get the associated colour with the pattern.
-       Gdk::Color getSecondColor() const
-	  {return (*d_tileSet)[d_index]->getSmallTile()->getSecondColor();}
+       Gdk::Color getSecondColor() const {return d_smalltile->getSecondColor();}
 
 	//! Get the associated colour with the pattern.
-       Gdk::Color getThirdColor() const
-	  {return (*d_tileSet)[d_index]->getSmallTile()->getThirdColor();}
+       Gdk::Color getThirdColor() const {return d_smalltile->getThirdColor();}
 
         //! Get the tile type (the type of the underlying terrain).
-        Tile::Type getMaptileType() const
-	  {return (*d_tileSet)[d_index]->getType();}
+        Tile::Type getType() const {return d_type;}
 
         //! Get the list of Item objects on this maptile.
         MapBackpack *getBackpack() const {return d_backpack;};
@@ -202,16 +197,29 @@ class Maptile
 	 * identified by it's index within Maptile::d_tileSet.
 	 */
         guint32 d_index;
-	//! The Tileset of the Tile referred to by Maptile::d_index.
-        Tileset* d_tileSet;
+
+	//! The tileset this tile belongs to.
+	Tileset *d_tileSet;
+
+        //! what kind of tile this is
+        Tile::Type d_type;
+
+        //! how many moves it takes to cross this tile type ( == Tile::d_moves).
+        guint32 d_moves;
+
 	//! The look of the maptile.
 	TileStyle *d_tileStyle;
+
 	//! The type of constructed object on this maptile.
         Building d_building;
+
 	//! The list of pointers to items on this maptile.
 	MapBackpack *d_backpack;
+
 	//! The list of pointers to stacks on this maptile.
 	StackTile *d_stacktile;
+
+        SmallTile *d_smalltile;
 };
 
 #endif // MAPTILE_H

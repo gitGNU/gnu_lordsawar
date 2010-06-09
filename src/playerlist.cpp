@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -44,6 +44,7 @@
 #include "network_player.h"
 #include "GameMap.h"
 #include "shieldset.h"
+#include "shieldsetlist.h"
 
 using namespace std;
 
@@ -623,22 +624,24 @@ void Playerlist::syncPlayer(GameParameters::Player player)
       int width = d_neutral->getFogMap()->getWidth();
       int height = d_neutral->getFogMap()->getHeight();
       int gold = d_neutral->getGold();
-      GameMap *gm = GameMap::getInstance();
+      Shieldset *shieldset = 
+        Shieldsetlist::getInstance()->getShieldset
+        (GameMap::getInstance()->getShieldset());
       switch (player.type)
 	{
 	case GameParameters::Player::HUMAN:
 	  p = new RealPlayer(player.name, armyset,
-			     gm->getShieldset()->getColor(player.id),
+			     shieldset->getColor(player.id),
 			     width, height, Player::HUMAN, player.id);
 	  break;
 	case GameParameters::Player::EASY:
 	  p = new AI_Fast(player.name, armyset,
-		       	  gm->getShieldset()->getColor(player.id),
+		       	  shieldset->getColor(player.id),
 			  width, height, player.id);
 	  break;
 	case GameParameters::Player::HARD:
 	  p = new AI_Smart(player.name, armyset,
-			   gm->getShieldset()->getColor(player.id),
+			   shieldset->getColor(player.id),
 			   width, height, player.id);
 	  break;
 	case GameParameters::Player::OFF:

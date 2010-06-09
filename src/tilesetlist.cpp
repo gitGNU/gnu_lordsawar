@@ -28,6 +28,7 @@
 #include "defs.h"
 #include "tileset.h"
 #include "tarhelper.h"
+#include "SmallTile.h"
 
 using namespace std;
 
@@ -329,4 +330,31 @@ bool Tilesetlist::contains(std::string name) const
         return true;
     }
   return false;
+}
+
+guint32 Tilesetlist::getTilesetId(std::string basename) const
+{
+  Tileset *ts = getTileset(basename);
+  if (ts)
+    return ts->getId();
+  else
+    return 0;
+}
+
+SmallTile *Tilesetlist::getSmallTile(std::string basename, Tile::Type type) const
+{
+  Tileset *ts = getTileset(basename);
+  if (!ts)
+    return NULL;
+  int idx = ts->getIndex(type);
+  return (*ts)[idx]->getSmallTile();
+}
+
+Gdk::Color Tilesetlist::getColor(std::string basename, Tile::Type type) const
+{
+  SmallTile *smalltile = getSmallTile(basename, type);
+  if (!smalltile)
+    return Gdk::Color("black");
+  else
+    return smalltile->getColor();
 }

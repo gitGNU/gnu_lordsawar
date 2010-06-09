@@ -54,6 +54,7 @@
 #include "editor-quit-dialog.h"
 #include "editor-recover-dialog.h"
 #include "tilestyle-organizer-dialog.h"
+#include "tileset-smallmap-building-colors-dialog.h"
 
 #include "ucompose.hpp"
 
@@ -202,6 +203,11 @@ TileSetWindow::TileSetWindow(std::string load_filename)
     xml->get_widget("organize_tilestyles_menuitem", organize_tilestyles_menuitem);
     organize_tilestyles_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &TileSetWindow::on_organize_tilestyles_activated));
+    xml->get_widget("smallmap_building_colors_menuitem", 
+                    smallmap_building_colors_menuitem);
+    smallmap_building_colors_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, 
+                     &TileSetWindow::on_smallmap_building_colors_activated));
     xml->get_widget ("help_about_menuitem", help_about_menuitem);
     help_about_menuitem->signal_activate().connect
        (sigc::mem_fun(this, &TileSetWindow::on_help_about_activated));
@@ -1115,6 +1121,13 @@ void TileSetWindow::on_organize_tilestyles_activated()
   TileStyleOrganizerDialog d(get_selected_tile());
   d.tilestyle_selected.connect
     (sigc::mem_fun(this, &TileSetWindow::on_tilestyle_id_selected));
+  d.set_parent_window(*window);
+  d.run();
+}
+
+void TileSetWindow::on_smallmap_building_colors_activated()
+{
+  TilesetSmallmapBuildingColorsDialog d(d_tileset);
   d.set_parent_window(*window);
   d.run();
 }

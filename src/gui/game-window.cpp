@@ -970,18 +970,6 @@ void GameWindow::update_diplomacy_button (bool sensitive)
 bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
 {
   currently_selected_stack = NULL;
-  /*
-   * this is done in GameScenario now.
-  Playerlist *pl = Playerlist::getInstance();
-  Armysetlist *al = Armysetlist::getInstance();
-  for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
-    if ((*i)->getType() != Player::NETWORKED)
-      al->getArmyset((*i)->getArmyset())->instantiateImages();
-
-  GameMap::getInstance()->getTileset()->instantiateImages();
-  GameMap::getInstance()->getShieldset()->instantiateImages();
-  GameMap::getInstance()->getCityset()->instantiateImages();
-  */
 
   Sound::getInstance()->haltMusic(false);
   Sound::getInstance()->enableBackground();
@@ -3408,7 +3396,6 @@ void GameWindow::on_quest_expired(Quest *quest)
 
 void GameWindow::on_inspect_activated ()
 {
-  GameMap *gm = GameMap::getInstance();
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
   if (Playerlist::getActiveplayer()->getHeroes().size() == 0)

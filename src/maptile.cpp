@@ -25,32 +25,33 @@
 #include "MapBackpack.h"
 #include "stacktile.h"
 
-Maptile::Maptile(Tileset* tileSet, int x, int y, guint32 type, TileStyle *tileStyle)
-    :d_index(type), d_building(NONE) 
+Maptile::Maptile(Tileset* tileSet, int x, int y, guint32 index, TileStyle *tileStyle)
+    :d_index(index), d_building(NONE) 
 {
     d_tileSet = tileSet;
     d_tileStyle = tileStyle;
     d_backpack = new MapBackpack(Vector<int>(x,y));
     d_stacktile = new StackTile(Vector<int>(x,y));
+    Tile *tile = (*tileSet)[d_index];
+    d_moves = tile->getMoves();
+    d_type = tile->getType();
+    d_smalltile = new SmallTile(*tile->getSmallTile());
 }
 
 Maptile::Maptile(Tileset* tileSet, int x, int y, Tile::Type type, TileStyle *tileStyle)
 {
-    bool found = false;
     d_building = NONE;
     d_tileSet = tileSet;
     d_tileStyle = tileStyle;
-    for (unsigned int i = 0; i < (*tileSet).size(); i++)
-      {
-	if ((*tileSet)[i]->getType() == type)
-	  {
-	    found = true;
-	    d_index = i;
-	    break;
-	  }
-      }
-    if (found == false)
-      d_index = 0;
+    int idx = tileSet->getIndex(type);
+    if (idx < 0)
+      idx = 0;
+    d_index = idx;
+    Tile *tile = (*tileSet)[d_index];
+    d_moves = tile->getMoves();
+    d_type = tile->getType();
+    d_smalltile = new SmallTile(*tile->getSmallTile());
+
     d_backpack = new MapBackpack(Vector<int>(x,y));
     d_stacktile = new StackTile(Vector<int>(x,y));
 }
@@ -59,6 +60,10 @@ Maptile::~Maptile()
 {
   if (d_backpack)
     delete d_backpack;
+  if (d_stacktile)
+    delete d_stacktile;
+  if (d_smalltile)
+    delete d_smalltile;
 }
 
 guint32 Maptile::getMoves() const
@@ -70,14 +75,13 @@ guint32 Maptile::getMoves() const
     else if (d_building == Maptile::BRIDGE)
         return 1;
 
-    Tile *tile = (*d_tileSet)[d_index];
-    if (tile->getType() == Tile::WATER)
+    if (d_type == Tile::WATER)
       {
 	// if we're sailing and we're not on shore, then we move faster
 	if (d_tileStyle->getType() == TileStyle::INNERMIDDLECENTER)
-	  return tile->getMoves() / 2;
+	  return d_moves / 2;
       }
-    return tile->getMoves();
+    return d_moves;
 }
 
 void Maptile::printDebugInfo() const
@@ -100,6 +104,7 @@ bool Maptile::isRoadTerrain()
     return true;
   return false;
 }
+
 bool Maptile::isOpenTerrain()
 {
   if (isCityTerrain())

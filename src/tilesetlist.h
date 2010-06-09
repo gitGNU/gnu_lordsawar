@@ -30,6 +30,7 @@
 #include "setlist.h"
 
 class Tar_Helper;
+class SmallTile;
 
 //! A list of all Tileset objects available to the game.
 /**
@@ -82,6 +83,13 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 	 *             among all tilesets in the tilesetlist.
 	 */
 	Tileset *getTileset(guint32 id) const;
+
+        //! get the id of the given tileset basename.
+        guint32 getTilesetId(std::string basename) const;
+
+        SmallTile *getSmallTile(std::string basename, Tile::Type type) const;
+
+        Gdk::Color getColor(std::string basename, Tile::Type type) const;
 
         std::string findFreeBaseName(std::string basename, guint32 max, guint32 &num) const;
 

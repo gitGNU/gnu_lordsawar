@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Ben Asselstine
+// Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -184,7 +184,7 @@ bool PathCalculator::calcFinalMoves(Vector<int> pos, Vector<int> next)
     return false;
   //flyers can't go through the void
   if (flying && is_blocked_dir &&
-      GameMap::getInstance()->getTile(next)->getMaptileType() == Tile::VOID)
+      GameMap::getInstance()->getTile(next)->getType() == Tile::VOID)
     return false;
 
   int dsxy = nodes[next.toIndex()].moves;
@@ -247,7 +247,7 @@ bool PathCalculator::calcMoves(Vector<int> pos, Vector<int> next)
     return false;
   //flyers can't go through the void
   if (flying && is_blocked_dir &&
-      GameMap::getInstance()->getTile(next)->getMaptileType() == Tile::VOID)
+      GameMap::getInstance()->getTile(next)->getType() == Tile::VOID)
     return false;
 
   int dsxy = nodes[next.toIndex()].moves;
@@ -377,7 +377,7 @@ int PathCalculator::pointsToMoveTo(Vector<int> pos, Vector<int> next) const
     }
 
   // does everything in the stack have a bonus to move onto this square?
-  if (tile->getMaptileType() & d_bonus && moves != 1)
+  if (tile->getType() & d_bonus && moves != 1)
     return 2;
 
   return moves;
@@ -458,8 +458,7 @@ bool PathCalculator::canMoveThere(Vector<int> dest)
 {
   Vector<int> pos = stack->getPos();
   if (flying && isBlockedDir(pos, dest) &&
-      GameMap::getInstance()->getTile(dest)->getMaptileType()
-      == Tile::VOID)
+      GameMap::getInstance()->getTile(dest)->getType() == Tile::VOID)
     return false;
   if (isBlocked(pos))
     {

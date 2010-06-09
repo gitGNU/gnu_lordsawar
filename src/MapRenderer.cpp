@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ MapRenderer::MapRenderer(Glib::RefPtr<Gdk::Pixmap> surface)
  
 bool MapRenderer::saveAsBitmap(std::string filename)
 {
-  int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+  int tilesize = GameMap::getInstance()->getTileSize();
   int width = GameMap::getWidth() * tilesize;
   int height = GameMap::getHeight() * tilesize;
   Glib::RefPtr<Gdk::Pixmap> surf = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(d_surface), width, height, 24);
@@ -83,7 +83,7 @@ void MapRenderer::render_tile(Vector<int> draw, Vector<int> tile,
   if (style == NULL)
     {
       printf ("style for tile %d at col=%d,row=%d is null\n",
-              mtile->getMaptileType(), tile.x, tile.y);
+              mtile->getType(), tile.x, tile.y);
       use_default_pic = true;
     }
   else
@@ -91,8 +91,7 @@ void MapRenderer::render_tile(Vector<int> draw, Vector<int> tile,
       if (style->getImage() == false)
 	{
 	  printf ("pic for style %d for tile %d at %d,%d is null\n",
-		  style->getType(),
-		  mtile->getMaptileType(), tile.x, tile.y);
+		  style->getType(), mtile->getType(), tile.x, tile.y);
           use_default_pic = true;
 	}
     }
@@ -102,7 +101,7 @@ void MapRenderer::render_tile(Vector<int> draw, Vector<int> tile,
       guint32 type = TileStyle::OTHER;
       if (style)
         type = style->getType();
-      int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+      int tilesize = GameMap::getInstance()->getTileSize();
       PixMask *img = 
         GraphicsCache::getInstance()->getDefaultTileStylePic(type,
                                                              tilesize);
@@ -119,7 +118,7 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
     GameMap* map = GameMap::getInstance();
     int width = GameMap::getWidth();
     int height = GameMap::getHeight();
-    int tilesize = map->getTileset()->getTileSize();
+    int tilesize = map->getTileSize();
     int drawY = y;
 
     Gdk::Color background_color = Gdk::Color();

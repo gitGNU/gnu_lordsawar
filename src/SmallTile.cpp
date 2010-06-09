@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,6 +28,12 @@ SmallTile::SmallTile()
   d_color.set_rgb_p(80.0/255.0,172.0/255.0,28.0/255.0);
   d_second_color.set_rgb_p(0,0,0);
   d_third_color.set_rgb_p(0,0,0);
+}
+
+SmallTile::SmallTile(const SmallTile &orig)
+       : d_pattern(orig.d_pattern), d_color(orig.d_color), 
+       d_second_color(orig.d_second_color), d_third_color(orig.d_third_color)
+{
 }
 
 SmallTile::SmallTile(XML_Helper* helper)

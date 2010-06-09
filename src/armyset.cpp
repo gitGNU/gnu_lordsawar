@@ -502,7 +502,7 @@ void Armyset::instantiateImages()
   if (broken)
     return;
   for (iterator it = begin(); it != end(); it++)
-    (*it)->instantiateImages(this);
+    (*it)->instantiateImages( getTileSize(), &t);
   std::string ship_filename = "";
   std::string flag_filename = "";
   std::string bag_filename = "";

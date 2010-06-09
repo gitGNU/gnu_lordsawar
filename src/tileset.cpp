@@ -42,6 +42,8 @@ using namespace std;
 
 std::string Tileset::d_tag = "tileset";
 std::string Tileset::d_road_smallmap_tag = "road_smallmap";
+std::string Tileset::d_ruin_smallmap_tag = "ruin_smallmap";
+std::string Tileset::d_temple_smallmap_tag = "temple_smallmap";
 std::string Tileset::file_extension = TILESET_EXT;
 
 Tileset::Tileset(guint32 id, std::string name)
@@ -56,6 +58,8 @@ Tileset::Tileset(guint32 id, std::string name)
   d_bridges = "";
   d_flags = "";
   d_road_color.set_rgb_p(0,0,0);
+  d_ruin_color.set_rgb_p(100,100,100);
+  d_temple_color.set_rgb_p(100,100,100);
   for (unsigned int i = 0; i < ROAD_TYPES; i++)
     roadpic[i] = NULL;
   for (unsigned int i = 0; i < BRIDGE_TYPES; i++)
@@ -94,6 +98,8 @@ Tileset::Tileset(XML_Helper *helper, std::string directory)
   helper->getData(d_flags, "flags");
   helper->registerTag(Tile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
   helper->registerTag(Tileset::d_road_smallmap_tag, sigc::mem_fun((*this), &Tileset::loadTile));
+  helper->registerTag(Tileset::d_ruin_smallmap_tag, sigc::mem_fun((*this), &Tileset::loadTile));
+  helper->registerTag(Tileset::d_temple_smallmap_tag, sigc::mem_fun((*this), &Tileset::loadTile));
   helper->registerTag(SmallTile::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
   helper->registerTag(TileStyle::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
   helper->registerTag(TileStyleSet::d_tag, sigc::mem_fun((*this), &Tileset::loadTile));
@@ -150,6 +156,18 @@ bool Tileset::loadTile(string tag, XML_Helper* helper)
   if (tag == Tileset::d_road_smallmap_tag)
     {
       helper->getData(d_road_color, "color");
+      return true;
+    }
+
+  if (tag == Tileset::d_ruin_smallmap_tag)
+    {
+      helper->getData(d_ruin_color, "color");
+      return true;
+    }
+
+  if (tag == Tileset::d_temple_smallmap_tag)
+    {
+      helper->getData(d_temple_color, "color");
       return true;
     }
 
@@ -216,6 +234,12 @@ bool Tileset::save(XML_Helper *helper) const
   retval &= helper->saveData("flags", d_flags);
   retval &= helper->openTag(d_road_smallmap_tag);
   retval &= helper->saveData("color", d_road_color);
+  retval &= helper->closeTag();
+  retval &= helper->openTag(d_ruin_smallmap_tag);
+  retval &= helper->saveData("color", d_ruin_color);
+  retval &= helper->closeTag();
+  retval &= helper->openTag(d_temple_smallmap_tag);
+  retval &= helper->saveData("color", d_temple_color);
   retval &= helper->closeTag();
   for (Tileset::const_iterator i = begin(); i != end(); ++i)
     retval &= (*i)->save(helper);
@@ -595,12 +619,12 @@ void Tileset::instantiateImages()
   int size = getTileSize();
   debug("Loading images for tileset " << getName());
   uninstantiateImages();
-  for (iterator it = begin(); it != end(); it++)
-    (*it)->instantiateImages(size, this);
   bool broken = false;
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
   if (broken)
     return;
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->instantiateImages(size, &t);
   std::string explosion_filename = "";
   std::string roads_filename = "";
   std::string bridges_filename = "";
@@ -800,6 +824,7 @@ bool Tileset::addTileStyleSet(Tile *tile, std::string filename)
   tile->push_back(set);
   for (TileStyleSet::iterator it = ++set->begin(); it != set->end(); it++)
     (*it)->setId(getFreeTileStyleId());
+  return success;
 }
 
 bool Tileset::getTileStyle(guint32 id, Tile **tile, TileStyleSet **set, TileStyle ** style) const

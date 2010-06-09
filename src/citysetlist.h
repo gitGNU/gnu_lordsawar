@@ -76,6 +76,8 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
 	 */
 	Cityset *getCityset(std::string bname) const;
 
+	guint32 getCitysetId(std::string bname) const;
+
 	//! Return the Cityset object by the id.
 	/**
 	 * @param id   A unique numeric identifier that identifies the cityset

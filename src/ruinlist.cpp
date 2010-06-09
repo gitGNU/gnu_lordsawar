@@ -27,6 +27,7 @@
 #include "reward.h"
 #include "GameMap.h"
 #include "cityset.h"
+#include "citysetlist.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -89,7 +90,10 @@ bool Ruinlist::load(std::string tag, XML_Helper* helper)
     if (tag != Ruin::d_tag)
         return false;
 
-    guint32 width = GameMap::getInstance()->getCityset()->getRuinTileWidth();
+    Cityset *cityset = 
+      Citysetlist::getInstance()->getCityset
+      (GameMap::getInstance()->getCityset());
+    guint32 width = cityset->getRuinTileWidth();
     add(new Ruin(helper, width));
 
     //! since the ruin has only now been copied to its final state, we need

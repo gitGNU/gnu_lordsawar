@@ -79,6 +79,8 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	 */
 	ShieldStyle *getShield(guint32 shieldset, guint32 type, guint32 colour) const;
 
+        guint32 getShieldsetId(std::string basename) const;
+
 	//! Return the Shieldset object that is in the given directory.
 	Shieldset *getShieldset(std::string dir) const;
 

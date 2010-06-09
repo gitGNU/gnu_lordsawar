@@ -154,6 +154,13 @@
                         <property name="use_underline">True</property>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkMenuItem" id="smallmap_building_colors_menuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Smallmap Building _Colours</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>

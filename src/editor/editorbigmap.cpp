@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -54,6 +54,8 @@
 #include "Backpack.h"
 #include "MapBackpack.h"
 #include "backpack-editor-dialog.h"
+#include "citysetlist.h"
+#include "cityset.h"
 
 
 EditorBigMap::EditorBigMap()
@@ -165,7 +167,7 @@ void EditorBigMap::mouse_motion_event(MouseMotionEvent e)
 	
 	// FIXME: show a drag cursor
 	
-	int ts = GameMap::getInstance()->getTileset()->getTileSize();
+	int ts = GameMap::getInstance()->getTileSize();
 	Vector<int> screen_dim(image.get_width(), image.get_height());
 	view_pos = clip(Vector<int>(0, 0),
 			view_pos + delta,
@@ -303,7 +305,6 @@ void EditorBigMap::change_map_under_cursor()
 
   Player* active = Playerlist::getInstance()->getActiveplayer();
   std::vector<Vector<int> > tiles = get_cursor_tiles();
-  Cityset* cs = GameMap::getInstance()->getCityset();
 
   Vector<int> tile = tiles.front();
   Rectangle changed_tiles(tile, Vector<int>(-1, -1));
@@ -382,49 +383,7 @@ void EditorBigMap::change_map_under_cursor()
     case ERASE:
       // check if there is a building or a stack there and remove it
 
-      // first stack, it's above everything else
-      while  (GameMap::getStack(tile) != NULL)
-        {
-          Stack *s = GameMap::getStack(tile);
-          GameMap::getInstance()->removeStack(s);
-        }
-
-      // ... or a temple ...
-      GameMap::getInstance()->removeTemple(tile);
-
-      // ... or a port ...
-      GameMap::getInstance()->removePort(tile);
-
-      // ... or a ruin ...
-      if (GameMap::getRuin(tile) != NULL)
-        {
-          Rewardlist *rl = Rewardlist::getInstance();
-          for (Rewardlist::iterator i = rl->begin(); i != rl->end(); i++)
-            {
-              if ((*i)->getType() == Reward::RUIN)
-                {
-                  Reward_Ruin *rr = static_cast<Reward_Ruin*>(*i);
-                  if (rr->getRuin()->getPos() == tile)
-                    rl->remove(*i);
-                }
-            }
-        }
-      GameMap::getInstance()->removeRuin(tile);
-
-      // ... or a road ...
-      GameMap::getInstance()->removeRoad(tile);
-
-      // ... or a bridge...
-      GameMap::getInstance()->removeBridge(tile);
-
-      // ... or a signpost ...
-      GameMap::getInstance()->removeSignpost(tile);
-
-      // ... or a city
-      GameMap::getInstance()->removeCity(tile);
-
-      // ... or a bag
-      GameMap::getInstance()->getTile(tile)->getBackpack()->removeAllFromBackpack();
+      GameMap::getInstance()->eraseTile(tile);
       break;
 
     case STACK:
@@ -456,41 +415,16 @@ void EditorBigMap::change_map_under_cursor()
       break;
 
     case CITY:
-        {
-          // check if we can place the city
-          bool city_placeable =
-            GameMap::getInstance()->canPutBuilding
-            (Maptile::CITY,cs->getCityTileWidth(), tile);
-
-          if (!city_placeable)
-            break;
-
-          City *c = new City(tile, cs->getCityTileWidth());
-          GameMap::getInstance()->putCity(c);
-          break;
-        }
+      GameMap::getInstance()->putNewCity(tile);
+      break;
 
     case RUIN:
-        {
-          bool ruin_placeable = GameMap::getInstance()->canPutBuilding
-            (Maptile::RUIN, cs->getRuinTileWidth(), tile);
-          if (!ruin_placeable)
-            break;
-          Ruin *r = new Ruin(tile, cs->getRuinTileWidth());
-          GameMap::getInstance()->putRuin(r);
-          break;
-        }
+      GameMap::getInstance()->putNewRuin(tile);
+      break;
 
     case TEMPLE:
-        {
-          bool temple_placeable = GameMap::getInstance()->canPutBuilding
-            (Maptile::TEMPLE, cs->getRuinTileWidth(), tile);
-          if (!temple_placeable)
-            break;
-          Temple *t = new Temple(tile, cs->getTempleTileWidth());
-          GameMap::getInstance()->putTemple(t);
-          break;
-        }
+      GameMap::getInstance()->putNewTemple(tile);
+      break;
 
     case SIGNPOST:
         {
@@ -547,7 +481,7 @@ void EditorBigMap::change_map_under_cursor()
           break;
         }
     case BAG:
-      if (maptile->getMaptileType() != Tile::WATER)
+      if (maptile->getType() != Tile::WATER)
         {
           //open the dialog
           MapBackpack *bag = 
@@ -574,7 +508,7 @@ void EditorBigMap::smooth_view()
 
 void EditorBigMap::after_draw()
 {
-    int tilesize = GameMap::getInstance()->getTileset()->getTileSize();
+    int tilesize = GameMap::getInstance()->getTileSize();
     std::vector<Vector<int> > tiles;
 
     if (show_tile_types_instead_of_tile_styles)
@@ -652,17 +586,17 @@ void EditorBigMap::after_draw()
 	    break;
 
 	  case CITY:
-	    pic = GraphicsCache::getInstance()->getCityPic(0, Playerlist::getInstance()->getActiveplayer(), GameMap::getInstance()->getCityset()->getId());
+	    pic = GraphicsCache::getInstance()->getCityPic(0, Playerlist::getInstance()->getActiveplayer(), GameMap::getInstance()->getCitysetId());
 	    pic->blit(buffer, pos);
 	    break;
 
 	  case RUIN:
-	    pic = GraphicsCache::getInstance()->getRuinPic(0, GameMap::getInstance()->getCityset()->getId());
+	    pic = GraphicsCache::getInstance()->getRuinPic(0, GameMap::getInstance()->getCitysetId());
 	    pic->blit(buffer, pos);
 	    break;
 
 	  case TEMPLE:
-	    pic = GraphicsCache::getInstance()->getTemplePic(0, GameMap::getInstance()->getCityset()->getId());
+	    pic = GraphicsCache::getInstance()->getTemplePic(0, GameMap::getInstance()->getCitysetId());
 	    pic->blit(buffer, pos);
 	    break;
 

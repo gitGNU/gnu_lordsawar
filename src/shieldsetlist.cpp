@@ -339,3 +339,12 @@ bool Shieldsetlist::contains(std::string name) const
     }
   return false;
 }
+
+guint32 Shieldsetlist::getShieldsetId(std::string basename) const
+{
+  Shieldset *ss = getShieldset(basename);
+  if (ss)
+    return ss->getId();
+  else
+    return 0;
+}

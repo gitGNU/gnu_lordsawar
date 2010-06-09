@@ -80,6 +80,7 @@ class TileSetWindow: public sigc::trackable
     Gtk::MenuItem *explosion_picture_menuitem;
     Gtk::MenuItem *preview_tile_menuitem;
     Gtk::MenuItem *organize_tilestyles_menuitem;
+    Gtk::MenuItem *smallmap_building_colors_menuitem;
     Gtk::MenuItem *quit_menuitem;
     Gtk::MenuItem *help_about_menuitem;
     Gtk::ComboBoxText *tilestyle_combobox;
@@ -155,6 +156,7 @@ class TileSetWindow: public sigc::trackable
     void on_flags_picture_activated();
     void on_preview_tile_activated();
     void on_organize_tilestyles_activated();
+    void on_smallmap_building_colors_activated();
     void on_help_about_activated();
     void on_tile_selected();
     void on_tilestyleset_selected();

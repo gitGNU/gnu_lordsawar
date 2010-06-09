@@ -1,6 +1,6 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2003, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -24,6 +24,8 @@
 #include "templelist.h"
 #include "playerlist.h"
 #include "stack.h"
+#include "citysetlist.h"
+#include "cityset.h"
 #include "GameMap.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -86,7 +88,7 @@ bool Templelist::load(std::string tag, XML_Helper* helper)
     //what has happened?
         return false;
     
-    guint32 width = GameMap::getInstance()->getCityset()->getTempleTileWidth();
+    guint32 width = Citysetlist::getInstance()->getCityset(GameMap::getInstance()->getCityset())->getTempleTileWidth();
     add(new Temple(helper, width));
 
     return true;

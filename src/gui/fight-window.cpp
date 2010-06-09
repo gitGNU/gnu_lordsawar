@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, 2008 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@
 #include "sound.h"
 #include "GameMap.h"
 #include "tileset.h"
+#include "tilesetlist.h"
 #include "Tile.h"
 #include "SmallTile.h"
 
@@ -254,9 +255,9 @@ void FightWindow::add_army(Army *army, int initial_hp,
     drawing_area->property_height_request() = 3;
     if (army->getStat(Army::SHIP, false))
       {
-        Tileset *ts = GameMap::getInstance()->getTileset();
-        int water_id = ts->getIndex(Tile::WATER);
-        SmallTile *water = (*ts)[water_id]->getSmallTile();
+        std::string ts = GameMap::getInstance()->getTileset();
+        SmallTile *water = 
+          Tilesetlist::getInstance()->getSmallTile(ts, Tile::WATER);
         drawing_area->modify_bg(Gtk::STATE_NORMAL, water->getColor());
       }
     ebox->add(*manage(drawing_area));

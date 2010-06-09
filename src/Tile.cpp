@@ -236,24 +236,19 @@ void Tile::uninstantiateImages()
     (*it)->uninstantiateImages();
 }
 
-void Tile::instantiateImages(int tilesize, Tileset *ts)
+void Tile::instantiateImages(int tilesize, Tar_Helper *t)
 {
   bool broken = false;
-  Tar_Helper t(ts->getConfigurationFile(), std::ios::in, broken);
-  if (broken)
-    return;
   for (iterator it = begin(); it != end(); it++)
     {
       std::string file = "";
       if ((*it)->getName().empty() == false)
-	file = t.getFile((*it)->getName() + ".png", broken);
+	file = t->getFile((*it)->getName() + ".png", broken);
       if (!broken)
         (*it)->instantiateImages(tilesize, file);
       if (file.empty() == false)
         File::erase(file);
     }
-  t.Close();
-
 }
 
 guint32 Tile::countTileStyles(TileStyle::Type type) const

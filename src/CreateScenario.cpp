@@ -138,15 +138,14 @@ void CreateScenario::setMapTiles(std::string tilesname)
 {
     debug("CreateScenario::setMapTiles")
     d_tilesname = tilesname;
-    Tileset *ts = Tilesetlist::getInstance()->getTileset(tilesname);
-    GameMap::getInstance()->setTileset(ts);
+    GameMap::getInstance()->setTileset(tilesname);
 }
 
 void CreateScenario::setShieldset(std::string shieldset)
 {
     debug("CreateScenario::setShieldset")
     d_shieldsname = shieldset;
-    GameMap::getInstance()->setShieldset(Shieldsetlist::getInstance()->getShieldset(shieldset));
+    GameMap::getInstance()->setShieldset(shieldset);
 }
 
 void CreateScenario::setCityset(std::string citysetname)
@@ -155,7 +154,7 @@ void CreateScenario::setCityset(std::string citysetname)
     d_citysetname = citysetname;
     Cityset *cs = Citysetlist::getInstance()->getCityset(citysetname);
     d_generator->setCityset(cs);
-    GameMap::getInstance()->setCityset(cs);
+    GameMap::getInstance()->setCityset(citysetname);
 }
 
 void CreateScenario::setNoCities(int nocities)
