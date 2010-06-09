@@ -271,6 +271,7 @@ class GameMap: public sigc::trackable
         bool putNewTemple(Vector<int> tile);
 	bool removeTemple(Vector<int> pos);
 	bool putRoad(Road *r);
+        bool putNewRoad(Vector<int> tile);
 	bool removeRoad(Vector<int> pos);
 	bool putBridge(Bridge *b);
 	bool removeBridge(Vector<int> pos);

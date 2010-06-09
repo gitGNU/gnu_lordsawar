@@ -1060,10 +1060,12 @@ Vector<int> GameMap::findNearestObjectToTheWest(Vector<int> pos)
   Vector<int> dir = Vector<int>(-1, 0);
   return findNearestObjectInDir(pos, dir);
 }
+
 City* GameMap::getCity(Vector<int> pos)
 {
   return Citylist::getInstance()->getObjectAt(pos);
 }
+
 City* GameMap::getEnemyCity(Vector<int> pos)
 {
   City *c = Citylist::getInstance()->getObjectAt(pos);
@@ -1071,30 +1073,37 @@ City* GameMap::getEnemyCity(Vector<int> pos)
     return c;
   return NULL;
 }
+
 Ruin* GameMap::getRuin(Vector<int> pos)
 {
   return Ruinlist::getInstance()->getObjectAt(pos);
 }
+
 Temple* GameMap::getTemple(Vector<int> pos)
 {
   return Templelist::getInstance()->getObjectAt(pos);
 }
+
 Port* GameMap::getPort(Vector<int> pos)
 {
   return Portlist::getInstance()->getObjectAt(pos);
 }
+
 Road* GameMap::getRoad(Vector<int> pos)
 {
   return Roadlist::getInstance()->getObjectAt(pos);
 }
+
 Bridge* GameMap::getBridge(Vector<int> pos)
 {
   return Bridgelist::getInstance()->getObjectAt(pos);
 }
+
 Signpost* GameMap::getSignpost(Vector<int> pos)
 {
   return Signpostlist::getInstance()->getObjectAt(pos);
 }
+
 Stack* GameMap::getFriendlyStack(Vector<int> pos)
 {
   return getStacks(pos)->getFriendlyStack(Playerlist::getActiveplayer());
@@ -1137,6 +1146,7 @@ std::list<Stack*> GameMap::getEnemyStacks(Vector<int> pos, Player *player)
     player = Playerlist::getActiveplayer();
   return getStacks(pos)->getEnemyStacks(player);
 }
+
 Stack* GameMap::getStack(Vector<int> pos)
 {
   return getStacks(pos)->getStack();
@@ -1146,6 +1156,7 @@ StackTile* GameMap::getStacks(Vector<int> pos)
 {
   return getInstance()->getTile(pos)->getStacks();
 }
+
 Stack *GameMap::groupStacks(Vector<int> pos)
 {
   return getStacks(pos)->group(Playerlist::getActiveplayer());
@@ -1706,6 +1717,15 @@ bool GameMap::removeRoad(Vector<int> pos)
   return false;
 }
 
+bool GameMap::putNewRoad(Vector<int> tile)
+{
+  Road *r = new Road(tile);
+  if (r)
+    return putRoad(r);
+  else
+    return false;
+}
+
 bool GameMap::putRoad(Road *r)
 {
   Roadlist::getInstance()->add(r);
@@ -2047,6 +2067,7 @@ std::list<Vector<int> > GameMap::getNearbyPoints(Vector<int> pos, int dist)
 
   return points;
 }
+
 bool GameMap::checkCityAccessibility()
 {
   //check to see if all cities are accessible
@@ -2153,7 +2174,7 @@ std::string GameMap::getTilesetName() const
   if (!ts)
     return "";
   else
-    ts->getName();
+    return ts->getName();
 }
 
 std::string GameMap::getCitysetName() const
@@ -2162,7 +2183,7 @@ std::string GameMap::getCitysetName() const
   if (!cs)
     return "";
   else
-    cs->getName();
+    return cs->getName();
 }
 
 std::string GameMap::getShieldsetName() const

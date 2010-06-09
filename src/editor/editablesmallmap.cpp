@@ -27,11 +27,15 @@
 #include "GameMap.h"
 #include "citysetlist.h"
 #include "cityset.h"
+#include "RoadPathCalculator.h"
+#include "path.h"
 
 #include "editablesmallmap.h"
 
 EditableSmallMap::EditableSmallMap()
 {
+  road_start = Vector<int>(-1,-1);
+  road_finish = Vector<int>(-1,-1);
 }
 
 EditableSmallMap::~EditableSmallMap()
@@ -185,4 +189,59 @@ Glib::RefPtr<Gdk::Pixbuf> EditableSmallMap::getDotPic(guint32 width,
   dot->fill(color.get_pixel());
   return dot;
 
+}
+
+bool EditableSmallMap::check_road()
+{
+  if (road_start == Vector<int>(-1,-1))
+    return false;
+  if (road_finish == Vector<int>(-1,-1))
+    return false;
+  if (road_finish == road_start)
+    return false;
+  RoadPathCalculator rpc(road_start);
+  Path *p = rpc.calculate(road_finish);
+  bool success = false;
+  if (p->size() > 0)
+    success = p->back() == road_finish;
+  delete p;
+  return success;
+}
+
+void EditableSmallMap::set_road_start(Vector<int> start)
+{
+  road_start = start;
+  road_can_be_created.emit(check_road());
+}
+
+void EditableSmallMap::set_road_finish(Vector<int> finish)
+{
+  road_finish = finish;
+  road_can_be_created.emit(check_road());
+}
+
+bool EditableSmallMap::create_road()
+{
+  if (check_road() == false)
+    return false;
+  RoadPathCalculator rpc(road_start);
+  Path *p = rpc.calculate(road_finish);
+  GameMap *gm = GameMap::getInstance();
+  bool success = true;
+  for (Path::iterator it = p->begin(); it != p->end(); it++)
+    {
+      Vector<int> pos = *it;
+      if (gm->getTile(pos)->getType() == Tile::WATER &&
+          gm->getBuilding(pos) != Maptile::BRIDGE)
+        {
+          success = false;
+          break;
+        }
+      if (gm->getBuilding(pos) == Maptile::NONE)
+        {
+          if (GameMap::getInstance()->getBuilding(pos) == Maptile::NONE)
+            GameMap::getInstance()->putNewRoad(pos);
+        }
+    }
+  return success;
 }

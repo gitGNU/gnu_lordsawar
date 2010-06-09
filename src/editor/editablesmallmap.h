@@ -58,6 +58,10 @@ public:
     //! Set the pointer characteristics.
     void set_pointer(Pointer pointer, int size, Tile::Type terrain);
 
+    void set_road_start(Vector<int> start);
+
+    void set_road_finish(Vector<int> finish);
+
     // Methods that operate on the class data and modify the class.
  
     //! Realize the given mouse button event.
@@ -66,6 +70,9 @@ public:
     //! Realize the given mouse motion event.
     void mouse_motion_event(MouseMotionEvent e);
 
+    //! make a road from road_start to road_finish.
+    bool create_road();
+
     // Signals
 
     // Emitted after a call to EditableSmallMap::Draw.
@@ -73,6 +80,7 @@ public:
      * Classes that use EditableSmallMap must catch this signal to display the map.
      */
     sigc::signal<void, Glib::RefPtr<Gdk::Pixmap>, Gdk::Rectangle> map_changed;
+    sigc::signal<void, bool> road_can_be_created;
 
 private:
 
@@ -84,6 +92,8 @@ private:
 
     void change_map(Vector<int> pos);
 
+    bool check_road();
+
     Glib::RefPtr<Gdk::Pixbuf> getDotPic(guint32 width, guint32 height, Gdk::Color color) const;
 
     Rectangle get_cursor_rectangle(Vector<int> current_tile);
@@ -92,6 +102,8 @@ private:
     Pointer pointer;
     Tile::Type pointer_terrain;
     int pointer_size;
+    Vector<int> road_start;
+    Vector<int> road_finish;
 };
 
 #endif
