@@ -557,6 +557,12 @@ Vector<int> OverviewMap::mapFromScreen(Vector<int> pos)
 
     if (y >= GameMap::getHeight())
         y = GameMap::getHeight() - 1;
+
+    if (x < 0)
+      x = 0;
+    
+    if (y < 0)
+      y = 0;
     
     return Vector<int>(x,y);
 }
@@ -628,4 +634,21 @@ void OverviewMap::draw_hero(Vector<int> pos, bool white)
 
     PixMask *heropic = gc->getSmallHeroPic(white);
     heropic->blit_centered(surface, start);
+}
+
+void OverviewMap::draw_target_box(Vector<int> pos)
+{
+  Vector<int> start = mapToSurface(pos);
+  start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
+  Gdk::Color box_color = Gdk::Color();
+  box_color.set_rgb_p(252.0/255.0, 160.0/255.0, 0);
+  int xsize = 8;
+  int ysize = 8;
+  //draw an 8 by 8 box, with a smaller box inside of it
+  draw_rect(start.x - (xsize / 2), start.y - (ysize / 2), 
+	    xsize, ysize, box_color);
+  xsize = 4;
+  ysize = 4;
+  draw_filled_rect(start.x - (xsize / 2), start.y - (ysize / 2), 
+		   xsize, ysize, box_color);
 }

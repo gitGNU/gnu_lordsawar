@@ -147,7 +147,7 @@ ShieldStyle *Shield::getFirstShieldstyle(ShieldStyle::Type type)
 {
   for (iterator i = begin(); i != end(); i++)
     {
-      if ((*i)->getType() == type)
+      if (ShieldStyle::Type((*i)->getType()) == type)
 	return *i;
     }
   return NULL;

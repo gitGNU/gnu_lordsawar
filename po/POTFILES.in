@@ -109,6 +109,7 @@
 [type: gettext/glade]dat/glade/editor/shieldset-window.ui
 [type: gettext/glade]dat/glade/editor/cityset-info-dialog.ui
 [type: gettext/glade]dat/glade/editor/shieldset-info-dialog.ui
+[type: gettext/glade]dat/glade/editor/smallmap-editor-dialog.ui
 src/FogMap.cpp
 src/templelist.cpp
 src/network-connection.cpp
@@ -240,7 +241,8 @@ src/editor/select-item-dialog.cpp
 src/editor/select-reward-dialog.cpp
 src/editor/players-dialog.cpp
 src/editor/editorbigmap.cpp
-src/editor/editablesmallmap.h
+src/editor/editablesmallmap.cpp
+src/editor/smallmap-editor-dialog.cpp
 src/editor/tileset-main.cpp
 src/editor/city-editor-dialog.cpp
 src/editor/main-window.cpp

@@ -245,6 +245,8 @@ class OverviewMap : public sigc::trackable
     //! Draw a hero icon at the given location.  white or black.
     void draw_hero(Vector<int> pos, bool white);
 
+    void draw_target_box(Vector<int> pos);
+
     bool blank_screen;
 };
 

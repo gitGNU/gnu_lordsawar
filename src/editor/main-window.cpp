@@ -91,6 +91,7 @@
 #include "armyset-window.h"
 #include "tileset-window.h"
 #include "editor-quit-dialog.h"
+#include "smallmap-editor-dialog.h"
 
 
 MainWindow::MainWindow(std::string load_filename)
@@ -240,6 +241,9 @@ MainWindow::MainWindow(std::string load_filename)
     xml->get_widget("edit_tileset_menuitem", edit_tileset_menuitem);
     edit_tileset_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &MainWindow::on_edit_tileset_activated));
+    xml->get_widget("edit_smallmap_menuitem", edit_smallmap_menuitem);
+    edit_smallmap_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_edit_smallmap_activated));
     
     xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
     fullscreen_menuitem->signal_activate().connect
@@ -533,6 +537,7 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
     }
 
     init_map_state();
+    GameMap::getInstance()->calculateBlockedAvenues();
 }
 
 void MainWindow::set_random_map(int width, int height,
@@ -1093,6 +1098,20 @@ void MainWindow::on_cityset_saved(guint32 id)
     }
 }
 
+void MainWindow::on_edit_smallmap_activated()
+{
+  SmallmapEditorDialog d;
+  d.set_parent_window(*window);
+  bool changed = d.run();
+  d.hide();
+  Rectangle r = Rectangle(0, 0, GameMap::getWidth(), GameMap::getHeight());
+  smallmap->redraw_tiles(r);
+  redraw();
+  if (changed)
+    needs_saving = true;
+  update_window_title();
+}
+
 void MainWindow::on_edit_tileset_activated()
 {
   Gtk::Main *kit = Gtk::Main::instance();;
@@ -1329,6 +1348,7 @@ void MainWindow::on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
       window->invalidate_rect(r, true);
     }
 }
+
 void MainWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map, Gdk::Rectangle r)
 {
   int width = 0;

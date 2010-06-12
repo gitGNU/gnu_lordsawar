@@ -83,6 +83,7 @@ class MainWindow: public sigc::trackable
     Gtk::MenuItem *switch_sets_menuitem;
     Gtk::MenuItem *edit_items_menuitem ;
     Gtk::MenuItem *edit_rewards_menuitem;
+    Gtk::MenuItem *edit_smallmap_menuitem;
     Gtk::MenuItem *random_all_cities_menuitem;
     Gtk::MenuItem *random_unnamed_cities_menuitem;
     Gtk::MenuItem *random_all_ruins_menuitem;
@@ -134,6 +135,7 @@ class MainWindow: public sigc::trackable
     void on_edit_tileset_activated();
     void on_tileset_saved(guint32 id);
     void on_edit_cityset_activated();
+    void on_edit_smallmap_activated();
     void on_cityset_saved(guint32 id);
     void on_smooth_map_activated();
     void on_smooth_screen_activated();

@@ -39,6 +39,8 @@ public:
 	RUIN, 
 	TEMPLE, 
 	ERASE, 
+        PICK_NEW_ROAD_START,
+        PICK_NEW_ROAD_FINISH,
     };
 
     //! Default constructor.  Make a new EditableSmallMap.
@@ -62,6 +64,8 @@ public:
 
     void set_road_finish(Vector<int> finish);
 
+    void clear_road();
+
     // Methods that operate on the class data and modify the class.
  
     //! Realize the given mouse button event.
@@ -73,14 +77,20 @@ public:
     //! make a road from road_start to road_finish.
     bool create_road();
 
+    //! check to see if the road can be made.
+    bool check_road();
+
     // Signals
 
     // Emitted after a call to EditableSmallMap::Draw.
     /**
      * Classes that use EditableSmallMap must catch this signal to display the map.
      */
-    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap>, Gdk::Rectangle> map_changed;
+    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap>, Gdk::Rectangle > map_changed;
+    sigc::signal<void, Vector<int> > road_start_placed;
+    sigc::signal<void, Vector<int> > road_finish_placed;
     sigc::signal<void, bool> road_can_be_created;
+    sigc::signal<void> map_edited;
 
 private:
 
@@ -92,7 +102,6 @@ private:
 
     void change_map(Vector<int> pos);
 
-    bool check_road();
 
     Glib::RefPtr<Gdk::Pixbuf> getDotPic(guint32 width, guint32 height, Gdk::Color color) const;
 

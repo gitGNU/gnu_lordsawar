@@ -100,7 +100,7 @@ class Maptile
         ~Maptile();
 
         //! Set the type of the terrain (type is an index in the tileset).
-        void setType(guint32 index){d_index = index;}
+        void setIndex(guint32 index);
 
         //! Set which kind of building is on this maptile.
         void setBuilding(Building building){d_building = building;}

@@ -282,7 +282,8 @@ class GameMap: public sigc::trackable
 	bool putStack(Stack *s);
 	void removeStack(Stack *s);
         bool removeLocation (Vector<int> pos);
-        void eraseTile(Vector<int> pos);
+        bool eraseTile(Vector<int> pos);
+        bool eraseTiles(Rectangle r);
 
 	Location *getLocation(Vector<int> pos);
 

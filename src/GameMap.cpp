@@ -435,8 +435,6 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
                 {
                   x = pos.x + (i - d);
                   y = pos.y + (j - d);
-                  if (x < 0 || y < 0)
-                    continue;
 		  if (offmap(x, y))
 		    continue;
                   //is there somebody else's city here?
@@ -522,13 +520,13 @@ bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
 {
   if (offmap(destx, desty))
     return true;
-  if (Citylist::getInstance()->empty())
-      return false;
+  //if (Citylist::getInstance()->empty())
+      //return false;
   int diffx = destx - x;
   int diffy = desty - y;
   if (diffx >= -1 && diffx <= 1 && diffy >= -1 && diffy <= 1)
     {
-      assert (Citylist::getInstance()->size());
+      //assert (Citylist::getInstance()->size());
       bool from_dock = isDock(Vector<int>(x,y));
       bool to_dock = isDock(Vector<int>(destx,desty));
       Maptile *from = getTile(x, y);
@@ -1736,9 +1734,8 @@ bool GameMap::putRoad(Road *r)
   for (int x = tile.x - 1; x <= tile.x + 1; ++x)
     for (int y = tile.y - 1; y <= tile.y + 1; ++y)
       {
-	if ((x < 0 || x >= GameMap::getWidth()) &&
-	    (y < 0 || y >= GameMap::getHeight()))
-	  continue;
+        if (offmap(x,y))
+          continue;
 
 	Vector<int> pos(x, y);
 	if (Road *r = Roadlist::getInstance()->getObjectAt(pos))
@@ -1786,12 +1783,21 @@ Rectangle GameMap::putTerrain(Rectangle r, Tile::Type type, int tile_style_id, b
 	Maptile* t = getTile(Vector<int>(x, y));
 	if (t->getType() != type)
           {
-            t->setType(index);
-            calculateBlockedAvenue(x, y);
+            t->setIndex(index);
             updateShips(Vector<int>(x,y));
             replaced = true;
           }
       }
+  if (replaced)
+    {
+      for (int x = r.x - 2; x < r.x + r.w + 2; ++x)
+        for (int y = r.y - 2; y < r.y + r.h + 2; ++y)
+          {
+            if (offmap(x,y))
+              continue;
+            calculateBlockedAvenue(x, y);
+          }
+    }
   if (tile_style_id == -1)
     {
       if (replaced || always_alter_tilestyles)
@@ -2195,49 +2201,69 @@ std::string GameMap::getShieldsetName() const
     return ss->getName();
 }
 
-void GameMap::eraseTile(Vector<int> tile) 
+bool GameMap::eraseTiles(Rectangle r)
 {
-      // first stack, it's above everything else
-      while  (getStack(tile) != NULL)
+  bool erased = false;
+  for (int x = r.x; x < r.x + r.w; ++x)
+    for (int y = r.y; y < r.y + r.h; ++y)
+      {
+	if (offmap(x,y))
+	  continue;
+        erased |= eraseTile(Vector<int>(x,y));
+      }
+  return erased;
+}
+
+bool GameMap::eraseTile(Vector<int> tile) 
+{
+  bool erased = false;
+  // first stack, it's above everything else
+  while  (getStack(tile) != NULL)
+    {
+      Stack *s = getStack(tile);
+      removeStack(s);
+      erased = true;
+    }
+
+  // ... or a temple ...
+  erased |= removeTemple(tile);
+
+  // ... or a port ...
+  erased |= removePort(tile);
+
+  // ... or a ruin ...
+  if (getRuin(tile) != NULL)
+    {
+      Rewardlist *rl = Rewardlist::getInstance();
+      for (Rewardlist::iterator i = rl->begin(); i != rl->end(); i++)
         {
-          Stack *s = getStack(tile);
-          removeStack(s);
-        }
-
-      // ... or a temple ...
-      removeTemple(tile);
-
-      // ... or a port ...
-      removePort(tile);
-
-      // ... or a ruin ...
-      if (getRuin(tile) != NULL)
-        {
-          Rewardlist *rl = Rewardlist::getInstance();
-          for (Rewardlist::iterator i = rl->begin(); i != rl->end(); i++)
+          if ((*i)->getType() == Reward::RUIN)
             {
-              if ((*i)->getType() == Reward::RUIN)
-                {
-                  Reward_Ruin *rr = static_cast<Reward_Ruin*>(*i);
-                  if (rr->getRuin()->getPos() == tile)
-                    rl->remove(*i);
-                }
+              Reward_Ruin *rr = static_cast<Reward_Ruin*>(*i);
+              if (rr->getRuin()->getPos() == tile)
+                rl->remove(*i);
             }
         }
-      removeRuin(tile);
+    }
+  erased |= removeRuin(tile);
 
-      // ... or a road ...
-      removeRoad(tile);
+  // ... or a road ...
+  erased |= removeRoad(tile);
 
-      // ... or a bridge...
-      removeBridge(tile);
+  // ... or a bridge...
+  erased |= removeBridge(tile);
 
-      // ... or a signpost ...
-      removeSignpost(tile);
+  // ... or a signpost ...
+  erased |= removeSignpost(tile);
 
-      // ... or a city
-      removeCity(tile);
+  // ... or a city
+  erased |= removeCity(tile);
 
-      // ... or a bag
+  // ... or a bag
+  if (getTile(tile)->getBackpack()->size() > 0)
+    {
       getTile(tile)->getBackpack()->removeAllFromBackpack();
+      erased = true;
+    }
+  return erased;
 }

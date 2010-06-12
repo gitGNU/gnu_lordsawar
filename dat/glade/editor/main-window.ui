@@ -176,6 +176,13 @@
                         <property name="use_underline">True</property>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkMenuItem" id="edit_smallmap_menuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">_Miniature Map</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>

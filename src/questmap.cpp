@@ -62,6 +62,7 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
   end = target;
 
   start = mapToSurface(start);
+  draw_target_box(end);
   end = mapToSurface(end);
 
 
@@ -69,18 +70,9 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
   end += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
   Gdk::Color box_color = Gdk::Color();
   box_color.set_rgb_p(252.0/255.0, 160.0/255.0, 0);
+
   int xsize = 8;
   int ysize = 8;
-  //draw an 8 by 8 box, with a smaller box inside of it
-  draw_rect(end.x - (xsize / 2), end.y - (ysize / 2), 
-	    xsize, ysize, box_color);
-  xsize = 4;
-  ysize = 4;
-  draw_filled_rect(end.x - (xsize / 2), end.y - (ysize / 2), 
-		   xsize, ysize, box_color);
-
-  xsize = 8;
-  ysize = 8;
   //which corner do we connect the line to?
   if (start.x >= end.x)
     {

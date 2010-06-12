@@ -48,6 +48,10 @@ void EditableSmallMap::after_draw()
   surface->get_size(width, height);
   OverviewMap::after_draw();
   draw_cities(false);
+  if (road_start != Vector<int>(-1,-1))
+      draw_target_box(road_start);
+  if (road_finish != Vector<int>(-1,-1))
+      draw_target_box(road_finish);
   map_changed.emit(surface, Gdk::Rectangle(0, 0, width, height));
 }
 
@@ -61,14 +65,24 @@ Rectangle EditableSmallMap::get_cursor_rectangle(Vector<int> current_tile)
 
 void EditableSmallMap::change_map(Vector<int> tile)
 {
+  bool redraw = true;
   switch (pointer)
     {
     case POINTER:
       //fixme: say what's on a given tile, and what kind of tile this is.
       //then don't redraw
+      redraw = false;
       break;
     case ERASE: 
-      GameMap::getInstance()->eraseTile(tile);
+        {
+          int erase_size = 3;
+          int offset = (erase_size - 1) / 2;
+          Vector<int> box = tile - Vector<int>(offset, offset);
+          Rectangle r(box.x, box.y, erase_size, erase_size);
+          bool erased = GameMap::getInstance()->eraseTiles(r);
+          if (erased)
+            map_edited.emit();
+        }
       break;
     case TERRAIN:
         {
@@ -83,21 +97,45 @@ void EditableSmallMap::change_map(Vector<int> tile)
               pointer_terrain != Tile::GRASS)
             break;
 
-          GameMap::getInstance()->putTerrain(get_cursor_rectangle(tile), 
-                                             pointer_terrain, -1, true);
+          Rectangle tiles = GameMap::getInstance()->putTerrain
+            (get_cursor_rectangle(tile), pointer_terrain, -1, true);
+          redraw_tiles(tiles);
+          map_edited.emit();
         }
       break;
     case CITY:
       GameMap::getInstance()->putNewCity(tile);
+      map_edited.emit();
       break;
     case RUIN:
       GameMap::getInstance()->putNewRuin(tile);
+      map_edited.emit();
       break;
     case TEMPLE: 
       GameMap::getInstance()->putNewTemple(tile);
+      map_edited.emit();
+      break;
+    case PICK_NEW_ROAD_START: 
+      if (GameMap::getInstance()->getTile(tile)->getType() != Tile::WATER &&
+          GameMap::getInstance()->getTile(tile)->getType() != Tile::VOID)
+        {
+          road_start = tile;
+          road_start_placed.emit(tile);
+          check_road();
+        }
+      break;
+    case PICK_NEW_ROAD_FINISH: 
+      if (GameMap::getInstance()->getTile(tile)->getType() != Tile::WATER &&
+          GameMap::getInstance()->getTile(tile)->getType() != Tile::VOID)
+        {
+          road_finish = tile;
+          road_finish_placed.emit(tile);
+          check_road();
+        }
       break;
     }
-  draw(Playerlist::getViewingplayer());
+  if (redraw)
+    draw(Playerlist::getViewingplayer());
   return;
 }
 
@@ -138,16 +176,18 @@ Glib::RefPtr<Gdk::Pixbuf> EditableSmallMap::get_cursor(Vector<int> & hotspot) co
       cursor = GraphicsCache::getInstance()->getCursorPic(GraphicsCache::POINTER)->to_pixbuf();
       hotspot = Vector<int>(cursor->get_width() / 2, cursor->get_height() / 2);
       break;
+    case PICK_NEW_ROAD_START: 
+    case PICK_NEW_ROAD_FINISH: 
+      cursor = GraphicsCache::getInstance()->getCursorPic(GraphicsCache::TARGET)->to_pixbuf();
+      hotspot = Vector<int>(cursor->get_width() / 2, cursor->get_height() / 2);
+      break;
     case ERASE: 
       cursor = GraphicsCache::getInstance()->getCursorPic(GraphicsCache::TARGET)->to_pixbuf();
       hotspot = Vector<int>(cursor->get_width() / 2, cursor->get_height() / 2);
       break;
     case TERRAIN:
         {
-          Gdk::Color terraincolor = 
-            Tilesetlist::getInstance()->getColor
-            (GameMap::getInstance()->getTileset(), pointer_terrain);
-          cursor = getDotPic(pointer_size, pointer_size, terraincolor);
+          cursor = GraphicsCache::getInstance()->getCursorPic(GraphicsCache::TARGET)->to_pixbuf();
           hotspot = 
             Vector<int>(cursor->get_width() / 2, cursor->get_height() / 2);
         }
@@ -158,20 +198,14 @@ Glib::RefPtr<Gdk::Pixbuf> EditableSmallMap::get_cursor(Vector<int> & hotspot) co
       break;
     case RUIN:
         {
-          Gdk::Color ruindotcolor = Gdk::Color();
-          ruindotcolor.set_rgb_p(100,100,100);
-          int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
-          cursor = getDotPic(size, size, ruindotcolor);
+          cursor = GraphicsCache::getInstance()->getCursorPic(GraphicsCache::TARGET)->to_pixbuf();
           hotspot = 
             Vector<int>(cursor->get_width() / 2, cursor->get_height() / 2);
         }
       break;
     case TEMPLE: 
         {
-          Gdk::Color templedotcolor = Gdk::Color();
-          templedotcolor.set_rgb_p(100,100,100);
-          int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
-          cursor = getDotPic(size, size, templedotcolor);
+          cursor = GraphicsCache::getInstance()->getCursorPic(GraphicsCache::TARGET)->to_pixbuf();
           hotspot = 
             Vector<int>(cursor->get_width() / 2, cursor->get_height() / 2);
         }
@@ -180,44 +214,44 @@ Glib::RefPtr<Gdk::Pixbuf> EditableSmallMap::get_cursor(Vector<int> & hotspot) co
   return cursor;
 }
           
-Glib::RefPtr<Gdk::Pixbuf> EditableSmallMap::getDotPic(guint32 width, 
-                                                      guint32 height, 
-                                                      Gdk::Color color) const
-{
-  Glib::RefPtr<Gdk::Pixbuf> dot = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, 
-                                                      true, 8, width, height);
-  dot->fill(color.get_pixel());
-  return dot;
-
-}
-
 bool EditableSmallMap::check_road()
 {
+  bool success = true;
   if (road_start == Vector<int>(-1,-1))
-    return false;
+    success = false;
   if (road_finish == Vector<int>(-1,-1))
-    return false;
+    success = false;
   if (road_finish == road_start)
-    return false;
+    success = false;
+  if (success == false)
+    {
+      road_can_be_created.emit(false);
+      return false;
+    }
+
   RoadPathCalculator rpc(road_start);
   Path *p = rpc.calculate(road_finish);
-  bool success = false;
+  success = false;
   if (p->size() > 0)
     success = p->back() == road_finish;
   delete p;
+  road_can_be_created.emit(success);
   return success;
 }
 
 void EditableSmallMap::set_road_start(Vector<int> start)
 {
   road_start = start;
-  road_can_be_created.emit(check_road());
+  road_start_placed.emit(start);
+  check_road();
+
 }
 
 void EditableSmallMap::set_road_finish(Vector<int> finish)
 {
   road_finish = finish;
-  road_can_be_created.emit(check_road());
+  road_finish_placed.emit(finish);
+  check_road();
 }
 
 bool EditableSmallMap::create_road()
@@ -231,17 +265,29 @@ bool EditableSmallMap::create_road()
   for (Path::iterator it = p->begin(); it != p->end(); it++)
     {
       Vector<int> pos = *it;
-      if (gm->getTile(pos)->getType() == Tile::WATER &&
-          gm->getBuilding(pos) != Maptile::BRIDGE)
-        {
-          success = false;
-          break;
-        }
+      //if (gm->getTile(pos)->getType() == Tile::WATER &&
+          //gm->getBuilding(pos) != Maptile::BRIDGE)
+        //{
+          //success = false;
+          //break;
+        //}
       if (gm->getBuilding(pos) == Maptile::NONE)
         {
           if (GameMap::getInstance()->getBuilding(pos) == Maptile::NONE)
             GameMap::getInstance()->putNewRoad(pos);
         }
     }
+  Rectangle r = Rectangle(0,0,GameMap::getWidth(), GameMap::getHeight());
+  redraw_tiles(r);
+  draw(Playerlist::getViewingplayer());
+  map_edited.emit();
   return success;
+}
+    
+void EditableSmallMap::clear_road()
+{
+  road_start = Vector<int>(-1,-1);
+  road_finish = Vector<int>(-1,-1);
+  draw(Playerlist::getViewingplayer());
+  check_road();
 }

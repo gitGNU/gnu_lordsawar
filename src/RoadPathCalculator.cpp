@@ -33,7 +33,7 @@ RoadPathCalculator::RoadPathCalculator(Vector<int> starting_point)
   ArmyProto *basearmy = ArmyProto::createScout();
   Army *a = Army::createNonUniqueArmy(*basearmy);
   delete basearmy;
-  stack->push_back(a);
+  stack->add(a);
   path_calculator = new PathCalculator(stack, false);
 }
 RoadPathCalculator::RoadPathCalculator(const RoadPathCalculator &r)

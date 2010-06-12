@@ -84,6 +84,21 @@ guint32 Maptile::getMoves() const
     return d_moves;
 }
 
+void Maptile::setIndex(guint32 index)
+{
+  Tile *tile = (*d_tileSet)[index];
+  if (!tile)
+    return;
+  d_index = index;
+  d_moves = tile->getMoves();
+  d_type = tile->getType();
+
+  if (d_smalltile)
+    delete d_smalltile;
+  d_smalltile = new SmallTile(*tile->getSmallTile());
+
+}
+
 void Maptile::printDebugInfo() const
 {
     std::cerr << "MAPTILE: type = " << d_index << std::endl;

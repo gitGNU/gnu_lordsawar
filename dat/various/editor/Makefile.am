@@ -6,6 +6,7 @@ editor_DATA = button_selector.png \
 			button_2x2.png \
 			button_3x3.png \
 			button_6x6.png \
+			button_12x12.png \
 			button_castle.png \
 			button_erase.png \
 			button_blank.png \

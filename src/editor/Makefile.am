@@ -88,6 +88,7 @@ lordsawar_editor_SOURCES = \
 	switch-sets-dialog.cpp switch-sets-dialog.h \
 	editorbigmap.cpp editorbigmap.h \
 	editablesmallmap.cpp editablesmallmap.h \
+	smallmap-editor-dialog.cpp smallmap-editor-dialog.h \
 	itemlist-dialog.cpp itemlist-dialog.h \
 	reward-editor-dialog.cpp reward-editor-dialog.h \
 	select-item-dialog.cpp select-item-dialog.h \
