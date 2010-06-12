@@ -1,3 +1,16 @@
+2010-06-12  Ben Asselstine  <benasselstine@hushmail.com>
+
+	* added smallmap editor dialog to the scenario editor.
+
+2010-06-09  Ben Asselstine  <benasselstine@hushmail.com>
+
+	* refactoring Maptile, and GameMap.
+	* added ruin_smallmap and temple_smallmap xml entities in the tileset
+	configuration file.  This changes the tileset configuration file.
+	* created a editablesmallmap object for future use in the scenario
+	editor.
+	* added a smallmap building color dialog to the tileset editor.
+
 2010-06-06  Ben Asselstine  <benasselstine@hushmail.com>
 
 	* now cleaning up temporary directories in the army/tile/shield/city
