@@ -25,6 +25,7 @@
 #ifndef DEFINITIONS_H
 #define DEFINITIONS_H
 
+#include <gtkmm.h>
 #include <string>
 #include <libintl.h>
 
@@ -100,6 +101,7 @@ const std::string CITYSET_EXT = ".lwc";
 const std::string SHIELDSET_EXT = ".lws";
 const std::string MAP_EXT = ".map";
 const std::string SAVE_EXT = ".sav";
+const std::string PBM_EXT = ".trn";
 const std::string RECENTLY_PLAYED_LIST = "recently-played.xml";
 const std::string RECENTLY_EDITED_LIST = "recently-edited.xml";
 
@@ -121,6 +123,20 @@ const unsigned int MIN_SIGHT_FOR_ARMY_UNITS = 0;
 const unsigned int MAX_SIGHT_FOR_ARMY_UNITS = 25;
 
 const float SIGNPOST_FREQUENCY = 0.0030;
+
+const std::string YELLOW_COLOUR = "#FCFCECEC2020";
+const std::string ORANGE_COLOUR = "#FCFCA0A00000";
+const std::string WHITE_COLOUR = "#FFFFFFFFFFFF";
+const std::string BLACK_COLOUR = "#000000000000";
+const Gdk::Color SEND_VECTORED_UNIT_LINE_COLOUR(YELLOW_COLOUR);
+const Gdk::Color RECEIVE_VECTORED_UNIT_LINE_COLOUR(ORANGE_COLOUR);
+const Gdk::Color SELECTOR_BOX_COLOUR(WHITE_COLOUR);
+const Gdk::Color QUEST_LINE_COLOUR(ORANGE_COLOUR);
+const Gdk::Color QUESTMAP_TARGET_BOX_COLOUR(ORANGE_COLOUR);
+const Gdk::Color ROAD_PLANNER_TARGET_BOX_COLOUR(ORANGE_COLOUR);
+const Gdk::Color GRID_BOX_COLOUR(BLACK_COLOUR);
+const Gdk::Color FOG_COLOUR(BLACK_COLOUR);
+const Gdk::Color VECTORMAP_ACTIVE_BOX_COLOUR(WHITE_COLOUR);
 
 #endif // DEFINITIONS_H
 

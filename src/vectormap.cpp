@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -119,13 +119,12 @@ void VectorMap::draw_vectoring_line(Vector<int> src, Vector<int> dest, bool to)
   Vector <int> end = dest;
   start = mapToSurface(start);
   end = mapToSurface(end);
-  Gdk::Color line_color = Gdk::Color();
+  Gdk::Color line_colour = Gdk::Color();
   if (to) //yellow
-    line_color.set_rgb_p(252.0/255.0, 236.0/255.0, 
-			  32.0/255.0);
+    line_colour = SEND_VECTORED_UNIT_LINE_COLOUR;
   else //orange
-    line_color.set_rgb_p(252.0/255.0, 160.0/255.0, 0);
-  draw_line(start.x, start.y, end.x, end.y, line_color);
+    line_colour = RECEIVE_VECTORED_UNIT_LINE_COLOUR;
+  draw_line(start.x, start.y, end.x, end.y, line_colour);
 }
 void VectorMap::draw_vectoring_line_from_here_to (Vector<int> dest)
 {
@@ -305,8 +304,6 @@ void VectorMap::after_draw()
 
 void VectorMap::draw_square_around_active_city()
 {
-  Gdk::Color box_color = Gdk::Color();
-  box_color.set_rgb_p(252.0/255.0, 1.0, 1.0);
   Vector<int> start = city->getPos();
   start = mapToSurface(start);
   std::string s = GameMap::getInstance()->getShieldset();
@@ -315,7 +312,8 @@ void VectorMap::draw_square_around_active_city()
   guint32 height = ss->getSmallHeight();
   start -= Vector<int>(width,height)/2;
   Vector<int> end = start + Vector<int>(width,height);
-  draw_rect (start.x-3, start.y-3, end.x-start.x+4, end.y-start.y+4, box_color);
+  draw_rect (start.x-3, start.y-3, end.x-start.x+4, end.y-start.y+4, 
+             VECTORMAP_ACTIVE_BOX_COLOUR);
 }
 
 void VectorMap::mouse_button_event(MouseButtonEvent e)

@@ -130,14 +130,14 @@ class OverviewMap : public sigc::trackable
 				Gdk::Color third,
 				int i, int j, bool shadowed);
 
-    static void draw_pixel(Glib::RefPtr<Gdk::Pixmap> surf, Glib::RefPtr<Gdk::GC> gc, int x, int y, Gdk::Color color);
+    static void draw_pixel(Glib::RefPtr<Gdk::Pixmap> surf, Glib::RefPtr<Gdk::GC> gc, int x, int y, const Gdk::Color color);
 
 
-    void draw_filled_rect(int x, int y, int width, int height, Gdk::Color color);
+    void draw_filled_rect(int x, int y, int width, int height, const Gdk::Color color);
 
-    void draw_rect(int x, int y, int width, int height, Gdk::Color color);
+    void draw_rect(int x, int y, int width, int height, const Gdk::Color color);
 
-    void draw_line( int src_x, int src_y, int dst_x, int dst_y, Gdk::Color color);
+    void draw_line( int src_x, int src_y, int dst_x, int dst_y, const Gdk::Color color);
 
     //! Make the map go black.
     void blank(bool on);
@@ -245,7 +245,7 @@ class OverviewMap : public sigc::trackable
     //! Draw a hero icon at the given location.  white or black.
     void draw_hero(Vector<int> pos, bool white);
 
-    void draw_target_box(Vector<int> pos);
+    void draw_target_box(Vector<int> pos, const Gdk::Color colour);
 
     bool blank_screen;
 };

@@ -126,7 +126,7 @@ void OverviewMap::choose_surface(bool front, Glib::RefPtr<Gdk::Pixmap> &surf,
     }
 }
 void
-OverviewMap::draw_pixel(Glib::RefPtr<Gdk::Pixmap> surf, Glib::RefPtr<Gdk::GC> gc, int x, int y, Gdk::Color color)
+OverviewMap::draw_pixel(Glib::RefPtr<Gdk::Pixmap> surf, Glib::RefPtr<Gdk::GC> gc, int x, int y, const Gdk::Color color)
 {
   gc->set_rgb_fg_color(color);
   surf->draw_point(gc, x, y);
@@ -134,13 +134,13 @@ OverviewMap::draw_pixel(Glib::RefPtr<Gdk::Pixmap> surf, Glib::RefPtr<Gdk::GC> gc
 }
 
 void
-OverviewMap::draw_filled_rect(int x, int y, int width, int height, Gdk::Color color)
+OverviewMap::draw_filled_rect(int x, int y, int width, int height, const Gdk::Color color)
 {
   draw_filled_rect(true, x, y, width, height, color);
 }
 
 void
-OverviewMap::draw_filled_rect(bool front, int x, int y, int width, int height, Gdk::Color color)
+OverviewMap::draw_filled_rect(bool front, int x, int y, int width, int height, const Gdk::Color color)
 {
   Glib::RefPtr<Gdk::Pixmap> surf;
   Glib::RefPtr<Gdk::GC> gc;
@@ -150,7 +150,7 @@ OverviewMap::draw_filled_rect(bool front, int x, int y, int width, int height, G
 }
 
 void
-OverviewMap::draw_line(int src_x, int src_y, int dst_x, int dst_y, Gdk::Color color)
+OverviewMap::draw_line(int src_x, int src_y, int dst_x, int dst_y, const Gdk::Color color)
 {
   draw_line(true, src_x, src_y, dst_x, dst_y, color);
 }
@@ -166,13 +166,13 @@ OverviewMap::draw_line(bool front, int src_x, int src_y, int dst_x, int dst_y, G
 }
 
 void
-OverviewMap::draw_rect(int x, int y, int width, int height, Gdk::Color color)
+OverviewMap::draw_rect(int x, int y, int width, int height, const Gdk::Color color)
 {
   draw_rect (true, x, y, width, height, color);
 }
 
 void
-OverviewMap::draw_rect(bool front, int x, int y, int width, int height, Gdk::Color color)
+OverviewMap::draw_rect(bool front, int x, int y, int width, int height, const Gdk::Color color)
 {
   Glib::RefPtr<Gdk::Pixmap> surf;
   Glib::RefPtr<Gdk::GC> gc;
@@ -500,8 +500,6 @@ void OverviewMap::draw(Player *player)
     }
 
     //fog it up
-    Gdk::Color fog_color = Gdk::Color();
-    fog_color.set_rgb_p(0,0,0);
     for (int i = 0; i < GameMap::getWidth(); i++)
         for (int j = 0; j < GameMap::getHeight(); j++)
         {
@@ -511,7 +509,7 @@ void OverviewMap::draw(Player *player)
           if (Playerlist::getViewingplayer()->getFogMap()->isFogged(pos) == true)
             {
               pos = mapToSurface(pos);
-              draw_filled_rect(true, pos.x, pos.y, size, size, fog_color);
+              draw_filled_rect(true, pos.x, pos.y, size, size, FOG_COLOUR);
             }
         }
 
@@ -524,17 +522,15 @@ void OverviewMap::draw(Player *player)
 	int width = 0;
 	int height = 0;
 	surface->get_size(width, height);
-	draw_filled_rect(true, 0, 0, width, height, fog_color);
+	draw_filled_rect(true, 0, 0, width, height, FOG_COLOUR);
       }
 
   if (blank_screen)
     {
-      Gdk::Color fog_color = Gdk::Color();
-      fog_color.set_rgb_p(0.0,0.0,0.0);
       int width = 0;
       int height = 0;
       surface->get_size(width, height);
-      surface_gc->set_rgb_fg_color(fog_color);
+      surface_gc->set_rgb_fg_color(FOG_COLOUR);
       surface->draw_rectangle(surface_gc, true, 0,0,width, height);
     }
     // let derived classes do their job
@@ -636,19 +632,17 @@ void OverviewMap::draw_hero(Vector<int> pos, bool white)
     heropic->blit_centered(surface, start);
 }
 
-void OverviewMap::draw_target_box(Vector<int> pos)
+void OverviewMap::draw_target_box(Vector<int> pos, const Gdk::Color c)
 {
   Vector<int> start = mapToSurface(pos);
   start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
-  Gdk::Color box_color = Gdk::Color();
-  box_color.set_rgb_p(252.0/255.0, 160.0/255.0, 0);
   int xsize = 8;
   int ysize = 8;
   //draw an 8 by 8 box, with a smaller box inside of it
   draw_rect(start.x - (xsize / 2), start.y - (ysize / 2), 
-	    xsize, ysize, box_color);
-  xsize = 4;
-  ysize = 4;
+	    xsize, ysize, c);
+  xsize = 5;
+  ysize = 5;
   draw_filled_rect(start.x - (xsize / 2), start.y - (ysize / 2), 
-		   xsize, ysize, box_color);
+		   xsize, ysize, c);
 }

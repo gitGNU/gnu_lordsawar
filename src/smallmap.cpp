@@ -71,10 +71,8 @@ void SmallMap::draw_selection()
     assert(pos.x >= 0 && pos.x + w < width &&
 	   pos.y >= 0 && pos.y + h < height);
     
-    Gdk::Color box_color = Gdk::Color();
-    box_color.set_rgb_p(100,100,100);
-    draw_rect(pos.x, pos.y, w, h, box_color);
-    draw_rect(pos.x-1, pos.y-1, w+2,  h+2, box_color);
+    draw_rect(pos.x, pos.y, w, h, SELECTOR_BOX_COLOUR);
+    draw_rect(pos.x-1, pos.y-1, w+2,  h+2, SELECTOR_BOX_COLOUR);
 }
 
 void SmallMap::center_view_on_tile(Vector<int> pos, bool slide)

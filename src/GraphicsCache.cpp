@@ -1494,9 +1494,7 @@ void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag,
   if (has_grid)
     {
       Glib::RefPtr<Gdk::GC> context = surface->get_gc();
-      Gdk::Color line_color = Gdk::Color();
-      line_color.set_rgb_p(0,0,0);
-      context->set_rgb_fg_color(line_color);
+      context->set_rgb_fg_color(GRID_BOX_COLOUR);
       pixmap->draw_rectangle(context, false, 0, 0, ts, ts);
     }
 

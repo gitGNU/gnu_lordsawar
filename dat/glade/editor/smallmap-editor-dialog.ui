@@ -345,7 +345,6 @@
                                   <object class="GtkEntry" id="road_start_entry">
                                     <property name="width_request">75</property>
                                     <property name="visible">True</property>
-                                    <property name="sensitive">False</property>
                                     <property name="can_focus">True</property>
                                     <property name="editable">False</property>
                                     <property name="invisible_char">&#x25CF;</property>
@@ -359,7 +358,6 @@
                                   <object class="GtkEntry" id="road_finish_entry">
                                     <property name="width_request">75</property>
                                     <property name="visible">True</property>
-                                    <property name="sensitive">False</property>
                                     <property name="can_focus">True</property>
                                     <property name="editable">False</property>
                                     <property name="invisible_char">&#x25CF;</property>

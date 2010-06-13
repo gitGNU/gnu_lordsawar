@@ -927,7 +927,7 @@ void GameWindow::end_turn_play_by_mail ()
   Gtk::FileChooserDialog chooser(*window, _("Save your Turn file and mail it back"),
 				 Gtk::FILE_CHOOSER_ACTION_SAVE);
   Gtk::FileFilter trn_filter;
-  trn_filter.add_pattern("*.trn");
+  trn_filter.add_pattern("*" + PBM_EXT);
   chooser.set_filter(trn_filter);
   chooser.set_current_folder(Glib::get_home_dir());
 

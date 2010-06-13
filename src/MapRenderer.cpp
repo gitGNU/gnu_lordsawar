@@ -121,9 +121,6 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
     int tilesize = map->getTileSize();
     int drawY = y;
 
-    Gdk::Color background_color = Gdk::Color();
-    background_color.set_rgb_p(0,0,0);
-    
     for (int tileY = tileStartY; tileY < (tileStartY + rows); tileY++)
     {
         int drawX = x;
@@ -131,7 +128,7 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
         {
 	    // first check if we're out of the map bounds
 	    if (tileX >= width || tileY >= height) {
-		context->set_rgb_fg_color(background_color);
+		context->set_rgb_fg_color(FOG_COLOUR);
 		surface->draw_rectangle(context, true, drawX, drawY, 
 					tilesize, tilesize);
 	    }

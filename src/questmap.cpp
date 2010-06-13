@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -62,14 +62,12 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
   end = target;
 
   start = mapToSurface(start);
-  draw_target_box(end);
+  draw_target_box(end, QUESTMAP_TARGET_BOX_COLOUR);
   end = mapToSurface(end);
 
 
   start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
   end += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
-  Gdk::Color box_color = Gdk::Color();
-  box_color.set_rgb_p(252.0/255.0, 160.0/255.0, 0);
 
   int xsize = 8;
   int ysize = 8;
@@ -102,7 +100,7 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
 	//connect to the northwestern corner of the box.
 	end += Vector<int>(-(xsize / 2), -(ysize / 2));
     }
-  draw_line(start.x, start.y, end.x, end.y, box_color);
+  draw_line(start.x, start.y, end.x, end.y, QUEST_LINE_COLOUR);
 }
 
 void QuestMap::after_draw()

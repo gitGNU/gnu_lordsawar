@@ -191,13 +191,11 @@ void BigMap::draw(Player *player, bool redraw_buffer)
 
     if (blank_screen)
       {
-	Gdk::Color fog_color = Gdk::Color();
-	fog_color.set_rgb_p(0.0,0.0,0.0);
 	int width = 0;
 	int height = 0;
 	outgoing->get_size(width, height);
 	Glib::RefPtr<Gdk::GC> outgoing_gc = Gdk::GC::create(outgoing);
-	outgoing_gc->set_rgb_fg_color(fog_color);
+	outgoing_gc->set_rgb_fg_color(FOG_COLOUR);
 	outgoing->draw_rectangle(outgoing_gc, true, 0, 0, width, height);
       }
     map_changed.emit(outgoing);
@@ -396,9 +394,7 @@ void BigMap::draw_buffer()
       int width = 0;
       int height = 0;
       buffer->get_size(width, height);
-      Gdk::Color fog_color = Gdk::Color();
-      fog_color.set_rgb_p(0,0,0);
-      buffer_gc->set_rgb_fg_color(fog_color);
+      buffer_gc->set_rgb_fg_color(FOG_COLOUR);
       buffer->draw_rectangle(buffer_gc, true, 0, 0, width, height);
     }
   else
