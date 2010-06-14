@@ -27,12 +27,12 @@
 
 #include "Configuration.h"
 #include "File.h"
-#include "GraphicsCache.h"
 #include "timing.h"
 #include "armyset.h"
 #include "recently-edited-file-list.h"
 
 #include "main-window.h"
+#include "editor-splash-window.h"
 
 
 sigc::connection on_timer_registered(Timing::timer_slot s, int msecs_interval)
@@ -61,11 +61,14 @@ int main(int argc, char* argv[])
 
     RecentlyEditedFileList::getInstance()->loadFromFile();
 	
+    Gtk::Main kit(argc, argv);
+
+    EditorSplashWindow d;
+    d.run();
+    d.hide();
     MainWindow* main_window = NULL;
     try
     {
-	Gtk::Main kit(argc, argv);
-
 	MainWindow* main_window;
 	if (argc > 1)
 	  main_window = new MainWindow (argv[1]);

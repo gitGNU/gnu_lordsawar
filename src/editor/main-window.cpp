@@ -429,10 +429,6 @@ bool MainWindow::on_smallmap_exposed(GdkEventExpose *event)
 
 void MainWindow::init()
 {
-  Armysetlist::getInstance()->instantiateImages();
-  Tilesetlist::getInstance()->instantiateImages();
-  Shieldsetlist::getInstance()->instantiateImages();
-  Citysetlist::getInstance()->instantiateImages();
   show_initial_map();
   Playerlist::getInstance()->setActiveplayer(Playerlist::getInstance()->getNeutral());
   fill_players();

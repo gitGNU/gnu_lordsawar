@@ -40,7 +40,8 @@ cityset-window.ui \
 shieldset-info-dialog.ui \
 tilestyle-organizer-dialog.ui \
 shieldset-window.ui \
-smallmap-editor-dialog.ui
+smallmap-editor-dialog.ui \
+splash-window.ui
 
 EXTRA_DIST = $(glade_DATA) \
 README

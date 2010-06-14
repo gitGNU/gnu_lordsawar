@@ -97,7 +97,8 @@ lordsawar_editor_SOURCES = \
 	select-hidden-ruin-dialog.cpp select-hidden-ruin-dialog.h \
 	RenamableLocation.cpp RenamableLocation.h  \
 	backpack-editor-dialog.cpp backpack-editor-dialog.h \
-	hero-editor-dialog.cpp hero-editor-dialog.h
+	hero-editor-dialog.cpp hero-editor-dialog.h \
+	editor-splash-window.cpp editor-splash-window.h
 	
 if FL_RESRC
 lordsawar_editor_SOURCES += editor.rc
