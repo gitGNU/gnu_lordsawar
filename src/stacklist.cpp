@@ -62,15 +62,6 @@ Vector<int> Stacklist::getPosition(guint32 id)
     return Vector<int>(-1,-1);
 }
 
-//We only expect one ambiguity at a time with stacks of the same player. This
-//never happens except when a stack comes to halt on another stack during
-//long movements
-//It also happens when two stacks fight.
-Stack* Stacklist::getAmbiguity(Stack* s)
-{
-  return GameMap::getInstance()->getTile(s->getPos())->getStacks()->getOtherStack(s);
-}
-
 //search all player's stacklists to find this stack
 bool Stacklist::deleteStack(Stack* s)
 {
@@ -682,6 +673,14 @@ bool Stacklist::getItemHolder(Item *item, Stack **stack, Hero **hero) const
         }
     }
   return false;
+}
+
+guint32 Stacklist::countBlessingsOnArmyUnits() const
+{
+  guint32 count = 0;
+  for (const_iterator it = begin(); it != end(); it++)
+    count += (*it)->countBlessings();
+  return count;
 }
 
 // End of file

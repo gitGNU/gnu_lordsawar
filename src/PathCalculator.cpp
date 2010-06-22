@@ -475,9 +475,8 @@ bool PathCalculator::canMoveThere(Vector<int> dest)
 int PathCalculator::calculate(Vector<int> dest, bool zigzag)
 {
   int retval = 0;
-  guint32 moves = 0;
-  guint32 turns = 0;
-  Path *p = calculate(dest, moves, turns, zigzag);
+  guint32 moves = 0, turns = 0, left = 0;
+  Path *p = calculate(dest, moves, turns, left, zigzag);
   if (p->size() == 0)
     retval = -1;
   delete p;
@@ -486,7 +485,7 @@ int PathCalculator::calculate(Vector<int> dest, bool zigzag)
   return retval;
 }
 
-Path* PathCalculator::calculate(Vector<int> dest, guint32 &moves, guint32 &turns, bool zigzag)
+Path* PathCalculator::calculate(Vector<int> dest, guint32 &moves, guint32 &turns, guint32 &left, bool zigzag)
 {
   Path *path = new Path();
   int width = GameMap::getWidth();
@@ -597,6 +596,7 @@ Path* PathCalculator::calculate(Vector<int> dest, guint32 &moves, guint32 &turns
 
   moves = nodes[idx].moves;
   turns = nodes[idx].turns;
+  left = nodes[idx].moves_left;
 
   //change dest back
   nodes[idx] = orig_dest;
@@ -650,7 +650,7 @@ bool PathCalculator::isReachable(Vector<int> pos)
   return nodes[pos.toIndex()].moves >= 0;
 }
 
-Path *PathCalculator::calculateToCity (City *c, guint32 &moves, guint32 &turns, bool zigzag)
+Path *PathCalculator::calculateToCity (City *c, guint32 &moves, guint32 &turns, guint32 &left, bool zigzag)
 {
   int min_dist = -1;
   Vector<int> shortest = c->getPos();
@@ -675,7 +675,7 @@ Path *PathCalculator::calculateToCity (City *c, guint32 &moves, guint32 &turns, 
 	      }
 	  }
       }
-  Path *p = calculate(shortest, moves, turns, zigzag);
+  Path *p = calculate(shortest, moves, turns, left, zigzag);
   if (p->size() > 0)
     return p;
   delete p;
@@ -691,7 +691,8 @@ Path *PathCalculator::calculateToCity (City *c, guint32 &moves, guint32 &turns, 
 	    if (other_stack && GameMap::canJoin(stack, other_stack) == false)
 	      continue;
 	  }
-	p = calculate(c->getPos() + Vector<int>(i,j), moves, turns, zigzag);
+	p = calculate(c->getPos() + Vector<int>(i,j), moves, turns, left,
+                      zigzag);
 	int dist = (int) moves;
 	delete p;
 	if (dist > 0)
@@ -703,7 +704,7 @@ Path *PathCalculator::calculateToCity (City *c, guint32 &moves, guint32 &turns, 
 	      }
 	  }
       }
-  return calculate(shortest, moves, turns, zigzag);
+  return calculate(shortest, moves, turns, left, zigzag);
 }
 
 std::list<Vector<int> > PathCalculator::getReachablePositions(int mp)

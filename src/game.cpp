@@ -180,13 +180,17 @@ void Game::addPlayer(Player *p)
   connections[p->getId()].push_back
     (p->using_item.connect (sigc::mem_fun(*this, &Game::on_use_item)));
   connections[p->getId()].push_back
-    (p->ruinfight_started.connect
-     (sigc::mem_fun
-      (ruinfight_started, &sigc::signal<void, Stack *, Stack *>::emit)));
+    (p->ruinfight_started.connect (sigc::mem_fun(*this, &Game::on_ruinfight_started)));
+
+    //(p->ruinfight_started.connect
+     //(sigc::mem_fun
+      //(ruinfight_started, &sigc::signal<void, Stack *, Stack *>::emit)));
   connections[p->getId()].push_back
-    (p->ruinfight_finished.connect
-     (sigc::mem_fun
-      (ruinfight_finished, &sigc::signal<void, Fight::Result>::emit)));
+    (p->ruinfight_finished.connect (sigc::mem_fun(*this, &Game::on_ruinfight_finished)));
+  //connections[p->getId()].push_back
+    //(p->ruinfight_finished.connect
+     //(sigc::mem_fun
+      //(ruinfight_finished, &sigc::signal<void, Fight::Result>::emit)));
   connections[p->getId()].push_back
     (p->cityfight_finished.connect (sigc::mem_fun(*this, &Game::on_city_fight_finished))); 
   if (p->getType() == Player::NETWORKED && p == Playerlist::getActiveplayer())
@@ -574,7 +578,7 @@ void Game::center_selected_stack()
     select_active_stack();
 }
 
-void Game::search_stack(Stack *stack)
+void Game::search_stack(Stack *stack, bool &gotquest, bool &stackdied)
 {
   Player *player = Playerlist::getActiveplayer();
   Ruin* ruin = GameMap::getRuin(stack);
@@ -586,8 +590,9 @@ void Game::search_stack(Stack *stack)
        ruin->isHidden() == false))
     {
       Reward *reward;
-
-      reward = player->stackSearchRuin(stack, ruin);
+      reward = player->stackSearchRuin(stack, ruin, stackdied);
+      if (stackdied)
+        return;
       if (ruin->hasSage() == true)
 	{
           Sage *sage = ruin->generateSage();
@@ -634,6 +639,7 @@ void Game::search_stack(Stack *stack)
 
 	  if (q)
             {
+              gotquest = true;
               if (player->isComputer() == false)
                 {
                   Hero *hero;
@@ -683,7 +689,10 @@ void Game::search_selected_stack()
 {
   Player *player = Playerlist::getActiveplayer();
   Stack* stack = player->getActivestack();
-  return search_stack(stack);
+  bool stack_died = false;
+  bool got_quest = false;
+  search_stack(stack, got_quest, stack_died);
+  return;
 }
 
 void Game::stackUpdate(Stack* s)
@@ -983,60 +992,12 @@ void Game::update_control_panel()
 	((!stack->getPath()->empty() && stack->enoughMoves()) ||
 	 (!stack->getPath()->empty() && stack->getPath()->getMovesExhaustedAtPoint() > 0));
 
-      /*
-       * a note about searching.
-       * ruins can be searched by stacks that have a hero, and when the
-       * hero has moves left.  also the ruin must be unexplored.
-       * temples can be searched by any stack, when the stack has 
-       * movement left.
-       */
       if (stack->getMoves() > 0)
-	{
-	  Temple *temple;
-	  temple = GameMap::getTemple(stack);
-	  can_search_selected_stack.emit(temple);
-	  can_move_selected_stack.emit(true);
-	}
+        can_move_selected_stack.emit(true);
 
-      if (stack->hasHero())
-	{
-	  Ruin *ruin = GameMap::getRuin(stack);
-	  if (stack->getFirstHero()->getMoves() > 0 && ruin)
-	    can_search_selected_stack.emit(!ruin->isSearched());
+      can_plant_standard_selected_stack.emit(GameMap::can_plant_flag(stack));
 
-	  //does the hero have the player's standard?
-	  for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
-	    {
-	      if ((*it)->isHero())
-		{
-		  Hero *hero = dynamic_cast<Hero*>((*it));
-		  if (hero->getBackpack()->getPlantableItem(player))
-		    {
-			  //can't plant on city/ruin/temple/signpost
-			  City *city = GameMap::getCity(stack->getPos());
-			  Temple *temple = GameMap::getTemple(stack);
-			  Ruin *ruin = GameMap::getRuin(stack);
-			  Signpost *sign = GameMap::getSignpost(stack);
-			  if (!city && !temple && !ruin && !sign)
-			    {
-			      GameMap *gm = GameMap::getInstance();
-			      MapBackpack *backpack;
-			      Vector<int> pos = stack->getPos();
-			      backpack = gm->getTile(pos)->getBackpack();
-			      bool standard_already_planted = 
-				backpack->getFirstPlantedItem() != NULL;
-			      //are there any other standards here?
-			      if (standard_already_planted == false)
-				can_plant_standard_selected_stack.emit(true);
-			    }
-		    }
-		}
-	    }
-	}
-      else
-	{
-	  can_plant_standard_selected_stack.emit(false);
-	}
+      can_search_selected_stack.emit(GameMap::can_search(stack));
           
       can_use_item.emit(player->hasUsableItem());
 
@@ -1048,7 +1009,6 @@ void Game::update_control_panel()
     }
   else
     {
-      can_search_selected_stack.emit(false);
       can_move_selected_stack.emit(false);
       can_move_selected_stack_along_path.emit(false);
       can_disband_stack.emit(false);
@@ -1508,12 +1468,29 @@ void Game::stack_leaves_tile(Stack *stack, Vector<int> tile)
     }
 }
     
-void Game::stack_searches_ruin(Ruin *ruin, Stack *stack)
+bool Game::stack_searches_ruin(Ruin *ruin, Stack *stack)
 {
-  search_stack(stack);
+  bool stack_died = false;
+  bool hero_got_quest = false;
+  search_stack(stack, hero_got_quest, stack_died);
+  return stack_died;
 }
     
-void Game::stack_searches_temple(Temple *temple, Stack *stack)
+bool Game::stack_searches_temple(Temple *temple, Stack *stack)
 {
-  search_stack(stack);
+  bool stack_died = false;
+  bool hero_got_quest = false;
+  search_stack(stack, hero_got_quest, stack_died);
+}
+
+void Game::on_ruinfight_started(Stack *attacker, Stack *defender)
+{
+  if (Playerlist::getActiveplayer()->isComputer() == false)
+    ruinfight_started.emit(attacker, defender);
+}
+
+void Game::on_ruinfight_finished(Fight::Result result)
+{
+  if (Playerlist::getActiveplayer()->isComputer() == false)
+    ruinfight_finished.emit(result);
 }

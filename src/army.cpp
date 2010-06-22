@@ -493,3 +493,8 @@ void Army::morph(const ArmyProto *army)
   d_type_id = army->getTypeId();
   d_armyset = army->getArmyset();
 }
+
+guint32 Army::countBlessings() const
+{
+  return d_visitedTemples.size();
+}

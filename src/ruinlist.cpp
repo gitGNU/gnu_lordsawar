@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001 Michael Bartl
 // Copyright (C) 2001, 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004 John Farrell
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -90,9 +90,7 @@ bool Ruinlist::load(std::string tag, XML_Helper* helper)
     if (tag != Ruin::d_tag)
         return false;
 
-    Cityset *cityset = 
-      Citysetlist::getInstance()->getCityset
-      (GameMap::getInstance()->getCityset());
+    Cityset *cityset = GameMap::getCityset();
     guint32 width = cityset->getRuinTileWidth();
     add(new Ruin(helper, width));
 

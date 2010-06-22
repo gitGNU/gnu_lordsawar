@@ -80,8 +80,8 @@
 
 using namespace std;
 
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
-#define debug(x)
+#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
+//#define debug(x)
 
 std::string Player::d_tag = "player";
 
@@ -369,7 +369,10 @@ void Player::clearHistorylist()
 
 void Player::addStack(Stack* stack)
 {
+  debug("Player " << getName() << ": Stack Id: " << stack->getId() << " added to stacklist");
     stack->setPlayer(this);
+  if (stack->getId() == 4322)
+    printf("owner of stack 4322 is %s\n", stack->getOwner()->getName().c_str());
     d_stacklist->add(stack);
 }
 
@@ -615,6 +618,7 @@ bool Player::doStackSplitArmy(Stack *s, Army *a, Stack *& new_stack)
   new_stack = s->splitArmy(a);
   if (new_stack != NULL)
     {
+      debug("1. split stack " << new_stack->getId() << " from stack " << s->getId());
       addStack(new_stack);
       return true;
     }
@@ -628,6 +632,11 @@ bool Player::doStackSplitArmies(Stack *stack, std::list<guint32> armies,
   new_stack = stack->splitArmies(armies);
   if (new_stack != NULL)
     {
+      debug("2. split stack " << new_stack->getId() << " from stack " << stack->getId() << " on " << stack->getPos().x << "," << stack->getPos().y);
+      if (new_stack->getId() == 4322)
+        {
+        printf("owner of stack %d (parent of 4322) is %s\n", stack->getId(), stack->getOwner()->getName().c_str());
+        }
       addStack(new_stack);
       return true;
     }
@@ -802,7 +811,10 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest)
 
 MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 {
-
+    bool searched_temple = false;
+    bool searched_ruin = false;
+    bool got_quest = false;
+    bool picked_up = false;
     debug("Player::stack_move()");
     //if follow is set to true, follow an already calculated way, else
     //calculate it here
@@ -825,7 +837,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
         if (abortRequested())
           {
             MoveResult *result = new MoveResult;
-            result->fillData(s, stepCount);
+            result->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
             result->setMoveAborted(true);
             return result;
           }
@@ -841,8 +853,22 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
         if (step)
 	  {
 	    stepCount++;
-	    moves_left--;
 	    supdatingStack.emit(0);
+            if (isComputer())
+              {
+                MoveResult *result = new MoveResult;
+                result->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
+                bool stack_died = computerSearch(s, result);
+                searched_temple = result->getComputerSearchedTemple();
+                searched_ruin = result->getComputerSearchedRuin();
+                got_quest = result->getComputerGotQuest();
+                picked_up = result->getComputerPickedUpBag();
+                if (stack_died)
+                  return result;
+                else
+                  delete result;
+              }
+	    moves_left--;
 	    if (moves_left == 1)
 	      break;
 	  }
@@ -879,7 +905,9 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 		    s->getPath()->clear();
 		    MoveResult *moveResult = new MoveResult;
 		    moveResult->setConsideredTreachery(true);
-		    moveResult->fillData(s, stepCount);
+                    if (isComputer())
+                      computerSearch(s, moveResult);
+		    moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
 		    return moveResult;
 		  }
 		else
@@ -894,12 +922,15 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 	      }
 	    else
 	      {
-		moveResult->fillData(s, stepCount);
+		moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
 		shaltedStack.emit(s);
 		return moveResult;
 	      }
 
-	    moveResult->fillData(s, stepCount);
+            if (isComputer())
+              computerSearch(s, moveResult);
+
+	    moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
             Fight::Result result;
             vector<Stack*> def_in_city = city->getDefenders();
             if (!def_in_city.empty())
@@ -946,8 +977,10 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 	      
 	    supdatingStack.emit(0);
 	    shaltedStack.emit(d_stacklist->getActivestack());
+            if (isComputer())
+              computerSearch(s, moveResult);
     
-	    moveResult->fillData(s, stepCount);
+	    moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
             return moveResult;
          }
         
@@ -963,7 +996,9 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 		  s->getPath()->clear();
 		  MoveResult *moveResult = new MoveResult;
 		  moveResult->setConsideredTreachery(true);
-		  moveResult->fillData(s, stepCount);
+                  if (isComputer())
+                    computerSearch(s, moveResult);
+		  moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
 		  return moveResult;
 		}
 	      else
@@ -973,14 +1008,16 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 	    moveResult->setTreachery(treachery);
 	    moveResult->setConsideredTreachery(treachery);
         
-	    moveResult->fillData(s, stepCount);
+	    moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
             Fight::Result result = stackFight(&s, &target);
             moveResult->setFightResult(result);
             if (!target)
 	      {
                 if (stackMoveOneStep(s))
 		  stepCount++;
-		moveResult->fillData(s, stepCount);
+                if (isComputer())
+                  computerSearch(s, moveResult);
+		moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
 	      }
             
             supdatingStack.emit(0);
@@ -999,20 +1036,24 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 	shaltedStack.emit(s);
     
         MoveResult *moveResult = new MoveResult;
-	moveResult->fillData(s, stepCount);
+	moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
+        if (isComputer())
+          computerSearch(s, moveResult);
         return moveResult;
     }
     else if (s->getPath()->size() >= 1 && s->enoughMoves() == false)
     {
     
         MoveResult *moveResult = new MoveResult;
-	moveResult->fillData(s, stepCount);
+	moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
       /* if we can't attack a city, don't remember it in the stack's path. */
         Vector<int> pos = s->getFirstPointInPath();
         City* city = GameMap::getCity(pos);
 	if (city && city->getOwner() != this)
 	  s->clearPath();
     
+        if (isComputer())
+          computerSearch(s, moveResult);
         return moveResult;
     }
 
@@ -1050,6 +1091,73 @@ bool Player::stackMoveOneStepOverTooLargeFriendlyStacks(Stack *s)
 
   s->moveOneStep(true);
   return true;
+}
+
+bool Player::computerSearch(Stack *s, MoveResult *r)
+{
+  bool stack_died = false;
+
+  Maptile *tile = GameMap::getInstance()->getTile(s->getPos());
+
+  if (tile->getBackpack()->size() > 0)
+    {
+      if (computerChoosePickupBag(s, s->getPos(), 0, 0) == true)
+        {
+          r->setComputerPickedUpBag(true);
+          Hero *hero = static_cast<Hero*>(s->getFirstHero());
+          if (hero)
+            heroPickupAllItems(hero, s->getPos());
+        }
+    }
+
+  //are we at a computer and happen to be a temple, or ruin?
+  if (GameMap::can_search(s) == false)
+    return false;
+
+  if (tile->getBuilding() == Maptile::TEMPLE)
+    {
+      if (s->hasHero())
+        {
+          if (computerChooseVisitTempleForQuest(s, s->getPos(), 0, 0) == true)
+            {
+              r->setComputerSearchedTemple(true);
+              svisitingTemple.emit(GameMap::getTemple(s->getPos()), s);
+            }
+        }
+      else
+        {
+          if (computerChooseVisitTempleForBlessing(s, s->getPos(), 0, 0) == true)
+            {
+              r->setComputerSearchedTemple(true);
+              bool got_quest = 
+                svisitingTemple.emit(GameMap::getTemple(s->getPos()), s);
+              r->setComputerGotQuest(got_quest);
+            }
+        }
+    }
+  else if (tile->getBuilding() == Maptile::RUIN)
+    {
+      if (s->hasHero() == true)
+        {
+          if (computerChooseVisitRuin(s, s->getPos(), 0, 0) == true)
+            {
+              r->setComputerSearchedRuin(true);
+              guint32 oldsize = s->size();
+              stack_died = 
+                ssearchingRuin.emit(GameMap::getRuin(s->getPos()), s);
+              if (stack_died)
+                r->setRuinFightResult(Fight::DEFENDER_WON);
+              else
+                {
+                  if (oldsize >= s->size())
+                    r->setRuinFightResult(Fight::ATTACKER_WON);
+                  else
+                    r->setRuinFightResult(Fight::DEFENDER_WON);
+                }
+            }
+        }
+    }
+  return stack_died;
 }
 
 bool Player::stackMoveOneStep(Stack* s)
@@ -1125,13 +1233,17 @@ void Player::cleanupAfterFight(std::list<Stack*> &attackers,
 Fight::Result Player::stackFight(Stack** attacker, Stack** defender) 
 {
     debug("stackFight: player = " << getName()<<" at position "
-          <<(*defender)->getPos().x<<","<<(*defender)->getPos().y);
+          <<(*defender)->getPos().x<<","<<(*defender)->getPos().y << " with stack " << (*attacker)->getId());
 
     // save the defender's player for future use
     Player* pd = (*defender)->getOwner();
 
     // I suppose, this should be always true, but one can never be sure
     bool attacker_active = *attacker == d_stacklist->getActivestack();
+    if (attacker_active == false && (*attacker)->getOwner()->isComputer() == true)
+      {
+        assert(0);
+      }
 
     Fight fight(*attacker, *defender);
     fight.battle(GameScenarioOptions::s_intense_combat);
@@ -1243,7 +1355,8 @@ Fight::Result ruinfight (Stack **attacker, Stack **defender)
   return result;
 }
 
-Fight::Result Player::stackRuinFight (Stack **attacker, Stack **defender)
+Fight::Result Player::stackRuinFight (Stack **attacker, Stack **defender,
+                                      bool &stackdied)
 {
     Fight::Result result = Fight::DRAW;
     if (*defender == NULL)
@@ -1257,12 +1370,6 @@ Fight::Result Player::stackRuinFight (Stack **attacker, Stack **defender)
 
     // cleanup
     
-    // add a ruin fight item about the combat
-    //Action_RuinFight* item = new Action_RuinFight();
-    //item->fillData(*attacker, *defender, result);
-    //addAction(item);
-    /* FIXME: do we need an Action_RuinFight? */
-
     // get attacker and defender heroes and more...
     std::list<Stack*> attackers;
     attackers.push_back(*attacker);
@@ -1270,6 +1377,18 @@ Fight::Result Player::stackRuinFight (Stack **attacker, Stack **defender)
     defenders.push_back(*defender);
 
     cleanupAfterFight(attackers, defenders);
+
+    bool exists =
+	std::find(d_stacklist->begin(), d_stacklist->end(), *attacker)
+	!= d_stacklist->end();
+    
+    if (!exists)
+      {
+        (*attacker) = 0;
+        stackdied = true;
+      }
+    else
+      stackdied = false;
 
     return result;
 }
@@ -1279,7 +1398,7 @@ bool Player::treachery (Stack *stack, Player *player, Vector <int> pos)
   return streachery.emit(stack, player, pos);
 }
 
-Reward* Player::stackSearchRuin(Stack* s, Ruin* r)
+Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
 {
   Reward *retReward = NULL;
   debug("Player::stack_search_ruin");
@@ -1303,7 +1422,7 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r)
 
   if (keeper)
   {
-    stackRuinFight(&s, &keeper);
+    stackRuinFight(&s, &keeper, stackdied);
 
     // did the explorer not win?
     if (keeper && !keeper->empty())
@@ -1360,8 +1479,6 @@ int Player::doStackVisitTemple(Stack *s, Temple *t)
 int Player::stackVisitTemple(Stack* s, Temple* t)
 {
   debug("Player::stackVisitTemple");
-
-  assert(s && t->getPos().x == s->getPos().x && t->getPos().y == s->getPos().y);
 
   Action_Temple* item = new Action_Temple();
   item->fillData(t, s);
@@ -2168,7 +2285,7 @@ guint32 Player::removeDeadArmies(std::list<Stack*>& stacks,
 {
     guint32 count = 0;
     Player *owner = NULL;
-    if (stacks.empty() == 0)
+    if (stacks.empty() == false)
     {
         owner = (*stacks.begin())->getOwner();
         debug("Owner = " << owner);
@@ -2187,8 +2304,9 @@ guint32 Player::removeDeadArmies(std::list<Stack*>& stacks,
     std::list<Stack*>::iterator it;
     for (it = stacks.begin(); it != stacks.end(); )
     {
-    
         debug("Stack: " << (*it))
+        if ((*it))
+          debug("Stack id: " << (*it)->getId());
         for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end();)
         {
             debug("Army: " << (*sit))
@@ -2212,13 +2330,23 @@ guint32 Player::removeDeadArmies(std::list<Stack*>& stacks,
 		{
 		  debug("Removing this stack from the owner's stacklist");
 		  bool found = owner->deleteStack(*it);
+                  if (found == false)
+                    {
+                      printf("couldn't find stack id %d for player %d\n", (*it)->getId(), owner->getId());
+                      printf("is it in our own stacklist?");
+                      Stack *a = getStacklist()->getStackById((*it)->getId());
+                      if  (a)
+                        printf(" yes\n");
+                      else
+                        printf(" no\n");
+                    }
 		  assert (found == true);
 		}
 	      else // there is no owner - like for the ruin's occupants
 		debug("No owner for this stack - do stacklist too");
 
 	      debug("Removing from the vector too (the vector had "
-		    << stacks.size() << " elt)");
+		    << stacks.size() << " left)");
 	      it = stacks.erase(it);
 	    }
 	  else
@@ -2680,7 +2808,51 @@ void Player::AI_maybeBuyScout(City *c)
     }
 }
 
-bool Player::AI_maybePickUpItems(Stack *s, int max_dist, int max_mp, 
+bool Player::AI_maybeContinueQuest(Stack *s, Quest *quest, bool &completed_quest, bool &stack_died)
+{
+  bool stack_moved = false;
+  Vector<int> quest_tile = AI_getQuestDestination(quest, s);
+
+  if (quest_tile == Vector<int>(-1,-1))
+    return false;
+
+  //are we not standing on it?
+  if (s->getPos() != quest_tile)
+    {
+      //can we really reach it?
+      Vector<int> old_dest(-1,-1);
+      if (s->getPath()->size())
+	old_dest = s->getLastPointInPath();
+      guint32 moves = 0, turns = 0, left = 0;
+      s->getPath()->calculate(s, quest_tile, moves, turns, left);
+      bool go_there = computerChooseContinueQuest(s, quest, quest_tile, moves, 
+                                                  turns);
+      if (!go_there)
+        {
+          s->clearPath();
+	  if (old_dest != Vector<int>(-1,-1))
+	    s->getPath()->calculate(s, old_dest);
+          return false;
+        }
+      d_stacklist->setActivestack(s);
+      stack_moved = stackMove(s);
+      //maybe we died either en route or at our destination.
+      if (!d_stacklist->getActivestack())
+	{
+	  stack_died = true;
+	  return true;
+	}
+      s = d_stacklist->getActivestack();
+    }
+
+  //are we standing on it now?
+  if (s->getPos() == quest_tile)
+    completed_quest = true;
+
+  return stack_moved;
+}
+
+bool Player::AI_maybePickUpItems(Stack *s, int max_dist, 
 				 bool &picked_up, bool &stack_died)
 {
   int min_dist = -1;
@@ -2724,14 +2896,18 @@ bool Player::AI_maybePickUpItems(Stack *s, int max_dist, int max_mp,
       Vector<int> old_dest(-1,-1);
       if (s->getPath()->size())
 	old_dest = s->getLastPointInPath();
-      guint32 mp = s->getPath()->calculate(s, item_tile);
-      if ((int)mp > max_mp)
-	{
-	  //nope.  unreachable.  set in our old path.
+      guint32 moves = 0, turns = 0, left = 0;
+      s->getPath()->calculate(s, item_tile, moves, turns, left);
+      bool go_there = computerChoosePickupBag(s, item_tile, moves, turns);
+      if (!go_there)
+        {
+          s->clearPath();
 	  if (old_dest != Vector<int>(-1,-1))
 	    s->getPath()->calculate(s, old_dest);
-	  return false;
-	}
+          return false;
+        }
+      d_stacklist->setActivestack(s);
+      printf("moving stack %d for bag!\n", s->getId());
       stack_moved = stackMove(s);
       //maybe we died -- an enemy stack was guarding the bag.
       if (!d_stacklist->getActivestack())
@@ -2745,6 +2921,12 @@ bool Player::AI_maybePickUpItems(Stack *s, int max_dist, int max_mp,
   //are we standing on it now?
   if (s->getPos() == item_tile)
     {
+      bool pickitup = computerChoosePickupBag(s, item_tile, 0, 0);
+      if (!pickitup)
+        {
+          s->clearPath();
+          return stack_moved;
+        }
       Hero *hero = static_cast<Hero*>(s->getFirstHero());
       if (hero)
 	picked_up = heroPickupAllItems(hero, s->getPos());
@@ -2753,8 +2935,7 @@ bool Player::AI_maybePickUpItems(Stack *s, int max_dist, int max_mp,
   return stack_moved;
 }
 
-bool Player::AI_maybeVisitTempleForQuest(Stack *s, int dist, int max_mp, 
-                                         bool &stack_died)
+bool Player::AI_maybeVisitTempleForQuest(Stack *s, int dist, bool &got_quest, bool &stack_died)
 {
   bool stack_moved = false;
   Templelist *tl = Templelist::getInstance();
@@ -2781,14 +2962,17 @@ bool Player::AI_maybeVisitTempleForQuest(Stack *s, int dist, int max_mp,
       Vector<int> old_dest(-1,-1);
       if (s->getPath()->size())
 	old_dest = s->getLastPointInPath();
-      guint32 mp = s->getPath()->calculate(s, temple->getPos());
-      if ((int)mp > max_mp)
-	{
-	  //nope.  unreachable.  set in our old path.
+      guint32 moves = 0, turns = 0, left = 0;
+      s->getPath()->calculate(s, s->getPos(), moves, turns, left);
+      bool go_there = computerChooseVisitTempleForQuest(s, temple->getPos(), moves, turns);
+      if (!go_there)
+        {
+          s->clearPath();
 	  if (old_dest != Vector<int>(-1,-1))
 	    s->getPath()->calculate(s, old_dest);
-	  return false;
-	}
+          return false;
+        }
+      d_stacklist->setActivestack(s);
       stack_moved = stackMove(s);
 
       //maybe we died -- an enemy stack was guarding the temple
@@ -2801,14 +2985,22 @@ bool Player::AI_maybeVisitTempleForQuest(Stack *s, int dist, int max_mp,
     }
 
   //are we there yet?
-  if (temple->contains(s->getPos()) == true)
-    svisitingTemple.emit(temple, s);
+  if (temple->contains(s->getPos()) == true && GameMap::can_search(s))
+    {
+      bool searchit = computerChooseVisitTempleForQuest(s, s->getPos(), 0, 0);
+      if (!searchit)
+        {
+          s->clearPath();
+          return stack_moved;
+        }
+      svisitingTemple.emit(temple, s);
+      got_quest = true;
+    }
 
   return stack_moved;
 }
 
-bool Player::AI_maybeVisitRuin(Stack *s, int dist, int max_mp, 
-                                         bool &stack_died)
+bool Player::AI_maybeVisitRuin(Stack *s, int dist, bool &visited_ruin, bool &stack_died)
 {
   bool stack_moved = false;
   Ruinlist *rl = Ruinlist::getInstance();
@@ -2828,14 +3020,17 @@ bool Player::AI_maybeVisitRuin(Stack *s, int dist, int max_mp,
       Vector<int> old_dest(-1,-1);
       if (s->getPath()->size())
 	old_dest = s->getLastPointInPath();
-      guint32 mp = s->getPath()->calculate(s, ruin->getPos());
-      if ((int)mp > max_mp)
-	{
-	  //nope.  unreachable.  set in our old path.
+      guint32 moves = 0, turns = 0, left = 0;
+      s->getPath()->calculate(s, ruin->getPos(), moves, turns, left);
+      bool go_there = computerChooseVisitRuin(s, ruin->getPos(), moves, turns);
+      if (!go_there)
+        {
+          s->clearPath();
 	  if (old_dest != Vector<int>(-1,-1))
 	    s->getPath()->calculate(s, old_dest);
-	  return false;
-	}
+          return false;
+        }
+      d_stacklist->setActivestack(s);
       stack_moved = stackMove(s);
 
       //maybe we died -- an enemy stack was guarding the temple
@@ -2848,12 +3043,23 @@ bool Player::AI_maybeVisitRuin(Stack *s, int dist, int max_mp,
     }
 
   //are we there yet?
-  if (ruin->contains(s->getPos()) == true)
-    ssearchingRuin.emit(ruin, s);
+  if (ruin->contains(s->getPos()) == true && GameMap::can_search(s))
+    {
+      bool searchit = computerChooseVisitRuin(s, s->getPos(), 0, 0);
+      if (!searchit)
+        {
+          s->clearPath();
+          return stack_moved;
+        }
+      stack_died = ssearchingRuin.emit(ruin, s);
+      if (!stack_died)
+        visited_ruin = true;
+    }
 
   return stack_moved;
 }
-bool Player::AI_maybeVisitTempleForBlessing(Stack *s, int dist, int max_mp, 
+
+bool Player::AI_maybeVisitTempleForBlessing(Stack *s, int dist,
 					    double percent_can_be_blessed, 
 					    bool &blessed, bool &stack_died)
 {
@@ -2871,14 +3077,17 @@ bool Player::AI_maybeVisitTempleForBlessing(Stack *s, int dist, int max_mp,
       Vector<int> old_dest(-1,-1);
       if (s->getPath()->size())
 	old_dest = s->getLastPointInPath();
-      guint32 mp = s->getPath()->calculate(s, temple->getPos());
-      if ((int)mp > max_mp)
-	{
-	  //nope.  unreachable.  set in our old path.
+      guint32 moves = 0, turns = 0, left = 0;
+      s->getPath()->calculate(s, temple->getPos(), moves, turns, left);
+      bool go_there = computerChooseVisitTempleForBlessing(s, temple->getPos(), moves, turns);
+      if (!go_there)
+        {
+          s->clearPath();
 	  if (old_dest != Vector<int>(-1,-1))
 	    s->getPath()->calculate(s, old_dest);
-	  return false;
-	}
+          return false;
+        }
+      d_stacklist->setActivestack(s);
       stack_moved = stackMove(s);
 
       //maybe we died -- an enemy stack was guarding the temple
@@ -2892,8 +3101,15 @@ bool Player::AI_maybeVisitTempleForBlessing(Stack *s, int dist, int max_mp,
 
   int num_blessed = 0;
   //are we there yet?
-  if (s->getPos() == temple->getPos())
+  if (temple->contains(s->getPos()) == true && GameMap::can_search(s))
     {
+      bool searchit = computerChooseVisitTempleForBlessing(s, s->getPos(),
+                                                           0, 0);
+      if (!searchit)
+        {
+          s->clearPath();
+          return stack_moved;
+        }
       num_blessed = stackVisitTemple(s, temple);
     }
 
@@ -3496,12 +3712,12 @@ bool Player::searchedRuin(Ruin *r) const
   return false;
 }
 
-bool Player::conqueredCity(City *c) const
+bool Player::conqueredCity(City *c, guint32 &turns_ago) const
 {
   if (!c)
     return false;
-  for (list<History*>::const_iterator it = d_history.begin();
-       it != d_history.end(); it++)
+  for (list<History*>::const_reverse_iterator it = d_history.rbegin();
+       it != d_history.rend(); it++)
     {
       if ((*it)->getType() == History::CITY_WON)
 	{
@@ -3509,6 +3725,9 @@ bool Player::conqueredCity(City *c) const
 	  if (event->getCityId() == c->getId())
 	    return true;
 	}
+      else if ((*it)->getType() == History::START_TURN)
+        turns_ago++;
+
     }    
   return false;
 }
@@ -3836,6 +4055,8 @@ bool Player::AI_invadeCityQuestPreference(City *c, CityDefeatedAction &action) c
   std::vector<Quest*> q = QuestsManager::getInstance()->getPlayerQuests(this);
   for (std::vector<Quest*>::iterator i = q.begin(); i != q.end(); i++)
     {
+      if (*i == NULL)
+        continue;
       switch ((*i)->getType())
         {
         case Quest::CITYOCCUPY:
@@ -4013,8 +4234,8 @@ bool Player::setPathOfStackToPreviousDestination(Stack *stack)
       if (dest != Vector<int>(-1,-1))
         {
           PathCalculator *path_calculator = new PathCalculator(stack);
-          guint32 moves = 0, turns = 0;
-          Path *new_path = path_calculator->calculate(dest, moves, turns, true);
+          guint32 moves = 0, turns = 0, left = 0;
+          Path *new_path = path_calculator->calculate(dest, moves, turns, left, true);
           if (new_path->size())
             stack->setPath(*new_path);
           delete new_path;
@@ -4043,7 +4264,6 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim)
     {
       assert (victim != NULL);
       std::list<Stack*> sunk = victim->getStacklist()->killArmyUnitsInBoats();
-      printf("sunk.size() is %d\n", sunk.size());
       guint32 num_armies = removeDeadArmies(sunk);
       sunk_ships.emit(victim, num_armies);
     }

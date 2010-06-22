@@ -92,6 +92,7 @@ int main(int argc, char* argv[])
 		  cerr <<_("non-numerical value for seed value") <<endl;
 		  exit(-1);
 		}
+              kit.random_number_seed = seed;
 	      srand(seed);
 	    }
 	  else if (parameter == "--turn")

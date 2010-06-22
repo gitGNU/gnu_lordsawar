@@ -88,31 +88,14 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 
 	// Methods that operate on class data and do not modify the class.
 
-        /** 
-	 * This method finds stacks which occupy the same tile.
-         * For internal and logical reasons, we always assume that a tile is
-         * occupied by at most one stack as strange bugs may happen when this
-         * is violated. However, in some cases, it does happen that stacks
-         * temporarily occupy the same tile. Reasons may be that, on its
-         * route, a stack crosses another stacks tile and can't move further.
-         *
-	 * We only expect one ambiguity at a time with stacks of the same 
-	 * player. This never happens except when a stack comes to halt on 
-	 * another stack during long movements.
-	 *
-         * @param stack        The stack which we search an ambiguity for.
-	 *
-	 * @return The other stack on the same tile occupied by stack.
-         */
-	//! Get the other stack on a tile that has more than one stack on it.
-        static Stack* getAmbiguity(Stack* stack);
-
         //! Returns the total number of armies in the list.
         unsigned int countArmies() const;
 
         //! Returns the total number of armies in the list that are awardable.
         unsigned int countAllies() const;
 
+        //! Count the number of blessings that army units have.
+        guint32 countBlessingsOnArmyUnits() const;
 	/**
 	 * Scan through the list of stacks to find one that is not defending, 
 	 * and not parked, and can move to another tile.

@@ -255,9 +255,8 @@ void FightWindow::add_army(Army *army, int initial_hp,
     drawing_area->property_height_request() = 3;
     if (army->getStat(Army::SHIP, false))
       {
-        std::string ts = GameMap::getInstance()->getTileset();
         SmallTile *water = 
-          Tilesetlist::getInstance()->getSmallTile(ts, Tile::WATER);
+          Tilesetlist::getInstance()->getSmallTile(GameMap::getTileset()->getBaseName(), Tile::WATER);
         drawing_area->modify_bg(Gtk::STATE_NORMAL, water->getColor());
       }
     ebox->add(*manage(drawing_area));

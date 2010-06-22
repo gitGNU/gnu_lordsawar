@@ -152,15 +152,15 @@ int AI_Allocation::allocateStacksToCapacityBuilding(City *first_city,
 
 bool AI_Allocation::continueQuest(Quest *quest, Stack *stack)
 {
-  Vector<int> dest = d_owner->AI_getQuestDestination(quest, stack);
-  if (dest == Vector<int>(-1,-1))
-    return false;
-  bool killed = false;
-  bool moved = moveStack(stack, dest, killed);
-  if (!killed)
+  bool quest_completed = false;
+  bool stack_died = false;
+  bool moved = d_owner->AI_maybeContinueQuest(stack, quest, 
+                                              quest_completed, stack_died);
+  if (!stack_died)
     {
       groupStacks(stack);
-      deleteStack(stack);
+      if (!quest_completed)
+        deleteStack(stack);
     }
   return moved;
 }
@@ -176,6 +176,8 @@ int AI_Allocation::continueQuests()
   for (std::vector<Quest*>::iterator i = quest.begin(); i != quest.end(); i++)
     {
       Quest *quest = *i;
+      if (quest == NULL)
+        continue;
       if (quest->isPendingDeletion())
         continue;
       Stack *s = d_owner->getStacklist()->getArmyStackById(quest->getHeroId());
@@ -192,9 +194,9 @@ int AI_Allocation::continueAttacks()
   for (StackReflist::iterator i = d_stacks->begin(); i != d_stacks->end(); i++)
     {
       Stack *s = *i;
+      Vector<int> pos = s->getLastPointInPath();
       if (s->getParked() == false && s->isOnCity() == false &&
-          s->hasPath() == true && 
-          GameMap::getEnemyCity(s->getLastPointInPath()) != NULL)
+          s->hasPath() == true && GameMap::getEnemyCity(pos) != NULL)
         {
           bool killed = false;
           bool moved = moveStack(s, killed);
@@ -215,12 +217,29 @@ int AI_Allocation::continueAttacks()
                 }
             }
         }
+      else if (s->getParked() == false && s->isOnCity() == false &&
+               s->hasPath() == true && GameMap::getCity(pos) != NULL)
+        {
+          guint32 turns_ago = 0;
+          if (d_owner->conqueredCity(GameMap::getCity(pos), turns_ago))
+            {
+              if (turns_ago <= 1)
+                {
+                  //hey, the city we were moving to was taken over by us.
+                  //pick another enemy city.
+                  //just clear the path so that another routine will move us.
+                  s->clearPath();
+                }
+            }
+        }
+
     }
   return count;
 }
 
 int AI_Allocation::attackNearbyEnemies()
 {
+  bool moved;
   int count = 0;
   Citylist *cl = Citylist::getInstance();
   for (Citylist::iterator i = cl->begin(); i != cl->end(); i++)
@@ -242,7 +261,6 @@ int AI_Allocation::attackNearbyEnemies()
           if (s->getParked() == false && s->getMoves() >= 4)
             {
               bool killed = false;
-              bool moved;
               moved = moveStack(s, city->getNearestPos(s->getPos()), killed);
               if (!killed)
                 {
@@ -264,6 +282,7 @@ int AI_Allocation::attackNearbyEnemies()
         }
     }
   //return count;
+  //attack nearby stacks in the field.
   Stacklist *sl = d_owner->getStacklist();
   std::list<Vector<int> > pos = sl->getPositions();
   for (std::list<Vector<int> >::iterator i = pos.begin(); i != pos.end(); i++)
@@ -287,7 +306,6 @@ int AI_Allocation::attackNearbyEnemies()
           if (!enemy)
             continue;
           bool killed = false;
-          bool moved;
           if (enemy->isOnCity() == true)
             continue;
           if (s->size() < enemy->size())
@@ -304,6 +322,71 @@ int AI_Allocation::attackNearbyEnemies()
             }
           else
             break;
+        }
+    }
+  //don't leave heroes sitting around in cities.
+  pos = sl->getPositions();
+  for (std::list<Vector<int> >::iterator i = pos.begin(); i != pos.end(); i++)
+    {
+      if (d_owner->abortRequested())
+        return count;
+      Stack *s = GameMap::getFriendlyStack(*i);
+      if (!s)
+        continue;
+      if (s->getParked() == true)
+        continue;
+      if (s->hasHero() == false)
+        continue;
+      if (s->getMoves() < s->getMaxMoves())
+        continue;
+      City *target = cl->getClosestEnemyCity(s);
+      if (target)
+        {
+          bool killed = false;
+          moved = moveStack(s, target->getNearestPos(s->getPos()), killed);
+          if (moved)
+            count++;
+          if (!killed)
+            {
+              if (s->hasPath() == true)
+                deleteStack(s);
+            }
+        }
+    }
+   //fixme: this should probably be commented out in favour of emptyOutCities
+  //don't leave stacks of eight lying around in cities.
+  pos = sl->getPositions();
+  for (std::list<Vector<int> >::iterator i = pos.begin(); i != pos.end(); i++)
+    {
+      if (d_owner->abortRequested())
+        return count;
+      Stack *s = GameMap::getFriendlyStack(*i);
+      if (!s)
+        continue;
+      if (s->getParked() == true)
+        continue;
+      if (s->size() != MAX_STACK_SIZE)
+        continue;
+      if (s->getMoves() < s->getMaxMoves())
+        continue;
+      City *city = GameMap::getCity(*i);
+      if (!city)
+        continue;
+      if (city->isBurnt() == false && 
+          city->getDefenders().size() > MAX_STACK_SIZE * 2)
+        continue;
+      City *target = cl->getClosestEnemyCity(s);
+      if (target)
+        {
+          bool killed = false;
+          moved = moveStack(s, target->getNearestPos(s->getPos()), killed);
+          if (moved)
+            count++;
+          if (!killed)
+            {
+              if (s->hasPath() == true)
+                deleteStack(s);
+            }
         }
     }
   return count;
@@ -367,34 +450,43 @@ int AI_Allocation::visitTemples(bool get_quests)
       Stack *s = GameMap::getFriendlyStack(*i);
       if (!s)
         continue;
-      if (s->isOnCity() == true)
-        continue;
       if (s->hasHero() && get_quests)
         {
           //debug("Player " << d_owner->getName() << " moving hero-laden stack " << s->getId() << " towards a temple");
           bool moved;
           bool killed = false;
-          moved = d_owner->AI_maybeVisitTempleForQuest(s, s->getMoves(), 
-                                                       s->getMoves() + 17,
-                                                       killed);
+          bool got_quest = false;
+          moved = d_owner->AI_maybeVisitTempleForQuest(s, s->getMaxMoves(), 
+                                                       got_quest, killed);
           if (moved)
-            count++;
-          if (!killed)
-            groupStacks(s);
+            {
+              count++;
+              if (!killed)
+                {
+                  groupStacks(s);
+                  deleteStack(s);
+                }
+            }
         }
       else
         {
           bool moved;
           bool killed = false;
           bool blessed = false;
-          //debug("Player " << d_owner->getName() << " moving stack " << s->getId() << " towards a temple");
+          //debug("Player " << d_owner->getName() << " moving stack " << s->getId() << " at " <<s->getPos().x << "," << s->getPos().y << " towards a temple");
           moved = d_owner->AI_maybeVisitTempleForBlessing(s, s->getMoves(), 
-                                                       s->getMoves() + 7, 
-                                                       50.0, blessed, killed);
+                                                          50.0, blessed, 
+                                                          killed);
+          //debug("moved is " << moved << ", killed is " << killed << ", blessed is " << blessed);
           if (moved)
-            count++;
-          if (!killed)
-            groupStacks(s);
+            {
+              count++;
+              if (!killed)
+                {
+                  groupStacks(s);
+                  deleteStack(s);
+                }
+            }
         }
     }
   return count;
@@ -410,24 +502,55 @@ int AI_Allocation::visitRuins()
       Stack *s = GameMap::getFriendlyStack(*i);
       if (!s)
         continue;
-      if (s->isOnCity() == true)
-        continue;
       if (s->hasHero())
         {
           bool moved;
           bool killed = false;
+          bool visited_ruin = false;
           moved = d_owner->AI_maybeVisitRuin(s, s->getMoves(), 
-                                             s->getMoves() + 17, killed);
+                                             visited_ruin, killed);
           if (moved)
-            count++;
-          if (!killed)
-            groupStacks(s);
+            {
+              count++;
+              if (!killed)
+                {
+                  groupStacks(s);
+                  deleteStack(s);
+                }
+            }
         }
     }
   return count;
 }
 
 int AI_Allocation::pickupItems()
+{
+  int count = 0;
+  //loop over all heroes
+  std::list<Vector<int> > pos = d_owner->getStacklist()->getPositions();
+  for (std::list<Vector<int> >::iterator i = pos.begin(); i != pos.end(); i++)
+    {
+      Stack *s = GameMap::getFriendlyStack(*i);
+      if (!s)
+        continue;
+      if (s->hasHero() && s->getParked() == false)
+        {
+          bool picked_up = false;
+          bool killed = false;
+          bool moved = d_owner->AI_maybePickUpItems(s, 8, picked_up, killed);
+          if (moved)
+            count++;
+          if (!killed && moved)
+            {
+              groupStacks(s);
+              deleteStack(s);
+            }
+        }
+    }
+  return count;
+}
+
+int AI_Allocation::oldPickupItems()
 {
   int count = 0;
   if (d_owner->getHeroes().size() == 0)
@@ -516,6 +639,7 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
   sbusy.emit();
   if (d_owner->abortRequested())
     return count;
+
   //move stacks to temples for blessing, or ones with heroes for a quest.
   temple_alloc = d_stacks->size();
   moved = visitTemples(GameScenarioOptions::s_play_with_quests != GameParameters::NO_QUESTING);
@@ -581,7 +705,6 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
       debug("Player " << d_owner->getName() << " moved " << moved << " stacks in capacity building mode.");
       count+=moved;
     }
-  //printf("here1\n");
   checkAmbiguities();
 
   sbusy.emit();
@@ -595,7 +718,6 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
   debug("Player " << d_owner->getName() << " has " << d_stacks->size() << " stacks after assigning defenders");
   debug("Player " << d_owner->getName() << " moved " << count << " stacks in defensive mode.");
 
-  //printf("here2\n");
   checkAmbiguities();
   if (d_stacks->size() == 0)
     {
@@ -614,7 +736,6 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
   debug("Player " << d_owner->getName() << " still has " << d_stacks->size() << " stacks after allocating stacks to threats")
     debug("Player " << d_owner->getName() << " moved " << moved << " stacks in offensive mode.");
 
- //printf("here3\n");
   checkAmbiguities();
   if (d_stacks->size() == 0)
     {
@@ -637,7 +758,6 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
     return count;
   //empty out the cities damnit.
   emptyOutCities();
-  //printf("here4\n");
   checkAmbiguities();
   debug("Player " << d_owner->getName() << " moved totals: " << attack_moved << "," << capacity_moved <<"," <<defensive_moved<<"," << offensive_moved <<"," << default_moved <<".");
   debug("Player " << d_owner->getName() << " alloc totals: " << attack_alloc << "," << capacity_alloc <<"," <<defensive_alloc<<"," << offensive_alloc <<"," << default_alloc <<" (" << total <<").");
@@ -1245,7 +1365,8 @@ bool AI_Allocation::stackReinforce(Stack *s)
 
 void AI_Allocation::searchRuin(Stack *stack, Ruin *ruin)
 {
-  d_owner->stackSearchRuin(stack, ruin);
+  bool stack_died = false;
+  d_owner->stackSearchRuin(stack, ruin, stack_died);
   // what to do if the ruin search fails?
 }
 
@@ -1254,13 +1375,22 @@ bool AI_Allocation::shuffleStacksWithinCity(City *city, Stack *stack,
 {
   if (!city)
     return false;
+  if (city->isBurnt() == true)
+    {
+      groupStacks(stack);
+      return false;
+    }
   Vector<int> target = city->getPos() + diff;
-  //groupStacks(stack);
   if (stack->getPos() == target)
     {
       debug("stack " << stack->getId() <<" at ("<<stack->getPos().x<<","<<stack->getPos().y<<") already in preferred position.");
+      std::list<Stack*> f = GameMap::getFriendlyStacks(target);
+      if (f.size() > 1)
+        {
+          groupStacks(stack);
+          return false;
+        }
       // already in the preferred position
-      //groupStacks(stack);
       return false;
     }
 

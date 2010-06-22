@@ -426,7 +426,7 @@ void OverviewMap::draw_terrain_tiles(Rectangle r)
 {
     unsigned int oldrand = rand();
     srand(0);
-    Tileset *ts = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTileset());
+    Tileset *ts = GameMap::getTileset();
     Gdk::Color rd = ts->getRoadColor();
     for (int i = r.x; i < r.x + r.w; i+=int(map_tiles_per_tile))
       for (int j = r.y; j < r.y + r.h; j+=int(map_tiles_per_tile))
@@ -449,7 +449,7 @@ void OverviewMap::after_draw()
 
 void OverviewMap::draw(Player *player)
 {
-    Tileset *ts = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTileset());
+    Tileset *ts = GameMap::getTileset();
     Playerlist::getInstance()->setViewingplayer(player);
     int size = int(pixels_per_tile) > 1 ? int(pixels_per_tile) : 1;
     assert(surface);

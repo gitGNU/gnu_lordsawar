@@ -55,10 +55,13 @@ QuestKillHero::QuestKillHero(QuestsManager& q_mgr, XML_Helper* helper)
 
   // double and triple check :)
   Hero *hero = Quest::getHeroById(d_victim);
-  assert(hero);
-  d_targets.push_back(hero->getOwner()->getStacklist()->getPosition(d_victim));
+  if (hero)
+    d_targets.push_back(hero->getOwner()->getStacklist()->getPosition(d_victim));
+  else
+    deactivate();
 
-  initDescription();
+  if (isPendingDeletion() == false)
+    initDescription();
 }
 
 QuestKillHero::QuestKillHero(QuestsManager& q_mgr, guint32 hero, guint32 victim) 

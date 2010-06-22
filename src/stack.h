@@ -91,6 +91,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Returns the max MP the stack would have if it were in the water
         guint32 getMaxBoatMoves() const;
 
+        //! Returns the maximum number of movements points for this stack.
+        guint32 getMaxMoves() const;
+
         //! Returns the Path object of the stack.
         Path* getPath() const {return d_path;}
 
@@ -104,6 +107,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         guint32 getMaxArmiesToJoin() const;
 
         guint32 countAllies() const;
+
 
 	// Set Methods
 
@@ -385,6 +389,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
 	//! Returns how many armies in the stack have visited the given temple.
 	guint32 countArmiesBlessedAtTemple(guint32 temple_id) const;
+        
+	//! Returns how many blessings have been bestowed on units in the stack.
+        guint32 countBlessings() const;
 
         //! Returns how many items this stack has.
         guint32 countItems() const;

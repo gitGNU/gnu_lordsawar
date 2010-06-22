@@ -72,6 +72,9 @@ GameMap* GameMap::s_instance = 0;
 
 int GameMap::s_width = 112;
 int GameMap::s_height = 156;
+Tileset* GameMap::s_tileset = 0;
+Cityset* GameMap::s_cityset = 0;
+Shieldset* GameMap::s_shieldset = 0;
 
 GameMap* GameMap::getInstance()
 {
@@ -114,6 +117,9 @@ void GameMap::deleteInstance()
 GameMap::GameMap(std::string TilesetName, std::string ShieldsetName,
 		 std::string CitysetName)
 {
+  s_tileset = 0;
+  s_cityset = 0;
+  s_shieldset = 0;
   if (TilesetName != "")
     d_tileset = TilesetName;
   if (ShieldsetName != "")
@@ -138,7 +144,7 @@ bool GameMap::offmap(int x, int y)
 
 void GameMap::processStyles(std::string styles, int chars_per_style)
 {
-  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+  Tileset *tileset = GameMap::getTileset();
   int c = chars_per_style;
     int offset = 0;
     for (int j = 0; j < s_height; j++)
@@ -180,6 +186,9 @@ int GameMap::determineCharsPerStyle(std::string styles)
 
 GameMap::GameMap(XML_Helper* helper)
 {
+    s_tileset = 0;
+    s_cityset = 0;
+    s_shieldset = 0;
     std::string types;
     std::string styles;
     std::string t_dir;
@@ -199,6 +208,11 @@ GameMap::GameMap(XML_Helper* helper)
     d_cityset = c_dir;
 
     Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+    s_tileset = tileset;
+    Cityset *cityset = Citysetlist::getInstance()->getCityset(d_cityset);
+    s_cityset = cityset;
+    Shieldset *shieldset = Shieldsetlist::getInstance()->getShieldset(d_shieldset);
+    s_shieldset = shieldset;
     Vector<int>::setMaximumWidth(s_width);
     //create the map
     d_map = new Maptile*[s_width*s_height];
@@ -256,7 +270,7 @@ bool GameMap::fill(MapGenerator* generator)
     int width = 0;
     int height = 0;
     const Tile::Type* terrain = generator->getMap(width, height);
-    Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+    Tileset *tileset = GameMap::getTileset();
 
     //the sizes should definitely match, else we have a problem here
     if (width != s_width || height != s_height)
@@ -283,7 +297,7 @@ bool GameMap::fill(MapGenerator* generator)
 
 bool GameMap::fill(guint32 type)
 {
-    Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+    Tileset *tileset = GameMap::getTileset();
     for (int i = 0; i < s_width; i++)
         for (int j = 0; j < s_height; j++)
 	  {
@@ -296,7 +310,7 @@ bool GameMap::fill(guint32 type)
 
 bool GameMap::save(XML_Helper* helper) const
 {
-    Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+    Tileset *tileset = GameMap::getTileset();
     bool retval = true;
 
     std::stringstream types;
@@ -670,7 +684,7 @@ std::list<MapBackpack*> GameMap::getBackpacks() const
 
 TileStyle *GameMap::calculatePreferredStyle(int i, int j)
 {
-  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+  Tileset *tileset = GameMap::getTileset();
   Maptile *mtile = getTile(j, i);
   int box[3][3];
   for (int k = -1; k <= +1; k++)
@@ -763,7 +777,7 @@ TileStyle *GameMap::calculatePreferredStyle(int i, int j)
 
 void GameMap::close_circles (int minx, int miny, int maxx, int maxy)
 {
-  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+  Tileset *tileset = GameMap::getTileset();
   for (int i = minx; i < maxx; i++)
     {
       for (int j = miny; j < maxy; j++)
@@ -878,7 +892,7 @@ int GameMap::tile_is_connected_to_other_like_tiles (Tile::Type tile, int i, int 
 void GameMap::demote_lone_tile(int minx, int miny, int maxx, int maxy, 
 			       Tile::Type intype, Tile::Type outtype)
 {
-  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+  Tileset *tileset = GameMap::getTileset();
   int i;
   int j;
   for (i = minx; i < maxx; i++)
@@ -951,7 +965,7 @@ std::vector<Vector<int> > GameMap::getItems()
 
 void GameMap::surroundMountains(int minx, int miny, int maxx, int maxy)
 {
-  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+  Tileset *tileset = GameMap::getTileset();
   for(int j = miny; j < maxy; j++)
     for(int i = minx; i < maxx; i++)
       {
@@ -985,7 +999,7 @@ void GameMap::surroundMountains(int minx, int miny, int maxx, int maxy)
 void GameMap::applyTileStyle (int i, int j)
 {
   Maptile *mtile = getTile(j, i);
-  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+  Tileset *tileset = GameMap::getTileset();
 
   TileStyle *style = calculatePreferredStyle(i, j);
   if (!style)
@@ -1061,11 +1075,15 @@ Vector<int> GameMap::findNearestObjectToTheWest(Vector<int> pos)
 
 City* GameMap::getCity(Vector<int> pos)
 {
+  if (getInstance()->getBuilding(pos) != Maptile::CITY)
+    return NULL;
   return Citylist::getInstance()->getObjectAt(pos);
 }
 
 City* GameMap::getEnemyCity(Vector<int> pos)
 {
+  if (getInstance()->getBuilding(pos) != Maptile::CITY)
+    return NULL;
   City *c = Citylist::getInstance()->getObjectAt(pos);
   if (c && c->getOwner() != Playerlist::getActiveplayer())
     return c;
@@ -1074,31 +1092,43 @@ City* GameMap::getEnemyCity(Vector<int> pos)
 
 Ruin* GameMap::getRuin(Vector<int> pos)
 {
+  if (getInstance()->getBuilding(pos) != Maptile::RUIN)
+    return NULL;
   return Ruinlist::getInstance()->getObjectAt(pos);
 }
 
 Temple* GameMap::getTemple(Vector<int> pos)
 {
+  if (getInstance()->getBuilding(pos) != Maptile::TEMPLE)
+    return NULL;
   return Templelist::getInstance()->getObjectAt(pos);
 }
 
 Port* GameMap::getPort(Vector<int> pos)
 {
+  if (getInstance()->getBuilding(pos) != Maptile::PORT)
+    return NULL;
   return Portlist::getInstance()->getObjectAt(pos);
 }
 
 Road* GameMap::getRoad(Vector<int> pos)
 {
+  if (getInstance()->getBuilding(pos) != Maptile::ROAD)
+    return NULL;
   return Roadlist::getInstance()->getObjectAt(pos);
 }
 
 Bridge* GameMap::getBridge(Vector<int> pos)
 {
+  if (getInstance()->getBuilding(pos) != Maptile::BRIDGE)
+    return NULL;
   return Bridgelist::getInstance()->getObjectAt(pos);
 }
 
 Signpost* GameMap::getSignpost(Vector<int> pos)
 {
+  if (getInstance()->getBuilding(pos) != Maptile::SIGNPOST)
+    return NULL;
   return Signpostlist::getInstance()->getObjectAt(pos);
 }
 
@@ -1201,19 +1231,19 @@ bool GameMap::canAddArmies(Vector<int> dest, guint32 stackSize)
 void GameMap::switchTileset(Tileset *tileset)
 {
   d_tileset = tileset->getBaseName();
+  s_tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
   applyTileStyles (0, 0, s_width, s_height,  false);
 }
 
 void GameMap::reloadTileset()
 {
-  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+  Tileset *tileset = GameMap::getTileset();
   tileset->reload();
 }
 
 void GameMap::reloadShieldset()
 {
-  Shieldset *shieldset = 
-    Shieldsetlist::getInstance()->getShieldset(d_shieldset);
+  Shieldset *shieldset = GameMap::getShieldset();
   shieldset->reload();
   Playerlist::getInstance()->setNewColours(shieldset);
 }
@@ -1222,6 +1252,7 @@ void GameMap::switchShieldset(Shieldset *shieldset)
 {
   Playerlist::getInstance()->setNewColours(shieldset);
   d_shieldset = shieldset->getBaseName();
+  s_shieldset = Shieldsetlist::getInstance()->getShieldset(d_shieldset);
 }
 
 Vector<int> GameMap::findNearestAreaForBuilding(Maptile::Building building_type, Vector<int> pos, guint32 width)
@@ -1294,7 +1325,7 @@ guint32 GameMap::countBuildings(Maptile::Building building_type)
 
 void GameMap::reloadCityset()
 {
-  Cityset *cityset = Citysetlist::getInstance()->getCityset(d_cityset);
+  Cityset *cityset = GameMap::getCityset();
   cityset->reload();
   switchCityset(cityset);
 }
@@ -1771,7 +1802,7 @@ bool GameMap::putBridge(Bridge *b)
 Rectangle GameMap::putTerrain(Rectangle r, Tile::Type type, int tile_style_id, bool always_alter_tilestyles)
 {
   bool replaced = false;
-  Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+  Tileset *tileset = GameMap::getTileset();
   int index = tileset->getIndex(type);
   if (index == -1)
     return r;
@@ -1874,7 +1905,7 @@ bool GameMap::removeCity(Vector<int> pos)
 
 bool GameMap::putNewCity(Vector<int> tile)
 {
-  Cityset *cs = Citysetlist::getInstance()->getCityset(getCityset());
+  Cityset *cs = GameMap::getCityset();
   // check if we can place the city
   bool city_placeable =
     canPutBuilding (Maptile::CITY, cs->getCityTileWidth(), tile);
@@ -1888,7 +1919,7 @@ bool GameMap::putNewCity(Vector<int> tile)
 
 bool GameMap::putNewRuin(Vector<int> tile)
 {
-  Cityset *cs = Citysetlist::getInstance()->getCityset(getCityset());
+  Cityset *cs = GameMap::getCityset();
   // check if we can place the city
   bool ruin_placeable =
     canPutBuilding (Maptile::RUIN, cs->getRuinTileWidth(), tile);
@@ -1902,7 +1933,7 @@ bool GameMap::putNewRuin(Vector<int> tile)
 
 bool GameMap::putNewTemple(Vector<int> tile)
 {
-  Cityset *cs = Citysetlist::getInstance()->getCityset(getCityset());
+  Cityset *cs = GameMap::getCityset();
   // check if we can place the city
   bool temple_placeable =
     canPutBuilding (Maptile::TEMPLE, cs->getTempleTileWidth(), tile);
@@ -2155,18 +2186,18 @@ void GameMap::relocateLocation(Location *location, Maptile::Building building_ty
         
 guint32 GameMap::getTileSize() const
 {
-  Tileset *ts = Tilesetlist::getInstance()->getTileset(d_tileset);
+  Tileset *ts = GameMap::getTileset();
   return ts->getTileSize();
 }
 
 guint32 GameMap::getTilesetId() const
 {
-  return Tilesetlist::getInstance()->getTilesetId(d_tileset);
+  return GameMap::getTileset()->getId();
 }
 
 guint32 GameMap::getCitysetId() const
 {
-  return Citysetlist::getInstance()->getCitysetId(d_cityset);
+  return GameMap::getCityset()->getId();
 }
 
 guint32 GameMap::getShieldsetId() const
@@ -2176,29 +2207,17 @@ guint32 GameMap::getShieldsetId() const
 
 std::string GameMap::getTilesetName() const
 {
-  Tileset *ts = Tilesetlist::getInstance()->getTileset(d_tileset);
-  if (!ts)
-    return "";
-  else
-    return ts->getName();
+  return d_tileset;
 }
 
 std::string GameMap::getCitysetName() const
 {
-  Cityset *cs = Citysetlist::getInstance()->getCityset(d_cityset);
-  if (!cs)
-    return "";
-  else
-    return cs->getName();
+  return d_cityset;
 }
 
 std::string GameMap::getShieldsetName() const
 {
-  Shieldset *ss = Shieldsetlist::getInstance()->getShieldset(d_shieldset);
-  if (!ss)
-    return "";
-  else
-    return ss->getName();
+  return d_shieldset;
 }
 
 bool GameMap::eraseTiles(Rectangle r)
@@ -2266,4 +2285,118 @@ bool GameMap::eraseTile(Vector<int> tile)
       erased = true;
     }
   return erased;
+}
+
+Tileset* GameMap::getTileset()
+{
+  if (s_tileset == 0)
+    s_tileset = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTilesetName());
+    
+  return s_tileset;
+}
+
+Cityset* GameMap::getCityset()
+{
+  if (s_cityset == 0)
+    s_cityset = Citysetlist::getInstance()->getCityset(GameMap::getInstance()->getCitysetName());
+    
+  return s_cityset;
+}
+
+Shieldset* GameMap::getShieldset()
+{
+  if (s_shieldset == 0)
+    s_shieldset = Shieldsetlist::getInstance()->getShieldset(GameMap::getInstance()->getShieldsetName());
+    
+  return s_shieldset;
+}
+
+void GameMap::setTileset(std::string tileset)
+{
+  d_tileset = tileset;
+  s_tileset = Tilesetlist::getInstance()->getTileset(tileset);
+}
+
+void GameMap::setCityset(std::string cityset)
+{
+  d_cityset = cityset;
+  s_cityset = Citysetlist::getInstance()->getCityset(cityset);
+}
+
+void GameMap::setShieldset(std::string shieldset)
+{
+  d_shieldset = shieldset;
+  s_shieldset = Shieldsetlist::getInstance()->getShieldset(shieldset);
+}
+
+bool GameMap::can_search(Stack *stack)
+{
+  /*
+   * a note about searching.
+   * ruins can be searched by stacks that have a hero, and when the
+   * hero has moves left.  also the ruin must be unexplored.
+   * temples can be searched by any stack, when the stack has 
+   * movement left.
+   */
+  if (!stack)
+    return false;
+  if (stack->getMoves() < 1)
+    return false;
+  bool temple_searchable = false;
+  Temple *temple = GameMap::getTemple(stack->getPos());
+  if (temple)
+    temple_searchable = true;
+  bool ruin_searchable = true;
+  Ruin *ruin = GameMap::getRuin(stack->getPos());
+  if (!ruin)
+    ruin_searchable = false;
+  else
+    {
+      if (ruin->isSearched() == true)
+        ruin_searchable = false;
+      if (ruin->isHidden() == true &&
+          ruin->getOwner() != Playerlist::getActiveplayer())
+        ruin_searchable = false;
+      if (stack->hasHero() == false)
+        ruin_searchable = false;
+    }
+  if (ruin_searchable || temple_searchable)
+    return true;
+  return false;
+}
+
+bool GameMap::can_plant_flag(Stack *stack)
+{
+  Player *player = Playerlist::getActiveplayer();
+  if (stack->hasHero())
+    {
+      //does the hero have the player's standard?
+      for (Stack::iterator it = stack->begin(); it != stack->end(); it++)
+        {
+          if ((*it)->isHero())
+            {
+              Hero *hero = dynamic_cast<Hero*>((*it));
+              if (hero->getBackpack()->getPlantableItem(player))
+                {
+                  //can't plant on city/ruin/temple/signpost
+                  City *city = getCity(stack->getPos());
+                  Temple *temple = getTemple(stack);
+                  Ruin *ruin = getRuin(stack);
+                  Signpost *sign = getSignpost(stack);
+                  if (!city && !temple && !ruin && !sign)
+                    {
+                      MapBackpack *backpack;
+                      Vector<int> pos = stack->getPos();
+                      backpack = getInstance()->getTile(pos)->getBackpack();
+                      bool standard_already_planted = 
+                        backpack->getFirstPlantedItem() != NULL;
+                      //are there any other standards here?
+                      if (standard_already_planted == false)
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+  return false;
 }

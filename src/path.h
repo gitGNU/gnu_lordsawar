@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
 // Copyright (C) 2004 John Farrell
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -125,11 +125,11 @@ class Path : public std::list<Vector<int> >
 	//! find which tile in the city is quickest to move to.
 	guint32 calculateToCity (Stack *s, City *c, bool zigzag = true);
 	void dump();
+	void calculate (Stack* s, Vector<int> dest, guint32 &mp, guint32 &turns, guint32 &left, bool zigzag = true);
     private:
 
         int pointsToMoveTo(const Stack *s, int x, int y, int destx, int desty) const;
 
-	void calculate (Stack* s, Vector<int> dest, guint32 &mp, guint32 &turns, bool zigzag);
 	bool load_or_unload(Stack *s, Vector<int> src, Vector<int> dest, bool &on_ship);
 
         // Data

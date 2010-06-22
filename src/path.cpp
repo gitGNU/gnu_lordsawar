@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
 // Copyright (C) 2004 John Farrell
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -219,7 +219,7 @@ guint32 Path::calculateToCity (Stack *s, City *c, bool zigzag)
   return mp;
 }
 
-void Path::calculate (Stack* s, Vector<int> dest, guint32 &moves, guint32 &turns, bool zigzag)
+void Path::calculate (Stack* s, Vector<int> dest, guint32 &moves, guint32 &turns, guint32 &left, bool zigzag)
 {
   //int mp;
   //Vector<int> start = s->getPos();
@@ -260,7 +260,7 @@ void Path::calculate (Stack* s, Vector<int> dest, guint32 &moves, guint32 &turns
   PathCalculator pc = PathCalculator(s, zigzag, enemy_city_avoidance, 
 				     enemy_stack_avoidance);
 
-  Path *calculated_path = pc.calculate(dest, moves, turns, zigzag);
+  Path *calculated_path = pc.calculate(dest, moves, turns, left, zigzag);
   if (calculated_path->size())
     {
       for(Path::iterator it = calculated_path->begin(); it!= calculated_path->end(); it++)
@@ -287,16 +287,15 @@ void Path::calculate (Stack* s, Vector<int> dest, guint32 &moves, guint32 &turns
 
 guint32 Path::calculate (Stack* s, Vector<int> dest, guint32 &turns, bool zigzag)
 {
-  guint32 mp = 0;
-  calculate(s, dest, mp, turns, zigzag);
-  return mp;
+  guint32 moves = 0, left = 0;
+  calculate(s, dest, moves, turns, left, zigzag);
+  return moves;
 }
 
 guint32 Path::calculate (Stack* s, Vector<int> dest, bool zigzag)
 {
-  guint32 mp = 0;
-  guint32 turns = 0;
-  calculate(s, dest, mp, turns, zigzag);
+  guint32 mp = 0, turns = 0, left = 0;
+  calculate(s, dest, mp, turns, left, zigzag);
   return mp;
 }
 

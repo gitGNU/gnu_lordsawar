@@ -624,9 +624,7 @@ void Playerlist::syncPlayer(GameParameters::Player player)
       int width = d_neutral->getFogMap()->getWidth();
       int height = d_neutral->getFogMap()->getHeight();
       int gold = d_neutral->getGold();
-      Shieldset *shieldset = 
-        Shieldsetlist::getInstance()->getShieldset
-        (GameMap::getInstance()->getShieldset());
+      Shieldset *shieldset = GameMap::getShieldset();
       switch (player.type)
 	{
 	case GameParameters::Player::HUMAN:
@@ -933,4 +931,12 @@ void Playerlist::setNewColours(Shieldset *shieldset)
       Player *p = (*it);
       p->setColor(shieldset->getColor(p->getId()));
     }
+}
+
+guint32 Playerlist::countBlessings() const
+{
+  guint32 count = 0;
+  for (const_iterator it = begin(); it != end(); it++)
+    count += (*it)->getStacklist()->countBlessingsOnArmyUnits();
+  return count;
 }

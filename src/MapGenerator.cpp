@@ -286,9 +286,9 @@ bool MapGenerator::canPlaceBridge(Vector<int> pos, int type, Vector<int> &src, V
 
 void MapGenerator::makeBridges()
 {
-  std::string orig_tileset = GameMap::getInstance()->getTileset();
-  std::string orig_shieldset = GameMap::getInstance()->getShieldset();
-  std::string orig_cityset = GameMap::getInstance()->getCityset();
+  std::string orig_tileset = GameMap::getInstance()->getTilesetName();
+  std::string orig_shieldset = GameMap::getInstance()->getShieldsetName();
+  std::string orig_cityset = GameMap::getInstance()->getCitysetName();
   GameMap::deleteInstance();
   Citylist::deleteInstance();
   Roadlist::deleteInstance();
@@ -1470,7 +1470,7 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
 {
   bool retval = true;
   GameMap *gm = GameMap::getInstance();
-  Tileset *ts = Tilesetlist::getInstance()->getTileset(gm->getTileset());
+  Tileset *ts = Tilesetlist::getInstance()->getTileset(gm->getTilesetName());
   Vector<int> src(src_x, src_y);
   Vector<int> dest(dest_x, dest_y);
 
@@ -1642,9 +1642,9 @@ std::vector<pair<int , Vector<int> > > MapGenerator::findBridgePlaces()
 
 void MapGenerator::makeRoads()
 {
-  std::string orig_tileset = GameMap::getInstance()->getTileset();
-  std::string orig_shieldset = GameMap::getInstance()->getShieldset();
-  std::string orig_cityset = GameMap::getInstance()->getCityset();
+  std::string orig_tileset = GameMap::getInstance()->getTilesetName();
+  std::string orig_shieldset = GameMap::getInstance()->getShieldsetName();
+  std::string orig_cityset = GameMap::getInstance()->getCitysetName();
   GameMap::deleteInstance();
   Citylist::deleteInstance();
   Roadlist::deleteInstance();

@@ -508,4 +508,115 @@ bool AI_Smart::chooseQuest(Hero *hero)
 {
   return true;
 }
+
+bool AI_Smart::computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  if (stack->isOnCity() == true)
+    {
+      if (moves <= stack->getMoves())
+        return true;
+      else
+        return false;
+    }
+  //if (stack->size() == 1 && stack->getFirstHero()->getStrength() < 6)
+    //return false;
+  if (stack->getPos() == dest)
+    return true;
+  if (moves < stack->getMoves() + 17)
+    return true;
+  else
+    return false;
+}
+
+bool AI_Smart::computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  if (GameMap::getEnemyCity(dest) != NULL)
+    return false;
+  if (stack->getPos() == dest)
+    return true;
+  City *c = GameMap::getCity(stack->getPos());
+  if (c)
+    {
+      if (c->contains(dest) == true)
+        return true;
+    }
+  else
+    return false;
+  //is this the closest hero to the bag?
+
+  if (turns > 0)
+    {
+      Vector<int> diff = dest - stack->getPos();
+      int dist;
+      if (abs(diff.x) > abs(diff.y))
+        dist = abs(diff.x);
+      else
+        dist = abs(diff.y);
+      std::list<Stack*> stacks = GameMap::getNearbyFriendlyStacks(dest, dist);
+      for (std::list<Stack*>::iterator it = stacks.begin(); it != stacks.end(); 
+           it++)
+        {
+          if ((*it)->hasHero() && (*it)->getId() != stack->getId())
+            return false;
+          else if ((*it)->getId() == stack->getId())
+            break;
+        }
+    }
+
+  if (moves < stack->getMoves() + 7)
+    return true;
+  else
+    return false;
+}
+
+bool AI_Smart::computerChooseVisitTempleForBlessing(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  if (stack->isOnCity() == true)
+    {
+      if (moves * 2 <= stack->getMoves())
+        return true;
+      else
+        return false;
+    }
+  if (stack->getPos() == dest)
+    return true;
+  //if (stack->size() == 1)
+    //return false;
+  //if (stack->getMoves() != stack->getMaxMoves())
+    //return false;
+  //if (turns == 0)
+    //return true;
+  if (moves < stack->getMoves() + 7)
+    return true;
+  else
+    return false;
+  return true;
+}
+
+bool AI_Smart::computerChooseVisitTempleForQuest(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  if (stack->size() == 1)
+    return false;
+
+  if (stack->isOnCity() == true)
+    {
+      if (moves <= stack->getMoves())
+        return true;
+      else
+        return false;
+    }
+  if (stack->getPos() == dest)
+    return true;
+  if (moves < stack->getMoves() + 17)
+    return true;
+  else
+    return false;
+}
+
+bool AI_Smart::computerChooseContinueQuest(Stack *stack, Quest *quest, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  if (turns > 4)
+    return false;
+  return true;
+}
 // End of file

@@ -356,6 +356,11 @@ bool City::changeVectorDestination(Vector<int> dest)
 
 std::vector<Stack *> City::getDefenders() const
 {
+  if (isBurnt() == true)
+    {
+      std::vector<Stack *> empty;
+      return empty;
+    }
   return getOwner()->getStacklist()->getDefendersInCity(this);
 }
 

@@ -230,6 +230,8 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	//! Return the number of players left alive, not including neutral.
 	guint32 countPlayersAlive() const;
 
+        //! counts blessings of all army units for all players.
+        guint32 countBlessings() const;
 
 	//! Return the list of activities that the given hero has accomplished.
 	std::list<History *>getHistoryForHeroId(guint32 id) const;

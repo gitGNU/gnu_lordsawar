@@ -115,9 +115,6 @@ public:
     //! Return the first stack on this tile.
     Stack *getStack() const;
 
-    //! Get the next friendly stack on this tile that isn't the given stack.
-    Stack *getOtherStack(Stack *stack) const;
-
     //! Return true if this tile contains the given stack id.
     bool contains(guint32 stack_id) const;
 

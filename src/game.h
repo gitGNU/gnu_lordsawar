@@ -77,7 +77,7 @@ class Game
     void deselect_selected_stack();
     void search_selected_stack();
     void select_item_to_use();
-    void search_stack(Stack *stack);
+    void search_stack(Stack *stack, bool &gotquest, bool &stackdied);
     void move_selected_stack_along_path();
     void move_selected_stack_northwest();
     void move_selected_stack_north();
@@ -221,9 +221,11 @@ class Game
     void invading_city(City* city, int gold);
     void init_turn_for_player(Player* p);
     void on_player_died(Player *p);
-    void stack_searches_ruin(Ruin *ruin, Stack *stack);
-    void stack_searches_temple(Temple *temple, Stack *stack);
+    bool stack_searches_ruin(Ruin *ruin, Stack *stack);
+    bool stack_searches_temple(Temple *temple, Stack *stack);
     void on_use_item(Item *item);
+    void on_ruinfight_started(Stack *attacker, Stack *defender);
+    void on_ruinfight_finished(Fight::Result result);
 
     //! Callback when the army of a human player reaches a new level.
     Army::Stat heroGainsLevel(Hero * a);

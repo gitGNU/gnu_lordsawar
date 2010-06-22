@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Ben Asselstine
+// Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -49,7 +49,6 @@ RoadPathCalculator::~RoadPathCalculator()
 }
 Path* RoadPathCalculator::calculate(Vector<int> dest)
 {
-  guint32 moves = 0;
-  guint32 turns = 0;
-  return path_calculator->calculate(dest, moves, turns, false);
+  guint32 moves = 0, turns = 0, left = 0;
+  return path_calculator->calculate(dest, moves, turns, left, false);
 }

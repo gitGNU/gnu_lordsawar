@@ -311,6 +311,8 @@ std::vector<Quest*> QuestsManager::getPlayerQuests(const Player *player) const
           Quest *q = (*qit).second;
           if (q && q->isPendingDeletion() == true)
             continue;
+          if (!q)
+            continue;
           debug("heroId = " << heroId << " - has quest: " << q);
           res.push_back(q);
         }

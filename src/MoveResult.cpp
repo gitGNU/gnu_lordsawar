@@ -1,5 +1,6 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2005 Ulf Lorenz
+// Copyright (C) 2009, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,10 +28,16 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 //#define debug(x)
 
+        bool d_computer_searched_temple;
+        bool d_computer_searched_ruin;
+        bool d_computer_got_quest;
 MoveResult::MoveResult()
     : d_fight(false), d_stepCount(0), d_out_of_moves(false), 
     d_reached_end(false), d_treachery(false), d_considered_treachery(false),
-    d_too_large_stack_in_the_way(false), d_fightResult(Fight::DRAW)
+    d_too_large_stack_in_the_way(false), d_fightResult(Fight::DRAW),
+    d_move_aborted(false), d_computer_searched_temple(false), 
+    d_computer_searched_ruin(false), d_computer_got_quest(false),
+    d_ruinfightResult(Fight::DRAW), d_computer_picked_up_bag(false)
 {
 }
 
@@ -38,7 +45,7 @@ MoveResult::~MoveResult()
 {
 }
 
-void MoveResult::fillData(Stack *s, int stepCount)
+void MoveResult::fillData(Stack *s, int stepCount, bool searched_temple, bool searched_ruin, bool got_quest, bool picked_up)
 {
   if (s->getPath()->size() == 0)
     d_reached_end = true;
@@ -47,6 +54,11 @@ void MoveResult::fillData(Stack *s, int stepCount)
     d_out_of_moves = true;
 
   d_stepCount = stepCount;
+
+  d_computer_searched_temple = searched_temple;
+  d_computer_searched_ruin = searched_ruin;
+  d_computer_got_quest = got_quest;
+  d_computer_picked_up_bag = picked_up;
 }
 
 void MoveResult::setFightResult(Fight::Result fightResult)

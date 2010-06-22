@@ -84,6 +84,8 @@ void StackTile::add(Stack *stack)
   struct StackTileRecord rec;
   rec.stack_id = stack->getId();
   rec.player_id = stack->getOwner()->getId();
+  if (rec.stack_id == 4322)
+  printf("4322 on %d,%d has an owner of %d\n", tile.x, tile.y, rec.player_id);
   push_back(rec);
   //i could stack->setpos here, but i prefer to let Stack::moveToDest do that because it's movement related, and this class is not movement related.
 }
@@ -203,27 +205,6 @@ std::list<Stack *> StackTile::getEnemyStacks(Player *owner) const
   return stacks;
 }
 
-Stack *StackTile::getOtherStack(Stack *stack) const
-{
-  if (findStack(stack) == end())
-    return NULL;
-  for (const_iterator it = begin(); it != end(); it++)
-    {
-      if (stack->getId() != (*it).stack_id)
-	{
-	  //great, this is a stack id that isn't us.
-	  //now go get the stack from somebody's stacklist.
-	  if (stack->getOwner()->getId() != (*it).player_id)
-	    continue;
-	  Player *p = stack->getOwner();
-	  Stack *other = p->getStacklist()->getStackById((*it).stack_id);
-	  if (other)
-	    return other;
-	}
-    }
-  return NULL;
-}
-    
 bool StackTile::contains(guint32 id) const
 {
   for (const_iterator it = begin(); it != end(); it++)

@@ -272,8 +272,9 @@ void HistoryReportDialog::generatePastCitylists()
       //is the city burned to begin with?
       bool no_city_history = true;
       pit = Playerlist::getInstance()->begin();
+      guint32 age;
       for (; pit != Playerlist::getInstance()->end(); ++pit)
-	if ((*pit)->conqueredCity(*it) == true)
+	if ((*pit)->conqueredCity(*it, age) == true)
 	  no_city_history = false;
       if ((*it)->isBurnt() == true && no_city_history)
 	(*it)->setBurnt(true);

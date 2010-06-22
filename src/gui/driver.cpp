@@ -716,29 +716,34 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
 
 void Driver::stressTestNextRound()
 {
-  //static time_t prev_round_start = time(NULL);
+
   static int count = 1;
-  //if (count == 1)
-    //{
-      //FILE * fileptr = fopen("/tmp/crapola.csv", "w");
-      //fclose(fileptr);
-    //}
+  /*
+  static time_t prev_round_start = time(NULL);
+  if (count == 1)
+    {
+      FILE * fileptr = fopen("/tmp/crapola.csv", "w");
+      fclose(fileptr);
+    }
+  time_t now = time(NULL);
+    */
   count++;
-  //time_t now = time(NULL);
   printf ("starting round %d!\n", count);
   /*
   FILE * fileptr = fopen("/tmp/crapola.csv", "a");
   int total_fights = Playerlist::getInstance()->countFightsThisTurn();
   int total_moves = Playerlist::getInstance()->countMovesThisTurn();
-  fprintf(fileptr, "%d, %d, %d, %d, %d, %d, %d, %d", count, 
+  fprintf(fileptr, "%d, %d, %d, %d, %d, %d, %d, %d, %d, %d", count, 
           now - prev_round_start,
           Stacklist::getNoOfStacks(), 
           Stacklist::getNoOfArmies(), 
           total_fights,
           total_moves,
+          Ruinlist::getInstance()->countUnexploredRuins(Playerlist::getInstance()->getNeutral()),
+          Playerlist::getInstance()->countBlessings(),
           Citylist::getInstance()->countCities(Playerlist::getInstance()->getNeutral()), 
           Playerlist::getInstance()->countPlayersAlive());
-  if (Playerlist::getInstance()->countPlayersAlive() == 2)
+  //if (Playerlist::getInstance()->countPlayersAlive() == 2)
     {
       Playerlist *pl = Playerlist::getInstance();
       for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
@@ -747,15 +752,15 @@ void Driver::stressTestNextRound()
             continue;
           if ((*it) == pl->getNeutral())
             continue;
-          fprintf(fileptr,", %d (%d)", Citylist::getInstance()->countCities(*it), (*it)->getHeroes().size() + (*it)->countAllies());
+          fprintf(fileptr,", %d: (%d %d)", (*it)->getId(), Citylist::getInstance()->countCities(*it), (*it)->getHeroes().size() + (*it)->countAllies());
         }
     }
   fprintf(fileptr,"\n");
   fclose(fileptr);
       
   prev_round_start = now;
-  */
   sleep (1);
+  */
 }
 
 void Driver::stress_test()
@@ -789,7 +794,7 @@ void Driver::stress_test()
   g.map.forest = 3;
   g.map.hills = 5;
   g.map.mountains = 5;
-  g.map.cities = 110;
+  g.map.cities = 40;
   g.map.ruins = 15;
   g.map.temples = 3;
   g.map.signposts = 10;
@@ -836,14 +841,6 @@ void Driver::stress_test()
       game_scenario->initialize(g);
     }
 
-  //this is a bit unfortunate... we have to instantiate images just to get stack positions into the stack tiles.  is there a better way?
-  /*/
-  GameMap::getInstance()->getTileset()->instantiateImages();
-  GameMap::getInstance()->getShieldset()->instantiateImages();
-  GameMap::getInstance()->getCityset()->instantiateImages();
-  guint32 armyset = Playerlist::getInstance()->getNeutral()->getArmyset();
-  Armysetlist::getInstance()->getArmyset(armyset)->instantiateImages();
-  */
   Game game(game_scenario, nextTurn);
   game.get_smallmap().set_slide_speed(0);
   Configuration::s_displaySpeedDelay = 0;
@@ -854,6 +851,9 @@ void Driver::stress_test()
   printf("duration: %d mins, turns: %d ", mins, game_scenario->getRound());
   fflush(stdout);
   printf("winner type: %s\n", Player::playerTypeToString(Player::Type(Playerlist::getInstance()->getFirstLiving()->getType())).c_str());
+  Glib::ustring s = String::ucompose("/tmp/run-seed-%1", 
+                                     Main::instance().random_number_seed);
+  game_scenario->saveGame(s + ".sav");
 
 }
 	

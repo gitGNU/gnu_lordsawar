@@ -185,7 +185,7 @@ void SmallmapEditorDialog::setup_terrain_radiobuttons()
 					 terrain_type_table->children().end());
 
     // then add new ones from the tile set
-    Tileset *tset = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTileset());
+    Tileset *tset = GameMap::getTileset();
     Gtk::RadioButton::Group group;
     bool group_set = false;
     const int no_columns = 6;

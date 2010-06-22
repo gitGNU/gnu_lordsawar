@@ -285,7 +285,7 @@ void NewMapDialog::on_map_size_changed()
 
 void NewMapDialog::add_fill_style(Tile::Type tile_type)
 {
-  Tileset *tileset = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTileset());
+  Tileset *tileset = GameMap::getTileset();
   Tile *tile = (*tileset)[tileset->getIndex(tile_type)];
   fill_style_combobox->append_text(tile->getName());
   fill_style.push_back(tile_type);

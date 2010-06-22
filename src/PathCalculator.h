@@ -50,9 +50,9 @@ public:
 
     bool isReachable(Vector<int> pos);
 
-    Path* calculate(Vector<int> dest, guint32 &moves, guint32 &turns, bool zigzag = true);
+    Path* calculate(Vector<int> dest, guint32 &moves, guint32 &turns, guint32 &left, bool zigzag = true);
 
-    Path* calculateToCity (City *c, guint32 &moves, guint32 &turns, bool zigzag = true);
+    Path* calculateToCity (City *c, guint32 &moves, guint32 &turns, guint32 &left, bool zigzag = true);
     int calculate(Vector<int> dest, bool zigzag = true);
 
     static bool isBlocked(const Stack *s, Vector<int> pos, bool enemy_cities_block, bool enemy_stacks_block);

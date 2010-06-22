@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -448,8 +448,7 @@ bool Citylist::load(std::string tag, XML_Helper* helper)
 {
     if (tag == City::d_tag)
       {
-        std::string cityset = GameMap::getInstance()->getCityset();
-        Cityset *cs = Citysetlist::getInstance()->getCityset(cityset);
+        Cityset *cs = GameMap::getCityset();
 	City *c = new City(helper, cs->getCityTileWidth());
 	add(c);
 	return true;

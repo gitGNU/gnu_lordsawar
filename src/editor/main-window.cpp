@@ -342,7 +342,7 @@ void MainWindow::setup_terrain_radiobuttons()
 					 terrain_type_table->children().end());
 
     // then add new ones from the tile set
-    Tileset *tset = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTileset());
+    Tileset *tset = GameMap::getTileset();
     Gtk::RadioButton::Group group;
     bool group_set = false;
     const int no_columns = 6;
@@ -522,7 +522,7 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
     Playerlist::getInstance()->nextPlayer();
 
     // fill the map with tile type
-    Tileset* tset = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTileset());
+    Tileset *tset = GameMap::getTileset();
     for (unsigned int i = 0; i < tset->size(); ++i)
     {
 	if ((*tset)[i]->getType() == fill_style)
@@ -597,7 +597,7 @@ void MainWindow::set_random_map(int width, int height,
     
     gen.setPercentages(water, forest, swamp, hills, mountains);
     
-    gen.setCityset(Citysetlist::getInstance()->getCityset(GameMap::getInstance()->getCityset()));
+    gen.setCityset(GameMap::getCityset());
     gen.makeMap(width, height, false);
     GameMap::deleteInstance();
     GameMap::setWidth(width);
@@ -1012,9 +1012,7 @@ void MainWindow::on_edit_shieldset_activated()
 {
   Gtk::Main *kit = Gtk::Main::instance();;
   ShieldSetWindow* shieldset_window;
-  GameMap *gm = GameMap::getInstance();
-  Shieldset *shieldset = 
-    Shieldsetlist::getInstance()->getShieldset(gm->getShieldset());
+  Shieldset *shieldset = GameMap::getShieldset();
   std::string file = shieldset->getConfigurationFile();
   shieldset_window = new ShieldSetWindow (file);
   shieldset_window->shieldset_saved.connect
@@ -1026,7 +1024,7 @@ void MainWindow::on_edit_shieldset_activated()
 void MainWindow::on_shieldset_saved(guint32 id)
 {
   //did we save the active shieldset?
-  Shieldset *shieldset = Shieldsetlist::getInstance()->getShieldset(GameMap::getInstance()->getShieldset());
+  Shieldset *shieldset = GameMap::getShieldset();
   if (id == shieldset->getId())
     {
       GraphicsCache::getInstance()->reset();
@@ -1070,8 +1068,7 @@ void MainWindow::on_armyset_saved(guint32 id)
 void MainWindow::on_edit_cityset_activated()
 {
   Gtk::Main *kit = Gtk::Main::instance();;
-  GameMap *gm = GameMap::getInstance();
-  Cityset *cityset = Citysetlist::getInstance()->getCityset(gm->getCityset());
+  Cityset *cityset = GameMap::getCityset();
   std::string file = cityset->getConfigurationFile();
   CitySetWindow* cityset_window = new CitySetWindow (file);
   cityset_window->cityset_saved.connect
@@ -1112,7 +1109,7 @@ void MainWindow::on_edit_tileset_activated()
 {
   Gtk::Main *kit = Gtk::Main::instance();;
   GameMap *gm = GameMap::getInstance();
-  Tileset *tileset = Tilesetlist::getInstance()->getTileset(gm->getTileset());
+  Tileset *tileset = GameMap::getTileset();
   std::string file = tileset->getConfigurationFile();
   TileSetWindow* tileset_window = new TileSetWindow (file);
   tileset_window->tileset_saved.connect
@@ -1173,7 +1170,7 @@ void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
 {
   Gtk::RadioButton::Group group;
   //iterate through tilestyles of a certain TERRAIN tile
-  Tileset *tileset = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTileset());
+  Tileset *tileset = GameMap::getTileset();
   guint32 index = tileset->getIndex(terrain);
   Tile *tile = (*tileset)[index];
   if (tile == NULL)
@@ -1240,7 +1237,7 @@ void MainWindow::auto_select_appropriate_pointer()
     case Tile::HILLS:
     case Tile::VOID:
 	{
-	  Tileset *tileset = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTileset());
+          Tileset *tileset = GameMap::getTileset();
 	  Tile *tile = (*tileset)[tileset->getIndex(get_terrain())];
 	  if (tile->consistsOnlyOfLoneAndOtherStyles())
 	    pointer_items[1].button->set_active();

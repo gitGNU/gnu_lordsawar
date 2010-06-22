@@ -175,7 +175,7 @@ void SwitchSetsDialog::on_tile_size_changed()
   std::list<std::string> city_themes = cl->getValidNames(get_active_tile_size());
   counter = 0;
   default_id = 0;
-  Cityset *active = Citysetlist::getInstance()->getCityset(GameMap::getInstance()->getCityset());
+  Cityset *active = GameMap::getCityset();
   for (std::list<std::string>::iterator i = city_themes.begin(),
        end = city_themes.end(); i != end; ++i)
     {
@@ -221,11 +221,11 @@ int SwitchSetsDialog::run()
   selected_armyset = Armysetlist::getInstance()->getArmyset(subdir);
 
   GameMap::getInstance()->switchArmysets(selected_armyset);
-  if (selected_cityset->getBaseName() != GameMap::getInstance()->getCityset())
+  if (selected_cityset->getBaseName() != GameMap::getCityset()->getBaseName())
     GameMap::getInstance()->switchCityset(selected_cityset);
-  if (selected_shieldset->getBaseName() != GameMap::getInstance()->getShieldset())
+  if (selected_shieldset->getBaseName() != GameMap::getInstance()->getShieldsetName())
     GameMap::getInstance()->switchShieldset(selected_shieldset);
-  if (selected_tileset->getBaseName() != GameMap::getInstance()->getTileset())
+  if (selected_tileset->getBaseName() != GameMap::getInstance()->getTilesetName())
     GameMap::getInstance()->switchTileset(selected_tileset);
   return response;
 }

@@ -306,8 +306,7 @@ void VectorMap::draw_square_around_active_city()
 {
   Vector<int> start = city->getPos();
   start = mapToSurface(start);
-  std::string s = GameMap::getInstance()->getShieldset();
-  Shieldset *ss = Shieldsetlist::getInstance()->getShieldset(s);
+  Shieldset *ss = GameMap::getShieldset();
   guint32 width = ss->getSmallWidth();
   guint32 height = ss->getSmallHeight();
   start -= Vector<int>(width,height)/2;

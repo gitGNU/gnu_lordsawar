@@ -111,10 +111,11 @@ class GameMap: public sigc::trackable
 	static Rectangle get_boundary()
 	    { return Rectangle(0, 0, s_width, s_height); }
 
-        //! Returns the tileset in use
-        std::string getTileset() const {return d_tileset;}
+        static Tileset* getTileset();
+        static Cityset* getCityset();
+        static Shieldset* getShieldset();
 
-        void setTileset(std::string tileset) {d_tileset = tileset;}
+        void setTileset(std::string tileset);
 
         guint32 getTileSize() const;
 
@@ -125,15 +126,9 @@ class GameMap: public sigc::trackable
         std::string getCitysetName() const;
         std::string getShieldsetName() const;
 
-        //! Returns the shieldset in use
-        std::string getShieldset() const {return d_shieldset;}
+        void setShieldset(std::string shieldset);
 
-        void setShieldset(std::string shieldset) {d_shieldset = shieldset;}
-
-        //! Returns the tileset in use
-        std::string getCityset() const {return d_cityset;}
-
-        void setCityset(std::string cityset) {d_cityset = cityset;}
+        void setCityset(std::string cityset);
 
 	//! Sets the tile object at position (x, y)
 	void setTile(int x, int y, Maptile *tile);
@@ -174,6 +169,8 @@ class GameMap: public sigc::trackable
         static std::list<Vector<int> > getNearbyPoints(Vector<int> pos, int dist);
 	static guint32 countArmyUnits(Vector<int> pos);
 	static MapBackpack *getBackpack(Vector<int> pos);
+        static bool can_search(Stack *stack);
+        static bool can_plant_flag(Stack *stack);
         std::list<MapBackpack*> getBackpacks() const;
 
         //! Get the tile object at position (x,y)
@@ -347,6 +344,9 @@ class GameMap: public sigc::trackable
         static GameMap* s_instance;
         static int s_width;
         static int s_height;
+        static Tileset* s_tileset; //not saved
+        static Cityset* s_cityset; //not saved
+        static Shieldset* s_shieldset; //not saved
 
         std::string d_tileset;
         std::string d_shieldset;

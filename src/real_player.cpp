@@ -149,4 +149,34 @@ void RealPlayer::heroGainsLevel(Hero* a)
     item->fillData(a, stat);
     addAction(item);
 }
+
+bool RealPlayer::computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  //this decision callback is only for computer players
+  return true;
+}
+
+bool RealPlayer::computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  //this decision callback is only for computer players
+  return true;
+}
+
+bool RealPlayer::computerChooseVisitTempleForBlessing(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  //this decision callback is only for computer players
+  return true;
+}
+
+bool RealPlayer::computerChooseVisitTempleForQuest(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  //this decision callback is only for computer players
+  return true;
+}
+
+bool RealPlayer::computerChooseContinueQuest(Stack *stack, Quest *quest, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  //this decision callback is only for computer players
+  return true;
+}
 // End of file

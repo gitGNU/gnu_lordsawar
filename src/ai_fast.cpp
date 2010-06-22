@@ -160,13 +160,12 @@ bool AI_Fast::startTurn()
         Stack *s = getStacklist()->getArmyStackById(quest->getHeroId());
         if (!s)
           continue;
-        Vector<int> dest = AI_getQuestDestination(quest, s);
-        if (dest == Vector<int>(-1,-1))
-            continue;
-        d_stacklist->setActivestack(s);
-        s->getPath()->calculate(s, dest);
-        bool stack_moved = stackMove(s);
-        if (d_stacklist->getActivestack() && stack_moved)
+        bool stack_died = false;
+        bool quest_completed = false;
+        bool stack_moved = AI_maybeContinueQuest(s, quest, quest_completed, 
+                                                 stack_died);
+
+        if (stack_moved == true && stack_died == false)
           GameMap::groupStacks(s);
       }
 
@@ -424,11 +423,10 @@ bool AI_Fast::computerTurn()
 	  {
 	    bool stack_died = false;
 	    bool blessed = false;
-	    if (s->isOnCity() == false && s->hasHero() == false)
+	    if (s->hasHero() == false)
 	      {
 		stack_moved = AI_maybeVisitTempleForBlessing
-		  (s, s->getMoves(), s->getMoves() + 7, 50.0, 
-		   blessed, stack_died);
+		  (s, s->getMoves(), 50.0, blessed, stack_died);
 		if (stack_died)
 		  return true;
 		s = d_stacklist->getActivestack();
@@ -439,16 +437,19 @@ bool AI_Fast::computerTurn()
                     continue;
                   }
 	      }
-            else if (s->isOnCity() == false && s->hasHero() == true)
+            else if (s->hasHero() == true)
               {
-		stack_moved = AI_maybeVisitTempleForQuest
-		  (s, s->getMoves(), s->getMoves() + 15, stack_died);
+                bool got_quest = false;
+		stack_moved = AI_maybeVisitTempleForQuest(s, s->getMoves(), 
+                                                          got_quest, 
+                                                          stack_died);
 		if (stack_died)
 		  return true;
                 if (!stack_moved)
                   {
-                    stack_moved = AI_maybeVisitRuin
-                      (s, s->getMoves(), s->getMoves() + 15, stack_died);
+                    bool ruin_visited = false;
+                    stack_moved = AI_maybeVisitRuin (s, s->getMoves(), 
+                                                     ruin_visited, stack_died);
                     if (stack_died)
                       return true;
                   }
@@ -468,9 +469,8 @@ bool AI_Fast::computerTurn()
 	    bool stack_died = false;
 	    bool picked_up = false;
 
-	    stack_moved = AI_maybePickUpItems(s, s->getMoves(), 
-					       s->getMoves() + 7, 
-					       picked_up, stack_died);
+	    stack_moved = AI_maybePickUpItems(s, s->getMoves(), picked_up, 
+                                              stack_died);
 	    if (stack_died)
 	      return true;
 	    s = d_stacklist->getActivestack();
@@ -568,13 +568,14 @@ bool AI_Fast::computerTurn()
 		target = NULL;
 		PathCalculator pc(s, true, 10, -1);
 		guint32 moves1 = 0, turns1 = 0, moves2 = 0, turns2 = 0;
+		guint32 left1 = 0, left2 = 0;
 		Path *target1_path = NULL;
 		Path *target2_path = NULL;
 		Citylist *cl = Citylist::getInstance();
 		City *target1 = cl->getNearestEnemyCity(s->getPos());
 		City *target2 = cl->getNearestForeignCity(s->getPos());
 		if (target1)
-		  target1_path = pc.calculateToCity(target1, moves1, turns1);
+		  target1_path = pc.calculateToCity(target1, moves1, turns1, left1);
 		else
 		  target1_path = new Path();
 		if (!target2)
@@ -582,7 +583,7 @@ bool AI_Fast::computerTurn()
 		    delete target1_path;
 		    return false; //it's game over and we're still moving
 		  }
-		target2_path = pc.calculateToCity(target2, moves2, turns2);
+		target2_path = pc.calculateToCity(target2, moves2, turns2, left2);
 
 		//no enemies?  then go for the nearest foreign city.
 		//if diplomacy isn't on and we hit this, then it's game over
@@ -798,6 +799,55 @@ Army::Stat AI_Fast::chooseStat(Hero *hero)
 }
 
 bool AI_Fast::chooseQuest(Hero *hero)
+{
+  return true;
+}
+
+bool AI_Fast::computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  if (stack->getPos() == dest)
+    return true;
+  if (moves < stack->getMoves() + 15)
+    return true;
+  else 
+    return false;
+}
+
+bool AI_Fast::computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  if (stack->getPos() == dest)
+    return true;
+  if (moves < stack->getMoves() + 7)
+    return true;
+  else 
+    return false;
+}
+
+bool AI_Fast::computerChooseVisitTempleForBlessing(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  if (stack->isOnCity() == true)
+    return false;
+  if (stack->getPos() == dest)
+    return true;
+  if (moves < stack->getMoves() + 7)
+    return true;
+  else 
+    return false;
+}
+
+bool AI_Fast::computerChooseVisitTempleForQuest(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  if (stack->isOnCity() == true)
+    return false;
+  if (stack->getPos() == dest)
+    return true;
+  if (moves < stack->getMoves() + 15)
+    return true;
+  else 
+    return false;
+}
+
+bool AI_Fast::computerChooseContinueQuest(Stack *stack, Quest *quest, Vector<int> dest, guint32 moves, guint32 turns)
 {
   return true;
 }

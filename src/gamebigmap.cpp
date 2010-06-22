@@ -866,8 +866,9 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	  d_cursor == GraphicsCache::GOTO_ARROW || 
 	  d_cursor == GraphicsCache::TARGET)
 	{
-	  guint32 moves = 0, turns = 0;
-	  Path *new_path = path_calculator->calculate(tile, moves, turns, true);
+	  guint32 moves = 0, turns = 0, left = 0;
+	  Path *new_path = path_calculator->calculate(tile, moves, turns, left,
+                                                      true);
 	  if (new_path->size())
 	    stack->setPath(*new_path);
 	  delete new_path;
@@ -969,7 +970,7 @@ void GameBigMap::after_draw()
 	  static int bigframe = -1;
 	  static int smallframe = -1;
 
-	  Tileset *t = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTileset());
+          Tileset *t = GameMap::getTileset();
 	  bigframe++;
 	  if (bigframe >= (int)t->getNumberOfSelectorFrames())
 	    bigframe = 0;

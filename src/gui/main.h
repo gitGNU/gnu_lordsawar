@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2010 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ class Main: public sigc::trackable, public boost::noncopyable
     bool start_test_scenario;
     std::string load_filename;
     std::string turn_filename;
+    guint32 random_number_seed;
     
  private:
     struct Impl;

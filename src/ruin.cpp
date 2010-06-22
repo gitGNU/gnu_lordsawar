@@ -193,6 +193,9 @@ std::string Ruin::ruinTypeToString(const Ruin::Type type)
       case Ruin::STRONGHOLD:
 	return "Ruin::STRONGHOLD";
 	break;
+      case Ruin::SAGE:
+	return "Ruin::SAGE";
+	break;
     }
   return "Ruin::RUIN";
 }
@@ -205,6 +208,8 @@ Ruin::Type Ruin::ruinTypeFromString(const std::string str)
     return Ruin::RUIN;
   else if (str == "Ruin::STRONGHOLD")
     return Ruin::STRONGHOLD;
+  else if (str == "Ruin::SAGE")
+    return Ruin::SAGE;
   return Ruin::RUIN;
 }
 

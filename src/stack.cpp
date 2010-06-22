@@ -836,6 +836,15 @@ Stack* Stack::createNonUniqueStack(Player *player, Vector<int> pos)
   return new Stack(0, player, pos);
 }
 
+guint32 Stack::getMaxMoves() const
+{
+  GameMap *gm = GameMap::getInstance();
+  if (gm->getTile(getPos())->getType() != Tile::WATER)
+    return getMaxLandMoves();
+  else
+    return getMaxBoatMoves();
+}
+
 guint32 Stack::getMaxLandMoves() const
 {
   if (empty())
@@ -1222,4 +1231,11 @@ bool Stack::killArmyUnitsInBoats()
   return retval;
 }
           
+guint32 Stack::countBlessings() const
+{
+  int count = 0;
+  for (const_iterator it = begin(); it != end(); it++)
+    count += (*it)->countBlessings();
+  return count;
+}
 // End of file

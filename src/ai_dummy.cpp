@@ -1,7 +1,7 @@
 // Copyright (C) 2002, 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -179,6 +179,36 @@ Army::Stat AI_Dummy::chooseStat(Hero *hero)
 bool AI_Dummy::chooseQuest(Hero *hero)
 {
   //neutrals don't have heroes.
+  return true;
+}
+
+bool AI_Dummy::computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  //neutrals don't have heroes.
+  return true;
+}
+
+bool AI_Dummy::computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  //neutrals don't have heroes.
+  return true;
+}
+
+bool AI_Dummy::computerChooseVisitTempleForBlessing(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  //neutral army units don't go afield.
+  return true;
+}
+
+bool AI_Dummy::computerChooseVisitTempleForQuest(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  //neutrals don't have heroes
+  return true;
+}
+
+bool AI_Dummy::computerChooseContinueQuest(Stack *stack, Quest *quest, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  //neutrals don't have heroes
   return true;
 }
 // End of file

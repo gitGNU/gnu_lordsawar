@@ -97,15 +97,17 @@ Fight::Fight(Stack* attacker, Stack* defender, FightType type)
     //
 
     City *city = GameMap::getCity(defender->getPos());
-    Vector<int> p = defender->getPos();
+    //Vector<int> p = defender->getPos();
 
-
-    if (city)
+    if (city && city->isBurnt() == false)
       {
+        printf("attacking city %s with attacker %d\n", city->getName().c_str(), attacker->getId());
+        printf("city is owned by %s\n", city->getOwner()->getName().c_str());
 	std::vector<Stack*> stacks = city->getDefenders();
 	for (std::vector<Stack*>::iterator it = stacks.begin(); 
 	     it != stacks.end(); it++)
 	  {
+            printf("city defender is %d\n", (*it)->getId());
 	    Stack *s = *it;
 	    if (s == d_defenders.front())
 	      continue;

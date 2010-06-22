@@ -1,6 +1,6 @@
 // Copyright (C) 2002, 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -72,6 +72,11 @@ class AI_Dummy : public RealPlayer
 	virtual bool chooseTreachery (Stack *stack, Player *player, Vector <int> pos);
         virtual Army::Stat chooseStat(Hero *hero);
         virtual bool chooseQuest(Hero *hero);
+        virtual bool computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns);
+        virtual bool computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns);
+        virtual bool computerChooseVisitTempleForBlessing(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns);
+        virtual bool computerChooseVisitTempleForQuest(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns);
+        virtual bool computerChooseContinueQuest(Stack *stack, Quest *quest, Vector<int> dest, guint32 moves, guint32 turns);
 
 	void setDefensiveProduction(City *city);
 	void examineCities();

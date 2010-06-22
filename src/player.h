@@ -354,7 +354,7 @@ class Player: public sigc::trackable
         void dumpHistorylist() const;
 
 	//! Check the player's history to see if we've conquered the given city.
-	bool conqueredCity(City *c) const;
+	bool conqueredCity(City *c, guint32 &turns_ago) const;
 
         //! Check the player's history to see if we've explored the given ruin.
         bool searchedRuin(Ruin *r) const;
@@ -535,17 +535,19 @@ class Player: public sigc::trackable
          * @param defender         The list of defending stacks.  This list
 	 *                         consists of a single Army unit in a 
 	 *                         single Stack.
+         * @param stackdied        Whether or not the stack went away because
+         *                         of the searching of the ruin.
 	 *
          *  If the defender dies in the fight, the defender pointer is set 
 	 *  to 0.
 	 *  If the Hero loses the battle, only the Hero unit is removed
 	 *  from the attacker's stack.
-	 *
+         *
          * @return One of Fight::ATTACKER_WON, Fight::DEFENDER_WON, or
 	 *         Fight::DRAW (Fight::Result).
          */
 	//! Callback to adjudicate fights in ruins.
-        Fight::Result stackRuinFight(Stack** attacker, Stack** defender);
+        Fight::Result stackRuinFight(Stack** attacker, Stack** defender, bool &stackdied);
         /** 
 	 * A stack searches a ruin.  The stack must contain a hero.
 	 *
@@ -554,12 +556,14 @@ class Player: public sigc::trackable
 	 *
          * @param stack            The stack which searches the ruin.
          * @param ruin             The ruin to be searched.
+         * @param stackdied        Whether or not the stack went away because
+         *                         of the searching of the ruin.
 	 *
          * @return reward          A pointer to the received Reward.  Return 
 	 *                         NULL if the keeper could not be defeated.
          */
 	//! Callback to have a stack visit a ruin.
-        Reward* stackSearchRuin(Stack* stack, Ruin* ruin);
+        Reward* stackSearchRuin(Stack* stack, Ruin* ruin, bool &stackdied);
 
         /** 
 	 * A stack visits a temple and becomes blessed. By blessing, the 
@@ -1036,6 +1040,17 @@ class Player: public sigc::trackable
         //! Decision callback for when a hero visits a temple.
         virtual bool chooseQuest(Hero *hero) = 0;
 
+        //! Decision callback for when an ai player considers going to a ruin.
+        virtual bool computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns) = 0;
+        //! Decision callback for when an ai player considers picking up a bag.
+        virtual bool computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns) = 0;
+        //! Decision callback for when the ai going to a temple.
+        virtual bool computerChooseVisitTempleForBlessing(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns) = 0;
+        //! Decision callback for when the ai considers obtaining a quest.
+        virtual bool computerChooseVisitTempleForQuest(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns) = 0;
+        //! Decision callback for considering the next target in a quest.
+        virtual bool computerChooseContinueQuest(Stack *stack, Quest *quest, Vector<int> dest, guint32 moves, guint32 turns) = 0;
+
 	// Player related actions the player can take.
 
         /** 
@@ -1104,8 +1119,6 @@ class Player: public sigc::trackable
 	 * @param dist         The maximum number of tiles that a temple
 	 *                     can be away from the stack, and be considered
 	 *                     for visiting.
-	 * @param mp           The maximum number of movement points that a
-	 *                     stack needs to have to reach the temple.
 	 * @param percent_can_be_blessed  If the stack has this many army 
 	 *                                units that have not been blessed
 	 *                                at the temple (expressed as a
@@ -1120,18 +1133,24 @@ class Player: public sigc::trackable
 	 *
 	 * Returns true if the stack moved, false if it stayed still.
 	 */
-	bool AI_maybeVisitTempleForBlessing(Stack *s, int dist, int mp, 
+	bool AI_maybeVisitTempleForBlessing(Stack *s, int dist,
 					    double percent_can_be_blessed, 
 					    bool &blessed, bool &stack_died);
 
-        bool AI_maybeVisitTempleForQuest(Stack *s, int dist, int max_mp, 
+        bool AI_maybeVisitTempleForQuest(Stack *s, int dist, bool &got_quest,
                                          bool &stack_died);
 
-        bool AI_maybeVisitRuin(Stack *s, int dist, int max_mp, 
+        bool AI_maybeVisitRuin(Stack *s, int dist, bool &visited_ruin,
                                bool &stack_died);
 
         Vector<int> AI_getQuestDestination(Quest *quest, Stack *stack) const;
         bool AI_invadeCityQuestPreference(City *c, CityDefeatedAction &action) const;
+        bool AI_maybeContinueQuest(Stack *s, Quest *quest, 
+                                   bool &completed_quest, bool &stack_died);
+
+	bool AI_maybePickUpItems (Stack *s, int dist, bool &picked_up,
+				  bool &stack_died);
+
 	/** 
 	 * Callback to decide if we perform treachery on a friendly player.
 	 *
@@ -1294,17 +1313,20 @@ class Player: public sigc::trackable
 	/**
 	 * @param ruin    The ruin being searched.
 	 * @param stack   The stack doing the searching (must contain Hero).
-	 * @param reward  The reward received.
+         *
+         * Returns whether or not the stack was deleted as a result.
 	 */
-        //! Emitted whenever the player successfully searched a ruin.
-        sigc::signal<void, Ruin*, Stack*> ssearchingRuin;
+        //! Emitted by the player to search a ruin.
+        sigc::signal<bool, Ruin*, Stack*> ssearchingRuin;
 
 	/**
 	 * @param temple  The temple being visited.
-	 * @param stack   The stack that has gotten blessed.
+	 * @param stack   The stack to be blessed.
+         *
+         * Returns whether or not a hero got a quest.
 	 */
-        //! Emitted whenever the player visits a temple.
-        sigc::signal<void, Temple*, Stack*> svisitingTemple;
+        //! Emitted by the player to visit a temple.
+        sigc::signal<bool, Temple*, Stack*> svisitingTemple;
 
 	/**
 	 * @param city   The city being occupied.
@@ -1629,15 +1651,8 @@ class Player: public sigc::trackable
 
 	void AI_maybeBuyScout(City *c);
 
-
-	bool AI_maybePickUpItems (Stack *s, int dist, int mp, bool &picked_up,
-				  bool &stack_died);
-
-
-
 	bool AI_maybeVector(City *c, guint32 safe_mp, guint32 min_defenders,
 			    City *target, City **vector_city = NULL);
-
 
 	void AI_setupVectoring(guint32 safe_mp, guint32 min_defenders,
 			       guint32 mp_to_front);
@@ -1737,6 +1752,8 @@ class Player: public sigc::trackable
 	static void pruneCityProductions(std::list<Action*> actions);
 
         std::list<Action *> getActionsThisTurn(int type) const;
+
+        bool computerSearch(Stack *s, MoveResult *r);
 };
 
 #endif // PLAYER_H

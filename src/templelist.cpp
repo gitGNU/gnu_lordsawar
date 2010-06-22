@@ -88,7 +88,7 @@ bool Templelist::load(std::string tag, XML_Helper* helper)
     //what has happened?
         return false;
     
-    guint32 width = Citysetlist::getInstance()->getCityset(GameMap::getInstance()->getCityset())->getTempleTileWidth();
+    guint32 width = GameMap::getCityset()->getTempleTileWidth();
     add(new Temple(helper, width));
 
     return true;
@@ -115,15 +115,17 @@ Temple* Templelist::getNearestVisibleAndUsefulTemple(Stack *s,
 
   for (const_iterator it = begin(); it != end(); ++it)
     {
-      Temple *temple = *it;
-      if (isFogged(temple))
+      Temple *t= *it;
+      if (isFogged(t))
 	continue;
 
-      if ((double)(s->size() - s->countArmiesBlessedAtTemple(temple->getId()))
-	  < (double)s->size() * (percent_can_be_blessed / 100.0))
+      double num_needed = (double)s->size() * (percent_can_be_blessed / 100.0);
+      double num_not_blessed = 
+        (double)s->size() - s->countArmiesBlessedAtTemple(t->getId());
+      if (num_not_blessed < num_needed)
 	continue;
 
-      Vector<int> p = (*it)->getPos();
+      Vector<int> p = t->getPos();
       int delta = abs(p.x - pos.x);
       if (delta < abs(p.y - pos.y))
 	delta = abs(p.y - pos.y);

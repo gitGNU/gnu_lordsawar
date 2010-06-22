@@ -144,6 +144,7 @@ class AI_Allocation
         int visitTemples(bool get_quests);
 
         int pickupItems();
+        int oldPickupItems();
 
         int visitRuins();
 

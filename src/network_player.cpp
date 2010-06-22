@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -146,6 +146,36 @@ Army::Stat NetworkPlayer::chooseStat(Hero *hero)
 bool NetworkPlayer::chooseQuest(Hero *hero)
 {
   assert(false);
+  return true;
+}
+
+bool NetworkPlayer::computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  assert (false);
+  return true;
+}
+
+bool NetworkPlayer::computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  assert (false);
+  return true;
+}
+
+bool NetworkPlayer::computerChooseVisitTempleForBlessing(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  assert (false);
+  return true;
+}
+
+bool NetworkPlayer::computerChooseVisitTempleForQuest(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  assert (false);
+  return true;
+}
+
+bool NetworkPlayer::computerChooseContinueQuest(Stack *stack, Quest *quest, Vector<int> dest, guint32 moves, guint32 turns)
+{
+  assert (false);
   return true;
 }
 
