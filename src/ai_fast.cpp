@@ -418,6 +418,24 @@ bool AI_Fast::computerTurn()
 
         d_stacklist->setActivestack(s);
         
+        //move stacks to enemy cities.
+        if (s->hasPath() == true && s->getParked() == false)
+          {
+            Vector<int> pos = s->getLastPointInPath();
+            City *enemy = GameMap::getEnemyCity(pos);
+            if (enemy)
+              {
+                if (enemy->isBurnt() == false)
+                  {
+                    stack_moved |= stackMove(s);
+                    if (d_stacklist->getActivestack() == NULL)
+                      return true;
+                    if (stack_moved)
+                      continue;
+                  }
+              }
+          }
+
 	//go to a temple or ruin
 	if (!d_maniac)
 	  {
@@ -572,7 +590,11 @@ bool AI_Fast::computerTurn()
 		Path *target1_path = NULL;
 		Path *target2_path = NULL;
 		Citylist *cl = Citylist::getInstance();
-		City *target1 = cl->getNearestEnemyCity(s->getPos());
+		City *target1;
+                if (rand() % 3 == 0)
+                  target1 = cl->getClosestEnemyCity(s);
+                else
+                  target1 = cl->getNearestEnemyCity(s->getPos());
 		City *target2 = cl->getNearestForeignCity(s->getPos());
 		if (target1)
 		  target1_path = pc.calculateToCity(target1, moves1, turns1, left1);
@@ -638,7 +660,9 @@ bool AI_Fast::computerTurn()
                             stack_moved |=  moved;
                             if (moved)
                               {
-                                GameMap::groupStacks(s);
+                                //either s or new_stack could be dead.
+                                if (d_stacklist->getActivestack() != NULL)
+                                  GameMap::groupStacks(s);
                                 GameMap::groupStacks(target->getPos());
                                 return true;
                               }

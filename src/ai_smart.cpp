@@ -530,7 +530,8 @@ bool AI_Smart::computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 m
 
 bool AI_Smart::computerChoosePickupBag(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)
 {
-  if (GameMap::getEnemyCity(dest) != NULL)
+  City *enemy = GameMap::getEnemyCity(dest);
+  if (enemy != NULL && enemy->isBurnt() == false)
     return false;
   if (stack->getPos() == dest)
     return true;

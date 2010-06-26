@@ -795,7 +795,8 @@ bool Player::nextStepOnEnemyStackOrCity(Stack *s) const
     {
       if (GameMap::getEnemyStack(dest))
 	return true;
-      if (GameMap::getEnemyCity(dest))
+      City *enemy = GameMap::getEnemyCity(dest);
+      if (enemy && enemy->isBurnt() == false)
 	return true;
     }
   return false;
@@ -905,9 +906,9 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 		    s->getPath()->clear();
 		    MoveResult *moveResult = new MoveResult;
 		    moveResult->setConsideredTreachery(true);
+		    moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
                     if (isComputer())
                       computerSearch(s, moveResult);
-		    moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
 		    return moveResult;
 		  }
 		else
@@ -927,10 +928,10 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 		return moveResult;
 	      }
 
+	    moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
             if (isComputer())
               computerSearch(s, moveResult);
 
-	    moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
             Fight::Result result;
             vector<Stack*> def_in_city = city->getDefenders();
             if (!def_in_city.empty())
@@ -977,10 +978,10 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 	      
 	    supdatingStack.emit(0);
 	    shaltedStack.emit(d_stacklist->getActivestack());
+	    moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
             if (isComputer())
               computerSearch(s, moveResult);
     
-	    moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
             return moveResult;
          }
         
@@ -996,9 +997,9 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 		  s->getPath()->clear();
 		  MoveResult *moveResult = new MoveResult;
 		  moveResult->setConsideredTreachery(true);
+		  moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
                   if (isComputer())
                     computerSearch(s, moveResult);
-		  moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
 		  return moveResult;
 		}
 	      else
@@ -1015,9 +1016,9 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 	      {
                 if (stackMoveOneStep(s))
 		  stepCount++;
+		moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
                 if (isComputer())
                   computerSearch(s, moveResult);
-		moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
 	      }
             
             supdatingStack.emit(0);
@@ -1049,7 +1050,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
       /* if we can't attack a city, don't remember it in the stack's path. */
         Vector<int> pos = s->getFirstPointInPath();
         City* city = GameMap::getCity(pos);
-	if (city && city->getOwner() != this)
+	if (city && city->getOwner() != this && city->isBurnt() == false)
 	  s->clearPath();
     
         if (isComputer())
@@ -3224,7 +3225,7 @@ bool Player::AI_maybeVector(City *c, guint32 safe_mp, guint32 min_defenders,
     return false;
 
   //is it safe to vector from this city?
-  bool safe = safeFromAttack(c, 18, 3);
+  bool safe = safeFromAttack(c, safe_mp, min_defenders);
 
   if (!safe)
     return false;
@@ -3259,25 +3260,22 @@ bool Player::AI_maybeVector(City *c, guint32 safe_mp, guint32 min_defenders,
 
   //can i just walk there faster?
 
-  //find mp from source to target city
+  //find turns from source to target city
   const ArmyProdBase *proto = c->getActiveProductionBase();
   PathCalculator pc1(c->getOwner(), c->getPos(), proto);
-  int mp_from_source_city = pc1.calculate(target->getPos());
+  guint32 moves1 = 0, turns1 = 0, left1 = 0;
+  guint32 moves2 = 0, turns2 = 0, left2 = 0;
+  Path *p = pc1.calculate(target->getPos(), moves1, turns1, left1);
+  if (p)
+    delete p;
 
-  //find mp from nearer vectorable city to target city
+  //find turns from nearer vectorable city to target city
   PathCalculator pc2(c->getOwner(), near_city->getPos(), proto);
-  int mp_from_near_city = pc2.calculate(target->getPos());
-
-  guint32 max_moves_per_turn = proto->getMaxMoves();
-
-  double turns_to_move_from_source_city = 
-    (double)mp_from_source_city / (double)max_moves_per_turn;
-  double turns_to_move_from_near_city = 
-    (double)mp_from_near_city / (double)max_moves_per_turn;
-  turns_to_move_from_near_city += 1.0; //add extra turn to vector
-
-  //yes i can walk there faster, so don't vector
-  if (turns_to_move_from_source_city <= turns_to_move_from_near_city)
+  p = pc2.calculate(target->getPos(), moves2, turns2, left2);
+  if (p)
+    delete p;
+  turns2+=MAX_TURNS_FOR_VECTORING;
+  if (turns1 <= turns2)
     return false;
 
   //great.  now do the vectoring.

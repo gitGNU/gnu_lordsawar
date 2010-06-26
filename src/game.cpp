@@ -1481,6 +1481,7 @@ bool Game::stack_searches_temple(Temple *temple, Stack *stack)
   bool stack_died = false;
   bool hero_got_quest = false;
   search_stack(stack, hero_got_quest, stack_died);
+  return hero_got_quest;
 }
 
 void Game::on_ruinfight_started(Stack *attacker, Stack *defender)

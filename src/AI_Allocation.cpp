@@ -195,8 +195,13 @@ int AI_Allocation::continueAttacks()
     {
       Stack *s = *i;
       Vector<int> pos = s->getLastPointInPath();
+      City *city = NULL;
+      if (pos != Vector<int>(-1,-1))
+        city = GameMap::getCity(pos);
+
       if (s->getParked() == false && s->isOnCity() == false &&
-          s->hasPath() == true && GameMap::getEnemyCity(pos) != NULL)
+          s->hasPath() == true && city != NULL && city->getOwner() != d_owner
+          && city->isBurnt() == false)
         {
           bool killed = false;
           bool moved = moveStack(s, killed);
@@ -218,10 +223,11 @@ int AI_Allocation::continueAttacks()
             }
         }
       else if (s->getParked() == false && s->isOnCity() == false &&
-               s->hasPath() == true && GameMap::getCity(pos) != NULL)
+               s->hasPath() == true && city != NULL && 
+               city->getOwner() == d_owner && city->isBurnt() == false)
         {
           guint32 turns_ago = 0;
-          if (d_owner->conqueredCity(GameMap::getCity(pos), turns_ago))
+          if (d_owner->conqueredCity(city, turns_ago))
             {
               if (turns_ago <= 1)
                 {

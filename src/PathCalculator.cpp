@@ -366,7 +366,8 @@ int PathCalculator::pointsToMoveTo(Vector<int> pos, Vector<int> next) const
   if (enemy_city_avoidance >= 1)
     {
       //We will still try to avoid enemy cities a little.
-      if (GameMap::getEnemyCity(pos))
+      City *enemy = GameMap::getEnemyCity(pos);
+      if (enemy && enemy->isBurnt() == false)
 	moves += enemy_city_avoidance;
     }
   if (enemy_stack_avoidance >= 1)

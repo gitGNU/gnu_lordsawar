@@ -457,7 +457,8 @@ bool Stacklist::canJumpOverTooLargeStack(Stack *s)
       if (moves > mp)
 	return false;
       mp -= moves;
-      if (GameMap::getEnemyCity(*it) != NULL)
+      City *enemy = GameMap::getEnemyCity(*it);
+      if (enemy != NULL && enemy->isBurnt() == false)
         return false;
       if (GameMap::getEnemyStack(*it) != NULL)
         return false;

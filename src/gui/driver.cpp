@@ -716,9 +716,7 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
 
 void Driver::stressTestNextRound()
 {
-
   static int count = 1;
-  /*
   static time_t prev_round_start = time(NULL);
   if (count == 1)
     {
@@ -726,10 +724,8 @@ void Driver::stressTestNextRound()
       fclose(fileptr);
     }
   time_t now = time(NULL);
-    */
   count++;
   printf ("starting round %d!\n", count);
-  /*
   FILE * fileptr = fopen("/tmp/crapola.csv", "a");
   int total_fights = Playerlist::getInstance()->countFightsThisTurn();
   int total_moves = Playerlist::getInstance()->countMovesThisTurn();
@@ -760,7 +756,6 @@ void Driver::stressTestNextRound()
       
   prev_round_start = now;
   sleep (1);
-  */
 }
 
 void Driver::stress_test()
