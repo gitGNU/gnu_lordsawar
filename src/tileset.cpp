@@ -256,6 +256,7 @@ bool Tileset::save(std::string filename, std::string extension) const
   int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
   close (fd);
   XML_Helper helper(tmpfile, std::ios::out, Configuration::s_zipfiles);
+  helper.begin(LORDSAWAR_TILESET_VERSION);
   broken = !save(&helper);
   helper.close();
   if (broken == true)
@@ -407,6 +408,10 @@ public:
       {
 	if (tag == Tileset::d_tag)
 	  {
+            if (helper->getVersion() != LORDSAWAR_TILESET_VERSION)
+              {
+                return false;
+              }
 	    tileset = new Tileset(helper, dir);
             tileset->setBaseName(file);
 	    return true;

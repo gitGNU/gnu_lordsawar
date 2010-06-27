@@ -102,6 +102,7 @@ bool Armyset::save(std::string filename, std::string extension) const
   int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
   close (fd);
   XML_Helper helper(tmpfile, std::ios::out, Configuration::s_zipfiles);
+  helper.begin(LORDSAWAR_ARMYSET_VERSION);
   broken = !save(&helper);
   helper.close();
   if (broken == true)
@@ -461,6 +462,10 @@ public:
       {
 	if (tag == Armyset::d_tag)
 	  {
+            if (helper->getVersion() != LORDSAWAR_ARMYSET_VERSION)
+              {
+                return false;
+              }
 	    armyset = new Armyset(helper, dir);
             armyset->setBaseName(file);
 	    return true;

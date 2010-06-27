@@ -152,6 +152,10 @@ public:
       {
 	if (tag == Shieldset::d_tag)
 	  {
+            if (helper->getVersion() != LORDSAWAR_SHIELDSET_VERSION)
+              {
+                return false;
+              }
 	    shieldset = new Shieldset(helper, dir);
             shieldset->setBaseName(file);
 	    return true;
@@ -191,6 +195,7 @@ bool Shieldset::save(std::string filename, std::string extension) const
   int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
   close (fd);
   XML_Helper helper(tmpfile, std::ios::out, Configuration::s_zipfiles);
+  helper.begin(LORDSAWAR_SHIELDSET_VERSION);
   broken = !save(&helper);
   helper.close();
   if (broken == true)

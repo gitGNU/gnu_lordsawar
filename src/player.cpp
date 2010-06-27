@@ -80,8 +80,8 @@
 
 using namespace std;
 
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
-//#define debug(x)
+//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
+#define debug(x)
 
 std::string Player::d_tag = "player";
 

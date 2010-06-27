@@ -515,6 +515,7 @@ bool GameScenario::loadWithHelper(XML_Helper& helper)
 
   bool broken = false;
 
+  helper.registerTag("lordsawar", sigc::mem_fun(this, &GameScenario::load));
   helper.registerTag(d_tag, sigc::mem_fun(this, &GameScenario::load));
   helper.registerTag(Itemlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
   helper.registerTag(Playerlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
@@ -724,7 +725,7 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
 
 bool GameScenario::load(std::string tag, XML_Helper* helper)
 {
-  if (tag == GameScenario::d_tag)
+  if (tag == "lordsawar")
     {
       if (helper->getVersion() != LORDSAWAR_SAVEGAME_VERSION)
 	{
@@ -733,7 +734,10 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
 	  cerr << "savefile offers " <<helper->getVersion() <<".\n";
 	  return false;
 	}
-
+      return true;
+    }
+  if (tag == GameScenario::d_tag)
+    {
       debug("loading scenario")
 
       helper->getData(d_id, "id");
