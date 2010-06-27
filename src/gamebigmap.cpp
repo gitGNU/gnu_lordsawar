@@ -150,6 +150,11 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
   if (e.button == MouseButtonEvent::LEFT_BUTTON
       && e.state == MouseButtonEvent::PRESSED)
     {
+      city_unqueried.emit();
+      ruin_queried.emit(0, true);
+      temple_queried.emit(0, true);
+      signpost_queried.emit(0);
+      stack_unqueried.emit();
       bool double_clicked = false;
       static Glib::TimeVal last_clicked;
       if (last_clicked.as_double() == 0.0)
