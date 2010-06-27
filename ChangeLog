@@ -1,3 +1,39 @@
+2010-06-27  Ben Asselstine  <benasselstine@hushmail.com>
+
+	* improved AI a little bit more.
+	* fixed bug wrt right-clicking and then simultaneously left-clicking
+	a ruin/city/temple/signpost.
+
+2010-06-22  Ben Asselstine  <benasselstine@hushmail.com>
+
+	* added Ruin::SAGE to the to/from enumeration strings.
+	* modified AI_Allocate to stop moving to enemy cities if they're
+	already taken over.
+	* fixed hit-assertion that involved shuffling stacks in a razed city.
+	* added moves_left to the out variables of PathCalculator::calculate.
+	* fixed hit-assertion that involved defending a razed city in a fight.
+	* fixed Kill Hero quest to deactivate when the hero id can't be
+	found in a saved-game file when loading it.
+	* added can_search to GameMap object.
+	* computer players now have the opportunity to pick up bags, visit 
+	temples, or ruins if it happens to be on a tile that has one.
+	* modified the MoveResult object to set flags if a computer picked up
+	a bag, searched a ruin, or visited a temple while moving to another
+	destination.
+	* added a set of decision callback functions for player:
+	computerChooseVisitRuin, computerChoosePickupBag,
+	computerChooseVisitTempleForBlessing,
+	computerChooseVisitTempleForQuest, computerChooseContinueQuest.
+	* the ssearchingRuin signal of player now returns false if the stack 
+	dies as a result.
+	* the svisitingTemple signal of player now returns true if a hero
+	obtained a quest.
+	* fixed a ruin searching dialog that popped up while a computer player
+	was moving.
+	* modified GameMap to have static methods for getting the tileset,
+	cityset and shieldset.
+
+
 2010-06-14  Ben Asselstine  <benasselstine@hushmail.com>
 
 	* added a tiny splash screen to the scenario editor.
