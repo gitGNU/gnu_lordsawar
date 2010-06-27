@@ -118,8 +118,9 @@ std::list<std::string> Citysetlist::getNames(guint32 tilesize)
 Cityset *Citysetlist::loadCityset(std::string name)
 {
   debug("Loading cityset " <<File::get_basename(name));
+  bool unsupported_version = false;
 
-  Cityset *cityset = Cityset::create(name);
+  Cityset *cityset = Cityset::create(name, unsupported_version);
   if (!cityset)
     {
       cerr << "Error!  cityset: `" << File::get_basename(name, true) << 
@@ -216,10 +217,11 @@ Cityset *Citysetlist::getCityset(std::string bname) const
 
 Cityset *Citysetlist::import(Tar_Helper *t, std::string f, bool &broken)
 {
+  bool unsupported_version = false;
   std::string filename = t->getFile(f, broken);
   if (broken)
     return NULL;
-  Cityset *cityset = Cityset::create(filename);
+  Cityset *cityset = Cityset::create(filename, unsupported_version);
   assert (cityset != NULL);
   cityset->setBaseName(File::get_basename(f));
 
@@ -302,13 +304,14 @@ bool Citysetlist::addToPersonalCollection(Cityset *cityset, std::string &new_bas
 
 int Citysetlist::getNextAvailableId(int after)
 {
+  bool unsupported_version = false;
   std::list<guint32> ids;
   std::list<std::string> citysets = Cityset::scanSystemCollection();
   //there might be IDs in invalid citysets.
   for (std::list<std::string>::const_iterator i = citysets.begin(); 
        i != citysets.end(); i++)
     {
-      Cityset *cityset = Cityset::create(*i);
+      Cityset *cityset = Cityset::create(*i, unsupported_version);
       if (cityset != NULL)
 	{
 	  ids.push_back(cityset->getId());
@@ -319,7 +322,7 @@ int Citysetlist::getNextAvailableId(int after)
   for (std::list<std::string>::const_iterator i = citysets.begin(); 
        i != citysets.end(); i++)
     {
-      Cityset *cityset = Cityset::create(*i);
+      Cityset *cityset = Cityset::create(*i, unsupported_version);
       if (cityset != NULL)
 	{
 	  ids.push_back(cityset->getId());

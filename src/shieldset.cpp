@@ -41,11 +41,6 @@ Shieldset::Shieldset(guint32 id, std::string name)
 {
 }
 
-Shieldset::Shieldset(std::string filename, bool &broken)
-{
-  *this = *Shieldset::create(filename);
-}
-
 Shieldset::Shieldset(XML_Helper *helper, std::string directory)
 	: d_basename("")
 {
@@ -120,8 +115,9 @@ bool Shieldset::loadShield(std::string tag, XML_Helper* helper)
 class ShieldsetLoader
 {
 public:
-    ShieldsetLoader(std::string filename, bool &broken)
+    ShieldsetLoader(std::string filename, bool &broken, bool &unsupported)
       {
+        unsupported_version = false;
 	shieldset = NULL;
 	dir = File::get_dirname(filename);
         file = File::get_basename(filename);
@@ -138,6 +134,7 @@ public:
 	helper.registerTag(Shieldset::d_tag, sigc::mem_fun((*this), &ShieldsetLoader::load));
 	if (!helper.parse())
 	  {
+            unsupported = unsupported_version;
 	    std::cerr << "Error, while loading an shieldset. Shieldset File: ";
 	    std::cerr << filename << std::endl <<std::flush;
 	    if (shieldset != NULL)
@@ -152,25 +149,30 @@ public:
       {
 	if (tag == Shieldset::d_tag)
 	  {
-            if (helper->getVersion() != LORDSAWAR_SHIELDSET_VERSION)
+            if (helper->getVersion() == LORDSAWAR_SHIELDSET_VERSION)
               {
+                shieldset = new Shieldset(helper, dir);
+                shieldset->setBaseName(file);
+                return true;
+              }
+            else
+              {
+                unsupported_version = true;
                 return false;
               }
-	    shieldset = new Shieldset(helper, dir);
-            shieldset->setBaseName(file);
-	    return true;
 	  }
 	return false;
       };
     std::string dir;
     std::string file;
     Shieldset *shieldset;
+    bool unsupported_version;
 };
 
-Shieldset *Shieldset::create(std::string filename)
+Shieldset *Shieldset::create(std::string filename, bool &unsupported_version)
 {
   bool broken = false;
-  ShieldsetLoader d(filename, broken);
+  ShieldsetLoader d(filename, broken, unsupported_version);
   if (broken)
     return NULL;
   return d.shieldset;
@@ -382,7 +384,8 @@ bool Shieldset::validateShieldImages(Shield::Colour c) const
 void Shieldset::reload()
 {
   bool broken = false;
-  ShieldsetLoader d(getConfigurationFile(), broken);
+  bool unsupported_version = false;
+  ShieldsetLoader d(getConfigurationFile(), broken, unsupported_version);
   if (broken == false && d.shieldset && d.shieldset->validate())
     {
       //steal the values from d.shieldset and then don't delete it.

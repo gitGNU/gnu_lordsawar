@@ -430,8 +430,9 @@ bool Armyset::validate()
 class ArmysetLoader
 {
 public:
-    ArmysetLoader(std::string filename, bool &broken)
+    ArmysetLoader(std::string filename, bool &broken, bool &unsupported)
       {
+        unsupported_version = false;
 	armyset = NULL;
 	dir = File::get_dirname(filename);
         file = File::get_basename(filename);
@@ -448,6 +449,7 @@ public:
 	helper.registerTag(Armyset::d_tag, sigc::mem_fun((*this), &ArmysetLoader::load));
 	if (!helper.parse())
 	  {
+            unsupported = unsupported_version;
 	    std::cerr << "Error, while loading an armyset. Armyset File: ";
 	    std::cerr << filename << std::endl <<std::flush;
 	    if (armyset != NULL)
@@ -462,25 +464,30 @@ public:
       {
 	if (tag == Armyset::d_tag)
 	  {
-            if (helper->getVersion() != LORDSAWAR_ARMYSET_VERSION)
+            if (helper->getVersion() == LORDSAWAR_ARMYSET_VERSION)
               {
+                armyset = new Armyset(helper, dir);
+                armyset->setBaseName(file);
+                return true;
+              }
+            else
+              {
+                unsupported_version = true;
                 return false;
               }
-	    armyset = new Armyset(helper, dir);
-            armyset->setBaseName(file);
-	    return true;
 	  }
 	return false;
       };
     std::string dir;
     std::string file;
     Armyset *armyset;
+    bool unsupported_version;
 };
 
-Armyset *Armyset::create(std::string filename)
+Armyset *Armyset::create(std::string filename, bool &unsupported_version)
 {
   bool broken = false;
-  ArmysetLoader d(filename, broken);
+  ArmysetLoader d(filename, broken, unsupported_version);
   if (broken)
     return NULL;
   return d.armyset;
@@ -830,7 +837,8 @@ const ArmyProto *Armyset::getRandomAwardableAlly() const
 void Armyset::reload()
 {
   bool broken = false;
-  ArmysetLoader d(getConfigurationFile(), broken);
+  bool unsupported = false;
+  ArmysetLoader d(getConfigurationFile(), broken, unsupported);
   if (!broken && d.armyset && d.armyset->validate())
     {
       //steal the values from d.armyset and then don't delete it.

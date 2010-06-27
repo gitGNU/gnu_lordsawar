@@ -87,7 +87,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 */
         Armyset(XML_Helper* helper, std::string directory);
 
-	static Armyset *create(std::string filename);
+	static Armyset *create(std::string filename, bool &unsupported);
 
 	//! Destructor.
         ~Armyset();

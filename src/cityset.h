@@ -71,7 +71,7 @@ class Cityset : public sigc::trackable, public Set
 	 */
         Cityset(XML_Helper* helper, std::string directory);
 
-	static Cityset *create(std::string file);
+	static Cityset *create(std::string file, bool &unsupported_version);
 	//! Destructor.
         ~Cityset();
 

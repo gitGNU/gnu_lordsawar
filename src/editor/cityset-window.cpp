@@ -510,11 +510,15 @@ bool CitySetWindow::load_cityset(std::string filename)
 
   std::string name = File::get_basename(filename);
 
-  Cityset *cityset = Cityset::create(autosave);
+  bool unsupported_version = false;
+  Cityset *cityset = Cityset::create(autosave, unsupported_version);
   if (cityset == NULL)
     {
       std::string msg;
-      msg = _("Error!  Cityset could not be loaded.");
+      if (unsupported_version)
+        msg = _("Error!  The version of cityset is unsupported.");
+      else
+        msg = _("Error!  Cityset could not be loaded.");
       Gtk::MessageDialog dialog(*window, msg);
       current_save_filename = old_current_save_filename;
       dialog.run();

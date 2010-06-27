@@ -110,9 +110,10 @@ std::string Shieldsetlist::getShieldsetDir(std::string name) const
 
 Shieldset* Shieldsetlist::loadShieldset(std::string name)
 {
+  bool unsupported_version = false;
   debug("Loading shieldset " <<File::get_basename(name));
 
-  Shieldset *shieldset = Shieldset::create(name);
+  Shieldset *shieldset = Shieldset::create(name, unsupported_version);
   if (!shieldset)
     {
       cerr << "Error!  shieldset: `" << File::get_basename(name, true) << 
@@ -213,8 +214,9 @@ Shieldset *Shieldsetlist::getShieldset(std::string bname) const
 
 Shieldset *Shieldsetlist::import(Tar_Helper *t, std::string f, bool &broken)
 {
+  bool unsupported_version = false;
   std::string filename = t->getFile(f, broken);
-  Shieldset *shieldset = Shieldset::create(filename);
+  Shieldset *shieldset = Shieldset::create(filename, unsupported_version);
   assert (shieldset != NULL);
   shieldset->setBaseName(File::get_basename(f));
 
@@ -298,12 +300,13 @@ bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &n
 
 int Shieldsetlist::getNextAvailableId(int after)
 {
+  bool unsupported_version = false;
   std::list<guint32> ids;
   std::list<std::string> shieldsets = Shieldset::scanSystemCollection();
   for (std::list<std::string>::const_iterator i = shieldsets.begin(); 
        i != shieldsets.end(); i++)
     {
-      Shieldset *shieldset = Shieldset::create(*i);
+      Shieldset *shieldset = Shieldset::create(*i, unsupported_version);
       if (shieldset != NULL)
 	{
 	  ids.push_back(shieldset->getId());
@@ -314,7 +317,7 @@ int Shieldsetlist::getNextAvailableId(int after)
   for (std::list<std::string>::const_iterator i = shieldsets.begin(); 
        i != shieldsets.end(); i++)
     {
-      Shieldset *shieldset = Shieldset::create(*i);
+      Shieldset *shieldset = Shieldset::create(*i, unsupported_version);
       if (shieldset != NULL)
 	{
 	  ids.push_back(shieldset->getId());

@@ -1870,11 +1870,15 @@ bool ArmySetWindow::load_armyset(std::string filename)
 
   std::string name = File::get_basename(filename);
 
-  Armyset *armyset = Armyset::create(autosave);
+  bool unsupported_version;
+  Armyset *armyset = Armyset::create(autosave, unsupported_version);
   if (armyset == NULL)
     {
       std::string msg;
-      msg = _("Error!  Armyset could not be loaded.");
+      if (unsupported_version)
+        msg = _("Error!  The version of the armyset is unsupported.");
+      else
+        msg = _("Error!  Armyset could not be loaded.");
       Gtk::MessageDialog dialog(*window, msg);
       current_save_filename = old_current_save_filename;
       dialog.run();

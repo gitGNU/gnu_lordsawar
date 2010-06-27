@@ -110,8 +110,9 @@ Cityset::~Cityset()
 class CitysetLoader
 {
 public:
-    CitysetLoader(std::string filename, bool &broken)
+    CitysetLoader(std::string filename, bool &broken, bool &unsupported)
       {
+        unsupported_version = false;
 	cityset = NULL;
 	dir = File::get_dirname(filename);
         file = File::get_basename(filename);
@@ -128,6 +129,7 @@ public:
 	helper.registerTag(Cityset::d_tag, sigc::mem_fun((*this), &CitysetLoader::load));
 	if (!helper.parse())
 	  {
+            unsupported = unsupported_version;
 	    std::cerr << "Error, while loading a cityset. Cityset File: ";
 	    std::cerr << filename << std::endl <<std::flush;
 	    if (cityset != NULL)
@@ -142,25 +144,30 @@ public:
       {
 	if (tag == Cityset::d_tag)
 	  {
-            if (helper->getVersion() != LORDSAWAR_CITYSET_VERSION)
+            if (helper->getVersion() == LORDSAWAR_CITYSET_VERSION)
               {
+                cityset = new Cityset(helper, dir);
+                cityset->setBaseName(file);
+                return true;
+              }
+            else
+              {
+                unsupported_version = true;
                 return false;
               }
-	    cityset = new Cityset(helper, dir);
-            cityset->setBaseName(file);
-	    return true;
 	  }
 	return false;
       };
     std::string dir;
     std::string file;
     Cityset *cityset;
+    bool unsupported_version;
 };
 
-Cityset *Cityset::create(std::string file)
+Cityset *Cityset::create(std::string file, bool &unsupported_version)
 {
   bool broken = false;
-  CitysetLoader d(file, broken);
+  CitysetLoader d(file, broken, unsupported_version);
   if (broken)
     return NULL;
   return d.cityset;
@@ -567,7 +574,8 @@ bool Cityset::tileWidthsEqual(Cityset *cityset)
 void Cityset::reload()
 {
   bool broken = false;
-  CitysetLoader d(getConfigurationFile(), broken);
+  bool unsupported_version = false;
+  CitysetLoader d(getConfigurationFile(), broken, unsupported_version);
   if (!broken && d.cityset && d.cityset->validate())
     {
       //steal the values from d.cityset and then don't delete it.

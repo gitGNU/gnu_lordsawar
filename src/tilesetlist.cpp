@@ -114,7 +114,8 @@ std::list<std::string> Tilesetlist::getNames(guint32 tilesize) const
 Tileset *Tilesetlist::loadTileset(std::string name)
 {
   debug("Loading tileset " <<File::get_basename(name));
-  Tileset *tileset = Tileset::create(name);
+  bool unsupported_version = false;
+  Tileset *tileset = Tileset::create(name, unsupported_version);
   if (tileset == NULL)
     {
       cerr<< "Error!  Tileset: `" << File::get_basename(name, true) <<
@@ -176,13 +177,14 @@ void Tilesetlist::loadTilesets(std::list<std::string> tilesets)
 
 int Tilesetlist::getNextAvailableId(int after)
 {
+  bool unsupported_version = false;
   std::list<guint32> ids;
   std::list<std::string> tilesets = Tileset::scanSystemCollection();
   //there might be IDs in invalid tilesets.
   for (std::list<std::string>::const_iterator i = tilesets.begin(); 
        i != tilesets.end(); i++)
     {
-      Tileset *tileset = Tileset::create(*i);
+      Tileset *tileset = Tileset::create(*i, unsupported_version);
       if (tileset != NULL)
 	{
 	  ids.push_back(tileset->getId());
@@ -193,7 +195,7 @@ int Tilesetlist::getNextAvailableId(int after)
   for (std::list<std::string>::const_iterator i = tilesets.begin(); 
        i != tilesets.end(); i++)
     {
-      Tileset *tileset = Tileset::create(*i);
+      Tileset *tileset = Tileset::create(*i, unsupported_version);
       if (tileset != NULL)
 	{
 	  ids.push_back(tileset->getId());
@@ -237,10 +239,11 @@ Tileset *Tilesetlist::getTileset(guint32 id) const
 
 Tileset *Tilesetlist::import(Tar_Helper *t, std::string f, bool &broken)
 {
+  bool unsupported_version = false;
   std::string filename = t->getFile(f, broken);
   if (broken)
     return NULL;
-  Tileset *tileset = Tileset::create(filename);
+  Tileset *tileset = Tileset::create(filename, unsupported_version);
   assert (tileset != NULL);
   tileset->setBaseName(File::get_basename(f));
 

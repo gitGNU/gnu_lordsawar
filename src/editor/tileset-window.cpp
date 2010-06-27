@@ -1343,11 +1343,15 @@ bool TileSetWindow::load_tileset(std::string filename)
         current_save_filename = files.front()->getFileName();
     }
 
-  Tileset *tileset = Tileset::create(autosave);
+  bool unsupported_version = false;
+  Tileset *tileset = Tileset::create(autosave, unsupported_version);
   if (tileset == NULL)
     {
       std::string msg;
-      msg = _("Error!  Tileset could not be loaded.");
+      if (unsupported_version)
+        msg = _("Error!  The version of the tileset is unsupported.");
+      else
+        msg = _("Error!  Tileset could not be loaded.");
       Gtk::MessageDialog dialog(*window, msg);
       current_save_filename = old_current_save_filename;
       dialog.run();

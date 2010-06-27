@@ -68,10 +68,6 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	 */
 	Shieldset(guint32 id, std::string name);
 
-
-        //! Load a Shieldset from a shieldset configuration file.
-        Shieldset(std::string filename, bool &broken);
-
 	//! Load a Shieldset from an opened shieldset configuration file.
 	/**
 	 * Make a new Shieldset object by reading it in from the shieldset
@@ -210,7 +206,7 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	// Static Methods
 
 	//! Create a shieldset from the given shieldset configuration file.
-	static Shieldset *create(std::string filename);
+	static Shieldset *create(std::string filename, bool &unsupported);
 
 	//! Return a list of shieldset basenames in the system collection.
 	static std::list<std::string> scanSystemCollection();

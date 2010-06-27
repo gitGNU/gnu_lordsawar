@@ -501,11 +501,15 @@ bool ShieldSetWindow::load_shieldset(std::string filename)
 
   std::string name = File::get_basename(filename);
 
-  Shieldset *shieldset = Shieldset::create(autosave);
+  bool unsupported_version = false;
+  Shieldset *shieldset = Shieldset::create(autosave, unsupported_version);
   if (shieldset == NULL)
     {
       std::string msg;
-      msg = _("Error!  Shieldset could not be loaded.");
+      if (unsupported_version)
+        msg = _("Error!  The version of the shieldset is not supported.");
+      else
+        msg = _("Error!  Shieldset could not be loaded.");
       Gtk::MessageDialog dialog(*window, msg);
       current_save_filename = old_current_save_filename;
       dialog.run();

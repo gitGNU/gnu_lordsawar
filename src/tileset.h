@@ -355,7 +355,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	static guint32 getDefaultTileSize();
 
 	//! Create a tileset from the given tileset configuration file.
-	static Tileset *create(std::string file);
+	static Tileset *create(std::string file, bool &unsupported_version);
 
 	//! Return a list of tileset basenames in the user's personal collection.
 	static std::list<std::string> scanUserCollection();

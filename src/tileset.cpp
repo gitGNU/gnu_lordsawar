@@ -376,8 +376,9 @@ bool Tileset::validate() const
 class TilesetLoader
 {
 public:
-    TilesetLoader(std::string filename, bool &broken)
+    TilesetLoader(std::string filename, bool &broken, bool &unsupported)
       {
+        unsupported_version = false;
 	tileset = NULL;
 	dir = File::get_dirname(filename);
         file = File::get_basename(filename);
@@ -394,6 +395,7 @@ public:
 	helper.registerTag(Tileset::d_tag, sigc::mem_fun((*this), &TilesetLoader::load));
 	if (!helper.parse())
 	  {
+            unsupported = unsupported_version;
 	    std::cerr << "Error, while loading a tileset. Tileset File: ";
 	    std::cerr << filename << std::endl <<std::flush;
 	    if (tileset != NULL)
@@ -408,26 +410,31 @@ public:
       {
 	if (tag == Tileset::d_tag)
 	  {
-            if (helper->getVersion() != LORDSAWAR_TILESET_VERSION)
+            if (helper->getVersion() == LORDSAWAR_TILESET_VERSION)
               {
+                tileset = new Tileset(helper, dir);
+                tileset->setBaseName(file);
+                return true;
+              }
+            else
+              {
+                unsupported_version = true;
                 return false;
               }
-	    tileset = new Tileset(helper, dir);
-            tileset->setBaseName(file);
-	    return true;
 	  }
 	return false;
       };
     std::string dir;
     std::string file;
     Tileset *tileset;
+    bool unsupported_version;
 };
 
 
-Tileset *Tileset::create(std::string file)
+Tileset *Tileset::create(std::string file, bool &unsupported_version)
 {
   bool broken = false;
-  TilesetLoader d(file, broken);
+  TilesetLoader d(file, broken, unsupported_version);
   if (broken)
     return NULL;
   return d.tileset;
@@ -712,7 +719,8 @@ TileStyle *Tileset::getTileStyle(guint32 id) const
 void Tileset::reload()
 {
   bool broken = false;
-  TilesetLoader d(getConfigurationFile(), broken);
+  bool unsupported_version = false;
+  TilesetLoader d(getConfigurationFile(), broken, unsupported_version);
   if (!broken && d.tileset && d.tileset->validate())
     {
       //steal the values from d.tileset and then don't delete it.

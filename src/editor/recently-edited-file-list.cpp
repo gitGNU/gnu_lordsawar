@@ -155,6 +155,7 @@ bool RecentlyEditedFileList::filename_in_list(std::string filename) const
 
 void RecentlyEditedFileList::addEntry(std::string filename)
 {
+  bool unsupported_version = false;
   if (Configuration::s_remember_recently_edited_files == false)
     return;
   if (filename_in_list(filename) == true)
@@ -166,7 +167,7 @@ void RecentlyEditedFileList::addEntry(std::string filename)
     {
       RecentlyEditedShieldsetFile *g = NULL;
       g = new RecentlyEditedShieldsetFile(filename);
-      Shieldset *shieldset = Shieldset::create(filename);
+      Shieldset *shieldset = Shieldset::create(filename, unsupported_version);
       g->fillData(shieldset);
       delete shieldset;
       push_back(g);
@@ -175,7 +176,7 @@ void RecentlyEditedFileList::addEntry(std::string filename)
     {
       RecentlyEditedTilesetFile *g = NULL;
       g = new RecentlyEditedTilesetFile(filename);
-      Tileset *tileset = Tileset::create(filename);
+      Tileset *tileset = Tileset::create(filename, unsupported_version);
       g->fillData(tileset);
       delete tileset;
       push_back(g);
@@ -184,7 +185,7 @@ void RecentlyEditedFileList::addEntry(std::string filename)
     {
       RecentlyEditedArmysetFile *g = NULL;
       g = new RecentlyEditedArmysetFile(filename);
-      Armyset *armyset = Armyset::create(filename);
+      Armyset *armyset = Armyset::create(filename, unsupported_version);
       g->fillData(armyset);
       delete armyset;
       push_back(g);
@@ -193,7 +194,7 @@ void RecentlyEditedFileList::addEntry(std::string filename)
     {
       RecentlyEditedCitysetFile *g = NULL;
       g = new RecentlyEditedCitysetFile(filename);
-      Cityset *cityset = Cityset::create(filename);
+      Cityset *cityset = Cityset::create(filename, unsupported_version);
       g->fillData(cityset);
       delete cityset;
       push_back(g);

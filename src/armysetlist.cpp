@@ -196,7 +196,8 @@ std::string Armysetlist::getName(guint32 id) const
 Armyset *Armysetlist::loadArmyset(std::string name)
 {
   debug("Loading armyset " <<File::get_basename(name));
-  Armyset *armyset = Armyset::create(name);
+  bool unsupported_version;
+  Armyset *armyset = Armyset::create(name, unsupported_version);
   if (armyset == NULL)
     {
       cerr << "Error!  armyset: `" << File::get_basename(name, true) << 
@@ -311,13 +312,14 @@ std::string Armysetlist::getArmysetDir(std::string name, guint32 tilesize) const
 
 int Armysetlist::getNextAvailableId(int after)
 {
+  bool unsupported_version;
   std::list<guint32> ids;
   std::list<std::string> armysets = Armyset::scanSystemCollection();
   //there might be IDs in invalid armysets.
   for (std::list<std::string>::const_iterator i = armysets.begin(); 
        i != armysets.end(); i++)
     {
-      Armyset *armyset = Armyset::create(*i);
+      Armyset *armyset = Armyset::create(*i, unsupported_version);
       if (armyset != NULL)
 	{
 	  ids.push_back(armyset->getId());
@@ -328,7 +330,7 @@ int Armysetlist::getNextAvailableId(int after)
   for (std::list<std::string>::const_iterator i = armysets.begin(); 
        i != armysets.end(); i++)
     {
-      Armyset *armyset = Armyset::create(*i);
+      Armyset *armyset = Armyset::create(*i, unsupported_version);
       if (armyset != NULL)
 	{
 	  ids.push_back(armyset->getId());
@@ -444,10 +446,11 @@ bool Armysetlist::addToPersonalCollection(Armyset *armyset, std::string &new_bas
 
 Armyset *Armysetlist::import(Tar_Helper *t, std::string f, bool &broken)
 {
+  bool unsupported_version;
   std::string filename = t->getFile(f, broken);
   if (broken)
     return NULL;
-  Armyset *armyset = Armyset::create(filename);
+  Armyset *armyset = Armyset::create(filename, unsupported_version);
   assert (armyset != NULL);
   armyset->setBaseName(File::get_basename(f));
 
