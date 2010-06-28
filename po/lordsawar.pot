@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2010-06-28 17:52+0100\n"
+"POT-Creation-Date: 2010-06-28 18:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2861,6 +2861,27 @@ msgstr ""
 
 #: ../dat/tilesets/bigwesnoth/bigwesnoth.lwt.in.h:6
 msgid "The doublesized tileset based on Wesnoth tileset"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:1
+msgid ""
+"Carthage has lost her dominance on the sea and you, Hannibal, are convinced "
+"that the only hope of avoiding the destruction of your city is to move to "
+"the attack - through Spain and across the Alps."
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:2
+msgid "The Second Punic War"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:1
+msgid "Dol Campaign"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:2
+msgid ""
+"The Dol are a people surrounded by powerful enemies. Only the most valiant "
+"warlord can rescue them from their fate of subjugation."
 msgstr ""
 
 #: ../src/GameScenario.cpp:337

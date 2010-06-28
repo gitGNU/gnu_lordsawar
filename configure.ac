@@ -293,6 +293,8 @@ AC_CONFIG_FILES([
         dat/various/items/Makefile
         dat/various/editor/Makefile
         dat/map/Makefile 
+        dat/map/2ndPunic37/Makefile 
+        dat/map/dol/Makefile 
         dat/music/Makefile
         dat/glade/Makefile
         dat/glade/editor/Makefile
