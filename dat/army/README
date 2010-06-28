@@ -15,15 +15,3 @@ The currently used indexes are:
 
 All indexes above 2 are free as of now.
 
-Copyright and license notices are held in the comments section of each image file of the lwa.in files in this directory.
-
-Use the `tar' program to unpack the lwa.in files.
-Use the `pnginfo' program from the www.stillhq.com/pngtools/ software package to read the comments in the image files.
-
-The images in the .lwa.in files were created specificially for lordsawar.
-
-default.lwa.in: Copyright (C) 2007, 2009 Ben Asselstine.  Licensed under the GPL Version 3 or later.
-
-bigdefault.lwa.in : Copyright (C) 2007, 2009 Ben Asselstine.  Licensed under the GPL Version 3 or later.
-
-

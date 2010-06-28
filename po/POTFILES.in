@@ -111,6 +111,21 @@
 [type: gettext/glade]dat/glade/editor/shieldset-info-dialog.ui
 [type: gettext/glade]dat/glade/editor/smallmap-editor-dialog.ui
 [type: gettext/glade]dat/glade/editor/splash-window.ui
+[type: gettext/xml]dat/shield/default/default.lws.in
+[type: gettext/xml]dat/shield/dol/dol.lws.in
+[type: gettext/xml]dat/shield/plain/plain.lws.in
+[type: gettext/xml]dat/citysets/default/default.lwc.in
+[type: gettext/xml]dat/citysets/bigdefault/bigdefault.lwc.in
+[type: gettext/xml]dat/citysets/dol/dol.lwc.in
+[type: gettext/xml]dat/citysets/bigdol/bigdol.lwc.in
+[type: gettext/xml]dat/army/bigdefault/bigdefault.lwa.in
+[type: gettext/xml]dat/army/default/default.lwa.in
+[type: gettext/xml]dat/tilesets/default/default.lwt.in
+[type: gettext/xml]dat/tilesets/bigdefault/bigdefault.lwt.in
+[type: gettext/xml]dat/tilesets/stark/stark.lwt.in
+[type: gettext/xml]dat/tilesets/bigstark/bigstark.lwt.in
+[type: gettext/xml]dat/tilesets/wesnoth/wesnoth.lwt.in
+[type: gettext/xml]dat/tilesets/bigwesnoth/bigwesnoth.lwt.in
 src/FogMap.cpp
 src/templelist.cpp
 src/network-connection.cpp

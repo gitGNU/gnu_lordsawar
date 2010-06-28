@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# put the files given on the command line into a tarball with the same name as the first file in that list.  that first file gets overwritten.
+files=$*
+tmpdir=`mktemp --quiet --directory /tmp/lw-tar.XXXXX `
+file=`basename $1`
+if [ "x$tmpdir" != "x" ]; then
+  cp $files $tmpdir
+  tarball=$file.tar
+  origdir=`pwd`
+  cd $tmpdir
+  tar -cvf $tarball --exclude=$tarball *
+  cd $origdir
+  cp -f $tmpdir/$tarball $1
+  rm -f $tmpdir/*
+  rmdir $tmpdir
+fi
+
+

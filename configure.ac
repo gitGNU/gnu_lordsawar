@@ -271,9 +271,24 @@ AC_SUBST(LORDSAWAR_DATADIR)
 AC_CONFIG_FILES([
         dat/Makefile 
         dat/army/Makefile 
+        dat/army/default/Makefile 
+        dat/army/bigdefault/Makefile 
         dat/tilesets/Makefile
+        dat/tilesets/default/Makefile
+        dat/tilesets/bigdefault/Makefile
+        dat/tilesets/stark/Makefile
+        dat/tilesets/bigstark/Makefile
+        dat/tilesets/wesnoth/Makefile
+        dat/tilesets/bigwesnoth/Makefile
         dat/shield/Makefile 
+        dat/shield/default/Makefile 
+        dat/shield/dol/Makefile 
+        dat/shield/plain/Makefile 
         dat/citysets/Makefile 
+        dat/citysets/default/Makefile 
+        dat/citysets/bigdefault/Makefile 
+        dat/citysets/dol/Makefile 
+        dat/citysets/bigdol/Makefile 
         dat/various/Makefile 
         dat/various/items/Makefile
         dat/various/editor/Makefile
