@@ -2,35 +2,6 @@
  scp lordsawar-0.1.8.tar.gz benasselstine@dl.sv.nongnu.org:/releases/lordsawar/
 
 
-fight bug:
-	armies fight out of order somehow
-	sighting 1:
-	properties: 8 attackers fighting with 13 defenders
-		both have heroes
-		both have special units
-		defender has 2 heroes
-		attacker has 1 hero
-	error happened on attacker
-	sighting 2:
-		8 attackers fighting with 7 defenders
-		both have heroes
-		both have special units
-		defender has 3 heroes
-		attacker has 2 heroes
-		attacked from water
-		heroes had same id.  this was fixed.
-
-
-check to see what happens when i pass a larger attacker/defender list of stacks to fight.  it only seems to use 1!
----
-moving the ai maybe* methods into realplayer, so that the smart ai player can use them
-	maybe they belong in AI_Allocate
-		the danger stuff looks redundant
---
-ai_smart could have a scoreArmyType method as an input parameter
-	so that it could have a different personalities
-	needs to be used for what to buy and what to produce
-
 when next to an enemy city, just attack it
 calculate to city should be different for enemy cities
   friendly should go to the free spot that we can merge with
