@@ -5,155 +5,155 @@
 	</counter>
 	<itemlist>
 		<itemproto>
-			<d_name>Shield of Courage</d_name>
+			<_d_name>Shield of Courage</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Troll Helm</d_name>
+			<_d_name>Troll Helm</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Icesword</d_name>
+			<_d_name>Icesword</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Armour of Gods</d_name>
+			<_d_name>Armour of Gods</_d_name>
 			<d_bonus> ItemProto::ADD3STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Crimson Banner</d_name>
+			<_d_name>Crimson Banner</_d_name>
 			<d_bonus> ItemProto::ADD1STACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Crown of Loriel</d_name>
+			<_d_name>Crown of Loriel</_d_name>
 			<d_bonus> ItemProto::ADD1STACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Ring of Power</d_name>
+			<_d_name>Ring of Power</_d_name>
 			<d_bonus> ItemProto::ADD2STACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Horn of Ages</d_name>
+			<_d_name>Horn of Ages</_d_name>
 			<d_bonus> ItemProto::ADD2STACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Staff of Ruling</d_name>
+			<_d_name>Staff of Ruling</_d_name>
 			<d_bonus> ItemProto::ADD3STACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Wings of Flying</d_name>
+			<_d_name>Wings of Flying</_d_name>
 			<d_bonus> ItemProto::FLYSTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Wand of Flight</d_name>
+			<_d_name>Wand of Flight</_d_name>
 			<d_bonus> ItemProto::FLYSTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Ring of Travel</d_name>
+			<_d_name>Ring of Travel</_d_name>
 			<d_bonus> ItemProto::DOUBLEMOVESTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Phantom Steed</d_name>
+			<_d_name>Phantom Steed</_d_name>
 			<d_bonus> ItemProto::DOUBLEMOVESTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Staff of Movement</d_name>
+			<_d_name>Staff of Movement</_d_name>
 			<d_bonus> ItemProto::DOUBLEMOVESTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Darksword</d_name>
+			<_d_name>Darksword</_d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Beserker Helm</d_name>
+			<_d_name>Beserker Helm</_d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Bow of Eldros</d_name>
+			<_d_name>Bow of Eldros</_d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Sceptre of Loriel</d_name>
+			<_d_name>Sceptre of Loriel</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Magic Carpet</d_name>
+			<_d_name>Magic Carpet</_d_name>
 			<d_bonus> ItemProto::FLYSTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Cup of Haste</d_name>
+			<_d_name>Cup of Haste</_d_name>
 			<d_bonus> ItemProto::DOUBLEMOVESTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Boots of Speed</d_name>
+			<_d_name>Boots of Speed</_d_name>
 			<d_bonus> ItemProto::DOUBLEMOVESTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Eldros's Pouch</d_name>
+			<_d_name>Eldros's Pouch</_d_name>
 			<d_bonus> ItemProto::ADD2GOLDPERCITY</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Spear of Ank</d_name>
+			<_d_name>Spear of Ank</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Lock of Safety</d_name>
+			<_d_name>Lock of Safety</_d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Horn of Siege</d_name>
+			<_d_name>Horn of Siege</_d_name>
 			<d_bonus> ItemProto::ADD3STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Staff of Might</d_name>
+			<_d_name>Staff of Might</_d_name>
 			<d_bonus> ItemProto::ADD3STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Wings of the Eagle</d_name>
+			<_d_name>Wings of the Eagle</_d_name>
 			<d_bonus> ItemProto::FLYSTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Everful Purse</d_name>
+			<_d_name>Everful Purse</_d_name>
 			<d_bonus> ItemProto::ADD2GOLDPERCITY</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Okradon's Pouch</d_name>
+			<_d_name>Okradon's Pouch</_d_name>
 			<d_bonus> ItemProto::ADD4GOLDPERCITY</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Firesword</d_name>
+			<_d_name>Firesword</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Sword of Death</d_name>
+			<_d_name>Sword of Death</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Chimes of Safety</d_name>
+			<_d_name>Chimes of Safety</_d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Lightsword</d_name>
+			<_d_name>Lightsword</_d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Orb of Loriel</d_name>
+			<_d_name>Orb of Loriel</_d_name>
 			<d_bonus> ItemProto::ADD1STACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Witch's Broom</d_name>
+			<_d_name>Witch's Broom</_d_name>
 			<d_bonus> ItemProto::FLYSTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Silver Purse</d_name>
+			<_d_name>Silver Purse</_d_name>
 			<d_bonus> ItemProto::ADD4GOLDPERCITY</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Tome of War</d_name>
+			<_d_name>Tome of War</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Horn of Plenty</d_name>
+			<_d_name>Horn of Plenty</_d_name>
 			<d_bonus> ItemProto::ADD2GOLDPERCITY ItemProto::ADD4GOLDPERCITY</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 	</itemlist>
@@ -162,7 +162,7 @@
 		<d_neutral>8</d_neutral>
 		<player>
 			<d_id>0</d_id>
-			<d_name>Carthage</d_name>
+			<_d_name>Carthage</_d_name>
 			<d_color>252 252 252</d_color>
 			<d_armyset>1</d_armyset>
 			<d_gold>800</d_gold>
@@ -275,7 +275,7 @@
 						<d_visited_temples></d_visited_temples>
 					</army>
 					<hero>
-						<d_name>Hannibal</d_name>
+						<_d_name>Hannibal</_d_name>
 						<d_gender>Hero::MALE</d_gender>
 						<d_upkeep>0</d_upkeep>
 						<d_move_bonus></d_move_bonus>
@@ -417,7 +417,7 @@
 		</player>
 		<player>
 			<d_id>1</d_id>
-			<d_name>Rome</d_name>
+			<_d_name>Rome</_d_name>
 			<d_color>80 172 28</d_color>
 			<d_armyset>1</d_armyset>
 			<d_gold>2850</d_gold>
@@ -878,7 +878,7 @@
 		</player>
 		<player>
 			<d_id>8</d_id>
-			<d_name>Neutral</d_name>
+			<_d_name>Neutral</_d_name>
 			<d_color>204 204 204</d_color>
 			<d_armyset>1</d_armyset>
 			<d_gold>1200</d_gold>
@@ -2026,7 +2026,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>102</d_id>
 			<d_x>75</d_x>
 			<d_y>34</d_y>
-			<d_name>Roma</d_name>
+			<_d_name>Roma</_d_name>
 			<d_owner>1</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>0</d_active_production_slot>
@@ -2038,7 +2038,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Scouts</d_name>
+					<_d_name>Scouts</_d_name>
 					<d_description></d_description>
 					<d_production_cost>2</d_production_cost>
 					<d_new_production_cost>10</d_new_production_cost>
@@ -2056,7 +2056,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -2081,7 +2081,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>106</d_id>
 			<d_x>92</d_x>
 			<d_y>41</d_y>
-			<d_name>Taras</d_name>
+			<_d_name>Taras</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2092,7 +2092,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Scouts</d_name>
+					<_d_name>Scouts</_d_name>
 					<d_description></d_description>
 					<d_production_cost>2</d_production_cost>
 					<d_new_production_cost>10</d_new_production_cost>
@@ -2110,7 +2110,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2135,7 +2135,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>110</d_id>
 			<d_x>13</d_x>
 			<d_y>57</d_y>
-			<d_name>Gades</d_name>
+			<_d_name>Gades</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2146,7 +2146,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Scouts</d_name>
+					<_d_name>Scouts</_d_name>
 					<d_description></d_description>
 					<d_production_cost>2</d_production_cost>
 					<d_new_production_cost>10</d_new_production_cost>
@@ -2173,7 +2173,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>133</d_id>
 			<d_x>29</d_x>
 			<d_y>53</d_y>
-			<d_name>New Carthage</d_name>
+			<_d_name>New Carthage</_d_name>
 			<d_owner>0</d_owner>
 			<d_defense>4</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2184,7 +2184,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Scouts</d_name>
+					<_d_name>Scouts</_d_name>
 					<d_description></d_description>
 					<d_production_cost>2</d_production_cost>
 					<d_new_production_cost>10</d_new_production_cost>
@@ -2211,7 +2211,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>156</d_id>
 			<d_x>68</d_x>
 			<d_y>57</d_y>
-			<d_name>Carthage</d_name>
+			<_d_name>Carthage</_d_name>
 			<d_owner>0</d_owner>
 			<d_defense>4</d_defense>
 			<d_active_production_slot>0</d_active_production_slot>
@@ -2223,7 +2223,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Scouts</d_name>
+					<_d_name>Scouts</_d_name>
 					<d_description></d_description>
 					<d_production_cost>2</d_production_cost>
 					<d_new_production_cost>10</d_new_production_cost>
@@ -2241,7 +2241,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2266,7 +2266,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>393</d_id>
 			<d_x>25</d_x>
 			<d_y>39</d_y>
-			<d_name>Numantia</d_name>
+			<_d_name>Numantia</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2277,7 +2277,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Orcish Mob</d_name>
+					<_d_name>Orcish Mob</_d_name>
 					<d_description></d_description>
 					<d_production_cost>4</d_production_cost>
 					<d_new_production_cost>100</d_new_production_cost>
@@ -2295,7 +2295,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Scouts</d_name>
+					<_d_name>Scouts</_d_name>
 					<d_description></d_description>
 					<d_production_cost>2</d_production_cost>
 					<d_new_production_cost>10</d_new_production_cost>
@@ -2320,7 +2320,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>394</d_id>
 			<d_x>32</d_x>
 			<d_y>46</d_y>
-			<d_name>Saguntum</d_name>
+			<_d_name>Saguntum</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2331,7 +2331,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2349,7 +2349,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -2374,7 +2374,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>395</d_id>
 			<d_x>82</d_x>
 			<d_y>39</d_y>
-			<d_name>Capua</d_name>
+			<_d_name>Capua</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2385,7 +2385,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -2403,7 +2403,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -2428,7 +2428,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>396</d_id>
 			<d_x>84</d_x>
 			<d_y>56</d_y>
-			<d_name>Syracuse</d_name>
+			<_d_name>Syracuse</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2439,7 +2439,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2457,7 +2457,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -2482,7 +2482,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>397</d_id>
 			<d_x>86</d_x>
 			<d_y>38</d_y>
-			<d_name>Ausculum</d_name>
+			<_d_name>Ausculum</_d_name>
 			<d_owner>1</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>0</d_active_production_slot>
@@ -2493,7 +2493,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Scouts</d_name>
+					<_d_name>Scouts</_d_name>
 					<d_description></d_description>
 					<d_production_cost>2</d_production_cost>
 					<d_new_production_cost>10</d_new_production_cost>
@@ -2511,7 +2511,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -2536,7 +2536,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>398</d_id>
 			<d_x>90</d_x>
 			<d_y>47</d_y>
-			<d_name>Croton</d_name>
+			<_d_name>Croton</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2547,7 +2547,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Scouts</d_name>
+					<_d_name>Scouts</_d_name>
 					<d_description></d_description>
 					<d_production_cost>2</d_production_cost>
 					<d_new_production_cost>10</d_new_production_cost>
@@ -2574,7 +2574,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>399</d_id>
 			<d_x>73</d_x>
 			<d_y>29</d_y>
-			<d_name>Clusium</d_name>
+			<_d_name>Clusium</_d_name>
 			<d_owner>1</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>0</d_active_production_slot>
@@ -2585,7 +2585,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -2612,7 +2612,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>400</d_id>
 			<d_x>76</d_x>
 			<d_y>53</d_y>
-			<d_name>Lilybaeum</d_name>
+			<_d_name>Lilybaeum</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2623,7 +2623,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Dwarves</d_name>
+					<_d_name>Dwarves</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2650,7 +2650,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>480</d_id>
 			<d_x>14</d_x>
 			<d_y>65</d_y>
-			<d_name>Lixus</d_name>
+			<_d_name>Lixus</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2661,7 +2661,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Cav.</d_name>
+					<_d_name>Light Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>6</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -2679,7 +2679,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Scouts</d_name>
+					<_d_name>Scouts</_d_name>
 					<d_description></d_description>
 					<d_production_cost>2</d_production_cost>
 					<d_new_production_cost>10</d_new_production_cost>
@@ -2704,7 +2704,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>481</d_id>
 			<d_x>64</d_x>
 			<d_y>46</d_y>
-			<d_name>Carales</d_name>
+			<_d_name>Carales</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2715,7 +2715,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Scouts</d_name>
+					<_d_name>Scouts</_d_name>
 					<d_description></d_description>
 					<d_production_cost>2</d_production_cost>
 					<d_new_production_cost>10</d_new_production_cost>
@@ -2742,7 +2742,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>482</d_id>
 			<d_x>69</d_x>
 			<d_y>62</d_y>
-			<d_name>Hadrumentum</d_name>
+			<_d_name>Hadrumentum</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2753,7 +2753,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2780,7 +2780,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>483</d_id>
 			<d_x>62</d_x>
 			<d_y>21</d_y>
-			<d_name>Placentia</d_name>
+			<_d_name>Placentia</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2791,7 +2791,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Orcish Mob</d_name>
+					<_d_name>Orcish Mob</_d_name>
 					<d_description></d_description>
 					<d_production_cost>4</d_production_cost>
 					<d_new_production_cost>100</d_new_production_cost>
@@ -2809,7 +2809,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Cav.</d_name>
+					<_d_name>Heavy Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -2834,7 +2834,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>484</d_id>
 			<d_x>50</d_x>
 			<d_y>28</d_y>
-			<d_name>Massillia</d_name>
+			<_d_name>Massillia</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2845,7 +2845,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2872,7 +2872,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>485</d_id>
 			<d_x>80</d_x>
 			<d_y>76</d_y>
-			<d_name>Leptis</d_name>
+			<_d_name>Leptis</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2883,7 +2883,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Cav.</d_name>
+					<_d_name>Light Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>6</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -2910,7 +2910,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>486</d_id>
 			<d_x>36</d_x>
 			<d_y>40</d_y>
-			<d_name>Tarraco</d_name>
+			<_d_name>Tarraco</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2921,7 +2921,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -2939,7 +2939,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Scouts</d_name>
+					<_d_name>Scouts</_d_name>
 					<d_description></d_description>
 					<d_production_cost>2</d_production_cost>
 					<d_new_production_cost>10</d_new_production_cost>
@@ -2964,7 +2964,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>487</d_id>
 			<d_x>84</d_x>
 			<d_y>52</d_y>
-			<d_name>Messana</d_name>
+			<_d_name>Messana</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2975,7 +2975,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Scouts</d_name>
+					<_d_name>Scouts</_d_name>
 					<d_description></d_description>
 					<d_production_cost>2</d_production_cost>
 					<d_new_production_cost>10</d_new_production_cost>
@@ -3002,7 +3002,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>488</d_id>
 			<d_x>46</d_x>
 			<d_y>20</d_y>
-			<d_name>Gegovia</d_name>
+			<_d_name>Gegovia</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -3013,7 +3013,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Orcish Mob</d_name>
+					<_d_name>Orcish Mob</_d_name>
 					<d_description></d_description>
 					<d_production_cost>4</d_production_cost>
 					<d_new_production_cost>100</d_new_production_cost>
@@ -3031,7 +3031,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -3056,7 +3056,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>489</d_id>
 			<d_x>4</d_x>
 			<d_y>49</d_y>
-			<d_name>Olisippo</d_name>
+			<_d_name>Olisippo</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -3067,7 +3067,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -3096,7 +3096,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>85</d_id>
 			<d_x>86</d_x>
 			<d_y>21</d_y>
-			<d_name>Temple of Io</d_name>
+			<_d_name>Temple of Io</_d_name>
 			<d_type>0</d_type>
 			<d_description>The Temple of Io can bless your armies or give you quests.</d_description>
 		</temple>
@@ -3104,7 +3104,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>91</d_id>
 			<d_x>22</d_x>
 			<d_y>42</d_y>
-			<d_name>Temple of Belisama</d_name>
+			<_d_name>Temple of Belisama</_d_name>
 			<d_type>1</d_type>
 			<d_description>The Temple of Belisama can bless your armies or give you quests.</d_description>
 		</temple>
@@ -3112,7 +3112,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>121</d_id>
 			<d_x>30</d_x>
 			<d_y>47</d_y>
-			<d_name>Temple of Apollo</d_name>
+			<_d_name>Temple of Apollo</_d_name>
 			<d_type>0</d_type>
 			<d_description>The Temple of Apollo can bless your armies or give you quests.</d_description>
 		</temple>
@@ -3120,7 +3120,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>123</d_id>
 			<d_x>77</d_x>
 			<d_y>36</d_y>
-			<d_name>Temple of Jupitor</d_name>
+			<_d_name>Temple of Jupitor</_d_name>
 			<d_type>0</d_type>
 			<d_description>The Temple of Jupitor can bless your armies or give you quests.</d_description>
 		</temple>
@@ -3130,7 +3130,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>104</d_id>
 			<d_x>50</d_x>
 			<d_y>24</d_y>
-			<d_name>Dark Tower</d_name>
+			<_d_name>Dark Tower</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -3177,7 +3177,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>131</d_id>
 			<d_x>36</d_x>
 			<d_y>59</d_y>
-			<d_name>Abandoned Town</d_name>
+			<_d_name>Abandoned Town</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -3224,7 +3224,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>149</d_id>
 			<d_x>80</d_x>
 			<d_y>35</d_y>
-			<d_name>The Sibyl's Cave</d_name>
+			<_d_name>The Sibyl's Cave</_d_name>
 			<d_type>Ruin::SAGE</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>true</d_sage>
@@ -3271,9 +3271,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 	<rewardlist>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Defender's Helmet</d_name>
+				<_d_name>Defender's Helmet</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>14</d_id>
 				<d_type>0</d_type>
@@ -3282,9 +3282,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Scroll of Waterwalking</d_name>
+				<_d_name>Scroll of Waterwalking</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>16</d_id>
 				<d_type>0</d_type>
@@ -3293,9 +3293,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Shield of Parrying</d_name>
+				<_d_name>Shield of Parrying</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>18</d_id>
 				<d_type>0</d_type>
@@ -3304,9 +3304,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Field Plate</d_name>
+				<_d_name>Field Plate</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>20</d_id>
 				<d_type>0</d_type>
@@ -3315,9 +3315,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Healthy Cloak</d_name>
+				<_d_name>Healthy Cloak</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>22</d_id>
 				<d_type>0</d_type>
@@ -3326,9 +3326,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Ring of Endurance</d_name>
+				<_d_name>Ring of Endurance</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>24</d_id>
 				<d_type>0</d_type>
@@ -3337,9 +3337,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Enchanted Dagger</d_name>
+				<_d_name>Enchanted Dagger</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>28</d_id>
 				<d_type>0</d_type>
@@ -3348,9 +3348,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Enchanted Sword</d_name>
+				<_d_name>Enchanted Sword</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>30</d_id>
 				<d_type>0</d_type>
@@ -3359,9 +3359,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Enchanted Axe</d_name>
+				<_d_name>Enchanted Axe</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>32</d_id>
 				<d_type>0</d_type>
@@ -3370,9 +3370,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Defense Rapier</d_name>
+				<_d_name>Defense Rapier</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>34</d_id>
 				<d_type>0</d_type>
@@ -3381,9 +3381,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Skull Crusher</d_name>
+				<_d_name>Skull Crusher</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>36</d_id>
 				<d_type>0</d_type>
@@ -3392,9 +3392,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Orcish Dagger</d_name>
+				<_d_name>Orcish Dagger</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>38</d_id>
 				<d_type>0</d_type>
@@ -3403,9 +3403,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Orcish Sword</d_name>
+				<_d_name>Orcish Sword</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>40</d_id>
 				<d_type>0</d_type>
@@ -3414,9 +3414,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Magic Spear</d_name>
+				<_d_name>Magic Spear</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>42</d_id>
 				<d_type>0</d_type>
@@ -3425,9 +3425,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Enchanted Greatsword</d_name>
+				<_d_name>Enchanted Greatsword</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>44</d_id>
 				<d_type>0</d_type>
@@ -3436,9 +3436,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Orcish Greatsword</d_name>
+				<_d_name>Orcish Greatsword</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>46</d_id>
 				<d_type>0</d_type>
@@ -3447,9 +3447,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Everburning Torch</d_name>
+				<_d_name>Everburning Torch</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>48</d_id>
 				<d_type>0</d_type>
@@ -3458,9 +3458,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Dwarven Hammer</d_name>
+				<_d_name>Dwarven Hammer</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>50</d_id>
 				<d_type>0</d_type>
@@ -3469,9 +3469,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Berserker Axe</d_name>
+				<_d_name>Berserker Axe</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>52</d_id>
 				<d_type>0</d_type>
@@ -3480,9 +3480,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Elven Sword</d_name>
+				<_d_name>Elven Sword</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>54</d_id>
 				<d_type>0</d_type>
@@ -3491,9 +3491,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Power Halberd</d_name>
+				<_d_name>Power Halberd</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>56</d_id>
 				<d_type>0</d_type>
@@ -3502,9 +3502,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Baneblade</d_name>
+				<_d_name>Baneblade</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>58</d_id>
 				<d_type>0</d_type>
@@ -3513,9 +3513,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Thrakil's Battleaxe</d_name>
+				<_d_name>Thrakil's Battleaxe</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>60</d_id>
 				<d_type>0</d_type>
@@ -3524,9 +3524,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Trident of the Seas</d_name>
+				<_d_name>Trident of the Seas</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>62</d_id>
 				<d_type>0</d_type>
@@ -3535,9 +3535,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Flaming Death</d_name>
+				<_d_name>Flaming Death</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>64</d_id>
 				<d_type>0</d_type>
@@ -3546,9 +3546,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Evening Star</d_name>
+				<_d_name>Evening Star</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>66</d_id>
 				<d_type>0</d_type>
@@ -3557,9 +3557,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Sword of the Avatar</d_name>
+				<_d_name>Sword of the Avatar</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>68</d_id>
 				<d_type>0</d_type>
@@ -3568,9 +3568,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Studded Armour</d_name>
+				<_d_name>Studded Armour</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>70</d_id>
 				<d_type>0</d_type>
@@ -3579,9 +3579,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Ranger Vest</d_name>
+				<_d_name>Ranger Vest</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>72</d_id>
 				<d_type>0</d_type>
@@ -3590,9 +3590,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Wall Aegis</d_name>
+				<_d_name>Wall Aegis</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>74</d_id>
 				<d_type>0</d_type>
@@ -3601,9 +3601,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Golden Shield</d_name>
+				<_d_name>Golden Shield</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>76</d_id>
 				<d_type>0</d_type>
@@ -3612,9 +3612,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Silver Cap</d_name>
+				<_d_name>Silver Cap</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>78</d_id>
 				<d_type>0</d_type>
@@ -3623,9 +3623,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Ruby Ring</d_name>
+				<_d_name>Ruby Ring</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>80</d_id>
 				<d_type>0</d_type>
@@ -3634,9 +3634,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Golden Mask</d_name>
+				<_d_name>Golden Mask</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>82</d_id>
 				<d_type>0</d_type>
@@ -3645,9 +3645,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Crystal Rose</d_name>
+				<_d_name>Crystal Rose</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>84</d_id>
 				<d_type>0</d_type>
@@ -3656,9 +3656,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Moon Blade</d_name>
+				<_d_name>Moon Blade</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>240</d_id>
 				<d_type>0</d_type>
@@ -3667,9 +3667,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Mace of the Zealot</d_name>
+				<_d_name>Mace of the Zealot</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>242</d_id>
 				<d_type>0</d_type>
@@ -3678,9 +3678,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Defender's Helmet</d_name>
+				<_d_name>Defender's Helmet</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>244</d_id>
 				<d_type>0</d_type>
@@ -3689,9 +3689,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Scroll of Waterwalking</d_name>
+				<_d_name>Scroll of Waterwalking</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>246</d_id>
 				<d_type>0</d_type>
@@ -3700,9 +3700,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Shield of Parrying</d_name>
+				<_d_name>Shield of Parrying</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>248</d_id>
 				<d_type>0</d_type>
@@ -3711,9 +3711,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Field Plate</d_name>
+				<_d_name>Field Plate</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>250</d_id>
 				<d_type>0</d_type>
@@ -3722,9 +3722,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Healthy Cloak</d_name>
+				<_d_name>Healthy Cloak</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>252</d_id>
 				<d_type>0</d_type>
@@ -3733,9 +3733,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
-			<d_name></d_name>
+			<_d_name></_d_name>
 			<item>
-				<d_name>Ring of Endurance</d_name>
+				<_d_name>Ring of Endurance</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>254</d_id>
 				<d_type>0</d_type>
@@ -3748,25 +3748,25 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>90</d_id>
 			<d_x>31</d_x>
 			<d_y>10</d_y>
-			<d_name>Tyrill lies to the southwest</d_name>
+			<_d_name>Tyrill lies to the southwest</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>115</d_id>
 			<d_x>41</d_x>
 			<d_y>37</d_y>
-			<d_name>Here lies a foolish warrior.</d_name>
+			<_d_name>Here lies a foolish warrior.</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>1024</d_id>
 			<d_x>67</d_x>
 			<d_y>59</d_y>
-			<d_name>Here in 255 BCE Marcus Atilius Regulus was defeated.</d_name>
+			<_d_name>Here in 255 BCE Marcus Atilius Regulus was defeated.</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>1126</d_id>
 			<d_x>87</d_x>
 			<d_y>40</d_y>
-			<d_name>Here in 279 BCE Pyrrhus won a "Pyrrhic" victory.</d_name>
+			<_d_name>Here in 279 BCE Pyrrhus won a "Pyrrhic" victory.</_d_name>
 		</signpost>
 	</signpostlist>
 	<roadlist>

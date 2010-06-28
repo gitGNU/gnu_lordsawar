@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2010-06-28 18:26+0100\n"
+"POT-Creation-Date: 2010-06-28 18:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2687,6 +2687,7 @@ msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:1
 #: ../dat/army/default/default.lwa.in.h:1
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:2 ../dat/map/dol/dol.map.in.h:3
 msgid "Archers"
 msgstr ""
 
@@ -2696,7 +2697,7 @@ msgid "Archons"
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:3
-#: ../dat/army/default/default.lwa.in.h:3
+#: ../dat/army/default/default.lwa.in.h:3 ../dat/map/dol/dol.map.in.h:28
 msgid "Catapults"
 msgstr ""
 
@@ -2717,6 +2718,7 @@ msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:8
 #: ../dat/army/default/default.lwa.in.h:8
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:26 ../dat/map/dol/dol.map.in.h:52
 msgid "Dwarves"
 msgstr ""
 
@@ -2726,7 +2728,7 @@ msgid "Elementals"
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:10
-#: ../dat/army/default/default.lwa.in.h:10
+#: ../dat/army/default/default.lwa.in.h:10 ../dat/map/dol/dol.map.in.h:55
 msgid "Elephants"
 msgstr ""
 
@@ -2736,7 +2738,7 @@ msgid "Ghosts"
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:12
-#: ../dat/army/default/default.lwa.in.h:12
+#: ../dat/army/default/default.lwa.in.h:12 ../dat/map/dol/dol.map.in.h:61
 msgid "Giant Bats"
 msgstr ""
 
@@ -2746,62 +2748,71 @@ msgid "Giant Worms"
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:14
-#: ../dat/army/default/default.lwa.in.h:14
+#: ../dat/army/default/default.lwa.in.h:14 ../dat/map/dol/dol.map.in.h:62
 msgid "Giants"
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:15
-#: ../dat/army/default/default.lwa.in.h:15
+#: ../dat/army/default/default.lwa.in.h:15 ../dat/map/dol/dol.map.in.h:73
 msgid "Griffins"
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:16
 #: ../dat/army/default/default.lwa.in.h:16
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:46 ../dat/map/dol/dol.map.in.h:77
 msgid "Heavy Cav."
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:17
 #: ../dat/army/default/default.lwa.in.h:17
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:47 ../dat/map/dol/dol.map.in.h:78
 msgid "Heavy Inf."
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:18
 #: ../dat/army/default/default.lwa.in.h:18
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:56 ../dat/map/dol/dol.map.in.h:92
 msgid "Light Cav."
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:19
 #: ../dat/army/default/default.lwa.in.h:19
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:57 ../dat/map/dol/dol.map.in.h:93
 msgid "Light Inf."
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:20
-#: ../dat/army/default/default.lwa.in.h:20
+#: ../dat/army/default/default.lwa.in.h:20 ../dat/map/dol/dol.map.in.h:99
 msgid "Minotaurs"
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:21
 #: ../dat/army/default/default.lwa.in.h:21
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:76
+#: ../dat/map/dol/dol.map.in.h:106
 msgid "Orcish Mob"
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:22
-#: ../dat/army/default/default.lwa.in.h:22
+#: ../dat/army/default/default.lwa.in.h:22 ../dat/map/dol/dol.map.in.h:108
 msgid "Pegasi"
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:23
 #: ../dat/army/default/default.lwa.in.h:23
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:79
+#: ../dat/map/dol/dol.map.in.h:110
 msgid "Pikemen"
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:24
 #: ../dat/army/default/default.lwa.in.h:24
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:91
 msgid "Scouts"
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:25
-#: ../dat/army/default/default.lwa.in.h:25
+#: ../dat/army/default/default.lwa.in.h:25 ../dat/map/dol/dol.map.in.h:121
 msgid "Spiders"
 msgstr ""
 
@@ -2813,7 +2824,7 @@ msgid ""
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:27
-#: ../dat/army/default/default.lwa.in.h:27
+#: ../dat/army/default/default.lwa.in.h:27 ../dat/map/dol/dol.map.in.h:150
 msgid "Unicorns"
 msgstr ""
 
@@ -2823,7 +2834,7 @@ msgid "Wizards"
 msgstr ""
 
 #: ../dat/army/bigdefault/bigdefault.lwa.in.h:29
-#: ../dat/army/default/default.lwa.in.h:29
+#: ../dat/army/default/default.lwa.in.h:29 ../dat/map/dol/dol.map.in.h:168
 msgid "Wolfriders"
 msgstr ""
 
@@ -2863,25 +2874,948 @@ msgstr ""
 msgid "The doublesized tileset based on Wesnoth tileset"
 msgstr ""
 
-#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:1
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:1 ../dat/ruinnames.xml.in.h:2
+msgid "Abandoned Town"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:3 ../dat/map/dol/dol.map.in.h:4
+#: ../dat/various/items/items.xml.in.h:1
+msgid "Armour of Gods"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:4
+msgid "Ausculum"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:5
+msgid "Baneblade"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:6
+msgid "Berserker Axe"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:7 ../dat/map/dol/dol.map.in.h:6
+#: ../dat/various/items/items.xml.in.h:2
+msgid "Beserker Helm"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:8 ../dat/map/dol/dol.map.in.h:7
+#: ../dat/various/items/items.xml.in.h:3
+msgid "Boots of Speed"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:9 ../dat/map/dol/dol.map.in.h:8
+#: ../dat/various/items/items.xml.in.h:4
+msgid "Bow of Eldros"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:10
+msgid "Capua"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:11
+msgid "Carales"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:12
+msgid "Carthage"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:13
 msgid ""
 "Carthage has lost her dominance on the sea and you, Hannibal, are convinced "
 "that the only hope of avoiding the destruction of your city is to move to "
 "the attack - through Spain and across the Alps."
 msgstr ""
 
-#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:2
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:14 ../dat/map/dol/dol.map.in.h:29
+#: ../dat/various/items/items.xml.in.h:5
+msgid "Chimes of Safety"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:15
+msgid "Clusium"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:16 ../dat/map/dol/dol.map.in.h:33
+#: ../dat/various/items/items.xml.in.h:6
+msgid "Crimson Banner"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:17
+msgid "Croton"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:18 ../dat/map/dol/dol.map.in.h:34
+#: ../dat/various/items/items.xml.in.h:7
+msgid "Crown of Loriel"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:19
+msgid "Crystal Rose"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:20 ../dat/map/dol/dol.map.in.h:36
+#: ../dat/various/items/items.xml.in.h:8
+msgid "Cup of Haste"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:21 ../dat/ruinnames.xml.in.h:14
+msgid "Dark Tower"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:22 ../dat/map/dol/dol.map.in.h:40
+#: ../dat/various/items/items.xml.in.h:9
+msgid "Darksword"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:23
+msgid "Defender's Helmet"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:24
+msgid "Defense Rapier"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:25
+msgid "Dwarven Hammer"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:27 ../dat/map/dol/dol.map.in.h:54
+#: ../dat/various/items/items.xml.in.h:10
+msgid "Eldros's Pouch"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:28
+msgid "Elven Sword"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:29
+msgid "Enchanted Axe"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:30
+msgid "Enchanted Dagger"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:31
+msgid "Enchanted Greatsword"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:32
+msgid "Enchanted Sword"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:33
+msgid "Evening Star"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:34
+msgid "Everburning Torch"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:35 ../dat/map/dol/dol.map.in.h:56
+#: ../dat/various/items/items.xml.in.h:11
+msgid "Everful Purse"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:36
+msgid "Field Plate"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:37 ../dat/map/dol/dol.map.in.h:58
+#: ../dat/various/items/items.xml.in.h:12
+msgid "Firesword"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:38
+msgid "Flaming Death"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:39
+msgid "Gades"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:40
+msgid "Gegovia"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:41
+msgid "Golden Mask"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:42
+msgid "Golden Shield"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:43
+msgid "Hadrumentum"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:44
+msgid "Hannibal"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:45
+msgid "Healthy Cloak"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:48
+msgid "Here in 255 BCE Marcus Atilius Regulus was defeated."
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:49
+msgid "Here in 279 BCE Pyrrhus won a \"Pyrrhic\" victory."
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:50 ../dat/signposts.xml.in.h:3
+msgid "Here lies a foolish warrior."
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:51 ../dat/map/dol/dol.map.in.h:84
+#: ../dat/various/items/items.xml.in.h:13
+msgid "Horn of Ages"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:52 ../dat/map/dol/dol.map.in.h:85
+#: ../dat/various/items/items.xml.in.h:14
+msgid "Horn of Plenty"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:53 ../dat/map/dol/dol.map.in.h:86
+#: ../dat/various/items/items.xml.in.h:15
+msgid "Horn of Siege"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:54 ../dat/map/dol/dol.map.in.h:88
+#: ../dat/various/items/items.xml.in.h:16
+msgid "Icesword"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:55
+msgid "Leptis"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:58 ../dat/map/dol/dol.map.in.h:95
+#: ../dat/various/items/items.xml.in.h:17
+msgid "Lightsword"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:59
+msgid "Lilybaeum"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:60
+msgid "Lixus"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:61 ../dat/map/dol/dol.map.in.h:96
+#: ../dat/various/items/items.xml.in.h:18
+msgid "Lock of Safety"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:62
+msgid "Mace of the Zealot"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:63 ../dat/map/dol/dol.map.in.h:98
+#: ../dat/various/items/items.xml.in.h:19
+msgid "Magic Carpet"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:64
+msgid "Magic Spear"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:65
+msgid "Massillia"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:66
+msgid "Messana"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:67
+msgid "Moon Blade"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:68
+#: ../dat/map/dol/dol.map.in.h:102
+msgid "Neutral"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:69
+msgid "New Carthage"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:70
+msgid "Numantia"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:71
+#: ../dat/map/dol/dol.map.in.h:103 ../dat/various/items/items.xml.in.h:20
+msgid "Okradon's Pouch"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:72
+msgid "Olisippo"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:73
+#: ../dat/map/dol/dol.map.in.h:104 ../dat/various/items/items.xml.in.h:21
+msgid "Orb of Loriel"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:74
+msgid "Orcish Dagger"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:75
+msgid "Orcish Greatsword"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:77
+msgid "Orcish Sword"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:78
+#: ../dat/map/dol/dol.map.in.h:109 ../dat/various/items/items.xml.in.h:22
+msgid "Phantom Steed"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:80
+msgid "Placentia"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:81
+msgid "Power Halberd"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:82
+msgid "Ranger Vest"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:83
+msgid "Ring of Endurance"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:84
+#: ../dat/map/dol/dol.map.in.h:114 ../dat/various/items/items.xml.in.h:23
+msgid "Ring of Power"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:85
+#: ../dat/map/dol/dol.map.in.h:115 ../dat/various/items/items.xml.in.h:24
+msgid "Ring of Travel"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:86
+msgid "Roma"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:87
+msgid "Rome"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:88
+msgid "Ruby Ring"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:89
+msgid "Saguntum"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:90
+#: ../dat/map/dol/dol.map.in.h:116 ../dat/various/items/items.xml.in.h:25
+msgid "Sceptre of Loriel"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:92
+msgid "Scroll of Waterwalking"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:93
+#: ../dat/map/dol/dol.map.in.h:117 ../dat/various/items/items.xml.in.h:29
+msgid "Shield of Courage"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:94
+msgid "Shield of Parrying"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:95
+msgid "Silver Cap"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:96
+#: ../dat/map/dol/dol.map.in.h:119 ../dat/various/items/items.xml.in.h:30
+msgid "Silver Purse"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:97
+msgid "Skull Crusher"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:98
+#: ../dat/map/dol/dol.map.in.h:120 ../dat/various/items/items.xml.in.h:31
+msgid "Spear of Ank"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:99
+#: ../dat/map/dol/dol.map.in.h:122 ../dat/various/items/items.xml.in.h:33
+msgid "Staff of Might"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:100
+#: ../dat/map/dol/dol.map.in.h:123 ../dat/various/items/items.xml.in.h:34
+msgid "Staff of Movement"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:101
+#: ../dat/map/dol/dol.map.in.h:124 ../dat/various/items/items.xml.in.h:35
+msgid "Staff of Ruling"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:102
+msgid "Studded Armour"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:103
+#: ../dat/map/dol/dol.map.in.h:126 ../dat/various/items/items.xml.in.h:36
+msgid "Sword of Death"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:104
+msgid "Sword of the Avatar"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:105
+msgid "Syracuse"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:106
+msgid "Taras"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:107
+msgid "Tarraco"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:108
+msgid "Temple of Apollo"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:109
+msgid "Temple of Belisama"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:110
+msgid "Temple of Io"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:111
+msgid "Temple of Jupitor"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:112
 msgid "The Second Punic War"
 msgstr ""
 
-#: ../dat/map/dol/dol.map.in.h:1
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:113
+msgid "The Sibyl's Cave"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:114
+msgid "Thrakil's Battleaxe"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:115
+#: ../dat/map/dol/dol.map.in.h:147 ../dat/various/items/items.xml.in.h:37
+msgid "Tome of War"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:116
+msgid "Trident of the Seas"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:117
+#: ../dat/map/dol/dol.map.in.h:149 ../dat/various/items/items.xml.in.h:38
+msgid "Troll Helm"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:118
+msgid "Tyrill lies to the southwest"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:119
+msgid "Wall Aegis"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:120
+#: ../dat/map/dol/dol.map.in.h:161 ../dat/various/items/items.xml.in.h:39
+msgid "Wand of Flight"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:121
+#: ../dat/map/dol/dol.map.in.h:165 ../dat/various/items/items.xml.in.h:40
+msgid "Wings of Flying"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:122
+#: ../dat/map/dol/dol.map.in.h:166 ../dat/various/items/items.xml.in.h:41
+msgid "Wings of the Eagle"
+msgstr ""
+
+#: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:123
+#: ../dat/map/dol/dol.map.in.h:167 ../dat/various/items/items.xml.in.h:42
+msgid "Witch's Broom"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:1 ../dat/ruinnames.xml.in.h:1
+msgid "Abandoned Temple"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:2 ../dat/ruinnames.xml.in.h:4
+msgid "Ancient Ruins"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:5 ../dat/ruinnames.xml.in.h:5
+msgid "Barren Ruins"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:9
+msgid "Bult"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:10
+msgid "Burd"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:11
+msgid "Burg"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:12
+msgid "Burgbane"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:13
+msgid "Burka"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:14
+msgid "Burl"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:15
+msgid "Burm"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:16
+msgid "Burn"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:17
+msgid "Burswept"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:18
+msgid "Burwell"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:19
+msgid "Cadmir"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:20
+msgid "Cardella"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:21
+msgid "Carden"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:22
+msgid "Carden Heights"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:23
+msgid "Cardola"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:24
+msgid "Cardwell"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:25
+msgid "Carlap"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:26
+msgid "Carn"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:27
+msgid "Carwald"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:30 ../dat/citynames.xml.in.h:17
+msgid "Cloudrock"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:31
+msgid "Colt"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:32 ../dat/ruinnames.xml.in.h:9
+msgid "Creepy Dungeon"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:35
+msgid "Crypt of the Lost Sailor"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:37
+msgid "Dardot"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:38 ../dat/ruinnames.xml.in.h:10
+msgid "Dark Cellars"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:39 ../dat/ruinnames.xml.in.h:11
+msgid "Dark Dungeon"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:41
+msgid "Dol Astal"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:42
 msgid "Dol Campaign"
 msgstr ""
 
-#: ../dat/map/dol/dol.map.in.h:2
+#: ../dat/map/dol/dol.map.in.h:43
+msgid "Dol Esta Primo"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:44
+msgid "Dol Flats"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:45
+msgid "Dol Gulash"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:46
+msgid "Dol Junta"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:47
+msgid "Dol Namaste"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:48
+msgid "Dol Nommen"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:49
+msgid "Dol Semaste"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:50
+msgid "Dol Tomad"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:51
+msgid "Dol Urdo"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:53
+msgid "Eastern Burg Pennisula"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:57 ../dat/ruinnames.xml.in.h:17
+msgid "Fallen Temple"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:59
+msgid "Foothills of the Vangalese"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:60
+msgid "Forest of Greff"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:63
+msgid "Glan"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:64
+msgid "Gortle"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:65
+msgid "Grafford"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:66
+msgid "Gralfagrad"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:67
+msgid "Greff"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:68
+msgid "Greff's Hollow"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:69
+msgid "Greffia"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:70
+msgid "Grefton"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:71
+msgid "Greygreffy"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:72
+msgid "Grief's Den"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:74
+msgid "Groffind"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:75
+msgid "Harren Gale"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:76
+msgid "Harren's Tomb"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:79
+msgid "Here starts the New Sea of Gor"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:80
+msgid "Here starts the Old Sea of Uttuk"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:81
+msgid "High Tomb of Gor"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:82
+msgid "Highmark"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:83
+msgid "Highvale"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:87
+msgid "Hurlon"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:89
+msgid "Item: Firesword"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:90
+msgid "Kettle Port"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:91
+msgid "Kettle Reach"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:94
+msgid "Light of Vangala"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:97
+msgid "Lord Burg"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:100
+msgid "Mount Card"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:101
+msgid "Murlon"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:105 ../dat/ruinnames.xml.in.h:24
+msgid "Orcish Hut"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:107
+msgid "Pattle Maw"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:111
+msgid "Plainsend"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:112
+msgid "Potsnam"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:113 ../dat/citynames.xml.in.h:72
+msgid "Quordia"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:118
+msgid "Shrine"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:125 ../dat/ruinnames.xml.in.h:33
+msgid "Stormy Tower"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:127
+msgid "The Ancient Spine of Uttuk the Mad"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:128
+msgid "The Bay of Gor"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:129
+msgid "The Beaches of Gor the Newer"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:130
+msgid "The Cardeans"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:131
+msgid "The Dol"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:132
+msgid "The Dol Burg Border"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:133
+msgid "The Dol Carden Border"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:134
+msgid "The Dol Valganese Border"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:135
 msgid ""
 "The Dol are a people surrounded by powerful enemies. Only the most valiant "
 "warlord can rescue them from their fate of subjugation."
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:136
+msgid "The Gorean Delta"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:137
+msgid "The Gorean Mountains"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:138
+msgid "The Great Plains of Greff"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:139
+msgid "The Greffians"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:140
+msgid "The High Carlands"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:141
+msgid "The Marches of Carden"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:142
+msgid "The Sacred Hill of Dol"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:143
+msgid "The Southern Passage"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:144
+msgid "The Southern Valganese Pass"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:145
+msgid "The Valganese"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:146 ../dat/citynames.xml.in.h:96
+msgid "Thornsdale"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:148
+msgid "Travellers beware! Your life is in danger!"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:151
+msgid "Vangala"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:152
+msgid "Veela"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:153
+msgid "Venya"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:154
+msgid "Verda Vala"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:155
+msgid "Vernia"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:156
+msgid "Vilma"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:157
+msgid "Vista Vala"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:158
+msgid "Volta's Keep"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:159
+msgid "Volta's Vale"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:160
+msgid "Voltima"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:162
+msgid "Warrot"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:163
+msgid "Western Burg Penninsula"
+msgstr ""
+
+#: ../dat/map/dol/dol.map.in.h:164
+msgid "Windtip"
 msgstr ""
 
 #: ../src/GameScenario.cpp:337
@@ -5408,106 +6342,6 @@ msgstr ""
 msgid "As your capital city has fallen, so shall you!"
 msgstr ""
 
-#: ../dat/various/items/items.xml.in.h:1
-msgid "Armour of Gods"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:2
-msgid "Beserker Helm"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:3
-msgid "Boots of Speed"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:4
-msgid "Bow of Eldros"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:5
-msgid "Chimes of Safety"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:6
-msgid "Crimson Banner"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:7
-msgid "Crown of Loriel"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:8
-msgid "Cup of Haste"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:9
-msgid "Darksword"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:10
-msgid "Eldros's Pouch"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:11
-msgid "Everful Purse"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:12
-msgid "Firesword"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:13
-msgid "Horn of Ages"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:14
-msgid "Horn of Plenty"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:15
-msgid "Horn of Siege"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:16
-msgid "Icesword"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:17
-msgid "Lightsword"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:18
-msgid "Lock of Safety"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:19
-msgid "Magic Carpet"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:20
-msgid "Okradon's Pouch"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:21
-msgid "Orb of Loriel"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:22
-msgid "Phantom Steed"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:23
-msgid "Ring of Power"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:24
-msgid "Ring of Travel"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:25
-msgid "Sceptre of Loriel"
-msgstr ""
-
 #: ../dat/various/items/items.xml.in.h:26
 msgid "Scroll of Great Tides"
 msgstr ""
@@ -5520,60 +6354,8 @@ msgstr ""
 msgid "Scroll of Thievery"
 msgstr ""
 
-#: ../dat/various/items/items.xml.in.h:29
-msgid "Shield of Courage"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:30
-msgid "Silver Purse"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:31
-msgid "Spear of Ank"
-msgstr ""
-
 #: ../dat/various/items/items.xml.in.h:32
 msgid "Staff of Many Steps"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:33
-msgid "Staff of Might"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:34
-msgid "Staff of Movement"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:35
-msgid "Staff of Ruling"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:36
-msgid "Sword of Death"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:37
-msgid "Tome of War"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:38
-msgid "Troll Helm"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:39
-msgid "Wand of Flight"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:40
-msgid "Wings of Flying"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:41
-msgid "Wings of the Eagle"
-msgstr ""
-
-#: ../dat/various/items/items.xml.in.h:42
-msgid "Witch's Broom"
 msgstr ""
 
 #: ../dat/citynames.xml.in.h:1
@@ -5638,10 +6420,6 @@ msgstr ""
 
 #: ../dat/citynames.xml.in.h:16
 msgid "Cliff Town"
-msgstr ""
-
-#: ../dat/citynames.xml.in.h:17
-msgid "Cloudrock"
 msgstr ""
 
 #: ../dat/citynames.xml.in.h:18
@@ -5860,10 +6638,6 @@ msgstr ""
 msgid "Pyronn"
 msgstr ""
 
-#: ../dat/citynames.xml.in.h:72
-msgid "Quordia"
-msgstr ""
-
 #: ../dat/citynames.xml.in.h:73
 msgid "Redhelm"
 msgstr ""
@@ -5954,10 +6728,6 @@ msgstr ""
 
 #: ../dat/citynames.xml.in.h:95
 msgid "Therryd"
-msgstr ""
-
-#: ../dat/citynames.xml.in.h:96
-msgid "Thornsdale"
 msgstr ""
 
 #: ../dat/citynames.xml.in.h:97
@@ -6160,10 +6930,6 @@ msgstr ""
 msgid "Danger!"
 msgstr ""
 
-#: ../dat/signposts.xml.in.h:3
-msgid "Here lies a foolish warrior."
-msgstr ""
-
 #: ../dat/signposts.xml.in.h:4
 msgid "Keep out!"
 msgstr ""
@@ -6180,24 +6946,8 @@ msgstr ""
 msgid "Visitors Welcome"
 msgstr ""
 
-#: ../dat/ruinnames.xml.in.h:1
-msgid "Abandoned Temple"
-msgstr ""
-
-#: ../dat/ruinnames.xml.in.h:2
-msgid "Abandoned Town"
-msgstr ""
-
 #: ../dat/ruinnames.xml.in.h:3
 msgid "Abandoned Village"
-msgstr ""
-
-#: ../dat/ruinnames.xml.in.h:4
-msgid "Ancient Ruins"
-msgstr ""
-
-#: ../dat/ruinnames.xml.in.h:5
-msgid "Barren Ruins"
 msgstr ""
 
 #: ../dat/ruinnames.xml.in.h:6
@@ -6212,18 +6962,6 @@ msgstr ""
 msgid "Creepy Crypt"
 msgstr ""
 
-#: ../dat/ruinnames.xml.in.h:9
-msgid "Creepy Dungeon"
-msgstr ""
-
-#: ../dat/ruinnames.xml.in.h:10
-msgid "Dark Cellars"
-msgstr ""
-
-#: ../dat/ruinnames.xml.in.h:11
-msgid "Dark Dungeon"
-msgstr ""
-
 #: ../dat/ruinnames.xml.in.h:12
 msgid "Dark Hole"
 msgstr ""
@@ -6232,20 +6970,12 @@ msgstr ""
 msgid "Dark Temple"
 msgstr ""
 
-#: ../dat/ruinnames.xml.in.h:14
-msgid "Dark Tower"
-msgstr ""
-
 #: ../dat/ruinnames.xml.in.h:15
 msgid "Deserted Monastery"
 msgstr ""
 
 #: ../dat/ruinnames.xml.in.h:16
 msgid "Dusty Caves"
-msgstr ""
-
-#: ../dat/ruinnames.xml.in.h:17
-msgid "Fallen Temple"
 msgstr ""
 
 #: ../dat/ruinnames.xml.in.h:18
@@ -6270,10 +7000,6 @@ msgstr ""
 
 #: ../dat/ruinnames.xml.in.h:23
 msgid "Old Dragon's Lair"
-msgstr ""
-
-#: ../dat/ruinnames.xml.in.h:24
-msgid "Orcish Hut"
 msgstr ""
 
 #: ../dat/ruinnames.xml.in.h:25
@@ -6306,10 +7032,6 @@ msgstr ""
 
 #: ../dat/ruinnames.xml.in.h:32
 msgid "Silent Lair"
-msgstr ""
-
-#: ../dat/ruinnames.xml.in.h:33
-msgid "Stormy Tower"
 msgstr ""
 
 #: ../dat/ruinnames.xml.in.h:34

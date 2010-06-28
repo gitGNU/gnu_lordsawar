@@ -5,155 +5,155 @@
 	</counter>
 	<itemlist>
 		<itemproto>
-			<d_name>Shield of Courage</d_name>
+			<_d_name>Shield of Courage</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Troll Helm</d_name>
+			<_d_name>Troll Helm</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Icesword</d_name>
+			<_d_name>Icesword</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Armour of Gods</d_name>
+			<_d_name>Armour of Gods</_d_name>
 			<d_bonus> ItemProto::ADD3STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Crimson Banner</d_name>
+			<_d_name>Crimson Banner</_d_name>
 			<d_bonus> ItemProto::ADD1STACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Crown of Loriel</d_name>
+			<_d_name>Crown of Loriel</_d_name>
 			<d_bonus> ItemProto::ADD1STACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Ring of Power</d_name>
+			<_d_name>Ring of Power</_d_name>
 			<d_bonus> ItemProto::ADD2STACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Horn of Ages</d_name>
+			<_d_name>Horn of Ages</_d_name>
 			<d_bonus> ItemProto::ADD2STACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Staff of Ruling</d_name>
+			<_d_name>Staff of Ruling</_d_name>
 			<d_bonus> ItemProto::ADD3STACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Wings of Flying</d_name>
+			<_d_name>Wings of Flying</_d_name>
 			<d_bonus> ItemProto::FLYSTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Wand of Flight</d_name>
+			<_d_name>Wand of Flight</_d_name>
 			<d_bonus> ItemProto::FLYSTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Ring of Travel</d_name>
+			<_d_name>Ring of Travel</_d_name>
 			<d_bonus> ItemProto::DOUBLEMOVESTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Phantom Steed</d_name>
+			<_d_name>Phantom Steed</_d_name>
 			<d_bonus> ItemProto::DOUBLEMOVESTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Staff of Movement</d_name>
+			<_d_name>Staff of Movement</_d_name>
 			<d_bonus> ItemProto::DOUBLEMOVESTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Darksword</d_name>
+			<_d_name>Darksword</_d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Beserker Helm</d_name>
+			<_d_name>Beserker Helm</_d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Bow of Eldros</d_name>
+			<_d_name>Bow of Eldros</_d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Sceptre of Loriel</d_name>
+			<_d_name>Sceptre of Loriel</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Magic Carpet</d_name>
+			<_d_name>Magic Carpet</_d_name>
 			<d_bonus> ItemProto::FLYSTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Cup of Haste</d_name>
+			<_d_name>Cup of Haste</_d_name>
 			<d_bonus> ItemProto::DOUBLEMOVESTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Boots of Speed</d_name>
+			<_d_name>Boots of Speed</_d_name>
 			<d_bonus> ItemProto::DOUBLEMOVESTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Eldros's Pouch</d_name>
+			<_d_name>Eldros's Pouch</_d_name>
 			<d_bonus> ItemProto::ADD2GOLDPERCITY</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Spear of Ank</d_name>
+			<_d_name>Spear of Ank</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Lock of Safety</d_name>
+			<_d_name>Lock of Safety</_d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Horn of Siege</d_name>
+			<_d_name>Horn of Siege</_d_name>
 			<d_bonus> ItemProto::ADD3STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Staff of Might</d_name>
+			<_d_name>Staff of Might</_d_name>
 			<d_bonus> ItemProto::ADD3STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Wings of the Eagle</d_name>
+			<_d_name>Wings of the Eagle</_d_name>
 			<d_bonus> ItemProto::FLYSTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Everful Purse</d_name>
+			<_d_name>Everful Purse</_d_name>
 			<d_bonus> ItemProto::ADD2GOLDPERCITY</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Okradon's Pouch</d_name>
+			<_d_name>Okradon's Pouch</_d_name>
 			<d_bonus> ItemProto::ADD4GOLDPERCITY</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Firesword</d_name>
+			<_d_name>Firesword</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Sword of Death</d_name>
+			<_d_name>Sword of Death</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Chimes of Safety</d_name>
+			<_d_name>Chimes of Safety</_d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Lightsword</d_name>
+			<_d_name>Lightsword</_d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Orb of Loriel</d_name>
+			<_d_name>Orb of Loriel</_d_name>
 			<d_bonus> ItemProto::ADD1STACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Witch's Broom</d_name>
+			<_d_name>Witch's Broom</_d_name>
 			<d_bonus> ItemProto::FLYSTACK</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Silver Purse</d_name>
+			<_d_name>Silver Purse</_d_name>
 			<d_bonus> ItemProto::ADD4GOLDPERCITY</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Tome of War</d_name>
+			<_d_name>Tome of War</_d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 		<itemproto>
-			<d_name>Horn of Plenty</d_name>
+			<_d_name>Horn of Plenty</_d_name>
 			<d_bonus> ItemProto::ADD2GOLDPERCITY ItemProto::ADD4GOLDPERCITY</d_bonus>
 		<d_uses_left>0</d_uses_left></itemproto>
 	</itemlist>
@@ -162,7 +162,7 @@
 		<d_neutral>8</d_neutral>
 		<player>
 			<d_id>1</d_id>
-			<d_name>The Greffians</d_name>
+			<_d_name>The Greffians</_d_name>
 			<d_color>80 195 28</d_color>
 			<d_armyset>1</d_armyset>
 			<d_gold>1000</d_gold>
@@ -353,7 +353,7 @@
 		</player>
 		<player>
 			<d_id>3</d_id>
-			<d_name>The Valganese</d_name>
+			<_d_name>The Valganese</_d_name>
 			<d_color>92 92 208</d_color>
 			<d_armyset>1</d_armyset>
 			<d_gold>1000</d_gold>
@@ -544,7 +544,7 @@
 		</player>
 		<player>
 			<d_id>4</d_id>
-			<d_name>The Dol</d_name>
+			<_d_name>The Dol</_d_name>
 			<d_color>252 160 0</d_color>
 			<d_armyset>1</d_armyset>
 			<d_gold>2500</d_gold>
@@ -735,7 +735,7 @@
 		</player>
 		<player>
 			<d_id>6</d_id>
-			<d_name>The Cardeans</d_name>
+			<_d_name>The Cardeans</_d_name>
 			<d_color>196 28 0</d_color>
 			<d_armyset>1</d_armyset>
 			<d_gold>1000</d_gold>
@@ -926,7 +926,7 @@
 		</player>
 		<player>
 			<d_id>7</d_id>
-			<d_name>Lord Burg</d_name>
+			<_d_name>Lord Burg</_d_name>
 			<d_color>0 0 0</d_color>
 			<d_armyset>1</d_armyset>
 			<d_gold>1000</d_gold>
@@ -1117,7 +1117,7 @@
 		</player>
 		<player>
 			<d_id>8</d_id>
-			<d_name>Neutral</d_name>
+			<_d_name>Neutral</_d_name>
 			<d_color>204 204 204</d_color>
 			<d_armyset>1</d_armyset>
 			<d_gold>1000</d_gold>
@@ -1635,7 +1635,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>9</d_id>
 			<d_x>18</d_x>
 			<d_y>5</d_y>
-			<d_name>Veela</d_name>
+			<_d_name>Veela</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -1646,7 +1646,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -1664,7 +1664,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -1689,7 +1689,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>11</d_id>
 			<d_x>79</d_x>
 			<d_y>7</d_y>
-			<d_name>Grafford</d_name>
+			<_d_name>Grafford</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -1700,7 +1700,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -1718,7 +1718,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -1736,7 +1736,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Minotaurs</d_name>
+					<_d_name>Minotaurs</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -1754,7 +1754,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Spiders</d_name>
+					<_d_name>Spiders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>12</d_production_cost>
 					<d_new_production_cost>1000</d_new_production_cost>
@@ -1775,7 +1775,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>12</d_id>
 			<d_x>24</d_x>
 			<d_y>8</d_y>
-			<d_name>Vernia</d_name>
+			<_d_name>Vernia</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -1786,7 +1786,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -1804,7 +1804,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -1829,7 +1829,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>14</d_id>
 			<d_x>84</d_x>
 			<d_y>9</d_y>
-			<d_name>Greygreffy</d_name>
+			<_d_name>Greygreffy</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -1840,7 +1840,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Cav.</d_name>
+					<_d_name>Heavy Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -1858,7 +1858,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pegasi</d_name>
+					<_d_name>Pegasi</_d_name>
 					<d_description></d_description>
 					<d_production_cost>12</d_production_cost>
 					<d_new_production_cost>1000</d_new_production_cost>
@@ -1883,7 +1883,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>15</d_id>
 			<d_x>102</d_x>
 			<d_y>9</d_y>
-			<d_name>Groffind</d_name>
+			<_d_name>Groffind</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -1894,7 +1894,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Cav.</d_name>
+					<_d_name>Light Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>6</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -1912,7 +1912,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Elephants</d_name>
+					<_d_name>Elephants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>15</d_production_cost>
 					<d_new_production_cost>1500</d_new_production_cost>
@@ -1937,7 +1937,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>17</d_id>
 			<d_x>55</d_x>
 			<d_y>12</d_y>
-			<d_name>Dardot</d_name>
+			<_d_name>Dardot</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -1948,7 +1948,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Cav.</d_name>
+					<_d_name>Light Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>6</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -1966,7 +1966,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Catapults</d_name>
+					<_d_name>Catapults</_d_name>
 					<d_description></d_description>
 					<d_production_cost>16</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -1984,7 +1984,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Griffins</d_name>
+					<_d_name>Griffins</_d_name>
 					<d_description></d_description>
 					<d_production_cost>15</d_production_cost>
 					<d_new_production_cost>1500</d_new_production_cost>
@@ -2002,7 +2002,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Unicorns</d_name>
+					<_d_name>Unicorns</_d_name>
 					<d_description></d_description>
 					<d_production_cost>15</d_production_cost>
 					<d_new_production_cost>1500</d_new_production_cost>
@@ -2023,7 +2023,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>20</d_id>
 			<d_x>43</d_x>
 			<d_y>16</d_y>
-			<d_name>Warrot</d_name>
+			<_d_name>Warrot</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2034,7 +2034,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -2052,7 +2052,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2070,7 +2070,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Dwarves</d_name>
+					<_d_name>Dwarves</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2088,7 +2088,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Giants</d_name>
+					<_d_name>Giants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -2109,7 +2109,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>21</d_id>
 			<d_x>93</d_x>
 			<d_y>16</d_y>
-			<d_name>Greff</d_name>
+			<_d_name>Greff</_d_name>
 			<d_owner>1</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2121,7 +2121,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Giant Bats</d_name>
+					<_d_name>Giant Bats</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>30</d_new_production_cost>
@@ -2139,7 +2139,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -2157,7 +2157,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Cav.</d_name>
+					<_d_name>Light Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>6</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -2175,7 +2175,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -2196,7 +2196,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>23</d_id>
 			<d_x>53</d_x>
 			<d_y>17</d_y>
-			<d_name>Glan</d_name>
+			<_d_name>Glan</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2207,7 +2207,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -2225,7 +2225,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2243,7 +2243,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Dwarves</d_name>
+					<_d_name>Dwarves</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2266,7 +2266,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>25</d_id>
 			<d_x>81</d_x>
 			<d_y>17</d_y>
-			<d_name>Gralfagrad</d_name>
+			<_d_name>Gralfagrad</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2277,7 +2277,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Cav.</d_name>
+					<_d_name>Light Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>6</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -2295,7 +2295,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pegasi</d_name>
+					<_d_name>Pegasi</_d_name>
 					<d_description></d_description>
 					<d_production_cost>12</d_production_cost>
 					<d_new_production_cost>1000</d_new_production_cost>
@@ -2313,7 +2313,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Elephants</d_name>
+					<_d_name>Elephants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>15</d_production_cost>
 					<d_new_production_cost>1500</d_new_production_cost>
@@ -2336,7 +2336,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>27</d_id>
 			<d_x>4</d_x>
 			<d_y>21</d_y>
-			<d_name>Vangala</d_name>
+			<_d_name>Vangala</_d_name>
 			<d_owner>3</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2348,7 +2348,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -2366,7 +2366,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -2384,7 +2384,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Wolfriders</d_name>
+					<_d_name>Wolfriders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -2402,7 +2402,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Cav.</d_name>
+					<_d_name>Heavy Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -2423,7 +2423,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>29</d_id>
 			<d_x>94</d_x>
 			<d_y>22</d_y>
-			<d_name>Grefton</d_name>
+			<_d_name>Grefton</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2434,7 +2434,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -2452,7 +2452,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Dwarves</d_name>
+					<_d_name>Dwarves</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2470,7 +2470,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2488,7 +2488,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Spiders</d_name>
+					<_d_name>Spiders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>12</d_production_cost>
 					<d_new_production_cost>1000</d_new_production_cost>
@@ -2509,7 +2509,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>30</d_id>
 			<d_x>55</d_x>
 			<d_y>23</d_y>
-			<d_name>Gortle</d_name>
+			<_d_name>Gortle</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2520,7 +2520,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -2538,7 +2538,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -2556,7 +2556,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Dwarves</d_name>
+					<_d_name>Dwarves</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2579,7 +2579,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>32</d_id>
 			<d_x>11</d_x>
 			<d_y>28</d_y>
-			<d_name>Vilma</d_name>
+			<_d_name>Vilma</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2590,7 +2590,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -2608,7 +2608,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Catapults</d_name>
+					<_d_name>Catapults</_d_name>
 					<d_description></d_description>
 					<d_production_cost>16</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -2626,7 +2626,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2649,7 +2649,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>33</d_id>
 			<d_x>58</d_x>
 			<d_y>28</d_y>
-			<d_name>Bult</d_name>
+			<_d_name>Bult</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2660,7 +2660,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -2678,7 +2678,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -2696,7 +2696,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2714,7 +2714,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Spiders</d_name>
+					<_d_name>Spiders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>12</d_production_cost>
 					<d_new_production_cost>1000</d_new_production_cost>
@@ -2735,7 +2735,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>34</d_id>
 			<d_x>104</d_x>
 			<d_y>28</d_y>
-			<d_name>Greffia</d_name>
+			<_d_name>Greffia</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2746,7 +2746,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -2764,7 +2764,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -2782,7 +2782,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Wolfriders</d_name>
+					<_d_name>Wolfriders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -2800,7 +2800,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Griffins</d_name>
+					<_d_name>Griffins</_d_name>
 					<d_description></d_description>
 					<d_production_cost>15</d_production_cost>
 					<d_new_production_cost>1500</d_new_production_cost>
@@ -2821,7 +2821,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>35</d_id>
 			<d_x>5</d_x>
 			<d_y>34</d_y>
-			<d_name>Venya</d_name>
+			<_d_name>Venya</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2832,7 +2832,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -2850,7 +2850,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Orcish Mob</d_name>
+					<_d_name>Orcish Mob</_d_name>
 					<d_description></d_description>
 					<d_production_cost>4</d_production_cost>
 					<d_new_production_cost>100</d_new_production_cost>
@@ -2875,7 +2875,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>36</d_id>
 			<d_x>28</d_x>
 			<d_y>34</d_y>
-			<d_name>Cloudrock</d_name>
+			<_d_name>Cloudrock</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2886,7 +2886,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -2904,7 +2904,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -2922,7 +2922,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Cav.</d_name>
+					<_d_name>Heavy Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -2940,7 +2940,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Giants</d_name>
+					<_d_name>Giants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -2961,7 +2961,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>37</d_id>
 			<d_x>47</d_x>
 			<d_y>35</d_y>
-			<d_name>Verda Vala</d_name>
+			<_d_name>Verda Vala</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -2972,7 +2972,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Catapults</d_name>
+					<_d_name>Catapults</_d_name>
 					<d_description></d_description>
 					<d_production_cost>16</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -2990,7 +2990,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Wolfriders</d_name>
+					<_d_name>Wolfriders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -3008,7 +3008,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Giants</d_name>
+					<_d_name>Giants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -3026,7 +3026,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Elephants</d_name>
+					<_d_name>Elephants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>15</d_production_cost>
 					<d_new_production_cost>1500</d_new_production_cost>
@@ -3047,7 +3047,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>38</d_id>
 			<d_x>42</d_x>
 			<d_y>36</d_y>
-			<d_name>Vista Vala</d_name>
+			<_d_name>Vista Vala</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -3058,7 +3058,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -3076,7 +3076,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -3094,7 +3094,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Giants</d_name>
+					<_d_name>Giants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -3117,7 +3117,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>39</d_id>
 			<d_x>3</d_x>
 			<d_y>38</d_y>
-			<d_name>Voltima</d_name>
+			<_d_name>Voltima</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -3128,7 +3128,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -3146,7 +3146,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -3164,7 +3164,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -3182,7 +3182,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Minotaurs</d_name>
+					<_d_name>Minotaurs</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -3203,7 +3203,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>43</d_id>
 			<d_x>33</d_x>
 			<d_y>44</d_y>
-			<d_name>Kettle Reach</d_name>
+			<_d_name>Kettle Reach</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -3214,7 +3214,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Wolfriders</d_name>
+					<_d_name>Wolfriders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -3232,7 +3232,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Giants</d_name>
+					<_d_name>Giants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -3250,7 +3250,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Elephants</d_name>
+					<_d_name>Elephants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>15</d_production_cost>
 					<d_new_production_cost>1500</d_new_production_cost>
@@ -3273,7 +3273,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>46</d_id>
 			<d_x>98</d_x>
 			<d_y>55</d_y>
-			<d_name>Highvale</d_name>
+			<_d_name>Highvale</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -3284,7 +3284,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -3302,7 +3302,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -3320,7 +3320,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -3338,7 +3338,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Giants</d_name>
+					<_d_name>Giants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -3359,7 +3359,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>47</d_id>
 			<d_x>17</d_x>
 			<d_y>56</d_y>
-			<d_name>Quordia</d_name>
+			<_d_name>Quordia</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -3370,7 +3370,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -3388,7 +3388,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Catapults</d_name>
+					<_d_name>Catapults</_d_name>
 					<d_description></d_description>
 					<d_production_cost>16</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -3406,7 +3406,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -3424,7 +3424,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Giants</d_name>
+					<_d_name>Giants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -3445,7 +3445,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>48</d_id>
 			<d_x>88</d_x>
 			<d_y>56</d_y>
-			<d_name>Highmark</d_name>
+			<_d_name>Highmark</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -3456,7 +3456,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -3474,7 +3474,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -3499,7 +3499,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>49</d_id>
 			<d_x>39</d_x>
 			<d_y>58</d_y>
-			<d_name>Kettle Port</d_name>
+			<_d_name>Kettle Port</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -3510,7 +3510,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Cav.</d_name>
+					<_d_name>Light Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>6</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -3528,7 +3528,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Cav.</d_name>
+					<_d_name>Heavy Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -3546,7 +3546,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Minotaurs</d_name>
+					<_d_name>Minotaurs</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -3564,7 +3564,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Elephants</d_name>
+					<_d_name>Elephants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>15</d_production_cost>
 					<d_new_production_cost>1500</d_new_production_cost>
@@ -3585,7 +3585,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>50</d_id>
 			<d_x>70</d_x>
 			<d_y>59</d_y>
-			<d_name>Carden Heights</d_name>
+			<_d_name>Carden Heights</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -3596,7 +3596,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -3614,7 +3614,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -3632,7 +3632,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Cav.</d_name>
+					<_d_name>Heavy Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -3650,7 +3650,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Spiders</d_name>
+					<_d_name>Spiders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>12</d_production_cost>
 					<d_new_production_cost>1000</d_new_production_cost>
@@ -3671,7 +3671,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>51</d_id>
 			<d_x>7</d_x>
 			<d_y>60</d_y>
-			<d_name>Thornsdale</d_name>
+			<_d_name>Thornsdale</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -3682,7 +3682,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -3700,7 +3700,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -3725,7 +3725,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>59</d_id>
 			<d_x>11</d_x>
 			<d_y>69</d_y>
-			<d_name>Dol Urdo</d_name>
+			<_d_name>Dol Urdo</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -3736,7 +3736,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -3754,7 +3754,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -3772,7 +3772,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Giants</d_name>
+					<_d_name>Giants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -3795,7 +3795,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>60</d_id>
 			<d_x>17</d_x>
 			<d_y>70</d_y>
-			<d_name>Dol Astal</d_name>
+			<_d_name>Dol Astal</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -3806,7 +3806,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Orcish Mob</d_name>
+					<_d_name>Orcish Mob</_d_name>
 					<d_description></d_description>
 					<d_production_cost>4</d_production_cost>
 					<d_new_production_cost>100</d_new_production_cost>
@@ -3824,7 +3824,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Cav.</d_name>
+					<_d_name>Light Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>6</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -3842,7 +3842,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -3865,7 +3865,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>61</d_id>
 			<d_x>23</d_x>
 			<d_y>70</d_y>
-			<d_name>Dol Semaste</d_name>
+			<_d_name>Dol Semaste</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -3876,7 +3876,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -3894,7 +3894,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Orcish Mob</d_name>
+					<_d_name>Orcish Mob</_d_name>
 					<d_description></d_description>
 					<d_production_cost>4</d_production_cost>
 					<d_new_production_cost>100</d_new_production_cost>
@@ -3912,7 +3912,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Minotaurs</d_name>
+					<_d_name>Minotaurs</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -3935,7 +3935,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>62</d_id>
 			<d_x>40</d_x>
 			<d_y>74</d_y>
-			<d_name>Pattle Maw</d_name>
+			<_d_name>Pattle Maw</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -3946,7 +3946,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Cav.</d_name>
+					<_d_name>Light Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>6</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -3964,7 +3964,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Cav.</d_name>
+					<_d_name>Heavy Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -3989,7 +3989,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>63</d_id>
 			<d_x>44</d_x>
 			<d_y>74</d_y>
-			<d_name>Potsnam</d_name>
+			<_d_name>Potsnam</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -4000,7 +4000,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Cav.</d_name>
+					<_d_name>Light Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>6</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -4018,7 +4018,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Wolfriders</d_name>
+					<_d_name>Wolfriders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -4043,7 +4043,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>65</d_id>
 			<d_x>72</d_x>
 			<d_y>75</d_y>
-			<d_name>Carden</d_name>
+			<_d_name>Carden</_d_name>
 			<d_owner>6</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -4055,7 +4055,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -4073,7 +4073,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -4091,7 +4091,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Wolfriders</d_name>
+					<_d_name>Wolfriders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -4109,7 +4109,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Minotaurs</d_name>
+					<_d_name>Minotaurs</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -4130,7 +4130,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>68</d_id>
 			<d_x>97</d_x>
 			<d_y>76</d_y>
-			<d_name>Carn</d_name>
+			<_d_name>Carn</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -4141,7 +4141,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -4159,7 +4159,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Orcish Mob</d_name>
+					<_d_name>Orcish Mob</_d_name>
 					<d_description></d_description>
 					<d_production_cost>4</d_production_cost>
 					<d_new_production_cost>100</d_new_production_cost>
@@ -4177,7 +4177,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -4195,7 +4195,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Minotaurs</d_name>
+					<_d_name>Minotaurs</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -4216,7 +4216,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>73</d_id>
 			<d_x>11</d_x>
 			<d_y>82</d_y>
-			<d_name>Dol Tomad</d_name>
+			<_d_name>Dol Tomad</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -4227,7 +4227,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Cav.</d_name>
+					<_d_name>Light Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>6</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -4245,7 +4245,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Minotaurs</d_name>
+					<_d_name>Minotaurs</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -4270,7 +4270,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>74</d_id>
 			<d_x>93</d_x>
 			<d_y>84</d_y>
-			<d_name>Cardella</d_name>
+			<_d_name>Cardella</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -4281,7 +4281,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -4299,7 +4299,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -4324,7 +4324,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>76</d_id>
 			<d_x>18</d_x>
 			<d_y>87</d_y>
-			<d_name>Dol Namaste</d_name>
+			<_d_name>Dol Namaste</_d_name>
 			<d_owner>4</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -4336,7 +4336,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -4354,7 +4354,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Catapults</d_name>
+					<_d_name>Catapults</_d_name>
 					<d_description></d_description>
 					<d_production_cost>16</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -4372,7 +4372,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -4390,7 +4390,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Giants</d_name>
+					<_d_name>Giants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -4411,7 +4411,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>77</d_id>
 			<d_x>28</d_x>
 			<d_y>87</d_y>
-			<d_name>Dol Nommen</d_name>
+			<_d_name>Dol Nommen</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -4422,7 +4422,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Giant Bats</d_name>
+					<_d_name>Giant Bats</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>30</d_new_production_cost>
@@ -4440,7 +4440,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -4458,7 +4458,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Orcish Mob</d_name>
+					<_d_name>Orcish Mob</_d_name>
 					<d_description></d_description>
 					<d_production_cost>4</d_production_cost>
 					<d_new_production_cost>100</d_new_production_cost>
@@ -4476,7 +4476,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Wolfriders</d_name>
+					<_d_name>Wolfriders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -4497,7 +4497,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>78</d_id>
 			<d_x>77</d_x>
 			<d_y>88</d_y>
-			<d_name>Carwald</d_name>
+			<_d_name>Carwald</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -4508,7 +4508,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -4526,7 +4526,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Catapults</d_name>
+					<_d_name>Catapults</_d_name>
 					<d_description></d_description>
 					<d_production_cost>16</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -4544,7 +4544,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -4562,7 +4562,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pegasi</d_name>
+					<_d_name>Pegasi</_d_name>
 					<d_description></d_description>
 					<d_production_cost>12</d_production_cost>
 					<d_new_production_cost>1000</d_new_production_cost>
@@ -4583,7 +4583,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>80</d_id>
 			<d_x>70</d_x>
 			<d_y>90</d_y>
-			<d_name>Carlap</d_name>
+			<_d_name>Carlap</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -4594,7 +4594,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -4612,7 +4612,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Spiders</d_name>
+					<_d_name>Spiders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>12</d_production_cost>
 					<d_new_production_cost>1000</d_new_production_cost>
@@ -4637,7 +4637,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>85</d_id>
 			<d_x>67</d_x>
 			<d_y>96</d_y>
-			<d_name>Cadmir</d_name>
+			<_d_name>Cadmir</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -4648,7 +4648,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -4666,7 +4666,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Orcish Mob</d_name>
+					<_d_name>Orcish Mob</_d_name>
 					<d_description></d_description>
 					<d_production_cost>4</d_production_cost>
 					<d_new_production_cost>100</d_new_production_cost>
@@ -4684,7 +4684,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Wolfriders</d_name>
+					<_d_name>Wolfriders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -4707,7 +4707,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>88</d_id>
 			<d_x>17</d_x>
 			<d_y>98</d_y>
-			<d_name>Dol Gulash</d_name>
+			<_d_name>Dol Gulash</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -4718,7 +4718,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -4736,7 +4736,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Orcish Mob</d_name>
+					<_d_name>Orcish Mob</_d_name>
 					<d_description></d_description>
 					<d_production_cost>4</d_production_cost>
 					<d_new_production_cost>100</d_new_production_cost>
@@ -4761,7 +4761,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>89</d_id>
 			<d_x>59</d_x>
 			<d_y>99</d_y>
-			<d_name>Cardwell</d_name>
+			<_d_name>Cardwell</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -4772,7 +4772,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -4790,7 +4790,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -4808,7 +4808,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Spiders</d_name>
+					<_d_name>Spiders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>12</d_production_cost>
 					<d_new_production_cost>1000</d_new_production_cost>
@@ -4831,7 +4831,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>92</d_id>
 			<d_x>68</d_x>
 			<d_y>107</d_y>
-			<d_name>Cardola</d_name>
+			<_d_name>Cardola</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -4842,7 +4842,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -4860,7 +4860,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -4878,7 +4878,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -4901,7 +4901,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>93</d_id>
 			<d_x>46</d_x>
 			<d_y>114</d_y>
-			<d_name>Windtip</d_name>
+			<_d_name>Windtip</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -4912,7 +4912,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -4930,7 +4930,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -4948,7 +4948,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -4966,7 +4966,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pegasi</d_name>
+					<_d_name>Pegasi</_d_name>
 					<d_description></d_description>
 					<d_production_cost>12</d_production_cost>
 					<d_new_production_cost>1000</d_new_production_cost>
@@ -4987,7 +4987,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>101</d_id>
 			<d_x>33</d_x>
 			<d_y>130</d_y>
-			<d_name>Plainsend</d_name>
+			<_d_name>Plainsend</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -4998,7 +4998,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -5016,7 +5016,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Orcish Mob</d_name>
+					<_d_name>Orcish Mob</_d_name>
 					<d_description></d_description>
 					<d_production_cost>4</d_production_cost>
 					<d_new_production_cost>100</d_new_production_cost>
@@ -5034,7 +5034,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Pikemen</d_name>
+					<_d_name>Pikemen</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -5057,7 +5057,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>105</d_id>
 			<d_x>79</d_x>
 			<d_y>132</d_y>
-			<d_name>Burwell</d_name>
+			<_d_name>Burwell</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -5068,7 +5068,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -5086,7 +5086,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -5104,7 +5104,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Minotaurs</d_name>
+					<_d_name>Minotaurs</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -5122,7 +5122,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Giants</d_name>
+					<_d_name>Giants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -5143,7 +5143,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>108</d_id>
 			<d_x>63</d_x>
 			<d_y>134</d_y>
-			<d_name>Burswept</d_name>
+			<_d_name>Burswept</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -5154,7 +5154,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -5172,7 +5172,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Orcish Mob</d_name>
+					<_d_name>Orcish Mob</_d_name>
 					<d_description></d_description>
 					<d_production_cost>4</d_production_cost>
 					<d_new_production_cost>100</d_new_production_cost>
@@ -5197,7 +5197,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>109</d_id>
 			<d_x>74</d_x>
 			<d_y>138</d_y>
-			<d_name>Burn</d_name>
+			<_d_name>Burn</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -5208,7 +5208,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Catapults</d_name>
+					<_d_name>Catapults</_d_name>
 					<d_description></d_description>
 					<d_production_cost>16</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -5226,7 +5226,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Cav.</d_name>
+					<_d_name>Heavy Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -5244,7 +5244,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Giants</d_name>
+					<_d_name>Giants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -5267,7 +5267,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>112</d_id>
 			<d_x>90</d_x>
 			<d_y>141</d_y>
-			<d_name>Burg</d_name>
+			<_d_name>Burg</_d_name>
 			<d_owner>7</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -5279,7 +5279,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -5297,7 +5297,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -5315,7 +5315,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -5333,7 +5333,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Dwarves</d_name>
+					<_d_name>Dwarves</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -5354,7 +5354,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>113</d_id>
 			<d_x>27</d_x>
 			<d_y>142</d_y>
-			<d_name>Murlon</d_name>
+			<_d_name>Murlon</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -5365,7 +5365,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -5383,7 +5383,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -5401,7 +5401,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Wolfriders</d_name>
+					<_d_name>Wolfriders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -5419,7 +5419,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Giants</d_name>
+					<_d_name>Giants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -5440,7 +5440,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>114</d_id>
 			<d_x>60</d_x>
 			<d_y>144</d_y>
-			<d_name>Burka</d_name>
+			<_d_name>Burka</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -5451,7 +5451,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -5469,7 +5469,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -5487,7 +5487,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Spiders</d_name>
+					<_d_name>Spiders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>12</d_production_cost>
 					<d_new_production_cost>1000</d_new_production_cost>
@@ -5510,7 +5510,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>115</d_id>
 			<d_x>80</d_x>
 			<d_y>144</d_y>
-			<d_name>Burl</d_name>
+			<_d_name>Burl</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -5521,7 +5521,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Cav.</d_name>
+					<_d_name>Light Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>6</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -5539,7 +5539,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Wolfriders</d_name>
+					<_d_name>Wolfriders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -5557,7 +5557,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Minotaurs</d_name>
+					<_d_name>Minotaurs</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -5580,7 +5580,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>117</d_id>
 			<d_x>66</d_x>
 			<d_y>147</d_y>
-			<d_name>Burd</d_name>
+			<_d_name>Burd</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -5591,7 +5591,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -5609,7 +5609,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Orcish Mob</d_name>
+					<_d_name>Orcish Mob</_d_name>
 					<d_description></d_description>
 					<d_production_cost>4</d_production_cost>
 					<d_new_production_cost>100</d_new_production_cost>
@@ -5634,7 +5634,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>118</d_id>
 			<d_x>76</d_x>
 			<d_y>148</d_y>
-			<d_name>Burm</d_name>
+			<_d_name>Burm</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -5645,7 +5645,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Archers</d_name>
+					<_d_name>Archers</_d_name>
 					<d_description></d_description>
 					<d_production_cost>7</d_production_cost>
 					<d_new_production_cost>400</d_new_production_cost>
@@ -5663,7 +5663,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Minotaurs</d_name>
+					<_d_name>Minotaurs</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -5688,7 +5688,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>119</d_id>
 			<d_x>31</d_x>
 			<d_y>149</d_y>
-			<d_name>Hurlon</d_name>
+			<_d_name>Hurlon</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -5699,7 +5699,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Cav.</d_name>
+					<_d_name>Light Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>6</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -5717,7 +5717,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Minotaurs</d_name>
+					<_d_name>Minotaurs</_d_name>
 					<d_description></d_description>
 					<d_production_cost>10</d_production_cost>
 					<d_new_production_cost>800</d_new_production_cost>
@@ -5735,7 +5735,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Elephants</d_name>
+					<_d_name>Elephants</_d_name>
 					<d_description></d_description>
 					<d_production_cost>15</d_production_cost>
 					<d_new_production_cost>1500</d_new_production_cost>
@@ -5758,7 +5758,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>120</d_id>
 			<d_x>41</d_x>
 			<d_y>150</d_y>
-			<d_name>Colt</d_name>
+			<_d_name>Colt</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -5769,7 +5769,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -5787,7 +5787,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Orcish Mob</d_name>
+					<_d_name>Orcish Mob</_d_name>
 					<d_description></d_description>
 					<d_production_cost>4</d_production_cost>
 					<d_new_production_cost>100</d_new_production_cost>
@@ -5812,7 +5812,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>898</d_id>
 			<d_x>10</d_x>
 			<d_y>103</d_y>
-			<d_name>Dol Junta</d_name>
+			<_d_name>Dol Junta</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -5823,7 +5823,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Wolfriders</d_name>
+					<_d_name>Wolfriders</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -5841,7 +5841,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Cav.</d_name>
+					<_d_name>Heavy Cav.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>8</d_production_cost>
 					<d_new_production_cost>500</d_new_production_cost>
@@ -5866,7 +5866,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>899</d_id>
 			<d_x>14</d_x>
 			<d_y>112</d_y>
-			<d_name>Dol Flats</d_name>
+			<_d_name>Dol Flats</_d_name>
 			<d_owner>8</d_owner>
 			<d_defense>1</d_defense>
 			<d_active_production_slot>-1</d_active_production_slot>
@@ -5877,7 +5877,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_vectoring>-1 -1</d_vectoring>
 			<slot>
 				<armyprodbase>
-					<d_name>Light Inf.</d_name>
+					<_d_name>Light Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>3</d_production_cost>
 					<d_new_production_cost>50</d_new_production_cost>
@@ -5895,7 +5895,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</slot>
 			<slot>
 				<armyprodbase>
-					<d_name>Heavy Inf.</d_name>
+					<_d_name>Heavy Inf.</_d_name>
 					<d_description></d_description>
 					<d_production_cost>5</d_production_cost>
 					<d_new_production_cost>300</d_new_production_cost>
@@ -5922,7 +5922,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>625</d_id>
 			<d_x>13</d_x>
 			<d_y>24</d_y>
-			<d_name>Light of Vangala</d_name>
+			<_d_name>Light of Vangala</_d_name>
 			<d_type>0</d_type>
 			<d_description>Light of Vangala can bless your armies or give you quests.</d_description>
 		</temple>
@@ -5930,7 +5930,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>627</d_id>
 			<d_x>75</d_x>
 			<d_y>82</d_y>
-			<d_name>Shrine</d_name>
+			<_d_name>Shrine</_d_name>
 			<d_type>0</d_type>
 			<d_description>Shrine can bless your armies or give you quests.</d_description>
 		</temple>
@@ -5938,7 +5938,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>637</d_id>
 			<d_x>16</d_x>
 			<d_y>77</d_y>
-			<d_name>Dol Esta Primo</d_name>
+			<_d_name>Dol Esta Primo</_d_name>
 			<d_type>0</d_type>
 			<d_description>Dol Esta Primo can bless your armies or give you quests.</d_description>
 		</temple>
@@ -5948,7 +5948,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>659</d_id>
 			<d_x>95</d_x>
 			<d_y>92</d_y>
-			<d_name>Stormy Tower</d_name>
+			<_d_name>Stormy Tower</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -5995,7 +5995,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>657</d_id>
 			<d_x>42</d_x>
 			<d_y>96</d_y>
-			<d_name>Fallen Temple</d_name>
+			<_d_name>Fallen Temple</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6007,7 +6007,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>652</d_id>
 			<d_x>86</d_x>
 			<d_y>33</d_y>
-			<d_name>Ancient Ruins</d_name>
+			<_d_name>Ancient Ruins</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6054,7 +6054,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>649</d_id>
 			<d_x>48</d_x>
 			<d_y>123</d_y>
-			<d_name>Barren Ruins</d_name>
+			<_d_name>Barren Ruins</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6101,7 +6101,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>646</d_id>
 			<d_x>58</d_x>
 			<d_y>37</d_y>
-			<d_name>Dark Dungeon</d_name>
+			<_d_name>Dark Dungeon</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6148,7 +6148,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>640</d_id>
 			<d_x>56</d_x>
 			<d_y>51</d_y>
-			<d_name>Orcish Hut</d_name>
+			<_d_name>Orcish Hut</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6192,9 +6192,9 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			</stack>
 			<reward>
 				<d_type>Reward::ITEM</d_type>
-				<d_name>Item: Firesword</d_name>
+				<_d_name>Item: Firesword</_d_name>
 				<item>
-					<d_name>Firesword</d_name>
+					<_d_name>Firesword</_d_name>
 					<d_plantable>false</d_plantable>
 					<d_id>645</d_id>
 					<d_type>0</d_type>
@@ -6206,7 +6206,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>639</d_id>
 			<d_x>49</d_x>
 			<d_y>77</d_y>
-			<d_name>Creepy Dungeon</d_name>
+			<_d_name>Creepy Dungeon</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6218,7 +6218,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>638</d_id>
 			<d_x>3</d_x>
 			<d_y>88</d_y>
-			<d_name>Harren's Tomb</d_name>
+			<_d_name>Harren's Tomb</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6265,7 +6265,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>636</d_id>
 			<d_x>18</d_x>
 			<d_y>82</d_y>
-			<d_name>Harren Gale</d_name>
+			<_d_name>Harren Gale</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6312,7 +6312,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>635</d_id>
 			<d_x>29</d_x>
 			<d_y>4</d_y>
-			<d_name>Volta's Vale</d_name>
+			<_d_name>Volta's Vale</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6359,7 +6359,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>634</d_id>
 			<d_x>74</d_x>
 			<d_y>19</d_y>
-			<d_name>Grief's Den</d_name>
+			<_d_name>Grief's Den</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6406,7 +6406,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>633</d_id>
 			<d_x>108</d_x>
 			<d_y>16</d_y>
-			<d_name>Greff's Hollow</d_name>
+			<_d_name>Greff's Hollow</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6453,7 +6453,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>632</d_id>
 			<d_x>64</d_x>
 			<d_y>78</d_y>
-			<d_name>Dark Cellars</d_name>
+			<_d_name>Dark Cellars</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6465,7 +6465,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>631</d_id>
 			<d_x>102</d_x>
 			<d_y>66</d_y>
-			<d_name>Abandoned Temple</d_name>
+			<_d_name>Abandoned Temple</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6477,7 +6477,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>630</d_id>
 			<d_x>106</d_x>
 			<d_y>125</d_y>
-			<d_name>Burgbane</d_name>
+			<_d_name>Burgbane</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6524,7 +6524,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>629</d_id>
 			<d_x>3</d_x>
 			<d_y>151</d_y>
-			<d_name>High Tomb of Gor</d_name>
+			<_d_name>High Tomb of Gor</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6571,7 +6571,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>628</d_id>
 			<d_x>91</d_x>
 			<d_y>117</d_y>
-			<d_name>Crypt of the Lost Sailor</d_name>
+			<_d_name>Crypt of the Lost Sailor</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6618,7 +6618,7 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>843</d_id>
 			<d_x>18</d_x>
 			<d_y>34</d_y>
-			<d_name>Volta's Keep</d_name>
+			<_d_name>Volta's Keep</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
 			<d_sage>false</d_sage>
@@ -6669,133 +6669,133 @@ c9aec8c4c9b6c9c8c0afcaaeaeadadb2adadaccaadb6c0cbcbc9ba83050209070202050703000702
 			<d_id>930</d_id>
 			<d_x>5</d_x>
 			<d_y>147</d_y>
-			<d_name>Travellers beware!  Your life is in danger!</d_name>
+			<_d_name>Travellers beware!  Your life is in danger!</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>932</d_id>
 			<d_x>19</d_x>
 			<d_y>123</d_y>
-			<d_name>The Dol Burg Border</d_name>
+			<_d_name>The Dol Burg Border</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>933</d_id>
 			<d_x>93</d_x>
 			<d_y>118</d_y>
-			<d_name>Eastern Burg Pennisula</d_name>
+			<_d_name>Eastern Burg Pennisula</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>934</d_id>
 			<d_x>60</d_x>
 			<d_y>15</d_y>
-			<d_name>Forest of Greff</d_name>
+			<_d_name>Forest of Greff</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>935</d_id>
 			<d_x>18</d_x>
 			<d_y>20</d_y>
-			<d_name>Foothills of the Vangalese</d_name>
+			<_d_name>Foothills of the Vangalese</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>936</d_id>
 			<d_x>9</d_x>
 			<d_y>89</d_y>
-			<d_name>The Sacred Hill of Dol</d_name>
+			<_d_name>The Sacred Hill of Dol</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>937</d_id>
 			<d_x>64</d_x>
 			<d_y>69</d_y>
-			<d_name>Mount Card</d_name>
+			<_d_name>Mount Card</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>938</d_id>
 			<d_x>85</d_x>
 			<d_y>35</d_y>
-			<d_name>Here starts the Old Sea of Uttuk</d_name>
+			<_d_name>Here starts the Old Sea of Uttuk</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>939</d_id>
 			<d_x>33</d_x>
 			<d_y>105</d_y>
-			<d_name>Here starts the New Sea of Gor</d_name>
+			<_d_name>Here starts the New Sea of Gor</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>940</d_id>
 			<d_x>44</d_x>
 			<d_y>114</d_y>
-			<d_name>Western Burg Penninsula</d_name>
+			<_d_name>Western Burg Penninsula</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>941</d_id>
 			<d_x>95</d_x>
 			<d_y>61</d_y>
-			<d_name>The High Carlands</d_name>
+			<_d_name>The High Carlands</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>942</d_id>
 			<d_x>21</d_x>
 			<d_y>48</d_y>
-			<d_name>The Dol Valganese Border</d_name>
+			<_d_name>The Dol Valganese Border</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>943</d_id>
 			<d_x>49</d_x>
 			<d_y>82</d_y>
-			<d_name>The Dol Carden Border</d_name>
+			<_d_name>The Dol Carden Border</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>944</d_id>
 			<d_x>42</d_x>
 			<d_y>24</d_y>
-			<d_name>The Great Plains of Greff</d_name>
+			<_d_name>The Great Plains of Greff</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>945</d_id>
 			<d_x>44</d_x>
 			<d_y>92</d_y>
-			<d_name>The Ancient Spine of Uttuk the Mad</d_name>
+			<_d_name>The Ancient Spine of Uttuk the Mad</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>948</d_id>
 			<d_x>32</d_x>
 			<d_y>50</d_y>
-			<d_name>The Southern Valganese Pass</d_name>
+			<_d_name>The Southern Valganese Pass</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>949</d_id>
 			<d_x>87</d_x>
 			<d_y>74</d_y>
-			<d_name>The Marches of Carden</d_name>
+			<_d_name>The Marches of Carden</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>950</d_id>
 			<d_x>94</d_x>
 			<d_y>31</d_y>
-			<d_name>The Southern Passage</d_name>
+			<_d_name>The Southern Passage</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>951</d_id>
 			<d_x>44</d_x>
 			<d_y>141</d_y>
-			<d_name>The Bay of Gor</d_name>
+			<_d_name>The Bay of Gor</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>952</d_id>
 			<d_x>81</d_x>
 			<d_y>103</d_y>
-			<d_name>The Beaches of Gor the Newer</d_name>
+			<_d_name>The Beaches of Gor the Newer</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>953</d_id>
 			<d_x>64</d_x>
 			<d_y>103</d_y>
-			<d_name>The Gorean Delta</d_name>
+			<_d_name>The Gorean Delta</_d_name>
 		</signpost>
 		<signpost>
 			<d_id>954</d_id>
 			<d_x>88</d_x>
 			<d_y>150</d_y>
-			<d_name>The Gorean Mountains</d_name>
+			<_d_name>The Gorean Mountains</_d_name>
 		</signpost>
 	</signpostlist>
 	<roadlist>
