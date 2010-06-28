@@ -282,7 +282,7 @@ void ShieldSetWindow::on_new_shieldset_activated()
 void ShieldSetWindow::on_load_shieldset_activated()
 {
   Gtk::FileChooserDialog chooser(*window, 
-				 _("Choose an Shieldset to Load"));
+				 _("Choose a Shieldset to Load"));
   Gtk::FileFilter sav_filter;
   sav_filter.add_pattern("*" + SHIELDSET_EXT);
   chooser.set_filter(sav_filter);
