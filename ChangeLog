@@ -3,6 +3,7 @@
 	* improved AI a little bit more.
 	* fixed bug wrt right-clicking and then simultaneously left-clicking
 	a ruin/city/temple/signpost.
+	* added version info to the shieldset/armyset/cityset/tileset files.
 
 2010-06-22  Ben Asselstine  <benasselstine@hushmail.com>
 
