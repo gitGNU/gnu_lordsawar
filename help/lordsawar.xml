@@ -118,117 +118,263 @@ The objective of the game is to conquer all of the cities on the map.  This is a
 <para>
 <itemizedlist>
 <listitem>
-A - Temple
+Temple
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_black_plus.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 A Temple is where stacks can go to get blessed, and heroes can find quests.
 </para>
 </listitem>
 <listitem>
-B - Port
+Port
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_black_equals.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 A Port is where army units can get on or off ships.
 </para>
 </listitem>
 <listitem>
-C - Selected Stack
+Selected Stack
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_black_minus.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 Army units must be first selected (with left-click) to command them.  This stack has one army unit (shown by the length of the flag).
 </para>
 </listitem>
 <listitem>
-D - City
+City
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_black_pipe.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 A City is a place that creates Army units, and provides valuable income.
 </para>
 </listitem>
 <listitem>
-E - Unselected Stack
+Unselected Stack
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_black_asterisk.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 This unselected stack has one army unit.
 </para>
 </listitem>
 <listitem>
-F - Ruin
+Ruin
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_black_hash.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 A Ruin is a place a Hero can go to risk life for valuable rewards.
 </para>
 </listitem>
 <listitem>
-G - Hills
+Hills
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_black_caret.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 Some army units can move swiftly through hills, although most cannot.
 </para>
 </listitem>
 <listitem>
-H - Mountains
+Mountains
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_black_tilde.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 No army unit can move through mountains, they must be traversed around, or flown over.
 </para>
 </listitem>
 <listitem>
-I - Forest
+Forest
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_black_lt.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 Some army units can move swiftly through forests, although most cannot.
 </para>
 </listitem>
 <listitem>
-J - Swamp
+Swamp
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_black_gt.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 No army units can travel swiftly through swamp, although it can be flown over by stacks that have the gift of flight.
 </para>
 </listitem>
 <listitem>
-K - Signpost
+Signpost
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_white_plus.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 Signposts contain information that the player can view by right-clicking on it.
 </para>
 </listitem>
 <listitem>
-L - Turn Indicator
+Turn Indicator
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_white_equals.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 The Turn Indicator shows what round it is, and who's turn it is.
 </para>
 </listitem>
 <listitem>
-M - Miniature Map
+Miniature Map
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_white_minus.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 The Miniature Map is the zoomed out view of the entire map.
 </para>
 </listitem>
 <listitem>
-N - Zoomed-In Area
+Zoomed-In Area
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_white_pipe.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 The Zoomed-In Area denote by a white box is show on the left.
 </para>
 </listitem>
 <listitem>
-O - Moves Left for the Army Unit
+Moves Left for the Army Unit
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_white_asterisk.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 This value is the number of movement points the army unit has left.
 </para>
 </listitem>
 <listitem>
-P - Selected Army Unit in Stack
+Selected Army Unit in Stack
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_white_hash.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 The button appears pushed-in, meaning that this army unit is part of the stack.  Other army units may appear to the right of this unit, in their own button.  There can be up to 8 army units in a stack.
 </para>
 </listitem>
 <listitem>
-Q - Moves Left for the Stack
+Moves Left for the Stack
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_white_caret.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 This value is the number of movement points that the stack has left.
 </para>
 </listitem>
 <listitem>
-R - Movement Bonus
+Movement Bonus
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_white_tilde.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 This graphic denotes which terrain the stack can move through swiftly.  In this case the stack has the gift of flight.
 </para>
 </listitem>
 <listitem>
-S - Water
+Water
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_white_lt.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 <para>
 Only army units on ships can go in the water, although some army units can fly over the water.
+</para>
+</listitem>
+<listitem>
+Bag
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_symbol_white_gt.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
+<para>
+A bag holds items that heroes can use.  Upon the death of a hero, all of the hero's items are left in a bag on the ground.
 </para>
 </listitem>
 </itemizedlist>
@@ -900,7 +1046,7 @@ When the player right-clicks on an army unit in a stack, the following informati
 </figure>
 
 <para>
-Here we can see a unit of Giants.  It fights with a strength of 5 (more strength is better), and has 18 movement points left of a maximum of 18.  The Giants cost the player 10 gold pieces per turn.
+Here we can see a unit of Light Infantry.  It fights with a strength of 2 (more strength is better), and has 4 movement points left of a maximum of 12.  The Light Infantry unit costs the player 3 gold pieces every turn.
 </para>
 
 <para>

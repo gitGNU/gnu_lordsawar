@@ -32,5 +32,24 @@ help_DATA = city_window.png conquer_city.png buy_production.png \
 	mousecursor_walk.png \
 	mousecursor_boat.png \
 	mousecursor_goto.png \
-	mousecursor_rook.png 
-
+	mousecursor_rook.png \
+	main_screen_symbol_black_asterisk.png \
+	main_screen_symbol_black_caret.png \
+	main_screen_symbol_black_equals.png \
+	main_screen_symbol_black_gt.png \
+	main_screen_symbol_black_hash.png \
+	main_screen_symbol_black_lt.png \
+	main_screen_symbol_black_minus.png \
+	main_screen_symbol_black_pipe.png \
+	main_screen_symbol_black_plus.png \
+	main_screen_symbol_black_tilde.png \
+	main_screen_symbol_white_asterisk.png \
+	main_screen_symbol_white_caret.png \
+	main_screen_symbol_white_equals.png \
+	main_screen_symbol_white_gt.png \
+	main_screen_symbol_white_hash.png \
+	main_screen_symbol_white_lt.png \
+	main_screen_symbol_white_minus.png \
+	main_screen_symbol_white_pipe.png \
+	main_screen_symbol_white_plus.png \
+	main_screen_symbol_white_tilde.png
