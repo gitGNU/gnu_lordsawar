@@ -9,7 +9,8 @@ if [ "x$tmpdir" != "x" ]; then
   tarball=$file.tar
   origdir=`pwd`
   cd $tmpdir
-  tar -cvf $tarball --exclude=$tarball *
+  tmpfiles=`ls $file * | uniq | sort -r`
+  tar -cvf $tarball --exclude=$tarball $tmpfiles
   cd $origdir
   cp -f $tmpdir/$tarball $1
   rm -f $tmpdir/*
