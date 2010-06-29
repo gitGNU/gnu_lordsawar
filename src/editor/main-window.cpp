@@ -1109,7 +1109,6 @@ void MainWindow::on_edit_smallmap_activated()
 void MainWindow::on_edit_tileset_activated()
 {
   Gtk::Main *kit = Gtk::Main::instance();;
-  GameMap *gm = GameMap::getInstance();
   Tileset *tileset = GameMap::getTileset();
   std::string file = tileset->getConfigurationFile();
   TileSetWindow* tileset_window = new TileSetWindow (file);

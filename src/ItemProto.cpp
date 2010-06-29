@@ -49,8 +49,8 @@ ItemProto::ItemProto(std::string name, guint32 id)
 }
 
 ItemProto::ItemProto(const ItemProto& orig)
-:Renamable(orig), d_bonus(orig.d_bonus), d_type_id(orig.d_type_id),
-    d_uses_left(orig.d_uses_left)
+:Renamable(orig), d_bonus(orig.d_bonus), d_uses_left(orig.d_uses_left),
+    d_type_id(orig.d_type_id)
 {
 }
 

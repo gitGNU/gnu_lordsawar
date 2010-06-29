@@ -146,7 +146,7 @@ lordsawar_DEPENDENCIES = \
   liblordsawarnet.la \
   gui/liblwgui.la
 
-AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\" -Wunused-function
+AM_CXXFLAGS = -Wall -Wunused-function
 INCLUDES = $(SDL_CFLAGS) \
     $(GTKMM_CFLAGS) \
     $(LIBGNET_CFLAGS) \

@@ -164,7 +164,7 @@ localedir = $(datadir)/locale
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 
-AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\"
+AM_CXXFLAGS = -Wall
 INCLUDES = $(GTKMM_CFLAGS) \
     $(SDL_CFLAGS) \
     -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' -I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/src/gui/

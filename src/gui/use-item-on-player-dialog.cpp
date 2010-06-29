@@ -92,6 +92,7 @@ Player *UseItemOnPlayerDialog::grabSelectedPlayer()
         Gtk::TreeModel::Row row = *it;
         return row[players_columns.player];
       }
+    return NULL;
 }
 
 void UseItemOnPlayerDialog::hide()

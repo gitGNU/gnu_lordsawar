@@ -269,7 +269,7 @@ bool Tar_Helper::replaceFile(std::string filename, std::string newfilename)
   File::create_dir(newtmpoutdir);
   std::string new_tar_file = newtmpoutdir +"/" + File::get_basename(t->pathname);
   char *f = strdup (new_tar_file.c_str());
-  int retval = tar_open (&new_tar, f, NULL, m, perms, TAR_GNU);
+  tar_open (&new_tar, f, NULL, m, perms, TAR_GNU);
   free (f);
   std::list<std::string> files = getFilenames();
   std::list<std::string> delfiles;
