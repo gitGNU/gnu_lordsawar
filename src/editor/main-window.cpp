@@ -837,6 +837,7 @@ void MainWindow::on_load_map_activated()
 	bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
         needs_saving = false;
         update_window_title();
+        fill_players();
     }
 }
 
@@ -1798,6 +1799,7 @@ void MainWindow::on_import_map_activated()
 
 	init_map_state();
 	bigmap->screen_size_changed(bigmap_drawingarea->get_allocation()); 
+        fill_players();
     }
 }
       
