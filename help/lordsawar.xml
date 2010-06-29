@@ -25,7 +25,7 @@
 			<affiliation>
 				<orgname>LordsAWar! Development Team</orgname> 
 				<address>
-					<email>benasselstine@gmail.com</email>
+					<email>lordsawar-discuss@nongnu.org</email>
 				</address>
 			</affiliation>
 		</author> 
@@ -36,7 +36,7 @@
 	<legalnotice id="feedback"> 
 		<title>Feedback Information</title> 
 		<para>
-                        To report a bug or make a suggestion regarding this application or this documentation, see the <ulink type="help" url="http://sv.gnu.org/p/lordsawar">LordsAWar! Project Page</ulink>.
+                        To report a bug or make a suggestion regarding the game, the editors, or this documentation, see the <ulink type="help" url="http://sv.gnu.org/p/lordsawar">LordsAWar! Project Page</ulink> or send it in a mail to <ulink type="help" url="mailto:lordsawar-discuss@nongnu.org">lordsawar-discuss@nongnu.org</ulink>.  Go ahead and tell us how we're doing.  We like that.
 		</para>
 	</legalnotice>
 </articleinfo>
