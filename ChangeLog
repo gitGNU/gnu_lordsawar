@@ -1,6 +1,11 @@
 2010-06-29  Ben Asselstine  <benasselstine@hushmail.com>
 
 	* updated user's manual to reflect changes in terrain artwork.
+	* fixed bug in scenario editor where the player shields weren't
+	getting updated when we loaded a map or imported a saved game.
+	* fixed a bug in the scenario editor relating to moving stacks that
+	are on roads.  now moving the stack first if there's a road
+	underneath.
 
 2010-06-28  Ben Asselstine  <benasselstine@hushmail.com>
 
