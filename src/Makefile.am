@@ -146,7 +146,7 @@ lordsawar_DEPENDENCIES = \
   liblordsawarnet.la \
   gui/liblwgui.la
 
-AM_CXXFLAGS = -Wall -Wunused-function
+AM_CXXFLAGS = -Wall
 INCLUDES = $(SDL_CFLAGS) \
     $(GTKMM_CFLAGS) \
     $(LIBGNET_CFLAGS) \
