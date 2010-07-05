@@ -3120,9 +3120,9 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<d_id>123</d_id>
 			<d_x>77</d_x>
 			<d_y>36</d_y>
-			<_d_name>Temple of Jupitor</_d_name>
+			<_d_name>Temple of Jupiter</_d_name>
 			<d_type>0</d_type>
-			<d_description>The Temple of Jupitor can bless your armies or give you quests.</d_description>
+			<d_description>The Temple of Jupiter can bless your armies or give you quests.</d_description>
 		</temple>
 	</templelist>
 	<ruinlist>
@@ -3343,7 +3343,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>28</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3354,7 +3354,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>30</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3365,7 +3365,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>32</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3387,7 +3387,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>36</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3398,7 +3398,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>38</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3409,7 +3409,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>40</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3420,7 +3420,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>42</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3431,7 +3431,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>44</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3442,7 +3442,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>46</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3453,7 +3453,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>48</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3464,7 +3464,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>50</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3475,7 +3475,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>52</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3486,7 +3486,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>54</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3497,7 +3497,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>56</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3508,7 +3508,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>58</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3519,7 +3519,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>60</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3530,7 +3530,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>62</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3541,18 +3541,18 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>64</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
 			<d_type>Reward::ITEM</d_type>
 			<_d_name></_d_name>
 			<item>
-				<_d_name>Evening Star</_d_name>
+				<_d_name>Morningstar</_d_name>
 				<d_plantable>false</d_plantable>
 				<d_id>66</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3563,7 +3563,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>68</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3607,7 +3607,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>76</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3662,7 +3662,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>240</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
@@ -3673,7 +3673,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 				<d_plantable>false</d_plantable>
 				<d_id>242</d_id>
 				<d_type>0</d_type>
-				<d_bonus></d_bonus>
+				<d_bonus> ItemProto::ADD1STR</d_bonus>
 			<d_uses_left>0</d_uses_left></item>
 		</reward>
 		<reward>
