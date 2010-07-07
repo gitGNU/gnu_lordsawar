@@ -261,6 +261,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 		    }
 		  if (path_calculator)
 		    delete path_calculator;
+                  stack = active->getActivestack();
 		  path_calculator = new PathCalculator(stack);
 		  draw(Playerlist::getViewingplayer());
 		  stack_grouped_or_ungrouped.emit(stack);
