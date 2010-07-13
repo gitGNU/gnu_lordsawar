@@ -2,7 +2,7 @@
 # Copyright (C) 2010 Yoyodyne, Inc & Joe Hansen.
 # This file is distributed under the same license as the lordsawar package.
 # Joe Hansen <joedalton2@yahoo.dk>, 2008, 2009, 2010.
-# Korrekturlæsning: Lars Christian Jensen, 2009.
+# Korrekturlæsning: Lars Christian Jensen, 2009, 2010.
 # Korrekturlæsning: Ask Hjort Larsen, 2009, 2010.
 #
 # Konventioner
@@ -16,16 +16,17 @@
 # sack -> brænde
 # signpost -> vejskilt
 #
-# afklar om pic er picture eller punkt
+# pic er en forkortelse for picture
 # husk at få rettet ../../lordsawar/lordsawar/trunk/po/../src/gui/surrender-dialog.cpp:47
 #   engelsk fejl.
 # "cancel non-hero" (hvad betyder cancel her).
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: lordsawar 0.1.9-pre3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-03 09:18+0100\n"
-"PO-Revision-Date: 2010-07-05 21:55-0400\n"
+"PO-Revision-Date: 2010-07-13 21:55-0400\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -2511,31 +2512,31 @@ msgstr "_Gendan"
 # afklar om pic er picture eller punkt
 #: ../dat/glade/editor/cityset-window.ui.h:1
 msgid "<b>(1 pic)</b> Port Picture:"
-msgstr "<b>(1 punkt)</b> havnebillede:"
+msgstr "<b>(1 billed)</b> havnebillede:"
 
 #: ../dat/glade/editor/cityset-window.ui.h:2
 msgid "<b>(1 pic)</b> Signpost Picture:"
-msgstr "<b>(1 punkt)</b> vejskiltbillede:"
+msgstr "<b>(1 billed)</b> vejskiltbillede:"
 
 #: ../dat/glade/editor/cityset-window.ui.h:3
 msgid "<b>(1 pic)</b> Temple Picture:"
-msgstr "<b>(1 punkt)</b> tempelbillede:"
+msgstr "<b>(1 billed)</b> tempelbillede:"
 
 #: ../dat/glade/editor/cityset-window.ui.h:4
 msgid "<b>(3 pics)</b> Ruins Picture:"
-msgstr "<b>(3 punkter)</b> ruinbillede:"
+msgstr "<b>(3 billeder)</b> ruinbillede:"
 
 #: ../dat/glade/editor/cityset-window.ui.h:5
 msgid "<b>(8 pics) </b>Razed Cities Picture:"
-msgstr "<b>(8 punkter)</b> billede af raserede byer:"
+msgstr "<b>(8 billeder)</b> billede af raserede byer:"
 
 #: ../dat/glade/editor/cityset-window.ui.h:6
 msgid "<b>(8 pics)</b> Towers Picture:"
-msgstr "<b>(8 punkter)</b> tårnbillede:"
+msgstr "<b>(8 billeder)</b> tårnbillede:"
 
 #: ../dat/glade/editor/cityset-window.ui.h:7
 msgid "<b>(9 pics on a row) </b>Cities Picture:"
-msgstr "<b>(9 punkter på en række)</b> bybillede:"
+msgstr "<b>(9 billeder på en række)</b> bybillede:"
 
 #: ../dat/glade/editor/cityset-window.ui.h:8
 #: ../dat/glade/editor/cityset-info-dialog.ui.h:2
@@ -3010,7 +3011,7 @@ msgstr "Carthage"
 
 #: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:13
 msgid "Carthage has lost her dominance on the sea and you, Hannibal, are convinced that the only hope of avoiding the destruction of your city is to move to the attack - through Spain and across the Alps."
-msgstr "Carthage har mistet sin dominans på havet og du, Hannibal, er overbevidst om, at det eneste håb om undgåelse af din bys destruktion er at angribe - via Spanien og over Alperne."
+msgstr "Carthage har mistet sin dominans på havet og du, Hannibal, er overbevidst om, at det eneste håb, om undgåelse af din bys destruktion, er at angribe - via Spanien og over Alperne."
 
 #: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:14 ../dat/map/dol/dol.map.in.h:29
 #: ../dat/various/items/items.xml.in.h:5
@@ -3847,7 +3848,7 @@ msgstr "Thornsdale"
 
 #: ../dat/map/dol/dol.map.in.h:148
 msgid "Travellers beware! Your life is in danger!"
-msgstr "Rejsende pas på! Jeres liv er i fare!"
+msgstr "Rejsende vær på vagt! Jeres liv er i fare!"
 
 #: ../dat/map/dol/dol.map.in.h:151
 msgid "Vangala"
@@ -5681,7 +5682,7 @@ msgstr "Ønsker du at gendanne sessionen?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:314
 msgid "Do you want to recover %1 (%2 armies)?"
-msgstr "Ønsker ud at gendanne %1 (%2 hære)?"
+msgstr "Ønsker du at gendanne %1 (%2 hære)?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:319
 msgid "Do you want to recover %1 (%2, %3 armies)?"
@@ -6519,6 +6520,7 @@ msgstr "Som din hovedstad er faldet vil også du falde!"
 msgid "Scroll of Great Tides"
 msgstr "Skriftrullen for store tider"
 
+# måske bedre med erhvervelse af glemt udstyr?
 #: ../dat/various/items/items.xml.in.h:27
 msgid "Scroll of Retrieve Lost Items"
 msgstr "Skriftrullen til opdagelse af glemt udstyr"
