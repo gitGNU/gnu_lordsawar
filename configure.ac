@@ -65,7 +65,8 @@ if test $use_sound = yes; then
     
     dnl check if ogg vorbis support is enabled
     dnl only under linux the SDL_mixer under windows supports it
-    if test $CC = "gcc" || test $CXX = "g++"; then
+    dnl if test $CC = "gcc" || test $CXX = "g++"; then
+    if test ${CC##*/} = "gcc" || test ${CXX##*/} = "g++" || test ${CXX##*/} = "c++"; then
 
        AC_TRY_RUN([
        #include <SDL/SDL_mixer.h>
@@ -89,9 +90,9 @@ if test $use_sound = yes; then
 
     SDLSOUND_LIBS="-lSDL_mixer"
 
-    CFLAGS=$ac_save_CFLAGS
-    LDFLAGS="$ac_save_LDFLAGS"
-    LIBS="$ac_save_libs"
+    CFLAGS=$ac_save_cflags
+    LDFLAGS=$ac_save_ldflags
+    LIBS=$ac_save_libs
 fi
 AC_SUBST(SDLSOUND_LIBS)
 
@@ -147,7 +148,7 @@ dnl Now check gettext.h
 #             )
 
 #if test $winnls = no ; then
-AM_GNU_GETTEXT_VERSION([0.17])
+AM_GNU_GETTEXT_VERSION([0.18.1])
 AM_GNU_GETTEXT([external])
 #fi
 
@@ -264,8 +265,7 @@ fi
 
 rm -f src/main.o
 
-LORDSAWAR_DATADIR="$datadir/lordsawar"
-LORDSAWAR_DATADIR=${LORDSAWAR_DATADIR/'${prefix}'/$prefix}
+eval LORDSAWAR_DATADIR="$datadir/lordsawar"
 AC_SUBST(LORDSAWAR_DATADIR)
 
 AC_CONFIG_FILES([

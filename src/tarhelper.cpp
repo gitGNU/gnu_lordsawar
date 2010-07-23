@@ -244,7 +244,7 @@ bool Tar_Helper::is_tarfile (std::string file)
     retval = false;
   else
     {
-      if (strcmp(header.magic, "ustar  ") != 0)
+      if (strncmp(header.magic, "ustar", 5) != 0)
         retval = false;
     }
   fclose (f);
