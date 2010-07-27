@@ -625,9 +625,9 @@ Glib::RefPtr<Gdk::Pixmap> BigMap::magnify(Glib::RefPtr<Gdk::Pixmap> orig)
   Glib::RefPtr<Gdk::Pixbuf> unzoomed_buffer;
   unzoomed_buffer = Gdk::Pixbuf::create(Glib::RefPtr<Gdk::Drawable>(orig), 0, 0, width, height);
 
-  Glib::RefPtr<Gdk::Pixbuf> zoomed_buffer;
-  zoomed_buffer = unzoomed_buffer->scale_simple(width * magnification_factor, height * magnification_factor, Gdk::INTERP_BILINEAR);
-  result->draw_pixbuf(zoomed_buffer, 0, 0, 0, 0, zoomed_buffer->get_width(), zoomed_buffer->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+  //Glib::RefPtr<Gdk::Pixbuf> zoomed_buffer;
+  //zoomed_buffer = unzoomed_buffer->scale_simple(width * magnification_factor, height * magnification_factor, Gdk::INTERP_BILINEAR);
+  //result->draw_pixbuf(zoomed_buffer, 0, 0, 0, 0, zoomed_buffer->get_width(), zoomed_buffer->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
 
   return result;
 }
