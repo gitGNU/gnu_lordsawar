@@ -78,23 +78,19 @@ bool NetworkServer::gotClientConnection(const Glib::RefPtr<Gio::SocketConnection
       
       conn->got_message.connect
         (sigc::bind<0>(sigc::mem_fun(got_message, 
-                                     &sigc::signal<void, void *, 
+                                     &sigc::signal<bool, void *, 
                                      MessageType, std::string>::emit), conn));
 
-      // bind ourselves too, so we can delete the connection
-      conn->connection_lost.connect
-        (sigc::bind(sigc::mem_fun(this, 
-                                  &NetworkServer::onConnectionLost), conn));
       return true;
     }
   return false;
 }
 
-void NetworkServer::onConnectionLost(NetworkConnection *conn)
+void NetworkServer::onConnectionLost(NetworkConnection *c)
 {
-  if (std::find (connections.begin(), connections.end(), conn) != connections.end())
-    connections.remove(conn);
-  delete conn;
+  if (std::find (connections.begin(), connections.end(), c) != connections.end())
+    connections.remove(c);
+  delete c;
 }
   
 bool NetworkServer::isListening()

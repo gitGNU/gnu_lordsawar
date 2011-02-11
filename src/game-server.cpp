@@ -177,7 +177,7 @@ void GameServer::gotChat(void *conn, std::string message)
   return;
 }
 
-void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
+bool GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
 {
   std::cerr << "got message of type " << type << std::endl;
   switch (type) {
@@ -317,6 +317,7 @@ void GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
     //faulty client
     break;
   }
+  return true;
 }
 
 void GameServer::onConnectionMade(void *conn)

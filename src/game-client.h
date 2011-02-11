@@ -50,7 +50,8 @@ public:
   void request_seat_manifest();
 
   sigc::signal<void> client_connected;
-  sigc::signal<void> client_disconnected;
+  sigc::signal<void> client_disconnected; 
+  sigc::signal<void> client_forcibly_disconnected; //server went away
   sigc::signal<void> client_could_not_connect;
   
   void sit_down (Player *player);
@@ -71,7 +72,7 @@ private:
 
   void onConnected();
   void onConnectionLost();
-  void onGotMessage(MessageType type, std::string message);
+  bool onGotMessage(MessageType type, std::string message);
 
   void onActionDone(NetworkAction *action);
   void sendActions();

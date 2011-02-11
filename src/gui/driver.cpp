@@ -379,6 +379,7 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
   if (response == false)
     {
       GameServer::deleteInstance();
+
       delete game_scenario;
       if (splash_window)
 	splash_window->show();
@@ -395,11 +396,11 @@ void Driver::on_server_went_away()
     download_window->hide();
   if (splash_window)
     splash_window->show();
-  GameClient::deleteInstance();
   TimedMessageDialog dialog(*splash_window->get_window(), 
 			    _("Server went away."), 0);
   dialog.run();
   dialog.hide();
+  GameClient::deleteInstance();
 }
 
 void Driver::on_client_could_not_connect()
@@ -426,6 +427,8 @@ void Driver::on_new_remote_network_game_requested(std::string host, unsigned sho
   game_client->game_scenario_received.connect
     (sigc::mem_fun(this, &Driver::on_game_scenario_downloaded));
   game_client->client_disconnected.connect
+    (sigc::mem_fun(this, &Driver::on_server_went_away));
+  game_client->client_forcibly_disconnected.connect
     (sigc::mem_fun(this, &Driver::on_server_went_away));
   game_client->client_could_not_connect.connect
     (sigc::mem_fun(this, &Driver::on_client_could_not_connect));
@@ -865,6 +868,8 @@ void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type
   game_client->game_scenario_received.connect
     (sigc::mem_fun(this, &Driver::on_game_scenario_downloaded));
   game_client->client_disconnected.connect
+    (sigc::mem_fun(this, &Driver::on_server_went_away));
+  game_client->client_forcibly_disconnected.connect
     (sigc::mem_fun(this, &Driver::on_server_went_away));
   game_client->client_could_not_connect.connect
     (sigc::mem_fun(this, &Driver::on_client_could_not_connect));

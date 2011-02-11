@@ -149,11 +149,16 @@ gssize NetworkConnection::on_payload_received(gssize len)
     return len;
 
   MessageType type = MessageType(payload[1]);
-  got_message.emit(type, 
-                   std::string(payload + MESSAGE_PREAMBLE_EXTRA_BYTES,
-                               payload_size - MESSAGE_PREAMBLE_EXTRA_BYTES));
+  bool keep_going = got_message.emit
+    (type, std::string(payload + MESSAGE_PREAMBLE_EXTRA_BYTES,
+                       payload_size - MESSAGE_PREAMBLE_EXTRA_BYTES));
   free (payload);
   payload = NULL;
+  if (keep_going == false)
+    {
+      //time to go away
+      return -1;
+    }
   header_left = header_size; //set things up for the next header.
   return len;
 }

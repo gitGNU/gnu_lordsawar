@@ -40,7 +40,7 @@ public:
   sigc::signal<void> connected;
   sigc::signal<void> connection_lost;
   sigc::signal<void> connection_received_data;
-  sigc::signal<void, MessageType, std::string> got_message;
+  sigc::signal<bool, MessageType, std::string> got_message;
 
   void send(MessageType type, const std::string &payload);
   void sendFile(MessageType type, std::string filename);

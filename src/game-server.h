@@ -99,7 +99,7 @@ private:
 
   Participant *findParticipantByConn(void *conn);
   
-  void onGotMessage(void *conn, MessageType type, std::string message);
+  bool onGotMessage(void *conn, MessageType type, std::string message);
   void onConnectionLost(void *conn);
   void onConnectionMade(void *conn);
   bool dumpActionsAndHistories(XML_Helper *helper);

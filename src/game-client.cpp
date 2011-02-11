@@ -92,7 +92,7 @@ void GameClient::onConnectionLost()
 {
   std::cerr << "connection lost" << std::endl;
   if (d_connected)
-    client_disconnected.emit();
+    client_forcibly_disconnected.emit();
   else
     client_could_not_connect.emit();
 }
@@ -123,7 +123,7 @@ void GameClient::stood_up(Player *player, std::string nickname)
   player_stands.emit(player, nickname);
 }
 
-void GameClient::onGotMessage(MessageType type, std::string payload)
+bool GameClient::onGotMessage(MessageType type, std::string payload)
 {
   std::cerr << "got message of type " << type << std::endl;
   switch (type) {
@@ -235,7 +235,7 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     break;
   
   case MESSAGE_TYPE_SERVER_DISCONNECT:
-    client_disconnected.emit();
+    return false;
     break;
 
   case MESSAGE_TYPE_TURN_ORDER:
@@ -250,6 +250,7 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     round_begins.emit();
     break;
   }
+  return true;
 }
 
 void GameClient::gotKillPlayer(Player *player)
