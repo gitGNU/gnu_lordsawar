@@ -226,6 +226,8 @@ GameLobbyDialog::update_player_details()
   (*i)[player_type_columns.type] = HARD_PLAYER_TYPE;
   i = player_type_list->append();
   (*i)[player_type_columns.type] = NO_PLAYER_TYPE;
+  i = player_type_list->append();
+  (*i)[player_type_columns.type] = NETWORKED_PLAYER_TYPE;
 
   type_renderer.property_model() = player_type_list;
   type_renderer.property_text_column() = 0;
@@ -347,6 +349,16 @@ void GameLobbyDialog::on_type_edited(const Glib::ustring &path,
 {
   (*player_list->get_iter(Gtk::TreePath(path)))[player_columns.type]
     = new_text;
+  if (new_text == NETWORKED_PLAYER_TYPE)
+    {
+      //Glib::ustring nick;
+      //bool sitting = false;
+      //Player *p = get_selected_player(nick, sitting);
+      //if (sitting)
+        //on_player_stands(p, nick);
+      //now we stand up.
+      ;
+    }
   //fixme, make a player->changeType method, and send it as an action
 }
 
@@ -420,8 +432,6 @@ void GameLobbyDialog::on_player_selected()
 
 void GameLobbyDialog::on_remote_participant_joins(std::string nickname)
 {
-  printf("hey hey, let's say put our name in our list.\n");
-  printf("mon nickname est `%s'\n", nickname.c_str());
   Gtk::TreeIter j = people_list->append();
   (*j)[people_columns.nickname] = nickname;
 }
@@ -555,6 +565,22 @@ void GameLobbyDialog::on_remote_player_changes_name(Player *p)
 	  return;
 	}
     }
+}
+
+Player* GameLobbyDialog::get_selected_player(Glib::ustring &nick, bool &sitting)
+{
+  Glib::RefPtr<Gtk::TreeSelection> selection = player_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+  if (iterrow)
+    {
+      Gtk::TreeModel::Row row = *iterrow;
+      nick = row[player_columns.name];
+      sitting = row[player_columns.sitting];
+      return 
+        Playerlist::getInstance()->getPlayer(row[player_columns.player_id]);
+    }
+  else
+    return NULL;
 }
 
 void GameLobbyDialog::on_play_clicked()

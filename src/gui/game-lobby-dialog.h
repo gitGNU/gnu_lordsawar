@@ -186,6 +186,7 @@ class GameLobbyDialog: public Decorated
     void on_local_player_ends_turn(Player *p);
     void on_local_player_starts_turn(Player *p);
 
+    Player* get_selected_player(Glib::ustring &nick, bool &sitting);
 
 };
 

@@ -400,9 +400,7 @@ void GameServer::notifyJoin(std::string nickname)
       //network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
       //nickname + " connected.");
     }
-  printf("display that the remote player connected.\n");
   gotChatMessage("[server]", nickname + " connected.");
-  printf("and displayed.\n");
 }
 
 void GameServer::notifyDepart(void *conn, std::string nickname)

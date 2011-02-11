@@ -46,7 +46,7 @@ public:
   void sendFile(MessageType type, std::string filename);
 
 private:
-  Glib::RefPtr<Gio::SocketClient> client; //this is for connections we start.
+  Glib::RefPtr<Gio::SocketClient> client; //this is client-side connections.
   Glib::RefPtr<Gio::SocketConnection> conn;
   Glib::RefPtr<Gio::DataInputStream> in;
   Glib::RefPtr<Gio::DataOutputStream> out;
@@ -59,10 +59,9 @@ private:
 
   void setup_connection();
   void on_connect_connected(Glib::RefPtr<Gio::AsyncResult> &result);
-  void on_header_received(Glib::RefPtr<Gio::AsyncResult> &result);
-  void on_payload_received(Glib::RefPtr<Gio::AsyncResult> &result);
-  void read_in_more_message_header();
-  void read_in_more_message_payload();
+  void on_header_received(gssize len);
+  void on_payload_received(gssize len);
+  bool on_got_input(Glib::IOCondition cond);
 };
 
 #endif
