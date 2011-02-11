@@ -46,6 +46,7 @@ struct Participant
   std::list<NetworkHistory *> histories;
   std::string nickname;
   bool round_finished;
+  bool departed;
 };
 
 GameServer * GameServer::s_instance = 0;
@@ -334,12 +335,13 @@ void GameServer::onConnectionLost(void *conn)
 
       depart(conn);
       participants.remove(part);
+      //tell everybode else that we've just stood up.
       for (std::list<guint32>::iterator it = players_to_stand.begin();
 	   it != players_to_stand.end(); it++)
 	notifyStand(Playerlist::getInstance()->getPlayer(*it), d_nickname);
       remote_participant_disconnected.emit();
+      delete part;
     }
-  delete part;
 }
 
 Participant *GameServer::findParticipantByConn(void *conn)
@@ -462,6 +464,8 @@ void GameServer::join(void *conn, std::string nickname)
     part->conn = conn;
     part->nickname = nickname;
     participants.push_back(part);
+    part->departed = false;
+    part->round_finished = false;
     new_participant = true;
   }
   if (new_participant)
@@ -474,11 +478,13 @@ void GameServer::join(void *conn, std::string nickname)
 
 void GameServer::depart(void *conn)
 {
-  std::cout << "DEPART: " << conn << std::endl;
-
   Participant *part = findParticipantByConn(conn);
-
-  notifyDepart(conn, part->nickname);
+  if (part && part->departed == false)
+    {
+      std::cout << "DEPART: " << conn << std::endl;
+      notifyDepart(conn, part->nickname);
+      part->departed = true;
+    }
   //we don't delete the participant, it gets deleted when it disconnects.
   //see onConnectionLost
 }

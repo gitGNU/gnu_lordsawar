@@ -60,8 +60,6 @@ GameClient::GameClient()
 
 GameClient::~GameClient()
 {
-  if (network_connection.get() != NULL)
-    network_connection->send(MESSAGE_TYPE_PARTICIPANT_DISCONNECT, d_nickname);
 }
 
 void GameClient::start(std::string host, guint32 port, std::string nick)
@@ -146,9 +144,12 @@ void GameClient::onGotMessage(MessageType type, std::string payload)
     break;
 
   case MESSAGE_TYPE_PARTICIPANT_CONNECTED:
+    std::cerr << "message: " << type <<" has data: " << payload << std::endl;
     remote_participant_joins.emit(payload);
     break;
+
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECTED:
+    std::cerr << "message: " << type <<" has data: " << payload << std::endl;
     remote_participant_departs.emit(payload);
     break;
 
@@ -405,4 +406,11 @@ void GameClient::gotTurnOrder (std::string payload)
 void GameClient::sendRoundOver()
 {
   network_connection->send(MESSAGE_TYPE_ROUND_OVER, "");
+}
+
+void GameClient::disconnect()
+{
+  d_connected = false;
+  if (network_connection.get() != NULL)
+    network_connection->send(MESSAGE_TYPE_PARTICIPANT_DISCONNECT, d_nickname);
 }

@@ -50,6 +50,7 @@ private:
   Glib::RefPtr<Gio::SocketConnection> conn;
   Glib::RefPtr<Gio::DataInputStream> in;
   Glib::RefPtr<Gio::DataOutputStream> out;
+  Glib::RefPtr<Glib::IOSource> source;
   char *payload;
   int payload_left;
   int payload_size;
@@ -59,9 +60,10 @@ private:
 
   void setup_connection();
   void on_connect_connected(Glib::RefPtr<Gio::AsyncResult> &result);
-  void on_header_received(gssize len);
-  void on_payload_received(gssize len);
+  gssize on_header_received(gssize len);
+  gssize on_payload_received(gssize len);
   bool on_got_input(Glib::IOCondition cond);
+  void tear_down_connection();
 };
 
 #endif

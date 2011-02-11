@@ -46,6 +46,7 @@ public:
   static void deleteInstance();
 
   void start(std::string host, guint32 port, std::string nick);
+  void disconnect();
   void request_seat_manifest();
 
   sigc::signal<void> client_connected;

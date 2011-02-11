@@ -32,31 +32,45 @@ void NetworkConnection::setup_connection()
   g_tcp_connection_set_graceful_disconnect((GTcpConnection*)conn->gobj(), true);
   in = Gio::DataInputStream::create(conn->get_input_stream());
   out = Gio::DataOutputStream::create(conn->get_output_stream());
-  Glib::RefPtr<Glib::IOSource> source = 
+  source = 
     Glib::IOSource::create 
     (conn->property_socket().get_value()->property_fd(), 
-     Glib::IO_IN | Glib::IO_PRI);
+     Glib::IO_IN | Glib::IO_PRI | Glib::IO_ERR);
   source->connect(sigc::mem_fun(*this, &NetworkConnection::on_got_input));
   header_size = MESSAGE_SIZE_BYTES;
   header_left = header_size;
   source->attach(Glib::MainContext::get_default());
 }
 
+void NetworkConnection::tear_down_connection()
+{
+  conn->clear_pending();
+  if (source)
+    source->destroy();
+  if (conn->is_closed() == false)
+    conn->close();
+}
+
 bool NetworkConnection::on_got_input(Glib::IOCondition cond)
 {
+  gssize len = -1;
   switch (cond)
     {
     case Glib::IO_IN:
     case Glib::IO_PRI:
       if (header_left > 0)
-        on_header_received(in->fill (header_left));
+        len = on_header_received(in->fill (header_left));
       else if (payload_left > 0)
-        on_payload_received(in->fill(payload_left));
-      break;
+        len = on_payload_received(in->fill(payload_left));
+      //break;  fallthrough here on purpose.
     case Glib::IO_ERR:
     case Glib::IO_HUP:
-      if (conn->is_closed() == false)
-        conn->close();
+      if (len <= 0)
+        {
+          tear_down_connection();
+          connection_lost();
+          return false;
+        }
       break;
     default:
       return false;
@@ -84,6 +98,7 @@ NetworkConnection::NetworkConnection()
 
 NetworkConnection::~NetworkConnection()
 {
+  tear_down_connection();
 }
 
 void NetworkConnection::on_connect_connected(Glib::RefPtr<Gio::AsyncResult> &result)
@@ -104,39 +119,34 @@ void NetworkConnection::on_connect_connected(Glib::RefPtr<Gio::AsyncResult> &res
     }
 }
 
-void NetworkConnection::on_header_received(gssize len)
+gssize NetworkConnection::on_header_received(gssize len)
 {
   if (len <= 0)
-    {
-      connection_lost();
-      return;
-    }
+    return len;
 
   in->read(header + (header_size - header_left), len);
   header_left -= len;
   if (header_left > 0)
-    return;
+    return len;
 
   guint32 val;
   memcpy(&val, header, header_size);
   payload_size = g_ntohl(val);
   payload_left = payload_size;
   payload = (char *) malloc (payload_size);
+  return len;
 }
 
-void NetworkConnection::on_payload_received(gssize len)
+gssize NetworkConnection::on_payload_received(gssize len)
 {
   if (len <= 0)
-    {
-      connection_lost();
-      return;
-    }
+    return len;
   in->read(payload + (payload_size - payload_left), len);
   payload_left -= len;
 
   connection_received_data.emit();
   if (payload_left > 0)
-    return;
+    return len;
 
   MessageType type = MessageType(payload[1]);
   got_message.emit(type, 
@@ -145,6 +155,7 @@ void NetworkConnection::on_payload_received(gssize len)
   free (payload);
   payload = NULL;
   header_left = header_size; //set things up for the next header.
+  return len;
 }
 
 
@@ -157,8 +168,6 @@ void NetworkConnection::connectToHost(std::string host, int port)
 
 void NetworkConnection::sendFile(MessageType type, const std::string filename)
 {
-  if (conn->is_closed())
-    return;
   FILE *fileptr = fopen (filename.c_str(), "r");
   if (fileptr == NULL)
     return;
@@ -184,8 +193,6 @@ void NetworkConnection::sendFile(MessageType type, const std::string filename)
 
 void NetworkConnection::send(MessageType type, const std::string &payload)
 {
-  if (conn->is_closed())
-    return;
   // write the preamble
   gchar buf[MESSAGE_HEADER_SIZE];
   guint32 l = g_htonl(MESSAGE_PREAMBLE_EXTRA_BYTES + payload.size());

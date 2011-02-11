@@ -491,6 +491,9 @@ void Driver::on_game_scenario_received(std::string path)
 
   if (response == false)
     {
+      GameClient::getInstance()->disconnect();
+      on_game_ended();
+
       if (splash_window)
 	splash_window->show();
     

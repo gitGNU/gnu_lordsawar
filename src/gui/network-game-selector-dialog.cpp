@@ -77,10 +77,17 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog()
 	    addRecentlyJoinedGame(game);
 	  }
       }
-    //should we desensitize the clear button?
+    port_spinbutton->set_value(LORDSAWAR_PORT);
+
     if (recently_joined_games_list->children().size() == 0)
       clear_button->set_sensitive(false);
-    port_spinbutton->set_value(LORDSAWAR_PORT);
+    else
+      {
+        Gtk::TreeModel::Row row;
+        row = recent_treeview->get_model()->children()[0];
+        if (row)
+          recent_treeview->get_selection()->select(row);
+      }
 }
 	    
 NetworkGameSelectorDialog::~NetworkGameSelectorDialog()
