@@ -21,18 +21,18 @@
 #include "config.h"
 
 #include <sigc++/signal.h>
+#include <glibmm.h>
+#include <giomm.h>
 #include <string>
 
 #include "network-common.h"
-
-class _GConn;
-class _GConnEvent;
 
 // a simple network connection for sending messages, encapsulates the protocol
 class NetworkConnection
 {
 public:
-  NetworkConnection(_GConn *conn = 0);
+  NetworkConnection(const Glib::RefPtr<Gio::SocketConnection> &conn);
+  NetworkConnection();
   ~NetworkConnection();
 
   void connectToHost(std::string host, int port);
@@ -45,13 +45,24 @@ public:
   void send(MessageType type, const std::string &payload);
   void sendFile(MessageType type, std::string filename);
 
-  
-  // private callback
-  void gotConnectionEvent(_GConn* conn, _GConnEvent* event);
-
 private:
-  _GConn *conn;
-  bool receiving_message;
+  Glib::RefPtr<Gio::SocketClient> client; //this is for connections we start.
+  Glib::RefPtr<Gio::SocketConnection> conn;
+  Glib::RefPtr<Gio::DataInputStream> in;
+  Glib::RefPtr<Gio::DataOutputStream> out;
+  char *payload;
+  int payload_left;
+  int payload_size;
+  char header[MESSAGE_SIZE_BYTES];
+  int header_left;
+  int header_size;
+
+  void setup_connection();
+  void on_connect_connected(Glib::RefPtr<Gio::AsyncResult> &result);
+  void on_header_received(Glib::RefPtr<Gio::AsyncResult> &result);
+  void on_payload_received(Glib::RefPtr<Gio::AsyncResult> &result);
+  void read_in_more_message_header();
+  void read_in_more_message_payload();
 };
 
 #endif

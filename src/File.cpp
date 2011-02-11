@@ -64,6 +64,16 @@ namespace
     }
 }
 
+bool File::nameEndsWith(std::string filename, std::string extension)
+{
+  std::string::size_type idx = filename.rfind(extension);
+  if (idx == std::string::npos)
+    return false;
+  if (idx == filename.length() - extension.length())
+    return true;
+  return false;
+}
+
 std::string File::add_ext_if_necessary(std::string file, std::string ext)
 {
   if (nameEndsWith(file, ext) == true)
@@ -306,16 +316,6 @@ std::string File::getUserCitysetDir()
   return dir;
 }
 
-
-bool File::nameEndsWith(std::string filename, std::string extension)
-{
-  std::string::size_type idx = filename.rfind(extension);
-  if (idx == std::string::npos)
-    return false;
-  if (idx == filename.length() - extension.length())
-    return true;
-  return false;
-}
 
 void File::erase(std::string filename)
 {

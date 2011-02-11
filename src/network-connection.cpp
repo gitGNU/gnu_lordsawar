@@ -20,55 +20,170 @@
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
-#include <gnet.h>
+#include <giomm.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
 #include "network-common.h"
 
-static void
-event_helper(GConn* conn, GConnEvent* event, gpointer user_data) 
+void NetworkConnection::read_in_more_message_header()
 {
-  static_cast<NetworkConnection *>(user_data)->gotConnectionEvent(conn, event);
+  printf("reading in %d more bytes of header\n", header_left);
+  in->fill_async ((sigc::mem_fun(*this, 
+                                 &NetworkConnection::on_header_received)),
+                 header_left);
 }
 
-
-NetworkConnection::NetworkConnection(_GConn *conn)
+void NetworkConnection::read_in_more_message_payload()
 {
-  this->conn = conn;
-  if (conn) {
-    gnet_conn_set_callback(conn, &event_helper, this);
-    receiving_message = false;
-    gnet_conn_readn(conn, MESSAGE_SIZE_BYTES);
-  }
+  printf("reading in %d more bytes of payload\n", payload_left);
+  in->fill_async(sigc::mem_fun(*this, 
+                               &NetworkConnection::on_payload_received),
+                 payload_left);
+}
+
+void NetworkConnection::setup_connection()
+{
+  g_tcp_connection_set_graceful_disconnect((GTcpConnection*)conn->gobj(), true);
+  in = Gio::DataInputStream::create(conn->get_input_stream());
+  out = Gio::DataOutputStream::create(conn->get_output_stream());
+}
+
+NetworkConnection::NetworkConnection(const Glib::RefPtr<Gio::SocketConnection> &c)
+{
+  printf("okay, i've been asked to create a SERVER side network connection.\n");
+  client = Gio::SocketClient::create();
+  client->set_protocol(Gio::SOCKET_PROTOCOL_TCP);
+  if (c) 
+    {
+      printf("here1\n");
+      conn = Gio::SocketConnection::create(c->property_socket());
+      printf("here2\n");
+      setup_connection();
+      printf("here3\n");
+      header_size = MESSAGE_SIZE_BYTES;
+      printf("here4\n");
+      header_left = header_size;
+      printf("here5 %p\n", header);
+      read_in_more_message_header();
+    }
+}
+
+NetworkConnection::NetworkConnection()
+{
+  client = Gio::SocketClient::create();
+  client->set_protocol(Gio::SOCKET_PROTOCOL_TCP);
 }
 
 NetworkConnection::~NetworkConnection()
 {
+}
+
+void NetworkConnection::on_connect_connected(Glib::RefPtr<Gio::AsyncResult> &result)
+{
+  try
+    {
+      conn = client->connect_to_host_finish (result);
+    }
+  catch(const Glib::Exception &ex)
+    {
+      return;
+    }
   if (conn)
     {
-      gnet_conn_delete(conn);
-      conn = 0;
+      setup_connection();
+      connected.emit();
     }
 }
 
+void NetworkConnection::on_header_received(Glib::RefPtr<Gio::AsyncResult> &result)
+{
+  gssize len = -1;
+  try
+    {
+      len = in->fill_finish(result);
+    }
+  catch(const Glib::Exception &ex)
+    {
+      connection_lost();
+      return;
+    }
+
+  printf("got %d bytes\n", len);
+  if (len <= 0)
+    {
+      connection_lost();
+      return;
+    }
+
+  in->read(header + (header_size - header_left), len);
+  header_left -= len;
+  if (header_left)
+    printf("still need %d more bytes of header\n", header_left);
+  if (header_left > 0)
+    return read_in_more_message_header();
+
+  guint32 val;
+  memcpy(&val, header, header_size);
+  payload_size = g_ntohl(val);
+  payload_left = payload_size;
+  payload = (char *) malloc (payload_size);
+  read_in_more_message_payload();
+}
+
+void NetworkConnection::on_payload_received(Glib::RefPtr<Gio::AsyncResult> &result)
+{
+  gssize len = -1;
+  try
+    {
+      len = in->fill_finish(result);
+    }
+  catch(const Glib::Exception &ex)
+    {
+      connection_lost();
+      return;
+    }
+
+  printf("got %d bytes\n", len);
+  if (len <= 0)
+    {
+      connection_lost();
+      return;
+    }
+  in->read(payload + (payload_size - payload_left), len);
+  payload_left -= len;
+  if (payload_left)
+    printf("still need %d more bytes of payload\n", payload_left);
+
+  connection_received_data.emit();
+  if (payload_left > 0)
+    return read_in_more_message_payload();
+
+  MessageType type = MessageType(payload[1]);
+  got_message.emit(type, 
+                   std::string(payload + MESSAGE_PREAMBLE_EXTRA_BYTES,
+                               payload_size - MESSAGE_PREAMBLE_EXTRA_BYTES));
+  free (payload);
+  payload = NULL;
+}
+
+
 void NetworkConnection::connectToHost(std::string host, int port)
 {
-  conn = gnet_conn_new(host.c_str(), port, &event_helper, this);
-  if (!conn)
-    exit(1);
-    ; // FIXME: report error
-
-  gnet_conn_connect(conn);
-  gnet_conn_set_watch_error(conn, true);
-  gnet_conn_timeout(conn, 30 * 1000);
+  client->connect_to_host_async 
+    (host, port, sigc::mem_fun(*this, 
+                               &NetworkConnection::on_connect_connected));
 }
 
 void NetworkConnection::sendFile(MessageType type, const std::string filename)
 {
-  if (gnet_conn_is_connected(conn) == false)
-    return;
+  if (conn->has_pending())
+    {
+      printf("we have pending!!!\n");
+    }
+  //if (conn->is_closed())
+    //return;
   FILE *fileptr = fopen (filename.c_str(), "r");
   if (fileptr == NULL)
     return;
@@ -76,96 +191,59 @@ void NetworkConnection::sendFile(MessageType type, const std::string filename)
   struct stat statbuf;
   stat (filename.c_str(), &statbuf);
   // write the preamble
-  gchar buf[MESSAGE_SIZE_BYTES + MESSAGE_PREAMBLE_EXTRA_BYTES];
+  gchar buf[MESSAGE_HEADER_SIZE];
   guint32 l = g_htonl(MESSAGE_PREAMBLE_EXTRA_BYTES + statbuf.st_size);
   memcpy(buf, &l, MESSAGE_SIZE_BYTES);
   buf[MESSAGE_SIZE_BYTES] = MESSAGE_PROTOCOL_VERSION;
   buf[MESSAGE_SIZE_BYTES + 1] = type;
   
-  gnet_conn_write(conn, buf, MESSAGE_SIZE_BYTES + MESSAGE_PREAMBLE_EXTRA_BYTES);
+  printf("writing out %d bytes\n", sizeof (buf));
+  gsize bytessent = 0;
+  bool wrote_all =  out->write_all ((const void*) buf, sizeof (buf), bytessent);
+  printf("written %d\n", wrote_all ? bytessent: -1);
 
-  std::cerr << "sending file " << type <<" of length " << MESSAGE_PREAMBLE_EXTRA_BYTES + statbuf.st_size << " to " << gnet_inetaddr_get_name(conn->inetaddr) << std::endl;
+  //std::cerr << "sending file " << type <<" of length " << MESSAGE_PREAMBLE_EXTRA_BYTES + statbuf.st_size << " to " << gnet_inetaddr_get_name(conn->inetaddr) << std::endl;
   char *buffer = (char*) malloc (statbuf.st_size);
-  size_t bytesread = fread (buffer, 1, statbuf.st_size, fileptr);
+  ssize_t bytesread = fread (buffer, 1, statbuf.st_size, fileptr);
   fclose (fileptr);
-  gnet_conn_write(conn, const_cast<gchar *>(buffer), bytesread);
+  printf("writing out %d bytes\n", bytesread);
+  wrote_all = out->write_all (buffer, bytesread, bytessent);
+  printf("written %d\n", wrote_all ? bytessent : -1);
   free (buffer);
+  //header_size = MESSAGE_SIZE_BYTES;
+  //header_left = header_size;
+  //read_in_more_message_header();
 }
 
 void NetworkConnection::send(MessageType type, const std::string &payload)
 {
-  if (gnet_conn_is_connected(conn) == false)
-    return;
+  if (conn->has_pending())
+    {
+      printf("we have pending!!!\n");
+    }
+  printf("Sending message %d\n", type);
+  //if (conn->is_closed())
+    //return;
   // write the preamble
-  gchar buf[MESSAGE_SIZE_BYTES + MESSAGE_PREAMBLE_EXTRA_BYTES];
+  gchar buf[MESSAGE_HEADER_SIZE];
   guint32 l = g_htonl(MESSAGE_PREAMBLE_EXTRA_BYTES + payload.size());
   memcpy(buf, &l, MESSAGE_SIZE_BYTES);
   buf[MESSAGE_SIZE_BYTES] = MESSAGE_PROTOCOL_VERSION;
   buf[MESSAGE_SIZE_BYTES + 1] = type;
   
-  gnet_conn_write(conn, buf, MESSAGE_SIZE_BYTES + MESSAGE_PREAMBLE_EXTRA_BYTES);
+  printf("writing out size bytes now\n");
+  gsize bytessent = 0;
+  bool wrote_all = out->write_all (buf, sizeof (buf), bytessent);
+  printf("written %d\n", wrote_all ? bytessent : -1);
 
-  std::cerr << "sending message " << type <<" of length " << MESSAGE_PREAMBLE_EXTRA_BYTES + payload.size() << " to " << gnet_inetaddr_get_name(conn->inetaddr) << std::endl;
+  //std::cerr << "sending message " << type <<" of length " << MESSAGE_PREAMBLE_EXTRA_BYTES + payload.size() << " to " << gnet_inetaddr_get_name(conn->inetaddr) << std::endl;
 
   // write the payload
-  gnet_conn_write(conn, const_cast<gchar *>(payload.data()), payload.size());
-}
-
-void NetworkConnection::gotConnectionEvent(GConn* conn, GConnEvent* event)
-{
-  switch (event->type)
-  {
-  case GNET_CONN_CONNECT:
-    gnet_conn_timeout(conn, 0); // stop timeout
-    receiving_message = false;
-    gnet_conn_readn(conn, MESSAGE_SIZE_BYTES);
-    connected.emit();
-    break;
-    
-  case GNET_CONN_READ:
-    if (receiving_message)
-    {
-      if (event->length < 2)
-      {
-        // misbehaving server
-        gnet_conn_disconnect(conn);
-        break;
-      }
-
-      // protocol version is ignored for now
-      //int protocol_version = event->buffer[0];
-      MessageType type = MessageType(event->buffer[1]);
-      
-      got_message.emit(type, std::string(event->buffer + MESSAGE_PREAMBLE_EXTRA_BYTES,
-                                         event->length - MESSAGE_PREAMBLE_EXTRA_BYTES));
-      receiving_message = false;
-      gnet_conn_readn(conn, MESSAGE_SIZE_BYTES);
-    }
-    else
-    {
-      g_assert(event->length == MESSAGE_SIZE_BYTES);
-      guint32 val;
-      memcpy(&val, event->buffer, 4);
-      int message_size = g_ntohl(val);
-      
-      std::cerr << "going to read length " << message_size << std::endl;
-      receiving_message = true;
-      gnet_conn_readn(conn, message_size);
-      connection_received_data.emit();
-    }
-    break;
-
-  case GNET_CONN_WRITE:
-    break;
-
-  case GNET_CONN_CLOSE:
-  case GNET_CONN_TIMEOUT:
-  case GNET_CONN_ERROR:
-    connection_lost.emit();
-    gnet_conn_delete(conn);
-    break;
-
-  default:
-    g_assert_not_reached ();
-  }
+  printf("writing out payload now\n");
+  wrote_all = out->write_all (payload.c_str(), payload.size(), bytessent);
+  printf("written %d\n", wrote_all ? bytessent : -1);
+  printf("done\n");
+  header_size = MESSAGE_SIZE_BYTES;
+  header_left = header_size;
+  read_in_more_message_header();
 }

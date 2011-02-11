@@ -420,6 +420,8 @@ void GameLobbyDialog::on_player_selected()
 
 void GameLobbyDialog::on_remote_participant_joins(std::string nickname)
 {
+  printf("hey hey, let's say put our name in our list.\n");
+  printf("mon nickname est `%s'\n", nickname.c_str());
   Gtk::TreeIter j = people_list->append();
   (*j)[people_columns.nickname] = nickname;
 }

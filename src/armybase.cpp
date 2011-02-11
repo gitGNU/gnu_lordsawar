@@ -106,7 +106,7 @@ std::string ArmyBase::getArmyBonusDescription() const
 			  _("+1 stack in hills"));
   if (bonus & ArmyBase::SUBALLCITYBONUS)
     s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
-			  _("Cancel city bonus"));
+			  UTF8(_("Cancel city bonus")));
   if (bonus & ArmyBase::SUB1ENEMYSTACK)
     s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
 			  _("-1 enemy stack"));

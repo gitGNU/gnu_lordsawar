@@ -85,6 +85,7 @@ void GameClient::onConnected()
   std::cerr << "connected" << std::endl;
   d_connected = true;
 
+  printf("okay, sending ping message from here.\n");
   network_connection->send(MESSAGE_TYPE_PING, "");
 
   client_connected.emit();
@@ -127,6 +128,7 @@ void GameClient::stood_up(Player *player, std::string nickname)
 
 void GameClient::onGotMessage(MessageType type, std::string payload)
 {
+  printf("hey the client got a message!\n");
   std::cerr << "got message of type " << type << std::endl;
   switch (type) {
   case MESSAGE_TYPE_PING:

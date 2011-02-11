@@ -135,7 +135,6 @@ lordsawar_LDADD = liblordsawar.la \
     liblordsawargfx.la \
     $(SDLSOUND_LIBS) $(SDL_LIBS) \
     $(GTKMM_LIBS) \
-    $(LIBGNET_LIBS) \
     $(LIBSIGC_LIBS) -ltar -lz \
     gui/liblwgui.la \
     @LIBINTL@
@@ -149,7 +148,6 @@ lordsawar_DEPENDENCIES = \
 AM_CXXFLAGS = -Wall
 INCLUDES = $(SDL_CFLAGS) \
     $(GTKMM_CFLAGS) \
-    $(LIBGNET_CFLAGS) \
     $(LIBSIGC_CFLAGS) \
     -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' \
     -I$(top_srcdir)

@@ -22,13 +22,14 @@
 #include "config.h"
 
 #include <map>
+#include <giomm.h>
+#include <giomm/socketservice.h>
+#include <glibmm.h>
 #include <sigc++/signal.h>
 #include <string>
 
 #include "network-common.h"
 
-class _GServer;
-class _GConn;
 class NetworkConnection;
 
 class NetworkServer
@@ -46,12 +47,12 @@ public:
   sigc::signal<void, void *> connection_lost;
   
   // private callback
-  void gotClientConnection(_GConn* conn);
+  bool gotClientConnection(const Glib::RefPtr<Gio::SocketConnection>& c, const Glib::RefPtr<Glib::Object>& source_object);
 
 private:
   void onConnectionLost(NetworkConnection *conn);
   
-  _GServer *server;
+  Glib::RefPtr<Gio::SocketService> server;
   std::list<NetworkConnection *> connections;
 };
 

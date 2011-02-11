@@ -25,6 +25,13 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="new_map_from_image_menuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">New _Map from Image</property>
+                        <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="load_map_menuitem">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">_Load Map</property>

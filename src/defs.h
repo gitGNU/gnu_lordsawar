@@ -26,6 +26,7 @@
 #define DEFINITIONS_H
 
 #include <gtkmm.h>
+#include <glibmm.h>
 #include <string>
 #include <libintl.h>
 
@@ -141,6 +142,8 @@ const Gdk::Color ROAD_PLANNER_TARGET_BOX_COLOUR(ORANGE_COLOUR);
 const Gdk::Color GRID_BOX_COLOUR(BLACK_COLOUR);
 const Gdk::Color FOG_COLOUR(BLACK_COLOUR);
 const Gdk::Color VECTORMAP_ACTIVE_BOX_COLOUR(WHITE_COLOUR);
+
+#define UTF8(X) Glib::locale_to_utf8(X)
 
 #endif // DEFINITIONS_H
 

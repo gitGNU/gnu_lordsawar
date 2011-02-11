@@ -203,11 +203,11 @@ void SplashWindow::on_new_network_game_clicked()
   nick_entry->set_text(nick);
   nick_entry->set_activates_default(true);
   int response = dialog->run();
+  network_game_nickname = nick_entry->get_text();
   dialog->hide();
   delete dialog;
   if (response == Gtk::RESPONSE_ACCEPT) //we hit connect
     {
-      network_game_nickname = nick_entry->get_text();
       if (client_radiobutton->get_active() == true)
 	{
 	  NetworkGameSelectorDialog ngsd;

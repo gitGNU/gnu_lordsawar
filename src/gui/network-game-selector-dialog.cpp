@@ -37,6 +37,8 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog()
 
     xml->get_widget("dialog", dialog);
     decorate(dialog);
+    dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+
     window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     xml->get_widget("hostname_entry", hostname_entry);
@@ -99,7 +101,15 @@ void NetworkGameSelectorDialog::on_hostname_changed()
 {
   //validate the ip/hostname
   if (hostname_entry->get_text().length() > 0)
-    connect_button->set_sensitive(true);
+    {
+      //connect_button->grab_focus();
+      connect_button->set_sensitive(true);
+      connect_button->property_can_focus() = true;
+      connect_button->property_can_default() = true;
+      connect_button->property_has_default() = true;
+      hostname_entry->property_activates_default() = true;
+      connect_button->property_receives_default() = true;
+    }
   else
     connect_button->set_sensitive(false);
 }

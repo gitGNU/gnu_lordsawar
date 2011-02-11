@@ -16,7 +16,6 @@
     <property name="resizable">False</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox">
         <property name="visible">True</property>
@@ -66,6 +65,7 @@ whose game you would like to join.</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="invisible_char">&#x25CF;</property>
+                        <property name="activates_default">True</property>
                       </object>
                       <packing>
                         <property name="position">1</property>
@@ -235,10 +235,12 @@ whose game you would like to join.</property>
               <object class="GtkButton" id="connect_button">
                 <property name="label" translatable="yes">_Connect</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
+                <property name="is_focus">True</property>
                 <property name="can_default">True</property>
                 <property name="has_default">True</property>
-                <property name="receives_default">False</property>
+                <property name="receives_default">True</property>
                 <property name="use_underline">True</property>
               </object>
               <packing>

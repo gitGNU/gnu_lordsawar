@@ -16,17 +16,18 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <stdio.h> //benfix
 #include "network-server.h"
 #include <iostream>
 #include <sigc++/bind.h>
-#include <gnet.h>
+#include <giomm.h>
 
 #include "network-common.h"
 #include "network-connection.h"
 
 NetworkServer::NetworkServer()
 {
-  server = 0;
+  connections.clear();
 }
 
 NetworkServer::~NetworkServer()
@@ -36,23 +37,18 @@ NetworkServer::~NetworkServer()
     //delete *i;
   
   if (server)
-    gnet_server_delete(server);
-}
-
-static void
-server_helper(GServer* server, GConn* conn, gpointer user_data)
-{
-  static_cast<NetworkServer *>(user_data)->gotClientConnection(conn);
+    {
+      server->stop();
+    }
 }
 
 void NetworkServer::startListening(int port)
 {
-  // listen on all interfaces
-  GInetAddr *iface = 0;
+  server = Gio::SocketService::create();
+  server->add_inet_port (port);
 
-  server = gnet_server_new(iface, port, &server_helper, this);
-  if (!server)
-    ; // FIXME: report error
+  server->signal_incoming().connect(sigc::mem_fun(*this, &NetworkServer::gotClientConnection));
+  server->start();
 }
 
 void NetworkServer::send(void *c, MessageType type, const std::string &payload)
@@ -64,27 +60,34 @@ void NetworkServer::send(void *c, MessageType type, const std::string &payload)
     conn->send(type, payload);
 }
 
-
-void NetworkServer::gotClientConnection(GConn* c)
+bool NetworkServer::gotClientConnection(const Glib::RefPtr<Gio::SocketConnection>& c, const Glib::RefPtr<Glib::Object>& source_object)
 {
-  if (c) {
-    NetworkConnection *conn = new NetworkConnection(c);
-    connections.push_back(conn);
+  if (c) 
+    {
+      NetworkConnection *conn = new NetworkConnection(c);
+      connections.push_back(conn);
 
-    conn->connection_lost.connect(
-      sigc::bind(sigc::mem_fun(connection_lost, &sigc::signal<void, void *>::emit), conn));
+      conn->connection_lost.connect
+        (sigc::bind(sigc::mem_fun
+                    (connection_lost, 
+                     &sigc::signal<void, void *>::emit), conn));
 
-    conn->connected.connect(
-      sigc::bind(sigc::mem_fun(connection_made, &sigc::signal<void, void *>::emit), conn));
-    conn->got_message.connect(
-      sigc::bind<0>(sigc::mem_fun(got_message, &sigc::signal<void, void *, MessageType, std::string>::emit), conn));
+      conn->connected.connect
+        (sigc::bind(sigc::mem_fun(connection_made, 
+                                  &sigc::signal<void, void *>::emit), conn));
+      
+      conn->got_message.connect
+        (sigc::bind<0>(sigc::mem_fun(got_message, 
+                                     &sigc::signal<void, void *, 
+                                     MessageType, std::string>::emit), conn));
 
-    // bind ourselves too, so we can delete the connection
-    conn->connection_lost.connect(
-      sigc::bind(sigc::mem_fun(this, &NetworkServer::onConnectionLost), conn));
-  }
-  else
-    ; // FIXME: report error
+      // bind ourselves too, so we can delete the connection
+      conn->connection_lost.connect
+        (sigc::bind(sigc::mem_fun(this, 
+                                  &NetworkServer::onConnectionLost), conn));
+      return true;
+    }
+  return false;
 }
 
 void NetworkServer::onConnectionLost(NetworkConnection *conn)
@@ -94,7 +97,5 @@ void NetworkServer::onConnectionLost(NetworkConnection *conn)
   
 bool NetworkServer::isListening()
 {
-  if (server)
-    return true;
-  return false;
+  return server->is_active();
 }
