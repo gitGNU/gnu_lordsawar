@@ -111,6 +111,7 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 	//! Remove extraneous games from the list.
 	void pruneTooManyGames(int too_many = 10);
 
+        void pruneSameNamedAndSameHostGames();
 	// DATA
 
         //! A static pointer for the singleton instance.

@@ -187,6 +187,7 @@ void RecentlyPlayedGameList::pruneGames()
   sort(orderByTime);
   pruneOldGames(TWO_WEEKS_OLD);
   pruneTooManyGames(10);
+  pruneSameNamedAndSameHostGames();
 }
 
 void RecentlyPlayedGameList::pruneTooManyGames(int too_many)
@@ -201,6 +202,42 @@ void RecentlyPlayedGameList::pruneTooManyGames(int too_many)
 	  it = erase (it);
 	  continue;
 	}
+      it++;
+    }
+}
+
+void RecentlyPlayedGameList::pruneSameNamedAndSameHostGames()
+{
+  time_t now = time(NULL);
+  for (RecentlyPlayedGameList::iterator it = begin(); it != end();)
+    {
+      int count = 0;
+      for (RecentlyPlayedGameList::iterator rit = begin(); rit != end(); rit++)
+        {
+          if ((*it)->getPlayMode() == GameScenario::NETWORKED &&
+              (*rit)->getPlayMode() == GameScenario::NETWORKED)
+            {
+              RecentlyPlayedNetworkedGame *i = 
+                dynamic_cast<RecentlyPlayedNetworkedGame*>((*it));
+              RecentlyPlayedNetworkedGame *j = 
+                dynamic_cast<RecentlyPlayedNetworkedGame*>((*rit));
+              if (j->getHost() == i->getHost() &&
+                  j->getPort() == i->getPort() && count > 0)
+                {
+                  count++;
+                  break;
+                }
+              else if (j->getHost() == i->getHost() &&
+                       j->getPort() == i->getPort() && count == 0)
+                count++;
+            }
+        }
+      if (count > 1)
+        {
+          delete *it;
+          it = erase (it);
+          continue;
+        }
       it++;
     }
 }

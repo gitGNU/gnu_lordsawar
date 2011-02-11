@@ -191,6 +191,7 @@ void SplashWindow::on_new_network_game_clicked()
   xml->get_widget("dialog", dialog);
   xml->get_widget("client_radiobutton", client_radiobutton);
   dialog->set_transient_for(*window);
+  decorate(dialog);
   Gtk::Entry *nick_entry;
   xml->get_widget("nick_entry", nick_entry);
   std::string nick;
