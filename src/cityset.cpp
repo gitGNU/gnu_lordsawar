@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2010 Ben Asselstine
+// Copyright (C) 2008, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -469,7 +469,6 @@ std::list<std::string> Cityset::scanSystemCollection()
       std::cerr << "Couldn't find any citysets (*" << file_extension << 
         ") in : " << File::getCitysetDir() << std::endl;
       std::cerr << "Please check the path settings in ~/.lordsawarrc" << std::endl;
-      std::cerr << "Exiting!" << std::endl;
       exit(-1);
     }
 
