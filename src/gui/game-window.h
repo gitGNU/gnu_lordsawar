@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, 2008 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -364,8 +364,6 @@ class GameWindow: public Decorated
     void give_some_cheese(Player *game_winner);
 
 public:
-    std::vector<PixMask* > d_button_images;
-    std::vector<PixMask* > d_arrow_images;
     bool d_quick_fights; //do we speed up fights for this player's turn?
     std::string stop_action; //hackhackhack
     std::string d_scenario;

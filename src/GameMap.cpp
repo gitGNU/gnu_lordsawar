@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 // Copyright (C) 2008 Janek Kozicki
 //
@@ -1237,14 +1237,16 @@ void GameMap::switchTileset(Tileset *tileset)
 
 void GameMap::reloadTileset()
 {
+  bool broken = false;
   Tileset *tileset = GameMap::getTileset();
-  tileset->reload();
+  tileset->reload(broken);
 }
 
 void GameMap::reloadShieldset()
 {
+  bool broken = false;
   Shieldset *shieldset = GameMap::getShieldset();
-  shieldset->reload();
+  shieldset->reload(broken);
   Playerlist::getInstance()->setNewColours(shieldset);
 }
 
@@ -1325,8 +1327,9 @@ guint32 GameMap::countBuildings(Maptile::Building building_type)
 
 void GameMap::reloadCityset()
 {
+  bool broken = false;
   Cityset *cityset = GameMap::getCityset();
-  cityset->reload();
+  cityset->reload(broken);
   switchCityset(cityset);
 }
 
@@ -1380,7 +1383,8 @@ void GameMap::switchArmysets(Armyset *armyset)
 
 void GameMap::reloadArmyset(Armyset *armyset)
 {
-  armyset->reload();
+  bool broken = false;
+  armyset->reload(broken);
 }
 
 bool GameMap::canPutBuilding(Maptile::Building bldg, guint32 size, Vector<int> to, bool making_islands)

@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -802,12 +802,15 @@ void ArmySetWindow::fill_army_image(Gtk::Button *button, Gtk::Image *image, Shie
 {
   if (army->getImageName(c) != "")
     {
+      bool broken = false;
+    
       std::string filename = "";
       filename = d_armyset->getFileFromConfigurationFile(army->getImageName(c) +".png");
       if (filename != "")
         {
           Gdk::Color colour = Shieldsetlist::getInstance()->getColor(1, c);
-          army->instantiateImages(d_armyset->getTileSize(), c, filename);
+          army->instantiateImages(d_armyset->getTileSize(), c, filename, 
+                                  broken);
           PixMask *army_image = GraphicsCache::applyMask(army->getImage(c), 
                                                          army->getMask(c), 
                                                          colour, false);
@@ -969,10 +972,11 @@ void ArmySetWindow::on_image_changed(Gtk::Button *button, Gtk::Image *image, Shi
         {
           if (d.get_selected_filename() != "" && d.get_selected_filename() != filename)
             {
+              bool broken = false;
               d_armyset->replaceFileInConfigurationFile(a->getImageName(c)+".png", d.get_selected_filename());
               a->setImageName(c, File::get_basename(d.get_selected_filename()));
               Gdk::Color colour = Shieldsetlist::getInstance()->getColor(1, c);
-              a->instantiateImages(d_armyset->getTileSize(), c, d.get_selected_filename());
+              a->instantiateImages(d_armyset->getTileSize(), c, d.get_selected_filename(), broken);
 
               PixMask *army_image = GraphicsCache::applyMask(a->getImage(c), 
                                                              a->getMask(c), 
@@ -1906,8 +1910,8 @@ bool ArmySetWindow::load_armyset(std::string filename)
       if(row)
 	armies_treeview->get_selection()->select(row);
     }
-
-  d_armyset->instantiateImages();
+  bool broken = false;
+  d_armyset->instantiateImages(broken);
   needs_saving = false;
   update_window_title();
   return true;

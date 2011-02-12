@@ -1,4 +1,4 @@
-//  Copyright (C) 2009, 2010 Ben Asselstine
+//  Copyright (C) 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -102,7 +102,10 @@ void MaskedImageEditorDialog::show_image(std::string filename)
 {
   if (filename == "")
     return;
-  std::vector<PixMask*> half = disassemble_row(filename, 2);
+  bool broken = false;
+  std::vector<PixMask*> half = disassemble_row(filename, 2, broken);
+  if (broken)
+    return;
   for (unsigned int i = Shield::WHITE; i <= Shield::NEUTRAL; i++)
     {
       Gtk::Image *image = NULL;

@@ -1,4 +1,4 @@
-//  Copyright (C) 2009, 2010 Ben Asselstine
+//  Copyright (C) 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -171,11 +171,31 @@ void TilesetExplosionPictureEditorDialog::update_scene(TilePreviewScene *scene,
   Glib::RefPtr<Gdk::Pixbuf> explosion;
   if (small_explosion_radiobutton->get_active())
     {
-      explosion = Gdk::Pixbuf::create_from_file(filename, d_tileset->getTileSize(), d_tileset->getTileSize(), false);
+      try
+        {
+          explosion = Gdk::Pixbuf::create_from_file(filename, 
+                                                    d_tileset->getTileSize(), 
+                                                    d_tileset->getTileSize(), 
+                                                    false);
+        }
+      catch (const Glib::Exception &ex)
+        {
+          return;
+        }
     }
   else if (large_explosion_radiobutton->get_active())
     {
-      explosion = Gdk::Pixbuf::create_from_file(filename, d_tileset->getTileSize() * 2, d_tileset->getTileSize() * 2, false);
+      try
+        {
+          explosion = 
+            Gdk::Pixbuf::create_from_file(filename, 
+                                          d_tileset->getTileSize() * 2, 
+                                          d_tileset->getTileSize() * 2, false);
+        }
+      catch (const Glib::Exception &ex)
+        {
+          return;
+        }
     }
   if (!explosion)
     return;

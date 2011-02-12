@@ -84,6 +84,10 @@ const unsigned int MOVE_BONUS_WIDTH = 32;
 const unsigned int MOVE_BONUS_HEIGHT = 20;
 const unsigned int MOVE_BONUS_TYPES = 6;
 const unsigned int MEDAL_TYPES = 3;
+const unsigned int NUM_WAYPOINTS = 2;
+const unsigned int NUM_GAME_BUTTON_IMAGES = 11;
+const unsigned int NUM_ARROW_IMAGES = 8;
+const unsigned int NUM_BACKGROUND_IMAGES = 2;
 
 const int MAX_GOLD_TO_CARRY_OVER_TO_NEXT_SCENARIO = 5000;
 const unsigned int MAX_ARMY_STRENGTH = 9;

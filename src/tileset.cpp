@@ -543,100 +543,132 @@ void Tileset::instantiateImages(std::string explosion_filename,
 				std::string fog_filename,
 				std::string flags_filename,
 				std::string selector_filename,
-				std::string small_selector_filename)
+				std::string small_selector_filename,
+                                bool &broken)
 {
-  if (explosion_filename.empty() == false)
-    setExplosionImage (PixMask::create(explosion_filename));
+  if (explosion_filename.empty() == false && !broken)
+    setExplosionImage (PixMask::create(explosion_filename, broken));
 
-  if (roads_filename.empty() == false)
+  if (roads_filename.empty() == false && !broken)
     {
       std::vector<PixMask* > roadpics;
-      roadpics = disassemble_row(roads_filename, ROAD_TYPES);
-      for (unsigned int i = 0; i < ROAD_TYPES ; i++)
-	{
-	  if (roadpics[i]->get_width() != (int)d_tileSize)
-	    PixMask::scale(roadpics[i], d_tileSize, d_tileSize);
-	  setRoadImage(i, roadpics[i]);
-	}
+      roadpics = disassemble_row(roads_filename, ROAD_TYPES, broken);
+      if (!broken)
+        {
+          for (unsigned int i = 0; i < ROAD_TYPES ; i++)
+            {
+              if (roadpics[i]->get_width() != (int)d_tileSize)
+                PixMask::scale(roadpics[i], d_tileSize, d_tileSize);
+              setRoadImage(i, roadpics[i]);
+            }
+        }
+
     }
 
-  if (bridges_filename.empty() == false)
+  if (bridges_filename.empty() == false && !broken)
     {
       std::vector<PixMask* > bridgepics;
-      bridgepics = disassemble_row(bridges_filename, BRIDGE_TYPES);
-      for (unsigned int i = 0; i < BRIDGE_TYPES ; i++)
-	{
-	  if (bridgepics[i]->get_width() != (int)d_tileSize)
-	    PixMask::scale(bridgepics[i], d_tileSize, d_tileSize);
-	  setBridgeImage(i, bridgepics[i]);
-	}
+      bridgepics = disassemble_row(bridges_filename, BRIDGE_TYPES, broken);
+      if (!broken)
+        {
+          for (unsigned int i = 0; i < BRIDGE_TYPES ; i++)
+            {
+              if (bridgepics[i]->get_width() != (int)d_tileSize)
+                PixMask::scale(bridgepics[i], d_tileSize, d_tileSize);
+              setBridgeImage(i, bridgepics[i]);
+            }
+        }
     }
 
-  if (fog_filename.empty() == false)
+  if (fog_filename.empty() == false && !broken)
     {
       std::vector<PixMask* > fogpics;
-      fogpics = disassemble_row(fog_filename, FOG_TYPES);
-      for (unsigned int i = 0; i < FOG_TYPES ; i++)
-	{
-	  if (fogpics[i]->get_width() != (int)d_tileSize)
-	    PixMask::scale(fogpics[i], d_tileSize, d_tileSize);
-	  setFogImage(i, fogpics[i]);
-	}
+      fogpics = disassemble_row(fog_filename, FOG_TYPES, broken);
+      if (!broken)
+        {
+          for (unsigned int i = 0; i < FOG_TYPES ; i++)
+            {
+              if (fogpics[i]->get_width() != (int)d_tileSize)
+                PixMask::scale(fogpics[i], d_tileSize, d_tileSize);
+              setFogImage(i, fogpics[i]);
+            }
+        }
     }
 
-  if (flags_filename.empty() == false)
+  if (flags_filename.empty() == false && !broken)
     {
       std::vector<PixMask* > flagpics;
       std::vector<PixMask* > maskpics;
-      GraphicsCache::loadFlagImages (flags_filename, d_tileSize, 
-				     flagpics, maskpics);
-      for (unsigned int i = 0; i < flagpics.size(); i++)
-	setFlagImage(i, flagpics[i]);
-      for (unsigned int i = 0; i < maskpics.size(); i++)
-	setFlagMask(i, maskpics[i]);
+      bool success;
+      success = GraphicsCache::loadFlagImages (flags_filename, d_tileSize, 
+                                               flagpics, maskpics);
+      if (success)
+        {
+          for (unsigned int i = 0; i < flagpics.size(); i++)
+            setFlagImage(i, flagpics[i]);
+          for (unsigned int i = 0; i < maskpics.size(); i++)
+            setFlagMask(i, maskpics[i]);
+        }
+      else
+        broken = true;
     }
 
-      
   std::vector<PixMask* > images;
   std::vector<PixMask* > masks;
-  if (selector_filename.empty() == false)
+  if (selector_filename.empty() == false && !broken)
     {
-      GraphicsCache::loadSelectorImages (selector_filename, d_tileSize, 
-					 images, masks);
-      setNumberOfSelectorFrames(images.size());
-      for (unsigned int i = 0; i < images.size(); i++)
-	{
-	  setSelectorImage(i, images[i]);
-	  setSelectorMask(i, masks[i]);
-	}
+      bool success;
+      success = GraphicsCache::loadSelectorImages (selector_filename, 
+                                                   d_tileSize, 
+                                                   images, masks);
+      if (success)
+        {
+          setNumberOfSelectorFrames(images.size());
+          for (unsigned int i = 0; i < images.size(); i++)
+            {
+              setSelectorImage(i, images[i]);
+              setSelectorMask(i, masks[i]);
+            }
+        }
+      else
+        broken = true;
     }
 
   images.clear();
   masks.clear();
-  if (small_selector_filename.empty() == false)
+  if (small_selector_filename.empty() == false && !broken)
     {
-      GraphicsCache::loadSelectorImages (small_selector_filename, d_tileSize,
-					 images, masks);
-      setNumberOfSmallSelectorFrames(images.size());
-      for (unsigned int i = 0; i < images.size(); i++)
-	{
-	  setSmallSelectorImage(i, images[i]);
-	  setSmallSelectorMask(i, masks[i]);
-	}
+      bool success;
+      success = GraphicsCache::loadSelectorImages (small_selector_filename, 
+                                                   d_tileSize, images, masks);
+      if (success)
+        {
+          setNumberOfSmallSelectorFrames(images.size());
+          for (unsigned int i = 0; i < images.size(); i++)
+            {
+              setSmallSelectorImage(i, images[i]);
+              setSmallSelectorMask(i, masks[i]);
+            }
+        }
+      else
+        broken = true;
     }
 }
 
-void Tileset::instantiateImages()
+void Tileset::instantiateImages(bool &broken)
 {
   int size = getTileSize();
   debug("Loading images for tileset " << getName());
   uninstantiateImages();
-  bool broken = false;
+  broken = false;
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
   if (broken)
     return;
   for (iterator it = begin(); it != end(); it++)
-    (*it)->instantiateImages(size, &t);
+    {
+      if (!broken)
+        (*it)->instantiateImages(size, &t, broken);
+    }
   std::string explosion_filename = "";
   std::string roads_filename = "";
   std::string bridges_filename = "";
@@ -663,7 +695,7 @@ void Tileset::instantiateImages()
   if (!broken)
     instantiateImages(explosion_filename, roads_filename, bridges_filename, 
                       fog_filename, flags_filename, selector_filename, 
-                      small_selector_filename);
+                      small_selector_filename, broken);
   if (explosion_filename.empty() == false)
     File::erase(explosion_filename);
   if (roads_filename.empty() == false)
@@ -679,6 +711,7 @@ void Tileset::instantiateImages()
   if (small_selector_filename.empty() == false)
     File::erase(small_selector_filename);
   t.Close();
+  return;
 }
 
 std::string Tileset::getConfigurationFile() const
@@ -715,9 +748,9 @@ TileStyle *Tileset::getTileStyle(guint32 id) const
     return (*it).second;
 }
 
-void Tileset::reload()
+void Tileset::reload(bool &broken)
 {
-  bool broken = false;
+  broken = false;
   bool unsupported_version = false;
   TilesetLoader d(getConfigurationFile(), broken, unsupported_version);
   if (!broken && d.tileset && d.tileset->validate())
@@ -728,7 +761,7 @@ void Tileset::reload()
         delete *it;
       std::string basename = d_basename;
       *this = *d.tileset;
-      instantiateImages();
+      instantiateImages(broken);
       d_basename = basename;
     }
 }

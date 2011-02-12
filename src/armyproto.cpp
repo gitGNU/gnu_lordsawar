@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -126,38 +126,44 @@ bool ArmyProto::saveData(XML_Helper* helper) const
   return retval;
 }
 
-bool ArmyProto::instantiateImages(int tilesize, Shield::Colour c, std::string image_filename)
+void ArmyProto::instantiateImages(int tilesize, Shield::Colour c, std::string image_filename, bool &broken)
 {
   std::string s;
 
   if (image_filename == "")
-    return false;
+    {
+      broken = true;
+      return;
+    }
   // load the army picture. This is done here to avoid confusion
   // since the armies are used as prototypes as well as actual units in the
   // game.
   // The army image consists of two halves. On the left is the army image, 
   // on the right the mask.
   std::vector<PixMask*> half;
-  half = disassemble_row(image_filename, 2);
-  PixMask::scale(half[0], tilesize, tilesize);
-  PixMask::scale(half[1], tilesize, tilesize);
+  half = disassemble_row(image_filename, 2, broken);
+  if (!broken)
+    {
+      PixMask::scale(half[0], tilesize, tilesize);
+      PixMask::scale(half[1], tilesize, tilesize);
 
-  setImage(c, half[0]);
-  setMask(c, half[1]);
+      setImage(c, half[0]);
+      setMask(c, half[1]);
+    }
 
-  return true;
+  return;
 }
 
-void ArmyProto::instantiateImages(guint32 tilesize, Tar_Helper *t)
+void ArmyProto::instantiateImages(guint32 tilesize, Tar_Helper *t, bool &broken)
 {
-  bool broken = false;
+  broken = false;
   for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
     {
       std::string file = "";
       if (getImageName(Shield::Colour(c)).empty() == false)
 	file = t->getFile(getImageName(Shield::Colour(c)) + ".png", broken);
       if (!broken && file.empty() == false)
-        instantiateImages(tilesize, Shield::Colour(c), file);
+        instantiateImages(tilesize, Shield::Colour(c), file, broken);
       if (file.empty() == false)
         File::erase(file);
     }

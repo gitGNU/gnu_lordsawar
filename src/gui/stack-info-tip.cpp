@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, StackTile *
 
     xml->get_widget("window", window);
     Decorated decorator;
-    decorator.decorate(window,File::getMiscFile("various/background.png"), 200);
+    decorator.decorate(window, GraphicsCache::GAME_BACKGROUND, 200);
 
     xml->get_widget("image_hbox", image_hbox);
 

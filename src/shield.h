@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -88,7 +88,7 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 	// Methods that operate on class data and modify the class.
 
 	//! Load the images associated with this shield.
-	void instantiateImages(Shieldset *s);
+	void instantiateImages(Shieldset *s, bool &broken);
 
 	//! Destroy the images associated with this shield.
 	void uninstantiateImages();

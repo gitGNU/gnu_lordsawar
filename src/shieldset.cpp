@@ -270,10 +270,10 @@ bool Shieldset::save(XML_Helper *helper) const
   return retval;
 }
 
-void Shieldset::instantiateImages()
+void Shieldset::instantiateImages(bool &broken)
 {
   for (iterator it = begin(); it != end(); it++)
-    (*it)->instantiateImages(this);
+    (*it)->instantiateImages(this, broken);
 }
 
 void Shieldset::uninstantiateImages()
@@ -380,9 +380,9 @@ bool Shieldset::validateShieldImages(Shield::Colour c) const
   return true;
 }
 
-void Shieldset::reload()
+void Shieldset::reload(bool &broken)
 {
-  bool broken = false;
+  broken = false;
   bool unsupported_version = false;
   ShieldsetLoader d(getConfigurationFile(), broken, unsupported_version);
   if (broken == false && d.shieldset && d.shieldset->validate())
@@ -393,7 +393,7 @@ void Shieldset::reload()
         delete *it;
       std::string basename = d_basename;
       *this = *d.shieldset;
-      instantiateImages();
+      instantiateImages(broken);
       d_basename = basename;
     }
 }

@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -51,24 +51,33 @@ EditorSplashWindow::~EditorSplashWindow()
 
 int EditorSplashWindow::run()
 {
+  bool broken = false;
   window->show_all();
   progressbar->property_fraction() = 0.0;
   progressbar->property_text() = _("Loading Armysets");
   while (g_main_context_iteration(NULL, FALSE));
   GraphicsCache::getInstance();
-  Armysetlist::getInstance()->instantiateImages();
+  Armysetlist::getInstance()->instantiateImages(broken);
+  if (broken)
+    return -1;
   progressbar->property_fraction() = 0.25;
   progressbar->property_text() = _("Loading Citysets");
   while (g_main_context_iteration(NULL, FALSE));
-  Citysetlist::getInstance()->instantiateImages();
+  Citysetlist::getInstance()->instantiateImages(broken);
+  if (broken)
+    return -1;
   progressbar->property_fraction() = 0.50;
   progressbar->property_text() = _("Loading Tilesets");
   while (g_main_context_iteration(NULL, FALSE));
-  Tilesetlist::getInstance()->instantiateImages();
+  Tilesetlist::getInstance()->instantiateImages(broken);
+  if (broken)
+    return -1;
   progressbar->property_fraction() = 0.75;
   progressbar->property_text() = _("Loading Shieldsets");
   while (g_main_context_iteration(NULL, FALSE));
-  Shieldsetlist::getInstance()->instantiateImages();
+  Shieldsetlist::getInstance()->instantiateImages(broken);
+  if (broken)
+    return -1;
   progressbar->property_fraction() = 1.00;
   while (g_main_context_iteration(NULL, FALSE));
   return 0;

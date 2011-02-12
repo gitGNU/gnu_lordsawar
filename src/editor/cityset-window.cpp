@@ -1,4 +1,4 @@
-//  Copyright (C) 2009, 2010 Ben Asselstine
+//  Copyright (C) 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -534,8 +534,9 @@ bool CitySetWindow::load_cityset(std::string filename)
     delete d_cityset;
   d_cityset = cityset;
 
+  bool broken = false;
   d_cityset->setBaseName(File::get_basename(autosave));
-  d_cityset->instantiateImages();
+  d_cityset->instantiateImages(broken);
   update_window_title();
   return true;
 }

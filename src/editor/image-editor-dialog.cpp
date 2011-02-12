@@ -1,4 +1,4 @@
-//  Copyright (C) 2009, 2010 Ben Asselstine
+//  Copyright (C) 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -97,16 +97,20 @@ void ImageEditorDialog::show_image(std::string filename)
   if (heartbeat.connected())
     heartbeat.disconnect();
 
-  frames = disassemble_row(filename, num_frames);
-  active_frame = 0;
-  image->clear();
-  if (num_frames > 0)
-    heartbeat = Glib::signal_timeout().connect
-      (bind_return
-       (sigc::mem_fun (*this, &ImageEditorDialog::on_heartbeat), 
-	true), 500);
-  else
-    on_heartbeat();
+  bool broken = false;
+  frames = disassemble_row(filename, num_frames, broken);
+  if (!broken)
+    {
+      active_frame = 0;
+      image->clear();
+      if (num_frames > 0)
+        heartbeat = Glib::signal_timeout().connect
+          (bind_return
+           (sigc::mem_fun (*this, &ImageEditorDialog::on_heartbeat), 
+            true), 500);
+      else
+        on_heartbeat();
+    }
 }
 
 void ImageEditorDialog::on_heartbeat()

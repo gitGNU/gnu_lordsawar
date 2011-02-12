@@ -1,4 +1,4 @@
-// Copyright (C) 2009, 2010 Ben Asselstine
+// Copyright (C) 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,6 +15,8 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <iostream>
+#include "defs.h"
 #include "PixMask.h"
 #include <string.h>
 
@@ -65,10 +67,20 @@ PixMask::PixMask(const PixMask&p)
   unscaled_height = p.unscaled_height;
 }
 
-PixMask::PixMask(std::string filename)
+PixMask::PixMask(std::string filename, bool &broken)
      : width(0), height(0)
 {
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create_from_file(filename);
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf;
+  try
+    {
+      pixbuf = Gdk::Pixbuf::create_from_file(filename);
+    }
+  catch (const Glib::Exception &ex)
+    {
+      std::cerr << _("Couldn't load image file ") << filename << std::endl;
+      broken = true;
+      return;
+    }
   pixbuf->render_pixmap_and_mask(pixmap, mask, 1);
   pixmap->get_size(width, height);
   gc = Gdk::GC::create(pixmap);
@@ -76,10 +88,9 @@ PixMask::PixMask(std::string filename)
   unscaled_height = height;
 }
 
-
-PixMask* PixMask::create(std::string filename)
+PixMask* PixMask::create(std::string filename, bool &broken)
 {
-  return new PixMask(filename);
+  return new PixMask(filename, broken);
 }
 
 PixMask* PixMask::create(Glib::RefPtr<Gdk::Pixbuf> pixbuf)

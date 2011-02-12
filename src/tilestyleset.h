@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -102,7 +102,8 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	//Methods that operate on the class data and modify the class.
 
 	//! Instantiate the tilestyleset's images from the given file.
-	void instantiateImages(int tilesize, std::string image_filename);
+	void instantiateImages(int tilesize, std::string image_filename,
+                               bool &broken);
 
 	//! Destroy the images associated with this tilestyleset.
 	void uninstantiateImages();

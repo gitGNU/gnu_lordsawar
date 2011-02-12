@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2010 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2010, 2011 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -120,8 +120,8 @@ bool GameScenario::loadArmysets(Tar_Helper *t)
        it != armysets.end(); it++)
     {
       Armyset *armyset = Armysetlist::getInstance()->import(t, *it, broken);
-      if (armyset)
-        Armysetlist::getInstance()->getArmyset(armyset->getId())->instantiateImages();
+      if (armyset && !broken)
+        Armysetlist::getInstance()->getArmyset(armyset->getId())->instantiateImages(broken);
     }
   return !broken;
 }
@@ -136,8 +136,8 @@ bool GameScenario::loadTilesets(Tar_Helper *t)
        it != tilesets.end(); it++)
     {
       Tileset *tileset = tlist->import(t, *it, broken);
-      if (tileset)
-        tlist->getTileset(tileset->getId())->instantiateImages();
+      if (tileset && !broken)
+        tlist->getTileset(tileset->getId())->instantiateImages(broken);
     }
   return !broken;
 }
@@ -152,8 +152,8 @@ bool GameScenario::loadCitysets(Tar_Helper *t)
        it != citysets.end(); it++)
     {
       Cityset *cityset = clist->import(t, *it, broken);
-      if (cityset)
-        clist->getCityset(cityset->getId())->instantiateImages();
+      if (cityset && !broken)
+        clist->getCityset(cityset->getId())->instantiateImages(broken);
     }
   return !broken;
 }
@@ -169,7 +169,7 @@ bool GameScenario::loadShieldsets(Tar_Helper *t)
     {
       Shieldset *shieldset = slist->import(t, *it, broken);
       if (shieldset)
-        slist->getShieldset(shieldset->getId())->instantiateImages();
+        slist->getShieldset(shieldset->getId())->instantiateImages(broken);
     }
   return !broken;
 }

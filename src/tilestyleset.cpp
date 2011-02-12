@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,18 +36,7 @@ TileStyleSet::TileStyleSet()
         
 bool TileStyleSet::validate_image(std::string filename)
 {
-  bool success = true;
-
-  Glib::RefPtr<Gdk::Pixbuf> row = Gdk::Pixbuf::create_from_file(filename);
-  if (row == false)
-    return false;
-    
-  guint32 width = row->get_width();
-  guint32 height = row->get_height();
-
-  if ((width % height) != 0)
-    return false;
-  return success;
+  return image_width_is_multiple_of_image_height (filename);
 }
 
 TileStyleSet::TileStyleSet(std::string file, guint32 tilesize, bool &success, TileStyle::Type type)
@@ -56,15 +45,24 @@ TileStyleSet::TileStyleSet(std::string file, guint32 tilesize, bool &success, Ti
   if (success == false)
     return;
     
-  Glib::RefPtr<Gdk::Pixbuf> row = Gdk::Pixbuf::create_from_file(file);
-  guint32 width = row->get_width();
-  guint32 height = row->get_height();
-  d_name = File::get_basename(file);
-  guint32 num_tilestyles = width / height;
-  for (guint32 i = 0; i < num_tilestyles; i++)
-    push_back(new TileStyle(0, type));
-  instantiateImages(tilesize, file);
-  success = true;
+  guint32 width;
+  guint32 height;
+  bool broken = false;
+  get_image_width_and_height (file, width, height, broken);
+  if (!broken)
+    {
+      d_name = File::get_basename(file);
+      guint32 num_tilestyles = width / height;
+      for (guint32 i = 0; i < num_tilestyles; i++)
+        push_back(new TileStyle(0, type));
+      instantiateImages(tilesize, file, broken);
+      if (!broken)
+        success = true;
+      else
+        success = false;
+    }
+  else
+    success = false;
 }
 
 TileStyleSet::TileStyleSet(XML_Helper *helper)
@@ -116,16 +114,20 @@ void TileStyleSet::uninstantiateImages()
 	}
     }
 }
-void TileStyleSet::instantiateImages(int tilesize, std::string filename)
+
+void TileStyleSet::instantiateImages(int tilesize, std::string filename, bool &broken)
 {
-  if (filename.empty() == false)
+  if (filename.empty() == false && !broken)
     {
-      std::vector<PixMask *> styles = disassemble_row(filename, size());
-      for (unsigned int i = 0; i < size(); i++)
-	{
-	  PixMask::scale(styles[i], tilesize, tilesize);
-	  (*this)[i]->setImage(styles[i]);
-	}
+      std::vector<PixMask *> styles = disassemble_row(filename, size(), broken);
+      if (!broken)
+        {
+          for (unsigned int i = 0; i < size(); i++)
+            {
+              PixMask::scale(styles[i], tilesize, tilesize);
+              (*this)[i]->setImage(styles[i]);
+            }
+        }
     }
 }
 // End of file

@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
 
     xml->get_widget("window", window);
     Decorated decorator;
-    decorator.decorate(window,File::getMiscFile("various/background.png"), 200);
+    decorator.decorate(window, GraphicsCache::GAME_BACKGROUND, 200);
 
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
@@ -111,7 +111,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army,
 
     xml->get_widget("window", window);
     Decorated decorator;
-    decorator.decorate(window,File::getMiscFile("various/background.png"), 200);
+    decorator.decorate(window,GraphicsCache::GAME_BACKGROUND, 200);
 
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
@@ -173,7 +173,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army)
 
     xml->get_widget("window", window);
     Decorated decorator;
-    decorator.decorate(window,File::getMiscFile("various/background.png"), 200);
+    decorator.decorate(window, GraphicsCache::GAME_BACKGROUND, 200);
 
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);

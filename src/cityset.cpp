@@ -328,82 +328,100 @@ void Cityset::instantiateImages(std::string port_filename,
 				std::string razed_cities_filename,
 				std::string towers_filename,
 				std::string ruins_filename,
-				std::string temples_filename)
+				std::string temples_filename,
+                                bool &broken)
 {
-  if (port_filename.empty() == false)
-    setPortImage (PixMask::create(port_filename));
-  if (signpost_filename.empty() == false)
-    setSignpostImage (PixMask::create(signpost_filename));
+  if (port_filename.empty() == false && !broken)
+    setPortImage (PixMask::create(port_filename, broken));
+  if (signpost_filename.empty() == false && !broken)
+    setSignpostImage (PixMask::create(signpost_filename, broken));
 
       
   int citysize = d_tileSize * d_city_tile_width;
-  if (cities_filename.empty() == false)
+  if (cities_filename.empty() == false && !broken)
     {
       std::vector<PixMask* > citypics;
-      citypics = disassemble_row(cities_filename, MAX_PLAYERS + 1);
-      for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
-	{
-	  if (citypics[i]->get_width() != citysize)
-	    PixMask::scale(citypics[i], citysize, citysize);
-	  setCityImage(i, citypics[i]);
-	}
+      citypics = disassemble_row(cities_filename, MAX_PLAYERS + 1, broken);
+      if (!broken)
+        {
+          for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
+            {
+              if (citypics[i]->get_width() != citysize)
+                PixMask::scale(citypics[i], citysize, citysize);
+              setCityImage(i, citypics[i]);
+            }
+        }
     }
 
-  if (razed_cities_filename.empty() == false)
+  if (razed_cities_filename.empty() == false && !broken)
     {
       std::vector<PixMask* > razedcitypics;
-      razedcitypics = disassemble_row(razed_cities_filename, MAX_PLAYERS);
-      for (unsigned int i = 0; i < MAX_PLAYERS; i++)
-	{
-	  if (razedcitypics[i]->get_width() != citysize)
-	    PixMask::scale(razedcitypics[i], citysize, citysize);
-	  setRazedCityImage(i, razedcitypics[i]);
-	}
+      razedcitypics = disassemble_row(razed_cities_filename, MAX_PLAYERS, 
+                                      broken);
+      if (!broken)
+        {
+          for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+            {
+              if (razedcitypics[i]->get_width() != citysize)
+                PixMask::scale(razedcitypics[i], citysize, citysize);
+              setRazedCityImage(i, razedcitypics[i]);
+            }
+        }
     }
 
-  if (towers_filename.empty() == false)
+  if (towers_filename.empty() == false && !broken)
     {
       std::vector<PixMask* > towerpics = disassemble_row(towers_filename, 
-							 MAX_PLAYERS);
-      for (unsigned int i = 0; i < MAX_PLAYERS; i++)
-	{
-	  if (towerpics[i]->get_width() != (int)d_tileSize)
-	    PixMask::scale(towerpics[i], d_tileSize, d_tileSize);
-	  setTowerImage(i, towerpics[i]);
-	}
+							 MAX_PLAYERS, broken);
+      if (!broken)
+        {
+          for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+            {
+              if (towerpics[i]->get_width() != (int)d_tileSize)
+                PixMask::scale(towerpics[i], d_tileSize, d_tileSize);
+              setTowerImage(i, towerpics[i]);
+            }
+        }
     }
 
-  if (ruins_filename.empty() == false)
+  if (ruins_filename.empty() == false && !broken)
     {
-      std::vector<PixMask* > ruinpics = disassemble_row(ruins_filename, RUIN_TYPES);
-      int ruinsize = d_tileSize * d_ruin_tile_width;
-      for (unsigned int i = 0; i < RUIN_TYPES ; i++)
-	{
-	  if (ruinpics[i]->get_width() != ruinsize)
-	    PixMask::scale(ruinpics[i], ruinsize, ruinsize);
-	  setRuinImage(i, ruinpics[i]);
-	}
+      std::vector<PixMask* > ruinpics = disassemble_row(ruins_filename, 
+                                                        RUIN_TYPES, broken);
+      if (!broken)
+        {
+          int ruinsize = d_tileSize * d_ruin_tile_width;
+          for (unsigned int i = 0; i < RUIN_TYPES ; i++)
+            {
+              if (ruinpics[i]->get_width() != ruinsize)
+                PixMask::scale(ruinpics[i], ruinsize, ruinsize);
+              setRuinImage(i, ruinpics[i]);
+            }
+        }
     }
 
-  if (temples_filename.empty() == false)
+  if (temples_filename.empty() == false && !broken)
     {
       std::vector<PixMask* > templepics;
-      templepics = disassemble_row(temples_filename, TEMPLE_TYPES);
-      int templesize = d_tileSize * d_temple_tile_width;
-      for (unsigned int i = 0; i < TEMPLE_TYPES ; i++)
-	{
-	  if (templepics[i]->get_width() != templesize)
-	    PixMask::scale(templepics[i], templesize, templesize);
-	  setTempleImage(i, templepics[i]);
-	}
+      templepics = disassemble_row(temples_filename, TEMPLE_TYPES, broken);
+      if (!broken)
+        {
+          int templesize = d_tileSize * d_temple_tile_width;
+          for (unsigned int i = 0; i < TEMPLE_TYPES ; i++)
+            {
+              if (templepics[i]->get_width() != templesize)
+                PixMask::scale(templepics[i], templesize, templesize);
+              setTempleImage(i, templepics[i]);
+            }
+        }
     }
 }
 
-void Cityset::instantiateImages()
+void Cityset::instantiateImages(bool &broken)
 {
   debug("Loading images for cityset " << getName());
   uninstantiateImages();
-  bool broken = false;
+  broken = false;
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
   if (broken)
     return;
@@ -432,7 +450,7 @@ void Cityset::instantiateImages()
   if (!broken)
     instantiateImages(port_filename, signpost_filename, cities_filename,
                       razed_cities_filename, towers_filename, ruins_filename,
-                      temples_filename);
+                      temples_filename, broken);
   if (port_filename != "")
     File::erase(port_filename);
   if (signpost_filename != "")
@@ -570,9 +588,9 @@ bool Cityset::tileWidthsEqual(Cityset *cityset)
   return false;
 }
 
-void Cityset::reload()
+void Cityset::reload(bool &broken)
 {
-  bool broken = false;
+  broken = false;
   bool unsupported_version = false;
   CitysetLoader d(getConfigurationFile(), broken, unsupported_version);
   if (!broken && d.cityset && d.cityset->validate())
@@ -581,7 +599,7 @@ void Cityset::reload()
       uninstantiateImages();
       std::string basename = d_basename;
       *this = *d.cityset;
-      instantiateImages();
+      instantiateImages(broken);
       d_basename = basename;
     }
 }

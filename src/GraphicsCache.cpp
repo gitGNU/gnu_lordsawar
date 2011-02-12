@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005, 2006, 2007 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -289,14 +289,18 @@ void GraphicsCache::deleteInstance()
 GraphicsCache::GraphicsCache()
     :d_cachesize(0)
 {
-    loadDiplomacyPics();
-
-    loadCursorPics();
-    loadProdShields();
-    loadMoveBonusPics();
-    loadMedalPics();
-    loadNewLevelPics();
-    loadDefaultTileStylePics();
+    bool success;
+    success = loadDiplomacyPics();
+    success = loadCursorPics();
+    success = loadProdShields();
+    success = loadMoveBonusPics();
+    success = loadMedalPics();
+    success = loadNewLevelPics();
+    success = loadDefaultTileStylePics();
+    success = loadWaypointPics(); //only for game.  not for editors.
+    success = loadGameButtonPics(); //only for game.  not for editors.
+    success = loadArrowPics(); //only for game.  not for editors.
+    success = loadBackgroundPics(); //only for game.  not for editors.
 
     d_smallruinedcity = getMiscPicture("smallruinedcity.png");
     d_smallhero = getMiscPicture("hero.png");
@@ -335,6 +339,41 @@ GraphicsCache::~GraphicsCache()
     delete d_newlevel_female;
     delete d_newlevelmask_male;
     delete d_newlevelmask_female;
+
+    for (unsigned int i = 0; i < NUM_WAYPOINTS; i++)
+      {
+        delete d_waypoint[i];
+      }
+
+    for (unsigned int i = 0; i < NUM_GAME_BUTTON_IMAGES; i++)
+      {
+        delete d_gamebuttons[i];
+      }
+
+    for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
+      {
+        delete d_arrow[i];
+      }
+
+    for (unsigned int i = 0; i < NUM_BACKGROUND_IMAGES; i++)
+      {
+        delete d_background[i];
+      }
+}
+
+PixMask* GraphicsCache::getBackgroundPic(guint32 type)
+{
+  return d_background[type];
+}
+
+PixMask* GraphicsCache::getArrowPic(guint32 type)
+{
+  return d_arrow[type];
+}
+
+PixMask* GraphicsCache::getGameButtonPic(guint32 type)
+{
+  return d_gamebuttons[type];
 }
 
 PixMask* GraphicsCache::getSmallRuinedCityPic()
@@ -439,7 +478,7 @@ PixMask* GraphicsCache::getShipPic(const Player* p)
 
 PixMask* GraphicsCache::getDefaultTileStylePic(guint32 type, guint32 size)
 {
-    debug("getting default tile style pic " <type)
+    debug("getting default tile style pic " <<(int)type)
     std::list<DefaultTileStyleCacheItem*>::iterator it;
     DefaultTileStyleCacheItem* myitem;
     for (it = d_defaulttilestylelist.begin(); 
@@ -616,6 +655,12 @@ PixMask* GraphicsCache::getExplosionPic(guint32 tileset)
     return myitem->surface;
 }
 
+PixMask* GraphicsCache::getWaypointPic(guint32 type)
+{
+  return d_waypoint[type];
+}
+
+
 PixMask* GraphicsCache::getPlantedStandardPic(const Player* p)
 {
     debug("getting planted standard pic " <<p->getName())
@@ -652,7 +697,7 @@ PixMask* GraphicsCache::getArmyPic(guint32 armyset, guint32 army_id,
 				   const Player* p, const bool *medals,
 				   bool greyed)
 {
-  debug("getting army pic " <<armyset <<" " <<army <<" " <<p->getName() << 
+  debug("getting army pic " <<armyset <<" " <<army_id <<" " <<p->getName() << 
     " "  << greyed)
 
     std::list<ArmyCacheItem*>::iterator it;
@@ -1147,7 +1192,7 @@ PixMask* GraphicsCache::getSelectorPic(guint32 type, guint32 frame,
 PixMask* GraphicsCache::getSelectorPic(guint32 type, guint32 frame, 
 					   const Player *p, guint32 tileset)
 {
-    debug("GraphicsCache::getSelectorPic " <<type <<", " << frame << ", player" <<s->getOwner()->getName())
+    debug("GraphicsCache::getSelectorPic " <<type <<", " << frame << ", player" <<p->getName())
 
     if (!p)
     {
@@ -1208,9 +1253,12 @@ PixMask* GraphicsCache::getProdShieldPic(guint32 type, bool prod)
 
 PixMask* GraphicsCache::applyMask(PixMask* image, PixMask* mask, Gdk::Color colour, bool isNeutral)
 {
+  bool broken = false;
   int width = image->get_width();
   int height = image->get_height();
   PixMask* result = PixMask::create(image->to_pixbuf());
+  if (broken)
+    return NULL;
   if (mask->get_width() != width || (mask->get_height()) != height)
     {
       std::cerr <<"Warning: mask and original image do not match\n";
@@ -1247,9 +1295,12 @@ PixMask* GraphicsCache::applyMask(PixMask* image, PixMask* mask, Gdk::Color colo
 
 PixMask* GraphicsCache::greyOut(PixMask* image)
 {
+  bool broken = false;
   int width = image->get_width();
   int height = image->get_height();
   PixMask* result = PixMask::create(image->to_pixbuf());
+  if (broken)
+    return NULL;
   
   guint8 *data = result->to_pixbuf()->get_pixels();
   guint8 *copy = (guint8*)  malloc (height * width * 4 * sizeof(guint8));
@@ -1517,8 +1568,8 @@ TileCacheItem* GraphicsCache::addTilePic(TileCacheItem *item)
 	item->has_ship << " " << item->building_type << " " << 
 	item->building_subtype << " " << item->building_tile.x << 
 	"," << item->building_tile.y << " " << item->building_player_id << 
-	" " << item->tilesize << " " << item->has_grid << " " << item->tileset
-	" " << item->cityset << " " << item->shieldset);
+	" " << item->tilesize << " " << item->has_grid << " " << 
+        item->tileset << " " << item->cityset << " " << item->shieldset);
 
   TileCacheItem* myitem = new TileCacheItem();
   *myitem = *item;
@@ -1529,17 +1580,21 @@ TileCacheItem* GraphicsCache::addTilePic(TileCacheItem *item)
     myitem->surface = t->getFogImage(myitem->fog_type_id - 1)->copy();
   else
     {
-      myitem->surface = 
-	t->getTileStyle(myitem->tile_style_id)->getImage()->copy();
-    
-      drawTilePic(myitem->surface, myitem->fog_type_id, myitem->has_bag, 
-		  myitem->has_standard, myitem->standard_player_id, 
-		  myitem->stack_size, myitem->stack_player_id, 
-		  myitem->army_type_id, myitem->has_tower, myitem->has_ship, 
-		  myitem->building_type, myitem->building_subtype, 
-		  myitem->building_tile, myitem->building_player_id, 
-		  myitem->tilesize, myitem->has_grid, myitem->tileset,
-		  myitem->cityset, myitem->shieldset);
+      TileStyle *tilestyle = t->getTileStyle(myitem->tile_style_id);
+      PixMask *image = tilestyle->getImage();
+      if (image)
+        {
+          myitem->surface = image->copy();
+
+          drawTilePic(myitem->surface, myitem->fog_type_id, myitem->has_bag, 
+                      myitem->has_standard, myitem->standard_player_id, 
+                      myitem->stack_size, myitem->stack_player_id, 
+                      myitem->army_type_id, myitem->has_tower, myitem->has_ship, 
+                      myitem->building_type, myitem->building_subtype, 
+                      myitem->building_tile, myitem->building_player_id, 
+                      myitem->tilesize, myitem->has_grid, myitem->tileset,
+                      myitem->cityset, myitem->shieldset);
+        }
     }
 
   //now the final preparation steps:
@@ -1585,7 +1640,7 @@ ArmyCacheItem* GraphicsCache::addArmyPic(ArmyCacheItem *item)
 
   if (myitem->medals != NULL)
     {
-      debug("medalsbonus============= " << medalsbonus); 
+      debug("medalsbonus============= "); 
       for(int i=0;i<3;i++)
 	{ 
 	  if (myitem->medals[i])
@@ -1706,7 +1761,7 @@ NewLevelCacheItem* GraphicsCache::addNewLevelPic(const Player* p, guint32 gender
 DefaultTileStyleCacheItem* GraphicsCache::addDefaultTileStylePic(guint32 type,
                                                                  guint32 tilesize)
 {
-  debug("ADD default tile style pic: " <<type ", size " << size)
+  debug("ADD default tile style pic: " <<(int)type << ", size " << tilesize)
 
   DefaultTileStyleCacheItem* myitem = new DefaultTileStyleCacheItem();
   myitem->tilestyle_type = type;
@@ -2668,12 +2723,15 @@ void GraphicsCache::eraseLastMoveBonusItem()
   delete myitem;
 }
 
-void GraphicsCache::loadDiplomacyPics()
+bool GraphicsCache::loadDiplomacyPics()
 {
+  bool broken = false;
   int ts = 30;
   std::vector<PixMask* > diplomacypics;
   diplomacypics = disassemble_row(File::getMiscFile("various/diplomacy-small.png"), 
-			     DIPLOMACY_TYPES);
+			     DIPLOMACY_TYPES, broken);
+  if (broken)
+    return false;
   for (unsigned int i = 0; i < DIPLOMACY_TYPES ; i++)
     {
       if (diplomacypics[i]->get_width() != ts)
@@ -2684,7 +2742,9 @@ void GraphicsCache::loadDiplomacyPics()
 
   ts = 50;
   diplomacypics = disassemble_row(File::getMiscFile("various/diplomacy-large.png"), 
-			     DIPLOMACY_TYPES);
+			     DIPLOMACY_TYPES, broken);
+  if (broken)
+    return false;
   for (unsigned int i = 0; i < DIPLOMACY_TYPES ; i++)
     {
       if (diplomacypics[i]->get_width() != ts)
@@ -2692,36 +2752,50 @@ void GraphicsCache::loadDiplomacyPics()
       d_diplomacypic[1][i] = diplomacypics[i];
 
     }
+  return true;
 }
 
-void GraphicsCache::loadCursorPics()
+bool GraphicsCache::loadCursorPics()
 {
+  bool broken = false;
   int ts = 16;
 
   // load the cursor pictures
   std::vector<PixMask* > cursorpics;
   cursorpics = disassemble_row(File::getMiscFile("various/cursors.png"),
-			       CURSOR_TYPES);
+			       CURSOR_TYPES, broken);
+  if (broken)
+    return false;
   for (unsigned int i = 0; i < CURSOR_TYPES ; i++)
     {
       if (cursorpics[i]->get_width() != ts)
 	PixMask::scale(cursorpics[i], ts, ts);
       d_cursorpic[i] = cursorpics[i];
     }
+  return true;
 }
 
 bool GraphicsCache::loadSelectorImages(std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks)
 {
+  bool broken = false;
   int num_frames;
-  num_frames = Gdk::Pixbuf::create_from_file (filename)->get_width() / size;
-  images = disassemble_row(filename, num_frames, true);
+  guint32 width, height;
+  get_image_width_and_height(filename, width, height, broken);
+  if (broken)
+    return false;
+  num_frames = width / size;
+  images = disassemble_row(filename, num_frames, true, broken);
+  if (broken)
+    return false;
   for (int i = 0; i < num_frames; i++)
     {
       if (images[i]->get_width() != (int)size)
 	PixMask::scale(images[i], size, size);
     }
 
-  masks = disassemble_row(filename, num_frames, false);
+  masks = disassemble_row(filename, num_frames, false, broken);
+  if (broken)
+    return false;
   for (int i = 0; i < num_frames; i++)
     {
       if (masks[i]->get_width() != (int)size)
@@ -2731,29 +2805,37 @@ bool GraphicsCache::loadSelectorImages(std::string filename, guint32 size, std::
   return true;
 }
 
-void GraphicsCache::loadProdShields()
+bool GraphicsCache::loadProdShields()
 {
+  bool broken = false;
   //load the production shieldset
   int xsize = PRODUCTION_SHIELD_WIDTH;
   int ysize = PRODUCTION_SHIELD_HEIGHT;
   std::vector<PixMask* > prodshieldpics;
   prodshieldpics = disassemble_row
-    (File::getMiscFile("various/prodshieldset.png"), PRODUCTION_SHIELD_TYPES);
+    (File::getMiscFile("various/prodshieldset.png"), PRODUCTION_SHIELD_TYPES,
+     broken);
+  if (broken)
+    return false;
   for (unsigned int i = 0; i < PRODUCTION_SHIELD_TYPES; i++)
     {
       if (prodshieldpics[i]->get_width() != xsize)
 	PixMask::scale(prodshieldpics[i], xsize, ysize);
       d_prodshieldpic[i] = prodshieldpics[i];
     }
+  return true;
 }
 
-void GraphicsCache::loadMedalPics()
+bool GraphicsCache::loadMedalPics()
 {
+  bool broken = false;
   //load the medal icons
   int ts = 40;
   std::vector<PixMask* > medalpics;
   medalpics = disassemble_row(File::getMiscFile("various/medals_mask.png"),
-				  MEDAL_TYPES);
+				  MEDAL_TYPES, broken);
+  if (broken)
+    return false;
   for (unsigned int i = 0; i < MEDAL_TYPES; i++)
     {
       if (medalpics[i]->get_width() != ts)
@@ -2761,17 +2843,23 @@ void GraphicsCache::loadMedalPics()
       d_medalpic[0][i] = medalpics[i];
     }
   medalpics = disassemble_row(File::getMiscFile("various/bigmedals.png"),
-			      MEDAL_TYPES);
+			      MEDAL_TYPES, broken);
+  if (broken)
+    return false;
   for (unsigned int i = 0; i < MEDAL_TYPES; i++)
     d_medalpic[1][i] = medalpics[i];
+  return true;
 }
 
-void GraphicsCache::loadDefaultTileStylePics()
+bool GraphicsCache::loadDefaultTileStylePics()
 {
+  bool broken = false;
   std::vector<PixMask* > tilestyle_images;
   tilestyle_images = 
     disassemble_row(File::getMiscFile("various/tilestyles.png"), 
-                    DEFAULT_TILESTYLE_TYPES);
+                    DEFAULT_TILESTYLE_TYPES, broken);
+  if (broken)
+    return false;
   int count = 0;
   for (std::vector<PixMask*>::iterator it = tilestyle_images.begin();
        it != tilestyle_images.end(); it++)
@@ -2779,47 +2867,132 @@ void GraphicsCache::loadDefaultTileStylePics()
       d_default_tilestyles[count] = *it;
       count++;
     }
+  return true;
 }
 
-void GraphicsCache::loadNewLevelPics()
+bool GraphicsCache::loadWaypointPics()
 {
+  bool broken = false;
+  std::vector<PixMask* > waypoint_images;
+  waypoint_images = 
+    disassemble_row(File::getMiscFile("various/waypoints.png"), NUM_WAYPOINTS, 
+                    broken);
+  if (broken)
+    return false;
+  int count = 0;
+  for (std::vector<PixMask*>::iterator it = waypoint_images.begin();
+       it != waypoint_images.end(); it++)
+    {
+      d_waypoint[count] = *it;
+      count++;
+    }
+  return true;
+}
+
+bool GraphicsCache::loadGameButtonPics()
+{
+  bool broken = false;
+  std::vector<PixMask* > images;
+  images = disassemble_row(File::getMiscFile("various/buttons.png"), 
+                           NUM_GAME_BUTTON_IMAGES, broken);
+  if (broken)
+    return false;
+  int count = 0;
+  for (std::vector<PixMask*>::iterator it = images.begin();
+       it != images.end(); it++)
+    {
+      d_gamebuttons[count] = *it;
+      count++;
+    }
+  return true;
+}
+
+bool GraphicsCache::loadArrowPics()
+{
+  bool broken = false;
+  std::vector<PixMask* > images;
+  images = disassemble_row(File::getMiscFile("various/arrows.png"), 
+                           NUM_ARROW_IMAGES, broken);
+  if (broken)
+    return false;
+  int count = 0;
+  for (std::vector<PixMask*>::iterator it = images.begin();
+       it != images.end(); it++)
+    {
+      d_arrow[count] = *it;
+      count++;
+    }
+  return true;
+}
+
+bool GraphicsCache::loadBackgroundPics()
+{
+  bool broken = false;
+  d_background[GAME_BACKGROUND] = 
+    PixMask::create(File::getMiscFile("various/background.png"), broken);
+  if (broken)
+    return false;
+  d_background[SPLASH_BACKGROUND] = 
+    PixMask::create(File::getMiscFile("various/back.bmp"), broken);
+  if (broken)
+    return false;
+  return true;
+}
+
+bool GraphicsCache::loadNewLevelPics()
+{
+  bool broken = false;
   std::vector<PixMask* > half;
   half = disassemble_row(File::getMiscFile("various/hero-newlevel-male.png"), 
-			 2);
+			 2, broken);
+  if (broken)
+    return false;
   d_newlevel_male = half[0];
   d_newlevelmask_male = half[1];
   half = disassemble_row(File::getMiscFile("various/hero-newlevel-female.png"), 
-			 2);
+			 2, broken);
+  if (broken)
+    return false;
   d_newlevel_female = half[0];
   d_newlevelmask_female = half[1];
+  return true;
 }
 
-void GraphicsCache::loadMoveBonusPics()
+bool GraphicsCache::loadMoveBonusPics()
 {
+  bool broken = false;
   //load the movement bonus icons
   int xsize = MOVE_BONUS_WIDTH;
   int ysize = MOVE_BONUS_HEIGHT;
   std::vector<PixMask* > movebonuspics;
   movebonuspics = disassemble_row(File::getMiscFile("various/movebonus.png"),
-				  MOVE_BONUS_TYPES);
+				  MOVE_BONUS_TYPES, broken);
+  if (broken)
+    return false;
   for (unsigned int i = 0; i < MOVE_BONUS_TYPES; i++)
     {
       if (movebonuspics[i]->get_width() != xsize)
 	PixMask::scale(movebonuspics[i], xsize, ysize);
       d_movebonuspic[i] = movebonuspics[i];
     }
+  return true;
 }
 
 bool GraphicsCache::loadFlagImages(std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks)
 {
-  images = disassemble_row(filename, FLAG_TYPES, true);
+  bool broken = false;
+  images = disassemble_row(filename, FLAG_TYPES, true, broken);
+  if (broken)
+    return false;
   for (unsigned int i = 0; i < FLAG_TYPES; i++)
     {
       if (images[i]->get_width() != (int)size)
 	PixMask::scale(images[i], size, size);
 
     }
-  masks = disassemble_row(filename, FLAG_TYPES, false);
+  masks = disassemble_row(filename, FLAG_TYPES, false, broken);
+  if (broken)
+    return false;
   for (unsigned int i = 0; i < FLAG_TYPES; i++)
     {
       if (masks[i]->get_width() !=(int) size)
@@ -2838,7 +3011,8 @@ PixMask* GraphicsCache::getMedalPic(bool large, int type)
 
 PixMask* GraphicsCache::loadImage(std::string filename, bool alpha)
 {
-  return PixMask::create(filename);
+  bool broken = false;
+  return PixMask::create(filename, broken);
 }
 
 PixMask* GraphicsCache::getMiscPicture(std::string picname, bool alpha)

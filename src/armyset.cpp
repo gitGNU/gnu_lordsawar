@@ -506,15 +506,15 @@ void Armyset::getFilenames(std::list<std::string> &files)
     }
 }
 	
-void Armyset::instantiateImages()
+void Armyset::instantiateImages(bool &broken)
 {
   uninstantiateImages();
-  bool broken = false;
+  broken = false;
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
   if (broken)
     return;
   for (iterator it = begin(); it != end(); it++)
-    (*it)->instantiateImages( getTileSize(), &t);
+    (*it)->instantiateImages(getTileSize(), &t, broken);
   std::string ship_filename = "";
   std::string flag_filename = "";
   std::string bag_filename = "";
@@ -528,11 +528,11 @@ void Armyset::instantiateImages()
   if (!broken)
     {
       if (ship_filename.empty() == false)
-        loadShipPic(ship_filename);
+        loadShipPic(ship_filename, broken);
       if (flag_filename.empty() == false)
-        loadStandardPic(flag_filename);
+        loadStandardPic(flag_filename, broken);
       if (bag_filename.empty() == false)
-        loadBagPic(bag_filename);
+        loadBagPic(bag_filename, broken);
     }
 
   if (ship_filename.empty() == false)
@@ -550,35 +550,52 @@ void Armyset::uninstantiateImages()
     (*it)->uninstantiateImages();
 }
 
-void Armyset::loadShipPic(std::string image_filename)
+void Armyset::loadShipPic(std::string image_filename, bool &broken)
 {
   if (image_filename.empty() == true)
-    return;
+    {
+      broken = true;
+      return;
+    }
   std::vector<PixMask*> half;
-  half = disassemble_row(image_filename, 2);
-  int size = getTileSize();
-  PixMask::scale(half[0], size, size);
-  PixMask::scale(half[1], size, size);
-  setShipImage(half[0]);
-  setShipMask(half[1]);
+  half = disassemble_row(image_filename, 2, broken);
+  if (!broken)
+    {
+      int size = getTileSize();
+      PixMask::scale(half[0], size, size);
+      PixMask::scale(half[1], size, size);
+      setShipImage(half[0]);
+      setShipMask(half[1]);
+    }
 }
 
-void Armyset::loadBagPic(std::string image_filename)
+void Armyset::loadBagPic(std::string image_filename, bool &broken)
 {
   if (image_filename.empty() == true)
-    return;
-  setBagPic(PixMask::create(image_filename));
+    {
+      broken = true;
+      return;
+    }
+  if (!broken)
+    setBagPic(PixMask::create(image_filename, broken));
 }
-void Armyset::loadStandardPic(std::string image_filename)
+
+void Armyset::loadStandardPic(std::string image_filename, bool &broken)
 {
   if (image_filename.empty() == true)
-    return;
-  std::vector<PixMask*> half = disassemble_row(image_filename, 2);
-  int size = getTileSize();
-  PixMask::scale(half[0], size, size);
-  PixMask::scale(half[1], size, size);
-  setStandardPic(half[0]);
-  setStandardMask(half[1]);
+    {
+      broken = true;
+      return;
+    }
+  std::vector<PixMask*> half = disassemble_row(image_filename, 2, broken);
+  if (!broken)
+    {
+      int size = getTileSize();
+      PixMask::scale(half[0], size, size);
+      PixMask::scale(half[1], size, size);
+      setStandardPic(half[0]);
+      setStandardMask(half[1]);
+    }
 }
 
 std::string Armyset::getConfigurationFile() const
@@ -833,9 +850,9 @@ const ArmyProto *Armyset::getRandomAwardableAlly() const
   return NULL;
 }
 
-void Armyset::reload()
+void Armyset::reload(bool &broken)
 {
-  bool broken = false;
+  broken = false;
   bool unsupported = false;
   ArmysetLoader d(getConfigurationFile(), broken, unsupported);
   if (!broken && d.armyset && d.armyset->validate())
@@ -846,7 +863,7 @@ void Armyset::reload()
         delete *it;
       std::string basename = d_basename;
       *this = *d.armyset;
-      instantiateImages();
+      instantiateImages(broken);
       d_basename = basename;
     }
 }

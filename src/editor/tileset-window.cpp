@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -400,8 +400,17 @@ void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
     }
 
   std::string n = d_tileset->getFileFromConfigurationFile(t->getName() + ".png");
+  bool broken = false;
   TileStyleSet *set = get_selected_tilestyleset ();
-  set->instantiateImages(d_tileset->getTileSize(), n);
+  set->instantiateImages(d_tileset->getTileSize(), n, broken);
+  if (broken)
+    {
+      tilestyles_list->clear();
+      image_button->set_label(_("no image set"));
+      update_tilestyle_panel();
+      return;
+    }
+
   File::erase(n);
   if (t->getName().empty() == false)
     image_button->set_label(File::get_basename(t->getName() + ".png", true));
@@ -1367,8 +1376,9 @@ bool TileSetWindow::load_tileset(std::string filename)
     delete d_tileset;
   d_tileset = tileset;
 
+  bool broken = false;
   d_tileset->setBaseName(File::get_basename(autosave));
-  d_tileset->instantiateImages();
+  d_tileset->instantiateImages(broken);
 
   tilestyles_list->clear();
   tilestylesets_list->clear();

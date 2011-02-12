@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -80,7 +80,8 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
 				 NextTurnNetworked *next_turn,
 				 GameStation *game_station)
 {
-  Shieldsetlist::getInstance()->instantiateImages();
+  bool broken = false;
+  Shieldsetlist::getInstance()->instantiateImages(broken);
   d_game_scenario = gamescenario;
   d_game_station = game_station;
   d_next_turn = next_turn;

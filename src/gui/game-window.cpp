@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, 2008, Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -123,6 +123,7 @@
 
 GameWindow::GameWindow()
 {
+  GraphicsCache *gc = GraphicsCache::getInstance();
   stack_info_button_table = NULL;
   game_winner = NULL;
   stack_info_tip = NULL;
@@ -140,7 +141,7 @@ GameWindow::GameWindow()
     xml->get_widget("window", w);
     window = w;
     w->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
-    decorate(window, File::getMiscFile("various/back.bmp"));
+    decorate(window, GraphicsCache::SPLASH_BACKGROUND);
     
     window_closed.connect
       (sigc::mem_fun(*this, &GameWindow::on_quit_activated));
@@ -258,63 +259,78 @@ GameWindow::GameWindow()
     xml->get_widget("se_keypad_button", se_keypad_button);
 
     // fill in imagery
-    d_button_images = disassemble_row(File::getMiscFile("various/buttons.png"), 11);
     Gtk::Image *button_image2 = new Gtk::Image();
-    button_image2->property_pixbuf() = d_button_images[2]->to_pixbuf();
+    button_image2->property_pixbuf() = 
+      gc->getGameButtonPic(GraphicsCache::NEXT_MOVABLE_STACK)->to_pixbuf();
     next_movable_button->add(*manage(button_image2));
     Gtk::Image *button_image5 = new Gtk::Image();
-    button_image5->property_pixbuf() = d_button_images[5]->to_pixbuf();
+    button_image5->property_pixbuf() = 
+      gc->getGameButtonPic(GraphicsCache::CENTER_ON_STACK)->to_pixbuf();
     center_button->add(*manage(button_image5));
     Gtk::Image *button_image0 = new Gtk::Image();
-    button_image0->property_pixbuf() = d_button_images[0]->to_pixbuf();
+    button_image0->property_pixbuf() = 
+      gc->getGameButtonPic(GraphicsCache::DIPLOMACY_NO_PROPOSALS)->to_pixbuf();
     diplomacy_button->add(*manage(button_image0));
     Gtk::Image *button_image6 = new Gtk::Image();
-    button_image6->property_pixbuf() = d_button_images[6]->to_pixbuf();
+    button_image6->property_pixbuf() = 
+      gc->getGameButtonPic(GraphicsCache::STACK_DEFEND)->to_pixbuf();
     defend_button->add(*manage(button_image6));
     Gtk::Image * button_image1 = new Gtk::Image();
-    button_image1->property_pixbuf() = d_button_images[1]->to_pixbuf();
+    button_image1->property_pixbuf() = 
+      gc->getGameButtonPic(GraphicsCache::STACK_PARK)->to_pixbuf();
     park_button->add(*manage(button_image1));
     Gtk::Image * button_image7 = new Gtk::Image();
-    button_image7->property_pixbuf() = d_button_images[7]->to_pixbuf();
+    button_image7->property_pixbuf() = 
+      gc->getGameButtonPic(GraphicsCache::STACK_DESELECT)->to_pixbuf();
     deselect_button->add(*manage(button_image7));
     Gtk::Image * button_image9 = new Gtk::Image();
-    button_image9->property_pixbuf() = d_button_images[9]->to_pixbuf();
+    button_image9->property_pixbuf() = 
+      gc->getGameButtonPic(GraphicsCache::STACK_SEARCH)->to_pixbuf();
     search_button->add(*manage(button_image9));
     Gtk::Image * button_image3 = new Gtk::Image();
-    button_image3->property_pixbuf() = d_button_images[3]->to_pixbuf();
+    button_image3->property_pixbuf() = 
+      gc->getGameButtonPic(GraphicsCache::STACK_MOVE)->to_pixbuf();
     move_button->add(*manage(button_image3));
     Gtk::Image * button_image4 = new Gtk::Image();
-    button_image4->property_pixbuf() = d_button_images[4]->to_pixbuf();
+    button_image4->property_pixbuf() = 
+      gc->getGameButtonPic(GraphicsCache::MOVE_ALL_STACKS)->to_pixbuf();
     move_all_button->add(*manage(button_image4));
     Gtk::Image * button_image10 = new Gtk::Image();
-    button_image10->property_pixbuf() = d_button_images[10]->to_pixbuf();
+    button_image10->property_pixbuf() = 
+      gc->getGameButtonPic(GraphicsCache::END_TURN)->to_pixbuf();
     end_turn_button->add(*manage(button_image10));
     
-    d_arrow_images = disassemble_row(File::getMiscFile("various/arrows.png"), 
-				     8);
     Gtk::Image * arrow_image0 = new Gtk::Image();
-    arrow_image0->property_pixbuf() = d_arrow_images[0]->to_pixbuf();
+    arrow_image0->property_pixbuf() = 
+      gc->getArrowPic(GraphicsCache::NORTHWEST)->to_pixbuf();
     nw_keypad_button->add(*manage(arrow_image0));
     Gtk::Image * arrow_image1 = new Gtk::Image();
-    arrow_image1->property_pixbuf() = d_arrow_images[1]->to_pixbuf();
+    arrow_image1->property_pixbuf() = 
+      gc->getArrowPic(GraphicsCache::NORTH)->to_pixbuf();
     n_keypad_button->add(*manage(arrow_image1));
     Gtk::Image * arrow_image2 = new Gtk::Image();
-    arrow_image2->property_pixbuf() = d_arrow_images[2]->to_pixbuf();
+    arrow_image2->property_pixbuf() = 
+      gc->getArrowPic(GraphicsCache::NORTHEAST)->to_pixbuf();
     ne_keypad_button->add(*manage(arrow_image2));
     Gtk::Image * arrow_image3 = new Gtk::Image();
-    arrow_image3->property_pixbuf() = d_arrow_images[3]->to_pixbuf();
+    arrow_image3->property_pixbuf() = 
+      gc->getArrowPic(GraphicsCache::EAST)->to_pixbuf();
     e_keypad_button->add(*manage(arrow_image3));
     Gtk::Image * arrow_image4 = new Gtk::Image();
-    arrow_image4->property_pixbuf() = d_arrow_images[4]->to_pixbuf();
+    arrow_image4->property_pixbuf() = 
+      gc->getArrowPic(GraphicsCache::WEST)->to_pixbuf();
     w_keypad_button->add(*manage(arrow_image4));
     Gtk::Image * arrow_image5 = new Gtk::Image();
-    arrow_image5->property_pixbuf() = d_arrow_images[5]->to_pixbuf();
+    arrow_image5->property_pixbuf() = 
+      gc->getArrowPic(GraphicsCache::SOUTHWEST)->to_pixbuf();
     sw_keypad_button->add(*manage(arrow_image5));
     Gtk::Image * arrow_image6 = new Gtk::Image();
-    arrow_image6->property_pixbuf() = d_arrow_images[6]->to_pixbuf();
+    arrow_image6->property_pixbuf() = 
+      gc->getArrowPic(GraphicsCache::SOUTH)->to_pixbuf();
     s_keypad_button->add(*manage(arrow_image6));
     Gtk::Image * arrow_image7 = new Gtk::Image();
-    arrow_image7->property_pixbuf() = d_arrow_images[7]->to_pixbuf();
+    arrow_image7->property_pixbuf() = 
+      gc->getArrowPic(GraphicsCache::SOUTHEAST)->to_pixbuf();
     se_keypad_button->add(*manage(arrow_image7));
 
     // connect callbacks for the menu
@@ -438,7 +454,7 @@ GameWindow::GameWindow()
 	Glib::RefPtr<Gdk::Pixmap> pixmap;
 	Glib::RefPtr<Gdk::Bitmap> bitmap;
 	copy = menubar->get_style()->copy();
-	back = Gdk::Pixbuf::create_from_file(File::getMiscFile("various/back.bmp"));
+	back = GraphicsCache::getInstance()->getBackgroundPic(GraphicsCache::SPLASH_BACKGROUND)->to_pixbuf();
 	pixmap = Gdk::Pixmap::create
 	  (window->get_window(), back->get_width(), back->get_height());
 	back->composite_color(back, 0, 0, 
@@ -906,17 +922,20 @@ void GameWindow::show_city_production_report (bool destitute)
 
 void GameWindow::change_diplomacy_button_image (bool proposals_present)
 {
+  GraphicsCache *gc = GraphicsCache::getInstance();
   /* switch up the image. */
   if (proposals_present)
     {
       Gtk::Image *proposals_present_image = new Gtk::Image();
-      proposals_present_image->property_pixbuf() = d_button_images[8]->to_pixbuf();
+      proposals_present_image->property_pixbuf() = 
+        gc->getGameButtonPic(GraphicsCache::DIPLOMACY_NEW_PROPOSALS)->to_pixbuf();
       diplomacy_button->property_image() = proposals_present_image;
     }
   else
     {
       Gtk::Image *proposals_not_present_image = new Gtk::Image();
-      proposals_not_present_image->property_pixbuf() = d_button_images[0]->to_pixbuf();
+      proposals_not_present_image->property_pixbuf() = 
+        gc->getGameButtonPic(GraphicsCache::DIPLOMACY_NO_PROPOSALS)->to_pixbuf();
       diplomacy_button->property_image() = proposals_not_present_image;
     }
 }
@@ -2353,7 +2372,7 @@ void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos)
 
   map_tip->add(*f);
   Decorated decorator;
-  decorator.decorate(map_tip,File::getMiscFile("various/background.png"), 200);
+  decorator.decorate(map_tip, GraphicsCache::GAME_BACKGROUND, 200);
   f->show_all();
 
   // get screen position
@@ -3778,13 +3797,15 @@ void GameWindow::give_some_cheese(Player *winner)
 
 void GameWindow::on_commentator_comments(std::string comment)
 {
+  GraphicsCache *gc = GraphicsCache::getInstance();
+  bool broken = false;
   TimedMessageDialog dialog (*window, comment, 0);
   dialog.set_title(_("The Warlord Says..."));
     
-  std::vector<PixMask* > buttons;
-  buttons = disassemble_row(File::getMiscFile("various/buttons.png"), 11);
-  PixMask::scale(buttons[0], 60, 60);
-  dialog.set_image(buttons[0]->to_pixbuf());
+  PixMask *img = 
+    gc->getGameButtonPic(GraphicsCache::DIPLOMACY_NO_PROPOSALS)->copy();
+  PixMask::scale(img, 60, 60);
+  dialog.set_image(img->to_pixbuf());
   dialog.run();
   dialog.hide();
 }

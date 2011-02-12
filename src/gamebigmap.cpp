@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -78,7 +78,6 @@ GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
   mouse_state = NONE;
   input_locked = false;
 
-  d_waypoint = disassemble_row(File::getMiscFile("various/waypoints.png"), 2);
   prev_mouse_pos = Vector<int>(0, 0);
 
   // setup timeout
@@ -945,9 +944,11 @@ void GameBigMap::after_draw()
 
 	  canMoveThere = (pathcount < stack->getPath()->getMovesExhaustedAtPoint());
 	  if (canMoveThere)
-	    d_waypoint[0]->blit_centered(buffer, pos + (Vector<int>(tilesize,tilesize)/2));
+            gc->getWaypointPic(0)->blit_centered
+              (buffer, pos + (Vector<int>(tilesize,tilesize)/2));
 	  else
-	    d_waypoint[1]->blit_centered(buffer, pos + (Vector<int>(tilesize,tilesize)/2));
+            gc->getWaypointPic(1)->blit_centered
+              (buffer, pos + (Vector<int>(tilesize,tilesize)/2));
 
 	  pathcount++;
 

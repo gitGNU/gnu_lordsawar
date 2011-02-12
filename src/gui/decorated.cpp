@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -34,13 +34,13 @@ Decorated::~Decorated()
   maximized = false;
 }
 
-void Decorated::decorate(Gtk::Window *d, std::string filename, int alpha)
+void Decorated::decorate(Gtk::Window *d, GraphicsCache::BackgroundType back, int alpha)
 {
+  GraphicsCache *gc = GraphicsCache::getInstance();
   window = d;
   if (Configuration::s_decorated == false)
     return;
   Glib::RefPtr<Gtk::Style> copy;
-  RefPtr<Pixbuf> back;
   RefPtr<Pixmap> pixmap;
   RefPtr<Bitmap> bitmap;
   window->set_decorated(true);
@@ -97,14 +97,12 @@ void Decorated::decorate(Gtk::Window *d, std::string filename, int alpha)
     (sigc::mem_fun(*this, &Decorated::on_mouse_motion_event));
   copy = windowdecoration->get_style()->copy();
 
-  if (filename == "")
-    filename = File::getMiscFile("various/background.png");
-  back = Pixbuf::create_from_file(filename);
-  pixmap = Pixmap::create(window->get_window(), back->get_width(), back->get_height());
+  Glib::RefPtr<Gdk::Pixbuf> b = gc->getBackgroundPic(back)->to_pixbuf();
+  pixmap = Pixmap::create(window->get_window(), b->get_width(), b->get_height());
   copy->set_bg(Gtk::STATE_NORMAL, Gdk::Color("black"));
   window->set_style(copy);
-  back->composite_color(back, 0, 0, back->get_width(), back->get_height(), 0.0, 0.0, 1.0, 1.0, Gdk::INTERP_NEAREST, alpha, 0, 0, 64, 0, 0);
-  back->render_pixmap_and_mask(pixmap, bitmap, 10);
+  b->composite_color(b, 0, 0, b->get_width(), b->get_height(), 0.0, 0.0, 1.0, 1.0, Gdk::INTERP_NEAREST, alpha, 0, 0, 64, 0, 0);
+  b->render_pixmap_and_mask(pixmap, bitmap, 10);
   copy->set_bg_pixmap(Gtk::STATE_NORMAL, pixmap);
   windowdecoration->show_all();
   window->set_style(copy);

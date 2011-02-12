@@ -1,6 +1,6 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2004, 2005, 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -295,10 +295,10 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	void uninstantiateImages();
 
 	//! Load the images assoicated with this tileset.
-	void instantiateImages();
+	void instantiateImages(bool &broken);
 
         //! Load the tileset again.
-        void reload();
+        void reload(bool &broken);
         
         //! make a new tilestyleset from an image and add it to the tile's list.
         bool addTileStyleSet(Tile *tile, std::string filename);
@@ -377,7 +377,8 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 			       std::string fog_filename,
 			       std::string flags_filename,
 			       std::string selector_filename,
-			       std::string small_selector_filename);
+			       std::string small_selector_filename,
+                               bool &broken);
         // DATA
 
 	//! The name of the Tileset.

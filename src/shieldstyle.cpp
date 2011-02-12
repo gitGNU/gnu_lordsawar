@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -92,16 +92,17 @@ bool ShieldStyle::save(XML_Helper *helper) const
   retval &= helper->closeTag();
   return retval;
 }
-void ShieldStyle::instantiateImages(std::string filename, Shieldset *s)
+
+void ShieldStyle::instantiateImages(std::string filename, Shieldset *s, bool &broken)
 {
   if (filename.empty() == true)
     return;
   // The shield image consists of two halves. On the left is the shield 
   // image, on the right the mask.
   debug("loading shield file: " << filename);
-  std::vector<PixMask* > half = disassemble_row(filename, 2);
-  if (half[0] == NULL)
-    debug("failed to load image file");
+  std::vector<PixMask* > half = disassemble_row(filename, 2, broken);
+  if (broken)
+    return;
 
   int xsize = 0;
   int ysize = 0;

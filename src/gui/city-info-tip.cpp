@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ CityInfoTip::CityInfoTip(Gtk::Widget *target, MapTipPosition mpos, const City *c
 
     xml->get_widget("window", window);
     Decorated decorator;
-    decorator.decorate(window,File::getMiscFile("various/background.png"), 200);
+    decorator.decorate(window, GraphicsCache::GAME_BACKGROUND, 200);
 
     Gtk::Image *left_shield_image;
     xml->get_widget("left_shield_image", left_shield_image);

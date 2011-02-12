@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -162,14 +162,15 @@ class Cityset : public sigc::trackable, public Set
         //! Delete the cityset's temporary directory.
         void clean_tmp_dir() const;
 
-	void instantiateImages();
+	void instantiateImages(bool &broken);
 	void instantiateImages(std::string port_filename,
 			       std::string signpost_filename,
 			       std::string cities_filename,
 			       std::string razed_cities_filename,
 			       std::string towers_filename,
 			       std::string ruins_filename,
-			       std::string temples_filename);
+			       std::string temples_filename,
+                               bool &broken);
 	void uninstantiateImages();
 
 	std::string getConfigurationFile() const;
@@ -200,7 +201,7 @@ class Cityset : public sigc::trackable, public Set
         bool replaceFileInConfigurationFile(std::string file, std::string new_file);
 
         //! Load the cityset again.
-        void reload();
+        void reload(bool &broken);
         guint32 calculate_preferred_tile_size() const;
     private:
 

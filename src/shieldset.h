@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -151,7 +151,7 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
         void setBaseName(std::string dir) {d_basename = dir;}
 
         //! Load the shieldset again.
-        void reload();
+        void reload(bool &broken);
 
 	// Methods that operate on the class data but do not modify the class.
 
@@ -198,7 +198,7 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	// Methods that operate on the class data and also modify the class.
 
 	//! Load images associated with this shieldset.
-	void instantiateImages();
+	void instantiateImages(bool &broken);
 
 	//! Destroy images associated with this shieldset.
 	void uninstantiateImages();

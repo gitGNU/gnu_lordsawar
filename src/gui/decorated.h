@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #include <gtkmm.h>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
+#include "GraphicsCache.h"
 
 class Decorated: public sigc::trackable
 {
@@ -28,7 +29,7 @@ class Decorated: public sigc::trackable
     Decorated();
     virtual ~Decorated();
 
-    void decorate(Gtk::Window *window, std::string background_filename="", int alpha = 255);
+    void decorate(Gtk::Window *window, GraphicsCache::BackgroundType back = GraphicsCache::GAME_BACKGROUND, int alpha = 255);
 
     void decorate_border(Gtk::Viewport *container, int alpha = 255);
 

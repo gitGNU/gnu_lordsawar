@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -103,7 +103,7 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	void uninstantiateImages();
 
 	//! Load all of the images associated with all of the shieldsets.
-	void instantiateImages();
+	void instantiateImages(bool &broken);
 
 	//! Add the given shieldset to the list, and copy files into place.
 	/**

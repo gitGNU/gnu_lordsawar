@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005, 2006, 2007 Ulf Lorenz
 // Copyright (C) 2004, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -106,6 +106,37 @@ class GraphicsCache
       HEART,
       GOTO_ARROW
     };
+  enum GameButtonType
+    {
+      DIPLOMACY_NO_PROPOSALS = 0,
+      STACK_PARK,
+      NEXT_MOVABLE_STACK,
+      STACK_MOVE,
+      MOVE_ALL_STACKS,
+      CENTER_ON_STACK,
+      STACK_DEFEND,
+      STACK_DESELECT,
+      DIPLOMACY_NEW_PROPOSALS,
+      STACK_SEARCH,
+      END_TURN,
+    };
+  enum ArrowType
+    {
+      NORTHWEST = 0,
+      NORTH,
+      NORTHEAST,
+      EAST,
+      WEST,
+      SOUTHWEST,
+      SOUTH,
+      SOUTHEAST
+    };
+  enum BackgroundType
+    {
+      SPLASH_BACKGROUND,
+      GAME_BACKGROUND
+    };
+
         //! Method for getting/creating the soliton instance.
         static GraphicsCache* getInstance();
 
@@ -262,6 +293,13 @@ class GraphicsCache
         PixMask* getExplosionPic();
         PixMask* getExplosionPic(guint32 tileset);
 
+        /** Method for getting a waypoint picture.  This is the picture
+	  * of a circle that shows on the map when stacks are moving.
+          *
+          * @return image of the waypoint.
+          */
+        PixMask* getWaypointPic(guint32 type);
+
 	/** Method for getting a new-level picture.  This is the picture
 	 * that appears when a hero gains a new level, and subsequently gets
 	 * to increase a stat.
@@ -379,6 +417,14 @@ class GraphicsCache
 
         PixMask* getMedalPic(bool large, int type);
 
+        //! get an image for one of the buttons on the main game window.
+        PixMask* getGameButtonPic(guint32 type);
+
+        //! get an image for one of an arrow, for the main game window.
+        PixMask* getArrowPic(guint32 type);
+
+        //! get an image for the background of a window or dialog.
+        PixMask* getBackgroundPic(guint32 type);
 
         /** Modify an image with player colors.
           * 
@@ -411,6 +457,7 @@ class GraphicsCache
           * @return the surface which contains the image
           */
         static PixMask* getMiscPicture(std::string picname, bool alpha=true);
+
 
         //! Erase cached graphics.
         void reset();
@@ -582,25 +629,37 @@ class GraphicsCache
         void loadRuinPics();
 
         //! Loads the images for the diplomacy pictures.
-        void loadDiplomacyPics();
+        bool loadDiplomacyPics();
+
+        //! Loads the images for the waypoints.
+        bool loadWaypointPics();
+
+        //! Loads the images for the buttons in the main game window.
+        bool loadGameButtonPics();
+
+        //! Loads the images for the arrows in the main game window.
+        bool loadArrowPics();
+        
+        //! Loads the background images that go behind dialogs and windows.
+        bool loadBackgroundPics();
 
         //! Loads the images for the cursor pictures.
-        void loadCursorPics();
+        bool loadCursorPics();
 
         //! Loads the images for the medals.
-        void loadMedalPics();
+        bool loadMedalPics();
         
         //! Loads the images for the production shields
-        void loadProdShields();
+        bool loadProdShields();
         
 	//! Loads the images associated with heroes gaining a new level.
-        void loadNewLevelPics();
+        bool loadNewLevelPics();
 
         //! Loads the images associated with default tile styles.
-        void loadDefaultTileStylePics();
+        bool loadDefaultTileStylePics();
 
         //! Loads the images for the movement bonuses
-        void loadMoveBonusPics();
+        bool loadMoveBonusPics();
 
 	void drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid, guint32 tileset, guint32 cityset, guint32 shieldset);
 
@@ -677,6 +736,10 @@ class GraphicsCache
 	PixMask *d_newlevel_female;
 	PixMask *d_newlevelmask_female;
         PixMask *d_default_tilestyles[DEFAULT_TILESTYLE_TYPES];
+        PixMask *d_waypoint[NUM_WAYPOINTS];
+        PixMask *d_gamebuttons[NUM_GAME_BUTTON_IMAGES];
+        PixMask *d_arrow[NUM_ARROW_IMAGES];
+        PixMask *d_background[NUM_BACKGROUND_IMAGES];
 };
 
 bool operator <(ArmyCacheItem lhs, ArmyCacheItem rhs);

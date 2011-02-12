@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2010 Ben Asselstine
+// Copyright (C) 2008, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -188,11 +188,17 @@ std::string Citysetlist::getCitysetDir(std::string name, guint32 tilesize) const
   else
     return (*it).second;
 }
-void Citysetlist::instantiateImages()
+
+void Citysetlist::instantiateImages(bool &broken)
 {
+  broken = false;
   for (iterator it = begin(); it != end(); it++)
-    (*it)->instantiateImages();
+    {
+      if (!broken)
+        (*it)->instantiateImages(broken);
+    }
 }
+
 void Citysetlist::uninstantiateImages()
 {
   for (iterator it = begin(); it != end(); it++)

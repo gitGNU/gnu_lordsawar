@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -114,9 +114,9 @@ bool Shield::save(XML_Helper *helper) const
   return retval;
 }
 	
-void Shield::instantiateImages(Shieldset *s)
+void Shield::instantiateImages(Shieldset *s, bool &broken)
 {
-  bool broken = false;
+  broken = false;
   Tar_Helper t(s->getConfigurationFile(), std::ios::in, broken);
   if (broken)
     return;
@@ -128,7 +128,7 @@ void Shield::instantiateImages(Shieldset *s)
                                           broken);
           if (broken == false)
             {
-              (*it)->instantiateImages(pngfile, s);
+              (*it)->instantiateImages(pngfile, s, broken);
               File::erase(pngfile);
             }
           else
@@ -137,6 +137,7 @@ void Shield::instantiateImages(Shieldset *s)
     }
   t.Close();
 }
+
 void Shield::uninstantiateImages()
 {
   for (iterator it = begin(); it != end(); it++)
