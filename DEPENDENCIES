@@ -27,15 +27,13 @@ Requirements:
 - GNU gettext 
     Should be distributed with the Linux distribution.
 
-- Gnet Library libgnet >= 2.0
-
 
 on Ubuntu 9.10, (Karmic Koala) you need the following packages:
-sudo apt-get install automake autoconf libtool m4 autotools-dev g++ libsigc++-2.0-dev libglibmm-2.4-dev libgtkmm-2.4-dev gettext subversion libsdl1.2-dev libsdl-mixer1.2-dev libgnet-dev libboost-dev intltool cvs libtar-dev
+sudo apt-get install automake autoconf libtool m4 autotools-dev g++ libsigc++-2.0-dev libglibmm-2.4-dev libgtkmm-2.4-dev gettext subversion libsdl1.2-dev libsdl-mixer1.2-dev libboost-dev intltool cvs libtar-dev
 
 on Fedora Core 12 you need the following packages:
-yum install libglademm24-devel gtkmm24-devel gnet2-devel gettext desktop-file-utils SDL-devel SDL_mixer-devel expat-devel libsigc++20-devel boost-devel libtiff-devel libvorbis-devel libjpeg-devel intltool automake autoconf m4 subversion cvs libtar-devel glade3
+yum install libglademm24-devel gtkmm24-devel gettext desktop-file-utils SDL-devel SDL_mixer-devel expat-devel libsigc++20-devel boost-devel libtiff-devel libvorbis-devel libjpeg-devel intltool automake autoconf m4 subversion cvs libtar-devel glade3
 
 on OpenSUSE 11.2, you need to manually build and install libtar from the libtar URL listed above (I know of no OpenSUSE rpm for libtar), plus the followin packages:
-autoconf gettext-tools intltool automake libtool glimbmm2-devel gtkmm2-devel gnet-devel libSDL_mixer-devel libexpat-devel boost-devel libsigc++2-devel pkg-config make gcc-c++
+autoconf gettext-tools intltool automake libtool glimbmm2-devel gtkmm2-devel libSDL_mixer-devel libexpat-devel boost-devel libsigc++2-devel pkg-config make gcc-c++
 (Several other rpms are needed, but these others will automatically be present in any normal workstation build, or will automatically be pulled in by rpm dependenices for the packages listed here).
