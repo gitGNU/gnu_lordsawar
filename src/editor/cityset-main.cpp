@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
     Cityset::scanSystemCollection();
 
     // init GUI stuff
-    g_set_application_name(_("LordsAWar! Cityset Editor"));
+    g_set_application_name(N_("LordsAWar! Cityset Editor"));
 
     RecentlyEditedFileList::getInstance()->loadFromFile();
 

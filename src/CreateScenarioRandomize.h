@@ -71,6 +71,8 @@ class CreateScenarioRandomize
 
 	std::string popRandomListName(std::vector<std::string>& list);
 
+        Glib::ustring get_direction(int xdir, int ydir);
+
 	bool loadNames(std::vector<std::string>& list, std::ifstream& file);
 
         //the namelists

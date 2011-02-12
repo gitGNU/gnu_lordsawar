@@ -177,7 +177,7 @@ void TilesetExplosionPictureEditorDialog::update_scene(TilePreviewScene *scene,
     {
       explosion = Gdk::Pixbuf::create_from_file(filename, d_tileset->getTileSize() * 2, d_tileset->getTileSize() * 2, false);
     }
-  if (explosion == NULL)
+  if (!explosion)
     return;
 
   int i = (scene_pixbuf->get_width() - explosion->get_width()) / 2;

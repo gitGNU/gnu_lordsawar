@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
     Tileset::scanSystemCollection();
 
     // init GUI stuff
-    g_set_application_name(_("LordsAWar! Tileset Editor"));
+    g_set_application_name(N_("LordsAWar! Tileset Editor"));
 
     RecentlyEditedFileList::getInstance()->loadFromFile();
 

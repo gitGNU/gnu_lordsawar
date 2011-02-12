@@ -311,20 +311,33 @@ bool compareDiplomaticScores (const struct rankable_t lhs,
   else
     return lhs.score < rhs.score;
 }
+
+Glib::ustring Playerlist::get_title(int rank)
+{
+  if (rank == 0)
+    return _("Statesman");
+  else if (rank == 1)
+    return _("Diplomat");
+  else if (rank == 2)
+    return _("Pragmatist");
+  else if (rank == 3)
+    return _("Politician");
+  else if (rank == 4)
+    return _("Deceiver");
+  else if (rank == 5)
+    return _("Scoundrel");
+  else if (rank == 6)
+    return _("Turncoat");
+  else if (rank == 7)
+    return _("Running Dog");
+  return _("unknown");
+}
+
 void Playerlist::calculateDiplomaticRankings()
 {
   unsigned int i = 0;
-  const char* titles[MAX_PLAYERS] =
-    {
-      _("Statesman"),
-      _("Diplomat"),
-      _("Pragmatist"),
-      _("Politician"),
-      _("Deceiver"),
-      _("Scoundrel"),
-      _("Turncoat"),
-      _("Running Dog"),
-    };
+  int used_titles[MAX_PLAYERS];
+  memset (used_titles, 0, sizeof (used_titles));
 
   //determine the rank for each player
   //add up the scores for all living players, and sort
@@ -375,13 +388,13 @@ void Playerlist::calculateDiplomaticRankings()
       for (unsigned int j = 0; j < MAX_PLAYERS; j++)
 	{
 	  if (deplete[j] == i)
-	    titles[j] = "";
+            used_titles[j] = 1;
 	}
     }
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
-      if (titles[i][0] != '\0')
-	available_titles.push_back (std::string(titles[i]));
+      if (used_titles[i] != 1)
+	available_titles.push_back (get_title(i));
     }
 
   for (const_iterator it = begin (); it != end (); it++)

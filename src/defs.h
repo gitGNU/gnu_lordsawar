@@ -38,8 +38,8 @@
 #define LORDSAWAR_CONFIG_VERSION "0.2.0"
 #define LORDSAWAR_RECENTLY_PLAYED_VERSION "0.2.0"
 #define LORDSAWAR_RECENTLY_EDITED_VERSION "0.2.0"
-#define _(string) gettext(string) // Macro for the gettext
-#define __(astring) std::string(gettext(astring.c_str()))
+#define _(string) Glib::locale_to_utf8(Glib::ustring(gettext(string))) // Macro for the gettext
+#define N_(string) string
 
 
 //-----------------------------------------------------------------------------
@@ -143,7 +143,6 @@ const Gdk::Color GRID_BOX_COLOUR(BLACK_COLOUR);
 const Gdk::Color FOG_COLOUR(BLACK_COLOUR);
 const Gdk::Color VECTORMAP_ACTIVE_BOX_COLOUR(WHITE_COLOUR);
 
-#define UTF8(X) Glib::locale_to_utf8(X)
 
 #endif // DEFINITIONS_H
 

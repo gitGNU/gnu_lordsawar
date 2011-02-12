@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
     Armyset::scanSystemCollection();
 
     // init GUI stuff
-    g_set_application_name(_("LordsAWar! Armyset Editor"));
+    g_set_application_name(N_("LordsAWar! Armyset Editor"));
 
     RecentlyEditedFileList::getInstance()->loadFromFile();
 

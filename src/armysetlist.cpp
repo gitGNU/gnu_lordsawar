@@ -296,18 +296,21 @@ void Armysetlist::getSizes(std::list<guint32> &sizes)
     }
 }
 
-guint32 Armysetlist::getArmysetId(std::string armyset, guint32 tilesize) const
+int Armysetlist::getArmysetId(std::string armyset, guint32 tilesize) const
 {
   IdMap::const_iterator it = 
     d_ids.find(String::ucompose("%1 %2", armyset, tilesize));
   if (it == d_ids.end())
-    return NULL;
+    return -1;
   return (*it).second;
 }
 
 std::string Armysetlist::getArmysetDir(std::string name, guint32 tilesize) const
 {
-  return getArmyset(getArmysetId(name, tilesize))->getBaseName();
+  int id = getArmysetId(name, tilesize);
+  if (id == -1)
+    return "";
+  return getArmyset(id)->getBaseName();
 }
 
 int Armysetlist::getNextAvailableId(int after)

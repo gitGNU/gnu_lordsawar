@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
     Shieldset::scanSystemCollection();
 
     // init GUI stuff
-    g_set_application_name(_("LordsAWar! Shieldset Editor"));
+    g_set_application_name(N_("LordsAWar! Shieldset Editor"));
 
   
     RecentlyEditedFileList::getInstance()->loadFromFile();

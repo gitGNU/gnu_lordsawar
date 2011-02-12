@@ -101,6 +101,8 @@ class ReportDialog: public Decorated
     void updateGoldChart();
     void updateWinningChart();
     void on_army_selected();
+
+    static Glib::ustring get_rank_string(int rank);
 };
 
 #endif

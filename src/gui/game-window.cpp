@@ -2849,7 +2849,7 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
   if (h)
     name = h->getName();
   else
-    name = p->getName(false);
+    name = p->getName();
 
   Glib::ustring s;
   switch (rand() % 4)

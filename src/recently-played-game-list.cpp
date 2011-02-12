@@ -208,7 +208,6 @@ void RecentlyPlayedGameList::pruneTooManyGames(int too_many)
 
 void RecentlyPlayedGameList::pruneSameNamedAndSameHostGames()
 {
-  time_t now = time(NULL);
   for (RecentlyPlayedGameList::iterator it = begin(); it != end();)
     {
       int count = 0;

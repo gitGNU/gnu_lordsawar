@@ -279,7 +279,7 @@ class Player: public sigc::trackable
         int getGold() const {return d_gold;}
 
         //! Returns the name of the player.
-        std::string getName(bool translate = true) const;
+        std::string getName() const;
 
 	//! Returns the player's current score.
         guint32 getScore() const;

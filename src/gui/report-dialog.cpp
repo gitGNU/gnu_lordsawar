@@ -310,13 +310,30 @@ void ReportDialog::updateGoldChart()
   gold_alignment->add(*manage(gold_chart));
 }
 
+Glib::ustring ReportDialog::get_rank_string(int rank)
+{
+  if (rank == 0)
+      return _("first"); 
+  else if (rank == 1)
+    return _("second"); 
+  else if (rank == 2)
+    return _("third"); 
+  else if (rank == 3) 
+    return _("fourth"); 
+  else if (rank == 4)
+    return _("fifth");
+  else if (rank == 5)
+    return _("sixth"); 
+  else if (rank == 6)
+    return _("seventh"); 
+  else if (rank == 7)
+    return _("eighth");
+  else
+    return _("unknown");
+}
+
 std::string ReportDialog::calculateRank(std::list<guint32> scores, guint32 score)
 {
-  char* rank_strings[MAX_PLAYERS] =
-    {
-      _("first"), _("second"), _("third"), _("fourth"), _("fifth"),
-      _("sixth"), _("seventh"), _("eighth"),
-    };
   guint32 rank = 0;
   std::list<guint32>::iterator it = scores.begin();
   for (; it != scores.end(); it++)
@@ -324,7 +341,7 @@ std::string ReportDialog::calculateRank(std::list<guint32> scores, guint32 score
       if (score < *it)
 	rank++;
     }
-  Glib::ustring s = String::ucompose(_("%1"), rank_strings[rank]);
+  Glib::ustring s = String::ucompose("%1", get_rank_string(rank));
   return s;
 }
 

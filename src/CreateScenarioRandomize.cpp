@@ -126,35 +126,40 @@ Army * CreateScenarioRandomize::getRandomRuinKeeper(Player *p)
   return NULL;
 }
 
+Glib::ustring CreateScenarioRandomize::get_direction(int xdir, int ydir)
+{
+  if (xdir >= 1 && ydir >= 1)
+    return _("southeast");
+  else if (xdir >= 1 && ydir == 0)
+    return _("east");
+  else if (xdir >= 1 && ydir <= -1)
+    return _("northeast");
+  else if (xdir == 0 && ydir >= 1)
+    return _("south");
+  else if (xdir == 0 && ydir <= -1)
+    return _("north");
+  else if (xdir <= -1 && ydir >= 1)
+    return _("southwest");
+  else if (xdir <= -1 && ydir == 0)
+    return _("west");
+  else if (xdir <= -1 && ydir <= -1)
+    return _("northwest");
+  return _("nowhere");
+}
+
 std::string CreateScenarioRandomize::getDynamicSignpost(Signpost *signpost)
 {
-  char *dir = NULL;
   int xdir, ydir;
   Vector<int> signpostPos = signpost->getPos();
   City *nearCity = Citylist::getInstance()->getNearestCity(signpostPos);
   if (nearCity == NULL)
-    return "nowhere";
+    return _("nowhere");
 
   Vector<int> cityPos = nearCity->getPos();
   xdir = cityPos.x - signpostPos.x;
   ydir = cityPos.y - signpostPos.y;
-  if (xdir >= 1 && ydir >= 1)
-    dir = _("southeast");
-  else if (xdir >= 1 && ydir == 0)
-    dir = _("east");
-  else if (xdir >= 1 && ydir <= -1)
-    dir = _("northeast");
-  else if (xdir == 0 && ydir >= 1)
-    dir = _("south");
-  else if (xdir == 0 && ydir <= -1)
-    dir = _("north");
-  else if (xdir <= -1 && ydir >= 1)
-    dir = _("southwest");
-  else if (xdir <= -1 && ydir == 0)
-    dir = _("west");
-  else if (xdir <= -1 && ydir <= -1)
-    dir = _("northwest");
-  return String::ucompose("%1 lies to the %2", nearCity->getName(), dir);
+  Glib::ustring dir = get_direction(xdir, ydir);
+  return String::ucompose(_("%1 lies to the %2"), nearCity->getName(), dir);
 }
   
 Reward *CreateScenarioRandomize::getNewRandomReward(bool hidden_ruins)

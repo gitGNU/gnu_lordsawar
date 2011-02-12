@@ -574,19 +574,13 @@ GameScenario::~GameScenario()
   GameScenarioOptions::s_round = 0;
 } 
 
-std::string GameScenario::getName(bool translate) const
+std::string GameScenario::getName() const
 {
-  if (translate)
-    return __(d_name);
-
   return d_name;
 }
 
-std::string GameScenario::getComment(bool translate) const
+std::string GameScenario::getComment() const
 {
-  if (translate)
-    return __(d_comment);
-
   return d_comment;
 }
 

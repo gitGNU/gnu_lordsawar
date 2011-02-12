@@ -320,6 +320,8 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	//! Calculate new diplomatic states for all players.
 	void negotiateDiplomacy();
 
+
+        Glib::ustring get_title(int rank);
         // DATA
 
 	//! The pointer to the player whose turn it is in the list.

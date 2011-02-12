@@ -97,10 +97,10 @@ class GameScenario: public GameScenarioOptions
 	void setNewRandomId();
 
         //! Returns the name of the scenario.
-        std::string getName(bool translate = true) const;
+        std::string getName() const;
 
         //! Returns the comment for the scenario.
-        std::string getComment(bool translate = true) const;
+        std::string getComment() const;
 
         //! Returns the copyright for the scenario.
         std::string getCopyright() const {return d_copyright; };

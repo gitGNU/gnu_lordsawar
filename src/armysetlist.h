@@ -126,7 +126,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	  *
           * @return the id of the armyset (0 on error)
           */
-	guint32 getArmysetId(std::string armyset, guint32 tilesize) const;
+	int getArmysetId(std::string armyset, guint32 tilesize) const;
 	Armyset *getArmyset(guint32 id) const;
 
 	//! Return the Armyset object by the name of the subdir.

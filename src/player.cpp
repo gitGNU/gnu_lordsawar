@@ -321,12 +321,9 @@ void Player::withdrawGold(int gold)
     schangingStats.emit();
 }
 
-std::string Player::getName(bool translate) const
+std::string Player::getName() const
 {
-    if (translate)
-        return __(d_name);
-
-    return d_name;
+  return d_name;
 }
 
 void Player::dumpActionlist() const

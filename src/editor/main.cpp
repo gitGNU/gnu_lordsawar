@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
     Armyset::scanSystemCollection();
 
     // init GUI stuff
-    g_set_application_name(_("LordsAWar! Scenario Editor"));
+    g_set_application_name(N_("LordsAWar! Scenario Editor"));
     Timing::instance().timer_registered.connect(
 	sigc::ptr_fun(on_timer_registered));
 
