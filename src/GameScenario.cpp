@@ -535,8 +535,11 @@ bool GameScenario::loadWithHelper(XML_Helper& helper)
   if (!helper.parse())
     broken = true;
 
-  GameMap::getInstance()->updateStackPositions();
-  GameMap::getInstance()->calculateBlockedAvenues();
+  if (!broken)
+    {
+      GameMap::getInstance()->updateStackPositions();
+      GameMap::getInstance()->calculateBlockedAvenues();
+    }
 
   return broken;
 }
