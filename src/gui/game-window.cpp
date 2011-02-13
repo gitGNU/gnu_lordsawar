@@ -3798,7 +3798,6 @@ void GameWindow::give_some_cheese(Player *winner)
 void GameWindow::on_commentator_comments(std::string comment)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
-  bool broken = false;
   TimedMessageDialog dialog (*window, comment, 0);
   dialog.set_title(_("The Warlord Says..."));
     

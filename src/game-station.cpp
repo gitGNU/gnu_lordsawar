@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -82,5 +82,30 @@ void GameStation::stopListeningForLocalEvents(Player *p)
       connection.disconnect();
       history_listeners.erase(it);
     }
+}
+
+bool GameStation::get_message_lobby_activity (std::string payload, 
+                                             guint32 &player_id, 
+                                             gint32 &action, bool &reported,
+                                             Glib::ustring &nickname)
+{
+  std::stringstream spayload;
+  spayload.str(payload);
+  spayload >> player_id;
+  if (player_id >= MAX_PLAYERS)
+    return false;
+  spayload >> action;
+  if (action != -1 && action != 1)
+    return false;
+  spayload >> reported;
+  if (reported != 0 && reported != 1)
+    return false;
+  //okay, the rest of the stringstream is a nickname.
+  char buffer[1024];
+  memset (buffer, 0, sizeof (buffer));
+  spayload.get();
+  spayload.rdbuf()->sgetn(buffer, sizeof (buffer));
+  nickname = std::string (buffer);
+  return true;
 }
 // End of file

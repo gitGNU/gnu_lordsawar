@@ -1,4 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
+// Copyright (C) 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -62,6 +63,7 @@ public:
   guint32 getPort() const{return d_port;};
 
   void sendRoundOver();
+
 protected:
   GameClient();
   ~GameClient();
@@ -70,6 +72,7 @@ private:
   std::auto_ptr<NetworkConnection> network_connection;
   int player_id;
 
+  void sit_or_stand (Player *player, bool sit);
   void onConnected();
   void onConnectionLost();
   bool onGotMessage(MessageType type, std::string message);

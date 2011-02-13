@@ -1,4 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
+// Copyright (C) 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -16,6 +17,7 @@
 //  02110-1301, USA.
 
 #include <iostream>
+#include <sstream>
 #include <fstream>
 
 #include "game-client.h"
@@ -28,6 +30,7 @@
 #include "playerlist.h"
 #include "network_player.h"
 #include "xmlhelper.h"
+#include "ucompose.hpp"
   
 #include "real_player.h" 
 #include "network_player.h" 
@@ -154,22 +157,6 @@ bool GameClient::onGotMessage(MessageType type, std::string payload)
     break;
 
   case MESSAGE_TYPE_REQUEST_SEAT_MANIFEST:
-  case MESSAGE_TYPE_P1_SIT:
-  case MESSAGE_TYPE_P2_SIT:
-  case MESSAGE_TYPE_P3_SIT:
-  case MESSAGE_TYPE_P4_SIT:
-  case MESSAGE_TYPE_P5_SIT:
-  case MESSAGE_TYPE_P6_SIT:
-  case MESSAGE_TYPE_P7_SIT:
-  case MESSAGE_TYPE_P8_SIT:
-  case MESSAGE_TYPE_P1_STAND:
-  case MESSAGE_TYPE_P2_STAND:
-  case MESSAGE_TYPE_P3_STAND:
-  case MESSAGE_TYPE_P4_STAND:
-  case MESSAGE_TYPE_P5_STAND:
-  case MESSAGE_TYPE_P6_STAND:
-  case MESSAGE_TYPE_P7_STAND:
-  case MESSAGE_TYPE_P8_STAND:
   case MESSAGE_TYPE_PARTICIPANT_CONNECT:
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECT:
   case MESSAGE_TYPE_CHAT:
@@ -181,54 +168,6 @@ bool GameClient::onGotMessage(MessageType type, std::string payload)
     gotChatMessage("", payload);
     break;
     //this is the client realizing that some other player joined the server
-  case MESSAGE_TYPE_P1_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(0), payload);
-    break;
-  case MESSAGE_TYPE_P2_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(1), payload);
-    break;
-  case MESSAGE_TYPE_P3_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(2), payload);
-    break;
-  case MESSAGE_TYPE_P4_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(3), payload);
-    break;
-  case MESSAGE_TYPE_P5_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(4), payload);
-    break;
-  case MESSAGE_TYPE_P6_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(5), payload);
-    break;
-  case MESSAGE_TYPE_P7_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(6), payload);
-    break;
-  case MESSAGE_TYPE_P8_SAT_DOWN:
-    sat_down(Playerlist::getInstance()->getPlayer(7), payload);
-    break;
-  case MESSAGE_TYPE_P1_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(0), payload);
-    break;
-  case MESSAGE_TYPE_P2_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(1), payload);
-    break;
-  case MESSAGE_TYPE_P3_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(2), payload);
-    break;
-  case MESSAGE_TYPE_P4_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(3), payload);
-    break;
-  case MESSAGE_TYPE_P5_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(4), payload);
-    break;
-  case MESSAGE_TYPE_P6_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(5), payload);
-    break;
-  case MESSAGE_TYPE_P7_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(6), payload);
-    break;
-  case MESSAGE_TYPE_P8_STOOD_UP:
-    stood_up(Playerlist::getInstance()->getPlayer(7), payload);
-    break;
 
   case MESSAGE_TYPE_SENDING_HISTORY:
     gotHistories(payload);
@@ -248,6 +187,28 @@ bool GameClient::onGotMessage(MessageType type, std::string payload)
 
   case MESSAGE_TYPE_ROUND_START:
     round_begins.emit();
+    break;
+
+  case MESSAGE_TYPE_LOBBY_ACTIVITY:
+      {
+        guint32 id;
+        gint32 action;
+        bool reported;
+        Glib::ustring nick;
+        bool success = get_message_lobby_activity (payload, id, action, 
+                                                   reported, nick);
+        if (success)
+          {
+            if (reported)
+              {
+                if (action == -1)
+                  sat_down(Playerlist::getInstance()->getPlayer(id), nick);
+                else if (action == 1)
+                  stood_up(Playerlist::getInstance()->getPlayer(id), nick);
+
+              }
+          }
+      }
     break;
   }
   return true;
@@ -323,57 +284,41 @@ void GameClient::sendHistories()
   network_connection->send(MESSAGE_TYPE_SENDING_HISTORY, os.str());
 }
 
-void GameClient::sit_down (Player *player)
+void GameClient::sit_or_stand (Player *player, bool sit)
 {
   if (!player)
     return;
-  MessageType type;
-  switch (player->getId())
+  Glib::ustring payload = 
+    String::ucompose("%1 %2 %3 %4", player->getId(), sit ? -1 : 1, 0, 
+                     d_nickname);
+  if (sit)
     {
-    case 0: type = MESSAGE_TYPE_P1_SIT; break;
-    case 1: type = MESSAGE_TYPE_P2_SIT; break;
-    case 2: type = MESSAGE_TYPE_P3_SIT; break;
-    case 3: type = MESSAGE_TYPE_P4_SIT; break;
-    case 4: type = MESSAGE_TYPE_P5_SIT; break;
-    case 5: type = MESSAGE_TYPE_P6_SIT; break;
-    case 6: type = MESSAGE_TYPE_P7_SIT; break;
-    case 7: type = MESSAGE_TYPE_P8_SIT; break;
-    default:
-	    return;
+      RealPlayer *new_p = new RealPlayer (*player);
+      Playerlist::getInstance()->swap(player, new_p);
+      stopListeningForLocalEvents(player);
+      listenForLocalEvents(new_p);
+      delete player;
     }
-  RealPlayer *new_p = new RealPlayer (*player);
-  Playerlist::getInstance()->swap(player, new_p);
-  stopListeningForLocalEvents(player);
-  listenForLocalEvents(new_p);
-  delete player;
-  network_connection->send(type, d_nickname);
+  else
+    {
+      NetworkPlayer *new_p = new NetworkPlayer(*player);
+      Playerlist::getInstance()->swap(player, new_p);
+      stopListeningForLocalEvents(new_p);
+      delete player;
+      new_p->setConnected(false);
+    }
+
+  network_connection->send(MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
+}
+
+void GameClient::sit_down (Player *player)
+{
+  sit_or_stand (player, true);
 }
 
 void GameClient::stand_up (Player *player)
 {
-  if (!player)
-    return;
-  MessageType type;
-  switch (player->getId())
-    {
-    case 0: type = MESSAGE_TYPE_P1_STAND; break;
-    case 1: type = MESSAGE_TYPE_P2_STAND; break;
-    case 2: type = MESSAGE_TYPE_P3_STAND; break;
-    case 3: type = MESSAGE_TYPE_P4_STAND; break;
-    case 4: type = MESSAGE_TYPE_P5_STAND; break;
-    case 5: type = MESSAGE_TYPE_P6_STAND; break;
-    case 6: type = MESSAGE_TYPE_P7_STAND; break;
-    case 7: type = MESSAGE_TYPE_P8_STAND; break;
-    default:
-	    return;
-    }
-  //now turning a human player into a network player
-  NetworkPlayer *new_p = new NetworkPlayer(*player);
-  Playerlist::getInstance()->swap(player, new_p);
-  stopListeningForLocalEvents(new_p);
-  delete player;
-  new_p->setConnected(false);
-  network_connection->send(type, d_nickname);
+  sit_or_stand (player, false);
 }
 
 void GameClient::chat(std::string message)

@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -55,6 +55,11 @@ protected:
   void clearNetworkHistorylist(std::list<NetworkHistory*> &histories);
 
   void stopListeningForLocalEvents(Player *p);
+
+  static bool get_message_lobby_activity (std::string payload, 
+                                          guint32 &player_id, 
+                                          gint32 &action, bool &reported,
+                                          Glib::ustring &nickname);
 
 private:
   std::map<guint32, sigc::connection> action_listeners;

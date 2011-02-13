@@ -1,5 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@
 #include "network_player.h"
 #include "real_player.h"
 #include "GameScenarioOptions.h"
-
+#include "ucompose.hpp"
 
 class NetworkAction;
 
@@ -210,70 +210,6 @@ bool GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
     sendChatRoster(conn);
     break;
 
-  case MESSAGE_TYPE_P1_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(0), payload);
-    break;
-
-  case MESSAGE_TYPE_P2_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(1), payload);
-    break;
-
-  case MESSAGE_TYPE_P3_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(2), payload);
-    break;
-
-  case MESSAGE_TYPE_P4_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(3), payload);
-    break;
-
-  case MESSAGE_TYPE_P5_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(4), payload);
-    break;
-
-  case MESSAGE_TYPE_P6_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(5), payload);
-    break;
-
-  case MESSAGE_TYPE_P7_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(6), payload);
-    break;
-
-  case MESSAGE_TYPE_P8_SIT:
-    sit(conn, Playerlist::getInstance()->getPlayer(7), payload);
-    break;
-
-  case MESSAGE_TYPE_P1_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(0), payload);
-    break;
-
-  case MESSAGE_TYPE_P2_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(1), payload);
-    break;
-
-  case MESSAGE_TYPE_P3_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(2), payload);
-    break;
-
-  case MESSAGE_TYPE_P4_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(3), payload);
-    break;
-
-  case MESSAGE_TYPE_P5_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(4), payload);
-    break;
-
-  case MESSAGE_TYPE_P6_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(5), payload);
-    break;
-
-  case MESSAGE_TYPE_P7_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(6), payload);
-    break;
-
-  case MESSAGE_TYPE_P8_STAND:
-    stand(conn, Playerlist::getInstance()->getPlayer(7), payload);
-    break;
-
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECT:
     depart(conn);
     break;
@@ -290,25 +226,30 @@ bool GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
     gotRoundOver(conn);
     break;
 
+  case MESSAGE_TYPE_LOBBY_ACTIVITY:
+      {
+        guint32 id;
+        gint32 action;
+        bool reported;
+        Glib::ustring nick;
+        bool success = 
+          get_message_lobby_activity (payload, id, action, reported, nick);
+        if (success)
+          {
+            if (reported == false) //player is /reporting/
+              {
+                if (action == -1)
+                  sit(conn, Playerlist::getInstance()->getPlayer(id), nick);
+                else if (action == 1)
+                  stand(conn, Playerlist::getInstance()->getPlayer(id), nick);
+              }
+          }
+      }
+    break;
+
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECTED:
     break;
 
-  case MESSAGE_TYPE_P1_SAT_DOWN:
-  case MESSAGE_TYPE_P2_SAT_DOWN:
-  case MESSAGE_TYPE_P3_SAT_DOWN:
-  case MESSAGE_TYPE_P4_SAT_DOWN:
-  case MESSAGE_TYPE_P5_SAT_DOWN:
-  case MESSAGE_TYPE_P6_SAT_DOWN:
-  case MESSAGE_TYPE_P7_SAT_DOWN:
-  case MESSAGE_TYPE_P8_SAT_DOWN:
-  case MESSAGE_TYPE_P1_STOOD_UP:
-  case MESSAGE_TYPE_P2_STOOD_UP:
-  case MESSAGE_TYPE_P3_STOOD_UP:
-  case MESSAGE_TYPE_P4_STOOD_UP:
-  case MESSAGE_TYPE_P5_STOOD_UP:
-  case MESSAGE_TYPE_P6_STOOD_UP:
-  case MESSAGE_TYPE_P7_STOOD_UP:
-  case MESSAGE_TYPE_P8_STOOD_UP:
   case MESSAGE_TYPE_SERVER_DISCONNECT:
   case MESSAGE_TYPE_CHATTED:
   case MESSAGE_TYPE_TURN_ORDER:
@@ -426,26 +367,14 @@ void GameServer::notifySit(Player *player, std::string nickname)
 {
   if (!player)
     return;
+  Glib::ustring payload = 
+    String::ucompose("%1 %2 %3 %4", player->getId(), -1, 1, nickname);
   player_sits.emit(player, nickname);
-  MessageType type;
-  switch (player->getId())
-    {
-    case 0: type = MESSAGE_TYPE_P1_SAT_DOWN; break;
-    case 1: type = MESSAGE_TYPE_P2_SAT_DOWN; break;
-    case 2: type = MESSAGE_TYPE_P3_SAT_DOWN; break;
-    case 3: type = MESSAGE_TYPE_P4_SAT_DOWN; break;
-    case 4: type = MESSAGE_TYPE_P5_SAT_DOWN; break;
-    case 5: type = MESSAGE_TYPE_P6_SAT_DOWN; break;
-    case 6: type = MESSAGE_TYPE_P7_SAT_DOWN; break;
-    case 7: type = MESSAGE_TYPE_P8_SAT_DOWN; break;
-    default:
-	    return;
-    }
 
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     {
-      network_server->send((*i)->conn, type, nickname);
+      network_server->send((*i)->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
       network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
 			   nickname + " assumes control of " + 
 			   player->getName() +".");
@@ -532,26 +461,14 @@ void GameServer::notifyStand(Player *player, std::string nickname)
 {
   if (!player)
     return;
+  Glib::ustring payload = 
+    String::ucompose("%1 %2 %3 %4", player->getId(), -1, 1, nickname);
   player_stands.emit(player, nickname);
-  MessageType type;
-  switch (player->getId())
-    {
-    case 0: type = MESSAGE_TYPE_P1_STOOD_UP; break;
-    case 1: type = MESSAGE_TYPE_P2_STOOD_UP; break;
-    case 2: type = MESSAGE_TYPE_P3_STOOD_UP; break;
-    case 3: type = MESSAGE_TYPE_P4_STOOD_UP; break;
-    case 4: type = MESSAGE_TYPE_P5_STOOD_UP; break;
-    case 5: type = MESSAGE_TYPE_P6_STOOD_UP; break;
-    case 6: type = MESSAGE_TYPE_P7_STOOD_UP; break;
-    case 7: type = MESSAGE_TYPE_P8_STOOD_UP; break;
-    default:
-	    return;
-    }
 
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     {
-      network_server->send((*i)->conn, type, nickname);
+      network_server->send((*i)->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
       network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, 
 			   nickname + " relinquishes control of " + 
 			   player->getName() +".");
@@ -838,21 +755,11 @@ void GameServer::sendSeats(void *conn)
 	   j != (*i)->players.end(); j++)
 	{
 	  Player *player = Playerlist::getInstance()->getPlayer(*j);
-	  MessageType type;
-	  switch (player->getId())
-	    {
-	    case 0: type = MESSAGE_TYPE_P1_SAT_DOWN; break;
-	    case 1: type = MESSAGE_TYPE_P2_SAT_DOWN; break;
-	    case 2: type = MESSAGE_TYPE_P3_SAT_DOWN; break;
-	    case 3: type = MESSAGE_TYPE_P4_SAT_DOWN; break;
-	    case 4: type = MESSAGE_TYPE_P5_SAT_DOWN; break;
-	    case 5: type = MESSAGE_TYPE_P6_SAT_DOWN; break;
-	    case 6: type = MESSAGE_TYPE_P7_SAT_DOWN; break;
-	    case 7: type = MESSAGE_TYPE_P8_SAT_DOWN; break;
-	    default:
-		    return;
-	    }
-	  network_server->send(part->conn, type, (*i)->nickname);
+          Glib::ustring payload = 
+            String::ucompose ("%1 %2 %3 %4",
+                              player->getId(), -1, 0, (*i)->nickname);
+	  network_server->send(part->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, 
+                               payload);
 	}
     }
   //send out seatedness info for local server
@@ -860,21 +767,9 @@ void GameServer::sendSeats(void *conn)
        j != players_seated_locally.end(); j++)
     {
       Player *player = Playerlist::getInstance()->getPlayer(*j);
-      MessageType type;
-      switch (player->getId())
-	{
-	case 0: type = MESSAGE_TYPE_P1_SAT_DOWN; break;
-	case 1: type = MESSAGE_TYPE_P2_SAT_DOWN; break;
-	case 2: type = MESSAGE_TYPE_P3_SAT_DOWN; break;
-	case 3: type = MESSAGE_TYPE_P4_SAT_DOWN; break;
-	case 4: type = MESSAGE_TYPE_P5_SAT_DOWN; break;
-	case 5: type = MESSAGE_TYPE_P6_SAT_DOWN; break;
-	case 6: type = MESSAGE_TYPE_P7_SAT_DOWN; break;
-	case 7: type = MESSAGE_TYPE_P8_SAT_DOWN; break;
-	default:
-		return;
-	}
-      network_server->send(part->conn, type, d_nickname);
+      Glib::ustring payload = 
+        String::ucompose ("%1 %2 %3 %4", player->getId(), -1, 0, d_nickname);
+      network_server->send(part->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
     }
 }
 
