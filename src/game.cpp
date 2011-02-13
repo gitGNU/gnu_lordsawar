@@ -268,6 +268,7 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
 	sigc::mem_fun(bigmap.get(), &GameBigMap::set_view));
 
     // get the maps up and running
+    Playerlist::getInstance()->setViewingplayer(Playerlist::getActiveplayer());
     bigmap->screen_size_changed(Gtk::Allocation(0,0,320,200));
 
     // connect player callbacks
