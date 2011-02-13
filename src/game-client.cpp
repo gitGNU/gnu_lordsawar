@@ -109,6 +109,24 @@ void GameClient::sat_down(Player *player, std::string nickname)
   player_sits.emit(player, nickname);
 }
 
+void GameClient::name_changed (Player *player, Glib::ustring name)
+{
+  if (player)
+    player_changes_name.emit(player, name);
+}
+
+void GameClient::type_changed (Player *player, int type)
+{
+  if (!player)
+    return;
+  //we don't change the type of player here.
+  //the player is networked on the remote side, and not networked 
+  //(e.g. ai_smart) on the local side.
+  //we show the "ai smart" in the game lobby, but the player object is still
+  //networked.
+  player_changes_type.emit(player, type);
+}
+
 void GameClient::stood_up(Player *player, std::string nickname)
 {
   if (!player)
@@ -119,6 +137,7 @@ void GameClient::stood_up(Player *player, std::string nickname)
       NetworkPlayer *new_p = new NetworkPlayer(*player);
       Playerlist::getInstance()->swap(player, new_p);
       delete player;
+      player = new_p;
       new_p->setConnected(false);
     }
   else if (player->getType() == Player::NETWORKED)
@@ -189,23 +208,42 @@ bool GameClient::onGotMessage(MessageType type, std::string payload)
     round_begins.emit();
     break;
 
+  case MESSAGE_TYPE_CHANGE_NICKNAME:
+    nickname_changed.emit(d_nickname, payload);
+    d_nickname = payload;
+    break;
+
   case MESSAGE_TYPE_LOBBY_ACTIVITY:
       {
         guint32 id;
         gint32 action;
         bool reported;
-        Glib::ustring nick;
+        Glib::ustring data;
         bool success = get_message_lobby_activity (payload, id, action, 
-                                                   reported, nick);
+                                                   reported, data);
         if (success)
           {
             if (reported)
               {
-                if (action == -1)
-                  sat_down(Playerlist::getInstance()->getPlayer(id), nick);
-                else if (action == 1)
-                  stood_up(Playerlist::getInstance()->getPlayer(id), nick);
-
+                switch (action)
+                  {
+                  case LOBBY_MESSAGE_TYPE_SIT:
+                    sat_down(Playerlist::getInstance()->getPlayer(id), data);
+                    break;
+                  case LOBBY_MESSAGE_TYPE_STAND:
+                    stood_up(Playerlist::getInstance()->getPlayer(id), data);
+                    break;
+                  case LOBBY_MESSAGE_TYPE_CHANGE_NAME:
+                    name_changed(Playerlist::getInstance()->getPlayer(id), 
+                                 data);
+                    break;
+                  case LOBBY_MESSAGE_TYPE_CHANGE_TYPE:
+                    type_changed(Playerlist::getInstance()->getPlayer(id), 
+                                 atoi(data.c_str()));
+                    break;
+                  default:
+                    break;
+                  }
               }
           }
       }
@@ -289,8 +327,11 @@ void GameClient::sit_or_stand (Player *player, bool sit)
   if (!player)
     return;
   Glib::ustring payload = 
-    String::ucompose("%1 %2 %3 %4", player->getId(), sit ? -1 : 1, 0, 
+    String::ucompose("%1 %2 %3 %4", player->getId(), 
+                     sit ? LOBBY_MESSAGE_TYPE_SIT : LOBBY_MESSAGE_TYPE_STAND, 
+                     0, 
                      d_nickname);
+  network_connection->send(MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
   if (sit)
     {
       RealPlayer *new_p = new RealPlayer (*player);
@@ -298,6 +339,9 @@ void GameClient::sit_or_stand (Player *player, bool sit)
       stopListeningForLocalEvents(player);
       listenForLocalEvents(new_p);
       delete player;
+      payload = String::ucompose("%1 %2 %3 %4", new_p->getId(), 
+                     LOBBY_MESSAGE_TYPE_CHANGE_TYPE, 0, new_p->getType());
+      network_connection->send(MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
     }
   else
     {
@@ -308,6 +352,21 @@ void GameClient::sit_or_stand (Player *player, bool sit)
       new_p->setConnected(false);
     }
 
+}
+
+void GameClient::change_name (Player *player, Glib::ustring name)
+{
+  Glib::ustring payload = 
+    String::ucompose("%1 %2 %3 %4", player->getId(), 
+                     LOBBY_MESSAGE_TYPE_CHANGE_NAME, 0, name);
+  network_connection->send(MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
+}
+
+void GameClient::change_type (Player *player, int type)
+{
+  Glib::ustring payload = 
+    String::ucompose("%1 %2 %3 %4", player->getId(), 
+                     LOBBY_MESSAGE_TYPE_CHANGE_TYPE, 0, type);
   network_connection->send(MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
 }
 

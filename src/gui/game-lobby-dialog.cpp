@@ -38,19 +38,18 @@
 #include "shieldsetlist.h"
 #include "NextTurnNetworked.h"
 #include "recently-played-game-list.h"
+#include "game-parameters.h"
 
 namespace
 {
     Glib::ustring player_type_to_string(guint32 type)
     {
-	switch (type)
-	{
-	case Player::HUMAN: return HUMAN_PLAYER_TYPE;
-	case Player::AI_FAST: return EASY_PLAYER_TYPE;
-	case Player::AI_SMART: return HARD_PLAYER_TYPE;
-	case Player::NETWORKED: return NETWORKED_PLAYER_TYPE;
-	default: return NO_PLAYER_TYPE;
-	}
+      Glib::ustring s = 
+        GameParameters::player_param_to_string(GameParameters::player_type_to_player_param(type));
+      if (s == NETWORKED_PLAYER_TYPE)
+        return "";
+      else
+        return s;
     }
 }
 
@@ -140,6 +139,10 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
       (sigc::mem_fun(*this, &GameLobbyDialog::on_player_sits));
     game_station->player_stands.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_player_stands));
+    game_station->player_changes_name.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_player_changes_name));
+    game_station->player_changes_type.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_player_changes_type));
     game_station->remote_player_named.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_changes_name));
     game_station->chat_message_received.connect
@@ -150,6 +153,8 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
       (sigc::mem_fun(*this, &GameLobbyDialog::on_player_died));
     game_station->local_player_died.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_player_died));
+    game_station->nickname_changed.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_nickname_changed));
 
     update_player_details();
     update_buttons();
@@ -169,7 +174,7 @@ void GameLobbyDialog::update_buttons()
        i != kids.end(); i++)
     {
       Gtk::TreeModel::Row row = *i;
-      if (row[player_columns.type] != NETWORKED_PLAYER_TYPE)
+      if (row[player_columns.type] != "")
 	{
 	  play_button->set_sensitive(true);
 	  return;
@@ -227,8 +232,6 @@ GameLobbyDialog::update_player_details()
   (*i)[player_type_columns.type] = HARD_PLAYER_TYPE;
   i = player_type_list->append();
   (*i)[player_type_columns.type] = NO_PLAYER_TYPE;
-  i = player_type_list->append();
-  (*i)[player_type_columns.type] = NETWORKED_PLAYER_TYPE;
 
   type_renderer.property_model() = player_type_list;
   type_renderer.property_text_column() = 0;
@@ -266,10 +269,13 @@ void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
   Player *player;
   //maybe we can't make other ppl stand up
   if ((*iter)[player_columns.sitting] &&
-      (*iter)[player_columns.type] == NETWORKED_PLAYER_TYPE && d_has_ops == false)
+      (*iter)[player_columns.person] != d_game_station->getNickname() && 
+      d_has_ops == false)
     return;
 
+  sitting_renderer.set_sensitive(false);
   player = pl->getPlayer((*iter)[player_columns.player_id]);
+  d_player_id_of_sit_or_stand_request = player->getId();
 
   if (!(*iter)[player_columns.sitting])
     player_sat_down.emit(player);
@@ -288,6 +294,9 @@ GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario,
   d_has_ops = has_ops;
   initDialog(game_scenario, next_turn, game_station);
   update_scenario_details();
+  d_player_id_of_sit_or_stand_request = MAX_PLAYERS + 1;
+  d_player_id_of_name_change_request = MAX_PLAYERS + 1;
+  d_player_id_of_type_change_request = MAX_PLAYERS + 1;
 }
 
 GameLobbyDialog::~GameLobbyDialog()
@@ -348,18 +357,24 @@ void GameLobbyDialog::cell_data_type(Gtk::CellRenderer *renderer,
 void GameLobbyDialog::on_type_edited(const Glib::ustring &path,
 				     const Glib::ustring &new_text)
 {
-  (*player_list->get_iter(Gtk::TreePath(path)))[player_columns.type]
-    = new_text;
-  if (new_text == NETWORKED_PLAYER_TYPE)
+  Gtk::TreeModel::iterator iter = player_treeview->get_model()->get_iter(path);
+  if (d_has_ops == false)
     {
-      //Glib::ustring nick;
-      //bool sitting = false;
-      //Player *p = get_selected_player(nick, sitting);
-      //if (sitting)
-        //on_player_stands(p, nick);
-      //now we stand up.
-      ;
+      if ((*iter)[player_columns.sitting] == false)
+        return;
+      if ((*iter)[player_columns.person] != d_game_station->getNickname())
+        return;
     }
+  type_renderer.set_sensitive(false);
+  Playerlist *pl = Playerlist::getInstance();
+  Player *player = pl->getPlayer((*iter)[player_columns.player_id]);
+  d_player_id_of_type_change_request = player->getId();
+
+  int type = GameParameters::player_param_string_to_player_param(new_text);
+  player_changed_type.emit (player, type);
+  //(*player_list->get_iter(Gtk::TreePath(path)))[player_columns.type]
+    //= new_text;
+
   //fixme, make a player->changeType method, and send it as an action
 }
 
@@ -380,13 +395,22 @@ void GameLobbyDialog::on_name_edited(const Glib::ustring &path,
   Playerlist *pl = Playerlist::getInstance();
   Player *player;
   Gtk::TreeModel::iterator iter = player_treeview->get_model()->get_iter(path);
-  if ((*iter)[player_columns.sitting] == false)
-    return;
-  player = pl->getPlayer((*iter)[player_columns.player_id]);
+  if (d_has_ops == false)
+    {
+      if ((*iter)[player_columns.sitting] == false)
+        return;
+      if ((*iter)[player_columns.person] != d_game_station->getNickname())
+        return;
+    }
 
-  player->rename(new_text);
-  (*player_list->get_iter(Gtk::TreePath(path)))[player_columns.name]
-    = new_text;
+  name_renderer.set_sensitive(false);
+  player = pl->getPlayer((*iter)[player_columns.player_id]);
+  d_player_id_of_name_change_request = player->getId();
+
+  //here's where we send the message saying that the name has changed.
+  player_changed_name.emit(player, new_text);
+  //(*player_list->get_iter(Gtk::TreePath(path)))[player_columns.name]
+    //= new_text;
 }
 
 void GameLobbyDialog::cell_data_sitting(Gtk::CellRenderer *renderer,
@@ -452,10 +476,59 @@ void GameLobbyDialog::on_remote_participant_departs(std::string nickname)
     }
 }
 
+void GameLobbyDialog::on_player_changes_name(Player *p, Glib::ustring name)
+{
+  if (!p)
+    return;
+  if (p->getId() == d_player_id_of_name_change_request)
+    {
+      name_renderer.set_sensitive(true);
+      d_player_id_of_name_change_request = MAX_PLAYERS + 1;
+    }
+  //look for the row that has the right player id.
+  Glib::ustring path = String::ucompose("%1", p->getId());
+  p->setName(name);
+  player_list->row_changed(Gtk::TreePath(path),
+                           player_list->get_iter(Gtk::TreePath(path)));
+}
+
+void GameLobbyDialog::on_player_changes_type(Player *p, int type)
+{
+  if (!p)
+    return;
+  if (p->getId() == d_player_id_of_type_change_request)
+    {
+      type_renderer.set_sensitive(true);
+      d_player_id_of_type_change_request = MAX_PLAYERS + 1;
+    }
+  Gtk::TreeModel::Children kids = player_list->children();
+  //look for the row that has the right player id.
+  for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
+       i != kids.end(); i++)
+    {
+      Gtk::TreeModel::Row row = *i;
+      if (row[player_columns.player_id] == p->getId())
+	{
+          Glib::ustring s = GameParameters::player_param_to_string(type);
+          if (s == NETWORKED_PLAYER_TYPE)
+            row[player_columns.type] = "";
+          else
+            row[player_columns.type] = s;
+	  update_buttons();
+	  return;
+	}
+    }
+}
+
 void GameLobbyDialog::on_player_sits(Player *p, std::string nickname)
 {
   if (!p)
     return;
+  if (p->getId() == d_player_id_of_sit_or_stand_request)
+    {
+      sitting_renderer.set_sensitive(true);
+      d_player_id_of_sit_or_stand_request = MAX_PLAYERS + 1;
+    }
   Gtk::TreeModel::Children kids = player_list->children();
   //look for the row that has the right player id.
   for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
@@ -587,6 +660,11 @@ Player* GameLobbyDialog::get_selected_player(Glib::ustring &nick, bool &sitting)
 void GameLobbyDialog::on_play_clicked()
 {
   hide();
+  if (d_has_ops)
+    {
+      //hmm, let's sync the types.
+      //generate the players list.
+    }
   //we only get here on the first time play is clicked
   //otherwise it just shows the form (Driver::start_network_game_requested)
   start_network_game.emit(d_game_scenario, d_next_turn);
@@ -703,4 +781,27 @@ bool GameLobbyDialog::run()
 void GameLobbyDialog::player_is_unavailable(Player *p)
 {
   on_local_player_starts_turn(p);
+}
+      
+void GameLobbyDialog::on_nickname_changed(Glib::ustring old_name, Glib::ustring new_name)
+{
+  d_game_station->setNickname(new_name);
+  //iterate through and find the nickname
+  Gtk::TreeNodeChildren rows = people_list->children();
+  for(Gtk::TreeIter row = rows.begin(); row != rows.end(); ++row)
+    {
+      Gtk::TreeModel::Row my_row = *row;
+      if (my_row[people_columns.nickname] == old_name)
+        {
+          my_row[people_columns.nickname] = new_name;
+          return;
+        }
+      Glib::ustring match = String::ucompose ("[%1]", old_name);
+      if (my_row[people_columns.nickname] == match)
+        {
+          my_row[people_columns.nickname] = String::ucompose("[%1]", new_name);
+          return;
+        }
+    }
+  
 }

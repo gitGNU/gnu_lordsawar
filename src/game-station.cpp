@@ -20,6 +20,7 @@
 #include <list>
 
 #include "game-station.h"
+#include "network-common.h"
 
 #include "network-action.h"
 #include "network-history.h"
@@ -87,16 +88,24 @@ void GameStation::stopListeningForLocalEvents(Player *p)
 bool GameStation::get_message_lobby_activity (std::string payload, 
                                              guint32 &player_id, 
                                              gint32 &action, bool &reported,
-                                             Glib::ustring &nickname)
+                                             Glib::ustring &remainder)
 {
   std::stringstream spayload;
   spayload.str(payload);
   spayload >> player_id;
-  if (player_id >= MAX_PLAYERS)
+  if (player_id >= MAX_PLAYERS + 1)
     return false;
   spayload >> action;
-  if (action != -1 && action != 1)
-    return false;
+  switch (action)
+    {
+    case LOBBY_MESSAGE_TYPE_SIT:
+    case LOBBY_MESSAGE_TYPE_CHANGE_NAME:
+    case LOBBY_MESSAGE_TYPE_STAND:
+    case LOBBY_MESSAGE_TYPE_CHANGE_TYPE:
+      break;
+    default:
+      return false;
+    }
   spayload >> reported;
   if (reported != 0 && reported != 1)
     return false;
@@ -105,7 +114,7 @@ bool GameStation::get_message_lobby_activity (std::string payload,
   memset (buffer, 0, sizeof (buffer));
   spayload.get();
   spayload.rdbuf()->sgetn(buffer, sizeof (buffer));
-  nickname = std::string (buffer);
+  remainder = std::string (buffer);
   return true;
 }
 // End of file

@@ -57,6 +57,8 @@ public:
   
   void sit_down (Player *player);
   void stand_up (Player *player);
+  void change_name(Player *player, Glib::ustring name);
+  void change_type(Player *player, int type);
   void chat(std::string message);
 
   std::string getHost() const{return d_host;};
@@ -88,6 +90,8 @@ private:
 
   void sat_down(Player *player, std::string nickname);
   void stood_up(Player *player, std::string nickname);
+  void name_changed (Player *player, Glib::ustring name);
+  void type_changed (Player *player, int type);
 
   std::list<NetworkAction*> actions;
   std::list<NetworkHistory*> histories;

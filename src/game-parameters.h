@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,12 +21,14 @@
 
 #include <vector>
 #include <string>
+#include "player.h"
 
-struct GameParameters
+class GameParameters
 {
+public:
     struct Player 
     {
-	enum Type { HUMAN, EASY, HARD, OFF };
+	enum Type { HUMAN, EASY, HARD, OFF, NETWORKED };
 
 	Type type;
 	std::string name;
@@ -88,6 +90,60 @@ struct GameParameters
     bool cities_can_produce_allies;
     int difficulty;
     std::string name;
+  static GameParameters::Player::Type player_type_to_player_param(guint32 type)
+    {
+      if (type == 0) //Player::HUMAN
+        return GameParameters::Player::HUMAN;
+      else if (type == 1) //Player::AI_FAST
+        return GameParameters::Player::EASY;
+      else if (type == 2) //Player::AI_DUMMY
+        return GameParameters::Player::HUMAN; //no equiv.
+      else if (type == 4) //Player::AI_SMART
+        return GameParameters::Player::HARD;
+      else if (type == 8)
+        return GameParameters::Player::NETWORKED;
+      return GameParameters::Player::OFF;
+    }
+  static guint32 player_param_to_player_type(guint32 param)
+    {
+      if (param == GameParameters::Player::HUMAN)
+        return 0;
+      else if (param == GameParameters::Player::EASY)
+        return 1;
+      else if (param == GameParameters::Player::HARD)
+        return 4;
+      else if (param == GameParameters::Player::NETWORKED)
+        return 8;
+      else if (param == GameParameters::Player::OFF)
+        return 0; //no equiv.
+    }
+  static GameParameters::Player::Type player_param_string_to_player_param(Glib::ustring s)
+    {
+      if (s == HUMAN_PLAYER_TYPE)
+        return GameParameters::Player::HUMAN;
+      else if (s == EASY_PLAYER_TYPE)
+        return GameParameters::Player::EASY;
+      else if (s == HARD_PLAYER_TYPE)
+        return GameParameters::Player::HARD;
+      else if (s == NO_PLAYER_TYPE)
+        return GameParameters::Player::OFF;
+      else if (s == NETWORKED_PLAYER_TYPE)
+        return GameParameters::Player::NETWORKED;
+      else
+        return GameParameters::Player::HUMAN;
+    }
+  static Glib::ustring player_param_to_string (guint32 type)
+    {
+      switch (type)
+        {
+        case GameParameters::Player::HUMAN: return HUMAN_PLAYER_TYPE;
+        case GameParameters::Player::EASY: return EASY_PLAYER_TYPE;
+        case GameParameters::Player::HARD: return HARD_PLAYER_TYPE;
+        case GameParameters::Player::OFF: return NO_PLAYER_TYPE;
+        case GameParameters::Player::NETWORKED: return NETWORKED_PLAYER_TYPE;
+        default: return NO_PLAYER_TYPE;
+        }
+    }
 };
 
 #endif

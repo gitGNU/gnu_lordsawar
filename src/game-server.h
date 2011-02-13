@@ -52,6 +52,8 @@ public:
 
   void sit_down (Player *player);
   void stand_up (Player *player);
+  void name_change (Player *player, Glib::ustring name);
+  void type_change (Player *player, int type);
   void chat(std::string message);
   void sendTurnOrder();
   void sendKillPlayer(Player *player);
@@ -77,6 +79,10 @@ private:
   void notifySit(Player *player, std::string nickname);
   void stand(void *conn, Player *player, std::string nickname);
   void notifyStand(Player *player, std::string nickname);
+  void change_name(void *conn, Player *player, Glib::ustring name);
+  void notifyNameChange(Player *player, Glib::ustring name);
+  void change_type(void *conn, Player *player, int type);
+  void notifyTypeChange(Player *player, int type);
   void gotRemoteActions(void *conn, const std::string &payload);
   void gotRemoteHistory(void *conn, const std::string &payload);
   void notifyChat(std::string message);
@@ -98,6 +104,8 @@ private:
   Participant * play_by_mail_participant;
 
   Participant *findParticipantByConn(void *conn);
+  Participant *findParticipantByNick(Glib::ustring nickname);
+  Participant *findParticipantByPlayerId(guint32 id);
   
   bool onGotMessage(void *conn, MessageType type, std::string message);
   void onConnectionLost(void *conn);
@@ -112,6 +120,7 @@ private:
 
   bool add_to_player_list(std::list<guint32> &list, guint32 id);
   bool remove_from_player_list(std::list<guint32> &list, guint32 id);
+  Glib::ustring make_nickname_unique(Glib::ustring nickname);
   //! A static pointer for the singleton instance.
   static GameServer * s_instance;
 };

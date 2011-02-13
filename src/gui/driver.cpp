@@ -260,6 +260,18 @@ void Driver::on_hosted_player_stood_up(Player *player)
   player_replaced.emit(Playerlist::getInstance()->getPlayer(id));
 }
 
+void Driver::on_hosted_player_changed_name(Player *player, Glib::ustring name)
+{
+  GameServer *game_server = GameServer::getInstance();
+  game_server->name_change(player, name);
+}
+
+void Driver::on_hosted_player_changed_type(Player *player, int type)
+{
+  GameServer *game_server = GameServer::getInstance();
+  game_server->type_change(player, type);
+}
+
 void Driver::on_hosted_player_chat(std::string message)
 {
   GameServer *game_server = GameServer::getInstance();
@@ -276,6 +288,18 @@ void Driver::on_client_player_stood_up(Player *player)
 {
   GameClient *game_client = GameClient::getInstance();
   game_client->stand_up(player);
+}
+
+void Driver::on_client_player_changed_name(Player *player, Glib::ustring name)
+{
+  GameClient *game_client = GameClient::getInstance();
+  game_client->change_name(player, name);
+}
+
+void Driver::on_client_player_changed_type(Player *player, int type)
+{
+  GameClient *game_client = GameClient::getInstance();
+  game_client->change_type(player, type);
 }
 
 void Driver::on_client_player_chat(std::string message)
@@ -368,6 +392,10 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
     (sigc::mem_fun(this, &Driver::on_hosted_player_sat_down));
   game_lobby_dialog->player_stood_up.connect
     (sigc::mem_fun(this, &Driver::on_hosted_player_stood_up));
+  game_lobby_dialog->player_changed_name.connect
+    (sigc::mem_fun(this, &Driver::on_hosted_player_changed_name));
+  game_lobby_dialog->player_changed_type.connect
+    (sigc::mem_fun(this, &Driver::on_hosted_player_changed_type));
   game_lobby_dialog->message_sent.connect
     (sigc::mem_fun(this, &Driver::on_hosted_player_chat));
   game_lobby_dialog->start_network_game.connect
@@ -398,6 +426,7 @@ void Driver::on_server_went_away()
     splash_window->show();
   TimedMessageDialog dialog(*splash_window->get_window(), 
 			    _("Server went away."), 0);
+  dialog.set_title("Disconnected");
   dialog.run();
   dialog.hide();
   GameClient::deleteInstance();
@@ -484,6 +513,10 @@ void Driver::on_game_scenario_received(std::string path)
     (sigc::mem_fun(this, &Driver::on_client_player_sat_down));
   game_lobby_dialog->player_stood_up.connect
     (sigc::mem_fun(this, &Driver::on_client_player_stood_up));
+  game_lobby_dialog->player_changed_name.connect
+    (sigc::mem_fun(this, &Driver::on_client_player_changed_name));
+  game_lobby_dialog->player_changed_type.connect
+    (sigc::mem_fun(this, &Driver::on_client_player_changed_type));
   game_lobby_dialog->message_sent.connect
     (sigc::mem_fun(this, &Driver::on_client_player_chat));
   game_lobby_dialog->start_network_game.connect

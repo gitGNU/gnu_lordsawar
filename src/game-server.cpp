@@ -35,6 +35,7 @@
 #include "real_player.h"
 #include "GameScenarioOptions.h"
 #include "ucompose.hpp"
+#include "game-parameters.h"
 
 class NetworkAction;
 
@@ -50,7 +51,6 @@ struct Participant
 };
 
 GameServer * GameServer::s_instance = 0;
-
 
 GameServer* GameServer::getInstance()
 {
@@ -231,17 +231,33 @@ bool GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
         guint32 id;
         gint32 action;
         bool reported;
-        Glib::ustring nick;
+        Glib::ustring data;
         bool success = 
-          get_message_lobby_activity (payload, id, action, reported, nick);
+          get_message_lobby_activity (payload, id, action, reported, data);
         if (success)
           {
             if (reported == false) //player is /reporting/
               {
-                if (action == -1)
-                  sit(conn, Playerlist::getInstance()->getPlayer(id), nick);
-                else if (action == 1)
-                  stand(conn, Playerlist::getInstance()->getPlayer(id), nick);
+                switch (action)
+                  {
+                  case LOBBY_MESSAGE_TYPE_SIT:
+                    sit(conn, Playerlist::getInstance()->getPlayer(id), data);
+                    break;
+                  case LOBBY_MESSAGE_TYPE_STAND:
+                    stand(conn, Playerlist::getInstance()->getPlayer(id), data);
+                    break;
+                  case LOBBY_MESSAGE_TYPE_CHANGE_NAME:
+                    change_name(conn, 
+                                Playerlist::getInstance()->getPlayer(id), data);
+                    break;
+                  case LOBBY_MESSAGE_TYPE_CHANGE_TYPE:
+                    change_type(conn, 
+                                Playerlist::getInstance()->getPlayer(id), 
+                                atoi(data.c_str()));
+                    break;
+                  default:
+                    break;
+                  }
               }
           }
       }
@@ -255,6 +271,7 @@ bool GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
   case MESSAGE_TYPE_TURN_ORDER:
   case MESSAGE_TYPE_KILL_PLAYER:
   case MESSAGE_TYPE_ROUND_START:
+  case MESSAGE_TYPE_CHANGE_NICKNAME:
     //faulty client
     break;
   }
@@ -368,7 +385,8 @@ void GameServer::notifySit(Player *player, std::string nickname)
   if (!player)
     return;
   Glib::ustring payload = 
-    String::ucompose("%1 %2 %3 %4", player->getId(), -1, 1, nickname);
+    String::ucompose("%1 %2 %3 %4", player->getId(), LOBBY_MESSAGE_TYPE_SIT, 
+                     1, nickname);
   player_sits.emit(player, nickname);
 
   for (std::list<Participant *>::iterator i = participants.begin(),
@@ -381,6 +399,92 @@ void GameServer::notifySit(Player *player, std::string nickname)
     }
   gotChatMessage("", nickname + " assumes control of " + 
 		 player->getName() +".");
+}
+
+void GameServer::notifyTypeChange(Player *player, int type)
+{
+  if (!player)
+    return;
+  Glib::ustring payload = 
+    String::ucompose("%1 %2 %3 %4", player->getId(), 
+                     LOBBY_MESSAGE_TYPE_CHANGE_TYPE, 1, type);
+  player_changes_type.emit(player, type);
+
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    {
+      network_server->send((*i)->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
+    }
+}
+
+void GameServer::notifyNameChange(Player *player, Glib::ustring name)
+{
+  if (!player)
+    return;
+  Glib::ustring payload = 
+    String::ucompose("%1 %2 %3 %4", player->getId(), 
+                     LOBBY_MESSAGE_TYPE_CHANGE_NAME, 1, name);
+  player_changes_name.emit(player, name);
+
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    {
+      network_server->send((*i)->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
+    }
+}
+
+Participant *GameServer::findParticipantByPlayerId(guint32 id)
+{
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i)
+    {
+      if (std::find ((*i)->players.begin(), (*i)->players.end(), id) !=
+          (*i)->players.end())
+        return *i;
+    }
+
+  return 0;
+}
+
+Participant *GameServer::findParticipantByNick(Glib::ustring nickname)
+{
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i)
+    if ((*i)->nickname == nickname)
+      return *i;
+
+  return 0;
+}
+
+Glib::ustring GameServer::make_nickname_unique(Glib::ustring nickname)
+{
+  Glib::ustring new_nickname;
+  int count = 0;
+  //okay, does this nickname appear twice?
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i)
+    {
+      if ((*i)->nickname == nickname)
+        count++;
+    }
+  if (nickname == d_nickname)
+    count++;
+  if (count <= 1)
+    return nickname;
+  count = 2;
+  while (1)
+    {
+      new_nickname = String::ucompose("%1-%2", nickname, count);
+      Participant *part = findParticipantByNick(new_nickname);
+      if (!part)
+        break;
+      count++;
+      if (count == 1000)
+        break;
+    }
+  if (count == 1000)
+    return "";
+  return new_nickname;
 }
 
 void GameServer::join(void *conn, std::string nickname)
@@ -403,7 +507,17 @@ void GameServer::join(void *conn, std::string nickname)
       sendMap(part);
     }
 
-  notifyJoin(nickname);
+  Glib::ustring new_nickname = make_nickname_unique(nickname);
+  if (new_nickname != "")
+    {
+      if (new_nickname != nickname)
+        {
+          part->nickname = new_nickname;
+          network_server->send(conn, MESSAGE_TYPE_CHANGE_NICKNAME, 
+                               new_nickname);
+        }
+      notifyJoin(new_nickname);
+    }
 }
 
 void GameServer::depart(void *conn)
@@ -457,12 +571,39 @@ void GameServer::sit(void *conn, Player *player, std::string nickname)
   notifySit(player, nickname);
 }
 
+void GameServer::change_name(void *conn, Player *player, Glib::ustring name)
+{
+  std::cout << "CHANGE NAME: " << conn << " " << player << " " << name << std::endl;
+
+  if (!player || !conn)
+    return;
+  Participant *part = findParticipantByConn(conn);
+  if (!part) 
+    return;
+
+  name_change(player, name);
+}
+
+void GameServer::change_type(void *conn, Player *player, int type)
+{
+  std::cout << "CHANGE TYPE: " << conn << " " << player << " " << type << std::endl;
+
+  if (!player || !conn)
+    return;
+  Participant *part = findParticipantByConn(conn);
+  if (!part) 
+    return;
+
+  notifyTypeChange(player, type);
+}
+
 void GameServer::notifyStand(Player *player, std::string nickname)
 {
   if (!player)
     return;
   Glib::ustring payload = 
-    String::ucompose("%1 %2 %3 %4", player->getId(), 1, 1, nickname);
+    String::ucompose("%1 %2 %3 %4", player->getId(), 
+                     LOBBY_MESSAGE_TYPE_STAND, 1, nickname);
   player_stands.emit(player, nickname);
 
   for (std::list<Participant *>::iterator i = participants.begin(),
@@ -680,6 +821,7 @@ void GameServer::sit_down (Player *player)
       stopListeningForLocalEvents(player);
       listenForLocalEvents(new_p);
       delete player;
+      player = new_p;
       add_to_player_list (players_seated_locally, new_p->getId());
       notifySit(new_p, d_nickname);
     }
@@ -694,6 +836,7 @@ void GameServer::sit_down (Player *player)
       add_to_player_list (players_seated_locally, player->getId());
       notifySit(player, d_nickname);
     }
+  notifyTypeChange(player, player->getType());
 }
 
 void GameServer::stand_up (Player *player)
@@ -709,13 +852,16 @@ void GameServer::stand_up (Player *player)
       Playerlist::getInstance()->swap(player, new_p);
       stopListeningForLocalEvents(player);
       delete player;
+      player = new_p;
       new_p->setConnected(false);
       notifyStand(new_p, d_nickname);
       remove_from_player_list (players_seated_locally, new_p->getId());
     }
   else if (player->getType() == Player::NETWORKED)
     {
-      // do nothing
+      //this is the forcibly booted, made to stand-up case. .
+      Participant *part = findParticipantByPlayerId(player->getId());
+      stand(part->conn, player, part->nickname);
     }
   else // an ai player
     {
@@ -723,6 +869,23 @@ void GameServer::stand_up (Player *player)
       remove_from_player_list (players_seated_locally, player->getId());
       notifyStand(player, d_nickname);
     }
+  notifyTypeChange(player, GameParameters::Player::NETWORKED);
+}
+
+void GameServer::name_change (Player *player, Glib::ustring name)
+{
+  if (!player)
+    return;
+  player->rename(name);
+  notifyNameChange(player, name);
+}
+
+void GameServer::type_change (Player *player, int type)
+{
+  if (!player)
+    return;
+  notifyTypeChange(player, type);
+  player_changes_type.emit(player, type);
 }
 
 void GameServer::chat (std::string message)
@@ -757,7 +920,8 @@ void GameServer::sendSeats(void *conn)
 	  Player *player = Playerlist::getInstance()->getPlayer(*j);
           Glib::ustring payload = 
             String::ucompose ("%1 %2 %3 %4",
-                              player->getId(), -1, 0, (*i)->nickname);
+                              player->getId(), LOBBY_MESSAGE_TYPE_SIT, 0, 
+                              (*i)->nickname);
 	  network_server->send(part->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, 
                                payload);
 	}
@@ -768,7 +932,8 @@ void GameServer::sendSeats(void *conn)
     {
       Player *player = Playerlist::getInstance()->getPlayer(*j);
       Glib::ustring payload = 
-        String::ucompose ("%1 %2 %3 %4", player->getId(), -1, 0, d_nickname);
+        String::ucompose ("%1 %2 %3 %4", player->getId(), 
+                          LOBBY_MESSAGE_TYPE_SIT, 0, d_nickname);
       network_server->send(part->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
     }
 }

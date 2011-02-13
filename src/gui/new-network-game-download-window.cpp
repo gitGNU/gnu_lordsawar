@@ -16,6 +16,8 @@
 //  02110-1301, USA.
 #include "new-network-game-download-window.h"
 #include "defs.h"
+#include "File.h"
+#include "decorated.h"
 
 NewNetworkGameDownloadWindow::NewNetworkGameDownloadWindow()
 : m_vbox(false,10)
@@ -25,7 +27,11 @@ NewNetworkGameDownloadWindow::NewNetworkGameDownloadWindow()
   m_vbox.pack_start(m_label);
   m_vbox.pack_start(m_pbar);
  
+  Decorated decorator;
+  decorator.decorate(this);
+  decorator.window_closed.connect(sigc::mem_fun(this, &Gtk::Dialog::hide));
   set_title(_("Downloading."));
+  set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
   show_all();
 }
 

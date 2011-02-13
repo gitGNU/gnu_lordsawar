@@ -37,23 +37,10 @@
 #include "tilesetlist.h"
 #include "citysetlist.h"
 #include "player.h"
+#include "game-parameters.h"
 
 static bool inhibit_difficulty_combobox = false;
 
-namespace 
-{
-  GameParameters::Player::Type player_type_to_enum(const Glib::ustring &s)
-    {
-      if (s == HUMAN_PLAYER_TYPE)
-	return GameParameters::Player::HUMAN;
-      else if (s == EASY_PLAYER_TYPE)
-	return GameParameters::Player::EASY;
-      else if (s == NO_PLAYER_TYPE)
-	return GameParameters::Player::OFF;
-      else
-	return GameParameters::Player::HARD;
-    }
-}
 void GamePreferencesDialog::init(std::string filename)
 {
   d_filename = filename;
@@ -275,8 +262,7 @@ void GamePreferencesDialog::on_player_type_changed()
   std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
   for (; c != player_types.end(); c++)
     {
-      if (player_type_to_enum((*c)->get_active_text()) ==
-	  GameParameters::Player::OFF)
+      if (GameParameters::player_param_string_to_player_param((*c)->get_active_text()) == GameParameters::Player::OFF)
 	offcount++;
     }
   if (offcount > player_types.size() - 2)
@@ -293,7 +279,7 @@ void GamePreferencesDialog::update_difficulty_rating()
   for (; c != player_types.end(); c++)
     {
       GameParameters::Player p;
-      p.type = player_type_to_enum((*c)->get_active_text());
+      p.type = GameParameters::player_param_string_to_player_param((*c)->get_active_text());
       g.players.push_back(p);
     }
 
@@ -330,7 +316,7 @@ void GamePreferencesDialog::on_start_game_clicked()
   for (; c != player_types.end(); c++, e++, id++)
     {
       GameParameters::Player p;
-      p.type = player_type_to_enum((*c)->get_active_text());
+      p.type = GameParameters::player_param_string_to_player_param((*c)->get_active_text());
       Glib::ustring name = (*e)->get_text();
       p.name = name;
       p.id = id;

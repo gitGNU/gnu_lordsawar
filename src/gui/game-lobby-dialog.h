@@ -55,6 +55,8 @@ class GameLobbyDialog: public Decorated
   sigc::signal<void, Player*> player_sat_down;
   sigc::signal<void, Player*> player_stood_up;
   sigc::signal<void, std::string> message_sent;
+  sigc::signal<void, Player*, Glib::ustring> player_changed_name;
+  sigc::signal<void, Player*, int> player_changed_type;
   sigc::signal<void, GameScenario *, NextTurnNetworked*> start_network_game;
 
  private:
@@ -62,6 +64,9 @@ class GameLobbyDialog: public Decorated
     //! The mini map that shows the scenario map
     CityMap* citymap;
     Gtk::Image *map_image;
+    guint32 d_player_id_of_sit_or_stand_request;
+    guint32 d_player_id_of_name_change_request;
+    guint32 d_player_id_of_type_change_request;
 
     void initDialog(GameScenario *gamescenario, NextTurnNetworked *next_turn,
 		    GameStation *game_station);
@@ -69,6 +74,7 @@ class GameLobbyDialog: public Decorated
     GameScenario *d_game_scenario;
     GameStation *d_game_station;
     NextTurnNetworked *d_next_turn;
+    bool d_has_ops;
     Gtk::Label *turn_label;
     Gtk::Label *scenario_name_label;
     Gtk::Label *cities_label;
@@ -163,7 +169,6 @@ class GameLobbyDialog: public Decorated
     void add_player(const Glib::ustring &type, const Glib::ustring &name,
 		    Player *player);
     void on_player_selected();
-    bool d_has_ops;
     void update_buttons();
     void on_remote_player_ends_turn(Player *p);
 
@@ -171,6 +176,8 @@ class GameLobbyDialog: public Decorated
     void on_remote_participant_departs(std::string nickname);
     void on_player_stands(Player *p, std::string nickname);
     void on_player_sits(Player *p, std::string nickname);
+    void on_player_changes_name(Player *p, Glib::ustring name);
+    void on_player_changes_type(Player *p, int type);
     void on_remote_player_changes_name(Player *p);
     void on_player_died(Player *p);
     void on_play_clicked();
@@ -185,6 +192,8 @@ class GameLobbyDialog: public Decorated
 
     void on_local_player_ends_turn(Player *p);
     void on_local_player_starts_turn(Player *p);
+
+    void on_nickname_changed(Glib::ustring old_name, Glib::ustring new_name);
 
     Player* get_selected_player(Glib::ustring &nick, bool &sitting);
 
