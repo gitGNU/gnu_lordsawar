@@ -462,7 +462,7 @@ void GameServer::notifyStand(Player *player, std::string nickname)
   if (!player)
     return;
   Glib::ustring payload = 
-    String::ucompose("%1 %2 %3 %4", player->getId(), -1, 1, nickname);
+    String::ucompose("%1 %2 %3 %4", player->getId(), 1, 1, nickname);
   player_stands.emit(player, nickname);
 
   for (std::list<Participant *>::iterator i = participants.begin(),
