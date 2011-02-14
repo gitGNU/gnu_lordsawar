@@ -423,7 +423,7 @@ void GameClient::gotTurnOrder (std::string payload)
 	player_ids.push_back(ival);
     }
   Playerlist::getInstance()->reorder(player_ids);
-  playerlist_reorder_received.emit();
+  playerlist_reorder_received.emit(player_ids);
 }
 
 void GameClient::sendRoundOver()

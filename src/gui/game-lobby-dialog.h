@@ -97,8 +97,9 @@ class GameLobbyDialog: public Decorated
     class PlayerColumns: public Gtk::TreeModelColumnRecord {
     public:
 	PlayerColumns()
-	    {add(shield); add(sitting); add(person); add(name); add(type); add(turn); add(player_id);}
+	    {add(order); add(shield); add(sitting); add(person); add(name); add(type); add(turn); add(player_id);}
 	
+	Gtk::TreeModelColumn<guint32> order;
 	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > shield;
 	Gtk::TreeModelColumn<bool> sitting;
 	Gtk::TreeModelColumn<Glib::ustring> person, name, type;
@@ -168,11 +169,12 @@ class GameLobbyDialog: public Decorated
     const PeopleColumns people_columns;
     Glib::RefPtr<Gtk::ListStore> people_list;
 
-    void add_player(const Glib::ustring &type, const Glib::ustring &name,
-		    Player *player);
+    void add_player(guint32 order, const Glib::ustring &type, 
+                    const Glib::ustring &name, Player *player);
     void on_player_selected();
     void update_buttons();
     void on_remote_player_ends_turn(Player *p);
+    void on_remote_player_starts_turn(Player *p);
 
     void on_remote_participant_joins(std::string nickname);
     void on_remote_participant_departs(std::string nickname);
@@ -190,7 +192,7 @@ class GameLobbyDialog: public Decorated
     void on_chat_key_pressed(GdkEventKey *event);
     void on_chatted(std::string nickname, std::string message);
 
-    void on_reorder_playerlist();
+    void on_reorder_playerlist(std::list<guint32> order);
 
     void on_local_player_ends_turn(Player *p);
     void on_local_player_starts_turn(Player *p);
@@ -203,6 +205,10 @@ class GameLobbyDialog: public Decorated
 
     void lock_down();
     Player* get_selected_player(Glib::ustring &nick, bool &sitting);
+
+    void sort_player_list_by_turn_order();
+
+    void update_turn_indicator();
 
 };
 

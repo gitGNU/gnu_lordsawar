@@ -18,6 +18,7 @@
 #include <config.h>
 
 #include <gtkmm.h>
+#include <map>
 #include <sigc++/functors/mem_fun.h>
 
 #include "game-lobby-dialog.h"
@@ -127,6 +128,8 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
 
     game_station->remote_player_moved.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_ends_turn));
+    game_station->remote_player_starts_move.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_remote_player_starts_turn));
     game_station->local_player_moved.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_local_player_ends_turn));
     game_station->local_player_starts_move.connect
@@ -219,6 +222,8 @@ GameLobbyDialog::update_player_details()
       player_list.reset();
     }
   player_list = Gtk::ListStore::create(player_columns);
+  player_list->set_sort_column (player_columns.order, Gtk::SORT_ASCENDING);
+
   // setup the player settings
   player_treeview->set_model(player_list);
 
@@ -276,6 +281,7 @@ GameLobbyDialog::update_player_details()
 
   Playerlist *pl = Playerlist::getInstance();
 
+  guint32 count = 0;
   for (Playerlist::iterator i = pl->begin(), end = pl->end(); i != end; ++i)
     {
       Player *player = *i;
@@ -283,9 +289,11 @@ GameLobbyDialog::update_player_details()
 	continue;
       if (player->isDead())
 	continue;
-      add_player(player_type_to_string(player->getType()), player->getName(), 
+      add_player(count, player_type_to_string(player->getType()), player->getName(), 
 		 player);
+      count++;
     }
+  update_turn_indicator();
 }
 
 void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
@@ -385,10 +393,11 @@ void GameLobbyDialog::on_type_edited(const Glib::ustring &path,
 				     const Glib::ustring &new_text)
 {
   Gtk::TreeModel::iterator iter = player_treeview->get_model()->get_iter(path);
+      
+  if ((*iter)[player_columns.sitting] == false)
+    return;
   if (d_has_ops == false)
     {
-      if ((*iter)[player_columns.sitting] == false)
-        return;
       if ((*iter)[player_columns.person] != d_game_station->getNickname())
         return;
     }
@@ -399,10 +408,6 @@ void GameLobbyDialog::on_type_edited(const Glib::ustring &path,
 
   int type = GameParameters::player_param_string_to_player_param(new_text);
   player_changed_type.emit (player, type);
-  //(*player_list->get_iter(Gtk::TreePath(path)))[player_columns.type]
-    //= new_text;
-
-  //fixme, make a player->changeType method, and send it as an action
 }
 
 void GameLobbyDialog::cell_data_name(Gtk::CellRenderer *renderer,
@@ -447,13 +452,12 @@ void GameLobbyDialog::cell_data_sitting(Gtk::CellRenderer *renderer,
   dynamic_cast<Gtk::CellRendererToggle*>(renderer)->set_active((*i)[player_columns.sitting]);
 }
 
-void GameLobbyDialog::add_player(const Glib::ustring &type,
+void GameLobbyDialog::add_player(guint32 order, const Glib::ustring &type,
 				 const Glib::ustring &name, Player *player)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   Gtk::TreeIter i = player_list->append();
-  if (player == Playerlist::getInstance()->getActiveplayer())
-    (*i)[player_columns.turn] = gc->getCursorPic(GraphicsCache::SWORD)->to_pixbuf();
+  (*i)[player_columns.order] = order;
   (*i)[player_columns.shield] = gc->getShieldPic(1, player)->to_pixbuf();
   (*i)[player_columns.type] = type;
   (*i)[player_columns.name] = name;
@@ -513,11 +517,18 @@ void GameLobbyDialog::on_player_changes_name(Player *p, Glib::ustring name)
       name_renderer.set_sensitive(true);
       d_player_id_of_name_change_request = MAX_PLAYERS + 1;
     }
-  //look for the row that has the right player id.
-  Glib::ustring path = String::ucompose("%1", p->getId());
-  p->setName(name);
-  player_list->row_changed(Gtk::TreePath(path),
-                           player_list->get_iter(Gtk::TreePath(path)));
+  //look for the row that has the right player id, and change the name
+  Gtk::TreeModel::Children kids = player_list->children();
+  for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
+       i != kids.end(); i++)
+    {
+      Gtk::TreeModel::Row row = *i;
+      if (row[player_columns.player_id] == p->getId())
+        {
+          p->setName(name);
+          row[player_columns.name] = name;
+        }
+    }
 }
 
 void GameLobbyDialog::on_player_changes_type(Player *p, int type)
@@ -596,22 +607,11 @@ void GameLobbyDialog::on_player_stands(Player *p, std::string nickname)
 
 void GameLobbyDialog::on_local_player_ends_turn(Player *p)
 {
-  Gtk::TreeModel::Children kids = player_list->children();
-  for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
-       i != kids.end(); i++)
-    {
-      Gtk::TreeModel::Row row = *i;
-      if (row[player_columns.player_id] == p->getId())
-	{
-	  Glib::RefPtr<Gdk::Pixbuf> empty_pic
-	    = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, 1, 1);
-	  empty_pic->fill(0x00000000);
-	  row[player_columns.turn] = empty_pic;
-	}
-    }
+  update_turn_indicator();
   update_scenario_details();
 }
-void GameLobbyDialog::on_local_player_starts_turn(Player *p)
+
+void GameLobbyDialog::update_turn_indicator()
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   Gtk::TreeModel::Children kids = player_list->children();
@@ -622,7 +622,25 @@ void GameLobbyDialog::on_local_player_starts_turn(Player *p)
       Player *active = Playerlist::getActiveplayer();
       if (row[player_columns.player_id] == active->getId())
 	(*i)[player_columns.turn] = gc->getCursorPic(GraphicsCache::SWORD)->to_pixbuf();
+      else
+        {
+          Glib::RefPtr<Gdk::Pixbuf> empty_pic
+            = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, 4, 4);
+          empty_pic->fill(0x00000000);
+          (*i)[player_columns.turn] = empty_pic;
+        }
     }
+}
+
+void GameLobbyDialog::on_remote_player_starts_turn(Player *p)
+{
+  update_turn_indicator();
+  update_scenario_details();
+}
+
+void GameLobbyDialog::on_local_player_starts_turn(Player *p)
+{
+  update_turn_indicator();
   update_scenario_details();
 }
 
@@ -634,23 +652,7 @@ void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
       rpgl->updateEntry(d_game_scenario);
       rpgl->saveToFile(File::getSavePath() + "/recently-played.xml");
     }
-  GraphicsCache *gc = GraphicsCache::getInstance();
-  Gtk::TreeModel::Children kids = player_list->children();
-  for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
-       i != kids.end(); i++)
-    {
-      Gtk::TreeModel::Row row = *i;
-      if (row[player_columns.player_id] == p->getId())
-	{
-	  Glib::RefPtr<Gdk::Pixbuf> empty_pic
-	    = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, 1, 1);
-	  empty_pic->fill(0x00000000);
-	  row[player_columns.turn] = empty_pic;
-	}
-      Player *active = Playerlist::getActiveplayer();
-      if (row[player_columns.player_id] == active->getId())
-	(*i)[player_columns.turn] = gc->getCursorPic(GraphicsCache::SWORD)->to_pixbuf();
-    }
+  update_turn_indicator();
   update_scenario_details();
 }
 
@@ -739,26 +741,9 @@ void GameLobbyDialog::on_player_died(Player *p)
     }
 }
 
-void GameLobbyDialog::on_reorder_playerlist()
+void GameLobbyDialog::on_reorder_playerlist(std::list<guint32> order)
 {
-  int count = 0;
-  std::list<int> new_order;
-  Playerlist *pl = Playerlist::getInstance();
-  for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
-    {
-      Gtk::TreeNodeChildren rows = player_list->children();
-      for(Gtk::TreeIter row = rows.begin(); row != rows.end(); ++row)
-	{
-	  Gtk::TreeModel::Row my_row = *row;
-	  if (my_row[player_columns.player_id] == (*it)->getId())
-	    {
-	      new_order.push_back(count);
-	      count++;
-	      break;
-	    }
-	}
-    }
-  player_list->reorder(new_order);
+  sort_player_list_by_turn_order();
 }
 
 bool GameLobbyDialog::run()
@@ -860,5 +845,31 @@ void GameLobbyDialog::on_player_turned_off(Player *player)
           player_list->erase(row);
           return;
         }
+    }
+}
+
+void GameLobbyDialog::sort_player_list_by_turn_order()
+{
+  Playerlist *pl = Playerlist::getInstance();
+  std::map<guint32, guint32> id_order;
+
+  guint32 count = 0;
+  for (Playerlist::iterator i = pl->begin(), end = pl->end(); i != end; ++i)
+    {
+      Player *player = *i;
+      if (player == pl->getNeutral())
+	continue;
+      if (player->isDead())
+	continue;
+      id_order[player->getId()] = count;
+      count++;
+    }
+
+  Gtk::TreeNodeChildren rows = player_list->children();
+  for(Gtk::TreeIter row = rows.begin(); row != rows.end(); ++row)
+    {
+      Gtk::TreeModel::Row my_row = *row;
+      my_row[player_columns.order] = 
+        id_order[my_row[player_columns.player_id]];
     }
 }

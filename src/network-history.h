@@ -40,9 +40,6 @@ public:
      //! Returns debug information.
      std::string toString() const;
 
-     //! copying the deep contents of the history
-     static NetworkHistory* copy(History *history, Player *owner);
-
      //!Saving the network history to an xml stream.
      bool save(XML_Helper* helper) const;
 

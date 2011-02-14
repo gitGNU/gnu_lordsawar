@@ -41,9 +41,6 @@ public:
      //! Returns debug information.
      std::string toString() const;
 
-     //! copying the deep contents of the action
-     static NetworkAction* copy(Action *action, Player *owner);
-
      //!Saving the network action to an xml stream.
      bool save(XML_Helper* helper) const;
 

@@ -331,10 +331,12 @@ void GameServer::onActionDone(NetworkAction *action)
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     {
-      (*i)->actions.push_back(action);
+      (*i)->actions.push_back(new NetworkAction (action->getAction(),
+                                                 action->getOwnerId()));
       sendActions(*i);
       clearNetworkActionlist((*i)->actions);
     }
+  delete action;
 
 }
 
@@ -349,10 +351,12 @@ void GameServer::onHistoryDone(NetworkHistory *history)
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     {
-      (*i)->histories.push_back(history);
+      (*i)->histories.push_back (new NetworkHistory (history->getHistory(), 
+                                                     history->getOwnerId()));
       sendHistories(*i);
       clearNetworkHistorylist((*i)->histories);
     }
+  delete history;
 }
 
 void GameServer::notifyJoin(std::string nickname)
@@ -796,7 +800,7 @@ void GameServer::sendActions(Participant *part)
 
   helper.closeTag();
 
-  std::cerr << "sending actions" << std::endl;
+  std::cerr << "sending actions to " << part->nickname << std::endl;
   network_server->send(part->conn, MESSAGE_TYPE_SENDING_ACTIONS, os.str());
 }
 
@@ -814,7 +818,7 @@ void GameServer::sendHistories(Participant *part)
 
   helper.closeTag();
 
-  std::cerr << "sending histories" << std::endl;
+  std::cerr << "sending histories to " << part->nickname << std::endl;
   network_server->send(part->conn, MESSAGE_TYPE_SENDING_HISTORY, os.str());
 }
 
@@ -1039,14 +1043,18 @@ void GameServer::sendKillPlayer(Player *p)
 
 void GameServer::sendTurnOrder()
 {
+  std::list<guint32> ids;
   std::stringstream players;
   Playerlist *pl = Playerlist::getInstance();
   for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
-    players << (*it)->getId() << " ";
+    {
+      players << (*it)->getId() << " ";
+      ids.push_back((*it)->getId());
+    }
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     network_server->send((*i)->conn, MESSAGE_TYPE_TURN_ORDER, players.str());
-  playerlist_reorder_received.emit();
+  playerlist_reorder_received.emit(ids);
 }
 
 bool GameServer::gameHasBegun()
@@ -1066,6 +1074,7 @@ void GameServer::notifyClientsGameMayBeginNow()
 
 void GameServer::syncLocalPlayers()
 {
+  std::list<guint32> ids;
   for (std::list<GameParameters::Player>::iterator j = 
        players_seated_locally.begin(); j != players_seated_locally.end(); j++)
     {
@@ -1075,8 +1084,11 @@ void GameServer::syncLocalPlayers()
           stopListeningForLocalEvents(p);
           player_gets_turned_off.emit(p);
           sendOffPlayer(p);
+          ids.push_back(p->getId());
         }
       Playerlist::getInstance()->syncPlayer(*j);
     }
+  for (std::list<guint32>::iterator i = ids.begin(); i != ids.end(); i++)
+    remove_from_player_list (players_seated_locally, *i);
 }
 // End of file
