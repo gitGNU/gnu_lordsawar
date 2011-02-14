@@ -190,7 +190,23 @@ void GameLobbyDialog::update_buttons()
     }
   else
     {
-      play_button->set_sensitive(d_play_message_received);
+      bool found = false;
+      //do we have a horse in the race?
+      Gtk::TreeModel::Children kids = player_list->children();
+      for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
+           i != kids.end(); i++)
+        {
+          Gtk::TreeModel::Row row = *i;
+          if (row[player_columns.person] == d_game_station->getNickname())
+            {
+              found = true;
+              break;
+            }
+        }
+      if (found)
+        play_button->set_sensitive(d_play_message_received);
+      else
+        play_button->set_sensitive(false);
     }
 }
 
