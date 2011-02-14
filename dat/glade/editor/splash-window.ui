@@ -35,7 +35,7 @@
               <object class="GtkProgressBar" id="progressbar">
                 <property name="visible">True</property>
                 <property name="show_text">True</property>
-                <property name="text" translatable="yes">Please Wait..</property>
+                <property name="text" translatable="yes">Please Wait...</property>
                 <property name="adjustment">adjustment1</property>
               </object>
               <packing>
