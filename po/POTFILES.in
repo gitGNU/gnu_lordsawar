@@ -296,6 +296,7 @@ src/gui/city-info-tip.cpp
 src/gui/decorated.cpp
 src/gui/game-lobby-dialog.cpp
 src/gui/new-network-game-download-window.cpp
+src/gui/new-network-game-dialog.cpp
 src/gui/item-report-dialog.cpp
 src/NamedLocation.cpp
 src/herotemplates.cpp
