@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@
 #include "ruin.h"
 #include "ucompose.hpp"
 #include "SightMap.h"
+#include "stackreflist.h"
 
 std::string Reward::d_tag = "reward";
 
@@ -200,26 +201,38 @@ const ArmyProto* Reward_Allies::randomArmyAlly()
   return al->getArmyset(p->getArmyset())->getRandomAwardableAlly();
 }
 
-bool Reward_Allies::addAllies(Player *p, Vector<int> pos, const ArmyProto *army, guint32 alliesCount)
+bool Reward_Allies::addAllies(Player *p, Vector<int> pos, const ArmyProto *army, guint32 alliesCount, StackReflist *stacks)
 {
   for (unsigned int i = 0; i < alliesCount; i++)
     {
       Army* ally = new Army(*army, p);
       ally->setUpkeep(0);
-      if (GameMap::getInstance()->addArmyAtPos(pos, ally) == NULL)
+      Stack *s = GameMap::getInstance()->addArmyAtPos(pos, ally);
+      if (s == NULL)
         return false;
+      else if (stacks)
+        {
+          if (stacks->contains(s->getId()) == false)
+            stacks->addStack(s);
+        }
     }
   return true;
 }
 
-bool Reward_Allies::addAllies(Player *p, Location *l, const Army *army, guint32 alliesCount)
+bool Reward_Allies::addAllies(Player *p, Location *l, const Army *army, guint32 alliesCount, StackReflist *stacks)
 {
   for (unsigned int i = 0; i < alliesCount; i++)
     {
       Army* ally = new Army(*army, p);
       ally->setUpkeep(0);
-      if (GameMap::getInstance()->addArmy(l, ally) == NULL)
+      Stack *s = GameMap::getInstance()->addArmy(l, ally);
+      if (s == NULL)
         return false;
+      else if (stacks)
+        {
+          if (stacks->contains(s->getId()) == false)
+            stacks->addStack(s);
+        }
     }
   return true;
 }

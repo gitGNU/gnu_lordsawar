@@ -605,7 +605,9 @@ void Game::search_stack(Stack *stack, bool &gotquest, bool &stackdied)
 	  
       if (reward)
 	{
-	  player->giveReward(stack, reward);
+          StackReflist *stacks = new StackReflist();
+	  player->giveReward(stack, reward, stacks);
+          delete stacks;
 	  //FIXME: delete this reward, but don't delete the item, or map
 	  redraw();
 	  update_stack_info();

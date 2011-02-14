@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -35,6 +35,7 @@
 #include "army.h"
 #include "xmlhelper.h"
 #include "history.h"
+#include "stackreflist.h"
 
 std::string QuestsManager::d_tag = "questlist";
 
@@ -219,12 +220,13 @@ void QuestsManager::questCompleted(guint32 heroId)
     p->heroCompletesQuest(quest->getHero());
     Stack *stack = p->getStacklist()->getArmyStackById(heroId);
 
+    StackReflist *stacks = new StackReflist();
     int num = rand() % 4;
     if (num == 0)
       {
 	int gold = Reward_Gold::getRandomGoldPieces();
         Reward_Gold reward(gold);
-        p->giveReward(stack, &reward);
+        p->giveReward(stack, &reward, stacks);
         quest_completed.emit(quest, &reward);
       }
     else if (num == 1)
@@ -232,7 +234,7 @@ void QuestsManager::questCompleted(guint32 heroId)
         int num = (rand() % 8) + 1;
         const ArmyProto *a = Reward_Allies::randomArmyAlly();
         Reward_Allies reward(a, num);
-        p->giveReward(stack, &reward);
+        p->giveReward(stack, &reward, stacks);
         quest_completed.emit(quest, &reward);
 	    
 	History_HeroFindsAllies* item = new History_HeroFindsAllies();
@@ -244,14 +246,14 @@ void QuestsManager::questCompleted(guint32 heroId)
         Reward *itemReward = Rewardlist::getInstance()->popRandomItemReward();
         if (itemReward)
           {
-            p->giveReward(stack, itemReward);
+            p->giveReward(stack, itemReward, stacks);
             quest_completed.emit(quest, itemReward);
           }
         else //no items left to give!
           {
 	    int gold = Reward_Gold::getRandomGoldPieces();
             Reward_Gold reward(gold);
-            p->giveReward(stack, &reward);
+            p->giveReward(stack, &reward, stacks);
             quest_completed.emit(quest, &reward);
           }
       }
@@ -260,17 +262,18 @@ void QuestsManager::questCompleted(guint32 heroId)
         Reward *ruinReward = Rewardlist::getInstance()->popRandomRuinReward();
         if (ruinReward)
           {
-            p->giveReward(stack, ruinReward);
+            p->giveReward(stack, ruinReward, stacks);
             quest_completed.emit(quest, ruinReward);
           }
         else //no ruins left to give!
           {
             int gold = Reward_Gold::getRandomGoldPieces();
             Reward_Gold reward(gold);
-            p->giveReward(stack, &reward);
+            p->giveReward(stack, &reward, stacks);
             quest_completed.emit(quest, &reward);
           }
       }
+    delete stacks;
 
     //debug("deactivate quest");
     //deactivateQuest(heroId);

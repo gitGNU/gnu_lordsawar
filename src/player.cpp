@@ -77,6 +77,7 @@
 #include "QEnemyArmies.h"
 #include "QEnemyArmytype.h"
 #include "callback-enums.h"
+#include "stackreflist.h"
 
 using namespace std;
 
@@ -1877,7 +1878,7 @@ bool Player::cityChangeProduction(City* c, int slot)
   return true;
 }
 
-void Player::doGiveReward(Stack *s, Reward *reward)
+void Player::doGiveReward(Stack *s, Reward *reward, StackReflist *stacks)
 {
   switch (reward->getType())
     {
@@ -1889,7 +1890,7 @@ void Player::doGiveReward(Stack *s, Reward *reward)
           const ArmyProto *a = dynamic_cast<Reward_Allies*>(reward)->getArmy();
 
           Reward_Allies::addAllies(s->getOwner(), s->getPos(), a,
-      			     dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies());
+      			     dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies(), stacks);
   
         }
       break;
@@ -1915,11 +1916,11 @@ void Player::doGiveReward(Stack *s, Reward *reward)
     }
 }
 
-bool Player::giveReward(Stack *s, Reward *reward)
+bool Player::giveReward(Stack *s, Reward *reward, StackReflist *stacks)
 {
   debug("Player::give_reward");
 
-  doGiveReward(s, reward);
+  doGiveReward(s, reward, stacks);
   
   Action_Reward* item = new Action_Reward();
   item->fillData(s, reward);
@@ -2474,15 +2475,21 @@ void Player::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
     }
 }
 
-Hero* Player::doRecruitHero(HeroProto* herotemplate, City *city, int cost, int alliesCount, const ArmyProto *ally)
+Hero* Player::doRecruitHero(HeroProto* herotemplate, City *city, int cost, int alliesCount, const ArmyProto *ally, StackReflist *stacks)
 {
   Hero *newhero = new Hero(*herotemplate);
   newhero->setOwner(this);
-  GameMap::getInstance()->addArmy(city, newhero);
+  Stack *s = GameMap::getInstance()->addArmy(city, newhero);
+  if (stacks)
+    {
+      if (stacks->contains(s->getId()) == false)
+        stacks->addStack(s);
+    }
 
   if (alliesCount > 0)
     {
-      Reward_Allies::addAllies(this, city->getPos(), ally, alliesCount);
+      Reward_Allies::addAllies(this, city->getPos(), ally, alliesCount, 
+                               stacks);
       hero_arrives_with_allies.emit(alliesCount);
     }
 
@@ -2499,7 +2506,7 @@ Hero* Player::doRecruitHero(HeroProto* herotemplate, City *city, int cost, int a
   return newhero;
 }
 
-void Player::recruitHero(HeroProto* heroproto, City *city, int cost, int alliesCount, const ArmyProto *ally)
+void Player::recruitHero(HeroProto* heroproto, City *city, int cost, int alliesCount, const ArmyProto *ally, StackReflist *stacks)
 {
   //alright, we may have picked another sex for the hero.
   HeroProto *h;
@@ -2512,7 +2519,7 @@ void Player::recruitHero(HeroProto* heroproto, City *city, int cost, int alliesC
   action->fillData(h, city, cost, alliesCount, ally);
   addAction(action);
 
-  Hero *hero = doRecruitHero(h, city, cost, alliesCount, ally);
+  Hero *hero = doRecruitHero(h, city, cost, alliesCount, ally, stacks);
   if (hero)
     {
       History_HeroEmerges *item = new History_HeroEmerges();
@@ -4188,7 +4195,9 @@ bool Player::maybeRecruitHero ()
             alliesCount = 0;
         }
         
-        recruitHero(heroproto, city, gold_needed, alliesCount, ally);
+        StackReflist *stacks = new StackReflist();
+        recruitHero(heroproto, city, gold_needed, alliesCount, ally, stacks);
+        delete stacks;
       }
     }
   return accepted;

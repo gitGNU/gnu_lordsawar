@@ -52,6 +52,7 @@
 #include "vectoredunit.h"
 #include "Backpack.h"
 #include "MapBackpack.h"
+#include "stackreflist.h"
 
 using namespace std;
 
@@ -488,7 +489,9 @@ void NetworkPlayer::decodeActionProduction(const Action_Production *action)
 void NetworkPlayer::decodeActionReward(const Action_Reward *action)
 {
   Stack *stack = d_stacklist->getStackById(action->getStackId());
-  doGiveReward(stack, action->getReward());
+  StackReflist *stacks = new StackReflist();
+  doGiveReward(stack, action->getReward(), stacks);
+  delete stacks;
   supdatingStack.emit(stack); // make sure we get a redraw
 }
 
@@ -676,12 +679,17 @@ void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)
   if (action->getNumAllies())
     ally = Armysetlist::getInstance()->getArmy(getArmyset(),
                                                action->getAllyArmyType());
+  StackReflist *stacks = new StackReflist();
   Hero *hero = doRecruitHero(action->getHero(), city, action->getCost(), 
-			     action->getNumAllies(), ally);
+			     action->getNumAllies(), ally, stacks);
   printf ("created hero with id %d, in stack %d\n", hero->getId(),
 	 d_stacklist->getArmyStackById(hero->getId())->getId());
   //hero->syncNewId();
   d_stacklist->getArmyStackById(hero->getId())->sortForViewing(true);
+
+  if (stacks->size())
+    supdatingStack.emit(stacks->front()); // make sure we get a redraw
+  delete stacks;
 }
 
 void NetworkPlayer::decodeActionRenamePlayer(const Action_RenamePlayer *action)

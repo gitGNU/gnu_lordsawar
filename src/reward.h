@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ class Location;
 class Item;
 class XML_Helper;
 class Ruin;
+class StackReflist;
 
 //! A little something nice for the Player.
 /**
@@ -292,11 +293,12 @@ class Reward_Allies: public Reward
 	 * @param pos         The place on the map to add the allies.
 	 * @param army        The Army prototype that defines the allies.
 	 * @param alliesCount The number of allies to add.
+         * @param stacks      Where the allies ended up.
 	 *
 	 * @return True if the armies could successfully be added to the game
 	 *         map.  Returns false otherwise.
 	 */
-        static bool addAllies(Player *p, Vector<int> pos, const ArmyProto *army, guint32 alliesCount);
+        static bool addAllies(Player *p, Vector<int> pos, const ArmyProto *army, guint32 alliesCount, StackReflist *stacks);
 
 	//! A static method for adding allies to the game map.
 	/**
@@ -308,6 +310,7 @@ class Reward_Allies: public Reward
 	 * @param loc         The place on the map to add the allies.
 	 * @param army        The Army prototype that defines the allies.
 	 * @param alliesCount The number of allies to add.
+         * @param stacks      Where the allies ended up.
 	 *
 	 * @note This method tries to add the armies to the various tiles of
 	 *       the location first, before placing it outside of the location.
@@ -315,7 +318,7 @@ class Reward_Allies: public Reward
 	 * @return True if the armies could successfully be added to the game
 	 *         map.  Returns false otherwise.
 	 */
-        static bool addAllies(Player *p, Location *l, const Army *army, guint32 alliesCount);
+        static bool addAllies(Player *p, Location *l, const Army *army, guint32 alliesCount, StackReflist *stacks);
 
     private:
 	// DATA

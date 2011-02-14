@@ -61,6 +61,7 @@ class ArmyProto;
 class Item;
 class Triumphs;
 class Sage;
+class StackReflist;
 
 //! The abstract player class.
 /** 
@@ -777,10 +778,11 @@ class Player: public sigc::trackable
          * @param  city    The city where the hero is emerging.
          * @param  cost    The amount of gold pieces neccessary to recruit 
 	 *                 the hero.
+         * @param stacks   Where the allies ended up (if any).
 	 * 
          * @note Only change the name and gender attributes of the Hero.
          */
-        void recruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally);
+        void recruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally, StackReflist *stacks);
 
         /** 
 	 * Called whenever a hero advances a level.
@@ -1092,11 +1094,12 @@ class Player: public sigc::trackable
          * @param stack            The stack which has caused the reward.
          * @param reward           A pointer for storing the Reward being 
 	 *                         given to the player.
+         * @param stacks           Where the allies ended up (if any).
 	 *
          * @return False on error, true otherwise.
          */
 	//! Callback to give a Reward to the Player or the player's Stack.
-        bool giveReward (Stack *stack, Reward *reward);
+        bool giveReward (Stack *stack, Reward *reward, StackReflist *stacks);
 
 	//! Give the player a new name.
 	void rename (std::string name);
@@ -1618,7 +1621,7 @@ class Player: public sigc::trackable
         void doCityRaze(City *c);
         void doCityBuyProduction(City *c, int slot, int type);
         void doCityChangeProduction(City *c, int slot);
-        void doGiveReward(Stack *s, Reward *reward);
+        void doGiveReward(Stack *s, Reward *reward, StackReflist *stacks);
         void doHeroDropItem(Hero *hero, Item *item, Vector<int> pos, bool &splash);
 	bool doHeroDropAllItems(Hero *h, Vector<int> pos, bool &splash);
         bool doHeroUseItem(Hero *h, Item *item, Player *victim);
@@ -1636,7 +1639,7 @@ class Player: public sigc::trackable
         void doProposeDiplomacy (DiplomaticProposal proposal, Player *player);
         void doConquerCity(City *city, Stack *stack);
 	void doLootCity(Player *looted, guint32 added, guint32 subtracted);
-        Hero* doRecruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally);
+        Hero* doRecruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally, StackReflist *stacks);
         void doRename(std::string name);
 	void doKill();
 	const Army *doCityProducesArmy(City *city, Vector<int> &pos);
