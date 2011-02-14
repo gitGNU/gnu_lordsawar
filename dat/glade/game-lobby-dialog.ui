@@ -8,7 +8,6 @@
     <property name="modal">True</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
@@ -48,6 +47,7 @@
                                   <object class="GtkTreeView" id="player_treeview">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
+                                    <property name="hover_selection">True</property>
                                   </object>
                                 </child>
                               </object>
