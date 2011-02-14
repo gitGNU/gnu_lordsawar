@@ -42,7 +42,7 @@ class NetworkAction;
 struct Participant
 {
   void *conn;
-  std::list<guint32> players;
+  std::list<GameParameters::Player> players;
   std::list<NetworkAction *> actions;
   std::list<NetworkHistory *> histories;
   std::string nickname;
@@ -71,6 +71,7 @@ void GameServer::deleteInstance()
 
 GameServer::GameServer()
 {
+  d_game_has_begun = false;
 }
 
 GameServer::~GameServer()
@@ -206,8 +207,10 @@ bool GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
     break;
 
   case MESSAGE_TYPE_REQUEST_SEAT_MANIFEST:
-    sendSeats(conn);
     sendChatRoster(conn);
+    sendSeats(conn);
+    if (gameHasBegun())
+      network_server->send(conn, MESSAGE_TYPE_GAME_MAY_BEGIN, "");
     break;
 
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECT:
@@ -272,6 +275,7 @@ bool GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
   case MESSAGE_TYPE_KILL_PLAYER:
   case MESSAGE_TYPE_ROUND_START:
   case MESSAGE_TYPE_CHANGE_NICKNAME:
+  case MESSAGE_TYPE_GAME_MAY_BEGIN:
     //faulty client
     break;
   }
@@ -290,14 +294,14 @@ void GameServer::onConnectionLost(void *conn)
   Participant *part = findParticipantByConn(conn);
   if (part)
     {
-      std::list<guint32> players_to_stand = part->players;
+      std::list<GameParameters::Player> players_to_stand = part->players;
 
       depart(conn);
       participants.remove(part);
       //tell everybode else that we've just stood up.
-      for (std::list<guint32>::iterator it = players_to_stand.begin();
-	   it != players_to_stand.end(); it++)
-	notifyStand(Playerlist::getInstance()->getPlayer(*it), d_nickname);
+      for (std::list<GameParameters::Player>::iterator i = 
+           players_to_stand.begin(); i != players_to_stand.end(); i++)
+	notifyStand(Playerlist::getInstance()->getPlayer((*i).id), d_nickname);
       remote_participant_disconnected.emit();
       delete part;
     }
@@ -438,9 +442,12 @@ Participant *GameServer::findParticipantByPlayerId(guint32 id)
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i)
     {
-      if (std::find ((*i)->players.begin(), (*i)->players.end(), id) !=
-          (*i)->players.end())
-        return *i;
+      for (std::list<GameParameters::Player>::iterator j = 
+           (*i)->players.begin(); j != (*i)->players.end(); j++)
+        {
+          if ((*j).id == id)
+            return *i;
+        }
     }
 
   return 0;
@@ -503,9 +510,8 @@ void GameServer::join(void *conn, std::string nickname)
     new_participant = true;
   }
   if (new_participant)
-    {
-      sendMap(part);
-    }
+    sendMap(part);
+
 
   Glib::ustring new_nickname = make_nickname_unique(nickname);
   if (new_nickname != "")
@@ -518,6 +524,7 @@ void GameServer::join(void *conn, std::string nickname)
         }
       notifyJoin(new_nickname);
     }
+      
 }
 
 void GameServer::depart(void *conn)
@@ -539,10 +546,10 @@ bool GameServer::player_already_sitting(Player *p)
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     {
-      for (std::list<guint32>::iterator j = (*i)->players.begin(); 
-	   j != (*i)->players.end(); j++)
+      for (std::list<GameParameters::Player>::iterator j = 
+           (*i)->players.begin(); j != (*i)->players.end(); j++)
 	{
-	  if (p->getId() == *j)
+	  if (p->getId() == (*j).id)
 	    return true;
 	}
     }
@@ -563,7 +570,8 @@ void GameServer::sit(void *conn, Player *player, std::string nickname)
   if (player_already_sitting(player) == true)
     return;
 
-  add_to_player_list(part->players, player->getId());
+  add_to_player_list(part->players, player->getId(), player->getName(),
+                     GameParameters::player_type_to_player_param(player->getType()));
 
   if (player)
     dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
@@ -581,6 +589,7 @@ void GameServer::change_name(void *conn, Player *player, Glib::ustring name)
   if (!part) 
     return;
 
+  update_player_name (part->players, player->getId(), name);
   name_change(player, name);
 }
 
@@ -594,6 +603,7 @@ void GameServer::change_type(void *conn, Player *player, int type)
   if (!part) 
     return;
 
+  update_player_type (part->players, player->getId(), (guint32) type);
   notifyTypeChange(player, type);
 }
 
@@ -619,30 +629,70 @@ void GameServer::notifyStand(Player *player, std::string nickname)
 }
 
 bool
-GameServer::add_to_player_list(std::list<guint32> &list, guint32 id)
+GameServer::update_player_type (std::list<GameParameters::Player> &list, guint32 id, guint32 type)
 {
   bool found = false;
-  for (std::list<guint32>::iterator i = list.begin(); i != list.end(); i++)
+  for (std::list<GameParameters::Player>::iterator i = list.begin(); i != list.end(); i++)
     {
-      if (*i == id)
+      if ((*i).id == id)
 	{
 	  found = true;
+          (*i).type = GameParameters::Player::Type(type);
 	  break;
 	}
     }
-  if (found == false)
-    list.push_back(id);
   return found;
 }
 
 bool
-GameServer::remove_from_player_list(std::list<guint32> &list, guint32 id)
+GameServer::update_player_name (std::list<GameParameters::Player> &list, guint32 id, Glib::ustring name)
+{
+  bool found = false;
+  for (std::list<GameParameters::Player>::iterator i = list.begin(); i != list.end(); i++)
+    {
+      if ((*i).id == id)
+	{
+	  found = true;
+          (*i).name = name;
+	  break;
+	}
+    }
+  return found;
+}
+
+bool
+GameServer::add_to_player_list(std::list<GameParameters::Player> &list, guint32 id, Glib::ustring name, guint32 type)
+{
+  bool found = false;
+  for (std::list<GameParameters::Player>::iterator i = list.begin(); i != list.end(); i++)
+    {
+      if ((*i).id == id)
+	{
+	  found = true;
+          (*i).type = GameParameters::Player::Type(type);
+          (*i).name = name;
+	  break;
+	}
+    }
+  if (found == false)
+    {
+      GameParameters::Player p;
+      p.id = id;
+      p.type = GameParameters::Player::Type(type);
+      p.name = name;
+      list.push_back(p);
+    }
+  return found;
+}
+
+bool
+GameServer::remove_from_player_list(std::list<GameParameters::Player> &list, guint32 id)
 {
   //remove player id from part.
-  for (std::list<guint32>::iterator i = list.begin(); 
+  for (std::list<GameParameters::Player>::iterator i = list.begin(); 
        i != list.end(); i++)
     {
-      if (*i == id)
+      if ((*i).id == id)
 	{
 	  list.erase (i);
 	  return true;
@@ -774,10 +824,10 @@ bool GameServer::dumpActionsAndHistories(XML_Helper *helper, Player *player)
        end = participants.end(); i != end; ++i)
     {
       bool found = false;
-      for (std::list<guint32>::iterator it = (*i)->players.begin();
-	   it != (*i)->players.end(); it++)
+      for (std::list<GameParameters::Player>::iterator it = 
+           (*i)->players.begin(); it != (*i)->players.end(); it++)
 	{
-	  if (*it == player->getId())
+	  if ((*it).id == player->getId())
 	    {
 	      found = true;
 	      break;
@@ -822,7 +872,9 @@ void GameServer::sit_down (Player *player)
       listenForLocalEvents(new_p);
       delete player;
       player = new_p;
-      add_to_player_list (players_seated_locally, new_p->getId());
+      add_to_player_list (players_seated_locally, new_p->getId(),
+                          new_p->getName(), 
+                          GameParameters::player_type_to_player_param(new_p->getType()));
       notifySit(new_p, d_nickname);
     }
   else if (player->getType() == Player::HUMAN)
@@ -833,7 +885,9 @@ void GameServer::sit_down (Player *player)
     {
       stopListeningForLocalEvents(player);
       listenForLocalEvents(player);
-      add_to_player_list (players_seated_locally, player->getId());
+      add_to_player_list (players_seated_locally, player->getId(),
+                          player->getName(),
+                          GameParameters::player_type_to_player_param(player->getType()));
       notifySit(player, d_nickname);
     }
   notifyTypeChange(player, player->getType());
@@ -877,6 +931,7 @@ void GameServer::name_change (Player *player, Glib::ustring name)
   if (!player)
     return;
   player->rename(name);
+  update_player_name (players_seated_locally, player->getId(), name);
   notifyNameChange(player, name);
 }
 
@@ -884,6 +939,7 @@ void GameServer::type_change (Player *player, int type)
 {
   if (!player)
     return;
+  update_player_type (players_seated_locally, player->getId(), (guint32) type);
   notifyTypeChange(player, type);
   player_changes_type.emit(player, type);
 }
@@ -901,6 +957,23 @@ void GameServer::notifyChat(std::string message)
     network_server->send((*i)->conn, MESSAGE_TYPE_CHATTED, message);
 }
 
+void GameServer::sendSeat(void *conn, GameParameters::Player player, Glib::ustring nickname)
+{
+  Glib::ustring payload = String::ucompose ("%1 %2 %3 %4", player.id, 
+                                            LOBBY_MESSAGE_TYPE_SIT, 1, 
+                                            nickname);
+  network_server->send(conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
+
+  payload = String::ucompose ("%1 %2 %3 %4", player.id, 
+                              LOBBY_MESSAGE_TYPE_CHANGE_TYPE, 1, player.type);
+  network_server->send(conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
+
+  payload = String::ucompose ("%1 %2 %3 %4", player.id, 
+                              LOBBY_MESSAGE_TYPE_CHANGE_NAME, 1, 
+                              player.name);
+  network_server->send(conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
+}
+
 void GameServer::sendSeats(void *conn)
 {
   Participant *part = findParticipantByConn(conn);
@@ -914,28 +987,14 @@ void GameServer::sendSeats(void *conn)
       if ((*i)->conn == part->conn)
 	continue;
 
-      for (std::list<guint32>::iterator j = (*i)->players.begin(); 
-	   j != (*i)->players.end(); j++)
-	{
-	  Player *player = Playerlist::getInstance()->getPlayer(*j);
-          Glib::ustring payload = 
-            String::ucompose ("%1 %2 %3 %4",
-                              player->getId(), LOBBY_MESSAGE_TYPE_SIT, 0, 
-                              (*i)->nickname);
-	  network_server->send(part->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, 
-                               payload);
-	}
+      for (std::list<GameParameters::Player>::iterator j = 
+           (*i)->players.begin(); j != (*i)->players.end(); j++)
+        sendSeat(conn, (*j), (*i)->nickname);
     }
   //send out seatedness info for local server
-  for (std::list<guint32>::iterator j = players_seated_locally.begin(); 
-       j != players_seated_locally.end(); j++)
-    {
-      Player *player = Playerlist::getInstance()->getPlayer(*j);
-      Glib::ustring payload = 
-        String::ucompose ("%1 %2 %3 %4", player->getId(), 
-                          LOBBY_MESSAGE_TYPE_SIT, 0, d_nickname);
-      network_server->send(part->conn, MESSAGE_TYPE_LOBBY_ACTIVITY, payload);
-    }
+  for (std::list<GameParameters::Player>::iterator j = 
+       players_seated_locally.begin(); j != players_seated_locally.end(); j++)
+    sendSeat(conn, (*j), d_nickname);
 }
 
 void GameServer::sendChatRoster(void *conn)
@@ -976,6 +1035,20 @@ void GameServer::sendTurnOrder()
        end = participants.end(); i != end; ++i) 
     network_server->send((*i)->conn, MESSAGE_TYPE_TURN_ORDER, players.str());
   playerlist_reorder_received.emit();
+}
+
+bool GameServer::gameHasBegun()
+{
+  return d_game_has_begun;
+}
+
+void GameServer::notifyClientsGameMayBeginNow()
+{
+  d_game_has_begun = true;
+  //notify everyone that the game can finally start.
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    network_server->send((*i)->conn, MESSAGE_TYPE_GAME_MAY_BEGIN, "");
 }
 
 // End of file

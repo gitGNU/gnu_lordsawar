@@ -92,6 +92,7 @@ class Driver: public sigc::trackable
 
     void on_client_player_chat(std::string message);
     void on_hosted_player_chat(std::string message);
+    void on_hosted_player_says_game_may_begin();
 
     void on_show_lobby_requested();
 

@@ -32,7 +32,7 @@ public:
 
 	Type type;
 	std::string name;
-	int id;
+	guint32 id;
     };
 
     std::vector<Player> players;

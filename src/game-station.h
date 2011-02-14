@@ -45,6 +45,7 @@ public:
   sigc::signal<void, Player*, Glib::ustring> player_changes_name;
   sigc::signal<void, Glib::ustring, Glib::ustring> nickname_changed;
   sigc::signal<void> round_begins;
+  sigc::signal<void> game_may_begin;
 
   void listenForLocalEvents(Player *p);
 protected:

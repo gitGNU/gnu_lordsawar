@@ -58,6 +58,7 @@ class GameLobbyDialog: public Decorated
   sigc::signal<void, Player*, Glib::ustring> player_changed_name;
   sigc::signal<void, Player*, int> player_changed_type;
   sigc::signal<void, GameScenario *, NextTurnNetworked*> start_network_game;
+  sigc::signal<void> game_may_begin;
 
  private:
     Gtk::Dialog* dialog;
@@ -75,6 +76,7 @@ class GameLobbyDialog: public Decorated
     GameStation *d_game_station;
     NextTurnNetworked *d_next_turn;
     bool d_has_ops;
+    bool d_play_message_received;
     Gtk::Label *turn_label;
     Gtk::Label *scenario_name_label;
     Gtk::Label *cities_label;
@@ -192,9 +194,12 @@ class GameLobbyDialog: public Decorated
 
     void on_local_player_ends_turn(Player *p);
     void on_local_player_starts_turn(Player *p);
+    void on_play_message_received();
 
     void on_nickname_changed(Glib::ustring old_name, Glib::ustring new_name);
 
+
+    void lock_down();
     Player* get_selected_player(Glib::ustring &nick, bool &sitting);
 
 };

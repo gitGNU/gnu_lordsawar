@@ -84,6 +84,7 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
   d_game_scenario = gamescenario;
   d_game_station = game_station;
   d_next_turn = next_turn;
+  d_play_message_received = false;
   citymap = NULL;
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
@@ -96,7 +97,6 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
     xml->get_widget("player_treeview", player_treeview);
     player_treeview->get_selection()->signal_changed().connect
           (sigc::mem_fun(*this, &GameLobbyDialog::on_player_selected));
-    //player_treeview->get_selection()->set_mode(Gtk::SELECTION_NONE);
     xml->get_widget("people_treeview", people_treeview);
     people_treeview->property_headers_visible() = true;
     xml->get_widget("play_button", play_button);
@@ -155,6 +155,8 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
       (sigc::mem_fun(*this, &GameLobbyDialog::on_player_died));
     game_station->nickname_changed.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_nickname_changed));
+    game_station->game_may_begin.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_play_message_received));
 
     update_player_details();
     update_buttons();
@@ -169,18 +171,25 @@ void GameLobbyDialog::update_buttons()
 {
   //if any types aren't networked, we can play.
   //if all types are networked then we can't.
-  Gtk::TreeModel::Children kids = player_list->children();
-  for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
-       i != kids.end(); i++)
+  if (d_has_ops)
     {
-      Gtk::TreeModel::Row row = *i;
-      if (row[player_columns.type] != "")
-	{
-	  play_button->set_sensitive(true);
-	  return;
-	}
+      Gtk::TreeModel::Children kids = player_list->children();
+      for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
+           i != kids.end(); i++)
+        {
+          Gtk::TreeModel::Row row = *i;
+          if (row[player_columns.type] != "")
+            {
+              play_button->set_sensitive(true);
+              return;
+            }
+        }
+      play_button->set_sensitive(false);
     }
-  play_button->set_sensitive(false);
+  else
+    {
+      play_button->set_sensitive(d_play_message_received);
+    }
 }
 
 void
@@ -659,14 +668,14 @@ Player* GameLobbyDialog::get_selected_player(Glib::ustring &nick, bool &sitting)
 
 void GameLobbyDialog::on_play_clicked()
 {
+  //we only get here on the first time play is clicked
+  //otherwise it just shows the form (Driver::start_network_game_requested)
   hide();
   if (d_has_ops)
     {
-      //hmm, let's sync the types.
-      //generate the players list.
+      lock_down();
+      game_may_begin.emit();
     }
-  //we only get here on the first time play is clicked
-  //otherwise it just shows the form (Driver::start_network_game_requested)
   start_network_game.emit(d_game_scenario, d_next_turn);
 }
 
@@ -804,4 +813,19 @@ void GameLobbyDialog::on_nickname_changed(Glib::ustring old_name, Glib::ustring 
         }
     }
   
+}
+    
+void GameLobbyDialog::lock_down ()
+{
+  name_renderer.set_sensitive(false);
+  name_renderer.property_editable() = false;
+  type_renderer.set_sensitive(false);
+  type_renderer.property_editable() = false;
+}
+
+void GameLobbyDialog::on_play_message_received()
+{
+  d_play_message_received = true;
+  update_buttons();
+  lock_down();
 }

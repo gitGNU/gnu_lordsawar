@@ -213,6 +213,10 @@ bool GameClient::onGotMessage(MessageType type, std::string payload)
     d_nickname = payload;
     break;
 
+  case MESSAGE_TYPE_GAME_MAY_BEGIN:
+    game_may_begin.emit();
+    break;
+
   case MESSAGE_TYPE_LOBBY_ACTIVITY:
       {
         guint32 id;

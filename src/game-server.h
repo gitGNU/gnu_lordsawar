@@ -57,10 +57,13 @@ public:
   void chat(std::string message);
   void sendTurnOrder();
   void sendKillPlayer(Player *player);
+  void notifyClientsGameMayBeginNow();
   sigc::signal<void> remote_participant_connected;
   sigc::signal<void> remote_participant_disconnected;
 
   void setGameScenario(GameScenario *scenario) {d_game_scenario = scenario;};
+
+  bool gameHasBegun();
 
 protected:
   GameServer();
@@ -68,6 +71,7 @@ protected:
 
 private:
   GameScenario *d_game_scenario;
+  bool d_game_has_begun;
   void onActionDone(NetworkAction *action);
   void onHistoryDone(NetworkHistory *history);
 
@@ -89,6 +93,7 @@ private:
 
   void sendMap(Participant *part);
   void sendSeats(void *conn);
+  void sendSeat(void *conn, GameParameters::Player player, Glib::ustring nickname);
   void sendChatRoster(void *conn);
 
   void checkRoundOver();
@@ -99,7 +104,7 @@ private:
   std::auto_ptr<NetworkServer> network_server;
 
   std::list<Participant *> participants;
-  std::list<guint32> players_seated_locally;
+  std::list<GameParameters::Player> players_seated_locally;
 
   Participant * play_by_mail_participant;
 
@@ -118,8 +123,11 @@ private:
 
   bool player_already_sitting(Player *p);
 
-  bool add_to_player_list(std::list<guint32> &list, guint32 id);
-  bool remove_from_player_list(std::list<guint32> &list, guint32 id);
+  bool add_to_player_list(std::list<GameParameters::Player> &list, guint32 id,
+                          Glib::ustring name, guint32 type);
+  bool remove_from_player_list(std::list<GameParameters::Player> &list, guint32 id);
+  bool update_player_type (std::list<GameParameters::Player> &list, guint32 id, guint32 type);
+  bool update_player_name (std::list<GameParameters::Player> &list, guint32 id, Glib::ustring name);
   Glib::ustring make_nickname_unique(Glib::ustring nickname);
   //! A static pointer for the singleton instance.
   static GameServer * s_instance;

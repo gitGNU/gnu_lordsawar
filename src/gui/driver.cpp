@@ -272,6 +272,12 @@ void Driver::on_hosted_player_changed_type(Player *player, int type)
   game_server->type_change(player, type);
 }
 
+void Driver::on_hosted_player_says_game_may_begin()
+{
+  GameServer *game_server = GameServer::getInstance();
+  game_server->notifyClientsGameMayBeginNow();
+}
+
 void Driver::on_hosted_player_chat(std::string message)
 {
   GameServer *game_server = GameServer::getInstance();
@@ -398,6 +404,8 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
     (sigc::mem_fun(this, &Driver::on_hosted_player_changed_type));
   game_lobby_dialog->message_sent.connect
     (sigc::mem_fun(this, &Driver::on_hosted_player_chat));
+  game_lobby_dialog->game_may_begin.connect
+    (sigc::mem_fun(this, &Driver::on_hosted_player_says_game_may_begin));
   game_lobby_dialog->start_network_game.connect
     (sigc::mem_fun(this, &Driver::start_network_game_requested));
   game_lobby_dialog->show();
