@@ -276,6 +276,7 @@ bool GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
   case MESSAGE_TYPE_ROUND_START:
   case MESSAGE_TYPE_CHANGE_NICKNAME:
   case MESSAGE_TYPE_GAME_MAY_BEGIN:
+  case MESSAGE_TYPE_OFF_PLAYER:
     //faulty client
     break;
   }
@@ -1014,6 +1015,17 @@ void GameServer::sendChatRoster(void *conn)
 		       d_nickname);
 }
 
+void GameServer::sendOffPlayer(Player *p)
+{
+  std::stringstream player;
+  player << p->getId();
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    network_server->send((*i)->conn, MESSAGE_TYPE_OFF_PLAYER, player.str());
+
+  remote_player_died.emit(p);
+}
+
 void GameServer::sendKillPlayer(Player *p)
 {
   std::stringstream player;
@@ -1045,10 +1057,26 @@ bool GameServer::gameHasBegun()
 void GameServer::notifyClientsGameMayBeginNow()
 {
   d_game_has_begun = true;
+  syncLocalPlayers();
   //notify everyone that the game can finally start.
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     network_server->send((*i)->conn, MESSAGE_TYPE_GAME_MAY_BEGIN, "");
 }
 
+void GameServer::syncLocalPlayers()
+{
+  for (std::list<GameParameters::Player>::iterator j = 
+       players_seated_locally.begin(); j != players_seated_locally.end(); j++)
+    {
+      if ((*j).type == GameParameters::Player::OFF)
+        {
+          Player *p = Playerlist::getInstance()->getPlayer((*j).id);
+          stopListeningForLocalEvents(p);
+          player_gets_turned_off.emit(p);
+          sendOffPlayer(p);
+        }
+      Playerlist::getInstance()->syncPlayer(*j);
+    }
+}
 // End of file

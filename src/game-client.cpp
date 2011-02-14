@@ -217,6 +217,10 @@ bool GameClient::onGotMessage(MessageType type, std::string payload)
     game_may_begin.emit();
     break;
 
+  case MESSAGE_TYPE_OFF_PLAYER:
+    gotOffPlayer(Playerlist::getInstance()->getPlayer(atoi(payload.c_str())));
+    break;
+
   case MESSAGE_TYPE_LOBBY_ACTIVITY:
       {
         guint32 id;
@@ -255,6 +259,16 @@ bool GameClient::onGotMessage(MessageType type, std::string payload)
   }
   return true;
 }
+
+void GameClient::gotOffPlayer(Player *player)
+{
+  player_gets_turned_off.emit(player);
+  GameParameters::Player p;
+  p.id = player->getId();
+  p.type = GameParameters::Player::OFF;
+  p.name = player->getName();
+  Playerlist::getInstance()->syncPlayer(p);
+}  
 
 void GameClient::gotKillPlayer(Player *player)
 {

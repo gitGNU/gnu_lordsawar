@@ -198,6 +198,8 @@ class GameLobbyDialog: public Decorated
 
     void on_nickname_changed(Glib::ustring old_name, Glib::ustring new_name);
 
+    void on_player_turned_off(Player *player);
+
 
     void lock_down();
     Player* get_selected_player(Glib::ustring &nick, bool &sitting);

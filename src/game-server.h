@@ -57,6 +57,7 @@ public:
   void chat(std::string message);
   void sendTurnOrder();
   void sendKillPlayer(Player *player);
+  void sendOffPlayer(Player *player);
   void notifyClientsGameMayBeginNow();
   sigc::signal<void> remote_participant_connected;
   sigc::signal<void> remote_participant_disconnected;
@@ -128,6 +129,8 @@ private:
   bool remove_from_player_list(std::list<GameParameters::Player> &list, guint32 id);
   bool update_player_type (std::list<GameParameters::Player> &list, guint32 id, guint32 type);
   bool update_player_name (std::list<GameParameters::Player> &list, guint32 id, Glib::ustring name);
+
+  void syncLocalPlayers();
   Glib::ustring make_nickname_unique(Glib::ustring nickname);
   //! A static pointer for the singleton instance.
   static GameServer * s_instance;

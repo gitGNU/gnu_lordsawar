@@ -44,6 +44,7 @@ public:
   sigc::signal<void, Player*, int> player_changes_type;
   sigc::signal<void, Player*, Glib::ustring> player_changes_name;
   sigc::signal<void, Glib::ustring, Glib::ustring> nickname_changed;
+  sigc::signal<void, Player*> player_gets_turned_off;
   sigc::signal<void> round_begins;
   sigc::signal<void> game_may_begin;
 

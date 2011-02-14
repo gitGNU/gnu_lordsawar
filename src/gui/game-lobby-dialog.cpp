@@ -157,6 +157,8 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
       (sigc::mem_fun(*this, &GameLobbyDialog::on_nickname_changed));
     game_station->game_may_begin.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_play_message_received));
+    game_station->player_gets_turned_off.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_player_turned_off));
 
     update_player_details();
     update_buttons();
@@ -298,7 +300,7 @@ GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario,
 				 bool has_ops)
 :name_column(_("Name"), name_renderer),
     type_column(_("Type"), type_renderer),
-    sitting_column(_("Seated"), sitting_renderer)
+    sitting_column(_("Controlled"), sitting_renderer)
 {
   d_has_ops = has_ops;
   initDialog(game_scenario, next_turn, game_station);
@@ -411,6 +413,8 @@ void GameLobbyDialog::on_name_edited(const Glib::ustring &path,
       if ((*iter)[player_columns.person] != d_game_station->getNickname())
         return;
     }
+  if (new_text.empty() == true)
+    return;
 
   name_renderer.set_sensitive(false);
   player = pl->getPlayer((*iter)[player_columns.player_id]);
@@ -828,4 +832,18 @@ void GameLobbyDialog::on_play_message_received()
   d_play_message_received = true;
   update_buttons();
   lock_down();
+}
+    
+void GameLobbyDialog::on_player_turned_off(Player *player)
+{
+  Gtk::TreeNodeChildren rows = player_list->children();
+  for(Gtk::TreeIter row = rows.begin(); row != rows.end(); ++row)
+    {
+      Gtk::TreeModel::Row my_row = *row;
+      if (my_row[player_columns.player_id] == player->getId())
+        {
+          player_list->erase(row);
+          return;
+        }
+    }
 }
