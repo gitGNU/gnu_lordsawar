@@ -429,6 +429,23 @@ namespace String
       .arg(o10).arg(o11).arg(o12).arg(o13).arg(o14).arg(o15);
     return c.str();
   }
+
+  inline Glib::ustring utrim(Glib::ustring str) 
+  {
+    Glib::ustring white = " \n\t\r\v\a\b\f";
+
+    if(str.empty () == true)
+      return str;
+
+    Glib::ustring::size_type start = str.find_first_not_of (white);
+    Glib::ustring::size_type finish = str.find_last_not_of (white);
+
+    if(start == Glib::ustring::npos)
+      return "";
+
+    return Glib::ustring (str, start, finish - start + 1);
+  }
+
 }
 
 

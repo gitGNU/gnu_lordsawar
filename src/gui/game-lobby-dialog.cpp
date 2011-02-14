@@ -429,7 +429,8 @@ void GameLobbyDialog::on_name_edited(const Glib::ustring &path,
       if ((*iter)[player_columns.person] != d_game_station->getNickname())
         return;
     }
-  if (new_text.empty() == true)
+  Glib::ustring new_name = String::utrim(new_text);
+  if (new_name.empty() == true)
     return;
 
   name_renderer.set_sensitive(false);
@@ -437,9 +438,7 @@ void GameLobbyDialog::on_name_edited(const Glib::ustring &path,
   d_player_id_of_name_change_request = player->getId();
 
   //here's where we send the message saying that the name has changed.
-  player_changed_name.emit(player, new_text);
-  //(*player_list->get_iter(Gtk::TreePath(path)))[player_columns.name]
-    //= new_text;
+  player_changed_name.emit(player, new_name);
 }
 
 void GameLobbyDialog::cell_data_sitting(Gtk::CellRenderer *renderer,

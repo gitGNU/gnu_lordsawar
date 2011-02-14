@@ -38,6 +38,7 @@
 #include "timed-message-dialog.h"
 #include "new-random-map-dialog.h"
 #include "GraphicsCache.h"
+#include "new-network-game-dialog.h"
 
 //namespace
 //{
@@ -184,69 +185,52 @@ void SplashWindow::on_load_game_clicked()
 
 void SplashWindow::on_new_network_game_clicked()
 {
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + 
-				"/new-network-game-dialog.ui");
-  Gtk::Dialog* dialog;
-  Gtk::RadioButton *client_radiobutton;
-  xml->get_widget("dialog", dialog);
-  xml->get_widget("client_radiobutton", client_radiobutton);
-  dialog->set_transient_for(*window);
-  decorate(dialog);
-  Gtk::Entry *nick_entry;
-  xml->get_widget("nick_entry", nick_entry);
-  std::string nick;
-  if (getenv("USER"))
-    nick = getenv("USER");
-  else if (network_game_nickname != "")
-    nick = network_game_nickname;
-  else
-    nick = "guest";
-  nick_entry->set_text(nick);
-  nick_entry->set_activates_default(true);
-  int response = dialog->run();
-  network_game_nickname = nick_entry->get_text();
-  dialog->hide();
-  delete dialog;
-  if (response == Gtk::RESPONSE_ACCEPT) //we hit connect
+  NewNetworkGameDialog nngd(network_game_nickname);
+  nngd.set_parent_window (*window);
+  if (nngd.run())
     {
-      if (client_radiobutton->get_active() == true)
-	{
-	  NetworkGameSelectorDialog ngsd;
-	  ngsd.game_selected.connect(sigc::mem_fun(*this, &SplashWindow::on_network_game_selected));
-	  ngsd.run();
-	}
+      nngd.hide();
+      network_game_nickname = nngd.getNickname();
+      if (nngd.isClient() == true)
+        {
+          NetworkGameSelectorDialog ngsd;
+          ngsd.game_selected.connect(sigc::mem_fun(*this, &SplashWindow::on_network_game_selected));
+          ngsd.run();
+        }
       else
-	{
-	  //okay, we're a server.
-	  LoadScenarioDialog d;
-	  d.set_parent_window(*window);
-	  d.run();
-	  std::string filename = d.get_scenario_filename();
-	  if (filename.empty())
-	    return;
-	  d.hide();
-	  if (filename == "random.map")
-	    {
-	      NewRandomMapDialog nrmd;
-	      nrmd.set_parent_window(*window);
-	      int res = nrmd.run();
-	      if (res == Gtk::RESPONSE_ACCEPT)
+        {
+          //okay, we're a server.
+          LoadScenarioDialog d;
+          d.set_parent_window(*window);
+          d.run();
+          std::string filename = d.get_scenario_filename();
+          if (filename.empty())
+            return;
+          d.hide();
+          if (filename == "random.map")
+            {
+              NewRandomMapDialog nrmd;
+              nrmd.set_parent_window(*window);
+              int res = nrmd.run();
+              if (res == Gtk::RESPONSE_ACCEPT)
                 filename = nrmd.getRandomMapFilename();
-	      else
-		return;
-	    }
+              else
+                return;
+            }
 
-	  GamePreferencesDialog gpd(filename, GameScenario::NETWORKED);
+          GamePreferencesDialog gpd(filename, GameScenario::NETWORKED);
 
-	  gpd.set_parent_window(*window);
-	  gpd.set_title(_("New Networked Game"));
-	  gpd.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_network_game_created));
-	  gpd.run(network_game_nickname);
-	  gpd.hide();
-	  return;
-	}
+          gpd.set_parent_window(*window);
+          gpd.set_title(_("New Networked Game"));
+          gpd.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_network_game_created));
+          gpd.run(network_game_nickname);
+          gpd.hide();
+          return;
+        }
     }
+  else
+    nngd.hide();
+
 
 }
 
