@@ -73,7 +73,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="randomize_name_button">
-                        <property name="label" translatable="yes">Randomi_ze</property>
+                        <property name="label" translatable="yes">Randomize</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -214,7 +214,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="clear_keeper_button">
-                                <property name="label" translatable="yes">Cle_ar Keeper</property>
+                                <property name="label" translatable="yes">Clear Keeper</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -228,7 +228,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="randomize_keeper_button">
-                                <property name="label" translatable="yes">Randomiz_e</property>
+                                <property name="label" translatable="yes">Randomize</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -322,7 +322,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="reward_list_button">
-                            <property name="label" translatable="yes">_Pick From List</property>
+                            <property name="label" translatable="yes">Pick From List</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -336,7 +336,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="clear_reward_button">
-                            <property name="label" translatable="yes">Clea_r Reward</property>
+                            <property name="label" translatable="yes">Clear Reward</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -350,7 +350,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="randomize_reward_button">
-                            <property name="label" translatable="yes">Ran_domize</property>
+                            <property name="label" translatable="yes">Randomize</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -440,7 +440,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="close_button">
-                <property name="label" translatable="yes">_Cancel</property>
+                <property name="label" translatable="yes">Cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">False</property>
@@ -454,7 +454,7 @@
             </child>
             <child>
               <object class="GtkButton" id="accept_button">
-                <property name="label" translatable="yes">_OK</property>
+                <property name="label" translatable="yes">OK</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="can_default">True</property>

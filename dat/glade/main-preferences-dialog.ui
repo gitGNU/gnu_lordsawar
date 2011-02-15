@@ -39,7 +39,7 @@
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkCheckButton" id="show_turn_popup_checkbutton">
-                            <property name="label" translatable="yes">Show popup at beginning of _turn</property>
+                            <property name="label" translatable="yes">Show popup at beginning of turn</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="receives_default">False</property>
@@ -131,12 +131,13 @@
                             <property name="spacing">12</property>
                             <child>
                               <object class="GtkCheckButton" id="play_music_checkbutton">
-                                <property name="label" translatable="yes">Play _music</property>
+                                <property name="label" translatable="yes">Play music</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <property name="receives_default">False</property>
                                 <property name="use_underline">True</property>
                                 <property name="draw_indicator">True</property>
+                                <accelerator key="m" signal="clicked"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -217,7 +218,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="close_button">
-                <property name="label" translatable="yes">_Close</property>
+                <property name="label" translatable="yes">Close</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="has_focus">True</property>

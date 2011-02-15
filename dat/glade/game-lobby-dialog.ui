@@ -372,7 +372,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="cancel_button">
-                <property name="label" translatable="yes">_Cancel</property>
+                <property name="label" translatable="yes">Cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">False</property>
@@ -386,7 +386,7 @@
             </child>
             <child>
               <object class="GtkButton" id="play_button">
-                <property name="label" translatable="yes">_Play</property>
+                <property name="label" translatable="yes">Play</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">False</property>

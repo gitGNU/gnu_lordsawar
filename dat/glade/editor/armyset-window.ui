@@ -13,42 +13,42 @@
             <child>
               <object class="GtkMenuItem" id="file_menuitem">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_File</property>
+                <property name="label" translatable="yes">File</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="file_menuitem_menu">
                     <child>
                       <object class="GtkMenuItem" id="new_armyset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_New Armyset</property>
+                        <property name="label" translatable="yes">New Armyset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="load_armyset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Load Armyset</property>
+                        <property name="label" translatable="yes">Load Armyset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="save_armyset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Save Armyset</property>
+                        <property name="label" translatable="yes">Save Armyset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="save_as_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Save A _Copy</property>
+                        <property name="label" translatable="yes">Save A Copy</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="validate_armyset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Validate Armyset</property>
+                        <property name="label" translatable="yes">Validate Armyset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -60,7 +60,7 @@
                     <child>
                       <object class="GtkMenuItem" id="quit_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Quit</property>
+                        <property name="label" translatable="yes">Quit</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -71,7 +71,7 @@
             <child>
               <object class="GtkMenuItem" id="edit_menuitem">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Edit</property>
+                <property name="label" translatable="yes">Edit</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_edit_menuitem_activate"/>
                 <child type="submenu">
@@ -79,28 +79,28 @@
                     <child>
                       <object class="GtkMenuItem" id="edit_armyset_info_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Armyset _Information</property>
+                        <property name="label" translatable="yes">Armyset Information</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_ship_picture_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Edit _Ship Picture</property>
+                        <property name="label" translatable="yes">Edit Ship Picture</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_standard_picture_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Edit Hero _Flag Picture</property>
+                        <property name="label" translatable="yes">Edit Hero Flag Picture</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_bag_picture_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Edit _Bag of Items Picture</property>
+                        <property name="label" translatable="yes">Edit Bag of Items Picture</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -111,7 +111,7 @@
             <child>
               <object class="GtkMenuItem" id="help_menuitem">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Help</property>
+                <property name="label" translatable="yes">Help</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="help_menuitem_menu">

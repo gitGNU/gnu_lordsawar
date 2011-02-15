@@ -66,7 +66,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="occupy_button">
-                <property name="label" translatable="yes">_Occupy</property>
+                <property name="label" translatable="yes">Occupy</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="can_default">True</property>
@@ -82,7 +82,7 @@
             </child>
             <child>
               <object class="GtkButton" id="pillage_button">
-                <property name="label" translatable="yes">_Pillage</property>
+                <property name="label" translatable="yes">Pillage</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="can_default">True</property>
@@ -97,7 +97,7 @@
             </child>
             <child>
               <object class="GtkButton" id="sack_button">
-                <property name="label" translatable="yes">_Sack</property>
+                <property name="label" translatable="yes">Sack</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="can_default">True</property>
@@ -112,7 +112,7 @@
             </child>
             <child>
               <object class="GtkButton" id="raze_button">
-                <property name="label" translatable="yes">_Raze</property>
+                <property name="label" translatable="yes">Raze</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="can_default">True</property>

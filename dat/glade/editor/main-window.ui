@@ -13,49 +13,49 @@
             <child>
               <object class="GtkMenuItem" id="file_menuitem">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_File</property>
+                <property name="label" translatable="yes">File</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="file_menuitem_menu">
                     <child>
                       <object class="GtkMenuItem" id="new_map_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_New Map</property>
+                        <property name="label" translatable="yes">New Map</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="new_map_from_image_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">New _Map from Image</property>
+                        <property name="label" translatable="yes">New Map from Image</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="load_map_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Load Map</property>
+                        <property name="label" translatable="yes">Load Map</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="save_map_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Save Map</property>
+                        <property name="label" translatable="yes">Save Map</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="save_map_as_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Save Map _As</property>
+                        <property name="label" translatable="yes">Save Map As</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="import_map_from_sav_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Import Map from Saved Game</property>
+                        <property name="label" translatable="yes">Import Map from Saved Game</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -63,7 +63,7 @@
                       <object class="GtkMenuItem" id="export_as_bitmap_menuitem">
                         <property name="visible">True</property>
                         <property name="tooltip_text" translatable="yes">Save a picture of the map.</property>
-                        <property name="label" translatable="yes">E_xport Map As Image</property>
+                        <property name="label" translatable="yes">Export Map As Image</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -78,7 +78,7 @@
                     <child>
                       <object class="GtkMenuItem" id="validate_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Validate</property>
+                        <property name="label" translatable="yes">Validate</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -90,7 +90,7 @@
                     <child>
                       <object class="GtkMenuItem" id="quit_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Quit</property>
+                        <property name="label" translatable="yes">Quit</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -101,42 +101,42 @@
             <child>
               <object class="GtkMenuItem" id="edit_menuitem">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Edit</property>
+                <property name="label" translatable="yes">Edit</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="edit_menuitem_menu">
                     <child>
                       <object class="GtkMenuItem" id="edit_players_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Players</property>
+                        <property name="label" translatable="yes">Players</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_map_info_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Map Info</property>
+                        <property name="label" translatable="yes">Map Info</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_items_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Items</property>
+                        <property name="label" translatable="yes">Items</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_rewards_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Rewards</property>
+                        <property name="label" translatable="yes">Rewards</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="smooth_screen_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Smooth Screen</property>
+                        <property name="label" translatable="yes">Smooth Screen</property>
                         <property name="use_underline">True</property>
                         <accelerator key="s" signal="activate"/>
                       </object>
@@ -144,49 +144,49 @@
                     <child>
                       <object class="GtkMenuItem" id="smooth_map_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Smooth _Entire Map</property>
+                        <property name="label" translatable="yes">Smooth Entire Map</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="switch_sets_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">S_witch Image Sets</property>
+                        <property name="label" translatable="yes">Switch Image Sets</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_armyset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Armyset</property>
+                        <property name="label" translatable="yes">Armyset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_cityset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Cityset</property>
+                        <property name="label" translatable="yes">Cityset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_shieldset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">S_hieldset</property>
+                        <property name="label" translatable="yes">Shieldset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_tileset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Tileset</property>
+                        <property name="label" translatable="yes">Tileset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="edit_smallmap_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Miniature Map</property>
+                        <property name="label" translatable="yes">Miniature Map</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -197,7 +197,7 @@
             <child>
               <object class="GtkMenuItem" id="random_menuitem">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Random</property>
+                <property name="label" translatable="yes">Random</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="random_menuitem_menu">
@@ -265,14 +265,14 @@
             <child>
               <object class="GtkMenuItem" id="view_menuitem">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_View</property>
+                <property name="label" translatable="yes">View</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="view_menuitem_menu">
                     <child>
                       <object class="GtkCheckMenuItem" id="fullscreen_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Fullscreen</property>
+                        <property name="label" translatable="yes">Fullscreen</property>
                         <property name="use_underline">True</property>
                         <accelerator key="F11" signal="activate"/>
                         <signal name="activate" handler="on_fullscreen_menuitem_activate"/>
@@ -281,7 +281,7 @@
                     <child>
                       <object class="GtkMenuItem" id="toggle_tile_graphics_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Toggle Tile Graphics</property>
+                        <property name="label" translatable="yes">Toggle Tile Graphics</property>
                         <property name="use_underline">True</property>
                         <accelerator key="space" signal="activate"/>
                       </object>
@@ -289,7 +289,7 @@
                     <child>
                       <object class="GtkMenuItem" id="toggle_grid_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Toggle _Grid</property>
+                        <property name="label" translatable="yes">Toggle Grid</property>
                         <property name="use_underline">True</property>
                         <accelerator key="g" signal="activate"/>
                       </object>
@@ -301,7 +301,7 @@
             <child>
               <object class="GtkMenuItem" id="help_menuitem">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Help</property>
+                <property name="label" translatable="yes">Help</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="help_menuitem_menu">

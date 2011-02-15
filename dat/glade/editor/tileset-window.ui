@@ -42,35 +42,35 @@
             <child>
               <object class="GtkMenuItem" id="file_menuitem">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_File</property>
+                <property name="label" translatable="yes">File</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="file_menuitem_menu">
                     <child>
                       <object class="GtkMenuItem" id="new_tileset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_New Tileset</property>
+                        <property name="label" translatable="yes">New Tileset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="load_tileset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Load Tileset</property>
+                        <property name="label" translatable="yes">Load Tileset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="save_tileset_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Save Tileset</property>
+                        <property name="label" translatable="yes">Save Tileset</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="save_as_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Save A _Copy</property>
+                        <property name="label" translatable="yes">Save A Copy</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -82,7 +82,7 @@
                     <child>
                       <object class="GtkMenuItem" id="quit_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Quit</property>
+                        <property name="label" translatable="yes">Quit</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -93,7 +93,7 @@
             <child>
               <object class="GtkMenuItem" id="edit_menuitem">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Edit</property>
+                <property name="label" translatable="yes">Edit</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_edit_menuitem_activate"/>
                 <child type="submenu">
@@ -108,56 +108,56 @@
                     <child>
                       <object class="GtkMenuItem" id="army_unit_selector_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Army Unit Selector</property>
+                        <property name="label" translatable="yes">Army Unit Selector</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="explosion_picture_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">E_xplosion Picture</property>
+                        <property name="label" translatable="yes">Explosion Picture</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="roads_picture_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Roads Picture</property>
+                        <property name="label" translatable="yes">Roads Picture</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="bridges_picture_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Bridges Picture</property>
+                        <property name="label" translatable="yes">Bridges Picture</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="fog_picture_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Fog Picture</property>
+                        <property name="label" translatable="yes">Fog Picture</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="flags_picture_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">F_lag Picture</property>
+                        <property name="label" translatable="yes">Flag Picture</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="organize_tilestyles_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Organize TileStyles</property>
+                        <property name="label" translatable="yes">Organize TileStyles</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="smallmap_building_colors_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Smallmap Building _Colours</property>
+                        <property name="label" translatable="yes">Smallmap Building Colours</property>
                         <property name="use_underline">True</property>
                       </object>
                     </child>
@@ -168,7 +168,7 @@
             <child>
               <object class="GtkMenuItem" id="view_menuitem">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_View</property>
+                <property name="label" translatable="yes">View</property>
                 <property name="use_underline">True</property>
                 <signal name="activate" handler="on_view_menuitem_activate"/>
                 <child type="submenu">
@@ -176,7 +176,7 @@
                     <child>
                       <object class="GtkMenuItem" id="preview_tile_menuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">_Preview Tile</property>
+                        <property name="label" translatable="yes">Preview Tile</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_preview_tile_menuitem_activate"/>
                       </object>
@@ -188,7 +188,7 @@
             <child>
               <object class="GtkMenuItem" id="help_menuitem">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Help</property>
+                <property name="label" translatable="yes">Help</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="help_menuitem_menu">

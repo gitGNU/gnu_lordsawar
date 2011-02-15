@@ -244,7 +244,7 @@ All</property>
                     <property name="visible">True</property>
                     <child>
                       <object class="GtkToggleButton" id="vector_togglebutton">
-                        <property name="label" translatable="yes">_Vector</property>
+                        <property name="label" translatable="yes">Vector</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -280,7 +280,7 @@ a new city</property>
                     <property name="visible">True</property>
                     <child>
                       <object class="GtkToggleButton" id="change_togglebutton">
-                        <property name="label" translatable="yes">Chan_ge</property>
+                        <property name="label" translatable="yes">Change</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -329,7 +329,7 @@ destination of armies</property>
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="close_button">
-                <property name="label" translatable="yes">_Close</property>
+                <property name="label" translatable="yes">Close</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="has_focus">True</property>

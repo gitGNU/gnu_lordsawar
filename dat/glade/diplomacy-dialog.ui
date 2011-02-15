@@ -272,7 +272,7 @@
             <property name="layout_style">edge</property>
             <child>
               <object class="GtkButton" id="report_button">
-                <property name="label" translatable="yes">_Report</property>
+                <property name="label" translatable="yes">Report</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="can_default">True</property>
@@ -287,7 +287,7 @@
             </child>
             <child>
               <object class="GtkButton" id="close_button">
-                <property name="label" translatable="yes">_Close</property>
+                <property name="label" translatable="yes">Close</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="has_focus">True</property>

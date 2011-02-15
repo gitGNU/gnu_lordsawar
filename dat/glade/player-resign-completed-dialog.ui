@@ -43,7 +43,7 @@ Let the enemy come!</property>
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="continue_button">
-                <property name="label">_Continue</property>
+                <property name="label">Continue</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">False</property>

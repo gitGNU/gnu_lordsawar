@@ -28,7 +28,7 @@
             </child>
             <child>
               <object class="GtkButton" id="load_scenario_button">
-                <property name="label" translatable="yes">New _Game</property>
+                <property name="label" translatable="yes">New Game</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="has_focus">True</property>
@@ -48,7 +48,7 @@
             </child>
             <child>
               <object class="GtkButton" id="new_network_game_button">
-                <property name="label" translatable="yes">New _Network Game</property>
+                <property name="label" translatable="yes">New Network Game</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">False</property>
@@ -62,7 +62,7 @@
             </child>
             <child>
               <object class="GtkButton" id="new_pbm_game_button">
-                <property name="label" translatable="yes">New Play By _Mail Game</property>
+                <property name="label" translatable="yes">New Play By Mail Game</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">False</property>
@@ -74,7 +74,7 @@
             </child>
             <child>
               <object class="GtkButton" id="load_game_button">
-                <property name="label" translatable="yes">L_oad Game</property>
+                <property name="label" translatable="yes">Load Game</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">False</property>
@@ -88,7 +88,7 @@
             </child>
             <child>
               <object class="GtkButton" id="preferences_button">
-                <property name="label" translatable="yes">_Preferences</property>
+                <property name="label" translatable="yes">Preferences</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">False</property>
@@ -102,7 +102,7 @@
             </child>
             <child>
               <object class="GtkButton" id="quit_button">
-                <property name="label" translatable="yes">_Quit</property>
+                <property name="label" translatable="yes">Quit</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">False</property>

@@ -157,7 +157,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="randomize_gold_button">
-                                <property name="label" translatable="yes">Ran_domize</property>
+                                <property name="label" translatable="yes">Randomize</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -217,7 +217,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="randomize_item_button">
-                                <property name="label" translatable="yes">Ra_ndomize</property>
+                                <property name="label" translatable="yes">Randomize</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -290,7 +290,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="randomize_allies_button">
-                                <property name="label" translatable="yes">Rand_omize</property>
+                                <property name="label" translatable="yes">Randomize</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -414,7 +414,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="randomize_map_button">
-                                <property name="label" translatable="yes">Randomiz_e</property>
+                                <property name="label" translatable="yes">Randomize</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -493,7 +493,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="randomize_hidden_ruin_button">
-                                <property name="label" translatable="yes">Random_ize</property>
+                                <property name="label" translatable="yes">Randomize</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -544,7 +544,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="close_button">
-                <property name="label" translatable="yes">_Cancel</property>
+                <property name="label" translatable="yes">Cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">False</property>
@@ -558,7 +558,7 @@
             </child>
             <child>
               <object class="GtkButton" id="accept_button">
-                <property name="label" translatable="yes">_OK</property>
+                <property name="label" translatable="yes">OK</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="can_default">True</property>

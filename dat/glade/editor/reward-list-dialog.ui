@@ -52,7 +52,7 @@
                     <property name="spacing">12</property>
                     <child>
                       <object class="GtkButton" id="add_button">
-                        <property name="label" translatable="yes">_Add</property>
+                        <property name="label" translatable="yes">Add</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -66,7 +66,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="remove_button">
-                        <property name="label" translatable="yes">_Remove</property>
+                        <property name="label" translatable="yes">Remove</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -80,7 +80,7 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="edit_button">
-                        <property name="label" translatable="yes">_Edit</property>
+                        <property name="label" translatable="yes">Edit</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -114,7 +114,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="close_button">
-                <property name="label" translatable="yes">_Close</property>
+                <property name="label" translatable="yes">Close</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="receives_default">False</property>
