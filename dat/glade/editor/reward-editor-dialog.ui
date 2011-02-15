@@ -322,7 +322,7 @@
                                 <child>
                                   <object class="GtkLabel" id="label3">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">x:</property>
+                                    <property name="label" translatable="yes" comments="this is an x coordinate for a map point.">x:</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -344,7 +344,7 @@
                                 <child>
                                   <object class="GtkLabel" id="label4">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">y:</property>
+                                    <property name="label" translatable="yes" comments="this is a y coordinate for a map point.">y:</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -366,7 +366,7 @@
                                 <child>
                                   <object class="GtkLabel" id="label5">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">w:</property>
+                                    <property name="label" translatable="yes">width:</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -388,7 +388,7 @@
                                 <child>
                                   <object class="GtkLabel" id="label6">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">h:</property>
+                                    <property name="label" translatable="yes">height:</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
