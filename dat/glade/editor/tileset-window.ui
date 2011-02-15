@@ -792,8 +792,10 @@
                                                             <child type="label">
                                                             <object class="GtkLabel" id="label28">
                                                             <property name="visible">True</property>
-                                                            <property name="label" translatable="yes">&lt;b&gt;Tile Style&lt;/b&gt;</property>
-                                                            <property name="use_markup">True</property>
+                                                            <property name="label" translatable="yes">Tile Style</property>
+                                                            <attributes>
+                                                            <attribute name="weight" value="bold"/>
+                                                            </attributes>
                                                             </object>
                                                             </child>
                                                           </object>
@@ -813,8 +815,10 @@
                                             <child type="label">
                                               <object class="GtkLabel" id="label26">
                                                 <property name="visible">True</property>
-                                                <property name="label" translatable="yes">&lt;b&gt;Tile Style Set&lt;/b&gt;</property>
-                                                <property name="use_markup">True</property>
+                                                <property name="label" translatable="yes">Tile Style Set</property>
+                                                <attributes>
+                                                  <attribute name="weight" value="bold"/>
+                                                </attributes>
                                               </object>
                                             </child>
                                           </object>
@@ -829,8 +833,10 @@
                                 <child type="label">
                                   <object class="GtkLabel" id="label25">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">&lt;b&gt;Tile Style Sets&lt;/b&gt;</property>
-                                    <property name="use_markup">True</property>
+                                    <property name="label" translatable="yes">Tile Style Sets</property>
+                                    <attributes>
+                                      <attribute name="weight" value="bold"/>
+                                    </attributes>
                                   </object>
                                 </child>
                               </object>
@@ -845,8 +851,10 @@
                     <child type="label">
                       <object class="GtkLabel" id="label1">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Tile&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
+                        <property name="label" translatable="yes">Tile</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
                       </object>
                     </child>
                   </object>

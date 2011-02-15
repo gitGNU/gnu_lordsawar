@@ -9,7 +9,6 @@
     <property name="title" translatable="yes">Organize Tile Images</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox">
         <property name="visible">True</property>
@@ -29,8 +28,10 @@
                     <child>
                       <object class="GtkLabel" id="label1">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Categories&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
+                        <property name="label" translatable="yes">Categories</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -60,8 +61,10 @@
                     <child>
                       <object class="GtkLabel" id="category_label">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Selected Category&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
+                        <property name="label" translatable="yes">Selected Category</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -100,8 +103,10 @@
                     <child>
                       <object class="GtkLabel" id="unsorted_label">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Unsorted TileStyles&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
+                        <property name="label" translatable="yes">Unsorted TileStyles</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
                       </object>
                       <packing>
                         <property name="expand">False</property>

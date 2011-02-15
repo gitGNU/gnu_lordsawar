@@ -67,9 +67,11 @@
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
                         <property name="yalign">0</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Players&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
+                        <property name="label" translatable="yes">Players</property>
                         <property name="use_underline">True</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
                       </object>
                     </child>
                   </object>
@@ -170,8 +172,10 @@
                     <child type="label">
                       <object class="GtkLabel" id="label25">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Chat&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
+                        <property name="label" translatable="yes">Chat</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
                       </object>
                     </child>
                   </object>
@@ -272,7 +276,6 @@
                                       <object class="GtkLabel" id="turn_label">
                                         <property name="visible">True</property>
                                         <property name="xalign">0</property>
-                                        <property name="label">0</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -285,7 +288,6 @@
                                       <object class="GtkLabel" id="scenario_name_label">
                                         <property name="visible">True</property>
                                         <property name="xalign">0</property>
-                                        <property name="label" translatable="yes">Random</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -300,7 +302,6 @@
                                       <object class="GtkLabel" id="cities_label">
                                         <property name="visible">True</property>
                                         <property name="xalign">0</property>
-                                        <property name="label">0</property>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -331,8 +332,10 @@
                             <child type="label">
                               <object class="GtkLabel" id="label21">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">&lt;b&gt;Scenario Details&lt;/b&gt;</property>
-                                <property name="use_markup">True</property>
+                                <property name="label" translatable="yes">Scenario Details</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
                               </object>
                             </child>
                           </object>
@@ -350,7 +353,6 @@
                     <property name="visible">True</property>
                     <property name="xalign">0</property>
                     <property name="yalign">0</property>
-                    <property name="label" translatable="yes">&lt;b&gt;&lt;/b&gt;</property>
                     <property name="use_markup">True</property>
                   </object>
                 </child>

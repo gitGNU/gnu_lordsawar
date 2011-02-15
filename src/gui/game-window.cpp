@@ -2052,7 +2052,8 @@ void GameWindow::on_sidebar_stats_changed(SidebarStats s)
       gold_stats_label->set_markup(String::ucompose("<b>%1</b>", s.gold));
       income_stats_label->set_markup(String::ucompose("<b>%1</b>", s.income));
       upkeep_stats_label->set_markup(String::ucompose("<b>%1</b>", s.upkeep));
-      turn_label->set_markup(String::ucompose("<b>Turn %1</b>", s.turns));
+      turn_label->set_markup(String::ucompose("<b>%1 %2</b>", _("Turn"), 
+                                              s.turns));
     }
   else
     {
@@ -2060,7 +2061,7 @@ void GameWindow::on_sidebar_stats_changed(SidebarStats s)
       gold_stats_label->set_markup(String::ucompose("%1", s.gold));
       income_stats_label->set_markup(String::ucompose("%1", s.income));
       upkeep_stats_label->set_markup(String::ucompose("%1", s.upkeep));
-      turn_label->set_markup(String::ucompose("Turn %1", s.turns));
+      turn_label->set_markup(String::ucompose("%1 %2", _("Turn"), s.turns));
     }
   Glib::ustring tip;
   tip = String::ucompose(
@@ -3235,8 +3236,8 @@ void GameWindow::on_remote_next_player_turn()
 
   d_quick_fights = false;
   show_shield_turn();
-  turn_label->set_markup(String::ucompose("Turn %1", 
-					  GameScenarioOptions::s_round));
+  turn_label->set_markup(String::ucompose("%1 %2", _("Turn"),
+                                          GameScenarioOptions::s_round));
 }
 
 void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)

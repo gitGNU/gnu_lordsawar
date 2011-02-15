@@ -10,7 +10,6 @@
     <property name="window_position">mouse</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox">
         <property name="visible">True</property>
@@ -565,8 +564,10 @@
                             <child type="label">
                               <object class="GtkLabel" id="label2">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">&lt;b&gt;Item&lt;/b&gt;</property>
-                                <property name="use_markup">True</property>
+                                <property name="label" translatable="yes">Item</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
                               </object>
                             </child>
                           </object>

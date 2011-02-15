@@ -6,7 +6,6 @@
     <property name="border_width">6</property>
     <property name="title" translatable="yes">Item Report</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox">
         <property name="visible">True</property>
@@ -68,8 +67,10 @@
                     <child type="label">
                       <object class="GtkLabel" id="label4">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Details&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
+                        <property name="label" translatable="yes">Details</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
                       </object>
                     </child>
                   </object>
