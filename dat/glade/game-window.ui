@@ -787,7 +787,7 @@ XX</property>
                             </child>
                             <child>
                               <object class="GtkToggleButton" id="group_togglebutton">
-                                <property name="label" translatable="yes">Grp</property>
+                                <property name="label" translatable="yes" comments="This is text on a toggle button that means &quot;Group&quot;.  Pressing this button gathers the army units on this tile into one stack.  ">Grp</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
