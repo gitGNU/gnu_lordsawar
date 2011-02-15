@@ -461,10 +461,14 @@ void Citylist::changeOwnership(Player *old_owner, Player *new_owner)
   for (iterator it = begin(); it != end(); it++)
     if ((*it)->getOwner() == old_owner)
       {
+        stopVectoringTo(*it);
+        (*it)->setVectoring(Vector<int>(-1,-1));
 	(*it)->setOwner(new_owner);
 	if ((*it)->isCapital())
 	  if ((*it)->getCapitalOwner() == old_owner)
 	    (*it)->setCapitalOwner(new_owner);
+        if (new_owner == Playerlist::getInstance()->getNeutral())
+          (*it)->setActiveProductionSlot(-1); //hmm, what about neutral policy.
       }
 }
 

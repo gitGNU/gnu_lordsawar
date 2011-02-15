@@ -708,6 +708,8 @@ void Playerlist::syncPlayer(GameParameters::Player player)
 	  //point owned ruins to neutral
 	  Ruinlist *rlist = Ruinlist::getInstance();
 	  rlist->changeOwnership (p, d_neutral);
+          //also copy over the stacks
+          p->getStacklist()->changeOwnership(p, d_neutral);
 	  //now get rid of the player entirely
 	  flErase(find(begin(), end(), p));
 	}

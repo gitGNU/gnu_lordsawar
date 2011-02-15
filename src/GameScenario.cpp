@@ -1168,7 +1168,7 @@ public:
 	return false;
       };
     GameParameters game_params;
-    int d_neutral;
+    guint32 d_neutral;
 };
 GameParameters GameScenario::loadGameParameters(std::string filename, bool &broken)
 {

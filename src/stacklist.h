@@ -202,7 +202,6 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	//! Erase a stack from the list, given the stack id.
         bool flRemove(guint32 id);
 
-
 	// Signals
 
 	//! The stack in the stacklist has been grouped or ungrouped.
@@ -250,6 +249,9 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	 */
 	//! Change allegience of the given stack to a new owner.
 	static Stack* changeOwnership(Stack *stack, Player *new_owner);
+
+        //! change allegience for all stacks in the stacklist.
+        static void changeOwnership(Player *old_owner, Player *new_owner);
 
 	//! Can this stack reach a point where it is not blocked by friendlies?
 	/**

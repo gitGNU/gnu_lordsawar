@@ -174,6 +174,8 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
 
 void GameLobbyDialog::update_buttons()
 {
+  if (d_play_button_clicked == true)
+    return;
   //if any types aren't networked, we can play.
   //if all types are networked then we can't.
   if (d_has_ops)
@@ -327,6 +329,8 @@ GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario,
     sitting_column(_("Controlled"), sitting_renderer)
 {
   d_has_ops = has_ops;
+  d_play_button_clicked = false;
+  d_play_message_received = false;
   initDialog(game_scenario, next_turn, game_station);
   update_scenario_details();
   d_player_id_of_sit_or_stand_request = MAX_PLAYERS + 1;
@@ -697,7 +701,10 @@ void GameLobbyDialog::on_play_clicked()
       lock_down();
       game_may_begin.emit();
     }
+  play_button->set_sensitive(false);
+  play_button->set_visible(false);
   start_network_game.emit(d_game_scenario, d_next_turn);
+  d_play_button_clicked = true;
 }
 
 void GameLobbyDialog::on_cancel_clicked()

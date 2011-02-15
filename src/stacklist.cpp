@@ -40,6 +40,7 @@
 #include "GameMap.h"
 #include "stacktile.h"
 #include "Item.h"
+#include "stackreflist.h"
 
 std::string Stacklist::d_tag = "stacklist";
 using namespace std;
@@ -75,6 +76,7 @@ bool Stacklist::deleteStack(Stack* s)
     }
     return false;
 }
+
 bool Stacklist::deleteStack(guint32 id)
 {
     for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
@@ -579,6 +581,14 @@ void Stacklist::drainAllMovement()
   for (iterator it = begin(); it != end(); it++)
     for (Stack::iterator ait = (*it)->begin(); ait != (*it)->end(); ait++)
       (*ait)->decrementMoves((*ait)->getMoves());
+}
+
+void Stacklist::changeOwnership(Player *old_owner, Player *new_owner)
+{
+  StackReflist *stacks = new StackReflist(old_owner->getStacklist());
+  for (StackReflist::iterator it = stacks->begin(); it != stacks->end(); it++)
+    Stacklist::changeOwnership (*it, new_owner);
+  delete stacks;
 }
 
 Stack* Stacklist::changeOwnership(Stack *stack, Player *new_owner)

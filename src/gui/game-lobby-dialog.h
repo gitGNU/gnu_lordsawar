@@ -77,6 +77,7 @@ class GameLobbyDialog: public Decorated
     NextTurnNetworked *d_next_turn;
     bool d_has_ops;
     bool d_play_message_received;
+    bool d_play_button_clicked;
     Gtk::Label *turn_label;
     Gtk::Label *scenario_name_label;
     Gtk::Label *cities_label;
