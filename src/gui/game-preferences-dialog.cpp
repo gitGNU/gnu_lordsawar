@@ -317,7 +317,7 @@ void GamePreferencesDialog::on_start_game_clicked()
     {
       GameParameters::Player p;
       p.type = GameParameters::player_param_string_to_player_param((*c)->get_active_text());
-      Glib::ustring name = (*e)->get_text();
+      Glib::ustring name = String::utrim((*e)->get_text());
       p.name = name;
       p.id = id;
       g.players.push_back(p);
@@ -340,7 +340,7 @@ void GamePreferencesDialog::on_start_game_clicked()
   g.difficulty = GameScenario::calculate_difficulty_rating(g);
 
   if (mode == GameScenario::NETWORKED)
-    g.name = game_name_entry->get_text();
+    g.name = String::utrim(game_name_entry->get_text());
 
   // and call callback
   dialog->hide();

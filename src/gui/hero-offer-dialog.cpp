@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
 #include "File.h"
 #include "sound.h"
 #include "city.h"
+#include "ucompose.hpp"
 
 HeroOfferDialog::HeroOfferDialog(Player *player, HeroProto *h, City *c, int gold)
 {
@@ -119,7 +120,7 @@ bool HeroOfferDialog::run()
 
     if (response == Gtk::RESPONSE_ACCEPT)	// accepted
       {
-        hero->setName(name_entry->get_text());
+        hero->setName(String::utrim(name_entry->get_text()));
         if (male_radiobutton->get_active() == true && 
 	    hero->getGender() == Hero::FEMALE)
           hero->setGender(Hero::MALE);

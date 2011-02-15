@@ -1415,7 +1415,8 @@ void GameWindow::on_signpost_activated()
   dialog->hide();
 
   if (response == Gtk::RESPONSE_ACCEPT)
-    Playerlist::getActiveplayer()->signpostChange(s, e->get_text());
+    Playerlist::getActiveplayer()->signpostChange(s, 
+                                                  String::utrim(e->get_text()));
 
   delete dialog;
   return;

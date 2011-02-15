@@ -472,7 +472,8 @@ void CityWindow::on_rename_clicked ()
 
     if (response == Gtk::RESPONSE_ACCEPT)		// changed city name
       {
-        Playerlist::getActiveplayer()->cityRename(city, e->get_text());
+        Playerlist::getActiveplayer()->cityRename(city, 
+                                                  String::utrim(e->get_text()));
         fill_in_city_info();
       }
     subdialog->hide();
