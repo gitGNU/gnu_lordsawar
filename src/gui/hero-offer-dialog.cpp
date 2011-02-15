@@ -67,7 +67,10 @@ HeroOfferDialog::HeroOfferDialog(Player *player, HeroProto *h, City *c, int gold
     
     xml->get_widget("name", name_entry);
     name_entry->set_text(hero->getName());
+    name_entry->signal_changed().connect
+      (sigc::mem_fun(*this, &HeroOfferDialog::on_name_changed));
 
+    xml->get_widget("accept_button", accept_button);
     Gtk::Label *label;
     xml->get_widget("label", label);
     
@@ -80,6 +83,7 @@ HeroOfferDialog::HeroOfferDialog(Player *player, HeroProto *h, City *c, int gold
     else
 	s = String::ucompose(_("A hero in %1 wants to join you!"), city->getName());
     label->set_text(s);
+    update_buttons();
 }
 
 HeroOfferDialog::~HeroOfferDialog()
@@ -87,6 +91,27 @@ HeroOfferDialog::~HeroOfferDialog()
   delete heromap;
   delete dialog;
 }
+
+void HeroOfferDialog::update_buttons()
+{
+  if (String::utrim(name_entry->get_text()) == "")
+    accept_button->set_sensitive(false);
+  else
+    {
+      accept_button->set_sensitive(true);
+      accept_button->property_can_focus() = true;
+      accept_button->property_can_default() = true;
+      accept_button->property_has_default() = true;
+      name_entry->property_activates_default() = true;
+      accept_button->property_receives_default() = true;
+    }
+}
+
+void HeroOfferDialog::on_name_changed()
+{
+  update_buttons();
+}
+
 void HeroOfferDialog::on_male_toggled()
 {
     if (male_radiobutton->get_active())

@@ -100,11 +100,10 @@ void GamePreferencesDialog::init(std::string filename)
     }
   //parse load map parameters.
 
-  int f = 0;
-  int b;
+  guint32 b;
   for (std::vector<GameParameters::Player>::const_iterator
        i = load_map_parameters.players.begin(), 
-       end = load_map_parameters.players.end(); i != end; ++i, ++f) 
+       end = load_map_parameters.players.end(); i != end; ++i) 
     {
       c = player_types.begin();
       e = player_names.begin();
@@ -190,6 +189,8 @@ void GamePreferencesDialog::add_player(GameParameters::Player::Type type,
   player_type->signal_changed().connect
     (sigc::mem_fun(this, &GamePreferencesDialog::on_player_type_changed));
   Gtk::Entry *player_name = new Gtk::Entry();
+  player_name->signal_changed().connect
+    (sigc::mem_fun(this, &GamePreferencesDialog::on_player_name_changed));
   player_name->set_text(name);
 
   if (type == GameParameters::Player::HUMAN)
@@ -258,6 +259,18 @@ void GamePreferencesDialog::update_shields()
 
 void GamePreferencesDialog::on_player_type_changed()
 {
+  update_buttons();
+  update_difficulty_rating();
+}
+
+void GamePreferencesDialog::on_player_name_changed()
+{
+  update_buttons();
+  update_difficulty_rating();
+}
+
+void GamePreferencesDialog::update_buttons()
+{
   guint32 offcount = 0;
   std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
   for (; c != player_types.end(); c++)
@@ -265,11 +278,24 @@ void GamePreferencesDialog::on_player_type_changed()
       if (GameParameters::player_param_string_to_player_param((*c)->get_active_text()) == GameParameters::Player::OFF)
 	offcount++;
     }
-  if (offcount > player_types.size() - 2)
+  bool found_empty_name = false;
+  std::list<Gtk::Entry *>::iterator e = player_names.begin();
+  for (; e != player_names.end(); e++)
+    {
+      if (String::utrim((*e)->get_text())== "")
+        {
+          found_empty_name = true;
+          break;
+        }
+    }
+  if (offcount > player_types.size() - 2 || found_empty_name)
     start_game_button->set_sensitive(false);
   else
-    start_game_button->set_sensitive(true);
-  update_difficulty_rating();
+    {
+      start_game_button->set_sensitive(true);
+      start_game_button->property_can_focus() = true;
+      start_game_button->receives_default();
+    }
 }
 
 void GamePreferencesDialog::update_difficulty_rating()

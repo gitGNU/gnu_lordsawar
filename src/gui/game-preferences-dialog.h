@@ -79,6 +79,7 @@ class GamePreferencesDialog: public Decorated
     void on_start_game_clicked();
     void on_edit_options_clicked();
     void on_player_type_changed();
+    void on_player_name_changed();
     bool is_beginner();
     bool is_intermediate();
     bool is_advanced();
@@ -86,6 +87,7 @@ class GamePreferencesDialog: public Decorated
     void update_difficulty_combobox();
     void update_difficulty_rating();
     void update_shields();
+    void update_buttons();
     Glib::RefPtr<Gdk::Pixbuf> getShieldPic(guint32 type, guint32 owner);
     std::string d_filename;
     guint32 d_shieldset;

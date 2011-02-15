@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -472,8 +472,9 @@ void CityWindow::on_rename_clicked ()
 
     if (response == Gtk::RESPONSE_ACCEPT)		// changed city name
       {
-        Playerlist::getActiveplayer()->cityRename(city, 
-                                                  String::utrim(e->get_text()));
+        if (String::utrim(e->get_text()) != "")
+          Playerlist::getActiveplayer()->cityRename
+            (city, String::utrim(e->get_text()));
         fill_in_city_info();
       }
     subdialog->hide();

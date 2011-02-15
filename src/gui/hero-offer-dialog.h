@@ -52,12 +52,16 @@ class HeroOfferDialog: public Decorated
     Gtk::Image *hero_image;
     Gtk::RadioButton *male_radiobutton;
     Gtk::Entry *name_entry;
+    Gtk::Button *accept_button;
     
     HeroProto *hero;
     City *city;
 
     void on_male_toggled();
     void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    void update_buttons();
+    void on_name_changed();
+
 };
 
 #endif
