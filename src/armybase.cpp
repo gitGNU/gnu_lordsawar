@@ -84,41 +84,41 @@ std::string ArmyBase::getArmyBonusDescription() const
   guint32 bonus = d_army_bonus;
   Glib::ustring s = "";
   if (bonus & ArmyBase::ADD1STRINOPEN)
-    s += String::ucompose(_("%1%2"), s == "" ? " " : "& ", 
+    s += String::ucompose("%1%2", s == "" ? " " : "& ", 
 			  _("+1 str in open"));
   if (bonus & ArmyBase::ADD2STRINOPEN)
-    s += String::ucompose(_("%1%2"), s == "" ? " " : "& ", 
+    s += String::ucompose("%1%2", s == "" ? " " : "& ", 
 			  _("+2 str in open"));
   if (bonus & ArmyBase::ADD1STRINFOREST)
-    s += String::ucompose(_("%1%2"), s == "" ? " " : "& ", 
+    s += String::ucompose("%1%2", s == "" ? " " : "& ", 
 			  _("+1 str in woods"));
   if (bonus & ArmyBase::ADD1STRINHILLS)
-    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
 			  _("+1 str in hills"));
   if (bonus & ArmyBase::ADD1STRINCITY)
-    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
 			  _("+1 str in city"));
   if (bonus & ArmyBase::ADD2STRINCITY)
-    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
 			  _("+2 str in city"));
   if (bonus & ArmyBase::ADD1STACKINHILLS)
-    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
 			  _("+1 stack in hills"));
   if (bonus & ArmyBase::SUBALLCITYBONUS)
-    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
 			  _("Cancel city bonus"));
   if (bonus & ArmyBase::SUB1ENEMYSTACK)
-    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
 			  _("-1 enemy stack"));
   if (bonus & ArmyBase::ADD1STACK)
-    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", _("+1 stack"));
+    s += String::ucompose("%1%2", s == "" ? " " : " & ", _("+1 stack"));
   if (bonus & ArmyBase::ADD2STACK)
-    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", _("+2 stack"));
+    s += String::ucompose("%1%2", s == "" ? " " : " & ", _("+2 stack"));
   if (bonus & ArmyBase::SUBALLNONHEROBONUS)
-    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
 			  _("cancel non-hero"));
   if (bonus & ArmyBase::SUBALLHEROBONUS)
-    s += String::ucompose(_("%1%2"), s == "" ? " " : " & ", 
+    s += String::ucompose("%1%2", s == "" ? " " : " & ", 
 			  _("cancel hero"));
   return s;
 }
