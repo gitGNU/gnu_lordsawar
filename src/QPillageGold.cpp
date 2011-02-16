@@ -68,7 +68,7 @@ bool QuestPillageGold::save(XML_Helper *helper) const
 
 std::string QuestPillageGold::getProgress() const
 {
-  return String::ucompose(_("You have already stolen %1 gold."), d_pillaged);
+  return String::ucompose(_("You have already stolen %1 gold pieces."), d_pillaged);
 }
 
 void QuestPillageGold::getSuccessMsg(std::queue<std::string>& msgs) const
