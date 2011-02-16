@@ -2563,14 +2563,16 @@ void Player::doProposeDiplomacy (DiplomaticProposal proposal, Player *player)
     return;
   if (proposal == PROPOSE_PEACE)
     {
-      std::string s = _("Peace negotiated with ") + player->getName();
+      Glib::ustring s = 
+        String::ucompose(_("Peace negotiated with %1."),player->getName());
       if (getDiplomaticState(player) == AT_PEACE ||
 	  getDiplomaticProposal(player) == PROPOSE_PEACE)
 	schangingStatus.emit(s);
     }
   else if (proposal == PROPOSE_WAR)
     {
-      std::string s = _("War declared with ") + player->getName();
+      Glib::ustring s = 
+        String::ucompose(_("War declared with %1."), player->getName());
       if (getDiplomaticState(player) == AT_WAR ||
 	  getDiplomaticProposal(player) == PROPOSE_WAR)
       schangingStatus.emit(s);
