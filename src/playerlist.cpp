@@ -832,7 +832,7 @@ bool Playerlist::inGivenOrder(const Player *lhs, const Player *rhs)
 	break;
     }
   int rhs_rank = count;
-  return lhs_rank > rhs_rank;
+  return lhs_rank < rhs_rank;
 }
 
 

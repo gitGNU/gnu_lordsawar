@@ -25,6 +25,7 @@
 #include "network-action.h"
 #include "network-history.h"
 
+#include "playerlist.h"  /// REMOVE ME
 
 GameStation::GameStation()
 {

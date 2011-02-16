@@ -193,7 +193,7 @@ class GameLobbyDialog: public Decorated
     void on_chat_key_pressed(GdkEventKey *event);
     void on_chatted(std::string nickname, std::string message);
 
-    void on_reorder_playerlist(std::list<guint32> order);
+    void on_reorder_playerlist();
 
     void on_local_player_ends_turn(Player *p);
     void on_local_player_starts_turn(Player *p);

@@ -152,6 +152,8 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
       (sigc::mem_fun(*this, &GameLobbyDialog::on_chatted));
     game_station->playerlist_reorder_received.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_reorder_playerlist));
+    game_station->round_begins.connect
+      (sigc::mem_fun(*this, &GameLobbyDialog::on_reorder_playerlist));
     game_station->remote_player_died.connect
       (sigc::mem_fun(*this, &GameLobbyDialog::on_player_died));
     game_station->local_player_died.connect
@@ -748,7 +750,7 @@ void GameLobbyDialog::on_player_died(Player *p)
     }
 }
 
-void GameLobbyDialog::on_reorder_playerlist(std::list<guint32> order)
+void GameLobbyDialog::on_reorder_playerlist()
 {
   sort_player_list_by_turn_order();
 }

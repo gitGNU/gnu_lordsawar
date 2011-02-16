@@ -59,6 +59,7 @@ public:
   void sendKillPlayer(Player *player);
   void sendOffPlayer(Player *player);
   void notifyClientsGameMayBeginNow();
+  void notifyRoundOver();
   sigc::signal<void> remote_participant_connected;
   sigc::signal<void> remote_participant_disconnected;
 
@@ -97,8 +98,6 @@ private:
   void sendSeat(void *conn, GameParameters::Player player, Glib::ustring nickname);
   void sendChatRoster(void *conn);
 
-  void checkRoundOver();
-
   void sendActions(Participant *part);
   void sendHistories(Participant *part);
 
@@ -106,6 +105,7 @@ private:
 
   std::list<Participant *> participants;
   std::list<GameParameters::Player> players_seated_locally;
+  std::map<guint32, bool> id_end_turn; //whether local players ended their turn
 
   Participant * play_by_mail_participant;
 
@@ -120,7 +120,6 @@ private:
   bool dumpActionsAndHistories(XML_Helper *helper, Player *player);
 
   void gotChat(void *conn, std::string message);
-  void gotRoundOver(void *conn);
 
   bool player_already_sitting(Player *p);
 
@@ -131,7 +130,17 @@ private:
   bool update_player_name (std::list<GameParameters::Player> &list, guint32 id, Glib::ustring name);
 
   void syncLocalPlayers();
+
+  void sendRoundStart();
+  void player_finished_turn(Player *player);
   Glib::ustring make_nickname_unique(Glib::ustring nickname);
+
+  bool check_for_all_players_having_ended_their_turn();
+  void clear_end_turn_flag_for_all_players();
+  void onLocalNonNetworkedActionDone(NetworkAction *action);
+  void onLocalNonNetworkedHistoryDone(NetworkHistory *history);
+  void onLocalNetworkedHistoryDone(NetworkHistory *history);
+
   //! A static pointer for the singleton instance.
   static GameServer * s_instance;
 };

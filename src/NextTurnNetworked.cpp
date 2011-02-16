@@ -1,5 +1,5 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2011 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -69,6 +69,11 @@ void NextTurnNetworked::start()
     if (plist->getActiveplayer()->isDead())
       return;
 
+    if (plist->getActiveplayer()->getType() == Player::NETWORKED)
+      {
+        splayerStart.emit(plist->getActiveplayer());
+        return;
+      }
     if (plist->getActiveplayer()->getType() != Player::NETWORKED)
       {
 	while (!d_stop)
@@ -114,9 +119,12 @@ void NextTurnNetworked::start()
 			  nextPlayer();
 		      }
 		    finishRound();
-		    snextRound.emit();
-		    if (GameServer::getInstance()->isListening() == false)
-		      GameClient::getInstance()->sendRoundOver();
+		    //snextRound.emit();
+		    //if (GameServer::getInstance()->isListening() == false)
+                      //{
+                        //printf("sending round over from the client side.\n");
+		      //GameClient::getInstance()->sendRoundOver();
+                      //}
 		  }
 		//both client and server exit this loop at the end of the round
 		break;
@@ -151,8 +159,8 @@ void NextTurnNetworked::endTurn()
 	//{
 	  finishRound();
 	  snextRound.emit();
-	  if (GameServer::getInstance()->isListening() == false)
-	    GameClient::getInstance()->sendRoundOver();
+	  //if (GameServer::getInstance()->isListening() == false)
+	    //GameClient::getInstance()->sendRoundOver();
 	//}
       return;
     }

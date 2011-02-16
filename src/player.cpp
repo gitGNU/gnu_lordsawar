@@ -564,7 +564,6 @@ void Player::addHistory(History *history)
   //free'd in game-server
 }
 
-
 guint32 Player::getScore() const
 {
   //go get our last published score in the history

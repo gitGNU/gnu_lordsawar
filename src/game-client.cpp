@@ -175,11 +175,14 @@ bool GameClient::onGotMessage(MessageType type, std::string payload)
     remote_participant_departs.emit(payload);
     break;
 
+  case MESSAGE_TYPE_ROUND_OVER:
+    round_ends.emit();
+    break;
+
   case MESSAGE_TYPE_REQUEST_SEAT_MANIFEST:
   case MESSAGE_TYPE_PARTICIPANT_CONNECT:
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECT:
   case MESSAGE_TYPE_CHAT:
-  case MESSAGE_TYPE_ROUND_OVER:
     //FIXME: faulty server.
     break;
 
@@ -365,7 +368,7 @@ void GameClient::sit_or_stand (Player *player, bool sit)
     {
       NetworkPlayer *new_p = new NetworkPlayer(*player);
       Playerlist::getInstance()->swap(player, new_p);
-      stopListeningForLocalEvents(new_p);
+      stopListeningForLocalEvents(player);
       delete player;
       new_p->setConnected(false);
     }
@@ -423,12 +426,7 @@ void GameClient::gotTurnOrder (std::string payload)
 	player_ids.push_back(ival);
     }
   Playerlist::getInstance()->reorder(player_ids);
-  playerlist_reorder_received.emit(player_ids);
-}
-
-void GameClient::sendRoundOver()
-{
-  network_connection->send(MESSAGE_TYPE_ROUND_OVER, "");
+  playerlist_reorder_received.emit();
 }
 
 void GameClient::disconnect()

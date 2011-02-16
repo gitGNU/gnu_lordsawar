@@ -37,7 +37,7 @@ public:
   sigc::signal<void, Player*, std::string> player_sits;
   sigc::signal<void, Player*, std::string> player_stands;
   sigc::signal<void, std::string> remote_participant_departs;
-  sigc::signal<void, std::list<guint32> > playerlist_reorder_received;
+  sigc::signal<void> playerlist_reorder_received;
   sigc::signal<void, Player*> local_player_moved;
   sigc::signal<void, Player*> local_player_died;
   sigc::signal<void, Player*> local_player_starts_move;
@@ -46,6 +46,7 @@ public:
   sigc::signal<void, Glib::ustring, Glib::ustring> nickname_changed;
   sigc::signal<void, Player*> player_gets_turned_off;
   sigc::signal<void> round_begins;
+  sigc::signal<void> round_ends;
   sigc::signal<void> game_may_begin;
 
   void listenForLocalEvents(Player *p);

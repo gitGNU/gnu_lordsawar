@@ -1145,6 +1145,11 @@ void Game::init_turn_for_player(Player* p)
 
   next_player_turn.emit(p, d_gameScenario->getRound());
 
+  if (p->getType() == Player::NETWORKED)
+    {
+      remote_next_player_turn.emit();
+      return;
+    }
   blank(false);
 
   if (p->isObservable() == true)
@@ -1336,9 +1341,12 @@ bool Game::maybeTreachery(Stack *stack, Player *them, Vector<int> pos)
 
 void Game::nextRound()
 {
-  Playerlist::getInstance()->nextRound
-    (GameScenarioOptions::s_diplomacy, 
-     &GameScenarioOptions::s_surrender_already_offered);
+  if (GameServer::getInstance()->isListening())
+    {
+      Playerlist::getInstance()->nextRound
+        (GameScenarioOptions::s_diplomacy, 
+         &GameScenarioOptions::s_surrender_already_offered);
+    }
 }
     
 void Game::on_surrender_offered(Player *recipient)

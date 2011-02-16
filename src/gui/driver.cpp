@@ -383,8 +383,10 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
   game_server->start(game_scenario, port, nick);
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   if (game_scenario->s_random_turns == true)
-    next_turn->snextRound.connect (sigc::mem_fun(GameServer::getInstance(), 
-						 &GameServer::sendTurnOrder));
+    game_server->round_begins.connect (sigc::mem_fun(GameServer::getInstance(), 
+                                                     &GameServer::sendTurnOrder));
+  
+  game_server->round_ends.connect(sigc::mem_fun(next_turn->snextRound, &sigc::signal<void>::emit));
   next_turn->snextPlayerUnavailable.connect(sigc::mem_fun(this, &Driver::on_player_unavailable));
   if (game_lobby_dialog)
     delete game_lobby_dialog;
@@ -512,6 +514,7 @@ void Driver::on_game_scenario_received(std::string path)
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   next_turn->snextPlayerUnavailable.connect(sigc::mem_fun(this, &Driver::on_player_unavailable));
   game_client->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
+  game_client->round_ends.connect(sigc::mem_fun(next_turn->snextRound, &sigc::signal<void>::emit));
   if (game_lobby_dialog)
     delete game_lobby_dialog;
   game_lobby_dialog = new GameLobbyDialog(game_scenario, next_turn, 
@@ -624,9 +627,16 @@ void Driver::on_load_requested(std::string filename)
 					  game_scenario->s_random_turns));
       }
     else if (game_scenario->getPlayMode() == GameScenario::NETWORKED)
-      game_window->load_game
-	(game_scenario, new NextTurnNetworked(game_scenario->getTurnmode(),
-					      game_scenario->s_random_turns));
+      {
+	TimedMessageDialog dialog(*splash_window->get_window(),
+				  _("Can't load networked game from file."), 0);
+	dialog.run();
+	dialog.hide();
+        //well isn't this interesting.  we lack a game station.
+      //game_window->load_game
+	//(game_scenario, new NextTurnNetworked(game_scenario->getTurnmode(),
+					      //game_scenario->s_random_turns));
+      }
 }
 
 void Driver::on_quit_requested()

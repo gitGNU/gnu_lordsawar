@@ -544,7 +544,7 @@ void GameWindow::new_network_game(GameScenario *game_scenario, NextTurn *next_tu
   if (GameServer::getInstance()->isListening() == true)
     GameServer::getInstance()->round_begins.connect(sigc::mem_fun(this, &GameWindow::on_remote_next_player_turn));
   else
-      GameClient::getInstance()->round_begins.connect(sigc::mem_fun(this, &GameWindow::on_remote_next_player_turn));
+    GameClient::getInstance()->playerlist_reorder_received.connect(sigc::mem_fun(this, &GameWindow::on_remote_next_player_turn));
   bool success = false;
   //stop_game();
   success = setup_game(game_scenario, next_turn);
@@ -1348,9 +1348,16 @@ void GameWindow::on_game_stopped()
 				    game_scenario->s_random_turns));
 	}
       else if (game_scenario->getPlayMode() == GameScenario::NETWORKED)
-	load_game(game_scenario, 
-		  new NextTurnNetworked(game_scenario->getTurnmode(),
-					game_scenario->s_random_turns));
+        {
+          TimedMessageDialog dialog(*window, _("Can't load networked game from file."), 30);
+
+          dialog.show_all();
+          dialog.run();
+          dialog.hide();
+	//load_game(game_scenario, 
+		  //new NextTurnNetworked(game_scenario->getTurnmode(),
+					//game_scenario->s_random_turns));
+        }
     }
 }
 
