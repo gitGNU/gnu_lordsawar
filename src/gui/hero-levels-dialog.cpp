@@ -114,7 +114,7 @@ void HeroLevelsDialog::addHero(Hero *h)
     (*i)[heroes_columns.name] = h->getName();
     (*i)[heroes_columns.image] = gc->getArmyPic(player->getArmyset(),
 						h->getTypeId(), player, NULL)->to_pixbuf();
-    (*i)[heroes_columns.level] = String::ucompose(_("%1"), h->getLevel());
+    (*i)[heroes_columns.level] = String::ucompose("%1", h->getLevel());
     (*i)[heroes_columns.exp] = (guint32)h->getXP();
     (*i)[heroes_columns.needs] = (guint32)h->getXpNeededForNextLevel();
     (*i)[heroes_columns.str] = h->getStat(Army::STRENGTH, true);
