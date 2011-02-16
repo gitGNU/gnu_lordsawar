@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: lordsawar 0.1.9-pre3\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-07-03 09:18+0100\n"
-"PO-Revision-Date: 2011-02-15 14:00+0100\n"
+"PO-Revision-Date: 2011-02-16 19:17+0100\n"
 "Last-Translator: Martin Thoma <info@martin-thoma.de>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
 "Language: de\n"
@@ -31,9 +31,8 @@ msgid "Joe Hansen"
 msgstr "Martin Thoma"
 
 #: ../dat/glade/about-dialog.ui.h:5
-#, fuzzy
 msgid "The GNU General Public License version 3 or later at your option."
-msgstr "Die GNU General Public Lizenz in der Version 3 oder neuer stehen zur Wahl."
+msgstr "Die GNU General Public License in der Version 3 oder neuer stehen zur Wahl."
 
 #: ../dat/glade/about-dialog.ui.h:6
 msgid "The LordsAWar Website"
@@ -429,9 +428,8 @@ msgid "Average"
 msgstr "Durchschnitt"
 
 #: ../dat/glade/game-options-dialog.ui.h:6
-#, fuzzy
 msgid "Cusp of War"
-msgstr "Kriegsgipfel"
+msgstr "Höhepunkt des Krieges"
 
 #: ../dat/glade/game-options-dialog.ui.h:7
 msgid "Defensive"
@@ -859,7 +857,6 @@ msgid "<b>Hero</b>"
 msgstr "<b>Held</b>"
 
 #: ../dat/glade/hero-dialog.ui.h:2
-#, fuzzy
 msgid "<b>History</b>"
 msgstr "<b>Geschichte</b>"
 
@@ -873,7 +870,6 @@ msgid "<b>Your Heroes</b>"
 msgstr "<b>Deine Helden</b>"
 
 #: ../dat/glade/hero-dialog.ui.h:7
-#, fuzzy
 msgid "Previous"
 msgstr "Vorher"
 
@@ -990,9 +986,8 @@ msgid "Show popup at beginning of _turn"
 msgstr "Zeige Popup-Fens_ter zu beginn des Zuges"
 
 #: ../dat/glade/medal-awarded-dialog.ui.h:1
-#, fuzzy
 msgid "Medal Awarded"
-msgstr "Medallie wurde verliehen"
+msgstr "Medaille wurde verliehen"
 
 #: ../dat/glade/new-network-game-dialog.ui.h:1
 msgid ""
@@ -1023,12 +1018,10 @@ msgid "Next Turn"
 msgstr "Nächster Zug"
 
 #: ../dat/glade/pick-network-game-to-join-dialog.ui.h:1
-#, fuzzy
 msgid "<b>Recently Joined Games</b>"
 msgstr "<b>Vor kurzem beigetretene Spiele</b>"
 
 #: ../dat/glade/pick-network-game-to-join-dialog.ui.h:2
-#, fuzzy
 msgid "Clear List"
 msgstr "Liste löschen"
 
@@ -1097,7 +1090,6 @@ msgid "Quests Report"
 msgstr "Aufgaben Bericht"
 
 #: ../dat/glade/quest-expired-dialog.ui.h:1
-#, fuzzy
 msgid "Quest Expired"
 msgstr "Aufgabe verfallen"
 
@@ -1106,7 +1098,6 @@ msgid "Amount of gold each side possesses"
 msgstr "Goldmenge, die sich jede Seite angeeignet hat"
 
 #: ../dat/glade/report-dialog.ui.h:2
-#, fuzzy
 msgid "Armies you produced this turn"
 msgstr "Armeen, die du in diesen Zug produziert hast"
 
@@ -1123,12 +1114,10 @@ msgid "Who is the most powerful nation"
 msgstr "Welche Nation ist die mächtigste?"
 
 #: ../dat/glade/ruinfight-finished-dialog.ui.h:1
-#, fuzzy
 msgid "...is victorious! or ...is slain by it!"
 msgstr "...ist siegreich! oder ...wurde von ihm erschlagen!"
 
 #: ../dat/glade/ruinfight-started-dialog.ui.h:1
-#, fuzzy
 msgid "So and so encounters a monster and..."
 msgstr "So und so trifft auf ein Monster und ..."
 
@@ -1168,7 +1157,6 @@ msgid "label"
 msgstr "Ettikett"
 
 #: ../dat/glade/ruin-rewarded-dialog.ui.h:1
-#, fuzzy
 msgid "The Sages show thee the site of X where Y can be found."
 msgstr "Der Weise zeigt dir die Seite von X wo Y gefunden werden kann."
 
@@ -1269,12 +1257,10 @@ msgid "_Use"
 msgstr "Benutzen"
 
 #: ../dat/glade/use-item-on-player-dialog.ui.h:1
-#, fuzzy
 msgid "Select a Player to Target"
 msgstr "Wähle den Spieler aus"
 
 #: ../dat/glade/use-item-on-player-dialog.ui.h:2
-#, fuzzy
 msgid "Which player do you want to target?"
 msgstr "Welchen Spieler willst du auswählen?"
 
@@ -1287,19 +1273,16 @@ msgstr "<b>Karte</b>"
 #: ../dat/glade/new-random-map-dialog.ui.h:2
 #: ../dat/glade/editor/new-map-dialog.ui.h:3
 #: ../dat/glade/editor/switch-sets-dialog.ui.h:2
-#, fuzzy
 msgid "Army Set:"
 msgstr "Armee Set:"
 
 #: ../dat/glade/new-random-map-dialog.ui.h:4
-#, fuzzy
 msgid "Cities can produce allies"
-msgstr "Städte können Verbündete produzieren"
+msgstr "Städte können Verbündete erzeugen"
 
 #: ../dat/glade/new-random-map-dialog.ui.h:5
 #: ../dat/glade/editor/new-map-dialog.ui.h:4
 #: ../dat/glade/editor/switch-sets-dialog.ui.h:3
-#, fuzzy
 msgid "City Set:"
 msgstr "Stadt Set:"
 
@@ -1377,7 +1360,6 @@ msgstr "Andere Kartenobjekte"
 #: ../dat/glade/new-random-map-dialog.ui.h:16
 #: ../dat/glade/editor/new-map-dialog.ui.h:16
 #: ../dat/glade/editor/switch-sets-dialog.ui.h:5
-#, fuzzy
 msgid "Shield Set:"
 msgstr "Schild Set:"
 
@@ -1420,9 +1402,8 @@ msgstr "Tempel"
 #: ../dat/glade/new-random-map-dialog.ui.h:22
 #: ../dat/glade/editor/new-map-dialog.ui.h:22
 #: ../dat/glade/editor/switch-sets-dialog.ui.h:8
-#, fuzzy
 msgid "Tile Set:"
-msgstr "Kachel Set:"
+msgstr "Kachel-Set:"
 
 #: ../dat/glade/new-random-map-dialog.ui.h:23
 #: ../dat/glade/editor/new-map-dialog.ui.h:23
@@ -1454,9 +1435,8 @@ msgid ".lwa"
 msgstr ".lwa"
 
 #: ../dat/glade/editor/armyset-info-dialog.ui.h:2
-#, fuzzy
 msgid "<b>Armyset</b>"
-msgstr "<b>Armee Set</b>"
+msgstr "<b>Armee-Set</b>"
 
 #: ../dat/glade/editor/armyset-info-dialog.ui.h:3
 #: ../dat/glade/editor/tileset-info-dialog.ui.h:3
@@ -1476,7 +1456,6 @@ msgstr "Beschreibung"
 #: ../dat/glade/editor/tileset-info-dialog.ui.h:5
 #: ../dat/glade/editor/cityset-info-dialog.ui.h:5
 #: ../dat/glade/editor/shieldset-info-dialog.ui.h:5
-#, fuzzy
 msgid "Directory:"
 msgstr "Verzeichnis"
 
@@ -1484,9 +1463,8 @@ msgstr "Verzeichnis"
 #: ../dat/glade/editor/tileset-info-dialog.ui.h:6
 #: ../dat/glade/editor/cityset-info-dialog.ui.h:6
 #: ../dat/glade/editor/shieldset-info-dialog.ui.h:6
-#, fuzzy
 msgid "Edit Shieldset Info"
-msgstr "Schild Set Informationen bearbeiten"
+msgstr "Schild-Set Informationen bearbeiten"
 
 #: ../dat/glade/editor/armyset-info-dialog.ui.h:7
 #: ../dat/glade/editor/tileset-info-dialog.ui.h:7
@@ -1499,7 +1477,6 @@ msgstr "Dateiname:"
 #: ../dat/glade/editor/tileset-info-dialog.ui.h:8
 #: ../dat/glade/editor/cityset-info-dialog.ui.h:8
 #: ../dat/glade/editor/shieldset-info-dialog.ui.h:8
-#, fuzzy
 msgid "Id:"
 msgstr "Id:"
 
@@ -1559,12 +1536,10 @@ msgid "<b>Movement Bonus</b>"
 msgstr "<b>Bewegungsbonus</b>"
 
 #: ../dat/glade/editor/armyset-window.ui.h:14
-#, fuzzy
 msgid "Armyset _Information"
-msgstr "Armee Set Informationen"
+msgstr "Armee-Set Informationen"
 
 #: ../dat/glade/editor/armyset-window.ui.h:15
-#, fuzzy
 msgid "Basic"
 msgstr "Elementar"
 
@@ -1589,7 +1564,6 @@ msgid "Defends Ruins?"
 msgstr "Verteidigt Ruinen?"
 
 #: ../dat/glade/editor/armyset-window.ui.h:22
-#, fuzzy
 msgid "Edit Hero _Flag Picture"
 msgstr "Bearbeite das _Flaggen-Symbol des Helden"
 
@@ -1614,9 +1588,8 @@ msgid "Green Picture:"
 msgstr "Grünes Bild:"
 
 #: ../dat/glade/editor/armyset-window.ui.h:28
-#, fuzzy
 msgid "Is Awardable?"
-msgstr "Ist Verkaufbar?"
+msgstr "Ist verkäuflich?"
 
 #: ../dat/glade/editor/armyset-window.ui.h:29
 msgid "Light Blue Picture:"
@@ -1626,9 +1599,8 @@ msgstr "Hellblaues Bild:"
 #: ../dat/glade/editor/armyset-window.ui.h:30
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:1958
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-main.cpp:51
-#, fuzzy
 msgid "LordsAWar! Armyset Editor"
-msgstr "LordsAWar! Armee Set Editor"
+msgstr "LordsAWar! Armee-Set Editor"
 
 #: ../dat/glade/editor/armyset-window.ui.h:31
 msgid "Male Hero"
@@ -1639,12 +1611,10 @@ msgid "Max Moves:"
 msgstr "Maximale Anzahl der Züge:"
 
 #: ../dat/glade/editor/armyset-window.ui.h:34
-#, fuzzy
 msgid "Neutral Picture:"
 msgstr "Neutrales Bild:"
 
 #: ../dat/glade/editor/armyset-window.ui.h:35
-#, fuzzy
 msgid "New Cost:"
 msgstr "Neue Kosten:"
 
@@ -1668,7 +1638,6 @@ msgid "Save A _Copy"
 msgstr "Speichere eine Kopie"
 
 #: ../dat/glade/editor/armyset-window.ui.h:40
-#, fuzzy
 msgid "Sight:"
 msgstr "Sicht:"
 
@@ -1738,22 +1707,18 @@ msgid "_File"
 msgstr "Datei"
 
 #: ../dat/glade/editor/armyset-window.ui.h:56
-#, fuzzy
 msgid "_Load Armyset"
 msgstr "Armee Set _laden"
 
 #: ../dat/glade/editor/armyset-window.ui.h:57
-#, fuzzy
 msgid "_New Armyset"
 msgstr "_Neues Armee set"
 
 #: ../dat/glade/editor/armyset-window.ui.h:59
-#, fuzzy
 msgid "_Save Armyset"
 msgstr "Armee _Set speichern"
 
 #: ../dat/glade/editor/armyset-window.ui.h:60
-#, fuzzy
 msgid "_Validate Armyset"
 msgstr "Armee Set _validieren"
 
@@ -1770,9 +1735,8 @@ msgid "Burned down"
 msgstr "Niedergebrannt"
 
 #: ../dat/glade/editor/city-editor-dialog.ui.h:4
-#, fuzzy
 msgid "Capital"
-msgstr "Kapital"
+msgstr "Hauptstadt"
 
 #: ../dat/glade/editor/city-editor-dialog.ui.h:5
 msgid "Edit City"
@@ -1789,7 +1753,6 @@ msgstr "Besitzer:"
 
 #: ../dat/glade/editor/city-editor-dialog.ui.h:9
 #: ../dat/glade/editor/reward-editor-dialog.ui.h:11
-#, fuzzy
 msgid "Ra_ndomize"
 msgstr "Willkürlich a_nordnen"
 
@@ -1797,14 +1760,12 @@ msgstr "Willkürlich a_nordnen"
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:12
 #: ../dat/glade/editor/signpost-editor-dialog.ui.h:3
 #: ../dat/glade/editor/temple-editor-dialog.ui.h:5
-#, fuzzy
 msgid "Randomi_ze"
 msgstr "Willkürlich anordnen"
 
 #: ../dat/glade/editor/city-editor-dialog.ui.h:11
 #: ../dat/glade/editor/reward-editor-dialog.ui.h:15
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:13
-#, fuzzy
 msgid "Randomiz_e"
 msgstr "Willkürlich anordn_en"
 
@@ -1877,12 +1838,10 @@ msgid "Item Editor"
 msgstr "Gegenstandseditor"
 
 #: ../dat/glade/editor/itemlist-dialog.ui.h:16
-#, fuzzy
 msgid "Number of Uses:"
 msgstr "Anzahl der Benutzungen:"
 
 #: ../dat/glade/editor/itemlist-dialog.ui.h:17
-#, fuzzy
 msgid "Sinks Enemy Ships"
 msgstr "Versenkt feindliche Schiffe"
 
@@ -1895,7 +1854,6 @@ msgid "Steals Gold from Enemy"
 msgstr "Stehlt Gold vom Feind"
 
 #: ../dat/glade/editor/itemlist-dialog.ui.h:20
-#, fuzzy
 msgid "Uses"
 msgstr "Benutzungen"
 
@@ -1931,12 +1889,10 @@ msgid "LordsAWar! Scenario Editor"
 msgstr "LordsAWar! Szenario-Editor"
 
 #: ../dat/glade/editor/main-window.ui.h:8
-#, fuzzy
 msgid "S_hieldset"
 msgstr "Sc_hild Set"
 
 #: ../dat/glade/editor/main-window.ui.h:9
-#, fuzzy
 msgid "S_witch Image Sets"
 msgstr "Bilder Sets austauschen"
 
@@ -1953,7 +1909,6 @@ msgid "Save a picture of the map."
 msgstr "Speichere ein Bild der Karte."
 
 #: ../dat/glade/editor/main-window.ui.h:13
-#, fuzzy
 msgid "Smooth _Entire Map"
 msgstr "Ganze Kart_e glätten"
 
@@ -1974,12 +1929,10 @@ msgid "Unnamed Temples"
 msgstr "Unbenannte Tempel"
 
 #: ../dat/glade/editor/main-window.ui.h:19
-#, fuzzy
 msgid "_Armyset"
 msgstr "_Armee Set"
 
 #: ../dat/glade/editor/main-window.ui.h:20
-#, fuzzy
 msgid "_Cityset"
 msgstr "Stadt Set"
 
@@ -2024,12 +1977,10 @@ msgid "_Save Map"
 msgstr "_Speichere Karte"
 
 #: ../dat/glade/editor/main-window.ui.h:36
-#, fuzzy
 msgid "_Smooth Screen"
 msgstr "_Glatter Bildschirm"
 
 #: ../dat/glade/editor/main-window.ui.h:37
-#, fuzzy
 msgid "_Tileset"
 msgstr "Kachel Set"
 
@@ -2063,7 +2014,6 @@ msgid "   Cities"
 msgstr "   Städte"
 
 #: ../dat/glade/editor/new-map-dialog.ui.h:7
-#, fuzzy
 msgid "Fill style:"
 msgstr "Füllart:"
 
@@ -2080,17 +2030,14 @@ msgid "Width:"
 msgstr "Breite:"
 
 #: ../dat/glade/editor/switch-sets-dialog.ui.h:1
-#, fuzzy
 msgid "<b>Image Sets</b>"
 msgstr "<b>Bilder Sets</b>"
 
 #: ../dat/glade/editor/switch-sets-dialog.ui.h:7
-#, fuzzy
 msgid "Switch Image Sets"
 msgstr "Bildersets tauschen"
 
 #: ../dat/glade/editor/switch-sets-dialog.ui.h:12
-#, fuzzy
 msgid "_Switch Image Sets"
 msgstr "Bildersets tau_schen"
 
@@ -2108,17 +2055,14 @@ msgid "Allies"
 msgstr "Verbündete"
 
 #: ../dat/glade/editor/reward-editor-dialog.ui.h:3
-#, fuzzy
 msgid "Clear Ally Type"
 msgstr "Verbündetentyp löschen"
 
 #: ../dat/glade/editor/reward-editor-dialog.ui.h:4
-#, fuzzy
 msgid "Clear Hidden Ruin"
 msgstr "Versteckte Ruinen löschen"
 
 #: ../dat/glade/editor/reward-editor-dialog.ui.h:5
-#, fuzzy
 msgid "Clear Item"
 msgstr "Gegenstand löschen"
 
@@ -2140,37 +2084,30 @@ msgstr "Karte"
 
 #: ../dat/glade/editor/reward-editor-dialog.ui.h:12
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:10
-#, fuzzy
 msgid "Ran_domize"
 msgstr "willkürlich anor_dnen"
 
 #: ../dat/glade/editor/reward-editor-dialog.ui.h:13
-#, fuzzy
 msgid "Rand_omize"
 msgstr "willkürlich an_ordnen"
 
 #: ../dat/glade/editor/reward-editor-dialog.ui.h:14
-#, fuzzy
 msgid "Random_ize"
 msgstr "w_illkürlich anordnen"
 
 #: ../dat/glade/editor/reward-editor-dialog.ui.h:18
-#, fuzzy
 msgid "h:"
 msgstr "h:"
 
 #: ../dat/glade/editor/reward-editor-dialog.ui.h:19
-#, fuzzy
 msgid "w:"
 msgstr "w:"
 
 #: ../dat/glade/editor/reward-editor-dialog.ui.h:20
-#, fuzzy
 msgid "x:"
 msgstr "x:"
 
 #: ../dat/glade/editor/reward-editor-dialog.ui.h:21
-#, fuzzy
 msgid "y:"
 msgstr "y:"
 
@@ -2183,12 +2120,10 @@ msgid "<b>Ruin</b>"
 msgstr "<b>Ruine</b>"
 
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:2
-#, fuzzy
 msgid "Cle_ar Keeper"
 msgstr "Hüter löschen"
 
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:3
-#, fuzzy
 msgid "Clea_r Reward"
 msgstr "Belohnung löschen"
 
@@ -2197,7 +2132,6 @@ msgid "Edit Ruin"
 msgstr "Ruine bearbeiten"
 
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:6
-#, fuzzy
 msgid "Is Hidden?"
 msgstr "Ist es versteckt?"
 
@@ -2214,7 +2148,6 @@ msgid "Random Reward"
 msgstr "Zufällige Belohnung"
 
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:14
-#, fuzzy
 msgid "Seen By:"
 msgstr "Gesehen von:"
 
@@ -2277,22 +2210,18 @@ msgid "Edit Temple"
 msgstr "Tempel bearbeiten"
 
 #: ../dat/glade/editor/tile-preview-dialog.ui.h:1
-#, fuzzy
 msgid "Preview Tile"
 msgstr "Kachel Vorschau"
 
 #: ../dat/glade/editor/tile-preview-dialog.ui.h:2
-#, fuzzy
 msgid "TileStyle Id:"
 msgstr "KachelStiel Id:"
 
 #: ../dat/glade/editor/tileset-info-dialog.ui.h:1
-#, fuzzy
 msgid ".lwt"
 msgstr ".lwt"
 
 #: ../dat/glade/editor/tileset-info-dialog.ui.h:2
-#, fuzzy
 msgid "<b>Tileset</b>"
 msgstr "<b>Kachel Set</b>"
 
@@ -2320,7 +2249,6 @@ msgid "Large"
 msgstr "Groß"
 
 #: ../dat/glade/editor/tileset-selector-editor-dialog.ui.h:5
-#, fuzzy
 msgid "Selector Editor"
 msgstr "Auswahl Editor"
 
@@ -2330,12 +2258,10 @@ msgid "Shieldset:"
 msgstr "Schild Set:"
 
 #: ../dat/glade/editor/tileset-flag-editor-dialog.ui.h:2
-#, fuzzy
 msgid "<b>Stack Flags</b>"
 msgstr "<b>Stack Flaggen</b>"
 
 #: ../dat/glade/editor/tileset-flag-editor-dialog.ui.h:3
-#, fuzzy
 msgid "Flag Editor"
 msgstr "Flaggen Editor"
 
@@ -2353,17 +2279,14 @@ msgid "Change Image"
 msgstr "Bild ändern"
 
 #: ../dat/glade/editor/tileset-window.ui.h:1
-#, fuzzy
 msgid "<b>Tile Style Set</b>"
 msgstr "<b>Kachel Stil Set</b>"
 
 #: ../dat/glade/editor/tileset-window.ui.h:2
-#, fuzzy
 msgid "<b>Tile Style Sets</b>"
 msgstr "<b>Kachel Stil Sets</b>"
 
 #: ../dat/glade/editor/tileset-window.ui.h:3
-#, fuzzy
 msgid "<b>Tile Style</b>"
 msgstr "<b>Kachel Stil</b>"
 
@@ -2407,12 +2330,10 @@ msgid "Second Colour:"
 msgstr "Zweite Farbe:"
 
 #: ../dat/glade/editor/tileset-window.ui.h:19
-#, fuzzy
 msgid "Smallmap Appearance:"
 msgstr "Erscheinungsbild der kleinen Karte:"
 
 #: ../dat/glade/editor/tileset-window.ui.h:20
-#, fuzzy
 msgid "Smallmap Building _Colours"
 msgstr "Farbe von Gebäuden in der kleine Karte"
 
@@ -2421,18 +2342,15 @@ msgid "Third Colour:"
 msgstr "Dritte Farbe:"
 
 #: ../dat/glade/editor/tileset-window.ui.h:23
-#, fuzzy
 msgid "Tileset info"
 msgstr "Kachel Set Informationen"
 
 #: ../dat/glade/editor/tileset-window.ui.h:25
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:92
-#, fuzzy
 msgid "Void"
 msgstr "Leer"
 
 #: ../dat/glade/editor/tileset-window.ui.h:27
-#, fuzzy
 msgid "_Army Unit Selector"
 msgstr "_Armee Einheiten Auswahl"
 
@@ -2445,7 +2363,6 @@ msgid "_Fog Picture"
 msgstr "Nebel Bild"
 
 #: ../dat/glade/editor/tileset-window.ui.h:33
-#, fuzzy
 msgid "_Load Tileset"
 msgstr "Kachelset _laden"
 
@@ -2454,7 +2371,6 @@ msgid "_New Tileset"
 msgstr "_Neues Kachelset"
 
 #: ../dat/glade/editor/tileset-window.ui.h:35
-#, fuzzy
 msgid "_Organize TileStyles"
 msgstr "KachelStil _ordnen"
 
@@ -2479,7 +2395,6 @@ msgid "<b>Selected Category</b>"
 msgstr "<b>Ausgewählte Kategorien</b>"
 
 #: ../dat/glade/editor/tilestyle-organizer-dialog.ui.h:3
-#, fuzzy
 msgid "<b>Unsorted TileStyles</b>"
 msgstr "<b>Ungeordnete KachelStile</b>"
 
@@ -2556,7 +2471,6 @@ msgid "Recover Session?"
 msgstr "Session wiederherstellen?"
 
 #: ../dat/glade/editor/editor-recover-dialog.ui.h:2
-#, fuzzy
 msgid "_Disregard"
 msgstr "Missachtung"
 
@@ -2727,12 +2641,10 @@ msgid ".lwc"
 msgstr ".lwc"
 
 #: ../dat/glade/editor/shieldset-info-dialog.ui.h:1
-#, fuzzy
 msgid ".lws"
 msgstr ".lws"
 
 #: ../dat/glade/editor/shieldset-info-dialog.ui.h:2
-#, fuzzy
 msgid "<b>Shieldset</b>"
 msgstr "<b>Schild Set</b>"
 
@@ -2749,7 +2661,6 @@ msgid "Choose Point..."
 msgstr "Punkt wählen..."
 
 #: ../dat/glade/editor/smallmap-editor-dialog.ui.h:4
-#, fuzzy
 msgid "Clear"
 msgstr "Löschen"
 
@@ -2799,17 +2710,14 @@ msgstr "Das ist das Standard Schild Set für LordsAWar!"
 
 #: ../dat/shield/dol/dol.lws.in.h:1 ../dat/citysets/dol/dol.lwc.in.h:1
 #: ../dat/citysets/bigdol/bigdol.lwc.in.h:2
-#, fuzzy
 msgid "Dol"
 msgstr "DoI"
 
 #: ../dat/shield/dol/dol.lws.in.h:2
-#, fuzzy
 msgid "This is the shieldset associated with the dol scenario."
 msgstr "Dieses Schild Set wird mit dem dol Szenario verbunden."
 
 #: ../dat/shield/plain/plain.lws.in.h:1
-#, fuzzy
 msgid "Plain"
 msgstr "Ebene"
 
@@ -2822,7 +2730,6 @@ msgid "The default cityset of LordsAWar"
 msgstr "Das Standardschildset von LordsAWar"
 
 #: ../dat/citysets/bigdefault/bigdefault.lwc.in.h:2
-#, fuzzy
 msgid "The doublesized default cityset of LordsAWar"
 msgstr "Das doppelt so große Standard-Stadt-Set of LordsAWar"
 
@@ -2996,13 +2903,11 @@ msgid "A tileset made by David Baumgart for Lordsawar"
 msgstr "Ein Kachelset von David Baumgart für LordsAWar"
 
 #: ../dat/tilesets/stark/stark.lwt.in.h:1
-#, fuzzy
 msgid "A stark and simple tileset"
 msgstr "Ein gutes und einfaches Kachelset"
 
 #: ../dat/tilesets/stark/stark.lwt.in.h:6
 #: ../dat/tilesets/bigstark/bigstark.lwt.in.h:5
-#, fuzzy
 msgid "Stark"
 msgstr "Gut"
 
@@ -3146,7 +3051,6 @@ msgid "Enchanted Dagger"
 msgstr "Verzauberter Dolch"
 
 #: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:31
-#, fuzzy
 msgid "Enchanted Greatsword"
 msgstr "Verzaubertes Großschwert"
 
@@ -3168,7 +3072,6 @@ msgid "Everful Purse"
 msgstr "Immervolle Geldbörse"
 
 #: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:36
-#, fuzzy
 msgid "Field Plate"
 msgstr "Feld Platte"
 
@@ -3537,7 +3440,6 @@ msgid "Bult"
 msgstr "Bult"
 
 #: ../dat/map/dol/dol.map.in.h:10
-#, fuzzy
 msgid "Burd"
 msgstr "Burd"
 
@@ -3546,12 +3448,10 @@ msgid "Burg"
 msgstr "Stadt"
 
 #: ../dat/map/dol/dol.map.in.h:12
-#, fuzzy
 msgid "Burgbane"
 msgstr "Burgbane"
 
 #: ../dat/map/dol/dol.map.in.h:13
-#, fuzzy
 msgid "Burka"
 msgstr "Burka"
 
@@ -3560,7 +3460,6 @@ msgid "Burl"
 msgstr "Knoten"
 
 #: ../dat/map/dol/dol.map.in.h:15
-#, fuzzy
 msgid "Burm"
 msgstr "Burm"
 
@@ -3569,7 +3468,6 @@ msgid "Burn"
 msgstr "Brennen"
 
 #: ../dat/map/dol/dol.map.in.h:17
-#, fuzzy
 msgid "Burswept"
 msgstr "Burswept"
 
@@ -3586,27 +3484,22 @@ msgid "Cardella"
 msgstr "Cardella"
 
 #: ../dat/map/dol/dol.map.in.h:21
-#, fuzzy
 msgid "Carden"
 msgstr "Carden"
 
 #: ../dat/map/dol/dol.map.in.h:22
-#, fuzzy
 msgid "Carden Heights"
 msgstr "Carden Heights"
 
 #: ../dat/map/dol/dol.map.in.h:23
-#, fuzzy
 msgid "Cardola"
 msgstr "Cardola"
 
 #: ../dat/map/dol/dol.map.in.h:24
-#, fuzzy
 msgid "Cardwell"
 msgstr "Cardwell"
 
 #: ../dat/map/dol/dol.map.in.h:25
-#, fuzzy
 msgid "Carlap"
 msgstr "Carlap"
 
@@ -3635,7 +3528,6 @@ msgid "Crypt of the Lost Sailor"
 msgstr "Gruft des verlohrenen Seemannes"
 
 #: ../dat/map/dol/dol.map.in.h:37
-#, fuzzy
 msgid "Dardot"
 msgstr "Dardot"
 
@@ -3700,7 +3592,6 @@ msgid "Fallen Temple"
 msgstr "Gefallener Tempel"
 
 #: ../dat/map/dol/dol.map.in.h:59
-#, fuzzy
 msgid "Foothills of the Vangalese"
 msgstr "Ausläufer der Vangalesen"
 
@@ -3773,7 +3664,6 @@ msgid "High Tomb of Gor"
 msgstr "Hohes Grab von Gor"
 
 #: ../dat/map/dol/dol.map.in.h:82
-#, fuzzy
 msgid "Highmark"
 msgstr "Highmark"
 
@@ -3790,12 +3680,10 @@ msgid "Item: Firesword"
 msgstr "Gegenstand: Feuerschwert"
 
 #: ../dat/map/dol/dol.map.in.h:90
-#, fuzzy
 msgid "Kettle Port"
 msgstr "Hafen von Kettle"
 
 #: ../dat/map/dol/dol.map.in.h:91
-#, fuzzy
 msgid "Kettle Reach"
 msgstr "Bereich von Kettle"
 
@@ -3856,7 +3744,6 @@ msgid "The Beaches of Gor the Newer"
 msgstr "Die Strände von dem Neuen Gor"
 
 #: ../dat/map/dol/dol.map.in.h:130
-#, fuzzy
 msgid "The Cardeans"
 msgstr "The Cardeans"
 
@@ -3897,7 +3784,6 @@ msgid "The Greffians"
 msgstr "Die Greffianer"
 
 #: ../dat/map/dol/dol.map.in.h:140
-#, fuzzy
 msgid "The High Carlands"
 msgstr "Die Hohen Carlands"
 
@@ -3958,7 +3844,6 @@ msgid "Vista Vala"
 msgstr "Vista Vala"
 
 #: ../dat/map/dol/dol.map.in.h:158
-#, fuzzy
 msgid "Volta's Keep"
 msgstr "Volta's Wohnturm"
 
@@ -4064,7 +3949,6 @@ msgid "You're still searching for him..."
 msgstr "Du suchst immer noch nach ihm..."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/QKillHero.cpp:107
-#, fuzzy
 msgid "Seen lately near ("
 msgstr "Wurde kürzlich gesehen in der nähe von ("
 
@@ -4361,16 +4245,16 @@ msgstr "Züge: %1"
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:208
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/buy-production-dialog.cpp:185
 msgid "Cost: %1"
-msgstr ""
+msgstr "Kosten: %1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/city-window.cpp:300
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/destination-dialog.cpp:239
 msgid "%1t"
-msgstr ""
+msgstr "%1t"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/city-window.cpp:305
 msgid ", then to %1"
-msgstr ""
+msgstr ", dann zu %1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/city-window.cpp:458
 msgid "Rename City"
@@ -4386,11 +4270,11 @@ msgstr "Stadt niederreißen"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/city-window.cpp:508
 msgid "Are you sure that you want to raze %1?"
-msgstr ""
+msgstr "Bist du dir sicher, dass du %1 niederreißen willst?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/city-window.cpp:511
 msgid "You won't be popular!"
-msgstr ""
+msgstr "Du wirst nicht beliebt sein!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/preferences-dialog.cpp:73
 msgid "Observe"
@@ -4416,33 +4300,33 @@ msgstr "Computer"
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/quest-assigned-dialog.cpp:54
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/quest-report-dialog.cpp:107
 msgid "Quest for %1"
-msgstr ""
+msgstr "Aufgabe für %1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/quest-completed-dialog.cpp:61
 msgid "%1 completed the quest!"
-msgstr ""
+msgstr "%1 hat die Aufgabe erledigt"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/quest-completed-dialog.cpp:77
 msgid "You have been rewarded with %1 gold piece."
 msgid_plural "You have been rewarded with %1 gold pieces."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Du wurdest mit %1 Goldstück belohnt!"
+msgstr[1] "Du wurdest mit %1 Goldstücken belohnt!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/quest-completed-dialog.cpp:85
 msgid "You have been rewarded with %1 ally."
 msgid_plural "You have been rewarded with %1 allies."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Du wurdest mit %1 Verbündetem belohnt!"
+msgstr[1] "Du wurdest mit %1 Verbündeten belohnt!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/quest-completed-dialog.cpp:105
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-rewarded-dialog.cpp:89
 msgid "where powerful allies can be found!"
-msgstr ""
+msgstr "wo mächtige Verbündete gefunden werden können!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/quest-completed-dialog.cpp:109
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-rewarded-dialog.cpp:93
 msgid "where the %1 can be found!"
-msgstr ""
+msgstr "wo das %1 gefunden werden kann!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/quest-completed-dialog.cpp:113
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-rewarded-dialog.cpp:96
@@ -4452,78 +4336,78 @@ msgstr "wo die Karte gefunden werden kann!"
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/quest-completed-dialog.cpp:115
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-rewarded-dialog.cpp:98
 msgid "where nothing can be found!"
-msgstr ""
+msgstr "wo nichts gefunden werden kann!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/quest-completed-dialog.cpp:117
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-rewarded-dialog.cpp:100
 msgid "where gold can be found!"
-msgstr ""
+msgstr "wo Gold gefunden werden kann!"
 
 #. this one shouldn't happen
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/quest-completed-dialog.cpp:119
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-rewarded-dialog.cpp:102
 msgid "where something important can be found!"
-msgstr ""
+msgstr "wo etwas wichtiges gefunden werden kann!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/triumphs-dialog.cpp:108
 msgid "%1 hero earned fates worthy of legend!"
 msgid_plural "%1 heroes earned fates worthy of legend!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 Held hat ein Schicksal verdient, das Legenden wert ist!"
+msgstr[1] "%1 Helden haben ein Schicksal verdient, das Legenden wert ist!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/triumphs-dialog.cpp:113
 msgid "%1 so-called hero slaughtered without mercy!"
 msgid_plural "%1 so-called heroes slaughtered without mercy!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 sogenannter Held hat ohne Gnade abgeschlachtet!"
+msgstr[1] "%1 sogenannte Helden haben ohne Gnade abgeschlachtet!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/triumphs-dialog.cpp:138
 msgid "%1 navy not currently in service!"
 msgid_plural "%1 navies not currently in service!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 Kriegsflotte ist Momentan nicht betriebsbereit!"
+msgstr[1] "%1 Kriegsflotten sind Momentan nicht betriebsbereit!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/triumphs-dialog.cpp:142
 msgid "%1 navy rests with the fishes!"
 msgid_plural "%1 navies rest with the fishes!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 Kriegsflotte verbleibt bei den Fischen!"
+msgstr[1] "%1 Kriegsflotten verbleiben bei den Fischen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/triumphs-dialog.cpp:154
 msgid "%1 army died to ensure final victory!"
 msgid_plural "%1 armies died to ensure final victory!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 Armee starb um den finalen Sieg zu sichern!"
+msgstr[1] "%1 Armeen starben um den finalen Sieg zu sichern!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/triumphs-dialog.cpp:158
 msgid "%1 army smote like sheep!"
 msgid_plural "%1 armies smote like sheep!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 Armee hat sich wie Schafe geschlagen!"
+msgstr[1] "%1 Armeen haben sich wie Schafe geschlagen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/triumphs-dialog.cpp:171
 msgid "%1 unnatural creature returned from whence it came!"
 msgid_plural "%1 unnatural creatures returned from whence they came!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 unnatürliche Kreatur ist dort hin zurückgekehrt, wo sie her kam!"
+msgstr[1] "%1 unnatürliche Kreaturen sind dort hin zurückgekehrt, wo sie her kamen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/triumphs-dialog.cpp:175
 msgid "%1 unnatural creature dispatched!"
 msgid_plural "%1 unnatural creatures dispatched!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 unnatürliche Kreatur wurde abgefertigt!"
+msgstr[1] "%1 unnatürliche Kreaturen wurden abgefertigt!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/triumphs-dialog.cpp:199
 msgid "%1 standard betrayed by it's guardian!"
 msgid_plural "%1 standards betrayed by it's guardian!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 Flagge wurde von ihrem Wächter verraten!"
+msgstr[1] "%1 Flaggen wurde von ihrem Wächter verraten!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/triumphs-dialog.cpp:204
 msgid "%1 standard wrested from a vanquished foe!"
 msgid_plural "%1 standards wrested from a vanquished foe!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 Flagge wurde von einem bezwungenem Feind entrissen!"
+msgstr[1] "%1 Flaggen wurde von einem bezwungenem Feind entrissen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/error-utils.cpp:31
 msgid "Fatal error"
@@ -4533,23 +4417,23 @@ msgstr "Fataler Fehler"
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:80
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:453
 msgid "Moves: %1/%2"
-msgstr ""
+msgstr "Züge: %1/%2"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:83
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/buy-production-dialog.cpp:189
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:456
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/select-army-dialog.cpp:190
 msgid "Upkeep: %1"
-msgstr ""
+msgstr "Unterhaltskosten: %1"
 
 #. note to translators: %1 is remaining moves, %2 is total moves
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-info-tip.cpp:204
 msgid "Movement: %1"
-msgstr ""
+msgstr "Bewegung: %1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/buy-production-dialog.cpp:178
 msgid "Duration: %1"
-msgstr ""
+msgstr "Dauer: %1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/quest-assigned-dialog.cpp:61
 msgid "This hero already has a quest."
@@ -4598,105 +4482,105 @@ msgstr "Siegerprotokol"
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:449
 msgid "On turn %1 you have %2 gold piece!"
 msgid_plural "On turn %1 you have %2 gold pieces!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Im %1 Zug hast du %2 Goldstück!"
+msgstr[1] "Im %1 Zug hast du %2 Goldstücke!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:452
 msgid "On turn %1 you had %2 gold piece!"
 msgid_plural "On turn %1 you had %2 gold pieces!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Im %1 Zug hattest du %2 Goldstück!"
+msgstr[1] "Im %1 Zug hattest du %2 Goldstücke!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:470
 msgid "On turn %1 you have %2 city!"
 msgid_plural "On turn %1 you have %2 cities!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Im %1 Zug hast du %2 Stadt!"
+msgstr[1] "Im %1 Zug hast du %2 Städte!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:473
 msgid "On turn %1 you had %2 city!"
 msgid_plural "On turn %1 you had %2 cities!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Im %1 Zug hattest du %2 Stadt!"
+msgstr[1] "Im %1 Zug hattest du %2 Städte!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:491
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:494
 msgid "By turn %1 you explored %2 ruin!"
 msgid_plural "By turn %1 you explored %2 ruins!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Im %1 Zug hast du %2 Ruine erforscht!"
+msgstr[1] "Im %1 Zug hast du %2 Ruinen erforscht!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:517
 msgid "On turn %1 you are coming %2!"
-msgstr ""
+msgstr "Im %1 Zug kommst du an Stelle %2!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:519
 msgid "On turn %1 you were coming %2!"
-msgstr ""
+msgstr "Im %1 Zug warst du an Stelle %2!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:548
 msgid "%1 %2 finds a sage!"
-msgstr ""
+msgstr "%1 %2 findet einen Weisen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:556
 msgid "%1 %2 emerges in %3"
-msgstr ""
+msgstr "%1 %2 kommt auf in %3"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:564
 msgid "%1 %2 begins a quest!"
-msgstr ""
+msgstr "%1 %2 beginnt eine Aufgabe!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:572
 msgid "%1 %2 finishes a quest!"
-msgstr ""
+msgstr "%1 %2 beendet eine Aufgabe!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:580
 msgid "%1 %2 is killed in %3!"
-msgstr ""
+msgstr "%1 %2 wurde in %3 getötet!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:588
 msgid "%1 %2 is killed in battle!"
-msgstr ""
+msgstr "%1 %2 wurde im Kampf getötet!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:596
 msgid "%1 %2 is killed while searching!"
-msgstr ""
+msgstr "%1 %2 wurde getötet, während er auf der Suche war!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:604
 msgid "%1 %2 conquers %3!"
-msgstr ""
+msgstr "%1 %2 erobert %3!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:610
 msgid "%1 %2 utterly vanquished!"
-msgstr ""
+msgstr "%1 %2 wurde vernichtend geschlagen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:619
 msgid "%1 %2 at peace with %3 %4!"
-msgstr ""
+msgstr "%1 %2 ist mit %3 %4 im Frieden!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:630
 msgid "%1 %2 at war with %3 %4!"
-msgstr ""
+msgstr "%1 %2 im Krieg mit %3 %4!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:641
 msgid "%1 Treachery on %2 %3!"
-msgstr ""
+msgstr "%1 hat an %2 %3 Verrat begangen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:650
 msgid "%1 %2 finds allies!"
-msgstr ""
+msgstr "%1 %2 findet Alliierte!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:659
 msgid "%1 %2 explores %3!"
-msgstr ""
+msgstr "%1 %2 erforscht %3!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:670
 msgid "%1 %2 uses the %3 against %4 %5!"
-msgstr ""
+msgstr "%1 %2 benutzt den %3 gegen %4 %5!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/history-report-dialog.cpp:675
 msgid "%1 %2 uses the %3!"
-msgstr ""
+msgstr "%1 %2 benutzt den %3!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/sage-dialog.cpp:66
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-rewarded-dialog.cpp:57
@@ -4723,39 +4607,39 @@ msgstr "Status"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:157
 msgid "%1 finds a sage!"
-msgstr ""
+msgstr "%1 findet einen Weisen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:164
 msgid "%1 emerges in %2!"
-msgstr ""
+msgstr "%1 taucht in %2 auf!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:172
 msgid "%1 begins a quest!"
-msgstr ""
+msgstr "%1 beginnt eine Aufgabe!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:179
 msgid "%1 finishes a quest!"
-msgstr ""
+msgstr "%1 beendet eine Aufgabe!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:186
 msgid "%1 is killed in %2!"
-msgstr ""
+msgstr "%1 wurde in %2 getötet!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:194
 msgid "%1 is killed in battle!"
-msgstr ""
+msgstr "%1 wurde im Kampf getötet!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:201
 msgid "%1 is killed while searching!"
-msgstr ""
+msgstr "%1 wurde auf der Suche getötet"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:209
 msgid "%1 conquers %2!"
-msgstr ""
+msgstr "%1 erobert %2!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:217
 msgid "%1 finds allies!"
-msgstr ""
+msgstr "%1 findet Verbündete!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:221
 msgid "unknown"
@@ -4774,24 +4658,24 @@ msgstr "Auf dem Boden"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:421
 msgid "Battle: %1"
-msgstr ""
+msgstr "Kampf: %1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:438
 msgid "Command: %1"
-msgstr ""
+msgstr "Befehl: %1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:440
 msgid "Level: %1"
-msgstr ""
+msgstr "Level: %1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-dialog.cpp:442
 msgid "Experience: %1"
-msgstr ""
+msgstr "Erfahrung: %1"
 
 #. prompt to save the turn file!
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:927
 msgid "Save your Turn file and mail it back"
-msgstr ""
+msgstr "Sichere deine Zug-Datei und sende sie zurück"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1137
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/splash-window.cpp:163
@@ -4811,7 +4695,7 @@ msgstr "Wähle einen Namen"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1205
 msgid "Error saving game!"
-msgstr ""
+msgstr "Beim speichern des Spiels ist ein Fehler aufgetreten!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1316
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:346
@@ -4819,15 +4703,15 @@ msgstr ""
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:652
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:670
 msgid "Corrupted saved game file."
-msgstr ""
+msgstr "Beschädigte gespeicherte Spieldatei."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1389
 msgid "Change the message on this sign:"
-msgstr ""
+msgstr "Verändere die Nachricht auf diesem Wegweiser:"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1444
 msgid "Are you sure you want to disband this group?"
-msgstr ""
+msgstr "Bist du dir sicher, dass du diese Gruppe entlassen willst?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1448
 msgid "(It contains %1 hero)."
@@ -4837,56 +4721,60 @@ msgstr[1] "(Es beinhaltet %1 Helden)."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1506
 msgid "Are you sure you want to resign?"
-msgstr ""
+msgstr "Bist du sicher, dass du abtreten willst?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1619
 msgid "No ruins or temples to show!"
-msgstr ""
+msgstr "Keine Ruinen oder Tempel zu zeigen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1859
 msgid "Congratulations to %1 for conquering the world!"
-msgstr ""
+msgstr "Gratulation an %1 für die Welteroberung!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1877
 msgid "The rule of %1 has permanently ended!"
-msgstr ""
+msgstr "Die Herrschaft von %1 wurde endgültig beendet!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1883
 msgid ""
 "No further human resistance is possible\n"
 "but the battle will continue!"
 msgstr ""
+"Kein weiterer menschlicher Widerstand ist möglich,\n"
+"aber der Kampf wird fortgesetzt!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:1885
 msgid ""
 "Press `CTRL-P' to stop the war\n"
 "and visit the sites of thy old battles."
 msgstr ""
+"Drücke `Strg-P' um den Krieg zu beenden\n"
+"und besuche die Seiten deinen vergangenen Schlachten."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2048
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:271
 msgid "You have %1 city!"
 msgid_plural "You have %1 cities!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Du hast %1 Stadt!"
+msgstr[1] "Du hast %1 Städte!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2053
 msgid "You have %1 gold piece in your treasury!"
 msgid_plural "You have %1 gold pieces in your treasury!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Du hast %1 Goldstück in deiner Schatzkammer!"
+msgstr[1] "Du hast %1 Goldstücke in deiner Schatzkammer!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2058
 msgid "You earn %1 gold piece in income!"
 msgid_plural "You earn %1 gold pieces in income!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Du hast %1 Goldstück an Einkommen verdient!"
+msgstr[1] "Du hast %1 Goldstücke an Einkommen verdient!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2063
 msgid "You pay %1 gold piece in upkeep!"
 msgid_plural "You pay %1 gold pieces in upkeep!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Du bezahlst %1 Goldstück Unterhaltskosten!"
+msgstr[1] "Du bezahlst %1 Goldstücke Unterhaltskosten!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2176
 msgid "UnGrp"
@@ -4894,61 +4782,61 @@ msgstr "Gruppe auflösen"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2443
 msgid "%1 finds "
-msgstr ""
+msgstr "%1 findet "
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2447
 msgid "%1 gold pieces."
-msgstr ""
+msgstr "%1 Goldstücke."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2452
 msgid "%1 allies!"
-msgstr ""
+msgstr "%1 Verbündete!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2457
 msgid "the %1!"
-msgstr ""
+msgstr "der %1!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2462
 msgid "a map!"
-msgstr ""
+msgstr "eine Karte!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2487
 msgid "Searching"
-msgstr ""
+msgstr "Suchend"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2516
 msgid "Hero Victorious"
-msgstr ""
+msgstr "Der Held ist siegreich"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2518
 msgid "Hero Defeated"
-msgstr ""
+msgstr "Der Held wurde besiegt"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2525
 msgid "...and is victorious!"
-msgstr ""
+msgstr "...und ist siegreich!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2527
 msgid "...and is slain by it!"
-msgstr ""
+msgstr "...und wurde von ihm besiegt!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2571
 msgid "Hero brings allies!"
-msgstr ""
+msgstr "Der Held bringt Verbündete!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2577
 msgid "The hero brings %1 ally!"
 msgid_plural "The hero brings %1 allies!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Der Held bringt %1 Verbündeten!"
+msgstr[1] "Der Held bringt %1 Verbündete!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2609
 msgid "You graciously and benevolently accept their offer."
-msgstr ""
+msgstr "Du hast gnädig und wohlwollend ihr Angebot akzeptiert."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2635
 msgid "Are you sure you want to attack %1?"
-msgstr ""
+msgstr "Bist du sicher, dass du %1 angreifen willst?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2638
 msgid "Other players may not like this!"
@@ -4957,16 +4845,16 @@ msgstr "Anderen Spielern wird das nicht gefallen!"
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2702
 msgid "%1 army has been blessed!"
 msgid_plural "%1 armies have been blessed!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 Armee wurde gesegnet!"
+msgstr[1] "%1 Armeen wurde gesegnet!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2705
 msgid "We have already blessed thee!"
-msgstr ""
+msgstr "Wir haben dich bereits gesegnet!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2708
 msgid "Seek more blessings in far temples!"
-msgstr ""
+msgstr "Suche weitere Segnungen in fernen Tempeln!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2712
 msgid "Do you seek a quest?"
@@ -4974,87 +4862,89 @@ msgstr "Suchst du eine Aufgabe?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2857
 msgid "%1, you have triumphed in the battle of %2."
-msgstr ""
+msgstr "%1, du hast im Kampf um %2 triumphiert."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2858
 msgid "%1, you have claimed victory in the battle of %2."
-msgstr ""
+msgstr "%1, du hast den Sieg im Kampf um %2 beansprucht."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2859
 msgid "%1, you have shown no mercy in the battle of %2."
-msgstr ""
+msgstr "%1, du hast keine Gnade im Kampf um %2 gezeigt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2860
 msgid "%1, you have slain the foe in the battle of %2."
-msgstr ""
+msgstr "% 1, du hast den Feind in der Schlacht von% 2 erschlagen."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2965
 msgid "%1 Looted"
-msgstr ""
+msgstr "%1 geraubt"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2972
 msgid "Your armies loot %1 gold piece."
 msgid_plural "Your armies loot %1 gold pieces."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Deine Armeen haben %1 Goldstück geraubt."
+msgstr[1] "Deine Armeen haben %1 Goldstücke geraubt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:2998
 msgid "Pillaged %1"
-msgstr ""
+msgstr "%1 Geplündert"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3025
 msgid "The loot is worth %1 gold piece."
 msgid_plural "The loot is worth %1 gold pieces."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Die Beute ist %1 Goldstück wert."
+msgstr[1] "Die Beute ist %1 Goldstücke wert."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3052
 msgid "Sacked %1"
-msgstr ""
+msgstr "Geplündert %1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3060
 msgid "Ability to produce %1 unit has been lost"
 msgid_plural "Ability to produce %1 units has been lost"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Die Fähigkeit, %1 Einheit zu produzieren, ging verloren."
+msgstr[1] "Die Fähigkeit, %1 Einheiten zu produzieren, ging verloren."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3152
 msgid "Razed %1"
-msgstr ""
+msgstr "Zerstört %1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3157
 msgid "The city of %1 is in ruins!"
-msgstr ""
+msgstr "Von der Stadt %1 stehen nur noch Ruinen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3253
 msgid ""
 "%1\n"
 "Turn %2"
 msgstr ""
+"%1\n"
+"Zug %2"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3295
 msgid "Your unit of %1 is awarded the avenger's medal of valour!"
-msgstr ""
+msgstr "Deiner Einheit %1 wurde die Medallie der Tapferkeit der Rächer verliehen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3297
 msgid "Your unit of %1 is awarded the defender's medal of bravery!"
-msgstr ""
+msgstr "Deiner Einheit %1 wurde die Verteidiger-Medaille der Tapferkeit verliehen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3299
 msgid "Your unit of %1 is awarded the veteran's medal!"
-msgstr ""
+msgstr "Deiner Einheit %1 wurde die Veteranen-Medaille verliehen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3301
 msgid "Your unit of %1 is awarded a medal!"
-msgstr ""
+msgstr "Deiner Einheit %1 wurde eine Medaille verliehen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3337
 msgid "%1, your turn continues."
-msgstr ""
+msgstr "%1, dein Zug geht weiter."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3374
 msgid "%1 did not complete the quest."
-msgstr ""
+msgstr "%1 hat die Aufgabe nicht beendet."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3462
 msgid "Advisor!"
@@ -5082,212 +4972,212 @@ msgstr "Oh großer Kriegsherr!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3486
 msgid "This battle will surely be as simple as butchering sleeping cattle!"
-msgstr ""
+msgstr "Dieser Kampf wird sicher so einfach wie das abschlachten schlafenden Viehs!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3488
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3494
 msgid "A battle here would be as simple as butchering sleeping cattle!"
-msgstr ""
+msgstr "Ein Kampf wird hier sicher so einfach wie das abschlachten schlafenden Viehs!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3490
 msgid "I believe this battle will surely be as simple as butchering sleeping cattle!"
-msgstr ""
+msgstr "Ich glaube, dass ein Kampf hier sicher so einfach wie das abschlachten schlafenden Viehs wird!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3492
 msgid "This battle would be as simple as butchering sleeping cattle!"
-msgstr ""
+msgstr "Dieser Kampf wird so einfach wie das abschlachten schlafenden Viehs!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3496
 msgid "I believe this battle will be as simple as butchering sleeping cattle!"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird so einfach wie das abschlachten schlafenden Viehs!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3498
 msgid "This battle shall be as simple as butchering sleeping cattle!"
-msgstr ""
+msgstr "Dieser Kampf sollte so einfach sein wie das abschlachten schlafenden Viehs!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3503
 msgid "This battle will surely be an easy victory!  We cannot lose!"
-msgstr ""
+msgstr "Dieser Kampf wird sicher ein einfacher Sieg! Wir können nicht verlieren!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3505
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3511
 msgid "A battle here would be an easy victory!  We cannot lose!"
-msgstr ""
+msgstr "Ein Kampf wäre hier ein einfacher Sieg! Wir können nicht verlieren!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3507
 msgid "I believe this battle will surely be an easy victory!  We cannot lose!"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird sicherlich ein einfacher Sieg! Wir können nicht verlieren!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3509
 msgid "This battle would be an easy victory!  We cannot lose!"
-msgstr ""
+msgstr "Dieser Kampf wäre ein einfacher Sieg! Wir können nicht verlieren"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3513
 msgid "I believe this battle will be an easy victory!  We cannot lose!"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird ein einfacher Sieg sein! Wir können nicht verlieren!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3515
 msgid "This battle shall be an easy victory!  We cannot lose!"
-msgstr ""
+msgstr "Dieser Kampf sollte ein einfacher Sieg sein! Wir können nicht verlieren!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3520
 msgid "This battle will surely be a comfortable victory"
-msgstr ""
+msgstr "Dieser Kampf wird sicherlich ein angenehmer Sieg."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3522
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3528
 msgid "A battle here would be a comfortable victory"
-msgstr ""
+msgstr "Ein Kampf hier wäre ein komfortabler Sieg."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3524
 msgid "I believe this battle will surely be a comfortable victory"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird sicherlich eine angenehmer Sieg."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3526
 msgid "This battle would be a comfortable victory"
-msgstr ""
+msgstr "Dieser Kampf würde einen komfortablen Sieg werden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3530
 msgid "I believe this battle will be a comfortable victory"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird ein komfortabler Sieg."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3532
 msgid "This battle shall be a comfortable victory"
-msgstr ""
+msgstr "Dieser Kampf wird eine komfortabler Sieg."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3537
 msgid "This battle will surely be a hard fought victory! But we shall win!"
-msgstr ""
+msgstr "Dieser Kampf wird sicherlich einem hart erkämpfter Sieg! Aber wir werden gewinnen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3539
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3545
 msgid "A battle here would be a hard fought victory! But we shall win!"
-msgstr ""
+msgstr "Ein Kampf wäre hier ein hart erkämpfter Sieg! Aber wir werden gewinnen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3541
 msgid "I believe this battle will surely be a hard fought victory! But we shall win!"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird sicherlich ein hart erkämpfter Sieg! Aber wir werden gewinnen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3543
 msgid "This battle would be a hard fought victory! But we shall win!"
-msgstr ""
+msgstr "Dieser Kampf würde einem hart erkämpfter Sieg werden! Aber wir werden gewinnen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3547
 msgid "I believe this battle will be a hard fought victory! But we shall win!"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird hart erkämpfter Sieg sein! Aber wir werden gewinnen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3549
 msgid "This battle shall be a hard fought victory! But we shall win!"
-msgstr ""
+msgstr "Dieser Kampf wird einem hart erkämpfter Sieg! Aber wir werden gewinnen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3554
 msgid "This battle will surely be very evenly matched!"
-msgstr ""
+msgstr "Dieser Kampf wird sicherlich sehr ebenbürtig sein!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3556
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3562
 msgid "A battle here would be very evenly matched!"
-msgstr ""
+msgstr "Ein Kampf wäre hier sehr ebenbürtig!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3558
 msgid "I believe this battle will surely be very evenly matched!"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird sicherlich sehr ebenbürtig!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3560
 msgid "This battle would be very evenly matched!"
-msgstr ""
+msgstr "Dieser Kampf würde sehr ebenbürtig sein!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3564
 msgid "I believe this battle will be very evenly matched!"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird sehr ebenbürtig!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3566
 msgid "This battle shall be very evenly matched!"
-msgstr ""
+msgstr "Dieser Kampf wird sehr ebenbürtig!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3571
 msgid "This battle will surely be difficult but not impossible to win!"
-msgstr ""
+msgstr "Dieser Kampf wird sicherlich schwierig, aber nicht unmöglich zu gewinnen sein!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3573
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3579
 msgid "A battle here would be difficult but not impossible to win!"
-msgstr ""
+msgstr "Ein Kampf wäre hier schwierig, aber nicht unmöglich zu gewinnen sein!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3575
 msgid "I believe this battle will surely be difficult but not impossible to win!"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird sicherlich schwierig, aber nicht unmöglich zu gewinnen sein!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3577
 msgid "This battle would be difficult but not impossible to win!"
-msgstr ""
+msgstr "Diese Schlacht wäre schwierig, aber nicht unmöglich zu gewinnen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3581
 msgid "I believe this battle will be difficult but not impossible to win!"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird schwierig, aber nicht unmöglich zu gewinnen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3583
 msgid "This battle shall be difficult but not impossible to win!"
-msgstr ""
+msgstr "Dieser Kampf wird schwierig, aber nicht unmöglich zu gewinnen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3588
 msgid "This battle will surely be a brave choice! I leave it to thee!"
-msgstr ""
+msgstr "Dieser Kampf wird sicherlich eine mutige Wahl! Ich überlasse es dir!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3590
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3596
 msgid "A battle here would be a brave choice! I leave it to thee!"
-msgstr ""
+msgstr "Ein Kampf wäre hier eine mutige Wahl! Ich überlasse es dir!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3592
 msgid "I believe this battle will surely be a brave choice! I leave it to thee!"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird sicherlich eine mutige Wahl! Ich überlasse es dir!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3594
 msgid "This battle would be a brave choice! I leave it to thee!"
-msgstr ""
+msgstr "Dieser Kampf würde eine mutige Wahl sein! Ich überlasse es dir!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3598
 msgid "I believe this battle will be a brave choice! I leave it to thee!"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird eine mutige Wahl sein! Ich überlasse es dir!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3600
 msgid "This battle shall be a brave choice! I leave it to thee!"
-msgstr ""
+msgstr "Dieser Kampf wird eine mutige Wahl! Ich überlasse es dir!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3605
 msgid "This battle will surely be a foolish decision!"
-msgstr ""
+msgstr "Dieser Kampf wird sicherlich eine dumme Entscheidung sein!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3607
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3613
 msgid "A battle here would be a foolish decision!"
-msgstr ""
+msgstr "Ein Kampf wäre hier eine törichte Entscheidung!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3609
 msgid "I believe this battle will surely be a foolish decision!"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird sicherlich eine dumme Entscheidung!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3611
 msgid "This battle would be a foolish decision!"
-msgstr ""
+msgstr "Diese Schlacht wäre eine dumme Entscheidung!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3615
 msgid "I believe this battle will be a foolish decision!"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird eine törichte Entscheidung!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3617
 msgid "This battle shall be a foolish decision!"
-msgstr ""
+msgstr "Dieser Kampf wird eine törichte Entscheidung!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3622
 msgid "This battle will surely be sheerest folly!  Thou shouldst not attack!"
-msgstr ""
+msgstr "Dieser Kampf ist sicherlich der reinste Wahnsinn! Du solltest nicht angreifen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3624
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3630
 msgid "A battle here would be sheerest folly!  Thou shouldst not attack!"
-msgstr ""
+msgstr "Ein Kampf wäre hier der reinste Wahnsinn! Du solltest nicht angreifen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3626
 msgid "I believe this battle will surely be sheerest folly!  Thou shouldst not attack!"
@@ -5312,19 +5202,19 @@ msgstr "Dieser Kampf wird sicher kompletter völliger Selbstmord sein!"
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3641
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3647
 msgid "A battle here would be complete and utter suicide!"
-msgstr ""
+msgstr "Ein Kampf wäre hier uneingeschränkter und vollständiger Selbstmord!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3643
 msgid "I believe this battle will surely be complete and utter suicide!"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird sicherlich uneingeschränkter und vollständiger Selbstmord!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3645
 msgid "This battle would be complete and utter suicide!"
-msgstr ""
+msgstr "Dieser Kampf würde uneingeschränkten und vollständigen Selbstmord gleichen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3649
 msgid "I believe this battle will be complete and utter suicide!"
-msgstr ""
+msgstr "Ich glaube, dieser Kampf wird komplett und völliger Selbstmord!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-window.cpp:3651
 msgid "This battle shall be complete and utter suicide!"
@@ -5387,14 +5277,16 @@ msgid ""
 "Invalid map file.\n"
 "Please validate it in the scenario editor."
 msgstr ""
+"Ungültige Karten-Datei (.map).\n"
+"Bitte validiere Sie in dem Szenario-Editor."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:681
 msgid "Save the scenario and mail it to the first player"
-msgstr ""
+msgstr "Speichern Sie das Szenario und senden Sie es an den ersten Spieler"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:704
 msgid "Error while trying to rename the temporary file to "
-msgstr ""
+msgstr "Fehler beim Versuch, die temporäre Datei umbenennen"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:706
 msgid "Error: "
@@ -5402,7 +5294,7 @@ msgstr "Fehler:"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/driver.cpp:709
 msgid "Now send the saved-game file to %1"
-msgstr ""
+msgstr "Nun senden Sie die gespeicherte Spiel Datei an % 1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-levels-dialog.cpp:55
 msgid "Level"
@@ -5429,21 +5321,21 @@ msgstr "Zug"
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-levels-dialog.cpp:117
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:327
 msgid "%1"
-msgstr ""
+msgstr "%1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-rewarded-dialog.cpp:85
 msgid "The sages show thee the site of %1\n"
-msgstr ""
+msgstr "Die Weisen zeigen dir die Seite von %1\n"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/surrender-refused-dialog.cpp:46
 msgid "Off with their heads!  I want it ALL!"
-msgstr ""
+msgstr "Herunter mit Ihren Köpfen! Ich will sie ALLE!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/surrender-dialog.cpp:47
 msgid "Your enemy grudgingly surrenders!\n"
 msgid_plural "Your enemies respectfully surrender!\n"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Dein Feind gibt ungern auf!\n"
+msgstr[1] "Deine Feinde geben ungern auf!\n"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/surrender-dialog.cpp:50
 msgid "Do you accept?"
@@ -5472,24 +5364,24 @@ msgstr "Nein"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-report-dialog.cpp:152
 msgid "It is especially well-guarded."
-msgstr ""
+msgstr "Es ist besonders gut bewacht."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-report-dialog.cpp:154
 msgid "Rumour speaks of a formidable force within."
-msgstr ""
+msgstr "Die Gerüchte sprechen von einer gewaltigen Kraft in ihm."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-report-dialog.cpp:157
 msgid "Even heroes are wary of this site."
-msgstr ""
+msgstr "Auch Helden sind vorsichtig auf dieser Seite."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-report-dialog.cpp:159
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-report-dialog.cpp:169
 msgid "Bones litter this place."
-msgstr ""
+msgstr "Knochen übersäen an dieser Stelle den Boden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-report-dialog.cpp:161
 msgid "It is guarded."
-msgstr ""
+msgstr "Es ist bewacht."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/ruin-report-dialog.cpp:175
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1435
@@ -5498,19 +5390,19 @@ msgstr "Tempel"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/splash-window.cpp:108
 msgid "Rescue Crashed Game"
-msgstr ""
+msgstr "Stelle abgestürztes Spiel wieder her"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/splash-window.cpp:241
 msgid "New Networked Game"
-msgstr ""
+msgstr "Neues Netzwerkspiel"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/splash-window.cpp:274
 msgid "New Play By Mail game"
-msgstr ""
+msgstr "Neues Email-Spiel"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/splash-window.cpp:341
 msgid "Please exit the program and restart it for the changes to take effect."
-msgstr ""
+msgstr "Bitte beenden Sie das Programm und starten Sie es neu, damit die Änderungen wirksam werden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/quest-report-dialog.cpp:116
 msgid "No Quest"
@@ -5518,7 +5410,7 @@ msgstr "Keine Aufgabe"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/quest-report-dialog.cpp:121
 msgid "Seek a quest in a temple!"
-msgstr ""
+msgstr "Suche eine Aufgabe in einem Tempel!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/quest-report-dialog.cpp:124
 msgid "Quest?  What Quest?"
@@ -5531,8 +5423,8 @@ msgstr "Du hast keine Aufgaben!"
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:96
 msgid "You produced %1 army this turn!"
 msgid_plural "You produced %1 armies this turn!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Du hast %1 Armee in diesem Zug produziert!"
+msgstr[1] "Du hast %1 Armeen in diesem Zug produziert!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:201
 msgid "Army Report"
@@ -5557,14 +5449,14 @@ msgstr "Bericht über den Sieg"
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:239
 msgid "You have %1 army!"
 msgid_plural "You have %1 armies!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Du hast %1 Armee!"
+msgstr[1] "Du hast %1 Armeen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:303
 msgid "You have %1 gold piece!"
 msgid_plural "You have %1 gold pieces!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Du hast %1 Goldstück!"
+msgstr[1] "Du hast %1 Goldstücke!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:317
 msgid "first"
@@ -5600,15 +5492,15 @@ msgstr "Achter"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:350
 msgid "You are coming %1"
-msgstr ""
+msgstr "Du kommst an %1. Stelle"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/report-dialog.cpp:392
 msgid "Standard"
-msgstr "Standard"
+msgstr "Flagge"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-gains-level-dialog.cpp:60
 msgid "%1 has advanced to level %2!"
-msgstr ""
+msgstr "%1 ist auf Level %2 aufgestiegen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-gains-level-dialog.cpp:64
 msgid "Choose an attribute to improve:"
@@ -5616,25 +5508,25 @@ msgstr "Wähle eine Eigenschaft aus, die du verbessern willst:"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/army-gains-level-dialog.cpp:71
 msgid "Sight: %1"
-msgstr ""
+msgstr "Sicht: %1"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-offer-dialog.cpp:56
 msgid "Hero offer for %1"
-msgstr ""
+msgstr "Held für %1 einstellen"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-offer-dialog.cpp:76
 msgid "A hero in %2 wants to join you for %1 gold piece!"
 msgid_plural "A hero in %2 wants to join you for %1 gold pieces!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Ein Held in% 2 will dich für% 1 Goldstück unterstützen!"
+msgstr[1] "Ein Held in% 2 will dich für% 1 Goldstücke unterstützen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/hero-offer-dialog.cpp:80
 msgid "A hero in %1 wants to join you!"
-msgstr ""
+msgstr "Ein held in %1 will dich unterstützen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-random-map-dialog.cpp:468
 msgid "Autogenerated"
-msgstr ""
+msgstr "Automatisch generiert"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/CreateScenarioRandomize.cpp:142
 msgid "southeast"
@@ -5727,29 +5619,29 @@ msgstr "unbenannt"
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-info-dialog.cpp:148
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-info-dialog.cpp:147
 msgid "That filename is already used."
-msgstr ""
+msgstr "Dieser Dateiname wird bereits benutzt"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-info-dialog.cpp:155
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-info-dialog.cpp:155
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-info-dialog.cpp:156
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-info-dialog.cpp:155
 msgid "That name is already in use."
-msgstr ""
+msgstr "Dieser Name wird bereits benutzt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:309
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:144
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:277
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:131
 msgid "Do you want to recover the session?"
-msgstr ""
+msgstr "Wollen Sie die Sitzung wiederherstellen?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:314
 msgid "Do you want to recover %1 (%2 armies)?"
-msgstr ""
+msgstr "Wollen Sie %1 wiederherstellen (%2 Armeen)?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:319
 msgid "Do you want to recover %1 (%2, %3 armies)?"
-msgstr ""
+msgstr "Wollen Sie %1 wiederherstellen (%2, %3 Armeen)?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:482
 msgid "Make a New Armyset"
@@ -5761,60 +5653,60 @@ msgstr "Wähle ein Armee-Set aus, das geladen werden soll"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:549
 msgid "There must be at least one army unit in the armyset."
-msgstr ""
+msgstr "Es muss mindestens eine Armee-Einheit im Armee-Set sein."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:552
 msgid "There must be at least one hero in the armyset."
-msgstr ""
+msgstr "Es muss mindestens ein Held im Armee-Set sein."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:555
 msgid "There must be at least one army unit with a production cost of more than zero."
-msgstr ""
+msgstr "Es muss mindestens eine Armee-Einheit mit Produktionskosten größer 0 geben."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:558
 msgid "There must be at least one army unit than can defend a ruin."
-msgstr ""
+msgstr "Es muss mindestens eine Armee-Einheit geben, die eine Ruine verteidigen kann."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:561
 msgid "There must be at least one army unit than can be awarded to a hero."
-msgstr ""
+msgstr "Es muss mindestens eine Armee-Einheit geben, die einem Helden als Belohnung gegeben werden kann."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:564
 msgid "The ship image must be set."
-msgstr ""
+msgstr "Ein Bild für Schiffe muss gesetzt werden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:567
 msgid "The hero's standard (the flag) image must be set."
-msgstr ""
+msgstr "Das Standartenbild des Helden (die Flagge) muss gesetzt sein."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:570
 msgid "The picture for the bag of items must be set."
-msgstr ""
+msgstr "Das Bild der Tasche der Gegenstände muss gesetzt sein."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:578
 msgid "%1 does not have an image set for the %2 player"
-msgstr ""
+msgstr "%1 hat kein Bild für den Spieler %2 gesetzt"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:585
 msgid "An army unit does not have a name."
-msgstr ""
+msgstr "Eine Armee-Einheit hat keinen namen."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:593
 msgid "The armyset is valid."
-msgstr ""
+msgstr "Das Armee-Set ist valide."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:608
 msgid "Save a Copy of a Armyset"
-msgstr ""
+msgstr "Sichere eine Kopie des Armee-Sets"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:632
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:677
 msgid "Error!  Armyset could not be saved."
-msgstr ""
+msgstr "Fehler! Das Armee-Set konnte nicht gespeichert werden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:755
 msgid "Edit Armyset Information"
-msgstr ""
+msgstr "Bearbeite Armee-Set informationen"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:823
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:991
@@ -5824,33 +5716,33 @@ msgstr ""
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:196
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:464
 msgid "no image set"
-msgstr ""
+msgstr "Kein Bild gesetzt"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:1879
 msgid "Error!  The version of the armyset is unsupported."
-msgstr ""
+msgstr "Fehler! Die Version des Armee-Sets wird nicht unterstützt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/armyset-window.cpp:1881
 msgid "Error!  Armyset could not be loaded."
-msgstr ""
+msgstr "Fehler! Das Armee-Set konnte nicht geladen werden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:149
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:136
 msgid "Do you want to recover %1?"
-msgstr ""
+msgstr "Wollen Sie %1 wiederherstellen?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:154
 msgid "Do you want to recover %1 (%2, %3 more images needed)?"
-msgstr ""
+msgstr "Wollen Sie %1 wiederherstellen (%2, %3 mehr Bilder werden gebraucht)?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:162
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:139
 msgid "Do you want to recover %1 (%2)?"
-msgstr ""
+msgstr "Wollen Sie %1 wiederherstellen (%2)?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:291
 msgid "Make a New Cityset"
-msgstr ""
+msgstr "Erstelle ein neues Stadt-Set"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:321
 msgid "Choose a Cityset to Load"
@@ -5862,57 +5754,57 @@ msgstr "Das Bild der Stadt wurde nicht gesetzt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:354
 msgid "The razed cities picture is not set."
-msgstr ""
+msgstr "Das Bild für zerstörte Städte wurde nicht gesetzt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:356
 msgid "The port picture is not set."
-msgstr ""
+msgstr "Das Bild für Häfen wurde nicht gesetzt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:358
 msgid "The signpost picture is not set."
-msgstr ""
+msgstr "Das Bild für Schilder wurde nicht gesetzt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:360
 msgid "The ruins picture is not set."
-msgstr ""
+msgstr "Das Bild für Ruinen wurde nicht gesetzt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:362
 msgid "The temple picture is not set."
-msgstr ""
+msgstr "Das Bild für Tempel wurde nicht gesetzt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:364
 msgid "The towers picture is not set."
-msgstr ""
+msgstr "Das Bild für Türme wurde nicht gesetzt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:366
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:370
 msgid "The tile width for temples must be over zero."
-msgstr ""
+msgstr "Die Kachelbreite für Tempel muss größer als 0 sein."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:368
 msgid "The tile width for ruins must be over zero."
-msgstr ""
+msgstr "Die Kachelbreite für Ruinen muss größer als 0 sein."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:378
 msgid "The cityset is valid."
-msgstr ""
+msgstr "Das Stadt-Set ist valide."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:393
 msgid "Save a Copy of a Cityset"
-msgstr ""
+msgstr "Speichere eine Kopie des Stadt-Sets"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:417
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:456
 msgid "Error!  Cityset could not be saved."
-msgstr ""
+msgstr "Fehler! Stadt-Set konnte nicht geladen werden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:519
 msgid "Error!  The version of cityset is unsupported."
-msgstr ""
+msgstr "Fehler! Die Version des Stadt-Sets wird nicht unterstützt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/cityset-window.cpp:521
 msgid "Error!  Cityset could not be loaded."
-msgstr ""
+msgstr "Fehler! Das Stadt-Set konnte nicht geladen werden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/city-editor-dialog.cpp:45
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/stack-editor-dialog.cpp:49
@@ -5936,21 +5828,21 @@ msgstr "Keine Beschreibung"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:800
 msgid "Choose Map to Load"
-msgstr ""
+msgstr "Wähle eine Karte aus, die geladen werden soll"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:830
 msgid "Could not load map %1."
-msgstr ""
+msgstr "Die Karte %1 konnte nicht geladen werden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:853
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:945
 msgid "Map was not saved!"
-msgstr ""
+msgstr "Die Karte wurde nicht gesichert!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:888
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:916
 msgid "Map was not exported!"
-msgstr ""
+msgstr "Die Karte wurde nicht exportiert!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1183
 msgid "Auto"
@@ -5959,11 +5851,11 @@ msgstr "Auto"
 #. note to translators: this is a coordinate pair (x, y)
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1405
 msgid "(%1, %2)"
-msgstr ""
+msgstr "(%1, %2)"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1437
 msgid "Bag"
-msgstr ""
+msgstr "Tasche"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1730
 msgid "No errors."
@@ -5977,7 +5869,11 @@ msgid_plural ""
 "\n"
 "There are %1 more errors"
 msgstr[0] ""
+"\n"
+"Es gibt noch %1 Fehler."
 msgstr[1] ""
+"\n"
+"Es gibt noch %1 Fehler."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1735
 msgid ""
@@ -5987,15 +5883,19 @@ msgid_plural ""
 "\n"
 "There are %1 warnings"
 msgstr[0] ""
+"\n"
+"Es gibt noch %1 Warnung"
 msgstr[1] ""
+"\n"
+"Es gibt noch %1 Warnungen"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1759
 msgid "Choose Game to Load Map from"
-msgstr ""
+msgstr "Wähle ein Spiel aus, das aus der Karte geladen werden soll"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/main-window.cpp:1786
 msgid "Could not load game %1."
-msgstr ""
+msgstr "Das Spiel %1 konnte nicht geladen werden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/ruin-editor-dialog.cpp:217
 msgid "No keeper"
@@ -6047,210 +5947,210 @@ msgstr "Mittig unten, außen"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:107
 msgid "Outer Bottom-Right"
-msgstr ""
+msgstr "Außen Unten Rechts"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:108
 msgid "Outer Middle-Left"
-msgstr ""
+msgstr "Außen Mittig Links"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:109
 msgid "Inner Middle-Center"
-msgstr ""
+msgstr "Innen Mittig Zentral"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:110
 msgid "Outer Middle-Right"
-msgstr ""
+msgstr "Außen Zentral Rechts"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:111
 msgid "Inner Top-Left"
-msgstr ""
+msgstr "Innen Oben Links"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:112
 msgid "Inner Top-Right"
-msgstr ""
+msgstr "Innen Oben Rechts"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:113
 msgid "Inner Bottom-Left"
-msgstr ""
+msgstr "Innen Unten Links"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:114
 msgid "Inner Bottom-Right"
-msgstr ""
+msgstr "Innen Unten Rechts"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:115
 msgid "Top-Left To Bottom-Right"
-msgstr ""
+msgstr "Oben Links nach Unten Rechts"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:116
 msgid "Bottom-Left To Top-Right"
-msgstr ""
+msgstr "Unten Links nach Oben Rechts"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:117
 msgid "Other"
-msgstr ""
+msgstr "Andere"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:118
 msgid "Unknown"
-msgstr ""
+msgstr "Unbekannt"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:127
 msgid "Solid"
-msgstr ""
+msgstr "Fest"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:128
 msgid "Stippled"
-msgstr ""
+msgstr "Getüpfelt"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:129
 msgid "Randomized"
-msgstr ""
+msgstr "Zufällig"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:130
 msgid "Sunken"
-msgstr ""
+msgstr "Gesunken"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:131
 msgid "Tablecloth"
-msgstr ""
+msgstr "Tischdecke"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:132
 msgid "Diagonal"
-msgstr ""
+msgstr "Diagonal"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:133
 msgid "Crosshatched"
-msgstr ""
+msgstr "Schraffiert"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:134
 msgid "Sunken Striped"
-msgstr ""
+msgstr "Gesunken gestreift"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:282
 msgid "Do you want to recover %1 (%2 tiles)?"
-msgstr ""
+msgstr "Willst du %1 wiederherstellen (%2 Kacheln)?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:287
 msgid "Do you want to recover %1 (%2, %3 tiles)?"
-msgstr ""
+msgstr "Willst du %1 wiederherstellen (%2, %3 Kacheln)?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:496
 msgid "Make a New Tileset"
-msgstr ""
+msgstr "Erstelle ein neues Kachel-Set"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:530
 msgid "Choose a Tileset to Load"
-msgstr ""
+msgstr "Wähle ein Kachel-Set, dass geladen werden soll."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:559
 msgid "Save a Copy of a Tileset"
-msgstr ""
+msgstr "Sichere eine Kopie eines Kachel-Sets"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:583
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:627
 msgid "Error!  Tileset could not be saved."
-msgstr ""
+msgstr "Fehler! Kachelset konnte nicht gespeichert werden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:976
 msgid "Choose an Image"
-msgstr ""
+msgstr "Wähle ein Bild"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:1352
 msgid "Error!  The version of the tileset is unsupported."
-msgstr ""
+msgstr "Fehler! Die Version des Kachel-Sets wird nicht unterstützt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tileset-window.cpp:1354
 msgid "Error!  Tileset could not be loaded."
-msgstr ""
+msgstr "Fehler! Das Kachel-Set konnte nicht geladen werden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tilestyle-organizer-dialog.cpp:197
 msgid "(%1 items)"
-msgstr ""
+msgstr "(%1 Gegenstände)"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tilestyle-organizer-dialog.cpp:204
 msgid "Unsorted TileStyles"
-msgstr ""
+msgstr "Nicht sortierter Kachel-Stil"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:144
 msgid "Do you want to recover %1 (%2, %3 images needed)?"
-msgstr ""
+msgstr "Willst du %1 wiederherstellen (%2, %3 Bilder werden benötigt)?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:250
 msgid "Make a New Shieldset"
-msgstr ""
+msgstr "Erstelle ein neues Schild-Set"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:285
 msgid "Choose a Shieldset to Load"
-msgstr ""
+msgstr "Wähle ein neues Schild-Set, dass geladen werden soll"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:320
 msgid "The shieldset must have 9 shields in it."
-msgstr ""
+msgstr "Das Schild-Set muss 9 Schilder haben."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:328
 msgid "%1 must have all three images specified."
-msgstr ""
+msgstr "%1 muss alle drei Bilder angegeben haben."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:341
 msgid "The shieldset is valid."
-msgstr ""
+msgstr "Das Schild-Set ist valide."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:356
 msgid "Save a Copy of a Shieldset"
-msgstr ""
+msgstr "Speichere eine Kopie des Schild-Sets"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:380
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:414
 msgid "Error!  Shieldset could not be saved."
-msgstr ""
+msgstr "Fehler! Die Version des Schild-Sets wird nicht unterstützt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:510
 msgid "Error!  The version of the shieldset is not supported."
-msgstr ""
+msgstr "Fehler! Die Version des Schild-Sets wird nicht unterstützt."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/shieldset-window.cpp:512
 msgid "Error!  Shieldset could not be loaded."
-msgstr ""
+msgstr "Fehler! Schild-Set konnte nicht geladen werden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/tile-size-editor-dialog.cpp:41
 msgid "Do you want to change the tile size from %1 to %2?"
-msgstr ""
+msgstr "Willst du die Kachelgröße von %1 nach %2 ändern?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/editor-splash-window.cpp:56
 msgid "Loading Armysets"
-msgstr ""
+msgstr "Armee-Set wird geladen"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/editor-splash-window.cpp:61
 msgid "Loading Citysets"
-msgstr ""
+msgstr "Stadt-Set wird geladen"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/editor-splash-window.cpp:65
 msgid "Loading Tilesets"
-msgstr ""
+msgstr "Kachel-Set wird geladen"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/editor/editor-splash-window.cpp:69
 msgid "Loading Shieldsets"
-msgstr ""
+msgstr "Schild-Set wird geladen"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/city-info-tip.cpp:70
 msgid "Razed!"
-msgstr ""
+msgstr "Zerstört!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/city-info-tip.cpp:88
 msgid "Capital of\n"
-msgstr ""
+msgstr "Hauptstadt von\n"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/decorated.cpp:67
 msgid "Minimize"
-msgstr ""
+msgstr "Minimieren"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/decorated.cpp:75
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/decorated.cpp:128
 msgid "Maximize"
-msgstr ""
+msgstr "Maximieren"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/decorated.cpp:82
 msgid "Close"
-msgstr ""
+msgstr "Schließen"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/decorated.cpp:122
 msgid "Restore"
@@ -6263,11 +6163,11 @@ msgstr "Person"
 #. if it's this player's turn
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-lobby-dialog.cpp:242
 msgid "Turn"
-msgstr ""
+msgstr "Zug"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-lobby-dialog.cpp:283
 msgid "Seated"
-msgstr ""
+msgstr "Gesetzt"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/game-lobby-dialog.cpp:640
 msgid "People"
@@ -6275,21 +6175,21 @@ msgstr "Leute"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/new-network-game-download-window.cpp:28
 msgid "Downloading."
-msgstr ""
+msgstr "Läd herunter."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/item-report-dialog.cpp:102
 msgid "You have %1 item!"
 msgid_plural "You have %1 items!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Du hast %1 Gegenstand!"
+msgstr[1] "Du hast %1 Gegenstände!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/gui/item-report-dialog.cpp:105
 msgid "You don't have any items!"
-msgstr ""
+msgstr "Du hast keine Gegenstände"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/xmlhelper.cpp:394
 msgid "Saving game without obfuscation.\n"
-msgstr ""
+msgstr "Spiel ohne Verschleierung speichern.\n"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/armybase.cpp:87
 #: ../../lordsawar/lordsawar/trunk/po/../src/armybase.cpp:90
@@ -6305,7 +6205,7 @@ msgstr ""
 #: ../../lordsawar/lordsawar/trunk/po/../src/armybase.cpp:118
 #: ../../lordsawar/lordsawar/trunk/po/../src/armybase.cpp:121
 msgid "%1%2"
-msgstr ""
+msgstr "%1%2"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/armybase.cpp:88
 msgid "+1 str in open"
@@ -6337,7 +6237,7 @@ msgstr "+1 Stack auf Hügeln"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/armybase.cpp:109
 msgid "Cancel city bonus"
-msgstr ""
+msgstr "Breche Stadt-Bonus ab"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/armybase.cpp:112
 msgid "-1 enemy stack"
@@ -6353,11 +6253,11 @@ msgstr "+2 Stack"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/armybase.cpp:119
 msgid "cancel non-hero"
-msgstr ""
+msgstr "Breche Nicht-Held ab"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/armybase.cpp:122
 msgid "cancel hero"
-msgstr ""
+msgstr "Breche Held ab"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/ItemProto.cpp:112
 msgid "Allows Flight"
@@ -6365,7 +6265,7 @@ msgstr "Fliegen erlauben"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/ItemProto.cpp:114
 msgid "Doubles Movement"
-msgstr ""
+msgstr "Verdoppele die Bewegungsgeschwindigkeit"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/ItemProto.cpp:124
 msgid "Steals Gold"
@@ -6377,7 +6277,7 @@ msgstr "Schiffe versenken"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/ItemProto.cpp:128
 msgid "Picks Up Bags"
-msgstr ""
+msgstr "Hebe eine Tasche auf"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/ItemProto.cpp:130
 msgid "+2 MP to stack"
@@ -6385,27 +6285,27 @@ msgstr "+2 MP auf den Stack"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/ItemProto.cpp:133
 msgid "+%1 Battle"
-msgstr ""
+msgstr "+%1 im Kampf"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/ItemProto.cpp:135
 msgid "+%1 Command"
-msgstr ""
+msgstr "+%1 auf Führung"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/ItemProto.cpp:137
 msgid "+%1 gold per city"
-msgstr ""
+msgstr "+%1 Gold pro Stadt"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Itemlist.cpp:56
 msgid "Could not parse items description file. Exiting!\n"
-msgstr ""
+msgstr "Konnte Gegenstandsbeschreibung nicht parsen. Abbruch!\n"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/main.cpp:79
 msgid "non-numerical value for cache size"
-msgstr ""
+msgstr "nicht-nummerischer Wert für die Cache-Größe"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/main.cpp:92
 msgid "non-numerical value for seed value"
-msgstr ""
+msgstr "nicht-nummerischer Wert für die Seed-Größe"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/main.cpp:118
 msgid "version"
@@ -6417,31 +6317,31 @@ msgstr "Optionen"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/main.cpp:120
 msgid "Shows this help screen"
-msgstr ""
+msgstr "Zeige diesen Hilfetext"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/main.cpp:121
 msgid "Set the cache size for imagery to SIZE bytes"
-msgstr ""
+msgstr "Setze die Cache-Größe für Bilder zu SIZE Bytes"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/main.cpp:122
 msgid "Start with a test-scenario"
-msgstr ""
+msgstr "Starte mit einem Test-Szenario"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/main.cpp:123
 msgid "Seed the random number generator with NUMBER"
-msgstr ""
+msgstr "Starte den Zufallszahlengenerator mit NUMBER"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/main.cpp:124
 msgid "Non-interactive stress test"
-msgstr ""
+msgstr "Nicht-Interaktiver Stress Test"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/main.cpp:125
 msgid "Non-interactive network stress test"
-msgstr ""
+msgstr "Nicht-Interaktiver Netzwerk Stress Test"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/main.cpp:127
 msgid "FILE can be a saved game file (.sav), or a map (.map) file."
-msgstr ""
+msgstr "FILE kann ein gespeicherter Spielstand (.sav) oder eine Karte (.map) sein."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/main.cpp:129
 msgid "Report bugs to"
@@ -6449,139 +6349,139 @@ msgstr "Melde Fehler an"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/main.cpp:139
 msgid "Error: Cannot specify -t and have a file specified."
-msgstr ""
+msgstr "Fehler: -t kann nicht spezifiziert werden und eine Datei wurde spezifiziert."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/main.cpp:145
 msgid "Error: Cannot specify -s and have a file specified."
-msgstr ""
+msgstr "Fehler: -s kann nicht spezifiziert werden und eine Datei wurde spezifiziert."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/main.cpp:151
 msgid "Error: Cannot specify -s and -t simultaneously."
-msgstr ""
+msgstr "Fehler: -s und -t können nicht gleichzeitig spezifiziert werden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/main.cpp:157
 msgid "Error: Must specify a file to load when specifying --turn."
-msgstr ""
+msgstr "Fehler: Eine zu ladende Datei muss spezifiziert werden, wenn --turn spezifiziert wird."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/QCitySack.cpp:92
 msgid "The priests thank you for sacking this evil place."
-msgstr ""
+msgstr "Die Priester danken dir dafür, diesen teuflischen Ort geplündert zu haben."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/QCitySack.cpp:98
 msgid "The sacking of \"%1\" could not be accomplished."
-msgstr ""
+msgstr "Das Plündern von \"%1\" konnte nicht beendet werden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/QCitySack.cpp:115
 msgid "You must take over and sack the city of \"%1\"."
-msgstr ""
+msgstr "Du musst die Stadt \"%1\" übernehmen und plündern."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:72
 msgid "You are sadly in need of gold!"
-msgstr ""
+msgstr "Du bist leider in Geldnot!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:75
 msgid "Your wealth is greather than the mightiest of dragons!"
-msgstr ""
+msgstr "Dein Wohlstand ist größer als der des größten Drachen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:76
 msgid "All your gold must surely be a burden!"
-msgstr ""
+msgstr "Dein ganzes Gold muss dir doch sicher eine Last sein!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:80
 msgid "Will no hero defend your honour?"
-msgstr ""
+msgstr "Wird kein Held deine Ehre verteidigen?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:82
 msgid "I see heroes are flocking to your banner!"
-msgstr ""
+msgstr "Ich sehe, dass sich die Helden um dein Banner scharen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:86
 msgid "Your enemies mock your feeble endeavours!"
-msgstr ""
+msgstr "Deine Feinde spotten über deine schwächlichen Bemühungen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:87
 msgid "How much adversity can you endure?"
-msgstr ""
+msgstr "Wie viel Unglück kann man ertragen?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:88
 msgid "Your enemies are beyond measure!"
-msgstr ""
+msgstr "Deine Feinde sind über alle maßen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:89
 msgid "Your dreams of conquest confound you!"
-msgstr ""
+msgstr "Deine Träume der Eroberung verwirren dich!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:92
 msgid "Your sorry efforts have come to nought!"
-msgstr ""
+msgstr "Deine Bemühungen waren nichtig!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:96
 msgid "Victory is just beyond your reach!"
-msgstr ""
+msgstr "Der Sieg liegt außerhalb deiner Möglichkeiten!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:97
 msgid "Your destiny is forged in steel!"
-msgstr ""
+msgstr "Dein Schicksal wurde mit Stahl geschmiedet!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:98
 msgid "You stand at the crossroads of victory!"
-msgstr ""
+msgstr "Du stehst am Kreuzweg des Sieges!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:99
 msgid "Attack is the best means of defence!"
-msgstr ""
+msgstr "Angriff ist die beste Verteidigung!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:100
 msgid "Do you feel the wolves snapping at your heels?"
-msgstr ""
+msgstr "Spürst du die Wölfe nach deinen Fersen schnappen?"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:103
 msgid "Warlord!  Your progress is astounding!"
-msgstr ""
+msgstr "Kriegsherr! Dein Fortschritt ist erstaunlich!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:106
 msgid "So, Warlord, you show some merit!"
-msgstr ""
+msgstr "So, Kriegsherr, zeigen Sie einige Verdienste!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:107
 msgid "You are doing well... ...so far!"
-msgstr ""
+msgstr "Sie sind gut ... so weit!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:112
 msgid "Beware!  Lest overconfidence consume you!"
-msgstr ""
+msgstr "Vorsicht! Lasst euch nicht von Selbstüberschätzung zerfressen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:113
 msgid "Your name evokes fear and loathing!"
-msgstr ""
+msgstr "Dein Name ruft Angst und Schrecken hervor!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:124
 msgid "Ahh, the expectation of a coming battle!"
-msgstr ""
+msgstr "Ah, die Erwartung eines kommenden Kampfes!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:127
 msgid "Warlord... a might battle is brewing!"
-msgstr ""
+msgstr "Kriegsherr ... ein Machtkampf droht!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/Commentator.cpp:131
 msgid "As your capital city has fallen, so shall you!"
-msgstr ""
+msgstr "So wie deine Hauptstadt gefallen ist, wirst du fallen!"
 
 #: ../dat/various/items/items.xml.in.h:26
 msgid "Scroll of Great Tides"
-msgstr ""
+msgstr "Rolle der großen Gezeiten"
 
 #: ../dat/various/items/items.xml.in.h:27
 msgid "Scroll of Retrieve Lost Items"
-msgstr ""
+msgstr "Rolle vom Aufruf verlorener Gegenstände"
 
 #: ../dat/various/items/items.xml.in.h:28
 msgid "Scroll of Thievery"
-msgstr ""
+msgstr "Rolle des Diebstahls"
 
 #: ../dat/various/items/items.xml.in.h:32
 msgid "Staff of Many Steps"
-msgstr ""
+msgstr "Stab der vielen Schritte"
 
 #: ../dat/citynames.xml.in.h:1
 msgid "Ankh-Morpok"
@@ -7033,11 +6933,11 @@ msgstr "Altar des Glaubens"
 
 #: ../dat/templenames.xml.in.h:2
 msgid "Altar of Offler"
-msgstr ""
+msgstr "Altar von Offler"
 
 #: ../dat/templenames.xml.in.h:3
 msgid "Brotherhood of Order"
-msgstr ""
+msgstr "Bruderschaft der Ordnung"
 
 #: ../dat/templenames.xml.in.h:4
 msgid "Cathedral"
@@ -7045,35 +6945,35 @@ msgstr "Kathedrale"
 
 #: ../dat/templenames.xml.in.h:5
 msgid "Druid's Home"
-msgstr ""
+msgstr "Heim des Druiden"
 
 #: ../dat/templenames.xml.in.h:6
 msgid "Garden of Frost"
-msgstr ""
+msgstr "Garten des Frostes"
 
 #: ../dat/templenames.xml.in.h:7
 msgid "Garden of Peace"
-msgstr ""
+msgstr "Garten des Friedens"
 
 #: ../dat/templenames.xml.in.h:8
 msgid "High Priest's seat"
-msgstr ""
+msgstr "Der Sitz des Hohepriesters"
 
 #: ../dat/templenames.xml.in.h:9
 msgid "Holy Ghost's Archive"
-msgstr ""
+msgstr "Archiv des Heiligen Geistes"
 
 #: ../dat/templenames.xml.in.h:10
 msgid "Holy Place"
-msgstr ""
+msgstr "Heiliger Ort"
 
 #: ../dat/templenames.xml.in.h:11
 msgid "Holy Wood"
-msgstr ""
+msgstr "Heiliger Wald"
 
 #: ../dat/templenames.xml.in.h:12
 msgid "House of Small Gods"
-msgstr ""
+msgstr "Haus der kleinen Götter"
 
 #: ../dat/templenames.xml.in.h:13
 msgid "Ice temple"
@@ -7081,11 +6981,11 @@ msgstr "Eistempel"
 
 #: ../dat/templenames.xml.in.h:14
 msgid "Monastery of Io"
-msgstr ""
+msgstr "Kloster von Io"
 
 #: ../dat/templenames.xml.in.h:15
 msgid "Offler's Temple"
-msgstr ""
+msgstr "Tempel von Offler"
 
 #: ../dat/templenames.xml.in.h:16
 msgid "Order of Fire"
@@ -7093,39 +6993,39 @@ msgstr "Auftrag des Feuers"
 
 #: ../dat/templenames.xml.in.h:17
 msgid "Order of Spirit"
-msgstr ""
+msgstr "Auftrag des Geistes"
 
 #: ../dat/templenames.xml.in.h:18
 msgid "Peasant's church"
-msgstr ""
+msgstr "Bauernkirche"
 
 #: ../dat/templenames.xml.in.h:19
 msgid "Sanctuary of the Fallen"
-msgstr ""
+msgstr "Heiligtum der gefallenen"
 
 #: ../dat/templenames.xml.in.h:20
 msgid "Shrine of Power"
-msgstr ""
+msgstr "Schrein der Macht"
 
 #: ../dat/templenames.xml.in.h:21
 msgid "Shrine of the Crusader"
-msgstr ""
+msgstr "Schrein des Kreuzfahrers"
 
 #: ../dat/templenames.xml.in.h:22
 msgid "Shrine of the Mists"
-msgstr ""
+msgstr "Schrein des Nebels"
 
 #: ../dat/templenames.xml.in.h:23
 msgid "Shrine of the Paladin"
-msgstr ""
+msgstr "Schrein des Paladins"
 
 #: ../dat/templenames.xml.in.h:24
 msgid "Silent Monastery"
-msgstr ""
+msgstr "Stilles Kloster"
 
 #: ../dat/templenames.xml.in.h:25
 msgid "Small temple"
-msgstr ""
+msgstr "Kleiner Tempel"
 
 #: ../dat/templenames.xml.in.h:26
 msgid "Temple of Flame"
@@ -7133,19 +7033,19 @@ msgstr "Tempel der Flammen"
 
 #: ../dat/templenames.xml.in.h:27
 msgid "Tomb of Kings"
-msgstr ""
+msgstr "Grab der Könige"
 
 #: ../dat/templenames.xml.in.h:28
 msgid "Tomb of Warriors"
-msgstr ""
+msgstr "Grab der Krieger"
 
 #: ../dat/templenames.xml.in.h:29
 msgid "Tower of Prayers"
-msgstr ""
+msgstr "Turm der Betenden"
 
 #: ../dat/templenames.xml.in.h:30
 msgid "Warrior's Sanctuary"
-msgstr ""
+msgstr "Heiligtum des Kriegers"
 
 #: ../dat/signposts.xml.in.h:1
 msgid "Beware!"
@@ -7161,19 +7061,19 @@ msgstr "Draußen bleiben!"
 
 #: ../dat/signposts.xml.in.h:5
 msgid "Kilroy was here."
-msgstr ""
+msgstr "Kilroy war hier"
 
 #: ../dat/signposts.xml.in.h:6
 msgid "Turn back or die!"
-msgstr ""
+msgstr "Zieh dich zurück oder stirb!"
 
 #: ../dat/signposts.xml.in.h:7
 msgid "Visitors Welcome"
-msgstr ""
+msgstr "Besucher sind willkommen"
 
 #: ../dat/ruinnames.xml.in.h:3
 msgid "Abandoned Village"
-msgstr ""
+msgstr "Verlassenes Dorf"
 
 #: ../dat/ruinnames.xml.in.h:6
 msgid "Black Tomb"
@@ -7181,7 +7081,7 @@ msgstr "Schwarzes Grab"
 
 #: ../dat/ruinnames.xml.in.h:7
 msgid "Bone-filled Pit"
-msgstr ""
+msgstr "Knochengrube"
 
 #: ../dat/ruinnames.xml.in.h:8
 msgid "Creepy Crypt"
@@ -7193,19 +7093,19 @@ msgstr "Dunkles Loch"
 
 #: ../dat/ruinnames.xml.in.h:13
 msgid "Dark Temple"
-msgstr ""
+msgstr "Dunkler Tempel"
 
 #: ../dat/ruinnames.xml.in.h:15
 msgid "Deserted Monastery"
-msgstr ""
+msgstr "Verlassenes Kloster"
 
 #: ../dat/ruinnames.xml.in.h:16
 msgid "Dusty Caves"
-msgstr ""
+msgstr "Staubige Höhlen"
 
 #: ../dat/ruinnames.xml.in.h:18
 msgid "Forbidden Lair"
-msgstr ""
+msgstr "Verbotenes Nest"
 
 #: ../dat/ruinnames.xml.in.h:19
 msgid "Ghost Town"
@@ -7213,43 +7113,43 @@ msgstr "Geisterstadt"
 
 #: ../dat/ruinnames.xml.in.h:20
 msgid "Goblin Hideout"
-msgstr ""
+msgstr "Goblinversteck"
 
 #: ../dat/ruinnames.xml.in.h:21
 msgid "Misty Maze"
-msgstr ""
+msgstr "Dunstiges Labyrinth"
 
 #: ../dat/ruinnames.xml.in.h:22
 msgid "Misty Ruins"
-msgstr ""
+msgstr "Dunstige Ruinen"
 
 #: ../dat/ruinnames.xml.in.h:23
 msgid "Old Dragon's Lair"
-msgstr ""
+msgstr "Nest des alten Drachen"
 
 #: ../dat/ruinnames.xml.in.h:25
 msgid "Rampaged Village"
-msgstr ""
+msgstr "Rampaged Dorf"
 
 #: ../dat/ruinnames.xml.in.h:26
 msgid "Rat-filled Catacombs"
-msgstr ""
+msgstr "Rattengefülltes Labyrinth"
 
 #: ../dat/ruinnames.xml.in.h:27
 msgid "Ruined Castle"
-msgstr ""
+msgstr "Zerstörtes Schloss"
 
 #: ../dat/ruinnames.xml.in.h:28
 msgid "Ruined City"
-msgstr ""
+msgstr "Zerstörte Stadt"
 
 #: ../dat/ruinnames.xml.in.h:29
 msgid "Ruined Temple"
-msgstr ""
+msgstr "Zerstörter Tempel"
 
 #: ../dat/ruinnames.xml.in.h:30
 msgid "Savaged Castle"
-msgstr ""
+msgstr "Verwildertes Schloss"
 
 #: ../dat/ruinnames.xml.in.h:31
 msgid "Silent Farm"
