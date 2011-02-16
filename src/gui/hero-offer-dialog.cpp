@@ -54,8 +54,7 @@ HeroOfferDialog::HeroOfferDialog(Player *player, HeroProto *h, City *c, int gold
     heromap->map_changed.connect(
 	sigc::mem_fun(this, &HeroOfferDialog::on_map_changed));
 
-    set_title(String::ucompose(_("Hero offer for %1"),
-				       player->getName()));
+    set_title(String::ucompose(_("A Hero for %1"), player->getName()));
 
     xml->get_widget("hero_image", hero_image);
     xml->get_widget("hero_male", male_radiobutton);

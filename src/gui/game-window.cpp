@@ -3545,19 +3545,19 @@ void GameWindow::on_advice_asked(float percent)
   else if (percent >= 70.0)
     {
       if (num == 0)
-	s += _("This battle will surely be a comfortable victory");
+	s += _("This battle will surely be a comfortable victory!");
       else if (num == 1)
-	s += _("A battle here would be a comfortable victory");
+	s += _("A battle here would be a comfortable victory!");
       else if (num == 2)
-	s += _("I believe this battle will surely be a comfortable victory");
+	s += _("I believe this battle will surely be a comfortable victory!");
       else if (num == 3)
-	s += _("This battle would be a comfortable victory");
+	s += _("This battle would be a comfortable victory!");
       else if (num == 4)
-	s += _("A battle here would be a comfortable victory");
+	s += _("A battle here would be a comfortable victory!");
       else if (num == 5)
-	s += _("I believe this battle will be a comfortable victory");
+	s += _("I believe this battle will be a comfortable victory!");
       else if (num == 6)
-	s += _("This battle shall be a comfortable victory");
+	s += _("This battle shall be a comfortable victory!");
     }
   else if (percent >= 60.0)
     {
