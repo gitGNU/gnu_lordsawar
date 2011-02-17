@@ -250,6 +250,7 @@ class Game
     void stack_arrives_on_tile(Stack *stack, Vector<int> tile);
     void stack_leaves_tile(Stack *stack, Vector<int> tile);
     void on_stack_halted(Stack *stack);
+    void on_stack_starts_moving(Stack *stack);
 
 
     GameScenario* d_gameScenario;

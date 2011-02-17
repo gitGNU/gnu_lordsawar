@@ -113,6 +113,9 @@ void Game::addPlayer(Player *p)
 	(p->advice_asked.connect
 	 (sigc::mem_fun(advice_asked, &sigc::signal<void, float>::emit)));
       connections[p->getId()].push_back
+	(p->smovingStack.connect
+	 (sigc::mem_fun(this, &Game::on_stack_starts_moving)));
+      connections[p->getId()].push_back
 	(p->shaltedStack.connect
 	 (sigc::mem_fun(this, &Game::on_stack_halted)));
       connections[p->getId()].push_back
@@ -199,8 +202,16 @@ void Game::addPlayer(Player *p)
     unlock_inputs();
 }
 
+void Game::on_stack_starts_moving(Stack *stack)
+{
+  if (Playerlist::getActiveplayer()->getType() == Player::HUMAN)
+    lock_inputs();
+}
+
 void Game::on_stack_halted(Stack *stack)
 {
+  if (Playerlist::getActiveplayer()->getType() == Player::HUMAN)
+    unlock_inputs();
   if (stack == NULL)
     return;
   bigmap->reset_path_calculator(stack);
@@ -326,13 +337,7 @@ void Game::end_turn()
     update_control_panel();
     lock_inputs();
 
-    bool trigger_next_remote_player = false;
-    if (d_gameScenario->getPlayMode() == GameScenario::NETWORKED &&
-	Playerlist::getActiveplayer()->getType() == Player::NETWORKED)
-      trigger_next_remote_player = true;
     d_nextTurn->endTurn();
-    if (trigger_next_remote_player)
-      remote_next_player_turn.emit();
 }
 
 void Game::update_stack_info()
