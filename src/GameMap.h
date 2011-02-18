@@ -215,6 +215,7 @@ class GameMap: public sigc::trackable
         void calculateBlockedAvenues();
 	void calculateBlockedAvenue(int i, int j);
 	void updateStackPositions();
+        void clearStackPositions();
 
 	/** Smooth a portion of the map.
 	 *

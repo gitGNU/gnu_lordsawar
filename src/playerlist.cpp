@@ -203,10 +203,9 @@ Player* Playerlist::getPlayer(string name) const
 Player* Playerlist::getPlayer(guint32 id) const
 {
   IdMap::const_iterator it = d_id.find(id);
-
   if (it == d_id.end())
     return NULL;
-  return  (*it).second;
+  return (*it).second;
 }
 
 guint32 Playerlist::getNoOfPlayers() const
@@ -548,12 +547,9 @@ void Playerlist::swap(Player *old_player, Player *new_player)
 {
   std::replace(begin(), end(), old_player, new_player);
   //point cities to the new owner
-  Citylist *clist = Citylist::getInstance();
-  clist->changeOwnership (old_player, new_player);
-  Ruinlist *rlist = Ruinlist::getInstance();
-  rlist->changeOwnership (old_player, new_player);
-  VectoredUnitlist *vlist = VectoredUnitlist::getInstance();
-  vlist->changeOwnership (old_player, new_player);
+  Citylist::getInstance()->changeOwnership (old_player, new_player);
+  Ruinlist::getInstance()->changeOwnership (old_player, new_player);
+  VectoredUnitlist::getInstance()->changeOwnership (old_player, new_player);
   AI_Analysis::changeOwnership(old_player, new_player);
   if (old_player == d_activeplayer)
     {
@@ -563,6 +559,8 @@ void Playerlist::swap(Player *old_player, Player *new_player)
   if (old_player == viewingplayer)
     viewingplayer = new_player;
   d_id[new_player->getId()] = new_player;
+  GameMap::getInstance()->clearStackPositions();
+  GameMap::getInstance()->updateStackPositions();
   /* note, we don't have to change the player associated with flag graphics
      because it's stored as an id. */
 }
@@ -677,6 +675,7 @@ void Playerlist::syncPlayer(GameParameters::Player player)
   else
     p->setName(player.name);
 
+          
   switch (player.type)
     {
     case GameParameters::Player::HUMAN:
@@ -703,15 +702,17 @@ void Playerlist::syncPlayer(GameParameters::Player player)
     case GameParameters::Player::OFF:
 	{
 	  //point owned cities to neutral
-	  Citylist *clist = Citylist::getInstance();
-	  clist->changeOwnership (p, d_neutral);
+          Citylist::getInstance()->changeOwnership (p, d_neutral);
 	  //point owned ruins to neutral
-	  Ruinlist *rlist = Ruinlist::getInstance();
-	  rlist->changeOwnership (p, d_neutral);
-          //also copy over the stacks
+          Ruinlist::getInstance()->changeOwnership (p, d_neutral);
+          //also copy over the stacks to neutral
           p->getStacklist()->changeOwnership(p, d_neutral);
 	  //now get rid of the player entirely
+          GameMap::getInstance()->clearStackPositions();
+          if (d_id.find(p->getId()) != d_id.end())
+            d_id.erase(d_id.find(p->getId()));
 	  flErase(find(begin(), end(), p));
+          GameMap::getInstance()->updateStackPositions();
 	}
       break;
     default:

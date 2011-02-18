@@ -1195,9 +1195,20 @@ void GameMap::groupStacks(Stack *stack)
   getStacks(stack->getPos())->group(Playerlist::getActiveplayer(), stack);
 }
   
+void GameMap::clearStackPositions()
+{
+  Playerlist *plist = Playerlist::getInstance();
+  for (Playerlist::iterator i = plist->begin(); i != plist->end(); i++)
+    {
+      Stacklist *sl = (*i)->getStacklist();
+      for (Stacklist::iterator s = sl->begin(); s != sl->end(); s++)
+	getStacks((*s)->getPos())->clear();
+    }
+}
 void GameMap::updateStackPositions()
 {
   Playerlist *plist = Playerlist::getInstance();
+  //okay, clear them all first.
   for (Playerlist::iterator i = plist->begin(); i != plist->end(); i++)
     {
       Stacklist *sl = (*i)->getStacklist();
@@ -2404,3 +2415,4 @@ bool GameMap::can_plant_flag(Stack *stack)
     }
   return false;
 }
+
