@@ -98,9 +98,6 @@ void Stacklist::payUpkeep(Player *p)
 
 bool Stacklist::check()
 {
-  //printf("checking stacks of the current player.  the current player is %s\n", Playerlist::getActiveplayer()->getName().c_str());
-  //if (size())
-    //printf("stacklist stacks belong to %s\n", front()->getOwner()->getName().c_str());
     for (iterator it = begin(); it != end(); it++)
       {
         if ((*it)->getOwner()->isComputer() == false)
@@ -349,7 +346,6 @@ bool Stacklist::flRemove(Stack* object)
 {
   if (object == NULL)
     return false;
-    debug("removing stack with id " << object->getId() << endl);
     iterator stackit = find(begin(), end(), object);
     if (stackit != end())
     {
@@ -510,13 +506,13 @@ Hero *Stacklist::getNearestHero(Vector<int> pos, int dist) const
   return NULL;
 }
 
-bool Stacklist::addPositionToMap(Stack *stack)
+bool Stacklist::addPositionToMap(Stack *stack) const
 {
   snewpos.emit(stack, stack->getPos());
   return true;
 }
 
-bool Stacklist::deletePositionFromMap(Stack *stack)
+bool Stacklist::deletePositionFromMap(Stack *stack) const
 {
   soldpos.emit(stack, stack->getPos());
   return true;
@@ -548,6 +544,7 @@ void Stacklist::on_stack_grouped (Stack *stack, bool grouped)
 {
   sgrouped.emit(stack, grouped);
 }
+
 void Stacklist::on_stack_died (Stack *stack)
 {
   deletePositionFromMap(stack);

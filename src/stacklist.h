@@ -151,7 +151,6 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
         //! Return which stack and hero the item belongs to.
         bool getItemHolder(Item *item, Stack **stack, Hero **hero) const;
 
-
 	// Methods that operate on class data and modify the class.
 
 	//! remove all movement points from every army in every stack.
@@ -301,10 +300,10 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	void getHeroes(std::vector<guint32>& dst) const;
 
 	//! Notify the game map that a stack is leaving it's tile.
-	bool deletePositionFromMap(Stack *stack);
+	bool deletePositionFromMap(Stack *stack) const;
 
 	//! Notify the game map that a stack is arriving on a tile.
-	bool addPositionToMap(Stack *s);
+	bool addPositionToMap(Stack *s) const;
 
 	// DATA
 
