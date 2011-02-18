@@ -12,7 +12,6 @@ players-dialog.ui \
 city-editor-dialog.ui \
 map-info-dialog.ui \
 new-map-dialog.ui \
-new-map-from-image-dialog.ui \
 switch-sets-dialog.ui \
 armyset-window.ui \
 armyset-info-dialog.ui \
