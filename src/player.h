@@ -1387,6 +1387,9 @@ class Player: public sigc::trackable
         //! Emitted whenever the active stack comes to a stop.
         sigc::signal<void, Stack*> shaltedStack;
 
+        //! Emitted whenever the active stack comes to a stop.
+        sigc::signal<void> sstoppingStack;
+
         //! Emitted whenever the active stack starts moving.
         sigc::signal<void, Stack*> smovingStack;
 

@@ -827,6 +827,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
       {
 	MoveResult *result = new MoveResult;
 	result->setReachedEndOfPath(true);
+        sstoppingStack.emit();
 	return result;
       }
 
@@ -908,6 +909,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 		    moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
                     if (isComputer())
                       computerSearch(s, moveResult);
+                    sstoppingStack.emit();
 		    return moveResult;
 		  }
 		else
@@ -954,6 +956,8 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
                 invadeCity(city); //let AIs determine what to do with city
 		shaltedStack.emit(s);
             }
+            else
+              sstoppingStack.emit();
             
 	    cityfight_finished(city, result);
             supdatingStack.emit(0);
@@ -999,6 +1003,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 		  moveResult->fillData(s, stepCount, searched_temple, searched_ruin, got_quest, picked_up);
                   if (isComputer())
                     computerSearch(s, moveResult);
+                  sstoppingStack.emit();
 		  return moveResult;
 		}
 	      else
@@ -1023,6 +1028,8 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
             supdatingStack.emit(0);
             if (result == Fight::ATTACKER_WON)
 	      shaltedStack.emit(s);
+            else
+              sstoppingStack.emit();
             return moveResult;
         }
         
@@ -1054,11 +1061,13 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
     
         if (isComputer())
           computerSearch(s, moveResult);
+        sstoppingStack.emit();
         return moveResult;
     }
 
     MoveResult *moveResult = new MoveResult;
     moveResult->setStepCount(stepCount);
+    sstoppingStack.emit();
     return moveResult;
 }
 

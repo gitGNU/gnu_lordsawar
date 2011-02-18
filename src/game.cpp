@@ -116,6 +116,9 @@ void Game::addPlayer(Player *p)
 	(p->smovingStack.connect
 	 (sigc::mem_fun(this, &Game::on_stack_starts_moving)));
       connections[p->getId()].push_back
+	(p->sstoppingStack.connect
+	 (sigc::mem_fun(this, &Game::on_stack_stopped)));
+      connections[p->getId()].push_back
 	(p->shaltedStack.connect
 	 (sigc::mem_fun(this, &Game::on_stack_halted)));
       connections[p->getId()].push_back
@@ -206,6 +209,12 @@ void Game::on_stack_starts_moving(Stack *stack)
 {
   if (Playerlist::getActiveplayer()->getType() == Player::HUMAN)
     lock_inputs();
+}
+
+void Game::on_stack_stopped()
+{
+  if (Playerlist::getActiveplayer()->getType() == Player::HUMAN)
+    unlock_inputs();
 }
 
 void Game::on_stack_halted(Stack *stack)
@@ -1056,7 +1065,9 @@ void Game::startGame()
   update_stack_info();
   lock_inputs();
 
-  d_nextTurn->start();
+  if (d_gameScenario->getPlayMode() != GameScenario::NETWORKED)
+    d_nextTurn->start();
+      
   if (Playerlist::getInstance()->countPlayersAlive())
     update_control_panel();
 }
@@ -1148,6 +1159,7 @@ void Game::init_turn_for_player(Player* p)
 
   blank(true);
 
+  printf("init turn for player %s\n", p->getName().c_str());
   next_player_turn.emit(p, d_gameScenario->getRound());
 
   if (p->getType() == Player::NETWORKED)
