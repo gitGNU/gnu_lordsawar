@@ -816,6 +816,8 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
     debug("Player::stack_move()");
     //if follow is set to true, follow an already calculated way, else
     //calculate it here
+		
+    smovingStack.emit(s);
     if (!follow)
     {
         s->getPath()->calculate(s, dest);
