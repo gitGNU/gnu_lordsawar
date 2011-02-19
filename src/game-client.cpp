@@ -78,6 +78,8 @@ void GameClient::start(std::string host, guint32 port, std::string nick)
     sigc::mem_fun(this, &GameClient::onConnectionLost));
   network_connection->got_message.connect(
     sigc::mem_fun(this, &GameClient::onGotMessage));
+  network_connection->connection_failed.connect
+    (sigc::mem_fun(this->client_could_not_connect, &sigc::signal<void>::emit));
   network_connection->connectToHost(host, port);
 }
 

@@ -39,6 +39,7 @@ public:
 
   sigc::signal<void> connected;
   sigc::signal<void> connection_lost;
+  sigc::signal<void> connection_failed;
   sigc::signal<void> connection_received_data;
   sigc::signal<bool, MessageType, std::string> got_message;
 
@@ -51,6 +52,7 @@ private:
   Glib::RefPtr<Gio::DataInputStream> in;
   Glib::RefPtr<Gio::DataOutputStream> out;
   Glib::RefPtr<Glib::IOSource> source;
+  sigc::connection d_connect_timer;
   char *payload;
   int payload_left;
   int payload_size;
@@ -64,6 +66,7 @@ private:
   gssize on_payload_received(gssize len);
   bool on_got_input(Glib::IOCondition cond);
   void tear_down_connection();
+  bool on_connect_timeout();
 };
 
 #endif

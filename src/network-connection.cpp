@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "timing.h"
 
 #include "network-common.h"
 
@@ -44,11 +45,13 @@ void NetworkConnection::setup_connection()
 
 void NetworkConnection::tear_down_connection()
 {
-  conn->clear_pending();
+  if (conn)
+    conn->clear_pending();
   if (source)
     source->destroy();
-  if (conn->is_closed() == false)
-    conn->close();
+  if (conn)
+    if (conn->is_closed() == false)
+      conn->close();
 }
 
 bool NetworkConnection::on_got_input(Glib::IOCondition cond)
@@ -103,12 +106,14 @@ NetworkConnection::~NetworkConnection()
 
 void NetworkConnection::on_connect_connected(Glib::RefPtr<Gio::AsyncResult> &result)
 {
+  d_connect_timer.disconnect();
   try
     {
       conn = client->connect_to_host_finish (result);
     }
   catch(const Glib::Exception &ex)
     {
+      connection_failed.emit();
       return;
     }
   if (conn)
@@ -166,6 +171,9 @@ gssize NetworkConnection::on_payload_received(gssize len)
 
 void NetworkConnection::connectToHost(std::string host, int port)
 {
+  d_connect_timer = 
+    Timing::instance().register_timer
+    (sigc::mem_fun(this, &NetworkConnection::on_connect_timeout), 5000);
   client->connect_to_host_async 
     (host, port, sigc::mem_fun(*this, 
                                &NetworkConnection::on_connect_connected));
@@ -210,4 +218,11 @@ void NetworkConnection::send(MessageType type, const std::string &payload)
 
   // write the payload
   wrote_all = out->write_all (payload.c_str(), payload.size(), bytessent);
+}
+  
+bool NetworkConnection::on_connect_timeout()
+{
+  d_connect_timer.disconnect();
+  connection_failed.emit();
+  return Timing::STOP;
 }
