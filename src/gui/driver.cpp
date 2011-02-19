@@ -947,14 +947,19 @@ void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type
 void Driver::on_game_scenario_received_for_robots(std::string path)
 {
   heartbeat_conn.disconnect();
+  GameClient *game_client = GameClient::getInstance();
   GameScenario *game_scenario = load_game(path);
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
-  GameClient::getInstance()->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
+  game_client->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
+  game_client->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
+
   Playerlist *pl = Playerlist::getInstance();
 
   unsigned int count = 0;
   for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
     {
+      if ((*it) == Playerlist::getInstance()->getNeutral())
+        continue;
       if (count >= number_of_robots && number_of_robots > 0)
 	break;
       if ((*it)->getType() == Player::NETWORKED)
@@ -968,13 +973,9 @@ void Driver::on_game_scenario_received_for_robots(std::string path)
 
   for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
     if (Player::Type((*it)->getType()) == robot_player_type)
-      {
-	GameClient::getInstance()->listenForLocalEvents(*it);
-      }
+      GameClient::getInstance()->listenForLocalEvents(*it);
 
-  //end turn signals are listened to by next_turn, that are fired by the game client decoder
-
-  next_turn->start();
+  //okay, now go click play in the game lobby dialog.
 }
 
 void Driver::on_show_lobby_requested()

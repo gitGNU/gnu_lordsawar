@@ -704,7 +704,11 @@ void GameServer::sit(void *conn, Player *player, std::string nickname)
                      GameParameters::player_type_to_player_param(player->getType()));
 
   if (player)
+    {
+      printf("player is %p\n", player);
+      printf("player id: %d\n", player->getId());
     dynamic_cast<NetworkPlayer*>(player)->setConnected(true);
+    }
 
   notifySit(player, nickname);
 }
