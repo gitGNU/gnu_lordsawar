@@ -61,10 +61,23 @@ class NextTurnNetworked: public NextTurn
          */
         void endTurn();
 
-	/**
-           \brief signal for telling when the game stops due to player absence.
-	 */
-	sigc::signal<void, Player*> snextPlayerUnavailable;
+        //! Emitted when a new round begins.
+	sigc::signal<void> sroundBegins;
+
+        //! Run the turn of the given player.
+        void start_player(Player *p);
+
+        //! Run this to calculate the next active player.
+        Player* next();
+
+        //! Emitted when the next player has been calculated
+        //sigc::signal<void, Player*> snextPlayer;
+
+        /**
+           \brief The function for all actions which are taken at the end of a
+           Game Turn.
+         */
+        void finishRound();
 
     private:
         /**
@@ -79,11 +92,6 @@ class NextTurnNetworked: public NextTurn
          */
         void finishTurn();
 
-        /**
-           \brief The function for all actions which are taken at the end of a
-           Game Turn.
-         */
-        void finishRound();
 };
 
 #endif //NEXT_TURN_NETWORKED_H

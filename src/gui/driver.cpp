@@ -66,6 +66,7 @@
 #include "stacklist.h"
 #include "smallmap.h"
 #include "new-random-map-dialog.h"
+#include "network_player.h"
 
 Driver::Driver(std::string load_filename)
 {
@@ -382,17 +383,23 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
   GameServer *game_server = GameServer::getInstance();
   game_server->start(game_scenario, port, nick);
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
-  if (game_scenario->s_random_turns == true)
-    game_server->round_begins.connect (sigc::mem_fun(GameServer::getInstance(), 
-                                                     &GameServer::sendTurnOrder));
+  //if (game_scenario->s_random_turns == true)
+    //game_server->round_begins.connect (sigc::mem_fun(GameServer::getInstance(), 
+                                                     //&GameServer::sendTurnOrder));
   
-  game_server->round_ends.connect(sigc::mem_fun(next_turn->snextRound, &sigc::signal<void>::emit));
-  next_turn->snextPlayerUnavailable.connect(sigc::mem_fun(this, &Driver::on_player_unavailable));
+  //next_turn->sroundBegins.connect(sigc::mem_fun(game_server, &GameServer::sendRoundStart));
+  //game_server->round_ends.connect(sigc::mem_fun(next_turn->snextRound, &sigc::signal<void>::emit));
+  game_server->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
+  game_server->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
+  next_turn->srequestAbort.connect(sigc::mem_fun(game_server, &GameServer::on_turn_aborted));
   if (game_lobby_dialog)
     delete game_lobby_dialog;
   game_lobby_dialog = new GameLobbyDialog(game_scenario, next_turn, 
 					      game_server, true);
-  game_server->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
+  //game_server->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
+  game_server->get_next_player.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::next));
+  game_server->round_ends.connect
+    (sigc::mem_fun(*this, &Driver::on_keep_network_play_going));
   Playerlist::getInstance()->splayerDead.connect
     (sigc::mem_fun(GameServer::getInstance(), &GameServer::sendKillPlayer));
   game_lobby_dialog->set_parent_window(*splash_window->get_window());
@@ -512,9 +519,9 @@ void Driver::on_game_scenario_received(std::string path)
   RecentlyPlayedGameList::getInstance()->saveToFile(File::getSavePath() + "/recently-played.xml");
 
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
-  next_turn->snextPlayerUnavailable.connect(sigc::mem_fun(this, &Driver::on_player_unavailable));
-  game_client->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
-  game_client->round_ends.connect(sigc::mem_fun(next_turn->snextRound, &sigc::signal<void>::emit));
+  game_client->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
+  //game_client->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
+  game_client->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
   if (game_lobby_dialog)
     delete game_lobby_dialog;
   game_lobby_dialog = new GameLobbyDialog(game_scenario, next_turn, 
@@ -643,7 +650,7 @@ void Driver::on_quit_requested()
 {
     if (splash_window)
 	splash_window->hide();
-    
+
     if (game_window)
 	game_window->hide();
 
@@ -652,10 +659,13 @@ void Driver::on_quit_requested()
 
 void Driver::on_game_ended()
 {
+    if (game_lobby_dialog)
+      game_lobby_dialog->clean_up_players();
   if (game_window)
     {
       game_window->hide();
     }
+    
   GameClient::deleteInstance();
   PbmGameClient::deleteInstance();
   GameServer::deleteInstance();
@@ -977,7 +987,6 @@ void Driver::start_network_game_requested(GameScenario *game_scenario, NextTurnN
 {
   if (game_window)
     {
-  
       Player *active = Playerlist::getActiveplayer();
       if (active->getType() == Player::NETWORKED)
 	game_window->show();
@@ -997,11 +1006,23 @@ void Driver::start_network_game_requested(GameScenario *game_scenario, NextTurnN
       game_window->show();
 
       game_window->new_network_game (game_scenario, next_turn);
+      if (GameServer::getInstance()->isListening())
+        on_keep_network_play_going();
+
     }
 }
-  
-void Driver::on_player_unavailable(Player *p)
+
+void Driver::on_keep_network_play_going()
 {
-  game_lobby_dialog->player_is_unavailable(p);
-  on_show_lobby_requested();
+  while (GameServer::getInstance()->isListening())
+    {
+      bool round_finished = GameServer::getInstance()->sendRoundStart();
+      if (!round_finished)
+        {
+          //we are waiting for a player to finish their turn
+          //or they are unavailable.
+          break;
+          ;
+        }
+    }
 }

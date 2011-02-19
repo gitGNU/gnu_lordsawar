@@ -402,11 +402,8 @@ void GameLobbyDialog::on_type_edited(const Glib::ustring &path,
       
   if ((*iter)[player_columns.sitting] == false)
     return;
-  if (d_has_ops == false)
-    {
-      if ((*iter)[player_columns.person] != d_game_station->getNickname())
-        return;
-    }
+  if ((*iter)[player_columns.person] != d_game_station->getNickname())
+    return;
   type_renderer.set_sensitive(false);
   Playerlist *pl = Playerlist::getInstance();
   Player *player = pl->getPlayer((*iter)[player_columns.player_id]);
@@ -626,14 +623,17 @@ void GameLobbyDialog::update_turn_indicator()
     {
       Gtk::TreeModel::Row row = *i;
       Player *active = Playerlist::getActiveplayer();
-      if (row[player_columns.player_id] == active->getId())
-	(*i)[player_columns.turn] = gc->getCursorPic(GraphicsCache::SWORD)->to_pixbuf();
-      else
+      if (active)
         {
-          Glib::RefPtr<Gdk::Pixbuf> empty_pic
-            = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, 4, 4);
-          empty_pic->fill(0x00000000);
-          (*i)[player_columns.turn] = empty_pic;
+          if (row[player_columns.player_id] == active->getId())
+            (*i)[player_columns.turn] = gc->getCursorPic(GraphicsCache::SWORD)->to_pixbuf();
+          else
+            {
+              Glib::RefPtr<Gdk::Pixbuf> empty_pic
+                = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, 4, 4);
+              empty_pic->fill(0x00000000);
+              (*i)[player_columns.turn] = empty_pic;
+            }
         }
     }
 }
@@ -800,11 +800,6 @@ bool GameLobbyDialog::run()
     return false;
 }
 
-void GameLobbyDialog::player_is_unavailable(Player *p)
-{
-  on_local_player_starts_turn(p);
-}
-      
 void GameLobbyDialog::on_nickname_changed(Glib::ustring old_name, Glib::ustring new_name)
 {
   d_game_station->setNickname(new_name);
@@ -881,4 +876,10 @@ void GameLobbyDialog::sort_player_list_by_turn_order()
       my_row[player_columns.order] = 
         id_order[my_row[player_columns.player_id]];
     }
+}
+
+void GameLobbyDialog::clean_up_players()
+{
+  player_list->clear();
+  //player_list.reset();
 }

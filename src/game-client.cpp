@@ -207,6 +207,11 @@ bool GameClient::onGotMessage(MessageType type, std::string payload)
     gotKillPlayer(Playerlist::getInstance()->getPlayer(atoi(payload.c_str())));
     break;
 
+  case MESSAGE_TYPE_NEXT_PLAYER:
+    start_player_turn.emit
+      (Playerlist::getInstance()->getPlayer(atoi(payload.c_str())));
+    break;
+
   case MESSAGE_TYPE_ROUND_START:
     round_begins.emit();
     break;
@@ -423,7 +428,7 @@ void GameClient::gotTurnOrder (std::string payload)
       ival = -1;
       players >> ival;
       if (ival != -1)
-	player_ids.push_back(ival);
+        player_ids.push_back(ival);
     }
   Playerlist::getInstance()->reorder(player_ids);
   playerlist_reorder_received.emit();

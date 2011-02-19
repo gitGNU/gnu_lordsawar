@@ -74,52 +74,9 @@ GameServer::GameServer()
   d_game_has_begun = false;
 
   remote_player_moved.connect
-    (sigc::mem_fun(*this, &GameServer::player_finished_turn));
+    (sigc::mem_fun(*this, &GameServer::on_player_finished_turn));
   local_player_moved.connect
-    (sigc::mem_fun(*this, &GameServer::player_finished_turn));
-}
-
-void GameServer::clear_end_turn_flag_for_all_players()
-{
-  for (std::list<Participant *>::iterator i = participants.begin(),
-       end = participants.end(); i != end; ++i)
-    {
-      for (std::list<GameParameters::Player>::iterator j = 
-           (*i)->players.begin(); j != (*i)->players.end(); j++)
-        (*i)->id_end_turn[(*j).id] = false;
-    }
-
-  for (std::list<GameParameters::Player>::iterator j = 
-       players_seated_locally.begin(); j != players_seated_locally.end(); j++)
-    id_end_turn[(*j).id] = false;
-}
-
-bool GameServer::check_for_all_players_having_ended_their_turn()
-{
-  int ended = 0;
-  int total = 0;
-  for (std::list<Participant *>::iterator i = participants.begin(),
-         end = participants.end(); i != end; ++i)
-    {
-      for (std::list<GameParameters::Player>::iterator j = 
-           (*i)->players.begin(); j != (*i)->players.end(); j++)
-        {
-          if ((*i)->id_end_turn[(*j).id] == true)
-            ended++;
-          total++;
-        }
-    }
-      
-  for (std::list<GameParameters::Player>::iterator j = 
-       players_seated_locally.begin(); j != players_seated_locally.end(); j++)
-        {
-          if (id_end_turn[(*j).id] == true)
-            ended++;
-          total++;
-        }
-  if (ended == total)
-    return true;
-  return false;
+    (sigc::mem_fun(*this, &GameServer::on_player_finished_turn));
 }
 
 void GameServer::notifyRoundOver()
@@ -129,26 +86,34 @@ void GameServer::notifyRoundOver()
     network_server->send((*i)->conn, MESSAGE_TYPE_ROUND_OVER, "");
 }
 
-void GameServer::player_finished_turn(Player *player)
+bool GameServer::check_end_of_round()
 {
-  //a player finished a turn.  can be either remote or local.
-  Participant *part = findParticipantByPlayerId(player->getId());
-  if (part)
-    part->id_end_turn[player->getId()] = true;
-  else
-    id_end_turn[player->getId()] = true;
-  bool ended = check_for_all_players_having_ended_their_turn();
-  if (ended)
+  if (Playerlist::getInstance()->getNeutral()->hasAlreadyEndedTurn())
     {
+      Playerlist::getInstance()->getNeutral()->clearActionlist();
       notifyRoundOver();
-      clear_end_turn_flag_for_all_players();
       round_ends.emit();
-      //sendRoundStart();
+      return true;
+    }
+  return false;
+}
+
+void GameServer::on_player_finished_turn(Player *player)
+{
+  if (check_end_of_round() == false)
+    {
+      //if the end of turn is asynchronous, start a new turn from here
+      //otherwise, just fall through back to the nextTurn method, and it's 
+      //inner loop.
+      if (player->getType() == Player::HUMAN ||
+          player->getType() == Player::NETWORKED)
+        nextTurn();
     }
 }
 
-GameServer::~GameServer()
+void GameServer::remove_all_participants()
 {
+  stopListeningForLocalEvents();
   //say goodbye to all participants
   for (std::list<Participant *>::iterator i = participants.begin(),
          end = participants.end(); i != end; ++i)
@@ -157,7 +122,15 @@ GameServer::~GameServer()
   for (std::list<Participant *>::iterator i = participants.begin(),
          end = participants.end(); i != end; ++i)
     delete *i;
+  participants.clear();
   players_seated_locally.clear();
+}
+
+GameServer::~GameServer()
+{
+  if (network_server.get() != NULL)
+    network_server->stop();
+  remove_all_participants();
 }
 
 bool GameServer::isListening()
@@ -192,15 +165,72 @@ void GameServer::start(GameScenario *game_scenario, int port, std::string nick)
       listenForLocalEvents(*it);
 }
 
-void GameServer::sendRoundStart()
+bool GameServer::sendNextPlayer()
 {
+  Glib::ustring s = 
+    String::ucompose("%1", Playerlist::getActiveplayer()->getId());
+  //now we can send the start round message, and begin the round ourselves.
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i)
+    network_server->send((*i)->conn, MESSAGE_TYPE_NEXT_PLAYER, s);
+  Participant *part = findParticipantByPlayerId
+    (Playerlist::getActiveplayer()->getId());
+  if (!part)
+    return false;
+  return true;
+}
+
+bool GameServer::nextTurn()
+{
+  while (1)
+    {
+      Player *p = get_next_player.emit();
+      if (p)
+        {
+          if (p->getType() == Player::NETWORKED)
+            {
+              bool player_available = sendNextPlayer();
+              if (!player_available)
+                {
+                  ; //now what?
+                }
+              //we do this anyway, to update our local turn shield
+                  start_player_turn.emit(p);
+              break; //now it goes to on_player_finished_turn if player avail.
+            }
+          else
+            {
+              sendNextPlayer();
+              if (p->getType() == Player::HUMAN)
+                {
+                  start_player_turn.emit(p);
+                  break;
+                }
+              else if (p->getType() == Player::AI_DUMMY)
+                {
+                  start_player_turn.emit(p);
+                  return true;
+                }
+              else
+                start_player_turn.emit(p);
+            }
+        }
+      else
+        break;
+    }
+  return false;
+}
+
+bool GameServer::sendRoundStart()
+{
+  sendTurnOrder();
   //now we can send the start round message, and begin the round ourselves.
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i)
     network_server->send((*i)->conn, MESSAGE_TYPE_ROUND_START, "");
-
-  clear_end_turn_flag_for_all_players();
   round_begins.emit();
+  Playerlist::getInstance()->setActiveplayer(NULL);
+  return nextTurn();
 }
 
 
@@ -323,6 +353,7 @@ bool GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
   case MESSAGE_TYPE_CHANGE_NICKNAME:
   case MESSAGE_TYPE_GAME_MAY_BEGIN:
   case MESSAGE_TYPE_OFF_PLAYER:
+  case MESSAGE_TYPE_NEXT_PLAYER:
     //faulty client
     break;
   }
@@ -367,12 +398,12 @@ Participant *GameServer::findParticipantByConn(void *conn)
 void GameServer::onLocalNonNetworkedActionDone(NetworkAction *action)
 {
   std::string desc = action->toString();
-  std::cerr << "Game Server got " << desc <<"\n";
+  std::cerr << "Game Server got " << Action::actionTypeToString(action->getAction()->getType()) << " "<< desc <<"\n";
 
   if (action->getAction()->getType() == Action::END_TURN)
-    local_player_moved(action->getOwner());
+    local_player_moved.emit(action->getOwner());
   if (action->getAction()->getType() == Action::INIT_TURN)
-    local_player_starts_move(action->getOwner());
+    local_player_starts_move.emit(action->getOwner());
 
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
@@ -389,6 +420,8 @@ void GameServer::onLocalNonNetworkedActionDone(NetworkAction *action)
 
 void GameServer::onActionDone(NetworkAction *action)
 {
+  if (d_stop)
+    return;
   Player *p = Playerlist::getInstance()->getPlayer(action->getOwnerId());
   if (p->getType() != Player::NETWORKED)
     onLocalNonNetworkedActionDone(action);
@@ -401,7 +434,7 @@ void GameServer::onActionDone(NetworkAction *action)
 void GameServer::onLocalNonNetworkedHistoryDone(NetworkHistory *history)
 {
   std::string desc = history->toString();
-  std::cerr << "Game Server got " << desc <<"\n";
+  std::cerr << "Game Server got " << History::historyTypeToString(history->getHistory()->getType())<< " " << desc <<"\n";
 
   if (history->getHistory()->getType() == History::PLAYER_VANQUISHED)
     local_player_died(history->getOwner());
@@ -889,7 +922,7 @@ void GameServer::sendActions(Participant *part)
   for (std::list<NetworkAction *>::iterator i = part->actions.begin(),
        end = part->actions.end(); i != end; ++i)
     {
-  std::cerr << "sending " << Action::actionTypeToString((*i)->getAction()->getType()) << " from " << d_nickname << "(" << Playerlist::getInstance()->getPlayer((*i)->getOwnerId())->getName() << ")" << " to " << part->nickname << std::endl;
+  std::cerr << "sending " << Action::actionTypeToString((*i)->getAction()->getType()) << " from " << d_nickname << " (" << Playerlist::getInstance()->getPlayer((*i)->getOwnerId())->getName() << ")" << " to " << part->nickname << std::endl;
     (**i).save(&helper);
     }
 
@@ -909,7 +942,7 @@ void GameServer::sendHistories(Participant *part)
   for (std::list<NetworkHistory *>::iterator i = part->histories.begin(),
        end = part->histories.end(); i != end; ++i)
     {
-  std::cerr << "sending " << History::historyTypeToString((*i)->getHistory()->getType()) << " to " << part->nickname << std::endl;
+  std::cerr << "sending " << History::historyTypeToString((*i)->getHistory()->getType()) << " from " << d_nickname << " (" << Playerlist::getInstance()->getPlayer((*i)->getOwnerId())->getName() << ")" << " to " << part->nickname << std::endl;
     (**i).save(&helper);
     }
 
@@ -1169,7 +1202,6 @@ void GameServer::notifyClientsGameMayBeginNow()
   for (std::list<Participant *>::iterator i = participants.begin(),
        end = participants.end(); i != end; ++i) 
     network_server->send((*i)->conn, MESSAGE_TYPE_GAME_MAY_BEGIN, "");
-  sendRoundStart();
 }
 
 void GameServer::syncLocalPlayers()
@@ -1178,17 +1210,30 @@ void GameServer::syncLocalPlayers()
   for (std::list<GameParameters::Player>::iterator j = 
        players_seated_locally.begin(); j != players_seated_locally.end(); j++)
     {
+      Player *p = Playerlist::getInstance()->getPlayer((*j).id);
       if ((*j).type == GameParameters::Player::OFF)
         {
-          Player *p = Playerlist::getInstance()->getPlayer((*j).id);
           stopListeningForLocalEvents(p);
           player_gets_turned_off.emit(p);
           sendOffPlayer(p);
           ids.push_back(p->getId());
+          Playerlist::getInstance()->syncPlayer(*j);
         }
-      Playerlist::getInstance()->syncPlayer(*j);
+      else
+        {
+          stopListeningForLocalEvents(p);
+          Playerlist::getInstance()->syncPlayer(*j);
+          listenForLocalEvents(Playerlist::getInstance()->getPlayer((*j).id));
+        }
     }
   for (std::list<guint32>::iterator i = ids.begin(); i != ids.end(); i++)
     remove_from_player_list (players_seated_locally, *i);
 }
+  
+void GameServer::on_turn_aborted()
+{
+  d_stop = true;
+  remove_all_participants();
+}
+
 // End of file

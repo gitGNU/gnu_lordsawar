@@ -66,6 +66,18 @@ void GameStation::listenForLocalEvents(Player *p)
   history_listeners[p->getId()] = connection;
 }
 
+void GameStation::stopListeningForLocalEvents()
+{
+  std::map<guint32, sigc::connection>::iterator i = action_listeners.begin();
+  for (; i != action_listeners.end(); i++)
+    (*i).second.disconnect();
+  action_listeners.clear();
+  std::map<guint32, sigc::connection>::iterator j = history_listeners.begin();
+  for (; j != history_listeners.end(); j++)
+    (*j).second.disconnect();
+  history_listeners.clear();
+}
+
 void GameStation::stopListeningForLocalEvents(Player *p)
 {
   sigc::connection connection;

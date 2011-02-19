@@ -553,6 +553,11 @@ void GameWindow::new_network_game(GameScenario *game_scenario, NextTurn *next_tu
   setup_signals(game_scenario);
   game->redraw();
   game->startGame();
+  if (Playerlist::getActiveplayer() && GameServer::getInstance()->isListening() == false)
+    if (Playerlist::getActiveplayer()->getType() != Player::NETWORKED)
+      {
+        dynamic_cast<NextTurnNetworked*>(next_turn)->start_player(Playerlist::getActiveplayer());
+      }
 }
 
 void GameWindow::continue_network_game(NextTurn *next_turn)
@@ -1594,7 +1599,10 @@ void GameWindow::on_production_activated()
 void GameWindow::on_preferences_activated()
 {
   Player *current = Playerlist::getInstance()->getActiveplayer();
-  PreferencesDialog d(false);
+  bool readonly = false;
+  if (game->getScenario()->getPlayMode() == GameScenario::NETWORKED)
+    readonly = true;
+  PreferencesDialog d(readonly);
   d.set_parent_window(*window);
   d.run(game);
   d.hide();
@@ -1933,6 +1941,8 @@ void GameWindow::on_message_requested(std::string msg)
 
 void GameWindow::on_stack_toggled(Gtk::RadioButton *radio, Stack *stack)
 {
+  if (end_turn_button->get_sensitive() == false)
+    return;
   if (radio->get_active() == true)
     {
       if (stack == currently_selected_stack)
@@ -1946,6 +1956,8 @@ void GameWindow::on_stack_toggled(Gtk::RadioButton *radio, Stack *stack)
 
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Stack *stack, Army *army)
 {
+  if (end_turn_button->get_sensitive() == false)
+    return;
   Player *p = Playerlist::getActiveplayer();
   Stack *s = p->getActivestack();
   group_ungroup_toggle->set_sensitive(false);

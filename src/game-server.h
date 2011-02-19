@@ -62,11 +62,16 @@ public:
   void notifyRoundOver();
   sigc::signal<void> remote_participant_connected;
   sigc::signal<void> remote_participant_disconnected;
+  sigc::signal<Player*> get_next_player;
 
   void setGameScenario(GameScenario *scenario) {d_game_scenario = scenario;};
 
+  bool sendRoundStart();
+  bool sendNextPlayer();
   bool gameHasBegun();
 
+  void on_player_finished_turn(Player *player);
+  void on_turn_aborted();
 protected:
   GameServer();
   ~GameServer();
@@ -131,16 +136,19 @@ private:
 
   void syncLocalPlayers();
 
-  void sendRoundStart();
-  void player_finished_turn(Player *player);
   Glib::ustring make_nickname_unique(Glib::ustring nickname);
 
-  bool check_for_all_players_having_ended_their_turn();
-  void clear_end_turn_flag_for_all_players();
   void onLocalNonNetworkedActionDone(NetworkAction *action);
   void onLocalNonNetworkedHistoryDone(NetworkHistory *history);
   void onLocalNetworkedHistoryDone(NetworkHistory *history);
 
+  bool nextTurn();
+
+  bool check_end_of_round();
+
+  void remove_all_participants();
+
+  bool d_stop;
   //! A static pointer for the singleton instance.
   static GameServer * s_instance;
 };

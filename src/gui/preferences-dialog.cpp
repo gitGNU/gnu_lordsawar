@@ -78,10 +78,17 @@ PreferencesDialog::PreferencesDialog(bool readonly)
 	observe->set_active(p->isObservable());
 	type->append_text(_("Human"));
 	type->append_text(_("Computer"));
+        if (readonly)
+          type->append_text(_("Networked"));
 	if (p->getType() == Player::HUMAN)
 	  {
 	    observe->set_sensitive(false);
 	    type->set_active(0);
+	  }
+        else if (p->getType() == Player::NETWORKED)
+	  {
+	    observe->set_sensitive(false);
+	    type->set_active(2);
 	  }
 	else
 	  type->set_active(1);

@@ -48,6 +48,7 @@ public:
   sigc::signal<void> round_begins;
   sigc::signal<void> round_ends;
   sigc::signal<void> game_may_begin;
+  sigc::signal<void, Player *> start_player_turn;
 
   void listenForLocalEvents(Player *p);
 protected:
@@ -61,6 +62,7 @@ protected:
   void clearNetworkHistorylist(std::list<NetworkHistory*> &histories);
 
   void stopListeningForLocalEvents(Player *p);
+  void stopListeningForLocalEvents();
 
   static bool get_message_lobby_activity (std::string payload, 
                                           guint32 &player_id, 

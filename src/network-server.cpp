@@ -97,3 +97,7 @@ bool NetworkServer::isListening()
 {
   return server->is_active();
 }
+ void NetworkServer::stop()
+{
+  return server->stop();
+}

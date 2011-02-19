@@ -98,6 +98,7 @@ bool NetworkPlayer::save(XML_Helper* helper) const
 void NetworkPlayer::abortTurn()
 {
   d_abort_requested = true;
+    aborted_turn.emit();
 }
 
 bool NetworkPlayer::startTurn()

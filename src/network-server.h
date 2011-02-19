@@ -42,6 +42,7 @@ public:
   void startListening(int port);
   void send(void *conn, MessageType type, const std::string &payload);
 
+  void stop();
   sigc::signal<bool, void *, MessageType, std::string> got_message;
   sigc::signal<void, void *> connection_made;
   sigc::signal<void, void *> connection_lost;

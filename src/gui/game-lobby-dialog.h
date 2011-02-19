@@ -46,7 +46,7 @@ class GameLobbyDialog: public Decorated
     void set_parent_window(Gtk::Window &parent);
 
 
-    void player_is_unavailable(Player *p);
+    void clean_up_players();
 
     void hide();
     void show();

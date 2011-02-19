@@ -44,128 +44,78 @@ NextTurnNetworked::NextTurnNetworked(bool turnmode, bool random_turns)
     :NextTurn(turnmode, random_turns)
 {
   Playerlist* plist = Playerlist::getInstance();
-  for (Playerlist::iterator i = plist->begin(); i != plist->end(); ++i) {
-    Player *p = *i;
-    p->ending_turn.connect(sigc::mem_fun(this, &NextTurn::endTurn));
-  }
+  for (Playerlist::iterator i = plist->begin(); i != plist->end(); ++i) 
+    {
+      Player *p = *i;
+      if (p->getType() != Player::NETWORKED)
+        p->ending_turn.connect(sigc::mem_fun(this, &NextTurn::endTurn));
+    }
 }
 
 NextTurnNetworked::~NextTurnNetworked()
 {
 }
 
+Player* NextTurnNetworked::next()
+{
+  nextPlayer();
+  Player *p = Playerlist::getActiveplayer();
+  return p;
+}
+
+void NextTurnNetworked::start_player(Player *player)
+{
+  if (d_stop)
+    return;
+      
+  abort.disconnect();
+  abort = srequestAbort.connect(sigc::mem_fun(player, &Player::abortTurn));
+  Playerlist::getInstance()->setActiveplayer(player);
+  if (player->getType() == Player::NETWORKED)
+    {
+      splayerStart.emit(player);
+      return;
+    }
+  start();
+}
+
 void NextTurnNetworked::start()
 {
-    //We need the playerlist a lot, so maintain a copy of it.
-    Playerlist* plist = Playerlist::getInstance();
+  Playerlist* plist = Playerlist::getInstance();
+    {
+      supdating.emit();
 
-    //set first player as active if no active player exists
-    if (!plist->getActiveplayer())
-        nextPlayer();
-	
-    if (plist->getActiveplayer()->isDead())
-      nextPlayer();
+      startTurn();
 
-    if (plist->getActiveplayer()->isDead())
-      return;
+      // inform everyone about the next turn 
+      snextTurn.emit(plist->getActiveplayer());
 
-    if (plist->getActiveplayer()->getType() == Player::NETWORKED)
-      {
-        splayerStart.emit(plist->getActiveplayer());
+      if (plist->getNoOfPlayers() <= 2)
+        {
+          if (plist->checkPlayers()) //end of game detected
+            return;
+        }
+
+      splayerStart.emit(plist->getActiveplayer());
+
+      // let the player do his or her duties...
+      bool continue_loop = plist->getActiveplayer()->startTurn();
+      if (!continue_loop)
         return;
-      }
-    if (plist->getActiveplayer()->getType() != Player::NETWORKED)
-      {
-	while (!d_stop)
-	  {
-	    supdating.emit();
 
-	    startTurn();
-
-	    // inform everyone about the next turn 
-	    snextTurn.emit(plist->getActiveplayer());
-
-	    if (plist->getNoOfPlayers() <= 2)
-	      {
-		if (plist->checkPlayers()) //end of game detected
-		  return;
-	      }
-
-	    splayerStart.emit(plist->getActiveplayer());
-
-	    // let the player do his or her duties...
-	    bool continue_loop = plist->getActiveplayer()->startTurn();
-	    if (!continue_loop)
-	      return;
-
-	    //Now do some cleanup at the end of the turn.
-	    finishTurn();
-
-	    //...and initiate the next one.
-	    nextPlayer();
-
-
-	    //if it is the first player's turn now, a new round has started
-	    if (Playerlist::getInstance()->getActiveplayer() == 
-		Playerlist::getInstance()->getFirstLiving())
-	      {
-		//if (GameServer::getInstance()->isListening() == true)
-		  {
-		    if (plist->checkPlayers() == true)
-		      {
-			if (plist->getNoOfPlayers() <= 1)
-			  break;
-			if (plist->getActiveplayer()->isDead())
-			  nextPlayer();
-		      }
-		    finishRound();
-		    //snextRound.emit();
-		    //if (GameServer::getInstance()->isListening() == false)
-                      //{
-                        //printf("sending round over from the client side.\n");
-		      //GameClient::getInstance()->sendRoundOver();
-                      //}
-		  }
-		//both client and server exit this loop at the end of the round
-		break;
-	      }
-	    if (Playerlist::getInstance()->getActiveplayer()->getType() == Player::NETWORKED)
-	      break;
-	  }
-      }
-    if (d_stop == true)
-      {
-	Player *active = Playerlist::getInstance()->getActiveplayer();
-	if (active->getType() == Player::NETWORKED &&
-	    Playerlist::getInstance()->getNeutral() != active)
-	  {
-	    NetworkPlayer *player = dynamic_cast<NetworkPlayer*>(active);
-	    if (player->isConnected() == false)
-	      snextPlayerUnavailable.emit(active);
-	  }
-      }
+      //Now do some cleanup at the end of the turn.
+      if (d_stop == true)
+        return;
+      finishTurn();
+    }
 }
 
 void NextTurnNetworked::endTurn()
 {
+  std::string old_name = Playerlist::getActiveplayer()->getName();
   // Finish off the player and transfers the control to the start function
   // again.
   finishTurn();
-  nextPlayer();
-
-  if (Playerlist::getActiveplayer() == Playerlist::getInstance()->getFirstLiving())
-    {
-      //if (GameServer::getInstance()->isListening() == true)
-	//{
-	  finishRound();
-	  snextRound.emit();
-	  //if (GameServer::getInstance()->isListening() == false)
-	    //GameClient::getInstance()->sendRoundOver();
-	//}
-      return;
-    }
-
-  start();
 }
 
 void NextTurnNetworked::startTurn()
@@ -223,8 +173,11 @@ void NextTurnNetworked::finishTurn()
   //Put everything that has to be done before the next player starts
   //his turn here. E.g. one could clear some caches.
   Player *p = Playerlist::getActiveplayer();
-  p->getFogMap()->smooth();
-  p->endTurn();
+  if (p)
+    {
+      p->getFogMap()->smooth();
+      p->endTurn();
+    }
 }
 
 void NextTurnNetworked::finishRound()
@@ -239,29 +192,29 @@ void NextTurnNetworked::finishRound()
       //do this for all players at once
 
       for (Playerlist::iterator it = plist->begin(); it != plist->end(); it++)
-	{
-	  if ((*it)->isDead())
-	    continue;
+        {
+          if ((*it)->isDead())
+            continue;
 
-	  //collect monies from cities
-	  Citylist::getInstance()->collectTaxes(*it);
+          //collect monies from cities
+          Citylist::getInstance()->collectTaxes(*it);
 
-	  guint32 num_cities = Citylist::getInstance()->countCities(*it);
-	  (*it)->getStacklist()->collectTaxes((*it), num_cities);
+          guint32 num_cities = Citylist::getInstance()->countCities(*it);
+          (*it)->getStacklist()->collectTaxes((*it), num_cities);
 
-	  //vector armies (needs to preceed city's next turn)
-	  VectoredUnitlist::getInstance()->nextTurn(*it);
+          //vector armies (needs to preceed city's next turn)
+          VectoredUnitlist::getInstance()->nextTurn(*it);
 
-	  //pay for existing armies
-	  (*it)->getStacklist()->payUpkeep(*it);
+          //pay for existing armies
+          (*it)->getStacklist()->payUpkeep(*it);
 
-	  //reset, and heal armies
-	  (*it)->getStacklist()->nextTurn();
+          //reset, and heal armies
+          (*it)->getStacklist()->nextTurn();
 
-	  //produce new armies
-	  Citylist::getInstance()->nextTurn(*it);
+          //produce new armies
+          Citylist::getInstance()->nextTurn(*it);
 
-	}
+        }
     }
 
   // heal the stacks in the ruins
@@ -270,7 +223,7 @@ void NextTurnNetworked::finishRound()
     {
       Stack* keeper = (*it)->getOccupant();
       if (keeper)
-	keeper->nextTurn();
+        keeper->nextTurn();
     }
 
   if (d_random_turns)
