@@ -131,7 +131,7 @@ msgstr "_Abbrechen"
 
 #: ../dat/glade/city-defeated-dialog.ui.h:1
 msgid "The city is yours! Will you..."
-msgstr "Die Stadt ist ein! Wirst du ..."
+msgstr "Die Stadt ist ein! Wirst du die Stadt ..."
 
 #: ../dat/glade/city-defeated-dialog.ui.h:2
 msgid "Victory!"
@@ -264,7 +264,7 @@ msgstr "_Stop"
 
 #: ../dat/glade/city-window.ui.h:10
 msgid "_Vector..."
-msgstr "_Vector"
+msgstr "Ziel"
 
 #: ../dat/glade/destination-dialog.ui.h:1
 msgid "4t"
@@ -829,7 +829,7 @@ msgstr "Gewinner"
 
 #: ../dat/glade/game-window.ui.h:62 ../dat/glade/report-dialog.ui.h:10
 msgid "Winning"
-msgstr "gewinnen"
+msgstr "Punkzahl"
 
 #: ../dat/glade/game-window.ui.h:63 ../dat/glade/editor/main-window.ui.h:23
 msgid "_Fullscreen"
@@ -841,7 +841,7 @@ msgstr "_Vollbild"
 #: ../dat/glade/editor/cityset-window.ui.h:20
 #: ../dat/glade/editor/shieldset-window.ui.h:12
 msgid "_Help"
-msgstr "_Hilfe"
+msgstr "Hilfe"
 
 #: ../dat/glade/game-window.ui.h:65 ../dat/glade/splash-window.ui.h:5
 msgid "_Preferences"
@@ -1095,7 +1095,7 @@ msgstr "Aufgabe verfallen"
 
 #: ../dat/glade/report-dialog.ui.h:1
 msgid "Amount of gold each side possesses"
-msgstr "Goldmenge, die sich jede Seite angeeignet hat"
+msgstr "Goldstücke je Spieler"
 
 #: ../dat/glade/report-dialog.ui.h:2
 msgid "Armies you produced this turn"
@@ -1103,11 +1103,11 @@ msgstr "Armeen, die du in diesen Zug produziert hast"
 
 #: ../dat/glade/report-dialog.ui.h:6
 msgid "Number of armies each side owns"
-msgstr "Anzahl der Armeen, die jede Seite besitzt"
+msgstr "Anzahl der Armeen je Spieler"
 
 #: ../dat/glade/report-dialog.ui.h:7
 msgid "Number of cities each side owns"
-msgstr "Anzahl der Städte, die jede Seite besitzt"
+msgstr "Anzahl der Städte je Spieler"
 
 #: ../dat/glade/report-dialog.ui.h:9
 msgid "Who is the most powerful nation"
@@ -3984,7 +3984,7 @@ msgstr "Gut gemacht!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/QEnemyArmytype.cpp:136
 msgid "You must destroy a unit of enemy %1."
-msgstr "Du musst eine Einheit vom Gegner %1 besiegen."
+msgstr "Du musst eine gegnerische Einheit vom Typ %1 besiegen."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/playerlist.cpp:319
 msgid "Statesman"
@@ -4185,7 +4185,7 @@ msgstr "Das niederreißen der Stadt \"%1\" konnte nicht bewerkstelligt werden."
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/QCityRaze.cpp:118
 msgid "You must conquer the city \"%1\" and burn it to the ground."
-msgstr "Du musst die Stadt \"%1\" erobern und sie auf die Grundmauern abbrennen!"
+msgstr "Du musst die Stadt \"%1\" erobern und sie bis auf die Grundmauern abbrennen!"
 
 #: ../../lordsawar/lordsawar/trunk/po/../src/temple.cpp:31
 msgid " can bless your armies or give you quests."
