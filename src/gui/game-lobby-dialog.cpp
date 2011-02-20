@@ -257,6 +257,7 @@ GameLobbyDialog::update_player_details()
     ( name_renderer, sigc::mem_fun(*this, &GameLobbyDialog::cell_data_name));
   player_treeview->append_column(name_column);
 
+
   // the type column
   player_type_list = Gtk::ListStore::create(player_type_columns);
   Gtk::TreeModel::iterator i;
@@ -338,6 +339,8 @@ GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario,
   d_player_id_of_sit_or_stand_request = MAX_PLAYERS + 1;
   d_player_id_of_name_change_request = MAX_PLAYERS + 1;
   d_player_id_of_type_change_request = MAX_PLAYERS + 1;
+  name_column.property_resizable() = true;
+  player_treeview->get_column(2)->property_resizable() = true;
 }
 
 GameLobbyDialog::~GameLobbyDialog()

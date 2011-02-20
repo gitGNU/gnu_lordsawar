@@ -936,8 +936,8 @@ void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type
     (sigc::mem_fun(this, &Driver::on_client_could_not_connect));
   game_scenario_received.connect
     (sigc::mem_fun(this, &Driver::on_game_scenario_received_for_robots));
-  game_client->setNickname("lordsawaromatic");
-  game_client->start(host, port, "lordsawaromatic");
+  game_client->setNickname("robot");
+  game_client->start(host, port, "robot");
   heartbeat_conn = Glib::signal_timeout().connect
     (bind_return(sigc::mem_fun(*this, &Driver::heartbeat), true), 1 * 1000);
   robot_player_type = type;
@@ -946,12 +946,14 @@ void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type
 
 void Driver::on_game_scenario_received_for_robots(std::string path)
 {
+
   heartbeat_conn.disconnect();
-  GameClient *game_client = GameClient::getInstance();
   GameScenario *game_scenario = load_game(path);
+  GameClient *game_client = GameClient::getInstance();
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   game_client->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
   game_client->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
+  game_client->game_may_begin.connect(sigc::bind(sigc::mem_fun(this, &Driver::on_game_may_begin_for_robots), game_scenario, next_turn));
 
   Playerlist *pl = Playerlist::getInstance();
 
@@ -975,7 +977,13 @@ void Driver::on_game_scenario_received_for_robots(std::string path)
     if (Player::Type((*it)->getType()) == robot_player_type)
       GameClient::getInstance()->listenForLocalEvents(*it);
 
-  //okay, now go click play in the game lobby dialog.
+}
+
+void Driver::on_game_may_begin_for_robots(GameScenario *game_scenario,
+                                          NextTurnNetworked *next_turn)
+{
+  Game *game = new Game(game_scenario, next_turn);
+  game->get_smallmap().set_slide_speed(0);
 }
 
 void Driver::on_show_lobby_requested()

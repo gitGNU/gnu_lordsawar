@@ -101,6 +101,8 @@ class Driver: public sigc::trackable
 
     void on_keep_network_play_going(); //starts a new round
 
+    void on_game_may_begin_for_robots(GameScenario *game_scenario, NextTurnNetworked *next_turn);
+
     GameScenario *create_new_scenario(GameParameters &g, GameScenario::PlayMode m);
 };
 
