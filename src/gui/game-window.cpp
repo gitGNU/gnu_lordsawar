@@ -1995,17 +1995,15 @@ void GameWindow::on_group_toggled(Gtk::ToggleButton *toggle)
   clear_army_buttons();
       
   StackTile *s = GameMap::getStacks(currently_selected_stack->getPos());
+  game->get_bigmap().set_input_locked(true);
   if (active)
     {
       s->group(Playerlist::getActiveplayer(), currently_selected_stack);
       currently_selected_stack->sortForViewing(true);
     }
   else
-    {
-      game->get_bigmap().set_input_locked(true);
-      s->ungroup(Playerlist::getActiveplayer());
-      game->get_bigmap().set_input_locked(false);
-    }
+    s->ungroup(Playerlist::getActiveplayer());
+  game->get_bigmap().set_input_locked(false);
   //Stack *stack = s->getFriendlyStacks(Playerlist::getActiveplayer()).front();
   //currently_selected_stack = stack;
   //Playerlist::getActiveplayer()->setActivestack(stack);
