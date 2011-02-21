@@ -82,32 +82,31 @@ void NextTurnNetworked::start_player(Player *player)
 void NextTurnNetworked::start()
 {
   Playerlist* plist = Playerlist::getInstance();
+  supdating.emit();
+
+  startTurn();
+
+  // inform everyone about the next turn 
+  snextTurn.emit(plist->getActiveplayer());
+
+  if (plist->getNoOfPlayers() <= 2)
     {
-      supdating.emit();
-
-      startTurn();
-
-      // inform everyone about the next turn 
-      snextTurn.emit(plist->getActiveplayer());
-
-      if (plist->getNoOfPlayers() <= 2)
-        {
-          if (plist->checkPlayers()) //end of game detected
-            return;
-        }
-
-      splayerStart.emit(plist->getActiveplayer());
-
-      // let the player do his or her duties...
-      bool continue_loop = plist->getActiveplayer()->startTurn();
-      if (!continue_loop)
+      if (plist->checkPlayers()) //end of game detected
         return;
-
-      //Now do some cleanup at the end of the turn.
-      if (d_stop == true)
-        return;
-      finishTurn();
     }
+
+  splayerStart.emit(plist->getActiveplayer());
+
+  // let the player do his or her duties...
+  bool continue_loop = plist->getActiveplayer()->startTurn();
+  if (!continue_loop)
+    return;
+
+  //Now do some cleanup at the end of the turn.
+  if (d_stop == true)
+    return;
+  finishTurn();
+
 }
 
 void NextTurnNetworked::endTurn()
@@ -116,6 +115,13 @@ void NextTurnNetworked::endTurn()
   // Finish off the player and transfers the control to the start function
   // again.
   finishTurn();
+  if (Playerlist::getInstance()->checkPlayers() == true)
+    {
+      if (d_stop)
+	return;
+      if (Playerlist::getInstance()->getNoOfPlayers() <= 1)
+	return;
+    }
 }
 
 void NextTurnNetworked::startTurn()
@@ -142,22 +148,13 @@ void NextTurnNetworked::startTurn()
   if (d_turnmode)
     {
 
-      //if (p->getType() != Player::NETWORKED)
+      p->collectTaxesAndPayUpkeep();
 
-      //collect taxes
-      Citylist::getInstance()->collectTaxes(p);
-
-      guint32 num_cities = Citylist::getInstance()->countCities(p);
-      p->getStacklist()->collectTaxes(p, num_cities);
+      //reset moves, and heal stacks
+      p->stacksReset();
 
       //vector armies (needs to preceed city's next turn)
       VectoredUnitlist::getInstance()->nextTurn(p);
-
-      //pay upkeep for existing stacks
-      p->getStacklist()->payUpkeep(p);
-
-      //reset moves, and heal stacks
-      p->getStacklist()->nextTurn();
 
       //build new armies
       Citylist::getInstance()->nextTurn(p);
@@ -187,6 +184,15 @@ void NextTurnNetworked::finishRound()
   //E.g. increase the round number in GameScenario. (this is done with
   //the snextRound signal, but useful for an example).
 
+  if (Playerlist::getInstance()->checkPlayers() == true)
+    {
+      if (d_stop)
+        return;
+      if (Playerlist::getInstance()->getNoOfPlayers() <= 1)
+        return;
+    }
+
+  printf("d_turnmode is %d\n", d_turnmode);
   if (!d_turnmode)
     {
       //do this for all players at once
@@ -196,20 +202,14 @@ void NextTurnNetworked::finishRound()
           if ((*it)->isDead())
             continue;
 
-          //collect monies from cities
-          Citylist::getInstance()->collectTaxes(*it);
+          (*it)->collectTaxesAndPayUpkeep();
 
-          guint32 num_cities = Citylist::getInstance()->countCities(*it);
-          (*it)->getStacklist()->collectTaxes((*it), num_cities);
+          printf("healing armies for %s\n", (*it)->getName().c_str());
+          //reset, and heal armies
+          (*it)->stacksReset();
 
           //vector armies (needs to preceed city's next turn)
           VectoredUnitlist::getInstance()->nextTurn(*it);
-
-          //pay for existing armies
-          (*it)->getStacklist()->payUpkeep(*it);
-
-          //reset, and heal armies
-          (*it)->getStacklist()->nextTurn();
 
           //produce new armies
           Citylist::getInstance()->nextTurn(*it);
@@ -218,13 +218,7 @@ void NextTurnNetworked::finishRound()
     }
 
   // heal the stacks in the ruins
-  Ruinlist* rl = Ruinlist::getInstance();
-  for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
-    {
-      Stack* keeper = (*it)->getOccupant();
-      if (keeper)
-        keeper->nextTurn();
-    }
+  Playerlist::getInstance()->getNeutral()->ruinsReset();
 
   if (d_random_turns)
     {

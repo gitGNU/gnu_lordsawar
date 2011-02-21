@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
 // Copyright (C) 2004 John Farrell
-// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -124,13 +124,17 @@ bool Stacklist::check()
     return true;
 }
 
+void Stacklist::resetStacks()
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->reset();
+}
+
 void Stacklist::nextTurn()
 {
     debug("nextTurn()");
-    for (iterator it = begin(); it != end(); it++)
-      {
-        (*it)->nextTurn();
-      }
+    resetStacks();
+
     for (iterator it = begin(); it != end(); it++)
       for (iterator jit = begin(); jit != end(); jit++)
 	if (*jit != *it)

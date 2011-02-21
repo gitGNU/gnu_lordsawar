@@ -2,7 +2,7 @@
 // Copyright (C) 2002 Mark L. Amidon
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2011 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -219,7 +219,7 @@ class City : public Ownable, public Location, public Renamable,
 	bool changeVectorDestination(Vector<int> dest);
 
 	//! Callback that makes the army show up.
-	const Army *armyArrives(Vector<int> &pos);
+	const Army *armyArrives(Stack *& stack);
 
 	
 	// Methods that operate on class data and do not modify the class.
@@ -271,7 +271,7 @@ class City : public Ownable, public Location, public Renamable,
 	bool load(std::string tag, XML_Helper *helper);
 
         //! Produces the currently active Army production base.
-        Army * produceArmy(Vector<int> &pos);
+        Army * produceArmy(Stack *& stack);
 
 	//! Makes an Army production base be a little different than expected.
 	/**

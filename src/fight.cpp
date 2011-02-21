@@ -247,12 +247,6 @@ Fight::Result Fight::battleFromHistory()
     if (!a)
       a = findArmyById(d_defenders, f.id);
 
-    if (!a)
-      {
-	printf ("uh oh.  army id %d can't be found in the battle.\n", f.id);
-	printf ("do we have an army id of that in the stacklist anywhere?\n");
-      assert (false);
-      }
     a->damage(f.damage);
   }
   //is there anybody alive in the attackers?
@@ -587,7 +581,7 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 	  defender_roll > defender->terrain_strength)
 	{
 	  //hit defender
-	  if (d_type == FOR_KEEPS)
+	  if (d_type != FOR_KEEPS)
 	    {
 	      a->setNumberHasHit(a->getNumberHasHit() + (1/xp_factor));
 	      d->setNumberHasBeenHit(d->getNumberHasBeenHit() + (1/xp_factor));
@@ -601,7 +595,7 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 	       attacker_roll > attacker->terrain_strength)
 	{
 	  //hit attacker
-	  if (d_type == FOR_KEEPS)
+	  if (d_type != FOR_KEEPS)
 	    {
 	      d->setNumberHasHit(d->getNumberHasHit() + (1/xp_factor));
 	      a->setNumberHasBeenHit(a->getNumberHasBeenHit() + (1/xp_factor));
@@ -618,7 +612,7 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 	    {
 	      //defender automatically wins
 	      //hit attacker for however much it takes
-	      if (d_type == FOR_KEEPS)
+	      if (d_type != FOR_KEEPS)
 		{
 		  d->setNumberHasHit(d->getNumberHasHit() + (1/xp_factor));
 		  a->setNumberHasBeenHit(a->getNumberHasBeenHit() + 
@@ -632,6 +626,7 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 	}
     }
   // continue documenting the engagement
+
   item.damage = damage;
   d_actions.push_back(item);
 

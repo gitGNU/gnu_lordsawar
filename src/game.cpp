@@ -298,7 +298,8 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
 	Player *p = *i;
 	addPlayer(p);
     }
-    if (gameScenario->getPlayMode() == GameScenario::HOTSEAT)
+    if (gameScenario->getPlayMode() == GameScenario::HOTSEAT ||
+        gameScenario->getPlayMode() == GameScenario::NETWORKED)
       pl->splayerDead.connect(sigc::mem_fun(this, &Game::on_player_died));
     pl->ssurrender.connect(sigc::mem_fun(this, &Game::on_surrender_offered));
 

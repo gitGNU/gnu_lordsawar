@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -56,6 +56,7 @@
 
 using namespace std;
 
+int action_tally[Action::USE_ITEM];
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
@@ -196,6 +197,7 @@ void NetworkPlayer::decodeActions(std::list<Action *> actions)
 void NetworkPlayer::decodeAction(const Action *a)
 {
   d_actions.push_back(Action::copy(a));
+  action_tally[a->getType()]++;
   switch(a->getType())
     {
     case Action::STACK_MOVE:
@@ -289,6 +291,16 @@ void NetworkPlayer::decodeAction(const Action *a)
     case Action::USE_ITEM:
       return decodeActionUseItem
 	(dynamic_cast<const Action_UseItem*>(a));
+    case Action::STACK_ORDER:
+      return decodeActionStackOrder(dynamic_cast<const Action_ReorderArmies*>(a));
+    case Action::STACKS_RESET:
+      return decodeActionStacksReset(dynamic_cast<const Action_ResetStacks*>(a));
+    case Action::RUINS_RESET:
+      return decodeActionRuinsReset(dynamic_cast<const Action_ResetRuins*>(a));
+    case Action::COLLECT_TAXES_AND_PAY_UPKEEP:
+      return decodeActionCollectTaxesAndPayUpkeep(dynamic_cast<const Action_CollectTaxesAndPayUpkeep*>(a));
+    case Action::KILL_PLAYER:
+      return decodeActionKillPlayer(dynamic_cast<const Action_Kill*>(a));
     }
 
   return;
@@ -341,7 +353,8 @@ void NetworkPlayer::decodeActionSplit(const Action_Split *action)
   
   std::list<guint32> armies;
   for (unsigned int i = 0; i < MAX_STACK_SIZE; ++i) 
-    armies.push_back(action->getGroupedArmyId(i));
+    if (action->getGroupedArmyId(i) != 0)
+      armies.push_back(action->getGroupedArmyId(i));
 
   Stack *new_stack = NULL;
   doStackSplitArmies(stack, armies, new_stack);
@@ -359,19 +372,33 @@ void NetworkPlayer::decodeActionSplit(const Action_Split *action)
 
 void NetworkPlayer::decodeActionFight(const Action_Fight *action)
 {
+  printf("performing action: %s\n", action->dump().c_str());
   std::list<Stack *> attackers, defenders;
-  std::list<guint32> attacker_army_ids = action->getAttackerArmyIds();
-  for (std::list<guint32>::const_iterator i = attacker_army_ids.begin(),
-         end = attacker_army_ids.end(); i != end; ++i)
+  std::list<guint32> attacker_stack_ids = action->getAttackerStackIds();
+  for (std::list<guint32>::const_iterator i = attacker_stack_ids.begin(),
+         end = attacker_stack_ids.end(); i != end; ++i)
     attackers.push_back(d_stacklist->getStackById(*i));
 
-  std::list<guint32> defender_army_ids = action->getDefenderArmyIds();
-  for (std::list<guint32>::const_iterator i = defender_army_ids.begin(),
-         end = defender_army_ids.end(); i != end; ++i)
+  std::list<guint32> defender_stack_ids = action->getDefenderStackIds();
+  for (std::list<guint32>::const_iterator i = defender_stack_ids.begin(),
+         end = defender_stack_ids.end(); i != end; ++i)
     defenders.push_back(findStackById(*i));
 
   Stack *attack = &*attackers.front();
   Fight fight(attackers, defenders, action->getBattleHistory());
+    std::list<Stack *> att= fight.getAttackers(),
+      def= fight.getDefenders();
+    for (std::list<Stack*>::iterator i = att.begin(); i != att.end(); i++)
+      {
+        for (Stack::iterator j = (*i)->begin(); j != (*i)->end(); j++)
+            printf("attacker %d has hp %d\n", (*j)->getId(), (*j)->getHP());
+      }
+
+    for (std::list<Stack*>::iterator i = def.begin(); i != def.end(); i++)
+      {
+        for (Stack::iterator j = (*i)->begin(); j != (*i)->end(); j++)
+          printf("defender %d has hp %d\n", (*j)->getId(), (*j)->getHP());
+      }
   Fight::Result result = fight.battleFromHistory();
   fight_started.emit(fight);
 
@@ -617,13 +644,33 @@ void NetworkPlayer::decodeActionProduce(const Action_Produce *action)
   if (action->getVectored() == true)
     {
       printf ("produced unit but it's vectored.\n");
+      printf("we could put it in the vectored unit list, but why bother eh.\n");
+      printf("We can just make one on demand when it \"shows up\".\n");
     return;
     }
-  ArmyProdBase *a = action->getArmy();
+  //ArmyProdBase *a = action->getArmy();
   City *c = Citylist::getInstance()->getById(action->getCityId());
-  Army *army = new Army (*a, this);
-  Stack *s = c->addArmy(army);
-  printf ("created army id %d, in stack %d of size %d\n", army->getId(), s->getId(), s->size());
+  //Army *army = new Army (*a, this);
+  //Stack *s = c->addArmy(army);
+  Stack *s = NULL;
+  bool vectored = false;
+  const Army *army = doCityProducesArmy(c, s, vectored);
+  if (army)
+    printf ("created army id %d, in stack %d of size %d\n", army->getId(), s->getId(), s->size());
+  else
+    {
+    printf("we got a null army! how?\n");
+        int cost = c->getActiveProductionBase()->getProductionCost();
+          if (cost > d_gold)
+              printf("we can't afford it.\n");
+          else
+            printf("we can afford it\n");
+
+    exit(0);
+    }
+  printf("expecting it to be in stack id %d\n", action->getStackId());
+  assert (s != NULL);
+  assert (s->getId() == action->getStackId());
   assert (s->getPos() == action->getDestination());
   assert (army->getId() == action->getArmyId());
   s->sortForViewing(true);
@@ -729,5 +776,85 @@ void NetworkPlayer::decodeActionUseItem(const Action_UseItem *action)
   Player *victim = Playerlist::getInstance()->getPlayer(action->getVictimPlayerId());
   doHeroUseItem(hero, item, victim);
 }
+      
+void NetworkPlayer::decodeActionStackOrder(const Action_ReorderArmies* action)
+{
+  //sort the buggers.
+  Player *p = Playerlist::getInstance()->getPlayer(action->getPlayerId());
+  if (!p)
+    {
+      printf("we don't have player id %d\n", action->getPlayerId());
+      exit(0);
+    }
+  Stack *s = p->getStacklist()->getStackById(action->getStackId());
+  if (!s)
+    {
+      printf("we don't have stack id %d\n", action->getStackId());
+      exit(0);
+    }
+  std::list<guint32> ids = action->getArmyIds();
+  bool success = true;
+  for (std::list<guint32>::iterator i = ids.begin(); i != ids.end(); i++)
+    {
+      if (s->getArmyById(*i) == NULL)
+        {
+          printf("stack %d does not have army id %d\n", s->getId(), *i);
+          success = false;
+        }
+    }
+  if (!success)
+    {
+      exit(0);
+    }
+  printf("started out with this ordering: ");
+  for (Stack::iterator i = s->begin(); i != s->end(); i++)
+    printf ("%d ", (*i)->getId());
+  printf("\n");
+  printf("we say order like: ");
+  for (std::list<guint32>::iterator i = ids.begin(); i != ids.end(); i++)
+    printf ("%d ", *i);
+  printf("\n");
+  doStackSort(s, ids);
+  printf("changed it to: ");
+  for (Stack::iterator i = s->begin(); i != s->end(); i++)
+    printf ("%d ", (*i)->getId());
+  printf("\n");
+}
+
+void NetworkPlayer::decodeActionStacksReset(const Action_ResetStacks *action)
+{
+  Player *p = Playerlist::getInstance()->getPlayer(action->getPlayerId());
+  if (!p)
+    {
+      printf("couldn't find player %d\n", action->getPlayerId());
+      exit(0);
+    }
+  if (p->getId() != getId())
+    {
+      printf("can't heal another player's stacks?\n");
+      exit(0);
+    }
+  doStacksReset();
+}
+
+void NetworkPlayer::decodeActionRuinsReset(const Action_ResetRuins *action)
+{
+  doRuinsReset();
+}
+
+void NetworkPlayer::decodeActionCollectTaxesAndPayUpkeep(const Action_CollectTaxesAndPayUpkeep *action)
+{
+  doCollectTaxesAndPayUpkeep();
+}
+
+void NetworkPlayer::decodeActionKillPlayer(const Action_Kill *action)
+{
+  if (isDead() == false)
+    {
+      doKill();
+      Playerlist::getInstance()->splayerDead.emit(this);
+    }
+}
+
 
 // End of file

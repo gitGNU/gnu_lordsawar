@@ -3,7 +3,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -466,7 +466,7 @@ void Stack::payUpkeep(Player *p)
       p->withdrawGold((*it)->getUpkeep());
 }
 
-void Stack::nextTurn()
+void Stack::reset()
 {
   guint32 movement_multiplier = 1;
   setParked(false);
@@ -497,7 +497,6 @@ void Stack::nextTurn()
   //recalculate paths
 
   d_path->recalculate(this);
-
 }
 
 bool Stack::save(XML_Helper* helper) const
@@ -854,9 +853,9 @@ guint32 Stack::getMaxLandMoves() const
 
   //copy the stack, reset the moves and return the group moves
   Stack *copy = new Stack (*this);
-  copy->getPath()->clear(); //this prevents triggering path recalc in nextTurn
+  copy->getPath()->clear(); //this prevents triggering path recalc in reset
   copy->decrementMoves(copy->getMoves());
-  copy->nextTurn();
+  copy->reset();
   guint32 moves = copy->getMoves();
   if (isFlying() == true)
     {
@@ -869,7 +868,7 @@ guint32 Stack::getMaxLandMoves() const
   copy->decrementMoves(copy->getMoves());
   for (Stack::iterator it = copy->begin(); it != copy->end(); it++)
     (*it)->setInShip(false);
-  copy->nextTurn();
+  copy->reset();
 
   moves = copy->getMoves();
   delete copy;
@@ -885,8 +884,8 @@ guint32 Stack::getMaxBoatMoves() const
 
   //copy the stack, reset the moves and return the group moves
   Stack *copy = new Stack (*this);
-  copy->getPath()->clear(); //this prevents triggering path recalc in nextTurn
-  copy->nextTurn();
+  copy->getPath()->clear(); //this prevents triggering path recalc in reset
+  copy->reset();
   guint32 moves = copy->getMoves();
   if (isFlying() == true)
     {
@@ -903,7 +902,7 @@ guint32 Stack::getMaxBoatMoves() const
       else
 	(*it)->setInShip(false);
     }
-  copy->nextTurn();
+  copy->reset();
 
   moves = copy->getMoves();
   delete copy;
@@ -983,6 +982,7 @@ Stack *Stack::splitArmies(std::list<guint32> armies)
     }
   return new_stack;
 }
+
 //! split the armies in the stack that this much mp or more into a new stack.
 Stack *Stack::splitArmiesWithMovement(guint32 mp)
 {
@@ -1237,5 +1237,28 @@ guint32 Stack::countBlessings() const
   for (const_iterator it = begin(); it != end(); it++)
     count += (*it)->countBlessings();
   return count;
+}
+
+std::list<guint32> compare_ids;
+bool Stack::compareIds(const Army *lhs, const Army *rhs)
+{
+  guint32 lhs_rank = MAX_STACK_SIZE + 1;
+  guint32 rhs_rank = MAX_STACK_SIZE + 1;
+  int count = 0;
+  for (std::list<guint32>::iterator i = compare_ids.begin(); 
+       i != compare_ids.end(); i++)
+    {
+      if (lhs && *i == lhs->getId())
+        lhs_rank = count;
+      if (rhs && *i == rhs->getId())
+        rhs_rank = count;
+      count++;
+    }
+  return lhs_rank < rhs_rank;
+}
+void Stack::sortByIds(std::list<guint32> ids)
+{
+  compare_ids = ids;
+  sort(compareIds);
 }
 // End of file

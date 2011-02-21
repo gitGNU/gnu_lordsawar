@@ -1,6 +1,6 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
-// Copyright (C) 2007, 2008, 2010 Ben Asselstine
+// Copyright (C) 2007, 2008, 2010, 2011 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -139,6 +139,11 @@ class Action
 		INIT_TURN = 35,
 		CITY_LOOT = 36,
                 USE_ITEM = 37,
+                STACK_ORDER = 38,
+                STACKS_RESET = 39,
+                RUINS_RESET = 40,
+                COLLECT_TAXES_AND_PAY_UPKEEP = 41,
+                KILL_PLAYER = 42,
         };
 	static std::string actionTypeToString(Action::Type type);
 	static Action::Type actionTypeFromString(std::string str);
@@ -337,14 +342,17 @@ class Action_Fight : public Action, public sigc::trackable
 
 
 	std::list<FightItem> getBattleHistory() const {return d_history;};
-	std::list<guint32> getAttackerArmyIds() const {return d_attackers;};
-	std::list<guint32> getDefenderArmyIds() const {return d_defenders;};
+	std::list<guint32> getAttackerStackIds() const {return d_attackers;};
+	std::list<guint32> getDefenderStackIds() const {return d_defenders;};
 
         private:
         
         std::list<FightItem> d_history;
         std::list<guint32> d_attackers;
         std::list<guint32> d_defenders;
+
+        bool is_army_id_in_stacks(guint32 id, std::list<guint32> stack_ids) const;
+        bool stack_ids_to_stacks(std::list<guint32> stack_ids, std::list<Stack*> &stacks, guint32 &stack_id) const;
 
         bool loadItem(std::string tag, XML_Helper* helper);
 };
@@ -1187,7 +1195,7 @@ class Action_Produce: public Action
 	 * up.
 	 */
 	//! Populate the action with pertinent data.
-        bool fillData(const ArmyProdBase *a, City *city, bool vectored, Vector<int> pos, guint32 army_id);
+        bool fillData(const ArmyProdBase *a, City *city, bool vectored, Vector<int> pos, guint32 army_id, guint32 stack_id);
 
 	//! Get the production details of the army that was produced.
 	ArmyProdBase * getArmy() const {return d_army;}
@@ -1203,12 +1211,16 @@ class Action_Produce: public Action
 
 	//! Get the id of the army instance that was created.
 	guint32 getArmyId() const {return d_army_id;}
+
+	//! Get the id of the stack that the army instance that was created in.
+	guint32 getStackId() const {return d_stack_id;}
     private:
 	ArmyProdBase *d_army;
         guint32 d_city;
         bool d_vectored;
 	Vector<int> d_dest;
 	guint32 d_army_id;
+        guint32 d_stack_id;
 
 	bool load(std::string tag, XML_Helper *helper);
 };
@@ -1653,6 +1665,166 @@ class Action_UseItem: public Action
         guint32 d_hero;
         guint32 d_item;
         guint32 d_victim_player;
+};
+
+//-----------------------------------------------------------------------------
+
+//! A temporary record of the armies in a stack being reordered.
+/**
+ * The purpose of the Action_ReorderArmies class is to record when a Player
+ * changes the ordering of a given stack.
+ */
+class Action_ReorderArmies: public Action
+{
+    public:
+	//! Make a new reorder armies action.
+        Action_ReorderArmies();
+	//! Copy constructor
+	Action_ReorderArmies(const Action_ReorderArmies &action);
+	//! Load a new reorder armies action from a saved-game file.
+        Action_ReorderArmies(XML_Helper* helper);
+	//! Destroy a reorder armies action.
+        ~Action_ReorderArmies();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this reorder armies action to a saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! Populate the Action_ReorderArmies with the stack.
+        bool fillData(Stack *stack);
+
+        std::list<guint32> getArmyIds() const {return d_army_ids;};
+	guint32 getStackId() const {return d_stack_id;};
+	guint32 getPlayerId() const {return d_player_id;};
+
+        private:
+        guint32 d_stack_id;
+        guint32 d_player_id;
+        std::list<guint32> d_army_ids;
+};
+
+//-----------------------------------------------------------------------------
+
+//! A temporary record of the players stacks being healed and moves reset.
+/**
+ * The purpose of the Action_ResetStacks class is to record when a Player
+ * has it's stacks healed and it's movement points recharged.
+ */
+class Action_ResetStacks: public Action
+{
+    public:
+	//! Make a new reset stacks action.
+        Action_ResetStacks();
+	//! Copy constructor
+	Action_ResetStacks(const Action_ResetStacks &action);
+	//! Load a new reset stacks action from a saved-game file.
+        Action_ResetStacks(XML_Helper* helper);
+	//! Destroy a reset stacks action.
+        ~Action_ResetStacks();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this reset stacks action to a saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! Populate the Action_ResetStacks with the stack.
+        bool fillData(Player *p);
+
+	guint32 getPlayerId() const {return d_player_id;};
+
+        private:
+        guint32 d_player_id;
+};
+
+//-----------------------------------------------------------------------------
+
+//! A temporary record of the monsters in ruins being recharged..
+/**
+ * The purpose of the Action_ResetRuins class is to record when the neutral
+ * player heals up the monsters in ruins.
+ */
+class Action_ResetRuins: public Action
+{
+    public:
+	//! Make a new reset ruins action.
+        Action_ResetRuins();
+	//! Copy constructor
+	Action_ResetRuins(const Action_ResetRuins &action);
+	//! Load a new reset ruins action from a saved-game file.
+        Action_ResetRuins(XML_Helper* helper);
+	//! Destroy a reset ruins action.
+        ~Action_ResetRuins();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this reset ruins action to a saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! Populate the Action_ResetRuins with the stack.
+        bool fillData();
+};
+
+//-----------------------------------------------------------------------------
+
+//! A temporary record of a player making and paying out money.
+/**
+ * The purpose of the Action_CollectTaxesAndPayUpkeeps class is to record when 
+ * a player makes money from her cities, and her stacks, and her heroes 
+ * magical items and pays out money to her stacks.
+ */
+class Action_CollectTaxesAndPayUpkeep: public Action
+{
+    public:
+	//! Make a new collect taxes and pay upkeep action.
+        Action_CollectTaxesAndPayUpkeep();
+	//! Copy constructor
+	Action_CollectTaxesAndPayUpkeep(const Action_CollectTaxesAndPayUpkeep &action);
+	//! Load a new collect taxes and pay upkeep action from a saved-game file.
+        Action_CollectTaxesAndPayUpkeep(XML_Helper* helper);
+	//! Destroy a collect taxes and pay upkeep action.
+        ~Action_CollectTaxesAndPayUpkeep();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this collect taxes and pay upkeep action to a saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! The Action_CollectTaxesAndPayUpkeep doesn't need any info to fill.
+        bool fillData();
+};
+
+//-----------------------------------------------------------------------------
+
+//! A temporary record of a player dying.
+/**
+ * The purpose of the Action_Kill class is to record when a player has been
+ * vanquished by foes.
+ */
+class Action_Kill: public Action
+{
+    public:
+	//! Make a kill action.
+        Action_Kill();
+	//! Copy constructor
+	Action_Kill(const Action_Kill &action);
+	//! Load a new kill action from a saved-game file.
+        Action_Kill(XML_Helper* helper);
+	//! Destroy a kill action.
+        ~Action_Kill();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this kill action to a saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! The Action_Kill doesn't take any info to fill.
+        bool fillData();
 };
 
 #endif //ACTION_H

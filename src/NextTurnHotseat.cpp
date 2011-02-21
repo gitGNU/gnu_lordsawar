@@ -1,5 +1,5 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -152,22 +152,13 @@ void NextTurnHotseat::startTurn()
   if (d_turnmode)
     {
 
-      //if (p->getType() != Player::NETWORKED)
-      
-      //collect taxes
-      Citylist::getInstance()->collectTaxes(p);
+      p->collectTaxesAndPayUpkeep();
 
-      guint32 num_cities = Citylist::getInstance()->countCities(p);
-      p->getStacklist()->collectTaxes(p, num_cities);
+      //reset moves, and heal stacks
+      p->stacksReset();
 
       //vector armies (needs to preceed city's next turn)
       VectoredUnitlist::getInstance()->nextTurn(p);
-
-      //pay upkeep for existing stacks
-      p->getStacklist()->payUpkeep(p);
-
-      //reset moves, and heal stacks
-      p->getStacklist()->nextTurn();
 
       //build new armies
       Citylist::getInstance()->nextTurn(p);
@@ -203,20 +194,13 @@ void NextTurnHotseat::finishRound()
 	  if ((*it)->isDead())
 	    continue;
 
-	  //collect monies from cities
-	  Citylist::getInstance()->collectTaxes(*it);
+          (*it)->collectTaxesAndPayUpkeep();
 
-	  guint32 num_cities = Citylist::getInstance()->countCities(*it);
-	  (*it)->getStacklist()->collectTaxes((*it), num_cities);
+	  //reset, and heal armies
+          (*it)->stacksReset();
 
 	  //vector armies (needs to preceed city's next turn)
 	  VectoredUnitlist::getInstance()->nextTurn(*it);
-
-	  //pay for existing armies
-	  (*it)->getStacklist()->payUpkeep(*it);
-
-	  //reset, and heal armies
-	  (*it)->getStacklist()->nextTurn();
 
 	  //produce new armies
 	  Citylist::getInstance()->nextTurn(*it);
@@ -225,13 +209,7 @@ void NextTurnHotseat::finishRound()
     }
 
   // heal the stacks in the ruins
-  Ruinlist* rl = Ruinlist::getInstance();
-  for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
-    {
-      Stack* keeper = (*it)->getOccupant();
-      if (keeper)
-	keeper->nextTurn();
-    }
+  Playerlist::getInstance()->getNeutral()->ruinsReset();
     
   if (d_random_turns)
     {

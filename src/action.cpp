@@ -1,6 +1,6 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
-// Copyright (C) 2007, 2008, 2010 Ben Asselstine
+// Copyright (C) 2007, 2008, 2010, 2011 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -43,6 +43,7 @@
 #include "armyprodbase.h"
 #include "heroproto.h"
 #include "Item.h"
+#include "stacklist.h" //remove me
 
 std::string Action::d_tag = "action";
 using namespace std;
@@ -176,6 +177,16 @@ Action* Action::handle_load(XML_Helper* helper)
           return (new Action_Loot(helper));
       case USE_ITEM:
           return (new Action_UseItem(helper));
+      case STACK_ORDER:
+          return (new Action_ReorderArmies(helper));
+      case STACKS_RESET:
+          return (new Action_ResetStacks(helper));
+      case RUINS_RESET:
+          return (new Action_ResetRuins(helper));
+      case COLLECT_TAXES_AND_PAY_UPKEEP:
+          return (new Action_CollectTaxesAndPayUpkeep(helper));
+      case KILL_PLAYER:
+          return (new Action_Kill(helper));
     }
 
   return 0;
@@ -284,6 +295,24 @@ Action* Action::copy(const Action* a)
             return 
               (new Action_UseItem
                 (*dynamic_cast<const Action_UseItem*>(a)));
+        case STACK_ORDER:
+            return 
+              (new Action_ReorderArmies
+                (*dynamic_cast<const Action_ReorderArmies*>(a)));
+        case STACKS_RESET:
+            return 
+              (new Action_ResetStacks
+                (*dynamic_cast<const Action_ResetStacks*>(a)));
+        case RUINS_RESET:
+            return 
+              (new Action_ResetRuins
+                (*dynamic_cast<const Action_ResetRuins*>(a)));
+        case COLLECT_TAXES_AND_PAY_UPKEEP:
+            return 
+              (new Action_CollectTaxesAndPayUpkeep
+                (*dynamic_cast<const Action_CollectTaxesAndPayUpkeep*>(a)));
+        case KILL_PLAYER:
+            return (new Action_Kill (*dynamic_cast<const Action_Kill*>(a)));
     }
 
     return 0;
@@ -466,21 +495,31 @@ Action_Fight::Action_Fight(XML_Helper* helper)
 {
     std::string s;
     std::istringstream si;
-    guint32 ui;
+    int ival = -1;
 
     helper->registerTag(Item::d_tag, sigc::mem_fun(this, &Action_Fight::loadItem));
 
     // get attacking and defending stacks
     helper->getData(s, "attackers");
     si.str(s);
-    while (si >> ui)
-        d_attackers.push_back(ui);
+    while (si.eof() == false)
+      {
+        ival = -1;
+        si >> ival;
+        if (ival != -1)
+          d_attackers.push_back((guint32)ival);
+      }
     si.clear();
 
     helper->getData(s, "defenders");
     si.str(s);
-    while (si >> ui)
-        d_defenders.push_back(ui);
+    while (si.eof() == false)
+      {
+        ival = -1;
+        si >> ival;
+        if (ival != -1)
+          d_defenders.push_back((guint32) ival);
+      }
 }
 
 Action_Fight::~Action_Fight()
@@ -549,6 +588,53 @@ bool Action_Fight::fillData(const Fight* f)
     d_history = f->getCourseOfEvents();
 
     return true;
+}
+
+bool Action_Fight::stack_ids_to_stacks(std::list<guint32> stack_ids, std::list<Stack*> &stacks, guint32 &stack_id) const
+{
+  for (std::list<guint32>::iterator i = stack_ids.begin(); i != stack_ids.end(); i++)
+    {
+      bool found = false;
+      for (Playerlist::iterator j = Playerlist::getInstance()->begin(), jend = Playerlist::getInstance()->end();
+           j != jend; ++j) 
+        {
+          Stack *s = (*j)->getStacklist()->getStackById(*i);
+          if (s)
+            {
+              found = true;
+              stacks.push_back(s);
+              break;
+            }
+        }
+      if (found == false)
+        {
+          stack_id = *i;
+          return false;
+        }
+    }
+  return true;
+}
+
+bool Action_Fight::is_army_id_in_stacks(guint32 id, std::list<guint32> stack_ids) const
+{
+  std::list<Stack*> stacks;
+  guint32 stack_id = 0;
+  bool success = stack_ids_to_stacks(stack_ids, stacks, stack_id);
+  if (!success)
+    return false;
+  bool found = false;
+  for (std::list<Stack*>::iterator i = stacks.begin(); i != stacks.end(); i++)
+    {
+      if ((*i)->getArmyById(id))
+        {
+          found = true;
+          break;
+        }
+    }
+  if (found)
+    return true;
+  else
+    return false;
 }
 
 bool Action_Fight::loadItem(std::string tag, XML_Helper* helper)
@@ -1742,7 +1828,8 @@ Action_Produce::Action_Produce()
 
 Action_Produce::Action_Produce(const Action_Produce &action)
 : Action(action), d_city(action.d_city), d_vectored(action.d_vectored),
-    d_dest(action.d_dest), d_army_id(action.d_army_id)
+    d_dest(action.d_dest), d_army_id(action.d_army_id), 
+    d_stack_id(action.d_stack_id)
 {
   d_army = new ArmyProdBase (*action.d_army);
 }
@@ -1755,6 +1842,7 @@ Action_Produce::Action_Produce(XML_Helper* helper)
   helper->getData(d_dest.x, "dest_x");
   helper->getData(d_dest.y, "dest_y");
   helper->getData(d_army_id, "army_id");
+  helper->getData(d_stack_id, "stack_id");
   helper->registerTag(ArmyProdBase::d_tag, sigc::mem_fun(this, &Action_Produce::load));
 }
 
@@ -1782,7 +1870,7 @@ std::string Action_Produce::dump() const
   if (d_vectored)
     s <<" but it is vectored to another city at " << d_dest.x << "," << d_dest.y;
   else
-    s <<" at position " << d_dest.x << "," << d_dest.y;
+    s <<" at position " << d_dest.x << "," << d_dest.y << " in stack " << d_stack_id ;
   s <<"\n";
 
   return s.str();
@@ -1797,18 +1885,20 @@ bool Action_Produce::doSave(XML_Helper* helper) const
   retval &= helper->saveData("dest_x", d_dest.x);
   retval &= helper->saveData("dest_y", d_dest.y);
   retval &= helper->saveData("army_id", d_army_id);
+  retval &= helper->saveData("stack_id", d_stack_id);
   retval &= d_army->save(helper);
 
   return retval;
 }
 
-bool Action_Produce::fillData(const ArmyProdBase *army, City *city, bool vectored, Vector<int> pos, guint32 army_id)
+bool Action_Produce::fillData(const ArmyProdBase *army, City *city, bool vectored, Vector<int> pos, guint32 army_id, guint32 stack_id)
 {
   d_army = new ArmyProdBase(*army);
   d_city = city->getId();
   d_vectored = vectored;
   d_dest = pos;
   d_army_id = army_id;
+  d_stack_id = stack_id;
   return true;
 }
 
@@ -2481,6 +2571,258 @@ bool Action_UseItem::fillData(Hero *hero, Item *item, Player *victim)
   return true;
 }
 
+//-----------------------------------------------------------------------------
+// Action_ReorderArmies
+
+Action_ReorderArmies::Action_ReorderArmies()
+:Action(Action::STACK_ORDER), d_stack_id(0), d_player_id(MAX_PLAYERS + 1)
+{
+}
+
+Action_ReorderArmies::Action_ReorderArmies(const Action_ReorderArmies &action)
+: Action(action), d_stack_id(action.d_stack_id), 
+    d_player_id(action.d_player_id), d_army_ids(action.d_army_ids)
+{
+}
+
+Action_ReorderArmies::Action_ReorderArmies(XML_Helper* helper)
+:Action(helper)
+{
+
+  helper->getData(d_stack_id, "stack_id");
+  helper->getData(d_player_id, "player_id");
+  std::string armies;
+  helper->getData(armies, "armies");
+  std::stringstream sarmies;
+  sarmies.str(armies);
+  int ival = -1;
+  while (sarmies.eof() == false)
+    {
+      ival = -1;
+      sarmies >> ival;
+      if (ival != -1)
+        d_army_ids.push_back((guint32)ival);
+    }
+}
+
+Action_ReorderArmies::~Action_ReorderArmies()
+{
+}
+
+std::string Action_ReorderArmies::dump() const
+{
+  std::stringstream ss;
+
+  ss <<"Stack " <<d_stack_id <<" belonging to " << d_player_id << " has new order: ";
+ 
+  for (std::list<guint32>::const_iterator i = d_army_ids.begin(); 
+       i != d_army_ids.end(); i++)
+    ss << (*i) << " ";
+  ss << "\n";
+
+  return ss.str();
+}
+
+bool Action_ReorderArmies::doSave(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->saveData("stack_id", d_stack_id);
+  retval &= helper->saveData("player_id", d_player_id);
+
+  std::stringstream armies;
+  std::list<guint32>::const_iterator tit = d_army_ids.begin();
+  std::list<guint32>::const_iterator tend = d_army_ids.end();
+  for(;tit != tend;++tit)
+    armies << (*tit) << " ";
+  retval &= helper->saveData("armies", armies.str());
+  return retval;
+}
+
+bool Action_ReorderArmies::fillData(Stack *s)
+{
+  d_stack_id = s->getId();
+  d_player_id = s->getOwner()->getId();
+  for (Stack::iterator i = s->begin(); i != s->end(); i++)
+    d_army_ids.push_back((*i)->getId());
+
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+// Action_ResetStacks
+
+Action_ResetStacks::Action_ResetStacks()
+:Action(Action::STACKS_RESET), d_player_id(0)
+{
+}
+
+Action_ResetStacks::Action_ResetStacks(const Action_ResetStacks &action)
+: Action(action), d_player_id(action.d_player_id)
+{
+}
+
+Action_ResetStacks::Action_ResetStacks(XML_Helper* helper)
+:Action(helper)
+{
+  helper->getData(d_player_id, "player_id");
+}
+
+Action_ResetStacks::~Action_ResetStacks()
+{
+}
+
+std::string Action_ResetStacks::dump() const
+{
+  std::stringstream ss;
+
+  ss <<"Stacks for " <<d_player_id <<" are being recharged.";
+  ss << "\n";
+
+  return ss.str();
+}
+
+bool Action_ResetStacks::doSave(XML_Helper* helper) const
+{
+  bool retval = true;
+
+  retval &= helper->saveData("player_id", d_player_id);
+  return retval;
+}
+
+bool Action_ResetStacks::fillData(Player *p)
+{
+  d_player_id = p->getId();
+
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+// Action_ResetStack
+
+Action_ResetRuins::Action_ResetRuins()
+:Action(Action::RUINS_RESET)
+{
+}
+
+Action_ResetRuins::Action_ResetRuins(const Action_ResetRuins &action)
+: Action(action)
+{
+}
+
+Action_ResetRuins::Action_ResetRuins(XML_Helper* helper)
+:Action(helper)
+{
+}
+
+Action_ResetRuins::~Action_ResetRuins()
+{
+}
+
+std::string Action_ResetRuins::dump() const
+{
+  std::stringstream ss;
+  ss <<"Ruins are being recharged.";
+  ss << "\n";
+
+  return ss.str();
+}
+
+bool Action_ResetRuins::doSave(XML_Helper* helper) const
+{
+  bool retval = true;
+  return retval;
+}
+
+bool Action_ResetRuins::fillData()
+{
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+// Action_CollectTaxesAndPayUpkeep
+
+Action_CollectTaxesAndPayUpkeep::Action_CollectTaxesAndPayUpkeep()
+:Action(Action::COLLECT_TAXES_AND_PAY_UPKEEP)
+{
+}
+
+Action_CollectTaxesAndPayUpkeep::Action_CollectTaxesAndPayUpkeep(const Action_CollectTaxesAndPayUpkeep &action)
+: Action(action)
+{
+}
+
+Action_CollectTaxesAndPayUpkeep::Action_CollectTaxesAndPayUpkeep(XML_Helper* helper)
+:Action(helper)
+{
+}
+
+Action_CollectTaxesAndPayUpkeep::~Action_CollectTaxesAndPayUpkeep()
+{
+}
+
+std::string Action_CollectTaxesAndPayUpkeep::dump() const
+{
+  std::stringstream ss;
+  ss <<"Collecting taxes from cities and paying the troops.";
+  ss << "\n";
+
+  return ss.str();
+}
+
+bool Action_CollectTaxesAndPayUpkeep::doSave(XML_Helper* helper) const
+{
+  bool retval = true;
+  return retval;
+}
+
+bool Action_CollectTaxesAndPayUpkeep::fillData()
+{
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+// Action_Kill
+
+Action_Kill::Action_Kill()
+:Action(Action::KILL_PLAYER)
+{
+}
+
+Action_Kill::Action_Kill(const Action_Kill &action)
+: Action(action)
+{
+}
+
+Action_Kill::Action_Kill(XML_Helper* helper)
+:Action(helper)
+{
+}
+
+Action_Kill::~Action_Kill()
+{
+}
+
+std::string Action_Kill::dump() const
+{
+  std::stringstream ss;
+  ss <<"player is vanquished.";
+  ss << "\n";
+
+  return ss.str();
+}
+
+bool Action_Kill::doSave(XML_Helper* helper) const
+{
+  bool retval = true;
+  return retval;
+}
+
+bool Action_Kill::fillData()
+{
+  return true;
+}
+
 std::string Action::actionTypeToString(Action::Type type)
 {
   switch (type)
@@ -2559,6 +2901,16 @@ std::string Action::actionTypeToString(Action::Type type)
       return "Action::CITY_LOOT";
     case Action::USE_ITEM:
       return "Action::USE_ITEM";
+    case Action::STACK_ORDER:
+      return "Action::STACK_ORDER";
+    case Action::STACKS_RESET:
+      return "Action::STACKS_RESET";
+    case Action::RUINS_RESET:
+      return "Action::RUINS_RESET";
+    case Action::COLLECT_TAXES_AND_PAY_UPKEEP:
+      return "Action::COLLECT_TAXES_AND_PAY_UPKEEP";
+    case Action::KILL_PLAYER:
+      return "Action::KILL_PLAYER";
     }
       
   return "Action::MOVE";
@@ -2642,6 +2994,16 @@ Action::Type Action::actionTypeFromString(std::string str)
     return Action::CITY_LOOT;
   else if (str == "Action::USE_ITEM")
     return Action::USE_ITEM;
+  else if (str == "Action::STACK_ORDER")
+    return Action::STACK_ORDER;
+  else if (str == "Action::STACKS_RESET")
+    return Action::STACKS_RESET;
+  else if (str == "Action::RUINS_RESET")
+    return Action::RUINS_RESET;
+  else if (str == "Action::COLLECT_TAXES_AND_PAY_UPKEEP")
+    return Action::COLLECT_TAXES_AND_PAY_UPKEEP;
+  else if (str == "Action::KILL_PLAYER")
+    return Action::KILL_PLAYER;
   return Action::STACK_MOVE;
 }
 

@@ -369,8 +369,6 @@ void Player::addStack(Stack* stack)
 {
   debug("Player " << getName() << ": Stack Id: " << stack->getId() << " added to stacklist");
     stack->setPlayer(this);
-  if (stack->getId() == 4322)
-    printf("owner of stack 4322 is %s\n", stack->getOwner()->getName().c_str());
     d_stacklist->add(stack);
 }
 
@@ -387,6 +385,8 @@ bool Player::deleteStack(Stack* stack)
 void Player::kill()
 {
   doKill();
+  Action_Kill *item = new Action_Kill();
+  addAction(item);
 }
 
 void Player::doKill()
@@ -629,11 +629,6 @@ bool Player::doStackSplitArmies(Stack *stack, std::list<guint32> armies,
   new_stack = stack->splitArmies(armies);
   if (new_stack != NULL)
     {
-      debug("2. split stack " << new_stack->getId() << " from stack " << stack->getId() << " on " << stack->getPos().x << "," << stack->getPos().y);
-      if (new_stack->getId() == 4322)
-        {
-        printf("owner of stack %d (parent of 4322) is %s\n", stack->getId(), stack->getOwner()->getName().c_str());
-        }
       addStack(new_stack);
       return true;
     }
@@ -1255,8 +1250,12 @@ Fight::Result Player::stackFight(Stack** attacker, Stack** defender)
       }
 
     Fight fight(*attacker, *defender);
-    fight.battle(GameScenarioOptions::s_intense_combat);
     
+    std::list<Stack *> attackers = fight.getAttackers(),
+      defenders = fight.getDefenders();
+
+    fight.battle(GameScenarioOptions::s_intense_combat);
+
     fight_started.emit(fight);
     // cleanup
     
@@ -1265,10 +1264,24 @@ Fight::Result Player::stackFight(Stack** attacker, Stack** defender)
     item->fillData(&fight);
     addAction(item);
 
-    std::list<Stack *> attackers = fight.getAttackers(),
-      defenders = fight.getDefenders();
 
     cleanupAfterFight(attackers, defenders);
+  
+    for (std::list<Stack*>::iterator i = attackers.begin(); 
+         i != attackers.end(); i++)
+      {
+        Action_ReorderArmies *ordering = new Action_ReorderArmies();
+        ordering->fillData(*i);
+        addAction(ordering);
+      }
+
+    for (std::list<Stack*>::iterator i = defenders.begin(); 
+         i != defenders.end(); i++)
+      {
+        Action_ReorderArmies *ordering = new Action_ReorderArmies();
+        ordering->fillData(*i);
+        addAction(ordering);
+      }
     
     // Set the attacker and defender stack to 0 if neccessary. This is a great
     // help for the functions calling stackFight (e.g. if a stack attacks
@@ -2307,7 +2320,7 @@ guint32 Player::removeDeadArmies(std::list<Stack*>& stacks,
 
     tallyDeadArmyTriumphs(stacks);
     handleDeadHeroes(stacks);
-    healInjuredArmies(stacks);
+    //healInjuredArmies(stacks);
     handleDeadArmiesForQuests(stacks, culprits);
 
     std::list<Stack*>::iterator it;
@@ -2318,10 +2331,10 @@ guint32 Player::removeDeadArmies(std::list<Stack*>& stacks,
           debug("Stack id: " << (*it)->getId());
         for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end();)
         {
-            debug("Army: " << (*sit))
+            debug("Army: " << (*sit) << " " << (*sit)->getId())
             if ((*sit)->getHP() <= 0)
             {
-                debug("Army: " << (*sit)->getName())
+                debug("Dead Army: " << (*sit)->getName())
 
                 count++;
 		sit = (*it)->flErase(sit);
@@ -2337,7 +2350,7 @@ guint32 Player::removeDeadArmies(std::list<Stack*>& stacks,
 	    {
 	      if (owner)
 		{
-		  debug("Removing this stack from the owner's stacklist");
+		  debug("Yes, removing this stack from the owner's stacklist");
 		  bool found = owner->deleteStack(*it);
                   if (found == false)
                     {
@@ -2361,7 +2374,7 @@ guint32 Player::removeDeadArmies(std::list<Stack*>& stacks,
 	  else
 	    it++;
     }
-    debug("after removeDead: size = " << stacks.size());
+    debug("after removeDead: num stacks = " << stacks.size());
     return count;
 }
 
@@ -3370,13 +3383,16 @@ void Player::AI_setupVectoring(guint32 safe_mp, guint32 min_defenders,
     }
 }
 
-const Army * Player::doCityProducesArmy(City *city, Vector<int> &pos)
+const Army * Player::doCityProducesArmy(City *city, Stack *& s, bool &vectored)
 {
+  vectored = false;
   int cost = city->getActiveProductionBase()->getProductionCost();
   if (cost > d_gold)
     return NULL;
   withdrawGold(cost);
-  const Army *a = city->armyArrives(pos);
+  const Army *a = city->armyArrives(s);
+  if (city->getVectoring() != Vector<int>(-1,-1))
+    vectored = true;
   return a;
 }
 
@@ -3384,17 +3400,35 @@ bool Player::cityProducesArmy(City *city)
 {
   assert(city->getOwner() == this);
   Action_Produce *item = new Action_Produce();
-  Vector<int> pos;
-  const Army *army = doCityProducesArmy(city, pos);
+  Stack *stack = NULL;
+  bool vectored = false;
+  const Army *army = doCityProducesArmy(city, stack, vectored);
   if (army)
     {
+      if (!stack)
+        exit(0);
       const ArmyProdBase *source_army;
       source_army = city->getProductionBaseBelongingTo(army);
-      if (city->getVectoring() == Vector<int>(-1, -1))
-	item->fillData(source_army, city, false, pos, army->getId());
-      else
-	item->fillData(source_army, city, true, city->getVectoring(), army->getId());
-      addAction(item);
+      if (stack)
+        {
+          item->fillData(source_army, city, false, stack->getPos(), army->getId(),
+                         stack->getId());
+          addAction(item);
+
+          Action_ReorderArmies *ordering = new Action_ReorderArmies();
+          ordering->fillData(stack);
+          addAction(ordering);
+        }
+    }
+  else
+    {
+      if (vectored)
+        {
+          //send vectoring action.
+          const ArmyProdBase *source_army = city->getActiveProductionBase();
+          item->fillData(source_army, city, true, city->getVectoring(), 0, 0);
+          addAction(item);
+        }
     }
   return true;
 }
@@ -3643,6 +3677,15 @@ bool Player::hasAlreadyInitializedTurn() const
   for (list<Action*>::const_iterator it = d_actions.begin();
        it != d_actions.end(); it++)
     if ((*it)->getType() == Action::INIT_TURN)
+      return true;
+  return false;
+}
+
+bool Player::hasAlreadyCollectedTaxesAndPaidUpkeep() const
+{
+  for (list<Action*>::const_iterator it = d_actions.begin();
+       it != d_actions.end(); it++)
+    if ((*it)->getType() == Action::COLLECT_TAXES_AND_PAY_UPKEEP)
       return true;
   return false;
 }
@@ -4470,4 +4513,65 @@ double Player::countXPFromDeadArmies(std::list<Stack*>& stacks)
     }
   return total;
 }
+
+void Player::doStackSort(Stack *s, std::list<guint32> army_ids)
+{
+  return s->sortByIds(army_ids);
+}
+
+void Player::doStacksReset()
+{
+  getStacklist()->resetStacks();
+}
+
+void Player::stacksReset()
+{
+  doStacksReset();
+  Action_ResetStacks *item = new Action_ResetStacks();
+  item->fillData(this);
+  addAction(item);
+}
+
+void Player::doRuinsReset()
+{
+  if (this != Playerlist::getInstance()->getNeutral())
+    return;
+  Ruinlist* rl = Ruinlist::getInstance();
+  for (Ruinlist::iterator it = rl->begin(); it != rl->end(); it++)
+    {
+      Stack* keeper = (*it)->getOccupant();
+      if (keeper)
+        keeper->reset();
+    }
+}
+
+void Player::ruinsReset()
+{
+  doRuinsReset();
+  Action_ResetRuins *item = new Action_ResetRuins();
+  addAction(item);
+}
+
+void Player::doCollectTaxesAndPayUpkeep()
+{
+  //collect monies from cities
+  Citylist::getInstance()->collectTaxes(this);
+
+  //factor in the gold-per-city items that heroes may hold
+  guint32 num_cities = Citylist::getInstance()->countCities(this);
+  getStacklist()->collectTaxes(this, num_cities);
+
+  //pay for existing armies
+  getStacklist()->payUpkeep(this);
+}
+
+void Player::collectTaxesAndPayUpkeep()
+{
+  if (hasAlreadyCollectedTaxesAndPaidUpkeep())
+    return;
+  doCollectTaxesAndPayUpkeep();
+  Action_CollectTaxesAndPayUpkeep *item = new Action_CollectTaxesAndPayUpkeep();
+  addAction(item);
+}
+
 // End of file

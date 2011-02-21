@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -144,12 +144,11 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	// Methods that operate on class data and modify the class
 	
 	/**
-	 * When the end of a turn occurs, this callback is used to calculate
-	 * stack bonuses, moves, paths, and it also charges the player the
-	 * upkeep fee for every Army unit in the Stack.
+	 * This method is used to calculate stack bonuses, moves, paths, and 
+         * hp for every army in the stack.
 	 */
-        //! Callback when the end of a turn happens.
-        void nextTurn();
+        //!Recharge all of the armies in this stack with movement points and hp.
+        void reset();
 
         //! Reduces movement points of the Army units in the Stack.
         void decrementMoves(guint32 moves);
@@ -236,6 +235,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
 	//! Remove this stack's path.  Return true if anything was cleared.
 	bool clearPath();
+
+        //! Sort the armies in this stack in the order shown by ids.
+        void sortByIds(std::list<guint32> ids);
 
 	// Methods that operate on class and do not modify the class
 
@@ -474,6 +476,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
         std::list<guint32> determineArmiesByStrength(bool strongest, float strength) const;
 
+static bool compareIds(const Army *lhs, const Army *rhs);
 	//! Private constructor.
 	Stack(guint32 id, Player* player, Vector<int> pos);
 

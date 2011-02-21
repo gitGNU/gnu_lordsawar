@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -110,6 +110,12 @@ class NetworkPlayer : public Player
 	void decodeActionInitTurn(const Action_InitTurn*action);
 	void decodeActionLoot(const Action_Loot*action);
 	void decodeActionUseItem(const Action_UseItem*action);
+        void decodeActionStackOrder(const Action_ReorderArmies* action);
+        void decodeActionStacksReset(const Action_ResetStacks *action);
+        void decodeActionRuinsReset(const Action_ResetRuins *action);
+        void decodeActionCollectTaxesAndPayUpkeep(const Action_CollectTaxesAndPayUpkeep *action);
+        void decodeActionKillPlayer(const Action_Kill *action);
+
 };
 
 #endif // NETWORK_PLAYER_H

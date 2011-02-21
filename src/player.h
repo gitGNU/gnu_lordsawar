@@ -3,7 +3,7 @@
 // Copyright (C) 2003 Marek Publicewicz
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2005 Bryan Duff
-// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -339,6 +339,9 @@ class Player: public sigc::trackable
 	//! Check to see if it's our turn.
 	bool hasAlreadyInitializedTurn() const;
 
+	//! Check to see if we've already collected from cities and paid troops
+	bool hasAlreadyCollectedTaxesAndPaidUpkeep() const;
+
 	//! Check to see if we've ended our turn this round.
 	bool hasAlreadyEndedTurn() const;
 
@@ -610,6 +613,14 @@ class Player: public sigc::trackable
 	 */
         //! Callback to disband a player's stack.
         bool stackDisband(Stack* stack);
+
+        //! Recharge the player's stacks with hp and movement points.
+        void stacksReset();
+
+        //! Recharge the monsters in all of the ruins. (neutral does this)
+        void ruinsReset();
+
+        void collectTaxesAndPayUpkeep();
 
 	/**
 	 * Modifying a signpost entails changing the message on the sign.
@@ -1635,6 +1646,9 @@ class Player: public sigc::trackable
         bool doHeroPickupAllItems(Hero *h, Vector<int> pos);
         void doHeroGainsLevel(Hero *hero, Army::Stat stat);
         bool doStackDisband(Stack *stack);
+        void doStacksReset();
+        void doRuinsReset();
+        void doCollectTaxesAndPayUpkeep();
         void doSignpostChange(Signpost *signpost, std::string message);
         void doCityRename(City *c, std::string name);
         void doVectorFromCity(City * c, Vector<int> dest);
@@ -1648,7 +1662,7 @@ class Player: public sigc::trackable
         Hero* doRecruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally, StackReflist *stacks);
         void doRename(std::string name);
 	void doKill();
-	const Army *doCityProducesArmy(City *city, Vector<int> &pos);
+	const Army *doCityProducesArmy(City *city, Stack *& stack, bool &vectored);
 	Army *doVectoredUnitArrives(VectoredUnit *unit);
 	bool doChangeVectorDestination(Vector<int> src, Vector<int> dest,
 				       std::list<City*> &vectored);
@@ -1657,6 +1671,8 @@ class Player: public sigc::trackable
 				Stack *&new_stack);
 
         Quest* doHeroGetQuest(Hero *hero, Temple* t, bool except_raze);
+
+        void doStackSort(Stack *s, std::list<guint32> army_ids);
 
 	void AI_maybeBuyScout(City *c);
 

@@ -2,7 +2,7 @@
 //  Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 //  Copyright (C) 2002 Mark L. Amidon
 //  Copyright (C) 2005 Andrea Paternesi
-//  Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2006, 2007, 2008, 2009, 2011 Ben Asselstine
 //  Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -191,8 +191,8 @@ void City::produceStrongestProductionBase()
 
       int savep = d_active_production_slot;
       setActiveProductionSlot(strong_idx);
-      Vector<int> pos;
-      produceArmy(pos);
+      Stack *s = NULL;
+      produceArmy(s);
       setActiveProductionSlot(savep);
       return;
     }
@@ -234,14 +234,14 @@ void City::produceWeakestProductionBase()
 
       int savep = d_active_production_slot;
       setActiveProductionSlot(weak_idx);
-      Vector<int> pos;
-      produceArmy(pos);
+      Stack *s = NULL;
+      produceArmy(s);
       setActiveProductionSlot(savep);
       return;
     }
 }
 
-const Army *City::armyArrives(Vector<int> &pos)
+const Army *City::armyArrives(Stack *& stack)
 {
   // vector the army to the new spot
   if (d_vectoring)
@@ -259,7 +259,7 @@ const Army *City::armyArrives(Vector<int> &pos)
     }
   else //or make it here
     {
-      return produceArmy(pos);
+      return produceArmy(stack);
     }
   return NULL;
 }
@@ -299,7 +299,7 @@ void City::setVectoring(Vector<int> p)
     }
 }
 
-Army *City::produceArmy(Vector<int> &pos)
+Army *City::produceArmy(Stack *& stack)
 {
   // add produced army to stack
   if (d_active_production_slot == -1)
@@ -314,8 +314,7 @@ Army *City::produceArmy(Vector<int> &pos)
     return NULL;
 
   Army *a = new Army(*(getProductionBase(d_active_production_slot)), d_owner);
-  Stack *s = GameMap::getInstance()->addArmy(this, a);
-  pos = s->getPos();
+  stack = GameMap::getInstance()->addArmy(this, a);
 
   if (d_owner == Playerlist::getInstance()->getNeutral()) 
     {
