@@ -341,7 +341,6 @@ void NetworkPlayer::decodeActionMove(const Action_Move *action)
     }
   assert (stack != NULL);
   stack->moveToDest(action->getEndingPosition());
-  stack->sortForViewing(true);
   supdatingStack.emit(stack);
 }
 
@@ -365,9 +364,6 @@ void NetworkPlayer::decodeActionSplit(const Action_Split *action)
 	      action->getNewStackId());
     }
   assert (new_stack->getId() == action->getNewStackId());
-  new_stack->sortForViewing(true);
-  stack->sortForViewing(true);
-
 }
 
 void NetworkPlayer::decodeActionFight(const Action_Fight *action)
@@ -417,7 +413,6 @@ void NetworkPlayer::decodeActionJoin(const Action_Join *action)
   assert (receiver != NULL);
   assert (joining != NULL);
   doStackJoin(receiver, joining);
-  receiver->sortForViewing(true);
   supdatingStack.emit(0);
 }
 
@@ -673,7 +668,6 @@ void NetworkPlayer::decodeActionProduce(const Action_Produce *action)
   assert (s->getId() == action->getStackId());
   assert (s->getPos() == action->getDestination());
   assert (army->getId() == action->getArmyId());
-  s->sortForViewing(true);
 }
 
 void NetworkPlayer::decodeActionProduceVectored(const Action_ProduceVectored *action)
@@ -684,7 +678,6 @@ void NetworkPlayer::decodeActionProduceVectored(const Action_ProduceVectored *ac
   Army *army = doVectoredUnitArrives(&v);
   printf ("army is %p\n", army);
   Stack *s = d_stacklist->getArmyStackById(army->getId());
-  s->sortForViewing(true);
   printf ("created vectored army id %d, in stack %d of size %d\n", army->getId(), s->getId(), s->size());
 }
 
@@ -732,8 +725,6 @@ void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)
 			     action->getNumAllies(), ally, stacks);
   printf ("created hero with id %d, in stack %d\n", hero->getId(),
 	 d_stacklist->getArmyStackById(hero->getId())->getId());
-  //hero->syncNewId();
-  d_stacklist->getArmyStackById(hero->getId())->sortForViewing(true);
 
   if (stacks->size())
     supdatingStack.emit(stacks->front()); // make sure we get a redraw
