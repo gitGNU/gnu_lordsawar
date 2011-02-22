@@ -107,7 +107,10 @@ void GameServer::on_player_finished_turn(Player *player)
       //inner loop.
       if (player->getType() == Player::HUMAN ||
           player->getType() == Player::NETWORKED)
-        nextTurn();
+        {
+          if (nextTurn())
+            on_player_finished_turn(Playerlist::getInstance()->getNeutral());
+        }
     }
 }
 
@@ -232,7 +235,6 @@ bool GameServer::sendRoundStart()
   Playerlist::getInstance()->setActiveplayer(NULL);
   return nextTurn();
 }
-
 
 void GameServer::gotChat(void *conn, std::string message)
 {

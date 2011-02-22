@@ -743,6 +743,12 @@ void NetworkPlayer::decodeActionCityTooPoorToProduce(const Action_CityTooPoorToP
 
 void NetworkPlayer::decodeActionInitTurn(const Action_InitTurn*action)
 {
+  printf("remote: dumping %d actions\n", d_actions.size());
+  for (std::list<Action*>::iterator i = d_actions.begin(); i != d_actions.end(); i++)
+    {
+      printf("\t%s %s\n", Action::actionTypeToString((*i)->getType()).c_str(), (*i)->dump().c_str());
+    }
+  clearActionlist();
 }
 
 void NetworkPlayer::decodeActionLoot (const Action_Loot *action)

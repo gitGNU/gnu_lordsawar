@@ -1041,7 +1041,7 @@ void Game::update_control_panel()
     
   can_see_diplomacy.emit(GameScenarioOptions::s_diplomacy);
 
-  can_end_turn.emit(true);
+  can_end_turn.emit(Playerlist::getInstance()->getWinningPlayer() == NULL);
 }
 
 GameBigMap &Game::get_bigmap()
@@ -1460,8 +1460,7 @@ void Game::endOfGameRoaming(Player *winner)
 {
   Playerlist* pl = Playerlist::getInstance();
   pl->setWinningPlayer(winner);
-
-  winner->immobilize();
+  Playerlist::getActiveplayer()->immobilize();
   d_gameScenario->s_see_opponents_stacks = true;
   d_gameScenario->s_see_opponents_production = true;
   bigmap->d_see_opponents_stacks = true;

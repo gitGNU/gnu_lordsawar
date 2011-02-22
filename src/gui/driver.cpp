@@ -383,12 +383,6 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
   GameServer *game_server = GameServer::getInstance();
   game_server->start(game_scenario, port, nick);
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
-  //if (game_scenario->s_random_turns == true)
-    //game_server->round_begins.connect (sigc::mem_fun(GameServer::getInstance(), 
-                                                     //&GameServer::sendTurnOrder));
-  
-  //next_turn->sroundBegins.connect(sigc::mem_fun(game_server, &GameServer::sendRoundStart));
-  //game_server->round_ends.connect(sigc::mem_fun(next_turn->snextRound, &sigc::signal<void>::emit));
   game_server->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
   game_server->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
   next_turn->srequestAbort.connect(sigc::mem_fun(game_server, &GameServer::on_turn_aborted));
@@ -396,7 +390,6 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
     delete game_lobby_dialog;
   game_lobby_dialog = new GameLobbyDialog(game_scenario, next_turn, 
 					      game_server, true);
-  //game_server->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
   game_server->get_next_player.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::next));
   game_server->round_ends.connect
     (sigc::mem_fun(*this, &Driver::on_keep_network_play_going));
@@ -472,6 +465,8 @@ void Driver::on_new_remote_network_game_requested(std::string host, unsigned sho
   GameClient *game_client = GameClient::getInstance();
   game_client->game_scenario_received.connect
     (sigc::mem_fun(this, &Driver::on_game_scenario_downloaded));
+  game_client->game_over.connect
+    (sigc::mem_fun(this, &Driver::on_game_ended));
   game_client->client_disconnected.connect
     (sigc::mem_fun(this, &Driver::on_server_went_away));
   game_client->client_forcibly_disconnected.connect
@@ -928,6 +923,8 @@ void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type
   GameClient *game_client = GameClient::getInstance();
   game_client->game_scenario_received.connect
     (sigc::mem_fun(this, &Driver::on_game_scenario_downloaded));
+  game_client->game_over.connect
+    (sigc::mem_fun(this, &Driver::on_game_ended));
   game_client->client_disconnected.connect
     (sigc::mem_fun(this, &Driver::on_server_went_away));
   game_client->client_forcibly_disconnected.connect

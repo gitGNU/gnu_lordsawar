@@ -1298,32 +1298,32 @@ void GameWindow::on_game_stopped()
   else if (stop_action == "game-over")
     {
       if (game_winner)
-	{
-	  if (game_winner->getType() != Player::HUMAN)
-	    {
-	      if (game)
-		{
-		  delete game;
-		  game = NULL;
-		}
-	      game_ended.emit();
-	    }
-	  else
-	    {
-	      //we need to keep the game object around
-	      //so that we can give out some cheese
-	      give_some_cheese(game_winner);
-	    }
-	}
+        {
+          if (game_winner->getType() != Player::HUMAN)
+            {
+              if (game)
+                {
+                  delete game;
+                  game = NULL;
+                }
+              game_ended.emit();
+            }
+          else
+            {
+              //we need to keep the game object around
+              //so that we can give out some cheese
+              give_some_cheese(game_winner);
+            }
+        }
       else
-	{
-	  if (game)
-	    {
-	      delete game;
-	      game = NULL;
-	    }
-	  game_ended.emit();
-	}
+        {
+          if (game)
+            {
+              delete game;
+              game = NULL;
+            }
+          game_ended.emit();
+        }
     }
   else if (stop_action == "load-game")
     {
@@ -1864,7 +1864,11 @@ void GameWindow::stop_game(std::string action)
   Sound::getInstance()->disableBackground();
   if (game)
     {
-      game->stopGame();
+      if (action == "game-over" && game->getScenario()->getPlayMode() == GameScenario::NETWORKED)
+        give_some_cheese(game_winner);
+      else
+        game->stopGame();
+
       current_save_filename = "";
     }
 }
@@ -3232,9 +3236,9 @@ void GameWindow::show_shield_turn() //show turn indicator
   unsigned int c = 0;
   for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i)
     {
-      if (pl->getNeutral() == (*i))
-	continue;
-      if ((*i)->isDead())
+      //if (pl->getNeutral() == (*i))
+	//continue;
+      if ((*i)->isDead() || pl->getNeutral() == (*i))
 	{
 	  shield_image[c]->clear();
 	  turn_hbox->remove(dynamic_cast<Gtk::Widget&>(*shield_image[c]));

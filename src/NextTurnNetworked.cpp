@@ -192,7 +192,6 @@ void NextTurnNetworked::finishRound()
         return;
     }
 
-  printf("d_turnmode is %d\n", d_turnmode);
   if (!d_turnmode)
     {
       //do this for all players at once
@@ -204,7 +203,6 @@ void NextTurnNetworked::finishRound()
 
           (*it)->collectTaxesAndPayUpkeep();
 
-          printf("healing armies for %s\n", (*it)->getName().c_str());
           //reset, and heal armies
           (*it)->stacksReset();
 

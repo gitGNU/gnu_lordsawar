@@ -35,6 +35,8 @@ NextTurn::NextTurn(bool turnmode, bool random_turns)
 
 void NextTurn::stop() 
 {
+  Player *active = Playerlist::getActiveplayer();
+  abort = srequestAbort.connect(sigc::mem_fun(active, &Player::abortTurn));
   d_stop = true;
   srequestAbort.emit();
 }

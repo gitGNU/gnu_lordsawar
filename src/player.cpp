@@ -294,8 +294,14 @@ Player* Player::create(Player* orig, Type type)
     return 0;
 }
 
+
 void Player::initTurn()
 {
+  printf("local: dumping %d actions\n", d_actions.size());
+  for (std::list<Action*>::iterator i = d_actions.begin(); i != d_actions.end(); i++)
+    {
+      printf("\t%s %s\n", Action::actionTypeToString((*i)->getType()).c_str(), (*i)->dump().c_str());
+    }
   clearActionlist();
   History_StartTurn* item = new History_StartTurn();
   addHistory(item);
