@@ -210,15 +210,18 @@ int StackEditorDialog::run()
 	if (player_combobox)
 	{
 	    Player *player = get_selected_player();
-
-	    Player *old_active = Playerlist::getActiveplayer();
-	    Playerlist::getInstance()->setActiveplayer(player);
-	    Stack *new_stack = new Stack(*stack);
-	    GameMap::getInstance()->removeStack(stack);
-	    stack = new_stack;
-	    stack->setPlayer(player);
-	    GameMap::getInstance()->putStack(stack);
-	    Playerlist::getInstance()->setActiveplayer(old_active);
+            if (stack->getOwner() != player)
+              {
+                Player *old_active = Playerlist::getActiveplayer();
+                Playerlist::getInstance()->setActiveplayer(player);
+                Stack *new_stack = new Stack(*stack);
+                GameMap::getInstance()->removeStack(stack);
+                new_stack->setPlayer(player);
+                bool putted = GameMap::getInstance()->putStack(new_stack);
+                stack->getOwner()->deleteStack(stack);
+                player->addStack(new_stack);
+                Playerlist::getInstance()->setActiveplayer(old_active);
+              }
 	}
     }
     return response;
