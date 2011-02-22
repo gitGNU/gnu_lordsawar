@@ -644,6 +644,12 @@ Stack *Player::stackSplitArmies(Stack *stack, std::list<guint32> armies)
       Action_Split* item = new Action_Split();
       item->fillData(stack, new_stack);
       addAction(item);
+      Action_ReorderArmies *orig = new Action_ReorderArmies();
+      orig->fillData(stack);
+      addAction(orig);
+      Action_ReorderArmies *dest = new Action_ReorderArmies();
+      dest->fillData(new_stack);
+      addAction(dest);
     }
   return new_stack;
 }
@@ -657,6 +663,9 @@ Stack *Player::stackSplitArmy(Stack *stack, Army *a)
       Action_Split* item = new Action_Split();
       item->fillData(stack, new_stack);
       addAction(item);
+      Action_ReorderArmies *orig = new Action_ReorderArmies();
+      orig->fillData(stack);
+      addAction(orig);
     }
   return new_stack;
 }
@@ -686,6 +695,10 @@ bool Player::stackJoin(Stack* receiver, Stack* joining)
     addAction(item);
 
     doStackJoin(receiver, joining);
+      
+    Action_ReorderArmies *ordering = new Action_ReorderArmies();
+    ordering->fillData(receiver);
+    addAction(ordering);
  
     supdatingStack.emit(0);
     return true;
