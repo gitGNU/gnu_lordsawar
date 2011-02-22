@@ -339,8 +339,12 @@ GameLobbyDialog::GameLobbyDialog(GameScenario *game_scenario,
   d_player_id_of_sit_or_stand_request = MAX_PLAYERS + 1;
   d_player_id_of_name_change_request = MAX_PLAYERS + 1;
   d_player_id_of_type_change_request = MAX_PLAYERS + 1;
-  //name_column.property_resizable() = true;
-  //player_treeview->get_column(2)->property_resizable() = true;
+  name_column.set_resizable();
+  name_column.set_expand();
+  name_column.set_min_width(115);
+  name_renderer.property_ellipsize() = Pango::ELLIPSIZE_END;
+  player_treeview->get_column(2)->set_min_width(75);
+  player_treeview->get_column(2)->set_resizable();
 }
 
 GameLobbyDialog::~GameLobbyDialog()

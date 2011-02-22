@@ -205,13 +205,23 @@
                       <object class="GtkVBox" id="vbox8">
                         <property name="visible">True</property>
                         <child>
-                          <object class="GtkEventBox" id="map_eventbox">
+                          <object class="GtkHBox" id="hbox3">
                             <property name="visible">True</property>
                             <child>
-                              <object class="GtkImage" id="map_image">
+                              <object class="GtkEventBox" id="map_eventbox">
                                 <property name="visible">True</property>
-                                <property name="stock">gtk-missing-image</property>
+                                <child>
+                                  <object class="GtkImage" id="map_image">
+                                    <property name="visible">True</property>
+                                    <property name="stock">gtk-missing-image</property>
+                                  </object>
+                                </child>
                               </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
+                              </packing>
                             </child>
                           </object>
                           <packing>
@@ -358,6 +368,8 @@
                 </child>
               </object>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
