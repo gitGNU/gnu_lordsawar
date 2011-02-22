@@ -226,4 +226,5 @@ void NextTurnNetworked::finishRound()
       nextPlayer();
     }
 
+  snextRound.emit();
 }
