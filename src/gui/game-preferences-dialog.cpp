@@ -271,22 +271,34 @@ void GamePreferencesDialog::on_player_name_changed()
 
 void GamePreferencesDialog::update_buttons()
 {
+  std::map<guint32, bool> offplayers;
   guint32 offcount = 0;
+  guint32 count = 0;
   std::list<Gtk::ComboBoxText *>::iterator c = player_types.begin();
   for (; c != player_types.end(); c++)
     {
       if (GameParameters::player_param_string_to_player_param((*c)->get_active_text()) == GameParameters::Player::OFF)
-	offcount++;
+        {
+          offplayers[count] = true;
+          offcount++;
+        }
+      else
+        offplayers[count] = false;
+      count++;
     }
   bool found_empty_name = false;
   std::list<Gtk::Entry *>::iterator e = player_names.begin();
+  count = 0;
   for (; e != player_names.end(); e++)
     {
+      if (offplayers[count] == true)
+        continue;
       if (String::utrim((*e)->get_text())== "")
         {
           found_empty_name = true;
           break;
         }
+      count++;
     }
   if (offcount > player_types.size() - 2 || found_empty_name)
     start_game_button->set_sensitive(false);
