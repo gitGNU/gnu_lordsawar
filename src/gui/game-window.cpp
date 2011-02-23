@@ -3236,9 +3236,9 @@ void GameWindow::show_shield_turn() //show turn indicator
   unsigned int c = 0;
   for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i)
     {
-      //if (pl->getNeutral() == (*i))
-	//continue;
-      if ((*i)->isDead() || pl->getNeutral() == (*i))
+      if (pl->getNeutral() == (*i))
+	continue;
+      if ((*i)->isDead()) 
 	{
 	  shield_image[c]->clear();
 	  turn_hbox->remove(dynamic_cast<Gtk::Widget&>(*shield_image[c]));

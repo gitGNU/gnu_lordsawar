@@ -465,8 +465,6 @@ void Driver::on_new_remote_network_game_requested(std::string host, unsigned sho
   GameClient *game_client = GameClient::getInstance();
   game_client->game_scenario_received.connect
     (sigc::mem_fun(this, &Driver::on_game_scenario_downloaded));
-  game_client->game_over.connect
-    (sigc::mem_fun(this, &Driver::on_game_ended));
   game_client->client_disconnected.connect
     (sigc::mem_fun(this, &Driver::on_server_went_away));
   game_client->client_forcibly_disconnected.connect
@@ -923,8 +921,6 @@ void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type
   GameClient *game_client = GameClient::getInstance();
   game_client->game_scenario_received.connect
     (sigc::mem_fun(this, &Driver::on_game_scenario_downloaded));
-  game_client->game_over.connect
-    (sigc::mem_fun(this, &Driver::on_game_ended));
   game_client->client_disconnected.connect
     (sigc::mem_fun(this, &Driver::on_server_went_away));
   game_client->client_forcibly_disconnected.connect
