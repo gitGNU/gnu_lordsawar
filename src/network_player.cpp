@@ -56,7 +56,6 @@
 
 using namespace std;
 
-int action_tally[Action::USE_ITEM];
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
@@ -197,7 +196,6 @@ void NetworkPlayer::decodeActions(std::list<Action *> actions)
 void NetworkPlayer::decodeAction(const Action *a)
 {
   d_actions.push_back(Action::copy(a));
-  action_tally[a->getType()]++;
   switch(a->getType())
     {
     case Action::STACK_MOVE:
@@ -301,6 +299,18 @@ void NetworkPlayer::decodeAction(const Action *a)
       return decodeActionCollectTaxesAndPayUpkeep(dynamic_cast<const Action_CollectTaxesAndPayUpkeep*>(a));
     case Action::KILL_PLAYER:
       return decodeActionKillPlayer(dynamic_cast<const Action_Kill*>(a));
+    case Action::STACK_DEFEND:
+      return decodeActionDefendStack(dynamic_cast<const Action_DefendStack*>(a));
+    case Action::STACK_UNDEFEND:
+      return decodeActionUndefendStack(dynamic_cast<const Action_UndefendStack*>(a));
+    case Action::STACK_PARK:
+      return decodeActionParkStack(dynamic_cast<const Action_ParkStack*>(a));
+    case Action::STACK_UNPARK:
+      return decodeActionUnparkStack(dynamic_cast<const Action_UnparkStack*>(a));
+    case Action::STACK_SELECT:
+      return decodeActionSelectStack(dynamic_cast<const Action_SelectStack*>(a));
+    case Action::STACK_DESELECT:
+      return decodeActionDeselectStack(dynamic_cast<const Action_DeselectStack*>(a));
     }
 
   return;
@@ -327,16 +337,18 @@ void NetworkPlayer::decodeActionMove(const Action_Move *action)
   Stack *stack = d_stacklist->getStackById(action->getStackId());
   if (stack == NULL)
     {
-      printf ("couldn't find stack with id %d\n", action->getStackId());
-      printf ("is there a stack near the ending position?\n");
+      debug ("couldn't find stack with id " <<  action->getStackId());
+      debug ("is there a stack near the ending position?");
       for (int x = -1; x <= 1; x++)
 	for (int y = -1; y <= 1; y++)
 	  {
 	    Vector<int> dest = action->getEndingPosition() + Vector<int>(x,y);
 	    Stack *s = GameMap::getFriendlyStack(dest);
-	    printf ("stack at position %d,%d is %p\n", dest.x, dest.y, s);
+	    debug ("stack at position " << dest.x << "," << dest.y << " is " << s);
 	    if (s)
-	      printf ("stack id is %d\n", s->getId());
+              {
+                debug ("stack id is " << s->getId());
+              }
 	  }
     }
   assert (stack != NULL);
@@ -360,15 +372,14 @@ void NetworkPlayer::decodeActionSplit(const Action_Split *action)
   assert (new_stack != NULL);
   if (new_stack->getId() != action->getNewStackId())
     {
-      printf ("created stack with id %d, but expected %d\n", new_stack->getId(),
-	      action->getNewStackId());
+      debug ("created stack with id " << new_stack->getId() << ", but expected " << action->getNewStackId());
     }
   assert (new_stack->getId() == action->getNewStackId());
 }
 
 void NetworkPlayer::decodeActionFight(const Action_Fight *action)
 {
-  printf("performing action: %s\n", action->dump().c_str());
+  debug ("performing action: " <<  action->dump());
   std::list<Stack *> attackers, defenders;
   std::list<guint32> attacker_stack_ids = action->getAttackerStackIds();
   for (std::list<guint32>::const_iterator i = attacker_stack_ids.begin(),
@@ -380,28 +391,14 @@ void NetworkPlayer::decodeActionFight(const Action_Fight *action)
          end = defender_stack_ids.end(); i != end; ++i)
     defenders.push_back(findStackById(*i));
 
-  Stack *attack = &*attackers.front();
   Fight fight(attackers, defenders, action->getBattleHistory());
-    std::list<Stack *> att= fight.getAttackers(),
-      def= fight.getDefenders();
-    for (std::list<Stack*>::iterator i = att.begin(); i != att.end(); i++)
-      {
-        for (Stack::iterator j = (*i)->begin(); j != (*i)->end(); j++)
-            printf("attacker %d has hp %d\n", (*j)->getId(), (*j)->getHP());
-      }
-
-    for (std::list<Stack*>::iterator i = def.begin(); i != def.end(); i++)
-      {
-        for (Stack::iterator j = (*i)->begin(); j != (*i)->end(); j++)
-          printf("defender %d has hp %d\n", (*j)->getId(), (*j)->getHP());
-      }
   Fight::Result result = fight.battleFromHistory();
   fight_started.emit(fight);
 
   cleanupAfterFight(attackers, defenders);
   if (result == Fight::ATTACKER_WON)
     {
-      printf ("there are %d attackers left in %d at %d,%d\n", attack->size(),attack->getId(), attack->getPos().x, attack->getPos().y);
+      debug ("there are " << (&*attackers.front())->size() << " attackers left in " << (&*attackers.front())->getId() << " at " << (&*attackers.front())->getPos().x << "," << (&*attackers.front())->getPos().y);
     }
 }
 
@@ -553,7 +550,7 @@ void NetworkPlayer::decodeActionEquip(const Action_Equip *action)
   Stack *stack = d_stacklist->getArmyStackById(action->getHeroId());
   if (stack == NULL)
     {
-      printf ("couldn't find hero with id %d\n", action->getHeroId());
+      debug ("couldn't find hero with id " <<  action->getHeroId());
     }
   assert (stack != NULL);
   Hero *hero = dynamic_cast<Hero *>(stack->getArmyById(action->getHeroId()));
@@ -580,8 +577,8 @@ void NetworkPlayer::decodeActionLevel(const Action_Level *action)
   Hero*hero= dynamic_cast<Hero*>(stack->getArmyById(action->getArmyId()));
 
   doHeroGainsLevel(hero, Army::Stat(action->getStatToIncrease()));
-  printf ("army is hero? %d\n", hero->isHero());
-  printf ("new level is %d\n", hero->getLevel());
+  debug ("army is hero? " << hero->isHero());
+  debug ("new level is " << hero->getLevel());
 }
 
 void NetworkPlayer::decodeActionDisband(const Action_Disband *action)
@@ -589,7 +586,7 @@ void NetworkPlayer::decodeActionDisband(const Action_Disband *action)
   Stack *stack = d_stacklist->getStackById(action->getStackId());
   if (stack == NULL)
     {
-      printf ("couldn't find stack with id %d\n", action->getStackId());
+      debug ("couldn't find stack with id " << action->getStackId());
     }
   assert (stack != NULL);
   bool found = doStackDisband(stack);
@@ -638,9 +635,9 @@ void NetworkPlayer::decodeActionProduce(const Action_Produce *action)
   //if it was vectored, we just wait for the Action_ProduceVectored later on.
   if (action->getVectored() == true)
     {
-      printf ("produced unit but it's vectored.\n");
-      printf("we could put it in the vectored unit list, but why bother eh.\n");
-      printf("We can just make one on demand when it \"shows up\".\n");
+      debug ("produced unit but it's vectored.");
+      debug ("we could put it in the vectored unit list, but why bother eh.");
+      debug ("We can just make one on demand when it \"shows up\".");
     return;
     }
   //ArmyProdBase *a = action->getArmy();
@@ -651,19 +648,25 @@ void NetworkPlayer::decodeActionProduce(const Action_Produce *action)
   bool vectored = false;
   const Army *army = doCityProducesArmy(c, s, vectored);
   if (army)
-    printf ("created army id %d, in stack %d of size %d\n", army->getId(), s->getId(), s->size());
+    {
+      debug ("created army id " << army->getId() << " in stack " << s->getId() << " of size " << s->size());
+    }
   else
     {
-    printf("we got a null army! how?\n");
+      debug ("we got a null army! how?");
         int cost = c->getActiveProductionBase()->getProductionCost();
           if (cost > d_gold)
-              printf("we can't afford it.\n");
+            {
+              debug ("we can't afford it.");
+            }
           else
-            printf("we can afford it\n");
+            {
+              debug ("we can afford it");
+            }
 
     exit(0);
     }
-  printf("expecting it to be in stack id %d\n", action->getStackId());
+  debug ("expecting it to be in stack id " << action->getStackId());
   assert (s != NULL);
   assert (s->getId() == action->getStackId());
   assert (s->getPos() == action->getDestination());
@@ -676,9 +679,11 @@ void NetworkPlayer::decodeActionProduceVectored(const Action_ProduceVectored *ac
   VectoredUnit v(action->getOrigination(), action->getDestination(),
 		 action->getArmy(), 0, this);
   Army *army = doVectoredUnitArrives(&v);
-  printf ("army is %p\n", army);
-  Stack *s = d_stacklist->getArmyStackById(army->getId());
-  printf ("created vectored army id %d, in stack %d of size %d\n", army->getId(), s->getId(), s->size());
+  debug ("army is " << army);
+  if (army)
+    {
+      debug ("created vectored army id " << army->getId() << ", in stack " << d_stacklist->getArmyStackById(army->getId())->getId() << " of size " << d_stacklist->getArmyStackById(army->getId())->size());
+    }
 }
 
 void NetworkPlayer::decodeActionDiplomacyState(const Action_DiplomacyState *action)
@@ -701,7 +706,7 @@ void NetworkPlayer::decodeActionDiplomacyScore(const Action_DiplomacyScore *acti
 
 void NetworkPlayer::decodeActionEndTurn(const Action_EndTurn *action)
 {
-  printf ("ending turn!!\n");
+  debug ("ending turn!!");
   ending_turn.emit();
 }
 
@@ -714,7 +719,6 @@ void NetworkPlayer::decodeActionConquerCity(const Action_ConquerCity *action)
 
 void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)
 {
-
   City *city = Citylist::getInstance()->getById(action->getCityId());
   ArmyProto *ally = 0;
   if (action->getNumAllies())
@@ -723,8 +727,10 @@ void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)
   StackReflist *stacks = new StackReflist();
   Hero *hero = doRecruitHero(action->getHero(), city, action->getCost(), 
 			     action->getNumAllies(), ally, stacks);
-  printf ("created hero with id %d, in stack %d\n", hero->getId(),
-	 d_stacklist->getArmyStackById(hero->getId())->getId());
+  if (hero)
+    {
+      debug ("created hero with id " << hero->getId() << ", in stack " << d_stacklist->getArmyStackById(hero->getId())->getId());
+    }
 
   if (stacks->size())
     supdatingStack.emit(stacks->front()); // make sure we get a redraw
@@ -743,10 +749,10 @@ void NetworkPlayer::decodeActionCityTooPoorToProduce(const Action_CityTooPoorToP
 
 void NetworkPlayer::decodeActionInitTurn(const Action_InitTurn*action)
 {
-  printf("remote: dumping %d actions\n", d_actions.size());
+  debug ("remote: dumping " << d_actions.size() << " actions");
   for (std::list<Action*>::iterator i = d_actions.begin(); i != d_actions.end(); i++)
     {
-      printf("\t%s %s\n", Action::actionTypeToString((*i)->getType()).c_str(), (*i)->dump().c_str());
+      debug ("\t" << Action::actionTypeToString((*i)->getType()) << " " << (*i)->dump().c_str());
     }
   clearActionlist();
 }
@@ -763,7 +769,7 @@ void NetworkPlayer::decodeActionUseItem(const Action_UseItem *action)
   Stack *stack = d_stacklist->getArmyStackById(action->getHeroId());
   if (stack == NULL)
     {
-      printf ("couldn't find hero with id %d\n", action->getHeroId());
+      debug ("couldn't find hero with id " << action->getHeroId());
     }
   assert (stack != NULL);
   Hero *hero = dynamic_cast<Hero *>(stack->getArmyById(action->getHeroId()));
@@ -780,13 +786,13 @@ void NetworkPlayer::decodeActionStackOrder(const Action_ReorderArmies* action)
   Player *p = Playerlist::getInstance()->getPlayer(action->getPlayerId());
   if (!p)
     {
-      printf("we don't have player id %d\n", action->getPlayerId());
+      debug ("we don't have player id " << action->getPlayerId());
       exit(0);
     }
   Stack *s = p->getStacklist()->getStackById(action->getStackId());
   if (!s)
     {
-      printf("we don't have stack id %d\n", action->getStackId());
+      debug ("we don't have stack id %d" <<  action->getStackId());
       exit(0);
     }
   std::list<guint32> ids = action->getArmyIds();
@@ -795,7 +801,7 @@ void NetworkPlayer::decodeActionStackOrder(const Action_ReorderArmies* action)
     {
       if (s->getArmyById(*i) == NULL)
         {
-          printf("stack %d does not have army id %d\n", s->getId(), *i);
+          debug ("stack " << s->getId() << " does not have army id " << *i);
           success = false;
         }
     }
@@ -823,12 +829,12 @@ void NetworkPlayer::decodeActionStacksReset(const Action_ResetStacks *action)
   Player *p = Playerlist::getInstance()->getPlayer(action->getPlayerId());
   if (!p)
     {
-      printf("couldn't find player %d\n", action->getPlayerId());
+      debug ("couldn't find player " << action->getPlayerId());
       exit(0);
     }
   if (p->getId() != getId())
     {
-      printf("can't heal another player's stacks?\n");
+      debug ("can't heal another player's stacks?");
       exit(0);
     }
   doStacksReset();
@@ -853,5 +859,66 @@ void NetworkPlayer::decodeActionKillPlayer(const Action_Kill *action)
     }
 }
 
+void NetworkPlayer::decodeActionDefendStack(const Action_DefendStack *action)
+{
+  Stack *stack = d_stacklist->getStackById(action->getStackId());
+  if (!stack)
+    {
+      debug ("couldn't find stack id " << action->getStackId());
+      exit(0);
+    }
+  doStackDefend(stack);
+}
 
+void NetworkPlayer::decodeActionUndefendStack(const Action_UndefendStack *action)
+{
+  Stack *stack = d_stacklist->getStackById(action->getStackId());
+  if (!stack)
+    {
+      debug ("couldn't find stack id " << action->getStackId());
+      exit(0);
+    }
+  doStackUndefend(stack);
+}
+
+void NetworkPlayer::decodeActionParkStack(const Action_ParkStack *action)
+{
+  Stack *stack = d_stacklist->getStackById(action->getStackId());
+  if (!stack)
+    {
+      debug ("couldn't find stack id " << action->getStackId());
+      exit(0);
+    }
+  doStackPark(stack);
+}
+
+void NetworkPlayer::decodeActionUnparkStack(const Action_UnparkStack *action)
+{
+  debug ("here i am, decoding unpark stack.\n");
+  Stack *stack = d_stacklist->getStackById(action->getStackId());
+  if (!stack)
+    {
+      debug ("couldn't find stack id " << action->getStackId());
+      exit(0);
+    }
+  doStackUnpark(stack);
+}
+
+void NetworkPlayer::decodeActionSelectStack(const Action_SelectStack *action)
+{
+  Stack *stack = d_stacklist->getStackById(action->getStackId());
+  if (!stack)
+    {
+      debug ("couldn't find stack id " << action->getStackId());
+      exit(0);
+    }
+  doStackSelect(stack);
+  supdatingStack.emit(stack);
+}
+
+void NetworkPlayer::decodeActionDeselectStack(const Action_DeselectStack *action)
+{
+  doStackDeselect();
+  supdatingStack.emit(0);
+}
 // End of file

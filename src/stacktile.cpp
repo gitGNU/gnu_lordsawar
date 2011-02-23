@@ -275,12 +275,22 @@ void StackTile::setDefending(Player *owner, bool defending)
 {
   std::list<Stack *> stks = getFriendlyStacks(owner);
   for (std::list<Stack *>::iterator it = stks.begin(); it != stks.end(); it++)
-    (*it)->setDefending(defending);
+    {
+      if (defending)
+        (*it)->getOwner()->stackDefend(*it);
+      else
+        (*it)->getOwner()->stackUndefend(*it);
+    }
 }
 
 void StackTile::setParked(Player *owner, bool parked)
 {
   std::list<Stack *> stks = getFriendlyStacks(owner);
   for (std::list<Stack *>::iterator it = stks.begin(); it != stks.end(); it++)
-    (*it)->setParked(parked);
+    {
+      if (parked)
+        (*it)->getOwner()->stackPark((*it));
+      else
+        (*it)->getOwner()->stackUnpark((*it));
+    }
 }

@@ -633,7 +633,7 @@ bool AI_Fast::computerTurn()
 		if (!target)    // strange situation
 		  {
 		    cerr << "yet another bad situation!!\n";
-		    s->setParked(true);
+                    stackPark(s);
 		    return true;
 		  }
 

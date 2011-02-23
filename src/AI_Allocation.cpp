@@ -1551,12 +1551,12 @@ void AI_Allocation::setParked(Stack *stack, bool force_park)
   if (force_park == false)
     {
       if (stack->hasPath() > 0 && stack->enoughMoves())
-        stack->setParked(true);
+        d_owner->stackPark(stack);
       else if (stack->canMove() == false)
-        stack->setParked(true);
+        d_owner->stackPark(stack);
     }
   else
-    stack->setParked(true);
+    d_owner->stackPark(stack);
 }
 
 bool AI_Allocation::groupStacks(Stack *stack)

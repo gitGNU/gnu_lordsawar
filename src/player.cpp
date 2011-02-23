@@ -4593,4 +4593,80 @@ void Player::collectTaxesAndPayUpkeep()
   addAction(item);
 }
 
+void Player::doStackDefend(Stack *s)
+{
+  s->setDefending(true);
+}
+
+void Player::stackDefend(Stack *s)
+{
+  doStackDefend(s);
+  Action_DefendStack *item = new Action_DefendStack();
+  item->fillData(s);
+  addAction(item);
+}
+
+void Player::doStackUndefend(Stack *s)
+{
+  s->setDefending(false);
+}
+
+void Player::stackUndefend(Stack *s)
+{
+  doStackUndefend(s);
+  Action_UndefendStack *item = new Action_UndefendStack();
+  item->fillData(s);
+  addAction(item);
+}
+
+void Player::doStackPark(Stack *s)
+{
+  s->setParked(true);
+}
+
+void Player::stackPark(Stack *s)
+{
+  doStackPark(s);
+  Action_ParkStack *item = new Action_ParkStack();
+  item->fillData(s);
+  addAction(item);
+}
+
+void Player::doStackUnpark(Stack *s)
+{
+  s->setParked(false);
+}
+
+void Player::stackUnpark(Stack *s)
+{
+  doStackPark(s);
+  Action_UnparkStack *item = new Action_UnparkStack();
+  item->fillData(s);
+  addAction(item);
+}
+
+void Player::doStackSelect(Stack *s)
+{
+  d_stacklist->setActivestack(s);
+}
+
+void Player::stackSelect(Stack *s)
+{
+  doStackSelect(s);
+  Action_SelectStack *item = new Action_SelectStack();
+  item->fillData(s);
+  addAction(item);
+}
+
+void Player::doStackDeselect ()
+{
+  d_stacklist->setActivestack(0);
+}
+
+void Player::stackDeselect ()
+{
+  doStackDeselect();
+  Action_DeselectStack *item = new Action_DeselectStack();
+  addAction(item);
+}
 // End of file

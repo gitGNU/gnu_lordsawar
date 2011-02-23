@@ -553,7 +553,7 @@ void Game::defend_selected_stack()
   Stack *stack = player->getActivestack();
   assert(stack);
 
-  stack->setDefending(true);
+  player->stackDefend(stack);
 
   stack = player->getStacklist()->getNextMovable();
   player->setActivestack(stack);
@@ -569,7 +569,7 @@ void Game::park_selected_stack()
   Player *player = Playerlist::getActiveplayer();
   Stack *stack = player->getActivestack();
   assert(stack);
-  stack->setParked(true);
+  player->stackPark(stack);
 
   stack = player->getStacklist()->getNextMovable();
   player->setActivestack(stack);
@@ -725,7 +725,8 @@ void Game::stackUpdate(Stack* s)
   if (s)
     smallmap->center_view_on_tile(s->getPos(), true);
 
-  //redraw();
+  if (!s)
+    redraw();
 
   update_stack_info();
   update_control_panel();
@@ -1310,6 +1311,7 @@ void Game::center_view_on_city()
 	}
     }
 }
+
 void Game::select_active_stack()
 {
   //if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
@@ -1319,6 +1321,7 @@ void Game::select_active_stack()
   smallmap->center_view_on_tile (p->getActivestack()->getPos(), true);
   bigmap->select_active_stack();
 }
+
 void Game::unselect_active_stack()
 {
   bigmap->unselect_active_stack();

@@ -1121,6 +1121,24 @@ class Player: public sigc::trackable
         //! Mark the player as dead. Kills all Army units in the Stacklist.
         void kill();
 
+        //! Put the given stack into defend-mode.
+        void stackDefend(Stack *s);
+
+        //! Take the given stack out of defend-mode.
+        void stackUndefend(Stack *s);
+
+        //! Put the given stack into parked-mode.
+        void stackPark(Stack *s);
+
+        //! Take the given stack out of parked-mode.
+        void stackUnpark(Stack *s);
+
+        //! Select the given stack.
+        void stackSelect(Stack *s);
+
+        //! Deselect any and all stacks.
+        void stackDeselect();
+
 	//! Go to a temple if we're near enough.
 	/**
 	 * Helper method to take a stack on a mission to get blessed.
@@ -1662,6 +1680,12 @@ class Player: public sigc::trackable
         Hero* doRecruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally, StackReflist *stacks);
         void doRename(std::string name);
 	void doKill();
+        void doStackDefend(Stack *stack);
+        void doStackUndefend(Stack *stack);
+        void doStackPark(Stack *stack);
+        void doStackUnpark(Stack *stack);
+        void doStackSelect(Stack *stack);
+        void doStackDeselect();
 	const Army *doCityProducesArmy(City *city, Stack *& stack, bool &vectored);
 	Army *doVectoredUnitArrives(VectoredUnit *unit);
 	bool doChangeVectorDestination(Vector<int> src, Vector<int> dest,

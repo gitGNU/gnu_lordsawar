@@ -144,6 +144,12 @@ class Action
                 RUINS_RESET = 40,
                 COLLECT_TAXES_AND_PAY_UPKEEP = 41,
                 KILL_PLAYER = 42,
+                STACK_DEFEND = 43,
+                STACK_UNDEFEND = 44,
+                STACK_PARK = 45,
+                STACK_UNPARK = 46,
+                STACK_SELECT = 47,
+                STACK_DESELECT = 48,
         };
 	static std::string actionTypeToString(Action::Type type);
 	static Action::Type actionTypeFromString(std::string str);
@@ -1824,6 +1830,200 @@ class Action_Kill: public Action
         virtual bool doSave(XML_Helper* helper) const;
 
 	//! The Action_Kill doesn't take any info to fill.
+        bool fillData();
+};
+
+//-----------------------------------------------------------------------------
+
+//! A temporary record of a player putting a stack into defend mode.
+/**
+ * The purpose of the Action_DefendStack class is to record when a player puts
+ * a stack into defensive mode.  This makes the stack appear as a tower.
+ */
+class Action_DefendStack: public Action
+{
+    public:
+	//! Make a defend stack action.
+        Action_DefendStack();
+	//! Copy constructor
+	Action_DefendStack (const Action_DefendStack &action);
+	//! Load a new defend stack action from a saved-game file.
+        Action_DefendStack (XML_Helper* helper);
+	//! Destroy a defend stack action.
+        ~Action_DefendStack();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this defend stack action to a saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! Supply the stack that is being put into defend mode.
+        bool fillData(Stack *s);
+	
+        guint32 getStackId() const {return d_stack_id;};
+    private:
+        guint32 d_stack_id;
+};
+
+//-----------------------------------------------------------------------------
+
+//! A temporary record of a player taking a stack out of defend mode.
+/**
+ * The purpose of the Action_UndefendStack class is to record when a player
+ * takes a stack out of defensive mode.  This means that the stack is no longer
+ * depicted by a tower.
+ */
+class Action_UndefendStack: public Action
+{
+    public:
+	//! Make an undefend stack action.
+        Action_UndefendStack();
+	//! Copy constructor
+	Action_UndefendStack (const Action_UndefendStack &action);
+	//! Load a new undefend stack action from a saved-game file.
+        Action_UndefendStack (XML_Helper* helper);
+	//! Destroy a undefend stack action.
+        ~Action_UndefendStack();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this undefend stack action to a saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! Supply the stack that is being taken out of defend mode.
+        bool fillData(Stack *s);
+	
+        guint32 getStackId() const {return d_stack_id;};
+    private:
+        guint32 d_stack_id;
+};
+
+//-----------------------------------------------------------------------------
+
+//! A temporary record of a player putting a stack into parked mode.
+/**
+ * The purpose of the Action_ParkStack class is to record when a player puts
+ * a stack into parked mode.
+ */
+class Action_ParkStack: public Action
+{
+    public:
+	//! Make a park stack action.
+        Action_ParkStack();
+	//! Copy constructor
+	Action_ParkStack (const Action_ParkStack &action);
+	//! Load a new park stack action from a saved-game file.
+        Action_ParkStack (XML_Helper* helper);
+	//! Destroy a park stack action.
+        ~Action_ParkStack();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this park stack action to a saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! Supply the stack that is being put into parked mode.
+        bool fillData(Stack *s);
+	
+        guint32 getStackId() const {return d_stack_id;};
+    private:
+        guint32 d_stack_id;
+};
+
+//-----------------------------------------------------------------------------
+
+//! A temporary record of a player taking a stack out of parked mode.
+/**
+ * The purpose of the Action_UnparkStack class is to record when a player
+ * takes a stack out of parked mode (a stationary condition that means we
+ * don't want to move this stack any more this turn).
+ */
+class Action_UnparkStack: public Action
+{
+    public:
+	//! Make a unpark stack action.
+        Action_UnparkStack();
+	//! Copy constructor
+	Action_UnparkStack (const Action_UnparkStack &action);
+	//! Load a new unpark stack action from a saved-game file.
+        Action_UnparkStack (XML_Helper* helper);
+	//! Destroy an unpark stack action.
+        ~Action_UnparkStack();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this unpark stack action to a saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! Supply the stack that is being taken out of parked mode.
+        bool fillData(Stack *s);
+	
+        guint32 getStackId() const {return d_stack_id;};
+    private:
+        guint32 d_stack_id;
+};
+
+//! A temporary record of a player selecting a stack to work with.
+/**
+ * The purpose of the Action_SelectStack class is to record when a player
+ * grabs a stack to work with.  Only one stack can be selected at a time.
+ */
+class Action_SelectStack: public Action
+{
+    public:
+	//! Make a select stack action.
+        Action_SelectStack();
+	//! Copy constructor
+	Action_SelectStack (const Action_SelectStack &action);
+	//! Load a new select stack action from a saved-game file.
+        Action_SelectStack (XML_Helper* helper);
+	//! Destroy a select stack action.
+        ~Action_SelectStack();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this select stack action to a saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! Supply the stack that is being selected
+        bool fillData(Stack *s);
+	
+        guint32 getStackId() const {return d_stack_id;};
+    private:
+        guint32 d_stack_id;
+};
+
+//-----------------------------------------------------------------------------
+
+//! A temporary record of a player deselecting a stack.
+/**
+ * The purpose of the Action_DeselectStack class is to record when a player
+ * removes focus from any and all stacks.
+ */
+class Action_DeselectStack: public Action
+{
+    public:
+	//! Make a deselect stack action.
+        Action_DeselectStack();
+	//! Copy constructor
+	Action_DeselectStack (const Action_DeselectStack &action);
+	//! Load a new deselect stack action from a saved-game file.
+        Action_DeselectStack (XML_Helper* helper);
+	//! Destroy a deselect stack action.
+        ~Action_DeselectStack();
+
+	//! Return some debug information about this action.
+        std::string dump() const;
+
+	//! Save this deslect stack action to a saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	//! The Action_DeselectStack class doesn't take any info to fill.
         bool fillData();
 };
 

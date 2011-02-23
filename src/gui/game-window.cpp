@@ -2168,7 +2168,6 @@ void GameWindow::on_stack_info_changed(Stack *s)
 	  StackTile *stile = GameMap::getStacks(s->getPos());
 	  stile->setDefending(s->getOwner(), false);
 	  stile->setParked(s->getOwner(), false);
-
 	  show_stack(stile);
 	}
       else

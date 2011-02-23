@@ -115,6 +115,12 @@ class NetworkPlayer : public Player
         void decodeActionRuinsReset(const Action_ResetRuins *action);
         void decodeActionCollectTaxesAndPayUpkeep(const Action_CollectTaxesAndPayUpkeep *action);
         void decodeActionKillPlayer(const Action_Kill *action);
+        void decodeActionDefendStack(const Action_DefendStack *action);
+        void decodeActionUndefendStack(const Action_UndefendStack *action);
+        void decodeActionParkStack(const Action_ParkStack *action);
+        void decodeActionUnparkStack(const Action_UnparkStack *action);
+        void decodeActionSelectStack(const Action_SelectStack *action);
+        void decodeActionDeselectStack(const Action_DeselectStack *action);
 
 };
 

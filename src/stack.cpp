@@ -219,7 +219,6 @@ void Stack::moveToDest(Vector<int> dest, bool skipping)
   setFortified(false);
   setDefending(false);
   setParked(false);
-
 }
 
 void Stack::deFog()
@@ -469,7 +468,6 @@ void Stack::payUpkeep(Player *p)
 void Stack::reset()
 {
   guint32 movement_multiplier = 1;
-  setParked(false);
 
   //count the number of items that double the movement in the stack.
   for (const_iterator it = begin(); it != end(); it++)

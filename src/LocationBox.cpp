@@ -94,8 +94,8 @@ Stack *LocationBox::addArmy(Army *a) const
 
   if (stack->size() > 1)
     stack->sortForViewing(true);
-  stack->setDefending(false);
-  stack->setParked(false);
+  stack->getOwner()->stackUndefend(stack);
+  stack->getOwner()->stackUnpark(stack);
   return stack;
 }
 

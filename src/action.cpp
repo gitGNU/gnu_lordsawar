@@ -187,6 +187,18 @@ Action* Action::handle_load(XML_Helper* helper)
           return (new Action_CollectTaxesAndPayUpkeep(helper));
       case KILL_PLAYER:
           return (new Action_Kill(helper));
+      case STACK_DEFEND:
+          return (new Action_DefendStack(helper));
+      case STACK_UNDEFEND:
+          return (new Action_UndefendStack(helper));
+      case STACK_PARK:
+          return (new Action_ParkStack(helper));
+      case STACK_UNPARK:
+          return (new Action_UnparkStack(helper));
+      case STACK_SELECT:
+          return (new Action_SelectStack(helper));
+      case STACK_DESELECT:
+          return (new Action_DeselectStack(helper));
     }
 
   return 0;
@@ -313,6 +325,24 @@ Action* Action::copy(const Action* a)
                 (*dynamic_cast<const Action_CollectTaxesAndPayUpkeep*>(a)));
         case KILL_PLAYER:
             return (new Action_Kill (*dynamic_cast<const Action_Kill*>(a)));
+        case STACK_DEFEND:
+            return (new Action_DefendStack
+                    (*dynamic_cast<const Action_DefendStack*>(a)));
+        case STACK_UNDEFEND:
+            return (new Action_UndefendStack
+                    (*dynamic_cast<const Action_UndefendStack*>(a)));
+        case STACK_PARK:
+            return (new Action_ParkStack
+                    (*dynamic_cast<const Action_ParkStack*>(a)));
+        case STACK_UNPARK:
+            return (new Action_UnparkStack
+                    (*dynamic_cast<const Action_UnparkStack*>(a)));
+        case STACK_SELECT:
+            return (new Action_SelectStack
+                    (*dynamic_cast<const Action_SelectStack*>(a)));
+        case STACK_DESELECT:
+            return (new Action_DeselectStack
+                    (*dynamic_cast<const Action_DeselectStack*>(a)));
     }
 
     return 0;
@@ -2823,6 +2853,272 @@ bool Action_Kill::fillData()
   return true;
 }
 
+//-----------------------------------------------------------------------------
+// Action_DefendStack
+
+Action_DefendStack::Action_DefendStack()
+:Action(Action::STACK_DEFEND), d_stack_id(0)
+{
+}
+
+Action_DefendStack::Action_DefendStack(const Action_DefendStack &action)
+: Action(action), d_stack_id(action.d_stack_id)
+{
+}
+
+Action_DefendStack::Action_DefendStack(XML_Helper* helper)
+:Action(helper)
+{
+  helper->getData(d_stack_id, "stack_id");
+}
+
+Action_DefendStack::~Action_DefendStack()
+{
+}
+
+std::string Action_DefendStack::dump() const
+{
+  std::stringstream ss;
+
+  ss <<"Stack " <<d_stack_id <<" is going into defend mode. " << std::endl;
+
+  return ss.str();
+}
+
+bool Action_DefendStack::doSave(XML_Helper* helper) const
+{
+  bool retval = true;
+  retval &= helper->saveData("stack_id", d_stack_id);
+  return retval;
+}
+
+bool Action_DefendStack::fillData(Stack *s)
+{
+  d_stack_id = s->getId();
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+// Action_UndefendStack
+
+Action_UndefendStack::Action_UndefendStack()
+:Action(Action::STACK_UNDEFEND), d_stack_id(0)
+{
+}
+
+Action_UndefendStack::Action_UndefendStack(const Action_UndefendStack &action)
+: Action(action), d_stack_id(action.d_stack_id)
+{
+}
+
+Action_UndefendStack::Action_UndefendStack(XML_Helper* helper)
+:Action(helper)
+{
+  helper->getData(d_stack_id, "stack_id");
+}
+
+Action_UndefendStack::~Action_UndefendStack()
+{
+}
+
+std::string Action_UndefendStack::dump() const
+{
+  std::stringstream ss;
+
+  ss <<"Stack " <<d_stack_id <<" is going out of defend mode. " << std::endl;
+
+  return ss.str();
+}
+
+bool Action_UndefendStack::doSave(XML_Helper* helper) const
+{
+  bool retval = true;
+  retval &= helper->saveData("stack_id", d_stack_id);
+  return retval;
+}
+
+bool Action_UndefendStack::fillData(Stack *s)
+{
+  d_stack_id = s->getId();
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+// Action_ParkStack
+
+Action_ParkStack::Action_ParkStack()
+:Action(Action::STACK_PARK), d_stack_id(0)
+{
+}
+
+Action_ParkStack::Action_ParkStack(const Action_ParkStack &action)
+: Action(action), d_stack_id(action.d_stack_id)
+{
+}
+
+Action_ParkStack::Action_ParkStack(XML_Helper* helper)
+:Action(helper)
+{
+  helper->getData(d_stack_id, "stack_id");
+}
+
+Action_ParkStack::~Action_ParkStack()
+{
+}
+
+std::string Action_ParkStack::dump() const
+{
+  std::stringstream ss;
+
+  ss <<"Stack " <<d_stack_id <<" is going into parked mode. " << std::endl;
+
+  return ss.str();
+}
+
+bool Action_ParkStack::doSave(XML_Helper* helper) const
+{
+  bool retval = true;
+  retval &= helper->saveData("stack_id", d_stack_id);
+  return retval;
+}
+
+bool Action_ParkStack::fillData(Stack *s)
+{
+  d_stack_id = s->getId();
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+// Action_UnparkStack
+
+Action_UnparkStack::Action_UnparkStack()
+:Action(Action::STACK_UNPARK), d_stack_id(0)
+{
+}
+
+Action_UnparkStack::Action_UnparkStack(const Action_UnparkStack &action)
+: Action(action), d_stack_id(action.d_stack_id)
+{
+}
+
+Action_UnparkStack::Action_UnparkStack(XML_Helper* helper)
+:Action(helper)
+{
+  helper->getData(d_stack_id, "stack_id");
+}
+
+Action_UnparkStack::~Action_UnparkStack()
+{
+}
+
+std::string Action_UnparkStack::dump() const
+{
+  std::stringstream ss;
+
+  ss <<"Stack " <<d_stack_id <<" is going out of parked mode. " << std::endl;
+
+  return ss.str();
+}
+
+bool Action_UnparkStack::doSave(XML_Helper* helper) const
+{
+  bool retval = true;
+  retval &= helper->saveData("stack_id", d_stack_id);
+  return retval;
+}
+
+bool Action_UnparkStack::fillData(Stack *s)
+{
+  d_stack_id = s->getId();
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+// Action_SelectStack
+
+Action_SelectStack::Action_SelectStack()
+:Action(Action::STACK_SELECT), d_stack_id(0)
+{
+}
+
+Action_SelectStack::Action_SelectStack(const Action_SelectStack &action)
+: Action(action), d_stack_id(action.d_stack_id)
+{
+}
+
+Action_SelectStack::Action_SelectStack(XML_Helper* helper)
+:Action(helper)
+{
+  helper->getData(d_stack_id, "stack_id");
+}
+
+Action_SelectStack::~Action_SelectStack()
+{
+}
+
+std::string Action_SelectStack::dump() const
+{
+  std::stringstream ss;
+
+  ss <<"Stack " <<d_stack_id <<" is selected. " << std::endl;
+
+  return ss.str();
+}
+
+bool Action_SelectStack::doSave(XML_Helper* helper) const
+{
+  bool retval = true;
+  retval &= helper->saveData("stack_id", d_stack_id);
+  return retval;
+}
+
+bool Action_SelectStack::fillData(Stack *s)
+{
+  d_stack_id = s->getId();
+  return true;
+}
+
+//-----------------------------------------------------------------------------
+// Action_DeselectStack
+
+Action_DeselectStack::Action_DeselectStack()
+:Action(Action::STACK_DESELECT)
+{
+}
+
+Action_DeselectStack::Action_DeselectStack(const Action_DeselectStack &action)
+: Action(action)
+{
+}
+
+Action_DeselectStack::Action_DeselectStack(XML_Helper* helper)
+:Action(helper)
+{
+}
+
+Action_DeselectStack::~Action_DeselectStack()
+{
+}
+
+std::string Action_DeselectStack::dump() const
+{
+  std::stringstream ss;
+
+  ss <<"deselecting stack. " << std::endl;
+
+  return ss.str();
+}
+
+bool Action_DeselectStack::doSave(XML_Helper* helper) const
+{
+  return true;
+}
+
+bool Action_DeselectStack::fillData()
+{
+  return true;
+}
+
 std::string Action::actionTypeToString(Action::Type type)
 {
   switch (type)
@@ -2911,6 +3207,18 @@ std::string Action::actionTypeToString(Action::Type type)
       return "Action::COLLECT_TAXES_AND_PAY_UPKEEP";
     case Action::KILL_PLAYER:
       return "Action::KILL_PLAYER";
+    case Action::STACK_DEFEND:
+      return "Action::STACK_DEFEND";
+    case Action::STACK_UNDEFEND:
+      return "Action::STACK_UNDEFEND";
+    case Action::STACK_PARK:
+      return "Action::STACK_PARK";
+    case Action::STACK_UNPARK:
+      return "Action::STACK_UNPARK";
+    case Action::STACK_SELECT:
+      return "Action::STACK_SELECT";
+    case Action::STACK_DESELECT:
+      return "Action::STACK_DESELECT";
     }
       
   return "Action::MOVE";
@@ -3004,6 +3312,18 @@ Action::Type Action::actionTypeFromString(std::string str)
     return Action::COLLECT_TAXES_AND_PAY_UPKEEP;
   else if (str == "Action::KILL_PLAYER")
     return Action::KILL_PLAYER;
+  else if (str == "Action::STACK_DEFEND")
+    return Action::STACK_DEFEND;
+  else if (str == "Action::STACK_UNDEFEND")
+    return Action::STACK_UNDEFEND;
+  else if (str == "Action::STACK_PARK")
+    return Action::STACK_PARK;
+  else if (str == "Action::STACK_UNPARK")
+    return Action::STACK_UNPARK;
+  else if (str == "Action::STACK_SELECT")
+    return Action::STACK_SELECT;
+  else if (str == "Action::STACK_DESELECT")
+    return Action::STACK_DESELECT;
   return Action::STACK_MOVE;
 }
 

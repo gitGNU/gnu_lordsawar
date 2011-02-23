@@ -100,6 +100,7 @@ void GameBigMap::select_active_stack()
   Stack* stack = Playerlist::getActiveplayer()->getActivestack();
   if (!stack)
     return;
+  Playerlist::getActiveplayer()->stackSelect(stack);
   reset_path_calculator(stack);
 
   if (stack->getPath()->checkPath(stack) == false)
@@ -116,6 +117,7 @@ void GameBigMap::select_active_stack()
 
 void GameBigMap::unselect_active_stack()
 {
+  Playerlist::getActiveplayer()->stackDeselect();
   draw(Playerlist::getViewingplayer());
   stack_selected.emit(0);
   if (path_calculator)
