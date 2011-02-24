@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
       for (int i = 2; i <= argc; i++)
 	{
 	  string parameter(argv[i-1]); 
-	  if (parameter == "-c")
+	  if (parameter == "-c" || parameter == "--cache-size")
 	    {
 	      i++;
 	      //convert the next argument
@@ -89,11 +89,29 @@ int main(int argc, char* argv[])
 	      long seed = strtol(argv[i-1], &error, 10);
 	      if (error && (*error != '\0'))
 		{
-		  cerr <<_("non-numerical value for seed value") <<endl;
+		  cerr <<_("non-numerical value for --seed") <<endl;
 		  exit(-1);
 		}
               kit.random_number_seed = seed;
 	      srand(seed);
+	    }
+	  else if (parameter == "--port" || parameter == "-p")
+	    {
+	      i++;
+	      //convert the next argument
+	      char* error = 0;
+	      long port = strtol(argv[i-1], &error, 10);
+	      if (error && (*error != '\0'))
+		{
+		  cerr <<_("non-numerical value for --port") <<endl;
+		  exit(-1);
+		}
+              if (port > 65535 || port < 1000)
+                {
+		  cerr <<_("invalid value for --port") <<endl;
+		  exit(-1);
+                }
+              kit.port = port;
 	    }
 	  else if (parameter == "--turn")
 	    {
@@ -122,12 +140,13 @@ int main(int argc, char* argv[])
 	      cout << "LordsAWar! " << _("version") << " " << VERSION << endl << endl;
 	      cout << _("Options:") << endl << endl; 
 	      cout << "  -h, --help                 " << _("Shows this help screen") <<endl;
-	      cout << "  -c <size>                  " << _("Set the cache size for imagery to SIZE bytes") <<endl;
+	      cout << "  -c, --cache-size <size>    " << _("Set the cache size for imagery to SIZE bytes") <<endl;
 	      cout << "  -t, --test                 " << _("Start with a test-scenario") << endl;
 	      cout << "  -S, --seed <number>        " << _("Seed the random number generator with NUMBER") << endl;
 	      cout << "  -s, --stress-test          " << _("Non-interactive stress test") << endl;
 	      cout << "  -r, --robots               " << _("Non-interactive network stress test") << endl;
 	      cout << "  -H, --host                 " << _("Start a headless server") << endl;
+	      cout << "  -p, --port <PORT>          " << _("Start the server on the given PORT") << endl;
 	      cout << endl;
 	      cout << _("FILE can be a saved game file (.sav), or a map (.map) file.") << endl;
 	      cout << endl;

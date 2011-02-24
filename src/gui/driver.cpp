@@ -146,7 +146,10 @@ void Driver::serve (GameScenario *game_scenario)
     return;
   //okay we're going to host a game, using this file as a scenario.
   GameServer *game_server = GameServer::getInstance();
-  game_server->start(game_scenario, LORDSAWAR_PORT, "admin");
+  guint32 port = LORDSAWAR_PORT;
+  if (Main::instance().port)
+    port = Main::instance().port;
+  game_server->start(game_scenario, port, "admin");
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   game_server->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
   game_server->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
