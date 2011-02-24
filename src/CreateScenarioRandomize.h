@@ -65,7 +65,7 @@ class CreateScenarioRandomize
 	int adjustBaseGold (int base_gold);
 
 	//! Get the default player name for the given shield colour.
-	std::string getPlayerName(Shield::Colour id);
+	static std::string getPlayerName(Shield::Colour id);
 
     private:
 

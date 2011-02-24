@@ -112,6 +112,10 @@ int main(int argc, char* argv[])
 	    {
 	      kit.start_robots = -1;
 	    }
+	  else if (parameter == "--host" || parameter == "-H")
+	    {
+	      kit.start_headless_server = true;
+	    }
 	  else if (parameter == "--help" || parameter == "-h")
 	    {
 	      cout << argv[0] << " [OPTION]... [FILE]" << endl << endl;
@@ -123,6 +127,7 @@ int main(int argc, char* argv[])
 	      cout << "  -S, --seed <number>        " << _("Seed the random number generator with NUMBER") << endl;
 	      cout << "  -s, --stress-test          " << _("Non-interactive stress test") << endl;
 	      cout << "  -r, --robots               " << _("Non-interactive network stress test") << endl;
+	      cout << "  -H, --host                 " << _("Start a headless server") << endl;
 	      cout << endl;
 	      cout << _("FILE can be a saved game file (.sav), or a map (.map) file.") << endl;
 	      cout << endl;

@@ -43,6 +43,7 @@ class Main: public sigc::trackable, public boost::noncopyable
     std::string load_filename;
     std::string turn_filename;
     guint32 random_number_seed;
+    bool start_headless_server;
     
  private:
     struct Impl;

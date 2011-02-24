@@ -55,6 +55,7 @@ Main::Main(int &argc, char **&argv)
     start_test_scenario = false;
     start_stress_test = false;
     start_robots = 0;
+    start_headless_server = false;
     load_filename = "";
     turn_filename = "";
     random_number_seed = 0;

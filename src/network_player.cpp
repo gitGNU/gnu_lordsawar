@@ -56,8 +56,8 @@
 
 using namespace std;
 
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
-#define debug(x)
+#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x)
 
 NetworkPlayer::NetworkPlayer(string name, guint32 armyset, Gdk::Color color, int width,
 		       int height, Player::Type type, int player_no)

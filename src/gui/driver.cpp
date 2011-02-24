@@ -103,9 +103,151 @@ Driver::Driver(std::string load_filename)
 	run();
 	return;
       }
+    if (Main::instance().start_headless_server)
+      {
+        GameScenario *game_scenario;
+        std::string path = load_filename;
+        if (load_filename.empty() == true)
+          {
+            GameParameters g;
+            get_default(MAX_PLAYERS, g);
+            game_scenario = create_new_scenario(g, GameScenario::NETWORKED);
+            if (!game_scenario)
+              {
+                cerr << "Error: could not load randomly generated map." << 
+                  std::endl;
+                exit(1);
+              }
+          }
+        else
+          {
+          game_scenario = load_game(load_filename);
+          if (!game_scenario)
+            {
+              cerr << "Error: could not load file " << 
+                load_filename << std::endl;
+              exit(1);
+            }
+          }
+        if (game_scenario)
+          {
+          serve (game_scenario);
+          }
+        return;
+      }
     splash_window->show();
     //here are the ones that do
     run();
+}
+
+void Driver::serve (GameScenario *game_scenario)
+{
+  if (!game_scenario)
+    return;
+  //okay we're going to host a game, using this file as a scenario.
+  GameServer *game_server = GameServer::getInstance();
+  game_server->start(game_scenario, LORDSAWAR_PORT, "admin");
+  NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
+  game_server->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
+  game_server->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
+  next_turn->srequestAbort.connect(sigc::mem_fun(game_server, &GameServer::on_turn_aborted));
+  game_server->get_next_player.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::next));
+  game_server->round_ends.connect
+    (sigc::mem_fun(*this, &Driver::on_keep_network_play_going));
+  Playerlist::getInstance()->splayerDead.connect
+    (sigc::mem_fun(GameServer::getInstance(), &GameServer::sendKillPlayer));
+
+  game_server->notifyClientsGameMayBeginNow();
+  Game *game = new Game(game_scenario, next_turn);
+  game_server->player_sits.connect(sigc::mem_fun(this, &Driver::on_client_sits_down_in_headless_server_game));
+}
+
+void Driver::on_client_sits_down_in_headless_server_game(Player *p, std::string nick)
+{
+  static int count;
+  count++;
+  if (count == MAX_PLAYERS)
+    GameServer::getInstance()->sendRoundStart();
+}
+
+void Driver::get_default(int num_players, GameParameters &g)
+{
+  GameParameters::Player p;
+  if (num_players <= 1 || num_players > (int)MAX_PLAYERS)
+    num_players = (int)MAX_PLAYERS;
+  for (unsigned int i = 0; i < (unsigned int) num_players; i++)
+    {
+      p.type = GameParameters::Player::HUMAN;
+      p.id = i;
+      switch (p.id)
+        {
+        case 0: 
+          p.name = 
+            CreateScenarioRandomize::getPlayerName(Shield::WHITE); 
+          break;
+        case 1: 
+          p.name = 
+            CreateScenarioRandomize::getPlayerName(Shield::GREEN); 
+          break;
+        case 2: 
+          p.name = 
+            CreateScenarioRandomize::getPlayerName(Shield::YELLOW); 
+          break;
+        case 3: 
+          p.name = 
+            CreateScenarioRandomize::getPlayerName(Shield::DARK_BLUE); 
+          break;
+        case 4: 
+          p.name = 
+            CreateScenarioRandomize::getPlayerName(Shield::ORANGE); 
+          break;
+        case 5: 
+          p.name = 
+            CreateScenarioRandomize::getPlayerName(Shield::LIGHT_BLUE); 
+          break;
+        case 6: 
+          p.name = 
+            CreateScenarioRandomize::getPlayerName(Shield::RED); 
+          break;
+        case 7: 
+          p.name = 
+            CreateScenarioRandomize::getPlayerName(Shield::BLACK); 
+          break;
+        }
+      g.players.push_back(p);
+    }
+  g.map.width = MAP_SIZE_NORMAL_WIDTH;
+  g.map.height = MAP_SIZE_NORMAL_HEIGHT;
+  g.map.grass = 78;
+  g.map.water = 7;
+  g.map.swamp = 2;
+  g.map.forest = 3;
+  g.map.hills = 5;
+  g.map.mountains = 5;
+  g.map.cities = 80;
+  g.map.ruins = 15;
+  g.map.temples = 3;
+  g.map.signposts = 20;
+  g.map_path = "";
+  g.play_with_quests = GameParameters::ONE_QUEST_PER_PLAYER;
+  g.hidden_map = false;
+  g.neutral_cities = GameParameters::STRONG;
+  g.razing_cities = GameParameters::ALWAYS;
+  g.diplomacy = false;
+  g.random_turns = false;
+  g.quick_start = GameParameters::NO_QUICK_START;
+  g.intense_combat = false;
+  g.military_advisor = false;
+  g.army_theme = "default";
+  g.tile_theme = "default";
+  g.shield_theme = "default";
+  g.city_theme = "default";
+  g.process_armies = GameParameters::PROCESS_ARMIES_AT_PLAYERS_TURN;
+  g.difficulty = GameScenario::calculate_difficulty_rating(g);
+  g.cities_can_produce_allies = false;
+  g.cusp_of_war = false;
+  g.see_opponents_stacks = false;
+  g.see_opponents_production = false;
 }
 
 void Driver::run()
@@ -824,7 +966,6 @@ void Driver::stressTestNextRound()
 
 void Driver::stress_test()
 {
-
   // quick load a test scenario
   GameParameters g;
   GameParameters::Player p;
@@ -970,6 +1111,7 @@ void Driver::on_game_scenario_received_for_robots(std::string path)
     if (Player::Type((*it)->getType()) == robot_player_type)
       GameClient::getInstance()->listenForLocalEvents(*it);
 
+  game_client->request_seat_manifest();
 }
 
 void Driver::on_game_may_begin_for_robots(GameScenario *game_scenario,

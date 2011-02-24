@@ -502,8 +502,8 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
 
   if (added_army)
     {
-      s->getOwner()->stackUndefend(s);
-      s->getOwner()->stackUnpark(s);
+      s->setDefending(false);
+      s->setParked(false);
       return s;
     }
   else

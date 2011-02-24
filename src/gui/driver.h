@@ -104,6 +104,10 @@ class Driver: public sigc::trackable
     void on_game_may_begin_for_robots(GameScenario *game_scenario, NextTurnNetworked *next_turn);
 
     GameScenario *create_new_scenario(GameParameters &g, GameScenario::PlayMode m);
+
+    void get_default(int num_players, GameParameters &g);
+    void serve (GameScenario *game_scenario);
+    void on_client_sits_down_in_headless_server_game(Player *p, std::string nick);
 };
 
 
