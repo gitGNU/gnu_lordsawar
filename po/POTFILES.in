@@ -337,6 +337,7 @@ src/Commentator.cpp
 src/Commentator.h
 src/Sage.cpp
 src/Sage.h
+src/PixMask.cpp
 dat/various/items/items.xml.in
 dat/citynames.xml.in
 dat/templenames.xml.in
