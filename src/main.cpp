@@ -146,7 +146,7 @@ int main(int argc, char* argv[])
 	      cout << "  -s, --stress-test          " << _("Non-interactive stress test") << endl;
 	      cout << "  -r, --robots               " << _("Non-interactive network stress test") << endl;
 	      cout << "  -H, --host                 " << _("Start a headless server") << endl;
-	      cout << "  -p, --port <PORT>          " << _("Start the server on the given PORT") << endl;
+	      cout << "  -p, --port <number>        " << _("Start the server on the given port") << endl;
 	      cout << endl;
 	      cout << _("FILE can be a saved game file (.sav), or a map (.map) file.") << endl;
 	      cout << endl;
