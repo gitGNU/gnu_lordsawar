@@ -26,6 +26,7 @@
 
 #include "GameScenario.h"
 class XML_Helper;
+class Profile;
 
 //! A single game entry in the recently played games list.
 /**
@@ -53,7 +54,7 @@ class RecentlyPlayedGame
 	 * Make a new recently played game object by taking values from the
 	 * GameScenario.
 	 */
-        RecentlyPlayedGame(GameScenario *game_scenario);
+        RecentlyPlayedGame(GameScenario *game_scenario, Profile *profile);
         
 	//! Destructor.
         virtual ~RecentlyPlayedGame();
@@ -62,6 +63,9 @@ class RecentlyPlayedGame
 
         //! Get the scenario id of the recently played game entry.
 	std::string getId() const {return d_id;};
+
+        //! Get the id of the profile who made the entry.
+	std::string getProfileId() const {return d_profile_id;};
 
 	//! Get time of when this game was last played (seconds past the epoch).
 	time_t getTimeOfLastPlay() const { return d_time;};
@@ -141,13 +145,15 @@ class RecentlyPlayedGame
 	//! The name of the game.
 	std::string d_name;
 
+        //! The id of the profile who played the game.
+        std::string d_profile_id;
 };
 
 class RecentlyPlayedHotseatGame : public RecentlyPlayedGame
 {
     public:
 	//! Make a new hotseat game entry.
-	RecentlyPlayedHotseatGame(GameScenario *game_scenario);
+	RecentlyPlayedHotseatGame(GameScenario *game_scenario, Profile *p);
 
 	//! Load a new hotseat game from an opened file.
 	RecentlyPlayedHotseatGame(XML_Helper *helper);
@@ -175,7 +181,7 @@ class RecentlyPlayedPbmGame : public RecentlyPlayedGame
 {
     public:
 	//! Make a new pbm game entry.
-	RecentlyPlayedPbmGame(GameScenario *game_scenario);
+	RecentlyPlayedPbmGame(GameScenario *game_scenario, Profile *p);
 
 	//! Load a new pbm game from an opened saved-game file.
 	RecentlyPlayedPbmGame(XML_Helper *helper);
@@ -206,7 +212,7 @@ class RecentlyPlayedNetworkedGame : public RecentlyPlayedGame
 {
     public:
 	//! Make a new networked game entry.
-	RecentlyPlayedNetworkedGame(GameScenario *game_scenario);
+	RecentlyPlayedNetworkedGame(GameScenario *game_scenario, Profile *p);
 
 	//! Load a new networked game from an opened file.
 	RecentlyPlayedNetworkedGame(XML_Helper *helper);

@@ -96,7 +96,9 @@ liblordsawarnet_la_SOURCES = \
         network-server.cpp network-server.h \
         pbm/pbm.cpp pbm/pbm.h \
         pbm-game-client.cpp pbm-game-client.h \
-        pbm-game-server.cpp pbm-game-server.h
+        pbm-game-server.cpp pbm-game-server.h \
+	profile.cpp profile.h \
+       	profilelist.cpp profilelist.h
 
 liblordsawargfx_la_SOURCES = \
 	bigmap.cpp bigmap.h citymap.cpp citymap.h  \

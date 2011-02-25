@@ -66,6 +66,7 @@
 #include "tarhelper.h"
 #include "stacktile.h"
 #include "GraphicsCache.h"
+#include "profile.h"
 
 std::string GameScenario::d_tag = "scenario";
 using namespace std;
@@ -940,7 +941,7 @@ GameScenario::PlayMode GameScenario::playModeFromString(const std::string str)
 	
 void GameScenario::setNewRandomId()
 {
-  d_id = String::ucompose("%1%2%3", time(NULL), getpid(), rand());
+  d_id = generate_guid();
 }
 	
 bool GameScenario::validate(std::list<std::string> &errors, std::list<std::string> &warnings)
@@ -1281,4 +1282,19 @@ void GameScenario::clean_tmp_dir() const
 {
   if (loaded_game_filename != "")
     Tar_Helper::clean_tmp_dir(loaded_game_filename);
+}
+
+std::string GameScenario::generate_guid()
+{
+  Glib::TimeVal now;
+  now.assign_current_time();
+  double n = now.as_double();
+  n -= (int) n ;
+  n *= 100000000;
+  Glib::Rand r(n);
+  char buf[40];
+  //this is a very poor guid generator.
+  snprintf (buf, sizeof (buf), "{%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", r.get_int(), rand() % 4096, r.get_int_range(0, 4096), r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256) % 256, r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256));
+
+  return std::string(buf);
 }

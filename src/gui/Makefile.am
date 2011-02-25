@@ -1,5 +1,5 @@
 #   Copyright (C) 2007 Ole Laursen
-#   Copyright (C) 2007, 2008, 2009 Ben Asselstine
+#   Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 #   Copyright (C) 2008 Barry deFreese
 # 
 #   This program is free software; you can redistribute it and/or modify
@@ -69,6 +69,7 @@ liblwgui_la_SOURCES = \
     game-lobby-dialog.cpp game-lobby-dialog.h \
     network-game-selector-dialog.cpp network-game-selector-dialog.h \
     new-network-game-dialog.cpp new-network-game-dialog.h \
+    new-profile-dialog.cpp new-profile-dialog.h \
     new-network-game-download-window.cpp new-network-game-download-window.h \
     decorated.cpp decorated.h \
     new-random-map-dialog.cpp new-random-map-dialog.h \

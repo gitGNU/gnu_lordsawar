@@ -48,6 +48,7 @@ struct Participant
   std::list<NetworkHistory *> histories;
   std::string nickname;
   bool departed;
+  std::string profile_id;
 };
 
 GameServer * GameServer::s_instance = 0;
@@ -147,10 +148,11 @@ bool GameServer::isListening()
     return false;
 }
 
-void GameServer::start(GameScenario *game_scenario, int port, std::string nick)
+void GameServer::start(GameScenario *game_scenario, int port, std::string profile_id, std::string nick)
 {
   setGameScenario(game_scenario);
   setNickname(nick);
+  setProfileId(profile_id);
 
   if (network_server.get() != NULL && network_server->isListening())
     return;
@@ -262,6 +264,7 @@ void GameServer::gotChat(void *conn, std::string message)
   return;
 }
 
+    
 bool GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
 {
   std::cerr << "got message of type " << type << std::endl;
@@ -632,16 +635,23 @@ Glib::ustring GameServer::make_nickname_unique(Glib::ustring nickname)
   return new_nickname;
 }
 
-void GameServer::join(void *conn, std::string nickname)
+void GameServer::join(void *conn, std::string nickname_and_profile_id)
 {
   bool new_participant = false;
   std::cout << "JOIN: " << conn << std::endl;
 
+  size_t pos;
+  pos = nickname_and_profile_id.rfind(' ');
+  if (pos == std::string::npos)
+    return;
+  std::string nickname = nickname_and_profile_id.substr(0, pos - 1);
+  std::string profile_id = nickname_and_profile_id.substr(pos + 1);
   Participant *part = findParticipantByConn(conn);
   if (!part) {
     part = new Participant;
     part->conn = conn;
     part->nickname = nickname;
+    part->profile_id = profile_id;
     participants.push_back(part);
     part->departed = false;
     new_participant = true;

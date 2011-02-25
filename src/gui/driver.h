@@ -29,6 +29,7 @@
 #include "new-network-game-download-window.h"
 #include "game-parameters.h"
 
+class Profile;
 // takes care of setting up the splash window and the game window, the
 // interaction between them and the model classes
 // it also takes care of the game lobby window.
@@ -54,11 +55,11 @@ class Driver: public sigc::trackable
     sigc::signal<void, Player*> player_replaced;
 
     void on_new_game_requested(GameParameters g);
-    void on_new_remote_network_game_requested(std::string host, unsigned short port, std::string nick);
-    void on_new_hosted_network_game_requested(GameParameters g, int port, std::string nick);
+    void on_new_remote_network_game_requested(std::string host, unsigned short port, Profile *p);
+    void on_new_hosted_network_game_requested(GameParameters g, int port, Profile *p);
     void on_new_pbm_game_requested(GameParameters g);
     void on_game_scenario_downloaded(std::string filename);
-    void on_game_scenario_received(std::string path);
+    void on_game_scenario_received(std::string path, Profile *p);
     void on_load_requested(std::string filename);
     void on_quit_requested();
 

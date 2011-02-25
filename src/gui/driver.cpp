@@ -67,6 +67,8 @@
 #include "smallmap.h"
 #include "new-random-map-dialog.h"
 #include "network_player.h"
+#include "profile.h"
+#include "profilelist.h"
 
 Driver::Driver(std::string load_filename)
 {
@@ -150,7 +152,10 @@ void Driver::serve (GameScenario *game_scenario)
   if (Main::instance().port)
     port = Main::instance().port;
   game_server->port_in_use.connect(sigc::mem_fun(*this, &Driver::on_could_not_bind_to_port_for_headless_server));
-  game_server->start(game_scenario, port, "admin");
+  std::string id = "";
+  if (Profilelist::getInstance()->empty() == false)
+    id = Profilelist::getInstance()->front()->getId();
+  game_server->start(game_scenario, port, id, "admin");
   game_server = GameServer::getInstance();
   if (game_server->isListening() == false)
     {
@@ -169,7 +174,8 @@ void Driver::serve (GameScenario *game_scenario)
 
   game_server->notifyClientsGameMayBeginNow();
   Game *game = new Game(game_scenario, next_turn);
-  game_server->player_sits.connect(sigc::mem_fun(this, &Driver::on_client_sits_down_in_headless_server_game));
+  if (game)
+    game_server->player_sits.connect(sigc::mem_fun(this, &Driver::on_client_sits_down_in_headless_server_game));
 }
 
 void Driver::on_client_sits_down_in_headless_server_game(Player *p, std::string nick)
@@ -515,7 +521,7 @@ GameScenario *Driver::create_new_scenario(GameParameters &g, GameScenario::PlayM
 }
 
 void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
-						  std::string nick)
+						  Profile *p)
 {
     if (splash_window)
 	splash_window->hide();
@@ -534,7 +540,7 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
 
   GameServer *game_server = GameServer::getInstance();
   game_server->port_in_use.connect(sigc::mem_fun(*this, &Driver::on_could_not_bind_to_port));
-  game_server->start(game_scenario, port, nick);
+  game_server->start(game_scenario, port, p->getId(), p->getNickname());
   game_server = GameServer::getInstance();
   if (game_server->isListening() == false)
     {
@@ -617,7 +623,7 @@ void Driver::on_client_could_not_connect()
   dialog.hide();
 }
 
-void Driver::on_new_remote_network_game_requested(std::string host, unsigned short port, std::string nick)
+void Driver::on_new_remote_network_game_requested(std::string host, unsigned short port, Profile *p)
 {
   if (splash_window)
     splash_window->hide();
@@ -631,12 +637,12 @@ void Driver::on_new_remote_network_game_requested(std::string host, unsigned sho
   game_client->client_could_not_connect.connect
     (sigc::mem_fun(this, &Driver::on_client_could_not_connect));
   game_scenario_received.connect
-    (sigc::mem_fun(this, &Driver::on_game_scenario_received));
+    (sigc::bind(sigc::mem_fun(this, &Driver::on_game_scenario_received), p));
   if (download_window)
     delete download_window;
   download_window = new NewNetworkGameDownloadWindow();
   download_window->pulse();
-  game_client->start(host, port, nick);
+  game_client->start(host, port, p->getId(), p->getNickname());
   heartbeat_conn = Glib::signal_timeout().connect
     (bind_return(sigc::mem_fun(*this, &Driver::heartbeat), true), 1 * 1000);
 
@@ -658,7 +664,7 @@ void Driver::heartbeat()
   already_done = true;
 }
 
-void Driver::on_game_scenario_received(std::string path)
+void Driver::on_game_scenario_received(std::string path, Profile *p)
 {
   heartbeat_conn.disconnect();
   if (download_window)
@@ -667,8 +673,8 @@ void Driver::on_game_scenario_received(std::string path)
   GameClient *game_client = GameClient::getInstance();
   std::string host = game_client->getHost();
   guint32 port = game_client->getPort();
-  RecentlyPlayedGameList::getInstance()->addNetworkedEntry(game_scenario, host, port);
-  RecentlyPlayedGameList::getInstance()->saveToFile(File::getSavePath() + "/recently-played.xml");
+  RecentlyPlayedGameList::getInstance()->addNetworkedEntry(game_scenario, p, host, port);
+  RecentlyPlayedGameList::getInstance()->save();
 
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   game_client->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
@@ -1088,7 +1094,10 @@ void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type
   game_scenario_received.connect
     (sigc::mem_fun(this, &Driver::on_game_scenario_received_for_robots));
   game_client->setNickname("robot");
-  game_client->start(host, port, "robot");
+  std::string id = "";
+  if (Profilelist::getInstance()->empty() == false)
+    id = Profilelist::getInstance()->front()->getId();
+  game_client->start(host, port, id, "robot");
   heartbeat_conn = Glib::signal_timeout().connect
     (bind_return(sigc::mem_fun(*this, &Driver::heartbeat), true), 1 * 1000);
   robot_player_type = type;

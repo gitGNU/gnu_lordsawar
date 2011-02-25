@@ -65,6 +65,7 @@ stack-info-dialog.ui \
 game-quit-dialog.ui \
 about-dialog.ui \
 new-network-game-dialog.ui \
+new-profile-dialog.ui \
 game-lobby-dialog.ui \
 pick-network-game-to-join-dialog.ui \
 new-random-map-dialog.ui \

@@ -65,12 +65,13 @@ GameClient::~GameClient()
 {
 }
 
-void GameClient::start(std::string host, guint32 port, std::string nick)
+void GameClient::start(std::string host, guint32 port, std::string profile_id, std::string nick)
 {
   d_host = host;
   d_port = port;
   player_id = -1;
   setNickname(nick);
+  setProfileId(profile_id);
   network_connection.reset(new NetworkConnection());
   network_connection->connected.connect(
     sigc::mem_fun(this, &GameClient::onConnected));
@@ -156,7 +157,8 @@ bool GameClient::onGotMessage(MessageType type, std::string payload)
     break;
 
   case MESSAGE_TYPE_PONG:
-    network_connection->send(MESSAGE_TYPE_PARTICIPANT_CONNECT, d_nickname);
+    network_connection->send(MESSAGE_TYPE_PARTICIPANT_CONNECT, 
+                             getNickname() + " " + getProfileId());
     break;
 
   case MESSAGE_TYPE_SENDING_ACTIONS:

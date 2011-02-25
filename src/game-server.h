@@ -48,7 +48,7 @@ public:
   static void deleteInstance();
 
   bool isListening();
-  void start(GameScenario *game_scenario, int port, std::string nick);
+  void start(GameScenario *game_scenario, int port, std::string profile_id, std::string nick);
 
   void sit_down (Player *player);
   void stand_up (Player *player);

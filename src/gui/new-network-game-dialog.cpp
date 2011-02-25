@@ -27,8 +27,11 @@
 #include "defs.h"
 #include "File.h"
 #include "ucompose.hpp"
+#include "profile.h"
+#include "profilelist.h"
+#include "new-profile-dialog.h"
 
-NewNetworkGameDialog::NewNetworkGameDialog(Glib::ustring network_game_nickname)
+NewNetworkGameDialog::NewNetworkGameDialog()
 {
   Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file
     (get_glade_path() + "/new-network-game-dialog.ui");
@@ -36,22 +39,57 @@ NewNetworkGameDialog::NewNetworkGameDialog(Glib::ustring network_game_nickname)
   xml->get_widget("dialog", dialog);
   xml->get_widget("client_radiobutton", client_radiobutton);
   xml->get_widget("accept_button", accept_button);
+  xml->get_widget("add_button", add_button);
+  add_button->signal_clicked().connect(sigc::mem_fun(*this, &NewNetworkGameDialog::on_add_button_clicked));
+  xml->get_widget("remove_button", remove_button);
+  remove_button->signal_clicked().connect(sigc::mem_fun(*this, &NewNetworkGameDialog::on_remove_button_clicked));
+  xml->get_widget("profiles_treeview", profiles_treeview);
+  profiles_list = Gtk::ListStore::create(profiles_columns);
+  profiles_treeview->set_model(profiles_list);
+  profiles_treeview->append_column("", profiles_columns.nickname);
+
+  if (Profilelist::getInstance()->empty() == true)
+    Profilelist::getInstance()->push_back(new Profile(Glib::get_user_name()));
+
+  for (Profilelist::iterator i = Profilelist::getInstance()->begin();
+       i != Profilelist::getInstance()->end(); i++)
+    add_profile(*i);
 
   decorate(dialog);
   dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
-  xml->get_widget("nick_entry", nick_entry);
-  std::string nick;
-  if (getenv("USER"))
-    nick = getenv("USER");
-  else if (network_game_nickname != "")
-    nick = network_game_nickname;
-  else
-    nick = "guest";
-  nick_entry->set_text(nick);
-  nick_entry->set_activates_default(true);
-  nick_entry->signal_changed().connect 
-    (sigc::mem_fun(*this, &NewNetworkGameDialog::on_nickname_changed));
+
+  select_preferred_profile(Glib::get_user_name());
   update_buttons();
+  profiles_treeview->get_selection()->signal_changed().connect
+    (sigc::mem_fun(*this, &NewNetworkGameDialog::on_profile_selected));
+}
+
+void NewNetworkGameDialog::select_preferred_profile(Glib::ustring user)
+{
+  Profile *p = Profilelist::getInstance()->findLastPlayedProfileForUser(user);
+  Gtk::TreeModel::Children kids = profiles_list->children();
+  for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
+       i != kids.end(); i++)
+    {
+      Gtk::TreeModel::Row row = *i;
+      if (row[profiles_columns.profile] == p)
+        {
+          profiles_treeview->get_selection()->select(row);
+          return;
+        }
+    }
+
+  Gtk::TreeModel::Row row;
+  row = profiles_treeview->get_model()->children()[0];
+  if(row)
+    profiles_treeview->get_selection()->select(row);
+}
+
+void NewNetworkGameDialog::add_profile(Profile *profile)
+{
+    Gtk::TreeIter i = profiles_list->append();
+    (*i)[profiles_columns.nickname] = profile->getNickname();
+    (*i)[profiles_columns.profile] = profile;
 }
 	    
 NewNetworkGameDialog::~NewNetworkGameDialog()
@@ -59,24 +97,15 @@ NewNetworkGameDialog::~NewNetworkGameDialog()
   delete dialog;
 }
 
-void NewNetworkGameDialog::on_nickname_changed()
-{
-  update_buttons();
-}
-
 void NewNetworkGameDialog::update_buttons()
 {
-  if (String::utrim(nick_entry->get_text()) == "")
-    accept_button->set_sensitive(false);
+  Glib::RefPtr<Gtk::TreeSelection> selection = 
+    profiles_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+  if (iterrow) 
+    accept_button->set_sensitive(true);
   else
-    {
-      accept_button->set_sensitive(true);
-      accept_button->property_can_focus() = true;
-      accept_button->property_can_default() = true;
-      accept_button->property_has_default() = true;
-      nick_entry->property_activates_default() = true;
-      accept_button->property_receives_default() = true;
-    }
+    accept_button->set_sensitive(false);
 }
 
 void NewNetworkGameDialog::set_parent_window(Gtk::Window &parent)
@@ -93,6 +122,53 @@ bool NewNetworkGameDialog::run()
 {
   int response = dialog->run();
   if (response == Gtk::RESPONSE_ACCEPT)
-    return true;
+    {
+      Profilelist::getInstance()->save();
+      Glib::RefPtr<Gtk::TreeSelection> selection = 
+        profiles_treeview->get_selection();
+      Gtk::TreeModel::iterator iterrow = selection->get_selected();
+      if (iterrow) 
+        {
+          Gtk::TreeModel::Row row = *iterrow;
+          d_profile = row[profiles_columns.profile];
+          d_profile->play();
+          Profilelist::getInstance()->save();
+        }
+      return true;
+    }
   return false;
+}
+
+void NewNetworkGameDialog::on_add_button_clicked()
+{
+  NewProfileDialog d("");
+  d.set_parent_window(*dialog);
+  if (d.run())
+    {
+      Profile *profile = new Profile (d.getNickname());
+      Profilelist::getInstance()->push_back(profile);
+      add_profile(profile);
+    }
+  update_buttons();
+}
+
+void NewNetworkGameDialog::on_remove_button_clicked()
+{
+  Glib::RefPtr<Gtk::TreeSelection> selection = 
+    profiles_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+  if (iterrow) 
+    {
+      Gtk::TreeModel::Row row = *iterrow;
+      Profile *profile = row[profiles_columns.profile];
+      if (profile)
+        Profilelist::getInstance()->remove(profile);
+      profiles_list->erase(iterrow);
+    }
+  update_buttons();
+}
+
+void NewNetworkGameDialog::on_profile_selected()
+{
+  update_buttons();
 }

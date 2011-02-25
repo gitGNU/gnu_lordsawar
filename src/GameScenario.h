@@ -149,6 +149,8 @@ class GameScenario: public GameScenarioOptions
 
 	static void loadDetails(std::string filename, bool &broken, guint32 &player_count, guint32 &city_count, std::string &name, std::string &comment);
 
+        static std::string generate_guid();
+
 	void inhibitAutosaveRemoval(bool i) {inhibit_autosave_removal = i;}
     private:
 	  /** Callback function for loading a game. See XML_Helper for details.

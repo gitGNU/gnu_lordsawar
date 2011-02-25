@@ -663,7 +663,7 @@ void GameLobbyDialog::on_remote_player_ends_turn(Player *p)
     {
       RecentlyPlayedGameList *rpgl = RecentlyPlayedGameList::getInstance();
       rpgl->updateEntry(d_game_scenario);
-      rpgl->saveToFile(File::getSavePath() + "/recently-played.xml");
+      rpgl->save();
     }
   update_turn_indicator();
   update_scenario_details();

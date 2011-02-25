@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,6 +26,8 @@
 #include "Configuration.h"
 #include <sigc++/functors/mem_fun.h>
 #include "defs.h"
+#include "profile.h"
+#include "profilelist.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -57,7 +59,7 @@ bool RecentlyPlayedGameList::loadFromFile(std::string filename)
   if (in)
     {
       XML_Helper helper(filename.c_str(), std::ios::in, false);
-      helper.registerTag(RecentlyPlayedGame::d_tag, sigc::mem_fun(this, &RecentlyPlayedGameList::load));
+      helper.registerTag(RecentlyPlayedGame::d_tag, sigc::mem_fun(this, &RecentlyPlayedGameList::load_tag));
       bool retval = helper.parse();
       if (retval == false)
 	unlink(filename.c_str());
@@ -89,7 +91,7 @@ RecentlyPlayedGameList::RecentlyPlayedGameList()
 
 RecentlyPlayedGameList::RecentlyPlayedGameList(XML_Helper* helper)
 {
-  helper->registerTag(RecentlyPlayedGame::d_tag, sigc::mem_fun(this, &RecentlyPlayedGameList::load));
+  helper->registerTag(RecentlyPlayedGame::d_tag, sigc::mem_fun(this, &RecentlyPlayedGameList::load_tag));
 }
 
 RecentlyPlayedGameList::~RecentlyPlayedGameList()
@@ -113,7 +115,7 @@ bool RecentlyPlayedGameList::save(XML_Helper* helper) const
   return retval;
 }
 
-bool RecentlyPlayedGameList::load(std::string tag, XML_Helper* helper)
+bool RecentlyPlayedGameList::load_tag(std::string tag, XML_Helper* helper)
 {
   if (helper->getVersion() != LORDSAWAR_RECENTLY_PLAYED_VERSION)
     {
@@ -128,7 +130,7 @@ bool RecentlyPlayedGameList::load(std::string tag, XML_Helper* helper)
   return false;
 }
 
-void RecentlyPlayedGameList::addNetworkedEntry(GameScenario *game_scenario, std::string host, guint32 port)
+void RecentlyPlayedGameList::addNetworkedEntry(GameScenario *game_scenario, Profile *p, std::string host, guint32 port)
 {
   if (Configuration::s_remember_recent_games == false)
     return;
@@ -136,7 +138,7 @@ void RecentlyPlayedGameList::addNetworkedEntry(GameScenario *game_scenario, std:
   switch (GameScenario::PlayMode(game_scenario->getPlayMode()))
     {
       case GameScenario::NETWORKED:
-	g = new RecentlyPlayedNetworkedGame(game_scenario);
+	g = new RecentlyPlayedNetworkedGame(game_scenario, p);
 	g->fillData(host, port);
 	break;
       default:
@@ -147,7 +149,8 @@ void RecentlyPlayedGameList::addNetworkedEntry(GameScenario *game_scenario, std:
   sort(orderByTime);
 }
 
-void RecentlyPlayedGameList::addEntry(GameScenario *game_scenario, std::string filename)
+void RecentlyPlayedGameList::addEntry(GameScenario *game_scenario, Profile *p, 
+                                      std::string filename)
 {
   if (Configuration::s_remember_recent_games == false)
     return;
@@ -156,7 +159,7 @@ void RecentlyPlayedGameList::addEntry(GameScenario *game_scenario, std::string f
       case GameScenario::HOTSEAT:
 	  {
 	    RecentlyPlayedHotseatGame *g = NULL;
-	    g = new RecentlyPlayedHotseatGame(game_scenario);
+	    g = new RecentlyPlayedHotseatGame(game_scenario, p);
 	    g->fillData(filename);
 	    push_back(g);
 	    break;
@@ -164,7 +167,7 @@ void RecentlyPlayedGameList::addEntry(GameScenario *game_scenario, std::string f
       case GameScenario::PLAY_BY_MAIL:
 	  {
 	    RecentlyPlayedPbmGame *g = NULL;
-	    g = new RecentlyPlayedPbmGame(game_scenario);
+	    g = new RecentlyPlayedPbmGame(game_scenario, p);
 	    g->fillData(filename);
 	    push_back(g);
 	    break;
@@ -185,9 +188,24 @@ bool RecentlyPlayedGameList::orderByTime(RecentlyPlayedGame*rhs, RecentlyPlayedG
 void RecentlyPlayedGameList::pruneGames()
 {
   sort(orderByTime);
+  pruneGamesBelongingToRemovedProfiles();
+  pruneSameNamedAndSameHostGames();
   pruneOldGames(TWO_WEEKS_OLD);
   pruneTooManyGames(10);
-  pruneSameNamedAndSameHostGames();
+}
+
+void RecentlyPlayedGameList::pruneGamesBelongingToRemovedProfiles()
+{
+  for (RecentlyPlayedGameList::iterator it = begin(); it != end();)
+    {
+      Profile *p = 
+        Profilelist::getInstance()->findProfileById((*it)->getProfileId());
+      if (!p)
+        {
+          delete *it;
+          it = erase (it);
+        }
+    }
 }
 
 void RecentlyPlayedGameList::pruneTooManyGames(int too_many)
@@ -297,5 +315,15 @@ void RecentlyPlayedGameList::removeAllNetworkedGames()
 	  continue;
 	}
     }
+}
+
+bool RecentlyPlayedGameList::load()
+{
+  return loadFromFile(File::getSavePath() + "/" + RECENTLY_PLAYED_LIST);
+}
+
+bool RecentlyPlayedGameList::save() const
+{
+  return saveToFile(File::getSavePath() + "/" + RECENTLY_PLAYED_LIST);
 }
 // End of file

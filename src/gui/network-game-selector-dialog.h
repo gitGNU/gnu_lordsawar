@@ -23,13 +23,14 @@
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
 
+class Profile;
 class RecentlyPlayedNetworkedGame;
 #include "decorated.h"
 // dialog for joining remote games
 class NetworkGameSelectorDialog: public Decorated
 {
  public:
-    NetworkGameSelectorDialog();
+    NetworkGameSelectorDialog(Profile *p);
     ~NetworkGameSelectorDialog();
 
     sigc::signal<void, std::string /*ip*/, unsigned short /*port*/> game_selected;

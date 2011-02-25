@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 
 class GameScenario;
 class RecentlyPlayedGame;
+class Profile;
 
 //! A list of games that we've recently played.
 /** 
@@ -46,8 +47,8 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 
 	// Methods that operate on the class data and do not modify the class.
 
-	//! Save the recently played game list to the given file.
-	bool saveToFile(std::string filename) const;
+        //! Save recently played game list to the recently played games file.
+        bool save() const;
 
 	//! Save the recently played game list to an opened file.
 	bool save(XML_Helper* helper) const;
@@ -55,14 +56,14 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 
 	// Methods that operate on the class data and modify the class.
 
-	//! Load the recently game list from the given file.
-	bool loadFromFile(std::string filename);
+	//! Load the recently game list from the recently played games file.
+        bool load();
 
 	//! Add a game entry to the list of recently played games.
-	void addEntry(GameScenario *game_scenario, std::string filename);
+	void addEntry(GameScenario *game_scenario, Profile *p, std::string filename);
 
 	//! Add a networked game entry to the list of recently played games.
-	void addNetworkedEntry(GameScenario *game_scenario, std::string host, guint32 port);
+	void addNetworkedEntry(GameScenario *game_scenario, Profile *p, std::string host, guint32 port);
 
 	//! Touch the game in the recently played list.
 	void updateEntry(GameScenario *game_scenario);
@@ -100,7 +101,7 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 
     private:
         //! Callback for loading recentlyplayedgames into this list.
-	bool load(std::string tag, XML_Helper *helper);
+	bool load_tag(std::string tag, XML_Helper *helper);
 
 	//! Helper method to sort the list by it's last-played time.
 	static bool orderByTime(RecentlyPlayedGame*rhs, RecentlyPlayedGame *lhs);
@@ -112,6 +113,14 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 	void pruneTooManyGames(int too_many = 10);
 
         void pruneSameNamedAndSameHostGames();
+
+        void pruneGamesBelongingToRemovedProfiles();
+	//! Load the recently game list from the given file.
+	bool loadFromFile(std::string filename);
+
+	//! Save the recently played game list to the given file.
+	bool saveToFile(std::string filename) const;
+
 	// DATA
 
         //! A static pointer for the singleton instance.

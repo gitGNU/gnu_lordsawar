@@ -28,8 +28,9 @@
 #include "input-helpers.h"
 #include "defs.h"
 #include "File.h"
+#include "profile.h"
 
-NetworkGameSelectorDialog::NetworkGameSelectorDialog()
+NetworkGameSelectorDialog::NetworkGameSelectorDialog(Profile *p)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file
@@ -74,7 +75,8 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog()
 	  {
 	    RecentlyPlayedNetworkedGame *game;
 	    game = dynamic_cast<RecentlyPlayedNetworkedGame*>(*it);
-	    addRecentlyJoinedGame(game);
+            if (game->getProfileId() == p->getId())
+              addRecentlyJoinedGame(game);
 	  }
       }
     port_spinbutton->set_value(LORDSAWAR_PORT);
@@ -161,7 +163,7 @@ void NetworkGameSelectorDialog::on_clear_clicked()
 {
   RecentlyPlayedGameList *rpgl = RecentlyPlayedGameList::getInstance();
   rpgl->removeAllNetworkedGames();
-  rpgl->saveToFile(File::getSavePath() + "/recently-played.xml");
+  rpgl->save();
   recently_joined_games_list->clear();
   recently_joined_games_list.reset();
 }

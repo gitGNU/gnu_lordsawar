@@ -69,9 +69,13 @@ protected:
                                           gint32 &action, bool &reported,
                                           Glib::ustring &nickname);
 
+  void setProfileId(std::string id) {d_profile_id = id;};
+  std::string getProfileId() const {return d_profile_id;};
+
 private:
   std::map<guint32, sigc::connection> action_listeners;
   std::map<guint32, sigc::connection> history_listeners;
+  std::string d_profile_id;
 };
 
 #endif

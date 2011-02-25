@@ -39,6 +39,7 @@
 #include "new-random-map-dialog.h"
 #include "GraphicsCache.h"
 #include "new-network-game-dialog.h"
+#include "profile.h"
 
 //namespace
 //{
@@ -185,16 +186,16 @@ void SplashWindow::on_load_game_clicked()
 
 void SplashWindow::on_new_network_game_clicked()
 {
-  NewNetworkGameDialog nngd(network_game_nickname);
+  NewNetworkGameDialog nngd;
   nngd.set_parent_window (*window);
   if (nngd.run())
     {
       nngd.hide();
-      network_game_nickname = nngd.getNickname();
+      network_game_nickname = nngd.getProfile()->getNickname();
       if (nngd.isClient() == true)
         {
-          NetworkGameSelectorDialog ngsd;
-          ngsd.game_selected.connect(sigc::mem_fun(*this, &SplashWindow::on_network_game_selected));
+          NetworkGameSelectorDialog ngsd(nngd.getProfile());
+          ngsd.game_selected.connect(sigc::bind(sigc::mem_fun(*this, &SplashWindow::on_network_game_selected), nngd.getProfile()));
           ngsd.run();
         }
       else
@@ -222,7 +223,7 @@ void SplashWindow::on_new_network_game_clicked()
 
           gpd.set_parent_window(*window);
           gpd.set_title(_("New Networked Game"));
-          gpd.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_network_game_created));
+          gpd.game_started.connect(sigc::bind(sigc::mem_fun(*this, &SplashWindow::on_network_game_created), nngd.getProfile()));
           gpd.run(network_game_nickname);
           gpd.hide();
           return;
@@ -294,9 +295,9 @@ void SplashWindow::on_load_scenario_clicked()
   //load_requested.emit(filename);
 }
 
-void SplashWindow::on_network_game_selected(std::string ip, unsigned short port)
+void SplashWindow::on_network_game_selected(std::string ip, unsigned short port, Profile *profile)
 {
-  new_remote_network_game_requested.emit(ip, port, network_game_nickname);
+  new_remote_network_game_requested.emit(ip, port, profile);
 }
 
 void SplashWindow::on_game_started(GameParameters g)
@@ -304,10 +305,9 @@ void SplashWindow::on_game_started(GameParameters g)
   new_game_requested.emit(g);
 }
 
-void SplashWindow::on_network_game_created(GameParameters g)
+void SplashWindow::on_network_game_created(GameParameters g, Profile *profile)
 {
-  new_hosted_network_game_requested.emit(g, LORDSAWAR_PORT, 
-					 network_game_nickname);
+  new_hosted_network_game_requested.emit(g, LORDSAWAR_PORT, profile);
 }
 
 void SplashWindow::on_pbm_game_created(GameParameters g)

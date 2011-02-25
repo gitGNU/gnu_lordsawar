@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,13 +23,14 @@
 #include "playerlist.h"
 #include "citylist.h"
 #include "xmlhelper.h"
+#include "profile.h"
 
 std::string RecentlyPlayedGame::d_tag = "recentlyplayedgame";
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-RecentlyPlayedGame::RecentlyPlayedGame(GameScenario *game_scenario)
+RecentlyPlayedGame::RecentlyPlayedGame(GameScenario *game_scenario, Profile *p)
 {
   d_id = game_scenario->getId();
   d_time = time(NULL);
@@ -38,6 +39,7 @@ RecentlyPlayedGame::RecentlyPlayedGame(GameScenario *game_scenario)
   d_number_of_players = Playerlist::getInstance()->size() - 1;
   d_playmode = GameScenario::PlayMode(game_scenario->getPlayMode());
   d_name = game_scenario->getName();
+  d_profile_id = p->getId();
 }
 
 RecentlyPlayedGame::RecentlyPlayedGame(XML_Helper* helper)
@@ -53,6 +55,7 @@ RecentlyPlayedGame::RecentlyPlayedGame(XML_Helper* helper)
   helper->getData(playmode_str, "playmode");
   d_playmode = GameScenario::playModeFromString(playmode_str);
   helper->getData(d_name, "name");
+  helper->getData(d_profile_id, "profile_id");
 }
 
 RecentlyPlayedGame::~RecentlyPlayedGame()
@@ -71,6 +74,7 @@ bool RecentlyPlayedGame::saveContents(XML_Helper *helper) const
   std::string playmode_str = GameScenario::playModeToString(d_playmode);
   retval &= helper->saveData("playmode", playmode_str);
   retval &= helper->saveData("name", d_name);
+  retval &= helper->saveData("profile_id", d_profile_id);
   retval &= doSave(helper);
   return retval;
 }
@@ -104,8 +108,9 @@ bool RecentlyPlayedGame::save(XML_Helper* helper) const
 //-----------------------------------------------------------------------------
 //RecentlyPlayedHotseatGame
 
-RecentlyPlayedHotseatGame::RecentlyPlayedHotseatGame(GameScenario *scen)
-	:RecentlyPlayedGame(scen), d_filename("")
+RecentlyPlayedHotseatGame::RecentlyPlayedHotseatGame(GameScenario *scen,
+                                                     Profile *p)
+	:RecentlyPlayedGame(scen, p), d_filename("")
 {
 }
 
@@ -135,8 +140,8 @@ bool RecentlyPlayedHotseatGame::fillData(std::string filename)
 //-----------------------------------------------------------------------------
 //RecentlyPlayedPbmGame
 
-RecentlyPlayedPbmGame::RecentlyPlayedPbmGame(GameScenario *scen)
-	:RecentlyPlayedGame(scen), d_filename("")
+RecentlyPlayedPbmGame::RecentlyPlayedPbmGame(GameScenario *scen, Profile *p)
+	:RecentlyPlayedGame(scen, p), d_filename("")
 {
 }
 
@@ -166,8 +171,9 @@ bool RecentlyPlayedPbmGame::fillData(std::string filename)
 //-----------------------------------------------------------------------------
 //RecentlyPlayedNetworkedGame
 
-RecentlyPlayedNetworkedGame::RecentlyPlayedNetworkedGame(GameScenario *scen)
-	:RecentlyPlayedGame(scen), d_host(""), d_port(LORDSAWAR_PORT)
+RecentlyPlayedNetworkedGame::RecentlyPlayedNetworkedGame(GameScenario *scen,
+                                                         Profile *p)
+	:RecentlyPlayedGame(scen, p), d_host(""), d_port(LORDSAWAR_PORT)
 {
 }
 

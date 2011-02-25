@@ -15,8 +15,8 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef NEW_NETWORK_GAME_DIALOG_H
-#define NEW_NETWORK_GAME_DIALOG_H
+#ifndef NEW_PROFILE_DIALOG_H
+#define NEW_PROFILE_DIALOG_H
 
 #include <memory>
 #include <string>
@@ -25,16 +25,14 @@
 
 #include "ucompose.hpp"
 #include "decorated.h"
-class Profile;
 // dialog for choosing between a hosted game and a game we connect to
-class NewNetworkGameDialog: public Decorated
+class NewProfileDialog: public Decorated
 {
  public:
-    NewNetworkGameDialog();
-    ~NewNetworkGameDialog();
+    NewProfileDialog(Glib::ustring network_game_nickname);
+    ~NewProfileDialog();
 
-    Profile* getProfile() const {return d_profile;};
-    bool isClient() {return client_radiobutton->get_active();}
+    Glib::ustring getNickname() {return String::utrim(nick_entry->get_text());}
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -43,29 +41,11 @@ class NewNetworkGameDialog: public Decorated
     
  private:
   Gtk::Dialog* dialog;
-  Gtk::RadioButton *client_radiobutton;
+  Gtk::Entry *nick_entry;
   Gtk::Button *accept_button;
-  Gtk::Button *add_button;
-  Gtk::Button *remove_button;
-  Gtk::TreeView *profiles_treeview;
-    class ProfilesColumns: public Gtk::TreeModelColumnRecord {
-    public:
-	ProfilesColumns() 
-        { add(nickname); add(profile);}
-	
-	Gtk::TreeModelColumn<Glib::ustring> nickname;
-	Gtk::TreeModelColumn<Profile*> profile;
-    };
-    const ProfilesColumns profiles_columns;
-    Glib::RefPtr<Gtk::ListStore> profiles_list;
-    Profile *d_profile;
 
   void update_buttons();
-  void add_profile(Profile *profile);
-  void on_remove_button_clicked();
-  void on_add_button_clicked();
-  void select_preferred_profile(Glib::ustring user);
-  void on_profile_selected();
+  void on_nickname_changed();
 };
 
 #endif

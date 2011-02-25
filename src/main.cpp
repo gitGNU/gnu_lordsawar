@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
 
   initialize_configuration();
   Vector<int>::setMaximumWidth(1000);
-  RecentlyPlayedGameList::getInstance()->loadFromFile(File::getSavePath() + "/" + RECENTLY_PLAYED_LIST);
+  RecentlyPlayedGameList::getInstance()->load();
 
   #if ENABLE_NLS
   //cout << "Configuration::s_lang.c_str(): " << Configuration::s_lang.c_str() << endl;

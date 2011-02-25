@@ -46,7 +46,7 @@ public:
   //! Deletes the singleton instance.
   static void deleteInstance();
 
-  void start(std::string host, guint32 port, std::string nick);
+  void start(std::string host, guint32 port, std::string profile_id, std::string nick);
   void disconnect();
   void request_seat_manifest();
 

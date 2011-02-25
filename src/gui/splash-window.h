@@ -28,6 +28,7 @@
 
 
 #include "decorated.h"
+class Profile;
 /** The opening window of the game
   * 
   * This is the first window to pop up, where the user selects whether to start
@@ -48,8 +49,8 @@ class SplashWindow: public Decorated
         
     Gtk::Window *get_window() {return window;}
 
-    sigc::signal<void, std::string, unsigned short, std::string> new_remote_network_game_requested;
-    sigc::signal<void, GameParameters, int, std::string > new_hosted_network_game_requested;
+    sigc::signal<void, std::string, unsigned short, Profile*> new_remote_network_game_requested;
+    sigc::signal<void, GameParameters, int, Profile* > new_hosted_network_game_requested;
     sigc::signal<void, GameParameters> new_pbm_game_requested;
     sigc::signal<void, GameParameters> new_game_requested;
     sigc::signal<void, std::string> load_requested;
@@ -80,9 +81,9 @@ class SplashWindow: public Decorated
     void on_rescue_crashed_game_clicked();
 	
     void on_game_started(GameParameters g);
-    void on_network_game_created(GameParameters g);
+    void on_network_game_created(GameParameters g, Profile *profile);
     void on_pbm_game_created(GameParameters g);
-    void on_network_game_selected(std::string ip, unsigned short port);
+    void on_network_game_selected(std::string ip, unsigned short port, Profile  *profile);
 
 #if 0
     //! Separate network input thread
