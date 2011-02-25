@@ -151,6 +151,12 @@ void Driver::serve (GameScenario *game_scenario)
     port = Main::instance().port;
   game_server->port_in_use.connect(sigc::mem_fun(*this, &Driver::on_could_not_bind_to_port_for_headless_server));
   game_server->start(game_scenario, port, "admin");
+  game_server = GameServer::getInstance();
+  if (game_server->isListening() == false)
+    {
+      GameServer::deleteInstance();
+      return;
+    }
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   game_server->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
   game_server->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
