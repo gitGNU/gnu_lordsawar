@@ -1185,7 +1185,7 @@ void Driver::on_keep_network_play_going()
 void Driver::on_could_not_bind_to_port_for_headless_server(int port)
 {
   cerr << "Could not bind to port " << port << std::endl;
-  exit(0);
+  exit(1);
 }
 
 void Driver::on_could_not_bind_to_port (int port)
