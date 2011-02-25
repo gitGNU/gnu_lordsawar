@@ -63,6 +63,7 @@ public:
   sigc::signal<void> remote_participant_connected;
   sigc::signal<void> remote_participant_disconnected;
   sigc::signal<Player*> get_next_player;
+  sigc::signal<void, int> port_in_use;
 
   void setGameScenario(GameScenario *scenario) {d_game_scenario = scenario;};
 

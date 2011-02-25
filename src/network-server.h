@@ -46,6 +46,7 @@ public:
   sigc::signal<bool, void *, MessageType, std::string> got_message;
   sigc::signal<void, void *> connection_made;
   sigc::signal<void, void *> connection_lost;
+  sigc::signal<void, int> port_in_use;
   
   // private callback
   bool gotClientConnection(const Glib::RefPtr<Gio::SocketConnection>& c, const Glib::RefPtr<Glib::Object>& source_object);

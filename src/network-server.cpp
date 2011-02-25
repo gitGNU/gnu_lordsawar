@@ -38,16 +38,27 @@ NetworkServer::~NetworkServer()
   
   if (server)
     {
-      server->stop();
+      if (server->is_active())
+        server->stop();
     }
 }
 
 void NetworkServer::startListening(int port)
 {
   server = Gio::SocketService::create();
-  server->add_inet_port (port);
 
   server->signal_incoming().connect(sigc::mem_fun(*this, &NetworkServer::gotClientConnection));
+  try 
+    {
+      server->add_inet_port (port);
+    }
+  catch(const Glib::Exception &ex)
+    {
+      server->stop();
+      port_in_use.emit(port);
+      return;
+    }
+
   server->start();
 }
 

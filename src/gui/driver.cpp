@@ -149,6 +149,7 @@ void Driver::serve (GameScenario *game_scenario)
   guint32 port = LORDSAWAR_PORT;
   if (Main::instance().port)
     port = Main::instance().port;
+  game_server->port_in_use.connect(sigc::mem_fun(*this, &Driver::on_could_not_bind_to_port_for_headless_server));
   game_server->start(game_scenario, port, "admin");
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   game_server->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
@@ -167,7 +168,7 @@ void Driver::serve (GameScenario *game_scenario)
 
 void Driver::on_client_sits_down_in_headless_server_game(Player *p, std::string nick)
 {
-  static int count;
+  static unsigned int count;
   count++;
   if (count == MAX_PLAYERS)
     GameServer::getInstance()->sendRoundStart();
@@ -526,7 +527,14 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
       }
 
   GameServer *game_server = GameServer::getInstance();
+  game_server->port_in_use.connect(sigc::mem_fun(*this, &Driver::on_could_not_bind_to_port));
   game_server->start(game_scenario, port, nick);
+  game_server = GameServer::getInstance();
+  if (game_server->isListening() == false)
+    {
+      GameServer::deleteInstance();
+      return;
+    }
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   game_server->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
   game_server->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
@@ -581,7 +589,7 @@ void Driver::on_server_went_away()
     splash_window->show();
   TimedMessageDialog dialog(*splash_window->get_window(), 
 			    _("Server went away."), 0);
-  dialog.set_title("Disconnected");
+  dialog.set_title(_("Disconnected"));
   dialog.run();
   dialog.hide();
   GameClient::deleteInstance();
@@ -1172,4 +1180,21 @@ void Driver::on_keep_network_play_going()
           ;
         }
     }
+}
+    
+void Driver::on_could_not_bind_to_port_for_headless_server(int port)
+{
+  cerr << "Could not bind to port " << port << std::endl;
+  exit(0);
+}
+
+void Driver::on_could_not_bind_to_port (int port)
+{
+  if (splash_window)
+    splash_window->show();
+  Glib::ustring s = String::ucompose(_("Could not bind to port %1"), port);
+  TimedMessageDialog dialog(*splash_window->get_window(), s, 0);
+  dialog.set_title(_("Server Failure"));
+  dialog.run();
+  dialog.hide();
 }

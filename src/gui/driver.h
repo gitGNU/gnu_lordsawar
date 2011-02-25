@@ -108,6 +108,9 @@ class Driver: public sigc::trackable
     void get_default(int num_players, GameParameters &g);
     void serve (GameScenario *game_scenario);
     void on_client_sits_down_in_headless_server_game(Player *p, std::string nick);
+  
+    void on_could_not_bind_to_port_for_headless_server(int port);
+    void on_could_not_bind_to_port (int port);
 };
 
 

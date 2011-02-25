@@ -59,6 +59,7 @@ Main::Main(int &argc, char **&argv)
     load_filename = "";
     turn_filename = "";
     random_number_seed = 0;
+    port = 0;
     
     Glib::thread_init();
     try

@@ -132,7 +132,10 @@ void GameServer::remove_all_participants()
 GameServer::~GameServer()
 {
   if (network_server.get() != NULL)
-    network_server->stop();
+    {
+      if (network_server->isListening())
+        network_server->stop();
+    }
   remove_all_participants();
 }
 
@@ -152,6 +155,8 @@ void GameServer::start(GameScenario *game_scenario, int port, std::string nick)
   if (network_server.get() != NULL && network_server->isListening())
     return;
   network_server.reset(new NetworkServer());
+  network_server->port_in_use.connect
+    (sigc::mem_fun(port_in_use, &sigc::signal<void, int>::emit));
   network_server->got_message.connect
     (sigc::mem_fun(this, &GameServer::onGotMessage));
   network_server->connection_lost.connect
