@@ -51,7 +51,10 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, StackTile *
     //fill up the hbox with images of the armies in the stack
 
     Player *active = Playerlist::getActiveplayer();
-    std::list<Stack *> stks = stile->getFriendlyStacks(active);
+    std::list<Stack *> stks;
+    stks = stile->getFriendlyStacks(active);
+    if (stks.empty() == true)
+      stks = stile->getEnemyStacks(active);
     for (std::list<Stack *>::iterator i = stks.begin(); i != stks.end(); i++)
       for (Stack::iterator it = (*i)->begin(); it != (*i)->end(); it++)
 	{
