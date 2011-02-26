@@ -34,6 +34,7 @@
 #include "decorated.h"
 #include "File.h"
 #include "stacktile.h"
+#include "GameScenarioOptions.h"
 
 StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, StackTile *stile)
 {
@@ -54,7 +55,12 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, StackTile *
     std::list<Stack *> stks;
     stks = stile->getFriendlyStacks(active);
     if (stks.empty() == true)
-      stks = stile->getEnemyStacks(active);
+      {
+        if (GameScenarioOptions::s_see_opponents_stacks)
+          stks = stile->getEnemyStacks(active);
+        else
+          return;
+      }
     for (std::list<Stack *>::iterator i = stks.begin(); i != stks.end(); i++)
       for (Stack::iterator it = (*i)->begin(); it != (*i)->end(); it++)
 	{
