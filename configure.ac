@@ -189,6 +189,12 @@ AC_ARG_ENABLE(pbm,
             use_pbm="$enableval", use_pbm="yes")
 AM_CONDITIONAL([WANT_PBM], [test $use_pbm = "yes"])
 
+dnl Do we want to compile the game list server?
+AC_ARG_ENABLE(gls,
+            [  --enable-gls     compile game list server (default=yes)],
+            use_gls="$enableval", use_gls="yes")
+AM_CONDITIONAL([WANT_GSL], [test $use_gls = "yes"])
+
 dnl ...the standard screen resolution...
 AC_ARG_WITH(resolution,
            [  --with-resolution=RES standard resolution for lordsawar [default=800x600]], 
@@ -298,6 +304,7 @@ AC_CONFIG_FILES([
         help/figures/Makefile
         src/editor/Makefile
         src/pbm/Makefile
+        src/gls/Makefile
         src/gui/Makefile])
 AC_OUTPUT
 echo ""
