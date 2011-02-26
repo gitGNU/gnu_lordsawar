@@ -68,7 +68,7 @@ class RecentlyPlayedGame
 	std::string getProfileId() const {return d_profile_id;};
 
 	//! Get time of when this game was last played (seconds past the epoch).
-	time_t getTimeOfLastPlay() const { return d_time;};
+        Glib::TimeVal getTimeOfLastPlay() const { return d_last_played;};
 
 	//! Get the round that we last saw this game at..
 	guint32 getRound() const { return d_round;};
@@ -89,7 +89,7 @@ class RecentlyPlayedGame
 	// Set Methods
 
 	//! Set the last time we saw something happen in this game.
-	void setTimeOfLastPlay(time_t then) { d_time = then;};
+	void setTimeOfLastPlay(Glib::TimeVal then) { d_last_played = then;};
 
 	//! Set the round that we last saw this game at.
 	void setRound(guint32 round) { d_round = round;};
@@ -128,7 +128,7 @@ class RecentlyPlayedGame
 	std::string d_id;
 
 	//! When the game was last played.
-	time_t d_time;
+        Glib::TimeVal d_last_played;
 
 	//! What round the game was at.
 	guint32 d_round;

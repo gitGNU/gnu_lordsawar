@@ -33,7 +33,7 @@ std::string RecentlyPlayedGame::d_tag = "recentlyplayedgame";
 RecentlyPlayedGame::RecentlyPlayedGame(GameScenario *game_scenario, Profile *p)
 {
   d_id = game_scenario->getId();
-  d_time = time(NULL);
+  d_last_played.assign_current_time();
   d_round = game_scenario->getRound();
   d_number_of_cities = Citylist::getInstance()->size();
   d_number_of_players = Playerlist::getInstance()->size() - 1;
@@ -45,9 +45,9 @@ RecentlyPlayedGame::RecentlyPlayedGame(GameScenario *game_scenario, Profile *p)
 RecentlyPlayedGame::RecentlyPlayedGame(XML_Helper* helper)
 {
   helper->getData(d_id, "id");
-  guint32 t;
-  helper->getData(t, "time");
-  d_time = t;
+  std::string s;
+  helper->getData(s, "last_played_on");
+  d_last_played.assign_from_iso8601(s);
   helper->getData(d_round, "round");
   helper->getData(d_number_of_cities, "number_of_cities");
   helper->getData(d_number_of_players, "number_of_players");
@@ -66,8 +66,8 @@ bool RecentlyPlayedGame::saveContents(XML_Helper *helper) const
 {
   bool retval = true;
   retval &= helper->saveData("id", d_id);
-  guint32 t = d_time;
-  retval &= helper->saveData("time", t);
+  std::string s = d_last_played.as_iso8601();
+  retval &= helper->saveData("last_played_on", s);
   retval &= helper->saveData("round", d_round);
   retval &= helper->saveData("number_of_cities", d_number_of_cities);
   retval &= helper->saveData("number_of_players", d_number_of_players);
