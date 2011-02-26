@@ -270,7 +270,11 @@ void VectorMap::after_draw()
       draw_cities (srcs, 3);
     }
 
-  if (show_vectoring == SHOW_ORIGIN_CITY_VECTORING && click_action == CLICK_SELECTS)
+  bool viewing_player_owns_city = false;
+  if (city->getOwner() == Playerlist::getViewingplayer())
+    viewing_player_owns_city = true;
+  if (show_vectoring == SHOW_ORIGIN_CITY_VECTORING && 
+      click_action == CLICK_SELECTS && viewing_player_owns_city)
     {
       // draw lines from origination to city/planted standard
       for (Citylist::iterator it = cl->begin(); it != cl->end(); it++)
@@ -292,7 +296,9 @@ void VectorMap::after_draw()
       if (city->getVectoring().x != -1)
 	draw_vectoring_line_from_here_to(city->getVectoring());
     }
-  else if (show_vectoring == SHOW_ALL_VECTORING && click_action == CLICK_SELECTS)
+  else if (show_vectoring == SHOW_ALL_VECTORING && 
+           click_action == CLICK_SELECTS &&
+           viewing_player_owns_city)
     draw_lines (srcs, dests);
 
   if (flag.x != -1 && flag.y != -1)
