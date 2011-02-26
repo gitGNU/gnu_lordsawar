@@ -119,7 +119,7 @@ private:
   Participant *findParticipantByNick(Glib::ustring nickname);
   Participant *findParticipantByPlayerId(guint32 id);
   
-  bool onGotMessage(void *conn, MessageType type, std::string message);
+  bool onGotMessage(void *conn, int type, std::string message);
   void onConnectionLost(void *conn);
   void onConnectionMade(void *conn);
   bool dumpActionsAndHistories(XML_Helper *helper);

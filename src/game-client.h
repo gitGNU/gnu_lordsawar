@@ -77,7 +77,7 @@ private:
   void sit_or_stand (Player *player, bool sit);
   void onConnected();
   void onConnectionLost();
-  bool onGotMessage(MessageType type, std::string message);
+  bool onGotMessage(int type, std::string message);
 
   void onActionDone(NetworkAction *action);
   void sendActions();

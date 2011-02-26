@@ -94,6 +94,7 @@ const int MAX_GOLD_TO_CARRY_OVER_TO_NEXT_SCENARIO = 5000;
 const unsigned int MAX_ARMY_STRENGTH = 9;
 
 const unsigned short LORDSAWAR_PORT = 14998;
+const unsigned short LORDSAWAR_GAMELIST_PORT = 18998;
 #define HUMAN_PLAYER_TYPE _("Human")
 #define EASY_PLAYER_TYPE _("Easy")
 #define HARD_PLAYER_TYPE _("Hard")

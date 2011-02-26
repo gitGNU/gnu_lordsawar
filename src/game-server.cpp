@@ -265,10 +265,10 @@ void GameServer::gotChat(void *conn, std::string message)
 }
 
     
-bool GameServer::onGotMessage(void *conn, MessageType type, std::string payload)
+bool GameServer::onGotMessage(void *conn, int type, std::string payload)
 {
   std::cerr << "got message of type " << type << std::endl;
-  switch (type) {
+  switch (MessageType(type)) {
   case MESSAGE_TYPE_PING:
     std::cerr << "sending pong" << std::endl;
     network_server->send(conn, MESSAGE_TYPE_PONG, "");
@@ -916,7 +916,7 @@ void GameServer::sendMap(Participant *part)
   d_game_scenario->saveGame(tmpfile, "sav");
 
   std::cerr << "sending map" << std::endl;
-  network_server->send(part->conn, MESSAGE_TYPE_SENDING_MAP, tmpfile);
+  network_server->sendFile(part->conn, MESSAGE_TYPE_SENDING_MAP, tmpfile);
   File::erase (tmpfile);
 
   // unhack the players

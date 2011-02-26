@@ -153,7 +153,7 @@ gssize NetworkConnection::on_payload_received(gssize len)
   if (payload_left > 0)
     return len;
 
-  MessageType type = MessageType(payload[1]);
+  int type = payload[1];
   bool keep_going = got_message.emit
     (type, std::string(payload + MESSAGE_PREAMBLE_EXTRA_BYTES,
                        payload_size - MESSAGE_PREAMBLE_EXTRA_BYTES));
@@ -179,7 +179,7 @@ void NetworkConnection::connectToHost(std::string host, int port)
                                &NetworkConnection::on_connect_connected));
 }
 
-void NetworkConnection::sendFile(MessageType type, const std::string filename)
+void NetworkConnection::sendFile(int type, const std::string filename)
 {
   FILE *fileptr = fopen (filename.c_str(), "r");
   if (fileptr == NULL)
@@ -204,7 +204,7 @@ void NetworkConnection::sendFile(MessageType type, const std::string filename)
   free (buffer);
 }
 
-void NetworkConnection::send(MessageType type, const std::string &payload)
+void NetworkConnection::send(int type, const std::string &payload)
 {
   // write the preamble
   gchar buf[MESSAGE_HEADER_SIZE];

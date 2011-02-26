@@ -148,10 +148,10 @@ void GameClient::stood_up(Player *player, std::string nickname)
   player_stands.emit(player, nickname);
 }
 
-bool GameClient::onGotMessage(MessageType type, std::string payload)
+bool GameClient::onGotMessage(int type, std::string payload)
 {
   std::cerr << "got message of type " << type << std::endl;
-  switch (type) {
+  switch (MessageType(type)) {
   case MESSAGE_TYPE_PING:
     network_connection->send(MESSAGE_TYPE_PONG, "PONGOGOGO");
     break;

@@ -1,4 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
+// Copyright (C) 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -41,10 +42,10 @@ public:
   sigc::signal<void> connection_lost;
   sigc::signal<void> connection_failed;
   sigc::signal<void> connection_received_data;
-  sigc::signal<bool, MessageType, std::string> got_message;
+  sigc::signal<bool, int, std::string> got_message;
 
-  void send(MessageType type, const std::string &payload);
-  void sendFile(MessageType type, std::string filename);
+  void send(int type, const std::string &payload);
+  void sendFile(int type, std::string filename);
 
 private:
   Glib::RefPtr<Gio::SocketClient> client; //this is client-side connections.

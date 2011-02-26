@@ -62,13 +62,16 @@ void NetworkServer::startListening(int port)
   server->start();
 }
 
-void NetworkServer::send(void *c, MessageType type, const std::string &payload)
+void NetworkServer::send(void *c, int type, const std::string &payload)
 {
   NetworkConnection *conn = static_cast<NetworkConnection *>(c);
-  if (type == MESSAGE_TYPE_SENDING_MAP)
-    conn->sendFile(type, payload);
-  else
-    conn->send(type, payload);
+  conn->send(type, payload);
+}
+
+void NetworkServer::sendFile(void *c, int type, const std::string &payload)
+{
+  NetworkConnection *conn = static_cast<NetworkConnection *>(c);
+  conn->sendFile(type, payload);
 }
 
 bool NetworkServer::gotClientConnection(const Glib::RefPtr<Gio::SocketConnection>& c, const Glib::RefPtr<Glib::Object>& source_object)
@@ -90,7 +93,7 @@ bool NetworkServer::gotClientConnection(const Glib::RefPtr<Gio::SocketConnection
       conn->got_message.connect
         (sigc::bind<0>(sigc::mem_fun(got_message, 
                                      &sigc::signal<bool, void *, 
-                                     MessageType, std::string>::emit), conn));
+                                     int, std::string>::emit), conn));
 
       return true;
     }

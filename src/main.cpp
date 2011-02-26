@@ -136,7 +136,7 @@ int main(int argc, char* argv[])
 	    }
 	  else if (parameter == "--help" || parameter == "-h")
 	    {
-	      cout << argv[0] << " [OPTION]... [FILE]" << endl << endl;
+	      cout << Glib::get_prgname() << " [OPTION]... [FILE]" << endl << endl;
 	      cout << "LordsAWar! " << _("version") << " " << VERSION << endl << endl;
 	      cout << _("Options:") << endl << endl; 
 	      cout << "  -h, --help                 " << _("Shows this help screen") <<endl;
