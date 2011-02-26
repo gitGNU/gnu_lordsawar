@@ -39,6 +39,7 @@
 #define LORDSAWAR_RECENTLY_PLAYED_VERSION "0.2.0"
 #define LORDSAWAR_RECENTLY_EDITED_VERSION "0.2.0"
 #define LORDSAWAR_PROFILES_VERSION "0.2.0"
+#define LORDSAWAR_RECENTLY_HOSTED_VERSION "0.2.0"
 #define _(string) Glib::locale_to_utf8(Glib::ustring(gettext(string))) // Macro for the gettext
 #define N_(string) string
 
@@ -116,6 +117,7 @@ const std::string PBM_EXT = ".trn";
 const std::string RECENTLY_PLAYED_LIST = "recently-played.xml";
 const std::string RECENTLY_EDITED_LIST = "recently-edited.xml";
 const std::string PROFILE_LIST = "profiles.xml";
+const std::string RECENTLY_HOSTED_LIST = "recently-hosted.xml";
 
 const unsigned int MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS = 1;
 const unsigned int MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS = 5;

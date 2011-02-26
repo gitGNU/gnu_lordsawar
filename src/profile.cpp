@@ -49,6 +49,13 @@ Profile::Profile(XML_Helper* helper)
   helper->getData(s, "last_played_on");
   d_last_played_date.assign_from_iso8601(s);
 }
+        
+Profile::Profile(const Profile &orig)
+  : d_id(orig.d_id), d_nickname(orig.d_nickname), d_user(orig.d_user),
+    d_creation_date(orig.d_creation_date), 
+    d_last_played_date(orig.d_last_played_date)
+{
+}
 
 Profile::~Profile()
 {

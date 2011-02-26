@@ -20,11 +20,11 @@ MAINTAINERCLEANFILES= Makefile.in
 bin_PROGRAMS = lordsawar-game-list-server
 
 lordsawar_game_list_server_SOURCES = main.cpp \
-  gamelist-server.cpp gamelist-server.h \
-  network-gls-common.h
+  gamelist-server.cpp gamelist-server.h 
 
 lordsawar_game_list_server_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS) -ltar -lz \
                                    $(top_builddir)/src/liblordsawar.la \
+                                   $(top_builddir)/src/liblordsawargamelist.la \
                                    $(top_builddir)/src/liblordsawarnet.la \
                                    @LIBINTL@ \
                                    -L$(top_builddir)/src

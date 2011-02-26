@@ -49,6 +49,9 @@ class Profile
 	 */
         Profile(std::string nickname);
         
+        //! Copy constructor
+        Profile(const Profile &orig);
+
 	//! Destructor.
         virtual ~Profile();
 

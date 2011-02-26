@@ -1,5 +1,5 @@
 #   Copyright (C) 2008 Barry deFreese
-#   Copyright (C) 2009, 2010 Ben Asselstine
+#   Copyright (C) 2009, 2010, 2011 Ben Asselstine
 # 
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -15,11 +15,12 @@
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 #   02110-1301, USA.
-SUBDIRS = gui . editor pbm
+SUBDIRS = gui . editor pbm gls
 MAINTAINERCLEANFILES= Makefile.in
 
 bin_PROGRAMS = lordsawar
-noinst_LTLIBRARIES = liblordsawar.la liblordsawarnet.la liblordsawargfx.la
+noinst_LTLIBRARIES = liblordsawar.la liblordsawarnet.la liblordsawargfx.la \
+		     liblordsawargamelist.la
 
 liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         AI_Allocation.cpp AI_Allocation.h AI_Diplomacy.cpp AI_Diplomacy.h \
@@ -85,7 +86,7 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
 	MapBackpack.cpp MapBackpack.h prodslot.cpp prodslot.h \
 	prodslotlist.cpp prodslotlist.h namelist.cpp namelist.h \
 	PixMask.cpp PixMask.h \
-	GraphicsCache.cpp GraphicsCache.h
+	GraphicsCache.cpp GraphicsCache.h 
 
 liblordsawarnet_la_SOURCES = \
 	game-client.cpp game-client.h \
@@ -98,7 +99,15 @@ liblordsawarnet_la_SOURCES = \
         pbm-game-client.cpp pbm-game-client.h \
         pbm-game-server.cpp pbm-game-server.h \
 	profile.cpp profile.h \
-       	profilelist.cpp profilelist.h
+       	profilelist.cpp profilelist.h 
+
+liblordsawargamelist_la_SOURCES= \
+        recently-played-game.cpp recently-played-game.h \
+	network-gls-common.h \
+	gamelist-client.cpp gamelist-client.h \
+	advertised-game.cpp advertised-game.h \
+	gamelist.cpp gamelist.h \
+	hosted-game.cpp hosted-game.h
 
 liblordsawargfx_la_SOURCES = \
 	bigmap.cpp bigmap.h citymap.cpp citymap.h  \
@@ -113,9 +122,8 @@ liblordsawargfx_la_SOURCES = \
 
 lordsawar_SOURCES = armymap.cpp armymap.h \
 	callback-enums.h defs.h game-parameters.h \
-        recently-played-game.cpp recently-played-game.h \
-        recently-played-game-list.cpp recently-played-game-list.h \
 	sidebar-stats.h game.cpp game.h gamebigmap.cpp gamebigmap.h \
+        recently-played-game-list.cpp recently-played-game-list.h \
 	sound.cpp sound.h main.cpp 
 
 
@@ -128,6 +136,8 @@ endif
 localedir = $(datadir)/locale
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
+liblordsawargamelist_la_LIBADD = liblordsawar.la liblordsawarnet.la
+
 liblordsawar_la_LIBADD = gui/liblwgui.la \
     @LTLIBOBJS@
 
@@ -135,6 +145,7 @@ lordsawar_LDFLAGS =
 lordsawar_LDADD = liblordsawar.la \
     liblordsawarnet.la \
     liblordsawargfx.la \
+    liblordsawargamelist.la \
     $(SDLSOUND_LIBS) $(SDL_LIBS) \
     $(GTKMM_LIBS) \
     $(LIBSIGC_LIBS) -ltar -lz \
@@ -144,6 +155,7 @@ lordsawar_LDADD = liblordsawar.la \
 lordsawar_DEPENDENCIES = \
   liblordsawar.la \
   liblordsawargfx.la \
+  liblordsawargamelist.la \
   liblordsawarnet.la \
   gui/liblwgui.la
 

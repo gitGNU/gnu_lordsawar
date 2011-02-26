@@ -20,9 +20,21 @@
 
 #include "config.h"
 
-enum GlsMessageType {
-  GLS_MESSAGE_TYPE_PING = 1,
-  GLS_MESSAGE_TYPE_PONG = 2,
+enum GlsMessageType 
+{
+  GLS_MESSAGE_HOST_NEW_GAME = 1,  //sent from client (lw host)
+  GLS_MESSAGE_HOST_NEW_RANDOM_GAME = 2, //from client (lw host)
+  GLS_MESSAGE_GAME_CREATED = 3, //from server
+  GLS_MESSAGE_ADVERTISE_GAME = 4, //from client (lw host or client)
+  GLS_MESSAGE_UNADVERTISE_GAME = 5, //from client (lw host or client)
+  GLS_MESSAGE_UNHOST_GAME = 6, //from client (lw host)
+  GLS_MESSAGE_REQUEST_GAME_LIST = 7, //from client (lw host or client)
+  GLS_MESSAGE_GAME_LIST = 8, //from server
+  GLS_MESSAGE_GAME_UNHOSTED = 9, //from server
+  GLS_MESSAGE_COULD_NOT_HOST_GAME = 10, //from server
+  GLS_MESSAGE_COULD_NOT_UNHOST_GAME = 11, //from server
+  GLS_MESSAGE_COULD_NOT_ADVERTISE_GAME = 12, //from server
+  GLS_MESSAGE_COULD_NOT_UNADVERTISE_GAME = 13, //from server
 };
 
 #endif

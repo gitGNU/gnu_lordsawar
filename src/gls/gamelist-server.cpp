@@ -25,6 +25,7 @@
 #include "xmlhelper.h"
 #include "Configuration.h"
 #include "ucompose.hpp"
+#include "gamelist.h"
 
 GamelistServer * GamelistServer::s_instance = 0;
 
@@ -48,6 +49,7 @@ GamelistServer::GamelistServer()
 {
   Timing::instance().timer_registered.connect
     (sigc::mem_fun(*this, &GamelistServer::on_timer_registered));
+  Gamelist::getInstance()->load();
 }
 
 GamelistServer::~GamelistServer()
@@ -57,6 +59,11 @@ GamelistServer::~GamelistServer()
       if (network_server->isListening())
         network_server->stop();
     }
+}
+
+void GamelistServer::reload()
+{
+  Gamelist::getInstance()->load();
 }
 
 bool GamelistServer::isListening()
@@ -88,15 +95,30 @@ void GamelistServer::start(int port)
 bool GamelistServer::onGotMessage(void *conn, int type, std::string payload)
 {
   std::cerr << "got message of type " << type << std::endl;
-  switch (GlsMessageType(type)) {
-  case GLS_MESSAGE_TYPE_PING:
-    std::cerr << "sending pong" << std::endl;
-    network_server->send(conn, GLS_MESSAGE_TYPE_PONG, "");
-    break;
-
-  case GLS_MESSAGE_TYPE_PONG:
-    break;
-  }
+  switch (GlsMessageType(type)) 
+    {
+    case GLS_MESSAGE_HOST_NEW_GAME:
+      break;
+    case GLS_MESSAGE_HOST_NEW_RANDOM_GAME:
+      break;
+    case GLS_MESSAGE_ADVERTISE_GAME:
+      break;
+    case GLS_MESSAGE_UNADVERTISE_GAME:
+      break;
+    case GLS_MESSAGE_UNHOST_GAME:
+      break;
+    case GLS_MESSAGE_REQUEST_GAME_LIST:
+      break;
+    case GLS_MESSAGE_GAME_CREATED:
+    case GLS_MESSAGE_GAME_LIST:
+    case GLS_MESSAGE_GAME_UNHOSTED:
+    case GLS_MESSAGE_COULD_NOT_HOST_GAME:
+    case GLS_MESSAGE_COULD_NOT_UNHOST_GAME:
+    case GLS_MESSAGE_COULD_NOT_ADVERTISE_GAME:
+    case GLS_MESSAGE_COULD_NOT_UNADVERTISE_GAME:
+      //faulty client
+      break;
+    }
   return true;
 }
 

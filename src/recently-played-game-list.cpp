@@ -179,7 +179,7 @@ void RecentlyPlayedGameList::addEntry(GameScenario *game_scenario, Profile *p,
 
 bool RecentlyPlayedGameList::orderByTime(RecentlyPlayedGame*rhs, RecentlyPlayedGame *lhs)
 {
-  if (rhs->getTimeOfLastPlay() > lhs->getTimeOfLastPlay())
+  if (rhs->getTimeOfLastPlay().as_double() > lhs->getTimeOfLastPlay().as_double())
     return true;
   else
     return false;
@@ -261,10 +261,11 @@ void RecentlyPlayedGameList::pruneSameNamedAndSameHostGames()
 
 void RecentlyPlayedGameList::pruneOldGames(int stale)
 {
-  time_t now = time(NULL);
+  Glib::TimeVal now;
+  now.assign_current_time();
   for (RecentlyPlayedGameList::iterator it = begin(); it != end();)
     {
-      if ((*it)->getTimeOfLastPlay() + stale < now)
+      if ((*it)->getTimeOfLastPlay().as_double() + stale < now.as_double())
 	{
 	  delete *it;
 	  it = erase (it);
@@ -297,7 +298,9 @@ void RecentlyPlayedGameList::updateEntry(GameScenario *game_scenario)
     {
       if ((*it)->getId() == game_scenario->getId())
 	{
-	  (*it)->setTimeOfLastPlay(time(NULL));
+          Glib::TimeVal now;
+          now.assign_current_time();
+	  (*it)->setTimeOfLastPlay(now);
 	  (*it)->setRound(game_scenario->getRound());
 	}
     }
