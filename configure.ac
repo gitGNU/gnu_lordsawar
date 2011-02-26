@@ -308,13 +308,14 @@ AC_CONFIG_FILES([
         src/gui/Makefile])
 AC_OUTPUT
 echo ""
-echo "LordsAWar is now configured. Type 'make' to compile it."
+echo "LordsAWar! is now configured. Type 'make' to compile it."
 echo ""
 echo "Configuration:"
 echo " Installation location : $prefix"
 echo " Editor compilation    : $use_editor"
 echo " Play-by-mail          : $use_pbm"
 echo " Sound support         : $use_sound"
+echo " Game-list Server      : $use_gls"
 echo ""
 echo "Extra Options:"
 echo " Compiler Optimizations: $use_opts"
