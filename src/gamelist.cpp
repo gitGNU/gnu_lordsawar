@@ -33,7 +33,7 @@
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-std::string Gamelist::d_tag = "recentlyhostedgamelist";
+std::string Gamelist::d_tag = "gamelist";
 
 Gamelist* Gamelist::s_instance = 0;
 

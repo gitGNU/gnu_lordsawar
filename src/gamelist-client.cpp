@@ -26,6 +26,8 @@
 #include "xmlhelper.h"
 #include "ucompose.hpp"
 #include "profile.h"
+#include "recently-played-game-list.h"
+#include "recently-played-game.h"
   
 GamelistClient * GamelistClient::s_instance = 0;
 
@@ -72,7 +74,7 @@ void GamelistClient::start(std::string host, guint32 port, Profile *p)
 
 void GamelistClient::onConnected() 
 {
-  std::cerr << "connected" << std::endl;
+  std::cerr << "GamelistClient connected" << std::endl;
 
   d_connected = true;
   client_connected.emit();
@@ -80,7 +82,7 @@ void GamelistClient::onConnected()
 
 void GamelistClient::onConnectionLost()
 {
-  std::cerr << "connection lost" << std::endl;
+  std::cerr << "GamelistClient connection lost" << std::endl;
   if (d_connected)
     client_forcibly_disconnected.emit();
   else
@@ -89,12 +91,25 @@ void GamelistClient::onConnectionLost()
 
 bool GamelistClient::onGotMessage(int type, std::string payload)
 {
-  std::cerr << "got message of type " << type << std::endl;
+  size_t pos;
+  std::cerr << "GamelistClient got message of type " << type << std::endl;
   switch (GlsMessageType(type)) 
     {
     case GLS_MESSAGE_GAME_CREATED:
       break;
     case GLS_MESSAGE_GAME_LIST:
+        {
+          std::istringstream is(payload);
+          XML_Helper helper(&is);
+          helper.registerTag
+            (RecentlyPlayedGameList::d_tag, 
+             sigc::mem_fun(*this, &GamelistClient::loadRecentlyPlayedGameList));
+          helper.parse();
+          received_game_list.emit(d_recently_played_game_list, "");
+        }
+      break;
+    case GLS_MESSAGE_COULD_NOT_GET_GAME_LIST:
+      received_game_list.emit(NULL, payload);
       break;
     case GLS_MESSAGE_GAME_UNHOSTED:
       break;
@@ -103,8 +118,28 @@ bool GamelistClient::onGotMessage(int type, std::string payload)
     case GLS_MESSAGE_COULD_NOT_UNHOST_GAME:
       break;
     case GLS_MESSAGE_COULD_NOT_ADVERTISE_GAME:
+        {
+          pos = payload.find(' ');
+          if (pos == std::string::npos)
+            return false;
+          received_advertising_response.emit(payload.substr(0, pos - 1), 
+                                             payload.substr(pos + 1));
+        }
       break;
     case GLS_MESSAGE_COULD_NOT_UNADVERTISE_GAME:
+        {
+          pos = payload.find(' ');
+          if (pos == std::string::npos)
+            return false;
+          received_advertising_removal_response.emit
+            (payload.substr(0, pos - 1), payload.substr(pos + 1));
+        }
+      break;
+    case GLS_MESSAGE_GAME_ADVERTISED:
+      received_advertising_response.emit(payload, "");
+      break;
+    case GLS_MESSAGE_GAME_UNADVERTISED:
+      received_advertising_response.emit(payload, "");
       break;
     case GLS_MESSAGE_HOST_NEW_GAME:
     case GLS_MESSAGE_HOST_NEW_RANDOM_GAME:
@@ -121,4 +156,44 @@ bool GamelistClient::onGotMessage(int type, std::string payload)
 void GamelistClient::disconnect()
 {
   d_connected = false;
+}
+  
+void GamelistClient::request_game_list()
+{
+  network_connection->send(GLS_MESSAGE_REQUEST_GAME_LIST, d_profile_id);
+}
+
+void GamelistClient::request_advertising(RecentlyPlayedGame *game)
+{
+  if (game)
+    {
+      std::ostringstream os;
+      XML_Helper helper(&os);
+      helper.begin("1");
+      game->save(&helper);
+      network_connection->send(GLS_MESSAGE_ADVERTISE_GAME, os.str());
+    }
+}
+
+void GamelistClient::request_advertising_removal(std::string scenario_id)
+{
+  network_connection->send(GLS_MESSAGE_UNADVERTISE_GAME, 
+                           d_profile_id + " " + scenario_id);
+
+}
+             
+bool GamelistClient::loadRecentlyPlayedGameList(std::string tag, XML_Helper *helper)
+{
+  if (tag == RecentlyPlayedGameList::d_tag)
+    {
+      d_recently_played_game_list = new RecentlyPlayedGameList(helper);
+      return true;
+    }
+  else if (tag == RecentlyPlayedGame::d_tag)
+    {
+      RecentlyPlayedGame *g = RecentlyPlayedGame::handle_load(helper);
+      d_recently_played_game_list->push_back(g);
+      return true;
+    }
+  return false;
 }

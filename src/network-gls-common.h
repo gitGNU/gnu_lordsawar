@@ -35,6 +35,9 @@ enum GlsMessageType
   GLS_MESSAGE_COULD_NOT_UNHOST_GAME = 11, //from server
   GLS_MESSAGE_COULD_NOT_ADVERTISE_GAME = 12, //from server
   GLS_MESSAGE_COULD_NOT_UNADVERTISE_GAME = 13, //from server
+  GLS_MESSAGE_GAME_ADVERTISED = 14, //from server
+  GLS_MESSAGE_GAME_UNADVERTISED = 15, //from server
+  GLS_MESSAGE_COULD_NOT_GET_GAME_LIST = 16, //from server
 };
 
 #endif

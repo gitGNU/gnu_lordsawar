@@ -103,6 +103,7 @@ liblordsawarnet_la_SOURCES = \
 
 liblordsawargamelist_la_SOURCES= \
         recently-played-game.cpp recently-played-game.h \
+        recently-played-game-list.cpp recently-played-game-list.h \
 	network-gls-common.h \
 	gamelist-client.cpp gamelist-client.h \
 	advertised-game.cpp advertised-game.h \
@@ -123,7 +124,6 @@ liblordsawargfx_la_SOURCES = \
 lordsawar_SOURCES = armymap.cpp armymap.h \
 	callback-enums.h defs.h game-parameters.h \
 	sidebar-stats.h game.cpp game.h gamebigmap.cpp gamebigmap.h \
-        recently-played-game-list.cpp recently-played-game-list.h \
 	sound.cpp sound.h main.cpp 
 
 

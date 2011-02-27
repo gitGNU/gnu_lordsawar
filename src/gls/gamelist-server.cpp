@@ -116,6 +116,9 @@ bool GamelistServer::onGotMessage(void *conn, int type, std::string payload)
     case GLS_MESSAGE_COULD_NOT_UNHOST_GAME:
     case GLS_MESSAGE_COULD_NOT_ADVERTISE_GAME:
     case GLS_MESSAGE_COULD_NOT_UNADVERTISE_GAME:
+    case GLS_MESSAGE_GAME_ADVERTISED:
+    case GLS_MESSAGE_GAME_UNADVERTISED:
+    case GLS_MESSAGE_COULD_NOT_GET_GAME_LIST:
       //faulty client
       break;
     }

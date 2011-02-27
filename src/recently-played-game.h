@@ -56,6 +56,10 @@ class RecentlyPlayedGame
 	 */
         RecentlyPlayedGame(GameScenario *game_scenario, Profile *profile);
         
+        RecentlyPlayedGame(std::string id, std::string profile_id, 
+                           guint32 round, guint32 num_cities, 
+                           guint32 num_players, GameScenario::PlayMode mode, 
+                           std::string name);
 	//! Destructor.
         virtual ~RecentlyPlayedGame();
 
@@ -213,6 +217,9 @@ class RecentlyPlayedNetworkedGame : public RecentlyPlayedGame
     public:
 	//! Make a new networked game entry.
 	RecentlyPlayedNetworkedGame(GameScenario *game_scenario, Profile *p);
+
+        //! Make a new networked game entry with all of the gory details.
+        RecentlyPlayedNetworkedGame(std::string id, std::string profile_id, guint32 round, guint32 num_cities, guint32 num_players, GameScenario::PlayMode mode, std::string name, std::string host, guint32 port);
 
 	//! Load a new networked game from an opened file.
 	RecentlyPlayedNetworkedGame(XML_Helper *helper);

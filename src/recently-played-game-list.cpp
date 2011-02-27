@@ -55,6 +55,7 @@ bool RecentlyPlayedGameList::saveToFile(std::string filename) const
 
 bool RecentlyPlayedGameList::loadFromFile(std::string filename)
 {
+  remove_all();
   std::ifstream in(filename.c_str());
   if (in)
     {
@@ -96,8 +97,14 @@ RecentlyPlayedGameList::RecentlyPlayedGameList(XML_Helper* helper)
 
 RecentlyPlayedGameList::~RecentlyPlayedGameList()
 {
+  remove_all();
+}
+
+void RecentlyPlayedGameList::remove_all()
+{
   for (RecentlyPlayedGameList::iterator it = begin(); it != end(); it++)
     delete *it;
+  clear();
 }
 
 bool RecentlyPlayedGameList::save(XML_Helper* helper) const

@@ -340,6 +340,8 @@ src/Sage.cpp
 src/Sage.h
 src/PixMask.cpp
 src/gls/main.cpp
+src/gls/lw-gls-tool.cpp
+src/gls/gls-client-tool.cpp
 dat/various/items/items.xml.in
 dat/citynames.xml.in
 dat/templenames.xml.in

@@ -32,7 +32,11 @@ class Profile;
 //! A list of games that we've recently played.
 /** 
  * This is only used for network games at the moment.
- * It is implemented as a singleton.
+ * It is implemented as a singleton, but this class may also exist outside
+ * of the the singleton.
+ * The singleton refers to the recently played games file.
+ * Recently played game lists can also be used in the game list server, to
+ * indicate a list of advertised games that others can connect to.
  *
  */
 class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc::trackable
@@ -59,6 +63,7 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 	//! Load the recently game list from the recently played games file.
         bool load();
 
+
 	//! Add a game entry to the list of recently played games.
 	void addEntry(GameScenario *game_scenario, Profile *p, std::string filename);
 
@@ -77,7 +82,6 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 	//! Removes games from the list that are too old, or just too numerous.
 	void pruneGames();
 	
-
 	// Static Methods
 
         //! return the singleton instance of this class.
@@ -89,7 +93,6 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
         //! Explicitly delete the singleton instance of this class.
         static void deleteInstance();
 
-    protected:
         //! Default Constructor.
         RecentlyPlayedGameList();
 
@@ -121,6 +124,7 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 	//! Save the recently played game list to the given file.
 	bool saveToFile(std::string filename) const;
 
+        void remove_all();
 	// DATA
 
         //! A static pointer for the singleton instance.

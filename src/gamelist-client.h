@@ -30,6 +30,8 @@ class XML_Helper;
 #include "network-gls-common.h"
 
 class NetworkConnection;
+class RecentlyPlayedGame;
+class RecentlyPlayedGameList;
 class Profile;
 
 class GamelistClient
@@ -44,6 +46,15 @@ public:
 
   void start(std::string host, guint32 port, Profile *p);
   void disconnect();
+
+  void request_game_list();
+  sigc::signal<void, RecentlyPlayedGameList*, std::string> received_game_list;
+
+  void request_advertising(RecentlyPlayedGame *game);
+  sigc::signal<void, std::string, std::string> received_advertising_response;
+
+  void request_advertising_removal(std::string scenario_id);
+  sigc::signal<void, std::string, std::string> received_advertising_removal_response;
 
   sigc::signal<void> client_connected;
   sigc::signal<void> client_disconnected; 
@@ -63,12 +74,15 @@ private:
   void onConnected();
   void onConnectionLost();
   bool onGotMessage(int type, std::string message);
+  bool loadRecentlyPlayedGameList(std::string tag, XML_Helper *helper);
 
   static GamelistClient * s_instance;
   std::string d_host;
   guint32 d_port;
   bool d_connected;
   std::string d_profile_id;
+  RecentlyPlayedGameList *d_recently_played_game_list;
+ 
 };
 
 #endif

@@ -57,6 +57,18 @@ RecentlyPlayedGame::RecentlyPlayedGame(XML_Helper* helper)
   helper->getData(d_name, "name");
   helper->getData(d_profile_id, "profile_id");
 }
+        
+RecentlyPlayedGame::RecentlyPlayedGame(std::string id, std::string profile_id, 
+                                       guint32 round, guint32 num_cities, 
+                                       guint32 num_players, 
+                                       GameScenario::PlayMode mode, 
+                                       std::string name)
+: d_id(id), d_last_played(Glib::TimeVal()), d_round(round), 
+    d_number_of_cities(num_cities), d_number_of_players(num_players),
+    d_playmode(mode), d_name(name), d_profile_id(profile_id)
+{
+  d_last_played.assign_current_time();
+}
 
 RecentlyPlayedGame::~RecentlyPlayedGame()
 {
@@ -174,6 +186,17 @@ bool RecentlyPlayedPbmGame::fillData(std::string filename)
 RecentlyPlayedNetworkedGame::RecentlyPlayedNetworkedGame(GameScenario *scen,
                                                          Profile *p)
 	:RecentlyPlayedGame(scen, p), d_host(""), d_port(LORDSAWAR_PORT)
+{
+}
+
+RecentlyPlayedNetworkedGame::RecentlyPlayedNetworkedGame
+                              (std::string id, std::string profile_id, 
+                               guint32 round, guint32 num_cities, 
+                               guint32 num_players, 
+                               GameScenario::PlayMode mode, 
+                               std::string name, std::string host, guint32 port)
+  : RecentlyPlayedGame(id, profile_id, round, num_cities, num_players, mode, 
+                       name), d_host(host), d_port(port)
 {
 }
 
