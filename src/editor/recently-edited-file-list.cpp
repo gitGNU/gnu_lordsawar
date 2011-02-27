@@ -216,7 +216,7 @@ void RecentlyEditedFileList::addEntry(std::string filename)
 
 bool RecentlyEditedFileList::orderByTime(RecentlyEditedFile*rhs, RecentlyEditedFile *lhs)
 {
-  if (rhs->getTimeOfLastEdit() > lhs->getTimeOfLastEdit())
+  if (rhs->getTimeOfLastEdit().as_double() > lhs->getTimeOfLastEdit().as_double())
     return true;
   else
     return false;
@@ -311,10 +311,11 @@ void RecentlyEditedFileList::pruneTooManyFiles(int too_many)
 
 void RecentlyEditedFileList::pruneOldFiles(int stale)
 {
-  time_t now = time(NULL);
+  Glib::TimeVal now;
+  now.assign_current_time();
   for (iterator it = begin(); it != end();)
     {
-      if ((*it)->getTimeOfLastEdit() + stale < now)
+      if ((*it)->getTimeOfLastEdit().as_double() + stale < now.as_double())
 	{
 	  delete *it;
 	  it = erase (it);
@@ -346,7 +347,11 @@ void RecentlyEditedFileList::updateEntry(std::string filename)
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getFileName() == filename)
-        (*it)->setTimeOfLastEdit(time(NULL));
+        {
+          Glib::TimeVal now;
+          now.assign_current_time();
+          (*it)->setTimeOfLastEdit(now);
+        }
     }
 }
 

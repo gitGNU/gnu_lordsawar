@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -61,7 +61,7 @@ class RecentlyEditedFile
 	// Get Methods
 
 	//! Get time of when this file was last edited (seconds past the epoch).
-	time_t getTimeOfLastEdit() const { return d_time;};
+        Glib::TimeVal getTimeOfLastEdit() const { return d_last_edit;};
 
 	//! Get the name of the file.
 	std::string getFileName() const {return d_filename;};
@@ -69,7 +69,7 @@ class RecentlyEditedFile
 	// Set Methods
 
 	//! Set the last time we saw something happen in this file.
-	void setTimeOfLastEdit(time_t then) { d_time = then;};
+	void setTimeOfLastEdit(Glib::TimeVal then) { d_last_edit = then;};
 
 	// Methods that operate on the class data but do not modify it.
 
@@ -101,7 +101,7 @@ class RecentlyEditedFile
 	// DATA
 	
 	//! When the file was last saved.
-	time_t d_time;
+        Glib::TimeVal d_last_edit;
 
 	//! The name of the file.
 	std::string d_filename;

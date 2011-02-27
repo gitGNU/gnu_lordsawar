@@ -34,15 +34,15 @@ std::string RecentlyEditedFile::d_tag = "recentlyeditedfile";
 
 RecentlyEditedFile::RecentlyEditedFile(std::string filename)
 {
-  d_time = time(NULL);
+  d_last_edit.assign_current_time();
   d_filename = filename;
 }
 
 RecentlyEditedFile::RecentlyEditedFile(XML_Helper* helper)
 {
-  guint32 t;
-  helper->getData(t, "time");
-  d_time = t;
+  std::string s;
+  helper->getData(s, "last_edited_on");
+  d_last_edit.assign_from_iso8601(s);
   helper->getData(d_filename, "filename");
 }
 
@@ -53,8 +53,8 @@ RecentlyEditedFile::~RecentlyEditedFile()
 bool RecentlyEditedFile::saveContents(XML_Helper *helper) const
 {
   bool retval = true;
-  guint32 t = d_time;
-  retval &= helper->saveData("time", t);
+  std::string s = d_last_edit.as_iso8601();
+  retval &= helper->saveData("last_edited_on", s);
   retval &= helper->saveData("filename", d_filename);
   retval &= doSave(helper);
   return retval;
