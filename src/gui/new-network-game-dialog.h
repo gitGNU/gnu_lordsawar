@@ -34,7 +34,9 @@ class NewNetworkGameDialog: public Decorated
     ~NewNetworkGameDialog();
 
     Profile* getProfile() const {return d_profile;};
-    bool isClient() {return client_radiobutton->get_active();}
+    bool isClient() {return client_radiobutton->get_active();};
+
+    bool isAdvertised() {return advertise_checkbutton->get_active();};
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -47,6 +49,7 @@ class NewNetworkGameDialog: public Decorated
   Gtk::Button *accept_button;
   Gtk::Button *add_button;
   Gtk::Button *remove_button;
+  Gtk::CheckButton *advertise_checkbutton;
   Gtk::TreeView *profiles_treeview;
     class ProfilesColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -66,6 +69,7 @@ class NewNetworkGameDialog: public Decorated
   void on_add_button_clicked();
   void select_preferred_profile(Glib::ustring user);
   void on_profile_selected();
+  void on_client_radiobutton_toggled();
 };
 
 #endif

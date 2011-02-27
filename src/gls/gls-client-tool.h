@@ -33,7 +33,7 @@ class RecentlyPlayedGame;
 class GlsClientTool
 {
 public:
-    GlsClientTool(int port, bool show_list, std::list<std::string> unadvertise, bool advertise);
+    GlsClientTool(int port, bool show_list, std::list<std::string> unadvertise, bool advertise, bool reload);
     virtual ~GlsClientTool();
 private:
   Profile *new_profile;
@@ -41,11 +41,14 @@ private:
   bool d_show_list;
   std::list<std::string> d_unadvertise;
   bool d_advertise;
+  bool d_reload;
+  guint32 request_count;
 
   //callbacks
   void on_got_list_response(RecentlyPlayedGameList *list, std::string err);
   void on_got_unadvertise_response(std::string id, std::string err);
   void on_got_advertise_response(std::string id, std::string err);
+  void on_got_reload_response(std::string err);
   void on_could_not_connect();
   void on_connected();
   void on_connection_lost();

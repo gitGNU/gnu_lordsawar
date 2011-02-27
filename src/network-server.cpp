@@ -1,5 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -114,4 +114,17 @@ bool NetworkServer::isListening()
  void NetworkServer::stop()
 {
   return server->stop();
+}
+  
+std::string NetworkServer::get_hostname(void *c) 
+{
+  NetworkConnection *conn = static_cast<NetworkConnection *>(c);
+  return conn->get_peer_hostname();
+}
+  
+bool NetworkServer::is_local_connection(void *conn)
+{
+  if (get_hostname(conn) == "127.0.0.1")
+    return true;
+  return false;
 }

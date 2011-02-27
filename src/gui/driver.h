@@ -56,7 +56,7 @@ class Driver: public sigc::trackable
 
     void on_new_game_requested(GameParameters g);
     void on_new_remote_network_game_requested(std::string host, unsigned short port, Profile *p);
-    void on_new_hosted_network_game_requested(GameParameters g, int port, Profile *p);
+    void on_new_hosted_network_game_requested(GameParameters g, int port, Profile *p, bool advertised);
     void on_new_pbm_game_requested(GameParameters g);
     void on_game_scenario_downloaded(std::string filename);
     void on_game_scenario_received(std::string path, Profile *p);
@@ -112,6 +112,11 @@ class Driver: public sigc::trackable
   
     void on_could_not_bind_to_port_for_headless_server(int port);
     void on_could_not_bind_to_port (int port);
+
+    void advertise_game(GameScenario *game_scenario, int port, Profile *p);
+    void on_connected_to_gamelist_server(GameScenario *game_scenario, int port, Profile *p);
+
+    void on_advertising_response_received(std::string scenario_id, std::string err);
 };
 
 

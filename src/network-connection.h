@@ -46,6 +46,7 @@ public:
 
   void send(int type, const std::string &payload);
   void sendFile(int type, std::string filename);
+  std::string get_peer_hostname();
 
 private:
   Glib::RefPtr<Gio::SocketClient> client; //this is client-side connections.

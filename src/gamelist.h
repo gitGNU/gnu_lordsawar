@@ -56,7 +56,7 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
 	bool save(XML_Helper* helper) const;
 
         //! Get the list, with some identifying information removed.
-        RecentlyPlayedGameList* getList() const;
+        RecentlyPlayedGameList* getList(bool scrub_profile_id = true) const;
 
         HostedGame *findGameByScenarioId(std::string scenario_id) const;
 

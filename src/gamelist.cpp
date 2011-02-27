@@ -237,14 +237,15 @@ bool Gamelist::save() const
   return saveToFile(File::getSavePath() + "/" + RECENTLY_HOSTED_LIST);
 }
 
-RecentlyPlayedGameList* Gamelist::getList() const
+RecentlyPlayedGameList* Gamelist::getList(bool scrub_profile_id) const
 {
   RecentlyPlayedGameList *l = new RecentlyPlayedGameList();
   for (Gamelist::const_iterator i = begin(); i != end(); i++)
     {
       RecentlyPlayedNetworkedGame *g = 
         new RecentlyPlayedNetworkedGame(*(*i)->getAdvertisedGame());
-      g->clearProfileId();
+      if (scrub_profile_id)
+        g->clearProfileId();
       l->push_back (g);
     }
   return l;

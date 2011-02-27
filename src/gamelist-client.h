@@ -56,6 +56,9 @@ public:
   void request_advertising_removal(std::string scenario_id);
   sigc::signal<void, std::string, std::string> received_advertising_removal_response;
 
+  void request_reload();
+  sigc::signal<void, std::string> received_reload_response;
+
   sigc::signal<void> client_connected;
   sigc::signal<void> client_disconnected; 
   sigc::signal<void> client_forcibly_disconnected; //server went away

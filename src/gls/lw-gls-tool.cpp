@@ -24,6 +24,7 @@
 #include "Configuration.h"
 #include "defs.h"
 #include "vector.h"
+#include "ucompose.hpp"
 #include "gls-client-tool.h"
 
 using namespace std;
@@ -34,6 +35,7 @@ int main(int argc, char* argv[])
 {
   bool advertise = false;
   bool show_list = false;
+  bool reload = false;
   srand(time(NULL));         // set the random seed
 
   initialize_configuration();
@@ -79,6 +81,10 @@ int main(int argc, char* argv[])
             {
               show_list = true;
             }
+          else if (parameter == "--reload" || parameter == "-r")
+            {
+              reload = true;
+            }
 	  else if (parameter == "--help" || parameter == "-?")
 	    {
 	      cout << Glib::get_prgname() << " [OPTION]..." << endl << endl;
@@ -89,6 +95,7 @@ int main(int argc, char* argv[])
 	      cout << "  -u, --unadvertise <id>     " << _("Remove a game, specified by scenario id") << endl;
 	      cout << "  -a, --advertise            " << _("Add a game") << endl;
 	      cout << "  -l, --list                 " << _("See a list of games") << endl;
+	      cout << "  -l, --reload               " << _("Reload the game list from disk") << endl;
 	      cout << endl;
 	      cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << endl;
 	      exit(0);
@@ -98,10 +105,19 @@ int main(int argc, char* argv[])
 
   if (port == 0)
     port = LORDSAWAR_GAMELIST_PORT;
-  GlsClientTool tool(port, show_list, unadvertise, advertise);
+
+  if (!show_list && unadvertise.empty() == true && !advertise && !reload)
+    {
+      Glib::ustring s = 
+        String::ucompose("Try `%1 --help' for more information.",
+                         Glib::get_prgname());
+      std::cout << s << std::endl;
+      return EXIT_SUCCESS;
+    }
+  GlsClientTool tool(port, show_list, unadvertise, advertise, reload);
 
   gtk_main->run();
-  delete gtk_main;
+  //delete gtk_main;
 
   return EXIT_SUCCESS;
 }

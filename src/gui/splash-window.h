@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ class SplashWindow: public Decorated
     Gtk::Window *get_window() {return window;}
 
     sigc::signal<void, std::string, unsigned short, Profile*> new_remote_network_game_requested;
-    sigc::signal<void, GameParameters, int, Profile* > new_hosted_network_game_requested;
+    sigc::signal<void, GameParameters, int, Profile*, bool > new_hosted_network_game_requested;
     sigc::signal<void, GameParameters> new_pbm_game_requested;
     sigc::signal<void, GameParameters> new_game_requested;
     sigc::signal<void, std::string> load_requested;
@@ -81,7 +81,7 @@ class SplashWindow: public Decorated
     void on_rescue_crashed_game_clicked();
 	
     void on_game_started(GameParameters g);
-    void on_network_game_created(GameParameters g, Profile *profile);
+    void on_network_game_created(GameParameters g, Profile *profile, bool advertised);
     void on_pbm_game_created(GameParameters g);
     void on_network_game_selected(std::string ip, unsigned short port, Profile  *profile);
 

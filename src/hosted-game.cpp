@@ -40,7 +40,7 @@ HostedGame::HostedGame(AdvertisedGame *advertised_game)
 HostedGame::HostedGame(XML_Helper *helper)
 {
   helper->getData(d_pid, "pid");
-  helper->registerTag(AdvertisedGame::d_tag, 
+  helper->registerTag(AdvertisedGame::d_tag_name, 
 		      sigc::mem_fun(*this, &HostedGame::loadAdvertisedGame));
 }
 

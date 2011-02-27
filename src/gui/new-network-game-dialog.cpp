@@ -38,6 +38,7 @@ NewNetworkGameDialog::NewNetworkGameDialog()
 
   xml->get_widget("dialog", dialog);
   xml->get_widget("client_radiobutton", client_radiobutton);
+  client_radiobutton->signal_toggled().connect(sigc::mem_fun(*this, &NewNetworkGameDialog::on_client_radiobutton_toggled));
   xml->get_widget("accept_button", accept_button);
   xml->get_widget("add_button", add_button);
   add_button->signal_clicked().connect(sigc::mem_fun(*this, &NewNetworkGameDialog::on_add_button_clicked));
@@ -55,8 +56,12 @@ NewNetworkGameDialog::NewNetworkGameDialog()
        i != Profilelist::getInstance()->end(); i++)
     add_profile(*i);
 
+  xml->get_widget("advertise_checkbutton", advertise_checkbutton);
   decorate(dialog);
   dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+
+  advertise_checkbutton->set_label(String::ucompose(_("List the game on %1."),
+                                   Configuration::s_gamelist_server_hostname));
 
   select_preferred_profile(Glib::get_user_name());
   update_buttons();
@@ -106,6 +111,12 @@ void NewNetworkGameDialog::update_buttons()
     accept_button->set_sensitive(true);
   else
     accept_button->set_sensitive(false);
+
+  if (Configuration::s_gamelist_server_hostname != "" &&
+      Configuration::s_gamelist_server_port != 0)
+    advertise_checkbutton->set_sensitive(!client_radiobutton->get_active());
+  else
+    advertise_checkbutton->set_sensitive(false);
 }
 
 void NewNetworkGameDialog::set_parent_window(Gtk::Window &parent)
@@ -169,6 +180,11 @@ void NewNetworkGameDialog::on_remove_button_clicked()
 }
 
 void NewNetworkGameDialog::on_profile_selected()
+{
+  update_buttons();
+}
+  
+void NewNetworkGameDialog::on_client_radiobutton_toggled()
 {
   update_buttons();
 }

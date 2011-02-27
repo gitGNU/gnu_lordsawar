@@ -57,6 +57,7 @@
 #include "NextTurnNetworked.h"
 #include "pbm/pbm.h"
 #include "recently-played-game-list.h"
+#include "recently-played-game.h"
 #include "Backpack.h"
 #include "Item.h"
 #include "city.h"
@@ -69,6 +70,7 @@
 #include "network_player.h"
 #include "profile.h"
 #include "profilelist.h"
+#include "gamelist-client.h"
 
 Driver::Driver(std::string load_filename)
 {
@@ -520,8 +522,39 @@ GameScenario *Driver::create_new_scenario(GameParameters &g, GameScenario::PlayM
   return game_scenario;
 }
 
+void Driver::advertise_game(GameScenario *game_scenario, int port, Profile *p)
+{
+  GamelistClient *gsc = GamelistClient ::getInstance();
+  gsc->client_connected.connect
+    (sigc::bind(sigc::mem_fun(*this, &Driver::on_connected_to_gamelist_server), game_scenario, port, p));
+  gsc->start(Configuration::s_gamelist_server_hostname,
+             Configuration::s_gamelist_server_port, p);
+}
+
+void Driver::on_connected_to_gamelist_server(GameScenario *game_scenario, int port, Profile *p)
+{
+  GamelistClient *gsc = GamelistClient::getInstance();
+  //okay, fashion the recently played game to go over the wire.
+  RecentlyPlayedNetworkedGame *g = 
+    new RecentlyPlayedNetworkedGame(game_scenario, p);
+  gsc->received_advertising_response.connect
+    (sigc::mem_fun(*this, &Driver::on_advertising_response_received));
+  gsc->request_advertising(g);
+}
+
+void Driver::on_advertising_response_received(std::string scenario_id, 
+                                              std::string err)
+{
+  //if (err != "")
+    //std::cerr << "Could not advertise " << scenario_id <<".  " << err << std::endl;
+  //else
+    //std::cerr << "Advertised " << scenario_id <<"." << std::endl;
+  GamelistClient::deleteInstance();
+  return;
+}
+
 void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
-						  Profile *p)
+						  Profile *p, bool advertised)
 {
     if (splash_window)
 	splash_window->hide();
@@ -547,6 +580,8 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
       GameServer::deleteInstance();
       return;
     }
+  if (advertised)
+    advertise_game(game_scenario, port, p);
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   game_server->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
   game_server->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));

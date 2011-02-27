@@ -69,9 +69,11 @@ AdvertisedGame::~AdvertisedGame()
 bool AdvertisedGame::doSave(XML_Helper *helper) const
 {
   bool retval = true;
-  retval &= dynamic_cast<const RecentlyPlayedNetworkedGame*>(this)->doSave(helper);
   std::string s = d_creation_date.as_iso8601();
   retval &= helper->saveData("created_on", s);
+  retval &= helper->saveData("host", getHost());
+  retval &= helper->saveData("port", getPort());
+  retval &= d_profile->save(helper);
   return retval;
 }
 
@@ -79,8 +81,7 @@ bool AdvertisedGame::saveEntry(XML_Helper* helper) const
 {
   bool retval = true;
   retval &= helper->openTag(d_tag_name);
-  retval &= saveContents(helper);
-  retval &= d_profile->save(helper);
+  retval &= dynamic_cast<const RecentlyPlayedGame*>(this)->saveContents(helper);
   retval &= helper->closeTag();
   return retval;
 }

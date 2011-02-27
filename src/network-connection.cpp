@@ -48,7 +48,7 @@ void NetworkConnection::tear_down_connection()
   if (conn)
     conn->clear_pending();
   if (source)
-    source->destroy();
+    source.reset();
   if (conn)
     if (conn->is_closed() == false)
       conn->close();
@@ -225,4 +225,15 @@ bool NetworkConnection::on_connect_timeout()
   d_connect_timer.disconnect();
   connection_failed.emit();
   return Timing::STOP;
+}
+
+std::string NetworkConnection::get_peer_hostname()
+{
+  Glib::RefPtr<Gio::InetSocketAddress> iconn = Glib::wrap((GInetSocketAddress*)(conn->get_remote_address()->gobj()), true);
+  Glib::ustring h = iconn->get_address()->to_string();
+  size_t pos = h.rfind(':');
+  if (pos == Glib::ustring::npos)
+    return h;
+  else
+    return h.substr(pos + 1);
 }

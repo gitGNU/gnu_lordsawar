@@ -38,6 +38,9 @@ enum GlsMessageType
   GLS_MESSAGE_GAME_ADVERTISED = 14, //from server
   GLS_MESSAGE_GAME_UNADVERTISED = 15, //from server
   GLS_MESSAGE_COULD_NOT_GET_GAME_LIST = 16, //from server
+  GLS_MESSAGE_REQUEST_RELOAD = 17, //from client
+  GLS_MESSAGE_RELOADED = 18, //from server
+  GLS_MESSAGE_COULD_NOT_RELOAD = 19, //from server
 };
 
 #endif

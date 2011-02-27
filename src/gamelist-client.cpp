@@ -31,6 +31,9 @@
 #include "recently-played-game-list.h"
 #include "recently-played-game.h"
   
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
+#define debug(x)
+
 GamelistClient * GamelistClient::s_instance = 0;
 
 GamelistClient* GamelistClient::getInstance()
@@ -76,7 +79,7 @@ void GamelistClient::start(std::string host, guint32 port, Profile *p)
 
 void GamelistClient::onConnected() 
 {
-  std::cerr << "GamelistClient connected" << std::endl;
+  debug("GamelistClient connected");
 
   d_connected = true;
   client_connected.emit();
@@ -84,7 +87,7 @@ void GamelistClient::onConnected()
 
 void GamelistClient::onConnectionLost()
 {
-  std::cerr << "GamelistClient connection lost" << std::endl;
+  debug("GamelistClient connection lost");
   if (d_connected)
     client_forcibly_disconnected.emit();
   else
@@ -94,7 +97,7 @@ void GamelistClient::onConnectionLost()
 bool GamelistClient::onGotMessage(int type, std::string payload)
 {
   size_t pos;
-  std::cerr << "GamelistClient got message of type " << type << std::endl;
+  debug("GamelistClient got message of type " << type);
   switch (GlsMessageType(type)) 
     {
     case GLS_MESSAGE_GAME_CREATED:
@@ -143,12 +146,19 @@ bool GamelistClient::onGotMessage(int type, std::string payload)
     case GLS_MESSAGE_GAME_UNADVERTISED:
       received_advertising_response.emit(payload, "");
       break;
+    case GLS_MESSAGE_RELOADED:
+      received_reload_response.emit("");
+      break;
+    case GLS_MESSAGE_COULD_NOT_RELOAD:
+      received_reload_response.emit(payload);
+      break;
     case GLS_MESSAGE_HOST_NEW_GAME:
     case GLS_MESSAGE_HOST_NEW_RANDOM_GAME:
     case GLS_MESSAGE_ADVERTISE_GAME:
     case GLS_MESSAGE_UNADVERTISE_GAME:
     case GLS_MESSAGE_UNHOST_GAME:
     case GLS_MESSAGE_REQUEST_GAME_LIST:
+    case GLS_MESSAGE_REQUEST_RELOAD:
       //faulty server
       break;
     }
@@ -169,14 +179,16 @@ void GamelistClient::request_advertising(RecentlyPlayedGame *game)
 {
   if (game)
     {
+      RecentlyPlayedNetworkedGame *ng = 
+        dynamic_cast<RecentlyPlayedNetworkedGame*>(game);
       Profile *p = Profilelist::getInstance()->findProfileById(d_profile_id);
-      AdvertisedGame *g = 
-        new AdvertisedGame(*dynamic_cast<RecentlyPlayedNetworkedGame*>(game), 
-                           p);
+      AdvertisedGame *g = new AdvertisedGame(*ng, p);
       std::ostringstream os;
       XML_Helper helper(&os);
-      helper.begin("1");
-      g->save(&helper);
+      helper.begin(LORDSAWAR_RECENTLY_HOSTED_VERSION);
+      helper.openTag("advertising_request");
+      g->saveEntry(&helper);
+      helper.closeTag();
       network_connection->send(GLS_MESSAGE_ADVERTISE_GAME, os.str());
       delete g;
     }
@@ -203,4 +215,9 @@ bool GamelistClient::loadRecentlyPlayedGameList(std::string tag, XML_Helper *hel
       return true;
     }
   return false;
+}
+
+void GamelistClient::request_reload()
+{
+  network_connection->send(GLS_MESSAGE_REQUEST_RELOAD, "");
 }

@@ -1,5 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
-// Copyright (C) 2008 Ben Asselstine 
+// Copyright (C) 2008, 2011 Ben Asselstine 
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -42,6 +42,8 @@ public:
   void startListening(int port);
   void send(void *conn, int type, const std::string &payload);
   void sendFile(void *c, int type, const std::string &payload);
+  std::string get_hostname(void *conn);
+  bool is_local_connection(void *conn);
 
   void stop();
   sigc::signal<bool, void *, int, std::string> got_message;

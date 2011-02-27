@@ -260,6 +260,8 @@ class RecentlyPlayedNetworkedGame : public RecentlyPlayedGame
 
 	bool fillData(std::string host, guint32 port);
 
+        void setHost(std::string host) {d_host = host;};
+
     private:
 
 	// DATA

@@ -77,6 +77,8 @@ bool Configuration::s_decorated = true;
 bool Configuration::s_remember_recent_games = true;
 bool Configuration::s_remember_recently_edited_files = true;
 guint32 Configuration::s_double_click_threshold = 400; //milliseconds
+std::string Configuration::s_gamelist_server_hostname = "lordsawar.com";
+guint32 Configuration::s_gamelist_server_port = LORDSAWAR_GAMELIST_PORT;
 
 Configuration::Configuration()
 {
@@ -159,6 +161,10 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("remember_recently_edited_files", s_remember_recently_edited_files);
     retval &= helper.saveData("double_click_threshold", 
 			      s_double_click_threshold);
+    retval &= helper.saveData("gamelist_server_hostname", 
+			      s_gamelist_server_hostname);
+    retval &= helper.saveData("gamelist_server_port", 
+			      s_gamelist_server_port);
     retval &= helper.closeTag();
     
     if (!retval)
@@ -285,6 +291,8 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     helper->getData(s_remember_recent_games, "remember_recent_games");
     helper->getData(s_remember_recently_edited_files, "remember_recently_edited_files");
     helper->getData(s_double_click_threshold, "double_click_threshold");
+    helper->getData(s_gamelist_server_hostname, "gamelist_server_hostname");
+    helper->getData(s_gamelist_server_port, "gamelist_server_port");
     return true;
 }
 

@@ -98,6 +98,10 @@ class Configuration : public sigc::trackable
         static guint32 s_musicvolume;
         static guint32 s_musiccache;
 
+        // the hostname of the game-list server
+        static std::string s_gamelist_server_hostname;
+        static guint32 s_gamelist_server_port;
+
 	// various default game settings
         static bool s_see_opponents_stacks;
         static bool s_see_opponents_production;
