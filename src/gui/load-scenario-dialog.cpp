@@ -125,10 +125,10 @@ void LoadScenarioDialog::add_scenario(std::string filename)
       return;
     }
   bool broken = false;
-  std::string name = "", comment = "";
+  std::string name = "", comment = "", id = "";
   guint32 player_count = 0, city_count = 0;
   selected_filename = std::string((*i)[scenarios_columns.filename]);
-  GameScenario::loadDetails(selected_filename, broken, player_count, city_count, name, comment);
+  GameScenario::loadDetails(selected_filename, broken, player_count, city_count, name, comment, id);
   if (broken == false)
     (*i)[scenarios_columns.name] = name;
 }
@@ -154,9 +154,9 @@ void LoadScenarioDialog::on_selection_changed()
 
       selected_filename = filename;
       bool broken = false;
-      std::string name, comment;
+      std::string name, comment, id;
       guint32 player_count = 0, city_count = 0;
-      GameScenario::loadDetails(filename, broken, player_count, city_count, name, comment);
+      GameScenario::loadDetails(filename, broken, player_count, city_count, name, comment, id);
 
       if (broken == true)
 	{

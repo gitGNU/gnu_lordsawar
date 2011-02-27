@@ -204,9 +204,9 @@ void RecentlyEditedFileList::addEntry(std::string filename)
       bool broken = false;
       guint32 players = 0;
       guint32 cities = 0;
-      std::string name;
-      std::string comment;
-      GameScenario::loadDetails(filename, broken, players, cities, name, comment);
+      std::string name, comment, id;
+      GameScenario::loadDetails(filename, broken, players, cities, name, 
+                                comment, id);
       RecentlyEditedMapFile *g = NULL;
       g = new RecentlyEditedMapFile(filename);
       g->fillData(name, players, cities);

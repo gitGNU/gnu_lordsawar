@@ -1247,6 +1247,7 @@ public:
 	  {
 	    helper->getData(name, "name");
 	    helper->getData(comment, "comment");
+	    helper->getData(id, "id");
 	    return true;
 	  }
 	if (tag == Player::d_tag)
@@ -1264,8 +1265,10 @@ public:
     Tar_Helper *t;
     std::string name, comment;
     guint32 player_count, city_count;
+    std::string id;
 };
-void GameScenario::loadDetails(std::string filename, bool &broken, guint32 &player_count, guint32 &city_count, std::string &name, std::string &comment)
+
+void GameScenario::loadDetails(std::string filename, bool &broken, guint32 &player_count, guint32 &city_count, std::string &name, std::string &comment, std::string &id)
 {
   DetailsLoader loader(filename, broken);
   if (broken == false)
@@ -1274,6 +1277,7 @@ void GameScenario::loadDetails(std::string filename, bool &broken, guint32 &play
       city_count = loader.city_count;
       name = loader.name;
       comment = loader.comment;
+      id = loader.id;
     }
   return;
 }

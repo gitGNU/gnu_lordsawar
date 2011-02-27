@@ -147,7 +147,7 @@ class GameScenario: public GameScenarioOptions
 
 	static PlayMode loadPlayMode(std::string filename, bool &broken);
 
-	static void loadDetails(std::string filename, bool &broken, guint32 &player_count, guint32 &city_count, std::string &name, std::string &comment);
+	static void loadDetails(std::string filename, bool &broken, guint32 &player_count, guint32 &city_count, std::string &name, std::string &comment, std::string &id);
 
         static std::string generate_guid();
 
