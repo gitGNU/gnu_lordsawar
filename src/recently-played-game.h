@@ -60,6 +60,9 @@ class RecentlyPlayedGame
                            guint32 round, guint32 num_cities, 
                            guint32 num_players, GameScenario::PlayMode mode, 
                            std::string name);
+        //! Copy constructor.
+        RecentlyPlayedGame(const RecentlyPlayedGame &orig);
+
 	//! Destructor.
         virtual ~RecentlyPlayedGame();
 
@@ -98,6 +101,7 @@ class RecentlyPlayedGame
 	//! Set the round that we last saw this game at.
 	void setRound(guint32 round) { d_round = round;};
 
+        void clearProfileId() { d_profile_id = "";};
 
 	// Methods that operate on the class data but do not modify it.
 
@@ -162,6 +166,9 @@ class RecentlyPlayedHotseatGame : public RecentlyPlayedGame
 	//! Load a new hotseat game from an opened file.
 	RecentlyPlayedHotseatGame(XML_Helper *helper);
 
+        //! Copy constructor.
+	RecentlyPlayedHotseatGame(const RecentlyPlayedHotseatGame &orig);
+
 	//! Destroy a hotseat game entry.
 	~RecentlyPlayedHotseatGame();
 
@@ -189,6 +196,9 @@ class RecentlyPlayedPbmGame : public RecentlyPlayedGame
 
 	//! Load a new pbm game from an opened saved-game file.
 	RecentlyPlayedPbmGame(XML_Helper *helper);
+
+        //! Copy constructor.
+	RecentlyPlayedPbmGame(const RecentlyPlayedPbmGame &orig);
 
 	//! Destroy a pbm game entry.
 	~RecentlyPlayedPbmGame();
@@ -220,6 +230,9 @@ class RecentlyPlayedNetworkedGame : public RecentlyPlayedGame
 
         //! Make a new networked game entry with all of the gory details.
         RecentlyPlayedNetworkedGame(std::string id, std::string profile_id, guint32 round, guint32 num_cities, guint32 num_players, GameScenario::PlayMode mode, std::string name, std::string host, guint32 port);
+
+        //! Copy constructor
+        RecentlyPlayedNetworkedGame(const RecentlyPlayedNetworkedGame &orig);
 
 	//! Load a new networked game from an opened file.
 	RecentlyPlayedNetworkedGame(XML_Helper *helper);

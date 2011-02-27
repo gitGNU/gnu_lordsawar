@@ -46,6 +46,9 @@ class HostedGame
 	~HostedGame();
 
 
+        // Set Methods
+        void setAdvertisedGame(AdvertisedGame *g) {d_advertised_game = g;};
+
 	// Get Methods
         AdvertisedGame * getAdvertisedGame() const {return d_advertised_game;};
 
@@ -55,7 +58,6 @@ class HostedGame
         bool save(XML_Helper* helper) const;
 
 	// Methods that operate on the class data and modify it.
-
 
     private:
 

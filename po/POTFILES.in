@@ -342,6 +342,7 @@ src/PixMask.cpp
 src/gls/main.cpp
 src/gls/lw-gls-tool.cpp
 src/gls/gls-client-tool.cpp
+src/gls/gamelist-server.cpp
 dat/various/items/items.xml.in
 dat/citynames.xml.in
 dat/templenames.xml.in

@@ -29,6 +29,7 @@ class GameScenario;
 class Profile;
 class AdvertisedGame;
 class HostedGame;
+class RecentlyPlayedGameList;
 
 //! A list of games that we've recently hosted or advertised.
 /** 
@@ -44,6 +45,8 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
 	
 	static const int TEN_DAYS_OLD = 864000; /* seconds */
 
+	static const int MAX_NUMBER_OF_ADVERTISED_GAMES = 100;
+
 	// Methods that operate on the class data and do not modify the class.
 
         //! Save game list to the game list file.
@@ -52,8 +55,14 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
 	//! Save the game list to an opened file.
 	bool save(XML_Helper* helper) const;
 
+        //! Get the list, with some identifying information removed.
+        RecentlyPlayedGameList* getList() const;
+
+        HostedGame *findGameByScenarioId(std::string scenario_id) const;
 
 	// Methods that operate on the class data and modify the class.
+
+        bool add(HostedGame *g);
 
 	//! Load the game list from the games file.
         bool load();

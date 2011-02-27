@@ -41,6 +41,11 @@ class AdvertisedGame : public RecentlyPlayedNetworkedGame
 	//! Make a new advertised game entry.
 	AdvertisedGame(GameScenario *game_scenario, Profile *p);
 
+	AdvertisedGame(const RecentlyPlayedNetworkedGame &orig, Profile *p);
+
+        //! Copy constructor
+	AdvertisedGame(const AdvertisedGame &orig);
+
 	//! Load a new advertised game entry from an opened file.
 	AdvertisedGame(XML_Helper *helper);
 

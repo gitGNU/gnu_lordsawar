@@ -26,6 +26,10 @@
 #include "Configuration.h"
 #include "ucompose.hpp"
 #include "gamelist.h"
+#include "recently-played-game-list.h"
+#include "recently-played-game.h"
+#include "hosted-game.h"
+#include "advertised-game.h"
 
 GamelistServer * GamelistServer::s_instance = 0;
 
@@ -92,6 +96,36 @@ void GamelistServer::start(int port)
 
 }
 
+void GamelistServer::sendList(void *conn)
+{
+  std::ostringstream os;
+  XML_Helper helper(&os);
+  helper.begin("1");
+  RecentlyPlayedGameList *l = Gamelist::getInstance()->getList();
+  l->save(&helper);
+  network_server->send(conn, GLS_MESSAGE_GAME_LIST, os.str());
+  delete l;
+}
+
+void GamelistServer::unadvertise(std::string profile_id, std::string scenario_id, std::string &err)
+{
+  HostedGame *g = Gamelist::getInstance()->findGameByScenarioId(scenario_id);
+  if (!g)
+    {
+      err = _("no such game with that scenario id");
+      return;
+    }
+  if (g->getAdvertisedGame()->getProfileId() != profile_id)
+    {
+      err = _("permission denied");
+      return;
+    }
+  Gamelist::getInstance()->remove(g);
+  Gamelist::getInstance()->save();
+  delete g;
+  return;
+}
+
 bool GamelistServer::onGotMessage(void *conn, int type, std::string payload)
 {
   std::cerr << "got message of type " << type << std::endl;
@@ -102,12 +136,32 @@ bool GamelistServer::onGotMessage(void *conn, int type, std::string payload)
     case GLS_MESSAGE_HOST_NEW_RANDOM_GAME:
       break;
     case GLS_MESSAGE_ADVERTISE_GAME:
+        {
+          std::istringstream is(payload);
+          XML_Helper helper(&is);
+          helper.registerTag
+            (RecentlyPlayedGameList::d_tag, 
+             sigc::bind(sigc::mem_fun(*this, &GamelistServer::loadAdvertisedGame), conn));
+          helper.parse();
+        }
       break;
     case GLS_MESSAGE_UNADVERTISE_GAME:
+        {
+          size_t pos;
+          std::string err;
+          pos = payload.find(' ');
+          if (pos == std::string::npos)
+            return false;
+          unadvertise(payload.substr(0, pos - 1), payload.substr(pos + 1),
+                      err);
+          network_server->send(conn, GLS_MESSAGE_GAME_UNADVERTISED, 
+                               payload.substr(pos + 1) + " " + err);
+        }
       break;
     case GLS_MESSAGE_UNHOST_GAME:
       break;
     case GLS_MESSAGE_REQUEST_GAME_LIST:
+      sendList(conn);
       break;
     case GLS_MESSAGE_GAME_CREATED:
     case GLS_MESSAGE_GAME_LIST:
@@ -139,5 +193,48 @@ sigc::connection GamelistServer::on_timer_registered(Timing::timer_slot s,
                                                      int msecs_interval)
 {
     return Glib::signal_timeout().connect(s, msecs_interval);
+}
+             
+bool GamelistServer::loadAdvertisedGame(std::string tag, XML_Helper *helper, void *conn)
+{
+  if (tag == AdvertisedGame::d_tag)
+    {
+      AdvertisedGame *a = new AdvertisedGame(helper);
+      //printf("profile is %p\n", a->getProfile());
+      //HostedGame* g = new HostedGame(a);
+      HostedGame *h = Gamelist::getInstance()->findGameByScenarioId(a->getId());
+      if (h)
+        {
+          //replace?
+          if (a->getProfileId() != h->getAdvertisedGame()->getProfileId())
+            {
+              network_server->send(conn, GLS_MESSAGE_GAME_ADVERTISED,
+                                   a->getId() + " " + _("permission denied"));
+              return true;
+            }
+          std::replace(Gamelist::getInstance()->begin(), 
+                       Gamelist::getInstance()->end(), h, new HostedGame(a));
+          Gamelist::getInstance()->save();
+              
+          network_server->send(conn, GLS_MESSAGE_GAME_ADVERTISED,
+                               a->getId() + " "); //no error
+          return true;
+        }
+      else
+        {
+          bool success = Gamelist::getInstance()->add(new HostedGame(a));
+          Gamelist::getInstance()->save();
+          if (!success)
+              network_server->send(conn, GLS_MESSAGE_GAME_ADVERTISED,
+                                   a->getId() + " " + 
+                                   _("could not advertised game"));
+          else
+              network_server->send(conn, GLS_MESSAGE_GAME_ADVERTISED,
+                                   a->getId() + " "); //no error
+
+        }
+      return true;
+    }
+  return false;
 }
 // End of file

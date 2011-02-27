@@ -60,6 +60,10 @@ private:
   void onConnectionMade(void *conn);
   sigc::connection on_timer_registered(Timing::timer_slot s, int msecs_interval);
 
+  void unadvertise(std::string profile_id, std::string scenario_id, std::string &err);
+  void sendList(void *conn);
+  bool loadAdvertisedGame(std::string tag, XML_Helper *helper, void *conn);
+
   //! A static pointer for the singleton instance.
   static GamelistServer * s_instance;
 };

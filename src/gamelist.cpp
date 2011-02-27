@@ -29,6 +29,8 @@
 #include "profile.h"
 #include "profilelist.h"
 #include "advertised-game.h"
+#include "recently-played-game-list.h"
+#include "recently-played-game.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -233,5 +235,37 @@ bool Gamelist::load()
 bool Gamelist::save() const
 {
   return saveToFile(File::getSavePath() + "/" + RECENTLY_HOSTED_LIST);
+}
+
+RecentlyPlayedGameList* Gamelist::getList() const
+{
+  RecentlyPlayedGameList *l = new RecentlyPlayedGameList();
+  for (Gamelist::const_iterator i = begin(); i != end(); i++)
+    {
+      RecentlyPlayedNetworkedGame *g = 
+        new RecentlyPlayedNetworkedGame(*(*i)->getAdvertisedGame());
+      g->clearProfileId();
+      l->push_back (g);
+    }
+  return l;
+}
+  
+HostedGame *Gamelist::findGameByScenarioId(std::string scenario_id) const
+{
+  for (Gamelist::const_iterator i = begin(); i != end(); i++)
+    {
+      if ((*i)->getAdvertisedGame()->getId() == scenario_id)
+        return *i;
+    }
+  return NULL;
+}
+
+bool Gamelist::add(HostedGame *g)
+{
+  if (size() >= (guint32) MAX_NUMBER_OF_ADVERTISED_GAMES && 
+      MAX_NUMBER_OF_ADVERTISED_GAMES != -1)
+    return false;
+  push_back(g);
+  return true;
 }
 // End of file

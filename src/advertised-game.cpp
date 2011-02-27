@@ -35,6 +35,21 @@ AdvertisedGame::AdvertisedGame(GameScenario *scen, Profile *p)
   d_creation_date.assign_current_time();
   d_profile = new Profile(*p);
 }
+	
+	
+AdvertisedGame::AdvertisedGame(const RecentlyPlayedNetworkedGame &orig, Profile *p)
+        :RecentlyPlayedNetworkedGame(orig)
+{
+  d_creation_date.assign_current_time();
+  d_profile = new Profile(*p);
+}
+
+AdvertisedGame::AdvertisedGame(const AdvertisedGame &orig)
+        :RecentlyPlayedNetworkedGame(orig), 
+        d_creation_date(orig.d_creation_date)
+{
+  d_profile = new Profile(*orig.d_profile);
+}
 
 AdvertisedGame::AdvertisedGame(XML_Helper *helper)
 	:RecentlyPlayedNetworkedGame(helper)

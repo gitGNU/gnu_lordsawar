@@ -26,6 +26,8 @@
 #include "xmlhelper.h"
 #include "ucompose.hpp"
 #include "profile.h"
+#include "profilelist.h"
+#include "advertised-game.h"
 #include "recently-played-game-list.h"
 #include "recently-played-game.h"
   
@@ -167,11 +169,16 @@ void GamelistClient::request_advertising(RecentlyPlayedGame *game)
 {
   if (game)
     {
+      Profile *p = Profilelist::getInstance()->findProfileById(d_profile_id);
+      AdvertisedGame *g = 
+        new AdvertisedGame(*dynamic_cast<RecentlyPlayedNetworkedGame*>(game), 
+                           p);
       std::ostringstream os;
       XML_Helper helper(&os);
       helper.begin("1");
-      game->save(&helper);
+      g->save(&helper);
       network_connection->send(GLS_MESSAGE_ADVERTISE_GAME, os.str());
+      delete g;
     }
 }
 

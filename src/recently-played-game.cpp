@@ -70,6 +70,14 @@ RecentlyPlayedGame::RecentlyPlayedGame(std::string id, std::string profile_id,
   d_last_played.assign_current_time();
 }
 
+RecentlyPlayedGame::RecentlyPlayedGame(const RecentlyPlayedGame &orig)
+: d_id(orig.d_id), d_last_played(orig.d_last_played), d_round(orig.d_round), 
+    d_number_of_cities(orig.d_number_of_cities), 
+    d_number_of_players(orig.d_number_of_players), d_playmode(orig.d_playmode),
+    d_name(orig.d_name), d_profile_id(orig.d_profile_id)
+{
+}
+
 RecentlyPlayedGame::~RecentlyPlayedGame()
 {
 }
@@ -125,6 +133,11 @@ RecentlyPlayedHotseatGame::RecentlyPlayedHotseatGame(GameScenario *scen,
 	:RecentlyPlayedGame(scen, p), d_filename("")
 {
 }
+	
+RecentlyPlayedHotseatGame::RecentlyPlayedHotseatGame(const RecentlyPlayedHotseatGame &orig)
+: RecentlyPlayedGame(orig), d_filename(orig.d_filename)
+{
+}
 
 RecentlyPlayedHotseatGame::RecentlyPlayedHotseatGame(XML_Helper *helper)
 	:RecentlyPlayedGame(helper)
@@ -154,6 +167,11 @@ bool RecentlyPlayedHotseatGame::fillData(std::string filename)
 
 RecentlyPlayedPbmGame::RecentlyPlayedPbmGame(GameScenario *scen, Profile *p)
 	:RecentlyPlayedGame(scen, p), d_filename("")
+{
+}
+
+RecentlyPlayedPbmGame::RecentlyPlayedPbmGame(const RecentlyPlayedPbmGame &orig)
+: RecentlyPlayedGame(orig), d_filename(orig.d_filename)
 {
 }
 
@@ -197,6 +215,11 @@ RecentlyPlayedNetworkedGame::RecentlyPlayedNetworkedGame
                                std::string name, std::string host, guint32 port)
   : RecentlyPlayedGame(id, profile_id, round, num_cities, num_players, mode, 
                        name), d_host(host), d_port(port)
+{
+}
+
+RecentlyPlayedNetworkedGame::RecentlyPlayedNetworkedGame(const RecentlyPlayedNetworkedGame &orig)
+  : RecentlyPlayedGame(orig), d_host(orig.d_host), d_port(orig.d_port)
 {
 }
 
