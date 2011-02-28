@@ -51,6 +51,7 @@ public:
   sigc::signal<void, Player *> start_player_turn;
 
   void listenForLocalEvents(Player *p);
+  std::string getProfileId() const {return d_profile_id;};
 protected:
   GameStation();
   virtual ~GameStation();
@@ -70,7 +71,6 @@ protected:
                                           Glib::ustring &nickname);
 
   void setProfileId(std::string id) {d_profile_id = id;};
-  std::string getProfileId() const {return d_profile_id;};
 
 private:
   std::map<guint32, sigc::connection> action_listeners;

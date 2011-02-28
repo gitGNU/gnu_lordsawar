@@ -40,6 +40,9 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
 {
     public:
 
+        //! Re-ping games that haven't been successfully pinged in 5 mins.
+        static const int FIVE_MINUTES_OLD = 60 * 5;
+
 	//! The xml tag of this object in a game list file.
 	static std::string d_tag; 
 	
@@ -79,6 +82,7 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
 	//! Removes games from the list that are too old, or just too numerous.
 	void pruneGames();
 	
+        void pingGames();
 
 	// Static Methods
 
@@ -111,7 +115,9 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
 	//! Remove the old games from the list.
 	void pruneOldGames(int stale = TEN_DAYS_OLD);
 
-        void pruneTooManyGames(int too_many = 100);
+        void pruneTooManyGames(int too_many = MAX_NUMBER_OF_ADVERTISED_GAMES);
+  
+        void pruneUnresponsiveGames();
 
 	//! Load the game list from the given file.
 	bool loadFromFile(std::string filename);
@@ -120,6 +126,9 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
 	bool saveToFile(std::string filename) const;
 
         void remove_all();
+
+        void on_could_not_ping_game(HostedGame *game);
+
 	// DATA
 
         //! A static pointer for the singleton instance.

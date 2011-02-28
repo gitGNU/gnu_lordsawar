@@ -32,6 +32,7 @@ std::string HostedGame::d_tag = "hostedgame";
 
 HostedGame::HostedGame(AdvertisedGame *advertised_game)
 {
+  unresponsive = false;
   d_pid = 0;
   //watch out, not copying here.
   d_advertised_game = advertised_game;
@@ -39,6 +40,7 @@ HostedGame::HostedGame(AdvertisedGame *advertised_game)
 
 HostedGame::HostedGame(XML_Helper *helper)
 {
+  unresponsive = false;
   helper->getData(d_pid, "pid");
   helper->registerTag(AdvertisedGame::d_tag_name, 
 		      sigc::mem_fun(*this, &HostedGame::loadAdvertisedGame));
@@ -67,4 +69,17 @@ bool HostedGame::loadAdvertisedGame(std::string tag, XML_Helper *helper)
       return true;
     }
   return false;
+}
+
+void HostedGame::ping()
+{
+  getAdvertisedGame()->pinged.connect
+    (sigc::mem_fun(*this, &HostedGame::on_pinged));
+  getAdvertisedGame()->ping();
+}
+
+void HostedGame::on_pinged(bool success)
+{
+  if (!success)
+    cannot_ping_game.emit(this);
 }

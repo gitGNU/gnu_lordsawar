@@ -28,6 +28,7 @@
 #include "recently-played-game.h"
 class XML_Helper;
 class Profile;
+class NetworkConnection;
 
 //! A single game entry in the advertised games list.
 /**
@@ -55,6 +56,7 @@ class AdvertisedGame : public RecentlyPlayedNetworkedGame
 
 	// Get Methods
         Glib::TimeVal getGameCreatedOn() const {return d_creation_date;};
+        Glib::TimeVal getGameLastPingedOn() const {return d_last_pinged_date;};
 
         Profile * getProfie() const {return d_profile;};
 	
@@ -65,17 +67,26 @@ class AdvertisedGame : public RecentlyPlayedNetworkedGame
 
         bool saveEntry(XML_Helper* helper) const;
 
-	// Methods that operate on the class data and modify it.
 
+	// Methods that operate on the class data and modify it.
+        void ping();
+
+        //signals
+  
+        sigc::signal<void, bool> pinged;
 
     private:
 
 	// DATA
         
         Glib::TimeVal d_creation_date;
+        Glib::TimeVal d_last_pinged_date;
         Profile *d_profile;
 
         bool loadProfile(std::string tag, XML_Helper *helper);
+
+        void on_connected_to_game(NetworkConnection *conn);
+        void on_could_not_connect_to_game(NetworkConnection *conn);
 	
 };
 

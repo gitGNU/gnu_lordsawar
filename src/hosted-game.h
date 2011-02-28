@@ -48,9 +48,11 @@ class HostedGame
 
         // Set Methods
         void setAdvertisedGame(AdvertisedGame *g) {d_advertised_game = g;};
+        void setUnresponsive(bool resp) {unresponsive = resp;};
 
 	// Get Methods
         AdvertisedGame * getAdvertisedGame() const {return d_advertised_game;};
+        bool getUnresponsive() const {return unresponsive;};
 
 	// Methods that operate on the class data but do not modify it.
 
@@ -59,15 +61,24 @@ class HostedGame
 
 	// Methods that operate on the class data and modify it.
 
+        void ping();
+
+        // Signals
+  
+        sigc::signal<void, HostedGame*> cannot_ping_game;
+
     private:
 
 	// DATA
         
         bool loadAdvertisedGame(std::string tag, XML_Helper *helper);
+        void on_pinged(bool success);
 
         AdvertisedGame *d_advertised_game;
         guint32 d_pid;
 	
+        bool unresponsive;
+    
 };
 
 #endif // HOSTED_GAME_H

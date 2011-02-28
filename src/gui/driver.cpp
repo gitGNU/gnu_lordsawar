@@ -526,12 +526,12 @@ void Driver::advertise_game(GameScenario *game_scenario, int port, Profile *p)
 {
   GamelistClient *gsc = GamelistClient ::getInstance();
   gsc->client_connected.connect
-    (sigc::bind(sigc::mem_fun(*this, &Driver::on_connected_to_gamelist_server), game_scenario, port, p));
+    (sigc::bind(sigc::mem_fun(*this, &Driver::on_connected_to_gamelist_server_for_advertising), game_scenario, port, p));
   gsc->start(Configuration::s_gamelist_server_hostname,
              Configuration::s_gamelist_server_port, p);
 }
 
-void Driver::on_connected_to_gamelist_server(GameScenario *game_scenario, int port, Profile *p)
+void Driver::on_connected_to_gamelist_server_for_advertising(GameScenario *game_scenario, int port, Profile *p)
 {
   GamelistClient *gsc = GamelistClient::getInstance();
   //okay, fashion the recently played game to go over the wire.
@@ -545,10 +545,7 @@ void Driver::on_connected_to_gamelist_server(GameScenario *game_scenario, int po
 void Driver::on_advertising_response_received(std::string scenario_id, 
                                               std::string err)
 {
-  //if (err != "")
-    //std::cerr << "Could not advertise " << scenario_id <<".  " << err << std::endl;
-  //else
-    //std::cerr << "Advertised " << scenario_id <<"." << std::endl;
+  d_advertised_scenario_id = scenario_id;
   GamelistClient::deleteInstance();
   return;
 }
@@ -616,11 +613,13 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
     
   if (response == false)
     {
+      if (d_advertised_scenario_id != "")
+        unadvertise_game (d_advertised_scenario_id, p);
       GameServer::deleteInstance();
 
       delete game_scenario;
       if (splash_window)
-	splash_window->show();
+        splash_window->show();
     }
 }
 
@@ -858,7 +857,16 @@ void Driver::on_game_ended()
     {
       game_window->hide();
     }
-    
+
+  if (GameServer::getInstance()->isListening() &&
+      d_advertised_scenario_id != "")
+    {
+      GameServer *gs = GameServer::getInstance();
+      Profile *profile = 
+        Profilelist::getInstance()->findProfileById(gs->getProfileId());
+      unadvertise_game (d_advertised_scenario_id, profile);
+    }
+
   GameClient::deleteInstance();
   PbmGameClient::deleteInstance();
   GameServer::deleteInstance();
@@ -1248,3 +1256,29 @@ void Driver::on_could_not_bind_to_port (int port)
   dialog.run();
   dialog.hide();
 }
+
+void Driver::unadvertise_game(std::string scenario_id, Profile *p)
+{
+  GamelistClient *gsc = GamelistClient ::getInstance();
+  gsc->client_connected.connect
+    (sigc::bind(sigc::mem_fun(*this, &Driver::on_connected_to_gamelist_server_for_advertising_removal), scenario_id));
+  gsc->start(Configuration::s_gamelist_server_hostname,
+             Configuration::s_gamelist_server_port, p);
+}
+
+void Driver::on_connected_to_gamelist_server_for_advertising_removal(std::string scenario_id)
+{
+  GamelistClient *gsc = GamelistClient::getInstance();
+  gsc->received_advertising_removal_response.connect
+    (sigc::mem_fun(*this, &Driver::on_advertising_removal_response_received));
+  gsc->request_advertising_removal(scenario_id);
+}
+
+void Driver::on_advertising_removal_response_received(std::string scenario_id, 
+                                                      std::string err)
+{
+  d_advertised_scenario_id = "";
+  GamelistClient::deleteInstance();
+  return;
+}
+

@@ -58,6 +58,8 @@ GamelistServer::GamelistServer()
   Timing::instance().timer_registered.connect
     (sigc::mem_fun(*this, &GamelistServer::on_timer_registered));
   Gamelist::getInstance()->load();
+  Gamelist::getInstance()->pruneGames();
+  Gamelist::getInstance()->pingGames();
 }
 
 GamelistServer::~GamelistServer()
@@ -210,6 +212,9 @@ bool GamelistServer::onGotMessage(void *conn, int type, std::string payload)
 void GamelistServer::onConnectionMade(void *conn)
 {
   debug("connection made");
+  printf("pinging games now.\n");
+  Gamelist::getInstance()->pruneGames();
+  Gamelist::getInstance()->pingGames();
 }
 
 void GamelistServer::onConnectionLost(void *conn)

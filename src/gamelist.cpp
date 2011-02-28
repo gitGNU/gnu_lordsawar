@@ -161,6 +161,7 @@ void Gamelist::pruneGames()
 {
   sort(orderByTime);
   pruneOldGames(TEN_DAYS_OLD);
+  pruneUnresponsiveGames();
   pruneTooManyGames(100);
 }
 
@@ -242,6 +243,8 @@ RecentlyPlayedGameList* Gamelist::getList(bool scrub_profile_id) const
   RecentlyPlayedGameList *l = new RecentlyPlayedGameList();
   for (Gamelist::const_iterator i = begin(); i != end(); i++)
     {
+      if ((*i)->getUnresponsive())
+        continue;
       RecentlyPlayedNetworkedGame *g = 
         new RecentlyPlayedNetworkedGame(*(*i)->getAdvertisedGame());
       if (scrub_profile_id)
@@ -270,4 +273,39 @@ bool Gamelist::add(HostedGame *g)
   push_back(g);
   return true;
 }
+
+void Gamelist::pingGames()
+{
+  double stale = (double) FIVE_MINUTES_OLD;
+  Glib::TimeVal now;
+  now.assign_current_time();
+  for (iterator i = begin(); i != end(); i++)
+    {
+      AdvertisedGame *a = (*i)->getAdvertisedGame();
+      if (a->getGameLastPingedOn().as_double() + stale < now.as_double())
+        {
+          (*i)->cannot_ping_game.connect
+            (sigc::mem_fun(*this, &Gamelist::on_could_not_ping_game));
+          (*i)->ping();
+        }
+    }
+}
+
+void Gamelist::pruneUnresponsiveGames()
+{
+  for (iterator i = begin(); i != end(); i++)
+    {
+      if ((*i)->getUnresponsive())
+        {
+          delete *i;
+          i = erase (i);
+        }
+    }
+}
+
+void Gamelist::on_could_not_ping_game(HostedGame *game)
+{
+  game->setUnresponsive(true);
+}
+
 // End of file

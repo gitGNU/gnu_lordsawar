@@ -49,6 +49,7 @@ class Driver: public sigc::trackable
     std::string d_load_filename;
     sigc::connection heartbeat_conn;
     Player::Type robot_player_type;
+    std::string d_advertised_scenario_id;
     unsigned int number_of_robots;
     std::string game_scenario_downloaded;
     sigc::signal<void, std::string> game_scenario_received;
@@ -114,9 +115,12 @@ class Driver: public sigc::trackable
     void on_could_not_bind_to_port (int port);
 
     void advertise_game(GameScenario *game_scenario, int port, Profile *p);
-    void on_connected_to_gamelist_server(GameScenario *game_scenario, int port, Profile *p);
+    void on_connected_to_gamelist_server_for_advertising(GameScenario *game_scenario, int port, Profile *p);
 
     void on_advertising_response_received(std::string scenario_id, std::string err);
+    void unadvertise_game(std::string scenario_id, Profile *p);
+    void on_connected_to_gamelist_server_for_advertising_removal(std::string scenario_id);
+    void on_advertising_removal_response_received(std::string scenario_id, std::string err);
 };
 
 

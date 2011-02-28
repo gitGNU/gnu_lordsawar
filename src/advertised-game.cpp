@@ -22,6 +22,7 @@
 #include "advertised-game.h"
 #include "xmlhelper.h"
 #include "profile.h"
+#include "network-connection.h"
 
 
 std::string AdvertisedGame::d_tag_name = "advertisedgame";
@@ -33,6 +34,7 @@ AdvertisedGame::AdvertisedGame(GameScenario *scen, Profile *p)
 	:RecentlyPlayedNetworkedGame(scen, p)
 {
   d_creation_date.assign_current_time();
+  d_last_pinged_date.assign_current_time();
   d_profile = new Profile(*p);
 }
 	
@@ -41,12 +43,14 @@ AdvertisedGame::AdvertisedGame(const RecentlyPlayedNetworkedGame &orig, Profile 
         :RecentlyPlayedNetworkedGame(orig)
 {
   d_creation_date.assign_current_time();
+  d_last_pinged_date.assign_current_time();
   d_profile = new Profile(*p);
 }
 
 AdvertisedGame::AdvertisedGame(const AdvertisedGame &orig)
         :RecentlyPlayedNetworkedGame(orig), 
-        d_creation_date(orig.d_creation_date)
+        d_creation_date(orig.d_creation_date),
+        d_last_pinged_date(orig.d_last_pinged_date)
 {
   d_profile = new Profile(*orig.d_profile);
 }
@@ -57,6 +61,8 @@ AdvertisedGame::AdvertisedGame(XML_Helper *helper)
   std::string s;
   helper->getData(s, "created_on");
   d_creation_date.assign_from_iso8601(s);
+  helper->getData(s, "last_pinged_on");
+  d_last_pinged_date.assign_from_iso8601(s);
   helper->registerTag(Profile::d_tag, 
 		      sigc::mem_fun(*this, &AdvertisedGame::loadProfile));
 }
@@ -71,6 +77,8 @@ bool AdvertisedGame::doSave(XML_Helper *helper) const
   bool retval = true;
   std::string s = d_creation_date.as_iso8601();
   retval &= helper->saveData("created_on", s);
+  s = d_last_pinged_date.as_iso8601();
+  retval &= helper->saveData("last_pinged_on", s);
   retval &= helper->saveData("host", getHost());
   retval &= helper->saveData("port", getPort());
   retval &= d_profile->save(helper);
@@ -94,4 +102,31 @@ bool AdvertisedGame::loadProfile(std::string tag, XML_Helper *helper)
       return true;
     }
   return false;
+}
+        
+void AdvertisedGame::ping()
+{
+  NetworkConnection *conn = new NetworkConnection();
+
+  conn->connected.connect
+    (sigc::bind(sigc::mem_fun(*this, &AdvertisedGame::on_connected_to_game), 
+                conn));
+  conn->connection_failed.connect
+    (sigc::bind(sigc::mem_fun(*this, 
+                              &AdvertisedGame::on_could_not_connect_to_game), 
+                conn));
+  conn->connectToHost(getHost(), getPort());
+}
+
+void AdvertisedGame::on_connected_to_game(NetworkConnection *conn)
+{
+  delete conn;
+  d_last_pinged_date.assign_current_time();
+  pinged.emit(true);
+}
+
+void AdvertisedGame::on_could_not_connect_to_game(NetworkConnection *conn)
+{
+  delete conn;
+  pinged.emit(false);
 }
