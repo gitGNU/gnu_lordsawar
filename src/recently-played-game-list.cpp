@@ -203,7 +203,7 @@ void RecentlyPlayedGameList::pruneGames()
 
 void RecentlyPlayedGameList::pruneGamesBelongingToRemovedProfiles()
 {
-  for (RecentlyPlayedGameList::iterator it = begin(); it != end();)
+  for (RecentlyPlayedGameList::iterator it = begin(); it != end(); ++it)
     {
       Profile *p = 
         Profilelist::getInstance()->findProfileById((*it)->getProfileId());
