@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 
 class Profile;
 class RecentlyPlayedNetworkedGame;
+class RecentlyPlayedGameList;
 #include "decorated.h"
 // dialog for joining remote games
 class NetworkGameSelectorDialog: public Decorated
@@ -41,19 +42,21 @@ class NetworkGameSelectorDialog: public Decorated
     bool run();
     
  private:
+    Profile *profile;
     Gtk::Dialog* dialog;
     Gtk::Entry *hostname_entry;
     Gtk::SpinButton *port_spinbutton;
     Gtk::Button *connect_button;
     Gtk::Button *clear_button;
+    Gtk::Button *refresh_button;
 
     void on_hostname_changed();
 
     Gtk::TreeView *recent_treeview;
 
-    class RecentlyJoinedGamesColumns: public Gtk::TreeModelColumnRecord {
+    class GamesColumns: public Gtk::TreeModelColumnRecord {
     public:
-	RecentlyJoinedGamesColumns() 
+	GamesColumns() 
         { add(name); add(turn);
 	  add(number_of_players); add(number_of_cities); add(host); add(port);}
 	
@@ -64,12 +67,24 @@ class NetworkGameSelectorDialog: public Decorated
 	Gtk::TreeModelColumn<Glib::ustring> host;
 	Gtk::TreeModelColumn<unsigned int> port;
     };
-    const RecentlyJoinedGamesColumns recently_joined_games_columns;
+    const GamesColumns recently_joined_games_columns;
     Glib::RefPtr<Gtk::ListStore> recently_joined_games_list;
-    void addRecentlyJoinedGame(RecentlyPlayedNetworkedGame*);
+    void addGame(Glib::RefPtr<Gtk::ListStore> list, const GamesColumns &columns, RecentlyPlayedNetworkedGame*);
+    const GamesColumns games_columns;
+    Glib::RefPtr<Gtk::ListStore> games_list;
+    Gtk::TreeView *games_treeview;
 
     void on_recent_game_selected();
+    void on_game_selected();
     void on_clear_clicked();
+    void on_refresh_clicked();
+    void update_buttons();
+
+    void select_first_game();
+    void fill_games(RecentlyPlayedGameList *rpgl, Glib::RefPtr<Gtk::ListStore> list, const GamesColumns &columns, Profile *p);
+
+    void on_connected_to_gamelist_server();
+    void on_game_list_received(RecentlyPlayedGameList *rpgl, std::string err);
 };
 
 #endif

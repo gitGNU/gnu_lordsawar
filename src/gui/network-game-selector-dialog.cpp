@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,9 +29,12 @@
 #include "defs.h"
 #include "File.h"
 #include "profile.h"
+#include "ucompose.hpp"
+#include "gamelist-client.h"
 
 NetworkGameSelectorDialog::NetworkGameSelectorDialog(Profile *p)
 {
+    profile = p;
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file
 	(get_glade_path() + "/pick-network-game-to-join-dialog.ui");
@@ -50,6 +53,9 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Profile *p)
     xml->get_widget("clear_button", clear_button);
     clear_button->signal_clicked().connect
       (sigc::mem_fun(*this, &NetworkGameSelectorDialog::on_clear_clicked));
+    xml->get_widget("refresh_button", refresh_button);
+    refresh_button->signal_clicked().connect
+      (sigc::mem_fun(*this, &NetworkGameSelectorDialog::on_refresh_clicked));
     xml->get_widget("connect_button", connect_button);
     connect_button->set_sensitive(false);
     recently_joined_games_list = 
@@ -68,62 +74,121 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Profile *p)
     
     RecentlyPlayedGameList *rpgl = RecentlyPlayedGameList::getInstance();
     rpgl->pruneGames();
-    for (RecentlyPlayedGameList::iterator it = rpgl->begin(); it != rpgl->end();
-	 it++)
-      {
-	if ((*it)->getPlayMode() == GameScenario::NETWORKED)
-	  {
-	    RecentlyPlayedNetworkedGame *game;
-	    game = dynamic_cast<RecentlyPlayedNetworkedGame*>(*it);
-            if (game->getProfileId() == p->getId())
-              addRecentlyJoinedGame(game);
-	  }
-      }
+    fill_games(rpgl, recently_joined_games_list, recently_joined_games_columns,
+               p);
+
+    xml->get_widget("games_treeview", games_treeview);
+    games_list = Gtk::ListStore::create(games_columns);
+    games_treeview->set_model(games_list);
+    games_treeview->append_column("Name", games_columns.name);
+    games_treeview->append_column("Turn", games_columns.turn);
+    games_treeview->append_column("Players", games_columns.number_of_players);
+    games_treeview->append_column("Cities", games_columns.number_of_cities);
+    games_treeview->append_column("Host", games_columns.host);
+    games_treeview->append_column("Port", games_columns.port);
+    games_treeview->set_headers_visible(true);
+    games_treeview->get_selection()->signal_changed().connect
+          (sigc::mem_fun(*this, &NetworkGameSelectorDialog::on_game_selected));
+  
     port_spinbutton->set_value(LORDSAWAR_PORT);
 
-    if (recently_joined_games_list->children().size() == 0)
-      clear_button->set_sensitive(false);
-    else
-      {
-        Gtk::TreeModel::Row row;
-        row = recent_treeview->get_model()->children()[0];
-        if (row)
-          recent_treeview->get_selection()->select(row);
-      }
+    select_first_game();
+ 
+  if (Configuration::s_gamelist_server_hostname != "" &&
+      Configuration::s_gamelist_server_port != 0)
+    {
+      GamelistClient::getInstance()->client_connected.connect
+        (sigc::mem_fun 
+         (*this, &NetworkGameSelectorDialog::on_connected_to_gamelist_server));
+
+      GamelistClient::getInstance()->received_game_list.connect
+        (sigc::mem_fun(*this, &NetworkGameSelectorDialog::on_game_list_received));
+
+      GamelistClient::getInstance()->start 
+        (Configuration::s_gamelist_server_hostname, 
+         Configuration::s_gamelist_server_port, profile);
+    }
 }
-	    
+
+void NetworkGameSelectorDialog::on_connected_to_gamelist_server()
+{
+  refresh_button->set_sensitive(false);
+  GamelistClient::getInstance()->request_game_list();
+}
+
+void NetworkGameSelectorDialog::on_game_list_received(RecentlyPlayedGameList *rpgl, std::string err)
+{
+  if (err == "")
+    {
+      fill_games(rpgl, games_list, games_columns, NULL);
+      select_first_game();
+    }
+
+  delete rpgl;
+  refresh_button->set_sensitive(true);
+}
+
+void NetworkGameSelectorDialog::select_first_game()
+{
+  if (games_treeview->get_model()->children().size() > 0)
+    {
+      Gtk::TreeModel::Row row;
+      row = games_treeview->get_model()->children()[0];
+      if (row)
+        games_treeview->get_selection()->select(row);
+    }
+  else if (recent_treeview->get_model()->children().size() > 0)
+    {
+      Gtk::TreeModel::Row row;
+      row = recent_treeview->get_model()->children()[0];
+      if (row)
+        recent_treeview->get_selection()->select(row);
+    }
+}
+
+void NetworkGameSelectorDialog::fill_games(RecentlyPlayedGameList *rpgl, Glib::RefPtr<Gtk::ListStore> list, const GamesColumns &columns, Profile *p)
+{
+  for (RecentlyPlayedGameList::iterator it = rpgl->begin(); it != rpgl->end();
+       it++)
+    {
+      if ((*it)->getPlayMode() == GameScenario::NETWORKED)
+        {
+          RecentlyPlayedNetworkedGame *game;
+          game = dynamic_cast<RecentlyPlayedNetworkedGame*>(*it);
+          if (p)
+            {
+              if (game->getProfileId() == p->getId())
+                {
+                  addGame(list, columns, game);
+                }
+            }
+          else
+            addGame(list, columns, game);
+        }
+    }
+}
+
 NetworkGameSelectorDialog::~NetworkGameSelectorDialog()
 {
+  GamelistClient::deleteInstance();
   delete dialog;
 }
 
-void NetworkGameSelectorDialog::addRecentlyJoinedGame(RecentlyPlayedNetworkedGame*recent)
+void NetworkGameSelectorDialog::addGame(Glib::RefPtr<Gtk::ListStore> list, const GamesColumns &columns, RecentlyPlayedNetworkedGame*g)
 {
-    Gtk::TreeIter i = recently_joined_games_list->append();
-    (*i)[recently_joined_games_columns.name] = recent->getName();
-    (*i)[recently_joined_games_columns.turn] = recent->getRound();
-    (*i)[recently_joined_games_columns.number_of_players] = recent->getNumberOfPlayers();
-    (*i)[recently_joined_games_columns.number_of_cities] = recent->getNumberOfCities();
-    (*i)[recently_joined_games_columns.host] = recent->getHost();
-    (*i)[recently_joined_games_columns.port] = recent->getPort();
+    Gtk::TreeIter i = list->append();
+    (*i)[columns.name] = g->getName();
+    (*i)[columns.turn] = g->getRound();
+    (*i)[columns.number_of_players] = g->getNumberOfPlayers();
+    (*i)[columns.number_of_cities] = g->getNumberOfCities();
+    (*i)[columns.host] = g->getHost();
+    (*i)[columns.port] = g->getPort();
 }
 
 
 void NetworkGameSelectorDialog::on_hostname_changed()
 {
-  //validate the ip/hostname
-  if (hostname_entry->get_text().length() > 0)
-    {
-      //connect_button->grab_focus();
-      connect_button->set_sensitive(true);
-      connect_button->property_can_focus() = true;
-      connect_button->property_can_default() = true;
-      connect_button->property_has_default() = true;
-      hostname_entry->property_activates_default() = true;
-      connect_button->property_receives_default() = true;
-    }
-  else
-    connect_button->set_sensitive(false);
+  update_buttons();
 }
 
 void NetworkGameSelectorDialog::set_parent_window(Gtk::Window &parent)
@@ -158,6 +223,15 @@ void NetworkGameSelectorDialog::on_recent_game_selected()
   hostname_entry->set_text(row[recently_joined_games_columns.host]);
   port_spinbutton->set_value(row[recently_joined_games_columns.port]);
 }
+
+void NetworkGameSelectorDialog::on_game_selected()
+{
+  Glib::RefPtr<Gtk::TreeSelection> selection = games_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+  Gtk::TreeModel::Row row = *iterrow;
+  hostname_entry->set_text(row[games_columns.host]);
+  port_spinbutton->set_value(row[games_columns.port]);
+}
       
 void NetworkGameSelectorDialog::on_clear_clicked()
 {
@@ -166,4 +240,33 @@ void NetworkGameSelectorDialog::on_clear_clicked()
   rpgl->save();
   recently_joined_games_list->clear();
   recently_joined_games_list.reset();
+  update_buttons();
+}
+
+void NetworkGameSelectorDialog::update_buttons()
+{
+  if (recently_joined_games_list->children().size() == 0)
+    clear_button->set_sensitive(false);
+  else
+    clear_button->set_sensitive(true);
+
+  //validate the ip/hostname
+  if (String::utrim(hostname_entry->get_text()).length() > 0)
+    {
+      //connect_button->grab_focus();
+      connect_button->set_sensitive(true);
+      connect_button->property_can_focus() = true;
+      connect_button->property_can_default() = true;
+      connect_button->property_has_default() = true;
+      hostname_entry->property_activates_default() = true;
+      connect_button->property_receives_default() = true;
+    }
+  else
+    connect_button->set_sensitive(false);
+}
+
+void NetworkGameSelectorDialog::on_refresh_clicked()
+{
+  games_list->clear();
+  on_connected_to_gamelist_server();
 }
