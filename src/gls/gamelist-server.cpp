@@ -163,7 +163,7 @@ bool GamelistServer::onGotMessage(void *conn, int type, std::string payload)
           pos = payload.find(' ');
           if (pos == std::string::npos)
             return false;
-          unadvertise(conn, payload.substr(0, pos - 1), payload.substr(pos + 1),
+          unadvertise(conn, payload.substr(0, pos), payload.substr(pos + 1),
                       err);
           if (err != "")
             network_server->send(conn, GLS_MESSAGE_COULD_NOT_UNADVERTISE_GAME, 

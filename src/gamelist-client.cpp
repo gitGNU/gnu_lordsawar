@@ -127,7 +127,7 @@ bool GamelistClient::onGotMessage(int type, std::string payload)
           pos = payload.find(' ');
           if (pos == std::string::npos)
             return false;
-          received_advertising_response.emit(payload.substr(0, pos - 1), 
+          received_advertising_response.emit(payload.substr(0, pos), 
                                              payload.substr(pos + 1));
         }
       break;
@@ -137,7 +137,7 @@ bool GamelistClient::onGotMessage(int type, std::string payload)
           if (pos == std::string::npos)
             return false;
           received_advertising_removal_response.emit
-            (payload.substr(0, pos - 1), payload.substr(pos + 1));
+            (payload.substr(0, pos), payload.substr(pos + 1));
         }
       break;
     case GLS_MESSAGE_GAME_ADVERTISED:
