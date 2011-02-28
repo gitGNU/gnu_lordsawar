@@ -644,7 +644,7 @@ void GameServer::join(void *conn, std::string nickname_and_profile_id)
   pos = nickname_and_profile_id.rfind(' ');
   if (pos == std::string::npos)
     return;
-  std::string nickname = nickname_and_profile_id.substr(0, pos - 1);
+  std::string nickname = nickname_and_profile_id.substr(0, pos);
   std::string profile_id = nickname_and_profile_id.substr(pos + 1);
   Participant *part = findParticipantByConn(conn);
   if (!part) {
@@ -659,7 +659,6 @@ void GameServer::join(void *conn, std::string nickname_and_profile_id)
   if (new_participant)
     sendMap(part);
 
-
   Glib::ustring new_nickname = make_nickname_unique(nickname);
   if (new_nickname != "")
     {
@@ -671,7 +670,6 @@ void GameServer::join(void *conn, std::string nickname_and_profile_id)
         }
       notifyJoin(new_nickname);
     }
-      
 }
 
 void GameServer::depart(void *conn)
