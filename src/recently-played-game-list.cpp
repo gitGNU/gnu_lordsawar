@@ -192,13 +192,13 @@ bool RecentlyPlayedGameList::orderByTime(RecentlyPlayedGame*rhs, RecentlyPlayedG
     return false;
 }
 
-void RecentlyPlayedGameList::pruneGames()
+void RecentlyPlayedGameList::pruneGames(int max_number_of_games)
 {
   sort(orderByTime);
   pruneGamesBelongingToRemovedProfiles();
   pruneSameNamedAndSameHostGames();
   pruneOldGames(TWO_WEEKS_OLD);
-  pruneTooManyGames(10);
+  pruneTooManyGames(max_number_of_games);
 }
 
 void RecentlyPlayedGameList::pruneGamesBelongingToRemovedProfiles()

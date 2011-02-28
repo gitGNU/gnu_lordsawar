@@ -248,6 +248,7 @@ RecentlyPlayedGameList* Gamelist::getList(bool scrub_profile_id) const
         g->clearProfileId();
       l->push_back (g);
     }
+  l->pruneGames(100);
   return l;
 }
   

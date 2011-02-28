@@ -80,8 +80,8 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 	void removeAllNetworkedGames();
 
 	//! Removes games from the list that are too old, or just too numerous.
-	void pruneGames();
-	
+	void pruneGames(int max_number_of_games = 10);
+
 	// Static Methods
 
         //! return the singleton instance of this class.
