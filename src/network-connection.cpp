@@ -48,10 +48,15 @@ void NetworkConnection::tear_down_connection()
   if (conn)
     conn->clear_pending();
   if (source)
-    source.reset();
+    source->destroy();
   if (conn)
+    {
     if (conn->is_closed() == false)
-      conn->close();
+      {
+        conn->close();
+        //conn.reset();
+      }
+    }
 }
 
 bool NetworkConnection::on_got_input(Glib::IOCondition cond)
@@ -71,7 +76,7 @@ bool NetworkConnection::on_got_input(Glib::IOCondition cond)
       if (len <= 0)
         {
           tear_down_connection();
-          connection_lost();
+          connection_lost.emit();
           return false;
         }
       break;

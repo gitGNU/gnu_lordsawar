@@ -86,9 +86,7 @@ bool NetworkServer::gotClientConnection(const Glib::RefPtr<Gio::SocketConnection
                     (connection_lost, 
                      &sigc::signal<void, void *>::emit), conn));
 
-      conn->connected.connect
-        (sigc::bind(sigc::mem_fun(connection_made, 
-                                  &sigc::signal<void, void *>::emit), conn));
+      connection_made.emit(conn);
       
       conn->got_message.connect
         (sigc::bind<0>(sigc::mem_fun(got_message, 
