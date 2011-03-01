@@ -4677,7 +4677,7 @@ void Player::doStackUnpark(Stack *s)
 
 void Player::stackUnpark(Stack *s)
 {
-  doStackPark(s);
+  doStackUnpark(s);
   Action_UnparkStack *item = new Action_UnparkStack();
   item->fillData(s);
   addAction(item);
