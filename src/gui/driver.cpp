@@ -522,21 +522,22 @@ GameScenario *Driver::create_new_scenario(GameParameters &g, GameScenario::PlayM
   return game_scenario;
 }
 
-void Driver::advertise_game(GameScenario *game_scenario, int port, Profile *p)
+void Driver::advertise_game(GameScenario *game_scenario, Profile *p)
 {
   GamelistClient *gsc = GamelistClient ::getInstance();
   gsc->client_connected.connect
-    (sigc::bind(sigc::mem_fun(*this, &Driver::on_connected_to_gamelist_server_for_advertising), game_scenario, port, p));
+    (sigc::bind(sigc::mem_fun(*this, &Driver::on_connected_to_gamelist_server_for_advertising), game_scenario, p));
   gsc->start(Configuration::s_gamelist_server_hostname,
              Configuration::s_gamelist_server_port, p);
 }
 
-void Driver::on_connected_to_gamelist_server_for_advertising(GameScenario *game_scenario, int port, Profile *p)
+void Driver::on_connected_to_gamelist_server_for_advertising(GameScenario *game_scenario, Profile *p)
 {
   GamelistClient *gsc = GamelistClient::getInstance();
   //okay, fashion the recently played game to go over the wire.
   RecentlyPlayedNetworkedGame *g = 
     new RecentlyPlayedNetworkedGame(game_scenario, p);
+  g->setNumberOfPlayers(Playerlist::getInstance()->countPlayersAlive());
   gsc->received_advertising_response.connect
     (sigc::mem_fun(*this, &Driver::on_advertising_response_received));
   gsc->request_advertising(g);
@@ -578,9 +579,13 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
       return;
     }
   if (advertised)
-    advertise_game(game_scenario, port, p);
+    advertise_game(game_scenario, p);
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   game_server->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
+  if (advertised)
+    game_server->round_ends.connect
+      (sigc::bind(sigc::mem_fun(*this, &Driver::on_advertised_game_round_ends),
+                  game_scenario, p));
   game_server->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
   next_turn->srequestAbort.connect(sigc::mem_fun(game_server, &GameServer::on_turn_aborted));
   if (game_lobby_dialog)
@@ -1282,3 +1287,7 @@ void Driver::on_advertising_removal_response_received(std::string scenario_id,
   return;
 }
 
+void Driver::on_advertised_game_round_ends(GameScenario *game_scenario, Profile *p)
+{
+  advertise_game(game_scenario, p);
+}

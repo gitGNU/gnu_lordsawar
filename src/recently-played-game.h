@@ -103,6 +103,8 @@ class RecentlyPlayedGame
 
         void clearProfileId() { d_profile_id = "";};
 
+        void setNumberOfPlayers(guint32 num) {d_number_of_players = num;};
+
 	// Methods that operate on the class data but do not modify it.
 
 	//! Save the game entry to an opened file.

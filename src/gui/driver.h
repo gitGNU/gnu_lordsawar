@@ -114,13 +114,15 @@ class Driver: public sigc::trackable
     void on_could_not_bind_to_port_for_headless_server(int port);
     void on_could_not_bind_to_port (int port);
 
-    void advertise_game(GameScenario *game_scenario, int port, Profile *p);
-    void on_connected_to_gamelist_server_for_advertising(GameScenario *game_scenario, int port, Profile *p);
+    void advertise_game(GameScenario *game_scenario, Profile *p);
+    void on_connected_to_gamelist_server_for_advertising(GameScenario *game_scenario, Profile *p);
 
     void on_advertising_response_received(std::string scenario_id, std::string err);
     void unadvertise_game(std::string scenario_id, Profile *p);
     void on_connected_to_gamelist_server_for_advertising_removal(std::string scenario_id);
     void on_advertising_removal_response_received(std::string scenario_id, std::string err);
+
+    void on_advertised_game_round_ends(GameScenario *game_scenario, Profile *p);
 };
 
 
