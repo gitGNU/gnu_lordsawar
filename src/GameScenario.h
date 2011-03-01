@@ -151,6 +151,8 @@ class GameScenario: public GameScenarioOptions
 
         static std::string generate_guid();
 
+        static void cleanup();
+
 	void inhibitAutosaveRemoval(bool i) {inhibit_autosave_removal = i;}
     private:
 	  /** Callback function for loading a game. See XML_Helper for details.

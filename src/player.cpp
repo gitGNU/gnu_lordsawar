@@ -355,9 +355,7 @@ void Player::clearActionlist()
 {
     for (list<Action*>::iterator it = d_actions.begin();
         it != d_actions.end(); it++)
-    {
       delete (*it);
-    }
     d_actions.clear();
 }
 

@@ -109,6 +109,13 @@ GameScenario::GameScenario(string savegame, bool& broken)
       File::erase(filename);
       helper.close();
       t.Close();
+      if (broken)
+        cleanup();
+    }
+  else
+    {
+      t.Close();
+      cleanup();
     }
 }
 
@@ -548,26 +555,7 @@ bool GameScenario::loadWithHelper(XML_Helper& helper)
 
 GameScenario::~GameScenario()
 {
-  // GameMap is a Singleton so we need a function to delete it
-  Itemlist::deleteInstance();
-  Playerlist::deleteInstance();
-  Citylist::deleteInstance();
-  Templelist::deleteInstance();
-  Ruinlist::deleteInstance();
-  Rewardlist::deleteInstance();
-  Signpostlist::deleteInstance();
-  Portlist::deleteInstance();
-  Bridgelist::deleteInstance();
-  Roadlist::deleteInstance();
-  QuestsManager::deleteInstance();
-  VectoredUnitlist::deleteInstance();
-  GameMap::deleteInstance();
-
-  if (fl_counter)
-    {
-      delete fl_counter;
-      fl_counter = 0;
-    }
+  cleanup();
   if (Configuration::s_autosave_policy == 1 && 
       inhibit_autosave_removal == false)
     {
@@ -575,7 +563,6 @@ GameScenario::~GameScenario()
       File::erase(filename);
     }
   clean_tmp_dir();
-  GameScenarioOptions::s_round = 0;
 } 
 
 std::string GameScenario::getName() const
@@ -1301,4 +1288,27 @@ std::string GameScenario::generate_guid()
   snprintf (buf, sizeof (buf), "{%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", r.get_int(), rand() % 4096, r.get_int_range(0, 4096), r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256) % 256, r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256));
 
   return std::string(buf);
+}
+
+void GameScenario::cleanup()
+{
+  Itemlist::deleteInstance();
+  Playerlist::deleteInstance();
+  Citylist::deleteInstance();
+  Templelist::deleteInstance();
+  Ruinlist::deleteInstance();
+  Rewardlist::deleteInstance();
+  Signpostlist::deleteInstance();
+  Portlist::deleteInstance();
+  Bridgelist::deleteInstance();
+  Roadlist::deleteInstance();
+  QuestsManager::deleteInstance();
+  VectoredUnitlist::deleteInstance();
+  GameMap::deleteInstance();
+  if (fl_counter)
+    {
+      delete fl_counter;
+      fl_counter = 0;
+    }
+  GameScenarioOptions::s_round = 0;
 }

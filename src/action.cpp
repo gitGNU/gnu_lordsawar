@@ -1195,6 +1195,7 @@ bool Action_Production::fillData(City* c, int slot)
 Action_Reward::Action_Reward()
     :Action(Action::REWARD)
 {
+  d_reward = NULL;
 }
 
 bool Action_Reward::load(std::string tag, XML_Helper *helper)
@@ -1227,13 +1228,17 @@ Action_Reward::Action_Reward (const Action_Reward &action)
 : Action(action), d_stack(action.d_stack)
 {
   const Reward *reward = action.d_reward;
-  d_reward = Reward::copy(reward);
+  if (reward)
+    d_reward = Reward::copy(reward);
+  else
+    d_reward = NULL;
 }
 
 Action_Reward::Action_Reward(XML_Helper* helper)
 :Action(helper)
 {
   helper->getData(d_stack, "stack");
+  d_reward = NULL;
   helper->registerTag(Reward::d_tag, sigc::mem_fun(this, &Action_Reward::load));
 }
 
@@ -1854,6 +1859,7 @@ bool Action_Plant::fillData(Hero *hero, Item *item)
 Action_Produce::Action_Produce()
 :Action(Action::PRODUCE_UNIT)
 {
+  d_army = NULL;
 }
 
 Action_Produce::Action_Produce(const Action_Produce &action)
@@ -1861,7 +1867,10 @@ Action_Produce::Action_Produce(const Action_Produce &action)
     d_dest(action.d_dest), d_army_id(action.d_army_id), 
     d_stack_id(action.d_stack_id)
 {
-  d_army = new ArmyProdBase (*action.d_army);
+  if (action.d_army)
+    d_army = new ArmyProdBase (*action.d_army);
+  else
+    d_army = NULL;
 }
 
 Action_Produce::Action_Produce(XML_Helper* helper)
@@ -1873,6 +1882,7 @@ Action_Produce::Action_Produce(XML_Helper* helper)
   helper->getData(d_dest.y, "dest_y");
   helper->getData(d_army_id, "army_id");
   helper->getData(d_stack_id, "stack_id");
+  d_army = NULL;
   helper->registerTag(ArmyProdBase::d_tag, sigc::mem_fun(this, &Action_Produce::load));
 }
 
@@ -1964,6 +1974,7 @@ Action_ProduceVectored::Action_ProduceVectored(XML_Helper* helper)
   d_src.x = i;
   helper->getData(i, "src_y");
   d_src.y = i;
+  d_army = NULL;
   helper->registerTag(ArmyProdBase::d_tag, sigc::mem_fun(this, &Action_ProduceVectored::load));
 }
 

@@ -492,6 +492,9 @@ GameScenario *Driver::create_new_scenario(GameParameters &g, GameScenario::PlayM
 						 
   GameScenario* game_scenario = new GameScenario(g.map_path, broken);
 
+  if (broken)
+    return NULL;
+
   GameScenarioOptions::s_see_opponents_stacks = g.see_opponents_stacks;
   GameScenarioOptions::s_see_opponents_production = g.see_opponents_production;
   GameScenarioOptions::s_play_with_quests = g.play_with_quests;
@@ -503,9 +506,6 @@ GameScenario *Driver::create_new_scenario(GameParameters &g, GameScenario::PlayM
   GameScenarioOptions::s_intense_combat = g.intense_combat;
   GameScenarioOptions::s_military_advisor = g.military_advisor;
   GameScenarioOptions::s_random_turns = g.random_turns;
-
-  if (broken)
-    return NULL;
 
   game_scenario->setName(g.name);
   game_scenario->setPlayMode(m);
