@@ -1033,6 +1033,7 @@ void Game::update_control_panel()
       can_disband_stack.emit(false);
       can_group_ungroup_selected_stack.emit(false);
       can_plant_standard_selected_stack.emit(false);
+      can_search_selected_stack.emit(false);
     }
 
   if (d_gameScenario->getRound() > 1)
