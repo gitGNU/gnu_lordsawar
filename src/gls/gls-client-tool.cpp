@@ -33,13 +33,14 @@
 #include "gls-client-tool.h"
 
 
-GlsClientTool::GlsClientTool(int port, bool show_list, std::list<std::string> unadvertise, bool advertise, bool reload)
+GlsClientTool::GlsClientTool(int port, bool show_list, std::list<std::string> unadvertise, bool advertise, bool reload, std::string remove_all)
 {
   request_count = 0;
   d_show_list = show_list;
   d_unadvertise = unadvertise;
   d_advertise = advertise;
   d_reload = reload;
+  d_remove_all = remove_all;
   GamelistClient *gamelistclient = GamelistClient::getInstance();
   Profilelist *plist = Profilelist::getInstance();
   new_profile = NULL;
@@ -130,6 +131,31 @@ void GlsClientTool::on_got_list_response(RecentlyPlayedGameList *l, std::string 
   return;
 }
 
+void GlsClientTool::on_got_list_response_for_unadvertising(RecentlyPlayedGameList *l, std::string err)
+{
+  request_count--;
+  if (err != "")
+    {
+      std::cerr << err << std::endl;
+      if (request_count == 0)
+        Gtk::Main::quit();
+      return;
+    }
+  std::list<std::string> scenario_ids;
+  for (RecentlyPlayedGameList::iterator i = l->begin(); i != l->end(); i++)
+    if ((*i)->getProfileId() == d_remove_all) //match profile ids
+      scenario_ids.push_back((*i)->getId());
+
+  if (scenario_ids.empty() == false)
+    unadvertise_games(scenario_ids);
+  else
+    {
+      if (request_count == 0)
+        Gtk::Main::quit();
+    }
+  return;
+}
+
 void GlsClientTool::on_got_reload_response(std::string err)
 {
   request_count--;
@@ -189,6 +215,18 @@ void GlsClientTool::on_connection_lost()
   exit(1);
 }
 
+void GlsClientTool::unadvertise_games(std::list<std::string> scenario_ids)
+{
+  GamelistClient *gamelistclient = GamelistClient::getInstance();
+  gamelistclient->received_advertising_removal_response.connect
+    (sigc::mem_fun(*this, &GlsClientTool::on_got_unadvertise_response));
+  for (std::list<std::string>::iterator i = scenario_ids.begin(); 
+       i != scenario_ids.end(); i++)
+    {
+      request_count++;
+      gamelistclient->request_advertising_removal(*i);
+    }
+}
 void GlsClientTool::on_connected()
 {
   GamelistClient *gamelistclient = GamelistClient::getInstance();
@@ -202,14 +240,7 @@ void GlsClientTool::on_connected()
 
   if (d_unadvertise.empty() == false)
     {
-      gamelistclient->received_advertising_removal_response.connect
-        (sigc::mem_fun(*this, &GlsClientTool::on_got_unadvertise_response));
-      for (std::list<std::string>::iterator i = d_unadvertise.begin(); 
-           i != d_unadvertise.end(); i++)
-        {
-          request_count++;
-          gamelistclient->request_advertising_removal(*i);
-        }
+      unadvertise_games(d_unadvertise);
     }
   if (d_advertise)
     {
@@ -228,5 +259,14 @@ void GlsClientTool::on_connected()
       gamelistclient->received_reload_response.connect
         (sigc::mem_fun(*this, &GlsClientTool::on_got_reload_response));
       gamelistclient->request_reload();
+    }
+
+  if (d_remove_all != "")
+    {
+      gamelistclient->received_game_list.connect
+        (sigc::mem_fun(*this, 
+                       &GlsClientTool::on_got_list_response_for_unadvertising));
+      request_count++;
+      gamelistclient->request_game_list();
     }
 }
