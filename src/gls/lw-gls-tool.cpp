@@ -103,6 +103,8 @@ int main(int argc, char* argv[])
 	      cout << "  -R, --reload               " << _("Reload the game list from disk") << endl;
 	      cout << "  -r, --remove-all <id>      " << _("Remove all games owned by the given profile id") << endl;
 	      cout << endl;
+              cout << String::ucompose ("%1", _("Specifying a profile id of -1 to the --remove-all option will remove all games \nfrom the game list.")) << endl;
+	      cout << endl;
 	      cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << endl;
 	      exit(0);
 	    }

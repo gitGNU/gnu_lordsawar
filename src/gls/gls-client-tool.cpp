@@ -143,7 +143,7 @@ void GlsClientTool::on_got_list_response_for_unadvertising(RecentlyPlayedGameLis
     }
   std::list<std::string> scenario_ids;
   for (RecentlyPlayedGameList::iterator i = l->begin(); i != l->end(); i++)
-    if ((*i)->getProfileId() == d_remove_all) //match profile ids
+    if ((*i)->getProfileId() == d_remove_all || d_remove_all == "-1") 
       scenario_ids.push_back((*i)->getId());
 
   if (scenario_ids.empty() == false)
@@ -227,6 +227,7 @@ void GlsClientTool::unadvertise_games(std::list<std::string> scenario_ids)
       gamelistclient->request_advertising_removal(*i);
     }
 }
+
 void GlsClientTool::on_connected()
 {
   GamelistClient *gamelistclient = GamelistClient::getInstance();
