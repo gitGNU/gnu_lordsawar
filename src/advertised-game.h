@@ -58,7 +58,7 @@ class AdvertisedGame : public RecentlyPlayedNetworkedGame
         Glib::TimeVal getGameCreatedOn() const {return d_creation_date;};
         Glib::TimeVal getGameLastPingedOn() const {return d_last_pinged_date;};
 
-        Profile * getProfie() const {return d_profile;};
+        Profile * getProfile() const {return d_profile;};
 	
 	// Methods that operate on the class data but do not modify it.
 
