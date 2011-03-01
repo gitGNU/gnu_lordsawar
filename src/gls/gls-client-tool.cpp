@@ -33,7 +33,7 @@
 #include "gls-client-tool.h"
 
 
-GlsClientTool::GlsClientTool(int port, bool show_list, std::list<std::string> unadvertise, bool advertise, bool reload, std::string remove_all)
+GlsClientTool::GlsClientTool(std::string host, int port, bool show_list, std::list<std::string> unadvertise, bool advertise, bool reload, std::string remove_all)
 {
   request_count = 0;
   d_show_list = show_list;
@@ -57,7 +57,7 @@ GlsClientTool::GlsClientTool(int port, bool show_list, std::list<std::string> un
     (sigc::mem_fun(*this, &GlsClientTool::on_connected));
   gamelistclient->client_forcibly_disconnected.connect
     (sigc::mem_fun(*this, &GlsClientTool::on_connection_lost));
-  gamelistclient->start("127.0.0.1", port, profile);
+  gamelistclient->start(host, port, profile);
 }
 
 RecentlyPlayedGame* GlsClientTool::create_game()

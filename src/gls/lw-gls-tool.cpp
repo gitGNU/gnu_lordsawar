@@ -33,6 +33,7 @@ int max_vector_width;
     
 int main(int argc, char* argv[])
 {
+  std::string host;
   bool advertise = false;
   bool show_list = false;
   bool reload = false;
@@ -92,10 +93,10 @@ int main(int argc, char* argv[])
             }
 	  else if (parameter == "--help" || parameter == "-?")
 	    {
-	      cout << Glib::get_prgname() << " [OPTION]..." << endl << endl;
+	      cout << Glib::get_prgname() << " " << _("[OPTION]... [HOST]") << endl << endl;
 	      cout << "LordsAWar! Game-list Client " << _("version") << " " << VERSION << endl << endl;
 	      cout << _("Options:") << endl << endl; 
-	      cout << "  -?, --help                 " << _("Shows this help screen") <<endl;
+	      cout << "  -?, --help                 " << _("Display this help and exit") <<endl;
 	      cout << "  -p, --port <number>        " << _("Connect to the server on the given port") << endl;
 	      cout << "  -u, --unadvertise <id>     " << _("Remove a game, specified by scenario id") << endl;
 	      cout << "  -a, --advertise            " << _("Add a game") << endl;
@@ -105,9 +106,13 @@ int main(int argc, char* argv[])
 	      cout << endl;
               cout << String::ucompose ("%1", _("Specifying a profile id of -1 to the --remove-all option will remove all games \nfrom the game list.")) << endl;
 	      cout << endl;
+              cout << String::ucompose ("%1", _("If HOST is not specified on the command-line, this tool will try to connect to \nthe game-list server at 127.0.0.1.")) << endl;
+	      cout << endl;
 	      cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << endl;
 	      exit(0);
 	    }
+          else
+            host = parameter;
 	}
     }
 
@@ -123,7 +128,9 @@ int main(int argc, char* argv[])
       std::cout << s << std::endl;
       return EXIT_SUCCESS;
     }
-  GlsClientTool tool(port, show_list, unadvertise, advertise, reload,
+  if (host == "")
+    host = "127.0.0.1";
+  GlsClientTool tool(host, port, show_list, unadvertise, advertise, reload,
                      remove_all);
 
   gtk_main->run();
