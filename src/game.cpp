@@ -1043,7 +1043,10 @@ void Game::update_control_panel()
     
   can_see_diplomacy.emit(GameScenarioOptions::s_diplomacy);
 
-  can_end_turn.emit(Playerlist::getInstance()->getWinningPlayer() == NULL);
+  if (Playerlist::getInstance()->countPlayersAlive() <= 1)
+    can_end_turn.emit(false);
+  else
+    can_end_turn.emit(true);
 }
 
 GameBigMap &Game::get_bigmap()
