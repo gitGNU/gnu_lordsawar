@@ -17,17 +17,17 @@
 MAINTAINERCLEANFILES= Makefile.in
 
 ##if WANT_GLS
-bin_PROGRAMS = lordsawar-game-list-server lw-gls-tool
+bin_PROGRAMS = lordsawar-game-list-server lordsawar-game-list-client
 
-lw_gls_tool_SOURCES = lw-gls-tool.cpp \
-		      gls-client-tool.cpp gls-client-tool.h
+lordsawar_game_list_client_SOURCES = gls-client-main.cpp \
+				     gls-client-tool.cpp gls-client-tool.h
 
-lw_gls_tool_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS) -ltar -lz \
-                    $(top_builddir)/src/liblordsawar.la \
-                    $(top_builddir)/src/liblordsawargamelist.la \
-                    $(top_builddir)/src/liblordsawarnet.la \
-                    @LIBINTL@ \
-                    -L$(top_builddir)/src
+lordsawar_game_list_client_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS) -ltar -lz \
+                                   $(top_builddir)/src/liblordsawar.la \
+                                   $(top_builddir)/src/liblordsawargamelist.la \
+                                   $(top_builddir)/src/liblordsawarnet.la \
+                                   @LIBINTL@ \
+                                   -L$(top_builddir)/src
 
 lordsawar_game_list_server_SOURCES = main.cpp \
   gamelist-server.cpp gamelist-server.h 

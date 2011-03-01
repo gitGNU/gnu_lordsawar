@@ -22,25 +22,18 @@
 
 enum GlsMessageType 
 {
-  GLS_MESSAGE_HOST_NEW_GAME = 1,  //sent from client (lw host)
-  GLS_MESSAGE_HOST_NEW_RANDOM_GAME = 2, //from client (lw host)
-  GLS_MESSAGE_GAME_CREATED = 3, //from server
-  GLS_MESSAGE_ADVERTISE_GAME = 4, //from client (lw host or client)
-  GLS_MESSAGE_UNADVERTISE_GAME = 5, //from client (lw host or client)
-  GLS_MESSAGE_UNHOST_GAME = 6, //from client (lw host)
-  GLS_MESSAGE_REQUEST_GAME_LIST = 7, //from client (lw host or client)
-  GLS_MESSAGE_GAME_LIST = 8, //from server
-  GLS_MESSAGE_GAME_UNHOSTED = 9, //from server
-  GLS_MESSAGE_COULD_NOT_HOST_GAME = 10, //from server
-  GLS_MESSAGE_COULD_NOT_UNHOST_GAME = 11, //from server
-  GLS_MESSAGE_COULD_NOT_ADVERTISE_GAME = 12, //from server
-  GLS_MESSAGE_COULD_NOT_UNADVERTISE_GAME = 13, //from server
-  GLS_MESSAGE_GAME_ADVERTISED = 14, //from server
-  GLS_MESSAGE_GAME_UNADVERTISED = 15, //from server
-  GLS_MESSAGE_COULD_NOT_GET_GAME_LIST = 16, //from server
-  GLS_MESSAGE_REQUEST_RELOAD = 17, //from client
-  GLS_MESSAGE_RELOADED = 18, //from server
-  GLS_MESSAGE_COULD_NOT_RELOAD = 19, //from server
+  GLS_MESSAGE_ADVERTISE_GAME = 1, //from client (lw host or client)
+  GLS_MESSAGE_UNADVERTISE_GAME = 2, //from client (lw host or client)
+  GLS_MESSAGE_REQUEST_GAME_LIST = 3, //from client (lw host or client)
+  GLS_MESSAGE_GAME_LIST = 4, //from server
+  GLS_MESSAGE_COULD_NOT_ADVERTISE_GAME = 5, //from server
+  GLS_MESSAGE_COULD_NOT_UNADVERTISE_GAME = 6, //from server
+  GLS_MESSAGE_GAME_ADVERTISED = 7, //from server
+  GLS_MESSAGE_GAME_UNADVERTISED = 8, //from server
+  GLS_MESSAGE_COULD_NOT_GET_GAME_LIST = 9, //from server
+  GLS_MESSAGE_REQUEST_RELOAD = 10, //from client
+  GLS_MESSAGE_RELOADED = 11, //from server
+  GLS_MESSAGE_COULD_NOT_RELOAD = 12, //from server
 };
 
 #endif

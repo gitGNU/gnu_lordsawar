@@ -54,6 +54,7 @@ protected:
 
 private:
   std::auto_ptr<NetworkServer> network_server;
+  std::string datafile;
 
   bool onGotMessage(void *conn, int type, std::string message);
   void onConnectionLost(void *conn);

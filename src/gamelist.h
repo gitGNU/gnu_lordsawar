@@ -55,6 +55,9 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
         //! Save game list to the game list file.
         bool save() const;
 
+	//! Save the game list to the given file.
+	bool saveToFile(std::string filename) const;
+
 	//! Save the game list to an opened file.
 	bool save(XML_Helper* helper) const;
 
@@ -69,6 +72,9 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
 
 	//! Load the game list from the games file.
         bool load();
+
+	//! Load the game list from the given file.
+	bool loadFromFile(std::string filename);
 
 	//! Add an entry to the list of games.
 	void addEntry(AdvertisedGame *advertised_game);
@@ -119,11 +125,6 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
   
         void pruneUnresponsiveGames();
 
-	//! Load the game list from the given file.
-	bool loadFromFile(std::string filename);
-
-	//! Save the game list to the given file.
-	bool saveToFile(std::string filename) const;
 
         void remove_all();
 

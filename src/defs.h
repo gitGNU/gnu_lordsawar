@@ -96,6 +96,7 @@ const unsigned int MAX_ARMY_STRENGTH = 9;
 
 const unsigned short LORDSAWAR_PORT = 14998;
 const unsigned short LORDSAWAR_GAMELIST_PORT = 18998;
+const unsigned short LORDSAWAR_GAMEHOST_PORT = 22998;
 #define HUMAN_PLAYER_TYPE _("Human")
 #define EASY_PLAYER_TYPE _("Easy")
 #define HARD_PLAYER_TYPE _("Hard")
@@ -117,6 +118,7 @@ const std::string PBM_EXT = ".trn";
 const std::string RECENTLY_PLAYED_LIST = "recently-played.xml";
 const std::string RECENTLY_EDITED_LIST = "recently-edited.xml";
 const std::string PROFILE_LIST = "profiles.xml";
+const std::string RECENTLY_ADVERTISED_LIST = "recently-advertised.xml";
 const std::string RECENTLY_HOSTED_LIST = "recently-hosted.xml";
 
 const unsigned int MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS = 1;

@@ -100,8 +100,6 @@ bool GamelistClient::onGotMessage(int type, std::string payload)
   debug("GamelistClient got message of type " << type);
   switch (GlsMessageType(type)) 
     {
-    case GLS_MESSAGE_GAME_CREATED:
-      break;
     case GLS_MESSAGE_GAME_LIST:
         {
           std::istringstream is(payload);
@@ -115,12 +113,6 @@ bool GamelistClient::onGotMessage(int type, std::string payload)
       break;
     case GLS_MESSAGE_COULD_NOT_GET_GAME_LIST:
       received_game_list.emit(NULL, payload);
-      break;
-    case GLS_MESSAGE_GAME_UNHOSTED:
-      break;
-    case GLS_MESSAGE_COULD_NOT_HOST_GAME:
-      break;
-    case GLS_MESSAGE_COULD_NOT_UNHOST_GAME:
       break;
     case GLS_MESSAGE_COULD_NOT_ADVERTISE_GAME:
         {
@@ -152,11 +144,8 @@ bool GamelistClient::onGotMessage(int type, std::string payload)
     case GLS_MESSAGE_COULD_NOT_RELOAD:
       received_reload_response.emit(payload);
       break;
-    case GLS_MESSAGE_HOST_NEW_GAME:
-    case GLS_MESSAGE_HOST_NEW_RANDOM_GAME:
     case GLS_MESSAGE_ADVERTISE_GAME:
     case GLS_MESSAGE_UNADVERTISE_GAME:
-    case GLS_MESSAGE_UNHOST_GAME:
     case GLS_MESSAGE_REQUEST_GAME_LIST:
     case GLS_MESSAGE_REQUEST_RELOAD:
       //faulty server

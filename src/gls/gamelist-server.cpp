@@ -55,9 +55,10 @@ void GamelistServer::deleteInstance()
 
 GamelistServer::GamelistServer()
 {
+  datafile = File::getSavePath() + "/" + RECENTLY_ADVERTISED_LIST;
   Timing::instance().timer_registered.connect
     (sigc::mem_fun(*this, &GamelistServer::on_timer_registered));
-  Gamelist::getInstance()->load();
+  Gamelist::getInstance()->loadFromFile(datafile);
   Gamelist::getInstance()->pruneGames();
   Gamelist::getInstance()->pingGames();
 }
@@ -73,7 +74,7 @@ GamelistServer::~GamelistServer()
 
 void GamelistServer::reload()
 {
-  Gamelist::getInstance()->load();
+  Gamelist::getInstance()->loadFromFile(datafile);
 }
 
 bool GamelistServer::isListening()
@@ -141,10 +142,6 @@ bool GamelistServer::onGotMessage(void *conn, int type, std::string payload)
   debug("got message of type " << type);
   switch (GlsMessageType(type)) 
     {
-    case GLS_MESSAGE_HOST_NEW_GAME:
-      break;
-    case GLS_MESSAGE_HOST_NEW_RANDOM_GAME:
-      break;
     case GLS_MESSAGE_ADVERTISE_GAME:
         {
           std::istringstream is(payload);
@@ -155,7 +152,7 @@ bool GamelistServer::onGotMessage(void *conn, int type, std::string payload)
                                       &GamelistServer::loadAdvertisedGame), 
                         conn));
           helper.parse();
-          Gamelist::getInstance()->save();
+          Gamelist::getInstance()->saveToFile(datafile);
         }
       break;
     case GLS_MESSAGE_UNADVERTISE_GAME:
@@ -173,10 +170,8 @@ bool GamelistServer::onGotMessage(void *conn, int type, std::string payload)
           else
             network_server->send(conn, GLS_MESSAGE_GAME_UNADVERTISED, 
                                  payload.substr(pos + 1));
-          Gamelist::getInstance()->save();
+          Gamelist::getInstance()->saveToFile(datafile);
         }
-      break;
-    case GLS_MESSAGE_UNHOST_GAME:
       break;
     case GLS_MESSAGE_REQUEST_GAME_LIST:
       sendList(conn);
@@ -184,18 +179,14 @@ bool GamelistServer::onGotMessage(void *conn, int type, std::string payload)
     case GLS_MESSAGE_REQUEST_RELOAD:
       if (network_server->is_local_connection(conn))
         {
-          Gamelist::getInstance()->load();
+          Gamelist::getInstance()->loadFromFile(datafile);
           network_server->send(conn, GLS_MESSAGE_RELOADED, "");
         }
       else
           network_server->send(conn, GLS_MESSAGE_COULD_NOT_RELOAD, 
                                _("permission denied"));
       break;
-    case GLS_MESSAGE_GAME_CREATED:
     case GLS_MESSAGE_GAME_LIST:
-    case GLS_MESSAGE_GAME_UNHOSTED:
-    case GLS_MESSAGE_COULD_NOT_HOST_GAME:
-    case GLS_MESSAGE_COULD_NOT_UNHOST_GAME:
     case GLS_MESSAGE_COULD_NOT_ADVERTISE_GAME:
     case GLS_MESSAGE_COULD_NOT_UNADVERTISE_GAME:
     case GLS_MESSAGE_GAME_ADVERTISED:
