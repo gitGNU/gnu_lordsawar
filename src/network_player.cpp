@@ -395,7 +395,11 @@ void NetworkPlayer::decodeActionFight(const Action_Fight *action)
   Fight::Result result = fight.battleFromHistory();
   fight_started.emit(fight);
 
-  cleanupAfterFight(attackers, defenders);
+  std::list<History*> attacker_history;
+  std::list<History*> defender_history;
+  cleanupAfterFight(attackers, defenders, attacker_history, defender_history);
+  clearHistorylist(attacker_history);
+  clearHistorylist(defender_history);
   if (result == Fight::ATTACKER_WON)
     {
       debug ("there are " << (&*attackers.front())->size() << " attackers left in " << (&*attackers.front())->getId() << " at " << (&*attackers.front())->getPos().x << "," << (&*attackers.front())->getPos().y);
@@ -437,7 +441,11 @@ void NetworkPlayer::decodeActionRuin(const Action_Ruin *action)
     attackers.push_back(explorer);
     defenders.push_back(keeper);
     
-    cleanupAfterFight(attackers, defenders);
+    std::list<History*> attacker_history;
+    std::list<History*> defender_history;
+    cleanupAfterFight(attackers, defenders, attacker_history, defender_history);
+    clearHistorylist(attacker_history);
+    clearHistorylist(defender_history);
 
     if (searched) {
         r->setOccupant(0);

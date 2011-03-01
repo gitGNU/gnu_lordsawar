@@ -62,6 +62,7 @@ class Item;
 class Triumphs;
 class Sage;
 class StackReflist;
+class Maptile;
 
 //! The abstract player class.
 /** 
@@ -1551,8 +1552,11 @@ class Player: public sigc::trackable
     protected:
         // do some fight cleaning up, setting
         void cleanupAfterFight(std::list<Stack*> &attackers,
-                               std::list<Stack*> &defenders);
+                               std::list<Stack*> &defenders,
+                               std::list<History*> &attacker_history,
+                               std::list<History*> &defender_history);
         
+        void clearHistorylist(std::list<History*> &history);
         //! Move stack s one step forward on it's Path.
         bool stackMoveOneStep(Stack* s);
 
@@ -1742,15 +1746,17 @@ class Player: public sigc::trackable
          */
 	//! Remove dead Armies from a list of stacks after a fight.
         guint32 removeDeadArmies(std::list<Stack*>& stacks,
-                                std::vector<guint32>& culprits);
+                                std::vector<guint32>& culprits, 
+                                std::list<History*> &history);
 
-        guint32 removeDeadArmies(std::list<Stack*>& stacks);
+        guint32 removeDeadArmies(std::list<Stack*>& stacks, std::list<History*> &history);
 
-        guint32 removeDeadArmies(Stack *stack);
+        guint32 removeDeadArmies(Stack *stack, std::list<History*> &history);
 
         double countXPFromDeadArmies(std::list<Stack*>& stacks);
 
-        void handleDeadHeroes(std::list<Stack*> &stacks);
+        void handleDeadHeroes(std::list<Stack*> &stacks, std::list<History*> &history);
+        History* handleDeadHero(Hero *h, Maptile *tile, Vector<int> pos);
 
         void healInjuredArmies(std::list<Stack*> &stacks);
 

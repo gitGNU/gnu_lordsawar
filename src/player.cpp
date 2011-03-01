@@ -361,14 +361,19 @@ void Player::clearActionlist()
     d_actions.clear();
 }
 
+void Player::clearHistorylist(std::list<History*> &history)
+{
+  for (list<History*>::iterator it = history.begin();
+       it != history.end(); it++)
+    {
+      delete (*it);
+    }
+  history.clear();
+}
+
 void Player::clearHistorylist()
 {
-    for (list<History*>::iterator it = d_history.begin();
-        it != d_history.end(); it++)
-    {
-        delete (*it);
-    }
-    d_history.clear();
+  clearHistorylist(d_history);
 }
 
 void Player::addStack(Stack* stack)
@@ -1221,7 +1226,9 @@ bool Player::stackMoveOneStep(Stack* s)
 }
 
 void Player::cleanupAfterFight(std::list<Stack*> &attackers,
-                               std::list<Stack*> &defenders)
+                               std::list<Stack*> &defenders,
+                               std::list<History*> &attacker_history,
+                               std::list<History*> &defender_history)
 {
   // get attacker and defender heroes and more...
   std::vector<guint32> attackerHeroes, defenderHeroes;
@@ -1234,12 +1241,12 @@ void Player::cleanupAfterFight(std::list<Stack*> &attackers,
   //
   double defender_xp = countXPFromDeadArmies(defenders);
   debug("clean dead defenders");
-  removeDeadArmies(defenders, attackerHeroes);
+  removeDeadArmies(defenders, attackerHeroes, defender_history);
 
   // and dead attackers
   double attacker_xp = countXPFromDeadArmies(attackers);
   debug("clean dead attackers");
-  removeDeadArmies(attackers, defenderHeroes);
+  removeDeadArmies(attackers, defenderHeroes, attacker_history);
 
   debug("after fight: attackers empty? " << attackers.empty()
         << "(" << attackers.size() << ")");
@@ -1284,7 +1291,15 @@ Fight::Result Player::stackFight(Stack** attacker, Stack** defender)
     addAction(item);
 
 
-    cleanupAfterFight(attackers, defenders);
+    std::list<History*> attacker_history;
+    std::list<History*> defender_history;
+    cleanupAfterFight(attackers, defenders, attacker_history, defender_history);
+    for (std::list<History*>::iterator i = attacker_history.begin();
+         i != attacker_history.end(); i++)
+      addHistory(*i);
+    for (std::list<History*>::iterator i = defender_history.begin();
+         i != defender_history.end(); i++)
+      addHistory(*i);
   
     for (std::list<Stack*>::iterator i = attackers.begin(); 
          i != attackers.end(); i++)
@@ -1417,7 +1432,15 @@ Fight::Result Player::stackRuinFight (Stack **attacker, Stack **defender,
     std::list<Stack*> defenders;
     defenders.push_back(*defender);
 
-    cleanupAfterFight(attackers, defenders);
+    std::list<History*> attacker_history;
+    std::list<History*> defender_history;
+    cleanupAfterFight(attackers, defenders, attacker_history, defender_history);
+    for (std::list<History*>::iterator i = attacker_history.begin();
+         i != attacker_history.end(); i++)
+      addHistory(*i);
+    for (std::list<History*>::iterator i = defender_history.begin();
+         i != defender_history.end(); i++)
+      addHistory(*i);
 
     bool exists =
 	std::find(d_stacklist->begin(), d_stacklist->end(), *attacker)
@@ -1985,7 +2008,9 @@ bool Player::doStackDisband(Stack* s)
 {
     getStacklist()->setActivestack(0);
     s->kill();
-    removeDeadArmies(s);
+    std::list<History*> history;
+    removeDeadArmies(s, history);
+    clearHistorylist(history);
     supdatingStack.emit(0);
     return true;
 }
@@ -2013,6 +2038,7 @@ void Player::doHeroDropItem(Hero *h, Item *i, Vector<int> pos, bool &splash)
     }
   else
     {
+      printf("dropped item %d at %d,%d\n", i->getId(), pos.x, pos.y);
       GameMap::getInstance()->getTile(pos)->getBackpack()->addToBackpack(i);
       h->getBackpack()->removeFromBackpack(i);
       splash = false;
@@ -2094,7 +2120,9 @@ void Player::doResign()
 {
   //disband all stacks
   std::list<Stack*> stacks = getStacklist()->kill();
-  removeDeadArmies(stacks);
+  std::list<History*> history;
+  removeDeadArmies(stacks, history);
+  clearHistorylist(history);
 
   //raze all cities
   Citylist *cl = Citylist::getInstance();
@@ -2308,21 +2336,23 @@ void Player::getHeroes(const std::list<Stack*> stacks, std::vector<guint32>& dst
         (*it)->getHeroes(dst);
 }
 
-guint32 Player::removeDeadArmies(Stack *stack)
+guint32 Player::removeDeadArmies(Stack *stack, std::list<History*> &history)
 {
   std::list<Stack*> stacks;
   stacks.push_back(stack);
-  return removeDeadArmies(stacks);
+  return removeDeadArmies(stacks, history);
 }
 
-guint32 Player::removeDeadArmies(std::list<Stack*>& stacks)
+guint32 Player::removeDeadArmies(std::list<Stack*>& stacks,
+                                 std::list<History*> &history)
 {
   std::vector<guint32> culprits;
-  return removeDeadArmies(stacks, culprits);
+  return removeDeadArmies(stacks, culprits, history);
 }
 
 guint32 Player::removeDeadArmies(std::list<Stack*>& stacks, 
-                                 std::vector<guint32>& culprits)
+                                 std::vector<guint32>& culprits,
+                                 std::list<History*> &history)
 {
     guint32 count = 0;
     Player *owner = NULL;
@@ -2338,7 +2368,7 @@ guint32 Player::removeDeadArmies(std::list<Stack*>& stacks,
         debug("Culprit: " << culprits[i]);
 
     tallyDeadArmyTriumphs(stacks);
-    handleDeadHeroes(stacks);
+    handleDeadHeroes(stacks, history);
     //healInjuredArmies(stacks);
     handleDeadArmiesForQuests(stacks, culprits);
 
@@ -4342,7 +4372,8 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim)
     {
       assert (victim != NULL);
       std::list<Stack*> sunk = victim->getStacklist()->killArmyUnitsInBoats();
-      guint32 num_armies = removeDeadArmies(sunk);
+      std::list<History*> history;
+      guint32 num_armies = removeDeadArmies(sunk, history);
       sunk_ships.emit(victim, num_armies);
     }
   if (item->getBonus() & ItemProto::PICK_UP_BAGS)
@@ -4430,13 +4461,41 @@ void Player::tallyDeadArmyTriumphs(std::list<Stack*> &stacks)
   return;
 }
 
-void Player::handleDeadHeroes(std::list<Stack*> &stacks)
+History* Player::handleDeadHero(Hero *h, Maptile *tile, Vector<int> pos)
+{
+  if (tile->getBuilding() == Maptile::RUIN)
+    {
+      History_HeroKilledSearching* item;
+      item = new History_HeroKilledSearching();
+      item->fillData(h);
+      return item;
+      //h->getOwner()->addHistory(item);
+    }
+  else if (tile->getBuilding() == Maptile::CITY)
+    {
+      City* c = GameMap::getCity(pos);
+      History_HeroKilledInCity* item;
+      item = new History_HeroKilledInCity();
+      item->fillData(h, c);
+      return item;
+      //h->getOwner()->addHistory(item);
+    }
+  else //somewhere else
+    {
+      History_HeroKilledInBattle* item;
+      item = new History_HeroKilledInBattle();
+      item->fillData(h);
+      return item;
+      //h->getOwner()->addHistory(item);
+    }
+  return NULL;
+}
+
+void Player::handleDeadHeroes(std::list<Stack*> &stacks, std::list<History*> &history)
 {
   std::list<Stack*>::iterator it;
   for (it = stacks.begin(); it != stacks.end(); it++)
     {
-      if ((*it)->getOwner() == this)
-        continue;
       for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
         {
           if ((*sit)->getHP() > 0)
@@ -4445,36 +4504,17 @@ void Player::handleDeadHeroes(std::list<Stack*> &stacks)
             continue;
           //one of our heroes died
           //drop hero's stuff
-          Hero *h = static_cast<Hero *>(*sit);
           //now record the details of the death
-          GameMap *gm = GameMap::getInstance();
-          Maptile *tile = gm->getTile((*it)->getPos());
+      
           bool splash = false;
-          if (tile->getBuilding() == Maptile::RUIN)
-            {
-              History_HeroKilledSearching* item;
-              item = new History_HeroKilledSearching();
-              item->fillData(h);
-              h->getOwner()->addHistory(item);
-              doHeroDropAllItems (h, (*it)->getPos(), splash);
-            }
-          else if (tile->getBuilding() == Maptile::CITY)
-            {
-              City* c = GameMap::getCity((*it)->getPos());
-              History_HeroKilledInCity* item;
-              item = new History_HeroKilledInCity();
-              item->fillData(h, c);
-              h->getOwner()->addHistory(item);
-              doHeroDropAllItems (h, (*it)->getPos(), splash);
-            }
-          else //somewhere else
-            {
-              History_HeroKilledInBattle* item;
-              item = new History_HeroKilledInBattle();
-              item->fillData(h);
-              h->getOwner()->addHistory(item);
-              doHeroDropAllItems (h, (*it)->getPos(), splash);
-            }
+          doHeroDropAllItems (static_cast<Hero*>(*sit), (*it)->getPos(), 
+                              splash);
+          Maptile *tile = GameMap::getInstance()->getTile((*it)->getPos());
+
+          History *item = handleDeadHero (static_cast<Hero*>(*sit), tile,
+                                          (*it)->getPos());
+          if (item)
+            history.push_back(item);
         }
     }
   return;
