@@ -129,7 +129,7 @@ class GameScenario: public GameScenarioOptions
           * @param filename     the full name of the save game file
           * @return true if all went well, false otherwise
           */
-        bool saveGame(std::string filename, std::string extension = "sav") const;
+        bool saveGame(std::string filename, std::string extension = SAVE_EXT) const;
         bool loadWithHelper(XML_Helper &helper);
         bool saveWithHelper(XML_Helper &helper) const;
 
