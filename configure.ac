@@ -193,7 +193,13 @@ dnl Do we want to compile the game list server?
 AC_ARG_ENABLE(gls,
             [  --enable-gls     compile game list server (default=yes)],
             use_gls="$enableval", use_gls="yes")
-AM_CONDITIONAL([WANT_GSL], [test $use_gls = "yes"])
+AM_CONDITIONAL([WANT_GLS], [test $use_gls = "yes"])
+
+dnl Do we want to compile the game host server?
+AC_ARG_ENABLE(ghs,
+            [  --enable-ghs     compile game host server (default=yes)],
+            use_ghs="$enableval", use_ghs="yes")
+AM_CONDITIONAL([WANT_GHS], [test $use_ghs = "yes"])
 
 dnl ...the standard screen resolution...
 AC_ARG_WITH(resolution,
@@ -305,6 +311,7 @@ AC_CONFIG_FILES([
         src/editor/Makefile
         src/pbm/Makefile
         src/gls/Makefile
+        src/ghs/Makefile
         src/gui/Makefile])
 AC_OUTPUT
 echo ""
@@ -316,6 +323,7 @@ echo " Editor compilation    : $use_editor"
 echo " Play-by-mail          : $use_pbm"
 echo " Sound support         : $use_sound"
 echo " Game-list Server      : $use_gls"
+echo " Game-host Server      : $use_ghs"
 echo ""
 echo "Extra Options:"
 echo " Compiler Optimizations: $use_opts"

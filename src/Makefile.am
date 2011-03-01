@@ -15,12 +15,12 @@
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 #   02110-1301, USA.
-SUBDIRS = gui . editor pbm gls
+SUBDIRS = gui . editor pbm gls ghs
 MAINTAINERCLEANFILES= Makefile.in
 
 bin_PROGRAMS = lordsawar
 noinst_LTLIBRARIES = liblordsawar.la liblordsawarnet.la liblordsawargfx.la \
-		     liblordsawargamelist.la
+		     liblordsawargamelist.la liblordsawargamehost.la
 
 liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         AI_Allocation.cpp AI_Allocation.h AI_Diplomacy.cpp AI_Diplomacy.h \
@@ -110,6 +110,10 @@ liblordsawargamelist_la_SOURCES= \
 	gamelist.cpp gamelist.h \
 	hosted-game.cpp hosted-game.h
 
+liblordsawargamehost_la_SOURCES= \
+	network-ghs-common.h \
+	gamehost-client.cpp gamehost-client.h 
+
 liblordsawargfx_la_SOURCES = \
 	bigmap.cpp bigmap.h citymap.cpp citymap.h  \
         historymap.cpp historymap.h heromap.cpp heromap.h \
@@ -138,6 +142,9 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 liblordsawargamelist_la_LIBADD = liblordsawar.la liblordsawarnet.la
 
+liblordsawargamehost_la_LIBADD = liblordsawar.la liblordsawarnet.la \
+				 liblordsawargamelist.la
+
 liblordsawar_la_LIBADD = gui/liblwgui.la \
     @LTLIBOBJS@
 
@@ -146,6 +153,7 @@ lordsawar_LDADD = liblordsawar.la \
     liblordsawarnet.la \
     liblordsawargfx.la \
     liblordsawargamelist.la \
+    liblordsawargamehost.la \
     $(SDLSOUND_LIBS) $(SDL_LIBS) \
     $(GTKMM_LIBS) \
     $(LIBSIGC_LIBS) -ltar -lz \
@@ -156,6 +164,7 @@ lordsawar_DEPENDENCIES = \
   liblordsawar.la \
   liblordsawargfx.la \
   liblordsawargamelist.la \
+  liblordsawargamehost.la \
   liblordsawarnet.la \
   gui/liblwgui.la
 
