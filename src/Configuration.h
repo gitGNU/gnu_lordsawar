@@ -102,6 +102,10 @@ class Configuration : public sigc::trackable
         static std::string s_gamelist_server_hostname;
         static guint32 s_gamelist_server_port;
 
+        // the hostname of the game-host server
+        static std::string s_gamehost_server_hostname;
+        static guint32 s_gamehost_server_port;
+
 	// various default game settings
         static bool s_see_opponents_stacks;
         static bool s_see_opponents_production;

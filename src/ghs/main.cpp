@@ -27,6 +27,7 @@
 
 #include "gamehost-server.h"
 #include "vector.h"
+#include "ucompose.hpp"
 
 using namespace std;
 
@@ -34,6 +35,7 @@ int max_vector_width;
     
 int main(int argc, char* argv[])
 {
+  std::string hostname = "";
   srand(time(NULL));         // set the random seed
 
   initialize_configuration();
@@ -66,12 +68,17 @@ int main(int argc, char* argv[])
                 }
               port = userport;
 	    }
+	  else if (parameter == "--host" || parameter == "--h")
+            {
+              hostname = parameter;
+            }
 	  else if (parameter == "--help" || parameter == "-?")
 	    {
 	      cout << Glib::get_prgname() << " [OPTION]..." << endl << endl;
 	      cout << "LordsAWar! Game-host Server " << _("version") << " " << VERSION << endl << endl;
 	      cout << _("Options:") << endl << endl; 
-	      cout << "  -?, --help                 " << _("Shows this help screen") <<endl;
+	      cout << "  -?, --help                 " << _("Display this help and exit") <<endl;
+	      cout << "  -h, --host <string>        " << _("Advertise our hostname as this to game clients") << endl;
 	      cout << "  -p, --port <number>        " << _("Start the server on the given port") << endl;
 	      cout << endl;
 	      cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << endl;
@@ -79,9 +86,20 @@ int main(int argc, char* argv[])
 	    }
 	}
     }
+  Glib::ustring lordsawar = Glib::find_program_in_path(PACKAGE);
+  if (lordsawar == "")
+    {
+      cerr << String::ucompose(_("Error: could not find %1 program in path."), 
+                               PACKAGE) << endl;
+      return EXIT_FAILURE;
+    }
+
   GamehostServer *gamehostserver = GamehostServer::getInstance();
   if (port == 0)
     port = LORDSAWAR_GAMEHOST_PORT;
+  if (hostname == "")
+    hostname = Configuration::s_gamehost_server_hostname;
+  gamehostserver->setHostname(hostname);
   gamehostserver->start(port);
   gtk_main->run();
   delete gtk_main;

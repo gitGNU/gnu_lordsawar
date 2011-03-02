@@ -49,10 +49,12 @@ class HostedGame
         // Set Methods
         void setAdvertisedGame(AdvertisedGame *g) {d_advertised_game = g;};
         void setUnresponsive(bool resp) {unresponsive = resp;};
+        void setPid(guint32 pid) {d_pid = pid;};
 
 	// Get Methods
         AdvertisedGame * getAdvertisedGame() const {return d_advertised_game;};
         bool getUnresponsive() const {return unresponsive;};
+        guint32 getPid() const {return d_pid;};
 
 	// Methods that operate on the class data but do not modify it.
 

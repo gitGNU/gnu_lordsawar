@@ -30,6 +30,10 @@
 #include "recently-played-game-list.h"
 #include "recently-played-game.h"
 #include "hosted-game.h"
+#include "gamelist-client.h"
+#include "advertised-game.h"
+#include "GameScenario.h"
+#include "profile.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -116,16 +120,197 @@ void GamehostServer::sendList(void *conn)
   delete l;
 }
 
+void GamehostServer::unhost(void *conn, std::string profile_id, std::string scenario_id, std::string &err)
+{
+  HostedGame *g = Gamelist::getInstance()->findGameByScenarioId(scenario_id);
+  if (!g)
+    {
+      err = _("no such game with that scenario id");
+      return;
+    }
+  if (g->getAdvertisedGame()->getProfileId() != profile_id &&
+      network_server->is_local_connection(conn) == false)
+    {
+      err = _("permission denied");
+      return;
+    }
+  if (kill (g->getPid(), SIGQUIT) != 0)
+    {
+      err = _("could not kill process");
+      return;
+    }
+  Glib::spawn_close_pid(g->getPid());
+  Gamelist::getInstance()->remove(g);
+
+  //now we unadvertise it.
+  GamelistClient *gsc = GamelistClient ::getInstance();
+  gsc->client_connected.connect
+    (sigc::bind(sigc::mem_fun(*this, &GamehostServer::on_connected_to_gamelist_server_for_advertising_removal), g->getAdvertisedGame()->getId()));
+  gsc->start(Configuration::s_gamelist_server_hostname,
+             Configuration::s_gamelist_server_port, g->getAdvertisedGame()->getProfile());
+  delete g;
+  return;
+}
+
+void GamehostServer::on_connected_to_gamelist_server_for_advertising_removal(std::string scenario_id)
+{
+  GamelistClient *gsc = GamelistClient::getInstance();
+  gsc->received_advertising_removal_response.connect
+    (sigc::mem_fun(*this, &GamehostServer::on_advertising_removal_response_received));
+  gsc->request_advertising_removal(scenario_id);
+}
+    
+void GamehostServer::on_advertising_removal_response_received(std::string scenario_id, std::string err)
+{
+  GamelistClient::deleteInstance();
+  return;
+}
+
+void GamehostServer::run_game(GameScenario *game_scenario, Glib::Pid *child_pid, guint32 port, std::string &err)
+{
+  Glib::ustring lordsawar = Glib::find_program_in_path(PACKAGE);
+  if (lordsawar == "")
+    {
+      err = _("couldn't find lordsawar binary in path!");
+      return;
+    }
+
+  std::string tmpfile = "lw.XXXX";
+  int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
+  close(fd);
+  game_scenario->saveGame(tmpfile);
+
+  std::list<std::string> argv;
+  argv.push_back(lordsawar);
+  argv.push_back(tmpfile);
+  argv.push_back("--host");
+  argv.push_back("--port");
+  argv.push_back(String::ucompose("%1", port));
+  
+  //run lordsawar <file> --host --port <port>
+  Glib::spawn_async (Glib::get_tmp_dir(), argv, 
+                     Glib::SPAWN_STDOUT_TO_DEV_NULL | 
+                     Glib::SPAWN_STDERR_TO_DEV_NULL, 
+                     sigc::mem_fun(*this, &GamehostServer::on_child_setup), 
+                     child_pid);
+}
+
+void GamehostServer::host(GameScenario *game_scenario, Profile *profile, std::string &err)
+{
+  guint32 port = get_free_port();
+  Glib::Pid child_pid;
+  run_game(game_scenario, &child_pid, port, err);
+  if (err != "")
+    return;
+
+  //now we add an entry to the gamelist.
+  HostedGame *g = new HostedGame(new AdvertisedGame(game_scenario, profile));
+  g->setPid((guint32) child_pid);
+  g->getAdvertisedGame()->fillData(getHostname(), port);
+  if (Gamelist::getInstance()->add(g))
+    {
+      err = _("could not add game to list.");
+      kill (g->getPid(), SIGQUIT);
+      Glib::spawn_close_pid(g->getPid());
+      delete g;
+      return;
+    }
+
+  //now we advertise it.
+  GamelistClient *gsc = GamelistClient ::getInstance();
+  gsc->client_connected.connect
+    (sigc::bind(sigc::mem_fun(*this, &GamehostServer::on_connected_to_gamelist_server_for_advertising), g));
+  gsc->start(Configuration::s_gamelist_server_hostname,
+             Configuration::s_gamelist_server_port, profile);
+}
+
+guint32 GamehostServer::get_free_port()
+{
+  Glib::RefPtr<Gio::SocketListener> l = Gio::SocketListener::create();
+  guint32 port = l->add_any_inet_port();
+  l.reset();
+  //gosh i hope this gets unbound before we run our program.
+  return port;
+}
+
+void GamehostServer::on_child_setup()
+{
+  return;
+}
+
+void GamehostServer::on_connected_to_gamelist_server_for_advertising(HostedGame *game)
+{
+  GamelistClient *gsc = GamelistClient::getInstance();
+  //okay, fashion the recently played game to go over the wire.
+  RecentlyPlayedNetworkedGame *g = 
+    new RecentlyPlayedNetworkedGame(*game->getAdvertisedGame());
+  gsc->received_advertising_response.connect
+    (sigc::mem_fun(*this, &GamehostServer::on_advertising_response_received));
+  gsc->request_advertising(g);
+}
+
+void GamehostServer::on_advertising_response_received(std::string scenario_id, 
+                                                      std::string err)
+{
+  GamelistClient::deleteInstance();
+  return;
+}
+
 bool GamehostServer::onGotMessage(void *conn, int type, std::string payload)
 {
   debug("got message of type " << type);
   switch (GhsMessageType(type)) 
     {
     case GHS_MESSAGE_HOST_NEW_GAME:
+        {
+          std::string err = "";
+          Profile *profile = NULL; //take it from payload
+          GameScenario *game_scenario = NULL; //take it from payload
+          host(game_scenario, profile, err);
+          if (err != "")
+            network_server->send(conn, GHS_MESSAGE_COULD_NOT_HOST_GAME, 
+                                 game_scenario->getId() + " " + err);
+          else
+            network_server->send(conn, GHS_MESSAGE_GAME_CREATED, 
+                                 game_scenario->getId());
+          delete game_scenario;
+          delete profile;
+          Gamelist::getInstance()->save();
+        }
       break;
     case GHS_MESSAGE_HOST_NEW_RANDOM_GAME:
+        {
+          std::string err;
+          GameScenario *game_scenario = NULL;; //make our own.
+          Profile *profile = NULL; //take it from payload
+          host(game_scenario, profile, err);
+          if (err != "")
+            network_server->send(conn, GHS_MESSAGE_COULD_NOT_UNHOST_GAME, 
+                                 game_scenario->getId() + " " + err);
+          else
+            network_server->send(conn, GHS_MESSAGE_GAME_UNHOSTED, 
+                                 game_scenario->getId());
+          delete game_scenario;
+          delete profile;
+          Gamelist::getInstance()->save();
+        }
       break;
     case GHS_MESSAGE_UNHOST_GAME:
+        {
+          size_t pos;
+          std::string err;
+          pos = payload.find(' ');
+          if (pos == std::string::npos)
+            return false;
+          unhost(conn, payload.substr(0, pos), payload.substr(pos + 1), err);
+          if (err != "")
+            network_server->send(conn, GHS_MESSAGE_COULD_NOT_UNHOST_GAME, 
+                                 payload.substr(pos + 1) + " " + err);
+          else
+            network_server->send(conn, GHS_MESSAGE_GAME_UNHOSTED, 
+                                 payload.substr(pos + 1));
+          Gamelist::getInstance()->save();
+        }
       break;
     case GHS_MESSAGE_REQUEST_GAME_LIST:
       sendList(conn);

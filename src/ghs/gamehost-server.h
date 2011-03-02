@@ -24,12 +24,16 @@
 #include <list>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
+#include <glibmm.h>
 
 #include "timing.h"
 #include "network-ghs-common.h"
 
 class NetworkServer;
 class XML_Helper;
+class Profile;
+class GameScenario;
+class HostedGame;
 
 class GamehostServer
 {
@@ -46,6 +50,12 @@ public:
 
   void reload();
 
+  //get functions
+  std::string getHostname() const {return hostname;};
+
+  //set functions
+  void setHostname(std::string host) {hostname = host;};
+
   sigc::signal<void, int> port_in_use;
 
 protected:
@@ -54,16 +64,28 @@ protected:
 
 private:
   std::auto_ptr<NetworkServer> network_server;
+  std::string hostname;
 
   bool onGotMessage(void *conn, int type, std::string message);
   void onConnectionLost(void *conn);
   void onConnectionMade(void *conn);
   sigc::connection on_timer_registered(Timing::timer_slot s, int msecs_interval);
+  void on_connected_to_gamelist_server_for_advertising_removal(std::string scenario_id);
+  void on_advertising_removal_response_received(std::string scenario_id, std::string err);
+  void on_connected_to_gamelist_server_for_advertising(HostedGame *game);
+  void on_advertising_response_received(std::string scenario_id, std::string err);
+  void on_child_setup();
 
+  // helpers
   void sendList(void *conn);
+  void unhost(void *conn, std::string profile_id, std::string scenario_id, std::string &err);
+  void host(GameScenario *game_scenario, Profile *profile, std::string &err);
+  void run_game(GameScenario *game_scenario, Glib::Pid *child_pid, guint32 port, std::string &err);
+  guint32 get_free_port();
 
   //! A static pointer for the singleton instance.
   static GamehostServer * s_instance;
+
 };
 
 #endif

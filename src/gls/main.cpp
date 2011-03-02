@@ -71,7 +71,7 @@ int main(int argc, char* argv[])
 	      cout << Glib::get_prgname() << " [OPTION]..." << endl << endl;
 	      cout << "LordsAWar! Game-list Server " << _("version") << " " << VERSION << endl << endl;
 	      cout << _("Options:") << endl << endl; 
-	      cout << "  -?, --help                 " << _("Shows this help screen") <<endl;
+	      cout << "  -?, --help                 " << _("Display this help and exit") <<endl;
 	      cout << "  -p, --port <number>        " << _("Start the server on the given port") << endl;
 	      cout << endl;
 	      cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << endl;
