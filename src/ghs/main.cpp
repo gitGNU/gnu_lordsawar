@@ -35,6 +35,7 @@ int max_vector_width;
     
 int main(int argc, char* argv[])
 {
+  std::list<std::string> members;
   std::string hostname = "";
   srand(time(NULL));         // set the random seed
 
@@ -72,6 +73,10 @@ int main(int argc, char* argv[])
             {
               hostname = parameter;
             }
+	  else if (parameter == "--members" || parameter == "--m")
+            {
+              members = GamehostServer::load_members_from_file(parameter);
+            }
 	  else if (parameter == "--help" || parameter == "-?")
 	    {
 	      cout << Glib::get_prgname() << " [OPTION]..." << endl << endl;
@@ -80,6 +85,7 @@ int main(int argc, char* argv[])
 	      cout << "  -?, --help                 " << _("Display this help and exit") <<endl;
 	      cout << "  -h, --host <string>        " << _("Advertise our hostname as this to game clients") << endl;
 	      cout << "  -p, --port <number>        " << _("Start the server on the given port") << endl;
+	      cout << "  -m, --members <file>       " << _("Allow the profile ids in this file to host games") << endl;
 	      cout << endl;
 	      cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << endl;
 	      exit(0);
@@ -100,6 +106,7 @@ int main(int argc, char* argv[])
   if (hostname == "")
     hostname = Configuration::s_gamehost_server_hostname;
   gamehostserver->setHostname(hostname);
+  gamehostserver->setMembers(members);
   gamehostserver->start(port);
   gtk_main->run();
   delete gtk_main;

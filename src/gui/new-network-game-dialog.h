@@ -37,6 +37,7 @@ class NewNetworkGameDialog: public Decorated
     bool isClient() {return client_radiobutton->get_active();};
 
     bool isAdvertised() {return advertise_checkbutton->get_active();};
+    bool isRemotelyHosted() {return remote_checkbutton->get_active();};
 
     void set_parent_window(Gtk::Window &parent);
 
@@ -50,6 +51,7 @@ class NewNetworkGameDialog: public Decorated
   Gtk::Button *add_button;
   Gtk::Button *remove_button;
   Gtk::CheckButton *advertise_checkbutton;
+  Gtk::CheckButton *remote_checkbutton;
   Gtk::TreeView *profiles_treeview;
     class ProfilesColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -70,6 +72,7 @@ class NewNetworkGameDialog: public Decorated
   void select_preferred_profile(Glib::ustring user);
   void on_profile_selected();
   void on_client_radiobutton_toggled();
+  void on_remote_checkbutton_toggled();
 };
 
 #endif

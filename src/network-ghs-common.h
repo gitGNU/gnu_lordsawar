@@ -23,18 +23,21 @@
 enum GhsMessageType 
 {
   GHS_MESSAGE_HOST_NEW_GAME = 1,  //sent from client (lw host)
-  GHS_MESSAGE_HOST_NEW_RANDOM_GAME = 2, //from client (lw host)
-  GHS_MESSAGE_GAME_CREATED = 3, //from server
-  GHS_MESSAGE_UNHOST_GAME = 4, //from client (lw host)
-  GHS_MESSAGE_GAME_UNHOSTED = 5, //from server
-  GHS_MESSAGE_COULD_NOT_HOST_GAME = 6, //from server
-  GHS_MESSAGE_COULD_NOT_UNHOST_GAME = 7, //from server
-  GHS_MESSAGE_REQUEST_RELOAD = 8, //from client
-  GHS_MESSAGE_RELOADED = 9, //from server
-  GHS_MESSAGE_COULD_NOT_RELOAD = 10, //from server
-  GHS_MESSAGE_GAME_LIST = 11, //from server
-  GHS_MESSAGE_COULD_NOT_GET_GAME_LIST = 12, //from server
-  GHS_MESSAGE_REQUEST_GAME_LIST = 13, //from client (lw host or client)
+  GHS_MESSAGE_AWAITING_MAP = 2, //from server
+  GHS_MESSAGE_UNHOST_GAME = 3, //from client (lw host)
+  GHS_MESSAGE_GAME_UNHOSTED = 4, //from server
+  GHS_MESSAGE_COULD_NOT_HOST_GAME = 5, //from server
+  GHS_MESSAGE_COULD_NOT_UNHOST_GAME = 6, //from server
+  GHS_MESSAGE_REQUEST_RELOAD = 7, //from client
+  GHS_MESSAGE_RELOADED = 8, //from server
+  GHS_MESSAGE_COULD_NOT_RELOAD = 9, //from server
+  GHS_MESSAGE_GAME_LIST = 10, //from server
+  GHS_MESSAGE_COULD_NOT_GET_GAME_LIST = 11, //from server
+  GHS_MESSAGE_REQUEST_GAME_LIST = 12, //from client (lw host or client)
+  GHS_MESSAGE_SENDING_MAP = 13, //from client
+  GHS_MESSAGE_GAME_HOSTED = 14, //from server
+  GHS_MESSAGE_COULD_NOT_READ_MAP = 15, //from server
+  GHS_MESSAGE_COULD_NOT_START_GAME = 16, //from server
 };
 
 #endif

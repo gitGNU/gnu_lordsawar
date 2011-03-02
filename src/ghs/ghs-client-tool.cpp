@@ -31,7 +31,7 @@
 
 #include "ghs-client-tool.h"
 
-GhsClientTool::GhsClientTool(std::string host, int port, bool show_list, bool reload)
+GhsClientTool::GhsClientTool(std::string host, int port, Profile *p, bool show_list, bool reload)
 {
   request_count = 0;
   d_show_list = show_list;
@@ -39,13 +39,18 @@ GhsClientTool::GhsClientTool(std::string host, int port, bool show_list, bool re
   GamehostClient *gamehostclient = GamehostClient::getInstance();
   Profilelist *plist = Profilelist::getInstance();
   new_profile = NULL;
-  if (plist->size() > 0)
-    profile = plist->front();
+  if (p)
+    profile = p;
   else
     {
-      new_profile = new Profile("admin");
-      profile = new_profile;
-    } 
+      if (plist->size() > 0)
+        profile = plist->front();
+      else
+        {
+          new_profile = new Profile("admin");
+          profile = new_profile;
+        } 
+    }
   gamehostclient->client_could_not_connect.connect
     (sigc::mem_fun(*this, &GhsClientTool::on_could_not_connect));
   gamehostclient->client_connected.connect

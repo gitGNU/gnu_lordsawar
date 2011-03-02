@@ -26,6 +26,8 @@
 #include "vector.h"
 #include "ucompose.hpp"
 #include "gls-client-tool.h"
+#include "profile.h"
+#include "profilelist.h"
 
 using namespace std;
 
@@ -33,6 +35,7 @@ int max_vector_width;
     
 int main(int argc, char* argv[])
 {
+  Profile *profile = NULL;
   std::string host;
   bool advertise = false;
   bool show_list = false;
@@ -71,9 +74,18 @@ int main(int argc, char* argv[])
                 }
               port = userport;
 	    }
+          else if (parameter == "--profile" || parameter == "-P")
+            {
+              profile = Profilelist::getInstance()->findProfileById(parameter);
+              if (!profile)
+                {
+                  cerr << _("invalid profile id") << endl;
+                  exit(-1);
+                }
+            }
           else if (parameter == "--unadvertise" || parameter == "-u")
             {
-              unadvertise.push_back(argv[i-1]);
+              unadvertise.push_back(parameter);
             }
           else if (parameter == "--advertise" || parameter == "-a")
             {
@@ -97,6 +109,7 @@ int main(int argc, char* argv[])
 	      cout << "LordsAWar! Game-list Client " << _("version") << " " << VERSION << endl << endl;
 	      cout << _("Options:") << endl << endl; 
 	      cout << "  -?, --help                 " << _("Display this help and exit") <<endl;
+	      cout << "  -P, --profile <id>         " << _("Use this identity, specified by profile id") << endl;
 	      cout << "  -p, --port <number>        " << _("Connect to the server on the given port") << endl;
 	      cout << "  -u, --unadvertise <id>     " << _("Remove a game, specified by scenario id") << endl;
 	      cout << "  -a, --advertise            " << _("Add a game") << endl;
@@ -130,8 +143,8 @@ int main(int argc, char* argv[])
     }
   if (host == "")
     host = "127.0.0.1";
-  GlsClientTool tool(host, port, show_list, unadvertise, advertise, reload,
-                     remove_all);
+  GlsClientTool tool(host, port, profile, show_list, unadvertise, 
+                     advertise, reload, remove_all);
 
   gtk_main->run();
   //delete gtk_main;

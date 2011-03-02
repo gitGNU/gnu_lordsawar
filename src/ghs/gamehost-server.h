@@ -34,6 +34,7 @@ class XML_Helper;
 class Profile;
 class GameScenario;
 class HostedGame;
+class HostGameRequest;
 
 class GamehostServer
 {
@@ -41,6 +42,9 @@ public:
         
   //! Returns the singleton instance.  Creates a new one if neccessary.
   static GamehostServer * getInstance();
+
+  static const int TOO_MANY_PROFILES_AWAITING_MAPS = 100;
+  static const int ONE_HOUR_OLD = 60 * 60;
 
   //! Deletes the singleton instance.
   static void deleteInstance();
@@ -55,8 +59,13 @@ public:
 
   //set functions
   void setHostname(std::string host) {hostname = host;};
+  void setMembers(std::list<std::string> profile_ids) {members = profile_ids;};
 
+  // signals
   sigc::signal<void, int> port_in_use;
+
+  // statics
+  static std::list<std::string> load_members_from_file(std::string file);
 
 protected:
   GamehostServer();
@@ -65,6 +74,8 @@ protected:
 private:
   std::auto_ptr<NetworkServer> network_server;
   std::string hostname;
+  std::list<HostGameRequest*> host_game_requests;
+  std::list<std::string> members;
 
   bool onGotMessage(void *conn, int type, std::string message);
   void onConnectionLost(void *conn);
@@ -75,13 +86,20 @@ private:
   void on_connected_to_gamelist_server_for_advertising(HostedGame *game);
   void on_advertising_response_received(std::string scenario_id, std::string err);
   void on_child_setup();
+  bool loadProfile(std::string tag, XML_Helper *helper, Profile **profile);
 
   // helpers
   void sendList(void *conn);
   void unhost(void *conn, std::string profile_id, std::string scenario_id, std::string &err);
-  void host(GameScenario *game_scenario, Profile *profile, std::string &err);
+  HostedGame* host(GameScenario *game_scenario, Profile *profile, std::string &err);
   void run_game(GameScenario *game_scenario, Glib::Pid *child_pid, guint32 port, std::string &err);
+  void get_profile_and_scenario_id(std::string payload, Profile **profile, std::string &scenario_id, std::string &err);
   guint32 get_free_port();
+  bool is_member(std::string profile_id);
+
+  void cleanup_old_profiles_awaiting_maps(int stale = ONE_HOUR_OLD);
+  bool add_to_profiles_awaiting_maps(Profile *profile, std::string scenario_id);
+  Profile *remove_from_profiles_awaiting_maps(std::string scenario_id);
 
   //! A static pointer for the singleton instance.
   static GamehostServer * s_instance;

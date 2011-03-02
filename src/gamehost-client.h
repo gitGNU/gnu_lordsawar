@@ -33,6 +33,7 @@ class NetworkConnection;
 class RecentlyPlayedGame;
 class RecentlyPlayedGameList;
 class Profile;
+class GameScenario;
 
 class GamehostClient
 {
@@ -50,6 +51,16 @@ public:
   void request_game_list();
   sigc::signal<void, RecentlyPlayedGameList*, std::string> received_game_list;
 
+  void request_game_host(std::string scenario_id);
+  sigc::signal<void, std::string, std::string> received_host_response;
+
+  void send_map(GameScenario *game_scenario);
+  void send_map_file(std::string file);
+  sigc::signal<void, std::string, guint32, std::string> received_map_response;
+
+  void request_game_unhost(std::string scenario_id);
+  sigc::signal<void, std::string, std::string> received_unhost_response;
+
   void request_reload();
   sigc::signal<void, std::string> received_reload_response;
 
@@ -58,6 +69,7 @@ public:
   sigc::signal<void> client_forcibly_disconnected; //server went away
   sigc::signal<void> client_could_not_connect;
   
+  std::string getProfileId() const {return d_profile_id;};
   std::string getHost() const{return d_host;};
   guint32 getPort() const{return d_port;};
 

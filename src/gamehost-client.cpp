@@ -99,13 +99,29 @@ bool GamehostClient::onGotMessage(int type, std::string payload)
   debug("GamehostClient got message of type " << type);
   switch (GhsMessageType(type)) 
     {
-    case GHS_MESSAGE_GAME_CREATED:
+    case GHS_MESSAGE_AWAITING_MAP:
+      received_host_response.emit(payload, "");
       break;
     case GHS_MESSAGE_GAME_UNHOSTED:
+      received_unhost_response.emit(payload, "");
       break;
     case GHS_MESSAGE_COULD_NOT_HOST_GAME:
+        {
+          pos = payload.find(' ');
+          if (pos == std::string::npos)
+            return false;
+          received_host_response.emit(payload.substr(0, pos), 
+                                      payload.substr(pos + 1));
+        }
       break;
     case GHS_MESSAGE_COULD_NOT_UNHOST_GAME:
+        {
+          pos = payload.find(' ');
+          if (pos == std::string::npos)
+            return false;
+          received_unhost_response.emit(payload.substr(0, pos), 
+                                        payload.substr(pos + 1));
+        }
       break;
     case GHS_MESSAGE_GAME_LIST:
         {
@@ -127,10 +143,31 @@ bool GamehostClient::onGotMessage(int type, std::string payload)
     case GHS_MESSAGE_COULD_NOT_RELOAD:
       received_reload_response.emit(payload);
       break;
+    case GHS_MESSAGE_COULD_NOT_READ_MAP:
+    case GHS_MESSAGE_COULD_NOT_START_GAME:
+        {
+          pos = payload.find(' ');
+          if (pos == std::string::npos)
+            return false;
+          received_map_response.emit(payload.substr(0, pos), 0,
+                                     payload.substr(pos + 1));
+        }
+      break;
+    case GHS_MESSAGE_GAME_HOSTED:
+        {
+          std::string scenario_id;
+          guint32 port = 0;
+          std::stringstream spayload;
+          spayload.str(payload);
+          spayload >> scenario_id;
+          spayload >> port;
+          received_map_response.emit(scenario_id, port, "");
+        }
+      break;
+    case GHS_MESSAGE_SENDING_MAP:
     case GHS_MESSAGE_REQUEST_GAME_LIST:
     case GHS_MESSAGE_REQUEST_RELOAD:
     case GHS_MESSAGE_HOST_NEW_GAME:
-    case GHS_MESSAGE_HOST_NEW_RANDOM_GAME:
     case GHS_MESSAGE_UNHOST_GAME:
       //faulty server
       break;
@@ -167,4 +204,41 @@ bool GamehostClient::loadRecentlyPlayedGameList(std::string tag, XML_Helper *hel
 void GamehostClient::request_reload()
 {
   network_connection->send(GLS_MESSAGE_REQUEST_RELOAD, "");
+} 
+
+void GamehostClient::request_game_unhost(std::string scenario_id)
+{
+  network_connection->send(GHS_MESSAGE_UNHOST_GAME, 
+                           d_profile_id + " " + scenario_id);
+
+}
+  
+void GamehostClient::request_game_host(std::string scenario_id)
+{
+  Profile *profile = Profilelist::getInstance()->findProfileById(d_profile_id);
+  //dump the profile to a string
+  std::ostringstream os;
+  XML_Helper helper(&os);
+  helper.begin(LORDSAWAR_RECENTLY_HOSTED_VERSION);
+  profile->save(&helper);
+  helper.close();
+  // os.str() is the first part that contains the profile object.
+  // it is followed by the scenario id, outside of any tags.
+  network_connection->send(GHS_MESSAGE_HOST_NEW_GAME, os.str() + scenario_id);
+  return;
+}
+
+void GamehostClient::send_map(GameScenario *game_scenario)
+{
+  std::string tmpfile = "lw.XXXX";
+  int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
+  close(fd);
+  game_scenario->saveGame(tmpfile);
+  send_map_file(tmpfile);
+  File::erase(tmpfile);
+}
+
+void GamehostClient::send_map_file(std::string file)
+{
+  network_connection->sendFile(GHS_MESSAGE_SENDING_MAP, file);
 }

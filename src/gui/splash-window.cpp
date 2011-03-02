@@ -223,7 +223,7 @@ void SplashWindow::on_new_network_game_clicked()
 
           gpd.set_parent_window(*window);
           gpd.set_title(_("New Networked Game"));
-          gpd.game_started.connect(sigc::bind(sigc::mem_fun(*this, &SplashWindow::on_network_game_created), nngd.getProfile(), nngd.isAdvertised()));
+          gpd.game_started.connect(sigc::bind(sigc::mem_fun(*this, &SplashWindow::on_network_game_created), nngd.getProfile(), nngd.isAdvertised(), nngd.isRemotelyHosted()));
           gpd.run(network_game_nickname);
           gpd.hide();
           return;
@@ -306,10 +306,11 @@ void SplashWindow::on_game_started(GameParameters g)
 }
 
 void SplashWindow::on_network_game_created(GameParameters g, Profile *profile,
-                                           bool advertised)
+                                           bool advertised, 
+                                           bool remotely_hosted)
 {
   new_hosted_network_game_requested.emit(g, LORDSAWAR_PORT, profile,
-                                         advertised);
+                                         advertised, remotely_hosted);
 }
 
 void SplashWindow::on_pbm_game_created(GameParameters g)

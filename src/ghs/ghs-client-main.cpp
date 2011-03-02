@@ -26,6 +26,8 @@
 #include "vector.h"
 #include "ucompose.hpp"
 #include "ghs-client-tool.h"
+#include "profile.h"
+#include "profilelist.h"
 
 using namespace std;
 
@@ -33,6 +35,7 @@ int max_vector_width;
     
 int main(int argc, char* argv[])
 {
+  Profile *profile;
   std::string host;
   bool show_list = false;
   bool reload = false;
@@ -68,6 +71,15 @@ int main(int argc, char* argv[])
                 }
               port = userport;
 	    }
+          else if (parameter == "--profile" || parameter == "-P")
+            {
+              profile = Profilelist::getInstance()->findProfileById(parameter);
+              if (!profile)
+                {
+                  cerr << _("invalid profile id") << endl;
+                  exit(-1);
+                }
+            }
           else if (parameter == "--list" || parameter == "-l")
             {
               show_list = true;
@@ -82,9 +94,11 @@ int main(int argc, char* argv[])
 	      cout << "LordsAWar! Game-list Client " << _("version") << " " << VERSION << endl << endl;
 	      cout << _("Options:") << endl << endl; 
 	      cout << "  -?, --help                 " << _("Display this help and exit") <<endl;
+	      cout << "  -P, --profile <id>         " << _("Use this identity, specified by profile id") << endl;
 	      cout << "  -p, --port <number>        " << _("Connect to the server on the given port") << endl;
-	      cout << "  -l, --list                 " << _("See a list of games") << endl;
+	      cout << "  -l, --list                 " << _("See a list of hosted games") << endl;
 	      cout << "  -R, --reload               " << _("Reload the game list from disk") << endl;
+	      //cout << "  -u, --unhost <id>          " << _("Stop hosting a game (specified by scenario id)") << endl;
 	      cout << endl;
               cout << String::ucompose ("%1", _("If HOST is not specified on the command-line, this tool will try to connect to \nthe game-host server at 127.0.0.1.")) << endl;
 	      cout << endl;
@@ -109,7 +123,7 @@ int main(int argc, char* argv[])
     }
   if (host == "")
     host = "127.0.0.1";
-  GhsClientTool tool(host, port, show_list, reload);
+  GhsClientTool tool(host, port, profile, show_list, reload);
 
   gtk_main->run();
   //delete gtk_main;

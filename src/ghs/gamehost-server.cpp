@@ -38,6 +38,14 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
+struct HostGameRequest
+{
+  Glib::TimeVal created_on;
+  Profile *profile;
+  std::string scenario_id;
+};
+
+
 GamehostServer * GamehostServer::s_instance = 0;
 
 GamehostServer* GamehostServer::getInstance()
@@ -195,13 +203,13 @@ void GamehostServer::run_game(GameScenario *game_scenario, Glib::Pid *child_pid,
                      child_pid);
 }
 
-void GamehostServer::host(GameScenario *game_scenario, Profile *profile, std::string &err)
+HostedGame * GamehostServer::host(GameScenario *game_scenario, Profile *profile, std::string &err)
 {
   guint32 port = get_free_port();
   Glib::Pid child_pid;
   run_game(game_scenario, &child_pid, port, err);
   if (err != "")
-    return;
+    return NULL;
 
   //now we add an entry to the gamelist.
   HostedGame *g = new HostedGame(new AdvertisedGame(game_scenario, profile));
@@ -213,7 +221,7 @@ void GamehostServer::host(GameScenario *game_scenario, Profile *profile, std::st
       kill (g->getPid(), SIGQUIT);
       Glib::spawn_close_pid(g->getPid());
       delete g;
-      return;
+      return NULL;
     }
 
   //now we advertise it.
@@ -222,6 +230,7 @@ void GamehostServer::host(GameScenario *game_scenario, Profile *profile, std::st
     (sigc::bind(sigc::mem_fun(*this, &GamehostServer::on_connected_to_gamelist_server_for_advertising), g));
   gsc->start(Configuration::s_gamelist_server_hostname,
              Configuration::s_gamelist_server_port, profile);
+  return g;
 }
 
 guint32 GamehostServer::get_free_port()
@@ -256,6 +265,41 @@ void GamehostServer::on_advertising_response_received(std::string scenario_id,
   return;
 }
 
+void GamehostServer::get_profile_and_scenario_id(std::string payload, Profile **profile, std::string &scenario_id, std::string &err)
+{
+  bool broken = false;
+  std::istringstream is(payload);
+  //get the profile that wants to host a game
+  XML_Helper helper(&is);
+  helper.registerTag 
+    (Profile::d_tag, sigc::bind(sigc::mem_fun(this, 
+                                              &GamehostServer::loadProfile), 
+                                profile));
+  broken = helper.parse();
+  helper.close();
+  if (broken)
+    {
+      err = _("Could not parse profile information.");
+      return;
+    }
+
+  //now get the scenario id that tags on the end.
+  char buffer[1024];
+  is.getline(buffer, sizeof(buffer));
+  scenario_id = buffer;
+}
+
+bool GamehostServer::loadProfile(std::string tag, XML_Helper *helper, Profile **profile)
+{
+  if (tag == Profile::d_tag)
+    {
+      *profile = new Profile(helper);
+      return true;
+    }
+  return false;
+}
+
+
 bool GamehostServer::onGotMessage(void *conn, int type, std::string payload)
 {
   debug("got message of type " << type);
@@ -265,34 +309,79 @@ bool GamehostServer::onGotMessage(void *conn, int type, std::string payload)
         {
           std::string err = "";
           Profile *profile = NULL; //take it from payload
-          GameScenario *game_scenario = NULL; //take it from payload
-          host(game_scenario, profile, err);
+          std::string scenario_id;
+          get_profile_and_scenario_id(payload, &profile, scenario_id, err);
           if (err != "")
-            network_server->send(conn, GHS_MESSAGE_COULD_NOT_HOST_GAME, 
-                                 game_scenario->getId() + " " + err);
-          else
-            network_server->send(conn, GHS_MESSAGE_GAME_CREATED, 
-                                 game_scenario->getId());
-          delete game_scenario;
-          delete profile;
-          Gamelist::getInstance()->save();
+            {
+              network_server->send(conn, GHS_MESSAGE_COULD_NOT_HOST_GAME, 
+                                   "{???} " + err);
+              return true;
+            }
+          if (is_member(profile->getId()) == false &&
+              network_server->is_local_connection(conn) == false)
+              {
+                delete profile;
+                err = _("Not authorized to host on this server.");
+                network_server->send(conn, GHS_MESSAGE_COULD_NOT_HOST_GAME, 
+                                     scenario_id + " " + err);
+                return true;
+              }
+          if (add_to_profiles_awaiting_maps(profile, scenario_id) == false)
+            {
+              delete profile;
+              err = _("Server too busy.  try again later.");
+              network_server->send(conn, GHS_MESSAGE_COULD_NOT_HOST_GAME, 
+                                   scenario_id + " " + err);
+              return true;
+            }
+
+          network_server->send(conn, GHS_MESSAGE_AWAITING_MAP, scenario_id);
+
         }
       break;
-    case GHS_MESSAGE_HOST_NEW_RANDOM_GAME:
+    case GHS_MESSAGE_SENDING_MAP:
         {
-          std::string err;
-          GameScenario *game_scenario = NULL;; //make our own.
-          Profile *profile = NULL; //take it from payload
-          host(game_scenario, profile, err);
+          std::string err = "";
+          std::string tmpfile = "lw.XXXX";
+          int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
+          close(fd);
+          std::ofstream f(tmpfile.c_str());
+          f << payload;
+          f.close();
+          bool broken = false;
+          GameScenario *game_scenario = new GameScenario(tmpfile, broken);
+          File::erase(tmpfile);
+          if (broken)
+            {
+              err = _("Could not read map file.");
+              network_server->send(conn, GHS_MESSAGE_COULD_NOT_READ_MAP, 
+                                  "{???} " + err);
+              return true;
+            }
+          //go get associated profile.
+          Profile *profile = 
+            remove_from_profiles_awaiting_maps(game_scenario->getId());
+          if (!profile)
+            {
+              err = _("protocol error.");
+              network_server->send(conn, GHS_MESSAGE_COULD_NOT_START_GAME, 
+                                   game_scenario->getId()+ " " + err);
+              return true;
+            }
+
+          HostedGame *g = host(game_scenario, profile, err);
           if (err != "")
-            network_server->send(conn, GHS_MESSAGE_COULD_NOT_UNHOST_GAME, 
-                                 game_scenario->getId() + " " + err);
+            network_server->send(conn, GHS_MESSAGE_COULD_NOT_START_GAME, 
+                                 game_scenario->getId()+ " " + err);
           else
-            network_server->send(conn, GHS_MESSAGE_GAME_UNHOSTED, 
-                                 game_scenario->getId());
+            network_server->send
+              (conn, GHS_MESSAGE_GAME_HOSTED, 
+               String::ucompose("%1 %2", game_scenario->getId(), 
+                                g->getAdvertisedGame()->getPort()));
+
+          Gamelist::getInstance()->save();
           delete game_scenario;
           delete profile;
-          Gamelist::getInstance()->save();
         }
       break;
     case GHS_MESSAGE_UNHOST_GAME:
@@ -328,11 +417,15 @@ bool GamehostServer::onGotMessage(void *conn, int type, std::string payload)
     case GHS_MESSAGE_GAME_LIST:
     case GHS_MESSAGE_COULD_NOT_RELOAD:
     case GHS_MESSAGE_RELOADED:
-    case GHS_MESSAGE_GAME_CREATED:
+    case GHS_MESSAGE_AWAITING_MAP:
     case GHS_MESSAGE_GAME_UNHOSTED:
     case GHS_MESSAGE_COULD_NOT_HOST_GAME:
     case GHS_MESSAGE_COULD_NOT_UNHOST_GAME:
     case GHS_MESSAGE_COULD_NOT_GET_GAME_LIST:
+    case GHS_MESSAGE_GAME_HOSTED:
+    case GHS_MESSAGE_COULD_NOT_READ_MAP:
+    case GHS_MESSAGE_COULD_NOT_START_GAME:
+      break;
       //faulty client
       break;
     }
@@ -345,6 +438,7 @@ void GamehostServer::onConnectionMade(void *conn)
   printf("pinging games now.\n");
   Gamelist::getInstance()->pruneGames();
   Gamelist::getInstance()->pingGames();
+  cleanup_old_profiles_awaiting_maps();
 }
 
 void GamehostServer::onConnectionLost(void *conn)
@@ -357,5 +451,89 @@ sigc::connection GamehostServer::on_timer_registered(Timing::timer_slot s,
 {
     return Glib::signal_timeout().connect(s, msecs_interval);
 }
-             
+          
+bool GamehostServer::add_to_profiles_awaiting_maps(Profile *profile, std::string scenario_id)
+{
+  if (host_game_requests.size() > (guint32) TOO_MANY_PROFILES_AWAITING_MAPS &&
+      TOO_MANY_PROFILES_AWAITING_MAPS != -1)
+    return false;
+  HostGameRequest* request = new HostGameRequest();
+  request->profile = profile;
+  request->scenario_id = scenario_id;
+  Glib::TimeVal now;
+  now.assign_current_time();
+  request->created_on = now;
+  host_game_requests.push_back(request);
+  return true;
+}
+
+void GamehostServer::cleanup_old_profiles_awaiting_maps(int stale)
+{
+  Glib::TimeVal now;
+  now.assign_current_time();
+  for (std::list<HostGameRequest*>::iterator i = host_game_requests.begin();
+       i != host_game_requests.end(); i++)
+    {
+      if ((*i)->created_on.as_double() + stale < now.as_double())
+        {
+          delete (*i)->profile;
+          delete (*i);
+          i = host_game_requests.erase(i);
+        }
+    }
+}
+
+Profile *GamehostServer::remove_from_profiles_awaiting_maps(std::string scenario_id)
+{
+  for (std::list<HostGameRequest*>::iterator i = host_game_requests.begin();
+       i != host_game_requests.end(); i++)
+    {
+      if ((*i)->scenario_id == scenario_id)
+        {
+          Profile *profile = (*i)->profile;
+          host_game_requests.erase(i);
+          delete (*i);
+          return profile;
+        }
+    }
+  return NULL;
+}
+
+bool GamehostServer::is_member(std::string profile_id)
+{
+  if (members.empty())
+    return true;
+  Glib::ustring id = String::utrim(profile_id);
+  for (std::list<std::string>::iterator i = members.begin(); i != members.end();
+       i++)
+    {
+      if (id == *i)
+        return true;
+    }
+  return false;
+}
+
+std::list<std::string> GamehostServer::load_members_from_file(std::string file)
+{
+  char buffer[1024];
+  std::list<std::string> members;
+  std::ifstream f(file.c_str());
+  if (f.is_open() == false)
+    return members;
+  while (!f.eof())
+    {
+      f.getline(buffer, sizeof(buffer));
+      std::string line = buffer;
+      size_t pos = line.find('#');
+      std::string trimmed_line;
+      if (pos == std::string::npos)
+        trimmed_line =String::utrim(line);
+      else
+        trimmed_line = String::utrim(line.substr(pos));
+      if (trimmed_line != "")
+        members.push_back(trimmed_line);
+    }
+  f.close();
+  return members;
+}
 // End of file

@@ -35,7 +35,7 @@ class RecentlyPlayedGame;
 class GhsClientTool
 {
 public:
-    GhsClientTool(std::string host, int port, bool show_list, bool reload);
+    GhsClientTool(std::string host, int port, Profile *p, bool show_list, bool reload);
     virtual ~GhsClientTool();
 private:
   Profile *new_profile;

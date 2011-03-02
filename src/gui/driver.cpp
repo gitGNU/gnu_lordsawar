@@ -71,6 +71,7 @@
 #include "profile.h"
 #include "profilelist.h"
 #include "gamelist-client.h"
+#include "gamehost-client.h"
 
 Driver::Driver(std::string load_filename)
 {
@@ -551,8 +552,49 @@ void Driver::on_advertising_response_received(std::string scenario_id,
   return;
 }
 
+void Driver::remotely_serve (GameScenario *game_scenario, Profile *p)
+{
+  if ((Configuration::s_gamehost_server_hostname == "" &&
+      Configuration::s_gamehost_server_port == 0) || !p || !game_scenario)
+    return;
+  GamehostClient *ghc = GamehostClient::getInstance();
+  ghc->client_connected.connect(sigc::bind(sigc::mem_fun(*this, &Driver::on_connected_to_gamehost_server_for_hosting_request), game_scenario));
+  ghc->start(Configuration::s_gamehost_server_hostname,
+             Configuration::s_gamehost_server_port, p);
+}
+
+void Driver::on_connected_to_gamehost_server_for_hosting_request (GameScenario *game_scenario)
+{
+  GamehostClient *ghc = GamehostClient::getInstance();
+  ghc->received_host_response.connect(sigc::bind(sigc::mem_fun(*this, &Driver::on_got_game_host_response), game_scenario));
+  ghc->request_game_host (game_scenario->getId());
+}
+
+void Driver::on_got_game_host_response(std::string scenario_id, std::string err, GameScenario *game_scenario)
+{
+  GamehostClient *ghc = GamehostClient::getInstance();
+  ghc->received_map_response.connect(sigc::mem_fun(*this, &Driver::on_remote_game_hosted));
+  ghc->send_map(game_scenario);
+}
+
+void Driver::on_remote_game_hosted(std::string scenario_id, guint32 port, std::string err)
+{
+  Profile *profile = 
+    Profilelist::getInstance()->findProfileById
+    (GamehostClient::getInstance()->getProfileId());
+  GamehostClient::deleteInstance();
+  if (err != "")
+    return;
+  //yay, we did it.  the new game is waiting for us on the gamehost server 
+  //on the port they just sent us.
+  //so now we start up a client.
+  on_new_remote_network_game_requested
+    (Configuration::s_gamehost_server_hostname, port, profile);
+}
+
 void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
-						  Profile *p, bool advertised)
+						  Profile *p, bool advertised,
+                                                  bool remotely_hosted)
 {
     if (splash_window)
 	splash_window->hide();
@@ -567,6 +609,11 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
 	dialog.run();
 	dialog.hide();
 	return;
+      }
+    if (remotely_hosted)
+      {
+        remotely_serve (game_scenario, p);
+        return;
       }
 
   GameServer *game_server = GameServer::getInstance();

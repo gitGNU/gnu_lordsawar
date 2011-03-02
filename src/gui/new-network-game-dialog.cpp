@@ -57,12 +57,18 @@ NewNetworkGameDialog::NewNetworkGameDialog()
     add_profile(*i);
 
   xml->get_widget("advertise_checkbutton", advertise_checkbutton);
+  xml->get_widget("remote_checkbutton", remote_checkbutton);
+  remote_checkbutton->signal_toggled().connect
+    (sigc::mem_fun(*this, 
+                   &NewNetworkGameDialog::on_remote_checkbutton_toggled));
   decorate(dialog);
   dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
 
   advertise_checkbutton->set_label(String::ucompose(_("List the game on %1."),
                                    Configuration::s_gamelist_server_hostname));
-
+  remote_checkbutton->set_label
+    (String::ucompose(_("Host and list the game on %1."),
+                      Configuration::s_gamehost_server_hostname));
   select_preferred_profile(Glib::get_user_name());
   update_buttons();
   profiles_treeview->get_selection()->signal_changed().connect
@@ -117,6 +123,20 @@ void NewNetworkGameDialog::update_buttons()
     advertise_checkbutton->set_sensitive(!client_radiobutton->get_active());
   else
     advertise_checkbutton->set_sensitive(false);
+
+  if (Configuration::s_gamehost_server_hostname != "" &&
+      Configuration::s_gamehost_server_port != 0)
+    remote_checkbutton->set_sensitive(!client_radiobutton->get_active());
+  else
+    remote_checkbutton->set_sensitive(false);
+
+  if (remote_checkbutton->get_active() && remote_checkbutton->get_sensitive())
+    {
+      advertise_checkbutton->set_sensitive(true);
+      advertise_checkbutton->set_active(false);
+      advertise_checkbutton->set_sensitive(false);
+    }
+
 }
 
 void NewNetworkGameDialog::set_parent_window(Gtk::Window &parent)
@@ -185,6 +205,11 @@ void NewNetworkGameDialog::on_profile_selected()
 }
   
 void NewNetworkGameDialog::on_client_radiobutton_toggled()
+{
+  update_buttons();
+}
+    
+void NewNetworkGameDialog::on_remote_checkbutton_toggled()
 {
   update_buttons();
 }

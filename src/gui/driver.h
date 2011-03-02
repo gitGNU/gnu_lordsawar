@@ -57,7 +57,7 @@ class Driver: public sigc::trackable
 
     void on_new_game_requested(GameParameters g);
     void on_new_remote_network_game_requested(std::string host, unsigned short port, Profile *p);
-    void on_new_hosted_network_game_requested(GameParameters g, int port, Profile *p, bool advertised);
+    void on_new_hosted_network_game_requested(GameParameters g, int port, Profile *p, bool advertised, bool remotely_hosted);
     void on_new_pbm_game_requested(GameParameters g);
     void on_game_scenario_downloaded(std::string filename);
     void on_game_scenario_received(std::string path, Profile *p);
@@ -109,6 +109,7 @@ class Driver: public sigc::trackable
 
     void get_default(int num_players, GameParameters &g);
     void serve (GameScenario *game_scenario);
+    void remotely_serve (GameScenario *game_scenario, Profile *p);
     void on_client_sits_down_in_headless_server_game(Player *p, std::string nick);
   
     void on_could_not_bind_to_port_for_headless_server(int port);
@@ -123,6 +124,10 @@ class Driver: public sigc::trackable
     void on_advertising_removal_response_received(std::string scenario_id, std::string err);
 
     void on_advertised_game_round_ends(GameScenario *game_scenario, Profile *p);
+
+    void on_connected_to_gamehost_server_for_hosting_request (GameScenario *game_scenario);
+    void on_got_game_host_response(std::string scenario_id, std::string err, GameScenario *game_scenario);
+    void on_remote_game_hosted(std::string scenario_id, guint32 port, std::string err);
 };
 
 
