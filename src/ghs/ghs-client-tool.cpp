@@ -28,14 +28,17 @@
 #include "profile.h"
 #include "recently-played-game-list.h"
 #include "recently-played-game.h"
-
+#include "GameScenario.h"
 #include "ghs-client-tool.h"
 
-GhsClientTool::GhsClientTool(std::string host, int port, Profile *p, bool show_list, bool reload)
+GhsClientTool::GhsClientTool(std::string host, int port, Profile *p, bool show_list, bool reload, std::string unhost, std::string file)
 {
+  d_host = host;
   request_count = 0;
   d_show_list = show_list;
   d_reload = reload;
+  d_unhost = unhost;
+  d_file_to_host = file;
   GamehostClient *gamehostclient = GamehostClient::getInstance();
   Profilelist *plist = Profilelist::getInstance();
   new_profile = NULL;
@@ -119,6 +122,51 @@ void GhsClientTool::on_connection_lost()
   exit(1);
 }
 
+void GhsClientTool::on_got_unhost_response(std::string id, std::string err)
+{
+  request_count--;
+  if (err != "")
+    std::cerr << err << std::endl;
+  else
+    std::cerr << 
+      String::ucompose(_("Stopped hosting game %1"), id) << std::endl;
+  if (request_count == 0)
+    Gtk::Main::quit();
+}
+
+void GhsClientTool::on_got_host_game_response(std::string scenario_id, std::string err, std::string file)
+{
+  request_count--;
+  if (err != "")
+    {
+      std::cerr << err << std::endl;
+      if (request_count == 0)
+        Gtk::Main::quit();
+      return;
+    }
+  GamehostClient *ghc = GamehostClient::getInstance();
+  ghc->received_map_response.connect
+    (sigc::mem_fun(*this, &GhsClientTool::on_game_hosted));
+  ghc->send_map_file(file);
+}
+
+void GhsClientTool::on_game_hosted(std::string scenario_id, guint32 port, std::string err)
+{
+  request_count--;
+  if (err != "")
+    {
+      std::cerr << err << std::endl;
+      if (request_count == 0)
+        Gtk::Main::quit();
+      return;
+    }
+      
+  std::cerr << String::ucompose("The game is hosted at %1, port %2", d_host,
+                                port) << std::endl;
+  if (request_count == 0)
+    Gtk::Main::quit();
+}
+
 void GhsClientTool::on_connected()
 {
   GamehostClient *gamehostclient = GamehostClient::getInstance();
@@ -138,4 +186,30 @@ void GhsClientTool::on_connected()
       gamehostclient->request_reload();
     }
 
+  if (d_unhost.empty() == false)
+    {
+      request_count++;
+      gamehostclient->received_unhost_response.connect
+        (sigc::mem_fun(*this, &GhsClientTool::on_got_unhost_response));
+      gamehostclient->request_game_unhost(d_unhost);
+    }
+
+  if (d_file_to_host.empty() == false)
+    {
+      request_count++;
+      gamehostclient->received_host_response.connect
+        (sigc::bind(sigc::mem_fun(*this, &GhsClientTool::on_got_host_game_response), d_file_to_host));
+      bool broken = false;
+      std::string n, com, id;
+      guint32 p, c;
+      GameScenario::loadDetails(d_file_to_host, broken, p, c, n, com, id);
+      if (broken == false)
+        gamehostclient->request_game_host(id);
+      else
+        {
+          request_count--;
+          std::cerr << String::ucompose("couldn't load %1", d_file_to_host)
+            << std::endl;
+        }
+    }
 }

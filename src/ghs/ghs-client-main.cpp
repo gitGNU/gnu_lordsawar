@@ -37,6 +37,8 @@ int main(int argc, char* argv[])
 {
   Profile *profile;
   std::string host;
+  std::string file;
+  std::string unhost;
   bool show_list = false;
   bool reload = false;
   srand(time(NULL));         // set the random seed
@@ -88,6 +90,14 @@ int main(int argc, char* argv[])
             {
               reload = true;
             }
+          else if (parameter == "--host" || parameter == "-h")
+            {
+              file = parameter;
+            }
+          else if (parameter == "--unhost" || parameter == "-u")
+            {
+              unhost = parameter;
+            }
 	  else if (parameter == "--help" || parameter == "-?")
 	    {
 	      cout << Glib::get_prgname() << " " << _("[OPTION]... [HOST]") << endl << endl;
@@ -98,7 +108,8 @@ int main(int argc, char* argv[])
 	      cout << "  -p, --port <number>        " << _("Connect to the server on the given port") << endl;
 	      cout << "  -l, --list                 " << _("See a list of hosted games") << endl;
 	      cout << "  -R, --reload               " << _("Reload the game list from disk") << endl;
-	      //cout << "  -u, --unhost <id>          " << _("Stop hosting a game (specified by scenario id)") << endl;
+              cout << "  -u, --unhost <id>          " << _("Stop hosting a game (specified by scenario id)") << endl;
+              cout << "  -h, --host <file>          " << _("Host a game") << endl;
 	      cout << endl;
               cout << String::ucompose ("%1", _("If HOST is not specified on the command-line, this tool will try to connect to \nthe game-host server at 127.0.0.1.")) << endl;
 	      cout << endl;
@@ -113,7 +124,7 @@ int main(int argc, char* argv[])
   if (port == 0)
     port = LORDSAWAR_GAMEHOST_PORT;
 
-  if (!show_list && !reload)
+  if (!show_list && !reload && unhost.empty() && file.empty())
     {
       Glib::ustring s = 
         String::ucompose("Try `%1 --help' for more information.",
@@ -123,7 +134,7 @@ int main(int argc, char* argv[])
     }
   if (host == "")
     host = "127.0.0.1";
-  GhsClientTool tool(host, port, profile, show_list, reload);
+  GhsClientTool tool(host, port, profile, show_list, reload, unhost, file);
 
   gtk_main->run();
   //delete gtk_main;

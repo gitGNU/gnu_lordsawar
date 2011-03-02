@@ -35,18 +35,25 @@ class RecentlyPlayedGame;
 class GhsClientTool
 {
 public:
-    GhsClientTool(std::string host, int port, Profile *p, bool show_list, bool reload);
+    GhsClientTool(std::string host, int port, Profile *p, bool show_list, bool reload, std::string unhost, std::string file);
     virtual ~GhsClientTool();
 private:
   Profile *new_profile;
   Profile *profile;
+  std::string d_host;
   bool d_show_list;
   bool d_reload;
+  std::string d_unhost;
+  std::string d_file_to_host;
   guint32 request_count;
 
   //callbacks
   void on_got_list_response(RecentlyPlayedGameList *list, std::string err);
   void on_got_reload_response(std::string err);
+  void on_got_unhost_response(std::string id, std::string err);
+
+  void on_got_host_game_response(std::string scenario_id, std::string err, std::string file);
+  void on_game_hosted(std::string scenario_id, guint32 port, std::string err);
   void on_could_not_connect();
   void on_connected();
   void on_connection_lost();
