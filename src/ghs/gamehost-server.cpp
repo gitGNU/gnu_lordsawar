@@ -35,8 +35,8 @@
 #include "GameScenario.h"
 #include "profile.h"
 
-//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
-#define debug(x)
+#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
+//#define debug(x)
 
 struct HostGameRequest
 {
@@ -186,6 +186,7 @@ void GamehostServer::run_game(GameScenario *game_scenario, Glib::Pid *child_pid,
   std::string tmpfile = "lw.XXXX";
   int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
   close(fd);
+  tmpfile += SAVE_EXT;
   game_scenario->saveGame(tmpfile);
 
   std::list<std::string> argv;
@@ -203,6 +204,24 @@ void GamehostServer::run_game(GameScenario *game_scenario, Glib::Pid *child_pid,
                      child_pid);
 }
 
+bool GamehostServer::waitForGameToBeConnectable(guint32 port)
+{
+  Glib::RefPtr<Gio::SocketClient>client = Gio::SocketClient::create();
+  while (1)
+    {
+      Glib::RefPtr<Gio::SocketConnection> sock = 
+        client->connect_to_host ("127.0.0.1", port);
+      if (sock)
+        {
+          sock.reset();
+          break;
+        }
+      Glib::usleep(1000000);
+    }
+  client.reset();
+  return true;
+}
+
 HostedGame * GamehostServer::host(GameScenario *game_scenario, Profile *profile, std::string &err)
 {
   guint32 port = get_free_port();
@@ -211,11 +230,22 @@ HostedGame * GamehostServer::host(GameScenario *game_scenario, Profile *profile,
   if (err != "")
     return NULL;
 
+  //now we wait to see if everything is okay.
+
+  bool success = waitForGameToBeConnectable(port);
+  if (!success)
+    {
+      err = _("Game couldn't be setup properly.");
+      kill (child_pid, SIGQUIT);
+      Glib::spawn_close_pid(child_pid);
+      return NULL;
+    }
+
   //now we add an entry to the gamelist.
   HostedGame *g = new HostedGame(new AdvertisedGame(game_scenario, profile));
   g->setPid((guint32) child_pid);
   g->getAdvertisedGame()->fillData(getHostname(), port);
-  if (Gamelist::getInstance()->add(g))
+  if (Gamelist::getInstance()->add(g) == false)
     {
       err = _("could not add game to list.");
       kill (g->getPid(), SIGQUIT);
@@ -268,14 +298,22 @@ void GamehostServer::on_advertising_response_received(std::string scenario_id,
 void GamehostServer::get_profile_and_scenario_id(std::string payload, Profile **profile, std::string &scenario_id, std::string &err)
 {
   bool broken = false;
-  std::istringstream is(payload);
+  std::string match = "</" + Profile::d_tag + ">";
+  size_t pos = payload.find(match);
+  if (pos == std::string::npos)
+    {
+      err = _("malformed host new game message");
+      return;
+    }
+  std::istringstream is(payload.substr(0, pos + match.length()));
   //get the profile that wants to host a game
   XML_Helper helper(&is);
   helper.registerTag 
     (Profile::d_tag, sigc::bind(sigc::mem_fun(this, 
                                               &GamehostServer::loadProfile), 
                                 profile));
-  broken = helper.parse();
+  if (!helper.parse())
+    broken = true;
   helper.close();
   if (broken)
     {
@@ -284,9 +322,7 @@ void GamehostServer::get_profile_and_scenario_id(std::string payload, Profile **
     }
 
   //now get the scenario id that tags on the end.
-  char buffer[1024];
-  is.getline(buffer, sizeof(buffer));
-  scenario_id = buffer;
+  scenario_id = String::utrim(payload.substr(pos + match.length()));
 }
 
 bool GamehostServer::loadProfile(std::string tag, XML_Helper *helper, Profile **profile)
@@ -491,8 +527,8 @@ Profile *GamehostServer::remove_from_profiles_awaiting_maps(std::string scenario
       if ((*i)->scenario_id == scenario_id)
         {
           Profile *profile = (*i)->profile;
-          host_game_requests.erase(i);
           delete (*i);
+          host_game_requests.erase(i);
           return profile;
         }
     }

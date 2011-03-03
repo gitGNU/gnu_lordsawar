@@ -100,6 +100,7 @@ private:
   void cleanup_old_profiles_awaiting_maps(int stale = ONE_HOUR_OLD);
   bool add_to_profiles_awaiting_maps(Profile *profile, std::string scenario_id);
   Profile *remove_from_profiles_awaiting_maps(std::string scenario_id);
+  bool waitForGameToBeConnectable(guint32 port);
 
   //! A static pointer for the singleton instance.
   static GamehostServer * s_instance;

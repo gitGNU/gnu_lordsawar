@@ -572,6 +572,8 @@ void Driver::on_connected_to_gamehost_server_for_hosting_request (GameScenario *
 
 void Driver::on_got_game_host_response(std::string scenario_id, std::string err, GameScenario *game_scenario)
 {
+  if (err != "")
+    return;
   GamehostClient *ghc = GamehostClient::getInstance();
   ghc->received_map_response.connect(sigc::mem_fun(*this, &Driver::on_remote_game_hosted));
   ghc->send_map(game_scenario);

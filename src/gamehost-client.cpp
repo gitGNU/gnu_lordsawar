@@ -224,6 +224,7 @@ void GamehostClient::request_game_host(std::string scenario_id)
   helper.close();
   // os.str() is the first part that contains the profile object.
   // it is followed by the scenario id, outside of any tags.
+  std::string data = os.str() + scenario_id;
   network_connection->send(GHS_MESSAGE_HOST_NEW_GAME, os.str() + scenario_id);
   return;
 }
@@ -233,6 +234,7 @@ void GamehostClient::send_map(GameScenario *game_scenario)
   std::string tmpfile = "lw.XXXX";
   int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
   close(fd);
+  tmpfile += SAVE_EXT;
   game_scenario->saveGame(tmpfile);
   send_map_file(tmpfile);
   File::erase(tmpfile);

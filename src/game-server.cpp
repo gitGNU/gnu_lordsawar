@@ -911,7 +911,7 @@ void GameServer::sendMap(Participant *part)
   File::erase(tmpfile);
   tmpfile += SAVE_EXT;
 
-  d_game_scenario->saveGame(tmpfile, "sav");
+  d_game_scenario->saveGame(tmpfile);
 
   std::cerr << "sending map" << std::endl;
   network_server->sendFile(part->conn, MESSAGE_TYPE_SENDING_MAP, tmpfile);
