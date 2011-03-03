@@ -182,7 +182,7 @@ void GamehostClient::disconnect()
   
 void GamehostClient::request_game_list()
 {
-  network_connection->send(GLS_MESSAGE_REQUEST_GAME_LIST, d_profile_id);
+  network_connection->send(GHS_MESSAGE_REQUEST_GAME_LIST, d_profile_id);
 }
 
 bool GamehostClient::loadRecentlyPlayedGameList(std::string tag, XML_Helper *helper)
@@ -203,7 +203,7 @@ bool GamehostClient::loadRecentlyPlayedGameList(std::string tag, XML_Helper *hel
 
 void GamehostClient::request_reload()
 {
-  network_connection->send(GLS_MESSAGE_REQUEST_RELOAD, "");
+  network_connection->send(GHS_MESSAGE_REQUEST_RELOAD, "");
 } 
 
 void GamehostClient::request_game_unhost(std::string scenario_id)

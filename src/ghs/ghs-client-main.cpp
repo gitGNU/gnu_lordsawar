@@ -35,7 +35,7 @@ int max_vector_width;
     
 int main(int argc, char* argv[])
 {
-  Profile *profile;
+  Profile *profile = NULL;
   std::string host;
   std::string file;
   std::string unhost;

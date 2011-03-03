@@ -358,6 +358,7 @@ bool GamehostServer::onGotMessage(void *conn, int type, std::string payload)
                                   "{???} " + err);
               return true;
             }
+          game_scenario->setPlayMode(GameScenario::NETWORKED);
           //go get associated profile.
           Profile *profile = 
             remove_from_profiles_awaiting_maps(game_scenario->getId());
@@ -435,7 +436,6 @@ bool GamehostServer::onGotMessage(void *conn, int type, std::string payload)
 void GamehostServer::onConnectionMade(void *conn)
 {
   debug("connection made");
-  printf("pinging games now.\n");
   Gamelist::getInstance()->pruneGames();
   Gamelist::getInstance()->pingGames();
   cleanup_old_profiles_awaiting_maps();
