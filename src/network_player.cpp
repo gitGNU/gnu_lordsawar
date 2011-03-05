@@ -721,8 +721,7 @@ void NetworkPlayer::decodeActionEndTurn(const Action_EndTurn *action)
 void NetworkPlayer::decodeActionConquerCity(const Action_ConquerCity *action)
 {
   City *city = Citylist::getInstance()->getById(action->getCityId());
-  Stack *stack = d_stacklist->getStackById(action->getStackId());
-  doConquerCity(city, stack);
+  doConquerCity(city);
 }
 
 void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)

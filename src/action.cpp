@@ -2240,12 +2240,12 @@ bool Action_EndTurn::doSave(XML_Helper* helper) const
 //Action_ConquerCity
 
 Action_ConquerCity::Action_ConquerCity()
-  :Action(Action::CITY_CONQUER), d_city(0), d_stack(0)
+  :Action(Action::CITY_CONQUER), d_city(0)
 {
 }
 
 Action_ConquerCity::Action_ConquerCity(const Action_ConquerCity &action)
-: Action(action), d_city(action.d_city), d_stack(action.d_stack)
+: Action(action), d_city(action.d_city)
 {
 }
 
@@ -2253,7 +2253,6 @@ Action_ConquerCity::Action_ConquerCity(XML_Helper* helper)
   :Action(helper)
 {
     helper->getData(d_city, "city");
-    helper->getData(d_stack, "stack");
 }
 
 Action_ConquerCity::~Action_ConquerCity()
@@ -2264,7 +2263,7 @@ std::string Action_ConquerCity::dump() const
 {
     std::stringstream s;
 
-    s <<"City " <<d_city <<" occupied by " << d_stack << "\n";
+    s <<"City " <<d_city <<" occupied." << std::endl;
 
     return s.str();
 }
@@ -2274,15 +2273,13 @@ bool Action_ConquerCity::doSave(XML_Helper* helper) const
     bool retval = true;
 
     retval &= helper->saveData("city", d_city);
-    retval &= helper->saveData("stack", d_stack);
 
     return retval;
 }
 
-bool Action_ConquerCity::fillData(City* c, Stack *s)
+bool Action_ConquerCity::fillData(City* c)
 {
     d_city = c->getId();
-    d_stack = s->getId();
     return true;
 }
 

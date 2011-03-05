@@ -1467,12 +1467,11 @@ class Action_ConquerCity : public Action
         virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with the City being conquered.
-        bool fillData (City* c, Stack *s);
+        bool fillData (City* c);
     
 	guint32 getCityId() const {return d_city;};
-	guint32 getStackId() const {return d_stack;};
         private:
-        guint32 d_city, d_stack;
+        guint32 d_city;
 };
 
 //-----------------------------------------------------------------------------

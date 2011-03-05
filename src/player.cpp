@@ -1659,33 +1659,31 @@ void Player::calculateLoot(Player *looted, guint32 &added, guint32 &subtracted)
   return;
 }
 
-void Player::doConquerCity(City *city, Stack *stack)
+void Player::doConquerCity(City *city)
 {
   takeCityInPossession(city);
-  
+}
+
+void Player::conquerCity(City *city, Stack *stack)
+{
+  Player *original_owner = city->getOwner();
+  Action_ConquerCity *action = new Action_ConquerCity();
+  action->fillData(city);
+  addAction(action);
+
+  doConquerCity(city);
   History_CityWon *item = new History_CityWon();
   item->fillData(city);
   addHistory(item);
-  if (stack->hasHero())
+  if (stack && stack->hasHero())
   {
     History_HeroCityWon *another = new History_HeroCityWon();
     Hero *hero = dynamic_cast<Hero *>(stack->getFirstHero());
     another->fillData(hero, city);
     addHistory(another);
   }
-}
-
-void Player::conquerCity(City *city, Stack *stack)
-{
-  
-  Action_ConquerCity *action = new Action_ConquerCity();
-  action->fillData(city, stack);
-  addAction(action);
-
-  Player *looted = city->getOwner();
-  doConquerCity(city, stack);
-  if (getType() != Player::NETWORKED)
-    lootCity(city, looted);
+  if (original_owner != this)
+    lootCity(city, original_owner);
 }
 
 void Player::lootCity(City *city, Player *looted)
@@ -1781,16 +1779,12 @@ void Player::doCityPillage(City *c, int& gold, int* pillaged_army_type)
 	    gold += a->getNewProductionCost() / 2;
 	  c->removeProductionBase(slot);
 	}
-  //*pillaged_army_type = 10;
-  //gold = 300;
       addGold(gold);
       Stack *s = getActivestack();
-      //printf ("%s emitting %p, %p, %d, %d\n", getName().c_str(), c, s, gold, *pillaged_army_type);
       spillagingCity.emit(c, s, gold, *pillaged_army_type);
       QuestsManager::getInstance()->cityPillaged(c, s, gold);
     }
 
-  //takeCityInPossession(c);
 }
 
 void Player::cityPillage(City* c, int& gold, int* pillaged_army_type)
@@ -1843,7 +1837,6 @@ void Player::doCitySack(City* c, int& gold, std::list<guint32> *sacked_types)
   Stack *s = getActivestack();
   ssackingCity.emit(c, s, gold, *sacked_types);
   QuestsManager::getInstance()->citySacked(c, s, gold);
-  //takeCityInPossession(c);
 }
 
 void Player::citySack(City* c, int& gold, std::list<guint32> *sacked_types)

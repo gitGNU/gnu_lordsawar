@@ -243,10 +243,7 @@ void GameScenario::quickStartEvenlyDivided()
 		}
 
 	      //now give the city to us.
-	      c->conquer(p);
-	      History_CityWon *item = new History_CityWon();
-	      item->fillData(c);
-	      p->addHistory(item);
+              p->conquerCity(c, NULL);
 	    }
 	}
     }
@@ -295,10 +292,7 @@ void GameScenario::quickStartAIHeadStart()
 		}
 
 	      //now give the city to us.
-	      c->conquer(p);
-	      History_CityWon *item = new History_CityWon();
-	      item->fillData(c);
-	      p->addHistory(item);
+              p->conquerCity(c, NULL);
 	    }
 	}
     }
@@ -434,9 +428,7 @@ bool GameScenario::setupCities(GameParameters::QuickStartPolicy quick_start)
       if (city)
 	{
 	  city->deFog(city->getOwner());
-	  History_CityWon *item = new History_CityWon();
-	  item->fillData(city);
-	  city->getOwner()->addHistory(item);
+          (*it)->conquerCity(city, NULL);
 	}
     }
 

@@ -429,10 +429,7 @@ class Player: public sigc::trackable
 	//! Get the diplomatic score with respect to an opponent.
 	guint32 getDiplomaticScore (Player *p) const;
 
-
         void adjustDiplomacyFromConqueringCity(City *city);
-
-
 
         //! Add some gold pieces to the player's treasury.
         void addGold(int gold);
@@ -874,6 +871,9 @@ class Player: public sigc::trackable
 	//! Callback to make a mass change to vectoring.
 	bool changeVectorDestination(Vector<int> src, Vector<int> dest);
 
+        //! The player's stack takes a city.  Stack can be NULL.
+        void conquerCity(City *city, Stack *stack);
+
         /** 
 	 * Callback to have the active player occupy a given city.
 	 * The player has defeated a City and now it has been decided
@@ -1010,7 +1010,7 @@ class Player: public sigc::trackable
          */
 	//! Callback to change the Army unit being produced within a City.
         bool cityChangeProduction(City* city, int slot);
-
+        
 	//! A player's city produces an army unit.
 	/**
 	 * @param city  The city that has produced an army unit.
@@ -1647,7 +1647,6 @@ class Player: public sigc::trackable
 	//! assists in scorekeeping for diplomacy
 	void alterDiplomaticRelationshipScore (Player *player, int amount);
 
-        void conquerCity(City *city, Stack *stack);
 
         // return the new stack if split succeeded
         Stack *doStackSplit(Stack *s);
@@ -1679,7 +1678,7 @@ class Player: public sigc::trackable
         void doHeroPlantStandard(Hero *hero, Item *item, Vector<int> pos);
         void doDeclareDiplomacy (DiplomaticState state, Player *player);
         void doProposeDiplomacy (DiplomaticProposal proposal, Player *player);
-        void doConquerCity(City *city, Stack *stack);
+        void doConquerCity(City *city);
 	void doLootCity(Player *looted, guint32 added, guint32 subtracted);
         Hero* doRecruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally, StackReflist *stacks);
         void doRename(std::string name);
