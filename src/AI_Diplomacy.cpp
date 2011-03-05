@@ -58,11 +58,7 @@ void AI_Diplomacy::considerCuspOfWar()
       {
         d_owner->proposeDiplomacy (Player::PROPOSE_WAR, *it);
         other->proposeDiplomacy (Player::PROPOSE_WAR, d_owner);
-        d_owner->declareDiplomacy (Player::AT_WAR, *it);
-  
-        History_DiplomacyWar *item = new History_DiplomacyWar();
-        item->fillData(other);
-	d_owner->addHistory(item);
+        d_owner->declareDiplomacy (Player::AT_WAR, *it, false);
       }
     }
   }
@@ -173,7 +169,7 @@ void AI_Diplomacy::gangUpOnTheBully()
 	      if ((*pit)->getType() == Player::HUMAN)
 		continue;
 	      if (d_owner->getDiplomaticState(*pit) != Player::AT_PEACE)
-		d_owner->declareDiplomacy(Player::AT_PEACE, *pit);
+		d_owner->declareDiplomacy(Player::AT_PEACE, *pit, false);
 	    }
 	}
     }

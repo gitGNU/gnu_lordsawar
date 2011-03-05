@@ -187,6 +187,9 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         //! Reassign player colours.
         void setNewColours(Shieldset *shieldset);
 
+        //! Remove all actions from every player's action list.
+        void clearAllActions();
+
 	// Methods that operate on the class data but do not modify it.
 
 	/**

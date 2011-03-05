@@ -1351,12 +1351,9 @@ bool Game::maybeTreachery(Stack *stack, Player *them, Vector<int> pos)
   if (treachery == false)
     return false;
   me->proposeDiplomacy (Player::NO_PROPOSAL, them);
-  me->declareDiplomacy (Player::AT_WAR, them);
+  me->declareDiplomacy (Player::AT_WAR, them, true);
   them->proposeDiplomacy (Player::NO_PROPOSAL, me);
-  them->declareDiplomacy (Player::AT_WAR, me);
-  History_DiplomacyTreachery *item = new History_DiplomacyTreachery();
-  item->fillData(them);
-  me->addHistory(item);
+  them->declareDiplomacy (Player::AT_WAR, me, false);
 
   me->deteriorateDiplomaticRelationship (5);
   them->improveDiplomaticRelationship (2, me);

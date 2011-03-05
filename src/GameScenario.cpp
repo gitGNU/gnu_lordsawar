@@ -494,12 +494,12 @@ void GameScenario::setupDiplomacy(bool diplomacy)
 	    if (diplomacy == false)
 	      {
 		(*pit)->proposeDiplomacy(Player::PROPOSE_WAR, *it);
-		(*pit)->declareDiplomacy(Player::AT_WAR, *it);
+		(*pit)->declareDiplomacy(Player::AT_WAR, *it, false);
 	      }
 	    else 
 	      {
 		(*pit)->proposeDiplomacy(Player::NO_PROPOSAL, *it);
-		(*pit)->declareDiplomacy(Player::AT_PEACE, *it);
+		(*pit)->declareDiplomacy(Player::AT_PEACE, *it, false);
 	      }
 	  }
       }
@@ -1017,6 +1017,7 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
 
 void GameScenario::initialize(GameParameters g)
 {
+  Playerlist::getInstance()->clearAllActions();
   setupFog(g.hidden_map);
   setupCities(g.quick_start);
   setupStacks(g.hidden_map);

@@ -1090,6 +1090,11 @@ class Player: public sigc::trackable
 
         virtual void endTurn() = 0;
         
+        //! record the player's score for this round.
+        void reportEndOfRound(guint32 score);
+
+        //! record the player's end of turn.
+        void reportEndOfTurn();
 
         /** 
 	 * This method gives the player the specified Reward.  There are 
@@ -1112,6 +1117,8 @@ class Player: public sigc::trackable
          */
 	//! Callback to give a Reward to the Player or the player's Stack.
         bool giveReward (Stack *stack, Reward *reward, StackReflist *stacks);
+
+        Reward* giveQuestReward(Quest *quest, Stack *stack);
 
 	//! Give the player a new name.
 	void rename (std::string name);
@@ -1221,7 +1228,7 @@ class Player: public sigc::trackable
         void resign();
 
 	//! Declare a new diplomatic state with respect to an opponent.
-	void declareDiplomacy(DiplomaticState state, Player *player);
+	void declareDiplomacy(DiplomaticState state, Player *player, bool treachery);
 
 	//! Negotiate diplomatic talks with an opponent, and return a new state.
 	DiplomaticState negotiateDiplomacy (Player *player);

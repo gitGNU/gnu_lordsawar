@@ -78,6 +78,7 @@
 #include "QEnemyArmytype.h"
 #include "callback-enums.h"
 #include "stackreflist.h"
+#include "rewardlist.h"
 
 using namespace std;
 
@@ -2603,7 +2604,7 @@ void Player::doDeclareDiplomacy (DiplomaticState state, Player *player)
   d_diplomatic_state[player->getId()] = state;
 }
 
-void Player::declareDiplomacy (DiplomaticState state, Player *player)
+void Player::declareDiplomacy (DiplomaticState state, Player *player, bool treachery)
 {
   doDeclareDiplomacy(state, player);
 
@@ -2611,6 +2612,31 @@ void Player::declareDiplomacy (DiplomaticState state, Player *player)
   item->fillData(player, state);
   addAction(item);
 
+  switch (state)
+    {
+    case AT_PEACE:
+        {
+          History_DiplomacyPeace *item = new History_DiplomacyPeace();
+          item->fillData(player);
+          addHistory(item);
+        }
+      break;
+    case AT_WAR_IN_FIELD:
+      break;
+    case AT_WAR:
+        {
+          History_DiplomacyWar *item = new History_DiplomacyWar();
+          item->fillData(player);
+          addHistory(item);
+        }
+      break;
+    }
+  if (treachery)
+    {
+      History_DiplomacyTreachery *item = new History_DiplomacyTreachery();
+      item->fillData(player);
+      addHistory(item);
+    }
   // FIXME: update diplomatic scores? 
 }
 
@@ -4460,7 +4486,6 @@ History* Player::handleDeadHero(Hero *h, Maptile *tile, Vector<int> pos)
       item = new History_HeroKilledSearching();
       item->fillData(h);
       return item;
-      //h->getOwner()->addHistory(item);
     }
   else if (tile->getBuilding() == Maptile::CITY)
     {
@@ -4469,7 +4494,6 @@ History* Player::handleDeadHero(Hero *h, Maptile *tile, Vector<int> pos)
       item = new History_HeroKilledInCity();
       item->fillData(h, c);
       return item;
-      //h->getOwner()->addHistory(item);
     }
   else //somewhere else
     {
@@ -4477,7 +4501,6 @@ History* Player::handleDeadHero(Hero *h, Maptile *tile, Vector<int> pos)
       item = new History_HeroKilledInBattle();
       item->fillData(h);
       return item;
-      //h->getOwner()->addHistory(item);
     }
   return NULL;
 }
@@ -4699,5 +4722,97 @@ void Player::stackDeselect ()
   doStackDeselect();
   Action_DeselectStack *item = new Action_DeselectStack();
   addAction(item);
+}
+
+void Player::reportEndOfRound(guint32 score)
+{
+  History_Score *item = new History_Score();
+  item->fillData(score);
+  addHistory(item);
+
+  History_GoldTotal* gold = new History_GoldTotal();
+  gold->fillData(d_gold);
+  addHistory(gold);
+}
+
+void Player::reportEndOfTurn()
+{
+  addHistory(new History_EndTurn);
+  addAction(new Action_EndTurn);
+}
+
+Reward* Player::giveQuestReward(Quest *quest, Stack *stack)
+{
+  StackReflist *stacks = new StackReflist();
+  Reward::Type reward_type = Reward::Type(rand() % 4);
+  switch (reward_type)
+    {
+    case Reward::GOLD:
+        {
+          int gold = Reward_Gold::getRandomGoldPieces();
+          Reward_Gold *reward = new Reward_Gold(gold);
+          giveReward(stack, reward, stacks);
+          delete stacks;
+          return reward;
+        }
+      break;
+    case Reward::ALLIES:
+        {
+          int num = (rand() % 8) + 1;
+          const ArmyProto *a = Reward_Allies::randomArmyAlly();
+          Reward_Allies *reward = new Reward_Allies(a, num);
+          giveReward(stack, reward, stacks);
+
+          History_HeroFindsAllies* item = new History_HeroFindsAllies();
+          item->fillData(quest->getHero());
+          addHistory(item);
+          delete stacks;
+          return reward;
+        }
+      break;
+    case Reward::ITEM:
+        {
+          Reward *itemReward = Rewardlist::getInstance()->popRandomItemReward();
+          if (itemReward)
+            {
+              giveReward(stack, itemReward, stacks);
+              delete stacks;
+              return itemReward;
+            }
+          else //no items left to give!
+            {
+              int gold = Reward_Gold::getRandomGoldPieces();
+              Reward_Gold * reward = new Reward_Gold(gold);
+              giveReward(stack, reward, stacks);
+              delete stacks;
+              return reward;
+            }
+        }
+      break;
+    case Reward::RUIN:
+        {
+          Reward *ruinReward = Rewardlist::getInstance()->popRandomRuinReward();
+          if (ruinReward)
+            {
+              giveReward(stack, ruinReward, stacks);
+              delete stacks;
+              return ruinReward;
+            }
+          else //no ruins left to give!
+            {
+              int gold = Reward_Gold::getRandomGoldPieces();
+              Reward_Gold* reward = new Reward_Gold(gold);
+              giveReward(stack, reward, stacks);
+              delete stacks;
+              return reward;
+            }
+        }
+      break;
+    case Reward::MAP:
+      //fixme!
+      break;
+    }
+  delete stacks;
+  return NULL;
 }
 // End of file

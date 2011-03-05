@@ -90,11 +90,8 @@ bool RealPlayer::startTurn()
 
 void RealPlayer::endTurn()
 {
-  History *history = new History_EndTurn();
-  addHistory(history);
+  reportEndOfTurn();
   pruneActionlist();
-  Action *action = new Action_EndTurn;
-  addAction(action);
 }
 
 void RealPlayer::invadeCity(City* c)

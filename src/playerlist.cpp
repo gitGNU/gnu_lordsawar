@@ -443,13 +443,7 @@ void Playerlist::calculateWinners()
 	  ((float) (*it)->getStacklist()->countArmies() / 
 	   (float)total_armies) * 20.0;
 	score = (guint32) (city_component + gold_component + army_component);
-	History_Score *item = new History_Score();
-	item->fillData(score);
-	(*it)->addHistory(item);
-
-	History_GoldTotal* gold = new History_GoldTotal();
-	gold->fillData((*it)->getGold());
-	(*it)->addHistory(gold);
+        (*it)->reportEndOfRound(score);
       }
 
     return;
@@ -504,9 +498,9 @@ void Playerlist::negotiateDiplomacy()
   
 	  Player::DiplomaticState old_state = (*pit)->getDiplomaticState(*it);
 	  Player::DiplomaticState new_state = (*pit)->negotiateDiplomacy(*it);
-	  (*pit)->declareDiplomacy (new_state, (*it));
+	  (*pit)->declareDiplomacy (new_state, (*it), false);
 	  (*pit)->proposeDiplomacy (Player::NO_PROPOSAL, (*it));
-	  (*it)->declareDiplomacy (new_state, (*pit));
+	  (*it)->declareDiplomacy (new_state, (*pit), false);
 	  (*it)->proposeDiplomacy (Player::NO_PROPOSAL, (*pit));
 	  if (old_state != new_state)
 	    {
@@ -520,10 +514,6 @@ void Playerlist::negotiateDiplomacy()
 		  me->improveAlliesRelationship (them, 1, Player::AT_PEACE);
 		  //their enemies think less of me
 		  them->deteriorateAlliesRelationship (me, 1, Player::AT_WAR);
-
-		  History_DiplomacyPeace *item = new History_DiplomacyPeace();
-		  item->fillData(*it);
-		  (*pit)->addHistory(item);
 		}
 	      else if (new_state == Player::AT_WAR)
 		{
@@ -533,10 +523,6 @@ void Playerlist::negotiateDiplomacy()
 		  them->deteriorateAlliesRelationship(me, 1, Player::AT_PEACE);
 		  //their enemies view of me goes up
 		  me->improveAlliesRelationship(them, 1, Player::AT_WAR);
-
-		  History_DiplomacyWar *item = new History_DiplomacyWar();
-		  item->fillData(them);
-		  me->addHistory(item);
 		}
 	    }
 	}
@@ -955,4 +941,10 @@ guint32 Playerlist::countBlessings() const
   for (const_iterator it = begin(); it != end(); it++)
     count += (*it)->getStacklist()->countBlessingsOnArmyUnits();
   return count;
+}
+
+void Playerlist::clearAllActions()
+{
+  for (iterator it = begin(); it != end(); it++)
+    (*it)->clearActionlist();
 }

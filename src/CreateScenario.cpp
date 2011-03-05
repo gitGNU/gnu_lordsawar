@@ -432,9 +432,7 @@ void CreateScenario::createCapitalCity(Player *player, City *city)
   city->setCapitalOwner(player);
   city->setCapital(true);
 
-  History_CityWon *item = new History_CityWon();
-  item->fillData(city);
-  player->addHistory(item);
+  player->conquerCity(city, NULL);
 }
 
 bool CreateScenario::tooNearToOtherCapitalCities(City *c, std::list<City*> capitals, guint32 distance)
