@@ -209,8 +209,15 @@ bool GamehostServer::waitForGameToBeConnectable(guint32 port)
   Glib::RefPtr<Gio::SocketClient>client = Gio::SocketClient::create();
   while (1)
     {
-      Glib::RefPtr<Gio::SocketConnection> sock = 
-        client->connect_to_host ("127.0.0.1", port);
+      Glib::RefPtr<Gio::SocketConnection> sock;
+      try
+        {
+          sock = client->connect_to_host ("127.0.0.1", port);
+        }
+      catch (Glib::Exception &ex)
+        {
+          ;
+        }
       if (sock)
         {
           sock.reset();
