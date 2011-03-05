@@ -208,7 +208,8 @@ bool NetworkGameSelectorDialog::run()
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       hide();
-      game_selected.emit(hostname_entry->get_text(), LORDSAWAR_PORT);
+      guint32 port = guint32(port_spinbutton->get_value());
+      game_selected.emit(hostname_entry->get_text(), port);
       return true;
     }
   else
