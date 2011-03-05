@@ -88,6 +88,9 @@ bool NetworkConnection::on_got_input(Glib::IOCondition cond)
 
 NetworkConnection::NetworkConnection(const Glib::RefPtr<Gio::SocketConnection> &c)
 {
+  d_host = "";
+  d_port = 0;
+  payload = NULL;
   //okay, i've been asked to create a SERVER side network connection.
   client = Gio::SocketClient::create();
   client->set_protocol(Gio::SOCKET_PROTOCOL_TCP);
@@ -100,6 +103,9 @@ NetworkConnection::NetworkConnection(const Glib::RefPtr<Gio::SocketConnection> &
 
 NetworkConnection::NetworkConnection()
 {
+  d_host = "";
+  d_port = 0;
+  payload = NULL;
   client = Gio::SocketClient::create();
   client->set_protocol(Gio::SOCKET_PROTOCOL_TCP);
 }
@@ -176,6 +182,8 @@ gssize NetworkConnection::on_payload_received(gssize len)
 
 void NetworkConnection::connectToHost(std::string host, int port)
 {
+  d_host = host;
+  d_port = port;
   d_connect_timer = 
     Timing::instance().register_timer
     (sigc::mem_fun(this, &NetworkConnection::on_connect_timeout), 5000);

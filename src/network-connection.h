@@ -48,6 +48,8 @@ public:
   void sendFile(int type, std::string filename);
   std::string get_peer_hostname();
 
+  std::string getHost() const {return d_host;};
+  guint32 getPort() const {return d_port;};
 private:
   Glib::RefPtr<Gio::SocketClient> client; //this is client-side connections.
   Glib::RefPtr<Gio::SocketConnection> conn;
@@ -61,6 +63,8 @@ private:
   char header[MESSAGE_SIZE_BYTES];
   int header_left;
   int header_size;
+  std::string d_host;
+  guint32 d_port;
 
   void setup_connection();
   void on_connect_connected(Glib::RefPtr<Gio::AsyncResult> &result);
