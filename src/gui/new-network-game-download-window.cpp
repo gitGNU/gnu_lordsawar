@@ -19,7 +19,7 @@
 #include "File.h"
 #include "decorated.h"
 
-NewNetworkGameDownloadWindow::NewNetworkGameDownloadWindow()
+NewNetworkGameDownloadWindow::NewNetworkGameDownloadWindow(Glib::ustring title)
 : m_vbox(false,10)
 {
   add(m_vbox);
@@ -30,7 +30,9 @@ NewNetworkGameDownloadWindow::NewNetworkGameDownloadWindow()
   Decorated decorator;
   decorator.decorate(this);
   decorator.window_closed.connect(sigc::mem_fun(this, &Gtk::Dialog::hide));
-  set_title(_("Downloading."));
+  if (title == "")
+    title = _("Downloading.");
+  set_title(title);
   set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
   show_all();
 }

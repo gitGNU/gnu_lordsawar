@@ -548,7 +548,6 @@ void Driver::on_advertising_response_received(std::string scenario_id,
                                               std::string err)
 {
   d_advertised_scenario_id = scenario_id;
-  GamelistClient::deleteInstance();
   return;
 }
 
@@ -559,8 +558,24 @@ void Driver::remotely_serve (GameScenario *game_scenario, Profile *p)
     return;
   GamehostClient *ghc = GamehostClient::getInstance();
   ghc->client_connected.connect(sigc::bind(sigc::mem_fun(*this, &Driver::on_connected_to_gamehost_server_for_hosting_request), game_scenario));
+  ghc->client_could_not_connect.connect(sigc::mem_fun(*this, &Driver::on_could_not_connect_to_gamehost_server));
   ghc->start(Configuration::s_gamehost_server_hostname,
              Configuration::s_gamehost_server_port, p);
+}
+
+void Driver::on_could_not_connect_to_gamehost_server()
+{
+  GamehostClient *ghc = GamehostClient::getInstance();
+  if (splash_window)
+    {
+      splash_window->show();
+      TimedMessageDialog dialog
+        (*splash_window->get_window(),
+         String::ucompose(_("Could not connect to gamehost server:\n%1:%2"),
+                          ghc->getHost(), ghc->getPort()), 0);
+      dialog.run();
+      dialog.hide();
+    }
 }
 
 void Driver::on_connected_to_gamehost_server_for_hosting_request (GameScenario *game_scenario)
@@ -573,20 +588,52 @@ void Driver::on_connected_to_gamehost_server_for_hosting_request (GameScenario *
 void Driver::on_got_game_host_response(std::string scenario_id, std::string err, GameScenario *game_scenario)
 {
   if (err != "")
-    return;
+    {
+      if (splash_window)
+        {
+          splash_window->show();
+          Glib::ustring s = 
+            String::ucompose(_("Gamehost Server Error: %1"), err);
+          TimedMessageDialog dialog(*splash_window->get_window(), s, 0);
+          dialog.set_title(_("Server Failure"));
+          dialog.run();
+          dialog.hide();
+        }
+      return;
+    }
   GamehostClient *ghc = GamehostClient::getInstance();
   ghc->received_map_response.connect(sigc::mem_fun(*this, &Driver::on_remote_game_hosted));
+  if (download_window)
+    delete download_window;
+  download_window = new NewNetworkGameDownloadWindow(_("Uploading."));
+  download_window->pulse();
+  upload_heartbeat_conn = Glib::signal_timeout().connect
+    (bind_return(sigc::mem_fun(*this, &Driver::upload_heartbeat), true), 1 * 1000);
   ghc->send_map(game_scenario);
 }
 
 void Driver::on_remote_game_hosted(std::string scenario_id, guint32 port, std::string err)
 {
+  upload_heartbeat_conn.disconnect();
+  if (download_window)
+    download_window->hide();
   Profile *profile = 
     Profilelist::getInstance()->findProfileById
     (GamehostClient::getInstance()->getProfileId());
-  GamehostClient::deleteInstance();
   if (err != "")
+    {
+      if (splash_window)
+        {
+          splash_window->show();
+          Glib::ustring s = 
+            String::ucompose(_("Gamehost Server Error: %1"), err);
+          TimedMessageDialog dialog(*splash_window->get_window(), s, 0);
+          dialog.set_title(_("Server Failure"));
+          dialog.run();
+          dialog.hide();
+        }
     return;
+    }
   //yay, we did it.  the new game is waiting for us on the gamehost server 
   //on the port they just sent us.
   //so now we start up a client.
@@ -680,6 +727,7 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
   
 void Driver::on_server_went_away()
 {
+  upload_heartbeat_conn.disconnect();
   heartbeat_conn.disconnect();
   if (game_lobby_dialog)
     game_lobby_dialog->hide();
@@ -704,11 +752,14 @@ void Driver::on_client_could_not_connect()
     download_window->hide();
   if (splash_window)
     splash_window->show();
-  GameClient::deleteInstance();
-  TimedMessageDialog dialog(*splash_window->get_window(), 
-			    _("Could not connect."), 0);
+  GameClient *gc = GameClient::getInstance();
+  TimedMessageDialog dialog
+    (*splash_window->get_window(), 
+     String::ucompose(_("Could not connect to server:\n%1 %2"),
+                        gc->getHost(), gc->getPort()), 0);
   dialog.run();
   dialog.hide();
+  GameClient::deleteInstance();
 }
 
 void Driver::on_new_remote_network_game_requested(std::string host, unsigned short port, Profile *p)
@@ -734,6 +785,12 @@ void Driver::on_new_remote_network_game_requested(std::string host, unsigned sho
   heartbeat_conn = Glib::signal_timeout().connect
     (bind_return(sigc::mem_fun(*this, &Driver::heartbeat), true), 1 * 1000);
 
+}
+
+void Driver::upload_heartbeat()
+{
+  if (download_window)
+    download_window->pulse();
 }
 
 void Driver::heartbeat()
@@ -927,6 +984,8 @@ void Driver::on_game_ended()
   PbmGameServer::deleteInstance();
 
   GraphicsCache::deleteInstance();
+  GamehostClient::deleteInstance();
+  GamelistClient::deleteInstance();
 
   splash_window->show();
 }
@@ -1332,7 +1391,6 @@ void Driver::on_advertising_removal_response_received(std::string scenario_id,
                                                       std::string err)
 {
   d_advertised_scenario_id = "";
-  GamelistClient::deleteInstance();
   return;
 }
 

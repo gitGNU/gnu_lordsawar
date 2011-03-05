@@ -22,7 +22,7 @@
 class NewNetworkGameDownloadWindow : public Gtk::Window, boost::noncopyable
 {
   public:
-    NewNetworkGameDownloadWindow();
+    NewNetworkGameDownloadWindow(Glib::ustring title = "");
     virtual ~NewNetworkGameDownloadWindow();
     void pulse();
 

@@ -48,6 +48,7 @@ class Driver: public sigc::trackable
     NewNetworkGameDownloadWindow* download_window;
     std::string d_load_filename;
     sigc::connection heartbeat_conn;
+    sigc::connection upload_heartbeat_conn;
     Player::Type robot_player_type;
     std::string d_advertised_scenario_id;
     unsigned int number_of_robots;
@@ -91,6 +92,7 @@ class Driver: public sigc::trackable
   
 
     void heartbeat();
+    void upload_heartbeat();
 
     void on_client_player_chat(std::string message);
     void on_hosted_player_chat(std::string message);
@@ -128,6 +130,7 @@ class Driver: public sigc::trackable
     void on_connected_to_gamehost_server_for_hosting_request (GameScenario *game_scenario);
     void on_got_game_host_response(std::string scenario_id, std::string err, GameScenario *game_scenario);
     void on_remote_game_hosted(std::string scenario_id, guint32 port, std::string err);
+    void on_could_not_connect_to_gamehost_server();
 };
 
 
