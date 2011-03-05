@@ -525,6 +525,7 @@ GameScenario *Driver::create_new_scenario(GameParameters &g, GameScenario::PlayM
 
 void Driver::advertise_game(GameScenario *game_scenario, Profile *p)
 {
+  GamelistClient::deleteInstance();
   GamelistClient *gsc = GamelistClient ::getInstance();
   gsc->client_connected.connect
     (sigc::bind(sigc::mem_fun(*this, &Driver::on_connected_to_gamelist_server_for_advertising), game_scenario, p));
@@ -556,6 +557,7 @@ void Driver::remotely_serve (GameScenario *game_scenario, Profile *p)
   if ((Configuration::s_gamehost_server_hostname == "" &&
       Configuration::s_gamehost_server_port == 0) || !p || !game_scenario)
     return;
+  GamehostClient::deleteInstance();
   GamehostClient *ghc = GamehostClient::getInstance();
   ghc->client_connected.connect(sigc::bind(sigc::mem_fun(*this, &Driver::on_connected_to_gamehost_server_for_hosting_request), game_scenario));
   ghc->client_could_not_connect.connect(sigc::mem_fun(*this, &Driver::on_could_not_connect_to_gamehost_server));
