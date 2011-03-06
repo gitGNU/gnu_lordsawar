@@ -218,8 +218,6 @@ int StackEditorDialog::run()
                 GameMap::getInstance()->removeStack(stack);
                 new_stack->setPlayer(player);
                 bool putted = GameMap::getInstance()->putStack(new_stack);
-                stack->getOwner()->deleteStack(stack);
-                player->addStack(new_stack);
                 Playerlist::getInstance()->setActiveplayer(old_active);
               }
 	}

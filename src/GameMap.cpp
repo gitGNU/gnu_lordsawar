@@ -2042,7 +2042,7 @@ bool GameMap::putStack(Stack *s)
 void GameMap::removeStack(Stack *s)
 {
   getStacks(s->getPos())->leaving(s);
-  Playerlist::getActiveplayer()->deleteStack(s);
+  s->getOwner()->deleteStack(s);
 }
 	
 guint32 GameMap::countArmyUnits(Vector<int> pos)
