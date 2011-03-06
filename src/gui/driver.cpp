@@ -165,6 +165,7 @@ void Driver::serve (GameScenario *game_scenario)
       GameServer::deleteInstance();
       return;
     }
+  printf("Game Server is now listening on port %d\n", port);
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   game_server->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
   game_server->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
