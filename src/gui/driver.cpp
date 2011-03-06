@@ -110,7 +110,7 @@ Driver::Driver(std::string load_filename)
       }
     if (Main::instance().start_headless_server)
       {
-        GameScenario *game_scenario;
+        GameScenario *game_scenario = NULL;
         std::string path = load_filename;
         if (load_filename.empty() == true)
           {
@@ -126,18 +126,22 @@ Driver::Driver(std::string load_filename)
           }
         else
           {
-          game_scenario = load_game(load_filename);
-          if (!game_scenario)
-            {
-              cerr << "Error: could not load file " << 
-                load_filename << std::endl;
-              exit(1);
-            }
+            bool broken = false;
+            GameParameters g = GameScenario::loadGameParameters(load_filename, 
+                                                                broken);
+            if (!broken)
+              game_scenario = load_game(load_filename);
+            if (!game_scenario || broken)
+              {
+                cerr << "Error: could not load file " << 
+                  load_filename << std::endl;
+                exit(1);
+              }
+            game_scenario->setPlayMode(GameScenario::NETWORKED);
+            game_scenario->initialize(g);
           }
         if (game_scenario)
-          {
           serve (game_scenario);
-          }
         return;
       }
     splash_window->show();
@@ -186,7 +190,7 @@ void Driver::on_client_sits_down_in_headless_server_game(Player *p, std::string 
 {
   static unsigned int count;
   count++;
-  if (count == MAX_PLAYERS)
+  if (count == Playerlist::getInstance()->countPlayersAlive())
     GameServer::getInstance()->sendRoundStart();
 }
 
@@ -493,7 +497,6 @@ GameScenario *Driver::create_new_scenario(GameParameters &g, GameScenario::PlayM
   bool broken = false;
 						 
   GameScenario* game_scenario = new GameScenario(g.map_path, broken);
-
   if (broken)
     return NULL;
 
@@ -516,9 +519,7 @@ GameScenario *Driver::create_new_scenario(GameParameters &g, GameScenario::PlayM
     {
       if (update_uuid)
 	game_scenario->setNewRandomId();
-
       Playerlist::getInstance()->syncPlayers(g.players);
-
       game_scenario->initialize(g);
     }
   return game_scenario;
@@ -1272,7 +1273,6 @@ void Driver::on_game_scenario_received_for_robots(std::string path)
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   game_client->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
   game_client->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
-  game_client->game_may_begin.connect(sigc::bind(sigc::mem_fun(this, &Driver::on_game_may_begin_for_robots), game_scenario, next_turn));
 
   Playerlist *pl = Playerlist::getInstance();
 
@@ -1296,14 +1296,9 @@ void Driver::on_game_scenario_received_for_robots(std::string path)
     if (Player::Type((*it)->getType()) == robot_player_type)
       GameClient::getInstance()->listenForLocalEvents(*it);
 
-  game_client->request_seat_manifest();
-}
-
-void Driver::on_game_may_begin_for_robots(GameScenario *game_scenario,
-                                          NextTurnNetworked *next_turn)
-{
   Game *game = new Game(game_scenario, next_turn);
   game->get_smallmap().set_slide_speed(0);
+  game_client->request_seat_manifest();
 }
 
 void Driver::on_show_lobby_requested()

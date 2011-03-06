@@ -395,8 +395,9 @@ bool Player::deleteStack(Stack* stack)
 void Player::kill()
 {
   doKill();
-  Action_Kill *item = new Action_Kill();
-  addAction(item);
+  addAction(new Action_Kill());
+  if (d_immortal == false)
+    addHistory(new History_PlayerVanquished());
 }
 
 void Player::doKill()
@@ -406,9 +407,6 @@ void Player::doKill()
         return;
 
     d_observable = false;
-    History_PlayerVanquished* item;
-    item = new History_PlayerVanquished();
-    addHistory(item);
 
     d_dead = true;
     //drop the bags of stuff that the heroes might be carrying
@@ -417,7 +415,7 @@ void Player::doKill()
       {
 	Stack *s = d_stacklist->getArmyStackById((*it)->getId());
 	if (s)
-	  stackDisband(s);
+	  doStackDisband(s);
       }
     //get rid of all of the other stacks.
     d_stacklist->flClear();
@@ -1114,9 +1112,9 @@ bool Player::stackMoveOneStepOverTooLargeFriendlyStacks(Stack *s)
 
   Action_Move* item = new Action_Move();
   item->fillData(s, dest);
-  addAction(item);
 
   s->moveOneStep(true);
+  addAction(item);
   return true;
 }
 
@@ -1217,9 +1215,10 @@ bool Player::stackMoveOneStep(Stack* s)
     }
   Action_Move* item = new Action_Move();
   item->fillData(s, dest);
-  addAction(item);
 
   s->moveOneStep();
+  addAction(item);
+
 
   return true;
 }
@@ -1411,7 +1410,9 @@ Fight::Result ruinfight (Stack **attacker, Stack **defender)
 }
 
 Fight::Result Player::stackRuinFight (Stack **attacker, Stack **defender,
-                                      bool &stackdied)
+                                      bool &stackdied, 
+                                      std::list<History*> &attacker_history, 
+                                      std::list<History*> &defender_history)
 {
     Fight::Result result = Fight::DRAW;
     if (*defender == NULL)
@@ -1431,16 +1432,7 @@ Fight::Result Player::stackRuinFight (Stack **attacker, Stack **defender,
     std::list<Stack*> defenders;
     defenders.push_back(*defender);
 
-    std::list<History*> attacker_history;
-    std::list<History*> defender_history;
     cleanupAfterFight(attackers, defenders, attacker_history, defender_history);
-    for (std::list<History*>::iterator i = attacker_history.begin();
-         i != attacker_history.end(); i++)
-      addHistory(*i);
-    for (std::list<History*>::iterator i = defender_history.begin();
-         i != defender_history.end(); i++)
-      addHistory(*i);
-
     bool exists =
 	std::find(d_stacklist->begin(), d_stacklist->end(), *attacker)
 	!= d_stacklist->end();
@@ -1461,20 +1453,71 @@ bool Player::treachery (Stack *stack, Player *player, Vector <int> pos)
   return streachery.emit(stack, player, pos);
 }
 
+void Player::doStackSearchRuin(Stack *s, Ruin *r, Fight::Result result)
+{
+  if (result == Fight::DEFENDER_WON)
+    r->setSearched(false);
+  else if (result == Fight::ATTACKER_WON)
+    {
+      r->setSearched(true);
+      r->setOccupant(0);
+      r->setOwner(s->getOwner());
+    }
+  return;
+}
+
+Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
+{
+  Reward *reward = NULL;
+  std::list<History*> attacker_history;
+  std::list<History*> defender_history;
+  Stack *keeper = r->getOccupant();
+  if (keeper)
+    {
+      Fight::Result result = stackRuinFight(&s, &keeper, stackdied,
+                                            attacker_history, defender_history);
+      for (std::list<History*>::iterator i = attacker_history.begin();
+           i != attacker_history.end(); i++)
+        addHistory(*i);
+      clearHistorylist(defender_history);
+
+      doStackSearchRuin(s, r, result);
+      if (result == Fight::DEFENDER_WON)
+        return NULL;
+    }
+
+  if (r->getReward() == NULL)
+    r->populateWithRandomReward();
+  reward = r->getReward();
+
+  Action_Ruin* item = new Action_Ruin();
+  item->fillData(r, s);
+  item->setSearched(r->isSearched());
+  addAction(item);
+  if (r->isSearched())
+    {
+      if (r->hasSage())
+        {
+          History_FoundSage* history = new History_FoundSage();
+          history->fillData(dynamic_cast<Hero *>(s->getFirstHero()));
+          addHistory(history);
+        }
+      History_HeroRuinExplored *history_item = new History_HeroRuinExplored();
+      history_item->fillData(dynamic_cast<Hero*>(s->getFirstHero()), r);
+      addHistory(history_item);
+    }
+  supdatingStack.emit(0);
+  return reward;
+}
+
+/*
 Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
 {
   Reward *retReward = NULL;
   debug("Player::stack_search_ruin");
 
-  //throw out impossible actions
-  if ((s->getPos().x != r->getPos().x) ||
-      (s->getPos().y != r->getPos().y))
-  {
-    cerr <<  "Error: searching stack and ruin to be searched not on same position\n" ;
-    exit(-1);
-  }
-
-  if (r->isSearched())
+  //why are we checking this at all?
+  if (r->isSearched() || r->contains(s->getPos()) == false)
     return NULL;
 
   // start the action item
@@ -1485,14 +1528,19 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
 
   if (keeper)
   {
-    stackRuinFight(&s, &keeper, stackdied);
+    std::list<History*> attacker_history, defender_history;
+    stackRuinFight(&s, &keeper, stackdied, attacker_history, defender_history);
+    for (std::list<History*>::iterator i = attacker_history.begin();
+         i != attacker_history.end(); i++)
+      addHistory(*i);
+    clearHistorylist(defender_history);
+
 
     // did the explorer not win?
     if (keeper && !keeper->empty())
     {
       item->setSearched(false);
       addAction(item);
-
       return NULL;
     }
 
@@ -1528,6 +1576,7 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
   supdatingStack.emit(0);
   return retReward;
 }
+*/
 
 int Player::doStackVisitTemple(Stack *s, Temple *t)
 {
@@ -1853,10 +1902,6 @@ void Player::citySack(City* c, int& gold, std::list<guint32> *sacked_types)
 
 void Player::doCityRaze(City *c)
 {
-  History_CityRazed* history = new History_CityRazed();
-  history->fillData(c);
-  addHistory(history);
-
   c->conquer(this);
   c->setBurnt(true);
 
@@ -1873,6 +1918,10 @@ void Player::cityRaze(City* c)
   Action_Raze* action = new Action_Raze();
   action->fillData(c);
   addAction(action);
+
+  History_CityRazed* history = new History_CityRazed();
+  history->fillData(c);
+  addHistory(history);
 
   doCityRaze(c);
 }
@@ -2108,13 +2157,11 @@ bool Player::heroCompletesQuest(Hero *h)
   return true;
 }
 
-void Player::doResign()
+void Player::doResign(std::list<History*> &histories)
 {
   //disband all stacks
   std::list<Stack*> stacks = getStacklist()->kill();
-  std::list<History*> history;
-  removeDeadArmies(stacks, history);
-  clearHistorylist(history);
+  removeDeadArmies(stacks, histories);
 
   //raze all cities
   Citylist *cl = Citylist::getInstance();
@@ -2125,7 +2172,7 @@ void Player::doResign()
 	  (*it)->setBurnt(true);
 	  History_CityRazed* history = new History_CityRazed();
 	  history->fillData((*it));
-	  addHistory(history);
+          histories.push_back(history);
 	}
     }
   withdrawGold(getGold()); //empty the coffers!
@@ -2136,7 +2183,11 @@ void Player::doResign()
 
 void Player::resign() 
 {
-  doResign();
+  std::list<History*> history;
+  doResign(history);
+  for (std::list<History*>::iterator i = history.begin(); i != history.end();
+       i++)
+    addHistory(*i);
   
   Action_Resign* item = new Action_Resign();
   item->fillData();
@@ -2423,7 +2474,6 @@ void Player::doHeroGainsLevel(Hero *hero, Army::Stat stat)
 {
   hero->gainLevel(stat);
 }
-
 
 void Player::updateArmyValues(std::list<Stack*>& stacks, double xp_sum)
 {
@@ -4808,8 +4858,16 @@ Reward* Player::giveQuestReward(Quest *quest, Stack *stack)
             }
         }
       break;
-    case Reward::MAP:
-      //fixme!
+    case Reward::MAP: //not hit.
+        {
+          int x = 0, y = 0, width = 0, height = 0;
+          Reward_Map::getRandomMap(&x, &y, &width, &height);
+          Reward_Map *reward = new Reward_Map(Vector<int>(x,y),
+                                              _("old map"), height, width);
+          giveReward(stack, reward, stacks);
+          delete stacks;
+          return reward;
+        }
       break;
     }
   delete stacks;

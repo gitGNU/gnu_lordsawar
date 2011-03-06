@@ -352,7 +352,23 @@ void NetworkPlayer::decodeActionMove(const Action_Move *action)
 	  }
     }
   assert (stack != NULL);
-  stack->moveToDest(action->getEndingPosition());
+
+  assert (stack->getPos() == (action->getEndingPosition() - action->getPositionDelta()));
+
+  bool skipping = false;
+  if (!stack->isFlying())
+    {
+      bool on_ship = stack->hasShip();
+      if (stack->isMovingToOrFromAShip(action->getEndingPosition(), on_ship) == true)
+        {
+          //are we skipping?
+          if (GameMap::countArmyUnits(action->getEndingPosition()) + stack->size() > MAX_STACK_SIZE && GameMap::getFriendlyStack(action->getEndingPosition()) != NULL)
+            skipping = true;
+          else
+            stack->updateShipStatus(action->getEndingPosition());
+        }
+    }
+  stack->moveToDest(action->getEndingPosition(), skipping);
   supdatingStack.emit(stack);
 }
 
@@ -422,38 +438,39 @@ void NetworkPlayer::decodeActionRuin(const Action_Ruin *action)
   Stack *explorer = d_stacklist->getStackById(action->getStackId());
   Ruin *r = Ruinlist::getInstance()->getById(action->getRuinId());
   bool searched = action->getSearchSuccessful();
-
   Stack* keeper = r->getOccupant();
 
+  Fight::Result result = Fight::ATTACKER_WON;
+  if (searched == false)
+    result = Fight::DEFENDER_WON;
+
   // now simulate the fight that might have happened on the other side
-  if (keeper) {
-    if (searched) {
-      // whack the keeper
-      for (Stack::iterator i = keeper->begin(); i != keeper->end(); ++i)
-        (*i)->setHP(0);
-    }
-    else {
-      // whack the hero
-      explorer->getFirstHero()->setHP(0);
+  if (keeper) 
+    {
+      if (result == Fight::ATTACKER_WON) 
+        {
+          // whack the keeper
+          for (Stack::iterator i = keeper->begin(); i != keeper->end(); ++i)
+            (*i)->setHP(0);
+        }
+      else if (result == Fight::DEFENDER_WON)
+        {
+          // whack the hero
+          explorer->getFirstHero()->setHP(0);
+        }
+
+      std::list<Stack *> attackers, defenders;
+      attackers.push_back(explorer);
+      defenders.push_back(keeper);
+
+      std::list<History*> attacker_history;
+      std::list<History*> defender_history;
+      cleanupAfterFight(attackers, defenders, attacker_history, defender_history);
+      clearHistorylist(attacker_history);
+      clearHistorylist(defender_history);
     }
 
-    std::list<Stack *> attackers, defenders;
-    attackers.push_back(explorer);
-    defenders.push_back(keeper);
-    
-    std::list<History*> attacker_history;
-    std::list<History*> defender_history;
-    cleanupAfterFight(attackers, defenders, attacker_history, defender_history);
-    clearHistorylist(attacker_history);
-    clearHistorylist(defender_history);
-
-    if (searched) {
-        r->setOccupant(0);
-        delete keeper;
-    }
-  }
-
-  r->setSearched(searched);
+  doStackSearchRuin(explorer, r, result);
 
   //the reward is given to the player via the decodeActionReward method.
   supdatingStack.emit(0);
@@ -626,7 +643,9 @@ void NetworkPlayer::decodeActionFightOrder(const Action_FightOrder *action)
 
 void NetworkPlayer::decodeActionResign(const Action_Resign *action)
 {
-  doResign();
+  std::list<History*> history;
+  doResign(history);
+  clearHistorylist(history);
 }
 
 void NetworkPlayer::decodeActionPlant(const Action_Plant *action)
@@ -675,6 +694,12 @@ void NetworkPlayer::decodeActionProduce(const Action_Produce *action)
     exit(0);
     }
   debug ("expecting it to be in stack id " << action->getStackId());
+  Stack *expected = getStacklist()->getStackById(action->getStackId());
+  debug ("expected stack is " << expected);
+  if (expected)
+    {
+    debug ("expected stack has position " << expected->getPos().x << "," << expected->getPos().y);
+    }
   assert (s != NULL);
   assert (s->getId() == action->getStackId());
   assert (s->getPos() == action->getDestination());

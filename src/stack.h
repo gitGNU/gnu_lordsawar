@@ -239,6 +239,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         //! Sort the armies in this stack in the order shown by ids.
         void sortByIds(std::list<guint32> ids);
 
+        //! Puts the stack into or out of a ship, depending on the tile at dest.
+        void updateShipStatus(Vector<int> dest);
+
 	// Methods that operate on class and do not modify the class
 
         //! Returns true if the stack has any points in it's path.

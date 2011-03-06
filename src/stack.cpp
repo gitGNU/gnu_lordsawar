@@ -167,19 +167,8 @@ void Stack::moveToDest(Vector<int> dest, bool skipping)
 	{
 	  if (!skipping)
 	    {
+              updateShipStatus(dest);
 	      ship_load_unload = true;
-	      Vector<int> pos = getPos();
-	      GameMap *gm = GameMap::getInstance();
-	      bool to_water = (gm->getTile(dest.x,dest.y)->getType() 
-                               == Tile::WATER);
-	      for (Stack::iterator it = begin(); it != end(); it++)
-		{
-		  if (to_water && 
-		      ((*it)->getStat(Army::MOVE_BONUS) & Tile::WATER) == 0)
-		    (*it)->setInShip(true);
-		  else
-		    (*it)->setInShip(false);
-		}
 	    }
 	}
     }
@@ -1258,5 +1247,20 @@ void Stack::sortByIds(std::list<guint32> ids)
 {
   compare_ids = ids;
   sort(compareIds);
+}
+
+void Stack::updateShipStatus(Vector<int> dest)
+{
+  GameMap *gm = GameMap::getInstance();
+  bool to_water = (gm->getTile(dest.x,dest.y)->getType() == Tile::WATER);
+  bool to_bridge = (GameMap::getBridge(dest) != NULL);
+  for (Stack::iterator it = begin(); it != end(); it++)
+    {
+      if (to_water && !to_bridge && 
+          ((*it)->getStat(Army::MOVE_BONUS) & Tile::WATER) == 0)
+        (*it)->setInShip(true);
+      else
+        (*it)->setInShip(false);
+    }
 }
 // End of file

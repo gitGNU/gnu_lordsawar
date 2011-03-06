@@ -529,28 +529,6 @@ class Player: public sigc::trackable
         Fight::Result stackFight(Stack** attacker, Stack** defender);
         
         /** 
-	 * Called to adjudicate a fight between two lists of stacks in a ruin.
-         *
-         * @param attacker         The list of attacking stacks.  This list
-	 *                         consists of a single Stack containing at
-	 *                         least one Hero unit.
-         * @param defender         The list of defending stacks.  This list
-	 *                         consists of a single Army unit in a 
-	 *                         single Stack.
-         * @param stackdied        Whether or not the stack went away because
-         *                         of the searching of the ruin.
-	 *
-         *  If the defender dies in the fight, the defender pointer is set 
-	 *  to 0.
-	 *  If the Hero loses the battle, only the Hero unit is removed
-	 *  from the attacker's stack.
-         *
-         * @return One of Fight::ATTACKER_WON, Fight::DEFENDER_WON, or
-	 *         Fight::DRAW (Fight::Result).
-         */
-	//! Callback to adjudicate fights in ruins.
-        Fight::Result stackRuinFight(Stack** attacker, Stack** defender, bool &stackdied);
-        /** 
 	 * A stack searches a ruin.  The stack must contain a hero.
 	 *
 	 * This callback must result in an Action_Ruin element being 
@@ -1118,6 +1096,7 @@ class Player: public sigc::trackable
 	//! Callback to give a Reward to the Player or the player's Stack.
         bool giveReward (Stack *stack, Reward *reward, StackReflist *stacks);
 
+        //! A method to make a reward, give it, and record a history item.
         Reward* giveQuestReward(Quest *quest, Stack *stack);
 
 	//! Give the player a new name.
@@ -1681,7 +1660,7 @@ class Player: public sigc::trackable
         void doCityRename(City *c, std::string name);
         void doVectorFromCity(City * c, Vector<int> dest);
         void doSetFightOrder(std::list<guint32> order);
-        void doResign();
+        void doResign(std::list<History*> &history);
         void doHeroPlantStandard(Hero *hero, Item *item, Vector<int> pos);
         void doDeclareDiplomacy (DiplomaticState state, Player *player);
         void doProposeDiplomacy (DiplomaticProposal proposal, Player *player);
@@ -1707,6 +1686,30 @@ class Player: public sigc::trackable
         Quest* doHeroGetQuest(Hero *hero, Temple* t, bool except_raze);
 
         void doStackSort(Stack *s, std::list<guint32> army_ids);
+
+        void doStackSearchRuin(Stack *s, Ruin *r, Fight::Result result);
+        /** 
+	 * Called to adjudicate a fight between two lists of stacks in a ruin.
+         *
+         * @param attacker         The list of attacking stacks.  This list
+	 *                         consists of a single Stack containing at
+	 *                         least one Hero unit.
+         * @param defender         The list of defending stacks.  This list
+	 *                         consists of a single Army unit in a 
+	 *                         single Stack.
+         * @param stackdied        Whether or not the stack went away because
+         *                         of the searching of the ruin.
+	 *
+         *  If the defender dies in the fight, the defender pointer is set 
+	 *  to 0.
+	 *  If the Hero loses the battle, only the Hero unit is removed
+	 *  from the attacker's stack.
+         *
+         * @return One of Fight::ATTACKER_WON, Fight::DEFENDER_WON, or
+	 *         Fight::DRAW (Fight::Result).
+         */
+	//! Callback to adjudicate fights in ruins.
+        Fight::Result stackRuinFight(Stack** attacker, Stack** defender, bool &stackdied, std::list<History*> &attacker_history, std::list<History*> &defender_history);
 
 	void AI_maybeBuyScout(City *c);
 
