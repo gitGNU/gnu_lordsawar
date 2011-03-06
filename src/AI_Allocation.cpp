@@ -1372,7 +1372,13 @@ bool AI_Allocation::stackReinforce(Stack *s)
 void AI_Allocation::searchRuin(Stack *stack, Ruin *ruin)
 {
   bool stack_died = false;
-  d_owner->stackSearchRuin(stack, ruin, stack_died);
+  Reward *reward = d_owner->stackSearchRuin(stack, ruin, stack_died);
+  if (reward && ruin->isSearched() == true && stack_died == false)
+    {
+      StackReflist *stacks = new StackReflist();
+      d_owner->giveReward(stack, reward, stacks);
+      delete stacks;
+    }
   // what to do if the ruin search fails?
 }
 
