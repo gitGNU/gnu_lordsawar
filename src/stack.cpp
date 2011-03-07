@@ -454,7 +454,7 @@ void Stack::payUpkeep(Player *p)
       p->withdrawGold((*it)->getUpkeep());
 }
 
-void Stack::reset()
+void Stack::reset(bool recalculate_path)
 {
   guint32 movement_multiplier = 1;
 
@@ -467,6 +467,9 @@ void Stack::reset()
 	for (guint32 i = 0; i < bonus; i++)
 	  movement_multiplier*=2;
       }
+
+  if (movement_multiplier > 1024)
+    movement_multiplier = 1024;
 
   //set the multipler on all armies in the stack
   for (const_iterator it = begin(); it != end(); it++)
@@ -483,7 +486,8 @@ void Stack::reset()
 
   //recalculate paths
 
-  d_path->recalculate(this);
+  if (recalculate_path)
+    d_path->recalculate(this);
 }
 
 bool Stack::save(XML_Helper* helper) const
@@ -842,7 +846,7 @@ guint32 Stack::getMaxLandMoves() const
   Stack *copy = new Stack (*this);
   copy->getPath()->clear(); //this prevents triggering path recalc in reset
   copy->decrementMoves(copy->getMoves());
-  copy->reset();
+  copy->reset(false);
   guint32 moves = copy->getMoves();
   if (isFlying() == true)
     {
@@ -855,7 +859,7 @@ guint32 Stack::getMaxLandMoves() const
   copy->decrementMoves(copy->getMoves());
   for (Stack::iterator it = copy->begin(); it != copy->end(); it++)
     (*it)->setInShip(false);
-  copy->reset();
+  copy->reset(false);
 
   moves = copy->getMoves();
   delete copy;

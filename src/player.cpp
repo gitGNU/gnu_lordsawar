@@ -1485,6 +1485,8 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
       if (result == Fight::DEFENDER_WON)
         return NULL;
     }
+  else
+    doStackSearchRuin(s, r, Fight::ATTACKER_WON);
 
   if (r->getReward() == NULL)
     r->populateWithRandomReward();

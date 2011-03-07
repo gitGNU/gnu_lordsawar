@@ -148,7 +148,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
          * hp for every army in the stack.
 	 */
         //!Recharge all of the armies in this stack with movement points and hp.
-        void reset();
+        void reset(bool recalculate_path = true);
 
         //! Reduces movement points of the Army units in the Stack.
         void decrementMoves(guint32 moves);
@@ -240,6 +240,12 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         void sortByIds(std::list<guint32> ids);
 
         //! Puts the stack into or out of a ship, depending on the tile at dest.
+        /*
+         * If the destination tile is water tile, and it doesn't have a bridge
+         * on it, then put the army units of this stack in a ship.
+         * Otherwise they're on land.
+         * This method must not be called on stacks that are flying.
+         */
         void updateShipStatus(Vector<int> dest);
 
 	// Methods that operate on class and do not modify the class
