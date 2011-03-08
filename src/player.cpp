@@ -1497,6 +1497,7 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
   if (r->getReward() == NULL)
     r->populateWithRandomReward();
   reward = r->getReward();
+  r->setReward(0);
 
   Action_Ruin* item = new Action_Ruin();
   item->fillData(r, s);
