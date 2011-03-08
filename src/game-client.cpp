@@ -331,7 +331,7 @@ void GameClient::sendActions()
 
   helper.closeTag();
 
-  std::cerr << "sending actions" << std::endl;
+  //std::cerr << "sending actions" << std::endl;
   network_connection->send(MESSAGE_TYPE_SENDING_ACTIONS, os.str());
 }
 
