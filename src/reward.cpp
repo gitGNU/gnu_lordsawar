@@ -207,7 +207,7 @@ bool Reward_Allies::addAllies(Player *p, Vector<int> pos, const ArmyProto *army,
     {
       Army* ally = new Army(*army, p);
       ally->setUpkeep(0);
-      Stack *s = GameMap::getInstance()->addArmyAtPos(pos, ally);
+      Stack *s = GameMap::getInstance()->addArmy(pos, ally);
       if (s == NULL)
         return false;
       else if (stacks)
