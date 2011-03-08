@@ -444,6 +444,7 @@ void NetworkPlayer::decodeActionRuin(const Action_Ruin *action)
   if (searched == false)
     result = Fight::DEFENDER_WON;
 
+  assert (keeper == NULL && searched == false);
   // now simulate the fight that might have happened on the other side
   if (keeper) 
     {
@@ -827,6 +828,7 @@ void NetworkPlayer::decodeActionStackOrder(const Action_ReorderArmies* action)
       debug ("we don't have stack id %d" <<  action->getStackId());
       exit(0);
     }
+  assert (action->getArmyIds().size() == s->size());
   std::list<guint32> ids = action->getArmyIds();
   bool success = true;
   for (std::list<guint32>::iterator i = ids.begin(); i != ids.end(); i++)
