@@ -49,6 +49,7 @@ Ruin::Ruin(const Ruin& ruin)
     d_type(ruin.d_type), d_occupant(ruin.d_occupant), d_hidden(ruin.d_hidden), 
     d_owner(ruin.d_owner), d_sage(ruin.d_sage), d_reward(ruin.d_reward)
 {
+  d_occupant = new Stack(*ruin.d_occupant);
 }
 
 Ruin::Ruin(const Ruin& ruin, Vector<int> pos)
@@ -56,6 +57,7 @@ Ruin::Ruin(const Ruin& ruin, Vector<int> pos)
     d_type(ruin.d_type), d_occupant(ruin.d_occupant), d_hidden(ruin.d_hidden), 
     d_owner(ruin.d_owner), d_sage(ruin.d_sage), d_reward(ruin.d_reward)
 {
+  d_occupant = new Stack(*ruin.d_occupant);
 }
 
 Ruin::Ruin(XML_Helper* helper, guint32 width)
