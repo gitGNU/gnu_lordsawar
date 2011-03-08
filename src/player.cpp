@@ -3551,9 +3551,9 @@ bool Player::cityProducesArmy(City *city)
   return true;
 }
 
-Army* Player::doVectoredUnitArrives(VectoredUnit *unit)
+Army* Player::doVectoredUnitArrives(VectoredUnit *unit, Stack *& s)
 {
-  Army *army = unit->armyArrives();
+  Army *army = unit->armyArrives(s);
   return army;
 }
 
@@ -3562,7 +3562,11 @@ bool Player::vectoredUnitArrives(VectoredUnit *unit)
   Action_ProduceVectored *item = new Action_ProduceVectored();
   item->fillData(unit->getArmy(), unit->getDestination(), unit->getPos());
   addAction(item);
-  Army *army = doVectoredUnitArrives(unit);
+  Stack *stack = NULL;
+  Army *army = doVectoredUnitArrives(unit, stack);
+  printf("it landed in stack %p\n", stack);
+  if (stack)
+    printf("it landed in stack %d\n", stack->getId());
   if (!army)
     {
       printf("this was supposed to be impossible because of operations on the vectoredunitlist after the city is conquered.\n");

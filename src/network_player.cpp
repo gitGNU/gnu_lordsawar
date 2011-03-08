@@ -711,12 +711,12 @@ void NetworkPlayer::decodeActionProduceVectored(const Action_ProduceVectored *ac
   //create a vectored unit.
   VectoredUnit v(action->getOrigination(), action->getDestination(),
 		 action->getArmy(), 0, this);
-  Army *army = doVectoredUnitArrives(&v);
+  Stack *s = NULL;
+  Army *army = doVectoredUnitArrives(&v, s);
   debug ("army is " << army);
-  if (army)
-    {
-      debug ("created vectored army id " << army->getId() << ", in stack " << d_stacklist->getArmyStackById(army->getId())->getId() << " of size " << d_stacklist->getArmyStackById(army->getId())->size());
-    }
+  debug ("stack is " << s);
+  assert (army != NULL);
+  assert (s != NULL);
 }
 
 void NetworkPlayer::decodeActionDiplomacyState(const Action_DiplomacyState *action)

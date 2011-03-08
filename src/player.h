@@ -1676,7 +1676,7 @@ class Player: public sigc::trackable
         void doStackSelect(Stack *stack);
         void doStackDeselect();
 	const Army *doCityProducesArmy(City *city, Stack *& stack, bool &vectored);
-	Army *doVectoredUnitArrives(VectoredUnit *unit);
+	Army *doVectoredUnitArrives(VectoredUnit *unit, Stack *& stack);
 	bool doChangeVectorDestination(Vector<int> src, Vector<int> dest,
 				       std::list<City*> &vectored);
 

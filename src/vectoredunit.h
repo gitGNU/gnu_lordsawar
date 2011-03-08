@@ -119,7 +119,7 @@ class VectoredUnit: public Ownable, public LocationBox, public sigc::trackable
         bool save(XML_Helper* helper) const;
 
 	//! Called when a vectored unit arrives at the destination.
-	Army *armyArrives() const;
+	Army *armyArrives(Stack *&stack) const;
 
 
 	// Methods that operate on class data and modify the class.

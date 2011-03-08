@@ -87,7 +87,7 @@ bool VectoredUnit::save(XML_Helper* helper) const
     return retval;
 }
 
-Army *VectoredUnit::armyArrives() const
+Army *VectoredUnit::armyArrives(Stack *& stack) const
 {
   City *dest;
   // drop it in the destination city!
@@ -108,7 +108,7 @@ Army *VectoredUnit::armyArrives() const
 	      //army arrives on a planted standard
 	      Army *a = new Army(*d_army, d_owner);
 	      LocationBox loc = LocationBox(d_destination);
-	      loc.addArmy(a);
+              stack = GameMap::getInstance()->addArmy(d_destination, a);
 	      return a;
 	    }
 	}
@@ -119,7 +119,7 @@ Army *VectoredUnit::armyArrives() const
 	{
 	  //army arrives in a city
 	  Army *a = new Army(*d_army, d_owner);
-	  dest->addArmy(a);
+          stack = GameMap::getInstance()->addArmy(d_destination, a);
 	  return a;
 	}
       printf ("destination city is owned by `%s', but the vectored unit is owned by `%s'\n", dest->getOwner()->getName().c_str(), d_owner->getName().c_str());
