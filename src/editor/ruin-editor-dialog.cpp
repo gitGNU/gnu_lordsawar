@@ -172,10 +172,12 @@ int RuinEditorDialog::run()
 	    delete occupant;
 
 	if (keeper->empty())
-	{
+          {
 	    delete keeper;
 	    keeper = 0;
-	}
+          }
+        else
+          ruin->setOccupant(keeper);
 
         ruin->setHidden(hidden_button->get_active());
         if (hidden_button->get_active())
