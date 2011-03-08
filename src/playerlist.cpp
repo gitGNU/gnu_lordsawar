@@ -952,3 +952,15 @@ void Playerlist::clearAllActions()
   for (iterator it = begin(); it != end(); it++)
     (*it)->clearActionlist();
 }
+
+void Playerlist::syncNeutral()
+{
+  if (d_neutral == NULL)
+    return;
+  if (d_neutral->getType() == Player::AI_DUMMY)
+    return;
+  //okay, let's sync it.
+  Player *p = new AI_Dummy(*d_neutral);
+  swap(d_neutral, p);
+  d_neutral = p;
+}

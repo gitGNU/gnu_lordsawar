@@ -455,6 +455,7 @@ void MainWindow::show_initial_map()
 	delete game_scenario;
       current_save_filename = d_load_filename;
       game_scenario = new GameScenario(current_save_filename, broken);
+      Playerlist::getInstance()->syncNeutral();
       if (d_create_scenario_names)
 	delete d_create_scenario_names;
       d_create_scenario_names = new CreateScenarioRandomize();
@@ -821,6 +822,7 @@ void MainWindow::on_load_map_activated()
 	if (game_scenario)
 	  delete game_scenario;
 	game_scenario = new GameScenario(current_save_filename, broken);
+        Playerlist::getInstance()->syncNeutral();
 	if (d_create_scenario_names)
 	  delete d_create_scenario_names;
 	d_create_scenario_names = new CreateScenarioRandomize();

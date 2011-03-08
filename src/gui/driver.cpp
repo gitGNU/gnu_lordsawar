@@ -153,6 +153,7 @@ void Driver::serve (GameScenario *game_scenario)
 {
   if (!game_scenario)
     return;
+  Playerlist::getInstance()->syncNeutral();
   //okay we're going to host a game, using this file as a scenario.
   GameServer *game_server = GameServer::getInstance();
   guint32 port = LORDSAWAR_PORT;

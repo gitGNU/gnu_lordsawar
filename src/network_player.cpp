@@ -444,7 +444,11 @@ void NetworkPlayer::decodeActionRuin(const Action_Ruin *action)
   if (searched == false)
     result = Fight::DEFENDER_WON;
 
-  assert (keeper == NULL && searched == false);
+  if (searched == false && keeper == NULL)
+    {
+      std::cerr << "whoops, we have an impossible situation here." << std::endl;
+      exit(0);
+    }
   // now simulate the fight that might have happened on the other side
   if (keeper) 
     {

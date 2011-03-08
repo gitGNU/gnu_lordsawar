@@ -169,6 +169,9 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	//! Sync the given player with the playerlist
 	void syncPlayer(GameParameters::Player player);
 
+        //! Switch the neutral player to AI_DUMMY if it has any other type.
+        void syncNeutral();
+
 	//! Converts all of the human players into network players.
 	guint32 turnHumansIntoNetworkPlayers();
 
