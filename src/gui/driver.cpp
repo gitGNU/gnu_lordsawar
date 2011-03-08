@@ -1269,6 +1269,8 @@ void Driver::on_game_scenario_received_for_robots(std::string path)
 
   heartbeat_conn.disconnect();
   GameScenario *game_scenario = load_game(path);
+  if (!game_scenario)
+    return;
   GameClient *game_client = GameClient::getInstance();
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   game_client->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
@@ -1284,10 +1286,32 @@ void Driver::on_game_scenario_received_for_robots(std::string path)
       if (count >= number_of_robots && number_of_robots > 0)
 	break;
       if ((*it)->getType() == Player::NETWORKED)
-	{
-	  on_client_player_sat_down(*it);
-	  count++;
-	}
+        {
+          on_client_player_sat_down(*it);
+          count++;
+        }
+    }
+  /*
+   * this is buggy because we're sitting down as players who may have
+   * already sat down.
+   *
+   * we can't use isConnected() because it's not saved in the save game.
+   *
+   * the game server doesn't seat the ai players who may already be 
+   * remotely sitting.
+   * the game lobby server does that.
+   *
+   * so we say sit, and then the game server disallows that, and we think we
+   * sat down.
+   *
+   */
+  if (count == 0)
+    {
+      printf("nowhere to sit!\n");
+      GameClient::deleteInstance();
+      delete next_turn;
+      delete game_scenario;
+      return;
     }
 
   pl->turnHumansInto(robot_player_type, number_of_robots);
