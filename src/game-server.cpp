@@ -267,7 +267,7 @@ void GameServer::gotChat(void *conn, std::string message)
     
 bool GameServer::onGotMessage(void *conn, int type, std::string payload)
 {
-  std::cerr << "got message of type " << type << std::endl;
+  //std::cerr << "got message of type " << type << std::endl;
   switch (MessageType(type)) {
   case MESSAGE_TYPE_PING:
     std::cerr << "sending pong" << std::endl;
@@ -711,8 +711,11 @@ void GameServer::sit(void *conn, Player *player, std::string nickname)
   if (!part) 
     return;
 
-  //fixme: is another player already sitting here?
   if (player_already_sitting(player) == true)
+    return;
+
+  //is this player already locally instantiated as an ai or human player?
+  if (player->getType() != Player::NETWORKED)
     return;
 
   add_to_player_list(part->players, player->getId(), player->getName(),
