@@ -1483,7 +1483,13 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
 
       doStackSearchRuin(s, r, result);
       if (result == Fight::DEFENDER_WON)
-        return NULL;
+        {
+          Action_Ruin* item = new Action_Ruin();
+          item->fillData(r, s);
+          item->setSearched(r->isSearched());
+          addAction(item);
+          return NULL;
+        }
     }
   else
     doStackSearchRuin(s, r, Fight::ATTACKER_WON);
