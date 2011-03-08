@@ -170,10 +170,10 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	void syncPlayer(GameParameters::Player player);
 
 	//! Converts all of the human players into network players.
-	void turnHumansIntoNetworkPlayers();
+	guint32 turnHumansIntoNetworkPlayers();
 
 	//! Converts a given number of the human players into a type of player.
-	void turnHumansInto(Player::Type type, int num_players = -1);
+	guint32 turnHumansInto(Player::Type type, int num_players = -1);
 
 	//! Reorder the list according to the given order.
 	void reorder(std::list<guint32> order);

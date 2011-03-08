@@ -722,12 +722,14 @@ void Playerlist::syncPlayers(std::vector<GameParameters::Player> players)
 
 }
 	
-void Playerlist::turnHumansIntoNetworkPlayers()
+guint32 Playerlist::turnHumansIntoNetworkPlayers()
 {
+  guint32 count = 0;
   for (iterator i = begin(); i != end(); i++)
     {
       if ((*i)->getType() == Player::HUMAN)
 	{
+          count++;
 	  NetworkPlayer *new_p = new NetworkPlayer(**i);
 	  swap((*i), new_p);
 	  //delete *i; fixme
@@ -735,9 +737,10 @@ void Playerlist::turnHumansIntoNetworkPlayers()
 	  continue;
 	}
     }
+  return count;
 }
 
-void Playerlist::turnHumansInto(Player::Type type, int number_of_players)
+guint32 Playerlist::turnHumansInto(Player::Type type, int number_of_players)
 {
   int count = 0;
   for (iterator i = begin(); i != end(); i++)
@@ -793,6 +796,7 @@ void Playerlist::turnHumansInto(Player::Type type, int number_of_players)
 	    }
 	}
     }
+  return count;
 }
 
 std::list<guint32> given_turn_order;
