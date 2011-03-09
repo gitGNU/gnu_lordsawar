@@ -3468,16 +3468,16 @@ void GameWindow::on_plant_standard_activated ()
     
 void GameWindow::on_stack_moves(Stack *stack, Vector<int> pos)
 {
+  Player *active = Playerlist::getInstance()->getActiveplayer();
+  if (!active)
+    return;
+  if (active->getActivestack() != stack)
+    return;
   if (GameMap::getEnemyCity(pos))
     return;
   if (GameMap::getEnemyStack(pos))
     return;
-  //assert (stack == Playerlist::getInstance()->getActiveplayer()->getActivestack());
-  Player *active = Playerlist::getInstance()->getActiveplayer();
-  Stack *old = active->getActivestack();
-  active->setActivestack(stack);
   game->get_smallmap().center_view_on_tile (pos, true);
-  // sleep for a specified amount of time
   int step = TIMER_BIGMAP_SELECTOR * 1000;
   for (int i = 0; i < Configuration::s_displaySpeedDelay; i += step)
     {
@@ -3485,7 +3485,6 @@ void GameWindow::on_stack_moves(Stack *stack, Vector<int> pos)
       while (g_main_context_iteration(NULL, FALSE)); //doEvents
       Glib::usleep(step);
     }
-  active->setActivestack(old);
 }
 
 void GameWindow::on_advice_asked(float percent)

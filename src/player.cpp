@@ -389,6 +389,7 @@ bool Player::deleteStack(Stack* stack)
       AI_Analysis::deleteStack(stack->getId());
       AI_Allocation::deleteStack(stack);
     }
+    return d_stacklist->flRemove(stack);
 }
 
 void Player::kill()
@@ -3537,7 +3538,10 @@ bool Player::cityProducesArmy(City *city)
   if (army)
     {
       if (!stack)
-        exit(0);
+        {
+          printf("we dropped an army down but it doesn't have a stack!\n");
+          return false;
+        }
       const ArmyProdBase *source_army;
       source_army = city->getProductionBaseBelongingTo(army);
       if (stack)
