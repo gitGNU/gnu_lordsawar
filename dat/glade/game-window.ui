@@ -1068,7 +1068,6 @@ XX</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">False</property>
                     <property name="padding">6</property>
                     <property name="position">0</property>
                   </packing>
@@ -1084,22 +1083,66 @@ XX</property>
                         <property name="visible">True</property>
                         <property name="shadow_type">none</property>
                         <child>
-                          <object class="GtkVBox" id="control_panel_vbox">
+                          <object class="GtkHBox" id="hbox2">
                             <property name="visible">True</property>
-                            <property name="border_width">11</property>
-                            <property name="spacing">6</property>
+                            <property name="border_width">7</property>
+                            <property name="spacing">3</property>
                             <child>
-                              <object class="GtkHBox" id="first_row_hbox">
+                              <object class="GtkVBox" id="control_panel_vbox">
                                 <property name="visible">True</property>
-                                <property name="spacing">6</property>
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">3</property>
                                 <child>
-                                  <object class="GtkButton" id="move_button">
+                                  <object class="GtkHBox" id="first_row_hbox">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="tooltip_text" translatable="yes">Make the stack travel along its route.</property>
+                                    <property name="spacing">4</property>
                                     <child>
-                                      <placeholder/>
+                                      <object class="GtkButton" id="move_button">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkButton" id="next_movable_button">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkButton" id="park_button">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">2</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkButton" id="deselect_button">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">3</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
@@ -1109,13 +1152,56 @@ XX</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkButton" id="next_movable_button">
+                                  <object class="GtkHBox" id="second_row_hbox">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="tooltip_text" translatable="yes">Select another stack to move.</property>
+                                    <property name="spacing">4</property>
                                     <child>
-                                      <placeholder/>
+                                      <object class="GtkButton" id="center_button">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkButton" id="diplomacy_button">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkButton" id="defend_button">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">2</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkButton" id="search_button">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">3</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
@@ -1125,11 +1211,55 @@ XX</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkButton" id="park_button">
+                                  <object class="GtkHBox" id="third_row_hbox">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="tooltip_text" translatable="yes">Make the stack stay here.</property>
+                                    <property name="spacing">4</property>
+                                    <child>
+                                      <object class="GtkVBox" id="vbox1">
+                                        <property name="visible">True</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="GtkButton" id="move_all_button">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkVBox" id="vbox2">
+                                        <property name="visible">True</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="GtkButton" id="end_turn_button">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">False</property>
+                                        <property name="fill">False</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
                                     <child>
                                       <placeholder/>
                                     </child>
@@ -1141,159 +1271,17 @@ XX</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkButton" id="deselect_button">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="tooltip_text" translatable="yes">Unselect the stack.</property>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">3</property>
-                                  </packing>
+                                  <placeholder/>
                                 </child>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkHBox" id="second_row_hbox">
+                              <object class="GtkVBox" id="vbox3">
                                 <property name="visible">True</property>
-                                <property name="spacing">6</property>
-                                <child>
-                                  <object class="GtkButton" id="center_button">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="tooltip_text" translatable="yes">Center the map on the stack.</property>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkButton" id="diplomacy_button">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="tooltip_text" translatable="yes">Take diplomatic action.</property>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkButton" id="defend_button">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="tooltip_text" translatable="yes">Have the stack stay here in defensive mode.</property>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">2</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkButton" id="search_button">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="receives_default">False</property>
-                                    <property name="tooltip_text" translatable="yes">Have the stack search the immediate area.</property>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">3</property>
-                                  </packing>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHBox" id="third_row_hbox">
-                                <property name="visible">True</property>
-                                <property name="spacing">6</property>
-                                <child>
-                                  <object class="GtkVBox" id="vbox1">
-                                    <property name="visible">True</property>
-                                    <child>
-                                      <object class="GtkButton" id="move_all_button">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="receives_default">False</property>
-                                        <property name="tooltip_text" translatable="yes">Have all stacks move along their routes.</property>
-                                        <child>
-                                          <placeholder/>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkVBox" id="vbox2">
-                                    <property name="visible">True</property>
-                                    <child>
-                                      <object class="GtkButton" id="end_turn_button">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="receives_default">False</property>
-                                        <property name="tooltip_text" translatable="yes">End the turn.</property>
-                                        <child>
-                                          <placeholder/>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">False</property>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                  <packing>
-                                    <property name="expand">False</property>
-                                    <property name="fill">False</property>
-                                    <property name="position">1</property>
-                                  </packing>
-                                </child>
+                                <property name="orientation">vertical</property>
                                 <child>
                                   <object class="GtkTable" id="keypad_table">
                                     <property name="visible">True</property>
@@ -1303,11 +1291,9 @@ XX</property>
                                       <object class="GtkButton" id="nw_keypad_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="relief">half</property>
                                         <accelerator key="KP_7" signal="clicked"/>
-                                        <child>
-                                          <placeholder/>
-                                        </child>
                                       </object>
                                       <packing>
                                         <property name="x_options">GTK_FILL</property>
@@ -1318,11 +1304,9 @@ XX</property>
                                       <object class="GtkButton" id="n_keypad_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="relief">half</property>
                                         <accelerator key="KP_8" signal="clicked"/>
-                                        <child>
-                                          <placeholder/>
-                                        </child>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -1335,11 +1319,9 @@ XX</property>
                                       <object class="GtkButton" id="ne_keypad_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="relief">half</property>
                                         <accelerator key="KP_9" signal="clicked"/>
-                                        <child>
-                                          <placeholder/>
-                                        </child>
                                       </object>
                                       <packing>
                                         <property name="left_attach">2</property>
@@ -1352,11 +1334,9 @@ XX</property>
                                       <object class="GtkButton" id="w_keypad_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="relief">half</property>
                                         <accelerator key="KP_4" signal="clicked"/>
-                                        <child>
-                                          <placeholder/>
-                                        </child>
                                       </object>
                                       <packing>
                                         <property name="top_attach">1</property>
@@ -1369,11 +1349,9 @@ XX</property>
                                       <object class="GtkButton" id="e_keypad_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="relief">half</property>
                                         <accelerator key="KP_6" signal="clicked"/>
-                                        <child>
-                                          <placeholder/>
-                                        </child>
                                       </object>
                                       <packing>
                                         <property name="left_attach">2</property>
@@ -1388,11 +1366,9 @@ XX</property>
                                       <object class="GtkButton" id="sw_keypad_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="relief">half</property>
                                         <accelerator key="KP_1" signal="clicked"/>
-                                        <child>
-                                          <placeholder/>
-                                        </child>
                                       </object>
                                       <packing>
                                         <property name="top_attach">2</property>
@@ -1405,11 +1381,9 @@ XX</property>
                                       <object class="GtkButton" id="s_keypad_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="relief">half</property>
                                         <accelerator key="KP_2" signal="clicked"/>
-                                        <child>
-                                          <placeholder/>
-                                        </child>
                                       </object>
                                       <packing>
                                         <property name="left_attach">1</property>
@@ -1424,11 +1398,9 @@ XX</property>
                                       <object class="GtkButton" id="se_keypad_button">
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
-                                        <property name="receives_default">False</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="relief">half</property>
                                         <accelerator key="KP_3" signal="clicked"/>
-                                        <child>
-                                          <placeholder/>
-                                        </child>
                                       </object>
                                       <packing>
                                         <property name="left_attach">2</property>
@@ -1444,18 +1416,15 @@ XX</property>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="position">2</property>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">0</property>
                                   </packing>
                                 </child>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
-                                <property name="position">2</property>
+                                <property name="position">1</property>
                               </packing>
-                            </child>
-                            <child>
-                              <placeholder/>
                             </child>
                           </object>
                         </child>
