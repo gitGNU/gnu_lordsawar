@@ -309,11 +309,8 @@ class Player: public sigc::trackable
 
 	//! Returns a list of the players unit production actions for this turn.
 	std::list<Action_Produce *> getUnitsProducedThisTurn() const;
-
-	//! Return the amount of gold pieces for the newly produced armies.
-	guint32 getCostOfUnitsProducedThisTurn() const;
-
-	//! Returns a list of the player's actions to show in a report.
+	
+        //! Returns a list of the player's actions to show in a report.
 	std::list<Action *> getReportableActions() const;
 
         //! Returns the number of times we fought so far this turn.

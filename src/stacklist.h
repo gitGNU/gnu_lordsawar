@@ -132,6 +132,10 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
 	 */
 	void collectTaxes(Player *p, guint32 num_cities) const;
 
+
+        //! Determine how much it costs for the stacks in our list.
+        guint32 calculateUpkeep() const;
+
 	//! Return a list of the heroes in the stacklist.
 	std::list<Hero*> getHeroes() const;
 

@@ -380,6 +380,7 @@ void Player::addStack(Stack* stack)
   debug("Player " << getName() << ": Stack Id: " << stack->getId() << " added to stacklist");
     stack->setPlayer(this);
     d_stacklist->add(stack);
+    schangingStats.emit();
 }
 
 bool Player::deleteStack(Stack* stack)
@@ -389,7 +390,9 @@ bool Player::deleteStack(Stack* stack)
       AI_Analysis::deleteStack(stack->getId());
       AI_Allocation::deleteStack(stack);
     }
-    return d_stacklist->flRemove(stack);
+  bool retval = d_stacklist->flRemove(stack);
+  schangingStats.emit();
+  return retval;
 }
 
 void Player::kill()
@@ -398,6 +401,7 @@ void Player::kill()
   addAction(new Action_Kill());
   if (d_immortal == false)
     addHistory(new History_PlayerVanquished());
+  schangingStats.emit();
 }
 
 void Player::doKill()
@@ -587,10 +591,10 @@ guint32 Player::getScore() const
 
 void Player::calculateUpkeep()
 {
-    d_upkeep = 0;
-    Stacklist *sl = getStacklist();
-    for (Stacklist::iterator i = sl->begin(), iend = sl->end(); i != iend; ++i)
-      d_upkeep += (*i)->getUpkeep();
+  d_upkeep = 0;
+  Stacklist *sl = getStacklist();
+  for (Stacklist::iterator i = sl->begin(), iend = sl->end(); i != iend; ++i)
+    d_upkeep += (*i)->getUpkeep();
 }
 
 void Player::calculateIncome()
@@ -1445,6 +1449,7 @@ Fight::Result Player::stackRuinFight (Stack **attacker, Stack **defender,
     else
       stackdied = false;
 
+    schangingStats.emit();
     return result;
 }
 
@@ -2006,7 +2011,6 @@ void Player::doGiveReward(Stack *s, Reward *reward, StackReflist *stacks)
 
           Reward_Allies::addAllies(s->getOwner(), s->getPos(), a,
       			     dynamic_cast<Reward_Allies*>(reward)->getNoOfAllies(), stacks);
-  
         }
       break;
     case Reward::ITEM:
@@ -2048,6 +2052,8 @@ bool Player::giveReward(Stack *s, Reward *reward, StackReflist *stacks)
       history_item->fillData(dynamic_cast<Hero*>(s->getFirstHero()), r);
       addHistory(history_item);
     }
+          
+  schangingStats.emit();
   //FIXME: get rid of this reward now that we're done with it
   //but we need to show it still... (in the case of quest completions)
 
@@ -2067,15 +2073,17 @@ bool Player::doStackDisband(Stack* s)
 
 bool Player::stackDisband(Stack* s)
 {
-    debug("Player::stackDisband(Stack*)")
+  debug("Player::stackDisband(Stack*)")
     if (!s)
       s = getActivestack();
-    
-    Action_Disband* item = new Action_Disband();
-    item->fillData(s);
-    addAction(item);
 
-    return doStackDisband(s);
+  Action_Disband* item = new Action_Disband();
+  item->fillData(s);
+  addAction(item);
+
+  bool retval = doStackDisband(s);
+  schangingStats.emit();
+  return retval;
 }
 
 void Player::doHeroDropItem(Hero *h, Item *i, Vector<int> pos, bool &splash)
@@ -2201,6 +2209,7 @@ void Player::resign()
   Action_Resign* item = new Action_Resign();
   item->fillData();
   addAction(item);
+  schangingStats.emit();
 }
 
 void Player::doSignpostChange(Signpost *s, std::string message)
@@ -4107,17 +4116,6 @@ void Player::immobilize()
   d_stacklist->drainAllMovement();
 }
 
-guint32 Player::getCostOfUnitsProducedThisTurn() const
-{
-  guint32 gold = 0;
-  std::list<Action_Produce *> units = getUnitsProducedThisTurn();
-  for (std::list<Action_Produce *>::const_iterator it = units.begin(); it != units.end(); it++)
-    gold +=(*it)->getArmy()->getProductionCost();
-    
-  return gold;
-
-}
-	  
 void Player::clearStacklist()
 {
   d_stacklist->flClear();

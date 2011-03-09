@@ -90,6 +90,14 @@ bool Stacklist::deleteStack(guint32 id)
     return false;
 }
 
+guint32 Stacklist::calculateUpkeep() const
+{
+  guint32 upkeep = 0;
+  for (const_iterator it = begin(); it != end(); it++)
+    upkeep += (*it)->getUpkeep();
+  return upkeep;
+}
+
 void Stacklist::payUpkeep(Player *p)
 {
   for (iterator it = begin(); it != end(); it++)
