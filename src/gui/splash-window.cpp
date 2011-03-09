@@ -116,6 +116,21 @@ SplashWindow::SplashWindow()
 	  }
       }
 
+    //set the window size.
+    bool broken = false;
+    PixMask *p = PixMask::create
+      (File::getMiscFile("/various/splash_screen.jpg"), broken);
+    if (broken == false)
+      {
+        guint32 decorations = 24 * 3;
+        if (Gdk::Screen::get_default()->get_height() - decorations < 
+            p->get_height())
+          window->set_default_size(Gdk::Screen::get_default()->get_width(),
+                         Gdk::Screen::get_default()->get_height());
+        else
+          window->set_default_size(p->get_width(), p->get_height() - 57);
+        delete p;
+      }
 }
 
 SplashWindow::~SplashWindow()
