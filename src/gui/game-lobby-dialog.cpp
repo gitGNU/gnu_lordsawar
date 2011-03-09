@@ -702,18 +702,21 @@ Player* GameLobbyDialog::get_selected_player(Glib::ustring &nick, bool &sitting)
 
 void GameLobbyDialog::on_play_clicked()
 {
-  //we only get here on the first time play is clicked
-  //otherwise it just shows the form (Driver::start_network_game_requested)
-  hide();
-  if (d_has_ops)
+  if (d_play_button_clicked == false)
     {
-      lock_down();
-      game_may_begin.emit();
+      //we only get here on the first time play is clicked
+      //otherwise it just shows the form (Driver::start_network_game_requested)
+      hide();
+      if (d_has_ops)
+        {
+          lock_down();
+          game_may_begin.emit();
+        }
+      play_button->set_sensitive(false);
+      play_button->set_visible(false);
+      start_network_game.emit(d_game_scenario, d_next_turn);
+      d_play_button_clicked = true;
     }
-  play_button->set_sensitive(false);
-  play_button->set_visible(false);
-  start_network_game.emit(d_game_scenario, d_next_turn);
-  d_play_button_clicked = true;
 }
 
 void GameLobbyDialog::on_cancel_clicked()
