@@ -1165,7 +1165,6 @@ void Game::init_turn_for_player(Player* p)
 
   blank(true);
 
-  printf("init turn for player %s\n", p->getName().c_str());
   next_player_turn.emit(p, d_gameScenario->getRound());
 
   if (p->getType() == Player::NETWORKED)

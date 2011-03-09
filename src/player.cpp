@@ -380,7 +380,6 @@ void Player::addStack(Stack* stack)
   debug("Player " << getName() << ": Stack Id: " << stack->getId() << " added to stacklist");
     stack->setPlayer(this);
     d_stacklist->add(stack);
-    schangingStats.emit();
 }
 
 bool Player::deleteStack(Stack* stack)
@@ -390,9 +389,6 @@ bool Player::deleteStack(Stack* stack)
       AI_Analysis::deleteStack(stack->getId());
       AI_Allocation::deleteStack(stack);
     }
-  bool retval = d_stacklist->flRemove(stack);
-  schangingStats.emit();
-  return retval;
 }
 
 void Player::kill()
@@ -1347,6 +1343,7 @@ Fight::Result Player::stackFight(Stack** attacker, Stack** defender)
     if (!exists)
         (*defender) = 0;
 
+    schangingStats.emit();
     return fight.getResult();
 }
 
