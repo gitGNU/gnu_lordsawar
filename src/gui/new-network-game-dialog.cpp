@@ -130,7 +130,7 @@ void NewNetworkGameDialog::update_buttons()
   else
     remote_checkbutton->set_sensitive(false);
 
-  if (remote_checkbutton->get_active() && remote_checkbutton->get_sensitive())
+  if (remote_checkbutton->get_active() && remote_checkbutton->property_sensitive())
     {
       advertise_checkbutton->set_sensitive(true);
       advertise_checkbutton->set_active(false);

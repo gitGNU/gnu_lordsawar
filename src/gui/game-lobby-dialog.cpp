@@ -713,7 +713,7 @@ void GameLobbyDialog::on_play_clicked()
           game_may_begin.emit();
         }
       play_button->set_sensitive(false);
-      play_button->set_visible(false);
+      play_button->property_visible() = false;
       start_network_game.emit(d_game_scenario, d_next_turn);
       d_play_button_clicked = true;
     }

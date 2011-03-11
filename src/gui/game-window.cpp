@@ -1945,7 +1945,7 @@ void GameWindow::on_message_requested(std::string msg)
 
 void GameWindow::on_stack_toggled(Gtk::RadioButton *radio, Stack *stack)
 {
-  if (end_turn_button->get_sensitive() == false)
+  if (end_turn_button->property_sensitive() == false)
     return;
   if (radio->get_active() == true)
     {
@@ -1960,7 +1960,7 @@ void GameWindow::on_stack_toggled(Gtk::RadioButton *radio, Stack *stack)
 
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Stack *stack, Army *army)
 {
-  if (end_turn_button->get_sensitive() == false)
+  if (end_turn_button->property_sensitive() == false)
     return;
   Player *p = Playerlist::getActiveplayer();
   Stack *s = p->getActivestack();
