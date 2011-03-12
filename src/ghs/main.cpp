@@ -19,6 +19,7 @@
 #include <config.h>
 #endif
 
+#include <unistd.h>
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
@@ -35,6 +36,7 @@ int max_vector_width;
     
 int main(int argc, char* argv[])
 {
+  bool foreground = false;
   std::list<std::string> members;
   std::string hostname = "";
   srand(time(NULL));         // set the random seed
@@ -69,11 +71,15 @@ int main(int argc, char* argv[])
                 }
               port = userport;
 	    }
-	  else if (parameter == "--host" || parameter == "--h")
+	  else if (parameter == "--host" || parameter == "-h")
             {
               hostname = parameter;
             }
-	  else if (parameter == "--members" || parameter == "--m")
+	  else if (parameter == "--foreground" || parameter == "-f")
+            {
+              foreground = true;
+            }
+	  else if (parameter == "--members" || parameter == "-m")
             {
               members = GamehostServer::load_members_from_file(parameter);
             }
@@ -83,6 +89,7 @@ int main(int argc, char* argv[])
 	      cout << "LordsAWar! Game-host Server " << _("version") << " " << VERSION << endl << endl;
 	      cout << _("Options:") << endl << endl; 
 	      cout << "  -?, --help                 " << _("Display this help and exit") <<endl;
+	      cout << "  -f, --foreground           " << _("Do not detach from the controlling terminal") << endl;
 	      cout << "  -h, --host <string>        " << _("Advertise our hostname as this to game clients") << endl;
 	      cout << "  -p, --port <number>        " << _("Start the server on the given port") << endl;
 	      cout << "  -m, --members <file>       " << _("Allow the profile ids in this file to host games") << endl;
@@ -98,6 +105,12 @@ int main(int argc, char* argv[])
       cerr << String::ucompose(_("Error: could not find %1 program in path."), 
                                PACKAGE) << endl;
       return EXIT_FAILURE;
+    }
+
+  if (foreground == false)
+    {
+      if (daemon (0, 0) == -1)
+        cerr << _("Could not detach from controlling terminal.");
     }
 
   GamehostServer *gamehostserver = GamehostServer::getInstance();

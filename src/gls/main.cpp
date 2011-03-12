@@ -20,6 +20,7 @@
 #endif
 
 #include <iostream>
+#include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
 #include "Configuration.h"
@@ -34,6 +35,7 @@ int max_vector_width;
     
 int main(int argc, char* argv[])
 {
+  bool foreground = false;
   srand(time(NULL));         // set the random seed
 
   initialize_configuration();
@@ -66,12 +68,17 @@ int main(int argc, char* argv[])
                 }
               port = userport;
 	    }
+	  else if (parameter == "--foreground" || parameter == "-f")
+            {
+              foreground = true;
+            }
 	  else if (parameter == "--help" || parameter == "-?")
 	    {
 	      cout << Glib::get_prgname() << " [OPTION]..." << endl << endl;
 	      cout << "LordsAWar! Game-list Server " << _("version") << " " << VERSION << endl << endl;
 	      cout << _("Options:") << endl << endl; 
 	      cout << "  -?, --help                 " << _("Display this help and exit") <<endl;
+	      cout << "  -f, --foreground           " << _("Do not detach from the controlling terminal") << endl;
 	      cout << "  -p, --port <number>        " << _("Start the server on the given port") << endl;
 	      cout << endl;
 	      cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << endl;
@@ -82,6 +89,13 @@ int main(int argc, char* argv[])
   GamelistServer *gamelistserver = GamelistServer::getInstance();
   if (port == 0)
     port = LORDSAWAR_GAMELIST_PORT;
+
+  if (foreground == false)
+    {
+      if (daemon (0, 0) == -1)
+        cerr << _("Could not detach from controlling terminal.");
+    }
+
   gamelistserver->start(port);
   gtk_main->run();
   delete gtk_main;
