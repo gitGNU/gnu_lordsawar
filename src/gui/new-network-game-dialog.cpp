@@ -64,15 +64,15 @@ NewNetworkGameDialog::NewNetworkGameDialog()
   decorate(dialog);
   dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
 
-  if (Configuration::s_gamelist_server_hostname != "" &&
-      Configuration::s_gamelist_server_port != 0)
+  if (Configuration::s_gamelist_server_hostname == "" ||
+      Configuration::s_gamelist_server_port == 0)
     advertise_checkbutton->set_label (_("List the game on a remote server."));
   else
     advertise_checkbutton->set_label
     (String::ucompose(_("List the game on %1."),
                       Configuration::s_gamelist_server_hostname));
-  if (Configuration::s_gamehost_server_hostname != "" &&
-      Configuration::s_gamehost_server_port != 0)
+  if (Configuration::s_gamehost_server_hostname == "" ||
+      Configuration::s_gamehost_server_port == 0)
     remote_checkbutton->set_label
       (_("Host and list the game on a remote server."));
   else
