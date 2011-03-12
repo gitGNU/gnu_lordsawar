@@ -250,3 +250,12 @@ std::string NetworkConnection::get_peer_hostname()
   else
     return h.substr(pos + 1);
 }
+
+void NetworkConnection::disconnect()
+{
+  if (conn)
+    {
+      if (conn->get_socket()->is_closed() == false)
+        conn->get_socket()->close();
+    }
+}

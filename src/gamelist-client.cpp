@@ -54,6 +54,7 @@ void GamelistClient::deleteInstance()
 
 GamelistClient::GamelistClient()
 {
+  network_connection.reset();
 }
 
 GamelistClient::~GamelistClient()
@@ -156,6 +157,8 @@ bool GamelistClient::onGotMessage(int type, std::string payload)
 
 void GamelistClient::disconnect()
 {
+  if (network_connection.get())
+    network_connection->disconnect();
   d_connected = false;
 }
   

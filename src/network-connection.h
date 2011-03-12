@@ -48,6 +48,7 @@ public:
   void sendFile(int type, std::string filename);
   std::string get_peer_hostname();
 
+  void disconnect();
   std::string getHost() const {return d_host;};
   guint32 getPort() const {return d_port;};
 private:

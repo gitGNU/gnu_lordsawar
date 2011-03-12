@@ -170,7 +170,8 @@ void NetworkGameSelectorDialog::fill_games(RecentlyPlayedGameList *rpgl, Glib::R
 
 NetworkGameSelectorDialog::~NetworkGameSelectorDialog()
 {
-  GamelistClient::deleteInstance();
+  GamelistClient::getInstance()->disconnect();
+  //GamelistClient::deleteInstance();
   delete dialog;
 }
 

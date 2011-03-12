@@ -53,6 +53,7 @@ void GamehostClient::deleteInstance()
 
 GamehostClient::GamehostClient()
 {
+  network_connection.reset();
 }
 
 GamehostClient::~GamehostClient()
@@ -177,6 +178,8 @@ bool GamehostClient::onGotMessage(int type, std::string payload)
 
 void GamehostClient::disconnect()
 {
+  if (network_connection.get())
+    network_connection->disconnect();
   d_connected = false;
 }
   

@@ -989,7 +989,9 @@ void Driver::on_game_ended()
   PbmGameServer::deleteInstance();
 
   GraphicsCache::deleteInstance();
+  GamehostClient::getInstance()->disconnect();
   GamehostClient::deleteInstance();
+  GamelistClient::getInstance()->disconnect();
   GamelistClient::deleteInstance();
 
   splash_window->show();
