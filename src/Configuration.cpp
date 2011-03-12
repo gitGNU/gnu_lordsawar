@@ -77,9 +77,9 @@ bool Configuration::s_decorated = true;
 bool Configuration::s_remember_recent_games = true;
 bool Configuration::s_remember_recently_edited_files = true;
 guint32 Configuration::s_double_click_threshold = 400; //milliseconds
-std::string Configuration::s_gamelist_server_hostname = "lordsawar.com";
+std::string Configuration::s_gamelist_server_hostname = "";
 guint32 Configuration::s_gamelist_server_port = LORDSAWAR_GAMELIST_PORT;
-std::string Configuration::s_gamehost_server_hostname = "lordsawar.com";
+std::string Configuration::s_gamehost_server_hostname = "";
 guint32 Configuration::s_gamehost_server_port = LORDSAWAR_GAMEHOST_PORT;
 
 Configuration::Configuration()
