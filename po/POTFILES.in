@@ -353,3 +353,4 @@ dat/templenames.xml.in
 dat/signposts.xml.in
 dat/ruinnames.xml.in
 dat/heronames.xml.in
+[type: gettext/ini]dat/lordsawar.desktop.in.in

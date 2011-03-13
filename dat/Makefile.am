@@ -1,4 +1,4 @@
-SUBDIRS = army tilesets various music glade shield citysets map
+SUBDIRS = army tilesets various music glade shield citysets map icons
 MANTAINERCLEANFILES= Makefile.in
 
 lordsawardatadir = $(datadir)/lordsawar
@@ -13,16 +13,16 @@ lordsawardata_DATA = \
     signposts.xml \
     gtkrc
 
-DISTCLEANFILES = citynames.xml heronames.xml templenames.xml ruinnames.xml signposts.xml
+DISTCLEANFILES = citynames.xml heronames.xml templenames.xml ruinnames.xml signposts.xml lordsawar.desktop lordsawar.desktop.in
+
+
+lordsawar.desktop: lordsawar.desktop.in $(wildcard $(top_srcdir)/po/*.po)
+		sed -e 's|.[{]prefix[}]|${prefix}|' lordsawar.desktop.in > desktop-foo \
+		&& $(INTLTOOL_MERGE) $(top_srcdir)/po desktop-foo $(@) -d -u -c $(top_builddir)/po/.intltool-merge-cachemake \
+		&& rm -r desktop-foo
 
 lwdesktopdir= $(datadir)/applications
 lwdesktop_DATA= lordsawar.desktop
-
-lordsawar64icondir=$(datadir)/icons/hicolor/64x64/apps
-lordsawar64icon= 
-
-lordsawar32icondir=$(datadir)/icons/hicolor/32x32/apps
-lordsawar32icon= 
 
 EXTRA_DIST = \
     README \
@@ -31,5 +31,5 @@ EXTRA_DIST = \
     templenames.xml.in \
     ruinnames.xml.in \
     signposts.xml.in \
-    lordsawar.desktop \
+    lordsawar.desktop.in.in \
     gtkrc
