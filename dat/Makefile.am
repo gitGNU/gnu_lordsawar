@@ -15,10 +15,11 @@ lordsawardata_DATA = \
 
 DISTCLEANFILES = citynames.xml heronames.xml templenames.xml ruinnames.xml signposts.xml lordsawar.desktop lordsawar.desktop.in
 
+CLEANFILES=desktop-foo
 
 lordsawar.desktop: lordsawar.desktop.in $(wildcard $(top_srcdir)/po/*.po)
 		sed -e 's|.[{]prefix[}]|${prefix}|' lordsawar.desktop.in > desktop-foo \
-		&& $(INTLTOOL_MERGE) $(top_srcdir)/po desktop-foo $(@) -d -u -c $(top_builddir)/po/.intltool-merge-cachemake \
+		&& $(INTLTOOL_MERGE) $(top_srcdir)/po desktop-foo $(@) -d -u -c $(top_builddir)/po/.intltool-merge-cache \
 		&& rm -r desktop-foo
 
 lwdesktopdir= $(datadir)/applications
