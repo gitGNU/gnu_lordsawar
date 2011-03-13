@@ -203,7 +203,6 @@ bool GamelistServer::onGotMessage(void *conn, int type, std::string payload)
 void GamelistServer::onConnectionMade(void *conn)
 {
   debug("connection made");
-  printf("pinging games now.\n");
   Gamelist::getInstance()->pruneGames();
   Gamelist::getInstance()->pingGames();
 }

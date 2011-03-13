@@ -78,6 +78,7 @@ bool NetworkServer::gotClientConnection(const Glib::RefPtr<Gio::SocketConnection
 {
   if (c) 
     {
+      c->reference();
       NetworkConnection *conn = new NetworkConnection(c);
       connections.push_back(conn);
 

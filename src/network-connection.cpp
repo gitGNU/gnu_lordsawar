@@ -96,6 +96,7 @@ NetworkConnection::NetworkConnection(const Glib::RefPtr<Gio::SocketConnection> &
   client->set_protocol(Gio::SOCKET_PROTOCOL_TCP);
   if (c) 
     {
+      c->reference();
       conn = Gio::SocketConnection::create(c->property_socket());
       setup_connection();
     }
