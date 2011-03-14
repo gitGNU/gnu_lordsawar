@@ -458,6 +458,13 @@ bool GamehostServer::onGotMessage(void *conn, int type, std::string payload)
           network_server->send(conn, GHS_MESSAGE_COULD_NOT_RELOAD, 
                                _("permission denied"));
       break;
+    case GHS_MESSAGE_REQUEST_TERMINATION:
+      if (network_server->is_local_connection(conn))
+        {
+          terminate_request_received.emit();
+          Gtk::Main::quit();
+        }
+      break;
     case GHS_MESSAGE_GAME_LIST:
     case GHS_MESSAGE_COULD_NOT_RELOAD:
     case GHS_MESSAGE_RELOADED:

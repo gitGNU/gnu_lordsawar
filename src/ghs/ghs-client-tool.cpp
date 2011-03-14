@@ -31,7 +31,7 @@
 #include "GameScenario.h"
 #include "ghs-client-tool.h"
 
-GhsClientTool::GhsClientTool(std::string host, int port, Profile *p, bool show_list, bool reload, std::string unhost, std::string file)
+GhsClientTool::GhsClientTool(std::string host, int port, Profile *p, bool show_list, bool reload, std::string unhost, std::string file, bool terminate)
 {
   d_host = host;
   request_count = 0;
@@ -39,6 +39,7 @@ GhsClientTool::GhsClientTool(std::string host, int port, Profile *p, bool show_l
   d_reload = reload;
   d_unhost = unhost;
   d_file_to_host = file;
+  d_terminate = terminate;
   GamehostClient *gamehostclient = GamehostClient::getInstance();
   Profilelist *plist = Profilelist::getInstance();
   new_profile = NULL;
@@ -212,4 +213,6 @@ void GhsClientTool::on_connected()
             << std::endl;
         }
     }
+  if (d_terminate)
+    gamehostclient->request_server_terminate();
 }

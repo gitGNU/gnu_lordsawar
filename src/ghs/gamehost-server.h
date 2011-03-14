@@ -63,6 +63,7 @@ public:
 
   // signals
   sigc::signal<void, int> port_in_use;
+  sigc::signal<void> terminate_request_received;
 
   // statics
   static std::list<std::string> load_members_from_file(std::string file);

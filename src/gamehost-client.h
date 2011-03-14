@@ -64,6 +64,8 @@ public:
   void request_reload();
   sigc::signal<void, std::string> received_reload_response;
 
+  void request_server_terminate();
+
   sigc::signal<void> client_connected;
   sigc::signal<void> client_disconnected; 
   sigc::signal<void> client_forcibly_disconnected; //server went away

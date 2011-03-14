@@ -41,6 +41,7 @@ int main(int argc, char* argv[])
   std::string unhost;
   bool show_list = false;
   bool reload = false;
+  bool terminate = false;
   srand(time(NULL));         // set the random seed
 
   initialize_configuration();
@@ -98,6 +99,10 @@ int main(int argc, char* argv[])
             {
               unhost = parameter;
             }
+          else if (parameter == "--terminate" || parameter == "-t")
+            {
+              terminate = true;
+            }
 	  else if (parameter == "--help" || parameter == "-?")
 	    {
 	      cout << Glib::get_prgname() << " " << _("[OPTION]... [HOST]") << endl << endl;
@@ -110,6 +115,7 @@ int main(int argc, char* argv[])
 	      cout << "  -R, --reload               " << _("Reload the game list from disk") << endl;
               cout << "  -u, --unhost <id>          " << _("Stop hosting a game (specified by scenario id)") << endl;
               cout << "  -h, --host <file>          " << _("Host a game") << endl;
+              cout << "  -t, --terminate            " << _("Stop the server") << endl;
 	      cout << endl;
               cout << String::ucompose ("%1", _("If HOST is not specified on the command-line, this tool will try to connect to \nthe game-host server at 127.0.0.1.")) << endl;
 	      cout << endl;
@@ -134,7 +140,8 @@ int main(int argc, char* argv[])
     }
   if (host == "")
     host = "127.0.0.1";
-  GhsClientTool tool(host, port, profile, show_list, reload, unhost, file);
+  GhsClientTool tool(host, port, profile, show_list, reload, unhost, file, 
+                     terminate);
 
   gtk_main->run();
   //delete gtk_main;

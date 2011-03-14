@@ -149,6 +149,7 @@ bool GamelistClient::onGotMessage(int type, std::string payload)
     case GLS_MESSAGE_UNADVERTISE_GAME:
     case GLS_MESSAGE_REQUEST_GAME_LIST:
     case GLS_MESSAGE_REQUEST_RELOAD:
+    case GLS_MESSAGE_REQUEST_TERMINATION:
       //faulty server
       break;
     }
@@ -212,4 +213,9 @@ bool GamelistClient::loadRecentlyPlayedGameList(std::string tag, XML_Helper *hel
 void GamelistClient::request_reload()
 {
   network_connection->send(GLS_MESSAGE_REQUEST_RELOAD, "");
+}
+
+void GamelistClient::request_server_terminate()
+{
+  network_connection->send(GLS_MESSAGE_REQUEST_TERMINATION, "");
 }

@@ -47,6 +47,7 @@ public:
   void reload();
 
   sigc::signal<void, int> port_in_use;
+  sigc::signal<void> terminate_request_received;
 
 protected:
   GamelistServer();

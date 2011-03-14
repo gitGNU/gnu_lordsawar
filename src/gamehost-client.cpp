@@ -170,6 +170,7 @@ bool GamehostClient::onGotMessage(int type, std::string payload)
     case GHS_MESSAGE_REQUEST_RELOAD:
     case GHS_MESSAGE_HOST_NEW_GAME:
     case GHS_MESSAGE_UNHOST_GAME:
+    case GHS_MESSAGE_REQUEST_TERMINATION:
       //faulty server
       break;
     }
@@ -246,4 +247,9 @@ void GamehostClient::send_map(GameScenario *game_scenario)
 void GamehostClient::send_map_file(std::string file)
 {
   network_connection->sendFile(GHS_MESSAGE_SENDING_MAP, file);
+}
+
+void GamehostClient::request_server_terminate()
+{
+  network_connection->send(GHS_MESSAGE_REQUEST_TERMINATION, "");
 }

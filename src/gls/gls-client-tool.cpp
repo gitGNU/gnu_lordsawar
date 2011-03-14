@@ -33,7 +33,7 @@
 #include "gls-client-tool.h"
 
 
-GlsClientTool::GlsClientTool(std::string host, int port, Profile *p, bool show_list, std::list<std::string> unadvertise, bool advertise, bool reload, std::string remove_all)
+GlsClientTool::GlsClientTool(std::string host, int port, Profile *p, bool show_list, std::list<std::string> unadvertise, bool advertise, bool reload, std::string remove_all, bool terminate)
 {
   request_count = 0;
   d_show_list = show_list;
@@ -41,6 +41,7 @@ GlsClientTool::GlsClientTool(std::string host, int port, Profile *p, bool show_l
   d_advertise = advertise;
   d_reload = reload;
   d_remove_all = remove_all;
+  d_terminate = terminate;
   GamelistClient *gamelistclient = GamelistClient::getInstance();
   Profilelist *plist = Profilelist::getInstance();
   new_profile = NULL;
@@ -275,4 +276,7 @@ void GlsClientTool::on_connected()
       request_count++;
       gamelistclient->request_game_list();
     }
+
+  if (d_terminate)
+    gamelistclient->request_server_terminate();
 }

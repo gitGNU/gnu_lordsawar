@@ -36,7 +36,7 @@ class RecentlyPlayedGame;
 class GlsClientTool
 {
 public:
-    GlsClientTool(std::string host, int port, Profile *profile, bool show_list, std::list<std::string> unadvertise, bool advertise, bool reload, std::string remove_all);
+    GlsClientTool(std::string host, int port, Profile *profile, bool show_list, std::list<std::string> unadvertise, bool advertise, bool reload, std::string remove_all, bool terminate);
     virtual ~GlsClientTool();
 private:
   Profile *new_profile;
@@ -46,6 +46,7 @@ private:
   bool d_advertise;
   bool d_reload;
   std::string d_remove_all;
+  bool d_terminate;
   guint32 request_count;
 
   //callbacks

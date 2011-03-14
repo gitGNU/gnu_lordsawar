@@ -35,7 +35,7 @@ class RecentlyPlayedGame;
 class GhsClientTool
 {
 public:
-    GhsClientTool(std::string host, int port, Profile *p, bool show_list, bool reload, std::string unhost, std::string file);
+    GhsClientTool(std::string host, int port, Profile *p, bool show_list, bool reload, std::string unhost, std::string file, bool terminate);
     virtual ~GhsClientTool();
 private:
   Profile *new_profile;
@@ -45,6 +45,7 @@ private:
   bool d_reload;
   std::string d_unhost;
   std::string d_file_to_host;
+  bool d_terminate;
   guint32 request_count;
 
   //callbacks

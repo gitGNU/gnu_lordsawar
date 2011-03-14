@@ -40,6 +40,7 @@ int main(int argc, char* argv[])
   bool advertise = false;
   bool show_list = false;
   bool reload = false;
+  bool terminate = false;
   std::string remove_all;
   srand(time(NULL));         // set the random seed
 
@@ -103,6 +104,10 @@ int main(int argc, char* argv[])
             {
               remove_all = argv[i-1];
             }
+          else if (parameter == "--terminate" || parameter == "-t")
+            {
+              terminate = true;
+            }
 	  else if (parameter == "--help" || parameter == "-?")
 	    {
 	      cout << Glib::get_prgname() << " " << _("[OPTION]... [HOST]") << endl << endl;
@@ -116,6 +121,7 @@ int main(int argc, char* argv[])
 	      cout << "  -l, --list                 " << _("See a list of games") << endl;
 	      cout << "  -R, --reload               " << _("Reload the game list from disk") << endl;
 	      cout << "  -r, --remove-all <id>      " << _("Remove all games owned by the given profile id") << endl;
+	      cout << "  -t, --terminate            " << _("Stop the server") << endl;
 	      cout << endl;
               cout << String::ucompose ("%1", _("Specifying a profile id of -1 to the --remove-all option will remove all games \nfrom the game list.")) << endl;
 	      cout << endl;
@@ -144,7 +150,7 @@ int main(int argc, char* argv[])
   if (host == "")
     host = "127.0.0.1";
   GlsClientTool tool(host, port, profile, show_list, unadvertise, 
-                     advertise, reload, remove_all);
+                     advertise, reload, remove_all, terminate);
 
   gtk_main->run();
   //delete gtk_main;

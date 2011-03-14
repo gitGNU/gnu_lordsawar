@@ -38,6 +38,7 @@ enum GhsMessageType
   GHS_MESSAGE_GAME_HOSTED = 14, //from server
   GHS_MESSAGE_COULD_NOT_READ_MAP = 15, //from server
   GHS_MESSAGE_COULD_NOT_START_GAME = 16, //from server
+  GHS_MESSAGE_REQUEST_TERMINATION = 17, //from client
 };
 
 #endif
