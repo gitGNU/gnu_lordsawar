@@ -50,7 +50,7 @@ Item::Item(XML_Helper* helper)
 }
 
 Item::Item(std::string name, bool plantable, Player *plantable_owner)
-	: ItemProto(name, 0), UniquelyIdentified()
+	: ItemProto(name), UniquelyIdentified()
 {
   d_type = 0;
   d_bonus = 0;
@@ -63,8 +63,9 @@ Item::Item(std::string name, bool plantable, Player *plantable_owner)
   //std::cerr << "item created with id " << d_id << std::endl;
 }
 
+/*
 Item::Item(std::string name, bool plantable, Player *plantable_owner, guint32 id)
-	: ItemProto(name, 0), UniquelyIdentified(id)
+	: ItemProto(name), UniquelyIdentified(id)
 {
   d_type = 0;
   d_bonus = 0;
@@ -76,6 +77,7 @@ Item::Item(std::string name, bool plantable, Player *plantable_owner, guint32 id
   d_planted = false;
   //std::cerr << "item created with id " << d_id << std::endl;
 }
+*/
 
 Item::Item(const Item& orig)
 :ItemProto(orig), UniquelyIdentified(orig), 
@@ -85,10 +87,10 @@ Item::Item(const Item& orig)
 {
 }
 
-Item::Item(const ItemProto &proto)
+Item::Item(const ItemProto &proto, guint32 type_id)
 :ItemProto(proto), UniquelyIdentified()
 {
-  d_type = proto.getTypeId();
+  d_type = type_id;
   d_plantable = false;
   d_plantable_owner_id = MAX_PLAYERS;
   d_planted = false;
@@ -123,12 +125,6 @@ bool Item::save(XML_Helper* helper) const
   retval &= helper->closeTag();
 
   return retval;
-}
-
-Item* Item::createNonUniqueItem(std::string name, bool plantable, 
-				Player *plantable_owner)
-{
-  return new Item(name, plantable, plantable_owner, 0);
 }
 
 bool Item::use()

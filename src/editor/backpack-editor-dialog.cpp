@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -119,10 +119,11 @@ void BackpackEditorDialog::on_add_item_clicked()
 {
   SelectItemDialog d;
   d.run();
-  const ItemProto *itemproto = d.get_selected_item();
+  guint32 id = 0;
+  const ItemProto *itemproto = d.get_selected_item(id);
   if (itemproto)
     {
-      Item *item = new Item(*itemproto);
+      Item *item = new Item(*itemproto, id);
       working->addToBackpack(item);
       add_item(item);
       on_item_selection_changed();

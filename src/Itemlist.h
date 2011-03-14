@@ -63,6 +63,7 @@ class Itemlist : public std::map<guint32, ItemProto*>, public sigc::trackable
 	bool save(XML_Helper* helper) const;
 
 	void remove(ItemProto *item);
+        void add(ItemProto *item);
 
     protected:
 	//! Default constructor.

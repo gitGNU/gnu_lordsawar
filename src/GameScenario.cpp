@@ -389,16 +389,18 @@ bool GameScenario::setupRuinRewards()
 
 bool GameScenario::setupItemRewards()
 {
+  guint32 count = 0;
   debug("GameScenario::setupItemRewards")
   Itemlist *il = Itemlist::getInstance();
   Itemlist::iterator iter;
   for (iter = il->begin(); iter != il->end(); iter++)
     {
-      Item templateItem = *iter->second;
-      Item *newItem = new Item(templateItem); //instantiate it
+      const ItemProto* templateItem = (*iter).second;
+      Item *newItem = new Item(*templateItem, count); //instantiate it
       Reward_Item *newReward = new Reward_Item(newItem); //make a reward
       newReward->setName(newReward->getDescription());
       Rewardlist::getInstance()->push_back(newReward); //add it
+      count++;
     }
 
   return true;

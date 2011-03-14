@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -299,10 +299,12 @@ void RewardEditorDialog::on_item_clicked()
 {
   SelectItemDialog d;
   d.run();
-  if (d.get_selected_item())
+  guint32 id = 0;
+  const ItemProto *itemproto = d.get_selected_item(id);
+  if (itemproto)
     {
       on_clear_item_clicked();
-      item = new Item(*(d.get_selected_item()));
+      item = new Item(*itemproto, id);
       set_item_name();
     }
 }

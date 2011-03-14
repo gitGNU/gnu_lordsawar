@@ -60,13 +60,11 @@ class Item: public ItemProto, public UniquelyIdentified
         Item(const Item& orig);
 
 	//! Copy constructor.  make an item from a prototype.
-	Item(const ItemProto &proto);
+	Item(const ItemProto &proto, guint32 type_id);
 
-	//! Creates a new Item from scratch.
+        //! Make an item from scratch.
         Item(std::string name, bool plantable, Player *plantable_owner);
 
-	static Item* createNonUniqueItem(std::string name, bool plantable,
-					 Player *plantable_owner);
         //! Destructor.
         ~Item();
         

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -96,10 +96,18 @@ void SelectItemDialog::run()
 	Gtk::TreeModel::iterator iterrow = selection->get_selected();
 
 	if (iterrow) 
-	  {
-	    Gtk::TreeModel::Row row = *iterrow;
-	    selected_item = row[items_columns.item];
-	  }
+          {
+            Gtk::TreeModel::Row row = *iterrow;
+            selected_item = row[items_columns.item];
+            selected_item_type_id = 0;
+            Itemlist::iterator iter = Itemlist::getInstance()->begin();
+            for (;iter != Itemlist::getInstance()->end(); iter++)
+              {
+                if ((*iter).second == selected_item)
+                  break;
+                selected_item_type_id++;
+              }
+          }
       }
 }
 

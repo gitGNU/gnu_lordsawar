@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,13 +36,14 @@ class SelectItemDialog: public sigc::trackable
 
     void run();
 
-    const ItemProto *get_selected_item() { return selected_item; }
+    const ItemProto *get_selected_item(guint32 &id) { id = selected_item_type_id; return selected_item; }
     
  private:
     Gtk::Dialog* dialog;
     Gtk::Button *select_button;
 
     const ItemProto *selected_item;
+    guint32 selected_item_type_id;
 
     Gtk::TreeView *items_treeview;
     class ItemsColumns: public Gtk::TreeModelColumnRecord {

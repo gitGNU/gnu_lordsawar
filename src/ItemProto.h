@@ -102,7 +102,7 @@ class ItemProto: public Renamable
         ItemProto(const ItemProto& orig);
 
 	//! Creates a new Item Prototype from scratch.
-        ItemProto(std::string name, guint32 id);
+        ItemProto(std::string name);
 
         //! Destructor.
         virtual ~ItemProto();
@@ -122,12 +122,6 @@ class ItemProto: public Renamable
 	//! Remove a bonus from the Item.
 	void removeBonus(ItemProto::Bonus bonus);
         
-        //! Return the Id of the Item prototype.
-        guint32 getTypeId() const {return d_type_id;};
-
-	//! Set the id of the item prototype.
-	void setTypeId(guint32 id) {d_type_id = id;};
-
 	//! Return some text describing the item's special abilities.
         std::string getBonusDescription() const;
 
@@ -151,13 +145,6 @@ class ItemProto: public Renamable
         //! The number of uses this item has before it is spent.
         guint32 d_uses_left;
     private:
-
-	//! The Id of the Item.
-	/**
-	 * This value is a unique Id among all other game objects.
-	 * This value does not change during gameplay.
-	 */
-        guint32 d_type_id;
 
 	static std::string bonusFlagToString(ItemProto::Bonus type);
 	static ItemProto::Bonus bonusFlagFromString(std::string str);

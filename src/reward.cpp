@@ -285,9 +285,10 @@ Item *Reward_Item::getRandomItem()
 {
   Itemlist *il = Itemlist::getInstance();
   Itemlist::iterator it = il->begin();
-  std::advance(it, rand() % il->size());
+  guint32 id = rand() % il->size();
+  std::advance(it, id);
   ItemProto *i = it->second;
-  return new Item(*i);
+  return new Item(*i, id);
 }
 
 Reward_Item::~Reward_Item()

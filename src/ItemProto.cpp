@@ -40,17 +40,15 @@ ItemProto::ItemProto(XML_Helper* helper)
     helper->getData(d_uses_left, "uses_left");
 }
 
-ItemProto::ItemProto(std::string name, guint32 id)
+ItemProto::ItemProto(std::string name)
 	: Renamable(name)
 {
   d_bonus = 0;
-  d_type_id = id;
   d_uses_left = 0;
 }
 
 ItemProto::ItemProto(const ItemProto& orig)
-:Renamable(orig), d_bonus(orig.d_bonus), d_uses_left(orig.d_uses_left),
-    d_type_id(orig.d_type_id)
+:Renamable(orig), d_bonus(orig.d_bonus), d_uses_left(orig.d_uses_left)
 {
 }
 

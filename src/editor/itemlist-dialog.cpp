@@ -245,17 +245,19 @@ void ItemlistDialog::on_name_changed()
       row[items_columns.name] = name_entry->get_text();
     }
 }
+
 void ItemlistDialog::on_add_item_clicked()
 {
   //add a new empty item to the itemlist
-  ItemProto *a = new ItemProto("Untitled", 0);
+  ItemProto *a = new ItemProto("Untitled");
+  d_itemlist->add(a);
   //add it to the treeview
   Gtk::TreeIter i = items_list->append();
   a->setName("Untitled");
   (*i)[items_columns.name] = a->getName();
   (*i)[items_columns.item] = a;
-
 }
+
 void ItemlistDialog::on_remove_item_clicked()
 {
   //erase the selected row from the treeview
@@ -271,6 +273,7 @@ void ItemlistDialog::on_remove_item_clicked()
       d_itemlist->remove(a);
     }
 }
+
 void ItemlistDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
