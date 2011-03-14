@@ -1222,6 +1222,21 @@ bool Stack::killArmyUnitsInBoats()
   return retval;
 }
           
+//! Kill the army units that are the given army type
+bool Stack::killArmies(guint32 army_type)
+{
+  bool killed = false;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->getTypeId() == army_type)
+        {
+          (*it)->kill();
+          killed = true;
+        }
+    }
+  return killed;
+}
+
 guint32 Stack::countBlessings() const
 {
   int count = 0;

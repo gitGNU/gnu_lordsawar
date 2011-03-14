@@ -184,6 +184,9 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
         //! Kill all the army units in the stack list.
         std::list<Stack*> kill();
 
+        //! Kill this kind of army unit in the stack list.
+        std::list<Stack*> killArmies(guint32 army_type);
+
         /** 
 	 * Erase a Stack from the list, and free the contents of the Stack.
 	 *

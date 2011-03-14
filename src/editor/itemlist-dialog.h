@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -66,6 +66,7 @@ class ItemlistDialog: public sigc::trackable
     Gtk::CheckButton *add5goldpercity_checkbutton;
     Gtk::CheckButton *steals_gold_checkbutton;
     Gtk::CheckButton *sinks_ships_checkbutton;
+    Gtk::CheckButton *banish_worms_checkbutton;
     Gtk::SpinButton *uses_spinbutton;
 
     class ItemsColumns: public Gtk::TreeModelColumnRecord {
@@ -110,6 +111,7 @@ class ItemlistDialog: public sigc::trackable
     void on_add5goldpercity_toggled();
     void on_steals_gold_toggled();
     void on_sinks_ships_toggled();
+    void on_banish_worms_toggled();
     void on_uses_changed();
 };
 

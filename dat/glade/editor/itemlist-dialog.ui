@@ -464,7 +464,7 @@
                                             <child>
                                               <object class="GtkTable" id="table3">
                                                 <property name="visible">True</property>
-                                                <property name="n_rows">2</property>
+                                                <property name="n_rows">3</property>
                                                 <property name="n_columns">2</property>
                                                 <child>
                                                   <object class="GtkCheckButton" id="steals_gold_checkbutton">
@@ -493,6 +493,22 @@
                                                 </child>
                                                 <child>
                                                   <placeholder/>
+                                                </child>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="banish_worms_checkbutton">
+                                                    <property name="label" translatable="yes">Kills All Units of Giant Worms</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="top_attach">2</property>
+                                                    <property name="bottom_attach">3</property>
+                                                  </packing>
                                                 </child>
                                               </object>
                                               <packing>

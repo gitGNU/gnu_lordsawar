@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -82,10 +82,13 @@ class ItemProto: public Renamable
           PICK_UP_BAGS    = 0x00004000,
           //! Provide 2 movement points to the stack.
           ADD_2MP_STACK   = 0x00008000,
+          //! Kill all of the giant worms
+          BANISH_WORMS    = 0x00010000,
         };
 
         enum UsableItems {
-          USABLE = STEAL_GOLD | SINK_SHIPS | PICK_UP_BAGS | ADD_2MP_STACK,
+          USABLE = STEAL_GOLD | SINK_SHIPS | PICK_UP_BAGS | ADD_2MP_STACK
+            | BANISH_WORMS,
         };
 
 

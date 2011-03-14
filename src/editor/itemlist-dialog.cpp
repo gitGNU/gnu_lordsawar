@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -122,6 +122,9 @@ ItemlistDialog::ItemlistDialog()
     xml->get_widget("sinks_ships_checkbutton", sinks_ships_checkbutton);
     sinks_ships_checkbutton->signal_toggled().connect(
 	sigc::mem_fun(this, &ItemlistDialog::on_sinks_ships_toggled));
+    xml->get_widget("banish_worms_checkbutton", banish_worms_checkbutton);
+    banish_worms_checkbutton->signal_toggled().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_banish_worms_toggled));
     xml->get_widget("uses_spinbutton", uses_spinbutton);
     uses_spinbutton->signal_changed().connect(
 	sigc::mem_fun(this, &ItemlistDialog::on_uses_changed));
@@ -224,6 +227,7 @@ void ItemlistDialog::fill_item_info(ItemProto *item)
     (item->getBonus(ItemProto::ADD5GOLDPERCITY));
   steals_gold_checkbutton->set_active (item->getBonus(ItemProto::STEAL_GOLD));
   sinks_ships_checkbutton->set_active (item->getBonus(ItemProto::SINK_SHIPS));
+  banish_worms_checkbutton->set_active (item->getBonus(ItemProto::BANISH_WORMS));
   uses_spinbutton->set_value(double(item->getNumberOfUsesLeft()));
   inhibit_bonus_checkbuttons = 0;
 }
@@ -369,6 +373,11 @@ void ItemlistDialog::on_steals_gold_toggled()
 void ItemlistDialog::on_sinks_ships_toggled()
 {
   on_checkbutton_toggled(sinks_ships_checkbutton, ItemProto::SINK_SHIPS);
+}
+	
+void ItemlistDialog::on_banish_worms_toggled()
+{
+  on_checkbutton_toggled(banish_worms_checkbutton, ItemProto::BANISH_WORMS);
 }
 	
 void ItemlistDialog::on_uses_changed()

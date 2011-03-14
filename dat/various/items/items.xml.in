@@ -213,4 +213,9 @@
         <d_bonus>ItemProto::ADD_2MP_STACK</d_bonus>
         <d_uses_left>11</d_uses_left>
     </itemproto>
+    <itemproto>
+        <_d_name>Staff of Saint Patrick</_d_name>
+        <d_bonus>ItemProto::BANISH_WORMS</d_bonus>
+        <d_uses_left>3</d_uses_left>
+    </itemproto>
 </itemlist>

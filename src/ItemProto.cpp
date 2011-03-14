@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2010 Ben Asselstine
+// Copyright (C) 2008, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -128,6 +128,8 @@ std::string ItemProto::getBonusDescription() const
     s.push_back(_("Picks Up Bags"));
   if (getBonus(ItemProto::ADD_2MP_STACK))
     s.push_back(_("+2 MP to stack"));
+  if (getBonus(ItemProto::BANISH_WORMS))
+    s.push_back(_("Kills all Giant Worms"));
 
   if (battle > 0)
     s.push_back(String::ucompose(_("+%1 Battle"), battle));
@@ -186,6 +188,8 @@ std::string ItemProto::bonusFlagToString(ItemProto::Bonus bonus)
       return "ItemProto::PICK_UP_BAGS";
     case ItemProto::ADD_2MP_STACK:
       return "ItemProto::ADD_2MP_STACK";
+    case ItemProto::BANISH_WORMS:
+      return "ItemProto::BANISH_WORMS";
     }
   return "ItemProto::ADD1STR";
 }
@@ -225,6 +229,8 @@ std::string ItemProto::bonusFlagsToString(guint32 bonus)
     bonuses += " " + bonusFlagToString(ItemProto::PICK_UP_BAGS);
   if (bonus & ItemProto::ADD_2MP_STACK)
     bonuses += " " + bonusFlagToString(ItemProto::ADD_2MP_STACK);
+  if (bonus & ItemProto::BANISH_WORMS)
+    bonuses += " " + bonusFlagToString(ItemProto::BANISH_WORMS);
   return bonuses;
 }
 
@@ -281,5 +287,7 @@ ItemProto::Bonus ItemProto::bonusFlagFromString(std::string str)
     return ItemProto::PICK_UP_BAGS;
   else if (str == "ItemProto::ADD_2MP_STACK")
     return ItemProto::ADD_2MP_STACK;
+  else if (str == "ItemProto::BANISH_WORMS")
+    return ItemProto::BANISH_WORMS;
   return ItemProto::ADD1STR;
 }

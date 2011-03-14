@@ -887,6 +887,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
     (game->mp_added_to_hero_stack.connect
      (sigc::mem_fun(*this, &GameWindow::on_mp_added_to_hero_stack)));
   connections.push_back
+    (game->worms_killed.connect
+     (sigc::mem_fun(*this, &GameWindow::on_worms_killed)));
+  connections.push_back
     (game->stole_gold.connect
      (sigc::mem_fun(*this, &GameWindow::on_gold_stolen)));
   connections.push_back
@@ -3907,6 +3910,21 @@ void GameWindow::on_bags_picked_up(Hero *hero, guint32 num_bags)
     String::ucompose(ngettext("%1 bag was retrieved by %2!",
                               "%1 bags were retrieved by %2!", 
                               num_bags), num_bags, hero->getName());
+  TimedMessageDialog dialog(*window, s, 30);
+
+  dialog.show_all();
+  dialog.run();
+  dialog.hide();
+  return;
+}
+
+void GameWindow::on_worms_killed(Hero *hero, guint32 num_killed)
+{
+  std::string s = "";
+  s += 
+    String::ucompose(ngettext("%1 unit of giant worms was banished by %2!",
+                              "%1 units of giant worms were banished by %2!", 
+                              num_killed), num_killed, hero->getName());
   TimedMessageDialog dialog(*window, s, 30);
 
   dialog.show_all();

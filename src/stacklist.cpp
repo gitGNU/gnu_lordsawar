@@ -659,6 +659,17 @@ std::list<Stack*> Stacklist::killArmyUnitsInBoats()
     }
   return stacks;
 }
+        
+std::list<Stack*> Stacklist::killArmies(guint32 army_type)
+{
+  std::list<Stack*> stacks;
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if ((*it)->killArmies(army_type))
+        stacks.push_back(*it);
+    }
+  return stacks;
+}
 
 std::list<Item*> Stacklist::getUsableItems() const
 {

@@ -223,6 +223,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         //! Drown the non-flying units over water.  sets hitpoints to zero.
         bool killArmyUnitsInBoats();
 
+        //! Kill the armies of a given type.  sets hitpoints to zero.
+        bool killArmies(guint32 army_type);
+
         //! Sets the hitpoints of all army units in the stack to zero.
         void kill();
 

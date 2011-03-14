@@ -330,6 +330,7 @@ class GameWindow: public Decorated
     void on_gold_stolen(Player *victim, guint32 gold_pieces);
     void on_ships_sunk(Player *victim, guint32 num_armies);
     void on_bags_picked_up(Hero *hero, guint32 num_bags);
+    void on_worms_killed(Hero *hero, guint32 num_worms_killed);
     void on_mp_added_to_hero_stack(Hero *hero, guint32 mp);
     void on_stack_moves(Stack *stack, Vector<int> pos);
     void end_turn_play_by_mail ();
