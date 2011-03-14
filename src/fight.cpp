@@ -99,17 +99,21 @@ Fight::Fight(Stack* attacker, Stack* defender, FightType type)
     City *city = GameMap::getCity(defender->getPos());
     //Vector<int> p = defender->getPos();
 
-    if (city && city->isBurnt() == false)
+    if (city && city->isBurnt() == false && type == Fight::FOR_KEEPS)
       {
-	std::vector<Stack*> stacks = city->getDefenders();
-	for (std::vector<Stack*>::iterator it = stacks.begin(); 
-	     it != stacks.end(); it++)
-	  {
-	    Stack *s = *it;
-	    if (s == d_defenders.front())
-	      continue;
-	    d_defenders.push_back(s);
-	  }
+        /* we say FOR_KEEPS here because:
+         * StackInfoDialog does a fight for kicks on the tile of the selected 
+         * stack, which could be in a city.
+         */
+        std::vector<Stack*> stacks = city->getDefenders();
+        for (std::vector<Stack*>::iterator it = stacks.begin(); 
+             it != stacks.end(); it++)
+          {
+            Stack *s = *it;
+            if (s == d_defenders.front())
+              continue;
+            d_defenders.push_back(s);
+          }
       }
 	
     std::list<Stack*>::iterator it;
