@@ -957,6 +957,8 @@ void Game::update_control_panel()
       can_defend_selected_stack.emit(false);
       can_park_selected_stack.emit(false);
       can_deselect_selected_stack.emit(false);
+      can_inspect.emit(false);
+      can_see_hero_levels.emit(false);
       can_search_selected_stack.emit(false);
       can_use_item.emit(false);
       can_plant_standard_selected_stack.emit(false);
@@ -1004,6 +1006,8 @@ void Game::update_control_panel()
   can_park_selected_stack.emit(stack != 0);
   can_deselect_selected_stack.emit(stack != 0);
   can_center_selected_stack.emit(stack != 0);
+  can_inspect.emit(Playerlist::getActiveplayer()->getHeroes().size() > 0);
+  can_see_hero_levels.emit(Playerlist::getActiveplayer()->getHeroes().size() > 0);
 
   if (stack)
     {
@@ -1035,7 +1039,7 @@ void Game::update_control_panel()
       can_plant_standard_selected_stack.emit(false);
       can_search_selected_stack.emit(false);
     }
-
+      
   if (d_gameScenario->getRound() > 1)
     can_see_history.emit(true);
   else

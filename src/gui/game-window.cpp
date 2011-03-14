@@ -418,11 +418,7 @@ GameWindow::GameWindow()
     vectoring_menuitem->signal_activate().connect
       (sigc::mem_fun(*this, &GameWindow::on_vectoring_activated));
     xml->get_widget("levels_menuitem", levels_menuitem);
-    levels_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_levels_activated));
     xml->get_widget("inspect_menuitem", inspect_menuitem);
-    inspect_menuitem->signal_activate().connect
-      (sigc::mem_fun(*this, &GameWindow::on_inspect_activated));
     xml->get_widget("ruin_report_menuitem", ruin_report_menuitem);
     ruin_report_menuitem->signal_activate().connect
       (sigc::mem_fun(*this, &GameWindow::on_ruin_report_activated));
@@ -725,6 +721,14 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   setup_menuitem(use_menuitem,
 		 sigc::mem_fun(game, &Game::select_item_to_use),
 		 game->can_use_item);
+  setup_menuitem(inspect_menuitem,
+		 sigc::mem_fun(*this, 
+			       &GameWindow::on_inspect_activated),
+		 game->can_inspect);
+  setup_menuitem(levels_menuitem,
+		 sigc::mem_fun(*this, 
+			       &GameWindow::on_levels_activated),
+		 game->can_see_hero_levels);
   setup_menuitem(plant_standard_menuitem,
 		 sigc::mem_fun(*this, 
 			       &GameWindow::on_plant_standard_activated),

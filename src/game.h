@@ -116,6 +116,8 @@ class Game
 	can_park_selected_stack,
 	can_deselect_selected_stack,
 	can_search_selected_stack,
+	can_inspect,
+	can_see_hero_levels,
 	can_use_item,
 	can_plant_standard_selected_stack,
 	can_move_selected_stack_along_path,
