@@ -2094,7 +2094,6 @@ void Player::doHeroDropItem(Hero *h, Item *i, Vector<int> pos, bool &splash)
     }
   else
     {
-      printf("dropped item %d at %d,%d\n", i->getId(), pos.x, pos.y);
       GameMap::getInstance()->getTile(pos)->getBackpack()->addToBackpack(i);
       h->getBackpack()->removeFromBackpack(i);
       splash = false;
