@@ -2776,7 +2776,7 @@ bool GameWindow::on_temple_searched(Hero *hero, Temple *temple, int blessCount)
   delete dialog;
 
   if (ask_quest == false)
-    response = Gtk::RESPONSE_ACCEPT;
+    response = Gtk::RESPONSE_CANCEL;
 
   if (response == Gtk::RESPONSE_ACCEPT)		// accepted a quest
     return true;
