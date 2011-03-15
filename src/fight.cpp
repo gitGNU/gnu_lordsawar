@@ -99,11 +99,12 @@ Fight::Fight(Stack* attacker, Stack* defender, FightType type)
     City *city = GameMap::getCity(defender->getPos());
     //Vector<int> p = defender->getPos();
 
-    if (city && city->isBurnt() == false && type == Fight::FOR_KEEPS)
+    if (city && city->isBurnt() == false && 
+        city->getOwner() == defender->getOwner())
       {
-        /* we say FOR_KEEPS here because:
-         * StackInfoDialog does a fight for kicks on the tile of the selected 
-         * stack, which could be in a city.
+        /* we check the owner here because:
+         * StackInfoDialog does a fight for kicks with a neutral scout, 
+         * on the tile of the selected stack, which could be in a city.
          */
         std::vector<Stack*> stacks = city->getDefenders();
         for (std::vector<Stack*>::iterator it = stacks.begin(); 
