@@ -1221,6 +1221,13 @@ Generally it is best to maximize the total number of strength points in the stac
 <para>
 It generally makes sense to have army units that have city fighting bonuses to reside in cities.  The trade-off here is that these armies are unsuited to traveling overland to attack remote cities; the player also needs to create units that are offensively suited.  The player can only afford so many army units at any given time.
 </para>
+<para>
+When a battle happens, each army unit is given exactly two hitpoints.  The fight is depicted as a series of skirmishes between army units.  These skirmishes between individual army units continue until one side has no army units left.
+</para>
+<para>
+Each skirmish has an attacker and a defender.  The attacker and defender make simultaneous swings at each other, by rolling a 24 sided die.  Each army unit is trying to roll a value this is larger than their opponent's augmented strength.  An army units augmented strength is a value that is the army unit's strength combined with any other army bonuses that affect the army unit.  If they both succeed, then nothing happens, and they both take another swing at each other.
+If one army unit succeeds and the other does not, then the other army unit has been hit, and loses a single hitpoint.  The "Intense Combat" game option determines whether the 20 or 24 sided die is used.
+</para>
 </sect2>
 <sect2 id="lordsawar-combat-example-in-field">
 	<title>Example of combat in the field</title> 
@@ -1597,7 +1604,7 @@ The player may never raze cities (not even in the city screen).
 <listitem>
 <para>Intense Combat</para>
 <para>
-Use a slightly different calculation for battles that makes gaps in strength less evident.
+Use a slightly different calculation for battles that makes gaps in strength less evident.  A 20-sided die is used for fights instead of a 24-sided die.
 </para>
 </listitem>
 <listitem>
