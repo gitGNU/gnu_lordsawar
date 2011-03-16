@@ -71,6 +71,7 @@ EXTRA_DIST = \
     bag.png \
     hero-inactive.png \
     prodshieldset.png \
+    prodshieldset-medium.png \
     smallruinedcity.png \
     movebonus.png \
     smallunexploredruin.png \
