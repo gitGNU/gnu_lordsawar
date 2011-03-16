@@ -5,8 +5,10 @@ MAINTAINERCLEANFILES= Makefile.in
 variousdir = $(datadir)/lordsawar/various
 various_DATA = \
     arrows.png \
+    arrows-medium.png \
     waypoints.png \
     buttons.png \
+    buttons-medium.png \
     city_occupied.png \
     medals_mask.png \
     bigmedals.png \
@@ -22,6 +24,7 @@ various_DATA = \
     bag.png \
     hero-inactive.png \
     prodshieldset.png \
+    prodshieldset-medium.png \
     smallruinedcity.png \
     movebonus.png \
     smallunexploredruin.png \
@@ -49,8 +52,10 @@ various_DATA = \
 EXTRA_DIST = \
     README \
     arrows.png \
+    arrows-medium.png \
     waypoints.png \
     buttons.png \
+    buttons-medium.png \
     city_occupied.png \
     medals_mask.png \
     bigmedals.png \

@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -82,6 +82,9 @@ class RecentlyEditedFileList: public std::list<RecentlyEditedFile*>, public sigc
 
         //! Explicitly delete the singleton instance of this class.
         static void deleteInstance();
+
+        //! Get rid of an old recently edited file list file.
+        static bool removeOldVersionsOfFile();
 
     protected:
         //! Default Constructor.

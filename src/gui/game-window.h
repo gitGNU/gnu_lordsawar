@@ -43,6 +43,7 @@
 #include "GameScenario.h"
 
 class Game;
+class GameButtonBox;
 class Ruin;
 class Fight;
 class Hero;
@@ -177,24 +178,7 @@ class GameWindow: public Decorated
     Gtk::Image *shield_image[MAX_PLAYERS];
     
     // the button control panel
-    Gtk::Button *next_movable_button;
-    Gtk::Button *center_button;
-    Gtk::Button *diplomacy_button;
-    Gtk::Button *defend_button;
-    Gtk::Button *park_button;
-    Gtk::Button *deselect_button;
-    Gtk::Button *search_button;
-    Gtk::Button *move_button;
-    Gtk::Button *move_all_button;
-    Gtk::Button *end_turn_button;
-    Gtk::Button *nw_keypad_button;
-    Gtk::Button *n_keypad_button;
-    Gtk::Button *ne_keypad_button;
-    Gtk::Button *e_keypad_button;
-    Gtk::Button *w_keypad_button;
-    Gtk::Button *sw_keypad_button;
-    Gtk::Button *s_keypad_button;
-    Gtk::Button *se_keypad_button;
+    Gtk::Viewport *control_panel_viewport;
 
     Stack *currently_selected_stack;
     ArmyInfoTip* army_info_tip;
@@ -211,6 +195,7 @@ class GameWindow: public Decorated
     std::string current_save_filename;
 
     Game* game;
+    GameButtonBox *game_button_box;
     
     bool sdl_inited;
 
@@ -346,9 +331,7 @@ class GameWindow: public Decorated
     void show_map_tip(Glib::ustring msg, MapTipPosition pos);
     void on_city_looted(City *city, int gold);
     void hide_map_tip();
-    void change_diplomacy_button_image (bool proposals_present);
     void show_city_production_report (bool destitute);
-    void update_diplomacy_button (bool sensitive);
 
     bool setup_game(GameScenario *game_scenario, NextTurn *nextTurn);
     void setup_signals(GameScenario *game_scenario);
@@ -356,13 +339,13 @@ class GameWindow: public Decorated
     std::list<sigc::connection> connections;
     
     void setup_menuitem(Gtk::MenuItem*, sigc::slot<void> , sigc::signal<void, bool> &);
-    void setup_button(Gtk::Button *, sigc::slot<void> slot, sigc::signal<void, bool> &);
     void on_bigmap_surface_changed(Gtk::Allocation box);
     bool on_bigmap_exposed(GdkEventExpose *event);
     bool on_smallmap_exposed(GdkEventExpose *event);
 
     Player *game_winner;
     void give_some_cheese(Player *game_winner);
+    void on_ui_form_factor_changed(guint32 factor);
 
 public:
     bool d_quick_fights; //do we speed up fights for this player's turn?

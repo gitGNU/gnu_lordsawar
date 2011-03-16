@@ -43,6 +43,10 @@ MainPreferencesDialog::MainPreferencesDialog()
     xml->get_widget("show_turn_popup_checkbutton", show_turn_popup_checkbutton);
     xml->get_widget("commentator_checkbutton", commentator_checkbutton);
     xml->get_widget("show_decorated_windows_checkbutton", show_decorated_windows_checkbutton);
+    xml->get_widget("ui_combobox", ui_combobox);
+    ui_combobox->signal_changed().connect(
+	sigc::mem_fun(this, &MainPreferencesDialog::on_ui_form_factor_changed));
+
     xml->get_widget("play_music_checkbutton", play_music_checkbutton);
     xml->get_widget("music_volume_scale", music_volume_scale);
     xml->get_widget("music_volume_hbox", music_volume_hbox);
@@ -63,6 +67,7 @@ MainPreferencesDialog::MainPreferencesDialog()
     play_music_checkbutton->set_active(Configuration::s_musicenable);
     music_volume_hbox->set_sensitive(Configuration::s_musicenable);
     music_volume_scale->set_value(Configuration::s_musicvolume * 100.0 / 128);
+    ui_combobox->set_active(Configuration::s_ui_form_factor);
     
 }
 
@@ -134,3 +139,8 @@ void MainPreferencesDialog::on_show_commentator_toggled()
   Configuration::s_displayCommentator = commentator_checkbutton->get_active();
 }
 
+void MainPreferencesDialog::on_ui_form_factor_changed()
+{
+  Configuration::s_ui_form_factor = 
+    Configuration::UiFormFactor (ui_combobox->get_active_row_number());
+}

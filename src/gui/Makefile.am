@@ -74,7 +74,8 @@ liblwgui_la_SOURCES = \
     decorated.cpp decorated.h \
     new-random-map-dialog.cpp new-random-map-dialog.h \
     use-item-dialog.cpp use-item-dialog.h \
-    use-item-on-player-dialog.cpp use-item-on-player-dialog.h
+    use-item-on-player-dialog.cpp use-item-on-player-dialog.h \
+    game-button-box.cpp game-button-box.h
 
 liblwgui_la_LIBADD = @LTLIBOBJS@
 

@@ -25,6 +25,7 @@
 #include "GameMap.h"
 #include "LocationBox.h"
 #include "shieldsetlist.h"
+#include "Configuration.h"
 
 VectorMap::VectorMap(City *c, enum ShowVectoring v, bool see_opponents_production)
 {
@@ -50,6 +51,17 @@ void VectorMap::draw_planted_standard(Vector<int> flag)
 
 void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
 {
+  int csize = 0;
+  switch (Configuration::UiFormFactor(Configuration::s_ui_form_factor))
+    {
+    case Configuration::UI_FORM_FACTOR_DESKTOP:
+    case Configuration::UI_FORM_FACTOR_NETBOOK:
+      break;
+    case Configuration::UI_FORM_FACTOR_LARGE_SCREEN:
+      csize = 1;
+      break;
+    }
+
   if (c->isVisible(Playerlist::getViewingplayer()) == false)
     return;
   GraphicsCache *gc = GraphicsCache::getInstance();
@@ -63,10 +75,10 @@ void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
       if (Playerlist::getInstance()->getViewingplayer() != c->getOwner())
 	{
 	  guint32 s = GameMap::getInstance()->getShieldsetId();
-	  tmp = gc->getShieldPic (s, 0, c->getOwner()->getId());
+	  tmp = gc->getShieldPic (s, csize, c->getOwner()->getId());
 	}
       else
-	tmp = gc->getProdShieldPic (type, prod);
+	tmp = gc->getProdShieldPic (csize, type, prod);
     }
 
   Vector<int> start;

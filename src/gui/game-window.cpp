@@ -69,6 +69,7 @@
 #include "item-report-dialog.h"
 #include "use-item-dialog.h"
 #include "use-item-on-player-dialog.h"
+#include "game-button-box.h"
 
 #include "ucompose.hpp"
 #include "defs.h"
@@ -123,7 +124,6 @@
 
 GameWindow::GameWindow()
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
   stack_info_button_table = NULL;
   game_winner = NULL;
   stack_info_tip = NULL;
@@ -132,6 +132,7 @@ GameWindow::GameWindow()
   map_tip = NULL;
   stack_tip = NULL;
   game = NULL;
+  game_button_box = NULL;
     sdl_inited = false;
     
     Glib::RefPtr<Gtk::Builder> xml
@@ -210,8 +211,11 @@ GameWindow::GameWindow()
     Gtk::Viewport *mvp;
     xml->get_widget("map_viewport", mvp);
     decorate_border(mvp, 175);
-    xml->get_widget("control_panel_viewport", vp);
-    decorate_border(vp, 175);
+    xml->get_widget("control_panel_viewport", control_panel_viewport);
+    decorate_border(control_panel_viewport, 175);
+    game_button_box = GameButtonBox::create(Configuration::s_ui_form_factor);
+    game_button_box->reparent(*control_panel_viewport);
+    control_panel_viewport->add(*manage(game_button_box));
 
     // the stats
     xml->get_widget("cities_stats_image", cities_stats_image);
@@ -237,101 +241,6 @@ GameWindow::GameWindow()
     xml->get_widget("shield_image_5", shield_image[5]);
     xml->get_widget("shield_image_6", shield_image[6]);
     xml->get_widget("shield_image_7", shield_image[7]);
-
-    // the control panel
-    xml->get_widget("next_movable_button", next_movable_button);
-    xml->get_widget("center_button", center_button);
-    xml->get_widget("diplomacy_button", diplomacy_button);
-    xml->get_widget("defend_button", defend_button);
-    xml->get_widget("park_button", park_button);
-    xml->get_widget("deselect_button", deselect_button);
-    xml->get_widget("search_button", search_button);
-    xml->get_widget("move_button", move_button);
-    xml->get_widget("move_all_button", move_all_button);
-    xml->get_widget("end_turn_button", end_turn_button);
-    xml->get_widget("nw_keypad_button", nw_keypad_button);
-    xml->get_widget("n_keypad_button", n_keypad_button);
-    xml->get_widget("ne_keypad_button", ne_keypad_button);
-    xml->get_widget("e_keypad_button", e_keypad_button);
-    xml->get_widget("w_keypad_button", w_keypad_button);
-    xml->get_widget("sw_keypad_button", sw_keypad_button);
-    xml->get_widget("s_keypad_button", s_keypad_button);
-    xml->get_widget("se_keypad_button", se_keypad_button);
-
-    // fill in imagery
-    Gtk::Image *button_image2 = new Gtk::Image();
-    button_image2->property_pixbuf() = 
-      gc->getGameButtonPic(GraphicsCache::NEXT_MOVABLE_STACK)->to_pixbuf();
-    next_movable_button->add(*manage(button_image2));
-    Gtk::Image *button_image5 = new Gtk::Image();
-    button_image5->property_pixbuf() = 
-      gc->getGameButtonPic(GraphicsCache::CENTER_ON_STACK)->to_pixbuf();
-    center_button->add(*manage(button_image5));
-    Gtk::Image *button_image0 = new Gtk::Image();
-    button_image0->property_pixbuf() = 
-      gc->getGameButtonPic(GraphicsCache::DIPLOMACY_NO_PROPOSALS)->to_pixbuf();
-    diplomacy_button->add(*manage(button_image0));
-    Gtk::Image *button_image6 = new Gtk::Image();
-    button_image6->property_pixbuf() = 
-      gc->getGameButtonPic(GraphicsCache::STACK_DEFEND)->to_pixbuf();
-    defend_button->add(*manage(button_image6));
-    Gtk::Image * button_image1 = new Gtk::Image();
-    button_image1->property_pixbuf() = 
-      gc->getGameButtonPic(GraphicsCache::STACK_PARK)->to_pixbuf();
-    park_button->add(*manage(button_image1));
-    Gtk::Image * button_image7 = new Gtk::Image();
-    button_image7->property_pixbuf() = 
-      gc->getGameButtonPic(GraphicsCache::STACK_DESELECT)->to_pixbuf();
-    deselect_button->add(*manage(button_image7));
-    Gtk::Image * button_image9 = new Gtk::Image();
-    button_image9->property_pixbuf() = 
-      gc->getGameButtonPic(GraphicsCache::STACK_SEARCH)->to_pixbuf();
-    search_button->add(*manage(button_image9));
-    Gtk::Image * button_image3 = new Gtk::Image();
-    button_image3->property_pixbuf() = 
-      gc->getGameButtonPic(GraphicsCache::STACK_MOVE)->to_pixbuf();
-    move_button->add(*manage(button_image3));
-    Gtk::Image * button_image4 = new Gtk::Image();
-    button_image4->property_pixbuf() = 
-      gc->getGameButtonPic(GraphicsCache::MOVE_ALL_STACKS)->to_pixbuf();
-    move_all_button->add(*manage(button_image4));
-    Gtk::Image * button_image10 = new Gtk::Image();
-    button_image10->property_pixbuf() = 
-      gc->getGameButtonPic(GraphicsCache::END_TURN)->to_pixbuf();
-    end_turn_button->add(*manage(button_image10));
-    
-    Gtk::Image * arrow_image0 = new Gtk::Image();
-    arrow_image0->property_pixbuf() = 
-      gc->getArrowPic(GraphicsCache::NORTHWEST)->to_pixbuf();
-    nw_keypad_button->add(*manage(arrow_image0));
-    Gtk::Image * arrow_image1 = new Gtk::Image();
-    arrow_image1->property_pixbuf() = 
-      gc->getArrowPic(GraphicsCache::NORTH)->to_pixbuf();
-    n_keypad_button->add(*manage(arrow_image1));
-    Gtk::Image * arrow_image2 = new Gtk::Image();
-    arrow_image2->property_pixbuf() = 
-      gc->getArrowPic(GraphicsCache::NORTHEAST)->to_pixbuf();
-    ne_keypad_button->add(*manage(arrow_image2));
-    Gtk::Image * arrow_image3 = new Gtk::Image();
-    arrow_image3->property_pixbuf() = 
-      gc->getArrowPic(GraphicsCache::EAST)->to_pixbuf();
-    e_keypad_button->add(*manage(arrow_image3));
-    Gtk::Image * arrow_image4 = new Gtk::Image();
-    arrow_image4->property_pixbuf() = 
-      gc->getArrowPic(GraphicsCache::WEST)->to_pixbuf();
-    w_keypad_button->add(*manage(arrow_image4));
-    Gtk::Image * arrow_image5 = new Gtk::Image();
-    arrow_image5->property_pixbuf() = 
-      gc->getArrowPic(GraphicsCache::SOUTHWEST)->to_pixbuf();
-    sw_keypad_button->add(*manage(arrow_image5));
-    Gtk::Image * arrow_image6 = new Gtk::Image();
-    arrow_image6->property_pixbuf() = 
-      gc->getArrowPic(GraphicsCache::SOUTH)->to_pixbuf();
-    s_keypad_button->add(*manage(arrow_image6));
-    Gtk::Image * arrow_image7 = new Gtk::Image();
-    arrow_image7->property_pixbuf() = 
-      gc->getArrowPic(GraphicsCache::SOUTHEAST)->to_pixbuf();
-    se_keypad_button->add(*manage(arrow_image7));
 
     // connect callbacks for the menu
     xml->get_widget("new_game_menuitem", new_game_menuitem);
@@ -491,6 +400,11 @@ GameWindow::~GameWindow()
 	delete game;
 	game = NULL;
       }
+    if (game_button_box)
+      {
+        delete game_button_box;
+        game_button_box = NULL;
+      }
   if (stack_info_button_table != NULL)
     delete stack_info_button_table;
   delete window;
@@ -498,24 +412,11 @@ GameWindow::~GameWindow()
 
 void GameWindow::show()
 {
-    next_movable_button->show_all();
-    center_button->show_all();
-    diplomacy_button->show_all();
-    defend_button->show_all();
-    park_button->show_all();
-    deselect_button->show_all();
-    search_button->show_all();
-    move_button->show_all();
-    move_all_button->show_all();
-    end_turn_button->show_all();
-    nw_keypad_button->show_all();
-    n_keypad_button->show_all();
-    ne_keypad_button->show_all();
-    e_keypad_button->show_all();
-    w_keypad_button->show_all();
-    sw_keypad_button->show_all();
-    s_keypad_button->show_all();
-    se_keypad_button->show_all();
+  if (game_button_box)
+    {
+      control_panel_viewport->show_all();
+      game_button_box->show_all();
+    }
     
     bigmap_drawingarea->show_all();
     window->show();
@@ -587,15 +488,6 @@ void GameWindow::load_game(GameScenario *game_scenario, NextTurn *next_turn)
     game->redraw();
 }
 
-void GameWindow::setup_button(Gtk::Button *button,
-			      sigc::slot<void> slot,
-			      sigc::signal<void, bool> &game_signal)
-{
-  connections.push_back (button->signal_clicked().connect(slot));
-  connections.push_back 
-    (game_signal.connect(sigc::mem_fun(button, &Gtk::Widget::set_sensitive)));
-}
-
 void GameWindow::setup_menuitem(Gtk::MenuItem *item,
 				sigc::slot<void> slot,
 				sigc::signal<void, bool> &game_signal)
@@ -613,77 +505,15 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
     (*it).disconnect();
   connections.clear();
 
-  setup_button(next_movable_button,
-	       sigc::mem_fun(game, &Game::select_next_movable_stack),
-	       game->can_select_next_movable_stack);
-  setup_button(center_button,
-	       sigc::mem_fun(game, &Game::center_selected_stack),
-	       game->can_center_selected_stack);
-	       
-  connections.push_back (diplomacy_button->signal_clicked().connect
+  connections.push_back (game_button_box->diplomacy_clicked.connect
    (sigc::mem_fun (*this, &GameWindow::on_diplomacy_button_clicked)));
-  connections.push_back 
-    (game->received_diplomatic_proposal.connect 
-     (sigc::mem_fun(*this, &GameWindow::change_diplomacy_button_image)));
   connections.push_back 
     (game->city_too_poor_to_produce.connect 
      (sigc::mem_fun(*this, &GameWindow::show_city_production_report)));
   connections.push_back
     (game->commentator_comments.connect
      (sigc::mem_fun(*this, &GameWindow::on_commentator_comments)));
-  connections.push_back 
-    (game->can_end_turn.connect 
-     (sigc::mem_fun(*this, &GameWindow::update_diplomacy_button)));
 
-  setup_button(defend_button,
-	       sigc::mem_fun(game, &Game::defend_selected_stack),
-	       game->can_defend_selected_stack);
-  setup_button(park_button,
-	       sigc::mem_fun(game, &Game::park_selected_stack),
-	       game->can_park_selected_stack);
-  setup_button(deselect_button,
-	       sigc::mem_fun(game, &Game::deselect_selected_stack),
-	       game->can_deselect_selected_stack);
-  setup_button(search_button,
-	       sigc::mem_fun(game, &Game::search_selected_stack),
-	       game->can_search_selected_stack);
-  setup_button(move_button,
-	       sigc::mem_fun(game, &Game::move_selected_stack_along_path),
-	       game->can_move_selected_stack_along_path);
-  setup_button(move_all_button,
-	       sigc::mem_fun(game, &Game::move_all_stacks),
-	       game->can_move_all_stacks);
-  setup_button(end_turn_button,
-	       sigc::mem_fun(game, &Game::end_turn),
-	       game->can_end_turn);
-  if (game_scenario->getPlayMode() ==  GameScenario::PLAY_BY_MAIL)
-    setup_button(end_turn_button,
-		 sigc::mem_fun(*this, &GameWindow::end_turn_play_by_mail),
-		 game->can_end_turn);
-  setup_button(nw_keypad_button,
-	       sigc::mem_fun(game, &Game::move_selected_stack_northwest),
-	       game->can_end_turn);
-  setup_button(n_keypad_button,
-	       sigc::mem_fun(game, &Game::move_selected_stack_north),
-	       game->can_end_turn);
-  setup_button(ne_keypad_button,
-	       sigc::mem_fun(game, &Game::move_selected_stack_northeast),
-	       game->can_end_turn);
-  setup_button(e_keypad_button,
-	       sigc::mem_fun(game, &Game::move_selected_stack_east),
-	       game->can_end_turn);
-  setup_button(w_keypad_button,
-	       sigc::mem_fun(game, &Game::move_selected_stack_west),
-	       game->can_end_turn);
-  setup_button(sw_keypad_button,
-	       sigc::mem_fun(game, &Game::move_selected_stack_southwest),
-	       game->can_end_turn);
-  setup_button(s_keypad_button,
-	       sigc::mem_fun(game, &Game::move_selected_stack_south),
-	       game->can_end_turn);
-  setup_button(se_keypad_button,
-	       sigc::mem_fun(game, &Game::move_selected_stack_southeast),
-	       game->can_end_turn);
   setup_menuitem(move_all_menuitem,
 		 sigc::mem_fun(game, &Game::move_all_stacks),
 		 game->can_move_all_stacks);
@@ -932,26 +762,6 @@ void GameWindow::show_city_production_report (bool destitute)
   d.hide();
 }
 
-void GameWindow::change_diplomacy_button_image (bool proposals_present)
-{
-  GraphicsCache *gc = GraphicsCache::getInstance();
-  /* switch up the image. */
-  if (proposals_present)
-    {
-      Gtk::Image *proposals_present_image = new Gtk::Image();
-      proposals_present_image->property_pixbuf() = 
-        gc->getGameButtonPic(GraphicsCache::DIPLOMACY_NEW_PROPOSALS)->to_pixbuf();
-      diplomacy_button->property_image() = proposals_present_image;
-    }
-  else
-    {
-      Gtk::Image *proposals_not_present_image = new Gtk::Image();
-      proposals_not_present_image->property_pixbuf() = 
-        gc->getGameButtonPic(GraphicsCache::DIPLOMACY_NO_PROPOSALS)->to_pixbuf();
-      diplomacy_button->property_image() = proposals_not_present_image;
-    }
-}
-
 void GameWindow::end_turn_play_by_mail ()
 {
   //prompt to save the turn file!
@@ -983,21 +793,6 @@ void GameWindow::end_turn_play_by_mail ()
   game_ended.emit();
 }
 
-void GameWindow::update_diplomacy_button (bool sensitive)
-{
-  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
-    {
-      diplomacy_button->set_sensitive (false);
-      return;
-    }
-  if (GameScenario::s_diplomacy == false)
-    {
-      diplomacy_button->set_sensitive (false);
-      return;
-    }
-  diplomacy_button->set_sensitive(sensitive);
-}
-
 bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
 {
   currently_selected_stack = NULL;
@@ -1009,6 +804,7 @@ bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
     delete game;
   game = new Game(game_scenario, nextTurn);
 
+  game_button_box->setup_signals(game, Configuration::s_ui_form_factor);
   show_shield_turn();
   return true;
 }
@@ -1610,12 +1406,29 @@ void GameWindow::on_preferences_activated()
   if (game->getScenario()->getPlayMode() == GameScenario::NETWORKED)
     readonly = true;
   PreferencesDialog d(readonly);
+  d.ui_form_factor_changed.connect(sigc::mem_fun(this, &GameWindow::on_ui_form_factor_changed));
   d.set_parent_window(*window);
   d.run(game);
   d.hide();
   game->get_bigmap().set_control_key_down (false);
   if (current != Playerlist::getInstance()->getActiveplayer())
     game->end_turn();
+}
+
+void GameWindow::on_ui_form_factor_changed(guint32 factor)
+{
+  if (game_button_box)
+    {
+      delete game_button_box;
+      control_panel_viewport->remove();
+    }
+  game_button_box = GameButtonBox::create(Configuration::s_ui_form_factor);
+  game_button_box->reparent(*control_panel_viewport);
+  control_panel_viewport->add(*manage(game_button_box));
+  game_button_box->setup_signals(game, Configuration::s_ui_form_factor);
+  game_button_box->show_all();
+    game->get_smallmap().resize();
+  game->redraw();
 }
 
 void GameWindow::on_group_ungroup_activated()
@@ -1952,7 +1765,7 @@ void GameWindow::on_message_requested(std::string msg)
 
 void GameWindow::on_stack_toggled(Gtk::RadioButton *radio, Stack *stack)
 {
-  if (end_turn_button->property_sensitive() == false)
+  if (game_button_box->get_end_turn_button_sensitive() == false)
     return;
   if (radio->get_active() == true)
     {
@@ -1967,7 +1780,7 @@ void GameWindow::on_stack_toggled(Gtk::RadioButton *radio, Stack *stack)
 
 void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Stack *stack, Army *army)
 {
-  if (end_turn_button->property_sensitive() == false)
+  if (game_button_box->get_end_turn_button_sensitive() == false)
     return;
   Player *p = Playerlist::getActiveplayer();
   Stack *s = p->getActivestack();
@@ -3818,7 +3631,7 @@ void GameWindow::on_grid_toggled()
 void GameWindow::give_some_cheese(Player *winner)
 {
   game->endOfGameRoaming(winner);
-  end_turn_button->set_sensitive(false);
+  game_button_box->give_some_cheese();
   end_turn_menuitem->set_sensitive(false);
   save_game_menuitem->set_sensitive(false);
   save_game_as_menuitem->set_sensitive(false);
@@ -3835,7 +3648,7 @@ void GameWindow::on_commentator_comments(std::string comment)
   dialog.set_title(_("The Warlord Says..."));
     
   PixMask *img = 
-    gc->getGameButtonPic(GraphicsCache::DIPLOMACY_NO_PROPOSALS)->copy();
+    gc->getGameButtonPic(GraphicsCache::DIPLOMACY_NO_PROPOSALS, 1)->copy();
   PixMask::scale(img, 60, 60);
   dialog.set_image(img->to_pixbuf());
   dialog.run();

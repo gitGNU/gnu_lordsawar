@@ -404,6 +404,7 @@ class GraphicsCache
           * As with the other methods, use solely this method to get the 
           * shield images. And DON'T modify the images!
           *
+          * @param size 0 or 1.  0 is small, and 1 is medium sized.
           * @param type home/away/destination/source/invalid.  
 	  * one sees home/away
 	  * normally, but when "see all" is turned on, one sees source/dest.
@@ -413,15 +414,15 @@ class GraphicsCache
 	  * note that type=invalid,production=true is used to show the symbol
 	  * that means no more units can be vectored to this city.
           */
-        PixMask* getProdShieldPic(guint32 type, bool prod);
+        PixMask* getProdShieldPic(int size, guint32 type, bool prod);
 
         PixMask* getMedalPic(bool large, int type);
 
         //! get an image for one of the buttons on the main game window.
-        PixMask* getGameButtonPic(guint32 type);
+        PixMask* getGameButtonPic(guint32 type, int size);
 
         //! get an image for one of an arrow, for the main game window.
-        PixMask* getArrowPic(guint32 type);
+        PixMask* getArrowPic(guint32 type, int size);
 
         //! get an image for the background of a window or dialog.
         PixMask* getBackgroundPic(guint32 type);
@@ -535,7 +536,7 @@ class GraphicsCache
 					  const Player* p, guint32 tileset);
 
         //! Creates a new production shield picture with the given parameters.
-        ProdShieldCacheItem* addProdShieldPic(guint32 type, bool prod);
+        ProdShieldCacheItem* addProdShieldPic(int size, guint32 type, bool prod);
 
         //! Creates a new movement bonus picture with the given parameters.
         MoveBonusCacheItem* addMoveBonusPic(guint32 type);
@@ -720,7 +721,7 @@ class GraphicsCache
         PixMask* d_diplomacypic[2][DIPLOMACY_TYPES];
 
         PixMask* d_cursorpic[CURSOR_TYPES];
-        PixMask* d_prodshieldpic[PRODUCTION_SHIELD_TYPES];
+        PixMask* d_prodshieldpic[2][PRODUCTION_SHIELD_TYPES];
 	PixMask* d_smallruinedcity;
 	PixMask* d_smallhero;
 	PixMask* d_bag;
@@ -737,8 +738,8 @@ class GraphicsCache
 	PixMask *d_newlevelmask_female;
         PixMask *d_default_tilestyles[DEFAULT_TILESTYLE_TYPES];
         PixMask *d_waypoint[NUM_WAYPOINTS];
-        PixMask *d_gamebuttons[NUM_GAME_BUTTON_IMAGES];
-        PixMask *d_arrow[NUM_ARROW_IMAGES];
+        PixMask *d_gamebuttons[2][NUM_GAME_BUTTON_IMAGES];
+        PixMask *d_arrow[2][NUM_ARROW_IMAGES];
         PixMask *d_background[NUM_BACKGROUND_IMAGES];
 };
 

@@ -2,7 +2,7 @@
 //  Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 //  Copyright (C) 2004, 2005, 2006 Andrea Paternesi
 //  Copyright (C) 2005 Josef Spillner
-//  Copyright (C) 2006, 2007, 2008 Ben Asselstine
+//  Copyright (C) 2006, 2007, 2008, 2011 Ben Asselstine
 //  Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -81,6 +81,7 @@ std::string Configuration::s_gamelist_server_hostname = "lordsawar.com";
 guint32 Configuration::s_gamelist_server_port = LORDSAWAR_GAMELIST_PORT;
 std::string Configuration::s_gamehost_server_hostname = "lordsawar.com";
 guint32 Configuration::s_gamehost_server_port = LORDSAWAR_GAMEHOST_PORT;
+guint32 Configuration::s_ui_form_factor = Configuration::UI_FORM_FACTOR_DESKTOP;
 
 Configuration::Configuration()
 {
@@ -171,6 +172,9 @@ bool Configuration::saveConfigurationFile(string filename)
 			      s_gamehost_server_hostname);
     retval &= helper.saveData("gamehost_server_port", 
 			      s_gamehost_server_port);
+    std::string ui_str = 
+      uiFormFactorToString(Configuration::UiFormFactor(s_ui_form_factor));
+    retval &= helper.saveData("ui_form_factor", ui_str);
     retval &= helper.closeTag();
     
     if (!retval)
@@ -301,6 +305,9 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     helper->getData(s_gamelist_server_port, "gamelist_server_port");
     helper->getData(s_gamehost_server_hostname, "gamehost_server_hostname");
     helper->getData(s_gamehost_server_port, "gamehost_server_port");
+    std::string ui_str;
+    helper->getData(ui_str, "ui_form_factor");
+    s_ui_form_factor = uiFormFactorFromString(ui_str);
     return true;
 }
 
@@ -534,5 +541,36 @@ GameParameters::QuestPolicy Configuration::questPolicyFromString(std::string str
     return GameParameters::ONE_QUEST_PER_HERO;
     
   return GameParameters::NO_QUESTING;
+}
+
+std::string Configuration::uiFormFactorToString(const Configuration::UiFormFactor factor)
+{
+  switch (factor)
+    {
+    case Configuration::UI_FORM_FACTOR_DESKTOP:
+      return "Configuration::UI_FORM_FACTOR_DESKTOP";
+      break;
+    case Configuration::UI_FORM_FACTOR_NETBOOK:
+      return "Configuration::UI_FORM_FACTOR_NETBOOK";
+      break;
+    case Configuration::UI_FORM_FACTOR_LARGE_SCREEN:
+      return "Configuration::UI_FORM_FACTOR_LARGE_SCREEN";
+      break;
+    }
+  return "Configuration::UI_FORM_FACTOR_DESKTOP";
+}
+
+Configuration::UiFormFactor Configuration::uiFormFactorFromString(std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return Configuration::UiFormFactor(atoi(str.c_str()));
+  if (str == "Configuration::UI_FORM_FACTOR_DESKTOP")
+    return Configuration::UI_FORM_FACTOR_DESKTOP;
+  else if (str == "Configuration::UI_FORM_FACTOR_NETBOOK")
+    return Configuration::UI_FORM_FACTOR_NETBOOK;
+  else if (str == "Configuration::UI_FORM_FACTOR_LARGE_SCREEN")
+    return Configuration::UI_FORM_FACTOR_LARGE_SCREEN;
+    
+  return Configuration::UI_FORM_FACTOR_DESKTOP;
 }
 

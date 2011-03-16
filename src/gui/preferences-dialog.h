@@ -42,10 +42,13 @@ class PreferencesDialog: public Decorated
     void run(Game *game);
     void hide();
 
+    sigc::signal<void, guint32> ui_form_factor_changed;
+
  private:
     Gtk::Dialog* dialog;
     Gtk::CheckButton *commentator_checkbutton;
     Gtk::Scale *speed_scale;
+    Gtk::ComboBox *ui_combobox;
     Gtk::CheckButton *play_music_checkbutton;
     Gtk::Scale *music_volume_scale;
     Gtk::Box *music_volume_hbox;
@@ -58,6 +61,7 @@ class PreferencesDialog: public Decorated
     void on_speed_changed();
     void on_observe_toggled(Gtk::CheckButton *button);
     void on_type_changed(Gtk::ComboBoxText *combo);
+    void on_ui_form_factor_changed();
 
     typedef std::map<Player*, Gtk::ComboBoxText*> PlayerTypeMap;
     PlayerTypeMap player_types;

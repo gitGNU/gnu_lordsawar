@@ -3,7 +3,7 @@
 // Copyright (C) 2003, 2004, 2005, 2006 Andrea Paternesi
 // Copyright (C) 2004 David Sterba
 // Copyright (C) 2005 Bryan Duff
-// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,16 +30,16 @@
 #include <string>
 #include <libintl.h>
 
-#define LORDSAWAR_SAVEGAME_VERSION "0.2.0"
-#define LORDSAWAR_TILESET_VERSION "0.2.0"
-#define LORDSAWAR_ARMYSET_VERSION "0.2.0"
-#define LORDSAWAR_CITYSET_VERSION "0.2.0"
-#define LORDSAWAR_SHIELDSET_VERSION "0.2.0"
-#define LORDSAWAR_CONFIG_VERSION "0.2.0"
-#define LORDSAWAR_RECENTLY_PLAYED_VERSION "0.2.0"
-#define LORDSAWAR_RECENTLY_EDITED_VERSION "0.2.0"
-#define LORDSAWAR_PROFILES_VERSION "0.2.0"
-#define LORDSAWAR_RECENTLY_HOSTED_VERSION "0.2.0"
+#define LORDSAWAR_SAVEGAME_VERSION "0.2.1"
+#define LORDSAWAR_TILESET_VERSION "0.2.1"
+#define LORDSAWAR_ARMYSET_VERSION "0.2.1"
+#define LORDSAWAR_CITYSET_VERSION "0.2.1"
+#define LORDSAWAR_SHIELDSET_VERSION "0.2.1"
+#define LORDSAWAR_CONFIG_VERSION "0.2.1"
+#define LORDSAWAR_RECENTLY_PLAYED_VERSION "0.2.1"
+#define LORDSAWAR_RECENTLY_EDITED_VERSION "0.2.1"
+#define LORDSAWAR_PROFILES_VERSION "0.2.1"
+#define LORDSAWAR_RECENTLY_HOSTED_VERSION "0.2.1"
 #define _(string) Glib::locale_to_utf8(Glib::ustring(gettext(string))) // Macro for the gettext
 #define N_(string) string
 
@@ -79,8 +79,10 @@ const unsigned int MAP_SIZE_SMALL_HEIGHT = 105;
 const unsigned int MAP_SIZE_NORMAL_WIDTH = 112;
 const unsigned int MAP_SIZE_NORMAL_HEIGHT = 156;
 
-const unsigned int PRODUCTION_SHIELD_WIDTH = 10;
-const unsigned int PRODUCTION_SHIELD_HEIGHT = 10;
+const unsigned int SMALL_PRODUCTION_SHIELD_WIDTH = 10;
+const unsigned int SMALL_PRODUCTION_SHIELD_HEIGHT = 10;
+const unsigned int MEDIUM_PRODUCTION_SHIELD_WIDTH = 11;
+const unsigned int MEDIUM_PRODUCTION_SHIELD_HEIGHT = 14;
 const unsigned int PRODUCTION_SHIELD_TYPES = 8;
 const unsigned int MOVE_BONUS_WIDTH = 32;
 const unsigned int MOVE_BONUS_HEIGHT = 20;

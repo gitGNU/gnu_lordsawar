@@ -37,6 +37,7 @@
 #include "FogMap.h"
 #include "GameScenarioOptions.h"
 #include "tilesetlist.h"
+#include "Configuration.h"
 
 OverviewMap::OverviewMap()
 {
@@ -308,14 +309,25 @@ void OverviewMap::draw_terrain_tile(Maptile *t, int i, int j)
 
 int OverviewMap::calculatePixelsPerTile(int width, int height)
 {
+  int pixels = 2;
   if (width <= (int)MAP_SIZE_TINY_WIDTH && 
       height <= (int)MAP_SIZE_TINY_HEIGHT)
-    return 4;
+    pixels = 4;
   else if (width <= (int)MAP_SIZE_SMALL_WIDTH && 
 	   height <= (int)MAP_SIZE_SMALL_HEIGHT)
-    return 3;
+    pixels = 3;
   else
-    return 2;
+    pixels = 2;
+  switch (Configuration::UiFormFactor(Configuration::s_ui_form_factor))
+    {
+    case Configuration::UI_FORM_FACTOR_DESKTOP:
+    case Configuration::UI_FORM_FACTOR_NETBOOK:
+      break;
+    case Configuration::UI_FORM_FACTOR_LARGE_SCREEN:
+      pixels++;
+      break;
+    }
+  return pixels;
 }
 
 int OverviewMap::calculatePixelsPerTile()
@@ -590,6 +602,16 @@ Vector<int> OverviewMap::mapToSurface(Vector<int> pos)
 
 void OverviewMap::draw_cities (bool all_razed)
 {
+  int csize = 0;
+  switch (Configuration::UiFormFactor(Configuration::s_ui_form_factor))
+    {
+    case Configuration::UI_FORM_FACTOR_DESKTOP:
+    case Configuration::UI_FORM_FACTOR_NETBOOK:
+      break;
+    case Configuration::UI_FORM_FACTOR_LARGE_SCREEN:
+      csize = 1;
+      break;
+    }
   GraphicsCache *gc = GraphicsCache::getInstance();
 
   // Draw all cities as shields over the city location, in the colors of
@@ -604,7 +626,7 @@ void OverviewMap::draw_cities (bool all_razed)
       if (c->isBurnt() == true || all_razed == true)
         tmp = gc->getSmallRuinedCityPic();
       else
-        tmp = gc->getShieldPic(0, c->getOwner());
+        tmp = gc->getShieldPic(csize, c->getOwner());
   
       Vector<int> pos = c->getPos();
       pos = mapToSurface(pos);

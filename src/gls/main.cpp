@@ -25,6 +25,8 @@
 #include <time.h>
 #include "Configuration.h"
 #include "File.h"
+#include "gamelist.h"
+#include "profilelist.h"
 
 #include "gamelist-server.h"
 #include "vector.h"
@@ -39,6 +41,9 @@ int main(int argc, char* argv[])
   srand(time(NULL));         // set the random seed
 
   initialize_configuration();
+  Gamelist::removeOldVersionsOfFile(File::getSavePath() + "/" + RECENTLY_ADVERTISED_LIST);
+  Profilelist::removeOldVersionsOfFile();
+
   Vector<int>::setMaximumWidth(1000);
 
   setlocale(LC_ALL, Configuration::s_lang.c_str());

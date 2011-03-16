@@ -101,6 +101,9 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
         //! Explicitly delete the singleton instance of this class.
         static void deleteInstance();
 
+        //! Get rid of an old file.
+        static bool removeOldVersionsOfFile(std::string filename);
+
     protected:
         //! Default Constructor.
         Gamelist();

@@ -200,6 +200,7 @@ struct ShieldCacheItem
 // the structure to store production shield images in
 struct ProdShieldCacheItem
 {
+    int size;
     guint32 type;
     bool prod;
     PixMask* surface;
@@ -319,7 +320,8 @@ GraphicsCache::~GraphicsCache()
 
     for (unsigned int i = 0; i < PRODUCTION_SHIELD_TYPES; i++)
     {
-        delete d_prodshieldpic[i];
+        delete d_prodshieldpic[0][i];
+        delete d_prodshieldpic[1][i];
     }
 
     for (unsigned int i = 0; i < MOVE_BONUS_TYPES; i++)
@@ -347,12 +349,14 @@ GraphicsCache::~GraphicsCache()
 
     for (unsigned int i = 0; i < NUM_GAME_BUTTON_IMAGES; i++)
       {
-        delete d_gamebuttons[i];
+        delete d_gamebuttons[0][i];
+        delete d_gamebuttons[1][i];
       }
 
     for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
       {
-        delete d_arrow[i];
+        delete d_arrow[0][i];
+        delete d_arrow[1][i];
       }
 
     for (unsigned int i = 0; i < NUM_BACKGROUND_IMAGES; i++)
@@ -366,15 +370,16 @@ PixMask* GraphicsCache::getBackgroundPic(guint32 type)
   return d_background[type];
 }
 
-PixMask* GraphicsCache::getArrowPic(guint32 type)
+PixMask* GraphicsCache::getGameButtonPic(guint32 type, int size)
 {
-  return d_arrow[type];
+  return d_gamebuttons[size][type];
 }
 
-PixMask* GraphicsCache::getGameButtonPic(guint32 type)
+PixMask* GraphicsCache::getArrowPic(guint32 type, int size)
 {
-  return d_gamebuttons[type];
+  return d_arrow[size][type];
 }
+
 
 PixMask* GraphicsCache::getSmallRuinedCityPic()
 {
@@ -1224,9 +1229,9 @@ PixMask* GraphicsCache::getSelectorPic(guint32 type, guint32 frame,
 }
 
 
-PixMask* GraphicsCache::getProdShieldPic(guint32 type, bool prod)
+PixMask* GraphicsCache::getProdShieldPic(int size, guint32 type, bool prod)
 {
-    debug("GraphicsCache::getProdShieldPic " <<type <<", " << ", prod " <<prod)
+    debug("GraphicsCache::getProdShieldPic " << size << ", " << type <<", " << ", prod " <<prod)
 
     std::list<ProdShieldCacheItem*>::iterator it;
     ProdShieldCacheItem* myitem;
@@ -1234,7 +1239,8 @@ PixMask* GraphicsCache::getProdShieldPic(guint32 type, bool prod)
     for (it = d_prodshieldlist.begin(); it != d_prodshieldlist.end(); it++)
     {
         myitem = *it;
-        if ((myitem->type == type) && (myitem->prod == prod))
+        if (myitem->size == size && myitem->type == type && 
+            myitem->prod == prod)
         {
             // put the item in last place (last touched)
             d_prodshieldlist.erase(it);
@@ -1245,7 +1251,7 @@ PixMask* GraphicsCache::getProdShieldPic(guint32 type, bool prod)
     }
 
     // no item found => create a new one
-    myitem = addProdShieldPic(type, prod);
+    myitem = addProdShieldPic(size, type, prod);
 
     return myitem->surface;
 }
@@ -2196,9 +2202,9 @@ SelectorCacheItem* GraphicsCache::addSelectorPic(guint32 type, guint32 frame, co
   return myitem;
 }
 
-ProdShieldCacheItem* GraphicsCache::addProdShieldPic(guint32 type, bool prod)
+ProdShieldCacheItem* GraphicsCache::addProdShieldPic(int size, guint32 type, bool prod)
 {
-  debug("GraphicsCache::addProdShieldPic, prod="<<prod<<", type="<<type)
+  debug("GraphicsCache::addProdShieldPic, size=" <<size << ", prod="<<prod<<", type="<<type)
 
     // type is 0 for home, 1 for away, 2 for destination, 3 for source,
     // 4 for invalid
@@ -2208,27 +2214,27 @@ ProdShieldCacheItem* GraphicsCache::addProdShieldPic(guint32 type, bool prod)
     {
     case 0: //home city
       if (prod) //production
-	mysurf = d_prodshieldpic[1]->copy();
+	mysurf = d_prodshieldpic[size][1]->copy();
       else //no production
-	mysurf = d_prodshieldpic[0]->copy();
+	mysurf = d_prodshieldpic[size][0]->copy();
       break;
     case 1: //away city
       if (prod) //production
-	mysurf = d_prodshieldpic[3]->copy();
+	mysurf = d_prodshieldpic[size][3]->copy();
       else //no production
-	mysurf = d_prodshieldpic[2]->copy();
+	mysurf = d_prodshieldpic[size][2]->copy();
       break;
     case 2: //destination city
       if (prod) //production
-	mysurf = d_prodshieldpic[5]->copy();
+	mysurf = d_prodshieldpic[size][5]->copy();
       else //no production
-	mysurf = d_prodshieldpic[4]->copy();
+	mysurf = d_prodshieldpic[size][4]->copy();
       break;
     case 3: //source city
-      mysurf = d_prodshieldpic[6]->copy();
+      mysurf = d_prodshieldpic[size][6]->copy();
       break;
     case 4: //invalid
-      mysurf = d_prodshieldpic[7]->copy();
+      mysurf = d_prodshieldpic[size][7]->copy();
       break;
     }
 
@@ -2236,6 +2242,7 @@ ProdShieldCacheItem* GraphicsCache::addProdShieldPic(guint32 type, bool prod)
   ProdShieldCacheItem* myitem = new ProdShieldCacheItem();
   myitem->prod = prod;
   myitem->type = type;
+  myitem->size = size;
   myitem->surface = mysurf;
 
   d_prodshieldlist.push_back(myitem);
@@ -2809,8 +2816,10 @@ bool GraphicsCache::loadProdShields()
 {
   bool broken = false;
   //load the production shieldset
-  int xsize = PRODUCTION_SHIELD_WIDTH;
-  int ysize = PRODUCTION_SHIELD_HEIGHT;
+  int smallxsize = SMALL_PRODUCTION_SHIELD_WIDTH;
+  int smallysize = SMALL_PRODUCTION_SHIELD_HEIGHT;
+  int mediumxsize = MEDIUM_PRODUCTION_SHIELD_WIDTH;
+  int mediumysize = MEDIUM_PRODUCTION_SHIELD_HEIGHT;
   std::vector<PixMask* > prodshieldpics;
   prodshieldpics = disassemble_row
     (File::getMiscFile("various/prodshieldset.png"), PRODUCTION_SHIELD_TYPES,
@@ -2819,9 +2828,22 @@ bool GraphicsCache::loadProdShields()
     return false;
   for (unsigned int i = 0; i < PRODUCTION_SHIELD_TYPES; i++)
     {
-      if (prodshieldpics[i]->get_width() != xsize)
-	PixMask::scale(prodshieldpics[i], xsize, ysize);
-      d_prodshieldpic[i] = prodshieldpics[i];
+      if (prodshieldpics[i]->get_width() != smallxsize)
+	PixMask::scale(prodshieldpics[i], smallxsize, smallysize);
+      d_prodshieldpic[0][i] = prodshieldpics[i];
+    }
+  prodshieldpics.clear();
+  prodshieldpics = disassemble_row
+    (File::getMiscFile("various/prodshieldset-medium.png"), 
+     PRODUCTION_SHIELD_TYPES,
+     broken);
+  if (broken)
+    return false;
+  for (unsigned int i = 0; i < PRODUCTION_SHIELD_TYPES; i++)
+    {
+      if (prodshieldpics[i]->get_width() != mediumxsize)
+	PixMask::scale(prodshieldpics[i], mediumxsize, mediumysize);
+      d_prodshieldpic[1][i] = prodshieldpics[i];
     }
   return true;
 }
@@ -2901,7 +2923,20 @@ bool GraphicsCache::loadGameButtonPics()
   for (std::vector<PixMask*>::iterator it = images.begin();
        it != images.end(); it++)
     {
-      d_gamebuttons[count] = *it;
+      d_gamebuttons[0][count] = *it;
+      count++;
+    }
+
+  images.clear();
+  images = disassemble_row(File::getMiscFile("various/buttons-medium.png"), 
+                           NUM_GAME_BUTTON_IMAGES, broken);
+  if (broken)
+    return false;
+  count = 0;
+  for (std::vector<PixMask*>::iterator it = images.begin();
+       it != images.end(); it++)
+    {
+      d_gamebuttons[1][count] = *it;
       count++;
     }
   return true;
@@ -2919,7 +2954,19 @@ bool GraphicsCache::loadArrowPics()
   for (std::vector<PixMask*>::iterator it = images.begin();
        it != images.end(); it++)
     {
-      d_arrow[count] = *it;
+      d_arrow[0][count] = *it;
+      count++;
+    }
+  images.clear();
+  images = disassemble_row(File::getMiscFile("various/arrows-medium.png"), 
+                           NUM_ARROW_IMAGES, broken);
+  if (broken)
+    return false;
+  count = 0;
+  for (std::vector<PixMask*>::iterator it = images.begin();
+       it != images.end(); it++)
+    {
+      d_arrow[1][count] = *it;
       count++;
     }
   return true;

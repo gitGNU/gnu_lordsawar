@@ -1,6 +1,7 @@
 // Copyright (C) 2002, 2003 Michael Bartl
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2004, 2005 Andrea Paternesi
+// Copyright (C) 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -246,5 +247,35 @@ class XML_Helper
         bool d_zip;
 };
 
+class VersionLoader 
+{
+public:
+    VersionLoader(std::string filename, std::string tag, std::string &version, bool &broken)
+      {
+        std::ifstream in(filename.c_str());
+        if (in)
+          {
+            d_tag = tag;
+            XML_Helper helper(filename.c_str(), std::ios::in, false);
+            helper.registerTag(tag, sigc::mem_fun(*this, &VersionLoader::load));
+            bool retval = helper.parse();
+            if (!retval)
+              broken = true;
+            version = d_version;
+          }
+      }
+    bool load(std::string tag, XML_Helper* helper)
+      {
+        if (tag == d_tag)
+          {
+            d_version = helper->getVersion();
+            return true;
+          }
+        return false;
+      }
+
+    std::string d_tag;
+    std::string d_version;
+};
 
 #endif //XML_HELPER_H

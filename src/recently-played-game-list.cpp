@@ -336,4 +336,20 @@ bool RecentlyPlayedGameList::save() const
 {
   return saveToFile(File::getSavePath() + "/" + RECENTLY_PLAYED_LIST);
 }
+
+bool RecentlyPlayedGameList::removeOldVersionsOfFile()
+{
+  bool removed = false;
+  bool broken = false;
+  std::string version = "";
+  std::string filename = File::getSavePath() + "/" + RECENTLY_PLAYED_LIST;
+  VersionLoader l(filename, d_tag, version, broken);
+  if (broken == false && version != "" && 
+      version != LORDSAWAR_RECENTLY_PLAYED_VERSION)
+    {
+      File::erase(filename);
+      removed = true;
+    }
+  return removed;
+}
 // End of file

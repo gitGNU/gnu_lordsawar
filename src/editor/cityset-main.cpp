@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -39,6 +39,7 @@ int main(int argc, char* argv[])
     srand(time(NULL));         // set the random seed
 
     initialize_configuration();
+    RecentlyEditedFileList::removeOldVersionsOfFile();
     Vector<int>::setMaximumWidth(1000);
 
     setlocale(LC_ALL, Configuration::s_lang.c_str());

@@ -1,4 +1,4 @@
-// Copyright (C) 2010 Ben Asselstine
+// Copyright (C) 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -365,5 +365,21 @@ std::list<RecentlyEditedFile*> RecentlyEditedFileList::getFilesWithExtension(std
         files.push_back(*it);
     }
   return files;
+}
+
+bool RecentlyEditedFileList::removeOldVersionsOfFile()
+{
+  bool removed = false;
+  bool broken = false;
+  std::string version = "";
+  std::string filename = File::getSavePath() + "/" + RECENTLY_EDITED_LIST;
+  VersionLoader l(filename, d_tag, version, broken);
+  if (broken == false && version != "" && 
+      version != LORDSAWAR_RECENTLY_EDITED_VERSION)
+    {
+      File::erase(filename);
+      removed = true;
+    }
+  return removed;
 }
 // End of file

@@ -93,6 +93,9 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
         //! Explicitly delete the singleton instance of this class.
         static void deleteInstance();
 
+        //! Get rid of an old recently played game list file.
+        static bool removeOldVersionsOfFile();
+
         //! Default Constructor.
         RecentlyPlayedGameList();
 
@@ -123,6 +126,7 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 
 	//! Save the recently played game list to the given file.
 	bool saveToFile(std::string filename) const;
+
 
         void remove_all();
 	// DATA

@@ -70,7 +70,10 @@ game-lobby-dialog.ui \
 pick-network-game-to-join-dialog.ui \
 new-random-map-dialog.ui \
 use-item-dialog.ui \
-use-item-on-player-dialog.ui
+use-item-on-player-dialog.ui \
+game-button-box-desktop.ui \
+game-button-box-netbook.ui \
+game-button-box-large-screen.ui
 
 EXTRA_DIST = $(glade_DATA) \
 README
