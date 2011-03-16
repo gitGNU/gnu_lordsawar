@@ -1,6 +1,11 @@
+2011-03-16  Ben Asselstine <benasselstine@hushmail.com>
+
+	* released version 0.2.0.
+
 2011-03-15  Ben Asselstine <benasselstine@hushmail.com>
 
 	* This ChangeLog is now deprecated in favour of svn commit messages.
+	Only releases will be shown here.
 
 2010-07-23  gettextize  <bug-gnu-gettext@gnu.org>
 
