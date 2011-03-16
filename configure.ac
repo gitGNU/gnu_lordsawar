@@ -68,6 +68,8 @@ if test $use_sound = yes; then
     dnl if test $CC = "gcc" || test $CXX = "g++"; then
     if test ${CC##*/} = "gcc" || test ${CXX##*/} = "g++" || test ${CXX##*/} = "c++"; then
 
+       if test $enable_sdltest = yes; then
+
        AC_TRY_RUN([
        #include <SDL/SDL_mixer.h>
        #include <stdio.h> 
@@ -82,6 +84,8 @@ if test $use_sound = yes; then
                          *** with ogg vorbis support]),[])
 
        AC_MSG_RESULT([Test SDL_Mixer Run OK.])
+
+       fi
 
     else AC_MSG_WARN([Skipping SDL_Mixer Run. We are cross-compiling for windows!])
     fi
