@@ -216,6 +216,7 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 
         static bool copy(std::string src, std::string dest);
 
+        static bool upgradeOldVersionsOfFile(std::string filename);
 
     private:
 

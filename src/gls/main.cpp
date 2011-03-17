@@ -41,8 +41,8 @@ int main(int argc, char* argv[])
   srand(time(NULL));         // set the random seed
 
   initialize_configuration();
-  Gamelist::removeOldVersionsOfFile(File::getSavePath() + "/" + RECENTLY_ADVERTISED_LIST);
-  Profilelist::removeOldVersionsOfFile();
+  Gamelist::upgradeOldVersionsOfFile(File::getSavePath() + "/" + RECENTLY_ADVERTISED_LIST);
+  Profilelist::upgradeOldVersionsOfFile();
 
   Vector<int>::setMaximumWidth(1000);
 

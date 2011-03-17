@@ -200,6 +200,8 @@ class Cityset : public sigc::trackable, public Set
         std::string getFileFromConfigurationFile(std::string file);
         bool replaceFileInConfigurationFile(std::string file, std::string new_file);
 
+        static bool upgradeOldVersionsOfFile(std::string filename);
+
         //! Load the cityset again.
         void reload(bool &broken);
         guint32 calculate_preferred_tile_size() const;

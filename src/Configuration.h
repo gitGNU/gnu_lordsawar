@@ -45,6 +45,9 @@ void initialize_configuration();
 class Configuration : public sigc::trackable
 {
     public:
+
+        static std::string d_tag;
+
         // CREATORS
         Configuration();
         ~Configuration();
@@ -147,6 +150,9 @@ class Configuration : public sigc::trackable
         static std::string quickStartPolicyToString(const GameParameters::QuickStartPolicy policy);
         static GameParameters::QuestPolicy questPolicyFromString(std::string str);
         static std::string questPolicyToString(const GameParameters::QuestPolicy quest);
+
+        static bool upgradeOldVersionsOfFile(std::string filename);
+        static bool upgradeOldVersionsOfFile();
     private:
         /** \brief The callback for the XML_Helper
           * 

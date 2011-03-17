@@ -83,8 +83,9 @@ class RecentlyEditedFileList: public std::list<RecentlyEditedFile*>, public sigc
         //! Explicitly delete the singleton instance of this class.
         static void deleteInstance();
 
-        //! Get rid of an old recently edited file list file.
-        static bool removeOldVersionsOfFile();
+        //! Rewrite or delete an old recently edited file list file.
+        static bool upgradeOldVersionsOfFile();
+        static bool upgradeOldVersionsOfFile(std::string filename);
 
     protected:
         //! Default Constructor.

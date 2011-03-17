@@ -374,3 +374,11 @@ char *File::sanify(const char *string)
     }
   return result;
 }
+  
+std::string File::get_tmp_file()
+{
+  std::string tmpfile = "lw.XXXX";
+  int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
+  close(fd);
+  return tmpfile;
+}

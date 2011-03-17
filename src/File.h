@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2000, 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -138,6 +138,8 @@ class File
         static std::string add_ext_if_necessary(std::string file, std::string ext);
 
         static char *sanify(const char *string);
+
+        static std::string get_tmp_file();
 };
 
 #endif //FILE_H

@@ -19,6 +19,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include "config.h"
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -69,6 +70,7 @@
 #include "profile.h"
 
 std::string GameScenario::d_tag = "scenario";
+std::string GameScenario::d_top_tag = PACKAGE;
 using namespace std;
 
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
@@ -103,7 +105,10 @@ GameScenario::GameScenario(string savegame, bool& broken)
       loadTilesets(&t);
       loadCitysets(&t);
       loadShieldsets(&t);
-      std::string filename = t.getFirstFile(broken);
+      std::list<std::string> ext;
+      ext.push_back(MAP_EXT);
+      ext.push_back(SAVE_EXT);
+      std::string filename = t.getFirstFile(ext, broken);
       XML_Helper helper(filename, std::ios::in, Configuration::s_zipfiles);
       broken = loadWithHelper(helper);
       File::erase(filename);
@@ -517,7 +522,7 @@ bool GameScenario::loadWithHelper(XML_Helper& helper)
 
   bool broken = false;
 
-  helper.registerTag("lordsawar", sigc::mem_fun(this, &GameScenario::load));
+  helper.registerTag(d_top_tag, sigc::mem_fun(this, &GameScenario::load));
   helper.registerTag(d_tag, sigc::mem_fun(this, &GameScenario::load));
   helper.registerTag(Itemlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
   helper.registerTag(Playerlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
@@ -648,7 +653,7 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
 
   //start writing
   retval &= helper.begin(LORDSAWAR_SAVEGAME_VERSION);
-  retval &= helper.openTag("lordsawar");
+  retval &= helper.openTag(d_top_tag);
 
   //if retval is still true it propably doesn't change throughout the rest
   //now save the single object's data
@@ -704,7 +709,7 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
 
 bool GameScenario::load(std::string tag, XML_Helper* helper)
 {
-  if (tag == "lordsawar")
+  if (tag == d_top_tag)
     {
       if (helper->getVersion() != LORDSAWAR_SAVEGAME_VERSION)
 	{
@@ -1048,7 +1053,10 @@ public:
       Tar_Helper t(filename, std::ios::in, broken);
       if (broken)
         return;
-      std::string tmpfile = t.getFirstFile(broken);
+      std::list<std::string> ext;
+      ext.push_back(MAP_EXT);
+      ext.push_back(SAVE_EXT);
+      std::string tmpfile = t.getFirstFile(ext, broken);
       XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
       helper.registerTag(GameMap::d_tag, 
 			 sigc::mem_fun(this, &ParamLoader::loadParam));
@@ -1169,7 +1177,10 @@ public:
       if (broken)
         return;
       std::string file = File::get_basename(filename, true);
-      std::string tmpfile = t.getFirstFile(broken);
+      std::list<std::string> ext;
+      ext.push_back(MAP_EXT);
+      ext.push_back(SAVE_EXT);
+      std::string tmpfile = t.getFirstFile(ext, broken);
       XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
       helper.registerTag(GameScenario::d_tag, 
 			 sigc::mem_fun(this, &PlayModeLoader::loadParam));
@@ -1209,7 +1220,10 @@ public:
       Tar_Helper t(filename, std::ios::in, broken);
       if (broken)
         return;
-      std::string tmpfile = t.getFirstFile(broken);
+      std::list<std::string> ext;
+      ext.push_back(MAP_EXT);
+      ext.push_back(SAVE_EXT);
+      std::string tmpfile = t.getFirstFile(ext, broken);
       XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
       helper.registerTag(GameScenario::d_tag, 
 			 sigc::mem_fun(this, &DetailsLoader::loadDetails));
@@ -1306,4 +1320,72 @@ void GameScenario::cleanup()
       fl_counter = 0;
     }
   GameScenarioOptions::s_round = 0;
+}
+
+bool GameScenario::upgradeOldVersionsOfFile(std::string filename)
+{
+  std::string ext = "";
+  if (filename.rfind('.') == std::string::npos)
+    return false;
+  ext = filename.substr(filename.rfind('.'));
+  if (ext != MAP_EXT && ext != SAVE_EXT)
+    return false;
+  bool upgraded = false;
+  bool broken = false;
+  std::string version = "";
+  Tar_Helper t(filename, std::ios::in, broken);
+  if (!broken)
+    {
+      std::string tmpfile = t.getFirstFile(ext, broken);
+      VersionLoader l(tmpfile, d_top_tag, version, broken, 
+                      Configuration::s_zipfiles);
+      if (broken == false && version != "" && 
+          version != LORDSAWAR_SAVEGAME_VERSION)
+        upgraded = XML_Helper::rewrite_version(tmpfile, d_top_tag, 
+                                               LORDSAWAR_SAVEGAME_VERSION, 
+                                               Configuration::s_zipfiles);
+      std::list<std::string> delfiles;
+      delfiles.push_back(tmpfile);
+      if (upgraded)
+        {
+          t.replaceFile (t.getFilenamesWithExtension(ext).front(), tmpfile);
+          //now we need to upgrade the other files.
+          std::string f = t.getFilenamesWithExtension(Armyset::file_extension).front();
+          tmpfile = t.getFile(f, broken);
+          if (tmpfile != "")
+            {
+              if (Armyset::upgradeOldVersionsOfFile(tmpfile))
+                t.replaceFile (f, tmpfile);
+              delfiles.push_back(tmpfile);
+            }
+          tmpfile = t.getFirstFile(Tileset::file_extension, broken);
+          if (tmpfile != "")
+            {
+              if (Tileset::upgradeOldVersionsOfFile(tmpfile))
+                t.replaceFile (t.getFilenamesWithExtension
+                               (Tileset::file_extension).front(), tmpfile);
+              delfiles.push_back(tmpfile);
+            }
+          tmpfile = t.getFirstFile(Cityset::file_extension, broken);
+          if (tmpfile != "")
+            {
+              if (Cityset::upgradeOldVersionsOfFile(tmpfile))
+                t.replaceFile (t.getFilenamesWithExtension
+                               (Cityset::file_extension).front(), tmpfile);
+              delfiles.push_back(tmpfile);
+            }
+          tmpfile = t.getFirstFile(Shieldset::file_extension, broken);
+          if (tmpfile != "")
+            {
+              if (Shieldset::upgradeOldVersionsOfFile(tmpfile))
+                t.replaceFile (t.getFilenamesWithExtension
+                               (Shieldset::file_extension).front(), tmpfile);
+              delfiles.push_back(tmpfile);
+            }
+        }
+      for (std::list<std::string>::iterator i = delfiles.begin(); i != delfiles.end(); i++)
+        File::erase(*i);
+      t.Close();
+    }
+  return upgraded;
 }

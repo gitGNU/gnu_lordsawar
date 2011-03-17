@@ -337,19 +337,23 @@ bool RecentlyPlayedGameList::save() const
   return saveToFile(File::getSavePath() + "/" + RECENTLY_PLAYED_LIST);
 }
 
-bool RecentlyPlayedGameList::removeOldVersionsOfFile()
+bool RecentlyPlayedGameList::upgradeOldVersionsOfFile(std::string filename)
 {
-  bool removed = false;
+  bool upgraded = false;
   bool broken = false;
   std::string version = "";
-  std::string filename = File::getSavePath() + "/" + RECENTLY_PLAYED_LIST;
   VersionLoader l(filename, d_tag, version, broken);
   if (broken == false && version != "" && 
       version != LORDSAWAR_RECENTLY_PLAYED_VERSION)
-    {
-      File::erase(filename);
-      removed = true;
-    }
-  return removed;
+    upgraded = 
+      XML_Helper::rewrite_version(filename, d_tag, 
+                                  LORDSAWAR_RECENTLY_PLAYED_VERSION, false);
+  return upgraded;
+}
+
+bool RecentlyPlayedGameList::upgradeOldVersionsOfFile()
+{
+  std::string filename = File::getSavePath() + "/" + RECENTLY_PLAYED_LIST;
+  return upgradeOldVersionsOfFile(filename);
 }
 // End of file

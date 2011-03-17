@@ -18,7 +18,7 @@
 SUBDIRS = gui . editor pbm gls ghs
 MAINTAINERCLEANFILES= Makefile.in
 
-bin_PROGRAMS = lordsawar
+bin_PROGRAMS = lordsawar lordsawar-upgrade-file
 noinst_LTLIBRARIES = liblordsawar.la liblordsawarnet.la liblordsawargfx.la \
 		     liblordsawargamelist.la liblordsawargamehost.la
 
@@ -130,6 +130,20 @@ lordsawar_SOURCES = armymap.cpp armymap.h \
 	sidebar-stats.h game.cpp game.h gamebigmap.cpp gamebigmap.h \
 	sound.cpp sound.h main.cpp 
 
+lordsawar_upgrade_file_SOURCES = upgrade-file.cpp editor/recently-edited-file.cpp editor/recently-edited-file.h editor/recently-edited-file-list.cpp editor/recently-edited-file-list.h
+
+lordsawar_upgrade_file_LDADD = liblordsawar.la \
+    liblordsawargamelist.la \
+    liblordsawargamehost.la \
+    $(SDLSOUND_LIBS) $(SDL_LIBS) \
+    $(GTKMM_LIBS) \
+    $(LIBSIGC_LIBS) -ltar -lz \
+    @LIBINTL@
+
+lordsawar_upgrade_file_DEPENDENCIES = \
+  liblordsawar.la \
+  liblordsawargamelist.la \
+  liblordsawargamehost.la
 
 if FL_RESRC
 lordsawar_SOURCES += lordsawar.rc

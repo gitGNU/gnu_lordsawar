@@ -367,19 +367,23 @@ std::list<RecentlyEditedFile*> RecentlyEditedFileList::getFilesWithExtension(std
   return files;
 }
 
-bool RecentlyEditedFileList::removeOldVersionsOfFile()
+bool RecentlyEditedFileList::upgradeOldVersionsOfFile()
 {
-  bool removed = false;
+  std::string filename = File::getSavePath() + "/" + RECENTLY_EDITED_LIST;
+  return upgradeOldVersionsOfFile(filename);
+}
+
+bool RecentlyEditedFileList::upgradeOldVersionsOfFile(std::string filename)
+{
+  bool upgraded = false;
   bool broken = false;
   std::string version = "";
-  std::string filename = File::getSavePath() + "/" + RECENTLY_EDITED_LIST;
   VersionLoader l(filename, d_tag, version, broken);
   if (broken == false && version != "" && 
       version != LORDSAWAR_RECENTLY_EDITED_VERSION)
-    {
-      File::erase(filename);
-      removed = true;
-    }
-  return removed;
+      upgraded = XML_Helper::rewrite_version(filename, d_tag, 
+                                             LORDSAWAR_RECENTLY_EDITED_VERSION,
+                                             false);
+  return upgraded;
 }
 // End of file

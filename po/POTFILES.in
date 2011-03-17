@@ -347,6 +347,7 @@ src/ghs/main.cpp
 src/ghs/ghs-client-main.cpp
 src/ghs/ghs-client-tool.cpp
 src/ghs/gamehost-server.cpp
+src/upgrade-file.cpp
 dat/various/items/items.xml.in
 dat/citynames.xml.in
 dat/templenames.xml.in

@@ -1,3 +1,20 @@
+// Copyright (C) 2010, 2011 Ben Asselstine
+//
+//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Library General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public License
+//  along with this program; if not, write to the Free Software
+//  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
+//  02110-1301, USA.
+
 #include "tarhelper.h"
 #include <fcntl.h>
 #include <string.h>
@@ -48,7 +65,7 @@ bool Tar_Helper::Open(std::string file, std::ios::openmode mode)
   if (mode & std::ios::in)
     {
       std::list<std::string> files = getFilenames();
-      tmpoutdir = String::ucompose("%1/%2.%3/", Glib::get_tmp_dir(), files.front(), getpid());
+      tmpoutdir = String::ucompose("%1/%2.%3/", Glib::get_tmp_dir(), File::get_basename(f,true), getpid());
       File::create_dir(tmpoutdir);
     }
   else
@@ -92,20 +109,29 @@ void Tar_Helper::Close()
     }
 }
     
+std::string Tar_Helper::getFirstFile(std::list<std::string> exts, bool &broken)
+{
+  for (std::list<std::string>::iterator i = exts.begin(); i != exts.end(); i++)
+    {
+      std::string file = getFirstFile(*i, broken);
+      if (file != "")
+        return file;
+    }
+  return "";
+}
+
 std::string Tar_Helper::getFirstFile(std::string extension, bool &broken)
 {
   std::list<std::string> files = getFilenamesWithExtension(extension);
-  return getFile(files.front(), broken);
-}
-
-std::string Tar_Helper::getFirstFile(bool &broken)
-{
-  std::list<std::string> files = getFilenames();
+  if (files.size() == 0)
+    return "";
   return getFile(files.front(), broken);
 }
 
 std::string Tar_Helper::getFile(TAR *t, std::string filename, bool &broken, std::string tmpoutdir)
 {
+  if (File::exists(tmpoutdir + filename) == true)
+    return tmpoutdir + filename;
   char buf[T_BLOCKSIZE];
   lseek(t->fd, 0, SEEK_SET);
   int i, k;
@@ -265,7 +291,9 @@ bool Tar_Helper::replaceFile(std::string filename, std::string newfilename)
   m = O_WRONLY|O_CREAT;
   perms = 0644;
   TAR *new_tar = NULL;
-  std::string newtmpoutdir = String::ucompose("%1/%2.%3/", Glib::get_tmp_dir(), File::get_basename(t->pathname), getpid());
+  if (newfilename != "" && File::exists(newfilename) == false)
+    return false;
+  std::string newtmpoutdir = String::ucompose("%1/%2.%3.replace/", Glib::get_tmp_dir(), File::get_basename(t->pathname), getpid());
   File::create_dir(newtmpoutdir);
   std::string new_tar_file = newtmpoutdir +"/" + File::get_basename(t->pathname);
   char *f = strdup (new_tar_file.c_str());

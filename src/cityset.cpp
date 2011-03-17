@@ -695,4 +695,30 @@ void Cityset::clean_tmp_dir() const
 {
   return Tar_Helper::clean_tmp_dir(getConfigurationFile());
 }
+
+bool Cityset::upgradeOldVersionsOfFile(std::string filename)
+{
+  bool upgraded = false;
+  bool broken = false;
+  std::string version = "";
+  Tar_Helper t(filename, std::ios::in, broken);
+  if (!broken)
+    {
+      std::string tmpfile = t.getFirstFile(Cityset::file_extension, broken);
+      VersionLoader l(tmpfile, d_tag, version, broken, 
+                      Configuration::s_zipfiles);
+      if (broken == false && version != "" && 
+          version != LORDSAWAR_CITYSET_VERSION)
+        upgraded = XML_Helper::rewrite_version(tmpfile, d_tag, 
+                                               LORDSAWAR_CITYSET_VERSION, 
+                                               Configuration::s_zipfiles);
+      if (upgraded)
+        t.replaceFile
+          (t.getFilenamesWithExtension(Cityset::file_extension).front(), 
+           tmpfile);
+      t.Close();
+      File::erase(tmpfile);
+    }
+  return upgraded;
+}
 // End of file

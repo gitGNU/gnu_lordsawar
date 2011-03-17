@@ -91,6 +91,9 @@ typedef sigc::slot<bool, std::string, XML_Helper*> XML_Slot;
 class XML_Helper
 {
     public:
+
+        static std::string xml_entity; // <?xml version=\"1.0\"?>
+
         /** The most common constructor reads or writes to a file
           * 
           * @param filename     the filename where data read from/written to
@@ -210,6 +213,9 @@ class XML_Helper
 
         //! Used internally for the expat callback
         bool tag_close(std::string tag, std::string cdata = "");
+
+        static std::string get_top_tag(std::string filename, bool zip);
+        static bool rewrite_version(std::string filename, std::string tag, std::string new_version, bool zip);
         
     private:
         /** Prepends a number of tags (depending on the number of opened tags)
@@ -250,13 +256,13 @@ class XML_Helper
 class VersionLoader 
 {
 public:
-    VersionLoader(std::string filename, std::string tag, std::string &version, bool &broken)
+    VersionLoader(std::string filename, std::string tag, std::string &version, bool &broken, bool zip = false)
       {
         std::ifstream in(filename.c_str());
         if (in)
           {
             d_tag = tag;
-            XML_Helper helper(filename.c_str(), std::ios::in, false);
+            XML_Helper helper(filename.c_str(), std::ios::in, zip);
             helper.registerTag(tag, sigc::mem_fun(*this, &VersionLoader::load));
             bool retval = helper.parse();
             if (!retval)

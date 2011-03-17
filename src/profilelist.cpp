@@ -172,18 +172,21 @@ Profile *Profilelist::findProfileById(std::string id) const
   return NULL;
 }
 
-bool Profilelist::removeOldVersionsOfFile()
+bool Profilelist::upgradeOldVersionsOfFile()
 {
-  bool removed = false;
+  std::string filename = File::getSavePath() + "/" + PROFILE_LIST;
+  return upgradeOldVersionsOfFile(filename);
+}
+
+bool Profilelist::upgradeOldVersionsOfFile(std::string filename)
+{
+  bool upgraded = false;
   bool broken = false;
   std::string version = "";
-  std::string filename = File::getSavePath() + "/" + PROFILE_LIST;
   VersionLoader l(filename, d_tag, version, broken);
   if (broken == false && version != "" && version != LORDSAWAR_PROFILES_VERSION)
-    {
-      File::erase(filename);
-      removed = true;
-    }
-  return removed;
+    upgraded = XML_Helper::rewrite_version(filename, d_tag,
+                                           LORDSAWAR_PROFILES_VERSION, false);
+  return upgraded;
 }
 // End of file

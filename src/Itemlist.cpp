@@ -1,5 +1,5 @@
 // Copyright (C) 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -136,4 +136,22 @@ void Itemlist::remove(ItemProto *itemproto)
 void Itemlist::add(ItemProto *itemproto)
 {
   (*this)[size()] = itemproto;
+}
+
+bool Itemlist::upgradeOldVersionsOfFile(std::string filename)
+{
+  bool upgraded = false;
+  bool broken = false;
+  std::string version = "";
+  VersionLoader l(filename, d_tag, version, broken);
+  if (broken == false && version != "" && version != LORDSAWAR_ITEMS_VERSION)
+    upgraded = XML_Helper::rewrite_version(filename, d_tag, 
+                                           LORDSAWAR_ITEMS_VERSION, false);
+  return upgraded;
+}
+
+bool Itemlist::upgradeOldVersionsOfFile()
+{
+  std::string filename = File::getItemDescription();
+  return upgradeOldVersionsOfFile(filename);
 }

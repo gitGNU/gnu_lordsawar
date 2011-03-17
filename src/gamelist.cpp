@@ -308,18 +308,17 @@ void Gamelist::on_could_not_ping_game(HostedGame *game)
   game->setUnresponsive(true);
 }
 
-bool Gamelist::removeOldVersionsOfFile(std::string filename)
+bool Gamelist::upgradeOldVersionsOfFile(std::string filename)
 {
-  bool removed = false;
+  bool upgraded = false;
   bool broken = false;
   std::string version = "";
   VersionLoader l(filename, d_tag, version, broken);
   if (broken == false && version != "" && 
       version != LORDSAWAR_RECENTLY_HOSTED_VERSION)
-    {
-      File::erase(filename);
-      removed = true;
-    }
-  return removed;
+    upgraded = XML_Helper::rewrite_version(filename, d_tag, 
+                                           LORDSAWAR_RECENTLY_HOSTED_VERSION, 
+                                           false);
+  return upgraded;
 }
 // End of file

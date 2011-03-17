@@ -1,6 +1,7 @@
 // Copyright (C) 2002, 2003 Michael Bartl
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2004, 2005 Andrea Paternesi
+// Copyright (C) 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,6 +26,7 @@
 #include <zlib.h>
 #include "xmlhelper.h"
 #include "defs.h"
+#include "File.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -32,13 +34,13 @@
 //they are only needed later for the expat callbacks
 std::string my_cdata;
 bool error = false;
+    
+std::string XML_Helper::xml_entity = "<?xml version=\"1.0\"?>";
 
 // forward declarations of the internally used functions
 void start_handler(void* udata, const XML_Char* name, const XML_Char** atts);
 void character_handler(void* udata, const XML_Char* s, int len);
 void end_handler(void* udata, const XML_Char* name);
-
-
 
 XML_Helper::XML_Helper(std::string filename, std::ios::openmode mode, bool zip)
   : d_inbuf(0), d_outbuf(0), d_fout(0), d_fin(0), d_out(0), d_in(0),
@@ -157,7 +159,7 @@ XML_Helper::~XML_Helper()
 bool XML_Helper::begin(std::string version)
 {
     d_version = version;
-    (*d_out) <<"<?xml version=\"1.0\"?>\n";
+    (*d_out) << xml_entity << std::endl;
 
     return true;
 }
@@ -207,7 +209,6 @@ bool XML_Helper::closeTag()
     return true;
 }
 
-	
 bool XML_Helper::saveData(std::string name, const Gdk::Color value)
 {
     //prepend a "d_" to show that this is a data tag
@@ -444,7 +445,6 @@ bool XML_Helper::registerTag(std::string tag, XML_Slot callback)
 
     return true;
 }
-
 
 bool XML_Helper::unregisterTag(std::string tag)
 {
@@ -842,4 +842,74 @@ void end_handler(void* udata, const XML_Char* name)
     error = !helper->tag_close(std::string(name), my_cdata);
 
     my_cdata = "";
+}
+
+std::string XML_Helper::get_top_tag(std::string filename, bool zip)
+{
+  char buffer[1024];
+  XML_Helper in(filename, std::ios::in, zip);
+  while (in.d_in->eof() == false)
+    {
+      in.d_in->getline(buffer, sizeof buffer);
+      std::string line(buffer);
+      if (line.find("<?xml version=\"1.0\"") == 0)
+        continue;
+      size_t start = line.find('<');
+      if (start == std::string::npos)
+        continue;
+      size_t finish = line.find(" version=", start + 1);
+      if (finish == std::string::npos)
+        continue;
+      in.close();
+      return line.substr(start + 1, finish - start - 1);
+    }
+  in.close();
+  return "";
+}
+
+bool XML_Helper::rewrite_version(std::string filename, std::string tag, std::string new_version, bool zip)
+{
+  std::string match = "<" + tag + " version=\"";
+  bool found = false;
+  char buffer[1024];
+  std::string tmpfile = File::get_tmp_file();
+  XML_Helper in(filename, std::ios::in, zip);
+  XML_Helper out(tmpfile, std::ios::out, zip);
+  while (in.d_in->eof() == false)
+    {
+      in.d_in->getline(buffer, sizeof buffer);
+      std::string line(buffer);
+      if (line.compare(0, match.length(), match) == 0 && found == false)
+        {
+          found = true;
+          std::string upgraded_line = match + new_version + "\">";
+          out.d_out->write(upgraded_line.c_str(), upgraded_line.length());
+          (*out.d_out) << std::endl;
+        }
+      else
+        {
+          int len = in.d_in->gcount();
+          size_t pos = line.rfind("\r\n");
+          if (pos == std::string::npos)
+            {
+              pos = line.rfind('\n');
+              if (pos != std::string::npos)
+                len--;
+            }
+          else
+            len-=2;
+          if (len)
+            {
+              if (buffer[len-1] == '\0')
+                len--;
+              out.d_out->write(buffer, len);
+            }
+          (*out.d_out) << std::endl;
+        }
+    }
+  out.close();
+  in.close();
+  File::erase(filename);
+  rename(tmpfile.c_str(), filename.c_str());
+  return found;
 }

@@ -52,10 +52,10 @@ int main(int argc, char* argv[])
   srand(time(NULL));         // set the random seed
 
   initialize_configuration();
-  Gamelist::removeOldVersionsOfFile(File::getSavePath() + "/" + RECENTLY_ADVERTISED_LIST);
-  Gamelist::removeOldVersionsOfFile(File::getSavePath() + "/" + RECENTLY_HOSTED_LIST);
-  RecentlyPlayedGameList::removeOldVersionsOfFile();
-  Profilelist::removeOldVersionsOfFile();
+  Gamelist::upgradeOldVersionsOfFile(File::getSavePath() + "/" + RECENTLY_ADVERTISED_LIST);
+  Gamelist::upgradeOldVersionsOfFile(File::getSavePath() + "/" + RECENTLY_HOSTED_LIST);
+  RecentlyPlayedGameList::upgradeOldVersionsOfFile();
+  Profilelist::upgradeOldVersionsOfFile();
   Vector<int>::setMaximumWidth(1000);
   RecentlyPlayedGameList::getInstance()->load();
 

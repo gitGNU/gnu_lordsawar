@@ -39,6 +39,7 @@ using namespace std;
 
 // define static variables
 
+std::string Configuration::d_tag = "lordsawarrc";
 bool Configuration::s_showNextPlayer = true;
 #ifndef __WIN32__
 string Configuration::configuration_file_path = string(getenv("HOME")) + "/.lordsawarrc";
@@ -108,8 +109,7 @@ bool Configuration::loadConfigurationFile(string fileName)
 
         //parse the file
         XML_Helper helper(fileName.c_str(), ios::in, false);
-        helper.registerTag(
-	    "lordsawarrc",
+        helper.registerTag(d_tag,
 	    sigc::mem_fun(*this, &Configuration::parseConfiguration));
     
         return helper.parse();
@@ -125,7 +125,7 @@ bool Configuration::saveConfigurationFile(string filename)
 
     //start writing
     retval &= helper.begin(LORDSAWAR_CONFIG_VERSION);
-    retval &= helper.openTag("lordsawarrc");
+    retval &= helper.openTag(d_tag);
     
     //save the values 
     retval &= helper.saveData("datapath",s_dataPath);
@@ -574,3 +574,20 @@ Configuration::UiFormFactor Configuration::uiFormFactorFromString(std::string st
   return Configuration::UI_FORM_FACTOR_DESKTOP;
 }
 
+bool Configuration::upgradeOldVersionsOfFile(std::string filename)
+{
+  bool upgraded = false;
+  bool broken = false;
+  std::string version = "";
+  VersionLoader l(filename, d_tag, version, broken);
+  if (broken == false && version != "" && version != LORDSAWAR_CONFIG_VERSION)
+    upgraded = XML_Helper::rewrite_version(filename, d_tag, 
+                                           LORDSAWAR_CONFIG_VERSION, false);
+  return upgraded;
+}
+
+bool Configuration::upgradeOldVersionsOfFile()
+{
+  std::string filename = Configuration::configuration_file_path;
+  return upgradeOldVersionsOfFile(filename);
+}
