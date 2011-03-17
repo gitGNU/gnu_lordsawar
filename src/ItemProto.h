@@ -84,11 +84,13 @@ class ItemProto: public Renamable
           ADD_2MP_STACK   = 0x00008000,
           //! Kill all of the giant worms
           BANISH_WORMS    = 0x00010000,
+          //! Burn Bridge
+          BURN_BRIDGE     = 0x00020000,
         };
 
         enum UsableItems {
           USABLE = STEAL_GOLD | SINK_SHIPS | PICK_UP_BAGS | ADD_2MP_STACK
-            | BANISH_WORMS,
+            | BANISH_WORMS | BURN_BRIDGE,
         };
 
 

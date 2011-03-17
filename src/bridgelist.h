@@ -53,6 +53,11 @@ class Bridgelist : public LocationList<Bridge*>, public sigc::trackable
 	 */
 	int calculateType(Vector<int> t) const;
 
+        //! Give it a bridge, and this method returns the other half.
+        Bridge* getOtherSide(Bridge *bridge);
+
+        //! Get the two points at which roads would connect to this bridge.
+        std::list<Vector<int> > getRoadEntryPoints(Bridge *bridge);
 
 	// Static Methods
 

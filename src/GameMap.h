@@ -273,6 +273,8 @@ class GameMap: public sigc::trackable
 	bool removeRoad(Vector<int> pos);
 	bool putBridge(Bridge *b);
 	bool removeBridge(Vector<int> pos);
+        //! destroys both halves of the bridge
+        bool burnBridge(Vector<int> pos);
 	bool putSignpost(Signpost *s);
 	bool removeSignpost(Vector<int> pos);
 	bool putPort(Port *p);

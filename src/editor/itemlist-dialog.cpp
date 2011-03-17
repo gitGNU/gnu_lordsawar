@@ -125,6 +125,9 @@ ItemlistDialog::ItemlistDialog()
     xml->get_widget("banish_worms_checkbutton", banish_worms_checkbutton);
     banish_worms_checkbutton->signal_toggled().connect(
 	sigc::mem_fun(this, &ItemlistDialog::on_banish_worms_toggled));
+    xml->get_widget("burn_bridge_checkbutton", burn_bridge_checkbutton);
+    burn_bridge_checkbutton->signal_toggled().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_burn_bridge_toggled));
     xml->get_widget("uses_spinbutton", uses_spinbutton);
     uses_spinbutton->signal_changed().connect(
 	sigc::mem_fun(this, &ItemlistDialog::on_uses_changed));
@@ -382,7 +385,12 @@ void ItemlistDialog::on_banish_worms_toggled()
 {
   on_checkbutton_toggled(banish_worms_checkbutton, ItemProto::BANISH_WORMS);
 }
-	
+
+void ItemlistDialog::on_burn_bridge_toggled()
+{
+  on_checkbutton_toggled(burn_bridge_checkbutton, ItemProto::BURN_BRIDGE);
+}
+
 void ItemlistDialog::on_uses_changed()
 {
   if (inhibit_bonus_checkbuttons)

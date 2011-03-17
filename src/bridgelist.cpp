@@ -105,3 +105,29 @@ int Bridgelist::calculateType(Vector<int> t) const
     return Bridge::CONNECTS_TO_NORTH;
 }
 
+Bridge* Bridgelist::getOtherSide(Bridge *bridge)
+{
+  switch (bridge->getType())
+    {
+    case Bridge::CONNECTS_TO_NORTH:
+      return getObjectAt(bridge->getPos() + Vector<int>(0, -1));
+    case Bridge::CONNECTS_TO_SOUTH:
+      return getObjectAt(bridge->getPos() + Vector<int>(0, 1));
+    case Bridge::CONNECTS_TO_EAST:
+      return getObjectAt(bridge->getPos() + Vector<int>(1, 0));
+    case Bridge::CONNECTS_TO_WEST:
+      return getObjectAt(bridge->getPos() + Vector<int>(-1, 0));
+    }
+  return NULL;
+}
+
+std::list<Vector<int> > Bridgelist::getRoadEntryPoints(Bridge *bridge)
+{
+  std::list<Vector<int> > points;
+  points.push_back(bridge->getRoadEntryPoint());
+  Bridge *other = getOtherSide(bridge);
+  if (other)
+    points.push_back(other->getRoadEntryPoint());
+  return points;
+}
+

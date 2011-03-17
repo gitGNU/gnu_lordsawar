@@ -218,4 +218,9 @@
         <d_bonus>ItemProto::BANISH_WORMS</d_bonus>
         <d_uses_left>3</d_uses_left>
     </itemproto>
+    <itemproto>
+        <_d_name>Wand of the Bridgeburners</_d_name>
+        <d_bonus>ItemProto::BURN_BRIDGE</d_bonus>
+        <d_uses_left>3</d_uses_left>
+    </itemproto>
 </itemlist>

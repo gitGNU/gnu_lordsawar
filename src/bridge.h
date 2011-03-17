@@ -61,11 +61,15 @@ class Bridge: public Location
 	 * @param helper  The opened saved-game file to load the bridge from.
 	 */
         Bridge(XML_Helper* helper);
+
 	//! Destructor.
         ~Bridge();
 
         //! Returns the type of the bridge.
-        int getType() {return d_type;};
+        int getType() const {return d_type;};
+
+        //! Return the point at which a road would connect to this bridge.
+        Vector<int> getRoadEntryPoint() const;
 
         //! Sets the type of the bridge.
         void setType(int type) {d_type = type;};

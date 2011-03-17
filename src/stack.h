@@ -156,6 +156,9 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         //! Increases movement points of the Army units in the Stack.
         void incrementMoves(guint32 moves);
 
+        //! Removes all movement from all Army units in the stack.
+        void drainMovement();
+
         //! Sets the stack's position to the next point in it's Path.
         void moveOneStep(bool skipping = false);
 

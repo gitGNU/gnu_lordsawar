@@ -720,6 +720,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
     (game->worms_killed.connect
      (sigc::mem_fun(*this, &GameWindow::on_worms_killed)));
   connections.push_back
+    (game->bridge_burned.connect
+     (sigc::mem_fun(*this, &GameWindow::on_bridge_burned)));
+  connections.push_back
     (game->stole_gold.connect
      (sigc::mem_fun(*this, &GameWindow::on_gold_stolen)));
   connections.push_back
@@ -3723,6 +3726,19 @@ void GameWindow::on_bags_picked_up(Hero *hero, guint32 num_bags)
     String::ucompose(ngettext("%1 bag was retrieved by %2!",
                               "%1 bags were retrieved by %2!", 
                               num_bags), num_bags, hero->getName());
+  TimedMessageDialog dialog(*window, s, 30);
+
+  dialog.show_all();
+  dialog.run();
+  dialog.hide();
+  return;
+}
+
+void GameWindow::on_bridge_burned(Hero *hero)
+{
+  std::string s = "";
+  s += 
+    String::ucompose(_("%1 has burned a bridge!  None shall pass this way again!"), hero->getName());
   TimedMessageDialog dialog(*window, s, 30);
 
   dialog.show_all();

@@ -3,7 +3,7 @@
 // Copyright (C) 2004, 2005 Andrea Paternesi
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2005 Bryan Duff
-// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -4473,6 +4473,7 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim)
     }
   if (item->getBonus() & ItemProto::BANISH_WORMS)
     {
+      guint32 num_worms_killed = 0;
       Armyset *armyset = Armysetlist::getInstance()->getArmyset(getArmyset());
       for (Armyset::iterator i = armyset->begin(); i != armyset->end(); i++)
         {
@@ -4480,7 +4481,6 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim)
           if ((*i)->getImageName(Shield::NEUTRAL) == "giantworms")
             {
               std::list<History*> history;
-              guint32 num_worms_killed = 0;
               Playerlist *pl = Playerlist::getInstance();
               for (Playerlist::iterator j = pl->begin(); j != pl->end(); j++)
                 {
@@ -4489,10 +4489,17 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim)
                   if (affected.size())
                     num_worms_killed += removeDeadArmies(affected, history);
                 }
-              worms_killed.emit(hero, num_worms_killed);
-              break;
             }
         }
+      worms_killed.emit(hero, num_worms_killed);
+    }
+  if (item->getBonus() & ItemProto::BURN_BRIDGE)
+    {
+      //am i on a bridge?
+      Vector<int> pos = d_stacklist->getPosition(hero->getId());
+      bool burned = GameMap::getInstance()->burnBridge(pos);
+      if (burned)
+        bridge_burned.emit(hero);
     }
 
   hero->getBackpack()->useItem(item);

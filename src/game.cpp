@@ -141,7 +141,9 @@ void Game::addPlayer(Player *p)
       connections[p->getId()].push_back
 	(p->worms_killed.connect
 	 (sigc::mem_fun(worms_killed, &sigc::signal<void, Hero*, guint32>::emit)));
-
+      connections[p->getId()].push_back
+	(p->bridge_burned.connect
+	 (sigc::mem_fun(bridge_burned, &sigc::signal<void, Hero*>::emit)));
 
     }
       

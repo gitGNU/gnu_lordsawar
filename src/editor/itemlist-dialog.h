@@ -67,6 +67,7 @@ class ItemlistDialog: public sigc::trackable
     Gtk::CheckButton *steals_gold_checkbutton;
     Gtk::CheckButton *sinks_ships_checkbutton;
     Gtk::CheckButton *banish_worms_checkbutton;
+    Gtk::CheckButton *burn_bridge_checkbutton;
     Gtk::SpinButton *uses_spinbutton;
 
     class ItemsColumns: public Gtk::TreeModelColumnRecord {
@@ -112,6 +113,7 @@ class ItemlistDialog: public sigc::trackable
     void on_steals_gold_toggled();
     void on_sinks_ships_toggled();
     void on_banish_worms_toggled();
+    void on_burn_bridge_toggled();
     void on_uses_changed();
 };
 

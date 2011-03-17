@@ -128,6 +128,8 @@ std::string ItemProto::getBonusDescription() const
     s.push_back(_("+2 MP to stack"));
   if (getBonus(ItemProto::BANISH_WORMS))
     s.push_back(_("Kills all Giant Worms"));
+  if (getBonus(ItemProto::BURN_BRIDGE))
+    s.push_back(_("Destroys a Bridge"));
 
   if (battle > 0)
     s.push_back(String::ucompose(_("+%1 Battle"), battle));
@@ -188,6 +190,8 @@ std::string ItemProto::bonusFlagToString(ItemProto::Bonus bonus)
       return "ItemProto::ADD_2MP_STACK";
     case ItemProto::BANISH_WORMS:
       return "ItemProto::BANISH_WORMS";
+    case ItemProto::BURN_BRIDGE:
+      return "ItemProto::BURN_BRIDGE";
     }
   return "ItemProto::ADD1STR";
 }
@@ -229,6 +233,8 @@ std::string ItemProto::bonusFlagsToString(guint32 bonus)
     bonuses += " " + bonusFlagToString(ItemProto::ADD_2MP_STACK);
   if (bonus & ItemProto::BANISH_WORMS)
     bonuses += " " + bonusFlagToString(ItemProto::BANISH_WORMS);
+  if (bonus & ItemProto::BURN_BRIDGE)
+    bonuses += " " + bonusFlagToString(ItemProto::BURN_BRIDGE);
   return bonuses;
 }
 
@@ -287,5 +293,7 @@ ItemProto::Bonus ItemProto::bonusFlagFromString(std::string str)
     return ItemProto::ADD_2MP_STACK;
   else if (str == "ItemProto::BANISH_WORMS")
     return ItemProto::BANISH_WORMS;
+  else if (str == "ItemProto::BURN_BRIDGE")
+    return ItemProto::BURN_BRIDGE;
   return ItemProto::ADD1STR;
 }

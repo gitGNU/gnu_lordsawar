@@ -157,6 +157,12 @@ bool Stack::isMovingToOrFromAShip(Vector<int> dest, bool &on_ship) const
   return false;
 }
 
+void Stack::drainMovement()
+{
+  for (Stack::iterator it = begin(); it != end(); it++)
+    (*it)->decrementMoves((*it)->getMoves());
+}
+
 void Stack::moveToDest(Vector<int> dest, bool skipping)
 {
   bool ship_load_unload = false;
@@ -182,18 +188,18 @@ void Stack::moveToDest(Vector<int> dest, bool skipping)
   //how many moves does the stack need to travel to dest?
   int needed_moves = calculateTileMovementCost(dest);
 
-  for (Stack::iterator it = begin(); it != end(); it++)
+  if (ship_load_unload)
+    drainMovement();
+  else
     {
-      if (ship_load_unload)
-	(*it)->decrementMoves((*it)->getMoves());
-      else 
-	{
-	  //maybe the army has a natural movement ability
-	  if ((*it)->getStat(Army::MOVE_BONUS) & maptype && needed_moves > 1)
-	    (*it)->decrementMoves(2);
-	  else
-	    (*it)->decrementMoves(needed_moves);
-	}
+      for (Stack::iterator it = begin(); it != end(); it++)
+        {
+          //maybe the army has a natural movement ability
+          if ((*it)->getStat(Army::MOVE_BONUS) & maptype && needed_moves > 1)
+            (*it)->decrementMoves(2);
+          else
+            (*it)->decrementMoves(needed_moves);
+        }
     }
 
   //update position and status

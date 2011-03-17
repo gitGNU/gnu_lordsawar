@@ -1800,6 +1800,7 @@ bool GameMap::removeBridge(Vector<int> pos)
     {
       removeBuilding(b);
       Bridgelist::getInstance()->subtract(b);
+      updateShips(pos);
       return true;
     }
   return false;
@@ -2416,3 +2417,44 @@ bool GameMap::can_plant_flag(Stack *stack)
   return false;
 }
 
+bool GameMap::burnBridge(Vector<int> pos)
+{
+  bool burned = false;
+  Bridge *bridge = GameMap::getBridge(pos);
+  if (bridge)
+    {
+      Bridge *other = Bridgelist::getInstance()->getOtherSide(bridge);
+      Vector<int> src = bridge->getPos();
+      GameMap::getInstance()->removeBridge(src);
+      Vector<int> dest = Vector<int>(-1, -1);
+      std::list<Stack*> stacks;
+      if (other)
+        {
+          dest = other->getPos();
+          GameMap::getInstance()->removeBridge(dest);
+          std::list<Stack*> s = GameMap::getStacks(src)->getStacks();
+          stacks.merge(s);
+        }
+      std::list<Stack*> s = 
+        GameMap::getFriendlyStacks(src, Playerlist::getActiveplayer());
+      stacks.merge(s);
+      for (std::list<Stack*>::iterator i = stacks.begin(); 
+           i != stacks.end(); i++)
+        {
+          (*i)->setDefending(false);
+          (*i)->setParked(false);
+          (*i)->clearPath();
+          (*i)->drainMovement();
+        }
+      std::list<Vector<int> > r = 
+        Bridgelist::getInstance()->getRoadEntryPoints(bridge);
+      for (std::list<Vector<int> >::iterator i = r.begin(); i != r.end(); i++)
+        {
+          Road *rd = GameMap::getInstance()->getRoad(*i);
+          if (rd)
+            rd->setType(Roadlist::getInstance()->calculateType(rd->getPos()));
+        }
+      burned = true;
+    }
+  return burned;
+}

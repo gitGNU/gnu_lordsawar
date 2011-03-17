@@ -97,3 +97,19 @@ Bridge::Type Bridge::bridgeTypeFromString(const std::string str)
     return Bridge::CONNECTS_TO_SOUTH;
   return Bridge::CONNECTS_TO_EAST;
 }
+
+Vector<int> Bridge::getRoadEntryPoint() const
+{
+  switch (getType())
+    {
+    case Bridge::CONNECTS_TO_NORTH:
+      return getPos() + Vector<int>(0, 1);
+    case Bridge::CONNECTS_TO_SOUTH:
+      return getPos() + Vector<int>(0, -1);
+    case Bridge::CONNECTS_TO_EAST:
+      return getPos() + Vector<int>(-1, 0);
+    case Bridge::CONNECTS_TO_WEST:
+      return getPos() + Vector<int>(1, 0);
+    }
+  return getPos();
+}

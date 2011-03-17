@@ -588,8 +588,7 @@ void Stacklist::setActivestack(Stack* activestack)
 void Stacklist::drainAllMovement()
 {
   for (iterator it = begin(); it != end(); it++)
-    for (Stack::iterator ait = (*it)->begin(); ait != (*it)->end(); ait++)
-      (*ait)->decrementMoves((*ait)->getMoves());
+    (*it)->drainMovement();
 }
 
 void Stacklist::changeOwnership(Player *old_owner, Player *new_owner)
