@@ -898,14 +898,18 @@ void Tileset::clean_tmp_dir() const
   return Tar_Helper::clean_tmp_dir(getConfigurationFile());
 }
 
-bool Tileset::upgrade(std::string filename, std::string old_version)
+bool Tileset::upgrade(std::string filename, std::string old_version, std::string new_version)
 {
-  return true;
+  return FileCompat::getInstance()->rewrite_with_updated_version
+    (filename, FileCompat::TILESET, d_tag, new_version);
 }
 
 void Tileset::support_backward_compatibility()
 {
-  FileCompat::getInstance()->support(FileCompat::TILESET, file_extension, 
-                                     d_tag, LORDSAWAR_TILESET_VERSION, true);
+  FileCompat::getInstance()->support_type(FileCompat::TILESET, file_extension, 
+                                          d_tag, true);
+  FileCompat::getInstance()->support_version
+    (FileCompat::TILESET, "0.2.0", LORDSAWAR_TILESET_VERSION,
+     sigc::ptr_fun(&Tileset::upgrade));
 }
 //End of file

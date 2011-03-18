@@ -309,20 +309,24 @@ void Gamelist::on_could_not_ping_game(HostedGame *game)
   game->setUnresponsive(true);
 }
 
-bool Gamelist::upgrade(std::string filename, std::string old_version)
+bool Gamelist::upgrade(std::string filename, std::string old_version, std::string new_version)
 {
-  return true;
+  return FileCompat::getInstance()->rewrite_with_updated_version
+    (filename, FileCompat::GAMELIST, d_tag, new_version);
 }
 
 void Gamelist::support_backward_compatibility()
 {
-  FileCompat::getInstance()->support
+  FileCompat::getInstance()->support_type
     (FileCompat::GAMELIST, 
      File::get_extension(File::getUserRecentlyHostedGamesDescription()), d_tag, 
-     LORDSAWAR_RECENTLY_HOSTED_VERSION, false);
-  FileCompat::getInstance()->support
+     false);
+  FileCompat::getInstance()->support_type
     (FileCompat::GAMELIST, 
      File::get_extension(File::getUserRecentlyAdvertisedGamesDescription()), 
-     d_tag, LORDSAWAR_RECENTLY_HOSTED_VERSION, false);
+     d_tag, false);
+  FileCompat::getInstance()->support_version
+    (FileCompat::GAMELIST, "0.2.0", LORDSAWAR_RECENTLY_HOSTED_VERSION,
+     sigc::ptr_fun(&Gamelist::upgrade));
 }
 // End of file

@@ -450,15 +450,18 @@ void Shieldset::clean_tmp_dir() const
   return Tar_Helper::clean_tmp_dir(getConfigurationFile());
 }
 
-bool Shieldset::upgrade(std::string filename, std::string old_version)
+bool Shieldset::upgrade(std::string filename, std::string old_version, std::string new_version)
 {
-  return true;
+  return FileCompat::getInstance()->rewrite_with_updated_version
+    (filename, FileCompat::SHIELDSET, d_tag, new_version);
 }
 
 void Shieldset::support_backward_compatibility()
 {
-  FileCompat::getInstance()->support
-    (FileCompat::SHIELDSET, file_extension, d_tag, LORDSAWAR_SHIELDSET_VERSION,
-     true);
+  FileCompat::getInstance()->support_type(FileCompat::SHIELDSET, 
+                                          file_extension, d_tag, true);
+  FileCompat::getInstance()->support_version
+    (FileCompat::SHIELDSET, "0.2.0", LORDSAWAR_SHIELDSET_VERSION,
+     sigc::ptr_fun(&Shieldset::upgrade));
 }
 //End of file

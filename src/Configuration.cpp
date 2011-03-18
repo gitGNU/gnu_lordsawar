@@ -575,14 +575,19 @@ Configuration::UiFormFactor Configuration::uiFormFactorFromString(std::string st
   return Configuration::UI_FORM_FACTOR_DESKTOP;
 }
 
-bool Configuration::upgrade(std::string filename, std::string old_version)
+bool Configuration::upgrade(std::string filename, std::string old_version,
+                            std::string new_version)
 {
-  return true;
+  return FileCompat::getInstance()->rewrite_with_updated_version
+    (filename, FileCompat::CONFIGURATION, d_tag, new_version);
 }
 
 void Configuration::support_backward_compatibility()
 {
   std::string ext = File::get_extension(Configuration::configuration_file_path);
-  FileCompat::getInstance()->support
-    (FileCompat::CONFIGURATION, ext, d_tag, LORDSAWAR_CONFIG_VERSION, false);
+  FileCompat::getInstance()->support_type (FileCompat::CONFIGURATION, ext, 
+                                           d_tag, false);
+  FileCompat::getInstance()->support_version
+    (FileCompat::CONFIGURATION, "0.2.0", LORDSAWAR_CONFIG_VERSION,
+     sigc::ptr_fun(&Configuration::upgrade));
 }

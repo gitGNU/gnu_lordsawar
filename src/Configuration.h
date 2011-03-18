@@ -151,7 +151,8 @@ class Configuration : public sigc::trackable
         static GameParameters::QuestPolicy questPolicyFromString(std::string str);
         static std::string questPolicyToString(const GameParameters::QuestPolicy quest);
 
-        static bool upgrade(std::string filename, std::string old_version);
+        static bool upgrade(std::string filename, std::string old_version,
+                            std::string new_version);
         static void support_backward_compatibility();
     private:
         /** \brief The callback for the XML_Helper

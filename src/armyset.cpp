@@ -938,14 +938,18 @@ void Armyset::clean_tmp_dir() const
   return Tar_Helper::clean_tmp_dir(getConfigurationFile());
 }
 
-bool Armyset::upgrade(std::string filename, std::string oldversion)
+bool Armyset::upgrade(std::string filename, std::string old_version, std::string new_version)
 {
-  return true;
+  return FileCompat::getInstance()->rewrite_with_updated_version
+    (filename, FileCompat::ARMYSET, d_tag, new_version);
 }
 
 void Armyset::support_backward_compatibility()
 {
-  FileCompat::getInstance()->support(FileCompat::ARMYSET, file_extension, 
-                                     d_tag, LORDSAWAR_ARMYSET_VERSION, true);
+  FileCompat::getInstance()->support_type(FileCompat::ARMYSET, file_extension, 
+                                          d_tag, true);
+  FileCompat::getInstance()->support_version
+    (FileCompat::ARMYSET, "0.2.0", LORDSAWAR_ARMYSET_VERSION,
+     sigc::ptr_fun(&Armyset::upgrade));
 }
 

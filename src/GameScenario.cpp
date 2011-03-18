@@ -1323,18 +1323,20 @@ void GameScenario::cleanup()
   GameScenarioOptions::s_round = 0;
 }
 
-bool GameScenario::upgrade(std::string filename, std::string old_version)
+bool GameScenario::upgrade(std::string filename, std::string old_version, std::string new_version)
 {
-  return true;
+  return FileCompat::getInstance()->rewrite_with_updated_version
+    (filename, FileCompat::GAMESCENARIO, d_top_tag, new_version);
 }
 
 void GameScenario::support_backward_compatibility()
 {
-  FileCompat::getInstance()->support
-    (FileCompat::GAMESCENARIO, MAP_EXT, d_top_tag, LORDSAWAR_SAVEGAME_VERSION, 
-     true);
-  FileCompat::getInstance()->support
-    (FileCompat::GAMESCENARIO, SAVE_EXT, d_top_tag, LORDSAWAR_SAVEGAME_VERSION,
-     true);
+  FileCompat::getInstance()->support_type (FileCompat::GAMESCENARIO, MAP_EXT, 
+                                           d_top_tag, true);
+  FileCompat::getInstance()->support_type (FileCompat::GAMESCENARIO, SAVE_EXT, 
+                                           d_top_tag, true);
+  FileCompat::getInstance()->support_version
+    (FileCompat::GAMESCENARIO, "0.2.0", LORDSAWAR_SAVEGAME_VERSION,
+     sigc::ptr_fun(&GameScenario::upgrade));
 }
 

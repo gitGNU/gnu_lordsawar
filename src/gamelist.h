@@ -102,7 +102,7 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
         static void deleteInstance();
 
         //! Rewrite an old file.
-        static bool upgrade(std::string filename, std::string old_version);
+        static bool upgrade(std::string filename, std::string old_version, std::string new_version);
         static void support_backward_compatibility();
 
     protected:

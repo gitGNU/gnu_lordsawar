@@ -697,15 +697,19 @@ void Cityset::clean_tmp_dir() const
   return Tar_Helper::clean_tmp_dir(getConfigurationFile());
 }
 
-bool Cityset::upgrade(std::string filename, std::string old_version)
+bool Cityset::upgrade(std::string filename, std::string old_version, std::string new_version)
 {
+  return FileCompat::getInstance()->rewrite_with_updated_version
+    (filename, FileCompat::CITYSET, d_tag, new_version);
   return true;
 }
 
 void Cityset::support_backward_compatibility()
 {
-  FileCompat::getInstance()->support
-    (FileCompat::CITYSET, file_extension, d_tag, LORDSAWAR_CITYSET_VERSION, 
-     true);
+  FileCompat::getInstance()->support_type (FileCompat::CITYSET, file_extension, 
+                                           d_tag, true);
+  FileCompat::getInstance()->support_version
+    (FileCompat::CITYSET, "0.2.0", LORDSAWAR_CITYSET_VERSION,
+     sigc::ptr_fun(&Cityset::upgrade));
 }
 // End of file

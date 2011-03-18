@@ -338,16 +338,21 @@ bool RecentlyPlayedGameList::save() const
   return saveToFile(File::getSavePath() + "/" + RECENTLY_PLAYED_LIST);
 }
 
-bool RecentlyPlayedGameList::upgrade(std::string filename, std::string old_version)
+bool RecentlyPlayedGameList::upgrade(std::string filename, std::string old_version, std::string new_version)
 {
-  return true;
+  return FileCompat::getInstance()->rewrite_with_updated_version
+    (filename, FileCompat::RECENTLYPLAYEDGAMELIST, d_tag, new_version);
 }
 
 void RecentlyPlayedGameList::support_backward_compatibility()
 {
-  FileCompat::getInstance()->support
+  FileCompat::getInstance()->support_type
     (FileCompat::RECENTLYPLAYEDGAMELIST, 
      File::get_extension(File::getUserRecentlyPlayedGamesDescription()), d_tag, 
-     LORDSAWAR_RECENTLY_PLAYED_VERSION, false);
+     false);
+  FileCompat::getInstance()->support_version
+    (FileCompat::RECENTLYPLAYEDGAMELIST, "0.2.0", 
+     LORDSAWAR_RECENTLY_PLAYED_VERSION,
+     sigc::ptr_fun(&RecentlyPlayedGameList::upgrade));
 }
 // End of file

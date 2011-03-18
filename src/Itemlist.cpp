@@ -139,16 +139,19 @@ void Itemlist::add(ItemProto *itemproto)
   (*this)[size()] = itemproto;
 }
 
-bool Itemlist::upgrade(std::string filename, std::string old_version)
+bool Itemlist::upgrade(std::string filename, std::string old_version, std::string new_version)
 {
-  return true;
+  return FileCompat::getInstance()->rewrite_with_updated_version
+    (filename, FileCompat::ITEMLIST, d_tag, new_version);
 }
 
 void Itemlist::support_backward_compatibility()
 {
-  FileCompat::getInstance()->support
-    (FileCompat::ITEMLIST, 
-     File::get_extension(File::getItemDescription()), d_tag, 
-     LORDSAWAR_ITEMS_VERSION, false);
+  FileCompat::getInstance()->support_type
+    (FileCompat::ITEMLIST, File::get_extension(File::getItemDescription()), 
+     d_tag, false);
+  FileCompat::getInstance()->support_version
+    (FileCompat::ITEMLIST, "0.2.0", LORDSAWAR_ITEMS_VERSION,
+     sigc::ptr_fun(&Itemlist::upgrade));
 }
 

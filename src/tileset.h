@@ -367,7 +367,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
         static bool copy(std::string src, std::string dest);
 
         //! Rewrite old tileset files.
-        static bool upgrade(std::string filename, std::string old_version);
+        static bool upgrade(std::string filename, std::string old_version, std::string new_version);
         static void support_backward_compatibility();
 	
     private:

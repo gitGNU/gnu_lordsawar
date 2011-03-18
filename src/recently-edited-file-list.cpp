@@ -368,16 +368,21 @@ std::list<RecentlyEditedFile*> RecentlyEditedFileList::getFilesWithExtension(std
   return files;
 }
 
-bool RecentlyEditedFileList::upgrade(std::string filename, std::string old_version)
+bool RecentlyEditedFileList::upgrade(std::string filename, std::string old_version, std::string new_version)
 {
-  return true;
+  return FileCompat::getInstance()->rewrite_with_updated_version
+    (filename, FileCompat::RECENTLYEDITEDFILELIST, d_tag, new_version);
 }
 
 void RecentlyEditedFileList::support_backward_compatibility()
 {
-  FileCompat::getInstance()->support
+  FileCompat::getInstance()->support_type
     (FileCompat::RECENTLYEDITEDFILELIST, 
      File::get_extension(File::getUserRecentlyEditedFilesDescription()), d_tag, 
-     LORDSAWAR_RECENTLY_EDITED_VERSION, false);
+     false);
+  FileCompat::getInstance()->support_version
+    (FileCompat::RECENTLYEDITEDFILELIST, "0.2.0", 
+     LORDSAWAR_RECENTLY_EDITED_VERSION,
+     sigc::ptr_fun(&RecentlyEditedFileList::upgrade));
 }
 // End of file

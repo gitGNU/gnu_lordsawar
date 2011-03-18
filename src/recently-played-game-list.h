@@ -94,7 +94,7 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
         static void deleteInstance();
 
         //! Rewrite an old recently played game list file.
-        static bool upgrade(std::string filename, std::string old_version);
+        static bool upgrade(std::string filename, std::string old_version, std::string new_version);
         static void support_backward_compatibility();
 
         //! Default Constructor.
