@@ -1,9 +1,8 @@
 SUBDIRS=figures
-EXTRA_DIST = $(help_DATA)
-helpdir = ${datadir}/gnome/help/lordsawar/C/
+EXTRA_DIST = $(noinst_DATA)
+#helpdir = ${datadir}/gnome/help/lordsawar/C/
 
-help_DATA = legal.xml \
-            lordsawar.xml
+noinst_DATA = legal.xml lordsawar.xml
 
 ## for html publishing install docbook-utils:
 ## cd into this directory
