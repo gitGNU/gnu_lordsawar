@@ -30,8 +30,8 @@
 #include "timing.h"
 
 #include "armyset-window.h"
+#include "file-compat.h"
 #include "recently-edited-file-list.h"
-
 
 int max_vector_width;
 int main(int argc, char* argv[])
@@ -39,7 +39,8 @@ int main(int argc, char* argv[])
     srand(time(NULL));         // set the random seed
 
     initialize_configuration();
-    RecentlyEditedFileList::upgradeOldVersionsOfFile();
+    RecentlyEditedFileList::support_backward_compatibility();
+    FileCompat::getInstance()->initialize();
     Vector<int>::setMaximumWidth(1000);
 
     setlocale(LC_ALL, Configuration::s_lang.c_str());

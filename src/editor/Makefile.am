@@ -24,8 +24,6 @@ bin_PROGRAMS = lordsawar-editor lordsawar-army-editor lordsawar-tile-editor lord
 noinst_LTLIBRARIES = libshieldsetwindow.la libarmysetwindow.la libcitysetwindow.la libtilesetwindow.la libeditutil.la
 
 libeditutil_la_SOURCES = \
-	recently-edited-file.cpp recently-edited-file.h \
-	recently-edited-file-list.cpp recently-edited-file-list.h \
 	editor-quit-dialog.cpp editor-quit-dialog.h \
 	editor-recover-dialog.cpp editor-recover-dialog.h \
 	tile-size-editor-dialog.cpp tile-size-editor-dialog.h \

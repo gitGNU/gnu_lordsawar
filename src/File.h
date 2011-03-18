@@ -93,6 +93,12 @@ class File
 	//! get the path of a personal scenario called file.
 	static std::string getUserMapFile(std::string file);
 
+        static std::string getUserProfilesDescription();
+        static std::string getUserRecentlyPlayedGamesDescription();
+        static std::string getUserRecentlyHostedGamesDescription();
+        static std::string getUserRecentlyAdvertisedGamesDescription();
+        static std::string getUserRecentlyEditedFilesDescription();
+
         // get the available scenarios
         static std::list<std::string> scanMaps();
 
@@ -140,6 +146,8 @@ class File
         static char *sanify(const char *string);
 
         static std::string get_tmp_file();
+
+        static std::string get_extension(std::string filename);
 };
 
 #endif //FILE_H

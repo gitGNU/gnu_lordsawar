@@ -68,6 +68,7 @@
 #include "stacktile.h"
 #include "GraphicsCache.h"
 #include "profile.h"
+#include "file-compat.h"
 
 std::string GameScenario::d_tag = "scenario";
 std::string GameScenario::d_top_tag = PACKAGE;
@@ -1322,70 +1323,18 @@ void GameScenario::cleanup()
   GameScenarioOptions::s_round = 0;
 }
 
-bool GameScenario::upgradeOldVersionsOfFile(std::string filename)
+bool GameScenario::upgrade(std::string filename, std::string old_version)
 {
-  std::string ext = "";
-  if (filename.rfind('.') == std::string::npos)
-    return false;
-  ext = filename.substr(filename.rfind('.'));
-  if (ext != MAP_EXT && ext != SAVE_EXT)
-    return false;
-  bool upgraded = false;
-  bool broken = false;
-  std::string version = "";
-  Tar_Helper t(filename, std::ios::in, broken);
-  if (!broken)
-    {
-      std::string tmpfile = t.getFirstFile(ext, broken);
-      VersionLoader l(tmpfile, d_top_tag, version, broken, 
-                      Configuration::s_zipfiles);
-      if (broken == false && version != "" && 
-          version != LORDSAWAR_SAVEGAME_VERSION)
-        upgraded = XML_Helper::rewrite_version(tmpfile, d_top_tag, 
-                                               LORDSAWAR_SAVEGAME_VERSION, 
-                                               Configuration::s_zipfiles);
-      std::list<std::string> delfiles;
-      delfiles.push_back(tmpfile);
-      if (upgraded)
-        {
-          t.replaceFile (t.getFilenamesWithExtension(ext).front(), tmpfile);
-          //now we need to upgrade the other files.
-          std::string f = t.getFilenamesWithExtension(Armyset::file_extension).front();
-          tmpfile = t.getFile(f, broken);
-          if (tmpfile != "")
-            {
-              if (Armyset::upgradeOldVersionsOfFile(tmpfile))
-                t.replaceFile (f, tmpfile);
-              delfiles.push_back(tmpfile);
-            }
-          tmpfile = t.getFirstFile(Tileset::file_extension, broken);
-          if (tmpfile != "")
-            {
-              if (Tileset::upgradeOldVersionsOfFile(tmpfile))
-                t.replaceFile (t.getFilenamesWithExtension
-                               (Tileset::file_extension).front(), tmpfile);
-              delfiles.push_back(tmpfile);
-            }
-          tmpfile = t.getFirstFile(Cityset::file_extension, broken);
-          if (tmpfile != "")
-            {
-              if (Cityset::upgradeOldVersionsOfFile(tmpfile))
-                t.replaceFile (t.getFilenamesWithExtension
-                               (Cityset::file_extension).front(), tmpfile);
-              delfiles.push_back(tmpfile);
-            }
-          tmpfile = t.getFirstFile(Shieldset::file_extension, broken);
-          if (tmpfile != "")
-            {
-              if (Shieldset::upgradeOldVersionsOfFile(tmpfile))
-                t.replaceFile (t.getFilenamesWithExtension
-                               (Shieldset::file_extension).front(), tmpfile);
-              delfiles.push_back(tmpfile);
-            }
-        }
-      for (std::list<std::string>::iterator i = delfiles.begin(); i != delfiles.end(); i++)
-        File::erase(*i);
-      t.Close();
-    }
-  return upgraded;
+  return true;
 }
+
+void GameScenario::support_backward_compatibility()
+{
+  FileCompat::getInstance()->support
+    (FileCompat::GAMESCENARIO, MAP_EXT, d_top_tag, LORDSAWAR_SAVEGAME_VERSION, 
+     true);
+  FileCompat::getInstance()->support
+    (FileCompat::GAMESCENARIO, SAVE_EXT, d_top_tag, LORDSAWAR_SAVEGAME_VERSION,
+     true);
+}
+

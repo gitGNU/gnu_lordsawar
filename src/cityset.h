@@ -200,7 +200,9 @@ class Cityset : public sigc::trackable, public Set
         std::string getFileFromConfigurationFile(std::string file);
         bool replaceFileInConfigurationFile(std::string file, std::string new_file);
 
-        static bool upgradeOldVersionsOfFile(std::string filename);
+        //! Callback to convert old files to new ones.
+        static bool upgrade(std::string filename, std::string old_version);
+        static void support_backward_compatibility();
 
         //! Load the cityset again.
         void reload(bool &broken);

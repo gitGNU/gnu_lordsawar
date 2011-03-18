@@ -287,7 +287,9 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
         void reload(bool &broken);
         guint32 calculate_preferred_tile_size() const;
 
-        static bool upgradeOldVersionsOfFile(std::string filename);
+        //! callback to upgrade old files.
+        static bool upgrade(std::string filename, std::string old_version);
+        static void support_backward_compatibility();
 
     private:
 

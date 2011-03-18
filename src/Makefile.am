@@ -86,7 +86,10 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
 	MapBackpack.cpp MapBackpack.h prodslot.cpp prodslot.h \
 	prodslotlist.cpp prodslotlist.h namelist.cpp namelist.h \
 	PixMask.cpp PixMask.h \
-	GraphicsCache.cpp GraphicsCache.h 
+	GraphicsCache.cpp GraphicsCache.h \
+	file-compat.cpp file-compat.h \
+	recently-edited-file.cpp recently-edited-file.h \
+	recently-edited-file-list.cpp recently-edited-file-list.h 
 
 liblordsawarnet_la_SOURCES = \
 	game-client.cpp game-client.h \
@@ -130,7 +133,7 @@ lordsawar_SOURCES = armymap.cpp armymap.h \
 	sidebar-stats.h game.cpp game.h gamebigmap.cpp gamebigmap.h \
 	sound.cpp sound.h main.cpp 
 
-lordsawar_upgrade_file_SOURCES = upgrade-file.cpp editor/recently-edited-file.cpp editor/recently-edited-file.h editor/recently-edited-file-list.cpp editor/recently-edited-file-list.h
+lordsawar_upgrade_file_SOURCES = upgrade-file.cpp
 
 lordsawar_upgrade_file_LDADD = liblordsawar.la \
     liblordsawargamelist.la \

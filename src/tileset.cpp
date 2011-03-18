@@ -31,6 +31,7 @@
 #include "tilesetlist.h"
 #include "tarhelper.h"
 #include "Configuration.h"
+#include "file-compat.h"
 
 using namespace std;
 
@@ -897,29 +898,14 @@ void Tileset::clean_tmp_dir() const
   return Tar_Helper::clean_tmp_dir(getConfigurationFile());
 }
 
-bool Tileset::upgradeOldVersionsOfFile(std::string filename)
+bool Tileset::upgrade(std::string filename, std::string old_version)
 {
-  bool upgraded = false;
-  bool broken = false;
-  std::string version = "";
-  Tar_Helper t(filename, std::ios::in, broken);
-  if (!broken)
-    {
-      std::string tmpfile = t.getFirstFile(Tileset::file_extension, broken);
-      VersionLoader l(tmpfile, d_tag, version, broken, 
-                      Configuration::s_zipfiles);
-      if (broken == false && version != "" && 
-          version != LORDSAWAR_TILESET_VERSION)
-        upgraded = XML_Helper::rewrite_version(tmpfile, d_tag, 
-                                               LORDSAWAR_TILESET_VERSION, 
-                                               Configuration::s_zipfiles);
-      if (upgraded)
-        t.replaceFile
-          (t.getFilenamesWithExtension(Tileset::file_extension).front(), 
-           tmpfile);
-      t.Close();
-      File::erase(tmpfile);
-    }
-  return upgraded;
+  return true;
+}
+
+void Tileset::support_backward_compatibility()
+{
+  FileCompat::getInstance()->support(FileCompat::TILESET, file_extension, 
+                                     d_tag, LORDSAWAR_TILESET_VERSION, true);
 }
 //End of file

@@ -101,8 +101,9 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
         //! Explicitly delete the singleton instance of this class.
         static void deleteInstance();
 
-        //! Rewrite or delete an old file.
-        static bool upgradeOldVersionsOfFile(std::string filename);
+        //! Rewrite an old file.
+        static bool upgrade(std::string filename, std::string old_version);
+        static void support_backward_compatibility();
 
     protected:
         //! Default Constructor.

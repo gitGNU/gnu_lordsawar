@@ -154,7 +154,8 @@ class GameScenario: public GameScenarioOptions
 
         static void cleanup();
 
-        static bool upgradeOldVersionsOfFile(std::string filename);
+        static bool upgrade(std::string filename, std::string old_version);
+        static void support_backward_compatibility();
 
 	void inhibitAutosaveRemoval(bool i) {inhibit_autosave_removal = i;}
     private:

@@ -65,9 +65,9 @@ class Profilelist: public std::list<Profile*>, public sigc::trackable
         //! Explicitly delete the singleton instance of this class.
         static void deleteInstance();
 
-        //! Rewrite or delete an old profiles file.
-        static bool upgradeOldVersionsOfFile();
-        static bool upgradeOldVersionsOfFile(std::string filename);
+        //! Rewrite an old profiles file.
+        static bool upgrade(std::string filename, std::string old_version);
+        static void support_backward_compatibility();
 
     protected:
         //! Default Constructor.

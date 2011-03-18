@@ -22,6 +22,7 @@
 
 #include "File.h"
 #include "defs.h"
+#include "file-compat.h"
 
 std::string Itemlist::d_tag = "itemlist";
 
@@ -138,20 +139,16 @@ void Itemlist::add(ItemProto *itemproto)
   (*this)[size()] = itemproto;
 }
 
-bool Itemlist::upgradeOldVersionsOfFile(std::string filename)
+bool Itemlist::upgrade(std::string filename, std::string old_version)
 {
-  bool upgraded = false;
-  bool broken = false;
-  std::string version = "";
-  VersionLoader l(filename, d_tag, version, broken);
-  if (broken == false && version != "" && version != LORDSAWAR_ITEMS_VERSION)
-    upgraded = XML_Helper::rewrite_version(filename, d_tag, 
-                                           LORDSAWAR_ITEMS_VERSION, false);
-  return upgraded;
+  return true;
 }
 
-bool Itemlist::upgradeOldVersionsOfFile()
+void Itemlist::support_backward_compatibility()
 {
-  std::string filename = File::getItemDescription();
-  return upgradeOldVersionsOfFile(filename);
+  FileCompat::getInstance()->support
+    (FileCompat::ITEMLIST, 
+     File::get_extension(File::getItemDescription()), d_tag, 
+     LORDSAWAR_ITEMS_VERSION, false);
 }
+

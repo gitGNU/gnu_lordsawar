@@ -1,7 +1,7 @@
 // Copyright (C) 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2011 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 // Copyright (C) 2005, 2006 Josef Spillner
 //
@@ -37,8 +37,9 @@
 #include "shieldset.h"
 #include "armyset.h"
 #include "recently-played-game-list.h"
-#include "gamelist.h"
 #include "profilelist.h"
+#include "gamelist.h"
+#include "file-compat.h"
 
 #include "gui/main.h"
 
@@ -52,10 +53,11 @@ int main(int argc, char* argv[])
   srand(time(NULL));         // set the random seed
 
   initialize_configuration();
-  Gamelist::upgradeOldVersionsOfFile(File::getSavePath() + "/" + RECENTLY_ADVERTISED_LIST);
-  Gamelist::upgradeOldVersionsOfFile(File::getSavePath() + "/" + RECENTLY_HOSTED_LIST);
-  RecentlyPlayedGameList::upgradeOldVersionsOfFile();
-  Profilelist::upgradeOldVersionsOfFile();
+  Profilelist::support_backward_compatibility();
+  RecentlyPlayedGameList::support_backward_compatibility();
+  Gamelist::support_backward_compatibility();
+  FileCompat::support_backward_compatibility_for_common_files();
+  FileCompat::getInstance()->initialize();
   Vector<int>::setMaximumWidth(1000);
   RecentlyPlayedGameList::getInstance()->load();
 

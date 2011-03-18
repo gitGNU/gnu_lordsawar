@@ -27,6 +27,7 @@
 #include "temple.h"
 #include "tarhelper.h"
 #include "Configuration.h"
+#include "file-compat.h"
 
 std::string Cityset::d_tag = "cityset";
 std::string Cityset::file_extension = CITYSET_EXT;
@@ -696,29 +697,15 @@ void Cityset::clean_tmp_dir() const
   return Tar_Helper::clean_tmp_dir(getConfigurationFile());
 }
 
-bool Cityset::upgradeOldVersionsOfFile(std::string filename)
+bool Cityset::upgrade(std::string filename, std::string old_version)
 {
-  bool upgraded = false;
-  bool broken = false;
-  std::string version = "";
-  Tar_Helper t(filename, std::ios::in, broken);
-  if (!broken)
-    {
-      std::string tmpfile = t.getFirstFile(Cityset::file_extension, broken);
-      VersionLoader l(tmpfile, d_tag, version, broken, 
-                      Configuration::s_zipfiles);
-      if (broken == false && version != "" && 
-          version != LORDSAWAR_CITYSET_VERSION)
-        upgraded = XML_Helper::rewrite_version(tmpfile, d_tag, 
-                                               LORDSAWAR_CITYSET_VERSION, 
-                                               Configuration::s_zipfiles);
-      if (upgraded)
-        t.replaceFile
-          (t.getFilenamesWithExtension(Cityset::file_extension).front(), 
-           tmpfile);
-      t.Close();
-      File::erase(tmpfile);
-    }
-  return upgraded;
+  return true;
+}
+
+void Cityset::support_backward_compatibility()
+{
+  FileCompat::getInstance()->support
+    (FileCompat::CITYSET, file_extension, d_tag, LORDSAWAR_CITYSET_VERSION, 
+     true);
 }
 // End of file

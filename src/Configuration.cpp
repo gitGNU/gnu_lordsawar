@@ -31,6 +31,7 @@
 #include "xmlhelper.h"
 #include "defs.h"
 #include "File.h"
+#include "file-compat.h"
 
 using namespace std;
 
@@ -574,20 +575,14 @@ Configuration::UiFormFactor Configuration::uiFormFactorFromString(std::string st
   return Configuration::UI_FORM_FACTOR_DESKTOP;
 }
 
-bool Configuration::upgradeOldVersionsOfFile(std::string filename)
+bool Configuration::upgrade(std::string filename, std::string old_version)
 {
-  bool upgraded = false;
-  bool broken = false;
-  std::string version = "";
-  VersionLoader l(filename, d_tag, version, broken);
-  if (broken == false && version != "" && version != LORDSAWAR_CONFIG_VERSION)
-    upgraded = XML_Helper::rewrite_version(filename, d_tag, 
-                                           LORDSAWAR_CONFIG_VERSION, false);
-  return upgraded;
+  return true;
 }
 
-bool Configuration::upgradeOldVersionsOfFile()
+void Configuration::support_backward_compatibility()
 {
-  std::string filename = Configuration::configuration_file_path;
-  return upgradeOldVersionsOfFile(filename);
+  std::string ext = File::get_extension(Configuration::configuration_file_path);
+  FileCompat::getInstance()->support
+    (FileCompat::CONFIGURATION, ext, d_tag, LORDSAWAR_CONFIG_VERSION, false);
 }

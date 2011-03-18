@@ -25,6 +25,7 @@
 #include <sigc++/functors/mem_fun.h>
 #include "defs.h"
 #include "File.h"
+#include "file-compat.h"
 #include "profile.h"
 #include "profilelist.h"
 
@@ -172,21 +173,17 @@ Profile *Profilelist::findProfileById(std::string id) const
   return NULL;
 }
 
-bool Profilelist::upgradeOldVersionsOfFile()
+bool Profilelist::upgrade(std::string filename, std::string old_version)
 {
-  std::string filename = File::getSavePath() + "/" + PROFILE_LIST;
-  return upgradeOldVersionsOfFile(filename);
+  return true;
 }
 
-bool Profilelist::upgradeOldVersionsOfFile(std::string filename)
+void Profilelist::support_backward_compatibility()
 {
-  bool upgraded = false;
-  bool broken = false;
-  std::string version = "";
-  VersionLoader l(filename, d_tag, version, broken);
-  if (broken == false && version != "" && version != LORDSAWAR_PROFILES_VERSION)
-    upgraded = XML_Helper::rewrite_version(filename, d_tag,
-                                           LORDSAWAR_PROFILES_VERSION, false);
-  return upgraded;
+  FileCompat::getInstance()->support 
+    (FileCompat::PROFILELIST, 
+     File::get_extension(File::getUserProfilesDescription()), d_tag, 
+     LORDSAWAR_PROFILES_VERSION, false);
 }
+
 // End of file

@@ -65,8 +65,8 @@ class Itemlist : public std::map<guint32, ItemProto*>, public sigc::trackable
 	void remove(ItemProto *item);
         void add(ItemProto *item);
 
-        static bool upgradeOldVersionsOfFile(std::string filename);
-        static bool upgradeOldVersionsOfFile();
+        static bool upgrade(std::string filename, std::string old_version);
+        static void support_backward_compatibility();
     protected:
 	//! Default constructor.
 	Itemlist();

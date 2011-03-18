@@ -216,7 +216,9 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 
         static bool copy(std::string src, std::string dest);
 
-        static bool upgradeOldVersionsOfFile(std::string filename);
+        //! rewrite old shieldset files.
+        static bool upgrade(std::string filename, std::string old_version);
+        static void support_backward_compatibility();
 
     private:
 

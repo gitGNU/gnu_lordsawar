@@ -28,6 +28,7 @@
 #include "defs.h"
 #include "profile.h"
 #include "profilelist.h"
+#include "file-compat.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -337,23 +338,16 @@ bool RecentlyPlayedGameList::save() const
   return saveToFile(File::getSavePath() + "/" + RECENTLY_PLAYED_LIST);
 }
 
-bool RecentlyPlayedGameList::upgradeOldVersionsOfFile(std::string filename)
+bool RecentlyPlayedGameList::upgrade(std::string filename, std::string old_version)
 {
-  bool upgraded = false;
-  bool broken = false;
-  std::string version = "";
-  VersionLoader l(filename, d_tag, version, broken);
-  if (broken == false && version != "" && 
-      version != LORDSAWAR_RECENTLY_PLAYED_VERSION)
-    upgraded = 
-      XML_Helper::rewrite_version(filename, d_tag, 
-                                  LORDSAWAR_RECENTLY_PLAYED_VERSION, false);
-  return upgraded;
+  return true;
 }
 
-bool RecentlyPlayedGameList::upgradeOldVersionsOfFile()
+void RecentlyPlayedGameList::support_backward_compatibility()
 {
-  std::string filename = File::getSavePath() + "/" + RECENTLY_PLAYED_LIST;
-  return upgradeOldVersionsOfFile(filename);
+  FileCompat::getInstance()->support
+    (FileCompat::RECENTLYPLAYEDGAMELIST, 
+     File::get_extension(File::getUserRecentlyPlayedGamesDescription()), d_tag, 
+     LORDSAWAR_RECENTLY_PLAYED_VERSION, false);
 }
 // End of file

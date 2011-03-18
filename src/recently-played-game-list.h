@@ -93,9 +93,9 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
         //! Explicitly delete the singleton instance of this class.
         static void deleteInstance();
 
-        //! Rewrite or delete an old recently played game list file.
-        static bool upgradeOldVersionsOfFile();
-        static bool upgradeOldVersionsOfFile(std::string filename);
+        //! Rewrite an old recently played game list file.
+        static bool upgrade(std::string filename, std::string old_version);
+        static void support_backward_compatibility();
 
         //! Default Constructor.
         RecentlyPlayedGameList();

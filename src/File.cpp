@@ -95,6 +95,31 @@ std::string File::getMiscFile(std::string filename)
   return Configuration::s_dataPath + "/" + filename;
 }
 
+std::string File::getUserProfilesDescription()
+{
+  return Configuration::s_savePath + "/" + PROFILE_LIST;
+}
+
+std::string File::getUserRecentlyPlayedGamesDescription()
+{
+  return Configuration::s_savePath + "/" + RECENTLY_PLAYED_LIST;
+}
+
+std::string File::getUserRecentlyHostedGamesDescription()
+{
+  return Configuration::s_savePath + "/" + RECENTLY_HOSTED_LIST;
+}
+
+std::string File::getUserRecentlyAdvertisedGamesDescription()
+{
+  return Configuration::s_savePath + "/" + RECENTLY_ADVERTISED_LIST;
+}
+
+std::string File::getUserRecentlyEditedFilesDescription()
+{
+  return Configuration::s_savePath + "/" + RECENTLY_EDITED_LIST;
+}
+
 std::string File::getItemDescription()
 {
   return Configuration::s_dataPath + "/various/items/items.xml";
@@ -381,4 +406,11 @@ std::string File::get_tmp_file()
   int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
   close(fd);
   return tmpfile;
+}
+
+std::string File::get_extension(std::string filename)
+{
+  if (filename.rfind('.') == std::string::npos)
+    return "";
+  return filename.substr(filename.rfind('.'));
 }

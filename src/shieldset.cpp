@@ -26,6 +26,7 @@
 #include "File.h"
 #include "Configuration.h"
 #include "tarhelper.h"
+#include "file-compat.h"
 
 using namespace std;
 
@@ -449,29 +450,15 @@ void Shieldset::clean_tmp_dir() const
   return Tar_Helper::clean_tmp_dir(getConfigurationFile());
 }
 
-bool Shieldset::upgradeOldVersionsOfFile(std::string filename)
+bool Shieldset::upgrade(std::string filename, std::string old_version)
 {
-  bool upgraded = false;
-  bool broken = false;
-  std::string version = "";
-  Tar_Helper t(filename, std::ios::in, broken);
-  if (!broken)
-    {
-      std::string tmpfile = t.getFirstFile(Shieldset::file_extension, broken);
-      VersionLoader l(tmpfile, d_tag, version, broken, 
-                      Configuration::s_zipfiles);
-      if (broken == false && version != "" && 
-          version != LORDSAWAR_SHIELDSET_VERSION)
-        upgraded = XML_Helper::rewrite_version(tmpfile, d_tag, 
-                                               LORDSAWAR_SHIELDSET_VERSION, 
-                                               Configuration::s_zipfiles);
-      if (upgraded)
-        t.replaceFile
-          (t.getFilenamesWithExtension(Shieldset::file_extension).front(), 
-           tmpfile);
-      t.Close();
-      File::erase(tmpfile);
-    }
-  return upgraded;
+  return true;
+}
+
+void Shieldset::support_backward_compatibility()
+{
+  FileCompat::getInstance()->support
+    (FileCompat::SHIELDSET, file_extension, d_tag, LORDSAWAR_SHIELDSET_VERSION,
+     true);
 }
 //End of file

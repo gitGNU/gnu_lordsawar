@@ -25,177 +25,95 @@
 #include "xmlhelper.h"
 #include "tarhelper.h"
 #include "File.h"
-#include "GameScenario.h"
 #include "profilelist.h"
 #include "recently-played-game-list.h"
 #include "gamelist.h"
 #include "ucompose.hpp"
-#include "editor/recently-edited-file-list.h"
-#include "Itemlist.h"
+#include "file-compat.h"
 
-bool upgrade_file (std::string filename, std::string tag, std::string version, bool &same)
-{
-  bool upgraded = false;
-  if (tag == Configuration::d_tag)
-    {
-      if (LORDSAWAR_CONFIG_VERSION == version)
-        same = true;
-      else
-        upgraded = Configuration::upgradeOldVersionsOfFile(filename);
-    }
-  else if (tag == Itemlist::d_tag)
-    {
-      if (LORDSAWAR_ITEMS_VERSION == version)
-        same = true;
-      else
-        upgraded = Itemlist::upgradeOldVersionsOfFile(filename);
-    }
-  else if (tag == Profilelist::d_tag)
-    {
-      if (LORDSAWAR_PROFILES_VERSION == version)
-        same = true;
-      else
-        upgraded = Profilelist::upgradeOldVersionsOfFile(filename);
-    }
-  else if (tag == RecentlyPlayedGameList::d_tag)
-    {
-      if (LORDSAWAR_RECENTLY_PLAYED_VERSION == version)
-        same = true;
-      else
-        upgraded = RecentlyPlayedGameList::upgradeOldVersionsOfFile(filename);
-    }
-  else if (tag == Gamelist::d_tag)
-    {
-      if (LORDSAWAR_RECENTLY_HOSTED_VERSION == version)
-        same = true;
-      else
-        upgraded = Gamelist::upgradeOldVersionsOfFile(filename);
-    }
-  else if (tag == RecentlyEditedFileList::d_tag)
-    {
-      if (LORDSAWAR_RECENTLY_EDITED_VERSION == version)
-        same = true;
-      else
-        upgraded = RecentlyEditedFileList::upgradeOldVersionsOfFile(filename);
-    }
-  else if (tag == Armyset::d_tag)
-    {
-      if (LORDSAWAR_ARMYSET_VERSION == version)
-        same = true;
-      else
-        upgraded = Armyset::upgradeOldVersionsOfFile(filename);
-    }
-  else if (tag == Tileset::d_tag)
-    {
-      if (LORDSAWAR_TILESET_VERSION == version)
-        same = true;
-      else
-        upgraded = Tileset::upgradeOldVersionsOfFile(filename);
-    }
-  else if (tag == Cityset::d_tag)
-    {
-      if (LORDSAWAR_CITYSET_VERSION == version)
-        same = true;
-      else
-        upgraded = Cityset::upgradeOldVersionsOfFile(filename);
-    }
-  else if (tag == Shieldset::d_tag)
-    {
-      if (LORDSAWAR_SHIELDSET_VERSION == version)
-        same = true;
-      else
-        upgraded = Shieldset::upgradeOldVersionsOfFile(filename);
-    }
-  else if (tag == GameScenario::d_top_tag)
-    {
-      if (LORDSAWAR_SAVEGAME_VERSION == version)
-        same = true;
-      else
-        upgraded = GameScenario::upgradeOldVersionsOfFile(filename);
-    }
-  else
-    {
-      std::cerr << 
-        String::ucompose(_("Error: `%1' files are not supported."), tag) << 
-        std::endl;
-    }
-  return upgraded;
-}
-
-bool get_tag_and_version_from_file(std::string filename, std::string &tag, std::string &version)
-{
-  bool broken = false;
-  if (File::nameEndsWith(filename, ARMYSET_EXT) == true ||
-      File::nameEndsWith(filename, TILESET_EXT) == true ||
-      File::nameEndsWith(filename, CITYSET_EXT) == true ||
-      File::nameEndsWith(filename, SHIELDSET_EXT) == true ||
-      File::nameEndsWith(filename, MAP_EXT) == true ||
-      File::nameEndsWith(filename, SAVE_EXT) == true)
-    {
-      std::string ext = "";
-      if (filename.rfind('.') == std::string::npos)
-        return false;
-      ext = filename.substr(filename.rfind('.'));
-      Tar_Helper t(filename, std::ios::in, broken);
-      if (!broken)
-        {
-          std::string tmpfile = t.getFirstFile(ext, broken);
-          XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
-          tag = XML_Helper::get_top_tag(tmpfile, Configuration::s_zipfiles);
-          VersionLoader l(tmpfile, tag, version, broken, 
-                          Configuration::s_zipfiles);
-          t.Close();
-          File::erase(tmpfile);
-        }
-    }
-  else
-    {
-      tag = XML_Helper::get_top_tag(filename, false);
-      VersionLoader l(filename, tag, version, broken);
-    }
-  return !broken;
-}
-
-bool upgrade(std::string filename, bool &same)
-{
-  std::string tag;
-  std::string version;
-  if (get_tag_and_version_from_file (filename, tag, version))
-    return upgrade_file (filename, tag, version, same);
-  else
-    return false;
-}
-
+using namespace std;
 int max_vector_width;
 int main(int argc, char* argv[])
 {
+  std::string filename;
+  bool identify_file = false;
   initialize_configuration();
   Vector<int>::setMaximumWidth(1000);
 
   #if ENABLE_NLS
-  //cout << "Configuration::s_lang.c_str(): " << Configuration::s_lang.c_str() << endl;
   setlocale(LC_ALL, Configuration::s_lang.c_str());
-  //setlocale(LC_ALL, "");
   bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
   #endif
 
-  if (argc != 2)
+  if (argc > 1)
     {
-      std::cerr << "Usage: " << argv[0] << "FILE" << std::endl;
-      return EXIT_FAILURE;
+      for (int i = 2; i <= argc; i++)
+	{
+          string parameter(argv[i-1]); 
+	  if (parameter == "--identify" || parameter == "-i")
+            {
+              identify_file = true;
+            }
+	  else if (parameter == "--help" || parameter == "-?")
+	    {
+	      cout << File::get_basename(argv[0], true) << " [OPTION]... FILE" << endl << 
+                endl;
+	      cout << "LordsAWar! File Upgrading Tool " << _("version") << 
+                " " << VERSION << endl << endl;
+	      cout << _("Options:") << endl << endl; 
+	      cout << "  -?, --help                 " << _("Display this help and exit") <<endl;
+	      cout << "  -i, --identify             " << _("Show the file type instead of upgrading") << endl;
+	      cout << endl;
+	      cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << endl;
+	      exit(0);
+	    }
+	  else
+	    filename = parameter;
+	}
     }
 
   bool same_version = false;
-  bool upgraded = upgrade(argv[1], same_version);
+  Profilelist::support_backward_compatibility();
+  RecentlyPlayedGameList::support_backward_compatibility();
+  Gamelist::support_backward_compatibility();
+  FileCompat::support_backward_compatibility_for_common_files();
+  if (identify_file == false)
+    {
+      std::string tmpfile = File::get_tmp_file();
+      File::copy(filename, tmpfile);
+      bool upgraded = FileCompat::getInstance()->upgrade(tmpfile, 
+                                                         same_version);
 
-  if (same_version)
-    std::cerr << String::ucompose(_("%1 is already the latest version."), 
-                                  argv[1]) << std::endl;
-  if (!upgraded && !same_version)
-    std::cerr << String::ucompose(_("Error: %1 could not be upgraded."), 
-                                  argv[1]) << std::endl;
+      if (same_version)
+        {
+          cerr << String::ucompose(_("%1 is already the latest version."), 
+                                   filename) << endl;
+          File::erase(tmpfile);
+        }
+      else if (!upgraded && !same_version)
+        {
+          cerr << String::ucompose(_("Error: %1 could not be upgraded."), 
+                                   filename) << endl;
+          File::erase(tmpfile);
+        }
+      else
+        {
+          File::copy(tmpfile, filename);
+          File::erase(tmpfile);
+        }
+      return !upgraded;
+    }
+  else
+    {
+      std::string tag, version;
+      FileCompat::Type type = FileCompat::getInstance()->getType(filename);
+      FileCompat::getInstance()->get_tag_and_version_from_file(filename, type, tag, version);
+      cout << String::ucompose("%1 (%2 %3)", FileCompat::typeToString(type), 
+                               tag, version) << endl;
+      return EXIT_SUCCESS;
+    }
 
-  return !upgraded;
 }
+

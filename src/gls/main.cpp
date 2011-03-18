@@ -27,6 +27,7 @@
 #include "File.h"
 #include "gamelist.h"
 #include "profilelist.h"
+#include "file-compat.h"
 
 #include "gamelist-server.h"
 #include "vector.h"
@@ -41,8 +42,9 @@ int main(int argc, char* argv[])
   srand(time(NULL));         // set the random seed
 
   initialize_configuration();
-  Gamelist::upgradeOldVersionsOfFile(File::getSavePath() + "/" + RECENTLY_ADVERTISED_LIST);
-  Profilelist::upgradeOldVersionsOfFile();
+  Profilelist::support_backward_compatibility();
+  Gamelist::support_backward_compatibility();
+  FileCompat::getInstance()->initialize();
 
   Vector<int>::setMaximumWidth(1000);
 

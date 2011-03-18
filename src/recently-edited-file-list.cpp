@@ -31,6 +31,7 @@
 #include "tileset.h"
 #include "armyset.h"
 #include "cityset.h"
+#include "file-compat.h"
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -367,23 +368,16 @@ std::list<RecentlyEditedFile*> RecentlyEditedFileList::getFilesWithExtension(std
   return files;
 }
 
-bool RecentlyEditedFileList::upgradeOldVersionsOfFile()
+bool RecentlyEditedFileList::upgrade(std::string filename, std::string old_version)
 {
-  std::string filename = File::getSavePath() + "/" + RECENTLY_EDITED_LIST;
-  return upgradeOldVersionsOfFile(filename);
+  return true;
 }
 
-bool RecentlyEditedFileList::upgradeOldVersionsOfFile(std::string filename)
+void RecentlyEditedFileList::support_backward_compatibility()
 {
-  bool upgraded = false;
-  bool broken = false;
-  std::string version = "";
-  VersionLoader l(filename, d_tag, version, broken);
-  if (broken == false && version != "" && 
-      version != LORDSAWAR_RECENTLY_EDITED_VERSION)
-      upgraded = XML_Helper::rewrite_version(filename, d_tag, 
-                                             LORDSAWAR_RECENTLY_EDITED_VERSION,
-                                             false);
-  return upgraded;
+  FileCompat::getInstance()->support
+    (FileCompat::RECENTLYEDITEDFILELIST, 
+     File::get_extension(File::getUserRecentlyEditedFilesDescription()), d_tag, 
+     LORDSAWAR_RECENTLY_EDITED_VERSION, false);
 }
 // End of file

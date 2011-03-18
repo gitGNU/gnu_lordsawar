@@ -28,6 +28,7 @@
 #include "defs.h"
 #include "profile.h"
 #include "profilelist.h"
+#include "file-compat.h"
 #include "advertised-game.h"
 #include "recently-played-game-list.h"
 #include "recently-played-game.h"
@@ -308,17 +309,20 @@ void Gamelist::on_could_not_ping_game(HostedGame *game)
   game->setUnresponsive(true);
 }
 
-bool Gamelist::upgradeOldVersionsOfFile(std::string filename)
+bool Gamelist::upgrade(std::string filename, std::string old_version)
 {
-  bool upgraded = false;
-  bool broken = false;
-  std::string version = "";
-  VersionLoader l(filename, d_tag, version, broken);
-  if (broken == false && version != "" && 
-      version != LORDSAWAR_RECENTLY_HOSTED_VERSION)
-    upgraded = XML_Helper::rewrite_version(filename, d_tag, 
-                                           LORDSAWAR_RECENTLY_HOSTED_VERSION, 
-                                           false);
-  return upgraded;
+  return true;
+}
+
+void Gamelist::support_backward_compatibility()
+{
+  FileCompat::getInstance()->support
+    (FileCompat::GAMELIST, 
+     File::get_extension(File::getUserRecentlyHostedGamesDescription()), d_tag, 
+     LORDSAWAR_RECENTLY_HOSTED_VERSION, false);
+  FileCompat::getInstance()->support
+    (FileCompat::GAMELIST, 
+     File::get_extension(File::getUserRecentlyAdvertisedGamesDescription()), 
+     d_tag, LORDSAWAR_RECENTLY_HOSTED_VERSION, false);
 }
 // End of file
