@@ -36,6 +36,7 @@ int max_vector_width;
 int main(int argc, char* argv[])
 {
   std::string filename;
+  std::string rewrite;
   bool identify_file = false;
   initialize_configuration();
   Vector<int>::setMaximumWidth(1000);
@@ -56,6 +57,10 @@ int main(int argc, char* argv[])
             {
               identify_file = true;
             }
+          else if (parameter == "--rewrite" || parameter == "-r")
+            {
+              rewrite = parameter;
+            }
 	  else if (parameter == "--help" || parameter == "-?")
 	    {
 	      cout << File::get_basename(argv[0], true) << " [OPTION]... FILE" << endl << 
@@ -65,6 +70,7 @@ int main(int argc, char* argv[])
 	      cout << _("Options:") << endl << endl; 
 	      cout << "  -?, --help                 " << _("Display this help and exit") <<endl;
 	      cout << "  -i, --identify             " << _("Show the file type instead of upgrading") << endl;
+	      cout << "  -r, --rewrite VERSION      " << _("Just change the version instead of upgrading") << endl;
 	      cout << endl;
 	      cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << endl;
 	      exit(0);
@@ -79,7 +85,7 @@ int main(int argc, char* argv[])
   RecentlyPlayedGameList::support_backward_compatibility();
   Gamelist::support_backward_compatibility();
   FileCompat::support_backward_compatibility_for_common_files();
-  if (identify_file == false)
+  if (identify_file == false && rewrite == "")
     {
       std::string tmpfile = File::get_tmp_file();
       File::copy(filename, tmpfile);
@@ -105,7 +111,7 @@ int main(int argc, char* argv[])
         }
       return !upgraded;
     }
-  else
+  else if (identify_file && rewrite == "")
     {
       std::string tag, version;
       FileCompat::Type type = FileCompat::getInstance()->getType(filename);
@@ -113,6 +119,26 @@ int main(int argc, char* argv[])
       cout << String::ucompose("%1 (%2 %3)", FileCompat::typeToString(type), 
                                tag, version) << endl;
       return EXIT_SUCCESS;
+    }
+  else if (identify_file == false && rewrite != "")
+    {
+      FileCompat *fc = FileCompat::getInstance();
+      std::string tag, version;
+      FileCompat::Type type = fc->getType(filename);
+      if (fc->get_tag_and_version_from_file(filename, type, tag, version))
+        {
+          if (fc->rewrite_with_updated_version(filename, type, tag, rewrite))
+            return EXIT_SUCCESS;
+          else
+            return EXIT_FAILURE;
+        }
+      else
+        return EXIT_FAILURE;
+    }
+  else if (identify_file && rewrite != "")
+    {
+      cerr << _("Error: The --identify and --rewrite options cannot be used at the same time.") << endl;
+      return EXIT_FAILURE;
     }
 
 }
