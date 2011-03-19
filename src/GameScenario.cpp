@@ -67,7 +67,6 @@
 #include "tarhelper.h"
 #include "stacktile.h"
 #include "GraphicsCache.h"
-#include "profile.h"
 #include "file-compat.h"
 
 std::string GameScenario::d_tag = "scenario";
