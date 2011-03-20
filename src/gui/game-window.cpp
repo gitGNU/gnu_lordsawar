@@ -723,6 +723,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
     (game->bridge_burned.connect
      (sigc::mem_fun(*this, &GameWindow::on_bridge_burned)));
   connections.push_back
+    (game->keeper_captured.connect
+     (sigc::mem_fun(*this, &GameWindow::on_keeper_captured)));
+  connections.push_back
     (game->stole_gold.connect
      (sigc::mem_fun(*this, &GameWindow::on_gold_stolen)));
   connections.push_back
@@ -3739,6 +3742,19 @@ void GameWindow::on_bridge_burned(Hero *hero)
   std::string s = "";
   s += 
     String::ucompose(_("%1 has burned a bridge!  None shall pass this way again!"), hero->getName());
+  TimedMessageDialog dialog(*window, s, 30);
+
+  dialog.show_all();
+  dialog.run();
+  dialog.hide();
+  return;
+}
+
+void GameWindow::on_keeper_captured(Hero *hero, Ruin *ruin, Glib::ustring name)
+{
+  std::string s = "";
+  s += String::ucompose(_("%1 has turned a unit of %2 from %3!"), 
+                        hero->getName(), name, ruin->getName());
   TimedMessageDialog dialog(*window, s, 30);
 
   dialog.show_all();

@@ -86,11 +86,13 @@ class ItemProto: public Renamable
           BANISH_WORMS    = 0x00010000,
           //! Burn Bridge
           BURN_BRIDGE     = 0x00020000,
+          //! Persuade a monster from a ruin into joining the stack.
+          CAPTURE_KEEPER  = 0x00040000,
         };
 
         enum UsableItems {
           USABLE = STEAL_GOLD | SINK_SHIPS | PICK_UP_BAGS | ADD_2MP_STACK
-            | BANISH_WORMS | BURN_BRIDGE,
+            | BANISH_WORMS | BURN_BRIDGE | CAPTURE_KEEPER,
         };
 
 
@@ -137,6 +139,11 @@ class ItemProto: public Renamable
 
         bool usableOnVictimPlayer() const { if (d_bonus & SINK_SHIPS || d_bonus & STEAL_GOLD) return true; else return false;};
 
+        guint32 getArmyTypeToKill() const {return d_army_type_to_kill;};
+        void setArmyTypeToKill(guint32 type) {d_army_type_to_kill = type;};
+
+        double getPercentGoldToSteal() const {return d_steal_gold_percent;};
+        void setPercentGoldToSteal(double p) {d_steal_gold_percent = p;};
     protected:
 	//! The item's bonus.
 	/**
@@ -146,6 +153,13 @@ class ItemProto: public Renamable
         
         //! The number of uses this item has before it is spent.
         guint32 d_uses_left;
+
+        //! Which army type to kill if d_bonus includes BANISH_WORMS.
+        guint32 d_army_type_to_kill;
+
+        //! How much gold to steal if d_bonus includes STEAL_GOLD.
+        double d_steal_gold_percent;
+
     private:
 
 	static std::string bonusFlagToString(ItemProto::Bonus type);

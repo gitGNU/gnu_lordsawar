@@ -145,6 +145,10 @@ void Game::addPlayer(Player *p)
 	(p->bridge_burned.connect
 	 (sigc::mem_fun(bridge_burned, &sigc::signal<void, Hero*>::emit)));
 
+      connections[p->getId()].push_back
+	(p->keeper_captured.connect
+	 (sigc::mem_fun(keeper_captured, &sigc::signal<void, Hero*, Ruin*, Glib::ustring>::emit)));
+
     }
       
       

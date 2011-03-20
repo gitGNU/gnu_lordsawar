@@ -4501,6 +4501,21 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim)
       if (burned)
         bridge_burned.emit(hero);
     }
+  if (item->getBonus() & ItemProto::CAPTURE_KEEPER)
+    {
+      Vector<int> pos = d_stacklist->getPosition(hero->getId());
+      Ruin *ruin = GameMap::getInstance()->getRuin(pos);
+      if (ruin && ruin->isSearched() == false)
+        {
+          if (ruin->getOccupant() && ruin->getOccupant()->size() > 0)
+            {
+              Glib::ustring name = ruin->getOccupant()->front()->getName();
+              addStack(ruin->getOccupant());
+              ruin->setOccupant(0);
+              keeper_captured.emit(hero, ruin, name);
+            }
+        }
+    }
 
   hero->getBackpack()->useItem(item);
   supdatingStack.emit(0);

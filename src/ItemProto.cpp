@@ -37,7 +37,20 @@ ItemProto::ItemProto(XML_Helper* helper)
     helper->getData(bonus_str, "bonus");
     d_bonus = bonusFlagsFromString(bonus_str);
 
-    helper->getData(d_uses_left, "uses_left");
+    if (isUsable())
+      {
+        helper->getData(d_uses_left, "uses_left");
+        if (d_bonus & ItemProto::STEAL_GOLD)
+          helper->getData(d_steal_gold_percent, "steal_gold_percent");
+        if (d_bonus & ItemProto::BANISH_WORMS)
+          helper->getData(d_army_type_to_kill, "army_type_to_kill");
+      }
+    else
+      {
+        d_uses_left = 0;
+        d_steal_gold_percent = 0.0;
+        d_army_type_to_kill = 0;
+      }
 }
 
 ItemProto::ItemProto(std::string name)
@@ -45,10 +58,14 @@ ItemProto::ItemProto(std::string name)
 {
   d_bonus = 0;
   d_uses_left = 0;
+  d_army_type_to_kill = 0;
+  d_steal_gold_percent = 0.0;
 }
 
 ItemProto::ItemProto(const ItemProto& orig)
-:Renamable(orig), d_bonus(orig.d_bonus), d_uses_left(orig.d_uses_left)
+:Renamable(orig), d_bonus(orig.d_bonus), d_uses_left(orig.d_uses_left),
+    d_army_type_to_kill(orig.d_army_type_to_kill),
+    d_steal_gold_percent(orig.d_steal_gold_percent)
 {
 }
 
@@ -65,7 +82,15 @@ bool ItemProto::save(XML_Helper* helper) const
   retval &= helper->saveData("name", getName(false));
   std::string bonus_str = bonusFlagsToString(d_bonus);
   retval &= helper->saveData("bonus", bonus_str);
-  retval &= helper->saveData("uses_left", d_uses_left);
+  if (isUsable())
+      {
+        retval &= helper->saveData("uses_left", d_uses_left);
+        if (d_bonus & ItemProto::STEAL_GOLD)
+          retval &= helper->saveData("steal_gold_percent", 
+                                     d_steal_gold_percent);
+        if (d_bonus & ItemProto::BANISH_WORMS)
+          retval &= helper->saveData("army_type_to_kill", d_army_type_to_kill);
+      }
 
   retval &= helper->closeTag();
 
@@ -130,6 +155,8 @@ std::string ItemProto::getBonusDescription() const
     s.push_back(_("Kills all Giant Worms"));
   if (getBonus(ItemProto::BURN_BRIDGE))
     s.push_back(_("Destroys a Bridge"));
+  if (getBonus(ItemProto::CAPTURE_KEEPER))
+    s.push_back(_("Removes monster from ruin"));
 
   if (battle > 0)
     s.push_back(String::ucompose(_("+%1 Battle"), battle));
@@ -192,6 +219,8 @@ std::string ItemProto::bonusFlagToString(ItemProto::Bonus bonus)
       return "ItemProto::BANISH_WORMS";
     case ItemProto::BURN_BRIDGE:
       return "ItemProto::BURN_BRIDGE";
+    case ItemProto::CAPTURE_KEEPER:
+      return "ItemProto::CAPTURE_KEEPER";
     }
   return "ItemProto::ADD1STR";
 }
@@ -235,6 +264,8 @@ std::string ItemProto::bonusFlagsToString(guint32 bonus)
     bonuses += " " + bonusFlagToString(ItemProto::BANISH_WORMS);
   if (bonus & ItemProto::BURN_BRIDGE)
     bonuses += " " + bonusFlagToString(ItemProto::BURN_BRIDGE);
+  if (bonus & ItemProto::CAPTURE_KEEPER)
+    bonuses += " " + bonusFlagToString(ItemProto::CAPTURE_KEEPER);
   return bonuses;
 }
 
@@ -295,5 +326,7 @@ ItemProto::Bonus ItemProto::bonusFlagFromString(std::string str)
     return ItemProto::BANISH_WORMS;
   else if (str == "ItemProto::BURN_BRIDGE")
     return ItemProto::BURN_BRIDGE;
+  else if (str == "ItemProto::CAPTURE_KEEPER")
+    return ItemProto::CAPTURE_KEEPER;
   return ItemProto::ADD1STR;
 }

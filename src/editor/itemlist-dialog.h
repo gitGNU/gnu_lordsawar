@@ -68,7 +68,10 @@ class ItemlistDialog: public sigc::trackable
     Gtk::CheckButton *sinks_ships_checkbutton;
     Gtk::CheckButton *banish_worms_checkbutton;
     Gtk::CheckButton *burn_bridge_checkbutton;
+    Gtk::CheckButton *capture_keeper_checkbutton;
     Gtk::SpinButton *uses_spinbutton;
+    Gtk::Button *kill_army_type_button;
+    Gtk::SpinButton *steal_percent_spinbutton;
 
     class ItemsColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -115,6 +118,9 @@ class ItemlistDialog: public sigc::trackable
     void on_banish_worms_toggled();
     void on_burn_bridge_toggled();
     void on_uses_changed();
+    void on_kill_army_type_clicked();
+    void update_kill_army_type_name();
+    void on_capture_keeper_toggled();
 };
 
 #endif

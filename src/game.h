@@ -176,6 +176,7 @@ class Game
     sigc::signal<void, Hero *, guint32> mp_added_to_hero_stack;
     sigc::signal<void, Hero *, guint32> worms_killed;
     sigc::signal<void, Hero *> bridge_burned;
+    sigc::signal<void, Hero *, Ruin*, Glib::ustring> keeper_captured;
     
     void addPlayer(Player *p);
 

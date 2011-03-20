@@ -35,10 +35,13 @@
 #include "Configuration.h"
 #include "Itemlist.h"
 #include "Tile.h"
+#include "playerlist.h"
+#include "armysetlist.h"
 
 #include "ucompose.hpp"
 
 #include "glade-helpers.h"
+#include "select-army-dialog.h"
 
 
 ItemlistDialog::ItemlistDialog()
@@ -61,6 +64,9 @@ ItemlistDialog::ItemlistDialog()
     remove_item_button->signal_clicked().connect
       (sigc::mem_fun(this, &ItemlistDialog::on_remove_item_clicked));
     xml->get_widget("item_vbox", item_vbox);
+    xml->get_widget("kill_army_type_button", kill_army_type_button);
+    kill_army_type_button->signal_clicked().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_kill_army_type_clicked));
 
     items_list = Gtk::ListStore::create(items_columns);
     items_treeview->set_model(items_list);
@@ -128,9 +134,13 @@ ItemlistDialog::ItemlistDialog()
     xml->get_widget("burn_bridge_checkbutton", burn_bridge_checkbutton);
     burn_bridge_checkbutton->signal_toggled().connect(
 	sigc::mem_fun(this, &ItemlistDialog::on_burn_bridge_toggled));
+    xml->get_widget("capture_keeper_checkbutton", capture_keeper_checkbutton);
+    capture_keeper_checkbutton->signal_toggled().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_capture_keeper_toggled));
     xml->get_widget("uses_spinbutton", uses_spinbutton);
     uses_spinbutton->signal_changed().connect(
 	sigc::mem_fun(this, &ItemlistDialog::on_uses_changed));
+    xml->get_widget("steal_percent_spinbutton", steal_percent_spinbutton);
 
     update_item_panel();
     update_itemlist_buttons();
@@ -231,8 +241,13 @@ void ItemlistDialog::fill_item_info(ItemProto *item)
   steals_gold_checkbutton->set_active (item->getBonus(ItemProto::STEAL_GOLD));
   sinks_ships_checkbutton->set_active (item->getBonus(ItemProto::SINK_SHIPS));
   banish_worms_checkbutton->set_active (item->getBonus(ItemProto::BANISH_WORMS));
+  burn_bridge_checkbutton->set_active (item->getBonus(ItemProto::BURN_BRIDGE));
+  capture_keeper_checkbutton->set_active 
+    (item->getBonus(ItemProto::CAPTURE_KEEPER));
   uses_spinbutton->set_value(double(item->getNumberOfUsesLeft()));
   inhibit_bonus_checkbuttons = 0;
+  steal_percent_spinbutton->set_value(item->getPercentGoldToSteal());
+  update_kill_army_type_name();
 }
 
 void ItemlistDialog::on_name_changed()
@@ -374,6 +389,8 @@ void ItemlistDialog::on_add5goldpercity_toggled()
 void ItemlistDialog::on_steals_gold_toggled()
 {
   on_checkbutton_toggled(steals_gold_checkbutton, ItemProto::STEAL_GOLD);
+  steal_percent_spinbutton->set_sensitive
+    (steals_gold_checkbutton->get_active());
 }
 
 void ItemlistDialog::on_sinks_ships_toggled()
@@ -384,6 +401,7 @@ void ItemlistDialog::on_sinks_ships_toggled()
 void ItemlistDialog::on_banish_worms_toggled()
 {
   on_checkbutton_toggled(banish_worms_checkbutton, ItemProto::BANISH_WORMS);
+  kill_army_type_button->set_sensitive(banish_worms_checkbutton->get_active());
 }
 
 void ItemlistDialog::on_burn_bridge_toggled()
@@ -408,4 +426,41 @@ void ItemlistDialog::on_uses_changed()
     }
   else
     return;
+}
+	
+void ItemlistDialog::on_kill_army_type_clicked()
+{
+    Player *neutral = Playerlist::getInstance()->getNeutral();
+    SelectArmyDialog d(neutral, false, true);
+    d.set_parent_window(*dialog);
+    d.run();
+
+    const ArmyProto *army = d.get_selected_army();
+    if (army)
+      d_item->setArmyTypeToKill(army->getTypeId());
+    else
+      d_item->setArmyTypeToKill(0);
+
+    update_kill_army_type_name();
+}
+
+void ItemlistDialog::update_kill_army_type_name()
+{
+    Player *neutral = Playerlist::getInstance()->getNeutral();
+    Glib::ustring name;
+    if (banish_worms_checkbutton->get_active() == true)
+      {
+        Armysetlist *asl = Armysetlist::getInstance();
+	name = asl->getArmy(neutral->getArmyset(), 
+                            d_item->getArmyTypeToKill())->getName();
+      }
+    else
+	name = _("No army type selected");
+    
+    kill_army_type_button->set_label(name);
+}
+	
+void ItemlistDialog::on_capture_keeper_toggled()
+{
+  on_checkbutton_toggled(capture_keeper_checkbutton, ItemProto::CAPTURE_KEEPER);
 }
