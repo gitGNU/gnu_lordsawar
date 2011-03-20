@@ -7,192 +7,154 @@
 		<itemproto>
 			<d_name>Shield of Courage</d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Troll Helm</d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Icesword</d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Armour of Gods</d_name>
 			<d_bonus> ItemProto::ADD3STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Crimson Banner</d_name>
 			<d_bonus> ItemProto::ADD1STACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Crown of Loriel</d_name>
 			<d_bonus> ItemProto::ADD1STACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Ring of Power</d_name>
 			<d_bonus> ItemProto::ADD2STACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Horn of Ages</d_name>
 			<d_bonus> ItemProto::ADD2STACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Staff of Ruling</d_name>
 			<d_bonus> ItemProto::ADD3STACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Wings of Flying</d_name>
 			<d_bonus> ItemProto::FLYSTACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Wand of Flight</d_name>
 			<d_bonus> ItemProto::FLYSTACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Ring of Travel</d_name>
 			<d_bonus> ItemProto::DOUBLEMOVESTACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Phantom Steed</d_name>
 			<d_bonus> ItemProto::DOUBLEMOVESTACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Staff of Movement</d_name>
 			<d_bonus> ItemProto::DOUBLEMOVESTACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Darksword</d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Beserker Helm</d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Bow of Eldros</d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Sceptre of Loriel</d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Magic Carpet</d_name>
 			<d_bonus> ItemProto::FLYSTACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Cup of Haste</d_name>
 			<d_bonus> ItemProto::DOUBLEMOVESTACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Boots of Speed</d_name>
 			<d_bonus> ItemProto::DOUBLEMOVESTACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Eldros's Pouch</d_name>
 			<d_bonus> ItemProto::ADD2GOLDPERCITY</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Spear of Ank</d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Lock of Safety</d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Horn of Siege</d_name>
 			<d_bonus> ItemProto::ADD3STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Staff of Might</d_name>
 			<d_bonus> ItemProto::ADD3STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Wings of the Eagle</d_name>
 			<d_bonus> ItemProto::FLYSTACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Everful Purse</d_name>
 			<d_bonus> ItemProto::ADD2GOLDPERCITY</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Okradon's Pouch</d_name>
 			<d_bonus> ItemProto::ADD4GOLDPERCITY</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Firesword</d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Sword of Death</d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Chimes of Safety</d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Lightsword</d_name>
 			<d_bonus> ItemProto::ADD2STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Orb of Loriel</d_name>
 			<d_bonus> ItemProto::ADD1STACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Witch's Broom</d_name>
 			<d_bonus> ItemProto::FLYSTACK</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Silver Purse</d_name>
 			<d_bonus> ItemProto::ADD4GOLDPERCITY</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Tome of War</d_name>
 			<d_bonus> ItemProto::ADD1STR</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 		<itemproto>
 			<d_name>Horn of Plenty</d_name>
 			<d_bonus> ItemProto::ADD2GOLDPERCITY ItemProto::ADD4GOLDPERCITY</d_bonus>
-			<d_uses_left>0</d_uses_left>
 		</itemproto>
 	</itemlist>
 	<playerlist>
@@ -6036,7 +5998,6 @@ b7b5b7b4b5b1b5b9b6b1bababab9b3b8b4b8b4b9b5b6b5b2b5b7bc951207020603080b0708070705
 					<d_plantable>false</d_plantable>
 					<d_id>645</d_id>
 					<d_type>0</d_type>
-					<d_uses_left>0</d_uses_left>
 					<d_bonus> ItemProto::ADD1STR</d_bonus>
 				</item>
 			</reward>
