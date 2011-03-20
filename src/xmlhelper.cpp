@@ -735,6 +735,8 @@ bool XML_Helper::lang_check(std::string lang)
   static char *envlang = getenv("LANG");
   if (envlang == NULL)
     envlang = getenv("LC_ALL");
+  if (envlang == NULL)
+    envlang = getenv("LC_CTYPE");
   if (lang == "")
     return true;
   if (envlang == NULL)
