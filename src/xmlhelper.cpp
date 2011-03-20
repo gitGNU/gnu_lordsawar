@@ -733,8 +733,12 @@ bool XML_Helper::tag_open(std::string tag, std::string version, std::string lang
 bool XML_Helper::lang_check(std::string lang)
 {
   static char *envlang = getenv("LANG");
+  if (envlang == NULL)
+    envlang = getenv("LC_ALL");
   if (lang == "")
     return true;
+  if (envlang == NULL)
+    return false;
   if (lang == envlang)
     return true;
   //try harder
