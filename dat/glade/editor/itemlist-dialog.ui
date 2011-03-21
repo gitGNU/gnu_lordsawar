@@ -2,6 +2,38 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkListStore" id="liststore1">
+    <columns>
+      <!-- column-name buildingtype -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Anywhere</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">On a City</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">On a Ruin</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">On a Temple</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">On a Signpost</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">On a Road</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">On a Port</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">On a Bridge</col>
+      </row>
+    </data>
+  </object>
   <object class="GtkDialog" id="dialog">
     <property name="border_width">6</property>
     <property name="title" translatable="yes">Item Editor</property>
@@ -464,7 +496,7 @@
                                             <child>
                                               <object class="GtkTable" id="table3">
                                                 <property name="visible">True</property>
-                                                <property name="n_rows">5</property>
+                                                <property name="n_rows">6</property>
                                                 <property name="n_columns">2</property>
                                                 <child>
                                                   <object class="GtkCheckButton" id="steals_gold_checkbutton">
@@ -541,15 +573,6 @@
                                                   </packing>
                                                 </child>
                                                 <child>
-                                                  <placeholder/>
-                                                </child>
-                                                <child>
-                                                  <placeholder/>
-                                                </child>
-                                                <child>
-                                                  <placeholder/>
-                                                </child>
-                                                <child>
                                                   <object class="GtkCheckButton" id="capture_keeper_checkbutton">
                                                     <property name="label" translatable="yes">Capture Ruin Keeper</property>
                                                     <property name="visible">True</property>
@@ -561,6 +584,64 @@
                                                     <property name="top_attach">4</property>
                                                     <property name="bottom_attach">5</property>
                                                   </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="summon_monster_checkbutton">
+                                                    <property name="label" translatable="yes">Summon Monster</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="top_attach">5</property>
+                                                    <property name="bottom_attach">6</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkHBox" id="hbox4">
+                                                    <property name="visible">True</property>
+                                                    <child>
+                                                      <object class="GtkButton" id="summon_army_type_button">
+                                                        <property name="visible">True</property>
+                                                        <property name="can_focus">True</property>
+                                                        <property name="receives_default">True</property>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="position">0</property>
+                                                      </packing>
+                                                    </child>
+                                                    <child>
+                                                      <object class="GtkComboBox" id="building_type_to_summon_on_combobox">
+                                                        <property name="visible">True</property>
+                                                        <property name="model">liststore1</property>
+                                                        <child>
+                                                          <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                                                          <attributes>
+                                                            <attribute name="text">0</attribute>
+                                                          </attributes>
+                                                        </child>
+                                                      </object>
+                                                      <packing>
+                                                        <property name="position">1</property>
+                                                      </packing>
+                                                    </child>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="left_attach">1</property>
+                                                    <property name="right_attach">2</property>
+                                                    <property name="top_attach">5</property>
+                                                    <property name="bottom_attach">6</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                                <child>
+                                                  <placeholder/>
                                                 </child>
                                               </object>
                                               <packing>

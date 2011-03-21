@@ -1473,6 +1473,7 @@ class Player: public sigc::trackable
         sigc::signal<void, Hero *, guint32> worms_killed;
         sigc::signal<void, Hero *> bridge_burned;
         sigc::signal<void, Hero *, Ruin*, Glib::ustring> keeper_captured;
+        sigc::signal<void, Hero *, Glib::ustring> monster_summoned;
         
 	void loadPbmGame();
 	//! Check the history to see if we ever conquered the given city.

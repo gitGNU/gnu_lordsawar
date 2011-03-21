@@ -149,6 +149,10 @@ void Game::addPlayer(Player *p)
 	(p->keeper_captured.connect
 	 (sigc::mem_fun(keeper_captured, &sigc::signal<void, Hero*, Ruin*, Glib::ustring>::emit)));
 
+      connections[p->getId()].push_back
+	(p->monster_summoned.connect
+	 (sigc::mem_fun(monster_summoned, &sigc::signal<void, Hero*, Glib::ustring>::emit)));
+
     }
       
       

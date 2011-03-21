@@ -88,11 +88,13 @@ class ItemProto: public Renamable
           BURN_BRIDGE     = 0x00020000,
           //! Persuade a monster from a ruin into joining the stack.
           CAPTURE_KEEPER  = 0x00040000,
+          //! Summon a monster.
+          SUMMON_MONSTER  = 0x00080000,
         };
 
         enum UsableItems {
           USABLE = STEAL_GOLD | SINK_SHIPS | PICK_UP_BAGS | ADD_2MP_STACK
-            | BANISH_WORMS | BURN_BRIDGE | CAPTURE_KEEPER,
+            | BANISH_WORMS | BURN_BRIDGE | CAPTURE_KEEPER | SUMMON_MONSTER,
         };
 
 
@@ -113,6 +115,8 @@ class ItemProto: public Renamable
         
         //! Save the item to the opened saved-game file.
         bool save(XML_Helper* helper) const;
+        //! Save the item, but not the enclosing d_tag.
+        bool saveContents(XML_Helper* helper) const;
 
         //! Returns whether or not the Item has a particular special bonus.
         guint32 getBonus() const {return d_bonus;};
@@ -144,6 +148,12 @@ class ItemProto: public Renamable
 
         double getPercentGoldToSteal() const {return d_steal_gold_percent;};
         void setPercentGoldToSteal(double p) {d_steal_gold_percent = p;};
+
+        guint32 getArmyTypeToSummon() const {return d_army_type_to_summon;};
+        void setArmyTypeToSummon(guint32 type) {d_army_type_to_summon = type;};
+
+        guint32 getBuildingTypeToSummonOn() const {return d_building_type_to_summon_on;};
+        void setBuildingTypeToSummonOn(guint32 type) {d_building_type_to_summon_on = type;};
     protected:
 	//! The item's bonus.
 	/**
@@ -160,6 +170,15 @@ class ItemProto: public Renamable
         //! How much gold to steal if d_bonus includes STEAL_GOLD.
         double d_steal_gold_percent;
 
+        //! Which army type to summon when d_bonus includes SUMMON_MONSTER.
+        guint32 d_army_type_to_summon;
+
+        //! The building type to allow summoning in SUMMON_MONSTER.
+        /**
+         * When this value is 0 (Building::NONE), it means the monster can
+         * be summoned on any tile.
+         */
+        guint32 d_building_type_to_summon_on;
     private:
 
 	static std::string bonusFlagToString(ItemProto::Bonus type);

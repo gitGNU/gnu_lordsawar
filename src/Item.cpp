@@ -25,6 +25,7 @@
 #include "File.h"
 #include "playerlist.h"
 #include "ucompose.hpp"
+#include "maptile.h"
 
 std::string Item::d_tag = "item";
 using namespace std;
@@ -108,7 +109,7 @@ bool Item::save(XML_Helper* helper) const
 
   // A template is never saved, so we assume this class is a real-life item
   retval &= helper->openTag(Item::d_tag);
-  retval &= helper->saveData("name", getName(false));
+  retval &= saveContents(helper);
   retval &= helper->saveData("plantable", d_plantable);
   if (d_plantable)
     {
@@ -117,11 +118,6 @@ bool Item::save(XML_Helper* helper) const
     }
   retval &= helper->saveData("id", d_id);
   retval &= helper->saveData("type", d_type);
-  retval &= helper->saveData("uses_left", d_uses_left);
-
-  std::string bonus_str = ItemProto::bonusFlagsToString(d_bonus);
-  retval &= helper->saveData("bonus", bonus_str);
-
   retval &= helper->closeTag();
 
   return retval;

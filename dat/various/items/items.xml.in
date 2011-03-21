@@ -192,4 +192,11 @@
         <d_bonus>ItemProto::CAPTURE_KEEPER</d_bonus>
         <d_uses_left>3</d_uses_left>
     </itemproto>
+    <itemproto>
+        <_d_name>Whistle of Angelic Assistance</_d_name>
+        <d_bonus>ItemProto::SUMMON_MONSTER</d_bonus>
+        <d_uses_left>3</d_uses_left>
+        <d_army_type_to_summon>25</d_army_type_to_summon>
+        <d_building_type_to_summon_on>Maptile::TEMPLE</d_building_type_to_summon_on>
+    </itemproto>
 </itemlist>

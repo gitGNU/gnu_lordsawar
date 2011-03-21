@@ -67,6 +67,11 @@ ItemlistDialog::ItemlistDialog()
     xml->get_widget("kill_army_type_button", kill_army_type_button);
     kill_army_type_button->signal_clicked().connect(
 	sigc::mem_fun(this, &ItemlistDialog::on_kill_army_type_clicked));
+    xml->get_widget("summon_army_type_button", summon_army_type_button);
+    summon_army_type_button->signal_clicked().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_summon_army_type_clicked));
+    xml->get_widget("building_type_to_summon_on_combobox", 
+                    building_type_to_summon_on_combobox);
 
     items_list = Gtk::ListStore::create(items_columns);
     items_treeview->set_model(items_list);
@@ -137,6 +142,9 @@ ItemlistDialog::ItemlistDialog()
     xml->get_widget("capture_keeper_checkbutton", capture_keeper_checkbutton);
     capture_keeper_checkbutton->signal_toggled().connect(
 	sigc::mem_fun(this, &ItemlistDialog::on_capture_keeper_toggled));
+    xml->get_widget("summon_monster_checkbutton", summon_monster_checkbutton);
+    summon_monster_checkbutton->signal_toggled().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_summon_monster_toggled));
     xml->get_widget("uses_spinbutton", uses_spinbutton);
     uses_spinbutton->signal_changed().connect(
 	sigc::mem_fun(this, &ItemlistDialog::on_uses_changed));
@@ -247,7 +255,13 @@ void ItemlistDialog::fill_item_info(ItemProto *item)
   uses_spinbutton->set_value(double(item->getNumberOfUsesLeft()));
   inhibit_bonus_checkbuttons = 0;
   steal_percent_spinbutton->set_value(item->getPercentGoldToSteal());
+  summon_monster_checkbutton->set_active 
+    (item->getBonus(ItemProto::SUMMON_MONSTER));
+  building_type_to_summon_on_combobox->set_active(item->getBuildingTypeToSummonOn());
   update_kill_army_type_name();
+  update_summon_army_type_name();
+  building_type_to_summon_on_combobox->set_sensitive(summon_monster_checkbutton->get_active());
+
 }
 
 void ItemlistDialog::on_name_changed()
@@ -450,12 +464,16 @@ void ItemlistDialog::update_kill_army_type_name()
     Glib::ustring name;
     if (banish_worms_checkbutton->get_active() == true)
       {
+        kill_army_type_button->set_sensitive(true);
         Armysetlist *asl = Armysetlist::getInstance();
 	name = asl->getArmy(neutral->getArmyset(), 
                             d_item->getArmyTypeToKill())->getName();
       }
     else
-	name = _("No army type selected");
+      {
+        name = _("No army type selected");
+        kill_army_type_button->set_sensitive(false);
+      }
     
     kill_army_type_button->set_label(name);
 }
@@ -464,3 +482,49 @@ void ItemlistDialog::on_capture_keeper_toggled()
 {
   on_checkbutton_toggled(capture_keeper_checkbutton, ItemProto::CAPTURE_KEEPER);
 }
+    
+void ItemlistDialog::on_summon_monster_toggled()
+{
+  on_checkbutton_toggled(summon_monster_checkbutton, ItemProto::SUMMON_MONSTER);
+  summon_army_type_button->set_sensitive
+    (summon_monster_checkbutton->get_active());
+  building_type_to_summon_on_combobox->set_sensitive
+    (summon_monster_checkbutton->get_active());
+}
+    
+void ItemlistDialog::on_summon_army_type_clicked()
+{
+    Player *neutral = Playerlist::getInstance()->getNeutral();
+    Glib::ustring name;
+    if (summon_monster_checkbutton->get_active() == true)
+      {
+        Armysetlist *asl = Armysetlist::getInstance();
+	name = asl->getArmy(neutral->getArmyset(), 
+                            d_item->getArmyTypeToSummon())->getName();
+      }
+    else
+	name = _("No army type selected");
+    
+    summon_army_type_button->set_label(name);
+}
+
+void ItemlistDialog::update_summon_army_type_name()
+{
+    Player *neutral = Playerlist::getInstance()->getNeutral();
+    Glib::ustring name;
+    if (summon_monster_checkbutton->get_active() == true)
+      {
+        summon_army_type_button->set_sensitive(true);
+        Armysetlist *asl = Armysetlist::getInstance();
+	name = asl->getArmy(neutral->getArmyset(), 
+                            d_item->getArmyTypeToSummon())->getName();
+      }
+    else
+      {
+	name = _("No army type selected");
+        summon_army_type_button->set_sensitive(false);
+      }
+    
+    summon_army_type_button->set_label(name);
+}
+	

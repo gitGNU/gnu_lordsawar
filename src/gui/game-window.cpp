@@ -726,6 +726,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
     (game->keeper_captured.connect
      (sigc::mem_fun(*this, &GameWindow::on_keeper_captured)));
   connections.push_back
+    (game->monster_summoned.connect
+     (sigc::mem_fun(*this, &GameWindow::on_monster_summoned)));
+  connections.push_back
     (game->stole_gold.connect
      (sigc::mem_fun(*this, &GameWindow::on_gold_stolen)));
   connections.push_back
@@ -3755,6 +3758,19 @@ void GameWindow::on_keeper_captured(Hero *hero, Ruin *ruin, Glib::ustring name)
   std::string s = "";
   s += String::ucompose(_("%1 has turned a unit of %2 from %3!"), 
                         hero->getName(), name, ruin->getName());
+  TimedMessageDialog dialog(*window, s, 30);
+
+  dialog.show_all();
+  dialog.run();
+  dialog.hide();
+  return;
+}
+
+void GameWindow::on_monster_summoned(Hero *hero, Glib::ustring name)
+{
+  std::string s = "";
+  s += String::ucompose(_("A unit of %1 has come to the aid of %2!"), 
+                        name, hero->getName());
   TimedMessageDialog dialog(*window, s, 30);
 
   dialog.show_all();

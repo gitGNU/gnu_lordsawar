@@ -318,6 +318,7 @@ class GameWindow: public Decorated
     void on_worms_killed(Hero *hero, guint32 num_worms_killed);
     void on_bridge_burned(Hero *hero);
     void on_keeper_captured(Hero *hero, Ruin*, Glib::ustring monster_name);
+    void on_monster_summoned(Hero *hero, Glib::ustring monster_name);
     void on_mp_added_to_hero_stack(Hero *hero, guint32 mp);
     void on_stack_moves(Stack *stack, Vector<int> pos);
     void end_turn_play_by_mail ();

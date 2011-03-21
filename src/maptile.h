@@ -190,6 +190,7 @@ class Maptile
 
 	static Maptile::Building buildingFromString(const std::string str);
 	static std::string buildingToString(const Maptile::Building bldg);
+        static Glib::ustring buildingToFriendlyName(const guint32 bldg);
     private:
 	//! The index of the Tile within the Tileset (Maptile::d_tileSet).
 	/**

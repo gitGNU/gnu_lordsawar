@@ -140,6 +140,30 @@ bool Maptile::isHillyTerrain()
   return false;
 }
 
+Maptile::Building Maptile::buildingFromString(std::string str)
+{
+  if (str.size() > 0 && isdigit(str.c_str()[0]))
+    return Maptile::Building(atoi(str.c_str()));
+  if (str == "Maptile::NONE")
+    return Maptile::NONE;
+  else if (str == "Maptile::CITY")
+    return Maptile::CITY;
+  else if (str == "Maptile::RUIN")
+    return Maptile::RUIN;
+  else if (str == "Maptile::TEMPLE")
+    return Maptile::TEMPLE;
+  else if (str == "Maptile::SIGNPOST")
+    return Maptile::SIGNPOST;
+  else if (str == "Maptile::ROAD")
+    return Maptile::ROAD;
+  else if (str == "Maptile::PORT")
+    return Maptile::PORT;
+  else if (str == "Maptile::BRIDGE")
+    return Maptile::BRIDGE;
+    
+  return Maptile::NONE;
+}
+
 std::string Maptile::buildingToString(const Maptile::Building bldg)
 {
   switch (bldg)
@@ -172,27 +196,27 @@ std::string Maptile::buildingToString(const Maptile::Building bldg)
   return "Maptile::NONE";
 }
 
-Maptile::Building Maptile::buildingFromString(std::string str)
+Glib::ustring Maptile::buildingToFriendlyName(const guint32 bldg)
 {
-  if (str.size() > 0 && isdigit(str.c_str()[0]))
-    return Maptile::Building(atoi(str.c_str()));
-  if (str == "Maptile::NONE")
-    return Maptile::NONE;
-  else if (str == "Maptile::CITY")
-    return Maptile::CITY;
-  else if (str == "Maptile::RUIN")
-    return Maptile::RUIN;
-  else if (str == "Maptile::TEMPLE")
-    return Maptile::TEMPLE;
-  else if (str == "Maptile::SIGNPOST")
-    return Maptile::SIGNPOST;
-  else if (str == "Maptile::ROAD")
-    return Maptile::ROAD;
-  else if (str == "Maptile::PORT")
-    return Maptile::PORT;
-  else if (str == "Maptile::BRIDGE")
-    return Maptile::BRIDGE;
-    
-  return Maptile::NONE;
+  switch (Building(bldg))
+    {
+    case Maptile::NONE:
+      return _("None");
+    case Maptile::CITY:
+      return _("City");
+    case Maptile::RUIN:
+      return _("Ruin");
+    case Maptile::TEMPLE:
+      return _("Temple");
+    case Maptile::SIGNPOST:
+      return _("Signpost");
+    case Maptile::ROAD:
+      return _("Road");
+    case Maptile::PORT:
+      return _("Port");
+    case Maptile::BRIDGE:
+      return _("Bridge");
+    }
+  return _("None");
 }
 // End of file

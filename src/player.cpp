@@ -4516,6 +4516,22 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim)
             }
         }
     }
+  if (item->getBonus() & ItemProto::SUMMON_MONSTER)
+    {
+      Vector<int> pos = d_stacklist->getPosition(hero->getId());
+      Maptile::Building building = GameMap::getInstance()->getBuilding(pos);
+      if (building == item->getBuildingTypeToSummonOn() ||
+          item->getBuildingTypeToSummonOn() == 0)
+        {
+          Stack *stack = getStacklist()->getArmyStackById(hero->getId());
+          StackReflist *stacks = new StackReflist();
+          //okay we're going to add some allies now.
+          const ArmyProto *a = Armysetlist::getInstance()->getArmy(Playerlist::getActiveplayer()->getArmyset(), item->getArmyTypeToSummon());
+          giveReward(stack, new Reward_Allies(a, 1), stacks);
+          delete stacks;
+          monster_summoned.emit(hero, a->getName());
+        }
+    }
 
   hero->getBackpack()->useItem(item);
   supdatingStack.emit(0);
