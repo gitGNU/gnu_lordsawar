@@ -4474,22 +4474,14 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim)
   if (item->getBonus() & ItemProto::BANISH_WORMS)
     {
       guint32 num_worms_killed = 0;
-      Armyset *armyset = Armysetlist::getInstance()->getArmyset(getArmyset());
-      for (Armyset::iterator i = armyset->begin(); i != armyset->end(); i++)
+      std::list<History*> history;
+      Playerlist *pl = Playerlist::getInstance();
+      for (Playerlist::iterator j = pl->begin(); j != pl->end(); j++)
         {
-          //this is an annoying way to check if it's a unit of giant worms.
-          if ((*i)->getImageName(Shield::NEUTRAL) == "giantworms")
-            {
-              std::list<History*> history;
-              Playerlist *pl = Playerlist::getInstance();
-              for (Playerlist::iterator j = pl->begin(); j != pl->end(); j++)
-                {
-                  std::list<Stack*> affected = 
-                    (*j)->getStacklist()->killArmies((*i)->getTypeId());
-                  if (affected.size())
-                    num_worms_killed += removeDeadArmies(affected, history);
-                }
-            }
+          std::list<Stack*> affected = 
+            (*j)->getStacklist()->killArmies(item->getArmyTypeToKill());
+          if (affected.size())
+            num_worms_killed += removeDeadArmies(affected, history);
         }
       worms_killed.emit(hero, num_worms_killed);
     }
