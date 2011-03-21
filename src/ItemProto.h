@@ -154,6 +154,8 @@ class ItemProto: public Renamable
 
         guint32 getBuildingTypeToSummonOn() const {return d_building_type_to_summon_on;};
         void setBuildingTypeToSummonOn(guint32 type) {d_building_type_to_summon_on = type;};
+
+        bool isCurrentlyUsable(guint32 building, bool bags_on_map, bool victims_left, bool ruin_has_occupant);
     protected:
 	//! The item's bonus.
 	/**

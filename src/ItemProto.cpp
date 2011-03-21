@@ -378,3 +378,25 @@ ItemProto::Bonus ItemProto::bonusFlagFromString(std::string str)
     return ItemProto::SUMMON_MONSTER;
   return ItemProto::ADD1STR;
 }
+
+bool ItemProto::isCurrentlyUsable(guint32 building, bool bags_on_map, bool victims_left, bool ruin_has_occupant)
+{
+  bool usable = false;
+  if (d_bonus & ItemProto::BURN_BRIDGE && building == Maptile::BRIDGE)
+    usable = true;
+  if (d_bonus & ItemProto::SUMMON_MONSTER)
+    {
+      if (getBuildingTypeToSummonOn() == Maptile::NONE ||
+          getBuildingTypeToSummonOn() == building)
+        usable = true;
+    }
+  if (d_bonus & ItemProto::PICK_UP_BAGS && bags_on_map)
+    usable = true;
+  if (d_bonus & ItemProto::CAPTURE_KEEPER && building == Maptile::RUIN &&
+      ruin_has_occupant)
+    usable = true;
+        
+  if (usableOnVictimPlayer() && victims_left)
+    usable = true;
+  return usable;
+}

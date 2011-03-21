@@ -39,6 +39,7 @@
 #include "player.h"
 #include "Backpack.h"
 #include "AI_Analysis.h"
+#include "ruin.h"
 
 std::string Stack::d_tag = "stack";
 using namespace std;
@@ -1145,7 +1146,29 @@ void Stack::getUsableItems(std::list<Item*> &items) const
         continue;
       Hero *hero = dynamic_cast<Hero*>(*it);
       Backpack *backpack = hero->getBackpack();
-      backpack->getUsableItems(items);
+      std::list<Item*> backpack_items;
+      backpack->getUsableItems(backpack_items);
+      //now we dwindle the items from the backpack, depending on whether or
+      //not they're actually usable.
+      for (std::list<Item*>::iterator i = backpack_items.begin(); 
+           i !=backpack_items.end(); i++)
+        {
+          GameMap *gm = GameMap::getInstance();
+          Maptile::Building b = gm->getBuilding(getPos());
+          Ruin *ruin = gm->getRuin(getPos());
+          bool ruin_has_occupant = false;
+          if (ruin)
+            {
+              if (ruin->isSearched() == false && ruin->getOccupant() != NULL)
+                ruin_has_occupant = true;
+            }
+          bool victims = Playerlist::getInstance()->countPlayersAlive() > 1;
+          if ((*i)->isCurrentlyUsable(b, gm->getBackpacks().empty() == false, 
+                                      victims, ruin_has_occupant) == false)
+            i = backpack_items.erase(i);
+        }
+      if (backpack_items.size() > 0)
+        items.merge(backpack_items);
     }
   return;
 }
