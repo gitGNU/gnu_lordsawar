@@ -108,6 +108,8 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 
         guint32 countAllies() const;
 
+        bool hasDeadArmies() const;
+
 
 	// Set Methods
 

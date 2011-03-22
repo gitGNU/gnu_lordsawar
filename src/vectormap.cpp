@@ -322,15 +322,7 @@ void VectorMap::after_draw()
 
 void VectorMap::draw_square_around_active_city()
 {
-  Vector<int> start = city->getPos();
-  start = mapToSurface(start);
-  Shieldset *ss = GameMap::getShieldset();
-  guint32 width = ss->getSmallWidth();
-  guint32 height = ss->getSmallHeight();
-  start -= Vector<int>(width,height)/2;
-  Vector<int> end = start + Vector<int>(width,height);
-  draw_rect (start.x-3, start.y-3, end.x-start.x+4, end.y-start.y+4, 
-             VECTORMAP_ACTIVE_BOX_COLOUR);
+  draw_square_around_city(city, VECTORMAP_ACTIVE_BOX_COLOUR);
 }
 
 void VectorMap::mouse_button_event(MouseButtonEvent e)

@@ -4433,12 +4433,18 @@ bool Player::setPathOfStackToPreviousDestination(Stack *stack)
   return false;
 }
 
-bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim)
+bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim,
+                           City *friendly_city, City *enemy_city, City *neutral_city)
 {
   if (item->getBonus() & ItemProto::STEAL_GOLD)
     {
       assert (victim != NULL);
-      int gold = victim->getGold() / 2;
+      double percent = item->getPercentGoldToSteal();
+      if (percent > 100)
+        percent = 100;
+      else if (percent < 0)
+        percent = 0;
+      int gold = victim->getGold() * (percent / 100.0);
       if (gold > 0)
         {
           victim->withdrawGold(gold);
@@ -4483,7 +4489,8 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim)
           if (affected.size())
             num_worms_killed += removeDeadArmies(affected, history);
         }
-      worms_killed.emit(hero, num_worms_killed);
+      const ArmyProto *a = Armysetlist::getInstance()->getArmy(Playerlist::getActiveplayer()->getArmyset(), item->getArmyTypeToKill());
+      worms_killed.emit(hero, a->getName(), num_worms_killed);
     }
   if (item->getBonus() & ItemProto::BURN_BRIDGE)
     {
@@ -4524,21 +4531,37 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim)
           monster_summoned.emit(hero, a->getName());
         }
     }
+  if (item->getBonus() & ItemProto::DISEASE_CITY)
+    {
+      if (enemy_city)
+        {
+          std::list<History*> history;
+          std::list<Stack*> affected = 
+            enemy_city->diseaseOccupants(item->getPercentArmiesToKill());
+          guint32 num_armies_killed = removeDeadArmies(affected, history);
+          city_diseased.emit(hero, enemy_city->getName(), num_armies_killed);
+        }
+    }
 
   hero->getBackpack()->useItem(item);
   supdatingStack.emit(0);
   return true;
 }
 
-bool Player::heroUseItem(Hero *hero, Item *item, Player *victim)
+bool Player::heroUseItem(Hero *hero, Item *item, Player *victim,
+                         City *friendly_city, City *enemy_city, 
+                         City *neutral_city)
 {
-  if (doHeroUseItem(hero, item, victim))
+  if (doHeroUseItem(hero, item, victim, friendly_city, enemy_city, 
+                    neutral_city))
     {
       Action_UseItem * action = new Action_UseItem();
-      action->fillData(hero, item, victim);
+      action->fillData(hero, item, victim, friendly_city, enemy_city, 
+                       neutral_city);
       addAction(action);
       History_HeroUseItem * history = new History_HeroUseItem();
-      history->fillData(hero, item, victim);
+      history->fillData(hero, item, victim, friendly_city, enemy_city,
+                        neutral_city);
       addHistory (history);
       return true;
     }

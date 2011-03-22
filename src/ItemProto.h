@@ -90,11 +90,14 @@ class ItemProto: public Renamable
           CAPTURE_KEEPER  = 0x00040000,
           //! Summon a monster.
           SUMMON_MONSTER  = 0x00080000,
+          //! Target a city and kill a percentage of army units there.
+          DISEASE_CITY    = 0x00100000,
         };
 
         enum UsableItems {
           USABLE = STEAL_GOLD | SINK_SHIPS | PICK_UP_BAGS | ADD_2MP_STACK
-            | BANISH_WORMS | BURN_BRIDGE | CAPTURE_KEEPER | SUMMON_MONSTER,
+            | BANISH_WORMS | BURN_BRIDGE | CAPTURE_KEEPER | SUMMON_MONSTER
+            | DISEASE_CITY,
         };
 
 
@@ -143,6 +146,10 @@ class ItemProto: public Renamable
 
         bool usableOnVictimPlayer() const { if (d_bonus & SINK_SHIPS || d_bonus & STEAL_GOLD) return true; else return false;};
 
+        bool usableOnEnemyCity() const { if (d_bonus & DISEASE_CITY) return true; else return false;};
+        bool usableOnFriendlyCity() const { if (d_bonus & 0) return true; else return false;};
+        bool usableOnNeutralCity() const { if (d_bonus & 0) return true; else return false;};
+
         guint32 getArmyTypeToKill() const {return d_army_type_to_kill;};
         void setArmyTypeToKill(guint32 type) {d_army_type_to_kill = type;};
 
@@ -155,7 +162,13 @@ class ItemProto: public Renamable
         guint32 getBuildingTypeToSummonOn() const {return d_building_type_to_summon_on;};
         void setBuildingTypeToSummonOn(guint32 type) {d_building_type_to_summon_on = type;};
 
-        bool isCurrentlyUsable(guint32 building, bool bags_on_map, bool victims_left, bool ruin_has_occupant);
+        bool isCurrentlyUsable(guint32 building, bool bags_on_map, bool victims_left, bool ruin_has_occupant, bool friendly_cities_present, bool enemy_cities_present, bool neutral_cities_present);
+        double getPercentArmiesToKill() const {return d_percent_armies_to_kill;};
+        void setPercentArmiesToKill(double p) {d_percent_armies_to_kill = p;};
+
+        guint32 getMovementPointsToAdd() const {return d_mp_to_add;};
+        void setMovementPointsToAdd(guint32 mp) {d_mp_to_add = mp;};
+
     protected:
 	//! The item's bonus.
 	/**
@@ -181,6 +194,12 @@ class ItemProto: public Renamable
          * be summoned on any tile.
          */
         guint32 d_building_type_to_summon_on;
+
+        //! The percentage of army units to kill in DISEASE_CITY.
+        double d_percent_armies_to_kill;
+
+        //! How many movement points to add in ADD_2MP_STACK.
+        guint32 d_mp_to_add;
     private:
 
 	static std::string bonusFlagToString(ItemProto::Bonus type);

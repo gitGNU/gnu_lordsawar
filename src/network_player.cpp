@@ -814,7 +814,13 @@ void NetworkPlayer::decodeActionUseItem(const Action_UseItem *action)
   Item *item = hero->getBackpack()->getItemById(action->getItemId());
   assert (item != NULL);
   Player *victim = Playerlist::getInstance()->getPlayer(action->getVictimPlayerId());
-  doHeroUseItem(hero, item, victim);
+  City *friendly_city = 
+    Citylist::getInstance()->getById(action->getFriendlyCityId());
+  City *enemy_city = 
+    Citylist::getInstance()->getById(action->getEnemyCityId());
+  City *neutral_city = 
+    Citylist::getInstance()->getById(action->getNeutralCityId());
+  doHeroUseItem(hero, item, victim, friendly_city, enemy_city, neutral_city);
 }
       
 void NetworkPlayer::decodeActionStackOrder(const Action_ReorderArmies* action)

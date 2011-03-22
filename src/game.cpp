@@ -76,6 +76,7 @@
 #include "ai_smart.h"
 #include "Sage.h"
 #include "Commentator.h"
+#include "select-city-map.h"
 
 Game *Game::current_game = 0;
 
@@ -140,7 +141,7 @@ void Game::addPlayer(Player *p)
 	 (sigc::mem_fun(mp_added_to_hero_stack, &sigc::signal<void, Hero*, guint32>::emit)));
       connections[p->getId()].push_back
 	(p->worms_killed.connect
-	 (sigc::mem_fun(worms_killed, &sigc::signal<void, Hero*, guint32>::emit)));
+	 (sigc::mem_fun(worms_killed, &sigc::signal<void, Hero*, Glib::ustring, guint32>::emit)));
       connections[p->getId()].push_back
 	(p->bridge_burned.connect
 	 (sigc::mem_fun(bridge_burned, &sigc::signal<void, Hero*>::emit)));
@@ -153,6 +154,9 @@ void Game::addPlayer(Player *p)
 	(p->monster_summoned.connect
 	 (sigc::mem_fun(monster_summoned, &sigc::signal<void, Hero*, Glib::ustring>::emit)));
 
+      connections[p->getId()].push_back
+	(p->city_diseased.connect
+	 (sigc::mem_fun(city_diseased, &sigc::signal<void, Hero*, Glib::ustring, guint32>::emit)));
     }
       
       
@@ -705,17 +709,22 @@ void Game::on_use_item(Item *item)
   Hero *hero = NULL;
   active->getItemHolder(item, &stack, &hero);
   Player *victim = NULL;
+  City *friendly_city = NULL;
+  City *enemy_city = NULL;
+  City *neutral_city = NULL;
 
   //ask the user a series of questions on how to use the item
   if (item->usableOnVictimPlayer())
     victim = select_item_victim_player.emit();
-          
-  // now we act on the answers and execute the usage of the item
-  if (item->usableOnVictimPlayer() == true && victim)
-    active->heroUseItem(hero, item, victim);
+  if (item->usableOnFriendlyCity())
+    friendly_city = select_city_to_use_item_on.emit(SelectCityMap::FRIENDLY);
+  if (item->usableOnEnemyCity())
+    enemy_city = select_city_to_use_item_on.emit(SelectCityMap::ENEMY);
+  if (item->usableOnNeutralCity())
+    neutral_city = select_city_to_use_item_on.emit(SelectCityMap::NEUTRAL);
 
-  if (item->usableOnVictimPlayer() == false)
-    active->heroUseItem(hero, item, NULL);
+  active->heroUseItem(hero, item, victim, friendly_city, enemy_city, 
+                      neutral_city);
 }
 
 void Game::search_selected_stack()

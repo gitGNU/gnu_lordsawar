@@ -668,3 +668,16 @@ void OverviewMap::draw_target_box(Vector<int> pos, const Gdk::Color c)
   draw_filled_rect(start.x - (xsize / 2), start.y - (ysize / 2), 
 		   xsize, ysize, c);
 }
+
+void OverviewMap::draw_square_around_city(City *c, Gdk::Color colour)
+{
+  Vector<int> start = c->getPos();
+  start = mapToSurface(start);
+  Shieldset *ss = GameMap::getShieldset();
+  guint32 width = ss->getSmallWidth();
+  guint32 height = ss->getSmallHeight();
+  start -= Vector<int>(width,height)/2;
+  Vector<int> end = start + Vector<int>(width,height);
+  draw_rect (start.x-3, start.y-3, end.x-start.x+4, end.y-start.y+4, colour);
+}
+

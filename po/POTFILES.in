@@ -71,6 +71,7 @@
 [type: gettext/glade]dat/glade/triumphs-dialog.ui
 [type: gettext/glade]dat/glade/use-item-dialog.ui
 [type: gettext/glade]dat/glade/use-item-on-player-dialog.ui
+[type: gettext/glade]dat/glade/use-item-on-city-dialog.ui
 [type: gettext/glade]dat/glade/new-random-map-dialog.ui
 [type: gettext/glade]dat/glade/editor/armyset-info-dialog.ui
 [type: gettext/glade]dat/glade/editor/armyset-window.ui
@@ -246,6 +247,7 @@ src/gui/main.cpp
 src/gui/item-bonus-dialog.cpp
 src/gui/fight-window.cpp
 src/gui/new-random-map-dialog.cpp
+src/gui/use-item-on-city-dialog.cpp
 src/CreateScenarioRandomize.cpp
 src/vectoredunitlist.cpp
 src/editor/itemlist-dialog.cpp

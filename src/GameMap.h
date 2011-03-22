@@ -300,6 +300,10 @@ class GameMap: public sigc::trackable
         static int calculateTilesPerOverviewMapTile();
 
         Vector<int> findNearestAreaForBuilding(Maptile::Building building_type, Vector<int> pos, guint32 width);
+
+        static bool friendlyCitiesPresent();
+        static bool enemyCitiesPresent();
+        static bool neutralCitiesPresent();
     protected:
         //! Create the map with the given tileset
         GameMap(std::string TilesetName = "", std::string ShieldsetName = "",

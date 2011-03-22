@@ -40,6 +40,7 @@ UseItemOnPlayerDialog::UseItemOnPlayerDialog()
 
     xml->get_widget("dialog", dialog);
     decorate(dialog);
+    dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     players_list = Gtk::ListStore::create(players_columns);

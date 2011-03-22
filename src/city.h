@@ -221,6 +221,8 @@ class City : public Ownable, public Location, public Renamable,
 	//! Callback that makes the army show up.
 	const Army *armyArrives(Stack *& stack);
 
+        //! Kill a percentage of the army units in the city.
+        std::list<Stack*> diseaseOccupants(double percent_to_kill);
 	
 	// Methods that operate on class data and do not modify the class.
 

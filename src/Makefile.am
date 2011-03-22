@@ -125,7 +125,8 @@ liblordsawargfx_la_SOURCES = \
 	vectormap.cpp vectormap.h overviewmap.cpp overviewmap.h \
         smallmap.cpp smallmap.h \
 	MapRenderer.cpp MapRenderer.h  \
-	input-events.h map-tip-position.h 
+	input-events.h map-tip-position.h  \
+	select-city-map.cpp select-city-map.h
 
 
 lordsawar_SOURCES = armymap.cpp armymap.h \

@@ -882,7 +882,7 @@ class History_HeroUseItem: public History
         virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with the hero name and the player we attacked.
-        bool fillData(Hero *hero, Item *item, Player *opponent);
+        bool fillData(Hero *hero, Item *item, Player *opponent, City *friendly_city, City *enemy_city, City *neutral_city);
 
         //! Get the name of the hero that used the object.
         std::string getHeroName() const {return d_hero_name;}
@@ -894,7 +894,10 @@ class History_HeroUseItem: public History
         guint32 getItemBonus() const {return d_item_bonus;};
 
 	//! Get the Id of the Player object that we used the item on.
-	guint32 getOpponentId() const {return d_opponent_id;}
+	guint32 getOpponentId() const {return d_opponent_id;};
+        guint32 getFriendlyCityId() const {return d_friendly_city_id;};
+        guint32 getEnemyCityId() const {return d_enemy_city_id;};
+        guint32 getNeutralCityId() const {return d_neutral_city_id;};
     
     private:
 
@@ -914,6 +917,10 @@ class History_HeroUseItem: public History
          * be 0, but not used against the white player.
          */
 	guint32 d_opponent_id;
+
+        guint32 d_friendly_city_id;
+        guint32 d_enemy_city_id;
+        guint32 d_neutral_city_id;
 };
 
 #endif //HISTORY_H

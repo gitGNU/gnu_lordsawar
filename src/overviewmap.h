@@ -29,6 +29,7 @@
 
 class Maptile;
 class Player;
+class City;
 
 //! Generates a miniature graphic of the game map.
 /**
@@ -246,6 +247,7 @@ class OverviewMap : public sigc::trackable
     void draw_hero(Vector<int> pos, bool white);
 
     void draw_target_box(Vector<int> pos, const Gdk::Color colour);
+    void draw_square_around_city(City *c, const Gdk::Color colour);
 
     bool blank_screen;
 };

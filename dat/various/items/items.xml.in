@@ -175,6 +175,7 @@
         <_d_name>Staff of Many Steps</_d_name>
         <d_bonus>ItemProto::ADD_2MP_STACK</d_bonus>
         <d_uses_left>11</d_uses_left>
+        <d_mp_to_add>2</d_mp_to_add>
     </itemproto>
     <itemproto>
         <_d_name>Staff of Saint Patrick</_d_name>
@@ -198,5 +199,11 @@
         <d_uses_left>3</d_uses_left>
         <d_army_type_to_summon>25</d_army_type_to_summon>
         <d_building_type_to_summon_on>Maptile::TEMPLE</d_building_type_to_summon_on>
+    </itemproto>
+    <itemproto>
+        <_d_name>Wand of Urban Pestilence</_d_name>
+        <d_bonus>ItemProto::DISEASE_CITY</d_bonus>
+        <d_uses_left>3</d_uses_left>
+        <d_percent_armies_to_kill>25</d_percent_armies_to_kill>
     </itemproto>
 </itemlist>

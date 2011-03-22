@@ -2458,3 +2458,31 @@ bool GameMap::burnBridge(Vector<int> pos)
     }
   return burned;
 }
+
+bool GameMap::friendlyCitiesPresent()
+{
+  return Citylist::getInstance()->countCities(Playerlist::getActiveplayer());
+}
+
+bool GameMap::enemyCitiesPresent()
+{
+  Playerlist *plist = Playerlist::getInstance();
+  for (Playerlist::iterator i = plist->begin(); i != plist->end(); i++)
+    {
+      if ((*i) == plist->getNeutral())
+        continue;
+      if ((*i) == plist->getActiveplayer())
+        continue;
+      if ((*i)->isDead())
+        continue;
+      if (Citylist::getInstance()->countCities(*i) > 0)
+        return true;
+    }
+  return false;
+}
+
+bool GameMap::neutralCitiesPresent()
+{
+  return Citylist::getInstance()->countCities
+    (Playerlist::getInstance()->getNeutral());
+}

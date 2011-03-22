@@ -536,4 +536,42 @@ guint32 City::calculateDefenseLevel() const
     return 3;
   return 0;
 }
+
+std::list<Stack*> City::diseaseOccupants(double percent_to_kill)
+{
+  std::list<Stack*> affected;
+  std::vector<Stack*> stacks = 
+    getOwner()->getStacklist()->getDefendersInCity(this);
+  double percent;
+  if (percent_to_kill > 100.0)
+    percent = 100;
+  else if (percent_to_kill <= 0.0)
+    percent = 0;
+  else
+    percent = percent_to_kill;
+  guint32 num_armies_to_kill = (double)countDefenders() * (percent  / 100.0);
+  std::vector<guint32> ids;
+  for (unsigned int i = 0; i < stacks.size(); i++)
+    {
+      for (Stack::iterator j = stacks[i]->begin(); j != stacks[i]->end(); j++)
+        ids.push_back((*j)->getId());
+    }
+  std::random_shuffle(ids.begin(), ids.end());
+  for (unsigned int i = 0; i < num_armies_to_kill; i++)
+    {
+      Stack *s = getOwner()->getStacklist()->getArmyStackById(ids[i]);
+      if (s)
+        {
+          Army *a = s->getArmyById(ids[i]);
+          if (a)
+            a->kill();
+        }
+    }
+  for (unsigned int i = 0; i < stacks.size(); i++)
+    {
+      if (stacks[i]->hasDeadArmies())
+        affected.push_back(stacks[i]);
+    }
+  return affected;
+}
 // End of file

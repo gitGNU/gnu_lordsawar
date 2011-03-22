@@ -35,6 +35,7 @@
 #include "game-parameters.h"
 #include "player.h"
 #include "defs.h"
+#include "select-city-map.h"
 
 class NextTurn;
 class GameBigMap;
@@ -168,16 +169,18 @@ class Game
     sigc::signal<void, Stack*, Vector<int> > stack_moves;
     sigc::signal<Item*, std::list<Item*> > select_item;
     sigc::signal<Player*> select_item_victim_player;
+    sigc::signal<City*, SelectCityMap::Type> select_city_to_use_item_on;
 
     //! Results of using items
     sigc::signal<void, Player*, guint32> stole_gold;
     sigc::signal<void, Player*, guint32> sunk_ships;
     sigc::signal<void, Hero*, guint32> bags_picked_up;
     sigc::signal<void, Hero *, guint32> mp_added_to_hero_stack;
-    sigc::signal<void, Hero *, guint32> worms_killed;
+    sigc::signal<void, Hero *, Glib::ustring, guint32> worms_killed;
     sigc::signal<void, Hero *> bridge_burned;
     sigc::signal<void, Hero *, Ruin*, Glib::ustring> keeper_captured;
     sigc::signal<void, Hero *, Glib::ustring> monster_summoned;
+    sigc::signal<void, Hero *, Glib::ustring, guint32> city_diseased;
     
     void addPlayer(Player *p);
 

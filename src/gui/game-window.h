@@ -41,6 +41,7 @@
 #include "army.h"
 #include "GraphicsCache.h"
 #include "GameScenario.h"
+#include "select-city-map.h"
 
 class Game;
 class GameButtonBox;
@@ -315,7 +316,8 @@ class GameWindow: public Decorated
     void on_gold_stolen(Player *victim, guint32 gold_pieces);
     void on_ships_sunk(Player *victim, guint32 num_armies);
     void on_bags_picked_up(Hero *hero, guint32 num_bags);
-    void on_worms_killed(Hero *hero, guint32 num_worms_killed);
+    void on_worms_killed(Hero *hero, Glib::ustring army_type_name, guint32 num_worms_killed);
+    void on_city_diseased(Hero *hero, Glib::ustring city_name, guint32 num_armies_killed);
     void on_bridge_burned(Hero *hero);
     void on_keeper_captured(Hero *hero, Ruin*, Glib::ustring monster_name);
     void on_monster_summoned(Hero *hero, Glib::ustring monster_name);
@@ -325,6 +327,7 @@ class GameWindow: public Decorated
     void on_commentator_comments(std::string comment);
     Item* on_select_item(std::list<Item*> items);
     Player *on_select_item_victim_player();
+    City *on_select_city_to_use_item_on(SelectCityMap::Type type);
 
     // quest manager callbacks
     void on_quest_completed(Quest *quest, Reward *reward);

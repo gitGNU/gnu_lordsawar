@@ -1164,7 +1164,10 @@ void Stack::getUsableItems(std::list<Item*> &items) const
             }
           bool victims = Playerlist::getInstance()->countPlayersAlive() > 1;
           if ((*i)->isCurrentlyUsable(b, gm->getBackpacks().empty() == false, 
-                                      victims, ruin_has_occupant) == false)
+                                      victims, ruin_has_occupant,
+                                      GameMap::friendlyCitiesPresent(),
+                                      GameMap::enemyCitiesPresent(),
+                                      GameMap::neutralCitiesPresent()) == false)
             i = backpack_items.erase(i);
         }
       if (backpack_items.size() > 0)
@@ -1310,5 +1313,13 @@ void Stack::updateShipStatus(Vector<int> dest)
       else
         (*it)->setInShip(false);
     }
+}
+
+bool Stack::hasDeadArmies() const
+{
+  for (const_iterator i = begin(); i != end(); i++)
+    if ((*i)->getHP() == 0)
+      return true;
+  return false;
 }
 // End of file

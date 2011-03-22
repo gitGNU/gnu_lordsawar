@@ -72,6 +72,17 @@ ItemlistDialog::ItemlistDialog()
 	sigc::mem_fun(this, &ItemlistDialog::on_summon_army_type_clicked));
     xml->get_widget("building_type_to_summon_on_combobox", 
                     building_type_to_summon_on_combobox);
+    xml->get_widget("disease_city_checkbutton", disease_city_checkbutton);
+    disease_city_checkbutton->signal_toggled().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_disease_city_toggled));
+    xml->get_widget("disease_armies_percent_spinbutton", 
+                    disease_armies_percent_spinbutton);
+    disease_armies_percent_spinbutton->signal_changed().connect
+      (sigc::mem_fun(this, &ItemlistDialog::on_disease_armies_percent_changed));
+    disease_armies_percent_spinbutton->signal_insert_text().connect
+      (sigc::mem_fun(this, 
+                     &ItemlistDialog::on_disease_armies_percent_text_changed));
+
 
     items_list = Gtk::ListStore::create(items_columns);
     items_treeview->set_model(items_list);
@@ -82,14 +93,6 @@ ItemlistDialog::ItemlistDialog()
     for (;iter != d_itemlist->end(); iter++)
       addItemProto((*iter).second);
       
-    guint32 max = d_itemlist->size();
-    if (max)
-      {
-	Gtk::TreeModel::Row row;
-	row = items_treeview->get_model()->children()[0];
-	if(row)
-	  items_treeview->get_selection()->select(row);
-      }
 
     xml->get_widget("add1str_checkbutton", add1str_checkbutton);
     add1str_checkbutton->signal_toggled().connect(
@@ -130,6 +133,12 @@ ItemlistDialog::ItemlistDialog()
     xml->get_widget("steals_gold_checkbutton", steals_gold_checkbutton);
     steals_gold_checkbutton->signal_toggled().connect(
 	sigc::mem_fun(this, &ItemlistDialog::on_steals_gold_toggled));
+    xml->get_widget("pickup_bags_checkbutton", pickup_bags_checkbutton);
+    pickup_bags_checkbutton->signal_toggled().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_pickup_bags_toggled));
+    xml->get_widget("add_mp_checkbutton", add_mp_checkbutton);
+    add_mp_checkbutton->signal_toggled().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_add_mp_toggled));
     xml->get_widget("sinks_ships_checkbutton", sinks_ships_checkbutton);
     sinks_ships_checkbutton->signal_toggled().connect(
 	sigc::mem_fun(this, &ItemlistDialog::on_sinks_ships_toggled));
@@ -149,11 +158,29 @@ ItemlistDialog::ItemlistDialog()
     uses_spinbutton->signal_changed().connect(
 	sigc::mem_fun(this, &ItemlistDialog::on_uses_changed));
     xml->get_widget("steal_percent_spinbutton", steal_percent_spinbutton);
+    steal_percent_spinbutton->signal_changed().connect
+      (sigc::mem_fun(this, &ItemlistDialog::on_steal_percent_changed));
+    steal_percent_spinbutton->signal_insert_text().connect
+      (sigc::mem_fun(this, &ItemlistDialog::on_steal_percent_text_changed));
+    xml->get_widget("add_mp_spinbutton", add_mp_spinbutton);
+    add_mp_spinbutton->signal_changed().connect
+      (sigc::mem_fun(this, &ItemlistDialog::on_add_mp_changed));
+    add_mp_spinbutton->signal_insert_text().connect
+      (sigc::mem_fun(this, &ItemlistDialog::on_add_mp_text_changed));
 
-    update_item_panel();
-    update_itemlist_buttons();
     items_treeview->get_selection()->signal_changed().connect
       (sigc::mem_fun(*this, &ItemlistDialog::on_item_selected));
+    d_item = NULL;
+    guint32 max = d_itemlist->size();
+    if (max)
+      {
+	Gtk::TreeModel::Row row;
+	row = items_treeview->get_model()->children()[0];
+	if(row)
+	  items_treeview->get_selection()->select(row);
+      }
+    update_item_panel();
+    update_itemlist_buttons();
 }
 
 void
@@ -191,6 +218,7 @@ ItemlistDialog::update_item_panel()
       Gtk::TreeModel::Row row = *iterrow;
 
       ItemProto *a = row[items_columns.item];
+      d_item = a;
       fill_item_info(a);
     }
 }
@@ -247,21 +275,30 @@ void ItemlistDialog::fill_item_info(ItemProto *item)
   add5goldpercity_checkbutton->set_active
     (item->getBonus(ItemProto::ADD5GOLDPERCITY));
   steals_gold_checkbutton->set_active (item->getBonus(ItemProto::STEAL_GOLD));
+  pickup_bags_checkbutton->set_active (item->getBonus(ItemProto::PICK_UP_BAGS));
+  add_mp_checkbutton->set_active (item->getBonus(ItemProto::ADD_2MP_STACK));
   sinks_ships_checkbutton->set_active (item->getBonus(ItemProto::SINK_SHIPS));
   banish_worms_checkbutton->set_active (item->getBonus(ItemProto::BANISH_WORMS));
   burn_bridge_checkbutton->set_active (item->getBonus(ItemProto::BURN_BRIDGE));
   capture_keeper_checkbutton->set_active 
     (item->getBonus(ItemProto::CAPTURE_KEEPER));
   uses_spinbutton->set_value(double(item->getNumberOfUsesLeft()));
-  inhibit_bonus_checkbuttons = 0;
   steal_percent_spinbutton->set_value(item->getPercentGoldToSteal());
+  steal_percent_spinbutton->set_sensitive
+    (steals_gold_checkbutton->get_active());
+  add_mp_spinbutton->set_value(item->getMovementPointsToAdd());
+  add_mp_spinbutton->set_sensitive (add_mp_checkbutton->get_active());
   summon_monster_checkbutton->set_active 
     (item->getBonus(ItemProto::SUMMON_MONSTER));
   building_type_to_summon_on_combobox->set_active(item->getBuildingTypeToSummonOn());
+  building_type_to_summon_on_combobox->set_sensitive(summon_monster_checkbutton->get_active());
+  disease_city_checkbutton->set_active(item->getBonus(ItemProto::DISEASE_CITY));
+  disease_armies_percent_spinbutton->set_sensitive(disease_city_checkbutton->get_active());
+  disease_armies_percent_spinbutton->set_value(item->getPercentArmiesToKill());
   update_kill_army_type_name();
   update_summon_army_type_name();
-  building_type_to_summon_on_combobox->set_sensitive(summon_monster_checkbutton->get_active());
 
+  inhibit_bonus_checkbuttons = 0;
 }
 
 void ItemlistDialog::on_name_changed()
@@ -330,6 +367,8 @@ void ItemlistDialog::on_checkbutton_toggled(Gtk::CheckButton *checkbutton,
     {
       // Row selected
       Gtk::TreeModel::Row row = *iterrow;
+
+      printf("setting d_item now.1\n");
       d_item = row[items_columns.item];
     }
   else
@@ -407,6 +446,17 @@ void ItemlistDialog::on_steals_gold_toggled()
     (steals_gold_checkbutton->get_active());
 }
 
+void ItemlistDialog::on_pickup_bags_toggled()
+{
+  on_checkbutton_toggled(pickup_bags_checkbutton, ItemProto::PICK_UP_BAGS);
+}
+
+void ItemlistDialog::on_add_mp_toggled()
+{
+  on_checkbutton_toggled(add_mp_checkbutton, ItemProto::ADD_2MP_STACK);
+  add_mp_spinbutton->set_sensitive (add_mp_checkbutton->get_active());
+}
+
 void ItemlistDialog::on_sinks_ships_toggled()
 {
   on_checkbutton_toggled(sinks_ships_checkbutton, ItemProto::SINK_SHIPS);
@@ -434,6 +484,7 @@ void ItemlistDialog::on_uses_changed()
     {
       // Row selected
       Gtk::TreeModel::Row row = *iterrow;
+      printf("setting d_item now.2\n");
       d_item = row[items_columns.item];
   
       d_item->setNumberOfUsesLeft(int(uses_spinbutton->get_value()));
@@ -464,16 +515,12 @@ void ItemlistDialog::update_kill_army_type_name()
     Glib::ustring name;
     if (banish_worms_checkbutton->get_active() == true)
       {
-        kill_army_type_button->set_sensitive(true);
         Armysetlist *asl = Armysetlist::getInstance();
 	name = asl->getArmy(neutral->getArmyset(), 
                             d_item->getArmyTypeToKill())->getName();
       }
     else
-      {
-        name = _("No army type selected");
-        kill_army_type_button->set_sensitive(false);
-      }
+      name = _("No army type selected");
     
     kill_army_type_button->set_label(name);
 }
@@ -527,4 +574,53 @@ void ItemlistDialog::update_summon_army_type_name()
     
     summon_army_type_button->set_label(name);
 }
-	
+
+void ItemlistDialog::on_disease_city_toggled()
+{
+  on_checkbutton_toggled(disease_city_checkbutton, ItemProto::DISEASE_CITY);
+  disease_armies_percent_spinbutton->set_sensitive
+    (disease_city_checkbutton->get_active());
+}
+
+void ItemlistDialog::on_steal_percent_changed()
+{
+  if (inhibit_bonus_checkbuttons)
+    return;
+  if (d_item)
+    d_item->setPercentGoldToSteal(steal_percent_spinbutton->get_value());
+}
+
+void ItemlistDialog::on_steal_percent_text_changed(const Glib::ustring &s, int *p)
+{
+  steal_percent_spinbutton->set_value(atoi(steal_percent_spinbutton->get_text().c_str()));
+  on_steal_percent_changed();
+}
+
+void ItemlistDialog::on_disease_armies_percent_changed()
+{
+  if (inhibit_bonus_checkbuttons)
+    return;
+  if (d_item)
+    d_item->setPercentArmiesToKill
+      (disease_armies_percent_spinbutton->get_value());
+}
+
+void ItemlistDialog::on_disease_armies_percent_text_changed(const Glib::ustring &s, int *p)
+{
+  disease_armies_percent_spinbutton->set_value(atoi(disease_armies_percent_spinbutton->get_text().c_str()));
+  on_disease_armies_percent_changed();
+}
+
+void ItemlistDialog::on_add_mp_changed()
+{
+  if (inhibit_bonus_checkbuttons)
+    return;
+  if (d_item)
+    d_item->setMovementPointsToAdd (add_mp_spinbutton->get_value());
+}
+
+void ItemlistDialog::on_add_mp_text_changed(const Glib::ustring &s, int *p)
+{
+  add_mp_spinbutton->set_value(atoi(add_mp_spinbutton->get_text().c_str()));
+  on_add_mp_changed();
+}

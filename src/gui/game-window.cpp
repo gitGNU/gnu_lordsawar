@@ -69,6 +69,7 @@
 #include "item-report-dialog.h"
 #include "use-item-dialog.h"
 #include "use-item-on-player-dialog.h"
+#include "use-item-on-city-dialog.h"
 #include "game-button-box.h"
 
 #include "ucompose.hpp"
@@ -120,6 +121,7 @@
 #include "network_player.h"
 #include "stacktile.h"
 #include "MapBackpack.h"
+#include "select-city-map.h"
 
 
 GameWindow::GameWindow()
@@ -740,6 +742,12 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   connections.push_back
     (game->select_item_victim_player.connect
      (sigc::mem_fun(*this, &GameWindow::on_select_item_victim_player)));
+  connections.push_back
+    (game->select_city_to_use_item_on.connect
+     (sigc::mem_fun(*this, &GameWindow::on_select_city_to_use_item_on)));
+  connections.push_back
+    (game->city_diseased.connect
+     (sigc::mem_fun(*this, &GameWindow::on_city_diseased)));
 
   // misc callbacks
   QuestsManager *q = QuestsManager::getInstance();
@@ -3695,6 +3703,14 @@ Player *GameWindow::on_select_item_victim_player()
   return player;
 }
     
+City *GameWindow::on_select_city_to_use_item_on(SelectCityMap::Type type)
+{
+  UseItemOnCityDialog d(type);
+  City *city = d.run();
+  d.hide();
+  return city;
+}
+    
 void GameWindow::on_gold_stolen(Player *victim, guint32 gold_pieces)
 {
   std::string s = "";
@@ -3766,6 +3782,20 @@ void GameWindow::on_keeper_captured(Hero *hero, Ruin *ruin, Glib::ustring name)
   return;
 }
 
+void GameWindow::on_city_diseased(Hero *hero, Glib::ustring name, guint32 num_armies)
+{
+  std::string s = "";
+  s += String::ucompose(ngettext("%1 unit in %2 have perished!",
+                                 "%1 units in %2 have perished!", num_armies),
+                        num_armies, name);
+  TimedMessageDialog dialog(*window, s, 30);
+
+  dialog.show_all();
+  dialog.run();
+  dialog.hide();
+  return;
+}
+
 void GameWindow::on_monster_summoned(Hero *hero, Glib::ustring name)
 {
   std::string s = "";
@@ -3779,13 +3809,13 @@ void GameWindow::on_monster_summoned(Hero *hero, Glib::ustring name)
   return;
 }
 
-void GameWindow::on_worms_killed(Hero *hero, guint32 num_killed)
+void GameWindow::on_worms_killed(Hero *hero, Glib::ustring name, guint32 num_killed)
 {
   std::string s = "";
   s += 
-    String::ucompose(ngettext("%1 unit of giant worms was banished by %2!",
-                              "%1 units of giant worms were banished by %2!", 
-                              num_killed), num_killed, hero->getName());
+    String::ucompose(ngettext("%1 unit of %2 was banished by %3!",
+                              "%1 units of %2 were banished by %3!", 
+                              num_killed), num_killed, name, hero->getName());
   TimedMessageDialog dialog(*window, s, 30);
 
   dialog.show_all();

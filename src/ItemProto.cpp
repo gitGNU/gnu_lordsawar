@@ -55,6 +55,10 @@ ItemProto::ItemProto(XML_Helper* helper)
             helper->getData(str, "building_type_to_summon_on");
             d_building_type_to_summon_on = Maptile::buildingFromString(str);
           }
+        if (d_bonus & ItemProto::DISEASE_CITY)
+          helper->getData(d_percent_armies_to_kill, "percent_armies_to_kill");
+        if (d_bonus & ItemProto::ADD_2MP_STACK)
+          helper->getData(d_mp_to_add, "mp_to_add");
       }
     else
       {
@@ -63,6 +67,8 @@ ItemProto::ItemProto(XML_Helper* helper)
         d_army_type_to_kill = 0;
         d_army_type_to_summon = 0;
         d_building_type_to_summon_on = 0;
+        d_percent_armies_to_kill = 0.0;
+        d_mp_to_add = 0;
       }
 }
 
@@ -75,6 +81,8 @@ ItemProto::ItemProto(std::string name)
   d_steal_gold_percent = 0.0;
   d_army_type_to_summon = 0;
   d_building_type_to_summon_on = 0;
+  d_percent_armies_to_kill = 0.0;
+  d_mp_to_add = 0;
 }
 
 ItemProto::ItemProto(const ItemProto& orig)
@@ -82,7 +90,9 @@ ItemProto::ItemProto(const ItemProto& orig)
     d_army_type_to_kill(orig.d_army_type_to_kill),
     d_steal_gold_percent(orig.d_steal_gold_percent),
     d_army_type_to_summon(orig.d_army_type_to_summon),
-    d_building_type_to_summon_on(orig.d_building_type_to_summon_on)
+    d_building_type_to_summon_on(orig.d_building_type_to_summon_on),
+    d_percent_armies_to_kill(orig.d_percent_armies_to_kill),
+    d_mp_to_add(orig.d_mp_to_add)
 {
 }
 
@@ -114,6 +124,11 @@ bool ItemProto::saveContents(XML_Helper* helper) const
               (Maptile::Building(d_building_type_to_summon_on));
             retval &= helper->saveData("building_type_to_summon_on", type_str);
           }
+        if (d_bonus & ItemProto::DISEASE_CITY)
+          retval &= helper->saveData("percent_armies_to_kill", 
+                                     d_percent_armies_to_kill);
+        if (d_bonus & ItemProto::ADD_2MP_STACK)
+          retval &= helper->saveData("mp_to_add", d_mp_to_add);
       }
 
   return retval;
@@ -185,11 +200,16 @@ std::string ItemProto::getBonusDescription() const
   if (getBonus(ItemProto::ADD_2MP_STACK))
     s.push_back(_("+2 MP to stack"));
   if (getBonus(ItemProto::BANISH_WORMS))
-    s.push_back(_("Kills all Giant Worms"));
+    {
+      ArmyProto *a = Armysetlist::getInstance()->getArmy(Playerlist::getActiveplayer()->getArmyset(), d_army_type_to_kill);
+      s.push_back(String::ucompose(_("Kills all %1"), a->getName()));
+    }
   if (getBonus(ItemProto::BURN_BRIDGE))
     s.push_back(_("Destroys a Bridge"));
   if (getBonus(ItemProto::CAPTURE_KEEPER))
     s.push_back(_("Removes Monster from Ruin"));
+  if (getBonus(ItemProto::DISEASE_CITY))
+    s.push_back(_("Kills Defenders in a City"));
   if (getBonus(ItemProto::SUMMON_MONSTER))
     {
       ArmyProto *a = Armysetlist::getInstance()->getArmy(Playerlist::getActiveplayer()->getArmyset(), d_army_type_to_summon);
@@ -265,6 +285,8 @@ std::string ItemProto::bonusFlagToString(ItemProto::Bonus bonus)
       return "ItemProto::CAPTURE_KEEPER";
     case ItemProto::SUMMON_MONSTER:
       return "ItemProto::SUMMON_MONSTER";
+    case ItemProto::DISEASE_CITY:
+      return "ItemProto::DISEASE_CITY";
     }
   return "ItemProto::ADD1STR";
 }
@@ -312,6 +334,8 @@ std::string ItemProto::bonusFlagsToString(guint32 bonus)
     bonuses += " " + bonusFlagToString(ItemProto::CAPTURE_KEEPER);
   if (bonus & ItemProto::SUMMON_MONSTER)
     bonuses += " " + bonusFlagToString(ItemProto::SUMMON_MONSTER);
+  if (bonus & ItemProto::DISEASE_CITY)
+    bonuses += " " + bonusFlagToString(ItemProto::DISEASE_CITY);
   return bonuses;
 }
 
@@ -376,10 +400,12 @@ ItemProto::Bonus ItemProto::bonusFlagFromString(std::string str)
     return ItemProto::CAPTURE_KEEPER;
   else if (str == "ItemProto::SUMMON_MONSTER")
     return ItemProto::SUMMON_MONSTER;
+  else if (str == "ItemProto::DISEASE_CITY")
+    return ItemProto::DISEASE_CITY;
   return ItemProto::ADD1STR;
 }
 
-bool ItemProto::isCurrentlyUsable(guint32 building, bool bags_on_map, bool victims_left, bool ruin_has_occupant)
+bool ItemProto::isCurrentlyUsable(guint32 building, bool bags_on_map, bool victims_left, bool ruin_has_occupant, bool friendly_cities_present, bool enemy_cities_present, bool neutral_cities_present)
 {
   bool usable = false;
   if (d_bonus & ItemProto::BURN_BRIDGE && building == Maptile::BRIDGE)
@@ -398,5 +424,12 @@ bool ItemProto::isCurrentlyUsable(guint32 building, bool bags_on_map, bool victi
         
   if (usableOnVictimPlayer() && victims_left)
     usable = true;
+  if (usableOnFriendlyCity() && friendly_cities_present)
+    usable = true;
+  if (usableOnEnemyCity() && enemy_cities_present)
+    usable = true;
+  if (usableOnNeutralCity() && neutral_cities_present)
+    usable = true;
+
   return usable;
 }
