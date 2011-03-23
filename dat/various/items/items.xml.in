@@ -213,4 +213,9 @@
         <d_army_type_to_raise>19</d_army_type_to_raise>
         <d_num_armies_to_raise>3</d_num_armies_to_raise>
     </itemproto>
+    <itemproto>
+        <_d_name>Staff of Persuasion</_d_name>
+        <d_bonus>ItemProto::PERSUADE_NEUTRALS</d_bonus>
+        <d_uses_left>3</d_uses_left>
+    </itemproto>
 </itemlist>

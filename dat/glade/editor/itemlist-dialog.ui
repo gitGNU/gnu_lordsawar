@@ -496,7 +496,7 @@
                                             <child>
                                               <object class="GtkTable" id="table3">
                                                 <property name="visible">True</property>
-                                                <property name="n_rows">10</property>
+                                                <property name="n_rows">11</property>
                                                 <property name="n_columns">2</property>
                                                 <child>
                                                   <object class="GtkCheckButton" id="steals_gold_checkbutton">
@@ -704,18 +704,6 @@
                                                   </packing>
                                                 </child>
                                                 <child>
-                                                  <placeholder/>
-                                                </child>
-                                                <child>
-                                                  <placeholder/>
-                                                </child>
-                                                <child>
-                                                  <placeholder/>
-                                                </child>
-                                                <child>
-                                                  <placeholder/>
-                                                </child>
-                                                <child>
                                                   <object class="GtkHBox" id="hbox5">
                                                     <property name="visible">True</property>
                                                     <child>
@@ -758,6 +746,34 @@
                                                   <packing>
                                                     <property name="top_attach">9</property>
                                                     <property name="bottom_attach">10</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                                <child>
+                                                  <placeholder/>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="persuade_neutral_city_checkbutton">
+                                                    <property name="label" translatable="yes">Persuade Neutral City</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="top_attach">10</property>
+                                                    <property name="bottom_attach">11</property>
                                                   </packing>
                                                 </child>
                                               </object>
