@@ -94,12 +94,14 @@ class ItemProto: public Renamable
           DISEASE_CITY    = 0x00100000,
           //! Make some defenders show up in a friendly city.
           RAISE_DEFENDERS = 0x00200000,
+          //! Coerce a neutral city into flying your flag.
+          PERSUADE_NEUTRALS = 0x00400000,
         };
 
         enum UsableItems {
           USABLE = STEAL_GOLD | SINK_SHIPS | PICK_UP_BAGS | ADD_2MP_STACK
             | BANISH_WORMS | BURN_BRIDGE | CAPTURE_KEEPER | SUMMON_MONSTER
-            | DISEASE_CITY | RAISE_DEFENDERS,
+            | DISEASE_CITY | RAISE_DEFENDERS | PERSUADE_NEUTRALS,
         };
 
 
@@ -150,7 +152,7 @@ class ItemProto: public Renamable
 
         bool usableOnEnemyCity() const { if (d_bonus & DISEASE_CITY) return true; else return false;};
         bool usableOnFriendlyCity() const { if (d_bonus & RAISE_DEFENDERS) return true; else return false;};
-        bool usableOnNeutralCity() const { if (d_bonus & 0) return true; else return false;};
+        bool usableOnNeutralCity() const { if (d_bonus & PERSUADE_NEUTRALS) return true; else return false;};
 
         guint32 getArmyTypeToKill() const {return d_army_type_to_kill;};
         void setArmyTypeToKill(guint32 type) {d_army_type_to_kill = type;};

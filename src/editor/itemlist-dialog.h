@@ -74,6 +74,7 @@ class ItemlistDialog: public sigc::trackable
     Gtk::CheckButton *summon_monster_checkbutton;
     Gtk::CheckButton *disease_city_checkbutton;
     Gtk::CheckButton *raise_defenders_checkbutton;
+    Gtk::CheckButton *persuade_neutral_city_checkbutton;
     Gtk::SpinButton *uses_spinbutton;
     Gtk::Button *kill_army_type_button;
     Gtk::SpinButton *steal_percent_spinbutton;
@@ -150,6 +151,7 @@ class ItemlistDialog: public sigc::trackable
     void on_num_defenders_changed();
     void on_num_defenders_text_changed(const Glib::ustring &s, int *p);
     void update_raise_defender_army_type_name();
+    void on_persuade_neutral_city_toggled();
 };
 
 #endif

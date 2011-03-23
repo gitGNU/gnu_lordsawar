@@ -751,6 +751,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   connections.push_back
     (game->city_defended.connect
      (sigc::mem_fun(*this, &GameWindow::on_city_defended)));
+  connections.push_back
+    (game->city_persuaded.connect
+     (sigc::mem_fun(*this, &GameWindow::on_city_persuaded)));
 
   // misc callbacks
   QuestsManager *q = QuestsManager::getInstance();
@@ -3812,6 +3815,30 @@ void GameWindow::on_city_defended(Hero *hero, Glib::ustring city_name, Glib::ust
   dialog.hide();
   return;
 }
+
+void GameWindow::on_city_persuaded(Hero *hero, Glib::ustring city_name, guint32 num_armies)
+{
+  if (game)
+    game->redraw();
+  std::string s = "";
+  if (num_armies != 0)
+    s += String::ucompose
+      (ngettext("%1 unit in %2 have been persuaded to fly your flag!",
+                "%1 units in %2 have been persuaded to fly your flag!", 
+                num_armies),
+       num_armies, city_name);
+  else
+    s += String::ucompose
+      (_("The citizens of %1 have been persuaded to fly your flag!"), 
+       city_name);
+  TimedMessageDialog dialog(*window, s, 30);
+
+  dialog.show_all();
+  dialog.run();
+  dialog.hide();
+  return;
+}
+
 void GameWindow::on_monster_summoned(Hero *hero, Glib::ustring name)
 {
   std::string s = "";

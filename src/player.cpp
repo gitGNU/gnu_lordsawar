@@ -4537,7 +4537,7 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim,
         {
           std::list<History*> history;
           std::list<Stack*> affected = 
-            enemy_city->diseaseOccupants(item->getPercentArmiesToKill());
+            enemy_city->diseaseDefenders(item->getPercentArmiesToKill());
           guint32 num_armies_killed = removeDeadArmies(affected, history);
           city_diseased.emit(hero, enemy_city->getName(), num_armies_killed);
         }
@@ -4552,6 +4552,18 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim,
                                             friendly_city->getPos());
           city_defended.emit(hero, friendly_city->getName(), a->getName(),
                              item->getNumberOfArmiesToRaise());
+        }
+    }
+  if (item->getBonus() & ItemProto::PERSUADE_NEUTRALS)
+    {
+      if (neutral_city)
+        {
+          Stack *stack = getStacklist()->getArmyStackById(hero->getId());
+          neutral_city->persuadeDefenders(this);
+          takeCityInPossession(neutral_city);
+          QuestsManager::getInstance()->cityOccupied(neutral_city, stack);
+          city_persuaded.emit(hero, neutral_city->getName(), 
+                              neutral_city->countDefenders());
         }
     }
 

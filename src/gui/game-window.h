@@ -319,6 +319,7 @@ class GameWindow: public Decorated
     void on_worms_killed(Hero *hero, Glib::ustring army_type_name, guint32 num_worms_killed);
     void on_city_diseased(Hero *hero, Glib::ustring city_name, guint32 num_armies_killed);
     void on_city_defended(Hero *hero, Glib::ustring city_name, Glib::ustring army_name, guint32 num_armies);
+    void on_city_persuaded(Hero *hero, Glib::ustring city_name, guint32 num_armies);
     void on_bridge_burned(Hero *hero);
     void on_keeper_captured(Hero *hero, Ruin*, Glib::ustring monster_name);
     void on_monster_summoned(Hero *hero, Glib::ustring monster_name);

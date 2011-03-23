@@ -239,6 +239,8 @@ std::string ItemProto::getBonusDescription() const
     }
   if (getBonus(ItemProto::RAISE_DEFENDERS))
     s.push_back(_("Add Defenders to a City"));
+  if (getBonus(ItemProto::PERSUADE_NEUTRALS))
+    s.push_back(_("Take a Neutral City"));
 
   if (battle > 0)
     s.push_back(String::ucompose(_("+%1 Battle"), battle));
@@ -309,6 +311,8 @@ std::string ItemProto::bonusFlagToString(ItemProto::Bonus bonus)
       return "ItemProto::DISEASE_CITY";
     case ItemProto::RAISE_DEFENDERS:
       return "ItemProto::RAISE_DEFENDERS";
+    case ItemProto::PERSUADE_NEUTRALS:
+      return "ItemProto::PERSUADE_NEUTRALS";
     }
   return "ItemProto::ADD1STR";
 }
@@ -360,6 +364,8 @@ std::string ItemProto::bonusFlagsToString(guint32 bonus)
     bonuses += " " + bonusFlagToString(ItemProto::DISEASE_CITY);
   if (bonus & ItemProto::RAISE_DEFENDERS)
     bonuses += " " + bonusFlagToString(ItemProto::RAISE_DEFENDERS);
+  if (bonus & ItemProto::PERSUADE_NEUTRALS)
+    bonuses += " " + bonusFlagToString(ItemProto::PERSUADE_NEUTRALS);
   return bonuses;
 }
 
@@ -428,6 +434,8 @@ ItemProto::Bonus ItemProto::bonusFlagFromString(std::string str)
     return ItemProto::DISEASE_CITY;
   else if (str == "ItemProto::RAISE_DEFENDERS")
     return ItemProto::RAISE_DEFENDERS;
+  else if (str == "ItemProto::PERSUADE_NEUTRALS")
+    return ItemProto::PERSUADE_NEUTRALS;
   return ItemProto::ADD1STR;
 }
 

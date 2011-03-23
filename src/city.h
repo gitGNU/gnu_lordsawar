@@ -222,7 +222,10 @@ class City : public Ownable, public Location, public Renamable,
 	const Army *armyArrives(Stack *& stack);
 
         //! Kill a percentage of the army units in the city.
-        std::list<Stack*> diseaseOccupants(double percent_to_kill);
+        std::list<Stack*> diseaseDefenders(double percent_to_kill);
+
+        //! Change owner of city AND the stacks in it.
+        void persuadeDefenders(Player *new_owner);
 	
 	// Methods that operate on class data and do not modify the class.
 

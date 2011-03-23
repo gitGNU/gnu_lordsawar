@@ -537,7 +537,7 @@ guint32 City::calculateDefenseLevel() const
   return 0;
 }
 
-std::list<Stack*> City::diseaseOccupants(double percent_to_kill)
+std::list<Stack*> City::diseaseDefenders(double percent_to_kill)
 {
   std::list<Stack*> affected;
   std::vector<Stack*> stacks = 
@@ -573,5 +573,13 @@ std::list<Stack*> City::diseaseOccupants(double percent_to_kill)
         affected.push_back(stacks[i]);
     }
   return affected;
+}
+
+void City::persuadeDefenders(Player *new_owner)
+{
+  std::vector<Stack*> stacks = getDefenders();
+  for (unsigned int i = 0; i < stacks.size(); i++)
+    getOwner()->getStacklist()->changeOwnership(stacks[i], new_owner);
+  conquer(new_owner);
 }
 // End of file

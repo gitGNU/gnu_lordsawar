@@ -94,6 +94,10 @@ ItemlistDialog::ItemlistDialog()
       (sigc::mem_fun(this, &ItemlistDialog::on_num_defenders_changed));
     num_defenders_spinbutton->signal_insert_text().connect
       (sigc::mem_fun(this, &ItemlistDialog::on_num_defenders_text_changed));
+    xml->get_widget("persuade_neutral_city_checkbutton", 
+                    persuade_neutral_city_checkbutton);
+    persuade_neutral_city_checkbutton->signal_toggled().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_persuade_neutral_city_toggled));
 
     items_list = Gtk::ListStore::create(items_columns);
     items_treeview->set_model(items_list);
@@ -314,6 +318,8 @@ void ItemlistDialog::fill_item_info(ItemProto *item)
     (raise_defenders_checkbutton->get_active());
   num_defenders_spinbutton->set_value(item->getNumberOfArmiesToRaise());
   update_raise_defender_army_type_name();
+  persuade_neutral_city_checkbutton->set_active 
+    (item->getBonus(ItemProto::PERSUADE_NEUTRALS));
 
   inhibit_bonus_checkbuttons = 0;
 }
@@ -596,6 +602,13 @@ void ItemlistDialog::on_disease_city_toggled()
   disease_armies_percent_spinbutton->set_sensitive
     (disease_city_checkbutton->get_active());
 }
+
+void ItemlistDialog::on_persuade_neutral_city_toggled()
+{
+  on_checkbutton_toggled(persuade_neutral_city_checkbutton, 
+                         ItemProto::PERSUADE_NEUTRALS);
+}
+
 
 void ItemlistDialog::on_raise_defenders_toggled()
 {
