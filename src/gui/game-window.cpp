@@ -748,6 +748,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   connections.push_back
     (game->city_diseased.connect
      (sigc::mem_fun(*this, &GameWindow::on_city_diseased)));
+  connections.push_back
+    (game->city_defended.connect
+     (sigc::mem_fun(*this, &GameWindow::on_city_defended)));
 
   // misc callbacks
   QuestsManager *q = QuestsManager::getInstance();
@@ -3796,6 +3799,19 @@ void GameWindow::on_city_diseased(Hero *hero, Glib::ustring name, guint32 num_ar
   return;
 }
 
+void GameWindow::on_city_defended(Hero *hero, Glib::ustring city_name, Glib::ustring army_name, guint32 num_armies)
+{
+  std::string s = "";
+  s += String::ucompose(ngettext("%1 unit of %2 have been raised in %3!",
+                                 "%1 units of %2 have been raised in %3!", num_armies),
+                        num_armies, army_name, city_name);
+  TimedMessageDialog dialog(*window, s, 30);
+
+  dialog.show_all();
+  dialog.run();
+  dialog.hide();
+  return;
+}
 void GameWindow::on_monster_summoned(Hero *hero, Glib::ustring name)
 {
   std::string s = "";

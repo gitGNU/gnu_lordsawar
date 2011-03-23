@@ -92,12 +92,14 @@ class ItemProto: public Renamable
           SUMMON_MONSTER  = 0x00080000,
           //! Target a city and kill a percentage of army units there.
           DISEASE_CITY    = 0x00100000,
+          //! Make some defenders show up in a friendly city.
+          RAISE_DEFENDERS = 0x00200000,
         };
 
         enum UsableItems {
           USABLE = STEAL_GOLD | SINK_SHIPS | PICK_UP_BAGS | ADD_2MP_STACK
             | BANISH_WORMS | BURN_BRIDGE | CAPTURE_KEEPER | SUMMON_MONSTER
-            | DISEASE_CITY,
+            | DISEASE_CITY | RAISE_DEFENDERS,
         };
 
 
@@ -147,7 +149,7 @@ class ItemProto: public Renamable
         bool usableOnVictimPlayer() const { if (d_bonus & SINK_SHIPS || d_bonus & STEAL_GOLD) return true; else return false;};
 
         bool usableOnEnemyCity() const { if (d_bonus & DISEASE_CITY) return true; else return false;};
-        bool usableOnFriendlyCity() const { if (d_bonus & 0) return true; else return false;};
+        bool usableOnFriendlyCity() const { if (d_bonus & RAISE_DEFENDERS) return true; else return false;};
         bool usableOnNeutralCity() const { if (d_bonus & 0) return true; else return false;};
 
         guint32 getArmyTypeToKill() const {return d_army_type_to_kill;};
@@ -168,6 +170,12 @@ class ItemProto: public Renamable
 
         guint32 getMovementPointsToAdd() const {return d_mp_to_add;};
         void setMovementPointsToAdd(guint32 mp) {d_mp_to_add = mp;};
+
+        guint32 getArmyTypeToRaise() const {return d_army_type_to_raise;};
+        void setArmyTypeToRaise(guint32 type) {d_army_type_to_raise = type;};
+
+        guint32 getNumberOfArmiesToRaise() const {return d_num_armies_to_raise;};
+        void setNumberOfArmiesToRaise(guint32 num) {d_num_armies_to_raise = num;};
 
     protected:
 	//! The item's bonus.
@@ -200,6 +208,12 @@ class ItemProto: public Renamable
 
         //! How many movement points to add in ADD_2MP_STACK.
         guint32 d_mp_to_add;
+
+        //! Which army type to create when RAISE_DEFENDERS is used.
+        guint32 d_army_type_to_raise;
+
+        //! How many armies to create when RAISE_DEFENDERS is used.
+        guint32 d_num_armies_to_raise;
     private:
 
 	static std::string bonusFlagToString(ItemProto::Bonus type);

@@ -60,6 +60,20 @@ UseItemOnCityDialog::UseItemOnCityDialog(SelectCityMap::Type type)
 
   continue_button->set_sensitive(false);
 
+  xml->get_widget("label", label);
+  switch (type)
+    {
+    case SelectCityMap::FRIENDLY:
+      label->set_text(_("Select one of your cities to target."));
+      break;
+    case SelectCityMap::ENEMY:
+      label->set_text(_("Select an enemy city to target."));
+      break;
+    case SelectCityMap::NEUTRAL:
+      label->set_text(_("Select a neutral city to target."));
+      break;
+    }
+
 }
 
 UseItemOnCityDialog::~UseItemOnCityDialog()

@@ -73,6 +73,7 @@ class ItemlistDialog: public sigc::trackable
     Gtk::CheckButton *capture_keeper_checkbutton;
     Gtk::CheckButton *summon_monster_checkbutton;
     Gtk::CheckButton *disease_city_checkbutton;
+    Gtk::CheckButton *raise_defenders_checkbutton;
     Gtk::SpinButton *uses_spinbutton;
     Gtk::Button *kill_army_type_button;
     Gtk::SpinButton *steal_percent_spinbutton;
@@ -80,6 +81,9 @@ class ItemlistDialog: public sigc::trackable
     Gtk::ComboBox *building_type_to_summon_on_combobox;
     Gtk::SpinButton *disease_armies_percent_spinbutton;
     Gtk::SpinButton *add_mp_spinbutton;
+    Gtk::Button *defender_army_type_button;
+    Gtk::SpinButton *num_defenders_spinbutton;
+
 
     class ItemsColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -141,6 +145,11 @@ class ItemlistDialog: public sigc::trackable
     void on_disease_armies_percent_text_changed(const Glib::ustring &s, int *p);
     void on_add_mp_changed();
     void on_add_mp_text_changed(const Glib::ustring &s, int *p);
+    void on_raise_defenders_toggled();
+    void on_defender_type_clicked();
+    void on_num_defenders_changed();
+    void on_num_defenders_text_changed(const Glib::ustring &s, int *p);
+    void update_raise_defender_army_type_name();
 };
 
 #endif

@@ -157,6 +157,9 @@ void Game::addPlayer(Player *p)
       connections[p->getId()].push_back
 	(p->city_diseased.connect
 	 (sigc::mem_fun(city_diseased, &sigc::signal<void, Hero*, Glib::ustring, guint32>::emit)));
+      connections[p->getId()].push_back
+	(p->city_defended.connect
+	 (sigc::mem_fun(city_defended, &sigc::signal<void, Hero*, Glib::ustring, Glib::ustring, guint32>::emit)));
     }
       
       

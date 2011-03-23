@@ -4542,6 +4542,18 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim,
           city_diseased.emit(hero, enemy_city->getName(), num_armies_killed);
         }
     }
+  if (item->getBonus() & ItemProto::RAISE_DEFENDERS)
+    {
+      if (friendly_city)
+        {
+          //okay we're going to add some allies now.
+          const ArmyProto *a = Armysetlist::getInstance()->getArmy(Playerlist::getActiveplayer()->getArmyset(), item->getArmyTypeToRaise());
+          GameMap::getInstance()->addArmies(a, item->getNumberOfArmiesToRaise(),
+                                            friendly_city->getPos());
+          city_defended.emit(hero, friendly_city->getName(), a->getName(),
+                             item->getNumberOfArmiesToRaise());
+        }
+    }
 
   hero->getBackpack()->useItem(item);
   supdatingStack.emit(0);

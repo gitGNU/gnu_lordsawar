@@ -59,6 +59,11 @@ ItemProto::ItemProto(XML_Helper* helper)
           helper->getData(d_percent_armies_to_kill, "percent_armies_to_kill");
         if (d_bonus & ItemProto::ADD_2MP_STACK)
           helper->getData(d_mp_to_add, "mp_to_add");
+        if (d_bonus & ItemProto::RAISE_DEFENDERS)
+          {
+            helper->getData(d_army_type_to_raise, "army_type_to_raise");
+            helper->getData(d_num_armies_to_raise, "num_armies_to_raise");
+          }
       }
     else
       {
@@ -69,6 +74,8 @@ ItemProto::ItemProto(XML_Helper* helper)
         d_building_type_to_summon_on = 0;
         d_percent_armies_to_kill = 0.0;
         d_mp_to_add = 0;
+        d_army_type_to_raise = 0;
+        d_num_armies_to_raise = 0;
       }
 }
 
@@ -83,6 +90,8 @@ ItemProto::ItemProto(std::string name)
   d_building_type_to_summon_on = 0;
   d_percent_armies_to_kill = 0.0;
   d_mp_to_add = 0;
+  d_army_type_to_raise = 0;
+  d_num_armies_to_raise = 0;
 }
 
 ItemProto::ItemProto(const ItemProto& orig)
@@ -92,7 +101,9 @@ ItemProto::ItemProto(const ItemProto& orig)
     d_army_type_to_summon(orig.d_army_type_to_summon),
     d_building_type_to_summon_on(orig.d_building_type_to_summon_on),
     d_percent_armies_to_kill(orig.d_percent_armies_to_kill),
-    d_mp_to_add(orig.d_mp_to_add)
+    d_mp_to_add(orig.d_mp_to_add),
+    d_army_type_to_raise(orig.d_army_type_to_raise),
+    d_num_armies_to_raise(orig.d_num_armies_to_raise)
 {
 }
 
@@ -129,6 +140,13 @@ bool ItemProto::saveContents(XML_Helper* helper) const
                                      d_percent_armies_to_kill);
         if (d_bonus & ItemProto::ADD_2MP_STACK)
           retval &= helper->saveData("mp_to_add", d_mp_to_add);
+        if (d_bonus & ItemProto::RAISE_DEFENDERS)
+          {
+            retval &= helper->saveData("army_type_to_raise", 
+                                       d_army_type_to_raise);
+            retval &= helper->saveData("num_armies_to_raise", 
+                                       d_num_armies_to_raise);
+          }
       }
 
   return retval;
@@ -219,6 +237,8 @@ std::string ItemProto::getBonusDescription() const
       else
         s.push_back(String::ucompose(_("Summons %1"), a->getName()));
     }
+  if (getBonus(ItemProto::RAISE_DEFENDERS))
+    s.push_back(_("Add Defenders to a City"));
 
   if (battle > 0)
     s.push_back(String::ucompose(_("+%1 Battle"), battle));
@@ -287,6 +307,8 @@ std::string ItemProto::bonusFlagToString(ItemProto::Bonus bonus)
       return "ItemProto::SUMMON_MONSTER";
     case ItemProto::DISEASE_CITY:
       return "ItemProto::DISEASE_CITY";
+    case ItemProto::RAISE_DEFENDERS:
+      return "ItemProto::RAISE_DEFENDERS";
     }
   return "ItemProto::ADD1STR";
 }
@@ -336,6 +358,8 @@ std::string ItemProto::bonusFlagsToString(guint32 bonus)
     bonuses += " " + bonusFlagToString(ItemProto::SUMMON_MONSTER);
   if (bonus & ItemProto::DISEASE_CITY)
     bonuses += " " + bonusFlagToString(ItemProto::DISEASE_CITY);
+  if (bonus & ItemProto::RAISE_DEFENDERS)
+    bonuses += " " + bonusFlagToString(ItemProto::RAISE_DEFENDERS);
   return bonuses;
 }
 
@@ -402,6 +426,8 @@ ItemProto::Bonus ItemProto::bonusFlagFromString(std::string str)
     return ItemProto::SUMMON_MONSTER;
   else if (str == "ItemProto::DISEASE_CITY")
     return ItemProto::DISEASE_CITY;
+  else if (str == "ItemProto::RAISE_DEFENDERS")
+    return ItemProto::RAISE_DEFENDERS;
   return ItemProto::ADD1STR;
 }
 

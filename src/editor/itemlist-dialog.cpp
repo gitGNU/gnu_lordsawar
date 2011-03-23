@@ -83,6 +83,17 @@ ItemlistDialog::ItemlistDialog()
       (sigc::mem_fun(this, 
                      &ItemlistDialog::on_disease_armies_percent_text_changed));
 
+    xml->get_widget("raise_defenders_checkbutton", raise_defenders_checkbutton);
+    raise_defenders_checkbutton->signal_toggled().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_raise_defenders_toggled));
+    xml->get_widget("defender_army_type_button", defender_army_type_button);
+    defender_army_type_button->signal_clicked().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_defender_type_clicked));
+    xml->get_widget("num_defenders_spinbutton", num_defenders_spinbutton);
+    num_defenders_spinbutton->signal_changed().connect
+      (sigc::mem_fun(this, &ItemlistDialog::on_num_defenders_changed));
+    num_defenders_spinbutton->signal_insert_text().connect
+      (sigc::mem_fun(this, &ItemlistDialog::on_num_defenders_text_changed));
 
     items_list = Gtk::ListStore::create(items_columns);
     items_treeview->set_model(items_list);
@@ -297,6 +308,12 @@ void ItemlistDialog::fill_item_info(ItemProto *item)
   disease_armies_percent_spinbutton->set_value(item->getPercentArmiesToKill());
   update_kill_army_type_name();
   update_summon_army_type_name();
+  raise_defenders_checkbutton->set_active
+    (item->getBonus(ItemProto::RAISE_DEFENDERS));
+  num_defenders_spinbutton->set_sensitive
+    (raise_defenders_checkbutton->get_active());
+  num_defenders_spinbutton->set_value(item->getNumberOfArmiesToRaise());
+  update_raise_defender_army_type_name();
 
   inhibit_bonus_checkbuttons = 0;
 }
@@ -368,7 +385,6 @@ void ItemlistDialog::on_checkbutton_toggled(Gtk::CheckButton *checkbutton,
       // Row selected
       Gtk::TreeModel::Row row = *iterrow;
 
-      printf("setting d_item now.1\n");
       d_item = row[items_columns.item];
     }
   else
@@ -484,7 +500,6 @@ void ItemlistDialog::on_uses_changed()
     {
       // Row selected
       Gtk::TreeModel::Row row = *iterrow;
-      printf("setting d_item now.2\n");
       d_item = row[items_columns.item];
   
       d_item->setNumberOfUsesLeft(int(uses_spinbutton->get_value()));
@@ -582,6 +597,15 @@ void ItemlistDialog::on_disease_city_toggled()
     (disease_city_checkbutton->get_active());
 }
 
+void ItemlistDialog::on_raise_defenders_toggled()
+{
+  on_checkbutton_toggled(raise_defenders_checkbutton, ItemProto::RAISE_DEFENDERS);
+  num_defenders_spinbutton->set_sensitive
+    (raise_defenders_checkbutton->get_active());
+  defender_army_type_button->set_sensitive
+    (raise_defenders_checkbutton->get_active());
+}
+
 void ItemlistDialog::on_steal_percent_changed()
 {
   if (inhibit_bonus_checkbuttons)
@@ -623,4 +647,54 @@ void ItemlistDialog::on_add_mp_text_changed(const Glib::ustring &s, int *p)
 {
   add_mp_spinbutton->set_value(atoi(add_mp_spinbutton->get_text().c_str()));
   on_add_mp_changed();
+}
+
+void ItemlistDialog::on_num_defenders_changed()
+{
+  if (inhibit_bonus_checkbuttons)
+    return;
+  if (d_item)
+    d_item->setNumberOfArmiesToRaise(num_defenders_spinbutton->get_value());
+}
+
+void ItemlistDialog::on_num_defenders_text_changed(const Glib::ustring &s, int *p)
+{
+  num_defenders_spinbutton->set_value(atoi(num_defenders_spinbutton->get_text().c_str()));
+  on_num_defenders_changed();
+}
+
+void ItemlistDialog::on_defender_type_clicked()
+{
+    Player *neutral = Playerlist::getInstance()->getNeutral();
+    Glib::ustring name;
+    if (raise_defenders_checkbutton->get_active() == true)
+      {
+        Armysetlist *asl = Armysetlist::getInstance();
+	name = asl->getArmy(neutral->getArmyset(), 
+                            d_item->getArmyTypeToRaise())->getName();
+      }
+    else
+	name = _("No army type selected");
+    
+    defender_army_type_button->set_label(name);
+}
+
+void ItemlistDialog::update_raise_defender_army_type_name()
+{
+    Player *neutral = Playerlist::getInstance()->getNeutral();
+    Glib::ustring name;
+    if (raise_defenders_checkbutton->get_active() == true)
+      {
+        defender_army_type_button->set_sensitive(true);
+        Armysetlist *asl = Armysetlist::getInstance();
+	name = asl->getArmy(neutral->getArmyset(), 
+                            d_item->getArmyTypeToRaise())->getName();
+      }
+    else
+      {
+	name = _("No army type selected");
+        defender_army_type_button->set_sensitive(false);
+      }
+    
+    defender_army_type_button->set_label(name);
 }

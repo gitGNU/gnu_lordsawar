@@ -47,6 +47,7 @@ class UseItemOnCityDialog: public Decorated
 
     Gtk::Image *map_image;
     Gtk::Button *continue_button;
+    Gtk::Label *label;
     
     void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
 

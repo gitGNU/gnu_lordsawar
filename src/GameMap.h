@@ -183,6 +183,7 @@ class GameMap: public sigc::trackable
 	Stack* addArmy(Location *l, Army *a);
         Stack* addArmy(Vector<int> pos, Army *a);
         Stack* addArmyAtPos(Vector<int> pos, Army *a);
+        void addArmies(const ArmyProto *a, guint32 num_allies, Vector<int> pos);
 
 	//! Go find a player's planted standard on the map
         Vector<int> findPlantedStandard(Player *p);

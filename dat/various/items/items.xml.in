@@ -206,4 +206,11 @@
         <d_uses_left>3</d_uses_left>
         <d_percent_armies_to_kill>25</d_percent_armies_to_kill>
     </itemproto>
+    <itemproto>
+        <_d_name>Staff of Ghostly Defenders</_d_name>
+        <d_bonus>ItemProto::RAISE_DEFENDERS</d_bonus>
+        <d_uses_left>2</d_uses_left>
+        <d_army_type_to_raise>19</d_army_type_to_raise>
+        <d_num_armies_to_raise>3</d_num_armies_to_raise>
+    </itemproto>
 </itemlist>

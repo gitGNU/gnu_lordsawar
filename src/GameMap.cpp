@@ -2486,3 +2486,13 @@ bool GameMap::neutralCitiesPresent()
   return Citylist::getInstance()->countCities
     (Playerlist::getInstance()->getNeutral());
 }
+
+void GameMap::addArmies(const ArmyProto *a, guint32 num_allies, Vector<int> pos)
+{
+  for (unsigned int i = 0; i < num_allies; i++)
+    {
+      Army *army = new Army(*a, Playerlist::getActiveplayer());
+      if (army)
+        addArmy(pos, army);
+    }
+}

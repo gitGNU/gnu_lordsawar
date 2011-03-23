@@ -181,6 +181,7 @@ class Game
     sigc::signal<void, Hero *, Ruin*, Glib::ustring> keeper_captured;
     sigc::signal<void, Hero *, Glib::ustring> monster_summoned;
     sigc::signal<void, Hero *, Glib::ustring, guint32> city_diseased;
+    sigc::signal<void, Hero *, Glib::ustring, Glib::ustring, guint32> city_defended;
     
     void addPlayer(Player *p);
 
