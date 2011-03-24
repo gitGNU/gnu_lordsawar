@@ -65,6 +65,9 @@ class File
 
         //! load misc file, e.g. hero names 
         static std::string getMiscFile(std::string filename);
+
+        //! load an xslt file.
+        static std::string getXSLTFile(std::string filename);
         
         //! Load the xml file describing the items
         static std::string getItemDescription();

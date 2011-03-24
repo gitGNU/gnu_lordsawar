@@ -95,6 +95,11 @@ std::string File::getMiscFile(std::string filename)
   return Configuration::s_dataPath + "/" + filename;
 }
 
+std::string File::getXSLTFile(std::string filename)
+{
+  return getMiscFile("various/xslt/" + filename);
+}
+
 std::string File::getUserProfilesDescription()
 {
   return Configuration::s_savePath + "/" + PROFILE_LIST;
