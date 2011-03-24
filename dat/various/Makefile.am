@@ -1,4 +1,4 @@
-SUBDIRS = items editor
+SUBDIRS = items editor xslt
 
 MAINTAINERCLEANFILES= Makefile.in
 

@@ -304,6 +304,7 @@ AC_CONFIG_FILES([
         dat/various/Makefile 
         dat/various/items/Makefile
         dat/various/editor/Makefile
+        dat/various/xslt/Makefile
         dat/map/Makefile 
         dat/map/2ndPunic37/Makefile 
         dat/map/dol/Makefile 
