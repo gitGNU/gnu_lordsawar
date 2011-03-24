@@ -31,10 +31,12 @@
 class SelectCityMap : public OverviewMap
 {
  public:
+     //! Which cities we're going to be allowed to click on.
      enum Type {
-       NEUTRAL = 0,
-       FRIENDLY,
-       ENEMY
+       NEUTRAL_CITY = 0,
+       FRIENDLY_CITY,
+       ENEMY_CITY,
+       ANY_CITY
      };
      //! Default constructor.  Make a new SelectCityMap.
     SelectCityMap(SelectCityMap::Type type);

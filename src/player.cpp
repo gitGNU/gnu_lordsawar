@@ -4434,7 +4434,7 @@ bool Player::setPathOfStackToPreviousDestination(Stack *stack)
 }
 
 bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim,
-                           City *friendly_city, City *enemy_city, City *neutral_city)
+                           City *friendly_city, City *enemy_city, City *neutral_city, City *city)
 {
   if (item->getBonus() & ItemProto::STEAL_GOLD)
     {
@@ -4566,6 +4566,25 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim,
                               neutral_city->countDefenders());
         }
     }
+  if (item->getBonus() & ItemProto::TELEPORT_TO_CITY)
+    {
+      if (city)
+        {
+          Stack *s = getStacklist()->getArmyStackById(hero->getId());
+          for (Stack::iterator i = s->begin(); i != s->end(); ++i)
+            {
+              if (city->getOwner() != s->getOwner())
+                GameMap::getInstance()->addArmyAtPos(city->getPos(), *i);
+              else
+                GameMap::getInstance()->addArmy(city->getPos(), *i);
+            }
+          s->clear();
+          deleteStack(s);
+          //where do we teleport to?
+          stack_teleported.emit(hero, city->getName());
+          supdatingStack.emit(getStacklist()->getArmyStackById(hero->getId()));
+        }
+    }
 
   hero->getBackpack()->useItem(item);
   supdatingStack.emit(0);
@@ -4574,18 +4593,18 @@ bool Player::doHeroUseItem(Hero *hero, Item *item, Player *victim,
 
 bool Player::heroUseItem(Hero *hero, Item *item, Player *victim,
                          City *friendly_city, City *enemy_city, 
-                         City *neutral_city)
+                         City *neutral_city, City *city)
 {
   if (doHeroUseItem(hero, item, victim, friendly_city, enemy_city, 
-                    neutral_city))
+                    neutral_city, city))
     {
       Action_UseItem * action = new Action_UseItem();
       action->fillData(hero, item, victim, friendly_city, enemy_city, 
-                       neutral_city);
+                       neutral_city, city);
       addAction(action);
       History_HeroUseItem * history = new History_HeroUseItem();
       history->fillData(hero, item, victim, friendly_city, enemy_city,
-                        neutral_city);
+                        neutral_city, city);
       addHistory (history);
       return true;
     }

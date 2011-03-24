@@ -163,6 +163,9 @@ void Game::addPlayer(Player *p)
       connections[p->getId()].push_back
 	(p->city_persuaded.connect
 	 (sigc::mem_fun(city_persuaded, &sigc::signal<void, Hero*, Glib::ustring, guint32>::emit)));
+      connections[p->getId()].push_back
+	(p->stack_teleported.connect
+	 (sigc::mem_fun(stack_teleported, &sigc::signal<void, Hero*, Glib::ustring>::emit)));
     }
       
       
@@ -718,19 +721,23 @@ void Game::on_use_item(Item *item)
   City *friendly_city = NULL;
   City *enemy_city = NULL;
   City *neutral_city = NULL;
+  City *city = NULL;
 
   //ask the user a series of questions on how to use the item
   if (item->usableOnVictimPlayer())
     victim = select_item_victim_player.emit();
   if (item->usableOnFriendlyCity())
-    friendly_city = select_city_to_use_item_on.emit(SelectCityMap::FRIENDLY);
+    friendly_city = 
+      select_city_to_use_item_on.emit(SelectCityMap::FRIENDLY_CITY);
   if (item->usableOnEnemyCity())
-    enemy_city = select_city_to_use_item_on.emit(SelectCityMap::ENEMY);
+    enemy_city = select_city_to_use_item_on.emit(SelectCityMap::ENEMY_CITY);
   if (item->usableOnNeutralCity())
-    neutral_city = select_city_to_use_item_on.emit(SelectCityMap::NEUTRAL);
+    neutral_city = select_city_to_use_item_on.emit(SelectCityMap::NEUTRAL_CITY);
+  if (item->usableOnAnyCity())
+    city = select_city_to_use_item_on.emit(SelectCityMap::ANY_CITY);
 
   active->heroUseItem(hero, item, victim, friendly_city, enemy_city, 
-                      neutral_city);
+                      neutral_city, city);
 }
 
 void Game::search_selected_stack()

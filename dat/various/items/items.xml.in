@@ -218,4 +218,9 @@
         <d_bonus>ItemProto::PERSUADE_NEUTRALS</d_bonus>
         <d_uses_left>3</d_uses_left>
     </itemproto>
+    <itemproto>
+        <_d_name>Ring of Teleportation</_d_name>
+        <d_bonus>ItemProto::TELEPORT_TO_CITY</d_bonus>
+        <d_uses_left>3</d_uses_left>
+    </itemproto>
 </itemlist>

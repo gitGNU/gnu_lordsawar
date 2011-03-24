@@ -52,15 +52,18 @@ void SelectCityMap::mouse_button_event(MouseButtonEvent e)
           bool valid = false;
           switch (d_type)
             {
-            case NEUTRAL:
+            case ANY_CITY:
+              valid = true;
+              break;
+            case NEUTRAL_CITY:
               if (nearestCity->getOwner() == plist->getNeutral())
                 valid = true;
               break;
-            case FRIENDLY:
+            case FRIENDLY_CITY:
               if (nearestCity->getOwner() == plist->getActiveplayer())
                 valid = true;
               break;
-            case ENEMY:
+            case ENEMY_CITY:
               if (nearestCity->getOwner() != plist->getActiveplayer())
                 valid = true;
               break;

@@ -396,7 +396,7 @@ Stack* GameMap::addArmy(Vector<int> pos, Army *a)
   City *c = getCity(pos);
   if (c)
     {
-      if (c->isBurnt())
+      if (c->isBurnt() || c->getOwner() != a->getOwner())
         return addArmyAtPos(pos, a);
       else
         return addArmy(c, a);
@@ -424,10 +424,13 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
     max = s_width;
   max--;
 
-  Location l(pos, 1);
-  s = l.addArmy(a);
-  if (s)
-    return s;
+  if (getBuilding(pos) == Maptile::NONE)
+    {
+      Location l(pos, 1);
+      s = l.addArmy(a);
+      if (s)
+        return s;
+    }
 
   // we couldn't add the army to the square(s) identified by location,
   // so the idea is to go around in ever widening boxes until we find a
@@ -440,12 +443,14 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
   //d is the distance from Pos where our box starts
   for (d = 1; d < max; d++)
     {
-      for (i = 0; i < (d * 2) + 1; i++)
+      guint32 imax = (d * 2) + 1;
+      guint32 jmax = (d * 2) + 1;
+      for (i = 0; i < imax; i++)
         {
-          for (j = 0; j < (d * 2) + 1; j++)
+          for (j = 0; j < jmax; j++)
             {
-              if ((i == 0 || i == (d * 2) + 1) && 
-                  (j == 0 || j == (d * 2) + 1))
+              if ((i == 0 || i == imax - 1) && 
+                  (j == 0 || j == jmax - 1))
                 {
                   x = pos.x + (i - d);
                   y = pos.y + (j - d);

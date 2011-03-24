@@ -1662,7 +1662,7 @@ class Action_UseItem: public Action
 	//! Populate the Action_UseItem with a hero and an item.
         bool fillData(Hero *hero, Item *item, Player *victim, 
                       City *friendly_city, City *enemy_city, 
-                      City *neutral_city);
+                      City *neutral_city, City *city);
 
 	guint32 getHeroId() const {return d_hero;};
 	guint32 getItemId() const {return d_item;};
@@ -1670,6 +1670,7 @@ class Action_UseItem: public Action
         guint32 getFriendlyCityId() const {return d_friendly_city;};
         guint32 getEnemyCityId() const {return d_enemy_city;};
         guint32 getNeutralCityId() const {return d_neutral_city;};
+        guint32 getCityId() const {return d_city;};
 
         private:
         guint32 d_hero;
@@ -1678,6 +1679,7 @@ class Action_UseItem: public Action
         guint32 d_friendly_city;
         guint32 d_enemy_city;
         guint32 d_neutral_city;
+        guint32 d_city;
 };
 
 //-----------------------------------------------------------------------------

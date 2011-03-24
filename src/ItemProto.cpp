@@ -241,6 +241,8 @@ std::string ItemProto::getBonusDescription() const
     s.push_back(_("Add Defenders to a City"));
   if (getBonus(ItemProto::PERSUADE_NEUTRALS))
     s.push_back(_("Take a Neutral City"));
+  if (getBonus(ItemProto::TELEPORT_TO_CITY))
+    s.push_back(_("Teleport Stack to a City"));
 
   if (battle > 0)
     s.push_back(String::ucompose(_("+%1 Battle"), battle));
@@ -313,6 +315,8 @@ std::string ItemProto::bonusFlagToString(ItemProto::Bonus bonus)
       return "ItemProto::RAISE_DEFENDERS";
     case ItemProto::PERSUADE_NEUTRALS:
       return "ItemProto::PERSUADE_NEUTRALS";
+    case ItemProto::TELEPORT_TO_CITY:
+      return "ItemProto::TELEPORT_TO_CITY";
     }
   return "ItemProto::ADD1STR";
 }
@@ -366,6 +370,8 @@ std::string ItemProto::bonusFlagsToString(guint32 bonus)
     bonuses += " " + bonusFlagToString(ItemProto::RAISE_DEFENDERS);
   if (bonus & ItemProto::PERSUADE_NEUTRALS)
     bonuses += " " + bonusFlagToString(ItemProto::PERSUADE_NEUTRALS);
+  if (bonus & ItemProto::TELEPORT_TO_CITY)
+    bonuses += " " + bonusFlagToString(ItemProto::TELEPORT_TO_CITY);
   return bonuses;
 }
 
@@ -436,6 +442,8 @@ ItemProto::Bonus ItemProto::bonusFlagFromString(std::string str)
     return ItemProto::RAISE_DEFENDERS;
   else if (str == "ItemProto::PERSUADE_NEUTRALS")
     return ItemProto::PERSUADE_NEUTRALS;
+  else if (str == "ItemProto::TELEPORT_TO_CITY")
+    return ItemProto::TELEPORT_TO_CITY;
   return ItemProto::ADD1STR;
 }
 
@@ -463,6 +471,8 @@ bool ItemProto::isCurrentlyUsable(guint32 building, bool bags_on_map, bool victi
   if (usableOnEnemyCity() && enemy_cities_present)
     usable = true;
   if (usableOnNeutralCity() && neutral_cities_present)
+    usable = true;
+  if (usableOnAnyCity())
     usable = true;
 
   return usable;

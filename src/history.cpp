@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -1220,7 +1220,7 @@ bool History_HeroRewardRuin::fillData(Hero *hero, Ruin *ruin)
 History_HeroUseItem::History_HeroUseItem()
 :History(History::USE_ITEM), d_hero_name(""), d_item_name(""), d_item_bonus(0), 
     d_opponent_id(0), d_friendly_city_id(0), d_enemy_city_id(0), 
-    d_neutral_city_id(0)
+    d_neutral_city_id(0), d_city_id(0)
 {
 }
 
@@ -1228,7 +1228,7 @@ History_HeroUseItem::History_HeroUseItem(const History_HeroUseItem &history)
 :History(history), d_hero_name(history.d_hero_name), d_item_name(history.d_item_name), d_item_bonus(history.d_item_bonus), d_opponent_id(history.d_opponent_id),
     d_friendly_city_id(history.d_friendly_city_id), 
     d_enemy_city_id(history.d_enemy_city_id), 
-    d_neutral_city_id(history.d_neutral_city_id)
+    d_neutral_city_id(history.d_neutral_city_id), d_city_id(history.d_city_id)
 {
 }
 
@@ -1242,6 +1242,7 @@ History_HeroUseItem::History_HeroUseItem(XML_Helper* helper)
   helper->getData(d_friendly_city_id, "friendly_city_id");
   helper->getData(d_enemy_city_id, "enemy_city_id");
   helper->getData(d_neutral_city_id, "neutral_city_id");
+  helper->getData(d_city_id, "city_id");
 }
 
 History_HeroUseItem::~History_HeroUseItem()
@@ -1253,7 +1254,8 @@ std::string History_HeroUseItem::dump() const
   std::stringstream s;
 
   s <<"hero " << d_hero_name << "uses " << d_item_name <<" on player " << d_opponent_id << ", friendly city " << d_friendly_city_id << ", enemy city " <<
-    d_enemy_city_id << ", neutral city " << d_neutral_city_id;
+    d_enemy_city_id << ", neutral city " << d_neutral_city_id << ", city " <<
+    d_city_id;
   s <<"\n";
 
   return s.str();
@@ -1270,13 +1272,14 @@ bool History_HeroUseItem::doSave(XML_Helper* helper) const
   retval &= helper->saveData("friendly_city_id", d_friendly_city_id);
   retval &= helper->saveData("enemy_city_id", d_enemy_city_id);
   retval &= helper->saveData("neutral_city_id", d_neutral_city_id);
+  retval &= helper->saveData("city_id", d_city_id);
 
   return retval;
 }
 
 bool History_HeroUseItem::fillData(Hero *hero, Item *item, Player *opponent,
                                    City *friendly_city, City *enemy_city,
-                                   City *neutral_city)
+                                   City *neutral_city, City *city)
 {
   d_hero_name = hero->getName();
   d_item_name = item->getName();
@@ -1289,6 +1292,8 @@ bool History_HeroUseItem::fillData(Hero *hero, Item *item, Player *opponent,
     d_enemy_city_id = enemy_city->getId();
   if (neutral_city)
     d_neutral_city_id = neutral_city->getId();
+  if (city)
+    d_city_id = city->getId();
   return true;
 }
 

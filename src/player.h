@@ -714,7 +714,7 @@ class Player: public sigc::trackable
 	bool heroPickupAllItems(Hero *h, Vector<int> pos);
 
         //! Have the given hero use the given item, on the given player.
-        bool heroUseItem(Hero *h, Item *item, Player *player, City *friendly_city, City *enemy_city, City *neutral_city);
+        bool heroUseItem(Hero *h, Item *item, Player *player, City *friendly_city, City *enemy_city, City *neutral_city, City *city);
 
 	/**
 	 * Completing a Quest entails that the Hero is going to receive a
@@ -1477,6 +1477,7 @@ class Player: public sigc::trackable
         sigc::signal<void, Hero *, Glib::ustring, guint32> city_diseased;
         sigc::signal<void, Hero *, Glib::ustring, Glib::ustring, guint32> city_defended;
         sigc::signal<void, Hero *, Glib::ustring, guint32> city_persuaded;
+        sigc::signal<void, Hero *, Glib::ustring> stack_teleported;
         
 	void loadPbmGame();
 	//! Check the history to see if we ever conquered the given city.
@@ -1652,7 +1653,7 @@ class Player: public sigc::trackable
         void doGiveReward(Stack *s, Reward *reward, StackReflist *stacks);
         void doHeroDropItem(Hero *hero, Item *item, Vector<int> pos, bool &splash);
 	bool doHeroDropAllItems(Hero *h, Vector<int> pos, bool &splash);
-        bool doHeroUseItem(Hero *h, Item *item, Player *victim, City *friendly_city, City *enemy_city, City *neutral_city);
+        bool doHeroUseItem(Hero *h, Item *item, Player *victim, City *friendly_city, City *enemy_city, City *neutral_city, City *city);
         void doHeroPickupItem(Hero *hero, Item *item, Vector<int> pos);
         bool doHeroPickupAllItems(Hero *h, Vector<int> pos);
         void doHeroGainsLevel(Hero *hero, Army::Stat stat);

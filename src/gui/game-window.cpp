@@ -754,6 +754,9 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   connections.push_back
     (game->city_persuaded.connect
      (sigc::mem_fun(*this, &GameWindow::on_city_persuaded)));
+  connections.push_back
+    (game->stack_teleported.connect
+     (sigc::mem_fun(*this, &GameWindow::on_stack_teleported)));
 
   // misc callbacks
   QuestsManager *q = QuestsManager::getInstance();
@@ -3831,6 +3834,19 @@ void GameWindow::on_city_persuaded(Hero *hero, Glib::ustring city_name, guint32 
     s += String::ucompose
       (_("The citizens of %1 have been persuaded to fly your flag!"), 
        city_name);
+  TimedMessageDialog dialog(*window, s, 30);
+
+  dialog.show_all();
+  dialog.run();
+  dialog.hide();
+  return;
+}
+
+void GameWindow::on_stack_teleported(Hero *hero, Glib::ustring city_name)
+{
+  std::string s = "";
+  s += String::ucompose(_("%1 has teleported to %2!"), 
+                        hero->getName(), city_name);
   TimedMessageDialog dialog(*window, s, 30);
 
   dialog.show_all();

@@ -98,6 +98,10 @@ ItemlistDialog::ItemlistDialog()
                     persuade_neutral_city_checkbutton);
     persuade_neutral_city_checkbutton->signal_toggled().connect(
 	sigc::mem_fun(this, &ItemlistDialog::on_persuade_neutral_city_toggled));
+    xml->get_widget("teleport_to_city_checkbutton", 
+                    teleport_to_city_checkbutton);
+    teleport_to_city_checkbutton->signal_toggled().connect(
+	sigc::mem_fun(this, &ItemlistDialog::on_teleport_to_city_toggled));
 
     items_list = Gtk::ListStore::create(items_columns);
     items_treeview->set_model(items_list);
@@ -320,6 +324,8 @@ void ItemlistDialog::fill_item_info(ItemProto *item)
   update_raise_defender_army_type_name();
   persuade_neutral_city_checkbutton->set_active 
     (item->getBonus(ItemProto::PERSUADE_NEUTRALS));
+  teleport_to_city_checkbutton->set_active 
+    (item->getBonus(ItemProto::TELEPORT_TO_CITY));
 
   inhibit_bonus_checkbuttons = 0;
 }
@@ -609,6 +615,11 @@ void ItemlistDialog::on_persuade_neutral_city_toggled()
                          ItemProto::PERSUADE_NEUTRALS);
 }
 
+void ItemlistDialog::on_teleport_to_city_toggled()
+{
+  on_checkbutton_toggled(teleport_to_city_checkbutton, 
+                         ItemProto::TELEPORT_TO_CITY);
+}
 
 void ItemlistDialog::on_raise_defenders_toggled()
 {

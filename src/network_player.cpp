@@ -820,7 +820,10 @@ void NetworkPlayer::decodeActionUseItem(const Action_UseItem *action)
     Citylist::getInstance()->getById(action->getEnemyCityId());
   City *neutral_city = 
     Citylist::getInstance()->getById(action->getNeutralCityId());
-  doHeroUseItem(hero, item, victim, friendly_city, enemy_city, neutral_city);
+  City *city = 
+    Citylist::getInstance()->getById(action->getCityId());
+  doHeroUseItem(hero, item, victim, friendly_city, enemy_city, neutral_city, 
+                city);
 }
       
 void NetworkPlayer::decodeActionStackOrder(const Action_ReorderArmies* action)

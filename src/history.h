@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -882,7 +882,7 @@ class History_HeroUseItem: public History
         virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the event with the hero name and the player we attacked.
-        bool fillData(Hero *hero, Item *item, Player *opponent, City *friendly_city, City *enemy_city, City *neutral_city);
+        bool fillData(Hero *hero, Item *item, Player *opponent, City *friendly_city, City *enemy_city, City *neutral_city, City *city);
 
         //! Get the name of the hero that used the object.
         std::string getHeroName() const {return d_hero_name;}
@@ -898,6 +898,7 @@ class History_HeroUseItem: public History
         guint32 getFriendlyCityId() const {return d_friendly_city_id;};
         guint32 getEnemyCityId() const {return d_enemy_city_id;};
         guint32 getNeutralCityId() const {return d_neutral_city_id;};
+        guint32 getCityId() const {return d_city_id;};
     
     private:
 
@@ -921,6 +922,7 @@ class History_HeroUseItem: public History
         guint32 d_friendly_city_id;
         guint32 d_enemy_city_id;
         guint32 d_neutral_city_id;
+        guint32 d_city_id;
 };
 
 #endif //HISTORY_H

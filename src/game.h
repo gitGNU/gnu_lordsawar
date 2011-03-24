@@ -183,6 +183,7 @@ class Game
     sigc::signal<void, Hero *, Glib::ustring, guint32> city_diseased;
     sigc::signal<void, Hero *, Glib::ustring, Glib::ustring, guint32> city_defended;
     sigc::signal<void, Hero *, Glib::ustring, guint32> city_persuaded;
+    sigc::signal<void, Hero *, Glib::ustring> stack_teleported;
     
     void addPlayer(Player *p);
 

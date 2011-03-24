@@ -2557,7 +2557,7 @@ bool Action_Loot::fillData(Player *looter, Player *looted, guint32 amount_to_add
 
 Action_UseItem::Action_UseItem()
 :Action(Action::USE_ITEM), d_hero(0), d_item(0), d_victim_player(0),
-    d_friendly_city(0), d_enemy_city(0), d_neutral_city(0)
+    d_friendly_city(0), d_enemy_city(0), d_neutral_city(0), d_city(0)
 {
 }
 
@@ -2565,7 +2565,7 @@ Action_UseItem::Action_UseItem(const Action_UseItem &action)
 : Action(action), d_hero(action.d_hero), d_item(action.d_item),
     d_victim_player(action.d_victim_player),
     d_friendly_city(action.d_friendly_city), d_enemy_city(action.d_enemy_city),
-    d_neutral_city(action.d_neutral_city)
+    d_neutral_city(action.d_neutral_city), d_city(action.d_city)
 {
 }
 
@@ -2579,6 +2579,7 @@ Action_UseItem::Action_UseItem(XML_Helper* helper)
   helper->getData(d_friendly_city, "friendly_city");
   helper->getData(d_enemy_city, "enemy_city");
   helper->getData(d_neutral_city, "neutral_city");
+  helper->getData(d_city, "city");
 }
 
 Action_UseItem::~Action_UseItem()
@@ -2590,7 +2591,8 @@ std::string Action_UseItem::dump() const
   std::stringstream ss;
 
   ss <<"Hero " <<d_hero <<" uses item " <<d_item << " and targets player << " << d_victim_player << " friendly city " << d_friendly_city << ", enemy city "
-    << d_enemy_city << ", neutral city " << d_neutral_city << "\n";
+    << d_enemy_city << ", neutral city " << d_neutral_city << ", city " <<
+    d_city << "\n";
 
   return ss.str();
 }
@@ -2605,13 +2607,14 @@ bool Action_UseItem::doSave(XML_Helper* helper) const
   retval &= helper->saveData("friendly_city", d_friendly_city);
   retval &= helper->saveData("enemy_city", d_enemy_city);
   retval &= helper->saveData("neutral_city", d_neutral_city);
+  retval &= helper->saveData("city", d_city);
 
   return retval;
 }
 
 bool Action_UseItem::fillData(Hero *hero, Item *item, Player *victim,
                               City *friendly_city, City *enemy_city,
-                              City *neutral_city)
+                              City *neutral_city, City *city)
 {
   d_hero = hero->getId();
   d_item = item->getId();
@@ -2623,6 +2626,8 @@ bool Action_UseItem::fillData(Hero *hero, Item *item, Player *victim,
     d_enemy_city = enemy_city->getId();
   if (neutral_city)
     d_neutral_city = neutral_city->getId();
+  if (city)
+    d_city = city->getId();
 
   return true;
 }
