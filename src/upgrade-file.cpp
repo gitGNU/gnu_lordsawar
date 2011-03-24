@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
 	      cout << _("Options:") << endl << endl; 
 	      cout << "  -?, --help                 " << _("Display this help and exit") <<endl;
 	      cout << "  -i, --identify             " << _("Show the file type instead of upgrading") << endl;
-	      cout << "  -r, --rewrite VERSION      " << _("Just change the version instead of upgrading") << endl;
+	      //cout << "  -r, --rewrite VERSION      " << _("Just change the version instead of upgrading") << endl;
 	      cout << endl;
 	      cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << endl;
 	      exit(0);
