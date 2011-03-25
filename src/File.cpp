@@ -41,6 +41,8 @@
 #include "tileset.h"
 #include "shieldset.h"
 #include "cityset.h"
+#include "file-compat.h"
+#include "ucompose.hpp"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
@@ -95,9 +97,17 @@ std::string File::getMiscFile(std::string filename)
   return Configuration::s_dataPath + "/" + filename;
 }
 
-std::string File::getXSLTFile(std::string filename)
+std::string File::getXSLTFile(guint32 type, std::string old_version, std::string new_version)
 {
-  return getMiscFile("various/xslt/" + filename);
+  FileCompat::Type t = FileCompat::Type(type);
+  Glib::ustring filename = String::ucompose("%1-%2-%3",
+                                            FileCompat::typeToCode(t), 
+                                            old_version, new_version);
+  std::string file = getMiscFile("various/xslt/" + filename);
+  if (File::exists(file))
+    return file;
+  else
+    return "";
 }
 
 std::string File::getUserProfilesDescription()

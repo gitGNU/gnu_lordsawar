@@ -51,6 +51,7 @@ class FileCompat: public std::list<FileDetails>, public sigc::trackable
           RECENTLYPLAYEDGAMELIST,
           GAMELIST,
           RECENTLYEDITEDFILELIST,
+          PBMTURN,
           ARMYSET,
           TILESET,
           CITYSET,
@@ -72,18 +73,19 @@ class FileCompat: public std::list<FileDetails>, public sigc::trackable
 
         bool isTarFile(FileCompat::Type type) const;
 
-        bool rewrite_with_updated_version(std::string filename, FileCompat::Type type, std::string tag, std::string version);
         std::string getTag(FileCompat::Type type) const;
         FileCompat::Type getTypeByFileExtension(std::string ext) const;
         std::string getFileExtension(FileCompat::Type type) const;
         bool get_tag_and_version_from_file(std::string filename, FileCompat::Type type, std::string &tag, std::string &version) const;
 
         bool upgrade(std::string filename, bool &same) const;
-
+        bool upgrade(std::string filename, std::string old_version, std::string new_version, FileCompat::Type t, std::string tag) const;
+        bool rewrite_with_updated_version(std::string filename, FileCompat::Type type, std::string tag, std::string version) const;
 
 	// Static Methods
         static void support_backward_compatibility_for_common_files();
         static Glib::ustring typeToString(const FileCompat::Type type);
+        static Glib::ustring typeToCode(const FileCompat::Type type);
 
         //! return the singleton instance of this class.
         static FileCompat * getInstance();
@@ -103,9 +105,12 @@ class FileCompat: public std::list<FileDetails>, public sigc::trackable
         FileCompat::Type getTypeByTarFileInspection(std::string filename) const;
 
         bool upgradeGameScenario(std::string filename, std::string old_version) const;
+        bool upgradeGameScenarioWithXslt(std::string filename, std::string xsl_file) const;
 
         bool can_upgrade_to(FileCompat::Type type, std::string version) const;
         bool get_upgrade_method(FileCompat::Type type, std::string version, std::string &next_version, FileCompat::Slot &slot) const;
+        bool xsl_transform(std::string filename, std::string xsl_file) const;
+        bool rewrite_with_xslt(std::string filename, FileCompat::Type type, std::string xsl_file) const;
 
     private:
 	// DATA

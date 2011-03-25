@@ -132,6 +132,15 @@ if test $libtar = 0 ; then
    AC_CHECK_LIB(tar,tar_open,[],[AC_MSG_ERROR([*** Libtar not found!])])
 fi
 
+dnl check for libxml and libxslt
+PKG_CHECK_MODULES(LIBXML, [libxml-2.0 >= 2.6.28])
+PKG_CHECK_MODULES(XSLT, [libxslt >= 1.1.20])
+AC_SUBST(LIBXML_CFLAGS)
+AC_SUBST(LIBXML_LIBS)
+AC_SUBST(XSLT_CFLAGS)
+AC_SUBST(XSLT_LIBS)
+
+
 dnl this is needed in cross-compile with mingw32
 AC_ARG_ENABLE(winlibs,             
               [  --enable-winlibs         enable windows cross-compiling libs],

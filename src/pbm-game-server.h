@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #include "config.h"
 
 #include <memory>
+#include <string>
 #include <list>
 #include <sigc++/trackable.h>
 
@@ -32,17 +33,22 @@ class Player;
 class PbmGameServer: public sigc::trackable
 {
 public:
+    //!the topmost tag for a lordsawar turn file.
+    static std::string d_tag; 
         
+  void start();
+
+  bool endTurn(std::string turnfile, bool &broken);
+  
+  //Statics
   //! Returns the singleton instance.  Creates a new one if neccessary.
   static PbmGameServer * getInstance();
 
   //! Deletes the singleton instance.
   static void deleteInstance();
 
-  void start();
-
-  bool endTurn(std::string turnfile, bool &broken);
-  
+  static bool upgrade(std::string filename, std::string old_version, std::string new_version);
+  static void support_backward_compatibility();
 protected:
   PbmGameServer();
   ~PbmGameServer();

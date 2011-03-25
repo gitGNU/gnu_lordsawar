@@ -22,7 +22,9 @@ bin_PROGRAMS = lordsawar-game-list-server lordsawar-game-list-client
 lordsawar_game_list_client_SOURCES = gls-client-main.cpp \
 				     gls-client-tool.cpp gls-client-tool.h
 
-lordsawar_game_list_client_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS) -ltar -lz \
+lordsawar_game_list_client_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS) \
+    				   $(XSLT_LIBS) $(LIBXML_LIBS) \
+				   -ltar -lz \
                                    $(top_builddir)/src/liblordsawar.la \
                                    $(top_builddir)/src/liblordsawargamelist.la \
                                    $(top_builddir)/src/liblordsawarnet.la \
@@ -32,7 +34,9 @@ lordsawar_game_list_client_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS) -ltar -lz \
 lordsawar_game_list_server_SOURCES = main.cpp \
   gamelist-server.cpp gamelist-server.h 
 
-lordsawar_game_list_server_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS) -ltar -lz \
+lordsawar_game_list_server_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS) \
+    				   $(XSLT_LIBS) $(LIBXML_LIBS) \
+				   -ltar -lz \
                                    $(top_builddir)/src/liblordsawar.la \
                                    $(top_builddir)/src/liblordsawargamelist.la \
                                    $(top_builddir)/src/liblordsawarnet.la \
@@ -50,6 +54,8 @@ INCLUDES = \
     $(SDL_CFLAGS) \
     $(LIBSIGC_CFLAGS) \
     $(GTKMM_CFLAGS) \
+    $(LIBXML_CFLAGS) \
+    $(XSLT_CFLAGS) \
     -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' \
     -I$(top_srcdir) -I$(top_srcdir)/src
 

@@ -699,9 +699,8 @@ void Cityset::clean_tmp_dir() const
 
 bool Cityset::upgrade(std::string filename, std::string old_version, std::string new_version)
 {
-  return FileCompat::getInstance()->rewrite_with_updated_version
-    (filename, FileCompat::CITYSET, d_tag, new_version);
-  return true;
+  return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
+                                            FileCompat::CITYSET, d_tag);
 }
 
 void Cityset::support_backward_compatibility()

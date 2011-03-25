@@ -1324,8 +1324,9 @@ void GameScenario::cleanup()
 
 bool GameScenario::upgrade(std::string filename, std::string old_version, std::string new_version)
 {
-  return FileCompat::getInstance()->rewrite_with_updated_version
-    (filename, FileCompat::GAMESCENARIO, d_top_tag, new_version);
+  return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
+                                            FileCompat::GAMESCENARIO, 
+                                            d_top_tag);
 }
 
 void GameScenario::support_backward_compatibility()

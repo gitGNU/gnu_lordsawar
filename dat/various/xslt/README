@@ -13,6 +13,7 @@ il    - item description file
 pl    - profiles file
 rpg   - recently played games file
 gl    - recently hosted or recently advertised games file
+pbm   - play by mail turn file
 ref   - recently edited documents file
 as    - armyset file
 ts    - tileset file

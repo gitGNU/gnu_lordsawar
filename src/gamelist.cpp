@@ -311,8 +311,9 @@ void Gamelist::on_could_not_ping_game(HostedGame *game)
 
 bool Gamelist::upgrade(std::string filename, std::string old_version, std::string new_version)
 {
-  return FileCompat::getInstance()->rewrite_with_updated_version
-    (filename, FileCompat::GAMELIST, d_tag, new_version);
+  return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
+                                            FileCompat::GAMELIST, 
+                                            d_tag);
 }
 
 void Gamelist::support_backward_compatibility()

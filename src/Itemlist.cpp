@@ -141,8 +141,9 @@ void Itemlist::add(ItemProto *itemproto)
 
 bool Itemlist::upgrade(std::string filename, std::string old_version, std::string new_version)
 {
-  return FileCompat::getInstance()->rewrite_with_updated_version
-    (filename, FileCompat::ITEMLIST, d_tag, new_version);
+  return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
+                                            FileCompat::ITEMLIST, 
+                                            d_tag);
 }
 
 void Itemlist::support_backward_compatibility()

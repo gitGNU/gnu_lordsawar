@@ -67,7 +67,7 @@ class File
         static std::string getMiscFile(std::string filename);
 
         //! load an xslt file.
-        static std::string getXSLTFile(std::string filename);
+        static std::string getXSLTFile(guint32 type, std::string old_version, std::string new_version);
         
         //! Load the xml file describing the items
         static std::string getItemDescription();

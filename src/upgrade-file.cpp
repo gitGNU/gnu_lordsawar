@@ -30,6 +30,7 @@
 #include "gamelist.h"
 #include "ucompose.hpp"
 #include "file-compat.h"
+#include "pbm-game-server.h"
 
 using namespace std;
 int max_vector_width;
@@ -84,6 +85,7 @@ int main(int argc, char* argv[])
   Profilelist::support_backward_compatibility();
   RecentlyPlayedGameList::support_backward_compatibility();
   Gamelist::support_backward_compatibility();
+  PbmGameServer::support_backward_compatibility();
   FileCompat::support_backward_compatibility_for_common_files();
   if (identify_file == false && rewrite == "")
     {

@@ -17,12 +17,18 @@
 
 #include <sigc++/functors/mem_fun.h>
 
+#include <cstdio>
 #include <limits.h>
 #include <fstream>
 #include <iostream>
+#include <libxml/xmlmemory.h>
+#include <libxslt/xslt.h>
+#include <libxslt/transform.h>
+#include <libxslt/xsltutils.h>
+#include <sigc++/functors/mem_fun.h>
+
 #include "xmlhelper.h"
 #include "Configuration.h"
-#include <sigc++/functors/mem_fun.h>
 #include "defs.h"
 #include "File.h"
 #include "file-compat.h"
@@ -298,7 +304,7 @@ bool FileCompat::get_upgrade_method(FileCompat::Type type, std::string version, 
   return false;
 }
 
-bool FileCompat::rewrite_with_updated_version(std::string filename, FileCompat::Type type, std::string tag, std::string version)
+bool FileCompat::rewrite_with_updated_version(std::string filename, FileCompat::Type type, std::string tag, std::string version) const
 {
   bool broken = false;
   bool upgraded = false;
@@ -438,6 +444,8 @@ Glib::ustring FileCompat::typeToString(const FileCompat::Type type)
       return _("recently hosted or recently advertised games file");
     case RECENTLYEDITEDFILELIST:
       return _("recently edited documents file");
+    case PBMTURN:
+      return _("play-by-mail turn file");
     case ARMYSET:
       return _("armyset file");
     case TILESET:
@@ -451,9 +459,187 @@ Glib::ustring FileCompat::typeToString(const FileCompat::Type type)
     }
   return _("unknown file");
 }
+
+Glib::ustring FileCompat::typeToCode(const FileCompat::Type type)
+{
+  switch (type)
+    {
+    case UNKNOWN:
+      return "";
+    case CONFIGURATION:
+      return "c";
+    case ITEMLIST:
+      return "il";
+    case PROFILELIST:
+      return "pl";
+    case RECENTLYPLAYEDGAMELIST:
+      return "rpg";
+    case GAMELIST:
+      return "gl";
+    case RECENTLYEDITEDFILELIST:
+      return "ref";
+    case PBMTURN:
+      return "pbm";
+    case ARMYSET:
+      return "as";
+    case TILESET:
+      return "ts";
+    case CITYSET:
+      return "cs";
+    case SHIELDSET:
+      return "ss";
+    case GAMESCENARIO:
+      return "gs";
+    }
+  return "";
+}
+        
         
 void FileCompat::support_version(guint32 k, std::string from, std::string to, FileCompat::Slot slot)
 {
   versions[FileCompat::Type(k)].push_back(UpgradeDetails(from, to, slot));
 }
+
+bool FileCompat::rewrite_with_xslt(std::string filename, FileCompat::Type type, std::string xsl_file) const
+{
+  bool broken = false;
+  bool upgraded = false;
+  if (isTarFile(type) && type != GAMESCENARIO)
+    {
+      std::string ext = getFileExtension(type);
+
+      Tar_Helper t(filename, std::ios::in, broken);
+      if (broken == false)
+        {
+          std::string tmpfile = t.getFirstFile(ext, broken);
+          if (broken == false)
+            upgraded = xsl_transform(tmpfile, xsl_file);
+          if (upgraded)
+            t.replaceFile (t.getFilenamesWithExtension(ext).front(), tmpfile);
+          t.Close();
+          if (tmpfile != "")
+            File::erase(tmpfile);
+        }
+    }
+  else if (isTarFile(type) && type == GAMESCENARIO)
+    {
+      return upgradeGameScenarioWithXslt(filename, xsl_file);
+    }
+  else if (isTarFile(type) == false)
+    {
+      upgraded = xsl_transform(filename, xsl_file);
+    }
+  return upgraded;
+}
+
+bool FileCompat::upgradeGameScenarioWithXslt(std::string filename, std::string xsl_file) const
+{
+  std::string ext = File::get_extension(filename);
+  if (ext == "")
+    return false;
+  if (getTypeByFileExtension(ext) != GAMESCENARIO)
+    return false;
+  bool upgraded = false;
+  bool broken = false;
+  Tar_Helper t(filename, std::ios::in, broken);
+  if (!broken)
+    {
+      std::string tmpfile = t.getFirstFile(ext, broken);
+      if (broken == false)
+        upgraded = xsl_transform(tmpfile, xsl_file);
+
+      std::list<std::string> delfiles;
+      delfiles.push_back(tmpfile);
+      if (upgraded)
+        {
+          bool same;
+          t.replaceFile (t.getFilenamesWithExtension(ext).front(), tmpfile);
+          //now we need to upgrade the other files.
+          std::string f = t.getFilenamesWithExtension
+            (getFileExtension(ARMYSET)).front();
+          tmpfile = t.getFile(f, broken);
+          if (tmpfile != "")
+            {
+              if (upgrade(tmpfile, same))
+                t.replaceFile (f, tmpfile);
+              delfiles.push_back(tmpfile);
+            }
+          tmpfile = t.getFirstFile(getFileExtension(TILESET), broken);
+          if (tmpfile != "")
+            {
+              if (upgrade(tmpfile, same))
+                t.replaceFile (t.getFilenamesWithExtension
+                               (getFileExtension(TILESET)).front(), tmpfile);
+              delfiles.push_back(tmpfile);
+            }
+          tmpfile = t.getFirstFile(getFileExtension(CITYSET), broken);
+          if (tmpfile != "")
+            {
+              if (upgrade(tmpfile, same))
+                t.replaceFile (t.getFilenamesWithExtension
+                               (getFileExtension(CITYSET)).front(), tmpfile);
+              delfiles.push_back(tmpfile);
+            }
+          tmpfile = t.getFirstFile(getFileExtension(SHIELDSET), broken);
+          if (tmpfile != "")
+            {
+              if (upgrade(tmpfile, same))
+                t.replaceFile (t.getFilenamesWithExtension
+                               (getFileExtension(SHIELDSET)).front(), tmpfile);
+              delfiles.push_back(tmpfile);
+            }
+        }
+      for (std::list<std::string>::iterator i = delfiles.begin(); i != delfiles.end(); i++)
+        File::erase(*i);
+      t.Close();
+    }
+  return upgraded;
+}
+
+        
+bool FileCompat::xsl_transform(std::string filename, std::string xsl_file) const
+{
+  const char *params[16 + 1];
+  //int nbparams = 0;
+  memset (params, 0, sizeof (params));
+  xsltStylesheetPtr cur = NULL;
+  xmlDocPtr doc, res;
+
+  xmlChar *xsl = xmlCharStrdup(xsl_file.c_str());
+  cur = xsltParseStylesheetFile(xsl);
+  if (cur == NULL)
+    return false;
+  doc = xmlParseFile(filename.c_str());
+  if (doc == NULL)
+    return false;
+  res = xsltApplyStylesheet(cur, doc, params);
+  if (res == NULL)
+    return false;
+
+  std::string tmpfile = File::get_tmp_file();
+
+  xmlChar *out = xmlCharStrdup(tmpfile.c_str());
+  xsltSaveResultToFilename(tmpfile.c_str(), res, cur, 0);
+  xsltFreeStylesheet(cur);
+  xmlFreeDoc(res);
+  xmlFreeDoc(doc);
+  free (xsl);
+  free (out);
+
+  xsltCleanupGlobals();
+  xmlCleanupParser();
+  File::erase(filename);
+  rename(tmpfile.c_str(), filename.c_str());
+  return true;
+}
+
+bool FileCompat::upgrade(std::string filename, std::string old_version, std::string new_version, FileCompat::Type type, std::string tag) const
+{
+  std::string xsl_filename = File::getXSLTFile(type, old_version, new_version);
+  if (xsl_filename != "")
+    return rewrite_with_xslt (filename, type, xsl_filename);
+  else
+    return rewrite_with_updated_version (filename, type, tag, new_version);
+}
+
 // End of file

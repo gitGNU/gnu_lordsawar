@@ -41,6 +41,7 @@
 #define LORDSAWAR_RECENTLY_EDITED_VERSION "0.2.1"
 #define LORDSAWAR_PROFILES_VERSION "0.2.1"
 #define LORDSAWAR_RECENTLY_HOSTED_VERSION "0.2.1"
+#define LORDSAWAR_PBM_TURN_VERSION "0.2.1"
 #define _(string) Glib::locale_to_utf8(Glib::ustring(gettext(string))) // Macro for the gettext
 #define N_(string) string
 

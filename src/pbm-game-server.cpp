@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,10 +29,11 @@
 #include "network-action.h"
 #include "network-history.h"
 #include "Configuration.h"
-
+#include "file-compat.h"
 
 PbmGameServer * PbmGameServer::s_instance = 0;
 
+std::string PbmGameServer::d_tag = "lordsawarturn";
 
 PbmGameServer* PbmGameServer::getInstance()
 {
@@ -126,11 +127,26 @@ bool PbmGameServer::endTurn(std::string turnfile, bool &broken)
 {
   bool retval = true;
   XML_Helper helper(turnfile, std::ios::out, Configuration::s_zipfiles);
-  retval &= helper.openTag("lordsawarturn");
+  helper.begin(LORDSAWAR_PBM_TURN_VERSION);
+  retval &= helper.openTag(d_tag);
   broken = dumpActionsAndHistories(&helper);
   helper.closeTag();
   helper.close();
   return retval;
 }
 
+bool PbmGameServer::upgrade(std::string filename, std::string old_version, std::string new_version)
+{
+  return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
+                                            FileCompat::PBMTURN, d_tag);
+}
+
+void PbmGameServer::support_backward_compatibility()
+{
+  FileCompat::getInstance()->support_type (FileCompat::PBMTURN, PBM_EXT, d_tag,
+                                           false);
+  FileCompat::getInstance()->support_version
+    (FileCompat::PBMTURN, "0.2.0", LORDSAWAR_PBM_TURN_VERSION,
+     sigc::ptr_fun(&PbmGameServer::upgrade));
+}
 // End of file

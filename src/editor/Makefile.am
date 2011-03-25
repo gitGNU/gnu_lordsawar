@@ -113,6 +113,8 @@ lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
 			 libtilesetwindow.la \
 			 libeditutil.la \
                          $(GTKMM_LIBS) \
+    			 $(LIBXML_LIBS) \
+    			 $(XSLT_LIBS) \
                          $(SDL_LIBS) -ltar -lz \
                          @LIBINTL@ -L$(top_builddir)/src
 
@@ -123,6 +125,8 @@ lordsawar_shield_editor_LDADD =  \
                          $(top_builddir)/src/liblordsawar.la \
                          $(SDL_LIBS) -ltar -lz \
                          $(GTKMM_LIBS) \
+    			 $(LIBXML_LIBS) \
+    			 $(XSLT_LIBS) \
 			 libeditutil.la \
                          @LIBINTL@ -L$(top_builddir)/src
 
@@ -133,6 +137,8 @@ lordsawar_city_editor_LDADD = \
                          $(top_builddir)/src/liblordsawar.la \
                          $(SDL_LIBS) -ltar -lz \
                          $(GTKMM_LIBS) \
+    			 $(LIBXML_LIBS) \
+    			 $(XSLT_LIBS) \
 			 libeditutil.la \
                          @LIBINTL@ -L$(top_builddir)/src
 
@@ -143,6 +149,8 @@ lordsawar_army_editor_LDADD = \
                          $(top_builddir)/src/liblordsawar.la \
                          $(SDL_LIBS) -ltar -lz \
                          $(GTKMM_LIBS) \
+    			 $(LIBXML_LIBS) \
+    			 $(XSLT_LIBS) \
 			 libeditutil.la \
                          @LIBINTL@ -L$(top_builddir)/src
 
@@ -153,6 +161,8 @@ lordsawar_tile_editor_LDADD = \
                          $(top_builddir)/src/liblordsawar.la \
                          $(SDL_LIBS) -ltar -lz \
                          $(GTKMM_LIBS) \
+    			 $(LIBXML_LIBS) \
+    			 $(XSLT_LIBS) \
 			 libeditutil.la \
                          @LIBINTL@ -L$(top_builddir)/src
 endif
@@ -164,5 +174,7 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 AM_CXXFLAGS = -Wall
 INCLUDES = $(GTKMM_CFLAGS) \
+    $(LIBXML_CFLAGS) \
+    $(XSLT_CFLAGS) \
     $(SDL_CFLAGS) \
     -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' -I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/src/gui/

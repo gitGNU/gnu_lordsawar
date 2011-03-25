@@ -940,8 +940,8 @@ void Armyset::clean_tmp_dir() const
 
 bool Armyset::upgrade(std::string filename, std::string old_version, std::string new_version)
 {
-  return FileCompat::getInstance()->rewrite_with_updated_version
-    (filename, FileCompat::ARMYSET, d_tag, new_version);
+  return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
+                                            FileCompat::ARMYSET, d_tag);
 }
 
 void Armyset::support_backward_compatibility()
