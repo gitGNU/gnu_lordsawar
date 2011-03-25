@@ -318,6 +318,7 @@ TileSetWindow::update_tileset_menuitems()
       fog_picture_menuitem->set_sensitive(false);
       flags_picture_menuitem->set_sensitive(false);
       organize_tilestyles_menuitem->set_sensitive(false);
+      smallmap_building_colors_menuitem->set_sensitive(false);
     }
   else
     {
@@ -331,6 +332,7 @@ TileSetWindow::update_tileset_menuitems()
       fog_picture_menuitem->set_sensitive(true);
       flags_picture_menuitem->set_sensitive(true);
       organize_tilestyles_menuitem->set_sensitive(true);
+      smallmap_building_colors_menuitem->set_sensitive(true);
     }
 }
 
