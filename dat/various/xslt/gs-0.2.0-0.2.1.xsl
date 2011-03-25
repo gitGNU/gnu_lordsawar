@@ -8,6 +8,9 @@
                 <xsl:apply-templates select="@*|node()"/>
         </xsl:copy>
 </xsl:template>
+<xsl:template match='lordsawar/@version'>
+        <xsl:attribute name='version'>0.2.1</xsl:attribute>
+</xsl:template>
 
 <xsl:template match="action">
         <xsl:choose>
