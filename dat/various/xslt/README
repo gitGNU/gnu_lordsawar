@@ -22,6 +22,7 @@ ss    - shieldset file
 gs    - map or saved-game file
 
 Each version looks like 0.2.0, or 0.1.9, etc.
+The version number can contain double digits.  e.g. 0.1.10.
 
 Some of these xslt files operate on xml files found in ~/.lordsawar/.  Some xml files also appear inside of armyset, tileset, cityset, shieldset, map and saved-game files.  (These files are all implemented as tar files, and are normally found in ~/.lordsawar/, and ${PREFIX}/share/lordsawar/).
 The primary configuration file refers to the xml file located at ~/.lordsawarrc.
