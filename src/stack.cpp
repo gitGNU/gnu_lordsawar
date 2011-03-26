@@ -659,8 +659,8 @@ guint32 getFightOrder(std::list<guint32> values, guint32 value)
        it != values.end(); it++)
     {
       count++;
-      if (count == value)
-	return (*it);
+      if (*it == value)
+	return count;
     }
   return 0;
 }
