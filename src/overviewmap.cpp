@@ -1,5 +1,5 @@
 // Copyright (C) 2006, 2007 Ulf Lorenz
-// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -20,6 +20,7 @@
 #include <assert.h>
 #include <math.h>
 #include <stdlib.h>
+#include <cairomm/context.h>
 #include "gui/image-helpers.h"
 
 #include "overviewmap.h"
@@ -294,6 +295,10 @@ void OverviewMap::draw_terrain_tile(Glib::RefPtr<Gdk::Pixmap> surf,
               draw_pixel(surf, gc, i, j, third);
           }
         break;
+      case SmallTile::SUNKEN_RADIAL:
+        if (shadowed == true)
+          draw_pixel(surf, gc, i, j, third);
+        break;
     }
 }
 
@@ -364,10 +369,14 @@ void OverviewMap::resize(Vector<int> max_dimensions, float scale)
     }
     map_tiles_per_tile = scale;
 
-    
     static_surface = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), d.x, d.y, 24);
     static_surface_gc = Gdk::GC::create(static_surface);
 
+    Tileset *ts = GameMap::getTileset();
+    Tile *tile = ts->getFirstTile(SmallTile::SUNKEN_RADIAL);
+    if (tile)
+      draw_radial_gradient(tile->getSmallTile()->getColor(),
+                           tile->getSmallTile()->getSecondColor(), d.x, d.y);
     draw_terrain_tiles(Rectangle(0, 0, d.x, d.y));
     surface = Gdk::Pixmap::create(static_surface, d.x, d.y, 24);
     surface_gc = Gdk::GC::create(surface);
@@ -679,5 +688,33 @@ void OverviewMap::draw_square_around_city(City *c, Gdk::Color colour)
   start -= Vector<int>(width,height)/2;
   Vector<int> end = start + Vector<int>(width,height);
   draw_rect (start.x-3, start.y-3, end.x-start.x+4, end.y-start.y+4, colour);
+}
+
+void OverviewMap::draw_radial_gradient(Glib::RefPtr<Gdk::Pixmap> surface, Gdk::Color inner, Gdk::Color outer, int width, int height)
+{
+  double ired = (double)inner.get_red() /65535.0;
+  double igreen = (double)inner.get_green() /65535.0;
+  double iblue = (double)inner.get_blue() /65535.0;
+  double ored = (double)outer.get_red() /65535.0;
+  double ogreen = (double)outer.get_green() /65535.0;
+  double oblue = (double)outer.get_blue() /65535.0;
+  Cairo::RefPtr<Cairo::Context> cr = surface->create_cairo_context();
+  double max = (double) width;
+  if ((double)height > max)
+    max = (double)width;
+  double xcenter = (double)width / 2.0;
+  double ycenter = (double)height / 2.0;
+  Cairo::RefPtr<Cairo::RadialGradient> gradient = 
+    Cairo::RadialGradient::create(xcenter, ycenter, 1, xcenter, ycenter, max);
+  gradient->add_color_stop_rgb(0, ired, igreen, iblue);
+  gradient->add_color_stop_rgb(1.0, ored, ogreen, oblue);
+  cr->set_source(gradient);
+  cr->paint();
+}
+
+void OverviewMap::draw_radial_gradient(Gdk::Color inner, Gdk::Color outer, int width, int height)
+{
+  return draw_radial_gradient(static_surface, inner, outer, width, height);
+
 }
 

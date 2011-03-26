@@ -1,5 +1,5 @@
 // Copyright (C) 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -146,6 +146,8 @@ class OverviewMap : public sigc::trackable
     static int calculatePixelsPerTile(int width, int height);
     static int calculatePixelsPerTile();
 
+   static void draw_radial_gradient(Glib::RefPtr<Gdk::Pixmap> surface, Gdk::Color inner, Gdk::Color outer, int height, int width);
+
  private:
     //! An SDL surface of the terrain without the features.
     /**
@@ -248,8 +250,10 @@ class OverviewMap : public sigc::trackable
 
     void draw_target_box(Vector<int> pos, const Gdk::Color colour);
     void draw_square_around_city(City *c, const Gdk::Color colour);
+    void draw_radial_gradient(Gdk::Color inner, Gdk::Color outer, int width, int height);
 
     bool blank_screen;
+
 };
 
 #endif // OVERVIEWMAP_H

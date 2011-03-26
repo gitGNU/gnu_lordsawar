@@ -912,4 +912,12 @@ void Tileset::support_backward_compatibility()
     (FileCompat::TILESET, "0.2.0", LORDSAWAR_TILESET_VERSION,
      sigc::ptr_fun(&Tileset::upgrade));
 }
+
+Tile *Tileset::getFirstTile(SmallTile::Pattern pattern) const
+{
+  for (const_iterator i = begin(); i != end(); i++)
+    if ((*i)->getSmallTile()->getPattern() == pattern)
+      return *i;
+    return NULL;
+}
 //End of file

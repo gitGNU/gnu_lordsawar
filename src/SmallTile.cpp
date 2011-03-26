@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -72,7 +72,7 @@ bool SmallTile::save(XML_Helper *helper) const
       break;
       //patterns with three colours
     case RANDOMIZED: case TABLECLOTH: case DIAGONAL: case CROSSHATCH:
-    case SUNKEN_STRIPED:
+    case SUNKEN_STRIPED: case SUNKEN_RADIAL:
       retval &= helper->saveData("color", d_color);
       retval &= helper->saveData("2nd_color", d_second_color);
       retval &= helper->saveData("3rd_color", d_third_color);

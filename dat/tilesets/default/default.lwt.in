@@ -59,9 +59,10 @@
         <d_moves>2</d_moves>
         <d_type>Tile::WATER</d_type>
 	<smallmap>
-		<d_color>44 184 252</d_color>
-        	<d_pattern>3</d_pattern>
-		<d_2nd_color>0 92 208</d_2nd_color>
+		<d_pattern>8</d_pattern>
+		<d_color>#63C8FC</d_color>
+		<d_2nd_color>#0068DF</d_2nd_color>
+		<d_3rd_color>#295BE8</d_3rd_color>
 	</smallmap>
 	<tilestyleset>
 		<d_name>water</d_name>

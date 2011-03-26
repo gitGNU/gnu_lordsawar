@@ -28,6 +28,7 @@
 #include "defs.h"
 #include "File.h"
 #include "set.h"
+#include "SmallTile.h"
 using namespace std;
 
 class XML_Helper;
@@ -179,6 +180,9 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 
 	//! Get the number of animation frames in the small selector image.
 	guint32 getNumberOfSmallSelectorFrames() {return number_of_small_selector_frames;};
+
+        //! Get the first tile that has a certain pattern on the small map.
+        Tile *getFirstTile(SmallTile::Pattern pattern) const;
 
 	//! Get filenames in this tileset, excepting the configuration file.
 	void getFilenames(std::list<std::string> &files);

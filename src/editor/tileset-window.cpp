@@ -132,6 +132,7 @@ TileSetWindow::TileSetWindow(std::string load_filename)
     tile_smallmap_pattern_combobox->append_text(_("Diagonal"));
     tile_smallmap_pattern_combobox->append_text(_("Crosshatched"));
     tile_smallmap_pattern_combobox->append_text(_("Sunken Striped"));
+    tile_smallmap_pattern_combobox->append_text(_("Sunken Radial"));
     pattern_container->add(*manage(tile_smallmap_pattern_combobox));
     pattern_container->show_all();
     tile_smallmap_pattern_combobox->signal_changed().connect
@@ -887,7 +888,7 @@ void TileSetWindow::fill_colours(Tile *tile)
       tile_smallmap_first_colorbutton->set_color(tile->getSmallTile()->getColor());
       tile_smallmap_second_colorbutton->set_color(tile->getSmallTile()->getSecondColor());
       break;
-    case SmallTile::RANDOMIZED: case SmallTile::TABLECLOTH: case SmallTile::DIAGONAL: case SmallTile::CROSSHATCH: case SmallTile::SUNKEN_STRIPED:
+    case SmallTile::RANDOMIZED: case SmallTile::TABLECLOTH: case SmallTile::DIAGONAL: case SmallTile::CROSSHATCH: case SmallTile::SUNKEN_STRIPED: case SmallTile::SUNKEN_RADIAL:
       tile_smallmap_second_colorbutton->set_sensitive(true);
       tile_smallmap_third_colorbutton->set_sensitive(true);
       tile_smallmap_first_colorbutton->set_color(tile->getSmallTile()->getColor());
@@ -960,6 +961,10 @@ void TileSetWindow::on_tile_name_changed()
 
 void TileSetWindow::fill_tile_smallmap(Tile *tile)
 {
+  SmallTile *s = tile->getSmallTile();
+  if (s->getPattern() == SmallTile::SUNKEN_RADIAL)
+    OverviewMap::draw_radial_gradient(tile_smallmap_surface, s->getColor(), 
+                                      s->getSecondColor(), 32, 32);
   for (int i = 0; i < 32; i++)
     {
       for (int j = 0; j < 32; j++)
