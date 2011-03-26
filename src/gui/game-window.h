@@ -294,7 +294,7 @@ class GameWindow: public Decorated
     bool on_hero_offers_service(Player *player, HeroProto *hero, City *city, int gold);
     bool on_enemy_offers_surrender(int numEnemies);
     void on_surrender_answered (bool accepted);
-    bool on_stack_considers_treachery (Player *me, Stack *stack, Player *them, Vector<int> pos);
+    bool on_stack_considers_treachery (Stack *stack, Player *them, Vector<int> pos);
     bool on_temple_searched(Hero *hero, Temple *temple, int blessCount);
     void on_quest_assigned(Hero *hero, Quest *quest);
     CityDefeatedAction on_city_defeated(City *city, int gold);

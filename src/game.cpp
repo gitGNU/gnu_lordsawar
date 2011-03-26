@@ -101,12 +101,6 @@ void Game::addPlayer(Player *p)
 	(p->snewMedalArmy.connect(sigc::mem_fun(this, &Game::newMedalArmy)));
 
       connections[p->getId()].push_back
-	(p->streachery.connect
-	 (sigc::bind<0>
-	  (sigc::mem_fun
-	   (stack_considers_treachery, 
-	    &sigc::signal<bool, Player *, Stack *, Player *, Vector<int> >::emit), p)));
-      connections[p->getId()].push_back
 	(p->hero_arrives_with_allies.connect
          (sigc::mem_fun
           (hero_arrives, &sigc::signal<void, int>::emit)));
@@ -1388,6 +1382,8 @@ bool Game::maybeTreachery(Stack *stack, Player *them, Vector<int> pos)
           treachery = ai->chooseTreachery (stack, them, pos);
         }
     }
+  else
+    treachery = stack_considers_treachery.emit(stack, them, pos);
   if (treachery == false)
     return false;
   me->proposeDiplomacy (Player::NO_PROPOSAL, them);

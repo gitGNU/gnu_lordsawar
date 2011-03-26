@@ -1167,24 +1167,6 @@ class Player: public sigc::trackable
 	bool AI_maybePickUpItems (Stack *s, int dist, bool &picked_up,
 				  bool &stack_died);
 
-	/** 
-	 * Callback to decide if we perform treachery on a friendly player.
-	 *
-	 * For human players this method presents a dialog for the user
-	 * to confirm if treachery should happen or not.  For computer
-	 * players this method implements the decision to perform treachery
-	 * or not.
-	 *
-	 * @param stack             My stack considering the treachery.
-	 * @param player            The friendly player.
-	 * @param pos               The place on the map being targetted.
-	 * @param state             The state we end up in if we decide yes.
-	 *
-	 * @return True if we decided to be treacherous.  False otherwise.
-	 */
-	//! Decision callback for if we should perform trechery or not.
-	bool treachery (Stack *stack, Player *player, Vector <int> pos);
-
 	/**
 	 * Callback to have the Player resign.  This entails disbanding
 	 * all of the player's stacks and then razing all of the player's 
@@ -1450,7 +1432,7 @@ class Player: public sigc::trackable
         sigc::signal<bool, Stack *, Player *, Vector<int> > streacheryStack;
 
 	//! Signal raised when a human player is deciding.
-        sigc::signal<bool, Stack *, Player *, Vector<int> > streachery;
+        //sigc::signal<bool, Stack *, Player *, Vector<int> > streachery;
 
         //! Player would like to end the turn.
         sigc::signal<void> ending_turn;

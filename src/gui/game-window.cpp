@@ -2508,7 +2508,7 @@ void GameWindow::on_surrender_answered (bool accepted)
     }
 }
 
-bool GameWindow::on_stack_considers_treachery (Player *me, Stack *stack, 
+bool GameWindow::on_stack_considers_treachery (Stack *stack, 
 					       Player *them, Vector<int> pos)
 {
   Gtk::Dialog* dialog;

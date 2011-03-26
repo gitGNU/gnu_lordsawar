@@ -146,7 +146,7 @@ class Game
     sigc::signal<bool, Player *, HeroProto *, City *, int> hero_offers_service;
     sigc::signal<bool, int > enemy_offers_surrender;
     sigc::signal<void, bool> surrender_answered;
-    sigc::signal<bool, Player *, Stack *, Player *, Vector<int> > stack_considers_treachery;
+    sigc::signal<bool, Stack *, Player *, Vector<int> > stack_considers_treachery;
     sigc::signal<bool, Hero *, Temple *, int> temple_searched;
     sigc::signal<void, Hero *, Quest *> quest_assigned;
     sigc::signal<CityDefeatedAction, City *, int> city_defeated;
@@ -265,6 +265,7 @@ class Game
     void on_stack_stopped();
     void on_stack_starts_moving(Stack *stack);
 
+    bool ask_if_treachery(Stack *stack, Player *them, Vector<int> pos);
 
     GameScenario* d_gameScenario;
     NextTurn* d_nextTurn;

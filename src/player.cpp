@@ -1451,11 +1451,6 @@ Fight::Result Player::stackRuinFight (Stack **attacker, Stack **defender,
     return result;
 }
 
-bool Player::treachery (Stack *stack, Player *player, Vector <int> pos)
-{
-  return streachery.emit(stack, player, pos);
-}
-
 void Player::doStackSearchRuin(Stack *s, Ruin *r, Fight::Result result)
 {
   if (result == Fight::DEFENDER_WON)
