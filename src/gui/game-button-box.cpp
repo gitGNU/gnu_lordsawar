@@ -158,12 +158,12 @@ void GameButtonBox::add_pictures_to_buttons(guint32 factor)
   ne_keypad_button->add(*manage(arrow_image2));
   Gtk::Image * arrow_image3 = new Gtk::Image();
   arrow_image3->property_pixbuf() = 
-    gc->getArrowPic(GraphicsCache::EAST, s)->to_pixbuf();
+    gc->getArrowPic(GraphicsCache::WEST, s)->to_pixbuf();
   pad_image(arrow_image3);
   e_keypad_button->add(*manage(arrow_image3));
   Gtk::Image * arrow_image4 = new Gtk::Image();
   arrow_image4->property_pixbuf() = 
-    gc->getArrowPic(GraphicsCache::WEST, s)->to_pixbuf();
+    gc->getArrowPic(GraphicsCache::EAST, s)->to_pixbuf();
   pad_image(arrow_image4);
   w_keypad_button->add(*manage(arrow_image4));
   Gtk::Image * arrow_image5 = new Gtk::Image();
@@ -262,6 +262,9 @@ void GameButtonBox::setup_signals(Game *game, guint32 factor)
   setup_button(end_turn_button,
                sigc::mem_fun(game, &Game::end_turn),
                game->can_end_turn);
+  setup_button(center_button,
+               sigc::mem_fun(game, &Game::center_selected_stack),
+               game->can_center_selected_stack);
   //FIXME: we need to somehow signal end_turn_play_by_mail if we're doing that.
   setup_button(nw_keypad_button,
                sigc::mem_fun(game, &Game::move_selected_stack_northwest),
