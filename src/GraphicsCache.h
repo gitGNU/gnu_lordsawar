@@ -25,6 +25,7 @@
 #include <map>
 #include <vector>
 #include <string.h>
+#include <cairomm/context.h>
 
 #include "player.h"
 #include "defs.h"
@@ -34,6 +35,7 @@
 class Tileset;
 
 struct ArmyCacheItem;
+struct CircledArmyCacheItem;
 struct ShipCacheItem;
 struct CityCacheItem;
 struct TowerCacheItem;
@@ -168,6 +170,12 @@ class GraphicsCache
         PixMask* getArmyPic(guint32 armyset, guint32 army, const Player* p,
                                 const bool* medals, bool greyed = false);
 	PixMask* getArmyPic(Army *a, bool greyed = false);
+
+        PixMask* getCircledArmyPic(guint32 armyset, guint32 army, 
+                                   const Player* p, const bool* medals, 
+                                   bool greyed, guint32 circle_colour_id,
+                                   bool show_army);
+        PixMask *getCircledArmyPic(Army *a, bool greyed, guint32 circle_colour_id, bool show_army);
 
 	PixMask* getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid, guint32 tileset, guint32 cityset, guint32 shieldset);
 	PixMask* getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid);
@@ -445,6 +453,9 @@ class GraphicsCache
 
 	static PixMask* greyOut(PixMask* image);
 
+        static PixMask* circled(PixMask* image, Gdk::Color colour, bool coloured = true, double width_percent = 75.0);
+        static void draw_circle(Cairo::RefPtr<Cairo::Context> cr, double width_percent, int width, int height, Gdk::Color colour, bool coloured = true, bool mask = false);
+
 	static bool loadSelectorImages(std::string filename, guint32 tilesize, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);
 
 	static bool loadFlagImages(std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);
@@ -490,6 +501,8 @@ class GraphicsCache
 
         //! Creates a new army picture with the given parameters.
         ArmyCacheItem* addArmyPic(ArmyCacheItem*item);
+
+        CircledArmyCacheItem* addCircledArmyPic(CircledArmyCacheItem*item);
 
 	//! Creates a new drawn tile with the given parameters.
 	TileCacheItem* addTilePic(TileCacheItem*item);
@@ -547,6 +560,9 @@ class GraphicsCache
         
         //! Erases the oldest (least recently requested) army cache item.
         void eraseLastArmyItem();
+
+        //! Erases the oldest (least recently requested) circled army item.
+        void eraseLastCircledArmyItem();
 
         //! Erases the oldest (least recently requested) army cache item.
         void eraseLastTileItem();
@@ -688,6 +704,10 @@ class GraphicsCache
 	typedef std::map<ArmyCacheItem, std::list<ArmyCacheItem*>::iterator > ArmyMap;
 
 	ArmyMap	d_armymap;
+        std::list<CircledArmyCacheItem*> d_circledarmylist;
+	typedef std::map<CircledArmyCacheItem, std::list<CircledArmyCacheItem*>::iterator > CircledArmyMap;
+
+	CircledArmyMap	d_circledarmymap;
         std::list<TileCacheItem*> d_tilelist;
 	typedef std::map<TileCacheItem, std::list<TileCacheItem*>::iterator > TileMap;
 	TileMap	d_tilemap;
@@ -744,6 +764,7 @@ class GraphicsCache
 };
 
 bool operator <(ArmyCacheItem lhs, ArmyCacheItem rhs);
+bool operator <(CircledArmyCacheItem lhs, CircledArmyCacheItem rhs);
 bool operator <(TileCacheItem lhs, TileCacheItem rhs);
 bool operator <(FogCacheItem lhs, FogCacheItem rhs);
 #endif

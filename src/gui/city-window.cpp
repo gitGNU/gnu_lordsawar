@@ -160,7 +160,6 @@ void CityWindow::run()
 
 void CityWindow::fill_in_city_info()
 {
-    
     set_title(city->getName());
 
     // fill in status label
@@ -180,37 +179,14 @@ void CityWindow::fill_in_city_info()
 
 void CityWindow::fill_in_production_toggles()
 {
-    Player *player = city->getOwner();
-    unsigned int as = player->getArmyset();
     int production_index = city->getActiveProductionSlot();
-    int type;
-    Glib::RefPtr<Gdk::Pixbuf> pic;
-    GraphicsCache *gc = GraphicsCache::getInstance();
 
-    Glib::RefPtr<Gdk::Pixbuf> s
-	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL)->to_pixbuf();
-    Glib::RefPtr<Gdk::Pixbuf> empty_pic
-	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->get_width(), s->get_height());
-    empty_pic->fill(0x00000000);
-    
     ignore_toggles = true;
     for (unsigned int i = 0; i < city->getMaxNoOfProductionBases(); i++)
     {
 	Gtk::ToggleButton *toggle = production_toggles[i];
 	toggle->foreach(sigc::mem_fun(toggle, &Gtk::Container::remove));
-
-	type = city->getArmytype(i);
-        if (type != -1)
-            // use GraphicsCache to load army pics because of player-specific
-            // colors
-            pic = gc->getArmyPic(as, type, player, NULL)->to_pixbuf();
-	else
-	    pic = empty_pic;
-	
-	Gtk::Image *image = new Gtk::Image();
-	image->property_pixbuf() = pic;
-	toggle->add(*manage(image));
-
+        update_toggle_picture(i);
 	toggle->set_active((int)i == production_index);
 	toggle->show_all();
     }
@@ -218,7 +194,31 @@ void CityWindow::fill_in_production_toggles()
 
     on_hold_button->set_sensitive(production_index != -1);
     fill_in_production_info();
+}
 
+void CityWindow::update_toggle_picture(int slot)
+{
+  Player *player = city->getOwner();
+  unsigned int as = player->getArmyset();
+  Glib::RefPtr<Gdk::Pixbuf> pic;
+  GraphicsCache *gc = GraphicsCache::getInstance();
+  Gtk::ToggleButton *toggle = production_toggles[slot];
+  if (city->getArmytype(slot) == -1)
+    pic = gc->getCircledArmyPic(as, 0, player, NULL, false, 
+                                Shield::NEUTRAL, false)->to_pixbuf();
+  else
+    {
+      int type = city->getArmytype(slot);
+      pic = gc->getCircledArmyPic (as, type, player, NULL, false,
+                                   slot == city->getActiveProductionSlot() ? 
+                                   player->getId(): Shield::NEUTRAL, 
+                                   true)->to_pixbuf();
+    }
+  Gtk::Image *image = new Gtk::Image();
+  image->property_pixbuf() = pic;
+  toggle->remove();
+  toggle->add(*manage(image));
+  toggle->show_all();
 }
 
 void CityWindow::on_production_toggled(Gtk::ToggleButton *toggle)
@@ -250,6 +250,8 @@ void CityWindow::on_production_toggled(Gtk::ToggleButton *toggle)
 
     on_hold_button->set_sensitive(!is_empty);
     
+    for (unsigned int i = 0; i < production_toggles.size(); ++i) 
+      update_toggle_picture(i);
     fill_in_production_info();
 }
 
@@ -260,11 +262,10 @@ void CityWindow::fill_in_production_info()
     Glib::RefPtr<Gdk::Pixbuf> pic;
     GraphicsCache *gc = GraphicsCache::getInstance();
     int slot = city->getActiveProductionSlot();
-    Glib::RefPtr<Gdk::Pixbuf> s
-	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL)->to_pixbuf();
-    Glib::RefPtr<Gdk::Pixbuf> empty_pic
-	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->get_width(), s->get_height());
-    empty_pic->fill(0x00000000);
+    //Glib::RefPtr<Gdk::Pixbuf> s
+	//= GraphicsCache::getInstance()->getCircledArmyPic(as, 0, player, NULL, false, Shield::NEUTRAL, true)->to_pixbuf();
+    Glib::RefPtr<Gdk::Pixbuf> empty_pic =
+      GraphicsCache::getInstance()->getCircledArmyPic(as, 0, player, NULL, false, Shield::NEUTRAL, false)->to_pixbuf();
     
     Glib::ustring s1, s2, s3;
     Glib::ustring s4 = _("Current:");
@@ -305,7 +306,8 @@ void CityWindow::fill_in_production_info()
             s3 += String::ucompose(_(", then to %1"), 
                                    dest ? dest->getName() : "Standard");
           }
-      pic = gc->getArmyPic(as, a->getTypeId(), player, NULL)->to_pixbuf();
+      pic = gc->getCircledArmyPic(as, a->getTypeId(), player, NULL, false,
+                                  Shield::NEUTRAL, true)->to_pixbuf();
     }
     
     current_image->property_pixbuf() = pic;

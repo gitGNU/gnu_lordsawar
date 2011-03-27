@@ -122,7 +122,7 @@
 #include "stacktile.h"
 #include "MapBackpack.h"
 #include "select-city-map.h"
-
+#include "shield.h"
 
 GameWindow::GameWindow()
 {
@@ -2073,6 +2073,7 @@ void GameWindow::fill_in_group_info (StackTile *stile, Stack *s)
 
 void GameWindow::show_stack(StackTile *s)
 {
+  Player *p = Playerlist::getActiveplayer();
   Gtk::RadioButton *first_radio = NULL;
   GraphicsCache *gc = GraphicsCache::getInstance();
   //s->sortForViewing (true);
@@ -2084,12 +2085,16 @@ void GameWindow::show_stack(StackTile *s)
   int width = 0;
   int height = 0;
   std::list<Stack *> stks;
-  stks = s->getFriendlyStacks(Playerlist::getActiveplayer());
+  stks = s->getFriendlyStacks(p);
   unsigned int count= 0;
   if (stack_info_button_table != NULL)
     delete stack_info_button_table;
   stack_info_button_table = new Gtk::Table(2, MAX_ARMIES_ON_A_SINGLE_TILE);
 	    
+  guint32 colour_id = 0;
+  if (colour_id == p->getId())
+    colour_id = Shield::get_next_shield(colour_id);
+  Stack *active = p->getActivestack();
   for (std::list<Stack *>::iterator j = stks.begin(); j != stks.end(); j++)
     {
       bool first = true;
@@ -2102,10 +2107,14 @@ void GameWindow::show_stack(StackTile *s)
 	  // image
 	  Gtk::Image *army_image = new Gtk::Image();
 	  bool greyed_out = (*j)->getId() != currently_selected_stack->getId();
+
 	  Glib::RefPtr<Gdk::Pixbuf> army_icon = 
-	    gc->getArmyPic((*j)->getOwner()->getArmyset(), army->getTypeId(),
-			   (*j)->getOwner(), army->getMedalBonuses(), 
-			   greyed_out)->to_pixbuf();
+	    gc->getCircledArmyPic((*j)->getOwner()->getArmyset(), 
+                                  army->getTypeId(),
+                                  (*j)->getOwner(), army->getMedalBonuses(), 
+                                  greyed_out, 
+                                  *j == active ? p->getId() : colour_id, 
+                                  true)->to_pixbuf();
 	  army_image->property_pixbuf() = army_icon;
 	  width = army_icon->get_width();
 	  height = army_icon->get_height();
@@ -2160,7 +2169,11 @@ void GameWindow::show_stack(StackTile *s)
 
 	  count++;
 	}
+      colour_id = Shield::get_next_shield(colour_id);
+      if (colour_id== p->getId())
+        colour_id = Shield::get_next_shield(colour_id);
     }
+
   for (unsigned int i = count ; i < MAX_ARMIES_ON_A_SINGLE_TILE; i++)
     {
       // construct a toggle button
@@ -2168,9 +2181,10 @@ void GameWindow::show_stack(StackTile *s)
 
       // image
       Gtk::Image *army_image = new Gtk::Image();
-      Glib::RefPtr<Gdk::Pixbuf> empty_pic
-	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, width, height);
-      empty_pic->fill(0x00000000);
+      Glib::RefPtr<Gdk::Pixbuf> empty_pic= 
+        gc->getCircledArmyPic(Playerlist::getActiveplayer()->getArmyset(), 0, 
+                              Playerlist::getActiveplayer(), NULL, false, 
+                              Shield::NEUTRAL, false)->to_pixbuf();
       army_image->property_pixbuf() = empty_pic;
       toggle_box->add(*manage(army_image));
       // number of moves
@@ -2894,18 +2908,17 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
   xml->get_widget("pillaged_army_type_image", pillaged_army_type_image);
   if (gold == 0)
     {
-      Glib::RefPtr<Gdk::Pixbuf> s
-	= GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL)->to_pixbuf();
-      Glib::RefPtr<Gdk::Pixbuf> empty_pic
-	= Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->get_width(), s->get_height());
-      empty_pic->fill(0x00000000);
+      Glib::RefPtr<Gdk::Pixbuf> empty_pic = 
+        gc->getCircledArmyPic(as, 0, player, NULL, false, Shield::NEUTRAL, 
+                              false)->to_pixbuf();
       pillaged_army_type_image->set(empty_pic);
       pillaged_army_type_cost_label->set_text("");
     }
   else
     {
       Glib::RefPtr<Gdk::Pixbuf> pic;
-      pic = gc->getArmyPic(as, pillaged_army_type, player, NULL)->to_pixbuf();
+      pic = gc->getCircledArmyPic(as, pillaged_army_type, player, NULL, false,
+                                  Shield::NEUTRAL, true)->to_pixbuf();
       pillaged_army_type_image->property_pixbuf() = pic;
       pillaged_army_type_cost_label->set_text(String::ucompose("%1 gp", gold));
     }
@@ -2969,11 +2982,9 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<guint32> sacked_
   xml->get_widget("sacked_army_3_cost_label", sacked_army_3_cost_label);
 
   Glib::RefPtr<Gdk::Pixbuf> pic;
-  Glib::RefPtr<Gdk::Pixbuf> surf
-    = GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL)->to_pixbuf();
-  Glib::RefPtr<Gdk::Pixbuf> empty_pic
-    = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, surf->get_width(), surf->get_height());
-  empty_pic->fill(0x00000000);
+  Glib::RefPtr<Gdk::Pixbuf> empty_pic =
+    gc->getCircledArmyPic(as, 0, player, NULL, false, Shield::NEUTRAL, 
+                          false)->to_pixbuf();
   int i = 0;
   Gtk::Label *sack_label = NULL;
   Gtk::Image *sack_image = NULL;
@@ -2994,7 +3005,8 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<guint32> sacked_
 	  sack_image = sacked_army_3_image;
 	  break;
 	}
-      pic = gc->getArmyPic(as, *it, player, NULL)->to_pixbuf();
+      pic = gc->getCircledArmyPic(as, *it, player, NULL, false, 
+                                  Shield::NEUTRAL, true)->to_pixbuf();
       sack_image->property_pixbuf() = pic;
       const ArmyProto *a = 
 	Armysetlist::getInstance()->getArmy (player->getArmyset(), *it);
@@ -3173,8 +3185,9 @@ void GameWindow::on_medal_awarded_to_army(Army *army, int medaltype)
   xml->get_widget("image", image);
   Player *active = Playerlist::getInstance()->getActiveplayer();
   image->property_pixbuf() = 
-    gc->getArmyPic(active->getArmyset(), army->getTypeId(), active, 
-		   army->getMedalBonuses())->to_pixbuf();
+    gc->getCircledArmyPic(active->getArmyset(), army->getTypeId(), active, 
+		   army->getMedalBonuses(), false, Shield::NEUTRAL, 
+                   true)->to_pixbuf();
   Gtk::Image *medal_image;
   xml->get_widget("medal_image", medal_image);
   medal_image->property_pixbuf() = 

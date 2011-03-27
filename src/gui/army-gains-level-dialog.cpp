@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #include "army.h"
 #include "GraphicsCache.h"
 #include "hero.h"
+#include "shield.h"
 
 //give a hero some more abilities
 ArmyGainsLevelDialog::ArmyGainsLevelDialog(Hero *a, bool show_sight_stat)
@@ -47,7 +48,8 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Hero *a, bool show_sight_stat)
     
     Gtk::Image *image;
     xml->get_widget("image", image);
-    image->property_pixbuf() = gc->getArmyPic(hero)->to_pixbuf();
+    image->property_pixbuf() = 
+      gc->getCircledArmyPic(hero, false, Shield::NEUTRAL, true)->to_pixbuf();
     Gtk::Image *hero_image;
     xml->get_widget("hero_image", hero_image);
     hero_image->property_pixbuf() = 

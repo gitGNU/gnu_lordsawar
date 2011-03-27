@@ -153,3 +153,14 @@ ShieldStyle *Shield::getFirstShieldstyle(ShieldStyle::Type type)
     }
   return NULL;
 }
+    
+guint32 Shield::get_next_shield(guint32 colour)
+{
+  if (colour == Shield::NEUTRAL)
+    {
+      colour = Shield::WHITE;
+      return colour;
+    }
+  colour++;
+  return colour;
+}

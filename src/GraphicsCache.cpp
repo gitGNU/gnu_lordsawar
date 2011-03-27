@@ -38,6 +38,7 @@
 #include "gui/image-helpers.h"
 #include "FogMap.h"
 #include "hero.h"
+#include <cairomm/context.h>
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -56,9 +57,27 @@ struct ArmyCacheItem
     bool greyed;
     PixMask* surface;
 };
+
+struct CircledArmyCacheItem
+{
+    guint32 armyset;
+    guint32 army_id;
+    guint32 player_id;
+    bool medals[3];
+    bool greyed;
+    guint32 circle_colour_id;
+    bool show_army;
+    PixMask* surface;
+};
+
 bool operator <(ArmyCacheItem lhs, ArmyCacheItem rhs)
 {
   return memcmp(&lhs, &rhs, sizeof (ArmyCacheItem) - sizeof (PixMask*)) < 0;
+}
+
+bool operator <(CircledArmyCacheItem lhs, CircledArmyCacheItem rhs)
+{
+  return memcmp(&lhs, &rhs, sizeof (CircledArmyCacheItem) - sizeof (PixMask*)) < 0;
 }
 
 //the structure to store ships in
@@ -746,6 +765,66 @@ PixMask* GraphicsCache::getArmyPic(guint32 armyset, guint32 army_id,
     myitem = addArmyPic(&item);
 
     return myitem->surface;
+}
+
+PixMask* GraphicsCache::getCircledArmyPic(guint32 armyset, guint32 army_id, 
+				   const Player* p, const bool *medals,
+				   bool greyed, guint32 circle_colour_id,
+                                   bool show_army)
+{
+  debug("getting circled army pic " <<armyset <<" " <<army_id <<" " 
+        <<p->getName() << " "  << greyed <<" " << circle_colour_id << 
+        " " << show_army)
+
+    std::list<CircledArmyCacheItem*>::iterator it;
+    CircledArmyCacheItem* myitem;
+
+    // important: medals can be 0 in special cases
+    bool my_medals[3] = {0,0,0};
+    if (medals)
+        for (int i = 0; i < 3; i++)
+            my_medals[i] = medals[i];
+
+    // special situation: ruin keepers don't belong to any player
+    // we don't actually show them, but what the heck
+    if (!p)
+        p = Playerlist::getInstance()->getNeutral();
+    
+    CircledArmyCacheItem item = CircledArmyCacheItem();
+    item.armyset = armyset;
+    item.army_id = army_id;
+    item.player_id = p->getId();
+    item.medals[0] = my_medals[0];
+    item.medals[1] = my_medals[1];
+    item.medals[2] = my_medals[2];
+    item.greyed = greyed;
+    item.circle_colour_id = circle_colour_id;
+    item.show_army = show_army;
+    CircledArmyMap::iterator mit = d_circledarmymap.find(item);
+    if (mit != d_circledarmymap.end())
+      {
+	std::list<CircledArmyCacheItem*>::iterator it = (*mit).second;
+	myitem = *it;
+	d_circledarmylist.erase(it);
+	d_circledarmylist.push_back(myitem);
+	it = d_circledarmylist.end();
+	it--;
+	d_circledarmymap[*myitem] = it;
+	return myitem->surface;
+      }
+
+    // We are still here, so the graphic is not in the cache. addArmyPic calls
+    // checkPictures on its own, so we can simply return the surface
+    debug("getcircledarmypic============= " << my_medals) 
+    myitem = addCircledArmyPic(&item);
+
+    return myitem->surface;
+}
+
+PixMask* GraphicsCache::getCircledArmyPic(Army *a, bool greyed, guint32 circle_colour_id, bool show_army)
+{
+  return getCircledArmyPic(a->getOwner()->getArmyset(), a->getTypeId(), 
+		    a->getOwner(), NULL, greyed, circle_colour_id, show_army);
 }
 
 PixMask* GraphicsCache::getTilePic(int tile_style_id, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 tilesize, bool has_grid)
@@ -1488,6 +1567,10 @@ void GraphicsCache::checkPictures()
   while (d_armylist.size() > 40)
     eraseLastArmyItem();
 
+  // still not enough? Erase circled army images
+  while (d_circledarmylist.size() > 40)
+    eraseLastCircledArmyItem();
+
 }
 
 void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid, guint32 tileset, guint32 cityset, guint32 shieldset)
@@ -1664,6 +1747,53 @@ ArmyCacheItem* GraphicsCache::addArmyPic(ArmyCacheItem *item)
   std::list<ArmyCacheItem*>::iterator it = d_armylist.end();
   it--;
   d_armymap[*myitem] = it;
+
+  //c) check if the cache size is too large
+  checkPictures();
+
+  //we are finished, so return the pic
+  return myitem;
+}
+
+CircledArmyCacheItem* GraphicsCache::addCircledArmyPic(CircledArmyCacheItem *item)
+{
+  debug("ADD circled army pic: " <<item->armyset <<"," <<item->army_id)
+
+  CircledArmyCacheItem* myitem = new CircledArmyCacheItem();
+  *myitem = *item;
+
+  if (myitem->show_army)
+    {
+      Player *p = Playerlist::getInstance()->getPlayer(myitem->player_id);
+      PixMask *pre_circle = NULL;
+      pre_circle = getArmyPic(myitem->armyset, myitem->army_id, p, 
+                              myitem->medals, myitem->greyed);
+      myitem->surface = 
+        circled(pre_circle, 
+                Shield::get_default_color_for_no(myitem->circle_colour_id), 
+                myitem->circle_colour_id != Shield::NEUTRAL);
+    }
+  else
+    {
+      guint32 size = 
+        Armysetlist::getInstance()->getArmyset(myitem->armyset)->getTileSize();
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf
+        = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, size, size);
+      pixbuf->fill(0x00000000);
+      PixMask *empty = PixMask::create(pixbuf);
+      myitem->surface = circled(empty, Shield::get_default_color_for_no(myitem->circle_colour_id), myitem->circle_colour_id != Shield::NEUTRAL);
+    }
+
+  //now the final preparation steps:
+  //a) add the size
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize += myitem->surface->get_depth()/8 * size;
+
+  //b) add the entry to the list
+  d_circledarmylist.push_back(myitem);
+  std::list<CircledArmyCacheItem*>::iterator it = d_circledarmylist.end();
+  it--;
+  d_circledarmymap[*myitem] = it;
 
   //c) check if the cache size is too large
   checkPictures();
@@ -2289,6 +2419,9 @@ void GraphicsCache::clear()
   while (!d_armylist.empty())
     eraseLastArmyItem();
 
+  while (!d_circledarmylist.empty())
+    eraseLastCircledArmyItem();
+
   while (!d_tilelist.empty())
     eraseLastTileItem();
 
@@ -2366,6 +2499,25 @@ void GraphicsCache::eraseLastArmyItem()
   if (it != d_armymap.end())
     d_armymap.erase(it);
   d_armylist.erase(d_armylist.begin());
+
+  //don't forget to subtract the size from the size entry
+  int size = myitem->surface->get_width() * myitem->surface->get_height();
+  d_cachesize -= myitem->surface->get_depth()/8 * size;
+
+  delete myitem->surface;
+  delete myitem;
+}
+
+void GraphicsCache::eraseLastCircledArmyItem()
+{
+  if (d_circledarmylist.empty())
+    return;
+
+  CircledArmyCacheItem* myitem = *(d_circledarmylist.begin());
+  CircledArmyMap::iterator it = d_circledarmymap.find(*myitem);
+  if (it != d_circledarmymap.end())
+    d_circledarmymap.erase(it);
+  d_circledarmylist.erase(d_circledarmylist.begin());
 
   //don't forget to subtract the size from the size entry
   int size = myitem->surface->get_width() * myitem->surface->get_height();
@@ -3139,5 +3291,92 @@ void GraphicsCache::reset()
   while (d_armylist.size())
     eraseLastArmyItem();
 
+  while (d_circledarmylist.size())
+    eraseLastCircledArmyItem();
+
   return;
+}
+
+void GraphicsCache::draw_circle(Cairo::RefPtr<Cairo::Context> cr, double width_percent, int width, int height, Gdk::Color colour, bool coloured, bool mask)
+{
+  if (width_percent > 100)
+    width_percent = 0;
+  else if (width_percent < 0)
+    width_percent = 0;
+  width_percent /= 100.0;
+  //i want 2 o'clock as a starting point, and 8pm as an ending point.
+
+  double dred = (double)BEVELED_CIRCLE_DARK.get_red() /65535.0;
+  double dgreen = (double)BEVELED_CIRCLE_DARK.get_green() /65535.0;
+  double dblue = (double)BEVELED_CIRCLE_DARK.get_blue() /65535.0;
+  double lred = (double)BEVELED_CIRCLE_LIGHT.get_red() /65535.0;
+  double lgreen = (double)BEVELED_CIRCLE_LIGHT.get_green() /65535.0;
+  double lblue = (double)BEVELED_CIRCLE_LIGHT.get_blue() /65535.0;
+
+  double radius = (double)width * width_percent / 2.0;
+  double line_width = radius * 0.2;
+      
+  if (mask)
+    cr->set_line_width(line_width + 2.0);
+  else
+    cr->set_line_width(line_width + 4.0);
+  cr->set_source_rgb(((lred - dred) / 2.0) + lred, 
+                     ((lgreen -dgreen) / 2.0) + lgreen, 
+                     ((lblue - dblue) / 2.0) + lblue);
+  cr->arc((double)width/2.0, (double)height/2.0, radius - (line_width / 2.0), 0, 2 *M_PI);
+  cr->stroke();
+  if (mask)
+    return;
+
+  cr->set_line_width(1.0);
+  cr->set_source_rgb(dred, dgreen, dblue);
+  cr->arc((double)width/2.0, (double)height/2.0, radius, (2 * M_PI) * (2.0/12.0), (2 *M_PI) * (8.0/12.0));
+  cr->stroke();
+  cr->set_source_rgb(lred, lgreen, lblue);
+  cr->arc((double)width/2.0, (double)height/2.0, radius, (2 * M_PI) * (8.0/12.0), (2 *M_PI) * (2.0/12.0));
+  cr->stroke();
+
+  radius -= line_width;
+  cr->set_source_rgb(lred, lgreen, lblue);
+  cr->arc((double)width/2.0, (double)height/2.0, radius, (2 * M_PI) * (2.0/12.0), (2 *M_PI) * (8.0/12.0));
+  cr->stroke();
+
+  cr->set_source_rgb(dred, dgreen, dblue);
+  cr->arc((double)width/2.0, (double)height/2.0, radius, (2 * M_PI) * (8.0/12.0), (2 *M_PI) * (2.0/12.0));
+  cr->stroke();
+
+  if (coloured)
+    {
+      cr->set_line_width(line_width);
+      double red = (double)colour.get_red() /65535.0;
+      double green = (double)colour.get_green() /65535.0;
+      double blue = (double)colour.get_blue() /65535.0;
+      cr->set_source_rgb(red, green, blue);
+      cr->arc((double)width/2.0, (double)height/2.0, radius + (line_width / 2.0), 0, 2 *M_PI);
+      cr->stroke();
+    }
+}
+
+PixMask* GraphicsCache::circled(PixMask* image, Gdk::Color colour, bool coloured, double width_percent)
+{
+  int width = image->get_width();
+  int height = image->get_height();
+  Glib::RefPtr<Gdk::Pixmap> pixmap = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(), width, height, 24);
+
+  Cairo::RefPtr<Cairo::Context> cr = pixmap->create_cairo_context();
+  draw_circle(cr, width_percent, width, height, colour, coloured, false);
+
+  Glib::RefPtr<Gdk::Bitmap> mask;
+  int size = width * height / 8;
+  char *data = (char*)malloc(size);
+  memset(data, 0, size);
+  mask = Gdk::Bitmap::create(data, width, height);
+  cr = mask->create_cairo_context();
+  //here we merge the mask of the army image with the circle mask
+  mask->draw_drawable(Gdk::GC::create(mask), image->get_mask(), 0, 0, 0, 0, width, height);
+  draw_circle(cr, width_percent, width, height, colour, coloured, true);
+  PixMask *result = PixMask::create(pixmap, mask);
+  result->draw_pixbuf(image->to_pixbuf(), 0, 0, 0, 0, width, height);
+  free(data);
+  return result;
 }

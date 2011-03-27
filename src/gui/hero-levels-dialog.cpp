@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@
 #include "stack.h"
 #include "hero.h"
 #include "GraphicsCache.h"
+#include "shield.h"
 
 void HeroLevelsDialog::init(Player *theplayer)
 {
@@ -112,8 +113,9 @@ void HeroLevelsDialog::addHero(Hero *h)
     GraphicsCache *gc = GraphicsCache::getInstance();
     Gtk::TreeIter i = heroes_list->append();
     (*i)[heroes_columns.name] = h->getName();
-    (*i)[heroes_columns.image] = gc->getArmyPic(player->getArmyset(),
-						h->getTypeId(), player, NULL)->to_pixbuf();
+    (*i)[heroes_columns.image] = 
+      gc->getCircledArmyPic(player->getArmyset(), h->getTypeId(), player, NULL,
+                            false, Shield::NEUTRAL, true)->to_pixbuf();
     (*i)[heroes_columns.level] = String::ucompose("%1", h->getLevel());
     (*i)[heroes_columns.exp] = (guint32)h->getXP();
     (*i)[heroes_columns.needs] = (guint32)h->getXpNeededForNextLevel();

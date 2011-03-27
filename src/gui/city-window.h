@@ -85,6 +85,8 @@ class CityWindow: public Decorated
     bool on_map_mouse_button_event(GdkEventButton *e);
     void on_rename_clicked ();
     void on_raze_clicked ();
+
+    void update_toggle_picture(int slot);
 };
 
 #endif

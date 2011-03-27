@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@
 #include "armysetlist.h"
 #include "playerlist.h"
 #include "File.h"
+#include "shield.h"
 
 BuyProductionDialog::BuyProductionDialog(City *c)
 {
@@ -77,14 +78,16 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 	Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
 	
 	bool greyed_out = false;
+        guint32 selected = Shield::NEUTRAL;
 	if (city->hasProductionBase(purchasables[i]) == true)
-	  greyed_out = true;
-	else if ((int)purchasables[i]->getNewProductionCost() > 
+	  selected = p->getId();
+	if ((int)purchasables[i]->getNewProductionCost() > 
 		 c->getOwner()->getGold())
 	  greyed_out = true;
 	Glib::RefPtr<Gdk::Pixbuf> pix
-	    = gc->getArmyPic(p->getArmyset(), purchasables[i]->getTypeId(), p, 
-			     NULL, greyed_out)->to_pixbuf();
+	    = gc->getCircledArmyPic(p->getArmyset(), 
+                                    purchasables[i]->getTypeId(), p, NULL, 
+                                    greyed_out, selected, true)->to_pixbuf();
 	
 	Gtk::Image *image = new Gtk::Image();
 	image->property_pixbuf() = pix;

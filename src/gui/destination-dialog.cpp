@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@
 #include "GraphicsCache.h"
 #include "vectoredunitlist.h"
 #include "vectoredunit.h"
+#include "shield.h"
 
 DestinationDialog::DestinationDialog(City *c, bool *see_all)
 {
@@ -192,6 +193,7 @@ void DestinationDialog::on_change_toggled(Gtk::ToggleButton *toggle)
 
 void DestinationDialog::fill_in_vectoring_info()
 {
+  GraphicsCache *gc = GraphicsCache::getInstance();
   std::list<VectoredUnit*> vectored;
   std::list<VectoredUnit*>::const_iterator it;
   VectoredUnitlist *vul = VectoredUnitlist::getInstance();
@@ -200,13 +202,13 @@ void DestinationDialog::fill_in_vectoring_info()
   Player *player = city->getOwner();
   unsigned int as = player->getArmyset();
   Glib::RefPtr<Gdk::Pixbuf> pic;
-  GraphicsCache *gc = GraphicsCache::getInstance();
   int slot = city->getActiveProductionSlot();
-  Glib::RefPtr<Gdk::Pixbuf> s
-    = GraphicsCache::getInstance()->getArmyPic(as, 0, player, NULL)->to_pixbuf();
-  Glib::RefPtr<Gdk::Pixbuf> empty_pic
-    = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, s->get_width(), s->get_height());
-  empty_pic->fill(0x00000000);
+  Glib::RefPtr<Gdk::Pixbuf> s = 
+    gc->getCircledArmyPic(as, 0, player, NULL, false, Shield::NEUTRAL, 
+                          true)->to_pixbuf();
+  Glib::RefPtr<Gdk::Pixbuf> empty_pic =
+    gc->getCircledArmyPic(as, 0, player, NULL, false, Shield::NEUTRAL, 
+                          false)->to_pixbuf();
 
   vector_toggle->set_sensitive(slot != -1 ? true : false);
 
@@ -236,7 +238,8 @@ void DestinationDialog::fill_in_vectoring_info()
   else
     {
       const ArmyProdBase* a = city->getProductionBase(slot);
-      pic = gc->getArmyPic(as, a->getTypeId(), player, NULL)->to_pixbuf();
+      pic = gc->getCircledArmyPic(as, a->getTypeId(), player, NULL, false,
+                                  Shield::NEUTRAL, true)->to_pixbuf();
       s1 = String::ucompose(_("%1t"), city->getDuration());
       turns_label->set_markup("<i>" + s1 + "</i>");
     }
@@ -251,12 +254,14 @@ void DestinationDialog::fill_in_vectoring_info()
       int armytype = (*it)->getArmy()->getTypeId();
       if ((*it)->getDuration() == 2)
         {
-          pic = gc->getArmyPic(as, armytype, player, NULL)->to_pixbuf();
+          pic = gc->getCircledArmyPic(as, armytype, player, NULL, false,
+                                      Shield::NEUTRAL, true)->to_pixbuf();
           one_turn_away_image->property_pixbuf() = pic;
         }
       else if ((*it)->getDuration() == 1)
         {
-          pic = gc->getArmyPic(as, armytype, player, NULL)->to_pixbuf();
+          pic = gc->getCircledArmyPic(as, armytype, player, NULL, false, 
+                                      Shield::NEUTRAL, true)->to_pixbuf();
           two_turns_away_image->property_pixbuf() = pic;
         }
     }
@@ -278,7 +283,9 @@ void DestinationDialog::fill_in_vectoring_info()
           case 2: image = next_turn_3_image; break;
           case 3: image = next_turn_4_image; break;
         }
-      pic = gc->getArmyPic(as, (*it)->getArmy()->getTypeId(), player, NULL)->to_pixbuf();
+      pic = 
+        gc->getCircledArmyPic(as, (*it)->getArmy()->getTypeId(), player, NULL, 
+                              false, Shield::NEUTRAL, true)->to_pixbuf();
       image->property_pixbuf() = pic;
       count++;
     }
@@ -294,7 +301,9 @@ void DestinationDialog::fill_in_vectoring_info()
           case 2: image = turn_after_3_image; break;
           case 3: image = turn_after_4_image; break;
         }
-      pic = gc->getArmyPic(as, (*it)->getArmy()->getTypeId(), player, NULL)->to_pixbuf();
+      pic = 
+        gc->getCircledArmyPic(as, (*it)->getArmy()->getTypeId(), player, NULL,
+                              false, Shield::NEUTRAL, true)->to_pixbuf();
       image->property_pixbuf() = pic;
       count++;
     }

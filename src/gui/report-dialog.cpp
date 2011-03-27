@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@
 #include "GraphicsCache.h"
 #include "armyprodbase.h"
 #include "armysetlist.h"
+#include "shield.h"
 
 ReportDialog::ReportDialog(Player *player, ReportType type)
 {
@@ -423,8 +424,9 @@ void ReportDialog::addProduction(const Action *action)
   a = Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);
   Gtk::TreeIter i = armies_list->append();
   (*i)[armies_columns.city_id] = city_id;
-  (*i)[armies_columns.image] = gc->getArmyPic(p->getArmyset(), army_type, p, 
-					      NULL)->to_pixbuf();
+  (*i)[armies_columns.image] = 
+    gc->getCircledArmyPic(p->getArmyset(), army_type, p, NULL, false,
+                          Shield::NEUTRAL, true)->to_pixbuf();
   (*i)[armies_columns.desc] = s;
 }
 

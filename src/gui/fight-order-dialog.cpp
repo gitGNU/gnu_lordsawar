@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -53,9 +53,7 @@ FightOrderDialog::FightOrderDialog(Player *theplayer)
     std::list<guint32> fight_order = theplayer->getFightOrder();
     std::list<guint32>::iterator it = fight_order.begin();
     for (; it != fight_order.end(); it++)
-      {
-        addArmyType(*it);
-      }
+      addArmyType(*it);
     armies_treeview->set_reorderable(true);
     xml->get_widget("reverse_button", reverse_button);
     reverse_button->signal_clicked().connect
@@ -108,8 +106,9 @@ void FightOrderDialog::addArmyType(guint32 army_type)
     Armysetlist *alist = Armysetlist::getInstance();
     const ArmyProto *a = alist->getArmy(player->getArmyset(), army_type);
     (*i)[armies_columns.name] = a->getName();
-    (*i)[armies_columns.image] = gc->getArmyPic(player->getArmyset(),
-                                           army_type, player, NULL)->to_pixbuf();
+    (*i)[armies_columns.image] = 
+      gc->getCircledArmyPic(player->getArmyset(), army_type, player, NULL,
+                            false, player->getId(), true)->to_pixbuf();
     (*i)[armies_columns.army_type] = a->getTypeId();
 }
 
