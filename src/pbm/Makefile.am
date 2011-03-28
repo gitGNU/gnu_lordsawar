@@ -23,11 +23,11 @@ bin_PROGRAMS = lordsawar-pbm
 lordsawar_pbm_SOURCES =  pbm.cpp main.cpp pbm.h ${top_srcdir}/src/pbm-game-client.cpp ${top_srcdir}/src/pbm-game-client.h ${top_srcdir}/src/game-client-decoder.cpp ${top_srcdir}/src/game-client-decoder.h ${top_srcdir}/src/chat-client.cpp ${top_srcdir}/src/chat-client.h
 
 
-lordsawar_pbm_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS) $(LIBXML_LIBS) \
-		         $(XSLT_LIBS) $(SDL_LIBS) -ltar -lz \
-                         $(top_builddir)/src/liblordsawar.la \
-                         @LIBINTL@ \
-                         -L$(top_builddir)/src
+lordsawar_pbm_LDADD = $(top_builddir)/src/liblordsawar.la $(SDL_LIBS) \
+			$(GTKMM_LIBS) $(LIBXML_LIBS) $(XSLT_LIBS) 
+			$(LIBSIGC_LIBS) -ltar -lz \
+			@LIBINTL@ \
+			-L$(top_builddir)/src
 ##endif
 
 
