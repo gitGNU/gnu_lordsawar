@@ -38,10 +38,10 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\"
 INCLUDES = \
     $(SDL_CFLAGS) \
-    $(LIBSIGC_CFLAGS) \
     $(GTKMM_CFLAGS) \
     $(LIBXML_CFLAGS) \
     $(XSLT_CFLAGS) \
+    $(LIBSIGC_CFLAGS) \
     -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' \
     -I$(top_srcdir) -I$(top_srcdir)/src
 
