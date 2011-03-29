@@ -57,6 +57,7 @@ class Reward;
 class Reward_Ruin;
 class NextTurn;
 class LocationBox;
+class StatusBox;
 
 /** The main window in which all the game action is going on.
   *
@@ -158,22 +159,9 @@ class GameWindow: public Decorated
     Gtk::MenuItem *winning_report_menuitem;
     Gtk::MenuItem *quests_menuitem;
     Gtk::MenuItem *preferences_menuitem;
-    Gtk::Box *stack_info_box;
-    Gtk::Table *stack_info_button_table; //not loaded from .ui
-    Gtk::Box *stack_info_container;
-    Gtk::Label *group_moves_label;
-    Gtk::Image *terrain_image;
-    Gtk::Box *stats_box;
-    Gtk::Box *progress_box;
-    Gtk::ProgressBar *turn_progressbar;
-    Gtk::Label *progress_status_label;
     Gtk::DrawingArea *map_drawingarea;
     Gtk::DrawingArea *bigmap_drawingarea;
 
-    Gtk::Label *cities_stats_label;
-    Gtk::Label *gold_stats_label;
-    Gtk::Label *income_stats_label;
-    Gtk::Label *upkeep_stats_label;
     Gtk::Label *turn_label;
     Gtk::HBox *turn_hbox;
     Gtk::Image *shield_image[MAX_PLAYERS];
@@ -181,7 +169,6 @@ class GameWindow: public Decorated
     // the button control panel
     Gtk::Viewport *control_panel_viewport;
 
-    Stack *currently_selected_stack;
     ArmyInfoTip* army_info_tip;
     CityInfoTip* city_info_tip;
     StackInfoTip* stack_info_tip;
@@ -191,7 +178,8 @@ class GameWindow: public Decorated
     stack_buttons_type stack_buttons;
     Gtk::EventBox *map_eventbox;
     Gtk::EventBox *bigmap_eventbox;
-    Gtk::ToggleButton *group_ungroup_toggle;
+    Gtk::HBox *status_box_container;
+    StatusBox *status_box;
 
     std::string current_save_filename;
 
@@ -257,18 +245,6 @@ class GameWindow: public Decorated
 
     void on_message_requested(std::string msg);
     
-    // info pane at the bottom
-    void show_stats();
-    void show_progress();
-    void show_stack(StackTile *s);
-    void fill_in_group_info (StackTile *stile, Stack *s);
-    void on_army_toggled(Gtk::ToggleButton *toggle, Stack *stack, Army *army);
-    void on_stack_toggled(Gtk::RadioButton *radio, Stack *stack);
-    void on_group_toggled(Gtk::ToggleButton *toggle);
-    bool on_army_button_event(GdkEventButton *e,
-			      Gtk::ToggleButton *toggle, Army *army);
-    void clear_army_buttons();
-
     // shield set on the top
     void show_shield_turn();
 
@@ -351,6 +327,7 @@ class GameWindow: public Decorated
     void on_bigmap_surface_changed(Gtk::Allocation box);
     bool on_bigmap_exposed(GdkEventExpose *event);
     bool on_smallmap_exposed(GdkEventExpose *event);
+    void on_group_stack_toggled(bool lock);
 
     Player *game_winner;
     void give_some_cheese(Player *game_winner);

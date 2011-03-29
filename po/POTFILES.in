@@ -64,6 +64,12 @@
 [type: gettext/glade]dat/glade/splash-window.ui
 [type: gettext/glade]dat/glade/stack-info-dialog.ui
 [type: gettext/glade]dat/glade/stack-info-window.ui
+[type: gettext/glade]dat/glade/status-box-desktop.ui
+[type: gettext/glade]dat/glade/status-box-netbook.ui
+[type: gettext/glade]dat/glade/status-box-large-screen.ui
+[type: gettext/glade]dat/glade/stack-tile-box-desktop.ui
+[type: gettext/glade]dat/glade/stack-tile-box-netbook.ui
+[type: gettext/glade]dat/glade/stack-tile-box-large-screen.ui
 [type: gettext/glade]dat/glade/surrender-dialog.ui
 [type: gettext/glade]dat/glade/surrender-refused-dialog.ui
 [type: gettext/glade]dat/glade/temple-visit-dialog.ui

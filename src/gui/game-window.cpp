@@ -71,6 +71,7 @@
 #include "use-item-on-player-dialog.h"
 #include "use-item-on-city-dialog.h"
 #include "game-button-box.h"
+#include "status-box.h"
 
 #include "ucompose.hpp"
 #include "defs.h"
@@ -126,10 +127,8 @@
 
 GameWindow::GameWindow()
 {
-  stack_info_button_table = NULL;
   game_winner = NULL;
   stack_info_tip = NULL;
-  army_info_tip = NULL;
   city_info_tip = NULL;
   map_tip = NULL;
   stack_tip = NULL;
@@ -176,24 +175,14 @@ GameWindow::GameWindow()
      (sigc::mem_fun(*this, &GameWindow::on_bigmap_mouse_motion_event));
     bigmap_eventbox->signal_scroll_event().connect
        (sigc::mem_fun(*this, &GameWindow::on_bigmap_scroll_event));
-    xml->get_widget("stack_info_box", stack_info_box);
-    xml->get_widget("stack_info_container", stack_info_container);
+    xml->get_widget("status_box_container", status_box_container);
     Gtk::Viewport *vp;
     xml->get_widget("bigmap_viewport", vp);
     decorate_border(vp, 175);
-    xml->get_widget("group_moves_label", group_moves_label);
-    xml->get_widget("group_togglebutton", group_ungroup_toggle);
-    group_ungroup_toggle->signal_toggled().connect
-      (sigc::bind(sigc::mem_fun(*this, &GameWindow::on_group_toggled),
-		  group_ungroup_toggle));
-    xml->get_widget("terrain_image", terrain_image);
-    xml->get_widget("stats_box", stats_box);
-    xml->get_widget("progress_box", progress_box);
-    xml->get_widget("turn_progressbar", turn_progressbar);
-    xml->get_widget("progress_status_label", progress_status_label);
-    stack_info_box->hide();
-    stats_box->hide();
-    progress_box->show();
+
+    status_box = StatusBox::create(Configuration::s_ui_form_factor);
+    status_box->reparent(*status_box_container);
+    status_box_container->add(*manage(status_box));
 
     // the map image
     xml->get_widget("map_drawingarea", map_drawingarea);
@@ -220,19 +209,6 @@ GameWindow::GameWindow()
     control_panel_viewport->add(*manage(game_button_box));
 
     // the stats
-    xml->get_widget("cities_stats_image", cities_stats_image);
-    cities_stats_image->property_file() = File::getMiscFile("various/smallcity.png");
-    xml->get_widget("gold_stats_image", gold_stats_image);
-    gold_stats_image->property_file() = File::getMiscFile("various/smalltreasury.png");
-    xml->get_widget("income_stats_image", income_stats_image);
-    income_stats_image->property_file() = File::getMiscFile("various/smallincome.png");
-    xml->get_widget("upkeep_stats_image", upkeep_stats_image);
-    upkeep_stats_image->property_file() = File::getMiscFile("various/smallupkeep.png");
-    
-    xml->get_widget("cities_stats_label", cities_stats_label);
-    xml->get_widget("gold_stats_label", gold_stats_label);
-    xml->get_widget("income_stats_label", income_stats_label);
-    xml->get_widget("upkeep_stats_label", upkeep_stats_label);
     xml->get_widget("turn_label", turn_label);
     xml->get_widget("turn_hbox", turn_hbox);
     xml->get_widget("shield_image_0", shield_image[0]);
@@ -381,12 +357,6 @@ GameWindow::~GameWindow()
   for (; it != connections.end(); it++) 
     (*it).disconnect();
   connections.clear();
-  clear_army_buttons();
-    if (army_info_tip)
-      {
-	delete army_info_tip;
-	army_info_tip = NULL;
-      }
     if (city_info_tip)
       {
 	delete city_info_tip;
@@ -407,8 +377,11 @@ GameWindow::~GameWindow()
         delete game_button_box;
         game_button_box = NULL;
       }
-  if (stack_info_button_table != NULL)
-    delete stack_info_button_table;
+    if (status_box)
+      {
+        delete status_box;
+        status_box = NULL;
+      }
   delete window;
 }
 
@@ -422,6 +395,12 @@ void GameWindow::show()
     
     bigmap_drawingarea->show_all();
     window->show();
+    if (status_box)
+      {
+        status_box->setHeightFudgeFactor(turn_label->get_height());
+        status_box->enforce_height();
+        status_box->show_stats();
+      }
       
     //seems unnecessary, but this is for starting up a second game after
     //closing the first game window.
@@ -618,7 +597,7 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
      (sigc::mem_fun(*this, &GameWindow::on_smallmap_slid)));
   connections.push_back
     (game->stack_info_changed.connect
-     (sigc::mem_fun(*this, &GameWindow::on_stack_info_changed)));
+     (sigc::mem_fun(*status_box, &StatusBox::on_stack_info_changed)));
   connections.push_back
     (game->map_tip_changed.connect
      (sigc::mem_fun(*this, &GameWindow::on_bigmap_tip_changed)));
@@ -821,7 +800,7 @@ void GameWindow::end_turn_play_by_mail ()
 
 bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
 {
-  currently_selected_stack = NULL;
+  status_box->clear_selected_stack();
 
   Sound::getInstance()->haltMusic(false);
   Sound::getInstance()->enableBackground();
@@ -831,8 +810,18 @@ bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
   game = new Game(game_scenario, nextTurn);
 
   game_button_box->setup_signals(game, Configuration::s_ui_form_factor);
+    
+  status_box->stack_composition_modified.connect
+      (sigc::mem_fun(game, &Game::recalculate_moves_for_stack));
+  status_box->stack_tile_group_toggle.connect
+    (sigc::mem_fun(this, &GameWindow::on_group_stack_toggled));
   show_shield_turn();
   return true;
+}
+    
+void GameWindow::on_group_stack_toggled(bool lock)
+{
+  game->get_bigmap().set_input_locked(lock);
 }
 
 bool GameWindow::on_delete_event(GdkEventAny *e)
@@ -1268,12 +1257,12 @@ void GameWindow::on_stack_info_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  StackInfoDialog d(currently_selected_stack->getPos());
+  StackInfoDialog d(status_box->get_currently_selected_stack()->getPos());
   d.set_parent_window(*window);
   d.run();
   Stack *s = d.get_selected_stack();
   d.hide();
-  on_stack_info_changed(s);
+  status_box->on_stack_info_changed(s);
   //FIXME, armies don't stay selected in the right way.  to reproduce:
   //go in with all three selected.  deselect middle one in stackinfodialog,
   //then return.
@@ -1385,9 +1374,9 @@ void GameWindow::on_vectoring_activated()
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
 
-  if (currently_selected_stack)
+  if (status_box->get_currently_selected_stack())
     {
-      Vector<int> pos = currently_selected_stack->getPos();
+      Vector<int> pos = status_box->get_currently_selected_stack()->getPos();
       city = Citylist::getInstance()->getNearestVisibleFriendlyCity(pos);
     }
   else
@@ -1410,9 +1399,9 @@ void GameWindow::on_production_activated()
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
 
-  if (currently_selected_stack)
+  if (status_box->get_currently_selected_stack())
     {
-      Vector<int> pos = currently_selected_stack->getPos();
+      Vector<int> pos = status_box->get_currently_selected_stack()->getPos();
       city = Citylist::getInstance()->getNearestVisibleFriendlyCity(pos);
     }
   else
@@ -1449,11 +1438,38 @@ void GameWindow::on_ui_form_factor_changed(guint32 factor)
       control_panel_viewport->remove();
     }
   game_button_box = GameButtonBox::create(Configuration::s_ui_form_factor);
-  game_button_box->reparent(*control_panel_viewport);
   control_panel_viewport->add(*manage(game_button_box));
+  game_button_box->reparent(*control_panel_viewport);
   game_button_box->setup_signals(game, Configuration::s_ui_form_factor);
   game_button_box->show_all();
-    game->get_smallmap().resize();
+
+
+  if (status_box)
+    {
+      status_box_container->remove(*status_box);
+      delete status_box;
+    }
+
+  status_box = StatusBox::create(Configuration::s_ui_form_factor);
+  status_box_container->pack_start(*manage(status_box), Gtk::PACK_SHRINK);
+  status_box->reparent(*status_box_container);
+  status_box->stack_composition_modified.connect
+      (sigc::mem_fun(game, &Game::recalculate_moves_for_stack));
+  connections.push_back
+    (game->stack_info_changed.connect
+     (sigc::mem_fun(*status_box, &StatusBox::on_stack_info_changed)));
+  status_box->stack_tile_group_toggle.connect
+    (sigc::mem_fun(this, &GameWindow::on_group_stack_toggled));
+  status_box->setHeightFudgeFactor(turn_label->get_height());
+  status_box->enforce_height();
+  game->update_sidebar_stats();
+  if (Playerlist::getActiveplayer()->getActivestack())
+    status_box->on_stack_info_changed
+      (Playerlist::getActiveplayer()->getActivestack());
+  else
+    status_box->show_stats();
+    
+  game->get_smallmap().resize();
   game->redraw();
 }
 
@@ -1461,7 +1477,7 @@ void GameWindow::on_group_ungroup_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  group_ungroup_toggle->set_active(!group_ungroup_toggle->get_active());
+  status_box->toggle_group_ungroup();
 }
 
 void GameWindow::on_fight_order_activated()
@@ -1491,8 +1507,8 @@ void GameWindow::on_ruin_report_activated()
   Vector<int> pos;
   pos.x = 0;
   pos.y = 0;
-  if (currently_selected_stack)
-    pos = currently_selected_stack->getPos();
+  if (status_box->get_currently_selected_stack())
+    pos = status_box->get_currently_selected_stack()->getPos();
 
   if (Templelist::getInstance()->size() == 0 &&
       Ruinlist::getInstance()->size() == 0)
@@ -1789,174 +1805,26 @@ void GameWindow::on_message_requested(std::string msg)
   dialog.hide();
 }
 
-void GameWindow::on_stack_toggled(Gtk::RadioButton *radio, Stack *stack)
-{
-  if (game_button_box->get_end_turn_button_sensitive() == false)
-    return;
-  if (radio->get_active() == true)
-    {
-      if (stack == currently_selected_stack)
-	return;
-      currently_selected_stack = stack;
-      Playerlist::getActiveplayer()->setActivestack(stack);
-      on_stack_info_changed(stack);
-      game->recalculate_moves_for_stack(stack);
-    }
-}
-
-void GameWindow::on_army_toggled(Gtk::ToggleButton *toggle, Stack *stack, Army *army)
-{
-  if (game_button_box->get_end_turn_button_sensitive() == false)
-    return;
-  Player *p = Playerlist::getActiveplayer();
-  Stack *s = p->getActivestack();
-  group_ungroup_toggle->set_sensitive(false);
-  if (toggle->get_active() == true)
-    {
-      printf("split army %d from stack %d, and put it into current stack %d.\n", army->getId(), stack->getId(), currently_selected_stack->getId());
-
-      if (stack->size() > 1)
-	{
-	  Stack *new_stack = p->stackSplitArmy(stack, army);
-	  if (new_stack)
-	    p->stackJoin(currently_selected_stack, new_stack);
-	}
-      else
-	p->stackJoin(currently_selected_stack, stack);
-      currently_selected_stack->sortForViewing(true);
-    }
-  else
-    {
-      //printf("split army %d from stack %d, and make a new stack.\n", army->getId(), stack->getId());
-      p->stackSplitArmy(stack, army);
-      stack->sortForViewing(true);
-    }
-  on_stack_info_changed(s);
-  group_ungroup_toggle->set_sensitive(true);
-  game->recalculate_moves_for_stack(s);
-}
-
-void GameWindow::on_group_toggled(Gtk::ToggleButton *toggle)
-{
-  if (toggle->sensitive() == false)
-    return;
-  bool active = toggle->get_active();
-      
-  clear_army_buttons();
-      
-  StackTile *s = GameMap::getStacks(currently_selected_stack->getPos());
-  game->get_bigmap().set_input_locked(true);
-  if (active)
-    {
-      s->group(Playerlist::getActiveplayer(), currently_selected_stack);
-      currently_selected_stack->sortForViewing(true);
-    }
-  else
-    s->ungroup(Playerlist::getActiveplayer());
-  game->get_bigmap().set_input_locked(false);
-  //Stack *stack = s->getFriendlyStacks(Playerlist::getActiveplayer()).front();
-  //currently_selected_stack = stack;
-  //Playerlist::getActiveplayer()->setActivestack(stack);
-
-  on_stack_info_changed(currently_selected_stack);
-  game->recalculate_moves_for_stack(currently_selected_stack);
-}
-
-bool GameWindow::on_army_button_event(GdkEventButton *e,
-				      Gtk::ToggleButton *toggle, Army *army)
-{
-  // if a hero is right-clicked, pop up the hero dialog, otherwise show the
-  // army info tip
-  MouseButtonEvent event = to_input_event(e);
-  if (event.button == MouseButtonEvent::RIGHT_BUTTON
-      && event.state == MouseButtonEvent::PRESSED) {
-
-    if (army_info_tip)
-      delete army_info_tip;
-    army_info_tip = new ArmyInfoTip(toggle, army);
-
-    return true;
-  }
-  else if (event.button == MouseButtonEvent::RIGHT_BUTTON
-	   && event.state == MouseButtonEvent::RELEASED) {
-      {
-	if (army_info_tip)
-	  {
-	    delete army_info_tip;
-	    army_info_tip = NULL;
-	  }
-      }
-    return true;
-  }
-
-  return false;
-}
-
-void GameWindow::clear_army_buttons()
-{
-  for (army_buttons_type::iterator i = army_buttons.begin(),
-       end = army_buttons.end(); i != end; ++i)
-    delete *i;
-  army_buttons.clear();
-  for (stack_buttons_type::iterator i = stack_buttons.begin(),
-       end = stack_buttons.end(); i != end; ++i)
-    delete *i;
-  stack_buttons.clear();
-  delete stack_info_button_table;
-  stack_info_button_table = NULL;
-}
-
 void GameWindow::on_progress_status_changed(std::string string)
 {
-  progress_status_label->set_markup("<b>" + string + "</b>");
+  status_box->set_progress_label(string);
 }
 
 void GameWindow::on_progress_changed()
 {
-  turn_progressbar->pulse();
+  status_box->pulse();
 }
 
 void GameWindow::on_sidebar_stats_changed(SidebarStats s)
 {
+  status_box->update_sidebar_stats(s);
+
   if (Configuration::s_decorated)
-    {
-      cities_stats_label->set_markup(String::ucompose("<b>%1</b>", s.cities));
-      gold_stats_label->set_markup(String::ucompose("<b>%1</b>", s.gold));
-      income_stats_label->set_markup(String::ucompose("<b>%1</b>", s.income));
-      upkeep_stats_label->set_markup(String::ucompose("<b>%1</b>", s.upkeep));
       turn_label->set_markup(String::ucompose("<b>%1 %2</b>", _("Turn"), 
                                               s.turns));
-    }
   else
-    {
-      cities_stats_label->set_markup(String::ucompose("%1", s.cities));
-      gold_stats_label->set_markup(String::ucompose("%1", s.gold));
-      income_stats_label->set_markup(String::ucompose("%1", s.income));
-      upkeep_stats_label->set_markup(String::ucompose("%1", s.upkeep));
       turn_label->set_markup(String::ucompose("<b>%1 %2</b>", 
                                               _("Turn"), s.turns));
-    }
-  Glib::ustring tip;
-  tip = String::ucompose(
-			 ngettext("You have %1 city!",
-				  "You have %1 cities!", s.cities), s.cities);
-  cities_stats_image->set_tooltip_text(tip);
-  cities_stats_label->set_tooltip_text(tip);
-  tip = String::ucompose(
-			 ngettext("You have %1 gold piece in your treasury!",
-				  "You have %1 gold pieces in your treasury!", s.gold), s.gold);
-  gold_stats_image->set_tooltip_text(tip);
-  gold_stats_label->set_tooltip_text(tip);
-  tip = String::ucompose(
-			 ngettext("You earn %1 gold piece in income!",
-				  "You earn %1 gold pieces in income!", s.income), s.income);
-  income_stats_image->set_tooltip_text(tip);
-  income_stats_label->set_tooltip_text(tip);
-  tip = String::ucompose(
-			 ngettext("You pay %1 gold piece in upkeep!",
-				  "You pay %1 gold pieces in upkeep!", s.upkeep), s.upkeep);
-  upkeep_stats_image->set_tooltip_text(tip);
-  upkeep_stats_label->set_tooltip_text(tip);
 }
 
 void GameWindow::on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
@@ -1992,220 +1860,6 @@ void GameWindow::on_smallmap_slid(Rectangle view)
   on_smallmap_changed(game->get_smallmap().get_surface(),
 		      Gdk::Rectangle(view.x, view.y, view.w, view.h));
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
-}
-
-void GameWindow::on_stack_info_changed(Stack *s)
-{
-  clear_army_buttons();
-
-  currently_selected_stack = s;
-
-  if (!s)
-    {
-      if (Playerlist::getActiveplayer()->getType() == Player::HUMAN)
-	show_stats();
-      else
-	show_progress();
-    }
-  else
-    {
-      if (s->getOwner()->getType() == Player::HUMAN)
-	{
-	  StackTile *stile = GameMap::getStacks(s->getPos());
-	  stile->setDefending(s->getOwner(), false);
-	  stile->setParked(s->getOwner(), false);
-	  show_stack(stile);
-	}
-      else
-	show_progress();
-    }
-  return;
-}
-
-void GameWindow::show_stats()
-{
-  Armysetlist *al = Armysetlist::getInstance();
-  int height = al->getTileSize(Playerlist::getActiveplayer()->getArmyset());
-  height += turn_label->get_height();
-  height += 50;
-  stack_info_box->get_parent()->property_height_request() = height;
-  stats_box->get_parent()->property_height_request() = height;
-  stack_info_container->hide();
-  progress_box->hide();
-  stats_box->show();
-}
-
-void GameWindow::show_progress()
-{
-  turn_progressbar->property_fraction() = 0.0;
-  if (Playerlist::getActiveplayer() == Playerlist::getInstance()->getNeutral())
-    progress_status_label->set_text("");
-  else
-    progress_status_label->set_markup("<b>" + Playerlist::getActiveplayer()->getName() + "</b>");
-  stats_box->hide();
-  stack_info_container->hide();
-  progress_box->show();
-}
-
-void GameWindow::fill_in_group_info (StackTile *stile, Stack *s)
-{
-  guint32 bonus = s->calculateMoveBonus();
-  GraphicsCache *gc = GraphicsCache::getInstance();
-  terrain_image->property_pixbuf() = gc->getMoveBonusPic(bonus, s->hasShip())->to_pixbuf();
-  if (Configuration::s_decorated == true)
-    group_moves_label->set_markup(String::ucompose("<b>%1</b>",
-						   s->getMoves()));
-  else
-    group_moves_label->set_markup(String::ucompose("%1",
-						   s->getMoves()));
-  //printf ("toggling group/ungroup!\n");
-  group_ungroup_toggle->set_sensitive(false);
-  if (stile->getFriendlyStacks(s->getOwner()).size() != 1)
-    group_ungroup_toggle->set_active(false);
-  else
-    group_ungroup_toggle->set_active(true);
-  if (group_ungroup_toggle->get_active() == true)
-    group_ungroup_toggle->set_label(_("UnGrp"));
-  else
-    group_ungroup_toggle->set_label(_("Grp"));
-  group_ungroup_toggle->set_sensitive(true);
-}
-
-void GameWindow::show_stack(StackTile *s)
-{
-  Player *p = Playerlist::getActiveplayer();
-  Gtk::RadioButton *first_radio = NULL;
-  GraphicsCache *gc = GraphicsCache::getInstance();
-  //s->sortForViewing (true);
-  stats_box->hide();
-  progress_box->hide();
-
-  army_buttons.clear(); 
-  stack_buttons.clear();
-  int width = 0;
-  int height = 0;
-  std::list<Stack *> stks;
-  stks = s->getFriendlyStacks(p);
-  unsigned int count= 0;
-  if (stack_info_button_table != NULL)
-    delete stack_info_button_table;
-  stack_info_button_table = new Gtk::Table(2, MAX_ARMIES_ON_A_SINGLE_TILE);
-	    
-  guint32 colour_id = 0;
-  if (colour_id == p->getId())
-    colour_id = Shield::get_next_shield(colour_id);
-  Stack *active = p->getActivestack();
-  for (std::list<Stack *>::iterator j = stks.begin(); j != stks.end(); j++)
-    {
-      bool first = true;
-      for (Stack::iterator i = (*j)->begin(); i != (*j)->end(); ++i)
-	{
-	  // construct a toggle button
-	  Army *army = *i;
-	  Gtk::VBox *toggle_box = manage(new Gtk::VBox);
-
-	  // image
-	  Gtk::Image *army_image = new Gtk::Image();
-	  bool greyed_out = (*j)->getId() != currently_selected_stack->getId();
-
-	  Glib::RefPtr<Gdk::Pixbuf> army_icon = 
-	    gc->getCircledArmyPic((*j)->getOwner()->getArmyset(), 
-                                  army->getTypeId(),
-                                  (*j)->getOwner(), army->getMedalBonuses(), 
-                                  greyed_out, 
-                                  *j == active ? p->getId() : colour_id, 
-                                  true)->to_pixbuf();
-	  army_image->property_pixbuf() = army_icon;
-	  width = army_icon->get_width();
-	  height = army_icon->get_height();
-	  toggle_box->add(*manage(army_image));
-	  // number of moves
-	  Glib::ustring moves_str = String::ucompose("%1", army->getMoves());
-	  toggle_box->add(*manage(new Gtk::Label(moves_str,
-						 Gtk::ALIGN_CENTER, Gtk::ALIGN_TOP)));
-
-	  // the button itself
-	  Gtk::ToggleButton *toggle = new Gtk::ToggleButton;
-	  toggle->add(*toggle_box);
-	  toggle->set_active((*j)->getId() == currently_selected_stack->getId());
-	  toggle->signal_toggled().connect
-	    (sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_toggled),
-			toggle, *j, army));
-	  toggle->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
-	  toggle->signal_button_press_event().connect
-	    (sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_button_event),
-			toggle, army), false);
-	  toggle->signal_button_release_event().connect
-	    (sigc::bind(sigc::mem_fun(*this, &GameWindow::on_army_button_event),
-			toggle, army), false);
-	  // add it
-	  if (first == true)
-	    {
-	      first = false;
-	      Gtk::RadioButton *radio;
-	      if (first_radio)
-		{
-		  Gtk::RadioButtonGroup g = first_radio->get_group();
-		  radio = new Gtk::RadioButton(g);
-		}
-	      else
-	      radio = new Gtk::RadioButton;
-	      radio->property_can_focus() = false;
-	      radio->set_active(currently_selected_stack->getId() == (*j)->getId());
-	      radio->signal_toggled().connect
-		(sigc::bind(sigc::mem_fun(*this, &GameWindow::on_stack_toggled),
-			    radio, *j));
-	      stack_info_button_table->attach(*toggle, count, count + 1, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-	      stack_info_button_table->attach(*radio, count, count + 1, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
-	      stack_buttons.push_back(radio);
-	      if (first_radio == NULL)
-		first_radio = radio;
-	    }
-	  else
-	    {
-	      stack_info_button_table->attach(*toggle, count, count + 1, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-	    }
-	  army_buttons.push_back(toggle);
-
-	  count++;
-	}
-      colour_id = Shield::get_next_shield(colour_id);
-      if (colour_id== p->getId())
-        colour_id = Shield::get_next_shield(colour_id);
-    }
-
-  for (unsigned int i = count ; i < MAX_ARMIES_ON_A_SINGLE_TILE; i++)
-    {
-      // construct a toggle button
-      Gtk::VBox *toggle_box = manage(new Gtk::VBox);
-
-      // image
-      Gtk::Image *army_image = new Gtk::Image();
-      Glib::RefPtr<Gdk::Pixbuf> empty_pic= 
-        gc->getCircledArmyPic(Playerlist::getActiveplayer()->getArmyset(), 0, 
-                              Playerlist::getActiveplayer(), NULL, false, 
-                              Shield::NEUTRAL, false)->to_pixbuf();
-      army_image->property_pixbuf() = empty_pic;
-      toggle_box->add(*manage(army_image));
-      // number of moves
-      toggle_box->add(*manage
-		      (new Gtk::Label(" ", Gtk::ALIGN_CENTER, Gtk::ALIGN_TOP)));
-
-      // the button itself
-      Gtk::ToggleButton *toggle = new Gtk::ToggleButton;
-      toggle->add(*toggle_box);
-      toggle->set_sensitive(false);
-      // clicking on this button does nothing.
-      // add it
-      //stack_info_box->pack_start(*toggle, Gtk::PACK_SHRINK);
-      stack_info_button_table->attach(*toggle, i, i + 1, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-      army_buttons.push_back(toggle);
-    }
-  stack_info_box->pack_start(*manage(stack_info_button_table), Gtk::PACK_SHRINK);
-
-  fill_in_group_info(s, currently_selected_stack);
-  //ensure_one_army_button_active(); 
-  stack_info_container->show_all();
 }
 
 void GameWindow::on_city_tip_changed(City *city, MapTipPosition mpos)
@@ -3115,7 +2769,7 @@ void GameWindow::show_shield_turn() //show turn indicator
 
 void GameWindow::on_remote_next_player_turn()
 {
-  on_stack_info_changed(NULL);
+  status_box->on_stack_info_changed(NULL);
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 
   d_quick_fights = false;
@@ -3128,7 +2782,7 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 {
   Gtk::Dialog* dialog;
 
-  on_stack_info_changed(NULL);
+  status_box->on_stack_info_changed(NULL);
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 
   d_quick_fights = false;
@@ -3307,10 +2961,10 @@ void GameWindow::on_inspect_activated ()
     return;
   Hero *hero = NULL;
   Vector<int> pos = Vector<int>(-1,-1);
-  if (currently_selected_stack != NULL)
+  if (status_box->get_currently_selected_stack() != NULL)
     {
-      hero = dynamic_cast<Hero*>(currently_selected_stack->getFirstHero());
-      pos = currently_selected_stack->getPos();
+      hero = dynamic_cast<Hero*>(status_box->get_currently_selected_stack()->getFirstHero());
+      pos = status_box->get_currently_selected_stack()->getPos();
     }
     
   HeroDialog d(hero, pos);

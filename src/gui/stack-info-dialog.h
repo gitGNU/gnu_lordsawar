@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ class StackInfoDialog: public Decorated
     Gtk::Button *ungroup_button;
     Stack *currently_selected_stack;
 
-    void addArmy (bool first, Stack *s, Army *a, guint32 modified_strength, int idx);
+    void addArmy (bool first, Stack *s, Army *a, guint32 modified_strength, int idx, guint32 colour_id);
     void addStack(Stack *s, guint32 &idx);
     void on_group_clicked();
     void on_ungroup_clicked();

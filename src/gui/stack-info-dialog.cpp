@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -108,27 +108,33 @@ void StackInfoDialog::addStack(Stack *s, guint32 &idx)
   delete target;
 
   bool first = true;
+  guint32 colour_id = 0;
+  if (colour_id == s->getOwner()->getId())
+    colour_id = Shield::get_next_shield(colour_id);
   for (Stack::iterator it = s->begin(); it != s->end(); it++)
     {
       guint32 str = fight.getModifiedStrengthBonus(*it);
-      addArmy(first, s, *it, str, idx);
+      addArmy(first, s, *it, str, idx, colour_id);
       if (first == true)
 	first = false;
       idx++;
+      colour_id = Shield::get_next_shield(colour_id);
+      if (colour_id == s->getOwner()->getId())
+        colour_id = Shield::get_next_shield(colour_id);
     }
 }
 
-void StackInfoDialog::addArmy (bool first, Stack *s, Army *h, guint32 modified_strength, int idx)
+void StackInfoDialog::addArmy (bool first, Stack *s, Army *h, guint32 modified_strength, int idx, guint32 colour_id)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   Player *player = h->getOwner();
     
-	  
   bool greyed_out = s->getId() != currently_selected_stack->getId();
   Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
   Glib::RefPtr<Gdk::Pixbuf> pixbuf= 
-    gc->getArmyPic(player->getArmyset(), h->getTypeId(), player, NULL,
-		   greyed_out)->to_pixbuf();
+    gc->getCircledArmyPic(player->getArmyset(), h->getTypeId(), player, NULL,
+                          greyed_out, !greyed_out ? player->getId() : colour_id,
+                          true)->to_pixbuf();
   
   Gtk::Image *image = NULL;
   guint32 move_bonus = h->getStat(Army::MOVE_BONUS);
@@ -224,6 +230,7 @@ void StackInfoDialog::on_ungroup_clicked()
 
 void StackInfoDialog::fill_stack_info()
 {
+      
   StackTile *stile = GameMap::getStacks(tile);
   guint32 idx = 1;
 
@@ -233,22 +240,27 @@ void StackInfoDialog::fill_stack_info()
   stack_table->foreach(sigc::mem_fun(stack_table, &Gtk::Container::remove));
   stack_table->resize(6, MAX_ARMIES_ON_A_SINGLE_TILE);
 
+  Pango::AttrList attrs;
+  Pango::Attribute weight = Pango::Attribute::create_attr_weight(Pango::WEIGHT_BOLD);
+  attrs.insert(weight);
   Gtk::Label *str = new Gtk::Label(_("Str"));
+  str->set_attributes(attrs);
   stack_table->attach(*manage(str), 3, 4, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
 
   Gtk::Label *moves = new Gtk::Label(_("Move"));
+  moves->set_attributes(attrs);
   stack_table->attach(*manage(moves), 4, 5, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
 
   Gtk::Label *bonus = new Gtk::Label(_("Bonus"));
+  bonus->set_attributes(attrs);
   stack_table->attach(*manage(bonus), 6, 7, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
 
   std::list<Stack*> stks;
   stks = stile->getFriendlyStacks(Playerlist::getActiveplayer());
-  currently_selected_stack = stks.front();
+  if (currently_selected_stack == NULL)
+    currently_selected_stack = stks.front();
   for (std::list<Stack *>::iterator i = stks.begin(); i != stks.end(); i++)
-    {
-      addStack(*i, idx);
-    }
+    addStack(*i, idx);
   stack_table->show_all();
 }
 

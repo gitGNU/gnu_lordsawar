@@ -91,6 +91,7 @@ class Game
     void move_all_stacks();
     void end_turn();
     void recalculate_moves_for_stack(Stack *s);
+    void update_sidebar_stats();
 
     void startGame(); // initiate game flow
     void loadGame();
@@ -201,7 +202,6 @@ class Game
     void center_view_on_city();
 
     void update_control_panel();
-    void update_sidebar_stats();
     void update_stack_info();	// emit stack_info_changed
     void clear_stack_info();
 

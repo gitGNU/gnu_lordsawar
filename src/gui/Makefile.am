@@ -76,7 +76,10 @@ liblwgui_la_SOURCES = \
     use-item-dialog.cpp use-item-dialog.h \
     use-item-on-player-dialog.cpp use-item-on-player-dialog.h \
     use-item-on-city-dialog.cpp use-item-on-city-dialog.h \
-    game-button-box.cpp game-button-box.h
+    game-button-box.cpp game-button-box.h \
+    status-box.cpp status-box.h \
+    stack-tile-box.cpp stack-tile-box.h \
+    stack-army-button.cpp stack-army-button.h
 
 liblwgui_la_LIBADD = @LTLIBOBJS@
 
