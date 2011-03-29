@@ -17,7 +17,7 @@
 #   02110-1301, USA.
 MAINTAINERCLEANFILES= Makefile.in
 
-##if WANT_PBM
+if WANT_PBM
 bin_PROGRAMS = lordsawar-pbm
 
 lordsawar_pbm_SOURCES =  pbm.cpp main.cpp pbm.h ${top_srcdir}/src/pbm-game-client.cpp ${top_srcdir}/src/pbm-game-client.h ${top_srcdir}/src/game-client-decoder.cpp ${top_srcdir}/src/game-client-decoder.h ${top_srcdir}/src/chat-client.cpp ${top_srcdir}/src/chat-client.h
@@ -28,7 +28,7 @@ lordsawar_pbm_LDADD = $(top_builddir)/src/liblordsawar.la $(SDL_LIBS) \
 			$(LIBSIGC_LIBS) -ltar -lz \
 			@LIBINTL@ \
 			-L$(top_builddir)/src
-##endif
+endif
 
 
 localedir = $(datadir)/locale

@@ -16,7 +16,7 @@
 #   02110-1301, USA.
 MAINTAINERCLEANFILES= Makefile.in
 
-##if WANT_GHS
+if WANT_GHS
 bin_PROGRAMS = lordsawar-game-host-server lordsawar-game-host-client
 
 lordsawar_game_host_client_SOURCES = ghs-client-main.cpp \
@@ -42,7 +42,7 @@ lordsawar_game_host_server_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS) \
                                    $(top_builddir)/src/liblordsawarnet.la \
                                    @LIBINTL@ \
                                    -L$(top_builddir)/src
-##endif
+endif
 
 
 localedir = $(datadir)/locale
