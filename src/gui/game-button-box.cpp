@@ -241,6 +241,9 @@ void GameButtonBox::setup_signals(Game *game, guint32 factor)
 {
   d_factor = factor;
   drop_connections();
+  setup_button(next_movable_button,
+               sigc::mem_fun(game, &Game::select_next_movable_stack),
+               game->can_select_next_movable_stack);
   setup_button(defend_button,
                sigc::mem_fun(game, &Game::defend_selected_stack),
                game->can_defend_selected_stack);
