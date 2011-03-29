@@ -31,6 +31,7 @@
 #include "army.h"
 #include "armysetlist.h"
 #include "GraphicsCache.h"
+#include "armyset.h"
 
 FightOrderDialog::FightOrderDialog(Player *theplayer)
 {
@@ -58,6 +59,9 @@ FightOrderDialog::FightOrderDialog(Player *theplayer)
     xml->get_widget("reverse_button", reverse_button);
     reverse_button->signal_clicked().connect
       (sigc::mem_fun (*this, &FightOrderDialog::on_reverse_button_clicked));
+    xml->get_widget("reset_button", reset_button);
+    reset_button->signal_clicked().connect
+      (sigc::mem_fun (*this, &FightOrderDialog::on_reset_button_clicked));
 }
 FightOrderDialog::~FightOrderDialog()
 {
@@ -118,5 +122,23 @@ void FightOrderDialog::on_reverse_button_clicked()
   Gtk::TreeModel::Children kids = armies_list->children();
   for (unsigned int i = 0; i < kids.size(); i++)
     new_order.push_back(kids.size() - i - 1);
+  armies_list->reorder(new_order);
+}
+
+void FightOrderDialog::on_reset_button_clicked()
+{
+  std::list<int> new_order;
+  Gtk::TreeModel::Children kids = armies_list->children();
+  for (unsigned int i = 0; i < kids.size(); i++)
+    {
+      int index = 0;
+      for (unsigned int j = 0; j < kids.size(); j++)
+        {
+          if (i == (kids[j])[armies_columns.army_type])
+            break;
+          index++;
+        }
+      new_order.push_back(index);
+    }
   armies_list->reorder(new_order);
 }

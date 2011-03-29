@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -49,6 +49,7 @@ class FightOrderDialog: public Decorated
     Player *player;
     Gtk::TreeView *armies_treeview;
     Gtk::Button *reverse_button;
+    Gtk::Button *reset_button;
 
     class ArmiesColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -64,6 +65,7 @@ class FightOrderDialog: public Decorated
  private:
     void addArmyType(guint32 army_type);
     void on_reverse_button_clicked();
+    void on_reset_button_clicked();
 };
 
 #endif
