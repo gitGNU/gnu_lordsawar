@@ -1399,12 +1399,19 @@ bool Game::maybeTreachery(Stack *stack, Player *them, Vector<int> pos)
 
 void Game::nextRound()
 {
-  if (GameServer::getInstance()->isListening())
+  if (d_gameScenario->getPlayMode() == GameScenario::NETWORKED)
     {
-      Playerlist::getInstance()->nextRound
-        (GameScenarioOptions::s_diplomacy, 
-         &GameScenarioOptions::s_surrender_already_offered);
+      if (GameServer::getInstance()->isListening())
+        {
+          Playerlist::getInstance()->nextRound
+            (GameScenarioOptions::s_diplomacy, 
+             &GameScenarioOptions::s_surrender_already_offered);
+        }
     }
+  else
+    Playerlist::getInstance()->nextRound
+      (GameScenarioOptions::s_diplomacy, 
+       &GameScenarioOptions::s_surrender_already_offered);
 }
     
 void Game::on_surrender_offered(Player *recipient)
