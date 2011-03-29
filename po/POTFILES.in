@@ -307,6 +307,7 @@ src/gui/game-lobby-dialog.cpp
 src/gui/new-network-game-download-window.cpp
 src/gui/new-network-game-dialog.cpp
 src/gui/item-report-dialog.cpp
+src/gui/stack-tile-box.cpp
 src/NamedLocation.cpp
 src/herotemplates.cpp
 src/xmlhelper.cpp
