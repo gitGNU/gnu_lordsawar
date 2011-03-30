@@ -98,7 +98,7 @@ Army units are arranged into stacks of up to eight and are moved around the map 
 </para>
 
 <para>
-Some army units are special Hero units.  Heroes sometimes emerge spontaneously in cities at the start of the player's turn.  Heroes can search ruins to obtain gold pieces or magical items, or go on special quests.  Powerful allies often accompany a hero.
+Some army units are special hero units.  Heroes sometimes emerge spontaneously in cities at the start of the player's turn.  Heroes can search ruins to obtain gold pieces or magical items, or go on special quests.  Powerful allies often accompany a hero.
 </para>
 
 <para>
@@ -119,262 +119,333 @@ The objective of the game is to conquer all of the cities on the map.  This is a
 <itemizedlist>
 <listitem>
 Temple
+<para>
+A Temple is where army units can go to get blessed, and heroes can find quests.
+</para>
 <screenshot>
 <mediaobject>
 <imageobject>
-<imagedata fileref="figures/main_screen_symbol_black_plus.png" format="PNG"/>
+<imagedata fileref="figures/main_screen_temple.png" format="PNG"/>
 </imageobject>
 </mediaobject>
 </screenshot> 
-<para>
-A Temple is where stacks can go to get blessed, and heroes can find quests.
-</para>
 </listitem>
 <listitem>
 Port
+<para>
+A Port is where army units can go on a ship, or off a ship.
+</para>
 <screenshot>
 <mediaobject>
 <imageobject>
-<imagedata fileref="figures/main_screen_symbol_black_equals.png" format="PNG"/>
+<imagedata fileref="figures/main_screen_port.png" format="PNG"/>
 </imageobject>
 </mediaobject>
 </screenshot> 
-<para>
-A Port is where army units can get on or off ships.
-</para>
 </listitem>
 <listitem>
 Selected Stack
+<para>
+Army units must be first selected (with left-click) to command them.  This stack has one army unit.
+</para>
 <screenshot> 
 <mediaobject>
 <imageobject>
-<imagedata fileref="figures/main_screen_symbol_black_minus.png" format="PNG"/>
+<imagedata fileref="figures/main_screen_selected_stack_one.png" format="PNG"/>
 </imageobject>
 </mediaobject>
 </screenshot> 
 <para>
-Army units must be first selected (with left-click) to command them.  This stack has one army unit (shown by the length of the flag).
+The length of flag shows how many army units are in the stack.  The selector box is bigger when more than one army unit is in the stack.
 </para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_selected_stack_flags.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
+<para>
+Stacks appear as a ship when they are in the water.  When  a stack is in defend mode it appears to be in a tower.  The stack size flag is not shown when the stack is in defend mode.  This means your opponent does not know the number of army units in the stack.
+</para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_stack_water_defend.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 </listitem>
 <listitem>
 City
-<screenshot> 
-<mediaobject>
-<imageobject>
-<imagedata fileref="figures/main_screen_symbol_black_pipe.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot> 
 <para>
 A City is a place that creates Army units, and provides valuable income.
+Cities can also be destroyed:
 </para>
-</listitem>
-<listitem>
-Unselected Stack
 <screenshot> 
 <mediaobject>
 <imageobject>
-<imagedata fileref="figures/main_screen_symbol_black_asterisk.png" format="PNG"/>
+<imagedata fileref="figures/main_screen_city.png" format="PNG"/>
 </imageobject>
 </mediaobject>
 </screenshot> 
 <para>
-This unselected stack has one army unit.
+When cities are destroyed (e.g. "razed"), and they do not provide income or create army units.
 </para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_city_razed.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 </listitem>
 <listitem>
 Ruin
+<para>
+A Ruin is a place a hero can go to risk life and limb for valuable rewards.
+</para>
 <screenshot> 
 <mediaobject>
 <imageobject>
-<imagedata fileref="figures/main_screen_symbol_black_hash.png" format="PNG"/>
+<imagedata fileref="figures/main_screen_ruin.png" format="PNG"/>
 </imageobject>
 </mediaobject>
 </screenshot> 
-<para>
-A Ruin is a place a Hero can go to risk life for valuable rewards.
-</para>
 </listitem>
 <listitem>
 Hills
-<screenshot> 
-<mediaobject>
-<imageobject>
-<imagedata fileref="figures/main_screen_symbol_black_caret.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot> 
 <para>
 Some army units can move swiftly through hills, although most cannot.
 </para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_hills.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 </listitem>
 <listitem>
 Mountains
-<screenshot> 
-<mediaobject>
-<imageobject>
-<imagedata fileref="figures/main_screen_symbol_black_tilde.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot> 
 <para>
 No army unit can move through mountains, they must be traversed around, or flown over.
 </para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_mountains.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 </listitem>
 <listitem>
 Forest
-<screenshot> 
-<mediaobject>
-<imageobject>
-<imagedata fileref="figures/main_screen_symbol_black_lt.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot> 
 <para>
 Some army units can move swiftly through forests, although most cannot.
 </para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_forest.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
 </listitem>
 <listitem>
 Swamp
-<screenshot> 
-<mediaobject>
-<imageobject>
-<imagedata fileref="figures/main_screen_symbol_black_gt.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot> 
 <para>
 No army units can travel swiftly through swamp, although it can be flown over by stacks that have the gift of flight.
 </para>
-</listitem>
-<listitem>
-Signpost
 <screenshot> 
 <mediaobject>
 <imageobject>
-<imagedata fileref="figures/main_screen_symbol_white_plus.png" format="PNG"/>
+<imagedata fileref="figures/main_screen_swamp.png" format="PNG"/>
 </imageobject>
 </mediaobject>
 </screenshot> 
-<para>
-Signposts contain information that the player can view by right-clicking on it.
-</para>
-</listitem>
-<listitem>
-Turn Indicator
-<screenshot> 
-<mediaobject>
-<imageobject>
-<imagedata fileref="figures/main_screen_symbol_white_equals.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot> 
-<para>
-The Turn Indicator shows what round it is, and who's turn it is.
-</para>
-</listitem>
-<listitem>
-Miniature Map
-<screenshot> 
-<mediaobject>
-<imageobject>
-<imagedata fileref="figures/main_screen_symbol_white_minus.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot> 
-<para>
-The Miniature Map is the zoomed out view of the entire map.
-</para>
-</listitem>
-<listitem>
-Zoomed-In Area
-<screenshot> 
-<mediaobject>
-<imageobject>
-<imagedata fileref="figures/main_screen_symbol_white_pipe.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot> 
-<para>
-The Zoomed-In Area denote by a white box is show on the left.
-</para>
-</listitem>
-<listitem>
-Moves Left for the Army Unit
-<screenshot> 
-<mediaobject>
-<imageobject>
-<imagedata fileref="figures/main_screen_symbol_white_asterisk.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot> 
-<para>
-This value is the number of movement points the army unit has left.
-</para>
-</listitem>
-<listitem>
-Selected Army Unit in Stack
-<screenshot> 
-<mediaobject>
-<imageobject>
-<imagedata fileref="figures/main_screen_symbol_white_hash.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot> 
-<para>
-The button appears pushed-in, meaning that this army unit is part of the stack.  Other army units may appear to the right of this unit, in their own button.  There can be up to 8 army units in a stack.
-</para>
-</listitem>
-<listitem>
-Moves Left for the Stack
-<screenshot> 
-<mediaobject>
-<imageobject>
-<imagedata fileref="figures/main_screen_symbol_white_caret.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot> 
-<para>
-This value is the number of movement points that the stack has left.
-</para>
-</listitem>
-<listitem>
-Movement Bonus
-<screenshot> 
-<mediaobject>
-<imageobject>
-<imagedata fileref="figures/main_screen_symbol_white_tilde.png" format="PNG"/>
-</imageobject>
-</mediaobject>
-</screenshot> 
-<para>
-This graphic denotes which terrain the stack can move through swiftly.  In this case the stack has the gift of flight.
-</para>
 </listitem>
 <listitem>
 Water
+<para>
+Only army units on ships can go in the water, although some army units can fly over the water.  Army units can enter the water via a bridge, port, or city.
+</para>
 <screenshot> 
 <mediaobject>
 <imageobject>
-<imagedata fileref="figures/main_screen_symbol_white_lt.png" format="PNG"/>
+<imagedata fileref="figures/main_screen_water.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
+</listitem>
+<listitem>
+Roads
+<para>
+Roads are the best way to get around.  They only cost your stack one movement point per tile.
+</para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_road.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
+</listitem>
+<listitem>
+Bridge
+<para>
+Bridges serve the purpose of spanning a river.  Bridges can also be used as a jumping off point for army units that wish to go onto a ship.
+</para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_bridge.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
+</listitem>
+<listitem>
+Signpost
+<para>
+Signposts contain information that the player can view by right-clicking on it. 
+</para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_signpost.png" format="PNG"/>
 </imageobject>
 </mediaobject>
 </screenshot> 
 <para>
-Only army units on ships can go in the water, although some army units can fly over the water.
+Signposts used more often when the game has a hidden map (e.g. the map is all-black except for where your forces have explored).
+The contents of signposts can also be modified to give false information, or simply to slander your opponent.
 </para>
 </listitem>
 <listitem>
 Bag
+<para>
+A bag holds items that are useful for heroes to carry.
+</para>
 <screenshot> 
 <mediaobject>
 <imageobject>
-<imagedata fileref="figures/main_screen_symbol_white_gt.png" format="PNG"/>
+<imagedata fileref="figures/main_screen_bag.png" format="PNG"/>
 </imageobject>
 </mediaobject>
 </screenshot> 
 <para>
-A bag holds items that heroes can use.  Upon the death of a hero, all of the hero's items are left in a bag on the ground.
+Upon the death of a hero, all of the hero's items are left in a bag on the ground.  Items usually confer a battle bonus for the hero or the stack.
+</para>
+</listitem>
+<listitem>
+Stack Tray
+<para>
+The Stack tray shows the army units on a particular tile of the map.
+Here we see a tile that has 5 light infantry units in a single stack:
+</para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_stack_tray_5_units.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
+<para>
+The three grey empty buttons with circles means that the stack can have 3 more armies join it.
+</para>
+<para>
+The first five buttons all appear to be toggled on; which means that the army unit is in the stack.  To remove an army unit from the stack, toggle it:
+</para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_stack_tray_4_units.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
+<para>
+There are now two stacks on this tile:  One with four army units in the selected stack, and the other with one army unit.  The army unit can be brought back into the stack by toggling it again.
+</para>
+<para>
+Switching the currently selected stack to the new stack containing one army unit is accomplished by clicking on the button with the red dot.
+</para>
+<para>
+To group all of the army units together in a single stack, click the "Grp" button, or simply hit the space bar.
+</para>
+</listitem>
+<listitem>
+Stack Movement Capabilities
+<para>
+The stack movement capabilities are shown to the right of the selected stack:
+</para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_stack_info.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
+<para>
+The number above the button is the movement points that the stack has left.  The stack is limited in movement points by the army units it contains.  If an army unit only has two movement points left and all other army units have more that, then the stack can still only move one square.
+</para>
+<para>
+Above the number of moves is a picture denoting what kind of tiles the stack can move efficiently on.  It can show that:
+</para>
+<para>
+the stack moves well through forest:
+</para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_move_bonus_forest.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
+<para>
+the stack moves well through hills:
+</para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_move_bonus_hills.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
+<para>
+the stack moves well through hills and forest:
+</para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_move_bonus_hills_forest.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
+<para>
+the stack is on the water:
+</para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_move_bonus_water.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
+<para>
+the stack is in the air:
+</para>
+<screenshot> 
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_stack_info.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
+<para>
+The "UnGrp" button shows that the army units on this map tile are all grouped together in a single stack.  Toggle this button to ungroup them.
+</para>
+<para>
+Whereas the stack moves as slow as it's slowest unit, the movement bonuses of a single army unit confer to all army units in the stack (except for the flying movement bonus).  This means it is often handy to have a scout unit in your stack even though it only has a strength of 1.
 </para>
 </listitem>
 </itemizedlist>
@@ -504,7 +575,7 @@ This makes it easy for the player to tell if there are new diplomatic actions to
 </screenshot>
 </figure>
 <para>
-Clicking this button causes the stack to go into defend mode.  This will put the stack into a tent for the next turn.
+Clicking this button causes the stack to go into defend mode.  This will put the stack into a tent or tower for the next turn.  The stack will not have a flag on it to show your enemies how many army units are inside.
 </para>
 </listitem>
 <listitem>
@@ -1021,7 +1092,7 @@ A list of all army units that are available for the player to purchase are shown
 After making a selection, click on the buy button to purchase the unit.  Take special care because purchasing a new unit will replace the currently selected army unit type in the city screen!
 </para>
 <para>
-Some army units are not shown in this screen because they are not purchasable at any price.  Special units like dragons or ghosts cannot be purchased, and instead must be awarded to a Hero, or already present as production in a city.
+Some army units are not shown in this screen because they are not purchasable at any price.  Special units like dragons or ghosts cannot be purchased, and instead must be awarded to a hero, or already present as production in a city.
 </para>
 </sect2>
 </sect1>
@@ -1079,7 +1150,7 @@ Vectoring is a mechanism that invisibly transports new army units from one city 
 Vectoring is limited to new units, and to cities that the player already owns.  This means that you can't vector army units that have already been created, which can sometimes be a great inconvenience.   Another limitation is that a maximum of 4 cities can be vectored to a single destination city.
 </para>
 <para>
-It is also possible to vector new units to a Hero's planted standard.  The flag in the ground acts like a mobile city.
+It is also possible to vector new units to a hero's planted standard.  The flag in the ground acts like a mobile city.
 </para>
 <para>
 To initiate vectoring of new army units, go to the city screen for the city you want to vector from, and click on the "Vector..." button.  In the vectoring screen, click on the "Vector" button and then click on the destination city on the miniature map.
@@ -1198,7 +1269,7 @@ When the army unit is fighting, all of the army units it is fighting with have o
 <listitem>
 <para>cancel hero.</para>
 <para>
-This army unit nullifies any fighting bonuses an enemy Hero brings to the battle.
+This army unit nullifies any fighting bonuses an enemy hero brings to the battle.
 </para>
 </listitem>
 <listitem>
