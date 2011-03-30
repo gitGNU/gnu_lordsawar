@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -67,8 +67,8 @@ GameOptionsDialog::~GameOptionsDialog()
 
 void GameOptionsDialog::fill_in_options()
 {
-    neutral_cities_combobox->set_active(GameParameters::AVERAGE);
-    razing_cities_combobox->set_active(GameParameters::ALWAYS);
+    neutral_cities_combobox->set_active(GameScenarioOptions::s_neutral_cities);
+    razing_cities_combobox->set_active(GameScenarioOptions::s_razing_cities);
 
     view_enemies_checkbutton->set_active(GameScenarioOptions::s_see_opponents_stacks);
     view_production_checkbutton->set_active(GameScenarioOptions::s_see_opponents_production);

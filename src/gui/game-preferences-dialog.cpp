@@ -117,6 +117,23 @@ void GamePreferencesDialog::init(std::string filename)
   start_game_button->property_can_focus() = true;
   start_game_button->property_has_focus() = true;
   start_game_button->receives_default();
+      
+  //load the game options from the config file.
+  GameScenarioOptions::s_see_opponents_stacks = 
+    Configuration::s_see_opponents_stacks;
+  GameScenarioOptions::s_see_opponents_production = 
+    Configuration::s_see_opponents_production;
+  GameScenarioOptions::s_play_with_quests = Configuration::s_play_with_quests;
+  GameScenarioOptions::s_hidden_map = Configuration::s_hidden_map;
+  GameScenarioOptions::s_neutral_cities = Configuration::s_neutral_cities;
+  GameScenarioOptions::s_razing_cities = Configuration::s_razing_cities;
+  GameScenarioOptions::s_diplomacy = Configuration::s_diplomacy ;
+  GameScenarioOptions::s_random_turns = Configuration::s_random_turns;
+  GameScenarioOptions::s_cusp_of_war = Configuration::s_cusp_of_war;
+  GameScenarioOptions::s_intense_combat = Configuration::s_intense_combat;
+  GameScenarioOptions::s_military_advisor = Configuration::s_military_advisor;
+  update_difficulty_rating();
+  update_difficulty_combobox();
   return;
 }
 
@@ -502,7 +519,7 @@ bool GamePreferencesDialog::is_greatest()
 	  GameScenarioOptions::s_play_with_quests == 
           GameParameters::ONE_QUEST_PER_PLAYER &&
 	  GameScenarioOptions::s_hidden_map == true &&
-	  GameScenarioOptions::s_neutral_cities == GameParameters::ACTIVE &&
+	  GameScenarioOptions::s_neutral_cities == GameParameters::DEFENSIVE&&
 	  GameScenarioOptions::s_razing_cities == GameParameters::NEVER &&
 	  GameScenarioOptions::s_diplomacy == true &&
 	  GameScenarioOptions::s_cusp_of_war == true);
