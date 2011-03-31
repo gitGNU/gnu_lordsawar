@@ -215,9 +215,11 @@ void StackTileBox::show_stack(StackTile *s)
               stack = *j;
             }
 
+          bool toggled = (*j) == currently_selected_stack;
           StackArmyButton *button = 
-            StackArmyButton::create(d_factor, stack, *i, Shield::NEUTRAL,
-                                    (*j) == currently_selected_stack);
+            StackArmyButton::create(d_factor, stack, *i, 
+                                    toggled ? p->getId() : colour_id, 
+                                    toggled);
           if (stack)
             button->update_stack_button((*j) == currently_selected_stack);
           Gtk::VBox *box = new Gtk::VBox();
@@ -243,7 +245,7 @@ void StackTileBox::show_stack(StackTile *s)
   for (unsigned int i = count ; i < MAX_ARMIES_ON_A_SINGLE_TILE; i++)
     {
       StackArmyButton *button = StackArmyButton::create(d_factor, NULL, NULL,
-                                                        colour_id, false);
+                                                        Shield::NEUTRAL, false);
       Gtk::VBox *box = new Gtk::VBox();
       button->get_parent()->remove(*button);
       box->pack_start(*Gtk::manage(button), Gtk::PACK_SHRINK);
