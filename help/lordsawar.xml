@@ -120,7 +120,7 @@ The objective of the game is to conquer all of the cities on the map.  This is a
 <listitem>
 Unselected Army
 <para>
-Armies are units that move around the map.  Armies can be "stacked", up to 8 army units on a single tile.  This army unit belongs to the red player:
+Armies are units that move around the map.  This army unit belongs to the red player:
 </para>
 <screenshot>
 <mediaobject>
