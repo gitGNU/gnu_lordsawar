@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -152,6 +152,7 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
       Gtk::Image *im3 = new Gtk::Image();
       im3->property_pixbuf() = 
 	gc->getDiplomacyPic(1, Player::AT_PEACE)->to_pixbuf();
+      radio1->set_tooltip_text(_("Propose peace"));
       radio1->add(*manage(im3));
       radio1->set_mode(false);
       Gtk::RadioButtonGroup group = radio1->get_group();
@@ -172,6 +173,7 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
       Gtk::Image *im4 = new Gtk::Image();
       im4->property_pixbuf() = 
 	gc->getDiplomacyPic(1, Player::AT_WAR_IN_FIELD)->to_pixbuf();
+      radio2->set_tooltip_text(_("Propose war on armies not in cities"));
       radio2->add(*manage(im4));
       radio2->set_mode(false);
       radio2->set_group(group);
@@ -192,6 +194,7 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
       Gtk::Image *im5 = new Gtk::Image();
       im5->property_pixbuf() = 
 	gc->getDiplomacyPic(1, Player::AT_WAR)->to_pixbuf();
+      radio3->set_tooltip_text(_("Propose war"));
       radio3->add(*manage(im5));
       radio3->set_mode(false);
       radio3->set_group(group);
