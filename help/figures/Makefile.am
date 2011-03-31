@@ -33,23 +33,28 @@ noinst_DATA = city_window.png conquer_city.png buy_production.png \
 	      mousecursor_boat.png \
 	      mousecursor_goto.png \
 	      mousecursor_rook.png \
-	      main_screen_symbol_black_asterisk.png \
-	      main_screen_symbol_black_caret.png \
-	      main_screen_symbol_black_equals.png \
-	      main_screen_symbol_black_gt.png \
-	      main_screen_symbol_black_hash.png \
-	      main_screen_symbol_black_lt.png \
-	      main_screen_symbol_black_minus.png \
-	      main_screen_symbol_black_pipe.png \
-	      main_screen_symbol_black_plus.png \
-	      main_screen_symbol_black_tilde.png \
-	      main_screen_symbol_white_asterisk.png \
-	      main_screen_symbol_white_caret.png \
-	      main_screen_symbol_white_equals.png \
-	      main_screen_symbol_white_gt.png \
-	      main_screen_symbol_white_hash.png \
-	      main_screen_symbol_white_lt.png \
-	      main_screen_symbol_white_minus.png \
-	      main_screen_symbol_white_pipe.png \
-	      main_screen_symbol_white_plus.png \
-	      main_screen_symbol_white_tilde.png
+	      main_screen_bag.png \
+	      main_screen_bridge.png \
+	      main_screen_city.png \
+	      main_screen_city_razed.png \
+	      main_screen_forest.png \
+	      main_screen_hills.png \
+	      main_screen_mountains.png \
+	      main_screen_move_bonus_flying.png \
+	      main_screen_move_bonus_forest.png \
+	      main_screen_move_bonus_hills_forest.png \
+	      main_screen_move_bonus_hills.png \
+	      main_screen_move_bonus_water.png \
+	      main_screen_port.png \
+	      main_screen_road.png \
+	      main_screen_ruin.png \
+	      main_screen_selected_stack_flags.png \
+	      main_screen_selected_stack_one.png \
+	      main_screen_signpost.png \
+	      main_screen_stack_info.png \
+	      main_screen_stack_tray_4_units.png \
+	      main_screen_stack_tray_5_units.png \
+	      main_screen_stack_water_defend.png \
+	      main_screen_swamp.png \
+	      main_screen_temple.png \
+	      main_screen_water.png
