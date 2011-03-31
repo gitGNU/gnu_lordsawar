@@ -8,7 +8,6 @@
     <property name="resizable">False</property>
     <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox">
         <property name="visible">True</property>
@@ -44,7 +43,6 @@
                     <property name="n_columns">7</property>
                     <property name="column_spacing">3</property>
                     <property name="row_spacing">3</property>
-                    <property name="homogeneous">True</property>
                     <child>
                       <placeholder/>
                     </child>
