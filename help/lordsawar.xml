@@ -118,9 +118,26 @@ The objective of the game is to conquer all of the cities on the map.  This is a
 <para>
 <itemizedlist>
 <listitem>
+Unselected Army
+<para>
+Armies are units that move around the map.  Armies can be "stacked", up to 8 army units on a single tile.  This army unit belongs to the red player:
+</para>
+<screenshot>
+<mediaobject>
+<imageobject>
+<imagedata fileref="figures/main_screen_unselected_stack.png" format="PNG"/>
+</imageobject>
+</mediaobject>
+</screenshot> 
+<para>
+This army unit is a "hero" army unit, which can carry items and go on quests.
+</para>
+
+</listitem>
+<listitem>
 Temple
 <para>
-A Temple is where army units can go to get blessed, and heroes can find quests.
+A temple is where army units can go to get blessed, and heroes can find quests.
 </para>
 <screenshot>
 <mediaobject>
@@ -133,7 +150,7 @@ A Temple is where army units can go to get blessed, and heroes can find quests.
 <listitem>
 Port
 <para>
-A Port is where army units can go on a ship, or off a ship.
+A port is where army units can go on a ship, or off a ship.
 </para>
 <screenshot>
 <mediaobject>
@@ -179,7 +196,7 @@ Stacks appear as a ship when they are in the water.  When  a stack is in defend 
 <listitem>
 City
 <para>
-A City is a place that creates Army units, and provides valuable income.
+A city is a place that creates army units, and provides valuable income.
 Cities can also be destroyed:
 </para>
 <screenshot> 
@@ -203,7 +220,7 @@ When cities are destroyed (e.g. "razed"), and they do not provide income or crea
 <listitem>
 Ruin
 <para>
-A Ruin is a place a hero can go to risk life and limb for valuable rewards.
+A ruin is a place a hero can go to risk life and limb for valuable rewards.
 </para>
 <screenshot> 
 <mediaobject>
@@ -340,7 +357,7 @@ Upon the death of a hero, all of the hero's items are left in a bag on the groun
 <listitem>
 Stack Tray
 <para>
-The Stack tray shows the army units on a particular tile of the map.
+The stack tray shows the army units on a particular tile of the map.
 Here we see a tile that has 5 light infantry units in a single stack:
 </para>
 <screenshot> 
@@ -392,7 +409,7 @@ The number above the button is the movement points that the stack has left.  The
 Above the number of moves is a picture denoting what kind of tiles the stack can move efficiently on.  It can show that:
 </para>
 <para>
-the stack moves well through forest:
+...the stack moves well through forest:
 </para>
 <screenshot> 
 <mediaobject>
@@ -402,7 +419,7 @@ the stack moves well through forest:
 </mediaobject>
 </screenshot> 
 <para>
-the stack moves well through hills:
+...the stack moves well through hills:
 </para>
 <screenshot> 
 <mediaobject>
@@ -412,7 +429,7 @@ the stack moves well through hills:
 </mediaobject>
 </screenshot> 
 <para>
-the stack moves well through hills and forest:
+...the stack moves well through hills and forest:
 </para>
 <screenshot> 
 <mediaobject>
@@ -422,7 +439,7 @@ the stack moves well through hills and forest:
 </mediaobject>
 </screenshot> 
 <para>
-the stack is on the water:
+...the stack is on the water:
 </para>
 <screenshot> 
 <mediaobject>
@@ -432,7 +449,7 @@ the stack is on the water:
 </mediaobject>
 </screenshot> 
 <para>
-the stack is in the air:
+...the stack is in the air:
 </para>
 <screenshot> 
 <mediaobject>
@@ -442,7 +459,7 @@ the stack is in the air:
 </mediaobject>
 </screenshot> 
 <para>
-The "UnGrp" button shows that the army units on this map tile are all grouped together in a single stack.  Toggle this button to ungroup them.
+The "UnGrp" button shows that the army units on this map tile are all grouped together in a single stack.  Toggle this button to ungroup them all.
 </para>
 <para>
 Whereas the stack moves as slow as it's slowest unit, the movement bonuses of a single army unit confer to all army units in the stack (except for the flying movement bonus).  This means it is often handy to have a scout unit in your stack even though it only has a strength of 1.
@@ -467,7 +484,7 @@ Below the mini-map, there are a set of buttons that allow the player to control 
 </para>
 
 <para>
-&app; games can contain a large number of stacks, and it's easy to forget about a stack.  These buttons help the player manage large numbers of stacks.
+&app; games can contain a large number of stacks, and it's easy to forget about the location of a particular stack.  These buttons help the player manage large numbers of stacks.
 Here is what each of the buttons do:
 <itemizedlist>
 <listitem>

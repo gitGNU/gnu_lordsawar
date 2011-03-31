@@ -57,4 +57,5 @@ noinst_DATA = city_window.png conquer_city.png buy_production.png \
 	      main_screen_stack_water_defend.png \
 	      main_screen_swamp.png \
 	      main_screen_temple.png \
-	      main_screen_water.png
+	      main_screen_water.png \
+	      main_screen_unselected_stack.png
