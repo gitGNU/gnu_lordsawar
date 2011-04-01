@@ -70,6 +70,11 @@ PixMask::PixMask(const PixMask&p)
 PixMask::PixMask(std::string filename, bool &broken)
      : width(0), height(0)
 {
+  if (Gtk::Main::instance() == NULL)
+    {
+      broken = true;
+      return;
+    }
   Glib::RefPtr<Gdk::Pixbuf> pixbuf;
   try
     {

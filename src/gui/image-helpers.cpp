@@ -37,7 +37,10 @@ disassemble_row(const std::string &file, int no, bool &broken)
   Glib::RefPtr<Gdk::Pixbuf> row;
   try
     {
-      row = Gdk::Pixbuf::create_from_file(file);
+      if(Gtk::Main::instance())
+        row = Gdk::Pixbuf::create_from_file(file);
+      else
+        broken = true;
     }
   catch (const Glib::Exception &ex)
     {
