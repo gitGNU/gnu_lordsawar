@@ -582,7 +582,7 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
       int attacker_roll = rand() % sides;
       int defender_roll = rand() % sides;
 
-      if (attacker_roll <= attacker->terrain_strength &&
+      if (attacker_roll < attacker->terrain_strength &&
 	  defender_roll > defender->terrain_strength)
 	{
 	  //hit defender
@@ -596,7 +596,7 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 	  item.id = d->getId();
 	  misses_in_a_row = 0;
 	}
-      else if (defender_roll <= defender->terrain_strength &&
+      else if (defender_roll < defender->terrain_strength &&
 	       attacker_roll > attacker->terrain_strength)
 	{
 	  //hit attacker
@@ -674,6 +674,24 @@ guint32 Fight::getModifiedStrengthBonus(Army *a)
       return (*it)->terrain_strength;
   return 0;
 }
+
+void Fight::setModifiedStrengthBonus(Army *a, guint32 str)
+{
+  std::list<Fighter*>::iterator it;
+  for (it = d_att_close.begin(); it != d_att_close.end(); it++)
+    if ((*it)->army == a)
+      {
+        (*it)->terrain_strength = str;
+        return;
+      }
+  for (it = d_def_close.begin(); it != d_def_close.end(); it++)
+    if ((*it)->army == a)
+      {
+        (*it)->terrain_strength = str;
+        return;
+      }
+}
+
 
 void Fight::fillInInitialHPs()
 {

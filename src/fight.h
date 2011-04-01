@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 Bryan Duff
 // Copyright (C) 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2011 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -137,6 +137,8 @@ class Fight
         
 	//! Get the modified strength bonus of the given Army unit.
 	guint32 getModifiedStrengthBonus(Army *a);
+
+        void setModifiedStrengthBonus(Army *a, guint32 str);
 
         // CONSTANTS
         //! The number of rounds the fight lasts.
