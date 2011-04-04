@@ -311,7 +311,7 @@ void Fight::calculateTerrainModifiers(std::list<Fighter*> fighters)
   GameMap *gm = GameMap::getInstance();
   Maptile *mtile;
   std::list<Fighter*>::iterator fit;
-  for (fit = d_att_close.begin(); fit != d_att_close.end(); fit++)
+  for (fit = fighters.begin(); fit != fighters.end(); fit++)
     {
       if ((*fit)->army->getStat(Army::SHIP))
 	continue;

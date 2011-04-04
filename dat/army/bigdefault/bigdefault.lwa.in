@@ -626,7 +626,7 @@
 		<d_awardable>true</d_awardable>
 		<d_defends_ruins>true</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
-		<d_army_bonus> ArmyBase::ADD1STACK ArmyBase::SUBALLHEROBONUS</d_army_bonus>
+		<d_army_bonus> ArmyBase::ADD1STACK ArmyBase::SUBALLNONHEROBONUS</d_army_bonus>
 		<d_max_moves>16</d_max_moves>
 		<d_gender>Hero::NONE</d_gender>
 		<d_strength>8</d_strength>
@@ -678,7 +678,7 @@
 		<d_awardable>true</d_awardable>
 		<d_defends_ruins>true</d_defends_ruins>
 		<d_move_bonus> Tile::WATER Tile::FOREST Tile::HILLS Tile::MOUNTAIN Tile::SWAMP</d_move_bonus>
-		<d_army_bonus> ArmyBase::ADD1STACK ArmyBase::FORTIFY</d_army_bonus>
+		<d_army_bonus> ArmyBase::ADD1STACK ArmyBase::SUBALLHEROBONUS</d_army_bonus>
 		<d_max_moves>16</d_max_moves>
 		<d_gender>Hero::NONE</d_gender>
 		<d_strength>8</d_strength>
@@ -704,7 +704,7 @@
 		<d_awardable>true</d_awardable>
 		<d_defends_ruins>true</d_defends_ruins>
 		<d_move_bonus> Tile::WATER Tile::FOREST Tile::HILLS Tile::MOUNTAIN Tile::SWAMP</d_move_bonus>
-		<d_army_bonus> ArmyBase::SUBALLNONHEROBONUS</d_army_bonus>
+		<d_army_bonus> ArmyBase::ADD2STACK</d_army_bonus>
 		<d_max_moves>22</d_max_moves>
 		<d_gender>Hero::NONE</d_gender>
 		<d_strength>9</d_strength>
@@ -730,7 +730,7 @@
 		<d_awardable>false</d_awardable>
 		<d_defends_ruins>false</d_defends_ruins>
 		<d_move_bonus></d_move_bonus>
-		<d_army_bonus> ArmyBase::ADD1STRINFOREST</d_army_bonus>
+		<d_army_bonus></d_army_bonus>
 		<d_max_moves>14</d_max_moves>
 		<d_gender>Hero::MALE</d_gender>
 		<d_strength>5</d_strength>

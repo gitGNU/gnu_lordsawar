@@ -266,12 +266,10 @@ ArmyBase::Bonus ArmyBase::bonusFlagFromString(const std::string str)
     return ArmyBase::ADD1STACKINHILLS;
   else if (str == "ArmyBase::SUBALLCITYBONUS")
     return ArmyBase::SUBALLCITYBONUS;
-  else if (str == "ArmyBase::ADD2GOLDPERCITY")
-    return ArmyBase::SUB1ENEMYSTACK;
   else if (str == "ArmyBase::SUB1ENEMYSTACK")
-    return ArmyBase::ADD1STACK;
+    return ArmyBase::SUB1ENEMYSTACK;
   else if (str == "ArmyBase::ADD1STACK")
-    return ArmyBase::ADD2STACK;
+    return ArmyBase::ADD1STACK;
   else if (str == "ArmyBase::ADD2STACK")
     return ArmyBase::ADD2STACK;
   else if (str == "ArmyBase::SUBALLNONHEROBONUS")
