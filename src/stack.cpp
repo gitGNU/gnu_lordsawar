@@ -299,6 +299,8 @@ void Stack::incrementMoves(guint32 moves)
 // Purpose: Return the strongest army of a group
 // Note: If a hero is present return it. If there are two similar armies
 // (two of the same strength, or two heroes) return the first in the sequence.
+// heroes in boats must be considered to be less strong than heroes who are
+// not in boats.
 
 Army* Stack::getStrongestArmy() const
 {
@@ -308,7 +310,35 @@ Army* Stack::getStrongestArmy() const
 
 Army* Stack::getStrongestHero() const
 {
-  return getStrongestArmy(true);
+  Army *strongest = 0;
+  guint32 highest_strength = 0;
+  bool water = 
+    GameMap::getInstance()->getTile(getPos())->getType() == Tile::WATER;
+  for (const_iterator it = begin(); it != end(); ++it)
+    {
+      if ((*it)->isHero())
+        {
+          if (!water)
+            {
+              if ((*it)->getStat(Army::STRENGTH) > highest_strength)
+
+                {
+                  highest_strength = (*it)->getStat(Army::STRENGTH);
+                  strongest = *it;
+                }
+            }
+          else
+            {
+              if ((*it)->getStat(Army::SHIP) &&
+                  (*it)->getStat(Army::BOAT_STRENGTH) > highest_strength)
+                {
+                  highest_strength = (*it)->getStat(Army::STRENGTH);
+                  strongest = *it;
+                }
+            }
+        }
+    }
+  return strongest;
 }
 
 Army* Stack::getStrongestArmy(bool hero) const

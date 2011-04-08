@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2011 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -211,6 +211,8 @@ void Army::setStat(Army::Stat stat, guint32 value)
 			break;
     case SHIP:          value == 0 ? d_ship = false : d_ship = true;
 			break;
+    case BOAT_STRENGTH:
+                        break;
     }
 }
 
@@ -239,6 +241,18 @@ guint32 Army::getStat(Stat stat, bool modified) const
       return d_ship;
     case MOVES_MULTIPLIER:
       return d_max_moves_multiplier;
+    case BOAT_STRENGTH:
+        {
+          if (d_ship)
+            {
+              if (d_strength >= MAX_BOAT_STRENGTH)
+                return MAX_BOAT_STRENGTH;
+              else
+                return d_strength;
+            }
+          else
+            return d_strength;
+        }
     }
 
   // should never come to this

@@ -298,8 +298,8 @@ void Fight::calculateBaseStrength(std::list<Fighter*> fighters)
   std::list<Fighter*>::iterator fit;
   for (fit = fighters.begin(); fit != fighters.end(); fit++)
     {
-      if ((*fit)->army->getStat(Army::SHIP) && (*fit)->army->getStat(Army::STRENGTH) >= MAX_BOAT_STRENGTH)
-	(*fit)->terrain_strength = MAX_BOAT_STRENGTH;
+      if ((*fit)->army->getStat(Army::SHIP))
+	(*fit)->terrain_strength = (*fit)->army->getStat(Army::BOAT_STRENGTH);
       else
 	(*fit)->terrain_strength = (*fit)->army->getStat(Army::STRENGTH);
     }
@@ -361,6 +361,8 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
       guint32 non_hero_bonus = 0;
       if ((*fit)->army->isHero())
 	continue;
+      if ((*fit)->army->getStat(Army::SHIP))
+        continue;
       mtile = gm->getTile((*fit)->pos);
       army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
 
@@ -456,6 +458,8 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
       // does the attacker cancel our city bonus?
       for (fit = enemy.begin(); fit != enemy.end(); fit++)
 	{
+          if ((*fit)->army->getStat(Army::SHIP))
+            continue;
 	  army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
 	  if (army_bonus & Army::SUBALLCITYBONUS)
 	    {
@@ -474,6 +478,8 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
   //add it to the terrain strength of each unit
   for (fit = friendly.begin(); fit != friendly.end(); fit++)
     {
+      if ((*fit)->army->getStat(Army::SHIP))
+        continue;
       (*fit)->terrain_strength += total_bonus;
     }
 }
@@ -485,17 +491,17 @@ void Fight::calculateFinalStrengths (std::list<Fighter*> friendly, std::list<Fig
   std::list<Fighter*>::iterator ffit;
   for (efit = enemy.begin(); efit != enemy.end(); efit++)
     {
-      if ((*efit)->army->getStat(Army::SHIP))
-	continue;
       army_bonus = (*efit)->army->getStat(Army::ARMY_BONUS);
       if (army_bonus & Army::SUB1ENEMYSTACK)
 	{
 	  for (ffit = friendly.begin(); ffit != friendly.end(); ffit++)
-	    {
-	      (*ffit)->terrain_strength -= 1;
-	      if ((*ffit)->terrain_strength <= 0)
-		(*ffit)->terrain_strength = 1;
-	    }
+            {
+              if ((*ffit)->army->getStat(Army::SHIP))
+                continue;
+              (*ffit)->terrain_strength -= 1;
+              if ((*ffit)->terrain_strength <= 0)
+                (*ffit)->terrain_strength = 1;
+            }
 	  break;
 	}
     }
