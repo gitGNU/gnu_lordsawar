@@ -298,8 +298,8 @@ void Fight::calculateBaseStrength(std::list<Fighter*> fighters)
   std::list<Fighter*>::iterator fit;
   for (fit = fighters.begin(); fit != fighters.end(); fit++)
     {
-      if ((*fit)->army->getStat(Army::SHIP))
-	(*fit)->terrain_strength = 4;
+      if ((*fit)->army->getStat(Army::SHIP) && (*fit)->army->getStat(Army::STRENGTH) >= MAX_BOAT_STRENGTH)
+	(*fit)->terrain_strength = MAX_BOAT_STRENGTH;
       else
 	(*fit)->terrain_strength = (*fit)->army->getStat(Army::STRENGTH);
     }
@@ -560,9 +560,9 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
   debug("Army " << a->getId() << " attacks " << d->getId())
 
     if (d_intense_combat == true)
-      sides = 24;
+      sides = BATTLE_DICE_SIDES_INTENSE;
     else
-      sides = 20;
+      sides = BATTLE_DICE_SIDES_NORMAL;
 
   // factor used for some calculation regarding gaining medals
   double xp_factor = a->getXpReward() / d->getXpReward();

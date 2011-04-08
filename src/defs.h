@@ -97,6 +97,9 @@ const unsigned int NUM_BACKGROUND_IMAGES = 2;
 
 const int MAX_GOLD_TO_CARRY_OVER_TO_NEXT_SCENARIO = 5000;
 const unsigned int MAX_ARMY_STRENGTH = 9;
+const unsigned int MAX_BOAT_STRENGTH = 4;
+const unsigned int BATTLE_DICE_SIDES_INTENSE = 24;
+const unsigned int BATTLE_DICE_SIDES_NORMAL = 20;
 
 const unsigned short LORDSAWAR_PORT = 14998;
 const unsigned short LORDSAWAR_GAMELIST_PORT = 18998;
