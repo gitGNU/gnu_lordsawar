@@ -314,6 +314,8 @@ Army* Stack::getStrongestHero() const
   guint32 highest_strength = 0;
   bool water = 
     GameMap::getInstance()->getTile(getPos())->getType() == Tile::WATER;
+  if (GameMap::getBridge(getPos()))
+    water = false;
   for (const_iterator it = begin(); it != end(); ++it)
     {
       if ((*it)->isHero())
