@@ -305,7 +305,7 @@ void Fight::calculateBaseStrength(std::list<Fighter*> fighters)
     }
 }
 
-void Fight::calculateTerrainModifiers(std::list<Fighter*> fighters)
+void Fight::calculateTerrainModifiers(std::list<Fighter*> fighters, bool tower)
 { 
   guint32 army_bonus;
   GameMap *gm = GameMap::getInstance();
@@ -319,23 +319,24 @@ void Fight::calculateTerrainModifiers(std::list<Fighter*> fighters)
       mtile = gm->getTile((*fit)->pos);
       army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
 
-      if (army_bonus & Army::ADD1STRINOPEN && mtile->isOpenTerrain())
+      if (army_bonus & Army::ADD1STRINOPEN && mtile->isOpenTerrain() && !tower)
 	(*fit)->terrain_strength += 1;
 
       if (army_bonus & Army::ADD1STRINFOREST && 
-	  mtile->getType() == Tile::FOREST && !mtile->isCityTerrain())
+	  mtile->getType() == Tile::FOREST && !mtile->isCityTerrain() && !tower)
 	(*fit)->terrain_strength += 1;
 
-      if (army_bonus & Army::ADD1STRINHILLS && mtile->isHillyTerrain())
+      if (army_bonus & Army::ADD1STRINHILLS && mtile->isHillyTerrain() && 
+          !tower)
 	(*fit)->terrain_strength += 1;
 
-      if (army_bonus & Army::ADD1STRINCITY && mtile->isCityTerrain())
+      if (army_bonus & Army::ADD1STRINCITY && (mtile->isCityTerrain() || tower))
 	(*fit)->terrain_strength += 1;
 
-      if (army_bonus & Army::ADD2STRINCITY && mtile->isCityTerrain())
+      if (army_bonus & Army::ADD2STRINCITY && (mtile->isCityTerrain() || tower))
 	(*fit)->terrain_strength += 2;
 
-      if (army_bonus & Army::ADD2STRINOPEN && mtile->isOpenTerrain())
+      if (army_bonus & Army::ADD2STRINOPEN && mtile->isOpenTerrain() && !tower)
 	(*fit)->terrain_strength += 2;
 
       if ((*fit)->terrain_strength > 9) //terrain strength can't ever exceed 9
@@ -423,16 +424,6 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
     }
 
   guint32 fortify_bonus = 0;
-  for (fit = friendly.begin(); fit != friendly.end(); fit++)
-    {
-      army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
-      if (army_bonus & Army::FORTIFY)
-	{
-	  fortify_bonus = 1;
-	  break;
-	}
-    }
-
   guint32 city_bonus = 0;
   if (friendlyIsDefending)
     {
@@ -441,32 +432,45 @@ void Fight::calculateModifiedStrengths (std::list<Fighter*>friendly,
       mtile = gm->getTile((*fit)->pos);
       City *c = Citylist::getInstance()->getNearestCity((*fit)->pos);
       if (c && mtile->getBuilding() == Maptile::CITY)
-	{
-	  if (c->isBurnt()) 
-	    city_bonus = 0;
-	  else
-	    city_bonus = c->getDefenseLevel() - 1;
-	}
+        {
+          if (c->isBurnt()) 
+            city_bonus = 0;
+          else
+            city_bonus = c->getDefenseLevel() - 1;
+        }
       else
-	{
-	  if (mtile->getBuilding() == Maptile::TEMPLE)
-	    city_bonus = 2;
-	  else if (mtile->getBuilding() == Maptile::RUIN)
-	    city_bonus = 2;
-	}
+        {
+          if (mtile->getBuilding() == Maptile::TEMPLE)
+            city_bonus = 2;
+          else if (mtile->getBuilding() == Maptile::RUIN)
+            city_bonus = 2;
+          else if (mtile->isCityTerrain() == false)
+            {
+              for (fit = friendly.begin(); fit != friendly.end(); fit++)
+                {
+                  army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
+                  if (army_bonus & Army::FORTIFY)
+                    {
+                      fortify_bonus = 1;
+                      break;
+                    }
+                }
+            }
+        }
 
       // does the attacker cancel our city bonus?
       for (fit = enemy.begin(); fit != enemy.end(); fit++)
-	{
+        {
           if ((*fit)->army->getStat(Army::SHIP))
             continue;
-	  army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
-	  if (army_bonus & Army::SUBALLCITYBONUS)
-	    {
-	      city_bonus = 0; //yep
-	      break;
-	    }
-	}
+          army_bonus = (*fit)->army->getStat(Army::ARMY_BONUS);
+          if (army_bonus & Army::SUBALLCITYBONUS)
+            {
+              city_bonus = 0; //yep
+              fortify_bonus = 0;
+              break;
+            }
+        }
     }
 
   guint32 total_bonus = highest_non_hero_bonus + hero_bonus + fortify_bonus + 
@@ -523,8 +527,12 @@ void Fight::calculateBonus()
   // now determine the terrain strength by adding the terrain modifiers 
   // to the base strength
   // naval units always have a strength of 4
-  calculateTerrainModifiers (d_att_close);
-  calculateTerrainModifiers (d_def_close);
+  bool tower = false;
+  if (d_def_close.size())
+    tower = 
+      d_def_close.front()->army->getStat(Army::ARMY_BONUS) & Army::FORTIFY;
+  calculateTerrainModifiers (d_att_close, tower);
+  calculateTerrainModifiers (d_def_close, tower);
 
   //calculate hero, non-hero, city, and fortify bonuses
   it = d_attackers.begin();

@@ -172,7 +172,7 @@ class Fight
         void calculateBaseStrength(std::list<Fighter*> fighters);
 
 	//! Add the bonuses provided by terrain.
-        void calculateTerrainModifiers(std::list<Fighter*> fighters);
+        void calculateTerrainModifiers(std::list<Fighter*> fighters, bool defenders_in_tower);
 
 	//! Add the bonuses by opponents.
         void calculateModifiedStrengths (std::list<Fighter*>friendly, 
