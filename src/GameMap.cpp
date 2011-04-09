@@ -2501,3 +2501,16 @@ void GameMap::addArmies(const ArmyProto *a, guint32 num_allies, Vector<int> pos)
         addArmy(pos, army);
     }
 }
+      
+//we can't defend on cities, ruins, temples, ports, or water.
+bool GameMap::can_defend(Stack *stack)
+{
+  Tile::Type type = getInstance()->getTile(stack->getPos())->getType();
+  Maptile::Building building = getInstance()->getBuilding(stack->getPos());
+  if (type == Tile::WATER && building == Maptile::NONE)
+    return false;
+  if (building == Maptile::CITY || building == Maptile::RUIN ||
+      building == Maptile::TEMPLE || building == Maptile::PORT)
+    return false;
+  return true;
+}

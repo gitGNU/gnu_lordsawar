@@ -1033,7 +1033,6 @@ void Game::update_control_panel()
 
   Stack *stack = player->getActivestack();
 
-  can_defend_selected_stack.emit(stack != 0);
   can_park_selected_stack.emit(stack != 0);
   can_deselect_selected_stack.emit(stack != 0);
   can_center_selected_stack.emit(stack != 0);
@@ -1060,6 +1059,8 @@ void Game::update_control_panel()
 
       can_disband_stack.emit(true);
       can_group_ungroup_selected_stack.emit(true);
+      //we can't defend on cities, ruins, temples, ports, or water.
+      can_defend_selected_stack.emit(GameMap::can_defend(stack));
     }
   else
     {
@@ -1069,6 +1070,7 @@ void Game::update_control_panel()
       can_group_ungroup_selected_stack.emit(false);
       can_plant_standard_selected_stack.emit(false);
       can_search_selected_stack.emit(false);
+      can_defend_selected_stack.emit(false);
     }
       
   if (d_gameScenario->getRound() > 1)

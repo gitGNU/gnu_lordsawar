@@ -171,6 +171,7 @@ class GameMap: public sigc::trackable
 	static MapBackpack *getBackpack(Vector<int> pos);
         static bool can_search(Stack *stack);
         static bool can_plant_flag(Stack *stack);
+        static bool can_defend(Stack *stack);
         std::list<MapBackpack*> getBackpacks() const;
 
         //! Get the tile object at position (x,y)
