@@ -124,6 +124,9 @@ bool Maptile::isOpenTerrain()
 {
   if (isCityTerrain())
     return false;
+  if ((getType() == Tile::HILLS || getType() == Tile::FOREST ||
+      getType() == Tile::MOUNTAIN) && getBuilding() == Maptile::NONE)
+    return false;
   /* swamp and water are open terrain too */
   if ((getType() == Tile::GRASS || getType() == Tile::SWAMP ||
        getType() == Tile::WATER) || getBuilding() != Maptile::BRIDGE)
