@@ -562,7 +562,6 @@ void Fight::calculateBonus()
 
 void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 {
-  static int misses_in_a_row;
   guint32 sides = 0;
 
   if (!attacker || !defender)
@@ -597,7 +596,7 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
       int defender_roll = rand() % sides;
 
       if (attacker_roll < attacker->terrain_strength &&
-	  defender_roll > defender->terrain_strength)
+	  defender_roll >= defender->terrain_strength)
 	{
 	  //hit defender
 	  if (d_type != FOR_KEEPS)
@@ -608,10 +607,9 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 	  d->damage(1);
 	  damage = 1;
 	  item.id = d->getId();
-	  misses_in_a_row = 0;
 	}
       else if (defender_roll < defender->terrain_strength &&
-	       attacker_roll > attacker->terrain_strength)
+	       attacker_roll >= attacker->terrain_strength)
 	{
 	  //hit attacker
 	  if (d_type != FOR_KEEPS)
@@ -622,27 +620,9 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 	  a->damage(1);
 	  damage = 1;
 	  item.id = a->getId();
-	  misses_in_a_row = 0;
 	}
       else
-	{
-	  misses_in_a_row++;
-	  if (misses_in_a_row >= 10000)
-	    {
-	      //defender automatically wins
-	      //hit attacker for however much it takes
-	      if (d_type != FOR_KEEPS)
-		{
-		  d->setNumberHasHit(d->getNumberHasHit() + (1/xp_factor));
-		  a->setNumberHasBeenHit(a->getNumberHasBeenHit() + 
-					 (1/xp_factor));
-		}
-	      item.id = a->getId();
-	      damage = a->getHP();
-	      a->damage (damage);
-	      misses_in_a_row = 0;
-	    }
-	}
+        continue;
     }
   // continue documenting the engagement
 
