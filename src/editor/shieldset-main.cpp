@@ -44,7 +44,9 @@ int main(int argc, char* argv[])
     Vector<int>::setMaximumWidth(1000);
 
     setlocale(LC_ALL, Configuration::s_lang.c_str());
-    textdomain ("lordsawar");
+    bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+    bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+    textdomain (GETTEXT_PACKAGE);
 
     // Check if shieldsets are in the path (otherwise exit)
     Shieldset::scanSystemCollection();
