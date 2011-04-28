@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: lordsawar 0.2.0-pre4\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
 "POT-Creation-Date: 2011-03-14 17:23-0400\n"
-"PO-Revision-Date: 2011-04-22 16:59+0100\n"
+"PO-Revision-Date: 2011-04-28 15:20+0100\n"
 "Last-Translator: Michal Lisowski <lisu87@gmail.com>\n"
 "Language-Team: Polish <translation-team-pl@lists.sourceforge.net>\n"
 "Language: \n"
@@ -228,7 +228,7 @@ msgstr "OK"
 #: ../dat/glade/editor/shieldset-info-dialog.ui.h:9
 #: ../src/gls/gls-client-tool.cpp:129 ../src/ghs/ghs-client-tool.cpp:94
 msgid "Name:"
-msgstr "Imię:"
+msgstr "Nazwa:"
 
 #: ../dat/glade/city-window.ui.h:1 ../dat/glade/hero-dialog.ui.h:1
 #: ../dat/glade/editor/backpack-editor-dialog.ui.h:3
@@ -733,7 +733,7 @@ msgstr "Poddaj Się"
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:14
 #: ../src/gui/ruin-report-dialog.cpp:135 ../src/editor/main-window.cpp:1433
 msgid "Ruin"
-msgstr ""
+msgstr "Ruiny"
 
 #: ../dat/glade/game-window.ui.h:41 ../dat/glade/new-random-map-dialog.ui.h:16
 #: ../dat/glade/editor/new-map-dialog.ui.h:16
@@ -750,7 +750,7 @@ msgstr "Zapisz Grę Jako..."
 
 #: ../dat/glade/game-window.ui.h:44
 msgid "Search"
-msgstr "Znajdź"
+msgstr "Badaj"
 
 #: ../dat/glade/game-window.ui.h:45
 msgid "Show Lobby"
@@ -1086,7 +1086,7 @@ msgstr ""
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:4
 #: ../dat/glade/editor/temple-editor-dialog.ui.h:2
 msgid "Description:"
-msgstr ""
+msgstr "Opis:"
 
 #: ../dat/glade/ruin-report-dialog.ui.h:3
 #: ../dat/glade/item-report-dialog.ui.h:2
@@ -1095,7 +1095,7 @@ msgstr "Szczegóły"
 
 #: ../dat/glade/ruin-report-dialog.ui.h:4
 msgid "Explored:"
-msgstr ""
+msgstr "Zwiedzone:"
 
 #: ../dat/glade/ruin-report-dialog.ui.h:6
 msgid "Ruin Report"
@@ -2014,7 +2014,7 @@ msgstr ""
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:16
 #: ../src/editor/players-dialog.cpp:56 ../src/gui/game-lobby-dialog.cpp:331
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: ../dat/glade/editor/select-army-dialog.ui.h:3
 msgid "Select Army"
@@ -2060,7 +2060,7 @@ msgstr ""
 #: ../dat/glade/editor/temple-editor-dialog.ui.h:7
 #: ../src/gui/ruin-report-dialog.cpp:175 ../src/editor/main-window.cpp:1437
 msgid "Temple"
-msgstr ""
+msgstr "Świątynia"
 
 #: ../dat/glade/editor/tile-preview-dialog.ui.h:2
 #: ../dat/glade/editor/tileset-window.ui.h:22
@@ -2247,11 +2247,11 @@ msgstr ""
 
 #: ../dat/glade/editor/hero-editor-dialog.ui.h:4
 msgid "Female"
-msgstr ""
+msgstr "Kobieta"
 
 #: ../dat/glade/editor/hero-editor-dialog.ui.h:6
 msgid "Male"
-msgstr ""
+msgstr "Mężczyzna"
 
 #: ../dat/glade/editor/backpack-editor-dialog.ui.h:1
 msgid "Add Item"
@@ -2344,7 +2344,7 @@ msgstr ""
 
 #: ../dat/glade/editor/cityset-window.ui.h:8
 msgid "City:"
-msgstr ""
+msgstr "Miasto:"
 
 #: ../dat/glade/editor/cityset-window.ui.h:11
 #: ../src/editor/cityset-window.cpp:467
@@ -2379,7 +2379,7 @@ msgstr ""
 
 #: ../dat/glade/editor/cityset-window.ui.h:21
 msgid "Ruin:"
-msgstr ""
+msgstr "Ruiny:"
 
 #: ../dat/glade/editor/cityset-window.ui.h:22
 msgid "Ruins Picture:"
@@ -2399,7 +2399,7 @@ msgstr ""
 
 #: ../dat/glade/editor/cityset-window.ui.h:27
 msgid "Temple:"
-msgstr ""
+msgstr "Świątynia:"
 
 #: ../dat/glade/editor/cityset-window.ui.h:28
 msgid "Tile Widths"
@@ -2462,7 +2462,7 @@ msgstr ""
 
 #: ../dat/glade/editor/smallmap-editor-dialog.ui.h:1
 msgid "Build Road"
-msgstr ""
+msgstr "Buduj Drogę"
 
 #: ../dat/glade/editor/smallmap-editor-dialog.ui.h:2
 msgid "Choose Point..."
@@ -2819,7 +2819,7 @@ msgstr ""
 #: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:20
 #: ../dat/various/items/items.xml.in.h:8
 msgid "Cup of Haste"
-msgstr ""
+msgstr "Puchar Pośpiechu"
 
 #: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:21 ../dat/ruinnames.xml.in.h:14
 msgid "Dark Tower"
@@ -2899,7 +2899,7 @@ msgstr ""
 
 #: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:40
 msgid "Golden Mask"
-msgstr ""
+msgstr "Złota Maska"
 
 #: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:41
 msgid "Golden Shield"
@@ -2982,7 +2982,7 @@ msgstr ""
 
 #: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:63
 msgid "Magic Spear"
-msgstr ""
+msgstr "Magiczna Włócznia"
 
 #: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:64
 msgid "Massillia"
@@ -3006,7 +3006,7 @@ msgstr ""
 
 #: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:69
 msgid "New Carthage"
-msgstr ""
+msgstr "Nowa Kartagina"
 
 #: ../dat/map/2ndPunic37/2ndPunic37.map.in.h:70
 msgid "Numantia"
@@ -3519,7 +3519,7 @@ msgstr ""
 
 #: ../src/ruin.cpp:31
 msgid " is inhabited by monsters and full of treasure!"
-msgstr ""
+msgstr "jest zamieszkana przez potwory, jest też tu takęze wiele skarbów!"
 
 #: ../src/reward.cpp:439
 msgid "%1 Gold Piece"
@@ -3617,7 +3617,7 @@ msgstr ""
 
 #: ../src/gui/city-window.cpp:458
 msgid "Rename City"
-msgstr ""
+msgstr "Zmień Nazwę Miasta"
 
 #: ../src/gui/city-window.cpp:466
 msgid "Type the new name for this city:"
@@ -4006,7 +4006,7 @@ msgstr ""
 #: ../src/gui/hero-dialog.cpp:304 ../src/gui/hero-dialog.cpp:378
 #: ../src/gui/hero-dialog.cpp:399
 msgid "In backpack"
-msgstr ""
+msgstr "W plecaku"
 
 #: ../src/gui/hero-dialog.cpp:324 ../src/gui/hero-dialog.cpp:401
 msgid "On the ground"
@@ -4138,11 +4138,11 @@ msgstr "RozGrp"
 
 #: ../src/gui/game-window.cpp:2496
 msgid "%1 finds "
-msgstr ""
+msgstr "%1 znalazł(a)"
 
 #: ../src/gui/game-window.cpp:2500
 msgid "%1 gold pieces."
-msgstr ""
+msgstr "%1 sztuk złota."
 
 #: ../src/gui/game-window.cpp:2505
 msgid "%1 allies!"
@@ -4150,7 +4150,7 @@ msgstr ""
 
 #: ../src/gui/game-window.cpp:2510
 msgid "the %1!"
-msgstr ""
+msgstr "%1!"
 
 #: ../src/gui/game-window.cpp:2515
 msgid "a map!"
@@ -4201,8 +4201,9 @@ msgstr ""
 #: ../src/gui/game-window.cpp:2755
 msgid "%1 army has been blessed!"
 msgid_plural "%1 armies have been blessed!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%1 armia została pobłogosławiona!"
+msgstr[1] "%1 armie zostały pobłogosławione!"
+msgstr[2] "%1 armii zostało pobłogosławionych!"
 
 #: ../src/gui/game-window.cpp:2758
 msgid "We have already blessed thee!"
@@ -4210,11 +4211,11 @@ msgstr ""
 
 #: ../src/gui/game-window.cpp:2761
 msgid "Seek more blessings in far temples!"
-msgstr ""
+msgstr "Poszukuj więcej błogosławieństw w odległych świątyniach!"
 
 #: ../src/gui/game-window.cpp:2765
 msgid "Do you seek a quest?"
-msgstr ""
+msgstr "Poszukujesz zadania?"
 
 #: ../src/gui/game-window.cpp:2774
 msgid "_Close"
@@ -4222,7 +4223,7 @@ msgstr ""
 
 #: ../src/gui/game-window.cpp:2910
 msgid "%1, you have triumphed in the battle of %2."
-msgstr ""
+msgstr "%1, zwyciężyłeś w bitwie o %2."
 
 #: ../src/gui/game-window.cpp:2911
 msgid "%1, you have claimed victory in the battle of %2."
@@ -4743,7 +4744,7 @@ msgstr ""
 
 #: ../src/gui/ruin-report-dialog.cpp:159 ../src/gui/ruin-report-dialog.cpp:169
 msgid "Bones litter this place."
-msgstr ""
+msgstr "To miejscie zaściełają kości."
 
 #: ../src/gui/ruin-report-dialog.cpp:161
 msgid "It is guarded."
@@ -5601,7 +5602,7 @@ msgstr ""
 
 #: ../src/ItemProto.cpp:114
 msgid "Doubles Movement"
-msgstr ""
+msgstr "Podwojone Ruchy"
 
 #: ../src/ItemProto.cpp:124
 msgid "Steals Gold"
@@ -5629,7 +5630,7 @@ msgstr ""
 
 #: ../src/ItemProto.cpp:137
 msgid "+%1 Command"
-msgstr ""
+msgstr "+ %1 Dowodzenie"
 
 #: ../src/ItemProto.cpp:139
 msgid "+%1 gold per city"
@@ -6775,7 +6776,7 @@ msgstr ""
 
 #: ../dat/ruinnames.xml.in.h:31
 msgid "Silent Farm"
-msgstr ""
+msgstr "Milcząca Farma"
 
 #: ../dat/ruinnames.xml.in.h:32
 msgid "Silent Lair"
