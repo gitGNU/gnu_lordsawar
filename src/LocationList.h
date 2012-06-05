@@ -55,7 +55,7 @@ template<class T> class LocationList : public std::list<T>
 
   void add(T t)
     {
-      push_back(t);
+      this->push_back(t);
       d_id[t->getId()] = t;
       int size = t->getSize();
       for (int i = 0; i < size; i++)
