@@ -2,7 +2,7 @@
 //  Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 //  Copyright (C) 2004, 2005, 2006 Andrea Paternesi
 //  Copyright (C) 2005 Josef Spillner
-//  Copyright (C) 2006, 2007, 2008, 2011 Ben Asselstine
+//  Copyright (C) 2006, 2007, 2008, 2011, 2014 Ben Asselstine
 //  Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -59,7 +59,7 @@ bool Configuration::s_displayCommentator = true;
 guint32 Configuration::s_cacheSize = 1000000;
 bool Configuration::s_zipfiles = false;
 int Configuration::s_autosave_policy = 1;
-bool Configuration::s_musicenable = true;
+bool Configuration::s_musicenable = false;
 guint32 Configuration::s_musicvolume = 64;
 guint32 Configuration::s_musiccache = 10000000;
 string Configuration::s_filename = "";
