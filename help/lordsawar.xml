@@ -1987,35 +1987,6 @@ A hotseat game begins with all players agreeing on the scenario options, and the
 Playing a hotseat game is advantageous when all players are near the same computer.  
 </para>
 </sect2>
-<sect2 id="lordsawar-pbm-play">
-	<title>Playing By Email</title> 
-<para>
-Playing a game by email is advantageous when players aren't near the same computer and they take a long time to finish a turn.
-</para>
-<para>
-It works by assigning one person as the "game-master", who players receive their games from via email.  When a player receives a &app; game from the game-master, it means it is their turn to move.  The player saves the game out of their email program, and then loads the game using the "Load Game" button in the main menu of &app;.  The player then conducts their turn in the normal fashion by moving stacks around the map.  When the "end turn" button is pressed, the player is asked to save a "turn-file".  The turn-file is saved, and then the player is expected to attach this file to an email and send it to the game master.  The player then waits to receive another game from the game-master.
-</para>
-<para>
-The game-master uses the "lordsawar-pbm" program to process turn-files from players.  The program takes two filenames on the command-line:
-<para>
-<itemizedlist>
-<listitem>
-The turn-file that was received from the play who has finished their move.
-</listitem>
-<listitem>
-The saved-game file that was sent to the player who has finished their move.
-</listitem>
-</itemizedlist>
-</para>
-After the program is executed, the saved-game file is now ready for the next player.  The game-master mails the saved-game file to the next player.
-</para>
-<para>
-The game-master notifies all of the players when the game is over, and when a human player is vanquished.
-</para>
-<para>
-One of the disadvantages of playing a game by mail is that players can't watch other players as they move.
-</para>
-</sect2>
 <sect2 id="lordsawar-network-play">
 	<title>Network Play</title> 
 <para>
