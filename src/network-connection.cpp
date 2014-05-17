@@ -1,5 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -210,12 +210,14 @@ void NetworkConnection::sendFile(int type, const std::string filename)
   
   gsize bytessent = 0;
   bool wrote_all =  out->write_all ((const void*) buf, sizeof (buf), bytessent);
-
-  char *buffer = (char*) malloc (statbuf.st_size);
-  ssize_t bytesread = fread (buffer, 1, statbuf.st_size, fileptr);
-  fclose (fileptr);
-  wrote_all = out->write_all (buffer, bytesread, bytessent);
-  free (buffer);
+  if (wrote_all)
+    {
+      char *buffer = (char*) malloc (statbuf.st_size);
+      ssize_t bytesread = fread (buffer, 1, statbuf.st_size, fileptr);
+      fclose (fileptr);
+      wrote_all = out->write_all (buffer, bytesread, bytessent);
+      free (buffer);
+    }
 }
 
 void NetworkConnection::send(int type, const std::string &payload)
@@ -230,8 +232,9 @@ void NetworkConnection::send(int type, const std::string &payload)
   gsize bytessent = 0;
   bool wrote_all = out->write_all (buf, sizeof (buf), bytessent);
 
-  // write the payload
-  wrote_all = out->write_all (payload.c_str(), payload.size(), bytessent);
+  if (wrote_all)
+    // write the payload
+    wrote_all = out->write_all (payload.c_str(), payload.size(), bytessent);
 }
   
 bool NetworkConnection::on_connect_timeout()

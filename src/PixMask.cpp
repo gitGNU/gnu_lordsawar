@@ -26,10 +26,6 @@
 PixMask::PixMask(Glib::RefPtr<Gdk::Pixbuf> pixbuf)
      : width(0), height(0), unscaled_width(0), unscaled_height(0)
 {
-  
-  //pixbuf->render_pixmap_and_mask(pixmap, mask, 1);
-  //pixmap->get_size(width, height);
-  //gc = Gdk::GC::create(pixmap);
   pixmap = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, pixbuf->get_width(), pixbuf->get_height());
   gc = Cairo::Context::create(pixmap);
   Gdk::Cairo::set_source_pixbuf(gc, pixbuf, 0, 0);
@@ -39,33 +35,11 @@ PixMask::PixMask(Glib::RefPtr<Gdk::Pixbuf> pixbuf)
   unscaled_height = pixbuf->get_height();
   width = unscaled_width;
   height = unscaled_height;
- //s->paint();
-    //cr = cairo.Context (surface)
-
-    //gdkcr = gtk.gdk.CairoContext (cr)
-
-    //gdkcr.set_source_pixbuf (pixbuf)
-
-    //gdkcr.paint ()
 }
 
 PixMask::PixMask(Cairo::RefPtr<Cairo::Surface> p, Cairo::RefPtr<Cairo::Surface> m)
     : width(0), height(0)
 {
-  //pixmap = p;
-  //mask = m;
-  /*
-  if (pixmap == true)
-    {
-      pixmap->get_size(width, height);
-      gc = Gdk::GC::create(pixmap);
-    }
-  else if (mask == true)
-    {
-      mask->get_size(width, height);
-      gc = Gdk::GC::create(mask);
-    }
-  */
   gc = Cairo::Context::create(p);
   double x1, x2, y1, y2;
   gc->get_clip_extents (x1, y1, x2, y2);
@@ -75,15 +49,15 @@ PixMask::PixMask(Cairo::RefPtr<Cairo::Surface> p, Cairo::RefPtr<Cairo::Surface> 
   pixmap = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
   if (p)
     {
-  gc = Cairo::Context::create(pixmap);
-  gc->rectangle(0, 0, width, height);
-  gc->clip();
-  gc->save();
-  gc->set_source (p, 0, 0);
-  gc->rectangle (0, 0, width, height);
-  gc->clip();
-  gc->paint();
-  gc->restore();
+      gc = Cairo::Context::create(pixmap);
+      gc->rectangle(0, 0, width, height);
+      gc->clip();
+      gc->save();
+      gc->set_source (p, 0, 0);
+      gc->rectangle (0, 0, width, height);
+      gc->clip();
+      gc->paint();
+      gc->restore();
     }
 
   mask = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
@@ -109,30 +83,18 @@ PixMask::PixMask(const PixMask&p)
   height = p.height;
   unscaled_width = p.unscaled_width;
   unscaled_height = p.unscaled_height;
-  //pixmap = 
-    //Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), p.width, p.height, 24);
-  //gc = Gdk::GC::create(pixmap);
-  //pixmap->draw_drawable(gc, p.pixmap, 0, 0, 0, 0, p.width, p.height);
-  //int size = p.width * p.height / 8;
-  //char *data = (char*)malloc(size);
-  //memset(data, 0, size);
-  //mask = 
-    //Gdk::Bitmap::create(data, p.width, p.height);
-  //mask->draw_drawable(Gdk::GC::create(p.mask), p.mask, 0, 0, 0, 0, p.width, p.height);
-  //free(data);
-
   pixmap = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
   if (p.pixmap)
     {
-  gc = Cairo::Context::create(pixmap);
-  gc->rectangle(0, 0, width, height);
-  gc->clip();
-  gc->save();
-  gc->set_source (p.pixmap, 0, 0);
-  gc->rectangle (0, 0, width, height);
-  gc->clip();
-  gc->paint();
-  gc->restore();
+      gc = Cairo::Context::create(pixmap);
+      gc->rectangle(0, 0, width, height);
+      gc->clip();
+      gc->save();
+      gc->set_source (p.pixmap, 0, 0);
+      gc->rectangle (0, 0, width, height);
+      gc->clip();
+      gc->paint();
+      gc->restore();
     }
 
   mask = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
@@ -148,21 +110,6 @@ PixMask::PixMask(const PixMask&p)
       context->paint();
       context->restore();
     }
-  /*
-  Cairo::RefPtr<Cairo::ImageSurface> s;
-  s = Cairo::RefPtr<Cairo::ImageSurface>::cast_static(p.pixmap);
-  pixmap = Cairo::ImageSurface::create(s->get_data(),
-                                       s->get_format(), 
-                                       s->get_width(),
-                                       s->get_height(),
-                                       s->get_stride());
-  s = Cairo::RefPtr<Cairo::ImageSurface>::cast_static(p.mask);
-  mask = Cairo::ImageSurface::create(s->get_data(),
-                                       s->get_format(), 
-                                       s->get_width(),
-                                       s->get_height(),
-                                       s->get_stride());
-  */
 }
 
 PixMask::PixMask(std::string filename, bool &broken)
@@ -189,10 +136,8 @@ PixMask::PixMask(std::string filename, bool &broken)
   Gdk::Cairo::set_source_pixbuf(gc, pixbuf, 0, 0);
   gc->paint();
   mask = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, pixbuf->get_width(), pixbuf->get_height());
-  //pixbuf->render_pixmap_and_mask(pixmap, mask, 1);
   width = pixbuf->get_width();
   height = pixbuf->get_height();
-  //gc = Gdk::GC::create(pixmap);
   unscaled_width = width;
   unscaled_height = height;
 }
@@ -240,17 +185,6 @@ void PixMask::blit(Cairo::RefPtr<Cairo::Surface> dest, int dest_x, int dest_y)
      
 void PixMask::blit(Rectangle src, Cairo::RefPtr<Cairo::Surface> p, Vector<int> dest)
 {
-  /*
-  if (src.x + src.w > get_width())
-    return;
-  if (src.y + src.h > get_height())
-    return;
-  //here we cleverly set the clip origin
-  gc->set_clip_origin(dest.x - src.x,dest.y - src.y);
-  gc->set_clip_mask(mask);
-  p->draw_drawable(gc, pixmap, src.x, src.y, dest.x, dest.y, src.w, src.h);
-  gc->set_clip_mask(Glib::RefPtr<Gdk::Bitmap>(0));
-  */
   Cairo::RefPtr<Cairo::Context> context = Cairo::Context::create(p);
   // Select the clipping rectangle
   context->rectangle(dest.x, dest.y, src.w, src.h);
@@ -291,15 +225,6 @@ PixMask * PixMask::scale(int xsize, int ysize, Gdk::InterpType interp)
 
 Glib::RefPtr<Gdk::Pixbuf> PixMask::to_pixbuf()
 {
-  /*
-  Glib::RefPtr<Gdk::Pixmap> result = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), width, height, 24);
-  Gdk::Color transparent = Gdk::Color();
-  //fixme: check to see if this colour is already present somehow
-  transparent.set_rgb_p(255.0 /255.0 , 87.0 / 255.0, 204.0/255.0);
-  gc->set_rgb_fg_color(transparent);
-  result->draw_rectangle(gc, true, 0, 0, width, height);
-  blit(result, 0, 0);
-  */
   Glib::RefPtr<Gdk::Pixbuf> buf = Gdk::Pixbuf::create(pixmap, 0, 0, width, height);
   Glib::RefPtr<Gdk::Pixbuf> alphabuf = buf->add_alpha(true, 255, 87, 204);
   return alphabuf;
@@ -309,10 +234,6 @@ void PixMask::draw_pixbuf(Glib::RefPtr<Gdk::Pixbuf> pixbuf, int src_x, int src_y
 {
 
   Cairo::RefPtr<Cairo::Context> context = Cairo::Context::create(pixmap);
-  /*
-     pixmap->draw_pixbuf(gc, pixbuf, src_x, src_y, dest_x, dest_y, width, height,
-     Gdk::RGB_DITHER_NONE, 0, 0);
-     */
   // Select the clipping rectangle
   context->rectangle(dest_x, dest_y, width, height);
 
@@ -329,18 +250,8 @@ void PixMask::draw_pixbuf(Glib::RefPtr<Gdk::Pixbuf> pixbuf, int src_x, int src_y
 
 int PixMask::get_depth()
 {
-  /*
-  if (pixmap == true)
-    return pixmap->get_depth();
-  else
-  */
-    return 0;
+    return 32;
 }
 PixMask::~PixMask()
 {
-  /*
-  pixmap.clear();
-  mask.clear();
-  gc.clear();
-  */
 }

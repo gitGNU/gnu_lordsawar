@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -167,7 +167,7 @@ void VectorMap::draw_lines (std::list<City*> srcs, std::list<City*> dests)
       else
         end = planted_standard;
 
-      Vector<int> pos = (*it)->getVectoring();
+      //Vector<int> pos = (*it)->getVectoring();
       draw_vectoring_line ((*it)->getPos(), end, true);
     }
   //orange lines next.  cities receiving units from their sources.

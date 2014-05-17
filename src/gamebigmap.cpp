@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -821,7 +821,7 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 	{
 	  //here we have a case of the new view overlapping with the view.
 	  //why redraw what we've already drawn?
-	  Rectangle old_view = view;
+	  //Rectangle old_view = view;
 	  view.x = new_view.x;
 	  view.y = new_view.y;
 	  view_changed.emit(view);

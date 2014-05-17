@@ -311,16 +311,26 @@ GraphicsCache::GraphicsCache()
 {
     bool success = false;
     success = loadDiplomacyPics();
-    success = loadCursorPics();
-    success = loadProdShields();
-    success = loadMoveBonusPics();
-    success = loadMedalPics();
-    success = loadNewLevelPics();
-    success = loadDefaultTileStylePics();
-    success = loadWaypointPics(); //only for game.  not for editors.
-    success = loadGameButtonPics(); //only for game.  not for editors.
-    success = loadArrowPics(); //only for game.  not for editors.
-    success = loadBackgroundPics(); //only for game.  not for editors.
+    if (success)
+      success = loadCursorPics();
+    if (success)
+      success = loadProdShields();
+    if (success)
+      success = loadMoveBonusPics();
+    if (success)
+      success = loadMedalPics();
+    if (success)
+      success = loadNewLevelPics();
+    if (success)
+      success = loadDefaultTileStylePics();
+    if (success)
+      success = loadWaypointPics(); //only for game.  not for editors.
+    if (success)
+      success = loadGameButtonPics(); //only for game.  not for editors.
+    if (success)
+        success = loadArrowPics(); //only for game.  not for editors.
+    if (success)
+      success = loadBackgroundPics(); //only for game.  not for editors.
 
     d_smallruinedcity = getMiscPicture("smallruinedcity.png");
     d_smallhero = getMiscPicture("hero.png");
@@ -1340,7 +1350,6 @@ PixMask* GraphicsCache::applyMask(PixMask* image, PixMask* mask, Gdk::RGBA colou
 {
   int width = image->get_width();
   int height = image->get_height();
-  //PixMask* result = PixMask::create(image->to_pixbuf());
   PixMask* result = PixMask::create(image->get_pixmap(), mask->get_pixmap());
   if (!result)
     return NULL;
@@ -1349,10 +1358,6 @@ PixMask* GraphicsCache::applyMask(PixMask* image, PixMask* mask, Gdk::RGBA colou
       std::cerr <<"Warning: mask and original image do not match\n";
       return NULL;
     }
-  //if (isNeutral)
-    //return result;
-  
-
   Glib::RefPtr<Gdk::Pixbuf> maskbuf = mask->to_pixbuf();
 
   guint8 *data = maskbuf->get_pixels();
@@ -1777,9 +1782,7 @@ CircledArmyCacheItem* GraphicsCache::addCircledArmyPic(CircledArmyCacheItem *ite
       pre_circle = getArmyPic(myitem->armyset, myitem->army_id, p, 
                               myitem->medals, myitem->greyed);
       myitem->surface = 
-        circled(pre_circle,
-                                p->getColor(), //Shield::get_default_color_for_no(myitem->circle_colour_id),
-
+        circled(pre_circle, p->getColor(),
                 myitem->circle_colour_id != Shield::NEUTRAL);
     }
   else

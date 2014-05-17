@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Ben Asselstine
+//  Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -87,9 +87,6 @@ void GameButtonBox::add_pictures_to_buttons(guint32 factor)
   d_factor = factor;
   GraphicsCache *gc = GraphicsCache::getInstance();
   int s = get_icon_size(factor);
-  int padding = 0;
-  if (factor == Configuration::UI_FORM_FACTOR_LARGE_SCREEN)
-    padding = 3;
   Gtk::Image *button_image2 = new Gtk::Image();
   button_image2->property_pixbuf() = 
     gc->getGameButtonPic(GraphicsCache::NEXT_MOVABLE_STACK, s)->to_pixbuf();

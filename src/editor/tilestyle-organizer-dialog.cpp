@@ -1,4 +1,4 @@
-//  Copyright (C) 2010, 2012 Ben Asselstine
+//  Copyright (C) 2010, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -191,7 +191,6 @@ void TileStyleOrganizerDialog::add_tilestyle(Glib::RefPtr<Gtk::ListStore> list, 
 
 void TileStyleOrganizerDialog::fill_category(guint32 type)
 {
-  Gtk::IconView *iconview;
   Gtk::Label *label;
   guint32 count = d_tile->countTileStyles(TileStyle::Type(type));
   std::string items = String::ucompose(_("(%1 items)"), count);
@@ -200,7 +199,6 @@ void TileStyleOrganizerDialog::fill_category(guint32 type)
   if (type == TileStyle::UNKNOWN)
     {
       label = unsorted_label;
-      iconview = unsorted_iconview;
       std::string unsorted = _("Unsorted TileStyles");
       markup = "<b>" + unsorted + "</b> " + items;
       list = unsorted_list;
@@ -208,7 +206,6 @@ void TileStyleOrganizerDialog::fill_category(guint32 type)
   else
     {
       label = category_label;
-      iconview = category_iconview;
       markup = "<b>" + TileStyle::getTypeName(TileStyle::Type(type)) + 
                         " TileStyles</b> " + items;
       list = category_list;

@@ -1,7 +1,7 @@
 // Copyright (C) 2002, 2003 Michael Bartl
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2004, 2005 Andrea Paternesi
-// Copyright (C) 2011, 2012 Ben Asselstine
+// Copyright (C) 2011, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -372,9 +372,8 @@ bool XML_Helper::close()
             uLongf ziplength = static_cast<uLongf>(origlength + (12+0.01*origlength));
             char *buf1= (char*) malloc(ziplength);
          
-            int ret = compress2((Bytef*)buf1, &ziplength,
-                                (Bytef*)tmp.c_str(), (uLong)origlength, 9);
-            debug("RET="<<ret<<" length=" << origlength << " destlen1=" << ziplength)
+            compress2((Bytef*)buf1, &ziplength, (Bytef*)tmp.c_str(), 
+                      (uLong)origlength, 9);
 
             (*d_fout) << 'Z';
             (*d_fout) << origlength;
@@ -387,7 +386,6 @@ bool XML_Helper::close()
 
             d_outbuf = 0;
             debug("destroyed d_outbuf")
-            ret=0;// to avoid warning 
         }
         else 
         {

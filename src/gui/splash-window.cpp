@@ -122,7 +122,7 @@ SplashWindow::SplashWindow()
       (File::getMiscFile("/various/splash_screen.jpg"), broken);
     if (broken == false)
       {
-        guint32 decorations = 24 * 3;
+        int decorations = 24 * 3;
         if (Gdk::Screen::get_default()->get_height() - decorations < 
             p->get_height())
           window->set_default_size(Gdk::Screen::get_default()->get_width(),

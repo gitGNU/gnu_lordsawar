@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 // Copyright (C) 2008 Janek Kozicki
 //
@@ -630,7 +630,6 @@ void GameMap::calculateBlockedAvenues()
 
 Vector<int> GameMap::findStack(guint32 id)
 {
-    bool found = false;
     Vector<int> pos = Vector<int>(-1,-1);
     for (int x = 0; x < getWidth(); x++)
       {
@@ -640,7 +639,6 @@ Vector<int> GameMap::findStack(guint32 id)
 	    if (stile->contains(id) == true)
 	      {
 		pos = Vector<int>(x,y);
-		found = true;
 		break;
 	      }
           }
@@ -1635,11 +1633,13 @@ bool GameMap::moveStack(Stack *stack, Vector<int> to)
   if (c != NULL && stack->getOwner() != c->getOwner())
     stack = Stacklist::changeOwnership(stack, c->getOwner());
   getStacks(stack->getPos())->arriving(stack);
+  /*
   bool ship = false;
   if (getTerrainType(stack->getPos()) == Tile::WATER &&
       getBuilding(stack->getPos()) != Maptile::PORT &&
       getBuilding(stack->getPos()) != Maptile::BRIDGE)
     ship = true;
+  */
   updateShips(stack->getPos());
 
   return moved;

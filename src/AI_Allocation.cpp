@@ -1,6 +1,6 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005, 2006, 2007 Ulf Lorenz
-// Copyright (C) 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -619,7 +619,7 @@ int AI_Allocation::oldPickupItems()
 
 int AI_Allocation::move(City *first_city, bool take_neutrals)
 {
-  int temple_moved = 0, ruin_moved = 0, pickup_moved = 0, attack_moved = 0, quest_moved = 0, immediate_moved = 0, defensive_moved = 0, capacity_moved = 0, offensive_moved = 0, default_moved= 0;
+  int attack_moved = 0, defensive_moved = 0, capacity_moved = 0, offensive_moved = 0, default_moved= 0;
   int temple_alloc = 0, ruin_alloc = 0, pickup_alloc = 0, attack_alloc = 0, quest_alloc = 0, immediate_alloc = 0, defensive_alloc = 0, capacity_alloc = 0, offensive_alloc = 0, default_alloc= 0;
   int moved;
   // move stacks
@@ -637,7 +637,6 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
   // go on a quest
   quest_alloc = d_stacks->size();
   moved = continueQuests();
-  quest_moved = moved;
   quest_alloc -= d_stacks->size();
   debug("Player " << d_owner->getName() << " still has " << d_stacks->size() << " stacks after allocating stacks to fulfilling quests");
   debug("Player " << d_owner->getName() << " moved " << moved << " stacks in quest mode.");
@@ -649,7 +648,6 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
   //move stacks to temples for blessing, or ones with heroes for a quest.
   temple_alloc = d_stacks->size();
   moved = visitTemples(GameScenarioOptions::s_play_with_quests != GameParameters::NO_QUESTING);
-  temple_moved = moved;
   temple_alloc -= d_stacks->size();
   debug("Player " << d_owner->getName() << " still has " << d_stacks->size() << " stacks after allocating stacks to visiting temples");
   debug("Player " << d_owner->getName() << " moved " << moved << " stacks in temple-visiting mode.");
@@ -660,7 +658,6 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
   //move hero stacks to ruins for searching.
   ruin_alloc = d_stacks->size();
   moved = visitRuins();
-  ruin_moved = moved;
   ruin_alloc -= d_stacks->size();
   debug("Player " << d_owner->getName() << " still has " << d_stacks->size() << " stacks after allocating stacks to visiting ruins");
   debug("Player " << d_owner->getName() << " moved " << moved << " stacks in ruin-visiting mode.");
@@ -671,7 +668,6 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
   //if we're near a bag of stuff, go pick it up.
   pickup_alloc = d_stacks->size();
   moved = pickupItems();
-  pickup_moved = moved;
   pickup_alloc -= d_stacks->size();
   debug("Player " << d_owner->getName() << " still has " << d_stacks->size() << " stacks after allocating stacks to picking up items");
   debug("Player " << d_owner->getName() << " moved " << moved << " stacks in pickup-items mode.");
@@ -693,7 +689,6 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
   // if a stack is 2 tiles away from another enemy city, then attack it.
   immediate_alloc = d_stacks->size();
   moved = attackNearbyEnemies();
-  immediate_moved = moved;
   immediate_alloc -= d_stacks->size();
   debug("Player " << d_owner->getName() << " still has " << d_stacks->size() << " stacks after allocating stacks to attacking nearby stacks");
   debug("Player " << d_owner->getName() << " moved " << moved << " stacks in attack-nearby-stacks mode.");
@@ -1059,7 +1054,6 @@ Vector<int> AI_Allocation::getFreeSpotInCity(City *city, int stackSize)
 
 Stack *AI_Allocation::findClosestStackToEnemyCity(City *city, bool try_harder)
 {
-  Vector<int> pos = city->getPos();
   Stack *best = 0;
   int lowest_mp = -1;
   for (StackReflist::iterator it = d_stacks->begin(); it != d_stacks->end(); ++it)
@@ -1095,7 +1089,6 @@ Stack *AI_Allocation::findClosestStackToEnemyCity(City *city, bool try_harder)
 
 Stack *AI_Allocation::findClosestStackToCity(City *city)
 {
-  Vector<int> pos = city->getPos();
   Stack *best = 0;
   int lowest_mp = -1;
   for (StackReflist::iterator it = d_stacks->begin(); it != d_stacks->end(); ++it)
@@ -1410,7 +1403,7 @@ bool AI_Allocation::shuffleStacksWithinCity(City *city, Stack *stack,
   if (f.size() > 1)
     {
       printf("i am stack %d at %d,%d\n", stack->getId(), stack->getPos().x, stack->getPos().y);
-      printf("crap.  there are %d stacks at %d,%d\n", f.size(), target.x, target.y);
+      printf("crap.  there are %lu stacks at %d,%d\n", f.size(), target.x, target.y);
       for (std::list<Stack*>::iterator it = f.begin(); it != f.end(); it++)
         {
           Stack *n = *it;

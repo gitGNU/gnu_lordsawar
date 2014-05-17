@@ -257,7 +257,6 @@ void NewRandomMapDialog::on_tile_size_changed()
   guint32 counter = 0;
 
   accept_button->set_sensitive(true);
-  Gtk::Container *container = tile_theme_combobox->get_parent();
   tile_theme_combobox->remove_all();
 
   Tilesetlist *tl = Tilesetlist::getInstance();
@@ -277,7 +276,6 @@ void NewRandomMapDialog::on_tile_size_changed()
     accept_button->set_sensitive(false);
     
 
-  container = army_theme_combobox->get_parent();
   army_theme_combobox->remove_all();
 
   Armysetlist *al = Armysetlist::getInstance();
@@ -298,7 +296,6 @@ void NewRandomMapDialog::on_tile_size_changed()
   else
     accept_button->set_sensitive(false);
 
-  container = city_theme_combobox->get_parent();
   city_theme_combobox->remove_all();
 
   Citysetlist *cl = Citysetlist::getInstance();

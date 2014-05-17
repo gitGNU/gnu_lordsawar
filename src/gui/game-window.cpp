@@ -1709,10 +1709,10 @@ void GameWindow::on_help_about_activated()
   Decorated decorator;
   decorator.decorate(dialog);
   decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-  dialog->set_transient_for(*window);
 
   dialog->set_version(PACKAGE_VERSION);
   dialog->set_logo(GraphicsCache::getMiscPicture("castle_icon.png")->to_pixbuf());
+  dialog->set_transient_for(*window);
   dialog->show_all();
   dialog->run();
   dialog->hide();

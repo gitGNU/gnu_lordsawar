@@ -48,10 +48,6 @@ bool LineChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
     const int width = allocation.get_width();
     const int height = allocation.get_height();
 
-    // coordinates for the center of the window
-    int xc, yc;
-    xc = width / 2;
-    yc = height / 2;
     int origin_x = 0;
     int origin_y = height;
     unsigned int hoffs = 30;
@@ -211,9 +207,11 @@ bool LineChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
 
     PangoContext *context;
-    PangoCairoFontMap *fontmap;
-    fontmap = (PangoCairoFontMap *) pango_cairo_font_map_get_default ();
-    context = pango_cairo_font_map_create_context (fontmap);
+    PangoFontMap *fontmap;
+    fontmap = (PangoFontMap *) pango_cairo_font_map_get_default ();
+    //context = pango_cairo_font_map_create_context (fontmap);
+    context = pango_font_map_create_context (fontmap);
+    //pango_font_map_create_context
     pango_context_set_base_gravity(context, PANGO_GRAVITY_EAST);
     pango_context_set_gravity_hint(context, PANGO_GRAVITY_HINT_STRONG);
     layout->context_changed();

@@ -3,7 +3,7 @@
 // Copyright (C) 2004, 2005 Andrea Paternesi
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2005 Bryan Duff
-// Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -298,7 +298,7 @@ Player* Player::create(Player* orig, Type type)
 
 void Player::initTurn()
 {
-  printf("local: dumping %d actions\n", d_actions.size());
+  printf("local: dumping %lu actions\n", d_actions.size());
   for (std::list<Action*>::iterator i = d_actions.begin(); i != d_actions.end(); i++)
     {
       printf("\t%s %s\n", Action::actionTypeToString((*i)->getType()).c_str(), (*i)->dump().c_str());
@@ -987,12 +987,8 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
 		 getType() == Player::HUMAN*/)
           {
             MoveResult *moveResult = new MoveResult;
-	    bool moved = false;
             if (stackMoveOneStep(s))
-	      {
-		moved = true;
-                stepCount++;
-	      }
+              stepCount++;
             else
               moveResult->setTooLargeStackInTheWay(true);
 	      
@@ -1695,7 +1691,6 @@ void Player::adjustDiplomacyFromConqueringCity(City *city)
 void Player::calculateLoot(Player *looted, guint32 &added, guint32 &subtracted)
 {
   Player *defender = looted;
-  int gold = 0;
 
   // if the attacked city isn't neutral, loot some gold
   if (defender != Playerlist::getInstance()->getNeutral())
@@ -1710,7 +1705,6 @@ void Player::calculateLoot(Player *looted, guint32 &added, guint32 &subtracted)
     subtracted = amt;
     amt /= 2;
     added = amt;
-    gold = amt;
   }
 
   return;
@@ -3603,16 +3597,16 @@ bool Player::vectoredUnitArrives(VectoredUnit *unit)
 	    }
 	case History::CITY_WON:
 	    {
-	      History_CityWon *event;
-	      event = dynamic_cast<History_CityWon*>(*pit);
+	      //History_CityWon *event;
+	      //event = dynamic_cast<History_CityWon*>(*pit);
 	      //printf("on turn %d, player %s took %s\n", turn, dest->getOwner()->getName().c_str(), dest->getName().c_str());
 	      break;
 	    }
 	case History::CITY_RAZED:
 	    {
-	      History_CityRazed *event;
-	      event = dynamic_cast<History_CityRazed*>(*pit);
-	      printf("on turn %d, player %s razed %s\n", turn, dest->getOwner()->getName().c_str(), dest->getName().c_str());
+	      //History_CityRazed *event;
+	      //event = dynamic_cast<History_CityRazed*>(*pit);
+	      //printf("on turn %d, player %s razed %s\n", turn, dest->getOwner()->getName().c_str(), dest->getName().c_str());
 	      break;
 	    }
 	default:

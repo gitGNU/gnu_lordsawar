@@ -50,11 +50,6 @@ bool BarChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
     int w, h;
     layout->get_pixel_size (w, h);
 
-    // coordinates for the center of the window
-    int xc, yc;
-    xc = width / 2;
-    yc = height / 2;
-
     unsigned int lw = 10;
     //Cairo::RefPtr<Cairo::Surface> pixmap = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
     //Cairo::RefPtr<Cairo::Context> cr = Cairo::Context::create(pixmap);

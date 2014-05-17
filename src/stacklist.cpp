@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
 // Copyright (C) 2004 John Farrell
-// Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -113,7 +113,7 @@ bool Stacklist::check()
         std::list<Stack*> f = GameMap::getFriendlyStacks((*it)->getPos());
         if (f.size() > 1)
           {
-	      fprintf (stderr, "%d stacks found on %d,%d\n", f.size(),
+	      fprintf (stderr, "%lu stacks found on %d,%d\n", f.size(),
                        (*it)->getPos().x, (*it)->getPos().y);
               for (std::list<Stack*>::iterator t = f.begin(); t != f.end(); t++)
                 {
@@ -121,7 +121,7 @@ bool Stacklist::check()
                   if (stack)
                     {
                     printf("stack id: %d\n", stack->getId());
-                    printf("\tsize is %d\n", stack->size());
+                    printf("\tsize is %lu\n", stack->size());
                     }
                   else
                     printf("null stack\n");

@@ -330,14 +330,11 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface, Cairo::
   GraphicsCache *gc = GraphicsCache::getInstance();
   Vector<int> p = s->getPos();
   Player *player = s->getOwner();
-  int army_tilesize;
 
   // check if the object lies in the viewed part of the map
   // otherwise we shouldn't draw it
   if (is_inside(buffer_view, p) && !s->getDeleting())
     {
-      Armysetlist *al = Armysetlist::getInstance();
-      army_tilesize = al->getTileSize(player->getArmyset());
       if (s->empty())
 	{
 	  std::cerr << "WARNING: empty stack found" << std::endl;
