@@ -417,8 +417,6 @@ void GameWindow::hide()
 
 void GameWindow::init(int width, int height)
 {
-  //bigmap_image->set_allocated();
-  printf("%dx%d\n", width, height);
     bigmap_image->set_size_request(width, height);
 }
 
