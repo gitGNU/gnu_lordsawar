@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010, 2012 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -223,8 +223,8 @@ class MainWindow: public sigc::trackable
 
     void auto_select_appropriate_pointer();
 
-    bool on_bigmap_exposed(GdkEvent *event);
-    bool on_smallmap_exposed(GdkEvent *event);
+    bool on_bigmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr);
+    bool on_smallmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr);
     void on_bigmap_surface_changed(Gtk::Allocation box);
     void redraw();
     void fill_players();

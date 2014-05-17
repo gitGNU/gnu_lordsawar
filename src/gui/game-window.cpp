@@ -154,7 +154,7 @@ GameWindow::GameWindow()
     xml->get_widget("menubar", menubar);
     xml->get_widget("bigmap_image", bigmap_image);
     //bigmap_drawingarea->set_double_buffered(false);
-    bigmap_image->signal_event().connect
+    bigmap_image->signal_draw().connect
       (sigc::mem_fun(*this, &GameWindow::on_bigmap_exposed));
     bigmap_image->signal_size_allocate().connect
       (sigc::mem_fun(*this, &GameWindow::on_bigmap_surface_changed));
@@ -187,7 +187,7 @@ GameWindow::GameWindow()
     // the map image
     xml->get_widget("smallmap_image", smallmap_image);
     //map_drawingarea->set_double_buffered(false);
-    smallmap_image->signal_event().connect
+    smallmap_image->signal_draw().connect
       (sigc::mem_fun(*this, &GameWindow::on_smallmap_exposed));
     xml->get_widget("map_eventbox", map_eventbox);
     xml->get_widget("map_container", map_container);
@@ -935,41 +935,26 @@ bool GameWindow::on_smallmap_mouse_motion_event(GdkEventMotion *e)
   return true;
 }
 
-bool GameWindow::on_smallmap_exposed(GdkEvent *event)
+bool GameWindow::on_smallmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-  Gdk::Event e(event);
-  if (e.gobj()->type == GDK_EXPOSE)
-    {
-      Glib::RefPtr<Gdk::Window> window = smallmap_image->get_window();
-      if (window)
-        {
-          Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
-            Gdk::Pixbuf::create(game->get_smallmap().get_surface(), 0, 0, 
-                                game->get_smallmap().get_width(), 
-                                game->get_smallmap().get_height());
-          smallmap_image->property_pixbuf() = pixbuf;
-        }
-    }
+  return true;
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+    Gdk::Pixbuf::create(game->get_smallmap().get_surface(), 0, 0, 
+                        game->get_smallmap().get_width(), 
+                        game->get_smallmap().get_height());
+  smallmap_image->property_pixbuf() = pixbuf;
   return true;
 }
-bool GameWindow::on_bigmap_exposed(GdkEvent *event)
+
+bool GameWindow::on_bigmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-  printf("we got an event on the bigmap\n");
-  Gdk::Event e(event);
-  if (e.gobj()->type == GDK_EXPOSE)
-    {
-      printf("we got an expose event on the bigmap\n");
-      Glib::RefPtr<Gdk::Window> window = bigmap_image->get_window();
-      if (window)
-        {
-          printf("exposed\n");
-          Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
-            Gdk::Pixbuf::create(game->get_bigmap().get_surface(), 0, 0, 
-                                bigmap_image->get_allocated_width(), 
-                                bigmap_image->get_allocated_height());
-          bigmap_image->property_pixbuf() = pixbuf;
-        }
-    }
+  return true;
+  printf("drawing!\n");
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+    Gdk::Pixbuf::create(game->get_bigmap().get_surface(), 0, 0, 
+                        bigmap_image->get_allocated_width(), 
+                        bigmap_image->get_allocated_height());
+  bigmap_image->property_pixbuf() = pixbuf;
   return true;
 }
 
