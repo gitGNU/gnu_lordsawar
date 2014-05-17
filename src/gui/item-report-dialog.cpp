@@ -81,9 +81,11 @@ void ItemReportDialog::run()
   dialog->run();
 }
 
-void ItemReportDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
+void ItemReportDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  map_image->property_pixmap() = map;
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+    Gdk::Pixbuf::create(map, 0, 0, itemmap->get_width(), itemmap->get_height());
+  map_image->property_pixbuf() = pixbuf;
   fill_in_item_info();
 }
 

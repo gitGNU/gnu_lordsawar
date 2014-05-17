@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,10 +28,10 @@
 
 using namespace std;
 
-MapRenderer::MapRenderer(Glib::RefPtr<Gdk::Pixmap> surface)
+MapRenderer::MapRenderer(Cairo::RefPtr<Cairo::Surface> surface)
 {
     d_surface = surface;
-    gc = Gdk::GC::create(surface);
+    gc = Cairo::Context::create(surface);
 }
  
 bool MapRenderer::saveAsBitmap(std::string filename)
@@ -39,21 +39,18 @@ bool MapRenderer::saveAsBitmap(std::string filename)
   int tilesize = GameMap::getInstance()->getTileSize();
   int width = GameMap::getWidth() * tilesize;
   int height = GameMap::getHeight() * tilesize;
-  Glib::RefPtr<Gdk::Pixmap> surf = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(d_surface), width, height, 24);
-  render(0, 0, 0, 0, GameMap::getWidth(), GameMap::getHeight(), surf, Gdk::GC::create(surf));
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create(Glib::RefPtr<Gdk::Drawable>(surf), 0, 0, width, height);
+  Cairo::RefPtr<Cairo::Surface> empty;
+  Cairo::RefPtr<Cairo::Surface> surf = Cairo::Surface::create(empty, Cairo::CONTENT_COLOR_ALPHA, width, height);
+  render(0, 0, 0, 0, GameMap::getWidth(), GameMap::getHeight(), surf, Cairo::Context::create(surf));
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create(surf, 0, 0, width, height);
   pixbuf->save (filename, "png");
   return true;
 }
 
 bool MapRenderer::saveViewAsBitmap(std::string filename)
 {
-  int width;
-  int height;
-  d_surface->get_size(width, height);
   remove (filename.c_str());
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create(Glib::RefPtr<Gdk::Drawable>(d_surface), 0, 0, width, height);
-  pixbuf->save (filename, "png");
+  d_surface->write_to_png(filename);
   return true;
 }
 
@@ -68,8 +65,8 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 }
 
 void MapRenderer::render_tile(Vector<int> draw, Vector<int> tile,
-			      Glib::RefPtr<Gdk::Pixmap> surface, 
-			      Glib::RefPtr<Gdk::GC> context)
+			      Cairo::RefPtr<Cairo::Surface> surface, 
+			      Cairo::RefPtr<Cairo::Context> context)
 {
   Player *p = Playerlist::getActiveplayer();
   if (p->getFogMap()->isCompletelyObscuredFogTile(tile) == true)
@@ -113,7 +110,7 @@ void MapRenderer::render_tile(Vector<int> draw, Vector<int> tile,
 }
 
 void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
-			 int columns, int rows, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context)
+			 int columns, int rows, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> context)
 {
     GameMap* map = GameMap::getInstance();
     int width = GameMap::getWidth();
@@ -128,9 +125,9 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
         {
 	    // first check if we're out of the map bounds
 	    if (tileX >= width || tileY >= height) {
-		context->set_rgb_fg_color(FOG_COLOUR);
-		surface->draw_rectangle(context, true, drawX, drawY, 
-					tilesize, tilesize);
+		context->set_source_rgba(FOG_COLOUR.get_red(), FOG_COLOUR.get_blue(), FOG_COLOUR.get_green(), FOG_COLOUR.get_alpha());
+		context->rectangle(drawX, drawY, tilesize, tilesize);
+                context->fill();
 	    }
 	    else {
 	      render_tile(Vector<int>(drawX,drawY), Vector<int>(tileX,tileY),

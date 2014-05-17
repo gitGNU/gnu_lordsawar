@@ -104,10 +104,10 @@ void StackArmyButton::update_stack_button(bool selected)
     {
       if (selected)
         stack_image->property_pixbuf() = 
-          stack_button->render_icon(Gtk::Stock::YES, Gtk::ICON_SIZE_MENU);
+          stack_button->render_icon_pixbuf(Gtk::Stock::YES, Gtk::ICON_SIZE_MENU);
       else
         stack_image->property_pixbuf() = 
-          stack_button->render_icon(Gtk::Stock::NO, Gtk::ICON_SIZE_MENU);
+          stack_button->render_icon_pixbuf(Gtk::Stock::NO, Gtk::ICON_SIZE_MENU);
       stack_image->show_all();
     }
   else

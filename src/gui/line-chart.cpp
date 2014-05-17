@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 #include <cairomm/context.h>
 
 LineChart::LineChart(std::list<std::list<unsigned int> > lines, 
-		     std::list<Gdk::Color> colours, 
+		     std::list<Gdk::RGBA> colours, 
 		     unsigned int max_height_value,
 		     std::string x_axis_description,
 		     std::string y_axis_description)
@@ -37,7 +37,8 @@ LineChart::~LineChart()
 {
 }
 
-bool LineChart::on_expose_event(GdkEventExpose* event)
+//bool LineChart::on_expose_event(GdkEventExpose* event)
+bool LineChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
 {
   // This is where we draw on the window
   Glib::RefPtr<Gdk::Window> window = get_window();
@@ -56,12 +57,11 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
     unsigned int hoffs = 30;
     unsigned int voffs = 30;
 
-    Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
+    //Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
       
     // clip to the area indicated by the expose event so that we only redraw
     // the portion of the window that needs to be redrawn
-    cr->rectangle(event->area.x, event->area.y,
-            event->area.width, event->area.height);
+    cr->rectangle(0, 0, width, height);
     cr->clip();
     cr->set_source_rgb (0.8, 0.8, 0.8);
     cr->set_line_width(1000.0);
@@ -105,14 +105,14 @@ bool LineChart::on_expose_event(GdkEventExpose* event)
     if (w * (hoffs / 4) > hoffs)
       hoffs = w + (hoffs / 4);
 
-    std::list<Gdk::Color>::iterator cit = d_colours.begin();
+    std::list<Gdk::RGBA>::iterator cit = d_colours.begin();
     line = d_lines.begin();
     for (; line!= d_lines.end(), cit != d_colours.end(); line++, cit++)
       {
 	//okay, here's my line and it's colour,
-	double red = (double)(*cit).get_red() /65535.0;
-	double green = (double)(*cit).get_green() /65535.0;
-	double blue = (double)(*cit).get_blue() /65535.0;
+	double red = (*cit).get_red();
+	double green = (*cit).get_green();
+	double blue = (*cit).get_blue();
 	cr->set_source_rgb(red, green, blue);
 	std::list<unsigned int>::iterator it = (*line).begin();
 	unsigned int turn = 1;
@@ -236,6 +236,9 @@ void LineChart::set_x_indicator(int x)
   Glib::RefPtr<Gdk::Window> window = get_window();
   if(window)
     {
+      queue_draw();
+      //show();
+      /*
       Gtk::Allocation allocation = get_allocation();
       const int width = allocation.get_width();
       const int height = allocation.get_height();
@@ -245,5 +248,6 @@ void LineChart::set_x_indicator(int x)
       event.area.height = height;
       event.area.width = width;
       on_expose_event(&event);
+      */
     }
 }

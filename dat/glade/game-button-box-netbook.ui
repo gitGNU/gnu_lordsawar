@@ -1,27 +1,31 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="window1">
+    <property name="can_focus">False</property>
     <child>
       <object class="GtkHBox" id="box">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="border_width">7</property>
         <property name="spacing">3</property>
         <child>
           <object class="GtkVBox" id="control_panel_vbox">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
+            <property name="can_focus">False</property>
             <property name="spacing">3</property>
             <child>
               <object class="GtkHBox" id="first_row_hbox">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">4</property>
                 <child>
                   <object class="GtkButton" id="move_button">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Move this stack along its path.</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -34,6 +38,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Select the next stack that can move.</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -46,6 +51,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Finish moving this stack.</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -58,6 +64,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Deselect this stack.</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -75,12 +82,14 @@
             <child>
               <object class="GtkHBox" id="second_row_hbox">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">4</property>
                 <child>
                   <object class="GtkButton" id="center_button">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Center the map on this stack.</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -93,6 +102,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Diplomacy</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -105,6 +115,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Put this stack in a defensive posture.</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -117,6 +128,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="tooltip_text" translatable="yes">Search a temple or ruin.</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -134,16 +146,18 @@
             <child>
               <object class="GtkHBox" id="third_row_hbox">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">4</property>
                 <child>
                   <object class="GtkVBox" id="vbox1">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkButton" id="move_all_button">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">Move all stacks along their routes.</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -161,12 +175,13 @@
                 <child>
                   <object class="GtkVBox" id="vbox2">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkButton" id="end_turn_button">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">End your turn.</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -196,18 +211,24 @@
             </child>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkVBox" id="vbox3">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
+            <property name="can_focus">False</property>
             <child>
               <object class="GtkTable" id="keypad_table">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="n_rows">3</property>
                 <property name="n_columns">3</property>
+                <child>
+                  <placeholder/>
+                </child>
                 <child>
                   <object class="GtkButton" id="nw_keypad_button">
                     <property name="visible">True</property>
@@ -218,7 +239,7 @@
                   </object>
                   <packing>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
@@ -233,7 +254,7 @@
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
@@ -248,7 +269,7 @@
                     <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
@@ -263,7 +284,7 @@
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
@@ -280,7 +301,7 @@
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
@@ -295,7 +316,7 @@
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
@@ -312,7 +333,7 @@
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
                 </child>
                 <child>
@@ -329,11 +350,8 @@
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
                     <property name="x_options">GTK_FILL</property>
-                    <property name="y_options"></property>
+                    <property name="y_options"/>
                   </packing>
-                </child>
-                <child>
-                  <placeholder/>
                 </child>
               </object>
               <packing>
@@ -344,6 +362,8 @@
             </child>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>

@@ -1,7 +1,7 @@
 // Copyright (C) 2002, 2003 Michael Bartl
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2004, 2005 Andrea Paternesi
-// Copyright (C) 2011 Ben Asselstine
+// Copyright (C) 2011, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -209,7 +209,7 @@ bool XML_Helper::closeTag()
     return true;
 }
 
-bool XML_Helper::saveData(std::string name, const Gdk::Color value)
+bool XML_Helper::saveData(std::string name, const Gdk::RGBA value)
 {
     //prepend a "d_" to show that this is a data tag
     name = "d_" + name;
@@ -228,9 +228,9 @@ bool XML_Helper::saveData(std::string name, const Gdk::Color value)
     addTabs();
     char buf[3];
     guint32 r, g, b;
-    r = value.get_red_p() * 255;
-    g = value.get_green_p() * 255;
-    b = value.get_blue_p() * 255;
+    r = value.get_red() * 255;
+    g = value.get_green() * 255;
+    b = value.get_blue() * 255;
     snprintf(buf, sizeof(buf), "%02X", r);
     std::string red = buf;
     snprintf(buf, sizeof(buf), "%02X", g);
@@ -458,7 +458,7 @@ bool XML_Helper::unregisterTag(std::string tag)
     return true;
 }
 
-bool XML_Helper::getData(Gdk::Color& data, std::string name)
+bool XML_Helper::getData(Gdk::RGBA & data, std::string name)
 {
     //the data tags are stored with leading "d_", so prepend it here
     name = "d_" + name;
@@ -469,8 +469,8 @@ bool XML_Helper::getData(Gdk::Color& data, std::string name)
     
     if (it == d_data.end())
     {
-        data.set_rgb_p(0,0,0);
-        std::cerr<<"XML_Helper::getData(Gdk::Color, \"" <<name <<"\") failed\n";
+        data.set_rgba(0,0,0);
+        std::cerr<<"XML_Helper::getData(Gdk::RGBA, \"" <<name <<"\") failed\n";
         d_failed = true;
         return false;
     }
@@ -500,7 +500,7 @@ bool XML_Helper::getData(Gdk::Color& data, std::string name)
 	    blue > 255 || blue < 0)
 	  return false;
       }
-    data.set_rgb_p((float)red / 255.0, (float)green / 255.0,
+    data.set_rgba((float)red / 255.0, (float)green / 255.0,
 		   (float)blue / 255.0);
   return true;
 }

@@ -58,9 +58,9 @@ Tileset::Tileset(guint32 id, std::string name)
   d_roads = "";
   d_bridges = "";
   d_flags = "";
-  d_road_color.set_rgb_p(0,0,0);
-  d_ruin_color.set_rgb_p(100,100,100);
-  d_temple_color.set_rgb_p(100,100,100);
+  d_road_color.set_rgba(0,0,0);
+  d_ruin_color.set_rgba(100,100,100);
+  d_temple_color.set_rgba(100,100,100);
   for (unsigned int i = 0; i < ROAD_TYPES; i++)
     roadpic[i] = NULL;
   for (unsigned int i = 0; i < BRIDGE_TYPES; i++)

@@ -89,7 +89,7 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 
         SmallTile *getSmallTile(std::string basename, Tile::Type type) const;
 
-        Gdk::Color getColor(std::string basename, Tile::Type type) const;
+        Gdk::RGBA getColor(std::string basename, Tile::Type type) const;
 
         std::string findFreeBaseName(std::string basename, guint32 max, guint32 &num) const;
 

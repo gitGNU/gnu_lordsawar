@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Ben Asselstine
+//  Copyright (C) 2011, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ class UseItemOnCityDialog: public Decorated
     Gtk::Button *continue_button;
     Gtk::Label *label;
     
-    void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    void on_map_changed(Cairo::RefPtr<Cairo::Surface> map);
 
     void on_city_selected(City *city);
 

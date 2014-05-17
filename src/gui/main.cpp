@@ -107,8 +107,8 @@ void Main::start_main_loop()
 {
     if (Configuration::s_decorated)
       {
-      Gtk::RC::add_default_file(File::getMiscFile("gtkrc"));
-	Gtk::RC::reparse_all(Gtk::Settings::get_default(), true);
+      //Gtk::RC::add_default_file(File::getMiscFile("gtkrc"));
+	//Gtk::RC::reparse_all(Gtk::Settings::get_default(), true);
       }
 
     try

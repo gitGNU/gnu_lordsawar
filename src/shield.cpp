@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ Shield::Shield(XML_Helper* helper)
   helper->getData(d_color, "color");
 }
 	
-Shield::Shield(Shield::Colour owner, Gdk::Color color)
+Shield::Shield(Shield::Colour owner, Gdk::RGBA color)
 {
   d_owner = guint32(owner);
   d_color = color;
@@ -49,29 +49,30 @@ Shield::~Shield()
       delete *it;
 }
 
-Gdk::Color Shield::get_default_color_for_no(int player_no)
+Gdk::RGBA Shield::get_default_color_for_no(int player_no)
 {
-  Gdk::Color c;
+  Gdk::RGBA c;
   switch (player_no % MAX_PLAYERS)
     {
-    case Shield::WHITE: c.set_rgb_p(252.0/255.0,252.0/255.0,252.0/255.0); break;
-    case Shield::GREEN: c.set_rgb_p(80.0/255.0, 195.0/255.0, 28.0/255.0); break;
-    case Shield::YELLOW: c.set_rgb_p(252.0/255.0,236.0/255.0,32.0/255.0); break;
-    case Shield::DARK_BLUE: c.set_rgb_p(0,252.0/255.0,252.0/255.0); break;
-    case Shield::ORANGE: c.set_rgb_p(252.0/255.0,160.0/255.0,0);break;
+    case Shield::WHITE: c.set_rgba(252.0/255.0,252.0/255.0,252.0/255.0); break;
+    case Shield::GREEN: c.set_rgba(80.0/255.0, 195.0/255.0, 28.0/255.0); break;
+    case Shield::YELLOW: c.set_rgba(252.0/255.0,236.0/255.0,32.0/255.0); break;
+    //case Shield::DARK_BLUE: c.set_rgba(0,252.0/255.0,252.0/255.0); break;
+    case Shield::DARK_BLUE: c.set_rgba(22.0/255.0,92.0/255.0, 252.0/255.0); break;
+    case Shield::ORANGE: c.set_rgba(252.0/255.0,160.0/255.0,0);break;
     case Shield::LIGHT_BLUE: 
-		      c.set_rgb_p(44.0/255.0,184.0/255.0,252.0/255.0); break;
-    case Shield::RED: c.set_rgb_p(196.0/255.0, 28.0/255.0, 0); break;
-    case Shield::BLACK: c.set_rgb_p(0,0,0); break;
+		      c.set_rgba(44.0/255.0,184.0/255.0,252.0/255.0); break;
+    case Shield::RED: c.set_rgba(196.0/255.0, 28.0/255.0, 0); break;
+    case Shield::BLACK: c.set_rgba(0,0,0); break;
     }
     
     return c;
 }
 
-Gdk::Color Shield::get_default_color_for_neutral()
+Gdk::RGBA Shield::get_default_color_for_neutral()
 {
-  Gdk::Color color;
-  color.set_rgb_p(204.0/255.0,204.0/255.0,204.0/255.0);
+  Gdk::RGBA color;
+  color.set_rgba(204.0/255.0,204.0/255.0,204.0/255.0);
   return color;
 }
 
@@ -120,6 +121,7 @@ void Shield::instantiateImages(Shieldset *s, bool &broken)
   Tar_Helper t(s->getConfigurationFile(), std::ios::in, broken);
   if (broken)
     return;
+  int count = 0;
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getImageName().empty() == false)
@@ -134,6 +136,7 @@ void Shield::instantiateImages(Shieldset *s, bool &broken)
           else
             return;
         }
+      count++;
     }
   t.Close();
 }

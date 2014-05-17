@@ -40,7 +40,7 @@ void ArmyMap::draw_stacks()
        pit != Playerlist::getInstance()->end(); pit++)
     {
       Stacklist* mylist = (*pit)->getStacklist();
-      Gdk::Color cross_color = (*pit)->getColor();
+      //Gdk::RGBA cross_color = (*pit)->getColor();
 
       for (Stacklist::iterator it= mylist->begin(); it != mylist->end(); it++)
         {

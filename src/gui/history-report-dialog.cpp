@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -98,7 +98,7 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
   xml->get_widget("winner_alignment", winner_alignment);
 
   Playerlist::iterator pit = Playerlist::getInstance()->begin();
-  Gdk::Color colour;
+  Gdk::RGBA colour;
   for (; pit != Playerlist::getInstance()->end(); ++pit)
     {
       if (*pit == Playerlist::getInstance()->getNeutral())
@@ -372,9 +372,12 @@ void HistoryReportDialog::run()
   dialog->run();
 }
 
-void HistoryReportDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
+void HistoryReportDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  map_image->property_pixmap() = map;
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+    Gdk::Pixbuf::create(map, 0, 0, 
+                        historymap->get_width(), historymap->get_height());
+  map_image->property_pixbuf() = pixbuf;
 }
 
 void HistoryReportDialog::on_turn_changed(Gtk::Scale *scale)
@@ -422,8 +425,10 @@ void HistoryReportDialog::fill_in_turn_info(guint32 turn)
 
   //update the event list
   //events_list->clear();
-  events_list_box->children().erase(events_list_box->children().begin(),
-                                    events_list_box->children().end());
+  std::vector<Gtk::Widget*> kids = events_list_box->get_children();
+  for (unsigned int i = 0; i < kids.size(); i++)
+    events_list_box->remove(*kids[i]);
+
   if (turn <= past_eventlists.size() - 1)
     {
       std::list<NetworkHistory*> hist = past_eventlists[turn];
@@ -521,7 +526,7 @@ void HistoryReportDialog::fill_in_turn_info(guint32 turn)
   winner_label->set_text(s);
 }
 
-void HistoryReportDialog::on_switch_page(GtkNotebookPage *page, guint number)
+void HistoryReportDialog::on_switch_page(Gtk::Widget *page, guint number)
 {
   if (closing)
     return;

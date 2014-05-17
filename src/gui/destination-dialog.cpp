@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -118,7 +118,7 @@ void DestinationDialog::run()
     dialog->run();
 }
 
-void DestinationDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
+void DestinationDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
   if (vectormap->getClickAction() == VectorMap::CLICK_SELECTS &&
       vector_toggle->get_active() == true)
@@ -130,7 +130,10 @@ void DestinationDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
       city = vectormap->getCity();
       fill_in_vectoring_info();
     }
-  map_image->property_pixmap() = map;
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+    Gdk::Pixbuf::create(map, 0, 0, 
+                        vectormap->get_width(), vectormap->get_height());
+  map_image->property_pixbuf() = pixbuf;
 }
 
 bool DestinationDialog::on_map_mouse_button_event(GdkEventButton *e)

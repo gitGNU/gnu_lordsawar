@@ -2,7 +2,7 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004, 2005 Bryan Duff
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2012 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -80,7 +80,7 @@ class BigMap: public sigc::trackable
     /**
      * Classes that use BigMap must catch this signal to display the map.
      */
-    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > map_changed;
+    sigc::signal<void, Cairo::RefPtr<Cairo::Surface> > map_changed;
     void blank(bool on);
 
     //! Save the whole map as one big image (bmp file).
@@ -93,17 +93,17 @@ class BigMap: public sigc::trackable
     bool saveViewAsBitmap(std::string filename);
     void toggle_grid();
     
-    Glib::RefPtr<Gdk::Pixmap> get_surface() const {return outgoing;}
+    Cairo::RefPtr<Cairo::Surface> get_surface() const {return outgoing;}
  protected:
     MapRenderer* d_renderer;
 
     Rectangle view;		// approximate view of screen, in tiles
     Vector<int> view_pos; 	// precise position of view in pixels
 
-    Glib::RefPtr<Gdk::Pixmap> buffer;	// the buffer we draw things in
-    Glib::RefPtr<Gdk::Pixmap> outgoing; //goes out to the gtk::image
-    Glib::RefPtr<Gdk::GC> buffer_gc;
-    Glib::RefPtr<Gdk::Pixmap> magnified_buffer;	// the zoomed buffer;
+    Cairo::RefPtr<Cairo::Surface> buffer;	// the buffer we draw things in
+    Cairo::RefPtr<Cairo::Surface> outgoing; //goes out to the gtk::image
+    Cairo::RefPtr<Cairo::Context> buffer_gc;
+    Cairo::RefPtr<Cairo::Surface> magnified_buffer;	// the zoomed buffer;
     double magnification_factor; //how much we're zoomed
     Rectangle buffer_view;	// current view of the buffer, in tiles
 
@@ -120,19 +120,19 @@ class BigMap: public sigc::trackable
     Vector<int> tile_to_buffer_pos(Vector<int> tile);
     Vector<int> get_view_pos_from_view();
     void draw_buffer();  
-    void blit_object(const Location &obj, Vector<int> tile, PixMask* image, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc);
+    void blit_object(const Location &obj, Vector<int> tile, PixMask* image, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> surface_gc);
 
     virtual void after_draw() { }
 
  protected:
-    void draw_stack(Stack *s, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc);
+    void draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> surface_gc);
  private:
-    void draw_buffer(Rectangle map_view, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context);
-    void draw_buffer_tiles(Rectangle map_view, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context);
+    void draw_buffer(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> context);
+    void draw_buffer_tiles(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> context);
 
-    void draw_buffer_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context);
-    Glib::RefPtr<Gdk::Pixmap> magnify(Glib::RefPtr<Gdk::Pixmap> orig);
-    void clip_viewable_buffer(Glib::RefPtr<Gdk::Pixmap> pixmap, Glib::RefPtr<Gdk::GC> gc, Vector<int> pos, Glib::RefPtr<Gdk::Pixmap> out);
+    void draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> context);
+    Cairo::RefPtr<Cairo::Surface> magnify(Cairo::RefPtr<Cairo::Surface> orig);
+    void clip_viewable_buffer(Cairo::RefPtr<Cairo::Surface> pixmap, Cairo::RefPtr<Cairo::Context> gc, Vector<int> pos, Cairo::RefPtr<Cairo::Surface> out);
 };
 
 #endif

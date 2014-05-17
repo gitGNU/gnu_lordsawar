@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ class HeroMap : public OverviewMap
     /**
      * Classes that use HeroMap must catch this signal to display the map.
      */
-    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > map_changed;
+    sigc::signal<void, Cairo::RefPtr<Cairo::Surface> > map_changed;
     
  private:
     //! The City of where to draw the Hero icon.

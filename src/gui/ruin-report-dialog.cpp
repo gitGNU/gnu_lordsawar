@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -106,9 +106,12 @@ void RuinReportDialog::run()
   dialog->run();
 }
 
-void RuinReportDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
+void RuinReportDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  map_image->property_pixmap() = map;
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+    Gdk::Pixbuf::create(map, 0, 0, 
+                        ruinmap->get_width(), ruinmap->get_height());
+  map_image->property_pixbuf() = pixbuf;
   fill_in_ruin_info();
 }
 

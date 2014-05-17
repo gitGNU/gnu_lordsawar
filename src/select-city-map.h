@@ -51,7 +51,7 @@ class SelectCityMap : public OverviewMap
     /**
      * Classes that use CityMap must catch this signal to display the map.
      */
-    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > map_changed;
+    sigc::signal<void, Cairo::RefPtr<Cairo::Surface> > map_changed;
 
     sigc::signal<void, City *> city_selected;
     

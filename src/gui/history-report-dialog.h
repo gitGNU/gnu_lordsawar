@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -85,16 +85,16 @@ class HistoryReportDialog: public Decorated
 
     Gtk::Image *map_image;
   
-    std::list<Gdk::Color> d_colours; //player colours
+    std::list<Gdk::RGBA> d_colours; //player colours
     
     Gtk::VBox *events_list_box;
 
     void addHistoryEvent(NetworkHistory *event);
     void on_close_button();
-    void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    void on_map_changed(Cairo::RefPtr<Cairo::Surface> map);
     void on_turn_changed(Gtk::Scale *scale);
     void fill_in_turn_info(guint32 turn);
-    void on_switch_page(GtkNotebookPage *page, guint number);
+    void on_switch_page(Gtk::Widget *page, guint number);
     void update_window_title();
 
     bool closing;

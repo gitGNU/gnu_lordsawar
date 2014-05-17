@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Ben Asselstine
+//  Copyright (C) 2011, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -105,9 +105,11 @@ City*UseItemOnCityDialog::run()
     return citymap->get_selected_city();
 }
 
-void UseItemOnCityDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
+void UseItemOnCityDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  map_image->property_pixmap() = map;
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+    Gdk::Pixbuf::create(map, 0, 0, citymap->get_width(), citymap->get_height());
+  map_image->property_pixbuf() = pixbuf;
 }
 
 void UseItemOnCityDialog::on_city_selected(City *city)

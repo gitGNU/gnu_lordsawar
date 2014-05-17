@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -122,16 +122,16 @@ class Maptile
         guint32 getMoves() const;
 
         //! Get the smalltile color of this maptile.
-	Gdk::Color getColor() const {return d_smalltile->getColor();}
+	Gdk::RGBA getColor() const {return d_smalltile->getColor();}
 
 	//! Get the pattern of this maptile on the smalltile.
        SmallTile::Pattern getPattern() const {return d_smalltile->getPattern();}
 
 	//! Get the associated colour with the pattern.
-       Gdk::Color getSecondColor() const {return d_smalltile->getSecondColor();}
+       Gdk::RGBA getSecondColor() const {return d_smalltile->getSecondColor();}
 
 	//! Get the associated colour with the pattern.
-       Gdk::Color getThirdColor() const {return d_smalltile->getThirdColor();}
+       Gdk::RGBA getThirdColor() const {return d_smalltile->getThirdColor();}
 
         //! Get the tile type (the type of the underlying terrain).
         Tile::Type getType() const {return d_type;}

@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, 2008 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -159,8 +159,8 @@ class GameWindow: public Decorated
     Gtk::MenuItem *winning_report_menuitem;
     Gtk::MenuItem *quests_menuitem;
     Gtk::MenuItem *preferences_menuitem;
-    Gtk::DrawingArea *map_drawingarea;
-    Gtk::DrawingArea *bigmap_drawingarea;
+    Gtk::Image *smallmap_image;
+    Gtk::Image *bigmap_image;
 
     Gtk::Label *turn_label;
     Gtk::HBox *turn_hbox;
@@ -252,10 +252,10 @@ class GameWindow: public Decorated
     void on_sidebar_stats_changed(SidebarStats s);
     void on_progress_status_changed(std::string status);
     void on_progress_changed();
-    void on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map, Gdk::Rectangle r);
+    void on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map, Gdk::Rectangle r);
     void on_smallmap_slid(Rectangle view);
     void on_bigmap_cursor_changed(GraphicsCache::CursorType cursor);
-    void on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    void on_bigmap_changed(Cairo::RefPtr<Cairo::Surface> map);
     void on_stack_info_changed(Stack *s);
     void on_bigmap_tip_changed(Glib::ustring tip, MapTipPosition pos);
     void on_stack_tip_changed(StackTile *stile, MapTipPosition pos);
@@ -325,8 +325,8 @@ class GameWindow: public Decorated
     
     void setup_menuitem(Gtk::MenuItem*, sigc::slot<void> , sigc::signal<void, bool> &);
     void on_bigmap_surface_changed(Gtk::Allocation box);
-    bool on_bigmap_exposed(GdkEventExpose *event);
-    bool on_smallmap_exposed(GdkEventExpose *event);
+    bool on_bigmap_exposed(GdkEvent *event);
+    bool on_smallmap_exposed(GdkEvent *event);
     void on_group_stack_toggled(bool lock);
 
     Player *game_winner;

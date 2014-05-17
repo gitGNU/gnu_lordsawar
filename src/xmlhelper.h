@@ -1,7 +1,7 @@
 // Copyright (C) 2002, 2003 Michael Bartl
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2004, 2005 Andrea Paternesi
-// Copyright (C) 2011 Ben Asselstine
+// Copyright (C) 2011, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -150,7 +150,7 @@ class XML_Helper
         bool saveData(std::string identifier, const double value);
         /* amd64 fix, UL: still neccessary?*/
         bool saveData(std::string identifier, unsigned long int value);
-	bool saveData(std::string identifier, const Gdk::Color value);
+	bool saveData(std::string identifier, const Gdk::RGBA value);
 
         /** Closes the reading/writing stream.
           * @note As soon as you call this function, the object is dead with
@@ -195,7 +195,7 @@ class XML_Helper
         bool getData(int& data, std::string name);
         bool getData(guint32& data, std::string name);
         bool getData(double& data, std::string name);
-	bool getData(Gdk::Color& data, std::string name);
+	bool getData(Gdk::RGBA & data, std::string name);
 
         //! Returns the version number of the save file
         std::string getVersion() const {return d_version;}

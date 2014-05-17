@@ -231,7 +231,7 @@ void PlayersDialog::cell_data_gold(Gtk::CellRenderer *renderer,
 				  const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
-          = new Gtk::Adjustment((*i)[player_columns.gold], 0, 10000, 1);
+          = Gtk::Adjustment::create((*i)[player_columns.gold], 0, 10000, 1);
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
       String::ucompose("%1", (*i)[player_columns.gold]);
 }

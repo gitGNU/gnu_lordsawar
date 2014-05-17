@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ class UseItemOnPlayerDialog: public Decorated
     Gtk::Image *map_image;
     Gtk::Button *continue_button;
     
-    void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    void on_map_changed(Cairo::RefPtr<Cairo::Surface> map);
     void addPlayer(Player *player);
     Player *grabSelectedPlayer();
 

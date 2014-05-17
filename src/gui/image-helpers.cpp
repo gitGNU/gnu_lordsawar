@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2009, 2011 Ben Asselstine
+//  Copyright (C) 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,19 +17,6 @@
 //  02110-1301, USA.
 
 #include "image-helpers.h"
-
-Glib::RefPtr<Gdk::Pixmap> to_pixmap(Glib::RefPtr<Gdk::Pixbuf> pixbuf)
-{
-  Glib::RefPtr<Gdk::Pixmap> p = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), pixbuf->get_width(), pixbuf->get_height(), 24);
-  pixbuf->render_to_drawable_alpha(p, 0, 0, 0, 0, pixbuf->get_width(),
-				 pixbuf->get_height(), Gdk::PIXBUF_ALPHA_BILEVEL,
-				 123, Gdk::RGB_DITHER_NONE, 0, 0);
-  //p = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), 
-			  //pixbuf->get_width(), pixbuf->get_height(), 24);
-  //p->draw_pixbuf(pixbuf, 0, 0, 0, 0, pixbuf->get_width(), pixbuf->get_height(),
-		 //Gdk::RGB_DITHER_NORMAL, 0, 0);
-  return p;
-}
 
 std::vector<PixMask*>
 disassemble_row(const std::string &file, int no, bool &broken)
@@ -125,23 +112,11 @@ disassemble_row(const std::string &file, int no, bool first_half_height, bool &b
       pixmasks.push_back(PixMask::create(images[i]));
     return pixmasks;
 }
-int get_pwidth(Glib::RefPtr<Gdk::Pixmap> pixmap)
-{
-  int width = 0, height = 0;
-  pixmap->get_size(width, height);
-  return width;
-}
-int get_pheight(Glib::RefPtr<Gdk::Pixmap> pixmap)
-{
-  int width = 0, height = 0;
-  pixmap->get_size(width, height);
-  return height;
-}
-Glib::RefPtr<Gdk::Pixmap> scale (Glib::RefPtr<Gdk::Pixmap> pixmap, int w, int h)
-{
-  return pixmap;
+//Glib::RefPtr<Gdk::Pixmap> scale (Glib::RefPtr<Gdk::Pixmap> pixmap, int w, int h)
+//{
+  //return pixmap;
   //return to_pixmap(to_pixbuf(pixmap)->scale_simple(w, h, Gdk::INTERP_BILINEAR));
-}
+//}
 
 bool image_width_is_multiple_of_image_height(const std::string file)
 {

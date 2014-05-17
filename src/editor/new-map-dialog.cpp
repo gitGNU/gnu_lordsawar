@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -79,7 +79,7 @@ NewMapDialog::NewMapDialog()
 	 it++)
       {
 	Glib::ustring s = String::ucompose("%1x%1", *it);
-	tile_size_combobox->append_text(s);
+	tile_size_combobox->append(s);
 	if ((*it) == Tileset::getDefaultTileSize())
 	  default_id = counter;
 	counter++;
@@ -115,7 +115,7 @@ NewMapDialog::NewMapDialog()
       {
 	if (*i == _("Default"))
 	  default_id = counter;
-	shield_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+	shield_theme_combobox->append(Glib::filename_to_utf8(*i));
 	counter++;
       }
 
@@ -136,7 +136,7 @@ NewMapDialog::NewMapDialog()
     add_fill_style(Tile::MOUNTAIN);
     add_fill_style(Tile::SWAMP);
 
-    fill_style_combobox->append_text(_("Random"));
+    fill_style_combobox->append(_("Random"));
     fill_style.push_back(-1);
 
     Gtk::Alignment *alignment;
@@ -287,7 +287,7 @@ void NewMapDialog::add_fill_style(Tile::Type tile_type)
 {
   Tileset *tileset = GameMap::getTileset();
   Tile *tile = (*tileset)[tileset->getIndex(tile_type)];
-  fill_style_combobox->append_text(tile->getName());
+  fill_style_combobox->append(tile->getName());
   fill_style.push_back(tile_type);
 }
 
@@ -301,7 +301,10 @@ void NewMapDialog::on_tile_size_changed()
   guint32 default_id = 0;
   guint32 counter = 0;
 
-  tile_theme_combobox->clear_items();
+  Gtk::Container *container = tile_theme_combobox->get_parent();
+  container->remove(*tile_theme_combobox);
+  tile_theme_combobox = manage(new Gtk::ComboBoxText);
+
   Tilesetlist *tl = Tilesetlist::getInstance();
   std::list<std::string> tile_themes = tl->getValidNames(get_active_tile_size());
   for (std::list<std::string>::iterator i = tile_themes.begin(),
@@ -309,7 +312,7 @@ void NewMapDialog::on_tile_size_changed()
     {
       if (*i == _("Default"))
 	default_id = counter;
-      tile_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      tile_theme_combobox->append(Glib::filename_to_utf8(*i));
       counter++;
     }
 
@@ -317,7 +320,10 @@ void NewMapDialog::on_tile_size_changed()
   if (tile_theme_combobox->get_children().size() == 0)
     accept_button->set_sensitive(false);
 
-  army_theme_combobox->clear_items();
+  container = army_theme_combobox->get_parent();
+  container->remove(*army_theme_combobox);
+  army_theme_combobox = manage(new Gtk::ComboBoxText);
+
   Armysetlist *al = Armysetlist::getInstance();
   std::list<std::string> army_themes = al->getValidNames(get_active_tile_size());
   counter = 0;
@@ -327,7 +333,7 @@ void NewMapDialog::on_tile_size_changed()
     {
       if (*i == _("Default"))
 	default_id = counter;
-      army_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      army_theme_combobox->append(Glib::filename_to_utf8(*i));
       counter++;
     }
 
@@ -335,7 +341,10 @@ void NewMapDialog::on_tile_size_changed()
   if (army_theme_combobox->get_children().size() == 0)
     accept_button->set_sensitive(false);
 
-  city_theme_combobox->clear_items();
+  container = city_theme_combobox->get_parent();
+  container->remove(*city_theme_combobox);
+  city_theme_combobox = manage(new Gtk::ComboBoxText);
+
   Citysetlist *cl = Citysetlist::getInstance();
   std::list<std::string> city_themes = cl->getValidNames(get_active_tile_size());
   counter = 0;
@@ -345,7 +354,7 @@ void NewMapDialog::on_tile_size_changed()
     {
       if (*i == _("Default"))
 	default_id = counter;
-      city_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      city_theme_combobox->append(Glib::filename_to_utf8(*i));
       counter++;
     }
 

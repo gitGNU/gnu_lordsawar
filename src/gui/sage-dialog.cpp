@@ -128,9 +128,11 @@ Reward *SageDialog::run()
     return reward;
 }
 
-void SageDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
+void SageDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  map_image->property_pixmap() = map;
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+    Gdk::Pixbuf::create(map, 0, 0, ruinmap->get_width(), ruinmap->get_height());
+  map_image->property_pixbuf() = pixbuf;
 }
 
 void SageDialog::addReward(Reward *reward)

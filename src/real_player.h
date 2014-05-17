@@ -52,7 +52,7 @@ class RealPlayer : public Player
     public:
 
 	//! Default constructor.
-        RealPlayer(std::string name, guint32 armyset, Gdk::Color color, 
+        RealPlayer(std::string name, guint32 armyset, Gdk::RGBA color, 
 		   int width, int height, Player::Type type = Player::HUMAN, 
 		   int player_no = -1);
 

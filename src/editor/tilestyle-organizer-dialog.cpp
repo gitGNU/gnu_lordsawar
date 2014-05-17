@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 TileStyleOrganizerDialog::TileStyleOrganizerDialog(Tile *tile)
 {
     d_tile = tile;
-    std::list<Gtk::TargetEntry> targets;
+    std::vector<Gtk::TargetEntry> targets;
     targets.push_back(Gtk::TargetEntry("LordsawarTilestyleType", Gtk::TARGET_SAME_APP));
     
     Glib::RefPtr<Gtk::Builder> xml
@@ -118,7 +118,7 @@ void TileStyleOrganizerDialog::on_unsorted_drag_data_get(const Glib::RefPtr<Gdk:
 
 int TileStyleOrganizerDialog::get_selected_category()
 {
-  typedef std::list<Gtk::TreeModel::Path> type_list_paths;
+  typedef std::vector<Gtk::TreeModel::Path> type_list_paths;
   type_list_paths selected = categories_iconview->get_selected_items();
   if (!selected.empty())
     {
@@ -132,7 +132,7 @@ int TileStyleOrganizerDialog::get_selected_category()
 
 TileStyle * TileStyleOrganizerDialog::get_selected_category_tilestyle ()
 {
-  typedef std::list<Gtk::TreeModel::Path> type_list_paths;
+  typedef std::vector<Gtk::TreeModel::Path> type_list_paths;
   type_list_paths selected = category_iconview->get_selected_items();
   if (!selected.empty())
     {
@@ -146,7 +146,7 @@ TileStyle * TileStyleOrganizerDialog::get_selected_category_tilestyle ()
 
 TileStyle * TileStyleOrganizerDialog::get_selected_unsorted_tilestyle ()
 {
-  typedef std::list<Gtk::TreeModel::Path> type_list_paths;
+  typedef std::vector<Gtk::TreeModel::Path> type_list_paths;
   type_list_paths selected = unsorted_iconview->get_selected_items();
   if (!selected.empty())
     {

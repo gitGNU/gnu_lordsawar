@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -95,7 +95,7 @@ RuinEditorDialog::RuinEditorDialog(Ruin *r, CreateScenarioRandomize *randomizer)
 	     end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
     {
 	Player *player = *i;
-	player_combobox->append_text(player->getName());
+	player_combobox->append(player->getName());
 	if (player == ruin->getOwner())
 	    player_no = c;
     }

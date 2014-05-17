@@ -50,7 +50,7 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 
 AM_CXXFLAGS = -Wall -DPO_PATH=\"$(prefix)/share/locale/\"
-INCLUDES = \
+AM_CPPFLAGS = \
     $(SDL_CFLAGS) \
     $(LIBSIGC_CFLAGS) \
     $(GTKMM_CFLAGS) \

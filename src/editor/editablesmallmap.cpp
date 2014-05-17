@@ -44,15 +44,13 @@ EditableSmallMap::~EditableSmallMap()
 
 void EditableSmallMap::after_draw()
 {
-  int width = 0, height = 0;
-  surface->get_size(width, height);
   OverviewMap::after_draw();
   draw_cities(false);
   if (road_start != Vector<int>(-1,-1))
       draw_target_box(road_start, ROAD_PLANNER_TARGET_BOX_COLOUR);
   if (road_finish != Vector<int>(-1,-1))
       draw_target_box(road_finish, ROAD_PLANNER_TARGET_BOX_COLOUR);
-  map_changed.emit(surface, Gdk::Rectangle(0, 0, width, height));
+  map_changed.emit(surface, Gdk::Rectangle(0, 0, get_width(), get_height()));
 }
 
 Rectangle EditableSmallMap::get_cursor_rectangle(Vector<int> current_tile)

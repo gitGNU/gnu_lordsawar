@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -75,7 +75,7 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, StackTile *
     window->get_child()->show();
     Vector<int> p(0, 0);
     target->get_window()->get_origin(p.x, p.y);
-    if (target->has_no_window())
+    if (target->get_has_window() == false)
     {
 	Gtk::Allocation a = target->get_allocation();
 	p.x += a.get_x();

@@ -1,25 +1,43 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkAdjustment" id="adjustment1">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+    <property name="page_size">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment2">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+    <property name="page_size">10</property>
+  </object>
   <object class="GtkWindow" id="window">
+    <property name="can_focus">False</property>
     <property name="title" translatable="yes">LordsAWar! Scenario Editor</property>
     <child>
       <object class="GtkVBox" id="outermost_vbox">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <child>
           <object class="GtkMenuBar" id="menubar">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <object class="GtkMenuItem" id="file_menuitem">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">File</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="file_menuitem_menu">
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkMenuItem" id="new_map_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">New Map</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -27,6 +45,7 @@
                     <child>
                       <object class="GtkMenuItem" id="new_map_from_image_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">New Map from Image</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -34,6 +53,7 @@
                     <child>
                       <object class="GtkMenuItem" id="load_map_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Load Map</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -41,6 +61,7 @@
                     <child>
                       <object class="GtkMenuItem" id="save_map_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Save Map</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -48,6 +69,7 @@
                     <child>
                       <object class="GtkMenuItem" id="save_map_as_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Save Map As</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -55,6 +77,7 @@
                     <child>
                       <object class="GtkMenuItem" id="import_map_from_sav_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Import Map from Saved Game</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -62,6 +85,7 @@
                     <child>
                       <object class="GtkMenuItem" id="export_as_bitmap_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Save a picture of the map.</property>
                         <property name="label" translatable="yes">Export Map As Image</property>
                         <property name="use_underline">True</property>
@@ -70,6 +94,7 @@
                     <child>
                       <object class="GtkMenuItem" id="export_as_bitmap_no_game_objects_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="tooltip_text" translatable="yes">Save a picture of the map showing just the terrain.</property>
                         <property name="label" translatable="yes">Export Terrain Map As Image</property>
                         <property name="use_underline">True</property>
@@ -78,6 +103,7 @@
                     <child>
                       <object class="GtkMenuItem" id="validate_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Validate</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -85,11 +111,13 @@
                     <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="quit_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Quit</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -101,13 +129,16 @@
             <child>
               <object class="GtkMenuItem" id="edit_menuitem">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Edit</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="edit_menuitem_menu">
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkMenuItem" id="edit_players_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Players</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -115,6 +146,7 @@
                     <child>
                       <object class="GtkMenuItem" id="edit_map_info_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Map Info</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -122,6 +154,7 @@
                     <child>
                       <object class="GtkMenuItem" id="edit_items_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Items</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -129,6 +162,7 @@
                     <child>
                       <object class="GtkMenuItem" id="edit_rewards_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Rewards</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -136,6 +170,7 @@
                     <child>
                       <object class="GtkMenuItem" id="smooth_screen_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Smooth Screen</property>
                         <property name="use_underline">True</property>
                         <accelerator key="s" signal="activate"/>
@@ -144,6 +179,7 @@
                     <child>
                       <object class="GtkMenuItem" id="smooth_map_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Smooth Entire Map</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -151,6 +187,7 @@
                     <child>
                       <object class="GtkMenuItem" id="switch_sets_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Switch Image Sets</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -158,6 +195,7 @@
                     <child>
                       <object class="GtkMenuItem" id="edit_armyset_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Armyset</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -165,6 +203,7 @@
                     <child>
                       <object class="GtkMenuItem" id="edit_cityset_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Cityset</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -172,6 +211,7 @@
                     <child>
                       <object class="GtkMenuItem" id="edit_shieldset_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Shieldset</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -179,6 +219,7 @@
                     <child>
                       <object class="GtkMenuItem" id="edit_tileset_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Tileset</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -186,6 +227,7 @@
                     <child>
                       <object class="GtkMenuItem" id="edit_smallmap_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Miniature Map</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -197,13 +239,16 @@
             <child>
               <object class="GtkMenuItem" id="random_menuitem">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Random</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="random_menuitem_menu">
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkMenuItem" id="random_all_cities_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">All Cities</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -211,6 +256,7 @@
                     <child>
                       <object class="GtkMenuItem" id="random_unnamed_cities_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Unnamed Cities</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -218,6 +264,7 @@
                     <child>
                       <object class="GtkMenuItem" id="random_all_ruins_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">All Ruins</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -225,14 +272,16 @@
                     <child>
                       <object class="GtkMenuItem" id="random_unnamed_ruins_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Unnamed Ruins</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_random_unnamed_ruins_menuitem_activate"/>
+                        <signal name="activate" handler="on_random_unnamed_ruins_menuitem_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="random_all_temples_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">All Temples</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -240,6 +289,7 @@
                     <child>
                       <object class="GtkMenuItem" id="random_unnamed_temples_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Unnamed Temples</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -247,6 +297,7 @@
                     <child>
                       <object class="GtkMenuItem" id="random_all_signs_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">All Signs</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -254,6 +305,7 @@
                     <child>
                       <object class="GtkMenuItem" id="random_unnamed_signs_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Unnamed Signs</property>
                         <property name="use_underline">True</property>
                       </object>
@@ -265,22 +317,26 @@
             <child>
               <object class="GtkMenuItem" id="view_menuitem">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">View</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="view_menuitem_menu">
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkCheckMenuItem" id="fullscreen_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Fullscreen</property>
                         <property name="use_underline">True</property>
                         <accelerator key="F11" signal="activate"/>
-                        <signal name="activate" handler="on_fullscreen_menuitem_activate"/>
+                        <signal name="activate" handler="on_fullscreen_menuitem_activate" swapped="no"/>
                       </object>
                     </child>
                     <child>
                       <object class="GtkMenuItem" id="toggle_tile_graphics_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Toggle Tile Graphics</property>
                         <property name="use_underline">True</property>
                         <accelerator key="space" signal="activate"/>
@@ -289,6 +345,7 @@
                     <child>
                       <object class="GtkMenuItem" id="toggle_grid_menuitem">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Toggle Grid</property>
                         <property name="use_underline">True</property>
                         <accelerator key="g" signal="activate"/>
@@ -301,17 +358,20 @@
             <child>
               <object class="GtkMenuItem" id="help_menuitem">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Help</property>
                 <property name="use_underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu" id="help_menuitem_menu">
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkImageMenuItem" id="help_about_menuitem">
                         <property name="label">gtk-about</property>
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_help_about_activated"/>
+                        <signal name="activate" handler="on_help_about_activated" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -321,44 +381,57 @@
           </object>
           <packing>
             <property name="expand">False</property>
+            <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkHBox" id="contents_hbox">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <object class="GtkEventBox" id="bigmap_eventbox">
+                <property name="width_request">400</property>
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkDrawingArea" id="bigmap_drawingarea">
-                    <property name="width_request">480</property>
+                  <object class="GtkImage" id="bigmap_image">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stock">gtk-missing-image</property>
                   </object>
                 </child>
               </object>
               <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkVBox" id="sidebar_vbox">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">6</property>
                 <child>
                   <object class="GtkHBox" id="map_box">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkEventBox" id="map_eventbox">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <child>
                           <object class="GtkFrame" id="map_frame">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="label_xalign">0</property>
                             <property name="shadow_type">in</property>
                             <child>
-                              <object class="GtkDrawingArea" id="map_drawingarea">
+                              <object class="GtkImage" id="smallmap_image">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="stock">gtk-missing-image</property>
                               </object>
                             </child>
                           </object>
@@ -381,6 +454,7 @@
                 <child>
                   <object class="GtkVBox" id="terrain_vbox">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow3">
                         <property name="visible">True</property>
@@ -391,10 +465,12 @@
                         <child>
                           <object class="GtkViewport" id="viewport3">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="resize_mode">queue</property>
                             <child>
                               <object class="GtkHBox" id="terrain_cursor_hbox">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="spacing">3</property>
                                 <child>
                                   <object class="GtkRadioButton" id="pointer_radiobutton">
@@ -406,6 +482,7 @@
                                     <child>
                                       <object class="GtkImage" id="pointer_image">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="stock">gtk-missing-image</property>
                                       </object>
                                     </child>
@@ -426,6 +503,7 @@
                                     <child>
                                       <object class="GtkImage" id="draw_1_image">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="stock">gtk-missing-image</property>
                                       </object>
                                     </child>
@@ -446,6 +524,7 @@
                                     <child>
                                       <object class="GtkImage" id="draw_2_image">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="stock">gtk-missing-image</property>
                                       </object>
                                     </child>
@@ -466,6 +545,7 @@
                                     <child>
                                       <object class="GtkImage" id="draw_3_image">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="stock">gtk-missing-image</property>
                                       </object>
                                     </child>
@@ -486,6 +566,7 @@
                                     <child>
                                       <object class="GtkImage" id="draw_6_image">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="stock">gtk-missing-image</property>
                                       </object>
                                     </child>
@@ -506,6 +587,7 @@
                                     <child>
                                       <object class="GtkImage" id="erase_image">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="stock">gtk-missing-image</property>
                                       </object>
                                     </child>
@@ -526,11 +608,14 @@
                                     <child>
                                       <object class="GtkImage" id="move_image">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="stock">gtk-missing-image</property>
                                       </object>
                                     </child>
                                   </object>
                                   <packing>
+                                    <property name="expand">True</property>
+                                    <property name="fill">True</property>
                                     <property name="position">6</property>
                                   </packing>
                                 </child>
@@ -540,6 +625,8 @@
                         </child>
                       </object>
                       <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
                         <property name="position">0</property>
                       </packing>
                     </child>
@@ -553,10 +640,12 @@
                 <child>
                   <object class="GtkAlignment" id="terrain_type_alignment">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="top_padding">6</property>
                     <child>
                       <object class="GtkTable" id="terrain_type_table">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="n_rows">2</property>
                         <property name="n_columns">6</property>
                         <property name="column_spacing">6</property>
@@ -597,10 +686,120 @@
                         <child>
                           <placeholder/>
                         </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
                       </object>
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">2</property>
                   </packing>
                 </child>
@@ -612,9 +811,11 @@
                     <child>
                       <object class="GtkViewport" id="viewport2">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <child>
                           <object class="GtkHBox" id="terrain_tile_style_hbox">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <child>
                               <object class="GtkRadioButton" id="radiobutton1">
                                 <property name="visible">True</property>
@@ -624,15 +825,18 @@
                                 <child>
                                   <object class="GtkAlignment" id="alignment1">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="xscale">0</property>
                                     <property name="yscale">0</property>
                                     <child>
                                       <object class="GtkHBox" id="hbox1">
                                         <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
                                         <property name="spacing">2</property>
                                         <child>
                                           <object class="GtkImage" id="image1">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="stock">gtk-missing-image</property>
                                           </object>
                                           <packing>
@@ -644,6 +848,7 @@
                                         <child>
                                           <object class="GtkLabel" id="label1">
                                             <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
                                             <property name="use_underline">True</property>
                                           </object>
                                           <packing>
@@ -693,6 +898,8 @@
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">3</property>
                   </packing>
                 </child>
@@ -704,9 +911,11 @@
                     <child>
                       <object class="GtkViewport" id="viewport1">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <child>
                           <object class="GtkHBox" id="map_features_box">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <child>
                               <object class="GtkRadioButton" id="draw_stack_radiobutton">
                                 <property name="visible">True</property>
@@ -717,6 +926,7 @@
                                 <child>
                                   <object class="GtkImage" id="draw_stack_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
@@ -737,6 +947,7 @@
                                 <child>
                                   <object class="GtkImage" id="draw_city_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
@@ -757,6 +968,7 @@
                                 <child>
                                   <object class="GtkImage" id="draw_ruin_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
@@ -777,6 +989,7 @@
                                 <child>
                                   <object class="GtkImage" id="draw_temple_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
@@ -797,6 +1010,7 @@
                                 <child>
                                   <object class="GtkImage" id="draw_port_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
@@ -817,6 +1031,7 @@
                                 <child>
                                   <object class="GtkImage" id="draw_signpost_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
@@ -837,6 +1052,7 @@
                                 <child>
                                   <object class="GtkImage" id="draw_road_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
@@ -857,6 +1073,7 @@
                                 <child>
                                   <object class="GtkImage" id="draw_bridge_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
@@ -877,6 +1094,7 @@
                                 <child>
                                   <object class="GtkImage" id="draw_bag_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
@@ -893,23 +1111,29 @@
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">4</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkHBox" id="players_hbox">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <child>
                       <placeholder/>
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">5</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel" id="mouse_position_label">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="xalign">0</property>
                     <property name="justify">right</property>
                   </object>
@@ -930,22 +1154,12 @@
             </child>
           </object>
           <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
             <property name="position">1</property>
           </packing>
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkAdjustment" id="adjustment1">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">10</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment2">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">10</property>
   </object>
 </interface>

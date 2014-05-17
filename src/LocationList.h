@@ -1,7 +1,7 @@
 // Copyright (C) 2001, 2003 Michael Bartl
 // Copyright (C) 2004 Ulf Lorenz
 // Copyright (C) 2005, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify

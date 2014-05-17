@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, 2008 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -78,8 +78,7 @@ FightWindow::FightWindow(Fight &fight)
     for (armies_type::iterator i = attackers.begin(); i != attackers.end(); ++i)
     {
       add_army(*i, initial_hps[(*i)->getId()],
-               close_hboxes, attacker_close_vbox, close++, rows,
-	       Gtk::ALIGN_LEFT);
+               close_hboxes, attacker_close_vbox, close++, rows);
     }
 
     close_hboxes.clear();
@@ -89,8 +88,7 @@ FightWindow::FightWindow(Fight &fight)
     for (armies_type::iterator i = defenders.begin(); i != defenders.end(); ++i)
     {
 	add_army(*i, initial_hps[(*i)->getId()],
-                 close_hboxes, defender_close_vbox, close++, rows,
-		 Gtk::ALIGN_LEFT);
+                 close_hboxes, defender_close_vbox, close++, rows);
     }
     
     // fill in shield pictures
@@ -236,8 +234,7 @@ int FightWindow::compute_max_rows(const armies_type &attackers,
 void FightWindow::add_army(Army *army, int initial_hp,
 			   std::vector<Gtk::HBox *> &hboxes,
 			   Gtk::VBox *vbox,
-			   int current_no, int max_rows,
-			   Gtk::AlignmentEnum alignment)
+			   int current_no, int max_rows)
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
     // construct the army box
@@ -257,7 +254,8 @@ void FightWindow::add_army(Army *army, int initial_hp,
       {
         SmallTile *water = 
           Tilesetlist::getInstance()->getSmallTile(GameMap::getTileset()->getBaseName(), Tile::WATER);
-        drawing_area->modify_bg(Gtk::STATE_NORMAL, water->getColor());
+        Gdk::RGBA watercolor = water->getColor();
+        drawing_area->override_background_color(watercolor, Gtk::STATE_FLAG_NORMAL);
       }
     ebox->add(*manage(drawing_area));
     army_box->add(*manage(ebox));
@@ -277,7 +275,7 @@ void FightWindow::add_army(Army *army, int initial_hp,
 	hbox->set_spacing(6);
 	hboxes.push_back(hbox);
 
-	Gtk::Alignment *a = manage(new Gtk::Alignment(alignment));
+	Gtk::Alignment *a = manage(new Gtk::Alignment(Gtk::ALIGN_START));
 	a->property_xscale() = 0;
 	a->add(*hbox);
 	vbox->pack_start(*a, Gtk::PACK_SHRINK);

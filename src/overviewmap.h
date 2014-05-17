@@ -1,5 +1,5 @@
 // Copyright (C) 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -120,25 +120,25 @@ class OverviewMap : public sigc::trackable
      * It only makes sense to get the surface after OverviewMap::resize and 
      * OverviewMap::draw have been called.
      */
-    Glib::RefPtr<Gdk::Pixmap> get_surface();
+    Cairo::RefPtr<Cairo::Surface> get_surface();
 
 
-    static void draw_terrain_tile (Glib::RefPtr<Gdk::Pixmap> surf,
-				Glib::RefPtr<Gdk::GC> gc,
+    static void draw_terrain_tile (Cairo::RefPtr<Cairo::Surface> surf,
+				Cairo::RefPtr<Cairo::Context> gc,
 				SmallTile::Pattern pattern,
-				Gdk::Color first, 
-				Gdk::Color second,
-				Gdk::Color third,
+				Gdk::RGBA first, 
+				Gdk::RGBA second,
+				Gdk::RGBA third,
 				int i, int j, bool shadowed);
 
-    static void draw_pixel(Glib::RefPtr<Gdk::Pixmap> surf, Glib::RefPtr<Gdk::GC> gc, int x, int y, const Gdk::Color color);
+    static void draw_pixel(Cairo::RefPtr<Cairo::Surface> surf, Cairo::RefPtr<Cairo::Context> gc, int x, int y, const Gdk::RGBA color);
 
 
-    void draw_filled_rect(int x, int y, int width, int height, const Gdk::Color color);
+    void draw_filled_rect(int x, int y, int width, int height, const Gdk::RGBA color);
 
-    void draw_rect(int x, int y, int width, int height, const Gdk::Color color);
+    void draw_rect(int x, int y, int width, int height, const Gdk::RGBA color);
 
-    void draw_line( int src_x, int src_y, int dst_x, int dst_y, const Gdk::Color color);
+    void draw_line( int src_x, int src_y, int dst_x, int dst_y, const Gdk::RGBA color);
 
     //! Make the map go black.
     void blank(bool on);
@@ -146,16 +146,18 @@ class OverviewMap : public sigc::trackable
     static int calculatePixelsPerTile(int width, int height);
     static int calculatePixelsPerTile();
 
-   static void draw_radial_gradient(Glib::RefPtr<Gdk::Pixmap> surface, Gdk::Color inner, Gdk::Color outer, int height, int width);
+    static void draw_radial_gradient(Cairo::RefPtr<Cairo::Surface> surface, Gdk::RGBA inner, Gdk::RGBA outer, int height, int width);
 
+    int get_width();
+    int get_height();
  private:
     //! An SDL surface of the terrain without the features.
     /**
      * This is the cached surface after the resize method was called.
      * It is cached so that we don't have recalculate it.
      */
-    Glib::RefPtr<Gdk::Pixmap> static_surface;
-    Glib::RefPtr<Gdk::GC> static_surface_gc;
+    Cairo::RefPtr<Cairo::Surface> static_surface;
+    Cairo::RefPtr<Cairo::Context> static_surface_gc;
 
     //! Returns whether or not the given pixel appears sunken (Tile::SUNKEN).
     /**
@@ -190,13 +192,13 @@ class OverviewMap : public sigc::trackable
     void draw_terrain_tile (Maptile *tile, int i, int j);
 
 
-    void choose_surface(bool front, Glib::RefPtr<Gdk::Pixmap> &surf,
-				 Glib::RefPtr<Gdk::GC> &gc);
-    void draw_filled_rect(bool front, int x, int y, int width, int height, Gdk::Color color);
+    void choose_surface(bool front, Cairo::RefPtr<Cairo::Surface> &surf,
+				 Cairo::RefPtr<Cairo::Context> &gc);
+    void draw_filled_rect(bool front, int x, int y, int width, int height, Gdk::RGBA color);
 
-    void draw_rect(bool front, int x, int y, int width, int height, Gdk::Color color);
+    void draw_rect(bool front, int x, int y, int width, int height, Gdk::RGBA color);
 
-    void draw_line(bool front, int src_x, int src_y, int dst_x, int dst_y, Gdk::Color color);
+    void draw_line(bool front, int src_x, int src_y, int dst_x, int dst_y, Gdk::RGBA color);
  protected:
 
     //! Every pixel on the graphic is this wide and tall.  2 is normal.
@@ -242,15 +244,15 @@ class OverviewMap : public sigc::trackable
     Maptile* getTile(int x, int y);
 
     //! The surface containing the drawn map.
-    Glib::RefPtr<Gdk::Pixmap> surface;
-    Glib::RefPtr<Gdk::GC> surface_gc;
+    Cairo::RefPtr<Cairo::Surface> surface;
+    Cairo::RefPtr<Cairo::Context> surface_gc;
 
     //! Draw a hero icon at the given location.  white or black.
     void draw_hero(Vector<int> pos, bool white);
 
-    void draw_target_box(Vector<int> pos, const Gdk::Color colour);
-    void draw_square_around_city(City *c, const Gdk::Color colour);
-    void draw_radial_gradient(Gdk::Color inner, Gdk::Color outer, int width, int height);
+    void draw_target_box(Vector<int> pos, const Gdk::RGBA colour);
+    void draw_square_around_city(City *c, const Gdk::RGBA colour);
+    void draw_radial_gradient(Gdk::RGBA inner, Gdk::RGBA outer, int width, int height);
 
     bool blank_screen;
 

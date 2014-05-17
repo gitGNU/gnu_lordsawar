@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -112,8 +112,8 @@ class TileSetWindow: public sigc::trackable
     };
     const TileStyleSetsColumns tilestylesets_columns;
     Glib::RefPtr<Gtk::ListStore> tilestylesets_list;
-    Glib::RefPtr<Gdk::Pixmap> tile_smallmap_surface;
-    Glib::RefPtr<Gdk::GC> tile_smallmap_surface_gc;
+    //Glib::RefPtr<Gdk::Pixmap> tile_smallmap_surface;
+    //Glib::RefPtr<Gdk::GC> tile_smallmap_surface_gc;
     Gtk::TreeView *tilestyles_treeview;
     class TileStylesColumns: public Gtk::TreeModelColumnRecord {
     public:

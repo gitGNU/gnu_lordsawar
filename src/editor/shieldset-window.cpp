@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -203,7 +203,7 @@ ShieldSetWindow::update_shield_panel()
       change_smallpic_button->set_label(none);
       change_mediumpic_button->set_label(none);
       change_largepic_button->set_label(none);
-      player_colorbutton->set_color(Gdk::Color("black"));
+      player_colorbutton->set_rgba(Gdk::RGBA("black"));
       return;
     }
   shield_frame->set_sensitive(true);
@@ -283,9 +283,10 @@ void ShieldSetWindow::on_load_shieldset_activated()
 {
   Gtk::FileChooserDialog chooser(*window, 
 				 _("Choose a Shieldset to Load"));
-  Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*" + SHIELDSET_EXT);
-  chooser.set_filter(sav_filter);
+  Glib::RefPtr<Gtk::FileFilter> lws_filter = Gtk::FileFilter::create();
+  lws_filter->set_name(_("LordsAWar Shieldsets (*.lws)"));
+  lws_filter->add_pattern("*" + SHIELDSET_EXT);
+  chooser.add_filter(lws_filter);
   chooser.set_current_folder(File::getUserShieldsetDir());
 
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
@@ -462,7 +463,7 @@ void ShieldSetWindow::fill_shield_info(Shield*shield)
   if (shield)
     {
       std::string none = _("no image set");
-      player_colorbutton->set_color(shield->getColor());
+      player_colorbutton->set_rgba(shield->getColor());
       std::string s;
       ShieldStyle* ss = shield->getFirstShieldstyle(ShieldStyle::SMALL);
       if (ss && ss->getImageName().empty() == false)
@@ -684,13 +685,13 @@ void ShieldSetWindow::on_player_color_changed()
     {
       Gtk::TreeModel::Row row = *iterrow;
       Shield *s = row[shields_columns.shield];
-      s->setColor(player_colorbutton->get_color());
+      s->setColor(player_colorbutton->get_rgba());
       needs_saving = true;
       update_window_title();
     }
 }
 
-void ShieldSetWindow::addNewShield(Shield::Colour owner, Gdk::Color colour)
+void ShieldSetWindow::addNewShield(Shield::Colour owner, Gdk::RGBA colour)
 {
   std::string name = Shield::colourToString(owner);
   Shield *shield = new Shield(owner, colour);

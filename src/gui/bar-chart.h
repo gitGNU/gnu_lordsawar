@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,19 +20,20 @@
 #include <gtkmm.h>
 #include <list>
 
-class BarChart: public Gtk::DrawingArea
+class BarChart: public Gtk::Image
 {
 public:
-    BarChart(std::list<unsigned int> bars, std::list<Gdk::Color> colours,
+    BarChart(std::list<unsigned int> bars, std::list<Gdk::RGBA> colours,
 	     unsigned int max_value);
     virtual ~BarChart();
 
 protected:
     //Override default signal handler:
-    virtual bool on_expose_event(GdkEventExpose* event);
+    //virtual bool on_expose_event(GdkEventExpose* event);
+    virtual bool on_draw (const Cairo::RefPtr<Cairo::Context> &cr);
 private:
     std::list<unsigned int> d_bars;
-    std::list<Gdk::Color> d_colours;
+    std::list<Gdk::RGBA> d_colours;
     unsigned int d_max_value;
 };
 

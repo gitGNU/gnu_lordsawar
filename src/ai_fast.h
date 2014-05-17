@@ -58,7 +58,7 @@ class AI_Fast : public RealPlayer
 	 *                     the next free Id it used.
          */
 	//! Default constructor.
-        AI_Fast(std::string name, guint32 armyset, Gdk::Color color, 
+        AI_Fast(std::string name, guint32 armyset, Gdk::RGBA color, 
 		int width, int height, int player_no = -1);
 
         //! Copy constructor.

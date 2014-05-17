@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #include "ucompose.hpp"
 #include <cairomm/context.h>
 
-BarChart::BarChart(std::list<unsigned int> bars, std::list<Gdk::Color> colours,
+BarChart::BarChart(std::list<unsigned int> bars, std::list<Gdk::RGBA> colours,
 		   unsigned int max_value)
 {
   d_bars = bars;
@@ -30,7 +30,8 @@ BarChart::~BarChart()
 {
 }
 
-bool BarChart::on_expose_event(GdkEventExpose* event)
+//bool BarChart::on_expose_event(GdkEventExpose* event)
+bool BarChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
 {
   // This is where we draw on the window
   Glib::RefPtr<Gdk::Window> window = get_window();
@@ -40,18 +41,27 @@ bool BarChart::on_expose_event(GdkEventExpose* event)
     const int width = allocation.get_width();
     const int height = allocation.get_height();
 
+    // labels
+    Glib::RefPtr<Pango::Layout> layout = Glib::wrap (pango_cairo_create_layout (cr->cobj ()));
+    std::string text_font = "Sans 8";
+    Pango::FontDescription font_desc (text_font);
+    layout->set_font_description (font_desc);
+    layout->set_text("0");
+    int w, h;
+    layout->get_pixel_size (w, h);
+
     // coordinates for the center of the window
     int xc, yc;
     xc = width / 2;
     yc = height / 2;
 
     unsigned int lw = 10;
-    Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
+    //Cairo::RefPtr<Cairo::Surface> pixmap = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
+    //Cairo::RefPtr<Cairo::Context> cr = Cairo::Context::create(pixmap);
 
     // clip to the area indicated by the expose event so that we only redraw
     // the portion of the window that needs to be redrawn
-    cr->rectangle(event->area.x, event->area.y,
-            event->area.width, event->area.height);
+    cr->rectangle(0, 0, width, height);
     cr->clip();
     cr->set_source_rgb (0.8, 0.8, 0.8);
     cr->set_line_width(1000.0);
@@ -103,17 +113,17 @@ bool BarChart::on_expose_event(GdkEventExpose* event)
 
     unsigned int voffs = 15;
     unsigned int hoffs = 15;
-    unsigned int d = 10;
+    unsigned int d = ((height-voffs-lw-h)/d_colours.size())-lw;
     cr->move_to(0, 0);
     bit = d_bars.begin();
-    std::list<Gdk::Color>::iterator cit = d_colours.begin();
+    std::list<Gdk::RGBA>::iterator cit = d_colours.begin();
     unsigned int i = 0;
     for (; bit != d_bars.end(), cit != d_colours.end(); bit++, cit++, i+=(lw+d))
       {
 	cr->move_to(hoffs, i + lw + voffs);
-	double red = (double)(*cit).get_red() /65535.0;
-	double green = (double)(*cit).get_green() /65535.0;
-	double blue = (double)(*cit).get_blue() /65535.0;
+	double red = (*cit).get_red();
+	double green = (*cit).get_green();
+	double blue = (*cit).get_blue();
 	cr->set_source_rgb(red, green, blue);
 	cr->line_to(((float) *bit / (float)max) * (width - hoffs) + hoffs, 
 		    i + lw + voffs);
@@ -150,14 +160,7 @@ bool BarChart::on_expose_event(GdkEventExpose* event)
 		i + lw + voffs + (voffs / 2) + 1);
     cr->stroke();
 
-    // now draw the labels
-    Glib::RefPtr<Pango::Layout> layout = Glib::wrap (pango_cairo_create_layout (cr->cobj ()));
-    std::string text_font = "Sans 8";
-    Pango::FontDescription font_desc (text_font);
-    layout->set_font_description (font_desc);
-    layout->set_text("0");
-    int w, h;
-    layout->get_pixel_size (w, h);
+    // labels
     cr->move_to(hoffs + 1 - (w / 2), i + lw + voffs + (voffs / 2) + 1);
     cr->set_source_rgb (0.0, 0.0, 0.0);
     cr->set_operator (Cairo::OPERATOR_ATOP);
@@ -179,6 +182,7 @@ bool BarChart::on_expose_event(GdkEventExpose* event)
     cr->set_operator (Cairo::OPERATOR_ATOP);
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
 
+    //property_surface() = pixmap;
 
   }
 

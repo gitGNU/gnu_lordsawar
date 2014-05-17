@@ -77,7 +77,7 @@ class HeroDialog: public Decorated
 	ItemColumns() 
         { add(image); add(name); add(attributes); add(status); add(item); }
 	
-	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixmap> > image;
+	Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > image;
 	Gtk::TreeModelColumn<Glib::ustring> name;
 	Gtk::TreeModelColumn<Glib::ustring> attributes;
 	Gtk::TreeModelColumn<Glib::ustring> status;
@@ -109,7 +109,7 @@ class HeroDialog: public Decorated
     void addHistoryEvent(History *event);
     void fill_in_info_labels();
 
-    void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    void on_map_changed(Cairo::RefPtr<Cairo::Surface> map);
     bool on_map_mouse_button_event(GdkEventButton *e);
     void show_hero();
     void update_buttons();

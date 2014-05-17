@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -88,7 +88,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
     window->get_child()->show();
     Vector<int> pos(0, 0);
     target->get_window()->get_origin(pos.x, pos.y);
-    if (target->has_no_window())
+    if (target->get_has_window() == false)
       {
 	Gtk::Allocation a = target->get_allocation();
 	pos.x += a.get_x();
@@ -152,7 +152,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army,
     window->get_child()->show();
     Vector<int> pos(0, 0);
     target->get_window()->get_origin(pos.x, pos.y);
-    if (target->has_no_window())
+    if (target->get_has_window() == false)
       {
 	Gtk::Allocation a = target->get_allocation();
 	pos.x += a.get_x();
@@ -215,7 +215,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army)
     window->get_child()->show();
     Vector<int> pos(0, 0);
     target->get_window()->get_origin(pos.x, pos.y);
-    if (target->has_no_window())
+    if (target->get_has_window() == false)
       {
 	Gtk::Allocation a = target->get_allocation();
 	pos.x += a.get_x();

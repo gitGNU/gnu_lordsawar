@@ -1,5 +1,5 @@
 // Copyright (C) 2006, 2007 Ulf Lorenz
-// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2014 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -113,8 +113,8 @@ drand(int i, int j)
 }
 
 
-void OverviewMap::choose_surface(bool front, Glib::RefPtr<Gdk::Pixmap> &surf,
-				 Glib::RefPtr<Gdk::GC> &gc)
+void OverviewMap::choose_surface(bool front, Cairo::RefPtr<Cairo::Surface> &surf,
+				 Cairo::RefPtr<Cairo::Context> &gc)
 {
   if (front)
     {
@@ -128,67 +128,77 @@ void OverviewMap::choose_surface(bool front, Glib::RefPtr<Gdk::Pixmap> &surf,
     }
 }
 void
-OverviewMap::draw_pixel(Glib::RefPtr<Gdk::Pixmap> surf, Glib::RefPtr<Gdk::GC> gc, int x, int y, const Gdk::Color color)
+OverviewMap::draw_pixel(Cairo::RefPtr<Cairo::Surface> surf, Cairo::RefPtr<Cairo::Context> gc, int x, int y, const Gdk::RGBA color)
 {
-  gc->set_rgb_fg_color(color);
-  surf->draw_point(gc, x, y);
+  gc->set_source_rgba(color.get_red(), color.get_green(), color.get_blue(), color.get_alpha());
+  gc->rectangle(x, y, 1, 1);
+  gc->fill();
   return;
 }
 
 void
-OverviewMap::draw_filled_rect(int x, int y, int width, int height, const Gdk::Color color)
+OverviewMap::draw_filled_rect(int x, int y, int width, int height, const Gdk::RGBA color)
 {
   draw_filled_rect(true, x, y, width, height, color);
 }
 
 void
-OverviewMap::draw_filled_rect(bool front, int x, int y, int width, int height, const Gdk::Color color)
+OverviewMap::draw_filled_rect(bool front, int x, int y, int width, int height, const Gdk::RGBA color)
 {
-  Glib::RefPtr<Gdk::Pixmap> surf;
-  Glib::RefPtr<Gdk::GC> gc;
+  Cairo::RefPtr<Cairo::Surface> surf;
+  Cairo::RefPtr<Cairo::Context> gc;
   choose_surface (front, surf, gc);
-  gc->set_rgb_fg_color(color);
-  surf->draw_rectangle(gc, true, x, y, width, height);
+  gc->set_source_rgba(color.get_red(), color.get_green(), color.get_blue(), color.get_alpha());
+  gc->rectangle(x, y, width, height);
+  gc->fill();
 }
 
 void
-OverviewMap::draw_line(int src_x, int src_y, int dst_x, int dst_y, const Gdk::Color color)
+OverviewMap::draw_line(int src_x, int src_y, int dst_x, int dst_y, const Gdk::RGBA color)
 {
   draw_line(true, src_x, src_y, dst_x, dst_y, color);
 }
 
 void
-OverviewMap::draw_line(bool front, int src_x, int src_y, int dst_x, int dst_y, Gdk::Color color)
+OverviewMap::draw_line(bool front, int src_x, int src_y, int dst_x, int dst_y, Gdk::RGBA color)
 {
-  Glib::RefPtr<Gdk::Pixmap> surf;
-  Glib::RefPtr<Gdk::GC> gc;
+  Cairo::RefPtr<Cairo::Surface> surf;
+  Cairo::RefPtr<Cairo::Context> gc;
   choose_surface (front, surf, gc);
-  gc->set_rgb_fg_color(color);
-  surf->draw_line(gc, src_x, src_y, dst_x, dst_y);
+  gc->set_source_rgba(color.get_red(), color.get_green(), color.get_blue(), color.get_alpha());
+  gc->move_to(src_x, src_y);
+  gc->line_to(dst_x, dst_y);
 }
 
 void
-OverviewMap::draw_rect(int x, int y, int width, int height, const Gdk::Color color)
+OverviewMap::draw_rect(int x, int y, int width, int height, const Gdk::RGBA color)
 {
   draw_rect (true, x, y, width, height, color);
 }
 
 void
-OverviewMap::draw_rect(bool front, int x, int y, int width, int height, const Gdk::Color color)
+OverviewMap::draw_rect(bool front, int x, int y, int width, int height, const Gdk::RGBA color)
 {
-  Glib::RefPtr<Gdk::Pixmap> surf;
-  Glib::RefPtr<Gdk::GC> gc;
+  Cairo::RefPtr<Cairo::Surface> surf;
+  Cairo::RefPtr<Cairo::Context> gc;
   choose_surface (front, surf, gc);
-  gc->set_rgb_fg_color(color);
-  surf->draw_rectangle(gc, false, x, y, width, height);
+  gc->set_source_rgba(color.get_red(), color.get_green(), color.get_blue(), color.get_alpha());
+  //gc->rectangle(x, y, width, height);
+   gc->move_to(x, y);
+    gc->rel_line_to(width, 0);
+     gc->rel_line_to(0, height);
+      gc->rel_line_to(-width, 0);
+      gc->rel_line_to(0, -height);
+      gc->set_line_width(1.0);
+      gc->stroke();
 }
 
-void OverviewMap::draw_terrain_tile(Glib::RefPtr<Gdk::Pixmap> surf,
-				    Glib::RefPtr<Gdk::GC> gc,
+void OverviewMap::draw_terrain_tile(Cairo::RefPtr<Cairo::Surface> surf,
+				    Cairo::RefPtr<Cairo::Context> gc,
 				    SmallTile::Pattern pattern,
-				    Gdk::Color first, 
-				    Gdk::Color second,
-				    Gdk::Color third,
+				    Gdk::RGBA first, 
+				    Gdk::RGBA second,
+				    Gdk::RGBA third,
 				    int i, int j, bool shadowed)
 {
 
@@ -349,7 +359,7 @@ void OverviewMap::resize()
 
 void OverviewMap::resize(Vector<int> max_dimensions, float scale)
 {
-  surface.reset();
+  surface.clear();
 
     // calculate the width and height relations between pixels and maptiles
     Vector<int> bigmap_dim = GameMap::get_dim();
@@ -369,8 +379,9 @@ void OverviewMap::resize(Vector<int> max_dimensions, float scale)
     }
     map_tiles_per_tile = scale;
 
-    static_surface = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), d.x, d.y, 24);
-    static_surface_gc = Gdk::GC::create(static_surface);
+    Cairo::RefPtr<Cairo::Surface> empty = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, d.x, d.y);
+    static_surface = Cairo::Surface::create(empty, Cairo::CONTENT_COLOR_ALPHA, d.x, d.y);
+    static_surface_gc = Cairo::Context::create(static_surface);
 
     Tileset *ts = GameMap::getTileset();
     Tile *tile = ts->getFirstTile(SmallTile::SUNKEN_RADIAL);
@@ -378,8 +389,8 @@ void OverviewMap::resize(Vector<int> max_dimensions, float scale)
       draw_radial_gradient(tile->getSmallTile()->getColor(),
                            tile->getSmallTile()->getSecondColor(), d.x, d.y);
     draw_terrain_tiles(Rectangle(0, 0, d.x, d.y));
-    surface = Gdk::Pixmap::create(static_surface, d.x, d.y, 24);
-    surface_gc = Gdk::GC::create(surface);
+    surface = Cairo::Surface::create(empty, Cairo::CONTENT_COLOR_ALPHA, d.x, d.y);
+    surface_gc = Cairo::Context::create(surface);
 
 }
 
@@ -396,9 +407,8 @@ void OverviewMap::redraw_tiles(Rectangle tiles)
 	Vector<int> dim(int(round(tiles.w * pixels_per_tile)),
 			int(round(tiles.h * pixels_per_tile)));
 
-	int width;
-	int height;
-	static_surface->get_size(width, height);
+	int width = get_width();
+	int height = get_height();
 	// ensure we're within bounds
 	pos = clip(Vector<int>(0, 0), pos,
 		   Vector<int>(width, height) - Vector<int>(1, 1));
@@ -448,7 +458,7 @@ void OverviewMap::draw_terrain_tiles(Rectangle r)
     unsigned int oldrand = rand();
     srand(0);
     Tileset *ts = GameMap::getTileset();
-    Gdk::Color rd = ts->getRoadColor();
+    Gdk::RGBA rd = ts->getRoadColor();
     for (int i = r.x; i < r.x + r.w; i+=int(map_tiles_per_tile))
       for (int j = r.y; j < r.y + r.h; j+=int(map_tiles_per_tile))
         {
@@ -481,16 +491,19 @@ void OverviewMap::draw(Player *player)
     // of the surface when drawing. I will implcitely assume this during this
     // function.
     
-    //Gdk::Color black = Gdk::Color();
+    //Gdk::RGBA black = Gdk::RGBA();
     //black.set_rgb_p(0,0,0);
     //surface_gc->set_rgb_fg_color(black);
     //surface->draw_rectangle(surface_gc, true, 0, 0, -1, -1);
     //Glib::RefPtr<Gdk::Pixbuf> buf = Gdk::Pixbuf::create(static_surface, 0, 0, -1, -1);
-    surface->draw_drawable(surface_gc, static_surface, 0, 0, 0, 0, -1, -1);
+    //surface->draw_drawable(surface_gc, static_surface, 0, 0, 0, 0, -1, -1);
+    //put the static surface on the surface
+    surface_gc->set_source(static_surface, 0, 0);
+    surface_gc->paint();
 
     // Draw ruins as a white dot
 	
-    Gdk::Color ruindotcolor = ts->getRuinColor();
+    Gdk::RGBA ruindotcolor = ts->getRuinColor();
     for (Ruinlist::iterator it = Ruinlist::getInstance()->begin();
         it != Ruinlist::getInstance()->end(); it++)
     {
@@ -507,7 +520,7 @@ void OverviewMap::draw(Player *player)
     }
 
     // Draw temples as a white dot
-    Gdk::Color templedotcolor = ts->getTempleColor();
+    Gdk::RGBA templedotcolor = ts->getTempleColor();
     for (Templelist::iterator it = Templelist::getInstance()->begin();
         it != Templelist::getInstance()->end(); it++)
     {
@@ -540,26 +553,25 @@ void OverviewMap::draw(Player *player)
     if (Playerlist::getViewingplayer()->getType() != Player::HUMAN &&
        	GameScenarioOptions::s_hidden_map == true)
       {
-	int width = 0;
-	int height = 0;
-	surface->get_size(width, height);
+	int width = get_width();
+	int height = get_height();
 	draw_filled_rect(true, 0, 0, width, height, FOG_COLOUR);
       }
 
   if (blank_screen)
     {
-      int width = 0;
-      int height = 0;
-      surface->get_size(width, height);
-      surface_gc->set_rgb_fg_color(FOG_COLOUR);
-      surface->draw_rectangle(surface_gc, true, 0,0,width, height);
+      int width = get_width();
+      int height = get_height();
+      surface_gc->set_source_rgba(FOG_COLOUR.get_red(), FOG_COLOUR.get_green(), FOG_COLOUR.get_blue(), FOG_COLOUR.get_alpha());
+      surface_gc->rectangle(0,0,width, height);
+      surface_gc->fill();
     }
     // let derived classes do their job
     after_draw();
 
 }
 
-Glib::RefPtr<Gdk::Pixmap> OverviewMap::get_surface()
+Cairo::RefPtr<Cairo::Surface> OverviewMap::get_surface()
 {
     return surface;
 }
@@ -663,7 +675,7 @@ void OverviewMap::draw_hero(Vector<int> pos, bool white)
     heropic->blit_centered(surface, start);
 }
 
-void OverviewMap::draw_target_box(Vector<int> pos, const Gdk::Color c)
+void OverviewMap::draw_target_box(Vector<int> pos, const Gdk::RGBA c)
 {
   Vector<int> start = mapToSurface(pos);
   start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
@@ -678,7 +690,7 @@ void OverviewMap::draw_target_box(Vector<int> pos, const Gdk::Color c)
 		   xsize, ysize, c);
 }
 
-void OverviewMap::draw_square_around_city(City *c, Gdk::Color colour)
+void OverviewMap::draw_square_around_city(City *c, Gdk::RGBA colour)
 {
   Vector<int> start = c->getPos();
   start = mapToSurface(start);
@@ -690,15 +702,15 @@ void OverviewMap::draw_square_around_city(City *c, Gdk::Color colour)
   draw_rect (start.x-3, start.y-3, end.x-start.x+4, end.y-start.y+4, colour);
 }
 
-void OverviewMap::draw_radial_gradient(Glib::RefPtr<Gdk::Pixmap> surface, Gdk::Color inner, Gdk::Color outer, int width, int height)
+void OverviewMap::draw_radial_gradient(Cairo::RefPtr<Cairo::Surface> surface, Gdk::RGBA inner, Gdk::RGBA outer, int width, int height)
 {
-  double ired = (double)inner.get_red() /65535.0;
-  double igreen = (double)inner.get_green() /65535.0;
-  double iblue = (double)inner.get_blue() /65535.0;
-  double ored = (double)outer.get_red() /65535.0;
-  double ogreen = (double)outer.get_green() /65535.0;
-  double oblue = (double)outer.get_blue() /65535.0;
-  Cairo::RefPtr<Cairo::Context> cr = surface->create_cairo_context();
+  double ired = inner.get_red();
+  double igreen = inner.get_green();
+  double iblue = inner.get_blue();
+  double ored = outer.get_red();
+  double ogreen = outer.get_green();
+  double oblue = outer.get_blue();
+  Cairo::RefPtr<Cairo::Context> cr = Cairo::Context::create(surface);
   double max = (double) width;
   if ((double)height > max)
     max = (double)width;
@@ -712,9 +724,18 @@ void OverviewMap::draw_radial_gradient(Glib::RefPtr<Gdk::Pixmap> surface, Gdk::C
   cr->paint();
 }
 
-void OverviewMap::draw_radial_gradient(Gdk::Color inner, Gdk::Color outer, int width, int height)
+void OverviewMap::draw_radial_gradient(Gdk::RGBA inner, Gdk::RGBA outer, int width, int height)
 {
   return draw_radial_gradient(static_surface, inner, outer, width, height);
 
 }
 
+int OverviewMap::get_width()
+{
+  return GameMap::get_dim().x / map_tiles_per_tile * pixels_per_tile;
+}
+
+int OverviewMap::get_height()
+{
+  return GameMap::get_dim().y / map_tiles_per_tile * pixels_per_tile;
+}

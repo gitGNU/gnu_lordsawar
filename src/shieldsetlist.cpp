@@ -168,11 +168,11 @@ void Shieldsetlist::add(Shieldset *shieldset, std::string file)
   d_shieldsetids[shieldset->getId()] = shieldset;
 }
         
-Gdk::Color Shieldsetlist::getColor(guint32 shieldset, guint32 owner) const
+Gdk::RGBA Shieldsetlist::getColor(guint32 shieldset, guint32 owner) const
 {
   Shieldset *s = getShieldset(shieldset);
   if (!s)
-    return Gdk::Color("black");
+    return Gdk::RGBA("black");
   return s->getColor(owner);
 }
 

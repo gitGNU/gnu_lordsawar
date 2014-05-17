@@ -449,12 +449,12 @@ class GraphicsCache
 
 	PixMask* applyMask(PixMask* image, PixMask* mask, const Player* p);
 
-	static PixMask* applyMask(PixMask* image, PixMask* mask, Gdk::Color colour, bool isNeutral);
+	static PixMask* applyMask(PixMask* image, PixMask* mask, Gdk::RGBA colour, bool isNeutral);
 
 	static PixMask* greyOut(PixMask* image);
 
-        static PixMask* circled(PixMask* image, Gdk::Color colour, bool coloured = true, double width_percent = 75.0);
-        static void draw_circle(Cairo::RefPtr<Cairo::Context> cr, double width_percent, int width, int height, Gdk::Color colour, bool coloured = true, bool mask = false);
+        static PixMask* circled(PixMask* image, Gdk::RGBA colour, bool coloured = true, double width_percent = 75.0);
+        static void draw_circle(Cairo::RefPtr<Cairo::Context> cr, double width_percent, int width, int height, Gdk::RGBA colour, bool coloured = true, bool mask = false);
 
 	static bool loadSelectorImages(std::string filename, guint32 tilesize, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);
 

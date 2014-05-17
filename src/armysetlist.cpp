@@ -222,7 +222,6 @@ Armyset *Armysetlist::loadArmyset(std::string name)
 	a->getConfigurationFile() << "'.  Skipping." << endl;
       delete armyset;
       return NULL;
-      return false;
     }
   return armyset;
 }

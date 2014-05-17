@@ -83,7 +83,7 @@ liblwgui_la_SOURCES = \
 
 liblwgui_la_LIBADD = @LTLIBOBJS@
 
-INCLUDES = \
+AM_CPPFLAGS = \
    $(GTKMM_CFLAGS) \
    $(SDL_CFLAGS) \
    -I$(top_srcdir)/src

@@ -94,7 +94,7 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
         std::string getBaseName() const {return d_basename;}
 
 	//! Return the mask colour for the given player.
-	Gdk::Color getColor(guint32 owner) const;
+	Gdk::RGBA getColor(guint32 owner) const;
 
 	//! Return the number of pixels high the small shields are.
 	guint32 getSmallHeight() const {return d_small_height;}

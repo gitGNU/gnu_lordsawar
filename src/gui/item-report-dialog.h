@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ class ItemReportDialog: public Decorated
 
     Gtk::Image *map_image;
     
-    void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    void on_map_changed(Cairo::RefPtr<Cairo::Surface> map);
     void fill_in_item_info();
     Gtk::Label *label;
 

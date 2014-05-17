@@ -85,14 +85,14 @@ ShieldStyle * Shieldset::lookupShieldByTypeAndColour(guint32 type, guint32 colou
   return NULL;
 }
 
-Gdk::Color Shieldset::getColor(guint32 owner) const
+Gdk::RGBA Shieldset::getColor(guint32 owner) const
 {
   for (const_iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getOwner() == owner)
 	return (*it)->getColor();
     }
-  return Gdk::Color("black");
+  return Gdk::RGBA("black");
 }
 
 bool Shieldset::loadShield(std::string tag, XML_Helper* helper)

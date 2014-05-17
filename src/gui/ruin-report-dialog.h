@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ class RuinReportDialog: public Decorated
 
     Gtk::Image *map_image;
     
-    void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    void on_map_changed(Cairo::RefPtr<Cairo::Surface> map);
     bool on_map_mouse_button_event(GdkEventButton *e);
     void fill_in_ruin_info();
     Gtk::Label *name_label;

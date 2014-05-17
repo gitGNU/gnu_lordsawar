@@ -87,7 +87,7 @@ using namespace std;
 
 std::string Player::d_tag = "player";
 
-Player::Player(string name, guint32 armyset, Gdk::Color color, int width,
+Player::Player(string name, guint32 armyset, Gdk::RGBA color, int width,
 	       int height, Type type, int player_no)
     :d_color(color), d_name(name), d_armyset(armyset), d_gold(1000),
     d_dead(false), d_immortal(false), d_type(type), d_upkeep(0), d_income(0),
@@ -257,7 +257,7 @@ Player::~Player()
     d_fight_order.clear();
 }
 
-Player* Player::create(std::string name, guint32 armyset, Gdk::Color color, int width, int height, Type type)
+Player* Player::create(std::string name, guint32 armyset, Gdk::RGBA color, int width, int height, Type type)
 {
   switch(type)
   {
@@ -310,7 +310,7 @@ void Player::initTurn()
   addAction(action);
 }
 
-void Player::setColor(Gdk::Color c)
+void Player::setColor(Gdk::RGBA c)
 {
     d_color = c;
 }

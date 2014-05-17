@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ class SmallmapEditorDialog
     EditableSmallMap* smallmap;
     bool d_needs_saving;
 
-    Gtk::DrawingArea *map_drawingarea;
+    Gtk::Image *smallmap_image;
     Gtk::HBox *modes_hbox;
     Gtk::Table *terrain_type_table;
     Gtk::HBox *building_types_hbox;
@@ -71,7 +71,7 @@ class SmallmapEditorDialog
 
     std::vector<TerrainItem> terrain_items;
 
-    void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map, Gdk::Rectangle rect);
+    void on_map_changed(Cairo::RefPtr<Cairo::Surface> map, Gdk::Rectangle rect);
     bool on_map_mouse_button_event(GdkEventButton *e);
     bool on_map_mouse_motion_event(GdkEventMotion *e);
     void on_road_start_toggled();
@@ -80,7 +80,7 @@ class SmallmapEditorDialog
     void on_clear_points_clicked();
     void on_terrain_radiobutton_toggled();
     void on_pointer_radiobutton_toggled();
-    bool on_smallmap_exposed(GdkEventExpose *event);
+    bool on_smallmap_exposed(GdkEvent *event);
     void on_road_start_placed(Vector<int> pos);
     void on_road_finish_placed(Vector<int> pos);
     void on_road_can_be_created(bool create_road);

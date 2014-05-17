@@ -137,13 +137,13 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	std::string getFlagsFilename() {return d_flags;};
 
         //! Get the colour associated with the road on the smallmap.
-	Gdk::Color getRoadColor() const {return d_road_color;};
+	Gdk::RGBA getRoadColor() const {return d_road_color;};
 
         //! Get the colour associated with temples on the smallmap.
-	Gdk::Color getTempleColor() const {return d_temple_color;};
+	Gdk::RGBA getTempleColor() const {return d_temple_color;};
 
         //! Get the colour associated with ruins on the smallmap.
-	Gdk::Color getRuinColor() const {return d_ruin_color;};
+	Gdk::RGBA getRuinColor() const {return d_ruin_color;};
 
 	//! Get the explosion image.
 	PixMask *getExplosionImage() {return explosion;};
@@ -243,13 +243,13 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	void setFlagsFilename(std::string p){d_flags = p;};
 
 	//! Sets the colour of the road on the smallmap.
-	void setRoadColor(Gdk::Color color) {d_road_color = color;};
+	void setRoadColor(Gdk::RGBA color) {d_road_color = color;};
 
 	//! Sets the colour of the ruins on the smallmap.
-	void setRuinColor(Gdk::Color color) {d_ruin_color = color;};
+	void setRuinColor(Gdk::RGBA color) {d_ruin_color = color;};
 
 	//! Sets the colour of the temples on the smallmap.
-	void setTempleColor(Gdk::Color color) {d_temple_color = color;};
+	void setTempleColor(Gdk::RGBA color) {d_temple_color = color;};
 
 	//! Sets the explosion image.
 	void setExplosionImage(PixMask *p) {explosion = p;};
@@ -529,13 +529,13 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
         TileStyleIdMap d_tilestyles;
 
 	//! The colour of roads on the smallmap.
-	Gdk::Color d_road_color;
+	Gdk::RGBA d_road_color;
 
 	//! The colour of ruins on the smallmap.
-	Gdk::Color d_ruin_color;
+	Gdk::RGBA d_ruin_color;
 
 	//! The colour of temples on the smallmap.
-	Gdk::Color d_temple_color;
+	Gdk::RGBA d_temple_color;
 
 	//! The road images.
         PixMask* roadpic[ROAD_TYPES];

@@ -86,7 +86,7 @@ public:
     /**
      * Classes that use EditableSmallMap must catch this signal to display the map.
      */
-    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap>, Gdk::Rectangle > map_changed;
+    sigc::signal<void, Cairo::RefPtr<Cairo::Surface>, Gdk::Rectangle > map_changed;
     sigc::signal<void, Vector<int> > road_start_placed;
     sigc::signal<void, Vector<int> > road_finish_placed;
     sigc::signal<void, bool> road_can_be_created;
@@ -102,8 +102,6 @@ private:
 
     void change_map(Vector<int> pos);
 
-
-    Glib::RefPtr<Gdk::Pixbuf> getDotPic(guint32 width, guint32 height, Gdk::Color color) const;
 
     Rectangle get_cursor_rectangle(Vector<int> current_tile);
     // DATA

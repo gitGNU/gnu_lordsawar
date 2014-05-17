@@ -1,4 +1,4 @@
-//  Copyright (C) 2009, 2010 Ben Asselstine
+//  Copyright (C) 2009, 2010, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ SwitchSetsDialog::SwitchSetsDialog()
 	 it++)
       {
 	Glib::ustring s = String::ucompose("%1x%1", *it);
-	tile_size_combobox->append_text(s);
+	tile_size_combobox->append(s);
 	if ((*it) == GameMap::getInstance()->getTileSize())
 	  default_id = counter;
 	counter++;
@@ -102,7 +102,7 @@ SwitchSetsDialog::SwitchSetsDialog()
       {
 	if (*i == GameMap::getInstance()->getShieldsetName())
 	  default_id = counter;
-	shield_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+	shield_theme_combobox->append(Glib::filename_to_utf8(*i));
 	counter++;
       }
 
@@ -135,7 +135,10 @@ void SwitchSetsDialog::on_tile_size_changed()
   guint32 default_id = 0;
   guint32 counter = 0;
 
-  tile_theme_combobox->clear_items();
+  Gtk::Container *container = tile_theme_combobox->get_parent();
+  container->remove(*tile_theme_combobox);
+  tile_theme_combobox = manage(new Gtk::ComboBoxText);
+
   Tilesetlist *tl = Tilesetlist::getInstance();
   std::list<std::string> tile_themes = tl->getValidNames(get_active_tile_size());
   for (std::list<std::string>::iterator i = tile_themes.begin(),
@@ -143,7 +146,7 @@ void SwitchSetsDialog::on_tile_size_changed()
     {
       if (*i == GameMap::getInstance()->getTilesetName())
 	default_id = counter;
-      tile_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      tile_theme_combobox->append(Glib::filename_to_utf8(*i));
       counter++;
     }
 
@@ -151,7 +154,10 @@ void SwitchSetsDialog::on_tile_size_changed()
   if (tile_theme_combobox->get_children().size() == 0)
     accept_button->set_sensitive(false);
 
-  army_theme_combobox->clear_items();
+  container = army_theme_combobox->get_parent();
+  container->remove(*army_theme_combobox);
+  army_theme_combobox = manage(new Gtk::ComboBoxText);
+
   Armysetlist *al = Armysetlist::getInstance();
   std::list<std::string> army_themes = al->getValidNames(get_active_tile_size());
   counter = 0;
@@ -162,7 +168,7 @@ void SwitchSetsDialog::on_tile_size_changed()
     {
       if (*i == Armysetlist::getInstance()->getArmyset(armyset)->getName())
 	default_id = counter;
-      army_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      army_theme_combobox->append(Glib::filename_to_utf8(*i));
       counter++;
     }
 
@@ -170,7 +176,10 @@ void SwitchSetsDialog::on_tile_size_changed()
   if (army_theme_combobox->get_children().size() == 0)
     accept_button->set_sensitive(false);
 
-  city_theme_combobox->clear_items();
+  container = city_theme_combobox->get_parent();
+  container->remove(*city_theme_combobox);
+  city_theme_combobox = manage(new Gtk::ComboBoxText);
+
   Citysetlist *cl = Citysetlist::getInstance();
   std::list<std::string> city_themes = cl->getValidNames(get_active_tile_size());
   counter = 0;
@@ -185,7 +194,7 @@ void SwitchSetsDialog::on_tile_size_changed()
       //Cityset *cityset = 
 	//cl->getCityset(cl->getCitysetDir(*i, get_active_tile_size()));
       //if (active->tileWidthsEqual(cityset) == true)
-	city_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+	city_theme_combobox->append(Glib::filename_to_utf8(*i));
       counter++;
     }
 

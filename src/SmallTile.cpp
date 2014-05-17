@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010, 2011, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,9 +25,9 @@ using namespace std;
 SmallTile::SmallTile()
 {
   d_pattern = SOLID;
-  d_color.set_rgb_p(80.0/255.0,172.0/255.0,28.0/255.0);
-  d_second_color.set_rgb_p(0,0,0);
-  d_third_color.set_rgb_p(0,0,0);
+  d_color.set_rgba (80.0/255.0,172.0/255.0,28.0/255.0);
+  d_second_color.set_rgba(0,0,0);
+  d_third_color.set_rgba(0,0,0);
 }
 
 SmallTile::SmallTile(const SmallTile &orig)

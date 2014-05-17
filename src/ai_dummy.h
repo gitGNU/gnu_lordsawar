@@ -52,7 +52,7 @@ class AI_Dummy : public RealPlayer
 	 *                     the next free Id it used.
          */
 	//! Default constructor.
-        AI_Dummy (std::string name, guint32 armyset, Gdk::Color color, 
+        AI_Dummy (std::string name, guint32 armyset, Gdk::RGBA color, 
 		  int width, int height, int player_no = -1);
 
 	//! Copy constructor.

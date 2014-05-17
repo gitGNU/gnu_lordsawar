@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2012 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -110,7 +110,7 @@ class CreateScenario : public CreateScenarioRandomize
           * @param type     the type of the player (see class player for more info)
           * @return a pointer to the created player
           */
-        Player* addPlayer(std::string name, guint32 armyset, Gdk::Color color,
+        Player* addPlayer(std::string name, guint32 armyset, Gdk::RGBA color,
 			  int type);
 
         /** Almost the same as addPlayer, but performs some additional checks
@@ -121,7 +121,7 @@ class CreateScenario : public CreateScenarioRandomize
           * @param type     the type of the player (see class player for more info)
           * @return false if a neutral player already exists, true otherwise
           */
-        bool addNeutral(std::string name, guint32 armyset, Gdk::Color color,
+        bool addNeutral(std::string name, guint32 armyset, Gdk::RGBA color,
                         int type);
 
         

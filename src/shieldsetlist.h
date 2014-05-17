@@ -84,7 +84,7 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	//! Return the Shieldset object that is in the given directory.
 	Shieldset *getShieldset(std::string dir) const;
 
-	Gdk::Color getColor(guint32 shieldset, guint32 owner) const;
+	Gdk::RGBA getColor(guint32 shieldset, guint32 owner) const;
 
 	//! Return the Shieldset object by the id.
 	/**

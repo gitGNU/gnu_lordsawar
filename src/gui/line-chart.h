@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,20 +26,21 @@
 //the outer list contains a list of numbers belonging to a player
 //the inner list is just a list of numbers forming the y component of the graph.
 //the x component is taken from the turn number, which is just that number's position in the list.
-class LineChart: public Gtk::DrawingArea
+class LineChart: public Gtk::Image
 {
 public:
-    LineChart(std::list<std::list<unsigned int> > lines, std::list<Gdk::Color> colours, unsigned int max_height_value, std::string x_axis_description, std::string y_axis_description);
+    LineChart(std::list<std::list<unsigned int> > lines, std::list<Gdk::RGBA> colours, unsigned int max_height_value, std::string x_axis_description, std::string y_axis_description);
     virtual ~LineChart();
 
     void set_x_indicator(int x);
 
 protected:
     //Override default signal handler:
-    virtual bool on_expose_event(GdkEventExpose* event);
+    //virtual bool on_expose_event(GdkEventExpose* event);
+    virtual bool on_draw (const Cairo::RefPtr<Cairo::Context> &cr);
 private:
     std::list<std::list<unsigned int> > d_lines;
-    std::list<Gdk::Color> d_colours;
+    std::list<Gdk::RGBA> d_colours;
     unsigned int d_max_height_value;
     int d_x_indicator;
     std::string d_x_axis_description;

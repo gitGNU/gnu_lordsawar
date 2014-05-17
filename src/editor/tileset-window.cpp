@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2011, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -83,13 +83,13 @@ TileSetWindow::TileSetWindow(std::string load_filename)
     Gtk::HBox *type_combo_container;
     xml->get_widget("type_combo_container", type_combo_container);
     tile_type_combobox = new Gtk::ComboBoxText();
-    tile_type_combobox->append_text(_("Grass"));
-    tile_type_combobox->append_text(_("Water"));
-    tile_type_combobox->append_text(_("Forest"));
-    tile_type_combobox->append_text(_("Hills"));
-    tile_type_combobox->append_text(_("Mountains"));
-    tile_type_combobox->append_text(_("Swamp"));
-    tile_type_combobox->append_text(_("Void"));
+    tile_type_combobox->append(_("Grass"));
+    tile_type_combobox->append(_("Water"));
+    tile_type_combobox->append(_("Forest"));
+    tile_type_combobox->append(_("Hills"));
+    tile_type_combobox->append(_("Mountains"));
+    tile_type_combobox->append(_("Swamp"));
+    tile_type_combobox->append(_("Void"));
     type_combo_container->add(*manage(tile_type_combobox));
     type_combo_container->show_all();
     tile_type_combobox->signal_changed().connect
@@ -98,24 +98,24 @@ TileSetWindow::TileSetWindow(std::string load_filename)
     Gtk::HBox *tilestyle_combo_container;
     xml->get_widget("tilestyle_combo_container", tilestyle_combo_container);
     tilestyle_combobox = new Gtk::ComboBoxText();
-    tilestyle_combobox->append_text(_("Lone"));
-    tilestyle_combobox->append_text(_("Outer Top-Left"));
-    tilestyle_combobox->append_text(_("Outer Top-Center"));
-    tilestyle_combobox->append_text(_("Outer Top-Right"));
-    tilestyle_combobox->append_text(_("Outer Bottom-Left"));
-    tilestyle_combobox->append_text(_("Outer Bottom-Center"));
-    tilestyle_combobox->append_text(_("Outer Bottom-Right"));
-    tilestyle_combobox->append_text(_("Outer Middle-Left"));
-    tilestyle_combobox->append_text(_("Inner Middle-Center"));
-    tilestyle_combobox->append_text(_("Outer Middle-Right"));
-    tilestyle_combobox->append_text(_("Inner Top-Left"));
-    tilestyle_combobox->append_text(_("Inner Top-Right"));
-    tilestyle_combobox->append_text(_("Inner Bottom-Left"));
-    tilestyle_combobox->append_text(_("Inner Bottom-Right"));
-    tilestyle_combobox->append_text(_("Top-Left To Bottom-Right"));
-    tilestyle_combobox->append_text(_("Bottom-Left To Top-Right"));
-    tilestyle_combobox->append_text(_("Other"));
-    tilestyle_combobox->append_text(_("Unknown"));
+    tilestyle_combobox->append(_("Lone"));
+    tilestyle_combobox->append(_("Outer Top-Left"));
+    tilestyle_combobox->append(_("Outer Top-Center"));
+    tilestyle_combobox->append(_("Outer Top-Right"));
+    tilestyle_combobox->append(_("Outer Bottom-Left"));
+    tilestyle_combobox->append(_("Outer Bottom-Center"));
+    tilestyle_combobox->append(_("Outer Bottom-Right"));
+    tilestyle_combobox->append(_("Outer Middle-Left"));
+    tilestyle_combobox->append(_("Inner Middle-Center"));
+    tilestyle_combobox->append(_("Outer Middle-Right"));
+    tilestyle_combobox->append(_("Inner Top-Left"));
+    tilestyle_combobox->append(_("Inner Top-Right"));
+    tilestyle_combobox->append(_("Inner Bottom-Left"));
+    tilestyle_combobox->append(_("Inner Bottom-Right"));
+    tilestyle_combobox->append(_("Top-Left To Bottom-Right"));
+    tilestyle_combobox->append(_("Bottom-Left To Top-Right"));
+    tilestyle_combobox->append(_("Other"));
+    tilestyle_combobox->append(_("Unknown"));
     tilestyle_combo_container->add(*manage(tilestyle_combobox));
     tilestyle_combo_container->show_all();
     tilestyle_combobox->signal_changed().connect
@@ -124,15 +124,15 @@ TileSetWindow::TileSetWindow(std::string load_filename)
     Gtk::HBox *pattern_container;
     xml->get_widget("pattern_container", pattern_container);
     tile_smallmap_pattern_combobox = new Gtk::ComboBoxText();
-    tile_smallmap_pattern_combobox->append_text(_("Solid"));
-    tile_smallmap_pattern_combobox->append_text(_("Stippled"));
-    tile_smallmap_pattern_combobox->append_text(_("Randomized"));
-    tile_smallmap_pattern_combobox->append_text(_("Sunken"));
-    tile_smallmap_pattern_combobox->append_text(_("Tablecloth"));
-    tile_smallmap_pattern_combobox->append_text(_("Diagonal"));
-    tile_smallmap_pattern_combobox->append_text(_("Crosshatched"));
-    tile_smallmap_pattern_combobox->append_text(_("Sunken Striped"));
-    tile_smallmap_pattern_combobox->append_text(_("Sunken Radial"));
+    tile_smallmap_pattern_combobox->append(_("Solid"));
+    tile_smallmap_pattern_combobox->append(_("Stippled"));
+    tile_smallmap_pattern_combobox->append(_("Randomized"));
+    tile_smallmap_pattern_combobox->append(_("Sunken"));
+    tile_smallmap_pattern_combobox->append(_("Tablecloth"));
+    tile_smallmap_pattern_combobox->append(_("Diagonal"));
+    tile_smallmap_pattern_combobox->append(_("Crosshatched"));
+    tile_smallmap_pattern_combobox->append(_("Sunken Striped"));
+    tile_smallmap_pattern_combobox->append(_("Sunken Radial"));
     pattern_container->add(*manage(tile_smallmap_pattern_combobox));
     pattern_container->show_all();
     tile_smallmap_pattern_combobox->signal_changed().connect
@@ -267,8 +267,8 @@ TileSetWindow::TileSetWindow(std::string load_filename)
     update_tileset_menuitems();
     update_tile_preview_menuitem();
 
-    tile_smallmap_surface = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), 32, 32, 24);
-    tile_smallmap_surface_gc = Gdk::GC::create(tile_smallmap_surface);
+    //tile_smallmap_surface = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), 32, 32, 24);
+    //tile_smallmap_surface_gc = Gdk::GC::create(tile_smallmap_surface);
 
     if (File::exists(autosave))
       {
@@ -448,7 +448,7 @@ TileSetWindow::update_tilestyleset_panel()
 void
 TileSetWindow::update_tile_panel()
 {
-  Gdk::Color black("black");
+  Gdk::RGBA black("black");
   //if nothing selected in the treeview, then we don't show anything in
   //the tile panel
   Tile *t = get_selected_tile ();
@@ -463,9 +463,9 @@ TileSetWindow::update_tile_panel()
       tile_moves_spinbutton->set_value(0);
       tile_name_entry->set_text("");
       tile_smallmap_pattern_combobox->set_active(0);
-      tile_smallmap_first_colorbutton->set_color(black);
-      tile_smallmap_second_colorbutton->set_color(black);
-      tile_smallmap_third_colorbutton->set_color(black);
+      tile_smallmap_first_colorbutton->set_rgba(black);
+      tile_smallmap_second_colorbutton->set_rgba(black);
+      tile_smallmap_third_colorbutton->set_rgba(black);
       tilestylesets_list->clear();
       inhibit_needs_saving = false;
       return;
@@ -478,7 +478,7 @@ TileSetWindow::update_tile_panel()
 
 TileSetWindow::~TileSetWindow()
 {
-  tile_smallmap_surface.reset();
+  //tile_smallmap_surface.reset();
   delete window;
 }
 
@@ -540,9 +540,10 @@ void TileSetWindow::on_load_tileset_activated()
 {
   Gtk::FileChooserDialog chooser(*window, 
 				 _("Choose a Tileset to Load"));
-  Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*" + TILESET_EXT);
-  chooser.set_filter(sav_filter);
+  Glib::RefPtr<Gtk::FileFilter> lwt_filter = Gtk::FileFilter::create();
+  lwt_filter->set_name(_("LordsAWar Tilesets (*.lwt)"));
+  lwt_filter->add_pattern("*" + TILESET_EXT);
+  chooser.add_filter(lwt_filter);
   chooser.set_current_folder(File::getUserTilesetDir());
 
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
@@ -824,7 +825,7 @@ void TileSetWindow::on_tile_first_color_changed()
     {
       Gtk::TreeModel::Row row = *iterrow;
       Tile *t = row[tiles_columns.tile];
-      t->getSmallTile()->setColor(tile_smallmap_first_colorbutton->get_color());
+      t->getSmallTile()->setColor(tile_smallmap_first_colorbutton->get_rgba());
       fill_tile_smallmap(t);
       if (inhibit_needs_saving == false)
         {
@@ -843,7 +844,7 @@ void TileSetWindow::on_tile_second_color_changed()
     {
       Gtk::TreeModel::Row row = *iterrow;
       Tile *t = row[tiles_columns.tile];
-      t->getSmallTile()->setSecondColor(tile_smallmap_second_colorbutton->get_color());
+      t->getSmallTile()->setSecondColor(tile_smallmap_second_colorbutton->get_rgba());
       fill_tile_smallmap(t);
       if (inhibit_needs_saving == false)
         {
@@ -862,7 +863,7 @@ void TileSetWindow::on_tile_third_color_changed()
     {
       Gtk::TreeModel::Row row = *iterrow;
       Tile *t = row[tiles_columns.tile];
-      t->getSmallTile()->setThirdColor(tile_smallmap_third_colorbutton->get_color());
+      t->getSmallTile()->setThirdColor(tile_smallmap_third_colorbutton->get_rgba());
       fill_tile_smallmap(t);
       if (inhibit_needs_saving == false)
         {
@@ -874,26 +875,26 @@ void TileSetWindow::on_tile_third_color_changed()
 
 void TileSetWindow::fill_colours(Tile *tile)
 {
-  Gdk::Color c;
+  Gdk::RGBA c;
   switch (tile->getSmallTile()->getPattern())
     {
     case SmallTile::SOLID:
       tile_smallmap_second_colorbutton->set_sensitive(false);
       tile_smallmap_third_colorbutton->set_sensitive(false);
-      tile_smallmap_first_colorbutton->set_color(tile->getSmallTile()->getColor());
+      tile_smallmap_first_colorbutton->set_rgba(tile->getSmallTile()->getColor());
       break;
     case SmallTile::STIPPLED: case SmallTile::SUNKEN:
       tile_smallmap_second_colorbutton->set_sensitive(true);
       tile_smallmap_third_colorbutton->set_sensitive(false);
-      tile_smallmap_first_colorbutton->set_color(tile->getSmallTile()->getColor());
-      tile_smallmap_second_colorbutton->set_color(tile->getSmallTile()->getSecondColor());
+      tile_smallmap_first_colorbutton->set_rgba(tile->getSmallTile()->getColor());
+      tile_smallmap_second_colorbutton->set_rgba(tile->getSmallTile()->getSecondColor());
       break;
     case SmallTile::RANDOMIZED: case SmallTile::TABLECLOTH: case SmallTile::DIAGONAL: case SmallTile::CROSSHATCH: case SmallTile::SUNKEN_STRIPED: case SmallTile::SUNKEN_RADIAL:
       tile_smallmap_second_colorbutton->set_sensitive(true);
       tile_smallmap_third_colorbutton->set_sensitive(true);
-      tile_smallmap_first_colorbutton->set_color(tile->getSmallTile()->getColor());
-      tile_smallmap_second_colorbutton->set_color(tile->getSmallTile()->getSecondColor());
-      tile_smallmap_third_colorbutton->set_color(tile->getSmallTile()->getThirdColor());
+      tile_smallmap_first_colorbutton->set_rgba(tile->getSmallTile()->getColor());
+      tile_smallmap_second_colorbutton->set_rgba(tile->getSmallTile()->getSecondColor());
+      tile_smallmap_third_colorbutton->set_rgba(tile->getSmallTile()->getThirdColor());
       break;
     }
 }
@@ -961,6 +962,7 @@ void TileSetWindow::on_tile_name_changed()
 
 void TileSetWindow::fill_tile_smallmap(Tile *tile)
 {
+  /*
   SmallTile *s = tile->getSmallTile();
   if (s->getPattern() == SmallTile::SUNKEN_RADIAL)
     OverviewMap::draw_radial_gradient(tile_smallmap_surface, s->getColor(), 
@@ -985,15 +987,17 @@ void TileSetWindow::fill_tile_smallmap(Tile *tile)
     }
 
   tile_smallmap_image->property_pixmap() = tile_smallmap_surface;
+  */
 }
 
 void TileSetWindow::choose_and_add_or_replace_tilestyleset(std::string replace_filename)
 {
   Gtk::FileChooserDialog chooser(*window, _("Choose an Image"),
 				 Gtk::FILE_CHOOSER_ACTION_OPEN);
-  Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*.png");
-  chooser.set_filter(sav_filter);
+  Glib::RefPtr<Gtk::FileFilter> png_filter = Gtk::FileFilter::create();
+  png_filter->set_name(_("PNG files (*.png)"));
+  png_filter->add_pattern("*.png");
+  chooser.add_filter(png_filter);
   chooser.set_current_folder(Glib::get_home_dir());
 
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);

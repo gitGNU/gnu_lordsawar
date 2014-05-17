@@ -174,7 +174,7 @@ class Player: public sigc::trackable
 	 *                     the next free Id it used.
          */
 	//! Default constructor.
-        Player (std::string name, guint32 armyset, Gdk::Color color, int width,
+        Player (std::string name, guint32 armyset, Gdk::RGBA color, int width,
 		int height, Type type, int player_no = -1);
 
         //! Copy constructor.
@@ -199,7 +199,7 @@ class Player: public sigc::trackable
         void setType(Type type) {d_type = type;}
 
         //! Change the player's colour.
-        void setColor(Gdk::Color c);
+        void setColor(Gdk::RGBA c);
 
         //! Makes a player unable to die, even when having no units or cities.
         void setMortality(bool ismortal) {d_immortal = !ismortal;}
@@ -275,7 +275,7 @@ class Player: public sigc::trackable
 	std::string getDiplomaticTitle() const {return d_diplomatic_title;};
 
         //! Returns the colour of the player.
-	Gdk::Color getColor() const {return d_color;}
+	Gdk::RGBA getColor() const {return d_color;}
 
         //! Returns the amount of gold pieces the player has in the treasury.
         int getGold() const {return d_gold;}
@@ -1490,7 +1490,7 @@ class Player: public sigc::trackable
          */
 	//! Create a player.
         static Player* create(std::string name, guint32 armyset, 
-			      Gdk::Color color, int width, int height, 
+			      Gdk::RGBA color, int width, int height, 
 			      Type type);
         
         /** 
@@ -1543,7 +1543,7 @@ class Player: public sigc::trackable
 	/**
 	 * Mask portions of images are shaded in this colour.
 	 */
-	Gdk::Color d_color;
+	Gdk::RGBA d_color;
 
 	//! The name of the Player.
         std::string d_name;

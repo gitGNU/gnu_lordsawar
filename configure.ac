@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl This is useful to force using autoreconf 2.5.x
 AC_PREREQ(2.59)
-AC_INIT([lordsawar], [0.2.1-pre4], [lordsawar-discuss@nongnu.org], [lordsawar])
+AC_INIT([lordsawar], [0.3.0-pre1], [lordsawar-discuss@nongnu.org], [lordsawar])
 AC_CONFIG_SRCDIR([config.h.in])
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
@@ -161,7 +161,7 @@ dnl Now check gettext.h
 #             )
 
 #if test $winnls = no ; then
-AM_GNU_GETTEXT_VERSION([0.18.1])
+AM_GNU_GETTEXT_VERSION([0.18.3])
 AM_GNU_GETTEXT([external])
 #fi
 
@@ -174,7 +174,7 @@ AC_SUBST(GLIBMM_LIBS)
 
 dnl Check for gtkmm
 
-PKG_CHECK_MODULES(GTKMM, gtkmm-2.4)
+PKG_CHECK_MODULES(GTKMM, gtkmm-3.0)
 
 AC_SUBST(GTKMM_CFLAGS)
 AC_SUBST(GTKMM_LIBS)

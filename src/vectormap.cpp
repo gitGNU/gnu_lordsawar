@@ -131,7 +131,7 @@ void VectorMap::draw_vectoring_line(Vector<int> src, Vector<int> dest, bool to)
   Vector <int> end = dest;
   start = mapToSurface(start);
   end = mapToSurface(end);
-  Gdk::Color line_colour = Gdk::Color();
+  Gdk::RGBA line_colour = Gdk::RGBA();
   if (to) //yellow
     line_colour = SEND_VECTORED_UNIT_LINE_COLOUR;
   else //orange

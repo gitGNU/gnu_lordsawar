@@ -97,7 +97,7 @@ class ShieldSetWindow: public sigc::trackable
     void update_shieldset_menuitems();
     bool quit();
     
-    void addNewShield(Shield::Colour owner, Gdk::Color colour);
+    void addNewShield(Shield::Colour owner, Gdk::RGBA colour);
     void loadShield(Shield *shield);
     void update_window_title();
 };

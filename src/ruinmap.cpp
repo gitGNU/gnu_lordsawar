@@ -67,8 +67,8 @@ void RuinMap::draw_ruins (bool show_selected)
         {
           if ((*it)->getId() == ruin->getId()) //is this the selected ruin?
             {
-	      Gdk::Color box_color = Gdk::Color();
-	      box_color.set_rgb_p(100,100,100);
+	      Gdk::RGBA box_color = Gdk::RGBA();
+	      box_color.set_rgba(100,100,100);
               draw_rect(pos.x - (tmp->get_width()/2), 
 			pos.y - (tmp->get_height()/2), 
 			tmp->get_width(), tmp->get_height(), box_color);
@@ -96,8 +96,8 @@ void RuinMap::draw_temples (bool show_selected)
         {
           if ((*it)->getId() == ruin->getId()) //is this the selected ruin?
             {
-	      Gdk::Color box_color = Gdk::Color();
-	      box_color.set_rgb_p(100,100,100);
+	      Gdk::RGBA box_color = Gdk::RGBA();
+	      box_color.set_rgba(100,100,100);
               draw_rect(pos.x - (templepic->get_width()/2), 
 			pos.y - (templepic->get_height()/2), 
 			templepic->get_width(), templepic->get_height(), 

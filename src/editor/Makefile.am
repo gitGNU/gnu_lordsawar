@@ -173,7 +173,7 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 
 AM_CXXFLAGS = -Wall
-INCLUDES = $(GTKMM_CFLAGS) \
+AM_CPPFLAGS = $(GTKMM_CFLAGS) \
     $(LIBXML_CFLAGS) \
     $(XSLT_CFLAGS) \
     $(SDL_CFLAGS) \

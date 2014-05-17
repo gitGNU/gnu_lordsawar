@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2009, 2011 Ben Asselstine
+//  Copyright (C) 2009, 2011, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,12 +30,7 @@ disassemble_row(const std::string &file, int no, bool &broken);
 std::vector<PixMask*>
 disassemble_row(const std::string &file, int no, bool first_half_height, bool &broken);
 
-Glib::RefPtr<Gdk::Pixmap> to_pixmap(Glib::RefPtr<Gdk::Pixbuf> pixbuf);
-
-int get_pwidth(Glib::RefPtr<Gdk::Pixmap> pixmap);
-int get_pheight(Glib::RefPtr<Gdk::Pixmap> pixmap);
-Glib::RefPtr<Gdk::Pixbuf> to_pixbuf(Glib::RefPtr<Gdk::Pixmap> pixmap);
-Glib::RefPtr<Gdk::Pixmap> scale (Glib::RefPtr<Gdk::Pixmap> pixmap, int w, int h);
+//Cairo::RefPtr<Cairo::Surface> scale (Cairo::RefPtr<Cairo::Surface> pixmap, int w, int h);
 bool image_width_is_multiple_of_image_height(const std::string file);
 void get_image_width_and_height (const std::string &file, guint32 &width, guint32 &height, bool &broken);
 #endif

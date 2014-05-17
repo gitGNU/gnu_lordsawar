@@ -64,8 +64,8 @@ static std::string create_and_dump_scenario(const std::string &file,
     Map map;
     Gtk::Dialog* dialog;
 
-    Gtk::VBox *dialog_vbox;
-    Gtk::HButtonBox *dialog_action_area;
+    Gtk::Box *dialog_vbox;
+    Gtk::ButtonBox *dialog_action_area;
     Gtk::ComboBox *map_size_combobox;
     Gtk::ProgressBar *progressbar;
     Gtk::Widget *random_map_container;

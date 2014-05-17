@@ -58,9 +58,9 @@ void SmallMap::draw_selection()
     int w = int(view.w * pixels_per_tile);
     int h = int(view.h * pixels_per_tile);
 
-    int width;
-    int height;
-    surface->get_size(width, height);
+    int width = get_width();
+    int height = get_height();
+    
     // this is a bit unfortunate.  we require this catch-all
     // so that our selector box isn't too big for the smallmap
     if (pos.x + w >= width)
@@ -107,8 +107,7 @@ void SmallMap::center_view_on_pixel(Vector<int> pos, bool slide)
 
 void SmallMap::after_draw()
 {
-  int width = 0, height = 0;
-  surface->get_size(width, height);
+  int width = get_width(), height = get_height();
   if (blank_screen == true)
     {
       map_changed.emit(surface, Gdk::Rectangle(0, 0, width, height));

@@ -1,4 +1,4 @@
-//  Copyright (C) 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2009, 2010, 2011, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -319,9 +319,10 @@ void CitySetWindow::on_load_cityset_activated()
 {
   Gtk::FileChooserDialog chooser(*window, 
 				 _("Choose a Cityset to Load"));
-  Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*" + CITYSET_EXT);
-  chooser.set_filter(sav_filter);
+  Glib::RefPtr<Gtk::FileFilter> lwc_filter = Gtk::FileFilter::create();
+  lwc_filter->set_name(_("LordsAWar Citysets (*.lwc)"));
+  lwc_filter->add_pattern("*" + CITYSET_EXT);
+  chooser.add_filter(lwc_filter);
   chooser.set_current_folder(File::getUserCitysetDir());
 
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);

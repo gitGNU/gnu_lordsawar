@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -77,7 +77,7 @@ CityEditorDialog::CityEditorDialog(City *cit, CreateScenarioRandomize *randomize
 	     end = Playerlist::getInstance()->end(); i != end; ++i, ++c)
     {
 	Player *player = *i;
-	player_combobox->append_text(player->getName());
+	player_combobox->append(player->getName());
 	if (player == city->getOwner())
 	    player_no = c;
     }
@@ -340,7 +340,7 @@ void CityEditorDialog::cell_data_strength(Gtk::CellRenderer *renderer,
 				     const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
-          = new Gtk::Adjustment((*i)[army_columns.strength], 
+          = Gtk::Adjustment::create((*i)[army_columns.strength], 
 				MIN_STRENGTH_FOR_ARMY_UNITS, 
 				MAX_STRENGTH_FOR_ARMY_UNITS, 1);
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
@@ -361,7 +361,7 @@ void CityEditorDialog::cell_data_moves(Gtk::CellRenderer *renderer,
 				  const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
-          = new Gtk::Adjustment((*i)[army_columns.moves], 
+          = Gtk::Adjustment::create((*i)[army_columns.moves], 
 				MIN_MOVES_FOR_ARMY_UNITS, 
 				MAX_MOVES_FOR_ARMY_UNITS, 1);
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
@@ -382,7 +382,7 @@ void CityEditorDialog::cell_data_turns(Gtk::CellRenderer *renderer,
 				   const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
-          = new Gtk::Adjustment((*i)[army_columns.duration], 
+          = Gtk::Adjustment::create((*i)[army_columns.duration], 
 				MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS, 
 				MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS, 1);
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
@@ -403,7 +403,7 @@ void CityEditorDialog::cell_data_upkeep(Gtk::CellRenderer *renderer,
 				   const Gtk::TreeIter& i)
 {
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_adjustment()
-          = new Gtk::Adjustment((*i)[army_columns.upkeep], 0, 20, 1);
+          = Gtk::Adjustment::create((*i)[army_columns.upkeep], 0, 20, 1);
     dynamic_cast<Gtk::CellRendererSpin*>(renderer)->property_text() = 
       String::ucompose("%1", (*i)[army_columns.upkeep]);
 }

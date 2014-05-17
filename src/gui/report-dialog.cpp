@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -153,42 +153,73 @@ void ReportDialog::run()
   dialog->run();
 }
 
-void ReportDialog::on_army_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
+void ReportDialog::on_army_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
   if (report_notebook->get_current_page() == ARMY)
-    map_image->property_pixmap() = map;
+    {
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+        Gdk::Pixbuf::create(map, 0, 0, 
+                            armymap->get_width(), armymap->get_height());
+      map_image->property_pixbuf() = pixbuf;
+    }
 }
 
-void ReportDialog::on_city_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
+void ReportDialog::on_city_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
   if (report_notebook->get_current_page() == CITY ||
       report_notebook->get_current_page() == GOLD ||
       report_notebook->get_current_page() == WINNING)
-    map_image->property_pixmap() = map;
+    {
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+        Gdk::Pixbuf::create(map, 0, 0, 
+                            citymap->get_width(), citymap->get_height());
+      map_image->property_pixbuf() = pixbuf;
+    }
 }
 
-void ReportDialog::on_vector_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
+void ReportDialog::on_vector_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
   if (report_notebook->get_current_page() == PRODUCTION)
-    map_image->property_pixmap() = map;
+    {
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+        Gdk::Pixbuf::create(map, 0, 0, 
+                            vectormap->get_width(), vectormap->get_height());
+      map_image->property_pixbuf() = pixbuf;
+    }
 }
 
-void ReportDialog::on_switch_page(GtkNotebookPage *page, guint number)
+void ReportDialog::on_switch_page(Gtk::Widget *page, guint number)
 {
   if (closing)
     return;
   switch (number)
     {
     case ARMY:
-      map_image->property_pixmap() = armymap->get_surface();
+        {
+          Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+            Gdk::Pixbuf::create(armymap->get_surface(), 0, 0, 
+                                armymap->get_width(), citymap->get_height());
+          map_image->property_pixbuf() = pixbuf;
+        }
       break;
     case CITY: 
     case GOLD: 
     case WINNING:
-      map_image->property_pixmap() = citymap->get_surface();
+        {
+          Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+            Gdk::Pixbuf::create(citymap->get_surface(), 0, 0, 
+                                citymap->get_width(), citymap->get_height());
+          map_image->property_pixbuf() = pixbuf;
+        }
       break;
     case PRODUCTION:
-      map_image->property_pixmap() = vectormap->get_surface();
+        {
+          Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+            Gdk::Pixbuf::create(vectormap->get_surface(), 0, 0, 
+                                vectormap->get_width(), 
+                                vectormap->get_height());
+          map_image->property_pixbuf() = pixbuf;
+        }
       break;
     }
   fill_in_info();
@@ -219,8 +250,8 @@ void ReportDialog::fill_in_info()
 void ReportDialog::updateArmyChart()
 {
   std::list<guint32> bars;
-  std::list<Gdk::Color> colours;
-  Gdk::Color colour;
+  std::list<Gdk::RGBA> colours;
+  Gdk::RGBA colour;
   Glib::ustring s;
   guint32 total;
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
@@ -251,8 +282,8 @@ void ReportDialog::updateArmyChart()
 void ReportDialog::updateCityChart()
 {
   std::list<guint32> bars;
-  std::list<Gdk::Color> colours;
-  Gdk::Color colour;
+  std::list<Gdk::RGBA> colours;
+  Gdk::RGBA colour;
   Glib::ustring s;
   guint32 total;
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
@@ -283,8 +314,8 @@ void ReportDialog::updateCityChart()
 void ReportDialog::updateGoldChart()
 {
   std::list<guint32> bars;
-  std::list<Gdk::Color> colours;
-  Gdk::Color colour;
+  std::list<Gdk::RGBA> colours;
+  Gdk::RGBA colour;
   Glib::ustring s;
   guint32 total;
   bars.clear();
@@ -349,8 +380,8 @@ std::string ReportDialog::calculateRank(std::list<guint32> scores, guint32 score
 void ReportDialog::updateWinningChart()
 {
   std::list<guint32> bars;
-  std::list<Gdk::Color> colours;
-  Gdk::Color colour;
+  std::list<Gdk::RGBA> colours;
+  Gdk::RGBA colour;
   Glib::ustring s;
   guint32 score;
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
@@ -420,8 +451,8 @@ void ReportDialog::addProduction(const Action *action)
       s += " stops production!";
       city_id = act->getCityId();
     }
-  const ArmyProto *a;
-  a = Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);
+  //const ArmyProto *a = 
+    //Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);
   Gtk::TreeIter i = armies_list->append();
   (*i)[armies_columns.city_id] = city_id;
   (*i)[armies_columns.image] = 

@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010, 2011, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -134,21 +134,21 @@ oeeeeeee
 	// Get Methods
 
         //! Get the colour associated with this tile for the smallmap.
-	Gdk::Color getColor() const {return d_color;}
+	Gdk::RGBA getColor() const {return d_color;}
 
         //! Get the alternate colour associated with this tile's pattern.
 	/**
 	 * This "second" colour gets used when SmallTile::Pattern is
 	 * STIPPLED, RANDOMIZED, SUNKEN, or TABLECLOTH.
 	 */
-	Gdk::Color getSecondColor() const {return d_second_color;}
+	Gdk::RGBA getSecondColor() const {return d_second_color;}
 
         //! Get another alternate colour associated with this tile's pattern.
 	/**
 	 * This "third" colour gets used when SmallTile::Pattern is
 	 * RANDOMIZED, DIAGONAL, CROSSHATCH, or TABLECLOTH.
 	 */
-	Gdk::Color getThirdColor() const {return d_third_color;}
+	Gdk::RGBA getThirdColor() const {return d_third_color;}
 
         //! Get the pattern (solid, stippled, random) of this type.
         Pattern getPattern() const {return d_pattern;}
@@ -157,13 +157,13 @@ oeeeeeee
 	// Set Methods
 
         //! Set the colour associated with this tile for the smallmap.
-	void setColor(Gdk::Color clr) {d_color = clr;}
+	void setColor(Gdk::RGBA clr) {d_color = clr;}
 
         //! Set the alternate colour associated with this tile's pattern.
-        void setSecondColor(Gdk::Color color) {d_second_color = color;}
+        void setSecondColor(Gdk::RGBA color) {d_second_color = color;}
 
         //! Set another alternate colour associated with this tile's pattern.
-        void setThirdColor(Gdk::Color color) {d_third_color = color;}
+        void setThirdColor(Gdk::RGBA color) {d_third_color = color;}
 
         //! set the pattern (solid, stippled, random) of this type.
 	void setPattern(Pattern pattern) {d_pattern = pattern;}
@@ -194,7 +194,7 @@ oeeeeeee
 	 * tileset.tile.smallmap.d_green
 	 * tileset.tile.smallmap.d_blue
 	 */
-	Gdk::Color d_color;
+	Gdk::RGBA d_color;
 
 	//! Second colour.
 	/**
@@ -207,7 +207,7 @@ oeeeeeee
 	 * tileset.tile.smallmap.d_2nd_green
 	 * tileset.tile.smallmap.d_2nd_blue
 	 */
-	Gdk::Color d_second_color;
+	Gdk::RGBA d_second_color;
 
 	//! Third colour.
 	/**
@@ -220,7 +220,7 @@ oeeeeeee
 	 * tileset.tile.smallmap.d_3rd_green
 	 * tileset.tile.smallmap.d_3rd_blue
 	 */
-	Gdk::Color d_third_color;
+	Gdk::RGBA d_third_color;
 
 };
 

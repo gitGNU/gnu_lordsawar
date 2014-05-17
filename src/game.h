@@ -106,8 +106,8 @@ class Game
     
     // signals
     sigc::signal<void, Vector<int> > current_map_position;
-    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap>, Gdk::Rectangle> smallmap_changed;
-    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> > bigmap_changed;
+    sigc::signal<void, Cairo::RefPtr<Cairo::Surface>, Gdk::Rectangle> smallmap_changed;
+    sigc::signal<void, Cairo::RefPtr<Cairo::Surface> > bigmap_changed;
     sigc::signal<void, SidebarStats> sidebar_stats_changed;
     sigc::signal<void, std::string> progress_status_changed;
     sigc::signal<void> progress_changed;
@@ -226,8 +226,8 @@ class Game
     void on_city_unqueried ();
 
     // smallmap callbacks
-    void on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map);
-    void on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    void on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map);
+    void on_bigmap_changed(Cairo::RefPtr<Cairo::Surface> map);
     
     // misc. callbacks
     void invading_city(City* city, int gold);

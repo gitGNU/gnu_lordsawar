@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -457,9 +457,12 @@ void HeroDialog::fill_in_info_labels()
     info_label2->set_text(s);
 }
 
-void HeroDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
+void HeroDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-    map_image->property_pixmap() = map;
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+    Gdk::Pixbuf::create(map, 0, 0, 
+                        heroesmap->get_width(), heroesmap->get_height());
+  map_image->property_pixbuf() = pixbuf;
 }
 
 bool HeroDialog::on_map_mouse_button_event(GdkEventButton *e)

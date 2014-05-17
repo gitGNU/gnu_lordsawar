@@ -297,7 +297,7 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
     smallmap->resize();
     smallmap->map_changed.connect(
 	sigc::mem_fun(smallmap_changed,
-		      &sigc::signal<void, Glib::RefPtr<Gdk::Pixmap>, 
+		      &sigc::signal<void, Cairo::RefPtr<Cairo::Surface>, 
 		      Gdk::Rectangle>::emit));
 
     // connect the two maps
@@ -305,7 +305,7 @@ Game::Game(GameScenario* gameScenario, NextTurn *nextTurn)
 	sigc::mem_fun(smallmap.get(), &SmallMap::set_view));
     bigmap->map_changed.connect(
 	sigc::mem_fun(bigmap_changed,
-		      &sigc::signal<void, Glib::RefPtr<Gdk::Pixmap> >::emit));
+		      &sigc::signal<void, Cairo::RefPtr<Cairo::Surface> >::emit));
     smallmap->view_changed.connect(
 	sigc::mem_fun(bigmap.get(), &GameBigMap::set_view));
 

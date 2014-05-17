@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -114,9 +114,11 @@ Player*UseItemOnPlayerDialog::run()
     return player;
 }
 
-void UseItemOnPlayerDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
+void UseItemOnPlayerDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  map_image->property_pixmap() = map;
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+    Gdk::Pixbuf::create(map, 0, 0, citymap->get_width(), citymap->get_height());
+  map_image->property_pixbuf() = pixbuf;
 }
 
 void UseItemOnPlayerDialog::addPlayer(Player *player)

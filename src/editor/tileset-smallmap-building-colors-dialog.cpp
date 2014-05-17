@@ -39,17 +39,17 @@ TilesetSmallmapBuildingColorsDialog::TilesetSmallmapBuildingColorsDialog(Tileset
   xml->get_widget("dialog", dialog);
   dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
   xml->get_widget("road_colorbutton", road_colorbutton);
-  road_colorbutton->set_color(tileset->getRoadColor());
+  road_colorbutton->set_rgba(tileset->getRoadColor());
   road_colorbutton->signal_color_set().connect
     (sigc::mem_fun(this, 
                    &TilesetSmallmapBuildingColorsDialog::on_road_color_chosen));
   xml->get_widget("ruin_colorbutton", ruin_colorbutton);
-  ruin_colorbutton->set_color(tileset->getRuinColor());
+  ruin_colorbutton->set_rgba(tileset->getRuinColor());
   ruin_colorbutton->signal_color_set().connect
     (sigc::mem_fun(this, 
                    &TilesetSmallmapBuildingColorsDialog::on_ruin_color_chosen));
   xml->get_widget("temple_colorbutton", temple_colorbutton);
-  temple_colorbutton->set_color(tileset->getTempleColor());
+  temple_colorbutton->set_rgba(tileset->getTempleColor());
   temple_colorbutton->signal_color_set().connect
     (sigc::mem_fun
      (this, &TilesetSmallmapBuildingColorsDialog::on_temple_color_chosen));
@@ -78,15 +78,15 @@ void TilesetSmallmapBuildingColorsDialog::hide()
 
 void TilesetSmallmapBuildingColorsDialog::on_road_color_chosen()
 {
-  d_tileset->setRoadColor(road_colorbutton->get_color());
+  d_tileset->setRoadColor(road_colorbutton->get_rgba());
 }
 
 void TilesetSmallmapBuildingColorsDialog::on_ruin_color_chosen()
 {
-  d_tileset->setRuinColor(ruin_colorbutton->get_color());
+  d_tileset->setRuinColor(ruin_colorbutton->get_rgba());
 }
 
 void TilesetSmallmapBuildingColorsDialog::on_temple_color_chosen()
 {
-  d_tileset->setTempleColor(temple_colorbutton->get_color());
+  d_tileset->setTempleColor(temple_colorbutton->get_rgba());
 }

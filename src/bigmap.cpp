@@ -2,7 +2,7 @@
 // Copyright (C) 2003, 2004, 2005, 2006, 2007 Ulf Lorenz
 // Copyright (C) 2004, 2005 Bryan Duff
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -90,10 +90,8 @@ void BigMap::set_view(Rectangle new_view)
 {
     int tilesize = GameMap::getInstance()->getTileSize();
     
-    int width = 0;
-    int height = 0;
-    if (outgoing == true)
-      outgoing->get_size(width, height);
+    int width = image.get_width();
+    int height = image.get_height();
     if (view.dim == new_view.dim && buffer && image.get_width() == width && image.get_height() == height)
     {
 	// someone wants us to move the view, not resize it, no need to
@@ -129,13 +127,14 @@ void BigMap::set_view(Rectangle new_view)
     
     buffer_view.dim = view.dim + Vector<int>(2, 2);
 
-    buffer = Gdk::Pixmap::create (Glib::RefPtr<Gdk::Drawable>(0), buffer_view.w * tilesize, buffer_view.h * tilesize, 24);
-    buffer_gc = Gdk::GC::create(buffer);
+    Cairo::RefPtr<Cairo::Surface> empty = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, buffer_view.w *tilesize, buffer_view.h * tilesize);
+    buffer = Cairo::Surface::create (empty, Cairo::CONTENT_COLOR_ALPHA, buffer_view.w * tilesize, buffer_view.h * tilesize);
+    buffer_gc = Cairo::Context::create(buffer);
 
     //now create the part that will go out to the gtk::image
     if (outgoing == true)
       outgoing.clear();
-    outgoing = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(buffer), image.get_width(), image.get_height(), 24);
+    outgoing = Cairo::Surface::create(buffer, Cairo::CONTENT_COLOR_ALPHA, image.get_width(), image.get_height());
 
 
     if (d_renderer)
@@ -144,13 +143,19 @@ void BigMap::set_view(Rectangle new_view)
     d_renderer = new MapRenderer(buffer);
 }
 
-void BigMap::clip_viewable_buffer(Glib::RefPtr<Gdk::Pixmap> pixmap, Glib::RefPtr<Gdk::GC> gc, Vector<int> pos, Glib::RefPtr<Gdk::Pixmap> out)
+void BigMap::clip_viewable_buffer(Cairo::RefPtr<Cairo::Surface> pixmap, Cairo::RefPtr<Cairo::Context> gc, Vector<int> pos, Cairo::RefPtr<Cairo::Surface> out)
 {
     //Glib::RefPtr<Gdk::Pixmap> outgoing = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(pixmap), image.get_width(), image.get_height(), 24) ;
-    int width = 0;
-    int height = 0;
-    pixmap->get_size(width,height);
-    out->draw_drawable(gc, pixmap, pos.x, pos.y, 0, 0, image.get_width(), image.get_height());
+    Cairo::RefPtr<Cairo::Context> out_gc = Cairo::Context::create(out);
+    //Cairo::RefPtr<Cairo::Surface> pixmap_subsurface = Cairo::Surface::create(pixmap, pos.x, pos.y, image.get_width(), image.get_height());
+  out_gc->rectangle(0, 0, image.get_width(), image.get_height());
+  out_gc->clip();
+  out_gc->save();
+    out_gc->set_source(pixmap, -pos.x, -pos.y);
+  out_gc->rectangle (0, 0, image.get_width(), image.get_height());
+  out_gc->clip();
+    out_gc->paint();
+  out_gc->restore();
     return;
 }
 
@@ -172,7 +177,7 @@ void BigMap::draw(Player *player, bool redraw_buffer)
 
     // redraw the buffer
     if (redraw_buffer)
-	draw_buffer();
+      draw_buffer();
 
     // blit the visible part of buffer to the screen
     Vector<int> p = view_pos - (buffer_view.pos * tilesize * magnification_factor);
@@ -191,12 +196,12 @@ void BigMap::draw(Player *player, bool redraw_buffer)
 
     if (blank_screen)
       {
-	int width = 0;
-	int height = 0;
-	outgoing->get_size(width, height);
-	Glib::RefPtr<Gdk::GC> outgoing_gc = Gdk::GC::create(outgoing);
-	outgoing_gc->set_rgb_fg_color(FOG_COLOUR);
-	outgoing->draw_rectangle(outgoing_gc, true, 0, 0, width, height);
+	int width = image.get_width();
+	int height = image.get_height();
+	Cairo::RefPtr<Cairo::Context> outgoing_gc = Cairo::Context::create(outgoing);
+	outgoing_gc->set_source_rgba(FOG_COLOUR.get_red(), FOG_COLOUR.get_green(), FOG_COLOUR.get_blue(), FOG_COLOUR.get_alpha());
+	outgoing_gc->rectangle(0, 0, width, height);
+	outgoing_gc->fill();
       }
     map_changed.emit(outgoing);
 }
@@ -311,7 +316,7 @@ MapTipPosition BigMap::map_tip_position(Rectangle tile_area)
     return m;
 }
 
-void BigMap::blit_object(const Location &obj, Vector<int> tile, PixMask *image, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc)
+void BigMap::blit_object(const Location &obj, Vector<int> tile, PixMask *image, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> surface_gc)
 {
   Vector<int> diff = tile - obj.getPos();
   int tilesize = GameMap::getInstance()->getTileSize();
@@ -319,7 +324,7 @@ void BigMap::blit_object(const Location &obj, Vector<int> tile, PixMask *image, 
   image->blit(diff, tilesize, surface, p);
 }
 
-void BigMap::draw_stack(Stack *s, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> surface_gc)
+void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> surface_gc)
 {
   GameMap *gm = GameMap::getInstance();
   GraphicsCache *gc = GraphicsCache::getInstance();
@@ -391,11 +396,11 @@ void BigMap::draw_buffer()
   if (Playerlist::getViewingplayer()->getType() != Player::HUMAN &&
       GameScenarioOptions::s_hidden_map == true)
     {
-      int width = 0;
-      int height = 0;
-      buffer->get_size(width, height);
-      buffer_gc->set_rgb_fg_color(FOG_COLOUR);
-      buffer->draw_rectangle(buffer_gc, true, 0, 0, width, height);
+      int width = image.get_width();
+      int height = image.get_height();
+      buffer_gc->set_source_rgba(FOG_COLOUR.get_red(), FOG_COLOUR.get_green(), FOG_COLOUR.get_blue(), FOG_COLOUR.get_alpha());
+      buffer_gc->rectangle(0, 0, width, height);
+      buffer_gc->fill();
     }
   else
     after_draw();
@@ -404,11 +409,10 @@ void BigMap::draw_buffer()
 
 bool BigMap::saveViewAsBitmap(std::string filename)
 {
-  int width;
-  int height;
-  buffer->get_size(width, height);
+  int width = image.get_width();
+  int height = image.get_height();
   remove (filename.c_str());
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create(Glib::RefPtr<Gdk::Drawable>(buffer), 0, 0, width, height);
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create(buffer, 0, 0, width, height);
   pixbuf->save (filename, "png");
   return true;
 }
@@ -423,19 +427,20 @@ bool BigMap::saveAsBitmap(std::string filename)
   int tilesize = GameMap::getInstance()->getTileSize();
   int width = GameMap::getWidth() * tilesize;
   int height = GameMap::getHeight() * tilesize;
-  Glib::RefPtr<Gdk::Pixmap> surf = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), width, height, 24);
+  Cairo::RefPtr<Cairo::Surface> empty;
+  Cairo::RefPtr<Cairo::Surface> surf = Cairo::Surface::create(empty, Cairo::CONTENT_COLOR_ALPHA, width, height);
   
   bool orig_grid = d_grid_toggled;
   d_grid_toggled = false;
   draw_buffer(Rectangle (0, 0, GameMap::getWidth(), GameMap::getHeight()), surf,
-	      Gdk::GC::create(surf));
+	      Cairo::Context::create(surf));
   d_grid_toggled = orig_grid;
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create(Glib::RefPtr<Gdk::Drawable>(surf), 0, 0, width, height);
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create(surf, 0, 0, width, height);
   pixbuf->save (filename, "png");
   return true;
 }
 
-void BigMap::draw_buffer_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context)
+void BigMap::draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> context)
 {
   guint32 tilesize = GameMap::getInstance()->getTileSize();
   Player *viewing = Playerlist::getViewingplayer();
@@ -595,7 +600,7 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Glib::RefPtr<Gdk::Pixmap> surfac
   pixmask->blit(surface, tile_to_buffer_pos(tile));
 }
 
-void BigMap::draw_buffer_tiles(Rectangle map_view, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context)
+void BigMap::draw_buffer_tiles(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> context)
 {
   for (int i = map_view.x; i < map_view.x + map_view.w; i++)
     for (int j = map_view.y; j < map_view.y + map_view.h; j++)
@@ -603,27 +608,26 @@ void BigMap::draw_buffer_tiles(Rectangle map_view, Glib::RefPtr<Gdk::Pixmap> sur
 	draw_buffer_tile(Vector<int>(i,j), surface, context);
 }
 
-void BigMap::draw_buffer(Rectangle map_view, Glib::RefPtr<Gdk::Pixmap> surface, Glib::RefPtr<Gdk::GC> context)
+void BigMap::draw_buffer(Rectangle map_view, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> context)
 {
   draw_buffer_tiles(map_view, surface, context);
 }
 
 //here we want to magnify the entire buffer, not a subset
-Glib::RefPtr<Gdk::Pixmap> BigMap::magnify(Glib::RefPtr<Gdk::Pixmap> orig)
+Cairo::RefPtr<Cairo::Surface> BigMap::magnify(Cairo::RefPtr<Cairo::Surface> orig)
 {
   //magnify the buffer into a buffer of the correct size
 
-  int width = 0;
-  int height = 0;
-  orig->get_size(width, height);
+  int width = image.get_width();
+  int height = image.get_height();
   if (width == 0 || height == 0)
     return orig;
-  Glib::RefPtr<Gdk::Pixmap> result = 
-    Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(orig), 
-			width * magnification_factor,
-			height * magnification_factor);
+  Cairo::RefPtr<Cairo::Surface> result = 
+    Cairo::Surface::create(orig, Cairo::CONTENT_COLOR_ALPHA,
+                           width * magnification_factor,
+                           height * magnification_factor);
   Glib::RefPtr<Gdk::Pixbuf> unzoomed_buffer;
-  unzoomed_buffer = Gdk::Pixbuf::create(Glib::RefPtr<Gdk::Drawable>(orig), 0, 0, width, height);
+  unzoomed_buffer = Gdk::Pixbuf::create(orig, 0, 0, width, height);
 
   //Glib::RefPtr<Gdk::Pixbuf> zoomed_buffer;
   //zoomed_buffer = unzoomed_buffer->scale_simple(width * magnification_factor, height * magnification_factor, Gdk::INTERP_BILINEAR);

@@ -163,7 +163,7 @@ void StackTileBox::on_army_toggled(StackArmyButton *toggle, Stack *stack, Army *
 
 void StackTileBox::on_group_toggled(Gtk::ToggleButton *toggle)
 {
-  if (toggle->sensitive() == false)
+  if (toggle->get_sensitive() == false)
     return;
   bool active = toggle->get_active();
       

@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -116,7 +116,7 @@ void GamePreferencesDialog::init(std::string filename)
     }
   start_game_button->property_can_focus() = true;
   start_game_button->property_has_focus() = true;
-  start_game_button->receives_default();
+  start_game_button->get_receives_default();
       
   //load the game options from the config file.
   GameScenarioOptions::s_see_opponents_stacks = 
@@ -199,10 +199,10 @@ void GamePreferencesDialog::add_player(GameParameters::Player::Type type,
   //add it to players_vbox
   Gtk::HBox *player_hbox = new Gtk::HBox();
   Gtk::ComboBoxText *player_type = new Gtk::ComboBoxText();
-  player_type->append_text(HUMAN_PLAYER_TYPE);
-  player_type->append_text(EASY_PLAYER_TYPE);
-  player_type->append_text(HARD_PLAYER_TYPE);
-  player_type->append_text(NO_PLAYER_TYPE);
+  player_type->append(HUMAN_PLAYER_TYPE);
+  player_type->append(EASY_PLAYER_TYPE);
+  player_type->append(HARD_PLAYER_TYPE);
+  player_type->append(NO_PLAYER_TYPE);
   player_type->signal_changed().connect
     (sigc::mem_fun(this, &GamePreferencesDialog::on_player_type_changed));
   Gtk::Entry *player_name = new Gtk::Entry();
@@ -253,7 +253,7 @@ void GamePreferencesDialog::update_difficulty_combobox()
 
 void GamePreferencesDialog::update_shields()
 {
-  if (dialog->is_realized() == false)
+  if (dialog->get_realized() == false)
     return;
   bool broken = false;
   Shieldsetlist::getInstance()->instantiateImages(broken);
@@ -323,7 +323,7 @@ void GamePreferencesDialog::update_buttons()
     {
       start_game_button->set_sensitive(true);
       start_game_button->property_can_focus() = true;
-      start_game_button->receives_default();
+      start_game_button->get_receives_default();
     }
 }
 

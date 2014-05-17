@@ -79,7 +79,7 @@ class FightWindow: public sigc::trackable
     void add_army(Army *army, int initial_hp,
                   std::vector<Gtk::HBox *> &hboxes,
 		  Gtk::VBox *vbox,
-		  int current_no, int max_rows, Gtk::AlignmentEnum alignment);
+		  int current_no, int max_rows);
 
     void on_key_release_event(GdkEventKey* event);
 

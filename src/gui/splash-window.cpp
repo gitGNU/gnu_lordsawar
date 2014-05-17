@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -179,9 +179,10 @@ void SplashWindow::on_rescue_crashed_game_clicked()
 void SplashWindow::on_load_game_clicked()
 {
     Gtk::FileChooserDialog chooser(*window, _("Choose Game to Load"));
-    Gtk::FileFilter sav_filter;
-    sav_filter.add_pattern("*" + SAVE_EXT);
-    chooser.set_filter(sav_filter);
+    Glib::RefPtr<Gtk::FileFilter> sav_filter = Gtk::FileFilter::create();
+    sav_filter->set_name(_("LordsAWar Saved Games (*.sav)"));
+    sav_filter->add_pattern("*" + SAVE_EXT);
+    chooser.add_filter(sav_filter);
     chooser.set_current_folder(Configuration::s_savePath);
 
     chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);

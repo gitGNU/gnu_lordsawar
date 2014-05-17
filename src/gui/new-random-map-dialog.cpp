@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -98,7 +98,7 @@ NewRandomMapDialog::NewRandomMapDialog()
     
     guint32 counter = 0;
     guint32 default_id = 0;
-    Gtk::Box *box;
+    Gtk::HBox *box;
 
     //fill in tile sizes combobox
     tile_size_combobox = manage(new Gtk::ComboBoxText);
@@ -110,7 +110,7 @@ NewRandomMapDialog::NewRandomMapDialog()
 	 it++)
       {
 	Glib::ustring s = String::ucompose("%1x%1", *it);
-	tile_size_combobox->append_text(s);
+	tile_size_combobox->append(s);
 	if ((*it) == Tileset::getDefaultTileSize())
 	  default_id = counter;
 	counter++;
@@ -146,7 +146,7 @@ NewRandomMapDialog::NewRandomMapDialog()
       {
 	if (*i == _("Default"))
 	  default_id = counter;
-	shield_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+	shield_theme_combobox->append(Glib::filename_to_utf8(*i));
 	counter++;
       }
 
@@ -257,7 +257,9 @@ void NewRandomMapDialog::on_tile_size_changed()
   guint32 counter = 0;
 
   accept_button->set_sensitive(true);
-  tile_theme_combobox->clear_items();
+  Gtk::Container *container = tile_theme_combobox->get_parent();
+  tile_theme_combobox->remove_all();
+
   Tilesetlist *tl = Tilesetlist::getInstance();
   std::list<std::string> tile_themes = tl->getValidNames(get_active_tile_size());
   for (std::list<std::string>::iterator i = tile_themes.begin(),
@@ -265,7 +267,7 @@ void NewRandomMapDialog::on_tile_size_changed()
     {
       if (*i == _("Default"))
 	default_id = counter;
-      tile_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      tile_theme_combobox->append(Glib::filename_to_utf8(*i));
       counter++;
     }
 
@@ -273,8 +275,11 @@ void NewRandomMapDialog::on_tile_size_changed()
     tile_theme_combobox->set_active(default_id);
   else
     accept_button->set_sensitive(false);
+    
 
-  army_theme_combobox->clear_items();
+  container = army_theme_combobox->get_parent();
+  army_theme_combobox->remove_all();
+
   Armysetlist *al = Armysetlist::getInstance();
   std::list<std::string> army_themes = al->getValidNames(get_active_tile_size());
   counter = 0;
@@ -284,7 +289,7 @@ void NewRandomMapDialog::on_tile_size_changed()
     {
       if (*i == _("Default"))
 	default_id = counter;
-      army_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      army_theme_combobox->append(Glib::filename_to_utf8(*i));
       counter++;
     }
 
@@ -293,7 +298,9 @@ void NewRandomMapDialog::on_tile_size_changed()
   else
     accept_button->set_sensitive(false);
 
-  city_theme_combobox->clear_items();
+  container = city_theme_combobox->get_parent();
+  city_theme_combobox->remove_all();
+
   Citysetlist *cl = Citysetlist::getInstance();
   std::list<std::string> city_themes = cl->getValidNames(get_active_tile_size());
   counter = 0;
@@ -303,7 +310,7 @@ void NewRandomMapDialog::on_tile_size_changed()
     {
       if (*i == _("Default"))
 	default_id = counter;
-      city_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      city_theme_combobox->append(Glib::filename_to_utf8(*i));
       counter++;
     }
 

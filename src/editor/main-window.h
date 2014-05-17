@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -58,7 +58,7 @@ class MainWindow: public sigc::trackable
     GameScenario* game_scenario;
     CreateScenarioRandomize* d_create_scenario_names;
 
-    Gtk::DrawingArea *bigmap_drawingarea;
+    Gtk::Image *bigmap_image;
     Gtk::EventBox *bigmap_eventbox;
     Gtk::CheckMenuItem *fullscreen_menuitem;
     Gtk::MenuItem *new_map_menuitem;
@@ -94,13 +94,12 @@ class MainWindow: public sigc::trackable
     Gtk::MenuItem *random_unnamed_signs_menuitem;
     Gtk::MenuItem *help_about_menuitem;
     Gtk::HBox *terrain_tile_style_hbox;
-    Gtk::DrawingArea *map_drawingarea;
+    Gtk::Image *smallmap_image;
     std::string current_save_filename;
     bool needs_saving;
     Gtk::Table *terrain_type_table;
     Gtk::Label *mouse_position_label;
     Gtk::RadioButton *pointer_radiobutton;
-    Gtk::Tooltips tooltips;
     Gtk::Box *players_hbox;
 
     
@@ -215,8 +214,8 @@ class MainWindow: public sigc::trackable
     void randomize_ruin(Ruin *ruin);
 
     // map callbacks
-    void on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map, Gdk::Rectangle r);
-    void on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    void on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map, Gdk::Rectangle r);
+    void on_bigmap_changed(Cairo::RefPtr<Cairo::Surface> map);
     void on_objects_selected(std::vector<UniquelyIdentified *> objects);
     void on_mouse_on_tile(Vector<int> tile);
     
@@ -224,8 +223,8 @@ class MainWindow: public sigc::trackable
 
     void auto_select_appropriate_pointer();
 
-    bool on_bigmap_exposed(GdkEventExpose *event);
-    bool on_smallmap_exposed(GdkEventExpose *event);
+    bool on_bigmap_exposed(GdkEvent *event);
+    bool on_smallmap_exposed(GdkEvent *event);
     void on_bigmap_surface_changed(Gtk::Allocation box);
     void redraw();
     void fill_players();

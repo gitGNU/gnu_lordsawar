@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005, 2006, 2007 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -309,7 +309,7 @@ void GraphicsCache::deleteInstance()
 GraphicsCache::GraphicsCache()
     :d_cachesize(0)
 {
-    bool success;
+    bool success = false;
     success = loadDiplomacyPics();
     success = loadCursorPics();
     success = loadProdShields();
@@ -1336,13 +1336,13 @@ PixMask* GraphicsCache::getProdShieldPic(int size, guint32 type, bool prod)
 }
 
 
-PixMask* GraphicsCache::applyMask(PixMask* image, PixMask* mask, Gdk::Color colour, bool isNeutral)
+PixMask* GraphicsCache::applyMask(PixMask* image, PixMask* mask, Gdk::RGBA colour, bool isNeutral)
 {
-  bool broken = false;
   int width = image->get_width();
   int height = image->get_height();
-  PixMask* result = PixMask::create(image->to_pixbuf());
-  if (broken)
+  //PixMask* result = PixMask::create(image->to_pixbuf());
+  PixMask* result = PixMask::create(image->get_pixmap(), mask->get_pixmap());
+  if (!result)
     return NULL;
   if (mask->get_width() != width || (mask->get_height()) != height)
     {
@@ -1352,6 +1352,7 @@ PixMask* GraphicsCache::applyMask(PixMask* image, PixMask* mask, Gdk::Color colo
   //if (isNeutral)
     //return result;
   
+
   Glib::RefPtr<Gdk::Pixbuf> maskbuf = mask->to_pixbuf();
 
   guint8 *data = maskbuf->get_pixels();
@@ -1364,9 +1365,9 @@ PixMask* GraphicsCache::applyMask(PixMask* image, PixMask* mask, Gdk::Color colo
 
 	if (copy[base+3] != 0)
 	  {
-	    copy[base+0] = colour.get_red_p() *copy[base+0];
-	    copy[base+1] = colour.get_green_p() * copy[base+1];
-	    copy[base+2] = colour.get_blue_p() * copy[base+2];
+	    copy[base+0] = colour.get_red() *copy[base+0];
+	    copy[base+1] = colour.get_green() * copy[base+1];
+	    copy[base+2] = colour.get_blue() * copy[base+2];
 	  }
       }
   Glib::RefPtr<Gdk::Pixbuf> colouredmask = 
@@ -1576,7 +1577,7 @@ void GraphicsCache::checkPictures()
 void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag, bool has_standard, int standard_player_id, int stack_size, int stack_player_id, int army_type_id, bool has_tower, bool has_ship, Maptile::Building building_type, int building_subtype, Vector<int> building_tile, int building_player_id, guint32 ts, bool has_grid, guint32 tileset, guint32 cityset, guint32 shieldset)
 {
   const Player *player;
-  Glib::RefPtr<Gdk::Pixmap> pixmap = surface->get_pixmap();
+  Cairo::RefPtr<Cairo::Surface> pixmap = surface->get_pixmap();
 
   switch (building_type)
     {
@@ -1633,9 +1634,16 @@ void GraphicsCache::drawTilePic(PixMask *surface, int fog_type_id, bool has_bag,
     }
   if (has_grid)
     {
-      Glib::RefPtr<Gdk::GC> context = surface->get_gc();
-      context->set_rgb_fg_color(GRID_BOX_COLOUR);
-      pixmap->draw_rectangle(context, false, 0, 0, ts, ts);
+      Cairo::RefPtr<Cairo::Context> context = surface->get_gc();
+      context->set_source_rgba(GRID_BOX_COLOUR.get_red(), GRID_BOX_COLOUR.get_blue(), GRID_BOX_COLOUR.get_green(), GRID_BOX_COLOUR.get_alpha());
+      //context->rectangle(0, 0, ts, ts);
+   context->move_to(0, 0);
+    context->rel_line_to(ts, 0);
+     context->rel_line_to(0, ts);
+      context->rel_line_to(-ts, 0);
+      context->rel_line_to(0, -ts);
+      context->set_line_width(1.0);
+      context->stroke();
     }
 
   if (fog_type_id)
@@ -1769,8 +1777,9 @@ CircledArmyCacheItem* GraphicsCache::addCircledArmyPic(CircledArmyCacheItem *ite
       pre_circle = getArmyPic(myitem->armyset, myitem->army_id, p, 
                               myitem->medals, myitem->greyed);
       myitem->surface = 
-        circled(pre_circle, 
-                Shield::get_default_color_for_no(myitem->circle_colour_id), 
+        circled(pre_circle,
+                                p->getColor(), //Shield::get_default_color_for_no(myitem->circle_colour_id),
+
                 myitem->circle_colour_id != Shield::NEUTRAL);
     }
   else
@@ -2013,6 +2022,7 @@ SignpostCacheItem* GraphicsCache::addSignpostPic(guint32 cityset)
 
   // copy the pixmap
   myitem->surface = cs->getSignpostImage()->copy();
+
 
   //now the final preparation steps:
   //a) add the size
@@ -3297,7 +3307,7 @@ void GraphicsCache::reset()
   return;
 }
 
-void GraphicsCache::draw_circle(Cairo::RefPtr<Cairo::Context> cr, double width_percent, int width, int height, Gdk::Color colour, bool coloured, bool mask)
+void GraphicsCache::draw_circle(Cairo::RefPtr<Cairo::Context> cr, double width_percent, int width, int height, Gdk::RGBA colour, bool coloured, bool mask)
 {
   if (width_percent > 100)
     width_percent = 0;
@@ -3306,12 +3316,12 @@ void GraphicsCache::draw_circle(Cairo::RefPtr<Cairo::Context> cr, double width_p
   width_percent /= 100.0;
   //i want 2 o'clock as a starting point, and 8pm as an ending point.
 
-  double dred = (double)BEVELED_CIRCLE_DARK.get_red() /65535.0;
-  double dgreen = (double)BEVELED_CIRCLE_DARK.get_green() /65535.0;
-  double dblue = (double)BEVELED_CIRCLE_DARK.get_blue() /65535.0;
-  double lred = (double)BEVELED_CIRCLE_LIGHT.get_red() /65535.0;
-  double lgreen = (double)BEVELED_CIRCLE_LIGHT.get_green() /65535.0;
-  double lblue = (double)BEVELED_CIRCLE_LIGHT.get_blue() /65535.0;
+  double dred = BEVELED_CIRCLE_DARK.get_red();
+  double dgreen = BEVELED_CIRCLE_DARK.get_green();
+  double dblue = BEVELED_CIRCLE_DARK.get_blue();
+  double lred = BEVELED_CIRCLE_LIGHT.get_red();
+  double lgreen = BEVELED_CIRCLE_LIGHT.get_green();
+  double lblue = BEVELED_CIRCLE_LIGHT.get_blue();
 
   double radius = (double)width * width_percent / 2.0;
   double line_width = radius * 0.2;
@@ -3348,17 +3358,37 @@ void GraphicsCache::draw_circle(Cairo::RefPtr<Cairo::Context> cr, double width_p
   if (coloured)
     {
       cr->set_line_width(line_width);
-      double red = (double)colour.get_red() /65535.0;
-      double green = (double)colour.get_green() /65535.0;
-      double blue = (double)colour.get_blue() /65535.0;
+      double red = colour.get_red();
+      double green = colour.get_green();
+      double blue = colour.get_blue();
       cr->set_source_rgb(red, green, blue);
       cr->arc((double)width/2.0, (double)height/2.0, radius + (line_width / 2.0), 0, 2 *M_PI);
       cr->stroke();
     }
 }
 
-PixMask* GraphicsCache::circled(PixMask* image, Gdk::Color colour, bool coloured, double width_percent)
+PixMask* GraphicsCache::circled(PixMask* image, Gdk::RGBA colour, bool coloured, double width_percent)
 {
+  PixMask *copy = image->copy();
+  int width = image->get_width();
+  int height = image->get_height();
+  //here we draw a coloured circle on top of the army's image
+  Cairo::RefPtr<Cairo::Context> cr = Cairo::Context::create(copy->get_pixmap());
+
+  draw_circle(cr, width_percent, width, height, colour, coloured, false);
+
+  //here we draw a white circle on a copy of the image's mask.
+  Cairo::RefPtr<Cairo::Surface> mask = copy->get_mask();
+
+  cr = Cairo::Context::create(mask);
+  draw_circle(cr, width_percent, width, height, Gdk::RGBA("white"), coloured, true);
+  PixMask *result = PixMask::create(copy->get_pixmap(), mask);
+  //draw the army on top again, to make it look like the circle is behind.
+  result->draw_pixbuf(image->to_pixbuf(), 0, 0, 0, 0, width, height);
+  delete copy;
+  return result;
+  //return image->copy();
+  /*
   int width = image->get_width();
   int height = image->get_height();
   Glib::RefPtr<Gdk::Pixmap> pixmap = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(), width, height, 24);
@@ -3379,4 +3409,5 @@ PixMask* GraphicsCache::circled(PixMask* image, Gdk::Color colour, bool coloured
   result->draw_pixbuf(image->to_pixbuf(), 0, 0, 0, 0, width, height);
   free(data);
   return result;
+  */
 }

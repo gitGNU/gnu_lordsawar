@@ -55,7 +55,7 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
         Shield(XML_Helper* helper);
         
 	//! Default constructor.
-	Shield(Shield::Colour owner, Gdk::Color color);
+	Shield(Shield::Colour owner, Gdk::RGBA color);
 
 	//! Destructor.
         virtual ~Shield();
@@ -67,13 +67,13 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 	guint32 getOwner() const {return d_owner;}
 
         //! Returns the colour of the player shield.
-	Gdk::Color getColor() const {return d_color;}
+	Gdk::RGBA getColor() const {return d_color;}
 
 
 	// Set Methods
 
 	//! Sets the colour of the player shield.
-	void setColor(Gdk::Color c) {d_color = c;}
+	void setColor(Gdk::RGBA c) {d_color = c;}
 
 
 	// Methods that operate on class data and do not modify the class.
@@ -109,10 +109,10 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 	 * @return The default colour associated with the player.
 	 */
 	//! Get standard colour for a player.
-	static Gdk::Color get_default_color_for_no(int player_no);
+	static Gdk::RGBA get_default_color_for_no(int player_no);
 
 	//! Get standard colour for the neutral player.
-	static Gdk::Color get_default_color_for_neutral();
+	static Gdk::RGBA get_default_color_for_neutral();
 
 	//! Convert the Shield::Colour enumerated value to a string.
 	static std::string colourToString(const Shield::Colour c);
@@ -132,7 +132,7 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 	/**
 	 * Mask portions of images are shaded in this colour.
 	 */
-	Gdk::Color d_color;
+	Gdk::RGBA d_color;
 };
 
 #endif // SHIELD_H

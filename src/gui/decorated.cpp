@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,8 +36,9 @@ Decorated::~Decorated()
 
 void Decorated::decorate(Gtk::Window *d, GraphicsCache::BackgroundType back, int alpha)
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
   window = d;
+  /*
+  GraphicsCache *gc = GraphicsCache::getInstance();
   if (Configuration::s_decorated == false)
     return;
   Glib::RefPtr<Gtk::Style> copy;
@@ -83,13 +84,6 @@ void Decorated::decorate(Gtk::Window *d, GraphicsCache::BackgroundType back, int
   close_button->property_relief() = Gtk::RELIEF_NONE;
   close_button->property_can_focus() = false;
   close_button->signal_clicked().connect(sigc::mem_fun(this, &Decorated::on_hide));
-  //titlebox->pack_end(*close_button, false, false, 0);
-  //if (window->get_type_hint() == Gdk::WINDOW_TYPE_HINT_NORMAL)
-    //titlebox->pack_end(*maximize_button, false, false, 0);
-  //titlebox->pack_end(*minimize_button, false, false, 0);
-  //windowdecoration->set_label_align(Gtk::ALIGN_RIGHT);
-  //windowdecoration->set_label_widget(*titlebox);
-
 
   windowdecoration->add(*manage(child));
   titlebox->add_events(Gdk::POINTER_MOTION_MASK);
@@ -108,6 +102,7 @@ void Decorated::decorate(Gtk::Window *d, GraphicsCache::BackgroundType back, int
   window->set_style(copy);
   if (focus)
     window->set_focus(*focus);
+    */
 }
 
 void Decorated::on_maximize()
@@ -156,6 +151,7 @@ void Decorated::decorate_border(Gtk::Viewport *container, int alpha)
 {
   if (Configuration::s_decorated == false)
     return;
+  /*
   Glib::RefPtr<Gtk::Style> copy;
   Glib::RefPtr<Gdk::Pixbuf> back;
   Glib::RefPtr<Gdk::Pixmap> pixmap;
@@ -172,4 +168,5 @@ void Decorated::decorate_border(Gtk::Viewport *container, int alpha)
   back->render_pixmap_and_mask(pixmap, bitmap, 10);
   copy->set_bg_pixmap(Gtk::STATE_NORMAL, pixmap);
   container->set_style(copy);
+  */
 }

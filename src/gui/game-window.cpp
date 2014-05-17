@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, 2008, Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -152,13 +152,13 @@ GameWindow::GameWindow()
       (sigc::mem_fun(*this, &GameWindow::on_delete_event));
 
     xml->get_widget("menubar", menubar);
-    xml->get_widget("bigmap_drawingarea", bigmap_drawingarea);
+    xml->get_widget("bigmap_image", bigmap_image);
     //bigmap_drawingarea->set_double_buffered(false);
-    bigmap_drawingarea->signal_expose_event().connect
+    bigmap_image->signal_event().connect
       (sigc::mem_fun(*this, &GameWindow::on_bigmap_exposed));
-    bigmap_drawingarea->signal_size_allocate().connect
+    bigmap_image->signal_size_allocate().connect
       (sigc::mem_fun(*this, &GameWindow::on_bigmap_surface_changed));
-    bigmap_drawingarea->grab_focus();
+    bigmap_image->grab_focus();
     xml->get_widget("bigmap_eventbox", bigmap_eventbox);
     bigmap_eventbox->add_events(Gdk::KEY_PRESS_MASK | 
 		  Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
@@ -176,18 +176,18 @@ GameWindow::GameWindow()
     bigmap_eventbox->signal_scroll_event().connect
        (sigc::mem_fun(*this, &GameWindow::on_bigmap_scroll_event));
     xml->get_widget("status_box_container", status_box_container);
-    Gtk::Viewport *vp;
-    xml->get_widget("bigmap_viewport", vp);
-    decorate_border(vp, 175);
+    //Gtk::Viewport *vp;
+    //xml->get_widget("bigmap_viewport", vp);
+    //decorate_border(vp, 175);
 
     status_box = StatusBox::create(Configuration::s_ui_form_factor);
     status_box->reparent(*status_box_container);
     status_box_container->add(*manage(status_box));
 
     // the map image
-    xml->get_widget("map_drawingarea", map_drawingarea);
+    xml->get_widget("smallmap_image", smallmap_image);
     //map_drawingarea->set_double_buffered(false);
-    map_drawingarea->signal_expose_event().connect
+    smallmap_image->signal_event().connect
       (sigc::mem_fun(*this, &GameWindow::on_smallmap_exposed));
     xml->get_widget("map_eventbox", map_eventbox);
     xml->get_widget("map_container", map_container);
@@ -199,9 +199,9 @@ GameWindow::GameWindow()
        (sigc::mem_fun(*this, &GameWindow::on_smallmap_mouse_button_event));
       map_eventbox->signal_motion_notify_event().connect
        (sigc::mem_fun(*this, &GameWindow::on_smallmap_mouse_motion_event));
-    Gtk::Viewport *mvp;
-    xml->get_widget("map_viewport", mvp);
-    decorate_border(mvp, 175);
+    //Gtk::Viewport *mvp;
+    //xml->get_widget("map_viewport", mvp);
+    //decorate_border(mvp, 175);
     xml->get_widget("control_panel_viewport", control_panel_viewport);
     decorate_border(control_panel_viewport, 175);
     game_button_box = GameButtonBox::create(Configuration::s_ui_form_factor);
@@ -331,6 +331,7 @@ GameWindow::GameWindow()
 
     if (Configuration::s_decorated == true)
       {
+        /*
 	//colour the menubar
 	Glib::RefPtr<Gtk::Style> copy;
 	Glib::RefPtr<Gdk::Pixbuf> back;
@@ -347,6 +348,7 @@ GameWindow::GameWindow()
 	back->render_pixmap_and_mask(pixmap, bitmap, 10);
 	copy->set_bg_pixmap(Gtk::STATE_NORMAL, pixmap);
 	menubar->set_style(copy);
+        */
       }
 
 }
@@ -393,7 +395,7 @@ void GameWindow::show()
       game_button_box->show_all();
     }
     
-    bigmap_drawingarea->show_all();
+    bigmap_image->show_all();
     window->show();
     if (status_box)
       {
@@ -405,7 +407,7 @@ void GameWindow::show()
     //seems unnecessary, but this is for starting up a second game after
     //closing the first game window.
     //fixme: find out why this line is necessary
-    on_bigmap_surface_changed(bigmap_drawingarea->get_allocation());
+    on_bigmap_surface_changed(bigmap_image->get_allocation());
 }
 
 void GameWindow::hide()
@@ -415,6 +417,9 @@ void GameWindow::hide()
 
 void GameWindow::init(int width, int height)
 {
+  //bigmap_image->set_allocated();
+  printf("%dx%d\n", width, height);
+    bigmap_image->set_size_request(width, height);
 }
 
 void GameWindow::new_network_game(GameScenario *game_scenario, NextTurn *next_turn)
@@ -461,7 +466,7 @@ void GameWindow::load_game(GameScenario *game_scenario, NextTurn *next_turn)
   if (!success)
     return;
 
-  game->get_bigmap().screen_size_changed(bigmap_drawingarea->get_allocation());
+  game->get_bigmap().screen_size_changed(bigmap_image->get_allocation());
   setup_signals(game_scenario);
   game->loadGame();
   //we don't get here until the game ends, or a human player ends a turn.
@@ -772,9 +777,10 @@ void GameWindow::end_turn_play_by_mail ()
   //prompt to save the turn file!
   Gtk::FileChooserDialog chooser(*window, _("Save your Turn file and mail it back"),
 				 Gtk::FILE_CHOOSER_ACTION_SAVE);
-  Gtk::FileFilter trn_filter;
-  trn_filter.add_pattern("*" + PBM_EXT);
-  chooser.set_filter(trn_filter);
+  Glib::RefPtr<Gtk::FileFilter> trn_filter = Gtk::FileFilter::create();
+  trn_filter->set_name(_("LordsAWar Turn files (*.trn)"));
+  trn_filter->add_pattern("*" + PBM_EXT);
+  chooser.add_filter(trn_filter);
   chooser.set_current_folder(Glib::get_home_dir());
 
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
@@ -816,6 +822,10 @@ bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
   status_box->stack_tile_group_toggle.connect
     (sigc::mem_fun(this, &GameWindow::on_group_stack_toggled));
   show_shield_turn();
+      smallmap_image->set_size_request(game->get_smallmap().get_width(),
+                                                                            game->get_smallmap().get_height());
+  while (g_main_context_iteration(NULL, FALSE)); //doEvents
+
   return true;
 }
     
@@ -851,7 +861,7 @@ bool GameWindow::on_bigmap_mouse_motion_event(GdkEventMotion *e)
       if (delta > 40 || delta < 0)
 	{
 	  game->get_bigmap().mouse_motion_event(to_input_event(e));
-	  bigmap_drawingarea->grab_focus();
+	  bigmap_image->grab_focus();
 	  prev = e->time;
 	}
     }
@@ -862,6 +872,7 @@ bool GameWindow::on_bigmap_scroll_event(GdkEventScroll* event)
 {
   switch (event->direction) 
     {
+    case GDK_SCROLL_SMOOTH:
     case GDK_SCROLL_LEFT:
     case GDK_SCROLL_RIGHT:
       break;
@@ -877,17 +888,17 @@ bool GameWindow::on_bigmap_scroll_event(GdkEventScroll* event)
 
 void GameWindow::on_bigmap_cursor_changed(GraphicsCache::CursorType cursor)
 {
-  bigmap_drawingarea->get_window()->set_cursor 
-    (Gdk::Cursor
+  bigmap_image->get_window()->set_cursor 
+    (Gdk::Cursor::create
      (Gdk::Display::get_default(), 
       GraphicsCache::getInstance()->getCursorPic (cursor)->to_pixbuf(), 4, 4));
 }
 
 bool GameWindow::on_bigmap_key_event(GdkEventKey *e)
 {
-  if (e->keyval == GDK_Shift_L || e->keyval == GDK_Shift_R)
+  if (e->keyval == GDK_KEY_Shift_L || e->keyval == GDK_KEY_Shift_R)
     game->get_bigmap().set_shift_key_down (e->type == GDK_KEY_PRESS);
-  if (e->keyval == GDK_Control_L || e->keyval == GDK_Control_R)
+  if (e->keyval == GDK_KEY_Control_L || e->keyval == GDK_KEY_Control_R)
     game->get_bigmap().set_control_key_down (e->type == GDK_KEY_PRESS);
 
   return true;
@@ -917,7 +928,7 @@ bool GameWindow::on_smallmap_mouse_motion_event(GdkEventMotion *e)
 	}
 
       map_eventbox->get_window()->set_cursor 
-	(Gdk::Cursor
+	(Gdk::Cursor::create
 	 (Gdk::Display::get_default(), 
 	  GraphicsCache::getInstance()->getCursorPic
 		      (GraphicsCache::MAGNIFYING_GLASS)->to_pixbuf(), 8, 5));
@@ -926,35 +937,44 @@ bool GameWindow::on_smallmap_mouse_motion_event(GdkEventMotion *e)
   return true;
 }
 
-bool GameWindow::on_smallmap_exposed(GdkEventExpose *event)
+bool GameWindow::on_smallmap_exposed(GdkEvent *event)
 {
-  Glib::RefPtr<Gdk::Window> window = map_drawingarea->get_window();
-  if (window)
+  Gdk::Event e(event);
+  if (e.gobj()->type == GDK_EXPOSE)
     {
-      Glib::RefPtr<Gdk::Pixmap> surface = game->get_smallmap().get_surface();
-      window->draw_drawable(map_drawingarea->get_style()->get_white_gc(),
-			    surface, event->area.x, event->area.y, 
-			    event->area.x, event->area.y, 
-			    event->area.width, event->area.height);
+      Glib::RefPtr<Gdk::Window> window = smallmap_image->get_window();
+      if (window)
+        {
+          Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+            Gdk::Pixbuf::create(game->get_smallmap().get_surface(), 0, 0, 
+                                game->get_smallmap().get_width(), 
+                                game->get_smallmap().get_height());
+          smallmap_image->property_pixbuf() = pixbuf;
+        }
     }
   return true;
 }
-bool GameWindow::on_bigmap_exposed(GdkEventExpose *event)
+bool GameWindow::on_bigmap_exposed(GdkEvent *event)
 {
-  Glib::RefPtr<Gdk::Window> window = bigmap_drawingarea->get_window();
-  if (window)
+  printf("we got an event on the bigmap\n");
+  Gdk::Event e(event);
+  if (e.gobj()->type == GDK_EXPOSE)
     {
-      Glib::RefPtr<Gdk::Pixmap> surface = game->get_bigmap().get_surface();
-      int width = 0, height = 0;
-      surface->get_size(width, height);
+      printf("we got an expose event on the bigmap\n");
+      Glib::RefPtr<Gdk::Window> window = bigmap_image->get_window();
+      if (window)
+        {
+          printf("exposed\n");
+          Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+            Gdk::Pixbuf::create(game->get_bigmap().get_surface(), 0, 0, 
+                                bigmap_image->get_allocated_width(), 
+                                bigmap_image->get_allocated_height());
+          bigmap_image->property_pixbuf() = pixbuf;
+        }
+    }
+  return true;
+}
 
-      window->draw_drawable(bigmap_drawingarea->get_style()->get_white_gc(),
-			     surface, event->area.x, event->area.y, 
-			     event->area.x, event->area.y, 
-			     event->area.width, event->area.height);
-    }
-  return true;
-}
 void GameWindow::on_bigmap_surface_changed(Gtk::Allocation box)
 {
   static Gtk::Allocation last_box = Gtk::Allocation(0,0,1,1);
@@ -964,22 +984,24 @@ void GameWindow::on_bigmap_surface_changed(Gtk::Allocation box)
   }
 
   if (game) {
-    if (box.get_width() != last_box.get_width() || box.get_height() != last_box.get_height())
+    //if (box.get_width() != last_box.get_width() || box.get_height() != last_box.get_height())
       {
 	//bigmap_drawingarea->set_allocation(box);
-	game->get_bigmap().screen_size_changed(bigmap_drawingarea->get_allocation());
+	game->get_bigmap().screen_size_changed(bigmap_image->get_allocation());
 	game->redraw();
       }
   }
   last_box = box;
+  while (g_main_context_iteration(NULL, FALSE)); //doEvents
 }
 
 void GameWindow::on_load_game_activated()
 {
   Gtk::FileChooserDialog chooser(*window, _("Choose Game to Load"));
-  Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*" + SAVE_EXT);
-  chooser.set_filter(sav_filter);
+  Glib::RefPtr<Gtk::FileFilter> sav_filter = Gtk::FileFilter::create();
+  sav_filter->set_name(_("LordsAWar Saved Games (*.sav)"));
+  sav_filter->add_pattern("*" + SAVE_EXT);
+  chooser.add_filter(sav_filter);
   chooser.set_current_folder(Configuration::s_savePath);
 
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
@@ -1021,9 +1043,10 @@ void GameWindow::on_save_game_as_activated()
 {
   Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
 				 Gtk::FILE_CHOOSER_ACTION_SAVE);
-  Gtk::FileFilter sav_filter;
-  sav_filter.add_pattern("*" + SAVE_EXT);
-  chooser.set_filter(sav_filter);
+  Glib::RefPtr<Gtk::FileFilter> sav_filter = Gtk::FileFilter::create();
+  sav_filter->set_name(_("LordsAWar Saved Games (*.sav)"));
+  sav_filter->add_pattern("*" + SAVE_EXT);
+  chooser.add_filter(sav_filter);
   chooser.set_current_folder(Configuration::s_savePath);
 
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
@@ -1827,32 +1850,31 @@ void GameWindow::on_sidebar_stats_changed(SidebarStats s)
                                               _("Turn"), s.turns));
 }
 
-void GameWindow::on_bigmap_changed(Glib::RefPtr<Gdk::Pixmap> map)
+void GameWindow::on_bigmap_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  int width = 0;
-  int height = 0;
-  map->get_size(width, height);
-  Glib::RefPtr<Gdk::Window> window = bigmap_drawingarea->get_window();
-  if (window)
-    {
-      Gdk::Rectangle r = Gdk::Rectangle(0, 0, width, height);
-      window->invalidate_rect(r, true);
-    }
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+    Gdk::Pixbuf::create(map, 0, 0, 
+                        bigmap_image->get_allocated_width(), 
+                        bigmap_image->get_allocated_height());
+  bigmap_image->property_pixbuf() = pixbuf;
 }
-void GameWindow::on_smallmap_changed(Glib::RefPtr<Gdk::Pixmap> map, Gdk::Rectangle r)
+
+void GameWindow::on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map, Gdk::Rectangle r)
 {
-  int width = 0;
-  int height = 0;
-  map->get_size(width, height);
-  map_container->property_width_request() = width;
-  map_container->property_height_request() = height;
-      
-  Glib::RefPtr<Gdk::Window> window = map_drawingarea->get_window();
-  if (window)
-    window->invalidate_rect(r, true);
-  //map_image->property_pixbuf() = map;
-  //map.clear();
-  //still resides at smallmap->get_surface()
+  Cairo::RefPtr<Cairo::Context> cr = Cairo::Context::create(map);
+  double x1, x2, y1, y2;
+  cr->get_clip_extents (x1, y1, x2, y2);
+  int width = x2 - x1;
+  int height = y2 - y1;
+
+  if (smallmap_image->get_allocated_width() != width ||
+      smallmap_image->get_allocated_height() != height)
+    smallmap_image->set_size_request(width, height);
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+    Gdk::Pixbuf::create(map, 0, 0, 
+                        smallmap_image->get_allocated_width(), 
+                        smallmap_image->get_allocated_height());
+  smallmap_image->property_pixbuf() = pixbuf;
 }
 
 void GameWindow::on_smallmap_slid(Rectangle view)
@@ -1871,7 +1893,7 @@ void GameWindow::on_city_tip_changed(City *city, MapTipPosition mpos)
     }
   else
     {
-      city_info_tip = new CityInfoTip(bigmap_drawingarea, mpos, city);
+      city_info_tip = new CityInfoTip(bigmap_image, mpos, city);
     }
 }
 
@@ -1884,7 +1906,7 @@ void GameWindow::on_stack_tip_changed(StackTile *stile, MapTipPosition mpos)
     }
   else
     {
-      stack_info_tip = new StackInfoTip(bigmap_drawingarea, mpos, stile);
+      stack_info_tip = new StackInfoTip(bigmap_image, mpos, stile);
     }
 }
 
@@ -1918,7 +1940,7 @@ void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos)
 
   // get screen position
   Vector<int> p;
-  bigmap_drawingarea->get_window()->get_origin(p.x, p.y);
+  bigmap_image->get_window()->get_origin(p.x, p.y);
   p += pos.pos;
 
   Vector<int> size(0, 0);
@@ -2400,8 +2422,9 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 
   Gtk::Label *label;
   xml->get_widget("label", label);
-  Gtk::Requisition req = image->size_request();
-  label->set_size_request(req.width);
+  int width = 0, height = 0;
+  image->get_size_request(width, height);
+  label->set_size_request(width, height);
 
   Glib::ustring name;
   Player *p = Playerlist::getActiveplayer();

@@ -439,9 +439,11 @@ void CityWindow::on_destination_clicked()
     prodmap->draw(Playerlist::getActiveplayer());
 }
 
-void CityWindow::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map)
+void CityWindow::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-    map_image->property_pixmap() = map;
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+    Gdk::Pixbuf::create(map, 0, 0, prodmap->get_width(), prodmap->get_height());
+  map_image->property_pixbuf() = pixbuf;
 }
 
 void CityWindow::on_rename_clicked ()

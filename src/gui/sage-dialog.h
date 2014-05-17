@@ -67,7 +67,7 @@ class SageDialog: public Decorated
     Ruin *ruin;
 
     std::list<Reward*> common_rewards;
-    void on_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
+    void on_map_changed(Cairo::RefPtr<Cairo::Surface> map);
     void addReward(Reward *reward);
     Reward *grabSelectedReward();
     void on_reward_selected();

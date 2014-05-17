@@ -71,7 +71,7 @@ class GameLobbyDialog: public Decorated
 
     void initDialog(GameScenario *gamescenario, NextTurnNetworked *next_turn,
 		    GameStation *game_station);
-    void on_map_changed(Glib::RefPtr< Gdk::Pixmap> map);
+    void on_map_changed(Cairo::RefPtr< Cairo::Surface> map);
     GameScenario *d_game_scenario;
     GameStation *d_game_station;
     NextTurnNetworked *d_next_turn;

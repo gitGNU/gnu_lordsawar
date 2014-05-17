@@ -358,11 +358,11 @@ SmallTile *Tilesetlist::getSmallTile(std::string basename, Tile::Type type) cons
   return (*ts)[idx]->getSmallTile();
 }
 
-Gdk::Color Tilesetlist::getColor(std::string basename, Tile::Type type) const
+Gdk::RGBA Tilesetlist::getColor(std::string basename, Tile::Type type) const
 {
   SmallTile *smalltile = getSmallTile(basename, type);
   if (!smalltile)
-    return Gdk::Color("black");
+    return Gdk::RGBA("black");
   else
     return smalltile->getColor();
 }

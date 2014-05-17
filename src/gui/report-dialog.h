@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -74,10 +74,10 @@ class ReportDialog: public Decorated
     BarChart *winning_chart;
 
     Player *d_player;
-    void on_army_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
-    void on_city_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
-    void on_vector_map_changed(Glib::RefPtr<Gdk::Pixmap> map);
-    void on_switch_page(GtkNotebookPage *page, guint number);
+    void on_army_map_changed(Cairo::RefPtr<Cairo::Surface> map);
+    void on_city_map_changed(Cairo::RefPtr<Cairo::Surface> map);
+    void on_vector_map_changed(Cairo::RefPtr<Cairo::Surface> map);
+    void on_switch_page(Gtk::Widget *page, guint number);
 
     Gtk::TreeView *armies_treeview;
 

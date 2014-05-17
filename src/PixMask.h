@@ -1,4 +1,4 @@
-// Copyright (C) 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2009, 2010, 2011, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 #include <gtkmm.h>
 #include "vector.h"
 #include "rectangle.h"
+#include <cairomm/cairomm.h>
 
 
 //! A pixmap and bitmask pair.
@@ -28,9 +29,9 @@
 class PixMask
 {
  public:
-     Glib::RefPtr<Gdk::Pixmap> get_pixmap() {return pixmap;};
-     Glib::RefPtr<Gdk::Bitmap> get_mask() {return mask;};
-     Glib::RefPtr<Gdk::GC> get_gc() {return gc;};
+     Cairo::RefPtr<Cairo::Surface> get_pixmap() {return pixmap;};
+     Cairo::RefPtr<Cairo::Surface> get_mask() {return mask;};
+     Cairo::RefPtr<Cairo::Context> get_gc() {return gc;};
      int get_width() {return width;};
      int get_height() {return height;};
      int get_unscaled_width() {return unscaled_width;};
@@ -39,8 +40,8 @@ class PixMask
 
      static PixMask* create(std::string file, bool &broken);
      static PixMask* create(Glib::RefPtr<Gdk::Pixbuf> buf);
-     static PixMask* create(Glib::RefPtr<Gdk::Pixmap> pixmap,
-					 Glib::RefPtr<Gdk::Bitmap> mask);
+     static PixMask* create(Cairo::RefPtr<Cairo::Surface> pixmap,
+					 Cairo::RefPtr<Cairo::Surface> mask);
      PixMask* copy();
 
      //! convert this pixmask to a pixbuf.
@@ -53,11 +54,11 @@ class PixMask
      static void scale(PixMask*& pixmask, int xsize, int ysize, Gdk::InterpType intper = Gdk::INTERP_NEAREST);
 
      //! draw this pixmask onto a pixmap.
-     void blit(Glib::RefPtr<Gdk::Pixmap> pixmap, int dest_x, int dest_y);
-     void blit(Glib::RefPtr<Gdk::Pixmap> pixmap, Vector<int> pos = Vector<int>(0,0));
-     void blit_centered(Glib::RefPtr<Gdk::Pixmap> pixmap, Vector<int> pos);
-     // blit a tile's worth of imagery from this pixmask to a pixmap.
-     void blit(Vector<int> tile, int ts, Glib::RefPtr<Gdk::Pixmap> pixmap, Vector<int> dest = Vector<int>(0,0));
+     void blit(Cairo::RefPtr<Cairo::Surface> pixmap, int dest_x, int dest_y);
+     void blit(Cairo::RefPtr<Cairo::Surface> pixmap, Vector<int> pos = Vector<int>(0,0));
+     void blit_centered(Cairo::RefPtr<Cairo::Surface> pixmap, Vector<int> pos);
+      //blit a tile's worth of imagery from this pixmask to a pixmap.
+     void blit(Vector<int> tile, int ts, Cairo::RefPtr<Cairo::Surface> pixmap, Vector<int> dest = Vector<int>(0,0));
 
      //! Destructor.
     ~PixMask();
@@ -66,7 +67,7 @@ class PixMask
      PixMask(Glib::RefPtr<Gdk::Pixbuf> pixbuf);
 
      //! Alternative constructor.
-     PixMask(Glib::RefPtr<Gdk::Pixmap> pixmap, Glib::RefPtr<Gdk::Bitmap> mask);
+     PixMask(Cairo::RefPtr<Cairo::Surface> pixmap, Cairo::RefPtr<Cairo::Surface> mask);
 
      //! Copy constructor.
      PixMask(const PixMask&);
@@ -82,9 +83,9 @@ class PixMask
      void set_unscaled_height(guint32 height) {unscaled_height = height;};
     
  private:
-    Glib::RefPtr<Gdk::Pixmap> pixmap;
-    Glib::RefPtr<Gdk::Bitmap> mask;
-    Glib::RefPtr<Gdk::GC> gc;
+     Cairo::RefPtr<Cairo::Surface> pixmap;
+     Cairo::RefPtr<Cairo::Surface> mask;
+     Cairo::RefPtr<Cairo::Context> gc;
     int width;
     int height;
     int unscaled_width;
@@ -94,7 +95,7 @@ class PixMask
      PixMask* scale(int xsize, int ysize, 
 		    Gdk::InterpType interp = Gdk::INTERP_NEAREST);
      
-     void blit(Rectangle src, Glib::RefPtr<Gdk::Pixmap> pixmap, Vector<int> dest);
+     void blit(Rectangle src, Cairo::RefPtr<Cairo::Surface> pixmap, Vector<int> dest);
 };
 
 #endif

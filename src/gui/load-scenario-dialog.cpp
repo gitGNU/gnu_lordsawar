@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -187,11 +187,11 @@ void LoadScenarioDialog::on_add_scenario_clicked()
   load_map_filechooser->add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
   load_map_filechooser->set_default_response(Gtk::RESPONSE_ACCEPT);
   
-  Gtk::FileFilter map_filter;
-  map_filter.add_pattern("*.map");
-  map_filter.set_name(_("LordsAWar map files (*.map)"));
+  Glib::RefPtr<Gtk::FileFilter> map_filter = Gtk::FileFilter::create();
+  map_filter->add_pattern("*.map");
+  map_filter->set_name(_("LordsAWar Maps (*.map)"));
   load_map_filechooser->set_current_folder(Glib::get_home_dir ());
-  load_map_filechooser->set_filter(map_filter);
+  load_map_filechooser->add_filter(map_filter);
   int res = load_map_filechooser->run();
   load_map_filechooser->hide();
   if (res == Gtk::RESPONSE_ACCEPT) 

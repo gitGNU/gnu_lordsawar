@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2012 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -125,7 +125,7 @@ void TilesetSelectorEditorDialog::setup_shield_theme_combobox(Gtk::Box *box)
     {
       if (*i == _("Default"))
 	default_id = counter;
-      shield_theme_combobox->append_text(Glib::filename_to_utf8(*i));
+      shield_theme_combobox->append(Glib::filename_to_utf8(*i));
       counter++;
     }
 

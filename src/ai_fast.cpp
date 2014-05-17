@@ -56,7 +56,7 @@ using namespace std;
 #define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
 //#define debug(x)
 
-AI_Fast::AI_Fast(string name, guint32 armyset, Gdk::Color color, int width, int height, int player_no)
+AI_Fast::AI_Fast(string name, guint32 armyset, Gdk::RGBA color, int width, int height, int player_no)
     :RealPlayer(name, armyset, color, width, height, Player::AI_FAST, player_no), d_join(true),
     d_maniac(false), d_analysis(0), d_diplomacy(0)
 {

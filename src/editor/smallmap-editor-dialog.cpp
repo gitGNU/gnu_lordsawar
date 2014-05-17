@@ -40,8 +40,8 @@ SmallmapEditorDialog::SmallmapEditorDialog()
 
     xml->get_widget("dialog", dialog);
 
-    xml->get_widget("map_drawingarea", map_drawingarea);
-    map_drawingarea->signal_expose_event().connect
+    xml->get_widget("smallmap_image", smallmap_image);
+    smallmap_image->signal_event().connect
       (sigc::mem_fun(*this, &SmallmapEditorDialog::on_smallmap_exposed));
 
 
@@ -115,20 +115,13 @@ bool SmallmapEditorDialog::run()
     return d_needs_saving;
 }
 
-void SmallmapEditorDialog::on_map_changed(Glib::RefPtr<Gdk::Pixmap> map,
+void SmallmapEditorDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map,
                                           Gdk::Rectangle r)
 {
-  int width = 0;
-  int height = 0;
-  map->get_size(width, height);
-  map_drawingarea->property_width_request() = width;
-  map_drawingarea->property_height_request() = height;
-      
-  Glib::RefPtr<Gdk::Window> window = map_drawingarea->get_window();
-  if (window)
-    {
-      window->invalidate_rect(r, false);
-    }
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+    Gdk::Pixbuf::create(map, 0, 0, 
+                        smallmap->get_width(), smallmap->get_height());
+  smallmap_image->property_pixbuf() = pixbuf;
 }
 
 bool SmallmapEditorDialog::on_map_mouse_button_event(GdkEventButton *e)
@@ -181,8 +174,9 @@ void SmallmapEditorDialog::on_road_finish_toggled()
 void SmallmapEditorDialog::setup_terrain_radiobuttons()
 {
     // get rid of old ones
-    terrain_type_table->children().erase(terrain_type_table->children().begin(),
-					 terrain_type_table->children().end());
+  std::vector<Gtk::Widget*> kids = terrain_type_table->get_children();
+  for (guint i = 0; i < kids.size(); i++)
+    terrain_type_table->remove(*kids[i]);
 
     // then add new ones from the tile set
     Tileset *tset = GameMap::getTileset();
@@ -304,7 +298,7 @@ void SmallmapEditorDialog::update_cursor()
     Vector<int> hotspot = Vector<int>(-1,-1);
     Glib::RefPtr<Gdk::Pixbuf> cursor =  smallmap->get_cursor(hotspot);
     map_eventbox->get_window()->set_cursor 
-      (Gdk::Cursor
+      (Gdk::Cursor::create
        (Gdk::Display::get_default(),  cursor, hotspot.x, hotspot.y));
 }
 
@@ -324,16 +318,16 @@ Tile::Type SmallmapEditorDialog::get_terrain()
     return terrain;
 }
 
-bool SmallmapEditorDialog::on_smallmap_exposed(GdkEventExpose *event)
+bool SmallmapEditorDialog::on_smallmap_exposed(GdkEvent *event)
 {
-  Glib::RefPtr<Gdk::Window> window = map_drawingarea->get_window();
+  Glib::RefPtr<Gdk::Window> window = smallmap_image->get_window();
   if (window)
     {
-      Glib::RefPtr<Gdk::Pixmap> surface = smallmap->get_surface();
-      window->draw_drawable(map_drawingarea->get_style()->get_white_gc(),
-			     surface, event->area.x, event->area.y, 
-			     event->area.x, event->area.y, 
-			     event->area.width, event->area.height);
+      Cairo::RefPtr<Cairo::Surface> surface = smallmap->get_surface();
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+        Gdk::Pixbuf::create(surface, 0, 0, 
+                            smallmap->get_width(), smallmap->get_height());
+      smallmap_image->property_pixbuf() = pixbuf;
     }
   return true;
 }

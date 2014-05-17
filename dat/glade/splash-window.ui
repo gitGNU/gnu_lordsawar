@@ -1,8 +1,9 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="window">
+    <property name="can_focus">False</property>
     <property name="title">LordsAWar!</property>
     <property name="default_height">575</property>
     <child>
@@ -14,28 +15,27 @@
         <child>
           <object class="GtkTable" id="table">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="n_rows">2</property>
             <property name="n_columns">2</property>
             <child>
+              <placeholder/>
+            </child>
+            <child>
               <object class="GtkHBox" id="dummy_box">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
                   <placeholder/>
                 </child>
               </object>
             </child>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
               <object class="GtkVBox" id="button_box">
                 <property name="width_request">266</property>
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="resize_mode">queue</property>
-                <property name="orientation">vertical</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -51,6 +51,7 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="padding">3</property>
                     <property name="position">1</property>
                   </packing>
@@ -68,6 +69,7 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="padding">3</property>
                     <property name="position">3</property>
                   </packing>
@@ -75,12 +77,15 @@
                 <child>
                   <object class="GtkButton" id="new_pbm_game_button">
                     <property name="label" translatable="yes">New Play By Mail Game</property>
-                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
+                    <property name="no_show_all">True</property>
                     <property name="use_underline">True</property>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">4</property>
                   </packing>
                 </child>
@@ -94,6 +99,7 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="padding">3</property>
                     <property name="position">5</property>
                   </packing>
@@ -108,6 +114,7 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="padding">3</property>
                     <property name="position">6</property>
                   </packing>
@@ -122,6 +129,7 @@
                   </object>
                   <packing>
                     <property name="expand">False</property>
+                    <property name="fill">True</property>
                     <property name="padding">3</property>
                     <property name="position">7</property>
                   </packing>
@@ -135,10 +143,13 @@
                 <property name="right_attach">2</property>
                 <property name="top_attach">1</property>
                 <property name="bottom_attach">2</property>
-                <property name="x_options"></property>
+                <property name="x_options"/>
                 <property name="y_options">GTK_EXPAND</property>
                 <property name="x_padding">24</property>
               </packing>
+            </child>
+            <child>
+              <placeholder/>
             </child>
           </object>
         </child>

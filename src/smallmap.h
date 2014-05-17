@@ -130,7 +130,7 @@ public:
     /**
      * Classes that use SmallMap must catch this signal to display the map.
      */
-    sigc::signal<void, Glib::RefPtr<Gdk::Pixmap>, Gdk::Rectangle> map_changed;
+    sigc::signal<void, Cairo::RefPtr<Cairo::Surface>, Gdk::Rectangle> map_changed;
 
 private:
     //! Draw the selection rectangle that shows the viewed portion of the map.

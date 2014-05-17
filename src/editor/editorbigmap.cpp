@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -49,7 +49,6 @@
 #include "rewardlist.h"
 #include "GraphicsCache.h"
 #include "armysetlist.h"
-#include "MapRenderer.h"
 #include "CreateScenario.h"
 #include "Backpack.h"
 #include "MapBackpack.h"
@@ -520,7 +519,10 @@ void EditorBigMap::after_draw()
 	     end = tiles.end(); i != end; ++i)
 	  {
 	    Vector<int> pos = tile_to_buffer_pos(*i);
-	    buffer_gc->set_rgb_fg_color(GameMap::getInstance()->getTile(*i)->getColor());
+	    buffer_gc->set_source_rgba(GameMap::getInstance()->getTile(*i)->getColor().get_red(),
+                                       GameMap::getInstance()->getTile(*i)->getColor().get_green(),
+                                       GameMap::getInstance()->getTile(*i)->getColor().get_blue(),
+                                       GameMap::getInstance()->getTile(*i)->getColor().get_alpha());
 	    int x = pos.x;
 	    int y = pos.y;
 	    int ts = tilesize;
@@ -530,7 +532,7 @@ void EditorBigMap::after_draw()
 		y++;
 		ts--;
 	      }
-	    buffer->draw_rectangle (buffer_gc, true, x, y, ts, ts);
+            buffer_gc->rectangle(x, y, ts, ts);
 	  }
       }
 
@@ -538,14 +540,14 @@ void EditorBigMap::after_draw()
     tiles = get_cursor_tiles();
     // draw each tile
 	
-    Gdk::Color terrain_box_color = Gdk::Color();
-    terrain_box_color.set_rgb_p(200.0/255.0, 200.0/255.0, 200.0/255.0);
-    Gdk::Color erase_box_color = Gdk::Color();
-    erase_box_color.set_rgb_p(200.0/255.0, 50.0/255.0, 50.0/255.0);
-    Gdk::Color move_box_color = Gdk::Color();
-    move_box_color.set_rgb_p(50.0/255.0, 200.0/255.0, 50.0/255.0);
-    Gdk::Color moving_box_color = Gdk::Color();
-    moving_box_color.set_rgb_p(50.0/255.0, 50.0/255.0, 200.0/255.0);
+    Gdk::RGBA terrain_box_color = Gdk::RGBA();
+    terrain_box_color.set_rgba(200.0/255.0, 200.0/255.0, 200.0/255.0);
+    Gdk::RGBA erase_box_color = Gdk::RGBA();
+    erase_box_color.set_rgba(200.0/255.0, 50.0/255.0, 50.0/255.0);
+    Gdk::RGBA move_box_color = Gdk::RGBA();
+    move_box_color.set_rgba(50.0/255.0, 200.0/255.0, 50.0/255.0);
+    Gdk::RGBA moving_box_color = Gdk::RGBA();
+    moving_box_color.set_rgba(50.0/255.0, 50.0/255.0, 200.0/255.0);
     for (std::vector<Vector<int> >::iterator i = tiles.begin(),
 	     end = tiles.end(); i != end; ++i)
       {
@@ -560,24 +562,47 @@ void EditorBigMap::after_draw()
 	    break;
 
 	  case TERRAIN:
-	    buffer_gc->set_rgb_fg_color (terrain_box_color);
-	    buffer->draw_rectangle (buffer_gc, false, pos.x + 1, pos.y + 1, 
-				    tilesize - 1, tilesize -1);
+	    buffer_gc->set_source_rgb(terrain_box_color.get_red(),
+                                       terrain_box_color.get_green(),
+                                       terrain_box_color.get_blue());
+            buffer_gc->move_to(pos.x+1, pos.y+1);
+            buffer_gc->rel_line_to(tilesize-2, 0);
+            buffer_gc->rel_line_to(0, tilesize-2);
+            buffer_gc->rel_line_to(-tilesize +2, 0);
+            buffer_gc->rel_line_to(0, -tilesize+2);
+            buffer_gc->set_line_width(1.0);
+            buffer_gc->stroke();
 	    break;
 
 	  case ERASE:
-	    buffer_gc->set_rgb_fg_color (erase_box_color);
-	    buffer->draw_rectangle (buffer_gc, false, pos.x + 1, pos.y + 1, 
-				    tilesize - 1, tilesize -1);
+	    buffer_gc->set_source_rgb(erase_box_color.get_red(),
+                                       erase_box_color.get_green(),
+                                       erase_box_color.get_blue());
+            buffer_gc->move_to(pos.x+1, pos.y+1);
+            buffer_gc->rel_line_to(tilesize-2, 0);
+            buffer_gc->rel_line_to(0, tilesize-2);
+            buffer_gc->rel_line_to(-tilesize +2, 0);
+            buffer_gc->rel_line_to(0, -tilesize+2);
+            buffer_gc->set_line_width(1.0);
+            buffer_gc->stroke();
 	    break;
 
 	  case MOVE:
 	    if (moving_objects_from != Vector<int>(-1,-1))
-	      buffer_gc->set_rgb_fg_color (moving_box_color);
+              buffer_gc->set_source_rgb(moving_box_color.get_red(),
+                                        moving_box_color.get_green(),
+                                        moving_box_color.get_blue());
 	    else
-	      buffer_gc->set_rgb_fg_color (move_box_color);
-	    buffer->draw_rectangle (buffer_gc, false, pos.x + 1, pos.y + 1, 
-				    tilesize - 1, tilesize -1);
+              buffer_gc->set_source_rgb(move_box_color.get_red(),
+                                        move_box_color.get_green(),
+                                        move_box_color.get_blue());
+            buffer_gc->move_to(pos.x+1, pos.y+1);
+            buffer_gc->rel_line_to(tilesize-2, 0);
+            buffer_gc->rel_line_to(0, tilesize-2);
+            buffer_gc->rel_line_to(-tilesize +2, 0);
+            buffer_gc->rel_line_to(0, -tilesize+2);
+            buffer_gc->set_line_width(1.0);
+            buffer_gc->stroke();
 	    break;
 
 	  case STACK:

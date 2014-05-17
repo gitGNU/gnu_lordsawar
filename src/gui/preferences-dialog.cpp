@@ -79,10 +79,10 @@ PreferencesDialog::PreferencesDialog(bool readonly)
 		      (this, &PreferencesDialog::on_observe_toggled), observe));
 
 	observe->set_active(p->isObservable());
-	type->append_text(_("Human"));
-	type->append_text(_("Computer"));
+	type->append(_("Human"));
+	type->append(_("Computer"));
         if (readonly)
-          type->append_text(_("Networked"));
+          type->append(_("Networked"));
 	if (p->getType() == Player::HUMAN)
 	  {
 	    observe->set_sensitive(false);
