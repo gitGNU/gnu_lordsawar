@@ -935,9 +935,10 @@ void MainWindow::on_save_map_as_activated()
 {
     Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
 				   Gtk::FILE_CHOOSER_ACTION_SAVE);
-    Glib::RefPtr<Gtk::FileFilter> sav_filter = Gtk::FileFilter::create();
-    sav_filter->add_pattern("*" + MAP_EXT);
-    chooser.add_filter(sav_filter);
+    Glib::RefPtr<Gtk::FileFilter> map_filter = Gtk::FileFilter::create();
+    map_filter->set_name(_("LordsAWar Maps (*.map)"));
+    map_filter->add_pattern("*" + MAP_EXT);
+    chooser.add_filter(map_filter);
     chooser.set_current_folder(File::getUserMapDir());
 
     chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
