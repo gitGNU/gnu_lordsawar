@@ -61,7 +61,7 @@
     </shield>
     <shield>
         <d_owner>3</d_owner>
-        <d_color>92 92 208</d_color>
+        <d_color>22 92 252</d_color>
         <shieldstyle>
             <d_type>ShieldStyle::SMALL</d_type>
             <d_image>small-darkblue-shield</d_image>
