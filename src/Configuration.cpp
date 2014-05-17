@@ -52,7 +52,7 @@ string Configuration::s_dataPath = "./data/";
 string Configuration::s_savePath = "./saves/";
 #endif
 string Configuration::s_lang = "";
-int Configuration::s_displaySpeedDelay = 300000;
+int Configuration::s_displaySpeedDelay = 3000;
 int Configuration::s_displayFightRoundDelayFast = 250;
 int Configuration::s_displayFightRoundDelaySlow = 500;
 bool Configuration::s_displayCommentator = true;
