@@ -75,7 +75,7 @@ bool Configuration::s_military_advisor = false;
 bool Configuration::s_random_turns = false;
 GameParameters::QuickStartPolicy Configuration::s_quick_start = GameParameters::NO_QUICK_START;
 bool Configuration::s_cusp_of_war = false;
-bool Configuration::s_decorated = true;
+bool Configuration::s_decorated = false;
 bool Configuration::s_remember_recent_games = true;
 bool Configuration::s_remember_recently_edited_files = true;
 guint32 Configuration::s_double_click_threshold = 400; //milliseconds
@@ -161,6 +161,7 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("quick_start", quick_start_str);
     retval &= helper.saveData("cusp_of_war", s_cusp_of_war);
     retval &= helper.saveData("decorated", s_decorated);
+    s_decorated=false; //override
     retval &= helper.saveData("remember_recent_games", s_remember_recent_games);
     retval &= helper.saveData("remember_recently_edited_files", s_remember_recently_edited_files);
     retval &= helper.saveData("double_click_threshold", 
