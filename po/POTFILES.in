@@ -119,6 +119,9 @@
 [type: gettext/glade]dat/glade/editor/shieldset-info-dialog.ui
 [type: gettext/glade]dat/glade/editor/smallmap-editor-dialog.ui
 [type: gettext/glade]dat/glade/editor/splash-window.ui
+[type: gettext/glade]dat/glade/game-button-box-desktop.ui
+[type: gettext/glade]dat/glade/game-button-box-large-screen.ui
+[type: gettext/glade]dat/glade/game-button-box-netbook.ui
 [type: gettext/xml]dat/shield/default/default.lws.in
 [type: gettext/xml]dat/shield/dol/dol.lws.in
 [type: gettext/xml]dat/shield/plain/plain.lws.in
