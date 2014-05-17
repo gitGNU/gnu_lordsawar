@@ -161,7 +161,6 @@ bool Configuration::saveConfigurationFile(string filename)
     retval &= helper.saveData("quick_start", quick_start_str);
     retval &= helper.saveData("cusp_of_war", s_cusp_of_war);
     retval &= helper.saveData("decorated", s_decorated);
-    s_decorated=false; //override
     retval &= helper.saveData("remember_recent_games", s_remember_recent_games);
     retval &= helper.saveData("remember_recently_edited_files", s_remember_recently_edited_files);
     retval &= helper.saveData("double_click_threshold", 
@@ -300,6 +299,7 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
     s_quick_start = quickStartPolicyFromString(quick_start_str);
     helper->getData(s_cusp_of_war, "cusp_of_war");
     helper->getData(s_decorated, "decorated");
+    s_decorated = false;
     helper->getData(s_remember_recent_games, "remember_recent_games");
     helper->getData(s_remember_recently_edited_files, "remember_recently_edited_files");
     helper->getData(s_double_click_threshold, "double_click_threshold");
