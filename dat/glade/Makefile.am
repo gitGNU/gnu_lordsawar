@@ -15,6 +15,7 @@ city-sacked-dialog.ui \
 city-window.ui \
 destination-dialog.ui \
 fight-window.ui \
+fighter.ui \
 game-loaded-dialog.ui \
 player-died-dialog.ui \
 game-over-dialog.ui \
