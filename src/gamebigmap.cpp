@@ -137,7 +137,6 @@ bool GameBigMap::on_selection_timeout()
   return Timing::CONTINUE;
 }
 
-                        
 void GameBigMap::mouse_button_event(MouseButtonEvent e)
 {
   if (input_locked)
