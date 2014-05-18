@@ -2,9 +2,9 @@
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
   <!ENTITY legal SYSTEM "legal.xml">
 <!ENTITY app "<application>LordsAWar!</application>">
-<!ENTITY appversion "0.2.1">
-<!ENTITY date "April 2011">
-<!ENTITY manrevision "0.2.1">
+<!ENTITY appversion "0.3.0">
+<!ENTITY date "May 2014">
+<!ENTITY manrevision "0.3.0">
 ]>
 
 <article id="index" lang="en"> 
@@ -12,7 +12,7 @@
 <articleinfo> 
 	<title>LordsAWar! User's Manual &manrevision;</title> 
 	<copyright> 
-		<year>2008, 2009, 2010, 2011</year>
+		<year>2008, 2009, 2010, 2011, 2014</year>
 		<holder>Ben Asselstine</holder> 
  	</copyright>
 	<publisher> 
@@ -173,7 +173,7 @@ Army units must be first selected (with left-click) to command them.  This stack
 </mediaobject>
 </screenshot> 
 <para>
-The length of flag shows how many army units are in the stack.  The selector box is bigger when more than one army unit is in the stack.
+The length of flag shows how many army units are in the stack.  The first row has 4 stacks ranging from 1 army unit to 4 army units.  The second row has stacks with 5 to 8 army units.  8 is the maximum number of army units in a stack.
 </para>
 <screenshot> 
 <mediaobject>
@@ -371,7 +371,7 @@ Here we see a tile that has 5 light infantry units in a single stack:
 The three grey empty buttons with circles means that the stack can have 3 more armies join it.
 </para>
 <para>
-The first five buttons all appear to be toggled on; which means that the army unit is in the stack.  To remove an army unit from the stack, toggle it:
+The first five buttons all appear to be toggled on; which means that the army unit is in the stack.  To remove an army unit from the stack, click on the army to toggle it out of the stack:
 </para>
 <screenshot> 
 <mediaobject>
@@ -674,7 +674,6 @@ Some statistics appear at the bottom of the screen when a stack is not selected.
 </figure>
 <itemizedlist>
 <listitem>
-Here is what these four values mean:
 <para>
 <figure id="mainscreen-stat-icon-cities-fig">
 <screenshot>
@@ -685,7 +684,7 @@ Here is what these four values mean:
 </mediaobject>
 </screenshot>
 </figure>
-The number beside this icon is the total number of cities you own.
+The number beside this city icon is the total number of cities you own.
 </para>
 </listitem>
 <listitem>
@@ -699,7 +698,7 @@ The number beside this icon is the total number of cities you own.
 </mediaobject>
 </screenshot>
 </figure>
-The number beside this icon is the number of gold pieces in your treasury.  You can use the gold pieces in your treasury to purchase a new army unit production capability in a city.
+The number beside this bag of gold icon is the number of gold pieces in your treasury.  You can use the gold pieces in your treasury to purchase a new army unit production capability in a city.
 </para>
 </listitem>
 <listitem>
@@ -713,7 +712,7 @@ The number beside this icon is the number of gold pieces in your treasury.  You 
 </mediaobject>
 </screenshot>
 </figure>
-The number beside this icon is the number of gold pieces that your player makes every turn through city taxes (and perhaps a magical item that has a gold bonus).
+The number beside this coins icon is the number of gold pieces that your player makes every turn through city taxes (and perhaps a magical item that has a gold bonus).
 </para>
 </listitem>
 <listitem>
@@ -727,7 +726,7 @@ The number beside this icon is the number of gold pieces that your player makes 
 </mediaobject>
 </screenshot>
 </figure>
-The number beside this icon is the number of gold pieces that your player spends per turn on army unit maintenance (also called upkeep) costs.
+The number beside this gold pouch icon is the number of gold pieces that your player spends per turn on army unit maintenance (also called upkeep) costs.
 </para>
 </listitem>
 </itemizedlist>
@@ -968,7 +967,7 @@ Army units may not move through a foreign city without conquering it first.
 </figure>
 
 <para>
-The most noticeable thing in the screen is the miniature map that only shows all of the player's cities.  At a glance it shows; which cities are producing an army unit (shown by a white shield with an anvil), which ones are not (shown by a white shield without an anvil), and which city the player is currently visiting (shown by a black shield, with or without an anvil).  The player can visit another city by left-clicking on it.
+        The most noticeable thing in the screen is the miniature map that only shows all of the player's cities.  At a glance it shows; which cities are producing an army unit (shown by a white shield with an anvil), which ones are not (shown by a white shield without an anvil), and which city the player is currently visiting (shown by a black shield, with or without an anvil).  The player can see the details of another city by left-clicking on it.
 </para>
 <para>
 The screen contains information about the selected city.  The title of the screen is the name of the city.  To the right of the map the defense level is shown, along with the amount of money in gold pieces that this city provides.  Next is the army unit that is currently being produced, and how many more turns until it becomes available for use.  The set of buttons in the middle of the screen represent the set of army unit types that this city can produce.
@@ -1106,10 +1105,10 @@ When the player clicks on the buy button in the city screen the following screen
 A list of all army units that are available for the player to purchase are shown.  Some of these army units are too costly for the player to afford, so they are inactive and appear greyed-out.  Some of these army units will already be present within the city's production suite; and these army units are also inactive and greyed-out.  Left-clicking on the army unit type button will select it, and show the price at the bottom of the screen.  Right-clicking a button will display the capabilities of that army unit type.
 </para>
 <para>
-After making a selection, click on the buy button to purchase the unit.  Take special care because purchasing a new unit will replace the currently selected army unit type in the city screen!
+After making a selection, click on the buy button to purchase the unit.  Take special care when purchasing a new army unit because it will replace the currently selected army unit type in the city screen!
 </para>
 <para>
-Some army units are not shown in this screen because they are not purchasable at any price.  Special units like dragons or ghosts cannot be purchased, and instead must be awarded to a hero, or already present as production in a city.
+Some army units are not shown in this screen because cannot be bought at any price.  Special units like dragons or ghosts cannot be purchased, and instead must be awarded to a hero, or already present as production in a city.
 </para>
 </sect2>
 </sect1>
@@ -1134,13 +1133,8 @@ When the player right-clicks on an army unit in a stack, the following informati
 </figure>
 
 <para>
-Here we can see a unit of Light Infantry.  It fights with a strength of 2 (more strength is better), and has 4 movement points left of a maximum of 12.  The Light Infantry unit costs the player 3 gold pieces every turn.
+Here we can see a unit of Light Infantry.  It fights with a strength of 2 (more strength is better), and has 10 movement points left of a maximum of 12.  The Light Infantry unit costs the player 3 gold pieces every turn.
 </para>
-
-<para>
-Below the picture of the Giants, there is an image of mountains.  This means that this army unit moves more efficiently over hills.  Other terrain movement bonus pictures are: water, flight, forest, as well as forest/hills.
-</para>
-
 </para>
 </sect2>
 <sect2 id="lordsawar-units-what-kind-of-bonuses">
@@ -1341,7 +1335,7 @@ The yellow player commits to the battle by left-clicking on the red army unit wi
 </mediaobject>
 </screenshot>
 </figure>
-Here is the fight screen.  The attacker is always depicted on the bottom of the fight window, while the defender is always shown on the top.  The shields of both players is shown, along with the army units fighting.  The progress bar indicates how many hitpoints each of the army units have left.  Every army unit has precisely two hitpoints, and strength is used as the main determinator if the unit is hit or not.  In this battle the Orcish Mob is unscathed as it dispatches the single unit of Light Infantry.
+Here is the fight screen.  The attacker is always depicted on the bottom of the fight window, while the defender is always shown on the top.  The shields of both players is shown, along with the army units that are in this battle.  Every army unit has precisely two hitpoints, and strength is used as the main determinator if the unit is hit or not.  In this battle the Orcish Mob dispatches the single unit of Light Infantry.
 </para>
 <para>
 The battle finishes, and the yellow unit of Orcish Mob succeeds in killing the unit of red's Light infantry.  The red player loses the unit of Light Infantry:
@@ -1381,10 +1375,10 @@ The yellow player commits to the battle by left-clicking on the red city with th
 </mediaobject>
 </screenshot>
 </figure>
-Here is the fight screen.  The Orcish mob has just dispatched a single enemy army unit, and has lost a single hitpoint in doing so.  The battle is now down to two units of Light Infantry, and a single injured unit of Orcish Mob.
+Here is the fight screen.  The Orcish mob has just dispatched a single enemy army unit, and is continuing on.  The battle is now down to two units of Light Infantry, and a single injured unit of Orcish Mob.
 </para>
 <para>
-The battle finishes, and the yellow unit of Orcish Mob does not succeed in killing the remaining enemy units, an as a result the unit Orcish Mob dies.  The red player retains the city:
+The battle finishes, and the yellow unit of Orcish Mob does not succeed in killing the remaining enemy units, an as a result the unit Orcish Mob dies.  The red player has thwarted the attack and retains the city:
 <figure id="fought-one-on-two-fig">
 <screenshot>
 <mediaobject>
