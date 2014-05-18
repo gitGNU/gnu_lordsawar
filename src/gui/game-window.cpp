@@ -949,7 +949,7 @@ bool GameWindow::on_smallmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr)
 bool GameWindow::on_bigmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr)
 {
   return true;
-  printf("drawing!\n");
+  //printf("drawing!\n");
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
     Gdk::Pixbuf::create(game->get_bigmap().get_surface(), 0, 0, 
                         bigmap_image->get_allocated_width(), 
@@ -969,7 +969,6 @@ void GameWindow::on_bigmap_surface_changed(Gtk::Allocation box)
   if (game) {
     //if (box.get_width() != last_box.get_width() || box.get_height() != last_box.get_height())
       {
-	//bigmap_drawingarea->set_allocation(box);
 	game->get_bigmap().screen_size_changed(bigmap_image->get_allocation());
 	game->redraw();
       }

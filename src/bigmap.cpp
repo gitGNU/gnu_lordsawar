@@ -146,18 +146,16 @@ void BigMap::set_view(Rectangle new_view)
 
 void BigMap::clip_viewable_buffer(Cairo::RefPtr<Cairo::Surface> pixmap, Cairo::RefPtr<Cairo::Context> gc, Vector<int> pos, Cairo::RefPtr<Cairo::Surface> out)
 {
-    //Glib::RefPtr<Gdk::Pixmap> outgoing = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(pixmap), image.get_width(), image.get_height(), 24) ;
-    Cairo::RefPtr<Cairo::Context> out_gc = Cairo::Context::create(out);
-    //Cairo::RefPtr<Cairo::Surface> pixmap_subsurface = Cairo::Surface::create(pixmap, pos.x, pos.y, image.get_width(), image.get_height());
+  Cairo::RefPtr<Cairo::Context> out_gc = Cairo::Context::create(out);
   out_gc->rectangle(0, 0, image.get_width(), image.get_height());
   out_gc->clip();
   out_gc->save();
-    out_gc->set_source(pixmap, -pos.x, -pos.y);
+  out_gc->set_source(pixmap, -pos.x, -pos.y);
   out_gc->rectangle (0, 0, image.get_width(), image.get_height());
   out_gc->clip();
-    out_gc->paint();
+  out_gc->paint();
   out_gc->restore();
-    return;
+  return;
 }
 
 void BigMap::draw(Player *player, bool redraw_buffer)
@@ -182,6 +180,8 @@ void BigMap::draw(Player *player, bool redraw_buffer)
 
     // blit the visible part of buffer to the screen
     Vector<int> p = view_pos - (buffer_view.pos * tilesize * magnification_factor);
+    outgoing.clear();
+    outgoing = Cairo::Surface::create(buffer, Cairo::CONTENT_COLOR_ALPHA, image.get_width(), image.get_height());
     //Glib::RefPtr<Gdk::Pixmap> outgoing;
     if (magnification_factor != 1.0)
       {
