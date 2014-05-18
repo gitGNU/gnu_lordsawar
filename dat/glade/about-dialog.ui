@@ -8,20 +8,54 @@
     <property name="border_width">5</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
+    <property name="copyright" translatable="yes">Copyright © 2006-2014 Ben Asselstine
+(and many other copyright holders)</property>
     <property name="comments" translatable="yes">Freedom is the most important 
 feature of this game.</property>
     <property name="website">www.lordsawar.com</property>
     <property name="website_label" translatable="yes">The LordsAWar Website</property>
-    <property name="license" translatable="yes">The GNU General Public License version 3 or later at your option.</property>
+    <property name="license" translatable="yes">LordsAWar! is licensed under the GNU General Public License version 3,
+or (at your option) any later version of the license.  This license extends 
+to all source code, artwork assets and music and sound assets.
+
+To see the terms of the license, visit: http://www.gnu.org/licenses/gpl</property>
     <property name="authors">Ben Asselstine
 Ole Laursen
-</property>
+
+LordsAWar! was created by adapting Freelords.
+
+Freelords was written by:
+
+Michael Bartl
+Ulf Lorenz
+Andrea Paternesi
+Josef Spillner
+Vibhu Rishi
+John Farrell
+Bryan Duff
+David Sterba
+Daniel Nilsson
+Marek Publicewicz
+Jimmy Chin
+Chris Slater
+Mark L. Amidon
+Thomas Plonka
+David Barnsdale
+James Andrews
+Rene Saucedo
+Tiziano Ottaviani
+Regis Leroy
+Filip Kroczak
+Daniel Rigos
+Jonathan Blois
+Michael Scherer</property>
     <property name="documenters">Ben Asselstine</property>
     <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">Joe Hansen</property>
     <property name="artists">Leon Harmon
 Sune Theodorsen
 Mark Jones
-J. W. Bjerk</property>
+J. W. Bjerk
+Max Von Juntz (Music)</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="can_focus">False</property>
