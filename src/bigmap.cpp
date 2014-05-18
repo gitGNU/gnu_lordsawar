@@ -55,6 +55,7 @@
 #include "FogMap.h"
 #include "MapBackpack.h"
 #include "GameScenarioOptions.h"
+#include "stacktile.h"
 
 #include <iostream>
 using namespace std;
@@ -326,6 +327,8 @@ void BigMap::blit_object(const Location &obj, Vector<int> tile, PixMask *image, 
 
 void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> surface_gc)
 {
+  //this routine is for drawing the active stack.
+  //for all other stacks see GraphicsCache::draw_tile_pic
   GameMap *gm = GameMap::getInstance();
   GraphicsCache *gc = GraphicsCache::getInstance();
   Vector<int> p = s->getPos();
@@ -346,6 +349,7 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface, Cairo::
       // draw stack
 
       bool show_army = true;
+      //we don't show the army or the flag if we're in fortified tent.
       if (s->hasShip())
 	{
 	  gc->getShipPic(player)->blit(surface, p);
@@ -378,7 +382,7 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface, Cairo::
       if (show_army)
 	{
 	  // draw flag
-	  gc->getFlagPic(s)->blit(surface, p);
+          gc->getFlagPic(s)->blit(surface, p);
 	}
     }
 }
@@ -506,14 +510,18 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> su
 		  m->getBuilding() != Maptile::TEMPLE)
 		has_tower = true;
 	      else if (stack->hasShip() == true)
-		{
-		  has_ship = true;
-		  stack_size = stack->size();
-		}
+                {
+                  has_ship = true;
+                  stack_size = GameMap::getStacks(stack->getPos())->countNumberOfArmies(Playerlist::getInstance()->getPlayer(stack_player_id));
+                  //here we show the number of armies on the tile.
+                  //instead of the number of armies in the stack.
+                  //so that stacks appear whole before we click on them.
+                  //and that a stack of 1 can't hide a stack of 7.
+                }
 	      else
 		{
 		  army_type_id = (*stack->begin())->getTypeId();
-		  stack_size = stack->size();
+                  stack_size = GameMap::getStacks(stack->getPos())->countNumberOfArmies(Playerlist::getInstance()->getPlayer(stack_player_id));
 		}
 	    }
 	}
