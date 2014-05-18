@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //  Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -99,6 +99,14 @@ int HeroTemplates::loadHeroTemplates()
 	    d_male_heroes.push_back(a);
 	}
     }
+  if (d_female_heroes.size() == 0 && d_male_heroes.size() > 0)
+    {
+      //add a female hero if there isn't one in the armyset.
+      ArmyProto *female_hero = new ArmyProto(*(*d_male_heroes.begin()));
+      female_hero->setGender(Hero::FEMALE);
+      d_female_heroes.push_back(female_hero);
+    }
+
   XML_Helper helper(File::getMiscFile("heronames.xml"), std::ios::in, false);
 
   helper.registerTag("herotemplate", sigc::mem_fun((*this), &HeroTemplates::load));

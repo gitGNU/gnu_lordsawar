@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011, 2012 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -60,9 +60,16 @@ HeroOfferDialog::HeroOfferDialog(Player *player, HeroProto *h, City *c, int gold
     xml->get_widget("hero_male", male_radiobutton);
     male_radiobutton->signal_clicked().connect(
 	sigc::mem_fun(this, &HeroOfferDialog::on_male_toggled));
+    xml->get_widget("hero_female", female_radiobutton);
+    female_radiobutton->signal_clicked().connect(
+	sigc::mem_fun(this, &HeroOfferDialog::on_female_toggled));
     
     male_radiobutton->set_active(hero->getGender() == Hero::MALE);
-    on_male_toggled();
+    female_radiobutton->set_active(hero->getGender() == Hero::FEMALE);
+    if (hero->getGender() == Hero::MALE)
+      on_male_toggled();
+    else if (hero->getGender() == Hero::FEMALE)
+      on_female_toggled();
     
     xml->get_widget("name", name_entry);
     name_entry->set_text(hero->getName());
@@ -109,6 +116,16 @@ void HeroOfferDialog::update_buttons()
 void HeroOfferDialog::on_name_changed()
 {
   update_buttons();
+}
+
+void HeroOfferDialog::on_female_toggled()
+{
+    if (female_radiobutton->get_active())
+	hero_image->property_file()
+	    = File::getMiscFile("various/recruit_female.png");
+    else
+	hero_image->property_file()
+	    = File::getMiscFile("various/recruit_male.png");
 }
 
 void HeroOfferDialog::on_male_toggled()

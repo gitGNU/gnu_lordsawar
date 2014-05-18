@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -51,6 +51,7 @@ class HeroOfferDialog: public Decorated
     Gtk::Image *map_image;
     Gtk::Image *hero_image;
     Gtk::RadioButton *male_radiobutton;
+    Gtk::RadioButton *female_radiobutton;
     Gtk::Entry *name_entry;
     Gtk::Button *accept_button;
     
@@ -58,6 +59,7 @@ class HeroOfferDialog: public Decorated
     City *city;
 
     void on_male_toggled();
+    void on_female_toggled();
     void on_map_changed(Cairo::RefPtr<Cairo::Surface> map);
     void update_buttons();
     void on_name_changed();
