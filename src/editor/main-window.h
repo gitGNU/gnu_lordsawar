@@ -216,6 +216,7 @@ class MainWindow: public sigc::trackable
     // map callbacks
     void on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map, Gdk::Rectangle r);
     void on_bigmap_changed(Cairo::RefPtr<Cairo::Surface> map);
+    void on_smallmap_water_changed();
     void on_objects_selected(std::vector<UniquelyIdentified *> objects);
     void on_mouse_on_tile(Vector<int> tile);
     

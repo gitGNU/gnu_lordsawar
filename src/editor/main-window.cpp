@@ -1332,6 +1332,13 @@ int MainWindow::get_tile_style_id()
     return tile_style_id;
 }
 
+void MainWindow::on_smallmap_water_changed()
+{
+  //this is so that the radial water can be redrawn again.
+  //otherwise the land doesn't get erased on the smallmap
+  smallmap->resize();
+}
+
 void MainWindow::on_bigmap_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
@@ -1368,6 +1375,9 @@ void MainWindow::init_maps()
 	sigc::mem_fun(this, &MainWindow::on_objects_selected));
     bigmap->map_changed.connect(
 	sigc::mem_fun(this, &MainWindow::on_bigmap_changed));
+    bigmap->map_water_changed.connect
+      (sigc::mem_fun(this, &MainWindow::on_smallmap_water_changed));
+                                       
 
     // grid is on by default
     bigmap->toggle_grid();

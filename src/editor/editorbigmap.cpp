@@ -328,6 +328,8 @@ void EditorBigMap::change_map_under_cursor()
         break;
 
       changed_tiles = GameMap::getInstance()->putTerrain(get_cursor_rectangle(), pointer_terrain, pointer_tile_style_id, true);
+      if (pointer_terrain == Tile::WATER)
+        map_water_changed.emit();
       break;
 
     case MOVE:

@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -80,6 +80,9 @@ class EditorBigMap: public BigMap
 
     // emitted when the map is changed by the user
     sigc::signal<void, Rectangle> map_tiles_changed;
+
+    // emitted when the water on the map is altered.
+    sigc::signal<void> map_water_changed;
 
     void smooth_view();
 
