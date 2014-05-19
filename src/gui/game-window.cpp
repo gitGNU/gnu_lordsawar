@@ -1839,7 +1839,9 @@ void GameWindow::on_bigmap_changed(Cairo::RefPtr<Cairo::Surface> map)
                         bigmap_image->get_allocated_width(), 
                         bigmap_image->get_allocated_height());
   bigmap_image->property_pixbuf() = pixbuf;
-  while (g_main_context_iteration(NULL, FALSE)); //doEvents
+  bigmap_image->queue_draw();
+  //while (g_main_context_iteration(NULL, FALSE)); //doEvents
+  //enabling this makes dragging the smallmap freeze
 }
 
 void GameWindow::on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map, Gdk::Rectangle r)

@@ -2,7 +2,7 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
 // Copyright (C) 2004 Thomas Plonka
-// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -36,6 +36,7 @@
 SmallMap::SmallMap()
 {
     input_locked = false;
+    sliding = false;
     view.pos = Vector<int>(0, 0);
     view.dim = Vector<int>(3, 3);
     sleep_interval = TIMER_SMALLMAP_REFRESH;
@@ -80,6 +81,7 @@ void SmallMap::center_view_on_tile(Vector<int> pos, bool slide)
   pos = clip(Vector<int>(0,0), pos - view.dim / 2, 
              GameMap::get_dim() - view.dim);
 
+  sliding = false;
   if (slide)
     slide_view(Rectangle(pos.x, pos.y, view.w, view.h));
   else
@@ -175,6 +177,8 @@ void SmallMap::slide_view(Rectangle new_view)
 {
   if (view != new_view)
     {
+      sliding = true;
+      sliding_to = new_view;
       while (1)
 	{
 	  Rectangle tmp_view(view);
@@ -184,11 +188,14 @@ void SmallMap::slide_view(Rectangle new_view)
 	  view = tmp_view;
 	  draw(Playerlist::getViewingplayer());
           view_slid.emit(view);
+          if (sliding_to != new_view)
+            break;
           Glib::usleep(sleep_interval);
 
 	  if (tmp_view.x == new_view.x && tmp_view.y == new_view.y)
 	    break;
 	}
+      sliding = false;
     }
 }
 
