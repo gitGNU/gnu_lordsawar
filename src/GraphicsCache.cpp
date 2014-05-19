@@ -456,10 +456,10 @@ PixMask* GraphicsCache::getMoveBonusPic(guint32 bonus, bool has_ship)
     type = 2;
   else if (bonus & Tile::FOREST) // show trees
     type = 1;
-  else if (has_ship) // (what a) show boat
-    type = 5;
   else // show blank
     type = 0;
+  if (has_ship && bonus != Tile::isFlying()) // (what a) show boat
+    type = 5;
   debug("GraphicsCache::getMoveBonusPic " <<bonus <<"," <<type)
 
   std::list<MoveBonusCacheItem*>::iterator it;
