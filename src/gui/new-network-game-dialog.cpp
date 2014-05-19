@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Ben Asselstine
+//  Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -189,6 +189,11 @@ void NewNetworkGameDialog::on_add_button_clicked()
       Profile *profile = new Profile (d.getNickname());
       Profilelist::getInstance()->push_back(profile);
       add_profile(profile);
+      Gtk::TreeModel::Row row;
+      int n = profiles_treeview->get_model()->children().size();
+      row = profiles_treeview->get_model()->children()[n-1];
+      if(row)
+	profiles_treeview->get_selection()->select(row);
     }
   update_buttons();
 }
