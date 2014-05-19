@@ -1,4 +1,4 @@
-//  Copyright (C) 2009, 2010, 2012 Ben Asselstine
+//  Copyright (C) 2009, 2010, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -135,10 +135,7 @@ void SwitchSetsDialog::on_tile_size_changed()
   guint32 default_id = 0;
   guint32 counter = 0;
 
-  Gtk::Container *container = tile_theme_combobox->get_parent();
-  container->remove(*tile_theme_combobox);
-  tile_theme_combobox = manage(new Gtk::ComboBoxText);
-
+  tile_theme_combobox->remove_all();
   Tilesetlist *tl = Tilesetlist::getInstance();
   std::list<std::string> tile_themes = tl->getValidNames(get_active_tile_size());
   for (std::list<std::string>::iterator i = tile_themes.begin(),
@@ -154,10 +151,7 @@ void SwitchSetsDialog::on_tile_size_changed()
   if (tile_theme_combobox->get_children().size() == 0)
     accept_button->set_sensitive(false);
 
-  container = army_theme_combobox->get_parent();
-  container->remove(*army_theme_combobox);
-  army_theme_combobox = manage(new Gtk::ComboBoxText);
-
+  army_theme_combobox->remove_all();
   Armysetlist *al = Armysetlist::getInstance();
   std::list<std::string> army_themes = al->getValidNames(get_active_tile_size());
   counter = 0;
@@ -176,9 +170,7 @@ void SwitchSetsDialog::on_tile_size_changed()
   if (army_theme_combobox->get_children().size() == 0)
     accept_button->set_sensitive(false);
 
-  container = city_theme_combobox->get_parent();
-  container->remove(*city_theme_combobox);
-  city_theme_combobox = manage(new Gtk::ComboBoxText);
+  city_theme_combobox->remove_all();
 
   Citysetlist *cl = Citysetlist::getInstance();
   std::list<std::string> city_themes = cl->getValidNames(get_active_tile_size());
