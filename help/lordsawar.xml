@@ -2008,9 +2008,9 @@ After the game server is running, the lobby screen is shown.  Clients also see t
 </figure>
 </para>
 <para>
-The lobby screen has three main portions: the chat window, the seats, and the map.  The figure shows one person (ben) playing an eight-sided game with a map that has 20 cities.  Ben is responsible for playing The Sirians, and it is his turn.  Others can join or leave the game at any time.
+The lobby screen has three main portions: the chat window, the seats, and the map.  The figure shows two people (ben, and benny) playing an eight-sided game with a map that has 76 cities.  Ben is responsible for playing The Sirians (and others), and it is also currently his turn.  Others can join or leave the game at any time.
 <para>
-As others connect to the server, they appear in the People list of the chat window.  To send a message to all other players, type in a message into the box next to "Send:" and press the Enter key.
+As other people connect to the server, they appear in the People list of the chat window.  To send a message to all other players, type in a message into the box next to "Send:" and press the Enter key.
 </para>
 <para>
 To play the game, players need to "sit down" at a seat.  This is accomplished by clicking the "Controlled" checkbox beside the shield of the player the person wants to play as.  After this happens the player may choose to change their name.  This is accomplished by clicking on "The Sirians" (for example), and typing in a new name and pressing the Enter key.
@@ -2022,7 +2022,7 @@ The person who is hosting the game can change the "Type" of the players to one o
 The map portion of the game lobby is there to familiarize the players with the map that this scenario is using.  Players can use this information to choose which seat they will sit down in.  There is strategic value in starting in a city that is farther away from human opponents.  The map is not shown when the scenario is using a hidden map.
 </para>
 <para>
-Players can choose to leave this lobby window can stay open for the duration of the game for chatting purposes, or to monitor the availability of opponents.  Other clients who are only observing the game will keep this window open to watch the progress of the game as it unfolds.  Observers will watch the map change, and see the turn indicator cycle through the players, and they can chat with the players about what they see happening in the game.
+Players can choose to leave this lobby window can stay open for the duration of the game for chatting purposes, or to monitor the availability of opponents.  Other clients who are only observing the game will keep this window open to watch the progress of the game as it unfolds.  Observers can watch the map change, and see the turn indicator cycle through the players, and they can chat with the players about what they see happening in the game.
 </para>
 </para>
 </sect2>
