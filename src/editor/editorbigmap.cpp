@@ -388,8 +388,17 @@ void EditorBigMap::change_map_under_cursor()
       break;
 
     case STACK:
-              
-      if (GameMap::getInstance()->canPutStack(1, active, tile) == true)
+      if (GameMap::getInstance()->countArmyUnits(tile))
+        {
+          map_selection_seq seq;
+          Stack *s = GameMap::getStack(tile);
+          if (s)
+            seq.push_back(s);
+
+          if (!seq.empty())
+            objects_selected.emit(seq);
+        }
+      else if (GameMap::getInstance()->canPutStack(1, active, tile) == true)
         {
           // Create a new dummy stack. As we don't want to have empty
           // stacks hanging around, it's assumed that the default armyset
@@ -416,25 +425,71 @@ void EditorBigMap::change_map_under_cursor()
       break;
 
     case CITY:
-      GameMap::getInstance()->putNewCity(tile);
+      if (GameMap::getInstance()->getBuilding(tile) == Maptile::CITY)
+        {
+          map_selection_seq seq;
+          City *c = GameMap::getCity(tile);
+          if (c)
+            seq.push_back(c);
+
+          if (!seq.empty())
+            objects_selected.emit(seq);
+        }
+      else
+        GameMap::getInstance()->putNewCity(tile);
       break;
 
     case RUIN:
-      GameMap::getInstance()->putNewRuin(tile);
+      if (GameMap::getInstance()->getBuilding(tile) == Maptile::RUIN)
+        {
+          map_selection_seq seq;
+          Ruin *r = GameMap::getRuin(tile);
+          if (r)
+            seq.push_back(r);
+
+          if (!seq.empty())
+            objects_selected.emit(seq);
+        }
+      else
+        GameMap::getInstance()->putNewRuin(tile);
       break;
 
     case TEMPLE:
-      GameMap::getInstance()->putNewTemple(tile);
+      if (GameMap::getInstance()->getBuilding(tile) == Maptile::TEMPLE)
+        {
+          map_selection_seq seq;
+          Temple *t = GameMap::getTemple(tile);
+          if (t)
+            seq.push_back(t);
+
+          if (!seq.empty())
+            objects_selected.emit(seq);
+        }
+      else
+        GameMap::getInstance()->putNewTemple(tile);
       break;
 
     case SIGNPOST:
         {
-          bool signpost_placeable = GameMap::getInstance()->canPutBuilding
-            (Maptile::SIGNPOST, 1, tile);
-          if (!signpost_placeable)
-            break;
-          Signpost *s = new Signpost(tile);
-          GameMap::getInstance()->putSignpost(s);
+          if (GameMap::getInstance()->getBuilding(tile) == Maptile::SIGNPOST)
+            {
+              map_selection_seq seq;
+              Signpost *s = GameMap::getSignpost(tile);
+              if (s)
+                seq.push_back(s);
+
+              if (!seq.empty())
+                objects_selected.emit(seq);
+            }
+          else
+            {
+              bool signpost_placeable = GameMap::getInstance()->canPutBuilding
+                (Maptile::SIGNPOST, 1, tile);
+              if (!signpost_placeable)
+                break;
+              Signpost *s = new Signpost(tile);
+              GameMap::getInstance()->putSignpost(s);
+            }
           break;
         }
 
