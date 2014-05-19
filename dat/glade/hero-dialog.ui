@@ -364,6 +364,8 @@
                                 <property name="right_padding">17</property>
                                 <child>
                                   <object class="GtkScrolledWindow" id="treeview_scrolledwindow">
+                                    <property name="width_request">400</property>
+                                    <property name="height_request">100</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="hscrollbar_policy">automatic</property>
@@ -371,8 +373,6 @@
                                     <property name="shadow_type">in</property>
                                     <child>
                                       <object class="GtkTreeView" id="treeview">
-                                        <property name="width_request">400</property>
-                                        <property name="height_request">100</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
                                         <property name="rules_hint">True</property>
