@@ -1651,13 +1651,14 @@ void MainWindow::on_random_unnamed_temples_activated()
 void MainWindow::randomize_signpost(Signpost *signpost)
 {
   std::string name = "";
-  if ((rand() % d_create_scenario_names->getNumSignposts())  == 0)
+  if (d_create_scenario_names->getNumSignposts() > 0 &&
+      (rand() % d_create_scenario_names->getNumSignposts()) == 0)
     name = d_create_scenario_names->popRandomSignpost();
   else
+
     name = d_create_scenario_names->getDynamicSignpost(signpost);
-  if (name == "")
-    name = d_create_scenario_names->popRandomSignpost();
-  signpost->setName(name);
+  if (name != "")
+    signpost->setName(name);
 }
 
 void MainWindow::on_random_all_signs_activated()
