@@ -1,8 +1,9 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkDialog" id="dialog">
+    <property name="can_focus">False</property>
     <property name="border_width">6</property>
     <property name="title" translatable="yes">Miniature Map Editor</property>
     <property name="resizable">False</property>
@@ -12,24 +13,61 @@
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
         <property name="spacing">18</property>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="close_button">
+                <property name="label" translatable="yes">Close</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="has_focus">True</property>
+                <property name="can_default">True</property>
+                <property name="has_default">True</property>
+                <property name="receives_default">False</property>
+                <property name="use_underline">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
         <child>
           <object class="GtkHBox" id="contents_hbox">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
               <object class="GtkVBox" id="map_vbox">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkFrame" id="map_frame">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="label_xalign">0</property>
                     <child>
                       <object class="GtkEventBox" id="map_eventbox">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkDrawingArea" id="map_drawingarea">
+                          <object class="GtkImage" id="smallmap_image">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="stock">gtk-missing-image</property>
                           </object>
                         </child>
                       </object>
@@ -44,12 +82,14 @@
               </object>
               <packing>
                 <property name="expand">False</property>
+                <property name="fill">True</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkVBox" id="ops_vbox">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
                 <child>
                   <object class="GtkScrolledWindow" id="scrolledwindow1">
                     <property name="visible">True</property>
@@ -59,11 +99,13 @@
                     <child>
                       <object class="GtkViewport" id="viewport1">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="resize_mode">queue</property>
                         <property name="shadow_type">none</property>
                         <child>
                           <object class="GtkHBox" id="modes_hbox">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <child>
                               <object class="GtkRadioButton" id="pointer_radiobutton">
                                 <property name="visible">True</property>
@@ -74,11 +116,14 @@
                                 <child>
                                   <object class="GtkImage" id="pointer_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
                               </object>
                               <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
@@ -92,11 +137,14 @@
                                 <child>
                                   <object class="GtkImage" id="draw_1_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
                               </object>
                               <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -110,11 +158,14 @@
                                 <child>
                                   <object class="GtkImage" id="draw_2_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
                               </object>
                               <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
                                 <property name="position">2</property>
                               </packing>
                             </child>
@@ -128,11 +179,14 @@
                                 <child>
                                   <object class="GtkImage" id="draw_3_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
                               </object>
                               <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
                                 <property name="position">3</property>
                               </packing>
                             </child>
@@ -146,11 +200,14 @@
                                 <child>
                                   <object class="GtkImage" id="draw_6_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
                               </object>
                               <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
                                 <property name="position">4</property>
                               </packing>
                             </child>
@@ -165,11 +222,14 @@
                                 <child>
                                   <object class="GtkImage" id="draw_12_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
                               </object>
                               <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
                                 <property name="position">5</property>
                               </packing>
                             </child>
@@ -183,11 +243,14 @@
                                 <child>
                                   <object class="GtkImage" id="erase_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
                               </object>
                               <packing>
+                                <property name="expand">True</property>
+                                <property name="fill">True</property>
                                 <property name="position">6</property>
                               </packing>
                             </child>
@@ -197,6 +260,8 @@
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -209,6 +274,10 @@
                     <child>
                       <object class="GtkTable" id="terrain_type_table">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <placeholder/>
+                        </child>
                         <child>
                           <placeholder/>
                         </child>
@@ -216,6 +285,8 @@
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
@@ -228,11 +299,13 @@
                     <child>
                       <object class="GtkViewport" id="viewport2">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="resize_mode">queue</property>
                         <property name="shadow_type">none</property>
                         <child>
                           <object class="GtkHBox" id="building_types_hbox">
                             <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <child>
                               <object class="GtkRadioButton" id="draw_city_radiobutton">
                                 <property name="visible">True</property>
@@ -243,6 +316,7 @@
                                 <child>
                                   <object class="GtkImage" id="draw_city_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
@@ -263,6 +337,7 @@
                                 <child>
                                   <object class="GtkImage" id="draw_ruin_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
@@ -283,6 +358,7 @@
                                 <child>
                                   <object class="GtkImage" id="draw_temple_image">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="stock">gtk-missing-image</property>
                                   </object>
                                 </child>
@@ -307,19 +383,22 @@
                 <child>
                   <object class="GtkFrame" id="frame1">
                     <property name="visible">True</property>
+                    <property name="can_focus">False</property>
                     <property name="label_xalign">0</property>
                     <property name="shadow_type">none</property>
                     <child>
                       <object class="GtkAlignment" id="alignment1">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="left_padding">12</property>
                         <child>
                           <object class="GtkVBox" id="vbox1">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
+                            <property name="can_focus">False</property>
                             <child>
                               <object class="GtkTable" id="table1">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <property name="n_rows">2</property>
                                 <property name="n_columns">3</property>
                                 <property name="column_spacing">5</property>
@@ -327,12 +406,14 @@
                                 <child>
                                   <object class="GtkLabel" id="label2">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="label" translatable="yes">Starting Point:</property>
                                   </object>
                                 </child>
                                 <child>
                                   <object class="GtkLabel" id="label3">
                                     <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
                                     <property name="label" translatable="yes">Finishing Point:</property>
                                   </object>
                                   <packing>
@@ -346,7 +427,11 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="editable">False</property>
-                                    <property name="invisible_char">&#x25CF;</property>
+                                    <property name="invisible_char">●</property>
+                                    <property name="primary_icon_activatable">False</property>
+                                    <property name="secondary_icon_activatable">False</property>
+                                    <property name="primary_icon_sensitive">True</property>
+                                    <property name="secondary_icon_sensitive">True</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -359,7 +444,11 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="editable">False</property>
-                                    <property name="invisible_char">&#x25CF;</property>
+                                    <property name="invisible_char">●</property>
+                                    <property name="primary_icon_activatable">False</property>
+                                    <property name="secondary_icon_activatable">False</property>
+                                    <property name="primary_icon_sensitive">True</property>
+                                    <property name="secondary_icon_sensitive">True</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -401,12 +490,14 @@
                               </object>
                               <packing>
                                 <property name="expand">False</property>
+                                <property name="fill">True</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
                             <child>
                               <object class="GtkHBox" id="hbox1">
                                 <property name="visible">True</property>
+                                <property name="can_focus">False</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -441,6 +532,7 @@
                               </object>
                               <packing>
                                 <property name="expand">False</property>
+                                <property name="fill">True</property>
                                 <property name="padding">5</property>
                                 <property name="position">1</property>
                               </packing>
@@ -452,6 +544,7 @@
                     <child type="label">
                       <object class="GtkLabel" id="label1">
                         <property name="visible">True</property>
+                        <property name="can_focus">False</property>
                         <property name="label" translatable="yes">Road Planner</property>
                         <attributes>
                           <attribute name="weight" value="bold"/>
@@ -460,6 +553,8 @@
                     </child>
                   </object>
                   <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
                     <property name="position">3</property>
                   </packing>
                 </child>
@@ -478,34 +573,6 @@
             <property name="expand">False</property>
             <property name="fill">False</property>
             <property name="position">1</property>
-          </packing>
-        </child>
-        <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
-            <property name="visible">True</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="close_button">
-                <property name="label" translatable="yes">Close</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="has_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="has_default">True</property>
-                <property name="receives_default">False</property>
-                <property name="use_underline">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
           </packing>
         </child>
       </object>

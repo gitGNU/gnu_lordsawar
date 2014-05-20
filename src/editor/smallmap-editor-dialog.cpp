@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -354,5 +354,7 @@ void SmallmapEditorDialog::on_road_can_be_created(bool create_road)
 void SmallmapEditorDialog::on_map_edited()
 {
   d_needs_saving = true;
+  if (get_terrain() == Tile::WATER)
+    smallmap->resize();
   smallmap->check_road();
 }
