@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -78,6 +78,7 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Profile *p)
                p);
 
     xml->get_widget("games_treeview", games_treeview);
+    xml->get_widget("notebook1", notebook);
     games_list = Gtk::ListStore::create(games_columns);
     games_treeview->set_model(games_list);
     games_treeview->append_column("Name", games_columns.name);
@@ -108,6 +109,7 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Profile *p)
         (Configuration::s_gamelist_server_hostname, 
          Configuration::s_gamelist_server_port, profile);
     }
+  notebook->set_current_page(1);
 }
 
 void NetworkGameSelectorDialog::on_connected_to_gamelist_server()

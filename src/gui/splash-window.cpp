@@ -211,6 +211,7 @@ void SplashWindow::on_new_network_game_clicked()
       if (nngd.isClient() == true)
         {
           NetworkGameSelectorDialog ngsd(nngd.getProfile());
+          ngsd.set_parent_window (*window);
           ngsd.game_selected.connect(sigc::bind(sigc::mem_fun(*this, &SplashWindow::on_network_game_selected), nngd.getProfile()));
           ngsd.run();
         }
