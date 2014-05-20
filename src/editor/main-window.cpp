@@ -149,7 +149,7 @@ MainWindow::MainWindow(std::string load_filename)
     map_eventbox->signal_motion_notify_event().connect(
 	sigc::mem_fun(*this, &MainWindow::on_smallmap_mouse_motion_event));
 
-    xml->get_widget("terrain_tile_style_hbox", terrain_tile_style_hbox);
+    xml->get_widget("terrain_tile_style_viewport", terrain_tile_style_viewport);
 
     // setup pointer radiobuttons
     xml->get_widget("terrain_type_table", terrain_type_table);
@@ -302,6 +302,8 @@ MainWindow::MainWindow(std::string load_filename)
     xml->get_widget ("help_about_menuitem", help_about_menuitem);
     help_about_menuitem->signal_activate().connect
        (sigc::mem_fun(this, &MainWindow::on_help_about_activated));
+  terrain_tile_style_grid = new Gtk::Grid();
+  terrain_tile_style_viewport->add(*terrain_tile_style_grid);
 }
 
 MainWindow::~MainWindow()
@@ -320,7 +322,7 @@ void MainWindow::setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> xml,
 					   int size)
 {
     PointerItem item;
-    xml->get_widget(prefix + "_radiobutton", item.button);
+    xml->get_widget(prefix + "_radiobutton2", item.button);
     if (prefix == "pointer")
 	pointer_radiobutton = item.button;
     item.button->signal_toggled().connect(
@@ -329,10 +331,14 @@ void MainWindow::setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> xml,
     item.size = size;
     pointer_items.push_back(item);
 
-    Gtk::Image *image;
-    xml->get_widget(prefix + "_image", image);
-    image->property_file() = File::getEditorFile(image_file);
-    item.button->property_draw_indicator() = false;
+    Gtk::Image *image = new Gtk::Image(File::getEditorFile(image_file));
+    item.button->set_icon_widget(*image);
+    item.button->show_all();
+    item.button->queue_draw();
+    //Gtk::Image *image;
+    //xml->get_widget(prefix + "_image", image);
+    //image->property_file() = File::getEditorFile(image_file);
+    //item.button->property_draw_indicator() = false;
 }
 
 void MainWindow::setup_terrain_radiobuttons()
@@ -342,6 +348,7 @@ void MainWindow::setup_terrain_radiobuttons()
   for (guint i = 0; i < kids.size(); i++)
     terrain_type_table->remove(*kids[i]);
   
+  terrain_items.clear();
 
     // then add new ones from the tile set
     Tileset *tset = GameMap::getTileset();
@@ -353,6 +360,7 @@ void MainWindow::setup_terrain_radiobuttons()
 	Tile *tile = (*tset)[i];
 	TerrainItem item;
 	item.button = manage(new Gtk::RadioButton);
+        item.button->set_tooltip_text(tile->getName());
 	if (group_set)
 	    item.button->set_group(group);
 	else
@@ -1159,12 +1167,12 @@ void MainWindow::on_grid_toggled()
 void MainWindow::remove_tile_style_buttons()
 {
   Glib::ListHandle<Gtk::Widget*> children = 
-    terrain_tile_style_hbox->get_children();
+    terrain_tile_style_grid->get_children();
   if (!children.empty()) 
     {
       Glib::ListHandle<Gtk::Widget*>::iterator child = children.begin();
       for (; child != children.end(); child++)
-	terrain_tile_style_hbox->remove(**child);
+	terrain_tile_style_grid->remove(**child);
     }
   tile_style_items.clear();
 }
@@ -1181,48 +1189,57 @@ void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
 	  
   TileStyleItem auto_item;
   auto_item.button = manage(new Gtk::RadioButton);
-  terrain_tile_style_hbox->pack_start(*manage(auto_item.button), 
-				      Gtk::PACK_SHRINK, 0, 0);
+
+
   auto_item.button->set_label(_("Auto"));
   auto_item.button->property_draw_indicator() = false;
 	  
   auto_item.button->signal_toggled().connect
     (sigc::mem_fun(this, &MainWindow::on_tile_style_radiobutton_toggled));
+  terrain_tile_style_grid->attach(*manage(auto_item.button), 0, 0, 1, 1);
 
   auto_item.tile_style_id = -1;
   group = auto_item.button->get_group();
   tile_style_items.push_back(auto_item);
 
+  int r = 0, c = 0, max_rows = 4;
   for (Tile::iterator it = tile->begin(); it != tile->end(); it++)
     {
+
       TileStyleSet *tilestyleset = *it;
       //loop through tile style sets
       for (unsigned int j = 0; j < tilestyleset->size(); j++)
-	{
-	  //now loop through the tile styles
-	  TileStyle *tilestyle = (*tilestyleset)[j];
+        {
+          //now loop through the tile styles
+          TileStyle *tilestyle = (*tilestyleset)[j];
 
-	  //let's make a button
-	  TileStyleItem item;
-	  item.button = manage(new Gtk::RadioButton);
-	  item.button->set_group(group);
-	  item.button->property_draw_indicator() = false;
+          //let's make a button
+          TileStyleItem item;
+          item.button = manage(new Gtk::RadioButton);
+          item.button->set_group(group);
+          item.button->property_draw_indicator() = false;
 
-	  terrain_tile_style_hbox->pack_start(*manage(item.button), 
-					      Gtk::PACK_SHRINK, 0, 0);
-	  item.button->signal_toggled().connect
-	    (sigc::mem_fun(this, 
-			   &MainWindow::on_tile_style_radiobutton_toggled));
+          terrain_tile_style_grid->attach(*manage(item.button), c, r, 1, 1);
+          item.button->signal_toggled().connect
+            (sigc::mem_fun(this, 
+                           &MainWindow::on_tile_style_radiobutton_toggled));
 
-	  Glib::RefPtr<Gdk::Pixbuf> pic = tilestyle->getImage()->to_pixbuf();
-	  item.button->add(*manage(new Gtk::Image(pic)));
-	  item.tile_style_id = tilestyle->getId();
+          PixMask *pix = tilestyle->getImage()->copy();
+          PixMask::scale(pix, 40, 40);
+          item.button->add(*manage(new Gtk::Image(pix->to_pixbuf())));
+          item.tile_style_id = tilestyle->getId();
 
-	  tile_style_items.push_back(item);
-	}
+          tile_style_items.push_back(item);
+          c++;
+          if (c >= max_rows)
+            {
+              c = 0;
+              r++;
+            }
+        }
     }
+  terrain_tile_style_viewport->show_all();
 
-  terrain_tile_style_hbox->show_all();
 }
 
     
@@ -1294,7 +1311,7 @@ void MainWindow::on_pointer_radiobutton_toggled()
 	bigmap->set_pointer(pointer, size, get_terrain(),
 			    get_tile_style_id());
     terrain_type_table->set_sensitive(pointer == EditorBigMap::TERRAIN);
-    terrain_tile_style_hbox->set_sensitive(pointer == EditorBigMap::TERRAIN);
+    terrain_tile_style_viewport->set_sensitive(pointer == EditorBigMap::TERRAIN);
 
     players_hbox->set_sensitive (pointer == EditorBigMap::STACK || 
 				 pointer == EditorBigMap::CITY);
@@ -1817,6 +1834,8 @@ void MainWindow::on_switch_sets_activated()
       update_window_title();
       GraphicsCache::getInstance()->reset();
       bigmap->screen_size_changed(bigmap_image->get_allocation()); 
+      setup_terrain_radiobuttons();
+      on_terrain_radiobutton_toggled();
       redraw();
       fill_players();
     }

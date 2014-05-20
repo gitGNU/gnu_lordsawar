@@ -141,7 +141,7 @@ void SwitchSetsDialog::on_tile_size_changed()
   for (std::list<std::string>::iterator i = tile_themes.begin(),
        end = tile_themes.end(); i != end; ++i)
     {
-      if (*i == GameMap::getInstance()->getTilesetName())
+      if (*i == GameMap::getInstance()->getTileset()->getName())
 	default_id = counter;
       tile_theme_combobox->append(Glib::filename_to_utf8(*i));
       counter++;

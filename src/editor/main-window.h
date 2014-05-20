@@ -93,13 +93,14 @@ class MainWindow: public sigc::trackable
     Gtk::MenuItem *random_all_signs_menuitem;
     Gtk::MenuItem *random_unnamed_signs_menuitem;
     Gtk::MenuItem *help_about_menuitem;
-    Gtk::HBox *terrain_tile_style_hbox;
+    Gtk::Viewport *terrain_tile_style_viewport;
+    Gtk::Grid *terrain_tile_style_grid;
     Gtk::Image *smallmap_image;
     std::string current_save_filename;
     bool needs_saving;
     Gtk::Table *terrain_type_table;
     Gtk::Label *mouse_position_label;
-    Gtk::RadioButton *pointer_radiobutton;
+    Gtk::RadioToolButton *pointer_radiobutton;
     Gtk::Box *players_hbox;
 
     
@@ -159,7 +160,7 @@ class MainWindow: public sigc::trackable
     
     struct PointerItem
     {
-	Gtk::RadioButton *button;
+	Gtk::RadioToolButton *button;
 	EditorBigMap::Pointer pointer;
 	int size;
     };
