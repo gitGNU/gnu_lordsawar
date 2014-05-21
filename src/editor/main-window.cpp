@@ -102,8 +102,8 @@ MainWindow::MainWindow(std::string load_filename)
   game_scenario = NULL;
   d_create_scenario_names = NULL;
   needs_saving = false;
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + "/main-window.ui");
+  Glib::RefPtr<Gtk::Builder> xml
+    = Gtk::Builder::create_from_file(get_glade_path() + "/main-window.ui");
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
@@ -1192,7 +1192,7 @@ void MainWindow::remove_tile_style_buttons()
 
 void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
 {
-  Gtk::RadioButton::Group group;
+  Gtk::RadioButtonGroup group;
   //iterate through tilestyles of a certain TERRAIN tile
   Tileset *tileset = GameMap::getTileset();
   guint32 index = tileset->getIndex(terrain);
@@ -1201,18 +1201,17 @@ void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
     return;
 	  
   TileStyleItem auto_item;
-  auto_item.button = manage(new Gtk::RadioButton);
+  auto_item.button = manage(new Gtk::RadioButton(group));
 
 
   auto_item.button->set_label(_("Auto"));
   auto_item.button->property_draw_indicator() = false;
-	  
+
   auto_item.button->signal_toggled().connect
     (sigc::mem_fun(this, &MainWindow::on_tile_style_radiobutton_toggled));
   terrain_tile_style_grid->attach(*manage(auto_item.button), 0, 0, 1, 1);
 
   auto_item.tile_style_id = -1;
-  group = auto_item.button->get_group();
   tile_style_items.push_back(auto_item);
 
   int r = 0, c = 0, max_rows = 4;
