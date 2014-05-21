@@ -84,8 +84,8 @@ TileStyleOrganizerDialog::TileStyleOrganizerDialog(Tile *tile)
     unsorted_iconview->signal_item_activated().connect
       (sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_unsorted_tilestyle_activated));
 
-    on_category_selected();
     fill_category(TileStyle::UNKNOWN);
+    categories_iconview->select_path(Gtk::TreeModel::Path("0"));
 }
       
 void TileStyleOrganizerDialog::on_category_drag_data_get(const Glib::RefPtr<Gdk::DragContext> &drag_context,

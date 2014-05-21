@@ -1152,6 +1152,7 @@ void TileSetWindow::on_organize_tilestyles_activated()
     (sigc::mem_fun(this, &TileSetWindow::on_tilestyle_id_selected));
   d.set_parent_window(*window);
   d.run();
+  update_tilestyle_panel();
 }
 
 void TileSetWindow::on_smallmap_building_colors_activated()
