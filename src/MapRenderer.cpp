@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2012 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ bool MapRenderer::saveAsBitmap(std::string filename)
   int tilesize = GameMap::getInstance()->getTileSize();
   int width = GameMap::getWidth() * tilesize;
   int height = GameMap::getHeight() * tilesize;
-  Cairo::RefPtr<Cairo::Surface> empty;
+  Cairo::RefPtr<Cairo::Surface> empty = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
   Cairo::RefPtr<Cairo::Surface> surf = Cairo::Surface::create(empty, Cairo::CONTENT_COLOR_ALPHA, width, height);
   render(0, 0, 0, 0, GameMap::getWidth(), GameMap::getHeight(), surf, Cairo::Context::create(surf));
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create(surf, 0, 0, width, height);

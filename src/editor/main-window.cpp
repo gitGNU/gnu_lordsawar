@@ -871,7 +871,7 @@ void MainWindow::on_export_as_bitmap_activated()
 {
     Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
 				   Gtk::FILE_CHOOSER_ACTION_SAVE);
-    Glib::RefPtr<Gtk::FileFilter> png_filter;
+    Glib::RefPtr<Gtk::FileFilter> png_filter = Gtk::FileFilter::create();
     png_filter->set_name(_("PNG files (*.png)"));
     png_filter->add_pattern("*.png");
     chooser.add_filter(png_filter);
