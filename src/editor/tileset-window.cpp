@@ -880,12 +880,15 @@ void TileSetWindow::fill_colours(Tile *tile)
     {
     case SmallTile::SOLID:
       tile_smallmap_second_colorbutton->set_sensitive(false);
+      tile_smallmap_second_colorbutton->set_rgba(Gdk::RGBA("black"));
       tile_smallmap_third_colorbutton->set_sensitive(false);
+      tile_smallmap_third_colorbutton->set_rgba(Gdk::RGBA("black"));
       tile_smallmap_first_colorbutton->set_rgba(tile->getSmallTile()->getColor());
       break;
     case SmallTile::STIPPLED: case SmallTile::SUNKEN:
       tile_smallmap_second_colorbutton->set_sensitive(true);
       tile_smallmap_third_colorbutton->set_sensitive(false);
+      tile_smallmap_third_colorbutton->set_rgba(Gdk::RGBA("black"));
       tile_smallmap_first_colorbutton->set_rgba(tile->getSmallTile()->getColor());
       tile_smallmap_second_colorbutton->set_rgba(tile->getSmallTile()->getSecondColor());
       break;
