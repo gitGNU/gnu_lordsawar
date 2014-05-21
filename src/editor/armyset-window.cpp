@@ -70,6 +70,9 @@ ArmySetWindow::ArmySetWindow(std::string load_filename)
       (sigc::mem_fun(*this, &ArmySetWindow::on_window_closed));
 
     xml->get_widget("white_image", white_image);
+    xml->get_widget("make_same_button", make_same_button);
+    make_same_button->signal_clicked().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_make_same_clicked));
     xml->get_widget("green_image", green_image);
     xml->get_widget("yellow_image", yellow_image);
     xml->get_widget("light_blue_image", light_blue_image);
@@ -690,12 +693,11 @@ void ArmySetWindow::on_edit_ship_picture_activated()
   MaskedImageEditorDialog d(filename);
   d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
   int response = d.run();
-  if (filename != "")
-    File::erase(filename);
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       if (d.get_selected_filename() != filename)
         {
+          File::erase(filename);
           d_armyset->replaceFileInConfigurationFile(d_armyset->getShipImageName()+".png", d.get_selected_filename());
           d_armyset->setShipImageName(File::get_basename(d.get_selected_filename()));
           needs_saving = true;
@@ -712,12 +714,11 @@ void ArmySetWindow::on_edit_standard_picture_activated()
   MaskedImageEditorDialog d(filename);
   d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
   int response = d.run();
-  if (filename != "")
-    File::erase(filename);
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       if (d.get_selected_filename() != filename)
         {
+          File::erase(filename);
           d_armyset->replaceFileInConfigurationFile(d_armyset->getStandardImageName()+".png", d.get_selected_filename());
           d_armyset->setStandardImageName(File::get_basename(d.get_selected_filename()));
           needs_saving = true;
@@ -735,12 +736,11 @@ void ArmySetWindow::on_edit_bag_picture_activated()
   d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
   d.set_parent_window(*window);
   int response = d.run();
-  if (filename != "")
-    File::erase(filename);
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       if (d.get_selected_filename() != filename)
         {
+          File::erase(filename);
           d_armyset->replaceFileInConfigurationFile(d_armyset->getBagImageName()+".png", d.get_selected_filename());
           d_armyset->setBagImageName(File::get_basename(d.get_selected_filename()));
           needs_saving = true;
@@ -967,12 +967,11 @@ void ArmySetWindow::on_image_changed(Gtk::Button *button, Gtk::Image *image, Shi
       MaskedImageEditorDialog d(filename);
       d.set_parent_window(*window);
       int response = d.run();
-      if (filename != "")
-        File::erase(filename);
       if (response == Gtk::RESPONSE_ACCEPT)
         {
           if (d.get_selected_filename() != "" && d.get_selected_filename() != filename)
             {
+              File::erase(filename);
               bool broken = false;
               d_armyset->replaceFileInConfigurationFile(a->getImageName(c)+".png", d.get_selected_filename());
               a->setImageName(c, File::get_basename(d.get_selected_filename()));
@@ -1962,4 +1961,74 @@ void ArmySetWindow::update_window_title()
   title += " - ";
   title += _("LordsAWar! Armyset Editor");
   window->set_title(title);
+}
+    
+void ArmySetWindow::on_make_same_clicked()
+{
+  Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+  Gtk::TreeModel::Row row = *iterrow;
+  if (!row)
+    return;
+  ArmyProto *a = row[armies_columns.army];
+  if (!a)
+    return;
+  if (a->getImageName(Shield::WHITE).empty())
+    return;
+  //get the image for white and then transfer it to the rest.
+  green_image_button->set_label(white_image_button->get_label());
+  yellow_image_button->set_label(white_image_button->get_label());
+  light_blue_image_button->set_label(white_image_button->get_label());
+  red_image_button->set_label(white_image_button->get_label());
+  dark_blue_image_button->set_label(white_image_button->get_label());
+  orange_image_button->set_label(white_image_button->get_label());
+  black_image_button->set_label(white_image_button->get_label());
+  neutral_image_button->set_label(white_image_button->get_label());
+        
+  std::string white_filename = d_armyset->getFileFromConfigurationFile(a->getImageName(Shield::Colour(0)) + ".png");
+  for (unsigned int i = Shield::GREEN; i <= Shield::NEUTRAL; i++)
+    {
+      Shield::Colour s = Shield::Colour(i);
+      Glib::ustring filename = d_armyset->getFileFromConfigurationFile(a->getImageName(s) + ".png");
+      File::erase(filename);
+      bool broken = false;
+      d_armyset->replaceFileInConfigurationFile(a->getImageName(s)+".png", white_filename);
+      a->setImageName(s, File::get_basename(white_filename));
+      Gdk::RGBA colour = Shieldsetlist::getInstance()->getColor(1, s);
+      a->instantiateImages(d_armyset->getTileSize(), s, white_filename, broken);
+
+      PixMask *army_image = GraphicsCache::applyMask(a->getImage(s), 
+                                                     a->getMask(s), 
+                                                     colour, false);
+      switch (i)
+        {
+        case 0:
+          break;
+        case 1:
+          green_image->property_pixbuf() = army_image->to_pixbuf();
+          break;
+        case 2:
+          yellow_image->property_pixbuf() = army_image->to_pixbuf();
+          break;
+        case 3:
+          light_blue_image->property_pixbuf() = army_image->to_pixbuf();
+          break;
+        case 4:
+          red_image->property_pixbuf() = army_image->to_pixbuf();
+          break;
+        case 5:
+          dark_blue_image->property_pixbuf() = army_image->to_pixbuf();
+          break;
+        case 6:
+          orange_image->property_pixbuf() = army_image->to_pixbuf();
+          break;
+        case 7:
+          black_image->property_pixbuf() = army_image->to_pixbuf();
+          break;
+        case 8:
+          neutral_image->property_pixbuf() = army_image->to_pixbuf();
+          break;
+        }
+      delete army_image;
+    }
 }

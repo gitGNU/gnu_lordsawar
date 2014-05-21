@@ -1,4 +1,4 @@
-//  Copyright (C) 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ MaskedImageEditorDialog::MaskedImageEditorDialog(std::string filename, Shieldset
     show_image(filename);
     target_filename = filename;
     update_panel();
-    filechooserbutton->signal_selection_changed().connect
+    filechooserbutton->signal_file_set().connect
        (sigc::mem_fun(*this, &MaskedImageEditorDialog::on_image_chosen));
 
 }
@@ -75,7 +75,7 @@ int MaskedImageEditorDialog::run()
 {
     dialog->show_all();
     int response = dialog->run();
-    if (response == Gtk::RESPONSE_ACCEPT)
+    if (response != Gtk::RESPONSE_ACCEPT)
       target_filename = "";
 
     return response;
