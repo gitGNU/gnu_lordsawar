@@ -571,6 +571,7 @@ void EditorBigMap::after_draw()
 
     if (show_tile_types_instead_of_tile_styles)
       {
+        buffer_gc->reset_clip();
 	tiles = get_screen_tiles();
 	for (std::vector<Vector<int> >::iterator i = tiles.begin(),
 	     end = tiles.end(); i != end; ++i)
@@ -583,15 +584,11 @@ void EditorBigMap::after_draw()
 	    int x = pos.x;
 	    int y = pos.y;
 	    int ts = tilesize;
-	    if (d_grid_toggled)
-	      {
-		x++;
-		y++;
-		ts--;
-	      }
             buffer_gc->rectangle(x, y, ts, ts);
+            buffer_gc->clip();
+            buffer_gc->paint();
+            buffer_gc->reset_clip();
 	  }
-        buffer_gc->paint();
       }
 
     // we need to draw a drawing cursor on the map
@@ -664,9 +661,9 @@ void EditorBigMap::after_draw()
 	    break;
 
 	  case STACK:
-	    pic = GraphicsCache::getInstance()->getArmyPic
-	      (Playerlist::getInstance()->getActiveplayer()->getArmyset(), 0,
-	       Playerlist::getInstance()->getActiveplayer(), NULL);
+            pic = GraphicsCache::getInstance()->getArmyPic
+	       (Playerlist::getInstance()->getActiveplayer()->getArmyset(), 0,
+                Playerlist::getInstance()->getActiveplayer(), NULL);
 	    pic->blit(buffer, pos);
 	    break;
 
@@ -708,4 +705,5 @@ void EditorBigMap::after_draw()
 	    break;
 	  }
       }
+    return;
 }
