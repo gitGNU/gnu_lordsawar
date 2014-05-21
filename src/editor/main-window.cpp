@@ -335,10 +335,6 @@ void MainWindow::setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> xml,
     item.button->set_icon_widget(*image);
     item.button->show_all();
     item.button->queue_draw();
-    //Gtk::Image *image;
-    //xml->get_widget(prefix + "_image", image);
-    //image->property_file() = File::getEditorFile(image_file);
-    //item.button->property_draw_indicator() = false;
 }
 
 void MainWindow::setup_terrain_radiobuttons()
@@ -687,8 +683,10 @@ void MainWindow::clear_map_state()
 
 void MainWindow::init_map_state()
 {
-    pointer_radiobutton->set_active();
+    pointer_items[1].button->set_active();
     init_maps();
+    on_pointer_radiobutton_toggled();
+    on_terrain_radiobutton_toggled();
 }
 
 

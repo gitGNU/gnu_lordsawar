@@ -591,6 +591,7 @@ void EditorBigMap::after_draw()
 	      }
             buffer_gc->rectangle(x, y, ts, ts);
 	  }
+        buffer_gc->paint();
       }
 
     // we need to draw a drawing cursor on the map
