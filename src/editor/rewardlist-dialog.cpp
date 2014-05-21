@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -122,6 +122,7 @@ void RewardlistDialog::on_add_clicked()
 {
   Player *neutral = Playerlist::getInstance()->getNeutral();
   RewardEditorDialog d(neutral, true, NULL);
+  d.set_parent_window(*dialog);
   d.run();
   if (d.get_reward())
     {

@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -127,7 +127,6 @@ CityEditorDialog::CityEditorDialog(City *cit, CreateScenarioRandomize *randomize
     duration_column.set_cell_data_func
 	      ( duration_renderer, 
 		sigc::mem_fun(*this, &CityEditorDialog::cell_data_turns));
-    army_treeview->append_column(strength_column);
 
     army_treeview->append_column(_("Name"), army_columns.name);
 
