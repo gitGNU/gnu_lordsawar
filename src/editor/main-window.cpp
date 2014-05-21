@@ -442,6 +442,8 @@ void MainWindow::hide()
 
 bool MainWindow::on_delete_event(GdkEventAny *e)
 {
+  if (window->property_sensitive() == false)
+    return true;
   return !quit();
 }
 
@@ -1025,6 +1027,9 @@ void MainWindow::on_edit_shieldset_activated()
   Shieldset *shieldset = GameMap::getShieldset();
   std::string file = shieldset->getConfigurationFile();
   shieldset_window = new ShieldSetWindow (file);
+  shieldset_window->get_window().property_transient_for() = window;
+  shieldset_window->get_window().set_modal();
+  shieldset_window->get_window().set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
   shieldset_window->shieldset_saved.connect
     (sigc::mem_fun(this, &MainWindow::on_shieldset_saved));
   kit->run(shieldset_window->get_window());
@@ -1053,7 +1058,11 @@ void MainWindow::on_edit_armyset_activated()
   guint32 army_set_id = Playerlist::getActiveplayer()->getArmyset();
   Armyset *armyset = Armysetlist::getInstance()->getArmyset(army_set_id);
   std::string file = armyset->getConfigurationFile();
+ 
   ArmySetWindow* armyset_window = new ArmySetWindow (file);
+  armyset_window->get_window().property_transient_for() = window;
+  armyset_window->get_window().set_modal();
+  armyset_window->get_window().set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
   armyset_window->armyset_saved.connect
     (sigc::mem_fun(this, &MainWindow::on_armyset_saved));
   kit->run(armyset_window->get_window());
@@ -1081,6 +1090,9 @@ void MainWindow::on_edit_cityset_activated()
   Cityset *cityset = GameMap::getCityset();
   std::string file = cityset->getConfigurationFile();
   CitySetWindow* cityset_window = new CitySetWindow (file);
+  cityset_window->get_window().property_transient_for() = window;
+  cityset_window->get_window().set_modal();
+  cityset_window->get_window().set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
   cityset_window->cityset_saved.connect
     (sigc::mem_fun(this, &MainWindow::on_cityset_saved));
   kit->run(cityset_window->get_window());
@@ -1121,6 +1133,9 @@ void MainWindow::on_edit_tileset_activated()
   Tileset *tileset = GameMap::getTileset();
   std::string file = tileset->getConfigurationFile();
   TileSetWindow* tileset_window = new TileSetWindow (file);
+  tileset_window->get_window().property_transient_for() = window;
+  tileset_window->get_window().set_modal();
+  tileset_window->get_window().set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
   tileset_window->tileset_saved.connect
     (sigc::mem_fun(this, &MainWindow::on_tileset_saved));
   kit->run(tileset_window->get_window());
