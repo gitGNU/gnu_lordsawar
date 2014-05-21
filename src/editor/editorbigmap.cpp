@@ -520,16 +520,11 @@ void EditorBigMap::change_map_under_cursor()
 
     case ROAD:
         {
-          bool road_placeable = GameMap::getInstance()->canPutBuilding
-            (Maptile::ROAD, 1, tile);
-          if (!road_placeable)
-            {
-              //overwrite existing roads
-              if (GameMap::getRoad(tile) != NULL)
-                GameMap::getInstance()->removeRoad(tile);
-              else
-                break;
-            }
+          if (GameMap::getRoad(tile) != NULL)
+            GameMap::getInstance()->removeRoad(tile);
+
+          if (GameMap::getInstance()->getLocation(tile))
+            break;
 
           int type = CreateScenario::calculateRoadType(tile);
           Road *r = new Road(tile, type);

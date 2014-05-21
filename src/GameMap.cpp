@@ -1667,10 +1667,21 @@ bool GameMap::removeRuin(Vector<int> pos)
     }
   return false;
 }
+
+bool GameMap::containsWater(Rectangle rect)
+{
+  for (int y = rect.y; y < rect.y + rect.h; y++)
+    for (int x = rect.x; x < rect.x + rect.w; x++)
+      if (getTile(x, y)->getType() == Tile::WATER)
+        return true;
+  return false;
+}
+
 bool GameMap::putRuin(Ruin *r)
 {
   Ruinlist::getInstance()->add(r);
-  putTerrain(r->getArea(), Tile::GRASS);
+  if (containsWater(r->getArea()))
+    putTerrain(r->getArea(), Tile::GRASS);
   putBuilding(r, Maptile::RUIN);
   return true;
 }
@@ -1707,7 +1718,8 @@ bool GameMap::removeTemple(Vector<int> pos)
 bool GameMap::putTemple(Temple *t)
 {
   Templelist::getInstance()->add(t);
-  putTerrain(t->getArea(), Tile::GRASS);
+  if (containsWater(t->getArea()))
+    putTerrain(t->getArea(), Tile::GRASS);
   putBuilding(t, Maptile::TEMPLE);
   return true;
 }
@@ -1749,7 +1761,8 @@ bool GameMap::removeSignpost(Vector<int> pos)
 bool GameMap::putSignpost(Signpost *s)
 {
   Signpostlist::getInstance()->add(s);
-  putTerrain(s->getArea(), Tile::GRASS);
+  if (containsWater(s->getArea()))
+    putTerrain(s->getArea(), Tile::GRASS);
   putBuilding(s, Maptile::SIGNPOST);
   return true;
 }
@@ -1777,6 +1790,8 @@ bool GameMap::putNewRoad(Vector<int> tile)
 
 bool GameMap::putRoad(Road *r)
 {
+  if (containsWater(r->getArea()))
+    putTerrain(r->getArea(), Tile::GRASS);
   Roadlist::getInstance()->add(r);
   setBuilding(r->getPos(), Maptile::ROAD);
 
