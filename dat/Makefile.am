@@ -32,5 +32,4 @@ EXTRA_DIST = \
     templenames.xml.in \
     ruinnames.xml.in \
     signposts.xml.in \
-    lordsawar.desktop.in.in \
-    gtkrc
+    lordsawar.desktop.in.in
