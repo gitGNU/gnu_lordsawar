@@ -1310,9 +1310,6 @@ void MainWindow::on_pointer_radiobutton_toggled()
     if (bigmap)
 	bigmap->set_pointer(pointer, size, get_terrain(),
 			    get_tile_style_id());
-    terrain_type_table->set_sensitive(pointer == EditorBigMap::TERRAIN);
-    terrain_tile_style_viewport->set_sensitive(pointer == EditorBigMap::TERRAIN);
-
     players_hbox->set_sensitive (pointer == EditorBigMap::STACK || 
 				 pointer == EditorBigMap::CITY);
 }
