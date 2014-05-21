@@ -965,8 +965,10 @@ void TileSetWindow::on_tile_name_changed()
 
 void TileSetWindow::fill_tile_smallmap(Tile *tile)
 {
-  /*
   SmallTile *s = tile->getSmallTile();
+  Cairo::RefPtr<Cairo::Surface> tile_smallmap_surface= Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, 32, 32);
+  Cairo::RefPtr<Cairo::Context> tile_smallmap_surface_gc;
+  tile_smallmap_surface_gc = Cairo::Context::create(tile_smallmap_surface);
   if (s->getPattern() == SmallTile::SUNKEN_RADIAL)
     OverviewMap::draw_radial_gradient(tile_smallmap_surface, s->getColor(), 
                                       s->getSecondColor(), 32, 32);
@@ -989,8 +991,12 @@ void TileSetWindow::fill_tile_smallmap(Tile *tile)
 	}
     }
 
-  tile_smallmap_image->property_pixmap() = tile_smallmap_surface;
-  */
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+    Gdk::Pixbuf::create(tile_smallmap_surface, 0, 0, 32, 32);
+                                                        
+  tile_smallmap_image->property_pixbuf() = pixbuf;
+  tile_smallmap_image->queue_draw();
+
 }
 
 void TileSetWindow::choose_and_add_or_replace_tilestyleset(std::string replace_filename)
