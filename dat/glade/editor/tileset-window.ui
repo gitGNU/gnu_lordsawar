@@ -948,15 +948,8 @@
                                     </child>
                                   </object>
                                 </child>
-                                <child type="label">
-                                  <object class="GtkLabel" id="label25">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="label" translatable="yes">Tile Style Sets</property>
-                                    <attributes>
-                                      <attribute name="weight" value="bold"/>
-                                    </attributes>
-                                  </object>
+                                <child type="label_item">
+                                  <placeholder/>
                                 </child>
                               </object>
                               <packing>
