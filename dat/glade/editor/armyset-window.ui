@@ -837,6 +837,8 @@
                                   <object class="GtkLabel" id="label7">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">This is the cost to make one of these units.
+</property>
                                     <property name="label" translatable="yes">Cost:</property>
                                   </object>
                                   <packing>
@@ -1022,6 +1024,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
+                                <property name="tooltip_text" translatable="yes">Is awardable to heroes as a reward.</property>
                                 <property name="use_underline">True</property>
                                 <property name="draw_indicator">True</property>
                               </object>
@@ -1042,6 +1045,8 @@
                                   <object class="GtkLabel" id="label23">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
+                                    <property name="tooltip_text" translatable="yes">This is the cost in the buy production dialog.
+</property>
                                     <property name="xalign">0</property>
                                     <property name="label" translatable="yes">New Cost:</property>
                                   </object>
