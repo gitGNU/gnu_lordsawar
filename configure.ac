@@ -291,6 +291,7 @@ AC_CONFIG_FILES([
         dat/icons/32x32/Makefile 
         dat/icons/64x64/Makefile 
         dat/lordsawar.desktop.in
+        dat/lordsawar-editor.desktop.in
         dat/army/Makefile 
         dat/army/default/Makefile 
         dat/army/bigdefault/Makefile 

@@ -1,0 +1,11 @@
+[Desktop Entry]
+
+_Name=LordsAWar! Scenario Editor
+_GenericName=Scenario Editor for LordsAWar!
+_Comment=Scenario Editor for LordsAWar!
+
+Type=Application
+Exec=lordsawar-editor
+Icon=lordsawar-editor.png
+Terminal=false
+Categories=Game;StrategyGame;
