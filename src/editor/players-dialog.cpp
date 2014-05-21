@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -57,6 +57,7 @@ PlayersDialog::PlayersDialog(CreateScenarioRandomize *random, int width, int hei
     gold_column(_("Gold"), gold_renderer),
     name_column(_("Name"), name_renderer)
 {
+  d_random = random;
   d_width = width;
   d_height = height;
   Glib::RefPtr<Gtk::Builder> xml
@@ -67,6 +68,9 @@ PlayersDialog::PlayersDialog(CreateScenarioRandomize *random, int width, int hei
   // setup the player settings
   player_list = Gtk::ListStore::create(player_columns);
 
+  xml->get_widget("randomize_gold_button", randomize_gold_button);
+  randomize_gold_button->signal_clicked().connect
+    (sigc::mem_fun(this, &PlayersDialog::on_randomize_gold_pressed));
   xml->get_widget("player_treeview", player_treeview);
   player_treeview->set_model(player_list);
 
@@ -143,8 +147,6 @@ PlayersDialog::PlayersDialog(CreateScenarioRandomize *random, int width, int hei
     else
       {
 	int gold = 0;
-	random->getBaseGold(100, &gold);
-	gold = random->adjustBaseGold(gold);
 	add_player(NO_PLAYER_TYPE, *current_name, gold, 0);
 	++current_name;
       }
@@ -254,4 +256,16 @@ void PlayersDialog::on_name_edited(const Glib::ustring &path,
 				   const Glib::ustring &new_text)
 {
   (*player_list->get_iter(Gtk::TreePath(path)))[player_columns.name] = new_text;
+}
+
+void PlayersDialog::on_randomize_gold_pressed()
+{
+  for (Gtk::TreeIter i = player_list->children().begin(),
+       end = player_list->children().end(); i != end; ++i)
+    {
+      int gold = 0;
+      d_random->getBaseGold(100, &gold);
+      gold = d_random->adjustBaseGold(gold);
+      (*i)[player_columns.gold] = gold;
+    }
 }

@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -61,6 +61,7 @@ class PlayersDialog
     Gtk::TreeViewColumn gold_column;
     Gtk::CellRendererText name_renderer;
     Gtk::TreeViewColumn name_column;
+    Gtk::Button *randomize_gold_button;
     
     class PlayerTypeColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -85,8 +86,10 @@ class PlayersDialog
     
     void add_player(const Glib::ustring &type, const Glib::ustring &name,
 		    int gold, Player *player);
+    void on_randomize_gold_pressed();
     int d_width;
     int d_height;
+    CreateScenarioRandomize *d_random;
 };
 
 #endif
