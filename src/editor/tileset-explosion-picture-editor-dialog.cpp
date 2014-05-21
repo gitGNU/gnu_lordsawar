@@ -1,4 +1,4 @@
-//  Copyright (C) 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Tileset
     d_tileset = tileset;
 
     xml->get_widget("explosion_filechooserbutton", explosion_filechooserbutton);
-    explosion_filechooserbutton->signal_selection_changed().connect
+    explosion_filechooserbutton->signal_file_set().connect
        (sigc::mem_fun(*this, &TilesetExplosionPictureEditorDialog::on_image_chosen));
     explosion_filechooserbutton->set_current_folder(Glib::get_home_dir());
 
@@ -97,6 +97,7 @@ int TilesetExplosionPictureEditorDialog::run()
 void TilesetExplosionPictureEditorDialog::on_image_chosen()
 {
   selected_filename = explosion_filechooserbutton->get_filename();
+  printf("-%s-\n", selected_filename.c_str());
   if (selected_filename.empty())
     return;
 
@@ -117,7 +118,10 @@ void TilesetExplosionPictureEditorDialog::on_small_toggled()
 void TilesetExplosionPictureEditorDialog::update_panel()
 {
   if (selected_filename.empty() == false)
+    {
     explosion_filechooserbutton->set_filename (selected_filename);
+    show_explosion_image(selected_filename);
+    }
 }
 
 void TilesetExplosionPictureEditorDialog::show_explosion_image(std::string filename)
@@ -204,5 +208,5 @@ void TilesetExplosionPictureEditorDialog::update_scene(TilePreviewScene *scene,
   int j = (scene_pixbuf->get_height() - explosion->get_height()) / 2;
   explosion->composite (scene_pixbuf, i, j, explosion->get_width(), explosion->get_height(), i, j, 1, 1, Gdk::INTERP_NEAREST, 255);
   scene_image->property_pixbuf() = scene_pixbuf;
-  scene_image->show_all();
+  scene_image->queue_draw();
 }
