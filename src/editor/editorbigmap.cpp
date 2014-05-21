@@ -59,7 +59,8 @@
 
 EditorBigMap::EditorBigMap()
 {
-    mouse_pos = prev_mouse_pos = Vector<int>(0, 0);
+    mouse_pos = Vector<int>(-1, -1);
+    prev_mouse_pos = Vector<int>(0, 0);
 
     moving_objects_from = Vector<int>(-1,-1);
     mouse_state = NONE;
@@ -590,6 +591,9 @@ void EditorBigMap::after_draw()
             buffer_gc->reset_clip();
 	  }
       }
+
+    if (mouse_pos == Vector<int>(-1,-1))
+      return;
 
     // we need to draw a drawing cursor on the map
     tiles = get_cursor_tiles();
