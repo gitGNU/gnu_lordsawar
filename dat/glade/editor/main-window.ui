@@ -452,6 +452,7 @@
                 <property name="tooltip_text" translatable="yes">Draw 1x1 terrain</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">gtk-missing</property>
+                <property name="active">True</property>
                 <property name="group">pointer_radiobutton2</property>
               </object>
               <packing>
@@ -747,6 +748,42 @@
                         <property name="n_columns">6</property>
                         <property name="column_spacing">6</property>
                         <property name="row_spacing">6</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
                         <child>
                           <placeholder/>
                         </child>
