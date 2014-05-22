@@ -1285,7 +1285,7 @@ Vector<int> GameMap::findNearestAreaForBuilding(Maptile::Building building_type,
 
 void GameMap::switchCityset(Cityset *cityset)
 {
-  d_cityset = cityset->getBaseName();
+  setCityset(cityset->getBaseName());
 
   if (Templelist::getInstance()->size())
     {
