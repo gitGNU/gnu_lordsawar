@@ -159,7 +159,6 @@ void SmallmapEditorDialog::on_road_start_toggled()
 {
   smallmap->set_pointer(EditableSmallMap::PICK_NEW_ROAD_START, 1, 
                         get_terrain());
-  terrain_type_table->set_sensitive(false);
   update_cursor();
 }
 
@@ -167,7 +166,6 @@ void SmallmapEditorDialog::on_road_finish_toggled()
 {
   smallmap->set_pointer(EditableSmallMap::PICK_NEW_ROAD_FINISH, 1, 
                         get_terrain());
-  terrain_type_table->set_sensitive(false);
   update_cursor();
 }
 
@@ -288,8 +286,6 @@ void SmallmapEditorDialog::on_pointer_radiobutton_toggled()
     if (smallmap)
 	smallmap->set_pointer(pointer, size, get_terrain());
 
-    terrain_type_table->set_sensitive(pointer == EditableSmallMap::TERRAIN);
-      
     update_cursor();
 }
 
