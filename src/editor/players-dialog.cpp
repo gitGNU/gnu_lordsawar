@@ -71,6 +71,9 @@ PlayersDialog::PlayersDialog(CreateScenarioRandomize *random, int width, int hei
   xml->get_widget("randomize_gold_button", randomize_gold_button);
   randomize_gold_button->signal_clicked().connect
     (sigc::mem_fun(this, &PlayersDialog::on_randomize_gold_pressed));
+  xml->get_widget("all_players_on_button", all_players_on_button);
+  all_players_on_button->signal_clicked().connect
+    (sigc::mem_fun(this, &PlayersDialog::on_all_players_on_pressed));
   xml->get_widget("player_treeview", player_treeview);
   player_treeview->set_model(player_list);
 
@@ -268,4 +271,11 @@ void PlayersDialog::on_randomize_gold_pressed()
       gold = d_random->adjustBaseGold(gold);
       (*i)[player_columns.gold] = gold;
     }
+}
+
+void PlayersDialog::on_all_players_on_pressed()
+{
+  for (Gtk::TreeIter i = player_list->children().begin(),
+       end = player_list->children().end(); i != end; ++i)
+    (*i)[player_type_columns.type] = HUMAN_PLAYER_TYPE;
 }

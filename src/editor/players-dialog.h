@@ -62,6 +62,7 @@ class PlayersDialog
     Gtk::CellRendererText name_renderer;
     Gtk::TreeViewColumn name_column;
     Gtk::Button *randomize_gold_button;
+    Gtk::Button *all_players_on_button;
     
     class PlayerTypeColumns: public Gtk::TreeModelColumnRecord {
     public:
@@ -87,6 +88,7 @@ class PlayersDialog
     void add_player(const Glib::ustring &type, const Glib::ustring &name,
 		    int gold, Player *player);
     void on_randomize_gold_pressed();
+    void on_all_players_on_pressed();
     int d_width;
     int d_height;
     CreateScenarioRandomize *d_random;
