@@ -96,41 +96,17 @@ void EditorBigMap::set_pointer(Pointer p, int size, Tile::Type t,
 
 void EditorBigMap::mouse_button_event(MouseButtonEvent e)
 {
-    if (input_locked)
-	return;
-    
-    mouse_pos = e.pos;
-    Vector<int> tile = mouse_pos_to_tile(mouse_pos);
-    
-    if (e.button == MouseButtonEvent::LEFT_BUTTON
-	&& e.state == MouseButtonEvent::PRESSED)
-    {
-	change_map_under_cursor();
-    }
+  if (input_locked)
+    return;
 
-    else if (e.button == MouseButtonEvent::RIGHT_BUTTON
-	     && e.state == MouseButtonEvent::PRESSED)
-    {
-	map_selection_seq seq;
-	
-	if (Stack* s = GameMap::getStack(tile))
-	    seq.push_back(s);
-	if (City* c = GameMap::getCity(tile))
-	    seq.push_back(c);
-	if (Ruin* r = GameMap::getRuin(tile))
-	    seq.push_back(r);
-	if (Signpost* s = GameMap::getSignpost(tile))
-	    seq.push_back(s);
-	if (Temple* t = GameMap::getTemple(tile))
-	    seq.push_back(t);
-	MapBackpack *b = GameMap::getInstance()->getTile(tile)->getBackpack();
-	if (b->empty() == false)
-	  seq.push_back(b);
+  mouse_pos = e.pos;
 
-
-	if (!seq.empty())
-	    objects_selected.emit(seq);
-    }
+  if (e.button == MouseButtonEvent::LEFT_BUTTON
+      && e.state == MouseButtonEvent::PRESSED)
+    change_map_under_cursor();
+  else if (e.button == MouseButtonEvent::RIGHT_BUTTON
+           && e.state == MouseButtonEvent::PRESSED)
+    bring_up_details();
 }
 
 void EditorBigMap::mouse_motion_event(MouseMotionEvent e)
@@ -314,6 +290,7 @@ void EditorBigMap::change_map_under_cursor()
   switch (pointer)
     {
     case POINTER:
+      bring_up_details();
       break;
 
     case TERRAIN:
@@ -551,6 +528,29 @@ void EditorBigMap::change_map_under_cursor()
     map_tiles_changed.emit(changed_tiles);
 
   draw(Playerlist::getViewingplayer());
+}
+
+void EditorBigMap::bring_up_details()
+{
+  Vector<int> tile = mouse_pos_to_tile(mouse_pos);
+  map_selection_seq seq;
+
+  if (Stack* s = GameMap::getStack(tile))
+    seq.push_back(s);
+  if (City* c = GameMap::getCity(tile))
+    seq.push_back(c);
+  if (Ruin* r = GameMap::getRuin(tile))
+    seq.push_back(r);
+  if (Signpost* s = GameMap::getSignpost(tile))
+    seq.push_back(s);
+  if (Temple* t = GameMap::getTemple(tile))
+    seq.push_back(t);
+  MapBackpack *b = GameMap::getInstance()->getTile(tile)->getBackpack();
+  if (b->empty() == false)
+    seq.push_back(b);
+
+  if (!seq.empty())
+    objects_selected.emit(seq);
 }
 
 void EditorBigMap::smooth_view()

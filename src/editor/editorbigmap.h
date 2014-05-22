@@ -108,6 +108,7 @@ class EditorBigMap: public BigMap
     Rectangle get_cursor_rectangle();
     std::vector<Vector<int> > get_screen_tiles();
     bool show_tile_types_instead_of_tile_styles;
+    void bring_up_details();
 };
 
 #endif
