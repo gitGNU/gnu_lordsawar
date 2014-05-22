@@ -295,16 +295,6 @@ void EditorBigMap::change_map_under_cursor()
 
     case TERRAIN:
 
-      // don't change terrain to water if there is a building underneath
-      if (maptile->getBuilding() != Maptile::NONE && 
-          pointer_terrain == Tile::WATER)
-        break;
-      // don't change the terrain to anything else than grass if there is
-      // a city
-      if (maptile->getBuilding() == Maptile::CITY && 
-          pointer_terrain != Tile::GRASS)
-        break;
-
       changed_tiles = GameMap::getInstance()->putTerrain(get_cursor_rectangle(), pointer_terrain, pointer_tile_style_id, true);
       if (pointer_terrain == Tile::WATER)
         map_water_changed.emit();

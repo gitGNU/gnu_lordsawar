@@ -1,6 +1,6 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -140,6 +140,70 @@ bool Maptile::isHillyTerrain()
     return false;
   if ((getType() == Tile::HILLS || getType() == Tile::MOUNTAIN))
     return true;
+  return false;
+}
+
+bool Maptile::hasLandBuilding() const
+{
+  switch (d_building)
+    {
+    case Maptile::NONE:
+      return false;
+      break;
+    case Maptile::CITY:
+      return true;
+      break;
+    case Maptile::RUIN:
+      return true;
+      break;
+    case Maptile::TEMPLE:
+      return true;
+      break;
+    case Maptile::SIGNPOST:
+      return true;
+      break;
+    case Maptile::ROAD:
+      return true;
+      break;
+    case Maptile::PORT:
+      return false;
+      break;
+    case Maptile::BRIDGE:
+      return false;
+      break;
+    }
+  return false;
+}
+
+bool Maptile::hasWaterBuilding() const
+{
+  switch (d_building)
+    {
+    case Maptile::NONE:
+      return false;
+      break;
+    case Maptile::CITY:
+      return false;
+      break;
+    case Maptile::RUIN:
+      return false;
+      break;
+    case Maptile::TEMPLE:
+      return false;
+      break;
+    case Maptile::SIGNPOST:
+      return false;
+      break;
+    case Maptile::ROAD:
+      return false;
+      break;
+    case Maptile::PORT:
+      return true;
+      break;
+    case Maptile::BRIDGE:
+      return true;
+      break;
+    }
   return false;
 }
 

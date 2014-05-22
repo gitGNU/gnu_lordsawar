@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2012 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -177,6 +177,11 @@ class Maptile
          */
         bool isRoadTerrain();
 
+        //! Whether or not there is a building on this tile that belongs on land.
+        bool hasLandBuilding() const;
+
+        //! Whether or not there is a building on this tile that belongs on water.
+        bool hasWaterBuilding() const;
         //! Prints some debug information about this maptile.
         void printDebugInfo() const;
                 

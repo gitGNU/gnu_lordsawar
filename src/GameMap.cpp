@@ -1847,7 +1847,12 @@ Rectangle GameMap::putTerrain(Rectangle r, Tile::Type type, int tile_style_id, b
       {
 	if (offmap(x,y))
 	  continue;
+        
 	Maptile* t = getTile(Vector<int>(x, y));
+        if (t->hasLandBuilding() && type == Tile::WATER)
+          continue;
+        if (t->hasWaterBuilding() && type != Tile::WATER)
+          continue;
 	if (t->getType() != type)
           {
             t->setIndex(index);
