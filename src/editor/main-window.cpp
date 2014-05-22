@@ -1121,6 +1121,7 @@ void MainWindow::on_edit_smallmap_activated()
   d.hide();
   Rectangle r = Rectangle(0, 0, GameMap::getWidth(), GameMap::getHeight());
   smallmap->redraw_tiles(r);
+  smallmap->resize();
   redraw();
   if (changed)
     needs_saving = true;
