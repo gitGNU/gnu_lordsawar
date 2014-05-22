@@ -476,6 +476,13 @@ void EditorBigMap::change_map_under_cursor()
 
     case BRIDGE:
         {
+          if (GameMap::getBridge(tile))
+            {
+              GameMap::getInstance()->removeBridge(tile);
+              Bridge *b = new Bridge(tile, tile_to_bridge_type (tile));
+              GameMap::getInstance()->putBridge(b);
+              break;
+            }
           bool bridge_placeable = GameMap::getInstance()->canPutBuilding
             (Maptile::BRIDGE, 1, tile);
           if (!bridge_placeable)
