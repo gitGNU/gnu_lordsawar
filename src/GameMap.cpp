@@ -2529,3 +2529,32 @@ bool GameMap::can_defend(Stack *stack)
     return false;
   return true;
 }
+        
+bool GameMap::checkBuildingTerrain(Maptile::Building b, bool land)
+{
+  bool found = false;
+  GameMap *gm = GameMap::getInstance();
+  for (int i = 0; i < s_width; i++)
+    {
+      for (int j = 0; j < s_height; j++)
+        {
+          if (gm->getBuilding(Vector<int>(i, j)) == b)
+            {
+              if (land)
+                {
+                  if (gm->getTerrainType(Vector<int>(i, j)) != Tile::WATER)
+                    found = true;
+                }
+              else
+                {
+                  if (gm->getTerrainType(Vector<int>(i, j)) == Tile::WATER)
+                    found = true;
+                }
+              if (found)
+                break;
+            }
+        }
+    }
+
+  return found;
+}

@@ -337,6 +337,7 @@ void SmallmapEditorDialog::on_road_start_placed(Vector<int> pos)
   Glib::ustring s = String::ucompose("%1,%2", pos.x, pos.y);
   road_start_entry->set_text(s);
   pointer_radiobutton->set_active();
+  GameMap::getInstance()->calculateBlockedAvenues();
 }
 
 void SmallmapEditorDialog::on_road_finish_placed(Vector<int> pos)

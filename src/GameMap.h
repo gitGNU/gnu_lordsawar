@@ -290,6 +290,7 @@ class GameMap: public sigc::trackable
 	Location *getLocation(Vector<int> pos);
 
 	bool checkCityAccessibility();
+        static bool checkBuildingTerrain(Maptile::Building b, bool land);
 
         static Vector<int> getCenterOfMap();
 

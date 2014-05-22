@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2010, 2011 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2010, 2011, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -1014,9 +1014,27 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
     }
 
       
+  GameMap::getInstance()->calculateBlockedAvenues();
   if (GameMap::getInstance()->checkCityAccessibility() == false)
     errors.push_back(_("Not all cities are reachable by a non-flying unit."));
 
+  //any ports or bridges on land?
+  if (GameMap::checkBuildingTerrain(Maptile::PORT, true))
+    errors.push_back(_("One or more ports are on land."));
+  if (GameMap::checkBuildingTerrain(Maptile::BRIDGE, true))
+    errors.push_back(_("One or more bridges are on land."));
+  //any cities, roads, temples, ruins, signs on water?
+  if (GameMap::checkBuildingTerrain(Maptile::CITY, false))
+    errors.push_back(_("One or more cities are on water."));
+  if (GameMap::checkBuildingTerrain(Maptile::ROAD, false))
+    errors.push_back(_("One or more roads are on water."));
+  if (GameMap::checkBuildingTerrain(Maptile::RUIN, false))
+    errors.push_back(_("One or more ruins are on water."));
+  if (GameMap::checkBuildingTerrain(Maptile::TEMPLE, false))
+    errors.push_back(_("One or more temples are on water."));
+  if (GameMap::checkBuildingTerrain(Maptile::SIGNPOST, false))
+    errors.push_back(_("One or more signs are on water."));
+  
   if (errors.size() ==  0)
     return true;
   return false;
