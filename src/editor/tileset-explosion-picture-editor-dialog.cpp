@@ -97,7 +97,6 @@ int TilesetExplosionPictureEditorDialog::run()
 void TilesetExplosionPictureEditorDialog::on_image_chosen()
 {
   selected_filename = explosion_filechooserbutton->get_filename();
-  printf("-%s-\n", selected_filename.c_str());
   if (selected_filename.empty())
     return;
 
