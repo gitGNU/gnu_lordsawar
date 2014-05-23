@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -56,7 +56,6 @@ TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, std::string dir, std::str
 	(sigc::mem_fun(this, &TileSetInfoDialog::on_name_changed));
     
     xml->get_widget("filename_entry", filename_entry);
-    printf("file is `%s'\n", tileset->getBaseName().c_str());
     if (file != "")
       filename_entry->set_text(file);
     else
