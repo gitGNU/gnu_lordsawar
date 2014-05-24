@@ -613,6 +613,8 @@ void TileSetWindow::on_save_as_activated()
           delete copy;
         }
     }
+  else
+    delete copy;
 }
 
 void TileSetWindow::on_save_tileset_activated()

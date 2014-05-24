@@ -398,6 +398,8 @@ void ShieldSetWindow::on_save_as_activated()
           delete copy;
         }
     }
+  else
+    delete copy;
 }
 
 void ShieldSetWindow::on_save_shieldset_activated()

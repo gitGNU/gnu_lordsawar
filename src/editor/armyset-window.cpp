@@ -653,6 +653,8 @@ void ArmySetWindow::on_save_as_activated()
           delete copy;
         }
     }
+  else
+    delete copy;
 }
 
 void ArmySetWindow::on_save_armyset_activated()

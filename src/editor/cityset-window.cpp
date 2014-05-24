@@ -435,6 +435,8 @@ void CitySetWindow::on_save_as_activated()
           delete copy;
         }
     }
+  else
+    delete copy;
 }
 
 void CitySetWindow::on_save_cityset_activated()
