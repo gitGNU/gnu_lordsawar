@@ -217,7 +217,25 @@ void SmallmapEditorDialog::setup_terrain_radiobuttons()
 
 void SmallmapEditorDialog::on_terrain_radiobutton_toggled()
 {
+  int size = 1;
   on_pointer_radiobutton_toggled();
+  for (std::vector<PointerItem>::iterator i = pointer_items.begin(),
+       end = pointer_items.end(); i != end; ++i)
+    {
+      if (i->button->get_active())
+        {
+          size = i->size;
+          break;
+        }
+    }
+  if (size <= 1)
+    {
+      Tile::Type type = get_terrain();
+      if (type == Tile::MOUNTAIN)
+        pointer_items[2].button->set_active();
+      else
+        pointer_items[3].button->set_active();
+    }
 }
 
 void SmallmapEditorDialog::setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> xml,
@@ -247,8 +265,6 @@ void SmallmapEditorDialog::setup_pointer_radiobuttons(Glib::RefPtr<Gtk::Builder>
 {
     setup_pointer_radiobutton(xml, "pointer", "button_selector",
 			      EditableSmallMap::POINTER, 1);
-    setup_pointer_radiobutton(xml, "draw_1", "button_1x1",
-			      EditableSmallMap::TERRAIN, 1);
     setup_pointer_radiobutton(xml, "draw_2", "button_2x2",
 			      EditableSmallMap::TERRAIN, 2);
     setup_pointer_radiobutton(xml, "draw_3", "button_3x3",

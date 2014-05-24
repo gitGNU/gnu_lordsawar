@@ -1278,12 +1278,29 @@ void MainWindow::auto_select_appropriate_pointer()
 	  if (tile->consistsOnlyOfLoneAndOtherStyles())
 	    pointer_items[1].button->set_active();
 	  else
-	    pointer_items[2].button->set_active();
+            {
+              //if 1x1 and tilestyle is Auto, then things won't look right.
+              //e.g. a 1x1 forest will simply get smoothed away to grass.
+              if (pointer_items[1].button->get_active() &&
+                  tile_style_items[0].button->get_active())
+                pointer_items[2].button->set_active();
+            }
 	  break;
 	}
     case Tile::MOUNTAIN:
-	//do 6x6
-      pointer_items[4].button->set_active();
+	{
+          Tileset *tileset = GameMap::getTileset();
+	  Tile *tile = (*tileset)[tileset->getIndex(get_terrain())];
+	  if (tile->consistsOnlyOfLoneAndOtherStyles())
+	    pointer_items[1].button->set_active();
+	  else
+            {
+              //same as the rest, but 3x3 instead of 2x2.
+              if (pointer_items[1].button->get_active() &&
+                  tile_style_items[0].button->get_active())
+                pointer_items[3].button->set_active();
+            }
+        }
       break;
     }
 }
