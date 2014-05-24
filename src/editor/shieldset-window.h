@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -93,6 +93,7 @@ class ShieldSetWindow: public sigc::trackable
 
     void fill_shield_info(Shield *shield);
     bool load_shieldset(std::string filename);
+    bool save_current_shieldset();
     void update_shield_panel();
     void update_shieldset_menuitems();
     bool quit();

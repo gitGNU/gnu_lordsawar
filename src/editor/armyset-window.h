@@ -212,6 +212,7 @@ class ArmySetWindow: public sigc::trackable
     void on_white_all_checked();
 
     bool load_armyset(std::string filename);
+    bool save_current_armyset();
     void update_window_title();
     void on_make_same_clicked();
 };

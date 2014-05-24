@@ -183,6 +183,7 @@ class TileSetWindow: public sigc::trackable
     void on_remove_tilestyleset_clicked();
 
     bool load_tileset(std::string filename);
+    bool save_current_tileset();
     void update_window_title();
 
     void choose_and_add_or_replace_tilestyleset(std::string replace_filename);

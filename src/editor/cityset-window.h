@@ -1,4 +1,4 @@
-//  Copyright (C) 2009, 2010 Ben Asselstine
+//  Copyright (C) 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -72,6 +72,7 @@ class CitySetWindow: public sigc::trackable
     void update_cityset_menuitems();
 
     bool load_cityset(std::string filename);
+    bool save_current_cityset();
 
     //callbacks
     void on_new_cityset_activated();

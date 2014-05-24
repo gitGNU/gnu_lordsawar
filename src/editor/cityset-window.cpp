@@ -439,7 +439,7 @@ void CitySetWindow::on_save_as_activated()
     delete copy;
 }
 
-void CitySetWindow::on_save_cityset_activated()
+bool CitySetWindow::save_current_cityset()
 {
   if (current_save_filename.empty())
     current_save_filename = d_cityset->getConfigurationFile();
@@ -477,6 +477,12 @@ void CitySetWindow::on_save_cityset_activated()
       dialog.run();
       dialog.hide();
     }
+  return success;
+}
+
+void CitySetWindow::on_save_cityset_activated()
+{
+  save_current_cityset();
 }
 
 void CitySetWindow::on_edit_cityset_info_activated()
@@ -573,7 +579,10 @@ bool CitySetWindow::quit()
 	return false;
 
       else if (response == Gtk::RESPONSE_ACCEPT) // save and quit
-	on_save_cityset_activated();
+        {
+          if (save_current_cityset() == false)
+            return false;
+        }
       //else if (Response == Gtk::CLOSE) // don't save just quit
       window->hide();
     }

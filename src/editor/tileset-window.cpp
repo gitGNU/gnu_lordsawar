@@ -617,7 +617,7 @@ void TileSetWindow::on_save_as_activated()
     delete copy;
 }
 
-void TileSetWindow::on_save_tileset_activated()
+bool TileSetWindow::save_current_tileset()
 {
   if (current_save_filename.empty())
     current_save_filename = d_tileset->getConfigurationFile();
@@ -660,6 +660,12 @@ void TileSetWindow::on_save_tileset_activated()
       dialog.run();
       dialog.hide();
     }
+  return success;
+}
+
+void TileSetWindow::on_save_tileset_activated()
+{
+  save_current_tileset();
 }
 
 bool TileSetWindow::quit()
@@ -675,7 +681,10 @@ bool TileSetWindow::quit()
 	return false;
 
       else if (response == Gtk::RESPONSE_ACCEPT) // save and quit
-	on_save_tileset_activated();
+        {
+          if (save_current_tileset() == false)
+            return false;
+        }
       //else if (Response == Gtk::CLOSE) // don't save just quit
       window->hide();
     }

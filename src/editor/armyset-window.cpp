@@ -657,7 +657,7 @@ void ArmySetWindow::on_save_as_activated()
     delete copy;
 }
 
-void ArmySetWindow::on_save_armyset_activated()
+bool ArmySetWindow::save_current_armyset()
 {
   if (current_save_filename.empty())
     current_save_filename = d_armyset->getConfigurationFile();
@@ -700,6 +700,12 @@ void ArmySetWindow::on_save_armyset_activated()
       dialog.run();
       dialog.hide();
     }
+  return success;
+}
+
+void ArmySetWindow::on_save_armyset_activated()
+{
+  save_current_armyset();
 }
 
 void ArmySetWindow::on_edit_ship_picture_activated()
@@ -1946,7 +1952,10 @@ bool ArmySetWindow::quit()
 	return false;
 
       else if (response == Gtk::RESPONSE_ACCEPT) // save and quit
-	on_save_armyset_activated();
+        {
+          if (save_current_armyset() == false)
+            return false;
+        }
       //else if (Response == Gtk::CLOSE) // don't save just quit
       window->hide();
     }

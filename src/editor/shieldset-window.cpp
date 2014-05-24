@@ -402,7 +402,7 @@ void ShieldSetWindow::on_save_as_activated()
     delete copy;
 }
 
-void ShieldSetWindow::on_save_shieldset_activated()
+bool ShieldSetWindow::save_current_shieldset()
 {
   if (current_save_filename.empty())
     current_save_filename = d_shieldset->getConfigurationFile();
@@ -431,6 +431,11 @@ void ShieldSetWindow::on_save_shieldset_activated()
       dialog.run();
       dialog.hide();
     }
+  return success;
+}
+void ShieldSetWindow::on_save_shieldset_activated()
+{
+  save_current_shieldset();
 }
 
 void ShieldSetWindow::on_edit_shieldset_info_activated()
@@ -572,7 +577,10 @@ bool ShieldSetWindow::quit()
 	return false;
 
       else if (response == Gtk::RESPONSE_ACCEPT) // save and quit
-	on_save_shieldset_activated();
+        {
+          if (save_current_shieldset() == false)
+            return false;
+        }
       //else if (Response == Gtk::CLOSE) // don't save just quit
       window->hide();
     }
