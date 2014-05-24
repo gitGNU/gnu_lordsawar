@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2010, 2011 Ben Asselstine
+// Copyright (C) 2008, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -361,4 +361,20 @@ guint32 Citysetlist::getCitysetId(std::string basename) const
     return cs->getId();
   else
     return 0;
+}
+
+bool Citysetlist::reload(guint32 id) 
+{
+  Cityset *cityset = getCityset(id);
+  if (!cityset)
+    return false;
+  bool broken = false;
+  cityset->reload(broken);
+  if (broken)
+    return false;
+  std::string basename = cityset->getBaseName();
+  d_dirs[String::ucompose("%1 %2", cityset->getName(), cityset->getTileSize())] = basename;
+  d_citysets[basename] = cityset;
+  d_citysetids[cityset->getId()] = cityset;
+  return true;
 }

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,9 +37,20 @@ std::string Shieldset::file_extension = SHIELDSET_EXT;
 //#define debug(x)
 
 Shieldset::Shieldset(guint32 id, std::string name)
-	: d_id(id), d_name(name), d_copyright(""), d_license(""), d_info(""), 
-	d_basename("")
+ : d_id(id), d_name(name), d_copyright(""), d_license(""), d_info(""), 
+    d_basename("")
 {
+}
+
+Shieldset::Shieldset(const Shieldset& s)
+  :Set(s), d_id(s.d_id), d_name(s.d_name), d_copyright(s.d_copyright), 
+    d_license(s.d_license), d_info(s.d_info), d_basename(s.d_basename),
+    d_small_height(s.d_small_height), d_small_width(s.d_small_width),
+    d_medium_height(s.d_medium_height), d_medium_width(s.d_medium_width),
+    d_large_height(s.d_large_height), d_large_width(s.d_large_width)
+{
+  for (const_iterator it = s.begin(); it != s.end(); it++)
+    push_back(new Shield(*(*it)));
 }
 
 Shieldset::Shieldset(XML_Helper *helper, std::string directory)
@@ -463,5 +474,12 @@ void Shieldset::support_backward_compatibility()
   FileCompat::getInstance()->support_version
     (FileCompat::SHIELDSET, "0.2.0", LORDSAWAR_SHIELDSET_VERSION,
      sigc::ptr_fun(&Shieldset::upgrade));
+}
+
+Shieldset* Shieldset::copy(const Shieldset *shieldset)
+{
+  if (!shieldset)
+    return NULL;
+  return new Shieldset(*shieldset);
 }
 //End of file

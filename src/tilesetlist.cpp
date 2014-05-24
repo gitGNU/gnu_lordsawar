@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -365,4 +365,20 @@ Gdk::RGBA Tilesetlist::getColor(std::string basename, Tile::Type type) const
     return Gdk::RGBA("black");
   else
     return smalltile->getColor();
+}
+
+bool Tilesetlist::reload(guint32 id) 
+{
+  Tileset *tileset = getTileset(id);
+  if (!tileset)
+    return false;
+  bool broken = false;
+  tileset->reload(broken);
+  if (broken)
+    return false;
+  std::string basename = tileset->getBaseName();
+  d_dirs[String::ucompose("%1 %2", tileset->getName(), tileset->getTileSize())] = basename;
+  d_tilesets[basename] = tileset;
+  d_tilesetids[tileset->getId()] = tileset;
+  return true;
 }

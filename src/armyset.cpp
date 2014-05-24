@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -72,6 +72,35 @@ Armyset::Armyset(XML_Helper *helper, std::string directory)
   helper->getData(d_bag_name, "bag");
   helper->registerTag(ArmyProto::d_tag, 
 		      sigc::mem_fun((*this), &Armyset::loadArmyProto));
+}
+
+Armyset::Armyset(const Armyset& a)
+  :Set(a), d_id(a.d_id), d_name(a.d_name), d_copyright(a.d_copyright),
+    d_license(a.d_license), d_basename(a.d_basename), d_info(a.d_info),
+    d_tilesize(a.d_tilesize)
+{
+
+  if (a.d_ship)
+    d_ship = a.d_ship->copy();
+
+  if (a.d_shipmask)
+    d_shipmask = a.d_shipmask->copy();
+
+  if (a.d_standard)
+    d_standard = a.d_standard->copy();
+
+  if (a.d_standard_mask)
+    d_standard_mask = a.d_standard_mask->copy();
+
+  if (a.d_bag)
+    d_bag = a.d_bag->copy();
+
+  d_standard_name = a.d_standard_name;
+  d_stackship_name = a.d_stackship_name;
+  d_bag_name = a.d_bag_name;
+
+  for (const_iterator i = a.begin(); i != a.end(); i++)
+    push_back(new ArmyProto(*(*i)));
 }
 
 Armyset::~Armyset()
@@ -514,8 +543,10 @@ void Armyset::instantiateImages(bool &broken)
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
   if (broken)
     return;
-  for (iterator it = begin(); it != end(); it++)
+
+  for (iterator it = begin(); it != end(); ++it)
     (*it)->instantiateImages(getTileSize(), &t, broken);
+
   std::string ship_filename = "";
   std::string flag_filename = "";
   std::string bag_filename = "";
@@ -858,14 +889,13 @@ void Armyset::reload(bool &broken)
   ArmysetLoader d(getConfigurationFile(), broken, unsupported);
   if (!broken && d.armyset && d.armyset->validate())
     {
-      //steal the values from d.armyset and then don't delete it.
       uninstantiateImages();
       for (iterator it = begin(); it != end(); it++)
         delete *it;
-      std::string basename = d_basename;
-      *this = *d.armyset;
+      clear();
+      for (iterator it = d.armyset->begin(); it != d.armyset->end(); it++)
+        push_back(new ArmyProto(*(*it)));
       instantiateImages(broken);
-      d_basename = basename;
     }
 }
 
@@ -953,3 +983,9 @@ void Armyset::support_backward_compatibility()
      sigc::ptr_fun(&Armyset::upgrade));
 }
 
+Armyset * Armyset::copy(const Armyset *armyset)
+{
+  if (!armyset)
+    return NULL;
+  return new Armyset(*armyset);
+}

@@ -1,4 +1,4 @@
-// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,6 +31,18 @@ TileStyle::TileStyle()
 {
 }
         
+TileStyle::TileStyle(const TileStyle& t)
+{
+  if (t.d_image != NULL)
+    d_image = t.d_image->copy();
+  else
+    d_image = NULL;
+
+  d_type = t.d_type;
+
+  d_id = t.d_id;
+}
+
 TileStyle::TileStyle(guint32 id, TileStyle::Type type)
         : d_image(0), d_type(type), d_id(id)
 {

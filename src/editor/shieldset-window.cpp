@@ -22,6 +22,7 @@
 #include <assert.h>
 #include <libgen.h>
 #include <string.h>
+#include <errno.h>
 
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
@@ -350,44 +351,52 @@ void ShieldSetWindow::on_validate_shieldset_activated()
 
 void ShieldSetWindow::on_save_as_activated()
 {
-  std::string orig_basename = d_shieldset->getBaseName();
-  guint32 orig_id = d_shieldset->getId();
-  d_shieldset->setId(Shieldsetlist::getNextAvailableId(orig_id));
-  ShieldSetInfoDialog d(d_shieldset, File::getUserShieldsetDir(), "", false,
+  Shieldset *copy = Shieldset::copy (d_shieldset);
+  copy->setId(Shieldsetlist::getNextAvailableId(d_shieldset->getId()));
+  ShieldSetInfoDialog d(copy, File::getUserShieldsetDir(), "", false,
                         _("Save a Copy of a Shieldset"));
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string new_basename = d_shieldset->getBaseName();
-      guint32 new_id = d_shieldset->getId();
-      d_shieldset->setId(orig_id);
-      d_shieldset->setBaseName(orig_basename);
+      std::string new_basename = copy->getBaseName();
+      guint32 new_id = copy->getId();
+      std::string new_name = copy->getName();
+      save_shieldset_menuitem->set_sensitive(true);
+      current_save_filename = copy->getConfigurationFile();
+      //here we add the autosave to the personal collection.
+      //this is so that the images *with comments in them* come along.
+      std::string old_name = d_shieldset->getName();
+      d_shieldset->setName(copy->getName());
       bool success = Shieldsetlist::getInstance()->addToPersonalCollection(d_shieldset, new_basename, new_id);
       if (success)
         {
-          save_shieldset_menuitem->set_sensitive(true);
-          current_save_filename = d_shieldset->getConfigurationFile();
+          copy->setDirectory(d_shieldset->getDirectory());
+          d_shieldset = copy;
           RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
           refl->updateEntry(current_save_filename);
           refl->save();
-          load_shieldset(current_save_filename);
+        }
+      else
+        d_shieldset->setName(old_name);
+
+      if (success)
+        {
           needs_saving = false;
           update_window_title();
         }
       else
         {
+          Glib::ustring errmsg = Glib::strerror(errno);
           std::string msg;
           msg = _("Error!  Shieldset could not be saved.");
+          msg += "\n" + current_save_filename + "\n" +
+            errmsg;
           Gtk::MessageDialog dialog(*window, msg);
           dialog.run();
           dialog.hide();
-          d_shieldset->setId(orig_id);
+          delete copy;
         }
-    }
-  else
-    {
-      d_shieldset->setId(orig_id);
     }
 }
 
@@ -399,11 +408,11 @@ void ShieldSetWindow::on_save_shieldset_activated()
   bool success = d_shieldset->save(autosave, Shieldset::file_extension);
   if (success)
     {
-      RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
-      RecentlyEditedFileList::getInstance()->save();
       success = Shieldset::copy (autosave, current_save_filename);
       if (success == true)
         {
+          RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
+          RecentlyEditedFileList::getInstance()->save();
           needs_saving = false;
           update_window_title();
           shieldset_saved.emit(d_shieldset->getId());
@@ -411,8 +420,11 @@ void ShieldSetWindow::on_save_shieldset_activated()
     }
   if (!success)
     {
+      Glib::ustring errmsg = Glib::strerror(errno);
       std::string msg;
       msg = _("Error!  Shieldset could not be saved.");
+      msg += "\n" + current_save_filename + "\n" +
+        errmsg;
       Gtk::MessageDialog dialog(*window, msg);
       dialog.run();
       dialog.hide();

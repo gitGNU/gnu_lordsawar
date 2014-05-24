@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,6 +32,13 @@ using namespace std;
         
 TileStyleSet::TileStyleSet()
 {
+}
+
+TileStyleSet::TileStyleSet(const TileStyleSet &t)
+  : d_name(t.d_name)
+{
+  for (TileStyleSet::const_iterator i = t.begin(); i != t.end(); ++i)
+    push_back(new TileStyle(*(*i)));
 }
         
 bool TileStyleSet::validate_image(std::string filename)

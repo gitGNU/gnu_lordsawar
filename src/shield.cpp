@@ -36,7 +36,14 @@ Shield::Shield(XML_Helper* helper)
   helper->getData(d_owner, "owner");
   helper->getData(d_color, "color");
 }
-	
+
+Shield::Shield(const Shield& s)
+: d_owner(s.d_owner), d_color(s.d_color)
+{
+  for (const_iterator it = s.begin(); it != s.end(); it++)
+    push_back(new ShieldStyle(*(*it)));
+}
+
 Shield::Shield(Shield::Colour owner, Gdk::RGBA color)
 {
   d_owner = guint32(owner);

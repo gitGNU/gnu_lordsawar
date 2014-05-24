@@ -1246,22 +1246,33 @@ void GameMap::switchTileset(Tileset *tileset)
 {
   d_tileset = tileset->getBaseName();
   s_tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+  for (int i = 0; i < s_width; i++)
+    for (int j = 0; j < s_height; j++)
+      {
+        d_map[j*s_width + i]->setTileset(s_tileset);
+        //there is also the problem of the index being kept in the maptile.
+        //perhaps we need to get a new index, right?
+        //because "Grass" won't always be in the 0th spot in the tileset.
+        d_map[j*s_width + i]->setIndex(d_map[j*s_width + i]->getIndex());
+      }
   applyTileStyles (0, 0, s_width, s_height,  false);
 }
 
 void GameMap::reloadTileset()
 {
-  bool broken = false;
   Tileset *tileset = GameMap::getTileset();
-  tileset->reload(broken);
+  if (tileset)
+    Tilesetlist::getInstance()->reload(tileset->getId());
 }
 
 void GameMap::reloadShieldset()
 {
-  bool broken = false;
   Shieldset *shieldset = GameMap::getShieldset();
-  shieldset->reload(broken);
-  Playerlist::getInstance()->setNewColours(shieldset);
+  if (shieldset)
+    {
+      Shieldsetlist::getInstance()->reload(shieldset->getId());
+      Playerlist::getInstance()->setNewColours(shieldset);
+    }
 }
 
 void GameMap::switchShieldset(Shieldset *shieldset)
@@ -1296,8 +1307,8 @@ void GameMap::switchCityset(Cityset *cityset)
       if (old_tile_width != cityset->getTempleTileWidth())
         Templelist::getInstance()->resizeLocations
           (Maptile::TEMPLE, cityset->getTempleTileWidth(), old_tile_width, 
-           (void (*)(Temple*, Maptile::Building, guint32)) changeFootprintToSmallerCityset, 
-           (void (*)(Temple*, Maptile::Building, guint32)) relocateLocation);
+           (void (*)(Location*, Maptile::Building, guint32)) changeFootprintToSmallerCityset, 
+           (void (*)(Location*, Maptile::Building, guint32)) relocateLocation);
     }
     
   if (Ruinlist::getInstance()->size())
@@ -1308,8 +1319,8 @@ void GameMap::switchCityset(Cityset *cityset)
       if (old_tile_width != cityset->getRuinTileWidth())
         Ruinlist::getInstance()->resizeLocations
           (Maptile::RUIN, cityset->getRuinTileWidth(), old_tile_width, 
-           (void (*)(Ruin*, Maptile::Building, guint32)) changeFootprintToSmallerCityset, 
-           (void (*)(Ruin*, Maptile::Building, guint32)) relocateLocation);
+           (void (*)(Location*, Maptile::Building, guint32)) changeFootprintToSmallerCityset, 
+           (void (*)(Location*, Maptile::Building, guint32)) relocateLocation);
     }
   if (Citylist::getInstance()->size())
     {
@@ -1319,8 +1330,8 @@ void GameMap::switchCityset(Cityset *cityset)
       if (old_tile_width != cityset->getCityTileWidth())
         Citylist::getInstance()->resizeLocations
           (Maptile::CITY, cityset->getCityTileWidth(), old_tile_width, 
-           (void (*)(City*, Maptile::Building, guint32)) changeFootprintToSmallerCityset, 
-           (void (*)(City*, Maptile::Building, guint32)) relocateLocation);
+           (void (*)(Location*, Maptile::Building, guint32)) changeFootprintToSmallerCityset, 
+           (void (*)(Location*, Maptile::Building, guint32)) relocateLocation);
     }
 }
 
@@ -1341,10 +1352,12 @@ guint32 GameMap::countBuildings(Maptile::Building building_type)
 
 void GameMap::reloadCityset()
 {
-  bool broken = false;
   Cityset *cityset = GameMap::getCityset();
-  cityset->reload(broken);
-  switchCityset(cityset);
+  if (cityset)
+    {
+      Citysetlist::getInstance()->reload(cityset->getId());
+      switchCityset(cityset);  //is this still needed?
+    }
 }
 
 void GameMap::switchArmysets(Armyset *armyset)
@@ -1397,8 +1410,7 @@ void GameMap::switchArmysets(Armyset *armyset)
 
 void GameMap::reloadArmyset(Armyset *armyset)
 {
-  bool broken = false;
-  armyset->reload(broken);
+  Armysetlist::getInstance()->reload(armyset->getId());
 }
 
 bool GameMap::canPutBuilding(Maptile::Building bldg, guint32 size, Vector<int> to, bool making_islands)
@@ -2208,6 +2220,7 @@ int GameMap::calculateTilesPerOverviewMapTile()
 void GameMap::changeFootprintToSmallerCityset(Location *location, Maptile::Building building_type, guint32 old_tile_width)
 {
   GameMap::getInstance()->clearBuilding(location->getPos(), (guint32)old_tile_width);
+
   GameMap::getInstance()->putBuilding (location, building_type);
 }
 

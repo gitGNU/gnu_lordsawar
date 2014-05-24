@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -87,7 +87,12 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 */
         Armyset(XML_Helper* helper, std::string directory);
 
+        //! Copy constructor.
+        Armyset(const Armyset& armyset);
+
 	static Armyset *create(std::string filename, bool &unsupported);
+
+        static Armyset *copy (const Armyset *orig);
 
 	//! Destructor.
         ~Armyset();

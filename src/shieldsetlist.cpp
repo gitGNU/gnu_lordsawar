@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -354,4 +354,20 @@ guint32 Shieldsetlist::getShieldsetId(std::string basename) const
     return ss->getId();
   else
     return 0;
+}
+
+bool Shieldsetlist::reload(guint32 id) 
+{
+  Shieldset *shieldset = getShieldset(id);
+  if (!shieldset)
+    return false;
+  bool broken = false;
+  shieldset->reload(broken);
+  if (broken)
+    return false;
+  std::string basename = shieldset->getBaseName();
+  d_dirs[shieldset->getName()] = basename;
+  d_shieldsets[basename] = shieldset;
+  d_shieldsetids[shieldset->getId()] = shieldset;
+  return true;
 }

@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -44,6 +44,9 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 
 	//! The default constructor.
         TileStyleSet();
+
+        //! Copy constructor.
+        TileStyleSet(const TileStyleSet& t);
 
         //! Make a new tilestyleset from an image.
         /**

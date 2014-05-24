@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2010, 2011 Ben Asselstine
+// Copyright (C) 2008, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -88,6 +88,7 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
 	void add(Cityset *cityset, std::string file);
 	void instantiateImages(bool &broken);
 	void uninstantiateImages();
+        bool reload(guint32 cityset_id);
 
 	bool addToPersonalCollection(Cityset *cityset, std::string &new_basename, guint32 &new_id);
 	Cityset *import(Tar_Helper *t, std::string f, bool &broken);

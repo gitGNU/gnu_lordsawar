@@ -22,6 +22,7 @@
 #include <assert.h>
 #include <libgen.h>
 #include <string.h>
+#include <errno.h>
 
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
@@ -605,42 +606,53 @@ void ArmySetWindow::on_validate_armyset_activated()
 
 void ArmySetWindow::on_save_as_activated()
 {
-  std::string orig_basename = d_armyset->getBaseName();
-  guint32 orig_id = d_armyset->getId();
-  d_armyset->setId(Armysetlist::getNextAvailableId(orig_id));
-  ArmySetInfoDialog d(d_armyset, File::getUserArmysetDir(), "", false,
+  Armyset *copy = Armyset::copy (d_armyset);
+  copy->setId(Armysetlist::getNextAvailableId(d_armyset->getId()));
+  ArmySetInfoDialog d(copy, File::getUserArmysetDir(), "", false,
                         _("Save a Copy of a Armyset"));
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string new_basename = d_armyset->getBaseName();
-      guint32 new_id = d_armyset->getId();
-      d_armyset->setId(orig_id);
-      d_armyset->setBaseName(orig_basename);
+      std::string new_basename = copy->getBaseName();
+      guint32 new_id = copy->getId();
+      std::string new_name = copy->getName();
+      save_armyset_menuitem->set_sensitive(true);
+      current_save_filename = copy->getConfigurationFile();
+      //here we add the autosave to the personal collection.
+      //this is so that the images *with comments in them* come along.
+      std::string old_name = d_armyset->getName();
+      d_armyset->setName(copy->getName());
       bool success = Armysetlist::getInstance()->addToPersonalCollection(d_armyset, new_basename, new_id);
       if (success)
         {
-          save_armyset_menuitem->set_sensitive(true);
-          current_save_filename = d_armyset->getConfigurationFile();
+          copy->setDirectory(d_armyset->getDirectory());
+          d_armyset = copy;
           RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
           refl->updateEntry(current_save_filename);
           refl->save();
-          load_armyset(current_save_filename);
+        }
+      else
+        d_armyset->setName(old_name);
+
+      if (success)
+        {
           needs_saving = false;
           update_window_title();
         }
       else
         {
+          Glib::ustring errmsg = Glib::strerror(errno);
           std::string msg;
           msg = _("Error!  Armyset could not be saved.");
+          msg += "\n" + current_save_filename + "\n" +
+            errmsg;
           Gtk::MessageDialog dialog(*window, msg);
           dialog.run();
           dialog.hide();
+          delete copy;
         }
     }
-  else
-    d_armyset->setId(orig_id);
 }
 
 void ArmySetWindow::on_save_armyset_activated()
@@ -665,11 +677,11 @@ void ArmySetWindow::on_save_armyset_activated()
   bool success = d_armyset->save(autosave, Armyset::file_extension);
   if (success)
     {
-      RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
-      RecentlyEditedFileList::getInstance()->save();
-      bool success = Armyset::copy (autosave, current_save_filename);
+      success = Armyset::copy (autosave, current_save_filename);
       if (success == true)
         {
+          RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
+          RecentlyEditedFileList::getInstance()->save();
           needs_saving = false;
           update_window_title();
           armyset_saved.emit(d_armyset->getId());
@@ -677,8 +689,11 @@ void ArmySetWindow::on_save_armyset_activated()
     }
   if (!success)
     {
+      Glib::ustring errmsg = Glib::strerror(errno);
       std::string msg;
       msg = _("Error!  Armyset could not be saved.");
+      msg += "\n" + current_save_filename + "\n" +
+        errmsg;
       Gtk::MessageDialog dialog(*window, msg);
       dialog.run();
       dialog.hide();
@@ -1894,13 +1909,14 @@ bool ArmySetWindow::load_armyset(std::string filename)
       RecentlyEditedFileList::getInstance()->addEntry(current_save_filename);
       RecentlyEditedFileList::getInstance()->save();
     }
+  armies_list->clear();
   if (d_armyset)
     delete d_armyset;
   d_armyset = armyset;
-
   d_armyset->setBaseName(File::get_basename(autosave));
   guint32 max = d_armyset->getSize();
-  armies_list->clear();
+  bool broken = false;
+  d_armyset->instantiateImages(broken);
   for (unsigned int i = 0; i < max; i++)
     addArmyType(i);
   if (max)
@@ -1910,8 +1926,6 @@ bool ArmySetWindow::load_armyset(std::string filename)
       if(row)
 	armies_treeview->get_selection()->select(row);
     }
-  bool broken = false;
-  d_armyset->instantiateImages(broken);
   needs_saving = false;
   update_window_title();
   return true;

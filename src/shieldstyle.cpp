@@ -37,6 +37,20 @@ ShieldStyle::ShieldStyle(ShieldStyle::Type type)
   d_mask = NULL;
 }
 
+ShieldStyle::ShieldStyle(const ShieldStyle &s)
+{
+  d_type = s.d_type;
+  d_image_name = s.d_image_name;
+  if (d_image != NULL)
+    d_image = s.d_image->copy();
+  else
+    d_image = NULL;
+  if (d_mask != NULL)
+    d_mask = s.d_mask->copy();
+  else
+    d_mask = NULL;
+}
+
 ShieldStyle::ShieldStyle(XML_Helper* helper)
   :d_image(0), d_mask(0)
 {

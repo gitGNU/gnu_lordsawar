@@ -1075,8 +1075,7 @@ void MainWindow::on_armyset_saved(guint32 id)
   if (Playerlist::getInstance()->hasArmyset(id) == true)
     {
       GraphicsCache::getInstance()->reset();
-      Armyset *armyset = Armysetlist::getInstance()->getArmyset(id);
-      GameMap::getInstance()->reloadArmyset(armyset);
+      Armysetlist::getInstance()->reload(id);
       bigmap->screen_size_changed(bigmap_image->get_allocation()); 
       redraw();
       needs_saving = true;
@@ -1149,8 +1148,12 @@ void MainWindow::on_tileset_saved(guint32 id)
   if (id == GameMap::getInstance()->getTilesetId())
     {
       GraphicsCache::getInstance()->reset();
-      GameMap::getInstance()->reloadTileset();
+      Tilesetlist::getInstance()->reload(id);
+      GameMap::getInstance()->switchTileset(Tilesetlist::getInstance()->getTileset(id));
+      smallmap->resize();
       bigmap->screen_size_changed(bigmap_image->get_allocation()); 
+      setup_terrain_radiobuttons();
+      on_terrain_radiobutton_toggled();
       redraw();
       needs_saving = true;
       update_window_title();

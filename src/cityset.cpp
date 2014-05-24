@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2010, 2011 Ben Asselstine
+// Copyright (C) 2008, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -66,6 +66,67 @@ Cityset::Cityset(guint32 id, std::string name)
 	d_city_tile_width = 2;
 	d_temple_tile_width = 1;
 	d_ruin_tile_width = 1;
+}
+
+Cityset::Cityset(const Cityset& c)
+  :Set(c), d_id(c.d_id), d_name(c.d_name), d_copyright(c.d_copyright),
+    d_license(c.d_license), d_info(c.d_info), d_tileSize(c.d_tileSize),
+    d_basename(c.d_basename), d_cities_filename(c.d_cities_filename),
+    d_razedcities_filename(c.d_razedcities_filename),
+    d_port_filename(c.d_port_filename), 
+    d_signpost_filename(c.d_signpost_filename),
+    d_ruins_filename(c.d_ruins_filename),
+    d_temples_filename(c.d_temples_filename),
+    d_towers_filename(c.d_towers_filename)
+{
+  for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
+    {
+      if (c.citypics[i] != NULL)
+        citypics[i] = c.citypics[i]->copy();
+      else
+        citypics[i] = NULL;
+    }
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    {
+      if (c.razedcitypics[i] != NULL)
+        razedcitypics[i] = c.razedcitypics[i]->copy();
+      else
+        razedcitypics[i] = NULL;
+    }
+  if (c.port != NULL)
+    port = c.port->copy();
+  else
+    port = NULL;
+  if (c.signpost != NULL)
+    signpost = c.signpost->copy();
+  else
+    signpost = NULL;
+
+  for (unsigned int i = 0; i < RUIN_TYPES; i++)
+    {
+      if (ruinpics[i] != NULL)
+        ruinpics[i] = c.ruinpics[i]->copy();
+      else
+        ruinpics[i] = NULL;
+    }
+  for (unsigned int i = 0; i < TEMPLE_TYPES; i++)
+    {
+      if (templepics[i] != NULL)
+        templepics[i] = c.templepics[i]->copy();
+      else
+        templepics[i] = NULL;
+    }
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    {
+      if (towerpics[i] != NULL)
+        towerpics[i] = c.towerpics[i]->copy();
+      else
+        towerpics[i] = NULL;
+    }
+
+  d_city_tile_width = c.d_city_tile_width;
+  d_temple_tile_width = c.d_temple_tile_width;
+  d_ruin_tile_width = c.d_ruin_tile_width;
 }
 
 Cityset::Cityset(XML_Helper *helper, std::string directory)
@@ -710,5 +771,12 @@ void Cityset::support_backward_compatibility()
   FileCompat::getInstance()->support_version
     (FileCompat::CITYSET, "0.2.0", LORDSAWAR_CITYSET_VERSION,
      sigc::ptr_fun(&Cityset::upgrade));
+}
+
+Cityset* Cityset::copy(const Cityset *cityset)
+{
+  if (!cityset)
+    return NULL;
+  return new Cityset(*cityset);
 }
 // End of file

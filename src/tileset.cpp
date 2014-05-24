@@ -1,6 +1,6 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -78,6 +78,98 @@ Tileset::Tileset(guint32 id, std::string name)
   explosion = NULL;
   for (unsigned int i = 0; i < FOG_TYPES; i++)
     fogpic[i] = NULL;
+}
+
+Tileset::Tileset (const Tileset& t)
+  : Set(t), d_name(t.d_name), d_copyright(t.d_copyright), 
+    d_license(t.d_license), d_id(t.d_id), d_tileSize(t.d_tileSize), 
+    d_basename(t.d_basename)
+{
+  d_info = t.d_info;
+  d_large_selector = t.d_large_selector;
+  d_small_selector = t.d_small_selector;
+  d_fog = t.d_fog;
+  d_roads = t.d_roads;
+  d_bridges = t.d_bridges;
+  d_flags = t.d_flags;
+  d_road_color = t.d_road_color;
+  d_ruin_color = t.d_ruin_color;
+  d_temple_color = t.d_temple_color;
+  for (unsigned int i = 0; i < ROAD_TYPES; i++)
+    {
+      if (t.roadpic[i])
+        roadpic[i] = t.roadpic[i]->copy();
+      else
+        roadpic[i] = NULL;
+    }
+  for (unsigned int i = 0; i < BRIDGE_TYPES; i++)
+    {
+      if (t.bridgepic[i])
+        bridgepic[i] = t.bridgepic[i]->copy();
+      else
+        bridgepic[i] = NULL;
+    }
+  for (unsigned int i = 0; i < FLAG_TYPES; i++)
+    {
+      if (t.flagpic[i])
+        flagpic[i] = t.flagpic[i]->copy();
+      else
+        flagpic[i] = NULL;
+    }
+  for (unsigned int i = 0; i < FLAG_TYPES; i++)
+    {
+      if (flagmask[i])
+        flagmask[i] = t.flagmask[i]->copy();
+      else
+        flagmask[i] = NULL;
+    }
+  number_of_selector_frames = t.number_of_selector_frames;
+  std::vector<PixMask*> s1 = std::vector<PixMask*>(number_of_selector_frames);
+  for (unsigned int i = 0; i < number_of_selector_frames; i++)
+    s1[i] = t.selector[i]->copy();
+  selector = s1;
+  std::vector<PixMask*> s2 = std::vector<PixMask*>(number_of_selector_frames);
+  for (unsigned int i = 0; i < number_of_selector_frames; i++)
+    s2[i] = t.selectormask[i]->copy();
+  selectormask = s2;
+
+  number_of_small_selector_frames = t.number_of_small_selector_frames;
+  std::vector<PixMask*> s3 = std::vector<PixMask*>(number_of_small_selector_frames);
+  for (unsigned int i = 0; i < number_of_small_selector_frames; i++)
+    s3[i] = t.smallselector[i]->copy();
+  smallselector = s3;
+  std::vector<PixMask*> s4 = std::vector<PixMask*>(number_of_small_selector_frames);
+  for (unsigned int i = 0; i < number_of_small_selector_frames; i++)
+    s4[i] = t.smallselectormask[i]->copy();
+  smallselectormask = s4;
+
+  if (t.explosion != NULL)
+    explosion = t.explosion->copy();
+  else
+    explosion = NULL;
+
+  for (unsigned int i = 0; i < FOG_TYPES; i++)
+    {
+      if (t.fogpic[i] != NULL)
+        fogpic[i] = t.fogpic[i]->copy();
+      else
+        fogpic[i] = NULL;
+    }
+
+  for (Tileset::const_iterator i = t.begin(); i != t.end(); ++i)
+    push_back(new Tile(*(*i)));
+
+  for (Tileset::const_iterator i = begin(); i != end(); ++i)
+    {
+      for (std::list<TileStyleSet*>::const_iterator j = (*i)->begin(); j != (*i)->end(); j++)
+	{
+	  for (std::vector<TileStyle*>::const_iterator k = (*j)->begin(); k != (*j)->end(); k++)
+            {
+      
+              d_tilestyles[(*k)->getId()] = *k;
+            }
+        }
+    }
 }
 
 Tileset::Tileset(XML_Helper *helper, std::string directory)
@@ -919,5 +1011,12 @@ Tile *Tileset::getFirstTile(SmallTile::Pattern pattern) const
     if ((*i)->getSmallTile()->getPattern() == pattern)
       return *i;
     return NULL;
+}
+
+Tileset* Tileset::copy(const Tileset *tileset)
+{
+  if (!tileset)
+    return NULL;
+  return new Tileset(*tileset);
 }
 //End of file

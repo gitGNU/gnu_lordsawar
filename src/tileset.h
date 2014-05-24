@@ -1,6 +1,6 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2004, 2005, 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -83,6 +83,9 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 *                tileset from.
 	 */
         Tileset(XML_Helper* helper, std::string directory);
+
+        //! Copy constructor.
+        Tileset(const Tileset& tileset);
 
 	//! Destructor.
         ~Tileset();
@@ -360,6 +363,8 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 
 	//! Create a tileset from the given tileset configuration file.
 	static Tileset *create(std::string file, bool &unsupported_version);
+        
+        static Tileset *copy (const Tileset *orig);
 
 	//! Return a list of tileset basenames in the user's personal collection.
 	static std::list<std::string> scanUserCollection();

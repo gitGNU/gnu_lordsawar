@@ -190,6 +190,9 @@ class Maptile
 	//! Get the TileStyle associated with this Maptile.
 	TileStyle * getTileStyle() const {return d_tileStyle;}
 
+        //! Change the Tileset.
+        void setTileset(Tileset *t) {d_tileSet = t;};
+
 	//! Set the TileStyle associated with this Maptile.
 	void setTileStyle(TileStyle *style) {d_tileStyle = style;}
 

@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -42,8 +42,14 @@ ArmyProto::ArmyProto(const ArmyProto& a)
   for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
     {
       d_image_name[c] = a.d_image_name[c];
-      d_image[c] = a.d_image[c];
-      d_mask[c] = a.d_mask[c];
+      if (a.d_image[c])
+        d_image[c] = a.d_image[c]->copy();
+      else
+        d_image[c] = NULL;
+      if (a.d_mask[c])
+        d_mask[c] = a.d_mask[c]->copy();
+      else
+        d_mask[c] = NULL;
     }
 }
 

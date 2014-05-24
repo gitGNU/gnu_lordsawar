@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -67,6 +67,9 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	 * Make a new shieldset given a unique id and a basename name.
 	 */
 	Shieldset(guint32 id, std::string name);
+
+        //! Copy constructor.
+        Shieldset(const Shieldset& s);
 
 	//! Load a Shieldset from an opened shieldset configuration file.
 	/**
@@ -207,6 +210,8 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 
 	//! Create a shieldset from the given shieldset configuration file.
 	static Shieldset *create(std::string filename, bool &unsupported);
+
+        static Shieldset *copy (const Shieldset *orig);
 
 	//! Return a list of shieldset basenames in the system collection.
 	static std::list<std::string> scanSystemCollection();

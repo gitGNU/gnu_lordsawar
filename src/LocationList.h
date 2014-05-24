@@ -1,7 +1,7 @@
 // Copyright (C) 2001, 2003 Michael Bartl
 // Copyright (C) 2004 Ulf Lorenz
 // Copyright (C) 2005, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -97,12 +97,12 @@ template<class T> class LocationList : public std::list<T>
       return getObjectAt(pos.x, pos.y);
     }
 
-void resizeLocations(Maptile::Building building_type, guint32 tile_width, guint32 old_tile_width, void (*func1)(T, Maptile::Building, guint32), void (*func2)(T, Maptile::Building, guint32))
+void resizeLocations(Maptile::Building building_type, guint32 tile_width, guint32 old_tile_width, void (*func1)(Location*, Maptile::Building, guint32), void (*func2)(Location*, Maptile::Building, guint32))
 {
   if (old_tile_width > tile_width)
     {
-      for (typename LocationList<T>::iterator it = this->begin(); it != this->end(); ++it)
-        func1((*it), building_type, old_tile_width);
+      for (typename LocationList<T>::const_iterator it = this->begin(); it != this->end(); ++it)
+        func1(*it, building_type, old_tile_width);
     }
   std::list<T> objs;
   for (typename LocationList<T>::iterator it = this->begin(); it != this->end(); ++it)

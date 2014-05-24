@@ -23,6 +23,7 @@
 #include <assert.h>
 #include <libgen.h>
 #include <string.h>
+#include <errno.h>
 
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
@@ -565,49 +566,60 @@ void TileSetWindow::on_load_tileset_activated()
 
 void TileSetWindow::on_save_as_activated()
 {
-  std::string orig_basename = d_tileset->getBaseName();
-  guint32 orig_id = d_tileset->getId();
-  d_tileset->setId(Tilesetlist::getNextAvailableId(orig_id));
-  TileSetInfoDialog d(d_tileset, File::getUserTilesetDir(), "", false,
+  Tileset *copy = Tileset::copy (d_tileset);
+  copy->setId(Tilesetlist::getNextAvailableId(d_tileset->getId()));
+  TileSetInfoDialog d(copy, File::getUserTilesetDir(), "", false,
                         _("Save a Copy of a Tileset"));
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string new_basename = d_tileset->getBaseName();
-      guint32 new_id = d_tileset->getId();
-      d_tileset->setId(orig_id);
-      d_tileset->setBaseName(orig_basename);
+      std::string new_basename = copy->getBaseName();
+      guint32 new_id = copy->getId();
+      std::string new_name = copy->getName();
+      save_tileset_menuitem->set_sensitive(true);
+      current_save_filename = copy->getConfigurationFile();
+      //here we add the autosave to the personal collection.
+      //this is so that the images *with comments in them* come along.
+      std::string old_name = d_tileset->getName();
+      d_tileset->setName(copy->getName());
       bool success = Tilesetlist::getInstance()->addToPersonalCollection(d_tileset, new_basename, new_id);
       if (success)
         {
-          save_tileset_menuitem->set_sensitive(true);
-          current_save_filename = d_tileset->getConfigurationFile();
+          copy->setDirectory(d_tileset->getDirectory());
+          d_tileset = copy;
           RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
           refl->updateEntry(current_save_filename);
           refl->save();
-          load_tileset(current_save_filename);
+        }
+      else
+        d_tileset->setName(old_name);
+
+      if (success)
+        {
           needs_saving = false;
           update_window_title();
         }
       else
         {
+          Glib::ustring errmsg = Glib::strerror(errno);
           std::string msg;
           msg = _("Error!  Tileset could not be saved.");
+          msg += "\n" + current_save_filename + "\n" +
+            errmsg;
           Gtk::MessageDialog dialog(*window, msg);
           dialog.run();
           dialog.hide();
+          delete copy;
         }
     }
-  else
-    d_tileset->setId(orig_id);
 }
 
 void TileSetWindow::on_save_tileset_activated()
 {
   if (current_save_filename.empty())
     current_save_filename = d_tileset->getConfigurationFile();
-
+  
   guint32 suggested_tile_size = d_tileset->calculate_preferred_tile_size();
   if (suggested_tile_size != d_tileset->getTileSize())
     {
@@ -621,14 +633,15 @@ void TileSetWindow::on_save_tileset_activated()
   for (Gtk::TreeIter i = tiles_list->children().begin(),
        end = tiles_list->children().end(); i != end; ++i) 
     d_tileset->push_back((*i)[tiles_columns.tile]);
+
   bool success = d_tileset->save(autosave, Tileset::file_extension);
   if (success)
     {
-      RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
-      RecentlyEditedFileList::getInstance()->save();
       success = Tileset::copy (autosave, current_save_filename);
       if (success == true)
         {
+          RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
+          RecentlyEditedFileList::getInstance()->save();
           needs_saving = false;
           update_window_title();
           tileset_saved.emit(d_tileset->getId());
@@ -636,8 +649,11 @@ void TileSetWindow::on_save_tileset_activated()
     }
   if (!success)
     {
+      Glib::ustring errmsg = Glib::strerror(errno);
       std::string msg;
       msg = _("Error!  Tileset could not be saved.");
+      msg += "\n" + current_save_filename + "\n" +
+        errmsg;
       Gtk::MessageDialog dialog(*window, msg);
       dialog.run();
       dialog.hide();

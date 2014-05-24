@@ -1,7 +1,7 @@
 // Copyright (C) 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -476,4 +476,23 @@ bool Armysetlist::contains(std::string name) const
         return true;
     }
   return false;
+}
+
+bool Armysetlist::reload(guint32 id) 
+{
+  Armyset *armyset = getArmyset(id);
+  if (!armyset)
+    return false;
+  bool broken = false;
+  armyset->reload(broken);
+  if (broken)
+    return false;
+  d_armies[armyset->getId()].clear();
+  for (Armyset::iterator ait = armyset->begin(); ait != armyset->end(); ait++)
+    d_armies[armyset->getId()].push_back(*ait);
+  d_names[armyset->getId()] = armyset->getName();
+  d_ids[String::ucompose("%1 %2", armyset->getName(), armyset->getTileSize())] = armyset->getId();
+  d_armysetids[armyset->getId()] = armyset;
+  d_armysets[armyset->getBaseName()] = armyset;
+  return true;
 }

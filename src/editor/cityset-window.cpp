@@ -21,6 +21,7 @@
 #include <iomanip>
 #include <assert.h>
 #include <string.h>
+#include <errno.h>
 
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
@@ -387,49 +388,60 @@ void CitySetWindow::on_validate_cityset_activated()
 
 void CitySetWindow::on_save_as_activated()
 {
-  std::string orig_basename = d_cityset->getBaseName();
-  guint32 orig_id = d_cityset->getId();
-  d_cityset->setId(Citysetlist::getNextAvailableId(orig_id));
-  CitySetInfoDialog d(d_cityset, File::getUserCitysetDir(), "", false,
+  Cityset *copy = Cityset::copy (d_cityset);
+  copy->setId(Citysetlist::getNextAvailableId(d_cityset->getId()));
+  CitySetInfoDialog d(copy, File::getUserCitysetDir(), "", false,
                         _("Save a Copy of a Cityset"));
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string new_basename = d_cityset->getBaseName();
-      guint32 new_id = d_cityset->getId();
-      d_cityset->setId(orig_id);
-      d_cityset->setBaseName(orig_basename);
+      std::string new_basename = copy->getBaseName();
+      guint32 new_id = copy->getId();
+      std::string new_name = copy->getName();
+      save_cityset_menuitem->set_sensitive(true);
+      current_save_filename = copy->getConfigurationFile();
+      //here we add the autosave to the personal collection.
+      //this is so that the images *with comments in them* come along.
+      std::string old_name = d_cityset->getName();
+      d_cityset->setName(copy->getName());
       bool success = Citysetlist::getInstance()->addToPersonalCollection(d_cityset, new_basename, new_id);
       if (success)
         {
-          save_cityset_menuitem->set_sensitive(true);
-          current_save_filename = d_cityset->getConfigurationFile();
+          copy->setDirectory(d_cityset->getDirectory());
+          d_cityset = copy;
           RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
           refl->updateEntry(current_save_filename);
           refl->save();
-          load_cityset(current_save_filename);
+        }
+      else
+        d_cityset->setName(old_name);
+
+      if (success)
+        {
           needs_saving = false;
           update_window_title();
         }
       else
         {
+          Glib::ustring errmsg = Glib::strerror(errno);
           std::string msg;
           msg = _("Error!  Cityset could not be saved.");
+          msg += "\n" + current_save_filename + "\n" +
+            errmsg;
           Gtk::MessageDialog dialog(*window, msg);
           dialog.run();
           dialog.hide();
+          delete copy;
         }
     }
-  else
-    d_cityset->setId(orig_id);
 }
 
 void CitySetWindow::on_save_cityset_activated()
 {
   if (current_save_filename.empty())
     current_save_filename = d_cityset->getConfigurationFile();
-
+  
   guint32 suggested_tile_size = d_cityset->calculate_preferred_tile_size();
   if (suggested_tile_size != d_cityset->getTileSize())
     {
@@ -438,14 +450,15 @@ void CitySetWindow::on_save_cityset_activated()
       if (response == Gtk::RESPONSE_ACCEPT)
         d_cityset->setTileSize(d.get_selected_tilesize());
     }
+
   bool success = d_cityset->save(autosave, Cityset::file_extension);
   if (success)
     {
-      RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
-      RecentlyEditedFileList::getInstance()->save();
       success = Cityset::copy (autosave, current_save_filename);
       if (success == true)
         {
+          RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
+          RecentlyEditedFileList::getInstance()->save();
           needs_saving = false;
           update_window_title();
           cityset_saved.emit(d_cityset->getId());
@@ -453,8 +466,11 @@ void CitySetWindow::on_save_cityset_activated()
     }
   if (!success)
     {
+      Glib::ustring errmsg = Glib::strerror(errno);
       std::string msg;
       msg = _("Error!  Cityset could not be saved.");
+      msg += "\n" + current_save_filename + "\n" +
+        errmsg;
       Gtk::MessageDialog dialog(*window, msg);
       dialog.run();
       dialog.hide();

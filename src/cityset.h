@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -61,6 +61,9 @@ class Cityset : public sigc::trackable, public Set
 	 */
 	Cityset(guint32 id, std::string name);
 
+        //! Copy constructor.
+        Cityset(const Cityset& c);
+
 	//! Loading constructor.
 	/**
 	 * Make a new Cityset object by reading it in from the cityset
@@ -72,6 +75,8 @@ class Cityset : public sigc::trackable, public Set
         Cityset(XML_Helper* helper, std::string directory);
 
 	static Cityset *create(std::string file, bool &unsupported_version);
+
+        static Cityset *copy (const Cityset *orig);
 	//! Destructor.
         ~Cityset();
 

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -54,6 +54,9 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
          */
         Shield(XML_Helper* helper);
         
+        //! Copy constructor
+        Shield(const Shield& s);
+
 	//! Default constructor.
 	Shield(Shield::Colour owner, Gdk::RGBA color);
 
