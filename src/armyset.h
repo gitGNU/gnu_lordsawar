@@ -105,13 +105,6 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
         
         bool save(std::string filename, std::string extension) const;
 
-	//! Returns the size of this armyset.
-        /** 
-         * @return The number of Army prototype objects in the armyset or 0 
-	 *         on error (an armyset should never have a size of 0).
-         */
-        guint32 getSize() const {return size();}
-
 	//! Get the tile size of the Armyset.
 	/**
 	 * The width and height of the Army graphic images as they appear
@@ -228,6 +221,9 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 
 	//! Get the name of the file holding the image of the bag.
 	std::string getBagImageName() {return d_bag_name;};
+
+        //! Find the type id with the highest value and return it.
+        guint32 getMaxId() const;
 
 	//! Find an army with a type in this armyset.
 	/**

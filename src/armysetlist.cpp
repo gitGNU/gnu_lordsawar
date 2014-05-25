@@ -108,6 +108,7 @@ Armysetlist::~Armysetlist()
 
 ArmyProto* Armysetlist::getArmy(guint32 id, guint32 type_id) const
 {
+  static int count;
   // always use ArmyProtoMap::find for searching, else a default entry is 
   // created, which can produce really bad results!!
   ArmyPrototypeMap::const_iterator it = d_armies.find(id);

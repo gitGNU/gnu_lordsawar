@@ -54,6 +54,9 @@ class ArmyProto : public ArmyProtoBase
 
         // Set Methods
         
+        //! Sets the Type Id of the Army.
+        void setId(guint32 id) {d_id = id;};
+
 	//! Sets the filename of the image.
 	void setImageName(Shield::Colour c,std::string name) {d_image_name[c] = name;}
 

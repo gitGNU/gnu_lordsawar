@@ -815,7 +815,7 @@ void TileSetWindow::on_add_tile_clicked()
   Tile *t = new Tile();
   //add it to the treeview
   Gtk::TreeIter i = tiles_list->append();
-  t->setName("Untitled");
+  t->setName(_("Untitled"));
   (*i)[tiles_columns.name] = t->getName();
   (*i)[tiles_columns.tile] = t;
   d_tileset->push_back(t);

@@ -347,11 +347,11 @@ void ItemlistDialog::on_name_changed()
 void ItemlistDialog::on_add_item_clicked()
 {
   //add a new empty item to the itemlist
-  ItemProto *a = new ItemProto("Untitled");
+  ItemProto *a = new ItemProto(_("Untitled"));
   d_itemlist->add(a);
   //add it to the treeview
   Gtk::TreeIter i = items_list->append();
-  a->setName("Untitled");
+  a->setName(_("Untitled"));
   (*i)[items_columns.name] = a->getName();
   (*i)[items_columns.item] = a;
 }

@@ -114,12 +114,7 @@ Armyset::~Armyset()
 bool Armyset::loadArmyProto(string tag, XML_Helper* helper)
 {
     if (tag == ArmyProto::d_tag)
-      {
-	std::string s;
-	ArmyProto* a = new ArmyProto(helper);
-	a->setArmyset(d_id);
-	push_back(a);
-      }
+      push_back(new ArmyProto(helper));
     return true;
 }
 
@@ -997,3 +992,13 @@ Armyset * Armyset::copy(const Armyset *armyset)
     return NULL;
   return new Armyset(*armyset);
 }
+
+guint32 Armyset::getMaxId() const
+{
+  guint32 max = 0;
+  for (const_iterator i = begin(); i != end(); i++)
+    if ((*i)->getId() > max)
+      max = (*i)->getId();
+  return max;
+}
+

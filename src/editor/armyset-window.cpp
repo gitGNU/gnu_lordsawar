@@ -1870,9 +1870,13 @@ void ArmySetWindow::on_add_army_clicked()
   ArmyProto *a = new ArmyProto();
   //add it to the treeview
   Gtk::TreeIter i = armies_list->append();
-  a->setName("Untitled");
+  a->setName(_("Untitled"));
   (*i)[armies_columns.name] = a->getName();
   (*i)[armies_columns.army] = a;
+  if (d_armyset->empty() == true)
+    a->setId(0);
+  else
+    a->setId(d_armyset->getMaxId() + 1);
   d_armyset->push_back(a);
   needs_saving = true;
   update_window_title();
