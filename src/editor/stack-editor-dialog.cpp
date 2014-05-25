@@ -207,20 +207,15 @@ int StackEditorDialog::run()
 
 	// now set allegiance, it's important to do it after possibly new stack
 	// armies have been added
-	if (player_combobox)
-	{
-	    Player *player = get_selected_player();
-            if (stack->getOwner() != player)
-              {
-                Player *old_active = Playerlist::getActiveplayer();
-                Playerlist::getInstance()->setActiveplayer(player);
-                Stack *new_stack = new Stack(*stack);
-                GameMap::getInstance()->removeStack(stack);
-                new_stack->setPlayer(player);
-                GameMap::getInstance()->putStack(new_stack);
-                Playerlist::getInstance()->setActiveplayer(old_active);
-              }
-	}
+        // this also helps the stack ship icon show up when it's needed.
+        Player *player = get_selected_player();
+        Player *old_active = Playerlist::getActiveplayer();
+        Playerlist::getInstance()->setActiveplayer(player);
+        Stack *new_stack = new Stack(*stack);
+        GameMap::getInstance()->removeStack(stack);
+        new_stack->setPlayer(player);
+        GameMap::getInstance()->putStack(new_stack);
+        Playerlist::getInstance()->setActiveplayer(old_active);
     }
     return response;
 }
