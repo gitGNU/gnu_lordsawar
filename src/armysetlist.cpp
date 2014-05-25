@@ -63,7 +63,7 @@ void Armysetlist::add(Armyset *armyset, std::string file)
   std::string basename = File::get_basename(file);
   push_back(armyset); 
   for (Armyset::iterator ait = armyset->begin(); ait != armyset->end(); ait++)
-    d_armies[armyset->getId()].push_back(*ait);
+    d_armies[armyset->getId()][(*ait)->getId()] = (*ait);
   d_names[armyset->getId()] = armyset->getName();
   d_ids[String::ucompose("%1 %2", armyset->getName(), armyset->getTileSize())] = armyset->getId();
   armyset->setBaseName(basename);
@@ -103,12 +103,11 @@ Armysetlist::~Armysetlist()
   for (ArmyPrototypeMap::iterator it = d_armies.begin(); 
        it != d_armies.end(); it++)
     while (!(*it).second.empty())
-      delete ((*it).second)[0];
+      delete (*((*it).second).begin()).second;
 }
 
 ArmyProto* Armysetlist::getArmy(guint32 id, guint32 type_id) const
 {
-  static int count;
   // always use ArmyProtoMap::find for searching, else a default entry is 
   // created, which can produce really bad results!!
   ArmyPrototypeMap::const_iterator it = d_armies.find(id);
@@ -117,11 +116,10 @@ ArmyProto* Armysetlist::getArmy(guint32 id, guint32 type_id) const
   if (it == d_armies.end())
     return NULL;
 
-  for (std::vector<ArmyProto*>::const_iterator i = (*it).second.begin();
-       i != (*it).second.end(); ++i)
-    if ((*i)->getId() == type_id)
-      return (*i);
-  return NULL;
+  IdArmyPrototypeMap::const_iterator j = (*it).second.find(type_id);
+  if (j == (*it).second.end())
+    return NULL;
+  return (*j).second;
 }
 
 ArmyProto* Armysetlist::getScout(guint32 id) const
@@ -431,7 +429,6 @@ bool Armysetlist::addToPersonalCollection(Armyset *armyset, std::string &new_bas
   return true;
 }
 
-
 Armyset *Armysetlist::import(Tar_Helper *t, std::string f, bool &broken)
 {
   bool unsupported_version;
@@ -471,7 +468,7 @@ bool Armysetlist::reload(guint32 id)
     return false;
   d_armies[armyset->getId()].clear();
   for (Armyset::iterator ait = armyset->begin(); ait != armyset->end(); ait++)
-    d_armies[armyset->getId()].push_back(*ait);
+    d_armies[armyset->getId()][(*ait)->getId()] = (*ait);
   d_names[armyset->getId()] = armyset->getName();
   d_ids[String::ucompose("%1 %2", armyset->getName(), armyset->getTileSize())] = armyset->getId();
   d_armysetids[armyset->getId()] = armyset;

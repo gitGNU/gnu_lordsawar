@@ -189,8 +189,8 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
         //! Returns the names of all Armyset objects available to the game.
 	std::list<std::string> getNames() const;
 
-        
-        typedef std::map<guint32, std::vector<ArmyProto*> > ArmyPrototypeMap;
+        typedef std::map<guint32, ArmyProto*> IdArmyPrototypeMap;
+        typedef std::map<guint32, IdArmyPrototypeMap> ArmyPrototypeMap;
         typedef std::map<guint32, std::string> NameMap;
         typedef std::map<std::string, guint32> IdMap;
         typedef std::map<std::string, Armyset*> ArmysetMap;

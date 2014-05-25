@@ -114,7 +114,11 @@ Armyset::~Armyset()
 bool Armyset::loadArmyProto(string tag, XML_Helper* helper)
 {
     if (tag == ArmyProto::d_tag)
-      push_back(new ArmyProto(helper));
+      {
+        ArmyProto *a = new ArmyProto(helper);
+        a->setArmyset(getId());
+        push_back(a);
+      }
     return true;
 }
 
