@@ -148,6 +148,7 @@ ShieldSetWindow::ShieldSetWindow(std::string load_filename)
                  r->getImagesNeeded());
           }
         EditorRecoverDialog d(m);
+        d.set_parent_window(*window);
         int response = d.run();
         d.hide();
         //ask if we want to recover the autosave.

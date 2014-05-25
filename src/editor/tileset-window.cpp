@@ -291,6 +291,7 @@ TileSetWindow::TileSetWindow(std::string load_filename)
                                    r->getName(), r->getNumberOfTiles());
           }
         EditorRecoverDialog d(m);
+        d.set_parent_window(*window);
         int response = d.run();
         d.hide();
         //ask if we want to recover the autosave.
