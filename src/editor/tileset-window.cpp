@@ -567,6 +567,14 @@ void TileSetWindow::on_load_tileset_activated()
 
 void TileSetWindow::on_save_as_activated()
 {
+  guint32 suggested_tile_size = d_tileset->calculate_preferred_tile_size();
+  if (suggested_tile_size != d_tileset->getTileSize())
+    {
+      TileSizeEditorDialog d(d_tileset->getTileSize(), suggested_tile_size);
+      int response = d.run();
+      if (response == Gtk::RESPONSE_ACCEPT)
+        d_tileset->setTileSize(d.get_selected_tilesize());
+    }
   Tileset *copy = Tileset::copy (d_tileset);
   copy->setId(Tilesetlist::getNextAvailableId(d_tileset->getId()));
   TileSetInfoDialog d(copy, File::getUserTilesetDir(), "", false,

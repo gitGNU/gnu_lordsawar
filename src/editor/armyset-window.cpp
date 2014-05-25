@@ -607,6 +607,14 @@ void ArmySetWindow::on_validate_armyset_activated()
 
 void ArmySetWindow::on_save_as_activated()
 {
+  guint32 suggested_tile_size = d_armyset->calculate_preferred_tile_size();
+  if (suggested_tile_size != d_armyset->getTileSize())
+    {
+      TileSizeEditorDialog d(d_armyset->getTileSize(), suggested_tile_size);
+      int response = d.run();
+      if (response == Gtk::RESPONSE_ACCEPT)
+        d_armyset->setTileSize(d.get_selected_tilesize());
+    }
   Armyset *copy = Armyset::copy (d_armyset);
   copy->setId(Armysetlist::getNextAvailableId(d_armyset->getId()));
   ArmySetInfoDialog d(copy, File::getUserArmysetDir(), "", false,

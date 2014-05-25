@@ -389,6 +389,14 @@ void CitySetWindow::on_validate_cityset_activated()
 
 void CitySetWindow::on_save_as_activated()
 {
+  guint32 suggested_tile_size = d_cityset->calculate_preferred_tile_size();
+  if (suggested_tile_size != d_cityset->getTileSize())
+    {
+      TileSizeEditorDialog d(d_cityset->getTileSize(), suggested_tile_size);
+      int response = d.run();
+      if (response == Gtk::RESPONSE_ACCEPT)
+        d_cityset->setTileSize(d.get_selected_tilesize());
+    }
   Cityset *copy = Cityset::copy (d_cityset);
   copy->setId(Citysetlist::getNextAvailableId(d_cityset->getId()));
   CitySetInfoDialog d(copy, File::getUserCitysetDir(), "", false,
