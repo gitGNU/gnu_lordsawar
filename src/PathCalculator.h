@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Ben Asselstine
+// Copyright (C) 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ class Path;
 class City;
 class Player;
 class ArmyProdBase;
+class ArmyProto;
 
 //! An object that calculates shortest paths on a weighted grid.
 /** 
@@ -153,6 +154,7 @@ private:
 
     void dumpNodeMap(Vector<int> dest);
     bool compareNodeMaps(void *map);
+    ArmyProto *makeScout();
     bool delete_stack;
 
 };

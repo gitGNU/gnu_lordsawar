@@ -2,7 +2,7 @@
 //  Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 //  Copyright (C) 2002 Mark L. Amidon
 //  Copyright (C) 2005 Andrea Paternesi
-//  Copyright (C) 2006, 2007, 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2006, 2007, 2008, 2009, 2011, 2014 Ben Asselstine
 //  Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -198,14 +198,13 @@ void City::produceStrongestProductionBase()
     }
 }
 
-void City::produceScout()
+void City::produceWeakestQuickestArmyInArmyset()
 {
   const Armysetlist* al = Armysetlist::getInstance();
   guint32 set = d_owner->getArmyset();
-  ArmyProto *scout = al->getScout(set);
+  ArmyProto *scout = al->lookupWeakestQuickestArmy(set);
   Army *a = new Army(*scout, d_owner);
   GameMap::getInstance()->addArmy(this, a);
-
 }
 
 void City::produceWeakestProductionBase()
@@ -447,7 +446,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
       (template_army->getAwardable() == true && produce_allies == false) ||
       template_army->isHero())
     {
-      produceScout();
+      produceWeakestQuickestArmyInArmyset();
       return;
     }
   ArmyProdBase *army = new ArmyProdBase (*template_army);

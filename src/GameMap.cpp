@@ -1377,9 +1377,6 @@ void GameMap::switchArmysets(Armyset *armyset)
     }
   for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
     {
-      Armyset *a = 
-	Armysetlist::getInstance()->getArmyset((*i)->getArmyset());
-
       //change the armyprodbases in cities.
       for (Citylist::iterator j = cl->begin(); j != cl->end(); j++)
 	{

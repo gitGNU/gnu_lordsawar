@@ -2951,7 +2951,7 @@ void Player::AI_maybeBuyScout(City *c)
       int free_slot = c->getFreeSlot();
       if (free_slot == -1)
         free_slot = 0;
-      ArmyProto *scout = al->getScout(getArmyset());
+      ArmyProto *scout = al->lookupWeakestQuickestArmy(getArmyset());
       cityBuyProduction(c, free_slot, scout->getId());
     }
 }

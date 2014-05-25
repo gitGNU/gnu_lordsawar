@@ -452,7 +452,7 @@ bool GameScenario::setupCities(GameParameters::QuickStartPolicy quick_start)
 	  switch (GameScenario::s_neutral_cities)
 	    {
 	    case GameParameters::AVERAGE:
-	      (*it)->produceScout();
+	      (*it)->produceWeakestQuickestArmyInArmyset();
 	      break;
 	    case GameParameters::STRONG:
 	      (*it)->produceStrongestProductionBase();
@@ -464,8 +464,8 @@ bool GameScenario::setupCities(GameParameters::QuickStartPolicy quick_start)
 		(*it)->produceWeakestProductionBase();
 	      break;
 	    case GameParameters::DEFENSIVE:
-	      (*it)->produceScout();
-	      (*it)->produceScout();
+	      (*it)->produceWeakestQuickestArmyInArmyset();
+	      (*it)->produceWeakestQuickestArmyInArmyset();
 	      break;
 	    }
 	  (*it)->setActiveProductionSlot(-1);

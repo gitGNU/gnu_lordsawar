@@ -2,7 +2,7 @@
 // Copyright (C) 2002 Mark L. Amidon
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2011 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2011, 2014 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -185,14 +185,7 @@ class City : public Ownable, public Location, public Renamable,
         void produceWeakestProductionBase();
 
         //! Produces a scout in the city.
-	/**
-	 * A Scout is defined as the first Army in the Armyset.
-	 * It is used when neutral cities are "average".  
-	 * It is also used as a fallback when a city must have one Army unit.
-	 * @note The scout army doesn't have to be an Army production base in
-	 * the city for this method to operate.
-	 */
-        void produceScout();
+        void produceWeakestQuickestArmyInArmyset();
 
         //! Do everything neccessary for a new turn.
 	/**

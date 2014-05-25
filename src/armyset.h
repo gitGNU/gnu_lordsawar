@@ -247,6 +247,9 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	ArmyProto * lookupArmyByGender(Hero::Gender gender) const;
 
 	ArmyProto * lookupSimilarArmy(ArmyProto *army) const;
+        
+        ArmyProto * lookupWeakestQuickestArmy() const;
+
 	//! can this armyset be used within the game?
 	bool validate();
 	bool validateHero();

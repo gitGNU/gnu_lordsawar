@@ -260,12 +260,12 @@ ArmyProto * Armyset::lookupArmyByStrengthAndTurns(guint32 str, guint32 turns) co
 	  if ((*it)->getStrength() == str && (*it)->getProduction() == turns)
 	    return *it;
 	}
-      else if (str)
+      else if (str && !turns)
 	{
 	  if ((*it)->getStrength() == str)
 	    return *it;
 	}
-      else if (turns)
+      else if (turns && !str)
 	{
 	  if ((*it)->getProduction() == turns)
 	    return *it;
@@ -1006,3 +1006,21 @@ guint32 Armyset::getMaxId() const
   return max;
 }
 
+bool weakest_quickest (const ArmyProto* first, const ArmyProto* second)
+{
+  int f = (first->getStrength() * 100) + (first->getProduction() * 101);
+  int s = (second->getStrength() * 100) + (second->getProduction() * 101);
+  if (f < s)
+    return true;
+  return false;
+}
+
+ArmyProto *Armyset::lookupWeakestQuickestArmy() const
+{
+  Armyset *a = new Armyset(*this);
+  a->sort(weakest_quickest);
+  guint32 type_id = (*(a->begin()))->getId();
+  ArmyProto *p = Armysetlist::getInstance()->getArmy(getId(), type_id);
+  delete a;
+  return p;
+}

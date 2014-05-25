@@ -64,13 +64,13 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
          */
         ArmyProto* getArmy(guint32 id, guint32 index) const;
 
-	//! Returns an army prototype of a scout from a given armyset.
+	//! Returns army prototype of the weakest/quickest from a given armyset.
         /** 
          * @param id       The Id of the armyset.
 	 *
-         * @return The requested scout or 0 on error.
+         * @return The requested weakest quickest army prototype or 0 on error.
          */
-        ArmyProto* getScout(guint32 id) const;
+        ArmyProto* lookupWeakestQuickestArmy(guint32 id) const;
 
 	//! Get the unshaded ship image for the given Armyset.
 	PixMask* getShipPic (guint32 id);

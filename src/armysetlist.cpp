@@ -122,9 +122,12 @@ ArmyProto* Armysetlist::getArmy(guint32 id, guint32 type_id) const
   return (*j).second;
 }
 
-ArmyProto* Armysetlist::getScout(guint32 id) const
+ArmyProto* Armysetlist::lookupWeakestQuickestArmy(guint32 id) const
 {
-  return getArmy (id, 0);
+  Armyset *a = getArmyset(id);
+  if (a)
+    return a->lookupWeakestQuickestArmy();
+  return NULL;
 }
 
 std::list<std::string> Armysetlist::getValidNames() const

@@ -1,4 +1,4 @@
-// Copyright (C) 2009, 2010 Ben Asselstine
+// Copyright (C) 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -109,16 +109,39 @@ PathCalculator::PathCalculator(const Stack *s, bool zig, int city_avoidance, int
   populateNodeMap();
 }
 
+ArmyProto *PathCalculator::makeScout()
+{
+  ArmyProto *s = new ArmyProto();
+  s->setId(0);
+  s->setName("Scouts");
+  s->setDescription("");
+  s->setProductionCost(2);
+  s->setNewProductionCost(10);
+  s->setProduction(1);
+  s->setMoveBonus(Tile::FOREST | Tile::HILLS);
+  s->setArmyBonus(0);
+  s->setMaxMoves(16);
+  s->setStrength(1);
+  s->setSight(1);
+  s->setXpReward(1);
+  for (unsigned int i = Shield::WHITE; i <= Shield::NEUTRAL; i++)
+    s->setImageName(Shield::Colour(i), "scouts");
+  s->setAwardable(false);
+  s->setDefendsRuins(false);
+  s->setGender(Hero::NONE);
+  return s;
+}
+
 PathCalculator::PathCalculator(Player *p, Vector<int> src, const ArmyProdBase *prodbase, bool zig, int city_avoidance, int stack_avoidance)
 {
   Stack *new_stack = Stack::createNonUniqueStack(p, src);
   Army *army;
   if (!prodbase)
     {
-      ArmyProto *proto = Armysetlist::getInstance()->getScout(p->getArmyset());
-      if (!proto)
-	return;
+      //make a scout
+      ArmyProto *proto = makeScout();
       army = Army::createNonUniqueArmy (*proto, p);
+      delete proto;
     }
   else
     army = Army::createNonUniqueArmy (*prodbase, p);
