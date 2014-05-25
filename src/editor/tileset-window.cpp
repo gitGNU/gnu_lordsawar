@@ -608,6 +608,7 @@ void TileSetWindow::on_save_as_activated()
         {
           needs_saving = false;
           update_window_title();
+          tileset_saved.emit(d_tileset->getId());
         }
       else
         {

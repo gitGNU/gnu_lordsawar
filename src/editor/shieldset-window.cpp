@@ -385,6 +385,7 @@ void ShieldSetWindow::on_save_as_activated()
         {
           needs_saving = false;
           update_window_title();
+          shieldset_saved.emit(d_shieldset->getId());
         }
       else
         {

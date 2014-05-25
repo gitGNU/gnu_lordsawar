@@ -615,6 +615,12 @@ void ArmySetWindow::on_save_as_activated()
       if (response == Gtk::RESPONSE_ACCEPT)
         d_armyset->setTileSize(d.get_selected_tilesize());
     }
+  //Reorder the armyset according to the treeview
+  d_armyset->clear();
+  for (Gtk::TreeIter i = armies_list->children().begin(),
+       end = armies_list->children().end(); i != end; ++i) 
+    d_armyset->push_back((*i)[armies_columns.army]);
+
   Armyset *copy = Armyset::copy (d_armyset);
   copy->setId(Armysetlist::getNextAvailableId(d_armyset->getId()));
   ArmySetInfoDialog d(copy, File::getUserArmysetDir(), "", false,
@@ -648,6 +654,7 @@ void ArmySetWindow::on_save_as_activated()
         {
           needs_saving = false;
           update_window_title();
+          armyset_saved.emit(d_armyset->getId());
         }
       else
         {
@@ -1931,12 +1938,11 @@ bool ArmySetWindow::load_armyset(std::string filename)
     delete d_armyset;
   d_armyset = armyset;
   d_armyset->setBaseName(File::get_basename(autosave));
-  guint32 max = d_armyset->getSize();
   bool broken = false;
   d_armyset->instantiateImages(broken);
-  for (unsigned int i = 0; i < max; i++)
-    addArmyType(i);
-  if (max)
+  for (Armyset::iterator i = d_armyset->begin(); i != d_armyset->end(); ++i)
+    addArmyType((*i)->getId());
+  if (d_armyset->empty() == false)
     {
       Gtk::TreeModel::Row row;
       row = armies_treeview->get_model()->children()[0];
