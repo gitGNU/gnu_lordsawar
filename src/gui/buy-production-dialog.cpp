@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -64,9 +64,10 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 
     Player *p = Playerlist::getInstance()->getActiveplayer();
     // fill in purchasable armies
-    for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
+    Armyset *as = al->getArmyset(p->getArmyset());
+    for (Armyset::iterator j = as->begin(); j != as->end(); ++j)
       {
-        const ArmyProto *a = al->getArmy (p->getArmyset(), j);
+        const ArmyProto *a = al->getArmy (p->getArmyset(), (*j)->getId());
         if (a->getNewProductionCost() > 0)
           purchasables.push_back(a);
       }
@@ -86,7 +87,7 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 	  greyed_out = true;
 	Glib::RefPtr<Gdk::Pixbuf> pix
 	    = gc->getCircledArmyPic(p->getArmyset(), 
-                                    purchasables[i]->getTypeId(), p, NULL, 
+                                    purchasables[i]->getId(), p, NULL, 
                                     greyed_out, selected, true)->to_pixbuf();
 	
 	Gtk::Image *image = new Gtk::Image();

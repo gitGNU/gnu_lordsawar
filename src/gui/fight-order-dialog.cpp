@@ -113,7 +113,7 @@ void FightOrderDialog::addArmyType(guint32 army_type)
     (*i)[armies_columns.image] = 
       gc->getCircledArmyPic(player->getArmyset(), army_type, player, NULL,
                             false, player->getId(), true)->to_pixbuf();
-    (*i)[armies_columns.army_type] = a->getTypeId();
+    (*i)[armies_columns.army_type] = a->getId();
 }
 
 void FightOrderDialog::on_reverse_button_clicked()

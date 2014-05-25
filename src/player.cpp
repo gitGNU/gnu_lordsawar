@@ -104,11 +104,9 @@ Player::Player(string name, guint32 armyset, Gdk::RGBA color, int width,
 
     //initial fight order is the order in which the armies appear
     //in the default.xml file.
-    guint32 size = Armysetlist::getInstance()->getSize(d_armyset);
-    for (unsigned int i = 0; i < size; i++)
-    {
-      d_fight_order.push_back(i);
-    }
+    Armyset *as = Armysetlist::getInstance()->getArmyset(d_armyset);
+    for (Armyset::iterator i = as->begin(); i != as->end(); i++)
+      d_fight_order.push_back((*i)->getId());
 
     for (unsigned int i = 0 ; i < MAX_PLAYERS; i++)
     {
@@ -190,8 +188,8 @@ Player::Player(XML_Helper* helper)
     guint32 val;
     helper->getData(fight_order, "fight_order");
     sfight_order.str(fight_order);
-    guint32 size = Armysetlist::getInstance()->getSize(d_armyset);
-    for (unsigned int i = 0; i < size; i++)
+    Armyset *as = Armysetlist::getInstance()->getArmyset(d_armyset);
+    for (Armyset::iterator i = as->begin(); i != as->end(); ++i)
     {
             sfight_order >> val;
             d_fight_order.push_back(val);
@@ -1945,7 +1943,7 @@ bool Player::cityBuyProduction(City* c, int slot, int type)
   guint32 as = c->getOwner()->getArmyset();
 
   // sort out unusual values (-1 is allowed and means "scrap production")
-  if ((type <= -1) || (type >= (int)al->getSize(as)))
+  if ((type <= -1) || al->getArmy(d_armyset, type) == NULL)
     return false;
 
   // return if we don't have enough money
@@ -2954,7 +2952,7 @@ void Player::AI_maybeBuyScout(City *c)
       if (free_slot == -1)
         free_slot = 0;
       ArmyProto *scout = al->getScout(getArmyset());
-      cityBuyProduction(c, free_slot, scout->getTypeId());
+      cityBuyProduction(c, free_slot, scout->getId());
     }
 }
 

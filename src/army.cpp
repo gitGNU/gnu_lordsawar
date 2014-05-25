@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2011, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -58,7 +58,7 @@ Army::Army(const Army& a, Player* p)
 
 Army::Army(const ArmyProto& a, Player* p)
     :ArmyBase(a), UniquelyIdentified(), Ownable(p), 
-    d_type_id(a.getTypeId()), d_armyset(a.getArmyset()), 
+    d_type_id(a.getId()), d_armyset(a.getArmyset()), 
     d_max_hp(2), d_max_moves_multiplier(1), d_max_moves_rest_bonus(0),
     d_ship(false), d_hp(2), d_moves(a.getMaxMoves()), d_xp(0), d_level(0),
     d_battles_number(0), d_number_hashit(0), d_number_hasbeenhit(0)
@@ -70,7 +70,7 @@ Army::Army(const ArmyProto& a, Player* p)
 
 Army::Army(const ArmyProto& a, guint32 id, Player *p)
     :ArmyBase(a), UniquelyIdentified(id), Ownable(p), 
-    d_type_id(a.getTypeId()), d_armyset(a.getArmyset()), 
+    d_type_id(a.getId()), d_armyset(a.getArmyset()), 
     d_max_hp(2), d_max_moves_multiplier(1), d_max_moves_rest_bonus(0),
     d_ship(false), d_hp(2), d_moves(a.getMaxMoves()), d_xp(0), d_level(0),
     d_battles_number(0), d_number_hashit(0), d_number_hasbeenhit(0)
@@ -504,7 +504,7 @@ void Army::morph(const ArmyProto *army)
   setStat(Army::MOVES, army->getMaxMoves());
   setStat(Army::MOVE_BONUS, army->getMoveBonus());
   setStat(Army::ARMY_BONUS, army->getArmyBonus());
-  d_type_id = army->getTypeId();
+  d_type_id = army->getId();
   d_armyset = army->getArmyset();
 }
 

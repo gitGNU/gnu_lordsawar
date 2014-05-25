@@ -1,7 +1,7 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -295,23 +295,19 @@ int AI_Smart::setBestProduction(City *c)
 
 int AI_Smart::chooseArmyTypeToBuy(City *c, bool quick)
 {
-    int bestScore, bestIndex;
-    guint32 size = 0;
+    int bestScore, bestTypeId;
 
     const Armysetlist* al = Armysetlist::getInstance();
 
-    size = al->getSize(getArmyset());
-        
     bestScore = -1;
-    bestIndex = -1;
+    bestTypeId = -1;
     
-    debug("size " << size)
-
-    for (unsigned int i = 0; i < size; i++)
+    Armyset *as = al->getArmyset(getArmyset());
+    for (Armyset::iterator i = as->begin(); i != as->end(); ++i)
     {
         const ArmyProto *proto = NULL;
 
-        proto=al->getArmy(getArmyset(), i);
+        proto=al->getArmy(getArmyset(), (*i)->getId());
 
 	if (proto->getNewProductionCost() == 0)
 	  continue;
@@ -319,7 +315,7 @@ int AI_Smart::chooseArmyTypeToBuy(City *c, bool quick)
         if ((int)proto->getNewProductionCost() > d_gold)
           continue;
         
-       if (c->hasProductionBase(proto->getTypeId(), getArmyset())==false)
+       if (c->hasProductionBase(proto->getId(), getArmyset())==false)
        {
          int score;
          if (quick)
@@ -328,13 +324,13 @@ int AI_Smart::chooseArmyTypeToBuy(City *c, bool quick)
            score = scoreBestArmyType(proto);
          if (score >= bestScore)
          {
-            bestIndex = i;
+            bestTypeId = (*i)->getId();
             bestScore = score;
          }
        }
     }
 
-    return bestIndex;
+    return bestTypeId;
 }
 
 int AI_Smart::scoreQuickArmyType(const ArmyProdBase *a)

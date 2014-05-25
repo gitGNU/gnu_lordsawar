@@ -1,6 +1,6 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
-// Copyright (C) 2007, 2008, 2010, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2010, 2011, 2014 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -1132,7 +1132,7 @@ bool Action_Buy::fillData(City* c, int slot, const ArmyProto *prod)
 {
     d_city = c->getId();
     d_slot = slot;
-    d_prod = prod->getTypeId();
+    d_prod = prod->getId();
 
     return true;
 }
@@ -1714,8 +1714,9 @@ Action_FightOrder::Action_FightOrder(XML_Helper* helper)
   guint32 val;
   helper->getData(fight_order, "order");
   sfight_order.str(fight_order);
-  guint32 size = Armysetlist::getInstance()->getSize(Playerlist::getInstance()->getFirstLiving()->getArmyset());
-  for (unsigned int i = 0; i < size; i++)
+  //XXX XXX XXX this business of looking up the first living seems wrong.
+  Armyset *as = Armysetlist::getInstance()->getArmyset(Playerlist::getInstance()->getFirstLiving()->getArmyset());
+  for (Armyset::iterator i = as->begin(); i != as->end(); i++)
     {
       sfight_order >> val;
       d_order.push_back(val);
@@ -2352,7 +2353,7 @@ bool Action_RecruitHero::fillData(HeroProto* hero, City *city, int cost, int all
     d_cost = cost;
     d_allies = alliesCount;
     if (alliesCount > 0)
-      d_ally_army_type = ally->getTypeId();
+      d_ally_army_type = ally->getId();
     else
       d_ally_army_type = 0;
     return true;

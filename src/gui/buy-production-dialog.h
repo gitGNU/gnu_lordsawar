@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ class BuyProductionDialog: public Decorated
     void hide();
 
     enum { NO_ARMY_SELECTED = -1 };
-    int get_selected_army() { return selected_army == NO_ARMY_SELECTED ? NO_ARMY_SELECTED : purchasables[selected_army]->getTypeId(); }
+    int get_selected_army() { return selected_army == NO_ARMY_SELECTED ? NO_ARMY_SELECTED : purchasables[selected_army]->getId(); }
     
  private:
     Gtk::Dialog* dialog;

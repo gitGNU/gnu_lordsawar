@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -49,8 +49,6 @@ class ArmyProtoBase : public ArmyBase
 
         // Set Methods
         
-        void setTypeId(guint32 type_id) {d_type_id = type_id;};
-
         //! Sets the descriptive text for this Army.
         void setDescription(std::string text) {d_description = text;};
         
@@ -86,9 +84,6 @@ class ArmyProtoBase : public ArmyBase
 
         // Get Methods
         
-	//! Get the Id of the Armyset to which the Army's type belongs.
-        guint32 getTypeId() const {return d_type_id;}
-
         //! Returns the descriptive text of this Army.
         std::string getDescription() const {return _(d_description.c_str());}
 
@@ -117,9 +112,6 @@ class ArmyProtoBase : public ArmyBase
 
 	//! The name of the Army unit.  e.g. Scouts.
         std::string d_name;
-
-	//! The index of the Army prototype's index in it's Armyset.
-        guint32 d_type_id;
 
 	//! The description of the Army unit.
         std::string d_description;

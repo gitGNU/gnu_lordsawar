@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -31,7 +31,6 @@
 
 ArmyProtoBase::ArmyProtoBase(const ArmyProtoBase& a)
     :ArmyBase(a), d_name(a.d_name), 
-    d_type_id(a.d_type_id),
      d_description(a.d_description), d_production_cost(a.d_production_cost),
      d_new_production_cost(a.d_new_production_cost),
      d_production(a.d_production), d_armyset(a.d_armyset)
@@ -39,14 +38,14 @@ ArmyProtoBase::ArmyProtoBase(const ArmyProtoBase& a)
 }
 
 ArmyProtoBase::ArmyProtoBase()
-  :ArmyBase(), d_name(_("Untitled")), d_type_id(0),
+  :ArmyBase(), d_name(_("Untitled")),
     d_description(""), d_production_cost(0), d_new_production_cost(0),
     d_production(0), d_armyset(0)
 {
 }
 
 ArmyProtoBase::ArmyProtoBase(XML_Helper* helper)
-  :ArmyBase(helper), d_name(""), d_type_id(0), 
+  :ArmyBase(helper), d_name(""), 
     d_description(""), d_production_cost(0), d_new_production_cost(0),
     d_production(0), d_armyset(0)
 {

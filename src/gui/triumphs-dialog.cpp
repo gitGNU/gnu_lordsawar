@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -119,9 +119,10 @@ void TriumphsDialog::fill_in_page(Player *p)
   const ArmyProto *hero = NULL;
   const Armysetlist* al = Armysetlist::getInstance();
   //let's go find the hero army
-  for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
+  Armyset *as = al->getArmyset(p->getArmyset());
+  for (Armyset::iterator j = as->begin(); j != as->end(); ++j)
     {
-      const ArmyProto *a = al->getArmy (p->getArmyset(), j);
+      const ArmyProto *a = al->getArmy (p->getArmyset(), (*j)->getId());
       if (a->isHero())
 	{
 	  hero = a;
@@ -130,7 +131,7 @@ void TriumphsDialog::fill_in_page(Player *p)
     }
   Gtk::Image *hero_image = new Gtk::Image();
   hero_image->property_pixbuf() = 
-    gc->getCircledArmyPic(p->getArmyset(), hero->getTypeId(), p, NULL, false,
+    gc->getCircledArmyPic(p->getArmyset(), hero->getId(), p, NULL, false,
                           Shield::NEUTRAL, true)->to_pixbuf();
   Gtk::HBox *hero_hbox = new Gtk::HBox();
   hero_hbox->pack_start(*manage(hero_image), Gtk::PACK_SHRINK, 10);
@@ -185,9 +186,9 @@ void TriumphsDialog::fill_in_page(Player *p)
   Gtk::Label *special_label = new Gtk::Label(s);
   //let's go find a special army
   const ArmyProto *special = NULL;
-  for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
+  for (Armyset::iterator j = as->begin(); j != as->end(); ++j)
     {
-      const ArmyProto *a = al->getArmy (p->getArmyset(), j);
+      const ArmyProto *a = al->getArmy (p->getArmyset(), (*j)->getId());
       if (a->getAwardable())
 	{
 	  special = a;
@@ -196,7 +197,7 @@ void TriumphsDialog::fill_in_page(Player *p)
     }
   Gtk::Image *special_image = new Gtk::Image();
   special_image->property_pixbuf() = 
-    gc->getCircledArmyPic(p->getArmyset(), special->getTypeId(), p, NULL, false,
+    gc->getCircledArmyPic(p->getArmyset(), special->getId(), p, NULL, false,
                           Shield::NEUTRAL, true)->to_pixbuf();
   Gtk::HBox *special_hbox = new Gtk::HBox();
   special_hbox->pack_start(*manage(special_image), Gtk::PACK_SHRINK, 10);

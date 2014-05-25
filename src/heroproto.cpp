@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -55,7 +55,6 @@ HeroProto::HeroProto(XML_Helper* helper)
     d_gender = Hero::NONE;
   else
     d_gender = Hero::genderFromString(gender_str);
-  helper->getData(d_type_id, "type");
   helper->getData(d_armyset, "armyset");
 }
 
@@ -70,7 +69,6 @@ bool HeroProto::save(XML_Helper* helper) const
   retval &= helper->saveData("gender", gender_str);
   retval &= OwnerId::save(helper);
   retval &= helper->saveData("armyset", d_armyset);
-  retval &= helper->saveData("type", d_type_id);
 
   retval &= helper->closeTag();
 

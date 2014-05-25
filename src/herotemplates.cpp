@@ -88,9 +88,10 @@ int HeroTemplates::loadHeroTemplates()
 
   // list all the army types that are heroes.
   Player *p = Playerlist::getInstance()->getNeutral();
-  for (unsigned int j = 0; j < al->getSize(p->getArmyset()); j++)
+  Armyset *as = al->getArmyset(p->getArmyset());
+  for (Armyset::iterator j = as->begin(); j != as->end(); ++j)
     {
-      const ArmyProto *a = al->getArmy (p->getArmyset(), j);
+      const ArmyProto *a = al->getArmy (p->getArmyset(), (*j)->getId());
       if (a->isHero())
 	{
 	  if (a->getGender() == Hero::FEMALE)

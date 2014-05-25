@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -33,13 +33,14 @@ std::string ArmyProdBase::d_tag = "armyprodbase";
 #define debug(x)
 
 ArmyProdBase::ArmyProdBase(const ArmyProdBase& a)
-    :ArmyProtoBase(a)
+    :ArmyProtoBase(a), d_type_id(a.d_type_id)
 {
 }
 
 ArmyProdBase::ArmyProdBase(const ArmyProto& a)
     :ArmyProtoBase(a)
 {
+  d_type_id = a.getId();
 }
 
 ArmyProdBase::ArmyProdBase(XML_Helper* helper)
@@ -75,6 +76,6 @@ void ArmyProdBase::morph(const ArmyProto *army)
   setMaxMoves(army->getMaxMoves());
   setMoveBonus(army->getMoveBonus());
   setArmyBonus(army->getArmyBonus());
-  setTypeId(army->getTypeId());
+  setTypeId(army->getId());
   setArmyset(army->getArmyset());
 }

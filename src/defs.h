@@ -3,7 +3,7 @@
 // Copyright (C) 2003, 2004, 2005, 2006 Andrea Paternesi
 // Copyright (C) 2004 David Sterba
 // Copyright (C) 2005 Bryan Duff
-// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 
 #define LORDSAWAR_SAVEGAME_VERSION "0.2.1"
 #define LORDSAWAR_TILESET_VERSION "0.2.1"
-#define LORDSAWAR_ARMYSET_VERSION "0.2.1"
+#define LORDSAWAR_ARMYSET_VERSION "0.3.0"
 #define LORDSAWAR_CITYSET_VERSION "0.2.1"
 #define LORDSAWAR_SHIELDSET_VERSION "0.2.1"
 #define LORDSAWAR_CONFIG_VERSION "0.2.1"

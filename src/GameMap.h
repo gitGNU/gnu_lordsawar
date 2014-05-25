@@ -341,7 +341,6 @@ class GameMap: public sigc::trackable
 
 	void updateShips(Vector<int> pos);
 
-
         static void changeFootprintToSmallerCityset(Location *location, Maptile::Building building_type, guint32 old_tile_width);
 
         static void relocateLocation(Location *location, Maptile::Building building_type, guint32 tile_width);

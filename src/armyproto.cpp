@@ -34,8 +34,7 @@
 std::string ArmyProto::d_tag = "armyproto";
 
 ArmyProto::ArmyProto(const ArmyProto& a)
-    :ArmyProtoBase(a),
-     d_defends_ruins(a.d_defends_ruins), 
+    :ArmyProtoBase(a), d_id(a.d_id), d_defends_ruins(a.d_defends_ruins), 
      d_awardable(a.d_awardable), d_image_name(a.d_image_name),
      d_gender(Hero::NONE)
 {
@@ -54,8 +53,8 @@ ArmyProto::ArmyProto(const ArmyProto& a)
 }
 
 ArmyProto::ArmyProto()
-  :ArmyProtoBase(),
-    d_defends_ruins(false), d_awardable(false), d_gender(Hero::NONE)
+  :ArmyProtoBase(), d_id(0), d_defends_ruins(false), d_awardable(false), 
+    d_gender(Hero::NONE)
 {
   for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
     {
@@ -68,6 +67,7 @@ ArmyProto::ArmyProto()
 ArmyProto::ArmyProto(XML_Helper* helper)
   :ArmyProtoBase(helper), d_defends_ruins(false), d_awardable(false)
 {
+  helper->getData(d_id, "id");
   helper->getData(d_image_name[Shield::WHITE], "image_white");
   helper->getData(d_image_name[Shield::GREEN], "image_green");
   helper->getData(d_image_name[Shield::YELLOW], "image_yellow");
@@ -112,6 +112,7 @@ bool ArmyProto::saveData(XML_Helper* helper) const
 {
   bool retval = true;
 
+  retval &= helper->saveData("id", d_id);
   retval &= ArmyProtoBase::saveData(helper);
   retval &= helper->saveData("image_white", d_image_name[Shield::WHITE]);
   retval &= helper->saveData("image_green", d_image_name[Shield::GREEN]);

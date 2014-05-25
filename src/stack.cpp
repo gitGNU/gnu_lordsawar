@@ -3,7 +3,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -1353,5 +1353,24 @@ bool Stack::hasDeadArmies() const
     if ((*i)->getHP() == 0)
       return true;
   return false;
+}
+
+bool Stack::removeArmiesWithoutArmyType(guint32 armyset)
+{
+  bool removedArmy = false;
+  for (iterator i = begin(); i != end(); i++)
+    {
+      Armyset *a = Armysetlist::getInstance()->getArmyset(armyset);
+      ArmyProto *armyproto = a->lookupArmyByType((*i)->getTypeId());
+      if (armyproto == NULL)
+        {
+          i = flErase(i);
+          if (size() > 0)
+            i--;
+          removedArmy = true;
+          continue;
+        }
+    }
+  return removedArmy;
 }
 // End of file

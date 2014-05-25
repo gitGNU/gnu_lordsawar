@@ -117,7 +117,6 @@ bool Armyset::loadArmyProto(string tag, XML_Helper* helper)
       {
 	std::string s;
 	ArmyProto* a = new ArmyProto(helper);
-	a->setTypeId(size());
 	a->setArmyset(d_id);
 	push_back(a);
       }
@@ -290,7 +289,7 @@ ArmyProto * Armyset::lookupArmyByType(guint32 army_type_id) const
 {
   for (const_iterator it = begin(); it != end(); it++)
     {
-      if ((*it)->getTypeId() == army_type_id)
+      if ((*it)->getId() == army_type_id)
 	return *it;
     }
   return NULL;
@@ -663,6 +662,8 @@ void Armyset::switchArmysetForRuinKeeper(Army *army, const Armyset *armyset)
   Armyset *old_armyset
     = Armysetlist::getInstance()->getArmyset(army->getOwner()->getArmyset());
   ArmyProto *old_armyproto = old_armyset->lookupArmyByType(army->getTypeId());
+  if (old_armyproto == NULL)
+    return;
   const ArmyProto *new_armyproto = armyset->lookupArmyByType(army->getTypeId());
 
   //try looking at the same id first
@@ -701,6 +702,8 @@ void Armyset::switchArmyset(ArmyProdBase *army, const Armyset *armyset)
   Armyset *old_armyset
     = Armysetlist::getInstance()->getArmyset(army->getArmyset());
   ArmyProto *old_armyproto = old_armyset->lookupArmyByType(army->getTypeId());
+  if (old_armyproto == NULL)
+    return;
   ArmyProto *new_armyproto = armyset->lookupArmyByType(army->getTypeId());
 
   //try looking at the same id first
@@ -773,11 +776,13 @@ void Armyset::switchArmyset(Army *army, const Armyset *armyset)
   Armyset *old_armyset
     = Armysetlist::getInstance()->getArmyset(army->getOwner()->getArmyset());
   ArmyProto *old_armyproto = old_armyset->lookupArmyByType(army->getTypeId());
+  if (!old_armyproto)
+    return;
   ArmyProto *new_armyproto = armyset->lookupArmyByType(army->getTypeId());
 
   //try looking at the same id first
   if (new_armyproto != NULL && 
-      old_armyproto->getName() == new_armyproto->getName())
+      old_armyproto->getId() == new_armyproto->getId())
     {
       army->morph(new_armyproto);
       return;
@@ -978,8 +983,11 @@ void Armyset::support_backward_compatibility()
 {
   FileCompat::getInstance()->support_type(FileCompat::ARMYSET, file_extension, 
                                           d_tag, true);
+  //FileCompat::getInstance()->support_version
+    //(FileCompat::ARMYSET, "0.2.0", "0.2.1",
+     //sigc::ptr_fun(&Armyset::upgrade));
   FileCompat::getInstance()->support_version
-    (FileCompat::ARMYSET, "0.2.0", LORDSAWAR_ARMYSET_VERSION,
+    (FileCompat::ARMYSET, "0.2.1", "0.3.0",
      sigc::ptr_fun(&Armyset::upgrade));
 }
 

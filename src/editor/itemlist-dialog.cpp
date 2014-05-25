@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -529,7 +529,7 @@ void ItemlistDialog::on_kill_army_type_clicked()
 
     const ArmyProto *army = d.get_selected_army();
     if (army)
-      d_item->setArmyTypeToKill(army->getTypeId());
+      d_item->setArmyTypeToKill(army->getId());
     else
       d_item->setArmyTypeToKill(0);
 

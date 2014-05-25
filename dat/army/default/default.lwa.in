@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<armyset version="0.2.1">
+<armyset version="0.3.0">
 	<d_id>1</d_id>
 	<_d_name>Default</_d_name>
 	<d_copyright>Copyright (C) 2007, 2009 Ben Asselstine</d_copyright>
@@ -10,6 +10,7 @@
 	<d_plantedstandard>plantedstandard</d_plantedstandard>
 	<d_bag>items</d_bag>
 	<armyproto>
+                <d_id>0</d_id>
 		<_d_name>Scouts</_d_name>
 		<d_image_white>scouts</d_image_white>
 		<d_image_green>scouts</d_image_green>
@@ -36,6 +37,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>1</d_id>
 		<_d_name>Light Inf.</_d_name>
 		<d_image_white>lightinf</d_image_white>
 		<d_image_green>lightinf</d_image_green>
@@ -62,6 +64,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>2</d_id>
 		<_d_name>Orcish Mob</_d_name>
 		<d_image_white>orcishmob</d_image_white>
 		<d_image_green>orcishmob</d_image_green>
@@ -88,6 +91,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>3</d_id>
 		<_d_name>Heavy Inf.</_d_name>
 		<d_image_white>heavyinf</d_image_white>
 		<d_image_green>heavyinf</d_image_green>
@@ -114,6 +118,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>4</d_id>
 		<_d_name>Pikemen</_d_name>
 		<d_image_white>pikeman</d_image_white>
 		<d_image_green>pikeman</d_image_green>
@@ -140,6 +145,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>5</d_id>
 		<_d_name>Archers</_d_name>
 		<d_image_white>archers</d_image_white>
 		<d_image_green>archers</d_image_green>
@@ -166,6 +172,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>6</d_id>
 		<_d_name>Dwarves</_d_name>
 		<d_image_white>dwarves</d_image_white>
 		<d_image_green>dwarves</d_image_green>
@@ -192,6 +199,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>7</d_id>
 		<_d_name>Minotaurs</_d_name>
 		<d_image_white>minotaurs</d_image_white>
 		<d_image_green>minotaurs</d_image_green>
@@ -218,6 +226,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>8</d_id>
 		<_d_name>Giants</_d_name>
 		<d_image_white>giants</d_image_white>
 		<d_image_green>giants</d_image_green>
@@ -244,6 +253,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>9</d_id>
 		<_d_name>Spiders</_d_name>
 		<d_image_white>spiders</d_image_white>
 		<d_image_green>spiders</d_image_green>
@@ -270,6 +280,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>10</d_id>
 		<_d_name>Light Cav.</_d_name>
 		<d_image_white>lightcav</d_image_white>
 		<d_image_green>lightcav</d_image_green>
@@ -296,6 +307,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>11</d_id>
 		<_d_name>Wolfriders</_d_name>
 		<d_image_white>wolfriders</d_image_white>
 		<d_image_green>wolfriders</d_image_green>
@@ -322,6 +334,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>12</d_id>
 		<_d_name>Heavy Cav.</_d_name>
 		<d_image_white>heavycav</d_image_white>
 		<d_image_green>heavycav</d_image_green>
@@ -348,6 +361,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>13</d_id>
 		<_d_name>Catapults</_d_name>
 		<d_image_white>catapults</d_image_white>
 		<d_image_green>catapults</d_image_green>
@@ -374,6 +388,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>14</d_id>
 		<_d_name>Elephants</_d_name>
 		<d_image_white>elephants</d_image_white>
 		<d_image_green>elephants</d_image_green>
@@ -400,6 +415,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>15</d_id>
 		<_d_name>Giant Bats</_d_name>
 		<d_image_white>giantbats</d_image_white>
 		<d_image_green>giantbats</d_image_green>
@@ -426,6 +442,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>16</d_id>
 		<_d_name>Pegasi</_d_name>
 		<d_image_white>pegasi</d_image_white>
 		<d_image_green>pegasi</d_image_green>
@@ -452,6 +469,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>17</d_id>
 		<_d_name>Griffins</_d_name>
 		<d_image_white>griffins</d_image_white>
 		<d_image_green>griffins</d_image_green>
@@ -478,6 +496,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>18</d_id>
 		<_d_name>Giant Worms</_d_name>
 		<d_image_white>giantworms</d_image_white>
 		<d_image_green>giantworms</d_image_green>
@@ -504,6 +523,7 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>19</d_id>
 		<_d_name>Ghosts</_d_name>
 		<d_image_white>ghosts</d_image_white>
 		<d_image_green>ghosts</d_image_green>
@@ -530,6 +550,7 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>20</d_id>
 		<_d_name>Wizards</_d_name>
 		<d_image_white>wizards</d_image_white>
 		<d_image_green>wizards</d_image_green>
@@ -556,6 +577,7 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>21</d_id>
 		<_d_name>Unicorns</_d_name>
 		<d_image_white>unicorns</d_image_white>
 		<d_image_green>unicorns</d_image_green>
@@ -582,6 +604,7 @@
 		<d_expvalue>1</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>22</d_id>
 		<_d_name>Elementals</_d_name>
 		<d_image_white>elementals</d_image_white>
 		<d_image_green>elementals</d_image_green>
@@ -608,6 +631,7 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>23</d_id>
 		<_d_name>Devils</_d_name>
 		<d_image_white>devils</d_image_white>
 		<d_image_green>devils</d_image_green>
@@ -634,6 +658,7 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>24</d_id>
 		<_d_name>Demons</_d_name>
 		<d_image_white>daemons</d_image_white>
 		<d_image_green>daemons</d_image_green>
@@ -660,6 +685,7 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>25</d_id>
 		<_d_name>Archons</_d_name>
 		<d_image_white>archons</d_image_white>
 		<d_image_green>archons</d_image_green>
@@ -686,6 +712,7 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>26</d_id>
 		<_d_name>Dragons</_d_name>
 		<d_image_white>dragons</d_image_white>
 		<d_image_green>dragons</d_image_green>
@@ -712,6 +739,7 @@
 		<d_expvalue>10</d_expvalue>
 	</armyproto>
 	<armyproto>
+                <d_id>27</d_id>
 		<_d_name>hero</_d_name>
 		<d_image_white>hero</d_image_white>
 		<d_image_green>hero</d_image_green>

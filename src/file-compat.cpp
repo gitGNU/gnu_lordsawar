@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Ben Asselstine
+// Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -190,7 +190,7 @@ bool FileCompat::get_tag_and_version_from_file(std::string filename, FileCompat:
   bool broken = false;
   if (isTarFile(type) == true)
     {
-      std::string ext = File::get_extension(filename);
+      std::string ext = getFileExtension(type);
       if (ext == "")
         return false;
       Tar_Helper t(filename, std::ios::in, broken);

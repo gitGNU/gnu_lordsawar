@@ -1075,7 +1075,10 @@ void MainWindow::on_armyset_saved(guint32 id)
   if (Playerlist::getInstance()->hasArmyset(id) == true)
     {
       GraphicsCache::getInstance()->reset();
+      //we're doing reload before, because we need the maps to be updated.
+      //but then the armyset* gets changed and the switch has no effect.
       Armysetlist::getInstance()->reload(id);
+      GameMap::getInstance()->switchArmysets(Armysetlist::getInstance()->getArmyset(id));
       bigmap->screen_size_changed(bigmap_image->get_allocation()); 
       redraw();
       needs_saving = true;

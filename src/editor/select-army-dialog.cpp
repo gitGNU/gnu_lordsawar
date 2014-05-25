@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -107,9 +107,10 @@ void SelectArmyDialog::fill_in_army_toggles()
 
     // fill in selectable armies
     selectable.clear();
-    for (unsigned int j = 0; j < al->getSize(armyset); j++)
+    Armyset *as = al->getArmyset(armyset);
+    for (Armyset::iterator j = as->begin(); j != as->end(); ++j)
     {
-	const ArmyProto *a = al->getArmy(armyset, j);
+	const ArmyProto *a = al->getArmy(armyset, (*j)->getId());
 	if (a->isHero() && d_hero_too == false)
 	  continue;
 	if ((d_defends_ruins && a->getDefendsRuins()) || 
@@ -135,7 +136,7 @@ void SelectArmyDialog::fill_in_army_toggles()
 
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf
 	  = GraphicsCache::getInstance()->getArmyPic(armyset,
-						     selectable[i]->getTypeId(),
+						     selectable[i]->getId(),
 						     player, NULL)->to_pixbuf();
 
 	toggle->add(*manage(new Gtk::Image(pixbuf)));

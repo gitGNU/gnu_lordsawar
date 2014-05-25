@@ -1371,6 +1371,7 @@ void GameMap::switchArmysets(Armyset *armyset)
       Stack *s = (*i)->getOccupant();
       if (s == NULL)
 	continue;
+      s->removeArmiesWithoutArmyType(armyset->getId());
       for (Stack::iterator j = s->begin(); j != s->end(); j++)
 	Armyset::switchArmysetForRuinKeeper(*j, armyset);
     }
@@ -1378,14 +1379,13 @@ void GameMap::switchArmysets(Armyset *armyset)
     {
       Armyset *a = 
 	Armysetlist::getInstance()->getArmyset((*i)->getArmyset());
-      if (armyset == a)
-	continue;
 
       //change the armyprodbases in cities.
       for (Citylist::iterator j = cl->begin(); j != cl->end(); j++)
 	{
 	  City *c = *j;
-	  for (unsigned int k = 0; c->getSize(); k++)
+          c->removeArmyProdBasesWithoutAType(armyset->getId());
+	  for (unsigned int k = 0; k < c->getSize(); k++)
 	    {
 	      ArmyProdBase *prodbase = (*c)[k]->getArmyProdBase();
 	      if (prodbase)
@@ -1398,8 +1398,17 @@ void GameMap::switchArmysets(Armyset *armyset)
       for (Stacklist::iterator j = sl->begin(); j != sl->end(); j++)
 	{
 	  Stack *s = (*j);
-	  for (Stack::iterator k = s->begin(); k != s->end(); k++)
-	    Armyset::switchArmyset(*k,armyset);
+          s->removeArmiesWithoutArmyType(armyset->getId());
+          if (s->size() == 0)
+            {
+              GameMap::getInstance()->getStacks(s->getPos())->leaving(s);
+              j=sl->flErase(j);//this doesn't remove the stack from the map of id->stack pointer in stacklist. XXX XXX XXX
+              if (sl->size() > 0)
+                j--;
+              continue;
+            }
+          for (Stack::iterator k = s->begin(); k != s->end(); k++)
+            Armyset::switchArmyset(*k,armyset);
 	}
 
       //finally, change the player's armyset.

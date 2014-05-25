@@ -88,15 +88,6 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	PixMask* getStandardMask (guint32 id);
         guint32 getTileSize(guint32 id);
 
-	//! Returns the size of a specific armyset.
-        /** 
-         * @param id       The id of the armyset to get the size of.
-	 *
-         * @return The number of Army prototype objects in the Armyset.
-	 *         Returns 0 on error. 
-         */
-        guint32 getSize(guint32 id) const;
-
 	//! Return the name of a given armyset.
         /** 
          * @param id       The id of the armyset to get the name of.

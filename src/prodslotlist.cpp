@@ -2,7 +2,7 @@
 //  Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 //  Copyright (C) 2002 Mark L. Amidon
 //  Copyright (C) 2005 Andrea Paternesi
-//  Copyright (C) 2006, 2007, 2008 Ben Asselstine
+//  Copyright (C) 2006, 2007, 2008, 2014 Ben Asselstine
 //  Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -154,7 +154,7 @@ int ProdSlotlist::getFreeSlot()  const
 
 bool ProdSlotlist::hasProductionBase(const ArmyProto * army) const
 {
-  return hasProductionBase(army->getTypeId(), army->getArmyset());
+  return hasProductionBase(army->getId(), army->getArmyset());
 }
 
 void ProdSlotlist::addProductionBase(int idx, ArmyProdBase *army)
@@ -257,5 +257,21 @@ const ArmyProdBase *ProdSlotlist::getProductionBaseBelongingTo(const Army *army)
 	return armyprodbase;
     }
   return NULL;
+}
+        
+bool ProdSlotlist::removeArmyProdBasesWithoutAType(guint32 armyset)
+{
+  bool removed = false;
+  for (unsigned int i = 0; i < size(); i++)
+    {
+      const ArmyProdBase* armyprodbase = this->getProductionBase(i);
+      if (armyprodbase == NULL)
+	continue;
+      ArmyProto *a = Armysetlist::getInstance()->getArmy (armyset, armyprodbase->getTypeId());
+      if (!a)
+        removeProductionBase(i);
+      //XXX XXX XXX should we squeeze out the empty spaces?
+    }
+  return removed;
 }
 // End of file
