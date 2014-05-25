@@ -126,18 +126,7 @@ ArmyProto* Armysetlist::getArmy(guint32 id, guint32 type_id) const
 
 ArmyProto* Armysetlist::getScout(guint32 id) const
 {
-  // always use ArmyProtoMap::find for searching, else a default entry is 
-  // created, which can produce really bad results!!
-  ArmyPrototypeMap::const_iterator it = d_armies.find(id);
-
-  // armyset does not exist
-  if (it == d_armies.end())
-    return 0;
-
-  for (std::vector<ArmyProto*>::const_iterator i = (*it).second.begin();
-       i != (*it).second.end(); ++i)
-    if ((*i)->getId() == 0)
-      return (*i);
+  return getArmy (id, 0);
 }
 
 std::list<std::string> Armysetlist::getValidNames() const
