@@ -134,7 +134,10 @@ ArmyProto* Armysetlist::getScout(guint32 id) const
   if (it == d_armies.end())
     return 0;
 
-  return ((*it).second)[0];
+  for (std::vector<ArmyProto*>::const_iterator i = (*it).second.begin();
+       i != (*it).second.end(); ++i)
+    if ((*i)->getId() == 0)
+      return (*i);
 }
 
 std::list<std::string> Armysetlist::getValidNames() const
