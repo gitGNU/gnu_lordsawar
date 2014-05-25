@@ -82,6 +82,7 @@ std::list<std::string> Tilesetlist::getValidNames() const
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->validate() == true)
       names.push_back((*it)->getName());
+  names.sort(case_insensitive);
   return names;
 }
 
@@ -91,6 +92,7 @@ std::list<std::string> Tilesetlist::getValidNames(guint32 tilesize) const
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->getTileSize() == tilesize && (*it)->validate() == true)
       names.push_back((*it)->getName());
+  names.sort(case_insensitive);
   return names;
 }
 
@@ -99,6 +101,7 @@ std::list<std::string> Tilesetlist::getNames() const
   std::list<std::string> names;
   for (const_iterator it = begin(); it != end(); it++)
     names.push_back((*it)->getName());
+  names.sort(case_insensitive);
   return names;
 }
 
@@ -108,6 +111,7 @@ std::list<std::string> Tilesetlist::getNames(guint32 tilesize) const
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->getTileSize() == tilesize)
       names.push_back((*it)->getName());
+  names.sort(case_insensitive);
   return names;
 }
 

@@ -133,6 +133,7 @@ std::list<std::string> Armysetlist::getValidNames() const
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->validate() == true)
       names.push_back((*it)->getName());
+  names.sort(case_insensitive);
   return names;
 }
 
@@ -142,6 +143,7 @@ std::list<std::string> Armysetlist::getValidNames(guint32 tilesize)
   for (iterator it = begin(); it != end(); it++)
     if ((*it)->getTileSize() == tilesize && (*it)->validate() == true)
       names.push_back((*it)->getName());
+  names.sort(case_insensitive);
   return names;
 }
 
@@ -150,6 +152,7 @@ std::list<std::string> Armysetlist::getNames() const
   std::list<std::string> names;
   for (const_iterator it = begin(); it != end(); it++)
     names.push_back((*it)->getName());
+  names.sort(case_insensitive);
   return names;
 }
 
@@ -159,6 +162,7 @@ std::list<std::string> Armysetlist::getNames(guint32 tilesize)
   for (iterator it = begin(); it != end(); it++)
     if ((*it)->getTileSize() == tilesize)
       names.push_back((*it)->getName());
+  names.sort(case_insensitive);
   return names;
 }
 

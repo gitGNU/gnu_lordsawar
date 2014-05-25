@@ -429,3 +429,18 @@ std::string File::get_extension(std::string filename)
     return "";
   return filename.substr(filename.rfind('.'));
 }
+
+//this method is from http://www.cplusplus.com/reference/list/list/sort/
+bool case_insensitive (const std::string& first, const std::string& second)
+{
+  unsigned int i = 0;
+  while (i < first.length () && i < second.length ())
+    {
+      if (tolower (first[i]) < tolower (second[i])) 
+        return true;
+      else if (tolower (first[i]) > tolower (second[i])) 
+        return false;
+      ++i;
+    }
+  return (first.length() < second.length());
+}
