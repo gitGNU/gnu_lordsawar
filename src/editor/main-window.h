@@ -189,6 +189,7 @@ class MainWindow: public sigc::trackable
 
     void clear_save_file_of_scenario_specific_data();
     Tile::Type get_terrain();
+    int get_pointer_index();
     int get_tile_style_id();
     void setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> xml,
 	std::string prefix, std::string image_file,

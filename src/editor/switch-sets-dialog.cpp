@@ -112,7 +112,11 @@ SwitchSetsDialog::SwitchSetsDialog()
     box->pack_start(*shield_theme_combobox, Gtk::PACK_SHRINK);
 
     on_tile_size_changed();
-
+  
+    tileset_changed = false;
+    armyset_changed = false;
+    cityset_changed = false;
+    shieldset_changed = false;
 }
 
 SwitchSetsDialog::~SwitchSetsDialog()
@@ -221,12 +225,24 @@ int SwitchSetsDialog::run()
      get_active_tile_size());
   selected_armyset = Armysetlist::getInstance()->getArmyset(subdir);
 
+  Armyset *old_armyset = Armysetlist::getInstance()->getArmyset(Playerlist::getInstance()->getNeutral()->getArmyset());
+  if (old_armyset->getId() != selected_armyset->getId())
+    armyset_changed = true;
   GameMap::getInstance()->switchArmysets(selected_armyset);
   if (selected_cityset->getBaseName() != GameMap::getCityset()->getBaseName())
-    GameMap::getInstance()->switchCityset(selected_cityset);
+    {
+      cityset_changed = true;
+      GameMap::getInstance()->switchCityset(selected_cityset);
+    }
   if (selected_shieldset->getBaseName() != GameMap::getInstance()->getShieldsetName())
-    GameMap::getInstance()->switchShieldset(selected_shieldset);
+    {
+      shieldset_changed = true;
+      GameMap::getInstance()->switchShieldset(selected_shieldset);
+    }
   if (selected_tileset->getBaseName() != GameMap::getInstance()->getTilesetName())
-    GameMap::getInstance()->switchTileset(selected_tileset);
+    {
+      tileset_changed = true;
+      GameMap::getInstance()->switchTileset(selected_tileset);
+    }
   return response;
 }

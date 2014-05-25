@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -47,6 +47,10 @@ class SwitchSetsDialog
     Cityset* get_selected_cityset() {return selected_cityset;};
     Shieldset* get_selected_shieldset() {return selected_shieldset;};
 
+    bool get_armyset_changed() const {return armyset_changed;};
+    bool get_tileset_changed() const {return tileset_changed;};
+    bool get_cityset_changed() const {return cityset_changed;};
+    bool get_shieldset_changed() const {return shieldset_changed;};
     
  private:
     Gtk::Dialog* dialog;
@@ -64,6 +68,10 @@ class SwitchSetsDialog
     Shieldset* selected_shieldset;
     Cityset* selected_cityset;
     Armyset* selected_armyset;
+    bool armyset_changed;
+    bool tileset_changed;
+    bool cityset_changed;
+    bool shieldset_changed;
 
     void switchArmyset(Armyset *armyset);
 };

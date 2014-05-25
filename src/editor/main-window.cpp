@@ -1261,7 +1261,6 @@ void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
 
 }
 
-    
 void MainWindow::auto_select_appropriate_pointer()
 {
   switch (get_terrain())
@@ -1332,16 +1331,9 @@ void MainWindow::on_pointer_radiobutton_toggled()
     EditorBigMap::Pointer pointer = EditorBigMap::POINTER;
     int size = 1;
     
-    for (std::vector<PointerItem>::iterator i = pointer_items.begin(),
-	     end = pointer_items.end(); i != end; ++i)
-    {
-	if (i->button->get_active())
-	{
-	    pointer = i->pointer;
-	    size = i->size;
-	    break;
-	}
-    }
+    int i = get_pointer_index();
+    pointer = pointer_items[i].pointer;
+    size = pointer_items[i].size;
     
     if (bigmap)
 	bigmap->set_pointer(pointer, size, get_terrain(),
@@ -1867,8 +1859,11 @@ void MainWindow::on_switch_sets_activated()
       update_window_title();
       GraphicsCache::getInstance()->reset();
       bigmap->screen_size_changed(bigmap_image->get_allocation()); 
-      setup_terrain_radiobuttons();
-      on_terrain_radiobutton_toggled();
+      if (d.get_tileset_changed())
+        {
+          setup_terrain_radiobuttons();
+          on_terrain_radiobutton_toggled();
+        }
       redraw();
       fill_players();
     }
@@ -1931,4 +1926,16 @@ void MainWindow::update_window_title()
     }
   title += _("LordsAWar! Scenario Editor");
   window->set_title(title);
+}
+    
+int MainWindow::get_pointer_index()
+{
+  int c = 0;
+  for (std::vector<PointerItem>::iterator i = pointer_items.begin(),
+       end = pointer_items.end(); i != end; ++i, c++)
+    {
+      if (i->button->get_active())
+        return c;
+    }
+  return 0;
 }
