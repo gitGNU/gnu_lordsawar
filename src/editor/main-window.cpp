@@ -1026,7 +1026,7 @@ void MainWindow::on_edit_shieldset_activated()
   ShieldSetWindow* shieldset_window;
   Shieldset *shieldset = GameMap::getShieldset();
   std::string file = shieldset->getConfigurationFile();
-  shieldset_window = new ShieldSetWindow (file);
+  shieldset_window = new ShieldSetWindow (window, file);
   shieldset_window->get_window().property_transient_for() = window;
   shieldset_window->get_window().set_modal();
   shieldset_window->get_window().set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
@@ -1059,7 +1059,7 @@ void MainWindow::on_edit_armyset_activated()
   Armyset *armyset = Armysetlist::getInstance()->getArmyset(army_set_id);
   std::string file = armyset->getConfigurationFile();
  
-  ArmySetWindow* armyset_window = new ArmySetWindow (file);
+  ArmySetWindow* armyset_window = new ArmySetWindow (window, file);
   armyset_window->get_window().property_transient_for() = window;
   armyset_window->get_window().set_modal();
   armyset_window->get_window().set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
@@ -1091,7 +1091,7 @@ void MainWindow::on_edit_cityset_activated()
   Gtk::Main *kit = Gtk::Main::instance();;
   Cityset *cityset = GameMap::getCityset();
   std::string file = cityset->getConfigurationFile();
-  CitySetWindow* cityset_window = new CitySetWindow (file);
+  CitySetWindow* cityset_window = new CitySetWindow (window, file);
   cityset_window->get_window().property_transient_for() = window;
   cityset_window->get_window().set_modal();
   cityset_window->get_window().set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
@@ -1135,7 +1135,7 @@ void MainWindow::on_edit_tileset_activated()
   Gtk::Main *kit = Gtk::Main::instance();;
   Tileset *tileset = GameMap::getTileset();
   std::string file = tileset->getConfigurationFile();
-  TileSetWindow* tileset_window = new TileSetWindow (file);
+  TileSetWindow* tileset_window = new TileSetWindow (window, file);
   tileset_window->get_window().property_transient_for() = window;
   tileset_window->get_window().set_modal();
   tileset_window->get_window().set_position(Gtk::WIN_POS_CENTER_ON_PARENT);

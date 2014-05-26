@@ -30,7 +30,7 @@
 class CitySetWindow: public sigc::trackable
 {
  public:
-    CitySetWindow(std::string load_filename = "");
+    CitySetWindow(Gtk::Window *parent, std::string load_filename = "");
     ~CitySetWindow();
 
     void show();

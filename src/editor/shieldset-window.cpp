@@ -55,7 +55,7 @@
 #include "editor-recover-dialog.h"
 
 
-ShieldSetWindow::ShieldSetWindow(std::string load_filename)
+ShieldSetWindow::ShieldSetWindow(Gtk::Window *parent, std::string load_filename)
 {
   autosave = File::getSavePath() + "autosave" + Shieldset::file_extension;
   needs_saving = false;
@@ -148,7 +148,8 @@ ShieldSetWindow::ShieldSetWindow(std::string load_filename)
                  r->getImagesNeeded());
           }
         EditorRecoverDialog d(m);
-        d.set_parent_window(*window);
+        if (parent)
+          d.set_parent_window(*parent);
         int response = d.run();
         d.hide();
         //ask if we want to recover the autosave.

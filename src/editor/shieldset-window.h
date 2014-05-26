@@ -32,7 +32,7 @@
 class ShieldSetWindow: public sigc::trackable
 {
  public:
-    ShieldSetWindow(std::string load_filename = "");
+    ShieldSetWindow(Gtk::Window *parent, std::string load_filename = "");
     ~ShieldSetWindow();
 
     void show();

@@ -62,7 +62,7 @@
 #include "glade-helpers.h"
 
 
-TileSetWindow::TileSetWindow(std::string load_filename)
+TileSetWindow::TileSetWindow(Gtk::Window *parent, std::string load_filename)
 {
   autosave = File::getSavePath() + "autosave" + Tileset::file_extension;
   needs_saving = false;
@@ -291,7 +291,8 @@ TileSetWindow::TileSetWindow(std::string load_filename)
                                    r->getName(), r->getNumberOfTiles());
           }
         EditorRecoverDialog d(m);
-        d.set_parent_window(*window);
+        if (parent)
+          d.set_parent_window(*parent);
         int response = d.run();
         d.hide();
         //ask if we want to recover the autosave.

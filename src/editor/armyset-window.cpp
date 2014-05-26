@@ -56,7 +56,7 @@
 #include "image-editor-dialog.h"
 
 
-ArmySetWindow::ArmySetWindow(std::string load_filename)
+ArmySetWindow::ArmySetWindow(Gtk::Window *parent, std::string load_filename)
 {
   autosave = File::getSavePath() + "autosave" + Armyset::file_extension;
   needs_saving = false;
@@ -312,39 +312,40 @@ ArmySetWindow::ArmySetWindow(std::string load_filename)
     update_armyset_buttons();
     update_armyset_menuitems();
 
-    if (File::exists(autosave))
-      {
-        std::string m;
-        std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Armyset::file_extension);
-        if (files.size() == 0)
-          m = _("Do you want to recover the session?");
-        else
-          {
-            RecentlyEditedArmysetFile *r = dynamic_cast<RecentlyEditedArmysetFile*>(files.front());
-            if (r->getName() == "")
-              m = String::ucompose(_("Do you want to recover %1 (%2 armies)?"),
-                                   File::get_basename(r->getFileName(), true),
-                                   r->getNumberOfArmies());
-            else
-              m = String::ucompose
-                (_("Do you want to recover %1 (%2, %3 armies)?"),
-                 File::get_basename(r->getFileName(), true),
-                 r->getName(), r->getNumberOfArmies());
-          }
-        EditorRecoverDialog d(m);
-        d.set_parent_window(*window);
-        int response = d.run();
-        d.hide();
-        //ask if we want to recover the autosave.
-        if (response == Gtk::RESPONSE_ACCEPT)
-          {
-            load_armyset (autosave);
-            update_army_panel();
-            update_armyset_buttons();
-            update_armyset_menuitems();
-            return;
-          }
-      }
+  if (File::exists(autosave))
+    {
+      std::string m;
+      std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Armyset::file_extension);
+      if (files.size() == 0)
+        m = _("Do you want to recover the session?");
+      else
+        {
+          RecentlyEditedArmysetFile *r = dynamic_cast<RecentlyEditedArmysetFile*>(files.front());
+          if (r->getName() == "")
+            m = String::ucompose(_("Do you want to recover %1 (%2 armies)?"),
+                                 File::get_basename(r->getFileName(), true),
+                                 r->getNumberOfArmies());
+          else
+            m = String::ucompose
+              (_("Do you want to recover %1 (%2, %3 armies)?"),
+               File::get_basename(r->getFileName(), true),
+               r->getName(), r->getNumberOfArmies());
+        }
+      EditorRecoverDialog d(m);
+      if (parent)
+        d.set_parent_window(*parent);
+      int response = d.run();
+      d.hide();
+      //ask if we want to recover the autosave.
+      if (response == Gtk::RESPONSE_ACCEPT)
+        {
+          load_armyset (autosave);
+          update_army_panel();
+          update_armyset_buttons();
+          update_armyset_menuitems();
+          return;
+        }
+    }
     if (load_filename.empty() == false)
       {
 	load_armyset (load_filename);

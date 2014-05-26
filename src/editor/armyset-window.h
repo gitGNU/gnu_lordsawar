@@ -32,9 +32,9 @@
 class ArmySetWindow: public sigc::trackable
 {
  public:
-    ArmySetWindow(std::string load_filename = "");
+    ArmySetWindow(Gtk::Window *parent, std::string load_filename = "");
     ~ArmySetWindow();
-
+    
     void show();
     void hide();
 

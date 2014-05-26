@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -61,9 +61,9 @@ int main(int argc, char* argv[])
 	Gtk::Main kit(argc, argv);
 
 	if (argc > 1)
-	  tileset_window = new TileSetWindow(argv[1]);
+	  tileset_window = new TileSetWindow (NULL, argv[1]);
 	else
-	  tileset_window = new TileSetWindow;
+	  tileset_window = new TileSetWindow (NULL);
 	tileset_window->show();
 	
 	kit.run(tileset_window->get_window());

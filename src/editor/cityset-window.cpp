@@ -51,7 +51,7 @@
 #include "editor-recover-dialog.h"
 
 
-CitySetWindow::CitySetWindow(std::string load_filename)
+CitySetWindow::CitySetWindow(Gtk::Window *parent, std::string load_filename)
 {
   autosave = File::getSavePath() + "autosave" + Cityset::file_extension;
   needs_saving = false;
@@ -166,7 +166,8 @@ CitySetWindow::CitySetWindow(std::string load_filename)
               }
           }
         EditorRecoverDialog d(m);
-        d.set_parent_window(*window);
+        if (parent)
+          d.set_parent_window(*parent);
         int response = d.run();
         d.hide();
         //ask if we want to recover the autosave.

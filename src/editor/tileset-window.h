@@ -32,7 +32,7 @@
 class TileSetWindow: public sigc::trackable
 {
  public:
-    TileSetWindow(std::string load_filename = "");
+    TileSetWindow(Gtk::Window *parent, std::string load_filename = "");
     ~TileSetWindow();
 
     void show();
