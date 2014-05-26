@@ -621,6 +621,7 @@ void ArmySetWindow::on_save_as_activated()
   if (suggested_tile_size != d_armyset->getTileSize())
     {
       TileSizeEditorDialog d(d_armyset->getTileSize(), suggested_tile_size);
+      d.set_parent_window(*window);
       int response = d.run();
       if (response == Gtk::RESPONSE_ACCEPT)
         d_armyset->setTileSize(d.get_selected_tilesize());
@@ -2011,8 +2012,8 @@ bool ArmySetWindow::quit()
   if (needs_saving == true)
     {
       EditorQuitDialog d;
-      int response = d.run();
       d.set_parent_window(*window);
+      int response = d.run();
       d.hide();
       
       if (response == Gtk::RESPONSE_CANCEL) //we don't want to quit

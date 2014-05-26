@@ -572,8 +572,8 @@ bool ShieldSetWindow::quit()
   if (needs_saving == true)
     {
       EditorQuitDialog d;
-      int response = d.run();
       d.set_parent_window(*window);
+      int response = d.run();
       d.hide();
       
       if (response == Gtk::RESPONSE_CANCEL) //we don't want to quit

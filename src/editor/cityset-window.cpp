@@ -394,6 +394,7 @@ void CitySetWindow::on_save_as_activated()
   if (suggested_tile_size != d_cityset->getTileSize())
     {
       TileSizeEditorDialog d(d_cityset->getTileSize(), suggested_tile_size);
+      d.set_parent_window(*window);
       int response = d.run();
       if (response == Gtk::RESPONSE_ACCEPT)
         d_cityset->setTileSize(d.get_selected_tilesize());
@@ -582,8 +583,8 @@ bool CitySetWindow::quit()
   if (needs_saving == true)
     {
       EditorQuitDialog d;
-      int response = d.run();
       d.set_parent_window(*window);
+      int response = d.run();
       d.hide();
 
       if (response == Gtk::RESPONSE_CANCEL) //we don't want to quit
