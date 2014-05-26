@@ -319,7 +319,9 @@ void EditorBigMap::change_map_under_cursor()
               Stack *s = gm->getFriendlyStack(from);
               if (!s)
                 s = gm->getStack(from);
-              if (gm->canPutStack(s->size(), s->getOwner(), tile) == true)
+              std::list<Stack *> enemy_stacks = gm->getEnemyStacks(tile, s->getOwner());
+              if (gm->canPutStack(s->size(), s->getOwner(), tile) == true &&
+                  enemy_stacks.empty() == true)
                 {
                   gm->moveStack(s, tile);
                   moving_objects_from = Vector<int>(-1,-1);
@@ -601,7 +603,7 @@ void EditorBigMap::after_draw()
     Gdk::RGBA move_box_color = Gdk::RGBA();
     move_box_color.set_rgba(50.0/255.0, 200.0/255.0, 50.0/255.0);
     Gdk::RGBA moving_box_color = Gdk::RGBA();
-    moving_box_color.set_rgba(50.0/255.0, 50.0/255.0, 200.0/255.0);
+    moving_box_color.set_rgba(250.0/255.0, 250.0/255.0, 0.0/255.0);
     for (std::vector<Vector<int> >::iterator i = tiles.begin(),
 	     end = tiles.end(); i != end; ++i)
       {
