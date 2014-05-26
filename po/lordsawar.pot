@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2014-05-25 20:31-0400\n"
+"POT-Creation-Date: 2014-05-26 11:58-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -221,7 +221,7 @@ msgstr ""
 #: ../dat/glade/game-lobby-dialog.ui.h:8 ../dat/glade/hero-offer-dialog.ui.h:3
 #: ../dat/glade/ruin-report-dialog.ui.h:3
 #: ../dat/glade/editor/armyset-info-dialog.ui.h:5
-#: ../dat/glade/editor/armyset-window.ui.h:55
+#: ../dat/glade/editor/armyset-window.ui.h:56
 #: ../dat/glade/editor/city-editor-dialog.ui.h:7
 #: ../dat/glade/editor/itemlist-dialog.ui.h:11
 #: ../dat/glade/editor/map-info-dialog.ui.h:5
@@ -1381,6 +1381,7 @@ msgid "Directory:"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-info-dialog.ui.h:7
+#: ../dat/glade/editor/armyset-window.ui.h:34
 #: ../dat/glade/editor/tileset-info-dialog.ui.h:7
 #: ../dat/glade/editor/cityset-info-dialog.ui.h:7
 #: ../dat/glade/editor/shieldset-info-dialog.ui.h:7
@@ -1422,7 +1423,7 @@ msgstr ""
 
 #. init GUI stuff
 #: ../dat/glade/editor/armyset-window.ui.h:2
-#: ../src/editor/armyset-window.cpp:2006 ../src/editor/armyset-main.cpp:55
+#: ../src/editor/armyset-window.cpp:2055 ../src/editor/armyset-main.cpp:55
 msgid "LordsAWar! Armyset Editor"
 msgstr ""
 
@@ -1546,147 +1547,147 @@ msgstr ""
 msgid "Male Hero"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:34
+#: ../dat/glade/editor/armyset-window.ui.h:35
 msgid "Travels faster in forests"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:35
+#: ../dat/glade/editor/armyset-window.ui.h:36
 msgid "Travels faster in marshland"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:36
+#: ../dat/glade/editor/armyset-window.ui.h:37
 msgid "Travels faster in hills"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:37
+#: ../dat/glade/editor/armyset-window.ui.h:38
 msgid "Travels faster in mountains"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:38
+#: ../dat/glade/editor/armyset-window.ui.h:39
 msgid "Can Fly"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:39
+#: ../dat/glade/editor/armyset-window.ui.h:40
 msgid "Movement Bonus"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:40
+#: ../dat/glade/editor/armyset-window.ui.h:41
 msgid "+1 Str in Open"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:41
+#: ../dat/glade/editor/armyset-window.ui.h:42
 msgid "+2 Str in Open"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:42
+#: ../dat/glade/editor/armyset-window.ui.h:43
 msgid "+1 Str in Forest"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:43
+#: ../dat/glade/editor/armyset-window.ui.h:44
 msgid "+1 Str in Hills"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:44
+#: ../dat/glade/editor/armyset-window.ui.h:45
 msgid "+1 Str in City"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:45
+#: ../dat/glade/editor/armyset-window.ui.h:46
 msgid "+2 Str in City"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:46
+#: ../dat/glade/editor/armyset-window.ui.h:47
 msgid "+1 to Stack in Hills"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:47
+#: ../dat/glade/editor/armyset-window.ui.h:48
 msgid "Subtract All City Bonus"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:48
+#: ../dat/glade/editor/armyset-window.ui.h:49
 msgid "-1 Str to Enemy Stack"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:49
+#: ../dat/glade/editor/armyset-window.ui.h:50
 msgid "+1 Str to Stack"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:50
+#: ../dat/glade/editor/armyset-window.ui.h:51
 msgid "+2 Str to Stack"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:51
+#: ../dat/glade/editor/armyset-window.ui.h:52
 msgid "Subtract All Non-Hero Bonuses"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:52
+#: ../dat/glade/editor/armyset-window.ui.h:53
 msgid "Subtract all Hero Bonuses"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:53
+#: ../dat/glade/editor/armyset-window.ui.h:54
 msgid "Fighting Bonus"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:54
+#: ../dat/glade/editor/armyset-window.ui.h:55
 msgid "Capabilities"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:56
+#: ../dat/glade/editor/armyset-window.ui.h:57
 #: ../dat/glade/editor/map-info-dialog.ui.h:6
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:7
 #: ../dat/glade/editor/temple-editor-dialog.ui.h:7
 msgid "Description:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:57
+#: ../dat/glade/editor/armyset-window.ui.h:58
 msgid "White Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:58
+#: ../dat/glade/editor/armyset-window.ui.h:59
 msgid "Green Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:59
+#: ../dat/glade/editor/armyset-window.ui.h:60
 msgid "Yellow Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:60
+#: ../dat/glade/editor/armyset-window.ui.h:61
 msgid "Light Blue Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:61
+#: ../dat/glade/editor/armyset-window.ui.h:62
 msgid "Red Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:62
+#: ../dat/glade/editor/armyset-window.ui.h:63
 msgid "Dark Blue Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:63
+#: ../dat/glade/editor/armyset-window.ui.h:64
 msgid "Orange Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:64
+#: ../dat/glade/editor/armyset-window.ui.h:65
 msgid "Black Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:65
+#: ../dat/glade/editor/armyset-window.ui.h:66
 msgid "Neutral Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:66
-#: ../src/editor/armyset-window.cpp:866 ../src/editor/armyset-window.cpp:1034
-#: ../src/editor/cityset-window.cpp:214 ../src/editor/tileset-window.cpp:402
-#: ../src/editor/tileset-window.cpp:414 ../src/editor/tileset-window.cpp:423
-#: ../src/editor/shieldset-window.cpp:198
-#: ../src/editor/shieldset-window.cpp:486
+#: ../dat/glade/editor/armyset-window.ui.h:67
+#: ../src/editor/armyset-window.cpp:883 ../src/editor/armyset-window.cpp:1052
+#: ../src/editor/cityset-window.cpp:215 ../src/editor/tileset-window.cpp:403
+#: ../src/editor/tileset-window.cpp:415 ../src/editor/tileset-window.cpp:424
+#: ../src/editor/shieldset-window.cpp:199
+#: ../src/editor/shieldset-window.cpp:487
 msgid "no image set"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:67
+#: ../dat/glade/editor/armyset-window.ui.h:68
 msgid "Same for all players"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:68
+#: ../dat/glade/editor/armyset-window.ui.h:69
 msgid "Appearance"
 msgstr ""
 
@@ -2312,7 +2313,7 @@ msgstr ""
 
 #. init GUI stuff
 #: ../dat/glade/editor/tileset-window.ui.h:8 ../src/editor/tileset-main.cpp:54
-#: ../src/editor/tileset-window.cpp:1471
+#: ../src/editor/tileset-window.cpp:1466
 msgid "LordsAWar! Tileset Editor"
 msgstr ""
 
@@ -2491,7 +2492,7 @@ msgstr ""
 
 #. init GUI stuff
 #: ../dat/glade/editor/cityset-window.ui.h:1
-#: ../src/editor/cityset-window.cpp:838 ../src/editor/cityset-main.cpp:55
+#: ../src/editor/cityset-window.cpp:840 ../src/editor/cityset-main.cpp:55
 msgid "LordsAWar! Cityset Editor"
 msgstr ""
 
@@ -2512,7 +2513,7 @@ msgid "Validate Cityset"
 msgstr ""
 
 #: ../dat/glade/editor/cityset-window.ui.h:10
-#: ../src/editor/cityset-window.cpp:502
+#: ../src/editor/cityset-window.cpp:504
 msgid "Edit Cityset Information"
 msgstr ""
 
@@ -2534,55 +2535,55 @@ msgid "(1 picture)"
 msgstr ""
 
 #: ../dat/glade/editor/cityset-window.ui.h:16
-msgid "(3 picture)"
+msgid "(3 pictures)"
 msgstr ""
 
 #: ../dat/glade/editor/cityset-window.ui.h:17
-msgid "(8 picture)"
-msgstr ""
-
-#: ../dat/glade/editor/cityset-window.ui.h:18
 msgid "Towers Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/cityset-window.ui.h:19
+#: ../dat/glade/editor/cityset-window.ui.h:18
 msgid "Temple Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/cityset-window.ui.h:20
+#: ../dat/glade/editor/cityset-window.ui.h:19
 msgid "Ruins Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/cityset-window.ui.h:21
+#: ../dat/glade/editor/cityset-window.ui.h:20
 msgid "Signpost Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/cityset-window.ui.h:22
+#: ../dat/glade/editor/cityset-window.ui.h:21
 msgid "Port Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/cityset-window.ui.h:23
+#: ../dat/glade/editor/cityset-window.ui.h:22
 msgid "Razed Cities Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/cityset-window.ui.h:24
+#: ../dat/glade/editor/cityset-window.ui.h:23
 msgid "Cities Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/cityset-window.ui.h:25
+#: ../dat/glade/editor/cityset-window.ui.h:24
 msgid "Pictures"
 msgstr ""
 
-#: ../dat/glade/editor/cityset-window.ui.h:26
+#: ../dat/glade/editor/cityset-window.ui.h:25
 msgid "City:"
 msgstr ""
 
-#: ../dat/glade/editor/cityset-window.ui.h:27
+#: ../dat/glade/editor/cityset-window.ui.h:26
 msgid "Ruin:"
 msgstr ""
 
-#: ../dat/glade/editor/cityset-window.ui.h:28
+#: ../dat/glade/editor/cityset-window.ui.h:27
 msgid "Temple:"
+msgstr ""
+
+#: ../dat/glade/editor/cityset-window.ui.h:28
+msgid "(e.g. a city sits on 2x2 tiles)"
 msgstr ""
 
 #: ../dat/glade/editor/cityset-window.ui.h:29
@@ -2591,7 +2592,7 @@ msgstr ""
 
 #. init GUI stuff
 #: ../dat/glade/editor/shieldset-window.ui.h:1
-#: ../src/editor/shieldset-main.cpp:55 ../src/editor/shieldset-window.cpp:749
+#: ../src/editor/shieldset-main.cpp:55 ../src/editor/shieldset-window.cpp:750
 msgid "LordsAWar! Shieldset Editor"
 msgstr ""
 
@@ -2612,7 +2613,7 @@ msgid "Validate Shieldset"
 msgstr ""
 
 #: ../dat/glade/editor/shieldset-window.ui.h:10
-#: ../src/editor/shieldset-window.cpp:447
+#: ../src/editor/shieldset-window.cpp:448
 msgid "Edit Shieldset Information"
 msgstr ""
 
@@ -5303,9 +5304,9 @@ msgstr ""
 #: ../src/editor/itemlist-dialog.cpp:350 ../src/editor/itemlist-dialog.cpp:354
 #: ../src/editor/armyset-info-dialog.cpp:67
 #: ../src/editor/cityset-info-dialog.cpp:67
-#: ../src/editor/armyset-window.cpp:1873 ../src/editor/main-window.cpp:504
+#: ../src/editor/armyset-window.cpp:1916 ../src/editor/main-window.cpp:504
 #: ../src/editor/main-window.cpp:616 ../src/editor/tileset-info-dialog.cpp:67
-#: ../src/editor/tileset-window.cpp:818
+#: ../src/editor/tileset-window.cpp:820
 #: ../src/editor/shieldset-info-dialog.cpp:67 ../src/armyprotobase.cpp:41
 msgid "Untitled"
 msgstr ""
@@ -5337,94 +5338,94 @@ msgstr ""
 msgid "That name is already in use."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:313 ../src/editor/cityset-window.cpp:145
+#: ../src/editor/armyset-window.cpp:320 ../src/editor/cityset-window.cpp:145
 #: ../src/editor/tileset-window.cpp:279 ../src/editor/shieldset-window.cpp:132
 msgid "Do you want to recover the session?"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:318
+#: ../src/editor/armyset-window.cpp:325
 msgid "Do you want to recover %1 (%2 armies)?"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:323
+#: ../src/editor/armyset-window.cpp:330
 msgid "Do you want to recover %1 (%2, %3 armies)?"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:487
+#: ../src/editor/armyset-window.cpp:497
 msgid "Make a New Armyset"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:520
+#: ../src/editor/armyset-window.cpp:530
 msgid "Choose an Armyset to Load"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:522
+#: ../src/editor/armyset-window.cpp:532
 msgid "LordsAWar Armysets (*.lwa)"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:555
+#: ../src/editor/armyset-window.cpp:565
 msgid "There must be at least one army unit in the armyset."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:558
+#: ../src/editor/armyset-window.cpp:568
 msgid "There must be at least one hero in the armyset."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:561
+#: ../src/editor/armyset-window.cpp:571
 msgid ""
 "There must be at least one army unit with a production cost of more than "
 "zero."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:564
+#: ../src/editor/armyset-window.cpp:574
 msgid "There must be at least one army unit than can defend a ruin."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:567
+#: ../src/editor/armyset-window.cpp:577
 msgid "There must be at least one army unit than can be awarded to a hero."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:570
+#: ../src/editor/armyset-window.cpp:580
 msgid "The ship image must be set."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:573
+#: ../src/editor/armyset-window.cpp:583
 msgid "The hero's standard (the flag) image must be set."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:576
+#: ../src/editor/armyset-window.cpp:586
 msgid "The picture for the bag of items must be set."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:584
+#: ../src/editor/armyset-window.cpp:594
 msgid "%1 does not have an image set for the %2 player"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:591
+#: ../src/editor/armyset-window.cpp:601
 msgid "An army unit does not have a name."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:599
+#: ../src/editor/armyset-window.cpp:609
 msgid "The armyset is valid."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:627
+#: ../src/editor/armyset-window.cpp:638
 msgid "Save a Copy of a Armyset"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:663 ../src/editor/armyset-window.cpp:712
+#: ../src/editor/armyset-window.cpp:674 ../src/editor/armyset-window.cpp:723
 msgid "Error!  Armyset could not be saved."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:795
+#: ../src/editor/armyset-window.cpp:805
 msgid "Edit Armyset Information"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:1926
+#: ../src/editor/armyset-window.cpp:1974
 msgid "Error!  The version of the armyset is unsupported."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:1928
+#: ../src/editor/armyset-window.cpp:1976
 msgid "Error!  Armyset could not be loaded."
 msgstr ""
 
@@ -5440,71 +5441,71 @@ msgstr ""
 msgid "Do you want to recover %1 (%2)?"
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:293
+#: ../src/editor/cityset-window.cpp:294
 msgid "Make a New Cityset"
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:323
+#: ../src/editor/cityset-window.cpp:324
 msgid "Choose a Cityset to Load"
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:325
+#: ../src/editor/cityset-window.cpp:326
 msgid "LordsAWar Citysets (*.lwc)"
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:355
+#: ../src/editor/cityset-window.cpp:356
 msgid "The cities picture is not set."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:357
+#: ../src/editor/cityset-window.cpp:358
 msgid "The razed cities picture is not set."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:359
+#: ../src/editor/cityset-window.cpp:360
 msgid "The port picture is not set."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:361
+#: ../src/editor/cityset-window.cpp:362
 msgid "The signpost picture is not set."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:363
+#: ../src/editor/cityset-window.cpp:364
 msgid "The ruins picture is not set."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:365
+#: ../src/editor/cityset-window.cpp:366
 msgid "The temple picture is not set."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:367
+#: ../src/editor/cityset-window.cpp:368
 msgid "The towers picture is not set."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:369 ../src/editor/cityset-window.cpp:373
+#: ../src/editor/cityset-window.cpp:370 ../src/editor/cityset-window.cpp:374
 msgid "The tile width for temples must be over zero."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:371
+#: ../src/editor/cityset-window.cpp:372
 msgid "The tile width for ruins must be over zero."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:381
+#: ../src/editor/cityset-window.cpp:382
 msgid "The cityset is valid."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:403
+#: ../src/editor/cityset-window.cpp:405
 msgid "Save a Copy of a Cityset"
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:439 ../src/editor/cityset-window.cpp:483
+#: ../src/editor/cityset-window.cpp:441 ../src/editor/cityset-window.cpp:485
 msgid "Error!  Cityset could not be saved."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:554
+#: ../src/editor/cityset-window.cpp:556
 msgid "Error!  The version of cityset is unsupported."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:556
+#: ../src/editor/cityset-window.cpp:558
 msgid "Error!  Cityset could not be loaded."
 msgstr ""
 
@@ -5540,7 +5541,7 @@ msgid "Map was not saved!"
 msgstr ""
 
 #: ../src/editor/main-window.cpp:877 ../src/editor/main-window.cpp:906
-#: ../src/editor/tileset-window.cpp:1044
+#: ../src/editor/tileset-window.cpp:1046
 msgid "PNG files (*.png)"
 msgstr ""
 
@@ -5733,35 +5734,35 @@ msgstr ""
 msgid "Do you want to recover %1 (%2, %3 tiles)?"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:510
+#: ../src/editor/tileset-window.cpp:511
 msgid "Make a New Tileset"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:544
+#: ../src/editor/tileset-window.cpp:545
 msgid "Choose a Tileset to Load"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:546
+#: ../src/editor/tileset-window.cpp:547
 msgid "LordsAWar Tilesets (*.lwt)"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:581
+#: ../src/editor/tileset-window.cpp:583
 msgid "Save a Copy of a Tileset"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:617 ../src/editor/tileset-window.cpp:666
+#: ../src/editor/tileset-window.cpp:619 ../src/editor/tileset-window.cpp:668
 msgid "Error!  Tileset could not be saved."
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:1041
+#: ../src/editor/tileset-window.cpp:1043
 msgid "Choose an Image"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:1419
+#: ../src/editor/tileset-window.cpp:1414
 msgid "Error!  The version of the tileset is unsupported."
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:1421
+#: ../src/editor/tileset-window.cpp:1416
 msgid "Error!  Tileset could not be loaded."
 msgstr ""
 
@@ -5773,44 +5774,44 @@ msgstr ""
 msgid "Do you want to recover %1 (%2, %3 images needed)?"
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:252
+#: ../src/editor/shieldset-window.cpp:253
 msgid "Make a New Shieldset"
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:287
+#: ../src/editor/shieldset-window.cpp:288
 msgid "Choose a Shieldset to Load"
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:289
+#: ../src/editor/shieldset-window.cpp:290
 msgid "LordsAWar Shieldsets (*.lws)"
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:323
+#: ../src/editor/shieldset-window.cpp:324
 msgid "The shieldset must have 9 shields in it."
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:331
+#: ../src/editor/shieldset-window.cpp:332
 msgid "%1 must have all three images specified."
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:344
+#: ../src/editor/shieldset-window.cpp:345
 msgid "The shieldset is valid."
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:358
+#: ../src/editor/shieldset-window.cpp:359
 msgid "Save a Copy of a Shieldset"
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:394
-#: ../src/editor/shieldset-window.cpp:429
+#: ../src/editor/shieldset-window.cpp:395
+#: ../src/editor/shieldset-window.cpp:430
 msgid "Error!  Shieldset could not be saved."
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:532
+#: ../src/editor/shieldset-window.cpp:533
 msgid "Error!  The version of the shieldset is not supported."
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:534
+#: ../src/editor/shieldset-window.cpp:535
 msgid "Error!  Shieldset could not be loaded."
 msgstr ""
 
