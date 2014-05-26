@@ -414,6 +414,18 @@ bool Armyset::validateArmyUnitNames()
     }
   return true;
 }
+bool Armyset::validateArmyTypeIds()
+{
+  std::list<guint32> ids = std::list<guint32>();
+  for (iterator it = begin(); it != end(); it++)
+    {
+      if (std::find(ids.begin(), ids.end(), (*it)->getId()) == ids.end())
+        ids.push_back((*it)->getId());
+      else
+        return false;
+    }
+  return true;
+}
 bool Armyset::validate()
 {
   bool valid = true;
@@ -449,6 +461,10 @@ bool Armyset::validate()
     return false;
   //is there a name set for each army unit?
   valid = validateArmyUnitNames();
+  if (!valid)
+    return false;
+  //unique Ids per army unit?
+  valid = validateArmyTypeIds();
   if (!valid)
     return false;
 

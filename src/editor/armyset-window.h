@@ -60,6 +60,7 @@ class ArmySetWindow: public sigc::trackable
     Gtk::Image *black_image;
     Gtk::Image *neutral_image;
     Gtk::Entry *name_entry;
+    Gtk::ScrolledWindow *armies_scrolledwindow;
     Gtk::TreeView *armies_treeview;
     Gtk::TextView *description_textview;
     Gtk::Button *white_image_button;
@@ -78,6 +79,7 @@ class ArmySetWindow: public sigc::trackable
     Gtk::SpinButton *strength_spinbutton;
     Gtk::SpinButton *moves_spinbutton;
     Gtk::SpinButton *exp_spinbutton;
+    Gtk::SpinButton *id_spinbutton;
     Gtk::RadioButton *gender_none_radiobutton;
     Gtk::RadioButton *gender_male_radiobutton;
     Gtk::RadioButton *gender_female_radiobutton;
@@ -128,6 +130,7 @@ class ArmySetWindow: public sigc::trackable
     };
     const ArmiesColumns armies_columns;
     Glib::RefPtr<Gtk::ListStore> armies_list;
+    bool inhibit_scrolldown;
 
     bool on_delete_event(GdkEventAny *e);
 
@@ -182,6 +185,8 @@ class ArmySetWindow: public sigc::trackable
     void on_exp_text_changed(const Glib::ustring &s, int* p);
     void on_sight_changed();
     void on_sight_text_changed(const Glib::ustring &s, int* p);
+    void on_id_changed();
+    void on_id_text_changed(const Glib::ustring &s, int* p);
     void on_gender_none_toggled();
     void on_gender_male_toggled();
     void on_gender_female_toggled();

@@ -263,6 +263,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	bool validateArmyUnitImage(ArmyProto *a, Shield::Colour &c);
 	bool validateArmyUnitNames();
 	bool validateArmyUnitName(ArmyProto *a);
+	bool validateArmyTypeIds();
 	//! get filenames in this armyset, excepting the configuration file.
 	void getFilenames(std::list<std::string> &files);
         //! Delete the armyset's temporary directory.

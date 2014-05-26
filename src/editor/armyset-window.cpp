@@ -86,6 +86,7 @@ ArmySetWindow::ArmySetWindow(std::string load_filename)
     name_entry->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_name_changed));
     xml->get_widget("armies_treeview", armies_treeview);
+    xml->get_widget("armies_scrolledwindow", armies_scrolledwindow);
     xml->get_widget("description_textview", description_textview);
     description_textview->get_buffer()->signal_changed().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_description_changed));
@@ -189,6 +190,12 @@ ArmySetWindow::ArmySetWindow(std::string load_filename)
       (sigc::mem_fun(this, &ArmySetWindow::on_sight_changed));
     sight_spinbutton->signal_insert_text().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_sight_text_changed));
+    xml->get_widget("id_spinbutton", id_spinbutton);
+    id_spinbutton->set_range(0, 1000);
+    id_spinbutton->signal_changed().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_id_changed));
+    id_spinbutton->signal_insert_text().connect
+      (sigc::mem_fun(this, &ArmySetWindow::on_id_text_changed));
     xml->get_widget("move_forests_checkbutton", move_forests_checkbutton);
     move_forests_checkbutton->signal_toggled().connect
       (sigc::mem_fun(this, &ArmySetWindow::on_move_forests_toggled));
@@ -345,6 +352,7 @@ ArmySetWindow::ArmySetWindow(std::string load_filename)
 	update_armyset_menuitems();
 	update_army_panel();
       }
+    inhibit_scrolldown = false;
 }
 
 void
@@ -409,6 +417,7 @@ ArmySetWindow::update_army_panel()
       awardable_checkbutton->set_active(false);
       defends_ruins_checkbutton->set_active(false);
       sight_spinbutton->set_value(0);
+      id_spinbutton->set_value(0);
       move_forests_checkbutton->set_active(false);
       move_marshes_checkbutton->set_active(false);
       move_hills_checkbutton->set_active(false);
@@ -836,6 +845,13 @@ void ArmySetWindow::on_army_selected()
 {
   update_armyset_buttons();
   update_army_panel();
+  armies_treeview->queue_draw();
+  if (inhibit_scrolldown == false)
+    {
+      while (g_main_context_iteration(NULL, FALSE)); //doEvents
+      armies_scrolledwindow->get_vadjustment()->set_value
+        (armies_scrolledwindow->get_vadjustment()->get_upper());
+    }
 }
 
 void ArmySetWindow::fill_army_image(Gtk::Button *button, Gtk::Image *image, Shield::Colour c, ArmyProto *army)
@@ -900,6 +916,7 @@ void ArmySetWindow::fill_army_info(ArmyProto *army)
   awardable_checkbutton->set_active(army->getAwardable());
   defends_ruins_checkbutton->set_active(army->getDefendsRuins());
   sight_spinbutton->set_value(army->getSight());
+  id_spinbutton->set_value(army->getId());
 
   guint32 bonus = army->getMoveBonus();
   can_fly_checkbutton->set_active (bonus == 
@@ -1286,6 +1303,31 @@ void ArmySetWindow::on_sight_changed()
         }
     }
 }
+
+void ArmySetWindow::on_id_text_changed(const Glib::ustring &s, int* p)
+{
+  id_spinbutton->set_value(atoi(id_spinbutton->get_text().c_str()));
+  on_sight_changed();
+}
+
+void ArmySetWindow::on_id_changed()
+{
+  Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
+  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+
+  if (iterrow) 
+    {
+      Gtk::TreeModel::Row row = *iterrow;
+      ArmyProto *a = row[armies_columns.army];
+      a->setId(int(id_spinbutton->get_value()));
+      if (inhibit_needs_saving == false)
+        {
+          needs_saving = true;
+          update_window_title();
+        }
+    }
+}
+
 
 void ArmySetWindow::on_gender_none_toggled()
 {
@@ -1880,6 +1922,10 @@ void ArmySetWindow::on_add_army_clicked()
   d_armyset->push_back(a);
   needs_saving = true;
   update_window_title();
+  if (d_armyset->empty() == false)
+    {
+      armies_treeview->get_selection()->select(i);
+    }
 
 }
 
@@ -1903,6 +1949,7 @@ void ArmySetWindow::on_remove_army_clicked()
 
 bool ArmySetWindow::load_armyset(std::string filename)
 {
+  inhibit_scrolldown=true;
   std::string old_current_save_filename = current_save_filename;
   current_save_filename = filename;
   if (filename != autosave)
@@ -1955,6 +2002,7 @@ bool ArmySetWindow::load_armyset(std::string filename)
     }
   needs_saving = false;
   update_window_title();
+  inhibit_scrolldown=false;
   return true;
 }
 
