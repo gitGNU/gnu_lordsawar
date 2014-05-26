@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -41,9 +41,6 @@ QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
 				  + "/quest-assigned-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
     xml->get_widget("map_image", map_image);
 
     questmap = new QuestMap(quest);
@@ -53,8 +50,8 @@ QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
 
-    set_title(String::ucompose(_("Quest for %1"), 
-			       quest->getHero()->getName()));
+    dialog->set_title(String::ucompose(_("Quest for %1"), 
+                                       quest->getHero()->getName()));
 
     xml->get_widget("label", label);
     Glib::ustring s;

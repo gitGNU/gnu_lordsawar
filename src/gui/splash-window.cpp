@@ -57,9 +57,6 @@ SplashWindow::SplashWindow()
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
-    decorate(window, GraphicsCache::SPLASH_BACKGROUND);
-    window_closed.connect(sigc::mem_fun(this, &SplashWindow::on_window_closed));
-
     window->signal_delete_event().connect
       (sigc::mem_fun(*this, &SplashWindow::on_delete_event));
     
@@ -148,13 +145,6 @@ void SplashWindow::show()
 void SplashWindow::hide()
 {
     window->hide();
-}
-
-    
-void SplashWindow::on_window_closed()
-{
-  hide();
-  quit_requested.emit();
 }
 
 bool SplashWindow::on_delete_event(GdkEventAny *e)
@@ -337,16 +327,10 @@ void SplashWindow::on_pbm_game_created(GameParameters g)
 
 void SplashWindow::on_preferences_clicked()
 {
-  bool saved = Configuration::s_decorated;
   MainPreferencesDialog d;
   d.set_parent_window(*window);
   d.run();
   d.hide();
-  if (saved != Configuration::s_decorated)
-    {
-      TimedMessageDialog dialog(*window, _("Please exit the program and restart it for the changes to take effect."), 30);
-      dialog.run();
-    }
 }
     
 void SplashWindow::open_new_game_dialog()

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -42,9 +42,6 @@ DiplomacyReportDialog::DiplomacyReportDialog(Player *player)
 				"/diplomacy-report-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  decorate(dialog);
-  window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
   xml->get_widget("diplomacy_table", d_table);
 
   int order[MAX_PLAYERS];

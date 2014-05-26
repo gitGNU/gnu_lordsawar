@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -42,9 +42,6 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
     = Gtk::Builder::create_from_file(get_glade_path() + "/diplomacy-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  decorate(dialog);
-  window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
   xml->get_widget("proposals_table", d_proposals_table);
   xml->get_widget("offers_table", d_offers_table);
   xml->get_widget("player_label", d_player_label);

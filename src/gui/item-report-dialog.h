@@ -1,4 +1,4 @@
-//  Copyright (C) 2010, 2012 Ben Asselstine
+//  Copyright (C) 2010, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,12 +26,10 @@
 #include "itemmap.h"
 #include "player.h"
 
-
-#include "decorated.h"
 class Stack;
 class MapBackpack;
 // dialog for showing where the items are
-class ItemReportDialog: public Decorated
+class ItemReportDialog: public sigc::trackable
 {
  public:
     ItemReportDialog(std::list<Stack*> item_laden_stacks, std::list<MapBackpack*> bags);

@@ -53,9 +53,7 @@ CityWindow::CityWindow(City *c, bool razing_possible,
 	= Gtk::Builder::create_from_file(get_glade_path() + "/city-window.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-    set_title(c->getName());
+    dialog->set_title(c->getName());
     
     xml->get_widget("map_image", map_image);
 
@@ -160,7 +158,7 @@ void CityWindow::run()
 
 void CityWindow::fill_in_city_info()
 {
-    set_title(city->getName());
+    dialog->set_title(city->getName());
 
     // fill in status label
     Glib::ustring s;
@@ -454,9 +452,6 @@ void CityWindow::on_rename_clicked ()
 	= Gtk::Builder::create_from_file(get_glade_path() + "/city-rename-dialog.ui");
 	
     renamexml->get_widget("dialog", subdialog);
-    Decorated decorator;
-    decorator.decorate(subdialog);
-    decorator.window_closed.connect(sigc::mem_fun(subdialog, &Gtk::Dialog::hide));
     subdialog->set_transient_for(*dialog);
     
     Glib::ustring s = _("Rename City");
@@ -466,7 +461,7 @@ void CityWindow::on_rename_clicked ()
     Gtk::Entry *e;
     renamexml->get_widget("name_entry", e);
 
-    decorator.set_title(s);
+    subdialog->set_title(s);
     s = _("Type the new name for this city:");
     l->set_text(s);
 
@@ -499,9 +494,6 @@ bool CityWindow::on_raze_clicked (City *city, Gtk::Dialog *parent)
 	= Gtk::Builder::create_from_file(get_glade_path() + "/city-raze-dialog.ui");
 	
     razexml->get_widget("dialog", subdialog);
-    Decorated decorator;
-    decorator.decorate(subdialog);
-    decorator.window_closed.connect(sigc::mem_fun(subdialog, &Gtk::Dialog::hide));
     subdialog->set_transient_for(*parent);
     
     Glib::ustring s = _("Raze City");
@@ -509,7 +501,7 @@ bool CityWindow::on_raze_clicked (City *city, Gtk::Dialog *parent)
     Gtk::Label *l;
     razexml->get_widget("label", l);
 
-    decorator.set_title(s);
+    subdialog->set_title(s);
     s = String::ucompose(_("Are you sure that you want to raze %1?"), 
                            city->getName());
     s += "\n";

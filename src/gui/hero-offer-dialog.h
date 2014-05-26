@@ -29,10 +29,8 @@
 #include "hero.h"
 #include "heroproto.h"
 
-#include "decorated.h"
-
 //! dialog for accepting/rejecting a hero
-class HeroOfferDialog: public Decorated
+class HeroOfferDialog: public sigc::trackable
 {
  public:
     HeroOfferDialog(Player *player, HeroProto *hero, City *city, int gold);

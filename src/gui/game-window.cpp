@@ -65,7 +65,6 @@
 #include "stack-info-dialog.h"
 #include "timed-message-dialog.h"
 #include "destination-dialog.h"
-#include "decorated.h"
 #include "item-report-dialog.h"
 #include "use-item-dialog.h"
 #include "use-item-on-player-dialog.h"
@@ -143,11 +142,7 @@ GameWindow::GameWindow()
     xml->get_widget("window", w);
     window = w;
     w->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
-    decorate(window, GraphicsCache::SPLASH_BACKGROUND);
     
-    window_closed.connect
-      (sigc::mem_fun(*this, &GameWindow::on_quit_activated));
-
     w->signal_delete_event().connect
       (sigc::mem_fun(*this, &GameWindow::on_delete_event));
 
@@ -176,9 +171,6 @@ GameWindow::GameWindow()
     bigmap_eventbox->signal_scroll_event().connect
        (sigc::mem_fun(*this, &GameWindow::on_bigmap_scroll_event));
     xml->get_widget("status_box_container", status_box_container);
-    //Gtk::Viewport *vp;
-    //xml->get_widget("bigmap_viewport", vp);
-    //decorate_border(vp, 175);
 
     status_box = StatusBox::create(Configuration::s_ui_form_factor);
     status_box->reparent(*status_box_container);
@@ -199,11 +191,7 @@ GameWindow::GameWindow()
        (sigc::mem_fun(*this, &GameWindow::on_smallmap_mouse_button_event));
       map_eventbox->signal_motion_notify_event().connect
        (sigc::mem_fun(*this, &GameWindow::on_smallmap_mouse_motion_event));
-    //Gtk::Viewport *mvp;
-    //xml->get_widget("map_viewport", mvp);
-    //decorate_border(mvp, 175);
     xml->get_widget("control_panel_viewport", control_panel_viewport);
-    decorate_border(control_panel_viewport, 175);
     game_button_box = GameButtonBox::create(Configuration::s_ui_form_factor);
     game_button_box->reparent(*control_panel_viewport);
     control_panel_viewport->add(*manage(game_button_box));
@@ -328,29 +316,6 @@ GameWindow::GameWindow()
     online_help_menuitem->signal_activate().connect
       (sigc::mem_fun(*this, &GameWindow::on_online_help_activated));
     d_quick_fights = false;
-
-    if (Configuration::s_decorated == true)
-      {
-        /*
-	//colour the menubar
-	Glib::RefPtr<Gtk::Style> copy;
-	Glib::RefPtr<Gdk::Pixbuf> back;
-	Glib::RefPtr<Gdk::Pixmap> pixmap;
-	Glib::RefPtr<Gdk::Bitmap> bitmap;
-	copy = menubar->get_style()->copy();
-	back = GraphicsCache::getInstance()->getBackgroundPic(GraphicsCache::SPLASH_BACKGROUND)->to_pixbuf();
-	pixmap = Gdk::Pixmap::create
-	  (window->get_window(), back->get_width(), back->get_height());
-	back->composite_color(back, 0, 0, 
-			      back->get_width(), back->get_height(), 
-			      0.0, 0.0, 1.0, 1.0, Gdk::INTERP_NEAREST, 127, 
-			      0, 0, 64, 0, 0);
-	back->render_pixmap_and_mask(pixmap, bitmap, 10);
-	copy->set_bg_pixmap(Gtk::STATE_NORMAL, pixmap);
-	menubar->set_style(copy);
-        */
-      }
-
 }
 
 GameWindow::~GameWindow()
@@ -1060,12 +1025,7 @@ void GameWindow::on_new_game_activated()
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path() + "/game-quit-dialog.ui");
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
   dialog->set_transient_for(*window);
-
   int response = dialog->run();
   dialog->hide();
 
@@ -1082,10 +1042,6 @@ void GameWindow::on_quit_activated()
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path() + "/game-quit-dialog.ui");
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
   dialog->set_transient_for(*window);
 
   int response = dialog->run();
@@ -1225,13 +1181,8 @@ void GameWindow::on_signpost_activated()
     = Gtk::Builder::create_from_file(get_glade_path() + "/signpost-change-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
-
-  decorator.set_title(_("Signpost"));
-
+  dialog->set_title(_("Signpost"));
   Stack *stack = Playerlist::getActiveplayer()->getActivestack();
   if (!stack)
     return;
@@ -1284,13 +1235,8 @@ void GameWindow::on_disband_activated()
     = Gtk::Builder::create_from_file(get_glade_path() + "/disband-stack-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
-
-  decorator.set_title(_("Disband"));
-
+  dialog->set_title(_("Disband"));
   Gtk::Label *l;
   xml->get_widget("label", l);
 
@@ -1324,11 +1270,7 @@ void GameWindow::on_resignation_completed()
 				"/player-resign-completed-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
-
   dialog->show_all();
   dialog->run();
   dialog->hide();
@@ -1348,12 +1290,8 @@ void GameWindow::on_resign_activated()
     = Gtk::Builder::create_from_file(get_glade_path() + "/player-resign-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
-
-  decorator.set_title(_("Resign"));
+  dialog->set_title(_("Resign"));
 
   Gtk::Label *l;
   xml->get_widget("label", l);
@@ -1688,10 +1626,6 @@ void GameWindow::on_help_about_activated()
 
   xml->get_widget("dialog", dialog);
   dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
   dialog->set_version(PACKAGE_VERSION);
   dialog->set_logo(GraphicsCache::getMiscPicture("castle_icon.png")->to_pixbuf());
   dialog->set_transient_for(*window);
@@ -1749,11 +1683,7 @@ void GameWindow::on_game_over(Player *winner)
     = Gtk::Builder::create_from_file(get_glade_path() + "/game-over-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
-
   Gtk::Image *image;
   xml->get_widget("image", image);
 
@@ -1802,8 +1732,6 @@ void GameWindow::on_message_requested(std::string msg)
 {
   // FIXME: this is a bit crude, maybe beef it up
   Gtk::MessageDialog dialog(*window, msg);
-  Decorated decorator;
-  decorator.decorate(dynamic_cast<Gtk::Dialog*>(&dialog));
   //TimedMessageDialog dialog(*window, msg, 30, 5);
   dialog.show_all();
   dialog.run();
@@ -1824,12 +1752,8 @@ void GameWindow::on_sidebar_stats_changed(SidebarStats s)
 {
   status_box->update_sidebar_stats(s);
 
-  if (Configuration::s_decorated)
-      turn_label->set_markup(String::ucompose("<b>%1 %2</b>", _("Turn"), 
-                                              s.turns));
-  else
-      turn_label->set_markup(String::ucompose("<b>%1 %2</b>", 
-                                              _("Turn"), s.turns));
+  turn_label->set_markup(String::ucompose("<b>%1 %2</b>", 
+                                          _("Turn"), s.turns));
 }
 
 void GameWindow::on_bigmap_changed(Cairo::RefPtr<Cairo::Surface> map)
@@ -1919,8 +1843,6 @@ void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos)
   f->add(*l);
 
   map_tip->add(*f);
-  Decorated decorator;
-  decorator.decorate(map_tip, GraphicsCache::GAME_BACKGROUND, 200);
   f->show_all();
 
   // get screen position
@@ -1995,12 +1917,8 @@ void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
 
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
-
-  decorator.set_title(ruin->getName());
+  dialog->set_title(ruin->getName());
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -2046,12 +1964,8 @@ void GameWindow::on_ruinfight_started(Stack *attackers, Stack *defenders)
     = Gtk::Builder::create_from_file(get_glade_path() + "/ruinfight-started-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
-
-  decorator.set_title(_("Searching"));
+  dialog->set_title(_("Searching"));
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -2074,15 +1988,11 @@ void GameWindow::on_ruinfight_finished(Fight::Result result)
     = Gtk::Builder::create_from_file(get_glade_path() + "/ruinfight-finished-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
-
   if (result == Fight::ATTACKER_WON)
-    decorator.set_title(_("Hero Victorious"));
+    dialog->set_title(_("Hero Victorious"));
   else
-    decorator.set_title(_("Hero Defeated"));
+    dialog->set_title(_("Hero Defeated"));
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -2130,13 +2040,8 @@ void GameWindow::on_hero_brings_allies (int numAllies)
     = Gtk::Builder::create_from_file(get_glade_path() + "/hero-brings-allies-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
-
-  decorator.set_title(_("Hero brings allies!"));
-
+  dialog->set_title(_("Hero brings allies!"));
   Gtk::Label *label;
   xml->get_widget("label", label);
   Glib::ustring s;
@@ -2192,9 +2097,6 @@ bool GameWindow::on_stack_considers_treachery (Stack *stack,
     = Gtk::Builder::create_from_file(get_glade_path() + "/treachery-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -2236,12 +2138,8 @@ bool GameWindow::on_temple_searched(Hero *hero, Temple *temple, int blessCount)
     = Gtk::Builder::create_from_file(get_glade_path() + "/temple-visit-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
-
-  decorator.set_title(temple->getName());
+  dialog->set_title(temple->getName());
 
   Gtk::Label *l;
   Gtk::Button *close_button;
@@ -2395,9 +2293,6 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
     = Gtk::Builder::create_from_file(get_glade_path() + "/city-defeated-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
 
   Gtk::Image *image;
@@ -2525,12 +2420,9 @@ void GameWindow::on_city_looted (City *city, int gold)
     = Gtk::Builder::create_from_file(get_glade_path() + "/city-looted-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
 
-  decorator.set_title(String::ucompose(_("%1 Looted"), city->getName()));
+  dialog->set_title(String::ucompose(_("%1 Looted"), city->getName()));
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -2558,12 +2450,8 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
 
   Gtk::Image *pillaged_army_type_image;
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
-
-  decorator.set_title(String::ucompose(_("Pillaged %1"), city->getName()));
+  dialog->set_title(String::ucompose(_("Pillaged %1"), city->getName()));
 
   Gtk::Label *pillaged_army_type_cost_label;
   xml->get_widget("pillaged_army_type_cost_label", pillaged_army_type_cost_label);
@@ -2611,12 +2499,8 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<guint32> sacked_
     = Gtk::Builder::create_from_file(get_glade_path() + "/city-sacked-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
-
-  decorator.set_title(String::ucompose(_("Sacked %1"), city->getName()));
+  dialog->set_title(String::ucompose(_("Sacked %1"), city->getName()));
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -2710,12 +2594,8 @@ void GameWindow::on_city_razed (City *city)
     = Gtk::Builder::create_from_file(get_glade_path() + "/city-razed-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
-
-  decorator.set_title(String::ucompose(_("Razed %1"), city->getName()));
+  dialog->set_title(String::ucompose(_("Razed %1"), city->getName()));
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -2807,9 +2687,6 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
       xml->get_widget("dialog", dialog);
       dialog->set_transient_for(*window);
 
-      Decorated decorator;
-      decorator.decorate(dialog);
-      decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
       Gtk::Image *image;
       xml->get_widget("image", image);
       image->property_file() = File::getMiscFile("various/ship.png");
@@ -2838,9 +2715,6 @@ void GameWindow::on_medal_awarded_to_army(Army *army, int medaltype)
     = Gtk::Builder::create_from_file(get_glade_path() + "/medal-awarded-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
 
   Gtk::Image *image;
@@ -2893,9 +2767,6 @@ void GameWindow::on_game_loaded(Player *player)
     = Gtk::Builder::create_from_file(get_glade_path() + "/game-loaded-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
 
   Gtk::Label *label;
@@ -2930,9 +2801,6 @@ void GameWindow::on_quest_expired(Quest *quest)
     = Gtk::Builder::create_from_file(get_glade_path() + "/quest-expired-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
 
   Gtk::Label *label;
@@ -3020,12 +2888,9 @@ void GameWindow::on_advice_asked(float percent)
     = Gtk::Builder::create_from_file(get_glade_path() + "/military-advisor-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  Decorated decorator;
-  decorator.decorate(dialog);
-  decorator.window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
   dialog->set_transient_for(*window);
 
-  decorator.set_title(_("Advisor!"));
+  dialog->set_title(_("Advisor!"));
 
   Gtk::Label *label;
   xml->get_widget("label", label);

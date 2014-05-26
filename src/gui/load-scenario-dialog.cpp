@@ -37,9 +37,6 @@ LoadScenarioDialog::LoadScenarioDialog()
 				+ "/load-scenario-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  decorate(dialog);
-  window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
   xml->get_widget("description_textview", description_textview);
   xml->get_widget("load_button", load_button);
   xml->get_widget("num_players_label", num_players_label);

@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011, 2012 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@
 #include "stack.h"
 #include "GraphicsCache.h"
 #include "map-tip-position.h"
-#include "decorated.h"
 #include "File.h"
 #include "stacktile.h"
 #include "GameScenarioOptions.h"
@@ -44,9 +43,6 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, StackTile *
 				    + "/stack-info-window.ui");
 
     xml->get_widget("window", window);
-    Decorated decorator;
-    decorator.decorate(window, GraphicsCache::GAME_BACKGROUND, 200);
-
     xml->get_widget("image_hbox", image_hbox);
 
     //fill up the hbox with images of the armies in the stack

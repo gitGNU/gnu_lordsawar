@@ -34,7 +34,6 @@
 #include "GraphicsCache.h"
 #include "playerlist.h"
 #include "city.h"
-#include "decorated.h"
 #include "File.h"
 #include "shield.h"
 
@@ -45,9 +44,6 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
 				    + "/army-info-window.ui");
 
     xml->get_widget("window", window);
-    Decorated decorator;
-    decorator.decorate(window, GraphicsCache::GAME_BACKGROUND, 200);
-
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
     Player *p;
@@ -111,9 +107,6 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army,
 				    + "/army-info-window.ui");
 
     xml->get_widget("window", window);
-    Decorated decorator;
-    decorator.decorate(window,GraphicsCache::GAME_BACKGROUND, 200);
-
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
     Player *p = city->getOwner();
@@ -174,9 +167,6 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army)
 				    + "/army-info-window.ui");
 
     xml->get_widget("window", window);
-    Decorated decorator;
-    decorator.decorate(window, GraphicsCache::GAME_BACKGROUND, 200);
-
     Gtk::Image *army_image;
     xml->get_widget("army_image", army_image);
     Player *p = Playerlist::getInstance()->getActiveplayer();

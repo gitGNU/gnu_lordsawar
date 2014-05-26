@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Ben Asselstine
+//  Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "GraphicsCache.h"
-#include "decorated.h"
 #include "File.h"
 #include "playerlist.h"
 #include "player.h"
@@ -180,20 +179,11 @@ void StatusBox::show_stack(StackTile *s)
 
 void StatusBox::update_sidebar_stats(SidebarStats s)
 {
-  if (Configuration::s_decorated)
-    {
-      cities_stats_label->set_markup(String::ucompose("<b>%1</b>", s.cities));
-      gold_stats_label->set_markup(String::ucompose("<b>%1</b>", s.gold));
-      income_stats_label->set_markup(String::ucompose("<b>%1</b>", s.income));
-      upkeep_stats_label->set_markup(String::ucompose("<b>%1</b>", s.upkeep));
-    }
-  else
-    {
-      cities_stats_label->set_markup(String::ucompose("%1", s.cities));
-      gold_stats_label->set_markup(String::ucompose("%1", s.gold));
-      income_stats_label->set_markup(String::ucompose("%1", s.income));
-      upkeep_stats_label->set_markup(String::ucompose("%1", s.upkeep));
-    }
+  cities_stats_label->set_markup(String::ucompose("<b>%1</b>", s.cities));
+  gold_stats_label->set_markup(String::ucompose("<b>%1</b>", s.gold));
+  income_stats_label->set_markup(String::ucompose("<b>%1</b>", s.income));
+  upkeep_stats_label->set_markup(String::ucompose("<b>%1</b>", s.upkeep));
+
   Glib::ustring tip;
   tip = String::ucompose(
 			 ngettext("You have %1 city!",

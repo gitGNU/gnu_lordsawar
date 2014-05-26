@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -41,9 +41,6 @@ RuinRewardedDialog::RuinRewardedDialog(Reward_Ruin *reward)
 				    + "/ruin-rewarded-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
     xml->get_widget("map_image", map_image);
 
     ruinmap = new RuinMap(reward->getRuin());
@@ -54,7 +51,7 @@ RuinRewardedDialog::RuinRewardedDialog(Reward_Ruin *reward)
     xml->get_widget("map_eventbox", map_eventbox);
 
     xml->get_widget("label", label);
-    set_title(_("A Sage!"));
+    dialog->set_title(_("A Sage!"));
 
     d_reward = reward;
 }

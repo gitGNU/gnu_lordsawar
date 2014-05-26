@@ -26,9 +26,8 @@
 class Profile;
 class RecentlyPlayedNetworkedGame;
 class RecentlyPlayedGameList;
-#include "decorated.h"
 // dialog for joining remote games
-class NetworkGameSelectorDialog: public Decorated
+class NetworkGameSelectorDialog: public sigc::trackable
 {
  public:
     NetworkGameSelectorDialog(Profile *p);

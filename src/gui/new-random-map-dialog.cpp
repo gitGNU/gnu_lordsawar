@@ -48,8 +48,6 @@ NewRandomMapDialog::NewRandomMapDialog()
 					 "/new-random-map-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-
     xml->get_widget("dialog-vbox1", dialog_vbox);
     xml->get_widget("dialog-action_area1", dialog_action_area);
     xml->get_widget("map_size_combobox", map_size_combobox);

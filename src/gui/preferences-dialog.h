@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,11 +27,10 @@
 
 #include "vector.h"
 
-#include "decorated.h"
 class Game;
 class Player;
 // dialog for showing sound and game preferences
-class PreferencesDialog: public Decorated
+class PreferencesDialog: public sigc::trackable
 {
  public:
     PreferencesDialog(bool readonly);

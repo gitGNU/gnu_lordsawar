@@ -39,9 +39,6 @@ UseItemOnPlayerDialog::UseItemOnPlayerDialog()
 				    + "/use-item-on-player-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
     players_list = Gtk::ListStore::create(players_columns);
     xml->get_widget("playertreeview", player_treeview);
     player_treeview->set_model(players_list);

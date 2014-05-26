@@ -61,7 +61,6 @@ NewNetworkGameDialog::NewNetworkGameDialog()
   remote_checkbutton->signal_toggled().connect
     (sigc::mem_fun(*this, 
                    &NewNetworkGameDialog::on_remote_checkbutton_toggled));
-  decorate(dialog);
 
   if (Configuration::s_gamelist_server_hostname == "" ||
       Configuration::s_gamelist_server_port == 0)

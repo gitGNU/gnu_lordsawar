@@ -1,4 +1,4 @@
-//  Copyright (C) 2009, 2011, 2012 Ben Asselstine
+//  Copyright (C) 2009, 2011, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -16,21 +16,17 @@
 //  02110-1301, USA.
 
 #include <config.h>
-
 #include <gtkmm.h>
 
 #include "city-info-tip.h"
-
 #include "glade-helpers.h"
 #include "image-helpers.h"
-
 #include "ucompose.hpp"
 #include "vector.h"
 #include "defs.h"
 #include "GraphicsCache.h"
 #include "playerlist.h"
 #include "city.h"
-#include "decorated.h"
 #include "File.h"
 
 
@@ -42,9 +38,6 @@ CityInfoTip::CityInfoTip(Gtk::Widget *target, MapTipPosition mpos, const City *c
 				    + "/city-info-window.ui");
 
     xml->get_widget("window", window);
-    Decorated decorator;
-    decorator.decorate(window, GraphicsCache::GAME_BACKGROUND, 200);
-
     Gtk::Image *left_shield_image;
     xml->get_widget("left_shield_image", left_shield_image);
     Gtk::Image *right_shield_image;

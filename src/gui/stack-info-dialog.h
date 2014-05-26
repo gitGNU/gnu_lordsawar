@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,10 +30,9 @@ class Stack;
 class Army;
 
 #include "vector.h"
-#include "decorated.h"
 
 // dialog for showing hero information
-class StackInfoDialog: public Decorated
+class StackInfoDialog: public sigc::trackable
 {
  public:
     StackInfoDialog(Vector<int> pos);

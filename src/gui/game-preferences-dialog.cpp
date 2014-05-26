@@ -49,9 +49,6 @@ void GamePreferencesDialog::init(std::string filename)
 	= Gtk::Builder::create_from_file(get_glade_path() + "/game-preferences-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
     xml->get_widget("dialog-vbox1", dialog_vbox);
     xml->get_widget("start_game_button", start_game_button);
     xml->get_widget("difficulty_label", difficulty_label);
@@ -527,5 +524,5 @@ bool GamePreferencesDialog::is_greatest()
 
 void GamePreferencesDialog::set_title(std::string text)
 {
-  Decorated::set_title(text);
+  dialog->set_title(text);
 }

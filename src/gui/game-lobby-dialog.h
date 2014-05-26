@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,14 +26,11 @@
 #include "GameScenario.h"
 #include "game-station.h"
 
-#include "decorated.h"
-class NextTurnNetworked;
-
 class Player;
 class NextTurnNetworked;
 
 //! dialog for showing the scenario and who's joined
-class GameLobbyDialog: public Decorated
+class GameLobbyDialog: public sigc::trackable
 {
  public:
     GameLobbyDialog(GameScenario *game_scenario, 

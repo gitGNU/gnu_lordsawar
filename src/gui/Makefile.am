@@ -71,7 +71,6 @@ liblwgui_la_SOURCES = \
     new-network-game-dialog.cpp new-network-game-dialog.h \
     new-profile-dialog.cpp new-profile-dialog.h \
     new-network-game-download-window.cpp new-network-game-download-window.h \
-    decorated.cpp decorated.h \
     new-random-map-dialog.cpp new-random-map-dialog.h \
     use-item-dialog.cpp use-item-dialog.h \
     use-item-on-player-dialog.cpp use-item-on-player-dialog.h \

@@ -42,9 +42,6 @@ FightOrderDialog::FightOrderDialog(Player *theplayer)
 				    + "/fight-order-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
     armies_list = Gtk::ListStore::create(armies_columns);
     xml->get_widget("treeview", armies_treeview);
     armies_treeview->set_model(armies_list);

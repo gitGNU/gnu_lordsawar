@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,9 +26,8 @@
 
 #include "hero.h"
 
-#include "decorated.h"
 // dialog for choosing what hero stat to boost when a level is gained
-class ArmyGainsLevelDialog: public Decorated
+class ArmyGainsLevelDialog: public sigc::trackable
 {
  public:
     ArmyGainsLevelDialog(Hero *h, bool show_sight_stat);

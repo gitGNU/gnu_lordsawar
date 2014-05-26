@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -92,9 +92,6 @@ void GameLobbyDialog::initDialog(GameScenario *gamescenario,
 				    + "/game-lobby-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
     xml->get_widget("player_treeview", player_treeview);
     player_treeview->get_selection()->signal_changed().connect
           (sigc::mem_fun(*this, &GameLobbyDialog::on_player_selected));

@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,9 +25,8 @@
 #include <sigc++/signal.h>
 #include <gtkmm.h>
 
-#include "decorated.h"
 // dialog for choosing a scenario
-class LoadScenarioDialog: public Decorated
+class LoadScenarioDialog: public sigc::trackable
 {
  public:
     LoadScenarioDialog();

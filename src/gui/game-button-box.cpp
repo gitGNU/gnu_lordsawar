@@ -16,18 +16,14 @@
 //  02110-1301, USA.
 
 #include <config.h>
-
 #include <gtkmm.h>
 
 #include "game-button-box.h"
-
 #include "glade-helpers.h"
 #include "image-helpers.h"
-
 #include "ucompose.hpp"
 #include "defs.h"
 #include "GraphicsCache.h"
-#include "decorated.h"
 #include "File.h"
 #include "game.h"
 #include "GameScenario.h"

@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -45,9 +45,6 @@ PreferencesDialog::PreferencesDialog(bool readonly)
 				    + "/preferences-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
     xml->get_widget("commentator_checkbutton", commentator_checkbutton);
     xml->get_widget("speed_scale", speed_scale);
     xml->get_widget("ui_combobox", ui_combobox);

@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,8 +26,6 @@
 
 #include "game-parameters.h"
 
-
-#include "decorated.h"
 class Profile;
 /** The opening window of the game
   * 
@@ -37,7 +35,7 @@ class Profile;
   * The splash screen is also responsible for launching dialogs in response to
   * the menu choices.
   */
-class SplashWindow: public Decorated
+class SplashWindow: public sigc::trackable
 {
  public:
     SplashWindow();
@@ -68,7 +66,6 @@ class SplashWindow: public Decorated
     Gtk::VBox *button_box; //crash button box
 	    
     bool on_delete_event(GdkEventAny *e);
-    void on_window_closed();
   
     std::string network_game_nickname;
     

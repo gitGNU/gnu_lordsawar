@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -49,19 +49,16 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
 				+ "/history-report-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  decorate(dialog);
-
   generatePastCitylists();
   generatePastRuinlists();
   generatePastEventlists();
-
   xml->get_widget("map_image", map_image);
   historymap = new HistoryMap(Citylist::getInstance(), Ruinlist::getInstance());
   historymap->map_changed.connect
     (sigc::mem_fun(this, &HistoryReportDialog::on_map_changed));
 
   xml->get_widget("turn_scale", turn_scale);
-  set_title(_("History"));
+  dialog->set_title(_("History"));
   turn_scale->set_range(1, past_citylists.size());
   turn_scale->set_value(past_citylists.size());
 
@@ -400,19 +397,19 @@ void HistoryReportDialog::update_window_title()
   switch (history_notebook->get_current_page())
     {
     case CITY:
-      set_title(_("City History"));
+      dialog->set_title(_("City History"));
       break;
     case RUIN:
-      set_title(_("Ruin History"));
+      dialog->set_title(_("Ruin History"));
       break;
     case EVENTS: 
-      set_title(_("Event History"));
+      dialog->set_title(_("Event History"));
       break;
     case GOLD: 
-      set_title(_("Gold History"));
+      dialog->set_title(_("Gold History"));
       break;
     case WINNING:
-      set_title(_("Winner History"));
+      dialog->set_title(_("Winner History"));
       break;
     }
 }

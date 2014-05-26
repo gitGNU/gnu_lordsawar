@@ -44,17 +44,13 @@ HeroOfferDialog::HeroOfferDialog(Player *player, HeroProto *h, City *c, int gold
 				    + "/hero-offer-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
     xml->get_widget("map_image", map_image);
 
     heromap = new HeroMap(city);
     heromap->map_changed.connect(
 	sigc::mem_fun(this, &HeroOfferDialog::on_map_changed));
 
-    set_title(String::ucompose(_("A Hero for %1"), player->getName()));
+    dialog->set_title(String::ucompose(_("A Hero for %1"), player->getName()));
 
     xml->get_widget("hero_image", hero_image);
     xml->get_widget("hero_male", male_radiobutton);

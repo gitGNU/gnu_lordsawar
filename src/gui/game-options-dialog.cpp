@@ -37,9 +37,6 @@ GameOptionsDialog::GameOptionsDialog(bool readonly)
 				    + "/game-options-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
     d_readonly = readonly;
     xml->get_widget("difficultoptionstable", difficultoptionstable);
     xml->get_widget("notdifficultoptionstable", notdifficultoptionstable);

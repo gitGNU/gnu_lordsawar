@@ -40,10 +40,6 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Profile *p)
 	(get_glade_path() + "/pick-network-game-to-join-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
     xml->get_widget("hostname_entry", hostname_entry);
     xml->get_widget("port_spinbutton", port_spinbutton);
     hostname_entry->set_activates_default(true);

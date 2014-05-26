@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -42,9 +42,6 @@ ItemReportDialog::ItemReportDialog(std::list<Stack*> item_laden_stacks, std::lis
 				  + "/item-report-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  decorate(dialog);
-  window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
   xml->get_widget("map_image", map_image);
 
   itemmap = new ItemMap(item_laden_stacks, bags);

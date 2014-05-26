@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2010, 2012 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -50,8 +50,6 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 				    + "/hero-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
     xml->get_widget("map_image", map_image);
 
     std::list<Hero*> heroes;
@@ -482,7 +480,7 @@ bool HeroDialog::on_map_mouse_button_event(GdkEventButton *e)
 
 void HeroDialog::show_hero()
 {
-    set_title(hero->getName());
+    dialog->set_title(hero->getName());
 
     fill_in_info_labels();
     std::list<History* > events;

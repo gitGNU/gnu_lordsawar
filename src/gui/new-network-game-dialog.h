@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Ben Asselstine
+//  Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -24,10 +24,9 @@
 #include <gtkmm.h>
 
 #include "ucompose.hpp"
-#include "decorated.h"
 class Profile;
 // dialog for choosing between a hosted game and a game we connect to
-class NewNetworkGameDialog: public Decorated
+class NewNetworkGameDialog: public sigc::trackable
 {
  public:
     NewNetworkGameDialog();

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,10 +23,8 @@
 #include "timed-message-dialog.h"
 
 #include "ucompose.hpp"
-#include "decorated.h"
 #include "defs.h"
 #include "timing.h"
-#include "decorated.h"
 
 TimedMessageDialog::TimedMessageDialog(Gtk::Window &parent, std::string message, int timeout, int grace)
 {
@@ -40,9 +38,6 @@ TimedMessageDialog::TimedMessageDialog(Gtk::Window &parent, std::string message,
   window->set_message(message);
   window->signal_response().connect
        (sigc::mem_fun(*this, &TimedMessageDialog::on_response));
-  Decorated decorator;
-  decorator.decorate(window);
-  decorator.window_closed.connect(sigc::mem_fun(window, &Gtk::Dialog::hide));
   window->set_transient_for(parent);
 }
 

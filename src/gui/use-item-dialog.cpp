@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -39,11 +39,7 @@ UseItemDialog::UseItemDialog(std::list<Item*> items)
 				    + "/use-item-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-    
     xml->get_widget("select_button", select_button);
-
     xml->get_widget("items_treeview", items_treeview);
     items_list = Gtk::ListStore::create(items_columns);
     items_treeview->set_model(items_list);

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -49,12 +49,7 @@ StackInfoDialog::StackInfoDialog(Vector<int> pos)
 				    + "/stack-info-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
     xml->get_widget("stack_table", stack_table);
-
-
     xml->get_widget("group_button", group_button);
     group_button->signal_clicked().connect
       (sigc::mem_fun(*this, &StackInfoDialog::on_group_clicked));

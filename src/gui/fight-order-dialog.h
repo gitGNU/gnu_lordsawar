@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,11 +27,9 @@
 class Stack;
 class Player;
 
-#include "decorated.h"
-
 // dialog for showing and changing the order in which army types fight
 // in battle
-class FightOrderDialog: public Decorated
+class FightOrderDialog: public sigc::trackable
 {
  public:
     FightOrderDialog(Player *player);

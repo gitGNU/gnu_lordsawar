@@ -1,4 +1,4 @@
-//  Copyright (C) 2011, 2012 Ben Asselstine
+//  Copyright (C) 2011, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,10 +27,8 @@
 
 class City;
 
-#include "decorated.h"
-
 // dialog for targetting a player when using an item.
-class UseItemOnCityDialog: public Decorated
+class UseItemOnCityDialog: public sigc::trackable
 {
  public:
     UseItemOnCityDialog(SelectCityMap::Type type);

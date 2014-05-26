@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,12 +26,10 @@
 #include "ruinmap.h"
 #include "player.h"
 
-
-#include "decorated.h"
 class Reward_Ruin;
 
 // dialog for visiting a sage
-class RuinRewardedDialog: public Decorated
+class RuinRewardedDialog: public sigc::trackable
 {
  public:
     RuinRewardedDialog(Reward_Ruin *reward);

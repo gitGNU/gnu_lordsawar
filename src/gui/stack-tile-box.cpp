@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Ben Asselstine
+//  Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,7 +32,6 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "GraphicsCache.h"
-#include "decorated.h"
 #include "File.h"
 #include "playerlist.h"
 #include "player.h"
@@ -270,12 +269,7 @@ void StackTileBox::fill_in_group_info (StackTile *stile, Stack *s)
   guint32 bonus = s->calculateMoveBonus();
   GraphicsCache *gc = GraphicsCache::getInstance();
   terrain_image->property_pixbuf() = gc->getMoveBonusPic(bonus, s->hasShip())->to_pixbuf();
-  if (Configuration::s_decorated == true)
-    group_moves_label->set_markup(String::ucompose("<b>%1</b>",
-						   s->getMoves()));
-  else
-    group_moves_label->set_markup(String::ucompose("%1",
-						   s->getMoves()));
+  group_moves_label->set_markup(String::ucompose("<b>%1</b>", s->getMoves()));
   group_ungroup_toggle->set_sensitive(false);
   if (stile->getFriendlyStacks(s->getOwner()).size() != 1)
     group_ungroup_toggle->set_active(false);

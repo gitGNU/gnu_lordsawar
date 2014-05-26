@@ -29,8 +29,6 @@
 #include "army-info-tip.h"
 #include "city-info-tip.h"
 #include "stack-info-tip.h"
-#include "decorated.h"
-
 #include "game-parameters.h"
 #include "sidebar-stats.h"
 #include "stack.h"
@@ -67,7 +65,7 @@ class StatusBox;
   * It has a pane at the bottom with information about the currently selected
   * stack and a pane to the right with the small map, buttons and statistics. 
   */
-class GameWindow: public Decorated
+class GameWindow: public sigc::trackable
 {
  public:
     GameWindow();

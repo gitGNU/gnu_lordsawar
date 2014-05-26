@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Ben Asselstine
+//  Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "GraphicsCache.h"
-#include "decorated.h"
 #include "File.h"
 #include "playerlist.h"
 #include "player.h"

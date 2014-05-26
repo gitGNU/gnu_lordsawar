@@ -17,7 +17,6 @@
 #include "new-network-game-download-window.h"
 #include "defs.h"
 #include "File.h"
-#include "decorated.h"
 
 NewNetworkGameDownloadWindow::NewNetworkGameDownloadWindow(Glib::ustring title)
 : m_vbox(false,10)
@@ -27,9 +26,6 @@ NewNetworkGameDownloadWindow::NewNetworkGameDownloadWindow(Glib::ustring title)
   m_vbox.pack_start(m_label);
   m_vbox.pack_start(m_pbar);
  
-  Decorated decorator;
-  decorator.decorate(this);
-  decorator.window_closed.connect(sigc::mem_fun(this, &Gtk::Dialog::hide));
   if (title == "")
     title = _("Downloading.");
   set_title(title);

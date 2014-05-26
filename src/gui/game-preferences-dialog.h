@@ -28,11 +28,10 @@
 #include "game-options-dialog.h"
 #include "GameScenario.h"
 
-#include "decorated.h"
 class XML_Helper;
 
 // dialog for choosing parameters for starting a new game
-class GamePreferencesDialog: public Decorated
+class GamePreferencesDialog: public sigc::trackable
 {
  public:
     GamePreferencesDialog(std::string filename, GameScenario::PlayMode mode);

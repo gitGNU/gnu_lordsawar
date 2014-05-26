@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -43,9 +43,6 @@ SageDialog::SageDialog(Sage *sage, Player *player, Hero *h, Ruin *r)
 				    + "/sage-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
     rewards_list = Gtk::ListStore::create(rewards_columns);
     xml->get_widget("rewardtreeview", rewards_treeview);
     rewards_treeview->set_model(rewards_list);
@@ -63,7 +60,7 @@ SageDialog::SageDialog(Sage *sage, Player *player, Hero *h, Ruin *r)
     Gtk::EventBox *map_eventbox;
     xml->get_widget("map_eventbox", map_eventbox);
 
-    set_title(_("A Sage!"));
+    dialog->set_title(_("A Sage!"));
 
     for(Sage::iterator it = sage->begin(); it != sage->end(); it++)
       addReward(*it);

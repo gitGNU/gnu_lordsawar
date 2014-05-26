@@ -42,9 +42,6 @@ TriumphsDialog::TriumphsDialog(Player *player)
     = Gtk::Builder::create_from_file(get_glade_path() + "/triumphs-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  decorate(dialog);
-  window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
   Gtk::HBox *contents;
   xml->get_widget("outer_hbox", contents);
   notebook = Gtk::manage(new Gtk::Notebook());

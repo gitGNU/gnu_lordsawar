@@ -35,8 +35,6 @@ NewProfileDialog::NewProfileDialog(Glib::ustring network_game_nickname)
 
   xml->get_widget("dialog", dialog);
   xml->get_widget("accept_button", accept_button);
-
-  decorate(dialog);
   xml->get_widget("nick_entry", nick_entry);
   nick_entry->set_activates_default(true);
   nick_entry->signal_changed().connect 

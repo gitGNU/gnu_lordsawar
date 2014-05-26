@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,10 +26,9 @@
 
 #include "Tile.h"
 #include "game-parameters.h"
-#include "decorated.h"
 
 //! A dialog to let the user create a new random map.
-class NewRandomMapDialog: public Decorated
+class NewRandomMapDialog: public sigc::trackable
 {
  public:
     NewRandomMapDialog();

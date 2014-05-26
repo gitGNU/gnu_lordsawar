@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,11 +27,8 @@
 #include "Quest.h"
 #include "reward.h"
 
-
-#include "decorated.h"
-
 // dialog for depicting a quest
-class QuestReportDialog: public Decorated
+class QuestReportDialog: public sigc::trackable
 {
  public:
     QuestReportDialog(std::vector<Quest *>quests, Hero *preferred_hero);

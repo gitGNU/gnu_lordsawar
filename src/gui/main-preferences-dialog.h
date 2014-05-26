@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,10 +25,9 @@
 
 #include "vector.h"
 
-#include "decorated.h"
 class Game;
 // dialog for showing sound and game preferences
-class MainPreferencesDialog: public Decorated
+class MainPreferencesDialog: public sigc::trackable
 {
  public:
     MainPreferencesDialog();
@@ -44,13 +43,11 @@ class MainPreferencesDialog: public Decorated
     Gtk::CheckButton *show_turn_popup_checkbutton;
     Gtk::CheckButton *commentator_checkbutton;
     Gtk::CheckButton *play_music_checkbutton;
-    Gtk::CheckButton *show_decorated_windows_checkbutton;
     Gtk::ComboBox *ui_combobox;
     Gtk::Scale *music_volume_scale;
     Gtk::Box *music_volume_hbox;
     void on_show_turn_popup_toggled();
     void on_play_music_toggled();
-    void on_show_decorated_windows_toggled();
     void on_show_commentator_toggled();
     void on_music_volume_changed();
     void on_ui_form_factor_changed();

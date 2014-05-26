@@ -49,9 +49,6 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 				    + "/buy-production-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-    
     xml->get_widget("production_info_label1", production_info_label1);
     xml->get_widget("production_info_label2", production_info_label2);
     xml->get_widget("buy_button", buy_button);

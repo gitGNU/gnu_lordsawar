@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,12 +23,10 @@
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
 
-#include "decorated.h"
-
 class Item;
 
 //! Scenario editor.  Select an ItemProto object from the Itemlist.
-class UseItemDialog: public Decorated
+class UseItemDialog: public sigc::trackable
 {
  public:
     UseItemDialog(std::list<Item*> items);

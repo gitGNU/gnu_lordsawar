@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -40,9 +40,6 @@ RuinReportDialog::RuinReportDialog(Vector<int> pos)
 				  + "/ruin-report-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  decorate(dialog);
-  window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
   xml->get_widget("map_image", map_image);
 
   NamedLocation *l = NULL;
@@ -71,7 +68,7 @@ RuinReportDialog::RuinReportDialog(Vector<int> pos)
   map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK);
   map_eventbox->signal_button_press_event().connect(
     sigc::mem_fun(*this, &RuinReportDialog::on_map_mouse_button_event));
-  set_title(_("Ruins and Temples"));
+  dialog->set_title(_("Ruins and Temples"));
 
   xml->get_widget("name_label", name_label);
   xml->get_widget("type_label", type_label);

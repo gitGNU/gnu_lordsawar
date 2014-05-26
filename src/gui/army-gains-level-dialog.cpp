@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -43,9 +43,6 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Hero *a, bool show_sight_stat)
 				    + "/army-gains-level-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    decorate(dialog);
-    window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-    
     Gtk::Image *image;
     xml->get_widget("image", image);
     image->property_pixbuf() = 
@@ -61,7 +58,7 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Hero *a, bool show_sight_stat)
     Glib::ustring s;
     s = String::ucompose(_("%1 has advanced to level %2!"), a->getName(),
 			 a->getLevel() + 1);
-    set_title(s);
+    dialog->set_title(s);
     s += "\n\n";
     s += _("Choose an attribute to improve:");
     label->set_text(s);

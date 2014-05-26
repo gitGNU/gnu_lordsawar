@@ -39,9 +39,6 @@ UseItemOnCityDialog::UseItemOnCityDialog(SelectCityMap::Type type)
                                      + "/use-item-on-city-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  decorate(dialog);
-  window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-
   xml->get_widget("map_image", map_image);
   xml->get_widget("continue_button", continue_button);
 

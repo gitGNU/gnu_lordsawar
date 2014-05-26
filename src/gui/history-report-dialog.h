@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,14 +29,12 @@
 #include "historymap.h"
 #include "history.h"
 #include "player.h"
-#include "decorated.h"
 
 class Citylist;
 class City;
-
 class Player;
 
-class HistoryReportDialog: public Decorated
+class HistoryReportDialog: public sigc::trackable
 {
  public:
     enum HistoryReportType {CITY = 0, RUIN, EVENTS, GOLD, WINNING};
