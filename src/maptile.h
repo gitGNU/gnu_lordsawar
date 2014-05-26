@@ -74,27 +74,23 @@ class Maptile
         /** 
 	 * Make a new Maptile.
 	 *
-         * @param tileSet          The tileset to use.
          * @param x                The x position of the tile.
          * @param y                The y position of the tile.
          * @param type             The terrain type (index in the tileset).
 	 * @param tileStyle        The look of this tile to use.
          */
-        Maptile(Tileset* tileSet, int x, int y, guint32 type, 
-		TileStyle *tileStyle);
+        Maptile(int x, int y, guint32 type, TileStyle *tileStyle);
 
 	//! Slower constructor.
         /** 
 	 * Make a new Maptile, but this time using the Tile::Type.
 	 *
-         * @param tileSet          The tileset to use.
          * @param x                The x position of the tile.
          * @param y                The y position of the tile.
          * @param type             The terrain type enumeration Tile::Type.
 	 * @param tileStyle        The look of this tile to use.
          */
-        Maptile(Tileset* tileSet, int x, int y, Tile::Type type, 
-		TileStyle *tileStyle);
+        Maptile(int x, int y, Tile::Type type, TileStyle *tileStyle);
 
 	//! Destructor.
         ~Maptile();
@@ -190,9 +186,6 @@ class Maptile
 	//! Get the TileStyle associated with this Maptile.
 	TileStyle * getTileStyle() const {return d_tileStyle;}
 
-        //! Change the Tileset.
-        void setTileset(Tileset *t) {d_tileSet = t;};
-
 	//! Set the TileStyle associated with this Maptile.
 	void setTileStyle(TileStyle *style) {d_tileStyle = style;}
 
@@ -200,15 +193,12 @@ class Maptile
 	static std::string buildingToString(const Maptile::Building bldg);
         static Glib::ustring buildingToFriendlyName(const guint32 bldg);
     private:
-	//! The index of the Tile within the Tileset (Maptile::d_tileSet).
+	//! The index of the Tile within the Tileset (GameMap::s_tileset).
 	/**
 	 * The Maptile has a type, in the form of a Tile.  This Tile is
-	 * identified by it's index within Maptile::d_tileSet.
+	 * identified by it's index within GameMap::s_tileset.
 	 */
         guint32 d_index;
-
-	//! The tileset this tile belongs to.
-	Tileset *d_tileSet;
 
         //! what kind of tile this is
         Tile::Type d_type;

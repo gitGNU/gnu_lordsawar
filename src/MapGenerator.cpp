@@ -3,7 +3,7 @@
 // Copyright (C) 2004 David Barnsdale
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 // Copyright (C) 2008 Janek Kozicki
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -1470,7 +1470,6 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
 {
   bool retval = true;
   GameMap *gm = GameMap::getInstance();
-  Tileset *ts = Tilesetlist::getInstance()->getTileset(gm->getTilesetName());
   Vector<int> src(src_x, src_y);
   Vector<int> dest(dest_x, dest_y);
 
@@ -1508,7 +1507,7 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
 	  if (d_terrain[y*d_width + x] == Tile::MOUNTAIN)
 	    {
 	      d_terrain[y*d_width +x] = Tile::HILLS;
-	      Maptile *t = new Maptile(ts, x, y, Tile::HILLS, NULL);
+	      Maptile *t = new Maptile(x, y, Tile::HILLS, NULL);
 	      gm->setTile(x, y, t);
 	      calculateBlockedAvenue(x, y);
 	    }

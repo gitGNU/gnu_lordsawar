@@ -24,30 +24,30 @@
 #include "tileset.h"
 #include "MapBackpack.h"
 #include "stacktile.h"
+#include "GameMap.h"
 
-Maptile::Maptile(Tileset* tileSet, int x, int y, guint32 index, TileStyle *tileStyle)
+Maptile::Maptile(int x, int y, guint32 index, TileStyle *tileStyle)
     :d_index(index), d_building(NONE) 
 {
-    d_tileSet = tileSet;
     d_tileStyle = tileStyle;
     d_backpack = new MapBackpack(Vector<int>(x,y));
     d_stacktile = new StackTile(Vector<int>(x,y));
-    Tile *tile = (*tileSet)[d_index];
+    Tileset *ts = GameMap::getTileset();
+    Tile *tile = (*ts)[d_index];
     d_moves = tile->getMoves();
     d_type = tile->getType();
     d_smalltile = new SmallTile(*tile->getSmallTile());
 }
 
-Maptile::Maptile(Tileset* tileSet, int x, int y, Tile::Type type, TileStyle *tileStyle)
+Maptile::Maptile(int x, int y, Tile::Type type, TileStyle *tileStyle)
 {
     d_building = NONE;
-    d_tileSet = tileSet;
-    d_tileStyle = tileStyle;
-    int idx = tileSet->getIndex(type);
+    Tileset *ts = GameMap::getTileset();
+    int idx = ts->getIndex(type);
     if (idx < 0)
       idx = 0;
     d_index = idx;
-    Tile *tile = (*tileSet)[d_index];
+    Tile *tile = (*ts)[d_index];
     d_moves = tile->getMoves();
     d_type = tile->getType();
     d_smalltile = new SmallTile(*tile->getSmallTile());
@@ -86,7 +86,8 @@ guint32 Maptile::getMoves() const
 
 void Maptile::setIndex(guint32 index)
 {
-  Tile *tile = (*d_tileSet)[index];
+  Tileset *ts = GameMap::getTileset();
+  Tile *tile = (*ts)[index];
   if (!tile)
     return;
   d_index = index;

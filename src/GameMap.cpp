@@ -237,7 +237,7 @@ GameMap::GameMap(XML_Helper* helper)
             //the chars now hold the ascii representation of the numbers, which
             //we don't want
             type -= '0';
-            d_map[j*s_width + i] = new Maptile(tileset, i, j, type, NULL);
+            d_map[j*s_width + i] = new Maptile(i, j, type, NULL);
         }
     }
 
@@ -287,8 +287,7 @@ bool GameMap::fill(MapGenerator* generator)
         {
             int index = tileset->getIndex(terrain[j*width + i]);
 	    if (index != -1)
-	      d_map[j*s_width + i] = new Maptile(tileset, i, j, 
-						 (guint32)index, NULL);
+	      d_map[j*s_width + i] = new Maptile(i, j, (guint32)index, NULL);
         }
 
     applyTileStyles(0, 0, height, width, true);
@@ -297,15 +296,12 @@ bool GameMap::fill(MapGenerator* generator)
 
 bool GameMap::fill(guint32 type)
 {
-    Tileset *tileset = GameMap::getTileset();
-    for (int i = 0; i < s_width; i++)
-        for (int j = 0; j < s_height; j++)
-	  {
-            d_map[j*s_width + i] = new Maptile(tileset, i, j, type, NULL);
-	  }
+  for (int i = 0; i < s_width; i++)
+    for (int j = 0; j < s_height; j++)
+      d_map[j*s_width + i] = new Maptile(i, j, type, NULL);
 
-    applyTileStyles(0, 0, s_height, s_width, false);
-    return true;
+  applyTileStyles(0, 0, s_height, s_width, false);
+  return true;
 }
 
 bool GameMap::save(XML_Helper* helper) const
@@ -914,8 +910,7 @@ void GameMap::demote_lone_tile(int minx, int miny, int maxx, int maxy,
 		//downgrade it
 		int idx = tileset->getIndex(outtype);
 		if (idx != -1)
-		  setTile(j, i, new Maptile (tileset, j, i, 
-                                             (guint32)idx, NULL));
+		  setTile(j, i, new Maptile (j, i, (guint32)idx, NULL));
 	      }
 	  }
       }
@@ -985,15 +980,13 @@ void GameMap::surroundMountains(int minx, int miny, int maxx, int maxy)
 		    {
 		      if (idx != -1)
 			setTile(j+J, i+I, 
-				new Maptile (tileset, j+J, i+I, 
-					     (guint32)idx, NULL));
+				new Maptile (j+J, i+I, (guint32)idx, NULL));
 		    }
 		  else 
 		    {
 		    // water has priority here, there was some work done to conenct bodies of water
 		    // so don't break those connections.
-		      setTile(j, i, 
-			    new Maptile (tileset, j, i, (guint32)idx, NULL));
+		      setTile(j, i, new Maptile (j, i, (guint32)idx, NULL));
 		    }
 		}
       }
@@ -1249,9 +1242,9 @@ void GameMap::switchTileset(Tileset *tileset)
   for (int i = 0; i < s_width; i++)
     for (int j = 0; j < s_height; j++)
       {
-        d_map[j*s_width + i]->setTileset(s_tileset);
         //there is also the problem of the index being kept in the maptile.
-        //perhaps we need to get a new index, right?
+        //perhaps we need to get a new index, right? e.g. when we switch
+        //the tileset for another one in the editor.
         //because "Grass" won't always be in the 0th spot in the tileset.
         d_map[j*s_width + i]->setIndex(d_map[j*s_width + i]->getIndex());
       }
