@@ -362,9 +362,6 @@ class GameMap: public sigc::trackable
         std::string d_shieldset;
         std::string d_cityset;
 
-        Tileset* d_tileSet;
-        Shieldset* d_shieldSet;
-        Cityset* d_citySet;
         Maptile** d_map;
 };
 
