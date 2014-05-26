@@ -1439,7 +1439,7 @@ void MainWindow::init_maps()
 void MainWindow::on_mouse_on_tile(Vector<int> tile)
 {
     Glib::ustring str;
-    if (tile.x > 0 && tile.y > 0)
+    if (tile.x >= 0 && tile.y >= 0)
 	// note to translators: this is a coordinate pair (x, y)
 	str = "<i>" + String::ucompose(_("(%1, %2)"), tile.x, tile.y) + "</i>";
     
