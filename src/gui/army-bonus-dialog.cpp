@@ -43,7 +43,6 @@ ArmyBonusDialog::ArmyBonusDialog(Player *p)
     xml->get_widget("dialog", dialog);
     decorate(dialog);
     window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-    dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
 
     armies_list = Gtk::ListStore::create(armies_columns);
     xml->get_widget("treeview", armies_treeview);

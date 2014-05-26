@@ -62,7 +62,6 @@ NewNetworkGameDialog::NewNetworkGameDialog()
     (sigc::mem_fun(*this, 
                    &NewNetworkGameDialog::on_remote_checkbutton_toggled));
   decorate(dialog);
-  dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
 
   if (Configuration::s_gamelist_server_hostname == "" ||
       Configuration::s_gamelist_server_port == 0)

@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Ben Asselstine
+//  Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@ NewProfileDialog::NewProfileDialog(Glib::ustring network_game_nickname)
   xml->get_widget("accept_button", accept_button);
 
   decorate(dialog);
-  dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
   xml->get_widget("nick_entry", nick_entry);
   nick_entry->set_activates_default(true);
   nick_entry->signal_changed().connect 

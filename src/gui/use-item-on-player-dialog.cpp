@@ -1,4 +1,4 @@
-//  Copyright (C) 2010, 2012 Ben Asselstine
+//  Copyright (C) 2010, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -40,7 +40,6 @@ UseItemOnPlayerDialog::UseItemOnPlayerDialog()
 
     xml->get_widget("dialog", dialog);
     decorate(dialog);
-    dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
 
     players_list = Gtk::ListStore::create(players_columns);

@@ -51,7 +51,6 @@ BuyProductionDialog::BuyProductionDialog(City *c)
     xml->get_widget("dialog", dialog);
     decorate(dialog);
     window_closed.connect(sigc::mem_fun(dialog, &Gtk::Dialog::hide));
-    dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     
     xml->get_widget("production_info_label1", production_info_label1);
     xml->get_widget("production_info_label2", production_info_label2);

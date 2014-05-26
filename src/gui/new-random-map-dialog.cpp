@@ -48,7 +48,6 @@ NewRandomMapDialog::NewRandomMapDialog()
 					 "/new-random-map-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     decorate(dialog);
 
     xml->get_widget("dialog-vbox1", dialog_vbox);

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -33,7 +33,6 @@ NewNetworkGameDownloadWindow::NewNetworkGameDownloadWindow(Glib::ustring title)
   if (title == "")
     title = _("Downloading.");
   set_title(title);
-  set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
   show_all();
 }
 
