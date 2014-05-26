@@ -46,7 +46,6 @@ SwitchSetsDialog::SwitchSetsDialog()
 	= Gtk::Builder::create_from_file(get_glade_path() + "/switch-sets-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    dialog->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
     xml->get_widget("accept_button", accept_button);
 

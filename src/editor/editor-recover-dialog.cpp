@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -34,7 +34,6 @@ EditorRecoverDialog::EditorRecoverDialog(std::string question)
 				    + "/editor-recover-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     xml->get_widget("label", label);
     label->set_text(question);
 }

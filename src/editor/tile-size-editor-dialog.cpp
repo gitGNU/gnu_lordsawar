@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -35,7 +35,6 @@ TileSizeEditorDialog::TileSizeEditorDialog(guint32 current, guint32 suggested)
 				    + "/tile-size-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     xml->get_widget("label", label);
     std::string msg = 
       String::ucompose(_("Do you want to change the tile size from %1 to %2?"),

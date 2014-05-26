@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@ TilesetSmallmapBuildingColorsDialog::TilesetSmallmapBuildingColorsDialog(Tileset
     (get_glade_path() + "/tileset-smallmap-building-colors-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-  dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
   xml->get_widget("road_colorbutton", road_colorbutton);
   road_colorbutton->set_rgba(tileset->getRoadColor());
   road_colorbutton->signal_color_set().connect

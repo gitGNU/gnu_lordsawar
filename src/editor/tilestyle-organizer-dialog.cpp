@@ -40,7 +40,6 @@ TileStyleOrganizerDialog::TileStyleOrganizerDialog(Tile *tile)
 				    + "/tilestyle-organizer-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-    dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
     xml->get_widget("categories_iconview", categories_iconview);
     xml->get_widget("category_iconview", category_iconview);
     xml->get_widget("unsorted_iconview", unsorted_iconview);
