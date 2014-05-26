@@ -58,8 +58,6 @@ ImageEditorDialog::~ImageEditorDialog()
 void ImageEditorDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
-    dialog->property_icon() = parent.property_icon().get_value()->copy();
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 int ImageEditorDialog::run()

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -34,7 +34,6 @@ class TilesetSelectorEditorDialog: public sigc::trackable
     TilesetSelectorEditorDialog(Tileset * tileset);
     ~TilesetSelectorEditorDialog();
 
-    void set_icon_from_file(std::string name) {dialog->set_icon_from_file(name);};
     std::string get_small_selector_filename() {return small_filename;};
     std::string get_large_selector_filename() {return large_filename;};
 

@@ -618,8 +618,7 @@ void ShieldSetWindow::on_change_smallpic_clicked()
       ShieldStyle *ss = shield->getFirstShieldstyle(ShieldStyle::SMALL);
       if (ss->getImageName() != "")
 	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
-      MaskedImageEditorDialog d(filename, d_shieldset);
-      d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+      MaskedImageEditorDialog d(filename, shield->getOwner(), d_shieldset);
       d.set_parent_window(*window);
       d.run();
       if (filename != "")
@@ -652,8 +651,7 @@ void ShieldSetWindow::on_change_mediumpic_clicked()
       ShieldStyle *ss = shield->getFirstShieldstyle(ShieldStyle::MEDIUM);
       if (ss->getImageName() != "")
 	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
-      MaskedImageEditorDialog d(filename, d_shieldset);
-      d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+      MaskedImageEditorDialog d(filename, shield->getOwner(), d_shieldset);
       d.set_parent_window(*window);
       d.run();
       if (d.get_selected_filename() != "")
@@ -684,8 +682,7 @@ void ShieldSetWindow::on_change_largepic_clicked()
       ShieldStyle *ss = shield->getFirstShieldstyle(ShieldStyle::LARGE);
       if (ss->getImageName() != "")
 	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
-      MaskedImageEditorDialog d(filename, d_shieldset);
-      d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+      MaskedImageEditorDialog d(filename, shield->getOwner(), d_shieldset);
       d.set_parent_window(*window);
       d.run();
       if (d.get_selected_filename() != "")

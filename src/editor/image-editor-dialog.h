@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -40,8 +40,6 @@ class ImageEditorDialog: public sigc::trackable
 
     void set_parent_window(Gtk::Window &parent);
 
-  
-    void set_icon_from_file(std::string name) {dialog->set_icon_from_file(name);};
     std::string get_selected_filename() {return target_filename;};
 
     int run();

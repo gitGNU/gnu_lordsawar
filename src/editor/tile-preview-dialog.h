@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,8 +36,6 @@ class TilePreviewDialog: public sigc::trackable
     void set_parent_window(Gtk::Window &parent);
 
     void run();
-
-    void set_icon_from_file(std::string name) {dialog->set_icon_from_file(name);};
 
     sigc::signal<void, guint32> tilestyle_selected;
     

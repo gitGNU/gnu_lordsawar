@@ -1281,7 +1281,6 @@ void TileSetWindow::on_preview_tile_activated()
       TilePreviewDialog d(tile, sec, d_tileset->getTileSize());
       d.tilestyle_selected.connect
         (sigc::mem_fun(this, &TileSetWindow::on_tilestyle_id_selected));
-      d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
       d.run();
     }
 }
@@ -1292,7 +1291,6 @@ void TileSetWindow::on_roads_picture_activated()
   if (d_tileset->getRoadsFilename().empty() == false)
     filename = d_tileset->getFileFromConfigurationFile(d_tileset->getRoadsFilename() +".png");
   ImageEditorDialog d(filename, ROAD_TYPES);
-  d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
   d.set_parent_window(*window);
   int response = d.run();
   if (filename.empty() == false)
@@ -1317,7 +1315,6 @@ void TileSetWindow::on_bridges_picture_activated()
   if (d_tileset->getBridgesFilename().empty() == false)
     filename = d_tileset->getFileFromConfigurationFile(d_tileset->getBridgesFilename() +".png");
   ImageEditorDialog d(filename, BRIDGE_TYPES);
-  d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
   d.set_parent_window(*window);
   int response = d.run();
   if (filename.empty() == false)
@@ -1341,7 +1338,6 @@ void TileSetWindow::on_fog_picture_activated()
   if (d_tileset->getFogFilename().empty() == false)
     filename = d_tileset->getFileFromConfigurationFile(d_tileset->getFogFilename() +".png");
   ImageEditorDialog d(filename, FOG_TYPES);
-  d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
   d.set_parent_window(*window);
   int response = d.run();
   if (filename.empty() == false)
@@ -1363,7 +1359,6 @@ void TileSetWindow::on_fog_picture_activated()
 void TileSetWindow::on_flags_picture_activated()
 {
   TilesetFlagEditorDialog d(d_tileset);
-  d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
   d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
@@ -1376,7 +1371,6 @@ void TileSetWindow::on_flags_picture_activated()
 void TileSetWindow::on_army_unit_selector_activated()
 {
   TilesetSelectorEditorDialog d(d_tileset);
-  d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -1388,7 +1382,6 @@ void TileSetWindow::on_army_unit_selector_activated()
 void TileSetWindow::on_explosion_picture_activated()
 {
   TilesetExplosionPictureEditorDialog d(d_tileset);
-  d.set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {

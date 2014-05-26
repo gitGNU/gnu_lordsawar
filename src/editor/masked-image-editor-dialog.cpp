@@ -33,8 +33,13 @@
 #include "GraphicsCache.h"
 
 
-MaskedImageEditorDialog::MaskedImageEditorDialog(std::string filename, Shieldset *shieldset)
+MaskedImageEditorDialog::MaskedImageEditorDialog(std::string filename, int only, Shieldset *shieldset)
 {
+  if (only >= 0)
+    {
+      only_show = true;
+      only_show_colour = Shield::Colour(only);
+    }
   d_shieldset = shieldset;
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
@@ -57,7 +62,6 @@ MaskedImageEditorDialog::MaskedImageEditorDialog(std::string filename, Shieldset
     update_panel();
     filechooserbutton->signal_file_set().connect
        (sigc::mem_fun(*this, &MaskedImageEditorDialog::on_image_chosen));
-
 }
 
 MaskedImageEditorDialog::~MaskedImageEditorDialog()
@@ -67,8 +71,6 @@ MaskedImageEditorDialog::~MaskedImageEditorDialog()
 void MaskedImageEditorDialog::set_parent_window(Gtk::Window &parent)
 {
     dialog->set_transient_for(parent);
-    dialog->property_icon() = parent.property_icon().get_value()->copy();
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 int MaskedImageEditorDialog::run()
@@ -123,6 +125,15 @@ void MaskedImageEditorDialog::show_image(std::string filename)
 	default : break;
 	}
 
+      if (only_show)
+        {
+          if (i != only_show_colour)
+            {
+              image->property_visible() = false;
+              image->property_no_show_all() = true;
+              continue;
+            }
+        }
       if (d_shieldset == NULL)
         d_shieldset = Shieldsetlist::getInstance()->getShieldset(1);
       Gdk::RGBA colour = d_shieldset->getColor(i);

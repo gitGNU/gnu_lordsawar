@@ -1,4 +1,4 @@
-//  Copyright (C) 2009, 2010 Ben Asselstine
+//  Copyright (C) 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,27 +23,32 @@
 #include <sigc++/trackable.h>
 #include <sigc++/connection.h>
 #include <gtkmm.h>
+#include "shield.h"
 
 
-//! general picture editor.  
+//! general masked picture editor.  
 /**
  * This class doesn't actually edit the image, instead it shows the image
  * being edited in each player colour.  The user can pick a new file to be
  * the new image.
  *
  * the shieldset is required to define the mask colours.
+ *
+ * the only parameter means don't show the masked image in all colours,
+ * just show it in one colour.  -1 means all.  non-negative is one of the
+ * Shield::Colour enumerations.
  */
 class Shieldset;
 class MaskedImageEditorDialog: public sigc::trackable
 {
  public:
-    MaskedImageEditorDialog(std::string filename, Shieldset *shieldset = NULL);
+    MaskedImageEditorDialog(std::string filename, int only_show_colour, Shieldset *shieldset = NULL);
     ~MaskedImageEditorDialog();
 
     void set_parent_window(Gtk::Window &parent);
 
+    void set_only_show_one(Shield::Colour c){only_show=true;only_show_colour=c;};
   
-    void set_icon_from_file(std::string name) {dialog->set_icon_from_file(name);};
     std::string get_selected_filename() {return target_filename;};
 
     int run();
@@ -62,6 +67,8 @@ class MaskedImageEditorDialog: public sigc::trackable
     Gtk::Image *image_black;
     Gtk::Image *image_neutral;
     Shieldset * d_shieldset;
+    bool only_show;
+    Shield::Colour only_show_colour;
     void on_image_chosen();
     void show_image(std::string filename);
     void update_panel();
