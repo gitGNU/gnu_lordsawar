@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: lordsawar 0.3.0-pre2\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2014-05-19 20:09-0400\n"
+"POT-Creation-Date: 2014-05-25 20:31-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,8 +54,7 @@ msgid "Army Bonus"
 msgstr ""
 
 #: ../dat/glade/army-bonus-dialog.ui.h:2 ../dat/glade/city-window.ui.h:10
-#: ../dat/glade/destination-dialog.ui.h:14
-#: ../dat/glade/diplomacy-dialog.ui.h:7
+#: ../dat/glade/destination-dialog.ui.h:2 ../dat/glade/diplomacy-dialog.ui.h:7
 #: ../dat/glade/game-options-dialog.ui.h:23 ../dat/glade/hero-dialog.ui.h:1
 #: ../dat/glade/hero-levels-dialog.ui.h:2
 #: ../dat/glade/history-report-dialog.ui.h:1
@@ -63,7 +62,7 @@ msgstr ""
 #: ../dat/glade/main-preferences-dialog.ui.h:2
 #: ../dat/glade/preferences-dialog.ui.h:2 ../dat/glade/report-dialog.ui.h:1
 #: ../dat/glade/ruin-report-dialog.ui.h:2
-#: ../dat/glade/item-report-dialog.ui.h:4
+#: ../dat/glade/item-report-dialog.ui.h:2
 #: ../dat/glade/stack-info-dialog.ui.h:5
 #: ../dat/glade/editor/itemlist-dialog.ui.h:10
 #: ../dat/glade/editor/reward-list-dialog.ui.h:2
@@ -73,7 +72,7 @@ msgstr ""
 #: ../dat/glade/editor/tileset-explosion-picture-editor-dialog.ui.h:7
 #: ../dat/glade/editor/tilestyle-organizer-dialog.ui.h:5
 #: ../dat/glade/editor/tileset-smallmap-building-colors-dialog.ui.h:5
-#: ../dat/glade/editor/smallmap-editor-dialog.ui.h:8
+#: ../dat/glade/editor/smallmap-editor-dialog.ui.h:2
 msgid "Close"
 msgstr ""
 
@@ -97,7 +96,7 @@ msgstr ""
 #: ../dat/glade/load-scenario-dialog.ui.h:7
 #: ../dat/glade/new-network-game-dialog.ui.h:2
 #: ../dat/glade/new-profile-dialog.ui.h:3
-#: ../dat/glade/pick-network-game-to-join-dialog.ui.h:9
+#: ../dat/glade/pick-network-game-to-join-dialog.ui.h:2
 #: ../dat/glade/signpost-change-dialog.ui.h:2
 #: ../dat/glade/use-item-dialog.ui.h:2
 #: ../dat/glade/new-random-map-dialog.ui.h:25
@@ -107,7 +106,7 @@ msgstr ""
 #: ../dat/glade/editor/new-map-dialog.ui.h:26
 #: ../dat/glade/editor/switch-sets-dialog.ui.h:2
 #: ../dat/glade/editor/players-dialog.ui.h:2
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:18
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:2
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:2
 #: ../dat/glade/editor/select-army-dialog.ui.h:2
 #: ../dat/glade/editor/select-hidden-ruin-dialog.ui.h:2
@@ -202,7 +201,7 @@ msgstr ""
 #: ../dat/glade/editor/city-editor-dialog.ui.h:3
 #: ../dat/glade/editor/map-info-dialog.ui.h:3
 #: ../dat/glade/editor/players-dialog.ui.h:3
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:19
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:3
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:3
 #: ../dat/glade/editor/signpost-editor-dialog.ui.h:3
 #: ../dat/glade/editor/stack-editor-dialog.ui.h:3
@@ -222,7 +221,7 @@ msgstr ""
 #: ../dat/glade/game-lobby-dialog.ui.h:8 ../dat/glade/hero-offer-dialog.ui.h:3
 #: ../dat/glade/ruin-report-dialog.ui.h:3
 #: ../dat/glade/editor/armyset-info-dialog.ui.h:5
-#: ../dat/glade/editor/armyset-window.ui.h:15
+#: ../dat/glade/editor/armyset-window.ui.h:55
 #: ../dat/glade/editor/city-editor-dialog.ui.h:7
 #: ../dat/glade/editor/itemlist-dialog.ui.h:11
 #: ../dat/glade/editor/map-info-dialog.ui.h:5
@@ -237,7 +236,7 @@ msgstr ""
 msgid "Name:"
 msgstr ""
 
-#: ../dat/glade/city-window.ui.h:1 ../dat/glade/destination-dialog.ui.h:2
+#: ../dat/glade/city-window.ui.h:1 ../dat/glade/destination-dialog.ui.h:3
 #: ../src/gui/city-window.cpp:271 ../src/gui/destination-dialog.cpp:234
 msgid "Current:"
 msgstr ""
@@ -276,39 +275,39 @@ msgstr ""
 msgid "Choose Destination"
 msgstr ""
 
-#: ../dat/glade/destination-dialog.ui.h:3
+#: ../dat/glade/destination-dialog.ui.h:4
 msgid "4t"
 msgstr ""
 
-#: ../dat/glade/destination-dialog.ui.h:4
+#: ../dat/glade/destination-dialog.ui.h:5
 msgid ""
 "See\n"
 "All"
 msgstr ""
 
-#: ../dat/glade/destination-dialog.ui.h:6
+#: ../dat/glade/destination-dialog.ui.h:7
 msgid "Next Turn:"
 msgstr ""
 
-#: ../dat/glade/destination-dialog.ui.h:7
+#: ../dat/glade/destination-dialog.ui.h:8
 msgid "Turn After:"
 msgstr ""
 
-#: ../dat/glade/destination-dialog.ui.h:8
+#: ../dat/glade/destination-dialog.ui.h:9
 msgid "Vector"
 msgstr ""
 
-#: ../dat/glade/destination-dialog.ui.h:9
+#: ../dat/glade/destination-dialog.ui.h:10
 msgid ""
 "Click here to vector to\n"
 "a new city"
 msgstr ""
 
-#: ../dat/glade/destination-dialog.ui.h:11
+#: ../dat/glade/destination-dialog.ui.h:12
 msgid "Change"
 msgstr ""
 
-#: ../dat/glade/destination-dialog.ui.h:12
+#: ../dat/glade/destination-dialog.ui.h:13
 msgid ""
 "Click here to change the\n"
 "destination of armies"
@@ -518,7 +517,6 @@ msgid "Intermediate"
 msgstr ""
 
 #: ../dat/glade/game-preferences-dialog.ui.h:3
-#: ../dat/glade/editor/armyset-window.ui.h:60
 msgid "Advanced"
 msgstr ""
 
@@ -557,7 +555,7 @@ msgid "Start Game"
 msgstr ""
 
 #: ../dat/glade/game-quit-dialog.ui.h:1 ../dat/glade/game-window.ui.h:7
-#: ../dat/glade/splash-window.ui.h:6 ../dat/glade/editor/armyset-window.ui.h:8
+#: ../dat/glade/splash-window.ui.h:6 ../dat/glade/editor/armyset-window.ui.h:9
 #: ../dat/glade/editor/main-window.ui.h:14
 #: ../dat/glade/editor/tileset-window.ui.h:14
 #: ../dat/glade/editor/cityset-window.ui.h:8
@@ -618,8 +616,8 @@ msgid "Disband"
 msgstr ""
 
 #: ../dat/glade/game-window.ui.h:12
-#: ../dat/glade/editor/signpost-editor-dialog.ui.h:4 ../src/maptile.cpp:215
-#: ../src/gui/game-window.cpp:1233 ../src/editor/main-window.cpp:1430
+#: ../dat/glade/editor/signpost-editor-dialog.ui.h:4 ../src/maptile.cpp:280
+#: ../src/gui/game-window.cpp:1233 ../src/editor/main-window.cpp:1472
 msgid "Signpost"
 msgstr ""
 
@@ -649,14 +647,14 @@ msgstr ""
 
 #: ../dat/glade/game-window.ui.h:19 ../dat/glade/history-report-dialog.ui.h:2
 #: ../dat/glade/report-dialog.ui.h:5
-#: ../dat/glade/editor/city-editor-dialog.ui.h:4 ../src/maptile.cpp:209
-#: ../src/editor/main-window.cpp:1426
+#: ../dat/glade/editor/city-editor-dialog.ui.h:4 ../src/maptile.cpp:274
+#: ../src/editor/main-window.cpp:1468
 msgid "City"
 msgstr ""
 
 #: ../dat/glade/game-window.ui.h:20 ../dat/glade/history-report-dialog.ui.h:5
 #: ../dat/glade/report-dialog.ui.h:7
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:2
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:4
 #: ../src/gui/sage-dialog.cpp:144 ../src/editor/players-dialog.cpp:57
 msgid "Gold"
 msgstr ""
@@ -746,7 +744,7 @@ msgstr ""
 
 #: ../dat/glade/game-window.ui.h:41 ../dat/glade/stack-info-dialog.ui.h:2
 #: ../dat/glade/editor/stack-editor-dialog.ui.h:4
-#: ../src/editor/main-window.cpp:1424
+#: ../src/editor/main-window.cpp:1466
 msgid "Stack"
 msgstr ""
 
@@ -756,8 +754,8 @@ msgid "History"
 msgstr ""
 
 #: ../dat/glade/game-window.ui.h:43 ../dat/glade/history-report-dialog.ui.h:3
-#: ../dat/glade/editor/ruin-editor-dialog.ui.h:4 ../src/maptile.cpp:211
-#: ../src/gui/ruin-report-dialog.cpp:138 ../src/editor/main-window.cpp:1428
+#: ../dat/glade/editor/ruin-editor-dialog.ui.h:4 ../src/maptile.cpp:276
+#: ../src/gui/ruin-report-dialog.cpp:138 ../src/editor/main-window.cpp:1470
 msgid "Ruin"
 msgstr ""
 
@@ -773,7 +771,7 @@ msgstr ""
 msgid "Triumphs"
 msgstr ""
 
-#: ../dat/glade/game-window.ui.h:47 ../dat/glade/editor/armyset-window.ui.h:14
+#: ../dat/glade/game-window.ui.h:47 ../dat/glade/editor/armyset-window.ui.h:15
 #: ../dat/glade/editor/main-window.ui.h:41
 #: ../dat/glade/editor/tileset-window.ui.h:27
 #: ../dat/glade/editor/cityset-window.ui.h:11
@@ -979,36 +977,36 @@ msgstr ""
 msgid "Pick a game to Join"
 msgstr ""
 
-#: ../dat/glade/pick-network-game-to-join-dialog.ui.h:2
+#: ../dat/glade/pick-network-game-to-join-dialog.ui.h:3
+msgid "Connect"
+msgstr ""
+
+#: ../dat/glade/pick-network-game-to-join-dialog.ui.h:4
 msgid ""
 "Type in the name of the computer\n"
 "whose game you would like to join."
 msgstr ""
 
-#: ../dat/glade/pick-network-game-to-join-dialog.ui.h:4
+#: ../dat/glade/pick-network-game-to-join-dialog.ui.h:6
 msgid "Hostname:"
 msgstr ""
 
-#: ../dat/glade/pick-network-game-to-join-dialog.ui.h:5
+#: ../dat/glade/pick-network-game-to-join-dialog.ui.h:7
 #: ../src/gls/gls-client-tool.cpp:87 ../src/gls/gls-client-tool.cpp:131
 #: ../src/ghs/ghs-client-tool.cpp:96
 msgid "Port:"
 msgstr ""
 
-#: ../dat/glade/pick-network-game-to-join-dialog.ui.h:6
+#: ../dat/glade/pick-network-game-to-join-dialog.ui.h:8
 msgid "Games"
 msgstr ""
 
-#: ../dat/glade/pick-network-game-to-join-dialog.ui.h:7
+#: ../dat/glade/pick-network-game-to-join-dialog.ui.h:9
 msgid "Clear All Games"
 msgstr ""
 
-#: ../dat/glade/pick-network-game-to-join-dialog.ui.h:8
-msgid "Recently Joined Games"
-msgstr ""
-
 #: ../dat/glade/pick-network-game-to-join-dialog.ui.h:10
-msgid "Connect"
+msgid "Recently Joined Games"
 msgstr ""
 
 #: ../dat/glade/player-died-dialog.ui.h:1
@@ -1096,7 +1094,7 @@ msgid "Explored:"
 msgstr ""
 
 #: ../dat/glade/ruin-report-dialog.ui.h:6
-#: ../dat/glade/item-report-dialog.ui.h:3
+#: ../dat/glade/item-report-dialog.ui.h:4
 msgid "Details"
 msgstr ""
 
@@ -1104,7 +1102,7 @@ msgstr ""
 msgid "Item Report"
 msgstr ""
 
-#: ../dat/glade/item-report-dialog.ui.h:2
+#: ../dat/glade/item-report-dialog.ui.h:3
 msgid "label"
 msgstr ""
 
@@ -1262,7 +1260,7 @@ msgstr ""
 #: ../dat/tilesets/bigstark/bigstark.lwt.in.h:3
 #: ../dat/tilesets/wesnoth/wesnoth.lwt.in.h:3
 #: ../dat/tilesets/bigwesnoth/bigwesnoth.lwt.in.h:3
-#: ../src/editor/tileset-window.cpp:86
+#: ../src/editor/tileset-window.cpp:87
 msgid "Grass"
 msgstr ""
 
@@ -1275,7 +1273,7 @@ msgstr ""
 #: ../dat/tilesets/bigstark/bigstark.lwt.in.h:4
 #: ../dat/tilesets/wesnoth/wesnoth.lwt.in.h:4
 #: ../dat/tilesets/bigwesnoth/bigwesnoth.lwt.in.h:4
-#: ../src/editor/tileset-window.cpp:87
+#: ../src/editor/tileset-window.cpp:88
 msgid "Water"
 msgstr ""
 
@@ -1288,7 +1286,7 @@ msgstr ""
 #: ../dat/tilesets/bigstark/bigstark.lwt.in.h:8
 #: ../dat/tilesets/wesnoth/wesnoth.lwt.in.h:8
 #: ../dat/tilesets/bigwesnoth/bigwesnoth.lwt.in.h:8
-#: ../src/editor/tileset-window.cpp:91
+#: ../src/editor/tileset-window.cpp:92
 msgid "Swamp"
 msgstr ""
 
@@ -1301,7 +1299,7 @@ msgstr ""
 #: ../dat/tilesets/bigstark/bigstark.lwt.in.h:5
 #: ../dat/tilesets/wesnoth/wesnoth.lwt.in.h:5
 #: ../dat/tilesets/bigwesnoth/bigwesnoth.lwt.in.h:5
-#: ../src/editor/tileset-window.cpp:88
+#: ../src/editor/tileset-window.cpp:89
 msgid "Forest"
 msgstr ""
 
@@ -1314,7 +1312,7 @@ msgstr ""
 #: ../dat/tilesets/bigstark/bigstark.lwt.in.h:6
 #: ../dat/tilesets/wesnoth/wesnoth.lwt.in.h:6
 #: ../dat/tilesets/bigwesnoth/bigwesnoth.lwt.in.h:6
-#: ../src/editor/tileset-window.cpp:89
+#: ../src/editor/tileset-window.cpp:90
 msgid "Hills"
 msgstr ""
 
@@ -1327,7 +1325,7 @@ msgstr ""
 #: ../dat/tilesets/bigstark/bigstark.lwt.in.h:7
 #: ../dat/tilesets/wesnoth/wesnoth.lwt.in.h:7
 #: ../dat/tilesets/bigwesnoth/bigwesnoth.lwt.in.h:7
-#: ../src/editor/tileset-window.cpp:90
+#: ../src/editor/tileset-window.cpp:91
 msgid "Mountains"
 msgstr ""
 
@@ -1354,7 +1352,7 @@ msgstr ""
 #: ../dat/glade/new-random-map-dialog.ui.h:24
 #: ../dat/glade/editor/map-info-dialog.ui.h:4
 #: ../dat/glade/editor/new-map-dialog.ui.h:25
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:5
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:7
 msgid "Map"
 msgstr ""
 
@@ -1418,44 +1416,48 @@ msgstr ""
 msgid "License"
 msgstr ""
 
-#. init GUI stuff
 #: ../dat/glade/editor/armyset-window.ui.h:1
-#: ../src/editor/armyset-window.cpp:1963 ../src/editor/armyset-main.cpp:55
+msgid "radiobutton"
+msgstr ""
+
+#. init GUI stuff
+#: ../dat/glade/editor/armyset-window.ui.h:2
+#: ../src/editor/armyset-window.cpp:2006 ../src/editor/armyset-main.cpp:55
 msgid "LordsAWar! Armyset Editor"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:2
-#: ../dat/glade/editor/main-window.ui.h:2
+#: ../dat/glade/editor/armyset-window.ui.h:3
+#: ../dat/glade/editor/main-window.ui.h:3
 #: ../dat/glade/editor/tileset-window.ui.h:9
 #: ../dat/glade/editor/cityset-window.ui.h:2
 #: ../dat/glade/editor/shieldset-window.ui.h:2
 msgid "File"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:3
+#: ../dat/glade/editor/armyset-window.ui.h:4
 msgid "New Armyset"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:4
+#: ../dat/glade/editor/armyset-window.ui.h:5
 msgid "Load Armyset"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:5
+#: ../dat/glade/editor/armyset-window.ui.h:6
 msgid "Save Armyset"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:6
+#: ../dat/glade/editor/armyset-window.ui.h:7
 #: ../dat/glade/editor/tileset-window.ui.h:13
 #: ../dat/glade/editor/cityset-window.ui.h:6
 #: ../dat/glade/editor/shieldset-window.ui.h:6
 msgid "Save A Copy"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:7
+#: ../dat/glade/editor/armyset-window.ui.h:8
 msgid "Validate Armyset"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:9
+#: ../dat/glade/editor/armyset-window.ui.h:10
 #: ../dat/glade/editor/main-window.ui.h:15
 #: ../dat/glade/editor/reward-list-dialog.ui.h:5
 #: ../dat/glade/editor/tileset-window.ui.h:15
@@ -1464,199 +1466,228 @@ msgstr ""
 msgid "Edit"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:10
+#: ../dat/glade/editor/armyset-window.ui.h:11
 msgid "Armyset Information"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:11
+#: ../dat/glade/editor/armyset-window.ui.h:12
 msgid "Edit Ship Picture"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:12
+#: ../dat/glade/editor/armyset-window.ui.h:13
 msgid "Edit Hero Flag Picture"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:13
+#: ../dat/glade/editor/armyset-window.ui.h:14
 msgid "Edit Bag of Items Picture"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-window.ui.h:16
+msgid "Turns:"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:17
+msgid "This is the cost to make one of these units.\n"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:19
+msgid "Cost:"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:20
+msgid "Upkeep:"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:21
+msgid "Strength:"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:22
+msgid "Max Moves:"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:23
+msgid "Defends Ruins?"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:24
+msgid "Is Awardable?"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:25
+msgid "Is awardable to heroes as a reward."
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:26
+msgid "This is the cost in the buy production dialog.\n"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:28
+msgid "New Cost:"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:29
+msgid "Sight:"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:30
+msgid "Exp Points:"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:31
+msgid "Not A Hero"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:32
+msgid "Female Hero"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:33
+msgid "Male Hero"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:34
+msgid "Travels faster in forests"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:35
+msgid "Travels faster in marshland"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:36
+msgid "Travels faster in hills"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:37
+msgid "Travels faster in mountains"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:38
+msgid "Can Fly"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:39
+msgid "Movement Bonus"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:40
+msgid "+1 Str in Open"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:41
+msgid "+2 Str in Open"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:42
+msgid "+1 Str in Forest"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:43
+msgid "+1 Str in Hills"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:44
+msgid "+1 Str in City"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:45
+msgid "+2 Str in City"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:46
+msgid "+1 to Stack in Hills"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:47
+msgid "Subtract All City Bonus"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:48
+msgid "-1 Str to Enemy Stack"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:49
+msgid "+1 Str to Stack"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:50
+msgid "+2 Str to Stack"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:51
+msgid "Subtract All Non-Hero Bonuses"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:52
+msgid "Subtract all Hero Bonuses"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:53
+msgid "Fighting Bonus"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:54
+msgid "Capabilities"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:56
 #: ../dat/glade/editor/map-info-dialog.ui.h:6
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:7
 #: ../dat/glade/editor/temple-editor-dialog.ui.h:7
 msgid "Description:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:17
+#: ../dat/glade/editor/armyset-window.ui.h:57
 msgid "White Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:18
+#: ../dat/glade/editor/armyset-window.ui.h:58
 msgid "Green Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:19
+#: ../dat/glade/editor/armyset-window.ui.h:59
 msgid "Yellow Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:20
+#: ../dat/glade/editor/armyset-window.ui.h:60
 msgid "Light Blue Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:21
+#: ../dat/glade/editor/armyset-window.ui.h:61
 msgid "Red Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:22
+#: ../dat/glade/editor/armyset-window.ui.h:62
 msgid "Dark Blue Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:23
+#: ../dat/glade/editor/armyset-window.ui.h:63
 msgid "Orange Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:24
+#: ../dat/glade/editor/armyset-window.ui.h:64
 msgid "Black Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:25
+#: ../dat/glade/editor/armyset-window.ui.h:65
 msgid "Neutral Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:26
-msgid "Basic"
+#: ../dat/glade/editor/armyset-window.ui.h:66
+#: ../src/editor/armyset-window.cpp:866 ../src/editor/armyset-window.cpp:1034
+#: ../src/editor/cityset-window.cpp:214 ../src/editor/tileset-window.cpp:402
+#: ../src/editor/tileset-window.cpp:414 ../src/editor/tileset-window.cpp:423
+#: ../src/editor/shieldset-window.cpp:198
+#: ../src/editor/shieldset-window.cpp:486
+msgid "no image set"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:27
-msgid "Turns:"
+#: ../dat/glade/editor/armyset-window.ui.h:67
+msgid "Same for all players"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:28
-msgid "Cost:"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:29
-msgid "Upkeep:"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:30
-msgid "Strength:"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:31
-msgid "Max Moves:"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:32
-msgid "Defends Ruins?"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:33
-msgid "Is Awardable?"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:34
-msgid "New Cost:"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:35
-msgid "Sight:"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:36
-msgid "Exp Points:"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:37
-msgid "Not A Hero"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:38
-msgid "Female Hero"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:39
-msgid "Male Hero"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:40
-msgid "Travels faster in forests"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:41
-msgid "Travels faster in marshland"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:42
-msgid "Travels faster in hills"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:43
-msgid "Travels faster in mountains"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:44
-msgid "Can Fly"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:45
-msgid "Movement Bonus"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:46
-msgid "+1 Str in Open"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:47
-msgid "+2 Str in Open"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:48
-msgid "+1 Str in Forest"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:49
-msgid "+1 Str in Hills"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:50
-msgid "+1 Str in City"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:51
-msgid "+2 Str in City"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:52
-msgid "+1 to Stack in Hills"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:53
-msgid "Subtract All City Bonus"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:54
-msgid "-1 Str to Enemy Stack"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:55
-msgid "+1 Str to Stack"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:56
-msgid "+2 Str to Stack"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:57
-msgid "Subtract All Non-Hero Bonuses"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:58
-msgid "Subtract all Hero Bonuses"
-msgstr ""
-
-#: ../dat/glade/editor/armyset-window.ui.h:59
-msgid "Fighting Bonus"
+#: ../dat/glade/editor/armyset-window.ui.h:68
+msgid "Appearance"
 msgstr ""
 
 #: ../dat/glade/editor/city-editor-dialog.ui.h:1
@@ -1673,7 +1704,7 @@ msgid "Capital"
 msgstr ""
 
 #: ../dat/glade/editor/city-editor-dialog.ui.h:8
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:6
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:8
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:6
 #: ../dat/glade/editor/signpost-editor-dialog.ui.h:5
 #: ../dat/glade/editor/temple-editor-dialog.ui.h:6
@@ -1833,23 +1864,23 @@ msgid "Uses"
 msgstr ""
 
 #: ../dat/glade/editor/itemlist-dialog.ui.h:39
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:3
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:5
 msgid "Item"
 msgstr ""
 
+#: ../dat/glade/editor/main-window.ui.h:1
+msgid "toolbutton"
+msgstr ""
+
 #. init GUI stuff
-#: ../dat/glade/editor/main-window.ui.h:1 ../src/editor/main-window.cpp:1880
-#: ../src/editor/main.cpp:63
+#: ../dat/glade/editor/main-window.ui.h:2 ../src/editor/main-window.cpp:1927
+#: ../src/editor/main.cpp:63 ../dat/lordsawar-editor.desktop.in.in.h:1
 msgid "LordsAWar! Scenario Editor"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:3
+#: ../dat/glade/editor/main-window.ui.h:4
 #: ../dat/glade/editor/new-map-dialog.ui.h:5
 msgid "New Map"
-msgstr ""
-
-#: ../dat/glade/editor/main-window.ui.h:4
-msgid "New Map from Image"
 msgstr ""
 
 #: ../dat/glade/editor/main-window.ui.h:5
@@ -1965,6 +1996,70 @@ msgstr ""
 msgid "Toggle Tile Graphics"
 msgstr ""
 
+#: ../dat/glade/editor/main-window.ui.h:42
+msgid "Pointer.  Click to inspect objects."
+msgstr ""
+
+#: ../dat/glade/editor/main-window.ui.h:43
+msgid "Draw 1x1 terrain"
+msgstr ""
+
+#: ../dat/glade/editor/main-window.ui.h:44
+msgid "Draw 2x2 terrain"
+msgstr ""
+
+#: ../dat/glade/editor/main-window.ui.h:45
+msgid "Draw 3x3 terrain"
+msgstr ""
+
+#: ../dat/glade/editor/main-window.ui.h:46
+msgid "Draw 6x6 terrain"
+msgstr ""
+
+#: ../dat/glade/editor/main-window.ui.h:47
+msgid "Remove object"
+msgstr ""
+
+#: ../dat/glade/editor/main-window.ui.h:48
+msgid "Move object"
+msgstr ""
+
+#: ../dat/glade/editor/main-window.ui.h:49
+msgid "Add a stack"
+msgstr ""
+
+#: ../dat/glade/editor/main-window.ui.h:50
+msgid "Add a city"
+msgstr ""
+
+#: ../dat/glade/editor/main-window.ui.h:51
+msgid "Add a ruin"
+msgstr ""
+
+#: ../dat/glade/editor/main-window.ui.h:52
+msgid "Add a temple"
+msgstr ""
+
+#: ../dat/glade/editor/main-window.ui.h:53
+msgid "Add a port"
+msgstr ""
+
+#: ../dat/glade/editor/main-window.ui.h:54
+msgid "Add a sign"
+msgstr ""
+
+#: ../dat/glade/editor/main-window.ui.h:55
+msgid "Add a road"
+msgstr ""
+
+#: ../dat/glade/editor/main-window.ui.h:56
+msgid "Add a bridge"
+msgstr ""
+
+#: ../dat/glade/editor/main-window.ui.h:57
+msgid "Add a bag"
+msgstr ""
+
 #: ../dat/glade/editor/map-info-dialog.ui.h:1
 msgid "Edit Map Info"
 msgstr ""
@@ -2001,50 +2096,58 @@ msgstr ""
 msgid "Edit Players"
 msgstr ""
 
+#: ../dat/glade/editor/players-dialog.ui.h:5
+msgid "Randomize Gold"
+msgstr ""
+
+#: ../dat/glade/editor/players-dialog.ui.h:6
+msgid "All Human Players"
+msgstr ""
+
 #: ../dat/glade/editor/reward-editor-dialog.ui.h:1
 msgid "Edit Reward"
 msgstr ""
 
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:4
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:6
 #: ../src/gui/sage-dialog.cpp:198
 msgid "Allies"
 msgstr ""
 
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:7
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:9
 msgid "Clear Item"
 msgstr ""
 
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:8
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:10
 msgid "Clear Ally Type"
 msgstr ""
 
 #. this is an x coordinate for a map point.
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:10
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:12
 msgid "x:"
 msgstr ""
 
 #. this is a y coordinate for a map point.
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:12
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:14
 msgid "y:"
 msgstr ""
 
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:13
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:15
 msgid "width:"
 msgstr ""
 
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:14
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:16
 msgid "height:"
 msgstr ""
 
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:15
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:17
 msgid "Hidden Ruin"
 msgstr ""
 
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:16
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:18
 msgid "Clear Hidden Ruin"
 msgstr ""
 
-#: ../dat/glade/editor/reward-editor-dialog.ui.h:17
+#: ../dat/glade/editor/reward-editor-dialog.ui.h:19
 msgid "Reward"
 msgstr ""
 
@@ -2134,8 +2237,8 @@ msgstr ""
 msgid "Edit Temple"
 msgstr ""
 
-#: ../dat/glade/editor/temple-editor-dialog.ui.h:4 ../src/maptile.cpp:213
-#: ../src/gui/ruin-report-dialog.cpp:178 ../src/editor/main-window.cpp:1432
+#: ../dat/glade/editor/temple-editor-dialog.ui.h:4 ../src/maptile.cpp:278
+#: ../src/gui/ruin-report-dialog.cpp:178 ../src/editor/main-window.cpp:1474
 msgid "Temple"
 msgstr ""
 
@@ -2203,13 +2306,13 @@ msgid "Change Image"
 msgstr ""
 
 #: ../dat/glade/editor/tileset-window.ui.h:7
-#: ../src/editor/tileset-window.cpp:92
+#: ../src/editor/tileset-window.cpp:93
 msgid "Void"
 msgstr ""
 
 #. init GUI stuff
 #: ../dat/glade/editor/tileset-window.ui.h:8 ../src/editor/tileset-main.cpp:54
-#: ../src/editor/tileset-window.cpp:1424
+#: ../src/editor/tileset-window.cpp:1471
 msgid "LordsAWar! Tileset Editor"
 msgstr ""
 
@@ -2294,10 +2397,6 @@ msgid "Tile Style Set"
 msgstr ""
 
 #: ../dat/glade/editor/tileset-window.ui.h:39
-msgid "Tile Style Sets"
-msgstr ""
-
-#: ../dat/glade/editor/tileset-window.ui.h:40
 msgid "Tile"
 msgstr ""
 
@@ -2392,7 +2491,7 @@ msgstr ""
 
 #. init GUI stuff
 #: ../dat/glade/editor/cityset-window.ui.h:1
-#: ../src/editor/cityset-window.cpp:801 ../src/editor/cityset-main.cpp:55
+#: ../src/editor/cityset-window.cpp:838 ../src/editor/cityset-main.cpp:55
 msgid "LordsAWar! Cityset Editor"
 msgstr ""
 
@@ -2413,7 +2512,7 @@ msgid "Validate Cityset"
 msgstr ""
 
 #: ../dat/glade/editor/cityset-window.ui.h:10
-#: ../src/editor/cityset-window.cpp:468
+#: ../src/editor/cityset-window.cpp:502
 msgid "Edit Cityset Information"
 msgstr ""
 
@@ -2492,7 +2591,7 @@ msgstr ""
 
 #. init GUI stuff
 #: ../dat/glade/editor/shieldset-window.ui.h:1
-#: ../src/editor/shieldset-main.cpp:55 ../src/editor/shieldset-window.cpp:725
+#: ../src/editor/shieldset-main.cpp:55 ../src/editor/shieldset-window.cpp:749
 msgid "LordsAWar! Shieldset Editor"
 msgstr ""
 
@@ -2513,7 +2612,7 @@ msgid "Validate Shieldset"
 msgstr ""
 
 #: ../dat/glade/editor/shieldset-window.ui.h:10
-#: ../src/editor/shieldset-window.cpp:426
+#: ../src/editor/shieldset-window.cpp:447
 msgid "Edit Shieldset Information"
 msgstr ""
 
@@ -2541,27 +2640,27 @@ msgstr ""
 msgid "Miniature Map Editor"
 msgstr ""
 
-#: ../dat/glade/editor/smallmap-editor-dialog.ui.h:2
+#: ../dat/glade/editor/smallmap-editor-dialog.ui.h:3
 msgid "Starting Point:"
 msgstr ""
 
-#: ../dat/glade/editor/smallmap-editor-dialog.ui.h:3
+#: ../dat/glade/editor/smallmap-editor-dialog.ui.h:4
 msgid "Finishing Point:"
 msgstr ""
 
-#: ../dat/glade/editor/smallmap-editor-dialog.ui.h:4
+#: ../dat/glade/editor/smallmap-editor-dialog.ui.h:5
 msgid "Choose Point..."
 msgstr ""
 
-#: ../dat/glade/editor/smallmap-editor-dialog.ui.h:5
+#: ../dat/glade/editor/smallmap-editor-dialog.ui.h:6
 msgid "Clear"
 msgstr ""
 
-#: ../dat/glade/editor/smallmap-editor-dialog.ui.h:6
+#: ../dat/glade/editor/smallmap-editor-dialog.ui.h:7
 msgid "Build Road"
 msgstr ""
 
-#: ../dat/glade/editor/smallmap-editor-dialog.ui.h:7
+#: ../dat/glade/editor/smallmap-editor-dialog.ui.h:8
 msgid "Road Planner"
 msgstr ""
 
@@ -3442,8 +3541,36 @@ msgid_plural "There are %1 neutral stacks not in cities"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/GameScenario.cpp:1018
+#: ../src/GameScenario.cpp:1019
 msgid "Not all cities are reachable by a non-flying unit."
+msgstr ""
+
+#: ../src/GameScenario.cpp:1023
+msgid "One or more ports are on land."
+msgstr ""
+
+#: ../src/GameScenario.cpp:1025
+msgid "One or more bridges are on land."
+msgstr ""
+
+#: ../src/GameScenario.cpp:1028
+msgid "One or more cities are on water."
+msgstr ""
+
+#: ../src/GameScenario.cpp:1030
+msgid "One or more roads are on water."
+msgstr ""
+
+#: ../src/GameScenario.cpp:1032
+msgid "One or more ruins are on water."
+msgstr ""
+
+#: ../src/GameScenario.cpp:1034
+msgid "One or more temples are on water."
+msgstr ""
+
+#: ../src/GameScenario.cpp:1036
+msgid "One or more signs are on water."
 msgstr ""
 
 #: ../src/QKillHero.cpp:106
@@ -3602,8 +3729,8 @@ msgstr ""
 msgid "building cities..."
 msgstr ""
 
-#: ../src/MapGenerator.cpp:212 ../src/MapGenerator.cpp:1686
-#: ../src/MapGenerator.cpp:1700
+#: ../src/MapGenerator.cpp:212 ../src/MapGenerator.cpp:1685
+#: ../src/MapGenerator.cpp:1699
 msgid "paving roads..."
 msgstr ""
 
@@ -3640,35 +3767,35 @@ msgid "You shall slaughter %1 armies of the treacherous %2."
 msgstr ""
 
 #. Initially give the first hero the player's standard.
-#: ../src/player.cpp:2617
+#: ../src/player.cpp:2615
 msgid "%1 Standard"
 msgstr ""
 
-#: ../src/player.cpp:2711
+#: ../src/player.cpp:2709
 msgid "Peace negotiated with %1."
 msgstr ""
 
-#: ../src/player.cpp:2719
+#: ../src/player.cpp:2717
 msgid "War declared with %1."
 msgstr ""
 
-#: ../src/player.cpp:4985
+#: ../src/player.cpp:4983
 msgid "old map"
 msgstr ""
 
-#: ../src/maptile.cpp:207 ../src/maptile.cpp:223
+#: ../src/maptile.cpp:272 ../src/maptile.cpp:288
 msgid "None"
 msgstr ""
 
-#: ../src/maptile.cpp:217
+#: ../src/maptile.cpp:282
 msgid "Road"
 msgstr ""
 
-#: ../src/maptile.cpp:219
+#: ../src/maptile.cpp:284
 msgid "Port"
 msgstr ""
 
-#: ../src/maptile.cpp:221
+#: ../src/maptile.cpp:286
 msgid "Bridge"
 msgstr ""
 
@@ -3726,7 +3853,7 @@ msgstr ""
 msgid "Income: %1"
 msgstr ""
 
-#: ../src/gui/city-window.cpp:276 ../src/gui/buy-production-dialog.cpp:170
+#: ../src/gui/city-window.cpp:276 ../src/gui/buy-production-dialog.cpp:171
 msgid "No production"
 msgstr ""
 
@@ -3742,23 +3869,23 @@ msgstr ""
 #. note to translators: %1 is melee strength, %2 is ranged strength
 #: ../src/gui/city-window.cpp:292 ../src/gui/army-info-tip.cpp:76
 #: ../src/gui/army-info-tip.cpp:140 ../src/gui/army-info-tip.cpp:203
-#: ../src/gui/buy-production-dialog.cpp:184 ../src/gui/hero-dialog.cpp:449
+#: ../src/gui/buy-production-dialog.cpp:185 ../src/gui/hero-dialog.cpp:449
 #: ../src/gui/army-gains-level-dialog.cpp:75
-#: ../src/editor/select-army-dialog.cpp:184
+#: ../src/editor/select-army-dialog.cpp:185
 msgid "Strength: %1"
 msgstr ""
 
 #. note to translators: %1 is total moves
 #: ../src/gui/city-window.cpp:297 ../src/gui/army-info-tip.cpp:144
-#: ../src/gui/buy-production-dialog.cpp:190
+#: ../src/gui/buy-production-dialog.cpp:191
 #: ../src/gui/army-gains-level-dialog.cpp:71
-#: ../src/editor/select-army-dialog.cpp:186
+#: ../src/editor/select-army-dialog.cpp:187
 msgid "Moves: %1"
 msgstr ""
 
 #. fill in second column
 #: ../src/gui/city-window.cpp:299 ../src/gui/army-info-tip.cpp:148
-#: ../src/gui/army-info-tip.cpp:211 ../src/gui/buy-production-dialog.cpp:188
+#: ../src/gui/army-info-tip.cpp:211 ../src/gui/buy-production-dialog.cpp:189
 msgid "Cost: %1"
 msgstr ""
 
@@ -3877,49 +4004,49 @@ msgid_plural "%1 so-called heroes slaughtered without mercy!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/triumphs-dialog.cpp:141
+#: ../src/gui/triumphs-dialog.cpp:142
 msgid "%1 navy not currently in service!"
 msgid_plural "%1 navies not currently in service!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/triumphs-dialog.cpp:145
+#: ../src/gui/triumphs-dialog.cpp:146
 msgid "%1 navy rests with the fishes!"
 msgid_plural "%1 navies rest with the fishes!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/triumphs-dialog.cpp:159
+#: ../src/gui/triumphs-dialog.cpp:160
 msgid "%1 army died to ensure final victory!"
 msgid_plural "%1 armies died to ensure final victory!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/triumphs-dialog.cpp:163
+#: ../src/gui/triumphs-dialog.cpp:164
 msgid "%1 army smote like sheep!"
 msgid_plural "%1 armies smote like sheep!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/triumphs-dialog.cpp:178
+#: ../src/gui/triumphs-dialog.cpp:179
 msgid "%1 unnatural creature returned from whence it came!"
 msgid_plural "%1 unnatural creatures returned from whence they came!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/triumphs-dialog.cpp:182
+#: ../src/gui/triumphs-dialog.cpp:183
 msgid "%1 unnatural creature dispatched!"
 msgid_plural "%1 unnatural creatures dispatched!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/triumphs-dialog.cpp:207
+#: ../src/gui/triumphs-dialog.cpp:208
 msgid "%1 standard betrayed by it's guardian!"
 msgid_plural "%1 standards betrayed by it's guardian!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/triumphs-dialog.cpp:212
+#: ../src/gui/triumphs-dialog.cpp:213
 msgid "%1 standard wrested from a vanquished foe!"
 msgid_plural "%1 standards wrested from a vanquished foe!"
 msgstr[0] ""
@@ -3934,8 +4061,8 @@ msgstr ""
 msgid "Moves: %1/%2"
 msgstr ""
 
-#: ../src/gui/army-info-tip.cpp:84 ../src/gui/buy-production-dialog.cpp:192
-#: ../src/gui/hero-dialog.cpp:456 ../src/editor/select-army-dialog.cpp:190
+#: ../src/gui/army-info-tip.cpp:84 ../src/gui/buy-production-dialog.cpp:193
+#: ../src/gui/hero-dialog.cpp:456 ../src/editor/select-army-dialog.cpp:191
 msgid "Upkeep: %1"
 msgstr ""
 
@@ -3944,7 +4071,7 @@ msgstr ""
 msgid "Movement: %1"
 msgstr ""
 
-#: ../src/gui/buy-production-dialog.cpp:181
+#: ../src/gui/buy-production-dialog.cpp:182
 msgid "Duration: %1"
 msgstr ""
 
@@ -4100,7 +4227,7 @@ msgid "A Sage!"
 msgstr ""
 
 #: ../src/gui/hero-dialog.cpp:125 ../src/editor/players-dialog.cpp:58
-#: ../src/editor/city-editor-dialog.cpp:132
+#: ../src/editor/city-editor-dialog.cpp:131
 #: ../src/editor/stack-editor-dialog.cpp:119
 #: ../src/editor/backpack-editor-dialog.cpp:57
 #: ../src/gui/game-lobby-dialog.cpp:330
@@ -4191,7 +4318,7 @@ msgstr ""
 
 #: ../src/gui/game-window.cpp:984 ../src/gui/game-window.cpp:1029
 #: ../src/gui/driver.cpp:1072 ../src/gui/splash-window.cpp:183
-#: ../src/editor/main-window.cpp:1759
+#: ../src/editor/main-window.cpp:1801
 msgid "LordsAWar Saved Games (*.sav)"
 msgstr ""
 
@@ -4199,8 +4326,8 @@ msgstr ""
 msgid "Game was not saved!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1026 ../src/editor/main-window.cpp:866
-#: ../src/editor/main-window.cpp:895 ../src/editor/main-window.cpp:924
+#: ../src/gui/game-window.cpp:1026 ../src/editor/main-window.cpp:874
+#: ../src/editor/main-window.cpp:903 ../src/editor/main-window.cpp:932
 msgid "Choose a Name"
 msgstr ""
 
@@ -4786,8 +4913,8 @@ msgstr ""
 msgid "Select a scenario file to add to the library"
 msgstr ""
 
-#: ../src/gui/load-scenario-dialog.cpp:192 ../src/editor/main-window.cpp:800
-#: ../src/editor/main-window.cpp:927
+#: ../src/gui/load-scenario-dialog.cpp:192 ../src/editor/main-window.cpp:808
+#: ../src/editor/main-window.cpp:935
 msgid "LordsAWar Maps (*.map)"
 msgstr ""
 
@@ -4936,15 +5063,15 @@ msgstr ""
 msgid "Rescue Crashed Game"
 msgstr ""
 
-#: ../src/gui/splash-window.cpp:241
+#: ../src/gui/splash-window.cpp:242
 msgid "New Networked Game"
 msgstr ""
 
-#: ../src/gui/splash-window.cpp:277
+#: ../src/gui/splash-window.cpp:278
 msgid "New Play By Mail game"
 msgstr ""
 
-#: ../src/gui/splash-window.cpp:346
+#: ../src/gui/splash-window.cpp:347
 msgid "Please exit the program and restart it for the changes to take effect."
 msgstr ""
 
@@ -5171,6 +5298,18 @@ msgstr ""
 msgid "Neutrals"
 msgstr ""
 
+#. add a new empty item to the itemlist
+#. sets up the lists
+#: ../src/editor/itemlist-dialog.cpp:350 ../src/editor/itemlist-dialog.cpp:354
+#: ../src/editor/armyset-info-dialog.cpp:67
+#: ../src/editor/cityset-info-dialog.cpp:67
+#: ../src/editor/armyset-window.cpp:1873 ../src/editor/main-window.cpp:504
+#: ../src/editor/main-window.cpp:616 ../src/editor/tileset-info-dialog.cpp:67
+#: ../src/editor/tileset-window.cpp:818
+#: ../src/editor/shieldset-info-dialog.cpp:67 ../src/armyprotobase.cpp:41
+msgid "Untitled"
+msgstr ""
+
 #: ../src/editor/itemlist-dialog.cpp:550 ../src/editor/itemlist-dialog.cpp:580
 #: ../src/editor/itemlist-dialog.cpp:598 ../src/editor/itemlist-dialog.cpp:701
 #: ../src/editor/itemlist-dialog.cpp:719
@@ -5179,209 +5318,193 @@ msgstr ""
 
 #: ../src/editor/armyset-info-dialog.cpp:64
 #: ../src/editor/cityset-info-dialog.cpp:64
-#: ../src/editor/tileset-info-dialog.cpp:65
+#: ../src/editor/tileset-info-dialog.cpp:64
 #: ../src/editor/shieldset-info-dialog.cpp:64
 msgid "untitled"
 msgstr ""
 
-#. sets up the lists
-#: ../src/editor/armyset-info-dialog.cpp:67
-#: ../src/editor/cityset-info-dialog.cpp:67 ../src/editor/main-window.cpp:498
-#: ../src/editor/main-window.cpp:610 ../src/editor/tileset-info-dialog.cpp:68
-#: ../src/editor/shieldset-info-dialog.cpp:67 ../src/armyprotobase.cpp:42
-msgid "Untitled"
-msgstr ""
-
 #: ../src/editor/armyset-info-dialog.cpp:147
 #: ../src/editor/cityset-info-dialog.cpp:147
-#: ../src/editor/tileset-info-dialog.cpp:148
+#: ../src/editor/tileset-info-dialog.cpp:147
 #: ../src/editor/shieldset-info-dialog.cpp:147
 msgid "That filename is already used."
 msgstr ""
 
 #: ../src/editor/armyset-info-dialog.cpp:155
 #: ../src/editor/cityset-info-dialog.cpp:155
-#: ../src/editor/tileset-info-dialog.cpp:156
+#: ../src/editor/tileset-info-dialog.cpp:155
 #: ../src/editor/shieldset-info-dialog.cpp:155
 msgid "That name is already in use."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:309 ../src/editor/cityset-window.cpp:144
-#: ../src/editor/tileset-window.cpp:278 ../src/editor/shieldset-window.cpp:131
+#: ../src/editor/armyset-window.cpp:313 ../src/editor/cityset-window.cpp:145
+#: ../src/editor/tileset-window.cpp:279 ../src/editor/shieldset-window.cpp:132
 msgid "Do you want to recover the session?"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:314
+#: ../src/editor/armyset-window.cpp:318
 msgid "Do you want to recover %1 (%2 armies)?"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:319
+#: ../src/editor/armyset-window.cpp:323
 msgid "Do you want to recover %1 (%2, %3 armies)?"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:482
+#: ../src/editor/armyset-window.cpp:487
 msgid "Make a New Armyset"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:515
+#: ../src/editor/armyset-window.cpp:520
 msgid "Choose an Armyset to Load"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:517
+#: ../src/editor/armyset-window.cpp:522
 msgid "LordsAWar Armysets (*.lwa)"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:550
+#: ../src/editor/armyset-window.cpp:555
 msgid "There must be at least one army unit in the armyset."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:553
+#: ../src/editor/armyset-window.cpp:558
 msgid "There must be at least one hero in the armyset."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:556
+#: ../src/editor/armyset-window.cpp:561
 msgid ""
 "There must be at least one army unit with a production cost of more than "
 "zero."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:559
+#: ../src/editor/armyset-window.cpp:564
 msgid "There must be at least one army unit than can defend a ruin."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:562
+#: ../src/editor/armyset-window.cpp:567
 msgid "There must be at least one army unit than can be awarded to a hero."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:565
+#: ../src/editor/armyset-window.cpp:570
 msgid "The ship image must be set."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:568
+#: ../src/editor/armyset-window.cpp:573
 msgid "The hero's standard (the flag) image must be set."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:571
+#: ../src/editor/armyset-window.cpp:576
 msgid "The picture for the bag of items must be set."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:579
+#: ../src/editor/armyset-window.cpp:584
 msgid "%1 does not have an image set for the %2 player"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:586
+#: ../src/editor/armyset-window.cpp:591
 msgid "An army unit does not have a name."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:594
+#: ../src/editor/armyset-window.cpp:599
 msgid "The armyset is valid."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:609
+#: ../src/editor/armyset-window.cpp:627
 msgid "Save a Copy of a Armyset"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:633 ../src/editor/armyset-window.cpp:678
+#: ../src/editor/armyset-window.cpp:663 ../src/editor/armyset-window.cpp:712
 msgid "Error!  Armyset could not be saved."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:756
+#: ../src/editor/armyset-window.cpp:795
 msgid "Edit Armyset Information"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:827 ../src/editor/armyset-window.cpp:996
-#: ../src/editor/cityset-window.cpp:212 ../src/editor/tileset-window.cpp:400
-#: ../src/editor/tileset-window.cpp:412 ../src/editor/tileset-window.cpp:421
-#: ../src/editor/shieldset-window.cpp:196
-#: ../src/editor/shieldset-window.cpp:465
-msgid "no image set"
-msgstr ""
-
-#: ../src/editor/armyset-window.cpp:1884
+#: ../src/editor/armyset-window.cpp:1926
 msgid "Error!  The version of the armyset is unsupported."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:1886
+#: ../src/editor/armyset-window.cpp:1928
 msgid "Error!  Armyset could not be loaded."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:149 ../src/editor/shieldset-window.cpp:136
+#: ../src/editor/cityset-window.cpp:150 ../src/editor/shieldset-window.cpp:137
 msgid "Do you want to recover %1?"
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:154
+#: ../src/editor/cityset-window.cpp:155
 msgid "Do you want to recover %1 (%2, %3 more images needed)?"
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:162 ../src/editor/shieldset-window.cpp:139
+#: ../src/editor/cityset-window.cpp:163 ../src/editor/shieldset-window.cpp:140
 msgid "Do you want to recover %1 (%2)?"
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:291
+#: ../src/editor/cityset-window.cpp:293
 msgid "Make a New Cityset"
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:321
+#: ../src/editor/cityset-window.cpp:323
 msgid "Choose a Cityset to Load"
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:323
+#: ../src/editor/cityset-window.cpp:325
 msgid "LordsAWar Citysets (*.lwc)"
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:353
+#: ../src/editor/cityset-window.cpp:355
 msgid "The cities picture is not set."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:355
+#: ../src/editor/cityset-window.cpp:357
 msgid "The razed cities picture is not set."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:357
+#: ../src/editor/cityset-window.cpp:359
 msgid "The port picture is not set."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:359
+#: ../src/editor/cityset-window.cpp:361
 msgid "The signpost picture is not set."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:361
+#: ../src/editor/cityset-window.cpp:363
 msgid "The ruins picture is not set."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:363
+#: ../src/editor/cityset-window.cpp:365
 msgid "The temple picture is not set."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:365
+#: ../src/editor/cityset-window.cpp:367
 msgid "The towers picture is not set."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:367 ../src/editor/cityset-window.cpp:371
+#: ../src/editor/cityset-window.cpp:369 ../src/editor/cityset-window.cpp:373
 msgid "The tile width for temples must be over zero."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:369
+#: ../src/editor/cityset-window.cpp:371
 msgid "The tile width for ruins must be over zero."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:379
+#: ../src/editor/cityset-window.cpp:381
 msgid "The cityset is valid."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:394
+#: ../src/editor/cityset-window.cpp:403
 msgid "Save a Copy of a Cityset"
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:418 ../src/editor/cityset-window.cpp:457
+#: ../src/editor/cityset-window.cpp:439 ../src/editor/cityset-window.cpp:483
 msgid "Error!  Cityset could not be saved."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:520
+#: ../src/editor/cityset-window.cpp:554
 msgid "Error!  The version of cityset is unsupported."
 msgstr ""
 
-#: ../src/editor/cityset-window.cpp:522
+#: ../src/editor/cityset-window.cpp:556
 msgid "Error!  Cityset could not be loaded."
 msgstr ""
 
@@ -5400,49 +5523,49 @@ msgstr ""
 msgid "Upkeep"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:498 ../src/editor/main-window.cpp:610
+#: ../src/editor/main-window.cpp:504 ../src/editor/main-window.cpp:616
 msgid "No description"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:798
+#: ../src/editor/main-window.cpp:806
 msgid "Choose Map to Load"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:830
+#: ../src/editor/main-window.cpp:838
 msgid "Could not load map %1."
 msgstr ""
 
-#: ../src/editor/main-window.cpp:853 ../src/editor/main-window.cpp:948
+#: ../src/editor/main-window.cpp:861 ../src/editor/main-window.cpp:956
 msgid "Map was not saved!"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:869 ../src/editor/main-window.cpp:898
-#: ../src/editor/tileset-window.cpp:998
+#: ../src/editor/main-window.cpp:877 ../src/editor/main-window.cpp:906
+#: ../src/editor/tileset-window.cpp:1044
 msgid "PNG files (*.png)"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:889 ../src/editor/main-window.cpp:918
+#: ../src/editor/main-window.cpp:897 ../src/editor/main-window.cpp:926
 msgid "Map was not exported!"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:1186
+#: ../src/editor/main-window.cpp:1214
 msgid "Auto"
 msgstr ""
 
 #. note to translators: this is a coordinate pair (x, y)
-#: ../src/editor/main-window.cpp:1402
+#: ../src/editor/main-window.cpp:1444
 msgid "(%1, %2)"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:1434
+#: ../src/editor/main-window.cpp:1476
 msgid "Bag"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:1728
+#: ../src/editor/main-window.cpp:1770
 msgid "No errors."
 msgstr ""
 
-#: ../src/editor/main-window.cpp:1731
+#: ../src/editor/main-window.cpp:1773
 msgid ""
 "\n"
 "There is %1 more error"
@@ -5452,7 +5575,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/editor/main-window.cpp:1733
+#: ../src/editor/main-window.cpp:1775
 msgid ""
 "\n"
 "There is %1 warning"
@@ -5462,11 +5585,11 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/editor/main-window.cpp:1757
+#: ../src/editor/main-window.cpp:1799
 msgid "Choose Game to Load Map from"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:1785
+#: ../src/editor/main-window.cpp:1827
 msgid "Could not load game %1."
 msgstr ""
 
@@ -5478,7 +5601,7 @@ msgstr ""
 msgid "No reward"
 msgstr ""
 
-#: ../src/editor/select-army-dialog.cpp:173
+#: ../src/editor/select-army-dialog.cpp:174
 msgid "No army"
 msgstr ""
 
@@ -5494,151 +5617,151 @@ msgstr ""
 msgid "No Ruin"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:101
+#: ../src/editor/tileset-window.cpp:102
 msgid "Lone"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:102
+#: ../src/editor/tileset-window.cpp:103
 msgid "Outer Top-Left"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:103
+#: ../src/editor/tileset-window.cpp:104
 msgid "Outer Top-Center"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:104
+#: ../src/editor/tileset-window.cpp:105
 msgid "Outer Top-Right"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:105
+#: ../src/editor/tileset-window.cpp:106
 msgid "Outer Bottom-Left"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:106
+#: ../src/editor/tileset-window.cpp:107
 msgid "Outer Bottom-Center"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:107
+#: ../src/editor/tileset-window.cpp:108
 msgid "Outer Bottom-Right"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:108
+#: ../src/editor/tileset-window.cpp:109
 msgid "Outer Middle-Left"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:109
+#: ../src/editor/tileset-window.cpp:110
 msgid "Inner Middle-Center"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:110
+#: ../src/editor/tileset-window.cpp:111
 msgid "Outer Middle-Right"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:111
+#: ../src/editor/tileset-window.cpp:112
 msgid "Inner Top-Left"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:112
+#: ../src/editor/tileset-window.cpp:113
 msgid "Inner Top-Right"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:113
+#: ../src/editor/tileset-window.cpp:114
 msgid "Inner Bottom-Left"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:114
+#: ../src/editor/tileset-window.cpp:115
 msgid "Inner Bottom-Right"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:115
+#: ../src/editor/tileset-window.cpp:116
 msgid "Top-Left To Bottom-Right"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:116
+#: ../src/editor/tileset-window.cpp:117
 msgid "Bottom-Left To Top-Right"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:117
+#: ../src/editor/tileset-window.cpp:118
 msgid "Other"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:118
+#: ../src/editor/tileset-window.cpp:119
 msgid "Unknown"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:127
+#: ../src/editor/tileset-window.cpp:128
 msgid "Solid"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:128
+#: ../src/editor/tileset-window.cpp:129
 msgid "Stippled"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:129
+#: ../src/editor/tileset-window.cpp:130
 msgid "Randomized"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:130
+#: ../src/editor/tileset-window.cpp:131
 msgid "Sunken"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:131
+#: ../src/editor/tileset-window.cpp:132
 msgid "Tablecloth"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:132
+#: ../src/editor/tileset-window.cpp:133
 msgid "Diagonal"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:133
+#: ../src/editor/tileset-window.cpp:134
 msgid "Crosshatched"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:134
+#: ../src/editor/tileset-window.cpp:135
 msgid "Sunken Striped"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:135
+#: ../src/editor/tileset-window.cpp:136
 msgid "Sunken Radial"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:283
+#: ../src/editor/tileset-window.cpp:284
 msgid "Do you want to recover %1 (%2 tiles)?"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:288
+#: ../src/editor/tileset-window.cpp:289
 msgid "Do you want to recover %1 (%2, %3 tiles)?"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:508
+#: ../src/editor/tileset-window.cpp:510
 msgid "Make a New Tileset"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:542
+#: ../src/editor/tileset-window.cpp:544
 msgid "Choose a Tileset to Load"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:544
+#: ../src/editor/tileset-window.cpp:546
 msgid "LordsAWar Tilesets (*.lwt)"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:572
+#: ../src/editor/tileset-window.cpp:581
 msgid "Save a Copy of a Tileset"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:596 ../src/editor/tileset-window.cpp:640
+#: ../src/editor/tileset-window.cpp:617 ../src/editor/tileset-window.cpp:666
 msgid "Error!  Tileset could not be saved."
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:995
+#: ../src/editor/tileset-window.cpp:1041
 msgid "Choose an Image"
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:1372
+#: ../src/editor/tileset-window.cpp:1419
 msgid "Error!  The version of the tileset is unsupported."
 msgstr ""
 
-#: ../src/editor/tileset-window.cpp:1374
+#: ../src/editor/tileset-window.cpp:1421
 msgid "Error!  Tileset could not be loaded."
 msgstr ""
 
@@ -5646,48 +5769,48 @@ msgstr ""
 msgid "(%1 items)"
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:144
+#: ../src/editor/shieldset-window.cpp:145
 msgid "Do you want to recover %1 (%2, %3 images needed)?"
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:250
+#: ../src/editor/shieldset-window.cpp:252
 msgid "Make a New Shieldset"
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:285
+#: ../src/editor/shieldset-window.cpp:287
 msgid "Choose a Shieldset to Load"
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:287
+#: ../src/editor/shieldset-window.cpp:289
 msgid "LordsAWar Shieldsets (*.lws)"
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:321
+#: ../src/editor/shieldset-window.cpp:323
 msgid "The shieldset must have 9 shields in it."
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:329
+#: ../src/editor/shieldset-window.cpp:331
 msgid "%1 must have all three images specified."
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:342
+#: ../src/editor/shieldset-window.cpp:344
 msgid "The shieldset is valid."
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:357
+#: ../src/editor/shieldset-window.cpp:358
 msgid "Save a Copy of a Shieldset"
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:381
-#: ../src/editor/shieldset-window.cpp:415
+#: ../src/editor/shieldset-window.cpp:394
+#: ../src/editor/shieldset-window.cpp:429
 msgid "Error!  Shieldset could not be saved."
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:511
+#: ../src/editor/shieldset-window.cpp:532
 msgid "Error!  The version of the shieldset is not supported."
 msgstr ""
 
-#: ../src/editor/shieldset-window.cpp:513
+#: ../src/editor/shieldset-window.cpp:534
 msgid "Error!  Shieldset could not be loaded."
 msgstr ""
 
@@ -5927,13 +6050,13 @@ msgstr ""
 
 #: ../src/main.cpp:149 ../src/gls/main.cpp:85
 #: ../src/gls/gls-client-main.cpp:114 ../src/ghs/main.cpp:95
-#: ../src/ghs/ghs-client-main.cpp:109 ../src/upgrade-file.cpp:69
+#: ../src/ghs/ghs-client-main.cpp:109 ../src/upgrade-file.cpp:70
 msgid "version"
 msgstr ""
 
 #: ../src/main.cpp:150 ../src/gls/main.cpp:86
 #: ../src/gls/gls-client-main.cpp:115 ../src/ghs/main.cpp:96
-#: ../src/ghs/ghs-client-main.cpp:110 ../src/upgrade-file.cpp:71
+#: ../src/ghs/ghs-client-main.cpp:110 ../src/upgrade-file.cpp:72
 msgid "Options:"
 msgstr ""
 
@@ -5975,7 +6098,7 @@ msgstr ""
 
 #: ../src/main.cpp:162 ../src/gls/main.cpp:91
 #: ../src/gls/gls-client-main.cpp:130 ../src/ghs/main.cpp:103
-#: ../src/ghs/ghs-client-main.cpp:122 ../src/upgrade-file.cpp:76
+#: ../src/ghs/ghs-client-main.cpp:122 ../src/upgrade-file.cpp:77
 msgid "Report bugs to"
 msgstr ""
 
@@ -6105,7 +6228,7 @@ msgstr ""
 
 #: ../src/gls/main.cpp:87 ../src/gls/gls-client-main.cpp:116
 #: ../src/ghs/main.cpp:97 ../src/ghs/ghs-client-main.cpp:111
-#: ../src/upgrade-file.cpp:72
+#: ../src/upgrade-file.cpp:73
 msgid "Display this help and exit"
 msgstr ""
 
@@ -6311,19 +6434,19 @@ msgstr ""
 msgid "protocol error."
 msgstr ""
 
-#: ../src/upgrade-file.cpp:73
+#: ../src/upgrade-file.cpp:74
 msgid "Show the file type instead of upgrading"
 msgstr ""
 
-#: ../src/upgrade-file.cpp:99
+#: ../src/upgrade-file.cpp:101
 msgid "%1 is already the latest version."
 msgstr ""
 
-#: ../src/upgrade-file.cpp:105
+#: ../src/upgrade-file.cpp:107
 msgid "Error: %1 could not be upgraded."
 msgstr ""
 
-#: ../src/upgrade-file.cpp:142
+#: ../src/upgrade-file.cpp:144
 msgid ""
 "Error: The --identify and --rewrite options cannot be used at the same time."
 msgstr ""
@@ -7570,4 +7693,8 @@ msgstr ""
 
 #: ../dat/lordsawar.desktop.in.in.h:3
 msgid "Play a clone of Warlords II"
+msgstr ""
+
+#: ../dat/lordsawar-editor.desktop.in.in.h:2
+msgid "Scenario Editor for LordsAWar!"
 msgstr ""
