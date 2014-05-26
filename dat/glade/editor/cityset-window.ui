@@ -253,7 +253,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="xalign">0.89999997615814209</property>
-                                    <property name="label" translatable="yes">(3 picture)</property>
+                                    <property name="label" translatable="yes">(3 pictures)</property>
                                     <attributes>
                                       <attribute name="weight" value="bold"/>
                                     </attributes>
@@ -287,7 +287,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="xalign">0.89999997615814209</property>
-                                    <property name="label" translatable="yes">(8 picture)</property>
+                                    <property name="label" translatable="yes">(8 pictures)</property>
                                     <attributes>
                                       <attribute name="weight" value="bold"/>
                                     </attributes>
