@@ -741,6 +741,7 @@ void ArmySetWindow::on_edit_ship_picture_activated()
     filename = d_armyset->getFileFromConfigurationFile(d_armyset->getShipImageName() +".png");
   MaskedImageEditorDialog d(filename);
   d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+  d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -761,6 +762,7 @@ void ArmySetWindow::on_edit_standard_picture_activated()
   if (d_armyset->getStandardImageName() != "")
     filename = d_armyset->getFileFromConfigurationFile(d_armyset->getStandardImageName() +".png");
   MaskedImageEditorDialog d(filename);
+  d.set_parent_window(*window);
   d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
@@ -1023,6 +1025,7 @@ void ArmySetWindow::on_image_changed(Gtk::Button *button, Gtk::Image *image, Shi
         filename = d_armyset->getFileFromConfigurationFile(a->getImageName(c) + ".png");
       MaskedImageEditorDialog d(filename);
       d.set_parent_window(*window);
+      d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
       int response = d.run();
       if (response == Gtk::RESPONSE_ACCEPT)
         {

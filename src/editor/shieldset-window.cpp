@@ -620,6 +620,7 @@ void ShieldSetWindow::on_change_smallpic_clicked()
 	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
       MaskedImageEditorDialog d(filename, d_shieldset);
       d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+      d.set_parent_window(*window);
       d.run();
       if (filename != "")
         File::erase(filename);
@@ -653,6 +654,7 @@ void ShieldSetWindow::on_change_mediumpic_clicked()
 	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
       MaskedImageEditorDialog d(filename, d_shieldset);
       d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+      d.set_parent_window(*window);
       d.run();
       if (d.get_selected_filename() != "")
 	{
@@ -684,6 +686,7 @@ void ShieldSetWindow::on_change_largepic_clicked()
 	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
       MaskedImageEditorDialog d(filename, d_shieldset);
       d.set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+      d.set_parent_window(*window);
       d.run();
       if (d.get_selected_filename() != "")
 	{
