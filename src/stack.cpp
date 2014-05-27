@@ -42,9 +42,8 @@
 #include "ruin.h"
 
 std::string Stack::d_tag = "stack";
-using namespace std;
 
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 Stack::Stack(Player* player, Vector<int> pos)

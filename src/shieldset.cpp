@@ -27,13 +27,12 @@
 #include "Configuration.h"
 #include "tarhelper.h"
 #include "file-compat.h"
-
-using namespace std;
+#include "ucompose.hpp"
 
 std::string Shieldset::d_tag = "shieldset";
 std::string Shieldset::file_extension = SHIELDSET_EXT;
 
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
 
 Shieldset::Shieldset(guint32 id, std::string name)
@@ -142,13 +141,12 @@ public:
           t.getFirstFile(Shieldset::file_extension, broken);
         if (broken)
           return;
-	XML_Helper helper(lwsfilename, ios::in, false);
+	XML_Helper helper(lwsfilename, std::ios::in, false);
 	helper.registerTag(Shieldset::d_tag, sigc::mem_fun((*this), &ShieldsetLoader::load));
 	if (!helper.parse())
 	  {
             unsupported = unsupported_version;
-	    std::cerr << "Error, while loading an shieldset. Shieldset File: ";
-	    std::cerr << filename << std::endl <<std::flush;
+            std::cerr << String::ucompose(_("Error!  can't load shieldet `%1'."), filename) << std::endl;
 	    if (shieldset != NULL)
 	      delete shieldset;
 	    shieldset = NULL;
@@ -310,9 +308,9 @@ std::list<std::string> Shieldset::scanSystemCollection()
                                                       file_extension);
   if (retlist.empty())
     {
-      std::cerr << "Couldn't find any shieldsets (*" << file_extension << 
-        ") in : " << File::getShieldsetDir() << std::endl;
-      std::cerr << "Please check the path settings in ~/.lordsawarrc" << std::endl;
+      //note to translators: %1 is a file extension, %2 is a directory.
+      std::cerr << String::ucompose(_("Couldn't find any shieldsets (*%1) in `%2'."),file_extension, File::getShieldsetDir()) << std::endl;
+      std::cerr << _("Please check the path settings in ~/.lordsawarrc") << std::endl;
       exit(-1);
     }
   return retlist;

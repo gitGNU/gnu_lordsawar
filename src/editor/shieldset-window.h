@@ -26,7 +26,6 @@
 
 #include "shield.h"
 #include "shieldset.h"
-#include "shield.h"
 
 //! Shieldset Editor.  Edit an Shieldset.
 class ShieldSetWindow: public sigc::trackable

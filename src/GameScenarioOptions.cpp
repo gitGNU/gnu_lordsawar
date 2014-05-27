@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,10 +23,8 @@
 
 #include "GameScenarioOptions.h"
 
-using namespace std;
-
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
-//#define debug(x)
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
+#define debug(x)
 
 bool GameScenarioOptions::s_see_opponents_stacks = false;
 bool GameScenarioOptions::s_see_opponents_production = false;

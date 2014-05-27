@@ -20,7 +20,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include "config.h"
+#include <config.h>
 #include "signal.h"
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/adaptors/bind.h>
@@ -39,13 +39,11 @@
 #include "LocationList.h"
 #include "GameMap.h"
 #include "stacktile.h"
-#include "Item.h"
 #include "stackreflist.h"
 
 std::string Stacklist::d_tag = "stacklist";
-using namespace std;
 
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 Vector<int> Stacklist::getPosition(guint32 id)
@@ -155,11 +153,11 @@ void Stacklist::nextTurn()
     //check();
 }
 
-vector<Stack*> Stacklist::getDefendersInCity(const City *city)
+std::vector<Stack*> Stacklist::getDefendersInCity(const City *city)
 {
     debug("getDefendersInCity()");
 
-    vector<Stack*> stackvector;
+    std::vector<Stack*> stackvector;
     Vector<int> pos = city->getPos();
 
     for (unsigned int i = pos.x; i < pos.x + city->getSize(); i++)
@@ -404,7 +402,7 @@ bool Stacklist::enoughMoves() const
     return false;
 }
 
-bool Stacklist::load(string tag, XML_Helper* helper)
+bool Stacklist::load(std::string tag, XML_Helper* helper)
 {
     static guint32 active = 0;
     

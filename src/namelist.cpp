@@ -20,24 +20,24 @@
 #include <sigc++/functors/mem_fun.h>
 
 #include "namelist.h"
+#include "defs.h"
 #include "File.h"
+#include "ucompose.hpp"
 
-using namespace std;
-
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
 
 
 NameList::NameList(std::string filename, std::string item_tag)
 {
   d_item_tag = item_tag;
-  XML_Helper helper(File::getMiscFile(filename), ios::in, false);
+  XML_Helper helper(File::getMiscFile(filename), std::ios::in, false);
 
   helper.registerTag(d_item_tag, sigc::mem_fun((*this), &NameList::load));
 
   if (!helper.parse())
     {
-      std::cerr << "Error, while loading a name from  " << filename <<std::endl <<std::flush;
+      std::cerr << String::ucompose(_("Error can't load namelist `%1'"), filename) << std::endl;
       exit(-1);
     }
 

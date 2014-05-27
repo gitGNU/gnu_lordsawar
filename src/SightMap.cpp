@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #include "SightMap.h"
 
 std::string SightMap::d_tag = "sightmap";
-using namespace std;
 
 SightMap::SightMap(XML_Helper* helper)
 	:Renamable(helper)

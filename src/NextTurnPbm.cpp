@@ -1,5 +1,5 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2011, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -33,8 +33,7 @@
 
 #include "path.h"
 
-using namespace std;
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
+#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 //#define debug(x)
 
 NextTurnPbm::NextTurnPbm(bool turnmode, bool random_turns)

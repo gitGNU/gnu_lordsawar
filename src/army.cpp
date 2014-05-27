@@ -395,41 +395,6 @@ bool Army::saveData(XML_Helper* helper) const
   return retval;
 }
 
-void  Army::printAllDebugInfo() const
-{
-  std::cerr << "name = " << getName() << std::endl;
-  std::cerr << "max_hp = " << d_max_hp << std::endl;
-  std::cerr << "xp_value = " << d_xp_value << std::endl;
-  std::cerr << "strength = " << d_strength << std::endl;
-  std::cerr << "max_moves = " << d_max_moves << std::endl;
-  std::cerr << "max_moves_multiplier = " 
-    << d_max_moves_multiplier << std::endl;
-  std::cerr << "max_moves_rest_bonus = " 
-    << d_max_moves_rest_bonus << std::endl;
-  std::cerr << "upkeep = " << d_upkeep << std::endl;
-  std::cerr << "move_bonus = " << d_move_bonus << std::endl;
-  std::cerr << "ship = " << d_ship << std::endl;
-  std::cerr << "army_bonus = " << d_army_bonus << std::endl;
-
-  std::cerr << "type = "    << d_type_id    << std::endl;
-  std::cerr << "level = "   << d_level   << std::endl;
-  std::cerr << "xp = "      << d_xp      << std::endl;
-
-  std::cerr << "medal[0] = " << d_medal_bonus[0] << std::endl;
-  std::cerr << "medal[1] = " << d_medal_bonus[1] << std::endl;
-  std::cerr << "medal[2] = " << d_medal_bonus[2] << std::endl;
-
-  std::cerr << "battle number = "     << d_battles_number    << std::endl;
-  std::cerr << "has hit = "           << d_number_hashit     << std::endl;
-  std::cerr << "has been hit = "      << d_number_hasbeenhit << std::endl;
-  std::stringstream temples;
-  std::list<unsigned int>::const_iterator tit = d_visitedTemples.begin();
-  std::list<unsigned int>::const_iterator tend = d_visitedTemples.end();
-  for(;tit != tend;++tit)
-    temples << (*tit) << " ";
-  std::cerr << "visited temples with ids = " << temples << std::endl;
-}
-
 void Army::setInShip (bool s)
 {
   if (s == true && isFlyer() == true)

@@ -1,4 +1,4 @@
-// Copyright (C) 2009, 2010 Ben Asselstine
+// Copyright (C) 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,8 +22,7 @@
 #include "tileset.h"
 #include "army.h"
 
-using namespace std;
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
+#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 //#define debug(x)
 
 RoadPathCalculator::RoadPathCalculator(Vector<int> starting_point)

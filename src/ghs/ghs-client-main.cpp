@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Ben Asselstine
+// Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,9 +15,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
 
 #include <iostream>
 #include <stdlib.h>
@@ -28,8 +26,6 @@
 #include "ghs-client-tool.h"
 #include "profile.h"
 #include "profilelist.h"
-
-using namespace std;
 
 int max_vector_width;
     
@@ -55,7 +51,7 @@ int main(int argc, char* argv[])
     {
       for (int i = 2; i <= argc; i++)
 	{
-	  string parameter(argv[i-1]); 
+          std::string parameter(argv[i-1]); 
 	  if (parameter == "--port" || parameter == "-p")
 	    {
 	      i++;
@@ -64,12 +60,12 @@ int main(int argc, char* argv[])
 	      long userport = strtol(argv[i-1], &error, 10);
 	      if (error && (*error != '\0'))
 		{
-		  cerr <<_("non-numerical value for --port") <<endl;
+                  std::cerr <<_("non-numerical value for --port") <<std::endl;
 		  exit(-1);
 		}
               if (userport > 65535 || userport < 1000)
                 {
-		  cerr <<_("invalid value for --port") <<endl;
+                  std::cerr <<_("invalid value for --port") <<std::endl;
 		  exit(-1);
                 }
               port = userport;
@@ -79,7 +75,7 @@ int main(int argc, char* argv[])
               profile = Profilelist::getInstance()->findProfileById(parameter);
               if (!profile)
                 {
-                  cerr << _("invalid profile id") << endl;
+                  std::cerr << _("invalid profile id") << std::endl;
                   exit(-1);
                 }
             }
@@ -105,21 +101,21 @@ int main(int argc, char* argv[])
             }
 	  else if (parameter == "--help" || parameter == "-?")
 	    {
-	      cout << Glib::get_prgname() << " " << _("[OPTION]... [HOST]") << endl << endl;
-	      cout << "LordsAWar! Game-list Client " << _("version") << " " << VERSION << endl << endl;
-	      cout << _("Options:") << endl << endl; 
-	      cout << "  -?, --help                 " << _("Display this help and exit") <<endl;
-	      cout << "  -P, --profile <id>         " << _("Use this identity, specified by profile id") << endl;
-	      cout << "  -p, --port <number>        " << _("Connect to the server on the given port") << endl;
-	      cout << "  -l, --list                 " << _("See a list of hosted games") << endl;
-	      cout << "  -R, --reload               " << _("Reload the game list from disk") << endl;
-              cout << "  -u, --unhost <id>          " << _("Stop hosting a game (specified by scenario id)") << endl;
-              cout << "  -h, --host <file>          " << _("Host a game") << endl;
-              cout << "  -t, --terminate            " << _("Stop the server") << endl;
-	      cout << endl;
-              cout << String::ucompose ("%1", _("If HOST is not specified on the command-line, this tool will try to connect to \nthe game-host server at 127.0.0.1.")) << endl;
-	      cout << endl;
-	      cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << endl;
+              std::cout << Glib::get_prgname() << " " << _("[OPTION]... [HOST]") << std::endl << std::endl;
+              std::cout << "LordsAWar! Game-list Client " << _("version") << " " << VERSION << std::endl << std::endl;
+              std::cout << _("Options:") << std::endl << std::endl; 
+              std::cout << "  -?, --help                 " << _("Display this help and exit") <<std::endl;
+              std::cout << "  -P, --profile <id>         " << _("Use this identity, specified by profile id") << std::endl;
+              std::cout << "  -p, --port <number>        " << _("Connect to the server on the given port") << std::endl;
+              std::cout << "  -l, --list                 " << _("See a list of hosted games") << std::endl;
+              std::cout << "  -R, --reload               " << _("Reload the game list from disk") << std::endl;
+              std::cout << "  -u, --unhost <id>          " << _("Stop hosting a game (specified by scenario id)") << std::endl;
+              std::cout << "  -h, --host <file>          " << _("Host a game") << std::endl;
+              std::cout << "  -t, --terminate            " << _("Stop the server") << std::endl;
+              std::cout << std::endl;
+              std::cout << String::ucompose ("%1", _("If HOST is not specified on the command-line, this tool will try to connect to \nthe game-host server at 127.0.0.1.")) << std::endl;
+              std::cout << std::endl;
+              std::cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << std::endl;
 	      exit(0);
 	    }
           else

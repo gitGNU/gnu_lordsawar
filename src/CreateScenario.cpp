@@ -62,9 +62,7 @@
 #include "FogMap.h"
 #include "history.h"
 
-using namespace std;
-
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
 
 CreateScenario::CreateScenario(int width, int height)

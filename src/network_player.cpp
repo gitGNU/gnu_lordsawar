@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -45,7 +45,6 @@
 #include "Configuration.h"
 #include "FogMap.h"
 #include "xmlhelper.h"
-#include "ruinlist.h"
 #include "game-parameters.h"
 #include "signpost.h"
 #include "history.h"
@@ -54,13 +53,12 @@
 #include "MapBackpack.h"
 #include "stackreflist.h"
 
-using namespace std;
-
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
 
-NetworkPlayer::NetworkPlayer(string name, guint32 armyset, Gdk::RGBA color, int width,
-		       int height, Player::Type type, int player_no)
+NetworkPlayer::NetworkPlayer(std::string name, guint32 armyset, Gdk::RGBA color,
+                             int width, int height, Player::Type type, 
+                             int player_no)
     :Player(name, armyset, color, width, height, type, player_no),
     d_connected(false), d_abort_requested(false)
 {

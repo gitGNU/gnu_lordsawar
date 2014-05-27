@@ -28,14 +28,13 @@
 #include "tarhelper.h"
 #include "Configuration.h"
 #include "file-compat.h"
+#include "ucompose.hpp"
 
 std::string Cityset::d_tag = "cityset";
 std::string Cityset::file_extension = CITYSET_EXT;
 
-using namespace std;
-
 #include <iostream>
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 #define DEFAULT_CITY_TILE_SIZE 40
@@ -187,13 +186,12 @@ public:
           t.getFirstFile(Cityset::file_extension, broken);
         if (broken)
           return;
-	XML_Helper helper(lwcfilename, ios::in, false);
+	XML_Helper helper(lwcfilename, std::ios::in, false);
 	helper.registerTag(Cityset::d_tag, sigc::mem_fun((*this), &CitysetLoader::load));
 	if (!helper.parse())
 	  {
             unsupported = unsupported_version;
-	    std::cerr << "Error, while loading a cityset. Cityset File: ";
-	    std::cerr << filename << std::endl <<std::flush;
+            std::cerr << String::ucompose(_("Error!  can't load cityset `%1'."), filename) << std::endl;
 	    if (cityset != NULL)
 	      delete cityset;
 	    cityset = NULL;
@@ -546,9 +544,9 @@ std::list<std::string> Cityset::scanSystemCollection()
 						      file_extension);
   if (retlist.empty())
     {
-      std::cerr << "Couldn't find any citysets (*" << file_extension << 
-        ") in : " << File::getCitysetDir() << std::endl;
-      std::cerr << "Please check the path settings in ~/.lordsawarrc" << std::endl;
+      //note to translators: %1 is a file extension, %2 is a directory.
+      std::cerr << String::ucompose(_("Couldn't find any citysets (*%1) in `%2'."),file_extension, File::getCitysetDir()) << std::endl;
+      std::cerr << _("Please check the path settings in ~/.lordsawarrc") << std::endl;
       exit(-1);
     }
 

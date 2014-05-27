@@ -41,12 +41,10 @@
 
 std::string City::d_tag = "city";
 
-using namespace std;
-
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-City::City(Vector<int> pos, guint32 width, string name, guint32 gold, 
+City::City(Vector<int> pos, guint32 width, std::string name, guint32 gold, 
 	   guint32 numslots)
     :Ownable((Player *)0), Location(pos, width), Renamable(name),
     ProdSlotlist(numslots), d_gold(gold), d_defense_level(1), d_burnt(false), 
@@ -82,8 +80,8 @@ City::City(XML_Helper* helper, guint32 width)
       }
 
 
-    istringstream svect;
-    string s;
+    std::istringstream svect;
+    std::string s;
 
     helper->getData(s, "vectoring");
      svect.str(s);
@@ -126,7 +124,7 @@ bool City::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    stringstream svect;
+    std::stringstream svect;
 
     svect << d_vector.x << " " << d_vector.y;
 

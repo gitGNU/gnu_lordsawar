@@ -119,7 +119,7 @@ Driver::Driver(std::string load_filename)
             game_scenario = create_new_scenario(g, GameScenario::NETWORKED);
             if (!game_scenario)
               {
-                cerr << "Error: could not load randomly generated map." << 
+                std::cerr << "Error: could not load randomly generated map." << 
                   std::endl;
                 exit(1);
               }
@@ -133,7 +133,7 @@ Driver::Driver(std::string load_filename)
               game_scenario = load_game(load_filename);
             if (!game_scenario || broken)
               {
-                cerr << "Error: could not load file " << 
+                std::cerr << "Error: could not load file " << 
                   load_filename << std::endl;
                 exit(1);
               }
@@ -1089,7 +1089,7 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
 	{
 	  char* err = strerror(errno);
 	  std::cerr <<_("Error while trying to rename the temporary file to ")
-	    << filename << "\n";
+	    << filename << std::endl;
 	  std::cerr <<_("Error: ") <<err <<std::endl;
 	}
     }
@@ -1379,7 +1379,7 @@ void Driver::on_keep_network_play_going()
     
 void Driver::on_could_not_bind_to_port_for_headless_server(int port)
 {
-  cerr << "Could not bind to port " << port << std::endl;
+  std::cerr << "Could not bind to port " << port << std::endl;
   exit(1);
 }
 

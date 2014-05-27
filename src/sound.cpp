@@ -1,6 +1,6 @@
 // Copyright (C) 2006 Ulf Lorenz
 // Copyright (C) 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,9 +17,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#include <config.h>
 
 #include <iostream>
 #include <sigc++/functors/mem_fun.h>
@@ -99,7 +97,7 @@ Sound::Sound()
 
     if (!helper.parse())
     {
-        std::cerr<< "Error loading music descriptions; disable music\n";
+        std::cerr<< _("Error loading music descriptions; disabling music.") << std::endl;
         d_broken = true;
         Mix_CloseAudio();
 	return;

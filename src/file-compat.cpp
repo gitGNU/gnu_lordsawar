@@ -25,7 +25,6 @@
 #include <libxslt/xslt.h>
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
-#include <sigc++/functors/mem_fun.h>
 
 #include "xmlhelper.h"
 #include "Configuration.h"
@@ -38,7 +37,7 @@
 #include "recently-edited-file-list.h"
 #include "Itemlist.h"
 
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 FileCompat* FileCompat::s_instance = 0;

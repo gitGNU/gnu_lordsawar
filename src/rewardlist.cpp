@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -24,9 +24,7 @@
 
 std::string Rewardlist::d_tag = "rewardlist";
 
-using namespace std;
-
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 Rewardlist* Rewardlist::s_instance = 0;
@@ -143,7 +141,7 @@ bool Rewardlist::save(XML_Helper* helper) const
   return retval;
 }
 
-bool Rewardlist::load(string tag, XML_Helper* helper)
+bool Rewardlist::load(std::string tag, XML_Helper* helper)
 {
   if (tag == Reward::d_tag)
     {

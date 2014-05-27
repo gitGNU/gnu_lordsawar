@@ -1,6 +1,6 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2005, 2007 Ulf Lorenz
-// Copyright (C) 2009, 2010 Ben Asselstine
+// Copyright (C) 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 
 #include "fight.h"
 
-using namespace std;
 class Stack;
 
 /** 

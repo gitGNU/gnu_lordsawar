@@ -32,10 +32,9 @@
 #include "defs.h"
 #include "File.h"
 #include "file-compat.h"
+#include "ucompose.hpp"
 
-using namespace std;
-
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 // define static variables
@@ -43,15 +42,15 @@ using namespace std;
 std::string Configuration::d_tag = "lordsawarrc";
 bool Configuration::s_showNextPlayer = true;
 #ifndef __WIN32__
-string Configuration::configuration_file_path = string(getenv("HOME")) + "/.lordsawarrc";
-string Configuration::s_dataPath = LORDSAWAR_DATADIR;
-string Configuration::s_savePath = string(getenv("HOME"))+string("/.lordsawar/");
+std::string Configuration::configuration_file_path = std::string(getenv("HOME")) + "/.lordsawarrc";
+std::string Configuration::s_dataPath = LORDSAWAR_DATADIR;
+std::string Configuration::s_savePath = std::string(getenv("HOME"))+std::string("/.lordsawar/");
 #else
-string Configuration::configuration_file_path = "/.lordsawarrc";
-string Configuration::s_dataPath = "./data/";
-string Configuration::s_savePath = "./saves/";
+std::string Configuration::configuration_file_path = "/.lordsawarrc";
+std::string Configuration::s_dataPath = "./data/";
+std::string Configuration::s_savePath = "./saves/";
 #endif
-string Configuration::s_lang = "";
+std::string Configuration::s_lang = "";
 int Configuration::s_displaySpeedDelay = 3000;
 int Configuration::s_displayFightRoundDelayFast = 250;
 int Configuration::s_displayFightRoundDelaySlow = 500;
@@ -62,7 +61,7 @@ int Configuration::s_autosave_policy = 1;
 bool Configuration::s_musicenable = false;
 guint32 Configuration::s_musicvolume = 64;
 guint32 Configuration::s_musiccache = 10000000;
-string Configuration::s_filename = "";
+std::string Configuration::s_filename = "";
 bool Configuration::s_see_opponents_stacks = false;
 bool Configuration::s_see_opponents_production = false;
 GameParameters::QuestPolicy Configuration::s_play_with_quests = GameParameters::ONE_QUEST_PER_PLAYER;
@@ -98,18 +97,18 @@ Configuration::~Configuration()
 
 // check if file exists and parse it
 
-bool Configuration::loadConfigurationFile(string fileName)
+bool Configuration::loadConfigurationFile(std::string fileName)
 {
     debug("loadConfiguration()");
     s_filename=fileName;
      
-    ifstream in(fileName.c_str());
+    std::ifstream in(fileName.c_str());
     if (in)
     {
         //cout << _("Found configuration file: ") << fileName << endl;
 
         //parse the file
-        XML_Helper helper(fileName.c_str(), ios::in, false);
+        XML_Helper helper(fileName.c_str(), std::ios::in, false);
         helper.registerTag(d_tag,
 	    sigc::mem_fun(*this, &Configuration::parseConfiguration));
     
@@ -118,11 +117,11 @@ bool Configuration::loadConfigurationFile(string fileName)
     else return false;
 }
 
-bool Configuration::saveConfigurationFile(string filename)
+bool Configuration::saveConfigurationFile(std::string filename)
 {
     bool retval = true;
 
-    XML_Helper helper(filename, ios::out, Configuration::s_zipfiles);
+    XML_Helper helper(filename, std::ios::out, Configuration::s_zipfiles);
 
     //start writing
     retval &= helper.begin(LORDSAWAR_CONFIG_VERSION);
@@ -192,21 +191,18 @@ bool Configuration::saveConfigurationFile(string filename)
 
 // parse the configuration file and set the variables
 
-bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
+bool Configuration::parseConfiguration(std::string tag, XML_Helper* helper)
 {
     debug("parseConfiguration()");
     
-    string temp;
-    bool retval,zipping;
+    std::string temp;
+    bool retval, zipping;
     
     if (helper->getVersion() != LORDSAWAR_CONFIG_VERSION)
     {
-            cerr <<_("Configuration file has wrong version, we want ");
-            std::cerr <<LORDSAWAR_SAVEGAME_VERSION <<",\n";
-            cerr <<_("Configuration file offers ") << helper->getVersion() <<".\n";
-
-            string orig = s_filename;
-            string dest = s_filename+".OLD";
+      std::cerr << String::ucompose(_("Configuration file has wrong version.  expected %1, but got %2"), LORDSAWAR_CONFIG_VERSION, helper->getVersion()) << std::endl;
+            std::string orig = s_filename;
+            std::string dest = s_filename+".OLD";
 	    //#ifndef __WIN32__
 	    //            string orig = "./"+s_filename;
 	    //            string dest = "./"+s_filename+".OLD";
@@ -214,10 +210,10 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
 	    //            string orig = string(getenv("HOME"))+s_filename;
 	    //            string dest = string(getenv("HOME"))+s_filename+".OLD";
 	    //#endif
-            cerr << "I make a backup copy from " << orig << " to " << dest << endl;
+            std::cerr << String::ucompose(_("backing up config file `%1' to `%2'."), orig, dest) << std::endl;
 
-            ofstream ofs(dest.c_str());
-	    ifstream ifs(orig.c_str());
+            std::ofstream ofs(dest.c_str());
+            std::ifstream ifs(orig.c_str());
 	    ofs << ifs.rdbuf();
 	    ofs.close();
 
@@ -225,7 +221,7 @@ bool Configuration::parseConfiguration(string tag, XML_Helper* helper)
 
             //if (ret == -1)
 	    //{
-            //     cerr << _("An error occurred while executing command : ") << command << endl;
+            //     std::cerr << _("An error occurred while executing command : ") << command << std::endl;
             //     exit(-1);
 	    //}
             return false;
@@ -323,64 +319,51 @@ void initialize_configuration()
 	bool saveconf = conf.saveConfigurationFile(Configuration::configuration_file_path);
 	if (!saveconf)
 	{
-            std::cerr << "Couldn't save the new configuration file..." << std::endl;
-            std::cerr << "Check permissions of your home directory....aborting!" << std::endl;
-	    exit(-1);
+          std::cerr << String::ucompose(_("Error!  couldn't save configuration file `%1'.  Exiting."), Configuration::configuration_file_path) << std::endl;
+          exit(-1);
 	}
 	else
-	    std::cerr << "Created the standard configuration file " << Configuration::configuration_file_path << std::endl;
+          std::cerr << String::ucompose(_("created default configuration file `%1'."), Configuration::configuration_file_path) << std::endl;
     }
     
     //Check if the save game directory exists. If not, try to create it.
 
     if (File::create_dir(Configuration::s_savePath) == false)
     {
-        std::cerr << "Couldn't create save game directory ";
-        std::cerr << Configuration::s_savePath <<".\n";
-        std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
+      std::cerr << String::ucompose("Error!  Couldn't create saved game directory `%1'.  Exiting.", Configuration::s_savePath) << std::endl;
         exit(-1);
     }
     //Check if the personal armyset directory exists. If not, try to create it.
     if (File::create_dir(File::getUserArmysetDir()) == false)
     {
-        std::cerr << "Couldn't create personal armyset directory ";
-        std::cerr << File::getUserArmysetDir() <<".\n";
-        std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
+      std::cerr << String::ucompose(_("Error!  Couldn't create armyset directory `%1'.  Exiting."), File::getUserArmysetDir()) << std::endl;
         exit(-1);
     }
     //Check if the personal tileset directory exists. If not, try to create it.
     if (File::create_dir(File::getUserTilesetDir()) == false)
     {
-        std::cerr << "Couldn't create personal tileset directory ";
-        std::cerr << File::getUserTilesetDir() <<".\n";
-        std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
+      std::cerr << String::ucompose(_("Error!  Couldn't create tileset directory `%1'.  Exiting."), File::getUserTilesetDir()) << std::endl;
         exit(-1);
     }
 
     //Check if the personal maps directory exists. If not, try to create it.
     if (File::create_dir(File::getUserMapDir()) == false)
     {
-        std::cerr << "Couldn't create personal map directory ";
-        std::cerr << File::getUserMapDir() <<".\n";
-        std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
+      std::cerr << String::ucompose(_("Error!  Couldn't create map directory `%1'.  Exiting."), File::getUserMapDir()) << std::endl;
         exit(-1);
     }
 
     //Check if the personal shieldset directory exists. If not, try to make it.
     if (File::create_dir(File::getUserShieldsetDir()) == false)
     {
-        std::cerr << "Couldn't create personal shieldset directory ";
-        std::cerr << File::getUserShieldsetDir() <<".\n";
-        std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
+      std::cerr << String::ucompose(_("Error!  Couldn't create shieldset directory `%1'.  Exiting."), File::getUserShieldsetDir()) << std::endl;
         exit(-1);
     }
 
     //Check if the personal cityset directory exists. If not, try to make it.
     if (File::create_dir(File::getUserCitysetDir()) == false)
     {
-        std::cerr << "Couldn't create personal cityset directory ";
-        std::cerr << File::getUserCitysetDir() <<".\n";
-        std::cerr << "Check permissions and the entries in your lordsawarrc file!" << std::endl;
+      std::cerr << String::ucompose(_("Error!  Couldn't create cityset directory `%1'.  Exiting."), File::getUserCitysetDir()) << std::endl;
         exit(-1);
     }
 }

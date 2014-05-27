@@ -100,12 +100,6 @@ void Maptile::setIndex(guint32 index)
 
 }
 
-void Maptile::printDebugInfo() const
-{
-    std::cerr << "MAPTILE: type = " << d_index << std::endl;
-    std::cerr << "MAPTILE: building = " << d_building << std::endl;
-}    
-
 bool Maptile::isCityTerrain()
 {
   if (getBuilding() == Maptile::CITY || getBuilding() == Maptile::RUIN ||

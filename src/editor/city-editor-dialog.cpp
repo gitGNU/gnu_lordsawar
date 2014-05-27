@@ -30,7 +30,6 @@
 #include "armyprodbase.h"
 #include "army.h"
 #include "armyproto.h"
-#include "armyprodbase.h"
 #include "playerlist.h"
 #include "stacklist.h"
 #include "citylist.h"

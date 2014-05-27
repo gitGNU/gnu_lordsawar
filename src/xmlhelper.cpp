@@ -27,6 +27,7 @@
 #include "xmlhelper.h"
 #include "defs.h"
 #include "File.h"
+#include "ucompose.hpp"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -64,7 +65,7 @@ XML_Helper::XML_Helper(std::string filename, std::ios::openmode mode, bool zip)
         if (!(*d_fin))
         //error opening
         {
-            std::cerr <<filename << ": Error opening file for reading. Exiting\n";
+            std::cerr << String::ucompose(_("Error opening `%1' for reading.  Exiting."), filename) << std::endl;
             exit(-1);
         }
 
@@ -74,7 +75,7 @@ XML_Helper::XML_Helper(std::string filename, std::ios::openmode mode, bool zip)
 
         if (d_fin->eof())
         {
-            std::cerr << "File too short (<=1 byte), propably broken. Skipping load\n";
+            std::cerr << String::ucompose(_("Zip file `%1' is too short.  probably broken. Skipping load."), filename) << std::endl;
             d_failed = true;
         }
 
@@ -123,7 +124,7 @@ XML_Helper::XML_Helper(std::string filename, std::ios::openmode mode, bool zip)
                                    std::ios::out & std::ios::trunc);
         if (!(*d_fout))
         {
-            std::cerr <<filename << ": Error opening file for writing. Exiting\n";
+            std::cerr << String::ucompose(_("Error opening `%1' for writing.  Exiting."), filename) << std::endl;
             exit(-1);
         }
 
@@ -468,7 +469,7 @@ bool XML_Helper::getData(Gdk::RGBA & data, std::string name)
     if (it == d_data.end())
     {
         data.set_rgba(0,0,0);
-        std::cerr<<"XML_Helper::getData(Gdk::RGBA, \"" <<name <<"\") failed\n";
+        std::cerr<<String::ucompose(_("Error!  couldn't get Gdk::RGBA value from xml tag `%1'."), name) << std::endl;
         d_failed = true;
         return false;
     }
@@ -515,7 +516,7 @@ bool XML_Helper::getData(std::string& data, std::string name)
     if (it == d_data.end())
     {
         data = "";
-        std::cerr<<"XML_Helper::getData(std::string, \"" <<name <<"\") failed\n";
+        std::cerr<<String::ucompose(_("Error!  couldn't get std::string value from xml tag `%1'."), name) << std::endl;
         d_failed = true;
         return false;
     }
@@ -535,7 +536,7 @@ bool XML_Helper::getData(bool& data, std::string name)
 
     if (it == d_data.end())
     {
-        std::cerr<<"XML_Helper::getData(bool, \"" <<name <<"\") failed\n";
+        std::cerr<<String::ucompose(_("Error!  couldn't get bool value from xml tag `%1'."), name) << std::endl;
         d_failed = true;
         return false;
     }
@@ -565,7 +566,7 @@ bool XML_Helper::getData(int& data, std::string name)
 
     if (it == d_data.end())
     {
-        std::cerr<<"XML_Helper::getData(int, \"" <<name <<"\") failed\n";
+        std::cerr<<String::ucompose(_("Error!  couldn't get int value from xml tag `%1'."), name) << std::endl;
         d_failed = true;
         return false;
     }
@@ -584,7 +585,7 @@ bool XML_Helper::getData(guint32& data, std::string name)
 
     if (it == d_data.end())
     {
-        std::cerr<<"XML_Helper::getData(guint32, \"" <<name <<"\") failed\n";
+        std::cerr<<String::ucompose(_("Error!  couldn't get guint32 value from xml tag `%1'."), name) << std::endl;
         d_failed = true;
         return false;
     }
@@ -605,7 +606,7 @@ bool XML_Helper::getData(double& data, std::string name)
 
     if (it == d_data.end())
     {
-        std::cerr<<"XML_Helper::getData(double, \"" <<name <<"\") failed\n";
+        std::cerr<<String::ucompose(_("Error!  couldn't get double value from xml tag `%1'."), name) << std::endl;
         d_failed = true;
         return false;
     }
@@ -636,10 +637,7 @@ bool XML_Helper::parse()
         if (!XML_ParseBuffer(d_parser, strlen(buffer), my_eof))
         //error parsing
         {
-            std::cerr <<"XML_Helper: error parsing xml document.\n";
-            std::cerr <<"Line " <<XML_GetCurrentLineNumber(d_parser);
-            std::cerr <<": " <<XML_ErrorString(XML_GetErrorCode(d_parser)) <<"\n";
-            std::cerr <<"Buffercontent = " << buffer << std::endl;
+            std::cerr << String::ucompose(_("Error parsing xml document.  Line %1\n%2\nBuffer is `%3'"), XML_GetCurrentLineNumber(d_parser), XML_ErrorString(XML_GetErrorCode(d_parser)), buffer) << std::endl;
             d_failed = true;
         }
     }
@@ -712,7 +710,7 @@ bool XML_Helper::tag_open(std::string tag, std::string version, std::string lang
             bool retval = (it->second)(*ls_it, this);
             if (retval == false)
             {
-                std::cerr <<(*ls_it) << ": Callback for tag returned false. Stop parsing document.\n";
+                std::cerr << String::ucompose(_("%1: Callback for xml tag returned false.  Stop parsing document."), (*ls_it)) << std::endl;
                 error = true;
                 d_failed = true;
             }
@@ -780,7 +778,7 @@ bool XML_Helper::tag_close(std::string tag, std::string cdata)
             
             if (retval == false)
             {
-                std::cerr <<tag <<": Callback for tag returned false. Stop parsing document.\n";
+                std::cerr << String::ucompose(_("%1: Callback for xml tag returned false.  Stop parsing document."), tag) << std::endl;
                 error = true;
                 d_failed = true;
             }

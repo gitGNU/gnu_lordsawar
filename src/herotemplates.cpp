@@ -16,6 +16,8 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <sstream>
+
 #include "herotemplates.h"
 
 #include "File.h"
@@ -24,7 +26,7 @@
 #include "hero.h"
 #include "heroproto.h"
 #include "xmlhelper.h"
-#include <sstream>
+#include "ucompose.hpp"
 
 HeroTemplates* HeroTemplates::d_instance = 0;
 
@@ -114,7 +116,7 @@ int HeroTemplates::loadHeroTemplates()
 
   if (!helper.parse())
     {
-      std::cerr << "Error, while loading a template from heronames.xml" <<std::endl <<std::flush;
+      std::cerr << String::ucompose(_("Error!  can't load heronames file `%1'.  Exiting."), File::getMiscFile("heronames.xml")) << std::endl;
       exit(-1);
     }
 

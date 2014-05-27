@@ -15,9 +15,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
 
 #include <iostream>
 #include <stdlib.h>
@@ -33,7 +31,6 @@
 #include "pbm-game-server.h"
 #include "armyset.h"
 
-using namespace std;
 int max_vector_width;
 int main(int argc, char* argv[])
 {
@@ -54,7 +51,7 @@ int main(int argc, char* argv[])
     {
       for (int i = 2; i <= argc; i++)
 	{
-          string parameter(argv[i-1]); 
+          std::string parameter(argv[i-1]); 
 	  if (parameter == "--identify" || parameter == "-i")
             {
               identify_file = true;
@@ -65,16 +62,15 @@ int main(int argc, char* argv[])
             }
 	  else if (parameter == "--help" || parameter == "-?")
 	    {
-	      cout << File::get_basename(argv[0], true) << " [OPTION]... FILE" << endl << 
-                endl;
-	      cout << "LordsAWar! File Upgrading Tool " << _("version") << 
-                " " << VERSION << endl << endl;
-	      cout << _("Options:") << endl << endl; 
-	      cout << "  -?, --help                 " << _("Display this help and exit") <<endl;
-	      cout << "  -i, --identify             " << _("Show the file type instead of upgrading") << endl;
-	      //cout << "  -r, --rewrite VERSION      " << _("Just change the version instead of upgrading") << endl;
-	      cout << endl;
-	      cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << endl;
+              std::cout << File::get_basename(argv[0], true) << " [OPTION]... FILE" << std::endl << std::endl;
+              std::cout << "LordsAWar! File Upgrading Tool " << _("version") << 
+                " " << VERSION << std::endl << std::endl;
+              std::cout << _("Options:") << std::endl << std::endl; 
+              std::cout << "  -?, --help                 " << _("Display this help and exit") <<std::endl;
+              std::cout << "  -i, --identify             " << _("Show the file type instead of upgrading") << std::endl;
+              //std::cout << "  -r, --rewrite VERSION      " << _("Just change the version instead of upgrading") << std::endl;
+              std::cout << std::endl;
+              std::cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << std::endl;
 	      exit(0);
 	    }
 	  else
@@ -98,14 +94,14 @@ int main(int argc, char* argv[])
 
       if (same_version)
         {
-          cerr << String::ucompose(_("%1 is already the latest version."), 
-                                   filename) << endl;
+          std::cerr << String::ucompose(_("%1 is already the latest version."), 
+                                   filename) << std::endl;
           File::erase(tmpfile);
         }
       else if (!upgraded && !same_version)
         {
-          cerr << String::ucompose(_("Error: %1 could not be upgraded."), 
-                                   filename) << endl;
+          std::cerr << String::ucompose(_("Error: %1 could not be upgraded."), 
+                                   filename) << std::endl;
           File::erase(tmpfile);
         }
       else
@@ -120,8 +116,9 @@ int main(int argc, char* argv[])
       std::string tag, version;
       FileCompat::Type type = FileCompat::getInstance()->getType(filename);
       FileCompat::getInstance()->get_tag_and_version_from_file(filename, type, tag, version);
-      cout << String::ucompose("%1 (%2 %3)", FileCompat::typeToString(type), 
-                               tag, version) << endl;
+      std::cout << String::ucompose("%1 (%2 %3)", 
+                                    FileCompat::typeToString(type), 
+                                    tag, version) << std::endl;
       return EXIT_SUCCESS;
     }
   else if (identify_file == false && rewrite != "")
@@ -141,7 +138,7 @@ int main(int argc, char* argv[])
     }
   else if (identify_file && rewrite != "")
     {
-      cerr << _("Error: The --identify and --rewrite options cannot be used at the same time.") << endl;
+      std::cerr << _("Error: The --identify and --rewrite options cannot be used at the same time.") << std::endl;
       return EXIT_FAILURE;
     }
 

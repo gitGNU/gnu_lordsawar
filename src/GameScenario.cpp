@@ -19,7 +19,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include "config.h"
+#include <config.h>
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -60,7 +60,6 @@
 #include "army.h"
 #include "QuestsManager.h"
 #include "Itemlist.h"
-#include "player.h"
 #include "vectoredunitlist.h"
 #include "history.h"
 #include "xmlhelper.h"
@@ -71,10 +70,9 @@
 
 std::string GameScenario::d_tag = "scenario";
 std::string GameScenario::d_top_tag = PACKAGE;
-using namespace std;
 
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
-//#define debug(x)
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
+#define debug(x)
 
 GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
 			   GameScenario::PlayMode playmode)
@@ -93,7 +91,7 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
 }
 
 //savegame has an absolute path
-GameScenario::GameScenario(string savegame, bool& broken)
+GameScenario::GameScenario(std::string savegame, bool& broken)
   :d_turnmode(true), d_playmode(GameScenario::HOTSEAT), 
     inhibit_autosave_removal(false), loaded_game_filename("")
 {
@@ -574,15 +572,15 @@ std::string GameScenario::getComment() const
   return d_comment;
 }
 
-bool GameScenario::saveGame(string filename, string extension) const
+bool GameScenario::saveGame(std::string filename, std::string extension) const
 {
   bool retval = true;
-  string goodfilename = File::add_ext_if_necessary(filename, extension);
+  std::string goodfilename = File::add_ext_if_necessary(filename, extension);
 
   std::string tmpfile = "lw.XXXX";
   int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
   close(fd);
-  XML_Helper helper(tmpfile, ios::out, Configuration::s_zipfiles);
+  XML_Helper helper(tmpfile, std::ios::out, Configuration::s_zipfiles);
   retval &= saveWithHelper(helper);
   helper.close();
 
@@ -713,9 +711,7 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
     {
       if (helper->getVersion() != LORDSAWAR_SAVEGAME_VERSION)
 	{
-	  cerr << "savefile has wrong version, we want ";
-	  std::cerr <<LORDSAWAR_SAVEGAME_VERSION <<",\n";
-	  cerr << "savefile offers " <<helper->getVersion() <<".\n";
+          std::cerr << String::ucompose(_("saved game file has wrong version.  expecting %1 but got %2."), LORDSAWAR_SAVEGAME_VERSION, helper->getVersion()) << std::endl;
 	  return false;
 	}
       return true;
@@ -882,8 +878,7 @@ bool GameScenario::autoSave()
 	     std::string(File::getSavePath() + filename).c_str()))
     {
       char* err = strerror(errno);
-      std::cerr << "Error while trying to rename the temporary file to autosave.sav\n";
-      std::cerr << "Error: " <<err <<std::endl;
+      std::cerr << String::ucompose(_("Error! can't rename the temporary file `%1' to the autosave file `%2'.  %3"), File::getSavePath() + "tmp" + SAVE_EXT, File::getSavePath() + filename, err) << std::endl;
       return false;
     }
   return true;

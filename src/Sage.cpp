@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Ben Asselstine
+// Copyright (C) 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,8 +17,6 @@
 
 #include "Sage.h"
 #include "rewardlist.h"
-
-using namespace std;
 
 Sage::Sage()
 {

@@ -45,9 +45,7 @@
 #include "QEnemyArmies.h"
 #include "QEnemyArmytype.h"
 
-using namespace std;
-
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
+#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 //#define debug(x)
 
 AI_Allocation* AI_Allocation::s_instance = 0;
@@ -790,7 +788,7 @@ int AI_Allocation::allocateDefensiveStacksToCity(City *city)
           shuffleStacksWithinCity(city, d, Vector<int>(0,0));
       }
   std::vector<Stack*> defenders = city->getDefenders();
-  vector<Stack*>::iterator it;
+  std::vector<Stack*>::iterator it;
   for (it = defenders.begin(); it != defenders.end(); it++)
     {
       Stack *defender = *it;

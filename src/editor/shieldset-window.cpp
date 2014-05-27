@@ -43,13 +43,11 @@
 #include "Tile.h"
 #include "File.h"
 #include "shield.h"
-#include "shieldsetlist.h"
 #include "recently-edited-file-list.h"
 
 #include "ucompose.hpp"
 
 #include "glade-helpers.h"
-#include "masked-image-editor-dialog.h"
 #include "recently-edited-file.h"
 #include "editor-quit-dialog.h"
 #include "editor-recover-dialog.h"

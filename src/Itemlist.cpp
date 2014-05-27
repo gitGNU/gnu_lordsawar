@@ -1,5 +1,5 @@
 // Copyright (C) 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #include "File.h"
 #include "defs.h"
 #include "file-compat.h"
+#include "ucompose.hpp"
 
 std::string Itemlist::d_tag = "itemlist";
 
@@ -54,7 +55,7 @@ void Itemlist::createStandardInstance()
 
     if (!helper.parse())
     {
-        std::cerr <<_("Could not parse items description file. Exiting!\n");
+      std::cerr << String::ucompose(_("Could not parse item description file `%1'.  Exiting."), File::getItemDescription()) << std::endl;
         exit(-1);
     }
     helper.close();

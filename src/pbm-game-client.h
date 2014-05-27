@@ -1,5 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 #ifndef PBM_GAME_CLIENT_H
 #define PBM_GAME_CLIENT_H
 
-#include "config.h"
+#include <config.h>
 
 #include <list>
 #include <memory>

@@ -57,8 +57,6 @@
 #include "tilestyle-organizer-dialog.h"
 #include "tileset-smallmap-building-colors-dialog.h"
 
-#include "ucompose.hpp"
-
 #include "glade-helpers.h"
 
 

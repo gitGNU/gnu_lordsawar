@@ -1,5 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
-// Copyright (C) 2011 Ben Asselstine
+// Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -150,7 +150,7 @@ void GameClient::stood_up(Player *player, std::string nickname)
 
 bool GameClient::onGotMessage(int type, std::string payload)
 {
-  std::cerr << "got message of type " << type << std::endl;
+  std::cerr << String::ucompose(_("got message of type %1"), type) << std::endl;
   switch (MessageType(type)) {
   case MESSAGE_TYPE_PING:
     network_connection->send(MESSAGE_TYPE_PONG, "PONGOGOGO");
@@ -170,12 +170,12 @@ bool GameClient::onGotMessage(int type, std::string payload)
     break;
 
   case MESSAGE_TYPE_PARTICIPANT_CONNECTED:
-    std::cerr << "message: " << type <<" has data: " << payload << std::endl;
+    std::cerr << String::ucompose(_("message: %1 has data: %2"), type, payload) << std::endl;
     remote_participant_joins.emit(payload);
     break;
 
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECTED:
-    std::cerr << "message: " << type <<" has data: " << payload << std::endl;
+    std::cerr << String::ucompose(_("message: %1 has data: %2"), type, payload) << std::endl;
     remote_participant_departs.emit(payload);
     break;
 
@@ -290,7 +290,7 @@ void GameClient::gotKillPlayer(Player *player)
 void GameClient::onHistoryDone(NetworkHistory *history)
 {
   std::string desc = history->toString();
-  std::cerr << "Game Client got " << desc <<"\n";
+  std::cerr << String::ucompose(_("Game Client got %1"), desc) << std::endl;
 
   if (history->getHistory()->getType() == History::PLAYER_VANQUISHED)
     local_player_died(history->getOwner());
@@ -303,7 +303,7 @@ void GameClient::onHistoryDone(NetworkHistory *history)
 void GameClient::onActionDone(NetworkAction *action)
 {
   std::string desc = action->toString();
-  std::cerr << "Game Client got " << desc <<"\n";
+  std::cerr << String::ucompose(_("Game Client got %1"), desc) << std::endl;
 
   if (action->getAction()->getType() == Action::END_TURN)
     local_player_moved(action->getOwner());

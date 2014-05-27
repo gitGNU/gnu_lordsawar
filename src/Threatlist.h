@@ -1,7 +1,7 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2009 Ben Asselstine
+// Copyright (C) 2007, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,8 +27,6 @@
 class Stack;
 class Ruin;
 class AICityInfo;
-
-using namespace std;
 
 /** List of threats.
   */
@@ -85,7 +83,7 @@ class Threatlist : public std::list<Threat*>
 	// Methods that operate on class data but do not modify the class
 
         //! return some debugging information
-        string toString() const;
+        std::string toString() const;
         
         void changeOwnership(Player *old_owner, Player *new_owner);
 

@@ -27,9 +27,6 @@
 
 std::string Tile::d_tag = "tile";
 
-using namespace std;
-
-
 Tile::Tile()
 {
   d_type = Tile::GRASS;

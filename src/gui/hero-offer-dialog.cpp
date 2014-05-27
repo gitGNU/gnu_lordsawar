@@ -32,7 +32,6 @@
 #include "File.h"
 #include "sound.h"
 #include "city.h"
-#include "ucompose.hpp"
 
 HeroOfferDialog::HeroOfferDialog(Gtk::Window &parent, Player *player, HeroProto *h, City *c, int gold)
 {

@@ -19,6 +19,7 @@
 
 #include <sigc++/functors/mem_fun.h>
 #include <string.h>
+#include <iostream>
 
 #include "tileset.h"
 
@@ -32,11 +33,9 @@
 #include "tarhelper.h"
 #include "Configuration.h"
 #include "file-compat.h"
+#include "ucompose.hpp"
 
-using namespace std;
-
-#include <iostream>
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 #define DEFAULT_TILE_SIZE 40
@@ -233,7 +232,7 @@ int Tileset::getIndex(Tile::Type type) const
   return -1;
 }
 
-bool Tileset::loadTile(string tag, XML_Helper* helper)
+bool Tileset::loadTile(std::string tag, XML_Helper* helper)
 {
   debug("loadTile()")
 
@@ -484,13 +483,12 @@ public:
           t.getFirstFile(Tileset::file_extension, broken);
         if (broken)
           return;
-	XML_Helper helper(lwtfilename, ios::in, false);
+	XML_Helper helper(lwtfilename, std::ios::in, false);
 	helper.registerTag(Tileset::d_tag, sigc::mem_fun((*this), &TilesetLoader::load));
 	if (!helper.parse())
 	  {
             unsupported = unsupported_version;
-	    std::cerr << "Error, while loading a tileset. Tileset File: ";
-	    std::cerr << filename << std::endl <<std::flush;
+            std::cerr << String::ucompose(_("Error!  can't load tileset `%1'."), filename) << std::endl;
 	    if (tileset != NULL)
 	      delete tileset;
 	    tileset = NULL;
@@ -823,9 +821,9 @@ std::list<std::string> Tileset::scanSystemCollection()
                                                       file_extension);
   if (retlist.empty())
     {
-      std::cerr << "Couldn't find any tilesets (*" << file_extension << 
-        ") in : " << File::getTilesetDir() << std::endl;
-      std::cerr << "Please check the path settings in ~/.lordsawarrc" << std::endl;
+      //note to translators: %1 is a file extension, %2 is a directory.
+      std::cerr << String::ucompose(_("Couldn't find any tilesets (*%1) in `%2'."),file_extension, File::getTilesetDir()) << std::endl;
+      std::cerr << _("Please check the path settings in ~/.lordsawarrc") << std::endl;
       exit(-1);
     }
 

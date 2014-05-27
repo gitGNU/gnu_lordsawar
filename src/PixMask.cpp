@@ -21,6 +21,7 @@
 #include <string.h>
 #include <cairomm/cairomm.h>
 #include <gdkmm.h>
+#include "ucompose.hpp"
 
 
 PixMask::PixMask(Glib::RefPtr<Gdk::Pixbuf> pixbuf)
@@ -127,7 +128,7 @@ PixMask::PixMask(std::string filename, bool &broken)
     }
   catch (const Glib::Exception &ex)
     {
-      std::cerr << _("Couldn't load image file ") << filename << std::endl;
+      std::cerr << String::ucompose(_("Could not load image file `%1'."), filename) << std::endl;
       broken = true;
       return;
     }

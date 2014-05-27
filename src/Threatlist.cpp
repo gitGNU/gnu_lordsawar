@@ -1,7 +1,7 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005 Ulf Lorenz
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2007, 2009, 2010 Ben Asselstine
+// Copyright (C) 2007, 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,9 +27,7 @@
 #include "player.h"
 #include "AICityInfo.h"
 
-using namespace std;
-
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<std::endl<<std::flush;}
 #define debug(x)
 
 Threatlist::Threatlist()
@@ -218,9 +216,9 @@ void Threatlist::deleteStack(Stack* s)
         (*it)->deleteStack(s);
 }
 
-string Threatlist::toString() const
+std::string Threatlist::toString() const
 {
-    string result = "{";
+    std::string result = "{";
     bool first = true;
     for (const_iterator it = begin(); it != end(); it++)
     {

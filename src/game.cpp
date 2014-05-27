@@ -16,7 +16,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include "config.h"
+#include <config.h>
 
 #include <algorithm>
 #include <vector>
@@ -62,7 +62,6 @@
 #include "action.h"
 #include "game-parameters.h"
 #include "FogMap.h"
-#include "GameMap.h"
 #include "history.h"
 #include "pbm-game-server.h"
 #include "LocationBox.h"
@@ -80,7 +79,7 @@
 
 Game *Game::current_game = 0;
 
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 #define debug(x)
 void Game::addPlayer(Player *p)
 {

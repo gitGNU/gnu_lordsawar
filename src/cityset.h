@@ -22,7 +22,6 @@
 #include <vector>
 #include <gtkmm.h>
 #include <sigc++/trackable.h>
-#include <gtkmm.h>
 #include "PixMask.h"
 #include "set.h"
 

@@ -28,9 +28,7 @@
 #include "defs.h"
 #include "tarhelper.h"
 
-using namespace std;
-
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 Citysetlist* Citysetlist::s_instance = 0;
@@ -127,17 +125,14 @@ Cityset *Citysetlist::loadCityset(std::string name)
   Cityset *cityset = Cityset::create(name, unsupported_version);
   if (!cityset)
     {
-      cerr << "Error!  cityset: `" << File::get_basename(name, true) << 
-	"' is malformed.  Skipping." << endl;
+      std::cerr << String::ucompose(_("Error!  cityset: `%1' is malformed.  Skipping."), File::get_basename(name, true)) << std::endl;
       return NULL;
     }
     
   if (d_citysets.find(cityset->getBaseName()) != d_citysets.end())
     {
       Cityset *c = (*d_citysets.find(cityset->getBaseName())).second;
-      cerr << "Error!  cityset: `" << cityset->getConfigurationFile() << 
-	"' shares a duplicate cityset basename `" << c->getBaseName() << "' with `" << c->getConfigurationFile() 
-	<< "'.  Skipping." << endl;
+      std::cerr << String::ucompose(_("Error!  cityset: `%1' sahres a duplicate cityset basename `%2' with `%3'.  Skipping."), cityset->getConfigurationFile(), c->getBaseName(), c->getConfigurationFile()) << std::endl;
       delete cityset;
       return NULL;
     }
@@ -145,9 +140,7 @@ Cityset *Citysetlist::loadCityset(std::string name)
   if (d_citysetids.find(cityset->getId()) != d_citysetids.end())
     {
       Cityset *c = (*d_citysetids.find(cityset->getId())).second;
-      cerr << "Error!  cityset: `" << cityset->getConfigurationFile() << 
-	"' shares a duplicate cityset id with `" << c->getConfigurationFile() 
-	<< "'.  Skipping." << endl;
+      std::cerr << String::ucompose(_("Error!  cityset `%1' shares a duplicate cityset id with `%2'.  Skipping."), cityset->getConfigurationFile(), c->getConfigurationFile()) << std::endl;
       delete cityset;
       return NULL;
     }
@@ -155,9 +148,7 @@ Cityset *Citysetlist::loadCityset(std::string name)
   if (d_citysetids.find(cityset->getId()) != d_citysetids.end())
     {
       Cityset *c = (*d_citysetids.find(cityset->getId())).second;
-      cerr << "Error!  cityset: `" << cityset->getName() << 
-	"' has a duplicate cityset id with `" << c->getConfigurationFile() << 
-	"'.  Skipping." << endl;
+      std::cerr << String::ucompose(_("Error!  cityset: `%1' has a duplicate cityset id with `%2'.  Skipping"), cityset->getName(), c->getConfigurationFile()) << std::endl;
       delete cityset;
       return NULL;
     }

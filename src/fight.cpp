@@ -2,7 +2,7 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2006 Andrea Paternesi
 // Copyright (C) 2004 Bryan Duff
-// Copyright (C) 2006, 2007, 2008, 2011 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2011, 2014 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -37,7 +37,7 @@
 #include "stack.h"
 #include "Backpack.h"
 
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 // Helper class; the single units participating in the fight are saved with

@@ -32,12 +32,12 @@
 #include "tarhelper.h"
 #include "Configuration.h"
 #include "file-compat.h"
+#include "ucompose.hpp"
 
 std::string Armyset::d_tag = "armyset";
 std::string Armyset::file_extension = ARMYSET_EXT;
-using namespace std;
 
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
 
 #define DEFAULT_ARMY_TILE_SIZE 40
@@ -111,7 +111,7 @@ Armyset::~Armyset()
   clean_tmp_dir();
 }
 
-bool Armyset::loadArmyProto(string tag, XML_Helper* helper)
+bool Armyset::loadArmyProto(std::string tag, XML_Helper* helper)
 {
     if (tag == ArmyProto::d_tag)
       {
@@ -489,13 +489,12 @@ public:
           t.getFirstFile(Armyset::file_extension, broken);
         if (broken)
           return;
-	XML_Helper helper(lwafilename, ios::in, false);
+	XML_Helper helper(lwafilename, std::ios::in, false);
 	helper.registerTag(Armyset::d_tag, sigc::mem_fun((*this), &ArmysetLoader::load));
 	if (!helper.parse())
 	  {
             unsupported = unsupported_version;
-	    std::cerr << "Error, while loading an armyset. Armyset File: ";
-	    std::cerr << filename << std::endl <<std::flush;
+            std::cerr << String::ucompose(_("Error!  can't load armyset `%1'."), filename) << std::endl;
 	    if (armyset != NULL)
 	      delete armyset;
 	    armyset = NULL;
@@ -660,9 +659,9 @@ std::list<std::string> Armyset::scanSystemCollection()
                                                       file_extension);
   if (retlist.empty())
     {
-      std::cerr << "Couldn't find any armysets (*" << file_extension << 
-        ") in : " << File::getArmysetDir() << std::endl;
-      std::cerr << "Please check the path settings in ~/.lordsawarrc" << std::endl;
+      //note to translators: %1 is a file extension, %2 is a directory.
+      std::cerr << String::ucompose(_("Couldn't find any armysets (*%1) in `%2'."),file_extension, File::getArmysetDir()) << std::endl;
+      std::cerr << _("Please check the path settings in ~/.lordsawarrc") << std::endl;
       exit(-1);
     }
 

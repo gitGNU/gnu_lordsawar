@@ -30,14 +30,11 @@
 #include "Itemlist.h"
 #include "Item.h"
 #include "GameMap.h"
-#include "ruin.h"
 #include "ucompose.hpp"
 #include "SightMap.h"
 #include "stackreflist.h"
 
 std::string Reward::d_tag = "reward";
-
-using namespace std;
 
 Reward::Reward(Type type, std::string name)
     :d_type(type), d_name(name)

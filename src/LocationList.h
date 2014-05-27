@@ -38,8 +38,6 @@ class Stack;
   * the city list.
   */
 
-using namespace std;
-  
 template<class T> class LocationList : public std::list<T>
 {
  public:

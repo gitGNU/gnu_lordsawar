@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Ben Asselstine
+// Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #ifndef GAMELIST_CLIENT_H
 #define GAMELIST_CLIENT_H
 
-#include "config.h"
+#include <config.h>
 
 #include <list>
 #include <memory>

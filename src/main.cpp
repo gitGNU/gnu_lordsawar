@@ -1,7 +1,7 @@
 // Copyright (C) 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2011 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2011, 2014 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 // Copyright (C) 2005, 2006 Josef Spillner
 //
@@ -20,9 +20,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
 
 #include <iostream>
 #include <stdlib.h>
@@ -36,15 +34,11 @@
 #include "tileset.h"
 #include "shieldset.h"
 #include "armyset.h"
-#include "recently-played-game-list.h"
 #include "profilelist.h"
 #include "gamelist.h"
 #include "file-compat.h"
 
 #include "gui/main.h"
-
-
-using namespace std;
 
 
 int max_vector_width;
@@ -76,7 +70,7 @@ int main(int argc, char* argv[])
     {
       for (int i = 2; i <= argc; i++)
 	{
-	  string parameter(argv[i-1]); 
+          std::string parameter(argv[i-1]); 
 	  if (parameter == "-c" || parameter == "--cache-size")
 	    {
 	      i++;
@@ -85,7 +79,7 @@ int main(int argc, char* argv[])
 	      long size = strtol(argv[i-1], &error, 10);
 	      if (error && (*error != '\0'))
 		{
-		  cerr <<_("non-numerical value for cache size") <<endl;
+                  std::cerr <<_("non-numerical value for cache size") <<std::endl;
 		  exit(-1);
 		}
 	      Configuration::s_cacheSize = size;
@@ -98,7 +92,7 @@ int main(int argc, char* argv[])
 	      long seed = strtol(argv[i-1], &error, 10);
 	      if (error && (*error != '\0'))
 		{
-		  cerr <<_("non-numerical value for --seed") <<endl;
+                  std::cerr <<_("non-numerical value for --seed") <<std::endl;
 		  exit(-1);
 		}
               kit.random_number_seed = seed;
@@ -112,12 +106,12 @@ int main(int argc, char* argv[])
 	      long port = strtol(argv[i-1], &error, 10);
 	      if (error && (*error != '\0'))
 		{
-		  cerr <<_("non-numerical value for --port") <<endl;
+                  std::cerr <<_("non-numerical value for --port") <<std::endl;
 		  exit(-1);
 		}
               if (port > 65535 || port < 1000)
                 {
-		  cerr <<_("invalid value for --port") <<endl;
+                  std::cerr <<_("invalid value for --port") <<std::endl;
 		  exit(-1);
                 }
               kit.port = port;
@@ -145,21 +139,21 @@ int main(int argc, char* argv[])
 	    }
 	  else if (parameter == "--help" || parameter == "-h")
 	    {
-	      cout << Glib::get_prgname() << " [OPTION]... [FILE]" << endl << endl;
-	      cout << "LordsAWar! " << _("version") << " " << VERSION << endl << endl;
-	      cout << _("Options:") << endl << endl; 
-	      cout << "  -h, --help                 " << _("Shows this help screen") <<endl;
-	      cout << "  -c, --cache-size <size>    " << _("Set the cache size for imagery to SIZE bytes") <<endl;
-	      cout << "  -t, --test                 " << _("Start with a test-scenario") << endl;
-	      cout << "  -S, --seed <number>        " << _("Seed the random number generator with NUMBER") << endl;
-	      cout << "  -s, --stress-test          " << _("Non-interactive stress test") << endl;
-	      cout << "  -r, --robots               " << _("Non-interactive network stress test") << endl;
-	      cout << "  -H, --host                 " << _("Start a headless server") << endl;
-	      cout << "  -p, --port <number>        " << _("Start the server on the given port") << endl;
-	      cout << endl;
-	      cout << _("FILE can be a saved game file (.sav), or a map (.map) file.") << endl;
-	      cout << endl;
-	      cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << endl;
+              std::cout << Glib::get_prgname() << " [OPTION]... [FILE]" << std::endl << std::endl;
+              std::cout << "LordsAWar! " << _("version") << " " << VERSION << std::endl << std::endl;
+              std::cout << _("Options:") << std::endl << std::endl; 
+              std::cout << "  -h, --help                 " << _("Shows this help screen") <<std::endl;
+              std::cout << "  -c, --cache-size <size>    " << _("Set the cache size for imagery to SIZE bytes") <<std::endl;
+              std::cout << "  -t, --test                 " << _("Start with a test-scenario") << std::endl;
+              std::cout << "  -S, --seed <number>        " << _("Seed the random number generator with NUMBER") << std::endl;
+              std::cout << "  -s, --stress-test          " << _("Non-interactive stress test") << std::endl;
+              std::cout << "  -r, --robots               " << _("Non-interactive network stress test") << std::endl;
+              std::cout << "  -H, --host                 " << _("Start a headless server") << std::endl;
+              std::cout << "  -p, --port <number>        " << _("Start the server on the given port") << std::endl;
+              std::cout << std::endl;
+              std::cout << _("FILE can be a saved game file (.sav), or a map (.map) file.") << std::endl;
+              std::cout << std::endl;
+              std::cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << std::endl;
 	      exit(0);
 	    }
 	  else
@@ -169,25 +163,25 @@ int main(int argc, char* argv[])
 
   if (kit.load_filename != "" && kit.start_test_scenario)
     {
-      cerr <<_("Error: Cannot specify -t and have a file specified.") << endl;
+      std::cerr <<_("Error: Cannot specify -t and have a file specified.") << std::endl;
       exit (1);
     }
 
   if (kit.load_filename != "" && kit.start_stress_test)
     {
-      cerr <<_("Error: Cannot specify -s and have a file specified.") << endl;
+      std::cerr <<_("Error: Cannot specify -s and have a file specified.") << std::endl;
       exit (1);
     }
 
   if (kit.start_stress_test && kit.start_test_scenario)
     {
-      cerr <<_("Error: Cannot specify -s and -t simultaneously.") << endl;
+      std::cerr <<_("Error: Cannot specify -s and -t simultaneously.") << std::endl;
       exit (1);
     }
 
   if (kit.turn_filename != "" && kit.load_filename == "")
     {
-      cerr <<_("Error: Must specify a file to load when specifying --turn.") << endl;
+      std::cerr <<_("Error: Must specify a file to load when specifying --turn.") << std::endl;
       exit (1);
     }
 

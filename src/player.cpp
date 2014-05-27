@@ -66,7 +66,6 @@
 #include "MapBackpack.h"
 #include "PathCalculator.h"
 #include "stacktile.h"
-#include "templelist.h"
 #include "temple.h"
 #include "QCityOccupy.h"
 #include "QCitySack.h"
@@ -80,14 +79,12 @@
 #include "stackreflist.h"
 #include "rewardlist.h"
 
-using namespace std;
-
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 #define debug(x)
 
 std::string Player::d_tag = "player";
 
-Player::Player(string name, guint32 armyset, Gdk::RGBA color, int width,
+Player::Player(std::string name, guint32 armyset, Gdk::RGBA color, int width,
 	       int height, Type type, int player_no)
     :d_color(color), d_name(name), d_armyset(armyset), d_gold(1000),
     d_dead(false), d_immortal(false), d_type(type), d_upkeep(0), d_income(0),
@@ -334,25 +331,25 @@ std::string Player::getName() const
 
 void Player::dumpActionlist() const
 {
-    for (list<Action*>::const_iterator it = d_actions.begin();
+    for (std::list<Action*>::const_iterator it = d_actions.begin();
         it != d_actions.end(); it++)
     {
-        cerr <<(*it)->dump() << endl;
+      std::cerr <<(*it)->dump() << std::endl;
     }    
 }
 
 void Player::dumpHistorylist() const
 {
-    for (list<History*>::const_iterator it = d_history.begin();
+    for (std::list<History*>::const_iterator it = d_history.begin();
         it != d_history.end(); it++)
     {
-        cerr <<(*it)->dump() << endl;
+      std::cerr <<(*it)->dump() << std::endl;
     }    
 }
 
 void Player::clearActionlist()
 {
-    for (list<Action*>::iterator it = d_actions.begin();
+    for (std::list<Action*>::iterator it = d_actions.begin();
         it != d_actions.end(); it++)
       delete (*it);
     d_actions.clear();
@@ -360,7 +357,7 @@ void Player::clearActionlist()
 
 void Player::clearHistorylist(std::list<History*> &history)
 {
-  for (list<History*>::iterator it = history.begin();
+  for (std::list<History*>::iterator it = history.begin();
        it != history.end(); it++)
     {
       delete (*it);
@@ -488,12 +485,12 @@ bool Player::save(XML_Helper* helper) const
     retval &= helper->saveData("observable", d_observable);
 
     //save the actionlist
-    for (list<Action*>::const_iterator it = d_actions.begin();
+    for (std::list<Action*>::const_iterator it = d_actions.begin();
             it != d_actions.end(); it++)
         retval &= (*it)->save(helper);
     
     //save the pasteventlist
-    for (list<History*>::const_iterator it = d_history.begin();
+    for (std::list<History*>::const_iterator it = d_history.begin();
             it != d_history.end(); it++)
         retval &= (*it)->save(helper);
 
@@ -528,7 +525,7 @@ Player* Player::loadPlayer(XML_Helper* helper)
     return 0;
 }
 
-bool Player::load(string tag, XML_Helper* helper)
+bool Player::load(std::string tag, XML_Helper* helper)
 {
     if (tag == Action::d_tag)
     {
@@ -949,7 +946,7 @@ MoveResult *Player::stackMove(Stack* s, Vector<int> dest, bool follow)
               computerSearch(s, moveResult);
 
             Fight::Result result;
-            vector<Stack*> def_in_city = city->getDefenders();
+            std::vector<Stack*> def_in_city = city->getDefenders();
             if (!def_in_city.empty())
             {
                 // This is a hack to circumvent the limitations of stackFight.
@@ -1651,7 +1648,7 @@ float Player::stackFightAdvise(Stack* s, Vector<int> tile,
                 
   if (!target && city)
     {
-      vector<Stack*> def_in_city = city->getDefenders();
+      std::vector<Stack*> def_in_city = city->getDefenders();
       if (def_in_city.empty())
 	return 100.0;
       target = def_in_city[0];
@@ -3799,7 +3796,7 @@ Player::Type Player::playerTypeFromString(const std::string str)
 
 bool Player::hasAlreadyInitializedTurn() const
 {
-  for (list<Action*>::const_iterator it = d_actions.begin();
+  for (std::list<Action*>::const_iterator it = d_actions.begin();
        it != d_actions.end(); it++)
     if ((*it)->getType() == Action::INIT_TURN)
       return true;
@@ -3808,7 +3805,7 @@ bool Player::hasAlreadyInitializedTurn() const
 
 bool Player::hasAlreadyCollectedTaxesAndPaidUpkeep() const
 {
-  for (list<Action*>::const_iterator it = d_actions.begin();
+  for (std::list<Action*>::const_iterator it = d_actions.begin();
        it != d_actions.end(); it++)
     if ((*it)->getType() == Action::COLLECT_TAXES_AND_PAY_UPKEEP)
       return true;
@@ -3817,7 +3814,7 @@ bool Player::hasAlreadyCollectedTaxesAndPaidUpkeep() const
 
 bool Player::hasAlreadyEndedTurn() const
 {
-  for (list<Action*>::const_iterator it = d_actions.begin();
+  for (std::list<Action*>::const_iterator it = d_actions.begin();
        it != d_actions.end(); it++)
     if ((*it)->getType() == Action::END_TURN)
       return true;
@@ -3827,7 +3824,7 @@ bool Player::hasAlreadyEndedTurn() const
 std::list<History*> Player::getHistoryForThisTurn() const
 {
   std::list<History*> history;
-  for (list<History*>::const_reverse_iterator it = d_history.rbegin();
+  for (std::list<History*>::const_reverse_iterator it = d_history.rbegin();
        it != d_history.rend(); it++)
     {
       history.push_front(*it);
@@ -3840,7 +3837,7 @@ std::list<History*> Player::getHistoryForThisTurn() const
 guint32 Player::countEndTurnHistoryEntries() const
 {
   guint32 count = 0;
-  for (list<History*>::const_iterator it = d_history.begin();
+  for (std::list<History*>::const_iterator it = d_history.begin();
        it != d_history.end(); it++)
     {
       if ((*it)->getType() == History::END_TURN)
@@ -3851,14 +3848,14 @@ guint32 Player::countEndTurnHistoryEntries() const
 
 void Player::loadPbmGame() 
 {
-  for (list<Action*>::const_iterator it = d_actions.begin();
+  for (std::list<Action*>::const_iterator it = d_actions.begin();
        it != d_actions.end(); it++)
     {
       NetworkAction *copy = new NetworkAction(*it, getId());
       acting.emit(copy);
     }
   std::list<History*> history = getHistoryForThisTurn();
-  for (list<History*>::const_iterator it = history.begin();
+  for (std::list<History*>::const_iterator it = history.begin();
        it != history.end(); it++)
     {
       NetworkHistory *copy = new NetworkHistory(*it, getId());
@@ -3868,7 +3865,7 @@ void Player::loadPbmGame()
 
 void Player::saveNetworkActions(XML_Helper *helper) const
 {
-  for (list<Action*>::const_iterator it = d_actions.begin();
+  for (std::list<Action*>::const_iterator it = d_actions.begin();
        it != d_actions.end(); it++)
     {
       NetworkAction *copy = new NetworkAction(*it, getId());
@@ -3880,7 +3877,7 @@ bool Player::searchedRuin(Ruin *r) const
 {
   if (!r)
     return false;
-  for (list<History*>::const_iterator it = d_history.begin();
+  for (std::list<History*>::const_iterator it = d_history.begin();
        it != d_history.end(); it++)
     {
       if ((*it)->getType() == History::HERO_RUIN_EXPLORED)
@@ -3898,7 +3895,7 @@ bool Player::conqueredCity(City *c, guint32 &turns_ago) const
 {
   if (!c)
     return false;
-  for (list<History*>::const_reverse_iterator it = d_history.rbegin();
+  for (std::list<History*>::const_reverse_iterator it = d_history.rbegin();
        it != d_history.rend(); it++)
     {
       if ((*it)->getType() == History::CITY_WON)
@@ -3918,7 +3915,7 @@ std::list<Vector<int> > Player::getStackTrack(Stack *s) const
 {
   std::list<Vector<int> > points;
   Vector<int> delta = Vector<int>(0,0);
-  for (list<Action*>::const_iterator it = d_actions.begin();
+  for (std::list<Action*>::const_iterator it = d_actions.begin();
        it != d_actions.end(); it++)
     {
       if ((*it)->getType() == Action::STACK_MOVE)

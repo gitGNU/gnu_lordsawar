@@ -54,8 +54,7 @@
 
 
 #include <iostream>
-using namespace std;
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 namespace 
@@ -108,7 +107,7 @@ void GameBigMap::select_active_stack()
       assert (Playerlist::getActiveplayer()->getType() == Player::HUMAN);
       //original path was blocked, so let's find a new way there.
       //this shouldn't happen because nextTurn of stack recalculates.
-      //cerr << "original path of stack was blocked\n";
+      //std::cerr << "original path of stack was blocked" << std::endl;
       stack->getPath()->recalculate(stack);
     }
 
@@ -311,7 +310,7 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 
 	  int dist = stack->getPath()->calculate(stack, p);
 	  if (dist == -2)
-	    cerr << "error calculating path!";
+	    std::cerr << "error calculating path!" << std::endl;
 
 	  Vector<int> dest = Vector<int>(-1,-1);
 	  if (!stack->getPath()->empty())

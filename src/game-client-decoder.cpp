@@ -1,5 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,8 +29,7 @@
 #include "playerlist.h"
 #include "xmlhelper.h"
 #include "GameScenario.h"
-
-
+#include "ucompose.hpp"
 
 GameClientDecoder::GameClientDecoder()
 {
@@ -66,11 +65,11 @@ int GameClientDecoder::decodeActions(std::list<NetworkAction*> actions,
     Player *p = action->getOwner();
     //if (p != player && player)
       //continue;
-    std::cerr << "decoding action: " << desc << std::endl;
+    std::cerr << String::ucompose(_("decoding action: %1"), desc) << std::endl;
     NetworkPlayer *np = static_cast<NetworkPlayer *>(p);
 
     if (!np) {
-      std::cerr << "warning: ignoring action for player " << p << std::endl;
+      std::cerr << String::ucompose(_("warning, ignoring action for player %1"), p) << std::endl;
       continue;
     }
 
@@ -112,7 +111,7 @@ int GameClientDecoder::decodeHistories(std::list<NetworkHistory *> histories)
   {
     NetworkHistory *history = *i;
     std::string desc = history->toString();
-    std::cerr << "received history: " << desc << std::endl;
+    std::cerr << String::ucompose(_("received history: %1"), desc) << std::endl;
     
     //just add it to the player's history list.
     Player *p = Playerlist::getInstance()->getActiveplayer();

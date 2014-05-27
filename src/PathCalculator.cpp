@@ -30,8 +30,7 @@
 
 #define ENEMY_CITY_WEIGHT 10
 #define ENEMY_STACK_WEIGHT 10
-using namespace std;
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 #define debug(x)
 
 void PathCalculator::populateNodeMap()

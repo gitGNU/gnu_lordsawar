@@ -1,6 +1,6 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005, 2006 Ulf Lorenz
-// Copyright (C) 2009 Ben Asselstine
+// Copyright (C) 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,8 +36,6 @@ class StackReflist;
 class Threatlist;
 class City;
 class Quest;
-
-using namespace std;
 
 /** An AI's allocation of resources to goals identified in the analysis.
   */

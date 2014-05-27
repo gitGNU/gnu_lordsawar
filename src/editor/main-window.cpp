@@ -51,7 +51,6 @@
 #include "ai_dummy.h"
 
 #include "stack.h"
-#include "signpost.h"
 #include "citylist.h"
 #include "city.h"
 #include "templelist.h"

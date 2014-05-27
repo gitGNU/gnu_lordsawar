@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2014 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -34,7 +34,6 @@
 #include "QuestsManager.h"
 
 std::string Hero::d_tag = "hero";
-using namespace std;
 
 Hero::Hero(const HeroProto& a)
   : Army (dynamic_cast<const ArmyProto&>(a)), d_name(a.getName()),

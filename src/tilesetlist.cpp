@@ -30,9 +30,7 @@
 #include "tarhelper.h"
 #include "SmallTile.h"
 
-using namespace std;
-
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 Tilesetlist* Tilesetlist::s_instance = 0;
@@ -122,16 +120,13 @@ Tileset *Tilesetlist::loadTileset(std::string name)
   Tileset *tileset = Tileset::create(name, unsupported_version);
   if (tileset == NULL)
     {
-      cerr<< "Error!  Tileset: `" << File::get_basename(name, true) <<
-	"' is malformed.  Skipping.\n";
+      std::cerr << String::ucompose(_("Error!  Tileset: `%1' is malformed.  Skipping."), File::get_basename(name, true)) << std::endl;
         return NULL;
     }
   if (d_tilesets.find(tileset->getBaseName()) != d_tilesets.end())
     {
       Tileset *t = (*d_tilesets.find(tileset->getBaseName())).second;
-      cerr << "Error!  tileset: `" << tileset->getConfigurationFile() << 
-	"' shares a duplicate tileset subdir `" << t->getBaseName() << "' with `" << t->getConfigurationFile() 
-	<< "'.  Skipping." << endl;
+      std::cerr << String::ucompose(_("Error!  tileset: `%1' shares a duplicate tileset subdir `%2' with `%3'. Skipping."), tileset->getConfigurationFile(), t->getBaseName(), t->getConfigurationFile()) << std::endl;
       delete tileset;
       return NULL;
     }
@@ -139,9 +134,7 @@ Tileset *Tilesetlist::loadTileset(std::string name)
   if (d_tilesetids.find(tileset->getId()) != d_tilesetids.end())
     {
       Tileset *t = (*d_tilesetids.find(tileset->getId())).second;
-      cerr << "Error!  tileset: `" << tileset->getConfigurationFile() << 
-	"' shares a duplicate tileset id with `" << 
-	t->getConfigurationFile() << "'.  Skipping." << endl;
+      std::cerr << String::ucompose(_("Error!  tileset: `%1' shares a duplicate tileset id with `%2'.  Skipping."), tileset->getConfigurationFile(), t->getConfigurationFile()) << std::endl;
       delete tileset;
       return NULL;
     }

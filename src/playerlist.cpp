@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -20,21 +20,18 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include "config.h"
+#include <config.h>
 #include <sstream>
 #include <algorithm>
 #include <sigc++/functors/mem_fun.h>
 
 #include "playerlist.h"
 #include "armysetlist.h"
-
 #include "citylist.h"
 #include "ruinlist.h"
 #include "vectoredunitlist.h"
-#include "stacklist.h"
 #include "xmlhelper.h"
 #include "history.h"
-#include "citylist.h"
 #include "stacklist.h"
 #include "FogMap.h"
 #include "real_player.h"
@@ -45,10 +42,9 @@
 #include "GameMap.h"
 #include "shieldset.h"
 #include "shieldsetlist.h"
+#include "ucompose.hpp"
 
-using namespace std;
-
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 std::string Playerlist::d_tag = "playerlist";
@@ -190,7 +186,7 @@ void Playerlist::nextPlayer()
     debug("got player: " <<d_activeplayer->getName())
 }
 
-Player* Playerlist::getPlayer(string name) const
+Player* Playerlist::getPlayer(std::string name) const
 {
     debug("getPlayer()");
     for (const_iterator it = begin(); it != end(); ++it)
@@ -253,7 +249,8 @@ void Playerlist::add(Player *player)
   push_back(player);
   d_id[player->getId()] = player;
 }
-bool Playerlist::load(string tag, XML_Helper* helper)
+
+bool Playerlist::load(std::string tag, XML_Helper* helper)
 {
     static guint32 active = 0;
     static guint32 neutral = 0;
@@ -643,7 +640,7 @@ void Playerlist::syncPlayer(GameParameters::Player player)
 	  //was off, now it's still off.
 	  break;
 	default:
-	  cerr << "could not make player with type " << player.type;
+          std::cerr << String::ucompose("could not make player with type %1", player.type) << std::endl;
 	  exit (1);
 	  break;
 	}
@@ -702,7 +699,7 @@ void Playerlist::syncPlayer(GameParameters::Player player)
 	}
       break;
     default:
-      cerr << "could not sync player with type " << player.type;
+      std::cerr << String::ucompose("could not sync player with type %1", player.type) << std::endl;
       exit (1);
       break;
     }

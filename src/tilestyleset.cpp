@@ -25,7 +25,6 @@
 #include "gui/image-helpers.h"
 
 std::string TileStyleSet::d_tag = "tilestyleset";
-using namespace std;
 
 #include <iostream>
 

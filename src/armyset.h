@@ -32,8 +32,6 @@
 #include "set.h"
 #include "hero.h"
 
-using namespace std;
-
 //! A collection of Army prototype objects.
 /**
  * An Armyset is a complete set of Army prototype objects.  An Army prototype

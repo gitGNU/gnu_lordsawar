@@ -2,7 +2,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2004, 2006 Andrea Paternesi
 // Copyright (C) 2004 John Farrell
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -51,12 +51,10 @@
 #include "Quest.h"
 #include "Sage.h"
 
-using namespace std;
-
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
+#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 //#define debug(x)
 
-AI_Fast::AI_Fast(string name, guint32 armyset, Gdk::RGBA color, int width, int height, int player_no)
+AI_Fast::AI_Fast(std::string name, guint32 armyset, Gdk::RGBA color, int width, int height, int player_no)
     :RealPlayer(name, armyset, color, width, height, Player::AI_FAST, player_no), d_join(true),
     d_maniac(false), d_analysis(0), d_diplomacy(0)
 {
@@ -536,7 +534,7 @@ bool AI_Fast::computerTurn()
 
 		if (target->contains(s->getPos()) == false)
 		  {
-		    debug("Stack is not in " << target->getName() << " yet" <<endl);
+		    debug("Stack is not in " << target->getName() << " yet" <<std::endl);
 		    int mp = s->getPath()->calculateToCity(s, target);
 		    if (mp > 0)
 		      {
@@ -555,7 +553,7 @@ bool AI_Fast::computerTurn()
 		  }
 		else if (s->getPos() != target->getPos())
 		  {
-		    debug("Stack is inside " << target->getName() << endl);
+		    debug("Stack is inside " << target->getName() << std::endl);
 		    //if we're not in the upper right corner
 		    s->getPath()->calculate(s, target->getPos());
 		    //go there, and take as many as we can
@@ -632,7 +630,7 @@ bool AI_Fast::computerTurn()
 
 		if (!target)    // strange situation
 		  {
-		    cerr << "yet another bad situation!!\n";
+                    std::cerr << "yet another bad situation!!" << std::endl;
                     stackPark(s);
 		    return true;
 		  }

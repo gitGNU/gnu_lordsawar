@@ -26,8 +26,6 @@
 #include "FogMap.h"
 #include "GraphicsCache.h"
 
-using namespace std;
-
 MapRenderer::MapRenderer(Cairo::RefPtr<Cairo::Surface> surface)
 {
     d_surface = surface;

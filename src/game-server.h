@@ -1,5 +1,5 @@
 // Copyright (C) 2008 Ole Laursen
-// Copyright (C) 2008, 2011 Ben Asselstine
+// Copyright (C) 2008, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 #ifndef GAME_SERVER_H
 #define GAME_SERVER_H
 
-#include "config.h"
+#include <config.h>
 
 #include <memory>
 #include <list>

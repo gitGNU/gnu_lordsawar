@@ -29,7 +29,6 @@
 #include "File.h"
 #include "set.h"
 #include "SmallTile.h"
-using namespace std;
 
 class XML_Helper;
 

@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Ben Asselstine
+// Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 #ifndef NETWORK_GLS_COMMON_H
 #define NETWORK_GLS_COMMON_H
 
-#include "config.h"
+#include <config.h>
 
 enum GlsMessageType 
 {

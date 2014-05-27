@@ -44,12 +44,12 @@
 #include "heroproto.h"
 #include "Item.h"
 #include "stacklist.h" //remove me
+#include "ucompose.hpp"
 
 std::string Action::d_tag = "action";
-using namespace std;
 
-#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<< x << endl<<flush;}
-//#define debug(x)
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<< x << std::endl<<std::flush;}
+#define debug(x)
 
 Action::Action(Type type)
     :d_type(type)
@@ -487,9 +487,7 @@ bool Action_Split::fillData(Stack* orig, Stack* added)
 {
   if (orig->validate() == false || added->validate() == false)
     {
-        std::cerr <<"Action_Split::fillData(): stacks don't validate\n";
-	std::cerr <<"Action_Split:: orig has " << orig->size() << 
-	  " and added has " <<added->size();
+      std::cerr << String::ucompose(_("Action_Split::fillData(): stacks don't validate!  orig has %1 units, and added has %2 units."), orig->size(), added->size()) << std::endl;
         return false;
     }
     
@@ -728,9 +726,7 @@ bool Action_Join::fillData(Stack* orig, Stack* joining)
     if ((orig->empty()) || (joining->empty())
         || (orig->size() + joining->size() > MAX_STACK_SIZE))
     {
-        std::cerr <<"Action_Join::fillData(): wrong stack size\n";
-	std::cerr <<"Action_Join:: orig has " << orig->size() << 
-	  " and joining has " <<joining->size() <<"\n";
+      std::cerr << String::ucompose(_("Action_Join::fillData(): wrong stack size.  expected %1, but got %2."), orig->size(), joining->size()) << std::endl;
         return false;
     }
     

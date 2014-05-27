@@ -55,11 +55,9 @@
 #include "cityset.h"
 #include "overviewmap.h"
 
-#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
-//#define debug(x)
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
+#define debug(x)
 #define offmap(bx,by) (by<0)||(by>=d_height)||(bx<0)||(bx>=d_width)
-
-using namespace std;
 
 //-------------------------------------------------------------------
 
@@ -329,9 +327,9 @@ void MapGenerator::makeBridges()
   GameMap::getInstance()->calculateBlockedAvenues();
 
   Vector<int> src, dest;
-  std::vector<pair<int , Vector<int> > >  bridges;
+  std::vector<std::pair<int , Vector<int> > >  bridges;
   bridges = findBridgePlaces();
-  for (std::vector<pair<int, Vector<int> > >::iterator it = bridges.begin();
+  for (std::vector<std::pair<int, Vector<int> > >::iterator it = bridges.begin();
        it != bridges.end(); it++)
     {
       Vector<int> pos = (*it).second + Vector<int>(1,1);
@@ -1545,9 +1543,9 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
   return retval;
 }
 
-std::vector<pair<int , Vector<int> > > MapGenerator::findBridgePlaces()
+std::vector<std::pair<int , Vector<int> > > MapGenerator::findBridgePlaces()
 {
-    std::vector<pair<int , Vector<int> > > result;
+    std::vector<std::pair<int , Vector<int> > > result;
     result.clear();
 
     for(int j = 1; j < d_height-5; j++)
@@ -1630,7 +1628,7 @@ std::vector<pair<int , Vector<int> > > MapGenerator::findBridgePlaces()
         for(size_t s = r+1; s<result.size() ; ++s)
             if(dist(Vector<float>(result[r].second),Vector<float>(result[s].second)) < 4.5)
                 bad.insert(r);
-    std::vector<pair<int , Vector<int> > > filter;filter.clear();
+    std::vector<std::pair<int , Vector<int> > > filter;filter.clear();
     for(size_t r = 0; r<result.size() ; ++r)
         if(bad.find(r) == bad.end())
             filter.push_back(result[r]);

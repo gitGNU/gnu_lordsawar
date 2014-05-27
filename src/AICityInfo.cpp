@@ -20,9 +20,7 @@
 #include "Threat.h"
 #include "city.h"
 
-using namespace std;
-
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<flush<<endl;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 #define debug(x)
 
 AICityInfo::AICityInfo(City *c)

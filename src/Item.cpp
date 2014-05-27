@@ -1,6 +1,6 @@
 // Copyright (C) 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -28,7 +28,6 @@
 #include "maptile.h"
 
 std::string Item::d_tag = "item";
-using namespace std;
 
 Item::Item(XML_Helper* helper)
 	: ItemProto(helper), UniquelyIdentified(helper)

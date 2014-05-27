@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2010 Ben Asselstine
+//  Copyright (C) 2008, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,8 +26,6 @@
 #include "Item.h"
 
 std::string Backpack::d_tag = "backpack";
-
-using namespace std;
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<flush;}
 #define debug(x)

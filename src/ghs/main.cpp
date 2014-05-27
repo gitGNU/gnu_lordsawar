@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Ben Asselstine
+// Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,9 +15,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif
 
 #include <unistd.h>
 #include <iostream>
@@ -32,8 +30,6 @@
 #include "gamehost-server.h"
 #include "vector.h"
 #include "ucompose.hpp"
-
-using namespace std;
 
 int max_vector_width;
     
@@ -58,7 +54,7 @@ int main(int argc, char* argv[])
     {
       for (int i = 2; i <= argc; i++)
 	{
-	  string parameter(argv[i-1]); 
+          std::string parameter(argv[i-1]); 
 	  if (parameter == "--port" || parameter == "-p")
 	    {
 	      i++;
@@ -67,12 +63,12 @@ int main(int argc, char* argv[])
 	      long userport = strtol(argv[i-1], &error, 10);
 	      if (error && (*error != '\0'))
 		{
-		  cerr <<_("non-numerical value for --port") <<endl;
+                  std::cerr <<_("non-numerical value for --port") <<std::endl;
 		  exit(-1);
 		}
               if (userport > 65535 || userport < 1000)
                 {
-		  cerr <<_("invalid value for --port") <<endl;
+                  std::cerr <<_("invalid value for --port") <<std::endl;
 		  exit(-1);
                 }
               port = userport;
@@ -91,16 +87,16 @@ int main(int argc, char* argv[])
             }
 	  else if (parameter == "--help" || parameter == "-?")
 	    {
-	      cout << Glib::get_prgname() << " [OPTION]..." << endl << endl;
-	      cout << "LordsAWar! Game-host Server " << _("version") << " " << VERSION << endl << endl;
-	      cout << _("Options:") << endl << endl; 
-	      cout << "  -?, --help                 " << _("Display this help and exit") <<endl;
-	      cout << "  -f, --foreground           " << _("Do not detach from the controlling terminal") << endl;
-	      cout << "  -h, --host <string>        " << _("Advertise our hostname as this to game clients") << endl;
-	      cout << "  -p, --port <number>        " << _("Start the server on the given port") << endl;
-	      cout << "  -m, --members <file>       " << _("Allow the profile ids in this file to host games") << endl;
-	      cout << endl;
-	      cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << endl;
+              std::cout << Glib::get_prgname() << " [OPTION]..." << std::endl << std::endl;
+              std::cout << "LordsAWar! Game-host Server " << _("version") << " " << VERSION << std::endl << std::endl;
+              std::cout << _("Options:") << std::endl << std::endl; 
+              std::cout << "  -?, --help                 " << _("Display this help and exit") <<std::endl;
+              std::cout << "  -f, --foreground           " << _("Do not detach from the controlling terminal") << std::endl;
+              std::cout << "  -h, --host <string>        " << _("Advertise our hostname as this to game clients") << std::endl;
+              std::cout << "  -p, --port <number>        " << _("Start the server on the given port") << std::endl;
+              std::cout << "  -m, --members <file>       " << _("Allow the profile ids in this file to host games") << std::endl;
+              std::cout << std::endl;
+              std::cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << std::endl;
 	      exit(0);
 	    }
 	}
@@ -108,15 +104,16 @@ int main(int argc, char* argv[])
   Glib::ustring lordsawar = Glib::find_program_in_path(PACKAGE);
   if (lordsawar == "")
     {
-      cerr << String::ucompose(_("Error: could not find %1 program in path."), 
-                               PACKAGE) << endl;
+      std::cerr << 
+        String::ucompose(_("Error: could not find %1 program in path."), 
+                         PACKAGE) << std::endl;
       return EXIT_FAILURE;
     }
 
   if (foreground == false)
     {
       if (daemon (0, 0) == -1)
-        cerr << _("Could not detach from controlling terminal.");
+        std::cerr << _("Could not detach from controlling terminal.") << std::endl;
     }
 
   GamehostServer *gamehostserver = GamehostServer::getInstance();

@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2011, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -41,9 +41,7 @@ std::string QuestsManager::d_tag = "questlist";
 
 QuestsManager* QuestsManager::s_instance = NULL;
 
-using namespace std;
-
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 
@@ -306,7 +304,7 @@ bool QuestsManager::save(XML_Helper* helper) const
   return retval;
 }
 
-bool QuestsManager::load(string tag, XML_Helper* helper)
+bool QuestsManager::load(std::string tag, XML_Helper* helper)
 {
   debug("QuestsManager: load tag = " << tag);
 

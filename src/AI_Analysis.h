@@ -1,7 +1,7 @@
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004, 2005 Ulf Lorenz
 // Copyright (C) 2006 Andrea Paternesi
-// Copyright (C) 2009 Ben Asselstine
+// Copyright (C) 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,9 +36,7 @@ class Army;
 class StackReflist;
 class AICityInfo;
 
-using namespace std;
-
-typedef map<guint32, AICityInfo *> AICityMap;
+typedef std::map<guint32, AICityInfo *> AICityMap;
 
 /** An AI's analysis of the game situation.
   *

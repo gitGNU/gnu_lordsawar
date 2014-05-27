@@ -179,8 +179,7 @@ class Maptile
         //! Whether or not there is a building on this tile that belongs on water.
         bool hasWaterBuilding() const;
         //! Prints some debug information about this maptile.
-        void printDebugInfo() const;
-                
+
 	bool d_blocked[8];
 
 	//! Get the TileStyle associated with this Maptile.

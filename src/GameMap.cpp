@@ -63,7 +63,6 @@
 
 std::string GameMap::d_tag = "map";
 std::string GameMap::d_itemstack_tag = "itemstack";
-using namespace std;
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<flush;}
 #define debug(x)
@@ -274,10 +273,10 @@ bool GameMap::fill(MapGenerator* generator)
 
     //the sizes should definitely match, else we have a problem here
     if (width != s_width || height != s_height)
-    {
-        std::cerr << "Error in GameMap::fillMap: sizes don't match!! Exiting.\n";
+      {
+        std::cerr << String::ucompose(_("Error!  Map Generator and Game Map tile sizes differ.  %1 != %2 || %3 != %4.  Exiting."), width, s_width, height, s_height) << std::endl;
         exit(-1);
-    }
+      }
 
     // create tiles; there is a hack here: The map generator outputs tile types,
     // but we supply the index of the tile types in the tileset to Maptile. Was
@@ -311,16 +310,16 @@ bool GameMap::save(XML_Helper* helper) const
 
     std::stringstream types;
 
-    types <<endl;
+    types <<std::endl;
     for (int i = 0; i < s_height; i++)
     {
         for (int j = 0; j < s_width; j++)
             types << getTile(j, i)->getIndex();
-        types <<endl;
+        types <<std::endl;
     }
 
     std::stringstream styles;
-    styles <<endl;
+    styles <<std::endl;
 	    
     int largest_style_id = tileset->getLargestTileStyleId();
     guint32 num_digits = TileStyle::calculateHexDigits(largest_style_id);
@@ -334,7 +333,7 @@ bool GameMap::save(XML_Helper* helper) const
             hexstr = TileStyle::idToString(style->getId(), num_digits);
 	    styles << hexstr;
 	  }
-        styles <<endl;
+        styles <<std::endl;
     }
 
 

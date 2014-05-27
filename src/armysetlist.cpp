@@ -35,9 +35,7 @@
 #include "tarhelper.h"
 
 
-using namespace std;
-
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 Armysetlist* Armysetlist::s_instance = 0;
@@ -187,16 +185,13 @@ Armyset *Armysetlist::loadArmyset(std::string name)
   Armyset *armyset = Armyset::create(name, unsupported_version);
   if (armyset == NULL)
     {
-      cerr << "Error!  armyset: `" << File::get_basename(name, true) << 
-	"' is malformed.  Skipping." << endl;
+      std::cerr << String::ucompose (_("Error!  armyset: `%1' is malformed.  Skipping."),File::get_basename(name, true)) << std::endl;
       return NULL;
     }
   if (d_armysets.find(armyset->getBaseName()) != d_armysets.end())
     {
       Armyset *a = (*d_armysets.find(armyset->getBaseName())).second;
-      cerr << "Error!  armyset: `" << armyset->getConfigurationFile() << 
-	"' shares a duplicate armyset basename `" << a->getBaseName() << "' with `" << a->getConfigurationFile() 
-	<< "'.  Skipping." << endl;
+      std::cerr << String::ucompose(_("Error!  armyset: `%1' shares a duplicate armyset basename `%2' with `%3'.  Skipping."), armyset->getConfigurationFile(), a->getBaseName(), a->getConfigurationFile()) << std::endl;
       delete armyset;
       return NULL;
     }
@@ -204,9 +199,7 @@ Armyset *Armysetlist::loadArmyset(std::string name)
   if (d_armysetids.find(armyset->getId()) != d_armysetids.end())
     {
       Armyset *a = (*d_armysetids.find(armyset->getId())).second;
-      cerr << "Error!  armyset: `" << armyset->getConfigurationFile() << 
-	"' shares a duplicate armyset id with `" << 
-	a->getConfigurationFile() << "'.  Skipping." << endl;
+      std::cerr << String::ucompose(_("Error!  armyset: `%1' sahres a duplicate armyset id with `%2'.  Skipping."), armyset->getConfigurationFile(), a->getConfigurationFile()) << std::endl;
       delete armyset;
       return NULL;
     }

@@ -28,9 +28,7 @@
 #include "ucompose.hpp"
 #include "tarhelper.h"
 
-using namespace std;
-
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 Shieldsetlist* Shieldsetlist::s_instance = 0;
@@ -118,17 +116,14 @@ Shieldset* Shieldsetlist::loadShieldset(std::string name)
   Shieldset *shieldset = Shieldset::create(name, unsupported_version);
   if (!shieldset)
     {
-      cerr << "Error!  shieldset: `" << File::get_basename(name, true) << 
-	"' is malformed.  Skipping." << endl;
+      std::cerr << String::ucompose(_("Error!  shieldset: `%1' is malformed.  Skipping."), File::get_basename(name, true)) << std::endl;
       return NULL;
     }
 
   if (d_shieldsets.find(shieldset->getBaseName()) != d_shieldsets.end())
     {
       Shieldset *s = (*d_shieldsets.find(shieldset->getBaseName())).second;
-      cerr << "Error!  shieldset: `" << shieldset->getConfigurationFile() << 
-	"' shares a duplicate shieldset basename `" << s->getBaseName() << "' with `" << s->getConfigurationFile() 
-	<< "'.  Skipping." << endl;
+      std::cerr << String::ucompose(_("Error!  shieldset: `%1' shares a duplicate shieldset basename `%2' with `%3'.  Skipping."), shieldset->getConfigurationFile(), s->getBaseName(), s->getConfigurationFile()) << std::endl;
       delete shieldset;
       return NULL;
     }
@@ -139,9 +134,7 @@ Shieldset* Shieldsetlist::loadShieldset(std::string name)
       if (basename != "")
         {
           Shieldset *s = (*d_shieldsets.find(basename)).second;
-          cerr << "Error!  shieldset: `" << shieldset->getConfigurationFile() 
-            << "' shares a duplicate shieldset name `" << s->getName() << 
-            "' with `" << s->getConfigurationFile() << "'.  Skipping." << endl;
+          std::cerr << String::ucompose(_("Error!  shieldset: `%1' shares a duplicate shieldset name `%2' with `%3'.  Skipping."), shieldset->getConfigurationFile(), s->getName(), s->getConfigurationFile()) << std::endl;
           delete shieldset;
         }
       return NULL;
@@ -150,9 +143,7 @@ Shieldset* Shieldsetlist::loadShieldset(std::string name)
   if (d_shieldsetids.find(shieldset->getId()) != d_shieldsetids.end())
     {
       Shieldset *s = (*d_shieldsetids.find(shieldset->getId())).second;
-      cerr << "Error!  shieldset: `" << shieldset->getConfigurationFile() << 
-	"' shares a duplicate shieldset id with `" << s->getConfigurationFile() 
-	<< "'.  Skipping." << endl;
+      std::cerr << String::ucompose(_("Error!  shieldset: `%1' shares a duplicate shieldset id with `%2'.  Skipping."), shieldset->getConfigurationFile(), s->getConfigurationFile()) << std::endl;
       delete shieldset;
       return NULL;
     }

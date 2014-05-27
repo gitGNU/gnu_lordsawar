@@ -3,7 +3,7 @@
 // Copyright (C) 2004, 2006 Andrea Paternesi
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004 Bryan Duff
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -38,13 +38,11 @@
 #include "GameScenarioOptions.h"
 #include "Sage.h"
 
-using namespace std;
-
-//#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-RealPlayer::RealPlayer(string name, guint32 armyset, Gdk::RGBA color, int width,
-		       int height, Player::Type type, int player_no)
+RealPlayer::RealPlayer(std::string name, guint32 armyset, Gdk::RGBA color, 
+                       int width, int height, Player::Type type, int player_no)
     :Player(name, armyset, color, width, height, type, player_no),
     d_abort_requested(false)
 {

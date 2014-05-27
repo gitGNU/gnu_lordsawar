@@ -32,7 +32,6 @@
 #include "armysetlist.h"
 #include "stacklist.h"
 #include "citylist.h"
-#include "player.h"
 #include "ucompose.hpp"
 #include "game-parameters.h"
 #include "CreateScenarioRandomize.h"
