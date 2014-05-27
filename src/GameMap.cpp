@@ -1183,12 +1183,17 @@ StackTile* GameMap::getStacks(Vector<int> pos)
 
 Stack *GameMap::groupStacks(Vector<int> pos)
 {
-  return getStacks(pos)->group(Playerlist::getActiveplayer());
+  return getInstance()->groupStacks(pos, Playerlist::getActiveplayer());
+}
+
+Stack *GameMap::groupStacks(Vector<int> pos, Player *player)
+{
+  return getStacks(pos)->group(player);
 }
   
 void GameMap::groupStacks(Stack *stack)
 {
-  getStacks(stack->getPos())->group(Playerlist::getActiveplayer(), stack);
+  return getStacks(stack->getPos())->group(Playerlist::getActiveplayer(), stack);
 }
   
 void GameMap::clearStackPositions()

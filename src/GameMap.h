@@ -153,6 +153,7 @@ class GameMap: public sigc::trackable
 	static StackTile* getStacks(Vector<int> pos);
 	static Stack *groupStacks(Vector<int> pos);
 	static void groupStacks(Stack *s);
+        Stack *groupStacks(Vector<int> pos, Player *player);
 	static bool canJoin(const Stack *src, Stack *dest);
 	static bool canJoin(const Stack *stack, Vector<int> pos);
 	static bool canAddArmy(Vector<int> pos);
