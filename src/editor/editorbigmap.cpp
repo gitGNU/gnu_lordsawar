@@ -316,14 +316,31 @@ void EditorBigMap::change_map_under_cursor()
           GameMap *gm = GameMap::getInstance();
           if (gm->getStack(from) != NULL)
             {
-              Stack *s = gm->getFriendlyStack(from);
+              Stack *s = gm->getStack(from);
               if (!s)
                 s = gm->getStack(from);
-              std::list<Stack *> enemy_stacks = gm->getEnemyStacks(tile, s->getOwner());
+              std::list<Stack *> enemy_stacks = 
+                gm->getEnemyStacks(tile, s->getOwner());
               if (gm->canPutStack(s->size(), s->getOwner(), tile) == true &&
                   enemy_stacks.empty() == true)
                 {
-                  gm->moveStack(s, tile);
+                  std::list<Stack*> friendly_stacks = gm->getFriendlyStacks(tile, s->getOwner());
+                  if (friendly_stacks.empty() == true)
+                    gm->moveStack(s, tile);
+                  else
+                    {
+                      gm->moveStack(s, tile);
+                      gm->groupStacks(tile, s->getOwner());
+                      //big hack here.
+                      //apparently the stacktile state is all messed up after 
+                      //we group a stack.
+                      //the signals in the game make the game state work
+                      //but we don't to do all that signalling, so we cheat.
+                      gm->clearStackPositions();
+                      gm->updateStackPositions();
+                      //also we need to clear the active stack to have it show.
+                      gm->getStack(tile)->getOwner()->setActivestack(0);
+                    }
                   moving_objects_from = Vector<int>(-1,-1);
                 }
             }
@@ -360,7 +377,7 @@ void EditorBigMap::change_map_under_cursor()
       break;
 
     case STACK:
-      if (GameMap::getInstance()->countArmyUnits(tile))
+      if (GameMap::getInstance()->getStack(tile) != NULL)
         {
           map_selection_seq seq;
           Stack *s = GameMap::getStack(tile);
