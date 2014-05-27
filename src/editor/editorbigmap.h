@@ -84,6 +84,9 @@ class EditorBigMap: public BigMap
     // emitted when the water on the map is altered.
     sigc::signal<void> map_water_changed;
 
+    // emitted when the water on the map is altered.
+    sigc::signal<void, Vector<int> > bag_selected;
+
     void smooth_view();
 
  private:

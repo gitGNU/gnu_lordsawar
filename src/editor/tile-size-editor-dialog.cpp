@@ -27,14 +27,14 @@
 #include "defs.h"
 
 
-TileSizeEditorDialog::TileSizeEditorDialog(guint32 current, guint32 suggested)
+TileSizeEditorDialog::TileSizeEditorDialog(Gtk::Window &parent, guint32 current, guint32 suggested)
 {
-    
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/tile-size-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("label", label);
     std::string msg = 
       String::ucompose(_("Do you want to change the tile size from %1 to %2?"),
@@ -47,10 +47,6 @@ TileSizeEditorDialog::TileSizeEditorDialog(guint32 current, guint32 suggested)
 TileSizeEditorDialog::~TileSizeEditorDialog()
 {
   delete dialog;
-}
-void TileSizeEditorDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
 }
 
 int TileSizeEditorDialog::run()

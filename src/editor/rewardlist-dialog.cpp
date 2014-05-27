@@ -16,39 +16,33 @@
 //  02110-1301, USA.
 
 #include <config.h>
-
 #include <iostream>
 #include <iomanip>
 #include <assert.h>
 #include <libgen.h>
-
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
-
 #include <gtkmm.h>
-#include "rewardlist-dialog.h"
 
+#include "rewardlist-dialog.h"
 #include "gui/input-helpers.h"
 #include "gui/error-utils.h"
-
 #include "defs.h"
 #include "Configuration.h"
 #include "rewardlist.h"
-
 #include "ucompose.hpp"
 #include "playerlist.h"
-
 #include "glade-helpers.h"
 #include "reward-editor-dialog.h"
 
-
-RewardlistDialog::RewardlistDialog()
+RewardlistDialog::RewardlistDialog(Gtk::Window &parent)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + 
 				    "/reward-list-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
 
     xml->get_widget("rewards_treeview", rewards_treeview);
     xml->get_widget("add_button", add_button);
@@ -121,8 +115,7 @@ void RewardlistDialog::on_reward_selected()
 void RewardlistDialog::on_add_clicked()
 {
   Player *neutral = Playerlist::getInstance()->getNeutral();
-  RewardEditorDialog d(neutral, true, NULL);
-  d.set_parent_window(*dialog);
+  RewardEditorDialog d(*dialog, neutral, true, NULL);
   d.run();
   if (d.get_reward())
     {
@@ -162,7 +155,7 @@ void RewardlistDialog::on_edit_clicked()
       Gtk::TreeModel::Row row = *iterrow;
       Reward *reward = row[rewards_columns.reward];
       Player *neutral = Playerlist::getInstance()->getNeutral();
-      RewardEditorDialog d(neutral, true, reward);
+      RewardEditorDialog d(*dialog, neutral, true, reward);
       d.run();
       if (d.get_reward())
 	{
@@ -179,12 +172,6 @@ void RewardlistDialog::on_edit_clicked()
 	}
     }
 
-}
-
-void RewardlistDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 int RewardlistDialog::run()

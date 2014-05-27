@@ -31,10 +31,8 @@ class CreateScenarioRandomize;
 class PlayersDialog
 {
  public:
-    PlayersDialog(CreateScenarioRandomize *randomizer, int width, int height);
+    PlayersDialog(Gtk::Window &parent, CreateScenarioRandomize *randomizer, int width, int height);
     ~PlayersDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     int run();
     

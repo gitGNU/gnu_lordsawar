@@ -529,13 +529,7 @@ void EditorBigMap::change_map_under_cursor()
         }
     case BAG:
       if (maptile->getType() != Tile::WATER)
-        {
-          //open the dialog
-          MapBackpack *bag = 
-            GameMap::getInstance()->getTile(tile)->getBackpack();
-          BackpackEditorDialog d(dynamic_cast<Backpack*>(bag));
-          d.run();
-        }
+        bag_selected.emit(tile);
       break;
 
     }

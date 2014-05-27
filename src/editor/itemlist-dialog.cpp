@@ -44,7 +44,7 @@
 #include "select-army-dialog.h"
 
 
-ItemlistDialog::ItemlistDialog()
+ItemlistDialog::ItemlistDialog(Gtk::Window &parent)
 {
   d_itemlist = Itemlist::getInstance();
     Glib::RefPtr<Gtk::Builder> xml
@@ -52,6 +52,7 @@ ItemlistDialog::ItemlistDialog()
 				    "/itemlist-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
 
     xml->get_widget("name_entry", name_entry);
     name_entry->signal_changed().connect
@@ -372,12 +373,6 @@ void ItemlistDialog::on_remove_item_clicked()
     }
 }
 
-void ItemlistDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
-}
-
 int ItemlistDialog::run()
 {
     dialog->show_all();
@@ -523,8 +518,7 @@ void ItemlistDialog::on_uses_changed()
 void ItemlistDialog::on_kill_army_type_clicked()
 {
     Player *neutral = Playerlist::getInstance()->getNeutral();
-    SelectArmyDialog d(neutral, false, true);
-    d.set_parent_window(*dialog);
+    SelectArmyDialog d(*dialog, neutral, false, true);
     d.run();
 
     const ArmyProto *army = d.get_selected_army();

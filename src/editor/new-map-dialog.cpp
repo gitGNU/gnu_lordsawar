@@ -23,7 +23,6 @@
 #include <gtkmm.h>
 
 #include "new-map-dialog.h"
-
 #include "glade-helpers.h"
 #include "defs.h"
 #include "File.h"
@@ -36,7 +35,7 @@
 #include "GameMap.h"
 
 
-NewMapDialog::NewMapDialog()
+NewMapDialog::NewMapDialog(Gtk::Window &parent)
 {
     map_set = false;
     
@@ -44,6 +43,7 @@ NewMapDialog::NewMapDialog()
 	= Gtk::Builder::create_from_file(get_glade_path() + "/new-map-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
 
     xml->get_widget("map_size_combobox", map_size_combobox);
 
@@ -167,11 +167,6 @@ NewMapDialog::NewMapDialog()
 NewMapDialog::~NewMapDialog()
 {
   delete dialog;
-}
-
-void NewMapDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
 }
 
 void NewMapDialog::run()

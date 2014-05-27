@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
 #include "reward.h"
 #include "rewardlist.h"
 
-SelectRewardDialog::SelectRewardDialog()
+SelectRewardDialog::SelectRewardDialog(Gtk::Window &parent)
 {
     selected_reward = 0;
     
@@ -39,6 +39,7 @@ SelectRewardDialog::SelectRewardDialog()
 				    + "/select-reward-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     
     xml->get_widget("select_button", select_button);
 
@@ -69,17 +70,12 @@ SelectRewardDialog::~SelectRewardDialog()
 {
   delete dialog;
 }
+
 void SelectRewardDialog::addReward(Reward *reward)
 {
   Gtk::TreeIter i = rewards_list->append();
   (*i)[rewards_columns.name] = reward->getName();
   (*i)[rewards_columns.reward] = reward;
-}
-
-void SelectRewardDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void SelectRewardDialog::run()

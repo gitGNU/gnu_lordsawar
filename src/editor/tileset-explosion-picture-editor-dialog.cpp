@@ -33,7 +33,7 @@
 #include "tarhelper.h"
 
 
-TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Tileset *tileset)
+TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Gtk::Window &parent, Tileset *tileset)
 {
   selected_filename = "";
     Glib::RefPtr<Gtk::Builder> xml
@@ -41,6 +41,7 @@ TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Tileset
 				    + "/tileset-explosion-picture-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     d_tileset = tileset;
 
     xml->get_widget("explosion_filechooserbutton", explosion_filechooserbutton);
@@ -68,11 +69,6 @@ TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Tileset
 TilesetExplosionPictureEditorDialog::~TilesetExplosionPictureEditorDialog()
 {
   delete dialog;
-}
-void TilesetExplosionPictureEditorDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 int TilesetExplosionPictureEditorDialog::run()

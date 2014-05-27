@@ -1,4 +1,4 @@
-//  Copyright (C) 2009, 2011 Ben Asselstine
+//  Copyright (C) 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
 #include "Backpack.h"
 #include "select-item-dialog.h"
 
-BackpackEditorDialog::BackpackEditorDialog(Backpack *pack)
+BackpackEditorDialog::BackpackEditorDialog(Gtk::Window &parent, Backpack *pack)
 {
   backpack = pack;
   working = new Backpack(*pack);
@@ -41,6 +41,7 @@ BackpackEditorDialog::BackpackEditorDialog(Backpack *pack)
 				     + "/backpack-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
 
     xml->get_widget("remove_button", remove_button);
     xml->get_widget("add_button", add_button);
@@ -67,12 +68,6 @@ BackpackEditorDialog::~BackpackEditorDialog()
 {
   delete working;
   delete dialog;
-}
-
-void BackpackEditorDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void BackpackEditorDialog::hide()
@@ -117,7 +112,7 @@ void BackpackEditorDialog::on_remove_item_clicked()
 
 void BackpackEditorDialog::on_add_item_clicked()
 {
-  SelectItemDialog d;
+  SelectItemDialog d(*dialog);
   d.run();
   guint32 id = 0;
   const ItemProto *itemproto = d.get_selected_item(id);

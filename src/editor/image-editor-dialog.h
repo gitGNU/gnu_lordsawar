@@ -35,13 +35,10 @@
 class ImageEditorDialog: public sigc::trackable
 {
  public:
-    ImageEditorDialog(std::string filename, int num_frames);
+    ImageEditorDialog(Gtk::Window &parent, std::string filename, int num_frames);
     ~ImageEditorDialog();
 
-    void set_parent_window(Gtk::Window &parent);
-
     std::string get_selected_filename() {return target_filename;};
-
     int run();
     
  private:

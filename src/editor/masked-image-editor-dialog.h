@@ -42,15 +42,11 @@ class Shieldset;
 class MaskedImageEditorDialog: public sigc::trackable
 {
  public:
-    MaskedImageEditorDialog(std::string filename, int only_show_colour, Shieldset *shieldset = NULL);
+    MaskedImageEditorDialog(Gtk::Window &parent, std::string filename, int only_show_colour, Shieldset *shieldset = NULL);
     ~MaskedImageEditorDialog();
 
-    void set_parent_window(Gtk::Window &parent);
-
     void set_only_show_one(Shield::Colour c){only_show=true;only_show_colour=c;};
-  
     std::string get_selected_filename() {return target_filename;};
-
     int run();
     
  private:

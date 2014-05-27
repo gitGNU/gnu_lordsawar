@@ -35,10 +35,8 @@ class Shieldset;
 class SwitchSetsDialog
 {
  public:
-    SwitchSetsDialog();
+    SwitchSetsDialog(Gtk::Window &parent);
     ~SwitchSetsDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     int run();
 

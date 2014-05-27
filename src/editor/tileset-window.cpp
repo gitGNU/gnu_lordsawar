@@ -290,9 +290,7 @@ TileSetWindow::TileSetWindow(Gtk::Window *parent, std::string load_filename)
                                    File::get_basename(r->getFileName(), true),
                                    r->getName(), r->getNumberOfTiles());
           }
-        EditorRecoverDialog d(m);
-        if (parent)
-          d.set_parent_window(*parent);
+        EditorRecoverDialog d(parent, m);
         int response = d.run();
         d.hide();
         //ask if we want to recover the autosave.
@@ -507,9 +505,8 @@ void TileSetWindow::on_new_tileset_activated()
   std::string name = "";
   int id = Tilesetlist::getNextAvailableId(0);
   Tileset *tileset = new Tileset(id, name);
-  TileSetInfoDialog d(tileset, File::getUserTilesetDir(), "", false,
+  TileSetInfoDialog d(*window, tileset, File::getUserTilesetDir(), "", false,
                       _("Make a New Tileset"));
-  d.set_parent_window(*window);
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
     {
@@ -571,17 +568,15 @@ void TileSetWindow::on_save_as_activated()
   guint32 suggested_tile_size = d_tileset->calculate_preferred_tile_size();
   if (suggested_tile_size != d_tileset->getTileSize())
     {
-      TileSizeEditorDialog d(d_tileset->getTileSize(), suggested_tile_size);
-      d.set_parent_window(*window);
+      TileSizeEditorDialog d(*window, d_tileset->getTileSize(), suggested_tile_size);
       int response = d.run();
       if (response == Gtk::RESPONSE_ACCEPT)
         d_tileset->setTileSize(d.get_selected_tilesize());
     }
   Tileset *copy = Tileset::copy (d_tileset);
   copy->setId(Tilesetlist::getNextAvailableId(d_tileset->getId()));
-  TileSetInfoDialog d(copy, File::getUserTilesetDir(), "", false,
+  TileSetInfoDialog d(*window, copy, File::getUserTilesetDir(), "", false,
                         _("Save a Copy of a Tileset"));
-  d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -637,7 +632,7 @@ bool TileSetWindow::save_current_tileset()
   guint32 suggested_tile_size = d_tileset->calculate_preferred_tile_size();
   if (suggested_tile_size != d_tileset->getTileSize())
     {
-      TileSizeEditorDialog d(d_tileset->getTileSize(), suggested_tile_size);
+      TileSizeEditorDialog d(*window, d_tileset->getTileSize(), suggested_tile_size);
       int response = d.run();
       if (response == Gtk::RESPONSE_ACCEPT)
         d_tileset->setTileSize(d.get_selected_tilesize());
@@ -684,8 +679,7 @@ bool TileSetWindow::quit()
 {
   if (needs_saving)
     {
-      EditorQuitDialog d;
-      d.set_parent_window(*window);
+      EditorQuitDialog d(*window);
       int response = d.run();
       d.hide();
       
@@ -720,9 +714,9 @@ void TileSetWindow::on_quit_activated()
 
 void TileSetWindow::on_edit_tileset_info_activated()
 {
-  TileSetInfoDialog d(d_tileset, File::get_dirname(current_save_filename), 
+  TileSetInfoDialog d(*window, d_tileset, 
+                      File::get_dirname(current_save_filename), 
                       File::get_basename(current_save_filename), true);
-  d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -1186,18 +1180,16 @@ void TileSetWindow::on_image_chosen()
 
 void TileSetWindow::on_organize_tilestyles_activated()
 {
-  TileStyleOrganizerDialog d(get_selected_tile());
+  TileStyleOrganizerDialog d(*window, get_selected_tile());
   d.tilestyle_selected.connect
     (sigc::mem_fun(this, &TileSetWindow::on_tilestyle_id_selected));
-  d.set_parent_window(*window);
   d.run();
   update_tilestyle_panel();
 }
 
 void TileSetWindow::on_smallmap_building_colors_activated()
 {
-  TilesetSmallmapBuildingColorsDialog d(d_tileset);
-  d.set_parent_window(*window);
+  TilesetSmallmapBuildingColorsDialog d(*window, d_tileset);
   d.run();
 }
     
@@ -1279,7 +1271,7 @@ void TileSetWindow::on_preview_tile_activated()
         idx = d_tileset->getIndex(Tile::GRASS);
       if (idx > -1)
         sec = (*d_tileset)[idx];
-      TilePreviewDialog d(tile, sec, d_tileset->getTileSize());
+      TilePreviewDialog d(*window, tile, sec, d_tileset->getTileSize());
       d.tilestyle_selected.connect
         (sigc::mem_fun(this, &TileSetWindow::on_tilestyle_id_selected));
       d.run();
@@ -1291,8 +1283,7 @@ void TileSetWindow::on_roads_picture_activated()
   std::string filename = "";
   if (d_tileset->getRoadsFilename().empty() == false)
     filename = d_tileset->getFileFromConfigurationFile(d_tileset->getRoadsFilename() +".png");
-  ImageEditorDialog d(filename, ROAD_TYPES);
-  d.set_parent_window(*window);
+  ImageEditorDialog d(*window, filename, ROAD_TYPES);
   int response = d.run();
   if (filename.empty() == false)
     File::erase(filename);
@@ -1315,8 +1306,7 @@ void TileSetWindow::on_bridges_picture_activated()
   std::string filename = "";
   if (d_tileset->getBridgesFilename().empty() == false)
     filename = d_tileset->getFileFromConfigurationFile(d_tileset->getBridgesFilename() +".png");
-  ImageEditorDialog d(filename, BRIDGE_TYPES);
-  d.set_parent_window(*window);
+  ImageEditorDialog d(*window, filename, BRIDGE_TYPES);
   int response = d.run();
   if (filename.empty() == false)
     File::erase(filename);
@@ -1338,8 +1328,7 @@ void TileSetWindow::on_fog_picture_activated()
   std::string filename = "";
   if (d_tileset->getFogFilename().empty() == false)
     filename = d_tileset->getFileFromConfigurationFile(d_tileset->getFogFilename() +".png");
-  ImageEditorDialog d(filename, FOG_TYPES);
-  d.set_parent_window(*window);
+  ImageEditorDialog d(*window, filename, FOG_TYPES);
   int response = d.run();
   if (filename.empty() == false)
     File::erase(filename);
@@ -1359,8 +1348,7 @@ void TileSetWindow::on_fog_picture_activated()
 
 void TileSetWindow::on_flags_picture_activated()
 {
-  TilesetFlagEditorDialog d(d_tileset);
-  d.set_parent_window(*window);
+  TilesetFlagEditorDialog d(*window, d_tileset);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -1371,7 +1359,7 @@ void TileSetWindow::on_flags_picture_activated()
 
 void TileSetWindow::on_army_unit_selector_activated()
 {
-  TilesetSelectorEditorDialog d(d_tileset);
+  TilesetSelectorEditorDialog d(*window, d_tileset);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -1382,7 +1370,7 @@ void TileSetWindow::on_army_unit_selector_activated()
 
 void TileSetWindow::on_explosion_picture_activated()
 {
-  TilesetExplosionPictureEditorDialog d(d_tileset);
+  TilesetExplosionPictureEditorDialog d(*window, d_tileset);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {

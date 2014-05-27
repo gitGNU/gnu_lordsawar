@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,13 +26,10 @@ class Tileset;
 class TilesetSmallmapBuildingColorsDialog: public sigc::trackable
 {
  public:
-    TilesetSmallmapBuildingColorsDialog(Tileset *tileset);
+    TilesetSmallmapBuildingColorsDialog(Gtk::Window &parent, Tileset *tileset);
     ~TilesetSmallmapBuildingColorsDialog();
 
-    void set_parent_window(Gtk::Window &parent);
-
     int run();
-
     void hide();
     
  private:

@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
 #include "ruinlist.h"
 #include "playerlist.h"
 
-SelectHiddenRuinDialog::SelectHiddenRuinDialog()
+SelectHiddenRuinDialog::SelectHiddenRuinDialog(Gtk::Window &parent)
 {
     selected_hidden_ruin = 0;
     
@@ -40,6 +40,7 @@ SelectHiddenRuinDialog::SelectHiddenRuinDialog()
 				    + "/select-hidden-ruin-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     
     xml->get_widget("select_button", select_button);
 
@@ -73,6 +74,7 @@ SelectHiddenRuinDialog::~SelectHiddenRuinDialog()
 {
   delete dialog;
 }
+
 void SelectHiddenRuinDialog::addHiddenRuin(Ruin *ruin)
 {
     
@@ -82,12 +84,6 @@ void SelectHiddenRuinDialog::addHiddenRuin(Ruin *ruin)
 		       ruin->getPos().y);
   (*i)[hidden_ruins_columns.name] = s;
   (*i)[hidden_ruins_columns.ruin] = ruin;
-}
-
-void SelectHiddenRuinDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void SelectHiddenRuinDialog::run()

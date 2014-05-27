@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 #include "File.h"
 
 
-ArmySetInfoDialog::ArmySetInfoDialog(Armyset *armyset, std::string dir, std::string file, bool readonly, std::string title)
+ArmySetInfoDialog::ArmySetInfoDialog(Gtk::Window &parent, Armyset *armyset, std::string dir, std::string file, bool readonly, std::string title)
 {
   d_armyset = armyset;
   d_readonly = readonly;
@@ -42,6 +42,7 @@ ArmySetInfoDialog::ArmySetInfoDialog(Armyset *armyset, std::string dir, std::str
 				    + "/armyset-info-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     if (title != "")
       dialog->set_title(title);
 
@@ -105,11 +106,6 @@ void ArmySetInfoDialog::on_name_changed()
 ArmySetInfoDialog::~ArmySetInfoDialog()
 {
   delete dialog;
-}
-void ArmySetInfoDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 int ArmySetInfoDialog::run()

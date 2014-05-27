@@ -165,9 +165,7 @@ CitySetWindow::CitySetWindow(Gtk::Window *parent, std::string load_filename)
                                      r->getName());
               }
           }
-        EditorRecoverDialog d(m);
-        if (parent)
-          d.set_parent_window(*parent);
+        EditorRecoverDialog d(parent, m);
         int response = d.run();
         d.hide();
         //ask if we want to recover the autosave.
@@ -290,9 +288,8 @@ void CitySetWindow::on_new_cityset_activated()
   std::string name = "";
   int id = Citysetlist::getNextAvailableId(0);
   Cityset *cityset = new Cityset(id, name);
-  CitySetInfoDialog d(cityset, File::getUserCitysetDir(), "", false,
+  CitySetInfoDialog d(*window, cityset, File::getUserCitysetDir(), "", false,
                       _("Make a New Cityset"));
-  d.set_parent_window(*window);
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
     {
@@ -393,17 +390,15 @@ void CitySetWindow::on_save_as_activated()
   guint32 suggested_tile_size = d_cityset->calculate_preferred_tile_size();
   if (suggested_tile_size != d_cityset->getTileSize())
     {
-      TileSizeEditorDialog d(d_cityset->getTileSize(), suggested_tile_size);
-      d.set_parent_window(*window);
+      TileSizeEditorDialog d(*window, d_cityset->getTileSize(), suggested_tile_size);
       int response = d.run();
       if (response == Gtk::RESPONSE_ACCEPT)
         d_cityset->setTileSize(d.get_selected_tilesize());
     }
   Cityset *copy = Cityset::copy (d_cityset);
   copy->setId(Citysetlist::getNextAvailableId(d_cityset->getId()));
-  CitySetInfoDialog d(copy, File::getUserCitysetDir(), "", false,
+  CitySetInfoDialog d(*window, copy, File::getUserCitysetDir(), "", false,
                         _("Save a Copy of a Cityset"));
-  d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -459,7 +454,7 @@ bool CitySetWindow::save_current_cityset()
   guint32 suggested_tile_size = d_cityset->calculate_preferred_tile_size();
   if (suggested_tile_size != d_cityset->getTileSize())
     {
-      TileSizeEditorDialog d(d_cityset->getTileSize(), suggested_tile_size);
+      TileSizeEditorDialog d(*window, d_cityset->getTileSize(), suggested_tile_size);
       int response = d.run();
       if (response == Gtk::RESPONSE_ACCEPT)
         d_cityset->setTileSize(d.get_selected_tilesize());
@@ -499,10 +494,9 @@ void CitySetWindow::on_save_cityset_activated()
 
 void CitySetWindow::on_edit_cityset_info_activated()
 {
-  CitySetInfoDialog d(d_cityset, File::get_dirname(current_save_filename), 
+  CitySetInfoDialog d(*window, d_cityset, File::get_dirname(current_save_filename), 
                       File::get_basename(current_save_filename), true, 
                       _("Edit Cityset Information"));
-  d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -582,8 +576,7 @@ bool CitySetWindow::quit()
 {
   if (needs_saving == true)
     {
-      EditorQuitDialog d;
-      d.set_parent_window(*window);
+      EditorQuitDialog d(*window);
       int response = d.run();
       d.hide();
 
@@ -666,8 +659,7 @@ void CitySetWindow::on_change_citypics_clicked()
   std::string filename = "";
   if (d_cityset->getCitiesFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getCitiesFilename() +".png");
-  ImageEditorDialog d(filename, MAX_PLAYERS + 1);
-  d.set_parent_window(*window);
+  ImageEditorDialog d(*window, filename, MAX_PLAYERS + 1);
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -691,8 +683,7 @@ void CitySetWindow::on_change_razedcitypics_clicked()
   std::string filename = "";
   if (d_cityset->getRazedCitiesFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getRazedCitiesFilename() +".png");
-  ImageEditorDialog d(filename, MAX_PLAYERS);
-  d.set_parent_window(*window);
+  ImageEditorDialog d(*window, filename, MAX_PLAYERS);
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -715,8 +706,7 @@ void CitySetWindow::on_change_portpic_clicked()
   std::string filename = "";
   if (d_cityset->getPortFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getPortFilename() +".png");
-  ImageEditorDialog d(filename, 1);
-  d.set_parent_window(*window);
+  ImageEditorDialog d(*window, filename, 1);
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -738,8 +728,7 @@ void CitySetWindow::on_change_signpostpic_clicked()
   std::string filename = "";
   if (d_cityset->getSignpostFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getSignpostFilename() +".png");
-  ImageEditorDialog d(filename, 1);
-  d.set_parent_window(*window);
+  ImageEditorDialog d(*window, filename, 1);
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -763,8 +752,7 @@ void CitySetWindow::on_change_ruinpics_clicked()
   std::string filename = "";
   if (d_cityset->getRuinsFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getRuinsFilename() +".png");
-  ImageEditorDialog d(filename, RUIN_TYPES);
-  d.set_parent_window(*window);
+  ImageEditorDialog d(*window, filename, RUIN_TYPES);
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -787,8 +775,7 @@ void CitySetWindow::on_change_templepic_clicked()
   std::string filename = "";
   if (d_cityset->getTemplesFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getTemplesFilename() +".png");
-  ImageEditorDialog d(filename, TEMPLE_TYPES);
-  d.set_parent_window(*window);
+  ImageEditorDialog d(*window, filename, TEMPLE_TYPES);
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -811,8 +798,7 @@ void CitySetWindow::on_change_towerpics_clicked()
   std::string filename = "";
   if (d_cityset->getTowersFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getTowersFilename() +".png");
-  ImageEditorDialog d(filename, MAX_PLAYERS);
-  d.set_parent_window(*window);
+  ImageEditorDialog d(*window, filename, MAX_PLAYERS);
   int response = d.run();
   if (filename != "")
     File::erase(filename);

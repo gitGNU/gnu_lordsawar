@@ -240,6 +240,7 @@ class MainWindow: public sigc::trackable
     std::list<PlayerItem> player_buttons;
     void on_player_toggled(PlayerItem item);
     void update_window_title();
+    void on_bag_selected(Vector<int> pos);
 
     int d_width;
     int d_height;

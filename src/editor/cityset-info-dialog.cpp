@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,20 +19,18 @@
 
 #include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
-
-#include "cityset-info-dialog.h"
-#include "citysetlist.h"
-
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+
+#include "cityset-info-dialog.h"
+#include "citysetlist.h"
 #include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
 
-
-CitySetInfoDialog::CitySetInfoDialog(Cityset *cityset, std::string dir, std::string file, bool readonly, std::string title)
+CitySetInfoDialog::CitySetInfoDialog(Gtk::Window &parent, Cityset *cityset, std::string dir, std::string file, bool readonly, std::string title)
 {
   d_cityset = cityset;
   d_readonly = readonly;
@@ -42,6 +40,7 @@ CitySetInfoDialog::CitySetInfoDialog(Cityset *cityset, std::string dir, std::str
 				    + "/cityset-info-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     if (title != "")
       dialog->set_title(title);
 
@@ -105,11 +104,6 @@ void CitySetInfoDialog::on_name_changed()
 CitySetInfoDialog::~CitySetInfoDialog()
 {
   delete dialog;
-}
-void CitySetInfoDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 int CitySetInfoDialog::run()

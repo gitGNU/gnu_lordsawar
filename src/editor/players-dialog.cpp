@@ -52,7 +52,7 @@ namespace
     }
 }
 
-PlayersDialog::PlayersDialog(CreateScenarioRandomize *random, int width, int height)
+PlayersDialog::PlayersDialog(Gtk::Window &parent, CreateScenarioRandomize *random, int width, int height)
   : type_column(_("Type"), type_renderer),
     gold_column(_("Gold"), gold_renderer),
     name_column(_("Name"), name_renderer)
@@ -64,6 +64,7 @@ PlayersDialog::PlayersDialog(CreateScenarioRandomize *random, int width, int hei
     = Gtk::Builder::create_from_file(get_glade_path() + "/players-dialog.ui");
 
   xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(parent);
 
   // setup the player settings
   player_list = Gtk::ListStore::create(player_columns);
@@ -158,11 +159,6 @@ PlayersDialog::PlayersDialog(CreateScenarioRandomize *random, int width, int hei
 PlayersDialog::~PlayersDialog()
 {
   delete dialog;
-}
-
-void PlayersDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
 }
 
 int PlayersDialog::run()

@@ -28,8 +28,7 @@
 #include "Tile.h"
 #include "GraphicsCache.h"
 
-
-TileStyleOrganizerDialog::TileStyleOrganizerDialog(Tile *tile)
+TileStyleOrganizerDialog::TileStyleOrganizerDialog(Gtk::Window &parent, Tile *tile)
 {
     d_tile = tile;
     std::vector<Gtk::TargetEntry> targets;
@@ -40,6 +39,7 @@ TileStyleOrganizerDialog::TileStyleOrganizerDialog(Tile *tile)
 				    + "/tilestyle-organizer-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("categories_iconview", categories_iconview);
     xml->get_widget("category_iconview", category_iconview);
     xml->get_widget("unsorted_iconview", unsorted_iconview);
@@ -229,10 +229,6 @@ void TileStyleOrganizerDialog::on_category_selected()
 TileStyleOrganizerDialog::~TileStyleOrganizerDialog()
 {
   delete dialog;
-}
-void TileStyleOrganizerDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
 }
 
 int TileStyleOrganizerDialog::run()

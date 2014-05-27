@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -27,11 +27,10 @@
 class ArmySetInfoDialog: public sigc::trackable
 {
  public:
-    ArmySetInfoDialog(Armyset *armyset, std::string dir, std::string file,
-                        bool readonly = false, std::string title = "");
+    ArmySetInfoDialog(Gtk::Window &parent, Armyset *armyset, std::string dir, 
+                      std::string file, bool readonly = false, 
+                      std::string title = "");
     ~ArmySetInfoDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     int run();
     

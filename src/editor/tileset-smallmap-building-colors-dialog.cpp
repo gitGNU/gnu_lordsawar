@@ -28,7 +28,7 @@
 #include "tileset.h"
 
 
-TilesetSmallmapBuildingColorsDialog::TilesetSmallmapBuildingColorsDialog(Tileset *tileset)
+TilesetSmallmapBuildingColorsDialog::TilesetSmallmapBuildingColorsDialog(Gtk::Window &parent, Tileset *tileset)
 {
   d_tileset = tileset;
 
@@ -37,6 +37,7 @@ TilesetSmallmapBuildingColorsDialog::TilesetSmallmapBuildingColorsDialog(Tileset
     (get_glade_path() + "/tileset-smallmap-building-colors-dialog.ui");
 
   xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(parent);
   xml->get_widget("road_colorbutton", road_colorbutton);
   road_colorbutton->set_rgba(tileset->getRoadColor());
   road_colorbutton->signal_color_set().connect
@@ -57,10 +58,6 @@ TilesetSmallmapBuildingColorsDialog::TilesetSmallmapBuildingColorsDialog(Tileset
 TilesetSmallmapBuildingColorsDialog::~TilesetSmallmapBuildingColorsDialog()
 {
   delete dialog;
-}
-void TilesetSmallmapBuildingColorsDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
 }
 
 int TilesetSmallmapBuildingColorsDialog::run()

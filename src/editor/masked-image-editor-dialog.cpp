@@ -33,7 +33,7 @@
 #include "GraphicsCache.h"
 
 
-MaskedImageEditorDialog::MaskedImageEditorDialog(std::string filename, int only, Shieldset *shieldset)
+MaskedImageEditorDialog::MaskedImageEditorDialog(Gtk::Window &parent, std::string filename, int only, Shieldset *shieldset)
 {
   if (only >= 0)
     {
@@ -46,7 +46,7 @@ MaskedImageEditorDialog::MaskedImageEditorDialog(std::string filename, int only,
 				    + "/masked-image-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
-
+    dialog->set_transient_for(parent);
     xml->get_widget("filechooserbutton", filechooserbutton);
     xml->get_widget("image_white", image_white);
     xml->get_widget("image_green", image_green);
@@ -67,10 +67,6 @@ MaskedImageEditorDialog::MaskedImageEditorDialog(std::string filename, int only,
 MaskedImageEditorDialog::~MaskedImageEditorDialog()
 {
   delete dialog;
-}
-void MaskedImageEditorDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
 }
 
 int MaskedImageEditorDialog::run()

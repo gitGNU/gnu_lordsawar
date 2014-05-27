@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@
 #include "select-hidden-ruin-dialog.h"
 #include "armyproto.h"
 
-RewardEditorDialog::RewardEditorDialog(Player *player, bool hidden_ruins, Reward *r)
+RewardEditorDialog::RewardEditorDialog(Gtk::Window &parent, Player *player, bool hidden_ruins, Reward *r)
 {
   d_player = player;
   d_hidden_ruins = hidden_ruins;
@@ -49,7 +49,7 @@ RewardEditorDialog::RewardEditorDialog(Player *player, bool hidden_ruins, Reward
 				+ "/reward-editor-dialog.ui");
 
   xml->get_widget("dialog", dialog);
-
+  dialog->set_transient_for(parent);
   xml->get_widget("gold_hbox", gold_hbox);
   xml->get_widget("gold_radiobutton", gold_radiobutton);
   gold_radiobutton->signal_toggled().connect
@@ -153,6 +153,7 @@ RewardEditorDialog::~RewardEditorDialog()
 {
   delete dialog;
 }
+
 void RewardEditorDialog::fill_in_reward_info()
 {
   if (reward->getType() == Reward::GOLD)
@@ -189,12 +190,6 @@ void RewardEditorDialog::fill_in_reward_info()
     }
 
   //reward holds a reward
-}
-
-void RewardEditorDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
-  //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 int RewardEditorDialog::run()
@@ -297,7 +292,7 @@ void RewardEditorDialog::on_randomize_gold_clicked()
 
 void RewardEditorDialog::on_item_clicked()
 {
-  SelectItemDialog d;
+  SelectItemDialog d(*dialog);
   d.run();
   guint32 id = 0;
   const ItemProto *itemproto = d.get_selected_item(id);
@@ -339,7 +334,7 @@ void RewardEditorDialog::set_item_name()
     
 void RewardEditorDialog::on_ally_clicked()
 {
-  SelectArmyDialog d(d_player, false, false, true);
+  SelectArmyDialog d(*dialog, d_player, false, false, true);
   d.run();
   if (d.get_selected_army())
     {
@@ -395,7 +390,7 @@ void RewardEditorDialog::on_randomize_map_clicked()
 
 void RewardEditorDialog::on_hidden_ruin_clicked()
 {
-  SelectHiddenRuinDialog d;
+  SelectHiddenRuinDialog d(*dialog);
   d.run();
   if (d.get_selected_hidden_ruin())
     {

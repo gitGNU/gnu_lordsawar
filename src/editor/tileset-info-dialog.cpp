@@ -32,7 +32,7 @@
 #include "File.h"
 
 
-TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, std::string dir, std::string file, bool readonly, std::string title)
+TileSetInfoDialog::TileSetInfoDialog(Gtk::Window &parent, Tileset *tileset, std::string dir, std::string file, bool readonly, std::string title)
 {
   d_tileset = tileset;
   d_readonly = readonly;
@@ -42,6 +42,7 @@ TileSetInfoDialog::TileSetInfoDialog(Tileset *tileset, std::string dir, std::str
 				    + "/tileset-info-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     if (title != "")
       dialog->set_title(title);
 
@@ -105,11 +106,6 @@ void TileSetInfoDialog::on_name_changed()
 TileSetInfoDialog::~TileSetInfoDialog()
 {
   delete dialog;
-}
-void TileSetInfoDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 int TileSetInfoDialog::run()

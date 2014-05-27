@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010, 2012 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,13 +32,14 @@
 #include "GraphicsCache.h"
 
 
-TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Tileset *tileset)
+TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Gtk::Window &parent, Tileset *tileset)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/tileset-selector-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     d_tileset = tileset;
     small_filename = "";
     if (d_tileset->getSmallSelectorFilename().empty() == false)
@@ -77,15 +78,10 @@ TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Tileset *tileset)
     if (large_filename.empty() == false)
       show_preview_selectors(large_filename);
 }
+
 TilesetSelectorEditorDialog::~TilesetSelectorEditorDialog()
 {
   delete dialog;
-}
-
-void TilesetSelectorEditorDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 int TilesetSelectorEditorDialog::run()

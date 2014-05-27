@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,10 +29,8 @@ class GameScenario;
 class MapInfoDialog: public sigc::trackable
 {
  public:
-    MapInfoDialog(GameScenario *game_scenario);
+    MapInfoDialog(Gtk::Window &parent, GameScenario *game_scenario);
     ~MapInfoDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     int run();
     

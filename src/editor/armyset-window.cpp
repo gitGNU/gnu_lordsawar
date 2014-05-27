@@ -331,9 +331,7 @@ ArmySetWindow::ArmySetWindow(Gtk::Window *parent, std::string load_filename)
                File::get_basename(r->getFileName(), true),
                r->getName(), r->getNumberOfArmies());
         }
-      EditorRecoverDialog d(m);
-      if (parent)
-        d.set_parent_window(*parent);
+      EditorRecoverDialog d(parent, m);
       int response = d.run();
       d.hide();
       //ask if we want to recover the autosave.
@@ -493,9 +491,8 @@ void ArmySetWindow::on_new_armyset_activated()
   std::string name = "";
   int id = Armysetlist::getNextAvailableId(0);
   Armyset *armyset = new Armyset(id, name);
-  ArmySetInfoDialog d(armyset, File::getUserArmysetDir(), "", false,
+  ArmySetInfoDialog d(*window, armyset, File::getUserArmysetDir(), "", false,
                       _("Make a New Armyset"));
-  d.set_parent_window(*window);
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
     {
@@ -620,8 +617,7 @@ void ArmySetWindow::on_save_as_activated()
   guint32 suggested_tile_size = d_armyset->calculate_preferred_tile_size();
   if (suggested_tile_size != d_armyset->getTileSize())
     {
-      TileSizeEditorDialog d(d_armyset->getTileSize(), suggested_tile_size);
-      d.set_parent_window(*window);
+      TileSizeEditorDialog d(*window, d_armyset->getTileSize(), suggested_tile_size);
       int response = d.run();
       if (response == Gtk::RESPONSE_ACCEPT)
         d_armyset->setTileSize(d.get_selected_tilesize());
@@ -634,9 +630,8 @@ void ArmySetWindow::on_save_as_activated()
 
   Armyset *copy = Armyset::copy (d_armyset);
   copy->setId(Armysetlist::getNextAvailableId(d_armyset->getId()));
-  ArmySetInfoDialog d(copy, File::getUserArmysetDir(), "", false,
+  ArmySetInfoDialog d(*window, copy, File::getUserArmysetDir(), "", false,
                         _("Save a Copy of a Armyset"));
-  d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -692,7 +687,7 @@ bool ArmySetWindow::save_current_armyset()
   guint32 suggested_tile_size = d_armyset->calculate_preferred_tile_size();
   if (suggested_tile_size != d_armyset->getTileSize())
     {
-      TileSizeEditorDialog d(d_armyset->getTileSize(), suggested_tile_size);
+      TileSizeEditorDialog d(*window, d_armyset->getTileSize(), suggested_tile_size);
       int response = d.run();
       if (response == Gtk::RESPONSE_ACCEPT)
         d_armyset->setTileSize(d.get_selected_tilesize());
@@ -740,8 +735,7 @@ void ArmySetWindow::on_edit_ship_picture_activated()
   std::string filename = "";
   if (d_armyset->getShipImageName() != "")
     filename = d_armyset->getFileFromConfigurationFile(d_armyset->getShipImageName() +".png");
-  MaskedImageEditorDialog d(filename, -1);
-  d.set_parent_window(*window);
+  MaskedImageEditorDialog d(*window, filename, -1);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -761,8 +755,7 @@ void ArmySetWindow::on_edit_standard_picture_activated()
   std::string filename = "";
   if (d_armyset->getStandardImageName() != "")
     filename = d_armyset->getFileFromConfigurationFile(d_armyset->getStandardImageName() +".png");
-  MaskedImageEditorDialog d(filename, -1);
-  d.set_parent_window(*window);
+  MaskedImageEditorDialog d(*window, filename, -1);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -782,8 +775,7 @@ void ArmySetWindow::on_edit_bag_picture_activated()
   std::string filename = "";
   if (d_armyset->getBagImageName().empty() == false)
     filename = d_armyset->getFileFromConfigurationFile(d_armyset->getBagImageName() +".png");
-  ImageEditorDialog d(filename, 1);
-  d.set_parent_window(*window);
+  ImageEditorDialog d(*window, filename, 1);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -800,10 +792,10 @@ void ArmySetWindow::on_edit_bag_picture_activated()
 
 void ArmySetWindow::on_edit_armyset_info_activated()
 {
-  ArmySetInfoDialog d(d_armyset, File::get_dirname(current_save_filename), 
+  ArmySetInfoDialog d(*window, d_armyset, 
+                      File::get_dirname(current_save_filename), 
                       File::get_basename(current_save_filename), true, 
                       _("Edit Armyset Information"));
-  d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -1021,8 +1013,7 @@ void ArmySetWindow::on_image_changed(Gtk::Button *button, Gtk::Image *image, Shi
       std::string filename = "";
       if (a->getImageName(c) != "")
         filename = d_armyset->getFileFromConfigurationFile(a->getImageName(c) + ".png");
-      MaskedImageEditorDialog d(filename, -1);
-      d.set_parent_window(*window);
+      MaskedImageEditorDialog d(*window, filename, -1);
       int response = d.run();
       if (response == Gtk::RESPONSE_ACCEPT)
         {
@@ -2011,8 +2002,7 @@ bool ArmySetWindow::quit()
 {
   if (needs_saving == true)
     {
-      EditorQuitDialog d;
-      d.set_parent_window(*window);
+      EditorQuitDialog d(*window);
       int response = d.run();
       d.hide();
       

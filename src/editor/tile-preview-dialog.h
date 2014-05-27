@@ -30,10 +30,8 @@
 class TilePreviewDialog: public sigc::trackable
 {
  public:
-    TilePreviewDialog(Tile *tile, Tile *secondary, guint32 tileSize);
+    TilePreviewDialog(Gtk::Window &parent, Tile *tile, Tile *secondary, guint32 tileSize);
     ~TilePreviewDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
 

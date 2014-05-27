@@ -38,7 +38,7 @@
 #include "reward-editor-dialog.h"
 #include "RenamableLocation.h"
 
-RuinEditorDialog::RuinEditorDialog(Ruin *r, CreateScenarioRandomize *randomizer)
+RuinEditorDialog::RuinEditorDialog(Gtk::Window &parent, Ruin *r, CreateScenarioRandomize *randomizer)
 {
     d_randomizer = randomizer;
     ruin = r;
@@ -56,6 +56,7 @@ RuinEditorDialog::RuinEditorDialog(Ruin *r, CreateScenarioRandomize *randomizer)
 				    + "/ruin-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
 
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(ruin->getName());
@@ -147,11 +148,6 @@ RuinEditorDialog::~RuinEditorDialog()
 {
   delete dialog;
 }
-void RuinEditorDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
-}
 
 int RuinEditorDialog::run()
 {
@@ -238,8 +234,7 @@ void RuinEditorDialog::on_clear_keeper_clicked()
 void RuinEditorDialog::on_keeper_clicked()
 {
     Player *neutral = Playerlist::getInstance()->getNeutral();
-    SelectArmyDialog d(neutral, false, true);
-    d.set_parent_window(*dialog);
+    SelectArmyDialog d(*dialog, neutral, false, true);
     d.run();
 
     const ArmyProto *army = d.get_selected_army();
@@ -286,8 +281,7 @@ void RuinEditorDialog::on_random_reward_toggled()
 
 void RuinEditorDialog::on_reward_list_clicked()
 {
-  SelectRewardDialog d;
-  d.set_parent_window(*dialog);
+  SelectRewardDialog d(*dialog);
   d.run();
   const Reward *picked_reward = d.get_selected_reward();
   if (picked_reward)
@@ -301,7 +295,7 @@ void RuinEditorDialog::on_reward_list_clicked()
 
 void RuinEditorDialog::on_reward_clicked()
 {
-  RewardEditorDialog d(keeper->getOwner(), false, NULL);
+  RewardEditorDialog d(*dialog, keeper->getOwner(), false, NULL);
   d.run();
   if (d.get_reward())
     {

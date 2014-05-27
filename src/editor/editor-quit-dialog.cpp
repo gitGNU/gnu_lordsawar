@@ -27,23 +27,19 @@
 #include "defs.h"
 
 
-EditorQuitDialog::EditorQuitDialog()
+EditorQuitDialog::EditorQuitDialog(Gtk::Window &parent)
 {
-    
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/editor-quit-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
 }
 
 EditorQuitDialog::~EditorQuitDialog()
 {
   delete dialog;
-}
-void EditorQuitDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
 }
 
 int EditorQuitDialog::run()

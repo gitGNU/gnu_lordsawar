@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
 #include "Item.h"
 #include "Itemlist.h"
 
-SelectItemDialog::SelectItemDialog()
+SelectItemDialog::SelectItemDialog(Gtk::Window &parent)
 {
     selected_item = 0;
     
@@ -39,6 +39,7 @@ SelectItemDialog::SelectItemDialog()
 				    + "/select-item-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     
     xml->get_widget("select_button", select_button);
 
@@ -68,18 +69,13 @@ SelectItemDialog::~SelectItemDialog()
 {
   delete dialog;
 }
+
 void SelectItemDialog::addItemProto(ItemProto *item)
 {
   Gtk::TreeIter i = items_list->append();
   (*i)[items_columns.name] = item->getName();
   (*i)[items_columns.attributes] = item->getBonusDescription();
   (*i)[items_columns.item] = item;
-}
-
-void SelectItemDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void SelectItemDialog::run()

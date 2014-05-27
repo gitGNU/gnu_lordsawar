@@ -31,10 +31,8 @@
 class TilesetExplosionPictureEditorDialog: public sigc::trackable
 {
  public:
-    TilesetExplosionPictureEditorDialog(Tileset * tileset);
+    TilesetExplosionPictureEditorDialog(Gtk::Window &parent, Tileset * tileset);
     ~TilesetExplosionPictureEditorDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     std::string get_selected_filename() {return selected_filename;};
     int run();

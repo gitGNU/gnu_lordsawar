@@ -33,8 +33,9 @@
 #include "GraphicsCache.h"
 #include "armysetlist.h"
 
-SelectArmyDialog::SelectArmyDialog(Player *p, bool hero_too, 
-				   bool defends_ruins, bool awardable)
+SelectArmyDialog::SelectArmyDialog(Gtk::Window &parent, Player *p, 
+                                   bool hero_too, bool defends_ruins, 
+                                   bool awardable)
 {
   army_info_tip = NULL;
   d_hero_too = hero_too;
@@ -48,6 +49,7 @@ SelectArmyDialog::SelectArmyDialog(Player *p, bool hero_too,
 				    + "/select-army-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     
     xml->get_widget("army_info_label1", army_info_label1);
     xml->get_widget("army_info_label2", army_info_label2);
@@ -61,11 +63,6 @@ SelectArmyDialog::SelectArmyDialog(Player *p, bool hero_too,
 SelectArmyDialog::~SelectArmyDialog()
 {
   delete dialog;
-}
-void SelectArmyDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void SelectArmyDialog::run()

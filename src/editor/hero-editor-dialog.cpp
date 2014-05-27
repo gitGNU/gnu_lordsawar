@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 #include "backpack-editor-dialog.h"
 #include "Backpack.h"
 
-HeroEditorDialog::HeroEditorDialog(Hero *hero)
+HeroEditorDialog::HeroEditorDialog(Gtk::Window &parent, Hero *hero)
 {
   d_hero = hero;
     
@@ -38,6 +38,7 @@ HeroEditorDialog::HeroEditorDialog(Hero *hero)
 				    + "/hero-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     
     xml->get_widget("edit_backpack_button", edit_backpack_button);
     edit_backpack_button->signal_clicked().connect(
@@ -55,11 +56,6 @@ HeroEditorDialog::HeroEditorDialog(Hero *hero)
 HeroEditorDialog::~HeroEditorDialog()
 {
   delete dialog;
-}
-void HeroEditorDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void HeroEditorDialog::run()
@@ -85,7 +81,7 @@ void HeroEditorDialog::run()
 
 void HeroEditorDialog::on_edit_backpack_clicked()
 {
-  BackpackEditorDialog d(d_hero->getBackpack());
+  BackpackEditorDialog d(*dialog, d_hero->getBackpack());
   d.run();
   return;
 }

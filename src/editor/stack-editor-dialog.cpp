@@ -45,7 +45,7 @@ namespace
     int const max_stack_size = 8;
 }
 
-StackEditorDialog::StackEditorDialog(Stack *s, int m)
+StackEditorDialog::StackEditorDialog(Gtk::Window &parent, Stack *s, int m)
 	: strength_column(_("Strength"), strength_renderer),
 	moves_column(_("Max Moves"), moves_renderer),
 	upkeep_column(_("Upkeep"), upkeep_renderer)
@@ -59,6 +59,7 @@ StackEditorDialog::StackEditorDialog(Stack *s, int m)
 				    + "/stack-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
 
     if (stack->getOwner())
     {
@@ -148,11 +149,6 @@ StackEditorDialog::StackEditorDialog(Stack *s, int m)
 StackEditorDialog::~StackEditorDialog()
 {
   delete dialog;
-}
-void StackEditorDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 int StackEditorDialog::run()
@@ -250,8 +246,7 @@ void StackEditorDialog::on_copy_clicked()
 }
 void StackEditorDialog::on_add_clicked()
 {
-    SelectArmyDialog d(stack->getOwner(), true);
-    d.set_parent_window(*dialog);
+    SelectArmyDialog d(*dialog, stack->getOwner(), true);
     d.run();
 
     Player *player = get_selected_player();
@@ -278,7 +273,7 @@ void StackEditorDialog::on_edit_hero_clicked()
     {
 	Army *army = (*i)[army_columns.army];
 	Hero *hero = dynamic_cast<Hero*>(army);
-	HeroEditorDialog d(hero);
+	HeroEditorDialog d(*dialog, hero);
 	d.run();
 	(*i)[army_columns.name] = hero->getName();
     }

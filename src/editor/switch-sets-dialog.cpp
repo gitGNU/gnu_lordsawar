@@ -40,12 +40,13 @@
 #include "cityset.h"
 
 
-SwitchSetsDialog::SwitchSetsDialog()
+SwitchSetsDialog::SwitchSetsDialog(Gtk::Window &parent)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/switch-sets-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
 
     xml->get_widget("accept_button", accept_button);
 
@@ -121,11 +122,6 @@ SwitchSetsDialog::SwitchSetsDialog()
 SwitchSetsDialog::~SwitchSetsDialog()
 {
   delete dialog;
-}
-
-void SwitchSetsDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
 }
 
 guint32 SwitchSetsDialog::get_active_tile_size()

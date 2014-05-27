@@ -32,13 +32,14 @@
 #include "playerlist.h"
 #include "tilesetlist.h"
 
-SmallmapEditorDialog::SmallmapEditorDialog()
+SmallmapEditorDialog::SmallmapEditorDialog(Gtk::Window &parent)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/smallmap-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
 
     xml->get_widget("smallmap_image", smallmap_image);
     smallmap_image->signal_event().connect
@@ -91,12 +92,6 @@ SmallmapEditorDialog::~SmallmapEditorDialog()
 {
   delete dialog;
   delete smallmap;
-}
-
-void SmallmapEditorDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void SmallmapEditorDialog::hide()

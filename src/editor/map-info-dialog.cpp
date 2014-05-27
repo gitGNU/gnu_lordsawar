@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 #include "GameScenario.h"
 
 
-MapInfoDialog::MapInfoDialog(GameScenario *g)
+MapInfoDialog::MapInfoDialog(Gtk::Window &parent, GameScenario *g)
 {
     game_scenario = g;
     
@@ -38,6 +38,7 @@ MapInfoDialog::MapInfoDialog(GameScenario *g)
 				    + "/map-info-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
 
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(game_scenario->getName());
@@ -53,11 +54,6 @@ MapInfoDialog::MapInfoDialog(GameScenario *g)
 MapInfoDialog::~MapInfoDialog()
 {
   delete dialog;
-}
-void MapInfoDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 int MapInfoDialog::run()

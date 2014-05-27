@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,15 +25,11 @@
 class TileSizeEditorDialog: public sigc::trackable
 {
  public:
-    TileSizeEditorDialog(guint32 current, guint32 suggested);
+    TileSizeEditorDialog(Gtk::Window &parent, guint32 current, guint32 suggested);
     ~TileSizeEditorDialog();
 
-    void set_parent_window(Gtk::Window &parent);
-
     int run();
-
     guint32 get_selected_tilesize() const {return d_tilesize;}
-
     void hide();
     
  private:

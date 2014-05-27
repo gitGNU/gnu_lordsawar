@@ -779,8 +779,7 @@ void MainWindow::on_new_map_activated()
 {
     current_save_filename = "";
 
-    NewMapDialog d;
-    d.set_parent_window(*window);
+    NewMapDialog d(*window);
     d.run();
 
     if (d.map_set)
@@ -969,8 +968,7 @@ bool MainWindow::quit()
 {
   if (needs_saving)
     {
-      EditorQuitDialog d;
-      d.set_parent_window(*window);
+      EditorQuitDialog d(*window);
       int response = d.run();
       d.hide();
       
@@ -994,8 +992,7 @@ void MainWindow::on_quit_activated()
 
 void MainWindow::on_edit_players_activated()
 {
-    PlayersDialog d(d_create_scenario_names, d_width, d_height);
-    d.set_parent_window(*window);
+    PlayersDialog d(*window, d_create_scenario_names, d_width, d_height);
     Player *active = Playerlist::getActiveplayer();
     int response = d.run();
     if (response == Gtk::RESPONSE_ACCEPT)
@@ -1010,8 +1007,7 @@ void MainWindow::on_edit_players_activated()
 
 void MainWindow::on_edit_map_info_activated()
 {
-    MapInfoDialog d(game_scenario);
-    d.set_parent_window(*window);
+    MapInfoDialog d(*window, game_scenario);
     int response = d.run();
     if (response == Gtk::RESPONSE_ACCEPT)
       {
@@ -1117,8 +1113,7 @@ void MainWindow::on_cityset_saved(guint32 id)
 
 void MainWindow::on_edit_smallmap_activated()
 {
-  SmallmapEditorDialog d;
-  d.set_parent_window(*window);
+  SmallmapEditorDialog d(*window);
   bool changed = d.run();
   d.hide();
   Rectangle r = Rectangle(0, 0, GameMap::getWidth(), GameMap::getHeight());
@@ -1419,6 +1414,8 @@ void MainWindow::init_maps()
 	sigc::mem_fun(this, &MainWindow::on_bigmap_changed));
     bigmap->map_water_changed.connect
       (sigc::mem_fun(this, &MainWindow::on_smallmap_water_changed));
+    bigmap->bag_selected.connect
+      (sigc::mem_fun(this, &MainWindow::on_bag_selected));
                                        
 
     // grid is on by default
@@ -1489,8 +1486,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 {
     if (Stack *o = dynamic_cast<Stack *>(object))
     {
-	StackEditorDialog d(o);
-	d.set_parent_window(*window);
+	StackEditorDialog d(*window, o);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
           {
@@ -1503,8 +1499,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
     }
     else if (City *o = dynamic_cast<City *>(object))
     {
-	CityEditorDialog d(o, d_create_scenario_names);
-	d.set_parent_window(*window);
+	CityEditorDialog d(*window, o, d_create_scenario_names);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
           {
@@ -1517,8 +1512,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
     }
     else if (Ruin *o = dynamic_cast<Ruin *>(object))
     {
-	RuinEditorDialog d(o, d_create_scenario_names);
-	d.set_parent_window(*window);
+	RuinEditorDialog d(*window, o, d_create_scenario_names);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
           {
@@ -1529,8 +1523,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
     }
     else if (Signpost *o = dynamic_cast<Signpost *>(object))
     {
-	SignpostEditorDialog d(o, d_create_scenario_names);
-	d.set_parent_window(*window);
+	SignpostEditorDialog d(*window, o, d_create_scenario_names);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
           {
@@ -1540,8 +1533,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
     }
     else if (Temple *o = dynamic_cast<Temple *>(object))
     {
-	TempleEditorDialog d(o, d_create_scenario_names);
-	d.set_parent_window(*window);
+	TempleEditorDialog d(*window, o, d_create_scenario_names);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
           {
@@ -1554,7 +1546,7 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
     }
     else if (MapBackpack *b = dynamic_cast<MapBackpack*>(object))
       {
-	BackpackEditorDialog d(b);
+	BackpackEditorDialog d(*window, b);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
           {
@@ -1578,8 +1570,7 @@ void MainWindow::on_smooth_screen_activated()
 
 void MainWindow::on_edit_items_activated()
 {
-  ItemlistDialog d;
-  d.set_parent_window(*window);
+  ItemlistDialog d(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -1590,8 +1581,7 @@ void MainWindow::on_edit_items_activated()
 
 void MainWindow::on_edit_rewards_activated()
 {
-  RewardlistDialog d;
-  d.set_parent_window(*window);
+  RewardlistDialog d(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -1851,7 +1841,7 @@ void MainWindow::redraw()
 
 void MainWindow::on_switch_sets_activated()
 {
-  SwitchSetsDialog d;
+  SwitchSetsDialog d(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -1938,4 +1928,12 @@ int MainWindow::get_pointer_index()
         return c;
     }
   return 0;
+}
+
+void MainWindow::on_bag_selected(Vector<int> tile)
+{
+  MapBackpack *bag = 
+    GameMap::getInstance()->getTile(tile)->getBackpack();
+  BackpackEditorDialog d(*window, dynamic_cast<Backpack*>(bag));
+  d.run();
 }

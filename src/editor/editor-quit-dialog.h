@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,13 +25,10 @@
 class EditorQuitDialog: public sigc::trackable
 {
  public:
-    EditorQuitDialog();
+    EditorQuitDialog(Gtk::Window &parent);
     ~EditorQuitDialog();
 
-    void set_parent_window(Gtk::Window &parent);
-
     int run();
-
     void hide();
     
  private:

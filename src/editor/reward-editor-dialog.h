@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,10 +32,9 @@ class Player;
 class RewardEditorDialog: public sigc::trackable
 {
  public:
-    RewardEditorDialog(Player *player, bool hidden_ruins, Reward *r);
+    RewardEditorDialog(Gtk::Window &parent, Player *player, bool hidden_ruins, 
+                       Reward *r);
     ~RewardEditorDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     int run();
 

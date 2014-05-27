@@ -147,9 +147,7 @@ ShieldSetWindow::ShieldSetWindow(Gtk::Window *parent, std::string load_filename)
                  r->getName(),
                  r->getImagesNeeded());
           }
-        EditorRecoverDialog d(m);
-        if (parent)
-          d.set_parent_window(*parent);
+        EditorRecoverDialog d(parent, m);
         int response = d.run();
         d.hide();
         //ask if we want to recover the autosave.
@@ -249,9 +247,8 @@ void ShieldSetWindow::on_new_shieldset_activated()
   std::string name = "";
   int id = Shieldsetlist::getNextAvailableId(0);
   Shieldset *shieldset = new Shieldset(id, name);
-  ShieldSetInfoDialog d(shieldset, File::getUserShieldsetDir(), "", false,
-                        _("Make a New Shieldset"));
-  d.set_parent_window(*window);
+  ShieldSetInfoDialog d(*window, shieldset, File::getUserShieldsetDir(), "", 
+                        false, _("Make a New Shieldset"));
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
     {
@@ -355,9 +352,8 @@ void ShieldSetWindow::on_save_as_activated()
 {
   Shieldset *copy = Shieldset::copy (d_shieldset);
   copy->setId(Shieldsetlist::getNextAvailableId(d_shieldset->getId()));
-  ShieldSetInfoDialog d(copy, File::getUserShieldsetDir(), "", false,
+  ShieldSetInfoDialog d(*window, copy, File::getUserShieldsetDir(), "", false,
                         _("Save a Copy of a Shieldset"));
-  d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -443,10 +439,10 @@ void ShieldSetWindow::on_save_shieldset_activated()
 
 void ShieldSetWindow::on_edit_shieldset_info_activated()
 {
-  ShieldSetInfoDialog d(d_shieldset, File::get_dirname(current_save_filename), 
+  ShieldSetInfoDialog d(*window, d_shieldset, 
+                        File::get_dirname(current_save_filename), 
                         File::get_basename(current_save_filename), true, 
                         _("Edit Shieldset Information"));
-  d.set_parent_window(*window);
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -571,8 +567,7 @@ bool ShieldSetWindow::quit()
 {
   if (needs_saving == true)
     {
-      EditorQuitDialog d;
-      d.set_parent_window(*window);
+      EditorQuitDialog d(*window);
       int response = d.run();
       d.hide();
       
@@ -618,8 +613,7 @@ void ShieldSetWindow::on_change_smallpic_clicked()
       ShieldStyle *ss = shield->getFirstShieldstyle(ShieldStyle::SMALL);
       if (ss->getImageName() != "")
 	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
-      MaskedImageEditorDialog d(filename, shield->getOwner(), d_shieldset);
-      d.set_parent_window(*window);
+      MaskedImageEditorDialog d(*window, filename, shield->getOwner(), d_shieldset);
       d.run();
       if (filename != "")
         File::erase(filename);
@@ -651,8 +645,7 @@ void ShieldSetWindow::on_change_mediumpic_clicked()
       ShieldStyle *ss = shield->getFirstShieldstyle(ShieldStyle::MEDIUM);
       if (ss->getImageName() != "")
 	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
-      MaskedImageEditorDialog d(filename, shield->getOwner(), d_shieldset);
-      d.set_parent_window(*window);
+      MaskedImageEditorDialog d(*window, filename, shield->getOwner(), d_shieldset);
       d.run();
       if (d.get_selected_filename() != "")
 	{
@@ -682,8 +675,7 @@ void ShieldSetWindow::on_change_largepic_clicked()
       ShieldStyle *ss = shield->getFirstShieldstyle(ShieldStyle::LARGE);
       if (ss->getImageName() != "")
 	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
-      MaskedImageEditorDialog d(filename, shield->getOwner(), d_shieldset);
-      d.set_parent_window(*window);
+      MaskedImageEditorDialog d(*window, filename, shield->getOwner(), d_shieldset);
       d.run();
       if (d.get_selected_filename() != "")
 	{

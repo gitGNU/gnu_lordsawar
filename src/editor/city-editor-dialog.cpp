@@ -41,7 +41,7 @@
 #include "select-army-dialog.h"
 
 
-CityEditorDialog::CityEditorDialog(City *cit, CreateScenarioRandomize *randomizer)
+CityEditorDialog::CityEditorDialog(Gtk::Window &parent, City *cit, CreateScenarioRandomize *randomizer)
 	: strength_column(_("Strength"), strength_renderer),
 	moves_column(_("Max Moves"), moves_renderer),
 	duration_column(_("Turns"), duration_renderer),
@@ -55,6 +55,7 @@ CityEditorDialog::CityEditorDialog(City *cit, CreateScenarioRandomize *randomize
 				    + "/city-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
 
     xml->get_widget("capital_checkbutton", capital_checkbutton);
     capital_checkbutton->set_active(city->isCapital());
@@ -157,15 +158,10 @@ CityEditorDialog::CityEditorDialog(City *cit, CreateScenarioRandomize *randomize
 	    add_army(a);
     }
 }
+
 CityEditorDialog::~CityEditorDialog()
 {
   delete dialog;
-}
-
-void CityEditorDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void CityEditorDialog::change_city_ownership()
@@ -249,8 +245,7 @@ int CityEditorDialog::run()
 
 void CityEditorDialog::on_add_clicked()
 {
-  SelectArmyDialog d(city->getOwner());
-  d.set_parent_window(*dialog);
+  SelectArmyDialog d(*dialog, city->getOwner());
   d.run();
 
   const ArmyProto *army = d.get_selected_army();

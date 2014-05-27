@@ -31,14 +31,11 @@
 class TilesetSelectorEditorDialog: public sigc::trackable
 {
  public:
-    TilesetSelectorEditorDialog(Tileset * tileset);
+    TilesetSelectorEditorDialog(Gtk::Window &parent, Tileset * tileset);
     ~TilesetSelectorEditorDialog();
 
     std::string get_small_selector_filename() {return small_filename;};
     std::string get_large_selector_filename() {return large_filename;};
-
-    void set_parent_window(Gtk::Window &parent);
-
     int run();
     
  private:

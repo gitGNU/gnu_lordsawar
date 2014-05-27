@@ -31,13 +31,10 @@
 class TilesetFlagEditorDialog: public sigc::trackable
 {
  public:
-    TilesetFlagEditorDialog(Tileset * tileset);
+    TilesetFlagEditorDialog(Gtk::Window &parent, Tileset * tileset);
     ~TilesetFlagEditorDialog();
 
     std::string get_selected_filename() {return selected_filename;};
-
-    void set_parent_window(Gtk::Window &parent);
-
     int run();
     
  private:

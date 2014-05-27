@@ -1,4 +1,4 @@
-//  Copyright (C) 2009, 2010, 2012 Ben Asselstine
+//  Copyright (C) 2009, 2010, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -31,8 +31,7 @@
 #include "shieldsetlist.h"
 #include "GraphicsCache.h"
 
-
-TilesetFlagEditorDialog::TilesetFlagEditorDialog(Tileset *tileset)
+TilesetFlagEditorDialog::TilesetFlagEditorDialog(Gtk::Window &parent, Tileset *tileset)
 {
   selected_filename = "";
     Glib::RefPtr<Gtk::Builder> xml
@@ -40,6 +39,7 @@ TilesetFlagEditorDialog::TilesetFlagEditorDialog(Tileset *tileset)
 				    + "/tileset-flag-editor-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     d_tileset = tileset;
 
     Gtk::Box *box;
@@ -53,15 +53,10 @@ TilesetFlagEditorDialog::TilesetFlagEditorDialog(Tileset *tileset)
 
     update_flag_panel();
 }
+
 TilesetFlagEditorDialog::~TilesetFlagEditorDialog()
 {
   delete dialog;
-}
-
-void TilesetFlagEditorDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 int TilesetFlagEditorDialog::run()

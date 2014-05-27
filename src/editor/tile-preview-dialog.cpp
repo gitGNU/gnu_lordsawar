@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,14 +30,14 @@
 #include "File.h"
 #include "tilestyle.h"
 
-
-TilePreviewDialog::TilePreviewDialog(Tile *tile, Tile *sec, guint32 tileSize)
+TilePreviewDialog::TilePreviewDialog(Gtk::Window &parent, Tile *tile, Tile *sec, guint32 tileSize)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/tile-preview-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
 
     xml->get_widget("next_button", next_button);
     next_button->signal_clicked().connect
@@ -249,20 +249,13 @@ TilePreviewDialog::~TilePreviewDialog()
 {
   delete dialog;
 }
-void TilePreviewDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
-}
 
 void TilePreviewDialog::run()
 {
     dialog->show_all();
     dialog->run();
-
     return;
 }
-
 
 void TilePreviewDialog::on_next_clicked()
 {
