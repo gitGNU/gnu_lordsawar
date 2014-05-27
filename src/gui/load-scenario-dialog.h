@@ -29,10 +29,8 @@
 class LoadScenarioDialog: public sigc::trackable
 {
  public:
-    LoadScenarioDialog();
+    LoadScenarioDialog(Gtk::Window &parent);
     ~LoadScenarioDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
     void hide();

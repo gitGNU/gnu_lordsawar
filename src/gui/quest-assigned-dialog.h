@@ -31,10 +31,8 @@
 class QuestAssignedDialog: public sigc::trackable
 {
  public:
-    QuestAssignedDialog(Hero *hero, Quest *quest);
+    QuestAssignedDialog(Gtk::Window &parent, Hero *hero, Quest *quest);
     ~QuestAssignedDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
     void hide();

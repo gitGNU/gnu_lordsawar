@@ -33,7 +33,7 @@
 #include "shield.h"
 
 //give a hero some more abilities
-ArmyGainsLevelDialog::ArmyGainsLevelDialog(Hero *a, bool show_sight_stat)
+ArmyGainsLevelDialog::ArmyGainsLevelDialog(Gtk::Window &parent, Hero *a, bool show_sight_stat)
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
     hero = a;
@@ -43,6 +43,7 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Hero *a, bool show_sight_stat)
 				    + "/army-gains-level-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     Gtk::Image *image;
     xml->get_widget("image", image);
     image->property_pixbuf() = 
@@ -78,12 +79,6 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Hero *a, bool show_sight_stat)
 ArmyGainsLevelDialog::~ArmyGainsLevelDialog()
 {
   delete dialog;
-}
-
-void ArmyGainsLevelDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void ArmyGainsLevelDialog::hide()

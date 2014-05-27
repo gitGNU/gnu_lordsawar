@@ -29,13 +29,14 @@
 #include "defs.h"
 #include "File.h"
 
-SurrenderDialog::SurrenderDialog(int numEnemies)
+SurrenderDialog::SurrenderDialog(Gtk::Window &parent, int numEnemies)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/surrender-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     Gtk::Label *label;
     xml->get_widget("label", label);
     xml->get_widget("image", image);
@@ -55,16 +56,11 @@ SurrenderDialog::~SurrenderDialog()
   delete dialog;
 }
 
-void SurrenderDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
-  //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
-}
-
 void SurrenderDialog::hide()
 {
   dialog->hide();
 }
+
 bool SurrenderDialog::run()
 {
   return dialog->run() == Gtk::RESPONSE_ACCEPT;

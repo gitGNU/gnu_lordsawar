@@ -33,10 +33,8 @@
 class HeroOfferDialog: public sigc::trackable
 {
  public:
-    HeroOfferDialog(Player *player, HeroProto *hero, City *city, int gold);
+    HeroOfferDialog(Gtk::Window &parent, Player *player, HeroProto *hero, City *city, int gold);
     ~HeroOfferDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     bool run();
     void hide();

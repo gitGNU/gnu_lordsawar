@@ -33,7 +33,7 @@
 #include "ruin.h"
 #include "rewardlist.h"
 
-SageDialog::SageDialog(Sage *sage, Player *player, Hero *h, Ruin *r)
+SageDialog::SageDialog(Gtk::Window &parent, Sage *sage, Player *player, Hero *h, Ruin *r)
 {
     ruin = r;
     hero = h;
@@ -43,6 +43,7 @@ SageDialog::SageDialog(Sage *sage, Player *player, Hero *h, Ruin *r)
 				    + "/sage-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     rewards_list = Gtk::ListStore::create(rewards_columns);
     xml->get_widget("rewardtreeview", rewards_treeview);
     rewards_treeview->set_model(rewards_list);
@@ -72,12 +73,6 @@ SageDialog::~SageDialog()
 {
   delete dialog;
   delete ruinmap;
-}
-
-void SageDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 Reward *SageDialog::grabSelectedReward()

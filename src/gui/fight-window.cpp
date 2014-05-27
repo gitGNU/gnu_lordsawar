@@ -46,12 +46,13 @@
 #include "Tile.h"
 #include "SmallTile.h"
 
-FightWindow::FightWindow(Fight &fight)
+FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + "/fight-window.ui");
 
     xml->get_widget("window", window);
+    window->set_transient_for(parent);
     
     window->signal_key_release_event().connect_notify(sigc::mem_fun(*this, &FightWindow::on_key_release_event));
 
@@ -121,12 +122,6 @@ FightWindow::~FightWindow()
   Sound::getInstance()->haltMusic(true);
   Sound::getInstance()->enableBackground();
   delete window;
-}
-
-void FightWindow::set_parent_window(Gtk::Window &parent)
-{
-    window->set_transient_for(parent);
-    window->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void FightWindow::hide()

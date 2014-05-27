@@ -29,10 +29,8 @@ class ItemProto;
 class ItemBonusDialog: public sigc::trackable
 {
  public:
-    ItemBonusDialog();
+    ItemBonusDialog(Gtk::Window &parent);
     ~ItemBonusDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void hide();
     void run();

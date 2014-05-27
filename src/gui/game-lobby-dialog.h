@@ -33,18 +33,14 @@ class NextTurnNetworked;
 class GameLobbyDialog: public sigc::trackable
 {
  public:
-    GameLobbyDialog(GameScenario *game_scenario, 
+    GameLobbyDialog(Gtk::Window *parent, GameScenario *game_scenario, 
 		    NextTurnNetworked *next_turn, 
 		    GameStation *game_station,
 		    bool has_ops);
 
     ~GameLobbyDialog();
 
-    void set_parent_window(Gtk::Window &parent);
-
-
     void clean_up_players();
-
     void hide();
     void show();
     bool run();
@@ -66,8 +62,8 @@ class GameLobbyDialog: public sigc::trackable
     guint32 d_player_id_of_name_change_request;
     guint32 d_player_id_of_type_change_request;
 
-    void initDialog(GameScenario *gamescenario, NextTurnNetworked *next_turn,
-		    GameStation *game_station);
+    void initDialog(Gtk::Window *parent, GameScenario *gamescenario, 
+                    NextTurnNetworked *next_turn, GameStation *game_station);
     void on_map_changed(Cairo::RefPtr< Cairo::Surface> map);
     GameScenario *d_game_scenario;
     GameStation *d_game_station;

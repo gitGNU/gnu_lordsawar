@@ -381,8 +381,7 @@ void Driver::run()
 	  size_t found = d_load_filename.find(".map");
 	  if (found != std::string::npos)
 	    {
-	      GamePreferencesDialog d(d_load_filename, GameScenario::HOTSEAT);
-	      d.set_parent_window(*splash_window->get_window());
+	      GamePreferencesDialog d(*splash_window->get_window(), d_load_filename, GameScenario::HOTSEAT);
 	      d.game_started.connect(sigc::mem_fun
 				     (*this, &Driver::on_new_game_requested));
 	      d.run();
@@ -691,14 +690,14 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
   next_turn->srequestAbort.connect(sigc::mem_fun(game_server, &GameServer::on_turn_aborted));
   if (game_lobby_dialog)
     delete game_lobby_dialog;
-  game_lobby_dialog = new GameLobbyDialog(game_scenario, next_turn, 
-					      game_server, true);
+  game_lobby_dialog = new GameLobbyDialog(splash_window->get_window(), 
+                                          game_scenario, next_turn, 
+                                          game_server, true);
   game_server->get_next_player.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::next));
   game_server->round_ends.connect
     (sigc::mem_fun(*this, &Driver::on_keep_network_play_going));
   Playerlist::getInstance()->splayerDead.connect
     (sigc::mem_fun(GameServer::getInstance(), &GameServer::sendKillPlayer));
-  game_lobby_dialog->set_parent_window(*splash_window->get_window());
   game_lobby_dialog->player_sat_down.connect
     (sigc::mem_fun(this, &Driver::on_hosted_player_sat_down));
   game_lobby_dialog->player_stood_up.connect
@@ -832,9 +831,8 @@ void Driver::on_game_scenario_received(std::string path, Profile *p)
   game_client->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
   if (game_lobby_dialog)
     delete game_lobby_dialog;
-  game_lobby_dialog = new GameLobbyDialog(game_scenario, next_turn, 
+  game_lobby_dialog = new GameLobbyDialog(splash_window->get_window(), game_scenario, next_turn, 
 					      GameClient::getInstance(), false);
-  game_lobby_dialog->set_parent_window(*splash_window->get_window());
   game_lobby_dialog->player_sat_down.connect
     (sigc::mem_fun(this, &Driver::on_client_player_sat_down));
   game_lobby_dialog->player_stood_up.connect

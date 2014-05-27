@@ -31,10 +31,8 @@
 class NewRandomMapDialog: public sigc::trackable
 {
  public:
-    NewRandomMapDialog();
+    NewRandomMapDialog(Gtk::Window &parent);
     ~NewRandomMapDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     int run();
 

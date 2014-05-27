@@ -37,7 +37,7 @@
 #include "File.h"
 #include "shield.h"
 
-BuyProductionDialog::BuyProductionDialog(City *c)
+BuyProductionDialog::BuyProductionDialog(Gtk::Window &parent, City *c)
 {
   army_info_tip = NULL;
     GraphicsCache *gc = GraphicsCache::getInstance();
@@ -49,6 +49,7 @@ BuyProductionDialog::BuyProductionDialog(City *c)
 				    + "/buy-production-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("production_info_label1", production_info_label1);
     xml->get_widget("production_info_label2", production_info_label2);
     xml->get_widget("buy_button", buy_button);
@@ -118,11 +119,6 @@ BuyProductionDialog::~BuyProductionDialog()
   if (army_info_tip)
     delete army_info_tip;
   delete dialog;
-}
-void BuyProductionDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void BuyProductionDialog::hide()

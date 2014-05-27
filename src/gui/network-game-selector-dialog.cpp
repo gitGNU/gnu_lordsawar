@@ -32,7 +32,7 @@
 #include "ucompose.hpp"
 #include "gamelist-client.h"
 
-NetworkGameSelectorDialog::NetworkGameSelectorDialog(Profile *p)
+NetworkGameSelectorDialog::NetworkGameSelectorDialog(Gtk::Window &parent, Profile *p)
 {
     profile = p;
     Glib::RefPtr<Gtk::Builder> xml
@@ -40,6 +40,7 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Profile *p)
 	(get_glade_path() + "/pick-network-game-to-join-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("hostname_entry", hostname_entry);
     xml->get_widget("port_spinbutton", port_spinbutton);
     hostname_entry->set_activates_default(true);
@@ -187,12 +188,6 @@ void NetworkGameSelectorDialog::addGame(Glib::RefPtr<Gtk::ListStore> list, const
 void NetworkGameSelectorDialog::on_hostname_changed()
 {
   update_buttons();
-}
-
-void NetworkGameSelectorDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
-  //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void NetworkGameSelectorDialog::hide()

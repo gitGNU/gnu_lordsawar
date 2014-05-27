@@ -31,10 +31,8 @@ class City;
 class UseItemOnCityDialog: public sigc::trackable
 {
  public:
-    UseItemOnCityDialog(SelectCityMap::Type type);
+    UseItemOnCityDialog(Gtk::Window &parent, SelectCityMap::Type type);
     ~UseItemOnCityDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void hide();
     City *run();

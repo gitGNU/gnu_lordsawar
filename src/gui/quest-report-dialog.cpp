@@ -30,9 +30,10 @@
 #include "defs.h"
 #include "GameMap.h"
 
-QuestReportDialog::QuestReportDialog(std::vector<Quest *>q, Hero *hero)
+QuestReportDialog::QuestReportDialog(Gtk::Window &parent, std::vector<Quest *>q, Hero *hero)
 {
   quests = q;
+  dialog->set_transient_for(parent);
 
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path()
@@ -141,22 +142,18 @@ void QuestReportDialog::on_hero_changed()
     }
 
 }
+
 QuestReportDialog::~QuestReportDialog()
 {
   delete dialog;
   delete questmap;
 }
 
-void QuestReportDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
-}
-
 void QuestReportDialog::hide()
 {
   dialog->hide();
 }
+
 void QuestReportDialog::run()
 {
   questmap->resize();

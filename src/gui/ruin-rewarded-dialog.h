@@ -32,10 +32,8 @@ class Reward_Ruin;
 class RuinRewardedDialog: public sigc::trackable
 {
  public:
-    RuinRewardedDialog(Reward_Ruin *reward);
+    RuinRewardedDialog(Gtk::Window &parent, Reward_Ruin *reward);
     ~RuinRewardedDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void hide();
     void run();

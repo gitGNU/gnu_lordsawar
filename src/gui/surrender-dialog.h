@@ -27,10 +27,8 @@
 class SurrenderDialog: public sigc::trackable
 {
  public:
-    SurrenderDialog(int numPlayers);
+    SurrenderDialog(Gtk::Window &parent, int numPlayers);
     ~SurrenderDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void hide();
     bool run();

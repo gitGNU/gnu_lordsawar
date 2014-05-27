@@ -31,10 +31,8 @@
 class RuinReportDialog: public sigc::trackable
 {
  public:
-    RuinReportDialog(Vector<int> pos);
+    RuinReportDialog(Gtk::Window &parent, Vector<int> pos);
     ~RuinReportDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void hide();
     void run();

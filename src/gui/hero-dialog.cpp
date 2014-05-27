@@ -39,7 +39,7 @@
 #include "MapBackpack.h"
 #include "history.h"
 
-HeroDialog::HeroDialog(Hero *h, Vector<int> p)
+HeroDialog::HeroDialog(Gtk::Window &parent, Hero *h, Vector<int> p)
 {
   inhibit_hero_changed = false;
     hero = h;
@@ -50,6 +50,7 @@ HeroDialog::HeroDialog(Hero *h, Vector<int> p)
 				    + "/hero-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("map_image", map_image);
 
     std::list<Hero*> heroes;
@@ -222,12 +223,6 @@ void HeroDialog::addHistoryEvent(History *history)
 
   (*i)[events_columns.desc] = s;
   (*i)[events_columns.history] = history;
-}
-
-void HeroDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void HeroDialog::hide()

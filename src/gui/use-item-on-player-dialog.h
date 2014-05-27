@@ -31,10 +31,8 @@ class Player;
 class UseItemOnPlayerDialog: public sigc::trackable
 {
  public:
-    UseItemOnPlayerDialog();
+    UseItemOnPlayerDialog(Gtk::Window &parent);
     ~UseItemOnPlayerDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void hide();
     Player *run();

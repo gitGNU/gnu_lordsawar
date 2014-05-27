@@ -32,10 +32,8 @@ class Player;
 class TriumphsDialog: public sigc::trackable
 {
  public:
-    TriumphsDialog(Player *player);
+    TriumphsDialog(Gtk::Window &parent, Player *player);
     ~TriumphsDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
     void hide();

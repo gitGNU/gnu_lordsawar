@@ -32,13 +32,14 @@
 #include "GraphicsCache.h"
 #include "city.h"
 
-UseItemOnCityDialog::UseItemOnCityDialog(SelectCityMap::Type type)
+UseItemOnCityDialog::UseItemOnCityDialog(Gtk::Window &parent, SelectCityMap::Type type)
 {
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path()
                                      + "/use-item-on-city-dialog.ui");
 
   xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(parent);
   xml->get_widget("map_image", map_image);
   xml->get_widget("continue_button", continue_button);
 
@@ -79,12 +80,6 @@ UseItemOnCityDialog::~UseItemOnCityDialog()
 {
   delete dialog;
   delete citymap;
-}
-
-void UseItemOnCityDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void UseItemOnCityDialog::hide()

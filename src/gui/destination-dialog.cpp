@@ -38,7 +38,7 @@
 #include "vectoredunit.h"
 #include "shield.h"
 
-DestinationDialog::DestinationDialog(City *c, bool *see_all)
+DestinationDialog::DestinationDialog(Gtk::Window &parent, City *c, bool *see_all)
 {
   d_see_all = see_all;
     city = c;
@@ -48,6 +48,7 @@ DestinationDialog::DestinationDialog(City *c, bool *see_all)
 				    + "/destination-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("map_image", map_image);
     xml->get_widget("see_all_togglebutton", see_all_toggle);
     xml->get_widget("vector_togglebutton", vector_toggle);
@@ -92,12 +93,6 @@ DestinationDialog::~DestinationDialog()
 {
   delete dialog;
   delete vectormap;
-}
-
-void DestinationDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void DestinationDialog::hide()

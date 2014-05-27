@@ -38,7 +38,7 @@
 #include "stacktile.h"
 #include "GameMap.h"
 
-StackInfoDialog::StackInfoDialog(Vector<int> pos)
+StackInfoDialog::StackInfoDialog(Gtk::Window &parent, Vector<int> pos)
 {
   army_info_tip = NULL;
   tile = pos;
@@ -49,6 +49,7 @@ StackInfoDialog::StackInfoDialog(Vector<int> pos)
 				    + "/stack-info-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("stack_table", stack_table);
     xml->get_widget("group_button", group_button);
     group_button->signal_clicked().connect
@@ -64,11 +65,6 @@ StackInfoDialog::~StackInfoDialog()
   if (army_info_tip != NULL)
     delete army_info_tip;
   delete dialog;
-}
-void StackInfoDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void StackInfoDialog::hide()

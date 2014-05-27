@@ -33,7 +33,7 @@
 #include "MapBackpack.h"
 #include "itemmap.h"
 
-ItemReportDialog::ItemReportDialog(std::list<Stack*> item_laden_stacks, std::list<MapBackpack*> bags_of_stuff)
+ItemReportDialog::ItemReportDialog(Gtk::Window &parent, std::list<Stack*> item_laden_stacks, std::list<MapBackpack*> bags_of_stuff)
 {
   stacks = item_laden_stacks;
   bags = bags_of_stuff;
@@ -42,6 +42,7 @@ ItemReportDialog::ItemReportDialog(std::list<Stack*> item_laden_stacks, std::lis
 				  + "/item-report-dialog.ui");
 
   xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(parent);
   xml->get_widget("map_image", map_image);
 
   itemmap = new ItemMap(item_laden_stacks, bags);
@@ -57,11 +58,6 @@ ItemReportDialog::~ItemReportDialog()
 {
   delete dialog;
   delete itemmap;
-}
-void ItemReportDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
-  //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void ItemReportDialog::hide()

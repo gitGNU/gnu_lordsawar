@@ -41,7 +41,7 @@
 #include "GraphicsCache.h"
 #include "boxcompose.h"
 
-HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
+HistoryReportDialog::HistoryReportDialog(Gtk::Window &parent, Player *p, HistoryReportType type)
 {
   d_player = p;
   Glib::RefPtr<Gtk::Builder> xml
@@ -49,6 +49,7 @@ HistoryReportDialog::HistoryReportDialog(Player *p, HistoryReportType type)
 				+ "/history-report-dialog.ui");
 
   xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(parent);
   generatePastCitylists();
   generatePastRuinlists();
   generatePastEventlists();
@@ -347,12 +348,6 @@ void HistoryReportDialog::generatePastCitylists()
 
     }
   past_citylists.erase(--past_citylists.end());
-}
-
-void HistoryReportDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
-  //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void HistoryReportDialog::hide()

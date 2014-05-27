@@ -35,13 +35,14 @@
 #include "player.h"
 #include "shield.h"
 
-TriumphsDialog::TriumphsDialog(Player *player)
+TriumphsDialog::TriumphsDialog(Gtk::Window &parent, Player *player)
 {
   d_player = player;
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path() + "/triumphs-dialog.ui");
 
   xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(parent);
   Gtk::HBox *contents;
   xml->get_widget("outer_hbox", contents);
   notebook = Gtk::manage(new Gtk::Notebook());
@@ -54,11 +55,6 @@ TriumphsDialog::TriumphsDialog(Player *player)
 TriumphsDialog::~TriumphsDialog()
 {
   delete dialog;
-}
-void TriumphsDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
-  //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void TriumphsDialog::hide()

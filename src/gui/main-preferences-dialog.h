@@ -30,10 +30,8 @@ class Game;
 class MainPreferencesDialog: public sigc::trackable
 {
  public:
-    MainPreferencesDialog();
+    MainPreferencesDialog(Gtk::Window &parent);
     ~MainPreferencesDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
     void hide();

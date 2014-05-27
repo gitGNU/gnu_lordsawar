@@ -29,7 +29,7 @@
 #include "defs.h"
 #include "GameMap.h"
 
-QuestAssignedDialog::QuestAssignedDialog(Hero *h, Quest *q)
+QuestAssignedDialog::QuestAssignedDialog(Gtk::Window &parent, Hero *h, Quest *q)
 {
   hero = h;
   quest = q;
@@ -39,6 +39,7 @@ QuestAssignedDialog::QuestAssignedDialog(Hero *h, Quest *q)
 				  + "/quest-assigned-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("map_image", map_image);
 
     questmap = new QuestMap(quest);
@@ -64,11 +65,6 @@ QuestAssignedDialog::~QuestAssignedDialog()
 {
   delete dialog;
   delete questmap;
-}
-void QuestAssignedDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void QuestAssignedDialog::hide()

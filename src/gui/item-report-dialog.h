@@ -32,10 +32,8 @@ class MapBackpack;
 class ItemReportDialog: public sigc::trackable
 {
  public:
-    ItemReportDialog(std::list<Stack*> item_laden_stacks, std::list<MapBackpack*> bags);
+    ItemReportDialog(Gtk::Window &parent, std::list<Stack*> item_laden_stacks, std::list<MapBackpack*> bags);
     ~ItemReportDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void hide();
     void run();

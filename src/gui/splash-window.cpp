@@ -192,24 +192,21 @@ void SplashWindow::on_load_game_clicked()
 
 void SplashWindow::on_new_network_game_clicked()
 {
-  NewNetworkGameDialog nngd;
-  nngd.set_parent_window (*window);
+  NewNetworkGameDialog nngd(*window);
   if (nngd.run())
     {
       nngd.hide();
       network_game_nickname = nngd.getProfile()->getNickname();
       if (nngd.isClient() == true)
         {
-          NetworkGameSelectorDialog ngsd(nngd.getProfile());
-          ngsd.set_parent_window (*window);
+          NetworkGameSelectorDialog ngsd(*window, nngd.getProfile());
           ngsd.game_selected.connect(sigc::bind(sigc::mem_fun(*this, &SplashWindow::on_network_game_selected), nngd.getProfile()));
           ngsd.run();
         }
       else
         {
           //okay, we're a server.
-          LoadScenarioDialog d;
-          d.set_parent_window(*window);
+          LoadScenarioDialog d(*window);
           d.run();
           std::string filename = d.get_scenario_filename();
           if (filename.empty())
@@ -217,8 +214,7 @@ void SplashWindow::on_new_network_game_clicked()
           d.hide();
           if (filename == "random.map")
             {
-              NewRandomMapDialog nrmd;
-              nrmd.set_parent_window(*window);
+              NewRandomMapDialog nrmd(*window);
               int res = nrmd.run();
               if (res == Gtk::RESPONSE_ACCEPT)
                 filename = nrmd.getRandomMapFilename();
@@ -226,9 +222,8 @@ void SplashWindow::on_new_network_game_clicked()
                 return;
             }
 
-          GamePreferencesDialog gpd(filename, GameScenario::NETWORKED);
+          GamePreferencesDialog gpd(*window, filename, GameScenario::NETWORKED);
 
-          gpd.set_parent_window(*window);
           gpd.set_title(_("New Networked Game"));
           gpd.game_started.connect(sigc::bind(sigc::mem_fun(*this, &SplashWindow::on_network_game_created), nngd.getProfile(), nngd.isAdvertised(), nngd.isRemotelyHosted()));
           gpd.run(network_game_nickname);
@@ -244,8 +239,7 @@ void SplashWindow::on_new_network_game_clicked()
 
 void SplashWindow::on_new_pbm_game_clicked()
 {
-  LoadScenarioDialog d;
-  d.set_parent_window(*window);
+  LoadScenarioDialog d(*window);
   d.run();
 
   std::string filename = d.get_scenario_filename();
@@ -254,17 +248,15 @@ void SplashWindow::on_new_pbm_game_clicked()
   d.hide();
   if (filename == "random.map")
     {
-      NewRandomMapDialog nrmd;
-      nrmd.set_parent_window(*window);
+      NewRandomMapDialog nrmd(*window);
       int res = nrmd.run();
       if (res == Gtk::RESPONSE_ACCEPT)
         filename = nrmd.getRandomMapFilename();
       else
 	return;
     }
-  GamePreferencesDialog gpd(filename, GameScenario::PLAY_BY_MAIL);
+  GamePreferencesDialog gpd(*window, filename, GameScenario::PLAY_BY_MAIL);
 
-  gpd.set_parent_window(*window);
   gpd.set_title(_("New Play By Mail game"));
   gpd.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_pbm_game_created));
   gpd.run();
@@ -273,10 +265,7 @@ void SplashWindow::on_new_pbm_game_clicked()
 
 void SplashWindow::on_load_scenario_clicked()
 {
-  LoadScenarioDialog d;
-
-  d.set_parent_window(*window);
-
+  LoadScenarioDialog d(*window);
   d.run();
 
   std::string filename = d.get_scenario_filename();
@@ -285,16 +274,14 @@ void SplashWindow::on_load_scenario_clicked()
       d.hide();
       if (filename == "random.map")
 	{
-	  NewRandomMapDialog nrmd;
-	  nrmd.set_parent_window(*window);
+	  NewRandomMapDialog nrmd(*window);
 	  int res = nrmd.run();
 	  if (res == Gtk::RESPONSE_ACCEPT)
             filename = nrmd.getRandomMapFilename();
 	  else
 	    return;
 	}
-      GamePreferencesDialog gp(filename, GameScenario::HOTSEAT);
-      gp.set_parent_window(*window);
+      GamePreferencesDialog gp(*window, filename, GameScenario::HOTSEAT);
       gp.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_game_started));
 
       gp.run();
@@ -327,8 +314,7 @@ void SplashWindow::on_pbm_game_created(GameParameters g)
 
 void SplashWindow::on_preferences_clicked()
 {
-  MainPreferencesDialog d;
-  d.set_parent_window(*window);
+  MainPreferencesDialog d(*window);
   d.run();
   d.hide();
 }

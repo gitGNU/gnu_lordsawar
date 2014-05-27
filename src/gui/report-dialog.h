@@ -39,10 +39,8 @@ class ReportDialog: public sigc::trackable
  public:
     enum ReportType {ARMY = 0, CITY, GOLD, PRODUCTION, WINNING};
 
-    ReportDialog(Player *player, ReportType type);
+    ReportDialog(Gtk::Window &parent, Player *player, ReportType type);
     ~ReportDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     static std::string calculateRank(std::list<guint32> scores, guint32 score);
     void run();

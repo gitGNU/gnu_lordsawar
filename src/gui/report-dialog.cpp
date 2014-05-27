@@ -21,7 +21,6 @@
 #include <sigc++/functors/mem_fun.h>
 
 #include "report-dialog.h"
-
 #include "glade-helpers.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
@@ -39,13 +38,14 @@
 #include "armysetlist.h"
 #include "shield.h"
 
-ReportDialog::ReportDialog(Player *player, ReportType type)
+ReportDialog::ReportDialog(Gtk::Window &parent, Player *player, ReportType type)
 {
   d_player = player;
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path() + "/report-dialog.ui");
 
   xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(parent);
   xml->get_widget("map_image", map_image);
   citymap = new CityMap();
   citymap->map_changed.connect
@@ -119,17 +119,12 @@ ReportDialog::~ReportDialog()
     delete armymap;
     delete citymap;
 }
+
 void ReportDialog::on_close_button()
 {
   closing = true;
   //FIXME: find out why the page_switch events with crap data,
   //and then remove this function, and the closing variable too.
-}
-
-void ReportDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
-  //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void ReportDialog::hide()

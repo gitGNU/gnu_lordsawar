@@ -28,13 +28,10 @@
 class NewProfileDialog: public sigc::trackable
 {
  public:
-    NewProfileDialog(Glib::ustring network_game_nickname);
+    NewProfileDialog(Gtk::Window &parent, Glib::ustring network_game_nickname);
     ~NewProfileDialog();
 
     Glib::ustring getNickname() {return String::utrim(nick_entry->get_text());}
-
-    void set_parent_window(Gtk::Window &parent);
-
     void hide();
     bool run();
     

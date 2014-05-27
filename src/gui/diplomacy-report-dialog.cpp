@@ -32,7 +32,7 @@
 #include "playerlist.h"
 #include "player.h"
 
-DiplomacyReportDialog::DiplomacyReportDialog(Player *player)
+DiplomacyReportDialog::DiplomacyReportDialog(Gtk::Window &parent, Player *player)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   Playerlist *pl = Playerlist::getInstance();
@@ -42,6 +42,7 @@ DiplomacyReportDialog::DiplomacyReportDialog(Player *player)
 				"/diplomacy-report-dialog.ui");
 
   xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(parent);
   xml->get_widget("diplomacy_table", d_table);
 
   int order[MAX_PLAYERS];
@@ -97,11 +98,6 @@ DiplomacyReportDialog::DiplomacyReportDialog(Player *player)
 DiplomacyReportDialog::~DiplomacyReportDialog()
 {
   delete dialog;
-}
-void DiplomacyReportDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
-  //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void DiplomacyReportDialog::hide()

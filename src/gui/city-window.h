@@ -32,11 +32,9 @@ class City;
 class CityWindow: public sigc::trackable
 {
  public:
-    CityWindow(City *city, bool razing_possible, bool see_opponents_production);
+    CityWindow(Gtk::Window &parent, City *city, bool razing_possible, bool see_opponents_production);
 
     ~CityWindow();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
     void hide();

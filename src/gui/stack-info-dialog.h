@@ -35,10 +35,8 @@ class Army;
 class StackInfoDialog: public sigc::trackable
 {
  public:
-    StackInfoDialog(Vector<int> pos);
+    StackInfoDialog(Gtk::Window &parent, Vector<int> pos);
     ~StackInfoDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
     Stack * get_selected_stack() {return currently_selected_stack;};

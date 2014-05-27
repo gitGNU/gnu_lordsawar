@@ -43,7 +43,7 @@
 #include "playerlist.h"
 #include "File.h"
 
-CityWindow::CityWindow(City *c, bool razing_possible, 
+CityWindow::CityWindow(Gtk::Window &parent, City *c, bool razing_possible, 
 		       bool see_opponents_production)
 {
   army_info_tip = NULL;
@@ -53,6 +53,7 @@ CityWindow::CityWindow(City *c, bool razing_possible,
 	= Gtk::Builder::create_from_file(get_glade_path() + "/city-window.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     dialog->set_title(c->getName());
     
     xml->get_widget("map_image", map_image);
@@ -135,12 +136,6 @@ bool CityWindow::on_map_mouse_button_event(GdkEventButton *e)
     fill_in_production_toggles();
     fill_in_production_info();
     return true;
-}
-
-void CityWindow::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void CityWindow::hide()
@@ -401,8 +396,7 @@ void CityWindow::on_on_hold_clicked() //stop button
 
 void CityWindow::on_buy_clicked()
 {
-    BuyProductionDialog d(city);
-    d.set_parent_window(*dialog);
+    BuyProductionDialog d(*dialog, city);
     d.run();
 
     int army = d.get_selected_army();
@@ -430,8 +424,7 @@ void CityWindow::on_buy_clicked()
 
 void CityWindow::on_destination_clicked()
 {
-    DestinationDialog d(city, &d_see_all);
-    d.set_parent_window(*dialog);
+    DestinationDialog d(*dialog, city, &d_see_all);
     d.run();
     fill_in_production_info();
     prodmap->draw(Playerlist::getActiveplayer());

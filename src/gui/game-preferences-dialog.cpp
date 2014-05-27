@@ -41,7 +41,7 @@
 
 static bool inhibit_difficulty_combobox = false;
 
-void GamePreferencesDialog::init(std::string filename)
+void GamePreferencesDialog::init(Gtk::Window &parent, std::string filename)
 {
   d_filename = filename;
   bool broken = false;
@@ -49,6 +49,7 @@ void GamePreferencesDialog::init(std::string filename)
 	= Gtk::Builder::create_from_file(get_glade_path() + "/game-preferences-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("dialog-vbox1", dialog_vbox);
     xml->get_widget("start_game_button", start_game_button);
     xml->get_widget("difficulty_label", difficulty_label);
@@ -69,7 +70,7 @@ void GamePreferencesDialog::init(std::string filename)
     edit_options_button->signal_clicked().connect(
 	sigc::mem_fun(*this, &GamePreferencesDialog::on_edit_options_clicked));
 
-  game_options_dialog = new GameOptionsDialog(false);
+  game_options_dialog = new GameOptionsDialog(*dialog, false);
   game_options_dialog->difficulty_option_changed.connect(
 	sigc::mem_fun(*this, 
 		      &GamePreferencesDialog::update_difficulty_rating));
@@ -134,10 +135,10 @@ void GamePreferencesDialog::init(std::string filename)
   return;
 }
 
-GamePreferencesDialog::GamePreferencesDialog(std::string filename, GameScenario::PlayMode play_mode)
+GamePreferencesDialog::GamePreferencesDialog(Gtk::Window &parent, std::string filename, GameScenario::PlayMode play_mode)
 {
   mode = play_mode;
-  init(filename);
+  init(parent, filename);
   if (mode != GameScenario::NETWORKED)
     {
       delete game_name_label;
@@ -150,11 +151,6 @@ GamePreferencesDialog::~GamePreferencesDialog()
 {
   delete game_options_dialog;
   delete dialog;
-}
-
-void GamePreferencesDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
 }
 
 void GamePreferencesDialog::hide()
@@ -226,7 +222,6 @@ void GamePreferencesDialog::add_player(GameParameters::Player::Type type,
 void GamePreferencesDialog::on_edit_options_clicked()
 {
   inhibit_difficulty_combobox = true;
-  game_options_dialog->set_parent_window(*dialog);
   game_options_dialog->run();
 
   update_difficulty_rating();

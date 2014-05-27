@@ -34,7 +34,7 @@
 #include "city.h"
 #include "ucompose.hpp"
 
-HeroOfferDialog::HeroOfferDialog(Player *player, HeroProto *h, City *c, int gold)
+HeroOfferDialog::HeroOfferDialog(Gtk::Window &parent, Player *player, HeroProto *h, City *c, int gold)
 {
     city = c;
     hero = h;
@@ -44,6 +44,7 @@ HeroOfferDialog::HeroOfferDialog(Player *player, HeroProto *h, City *c, int gold
 				    + "/hero-offer-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("map_image", map_image);
 
     heromap = new HeroMap(city);
@@ -132,12 +133,6 @@ void HeroOfferDialog::on_male_toggled()
     else
 	hero_image->property_file()
 	    = File::getMiscFile("various/recruit_female.png");
-}
-
-void HeroOfferDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void HeroOfferDialog::hide()

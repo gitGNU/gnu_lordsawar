@@ -32,10 +32,8 @@
 class SageDialog: public sigc::trackable
 {
  public:
-    SageDialog(Sage *sage, Player *player, Hero *hero, Ruin *r);
+    SageDialog(Gtk::Window &parent, Sage *sage, Player *player, Hero *hero, Ruin *r);
     ~SageDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void hide();
     Reward *run();

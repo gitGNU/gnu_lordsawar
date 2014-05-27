@@ -30,10 +30,8 @@ class Player;
 class ArmyBonusDialog: public sigc::trackable
 {
  public:
-    ArmyBonusDialog(Player *p);
+    ArmyBonusDialog(Gtk::Window &parent, Player *p);
     ~ArmyBonusDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
     void hide();

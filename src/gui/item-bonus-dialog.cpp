@@ -29,13 +29,14 @@
 #include "ItemProto.h"
 #include "Itemlist.h"
 
-ItemBonusDialog::ItemBonusDialog()
+ItemBonusDialog::ItemBonusDialog(Gtk::Window &parent)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/item-bonus-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     items_list = Gtk::ListStore::create(items_columns);
     xml->get_widget("treeview", items_treeview);
     items_treeview->set_model(items_list);
@@ -50,11 +51,6 @@ ItemBonusDialog::ItemBonusDialog()
 ItemBonusDialog::~ItemBonusDialog()
 {
   delete dialog;
-}
-void ItemBonusDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void ItemBonusDialog::hide()

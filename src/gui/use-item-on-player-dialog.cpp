@@ -32,13 +32,14 @@
 #include "GraphicsCache.h"
 #include "player.h"
 
-UseItemOnPlayerDialog::UseItemOnPlayerDialog()
+UseItemOnPlayerDialog::UseItemOnPlayerDialog(Gtk::Window &parent)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/use-item-on-player-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     players_list = Gtk::ListStore::create(players_columns);
     xml->get_widget("playertreeview", player_treeview);
     player_treeview->set_model(players_list);
@@ -71,12 +72,6 @@ UseItemOnPlayerDialog::~UseItemOnPlayerDialog()
 {
   delete dialog;
   delete citymap;
-}
-
-void UseItemOnPlayerDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 Player *UseItemOnPlayerDialog::grabSelectedPlayer()

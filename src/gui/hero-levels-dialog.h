@@ -32,11 +32,9 @@ class Hero;
 class HeroLevelsDialog: public sigc::trackable
 {
  public:
-    HeroLevelsDialog(Player *player);
-    HeroLevelsDialog(std::list<Hero*> heroes);
+    HeroLevelsDialog(Gtk::Window &parent, Player *player);
+    HeroLevelsDialog(Gtk::Window &parent, std::list<Hero*> heroes);
     ~HeroLevelsDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
     void hide();
@@ -65,7 +63,7 @@ class HeroLevelsDialog: public sigc::trackable
     Glib::RefPtr<Gtk::ListStore> heroes_list;
  private:
 
-    void init(Player *theplayer);
+    void init(Gtk::Window &parent, Player *theplayer);
     void addHero(Hero *h);
 };
 

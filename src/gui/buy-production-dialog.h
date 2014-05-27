@@ -33,10 +33,8 @@ class City;
 class BuyProductionDialog: public sigc::trackable
 {
  public:
-    BuyProductionDialog(City *city);
+    BuyProductionDialog(Gtk::Window &parent, City *city);
     ~BuyProductionDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
     void hide();

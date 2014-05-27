@@ -41,13 +41,14 @@
 #include "File.h"
 
 
-NewRandomMapDialog::NewRandomMapDialog()
+NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path() + 
 					 "/new-random-map-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("dialog-vbox1", dialog_vbox);
     xml->get_widget("dialog-action_area1", dialog_action_area);
     xml->get_widget("map_size_combobox", map_size_combobox);
@@ -190,11 +191,6 @@ NewRandomMapDialog::NewRandomMapDialog()
 NewRandomMapDialog::~NewRandomMapDialog()
 {
   delete dialog;
-}
-
-void NewRandomMapDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
 }
 
 int NewRandomMapDialog::run()

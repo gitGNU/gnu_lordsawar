@@ -30,13 +30,14 @@
 #include "sound.h"
 
 
-MainPreferencesDialog::MainPreferencesDialog()
+MainPreferencesDialog::MainPreferencesDialog(Gtk::Window &parent)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/main-preferences-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("show_turn_popup_checkbutton", show_turn_popup_checkbutton);
     xml->get_widget("commentator_checkbutton", commentator_checkbutton);
     xml->get_widget("ui_combobox", ui_combobox);
@@ -67,11 +68,6 @@ MainPreferencesDialog::MainPreferencesDialog()
 MainPreferencesDialog::~MainPreferencesDialog()
 {
   delete dialog;
-}
-void MainPreferencesDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void MainPreferencesDialog::hide()

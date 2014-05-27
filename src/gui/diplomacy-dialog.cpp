@@ -33,7 +33,7 @@
 #include "playerlist.h"
 #include "player.h"
 
-DiplomacyDialog::DiplomacyDialog(Player *player)
+DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   Playerlist *pl = Playerlist::getInstance();
@@ -42,6 +42,7 @@ DiplomacyDialog::DiplomacyDialog(Player *player)
     = Gtk::Builder::create_from_file(get_glade_path() + "/diplomacy-dialog.ui");
 
   xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(parent);
   xml->get_widget("proposals_table", d_proposals_table);
   xml->get_widget("offers_table", d_offers_table);
   xml->get_widget("player_label", d_player_label);
@@ -222,17 +223,9 @@ void DiplomacyDialog::on_proposal_toggled (Gtk::ToggleButton *toggle,
     d_player->proposeDiplomacy (proposal, player);
 }
 
-void DiplomacyDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
-  //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
-
-}
-
 void DiplomacyDialog::on_report_clicked()
 {
-  DiplomacyReportDialog d(d_player);
-  d.set_parent_window(*dialog);
+  DiplomacyReportDialog d(*dialog, d_player);
   d.run();
   d.hide();
 }

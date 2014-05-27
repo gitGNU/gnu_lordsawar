@@ -729,8 +729,7 @@ void GameWindow::show_city_production_report (bool destitute)
 {
   if (!destitute)
     return;
-  ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::PRODUCTION);
-  d.set_parent_window(*window);
+  ReportDialog d(*window, Playerlist::getActiveplayer(), ReportDialog::PRODUCTION);
   d.run();
   d.hide();
 }
@@ -1156,8 +1155,7 @@ void GameWindow::on_quests_activated()
   Hero *hero = NULL;
   if (s)
     hero = s->getFirstHeroWithAQuest();
-  QuestReportDialog d(quests, hero);
-  d.set_parent_window(*window);
+  QuestReportDialog d(*window, quests, hero);
   d.run();
   d.hide();
   return;
@@ -1213,8 +1211,7 @@ void GameWindow::on_stack_info_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  StackInfoDialog d(status_box->get_currently_selected_stack()->getPos());
-  d.set_parent_window(*window);
+  StackInfoDialog d(*window, status_box->get_currently_selected_stack()->getPos());
   d.run();
   Stack *s = d.get_selected_stack();
   d.hide();
@@ -1328,9 +1325,7 @@ void GameWindow::on_vectoring_activated()
   if (!city)
     return;
   bool see_all = true;
-  DestinationDialog d(city, &see_all);
-
-  d.set_parent_window(*window);
+  DestinationDialog d(*window, city, &see_all);
   d.run();
   d.hide();
   return;
@@ -1363,9 +1358,8 @@ void GameWindow::on_preferences_activated()
   bool readonly = false;
   if (game->getScenario()->getPlayMode() == GameScenario::NETWORKED)
     readonly = true;
-  PreferencesDialog d(readonly);
+  PreferencesDialog d(*window, readonly);
   d.ui_form_factor_changed.connect(sigc::mem_fun(this, &GameWindow::on_ui_form_factor_changed));
-  d.set_parent_window(*window);
   d.run(game);
   d.hide();
   game->get_bigmap().set_control_key_down (false);
@@ -1427,8 +1421,7 @@ void GameWindow::on_fight_order_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  FightOrderDialog d(Playerlist::getActiveplayer());
-  d.set_parent_window(*window);
+  FightOrderDialog d(*window, Playerlist::getActiveplayer());
   d.run();
   d.hide();
 }
@@ -1437,8 +1430,7 @@ void GameWindow::on_levels_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  HeroLevelsDialog d(Playerlist::getActiveplayer());
-  d.set_parent_window(*window);
+  HeroLevelsDialog d(*window, Playerlist::getActiveplayer());
   d.run();
   d.hide();
 }
@@ -1464,8 +1456,7 @@ void GameWindow::on_ruin_report_activated()
       dialog.hide();
       return;
     }
-  RuinReportDialog d(pos);
-  d.set_parent_window(*window);
+  RuinReportDialog d(*window, pos);
   d.run();
   d.hide();
 }
@@ -1474,8 +1465,7 @@ void GameWindow::on_army_bonus_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  ArmyBonusDialog d(Playerlist::getActiveplayer());
-  d.set_parent_window(*window);
+  ArmyBonusDialog d(*window, Playerlist::getActiveplayer());
   d.run();
   d.hide();
 }
@@ -1484,8 +1474,7 @@ void GameWindow::on_item_bonus_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  ItemBonusDialog d;
-  d.set_parent_window(*window);
+  ItemBonusDialog d(*window);
   d.run();
   d.hide();
 }
@@ -1494,8 +1483,7 @@ void GameWindow::on_army_report_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::ARMY);
-  d.set_parent_window(*window);
+  ReportDialog d(*window, Playerlist::getActiveplayer(), ReportDialog::ARMY);
   d.run();
   d.hide();
 }
@@ -1506,8 +1494,7 @@ void GameWindow::on_item_report_activated()
     return;
   std::list<Stack*> stacks = Playerlist::getActiveplayer()->getStacksWithItems();
   std::list<MapBackpack*> bags = GameMap::getInstance()->getBackpacks();
-  ItemReportDialog d(stacks, bags);
-  d.set_parent_window(*window);
+  ItemReportDialog d(*window, stacks, bags);
   d.run();
   d.hide();
 }
@@ -1516,8 +1503,7 @@ void GameWindow::on_city_report_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::CITY);
-  d.set_parent_window(*window);
+  ReportDialog d(*window, Playerlist::getActiveplayer(), ReportDialog::CITY);
   d.run();
   d.hide();
 }
@@ -1526,8 +1512,7 @@ void GameWindow::on_gold_report_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::GOLD);
-  d.set_parent_window(*window);
+  ReportDialog d(*window, Playerlist::getActiveplayer(), ReportDialog::GOLD);
   d.run();
   d.hide();
 }
@@ -1536,8 +1521,7 @@ void GameWindow::on_production_report_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::PRODUCTION);
-  d.set_parent_window(*window);
+  ReportDialog d(*window, Playerlist::getActiveplayer(), ReportDialog::PRODUCTION);
   d.run();
   d.hide();
 }
@@ -1546,8 +1530,7 @@ void GameWindow::on_winning_report_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  ReportDialog d(Playerlist::getActiveplayer(), ReportDialog::WINNING);
-  d.set_parent_window(*window);
+  ReportDialog d(*window, Playerlist::getActiveplayer(), ReportDialog::WINNING);
   d.run();
   d.hide();
 }
@@ -1556,9 +1539,8 @@ void GameWindow::on_city_history_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  HistoryReportDialog d(Playerlist::getActiveplayer(), 
+  HistoryReportDialog d(*window, Playerlist::getActiveplayer(), 
 			HistoryReportDialog::CITY);
-  d.set_parent_window(*window);
   d.run();
   d.hide();
 }
@@ -1567,9 +1549,8 @@ void GameWindow::on_ruin_history_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  HistoryReportDialog d(Playerlist::getActiveplayer(), 
+  HistoryReportDialog d(*window, Playerlist::getActiveplayer(), 
 			HistoryReportDialog::RUIN);
-  d.set_parent_window(*window);
   d.run();
   d.hide();
 }
@@ -1578,9 +1559,8 @@ void GameWindow::on_event_history_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  HistoryReportDialog d(Playerlist::getActiveplayer(),
+  HistoryReportDialog d(*window, Playerlist::getActiveplayer(),
 			HistoryReportDialog::EVENTS);
-  d.set_parent_window(*window);
   d.run();
   d.hide();
 }
@@ -1589,9 +1569,8 @@ void GameWindow::on_gold_history_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  HistoryReportDialog d(Playerlist::getActiveplayer(),
+  HistoryReportDialog d(*window ,Playerlist::getActiveplayer(),
 			HistoryReportDialog::GOLD);
-  d.set_parent_window(*window);
   d.run();
   d.hide();
 }
@@ -1600,9 +1579,8 @@ void GameWindow::on_winner_history_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  HistoryReportDialog d(Playerlist::getActiveplayer(),
+  HistoryReportDialog d(*window, Playerlist::getActiveplayer(),
 			HistoryReportDialog::WINNING);
-  d.set_parent_window(*window);
   d.run();
   d.hide();
 }
@@ -1611,8 +1589,7 @@ void GameWindow::on_triumphs_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  TriumphsDialog d(Playerlist::getActiveplayer());
-  d.set_parent_window(*window);
+  TriumphsDialog d(*window, Playerlist::getActiveplayer());
   d.run();
   d.hide();
 }
@@ -1643,8 +1620,7 @@ void GameWindow::on_diplomacy_report_activated()
     return;
   if (GameScenario::s_diplomacy == false)
     return;
-  DiplomacyReportDialog d(Playerlist::getActiveplayer());
-  d.set_parent_window(*window);
+  DiplomacyReportDialog d(*window, Playerlist::getActiveplayer());
   d.run();
   d.hide();
 }
@@ -1653,8 +1629,7 @@ void GameWindow::on_diplomacy_button_clicked()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  DiplomacyDialog d(Playerlist::getActiveplayer());
-  d.set_parent_window(*window);
+  DiplomacyDialog d(*window, Playerlist::getActiveplayer());
   d.run();
   d.hide();
 }
@@ -1887,9 +1862,8 @@ void GameWindow::hide_map_tip()
 
 Reward* GameWindow::on_sage_visited (Ruin *ruin, Sage *sage, Stack *stack)
 {
-  SageDialog d(sage, stack->getFirstHero()->getOwner(), 
+  SageDialog d(*window, sage, stack->getFirstHero()->getOwner(), 
 	       static_cast<Hero*>(stack->getFirstHero()), ruin);
-  d.set_parent_window(*window);
   Reward *reward = d.run();
   d.hide();
   return reward;
@@ -1897,8 +1871,7 @@ Reward* GameWindow::on_sage_visited (Ruin *ruin, Sage *sage, Stack *stack)
 
 void GameWindow::on_ruin_rewarded (Reward_Ruin *reward)
 {
-  RuinRewardedDialog d(reward);
-  d.set_parent_window(*window);
+  RuinRewardedDialog d(*window, reward);
   d.run();
   d.hide();
 }
@@ -2019,11 +1992,10 @@ void GameWindow::on_ruinfight_finished(Fight::Result result)
 
 void GameWindow::on_fight_started(LocationBox box, Fight &fight)
 {
-  FightWindow d(fight);
+  FightWindow d(*window, fight);
 
   game->get_bigmap().setFighting(box);
   game->get_bigmap().draw(Playerlist::getViewingplayer());
-  d.set_parent_window(*window);
   d.run(&d_quick_fights);
   d.hide();
   game->get_bigmap().setFighting(LocationBox(Vector<int>(-1,-1)));
@@ -2058,8 +2030,7 @@ void GameWindow::on_hero_brings_allies (int numAllies)
 
 bool GameWindow::on_hero_offers_service(Player *player, HeroProto *hero, City *city, int gold)
 {
-  HeroOfferDialog d(player, hero, city, gold);
-  d.set_parent_window(*window);
+  HeroOfferDialog d(*window, player, hero, city, gold);
   bool retval = d.run();
   d.hide();
   return retval;
@@ -2067,8 +2038,7 @@ bool GameWindow::on_hero_offers_service(Player *player, HeroProto *hero, City *c
 
 bool GameWindow::on_enemy_offers_surrender(int numPlayers)
 {
-  SurrenderDialog d(numPlayers);
-  d.set_parent_window(*window);
+  SurrenderDialog d(*window, numPlayers);
   bool retval = d.run();
   d.hide();
   return retval;
@@ -2081,8 +2051,7 @@ void GameWindow::on_surrender_answered (bool accepted)
       (_("You graciously and benevolently accept their offer."));
   else
     {
-      SurrenderRefusedDialog d;
-      d.set_parent_window(*window);
+      SurrenderRefusedDialog d(*window);
       d.run();
       d.hide();
     }
@@ -2121,8 +2090,7 @@ bool GameWindow::on_stack_considers_treachery (Stack *stack,
 
 void GameWindow::on_temple_visited(Temple *temple)
 {
-  RuinReportDialog d(temple->getPos());
-  d.set_parent_window(*window);
+  RuinReportDialog d(*window, temple->getPos());
   d.run();
   d.hide();
 }
@@ -2205,8 +2173,7 @@ bool GameWindow::on_temple_searched(Hero *hero, Temple *temple, int blessCount)
 
 void GameWindow::on_quest_assigned(Hero *hero, Quest *quest)
 {
-  QuestAssignedDialog d(hero, quest);
-  d.set_parent_window(*window);
+  QuestAssignedDialog d(*window, hero, quest);
   d.run();
   d.hide();
 }
@@ -2611,19 +2578,17 @@ void GameWindow::on_city_razed (City *city)
 
 void GameWindow::on_city_visited(City *city)
 {
-  CityWindow d(city, 
+  CityWindow d(*window, city, 
 	       GameScenarioOptions::s_razing_cities == GameParameters::ALWAYS,
 	       GameScenarioOptions::s_see_opponents_production);
 
-  d.set_parent_window(*window);
   d.run();
   d.hide();
 }
 
 void GameWindow::on_ruin_visited(Ruin *ruin)
 {
-  RuinReportDialog d(ruin->getPos());
-  d.set_parent_window(*window);
+  RuinReportDialog d(*window, ruin->getPos());
   d.run();
   d.hide();
 }
@@ -2750,9 +2715,7 @@ void GameWindow::on_medal_awarded_to_army(Army *army, int medaltype)
 
 Army::Stat GameWindow::on_hero_gains_level(Hero *hero)
 {
-  ArmyGainsLevelDialog d(hero, GameScenario::s_hidden_map);
-
-  d.set_parent_window(*window);
+  ArmyGainsLevelDialog d(*window, hero, GameScenario::s_hidden_map);
   d.run();
   d.hide();
 
@@ -2785,8 +2748,7 @@ void GameWindow::on_quest_completed(Quest *quest, Reward *reward)
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  QuestCompletedDialog d(quest, reward);
-  d.set_parent_window(*window);
+  QuestCompletedDialog d(*window, quest, reward);
   d.run();
   d.hide();
 }
@@ -2843,8 +2805,7 @@ void GameWindow::on_inspect_activated ()
       pos = status_box->get_currently_selected_stack()->getPos();
     }
     
-  HeroDialog d(hero, pos);
-  d.set_parent_window(*window);
+  HeroDialog d(*window, hero, pos);
   d.run();
   d.hide();
 }
@@ -3234,8 +3195,7 @@ void GameWindow::on_abbreviated_fight_started(LocationBox box)
 Item* GameWindow::on_select_item(std::list<Item*> items)
 {
   Item *item = NULL;
-  UseItemDialog d(items);
-  d.set_parent_window(*window);
+  UseItemDialog d(*window, items);
   d.run();
   item = d.get_selected_item();
   d.hide();
@@ -3245,8 +3205,7 @@ Item* GameWindow::on_select_item(std::list<Item*> items)
 Player *GameWindow::on_select_item_victim_player()
 {
   Player *player = NULL;
-  UseItemOnPlayerDialog d;
-  d.set_parent_window(*window);
+  UseItemOnPlayerDialog d(*window);
   player = d.run();
   d.hide();
   return player;
@@ -3254,7 +3213,7 @@ Player *GameWindow::on_select_item_victim_player()
     
 City *GameWindow::on_select_city_to_use_item_on(SelectCityMap::Type type)
 {
-  UseItemOnCityDialog d(type);
+  UseItemOnCityDialog d(*window, type);
   City *city = d.run();
   d.hide();
   return city;

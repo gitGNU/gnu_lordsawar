@@ -30,13 +30,14 @@
 #include "File.h"
 #include "GameScenario.h"
 
-LoadScenarioDialog::LoadScenarioDialog()
+LoadScenarioDialog::LoadScenarioDialog(Gtk::Window &parent)
 {
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path()
 				+ "/load-scenario-dialog.ui");
 
   xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(parent);
   xml->get_widget("description_textview", description_textview);
   xml->get_widget("load_button", load_button);
   xml->get_widget("num_players_label", num_players_label);
@@ -78,12 +79,6 @@ LoadScenarioDialog::LoadScenarioDialog()
 LoadScenarioDialog::~LoadScenarioDialog()
 {
   delete dialog;
-}
-
-void LoadScenarioDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
-  //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void LoadScenarioDialog::hide()

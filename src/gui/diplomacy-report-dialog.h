@@ -30,10 +30,8 @@
 class DiplomacyReportDialog: public sigc::trackable
 {
  public:
-    DiplomacyReportDialog(Player *player);
+    DiplomacyReportDialog(Gtk::Window &parent, Player *player);
     ~DiplomacyReportDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
     void hide();

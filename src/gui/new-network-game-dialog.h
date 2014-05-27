@@ -29,17 +29,13 @@ class Profile;
 class NewNetworkGameDialog: public sigc::trackable
 {
  public:
-    NewNetworkGameDialog();
+    NewNetworkGameDialog(Gtk::Window &parent);
     ~NewNetworkGameDialog();
 
     Profile* getProfile() const {return d_profile;};
     bool isClient() {return client_radiobutton->get_active();};
-
     bool isAdvertised() {return advertise_checkbutton->get_active();};
     bool isRemotelyHosted() {return remote_checkbutton->get_active();};
-
-    void set_parent_window(Gtk::Window &parent);
-
     void hide();
     bool run();
     

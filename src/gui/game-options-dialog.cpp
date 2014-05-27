@@ -30,13 +30,14 @@
 #include "Configuration.h"
 #include "GameScenarioOptions.h"
 
-GameOptionsDialog::GameOptionsDialog(bool readonly)
+GameOptionsDialog::GameOptionsDialog(Gtk::Window &parent, bool readonly)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/game-options-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     d_readonly = readonly;
     xml->get_widget("difficultoptionstable", difficultoptionstable);
     xml->get_widget("notdifficultoptionstable", notdifficultoptionstable);
@@ -84,11 +85,6 @@ void GameOptionsDialog::fill_in_options()
 	difficultoptionstable->set_sensitive(false);
 	notdifficultoptionstable->set_sensitive(false);
       }
-}
-void GameOptionsDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void GameOptionsDialog::hide()

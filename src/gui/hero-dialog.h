@@ -34,10 +34,8 @@ class History;
 class HeroDialog: public sigc::trackable
 {
  public:
-    HeroDialog(Hero *hero, Vector<int> pos);
+    HeroDialog(Gtk::Window &parent, Hero *hero, Vector<int> pos);
     ~HeroDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
     void hide();

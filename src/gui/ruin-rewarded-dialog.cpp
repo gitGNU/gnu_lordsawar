@@ -34,13 +34,14 @@
 #include "ruin.h"
 
 
-RuinRewardedDialog::RuinRewardedDialog(Reward_Ruin *reward)
+RuinRewardedDialog::RuinRewardedDialog(Gtk::Window &parent, Reward_Ruin *reward)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()
 				    + "/ruin-rewarded-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("map_image", map_image);
 
     ruinmap = new RuinMap(reward->getRuin());
@@ -60,12 +61,6 @@ RuinRewardedDialog::~RuinRewardedDialog()
 {
   delete ruinmap;
   delete dialog;
-}
-
-void RuinRewardedDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void RuinRewardedDialog::hide()

@@ -31,10 +31,8 @@
 class GameOptionsDialog: public sigc::trackable
 {
  public:
-    GameOptionsDialog(bool readonly);
+    GameOptionsDialog(Gtk::Window &parent, bool readonly);
     ~GameOptionsDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     bool run();
     void hide();

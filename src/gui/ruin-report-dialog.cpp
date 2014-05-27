@@ -33,13 +33,14 @@
 #include "ruinlist.h"
 #include "templelist.h"
 
-RuinReportDialog::RuinReportDialog(Vector<int> pos)
+RuinReportDialog::RuinReportDialog(Gtk::Window &parent, Vector<int> pos)
 {
   Glib::RefPtr<Gtk::Builder> xml
     = Gtk::Builder::create_from_file(get_glade_path()
 				  + "/ruin-report-dialog.ui");
 
   xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(parent);
   xml->get_widget("map_image", map_image);
 
   NamedLocation *l = NULL;
@@ -82,11 +83,6 @@ RuinReportDialog::~RuinReportDialog()
 {
   delete dialog;
   delete ruinmap;
-}
-void RuinReportDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
-  //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void RuinReportDialog::hide()

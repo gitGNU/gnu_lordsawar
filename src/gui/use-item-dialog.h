@@ -29,10 +29,8 @@ class Item;
 class UseItemDialog: public sigc::trackable
 {
  public:
-    UseItemDialog(std::list<Item*> items);
+    UseItemDialog(Gtk::Window &parent, std::list<Item*> items);
     ~UseItemDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
     void hide();

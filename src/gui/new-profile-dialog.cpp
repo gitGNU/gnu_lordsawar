@@ -28,12 +28,13 @@
 #include "File.h"
 #include "ucompose.hpp"
 
-NewProfileDialog::NewProfileDialog(Glib::ustring network_game_nickname)
+NewProfileDialog::NewProfileDialog(Gtk::Window &parent, Glib::ustring network_game_nickname)
 {
   Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file
     (get_glade_path() + "/new-profile-dialog.ui");
 
   xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(parent);
   xml->get_widget("accept_button", accept_button);
   xml->get_widget("nick_entry", nick_entry);
   nick_entry->set_activates_default(true);
@@ -65,11 +66,6 @@ void NewProfileDialog::update_buttons()
       nick_entry->property_activates_default() = true;
       accept_button->property_receives_default() = true;
     }
-}
-
-void NewProfileDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
 }
 
 void NewProfileDialog::hide()

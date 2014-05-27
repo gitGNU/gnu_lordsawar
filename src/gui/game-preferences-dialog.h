@@ -34,12 +34,10 @@ class XML_Helper;
 class GamePreferencesDialog: public sigc::trackable
 {
  public:
-    GamePreferencesDialog(std::string filename, GameScenario::PlayMode mode);
+    GamePreferencesDialog(Gtk::Window &parent, std::string filename, GameScenario::PlayMode mode);
     ~GamePreferencesDialog();
 
     void set_title(std::string title);
-
-    void set_parent_window(Gtk::Window &parent);
 
     sigc::signal<void, GameParameters> game_started;
     
@@ -47,7 +45,7 @@ class GamePreferencesDialog: public sigc::trackable
     void hide();
     
  private:
-    void init(std::string filename);
+    void init(Gtk::Window &parent, std::string filename);
     Gtk::Dialog* dialog;
     GameScenario::PlayMode mode;
 

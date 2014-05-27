@@ -30,7 +30,7 @@
 #include "Item.h"
 #include "Itemlist.h"
 
-UseItemDialog::UseItemDialog(std::list<Item*> items)
+UseItemDialog::UseItemDialog(Gtk::Window &parent, std::list<Item*> items)
 {
     selected_item = 0;
     
@@ -39,6 +39,7 @@ UseItemDialog::UseItemDialog(std::list<Item*> items)
 				    + "/use-item-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("select_button", select_button);
     xml->get_widget("items_treeview", items_treeview);
     items_list = Gtk::ListStore::create(items_columns);
@@ -70,12 +71,6 @@ void UseItemDialog::addItem(Item *item)
   (*i)[items_columns.name] = item->getName();
   (*i)[items_columns.attributes] = item->getBonusDescription();
   (*i)[items_columns.item] = item;
-}
-
-void UseItemDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void UseItemDialog::hide()

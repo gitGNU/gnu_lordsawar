@@ -36,10 +36,8 @@ class Army;
 class FightWindow: public sigc::trackable
 {
  public:
-    FightWindow(Fight &fight);
+    FightWindow(Gtk::Window &parent, Fight &fight);
     ~FightWindow();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void hide();
     void run(bool *quick);

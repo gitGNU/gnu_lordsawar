@@ -31,13 +31,10 @@
 class QuestReportDialog: public sigc::trackable
 {
  public:
-    QuestReportDialog(std::vector<Quest *>quests, Hero *preferred_hero);
+    QuestReportDialog(Gtk::Window &parent, std::vector<Quest *>quests, Hero *preferred_hero);
     ~QuestReportDialog();
 
-    void set_parent_window(Gtk::Window &parent);
-
     void run();
-
     void hide();
     
  private:

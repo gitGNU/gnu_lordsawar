@@ -31,12 +31,13 @@
 #include "profilelist.h"
 #include "new-profile-dialog.h"
 
-NewNetworkGameDialog::NewNetworkGameDialog()
+NewNetworkGameDialog::NewNetworkGameDialog(Gtk::Window &parent)
 {
   Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file
     (get_glade_path() + "/new-network-game-dialog.ui");
 
   xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(parent);
   xml->get_widget("client_radiobutton", client_radiobutton);
   client_radiobutton->signal_toggled().connect(sigc::mem_fun(*this, &NewNetworkGameDialog::on_client_radiobutton_toggled));
   xml->get_widget("accept_button", accept_button);
@@ -147,11 +148,6 @@ void NewNetworkGameDialog::update_buttons()
 
 }
 
-void NewNetworkGameDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
-}
-
 void NewNetworkGameDialog::hide()
 {
   dialog->hide();
@@ -180,8 +176,7 @@ bool NewNetworkGameDialog::run()
 
 void NewNetworkGameDialog::on_add_button_clicked()
 {
-  NewProfileDialog d("");
-  d.set_parent_window(*dialog);
+  NewProfileDialog d(*dialog, "");
   if (d.run())
     {
       Profile *profile = new Profile (d.getNickname());

@@ -32,13 +32,10 @@ class Player;
 class FightOrderDialog: public sigc::trackable
 {
  public:
-    FightOrderDialog(Player *player);
+    FightOrderDialog(Gtk::Window &parent, Player *player);
     ~FightOrderDialog();
 
-    void set_parent_window(Gtk::Window &parent);
-
     void hide();
-
     void run();
 
  private:

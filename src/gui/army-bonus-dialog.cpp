@@ -33,7 +33,7 @@
 #include "GraphicsCache.h"
 #include "File.h"
 
-ArmyBonusDialog::ArmyBonusDialog(Player *p)
+ArmyBonusDialog::ArmyBonusDialog(Gtk::Window &parent, Player *p)
 {
     d_player = p;
     Glib::RefPtr<Gtk::Builder> xml
@@ -41,6 +41,7 @@ ArmyBonusDialog::ArmyBonusDialog(Player *p)
 				    + "/army-bonus-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
 
     armies_list = Gtk::ListStore::create(armies_columns);
     xml->get_widget("treeview", armies_treeview);
@@ -61,11 +62,6 @@ ArmyBonusDialog::ArmyBonusDialog(Player *p)
 ArmyBonusDialog::~ArmyBonusDialog()
 {
   delete dialog;
-}
-void ArmyBonusDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void ArmyBonusDialog::hide()

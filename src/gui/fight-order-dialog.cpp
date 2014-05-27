@@ -33,7 +33,7 @@
 #include "GraphicsCache.h"
 #include "armyset.h"
 
-FightOrderDialog::FightOrderDialog(Player *theplayer)
+FightOrderDialog::FightOrderDialog(Gtk::Window &parent, Player *theplayer)
 {
     player = theplayer;
     
@@ -42,6 +42,7 @@ FightOrderDialog::FightOrderDialog(Player *theplayer)
 				    + "/fight-order-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     armies_list = Gtk::ListStore::create(armies_columns);
     xml->get_widget("treeview", armies_treeview);
     armies_treeview->set_model(armies_list);
@@ -63,12 +64,6 @@ FightOrderDialog::FightOrderDialog(Player *theplayer)
 FightOrderDialog::~FightOrderDialog()
 {
   delete dialog;
-}
-
-void FightOrderDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void FightOrderDialog::hide()

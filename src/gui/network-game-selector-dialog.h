@@ -30,13 +30,10 @@ class RecentlyPlayedGameList;
 class NetworkGameSelectorDialog: public sigc::trackable
 {
  public:
-    NetworkGameSelectorDialog(Profile *p);
+    NetworkGameSelectorDialog(Gtk::Window &parent, Profile *p);
     ~NetworkGameSelectorDialog();
 
     sigc::signal<void, std::string /*ip*/, unsigned short /*port*/> game_selected;
-
-    void set_parent_window(Gtk::Window &parent);
-
     void hide();
     bool run();
     

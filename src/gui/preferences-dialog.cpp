@@ -37,7 +37,7 @@
 #include "GraphicsCache.h"
 
 
-PreferencesDialog::PreferencesDialog(bool readonly)
+PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
 {
   d_readonly = readonly;
     Glib::RefPtr<Gtk::Builder> xml
@@ -45,6 +45,7 @@ PreferencesDialog::PreferencesDialog(bool readonly)
 				    + "/preferences-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("commentator_checkbutton", commentator_checkbutton);
     xml->get_widget("speed_scale", speed_scale);
     xml->get_widget("ui_combobox", ui_combobox);
@@ -134,11 +135,6 @@ PreferencesDialog::PreferencesDialog(bool readonly)
 PreferencesDialog::~PreferencesDialog()
 {
   delete dialog;
-}
-void PreferencesDialog::set_parent_window(Gtk::Window &parent)
-{
-    dialog->set_transient_for(parent);
-    //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void PreferencesDialog::on_type_changed(Gtk::ComboBoxText *combo)

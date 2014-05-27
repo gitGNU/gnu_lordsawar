@@ -31,10 +31,8 @@
 class QuestCompletedDialog: public sigc::trackable
 {
  public:
-    QuestCompletedDialog(Quest *quest, Reward *reward);
+    QuestCompletedDialog(Gtk::Window &parent, Quest *quest, Reward *reward);
     ~QuestCompletedDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
     void hide();

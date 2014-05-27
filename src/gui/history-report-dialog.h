@@ -38,7 +38,7 @@ class HistoryReportDialog: public sigc::trackable
 {
  public:
     enum HistoryReportType {CITY = 0, RUIN, EVENTS, GOLD, WINNING};
-    HistoryReportDialog(Player *p, HistoryReportType type);
+    HistoryReportDialog(Gtk::Window &parent, Player *p, HistoryReportType type);
     ~HistoryReportDialog();
 
     void generatePastCitylists(); //data for map
@@ -48,7 +48,6 @@ class HistoryReportDialog: public sigc::trackable
     void generatePastGoldCounts(); //data for chart
     void generatePastWinningCounts(); //data for chart
     void generatePastEventlists(); //data for events list
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
     void hide();

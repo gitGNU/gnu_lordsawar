@@ -31,7 +31,7 @@
 #include "ruin.h"
 #include "GameMap.h"
 
-QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
+QuestCompletedDialog::QuestCompletedDialog(Gtk::Window &parent, Quest *q, Reward *r)
 {
   reward = r;
   quest = q;
@@ -41,6 +41,7 @@ QuestCompletedDialog::QuestCompletedDialog(Quest *q, Reward *r)
 				  + "/quest-assigned-dialog.ui");
 
     xml->get_widget("dialog", dialog);
+    dialog->set_transient_for(parent);
     xml->get_widget("map_image", map_image);
 
     questmap = new QuestMap(quest);
@@ -124,11 +125,6 @@ QuestCompletedDialog::~QuestCompletedDialog()
 {
   delete dialog;
   delete questmap;
-}
-void QuestCompletedDialog::set_parent_window(Gtk::Window &parent)
-{
-  dialog->set_transient_for(parent);
-  //dialog->set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
 }
 
 void QuestCompletedDialog::hide()

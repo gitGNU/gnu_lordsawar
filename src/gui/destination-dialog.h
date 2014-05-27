@@ -30,10 +30,8 @@
 class DestinationDialog: public sigc::trackable
 {
  public:
-    DestinationDialog(City *city, bool *see_all);
+    DestinationDialog(Gtk::Window &parent, City *city, bool *see_all);
     ~DestinationDialog();
-
-    void set_parent_window(Gtk::Window &parent);
 
     void run();
     void hide();
