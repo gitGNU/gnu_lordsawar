@@ -183,9 +183,7 @@ void GamehostServer::run_game(GameScenario *game_scenario, Glib::Pid *child_pid,
       return;
     }
 
-  std::string tmpfile = "lw.XXXX";
-  int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
-  close(fd);
+  Glib::ustring tmpfile = File::get_tmp_file();
   tmpfile += SAVE_EXT;
   game_scenario->saveGame(tmpfile);
 
@@ -385,9 +383,7 @@ bool GamehostServer::onGotMessage(void *conn, int type, Glib::ustring payload)
     case GHS_MESSAGE_SENDING_MAP:
         {
           Glib::ustring err = "";
-          std::string tmpfile = "lw.XXXX";
-          int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
-          close(fd);
+          Glib::ustring tmpfile = File::get_tmp_file();
           std::ofstream f(tmpfile.c_str());
           f << payload;
           f.close();
