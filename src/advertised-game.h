@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Ben Asselstine
+//  Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #define ADVERTISED_GAME_H
 
 #include <gtkmm.h>
-#include <string>
 
 
 #include <sys/time.h>
@@ -38,7 +37,7 @@ class AdvertisedGame : public RecentlyPlayedNetworkedGame
 {
     public:
 
-        static std::string d_tag_name;
+        static Glib::ustring d_tag_name;
 	//! Make a new advertised game entry.
 	AdvertisedGame(GameScenario *game_scenario, Profile *p);
 
@@ -83,7 +82,7 @@ class AdvertisedGame : public RecentlyPlayedNetworkedGame
         Glib::TimeVal d_last_pinged_date;
         Profile *d_profile;
 
-        bool loadProfile(std::string tag, XML_Helper *helper);
+        bool loadProfile(Glib::ustring tag, XML_Helper *helper);
 
         void on_connected_to_game(NetworkConnection *conn);
         void on_could_not_connect_to_game(NetworkConnection *conn);

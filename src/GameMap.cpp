@@ -22,6 +22,7 @@
 
 #include <sstream>
 #include <iostream>
+#include <string>
 #include <iomanip>
 #include <assert.h>
 #include <sigc++/functors/mem_fun.h>
@@ -61,8 +62,8 @@
 #include "reward.h"
 #include "rewardlist.h"
 
-std::string GameMap::d_tag = "map";
-std::string GameMap::d_itemstack_tag = "itemstack";
+Glib::ustring GameMap::d_tag = "map";
+Glib::ustring GameMap::d_itemstack_tag = "itemstack";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<flush;}
 #define debug(x)
@@ -84,9 +85,9 @@ GameMap* GameMap::getInstance()
 }
 
 
-GameMap* GameMap::getInstance(std::string TilesetName, 
-			      std::string ShieldsetName, 
-			      std::string CitysetName)
+GameMap* GameMap::getInstance(Glib::ustring TilesetName, 
+			      Glib::ustring ShieldsetName, 
+			      Glib::ustring CitysetName)
 {
     if (s_instance == 0)
     {
@@ -113,8 +114,8 @@ void GameMap::deleteInstance()
     s_instance = 0;
 }
 
-GameMap::GameMap(std::string TilesetName, std::string ShieldsetName,
-		 std::string CitysetName)
+GameMap::GameMap(Glib::ustring TilesetName, Glib::ustring ShieldsetName,
+		 Glib::ustring CitysetName)
 {
   s_tileset = 0;
   s_cityset = 0;
@@ -141,8 +142,9 @@ bool GameMap::offmap(int x, int y)
   return false;
 }
 
-void GameMap::processStyles(std::string styles, int chars_per_style)
+void GameMap::processStyles(Glib::ustring s, int chars_per_style)
 {
+  std::string styles = s.raw();
   Tileset *tileset = GameMap::getTileset();
   int c = chars_per_style;
     int offset = 0;
@@ -177,8 +179,8 @@ void GameMap::processStyles(std::string styles, int chars_per_style)
         }
     }
 }
-    
-int GameMap::determineCharsPerStyle(std::string styles)
+
+int GameMap::determineCharsPerStyle(Glib::ustring styles)
 {
   return styles.length() / (s_width * s_height);
 }
@@ -188,11 +190,11 @@ GameMap::GameMap(XML_Helper* helper)
     s_tileset = 0;
     s_cityset = 0;
     s_shieldset = 0;
-    std::string types;
-    std::string styles;
-    std::string t_dir;
-    std::string s_dir;
-    std::string c_dir;
+    Glib::ustring types;
+    Glib::ustring styles;
+    Glib::ustring t_dir;
+    Glib::ustring s_dir;
+    Glib::ustring c_dir;
 
     helper->getData(s_width, "width");
     helper->getData(s_height, "height");
@@ -356,7 +358,7 @@ bool GameMap::save(XML_Helper* helper) const
     return retval;
 }
 
-bool GameMap::loadItems(std::string tag, XML_Helper* helper)
+bool GameMap::loadItems(Glib::ustring tag, XML_Helper* helper)
 {
     if (tag == MapBackpack::d_tag)
       {
@@ -2262,17 +2264,17 @@ guint32 GameMap::getShieldsetId() const
   return Shieldsetlist::getInstance()->getShieldsetId(d_shieldset);
 }
 
-std::string GameMap::getTilesetName() const
+Glib::ustring GameMap::getTilesetName() const
 {
   return d_tileset;
 }
 
-std::string GameMap::getCitysetName() const
+Glib::ustring GameMap::getCitysetName() const
 {
   return d_cityset;
 }
 
-std::string GameMap::getShieldsetName() const
+Glib::ustring GameMap::getShieldsetName() const
 {
   return d_shieldset;
 }
@@ -2368,19 +2370,19 @@ Shieldset* GameMap::getShieldset()
   return s_shieldset;
 }
 
-void GameMap::setTileset(std::string tileset)
+void GameMap::setTileset(Glib::ustring tileset)
 {
   d_tileset = tileset;
   s_tileset = Tilesetlist::getInstance()->getTileset(tileset);
 }
 
-void GameMap::setCityset(std::string cityset)
+void GameMap::setCityset(Glib::ustring cityset)
 {
   d_cityset = cityset;
   s_cityset = Citysetlist::getInstance()->getCityset(cityset);
 }
 
-void GameMap::setShieldset(std::string shieldset)
+void GameMap::setShieldset(Glib::ustring shieldset)
 {
   d_shieldset = shieldset;
   s_shieldset = Shieldsetlist::getInstance()->getShieldset(shieldset);

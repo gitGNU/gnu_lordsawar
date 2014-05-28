@@ -93,7 +93,7 @@ void TileStyleOrganizerDialog::on_category_drag_data_get(const Glib::RefPtr<Gdk:
 {
   drag_context->get_source_window()->show();
 
-  std::string s;
+  Glib::ustring s;
   TileStyle *style = get_selected_category_tilestyle();
   if (!style)
     return;
@@ -107,7 +107,7 @@ void TileStyleOrganizerDialog::on_unsorted_drag_data_get(const Glib::RefPtr<Gdk:
 {
   drag_context->get_source_window()->show();
 
-  std::string s;
+  Glib::ustring s;
   TileStyle *style = get_selected_unsorted_tilestyle();
   if (!style)
     return;
@@ -192,13 +192,13 @@ void TileStyleOrganizerDialog::fill_category(guint32 type)
 {
   Gtk::Label *label;
   guint32 count = d_tile->countTileStyles(TileStyle::Type(type));
-  std::string items = String::ucompose(_("(%1 items)"), count);
-  std::string markup;
+  Glib::ustring items = String::ucompose(_("(%1 items)"), count);
+  Glib::ustring markup;
   Glib::RefPtr<Gtk::ListStore> list;
   if (type == TileStyle::UNKNOWN)
     {
       label = unsorted_label;
-      std::string unsorted = _("Unsorted TileStyles");
+      Glib::ustring unsorted = _("Unsorted TileStyles");
       markup = "<b>" + unsorted + "</b> " + items;
       list = unsorted_list;
     }

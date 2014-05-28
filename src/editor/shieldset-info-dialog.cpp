@@ -32,7 +32,7 @@
 #include "File.h"
 
 
-ShieldSetInfoDialog::ShieldSetInfoDialog(Gtk::Window &parent, Shieldset *shieldset, std::string dir, std::string file, bool readonly, std::string title)
+ShieldSetInfoDialog::ShieldSetInfoDialog(Gtk::Window &parent, Shieldset *shieldset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
 {
   d_shieldset = shieldset;
   d_readonly = readonly;
@@ -62,10 +62,10 @@ ShieldSetInfoDialog::ShieldSetInfoDialog(Gtk::Window &parent, Shieldset *shields
     else
       {
         guint32 num = 0;
-        std::string basename = Shieldsetlist::getInstance()->findFreeBaseName(_("untitled"), 100, num);
+        Glib::ustring basename = Shieldsetlist::getInstance()->findFreeBaseName(_("untitled"), 100, num);
         filename_entry->set_text(basename);
 
-        std::string name = String::ucompose("%1 %2", _("Untitled"), num);
+        Glib::ustring name = String::ucompose("%1 %2", _("Untitled"), num);
         name_entry->set_text(name);
       }
     if (readonly == false)
@@ -135,7 +135,7 @@ void ShieldSetInfoDialog::update_buttons()
       return;
     }
 
-  std::string dir = File::getUserShieldsetDir() + filename_entry->get_text();
+  Glib::ustring dir = File::getUserShieldsetDir() + filename_entry->get_text();
   if (Shieldsetlist::getInstance()->getShieldset(filename_entry->get_text()))
     {
       accept_button->set_sensitive(false);

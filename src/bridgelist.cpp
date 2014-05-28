@@ -21,7 +21,7 @@
 #include "bridge.h"
 #include "xmlhelper.h"
 
-std::string Bridgelist::d_tag = "bridgelist";
+Glib::ustring Bridgelist::d_tag = "bridgelist";
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
@@ -75,7 +75,7 @@ bool Bridgelist::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Bridgelist::load(std::string tag, XML_Helper* helper)
+bool Bridgelist::load(Glib::ustring tag, XML_Helper* helper)
 {
     if (tag != Bridge::d_tag)
     //what has happened?

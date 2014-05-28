@@ -47,7 +47,7 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-std::string Playerlist::d_tag = "playerlist";
+Glib::ustring Playerlist::d_tag = "playerlist";
 Playerlist* Playerlist::s_instance = 0;
 Player* Playerlist::d_activeplayer = 0;
 Player* Playerlist::viewingplayer = 0;
@@ -186,7 +186,7 @@ void Playerlist::nextPlayer()
     debug("got player: " <<d_activeplayer->getName())
 }
 
-Player* Playerlist::getPlayer(std::string name) const
+Player* Playerlist::getPlayer(Glib::ustring name) const
 {
     debug("getPlayer()");
     for (const_iterator it = begin(); it != end(); ++it)
@@ -250,7 +250,7 @@ void Playerlist::add(Player *player)
   d_id[player->getId()] = player;
 }
 
-bool Playerlist::load(std::string tag, XML_Helper* helper)
+bool Playerlist::load(Glib::ustring tag, XML_Helper* helper)
 {
     static guint32 active = 0;
     static guint32 neutral = 0;
@@ -378,7 +378,7 @@ void Playerlist::calculateDiplomaticRankings()
   unsigned int numAlive = countPlayersAlive ();
   // okay, we take the first numAlive titles
 
-  std::vector<std::string> available_titles;
+  std::vector<Glib::ustring> available_titles;
   for (i = numAlive; i < MAX_PLAYERS ; i++)
     {
       for (unsigned int j = 0; j < MAX_PLAYERS; j++)

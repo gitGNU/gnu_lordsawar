@@ -109,8 +109,8 @@ NewMapDialog::NewMapDialog(Gtk::Window &parent)
     default_id = 0;
     shield_theme_combobox = manage(new Gtk::ComboBoxText);
     Shieldsetlist *sl = Shieldsetlist::getInstance();
-    std::list<std::string> shield_themes = sl->getValidNames();
-    for (std::list<std::string>::iterator i = shield_themes.begin(),
+    std::list<Glib::ustring> shield_themes = sl->getValidNames();
+    for (std::list<Glib::ustring>::iterator i = shield_themes.begin(),
 	 end = shield_themes.end(); i != end; ++i)
       {
 	if (*i == _("Default"))
@@ -298,8 +298,8 @@ void NewMapDialog::on_tile_size_changed()
 
   tile_theme_combobox->remove_all();
   Tilesetlist *tl = Tilesetlist::getInstance();
-  std::list<std::string> tile_themes = tl->getValidNames(get_active_tile_size());
-  for (std::list<std::string>::iterator i = tile_themes.begin(),
+  std::list<Glib::ustring> tile_themes = tl->getValidNames(get_active_tile_size());
+  for (std::list<Glib::ustring>::iterator i = tile_themes.begin(),
        end = tile_themes.end(); i != end; ++i)
     {
       if (*i == _("Default"))
@@ -314,10 +314,10 @@ void NewMapDialog::on_tile_size_changed()
 
   army_theme_combobox->remove_all();
   Armysetlist *al = Armysetlist::getInstance();
-  std::list<std::string> army_themes = al->getValidNames(get_active_tile_size());
+  std::list<Glib::ustring> army_themes = al->getValidNames(get_active_tile_size());
   counter = 0;
   default_id = 0;
-  for (std::list<std::string>::iterator i = army_themes.begin(),
+  for (std::list<Glib::ustring>::iterator i = army_themes.begin(),
        end = army_themes.end(); i != end; ++i)
     {
       if (*i == _("Default"))
@@ -332,10 +332,10 @@ void NewMapDialog::on_tile_size_changed()
 
   city_theme_combobox->remove_all();
   Citysetlist *cl = Citysetlist::getInstance();
-  std::list<std::string> city_themes = cl->getValidNames(get_active_tile_size());
+  std::list<Glib::ustring> city_themes = cl->getValidNames(get_active_tile_size());
   counter = 0;
   default_id = 0;
-  for (std::list<std::string>::iterator i = city_themes.begin(),
+  for (std::list<Glib::ustring>::iterator i = city_themes.begin(),
        end = city_themes.end(); i != end; ++i)
     {
       if (*i == _("Default"))

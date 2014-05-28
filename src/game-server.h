@@ -48,13 +48,13 @@ public:
   static void deleteInstance();
 
   bool isListening();
-  void start(GameScenario *game_scenario, int port, std::string profile_id, std::string nick);
+  void start(GameScenario *game_scenario, int port, Glib::ustring profile_id, Glib::ustring nick);
 
   void sit_down (Player *player);
   void stand_up (Player *player);
   void name_change (Player *player, Glib::ustring name);
   void type_change (Player *player, int type);
-  void chat(std::string message);
+  void chat(Glib::ustring message);
   void sendTurnOrder();
   void sendKillPlayer(Player *player);
   void sendOffPlayer(Player *player);
@@ -83,21 +83,21 @@ private:
   void onActionDone(NetworkAction *action);
   void onHistoryDone(NetworkHistory *history);
 
-  void join(void *conn, std::string payload);
-  void notifyJoin (std::string nickname);
+  void join(void *conn, Glib::ustring payload);
+  void notifyJoin (Glib::ustring nickname);
   void depart(void *conn);
-  void notifyDepart (void *conn, std::string nickname);
-  void sit(void *conn, Player *player, std::string nickname);
-  void notifySit(Player *player, std::string nickname);
-  void stand(void *conn, Player *player, std::string nickname);
-  void notifyStand(Player *player, std::string nickname);
+  void notifyDepart (void *conn, Glib::ustring nickname);
+  void sit(void *conn, Player *player, Glib::ustring nickname);
+  void notifySit(Player *player, Glib::ustring nickname);
+  void stand(void *conn, Player *player, Glib::ustring nickname);
+  void notifyStand(Player *player, Glib::ustring nickname);
   void change_name(void *conn, Player *player, Glib::ustring name);
   void notifyNameChange(Player *player, Glib::ustring name);
   void change_type(void *conn, Player *player, int type);
   void notifyTypeChange(Player *player, int type);
-  void gotRemoteActions(void *conn, const std::string &payload);
-  void gotRemoteHistory(void *conn, const std::string &payload);
-  void notifyChat(std::string message);
+  void gotRemoteActions(void *conn, const Glib::ustring &payload);
+  void gotRemoteHistory(void *conn, const Glib::ustring &payload);
+  void notifyChat(Glib::ustring message);
 
   void sendMap(Participant *part);
   void sendSeats(void *conn);
@@ -119,13 +119,13 @@ private:
   Participant *findParticipantByNick(Glib::ustring nickname);
   Participant *findParticipantByPlayerId(guint32 id);
   
-  bool onGotMessage(void *conn, int type, std::string message);
+  bool onGotMessage(void *conn, int type, Glib::ustring message);
   void onConnectionLost(void *conn);
   void onConnectionMade(void *conn);
   bool dumpActionsAndHistories(XML_Helper *helper);
   bool dumpActionsAndHistories(XML_Helper *helper, Player *player);
 
-  void gotChat(void *conn, std::string message);
+  void gotChat(void *conn, Glib::ustring message);
 
   bool player_already_sitting(Player *p);
 

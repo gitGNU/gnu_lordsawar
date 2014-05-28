@@ -179,7 +179,7 @@ class GameWindow: public sigc::trackable
     Gtk::HBox *status_box_container;
     StatusBox *status_box;
 
-    std::string current_save_filename;
+    Glib::ustring current_save_filename;
 
     Game* game;
     GameButtonBox *game_button_box;
@@ -241,14 +241,14 @@ class GameWindow: public sigc::trackable
     void on_help_about_activated();
     void on_online_help_activated();
 
-    void on_message_requested(std::string msg);
+    void on_message_requested(Glib::ustring msg);
     
     // shield set on the top
     void show_shield_turn();
 
     // game callbacks
     void on_sidebar_stats_changed(SidebarStats s);
-    void on_progress_status_changed(std::string status);
+    void on_progress_status_changed(Glib::ustring status);
     void on_progress_changed();
     void on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map, Gdk::Rectangle r);
     void on_smallmap_slid(Rectangle view);
@@ -301,7 +301,7 @@ class GameWindow: public sigc::trackable
     void on_mp_added_to_hero_stack(Hero *hero, guint32 mp);
     void on_stack_moves(Stack *stack, Vector<int> pos);
     void end_turn_play_by_mail ();
-    void on_commentator_comments(std::string comment);
+    void on_commentator_comments(Glib::ustring comment);
     Item* on_select_item(std::list<Item*> items);
     Player *on_select_item_victim_player();
     City *on_select_city_to_use_item_on(SelectCityMap::Type type);
@@ -318,7 +318,7 @@ class GameWindow: public sigc::trackable
 
     bool setup_game(GameScenario *game_scenario, NextTurn *nextTurn);
     void setup_signals(GameScenario *game_scenario);
-    void stop_game(std::string action);
+    void stop_game(Glib::ustring action);
     std::list<sigc::connection> connections;
     
     void setup_menuitem(Gtk::MenuItem*, sigc::slot<void> , sigc::signal<void, bool> &);
@@ -333,12 +333,12 @@ class GameWindow: public sigc::trackable
 
 public:
     bool d_quick_fights; //do we speed up fights for this player's turn?
-    std::string stop_action; //hackhackhack
-    std::string d_scenario;
+    Glib::ustring stop_action; //hackhackhack
+    Glib::ustring d_scenario;
     int d_gold;
     std::list<Hero*> d_heroes;
-    std::string d_player_name;
-    std::string d_load_filename;
+    Glib::ustring d_player_name;
+    Glib::ustring d_load_filename;
     Gtk::Image *cities_stats_image;
     Gtk::Image *gold_stats_image;
     Gtk::Image *income_stats_image;

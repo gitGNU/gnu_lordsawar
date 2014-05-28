@@ -64,18 +64,18 @@ bool QuestPillageGold::save(XML_Helper *helper) const
   return retval;
 }
 
-std::string QuestPillageGold::getProgress() const
+Glib::ustring QuestPillageGold::getProgress() const
 {
   return String::ucompose(_("You have already stolen %1 gold pieces."), d_pillaged);
 }
 
-void QuestPillageGold::getSuccessMsg(std::queue<std::string>& msgs) const
+void QuestPillageGold::getSuccessMsg(std::queue<Glib::ustring>& msgs) const
 {
   msgs.push(String::ucompose(_("You have managed to sack and pillage %1 gold."), d_pillaged));
   msgs.push(_("Well done!"));
 }
 
-void QuestPillageGold::getExpiredMsg(std::queue<std::string>& msgs) const
+void QuestPillageGold::getExpiredMsg(std::queue<Glib::ustring>& msgs) const
 {
     // This quest should never expire, so this is just a dummy function
 }

@@ -26,7 +26,7 @@
 #include "File.h"
 #include "defs.h"
 
-EditorRecoverDialog::EditorRecoverDialog(Gtk::Window *parent, std::string question)
+EditorRecoverDialog::EditorRecoverDialog(Gtk::Window *parent, Glib::ustring question)
 {
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(get_glade_path()

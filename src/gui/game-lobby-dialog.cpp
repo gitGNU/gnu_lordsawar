@@ -494,13 +494,13 @@ void GameLobbyDialog::on_player_selected()
 
 }
 
-void GameLobbyDialog::on_remote_participant_joins(std::string nickname)
+void GameLobbyDialog::on_remote_participant_joins(Glib::ustring nickname)
 {
   Gtk::TreeIter j = people_list->append();
   (*j)[people_columns.nickname] = nickname;
 }
 
-void GameLobbyDialog::on_remote_participant_departs(std::string nickname)
+void GameLobbyDialog::on_remote_participant_departs(Glib::ustring nickname)
 {
   //iterate through and remove the nickname
   Gtk::TreeNodeChildren rows = people_list->children();
@@ -566,7 +566,7 @@ void GameLobbyDialog::on_player_changes_type(Player *p, int type)
     }
 }
 
-void GameLobbyDialog::on_player_sits(Player *p, std::string nickname)
+void GameLobbyDialog::on_player_sits(Player *p, Glib::ustring nickname)
 {
   if (!p)
     return;
@@ -592,7 +592,7 @@ void GameLobbyDialog::on_player_sits(Player *p, std::string nickname)
     }
 }
 
-void GameLobbyDialog::on_player_stands(Player *p, std::string nickname)
+void GameLobbyDialog::on_player_stands(Player *p, Glib::ustring nickname)
 {
   if (!p)
     return;
@@ -732,9 +732,9 @@ void GameLobbyDialog::on_chat_key_pressed(GdkEventKey *event)
   return;
 }
 
-void GameLobbyDialog::on_chatted(std::string nickname, std::string message)
+void GameLobbyDialog::on_chatted(Glib::ustring nickname, Glib::ustring message)
 {
-  std::string new_text;
+  Glib::ustring new_text;
   new_text = chat_textview->get_buffer()->get_text() + "\n" + message;
   chat_textview->get_buffer()->set_text(new_text);
   chat_scrolledwindow->get_vadjustment()->set_value(chat_scrolledwindow->get_vadjustment()->get_upper());

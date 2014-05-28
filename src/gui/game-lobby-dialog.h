@@ -18,7 +18,6 @@
 #ifndef GAME_LOBBY_DIALOG_H
 #define GAME_LOBBY_DIALOG_H
 
-#include <string>
 #include <memory>
 #include <vector>
 #include <gtkmm.h>
@@ -47,7 +46,7 @@ class GameLobbyDialog: public sigc::trackable
     
   sigc::signal<void, Player*> player_sat_down;
   sigc::signal<void, Player*> player_stood_up;
-  sigc::signal<void, std::string> message_sent;
+  sigc::signal<void, Glib::ustring> message_sent;
   sigc::signal<void, Player*, Glib::ustring> player_changed_name;
   sigc::signal<void, Player*, int> player_changed_type;
   sigc::signal<void, GameScenario *, NextTurnNetworked*> start_network_game;
@@ -170,10 +169,10 @@ class GameLobbyDialog: public sigc::trackable
     void on_remote_player_ends_turn(Player *p);
     void on_remote_player_starts_turn(Player *p);
 
-    void on_remote_participant_joins(std::string nickname);
-    void on_remote_participant_departs(std::string nickname);
-    void on_player_stands(Player *p, std::string nickname);
-    void on_player_sits(Player *p, std::string nickname);
+    void on_remote_participant_joins(Glib::ustring nickname);
+    void on_remote_participant_departs(Glib::ustring nickname);
+    void on_player_stands(Player *p, Glib::ustring nickname);
+    void on_player_sits(Player *p, Glib::ustring nickname);
     void on_player_changes_name(Player *p, Glib::ustring name);
     void on_player_changes_type(Player *p, int type);
     void on_remote_player_changes_name(Player *p);
@@ -184,7 +183,7 @@ class GameLobbyDialog: public sigc::trackable
     void on_name_changed(Gtk::CellEditable *editable, const Glib::ustring &path);
 
     void on_chat_key_pressed(GdkEventKey *event);
-    void on_chatted(std::string nickname, std::string message);
+    void on_chatted(Glib::ustring nickname, Glib::ustring message);
 
     void on_reorder_playerlist();
 

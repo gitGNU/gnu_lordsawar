@@ -30,9 +30,9 @@
 #include "playerlist.h"
 #include "player.h"
 
-std::string GameButtonBox::get_file(Configuration::UiFormFactor factor)
+Glib::ustring GameButtonBox::get_file(Configuration::UiFormFactor factor)
 {
-  std::string file = "";
+  Glib::ustring file = "";
   switch (factor)
     {
     case Configuration::UI_FORM_FACTOR_DESKTOP:
@@ -50,7 +50,7 @@ std::string GameButtonBox::get_file(Configuration::UiFormFactor factor)
 
 GameButtonBox * GameButtonBox::create(guint32 factor)
 {
-  std::string file = get_file(Configuration::UiFormFactor(factor));
+  Glib::ustring file = get_file(Configuration::UiFormFactor(factor));
   Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(file);
 
   GameButtonBox *box;

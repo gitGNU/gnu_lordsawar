@@ -34,7 +34,7 @@
 #include "Tile.h"
 #include "player.h"
 
-std::string Army::d_tag = "army";
+Glib::ustring Army::d_tag = "army";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -145,7 +145,7 @@ Army::Army(XML_Helper* helper)
   helper->getData(d_xp, "xp");
   helper->getData(d_level, "level");
 
-  std::string medals;
+  Glib::ustring medals;
   std::stringstream smedals;
   bool val;
 
@@ -161,7 +161,7 @@ Army::Army(XML_Helper* helper)
 
   helper->getData(d_battles_number, "battlesnumber");    
 
-  std::string temples;
+  Glib::ustring temples;
   std::stringstream stemples;
   helper->getData(temples, "visited_temples");
   stemples.str(temples);
@@ -454,7 +454,7 @@ bool Army::getAwardable() const
     return false;
 }
 
-std::string Army::getName() const
+Glib::ustring Army::getName() const
 {
   ArmyProto *a = Armysetlist::getInstance()->getArmy(d_armyset, d_type_id);
   if (a)

@@ -113,7 +113,7 @@ PixMask::PixMask(const PixMask&p)
     }
 }
 
-PixMask::PixMask(std::string filename, bool &broken)
+PixMask::PixMask(Glib::ustring filename, bool &broken)
      : width(0), height(0)
 {
   if (Gtk::Main::instance() == NULL)
@@ -143,7 +143,7 @@ PixMask::PixMask(std::string filename, bool &broken)
   unscaled_height = height;
 }
 
-PixMask* PixMask::create(std::string filename, bool &broken)
+PixMask* PixMask::create(Glib::ustring filename, bool &broken)
 {
   return new PixMask(filename, broken);
 }

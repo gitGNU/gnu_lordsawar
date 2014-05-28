@@ -18,7 +18,7 @@
 #include "bridge.h"
 #include "GameMap.h"
 
-std::string Bridge::d_tag = "bridge";
+Glib::ustring Bridge::d_tag = "bridge";
 
 Bridge::Bridge(Vector<int> pos, int type)
   :Location(pos), d_type(type)
@@ -30,7 +30,7 @@ Bridge::Bridge(Vector<int> pos, int type)
 Bridge::Bridge(XML_Helper* helper)
     :Location(helper)
 {
-  std::string type_str;
+  Glib::ustring type_str;
   helper->getData(type_str, "type");
   d_type = bridgeTypeFromString(type_str);
     
@@ -60,14 +60,14 @@ bool Bridge::save(XML_Helper* helper) const
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("x", getPos().x);
     retval &= helper->saveData("y", getPos().y);
-    std::string type_str = bridgeTypeToString(Bridge::Type(d_type));
+    Glib::ustring type_str = bridgeTypeToString(Bridge::Type(d_type));
     retval &= helper->saveData("type", type_str);
     retval &= helper->closeTag();
     
     return retval;
 }
 
-std::string Bridge::bridgeTypeToString(const Bridge::Type type)
+Glib::ustring Bridge::bridgeTypeToString(const Bridge::Type type)
 {
   switch (type)
     {
@@ -83,7 +83,7 @@ std::string Bridge::bridgeTypeToString(const Bridge::Type type)
   return "Bridge::CONNECTS_TO_EAST";
 }
 
-Bridge::Type Bridge::bridgeTypeFromString(const std::string str)
+Bridge::Type Bridge::bridgeTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Bridge::Type(atoi(str.c_str()));

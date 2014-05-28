@@ -21,7 +21,7 @@
 #include "port.h"
 #include "xmlhelper.h"
 
-std::string Portlist::d_tag = "portlist";
+Glib::ustring Portlist::d_tag = "portlist";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -76,7 +76,7 @@ bool Portlist::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Portlist::load(std::string tag, XML_Helper* helper)
+bool Portlist::load(Glib::ustring tag, XML_Helper* helper)
 {
     if (tag != Port::d_tag)
     //what has happened?

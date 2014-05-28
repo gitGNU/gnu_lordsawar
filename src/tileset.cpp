@@ -40,13 +40,13 @@
 
 #define DEFAULT_TILE_SIZE 40
 
-std::string Tileset::d_tag = "tileset";
-std::string Tileset::d_road_smallmap_tag = "road_smallmap";
-std::string Tileset::d_ruin_smallmap_tag = "ruin_smallmap";
-std::string Tileset::d_temple_smallmap_tag = "temple_smallmap";
-std::string Tileset::file_extension = TILESET_EXT;
+Glib::ustring Tileset::d_tag = "tileset";
+Glib::ustring Tileset::d_road_smallmap_tag = "road_smallmap";
+Glib::ustring Tileset::d_ruin_smallmap_tag = "ruin_smallmap";
+Glib::ustring Tileset::d_temple_smallmap_tag = "temple_smallmap";
+Glib::ustring Tileset::file_extension = TILESET_EXT;
 
-Tileset::Tileset(guint32 id, std::string name)
+Tileset::Tileset(guint32 id, Glib::ustring name)
 	: Set(), d_name(name), d_copyright(""), d_license(""), d_id(id), 
 	d_tileSize(DEFAULT_TILE_SIZE), d_basename("")
 {
@@ -171,7 +171,7 @@ Tileset::Tileset (const Tileset& t)
     }
 }
 
-Tileset::Tileset(XML_Helper *helper, std::string directory)
+Tileset::Tileset(XML_Helper *helper, Glib::ustring directory)
 	:Set()
 {
   setDirectory(directory);
@@ -232,7 +232,7 @@ int Tileset::getIndex(Tile::Type type) const
   return -1;
 }
 
-bool Tileset::loadTile(std::string tag, XML_Helper* helper)
+bool Tileset::loadTile(Glib::ustring tag, XML_Helper* helper)
 {
   debug("loadTile()")
 
@@ -340,34 +340,32 @@ bool Tileset::save(XML_Helper *helper) const
   return retval;
 }
 
-bool Tileset::save(std::string filename, std::string extension) const
+bool Tileset::save(Glib::ustring filename, Glib::ustring extension) const
 {
   bool broken = false;
-  std::string goodfilename = File::add_ext_if_necessary(filename, extension);
-  std::string tmpfile = "lw.XXXX";
-  int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
-  close (fd);
+  Glib::ustring goodfilename = File::add_ext_if_necessary(filename, extension);
+  Glib::ustring tmpfile = File::get_tmp_file();
   XML_Helper helper(tmpfile, std::ios::out, Configuration::s_zipfiles);
   helper.begin(LORDSAWAR_TILESET_VERSION);
   broken = !save(&helper);
   helper.close();
   if (broken == true)
     return false;
-  std::string tmptar = tmpfile + ".tar";
+  Glib::ustring tmptar = tmpfile + ".tar";
   Tar_Helper t(tmptar, std::ios::out, broken);
   if (broken == true)
     return false;
   t.saveFile(tmpfile, File::get_basename(goodfilename, true));
   //now the images, go get 'em from the tarball we were made from.
-  std::list<std::string> delfiles;
+  std::list<Glib::ustring> delfiles;
   Tar_Helper orig(getConfigurationFile(), std::ios::in, broken);
   if (broken == false)
     {
-      std::list<std::string> files = orig.getFilenamesWithExtension(".png");
-      for (std::list<std::string>::iterator it = files.begin(); 
+      std::list<Glib::ustring> files = orig.getFilenamesWithExtension(".png");
+      for (std::list<Glib::ustring>::iterator it = files.begin(); 
            it != files.end(); it++)
         {
-          std::string pngfile = orig.getFile(*it, broken);
+          Glib::ustring pngfile = orig.getFile(*it, broken);
           if (broken == false)
             {
               t.saveFile(pngfile);
@@ -387,7 +385,7 @@ bool Tileset::save(std::string filename, std::string extension) const
         broken = false;
     }
   t.Close();
-  for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
+  for (std::list<Glib::ustring>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
     File::erase(*it);
   File::erase(tmpfile);
   if (broken == false)
@@ -439,7 +437,7 @@ int Tileset::getLargestTileStyleId() const
   return largest;
 }
 
-void Tileset::setBaseName(std::string bname)
+void Tileset::setBaseName(Glib::ustring bname)
 {
   d_basename = bname;
 }
@@ -468,7 +466,7 @@ bool Tileset::validate() const
 class TilesetLoader
 {
 public:
-    TilesetLoader(std::string filename, bool &broken, bool &unsupported)
+    TilesetLoader(Glib::ustring filename, bool &broken, bool &unsupported)
       {
         unsupported_version = false;
 	tileset = NULL;
@@ -479,7 +477,7 @@ public:
         Tar_Helper t(filename, std::ios::in, broken);
         if (broken)
           return;
-        std::string lwtfilename = 
+        Glib::ustring lwtfilename = 
           t.getFirstFile(Tileset::file_extension, broken);
         if (broken)
           return;
@@ -497,7 +495,7 @@ public:
         helper.close();
         t.Close();
       };
-    bool load(std::string tag, XML_Helper* helper)
+    bool load(Glib::ustring tag, XML_Helper* helper)
       {
 	if (tag == Tileset::d_tag)
 	  {
@@ -515,14 +513,14 @@ public:
 	  }
 	return false;
       };
-    std::string dir;
-    std::string file;
+    Glib::ustring dir;
+    Glib::ustring file;
     Tileset *tileset;
     bool unsupported_version;
 };
 
 
-Tileset *Tileset::create(std::string file, bool &unsupported_version)
+Tileset *Tileset::create(Glib::ustring file, bool &unsupported_version)
 {
   bool broken = false;
   TilesetLoader d(file, broken, unsupported_version);
@@ -531,14 +529,14 @@ Tileset *Tileset::create(std::string file, bool &unsupported_version)
   return d.tileset;
 }
 
-void Tileset::getFilenames(std::list<std::string> &files)
+void Tileset::getFilenames(std::list<Glib::ustring> &files)
 {
   for (iterator it = begin(); it != end(); it++)
     {
       Tile *t = *it;
       for (Tile::iterator sit = t->begin(); sit != t->end(); sit++)
 	{
-	  std::string file = (*sit)->getName();
+	  Glib::ustring file = (*sit)->getName();
 	  if (std::find(files.begin(), files.end(), file) == files.end())
 	    files.push_back(file);
 	}
@@ -628,13 +626,13 @@ void Tileset::uninstantiateImages()
     }
 }
 
-void Tileset::instantiateImages(std::string explosion_filename,
-				std::string roads_filename,
-				std::string bridges_filename,
-				std::string fog_filename,
-				std::string flags_filename,
-				std::string selector_filename,
-				std::string small_selector_filename,
+void Tileset::instantiateImages(Glib::ustring explosion_filename,
+				Glib::ustring roads_filename,
+				Glib::ustring bridges_filename,
+				Glib::ustring fog_filename,
+				Glib::ustring flags_filename,
+				Glib::ustring selector_filename,
+				Glib::ustring small_selector_filename,
                                 bool &broken)
 {
   if (explosion_filename.empty() == false && !broken)
@@ -760,13 +758,13 @@ void Tileset::instantiateImages(bool &broken)
       if (!broken)
         (*it)->instantiateImages(size, &t, broken);
     }
-  std::string explosion_filename = "";
-  std::string roads_filename = "";
-  std::string bridges_filename = "";
-  std::string fog_filename = "";
-  std::string flags_filename = "";
-  std::string selector_filename = "";
-  std::string small_selector_filename = "";
+  Glib::ustring explosion_filename = "";
+  Glib::ustring roads_filename = "";
+  Glib::ustring bridges_filename = "";
+  Glib::ustring fog_filename = "";
+  Glib::ustring flags_filename = "";
+  Glib::ustring selector_filename = "";
+  Glib::ustring small_selector_filename = "";
 
   if (getExplosionFilename().empty() == false && !broken)
     explosion_filename = t.getFile(getExplosionFilename() + ".png", broken);
@@ -805,19 +803,19 @@ void Tileset::instantiateImages(bool &broken)
   return;
 }
 
-std::string Tileset::getConfigurationFile() const
+Glib::ustring Tileset::getConfigurationFile() const
 {
   return getDirectory() + d_basename + file_extension;
 }
 
-std::list<std::string> Tileset::scanUserCollection()
+std::list<Glib::ustring> Tileset::scanUserCollection()
 {
   return File::scanForFiles(File::getUserTilesetDir(), file_extension);
 }
 
-std::list<std::string> Tileset::scanSystemCollection()
+std::list<Glib::ustring> Tileset::scanSystemCollection()
 {
-  std::list<std::string> retlist = File::scanForFiles(File::getTilesetDir(), 
+  std::list<Glib::ustring> retlist = File::scanForFiles(File::getTilesetDir(), 
                                                       file_extension);
   if (retlist.empty())
     {
@@ -850,20 +848,20 @@ void Tileset::reload(bool &broken)
       uninstantiateImages();
       for (iterator it = begin(); it != end(); it++)
         delete *it;
-      std::string basename = d_basename;
+      Glib::ustring basename = d_basename;
       *this = *d.tileset;
       instantiateImages(broken);
       d_basename = basename;
     }
 }
 
-std::string Tileset::getFileFromConfigurationFile(std::string file)
+Glib::ustring Tileset::getFileFromConfigurationFile(Glib::ustring file)
 {
   bool broken = false;
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
   if (broken == false)
     {
-      std::string filename = t.getFile(file, broken);
+      Glib::ustring filename = t.getFile(file, broken);
       t.Close();
   
       if (broken == false)
@@ -872,11 +870,11 @@ std::string Tileset::getFileFromConfigurationFile(std::string file)
   return "";
 }
 
-bool Tileset::addFileInConfigurationFile(std::string new_file)
+bool Tileset::addFileInConfigurationFile(Glib::ustring new_file)
 {
   return replaceFileInConfigurationFile("", new_file);
 }
-bool Tileset::replaceFileInConfigurationFile(std::string file, std::string new_file)
+bool Tileset::replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file)
 {
   bool broken = false;
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
@@ -933,12 +931,12 @@ guint32 Tileset::calculate_preferred_tile_size() const
   return tilesize;
 }
 
-bool Tileset::copy(std::string src, std::string dest)
+bool Tileset::copy(Glib::ustring src, Glib::ustring dest)
 {
   return Tar_Helper::copy(src, dest);
 }
         
-bool Tileset::addTileStyleSet(Tile *tile, std::string filename)
+bool Tileset::addTileStyleSet(Tile *tile, Glib::ustring filename)
 {
   bool success = true;
   TileStyle::Type tilestyle_type;
@@ -988,7 +986,7 @@ void Tileset::clean_tmp_dir() const
   return Tar_Helper::clean_tmp_dir(getConfigurationFile());
 }
 
-bool Tileset::upgrade(std::string filename, std::string old_version, std::string new_version)
+bool Tileset::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version)
 {
   return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
                                             FileCompat::TILESET, d_tag);

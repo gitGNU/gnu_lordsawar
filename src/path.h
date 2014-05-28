@@ -41,7 +41,7 @@ class Path : public std::list<Vector<int> >
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
         //! Default constructor.
         Path();

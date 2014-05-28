@@ -20,7 +20,7 @@
 #include "armyprodbase.h"
 #include "xmlhelper.h"
 
-std::string ProdSlot::d_tag = "slot";
+Glib::ustring ProdSlot::d_tag = "slot";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
@@ -46,7 +46,7 @@ ProdSlot::ProdSlot(XML_Helper* helper)
 
 }
 
-bool ProdSlot::load(std::string tag, XML_Helper *helper)
+bool ProdSlot::load(Glib::ustring tag, XML_Helper *helper)
 {
   if (tag == ArmyProdBase::d_tag)
     {

@@ -753,7 +753,7 @@ void GameWindow::end_turn_play_by_mail ()
 
   if (res == Gtk::RESPONSE_ACCEPT)
     {
-      std::string filename = chooser.get_filename();
+      Glib::ustring filename = chooser.get_filename();
 
       game->saveTurnFile(filename);
       TimedMessageDialog dialog
@@ -958,7 +958,7 @@ void GameWindow::on_load_game_activated()
 
   if (res == Gtk::RESPONSE_ACCEPT)
     {
-      std::string filename = chooser.get_filename();
+      Glib::ustring filename = chooser.get_filename();
       current_save_filename = filename;
       if (filename ==  (File::getSavePath() + "autosave" + SAVE_EXT))
 	game->inhibitAutosaveRemoval(true);
@@ -1003,7 +1003,7 @@ void GameWindow::on_save_game_as_activated()
 
   if (res == Gtk::RESPONSE_ACCEPT)
     {
-      std::string filename = chooser.get_filename();
+      Glib::ustring filename = chooser.get_filename();
 
       current_save_filename = filename;
 
@@ -1446,7 +1446,7 @@ void GameWindow::on_ruin_report_activated()
   if (Templelist::getInstance()->size() == 0 &&
       Ruinlist::getInstance()->size() == 0)
     {
-      std::string s = _("No ruins or temples to show!");
+      Glib::ustring s = _("No ruins or temples to show!");
       TimedMessageDialog dialog(*window, s, 30);
 
       dialog.show_all();
@@ -1632,7 +1632,7 @@ void GameWindow::on_diplomacy_button_clicked()
   d.hide();
 }
 
-void GameWindow::stop_game(std::string action)
+void GameWindow::stop_game(Glib::ustring action)
 {
   stop_action = action;
   Sound::getInstance()->disableBackground();
@@ -1701,7 +1701,7 @@ void GameWindow::on_player_died(Player *player)
   dialog.hide();
 }
 
-void GameWindow::on_message_requested(std::string msg)
+void GameWindow::on_message_requested(Glib::ustring msg)
 {
   // FIXME: this is a bit crude, maybe beef it up
   Gtk::MessageDialog dialog(*window, msg);
@@ -1711,7 +1711,7 @@ void GameWindow::on_message_requested(std::string msg)
   dialog.hide();
 }
 
-void GameWindow::on_progress_status_changed(std::string string)
+void GameWindow::on_progress_status_changed(Glib::ustring string)
 {
   status_box->set_progress_label(string);
 }
@@ -2771,7 +2771,7 @@ void GameWindow::on_quest_expired(Quest *quest)
   s += "\n\n";
 
   // add messages from the quest
-  std::queue<std::string> msgs;
+  std::queue<Glib::ustring> msgs;
   quest->getExpiredMsg(msgs);
   while (!msgs.empty())
     {
@@ -3166,7 +3166,7 @@ void GameWindow::give_some_cheese(Player *winner)
   on_city_history_activated();
 }
 
-void GameWindow::on_commentator_comments(std::string comment)
+void GameWindow::on_commentator_comments(Glib::ustring comment)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   TimedMessageDialog dialog (*window, comment, 0);
@@ -3219,7 +3219,7 @@ City *GameWindow::on_select_city_to_use_item_on(SelectCityMap::Type type)
     
 void GameWindow::on_gold_stolen(Player *victim, guint32 gold_pieces)
 {
-  std::string s = "";
+  Glib::ustring s = "";
   s += 
     String::ucompose(ngettext("%1 gold piece was stolen from %2!",
                               "%1 gold pieces were stolen from %2!", 
@@ -3234,7 +3234,7 @@ void GameWindow::on_gold_stolen(Player *victim, guint32 gold_pieces)
 
 void GameWindow::on_ships_sunk(Player *victim, guint32 num_armies)
 {
-  std::string s = "";
+  Glib::ustring s = "";
   s += 
     String::ucompose(ngettext("%1 army unit was sunk to the watery depths!",
                               "%1 army units were sunk to the watery depths!", 
@@ -3249,7 +3249,7 @@ void GameWindow::on_ships_sunk(Player *victim, guint32 num_armies)
 
 void GameWindow::on_bags_picked_up(Hero *hero, guint32 num_bags)
 {
-  std::string s = "";
+  Glib::ustring s = "";
   s += 
     String::ucompose(ngettext("%1 bag was retrieved by %2!",
                               "%1 bags were retrieved by %2!", 
@@ -3264,7 +3264,7 @@ void GameWindow::on_bags_picked_up(Hero *hero, guint32 num_bags)
 
 void GameWindow::on_bridge_burned(Hero *hero)
 {
-  std::string s = "";
+  Glib::ustring s = "";
   s += 
     String::ucompose(_("%1 has burned a bridge!  None shall pass this way again!"), hero->getName());
   TimedMessageDialog dialog(*window, s, 30);
@@ -3277,7 +3277,7 @@ void GameWindow::on_bridge_burned(Hero *hero)
 
 void GameWindow::on_keeper_captured(Hero *hero, Ruin *ruin, Glib::ustring name)
 {
-  std::string s = "";
+  Glib::ustring s = "";
   s += String::ucompose(_("%1 has turned a unit of %2 from %3!"), 
                         hero->getName(), name, ruin->getName());
   TimedMessageDialog dialog(*window, s, 30);
@@ -3290,7 +3290,7 @@ void GameWindow::on_keeper_captured(Hero *hero, Ruin *ruin, Glib::ustring name)
 
 void GameWindow::on_city_diseased(Hero *hero, Glib::ustring name, guint32 num_armies)
 {
-  std::string s = "";
+  Glib::ustring s = "";
   s += String::ucompose(ngettext("%1 unit in %2 have perished!",
                                  "%1 units in %2 have perished!", num_armies),
                         num_armies, name);
@@ -3304,7 +3304,7 @@ void GameWindow::on_city_diseased(Hero *hero, Glib::ustring name, guint32 num_ar
 
 void GameWindow::on_city_defended(Hero *hero, Glib::ustring city_name, Glib::ustring army_name, guint32 num_armies)
 {
-  std::string s = "";
+  Glib::ustring s = "";
   s += String::ucompose(ngettext("%1 unit of %2 have been raised in %3!",
                                  "%1 units of %2 have been raised in %3!", num_armies),
                         num_armies, army_name, city_name);
@@ -3320,7 +3320,7 @@ void GameWindow::on_city_persuaded(Hero *hero, Glib::ustring city_name, guint32 
 {
   if (game)
     game->redraw();
-  std::string s = "";
+  Glib::ustring s = "";
   if (num_armies != 0)
     s += String::ucompose
       (ngettext("%1 unit in %2 have been persuaded to fly your flag!",
@@ -3341,7 +3341,7 @@ void GameWindow::on_city_persuaded(Hero *hero, Glib::ustring city_name, guint32 
 
 void GameWindow::on_stack_teleported(Hero *hero, Glib::ustring city_name)
 {
-  std::string s = "";
+  Glib::ustring s = "";
   s += String::ucompose(_("%1 has teleported to %2!"), 
                         hero->getName(), city_name);
   TimedMessageDialog dialog(*window, s, 30);
@@ -3354,7 +3354,7 @@ void GameWindow::on_stack_teleported(Hero *hero, Glib::ustring city_name)
 
 void GameWindow::on_monster_summoned(Hero *hero, Glib::ustring name)
 {
-  std::string s = "";
+  Glib::ustring s = "";
   s += String::ucompose(_("A unit of %1 has come to the aid of %2!"), 
                         name, hero->getName());
   TimedMessageDialog dialog(*window, s, 30);
@@ -3367,7 +3367,7 @@ void GameWindow::on_monster_summoned(Hero *hero, Glib::ustring name)
 
 void GameWindow::on_worms_killed(Hero *hero, Glib::ustring name, guint32 num_killed)
 {
-  std::string s = "";
+  Glib::ustring s = "";
   s += 
     String::ucompose(ngettext("%1 unit of %2 was banished by %3!",
                               "%1 units of %2 were banished by %3!", 
@@ -3382,7 +3382,7 @@ void GameWindow::on_worms_killed(Hero *hero, Glib::ustring name, guint32 num_kil
 
 void GameWindow::on_mp_added_to_hero_stack(Hero *hero, guint32 mp)
 {
-  std::string s = "";
+  Glib::ustring s = "";
   s += 
     String::ucompose(ngettext("%1 movement point was added to %2 and accompanying units!",
                               "%1 movement points were added to %2 and accompanying units!", 

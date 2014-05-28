@@ -18,7 +18,7 @@
 #include "SmallTile.h"
 #include <iostream>
 
-std::string SmallTile::d_tag = "smallmap";
+Glib::ustring SmallTile::d_tag = "smallmap";
 
 SmallTile::SmallTile()
 {

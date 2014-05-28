@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Ben Asselstine
+//  Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #define HOSTED_GAME_H
 
 #include <gtkmm.h>
-#include <string>
 
 
 #include <sys/time.h>
@@ -35,7 +34,7 @@ class HostedGame
 {
     public:
 
-        static std::string d_tag;
+        static Glib::ustring d_tag;
 	//! Make a new hosted game entry.
 	HostedGame(AdvertisedGame *advertised_game);
 
@@ -73,7 +72,7 @@ class HostedGame
 
 	// DATA
         
-        bool loadAdvertisedGame(std::string tag, XML_Helper *helper);
+        bool loadAdvertisedGame(Glib::ustring tag, XML_Helper *helper);
         void on_pinged(bool success);
 
         AdvertisedGame *d_advertised_game;

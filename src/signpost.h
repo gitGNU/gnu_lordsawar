@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 
 #define DEFAULT_SIGNPOST "nowhere"
 
-#include <string>
 #include "Location.h"
 #include "Renamable.h"
 
@@ -35,14 +34,14 @@ class Signpost: public Location, public Renamable
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! Default constructor.
         /**
          * @param pos          The location of the signpost on the game map.
          * @param name         The contents of the sign.
          */
-        Signpost(Vector<int> pos, std::string name = "nowhere");
+        Signpost(Vector<int> pos, Glib::ustring name = "nowhere");
 
 	//! Copy constructor.
         Signpost(const Signpost&);

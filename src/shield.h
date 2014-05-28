@@ -19,7 +19,6 @@
 #define SHIELD_H
 
 #include <gtkmm.h>
-#include <string>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 
@@ -38,7 +37,7 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
     public:
 
 	//! The xml tag of this object in a shieldset configuration file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! The notional player that the Shield goes with.
 	enum Colour {WHITE = 0, GREEN = 1, YELLOW = 2, DARK_BLUE = 3, ORANGE = 4,
@@ -118,7 +117,7 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 	static Gdk::RGBA get_default_color_for_neutral();
 
 	//! Convert the Shield::Colour enumerated value to a string.
-	static std::string colourToString(const Shield::Colour c);
+	static Glib::ustring colourToString(const Shield::Colour c);
 
         static guint32 get_next_shield(guint32 type);
     protected:

@@ -30,7 +30,7 @@
 #include "shieldsetlist.h"
 #include "GraphicsCache.h"
 
-ImageEditorDialog::ImageEditorDialog(Gtk::Window &parent, std::string filename, int frames)
+ImageEditorDialog::ImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int frames)
 {
   num_frames = frames;
     Glib::RefPtr<Gtk::Builder> xml
@@ -66,7 +66,7 @@ int ImageEditorDialog::run()
 
 void ImageEditorDialog::on_image_chosen()
 {
-  std::string selected_filename = filechooserbutton->get_filename();
+  Glib::ustring selected_filename = filechooserbutton->get_filename();
   if (selected_filename.empty())
     return;
 
@@ -81,7 +81,7 @@ void ImageEditorDialog::update_panel()
     filechooserbutton->set_filename (target_filename);
 }
 
-void ImageEditorDialog::show_image(std::string filename)
+void ImageEditorDialog::show_image(Glib::ustring filename)
 {
   if (filename == "")
     return;

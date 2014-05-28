@@ -22,7 +22,7 @@
 
 #include "xmlhelper.h"
 
-std::string FL_Counter::d_tag = "counter";
+Glib::ustring FL_Counter::d_tag = "counter";
 
 FL_Counter* fl_counter;
 

@@ -202,7 +202,7 @@ bool Maptile::hasWaterBuilding() const
   return false;
 }
 
-Maptile::Building Maptile::buildingFromString(std::string str)
+Maptile::Building Maptile::buildingFromString(Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Maptile::Building(atoi(str.c_str()));
@@ -226,7 +226,7 @@ Maptile::Building Maptile::buildingFromString(std::string str)
   return Maptile::NONE;
 }
 
-std::string Maptile::buildingToString(const Maptile::Building bldg)
+Glib::ustring Maptile::buildingToString(const Maptile::Building bldg)
 {
   switch (bldg)
     {

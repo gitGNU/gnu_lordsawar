@@ -35,14 +35,14 @@
 class ImageEditorDialog: public sigc::trackable
 {
  public:
-    ImageEditorDialog(Gtk::Window &parent, std::string filename, int num_frames);
+    ImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int num_frames);
     ~ImageEditorDialog();
 
-    std::string get_selected_filename() {return target_filename;};
+    Glib::ustring get_selected_filename() {return target_filename;};
     int run();
     
  private:
-    std::string target_filename;
+    Glib::ustring target_filename;
     int num_frames;
     std::vector<PixMask*> frames;
     int active_frame;
@@ -51,7 +51,7 @@ class ImageEditorDialog: public sigc::trackable
     Gtk::FileChooserButton *filechooserbutton;
     Gtk::Image *image;
     void on_image_chosen();
-    void show_image(std::string filename);
+    void show_image(Glib::ustring filename);
     void update_panel();
     void on_heartbeat();
 

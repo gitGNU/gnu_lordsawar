@@ -24,9 +24,9 @@
 #include <stdlib.h>
 #include "Sage.h"
 
-std::string Ruin::d_tag = "ruin";
+Glib::ustring Ruin::d_tag = "ruin";
 
-Ruin::Ruin(Vector<int> pos, guint32 width, std::string name, int type, Stack* occupant, bool searched, bool hidden, Player *owner, bool sage)
+Ruin::Ruin(Vector<int> pos, guint32 width, Glib::ustring name, int type, Stack* occupant, bool searched, bool hidden, Player *owner, bool sage)
 :NamedLocation(pos, width, name,
 	        name + _(" is inhabited by monsters and full of treasure!")), 
     d_searched(searched), 
@@ -67,7 +67,7 @@ Ruin::Ruin(XML_Helper* helper, guint32 width)
     d_hidden(0), d_owner(0), d_sage(0), d_reward(0)
 {
     guint32 ui;
-    std::string type_str;
+    Glib::ustring type_str;
     helper->getData(type_str, "type");
     d_type = ruinTypeFromString(type_str);
     helper->getData(d_searched, "searched");
@@ -111,7 +111,7 @@ bool Ruin::save(XML_Helper* helper) const
   retval &= helper->saveData("y", getPos().y);
   retval &= helper->saveData("name", getName(false));
   retval &= helper->saveData("description", getDescription());
-  std::string type_str = ruinTypeToString(Ruin::Type(d_type));
+  Glib::ustring type_str = ruinTypeToString(Ruin::Type(d_type));
   retval &= helper->saveData("type", type_str);
   retval &= helper->saveData("searched", d_searched);
   retval &= helper->saveData("sage", d_sage);
@@ -129,12 +129,12 @@ bool Ruin::save(XML_Helper* helper) const
   return retval;
 }
 
-bool Ruin::load(std::string tag, XML_Helper* helper)
+bool Ruin::load(Glib::ustring tag, XML_Helper* helper)
 {
   if (tag == Reward::d_tag)
     {
 	guint32 t;
-	std::string type_str;
+	Glib::ustring type_str;
 	helper->getData(type_str, "type");
 	t = Reward::rewardTypeFromString(type_str);
 	switch (t)
@@ -187,7 +187,7 @@ void Ruin::populateWithRandomReward()
     }
 }
 
-std::string Ruin::ruinTypeToString(const Ruin::Type type)
+Glib::ustring Ruin::ruinTypeToString(const Ruin::Type type)
 {
   switch (type)
     {
@@ -204,7 +204,7 @@ std::string Ruin::ruinTypeToString(const Ruin::Type type)
   return "Ruin::RUIN";
 }
 
-Ruin::Type Ruin::ruinTypeFromString(const std::string str)
+Ruin::Type Ruin::ruinTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Ruin::Type(atoi(str.c_str()));

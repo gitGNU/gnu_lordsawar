@@ -46,7 +46,7 @@ class StackArmyButton: public Gtk::Box
     
     //Statics
     static StackArmyButton * create(guint32 factor, Stack *stack, Army *army, guint32 circle_colour_id, bool toggled);
-    static std::string get_file(Configuration::UiFormFactor factor);
+    static Glib::ustring get_file(Configuration::UiFormFactor factor);
 
  protected:
 

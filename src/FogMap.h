@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #define FOGMAP_H
 
 #include <list>
+#include <glibmm.h>
 #include "vector.h"
 
 class XML_Helper;
@@ -34,7 +35,7 @@ class FogMap
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
         //! The two fog types.
         enum FogType {

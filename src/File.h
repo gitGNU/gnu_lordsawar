@@ -22,7 +22,6 @@
 #ifndef FILE_H
 #define FILE_H
 
-#include <string>
 #include <list>
 
 #include "xmlhelper.h"
@@ -40,120 +39,120 @@ class File
 {
     public:
 	//! Get the directory where personal armysets live.
-	static std::string getUserArmysetDir();
+	static Glib::ustring getUserArmysetDir();
 
 	//! Get the directory where system armysets live.
-	static std::string getArmysetDir();
+	static Glib::ustring getArmysetDir();
 
 	//! Get the directory where personal tilesets live.
-	static std::string getUserTilesetDir();
+	static Glib::ustring getUserTilesetDir();
 
 	//! Get the directory where system tilesets live.
-	static std::string getTilesetDir();
+	static Glib::ustring getTilesetDir();
 
 	//! Get the directory where personal shieldsets live.
-	static std::string getUserShieldsetDir();
+	static Glib::ustring getUserShieldsetDir();
 
 	//! Get the directory where system shieldsets live.
-	static std::string getShieldsetDir();
+	static Glib::ustring getShieldsetDir();
 
 	//! Get the directory where personal citysets live.
-	static std::string getUserCitysetDir();
+	static Glib::ustring getUserCitysetDir();
 
 	//! Get the directory where system citysets live.
-	static std::string getCitysetDir();
+	static Glib::ustring getCitysetDir();
 
         //! load misc file, e.g. hero names 
-        static std::string getMiscFile(std::string filename);
+        static Glib::ustring getMiscFile(Glib::ustring filename);
 
         //! load an xslt file.
-        static std::string getXSLTFile(guint32 type, std::string old_version, std::string new_version);
+        static Glib::ustring getXSLTFile(guint32 type, Glib::ustring old_version, Glib::ustring new_version);
         
         //! Load the xml file describing the items
-        static std::string getItemDescription();
+        static Glib::ustring getItemDescription();
         
         //! Get the path to an editor image
-	static std::string getEditorFile(std::string filename);
+	static Glib::ustring getEditorFile(Glib::ustring filename);
     
         // Returns the filename of a music file (description or actual piece)
-        static std::string getMusicFile(std::string filename);
+        static Glib::ustring getMusicFile(Glib::ustring filename);
         
         // get save game path
-        static std::string getSavePath();
+        static Glib::ustring getSavePath();
 
 	//! get game data path
-	static std::string getDataPath();
+	static Glib::ustring getDataPath();
 
 	//! the location of the system directory that holds scenario terrains.
-	static std::string getMapDir();
+	static Glib::ustring getMapDir();
 
 	//! the location of the system directory that holds personal terrains.
-	static std::string getUserMapDir();
+	static Glib::ustring getUserMapDir();
 
 	//! get the path of a system scenario file called file.
-	static std::string getMapFile(std::string file);
+	static Glib::ustring getMapFile(Glib::ustring file);
 
 	//! get the path of a personal scenario called file.
-	static std::string getUserMapFile(std::string file);
+	static Glib::ustring getUserMapFile(Glib::ustring file);
 
-        static std::string getUserProfilesDescription();
-        static std::string getUserRecentlyPlayedGamesDescription();
-        static std::string getUserRecentlyHostedGamesDescription();
-        static std::string getUserRecentlyAdvertisedGamesDescription();
-        static std::string getUserRecentlyEditedFilesDescription();
+        static Glib::ustring getUserProfilesDescription();
+        static Glib::ustring getUserRecentlyPlayedGamesDescription();
+        static Glib::ustring getUserRecentlyHostedGamesDescription();
+        static Glib::ustring getUserRecentlyAdvertisedGamesDescription();
+        static Glib::ustring getUserRecentlyEditedFilesDescription();
 
         // get the available scenarios
-        static std::list<std::string> scanMaps();
+        static std::list<Glib::ustring> scanMaps();
 
 	// get the available scenarios in the user's personal collection
-	static std::list<std::string> scanUserMaps();
+	static std::list<Glib::ustring> scanUserMaps();
 
 
 	//! Copy a file from one place to another.
 	static int copy (Glib::ustring from, Glib::ustring to);
 
 	//! make a directory if it doesn't already exist.
-	static bool create_dir(std::string dir);
+	static bool create_dir(Glib::ustring dir);
 
 	//! simple basename routine, but also strips the file extension.
-	static std::string get_basename(std::string path, bool keep_ext=false);
+	static Glib::ustring get_basename(Glib::ustring path, bool keep_ext=false);
 
 	//! is a file writable?
-	static bool is_writable(std::string path);
+	static bool is_writable(Glib::ustring path);
 
 	//! does a file exist?
-	static bool exists(std::string f);
+	static bool exists(Glib::ustring f);
 
 	//! does filename end with extension?
-	static bool nameEndsWith(std::string filename, std::string extension);
+	static bool nameEndsWith(Glib::ustring filename, Glib::ustring extension);
 
 	//! delete a file from the filesystem.
-	static void erase(std::string filename);
+	static void erase(Glib::ustring filename);
 
 	//! delete an empty directory from the filesystem.
-	static void erase_dir(std::string filename);
+	static void erase_dir(Glib::ustring filename);
 
         //! delete a directory and the files it contains from the filesystem.
-        static void clean_dir(std::string filename);
+        static void clean_dir(Glib::ustring filename);
 
-	static std::string add_slash_if_necessary(std::string dir);
+	static Glib::ustring add_slash_if_necessary(Glib::ustring dir);
 
-	static std::string getSetConfigurationFilename(std::string dir, std::string subdir, std::string ext);
+	static Glib::ustring getSetConfigurationFilename(Glib::ustring dir, Glib::ustring subdir, Glib::ustring ext);
 
-	static std::string get_dirname(std::string path);
+	static Glib::ustring get_dirname(Glib::ustring path);
 
-        static std::list<std::string> scanForFiles(std::string dir, std::string extension);
+        static std::list<Glib::ustring> scanForFiles(Glib::ustring dir, Glib::ustring extension);
 
-        static std::string add_ext_if_necessary(std::string file, std::string ext);
+        static Glib::ustring add_ext_if_necessary(Glib::ustring file, Glib::ustring ext);
 
         static char *sanify(const char *string);
 
-        static std::string get_tmp_file();
+        static Glib::ustring get_tmp_file();
 
-        static std::string get_extension(std::string filename);
+        static Glib::ustring get_extension(Glib::ustring filename);
 };
 
-bool case_insensitive (const std::string& first, const std::string& second);
+bool case_insensitive (const Glib::ustring& first, const Glib::ustring& second);
 
 #endif //FILE_H
 

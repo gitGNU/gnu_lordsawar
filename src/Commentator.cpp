@@ -58,9 +58,9 @@ bool Commentator::hasComment() const
   return false;
 }
 
-std::vector<std::string> Commentator::getComments(Player *player) const
+std::vector<Glib::ustring> Commentator::getComments(Player *player) const
 {
-  std::vector<std::string> comments;
+  std::vector<Glib::ustring> comments;
   guint32 round = player->countEndTurnHistoryEntries();
 
   if (round < 2)

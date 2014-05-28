@@ -56,7 +56,7 @@
 #include "image-editor-dialog.h"
 
 
-ArmySetWindow::ArmySetWindow(Gtk::Window *parent, std::string load_filename)
+ArmySetWindow::ArmySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
 {
   autosave = File::getSavePath() + "autosave" + Armyset::file_extension;
   needs_saving = false;
@@ -314,7 +314,7 @@ ArmySetWindow::ArmySetWindow(Gtk::Window *parent, std::string load_filename)
 
   if (File::exists(autosave))
     {
-      std::string m;
+      Glib::ustring m;
       std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Armyset::file_extension);
       if (files.size() == 0)
         m = _("Do you want to recover the session?");
@@ -488,7 +488,7 @@ bool ArmySetWindow::on_delete_event(GdkEventAny *e)
 
 void ArmySetWindow::on_new_armyset_activated()
 {
-  std::string name = "";
+  Glib::ustring name = "";
   int id = Armysetlist::getNextAvailableId(0);
   Armyset *armyset = new Armyset(id, name);
   ArmySetInfoDialog d(*window, armyset, File::getUserArmysetDir(), "", false,
@@ -502,7 +502,7 @@ void ArmySetWindow::on_new_armyset_activated()
   if (d_armyset)
     delete d_armyset;
   d_armyset = armyset;
-  std::string dir = File::getUserArmysetDir();
+  Glib::ustring dir = File::getUserArmysetDir();
   d_armyset->setDirectory(dir);
   current_save_filename = d_armyset->getConfigurationFile();
   RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
@@ -553,7 +553,7 @@ void ArmySetWindow::on_load_armyset_activated()
 
 void ArmySetWindow::on_validate_armyset_activated()
 {
-  std::list<std::string> msgs;
+  std::list<Glib::ustring> msgs;
   if (d_armyset == NULL)
     return;
   bool valid;
@@ -597,8 +597,8 @@ void ArmySetWindow::on_validate_armyset_activated()
   if (!valid)
     msgs.push_back(_("An army unit does not have a name."));
 
-  std::string msg = "";
-  for (std::list<std::string>::iterator it = msgs.begin(); it != msgs.end();
+  Glib::ustring msg = "";
+  for (std::list<Glib::ustring>::iterator it = msgs.begin(); it != msgs.end();
        it++)
     msg += (*it) + "\n";
 
@@ -635,14 +635,14 @@ void ArmySetWindow::on_save_as_activated()
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string new_basename = copy->getBaseName();
+      Glib::ustring new_basename = copy->getBaseName();
       guint32 new_id = copy->getId();
-      std::string new_name = copy->getName();
+      Glib::ustring new_name = copy->getName();
       save_armyset_menuitem->set_sensitive(true);
       current_save_filename = copy->getConfigurationFile();
       //here we add the autosave to the personal collection.
       //this is so that the images *with comments in them* come along.
-      std::string old_name = d_armyset->getName();
+      Glib::ustring old_name = d_armyset->getName();
       d_armyset->setName(copy->getName());
       bool success = Armysetlist::getInstance()->addToPersonalCollection(d_armyset, new_basename, new_id);
       if (success)
@@ -665,7 +665,7 @@ void ArmySetWindow::on_save_as_activated()
       else
         {
           Glib::ustring errmsg = Glib::strerror(errno);
-          std::string msg;
+          Glib::ustring msg;
           msg = _("Error!  Armyset could not be saved.");
           msg += "\n" + current_save_filename + "\n" +
             errmsg;
@@ -714,7 +714,7 @@ bool ArmySetWindow::save_current_armyset()
   if (!success)
     {
       Glib::ustring errmsg = Glib::strerror(errno);
-      std::string msg;
+      Glib::ustring msg;
       msg = _("Error!  Armyset could not be saved.");
       msg += "\n" + current_save_filename + "\n" +
         errmsg;
@@ -732,7 +732,7 @@ void ArmySetWindow::on_save_armyset_activated()
 
 void ArmySetWindow::on_edit_ship_picture_activated()
 {
-  std::string filename = "";
+  Glib::ustring filename = "";
   if (d_armyset->getShipImageName() != "")
     filename = d_armyset->getFileFromConfigurationFile(d_armyset->getShipImageName() +".png");
   MaskedImageEditorDialog d(*window, filename, -1);
@@ -752,7 +752,7 @@ void ArmySetWindow::on_edit_ship_picture_activated()
 
 void ArmySetWindow::on_edit_standard_picture_activated()
 {
-  std::string filename = "";
+  Glib::ustring filename = "";
   if (d_armyset->getStandardImageName() != "")
     filename = d_armyset->getFileFromConfigurationFile(d_armyset->getStandardImageName() +".png");
   MaskedImageEditorDialog d(*window, filename, -1);
@@ -772,7 +772,7 @@ void ArmySetWindow::on_edit_standard_picture_activated()
 
 void ArmySetWindow::on_edit_bag_picture_activated()
 {
-  std::string filename = "";
+  Glib::ustring filename = "";
   if (d_armyset->getBagImageName().empty() == false)
     filename = d_armyset->getFileFromConfigurationFile(d_armyset->getBagImageName() +".png");
   ImageEditorDialog d(*window, filename, 1);
@@ -853,7 +853,7 @@ void ArmySetWindow::fill_army_image(Gtk::Button *button, Gtk::Image *image, Shie
     {
       bool broken = false;
     
-      std::string filename = "";
+      Glib::ustring filename = "";
       filename = d_armyset->getFileFromConfigurationFile(army->getImageName(c) +".png");
       if (filename != "")
         {
@@ -1010,7 +1010,7 @@ void ArmySetWindow::on_image_changed(Gtk::Button *button, Gtk::Image *image, Shi
     {
       Gtk::TreeModel::Row row = *iterrow;
       ArmyProto *a = row[armies_columns.army];
-      std::string filename = "";
+      Glib::ustring filename = "";
       if (a->getImageName(c) != "")
         filename = d_armyset->getFileFromConfigurationFile(a->getImageName(c) + ".png");
       MaskedImageEditorDialog d(*window, filename, -1);
@@ -1939,10 +1939,10 @@ void ArmySetWindow::on_remove_army_clicked()
     }
 }
 
-bool ArmySetWindow::load_armyset(std::string filename)
+bool ArmySetWindow::load_armyset(Glib::ustring filename)
 {
   inhibit_scrolldown=true;
-  std::string old_current_save_filename = current_save_filename;
+  Glib::ustring old_current_save_filename = current_save_filename;
   current_save_filename = filename;
   if (filename != autosave)
     Armyset::copy(current_save_filename, autosave);
@@ -1954,13 +1954,13 @@ bool ArmySetWindow::load_armyset(std::string filename)
         current_save_filename = files.front()->getFileName();
     }
 
-  std::string name = File::get_basename(filename);
+  Glib::ustring name = File::get_basename(filename);
 
   bool unsupported_version;
   Armyset *armyset = Armyset::create(autosave, unsupported_version);
   if (armyset == NULL)
     {
-      std::string msg;
+      Glib::ustring msg;
       if (unsupported_version)
         msg = _("Error!  The version of the armyset is unsupported.");
       else
@@ -2037,7 +2037,7 @@ void ArmySetWindow::on_quit_activated()
 
 void ArmySetWindow::update_window_title()
 {
-  std::string title = "";
+  Glib::ustring title = "";
   if (needs_saving)
     title += "*";
   title += File::get_basename(current_save_filename, true);
@@ -2068,7 +2068,7 @@ void ArmySetWindow::on_make_same_clicked()
   black_image_button->set_label(white_image_button->get_label());
   neutral_image_button->set_label(white_image_button->get_label());
         
-  std::string white_filename = d_armyset->getFileFromConfigurationFile(a->getImageName(Shield::Colour(0)) + ".png");
+  Glib::ustring white_filename = d_armyset->getFileFromConfigurationFile(a->getImageName(Shield::Colour(0)) + ".png");
   for (unsigned int i = Shield::GREEN; i <= Shield::NEUTRAL; i++)
     {
       Shield::Colour s = Shield::Colour(i);

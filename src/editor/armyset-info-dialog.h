@@ -27,9 +27,9 @@
 class ArmySetInfoDialog: public sigc::trackable
 {
  public:
-    ArmySetInfoDialog(Gtk::Window &parent, Armyset *armyset, std::string dir, 
-                      std::string file, bool readonly = false, 
-                      std::string title = "");
+    ArmySetInfoDialog(Gtk::Window &parent, Armyset *armyset, Glib::ustring dir, 
+                      Glib::ustring file, bool readonly = false, 
+                      Glib::ustring title = "");
     ~ArmySetInfoDialog();
 
     int run();

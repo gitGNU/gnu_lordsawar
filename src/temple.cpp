@@ -24,9 +24,9 @@
 #include "QuestsManager.h"
 #include "stack.h"
 
-std::string Temple::d_tag = "temple";
+Glib::ustring Temple::d_tag = "temple";
 
-Temple::Temple(Vector<int> pos, guint32 width, std::string name, int type)
+Temple::Temple(Vector<int> pos, guint32 width, Glib::ustring name, int type)
 :NamedLocation(pos, width, name,
 	       name + _(" can bless your armies or give you quests.")), 
     d_type(type)

@@ -29,13 +29,13 @@
 #include "file-compat.h"
 #include "ucompose.hpp"
 
-std::string Shieldset::d_tag = "shieldset";
-std::string Shieldset::file_extension = SHIELDSET_EXT;
+Glib::ustring Shieldset::d_tag = "shieldset";
+Glib::ustring Shieldset::file_extension = SHIELDSET_EXT;
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
 
-Shieldset::Shieldset(guint32 id, std::string name)
+Shieldset::Shieldset(guint32 id, Glib::ustring name)
  : d_id(id), d_name(name), d_copyright(""), d_license(""), d_info(""), 
     d_basename("")
 {
@@ -52,7 +52,7 @@ Shieldset::Shieldset(const Shieldset& s)
     push_back(new Shield(*(*it)));
 }
 
-Shieldset::Shieldset(XML_Helper *helper, std::string directory)
+Shieldset::Shieldset(XML_Helper *helper, Glib::ustring directory)
 	: d_basename("")
 {
   setDirectory(directory);
@@ -105,7 +105,7 @@ Gdk::RGBA Shieldset::getColor(guint32 owner) const
   return Gdk::RGBA("black");
 }
 
-bool Shieldset::loadShield(std::string tag, XML_Helper* helper)
+bool Shieldset::loadShield(Glib::ustring tag, XML_Helper* helper)
 {
   if (tag == Shield::d_tag)
     {
@@ -126,7 +126,7 @@ bool Shieldset::loadShield(std::string tag, XML_Helper* helper)
 class ShieldsetLoader
 {
 public:
-    ShieldsetLoader(std::string filename, bool &broken, bool &unsupported)
+    ShieldsetLoader(Glib::ustring filename, bool &broken, bool &unsupported)
       {
         unsupported_version = false;
 	shieldset = NULL;
@@ -137,7 +137,7 @@ public:
         Tar_Helper t(filename, std::ios::in, broken);
         if (broken)
           return;
-        std::string lwsfilename = 
+        Glib::ustring lwsfilename = 
           t.getFirstFile(Shieldset::file_extension, broken);
         if (broken)
           return;
@@ -155,7 +155,7 @@ public:
         helper.close();
         t.Close();
       };
-    bool load(std::string tag, XML_Helper* helper)
+    bool load(Glib::ustring tag, XML_Helper* helper)
       {
 	if (tag == Shieldset::d_tag)
 	  {
@@ -173,13 +173,13 @@ public:
 	  }
 	return false;
       };
-    std::string dir;
-    std::string file;
+    Glib::ustring dir;
+    Glib::ustring file;
     Shieldset *shieldset;
     bool unsupported_version;
 };
 
-Shieldset *Shieldset::create(std::string filename, bool &unsupported_version)
+Shieldset *Shieldset::create(Glib::ustring filename, bool &unsupported_version)
 {
   bool broken = false;
   ShieldsetLoader d(filename, broken, unsupported_version);
@@ -188,45 +188,43 @@ Shieldset *Shieldset::create(std::string filename, bool &unsupported_version)
   return d.shieldset;
 }
 
-void Shieldset::getFilenames(std::list<std::string> &files) const
+void Shieldset::getFilenames(std::list<Glib::ustring> &files) const
 {
   for (const_iterator it = begin(); it != end(); it++)
     for (Shield::const_iterator i = (*it)->begin(); i != (*it)->end(); i++)
       {
-	std::string file = (*i)->getImageName();
+	Glib::ustring file = (*i)->getImageName();
 	if (std::find(files.begin(), files.end(), file) == files.end())
 	  files.push_back(file);
       }
 }
 
-bool Shieldset::save(std::string filename, std::string extension) const
+bool Shieldset::save(Glib::ustring filename, Glib::ustring extension) const
 {
   bool broken = false;
-  std::string goodfilename = File::add_ext_if_necessary(filename, extension);
-  std::string tmpfile = "lw.XXXX";
-  int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
-  close (fd);
+  Glib::ustring goodfilename = File::add_ext_if_necessary(filename, extension);
+  Glib::ustring tmpfile = File::get_tmp_file();
   XML_Helper helper(tmpfile, std::ios::out, Configuration::s_zipfiles);
   helper.begin(LORDSAWAR_SHIELDSET_VERSION);
   broken = !save(&helper);
   helper.close();
   if (broken == true)
     return false;
-  std::string tmptar = tmpfile + ".tar";
+  Glib::ustring tmptar = tmpfile + ".tar";
   Tar_Helper t(tmptar, std::ios::out, broken);
   if (broken == true)
     return false;
   t.saveFile(tmpfile, File::get_basename(goodfilename, true));
   //now the images, go get 'em from the tarball we were made from.
-  std::list<std::string> delfiles;
+  std::list<Glib::ustring> delfiles;
   Tar_Helper orig(getConfigurationFile(), std::ios::in, broken);
   if (broken == false)
     {
-      std::list<std::string> files = orig.getFilenamesWithExtension(".png");
-      for (std::list<std::string>::iterator it = files.begin(); 
+      std::list<Glib::ustring> files = orig.getFilenamesWithExtension(".png");
+      for (std::list<Glib::ustring>::iterator it = files.begin(); 
            it != files.end(); it++)
         {
-          std::string pngfile = orig.getFile(*it, broken);
+          Glib::ustring pngfile = orig.getFile(*it, broken);
           if (broken == false)
             {
               t.saveFile(pngfile);
@@ -246,7 +244,7 @@ bool Shieldset::save(std::string filename, std::string extension) const
         broken = false;
     }
   t.Close();
-  for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
+  for (std::list<Glib::ustring>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
     File::erase(*it);
   File::erase(tmpfile);
   if (broken == false)
@@ -292,19 +290,19 @@ void Shieldset::uninstantiateImages()
     (*it)->uninstantiateImages();
 }
 
-std::string Shieldset::getConfigurationFile() const
+Glib::ustring Shieldset::getConfigurationFile() const
 {
   return getDirectory() + d_basename + file_extension;
 }
 
-std::list<std::string> Shieldset::scanUserCollection()
+std::list<Glib::ustring> Shieldset::scanUserCollection()
 {
   return File::scanForFiles(File::getUserShieldsetDir(), file_extension);
 }
 
-std::list<std::string> Shieldset::scanSystemCollection()
+std::list<Glib::ustring> Shieldset::scanSystemCollection()
 {
-  std::list<std::string> retlist = File::scanForFiles(File::getShieldsetDir(), 
+  std::list<Glib::ustring> retlist = File::scanForFiles(File::getShieldsetDir(), 
                                                       file_extension);
   if (retlist.empty())
     {
@@ -401,20 +399,20 @@ void Shieldset::reload(bool &broken)
       uninstantiateImages();
       for (iterator it = begin(); it != end(); it++)
         delete *it;
-      std::string basename = d_basename;
+      Glib::ustring basename = d_basename;
       *this = *d.shieldset;
       instantiateImages(broken);
       d_basename = basename;
     }
 }
 
-std::string Shieldset::getFileFromConfigurationFile(std::string file)
+Glib::ustring Shieldset::getFileFromConfigurationFile(Glib::ustring file)
 {
   bool broken = false;
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
   if (broken == false)
     {
-      std::string filename = t.getFile(file, broken);
+      Glib::ustring filename = t.getFile(file, broken);
       t.Close();
   
       if (broken == false)
@@ -423,7 +421,7 @@ std::string Shieldset::getFileFromConfigurationFile(std::string file)
   return "";
 }
 
-bool Shieldset::replaceFileInConfigurationFile(std::string file, std::string new_file)
+bool Shieldset::replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file)
 {
   bool broken = false;
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
@@ -435,7 +433,7 @@ bool Shieldset::replaceFileInConfigurationFile(std::string file, std::string new
   return broken;
 }
 
-bool Shieldset::copy(std::string src, std::string dest)
+bool Shieldset::copy(Glib::ustring src, Glib::ustring dest)
 {
   return Tar_Helper::copy(src, dest);
 }
@@ -459,7 +457,7 @@ void Shieldset::clean_tmp_dir() const
   return Tar_Helper::clean_tmp_dir(getConfigurationFile());
 }
 
-bool Shieldset::upgrade(std::string filename, std::string old_version, std::string new_version)
+bool Shieldset::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version)
 {
   return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
                                             FileCompat::SHIELDSET, d_tag);

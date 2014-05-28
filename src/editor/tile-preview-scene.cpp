@@ -31,7 +31,7 @@
 
 TilePreviewScene::TilePreviewScene (Tile *tile, Tile *secondary_tile,
 				    guint32 height, guint32 width, 
-				    std::string scene, guint32 tilesize)
+				    Glib::ustring scene, guint32 tilesize)
 {
   struct tile_model model;
   std::list<struct tile_model> tilescene;

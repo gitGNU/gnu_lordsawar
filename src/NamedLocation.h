@@ -18,7 +18,6 @@
 #ifndef NAMEDLOCATION_H
 #define NAMEDLOCATION_H
 
-#include <string>
 #include "vector.h"
 #include "Location.h"
 #include "Namable.h"
@@ -35,8 +34,8 @@ class NamedLocation: public Location, public Namable
 {
  public:
      //! Default constructor.
-     NamedLocation(Vector<int> pos, guint32 size, std::string name, 
-		   std::string desc);
+     NamedLocation(Vector<int> pos, guint32 size, Glib::ustring name, 
+		   Glib::ustring desc);
      //! Copy constructor.
      NamedLocation(const NamedLocation&);
 
@@ -48,9 +47,9 @@ class NamedLocation: public Location, public Namable
      //! Destructor.
     virtual ~NamedLocation();
 
-    std::string getDescription() const {return d_description;};
+    Glib::ustring getDescription() const {return d_description;};
  private:
-    std::string d_description;
+    Glib::ustring d_description;
 };
 
 #endif

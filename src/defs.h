@@ -27,7 +27,6 @@
 
 #include <gtkmm.h>
 #include <glibmm.h>
-#include <string>
 #include <libintl.h>
 
 #define LORDSAWAR_SAVEGAME_VERSION "0.2.1"
@@ -110,23 +109,23 @@ const unsigned short LORDSAWAR_GAMEHOST_PORT = 22998;
 #define NO_PLAYER_TYPE _("Off")
 #define NETWORKED_PLAYER_TYPE _("Network")
 
-const std::string ARMYSETDIR = "army";
-const std::string TILESETDIR = "tilesets";
-const std::string CITYSETDIR = "citysets";
-const std::string SHIELDSETDIR = "shield";
-const std::string MAPDIR = "map";
-const std::string ARMYSET_EXT = ".lwa";
-const std::string TILESET_EXT = ".lwt";
-const std::string CITYSET_EXT = ".lwc";
-const std::string SHIELDSET_EXT = ".lws";
-const std::string MAP_EXT = ".map";
-const std::string SAVE_EXT = ".sav";
-const std::string PBM_EXT = ".trn";
-const std::string RECENTLY_PLAYED_LIST = "recently-played.xml";
-const std::string RECENTLY_EDITED_LIST = "recently-edited.xml";
-const std::string PROFILE_LIST = "profiles.xml";
-const std::string RECENTLY_ADVERTISED_LIST = "recently-advertised.xml";
-const std::string RECENTLY_HOSTED_LIST = "recently-hosted.xml";
+const Glib::ustring ARMYSETDIR = "army";
+const Glib::ustring TILESETDIR = "tilesets";
+const Glib::ustring CITYSETDIR = "citysets";
+const Glib::ustring SHIELDSETDIR = "shield";
+const Glib::ustring MAPDIR = "map";
+const Glib::ustring ARMYSET_EXT = ".lwa";
+const Glib::ustring TILESET_EXT = ".lwt";
+const Glib::ustring CITYSET_EXT = ".lwc";
+const Glib::ustring SHIELDSET_EXT = ".lws";
+const Glib::ustring MAP_EXT = ".map";
+const Glib::ustring SAVE_EXT = ".sav";
+const Glib::ustring PBM_EXT = ".trn";
+const Glib::ustring RECENTLY_PLAYED_LIST = "recently-played.xml";
+const Glib::ustring RECENTLY_EDITED_LIST = "recently-edited.xml";
+const Glib::ustring PROFILE_LIST = "profiles.xml";
+const Glib::ustring RECENTLY_ADVERTISED_LIST = "recently-advertised.xml";
+const Glib::ustring RECENTLY_HOSTED_LIST = "recently-hosted.xml";
 
 const unsigned int MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS = 1;
 const unsigned int MAX_PRODUCTION_TURNS_FOR_ARMY_UNITS = 5;
@@ -147,12 +146,12 @@ const unsigned int MAX_SIGHT_FOR_ARMY_UNITS = 25;
 
 const float SIGNPOST_FREQUENCY = 0.0030;
 
-const std::string YELLOW_COLOUR = "#FCFCECEC2020";
-const std::string ORANGE_COLOUR = "#FCFCA0A00000";
-const std::string WHITE_COLOUR = "#FFFFFFFFFFFF";
-const std::string BLACK_COLOUR = "#000000000000";
-const std::string DARK_GREY_COLOUR = "#515151515151";
-const std::string LIGHT_GREY_COLOUR = "#929292929292";
+const Glib::ustring YELLOW_COLOUR = "#FCFCECEC2020";
+const Glib::ustring ORANGE_COLOUR = "#FCFCA0A00000";
+const Glib::ustring WHITE_COLOUR = "#FFFFFFFFFFFF";
+const Glib::ustring BLACK_COLOUR = "#000000000000";
+const Glib::ustring DARK_GREY_COLOUR = "#515151515151";
+const Glib::ustring LIGHT_GREY_COLOUR = "#929292929292";
 const Gdk::RGBA SEND_VECTORED_UNIT_LINE_COLOUR(YELLOW_COLOUR);
 const Gdk::RGBA RECEIVE_VECTORED_UNIT_LINE_COLOUR(ORANGE_COLOUR);
 const Gdk::RGBA SELECTOR_BOX_COLOUR(WHITE_COLOUR);

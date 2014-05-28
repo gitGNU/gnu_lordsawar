@@ -36,7 +36,7 @@ TileSizeEditorDialog::TileSizeEditorDialog(Gtk::Window &parent, guint32 current,
     xml->get_widget("dialog", dialog);
     dialog->set_transient_for(parent);
     xml->get_widget("label", label);
-    std::string msg = 
+    Glib::ustring msg = 
       String::ucompose(_("Do you want to change the tile size from %1 to %2?"),
                        current, suggested);
     label->set_text(msg);

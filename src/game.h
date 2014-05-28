@@ -1,4 +1,4 @@
-// Copyright (C) 2006, 2007, 2008, 2009, 2010 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -24,7 +24,6 @@
 #include <sigc++/connection.h>
 #include <memory>
 #include <list>
-#include <string>
 
 #include "rectangle.h"
 #include "sidebar-stats.h"
@@ -97,8 +96,8 @@ class Game
     void loadGame();
     void stopGame(); // stop game flow, clean up
     // save current game, returns true if successful
-    bool saveGame(std::string file);
-    bool saveTurnFile(std::string file);
+    bool saveGame(Glib::ustring file);
+    bool saveTurnFile(Glib::ustring file);
 
     static GameScenario *getScenario();
     GameBigMap &get_bigmap();
@@ -109,7 +108,7 @@ class Game
     sigc::signal<void, Cairo::RefPtr<Cairo::Surface>, Gdk::Rectangle> smallmap_changed;
     sigc::signal<void, Cairo::RefPtr<Cairo::Surface> > bigmap_changed;
     sigc::signal<void, SidebarStats> sidebar_stats_changed;
-    sigc::signal<void, std::string> progress_status_changed;
+    sigc::signal<void, Glib::ustring> progress_status_changed;
     sigc::signal<void> progress_changed;
     sigc::signal<void, bool>
 	can_select_next_movable_stack,
@@ -166,7 +165,7 @@ class Game
     sigc::signal<void, Player *> game_over;
     sigc::signal<void, Player *> player_died;
     sigc::signal<void> game_stopped;
-    sigc::signal<void, std::string> commentator_comments;
+    sigc::signal<void, Glib::ustring> commentator_comments;
     sigc::signal<void, Stack*, Vector<int> > stack_moves;
     sigc::signal<Item*, std::list<Item*> > select_item;
     sigc::signal<Player*> select_item_victim_player;

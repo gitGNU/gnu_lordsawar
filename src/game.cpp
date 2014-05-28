@@ -191,7 +191,7 @@ void Game::addPlayer(Player *p)
         
   connections[p->getId()].push_back
     (p->schangingStatus.connect 
-	 (sigc::mem_fun(progress_status_changed, &sigc::signal<void, std::string>::emit)));
+	 (sigc::mem_fun(progress_status_changed, &sigc::signal<void, Glib::ustring>::emit)));
         
   connections[p->getId()].push_back
     (p->sbusy.connect (sigc::mem_fun (progress_changed, 
@@ -1181,7 +1181,7 @@ void Game::stopGame()
   d_nextTurn->stop();
 }
 
-bool Game::saveGame(std::string file)
+bool Game::saveGame(Glib::ustring file)
 {
   return d_gameScenario->saveGame(file);
 }
@@ -1217,7 +1217,7 @@ void Game::init_turn_for_player(Player* p)
     {
       if (Commentator::getInstance()->hasComment() == true)
         {
-          std::vector<std::string> comments =
+          std::vector<Glib::ustring> comments =
             Commentator::getInstance()->getComments(p);
           if (comments.size() > 0)
             commentator_comments.emit(comments[rand() % comments.size()]);
@@ -1489,7 +1489,7 @@ bool Game::recruitHero(HeroProto *hero, City *city, int gold)
   return retval;
 }
     
-bool Game::saveTurnFile(std::string turnfile)
+bool Game::saveTurnFile(Glib::ustring turnfile)
 {
   bool broken;
   //trigger the GameServer to spit out a set of networkactions and networkhistory events for the active player, into a file.

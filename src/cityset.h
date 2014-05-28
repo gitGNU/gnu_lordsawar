@@ -18,7 +18,6 @@
 #ifndef CITYSET_H
 #define CITYSET_H
 
-#include <string>
 #include <vector>
 #include <gtkmm.h>
 #include <sigc++/trackable.h>
@@ -47,8 +46,8 @@ class Cityset : public sigc::trackable, public Set
 {
     public:
 	//! The xml tag of this object in a cityset configuration file.
-	static std::string d_tag; 
-	static std::string file_extension; 
+	static Glib::ustring d_tag; 
+	static Glib::ustring file_extension; 
 
 	//! Default constructor.
 	/**
@@ -58,7 +57,7 @@ class Cityset : public sigc::trackable, public Set
 	 *              objects.  Must be more than 0.  
 	 * @param name  The name of the Cityset.  Analagous to Cityset::d_name.
 	 */
-	Cityset(guint32 id, std::string name);
+	Cityset(guint32 id, Glib::ustring name);
 
         //! Copy constructor.
         Cityset(const Cityset& c);
@@ -71,9 +70,9 @@ class Cityset : public sigc::trackable, public Set
 	 * @param helper  The opened cityset configuration file to load the
 	 *                Cityset from.
 	 */
-        Cityset(XML_Helper* helper, std::string directory);
+        Cityset(XML_Helper* helper, Glib::ustring directory);
 
-	static Cityset *create(std::string file, bool &unsupported_version);
+	static Cityset *create(Glib::ustring file, bool &unsupported_version);
 
         static Cityset *copy (const Cityset *orig);
 	//! Destructor.
@@ -81,22 +80,22 @@ class Cityset : public sigc::trackable, public Set
 
 	bool save(XML_Helper *helper) const;
 
-        bool save(std::string filename, std::string extension) const;
+        bool save(Glib::ustring filename, Glib::ustring extension) const;
 
 	//! Get the base name of the file holding the cityset configuration file.
-        std::string getBaseName() const {return d_basename;}
+        Glib::ustring getBaseName() const {return d_basename;}
 
 	//! Set the base name of the shieldset configuration file.
-        void setBaseName(std::string base) {d_basename = base;}
+        void setBaseName(Glib::ustring base) {d_basename = base;}
 
         //! Returns the name of the cityset.
-        std::string getName() const {return _(d_name.c_str());}
+        Glib::ustring getName() const {return _(d_name.c_str());}
 
         //! Returns the copyright holders for the cityset.
-        std::string getCopyright() const {return d_copyright;};
+        Glib::ustring getCopyright() const {return d_copyright;};
 
         //! Returns the license for the cityset.
-        std::string getLicense() const {return d_license;};
+        Glib::ustring getLicense() const {return d_license;};
 
 	/**
 	 * Analagous to the cityset.d_id XML entity in the cityset
@@ -111,39 +110,39 @@ class Cityset : public sigc::trackable, public Set
 	/**
 	 * @note This method is only used in the cityset editor.
 	 */
-        void setName(std::string name) {d_name = name;}
+        void setName(Glib::ustring name) {d_name = name;}
 
 	//! Set the copyright holders on the cityset.
-	void setCopyright(std::string copy) {d_copyright = copy;};
+	void setCopyright(Glib::ustring copy) {d_copyright = copy;};
 
 	//! Set the license for this cityset.
-	void setLicense(std::string license) {d_license = license;};
+	void setLicense(Glib::ustring license) {d_license = license;};
 
         //! Returns the description of the cityset.
-        std::string getInfo() const {return _(d_info.c_str());}
+        Glib::ustring getInfo() const {return _(d_info.c_str());}
 
 	//! Sets the description of the cityset.
-	void setInfo(std::string description) {d_info = description;};
+	void setInfo(Glib::ustring description) {d_info = description;};
 
         //! Returns the width and height in pixels of a square on the map.
         guint32 getTileSize() const {return d_tileSize;}
 
         void setTileSize(guint32 tile_size) {d_tileSize = tile_size;}
 
-	void setCitiesFilename(std::string s) {d_cities_filename = s;};
-	std::string getCitiesFilename() {return d_cities_filename;};
-	void setRazedCitiesFilename(std::string s) {d_razedcities_filename = s;};
-	std::string getRazedCitiesFilename() {return d_razedcities_filename;};
-	void setPortFilename(std::string s) {d_port_filename = s;};
-	std::string getPortFilename() {return d_port_filename;};
-	void setSignpostFilename(std::string s) {d_signpost_filename = s;};
-	std::string getSignpostFilename() {return d_signpost_filename;};
-	void setRuinsFilename(std::string s) {d_ruins_filename = s;};
-	std::string getRuinsFilename() {return d_ruins_filename;};
-	void setTemplesFilename(std::string s) {d_temples_filename = s;};
-	std::string getTemplesFilename() {return d_temples_filename;};
-	void setTowersFilename(std::string s) {d_towers_filename = s;};
-	std::string getTowersFilename() {return d_towers_filename;};
+	void setCitiesFilename(Glib::ustring s) {d_cities_filename = s;};
+	Glib::ustring getCitiesFilename() {return d_cities_filename;};
+	void setRazedCitiesFilename(Glib::ustring s) {d_razedcities_filename = s;};
+	Glib::ustring getRazedCitiesFilename() {return d_razedcities_filename;};
+	void setPortFilename(Glib::ustring s) {d_port_filename = s;};
+	Glib::ustring getPortFilename() {return d_port_filename;};
+	void setSignpostFilename(Glib::ustring s) {d_signpost_filename = s;};
+	Glib::ustring getSignpostFilename() {return d_signpost_filename;};
+	void setRuinsFilename(Glib::ustring s) {d_ruins_filename = s;};
+	Glib::ustring getRuinsFilename() {return d_ruins_filename;};
+	void setTemplesFilename(Glib::ustring s) {d_temples_filename = s;};
+	Glib::ustring getTemplesFilename() {return d_temples_filename;};
+	void setTowersFilename(Glib::ustring s) {d_towers_filename = s;};
+	Glib::ustring getTowersFilename() {return d_towers_filename;};
 
 	void setCityImage(guint32 i, PixMask *p) {citypics[i] = p;};
 	PixMask *getCityImage(guint32 i) {return citypics[i];};
@@ -161,27 +160,27 @@ class Cityset : public sigc::trackable, public Set
 	PixMask *getTowerImage(guint32 i) {return towerpics[i];};
 
 	//! get filenames in this cityset, excepting the configuration file.
-	void getFilenames(std::list<std::string> &files);
+	void getFilenames(std::list<Glib::ustring> &files);
 
         //! Delete the cityset's temporary directory.
         void clean_tmp_dir() const;
 
 	void instantiateImages(bool &broken);
-	void instantiateImages(std::string port_filename,
-			       std::string signpost_filename,
-			       std::string cities_filename,
-			       std::string razed_cities_filename,
-			       std::string towers_filename,
-			       std::string ruins_filename,
-			       std::string temples_filename,
+	void instantiateImages(Glib::ustring port_filename,
+			       Glib::ustring signpost_filename,
+			       Glib::ustring cities_filename,
+			       Glib::ustring razed_cities_filename,
+			       Glib::ustring towers_filename,
+			       Glib::ustring ruins_filename,
+			       Glib::ustring temples_filename,
                                bool &broken);
 	void uninstantiateImages();
 
-	std::string getConfigurationFile() const;
+	Glib::ustring getConfigurationFile() const;
 
-	static std::list<std::string> scanSystemCollection();
-	static std::list<std::string> scanUserCollection();
-        static bool copy(std::string src, std::string dest);
+	static std::list<Glib::ustring> scanSystemCollection();
+	static std::list<Glib::ustring> scanUserCollection();
+        static bool copy(Glib::ustring src, Glib::ustring dest);
         guint32 countEmptyImageNames() const;
 	guint32 getCityTileWidth() {return d_city_tile_width;};
 	void setCityTileWidth(guint32 tiles) {d_city_tile_width = tiles;};
@@ -201,11 +200,11 @@ class Cityset : public sigc::trackable, public Set
 	bool validateRuinTileWidth();
 	bool validateTempleTileWidth();
 	bool tileWidthsEqual(Cityset *cityset);
-        std::string getFileFromConfigurationFile(std::string file);
-        bool replaceFileInConfigurationFile(std::string file, std::string new_file);
+        Glib::ustring getFileFromConfigurationFile(Glib::ustring file);
+        bool replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file);
 
         //! Callback to convert old files to new ones.
-        static bool upgrade(std::string filename, std::string old_version, std::string new_version);
+        static bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version);
         static void support_backward_compatibility();
 
         //! Load the cityset again.
@@ -224,13 +223,13 @@ class Cityset : public sigc::trackable, public Set
 	 * This name appears in the dialogs where the user is asked to 
 	 * select a particular Cityset.
 	 */
-        std::string d_name;
+        Glib::ustring d_name;
 
 	//! The copyright holders for this cityset.
-	std::string d_copyright;
+	Glib::ustring d_copyright;
 
 	//! The license of this cityset.
-	std::string d_license;
+	Glib::ustring d_license;
 
 	//! The description of the cityset.
 	/**
@@ -238,7 +237,7 @@ class Cityset : public sigc::trackable, public Set
 	 * configuration file.
 	 * This value is not used.
 	 */
-        std::string d_info;
+        Glib::ustring d_info;
 
 	//! The size of each city image onscreen.
 	/**
@@ -255,16 +254,16 @@ class Cityset : public sigc::trackable, public Set
          * file extension removed.
 	 * Cityset directories sit in the citysets/ directory.
 	 */
-        std::string d_basename;
+        Glib::ustring d_basename;
 
 
-	std::string d_cities_filename;
-	std::string d_razedcities_filename;
-	std::string d_port_filename;
-	std::string d_signpost_filename;
-	std::string d_ruins_filename;
-	std::string d_temples_filename;
-	std::string d_towers_filename;
+	Glib::ustring d_cities_filename;
+	Glib::ustring d_razedcities_filename;
+	Glib::ustring d_port_filename;
+	Glib::ustring d_signpost_filename;
+	Glib::ustring d_ruins_filename;
+	Glib::ustring d_temples_filename;
+	Glib::ustring d_towers_filename;
 	PixMask *citypics[MAX_PLAYERS + 1];
 	PixMask *razedcitypics[MAX_PLAYERS];
 	PixMask *port;

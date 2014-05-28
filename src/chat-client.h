@@ -21,6 +21,7 @@
 #include <config.h>
 
 #include <list>
+#include <glibmm.h>
 #include <memory>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
@@ -28,16 +29,16 @@
 class ChatClient: public sigc::trackable
 {
 public:
-  ChatClient(std::string nick = "guest");
+  ChatClient(Glib::ustring nick = "guest");
   ~ChatClient();
 
-  void gotChatMessage(const std::string nickname, const std::string &payload);
-  void setNickname(std::string nick) {d_nickname = nick;};
-  std::string getNickname() {return d_nickname;};
-  sigc::signal<void, std::string, std::string> chat_message_received;
+  void gotChatMessage(const Glib::ustring nickname, const Glib::ustring &payload);
+  void setNickname(Glib::ustring nick) {d_nickname = nick;};
+  Glib::ustring getNickname() {return d_nickname;};
+  sigc::signal<void, Glib::ustring, Glib::ustring> chat_message_received;
 protected:
 
-  std::string d_nickname;
+  Glib::ustring d_nickname;
 };
 
 #endif

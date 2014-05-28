@@ -74,9 +74,9 @@ void Tilesetlist::getSizes(std::list<guint32> &sizes) const
     }
 }
 
-std::list<std::string> Tilesetlist::getValidNames() const
+std::list<Glib::ustring> Tilesetlist::getValidNames() const
 {
-  std::list<std::string> names;
+  std::list<Glib::ustring> names;
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->validate() == true)
       names.push_back((*it)->getName());
@@ -84,9 +84,9 @@ std::list<std::string> Tilesetlist::getValidNames() const
   return names;
 }
 
-std::list<std::string> Tilesetlist::getValidNames(guint32 tilesize) const
+std::list<Glib::ustring> Tilesetlist::getValidNames(guint32 tilesize) const
 {
-  std::list<std::string> names;
+  std::list<Glib::ustring> names;
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->getTileSize() == tilesize && (*it)->validate() == true)
       names.push_back((*it)->getName());
@@ -94,18 +94,18 @@ std::list<std::string> Tilesetlist::getValidNames(guint32 tilesize) const
   return names;
 }
 
-std::list<std::string> Tilesetlist::getNames() const
+std::list<Glib::ustring> Tilesetlist::getNames() const
 {
-  std::list<std::string> names;
+  std::list<Glib::ustring> names;
   for (const_iterator it = begin(); it != end(); it++)
     names.push_back((*it)->getName());
   names.sort(case_insensitive);
   return names;
 }
 
-std::list<std::string> Tilesetlist::getNames(guint32 tilesize) const
+std::list<Glib::ustring> Tilesetlist::getNames(guint32 tilesize) const
 {
-  std::list<std::string> names;
+  std::list<Glib::ustring> names;
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->getTileSize() == tilesize)
       names.push_back((*it)->getName());
@@ -113,7 +113,7 @@ std::list<std::string> Tilesetlist::getNames(guint32 tilesize) const
   return names;
 }
 
-Tileset *Tilesetlist::loadTileset(std::string name)
+Tileset *Tilesetlist::loadTileset(Glib::ustring name)
 {
   debug("Loading tileset " <<File::get_basename(name));
   bool unsupported_version = false;
@@ -141,9 +141,9 @@ Tileset *Tilesetlist::loadTileset(std::string name)
   return tileset;
 }
 
-void Tilesetlist::add(Tileset *tileset, std::string file)
+void Tilesetlist::add(Tileset *tileset, Glib::ustring file)
 {
-  std::string basename = File::get_basename(file);
+  Glib::ustring basename = File::get_basename(file);
   push_back(tileset); 
   tileset->setBaseName(basename);
   d_dirs[String::ucompose("%1 %2", tileset->getName(), tileset->getTileSize())] = basename;
@@ -151,7 +151,7 @@ void Tilesetlist::add(Tileset *tileset, std::string file)
   d_tilesetids[tileset->getId()] = tileset;
 }
 
-std::string Tilesetlist::getTilesetDir(std::string name, guint32 tilesize) const
+Glib::ustring Tilesetlist::getTilesetDir(Glib::ustring name, guint32 tilesize) const
 {
   DirMap::const_iterator it = d_dirs.find(String::ucompose("%1 %2", name, tilesize));
   if (it == d_dirs.end())
@@ -160,9 +160,9 @@ std::string Tilesetlist::getTilesetDir(std::string name, guint32 tilesize) const
     return (*it).second;
 }
 
-void Tilesetlist::loadTilesets(std::list<std::string> tilesets)
+void Tilesetlist::loadTilesets(std::list<Glib::ustring> tilesets)
 {
-  for (std::list<std::string>::const_iterator i = tilesets.begin(); 
+  for (std::list<Glib::ustring>::const_iterator i = tilesets.begin(); 
        i != tilesets.end(); i++)
     {
       Tileset *tileset = loadTileset(*i);
@@ -176,9 +176,9 @@ int Tilesetlist::getNextAvailableId(int after)
 {
   bool unsupported_version = false;
   std::list<guint32> ids;
-  std::list<std::string> tilesets = Tileset::scanSystemCollection();
+  std::list<Glib::ustring> tilesets = Tileset::scanSystemCollection();
   //there might be IDs in invalid tilesets.
-  for (std::list<std::string>::const_iterator i = tilesets.begin(); 
+  for (std::list<Glib::ustring>::const_iterator i = tilesets.begin(); 
        i != tilesets.end(); i++)
     {
       Tileset *tileset = Tileset::create(*i, unsupported_version);
@@ -189,7 +189,7 @@ int Tilesetlist::getNextAvailableId(int after)
 	}
     }
   tilesets = Tileset::scanUserCollection();
-  for (std::list<std::string>::const_iterator i = tilesets.begin(); 
+  for (std::list<Glib::ustring>::const_iterator i = tilesets.begin(); 
        i != tilesets.end(); i++)
     {
       Tileset *tileset = Tileset::create(*i, unsupported_version);
@@ -223,7 +223,7 @@ void Tilesetlist::instantiateImages(bool &broken)
     }
 }
 	
-Tileset *Tilesetlist::getTileset(std::string dir) const
+Tileset *Tilesetlist::getTileset(Glib::ustring dir) const
 { 
   TilesetMap::const_iterator it = d_tilesets.find(dir);
   if (it == d_tilesets.end())
@@ -239,26 +239,26 @@ Tileset *Tilesetlist::getTileset(guint32 id) const
   return (*it).second;
 }
 
-Tileset *Tilesetlist::import(Tar_Helper *t, std::string f, bool &broken)
+Tileset *Tilesetlist::import(Tar_Helper *t, Glib::ustring f, bool &broken)
 {
   bool unsupported_version = false;
-  std::string filename = t->getFile(f, broken);
+  Glib::ustring filename = t->getFile(f, broken);
   if (broken)
     return NULL;
   Tileset *tileset = Tileset::create(filename, unsupported_version);
   assert (tileset != NULL);
   tileset->setBaseName(File::get_basename(f));
 
-  std::string basename = "";
+  Glib::ustring basename = "";
   guint32 id = 0;
   addToPersonalCollection(tileset, basename, id);
 
   return tileset;
 }
 
-std::string Tilesetlist::findFreeBaseName(std::string basename, guint32 max, guint32 &num) const
+Glib::ustring Tilesetlist::findFreeBaseName(Glib::ustring basename, guint32 max, guint32 &num) const
 {
-  std::string new_basename;
+  Glib::ustring new_basename;
   for (unsigned int count = 1; count < max; count++)
     {
       new_basename = String::ucompose("%1%2", basename, count);
@@ -273,7 +273,7 @@ std::string Tilesetlist::findFreeBaseName(std::string basename, guint32 max, gui
   return new_basename;
 }
 
-bool Tilesetlist::addToPersonalCollection(Tileset *tileset, std::string &new_basename, guint32 &new_id)
+bool Tilesetlist::addToPersonalCollection(Tileset *tileset, Glib::ustring &new_basename, guint32 &new_id)
 {
   //do we already have this one?
       
@@ -292,7 +292,7 @@ bool Tilesetlist::addToPersonalCollection(Tileset *tileset, std::string &new_bas
       else
         {
           guint32 num = 0;
-          std::string new_basename = findFreeBaseName(tileset->getBaseName(), 100, num);
+          Glib::ustring new_basename = findFreeBaseName(tileset->getBaseName(), 100, num);
           if (new_basename == "")
             return false;
         }
@@ -315,7 +315,7 @@ bool Tilesetlist::addToPersonalCollection(Tileset *tileset, std::string &new_bas
     new_id = tileset->getId();
 
   //make the directory where the tileset is going to live.
-  std::string file = File::getUserTilesetDir() + new_basename + Tileset::file_extension;
+  Glib::ustring file = File::getUserTilesetDir() + new_basename + Tileset::file_extension;
 
   tileset->save(file, Tileset::file_extension);
 
@@ -326,10 +326,10 @@ bool Tilesetlist::addToPersonalCollection(Tileset *tileset, std::string &new_bas
   return true;
 }
 
-bool Tilesetlist::contains(std::string name) const
+bool Tilesetlist::contains(Glib::ustring name) const
 {
-  std::list<std::string> n = getNames();
-  for (std::list<std::string>::iterator it = n.begin(); it != n.end(); it++)
+  std::list<Glib::ustring> n = getNames();
+  for (std::list<Glib::ustring>::iterator it = n.begin(); it != n.end(); it++)
     {
       if (*it == name)
         return true;
@@ -337,7 +337,7 @@ bool Tilesetlist::contains(std::string name) const
   return false;
 }
 
-guint32 Tilesetlist::getTilesetId(std::string basename) const
+guint32 Tilesetlist::getTilesetId(Glib::ustring basename) const
 {
   Tileset *ts = getTileset(basename);
   if (ts)
@@ -346,7 +346,7 @@ guint32 Tilesetlist::getTilesetId(std::string basename) const
     return 0;
 }
 
-SmallTile *Tilesetlist::getSmallTile(std::string basename, Tile::Type type) const
+SmallTile *Tilesetlist::getSmallTile(Glib::ustring basename, Tile::Type type) const
 {
   Tileset *ts = getTileset(basename);
   if (!ts)
@@ -355,7 +355,7 @@ SmallTile *Tilesetlist::getSmallTile(std::string basename, Tile::Type type) cons
   return (*ts)[idx]->getSmallTile();
 }
 
-Gdk::RGBA Tilesetlist::getColor(std::string basename, Tile::Type type) const
+Gdk::RGBA Tilesetlist::getColor(Glib::ustring basename, Tile::Type type) const
 {
   SmallTile *smalltile = getSmallTile(basename, type);
   if (!smalltile)
@@ -373,7 +373,7 @@ bool Tilesetlist::reload(guint32 id)
   tileset->reload(broken);
   if (broken)
     return false;
-  std::string basename = tileset->getBaseName();
+  Glib::ustring basename = tileset->getBaseName();
   d_dirs[String::ucompose("%1 %2", tileset->getName(), tileset->getTileSize())] = basename;
   d_tilesets[basename] = tileset;
   d_tilesetids[tileset->getId()] = tileset;

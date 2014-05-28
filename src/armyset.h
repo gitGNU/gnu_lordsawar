@@ -19,7 +19,6 @@
 #define ARMYSET_H
 
 #include <gtkmm.h>
-#include <string>
 #include <map>
 #include <vector>
 #include <sigc++/trackable.h>
@@ -67,8 +66,8 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
     public:
 
 	//! The xml tag of this object in an armyset configuration file.
-	static std::string d_tag; 
-	static std::string file_extension; 
+	static Glib::ustring d_tag; 
+	static Glib::ustring file_extension; 
 
 	//! Default constructor.
 	/**
@@ -78,17 +77,17 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 *              objects.  Must be more than 0.  
 	 * @param name  The name of the Armyset.  Analagous to Armyset::d_name.
 	 */
-	Armyset(guint32 id, std::string name);
+	Armyset(guint32 id, Glib::ustring name);
 	//! Loading constructor.
 	/**
 	 * Load armyset XML entities from armyset configuration files.
 	 */
-        Armyset(XML_Helper* helper, std::string directory);
+        Armyset(XML_Helper* helper, Glib::ustring directory);
 
         //! Copy constructor.
         Armyset(const Armyset& armyset);
 
-	static Armyset *create(std::string filename, bool &unsupported);
+	static Armyset *create(Glib::ustring filename, bool &unsupported);
 
         static Armyset *copy (const Armyset *orig);
 
@@ -101,7 +100,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	//! Save the Armyset to an Armyset configuration file.
 	bool save(XML_Helper* helper) const;
         
-        bool save(std::string filename, std::string extension) const;
+        bool save(Glib::ustring filename, Glib::ustring extension) const;
 
 	//! Get the tile size of the Armyset.
 	/**
@@ -131,34 +130,34 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 *
          * @return The name or an empty string on error.
          */
-        std::string getName() const {return _(d_name.c_str());}
+        Glib::ustring getName() const {return _(d_name.c_str());}
 
 	//! Set the name of the armyset.
 	/**
 	 * @note This method is only used in the armyset editor.
 	 */
-        void setName(std::string name) {d_name = name;}
+        void setName(Glib::ustring name) {d_name = name;}
 
 	//! Get the copyright holders for this armyset.
-	std::string getCopyright() const {return d_copyright;};
+	Glib::ustring getCopyright() const {return d_copyright;};
 
 	//! Set the copyright holders on the armyset.
-	void setCopyright(std::string copy) {d_copyright = copy;};
+	void setCopyright(Glib::ustring copy) {d_copyright = copy;};
 
 	//! Get the license of this armyset.
-	std::string getLicense() const {return d_license;};
+	Glib::ustring getLicense() const {return d_license;};
 
         //! Returns the description of the armyset.
-        std::string getInfo() const {return _(d_info.c_str());}
+        Glib::ustring getInfo() const {return _(d_info.c_str());}
 
 	//! Set the license for this armyset.
-	void setLicense(std::string license) {d_license = license;};
+	void setLicense(Glib::ustring license) {d_license = license;};
 
 	//! Set the description of the armyset.
 	/**
 	 * @note This method is only used in the armyset editor.
 	 */
-        void setInfo(std::string info) {d_info = info;}
+        void setInfo(Glib::ustring info) {d_info = info;}
 
 	//! Get the base name of the armyset.
 	/**
@@ -167,10 +166,10 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 *
 	 * @return The basename of the file that the Armyset is held in.
 	 */
-        std::string getBaseName() const {return d_basename;}
+        Glib::ustring getBaseName() const {return d_basename;}
 
 	//! Set the base name of the file that the armyset is in.
-        void setBaseName(std::string bname) {d_basename = bname;}
+        void setBaseName(Glib::ustring bname) {d_basename = bname;}
 
 	//! Get the image of the stack in a ship (minus the mask).
 	PixMask* getShipPic() const {return d_ship;}
@@ -203,22 +202,22 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	void setStandardMask(PixMask* s) {d_standard_mask = s;};
 
 	//! Set the name of the file holding the image of the stack in a boat.
-	void setShipImageName(std::string n) {d_stackship_name = n;};
+	void setShipImageName(Glib::ustring n) {d_stackship_name = n;};
 
 	//! Get the name of the file holding the image of the stack in a boat.
-	std::string getShipImageName() {return d_stackship_name;};
+	Glib::ustring getShipImageName() {return d_stackship_name;};
 
 	//! Set the name of the file holding the image of the hero's flag.
-	void setStandardImageName(std::string n) {d_standard_name = n;};
+	void setStandardImageName(Glib::ustring n) {d_standard_name = n;};
 
 	//! Get the name of the file holding the image of the hero's flag.
-	std::string getStandardImageName() {return d_standard_name;};
+	Glib::ustring getStandardImageName() {return d_standard_name;};
 
 	//! Set the name of the file holding the image of the bag.
-	void setBagImageName(std::string n) {d_bag_name = n;};
+	void setBagImageName(Glib::ustring n) {d_bag_name = n;};
 
 	//! Get the name of the file holding the image of the bag.
-	std::string getBagImageName() {return d_bag_name;};
+	Glib::ustring getBagImageName() {return d_bag_name;};
 
         //! Find the type id with the highest value and return it.
         guint32 getMaxId() const;
@@ -238,7 +237,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 */
 	ArmyProto * lookupArmyByType(guint32 army_type) const;
 
-	ArmyProto * lookupArmyByName(std::string name) const;
+	ArmyProto * lookupArmyByName(Glib::ustring name) const;
 
 	ArmyProto * lookupArmyByStrengthAndTurns(guint32 str, guint32 turns) const;
 
@@ -263,41 +262,41 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	bool validateArmyUnitName(ArmyProto *a);
 	bool validateArmyTypeIds();
 	//! get filenames in this armyset, excepting the configuration file.
-	void getFilenames(std::list<std::string> &files);
+	void getFilenames(std::list<Glib::ustring> &files);
         //! Delete the armyset's temporary directory.
         void clean_tmp_dir() const;
 
 	void instantiateImages(bool &broken);
 	void uninstantiateImages();
-	void loadStandardPic(std::string image_filename, bool &broken);
-	void loadShipPic(std::string image_filename, bool &broken);
-	void loadBagPic(std::string image_filename, bool &broken);
+	void loadStandardPic(Glib::ustring image_filename, bool &broken);
+	void loadShipPic(Glib::ustring image_filename, bool &broken);
+	void loadBagPic(Glib::ustring image_filename, bool &broken);
 
-	std::string getConfigurationFile() const;
-	static std::list<std::string> scanUserCollection();
-	static std::list<std::string> scanSystemCollection();
+	Glib::ustring getConfigurationFile() const;
+	static std::list<Glib::ustring> scanUserCollection();
+	static std::list<Glib::ustring> scanSystemCollection();
 	static void switchArmyset(Army *army, const Armyset *armyset);
 	static void switchArmyset(ArmyProdBase *army, const Armyset *armyset);
 	static void switchArmysetForRuinKeeper(Army *army, const Armyset *armyset);
-        static bool copy(std::string src, std::string dest);
+        static bool copy(Glib::ustring src, Glib::ustring dest);
 
 	const ArmyProto * getRandomRuinKeeper() const;
 	const ArmyProto *getRandomAwardableAlly() const;
 
-        std::string getFileFromConfigurationFile(std::string file);
-        bool replaceFileInConfigurationFile(std::string file, std::string new_file);
+        Glib::ustring getFileFromConfigurationFile(Glib::ustring file);
+        bool replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file);
         //! Load the armyset again.
         void reload(bool &broken);
         guint32 calculate_preferred_tile_size() const;
 
         //! callback to upgrade old files.
-        static bool upgrade(std::string filename, std::string old_version, std::string new_version);
+        static bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version);
         static void support_backward_compatibility();
 
     private:
 
         //! Callback function for the army tag (see XML_Helper)
-        bool loadArmyProto(std::string tag, XML_Helper* helper);
+        bool loadArmyProto(Glib::ustring tag, XML_Helper* helper);
         
 	//! The unique Id of this armyset.
 	/**
@@ -311,13 +310,13 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 * This value appears in game configuration dialogs.
 	 * It is analgous to armyset.d_name in the armyset configuration files.
 	 */
-        std::string d_name;
+        Glib::ustring d_name;
 
 	//! The armyset has these copyright holders.
-	std::string d_copyright;
+	Glib::ustring d_copyright;
 
 	//! The license of the armyset.
-	std::string d_license;
+	Glib::ustring d_license;
 
 	//! The basename of the Armyset.
 	/**
@@ -325,7 +324,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 * residing in.  It does not contain a path (e.g. no slashes).
 	 * Armyset files sit in the army/ directory.
 	 */
-        std::string d_basename;
+        Glib::ustring d_basename;
 
 	//! The description of the Armyset.
 	/**
@@ -333,7 +332,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	 * configuration file.
 	 * This value is not used.
 	 */
-        std::string d_info;
+        Glib::ustring d_info;
 
 	//! The size of each army tile as rendered in the game.
 	/**
@@ -362,13 +361,13 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	PixMask *d_bag;
 
 	//! The name of the file that holds the picture of the hero's flag.
-	std::string d_standard_name;
+	Glib::ustring d_standard_name;
 
 	//! The name of the file that holds the picture of stack on water.
-	std::string d_stackship_name;
+	Glib::ustring d_stackship_name;
 
 	//! The name of the file that holds the picture of the sack of items.
-	std::string d_bag_name;
+	Glib::ustring d_bag_name;
 };
 
 #endif // ARMYSET_H

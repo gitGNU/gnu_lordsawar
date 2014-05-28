@@ -21,7 +21,6 @@
 #define AI_ALLOCATION_H
 
 #include <gtkmm.h>
-#include <string>
 
 #include "MoveResult.h"
 #include "stackreflist.h"

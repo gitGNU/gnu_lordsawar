@@ -27,12 +27,12 @@
 #include "cityset.h"
 #include "GameScenario.h"
 
-std::string RecentlyEditedFile::d_tag = "recentlyeditedfile";
+Glib::ustring RecentlyEditedFile::d_tag = "recentlyeditedfile";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-RecentlyEditedFile::RecentlyEditedFile(std::string filename)
+RecentlyEditedFile::RecentlyEditedFile(Glib::ustring filename)
 {
   d_last_edit.assign_current_time();
   d_filename = filename;
@@ -40,7 +40,7 @@ RecentlyEditedFile::RecentlyEditedFile(std::string filename)
 
 RecentlyEditedFile::RecentlyEditedFile(XML_Helper* helper)
 {
-  std::string s;
+  Glib::ustring s;
   helper->getData(s, "last_edited_on");
   d_last_edit.assign_from_iso8601(s);
   helper->getData(d_filename, "filename");
@@ -53,7 +53,7 @@ RecentlyEditedFile::~RecentlyEditedFile()
 bool RecentlyEditedFile::saveContents(XML_Helper *helper) const
 {
   bool retval = true;
-  std::string s = d_last_edit.as_iso8601();
+  Glib::ustring s = d_last_edit.as_iso8601();
   retval &= helper->saveData("last_edited_on", s);
   retval &= helper->saveData("filename", d_filename);
   retval &= doSave(helper);
@@ -62,7 +62,7 @@ bool RecentlyEditedFile::saveContents(XML_Helper *helper) const
 
 RecentlyEditedFile* RecentlyEditedFile::handle_load(XML_Helper *helper)
 {
-  std::string filename;
+  Glib::ustring filename;
   helper->getData(filename, "filename");
   if (File::nameEndsWith(filename, Shieldset::file_extension) == true)
     return new RecentlyEditedShieldsetFile(helper);
@@ -89,7 +89,7 @@ bool RecentlyEditedFile::save(XML_Helper* helper) const
 //-----------------------------------------------------------------------------
 //RecentlyEditedShieldsetFile
 
-RecentlyEditedShieldsetFile::RecentlyEditedShieldsetFile(std::string filename)
+RecentlyEditedShieldsetFile::RecentlyEditedShieldsetFile(Glib::ustring filename)
 	:RecentlyEditedFile(filename)
 {
 }
@@ -123,7 +123,7 @@ bool RecentlyEditedShieldsetFile::fillData(Shieldset *shieldset)
 //-----------------------------------------------------------------------------
 //RecentlyEditedTilesetFile
 
-RecentlyEditedTilesetFile::RecentlyEditedTilesetFile(std::string filename)
+RecentlyEditedTilesetFile::RecentlyEditedTilesetFile(Glib::ustring filename)
 	:RecentlyEditedFile(filename)
 {
 }
@@ -157,7 +157,7 @@ bool RecentlyEditedTilesetFile::fillData(Tileset *tileset)
 //-----------------------------------------------------------------------------
 //RecentlyEditedArmysetFile
 
-RecentlyEditedArmysetFile::RecentlyEditedArmysetFile(std::string filename)
+RecentlyEditedArmysetFile::RecentlyEditedArmysetFile(Glib::ustring filename)
 	:RecentlyEditedFile(filename)
 {
 }
@@ -191,7 +191,7 @@ bool RecentlyEditedArmysetFile::fillData(Armyset *armyset)
 //-----------------------------------------------------------------------------
 //RecentlyEditedCitysetFile
 
-RecentlyEditedCitysetFile::RecentlyEditedCitysetFile(std::string filename)
+RecentlyEditedCitysetFile::RecentlyEditedCitysetFile(Glib::ustring filename)
 	:RecentlyEditedFile(filename)
 {
 }
@@ -225,7 +225,7 @@ bool RecentlyEditedCitysetFile::fillData(Cityset *cityset)
 //-----------------------------------------------------------------------------
 //RecentlyEditedMapFile
 
-RecentlyEditedMapFile::RecentlyEditedMapFile(std::string filename)
+RecentlyEditedMapFile::RecentlyEditedMapFile(Glib::ustring filename)
 	:RecentlyEditedFile(filename)
 {
 }
@@ -251,7 +251,7 @@ bool RecentlyEditedMapFile::doSave(XML_Helper *helper) const
   return retval;
 }
 
-bool RecentlyEditedMapFile::fillData(std::string name, guint32 players, guint32 cities)
+bool RecentlyEditedMapFile::fillData(Glib::ustring name, guint32 players, guint32 cities)
 {
   d_name = name;
   d_num_players = players;

@@ -18,11 +18,9 @@
 #ifndef SIDEBAR_STATS_H
 #define SIDEBAR_STATS_H
 
-#include <string>
-
 struct SidebarStats
 {
-    std::string name;
+    Glib::ustring name;
     int gold, income, cities, units, turns, upkeep;
 };
 

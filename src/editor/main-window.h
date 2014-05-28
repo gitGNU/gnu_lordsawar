@@ -40,7 +40,7 @@ class CreateScenarioRandomize;
 class MainWindow: public sigc::trackable
 {
  public:
-    MainWindow(std::string load_filename = "");
+    MainWindow(Glib::ustring load_filename = "");
     ~MainWindow();
 
     void show();
@@ -96,7 +96,7 @@ class MainWindow: public sigc::trackable
     Gtk::Viewport *terrain_tile_style_viewport;
     Gtk::Grid *terrain_tile_style_grid;
     Gtk::Image *smallmap_image;
-    std::string current_save_filename;
+    Glib::ustring current_save_filename;
     bool needs_saving;
     Gtk::Table *terrain_type_table;
     Gtk::Label *mouse_position_label;
@@ -192,20 +192,20 @@ class MainWindow: public sigc::trackable
     int get_pointer_index();
     int get_tile_style_id();
     void setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> xml,
-	std::string prefix, std::string image_file,
+	Glib::ustring prefix, Glib::ustring image_file,
 	EditorBigMap::Pointer pointer, int size);
     void setup_terrain_radiobuttons();
 
     void init_maps();
     void set_filled_map(int width, int height, int fill_style, 
-			std::string tileset, std::string shieldset, 
-			std::string cityset, std::string armyset);
+			Glib::ustring tileset, Glib::ustring shieldset, 
+			Glib::ustring cityset, Glib::ustring armyset);
     void set_random_map(int width, int height,
 			int grass, int water, int swamp, int forest,
 			int hills, int mountains,
 			int cities, int ruins, int temples, int signposts,
-			std::string tileset, std::string shieldset,
-			std::string cityset, std::string armyset);
+			Glib::ustring tileset, Glib::ustring shieldset,
+			Glib::ustring cityset, Glib::ustring armyset);
 
     void clear_map_state();
     void init_map_state();
@@ -244,7 +244,7 @@ class MainWindow: public sigc::trackable
 
     int d_width;
     int d_height;
-    std::string d_load_filename;// filename given on the command line.
+    Glib::ustring d_load_filename;// filename given on the command line.
     
 };
 

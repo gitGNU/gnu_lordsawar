@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -48,10 +48,10 @@ ArmyBase::ArmyBase()
 ArmyBase::ArmyBase(XML_Helper* helper)
 {
   helper->getData(d_upkeep, "upkeep");
-  std::string move_bonus_str;
+  Glib::ustring move_bonus_str;
   helper->getData(move_bonus_str, "move_bonus");
   d_move_bonus = moveFlagsFromString(move_bonus_str);
-  std::string army_bonus_str;
+  Glib::ustring army_bonus_str;
   helper->getData(army_bonus_str, "army_bonus");
   d_army_bonus = bonusFlagsFromString(army_bonus_str);
   helper->getData(d_max_moves, "max_moves");
@@ -68,9 +68,9 @@ bool ArmyBase::saveData(XML_Helper* helper) const
 {
   bool retval = true;
   retval &= helper->saveData("upkeep", d_upkeep);
-  std::string move_bonus_str = moveFlagsToString(d_move_bonus);
+  Glib::ustring move_bonus_str = moveFlagsToString(d_move_bonus);
   retval &= helper->saveData("move_bonus", move_bonus_str);
-  std::string army_bonus_str = bonusFlagsToString(d_army_bonus);
+  Glib::ustring army_bonus_str = bonusFlagsToString(d_army_bonus);
   retval &= helper->saveData("army_bonus", army_bonus_str);
   retval &= helper->saveData("max_moves", d_max_moves);
   retval &= helper->saveData("strength", d_strength);
@@ -79,7 +79,7 @@ bool ArmyBase::saveData(XML_Helper* helper) const
   return retval;
 }
 
-std::string ArmyBase::getArmyBonusDescription() const
+Glib::ustring ArmyBase::getArmyBonusDescription() const
 {
   guint32 bonus = d_army_bonus;
   Glib::ustring s = "";
@@ -123,9 +123,9 @@ std::string ArmyBase::getArmyBonusDescription() const
   return s;
 }
 
-std::string ArmyBase::moveFlagsToString(const guint32 bonus)
+Glib::ustring ArmyBase::moveFlagsToString(const guint32 bonus)
 {
-  std::string move_bonuses;
+  Glib::ustring move_bonuses;
   //we don't add grass, because it's always implied.
   if (bonus & Tile::WATER)
     move_bonuses += " " + Tile::tileTypeToString(Tile::WATER);
@@ -142,7 +142,7 @@ std::string ArmyBase::moveFlagsToString(const guint32 bonus)
   return move_bonuses;
 }
 
-guint32 ArmyBase::moveFlagsFromString(const std::string str)
+guint32 ArmyBase::moveFlagsFromString(const Glib::ustring str)
 {
   guint32 total = 0;
   std::stringstream bonuses;
@@ -150,7 +150,7 @@ guint32 ArmyBase::moveFlagsFromString(const std::string str)
 
   while (bonuses.eof() == false)
     {
-      std::string bonus;
+      Glib::ustring bonus;
       bonuses >> bonus;
       if (bonus.size() == 0)
 	break;
@@ -159,7 +159,7 @@ guint32 ArmyBase::moveFlagsFromString(const std::string str)
   return total;
 }
 
-std::string ArmyBase::bonusFlagToString(const ArmyBase::Bonus bonus)
+Glib::ustring ArmyBase::bonusFlagToString(const ArmyBase::Bonus bonus)
 {
   switch (bonus)
     {
@@ -195,9 +195,9 @@ std::string ArmyBase::bonusFlagToString(const ArmyBase::Bonus bonus)
   return "";
 }
 
-std::string ArmyBase::bonusFlagsToString(const guint32 bonus)
+Glib::ustring ArmyBase::bonusFlagsToString(const guint32 bonus)
 {
-  std::string bonuses;
+  Glib::ustring bonuses;
   if (bonus & ArmyBase::ADD1STRINOPEN)
     bonuses += " " + bonusFlagToString(ArmyBase::ADD1STRINOPEN);
   if (bonus & ArmyBase::ADD2STRINOPEN)
@@ -229,7 +229,7 @@ std::string ArmyBase::bonusFlagsToString(const guint32 bonus)
   return bonuses;
 }
 
-guint32 ArmyBase::bonusFlagsFromString(const std::string str)
+guint32 ArmyBase::bonusFlagsFromString(const Glib::ustring str)
 {
   guint32 total = 0;
   std::stringstream bonuses;
@@ -237,7 +237,7 @@ guint32 ArmyBase::bonusFlagsFromString(const std::string str)
 
   while (bonuses.eof() == false)
     {
-      std::string bonus;
+      Glib::ustring bonus;
       bonuses >> bonus;
       if (bonus.size() == 0)
 	break;
@@ -246,7 +246,7 @@ guint32 ArmyBase::bonusFlagsFromString(const std::string str)
   return total;
 }
 
-ArmyBase::Bonus ArmyBase::bonusFlagFromString(const std::string str)
+ArmyBase::Bonus ArmyBase::bonusFlagFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return ArmyBase::Bonus(atoi(str.c_str()));

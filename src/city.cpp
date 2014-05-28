@@ -39,12 +39,12 @@
 #include "vectoredunit.h"
 #include "action.h"
 
-std::string City::d_tag = "city";
+Glib::ustring City::d_tag = "city";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-City::City(Vector<int> pos, guint32 width, std::string name, guint32 gold, 
+City::City(Vector<int> pos, guint32 width, Glib::ustring name, guint32 gold, 
 	   guint32 numslots)
     :Ownable((Player *)0), Location(pos, width), Renamable(name),
     ProdSlotlist(numslots), d_gold(gold), d_defense_level(1), d_burnt(false), 
@@ -81,7 +81,7 @@ City::City(XML_Helper* helper, guint32 width)
 
 
     std::istringstream svect;
-    std::string s;
+    Glib::ustring s;
 
     helper->getData(s, "vectoring");
      svect.str(s);

@@ -280,7 +280,7 @@ void CityEditorDialog::on_randomize_armies_clicked()
 
 void CityEditorDialog::on_randomize_name_clicked()
 {
-  std::string existing_name = name_entry->get_text();
+  Glib::ustring existing_name = name_entry->get_text();
   if (existing_name == City::getDefaultName())
     name_entry->set_text(d_randomizer->popRandomCityName());
   else

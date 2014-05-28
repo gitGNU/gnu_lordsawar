@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Ben Asselstine
+// Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ struct HostGameRequest
 {
   Glib::TimeVal created_on;
   Profile *profile;
-  std::string scenario_id;
+  Glib::ustring scenario_id;
 };
 
 
@@ -128,7 +128,7 @@ void GamehostServer::sendList(void *conn)
   delete l;
 }
 
-void GamehostServer::unhost(void *conn, std::string profile_id, std::string scenario_id, std::string &err)
+void GamehostServer::unhost(void *conn, Glib::ustring profile_id, Glib::ustring scenario_id, Glib::ustring &err)
 {
   HostedGame *g = Gamelist::getInstance()->findGameByScenarioId(scenario_id);
   if (!g)
@@ -160,7 +160,7 @@ void GamehostServer::unhost(void *conn, std::string profile_id, std::string scen
   return;
 }
 
-void GamehostServer::on_connected_to_gamelist_server_for_advertising_removal(std::string scenario_id)
+void GamehostServer::on_connected_to_gamelist_server_for_advertising_removal(Glib::ustring scenario_id)
 {
   GamelistClient *gsc = GamelistClient::getInstance();
   gsc->received_advertising_removal_response.connect
@@ -168,13 +168,13 @@ void GamehostServer::on_connected_to_gamelist_server_for_advertising_removal(std
   gsc->request_advertising_removal(scenario_id);
 }
     
-void GamehostServer::on_advertising_removal_response_received(std::string scenario_id, std::string err)
+void GamehostServer::on_advertising_removal_response_received(Glib::ustring scenario_id, Glib::ustring err)
 {
   GamelistClient::deleteInstance();
   return;
 }
 
-void GamehostServer::run_game(GameScenario *game_scenario, Glib::Pid *child_pid, guint32 port, std::string &err)
+void GamehostServer::run_game(GameScenario *game_scenario, Glib::Pid *child_pid, guint32 port, Glib::ustring &err)
 {
   Glib::ustring lordsawar = Glib::find_program_in_path(PACKAGE);
   if (lordsawar == "")
@@ -189,7 +189,7 @@ void GamehostServer::run_game(GameScenario *game_scenario, Glib::Pid *child_pid,
   tmpfile += SAVE_EXT;
   game_scenario->saveGame(tmpfile);
 
-  std::list<std::string> argv;
+  std::list<Glib::ustring> argv;
   argv.push_back(lordsawar);
   argv.push_back(tmpfile);
   argv.push_back("--host");
@@ -229,7 +229,7 @@ bool GamehostServer::waitForGameToBeConnectable(guint32 port)
   return true;
 }
 
-HostedGame * GamehostServer::host(GameScenario *game_scenario, Profile *profile, std::string &err)
+HostedGame * GamehostServer::host(GameScenario *game_scenario, Profile *profile, Glib::ustring &err)
 {
   guint32 port = get_free_port();
   Glib::Pid child_pid;
@@ -295,19 +295,19 @@ void GamehostServer::on_connected_to_gamelist_server_for_advertising(HostedGame 
   gsc->request_advertising(g);
 }
 
-void GamehostServer::on_advertising_response_received(std::string scenario_id, 
-                                                      std::string err)
+void GamehostServer::on_advertising_response_received(Glib::ustring scenario_id, 
+                                                      Glib::ustring err)
 {
   GamelistClient::deleteInstance();
   return;
 }
 
-void GamehostServer::get_profile_and_scenario_id(std::string payload, Profile **profile, std::string &scenario_id, std::string &err)
+void GamehostServer::get_profile_and_scenario_id(Glib::ustring payload, Profile **profile, Glib::ustring &scenario_id, Glib::ustring &err)
 {
   bool broken = false;
-  std::string match = "</" + Profile::d_tag + ">";
+  Glib::ustring match = "</" + Profile::d_tag + ">";
   size_t pos = payload.find(match);
-  if (pos == std::string::npos)
+  if (pos == Glib::ustring::npos)
     {
       err = _("malformed host new game message");
       return;
@@ -332,7 +332,7 @@ void GamehostServer::get_profile_and_scenario_id(std::string payload, Profile **
   scenario_id = String::utrim(payload.substr(pos + match.length()));
 }
 
-bool GamehostServer::loadProfile(std::string tag, XML_Helper *helper, Profile **profile)
+bool GamehostServer::loadProfile(Glib::ustring tag, XML_Helper *helper, Profile **profile)
 {
   if (tag == Profile::d_tag)
     {
@@ -343,16 +343,16 @@ bool GamehostServer::loadProfile(std::string tag, XML_Helper *helper, Profile **
 }
 
 
-bool GamehostServer::onGotMessage(void *conn, int type, std::string payload)
+bool GamehostServer::onGotMessage(void *conn, int type, Glib::ustring payload)
 {
   debug("got message of type " << type);
   switch (GhsMessageType(type)) 
     {
     case GHS_MESSAGE_HOST_NEW_GAME:
         {
-          std::string err = "";
+          Glib::ustring err = "";
           Profile *profile = NULL; //take it from payload
-          std::string scenario_id;
+          Glib::ustring scenario_id;
           get_profile_and_scenario_id(payload, &profile, scenario_id, err);
           if (err != "")
             {
@@ -384,7 +384,7 @@ bool GamehostServer::onGotMessage(void *conn, int type, std::string payload)
       break;
     case GHS_MESSAGE_SENDING_MAP:
         {
-          std::string err = "";
+          Glib::ustring err = "";
           std::string tmpfile = "lw.XXXX";
           int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
           close(fd);
@@ -431,9 +431,9 @@ bool GamehostServer::onGotMessage(void *conn, int type, std::string payload)
     case GHS_MESSAGE_UNHOST_GAME:
         {
           size_t pos;
-          std::string err;
+          Glib::ustring err;
           pos = payload.find(' ');
-          if (pos == std::string::npos)
+          if (pos == Glib::ustring::npos)
             return false;
           unhost(conn, payload.substr(0, pos), payload.substr(pos + 1), err);
           if (err != "")
@@ -502,7 +502,7 @@ sigc::connection GamehostServer::on_timer_registered(Timing::timer_slot s,
     return Glib::signal_timeout().connect(s, msecs_interval);
 }
           
-bool GamehostServer::add_to_profiles_awaiting_maps(Profile *profile, std::string scenario_id)
+bool GamehostServer::add_to_profiles_awaiting_maps(Profile *profile, Glib::ustring scenario_id)
 {
   if (host_game_requests.size() > (guint32) TOO_MANY_PROFILES_AWAITING_MAPS &&
       TOO_MANY_PROFILES_AWAITING_MAPS != -1)
@@ -533,7 +533,7 @@ void GamehostServer::cleanup_old_profiles_awaiting_maps(int stale)
     }
 }
 
-Profile *GamehostServer::remove_from_profiles_awaiting_maps(std::string scenario_id)
+Profile *GamehostServer::remove_from_profiles_awaiting_maps(Glib::ustring scenario_id)
 {
   for (std::list<HostGameRequest*>::iterator i = host_game_requests.begin();
        i != host_game_requests.end(); i++)
@@ -549,12 +549,12 @@ Profile *GamehostServer::remove_from_profiles_awaiting_maps(std::string scenario
   return NULL;
 }
 
-bool GamehostServer::is_member(std::string profile_id)
+bool GamehostServer::is_member(Glib::ustring profile_id)
 {
   if (members.empty())
     return true;
   Glib::ustring id = String::utrim(profile_id);
-  for (std::list<std::string>::iterator i = members.begin(); i != members.end();
+  for (std::list<Glib::ustring>::iterator i = members.begin(); i != members.end();
        i++)
     {
       if (id == *i)
@@ -563,20 +563,20 @@ bool GamehostServer::is_member(std::string profile_id)
   return false;
 }
 
-std::list<std::string> GamehostServer::load_members_from_file(std::string file)
+std::list<Glib::ustring> GamehostServer::load_members_from_file(Glib::ustring file)
 {
   char buffer[1024];
-  std::list<std::string> members;
+  std::list<Glib::ustring> members;
   std::ifstream f(file.c_str());
   if (f.is_open() == false)
     return members;
   while (!f.eof())
     {
       f.getline(buffer, sizeof(buffer));
-      std::string line = buffer;
+      Glib::ustring line = buffer;
       size_t pos = line.find('#');
-      std::string trimmed_line;
-      if (pos == std::string::npos)
+      Glib::ustring trimmed_line;
+      if (pos == Glib::ustring::npos)
         trimmed_line =String::utrim(line);
       else
         trimmed_line = String::utrim(line.substr(pos));

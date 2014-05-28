@@ -2,7 +2,7 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004, 2005 Bryan Duff
 // Copyright (C) 2004, 2005, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2012 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -26,7 +26,6 @@
 #include <sigc++/signal.h>
 #include <sigc++/trackable.h>
 #include <sigc++/connection.h>
-#include <string>
 #include <gtkmm.h>
 
 #include "vector.h"
@@ -84,13 +83,13 @@ class BigMap: public sigc::trackable
     void blank(bool on);
 
     //! Save the whole map as one big image (bmp file).
-    bool saveAsBitmap(std::string filename);
+    bool saveAsBitmap(Glib::ustring filename);
 
     //! Save the whole map, but not the game objects on top of it.
-    bool saveUnderlyingMapAsBitmap(std::string filename);
+    bool saveUnderlyingMapAsBitmap(Glib::ustring filename);
 
     //! Save the current view as an image (bmp file).
-    bool saveViewAsBitmap(std::string filename);
+    bool saveViewAsBitmap(Glib::ustring filename);
     void toggle_grid();
     
     Cairo::RefPtr<Cairo::Surface> get_surface() const {return outgoing;}

@@ -30,7 +30,7 @@
 #include "defs.h"
 #include "File.h"
 
-CitySetInfoDialog::CitySetInfoDialog(Gtk::Window &parent, Cityset *cityset, std::string dir, std::string file, bool readonly, std::string title)
+CitySetInfoDialog::CitySetInfoDialog(Gtk::Window &parent, Cityset *cityset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
 {
   d_cityset = cityset;
   d_readonly = readonly;
@@ -60,10 +60,10 @@ CitySetInfoDialog::CitySetInfoDialog(Gtk::Window &parent, Cityset *cityset, std:
     else
       {
         guint32 num = 0;
-        std::string basename = Citysetlist::getInstance()->findFreeBaseName(_("untitled"), 100, num);
+        Glib::ustring basename = Citysetlist::getInstance()->findFreeBaseName(_("untitled"), 100, num);
         filename_entry->set_text(basename);
 
-        std::string name = String::ucompose("%1 %2", _("Untitled"), num);
+        Glib::ustring name = String::ucompose("%1 %2", _("Untitled"), num);
         name_entry->set_text(name);
       }
     if (readonly == false)
@@ -133,7 +133,7 @@ void CitySetInfoDialog::update_buttons()
       return;
     }
 
-  std::string dir = File::getUserCitysetDir() + filename_entry->get_text();
+  Glib::ustring dir = File::getUserCitysetDir() + filename_entry->get_text();
   if (Citysetlist::getInstance()->getCityset(filename_entry->get_text()))
     {
       accept_button->set_sensitive(false);

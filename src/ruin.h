@@ -1,6 +1,6 @@
 // Copyright (C) 2001, 2003 Michael Bartl
 // Copyright (C) 2002, 2003, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 #define RUIN_H
 
 #define DEFAULT_RUIN_NAME  "Ruin"
-#include <string>
 #include <sigc++/trackable.h>
 #include "NamedLocation.h"
 #include "stack.h"
@@ -47,7 +46,7 @@ class Ruin : public NamedLocation, public sigc::trackable
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! The kind of ruin.
         enum Type {
@@ -71,7 +70,7 @@ class Ruin : public NamedLocation, public sigc::trackable
 	  * @param sage         if this ruin contains a sage or not.
           */
         Ruin(Vector<int> pos, guint32 width, 
-	     std::string name = DEFAULT_RUIN_NAME, int type = Ruin::RUIN, 
+	     Glib::ustring name = DEFAULT_RUIN_NAME, int type = Ruin::RUIN, 
 	     Stack* occupant = 0, bool searched = false, bool hidden = false, 
 	     Player *owner = 0, bool sage = false);
 
@@ -159,7 +158,7 @@ class Ruin : public NamedLocation, public sigc::trackable
 	// Methods that operate on class data and do not modify the class.
 	
         //! Callback for loading the ruin data.
-        bool load(std::string tag, XML_Helper* helper);
+        bool load(Glib::ustring tag, XML_Helper* helper);
 
         //! Saves the ruin data to an opened saved-game file.
         bool save(XML_Helper* helper) const;
@@ -170,13 +169,13 @@ class Ruin : public NamedLocation, public sigc::trackable
 	// Static Methods
 
 	//! Get the default name of any ruin.
-	static std::string getDefaultName() {return _(DEFAULT_RUIN_NAME);};
+	static Glib::ustring getDefaultName() {return _(DEFAULT_RUIN_NAME);};
 
 	//! Convert a Ruin::Type enumerated value to a string.
-	static std::string ruinTypeToString(const Ruin::Type type);
+	static Glib::ustring ruinTypeToString(const Ruin::Type type);
 
 	//! Convert a string containing a Ruin::Type to an enumerated value.
-	static Ruin::Type ruinTypeFromString(const std::string str);
+	static Ruin::Type ruinTypeFromString(const Glib::ustring str);
 
     private:
 

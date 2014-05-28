@@ -50,9 +50,9 @@ void Shieldsetlist::deleteInstance()
 }
 
 
-void Shieldsetlist::loadShieldsets(std::list<std::string> shieldsets)
+void Shieldsetlist::loadShieldsets(std::list<Glib::ustring> shieldsets)
 {
-    for (std::list<std::string>::const_iterator i = shieldsets.begin(); 
+    for (std::list<Glib::ustring>::const_iterator i = shieldsets.begin(); 
 	 i != shieldsets.end(); i++)
       {
         Shieldset *shieldset = loadShieldset(*i);
@@ -65,7 +65,7 @@ void Shieldsetlist::loadShieldsets(std::list<std::string> shieldsets)
 Shieldsetlist::Shieldsetlist()
 {
     // load all shieldsets
-    std::list<std::string> shieldsets = Shieldset::scanSystemCollection();
+    std::list<Glib::ustring> shieldsets = Shieldset::scanSystemCollection();
     loadShieldsets(shieldsets);
     shieldsets = Shieldset::scanUserCollection();
     loadShieldsets(shieldsets);
@@ -78,18 +78,18 @@ Shieldsetlist::~Shieldsetlist()
     delete (*it);
 }
 
-std::list<std::string> Shieldsetlist::getNames() const
+std::list<Glib::ustring> Shieldsetlist::getNames() const
 {
-  std::list<std::string> names;
+  std::list<Glib::ustring> names;
   for (const_iterator it = begin(); it != end(); it++)
     names.push_back((*it)->getName());
   names.sort(case_insensitive);
   return names;
 }
 
-std::list<std::string> Shieldsetlist::getValidNames() const
+std::list<Glib::ustring> Shieldsetlist::getValidNames() const
 {
-  std::list<std::string> names;
+  std::list<Glib::ustring> names;
   for (const_iterator it = begin(); it != end(); it++)
     {
       if ((*it)->validate() == true)
@@ -99,7 +99,7 @@ std::list<std::string> Shieldsetlist::getValidNames() const
   return names;
 }
 
-std::string Shieldsetlist::getShieldsetDir(std::string name) const
+Glib::ustring Shieldsetlist::getShieldsetDir(Glib::ustring name) const
 {
   DirMap::const_iterator it = d_dirs.find(name);
   if (it == d_dirs.end())
@@ -108,7 +108,7 @@ std::string Shieldsetlist::getShieldsetDir(std::string name) const
     return (*it).second;
 }
 
-Shieldset* Shieldsetlist::loadShieldset(std::string name)
+Shieldset* Shieldsetlist::loadShieldset(Glib::ustring name)
 {
   bool unsupported_version = false;
   debug("Loading shieldset " <<File::get_basename(name));
@@ -130,7 +130,7 @@ Shieldset* Shieldsetlist::loadShieldset(std::string name)
     
   if (d_dirs.find(shieldset->getName()) != d_dirs.end())
     {
-      std::string basename = (*d_dirs.find(shieldset->getName())).second;
+      Glib::ustring basename = (*d_dirs.find(shieldset->getName())).second;
       if (basename != "")
         {
           Shieldset *s = (*d_shieldsets.find(basename)).second;
@@ -151,9 +151,9 @@ Shieldset* Shieldsetlist::loadShieldset(std::string name)
   return shieldset;
 }
 
-void Shieldsetlist::add(Shieldset *shieldset, std::string file)
+void Shieldsetlist::add(Shieldset *shieldset, Glib::ustring file)
 {
-  std::string basename = File::get_basename(file);
+  Glib::ustring basename = File::get_basename(file);
   push_back(shieldset);
   shieldset->setBaseName(basename);
   d_dirs[shieldset->getName()] = basename;
@@ -201,7 +201,7 @@ Shieldset *Shieldsetlist::getShieldset(guint32 id)  const
   return (*it).second;
 }
 
-Shieldset *Shieldsetlist::getShieldset(std::string bname) const
+Shieldset *Shieldsetlist::getShieldset(Glib::ustring bname) const
 { 
   ShieldsetMap::const_iterator it = d_shieldsets.find(bname);
   if (it == d_shieldsets.end())
@@ -209,15 +209,15 @@ Shieldset *Shieldsetlist::getShieldset(std::string bname) const
   return (*it).second;
 }
 
-Shieldset *Shieldsetlist::import(Tar_Helper *t, std::string f, bool &broken)
+Shieldset *Shieldsetlist::import(Tar_Helper *t, Glib::ustring f, bool &broken)
 {
   bool unsupported_version = false;
-  std::string filename = t->getFile(f, broken);
+  Glib::ustring filename = t->getFile(f, broken);
   Shieldset *shieldset = Shieldset::create(filename, unsupported_version);
   assert (shieldset != NULL);
   shieldset->setBaseName(File::get_basename(f));
 
-  std::string basename = "";
+  Glib::ustring basename = "";
   guint32 id = 0;
   addToPersonalCollection(shieldset, basename, id);
 
@@ -225,9 +225,9 @@ Shieldset *Shieldsetlist::import(Tar_Helper *t, std::string f, bool &broken)
 
 }
 
-std::string Shieldsetlist::findFreeBaseName(std::string basename, guint32 max, guint32 &num) const
+Glib::ustring Shieldsetlist::findFreeBaseName(Glib::ustring basename, guint32 max, guint32 &num) const
 {
-  std::string new_basename;
+  Glib::ustring new_basename;
   for (unsigned int count = 1; count < max; count++)
     {
       new_basename = String::ucompose("%1%2", basename, count);
@@ -242,7 +242,7 @@ std::string Shieldsetlist::findFreeBaseName(std::string basename, guint32 max, g
   return new_basename;
 }
 
-bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &new_basename, guint32 &new_id)
+bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, Glib::ustring &new_basename, guint32 &new_id)
 {
   //do we already have this one?
       
@@ -261,7 +261,7 @@ bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &n
       else
         {
           guint32 num = 0;
-          std::string new_basename = findFreeBaseName(shieldset->getBaseName(), 100, num);
+          Glib::ustring new_basename = findFreeBaseName(shieldset->getBaseName(), 100, num);
           if (new_basename == "")
             return false;
         }
@@ -284,7 +284,7 @@ bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, std::string &n
     new_id = shieldset->getId();
 
   //make the directory where the shieldset is going to live.
-  std::string file = File::getUserShieldsetDir() + new_basename + Shieldset::file_extension;
+  Glib::ustring file = File::getUserShieldsetDir() + new_basename + Shieldset::file_extension;
 
   shieldset->save(file, Shieldset::file_extension);
 
@@ -299,8 +299,8 @@ int Shieldsetlist::getNextAvailableId(int after)
 {
   bool unsupported_version = false;
   std::list<guint32> ids;
-  std::list<std::string> shieldsets = Shieldset::scanSystemCollection();
-  for (std::list<std::string>::const_iterator i = shieldsets.begin(); 
+  std::list<Glib::ustring> shieldsets = Shieldset::scanSystemCollection();
+  for (std::list<Glib::ustring>::const_iterator i = shieldsets.begin(); 
        i != shieldsets.end(); i++)
     {
       Shieldset *shieldset = Shieldset::create(*i, unsupported_version);
@@ -311,7 +311,7 @@ int Shieldsetlist::getNextAvailableId(int after)
 	}
     }
   shieldsets = Shieldset::scanUserCollection();
-  for (std::list<std::string>::const_iterator i = shieldsets.begin(); 
+  for (std::list<Glib::ustring>::const_iterator i = shieldsets.begin(); 
        i != shieldsets.end(); i++)
     {
       Shieldset *shieldset = Shieldset::create(*i, unsupported_version);
@@ -329,10 +329,10 @@ int Shieldsetlist::getNextAvailableId(int after)
   return -1;
 }
 
-bool Shieldsetlist::contains(std::string name) const
+bool Shieldsetlist::contains(Glib::ustring name) const
 {
-  std::list<std::string> n = getNames();
-  for (std::list<std::string>::iterator it = n.begin(); it != n.end(); it++)
+  std::list<Glib::ustring> n = getNames();
+  for (std::list<Glib::ustring>::iterator it = n.begin(); it != n.end(); it++)
     {
       if (*it == name)
         return true;
@@ -340,7 +340,7 @@ bool Shieldsetlist::contains(std::string name) const
   return false;
 }
 
-guint32 Shieldsetlist::getShieldsetId(std::string basename) const
+guint32 Shieldsetlist::getShieldsetId(Glib::ustring basename) const
 {
   Shieldset *ss = getShieldset(basename);
   if (ss)
@@ -358,7 +358,7 @@ bool Shieldsetlist::reload(guint32 id)
   shieldset->reload(broken);
   if (broken)
     return false;
-  std::string basename = shieldset->getBaseName();
+  Glib::ustring basename = shieldset->getBaseName();
   d_dirs[shieldset->getName()] = basename;
   d_shieldsets[basename] = shieldset;
   d_shieldsetids[shieldset->getId()] = shieldset;

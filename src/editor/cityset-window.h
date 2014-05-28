@@ -30,7 +30,7 @@
 class CitySetWindow: public sigc::trackable
 {
  public:
-    CitySetWindow(Gtk::Window *parent, std::string load_filename = "");
+    CitySetWindow(Gtk::Window *parent, Glib::ustring load_filename = "");
     ~CitySetWindow();
 
     Gtk::Window &get_window() { return *window; }
@@ -41,8 +41,8 @@ class CitySetWindow: public sigc::trackable
 
  private:
     Gtk::Window* window;
-    std::string current_save_filename;
-    std::string autosave; //filename
+    Glib::ustring current_save_filename;
+    Glib::ustring autosave; //filename
     Cityset *d_cityset; //current cityset
     bool needs_saving;
     Gtk::MenuItem *new_cityset_menuitem;
@@ -70,7 +70,7 @@ class CitySetWindow: public sigc::trackable
     void update_cityset_panel();
     void update_cityset_menuitems();
 
-    bool load_cityset(std::string filename);
+    bool load_cityset(Glib::ustring filename);
     bool save_current_cityset();
 
     //callbacks

@@ -27,9 +27,9 @@
 class CitySetInfoDialog: public sigc::trackable
 {
  public:
-    CitySetInfoDialog(Gtk::Window &parent, Cityset *cityset, std::string dir, 
-                      std::string file, bool readonly = false, 
-                      std::string title = "");
+    CitySetInfoDialog(Gtk::Window &parent, Cityset *cityset, Glib::ustring dir, 
+                      Glib::ustring file, bool readonly = false, 
+                      Glib::ustring title = "");
     ~CitySetInfoDialog();
 
     int run();

@@ -83,7 +83,7 @@ class Threatlist : public std::list<Threat*>
 	// Methods that operate on class data but do not modify the class
 
         //! return some debugging information
-        std::string toString() const;
+        Glib::ustring toString() const;
         
         void changeOwnership(Player *old_owner, Player *new_owner);
 

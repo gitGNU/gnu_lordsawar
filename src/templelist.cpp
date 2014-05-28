@@ -31,7 +31,7 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-std::string Templelist::d_tag = "templelist";
+Glib::ustring Templelist::d_tag = "templelist";
 Templelist* Templelist::s_instance=0;
 
 Templelist* Templelist::getInstance()
@@ -82,7 +82,7 @@ bool Templelist::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Templelist::load(std::string tag, XML_Helper* helper)
+bool Templelist::load(Glib::ustring tag, XML_Helper* helper)
 {
     if (tag != Temple::d_tag)    
     //what has happened?

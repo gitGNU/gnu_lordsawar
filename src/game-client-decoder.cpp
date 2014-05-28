@@ -39,10 +39,10 @@ GameClientDecoder::~GameClientDecoder()
 {
 }
 
-void GameClientDecoder::gotScenario(const std::string &payload)
+void GameClientDecoder::gotScenario(const Glib::ustring &payload)
 {
-  std::string file = "clientnetwork" + SAVE_EXT;
-  std::string path = File::getSavePath();
+  Glib::ustring file = "clientnetwork" + SAVE_EXT;
+  Glib::ustring path = File::getSavePath();
   path += file;
   
   std::ofstream f(path.c_str());
@@ -60,7 +60,7 @@ int GameClientDecoder::decodeActions(std::list<NetworkAction*> actions,
        end = actions.end(); i != end; ++i)
   {
     NetworkAction *action = *i;
-    std::string desc = action->toString();
+    Glib::ustring desc = action->toString();
     
     Player *p = action->getOwner();
     //if (p != player && player)
@@ -89,7 +89,7 @@ int GameClientDecoder::decodeActions(std::list<NetworkAction*> actions,
   return count;
 }
 
-void GameClientDecoder::gotActions(const std::string &payload)
+void GameClientDecoder::gotActions(const Glib::ustring &payload)
 {
   std::istringstream is(payload);
 
@@ -110,7 +110,7 @@ int GameClientDecoder::decodeHistories(std::list<NetworkHistory *> histories)
        end = histories.end(); i != end; ++i)
   {
     NetworkHistory *history = *i;
-    std::string desc = history->toString();
+    Glib::ustring desc = history->toString();
     std::cerr << String::ucompose(_("received history: %1"), desc) << std::endl;
     
     //just add it to the player's history list.
@@ -127,7 +127,7 @@ int GameClientDecoder::decodeHistories(std::list<NetworkHistory *> histories)
   return count;
 }
 
-void GameClientDecoder::gotHistories(const std::string &payload)
+void GameClientDecoder::gotHistories(const Glib::ustring &payload)
 {
   std::istringstream is(payload);
 

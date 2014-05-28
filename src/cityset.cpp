@@ -18,7 +18,6 @@
 #include <sigc++/functors/mem_fun.h>
 
 #include "cityset.h"
-
 #include "File.h"
 #include "xmlhelper.h"
 #include "gui/image-helpers.h"
@@ -30,15 +29,15 @@
 #include "file-compat.h"
 #include "ucompose.hpp"
 
-std::string Cityset::d_tag = "cityset";
-std::string Cityset::file_extension = CITYSET_EXT;
+Glib::ustring Cityset::d_tag = "cityset";
+Glib::ustring Cityset::file_extension = CITYSET_EXT;
 
 #include <iostream>
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
 #define DEFAULT_CITY_TILE_SIZE 40
-Cityset::Cityset(guint32 id, std::string name)
+Cityset::Cityset(guint32 id, Glib::ustring name)
 	: d_id(id), d_name(name), d_copyright(""), d_license(""), 
 	d_tileSize(DEFAULT_CITY_TILE_SIZE), d_basename("")
 {
@@ -128,7 +127,7 @@ Cityset::Cityset(const Cityset& c)
   d_ruin_tile_width = c.d_ruin_tile_width;
 }
 
-Cityset::Cityset(XML_Helper *helper, std::string directory)
+Cityset::Cityset(XML_Helper *helper, Glib::ustring directory)
 	:Set()
 {
   setDirectory(directory);
@@ -171,7 +170,7 @@ Cityset::~Cityset()
 class CitysetLoader
 {
 public:
-    CitysetLoader(std::string filename, bool &broken, bool &unsupported)
+    CitysetLoader(Glib::ustring filename, bool &broken, bool &unsupported)
       {
         unsupported_version = false;
 	cityset = NULL;
@@ -182,7 +181,7 @@ public:
         Tar_Helper t(filename, std::ios::in, broken);
         if (broken)
           return;
-        std::string lwcfilename = 
+        Glib::ustring lwcfilename = 
           t.getFirstFile(Cityset::file_extension, broken);
         if (broken)
           return;
@@ -200,7 +199,7 @@ public:
         helper.close();
         t.Close();
       };
-    bool load(std::string tag, XML_Helper* helper)
+    bool load(Glib::ustring tag, XML_Helper* helper)
       {
 	if (tag == Cityset::d_tag)
 	  {
@@ -218,13 +217,13 @@ public:
 	  }
 	return false;
       };
-    std::string dir;
-    std::string file;
+    Glib::ustring dir;
+    Glib::ustring file;
     Cityset *cityset;
     bool unsupported_version;
 };
 
-Cityset *Cityset::create(std::string file, bool &unsupported_version)
+Cityset *Cityset::create(Glib::ustring file, bool &unsupported_version)
 {
   bool broken = false;
   CitysetLoader d(file, broken, unsupported_version);
@@ -233,7 +232,7 @@ Cityset *Cityset::create(std::string file, bool &unsupported_version)
   return d.cityset;
 }
 
-void Cityset::getFilenames(std::list<std::string> &files)
+void Cityset::getFilenames(std::list<Glib::ustring> &files)
 {
   files.push_back(d_cities_filename);
   files.push_back(d_razedcities_filename);
@@ -244,34 +243,32 @@ void Cityset::getFilenames(std::list<std::string> &files)
   files.push_back(d_towers_filename);
 }
 
-bool Cityset::save(std::string filename, std::string extension) const
+bool Cityset::save(Glib::ustring filename, Glib::ustring extension) const
 {
   bool broken = false;
-  std::string goodfilename = File::add_ext_if_necessary(filename, extension);
-  std::string tmpfile = "lw.XXXX";
-  int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
-  close (fd);
+  Glib::ustring goodfilename = File::add_ext_if_necessary(filename, extension);
+  Glib::ustring tmpfile = File::get_tmp_file();
   XML_Helper helper(tmpfile, std::ios::out, Configuration::s_zipfiles);
   helper.begin(LORDSAWAR_CITYSET_VERSION);
   broken = !save(&helper);
   helper.close();
   if (broken == true)
     return false;
-  std::string tmptar = tmpfile + ".tar";
+  Glib::ustring tmptar = tmpfile + ".tar";
   Tar_Helper t(tmptar, std::ios::out, broken);
   if (broken == true)
     return false;
   t.saveFile(tmpfile, File::get_basename(goodfilename, true));
   //now the images, go get 'em from the tarball we were made from.
-  std::list<std::string> delfiles;
+  std::list<Glib::ustring> delfiles;
   Tar_Helper orig(getConfigurationFile(), std::ios::in, broken);
   if (broken == false)
     {
-      std::list<std::string> files = orig.getFilenamesWithExtension(".png");
-      for (std::list<std::string>::iterator it = files.begin(); 
+      std::list<Glib::ustring> files = orig.getFilenamesWithExtension(".png");
+      for (std::list<Glib::ustring>::iterator it = files.begin(); 
            it != files.end(); it++)
         {
-          std::string pngfile = orig.getFile(*it, broken);
+          Glib::ustring pngfile = orig.getFile(*it, broken);
           if (broken == false)
             {
               t.saveFile(pngfile);
@@ -291,7 +288,7 @@ bool Cityset::save(std::string filename, std::string extension) const
         broken = false;
     }
   t.Close();
-  for (std::list<std::string>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
+  for (std::list<Glib::ustring>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
     File::erase(*it);
   File::erase(tmpfile);
   if (broken == false)
@@ -382,13 +379,13 @@ void Cityset::uninstantiateImages()
     }
 }
 
-void Cityset::instantiateImages(std::string port_filename,
-				std::string signpost_filename,
-				std::string cities_filename,
-				std::string razed_cities_filename,
-				std::string towers_filename,
-				std::string ruins_filename,
-				std::string temples_filename,
+void Cityset::instantiateImages(Glib::ustring port_filename,
+				Glib::ustring signpost_filename,
+				Glib::ustring cities_filename,
+				Glib::ustring razed_cities_filename,
+				Glib::ustring towers_filename,
+				Glib::ustring ruins_filename,
+				Glib::ustring temples_filename,
                                 bool &broken)
 {
   if (port_filename.empty() == false && !broken)
@@ -485,13 +482,13 @@ void Cityset::instantiateImages(bool &broken)
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
   if (broken)
     return;
-  std::string port_filename = "";
-  std::string signpost_filename = "";
-  std::string cities_filename = "";
-  std::string razed_cities_filename = "";
-  std::string towers_filename = "";
-  std::string ruins_filename = "";
-  std::string temples_filename = "";
+  Glib::ustring port_filename = "";
+  Glib::ustring signpost_filename = "";
+  Glib::ustring cities_filename = "";
+  Glib::ustring razed_cities_filename = "";
+  Glib::ustring towers_filename = "";
+  Glib::ustring ruins_filename = "";
+  Glib::ustring temples_filename = "";
 
   if (getPortFilename().empty() == false && !broken)
     port_filename = t.getFile(getPortFilename() + ".png", broken);
@@ -528,19 +525,19 @@ void Cityset::instantiateImages(bool &broken)
   t.Close();
 }
 
-std::string Cityset::getConfigurationFile() const
+Glib::ustring Cityset::getConfigurationFile() const
 {
   return getDirectory() + d_basename + file_extension;
 }
 
-std::list<std::string> Cityset::scanUserCollection()
+std::list<Glib::ustring> Cityset::scanUserCollection()
 {
   return File::scanForFiles(File::getUserCitysetDir(), file_extension);
 }
 
-std::list<std::string> Cityset::scanSystemCollection()
+std::list<Glib::ustring> Cityset::scanSystemCollection()
 {
-  std::list<std::string> retlist = File::scanForFiles(File::getCitysetDir(), 
+  std::list<Glib::ustring> retlist = File::scanForFiles(File::getCitysetDir(), 
 						      file_extension);
   if (retlist.empty())
     {
@@ -657,20 +654,20 @@ void Cityset::reload(bool &broken)
     {
       //steal the values from d.cityset and then don't delete it.
       uninstantiateImages();
-      std::string basename = d_basename;
+      Glib::ustring basename = d_basename;
       *this = *d.cityset;
       instantiateImages(broken);
       d_basename = basename;
     }
 }
 
-std::string Cityset::getFileFromConfigurationFile(std::string file)
+Glib::ustring Cityset::getFileFromConfigurationFile(Glib::ustring file)
 {
   bool broken = false;
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
   if (broken == false)
     {
-      std::string filename = t.getFile(file, broken);
+      Glib::ustring filename = t.getFile(file, broken);
       t.Close();
   
       if (broken == false)
@@ -679,7 +676,7 @@ std::string Cityset::getFileFromConfigurationFile(std::string file)
   return "";
 }
 
-bool Cityset::replaceFileInConfigurationFile(std::string file, std::string new_file)
+bool Cityset::replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file)
 {
   bool broken = false;
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
@@ -726,7 +723,7 @@ guint32 Cityset::calculate_preferred_tile_size() const
   return tilesize;
 }
 
-bool Cityset::copy(std::string src, std::string dest)
+bool Cityset::copy(Glib::ustring src, Glib::ustring dest)
 {
   return Tar_Helper::copy(src, dest);
 }
@@ -756,7 +753,7 @@ void Cityset::clean_tmp_dir() const
   return Tar_Helper::clean_tmp_dir(getConfigurationFile());
 }
 
-bool Cityset::upgrade(std::string filename, std::string old_version, std::string new_version)
+bool Cityset::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version)
 {
   return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
                                             FileCompat::CITYSET, d_tag);

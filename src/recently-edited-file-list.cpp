@@ -35,7 +35,7 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-std::string RecentlyEditedFileList::d_tag = "recentlyeditedfilelist";
+Glib::ustring RecentlyEditedFileList::d_tag = "recentlyeditedfilelist";
 
 RecentlyEditedFileList* RecentlyEditedFileList::s_instance = 0;
 
@@ -53,7 +53,7 @@ bool RecentlyEditedFileList::save()
   return saveToFile();
 }
 
-bool RecentlyEditedFileList::saveToFile(std::string filename) const
+bool RecentlyEditedFileList::saveToFile(Glib::ustring filename) const
 {
   if (filename == "")
     filename = File::getSavePath() + "/" + RECENTLY_EDITED_LIST;
@@ -64,7 +64,7 @@ bool RecentlyEditedFileList::saveToFile(std::string filename) const
   return retval;
 }
 
-bool RecentlyEditedFileList::loadFromFile(std::string filename)
+bool RecentlyEditedFileList::loadFromFile(Glib::ustring filename)
 {
   if (filename == "")
     filename = File::getSavePath() + "/" + RECENTLY_EDITED_LIST;
@@ -128,7 +128,7 @@ bool RecentlyEditedFileList::save(XML_Helper* helper) const
   return retval;
 }
 
-bool RecentlyEditedFileList::load(std::string tag, XML_Helper* helper)
+bool RecentlyEditedFileList::load(Glib::ustring tag, XML_Helper* helper)
 {
   if (helper->getVersion() != LORDSAWAR_RECENTLY_PLAYED_VERSION)
     {
@@ -143,7 +143,7 @@ bool RecentlyEditedFileList::load(std::string tag, XML_Helper* helper)
   return false;
 }
 
-bool RecentlyEditedFileList::filename_in_list(std::string filename) const
+bool RecentlyEditedFileList::filename_in_list(Glib::ustring filename) const
 {
   for (const_iterator it = begin(); it != end(); it++)
     {
@@ -153,7 +153,7 @@ bool RecentlyEditedFileList::filename_in_list(std::string filename) const
   return false;
 }
 
-void RecentlyEditedFileList::addEntry(std::string filename)
+void RecentlyEditedFileList::addEntry(Glib::ustring filename)
 {
   bool unsupported_version = false;
   if (Configuration::s_remember_recently_edited_files == false)
@@ -204,7 +204,7 @@ void RecentlyEditedFileList::addEntry(std::string filename)
       bool broken = false;
       guint32 players = 0;
       guint32 cities = 0;
-      std::string name, comment, id;
+      Glib::ustring name, comment, id;
       GameScenario::loadDetails(filename, broken, players, cities, name, 
                                 comment, id);
       RecentlyEditedMapFile *g = NULL;
@@ -325,7 +325,7 @@ void RecentlyEditedFileList::pruneOldFiles(int stale)
     }
 }
 
-bool RecentlyEditedFileList::removeEntry(std::string filename)
+bool RecentlyEditedFileList::removeEntry(Glib::ustring filename)
 {
   bool found = false;
   for (iterator it = begin(); it != end();)
@@ -342,7 +342,7 @@ bool RecentlyEditedFileList::removeEntry(std::string filename)
   return found;
 }
 
-void RecentlyEditedFileList::updateEntry(std::string filename)
+void RecentlyEditedFileList::updateEntry(Glib::ustring filename)
 {
   for (iterator it = begin(); it != end(); it++)
     {
@@ -356,7 +356,7 @@ void RecentlyEditedFileList::updateEntry(std::string filename)
 }
 
         
-std::list<RecentlyEditedFile*> RecentlyEditedFileList::getFilesWithExtension(std::string ext) const
+std::list<RecentlyEditedFile*> RecentlyEditedFileList::getFilesWithExtension(Glib::ustring ext) const
 {
   std::list<RecentlyEditedFile*> files;
   for (const_iterator it = begin(); it != end(); it++)
@@ -367,7 +367,7 @@ std::list<RecentlyEditedFile*> RecentlyEditedFileList::getFilesWithExtension(std
   return files;
 }
 
-bool RecentlyEditedFileList::upgrade(std::string filename, std::string old_version, std::string new_version)
+bool RecentlyEditedFileList::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version)
 {
   return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
                                             FileCompat::RECENTLYEDITEDFILELIST, 

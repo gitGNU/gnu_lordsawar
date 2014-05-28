@@ -36,7 +36,7 @@ class Templelist : public LocationList<Temple*>, public sigc::trackable
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	// Methods that operate on class data but do not modify the class.
 	
@@ -132,7 +132,7 @@ class Templelist : public LocationList<Temple*>, public sigc::trackable
 
     private:
         //! Callback for loading temple objects from opened saved game files.
-        bool load(std::string tag, XML_Helper* helper);
+        bool load(Glib::ustring tag, XML_Helper* helper);
 
         //! A static pointer for the singleton instance.
         static Templelist* s_instance;

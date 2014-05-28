@@ -22,7 +22,7 @@
 #include "GameMap.h"
 #include "xmlhelper.h"
 
-std::string Roadlist::d_tag = "roadlist";
+Glib::ustring Roadlist::d_tag = "roadlist";
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
@@ -76,7 +76,7 @@ bool Roadlist::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Roadlist::load(std::string tag, XML_Helper* helper)
+bool Roadlist::load(Glib::ustring tag, XML_Helper* helper)
 {
     if (tag != Road::d_tag)
     //what has happened?

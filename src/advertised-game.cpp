@@ -25,7 +25,7 @@
 #include "network-connection.h"
 
 
-std::string AdvertisedGame::d_tag_name = "advertisedgame";
+Glib::ustring AdvertisedGame::d_tag_name = "advertisedgame";
 
 //#define debug(x) {cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
@@ -58,7 +58,7 @@ AdvertisedGame::AdvertisedGame(const AdvertisedGame &orig)
 AdvertisedGame::AdvertisedGame(XML_Helper *helper)
 	:RecentlyPlayedNetworkedGame(helper)
 {
-  std::string s;
+  Glib::ustring s;
   helper->getData(s, "created_on");
   d_creation_date.assign_from_iso8601(s);
   helper->getData(s, "last_pinged_on");
@@ -75,7 +75,7 @@ AdvertisedGame::~AdvertisedGame()
 bool AdvertisedGame::doSave(XML_Helper *helper) const
 {
   bool retval = true;
-  std::string s = d_creation_date.as_iso8601();
+  Glib::ustring s = d_creation_date.as_iso8601();
   retval &= helper->saveData("created_on", s);
   s = d_last_pinged_date.as_iso8601();
   retval &= helper->saveData("last_pinged_on", s);
@@ -94,7 +94,7 @@ bool AdvertisedGame::saveEntry(XML_Helper* helper) const
   return retval;
 }
 
-bool AdvertisedGame::loadProfile(std::string tag, XML_Helper *helper)
+bool AdvertisedGame::loadProfile(Glib::ustring tag, XML_Helper *helper)
 {
   if (tag == Profile::d_tag)
     {

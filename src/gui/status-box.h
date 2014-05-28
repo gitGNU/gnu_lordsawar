@@ -49,7 +49,7 @@ class StatusBox: public Gtk::Box
     void clear_selected_stack() {stack_tile_box->clear_selected_stack();};
     void setHeightFudgeFactor(guint32 n) {d_height_fudge_factor = n;};
 
-    void set_progress_label(std::string s);
+    void set_progress_label(Glib::ustring s);
     void pulse();
     void update_sidebar_stats(SidebarStats s);
     void toggle_group_ungroup();
@@ -62,7 +62,7 @@ class StatusBox: public Gtk::Box
     StackTileBox *stack_tile_box;
     guint32 d_factor;
     guint32 d_height_fudge_factor;
-    static std::string get_file(Configuration::UiFormFactor factor);
+    static Glib::ustring get_file(Configuration::UiFormFactor factor);
     Gtk::Image *cities_stats_image;
     Gtk::Label *cities_stats_label;
     Gtk::Image *gold_stats_image;

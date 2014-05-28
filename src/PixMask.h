@@ -38,7 +38,7 @@ class PixMask
      int get_unscaled_height() {return unscaled_height;};
      int get_depth();
 
-     static PixMask* create(std::string file, bool &broken);
+     static PixMask* create(Glib::ustring file, bool &broken);
      static PixMask* create(Glib::RefPtr<Gdk::Pixbuf> buf);
      static PixMask* create(Cairo::RefPtr<Cairo::Surface> pixmap,
 					 Cairo::RefPtr<Cairo::Surface> mask);
@@ -77,7 +77,7 @@ class PixMask
       * Load the pixmask from a file.
       *
       */
-     PixMask(std::string filename, bool &broken);
+     PixMask(Glib::ustring filename, bool &broken);
 
      void set_unscaled_width(guint32 width) {unscaled_width = width;};
      void set_unscaled_height(guint32 height) {unscaled_height = height;};

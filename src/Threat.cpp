@@ -57,7 +57,7 @@ Threat::~Threat()
   delete d_stacks;
 }
 
-std::string Threat::toString() const
+Glib::ustring Threat::toString() const
 {
     if (d_city)
     {

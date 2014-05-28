@@ -118,7 +118,7 @@ void GamelistServer::sendList(void *conn)
   delete l;
 }
 
-void GamelistServer::unadvertise(void *conn, std::string profile_id, std::string scenario_id, std::string &err)
+void GamelistServer::unadvertise(void *conn, Glib::ustring profile_id, Glib::ustring scenario_id, Glib::ustring &err)
 {
   HostedGame *g = Gamelist::getInstance()->findGameByScenarioId(scenario_id);
   if (!g)
@@ -137,7 +137,7 @@ void GamelistServer::unadvertise(void *conn, std::string profile_id, std::string
   return;
 }
 
-bool GamelistServer::onGotMessage(void *conn, int type, std::string payload)
+bool GamelistServer::onGotMessage(void *conn, int type, Glib::ustring payload)
 {
   debug("got message of type " << type);
   switch (GlsMessageType(type)) 
@@ -158,9 +158,9 @@ bool GamelistServer::onGotMessage(void *conn, int type, std::string payload)
     case GLS_MESSAGE_UNADVERTISE_GAME:
         {
           size_t pos;
-          std::string err;
+          Glib::ustring err;
           pos = payload.find(' ');
-          if (pos == std::string::npos)
+          if (pos == Glib::ustring::npos)
             return false;
           unadvertise(conn, payload.substr(0, pos), payload.substr(pos + 1),
                       err);
@@ -225,12 +225,12 @@ sigc::connection GamelistServer::on_timer_registered(Timing::timer_slot s,
     return Glib::signal_timeout().connect(s, msecs_interval);
 }
              
-bool GamelistServer::loadAdvertisedGame(std::string tag, XML_Helper *helper, void *conn)
+bool GamelistServer::loadAdvertisedGame(Glib::ustring tag, XML_Helper *helper, void *conn)
 {
   if (tag == AdvertisedGame::d_tag_name)
     {
       AdvertisedGame *a = new AdvertisedGame(helper);
-      std::string host = network_server->get_hostname(conn);
+      Glib::ustring host = network_server->get_hostname(conn);
       a->setHost(host); //find our ip.
       HostedGame *h = Gamelist::getInstance()->findGameByScenarioId(a->getId());
       if (h)

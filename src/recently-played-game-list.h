@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2011 Ben Asselstine
+//  Copyright (C) 2008, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #define RECENTLYPLAYEDGAMELIST_H
 
 #include <gtkmm.h>
-#include <string>
 #include <list>
 #include <sigc++/trackable.h>
 
@@ -44,7 +43,7 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
     public:
 
 	//! The xml tag of this object in a recently played game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 	
 	static const int TWO_WEEKS_OLD = 1209600; /* seconds */
 
@@ -65,16 +64,16 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 
 
 	//! Add a game entry to the list of recently played games.
-	void addEntry(GameScenario *game_scenario, Profile *p, std::string filename);
+	void addEntry(GameScenario *game_scenario, Profile *p, Glib::ustring filename);
 
 	//! Add a networked game entry to the list of recently played games.
-	void addNetworkedEntry(GameScenario *game_scenario, Profile *p, std::string host, guint32 port);
+	void addNetworkedEntry(GameScenario *game_scenario, Profile *p, Glib::ustring host, guint32 port);
 
 	//! Touch the game in the recently played list.
 	void updateEntry(GameScenario *game_scenario);
 
 	//! Remove a game entry from the list, by it's scenario id.
-	bool removeEntry(std::string id);
+	bool removeEntry(Glib::ustring id);
 
 	//! Removes all networked games from the list.
 	void removeAllNetworkedGames();
@@ -94,7 +93,7 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
         static void deleteInstance();
 
         //! Rewrite an old recently played game list file.
-        static bool upgrade(std::string filename, std::string old_version, std::string new_version);
+        static bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version);
         static void support_backward_compatibility();
 
         //! Default Constructor.
@@ -108,7 +107,7 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 
     private:
         //! Callback for loading recentlyplayedgames into this list.
-	bool load_tag(std::string tag, XML_Helper *helper);
+	bool load_tag(Glib::ustring tag, XML_Helper *helper);
 
 	//! Helper method to sort the list by it's last-played time.
 	static bool orderByTime(RecentlyPlayedGame*rhs, RecentlyPlayedGame *lhs);
@@ -123,10 +122,10 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 
         void pruneGamesBelongingToRemovedProfiles();
 	//! Load the recently game list from the given file.
-	bool loadFromFile(std::string filename);
+	bool loadFromFile(Glib::ustring filename);
 
 	//! Save the recently played game list to the given file.
-	bool saveToFile(std::string filename) const;
+	bool saveToFile(Glib::ustring filename) const;
 
 
         void remove_all();

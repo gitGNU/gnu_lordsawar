@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Ben Asselstine
+//  Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #define PROFILELIST_H
 
 #include <gtkmm.h>
-#include <string>
 #include <list>
 #include <sigc++/trackable.h>
 
@@ -37,7 +36,7 @@ class Profilelist: public std::list<Profile*>, public sigc::trackable
     public:
 
 	//! The xml tag of this object in a profiles file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 	
 	// Methods that operate on the class data and do not modify the class.
 
@@ -49,7 +48,7 @@ class Profilelist: public std::list<Profile*>, public sigc::trackable
 	//! Save the profile list to an opened file.
 	bool save(XML_Helper* helper) const;
 
-        Profile *findProfileById(std::string id) const;
+        Profile *findProfileById(Glib::ustring id) const;
 	// Methods that operate on the class data and modify the class.
 
         bool load();
@@ -66,7 +65,7 @@ class Profilelist: public std::list<Profile*>, public sigc::trackable
         static void deleteInstance();
 
         //! Rewrite an old profiles file.
-        static bool upgrade(std::string filename, std::string old_version, std::string new_version);
+        static bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version);
         static void support_backward_compatibility();
 
     protected:
@@ -81,13 +80,13 @@ class Profilelist: public std::list<Profile*>, public sigc::trackable
 
     private:
         //! Callback for loading profiles into this list.
-	bool load_tag(std::string tag, XML_Helper *helper);
+	bool load_tag(Glib::ustring tag, XML_Helper *helper);
 
 	//! Save the profile list to the given file.
-	bool saveToFile(std::string filename) const;
+	bool saveToFile(Glib::ustring filename) const;
 
 	//! Load the profile list from the given file.
-	bool loadFromFile(std::string filename);
+	bool loadFromFile(Glib::ustring filename);
 
 	// DATA
 

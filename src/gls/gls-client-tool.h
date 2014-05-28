@@ -36,31 +36,31 @@ class RecentlyPlayedGame;
 class GlsClientTool
 {
 public:
-    GlsClientTool(std::string host, int port, Profile *profile, bool show_list, std::list<std::string> unadvertise, bool advertise, bool reload, std::string remove_all, bool terminate);
+    GlsClientTool(Glib::ustring host, int port, Profile *profile, bool show_list, std::list<Glib::ustring> unadvertise, bool advertise, bool reload, Glib::ustring remove_all, bool terminate);
     virtual ~GlsClientTool();
 private:
   Profile *new_profile;
   Profile *profile;
   bool d_show_list;
-  std::list<std::string> d_unadvertise;
+  std::list<Glib::ustring> d_unadvertise;
   bool d_advertise;
   bool d_reload;
-  std::string d_remove_all;
+  Glib::ustring d_remove_all;
   bool d_terminate;
   guint32 request_count;
 
   //callbacks
-  void on_got_list_response(RecentlyPlayedGameList *list, std::string err);
-  void on_got_unadvertise_response(std::string id, std::string err);
-  void on_got_advertise_response(std::string id, std::string err);
-  void on_got_reload_response(std::string err);
+  void on_got_list_response(RecentlyPlayedGameList *list, Glib::ustring err);
+  void on_got_unadvertise_response(Glib::ustring id, Glib::ustring err);
+  void on_got_advertise_response(Glib::ustring id, Glib::ustring err);
+  void on_got_reload_response(Glib::ustring err);
   void on_could_not_connect();
   void on_connected();
   void on_connection_lost();
-  void on_got_list_response_for_unadvertising(RecentlyPlayedGameList *l, std::string err);
+  void on_got_list_response_for_unadvertising(RecentlyPlayedGameList *l, Glib::ustring err);
 
   //helpers
-  void unadvertise_games(std::list<std::string> scenario_ids);
+  void unadvertise_games(std::list<Glib::ustring> scenario_ids);
   RecentlyPlayedGame* create_game();
 
 };

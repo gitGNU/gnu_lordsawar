@@ -55,7 +55,7 @@ class QuestsManager : public sigc::trackable
     public:
 
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	// Methods that operate on the class data and modify it.
 
@@ -267,7 +267,7 @@ class QuestsManager : public sigc::trackable
         typedef bool (*QFeasibilityType)(guint32);
 
 	//! Callback for loading Quest objects into the QuestsManager.
-        bool load(std::string tag, XML_Helper* helper);
+        bool load(Glib::ustring tag, XML_Helper* helper);
 
         //! Does some setup that has to be done on loading as well as creation.
         void sharedInit();

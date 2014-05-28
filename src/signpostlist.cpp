@@ -20,7 +20,7 @@
 #include "signpostlist.h"
 #include "xmlhelper.h"
 
-std::string Signpostlist::d_tag = "signpostlist";
+Glib::ustring Signpostlist::d_tag = "signpostlist";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -75,7 +75,7 @@ bool Signpostlist::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Signpostlist::load(std::string tag, XML_Helper* helper)
+bool Signpostlist::load(Glib::ustring tag, XML_Helper* helper)
 {
     if (tag != Signpost::d_tag)
     //what has happened?

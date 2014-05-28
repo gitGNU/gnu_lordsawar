@@ -93,7 +93,7 @@
 #include "smallmap-editor-dialog.h"
 
 
-MainWindow::MainWindow(std::string load_filename)
+MainWindow::MainWindow(Glib::ustring load_filename)
 {
   d_load_filename = load_filename;
   bigmap = NULL;
@@ -315,8 +315,8 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> xml,
-					   std::string prefix,
-					   std::string image_file,
+					   Glib::ustring prefix,
+					   Glib::ustring image_file,
 					   EditorBigMap::Pointer pointer,
 					   int size)
 {
@@ -485,7 +485,7 @@ void MainWindow::show_initial_map()
     }
 }
 
-void MainWindow::set_filled_map(int width, int height, int fill_style, std::string tileset, std::string shieldset, std::string cityset, std::string armyset)
+void MainWindow::set_filled_map(int width, int height, int fill_style, Glib::ustring tileset, Glib::ustring shieldset, Glib::ustring cityset, Glib::ustring armyset)
 {
     clear_map_state();
     d_width = width;
@@ -515,7 +515,7 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, std::stri
       Armysetlist::getInstance()->getArmyset(armyset)->getId();
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
     Shieldset *ss = ssl->getShieldset(shieldset);
-    std::string name = d_create_scenario_names->getPlayerName(Shield::NEUTRAL);
+    Glib::ustring name = d_create_scenario_names->getPlayerName(Shield::NEUTRAL);
     Player* neutral = new AI_Dummy(name, armyset_id, 
 				   ssl->getColor(ss->getId(), MAX_PLAYERS), 
 				   width, height, MAX_PLAYERS);
@@ -543,9 +543,9 @@ void MainWindow::set_random_map(int width, int height,
 				int grass, int water, int swamp, int forest,
 				int hills, int mountains,
 				int cities, int ruins, int temples,
-				int signposts, std::string tileset,
-				std::string shieldset, std::string cityset,
-				std::string armyset)
+				int signposts, Glib::ustring tileset,
+				Glib::ustring shieldset, Glib::ustring cityset,
+				Glib::ustring armyset)
 {
     clear_map_state();
 
@@ -566,7 +566,7 @@ void MainWindow::set_random_map(int width, int height,
     Citysetlist::getInstance();
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
     Shieldset *ss = ssl->getShieldset(shieldset);
-    std::string name = d_create_scenario_names->getPlayerName(Shield::NEUTRAL);
+    Glib::ustring name = d_create_scenario_names->getPlayerName(Shield::NEUTRAL);
     Player* neutral = new AI_Dummy(name, armyset_id, 
 				   ssl->getColor(ss->getId(), MAX_PLAYERS), 
 				   width, height, MAX_PLAYERS);
@@ -944,7 +944,7 @@ void MainWindow::on_save_map_as_activated()
     
     if (res == Gtk::RESPONSE_ACCEPT)
     {
-        std::string old_save_filename = current_save_filename;
+        Glib::ustring old_save_filename = current_save_filename;
 	current_save_filename = chooser.get_filename();
 	chooser.hide();
 
@@ -1020,7 +1020,7 @@ void MainWindow::on_edit_shieldset_activated()
   Gtk::Main *kit = Gtk::Main::instance();;
   ShieldSetWindow* shieldset_window;
   Shieldset *shieldset = GameMap::getShieldset();
-  std::string file = shieldset->getConfigurationFile();
+  Glib::ustring file = shieldset->getConfigurationFile();
   shieldset_window = new ShieldSetWindow (window, file);
   shieldset_window->get_window().property_transient_for() = window;
   shieldset_window->get_window().set_modal();
@@ -1052,7 +1052,7 @@ void MainWindow::on_edit_armyset_activated()
   Gtk::Main *kit = Gtk::Main::instance();;
   guint32 army_set_id = Playerlist::getActiveplayer()->getArmyset();
   Armyset *armyset = Armysetlist::getInstance()->getArmyset(army_set_id);
-  std::string file = armyset->getConfigurationFile();
+  Glib::ustring file = armyset->getConfigurationFile();
  
   ArmySetWindow* armyset_window = new ArmySetWindow (window, file);
   armyset_window->get_window().property_transient_for() = window;
@@ -1085,7 +1085,7 @@ void MainWindow::on_edit_cityset_activated()
 {
   Gtk::Main *kit = Gtk::Main::instance();;
   Cityset *cityset = GameMap::getCityset();
-  std::string file = cityset->getConfigurationFile();
+  Glib::ustring file = cityset->getConfigurationFile();
   CitySetWindow* cityset_window = new CitySetWindow (window, file);
   cityset_window->get_window().property_transient_for() = window;
   cityset_window->get_window().set_modal();
@@ -1128,7 +1128,7 @@ void MainWindow::on_edit_tileset_activated()
 {
   Gtk::Main *kit = Gtk::Main::instance();;
   Tileset *tileset = GameMap::getTileset();
-  std::string file = tileset->getConfigurationFile();
+  Glib::ustring file = tileset->getConfigurationFile();
   TileSetWindow* tileset_window = new TileSetWindow (window, file);
   tileset_window->get_window().property_transient_for() = window;
   tileset_window->get_window().set_modal();
@@ -1591,7 +1591,7 @@ void MainWindow::on_edit_rewards_activated()
 
 void MainWindow::randomize_city(City *c)
 {
-  std::string name = d_create_scenario_names->popRandomCityName();
+  Glib::ustring name = d_create_scenario_names->popRandomCityName();
   if (name != "")
     c->setName(name);
   c->setRandomArmytypes(true, 1);
@@ -1620,7 +1620,7 @@ void MainWindow::on_random_unnamed_cities_activated()
 
 void MainWindow::randomize_ruin(Ruin *r)
 {
-  std::string name = d_create_scenario_names->popRandomRuinName();
+  Glib::ustring name = d_create_scenario_names->popRandomRuinName();
   if (name != "")
     {
       Location *l = r;
@@ -1655,7 +1655,7 @@ void MainWindow::on_random_all_temples_activated()
   Templelist *tl = Templelist::getInstance();
   for (Templelist::iterator it = tl->begin(); it != tl->end(); it++)
     {
-      std::string name = d_create_scenario_names->popRandomTempleName();
+      Glib::ustring name = d_create_scenario_names->popRandomTempleName();
       if (name != "")
 	{
 	  Location *l = *it;
@@ -1675,7 +1675,7 @@ void MainWindow::on_random_unnamed_temples_activated()
     {
       if ((*it)->isUnnamed() == true)
 	{
-	  std::string name = d_create_scenario_names->popRandomTempleName();
+	  Glib::ustring name = d_create_scenario_names->popRandomTempleName();
 	  if (name != "")
 	    {
 	      Location *l = *it;
@@ -1691,7 +1691,7 @@ void MainWindow::on_random_unnamed_temples_activated()
 
 void MainWindow::randomize_signpost(Signpost *signpost)
 {
-  std::string name = "";
+  Glib::ustring name = "";
   if (d_create_scenario_names->getNumSignposts() > 0 &&
       (rand() % d_create_scenario_names->getNumSignposts()) == 0)
     name = d_create_scenario_names->popRandomSignpost();
@@ -1746,8 +1746,8 @@ void MainWindow::on_help_about_activated()
 void MainWindow::on_validate_activated()
 {
   Glib::ustring s;
-  std::list<std::string> errors;
-  std::list<std::string> warnings;
+  std::list<Glib::ustring> errors;
+  std::list<Glib::ustring> warnings;
   game_scenario->validate(errors, warnings);
   if (errors.size())
     s = errors.front();
@@ -1801,7 +1801,7 @@ void MainWindow::on_import_map_activated()
     
     if (res == Gtk::RESPONSE_ACCEPT)
     {
-        std::string filename = chooser.get_filename();
+        Glib::ustring filename = chooser.get_filename();
 	chooser.hide();
 
 	clear_map_state();
@@ -1905,7 +1905,7 @@ void MainWindow::fill_players()
 
 void MainWindow::update_window_title()
 {
-  std::string title = "";
+  Glib::ustring title = "";
   if (current_save_filename != "")
     {
       if (needs_saving == true)

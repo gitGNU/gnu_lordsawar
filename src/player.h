@@ -3,7 +3,7 @@
 // Copyright (C) 2003 Marek Publicewicz
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2005 Bryan Duff
-// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -24,7 +24,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <string>
 #include <list>
 #include <vector>
 #include <sigc++/trackable.h>
@@ -121,7 +120,7 @@ class Player: public sigc::trackable
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
         //! The available player types.
         enum Type {
@@ -174,7 +173,7 @@ class Player: public sigc::trackable
 	 *                     the next free Id it used.
          */
 	//! Default constructor.
-        Player (std::string name, guint32 armyset, Gdk::RGBA color, int width,
+        Player (Glib::ustring name, guint32 armyset, Gdk::RGBA color, int width,
 		int height, Type type, int player_no = -1);
 
         //! Copy constructor.
@@ -190,7 +189,7 @@ class Player: public sigc::trackable
 	// Set Methods
 
         //! Change the player's name.
-        void setName(std::string name){d_name = name;}
+        void setName(Glib::ustring name){d_name = name;}
         
         //! Change the player's Armyset.
         void setArmyset(guint32 armyset){d_armyset = armyset;}
@@ -211,7 +210,7 @@ class Player: public sigc::trackable
 	void setDiplomaticRank (guint32 rank) {d_diplomatic_rank = rank;};
 
 	//! Set the rank as a name.
-	void setDiplomaticTitle (std::string title) {d_diplomatic_title = title;};
+	void setDiplomaticTitle (Glib::ustring title) {d_diplomatic_title = title;};
 	//! Set if this player will be seen as it moves through visible terrain.
 	void setObservable(bool observable) {d_observable = observable;};
 
@@ -272,7 +271,7 @@ class Player: public sigc::trackable
 	guint32 getDiplomaticRank () const {return d_diplomatic_rank;};
 
 	//! What rank do we have?  As a name.
-	std::string getDiplomaticTitle() const {return d_diplomatic_title;};
+	Glib::ustring getDiplomaticTitle() const {return d_diplomatic_title;};
 
         //! Returns the colour of the player.
 	Gdk::RGBA getColor() const {return d_color;}
@@ -281,7 +280,7 @@ class Player: public sigc::trackable
         int getGold() const {return d_gold;}
 
         //! Returns the name of the player.
-        std::string getName() const;
+        Glib::ustring getName() const;
 
 	//! Returns the player's current score.
         guint32 getScore() const;
@@ -612,7 +611,7 @@ class Player: public sigc::trackable
          * @return False on error, true otherwise.
 	 */
         //! Change the text on a signpost.
-        bool signpostChange(Signpost *signpost, std::string message);
+        bool signpostChange(Signpost *signpost, Glib::ustring message);
 
 
 
@@ -806,7 +805,7 @@ class Player: public sigc::trackable
          * @return False on error, true otherwise.
 	 */
         //! Callback to rename a city.
-        bool cityRename(City *city, std::string name);
+        bool cityRename(City *city, Glib::ustring name);
 
         /** 
 	 * Callback to initiate vectoring new units from a player's City to 
@@ -1097,7 +1096,7 @@ class Player: public sigc::trackable
         Reward* giveQuestReward(Quest *quest, Stack *stack);
 
 	//! Give the player a new name.
-	void rename (std::string name);
+	void rename (Glib::ustring name);
 
         //! have a hero show up, or not.
         bool maybeRecruitHero ();
@@ -1365,7 +1364,7 @@ class Player: public sigc::trackable
         sigc::signal<void> schangingStats;
 
 	//! Emitted whenever a computer player does something of note.
-        sigc::signal<void, std::string> schangingStatus;
+        sigc::signal<void, Glib::ustring> schangingStatus;
 
 	//! Emitted whenever any player does anything at all.
 	sigc::signal<void> sbusy;
@@ -1471,8 +1470,8 @@ class Player: public sigc::trackable
 	
 	// Static Methods
 
-	static std::string playerTypeToString(const Player::Type type);
-	static Player::Type playerTypeFromString(const std::string str);
+	static Glib::ustring playerTypeToString(const Player::Type type);
+	static Player::Type playerTypeFromString(const Glib::ustring str);
 	//! is it safe to vector from the given city?
 	static bool safeFromAttack(City *c, guint32 safe_mp, guint32 min_defenders);
         /** 
@@ -1489,7 +1488,7 @@ class Player: public sigc::trackable
          * @param type     The player's type (Player::Type).
          */
 	//! Create a player.
-        static Player* create(std::string name, guint32 armyset, 
+        static Player* create(Glib::ustring name, guint32 armyset, 
 			      Gdk::RGBA color, int width, int height, 
 			      Type type);
         
@@ -1546,7 +1545,7 @@ class Player: public sigc::trackable
 	Gdk::RGBA d_color;
 
 	//! The name of the Player.
-        std::string d_name;
+        Glib::ustring d_name;
 
 	//! The ArmySet of the Player.
         guint32 d_armyset;
@@ -1600,7 +1599,7 @@ class Player: public sigc::trackable
 	guint32 d_diplomatic_rank;
 
 	//! The title that goes along with the diplomatic rank.
-	std::string d_diplomatic_title;
+	Glib::ustring d_diplomatic_title;
 
 	//! The proposals that this Player is making this turn.
 	DiplomaticProposal d_diplomatic_proposal[MAX_PLAYERS];
@@ -1643,8 +1642,8 @@ class Player: public sigc::trackable
         void doStacksReset();
         void doRuinsReset();
         void doCollectTaxesAndPayUpkeep();
-        void doSignpostChange(Signpost *signpost, std::string message);
-        void doCityRename(City *c, std::string name);
+        void doSignpostChange(Signpost *signpost, Glib::ustring message);
+        void doCityRename(City *c, Glib::ustring name);
         void doVectorFromCity(City * c, Vector<int> dest);
         void doSetFightOrder(std::list<guint32> order);
         void doResign(std::list<History*> &history);
@@ -1654,7 +1653,7 @@ class Player: public sigc::trackable
         void doConquerCity(City *city);
 	void doLootCity(Player *looted, guint32 added, guint32 subtracted);
         Hero* doRecruitHero(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally, StackReflist *stacks);
-        void doRename(std::string name);
+        void doRename(Glib::ustring name);
 	void doKill();
         void doStackDefend(Stack *stack);
         void doStackUndefend(Stack *stack);
@@ -1716,7 +1715,7 @@ class Player: public sigc::trackable
 	    
     private:
         //! Loads the subdata of a player (actions and stacklist)
-        bool load(std::string tag, XML_Helper* helper);
+        bool load(Glib::ustring tag, XML_Helper* helper);
 
         /**
 	 * Returns all heroes in the given list of stacks.

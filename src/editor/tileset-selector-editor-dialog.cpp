@@ -101,7 +101,7 @@ int TilesetSelectorEditorDialog::run()
         d_tileset->replaceFileInConfigurationFile(d_tileset->getLargeSelectorFilename()+".png", large_filename);
         d_tileset->setLargeSelectorFilename(File::get_basename(large_filename));
       }
-    for (std::list<std::string>::iterator it = delfiles.begin(); 
+    for (std::list<Glib::ustring>::iterator it = delfiles.begin(); 
          it != delfiles.end(); it++)
       File::erase(*it);
     return response;
@@ -113,10 +113,10 @@ void TilesetSelectorEditorDialog::setup_shield_theme_combobox(Gtk::Box *box)
   shield_theme_combobox = manage(new Gtk::ComboBoxText);
 
   Shieldsetlist *sl = Shieldsetlist::getInstance();
-  std::list<std::string> shield_themes = sl->getValidNames();
+  std::list<Glib::ustring> shield_themes = sl->getValidNames();
   int counter = 0;
   int default_id = 0;
-  for (std::list<std::string>::iterator i = shield_themes.begin(),
+  for (std::list<Glib::ustring>::iterator i = shield_themes.begin(),
        end = shield_themes.end(); i != end; ++i)
     {
       if (*i == _("Default"))
@@ -138,7 +138,7 @@ void TilesetSelectorEditorDialog::shieldset_changed()
 
 void TilesetSelectorEditorDialog::on_image_chosen()
 {
-  std::string selected_filename = selector_filechooserbutton->get_filename();
+  Glib::ustring selected_filename = selector_filechooserbutton->get_filename();
   if (selected_filename.empty())
     return;
 
@@ -152,7 +152,7 @@ void TilesetSelectorEditorDialog::on_image_chosen()
     show_preview_selectors(selected_filename);
 }
 
-void TilesetSelectorEditorDialog::show_preview_selectors(std::string filename)
+void TilesetSelectorEditorDialog::show_preview_selectors(Glib::ustring filename)
 {
   //load it up and show in the colours of the selected shield theme
 
@@ -185,14 +185,14 @@ void TilesetSelectorEditorDialog::clearSelector()
   preview_table->foreach(sigc::mem_fun(preview_table, &Gtk::Container::remove));
 }
 
-bool TilesetSelectorEditorDialog::loadSelector(std::string filename)
+bool TilesetSelectorEditorDialog::loadSelector(Glib::ustring filename)
 {
   std::vector<PixMask *> images;
   std::vector<PixMask *> masks;
   bool success = GraphicsCache::loadSelectorImages(filename, d_tileset->getTileSize(), images, masks);
   if (success)
     {
-      std::string subdir = Shieldsetlist::getInstance()->getShieldsetDir 
+      Glib::ustring subdir = Shieldsetlist::getInstance()->getShieldsetDir 
 	(Glib::filename_from_utf8(shield_theme_combobox->get_active_text()));
       Shieldset *shieldset = Shieldsetlist::getInstance()->getShieldset(subdir);
 

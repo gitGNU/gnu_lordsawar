@@ -25,7 +25,7 @@
 class EditorRecoverDialog: public sigc::trackable
 {
  public:
-    EditorRecoverDialog(Gtk::Window *parent, std::string question);
+    EditorRecoverDialog(Gtk::Window *parent, Glib::ustring question);
     ~EditorRecoverDialog();
 
     int run();

@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Ben Asselstine
+// Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ GamehostClient::~GamehostClient()
 {
 }
 
-void GamehostClient::start(std::string host, guint32 port, Profile *p)
+void GamehostClient::start(Glib::ustring host, guint32 port, Profile *p)
 {
   d_host = host;
   d_port = port;
@@ -94,7 +94,7 @@ void GamehostClient::onConnectionLost()
     client_could_not_connect.emit();
 }
 
-bool GamehostClient::onGotMessage(int type, std::string payload)
+bool GamehostClient::onGotMessage(int type, Glib::ustring payload)
 {
   size_t pos;
   debug("GamehostClient got message of type " << type);
@@ -109,7 +109,7 @@ bool GamehostClient::onGotMessage(int type, std::string payload)
     case GHS_MESSAGE_COULD_NOT_HOST_GAME:
         {
           pos = payload.find(' ');
-          if (pos == std::string::npos)
+          if (pos == Glib::ustring::npos)
             return false;
           received_host_response.emit(payload.substr(0, pos), 
                                       payload.substr(pos + 1));
@@ -118,7 +118,7 @@ bool GamehostClient::onGotMessage(int type, std::string payload)
     case GHS_MESSAGE_COULD_NOT_UNHOST_GAME:
         {
           pos = payload.find(' ');
-          if (pos == std::string::npos)
+          if (pos == Glib::ustring::npos)
             return false;
           received_unhost_response.emit(payload.substr(0, pos), 
                                         payload.substr(pos + 1));
@@ -148,7 +148,7 @@ bool GamehostClient::onGotMessage(int type, std::string payload)
     case GHS_MESSAGE_COULD_NOT_START_GAME:
         {
           pos = payload.find(' ');
-          if (pos == std::string::npos)
+          if (pos == Glib::ustring::npos)
             return false;
           received_map_response.emit(payload.substr(0, pos), 0,
                                      payload.substr(pos + 1));
@@ -156,7 +156,7 @@ bool GamehostClient::onGotMessage(int type, std::string payload)
       break;
     case GHS_MESSAGE_GAME_HOSTED:
         {
-          std::string scenario_id;
+          Glib::ustring scenario_id;
           guint32 port = 0;
           std::stringstream spayload;
           spayload.str(payload);
@@ -189,7 +189,7 @@ void GamehostClient::request_game_list()
   network_connection->send(GHS_MESSAGE_REQUEST_GAME_LIST, d_profile_id);
 }
 
-bool GamehostClient::loadRecentlyPlayedGameList(std::string tag, XML_Helper *helper)
+bool GamehostClient::loadRecentlyPlayedGameList(Glib::ustring tag, XML_Helper *helper)
 {
   if (tag == RecentlyPlayedGameList::d_tag)
     {
@@ -210,14 +210,14 @@ void GamehostClient::request_reload()
   network_connection->send(GHS_MESSAGE_REQUEST_RELOAD, "");
 } 
 
-void GamehostClient::request_game_unhost(std::string scenario_id)
+void GamehostClient::request_game_unhost(Glib::ustring scenario_id)
 {
   network_connection->send(GHS_MESSAGE_UNHOST_GAME, 
                            d_profile_id + " " + scenario_id);
 
 }
   
-void GamehostClient::request_game_host(std::string scenario_id)
+void GamehostClient::request_game_host(Glib::ustring scenario_id)
 {
   Profile *profile = Profilelist::getInstance()->findProfileById(d_profile_id);
   //dump the profile to a string
@@ -228,23 +228,21 @@ void GamehostClient::request_game_host(std::string scenario_id)
   helper.close();
   // os.str() is the first part that contains the profile object.
   // it is followed by the scenario id, outside of any tags.
-  std::string data = os.str() + scenario_id;
+  Glib::ustring data = os.str() + scenario_id;
   network_connection->send(GHS_MESSAGE_HOST_NEW_GAME, os.str() + scenario_id);
   return;
 }
 
 void GamehostClient::send_map(GameScenario *game_scenario)
 {
-  std::string tmpfile = "lw.XXXX";
-  int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
-  close(fd);
+  Glib::ustring tmpfile = File::get_tmp_file();
   tmpfile += SAVE_EXT;
   game_scenario->saveGame(tmpfile);
   send_map_file(tmpfile);
   File::erase(tmpfile);
 }
 
-void GamehostClient::send_map_file(std::string file)
+void GamehostClient::send_map_file(Glib::ustring file)
 {
   network_connection->sendFile(GHS_MESSAGE_SENDING_MAP, file);
 }

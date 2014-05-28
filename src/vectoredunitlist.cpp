@@ -25,7 +25,7 @@
 #include "player.h"
 #include "GameMap.h"
 
-std::string VectoredUnitlist::d_tag = "vectoredunitlist";
+Glib::ustring VectoredUnitlist::d_tag = "vectoredunitlist";
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
@@ -86,7 +86,7 @@ bool VectoredUnitlist::save(XML_Helper* helper) const
     return retval;
 }
 
-bool VectoredUnitlist::load(std::string tag, XML_Helper* helper)
+bool VectoredUnitlist::load(Glib::ustring tag, XML_Helper* helper)
 {
   if (tag == VectoredUnit::d_tag)
     {

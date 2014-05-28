@@ -60,7 +60,7 @@ ProdSlotlist::ProdSlotlist(XML_Helper* helper)
 		      sigc::mem_fun(this, &ProdSlotlist::load));
 }
 
-bool ProdSlotlist::load(std::string tag, XML_Helper *helper)
+bool ProdSlotlist::load(Glib::ustring tag, XML_Helper *helper)
 {
   if (tag == ProdSlot::d_tag)
     {

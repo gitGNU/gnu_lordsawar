@@ -19,7 +19,6 @@
 #define SHIELDSETLIST_H
 
 #include <gtkmm.h>
-#include <string>
 #include <map>
 #include <vector>
 #include <sigc++/trackable.h>
@@ -44,10 +43,10 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	// Methods that operate on the class data but do not modify the class.
 
         //! Returns the names of all Shieldset objects available to the game.
-	std::list<std::string> getValidNames() const;
+	std::list<Glib::ustring> getValidNames() const;
 
         //! Returns whether the given name is our list of shieldset objects.
-        bool contains(std::string name) const;
+        bool contains(Glib::ustring name) const;
 
 	//! Return the directory of a specific Shieldset by name.
         /**
@@ -60,7 +59,7 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	 *         empty string if a shieldset by that name could not be found.
 	 *         This value relates to Shieldset::d_dir.
          */
-	std::string getShieldsetDir(std::string name) const;
+	Glib::ustring getShieldsetDir(Glib::ustring name) const;
 
 	//! Return a particular Shield object from a given shieldset.
 	/**
@@ -79,10 +78,10 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	 */
 	ShieldStyle *getShield(guint32 shieldset, guint32 type, guint32 colour) const;
 
-        guint32 getShieldsetId(std::string basename) const;
+        guint32 getShieldsetId(Glib::ustring basename) const;
 
 	//! Return the Shieldset object that is in the given directory.
-	Shieldset *getShieldset(std::string dir) const;
+	Shieldset *getShieldset(Glib::ustring dir) const;
 
 	Gdk::RGBA getColor(guint32 shieldset, guint32 owner) const;
 
@@ -97,7 +96,7 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	// Methods that operate on the class data and modify the class.
 
 	//! Add a shieldset to the list.  Use this instead of push_back.
-	void add(Shieldset *shieldset, std::string filename);
+	void add(Shieldset *shieldset, Glib::ustring filename);
 
 	//! Destroy all of the images associated with shieldsets in this list.
 	void uninstantiateImages();
@@ -117,8 +116,8 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	 *         new_basename and new_id parameters updated to reflect the
 	 *         changed basename and id.
 	 */
-	bool addToPersonalCollection(Shieldset *shieldset, std::string &new_basename, guint32 &new_id);
-	Shieldset *import(Tar_Helper *t, std::string f, bool &broken);
+	bool addToPersonalCollection(Shieldset *shieldset, Glib::ustring &new_basename, guint32 &new_id);
+	Shieldset *import(Tar_Helper *t, Glib::ustring f, bool &broken);
 
 
 	// Static Methods
@@ -132,7 +131,7 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	//! Return a unique id for a shieldset.
 	static int getNextAvailableId(int after);
 
-        std::string findFreeBaseName(std::string basename, guint32 max, guint32 &num) const;
+        Glib::ustring findFreeBaseName(Glib::ustring basename, guint32 max, guint32 &num) const;
     private:
         //! Default Constructor.
 	/**
@@ -145,17 +144,17 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
         ~Shieldsetlist();
 
         //! Loads a specific shieldset.
-	Shieldset *loadShieldset(std::string name);
+	Shieldset *loadShieldset(Glib::ustring name);
 
 	//! Loads a bunch of shieldsets and puts them in this list.
-	void loadShieldsets(std::list<std::string> shieldsets);
+	void loadShieldsets(std::list<Glib::ustring> shieldsets);
 	
-        std::list<std::string> getNames() const;
+        std::list<Glib::ustring> getNames() const;
         
 	// DATA
 
-        typedef std::map<std::string, std::string> DirMap;
-        typedef std::map<std::string, Shieldset*> ShieldsetMap;
+        typedef std::map<Glib::ustring, Glib::ustring> DirMap;
+        typedef std::map<Glib::ustring, Shieldset*> ShieldsetMap;
         typedef std::map<guint32, Shieldset*> ShieldsetIdMap;
 
 	//! A map that provides a basename when supplying a Shieldset name.

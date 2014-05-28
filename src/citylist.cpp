@@ -38,7 +38,7 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-std::string Citylist::d_tag = "citylist";
+Glib::ustring Citylist::d_tag = "citylist";
 
 Citylist* Citylist::s_instance = 0;
 
@@ -444,7 +444,7 @@ bool Citylist::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Citylist::load(std::string tag, XML_Helper* helper)
+bool Citylist::load(Glib::ustring tag, XML_Helper* helper)
 {
     if (tag == City::d_tag)
       {

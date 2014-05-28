@@ -24,7 +24,7 @@
 #include "shieldset.h"
 #include "gui/image-helpers.h"
 
-std::string ShieldStyle::d_tag = "shieldstyle";
+Glib::ustring ShieldStyle::d_tag = "shieldstyle";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -54,7 +54,7 @@ ShieldStyle::ShieldStyle(const ShieldStyle &s)
 ShieldStyle::ShieldStyle(XML_Helper* helper)
   :d_image(0), d_mask(0)
 {
-  std::string type_str;
+  Glib::ustring type_str;
   helper->getData(type_str, "type");
   d_type = shieldStyleTypeFromString(type_str);
   helper->getData(d_image_name, "image");
@@ -65,7 +65,7 @@ ShieldStyle::~ShieldStyle()
 }
 
         
-std::string ShieldStyle::shieldStyleTypeToString(const ShieldStyle::Type type)
+Glib::ustring ShieldStyle::shieldStyleTypeToString(const ShieldStyle::Type type)
 {
   switch (type)
     {
@@ -82,7 +82,7 @@ std::string ShieldStyle::shieldStyleTypeToString(const ShieldStyle::Type type)
   return "ShieldStyle::SMALL";
 }
 
-ShieldStyle::Type ShieldStyle::shieldStyleTypeFromString(const std::string str)
+ShieldStyle::Type ShieldStyle::shieldStyleTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return ShieldStyle::Type(atoi(str.c_str()));
@@ -100,14 +100,14 @@ bool ShieldStyle::save(XML_Helper *helper) const
   bool retval = true;
 
   retval &= helper->openTag(d_tag);
-  std::string s = shieldStyleTypeToString(ShieldStyle::Type(d_type));
+  Glib::ustring s = shieldStyleTypeToString(ShieldStyle::Type(d_type));
   retval &= helper->saveData("type", s);
   retval &= helper->saveData("image", d_image_name);
   retval &= helper->closeTag();
   return retval;
 }
 
-void ShieldStyle::instantiateImages(std::string filename, Shieldset *s, bool &broken)
+void ShieldStyle::instantiateImages(Glib::ustring filename, Shieldset *s, bool &broken)
 {
   if (filename.empty() == true)
     return;

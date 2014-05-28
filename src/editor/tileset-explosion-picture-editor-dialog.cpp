@@ -84,7 +84,7 @@ int TilesetExplosionPictureEditorDialog::run()
       }
     else if (response == Gtk::RESPONSE_ACCEPT)
       response = Gtk::RESPONSE_CANCEL;
-    for (std::list<std::string>::iterator it = delfiles.begin(); 
+    for (std::list<Glib::ustring>::iterator it = delfiles.begin(); 
          it != delfiles.end(); it++)
       File::erase(*it);
     return response;
@@ -119,11 +119,11 @@ void TilesetExplosionPictureEditorDialog::update_panel()
     }
 }
 
-void TilesetExplosionPictureEditorDialog::show_explosion_image(std::string filename)
+void TilesetExplosionPictureEditorDialog::show_explosion_image(Glib::ustring filename)
 {
   guint32 size = d_tileset->getTileSize();
   TilePreviewScene *s;
-  std::string scene;
+  Glib::ustring scene;
   guint32 idx = d_tileset->getIndex(Tile::GRASS);
   Tile *grass = NULL;
   if (d_tileset->size() > 0)
@@ -155,7 +155,7 @@ void TilesetExplosionPictureEditorDialog::show_explosion_image(std::string filen
 }
 
 void TilesetExplosionPictureEditorDialog::update_scene(TilePreviewScene *scene,
-						       std::string filename)
+						       Glib::ustring filename)
 {
   if (!scene)
     return;

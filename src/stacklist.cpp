@@ -41,7 +41,7 @@
 #include "stacktile.h"
 #include "stackreflist.h"
 
-std::string Stacklist::d_tag = "stacklist";
+Glib::ustring Stacklist::d_tag = "stacklist";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -402,7 +402,7 @@ bool Stacklist::enoughMoves() const
     return false;
 }
 
-bool Stacklist::load(std::string tag, XML_Helper* helper)
+bool Stacklist::load(Glib::ustring tag, XML_Helper* helper)
 {
     static guint32 active = 0;
     

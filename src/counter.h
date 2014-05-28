@@ -1,6 +1,6 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 #define FL_COUNTER_H
 
 #include <gtkmm.h>
-#include <string>
 #include <sigc++/trackable.h>
 
 class XML_Helper;
@@ -40,7 +39,7 @@ class FL_Counter : public sigc::trackable
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
         //! Initialise the counter with a start value
         FL_Counter(guint32 start = 0);

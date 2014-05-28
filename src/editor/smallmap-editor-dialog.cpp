@@ -234,8 +234,8 @@ void SmallmapEditorDialog::on_terrain_radiobutton_toggled()
 }
 
 void SmallmapEditorDialog::setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> xml,
-                                                     std::string prefix,
-                                                     std::string image_file,
+                                                     Glib::ustring prefix,
+                                                     Glib::ustring image_file,
                                                      EditableSmallMap::Pointer pointer,
                                                      int size)
 {

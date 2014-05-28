@@ -22,6 +22,7 @@
 #include <config.h>
 
 #include <list>
+#include <glibmm.h>
 #include <memory>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
@@ -46,7 +47,7 @@ public:
   //! Deletes the singleton instance.
   static void deleteInstance();
 
-  void start(std::string host, guint32 port, std::string profile_id, std::string nick);
+  void start(Glib::ustring host, guint32 port, Glib::ustring profile_id, Glib::ustring nick);
   void disconnect();
   void request_seat_manifest();
 
@@ -59,9 +60,9 @@ public:
   void stand_up (Player *player);
   void change_name(Player *player, Glib::ustring name);
   void change_type(Player *player, int type);
-  void chat(std::string message);
+  void chat(Glib::ustring message);
 
-  std::string getHost() const{return d_host;};
+  Glib::ustring getHost() const{return d_host;};
   guint32 getPort() const{return d_port;};
 
   void sendRoundOver();
@@ -77,7 +78,7 @@ private:
   void sit_or_stand (Player *player, bool sit);
   void onConnected();
   void onConnectionLost();
-  bool onGotMessage(int type, std::string message);
+  bool onGotMessage(int type, Glib::ustring message);
 
   void onActionDone(NetworkAction *action);
   void sendActions();
@@ -85,12 +86,12 @@ private:
   void onHistoryDone(NetworkHistory *history);
   void sendHistories();
 
-  void gotTurnOrder (std::string payload);
+  void gotTurnOrder (Glib::ustring payload);
   void gotKillPlayer(Player *player);
   void gotOffPlayer(Player *player);
 
-  void sat_down(Player *player, std::string nickname);
-  void stood_up(Player *player, std::string nickname);
+  void sat_down(Player *player, Glib::ustring nickname);
+  void stood_up(Player *player, Glib::ustring nickname);
   void name_changed (Player *player, Glib::ustring name);
   void type_changed (Player *player, int type);
 
@@ -99,7 +100,7 @@ private:
   //! A static pointer for the singleton instance.
   static GameClient * s_instance;
   bool d_connected;
-  std::string d_host;
+  Glib::ustring d_host;
   guint32 d_port;
 };
 

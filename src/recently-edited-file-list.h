@@ -1,4 +1,4 @@
-//  Copyright (C) 2010, 2011 Ben Asselstine
+//  Copyright (C) 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #define RECENTLYEDITEDFILELIST_H
 
 #include <gtkmm.h>
-#include <string>
 #include <list>
 #include <sigc++/trackable.h>
 
@@ -38,7 +37,7 @@ class RecentlyEditedFileList: public std::list<RecentlyEditedFile*>, public sigc
     public:
 
 	//! The xml tag of this object in a recently edited file file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 	
 	static const int TWO_WEEKS_OLD = 1209600; /* seconds */
 
@@ -46,7 +45,7 @@ class RecentlyEditedFileList: public std::list<RecentlyEditedFile*>, public sigc
 	// Methods that operate on the class data and do not modify the class.
 
 	//! Save the recently edited file list to the given file.
-	bool saveToFile(std::string filename = "") const;
+	bool saveToFile(Glib::ustring filename = "") const;
         bool save();
 
 	//! Save the recently edited file list to an opened file.
@@ -56,21 +55,21 @@ class RecentlyEditedFileList: public std::list<RecentlyEditedFile*>, public sigc
 	// Methods that operate on the class data and modify the class.
 
 	//! Load the recently file list from the given file.
-	bool loadFromFile(std::string filename = "");
+	bool loadFromFile(Glib::ustring filename = "");
 
 	//! Add a file entry to the list of recently edited files.
-	void addEntry(std::string filename);
+	void addEntry(Glib::ustring filename);
 
 	//! Touch the file in the recently edited list.
-	void updateEntry(std::string filename);
+	void updateEntry(Glib::ustring filename);
 
 	//! Remove a file entry from the list, by it's scenario id.
-	bool removeEntry(std::string filename);
+	bool removeEntry(Glib::ustring filename);
 
 	//! Removes files from the list that are too old, or just too numerous.
 	void pruneFiles();
 	
-        std::list<RecentlyEditedFile*> getFilesWithExtension(std::string ext) const;
+        std::list<RecentlyEditedFile*> getFilesWithExtension(Glib::ustring ext) const;
 
 	// Static Methods
 
@@ -84,7 +83,7 @@ class RecentlyEditedFileList: public std::list<RecentlyEditedFile*>, public sigc
         static void deleteInstance();
 
         //! Rewrite an old recently edited file list file.
-        static bool upgrade(std::string filename, std::string old_version, std::string new_version);
+        static bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version);
         static void support_backward_compatibility();
 
     protected:
@@ -99,7 +98,7 @@ class RecentlyEditedFileList: public std::list<RecentlyEditedFile*>, public sigc
 
     private:
         //! Callback for loading recentlyeditedfiles into this list.
-	bool load(std::string tag, XML_Helper *helper);
+	bool load(Glib::ustring tag, XML_Helper *helper);
 
 	//! Helper method to sort the list by it's last-edited time.
 	static bool orderByTime(RecentlyEditedFile*rhs, RecentlyEditedFile *lhs);
@@ -110,7 +109,7 @@ class RecentlyEditedFileList: public std::list<RecentlyEditedFile*>, public sigc
 	//! Remove extraneous files from the list.
 	void pruneTooManyFiles(int too_many = 1);
 
-        bool filename_in_list(std::string filename) const;
+        bool filename_in_list(Glib::ustring filename) const;
 
 	// DATA
 

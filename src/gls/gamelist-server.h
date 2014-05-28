@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Ben Asselstine
+// Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 
 #include <memory>
 #include <list>
+#include <glibmm.h>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 
@@ -55,16 +56,16 @@ protected:
 
 private:
   std::auto_ptr<NetworkServer> network_server;
-  std::string datafile;
+  Glib::ustring datafile;
 
-  bool onGotMessage(void *conn, int type, std::string message);
+  bool onGotMessage(void *conn, int type, Glib::ustring message);
   void onConnectionLost(void *conn);
   void onConnectionMade(void *conn);
   sigc::connection on_timer_registered(Timing::timer_slot s, int msecs_interval);
 
-  void unadvertise(void *conn, std::string profile_id, std::string scenario_id, std::string &err);
+  void unadvertise(void *conn, Glib::ustring profile_id, Glib::ustring scenario_id, Glib::ustring &err);
   void sendList(void *conn);
-  bool loadAdvertisedGame(std::string tag, XML_Helper *helper, void *conn);
+  bool loadAdvertisedGame(Glib::ustring tag, XML_Helper *helper, void *conn);
 
   //! A static pointer for the singleton instance.
   static GamelistServer * s_instance;

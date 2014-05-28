@@ -18,9 +18,9 @@
 #include "signpost.h"
 #include "GameMap.h"
 
-std::string Signpost::d_tag = "signpost";
+Glib::ustring Signpost::d_tag = "signpost";
 
-Signpost::Signpost(Vector<int> pos, std::string name)
+Signpost::Signpost(Vector<int> pos, Glib::ustring name)
   :Location(pos), Renamable(name)
 {
     //mark the location on the game map as occupied by a signpost

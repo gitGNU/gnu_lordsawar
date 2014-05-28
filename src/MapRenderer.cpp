@@ -18,8 +18,6 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include <string>
-
 #include "MapRenderer.h"
 #include "GameMap.h"
 #include "player.h"
@@ -32,7 +30,7 @@ MapRenderer::MapRenderer(Cairo::RefPtr<Cairo::Surface> surface)
     gc = Cairo::Context::create(surface);
 }
  
-bool MapRenderer::saveAsBitmap(std::string filename)
+bool MapRenderer::saveAsBitmap(Glib::ustring filename)
 {
   int tilesize = GameMap::getInstance()->getTileSize();
   int width = GameMap::getWidth() * tilesize;
@@ -45,7 +43,7 @@ bool MapRenderer::saveAsBitmap(std::string filename)
   return true;
 }
 
-bool MapRenderer::saveViewAsBitmap(std::string filename)
+bool MapRenderer::saveViewAsBitmap(Glib::ustring filename)
 {
   remove (filename.c_str());
   d_surface->write_to_png(filename);

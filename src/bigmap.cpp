@@ -407,7 +407,7 @@ void BigMap::draw_buffer()
 
 }
 
-bool BigMap::saveViewAsBitmap(std::string filename)
+bool BigMap::saveViewAsBitmap(Glib::ustring filename)
 {
   int width = image.get_width();
   int height = image.get_height();
@@ -417,12 +417,12 @@ bool BigMap::saveViewAsBitmap(std::string filename)
   return true;
 }
 
-bool BigMap::saveUnderlyingMapAsBitmap(std::string filename)
+bool BigMap::saveUnderlyingMapAsBitmap(Glib::ustring filename)
 {
   return d_renderer->saveAsBitmap(filename);
 }
 
-bool BigMap::saveAsBitmap(std::string filename)
+bool BigMap::saveAsBitmap(Glib::ustring filename)
 {
   int tilesize = GameMap::getInstance()->getTileSize();
   int width = GameMap::getWidth() * tilesize;

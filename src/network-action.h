@@ -27,7 +27,7 @@ class NetworkAction: public OwnerId
 public:
 	
     //! The xml tag of this object in a network stream.
-    static std::string d_tag; 
+    static Glib::ustring d_tag; 
 
      //! Default constructor.
      NetworkAction(Action *action, guint32 owner);
@@ -39,7 +39,7 @@ public:
      ~NetworkAction();
 
      //! Returns debug information.
-     std::string toString() const;
+     Glib::ustring toString() const;
 
      //!Saving the network action to an xml stream.
      bool save(XML_Helper* helper) const;

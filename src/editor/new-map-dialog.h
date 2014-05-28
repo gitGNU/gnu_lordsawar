@@ -43,10 +43,10 @@ class NewMapDialog
 	int grass, water, swamp, forest, hills, mountains;
 	int cities, ruins, temples;
 	int signposts;
-	std::string tileset;
-	std::string shieldset;
-	std::string cityset;
-	std::string armyset;
+	Glib::ustring tileset;
+	Glib::ustring shieldset;
+	Glib::ustring cityset;
+	Glib::ustring armyset;
     };
 
     Map map;

@@ -20,7 +20,6 @@
 #ifndef TILESET_H
 #define TILESET_H
 
-#include <string>
 #include <vector>
 #include <sigc++/trackable.h>
 
@@ -50,19 +49,19 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 {
     public:
 	//! The xml tag of this object in a tileset configuration file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! The xml tag of the road smallmap section of the tileset.
-	static std::string d_road_smallmap_tag; 
+	static Glib::ustring d_road_smallmap_tag; 
 
 	//! The xml tag of the ruin smallmap section of the tileset.
-	static std::string d_ruin_smallmap_tag; 
+	static Glib::ustring d_ruin_smallmap_tag; 
 
 	//! The xml tag of the temple smallmap section of the tileset.
-	static std::string d_temple_smallmap_tag; 
+	static Glib::ustring d_temple_smallmap_tag; 
 
 	//! tilesets have this extension. e.g. ".lwt".
-	static std::string file_extension; 
+	static Glib::ustring file_extension; 
 
 	//! Default constructor.
 	/**
@@ -71,7 +70,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * @param id    A unique numeric identifier among all tilesets.
 	 * @param name  The name of the Tileset.  Analagous to Tileset::d_name.
 	 */
-	Tileset(guint32 id, std::string name);
+	Tileset(guint32 id, Glib::ustring name);
 
 	//! Loading constructor.
 	/**
@@ -81,7 +80,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * @param helper  The opened tileset configuration file to load the
 	 *                tileset from.
 	 */
-        Tileset(XML_Helper* helper, std::string directory);
+        Tileset(XML_Helper* helper, Glib::ustring directory);
 
         //! Copy constructor.
         Tileset(const Tileset& tileset);
@@ -100,43 +99,43 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
         guint32 getId() const {return d_id;}
 
 	//! Return the basename of this Tileset.
-        std::string getBaseName() const {return d_basename;}
+        Glib::ustring getBaseName() const {return d_basename;}
 
         //! Returns the name of the tileset.
-        std::string getName() const {return _(d_name.c_str());}
+        Glib::ustring getName() const {return _(d_name.c_str());}
 
         //! Returns the copyright holders of the tileset.
-        std::string getCopyright () const {return d_copyright;};
+        Glib::ustring getCopyright () const {return d_copyright;};
 
         //! Returns the license of the tileset.
-        std::string getLicense() const {return d_license;};
+        Glib::ustring getLicense() const {return d_license;};
 
         //! Returns the description of the tileset.
-        std::string getInfo() const {return _(d_info.c_str());}
+        Glib::ustring getInfo() const {return _(d_info.c_str());}
 
         //! Returns the tilesize of the tileset.
         guint32 getTileSize() const {return d_tileSize;}
 
 	//! Returns the basename of the file containing big selector images.
-	std::string getLargeSelectorFilename() {return d_large_selector;};
+	Glib::ustring getLargeSelectorFilename() {return d_large_selector;};
 
 	//! Returns the basename of the file containing small selector images.
-	std::string getSmallSelectorFilename() {return d_small_selector;};
+	Glib::ustring getSmallSelectorFilename() {return d_small_selector;};
 
 	//! Returns the basename of the file containing the explosion image.
-	std::string getExplosionFilename() {return d_explosion;};
+	Glib::ustring getExplosionFilename() {return d_explosion;};
 
 	//! Returns the basename of the file containing the road images.
-	std::string getRoadsFilename() {return d_roads;};
+	Glib::ustring getRoadsFilename() {return d_roads;};
 
 	//! Returns the basename of the file containing the bridge images.
-	std::string getBridgesFilename() {return d_bridges;};
+	Glib::ustring getBridgesFilename() {return d_bridges;};
 
 	//! Returns the basename of the file containing the fog images.
-	std::string getFogFilename() {return d_fog;};
+	Glib::ustring getFogFilename() {return d_fog;};
 
 	//! Returns the basename of the file containing the flag images.
-	std::string getFlagsFilename() {return d_flags;};
+	Glib::ustring getFlagsFilename() {return d_flags;};
 
         //! Get the colour associated with the road on the smallmap.
 	Gdk::RGBA getRoadColor() const {return d_road_color;};
@@ -187,14 +186,14 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
         Tile *getFirstTile(SmallTile::Pattern pattern) const;
 
 	//! Get filenames in this tileset, excepting the configuration file.
-	void getFilenames(std::list<std::string> &files);
+	void getFilenames(std::list<Glib::ustring> &files);
 
-	std::string getConfigurationFile() const;
+	Glib::ustring getConfigurationFile() const;
 
 	// Set Methods
 
 	//! Set the basename of where this Tileset resides on disk.
-        void setBaseName(std::string dir);
+        void setBaseName(Glib::ustring dir);
 
 	//! Set the unique identifier for this tileset.
 	/**
@@ -206,43 +205,43 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	/**
 	 * @note This method is only used in the tileset editor.
 	 */
-        void setName(std::string name) {d_name = name;}
+        void setName(Glib::ustring name) {d_name = name;}
 
 	//! Sets the copyright holders of the tileset.
-	void setCopyright(std::string copy) {d_copyright = copy;};
+	void setCopyright(Glib::ustring copy) {d_copyright = copy;};
 
 	//! Sets the license of the tileset.
-	void setLicense(std::string license) {d_license = license;};
+	void setLicense(Glib::ustring license) {d_license = license;};
 
 	//! Set the description of the tileset.
 	/**
 	 * @note This method is only used in the tileset editor.
 	 */
-        void setInfo(std::string info) {d_info = info;}
+        void setInfo(Glib::ustring info) {d_info = info;}
 
 	//!  Sets the tilesize of the tileset.
 	void setTileSize(guint32 tileSize) {d_tileSize = tileSize;}
 
 	//! Sets the basename of the file containing the big selector images.
-	void setLargeSelectorFilename(std::string p){d_large_selector = p;};
+	void setLargeSelectorFilename(Glib::ustring p){d_large_selector = p;};
 
 	//! Sets the basename of the file containing the small selector images.
-	void setSmallSelectorFilename(std::string p){d_small_selector = p;};
+	void setSmallSelectorFilename(Glib::ustring p){d_small_selector = p;};
 
 	//! Sets the basename of the file containing the explosion image.
-	void setExplosionFilename(std::string p){d_explosion = p;};
+	void setExplosionFilename(Glib::ustring p){d_explosion = p;};
 
 	//! Sets the basename of the file containing the road images.
-	void setRoadsFilename(std::string p){d_roads = p;};
+	void setRoadsFilename(Glib::ustring p){d_roads = p;};
 
 	//! Sets the basename of the file containing the bridge images.
-	void setBridgesFilename(std::string p){d_bridges = p;};
+	void setBridgesFilename(Glib::ustring p){d_bridges = p;};
 
 	//! Sets the basename of the file containing the fog images.
-	void setFogFilename(std::string p){d_fog = p;};
+	void setFogFilename(Glib::ustring p){d_fog = p;};
 
 	//! Sets the basename of the file containing the flag images.
-	void setFlagsFilename(std::string p){d_flags = p;};
+	void setFlagsFilename(Glib::ustring p){d_flags = p;};
 
 	//! Sets the colour of the road on the smallmap.
 	void setRoadColor(Gdk::RGBA color) {d_road_color = color;};
@@ -288,9 +287,9 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	//! Sets the number of animation frames in the small selector.
 	void setNumberOfSmallSelectorFrames(guint32 s) {smallselector.reserve(s);smallselectormask.reserve(s); number_of_small_selector_frames = s;};
 
-        std::string getFileFromConfigurationFile(std::string file);
-        bool replaceFileInConfigurationFile(std::string file, std::string new_file);
-        bool addFileInConfigurationFile(std::string new_file);
+        Glib::ustring getFileFromConfigurationFile(Glib::ustring file);
+        bool replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file);
+        bool addFileInConfigurationFile(Glib::ustring new_file);
 
         //! Delete the tileset's temporary directory.
         void clean_tmp_dir() const;
@@ -307,7 +306,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
         void reload(bool &broken);
         
         //! make a new tilestyleset from an image and add it to the tile's list.
-        bool addTileStyleSet(Tile *tile, std::string filename);
+        bool addTileStyleSet(Tile *tile, Glib::ustring filename);
 
 	//Methods that operate on class data and do not modify the class data.
 
@@ -338,7 +337,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 */
 	bool save(XML_Helper *helper) const;
 
-        bool save(std::string filename, std::string extension) const;
+        bool save(Glib::ustring filename, Glib::ustring extension) const;
 
 	//! Get a unique tile style id among all tile syles in this tileset.
 	int getFreeTileStyleId() const;
@@ -361,35 +360,35 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	static guint32 getDefaultTileSize();
 
 	//! Create a tileset from the given tileset configuration file.
-	static Tileset *create(std::string file, bool &unsupported_version);
+	static Tileset *create(Glib::ustring file, bool &unsupported_version);
         
         static Tileset *copy (const Tileset *orig);
 
 	//! Return a list of tileset basenames in the user's personal collection.
-	static std::list<std::string> scanUserCollection();
+	static std::list<Glib::ustring> scanUserCollection();
 
 	//! Return a list of tileset basenames in the system collection.
-	static std::list<std::string> scanSystemCollection();
+	static std::list<Glib::ustring> scanSystemCollection();
 
         //! Copy a tileset file from one place to another.
-        static bool copy(std::string src, std::string dest);
+        static bool copy(Glib::ustring src, Glib::ustring dest);
 
         //! Rewrite old tileset files.
-        static bool upgrade(std::string filename, std::string old_version, std::string new_version);
+        static bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version);
         static void support_backward_compatibility();
 	
     private:
         //! Callback to load Tile objects into the Tileset.
-        bool loadTile(std::string, XML_Helper* helper);
+        bool loadTile(Glib::ustring, XML_Helper* helper);
 
 	//! Load the various images from the given filenames.
-	void instantiateImages(std::string explosion_filename,
-			       std::string roads_filename,
-			       std::string bridges_filename,
-			       std::string fog_filename,
-			       std::string flags_filename,
-			       std::string selector_filename,
-			       std::string small_selector_filename,
+	void instantiateImages(Glib::ustring explosion_filename,
+			       Glib::ustring roads_filename,
+			       Glib::ustring bridges_filename,
+			       Glib::ustring fog_filename,
+			       Glib::ustring flags_filename,
+			       Glib::ustring selector_filename,
+			       Glib::ustring small_selector_filename,
                                bool &broken);
         // DATA
 
@@ -400,13 +399,13 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * This value appears in dialogs where the user is asked to select
 	 * a Tileset among all other Tileset objects available to the game.
 	 */
-        std::string d_name;
+        Glib::ustring d_name;
 
 	//! The copyright holders of the tileset.
-        std::string d_copyright;
+        Glib::ustring d_copyright;
 
 	//! The license of the tileset.
-        std::string d_license;
+        Glib::ustring d_license;
 
 	//! A unique numeric identifier among all tilesets.
 	guint32 d_id;
@@ -417,7 +416,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * configuration file.
 	 * This value is not used.
 	 */
-        std::string d_info;
+        Glib::ustring d_info;
 
 	//! The size of the graphic tiles in the Tileset.
 	/**
@@ -434,7 +433,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * residing in.  It does not contain a path (e.g. no slashes).
 	 * Tileset files sit in the tileset/ directory.
 	 */
-        std::string d_basename;
+        Glib::ustring d_basename;
 
 	//! The basename of the small selector image.
 	/**
@@ -447,7 +446,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * a file extension.  It refers to a png file in the directory of 
 	 * tileset.
 	 */
-	std::string d_small_selector;
+	Glib::ustring d_small_selector;
 
 	//! The basename of the large selector image.
 	/**
@@ -460,7 +459,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * a file extension.  It refers to a png file in the directory of 
 	 * tileset.
 	 */
-	std::string d_large_selector;
+	Glib::ustring d_large_selector;
 
 	//! The basename of the explosion image.
 	/**
@@ -471,7 +470,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * a file extension.  It refers to a png file in the directory of 
 	 * tileset.
 	 */
-	std::string d_explosion;
+	Glib::ustring d_explosion;
 
 	//! The basename of the fog image.
 	/**
@@ -484,7 +483,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * a file extension.  It refers to a png file in the directory of 
 	 * tileset.
 	 */
-	std::string d_fog;
+	Glib::ustring d_fog;
 
 	//! The basename of the road image.
 	/**
@@ -498,7 +497,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * a file extension.  It refers to a png file in the directory of 
 	 * tileset.
 	 */
-	std::string d_roads;
+	Glib::ustring d_roads;
 
 	//! The basename of the bridge image.
 	/**
@@ -512,7 +511,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * a file extension.  It refers to a png file in the directory of 
 	 * tileset.
 	 */
-	std::string d_bridges;
+	Glib::ustring d_bridges;
 
 	//! The basename of the flag image.
 	/**
@@ -526,7 +525,7 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * a file extension.  It refers to a png file in the directory of 
 	 * tileset.
 	 */
-	std::string d_flags;
+	Glib::ustring d_flags;
 
         typedef std::map<guint32, TileStyle*> TileStyleIdMap;
 	//! A map that provides a TileStyle when supplying a TileStyle id.

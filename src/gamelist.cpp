@@ -35,7 +35,7 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-std::string Gamelist::d_tag = "gamelist";
+Glib::ustring Gamelist::d_tag = "gamelist";
 
 Gamelist* Gamelist::s_instance = 0;
 
@@ -47,7 +47,7 @@ Gamelist* Gamelist::getInstance()
   return s_instance;
 }
 
-bool Gamelist::saveToFile(std::string filename) const
+bool Gamelist::saveToFile(Glib::ustring filename) const
 {
   bool retval = true;
   XML_Helper helper(filename, std::ios::out, false);
@@ -56,7 +56,7 @@ bool Gamelist::saveToFile(std::string filename) const
   return retval;
 }
 
-bool Gamelist::loadFromFile(std::string filename)
+bool Gamelist::loadFromFile(Glib::ustring filename)
 {
   remove_all();
   std::ifstream in(filename.c_str());
@@ -125,7 +125,7 @@ bool Gamelist::save(XML_Helper* helper) const
   return retval;
 }
 
-bool Gamelist::load_tag(std::string tag, XML_Helper* helper)
+bool Gamelist::load_tag(Glib::ustring tag, XML_Helper* helper)
 {
   if (helper->getVersion() != LORDSAWAR_RECENTLY_HOSTED_VERSION)
     {
@@ -197,7 +197,7 @@ void Gamelist::pruneOldGames(int stale)
     }
 }
 
-bool Gamelist::removeEntry(std::string id)
+bool Gamelist::removeEntry(Glib::ustring id)
 {
   bool found = false;
   for (Gamelist::iterator it = begin(); it != end();)
@@ -214,7 +214,7 @@ bool Gamelist::removeEntry(std::string id)
   return found;
 }
 
-void Gamelist::updateEntry(std::string scenario_id, guint32 round)
+void Gamelist::updateEntry(Glib::ustring scenario_id, guint32 round)
 {
   for (Gamelist::iterator it = begin(); it != end(); it++)
     {
@@ -255,7 +255,7 @@ RecentlyPlayedGameList* Gamelist::getList(bool scrub_profile_id) const
   return l;
 }
   
-HostedGame *Gamelist::findGameByScenarioId(std::string scenario_id) const
+HostedGame *Gamelist::findGameByScenarioId(Glib::ustring scenario_id) const
 {
   for (Gamelist::const_iterator i = begin(); i != end(); i++)
     {
@@ -308,7 +308,7 @@ void Gamelist::on_could_not_ping_game(HostedGame *game)
   game->setUnresponsive(true);
 }
 
-bool Gamelist::upgrade(std::string filename, std::string old_version, std::string new_version)
+bool Gamelist::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version)
 {
   return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
                                             FileCompat::GAMELIST, 

@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 #ifndef QUEST_H
 #define QUEST_H
 
-#include <string>
 #include <list>
 #include <queue>
 #include "xmlhelper.h"
@@ -51,7 +50,7 @@ class Quest: public OwnerId
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! The various kinds of Quest objects.
         enum Type {
@@ -104,7 +103,7 @@ class Quest: public OwnerId
          *  dynamic part consists of the quest's status info,
          *  which is obtained by the Quest::getProgress method.
          */
-        std::string getDescription() const { return d_description; }
+        Glib::ustring getDescription() const { return d_description; }
 
 	//! Returns if the Quest will be deleted at the end of the round.
         bool isPendingDeletion() const {return d_pending;}
@@ -113,7 +112,7 @@ class Quest: public OwnerId
         guint32 getHeroId() const { return d_hero; }
 
         //! Returns the name of the Hero responsible for this Quest.
-        std::string getHeroName() const {return d_hero_name;}
+        Glib::ustring getHeroName() const {return d_hero_name;}
 
         //! Return the type of the quest (one of values listed in Quest::Type).
         guint32 getType() const { return d_type; }
@@ -142,7 +141,7 @@ class Quest: public OwnerId
         Hero* getHero() const { return getHeroById(d_hero); }
 
 	//! Determine the name of the hero, even if it's dead.
-	std::string getHeroNameForDeadHero() const;
+	Glib::ustring getHeroNameForDeadHero() const;
 
 	//! Save the Quest to an opened saved-game file.
         /** 
@@ -159,14 +158,14 @@ class Quest: public OwnerId
 	// Methods that need to be implemented by derived classes.
 
 	//! Return the description of the progress the Hero has made.
-        virtual std::string getProgress() const = 0;
+        virtual Glib::ustring getProgress() const = 0;
 
 	//! Return the completion text that is associated with this Quest.
         /**
 	 * @param msgs  A queue of strings that represents the completion 
 	 *              text to show.
          */
-        virtual void getSuccessMsg(std::queue<std::string>& msgs) const = 0;
+        virtual void getSuccessMsg(std::queue<Glib::ustring>& msgs) const = 0;
 
         /**
          * \brief Provide the lines of the message describing
@@ -177,7 +176,7 @@ class Quest: public OwnerId
 	 * @param msgs  A queue of strings that represents the text to show
 	 *              when the Quest has expired.
 	 */
-        virtual void getExpiredMsg(std::queue<std::string>& msgs) const = 0;
+        virtual void getExpiredMsg(std::queue<Glib::ustring>& msgs) const = 0;
 
 	//! Callback whenever an Army dies.
 	/**
@@ -214,13 +213,13 @@ class Quest: public OwnerId
 	// Static Methods
 
 	//! Determine the name of a hero, given the id.
-	static std::string getHeroNameForDeadHero(guint32 id);
+	static Glib::ustring getHeroNameForDeadHero(guint32 id);
 
 	//! Convert a Quest::Type string to an enumerated value.
-	static Quest::Type questTypeFromString(std::string str);
+	static Quest::Type questTypeFromString(Glib::ustring str);
 
 	//! Convert a Quest::Type enumerated value to a string.
-	static std::string questTypeToString(const Quest::Type type);
+	static Glib::ustring questTypeToString(const Quest::Type type);
 
 	//! Return the Stack and Hero of a Quest.
         /**
@@ -243,7 +242,7 @@ class Quest: public OwnerId
         /** 
          * This value is to be filled by the derived quest objects.
          */
-        std::string d_description;
+        Glib::ustring d_description;
 
 	//! The Id of the Hero object responsible for this Quest.
         guint32 d_hero;
@@ -259,7 +258,7 @@ class Quest: public OwnerId
 	 * The name of the Hero must be saved so that after the Hero dies, we 
 	 * can submit a history item that references the Hero's name.
 	 */
-        std::string d_hero_name;
+        Glib::ustring d_hero_name;
 
 	//! A list of targets to display on a questmap.
 	/**

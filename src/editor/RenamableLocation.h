@@ -22,7 +22,6 @@
 #include "vector.h"
 #include "Location.h"
 #include "Renamable.h"
-#include <string>
 
 //! Scenario Editor.  A game object that has a position and a changeable name.
 class RenamableLocation: public Location, public Renamable
@@ -33,11 +32,11 @@ class RenamableLocation: public Location, public Renamable
      //! Destructor.
     ~RenamableLocation();
 
-    std::string getDescription() const {return d_description;};
-    void setDescription(std::string desc) {d_description = desc;};
+    Glib::ustring getDescription() const {return d_description;};
+    void setDescription(Glib::ustring desc) {d_description = desc;};
 
  private:
-    std::string d_description;
+    Glib::ustring d_description;
 };
 
 #endif

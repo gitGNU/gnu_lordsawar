@@ -34,16 +34,16 @@
 #include "SightMap.h"
 #include "stackreflist.h"
 
-std::string Reward::d_tag = "reward";
+Glib::ustring Reward::d_tag = "reward";
 
-Reward::Reward(Type type, std::string name)
+Reward::Reward(Type type, Glib::ustring name)
     :d_type(type), d_name(name)
 {
 }
 
 Reward::Reward(XML_Helper *helper)
 {
-  std::string type_str;
+  Glib::ustring type_str;
   helper->getData(type_str, "type");
   d_type = rewardTypeFromString(type_str);
   helper->getData(d_name, "name");
@@ -61,7 +61,7 @@ Reward::~Reward()
 Reward* Reward::handle_load(XML_Helper* helper)
 {
     guint32 t;
-    std::string type_str;
+    Glib::ustring type_str;
     helper->getData(type_str, "type");
     t = rewardTypeFromString(type_str);
 
@@ -102,7 +102,7 @@ bool Reward_Gold::save(XML_Helper* helper) const
 {
   bool retval = true;
   retval &= helper->openTag(Reward::d_tag);
-  std::string type_str = rewardTypeToString(Reward::Type(d_type));
+  Glib::ustring type_str = rewardTypeToString(Reward::Type(d_type));
   retval &= helper->saveData("type", type_str);
   retval &= helper->saveData("name", d_name);
   retval &= helper->saveData("gold", d_gold);
@@ -156,7 +156,7 @@ bool Reward_Allies::save(XML_Helper* helper) const
 {
   bool retval = true;
   retval &= helper->openTag(Reward::d_tag);
-  std::string type_str = rewardTypeToString(Reward::Type(d_type));
+  Glib::ustring type_str = rewardTypeToString(Reward::Type(d_type));
   retval &= helper->saveData("type", type_str);
   retval &= helper->saveData("name", d_name);
   retval &= helper->saveData("num_allies", d_count);
@@ -244,7 +244,7 @@ Reward_Item::Reward_Item(Item *item)
 {
 }
 
-bool Reward_Item::loadItem(std::string tag, XML_Helper* helper)
+bool Reward_Item::loadItem(Glib::ustring tag, XML_Helper* helper)
 {
   if (tag == Item::d_tag)
     {
@@ -270,7 +270,7 @@ bool Reward_Item::save(XML_Helper* helper) const
 {
   bool retval = true;
   retval &= helper->openTag(Reward::d_tag);
-  std::string type_str = rewardTypeToString(Reward::Type(d_type));
+  Glib::ustring type_str = rewardTypeToString(Reward::Type(d_type));
   retval &= helper->saveData("type", type_str);
   retval &= helper->saveData("name", d_name);
   retval &= d_item->save(helper);
@@ -317,7 +317,7 @@ bool Reward_Ruin::save(XML_Helper* helper) const
 {
   bool retval = true;
   retval &= helper->openTag(Reward::d_tag);
-  std::string type_str = rewardTypeToString(Reward::Type(d_type));
+  Glib::ustring type_str = rewardTypeToString(Reward::Type(d_type));
   retval &= helper->saveData("type", type_str);
   retval &= helper->saveData("name", d_name);
   retval &= helper->saveData("x", getRuin()->getPos().x);
@@ -367,14 +367,14 @@ Reward_Ruin::~Reward_Ruin()
 {
 }
 
-Reward_Map::Reward_Map(Vector<int> pos, std::string name, 
+Reward_Map::Reward_Map(Vector<int> pos, Glib::ustring name, 
 		       guint32 height, guint32 width)
     :Reward(Reward::MAP, name)
 {
   d_sightmap = new SightMap(name, pos, height, width);
 }
 
-bool Reward_Map::loadMap(std::string tag, XML_Helper* helper)
+bool Reward_Map::loadMap(Glib::ustring tag, XML_Helper* helper)
 {
   if (tag == SightMap::d_tag)
     {
@@ -402,7 +402,7 @@ bool Reward_Map::save(XML_Helper* helper) const
 {
   bool retval = true;
   retval &= helper->openTag(Reward::d_tag);
-  std::string type_str = rewardTypeToString(Reward::Type(d_type));
+  Glib::ustring type_str = rewardTypeToString(Reward::Type(d_type));
   retval &= helper->saveData("type", type_str);
   retval &= helper->saveData("name", d_sightmap->getName());
   retval &= d_sightmap->save(helper);
@@ -426,7 +426,7 @@ Reward_Map::~Reward_Map()
     delete d_sightmap;
 }
 
-std::string Reward::getDescription() const
+Glib::ustring Reward::getDescription() const
 {
   Glib::ustring s = "";
   switch (getType())
@@ -474,7 +474,7 @@ std::string Reward::getDescription() const
   return s;
 }
 
-std::string Reward::rewardTypeToString(const Reward::Type type)
+Glib::ustring Reward::rewardTypeToString(const Reward::Type type)
 {
   switch (type)
     {
@@ -497,7 +497,7 @@ std::string Reward::rewardTypeToString(const Reward::Type type)
   return "Reward::GOLD";
 }
 
-Reward::Type Reward::rewardTypeFromString(const std::string str)
+Reward::Type Reward::rewardTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Reward::Type(atoi(str.c_str()));

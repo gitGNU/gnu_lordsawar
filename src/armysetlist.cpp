@@ -56,9 +56,9 @@ void Armysetlist::deleteInstance()
   s_instance = 0;
 }
 
-void Armysetlist::add(Armyset *armyset, std::string file)
+void Armysetlist::add(Armyset *armyset, Glib::ustring file)
 {
-  std::string basename = File::get_basename(file);
+  Glib::ustring basename = File::get_basename(file);
   push_back(armyset); 
   for (Armyset::iterator ait = armyset->begin(); ait != armyset->end(); ait++)
     d_armies[armyset->getId()][(*ait)->getId()] = (*ait);
@@ -69,9 +69,9 @@ void Armysetlist::add(Armyset *armyset, std::string file)
   d_armysetids[armyset->getId()] = armyset;
 }
 
-void Armysetlist::loadArmysets(std::list<std::string> armysets)
+void Armysetlist::loadArmysets(std::list<Glib::ustring> armysets)
 {
-  for (std::list<std::string>::const_iterator i = armysets.begin(); 
+  for (std::list<Glib::ustring>::const_iterator i = armysets.begin(); 
        i != armysets.end(); i++)
     {
       Armyset *armyset = loadArmyset(*i);
@@ -85,7 +85,7 @@ void Armysetlist::loadArmysets(std::list<std::string> armysets)
 Armysetlist::Armysetlist()
 {
   // load all armysets
-  std::list<std::string> armysets = Armyset::scanSystemCollection();
+  std::list<Glib::ustring> armysets = Armyset::scanSystemCollection();
   loadArmysets(armysets);
   armysets = Armyset::scanUserCollection();
   loadArmysets(armysets);
@@ -128,9 +128,9 @@ ArmyProto* Armysetlist::lookupWeakestQuickestArmy(guint32 id) const
   return NULL;
 }
 
-std::list<std::string> Armysetlist::getValidNames() const
+std::list<Glib::ustring> Armysetlist::getValidNames() const
 {
-  std::list<std::string> names;
+  std::list<Glib::ustring> names;
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->validate() == true)
       names.push_back((*it)->getName());
@@ -138,9 +138,9 @@ std::list<std::string> Armysetlist::getValidNames() const
   return names;
 }
 
-std::list<std::string> Armysetlist::getValidNames(guint32 tilesize)
+std::list<Glib::ustring> Armysetlist::getValidNames(guint32 tilesize)
 {
-  std::list<std::string> names;
+  std::list<Glib::ustring> names;
   for (iterator it = begin(); it != end(); it++)
     if ((*it)->getTileSize() == tilesize && (*it)->validate() == true)
       names.push_back((*it)->getName());
@@ -148,18 +148,18 @@ std::list<std::string> Armysetlist::getValidNames(guint32 tilesize)
   return names;
 }
 
-std::list<std::string> Armysetlist::getNames() const
+std::list<Glib::ustring> Armysetlist::getNames() const
 {
-  std::list<std::string> names;
+  std::list<Glib::ustring> names;
   for (const_iterator it = begin(); it != end(); it++)
     names.push_back((*it)->getName());
   names.sort(case_insensitive);
   return names;
 }
 
-std::list<std::string> Armysetlist::getNames(guint32 tilesize)
+std::list<Glib::ustring> Armysetlist::getNames(guint32 tilesize)
 {
-  std::list<std::string> names;
+  std::list<Glib::ustring> names;
   for (iterator it = begin(); it != end(); it++)
     if ((*it)->getTileSize() == tilesize)
       names.push_back((*it)->getName());
@@ -167,7 +167,7 @@ std::list<std::string> Armysetlist::getNames(guint32 tilesize)
   return names;
 }
 
-std::string Armysetlist::getName(guint32 id) const
+Glib::ustring Armysetlist::getName(guint32 id) const
 {
   NameMap::const_iterator it = d_names.find(id);
 
@@ -178,7 +178,7 @@ std::string Armysetlist::getName(guint32 id) const
   return (*it).second;
 }
 
-Armyset *Armysetlist::loadArmyset(std::string name)
+Armyset *Armysetlist::loadArmyset(Glib::ustring name)
 {
   debug("Loading armyset " <<File::get_basename(name));
   bool unsupported_version;
@@ -275,7 +275,7 @@ void Armysetlist::getSizes(std::list<guint32> &sizes)
     }
 }
 
-int Armysetlist::getArmysetId(std::string armyset, guint32 tilesize) const
+int Armysetlist::getArmysetId(Glib::ustring armyset, guint32 tilesize) const
 {
   IdMap::const_iterator it = 
     d_ids.find(String::ucompose("%1 %2", armyset, tilesize));
@@ -284,7 +284,7 @@ int Armysetlist::getArmysetId(std::string armyset, guint32 tilesize) const
   return (*it).second;
 }
 
-std::string Armysetlist::getArmysetDir(std::string name, guint32 tilesize) const
+Glib::ustring Armysetlist::getArmysetDir(Glib::ustring name, guint32 tilesize) const
 {
   int id = getArmysetId(name, tilesize);
   if (id == -1)
@@ -296,9 +296,9 @@ int Armysetlist::getNextAvailableId(int after)
 {
   bool unsupported_version;
   std::list<guint32> ids;
-  std::list<std::string> armysets = Armyset::scanSystemCollection();
+  std::list<Glib::ustring> armysets = Armyset::scanSystemCollection();
   //there might be IDs in invalid armysets.
-  for (std::list<std::string>::const_iterator i = armysets.begin(); 
+  for (std::list<Glib::ustring>::const_iterator i = armysets.begin(); 
        i != armysets.end(); i++)
     {
       Armyset *armyset = Armyset::create(*i, unsupported_version);
@@ -309,7 +309,7 @@ int Armysetlist::getNextAvailableId(int after)
 	}
     }
   armysets = Armyset::scanUserCollection();
-  for (std::list<std::string>::const_iterator i = armysets.begin(); 
+  for (std::list<Glib::ustring>::const_iterator i = armysets.begin(); 
        i != armysets.end(); i++)
     {
       Armyset *armyset = Armyset::create(*i, unsupported_version);
@@ -351,7 +351,7 @@ Armyset *Armysetlist::getArmyset(guint32 id) const
   return (*it).second;
 }
 
-Armyset *Armysetlist::getArmyset(std::string bname) const
+Armyset *Armysetlist::getArmyset(Glib::ustring bname) const
 { 
   ArmysetMap::const_iterator it = d_armysets.find(bname);
   if (it == d_armysets.end())
@@ -359,9 +359,9 @@ Armyset *Armysetlist::getArmyset(std::string bname) const
   return (*it).second;
 }
 
-std::string Armysetlist::findFreeBaseName(std::string basename, guint32 max, guint32 &num) const
+Glib::ustring Armysetlist::findFreeBaseName(Glib::ustring basename, guint32 max, guint32 &num) const
 {
-  std::string new_basename;
+  Glib::ustring new_basename;
   for (unsigned int count = 1; count < max; count++)
     {
       new_basename = String::ucompose("%1%2", basename, count);
@@ -376,7 +376,7 @@ std::string Armysetlist::findFreeBaseName(std::string basename, guint32 max, gui
   return new_basename;
 }
 
-bool Armysetlist::addToPersonalCollection(Armyset *armyset, std::string &new_basename, guint32 &new_id)
+bool Armysetlist::addToPersonalCollection(Armyset *armyset, Glib::ustring &new_basename, guint32 &new_id)
 {
   //do we already have this one?
       
@@ -395,7 +395,7 @@ bool Armysetlist::addToPersonalCollection(Armyset *armyset, std::string &new_bas
       else
         {
           guint32 num = 0;
-          std::string new_basename = findFreeBaseName(armyset->getBaseName(), 100, num);
+          Glib::ustring new_basename = findFreeBaseName(armyset->getBaseName(), 100, num);
           if (new_basename == "")
             return false;
         }
@@ -418,7 +418,7 @@ bool Armysetlist::addToPersonalCollection(Armyset *armyset, std::string &new_bas
     new_id = armyset->getId();
 
   //make the directory where the armyset is going to live.
-  std::string file = File::getUserArmysetDir() + new_basename + Armyset::file_extension;
+  Glib::ustring file = File::getUserArmysetDir() + new_basename + Armyset::file_extension;
 
   armyset->save(file, Armyset::file_extension);
 
@@ -429,27 +429,27 @@ bool Armysetlist::addToPersonalCollection(Armyset *armyset, std::string &new_bas
   return true;
 }
 
-Armyset *Armysetlist::import(Tar_Helper *t, std::string f, bool &broken)
+Armyset *Armysetlist::import(Tar_Helper *t, Glib::ustring f, bool &broken)
 {
   bool unsupported_version;
-  std::string filename = t->getFile(f, broken);
+  Glib::ustring filename = t->getFile(f, broken);
   if (broken)
     return NULL;
   Armyset *armyset = Armyset::create(filename, unsupported_version);
   assert (armyset != NULL);
   armyset->setBaseName(File::get_basename(f));
 
-  std::string basename = "";
+  Glib::ustring basename = "";
   guint32 id = 0;
   addToPersonalCollection(armyset, basename, id);
 
   return armyset;
 }
 
-bool Armysetlist::contains(std::string name) const
+bool Armysetlist::contains(Glib::ustring name) const
 {
-  std::list<std::string> n = getNames();
-  for (std::list<std::string>::iterator it = n.begin(); it != n.end(); it++)
+  std::list<Glib::ustring> n = getNames();
+  for (std::list<Glib::ustring>::iterator it = n.begin(); it != n.end(); it++)
     {
       if (*it == name)
         return true;

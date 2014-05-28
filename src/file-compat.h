@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Ben Asselstine
+//  Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #define FILE_COMPAT_H
 
 #include <gtkmm.h>
-#include <string>
 #include <list>
 #include <sigc++/trackable.h>
 
@@ -30,11 +29,11 @@ class UpgradeDetails;
 class FileDetails
 {
 public:
-  FileDetails(guint32 k, std::string f, std::string t, bool ta) 
+  FileDetails(guint32 k, Glib::ustring f, Glib::ustring t, bool ta) 
     {type = k; file_extension = f; tag = t; tar = ta;};
   guint32 type;
-  std::string file_extension;
-  std::string tag;
+  Glib::ustring file_extension;
+  Glib::ustring tag;
   bool tar;
 };
 
@@ -62,25 +61,25 @@ class FileCompat: public std::list<FileDetails>, public sigc::trackable
         //! upgrade common files.
         void initialize();
 
-        typedef sigc::slot<bool, std::string, std::string, std::string> Slot;
-        void support_type (guint32 k, std::string f, std::string t, bool ta) 
+        typedef sigc::slot<bool, Glib::ustring, Glib::ustring, Glib::ustring> Slot;
+        void support_type (guint32 k, Glib::ustring f, Glib::ustring t, bool ta) 
           {push_back(FileDetails(k,f,t,ta));};
-        void support_version(guint32 k, std::string from, std::string to, FileCompat::Slot slot);
+        void support_version(guint32 k, Glib::ustring from, Glib::ustring to, FileCompat::Slot slot);
 
         bool contains(FileCompat::Type type) const;
-        FileCompat::Type getType(std::string filename) const;
-        FileCompat::Type getTypeByFileInspection(std::string filename) const;
+        FileCompat::Type getType(Glib::ustring filename) const;
+        FileCompat::Type getTypeByFileInspection(Glib::ustring filename) const;
 
         bool isTarFile(FileCompat::Type type) const;
 
-        std::string getTag(FileCompat::Type type) const;
-        FileCompat::Type getTypeByFileExtension(std::string ext) const;
-        std::string getFileExtension(FileCompat::Type type) const;
-        bool get_tag_and_version_from_file(std::string filename, FileCompat::Type type, std::string &tag, std::string &version) const;
+        Glib::ustring getTag(FileCompat::Type type) const;
+        FileCompat::Type getTypeByFileExtension(Glib::ustring ext) const;
+        Glib::ustring getFileExtension(FileCompat::Type type) const;
+        bool get_tag_and_version_from_file(Glib::ustring filename, FileCompat::Type type, Glib::ustring &tag, Glib::ustring &version) const;
 
-        bool upgrade(std::string filename, bool &same) const;
-        bool upgrade(std::string filename, std::string old_version, std::string new_version, FileCompat::Type t, std::string tag) const;
-        bool rewrite_with_updated_version(std::string filename, FileCompat::Type type, std::string tag, std::string version) const;
+        bool upgrade(Glib::ustring filename, bool &same) const;
+        bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version, FileCompat::Type t, Glib::ustring tag) const;
+        bool rewrite_with_updated_version(Glib::ustring filename, FileCompat::Type type, Glib::ustring tag, Glib::ustring version) const;
 
 	// Static Methods
         static void support_backward_compatibility_for_common_files();
@@ -101,16 +100,16 @@ class FileCompat: public std::list<FileDetails>, public sigc::trackable
         ~FileCompat();
 
         // helpers
-        FileCompat::Type getTypeByXmlFileInspection(std::string filename) const;
-        FileCompat::Type getTypeByTarFileInspection(std::string filename) const;
+        FileCompat::Type getTypeByXmlFileInspection(Glib::ustring filename) const;
+        FileCompat::Type getTypeByTarFileInspection(Glib::ustring filename) const;
 
-        bool upgradeGameScenario(std::string filename, std::string old_version) const;
-        bool upgradeGameScenarioWithXslt(std::string filename, std::string xsl_file) const;
+        bool upgradeGameScenario(Glib::ustring filename, Glib::ustring old_version) const;
+        bool upgradeGameScenarioWithXslt(Glib::ustring filename, Glib::ustring xsl_file) const;
 
-        bool can_upgrade_to(FileCompat::Type type, std::string version) const;
-        bool get_upgrade_method(FileCompat::Type type, std::string version, std::string &next_version, FileCompat::Slot &slot) const;
-        bool xsl_transform(std::string filename, std::string xsl_file) const;
-        bool rewrite_with_xslt(std::string filename, FileCompat::Type type, std::string xsl_file) const;
+        bool can_upgrade_to(FileCompat::Type type, Glib::ustring version) const;
+        bool get_upgrade_method(FileCompat::Type type, Glib::ustring version, Glib::ustring &next_version, FileCompat::Slot &slot) const;
+        bool xsl_transform(Glib::ustring filename, Glib::ustring xsl_file) const;
+        bool rewrite_with_xslt(Glib::ustring filename, FileCompat::Type type, Glib::ustring xsl_file) const;
 
     private:
 	// DATA

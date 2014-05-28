@@ -114,18 +114,18 @@ bool QuestEnemyArmies::save(XML_Helper *helper) const
   return retval;
 }
 
-std::string QuestEnemyArmies::getProgress() const
+Glib::ustring QuestEnemyArmies::getProgress() const
 {
   return String::ucompose (_("You have killed %1 so far."), d_killed);
 }
 
-void QuestEnemyArmies::getSuccessMsg(std::queue<std::string>& msgs) const
+void QuestEnemyArmies::getSuccessMsg(std::queue<Glib::ustring>& msgs) const
 {
   msgs.push(String::ucompose(_("You have managed to slaughter %1 armies."), d_killed));
   msgs.push(_("Well done!"));
 }
 
-void QuestEnemyArmies::getExpiredMsg(std::queue<std::string>& msgs) const
+void QuestEnemyArmies::getExpiredMsg(std::queue<Glib::ustring>& msgs) const
 {
   // This quest should never expire, so this is just a dummy function
 }

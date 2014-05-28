@@ -36,7 +36,7 @@ class MapBackpack: public Backpack, public Immovable, public UniquelyIdentified
 {
  public:
      //! The xml tag of this object in a saved-game file.
-     static std::string d_tag; 
+     static Glib::ustring d_tag; 
 
      //! Default constructor.
      MapBackpack(Vector<int> pos);
@@ -60,7 +60,7 @@ class MapBackpack: public Backpack, public Immovable, public UniquelyIdentified
     Item *getPlantedItem(Player *player);
  private:
 
-    bool loadBackpack(std::string tag, XML_Helper *helper);
+    bool loadBackpack(Glib::ustring tag, XML_Helper *helper);
 };
 
 #endif

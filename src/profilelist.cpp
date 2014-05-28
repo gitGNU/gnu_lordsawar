@@ -31,7 +31,7 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-std::string Profilelist::d_tag = "profilelist";
+Glib::ustring Profilelist::d_tag = "profilelist";
 
 Profilelist* Profilelist::s_instance = 0;
 
@@ -51,7 +51,7 @@ bool Profilelist::save() const
   return saveToFile(File::getSavePath() + "/" + PROFILE_LIST);
 }
 
-bool Profilelist::saveToFile(std::string filename) const
+bool Profilelist::saveToFile(Glib::ustring filename) const
 {
   bool retval = true;
   XML_Helper helper(filename, std::ios::out, false);
@@ -65,7 +65,7 @@ bool Profilelist::load()
   return loadFromFile(File::getSavePath() + "/" + PROFILE_LIST);
 }
 
-bool Profilelist::loadFromFile(std::string filename)
+bool Profilelist::loadFromFile(Glib::ustring filename)
 {
   std::ifstream in(filename.c_str());
   if (in)
@@ -129,7 +129,7 @@ bool Profilelist::save(XML_Helper* helper) const
   return retval;
 }
 
-bool Profilelist::load_tag(std::string tag, XML_Helper* helper)
+bool Profilelist::load_tag(Glib::ustring tag, XML_Helper* helper)
 {
   if (helper->getVersion() != LORDSAWAR_PROFILES_VERSION)
     {
@@ -162,7 +162,7 @@ Profile *Profilelist::findLastPlayedProfileForUser(Glib::ustring user) const
   return p;
 }
         
-Profile *Profilelist::findProfileById(std::string id) const
+Profile *Profilelist::findProfileById(Glib::ustring id) const
 {
   for (Profilelist::const_iterator i = begin(); i != end(); i++)
     {
@@ -172,7 +172,7 @@ Profile *Profilelist::findProfileById(std::string id) const
   return NULL;
 }
 
-bool Profilelist::upgrade(std::string filename, std::string old_version, std::string new_version)
+bool Profilelist::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version)
 {
   return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
                                             FileCompat::PROFILELIST, 

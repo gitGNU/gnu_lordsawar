@@ -32,9 +32,9 @@ int max_vector_width;
 int main(int argc, char* argv[])
 {
   Profile *profile = NULL;
-  std::string host;
-  std::string file;
-  std::string unhost;
+  Glib::ustring host;
+  Glib::ustring file;
+  Glib::ustring unhost;
   bool show_list = false;
   bool reload = false;
   bool terminate = false;
@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
     {
       for (int i = 2; i <= argc; i++)
 	{
-          std::string parameter(argv[i-1]); 
+          Glib::ustring parameter(argv[i-1]); 
 	  if (parameter == "--port" || parameter == "-p")
 	    {
 	      i++;

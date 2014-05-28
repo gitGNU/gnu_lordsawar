@@ -26,7 +26,6 @@
 #include <giomm/socketservice.h>
 #include <glibmm.h>
 #include <sigc++/signal.h>
-#include <string>
 
 #include "network-common.h"
 
@@ -40,13 +39,13 @@ public:
 
   bool isListening();
   void startListening(int port);
-  void send(void *conn, int type, const std::string &payload);
-  void sendFile(void *c, int type, const std::string &payload);
-  std::string get_hostname(void *conn);
+  void send(void *conn, int type, const Glib::ustring &payload);
+  void sendFile(void *c, int type, const Glib::ustring &payload);
+  Glib::ustring get_hostname(void *conn);
   bool is_local_connection(void *conn);
 
   void stop();
-  sigc::signal<bool, void *, int, std::string> got_message;
+  sigc::signal<bool, void *, int, Glib::ustring> got_message;
   sigc::signal<void, void *> connection_made;
   sigc::signal<void, void *> connection_lost;
   sigc::signal<void, int> port_in_use;

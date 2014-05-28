@@ -83,7 +83,7 @@ int TempleEditorDialog::run()
 
 void TempleEditorDialog::on_randomize_name_clicked()
 {
-  std::string existing_name = name_entry->get_text();
+  Glib::ustring existing_name = name_entry->get_text();
   if (existing_name == Temple::getDefaultName())
     name_entry->set_text(d_randomizer->popRandomTempleName());
   else

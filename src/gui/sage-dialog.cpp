@@ -140,7 +140,7 @@ void SageDialog::addReward(Reward *reward)
       break;
     case Reward::MAP:
 	{
-	  std::string name;
+	  Glib::ustring name;
 	  Reward_Map *m = static_cast<Reward_Map*>(reward);
 	  name  = m->getName();
 	  if (name == "")

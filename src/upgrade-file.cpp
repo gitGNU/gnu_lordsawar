@@ -34,8 +34,8 @@
 int max_vector_width;
 int main(int argc, char* argv[])
 {
-  std::string filename;
-  std::string rewrite;
+  Glib::ustring filename;
+  Glib::ustring rewrite;
   bool identify_file = false;
   initialize_configuration();
   Vector<int>::setMaximumWidth(1000);
@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
     {
       for (int i = 2; i <= argc; i++)
 	{
-          std::string parameter(argv[i-1]); 
+          Glib::ustring parameter(argv[i-1]); 
 	  if (parameter == "--identify" || parameter == "-i")
             {
               identify_file = true;
@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
   FileCompat::support_backward_compatibility_for_common_files();
   if (identify_file == false && rewrite == "")
     {
-      std::string tmpfile = File::get_tmp_file();
+      Glib::ustring tmpfile = File::get_tmp_file();
       File::copy(filename, tmpfile);
       bool upgraded = FileCompat::getInstance()->upgrade(tmpfile, 
                                                          same_version);
@@ -113,7 +113,7 @@ int main(int argc, char* argv[])
     }
   else if (identify_file && rewrite == "")
     {
-      std::string tag, version;
+      Glib::ustring tag, version;
       FileCompat::Type type = FileCompat::getInstance()->getType(filename);
       FileCompat::getInstance()->get_tag_and_version_from_file(filename, type, tag, version);
       std::cout << String::ucompose("%1 (%2 %3)", 
@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
   else if (identify_file == false && rewrite != "")
     {
       FileCompat *fc = FileCompat::getInstance();
-      std::string tag, version;
+      Glib::ustring tag, version;
       FileCompat::Type type = fc->getType(filename);
       if (fc->get_tag_and_version_from_file(filename, type, tag, version))
         {

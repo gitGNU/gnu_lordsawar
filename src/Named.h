@@ -18,7 +18,7 @@
 #ifndef NAMED_H
 #define NAMED_H
 
-#include <string>
+#include <glibmm.h>
 
 class XML_Helper;
 
@@ -30,7 +30,7 @@ class Named
 {
  public:
      //! Default constructor.
-     Named(std::string name);
+     Named(Glib::ustring name);
      //! Copy constructor.
      Named(const Named&);
      //! Loading constructor.
@@ -40,7 +40,7 @@ class Named
     
  protected:
     //! The name of the object.
-    std::string d_name;
+    Glib::ustring d_name;
 };
 
 #endif

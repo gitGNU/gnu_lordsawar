@@ -23,7 +23,6 @@
 #define ARMY_PROTO_H
 
 #include <gtkmm.h>
-#include <string>
 #include "PixMask.h"
 #include "shield.h"
 #include "hero.h"
@@ -37,7 +36,7 @@ class ArmyProto : public ArmyProtoBase
 {
     public:
 	//! The xml tag of this object in an armyset configuration file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! Copy constructor.
         ArmyProto(const ArmyProto& armyproto);
@@ -58,7 +57,7 @@ class ArmyProto : public ArmyProtoBase
         void setId(guint32 id) {d_id = id;};
 
 	//! Sets the filename of the image.
-	void setImageName(Shield::Colour c,std::string name) {d_image_name[c] = name;}
+	void setImageName(Shield::Colour c,Glib::ustring name) {d_image_name[c] = name;}
 
         //! Set the basic image of the Army.
         void setImage(Shield::Colour c, PixMask* image) {d_image[c] = image;};
@@ -92,7 +91,7 @@ class ArmyProto : public ArmyProtoBase
 	 * The filename does not have a path, and the filename does
 	 * not have an extension (e.g. .png).
 	 */
-	std::string getImageName(Shield::Colour c) const {return d_image_name[c];}
+	Glib::ustring getImageName(Shield::Colour c) const {return d_image_name[c];}
 
         //! Get the image of the army prototype. 
 	PixMask* getImage(Shield::Colour c) const {return d_image[c];};
@@ -123,7 +122,7 @@ class ArmyProto : public ArmyProtoBase
 	void instantiateImages(guint32 tilesize, Tar_Helper *t, bool &broken);
 
 	//! Load the ArmyProto image in the given filename.
-	void instantiateImages(int tilesize, Shield::Colour c, std::string image_filename, bool &broken);
+	void instantiateImages(int tilesize, Shield::Colour c, Glib::ustring image_filename, bool &broken);
 
 	//! Destroy the images associated with this ArmyProto object.
 	void uninstantiateImages();
@@ -188,7 +187,7 @@ class ArmyProto : public ArmyProtoBase
 	 *
 	 * There is an image filename for each player, plus the neutral player.
 	 */
-	std::string d_image_name[MAX_PLAYERS + 1];
+	Glib::ustring d_image_name[MAX_PLAYERS + 1];
 
 	//! The gender of this object.
 	/**

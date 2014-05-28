@@ -1,5 +1,5 @@
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2014 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -20,7 +20,6 @@
 #ifndef HERO_H
 #define HERO_H
 
-#include <string>
 #include <vector>
 #include <list>
 
@@ -49,7 +48,7 @@ class Hero : public Army
     public:
 
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
         //! The different genders a Hero unit can have.
 	/**
@@ -91,7 +90,7 @@ class Hero : public Army
 	// Get Methods
 
 	//! Return the name of this hero.
-	virtual std::string getName() const {return d_name;};
+	virtual Glib::ustring getName() const {return d_name;};
 
 	//! Return that this object is a hero.
 	bool isHero() const {return true;};
@@ -114,7 +113,7 @@ class Hero : public Army
 	
 	// Set Methods
 
-	void setName(std::string name) {d_name = name;};
+	void setName(Glib::ustring name) {d_name = name;};
 
         //! Set the gender of the hero.
         void setGender(Gender gender){d_gender = gender;}
@@ -141,10 +140,10 @@ class Hero : public Army
 	// Static methods
 
 	//! Convert a Hero::Gender string to an enumerated value.
-	static Hero::Gender genderFromString(const std::string str);
+	static Hero::Gender genderFromString(const Glib::ustring str);
 
 	//! Convert a Hero::Gender enumerated value to a string.
-	static std::string genderToString(const Hero::Gender gender);
+	static Glib::ustring genderToString(const Hero::Gender gender);
 
         /** 
 	 * Increase the Hero unit's level, and increase one of three stats;
@@ -178,13 +177,13 @@ class Hero : public Army
     private:
         
 	//! Callback for loading the backpack from a saved-game file.
-	bool loadBackpack(std::string tag, XML_Helper* helper);
+	bool loadBackpack(Glib::ustring tag, XML_Helper* helper);
 
 	//! The hero's backpack that holds any number of Item objects.
         Backpack *d_backpack;
 
 	//! The name of the hero.
-	std::string d_name;
+	Glib::ustring d_name;
 
 	//! Gender of the hero
 	Hero::Gender d_gender;

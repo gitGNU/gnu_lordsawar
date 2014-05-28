@@ -1,6 +1,6 @@
 /* Defines Box::ucompose(fmt, arg...) for easy, i18n-friendly
  * composition of labels and images with Gtkmm >= 1.3.* (see www.gtkmm.org).
- * Uses Glib::ustring instead of std::string which doesn't work with
+ * Uses Glib::ustring instead of Glib::ustring which doesn't work with
  * Gtkmm due to character encoding troubles with stringstreams.
  *
  * Version 1.0.4.
@@ -8,7 +8,7 @@
  * Copyright (c) 2002, 03, 04 Ole Laursen <olau@hardworking.dk>.
  * modified from String::ucompose by Ole.
  * Changed by Ben Asselstine to create HBoxes instead.
- * Copyright (C) 2009 Ben Asselstine
+ * Copyright (C) 2009, 2014 Ben Asselstine
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public License
@@ -39,7 +39,6 @@
 #include <glibmm/convert.h>
 
 #include <sstream>
-#include <string>
 #include <list>
 #include <map>			// for multimap
 
@@ -51,7 +50,7 @@ namespace UBoxPrivate
   {
   public:
     // initialize and prepare format string on the form "text %1 text %2 etc."
-    explicit Composition(std::string fmt);
+    explicit Composition(Glib::ustring fmt);
 
     // supply an replacement argument starting from %1
     template <typename T>
@@ -69,7 +68,7 @@ namespace UBoxPrivate
     // list is concatenated to a string; this way we can keep iterators into
     // the list instead of into a string where they're possibly invalidated
     // when inserting a specification string
-    typedef std::list<std::string> output_list;
+    typedef std::list<Glib::ustring> output_list;
     output_list output;
 
     // the initial parse of the format string fills in the specification map
@@ -78,7 +77,7 @@ namespace UBoxPrivate
     specification_map specs;
 
     template <typename T>
-    std::string stringify(T obj);
+    Glib::ustring stringify(T obj);
   };
 
   // helper for converting spec string numbers
@@ -120,41 +119,34 @@ namespace UBoxPrivate
   }
 
   template <typename T>
-  inline std::string Composition::stringify(T obj)
+  inline Glib::ustring Composition::stringify(T obj)
   {
     os << obj;
 
     std::wstring str = os.str();
     
-    return Glib::convert(std::string(reinterpret_cast<const char *>(str.data()),
+    return Glib::convert(Glib::ustring(reinterpret_cast<const char *>(str.data()),
 				     str.size() * sizeof(wchar_t)),
 			 "UTF-8", "WCHAR_T");
   }
 
   // specialisations for the common string types
   template <>
-  inline std::string
-  Composition::stringify<std::string>(std::string obj)
-  {
-    return obj;
-  }
-  
-  template <>
-  inline std::string
+  inline Glib::ustring
   Composition::stringify<Glib::ustring>(Glib::ustring obj)
   {
     return obj;
   }
   
   template <>
-  inline std::string
+  inline Glib::ustring
   Composition::stringify<const char *>(const char *obj)
   {
     return obj;
   }
   
   template <>
-  inline std::string
+  inline Glib::ustring
   Composition::stringify<Glib::RefPtr<Gdk::Pixbuf> >(Glib::RefPtr<Gdk::Pixbuf> obj)
   {
     char buf[32];
@@ -185,13 +177,13 @@ namespace UBoxPrivate
     return *this;
   }
 
-  inline Composition::Composition(std::string fmt)
+  inline Composition::Composition(Glib::ustring fmt)
     : arg_no(1)
   {
 //#if __GNUC__ >= 3
     //os.imbue(std::locale("")); // use the user's locale for the stream
 //#endif
-    std::string::size_type b = 0, i = 0;
+    Glib::ustring::size_type b = 0, i = 0;
   
     // fill in output with the strings between the %1 %2 %3 etc. and
     // fill in specs with the positions
@@ -238,7 +230,7 @@ namespace UBoxPrivate
   //inline Glib::ustring Composition::str() const
   //{
     // assemble string
-    //std::string str;
+    //Glib::ustring str;
   
     //for (output_list::const_iterator i = output.begin(), end = output.end();
 	 //i != end; ++i)

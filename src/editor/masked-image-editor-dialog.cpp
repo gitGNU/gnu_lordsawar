@@ -33,7 +33,7 @@
 #include "GraphicsCache.h"
 
 
-MaskedImageEditorDialog::MaskedImageEditorDialog(Gtk::Window &parent, std::string filename, int only, Shieldset *shieldset)
+MaskedImageEditorDialog::MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int only, Shieldset *shieldset)
 {
   if (only >= 0)
     {
@@ -81,7 +81,7 @@ int MaskedImageEditorDialog::run()
 
 void MaskedImageEditorDialog::on_image_chosen()
 {
-  std::string selected_filename = filechooserbutton->get_filename();
+  Glib::ustring selected_filename = filechooserbutton->get_filename();
   if (selected_filename.empty())
     return;
 
@@ -96,7 +96,7 @@ void MaskedImageEditorDialog::update_panel()
     filechooserbutton->set_filename (target_filename);
 }
 
-void MaskedImageEditorDialog::show_image(std::string filename)
+void MaskedImageEditorDialog::show_image(Glib::ustring filename)
 {
   if (filename == "")
     return;

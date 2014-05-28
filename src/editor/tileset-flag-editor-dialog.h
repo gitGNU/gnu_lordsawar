@@ -34,7 +34,7 @@ class TilesetFlagEditorDialog: public sigc::trackable
     TilesetFlagEditorDialog(Gtk::Window &parent, Tileset * tileset);
     ~TilesetFlagEditorDialog();
 
-    std::string get_selected_filename() {return selected_filename;};
+    Glib::ustring get_selected_filename() {return selected_filename;};
     int run();
     
  private:
@@ -43,16 +43,16 @@ class TilesetFlagEditorDialog: public sigc::trackable
     Gtk::ComboBoxText *shield_theme_combobox;
     Gtk::Table *preview_table;
     Tileset *d_tileset;
-    std::string selected_filename;
-    std::list<std::string> delfiles;
+    Glib::ustring selected_filename;
+    std::list<Glib::ustring> delfiles;
 
     void setup_shield_theme_combobox(Gtk::Box *box);
     void shieldset_changed();
     void on_image_chosen();
     void update_flag_panel();
-    void show_preview_flags(std::string filename);
+    void show_preview_flags(Glib::ustring filename);
 
-    bool loadFlag(std::string filename);
+    bool loadFlag(Glib::ustring filename);
     void clearFlag();
     std::map< guint32, std::list<Glib::RefPtr<Gdk::Pixbuf> >* > flags;
     sigc::connection heartbeat;

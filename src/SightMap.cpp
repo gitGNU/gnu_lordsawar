@@ -18,7 +18,7 @@
 #include <sstream>
 #include "SightMap.h"
 
-std::string SightMap::d_tag = "sightmap";
+Glib::ustring SightMap::d_tag = "sightmap";
 
 SightMap::SightMap(XML_Helper* helper)
 	:Renamable(helper)
@@ -29,7 +29,7 @@ SightMap::SightMap(XML_Helper* helper)
     helper->getData(h, "height");
 }
 
-SightMap::SightMap(std::string name, Vector<int> pos, guint32 height, guint32 width)
+SightMap::SightMap(Glib::ustring name, Vector<int> pos, guint32 height, guint32 width)
 :Rectangle(pos, Vector<int>(width, height)), Renamable(name)
 {
 }

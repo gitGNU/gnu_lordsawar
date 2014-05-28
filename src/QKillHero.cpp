@@ -93,7 +93,7 @@ bool QuestKillHero::save(XML_Helper* helper) const
   return retval;
 }
 
-std::string QuestKillHero::getProgress() const
+Glib::ustring QuestKillHero::getProgress() const
 {
   std::stringstream ss;
 
@@ -107,13 +107,13 @@ std::string QuestKillHero::getProgress() const
   return ss.str();
 }
 
-void QuestKillHero::getSuccessMsg(std::queue<std::string>& msgs) const
+void QuestKillHero::getSuccessMsg(std::queue<Glib::ustring>& msgs) const
 {
-  std::string name = getHeroNameForDeadHero(d_victim);
+  Glib::ustring name = getHeroNameForDeadHero(d_victim);
   msgs.push(String::ucompose(_("You have slain the wicked hero %1."), name));
 }
 
-void QuestKillHero::getExpiredMsg(std::queue<std::string>& msgs) const
+void QuestKillHero::getExpiredMsg(std::queue<Glib::ustring>& msgs) const
 {
   msgs.push(String::ucompose(_("You could not slay the wicked hero %1."),
 			     getHeroNameForDeadHero(d_victim)));

@@ -18,7 +18,6 @@
 #ifndef TILESTYLESET_H
 #define TILESTYLESET_H
 
-#include <string>
 #include <vector>
 #include <gtkmm.h>
 #include <sigc++/trackable.h>
@@ -40,7 +39,7 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
     public:
 
 	//! The xml tag of this object in a tileset configuration file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! The default constructor.
         TileStyleSet();
@@ -53,7 +52,7 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
          * convenience constructor.
          * tile style ids will be overlapping and need to be given values.
          * */
-        TileStyleSet(std::string pngfilename, guint32 tilesize, bool &success, TileStyle::Type type = TileStyle::UNKNOWN);
+        TileStyleSet(Glib::ustring pngfilename, guint32 tilesize, bool &success, TileStyle::Type type = TileStyle::UNKNOWN);
 
 	//! The loading constuctor loads the TileStyleSet from the config file.
 	/**
@@ -78,13 +77,13 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	 * tilestyleset.  It is a basename of the filename.  It doesn't
 	 * contain any slashes, or an ending file extension.  eg. ".png".
 	 */
-	std::string getName() const {return d_name;}
+	Glib::ustring getName() const {return d_name;}
 
 
 	// Set Methods
 
 	//! Set the name of this tilestyleset.
-	void setName(std::string name) {d_name = name;}
+	void setName(Glib::ustring name) {d_name = name;}
 
 
 	//Methods that operate on the class data but do not modify the class.
@@ -105,13 +104,13 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	//Methods that operate on the class data and modify the class.
 
 	//! Instantiate the tilestyleset's images from the given file.
-	void instantiateImages(int tilesize, std::string image_filename,
+	void instantiateImages(int tilesize, Glib::ustring image_filename,
                                bool &broken);
 
 	//! Destroy the images associated with this tilestyleset.
 	void uninstantiateImages();
 
-        static bool validate_image(std::string filename);
+        static bool validate_image(Glib::ustring filename);
 
     private:
 
@@ -128,7 +127,7 @@ class TileStyleSet : public sigc::trackable, public std::vector<TileStyle*>
 	 * The name does not contain a path, and does not contain an
 	 * extension (e.g. .png).  It must refer to a PNG file.
 	 */
-        std::string d_name;
+        Glib::ustring d_name;
 
 };
 

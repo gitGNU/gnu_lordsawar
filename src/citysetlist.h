@@ -18,7 +18,6 @@
 #ifndef CITYSETLIST_H
 #define CITYSETLIST_H
 
-#include <string>
 #include <map>
 #include <vector>
 #include <sigc++/trackable.h>
@@ -46,13 +45,13 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
         static void deleteInstance();
 
         //! Returns the names of all citysets available to the game.
-	std::list<std::string> getValidNames() const;
+	std::list<Glib::ustring> getValidNames() const;
 
         //! Returns the names of citysets that have the given tile size.
-	std::list<std::string> getValidNames(guint32 tilesize);
+	std::list<Glib::ustring> getValidNames(guint32 tilesize);
 
         //! Returns whether the given name is in our list of citysets.
-        bool contains(std::string name) const;
+        bool contains(Glib::ustring name) const;
 
         //! Returns the different tilesizes present in the citysetlist.
 	void getSizes(std::list<guint32> &sizes);
@@ -66,7 +65,7 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
 	 *         Cityset::d_dir for more information about the nature of 
 	 *         the return value.
          */
-	std::string getCitysetDir(std::string name, guint32 tilesize) const;
+	Glib::ustring getCitysetDir(Glib::ustring name, guint32 tilesize) const;
 
 	//! Return the Cityset object by the basename.
 	/**
@@ -74,9 +73,9 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
          *             disk.  This value does not contain any slashes, and is
 	 *             presumed to be found inside the citysets/ directory.
 	 */
-	Cityset *getCityset(std::string bname) const;
+	Cityset *getCityset(Glib::ustring bname) const;
 
-	guint32 getCitysetId(std::string bname) const;
+	guint32 getCitysetId(Glib::ustring bname) const;
 
 	//! Return the Cityset object by the id.
 	/**
@@ -85,17 +84,17 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
 	 */
 	Cityset *getCityset(guint32 id) const;
 
-	void add(Cityset *cityset, std::string file);
+	void add(Cityset *cityset, Glib::ustring file);
 	void instantiateImages(bool &broken);
 	void uninstantiateImages();
         bool reload(guint32 cityset_id);
 
-	bool addToPersonalCollection(Cityset *cityset, std::string &new_basename, guint32 &new_id);
-	Cityset *import(Tar_Helper *t, std::string f, bool &broken);
+	bool addToPersonalCollection(Cityset *cityset, Glib::ustring &new_basename, guint32 &new_id);
+	Cityset *import(Tar_Helper *t, Glib::ustring f, bool &broken);
 
 	static int getNextAvailableId(int after = 0);
 
-        std::string findFreeBaseName(std::string basename, guint32 max, guint32 &num) const;
+        Glib::ustring findFreeBaseName(Glib::ustring basename, guint32 max, guint32 &num) const;
     private:
         //! Default constructor.  Loads all citysets it can find.
 	/**
@@ -115,17 +114,17 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
          *
 	 * @return the Cityset.  NULL otherwise.
 	 */
-        Cityset* loadCityset (std::string name);
-        void loadCitysets (std::list<std::string> name);
+        Cityset* loadCityset (Glib::ustring name);
+        void loadCitysets (std::list<Glib::ustring> name);
         
         //! Returns the names of all citysets available to the game.
-	std::list<std::string> getNames() const;
+	std::list<Glib::ustring> getNames() const;
 
         //! Returns the names of citysets that have the given tile size.
-	std::list<std::string> getNames(guint32 tilesize);
+	std::list<Glib::ustring> getNames(guint32 tilesize);
 
-        typedef std::map<std::string, std::string> DirMap;
-        typedef std::map<std::string, Cityset*> CitysetMap;
+        typedef std::map<Glib::ustring, Glib::ustring> DirMap;
+        typedef std::map<Glib::ustring, Cityset*> CitysetMap;
         typedef std::map<guint32, Cityset*> CitysetIdMap;
 
 	//! A map that provides a basename when supplying a Cityset name.

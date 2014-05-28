@@ -30,7 +30,7 @@ class Road: public Location
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
         enum Type {
 	  CONNECTS_EAST_AND_WEST = 0,
@@ -97,10 +97,10 @@ class Road: public Location
 	// Static Methods
 
 	//! Convert a Road::Type enumerated value to a string.
-	static std::string roadTypeToString(const Road::Type type);
+	static Glib::ustring roadTypeToString(const Road::Type type);
 
 	//! Convert a string containing a Road::Type to it's enumerated value.
-	static Road::Type roadTypeFromString(const std::string str);
+	static Road::Type roadTypeFromString(const Glib::ustring str);
 
     protected:
 

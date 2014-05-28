@@ -103,7 +103,7 @@ bool QuestEnemyArmytype::save(XML_Helper *helper) const
   return retval;
 }
 
-std::string QuestEnemyArmytype::getProgress() const
+Glib::ustring QuestEnemyArmytype::getProgress() const
 {
   Armysetlist *al = Armysetlist::getInstance();
   guint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
@@ -112,7 +112,7 @@ std::string QuestEnemyArmytype::getProgress() const
 			  _("You have not killed a unit of enemy %1 yet."), a->getName());
 }
 
-void QuestEnemyArmytype::getSuccessMsg(std::queue<std::string>& msgs) const
+void QuestEnemyArmytype::getSuccessMsg(std::queue<Glib::ustring>& msgs) const
 {
   Armysetlist *al = Armysetlist::getInstance();
   guint32 set = Playerlist::getInstance()->getActiveplayer()->getArmyset();
@@ -121,7 +121,7 @@ void QuestEnemyArmytype::getSuccessMsg(std::queue<std::string>& msgs) const
   msgs.push(_("Well done!"));
 }
 
-void QuestEnemyArmytype::getExpiredMsg(std::queue<std::string>& msgs) const
+void QuestEnemyArmytype::getExpiredMsg(std::queue<Glib::ustring>& msgs) const
 {
   // This quest should never expire, so this is just a dummy function
 }

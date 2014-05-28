@@ -28,7 +28,7 @@ Set::Set(const Set &s)
 Set::~Set()
 {
 }
-std::string Set::getFile(std::string file) const
+Glib::ustring Set::getFile(Glib::ustring file) const
 {
   return getDirectory() +  file + ".png";
 }

@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
     {
       for (int i = 2; i <= argc; i++)
 	{
-          std::string parameter(argv[i-1]); 
+          Glib::ustring parameter(argv[i-1]); 
 	  if (parameter == "-c" || parameter == "--cache-size")
 	    {
 	      i++;

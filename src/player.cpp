@@ -82,9 +82,9 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 #define debug(x)
 
-std::string Player::d_tag = "player";
+Glib::ustring Player::d_tag = "player";
 
-Player::Player(std::string name, guint32 armyset, Gdk::RGBA color, int width,
+Player::Player(Glib::ustring name, guint32 armyset, Gdk::RGBA color, int width,
 	       int height, Type type, int player_no)
     :d_color(color), d_name(name), d_armyset(armyset), d_gold(1000),
     d_dead(false), d_immortal(false), d_type(type), d_upkeep(0), d_income(0),
@@ -112,7 +112,7 @@ Player::Player(std::string name, guint32 armyset, Gdk::RGBA color, int width,
       d_diplomatic_score[i] = DIPLOMACY_STARTING_SCORE;
     }
     d_diplomatic_rank = 0;
-    d_diplomatic_title = std::string("");
+    d_diplomatic_title = Glib::ustring("");
 
     d_triumphs = new Triumphs();
 }
@@ -171,7 +171,7 @@ Player::Player(XML_Helper* helper)
     helper->getData(d_gold, "gold");
     helper->getData(d_dead, "dead");
     helper->getData(d_immortal, "immortal");
-    std::string type_str;
+    Glib::ustring type_str;
     helper->getData(type_str, "type");
     d_type = playerTypeFromString(type_str);
     helper->getData(d_upkeep, "upkeep");
@@ -180,7 +180,7 @@ Player::Player(XML_Helper* helper)
     helper->getData(d_armyset, "armyset");
 
     // Read in Fight Order.  One ranking per army type.
-    std::string fight_order;
+    Glib::ustring fight_order;
     std::stringstream sfight_order;
     guint32 val;
     helper->getData(fight_order, "fight_order");
@@ -193,7 +193,7 @@ Player::Player(XML_Helper* helper)
     }
 
     // Read in Diplomatic States.  One state per player.
-    std::string diplomatic_states;
+    Glib::ustring diplomatic_states;
     std::stringstream sdiplomatic_states;
     helper->getData(diplomatic_states, "diplomatic_states");
     sdiplomatic_states.str(diplomatic_states);
@@ -207,7 +207,7 @@ Player::Player(XML_Helper* helper)
     helper->getData(d_diplomatic_title, "diplomatic_title");
 
     // Read in Diplomatic Proposals.  One proposal per player.
-    std::string diplomatic_proposals;
+    Glib::ustring diplomatic_proposals;
     std::stringstream sdiplomatic_proposals;
     helper->getData(diplomatic_proposals, "diplomatic_proposals");
     sdiplomatic_proposals.str(diplomatic_proposals);
@@ -218,7 +218,7 @@ Player::Player(XML_Helper* helper)
     }
 
     // Read in Diplomatic Scores.  One score per player.
-    std::string diplomatic_scores;
+    Glib::ustring diplomatic_scores;
     std::stringstream sdiplomatic_scores;
     helper->getData(diplomatic_scores, "diplomatic_scores");
     sdiplomatic_scores.str(diplomatic_scores);
@@ -252,7 +252,7 @@ Player::~Player()
     d_fight_order.clear();
 }
 
-Player* Player::create(std::string name, guint32 armyset, Gdk::RGBA color, int width, int height, Type type)
+Player* Player::create(Glib::ustring name, guint32 armyset, Gdk::RGBA color, int width, int height, Type type)
 {
   switch(type)
   {
@@ -324,7 +324,7 @@ void Player::withdrawGold(int gold)
     schangingStats.emit();
 }
 
-std::string Player::getName() const
+Glib::ustring Player::getName() const
 {
   return d_name;
 }
@@ -425,7 +425,7 @@ void Player::doKill()
             Playerlist::getInstance()->getNeutral()->takeCityInPossession(*it);
 
     d_diplomatic_rank = 0;
-    d_diplomatic_title = std::string("");
+    d_diplomatic_title = Glib::ustring("");
 }
 
 bool Player::save(XML_Helper* helper) const
@@ -439,7 +439,7 @@ bool Player::save(XML_Helper* helper) const
     retval &= helper->saveData("gold", d_gold);
     retval &= helper->saveData("dead", d_dead);
     retval &= helper->saveData("immortal", d_immortal);
-    std::string type_str = playerTypeToString(Player::Type(d_type));
+    Glib::ustring type_str = playerTypeToString(Player::Type(d_type));
     retval &= helper->saveData("type", type_str);
     debug("type of " << d_name << " is " << d_type)
     retval &= helper->saveData("upkeep", d_upkeep);
@@ -504,7 +504,7 @@ bool Player::save(XML_Helper* helper) const
 Player* Player::loadPlayer(XML_Helper* helper)
 {
     Type type;
-    std::string type_str;
+    Glib::ustring type_str;
     helper->getData(type_str, "type");
     type = playerTypeFromString(type_str);
 
@@ -525,7 +525,7 @@ Player* Player::loadPlayer(XML_Helper* helper)
     return 0;
 }
 
-bool Player::load(std::string tag, XML_Helper* helper)
+bool Player::load(Glib::ustring tag, XML_Helper* helper)
 {
     if (tag == Action::d_tag)
     {
@@ -2193,12 +2193,12 @@ void Player::resign()
   schangingStats.emit();
 }
 
-void Player::doSignpostChange(Signpost *s, std::string message)
+void Player::doSignpostChange(Signpost *s, Glib::ustring message)
 {
   s->setName(message);
 }
 
-bool Player::signpostChange(Signpost *s, std::string message)
+bool Player::signpostChange(Signpost *s, Glib::ustring message)
 {
   if (!s)
     return false;
@@ -2211,12 +2211,12 @@ bool Player::signpostChange(Signpost *s, std::string message)
   return true;
 }
 
-void Player::doCityRename(City *c, std::string name)
+void Player::doCityRename(City *c, Glib::ustring name)
 {
   c->setName(name);
 }
 
-bool Player::cityRename(City *c, std::string name)
+bool Player::cityRename(City *c, Glib::ustring name)
 {
   if (!c)
     return false;
@@ -2229,12 +2229,12 @@ bool Player::cityRename(City *c, std::string name)
   return true;
 }
 
-void Player::doRename(std::string name)
+void Player::doRename(Glib::ustring name)
 {
   setName(name);
 }
 
-void Player::rename(std::string name)
+void Player::rename(Glib::ustring name)
 {
   doRename(name);
   Action_RenamePlayer * item = new Action_RenamePlayer();
@@ -2609,7 +2609,7 @@ Hero* Player::doRecruitHero(HeroProto* herotemplate, City *city, int cost, int a
   if (cost == 0)
     {
       // Initially give the first hero the player's standard.
-      std::string name = String::ucompose(_("%1 Standard"), getName());
+      Glib::ustring name = String::ucompose(_("%1 Standard"), getName());
       Item *battle_standard = new Item (name, true, this);
       battle_standard->addBonus(Item::ADD1STACK);
       newhero->getBackpack()->addToBackpack(battle_standard, 0);
@@ -2623,7 +2623,7 @@ void Player::recruitHero(HeroProto* heroproto, City *city, int cost, int alliesC
 {
   //alright, we may have picked another sex for the hero.
   HeroProto *h;
-  std::string name = heroproto->getName();
+  Glib::ustring name = heroproto->getName();
   Hero::Gender g = Hero::Gender(heroproto->getGender());
   h = HeroTemplates::getInstance()->getRandomHero(g, getId());
   h->setGender(g);
@@ -3759,7 +3759,7 @@ void Player::pruneActionlist(std::list<Action*> actions)
 
 }
 
-std::string Player::playerTypeToString(const Player::Type type)
+Glib::ustring Player::playerTypeToString(const Player::Type type)
 {
   switch (type)
     {
@@ -3777,7 +3777,7 @@ std::string Player::playerTypeToString(const Player::Type type)
   return "Player::HUMAN";
 }
 
-Player::Type Player::playerTypeFromString(const std::string str)
+Player::Type Player::playerTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Player::Type(atoi(str.c_str()));
@@ -3976,7 +3976,7 @@ std::list<History *>Player::getHistoryForCityId(guint32 id) const
 
 std::list<History *>Player::getHistoryForHeroId(guint32 id) const
 {
-  std::string hero_name = "";
+  Glib::ustring hero_name = "";
   std::list<History*> events;
   std::list<History*>::const_iterator pit;
   for (pit = d_history.begin(); pit != d_history.end(); pit++)

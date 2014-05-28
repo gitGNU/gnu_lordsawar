@@ -62,7 +62,7 @@ TilePreviewDialog::TilePreviewDialog(Gtk::Window &parent, Tile *tile, Tile *sec,
 
     d_tileSize = tileSize;
 
-    std::string scene;
+    Glib::ustring scene;
     TilePreviewScene *s;
 
     scenes.clear();

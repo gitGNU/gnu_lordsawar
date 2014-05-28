@@ -27,9 +27,9 @@
 class TileSetInfoDialog: public sigc::trackable
 {
  public:
-    TileSetInfoDialog(Gtk::Window &parent, Tileset *tileset, std::string dir, 
-                      std::string file, bool readonly = false, 
-                      std::string title = "");
+    TileSetInfoDialog(Gtk::Window &parent, Tileset *tileset, Glib::ustring dir, 
+                      Glib::ustring file, bool readonly = false, 
+                      Glib::ustring title = "");
     ~TileSetInfoDialog();
 
     int run();

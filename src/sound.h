@@ -1,6 +1,6 @@
 // Copyright (C) 2006 Ulf Lorenz
 // Copyright (C) 2006 Andrea Paternesi
-// Copyright (C) 2007, 2009 Ben Asselstine
+// Copyright (C) 2007, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 
 #include "xmlhelper.h"
 
-#include <string>
 #include <map>
 #include <vector>
 #include <sigc++/trackable.h>
@@ -52,11 +51,11 @@
 struct MusicItem
 {
     // The file where the sound piece can be loaded from
-    std::string file;
+    Glib::ustring file;
     // Can it be played in the background?
     bool background;
     // If loading this file fails, we can define an alias to load instead.
-    std::string alias;
+    Glib::ustring alias;
 };
 
 
@@ -101,7 +100,7 @@ class Sound : public sigc::trackable
           * @param fade         if set to true, fade out a playing music piece 
           * @return false if any error occurred.
           */
-        bool playMusic(std::string piece, int nloops = -1, bool fade = true);
+        bool playMusic(Glib::ustring piece, int nloops = -1, bool fade = true);
         
         /** Stops the current (event) music. Note that the background music might
           * continue with playing.
@@ -146,13 +145,13 @@ class Sound : public sigc::trackable
         ~Sound();
 
         //! Callback for the music data, see XML_Helper
-        bool loadMusic(std::string tag, XML_Helper* helper);
+        bool loadMusic(Glib::ustring tag, XML_Helper* helper);
 
 	// DATA
         
         // music is stored here, access by d_musicMap[name]
-        std::map<std::string, MusicItem*> d_musicMap;
-        std::vector<std::string> d_bgMap;  // shallow copy of background pieces
+        std::map<Glib::ustring, MusicItem*> d_musicMap;
+        std::vector<Glib::ustring> d_bgMap;  // shallow copy of background pieces
 
         // currently playing background and foreground piece
 #ifdef FL_SOUND

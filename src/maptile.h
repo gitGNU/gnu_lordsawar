@@ -188,8 +188,8 @@ class Maptile
 	//! Set the TileStyle associated with this Maptile.
 	void setTileStyle(TileStyle *style) {d_tileStyle = style;}
 
-	static Maptile::Building buildingFromString(const std::string str);
-	static std::string buildingToString(const Maptile::Building bldg);
+	static Maptile::Building buildingFromString(const Glib::ustring str);
+	static Glib::ustring buildingToString(const Maptile::Building bldg);
         static Glib::ustring buildingToFriendlyName(const guint32 bldg);
     private:
 	//! The index of the Tile within the Tileset (GameMap::s_tileset).

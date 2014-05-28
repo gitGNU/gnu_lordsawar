@@ -26,7 +26,7 @@ class NetworkHistory: public OwnerId
 {
 public:
     //! The xml tag of this object in a network stream.
-    static std::string d_tag; 
+    static Glib::ustring d_tag; 
 
      //! Default constructor.
      NetworkHistory(History *history, guint32 owner);
@@ -38,7 +38,7 @@ public:
      ~NetworkHistory();
 
      //! Returns debug information.
-     std::string toString() const;
+     Glib::ustring toString() const;
 
      //!Saving the network history to an xml stream.
      bool save(XML_Helper* helper) const;

@@ -73,7 +73,7 @@
 #include "gamelist-client.h"
 #include "gamehost-client.h"
 
-Driver::Driver(std::string load_filename)
+Driver::Driver(Glib::ustring load_filename)
 {
     game_window = NULL;
     game_lobby_dialog = NULL;
@@ -111,7 +111,7 @@ Driver::Driver(std::string load_filename)
     if (Main::instance().start_headless_server)
       {
         GameScenario *game_scenario = NULL;
-        std::string path = load_filename;
+        Glib::ustring path = load_filename;
         if (load_filename.empty() == true)
           {
             GameParameters g;
@@ -160,7 +160,7 @@ void Driver::serve (GameScenario *game_scenario)
   if (Main::instance().port)
     port = Main::instance().port;
   game_server->port_in_use.connect(sigc::mem_fun(*this, &Driver::on_could_not_bind_to_port_for_headless_server));
-  std::string id = "";
+  Glib::ustring id = "";
   if (Profilelist::getInstance()->empty() == false)
     id = Profilelist::getInstance()->front()->getId();
   game_server->start(game_scenario, port, id, "admin");
@@ -187,7 +187,7 @@ void Driver::serve (GameScenario *game_scenario)
     game_server->player_sits.connect(sigc::mem_fun(this, &Driver::on_client_sits_down_in_headless_server_game));
 }
 
-void Driver::on_client_sits_down_in_headless_server_game(Player *p, std::string nick)
+void Driver::on_client_sits_down_in_headless_server_game(Player *p, Glib::ustring nick)
 {
   static unsigned int count;
   count++;
@@ -379,7 +379,7 @@ void Driver::run()
 	  GameParameters g;
 	  g.map_path = d_load_filename;
 	  size_t found = d_load_filename.find(".map");
-	  if (found != std::string::npos)
+	  if (found != Glib::ustring::npos)
 	    {
 	      GamePreferencesDialog d(*splash_window->get_window(), d_load_filename, GameScenario::HOTSEAT);
 	      d.game_started.connect(sigc::mem_fun
@@ -389,7 +389,7 @@ void Driver::run()
 	  else
 	    {
 	      found = d_load_filename.find(SAVE_EXT);
-	      if (found != std::string::npos)
+	      if (found != Glib::ustring::npos)
 		on_load_requested(d_load_filename);
 	      else
 		on_new_game_requested(g);
@@ -445,7 +445,7 @@ void Driver::on_hosted_player_says_game_may_begin()
   game_server->notifyClientsGameMayBeginNow();
 }
 
-void Driver::on_hosted_player_chat(std::string message)
+void Driver::on_hosted_player_chat(Glib::ustring message)
 {
   GameServer *game_server = GameServer::getInstance();
   game_server->chat(message);
@@ -475,7 +475,7 @@ void Driver::on_client_player_changed_type(Player *player, int type)
   game_client->change_type(player, type);
 }
 
-void Driver::on_client_player_chat(std::string message)
+void Driver::on_client_player_chat(Glib::ustring message)
 {
   GameClient *game_client = GameClient::getInstance();
   game_client->chat(message);
@@ -487,7 +487,7 @@ GameScenario *Driver::create_new_scenario(GameParameters &g, GameScenario::PlayM
   if (g.map_path.empty()) 
     {
       // construct new random scenario if we're not going to load the game
-      std::string path = 
+      Glib::ustring path = 
         NewRandomMapDialog::create_and_dump_scenario("random.map", g, NULL);
       g.map_path = path;
     }
@@ -495,7 +495,7 @@ GameScenario *Driver::create_new_scenario(GameParameters &g, GameScenario::PlayM
     update_uuid = true;
 
   bool broken = false;
-						 
+
   GameScenario* game_scenario = new GameScenario(g.map_path, broken);
   if (broken)
     return NULL;
@@ -547,8 +547,8 @@ void Driver::on_connected_to_gamelist_server_for_advertising(GameScenario *game_
   gsc->request_advertising(g);
 }
 
-void Driver::on_advertising_response_received(std::string scenario_id, 
-                                              std::string err)
+void Driver::on_advertising_response_received(Glib::ustring scenario_id, 
+                                              Glib::ustring err)
 {
   d_advertised_scenario_id = scenario_id;
   return;
@@ -589,7 +589,7 @@ void Driver::on_connected_to_gamehost_server_for_hosting_request (GameScenario *
   ghc->request_game_host (game_scenario->getId());
 }
 
-void Driver::on_got_game_host_response(std::string scenario_id, std::string err, GameScenario *game_scenario)
+void Driver::on_got_game_host_response(Glib::ustring scenario_id, Glib::ustring err, GameScenario *game_scenario)
 {
   if (err != "")
     {
@@ -616,7 +616,7 @@ void Driver::on_got_game_host_response(std::string scenario_id, std::string err,
   ghc->send_map(game_scenario);
 }
 
-void Driver::on_remote_game_hosted(std::string scenario_id, guint32 port, std::string err)
+void Driver::on_remote_game_hosted(Glib::ustring scenario_id, guint32 port, Glib::ustring err)
 {
   upload_heartbeat_conn.disconnect();
   if (download_window)
@@ -766,7 +766,7 @@ void Driver::on_client_could_not_connect()
   GameClient::deleteInstance();
 }
 
-void Driver::on_new_remote_network_game_requested(std::string host, unsigned short port, Profile *p)
+void Driver::on_new_remote_network_game_requested(Glib::ustring host, unsigned short port, Profile *p)
 {
   if (splash_window)
     splash_window->hide();
@@ -813,14 +813,14 @@ void Driver::heartbeat()
   already_done = true;
 }
 
-void Driver::on_game_scenario_received(std::string path, Profile *p)
+void Driver::on_game_scenario_received(Glib::ustring path, Profile *p)
 {
   heartbeat_conn.disconnect();
   if (download_window)
     download_window->hide();
   GameScenario *game_scenario = load_game(path);
   GameClient *game_client = GameClient::getInstance();
-  std::string host = game_client->getHost();
+  Glib::ustring host = game_client->getHost();
   guint32 port = game_client->getPort();
   RecentlyPlayedGameList::getInstance()->addNetworkedEntry(game_scenario, p, host, port);
   RecentlyPlayedGameList::getInstance()->save();
@@ -861,7 +861,7 @@ void Driver::on_game_scenario_received(std::string path, Profile *p)
       delete game_scenario;
     }
 }
-void Driver::on_game_scenario_downloaded(std::string path)
+void Driver::on_game_scenario_downloaded(Glib::ustring path)
 {
   game_scenario_downloaded = path;
   //emitting the signal doesn't work.
@@ -884,14 +884,14 @@ void Driver::on_new_game_requested(GameParameters g)
 	return;
       }
 
-    std::list<std::string> e, w;
+    std::list<Glib::ustring> e, w;
     if (g.map_path != "" && game_scenario->validate(e, w) == false)
       {
 	TimedMessageDialog dialog
 	  (*splash_window->get_window(), 
 	   _("Invalid map file.\n" 
 	     "Please validate it in the scenario editor."), 0);
-	std::list<std::string>::iterator it = e.begin();
+	std::list<Glib::ustring>::iterator it = e.begin();
 	for (; it != e.end(); it++)
 	  {
 	    printf ("error: %s\n", (*it).c_str());
@@ -913,7 +913,7 @@ void Driver::on_new_game_requested(GameParameters g)
     game_window->new_game(game_scenario, next_turn);
 }
 
-void Driver::on_load_requested(std::string filename)
+void Driver::on_load_requested(Glib::ustring filename)
 {
     if (splash_window)
 	splash_window->hide();
@@ -1027,7 +1027,7 @@ void Driver::init_game_window()
 
 }
 
-GameScenario *Driver::load_game(std::string file_path)
+GameScenario *Driver::load_game(Glib::ustring file_path)
 {
     bool broken = false;
     GameScenario* game_scenario = new GameScenario(file_path, broken);
@@ -1045,8 +1045,8 @@ GameScenario *Driver::load_game(std::string file_path)
 
 void Driver::on_new_pbm_game_requested(GameParameters g)
 {
-  std::string filename;
-  std::string temp_filename = File::getSavePath() + "pbmtmp" + SAVE_EXT;
+  Glib::ustring filename;
+  Glib::ustring temp_filename = File::getSavePath() + "pbmtmp" + SAVE_EXT;
       
   GameScenario *game_scenario = 
     create_new_scenario(g, GameScenario::PLAY_BY_MAIL);
@@ -1059,7 +1059,7 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
       return;
     }
   game_scenario->saveGame(temp_filename);
-  std::string player_name = Playerlist::getActiveplayer()->getName();
+  Glib::ustring player_name = Playerlist::getActiveplayer()->getName();
   delete game_scenario;
   pbm play_by_mail;
   play_by_mail.init(temp_filename);
@@ -1082,7 +1082,7 @@ void Driver::on_new_pbm_game_requested(GameParameters g)
 
   if (res == Gtk::RESPONSE_ACCEPT)
     {
-      std::string filename = chooser.get_filename();
+      Glib::ustring filename = chooser.get_filename();
 
       remove (filename.c_str());
       if (rename(temp_filename.c_str(), filename.c_str()))
@@ -1205,7 +1205,7 @@ void Driver::stress_test()
   g.see_opponents_production = true;
       
   bool broken = false;
-  std::string path;
+  Glib::ustring path;
   path = NewRandomMapDialog::create_and_dump_scenario("random.map", g, NULL);
   g.map_path = path;
 
@@ -1242,7 +1242,7 @@ void Driver::stress_test()
 
 }
 	
-void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type type, int num_players)
+void Driver::lordsawaromatic(Glib::ustring host, unsigned short port, Player::Type type, int num_players)
 {
   GameClient *game_client = GameClient::getInstance();
   game_client->game_scenario_received.connect
@@ -1256,7 +1256,7 @@ void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type
   game_scenario_received.connect
     (sigc::mem_fun(this, &Driver::on_game_scenario_received_for_robots));
   game_client->setNickname("robot");
-  std::string id = "";
+  Glib::ustring id = "";
   if (Profilelist::getInstance()->empty() == false)
     id = Profilelist::getInstance()->front()->getId();
   game_client->start(host, port, id, "robot");
@@ -1266,7 +1266,7 @@ void Driver::lordsawaromatic(std::string host, unsigned short port, Player::Type
   number_of_robots = num_players;
 }
 
-void Driver::on_game_scenario_received_for_robots(std::string path)
+void Driver::on_game_scenario_received_for_robots(Glib::ustring path)
 {
 
   heartbeat_conn.disconnect();
@@ -1394,7 +1394,7 @@ void Driver::on_could_not_bind_to_port (int port)
   dialog.hide();
 }
 
-void Driver::unadvertise_game(std::string scenario_id, Profile *p)
+void Driver::unadvertise_game(Glib::ustring scenario_id, Profile *p)
 {
   GamelistClient *gsc = GamelistClient ::getInstance();
   gsc->client_connected.connect
@@ -1403,7 +1403,7 @@ void Driver::unadvertise_game(std::string scenario_id, Profile *p)
              Configuration::s_gamelist_server_port, p);
 }
 
-void Driver::on_connected_to_gamelist_server_for_advertising_removal(std::string scenario_id)
+void Driver::on_connected_to_gamelist_server_for_advertising_removal(Glib::ustring scenario_id)
 {
   GamelistClient *gsc = GamelistClient::getInstance();
   gsc->received_advertising_removal_response.connect
@@ -1411,8 +1411,8 @@ void Driver::on_connected_to_gamelist_server_for_advertising_removal(std::string
   gsc->request_advertising_removal(scenario_id);
 }
 
-void Driver::on_advertising_removal_response_received(std::string scenario_id, 
-                                                      std::string err)
+void Driver::on_advertising_removal_response_received(Glib::ustring scenario_id, 
+                                                      Glib::ustring err)
 {
   d_advertised_scenario_id = "";
   return;

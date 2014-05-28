@@ -56,7 +56,7 @@
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
 
-NetworkPlayer::NetworkPlayer(std::string name, guint32 armyset, Gdk::RGBA color,
+NetworkPlayer::NetworkPlayer(Glib::ustring name, guint32 armyset, Gdk::RGBA color,
                              int width, int height, Player::Type type, 
                              int player_no)
     :Player(name, armyset, color, width, height, type, player_no),

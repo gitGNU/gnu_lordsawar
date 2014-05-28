@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2010 Ben Asselstine
+//  Copyright (C) 2008, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@
 #include "tilestyle.h"
 #include <list>
 #include <vector>
-#include <string>
 #include "gui/input-helpers.h"
 
 struct tile_model
@@ -38,7 +37,7 @@ class TilePreviewScene: public sigc::trackable
 public:
   TilePreviewScene (Tile *tile, Tile *secondary_tile,
 		    guint32 height, guint32 width, 
-		    std::string scene, guint32 tilesize);
+		    Glib::ustring scene, guint32 tilesize);
   void regenerate();
   Glib::RefPtr<Gdk::Pixbuf> getTileStylePixbuf(int x, int y);
   TileStyle* getTileStyle(int x, int y);

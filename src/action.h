@@ -1,6 +1,6 @@
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
-// Copyright (C) 2007, 2008, 2010, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2010, 2011, 2014 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 #define ACTION_H
 
 #include <gtkmm.h>
-#include <string>
 #include "vector.h"
 #include <sigc++/trackable.h>
 
@@ -61,7 +60,7 @@ class Action
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! An Action can be one of the following kinds.
         enum Type {
@@ -151,8 +150,8 @@ class Action
                 STACK_SELECT = 47,
                 STACK_DESELECT = 48,
         };
-	static std::string actionTypeToString(Action::Type type);
-	static Action::Type actionTypeFromString(std::string str);
+	static Glib::ustring actionTypeToString(Action::Type type);
+	static Action::Type actionTypeFromString(Glib::ustring str);
 
 	//! Default constructor.
         Action(Type type);
@@ -167,7 +166,7 @@ class Action
         virtual ~Action();
 
         //! Returns debug information. Needs to be overwritten by derivatives.
-        virtual std::string dump() const = 0;
+        virtual Glib::ustring dump() const = 0;
 
         //! Save function. See XML_Helper for information about saving.
         bool save(XML_Helper* helper) const;
@@ -217,7 +216,7 @@ class Action_Move : public Action
         ~Action_Move();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this move action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -254,7 +253,7 @@ class Action_Disband: public Action
         ~Action_Disband();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this disband action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -293,7 +292,7 @@ class Action_Split : public Action
         ~Action_Split();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this split action to an opened saved-game file.
         bool doSave (XML_Helper* helper) const;
@@ -334,7 +333,7 @@ class Action_Fight : public Action, public sigc::trackable
         ~Action_Fight();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this fight action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -360,7 +359,7 @@ class Action_Fight : public Action, public sigc::trackable
         bool is_army_id_in_stacks(guint32 id, std::list<guint32> stack_ids) const;
         bool stack_ids_to_stacks(std::list<guint32> stack_ids, std::list<Stack*> &stacks, guint32 &stack_id) const;
 
-        bool loadItem(std::string tag, XML_Helper* helper);
+        bool loadItem(Glib::ustring tag, XML_Helper* helper);
 };
 
 //-----------------------------------------------------------------------------
@@ -383,7 +382,7 @@ class Action_Join : public Action
         ~Action_Join();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this stack join action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -422,7 +421,7 @@ class Action_Ruin : public Action
         ~Action_Ruin();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this ruin search attempted action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -468,7 +467,7 @@ class Action_Temple : public Action
         ~Action_Temple();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this temple search attempted action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -511,7 +510,7 @@ class Action_Occupy : public Action
         ~Action_Occupy();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this city occupied action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -547,7 +546,7 @@ class Action_Pillage : public Action
         ~Action_Pillage();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this city pillaged action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -583,7 +582,7 @@ class Action_Sack : public Action
         ~Action_Sack();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this city sacked action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -618,7 +617,7 @@ class Action_Raze : public Action
         ~Action_Raze();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this city razed action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -653,7 +652,7 @@ class Action_Upgrade : public Action
         ~Action_Upgrade();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this city upgraded action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -693,7 +692,7 @@ class Action_Buy : public Action
         ~Action_Buy();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this city buy production action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -738,7 +737,7 @@ class Action_Production : public Action
         ~Action_Production();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this city change production action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -784,7 +783,7 @@ class Action_Reward : public Action
         ~Action_Reward();
         
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this player rewarded action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -800,7 +799,7 @@ class Action_Reward : public Action
 	Reward *d_reward;
         guint32 d_stack;
 
-        bool load(std::string tag, XML_Helper *helper);
+        bool load(Glib::ustring tag, XML_Helper *helper);
 	
 };
 
@@ -824,7 +823,7 @@ class Action_Quest : public Action
         ~Action_Quest();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this hero quest assigned action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -873,7 +872,7 @@ class Action_Equip : public Action
         ~Action_Equip();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this item equipped action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -920,7 +919,7 @@ class Action_Level : public Action
         ~Action_Level();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this level advancement action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -963,20 +962,20 @@ class Action_ModifySignpost: public Action
         ~Action_ModifySignpost();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this change signpost action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with the signpost and the new message.
-        bool fillData(Signpost * s, std::string message);
+        bool fillData(Signpost * s, Glib::ustring message);
     
 	guint32 getSignpostId() const {return d_signpost;};
-	std::string getSignContents() const {return d_message;};
+	Glib::ustring getSignContents() const {return d_message;};
 
         private:
         guint32 d_signpost;
-	std::string d_message;
+	Glib::ustring d_message;
 };
 
 //-----------------------------------------------------------------------------
@@ -1000,19 +999,19 @@ class Action_RenameCity: public Action
         ~Action_RenameCity();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this city rename action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action with the city being renamed and the new name.
-        bool fillData(City *c, std::string name);
+        bool fillData(City *c, Glib::ustring name);
     
 	guint32 getCityId() const {return d_city;};
-	std::string getNewCityName() const {return d_name;};
+	Glib::ustring getNewCityName() const {return d_name;};
         private:
         guint32 d_city;
-	std::string d_name;
+	Glib::ustring d_name;
 };
 
 //-----------------------------------------------------------------------------
@@ -1038,7 +1037,7 @@ class Action_Vector: public Action
         ~Action_Vector();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this city vector action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1078,7 +1077,7 @@ class Action_FightOrder: public Action
         ~Action_FightOrder();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this fight order action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1113,7 +1112,7 @@ class Action_Resign: public Action
         ~Action_Resign();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this player resignation action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1143,7 +1142,7 @@ class Action_Plant: public Action
         ~Action_Plant();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this item planted action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1185,7 +1184,7 @@ class Action_Produce: public Action
         ~Action_Produce();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this unit produced action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1228,7 +1227,7 @@ class Action_Produce: public Action
 	guint32 d_army_id;
         guint32 d_stack_id;
 
-	bool load(std::string tag, XML_Helper *helper);
+	bool load(Glib::ustring tag, XML_Helper *helper);
 };
 
         
@@ -1257,7 +1256,7 @@ class Action_ProduceVectored: public Action
         ~Action_ProduceVectored();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this vector arrival action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1282,7 +1281,7 @@ class Action_ProduceVectored: public Action
 	ArmyProdBase *d_army;
         Vector<int> d_dest;
         Vector<int> d_src;
-	bool load(std::string tag, XML_Helper *helper);
+	bool load(Glib::ustring tag, XML_Helper *helper);
 };
 
 //-----------------------------------------------------------------------------
@@ -1308,7 +1307,7 @@ class Action_DiplomacyState: public Action
         ~Action_DiplomacyState();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this diplomatic state action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1354,7 +1353,7 @@ class Action_DiplomacyProposal: public Action
         ~Action_DiplomacyProposal();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this diplomatic proposal action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1400,7 +1399,7 @@ class Action_DiplomacyScore: public Action
         ~Action_DiplomacyScore();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this diplomatic score action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1440,7 +1439,7 @@ class Action_EndTurn: public Action
         ~Action_EndTurn();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1461,7 +1460,7 @@ class Action_ConquerCity : public Action
         ~Action_ConquerCity();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this city occupied action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1489,7 +1488,7 @@ class Action_RecruitHero : public Action
         ~Action_RecruitHero();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this city occupied action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1507,7 +1506,7 @@ class Action_RecruitHero : public Action
         HeroProto *d_hero;
         guint32 d_city, d_cost, d_allies, d_ally_army_type;
 
-        bool load(std::string tag, XML_Helper *helper);
+        bool load(Glib::ustring tag, XML_Helper *helper);
 };
 
 //-----------------------------------------------------------------------------
@@ -1525,18 +1524,18 @@ class Action_RenamePlayer: public Action
         ~Action_RenamePlayer();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this city occupied action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
 	//! Populate the action.
-        bool fillData(std::string name);
+        bool fillData(Glib::ustring name);
     
-	std::string getName() const {return d_name;};
+	Glib::ustring getName() const {return d_name;};
 
         private:
-	std::string d_name;
+	Glib::ustring d_name;
 };
 
 //-----------------------------------------------------------------------------
@@ -1554,7 +1553,7 @@ class Action_CityTooPoorToProduce: public Action
         ~Action_CityTooPoorToProduce();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this city occupied action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1585,7 +1584,7 @@ class Action_InitTurn: public Action
         ~Action_InitTurn();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1613,7 +1612,7 @@ class Action_Loot : public Action
         ~Action_Loot();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this city looting action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1654,7 +1653,7 @@ class Action_UseItem: public Action
         ~Action_UseItem();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this use item action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1702,7 +1701,7 @@ class Action_ReorderArmies: public Action
         ~Action_ReorderArmies();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this reorder armies action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1740,7 +1739,7 @@ class Action_ResetStacks: public Action
         ~Action_ResetStacks();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this reset stacks action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1774,7 +1773,7 @@ class Action_ResetRuins: public Action
         ~Action_ResetRuins();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this reset ruins action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1804,7 +1803,7 @@ class Action_CollectTaxesAndPayUpkeep: public Action
         ~Action_CollectTaxesAndPayUpkeep();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this collect taxes and pay upkeep action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1833,7 +1832,7 @@ class Action_Kill: public Action
         ~Action_Kill();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this kill action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1862,7 +1861,7 @@ class Action_DefendStack: public Action
         ~Action_DefendStack();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this defend stack action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1896,7 +1895,7 @@ class Action_UndefendStack: public Action
         ~Action_UndefendStack();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this undefend stack action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1929,7 +1928,7 @@ class Action_ParkStack: public Action
         ~Action_ParkStack();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this park stack action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1963,7 +1962,7 @@ class Action_UnparkStack: public Action
         ~Action_UnparkStack();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this unpark stack action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -1994,7 +1993,7 @@ class Action_SelectStack: public Action
         ~Action_SelectStack();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this select stack action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -2027,7 +2026,7 @@ class Action_DeselectStack: public Action
         ~Action_DeselectStack();
 
 	//! Return some debug information about this action.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save this deslect stack action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;

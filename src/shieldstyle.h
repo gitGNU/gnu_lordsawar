@@ -19,7 +19,6 @@
 #define SHIELDSTYLE_H
 
 #include <gtkmm.h>
-#include <string>
 #include <sigc++/trackable.h>
 #include "PixMask.h"
 
@@ -44,7 +43,7 @@ class ShieldStyle : public sigc::trackable
     public:
 
 	//! The xml tag of this object in a shieldset configuration file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! The size of the shield.
 	enum Type {
@@ -88,7 +87,7 @@ class ShieldStyle : public sigc::trackable
 	PixMask* getMask() const {return d_mask;}
 
 	//! Returns the basename of the picture's filename.
-	std::string getImageName() const {return d_image_name;}
+	Glib::ustring getImageName() const {return d_image_name;}
 
 
         // Set Methods
@@ -100,13 +99,13 @@ class ShieldStyle : public sigc::trackable
         void setMask(PixMask* mask) {d_mask = mask;}
 
 	//! Set the basename of the shield picture's filename.
-	void setImageName(std::string name) {d_image_name = name;}
+	void setImageName(Glib::ustring name) {d_image_name = name;}
 
 
 	// Methods that operate on class data and modify the class.
 
 	//! Load the images for this shieldstyle from the given file.
-	void instantiateImages(std::string filename, Shieldset *s, bool &broke);
+	void instantiateImages(Glib::ustring filename, Shieldset *s, bool &broke);
 
 	//! Destroy the images associated with this shieldstyle.
 	void uninstantiateImages();
@@ -121,10 +120,10 @@ class ShieldStyle : public sigc::trackable
 	// Static Methods
 	
 	//! Convert a ShieldStyle::Type enumerated value to a string.
-	static std::string shieldStyleTypeToString(const ShieldStyle::Type type);
+	static Glib::ustring shieldStyleTypeToString(const ShieldStyle::Type type);
 
 	//! Convert a ShieldStyle::Type string to an enumerated value.
-	static ShieldStyle::Type shieldStyleTypeFromString(const std::string str);
+	static ShieldStyle::Type shieldStyleTypeFromString(const Glib::ustring str);
     protected:
 
 	//! The size of the shield. (small, medium, or large)
@@ -151,7 +150,7 @@ class ShieldStyle : public sigc::trackable
 	 * The filename does not have a path, and the filename does
 	 * not have an extension (e.g. .png).
 	 */
-	std::string d_image_name;
+	Glib::ustring d_image_name;
 };
 
 #endif // SHIELDSTYLE_H

@@ -40,8 +40,8 @@ class Main: public sigc::trackable, public boost::noncopyable
     bool start_stress_test;
     int start_robots;
     bool start_test_scenario;
-    std::string load_filename;
-    std::string turn_filename;
+    Glib::ustring load_filename;
+    Glib::ustring turn_filename;
     guint32 random_number_seed;
     bool start_headless_server;
     guint32 port;

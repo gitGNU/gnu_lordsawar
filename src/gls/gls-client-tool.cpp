@@ -33,7 +33,7 @@
 #include "gls-client-tool.h"
 
 
-GlsClientTool::GlsClientTool(std::string host, int port, Profile *p, bool show_list, std::list<std::string> unadvertise, bool advertise, bool reload, std::string remove_all, bool terminate)
+GlsClientTool::GlsClientTool(Glib::ustring host, int port, Profile *p, bool show_list, std::list<Glib::ustring> unadvertise, bool advertise, bool reload, Glib::ustring remove_all, bool terminate)
 {
   request_count = 0;
   d_show_list = show_list;
@@ -73,7 +73,7 @@ RecentlyPlayedGame* GlsClientTool::create_game()
   std::cin.getline(file, sizeof (file));
   bool broken = false;
   guint32 player_count = 0, city_count = 0;
-  std::string name, comment, id;
+  Glib::ustring name, comment, id;
   GameScenario::loadDetails (file, broken, player_count, city_count, name, 
                              comment, id);
 
@@ -106,7 +106,7 @@ GlsClientTool::~GlsClientTool()
     delete new_profile;
 }
 
-void GlsClientTool::on_got_list_response(RecentlyPlayedGameList *l, std::string err)
+void GlsClientTool::on_got_list_response(RecentlyPlayedGameList *l, Glib::ustring err)
 {
   request_count--;
   if (err != "")
@@ -137,7 +137,7 @@ void GlsClientTool::on_got_list_response(RecentlyPlayedGameList *l, std::string 
   return;
 }
 
-void GlsClientTool::on_got_list_response_for_unadvertising(RecentlyPlayedGameList *l, std::string err)
+void GlsClientTool::on_got_list_response_for_unadvertising(RecentlyPlayedGameList *l, Glib::ustring err)
 {
   request_count--;
   if (err != "")
@@ -147,7 +147,7 @@ void GlsClientTool::on_got_list_response_for_unadvertising(RecentlyPlayedGameLis
         Gtk::Main::quit();
       return;
     }
-  std::list<std::string> scenario_ids;
+  std::list<Glib::ustring> scenario_ids;
   for (RecentlyPlayedGameList::iterator i = l->begin(); i != l->end(); i++)
     if ((*i)->getProfileId() == d_remove_all || d_remove_all == "-1") 
       scenario_ids.push_back((*i)->getId());
@@ -162,7 +162,7 @@ void GlsClientTool::on_got_list_response_for_unadvertising(RecentlyPlayedGameLis
   return;
 }
 
-void GlsClientTool::on_got_reload_response(std::string err)
+void GlsClientTool::on_got_reload_response(Glib::ustring err)
 {
   request_count--;
   if (err != "")
@@ -171,7 +171,7 @@ void GlsClientTool::on_got_reload_response(std::string err)
     Gtk::Main::quit();
 }
 
-void GlsClientTool::on_got_unadvertise_response(std::string id, std::string err)
+void GlsClientTool::on_got_unadvertise_response(Glib::ustring id, Glib::ustring err)
 {
   request_count--;
   if (err != "")
@@ -190,7 +190,7 @@ void GlsClientTool::on_got_unadvertise_response(std::string id, std::string err)
   return;
 }
 
-void GlsClientTool::on_got_advertise_response(std::string id, std::string err)
+void GlsClientTool::on_got_advertise_response(Glib::ustring id, Glib::ustring err)
 {
   request_count--;
   if (err != "")
@@ -221,12 +221,12 @@ void GlsClientTool::on_connection_lost()
   exit(1);
 }
 
-void GlsClientTool::unadvertise_games(std::list<std::string> scenario_ids)
+void GlsClientTool::unadvertise_games(std::list<Glib::ustring> scenario_ids)
 {
   GamelistClient *gamelistclient = GamelistClient::getInstance();
   gamelistclient->received_advertising_removal_response.connect
     (sigc::mem_fun(*this, &GlsClientTool::on_got_unadvertise_response));
-  for (std::list<std::string>::iterator i = scenario_ids.begin(); 
+  for (std::list<Glib::ustring>::iterator i = scenario_ids.begin(); 
        i != scenario_ids.end(); i++)
     {
       request_count++;

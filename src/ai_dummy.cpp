@@ -38,7 +38,7 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}
 #define debug(x)
 
-AI_Dummy::AI_Dummy(std::string name, guint32 armyset, Gdk::RGBA color, int width, int height, int player_no)
+AI_Dummy::AI_Dummy(Glib::ustring name, guint32 armyset, Gdk::RGBA color, int width, int height, int player_no)
     :RealPlayer(name, armyset, color, width, height, Player::AI_DUMMY, player_no)
 {
 }

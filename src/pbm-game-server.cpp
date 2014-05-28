@@ -33,7 +33,7 @@
 
 PbmGameServer * PbmGameServer::s_instance = 0;
 
-std::string PbmGameServer::d_tag = "lordsawarturn";
+Glib::ustring PbmGameServer::d_tag = "lordsawarturn";
 
 PbmGameServer* PbmGameServer::getInstance()
 {
@@ -99,7 +99,7 @@ void PbmGameServer::clearNetworkHistorylist()
 
 void PbmGameServer::onActionDone(NetworkAction *action)
 {
-  std::string desc = action->toString();
+  Glib::ustring desc = action->toString();
   std::cerr << "Play By Mail Game Server got " << desc <<"\n";
 
   d_actions.push_back(action);
@@ -107,7 +107,7 @@ void PbmGameServer::onActionDone(NetworkAction *action)
 
 void PbmGameServer::onHistoryDone(NetworkHistory *history)
 {
-  std::string desc = history->toString();
+  Glib::ustring desc = history->toString();
   std::cerr << "Play By Mail Game Server got " << desc <<"\n";
   d_histories.push_back(history);
 }
@@ -123,7 +123,7 @@ bool PbmGameServer::dumpActionsAndHistories(XML_Helper *helper)
   return true;
 }
 
-bool PbmGameServer::endTurn(std::string turnfile, bool &broken)
+bool PbmGameServer::endTurn(Glib::ustring turnfile, bool &broken)
 {
   bool retval = true;
   XML_Helper helper(turnfile, std::ios::out, Configuration::s_zipfiles);
@@ -135,7 +135,7 @@ bool PbmGameServer::endTurn(std::string turnfile, bool &broken)
   return retval;
 }
 
-bool PbmGameServer::upgrade(std::string filename, std::string old_version, std::string new_version)
+bool PbmGameServer::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version)
 {
   return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
                                             FileCompat::PBMTURN, d_tag);

@@ -18,7 +18,6 @@
 #ifndef AI_DIPLOMACY_H
 #define AI_DIPLOMACY_H
 
-#include <string>
 #include <list>
 
 class Player;

@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005, 2006, 2007 Ulf Lorenz
 // Copyright (C) 2004, 2006 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 #ifndef GRAPHICS_CACHE_H
 #define GRAPHICS_CACHE_H
 
-#include <string>
 #include <list>
 #include <map>
 #include <vector>
@@ -456,9 +455,9 @@ class GraphicsCache
         static PixMask* circled(PixMask* image, Gdk::RGBA colour, bool coloured = true, double width_percent = 75.0);
         static void draw_circle(Cairo::RefPtr<Cairo::Context> cr, double width_percent, int width, int height, Gdk::RGBA colour, bool coloured = true, bool mask = false);
 
-	static bool loadSelectorImages(std::string filename, guint32 tilesize, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);
+	static bool loadSelectorImages(Glib::ustring filename, guint32 tilesize, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);
 
-	static bool loadFlagImages(std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);
+	static bool loadFlagImages(Glib::ustring filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks);
 
         /** Load misc pic
           * 
@@ -468,7 +467,7 @@ class GraphicsCache
           *                 Especially for background images...
           * @return the surface which contains the image
           */
-        static PixMask* getMiscPicture(std::string picname, bool alpha=true);
+        static PixMask* getMiscPicture(Glib::ustring picname, bool alpha=true);
 
 
         //! Erase cached graphics.
@@ -695,7 +694,7 @@ class GraphicsCache
           *                     will be marked as transparent in the returned image)
           * @return converted image or 0 if anything failed.
           */
-        static PixMask* loadImage(std::string filename, bool alpha = true);
+        static PixMask* loadImage(Glib::ustring filename, bool alpha = true);
         //the data
         static GraphicsCache* s_instance;
 

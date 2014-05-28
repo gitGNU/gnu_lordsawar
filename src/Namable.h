@@ -35,7 +35,7 @@ class Namable: private Named
      /**
       * @note After the name is set in the constructor, it cannot be altered.
       */
-     Namable(std::string name);
+     Namable(Glib::ustring name);
 
      //! Copy constructor.
      Namable(const Namable&);
@@ -47,7 +47,7 @@ class Namable: private Named
     ~Namable();
     
     //! Return the name of the object on the game map.
-    std::string getName(bool translate = false) const 
+    Glib::ustring getName(bool translate = false) const 
       {
 	if (translate == true)  
 	  return _(d_name.c_str());

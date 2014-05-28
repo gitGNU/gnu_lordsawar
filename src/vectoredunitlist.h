@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 
 #include <gtkmm.h>
 #include <list>
-#include <string>
 class VectoredUnit;
 class Player;
 class XML_Helper;
@@ -44,7 +43,7 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 
 	// Methods that operate on the class data and modify the class.
@@ -234,7 +233,7 @@ class VectoredUnitlist : public std::list<VectoredUnit*>, public sigc::trackable
     private:
 
         //! Callback for loading the VectoredUnitlist from a saved-game file.
-        bool load(std::string tag, XML_Helper* helper);
+        bool load(Glib::ustring tag, XML_Helper* helper);
 
 	// DATA
 

@@ -44,7 +44,7 @@ class TileStyle
 {
     public:
 	//! The xml tag of this object in a tileset configuration file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
         //! Describe terrain tile styles.
 	  /**
@@ -298,7 +298,7 @@ ooooooo
 	PixMask* getImage() const {return d_image;}
 
 	//! Get the name of the current style.
-	std::string getTypeName() const;
+	Glib::ustring getTypeName() const;
 
 
 	// Set Methods
@@ -327,10 +327,10 @@ ooooooo
 	// Static Methods
 
 	//! Get the name of the TileStyle::Type in string form.
-	static std::string getTypeName(Type type);
+	static Glib::ustring getTypeName(Type type);
 
 	//! Return the style type enumeration given the type name.
-	static TileStyle::Type typeNameToType(std::string name);
+	static TileStyle::Type typeNameToType(Glib::ustring name);
 
         //! Return how many digits the hex number should be for an id this big.
         /**
@@ -344,7 +344,7 @@ ooooooo
          * wants to save a series of tile style ids with the same width (in 
          * characters).
          */
-        static std::string idToString(guint32 id, guint32 digits = 0);
+        static Glib::ustring idToString(guint32 id, guint32 digits = 0);
 
     private:
         // DATA

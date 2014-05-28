@@ -31,7 +31,7 @@
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
-std::string ArmyProto::d_tag = "armyproto";
+Glib::ustring ArmyProto::d_tag = "armyproto";
 
 ArmyProto::ArmyProto(const ArmyProto& a)
     :ArmyProtoBase(a), d_id(a.d_id), d_defends_ruins(a.d_defends_ruins), 
@@ -79,7 +79,7 @@ ArmyProto::ArmyProto(XML_Helper* helper)
   helper->getData(d_image_name[Shield::NEUTRAL], "image_neutral");
   helper->getData(d_defends_ruins,"defends_ruins");
   helper->getData(d_awardable,"awardable");
-  std::string gender_str;
+  Glib::ustring gender_str;
   if (!helper->getData(gender_str, "gender"))
     d_gender = Hero::NONE;
   else
@@ -127,15 +127,15 @@ bool ArmyProto::saveData(XML_Helper* helper) const
   retval &= helper->saveData("image_neutral", d_image_name[Shield::NEUTRAL]);
   retval &= helper->saveData("awardable", d_awardable);
   retval &= helper->saveData("defends_ruins", d_defends_ruins);
-  std::string gender_str = Hero::genderToString(Hero::Gender(d_gender));
+  Glib::ustring gender_str = Hero::genderToString(Hero::Gender(d_gender));
   retval &= helper->saveData("gender", gender_str);
 
   return retval;
 }
 
-void ArmyProto::instantiateImages(int tilesize, Shield::Colour c, std::string image_filename, bool &broken)
+void ArmyProto::instantiateImages(int tilesize, Shield::Colour c, Glib::ustring image_filename, bool &broken)
 {
-  std::string s;
+  Glib::ustring s;
 
   if (image_filename == "")
     {
@@ -166,7 +166,7 @@ void ArmyProto::instantiateImages(guint32 tilesize, Tar_Helper *t, bool &broken)
   broken = false;
   for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
     {
-      std::string file = "";
+      Glib::ustring file = "";
       if (getImageName(Shield::Colour(c)).empty() == false)
 	file = t->getFile(getImageName(Shield::Colour(c)) + ".png", broken);
       if (!broken && file.empty() == false)

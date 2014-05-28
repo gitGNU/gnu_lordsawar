@@ -55,18 +55,18 @@ public:
   void reload();
 
   //get functions
-  std::string getHostname() const {return hostname;};
+  Glib::ustring getHostname() const {return hostname;};
 
   //set functions
-  void setHostname(std::string host) {hostname = host;};
-  void setMembers(std::list<std::string> profile_ids) {members = profile_ids;};
+  void setHostname(Glib::ustring host) {hostname = host;};
+  void setMembers(std::list<Glib::ustring> profile_ids) {members = profile_ids;};
 
   // signals
   sigc::signal<void, int> port_in_use;
   sigc::signal<void> terminate_request_received;
 
   // statics
-  static std::list<std::string> load_members_from_file(std::string file);
+  static std::list<Glib::ustring> load_members_from_file(Glib::ustring file);
 
 protected:
   GamehostServer();
@@ -74,33 +74,33 @@ protected:
 
 private:
   std::auto_ptr<NetworkServer> network_server;
-  std::string hostname;
+  Glib::ustring hostname;
   std::list<HostGameRequest*> host_game_requests;
-  std::list<std::string> members;
+  std::list<Glib::ustring> members;
 
-  bool onGotMessage(void *conn, int type, std::string message);
+  bool onGotMessage(void *conn, int type, Glib::ustring message);
   void onConnectionLost(void *conn);
   void onConnectionMade(void *conn);
   sigc::connection on_timer_registered(Timing::timer_slot s, int msecs_interval);
-  void on_connected_to_gamelist_server_for_advertising_removal(std::string scenario_id);
-  void on_advertising_removal_response_received(std::string scenario_id, std::string err);
+  void on_connected_to_gamelist_server_for_advertising_removal(Glib::ustring scenario_id);
+  void on_advertising_removal_response_received(Glib::ustring scenario_id, Glib::ustring err);
   void on_connected_to_gamelist_server_for_advertising(HostedGame *game);
-  void on_advertising_response_received(std::string scenario_id, std::string err);
+  void on_advertising_response_received(Glib::ustring scenario_id, Glib::ustring err);
   void on_child_setup();
-  bool loadProfile(std::string tag, XML_Helper *helper, Profile **profile);
+  bool loadProfile(Glib::ustring tag, XML_Helper *helper, Profile **profile);
 
   // helpers
   void sendList(void *conn);
-  void unhost(void *conn, std::string profile_id, std::string scenario_id, std::string &err);
-  HostedGame* host(GameScenario *game_scenario, Profile *profile, std::string &err);
-  void run_game(GameScenario *game_scenario, Glib::Pid *child_pid, guint32 port, std::string &err);
-  void get_profile_and_scenario_id(std::string payload, Profile **profile, std::string &scenario_id, std::string &err);
+  void unhost(void *conn, Glib::ustring profile_id, Glib::ustring scenario_id, Glib::ustring &err);
+  HostedGame* host(GameScenario *game_scenario, Profile *profile, Glib::ustring &err);
+  void run_game(GameScenario *game_scenario, Glib::Pid *child_pid, guint32 port, Glib::ustring &err);
+  void get_profile_and_scenario_id(Glib::ustring payload, Profile **profile, Glib::ustring &scenario_id, Glib::ustring &err);
   guint32 get_free_port();
-  bool is_member(std::string profile_id);
+  bool is_member(Glib::ustring profile_id);
 
   void cleanup_old_profiles_awaiting_maps(int stale = ONE_HOUR_OLD);
-  bool add_to_profiles_awaiting_maps(Profile *profile, std::string scenario_id);
-  Profile *remove_from_profiles_awaiting_maps(std::string scenario_id);
+  bool add_to_profiles_awaiting_maps(Profile *profile, Glib::ustring scenario_id);
+  Profile *remove_from_profiles_awaiting_maps(Glib::ustring scenario_id);
   bool waitForGameToBeConnectable(guint32 port);
 
   //! A static pointer for the singleton instance.

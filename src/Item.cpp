@@ -27,7 +27,7 @@
 #include "ucompose.hpp"
 #include "maptile.h"
 
-std::string Item::d_tag = "item";
+Glib::ustring Item::d_tag = "item";
 
 Item::Item(XML_Helper* helper)
 	: ItemProto(helper), UniquelyIdentified(helper)
@@ -49,7 +49,7 @@ Item::Item(XML_Helper* helper)
 
 }
 
-Item::Item(std::string name, bool plantable, Player *plantable_owner)
+Item::Item(Glib::ustring name, bool plantable, Player *plantable_owner)
 	: ItemProto(name), UniquelyIdentified()
 {
   d_type = 0;
@@ -64,7 +64,7 @@ Item::Item(std::string name, bool plantable, Player *plantable_owner)
 }
 
 /*
-Item::Item(std::string name, bool plantable, Player *plantable_owner, guint32 id)
+Item::Item(Glib::ustring name, bool plantable, Player *plantable_owner, guint32 id)
 	: ItemProto(name), UniquelyIdentified(id)
 {
   d_type = 0;

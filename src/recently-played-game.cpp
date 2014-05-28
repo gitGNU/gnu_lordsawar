@@ -25,7 +25,7 @@
 #include "xmlhelper.h"
 #include "profile.h"
 
-std::string RecentlyPlayedGame::d_tag = "recentlyplayedgame";
+Glib::ustring RecentlyPlayedGame::d_tag = "recentlyplayedgame";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -45,24 +45,24 @@ RecentlyPlayedGame::RecentlyPlayedGame(GameScenario *game_scenario, Profile *p)
 RecentlyPlayedGame::RecentlyPlayedGame(XML_Helper* helper)
 {
   helper->getData(d_id, "id");
-  std::string s;
+  Glib::ustring s;
   helper->getData(s, "last_played_on");
   d_last_played.assign_from_iso8601(s);
   helper->getData(d_round, "round");
   helper->getData(d_number_of_cities, "number_of_cities");
   helper->getData(d_number_of_players, "number_of_players");
-  std::string playmode_str;
+  Glib::ustring playmode_str;
   helper->getData(playmode_str, "playmode");
   d_playmode = GameScenario::playModeFromString(playmode_str);
   helper->getData(d_name, "name");
   helper->getData(d_profile_id, "profile_id");
 }
         
-RecentlyPlayedGame::RecentlyPlayedGame(std::string id, std::string profile_id, 
+RecentlyPlayedGame::RecentlyPlayedGame(Glib::ustring id, Glib::ustring profile_id, 
                                        guint32 round, guint32 num_cities, 
                                        guint32 num_players, 
                                        GameScenario::PlayMode mode, 
-                                       std::string name)
+                                       Glib::ustring name)
 : d_id(id), d_last_played(Glib::TimeVal()), d_round(round), 
     d_number_of_cities(num_cities), d_number_of_players(num_players),
     d_playmode(mode), d_name(name), d_profile_id(profile_id)
@@ -86,12 +86,12 @@ bool RecentlyPlayedGame::saveContents(XML_Helper *helper) const
 {
   bool retval = true;
   retval &= helper->saveData("id", d_id);
-  std::string s = d_last_played.as_iso8601();
+  Glib::ustring s = d_last_played.as_iso8601();
   retval &= helper->saveData("last_played_on", s);
   retval &= helper->saveData("round", d_round);
   retval &= helper->saveData("number_of_cities", d_number_of_cities);
   retval &= helper->saveData("number_of_players", d_number_of_players);
-  std::string playmode_str = GameScenario::playModeToString(d_playmode);
+  Glib::ustring playmode_str = GameScenario::playModeToString(d_playmode);
   retval &= helper->saveData("playmode", playmode_str);
   retval &= helper->saveData("name", d_name);
   retval &= helper->saveData("profile_id", d_profile_id);
@@ -101,7 +101,7 @@ bool RecentlyPlayedGame::saveContents(XML_Helper *helper) const
 
 RecentlyPlayedGame* RecentlyPlayedGame::handle_load(XML_Helper *helper)
 {
-  std::string mode_str;
+  Glib::ustring mode_str;
   helper->getData(mode_str, "playmode");
   GameScenario::PlayMode mode = GameScenario::playModeFromString(mode_str);
   switch (mode)
@@ -156,7 +156,7 @@ bool RecentlyPlayedHotseatGame::doSave(XML_Helper *helper) const
   return retval;
 }
 
-bool RecentlyPlayedHotseatGame::fillData(std::string filename)
+bool RecentlyPlayedHotseatGame::fillData(Glib::ustring filename)
 {
   d_filename = filename;
   return true;
@@ -192,7 +192,7 @@ bool RecentlyPlayedPbmGame::doSave(XML_Helper *helper) const
   return retval;
 }
 
-bool RecentlyPlayedPbmGame::fillData(std::string filename)
+bool RecentlyPlayedPbmGame::fillData(Glib::ustring filename)
 {
   d_filename = filename;
   return true;
@@ -208,11 +208,11 @@ RecentlyPlayedNetworkedGame::RecentlyPlayedNetworkedGame(GameScenario *scen,
 }
 
 RecentlyPlayedNetworkedGame::RecentlyPlayedNetworkedGame
-                              (std::string id, std::string profile_id, 
+                              (Glib::ustring id, Glib::ustring profile_id, 
                                guint32 round, guint32 num_cities, 
                                guint32 num_players, 
                                GameScenario::PlayMode mode, 
-                               std::string name, std::string host, guint32 port)
+                               Glib::ustring name, Glib::ustring host, guint32 port)
   : RecentlyPlayedGame(id, profile_id, round, num_cities, num_players, mode, 
                        name), d_host(host), d_port(port)
 {
@@ -242,7 +242,7 @@ bool RecentlyPlayedNetworkedGame::doSave(XML_Helper *helper) const
   return retval;
 }
 
-bool RecentlyPlayedNetworkedGame::fillData(std::string host, guint32 port)
+bool RecentlyPlayedNetworkedGame::fillData(Glib::ustring host, guint32 port)
 {
   d_host = host;
   d_port = port;

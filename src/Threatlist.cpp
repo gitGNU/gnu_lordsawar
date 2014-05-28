@@ -216,9 +216,9 @@ void Threatlist::deleteStack(Stack* s)
         (*it)->deleteStack(s);
 }
 
-std::string Threatlist::toString() const
+Glib::ustring Threatlist::toString() const
 {
-    std::string result = "{";
+    Glib::ustring result = "{";
     bool first = true;
     for (const_iterator it = begin(); it != end(); it++)
     {

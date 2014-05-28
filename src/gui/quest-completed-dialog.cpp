@@ -60,7 +60,7 @@ QuestCompletedDialog::QuestCompletedDialog(Gtk::Window &parent, Quest *q, Reward
 			  quest->getHero()->getName());
     s += "\n\n";
     // add messages from the quest
-    std::queue<std::string> msgs;
+    std::queue<Glib::ustring> msgs;
     quest->getSuccessMsg(msgs);
     while (!msgs.empty())
     {

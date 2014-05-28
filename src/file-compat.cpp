@@ -45,10 +45,10 @@ FileCompat* FileCompat::s_instance = 0;
 class UpgradeDetails
 {
 public:
-  UpgradeDetails(std::string f, std::string t, FileCompat::Slot s) 
+  UpgradeDetails(Glib::ustring f, Glib::ustring t, FileCompat::Slot s) 
     {from_version = f; to_version = t; slot = s;};
-  std::string from_version;
-  std::string to_version;
+  Glib::ustring from_version;
+  Glib::ustring to_version;
   FileCompat::Slot slot;
 };
 
@@ -104,7 +104,7 @@ FileCompat::~FileCompat()
 {
 }
 
-FileCompat::Type FileCompat::getType(std::string filename) const
+FileCompat::Type FileCompat::getType(Glib::ustring filename) const
 {
   if (File::exists(filename) == false)
     return UNKNOWN;
@@ -119,18 +119,18 @@ FileCompat::Type FileCompat::getType(std::string filename) const
   return getTypeByFileInspection(filename);
 }
   
-FileCompat::Type FileCompat::getTypeByTarFileInspection(std::string filename) const
+FileCompat::Type FileCompat::getTypeByTarFileInspection(Glib::ustring filename) const
 {
   bool broken = false;
   Tar_Helper t(filename, std::ios::in, broken);
   if (broken)
     return UNKNOWN;
 
-  std::list<std::string> files = t.getFilenames();
+  std::list<Glib::ustring> files = t.getFilenames();
   t.Close();
   std::list<FileDetails> details;
   //whittle down the files it can't be
-  for (std::list<std::string>::iterator i = files.begin(); i != files.end(); 
+  for (std::list<Glib::ustring>::iterator i = files.begin(); i != files.end(); 
        i++)
     {
       bool found = false;
@@ -158,9 +158,9 @@ FileCompat::Type FileCompat::getTypeByTarFileInspection(std::string filename) co
     return FileCompat::Type(details.front().type);
 }
 
-FileCompat::Type FileCompat::getTypeByXmlFileInspection(std::string filename) const
+FileCompat::Type FileCompat::getTypeByXmlFileInspection(Glib::ustring filename) const
 {
-  std::string tag = XML_Helper::get_top_tag(filename, 
+  Glib::ustring tag = XML_Helper::get_top_tag(filename, 
                                             Configuration::s_zipfiles);
   if (tag == "")
     tag = XML_Helper::get_top_tag(filename, !Configuration::s_zipfiles);
@@ -175,7 +175,7 @@ FileCompat::Type FileCompat::getTypeByXmlFileInspection(std::string filename) co
   return UNKNOWN;
 }
 
-FileCompat::Type FileCompat::getTypeByFileInspection(std::string filename) const
+FileCompat::Type FileCompat::getTypeByFileInspection(Glib::ustring filename) const
 {
   Type type = getTypeByTarFileInspection(filename);
   if (type == UNKNOWN)
@@ -184,18 +184,18 @@ FileCompat::Type FileCompat::getTypeByFileInspection(std::string filename) const
     return type;
 }
 
-bool FileCompat::get_tag_and_version_from_file(std::string filename, FileCompat::Type type, std::string &tag, std::string &version) const
+bool FileCompat::get_tag_and_version_from_file(Glib::ustring filename, FileCompat::Type type, Glib::ustring &tag, Glib::ustring &version) const
 {
   bool broken = false;
   if (isTarFile(type) == true)
     {
-      std::string ext = getFileExtension(type);
+      Glib::ustring ext = getFileExtension(type);
       if (ext == "")
         return false;
       Tar_Helper t(filename, std::ios::in, broken);
       if (!broken)
         {
-          std::string tmpfile = t.getFirstFile(ext, broken);
+          Glib::ustring tmpfile = t.getFirstFile(ext, broken);
           XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
           tag = XML_Helper::get_top_tag(tmpfile, Configuration::s_zipfiles);
           VersionLoader l(tmpfile, tag, version, broken, 
@@ -220,7 +220,7 @@ bool FileCompat::isTarFile(FileCompat::Type type) const
   return false;
 }
 
-std::string FileCompat::getFileExtension(FileCompat::Type type) const
+Glib::ustring FileCompat::getFileExtension(FileCompat::Type type) const
 {
   for (const_iterator i = begin(); i != end(); i++)
     if ((*i).type == type)
@@ -228,7 +228,7 @@ std::string FileCompat::getFileExtension(FileCompat::Type type) const
   return "";
 }
 
-std::string FileCompat::getTag(FileCompat::Type type) const
+Glib::ustring FileCompat::getTag(FileCompat::Type type) const
 {
   for (const_iterator i = begin(); i != end(); i++)
     if ((*i).type == type)
@@ -236,9 +236,9 @@ std::string FileCompat::getTag(FileCompat::Type type) const
   return "";
 }
 
-bool FileCompat::upgrade(std::string filename, bool &same) const
+bool FileCompat::upgrade(Glib::ustring filename, bool &same) const
 {
-  std::string tag, version;
+  Glib::ustring tag, version;
   bool upgraded = false;
   if (File::exists(filename) == false)
     return false;
@@ -250,7 +250,7 @@ bool FileCompat::upgrade(std::string filename, bool &same) const
       
   //can we get there from here?
   Slot slot;
-  std::string next_version;
+  Glib::ustring next_version;
   if (get_upgrade_method(type, version, next_version, slot) == false)
     {
       same = can_upgrade_to(type, version);
@@ -277,7 +277,7 @@ bool FileCompat::upgrade(std::string filename, bool &same) const
   return !broken;
 }
       
-bool FileCompat::can_upgrade_to(FileCompat::Type type, std::string version) const
+bool FileCompat::can_upgrade_to(FileCompat::Type type, Glib::ustring version) const
 {
   for (std::list<UpgradeDetails>::const_iterator i = versions[type].begin();
        i != versions[type].end(); i++)
@@ -288,7 +288,7 @@ bool FileCompat::can_upgrade_to(FileCompat::Type type, std::string version) cons
   return false;
 }
 
-bool FileCompat::get_upgrade_method(FileCompat::Type type, std::string version, std::string &next_version, FileCompat::Slot &slot) const
+bool FileCompat::get_upgrade_method(FileCompat::Type type, Glib::ustring version, Glib::ustring &next_version, FileCompat::Slot &slot) const
 {
   for (std::list<UpgradeDetails>::const_iterator i = versions[type].begin();
        i != versions[type].end(); i++)
@@ -303,18 +303,18 @@ bool FileCompat::get_upgrade_method(FileCompat::Type type, std::string version, 
   return false;
 }
 
-bool FileCompat::rewrite_with_updated_version(std::string filename, FileCompat::Type type, std::string tag, std::string version) const
+bool FileCompat::rewrite_with_updated_version(Glib::ustring filename, FileCompat::Type type, Glib::ustring tag, Glib::ustring version) const
 {
   bool broken = false;
   bool upgraded = false;
   if (isTarFile(type) && type != GAMESCENARIO)
     {
-      std::string ext = getFileExtension(type);
+      Glib::ustring ext = getFileExtension(type);
 
       Tar_Helper t(filename, std::ios::in, broken);
       if (broken == false)
         {
-          std::string tmpfile = t.getFirstFile(ext, broken);
+          Glib::ustring tmpfile = t.getFirstFile(ext, broken);
           if (broken == false && version != "")
             upgraded = XML_Helper::rewrite_version(tmpfile, tag, version, 
                                                    Configuration::s_zipfiles);
@@ -337,7 +337,7 @@ bool FileCompat::rewrite_with_updated_version(std::string filename, FileCompat::
   return upgraded;
 }
 
-FileCompat::Type FileCompat::getTypeByFileExtension(std::string ext) const
+FileCompat::Type FileCompat::getTypeByFileExtension(Glib::ustring ext) const
 {
   for (const_iterator i = begin(); i != end(); i++)
     if ((*i).file_extension == ext)
@@ -345,9 +345,9 @@ FileCompat::Type FileCompat::getTypeByFileExtension(std::string ext) const
   return UNKNOWN;
 }
 
-bool FileCompat::upgradeGameScenario(std::string filename, std::string version) const
+bool FileCompat::upgradeGameScenario(Glib::ustring filename, Glib::ustring version) const
 {
-  std::string ext = File::get_extension(filename);
+  Glib::ustring ext = File::get_extension(filename);
   if (ext == "")
     return false;
   if (getTypeByFileExtension(ext) != GAMESCENARIO)
@@ -357,19 +357,19 @@ bool FileCompat::upgradeGameScenario(std::string filename, std::string version) 
   Tar_Helper t(filename, std::ios::in, broken);
   if (!broken)
     {
-      std::string tmpfile = t.getFirstFile(ext, broken);
+      Glib::ustring tmpfile = t.getFirstFile(ext, broken);
       if (broken == false)
         upgraded = XML_Helper::rewrite_version(tmpfile, getTag(GAMESCENARIO), 
                                                version,
                                                Configuration::s_zipfiles);
-      std::list<std::string> delfiles;
+      std::list<Glib::ustring> delfiles;
       delfiles.push_back(tmpfile);
       if (upgraded)
         {
           bool same;
           t.replaceFile (t.getFilenamesWithExtension(ext).front(), tmpfile);
           //now we need to upgrade the other files.
-          std::string f = t.getFilenamesWithExtension
+          Glib::ustring f = t.getFilenamesWithExtension
             (getFileExtension(ARMYSET)).front();
           tmpfile = t.getFile(f, broken);
           if (tmpfile != "")
@@ -403,7 +403,7 @@ bool FileCompat::upgradeGameScenario(std::string filename, std::string version) 
               delfiles.push_back(tmpfile);
             }
         }
-      for (std::list<std::string>::iterator i = delfiles.begin(); i != delfiles.end(); i++)
+      for (std::list<Glib::ustring>::iterator i = delfiles.begin(); i != delfiles.end(); i++)
         File::erase(*i);
       t.Close();
     }
@@ -494,23 +494,23 @@ Glib::ustring FileCompat::typeToCode(const FileCompat::Type type)
 }
         
         
-void FileCompat::support_version(guint32 k, std::string from, std::string to, FileCompat::Slot slot)
+void FileCompat::support_version(guint32 k, Glib::ustring from, Glib::ustring to, FileCompat::Slot slot)
 {
   versions[FileCompat::Type(k)].push_back(UpgradeDetails(from, to, slot));
 }
 
-bool FileCompat::rewrite_with_xslt(std::string filename, FileCompat::Type type, std::string xsl_file) const
+bool FileCompat::rewrite_with_xslt(Glib::ustring filename, FileCompat::Type type, Glib::ustring xsl_file) const
 {
   bool broken = false;
   bool upgraded = false;
   if (isTarFile(type) && type != GAMESCENARIO)
     {
-      std::string ext = getFileExtension(type);
+      Glib::ustring ext = getFileExtension(type);
 
       Tar_Helper t(filename, std::ios::in, broken);
       if (broken == false)
         {
-          std::string tmpfile = t.getFirstFile(ext, broken);
+          Glib::ustring tmpfile = t.getFirstFile(ext, broken);
           if (broken == false)
             upgraded = xsl_transform(tmpfile, xsl_file);
           if (upgraded)
@@ -531,9 +531,9 @@ bool FileCompat::rewrite_with_xslt(std::string filename, FileCompat::Type type, 
   return upgraded;
 }
 
-bool FileCompat::upgradeGameScenarioWithXslt(std::string filename, std::string xsl_file) const
+bool FileCompat::upgradeGameScenarioWithXslt(Glib::ustring filename, Glib::ustring xsl_file) const
 {
-  std::string ext = File::get_extension(filename);
+  Glib::ustring ext = File::get_extension(filename);
   if (ext == "")
     return false;
   if (getTypeByFileExtension(ext) != GAMESCENARIO)
@@ -543,18 +543,18 @@ bool FileCompat::upgradeGameScenarioWithXslt(std::string filename, std::string x
   Tar_Helper t(filename, std::ios::in, broken);
   if (!broken)
     {
-      std::string tmpfile = t.getFirstFile(ext, broken);
+      Glib::ustring tmpfile = t.getFirstFile(ext, broken);
       if (broken == false)
         upgraded = xsl_transform(tmpfile, xsl_file);
 
-      std::list<std::string> delfiles;
+      std::list<Glib::ustring> delfiles;
       delfiles.push_back(tmpfile);
       if (upgraded)
         {
           bool same;
           t.replaceFile (t.getFilenamesWithExtension(ext).front(), tmpfile);
           //now we need to upgrade the other files.
-          std::string f = t.getFilenamesWithExtension
+          Glib::ustring f = t.getFilenamesWithExtension
             (getFileExtension(ARMYSET)).front();
           tmpfile = t.getFile(f, broken);
           if (tmpfile != "")
@@ -588,7 +588,7 @@ bool FileCompat::upgradeGameScenarioWithXslt(std::string filename, std::string x
               delfiles.push_back(tmpfile);
             }
         }
-      for (std::list<std::string>::iterator i = delfiles.begin(); i != delfiles.end(); i++)
+      for (std::list<Glib::ustring>::iterator i = delfiles.begin(); i != delfiles.end(); i++)
         File::erase(*i);
       t.Close();
     }
@@ -596,7 +596,7 @@ bool FileCompat::upgradeGameScenarioWithXslt(std::string filename, std::string x
 }
 
         
-bool FileCompat::xsl_transform(std::string filename, std::string xsl_file) const
+bool FileCompat::xsl_transform(Glib::ustring filename, Glib::ustring xsl_file) const
 {
   const char *params[16 + 1];
   //int nbparams = 0;
@@ -615,7 +615,7 @@ bool FileCompat::xsl_transform(std::string filename, std::string xsl_file) const
   if (res == NULL)
     return false;
 
-  std::string tmpfile = File::get_tmp_file();
+  Glib::ustring tmpfile = File::get_tmp_file();
 
   xmlChar *out = xmlCharStrdup(tmpfile.c_str());
   xsltSaveResultToFilename(tmpfile.c_str(), res, cur, 0);
@@ -632,9 +632,9 @@ bool FileCompat::xsl_transform(std::string filename, std::string xsl_file) const
   return true;
 }
 
-bool FileCompat::upgrade(std::string filename, std::string old_version, std::string new_version, FileCompat::Type type, std::string tag) const
+bool FileCompat::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version, FileCompat::Type type, Glib::ustring tag) const
 {
-  std::string xsl_filename = File::getXSLTFile(type, old_version, new_version);
+  Glib::ustring xsl_filename = File::getXSLTFile(type, old_version, new_version);
   if (xsl_filename != "")
     return rewrite_with_xslt (filename, type, xsl_filename);
   else

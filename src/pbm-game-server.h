@@ -21,7 +21,7 @@
 #include <config.h>
 
 #include <memory>
-#include <string>
+#include <glibmm.h>
 #include <list>
 #include <sigc++/trackable.h>
 
@@ -34,11 +34,11 @@ class PbmGameServer: public sigc::trackable
 {
 public:
     //!the topmost tag for a lordsawar turn file.
-    static std::string d_tag; 
+    static Glib::ustring d_tag; 
         
   void start();
 
-  bool endTurn(std::string turnfile, bool &broken);
+  bool endTurn(Glib::ustring turnfile, bool &broken);
   
   //Statics
   //! Returns the singleton instance.  Creates a new one if neccessary.
@@ -47,7 +47,7 @@ public:
   //! Deletes the singleton instance.
   static void deleteInstance();
 
-  static bool upgrade(std::string filename, std::string old_version, std::string new_version);
+  static bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version);
   static void support_backward_compatibility();
 protected:
   PbmGameServer();

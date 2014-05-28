@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 #define GAME_PARAMETERS_H
 
 #include <vector>
-#include <string>
 #include "player.h"
 
 class GameParameters
@@ -31,7 +30,7 @@ public:
 	enum Type { HUMAN, EASY, HARD, OFF, NETWORKED };
 
 	Type type;
-	std::string name;
+	Glib::ustring name;
 	guint32 id;
     };
 
@@ -47,11 +46,11 @@ public:
     Map map;
 
     // path to map file to load, empty if none
-    std::string map_path;
-    std::string tile_theme;
-    std::string army_theme;
-    std::string shield_theme;
-    std::string city_theme;
+    Glib::ustring map_path;
+    Glib::ustring tile_theme;
+    Glib::ustring army_theme;
+    Glib::ustring shield_theme;
+    Glib::ustring city_theme;
 
     enum ProcessArmies {
 	PROCESS_ARMIES_AT_PLAYERS_TURN = 0,
@@ -89,7 +88,7 @@ public:
     bool random_turns;
     bool cities_can_produce_allies;
     int difficulty;
-    std::string name;
+    Glib::ustring name;
   static GameParameters::Player::Type player_type_to_player_param(guint32 type)
     {
       if (type == 0) //Player::HUMAN

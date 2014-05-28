@@ -2,7 +2,7 @@
 //  Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
 //  Copyright (C) 2004, 2005 Andrea Paternesi
 //  Copyright (C) 2005 Josef Spillner
-//  Copyright (C) 2006, 2010, 2011 Ben Asselstine
+//  Copyright (C) 2006, 2010, 2011, 2014 Ben Asselstine
 //  Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -24,7 +24,6 @@
 #define CONFIGURATION_H
 
 #include <gtkmm.h>
-#include <string>
 #include <sigc++/trackable.h>
 
 class XML_Helper;
@@ -46,7 +45,7 @@ class Configuration : public sigc::trackable
 {
     public:
 
-        static std::string d_tag;
+        static Glib::ustring d_tag;
 
         // CREATORS
         Configuration();
@@ -59,7 +58,7 @@ class Configuration : public sigc::trackable
           * This class loads an xml-style config file and sets the settings
           * appropriately.
           */
-        bool loadConfigurationFile(std::string fileName);
+        bool loadConfigurationFile(Glib::ustring fileName);
 
         /** \brief Save the configuration file
           * 
@@ -67,9 +66,9 @@ class Configuration : public sigc::trackable
           *
           * This class saves the current config to an xml-style config file.
           */
-        static bool saveConfigurationFile(std::string filename);
+        static bool saveConfigurationFile(Glib::ustring filename);
 
-        static std::string configuration_file_path;
+        static Glib::ustring configuration_file_path;
 	
         // as the name implies
         static bool s_showNextPlayer;
@@ -79,11 +78,11 @@ class Configuration : public sigc::trackable
         static bool s_displayCommentator;
         
         //the paths
-        static std::string s_dataPath;
-        static std::string s_savePath;
+        static Glib::ustring s_dataPath;
+        static Glib::ustring s_savePath;
 
         // Language setting
-        static std::string s_lang;
+        static Glib::ustring s_lang;
 
         //the maximum size of the graphics cache
         static guint32 s_cacheSize;
@@ -102,11 +101,11 @@ class Configuration : public sigc::trackable
         static guint32 s_musiccache;
 
         // the hostname of the game-list server
-        static std::string s_gamelist_server_hostname;
+        static Glib::ustring s_gamelist_server_hostname;
         static guint32 s_gamelist_server_port;
 
         // the hostname of the game-host server
-        static std::string s_gamehost_server_hostname;
+        static Glib::ustring s_gamehost_server_hostname;
         static guint32 s_gamehost_server_port;
 
 	// various default game settings
@@ -128,31 +127,31 @@ class Configuration : public sigc::trackable
 	static guint32 s_double_click_threshold;
 	static guint32 s_ui_form_factor; //See UiFormFactor enumeration
 
-	static GameParameters::NeutralCities neutralCitiesFromString(const std::string str);
-	static std::string neutralCitiesToString(const GameParameters::NeutralCities neutrals);
-	static GameParameters::RazingCities razingCitiesFromString(const std::string str);
-	static std::string razingCitiesToString(const GameParameters::RazingCities razing);
+	static GameParameters::NeutralCities neutralCitiesFromString(const Glib::ustring str);
+	static Glib::ustring neutralCitiesToString(const GameParameters::NeutralCities neutrals);
+	static GameParameters::RazingCities razingCitiesFromString(const Glib::ustring str);
+	static Glib::ustring razingCitiesToString(const GameParameters::RazingCities razing);
         enum SavingPolicy {
 	  NO_SAVING = 0,
 	  WRITE_UNNUMBERED_AUTOSAVE_FILE = 1,
 	  WRITE_NUMBERED_AUTOSAVE_FILE = 2,
 	};
-	static Configuration::SavingPolicy savingPolicyFromString(const std::string str);
-	static std::string savingPolicyToString(const Configuration::SavingPolicy policy);
+	static Configuration::SavingPolicy savingPolicyFromString(const Glib::ustring str);
+	static Glib::ustring savingPolicyToString(const Configuration::SavingPolicy policy);
         enum UiFormFactor {
 	  UI_FORM_FACTOR_NETBOOK = 0,
 	  UI_FORM_FACTOR_DESKTOP = 1,
 	  UI_FORM_FACTOR_LARGE_SCREEN = 2,
 	};
-	static Configuration::UiFormFactor uiFormFactorFromString(const std::string str);
-	static std::string uiFormFactorToString(const Configuration::UiFormFactor factor);
-	static GameParameters::QuickStartPolicy quickStartPolicyFromString(const std::string str);
-        static std::string quickStartPolicyToString(const GameParameters::QuickStartPolicy policy);
-        static GameParameters::QuestPolicy questPolicyFromString(std::string str);
-        static std::string questPolicyToString(const GameParameters::QuestPolicy quest);
+	static Configuration::UiFormFactor uiFormFactorFromString(const Glib::ustring str);
+	static Glib::ustring uiFormFactorToString(const Configuration::UiFormFactor factor);
+	static GameParameters::QuickStartPolicy quickStartPolicyFromString(const Glib::ustring str);
+        static Glib::ustring quickStartPolicyToString(const GameParameters::QuickStartPolicy policy);
+        static GameParameters::QuestPolicy questPolicyFromString(Glib::ustring str);
+        static Glib::ustring questPolicyToString(const GameParameters::QuestPolicy quest);
 
-        static bool upgrade(std::string filename, std::string old_version,
-                            std::string new_version);
+        static bool upgrade(Glib::ustring filename, Glib::ustring old_version,
+                            Glib::ustring new_version);
         static void support_backward_compatibility();
     private:
         /** \brief The callback for the XML_Helper
@@ -160,9 +159,9 @@ class Configuration : public sigc::trackable
           * See the XML_Helper documentation for an explanation what the
           * callback is good for.
           */
-        bool parseConfiguration(std::string tag, XML_Helper* helper);
+        bool parseConfiguration(Glib::ustring tag, XML_Helper* helper);
 
-        static std::string s_filename;
+        static Glib::ustring s_filename;
 };
 
 #endif // CONFIGURATION_H

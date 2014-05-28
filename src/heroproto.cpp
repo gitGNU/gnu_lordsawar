@@ -22,7 +22,7 @@
 #include "heroproto.h"
 #include "xmlhelper.h"
 
-std::string HeroProto::d_tag = "heroproto";
+Glib::ustring HeroProto::d_tag = "heroproto";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -50,7 +50,7 @@ HeroProto::~HeroProto()
 HeroProto::HeroProto(XML_Helper* helper)
   :ArmyProto(helper), OwnerId(helper)
 {
-  std::string gender_str;
+  Glib::ustring gender_str;
   if (!helper->getData(gender_str, "gender"))
     d_gender = Hero::NONE;
   else
@@ -65,7 +65,7 @@ bool HeroProto::save(XML_Helper* helper) const
   retval &= helper->openTag(HeroProto::d_tag);
 
   retval &= ArmyProto::saveData(helper);
-  std::string gender_str = Hero::genderToString(Hero::Gender(d_gender));
+  Glib::ustring gender_str = Hero::genderToString(Hero::Gender(d_gender));
   retval &= helper->saveData("gender", gender_str);
   retval &= OwnerId::save(helper);
   retval &= helper->saveData("armyset", d_armyset);

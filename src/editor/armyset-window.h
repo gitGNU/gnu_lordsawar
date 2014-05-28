@@ -32,7 +32,7 @@
 class ArmySetWindow: public sigc::trackable
 {
  public:
-    ArmySetWindow(Gtk::Window *parent, std::string load_filename = "");
+    ArmySetWindow(Gtk::Window *parent, Glib::ustring load_filename = "");
     ~ArmySetWindow();
     
     void show();
@@ -44,8 +44,8 @@ class ArmySetWindow: public sigc::trackable
 
  private:
     Gtk::Window* window;
-    std::string current_save_filename;
-    std::string autosave; //filename
+    Glib::ustring current_save_filename;
+    Glib::ustring autosave; //filename
     Armyset *d_armyset; //current armyset
     ArmyProto *d_army; //current army
     bool needs_saving;
@@ -216,7 +216,7 @@ class ArmySetWindow: public sigc::trackable
 
     void on_white_all_checked();
 
-    bool load_armyset(std::string filename);
+    bool load_armyset(Glib::ustring filename);
     bool save_current_armyset();
     void update_window_title();
     void on_make_same_clicked();

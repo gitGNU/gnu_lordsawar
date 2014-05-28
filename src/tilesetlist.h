@@ -19,7 +19,6 @@
 #define TILESETLIST_H
 
 #include <gtkmm.h>
-#include <string>
 #include <map>
 #include <vector>
 #include <sigc++/trackable.h>
@@ -47,13 +46,13 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 	// Methods that operate on class data but do not modify the class.
 
         //! Returns the names of all tilesets available to the game.
-	std::list<std::string> getValidNames() const;
+	std::list<Glib::ustring> getValidNames() const;
 
         //! Returns whether the given name is in the list of tilesets.
-        bool contains(std::string name) const;
+        bool contains(Glib::ustring name) const;
 
         //! Returns the names of tilesets that have the given tile size.
-	std::list<std::string> getValidNames(guint32 tilesize) const;
+	std::list<Glib::ustring> getValidNames(guint32 tilesize) const;
 
         //! Returns the different tilesizes present in the tilesetlist.
 	void getSizes(std::list<guint32> &sizes) const;
@@ -67,7 +66,7 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 	 *         Tileset::d_dir for more information about the nature of 
 	 *         the return value.
          */
-	std::string getTilesetDir(std::string name, guint32 tilesize) const;
+	Glib::ustring getTilesetDir(Glib::ustring name, guint32 tilesize) const;
 
 	//! Return the Tileset object by the name of the subdir.
 	/**
@@ -75,7 +74,7 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 	 *             This value does not contain any slashes, and is
 	 *             presumed to be found inside the tilesets/ directory.
 	 */
-	Tileset *getTileset(std::string dir) const;
+	Tileset *getTileset(Glib::ustring dir) const;
 
 	//! Return the Tileset object by the id.
 	/**
@@ -85,18 +84,18 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 	Tileset *getTileset(guint32 id) const;
 
         //! get the id of the given tileset basename.
-        guint32 getTilesetId(std::string basename) const;
+        guint32 getTilesetId(Glib::ustring basename) const;
 
-        SmallTile *getSmallTile(std::string basename, Tile::Type type) const;
+        SmallTile *getSmallTile(Glib::ustring basename, Tile::Type type) const;
 
-        Gdk::RGBA getColor(std::string basename, Tile::Type type) const;
+        Gdk::RGBA getColor(Glib::ustring basename, Tile::Type type) const;
 
-        std::string findFreeBaseName(std::string basename, guint32 max, guint32 &num) const;
+        Glib::ustring findFreeBaseName(Glib::ustring basename, guint32 max, guint32 &num) const;
 
 	// Methods that operate on the class data and modify the class.
 
 	//! Add a tileset to the list.  Use this instead of push_back.
-	void add(Tileset *tileset, std::string file);
+	void add(Tileset *tileset, Glib::ustring file);
 
 	//! Destroy all of the tileset images in this list.
 	void uninstantiateImages();
@@ -117,8 +116,8 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 	 *         new_subdir and new_id parameters updated to reflect the
 	 *         changed subdir and id.
 	 */
-	bool addToPersonalCollection(Tileset *tileset, std::string &new_subdir, guint32 &new_id);
-	Tileset *import(Tar_Helper *t, std::string f, bool &broken);
+	bool addToPersonalCollection(Tileset *tileset, Glib::ustring &new_subdir, guint32 &new_id);
+	Tileset *import(Tar_Helper *t, Glib::ustring f, bool &broken);
 
 	// Static Methods
 
@@ -151,17 +150,17 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 	 *
 	 * @return the Tileset.  NULL otherwise.
 	 */
-        Tileset* loadTileset (std::string filename);
+        Tileset* loadTileset (Glib::ustring filename);
 
 	//! Load the given tilesets into the list.
-	void loadTilesets(std::list<std::string> tilesets);
+	void loadTilesets(std::list<Glib::ustring> tilesets);
         
-	std::list<std::string> getNames() const;
-	std::list<std::string> getNames(guint32 tilesize) const;
+	std::list<Glib::ustring> getNames() const;
+	std::list<Glib::ustring> getNames(guint32 tilesize) const;
 	// DATA
 
-        typedef std::map<std::string, std::string> DirMap;
-        typedef std::map<std::string, Tileset*> TilesetMap;
+        typedef std::map<Glib::ustring, Glib::ustring> DirMap;
+        typedef std::map<Glib::ustring, Tileset*> TilesetMap;
         typedef std::map<guint32, Tileset*> TilesetIdMap;
 
 	//! A map that provides a subdirectory when supplying a Tileset name.

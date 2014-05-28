@@ -1,6 +1,6 @@
 // Copyright (C) 2000, 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -23,7 +23,6 @@
 
 #include <list>
 #include <map>
-#include <string>
 #include <vector>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
@@ -47,7 +46,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
     public:
 
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	// Set Methods
 
@@ -203,7 +202,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 	 * @return A pointer to the Player if it is found, or NULL if it isn't.
 	 */
 	//! Lookup a Player by it's name.
-        Player* getPlayer(std::string name) const;
+        Player* getPlayer(Glib::ustring name) const;
 
 	/**
 	 * Scan the list of players for a Player with a given Id.
@@ -309,7 +308,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         
     private:
         //! Callback for loading the playerlist from an opened saved-game file.
-        bool load(std::string, XML_Helper* helper);
+        bool load(Glib::ustring, XML_Helper* helper);
 
 	//! Comparison function to assist in sorting the list of players.
 	static bool randomly(const Player *lhs, const Player *rhs);

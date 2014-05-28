@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-#include <string>
 #include "vector.h"
 #include <sigc++/trackable.h>
 
@@ -48,7 +47,7 @@ class History
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! A History can be one of the following kinds.
         enum Type {
@@ -97,8 +96,8 @@ class History
           //! The player has used an item
           USE_ITEM = 22,
         };
-	static std::string historyTypeToString(const History::Type type);
-	static History::Type historyTypeFromString(const std::string str);
+	static Glib::ustring historyTypeToString(const History::Type type);
+	static History::Type historyTypeFromString(const Glib::ustring str);
                 
 	//! Default constructor.
         History(Type type);
@@ -110,7 +109,7 @@ class History
         virtual ~History();
 
         //! Returns debug information. Needs to be overwritten by derivatives
-        virtual std::string dump() const = 0;
+        virtual Glib::ustring dump() const = 0;
 
         /** 
 	 * static load function (see XML_Helper)
@@ -154,7 +153,7 @@ class History_StartTurn : public History
         ~History_StartTurn();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -181,7 +180,7 @@ class History_FoundSage : public History
         ~History_FoundSage();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -190,11 +189,11 @@ class History_FoundSage : public History
         bool fillData(Hero *hero);
 
 	//! Get the name of the Hero who found the sage.
-	std::string getHeroName() const {return d_hero;}
+	Glib::ustring getHeroName() const {return d_hero;}
     
     private:
 	//! The name of the Hero.
-	std::string d_hero;
+	Glib::ustring d_hero;
 };
 
 //-----------------------------------------------------------------------------
@@ -213,7 +212,7 @@ class History_GoldTotal : public History
         ~History_GoldTotal();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -245,7 +244,7 @@ class History_HeroEmerges : public History
         ~History_HeroEmerges();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -261,22 +260,22 @@ class History_HeroEmerges : public History
         bool fillData(Hero *hero, City *city);
 
 	//! Get the name of the Hero who appeared.
-	std::string getHeroName() const {return d_hero;}
+	Glib::ustring getHeroName() const {return d_hero;}
 
 	guint32 getHeroId() const {return d_hero_id;};
 
 	//! Get the name of the City where the Hero has emerged.
-	std::string getCityName() const {return d_city;}
+	Glib::ustring getCityName() const {return d_city;}
     
     private:
 	//! The name of the Hero who emerged.
-	std::string d_hero;
+	Glib::ustring d_hero;
 
 	//! The id of the hero
 	guint32 d_hero_id;
 
 	//! The name of the City where the Hero emerged.
-	std::string d_city;
+	Glib::ustring d_city;
 };
 
 //-----------------------------------------------------------------------------
@@ -295,7 +294,7 @@ class History_CityWon : public History
         ~History_CityWon();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -327,7 +326,7 @@ class History_HeroCityWon: public History
         ~History_HeroCityWon();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -343,17 +342,17 @@ class History_HeroCityWon: public History
         bool fillData(Hero *hero, City *city);
 
 	//! Get the name of the Hero who conquered the City.
-	std::string getHeroName() const {return d_hero;}
+	Glib::ustring getHeroName() const {return d_hero;}
 
 	//! Get the name of the City that was conquered.
-	std::string getCityName() const {return d_city;}
+	Glib::ustring getCityName() const {return d_city;}
     
     private:
 	//! The name of the Hero who helped in conquering the City.
-	std::string d_hero;
+	Glib::ustring d_hero;
 
 	//! The name of the City that was conquered.
-	std::string d_city;
+	Glib::ustring d_city;
 };
 
 //-----------------------------------------------------------------------------
@@ -372,7 +371,7 @@ class History_CityRazed : public History
         ~History_CityRazed();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -404,7 +403,7 @@ class History_HeroQuestStarted : public History
         ~History_HeroQuestStarted();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -413,11 +412,11 @@ class History_HeroQuestStarted : public History
         bool fillData(Hero *hero);
 
 	//! Get the name of the Hero who started a Quest.
-	std::string getHeroName() const {return d_hero;}
+	Glib::ustring getHeroName() const {return d_hero;}
     
     private:
 	//! The name of the Hero who started the Quest.
-	std::string d_hero;
+	Glib::ustring d_hero;
 };
 
 //-----------------------------------------------------------------------------
@@ -436,7 +435,7 @@ class History_HeroQuestCompleted: public History
         ~History_HeroQuestCompleted();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -445,11 +444,11 @@ class History_HeroQuestCompleted: public History
         bool fillData(Hero *hero);
 
 	//! Get the name of the Hero who finished a Quest.
-	std::string getHeroName() const {return d_hero;}
+	Glib::ustring getHeroName() const {return d_hero;}
     
     private:
 	//! The name of the Hero who completed the Quest.
-	std::string d_hero;
+	Glib::ustring d_hero;
 };
 
 //-----------------------------------------------------------------------------
@@ -468,7 +467,7 @@ class History_HeroKilledInCity : public History
         ~History_HeroKilledInCity();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -484,17 +483,17 @@ class History_HeroKilledInCity : public History
         bool fillData(Hero *hero, City *city);
 
 	//! Get the name of the Hero who died.
-	std::string getHeroName() const {return d_hero;}
+	Glib::ustring getHeroName() const {return d_hero;}
 
 	//! Get the name of the City where the Hero died.
-	std::string getCityName() const {return d_city;}
+	Glib::ustring getCityName() const {return d_city;}
     
     private:
 	//! Get the name of the Hero who was killed.
-	std::string d_hero;
+	Glib::ustring d_hero;
 
 	//! Get the name of the City where the Hero was killed.
-	std::string d_city;
+	Glib::ustring d_city;
 };
 
 //-----------------------------------------------------------------------------
@@ -513,7 +512,7 @@ class History_HeroKilledInBattle: public History
         ~History_HeroKilledInBattle();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -522,11 +521,11 @@ class History_HeroKilledInBattle: public History
         bool fillData(Hero *hero);
 
 	//! Get the name of the Hero who died in battle outside of a City.
-	std::string getHeroName() const {return d_hero;}
+	Glib::ustring getHeroName() const {return d_hero;}
     
     private:
 	//! The name of the Hero who died in battle outside of a City.
-	std::string d_hero;
+	Glib::ustring d_hero;
 };
 
 //-----------------------------------------------------------------------------
@@ -545,7 +544,7 @@ class History_HeroKilledSearching: public History
         ~History_HeroKilledSearching();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -554,11 +553,11 @@ class History_HeroKilledSearching: public History
         bool fillData(Hero *hero);
 
 	//! Get the name of the Hero who died while searching a Ruin.
-	std::string getHeroName() const {return d_hero;}
+	Glib::ustring getHeroName() const {return d_hero;}
     
     private:
 	//! The name of the Hero who died while searching a Ruin.
-	std::string d_hero;
+	Glib::ustring d_hero;
 };
 
 //-----------------------------------------------------------------------------
@@ -577,7 +576,7 @@ class History_Score: public History
         ~History_Score();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -609,7 +608,7 @@ class History_PlayerVanquished: public History
         ~History_PlayerVanquished();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -632,7 +631,7 @@ class History_DiplomacyPeace : public History
         ~History_DiplomacyPeace();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -664,7 +663,7 @@ class History_DiplomacyWar: public History
         ~History_DiplomacyWar();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -696,7 +695,7 @@ class History_DiplomacyTreachery: public History
         ~History_DiplomacyTreachery();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -728,7 +727,7 @@ class History_HeroFindsAllies : public History
         ~History_HeroFindsAllies();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -737,11 +736,11 @@ class History_HeroFindsAllies : public History
         bool fillData(Hero *hero);
 
 	//! Get the name of the Hero who found powerful allies.
-	std::string getHeroName() const {return d_hero;}
+	Glib::ustring getHeroName() const {return d_hero;}
     
     private:
 	//! The name of the Hero who found powerful allies at a Ruin.
-	std::string d_hero;
+	Glib::ustring d_hero;
 };
 
 //-----------------------------------------------------------------------------
@@ -759,7 +758,7 @@ class History_EndTurn : public History
 	~History_EndTurn();
 
 	//! Return some debug information about this historical event.
-	std::string dump() const;
+	Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -785,7 +784,7 @@ class History_HeroRuinExplored: public History
         ~History_HeroRuinExplored();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -801,14 +800,14 @@ class History_HeroRuinExplored: public History
         bool fillData(Hero *hero, Ruin *ruin);
 
 	//! Get the name of the Hero who searched the Ruin.
-	std::string getHeroName() const {return d_hero;}
+	Glib::ustring getHeroName() const {return d_hero;}
 
 	//! Get the id of the Ruin that was searched.
 	guint32 getRuinId() const {return d_ruin;}
     
     private:
 	//! The name of the Hero who explored the Ruin.
-	std::string d_hero;
+	Glib::ustring d_hero;
 
 	//! The id of the Ruin that was searched.
 	guint32 d_ruin;
@@ -831,7 +830,7 @@ class History_HeroRewardRuin: public History
         ~History_HeroRewardRuin();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -847,14 +846,14 @@ class History_HeroRewardRuin: public History
         bool fillData(Hero *hero, Ruin *ruin);
 
 	//! Get the name of the Hero who was given the location of the Ruin.
-	std::string getHeroName() const {return d_hero;}
+	Glib::ustring getHeroName() const {return d_hero;}
 
 	//! Get the id of the Ruin that was exposed.
 	guint32 getRuinId() const {return d_ruin;}
     
     private:
 	//! The name of the Hero who was told the location of the Ruin.
-	std::string d_hero;
+	Glib::ustring d_hero;
 
 	//! The id of the Ruin that was exposed.
 	guint32 d_ruin;
@@ -876,7 +875,7 @@ class History_HeroUseItem: public History
         ~History_HeroUseItem();
 
 	//! Return some debug information about this historical event.
-        std::string dump() const;
+        Glib::ustring dump() const;
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
@@ -885,10 +884,10 @@ class History_HeroUseItem: public History
         bool fillData(Hero *hero, Item *item, Player *opponent, City *friendly_city, City *enemy_city, City *neutral_city, City *city);
 
         //! Get the name of the hero that used the object.
-        std::string getHeroName() const {return d_hero_name;}
+        Glib::ustring getHeroName() const {return d_hero_name;}
         
         //! Get the name of the item that was used by the hero.
-        std::string getItemName() const {return d_item_name;}
+        Glib::ustring getItemName() const {return d_item_name;}
 
         //! Get the reported capabilities of the item.
         guint32 getItemBonus() const {return d_item_bonus;};
@@ -903,10 +902,10 @@ class History_HeroUseItem: public History
     private:
 
         //! The name of the hero using an object.
-        std::string d_hero_name;
+        Glib::ustring d_hero_name;
         
         //! The name of the item that was used.
-        std::string d_item_name;
+        Glib::ustring d_item_name;
 
         //! The kind of item.
         guint32 d_item_bonus;

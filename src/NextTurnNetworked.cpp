@@ -110,7 +110,7 @@ void NextTurnNetworked::start()
 
 void NextTurnNetworked::endTurn()
 {
-  std::string old_name = Playerlist::getActiveplayer()->getName();
+  Glib::ustring old_name = Playerlist::getActiveplayer()->getName();
   // Finish off the player and transfers the control to the start function
   // again.
   finishTurn();

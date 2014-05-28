@@ -93,7 +93,7 @@ SplashWindow::SplashWindow()
     if (Configuration::s_autosave_policy == 1)
       {
   
-	std::string filename = File::getSavePath() + "autosave" + SAVE_EXT;
+	Glib::ustring filename = File::getSavePath() + "autosave" + SAVE_EXT;
 	FILE *fileptr = fopen (filename.c_str(), "r");
 	if (fileptr)
 	  {
@@ -162,7 +162,7 @@ void SplashWindow::on_quit_clicked()
 void SplashWindow::on_rescue_crashed_game_clicked()
 {
   delete crash_button;
-  std::string filename = File::getSavePath() + "autosave" + SAVE_EXT;
+  Glib::ustring filename = File::getSavePath() + "autosave" + SAVE_EXT;
   load_requested.emit(filename);
 }
 
@@ -184,7 +184,7 @@ void SplashWindow::on_load_game_clicked()
     
     if (res == Gtk::RESPONSE_ACCEPT)
     {
-	std::string filename = chooser.get_filename();
+	Glib::ustring filename = chooser.get_filename();
 	chooser.hide();	
 	load_requested.emit(filename);
     }
@@ -208,7 +208,7 @@ void SplashWindow::on_new_network_game_clicked()
           //okay, we're a server.
           LoadScenarioDialog d(*window);
           d.run();
-          std::string filename = d.get_scenario_filename();
+          Glib::ustring filename = d.get_scenario_filename();
           if (filename.empty())
             return;
           d.hide();
@@ -242,7 +242,7 @@ void SplashWindow::on_new_pbm_game_clicked()
   LoadScenarioDialog d(*window);
   d.run();
 
-  std::string filename = d.get_scenario_filename();
+  Glib::ustring filename = d.get_scenario_filename();
   if (filename.empty())
     return;
   d.hide();
@@ -268,7 +268,7 @@ void SplashWindow::on_load_scenario_clicked()
   LoadScenarioDialog d(*window);
   d.run();
 
-  std::string filename = d.get_scenario_filename();
+  Glib::ustring filename = d.get_scenario_filename();
   if (!filename.empty())
     {
       d.hide();
@@ -289,7 +289,7 @@ void SplashWindow::on_load_scenario_clicked()
   //load_requested.emit(filename);
 }
 
-void SplashWindow::on_network_game_selected(std::string ip, unsigned short port, Profile *profile)
+void SplashWindow::on_network_game_selected(Glib::ustring ip, unsigned short port, Profile *profile)
 {
   new_remote_network_game_requested.emit(ip, port, profile);
 }

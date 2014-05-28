@@ -64,7 +64,7 @@ class StackTileBox: public Gtk::Box
     ArmyInfoTip *army_info_tip;
     typedef std::vector<StackArmyButton *> stack_army_buttons_type;
     stack_army_buttons_type stack_army_buttons;
-    static std::string get_file(Configuration::UiFormFactor factor);
+    static Glib::ustring get_file(Configuration::UiFormFactor factor);
     Gtk::Box *stack_info_box;
     Gtk::Box *stack_info_container;
     Gtk::Label *group_moves_label;

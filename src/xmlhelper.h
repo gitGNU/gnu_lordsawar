@@ -1,7 +1,7 @@
 // Copyright (C) 2002, 2003 Michael Bartl
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2003, 2004, 2005 Andrea Paternesi
-// Copyright (C) 2011, 2012 Ben Asselstine
+// Copyright (C) 2011, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -84,7 +84,7 @@
     
 class XML_Helper;
 
-typedef sigc::slot<bool, std::string, XML_Helper*> XML_Slot;
+typedef sigc::slot<bool, Glib::ustring, XML_Helper*> XML_Slot;
 //return type (bool), parameters tag(string), this(XML_Helper)
 
 //! XML handling class.
@@ -92,7 +92,7 @@ class XML_Helper
 {
     public:
 
-        static std::string xml_entity; // <?xml version=\"1.0\"?>
+        static Glib::ustring xml_entity; // <?xml version=\"1.0\"?>
 
         /** The most common constructor reads or writes to a file
           * 
@@ -100,7 +100,7 @@ class XML_Helper
           * @param openmode     either std::ios::in for reading or out for writing
           * @param zip          when writing, obfuscate files or not
           */ 
-        XML_Helper(std::string filename, std::ios::openmode mode, bool zip);
+        XML_Helper(Glib::ustring filename, std::ios::openmode mode, bool zip);
 
         /** This constructor reads from a given input stream.
           * 
@@ -121,14 +121,14 @@ class XML_Helper
           * @param version          the version number for the savegame
           * @return true on success, false on error
           */
-        bool begin(std::string version);
+        bool begin(Glib::ustring version);
 
         /** Opens a new subtag
           * 
           * @param name             the name of the subtag
           * @return true on success, false otherwise
           */
-        bool openTag(std::string name);
+        bool openTag(Glib::ustring name);
 
         //! Closes the most recently opened tag
         bool closeTag();
@@ -143,14 +143,14 @@ class XML_Helper
           * @param value                the data
           * @return true on success, false otherwise
           */
-        bool saveData(std::string identifier, const std::string value);
-        bool saveData(std::string identifier, const int value);
-        bool saveData(std::string identifier, const guint32 value);
-        bool saveData(std::string identifier, const bool value);
-        bool saveData(std::string identifier, const double value);
+        bool saveData(Glib::ustring identifier, const Glib::ustring value);
+        bool saveData(Glib::ustring identifier, const int value);
+        bool saveData(Glib::ustring identifier, const guint32 value);
+        bool saveData(Glib::ustring identifier, const bool value);
+        bool saveData(Glib::ustring identifier, const double value);
         /* amd64 fix, UL: still neccessary?*/
-        bool saveData(std::string identifier, unsigned long int value);
-	bool saveData(std::string identifier, const Gdk::RGBA value);
+        bool saveData(Glib::ustring identifier, unsigned long int value);
+	bool saveData(Glib::ustring identifier, const Gdk::RGBA value);
 
         /** Closes the reading/writing stream.
           * @note As soon as you call this function, the object is dead with
@@ -169,14 +169,14 @@ class XML_Helper
           * @param callback     a pointer to the callback function
           * @return true on success, false otherwise
           */
-        bool registerTag(std::string tag, XML_Slot callback);
+        bool registerTag(Glib::ustring tag, XML_Slot callback);
 
         /** Removes a callback function from the list
           * 
           * @param tag          the tag whose callback should be deleted
           * @return true on success, false otherwise
           */
-        bool unregisterTag(std::string tag);
+        bool unregisterTag(Glib::ustring tag);
 
         /** Provides cached data
           * 
@@ -190,15 +190,15 @@ class XML_Helper
           * @note For string data you can also specify if the data should be
           * translated ro not.
           */
-        bool getData(std::string& data, std::string name);
-        bool getData(bool& data, std::string name);
-        bool getData(int& data, std::string name);
-        bool getData(guint32& data, std::string name);
-        bool getData(double& data, std::string name);
-	bool getData(Gdk::RGBA & data, std::string name);
+        bool getData(Glib::ustring& data, Glib::ustring name);
+        bool getData(bool& data, Glib::ustring name);
+        bool getData(int& data, Glib::ustring name);
+        bool getData(guint32& data, Glib::ustring name);
+        bool getData(double& data, Glib::ustring name);
+	bool getData(Gdk::RGBA & data, Glib::ustring name);
 
         //! Returns the version number of the save file
-        std::string getVersion() const {return d_version;}
+        Glib::ustring getVersion() const {return d_version;}
         
         
         //! Use this function to start reading a file or stream
@@ -209,13 +209,13 @@ class XML_Helper
 
         
         //! Used internally for the expat callback
-        bool tag_open(std::string tag, std::string version, std::string lang);
+        bool tag_open(Glib::ustring tag, Glib::ustring version, Glib::ustring lang);
 
         //! Used internally for the expat callback
-        bool tag_close(std::string tag, std::string cdata = "");
+        bool tag_close(Glib::ustring tag, Glib::ustring cdata = "");
 
-        static std::string get_top_tag(std::string filename, bool zip);
-        static bool rewrite_version(std::string filename, std::string tag, std::string new_version, bool zip);
+        static Glib::ustring get_top_tag(Glib::ustring filename, bool zip);
+        static bool rewrite_version(Glib::ustring filename, Glib::ustring tag, Glib::ustring new_version, bool zip);
         
     private:
         /** Prepends a number of tags (depending on the number of opened tags)
@@ -223,7 +223,7 @@ class XML_Helper
           */
         inline void addTabs();
 
-	bool lang_check(std::string lang);
+	bool lang_check(Glib::ustring lang);
         
         
         //streams, d_fout and d_fin are used when it comes to file
@@ -238,14 +238,14 @@ class XML_Helper
         std::ostream* d_out;
         std::istream* d_in;
 
-        std::list<std::string> d_tags;
+        std::list<Glib::ustring> d_tags;
 
-        std::map<std::string, XML_Slot> d_callbacks;
-        std::map<std::string, std::string> d_data;
-        std::map<std::string, std::string> d_lang;
+        std::map<Glib::ustring, XML_Slot> d_callbacks;
+        std::map<Glib::ustring, Glib::ustring> d_data;
+        std::map<Glib::ustring, Glib::ustring> d_lang;
         
-        std::string d_last_opened;
-        std::string d_version;
+        Glib::ustring d_last_opened;
+        Glib::ustring d_version;
 
         XML_Parser d_parser;
 
@@ -256,7 +256,7 @@ class XML_Helper
 class VersionLoader 
 {
 public:
-    VersionLoader(std::string filename, std::string tag, std::string &version, bool &broken, bool zip = false)
+    VersionLoader(Glib::ustring filename, Glib::ustring tag, Glib::ustring &version, bool &broken, bool zip = false)
       {
         std::ifstream in(filename.c_str());
         if (in)
@@ -270,7 +270,7 @@ public:
             version = d_version;
           }
       }
-    bool load(std::string tag, XML_Helper* helper)
+    bool load(Glib::ustring tag, XML_Helper* helper)
       {
         if (tag == d_tag)
           {
@@ -280,8 +280,8 @@ public:
         return false;
       }
 
-    std::string d_tag;
-    std::string d_version;
+    Glib::ustring d_tag;
+    Glib::ustring d_version;
 };
 
 #endif //XML_HELPER_H

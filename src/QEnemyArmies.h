@@ -62,13 +62,13 @@ public:
     // Get Methods
 
     //! Return a description of how many armies have been killed so far.
-    std::string getProgress() const;
+    Glib::ustring getProgress() const;
 
     //! Return a queue of strings to show when the quest is compeleted.
-    void getSuccessMsg(std::queue<std::string>& msgs) const;
+    void getSuccessMsg(std::queue<Glib::ustring>& msgs) const;
 
     //! Return a queue of strings to show when the quest has expired.
-    void getExpiredMsg(std::queue<std::string>& msgs) const;
+    void getExpiredMsg(std::queue<Glib::ustring>& msgs) const;
 
     //! Returns the number of Army objects to be killed in this Quest.
     guint32 getArmiesToKill() {return d_to_kill;}

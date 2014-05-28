@@ -55,7 +55,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
         /** 
 	 * Make a new stack.
@@ -500,7 +500,7 @@ static bool compareIds(const Army *lhs, const Army *rhs);
 	Stack(guint32 id, Player* player, Vector<int> pos);
 
         //! Callback for loading the object from an opened saved-game file.
-        bool load(std::string tag, XML_Helper* helper);
+        bool load(Glib::ustring tag, XML_Helper* helper);
     
 	//! Helper method for returning strongest army.
 	Army* getStrongestArmy(bool hero) const;

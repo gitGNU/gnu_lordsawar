@@ -26,7 +26,7 @@
 #include "defs.h"
 #include "timing.h"
 
-TimedMessageDialog::TimedMessageDialog(Gtk::Window &parent, std::string message, int timeout, int grace)
+TimedMessageDialog::TimedMessageDialog(Gtk::Window &parent, Glib::ustring message, int timeout, int grace)
 {
   d_timeout = timeout;
   d_timer_count = 0;
@@ -106,7 +106,7 @@ bool TimedMessageDialog::tick()
   return Timing::STOP;
 }
     
-void TimedMessageDialog::set_title(std::string title)
+void TimedMessageDialog::set_title(Glib::ustring title)
 {
   window->set_title(title);
 }

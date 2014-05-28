@@ -21,7 +21,6 @@
 #define ARMYSETLIST_H
 
 #include <gtkmm.h>
-#include <string>
 #include <map>
 #include <vector>
 #include <sigc++/trackable.h>
@@ -94,19 +93,19 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 *
          * @return The name of the Armyset or an empty string on error.
          */
-        std::string getName(guint32 id) const;
+        Glib::ustring getName(guint32 id) const;
 
         //! Returns the different tilesizes present in the armysetlist.
 	void getSizes(std::list<guint32> &sizes);
 
         //! Returns whether the given name is also in our list of armysets.
-        bool contains(std::string name) const;
+        bool contains(Glib::ustring name) const;
 
         //! Returns the names of armysets that have the given tile size.
-	std::list<std::string> getValidNames(guint32 tilesize);
+	std::list<Glib::ustring> getValidNames(guint32 tilesize);
 
         //! Returns the names of all Armyset objects available to the game.
-	std::list<std::string> getValidNames() const;
+	std::list<Glib::ustring> getValidNames() const;
 
 
 
@@ -117,7 +116,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	  *
           * @return the id of the armyset (0 on error)
           */
-	int getArmysetId(std::string armyset, guint32 tilesize) const;
+	int getArmysetId(Glib::ustring armyset, guint32 tilesize) const;
 	Armyset *getArmyset(guint32 id) const;
 
 	//! Return the Armyset object by the name of the subdir.
@@ -126,7 +125,7 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 *             This value does not contain any slashes, and is
 	 *             presumed to be found inside the army/ directory.
 	 */
-	Armyset *getArmyset(std::string dir) const;
+	Armyset *getArmyset(Glib::ustring dir) const;
 
 	//! Return the name of the subdirectory for a given armyset.
         /** 
@@ -137,13 +136,13 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 *         Armyset::d_dir for more information about the nature of 
 	 *         the return value.
          */
-	std::string getArmysetDir(std::string name, guint32 tilesize) const;
+	Glib::ustring getArmysetDir(Glib::ustring name, guint32 tilesize) const;
 
 
 	//! Return an unused armyset number.
 	static int getNextAvailableId(int after = 0);
 
-	void add(Armyset *arymset, std::string file);
+	void add(Armyset *arymset, Glib::ustring file);
 
 	void instantiateImages(bool &broken);
 	void uninstantiateImages();
@@ -151,10 +150,10 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
         bool reload(guint32 armyset);
 	
 
-	Armyset *import(Tar_Helper *t, std::string f, bool &broken);
-	bool addToPersonalCollection(Armyset *armyset, std::string &new_subdir, guint32 &new_id);
+	Armyset *import(Tar_Helper *t, Glib::ustring f, bool &broken);
+	bool addToPersonalCollection(Armyset *armyset, Glib::ustring &new_subdir, guint32 &new_id);
 
-        std::string findFreeBaseName(std::string basename, guint32 max, guint32 &num) const;
+        Glib::ustring findFreeBaseName(Glib::ustring basename, guint32 max, guint32 &num) const;
     private:
         //! Default Constructor.  Loads all armyset objects it can find.
 	/**
@@ -174,26 +173,26 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 *
 	 * @return the Armyset.  NULL otherwise.
 	 */
-	Armyset* loadArmyset(std::string name);
+	Armyset* loadArmyset(Glib::ustring name);
 	  
 	//! Loads a bunch of armysets.
 	/**
 	 * Load a list of armysets from the system armyset directory, or the
 	 * user's personal collection.
 	 */
-	void loadArmysets(std::list<std::string> armysets);
+	void loadArmysets(std::list<Glib::ustring> armysets);
 
         //! Returns the names of armysets that have the given tile size.
-	std::list<std::string> getNames(guint32 tilesize);
+	std::list<Glib::ustring> getNames(guint32 tilesize);
 
         //! Returns the names of all Armyset objects available to the game.
-	std::list<std::string> getNames() const;
+	std::list<Glib::ustring> getNames() const;
 
         typedef std::map<guint32, ArmyProto*> IdArmyPrototypeMap;
         typedef std::map<guint32, IdArmyPrototypeMap> ArmyPrototypeMap;
-        typedef std::map<guint32, std::string> NameMap;
-        typedef std::map<std::string, guint32> IdMap;
-        typedef std::map<std::string, Armyset*> ArmysetMap;
+        typedef std::map<guint32, Glib::ustring> NameMap;
+        typedef std::map<Glib::ustring, guint32> IdMap;
+        typedef std::map<Glib::ustring, Armyset*> ArmysetMap;
         typedef std::map<guint32, Armyset*> ArmysetIdMap;
         
 	//! A map that provides Army objects by their index.

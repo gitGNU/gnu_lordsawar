@@ -125,15 +125,15 @@ int HeroTemplates::loadHeroTemplates()
 }
 
       
-bool HeroTemplates::load(std::string tag, XML_Helper *helper)
+bool HeroTemplates::load(Glib::ustring tag, XML_Helper *helper)
 {
   if (tag == "herotemplate")
     {
-      std::string name;
+      Glib::ustring name;
       helper->getData(name, "name");
       guint32 owner;
       helper->getData(owner, "owner");
-      std::string gender_str;
+      Glib::ustring gender_str;
       if (owner >= (int) MAX_PLAYERS)
 	return false;
       helper->getData(gender_str, "gender");

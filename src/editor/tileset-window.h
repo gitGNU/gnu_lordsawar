@@ -32,7 +32,7 @@
 class TileSetWindow: public sigc::trackable
 {
  public:
-    TileSetWindow(Gtk::Window *parent, std::string load_filename = "");
+    TileSetWindow(Gtk::Window *parent, Glib::ustring load_filename = "");
     ~TileSetWindow();
 
     void show();
@@ -44,8 +44,8 @@ class TileSetWindow: public sigc::trackable
 
  private:
     Gtk::Window* window;
-    std::string current_save_filename;
-    std::string autosave; //filename
+    Glib::ustring current_save_filename;
+    Glib::ustring autosave; //filename
     Tileset *d_tileset; //current tileset
     Tile *d_tile; //current tile
     bool needs_saving;
@@ -182,11 +182,11 @@ class TileSetWindow: public sigc::trackable
     void on_add_tilestyleset_clicked();
     void on_remove_tilestyleset_clicked();
 
-    bool load_tileset(std::string filename);
+    bool load_tileset(Glib::ustring filename);
     bool save_current_tileset();
     void update_window_title();
 
-    void choose_and_add_or_replace_tilestyleset(std::string replace_filename);
+    void choose_and_add_or_replace_tilestyleset(Glib::ustring replace_filename);
 
     void on_tilestyle_id_selected(guint32 id);
 

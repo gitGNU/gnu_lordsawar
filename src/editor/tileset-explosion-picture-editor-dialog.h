@@ -34,7 +34,7 @@ class TilesetExplosionPictureEditorDialog: public sigc::trackable
     TilesetExplosionPictureEditorDialog(Gtk::Window &parent, Tileset * tileset);
     ~TilesetExplosionPictureEditorDialog();
 
-    std::string get_selected_filename() {return selected_filename;};
+    Glib::ustring get_selected_filename() {return selected_filename;};
     int run();
     
  private:
@@ -44,16 +44,16 @@ class TilesetExplosionPictureEditorDialog: public sigc::trackable
     Gtk::FileChooserButton *explosion_filechooserbutton;
     Gtk::Image *scene_image;
     Tileset *d_tileset;
-    std::string selected_filename;
-    std::list<std::string> delfiles;
+    Glib::ustring selected_filename;
+    std::list<Glib::ustring> delfiles;
 
     void on_image_chosen();
     void on_large_toggled();
     void on_small_toggled();
-    void show_explosion_image(std::string filename);
+    void show_explosion_image(Glib::ustring filename);
     void update_panel();
 
-    void update_scene(TilePreviewScene *scene, std::string filename);
+    void update_scene(TilePreviewScene *scene, Glib::ustring filename);
 
 };
 

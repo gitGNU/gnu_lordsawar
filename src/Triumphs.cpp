@@ -24,7 +24,7 @@
 
 #include "xmlhelper.h"
 
-std::string Triumphs::d_tag = "triumphs";
+Glib::ustring Triumphs::d_tag = "triumphs";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<flush;}
 #define debug(x)
@@ -39,7 +39,7 @@ Triumphs::Triumphs(XML_Helper* helper)
 {
   for (unsigned int i = 0; i < 5; i++)
     {
-      std::string tally;
+      Glib::ustring tally;
       std::stringstream stally;
       guint32 val;
       switch (TriumphType(i))

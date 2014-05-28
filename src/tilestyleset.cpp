@@ -24,7 +24,7 @@
 #include "xmlhelper.h"
 #include "gui/image-helpers.h"
 
-std::string TileStyleSet::d_tag = "tilestyleset";
+Glib::ustring TileStyleSet::d_tag = "tilestyleset";
 
 #include <iostream>
 
@@ -40,12 +40,12 @@ TileStyleSet::TileStyleSet(const TileStyleSet &t)
     push_back(new TileStyle(*(*i)));
 }
         
-bool TileStyleSet::validate_image(std::string filename)
+bool TileStyleSet::validate_image(Glib::ustring filename)
 {
   return image_width_is_multiple_of_image_height (filename);
 }
 
-TileStyleSet::TileStyleSet(std::string file, guint32 tilesize, bool &success, TileStyle::Type type)
+TileStyleSet::TileStyleSet(Glib::ustring file, guint32 tilesize, bool &success, TileStyle::Type type)
 {
   success = validate_image(file);
   if (success == false)
@@ -121,7 +121,7 @@ void TileStyleSet::uninstantiateImages()
     }
 }
 
-void TileStyleSet::instantiateImages(int tilesize, std::string filename, bool &broken)
+void TileStyleSet::instantiateImages(int tilesize, Glib::ustring filename, bool &broken)
 {
   if (filename.empty() == false && !broken)
     {

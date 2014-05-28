@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Ben Asselstine
+// Copyright (C) 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 #ifndef COMMENTATOR_H
 #define COMMENTATOR_H
 
-#include <string>
 #include <vector>
 #include <gtkmm.h>
 
@@ -43,7 +42,7 @@ class Commentator
 
         bool hasComment() const;
 
-        std::vector<std::string> getComments(Player *player) const;
+        std::vector<Glib::ustring> getComments(Player *player) const;
 
     protected:
 	//! Creates a new Commentator from scratch.

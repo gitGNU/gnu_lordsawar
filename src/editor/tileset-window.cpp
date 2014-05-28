@@ -60,7 +60,7 @@
 #include "glade-helpers.h"
 
 
-TileSetWindow::TileSetWindow(Gtk::Window *parent, std::string load_filename)
+TileSetWindow::TileSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
 {
   autosave = File::getSavePath() + "autosave" + Tileset::file_extension;
   needs_saving = false;
@@ -271,7 +271,7 @@ TileSetWindow::TileSetWindow(Gtk::Window *parent, std::string load_filename)
 
     if (File::exists(autosave))
       {
-        std::string m;
+        Glib::ustring m;
         std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Tileset::file_extension);
         if (files.size() == 0)
           m = _("Do you want to recover the session?");
@@ -401,7 +401,7 @@ void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
       return;
     }
 
-  std::string n = d_tileset->getFileFromConfigurationFile(t->getName() + ".png");
+  Glib::ustring n = d_tileset->getFileFromConfigurationFile(t->getName() + ".png");
   bool broken = false;
   TileStyleSet *set = get_selected_tilestyleset ();
   set->instantiateImages(d_tileset->getTileSize(), n, broken);
@@ -500,7 +500,7 @@ bool TileSetWindow::on_delete_event(GdkEventAny *e)
 
 void TileSetWindow::on_new_tileset_activated()
 {
-  std::string name = "";
+  Glib::ustring name = "";
   int id = Tilesetlist::getNextAvailableId(0);
   Tileset *tileset = new Tileset(id, name);
   TileSetInfoDialog d(*window, tileset, File::getUserTilesetDir(), "", false,
@@ -514,7 +514,7 @@ void TileSetWindow::on_new_tileset_activated()
   if (d_tileset)
     delete d_tileset;
   d_tileset = tileset;
-  std::string dir = File::getUserTilesetDir();
+  Glib::ustring dir = File::getUserTilesetDir();
   d_tileset->setDirectory(dir);
   current_save_filename = d_tileset->getConfigurationFile();
   RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
@@ -578,14 +578,14 @@ void TileSetWindow::on_save_as_activated()
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      std::string new_basename = copy->getBaseName();
+      Glib::ustring new_basename = copy->getBaseName();
       guint32 new_id = copy->getId();
-      std::string new_name = copy->getName();
+      Glib::ustring new_name = copy->getName();
       save_tileset_menuitem->set_sensitive(true);
       current_save_filename = copy->getConfigurationFile();
       //here we add the autosave to the personal collection.
       //this is so that the images *with comments in them* come along.
-      std::string old_name = d_tileset->getName();
+      Glib::ustring old_name = d_tileset->getName();
       d_tileset->setName(copy->getName());
       bool success = Tilesetlist::getInstance()->addToPersonalCollection(d_tileset, new_basename, new_id);
       if (success)
@@ -608,7 +608,7 @@ void TileSetWindow::on_save_as_activated()
       else
         {
           Glib::ustring errmsg = Glib::strerror(errno);
-          std::string msg;
+          Glib::ustring msg;
           msg = _("Error!  Tileset could not be saved.");
           msg += "\n" + current_save_filename + "\n" +
             errmsg;
@@ -657,7 +657,7 @@ bool TileSetWindow::save_current_tileset()
   if (!success)
     {
       Glib::ustring errmsg = Glib::strerror(errno);
-      std::string msg;
+      Glib::ustring msg;
       msg = _("Error!  Tileset could not be saved.");
       msg += "\n" + current_save_filename + "\n" +
         errmsg;
@@ -1030,7 +1030,7 @@ void TileSetWindow::fill_tile_smallmap(Tile *tile)
 
 }
 
-void TileSetWindow::choose_and_add_or_replace_tilestyleset(std::string replace_filename)
+void TileSetWindow::choose_and_add_or_replace_tilestyleset(Glib::ustring replace_filename)
 {
   Gtk::FileChooserDialog chooser(*window, _("Choose an Image"),
 				 Gtk::FILE_CHOOSER_ACTION_OPEN);
@@ -1050,7 +1050,7 @@ void TileSetWindow::choose_and_add_or_replace_tilestyleset(std::string replace_f
   if (res != Gtk::RESPONSE_ACCEPT)
     return;
 
-  std::string selected_filename = chooser.get_filename();
+  Glib::ustring selected_filename = chooser.get_filename();
   if (selected_filename.empty())
     return;
 
@@ -1278,7 +1278,7 @@ void TileSetWindow::on_preview_tile_activated()
       
 void TileSetWindow::on_roads_picture_activated()
 {
-  std::string filename = "";
+  Glib::ustring filename = "";
   if (d_tileset->getRoadsFilename().empty() == false)
     filename = d_tileset->getFileFromConfigurationFile(d_tileset->getRoadsFilename() +".png");
   ImageEditorDialog d(*window, filename, ROAD_TYPES);
@@ -1301,7 +1301,7 @@ void TileSetWindow::on_roads_picture_activated()
 
 void TileSetWindow::on_bridges_picture_activated()
 {
-  std::string filename = "";
+  Glib::ustring filename = "";
   if (d_tileset->getBridgesFilename().empty() == false)
     filename = d_tileset->getFileFromConfigurationFile(d_tileset->getBridgesFilename() +".png");
   ImageEditorDialog d(*window, filename, BRIDGE_TYPES);
@@ -1323,7 +1323,7 @@ void TileSetWindow::on_bridges_picture_activated()
 }
 void TileSetWindow::on_fog_picture_activated()
 {
-  std::string filename = "";
+  Glib::ustring filename = "";
   if (d_tileset->getFogFilename().empty() == false)
     filename = d_tileset->getFileFromConfigurationFile(d_tileset->getFogFilename() +".png");
   ImageEditorDialog d(*window, filename, FOG_TYPES);
@@ -1377,9 +1377,9 @@ void TileSetWindow::on_explosion_picture_activated()
     }
 }
 
-bool TileSetWindow::load_tileset(std::string filename)
+bool TileSetWindow::load_tileset(Glib::ustring filename)
 {
-  std::string old_current_save_filename = current_save_filename;
+  Glib::ustring old_current_save_filename = current_save_filename;
   current_save_filename = filename;
   if (filename != autosave)
     Tileset::copy(current_save_filename, autosave);
@@ -1395,7 +1395,7 @@ bool TileSetWindow::load_tileset(std::string filename)
   Tileset *tileset = Tileset::create(autosave, unsupported_version);
   if (tileset == NULL)
     {
-      std::string msg;
+      Glib::ustring msg;
       if (unsupported_version)
         msg = _("Error!  The version of the tileset is unsupported.");
       else
@@ -1444,7 +1444,7 @@ bool TileSetWindow::load_tileset(std::string filename)
 
 void TileSetWindow::update_window_title()
 {
-  std::string title = "";
+  Glib::ustring title = "";
   if (needs_saving)
     title += "*";
   title += File::get_basename(current_save_filename, true);

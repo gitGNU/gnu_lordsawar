@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2003 Michael Bartl
-// Copyright (C) 2006, 2007, 2008, 2009, 2012 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -21,7 +21,6 @@
 #ifndef CREATE_SCENARIO_H
 #define CREATE_SCENARIO_H
 
-#include <string>
 #include <vector>
 #include <list>
 #include <gtkmm.h>
@@ -66,13 +65,13 @@ class CreateScenario : public CreateScenarioRandomize
                             int phills, int pmountains);
 
         //! Set the tileset of the map
-        void setMapTiles(std::string tilesname);
+        void setMapTiles(Glib::ustring tilesname);
 
 	//! Set the shieldset for the map
-	void setShieldset(std::string shieldsname);
+	void setShieldset(Glib::ustring shieldsname);
 
 	//! Set the cityset for the map
-	void setCityset(std::string citysetname);
+	void setCityset(Glib::ustring citysetname);
 
         //! Set the number of cities on the map
         void setNoCities(int number);
@@ -110,7 +109,7 @@ class CreateScenario : public CreateScenarioRandomize
           * @param type     the type of the player (see class player for more info)
           * @return a pointer to the created player
           */
-        Player* addPlayer(std::string name, guint32 armyset, Gdk::RGBA color,
+        Player* addPlayer(Glib::ustring name, guint32 armyset, Gdk::RGBA color,
 			  int type);
 
         /** Almost the same as addPlayer, but performs some additional checks
@@ -121,7 +120,7 @@ class CreateScenario : public CreateScenarioRandomize
           * @param type     the type of the player (see class player for more info)
           * @return false if a neutral player already exists, true otherwise
           */
-        bool addNeutral(std::string name, guint32 armyset, Gdk::RGBA color,
+        bool addNeutral(Glib::ustring name, guint32 armyset, Gdk::RGBA color,
                         int type);
 
         
@@ -162,7 +161,7 @@ class CreateScenario : public CreateScenarioRandomize
           * This will do the same as GameScenario::save() does (in fact it calls
           * GameScenario::save)
           */
-        bool dump(std::string filename) const;
+        bool dump(Glib::ustring filename) const;
 
 	MapGenerator *getGenerator() const {return d_generator;};
 	static int calculateRoadType (Vector<int> t);
@@ -227,15 +226,15 @@ class CreateScenario : public CreateScenarioRandomize
 	//players do not have to pay for more armies.
 	void getCityDifficulty (int difficulty, int *number_of_armies_factor);
 
-	void on_progress(double percent, std::string description);
+	void on_progress(double percent, Glib::ustring description);
 
         //data
         //for map creation
         GameScenario* d_scenario;
         MapGenerator* d_generator;
-        std::string d_tilesname;
-        std::string d_shieldsname;
-        std::string d_citysetname;
+        Glib::ustring d_tilesname;
+        Glib::ustring d_shieldsname;
+        Glib::ustring d_citysetname;
         int d_width;
         int d_height;
         bool d_turnmode;

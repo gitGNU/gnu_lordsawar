@@ -22,8 +22,8 @@
 LineChart::LineChart(std::list<std::list<unsigned int> > lines, 
 		     std::list<Gdk::RGBA> colours, 
 		     unsigned int max_height_value,
-		     std::string x_axis_description,
-		     std::string y_axis_description)
+		     Glib::ustring x_axis_description,
+		     Glib::ustring y_axis_description)
 {
   d_lines = lines;
   d_colours = colours;
@@ -91,7 +91,7 @@ bool LineChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
 
     // ensure the border is big enough for the label.
     Glib::RefPtr<Pango::Layout> layout = Glib::wrap (pango_cairo_create_layout (cr->cobj ()));
-    std::string text_font = "Sans 8";
+    Glib::ustring text_font = "Sans 8";
     Pango::FontDescription font_desc (text_font);
     layout->set_font_description (font_desc);
 

@@ -49,9 +49,9 @@ void Citysetlist::deleteInstance()
     s_instance = 0;
 }
 
-void Citysetlist::loadCitysets(std::list<std::string> citysets)
+void Citysetlist::loadCitysets(std::list<Glib::ustring> citysets)
 {
-    for (std::list<std::string>::const_iterator i = citysets.begin(); 
+    for (std::list<Glib::ustring>::const_iterator i = citysets.begin(); 
 	 i != citysets.end(); i++)
       {
 	Cityset *cityset = loadCityset(*i);
@@ -65,7 +65,7 @@ void Citysetlist::loadCitysets(std::list<std::string> citysets)
 Citysetlist::Citysetlist()
 {
     // load all citysets
-    std::list<std::string> citysets = Cityset::scanSystemCollection();
+    std::list<Glib::ustring> citysets = Cityset::scanSystemCollection();
     loadCitysets(citysets);
     citysets = Cityset::scanUserCollection();
     loadCitysets(citysets);
@@ -78,9 +78,9 @@ Citysetlist::~Citysetlist()
     delete (*it);
 }
 
-std::list<std::string> Citysetlist::getValidNames() const
+std::list<Glib::ustring> Citysetlist::getValidNames() const
 {
-  std::list<std::string> names;
+  std::list<Glib::ustring> names;
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->validate() == true)
       names.push_back((*it)->getName());
@@ -88,9 +88,9 @@ std::list<std::string> Citysetlist::getValidNames() const
   return names;
 }
 
-std::list<std::string> Citysetlist::getValidNames(guint32 tilesize)
+std::list<Glib::ustring> Citysetlist::getValidNames(guint32 tilesize)
 {
-  std::list<std::string> names;
+  std::list<Glib::ustring> names;
   for (iterator it = begin(); it != end(); it++)
     if ((*it)->getTileSize() == tilesize && (*it)->validate() == true)
       names.push_back((*it)->getName());
@@ -98,18 +98,18 @@ std::list<std::string> Citysetlist::getValidNames(guint32 tilesize)
   return names;
 }
 
-std::list<std::string> Citysetlist::getNames() const
+std::list<Glib::ustring> Citysetlist::getNames() const
 {
-  std::list<std::string> names;
+  std::list<Glib::ustring> names;
   for (const_iterator it = begin(); it != end(); it++)
     names.push_back((*it)->getName());
   names.sort(case_insensitive);
   return names;
 }
 
-std::list<std::string> Citysetlist::getNames(guint32 tilesize)
+std::list<Glib::ustring> Citysetlist::getNames(guint32 tilesize)
 {
-  std::list<std::string> names;
+  std::list<Glib::ustring> names;
   for (iterator it = begin(); it != end(); it++)
     if ((*it)->getTileSize() == tilesize)
       names.push_back((*it)->getName());
@@ -117,7 +117,7 @@ std::list<std::string> Citysetlist::getNames(guint32 tilesize)
   return names;
 }
 
-Cityset *Citysetlist::loadCityset(std::string name)
+Cityset *Citysetlist::loadCityset(Glib::ustring name)
 {
   debug("Loading cityset " <<File::get_basename(name));
   bool unsupported_version = false;
@@ -155,9 +155,9 @@ Cityset *Citysetlist::loadCityset(std::string name)
   return cityset;
 }
 
-void Citysetlist::add(Cityset *cityset, std::string file)
+void Citysetlist::add(Cityset *cityset, Glib::ustring file)
 {
-  std::string basename = File::get_basename(file);
+  Glib::ustring basename = File::get_basename(file);
   push_back(cityset);
   cityset->setBaseName(basename);
   d_dirs[String::ucompose("%1 %2", cityset->getName(), cityset->getTileSize())] = basename;
@@ -174,9 +174,9 @@ void Citysetlist::getSizes(std::list<guint32> &sizes)
     }
 }
 
-std::string Citysetlist::getCitysetDir(std::string name, guint32 tilesize) const
+Glib::ustring Citysetlist::getCitysetDir(Glib::ustring name, guint32 tilesize) const
 {
-  std::string name_and_size = String::ucompose("%1 %2", name, tilesize);
+  Glib::ustring name_and_size = String::ucompose("%1 %2", name, tilesize);
   DirMap::const_iterator it = d_dirs.find(name_and_size);
   if (it == d_dirs.end())
     return "";
@@ -208,7 +208,7 @@ Cityset *Citysetlist::getCityset(guint32 id) const
   return (*it).second;
 }
 	
-Cityset *Citysetlist::getCityset(std::string bname) const
+Cityset *Citysetlist::getCityset(Glib::ustring bname) const
 { 
   CitysetMap::const_iterator it = d_citysets.find(bname);
   if (it == d_citysets.end())
@@ -216,26 +216,26 @@ Cityset *Citysetlist::getCityset(std::string bname) const
   return (*it).second;
 }
 
-Cityset *Citysetlist::import(Tar_Helper *t, std::string f, bool &broken)
+Cityset *Citysetlist::import(Tar_Helper *t, Glib::ustring f, bool &broken)
 {
   bool unsupported_version = false;
-  std::string filename = t->getFile(f, broken);
+  Glib::ustring filename = t->getFile(f, broken);
   if (broken)
     return NULL;
   Cityset *cityset = Cityset::create(filename, unsupported_version);
   assert (cityset != NULL);
   cityset->setBaseName(File::get_basename(f));
 
-  std::string basename = "";
+  Glib::ustring basename = "";
   guint32 id = 0;
   addToPersonalCollection(cityset, basename, id);
 
   return cityset;
 }
 
-std::string Citysetlist::findFreeBaseName(std::string basename, guint32 max, guint32 &num) const
+Glib::ustring Citysetlist::findFreeBaseName(Glib::ustring basename, guint32 max, guint32 &num) const
 {
-  std::string new_basename;
+  Glib::ustring new_basename;
   for (unsigned int count = 1; count < max; count++)
     {
       new_basename = String::ucompose("%1%2", basename, count);
@@ -250,7 +250,7 @@ std::string Citysetlist::findFreeBaseName(std::string basename, guint32 max, gui
   return new_basename;
 }
 
-bool Citysetlist::addToPersonalCollection(Cityset *cityset, std::string &new_basename, guint32 &new_id)
+bool Citysetlist::addToPersonalCollection(Cityset *cityset, Glib::ustring &new_basename, guint32 &new_id)
 {
   //do we already have this one?
       
@@ -269,7 +269,7 @@ bool Citysetlist::addToPersonalCollection(Cityset *cityset, std::string &new_bas
       else
         {
           guint32 num = 0;
-          std::string new_basename = findFreeBaseName(cityset->getBaseName(), 100, num);
+          Glib::ustring new_basename = findFreeBaseName(cityset->getBaseName(), 100, num);
           if (new_basename == "")
             return false;
         }
@@ -292,7 +292,7 @@ bool Citysetlist::addToPersonalCollection(Cityset *cityset, std::string &new_bas
     new_id = cityset->getId();
 
   //make the directory where the cityset is going to live.
-  std::string file = File::getUserCitysetDir() + new_basename + Cityset::file_extension;
+  Glib::ustring file = File::getUserCitysetDir() + new_basename + Cityset::file_extension;
 
   cityset->save(file, Cityset::file_extension);
 
@@ -307,9 +307,9 @@ int Citysetlist::getNextAvailableId(int after)
 {
   bool unsupported_version = false;
   std::list<guint32> ids;
-  std::list<std::string> citysets = Cityset::scanSystemCollection();
+  std::list<Glib::ustring> citysets = Cityset::scanSystemCollection();
   //there might be IDs in invalid citysets.
-  for (std::list<std::string>::const_iterator i = citysets.begin(); 
+  for (std::list<Glib::ustring>::const_iterator i = citysets.begin(); 
        i != citysets.end(); i++)
     {
       Cityset *cityset = Cityset::create(*i, unsupported_version);
@@ -320,7 +320,7 @@ int Citysetlist::getNextAvailableId(int after)
 	}
     }
   citysets = Cityset::scanUserCollection();
-  for (std::list<std::string>::const_iterator i = citysets.begin(); 
+  for (std::list<Glib::ustring>::const_iterator i = citysets.begin(); 
        i != citysets.end(); i++)
     {
       Cityset *cityset = Cityset::create(*i, unsupported_version);
@@ -338,10 +338,10 @@ int Citysetlist::getNextAvailableId(int after)
   return -1;
 }
 
-bool Citysetlist::contains(std::string name) const
+bool Citysetlist::contains(Glib::ustring name) const
 {
-  std::list<std::string> n = getNames();
-  for (std::list<std::string>::iterator it = n.begin(); it != n.end(); it++)
+  std::list<Glib::ustring> n = getNames();
+  for (std::list<Glib::ustring>::iterator it = n.begin(); it != n.end(); it++)
     {
       if (*it == name)
         return true;
@@ -349,7 +349,7 @@ bool Citysetlist::contains(std::string name) const
   return false;
 }
 
-guint32 Citysetlist::getCitysetId(std::string basename) const
+guint32 Citysetlist::getCitysetId(Glib::ustring basename) const
 {
   Cityset *cs = getCityset(basename);
   if (cs)
@@ -367,7 +367,7 @@ bool Citysetlist::reload(guint32 id)
   cityset->reload(broken);
   if (broken)
     return false;
-  std::string basename = cityset->getBaseName();
+  Glib::ustring basename = cityset->getBaseName();
   d_dirs[String::ucompose("%1 %2", cityset->getName(), cityset->getTileSize())] = basename;
   d_citysets[basename] = cityset;
   d_citysetids[cityset->getId()] = cityset;

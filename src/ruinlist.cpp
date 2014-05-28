@@ -32,7 +32,7 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-std::string Ruinlist::d_tag = "ruinlist";
+Glib::ustring Ruinlist::d_tag = "ruinlist";
 
 Ruinlist* Ruinlist::s_instance = 0;
 
@@ -84,7 +84,7 @@ bool Ruinlist::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Ruinlist::load(std::string tag, XML_Helper* helper)
+bool Ruinlist::load(Glib::ustring tag, XML_Helper* helper)
 {
     // Shouldn't happen, but one never knows...
     if (tag != Ruin::d_tag)

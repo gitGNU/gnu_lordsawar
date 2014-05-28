@@ -18,7 +18,6 @@
 #ifndef NAMELIST_H
 #define NAMELIST_H
 
-#include <string>
 #include <map>
 #include <vector>
 #include <sigc++/trackable.h>
@@ -32,7 +31,7 @@
  * and cities.
  *
  */
-class NameList : public std::vector<std::string>, public sigc::trackable
+class NameList : public std::vector<Glib::ustring>, public sigc::trackable
 {
     public:
 
@@ -41,9 +40,9 @@ class NameList : public std::vector<std::string>, public sigc::trackable
 	 * Loads all names it can find in the given file, and
 	 * makes a new NameList object from what it finds.
 	 */
-        NameList(std::string filename, std::string item_tag);
+        NameList(Glib::ustring filename, Glib::ustring item_tag);
 
-	std::string popRandomName();
+	Glib::ustring popRandomName();
 
     private:
         
@@ -51,9 +50,9 @@ class NameList : public std::vector<std::string>, public sigc::trackable
         ~NameList();
 
         //! Callback for loading names into the NameList.
-	bool load(std::string tag, XML_Helper *helper);
+	bool load(Glib::ustring tag, XML_Helper *helper);
 
-	std::string d_item_tag;
+	Glib::ustring d_item_tag;
 };
 
 #endif // NAMELIST_H

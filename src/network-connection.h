@@ -24,7 +24,6 @@
 #include <sigc++/signal.h>
 #include <glibmm.h>
 #include <giomm.h>
-#include <string>
 
 #include "network-common.h"
 
@@ -36,20 +35,20 @@ public:
   NetworkConnection();
   ~NetworkConnection();
 
-  void connectToHost(std::string host, int port);
+  void connectToHost(Glib::ustring host, int port);
 
   sigc::signal<void> connected;
   sigc::signal<void> connection_lost;
   sigc::signal<void> connection_failed;
   sigc::signal<void> connection_received_data;
-  sigc::signal<bool, int, std::string> got_message;
+  sigc::signal<bool, int, Glib::ustring> got_message;
 
-  void send(int type, const std::string &payload);
-  void sendFile(int type, std::string filename);
-  std::string get_peer_hostname();
+  void send(int type, const Glib::ustring &payload);
+  void sendFile(int type, Glib::ustring filename);
+  Glib::ustring get_peer_hostname();
 
   void disconnect();
-  std::string getHost() const {return d_host;};
+  Glib::ustring getHost() const {return d_host;};
   guint32 getPort() const {return d_port;};
 private:
   Glib::RefPtr<Gio::SocketClient> client; //this is client-side connections.
@@ -64,7 +63,7 @@ private:
   char header[MESSAGE_SIZE_BYTES];
   int header_left;
   int header_size;
-  std::string d_host;
+  Glib::ustring d_host;
   guint32 d_port;
 
   void setup_connection();

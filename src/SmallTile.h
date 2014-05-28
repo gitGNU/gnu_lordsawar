@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009, 2010, 2011, 2012 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010, 2011, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #define SMALLTILE_H
 
 #include <gtkmm.h>
-#include <string>
 
 #include "xmlhelper.h"
 
@@ -30,7 +29,7 @@ class SmallTile
 {
     public:
 	//! The xml tag of this object in a tileset configuration file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! The terrain tile's appearance as seen on the OverviewMap.
 	enum Pattern { 

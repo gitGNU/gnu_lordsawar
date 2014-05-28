@@ -28,7 +28,7 @@
 //#define debug(x)
 
 
-NameList::NameList(std::string filename, std::string item_tag)
+NameList::NameList(Glib::ustring filename, Glib::ustring item_tag)
 {
   d_item_tag = item_tag;
   XML_Helper helper(File::getMiscFile(filename), std::ios::in, false);
@@ -48,20 +48,20 @@ NameList::~NameList()
 {
 }
 
-bool NameList::load(std::string tag, XML_Helper *helper)
+bool NameList::load(Glib::ustring tag, XML_Helper *helper)
 {
   if (tag == d_item_tag)
     {
-      std::string name;
+      Glib::ustring name;
       helper->getData(name, "name");
       push_back(name); 
     }
   return true;
 }
 
-std::string NameList::popRandomName()
+Glib::ustring NameList::popRandomName()
 {
-  std::string name;
+  Glib::ustring name;
   if (empty())
     return "";
   int randno = rand() % size();

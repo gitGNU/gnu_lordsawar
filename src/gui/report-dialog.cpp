@@ -356,7 +356,7 @@ Glib::ustring ReportDialog::get_rank_string(int rank)
     return _("unknown");
 }
 
-std::string ReportDialog::calculateRank(std::list<guint32> scores, guint32 score)
+Glib::ustring ReportDialog::calculateRank(std::list<guint32> scores, guint32 score)
 {
   guint32 rank = 0;
   std::list<guint32>::iterator it = scores.begin();

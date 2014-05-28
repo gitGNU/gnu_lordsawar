@@ -167,7 +167,7 @@ gssize NetworkConnection::on_payload_received(gssize len)
 
   int type = payload[1];
   bool keep_going = got_message.emit
-    (type, std::string(payload + MESSAGE_PREAMBLE_EXTRA_BYTES,
+    (type, Glib::ustring(payload + MESSAGE_PREAMBLE_EXTRA_BYTES,
                        payload_size - MESSAGE_PREAMBLE_EXTRA_BYTES));
   free (payload);
   payload = NULL;
@@ -181,7 +181,7 @@ gssize NetworkConnection::on_payload_received(gssize len)
 }
 
 
-void NetworkConnection::connectToHost(std::string host, int port)
+void NetworkConnection::connectToHost(Glib::ustring host, int port)
 {
   d_host = host;
   d_port = port;
@@ -193,7 +193,7 @@ void NetworkConnection::connectToHost(std::string host, int port)
                                &NetworkConnection::on_connect_connected));
 }
 
-void NetworkConnection::sendFile(int type, const std::string filename)
+void NetworkConnection::sendFile(int type, const Glib::ustring filename)
 {
   FILE *fileptr = fopen (filename.c_str(), "r");
   if (fileptr == NULL)
@@ -220,7 +220,7 @@ void NetworkConnection::sendFile(int type, const std::string filename)
     }
 }
 
-void NetworkConnection::send(int type, const std::string &payload)
+void NetworkConnection::send(int type, const Glib::ustring &payload)
 {
   // write the preamble
   gchar buf[MESSAGE_HEADER_SIZE];
@@ -244,7 +244,7 @@ bool NetworkConnection::on_connect_timeout()
   return Timing::STOP;
 }
 
-std::string NetworkConnection::get_peer_hostname()
+Glib::ustring NetworkConnection::get_peer_hostname()
 {
   Glib::RefPtr<Gio::InetSocketAddress> iconn = Glib::wrap((GInetSocketAddress*)(conn->get_remote_address()->gobj()), true);
   Glib::ustring h = iconn->get_address()->to_string();

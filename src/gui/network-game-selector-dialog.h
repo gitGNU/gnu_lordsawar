@@ -19,7 +19,6 @@
 #define NETWORK_GAME_SELECTOR_DIALOG_H
 
 #include <memory>
-#include <string>
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
 
@@ -33,7 +32,7 @@ class NetworkGameSelectorDialog: public sigc::trackable
     NetworkGameSelectorDialog(Gtk::Window &parent, Profile *p);
     ~NetworkGameSelectorDialog();
 
-    sigc::signal<void, std::string /*ip*/, unsigned short /*port*/> game_selected;
+    sigc::signal<void, Glib::ustring /*ip*/, unsigned short /*port*/> game_selected;
     void hide();
     bool run();
     
@@ -81,7 +80,7 @@ class NetworkGameSelectorDialog: public sigc::trackable
     void fill_games(RecentlyPlayedGameList *rpgl, Glib::RefPtr<Gtk::ListStore> list, const GamesColumns &columns, Profile *p);
 
     void on_connected_to_gamelist_server();
-    void on_game_list_received(RecentlyPlayedGameList *rpgl, std::string err);
+    void on_game_list_received(RecentlyPlayedGameList *rpgl, Glib::ustring err);
 };
 
 #endif

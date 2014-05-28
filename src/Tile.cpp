@@ -25,7 +25,7 @@
 #include "tileset.h"
 #include "tarhelper.h"
 
-std::string Tile::d_tag = "tile";
+Glib::ustring Tile::d_tag = "tile";
 
 Tile::Tile()
 {
@@ -46,7 +46,7 @@ Tile::Tile(XML_Helper* helper)
 {
     helper->getData(d_name, "name");
     helper->getData(d_moves, "moves");
-    std::string type_str;
+    Glib::ustring type_str;
     helper->getData(type_str, "type");
     d_type = tileTypeFromString(type_str);
 }
@@ -58,7 +58,7 @@ bool Tile::save(XML_Helper *helper) const
   retval &= helper->openTag(d_tag);
   retval &= helper->saveData("name", d_name);
   retval &= helper->saveData("moves", d_moves);
-  std::string type_str = tileTypeToString(Tile::Type(d_type));
+  Glib::ustring type_str = tileTypeToString(Tile::Type(d_type));
   retval &= helper->saveData("type", type_str);
   retval &= d_smalltile->save(helper);
   for (Tile::const_iterator i = begin(); i != end(); ++i)
@@ -124,7 +124,7 @@ TileStyle *Tile::getRandomTileStyle (TileStyle::Type style) const
   return tilestyles[rand() % tilestyles.size()];
 }
 
-std::string Tile::tileTypeToString(const Tile::Type type)
+Glib::ustring Tile::tileTypeToString(const Tile::Type type)
 {
   switch (type)
     {
@@ -146,7 +146,7 @@ std::string Tile::tileTypeToString(const Tile::Type type)
   return "Tile::GRASS";
 }
 
-Tile::Type Tile::tileTypeFromString(const std::string str)
+Tile::Type Tile::tileTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Tile::Type(atoi(str.c_str()));
@@ -246,7 +246,7 @@ void Tile::instantiateImages(int tilesize, Tar_Helper *t, bool &broken)
   broken = false;
   for (iterator it = begin(); it != end(); it++)
     {
-      std::string file = "";
+      Glib::ustring file = "";
       if ((*it)->getName().empty() == false && !broken)
         {
           file = t->getFile((*it)->getName() + ".png", broken);

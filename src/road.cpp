@@ -18,7 +18,7 @@
 #include "road.h"
 #include "GameMap.h"
 
-std::string Road::d_tag = "road";
+Glib::ustring Road::d_tag = "road";
 
 Road::Road(Vector<int> pos, int type)
   :Location(pos), d_type(type)
@@ -30,7 +30,7 @@ Road::Road(Vector<int> pos, int type)
 Road::Road(XML_Helper* helper)
     :Location(helper)
 {
-  std::string type_str;
+  Glib::ustring type_str;
   helper->getData(type_str, "type");
   d_type = roadTypeFromString(type_str);
     
@@ -60,14 +60,14 @@ bool Road::save(XML_Helper* helper) const
     retval &= helper->saveData("id", d_id);
     retval &= helper->saveData("x", getPos().x);
     retval &= helper->saveData("y", getPos().y);
-    std::string type_str = roadTypeToString(Road::Type(d_type));
+    Glib::ustring type_str = roadTypeToString(Road::Type(d_type));
     retval &= helper->saveData("type", type_str);
     retval &= helper->closeTag();
     
     return retval;
 }
 
-std::string Road::roadTypeToString(const Road::Type type)
+Glib::ustring Road::roadTypeToString(const Road::Type type)
 {
   switch (type)
     {
@@ -105,7 +105,7 @@ std::string Road::roadTypeToString(const Road::Type type)
   return "Road::CONNECTS_EAST_AND_WEST";
 }
 
-Road::Type Road::roadTypeFromString(const std::string str)
+Road::Type Road::roadTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Road::Type(atoi(str.c_str()));

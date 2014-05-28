@@ -34,7 +34,7 @@ class Bridgelist : public LocationList<Bridge*>, public sigc::trackable
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	// Methods that operate on the class data but do not modify the class.
 
@@ -85,7 +85,7 @@ class Bridgelist : public LocationList<Bridge*>, public sigc::trackable
 
     private:
         //! Callback for loading Bridge objects into the list of bridges.
-        bool load(std::string tag, XML_Helper* helper);
+        bool load(Glib::ustring tag, XML_Helper* helper);
 
 	// DATA
 

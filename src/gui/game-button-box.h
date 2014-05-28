@@ -69,7 +69,7 @@ class GameButtonBox: public Gtk::Box
     Gtk::Button *sw_keypad_button;
     Gtk::Button *s_keypad_button;
     Gtk::Button *se_keypad_button;
-    static std::string get_file(Configuration::UiFormFactor factor);
+    static Glib::ustring get_file(Configuration::UiFormFactor factor);
 
     void setup_button(Gtk::Button *button, sigc::slot<void> slot,
                       sigc::signal<void, bool> &game_signal);

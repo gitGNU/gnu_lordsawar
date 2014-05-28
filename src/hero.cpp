@@ -33,7 +33,7 @@
 #include "playerlist.h"
 #include "QuestsManager.h"
 
-std::string Hero::d_tag = "hero";
+Glib::ustring Hero::d_tag = "hero";
 
 Hero::Hero(const HeroProto& a)
   : Army (dynamic_cast<const ArmyProto&>(a)), d_name(a.getName()),
@@ -54,7 +54,7 @@ Hero::Hero(XML_Helper* helper)
     :Army(helper)
 {
   helper->getData(d_name, "name");
-  std::string gender_str;
+  Glib::ustring gender_str;
   if (!helper->getData(gender_str, "gender"))
     d_gender = NONE;
   else
@@ -77,7 +77,7 @@ bool Hero::save(XML_Helper* helper) const
     retval &= helper->openTag(Hero::d_tag);
 
     retval &= helper->saveData("name", d_name);
-    std::string gender_str = genderToString(Hero::Gender(d_gender));
+    Glib::ustring gender_str = genderToString(Hero::Gender(d_gender));
     retval &= helper->saveData("gender", gender_str);
     retval &= saveData(helper);
 
@@ -89,7 +89,7 @@ bool Hero::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Hero::loadBackpack(std::string tag, XML_Helper* helper)
+bool Hero::loadBackpack(Glib::ustring tag, XML_Helper* helper)
 {
   if (tag == Backpack::d_tag)
     {
@@ -128,7 +128,7 @@ guint32 Hero::calculateNaturalCommand()
 }
 
 
-std::string Hero::genderToString(const Hero::Gender gender)
+Glib::ustring Hero::genderToString(const Hero::Gender gender)
 {
   switch (gender)
     {
@@ -145,7 +145,7 @@ std::string Hero::genderToString(const Hero::Gender gender)
   return "Hero::FEMALE";
 }
 
-Hero::Gender Hero::genderFromString(const std::string str)
+Hero::Gender Hero::genderFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Hero::Gender(atoi(str.c_str()));

@@ -65,7 +65,7 @@ GameClient::~GameClient()
 {
 }
 
-void GameClient::start(std::string host, guint32 port, std::string profile_id, std::string nick)
+void GameClient::start(Glib::ustring host, guint32 port, Glib::ustring profile_id, Glib::ustring nick)
 {
   d_host = host;
   d_port = port;
@@ -103,7 +103,7 @@ void GameClient::onConnectionLost()
     client_could_not_connect.emit();
 }
 
-void GameClient::sat_down(Player *player, std::string nickname)
+void GameClient::sat_down(Player *player, Glib::ustring nickname)
 {
   if (!player)
     return;
@@ -130,7 +130,7 @@ void GameClient::type_changed (Player *player, int type)
   player_changes_type.emit(player, type);
 }
 
-void GameClient::stood_up(Player *player, std::string nickname)
+void GameClient::stood_up(Player *player, Glib::ustring nickname)
 {
   if (!player)
     return;
@@ -148,7 +148,7 @@ void GameClient::stood_up(Player *player, std::string nickname)
   player_stands.emit(player, nickname);
 }
 
-bool GameClient::onGotMessage(int type, std::string payload)
+bool GameClient::onGotMessage(int type, Glib::ustring payload)
 {
   std::cerr << String::ucompose(_("got message of type %1"), type) << std::endl;
   switch (MessageType(type)) {
@@ -289,7 +289,7 @@ void GameClient::gotKillPlayer(Player *player)
 
 void GameClient::onHistoryDone(NetworkHistory *history)
 {
-  std::string desc = history->toString();
+  Glib::ustring desc = history->toString();
   std::cerr << String::ucompose(_("Game Client got %1"), desc) << std::endl;
 
   if (history->getHistory()->getType() == History::PLAYER_VANQUISHED)
@@ -302,7 +302,7 @@ void GameClient::onHistoryDone(NetworkHistory *history)
 
 void GameClient::onActionDone(NetworkAction *action)
 {
-  std::string desc = action->toString();
+  Glib::ustring desc = action->toString();
   std::cerr << String::ucompose(_("Game Client got %1"), desc) << std::endl;
 
   if (action->getAction()->getType() == Action::END_TURN)
@@ -410,7 +410,7 @@ void GameClient::stand_up (Player *player)
   sit_or_stand (player, false);
 }
 
-void GameClient::chat(std::string message)
+void GameClient::chat(Glib::ustring message)
 {
   network_connection->send(MESSAGE_TYPE_CHAT, d_nickname + ":" + message);
 }
@@ -420,7 +420,7 @@ void GameClient::request_seat_manifest()
   network_connection->send(MESSAGE_TYPE_REQUEST_SEAT_MANIFEST, "");
 }
     
-void GameClient::gotTurnOrder (std::string payload)
+void GameClient::gotTurnOrder (Glib::ustring payload)
 {
   std::list<guint32> player_ids;
   std::stringstream players;

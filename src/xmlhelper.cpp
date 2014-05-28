@@ -33,17 +33,17 @@
 #define debug(x)
 
 //they are only needed later for the expat callbacks
-std::string my_cdata;
+Glib::ustring my_cdata;
 bool error = false;
     
-std::string XML_Helper::xml_entity = "<?xml version=\"1.0\"?>";
+Glib::ustring XML_Helper::xml_entity = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 
 // forward declarations of the internally used functions
 void start_handler(void* udata, const XML_Char* name, const XML_Char** atts);
 void character_handler(void* udata, const XML_Char* s, int len);
 void end_handler(void* udata, const XML_Char* name);
 
-XML_Helper::XML_Helper(std::string filename, std::ios::openmode mode, bool zip)
+XML_Helper::XML_Helper(Glib::ustring filename, std::ios::openmode mode, bool zip)
   : d_inbuf(0), d_outbuf(0), d_fout(0), d_fin(0), d_out(0), d_in(0),
     d_last_opened(""), d_version(""), d_failed(false), d_zip(zip)
 {
@@ -157,7 +157,7 @@ XML_Helper::~XML_Helper()
     close();
 }
 
-bool XML_Helper::begin(std::string version)
+bool XML_Helper::begin(Glib::ustring version)
 {
     d_version = version;
     (*d_out) << xml_entity << std::endl;
@@ -165,7 +165,7 @@ bool XML_Helper::begin(std::string version)
     return true;
 }
 
-bool XML_Helper::openTag(std::string name)
+bool XML_Helper::openTag(Glib::ustring name)
 {
     if (!d_out)
     {
@@ -199,7 +199,7 @@ bool XML_Helper::closeTag()
         return false;
     }
 
-    std::string name = (*d_tags.begin());
+    Glib::ustring name = (*d_tags.begin());
     
     //remove tag from list
     d_tags.pop_front();
@@ -210,7 +210,7 @@ bool XML_Helper::closeTag()
     return true;
 }
 
-bool XML_Helper::saveData(std::string name, const Gdk::RGBA value)
+bool XML_Helper::saveData(Glib::ustring name, const Gdk::RGBA value)
 {
     //prepend a "d_" to show that this is a data tag
     name = "d_" + name;
@@ -233,17 +233,17 @@ bool XML_Helper::saveData(std::string name, const Gdk::RGBA value)
     g = value.get_green() * 255;
     b = value.get_blue() * 255;
     snprintf(buf, sizeof(buf), "%02X", r);
-    std::string red = buf;
+    Glib::ustring red = buf;
     snprintf(buf, sizeof(buf), "%02X", g);
-    std::string green = buf;
+    Glib::ustring green = buf;
     snprintf(buf, sizeof(buf), "%02X", b);
-    std::string blue = buf;
+    Glib::ustring blue = buf;
 
     (*d_out) <<"<" <<name <<">#" <<red <<green<<blue <<"</" <<name <<">\n";
   return true;
 }
 
-bool XML_Helper::saveData(std::string name, std::string value)
+bool XML_Helper::saveData(Glib::ustring name, Glib::ustring value)
 {
     //prepend a "d_" to show that this is a data tag
     name = "d_" + name;
@@ -264,7 +264,7 @@ bool XML_Helper::saveData(std::string name, std::string value)
     return true;
 }
 
-bool XML_Helper::saveData(std::string name, int value)
+bool XML_Helper::saveData(Glib::ustring name, int value)
 {
     //prepend a "d_" to show that this is a data tag
     name = "d_" + name;
@@ -285,7 +285,7 @@ bool XML_Helper::saveData(std::string name, int value)
     return true;
 }
 
-bool XML_Helper::saveData(std::string name, guint32 value)
+bool XML_Helper::saveData(Glib::ustring name, guint32 value)
 {
     //prepend a "d_" to show that this is a data tag
     name = "d_" + name;
@@ -306,7 +306,7 @@ bool XML_Helper::saveData(std::string name, guint32 value)
     return true;
 }
 
-bool XML_Helper::saveData(std::string name, bool value)
+bool XML_Helper::saveData(Glib::ustring name, bool value)
 {
     //prepend a "d_" to show that this is a data tag
     name = "d_" + name;
@@ -322,7 +322,7 @@ bool XML_Helper::saveData(std::string name, bool value)
         return false;
     }
 
-    std::string s;
+    Glib::ustring s;
     s = (value? "true" : "false");
 
     addTabs();
@@ -330,7 +330,7 @@ bool XML_Helper::saveData(std::string name, bool value)
     return true;
 }
 
-bool XML_Helper::saveData(std::string name, double value)
+bool XML_Helper::saveData(Glib::ustring name, double value)
 {
     //prepend a "d_" to show that this is a data tag
     name = "d_" + name;
@@ -351,12 +351,10 @@ bool XML_Helper::saveData(std::string name, double value)
     return true;
 }
 
-/* This is a wrapper for the AMD64 platform */
-bool XML_Helper::saveData(std::string name, unsigned long int value)
+bool XML_Helper::saveData(Glib::ustring name, unsigned long int value)
 {
     return saveData(name, static_cast<guint32>(value));
 }
-/* End wrapper AMD64 */
 
 bool XML_Helper::close()
 {
@@ -366,7 +364,7 @@ bool XML_Helper::close()
         {
             debug("I zip IT")
             debug("Saving game and obfuscating the Savefile.\n") 
-            std::string tmp = d_outbuf->str();
+            Glib::ustring tmp = d_outbuf->str();
             tmp+='\0';
 
             long origlength = tmp.length();
@@ -437,7 +435,7 @@ void XML_Helper::addTabs()
 }
 
 //loading
-bool XML_Helper::registerTag(std::string tag, XML_Slot callback)
+bool XML_Helper::registerTag(Glib::ustring tag, XML_Slot callback)
 {
     //register tag as important
     d_callbacks[tag] = callback;
@@ -445,9 +443,9 @@ bool XML_Helper::registerTag(std::string tag, XML_Slot callback)
     return true;
 }
 
-bool XML_Helper::unregisterTag(std::string tag)
+bool XML_Helper::unregisterTag(Glib::ustring tag)
 {
-    std::map<std::string, XML_Slot>::iterator it = d_callbacks.find(tag);
+    std::map<Glib::ustring, XML_Slot>::iterator it = d_callbacks.find(tag);
 
     if (it == d_callbacks.end())
     //item doesn't exist
@@ -457,12 +455,12 @@ bool XML_Helper::unregisterTag(std::string tag)
     return true;
 }
 
-bool XML_Helper::getData(Gdk::RGBA & data, std::string name)
+bool XML_Helper::getData(Gdk::RGBA & data, Glib::ustring name)
 {
     //the data tags are stored with leading "d_", so prepend it here
     name = "d_" + name;
 
-    std::map<std::string, std::string>::const_iterator it;
+    std::map<Glib::ustring, Glib::ustring>::const_iterator it;
 
     it = d_data.find(name);
     
@@ -474,7 +472,7 @@ bool XML_Helper::getData(Gdk::RGBA & data, std::string name)
         return false;
     }
     
-    std::string value = (*it).second;
+    Glib::ustring value = (*it).second;
     char buf[15];
     int retval = sscanf(value.c_str(), "%s", buf);
     if (retval == -1)
@@ -504,19 +502,19 @@ bool XML_Helper::getData(Gdk::RGBA & data, std::string name)
   return true;
 }
 
-bool XML_Helper::getData(std::string& data, std::string name)
+bool XML_Helper::getData(Glib::ustring& data, Glib::ustring name)
 {
     //the data tags are stored with leading "d_", so prepend it here
     name = "d_" + name;
 
-    std::map<std::string, std::string>::const_iterator it;
+    std::map<Glib::ustring, Glib::ustring>::const_iterator it;
 
     it = d_data.find(name);
     
     if (it == d_data.end())
     {
         data = "";
-        std::cerr<<String::ucompose(_("Error!  couldn't get std::string value from xml tag `%1'."), name) << std::endl;
+        std::cerr<<String::ucompose(_("Error!  couldn't get Glib::ustring value from xml tag `%1'."), name) << std::endl;
         d_failed = true;
         return false;
     }
@@ -526,12 +524,12 @@ bool XML_Helper::getData(std::string& data, std::string name)
     return true;
 }
 
-bool XML_Helper::getData(bool& data, std::string name)
+bool XML_Helper::getData(bool& data, Glib::ustring name)
 {
     //the data tags are stored with leading "d_", so prepend it here
     name = "d_" + name;
 
-    std::map<std::string, std::string>::const_iterator it;
+    std::map<Glib::ustring, Glib::ustring>::const_iterator it;
     it = d_data.find(name);
 
     if (it == d_data.end())
@@ -556,12 +554,12 @@ bool XML_Helper::getData(bool& data, std::string name)
     return false;
 }
 
-bool XML_Helper::getData(int& data, std::string name)
+bool XML_Helper::getData(int& data, Glib::ustring name)
 {
     //the data tags are stored with leading "d_", so prepend it here
     name = "d_" + name;
 
-    std::map<std::string, std::string>::const_iterator it;
+    std::map<Glib::ustring, Glib::ustring>::const_iterator it;
     it = d_data.find(name);
 
     if (it == d_data.end())
@@ -575,12 +573,12 @@ bool XML_Helper::getData(int& data, std::string name)
     return true;
 }
 
-bool XML_Helper::getData(guint32& data, std::string name)
+bool XML_Helper::getData(guint32& data, Glib::ustring name)
 {
     //the data tags are stored with leading "d_", so prepend it here
     name = "d_" + name;
 
-    std::map<std::string, std::string>::const_iterator it;
+    std::map<Glib::ustring, Glib::ustring>::const_iterator it;
     it = d_data.find(name);
 
     if (it == d_data.end())
@@ -596,12 +594,12 @@ bool XML_Helper::getData(guint32& data, std::string name)
     
 }
 
-bool XML_Helper::getData(double& data, std::string name)
+bool XML_Helper::getData(double& data, Glib::ustring name)
 {
     //the data tags are stored with leading "d_", so prepend it here
     name = "d_" + name;
 
-    std::map<std::string, std::string>::const_iterator it;
+    std::map<Glib::ustring, Glib::ustring>::const_iterator it;
     it = d_data.find(name);
 
     if (it == d_data.end())
@@ -630,14 +628,16 @@ bool XML_Helper::parse()
 
     while (!d_in->eof() && !d_failed)
     {
-        char* buffer = static_cast<char*>(XML_GetBuffer(d_parser,1000));
-        d_in->getline(buffer, 1000);
+        void * buffer = XML_GetBuffer(d_parser,1024);
+        d_in->read((char*)buffer, 1024);
+          int bytesread = d_in->gcount();
+        //int bytesread = d_in->getline(buffer, 1000);
         bool my_eof = d_in->eof();
 
-        if (!XML_ParseBuffer(d_parser, strlen(buffer), my_eof))
+        if (!XML_ParseBuffer(d_parser, bytesread, my_eof))
         //error parsing
         {
-            std::cerr << String::ucompose(_("Error parsing xml document.  Line %1\n%2\nBuffer is `%3'"), XML_GetCurrentLineNumber(d_parser), XML_ErrorString(XML_GetErrorCode(d_parser)), buffer) << std::endl;
+            std::cerr << String::ucompose(_("Error parsing xml document.  Line %1\n%2"), XML_GetCurrentLineNumber(d_parser), XML_ErrorString(XML_GetErrorCode(d_parser))) << std::endl;
             d_failed = true;
         }
     }
@@ -673,7 +673,7 @@ bool XML_Helper::parse()
  * which has led tag_open to already call the callback.
  */
 
-bool XML_Helper::tag_open(std::string tag, std::string version, std::string lang)
+bool XML_Helper::tag_open(Glib::ustring tag, Glib::ustring version, Glib::ustring lang)
 {
     if (d_failed)
         return false;
@@ -694,13 +694,13 @@ bool XML_Helper::tag_open(std::string tag, std::string version, std::string lang
     
     //first of all, look if another important tag has already been opened
     //and call the appropriate callback if so
-    std::list<std::string>::iterator ls_it;
+    std::list<Glib::ustring>::iterator ls_it;
     ls_it = d_tags.begin();
     ls_it++;
 
     if ((ls_it != d_tags.end()) && (d_last_opened == (*ls_it)))
     {
-        std::map<std::string, XML_Slot>::iterator it;
+        std::map<Glib::ustring, XML_Slot>::iterator it;
         it = d_callbacks.find(*ls_it);
 
         
@@ -726,7 +726,7 @@ bool XML_Helper::tag_open(std::string tag, std::string version, std::string lang
     return true;
 }
 
-bool XML_Helper::lang_check(std::string lang)
+bool XML_Helper::lang_check(Glib::ustring lang)
 {
   static char *envlang = getenv("LANG");
   if (envlang == NULL)
@@ -749,7 +749,7 @@ bool XML_Helper::lang_check(std::string lang)
   return false;
 }
 
-bool XML_Helper::tag_close(std::string tag, std::string cdata)
+bool XML_Helper::tag_close(Glib::ustring tag, Glib::ustring cdata)
 {
     if (d_failed)
         return false;
@@ -768,7 +768,7 @@ bool XML_Helper::tag_close(std::string tag, std::string cdata)
     if ((d_last_opened == tag))
     //callback hasn't been called yet
     {
-        std::map<std::string, XML_Slot>::iterator it;
+        std::map<Glib::ustring, XML_Slot>::iterator it;
         it = d_callbacks.find(tag);
         
         if (it != d_callbacks.end())
@@ -802,19 +802,19 @@ void start_handler(void* udata, const XML_Char* name, const XML_Char** atts)
         return;
     
     XML_Helper* helper = static_cast<XML_Helper*>(udata);
-    std::string version = "";
-    std::string lang = "";
+    Glib::ustring version = "";
+    Glib::ustring lang = "";
 
     //the only attribute we know and handle are version strings
-    if ((atts[0] != 0) && (std::string(atts[0]) == "version"))
-        version = std::string(atts[1]);
+    if ((atts[0] != 0) && (Glib::ustring(atts[0]) == "version"))
+        version = Glib::ustring(atts[1]);
 
-    if ((atts[0] != 0) && (std::string(atts[0]) == "xml:lang"))
-        lang = std::string(atts[1]);
+    if ((atts[0] != 0) && (Glib::ustring(atts[0]) == "xml:lang"))
+        lang = Glib::ustring(atts[1]);
 
     my_cdata = "";
 
-    error = !helper->tag_open(std::string(name), version, lang);
+    error = !helper->tag_open(Glib::ustring(name), version, lang);
 }
 
 //the cdata handler, just sums up the string  s
@@ -823,14 +823,16 @@ void character_handler(void* udata, const XML_Char* s, int len)
     if (error)
         return;
 
-    char buffer[len+1];     //TODO: this is a gcc extension, very handy, but
-                            //not neccessarily portable
+    XML_Char buffer[len+4];
     
-    strncpy(buffer, s, len);
-    buffer[len] = '\0';
+    memset (buffer, 0, sizeof (buffer));
+    memcpy (buffer, s, len);
+    //strncpy(buffer, s, len);
+    //buffer[len] = '\0';
 
     //now add the string to the other one
-    my_cdata += std::string(buffer);
+    //my_cdata += Glib::ustring(buffer);
+    my_cdata += Glib::ustring((const char *) buffer);
 }
 
 //the end handler: call tag_close and dosome cleanup
@@ -841,26 +843,26 @@ void end_handler(void* udata, const XML_Char* name)
     
     XML_Helper* helper = static_cast<XML_Helper*>(udata);
 
-    error = !helper->tag_close(std::string(name), my_cdata);
+    error = !helper->tag_close(Glib::ustring(name), my_cdata);
 
     my_cdata = "";
 }
 
-std::string XML_Helper::get_top_tag(std::string filename, bool zip)
+Glib::ustring XML_Helper::get_top_tag(Glib::ustring filename, bool zip)
 {
   char buffer[1024];
   XML_Helper in(filename, std::ios::in, zip);
   while (in.d_in->eof() == false)
     {
       in.d_in->getline(buffer, sizeof buffer);
-      std::string line(buffer);
+      Glib::ustring line(buffer);
       if (line.find("<?xml version=\"1.0\"") == 0)
         continue;
       size_t start = line.find('<');
-      if (start == std::string::npos)
+      if (start == Glib::ustring::npos)
         continue;
       size_t finish = line.find(" version=", start + 1);
-      if (finish == std::string::npos)
+      if (finish == Glib::ustring::npos)
         continue;
       in.close();
       return line.substr(start + 1, finish - start - 1);
@@ -869,22 +871,22 @@ std::string XML_Helper::get_top_tag(std::string filename, bool zip)
   return "";
 }
 
-bool XML_Helper::rewrite_version(std::string filename, std::string tag, std::string new_version, bool zip)
+bool XML_Helper::rewrite_version(Glib::ustring filename, Glib::ustring tag, Glib::ustring new_version, bool zip)
 {
-  std::string match = "<" + tag + " version=\"";
+  Glib::ustring match = "<" + tag + " version=\"";
   bool found = false;
   char buffer[1024];
-  std::string tmpfile = File::get_tmp_file();
+  Glib::ustring tmpfile = File::get_tmp_file();
   XML_Helper in(filename, std::ios::in, zip);
   XML_Helper out(tmpfile, std::ios::out, zip);
   while (in.d_in->eof() == false)
     {
       in.d_in->getline(buffer, sizeof buffer);
-      std::string line(buffer);
+      Glib::ustring line(buffer);
       if (line.compare(0, match.length(), match) == 0 && found == false)
         {
           found = true;
-          std::string upgraded_line = match + new_version + "\">";
+          Glib::ustring upgraded_line = match + new_version + "\">";
           out.d_out->write(upgraded_line.c_str(), upgraded_line.length());
           (*out.d_out) << std::endl;
         }
@@ -892,10 +894,10 @@ bool XML_Helper::rewrite_version(std::string filename, std::string tag, std::str
         {
           int len = in.d_in->gcount();
           size_t pos = line.rfind("\r\n");
-          if (pos == std::string::npos)
+          if (pos == Glib::ustring::npos)
             {
               pos = line.rfind('\n');
-              if (pos != std::string::npos)
+              if (pos != Glib::ustring::npos)
                 len--;
             }
           else

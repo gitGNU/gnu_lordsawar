@@ -18,7 +18,7 @@
 #include "port.h"
 #include "GameMap.h"
 
-std::string Port::d_tag = "port";
+Glib::ustring Port::d_tag = "port";
 
 Port::Port(Vector<int> pos)
   :Location(pos)

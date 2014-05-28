@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009, 2010, 2011 Ben Asselstine
+// Copyright (C) 2008, 2009, 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 #ifndef ITEM_PROTO_H
 #define ITEM_PROTO_H
 
-#include <string>
 #include <gtkmm.h>
 #include "xmlhelper.h"
 #include "army.h"
@@ -45,7 +44,7 @@ class ItemProto: public Renamable
 	 * @note This tag appears in the item configuration file, and in
 	 * saved-game files.
 	 */
-	static std::string d_tag;
+	static Glib::ustring d_tag;
 
 	// The item can confer these special properties.
         enum Bonus {
@@ -108,8 +107,8 @@ class ItemProto: public Renamable
         };
 
 
-	static guint32 bonusFlagsFromString(const std::string str);
-	static std::string bonusFlagsToString(const guint32 bonus);
+	static guint32 bonusFlagsFromString(const Glib::ustring str);
+	static Glib::ustring bonusFlagsToString(const guint32 bonus);
         
 	//! Loading constructor.
         ItemProto(XML_Helper* helper);
@@ -118,7 +117,7 @@ class ItemProto: public Renamable
         ItemProto(const ItemProto& orig);
 
 	//! Creates a new Item Prototype from scratch.
-        ItemProto(std::string name);
+        ItemProto(Glib::ustring name);
 
         //! Destructor.
         virtual ~ItemProto();
@@ -141,7 +140,7 @@ class ItemProto: public Renamable
 	void removeBonus(ItemProto::Bonus bonus);
         
 	//! Return some text describing the item's special abilities.
-        std::string getBonusDescription() const;
+        Glib::ustring getBonusDescription() const;
 
         //! Return if the item is usable or not.
         bool isUsable() const {return d_bonus & USABLE;};
@@ -222,8 +221,8 @@ class ItemProto: public Renamable
         guint32 d_num_armies_to_raise;
     private:
 
-	static std::string bonusFlagToString(ItemProto::Bonus type);
-	static ItemProto::Bonus bonusFlagFromString(std::string str);
+	static Glib::ustring bonusFlagToString(ItemProto::Bonus type);
+	static ItemProto::Bonus bonusFlagFromString(Glib::ustring str);
 
 
 };

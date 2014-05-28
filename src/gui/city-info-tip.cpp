@@ -60,7 +60,7 @@ CityInfoTip::CityInfoTip(Gtk::Widget *target, MapTipPosition mpos, const City *c
     xml->get_widget("razed_label", razed_label);
 
     if (city->isBurnt() == true)
-      razed_label->set_markup("<b>" + std::string(_("Razed!")) + "</b>");
+      razed_label->set_markup("<b>" + Glib::ustring(_("Razed!")) + "</b>");
       
     name_label->set_markup("<b>" + city->getName() + "</b>");
     left_shield_image->property_pixbuf() = 

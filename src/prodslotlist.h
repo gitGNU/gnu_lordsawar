@@ -25,7 +25,6 @@
 
 #include <gtkmm.h>
 #include <list>
-#include <string>
 #include <vector>
 #include "prodslot.h"
 #include "defs.h"
@@ -193,7 +192,7 @@ class ProdSlotlist: public std::vector<ProdSlot*>
     protected:
 
 	//! Callback method to help in loading the armyprodbases into the list.
-	bool load(std::string tag, XML_Helper *helper);
+	bool load(Glib::ustring tag, XML_Helper *helper);
 
         // DATA
 

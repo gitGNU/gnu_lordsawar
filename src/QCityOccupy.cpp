@@ -81,17 +81,17 @@ bool QuestCityOccupy::save(XML_Helper* helper) const
     return retval;
 }
 //=======================================================================
-std::string QuestCityOccupy::getProgress() const
+Glib::ustring QuestCityOccupy::getProgress() const
 {
     return _("You aren't afraid of doing it, are you?");
 }
 //=======================================================================
-void QuestCityOccupy::getSuccessMsg(std::queue<std::string>& msgs) const
+void QuestCityOccupy::getSuccessMsg(std::queue<Glib::ustring>& msgs) const
 {
     msgs.push(_("The priests thank you for occupying this evil place."));
 }
 //=======================================================================
-void QuestCityOccupy::getExpiredMsg(std::queue<std::string>& msgs) const
+void QuestCityOccupy::getExpiredMsg(std::queue<Glib::ustring>& msgs) const
 {
     const City* c = getCity();
 

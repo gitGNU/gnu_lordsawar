@@ -41,7 +41,7 @@
 
 static bool inhibit_difficulty_combobox = false;
 
-void GamePreferencesDialog::init(Gtk::Window &parent, std::string filename)
+void GamePreferencesDialog::init(Gtk::Window &parent, Glib::ustring filename)
 {
   d_filename = filename;
   bool broken = false;
@@ -135,7 +135,7 @@ void GamePreferencesDialog::init(Gtk::Window &parent, std::string filename)
   return;
 }
 
-GamePreferencesDialog::GamePreferencesDialog(Gtk::Window &parent, std::string filename, GameScenario::PlayMode play_mode)
+GamePreferencesDialog::GamePreferencesDialog(Gtk::Window &parent, Glib::ustring filename, GameScenario::PlayMode play_mode)
 {
   mode = play_mode;
   init(parent, filename);
@@ -158,13 +158,13 @@ void GamePreferencesDialog::hide()
   dialog->hide();
 }
 
-bool GamePreferencesDialog::run(std::string nickname)
+bool GamePreferencesDialog::run(Glib::ustring nickname)
 {
 
   dialog->show_all();
   if (mode == GameScenario::NETWORKED)
     {
-      std::string text = nickname;
+      Glib::ustring text = nickname;
       text += "'s game";
       game_name_entry->set_text(text);
     }
@@ -517,7 +517,7 @@ bool GamePreferencesDialog::is_greatest()
 	  GameScenarioOptions::s_cusp_of_war == true);
 }
 
-void GamePreferencesDialog::set_title(std::string text)
+void GamePreferencesDialog::set_title(Glib::ustring text)
 {
   dialog->set_title(text);
 }

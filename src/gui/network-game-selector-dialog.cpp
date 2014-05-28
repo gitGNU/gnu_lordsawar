@@ -114,7 +114,7 @@ void NetworkGameSelectorDialog::on_connected_to_gamelist_server()
   GamelistClient::getInstance()->request_game_list();
 }
 
-void NetworkGameSelectorDialog::on_game_list_received(RecentlyPlayedGameList *rpgl, std::string err)
+void NetworkGameSelectorDialog::on_game_list_received(RecentlyPlayedGameList *rpgl, Glib::ustring err)
 {
   if (err == "")
     {

@@ -2947,7 +2947,7 @@ bool GraphicsCache::loadCursorPics()
   return true;
 }
 
-bool GraphicsCache::loadSelectorImages(std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks)
+bool GraphicsCache::loadSelectorImages(Glib::ustring filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks)
 {
   bool broken = false;
   int num_frames;
@@ -3190,7 +3190,7 @@ bool GraphicsCache::loadMoveBonusPics()
   return true;
 }
 
-bool GraphicsCache::loadFlagImages(std::string filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks)
+bool GraphicsCache::loadFlagImages(Glib::ustring filename, guint32 size, std::vector<PixMask* > &images, std::vector<PixMask* > &masks)
 {
   bool broken = false;
   images = disassemble_row(filename, FLAG_TYPES, true, broken);
@@ -3221,13 +3221,13 @@ PixMask* GraphicsCache::getMedalPic(bool large, int type)
     return d_medalpic[0][type];
 }
 
-PixMask* GraphicsCache::loadImage(std::string filename, bool alpha)
+PixMask* GraphicsCache::loadImage(Glib::ustring filename, bool alpha)
 {
   bool broken = false;
   return PixMask::create(filename, broken);
 }
 
-PixMask* GraphicsCache::getMiscPicture(std::string picname, bool alpha)
+PixMask* GraphicsCache::getMiscPicture(Glib::ustring picname, bool alpha)
 {
   return loadImage(File::getMiscFile("/various/" + picname), alpha);
 }

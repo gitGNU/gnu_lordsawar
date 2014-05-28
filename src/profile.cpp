@@ -24,12 +24,12 @@
 #include "ucompose.hpp"
 #include "GameScenario.h"
 
-std::string Profile::d_tag = "profile";
+Glib::ustring Profile::d_tag = "profile";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-Profile::Profile(std::string nickname)
+Profile::Profile(Glib::ustring nickname)
 {
   d_id = GameScenario::generate_guid();
   d_nickname = nickname;
@@ -43,7 +43,7 @@ Profile::Profile(XML_Helper* helper)
   helper->getData(d_id, "id");
   helper->getData(d_nickname, "nickname");
   helper->getData(d_user, "user");
-  std::string s;
+  Glib::ustring s;
   helper->getData(s, "created_on");
   d_creation_date.assign_from_iso8601(s);
   helper->getData(s, "last_played_on");
@@ -67,7 +67,7 @@ bool Profile::saveContents(XML_Helper *helper) const
   retval &= helper->saveData("id", d_id);
   retval &= helper->saveData("nickname", d_nickname);
   retval &= helper->saveData("user", d_user);
-  std::string s = d_creation_date.as_iso8601();
+  Glib::ustring s = d_creation_date.as_iso8601();
   retval &= helper->saveData("created_on", s);
   s = d_last_played_date.as_iso8601();
   retval &= helper->saveData("last_played_on", s);

@@ -19,7 +19,7 @@
 #include "image-helpers.h"
 
 std::vector<PixMask*>
-disassemble_row(const std::string &file, int no, bool &broken)
+disassemble_row(const Glib::ustring &file, int no, bool &broken)
 {
   Glib::RefPtr<Gdk::Pixbuf> row;
   try
@@ -67,7 +67,7 @@ disassemble_row(const std::string &file, int no, bool &broken)
 }
 
 std::vector<PixMask*>
-disassemble_row(const std::string &file, int no, bool first_half_height, bool &broken)
+disassemble_row(const Glib::ustring &file, int no, bool first_half_height, bool &broken)
 {
     Glib::RefPtr<Gdk::Pixbuf> row;
     try
@@ -118,7 +118,7 @@ disassemble_row(const std::string &file, int no, bool first_half_height, bool &b
   //return to_pixmap(to_pixbuf(pixmap)->scale_simple(w, h, Gdk::INTERP_BILINEAR));
 //}
 
-bool image_width_is_multiple_of_image_height(const std::string file)
+bool image_width_is_multiple_of_image_height(const Glib::ustring file)
 {
   Glib::RefPtr<Gdk::Pixbuf> row;
   try
@@ -138,7 +138,7 @@ bool image_width_is_multiple_of_image_height(const std::string file)
   return true;
 }
 
-void get_image_width_and_height (const std::string &file, guint32 &width, guint32 &height, bool &broken)
+void get_image_width_and_height (const Glib::ustring &file, guint32 &width, guint32 &height, bool &broken)
 {
   Glib::RefPtr<Gdk::Pixbuf> row;
   try

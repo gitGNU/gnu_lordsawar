@@ -22,7 +22,7 @@
 #include "reward.h"
 #include "xmlhelper.h"
 
-std::string Rewardlist::d_tag = "rewardlist";
+Glib::ustring Rewardlist::d_tag = "rewardlist";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -141,7 +141,7 @@ bool Rewardlist::save(XML_Helper* helper) const
   return retval;
 }
 
-bool Rewardlist::load(std::string tag, XML_Helper* helper)
+bool Rewardlist::load(Glib::ustring tag, XML_Helper* helper)
 {
   if (tag == Reward::d_tag)
     {

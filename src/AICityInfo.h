@@ -19,7 +19,6 @@
 #ifndef AICITYINFO_H
 #define AICITYINFO_H
 
-#include <string>
 #include "city.h"
 class Threatlist;
 class Threat;

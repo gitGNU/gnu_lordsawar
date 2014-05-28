@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,17 +21,16 @@
 #include <sigc++/trackable.h>
 #include <glibmm/main.h>
 #include <gtkmm.h>
-#include <string>
 
 // used for displaying a timed dialog that goes away after a period of time
 class TimedMessageDialog: public sigc::trackable
 {
  public:
-    TimedMessageDialog(Gtk::Window &parent, std::string message, int timeout,
+    TimedMessageDialog(Gtk::Window &parent, Glib::ustring message, int timeout,
 		       int grace = 30);
     ~TimedMessageDialog();
 
-    void set_title(std::string title);
+    void set_title(Glib::ustring title);
     void set_image(Glib::RefPtr<Gdk::Pixbuf> picture);
     void show_all();
     void run();

@@ -37,9 +37,9 @@
 #include "armysetlist.h"
 #include "GameMap.h"
 
-std::string StackArmyButton::get_file(Configuration::UiFormFactor factor)
+Glib::ustring StackArmyButton::get_file(Configuration::UiFormFactor factor)
 {
-  std::string f = "";
+  Glib::ustring f = "";
   switch (factor)
     {
     case Configuration::UI_FORM_FACTOR_DESKTOP:
@@ -58,7 +58,7 @@ std::string StackArmyButton::get_file(Configuration::UiFormFactor factor)
 
 StackArmyButton * StackArmyButton::create(guint32 factor, Stack *stack, Army *army, guint32 circle_colour_id, bool toggled)
 {
-  std::string file = 
+  Glib::ustring file = 
     StackArmyButton::get_file (Configuration::UiFormFactor(factor));
   Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(file);
 

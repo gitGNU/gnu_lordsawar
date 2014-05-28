@@ -1,5 +1,5 @@
 //  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 #define GUI_DRIVER_H
 
 #include <memory>
-#include <string>
 #include <sigc++/trackable.h>
 
 #include "splash-window.h"
@@ -36,7 +35,7 @@ class Profile;
 class Driver: public sigc::trackable
 {
  public:
-    Driver(std::string load_filename);
+    Driver(Glib::ustring load_filename);
     ~Driver();
 
     void run();
@@ -46,23 +45,23 @@ class Driver: public sigc::trackable
     GameLobbyDialog* game_lobby_dialog;
     SplashWindow* splash_window;
     NewNetworkGameDownloadWindow* download_window;
-    std::string d_load_filename;
+    Glib::ustring d_load_filename;
     sigc::connection heartbeat_conn;
     sigc::connection upload_heartbeat_conn;
     Player::Type robot_player_type;
-    std::string d_advertised_scenario_id;
+    Glib::ustring d_advertised_scenario_id;
     unsigned int number_of_robots;
-    std::string game_scenario_downloaded;
-    sigc::signal<void, std::string> game_scenario_received;
+    Glib::ustring game_scenario_downloaded;
+    sigc::signal<void, Glib::ustring> game_scenario_received;
     sigc::signal<void, Player*> player_replaced;
 
     void on_new_game_requested(GameParameters g);
-    void on_new_remote_network_game_requested(std::string host, unsigned short port, Profile *p);
+    void on_new_remote_network_game_requested(Glib::ustring host, unsigned short port, Profile *p);
     void on_new_hosted_network_game_requested(GameParameters g, int port, Profile *p, bool advertised, bool remotely_hosted);
     void on_new_pbm_game_requested(GameParameters g);
-    void on_game_scenario_downloaded(std::string filename);
-    void on_game_scenario_received(std::string path, Profile *p);
-    void on_load_requested(std::string filename);
+    void on_game_scenario_downloaded(Glib::ustring filename);
+    void on_game_scenario_received(Glib::ustring path, Profile *p);
+    void on_load_requested(Glib::ustring filename);
     void on_quit_requested();
 
     void on_game_ended();
@@ -83,19 +82,19 @@ class Driver: public sigc::trackable
     void on_client_could_not_connect();
 
     GameScenario *new_game(GameParameters g);
-    GameScenario *load_game(std::string file_path);
+    GameScenario *load_game(Glib::ustring file_path);
     void stress_test();
     void stressTestNextRound();
 
-    void lordsawaromatic(std::string host, unsigned short port, Player::Type type, int num_players);
-    void on_game_scenario_received_for_robots(std::string path);
+    void lordsawaromatic(Glib::ustring host, unsigned short port, Player::Type type, int num_players);
+    void on_game_scenario_received_for_robots(Glib::ustring path);
   
 
     void heartbeat();
     void upload_heartbeat();
 
-    void on_client_player_chat(std::string message);
-    void on_hosted_player_chat(std::string message);
+    void on_client_player_chat(Glib::ustring message);
+    void on_hosted_player_chat(Glib::ustring message);
     void on_hosted_player_says_game_may_begin();
 
     void on_show_lobby_requested();
@@ -110,7 +109,7 @@ class Driver: public sigc::trackable
     void get_default(int num_players, GameParameters &g);
     void serve (GameScenario *game_scenario);
     void remotely_serve (GameScenario *game_scenario, Profile *p);
-    void on_client_sits_down_in_headless_server_game(Player *p, std::string nick);
+    void on_client_sits_down_in_headless_server_game(Player *p, Glib::ustring nick);
   
     void on_could_not_bind_to_port_for_headless_server(int port);
     void on_could_not_bind_to_port (int port);
@@ -118,16 +117,16 @@ class Driver: public sigc::trackable
     void advertise_game(GameScenario *game_scenario, Profile *p);
     void on_connected_to_gamelist_server_for_advertising(GameScenario *game_scenario, Profile *p);
 
-    void on_advertising_response_received(std::string scenario_id, std::string err);
-    void unadvertise_game(std::string scenario_id, Profile *p);
-    void on_connected_to_gamelist_server_for_advertising_removal(std::string scenario_id);
-    void on_advertising_removal_response_received(std::string scenario_id, std::string err);
+    void on_advertising_response_received(Glib::ustring scenario_id, Glib::ustring err);
+    void unadvertise_game(Glib::ustring scenario_id, Profile *p);
+    void on_connected_to_gamelist_server_for_advertising_removal(Glib::ustring scenario_id);
+    void on_advertising_removal_response_received(Glib::ustring scenario_id, Glib::ustring err);
 
     void on_advertised_game_round_ends(GameScenario *game_scenario, Profile *p);
 
     void on_connected_to_gamehost_server_for_hosting_request (GameScenario *game_scenario);
-    void on_got_game_host_response(std::string scenario_id, std::string err, GameScenario *game_scenario);
-    void on_remote_game_hosted(std::string scenario_id, guint32 port, std::string err);
+    void on_got_game_host_response(Glib::ustring scenario_id, Glib::ustring err, GameScenario *game_scenario);
+    void on_remote_game_hosted(Glib::ustring scenario_id, guint32 port, Glib::ustring err);
     void on_could_not_connect_to_gamehost_server();
 };
 

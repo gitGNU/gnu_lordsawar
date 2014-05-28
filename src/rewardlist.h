@@ -36,7 +36,7 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 
 	// Methods that operate on the class data and modify the class.
@@ -96,7 +96,7 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
 
     private:
         //! Callback function for loading rewards.
-        bool load(std::string tag, XML_Helper* helper);
+        bool load(Glib::ustring tag, XML_Helper* helper);
 
 	//! Return a random reward from the list of the given type.
         Reward *popRandomReward(Reward::Type type);

@@ -3,7 +3,7 @@
 // Copyright (C) 2004 Andrea Paternesi
 // Copyright (C) 2004 John Farrell
 // Copyright (C) 2004 Bryan Duff
-// Copyright (C) 2006, 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2009, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -24,7 +24,6 @@
 #ifndef REAL_PLAYER_H
 #define REAL_PLAYER_H
 
-#include <string>
 #include <list>
 #include <gtkmm.h>
 
@@ -52,7 +51,7 @@ class RealPlayer : public Player
     public:
 
 	//! Default constructor.
-        RealPlayer(std::string name, guint32 armyset, Gdk::RGBA color, 
+        RealPlayer(Glib::ustring name, guint32 armyset, Gdk::RGBA color, 
 		   int width, int height, Player::Type type = Player::HUMAN, 
 		   int player_no = -1);
 

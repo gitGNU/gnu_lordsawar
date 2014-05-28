@@ -42,7 +42,7 @@ class ReportDialog: public sigc::trackable
     ReportDialog(Gtk::Window &parent, Player *player, ReportType type);
     ~ReportDialog();
 
-    static std::string calculateRank(std::list<guint32> scores, guint32 score);
+    static Glib::ustring calculateRank(std::list<guint32> scores, guint32 score);
     void run();
     void hide();
     

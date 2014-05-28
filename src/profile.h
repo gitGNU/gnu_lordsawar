@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Ben Asselstine
+//  Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #define PROFILE_H
 
 #include <gtkmm.h>
-#include <string>
 
 class XML_Helper;
 
@@ -32,7 +31,7 @@ class Profile
     public:
 
 	//! The xml tag of this object in a profiles file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! Loading constructor.
         /**
@@ -47,7 +46,7 @@ class Profile
 	/**
 	 * Make a new profile object.
 	 */
-        Profile(std::string nickname);
+        Profile(Glib::ustring nickname);
         
         //! Copy constructor
         Profile(const Profile &orig);
@@ -58,10 +57,10 @@ class Profile
 	// Get Methods
 
         //! Get the guid of the profile.
-	std::string getId() const {return d_id;};
+	Glib::ustring getId() const {return d_id;};
 
         //! Get the name of the profile.
-        std::string getNickname() const {return d_nickname;};
+        Glib::ustring getNickname() const {return d_nickname;};
 
         //! Get the date of the last time this profile played a network game.
         Glib::TimeVal getLastPlayedOn() const {return d_last_played_date;};
@@ -70,7 +69,7 @@ class Profile
         Glib::TimeVal getCreatedOn() const {return d_creation_date;};
 
         //! Get the user name of the profile.
-        std::string getUserName() const {return d_user;};
+        Glib::ustring getUserName() const {return d_user;};
 
 	// Methods that operate on the class data but do not modify it.
 
@@ -99,11 +98,11 @@ class Profile
 	// DATA
 	
 	//! The id of the game.
-	std::string d_id;
+	Glib::ustring d_id;
 
-        std::string d_nickname;
+        Glib::ustring d_nickname;
 
-        std::string d_user;
+        Glib::ustring d_user;
 
         Glib::TimeVal d_creation_date;
 

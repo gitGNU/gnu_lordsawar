@@ -37,9 +37,9 @@
 #include "armysetlist.h"
 #include "GameMap.h"
 
-std::string StatusBox::get_file(Configuration::UiFormFactor factor)
+Glib::ustring StatusBox::get_file(Configuration::UiFormFactor factor)
 {
-  std::string file = "";
+  Glib::ustring file = "";
   switch (factor)
     {
     case Configuration::UI_FORM_FACTOR_DESKTOP:
@@ -57,7 +57,7 @@ std::string StatusBox::get_file(Configuration::UiFormFactor factor)
 
 StatusBox * StatusBox::create(guint32 factor)
 {
-  std::string file = get_file(Configuration::UiFormFactor(factor));
+  Glib::ustring file = get_file(Configuration::UiFormFactor(factor));
   Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(file);
 
   StatusBox *box;
@@ -207,7 +207,7 @@ void StatusBox::update_sidebar_stats(SidebarStats s)
   upkeep_stats_label->set_tooltip_text(tip);
 }
     
-void StatusBox::set_progress_label(std::string s)
+void StatusBox::set_progress_label(Glib::ustring s)
 {
   progress_status_label->set_markup("<b>" + s + "</b>");
 }

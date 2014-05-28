@@ -23,7 +23,6 @@
 #define ARMY_PROTO_BASE_H
 
 #include <gtkmm.h>
-#include <string>
 
 #include "defs.h"
 
@@ -50,7 +49,7 @@ class ArmyProtoBase : public ArmyBase
         // Set Methods
         
         //! Sets the descriptive text for this Army.
-        void setDescription(std::string text) {d_description = text;};
+        void setDescription(Glib::ustring text) {d_description = text;};
         
         //! Set the gold pieces needed to make an Army unit of this kind.
         void setProductionCost(guint32 production_cost)
@@ -76,7 +75,7 @@ class ArmyProtoBase : public ArmyBase
         void setSight(guint32 sight) {d_sight = sight;};
 
         //! Set the name of the Army.
-        void setName(std::string name){d_name = name;}
+        void setName(Glib::ustring name){d_name = name;}
 
         //! Set how many turns this unit type needs to be produced.
         void setProduction(guint32 production){d_production = production;};
@@ -85,7 +84,7 @@ class ArmyProtoBase : public ArmyBase
         // Get Methods
         
         //! Returns the descriptive text of this Army.
-        std::string getDescription() const {return _(d_description.c_str());}
+        Glib::ustring getDescription() const {return _(d_description.c_str());}
 
 	//! Returns how much gold making one of these army units costs.
         guint32 getProductionCost() const {return d_production_cost;}
@@ -101,7 +100,7 @@ class ArmyProtoBase : public ArmyBase
 	guint32 getArmyset() const {return d_armyset;};
 
         //! Returns the name of the Army.
-        std::string getName() const {return _(d_name.c_str());};
+        Glib::ustring getName() const {return _(d_name.c_str());};
 
         //! Returns how many turns this Army needs to be produced.
         guint32 getProduction() const {return d_production;};
@@ -111,10 +110,10 @@ class ArmyProtoBase : public ArmyBase
 	bool saveData(XML_Helper* helper) const;
 
 	//! The name of the Army unit.  e.g. Scouts.
-        std::string d_name;
+        Glib::ustring d_name;
 
 	//! The description of the Army unit.
-        std::string d_description;
+        Glib::ustring d_description;
 
 	//! How many gold pieces needed to create an army of this kind.
 	/**

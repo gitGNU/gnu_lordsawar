@@ -34,8 +34,8 @@ class TilesetSelectorEditorDialog: public sigc::trackable
     TilesetSelectorEditorDialog(Gtk::Window &parent, Tileset * tileset);
     ~TilesetSelectorEditorDialog();
 
-    std::string get_small_selector_filename() {return small_filename;};
-    std::string get_large_selector_filename() {return large_filename;};
+    Glib::ustring get_small_selector_filename() {return small_filename;};
+    Glib::ustring get_large_selector_filename() {return large_filename;};
     int run();
     
  private:
@@ -46,7 +46,7 @@ class TilesetSelectorEditorDialog: public sigc::trackable
     Gtk::ComboBoxText *shield_theme_combobox;
     Gtk::Table *preview_table;
     Tileset *d_tileset;
-    std::list<std::string> delfiles;
+    std::list<Glib::ustring> delfiles;
 
     void setup_shield_theme_combobox(Gtk::Box *box);
     void shieldset_changed();
@@ -54,17 +54,17 @@ class TilesetSelectorEditorDialog: public sigc::trackable
     void on_large_toggled();
     void on_small_toggled();
     void update_selector_panel();
-    void show_preview_selectors(std::string filename);
+    void show_preview_selectors(Glib::ustring filename);
 
-    bool loadSelector(std::string filename);
+    bool loadSelector(Glib::ustring filename);
     void clearSelector();
     std::map< guint32, std::list<Glib::RefPtr<Gdk::Pixbuf> >* > selectors;
     sigc::connection heartbeat;
     std::map<guint32, std::list<Glib::RefPtr<Gdk::Pixbuf> >::iterator> frame;
 
     void on_heartbeat();
-    std::string small_filename;
-    std::string large_filename;
+    Glib::ustring small_filename;
+    Glib::ustring large_filename;
 
 };
 

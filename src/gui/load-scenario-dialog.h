@@ -20,7 +20,6 @@
 #define LOAD_SCENARIOS_DIALOG_H
 
 #include <memory>
-#include <string>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 #include <gtkmm.h>
@@ -35,7 +34,7 @@ class LoadScenarioDialog: public sigc::trackable
     void run();
     void hide();
 
-    std::string get_scenario_filename();
+    Glib::ustring get_scenario_filename();
 
  private:
     Gtk::Dialog* dialog;
@@ -53,15 +52,15 @@ class LoadScenarioDialog: public sigc::trackable
         { add(name); add(filename); }
 	
 	Gtk::TreeModelColumn<Glib::ustring> name;
-	Gtk::TreeModelColumn<std::string> filename;
+	Gtk::TreeModelColumn<Glib::ustring> filename;
     };
     const ScenariosColumns scenarios_columns;
     Glib::RefPtr<Gtk::ListStore> scenarios_list;
     
-    std::string selected_filename;
+    Glib::ustring selected_filename;
     
     void on_selection_changed();
-    void add_scenario(std::string filename);
+    void add_scenario(Glib::ustring filename);
     void on_add_scenario_clicked();
     void on_remove_scenario_clicked();
     int copy_file (Glib::ustring from, Glib::ustring to);

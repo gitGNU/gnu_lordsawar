@@ -46,7 +46,7 @@
 #include "stacklist.h" //remove me
 #include "ucompose.hpp"
 
-std::string Action::d_tag = "action";
+Glib::ustring Action::d_tag = "action";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<< x << std::endl<<std::flush;}
 #define debug(x)
@@ -63,7 +63,7 @@ Action::Action(const Action &action)
 }
 Action::Action(XML_Helper *helper)
 {
-  std::string type_str;
+  Glib::ustring type_str;
   helper->getData(type_str, "type");
   d_type = actionTypeFromString(type_str);
 }
@@ -87,7 +87,7 @@ bool Action::saveContents(XML_Helper* helper) const
 {
     bool retval = true;
 
-    std::string type_str = actionTypeToString(Action::Type(d_type));
+    Glib::ustring type_str = actionTypeToString(Action::Type(d_type));
     retval &= helper->saveData("type", type_str);
     retval &= doSave(helper);
 
@@ -96,7 +96,7 @@ bool Action::saveContents(XML_Helper* helper) const
 
 Action* Action::handle_load(XML_Helper* helper)
 {
-  std::string type_str;
+  Glib::ustring type_str;
 
   helper->getData(type_str, "type");
   Action::Type t = actionTypeFromString(type_str);
@@ -384,9 +384,9 @@ Action_Move::~Action_Move()
 {
 }
 
-std::string Action_Move::dump() const
+Glib::ustring Action_Move::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
     s <<"Stack " <<d_stack <<" moved to (";
     s <<d_dest.x <<"," <<d_dest.y <<")\n";
@@ -439,7 +439,7 @@ Action_Split::Action_Split(XML_Helper* helper)
     helper->getData(d_orig, "orig_stack");
     helper->getData(d_added, "new_stack");
 
-    std::string s;
+    Glib::ustring s;
     std::istringstream si;
 
     helper->getData(s, "moved");
@@ -452,9 +452,9 @@ Action_Split::~Action_Split()
 {
 }
 
-std::string Action_Split::dump() const
+Glib::ustring Action_Split::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
     s <<"Stack " <<d_orig<<" splitted with new stack ";
     s <<d_added<<".\n";
@@ -521,7 +521,7 @@ Action_Fight::Action_Fight(const Action_Fight &action)
 Action_Fight::Action_Fight(XML_Helper* helper)
     :Action(helper)
 {
-    std::string s;
+    Glib::ustring s;
     std::istringstream si;
     int ival = -1;
 
@@ -554,9 +554,9 @@ Action_Fight::~Action_Fight()
 {
 }
 
-std::string Action_Fight::dump() const
+Glib::ustring Action_Fight::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
     std::list<guint32>::const_iterator uit;
 
     s << "Battle fought.\n Attacking stacks: ";
@@ -572,7 +572,7 @@ std::string Action_Fight::dump() const
 
 bool Action_Fight::doSave(XML_Helper* helper) const
 {
-    std::stringstream si;
+  std::stringstream si;
     std::list<guint32>::const_iterator uit;
     bool retval = true;
     
@@ -665,7 +665,7 @@ bool Action_Fight::is_army_id_in_stacks(guint32 id, std::list<guint32> stack_ids
     return false;
 }
 
-bool Action_Fight::loadItem(std::string tag, XML_Helper* helper)
+bool Action_Fight::loadItem(Glib::ustring tag, XML_Helper* helper)
 {
     FightItem item;
     
@@ -702,9 +702,9 @@ Action_Join::~Action_Join()
 {
 }
 
-std::string Action_Join::dump() const
+Glib::ustring Action_Join::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
     s <<"Stack " <<d_joining_id <<" joined stack " <<d_orig_id <<"\n";
 
@@ -763,9 +763,9 @@ Action_Ruin::~Action_Ruin()
 {
 }
 
-std::string Action_Ruin::dump() const
+Glib::ustring Action_Ruin::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
     s <<"Ruin " <<d_ruin <<" searched by stack " <<d_stack <<".  ";
     s <<"Ruin has" <<(d_searched? " ":" not ") <<"been searched.\n";
@@ -818,9 +818,9 @@ Action_Temple::~Action_Temple()
 {
 }
 
-std::string Action_Temple::dump() const
+Glib::ustring Action_Temple::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
     s <<"Stack " <<d_stack <<" visited temple " <<d_temple <<".\n";
 
@@ -869,9 +869,9 @@ Action_Occupy::~Action_Occupy()
 {
 }
 
-std::string Action_Occupy::dump() const
+Glib::ustring Action_Occupy::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
     s <<"City " <<d_city <<" occupied\n";
 
@@ -916,9 +916,9 @@ Action_Pillage::~Action_Pillage()
 {
 }
 
-std::string Action_Pillage::dump() const
+Glib::ustring Action_Pillage::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
     s <<"city " <<d_city <<"pillaged.\n";
     return s.str();
 }
@@ -961,9 +961,9 @@ Action_Sack::~Action_Sack()
 {
 }
 
-std::string Action_Sack::dump() const
+Glib::ustring Action_Sack::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
     s <<"city " <<d_city <<"sacked.\n";
     return s.str();
 }
@@ -1006,9 +1006,9 @@ Action_Raze::~Action_Raze()
 {
 }
 
-std::string Action_Raze::dump() const
+Glib::ustring Action_Raze::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
     s <<"City " <<d_city <<" razed.\n";
 
@@ -1053,9 +1053,9 @@ Action_Upgrade::~Action_Upgrade()
 {
 }
 
-std::string Action_Upgrade::dump() const
+Glib::ustring Action_Upgrade::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
     s <<"Defense of city " <<d_city <<" upgraded.\n";
 
@@ -1103,9 +1103,9 @@ Action_Buy::~Action_Buy()
 {
 }
 
-std::string Action_Buy::dump() const
+Glib::ustring Action_Buy::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
     s <<"Production " <<d_prod <<" bought in city " <<d_city;
     s <<" slot: " <<d_slot << "\n";
@@ -1157,9 +1157,9 @@ Action_Production::~Action_Production()
 {
 }
 
-std::string Action_Production::dump() const
+Glib::ustring Action_Production::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
     s <<"Production in city " <<d_city <<" changed to " <<d_prod;
     s <<".\n";
@@ -1194,12 +1194,12 @@ Action_Reward::Action_Reward()
   d_reward = NULL;
 }
 
-bool Action_Reward::load(std::string tag, XML_Helper *helper)
+bool Action_Reward::load(Glib::ustring tag, XML_Helper *helper)
 {
     if (tag == Reward::d_tag)
       {
 	guint32 t;
-	std::string type_str;
+	Glib::ustring type_str;
 	helper->getData(type_str, "type");
 	t = Reward::rewardTypeFromString(type_str);
 	switch (t)
@@ -1249,7 +1249,7 @@ bool Action_Reward::fillData(Stack *s, Reward* r)
   return true;
 }
 
-std::string Action_Reward::dump() const
+Glib::ustring Action_Reward::dump() const
 {
   std::stringstream s;
 
@@ -1297,7 +1297,7 @@ Action_Quest::Action_Quest(XML_Helper* helper)
 {
 
   helper->getData(d_hero, "hero");
-  std::string s;
+  Glib::ustring s;
   helper->getData(s, "quest");
   d_questtype = Quest::questTypeFromString(s);
   helper->getData(d_data, "data");
@@ -1308,7 +1308,7 @@ Action_Quest::~Action_Quest()
 {
 }
 
-std::string Action_Quest::dump() const
+Glib::ustring Action_Quest::dump() const
 {
   std::stringstream ss;
 
@@ -1323,7 +1323,7 @@ bool Action_Quest::doSave(XML_Helper* helper) const
   bool retval = true;
 
   retval &= helper->saveData("hero", d_hero);
-  std::string s = Quest::questTypeToString(Quest::Type(d_questtype));
+  Glib::ustring s = Quest::questTypeToString(Quest::Type(d_questtype));
   retval &= helper->saveData("quest", s);
   retval &= helper->saveData("data", d_data);
   retval &= helper->saveData("victim_player", d_victim_player);
@@ -1397,7 +1397,7 @@ Action_Equip::~Action_Equip()
 {
 }
 
-std::string Action_Equip::dump() const
+Glib::ustring Action_Equip::dump() const
 {
   std::stringstream ss;
 
@@ -1458,7 +1458,7 @@ Action_Level::~Action_Level()
 {
 }
 
-std::string Action_Level::dump() const
+Glib::ustring Action_Level::dump() const
 {
   std::stringstream ss;
 
@@ -1509,7 +1509,7 @@ Action_Disband::~Action_Disband()
 {
 }
 
-std::string Action_Disband::dump() const
+Glib::ustring Action_Disband::dump() const
 {
   std::stringstream s;
 
@@ -1557,7 +1557,7 @@ Action_ModifySignpost::~Action_ModifySignpost()
 {
 }
 
-std::string Action_ModifySignpost::dump() const
+Glib::ustring Action_ModifySignpost::dump() const
 {
   std::stringstream s;
 
@@ -1576,7 +1576,7 @@ bool Action_ModifySignpost::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_ModifySignpost::fillData(Signpost * s, std::string message)
+bool Action_ModifySignpost::fillData(Signpost * s, Glib::ustring message)
 {
   d_signpost = s->getId();
   d_message = message; 
@@ -1607,7 +1607,7 @@ Action_RenameCity::~Action_RenameCity()
 {
 }
 
-std::string Action_RenameCity::dump() const
+Glib::ustring Action_RenameCity::dump() const
 {
   std::stringstream s;
 
@@ -1626,7 +1626,7 @@ bool Action_RenameCity::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_RenameCity::fillData(City* c, std::string name)
+bool Action_RenameCity::fillData(City* c, Glib::ustring name)
 {
   d_city = c->getId();
   d_name = name; 
@@ -1661,7 +1661,7 @@ Action_Vector::~Action_Vector()
 {
 }
 
-std::string Action_Vector::dump() const
+Glib::ustring Action_Vector::dump() const
 {
   std::stringstream s;
 
@@ -1705,7 +1705,7 @@ Action_FightOrder::Action_FightOrder(const Action_FightOrder &action)
 Action_FightOrder::Action_FightOrder(XML_Helper* helper)
 :Action(helper)
 {
-  std::string fight_order;
+  Glib::ustring fight_order;
   std::stringstream sfight_order;
   guint32 val;
   helper->getData(fight_order, "order");
@@ -1723,7 +1723,7 @@ Action_FightOrder::~Action_FightOrder()
 {
 }
 
-std::string Action_FightOrder::dump() const
+Glib::ustring Action_FightOrder::dump() const
 {
   std::stringstream s;
 
@@ -1781,7 +1781,7 @@ Action_Resign::~Action_Resign()
 {
 }
 
-std::string Action_Resign::dump() const
+Glib::ustring Action_Resign::dump() const
 {
   std::stringstream s;
   s << "this player resigns\n";
@@ -1825,7 +1825,7 @@ Action_Plant::~Action_Plant()
 {
 }
 
-std::string Action_Plant::dump() const
+Glib::ustring Action_Plant::dump() const
 {
   std::stringstream s;
   s << "hero " << d_hero << " plants item " << d_item;
@@ -1883,7 +1883,7 @@ Action_Produce::Action_Produce(XML_Helper* helper)
   helper->registerTag(ArmyProdBase::d_tag, sigc::mem_fun(this, &Action_Produce::load));
 }
 
-bool Action_Produce::load(std::string tag, XML_Helper *helper)
+bool Action_Produce::load(Glib::ustring tag, XML_Helper *helper)
 {
     if (tag == ArmyProdBase::d_tag)
       {
@@ -1900,7 +1900,7 @@ Action_Produce::~Action_Produce()
     delete d_army;
 }
 
-std::string Action_Produce::dump() const
+Glib::ustring Action_Produce::dump() const
 {
   std::stringstream s;
   s << "army id " << d_army_id << " of type " << d_army->getTypeId() << " shows up at city " << d_city;
@@ -1975,7 +1975,7 @@ Action_ProduceVectored::Action_ProduceVectored(XML_Helper* helper)
   helper->registerTag(ArmyProdBase::d_tag, sigc::mem_fun(this, &Action_ProduceVectored::load));
 }
 
-bool Action_ProduceVectored::load(std::string tag, XML_Helper *helper)
+bool Action_ProduceVectored::load(Glib::ustring tag, XML_Helper *helper)
 {
     if (tag == ArmyProdBase::d_tag)
       {
@@ -1992,7 +1992,7 @@ Action_ProduceVectored::~Action_ProduceVectored()
     delete d_army;
 }
 
-std::string Action_ProduceVectored::dump() const
+Glib::ustring Action_ProduceVectored::dump() const
 {
   std::stringstream s;
   s << "vectored army of type " << d_army->getTypeId() << " shows up at ";
@@ -2052,7 +2052,7 @@ Action_DiplomacyState::~Action_DiplomacyState()
 {
 }
 
-std::string Action_DiplomacyState::dump() const
+Glib::ustring Action_DiplomacyState::dump() const
 {
   std::stringstream s;
   s << "declaring ";
@@ -2112,7 +2112,7 @@ Action_DiplomacyProposal::~Action_DiplomacyProposal()
 {
 }
 
-std::string Action_DiplomacyProposal::dump() const
+Glib::ustring Action_DiplomacyProposal::dump() const
 {
   std::stringstream s;
   s << "proposing ";
@@ -2170,7 +2170,7 @@ Action_DiplomacyScore::~Action_DiplomacyScore()
 {
 }
 
-std::string Action_DiplomacyScore::dump() const
+Glib::ustring Action_DiplomacyScore::dump() const
 {
   std::stringstream s;
   if(d_amount > 0)
@@ -2221,7 +2221,7 @@ Action_EndTurn::~Action_EndTurn()
 {
 }
 
-std::string Action_EndTurn::dump() const
+Glib::ustring Action_EndTurn::dump() const
 {
   return "ending turn\n";
 }
@@ -2256,9 +2256,9 @@ Action_ConquerCity::~Action_ConquerCity()
 {
 }
 
-std::string Action_ConquerCity::dump() const
+Glib::ustring Action_ConquerCity::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
     s <<"City " <<d_city <<" occupied." << std::endl;
 
@@ -2305,7 +2305,7 @@ Action_RecruitHero::Action_RecruitHero(const Action_RecruitHero &action)
   d_hero = new HeroProto(*action.d_hero);
 }
 
-bool Action_RecruitHero::load(std::string tag, XML_Helper *helper)
+bool Action_RecruitHero::load(Glib::ustring tag, XML_Helper *helper)
 {
     if (tag == HeroProto::d_tag)
       {
@@ -2320,9 +2320,9 @@ Action_RecruitHero::~Action_RecruitHero()
 {
 }
 
-std::string Action_RecruitHero::dump() const
+Glib::ustring Action_RecruitHero::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
     s << "Hero " << d_hero->getName() << " recruited with " << d_allies << " allies\n";
 
@@ -2378,9 +2378,9 @@ Action_RenamePlayer::~Action_RenamePlayer()
 {
 }
 
-std::string Action_RenamePlayer::dump() const
+Glib::ustring Action_RenamePlayer::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
     s << "Player changes name to " << d_name <<".\n";
 
@@ -2396,7 +2396,7 @@ bool Action_RenamePlayer::doSave(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_RenamePlayer::fillData(std::string name)
+bool Action_RenamePlayer::fillData(Glib::ustring name)
 {
   d_name = name;
   return true;
@@ -2426,9 +2426,9 @@ Action_CityTooPoorToProduce::~Action_CityTooPoorToProduce()
 {
 }
 
-std::string Action_CityTooPoorToProduce::dump() const
+Glib::ustring Action_CityTooPoorToProduce::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
 
     s << "City " << d_city << " is too poor to produce army type " 
       << d_army_type << "\n";
@@ -2476,7 +2476,7 @@ Action_InitTurn::~Action_InitTurn()
 {
 }
 
-std::string Action_InitTurn::dump() const
+Glib::ustring Action_InitTurn::dump() const
 {
   return "initializing turn\n";
 }
@@ -2517,9 +2517,9 @@ Action_Loot::~Action_Loot()
 {
 }
 
-std::string Action_Loot::dump() const
+Glib::ustring Action_Loot::dump() const
 {
-    std::stringstream s;
+  std::stringstream s;
     s <<"player " <<d_looting_player_id << " took " << d_gold_added << 
       " gold pieces from player " << d_looted_player_id << 
       " who lost a total of " << d_gold_removed << "gold pieces.\n";
@@ -2583,7 +2583,7 @@ Action_UseItem::~Action_UseItem()
 {
 }
 
-std::string Action_UseItem::dump() const
+Glib::ustring Action_UseItem::dump() const
 {
   std::stringstream ss;
 
@@ -2649,7 +2649,7 @@ Action_ReorderArmies::Action_ReorderArmies(XML_Helper* helper)
 
   helper->getData(d_stack_id, "stack_id");
   helper->getData(d_player_id, "player_id");
-  std::string armies;
+  Glib::ustring armies;
   helper->getData(armies, "armies");
   std::stringstream sarmies;
   sarmies.str(armies);
@@ -2667,7 +2667,7 @@ Action_ReorderArmies::~Action_ReorderArmies()
 {
 }
 
-std::string Action_ReorderArmies::dump() const
+Glib::ustring Action_ReorderArmies::dump() const
 {
   std::stringstream ss;
 
@@ -2730,7 +2730,7 @@ Action_ResetStacks::~Action_ResetStacks()
 {
 }
 
-std::string Action_ResetStacks::dump() const
+Glib::ustring Action_ResetStacks::dump() const
 {
   std::stringstream ss;
 
@@ -2777,7 +2777,7 @@ Action_ResetRuins::~Action_ResetRuins()
 {
 }
 
-std::string Action_ResetRuins::dump() const
+Glib::ustring Action_ResetRuins::dump() const
 {
   std::stringstream ss;
   ss <<"Ruins are being recharged.";
@@ -2819,7 +2819,7 @@ Action_CollectTaxesAndPayUpkeep::~Action_CollectTaxesAndPayUpkeep()
 {
 }
 
-std::string Action_CollectTaxesAndPayUpkeep::dump() const
+Glib::ustring Action_CollectTaxesAndPayUpkeep::dump() const
 {
   std::stringstream ss;
   ss <<"Collecting taxes from cities and paying the troops.";
@@ -2861,7 +2861,7 @@ Action_Kill::~Action_Kill()
 {
 }
 
-std::string Action_Kill::dump() const
+Glib::ustring Action_Kill::dump() const
 {
   std::stringstream ss;
   ss <<"player is vanquished.";
@@ -2904,7 +2904,7 @@ Action_DefendStack::~Action_DefendStack()
 {
 }
 
-std::string Action_DefendStack::dump() const
+Glib::ustring Action_DefendStack::dump() const
 {
   std::stringstream ss;
 
@@ -2949,7 +2949,7 @@ Action_UndefendStack::~Action_UndefendStack()
 {
 }
 
-std::string Action_UndefendStack::dump() const
+Glib::ustring Action_UndefendStack::dump() const
 {
   std::stringstream ss;
 
@@ -2994,7 +2994,7 @@ Action_ParkStack::~Action_ParkStack()
 {
 }
 
-std::string Action_ParkStack::dump() const
+Glib::ustring Action_ParkStack::dump() const
 {
   std::stringstream ss;
 
@@ -3039,7 +3039,7 @@ Action_UnparkStack::~Action_UnparkStack()
 {
 }
 
-std::string Action_UnparkStack::dump() const
+Glib::ustring Action_UnparkStack::dump() const
 {
   std::stringstream ss;
 
@@ -3084,7 +3084,7 @@ Action_SelectStack::~Action_SelectStack()
 {
 }
 
-std::string Action_SelectStack::dump() const
+Glib::ustring Action_SelectStack::dump() const
 {
   std::stringstream ss;
 
@@ -3128,7 +3128,7 @@ Action_DeselectStack::~Action_DeselectStack()
 {
 }
 
-std::string Action_DeselectStack::dump() const
+Glib::ustring Action_DeselectStack::dump() const
 {
   std::stringstream ss;
 
@@ -3147,7 +3147,7 @@ bool Action_DeselectStack::fillData()
   return true;
 }
 
-std::string Action::actionTypeToString(Action::Type type)
+Glib::ustring Action::actionTypeToString(Action::Type type)
 {
   switch (type)
     {
@@ -3252,7 +3252,7 @@ std::string Action::actionTypeToString(Action::Type type)
   return "Action::MOVE";
 }
 
-Action::Type Action::actionTypeFromString(std::string str)
+Action::Type Action::actionTypeFromString(Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Action::Type(atoi(str.c_str()));

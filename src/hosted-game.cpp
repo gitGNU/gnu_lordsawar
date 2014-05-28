@@ -25,7 +25,7 @@
 #include "profile.h"
 
 
-std::string HostedGame::d_tag = "hostedgame";
+Glib::ustring HostedGame::d_tag = "hostedgame";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -61,7 +61,7 @@ bool HostedGame::save(XML_Helper* helper) const
   return retval;
 }
 
-bool HostedGame::loadAdvertisedGame(std::string tag, XML_Helper *helper)
+bool HostedGame::loadAdvertisedGame(Glib::ustring tag, XML_Helper *helper)
 {
   if (tag == AdvertisedGame::d_tag_name)
     {

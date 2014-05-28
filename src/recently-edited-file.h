@@ -1,4 +1,4 @@
-//  Copyright (C) 2010, 2011 Ben Asselstine
+//  Copyright (C) 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #define RECENTLY_EDITED_FILE_H
 
 #include <gtkmm.h>
-#include <string>
 
 
 #include <sys/time.h>
@@ -40,7 +39,7 @@ class RecentlyEditedFile
     public:
 
 	//! The xml tag of this object in a recently edited file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! Loading constructor.
         /**
@@ -53,7 +52,7 @@ class RecentlyEditedFile
         RecentlyEditedFile(XML_Helper* helper);
 
 	//! Default constructor.
-        RecentlyEditedFile(std::string filename);
+        RecentlyEditedFile(Glib::ustring filename);
         
 	//! Destructor.
         virtual ~RecentlyEditedFile();
@@ -64,7 +63,7 @@ class RecentlyEditedFile
         Glib::TimeVal getTimeOfLastEdit() const { return d_last_edit;};
 
 	//! Get the name of the file.
-	std::string getFileName() const {return d_filename;};
+	Glib::ustring getFileName() const {return d_filename;};
 
 	// Set Methods
 
@@ -104,7 +103,7 @@ class RecentlyEditedFile
         Glib::TimeVal d_last_edit;
 
 	//! The name of the file.
-	std::string d_filename;
+	Glib::ustring d_filename;
 
 };
 
@@ -112,7 +111,7 @@ class RecentlyEditedShieldsetFile : public RecentlyEditedFile
 {
     public:
 	//! Make a new shieldset file entry.
-	RecentlyEditedShieldsetFile(std::string filename);
+	RecentlyEditedShieldsetFile(Glib::ustring filename);
 
 	//! Load a new shieldset file from an opened file.
 	RecentlyEditedShieldsetFile(XML_Helper *helper);
@@ -126,7 +125,7 @@ class RecentlyEditedShieldsetFile : public RecentlyEditedFile
 	//! Save the shieldset file entry to an opened file.
 	virtual bool doSave(XML_Helper *helper) const;
 
-        std::string getName() const {return d_name;};
+        Glib::ustring getName() const {return d_name;};
 
         guint32 getImagesNeeded() const {return d_images_needed;};
 
@@ -136,7 +135,7 @@ class RecentlyEditedShieldsetFile : public RecentlyEditedFile
 	bool fillData(Shieldset *shieldset);
 
     private:
-	std::string d_name;
+	Glib::ustring d_name;
         //! The number of image filenames required to make this shieldset valid.
         guint32 d_images_needed;
 };
@@ -145,7 +144,7 @@ class RecentlyEditedTilesetFile : public RecentlyEditedFile
 {
     public:
 	//! Make a new tileset file entry.
-	RecentlyEditedTilesetFile(std::string filename);
+	RecentlyEditedTilesetFile(Glib::ustring filename);
 
 	//! Load a new tileset file from an opened saved-file file.
 	RecentlyEditedTilesetFile(XML_Helper *helper);
@@ -159,7 +158,7 @@ class RecentlyEditedTilesetFile : public RecentlyEditedFile
 	//! Save the tileset file entry to an opened file.
 	virtual bool doSave(XML_Helper *helper) const;
 
-        std::string getName() const {return d_name;};
+        Glib::ustring getName() const {return d_name;};
         guint32 getNumberOfTiles() const {return d_num_tiles;};
 
 	// Methods that operate on the class data and modify it.
@@ -171,7 +170,7 @@ class RecentlyEditedTilesetFile : public RecentlyEditedFile
 	// DATA
 	
 	//! The name of the tileset for this entry.
-        std::string d_name;
+        Glib::ustring d_name;
 
         //! The number of tiles in this tileset.
         guint32 d_num_tiles;
@@ -181,7 +180,7 @@ class RecentlyEditedArmysetFile : public RecentlyEditedFile
 {
     public:
 	//! Make a new armyset file entry.
-	RecentlyEditedArmysetFile(std::string filename);
+	RecentlyEditedArmysetFile(Glib::ustring filename);
 
 	//! Load a new armyset file from an opened file.
 	RecentlyEditedArmysetFile(XML_Helper *helper);
@@ -195,7 +194,7 @@ class RecentlyEditedArmysetFile : public RecentlyEditedFile
 	//! Save the armyset file entry to an opened file.
 	virtual bool doSave(XML_Helper *helper) const;
 
-        std::string getName() const {return d_name;};
+        Glib::ustring getName() const {return d_name;};
         guint32 getNumberOfArmies() const {return d_num_armies;};
 
 	// Methods that operate on the class data and modify it.
@@ -207,7 +206,7 @@ class RecentlyEditedArmysetFile : public RecentlyEditedFile
 	// DATA
 	
 	//! The name of the armyset.
-	std::string d_name;
+	Glib::ustring d_name;
 
         //! How many armies are in this armyset.
         guint32 d_num_armies;
@@ -217,7 +216,7 @@ class RecentlyEditedCitysetFile : public RecentlyEditedFile
 {
     public:
 	//! Make a new cityset file entry.
-	RecentlyEditedCitysetFile(std::string filename);
+	RecentlyEditedCitysetFile(Glib::ustring filename);
 
 	//! Load a new cityset file from an opened saved-file file.
 	RecentlyEditedCitysetFile(XML_Helper *helper);
@@ -231,7 +230,7 @@ class RecentlyEditedCitysetFile : public RecentlyEditedFile
 	//! Save the cityset file entry to an opened file.
 	virtual bool doSave(XML_Helper *helper) const;
 
-        std::string getName() const {return d_name;};
+        Glib::ustring getName() const {return d_name;};
 
         guint32 getImagesNeeded() const {return d_images_needed;};
 
@@ -244,7 +243,7 @@ class RecentlyEditedCitysetFile : public RecentlyEditedFile
 	// DATA
 	
 	//! The name of the cityset.
-	std::string d_name;
+	Glib::ustring d_name;
 
         //! The number of image filenames required to make this cityset valid.
         guint32 d_images_needed;
@@ -254,7 +253,7 @@ class RecentlyEditedMapFile : public RecentlyEditedFile
 {
     public:
 	//! Make a new map file entry.
-	RecentlyEditedMapFile(std::string filename);
+	RecentlyEditedMapFile(Glib::ustring filename);
 
 	//! Load a new map file from an opened saved-file file.
 	RecentlyEditedMapFile(XML_Helper *helper);
@@ -268,18 +267,18 @@ class RecentlyEditedMapFile : public RecentlyEditedFile
 	//! Save the cityset file entry to an opened file.
 	virtual bool doSave(XML_Helper *helper) const;
 
-        std::string getName() const {return d_name;};
+        Glib::ustring getName() const {return d_name;};
 
 	// Methods that operate on the class data and modify it.
 
 	//! Assign the map info to the entry.
-	bool fillData(std::string name, guint32 players, guint32 cities);
+	bool fillData(Glib::ustring name, guint32 players, guint32 cities);
     private:
 
 	// DATA
 	
 	//! The name of the map.
-	std::string d_name;
+	Glib::ustring d_name;
 
         guint32 d_num_players;
 

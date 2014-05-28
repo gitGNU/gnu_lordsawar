@@ -1,4 +1,4 @@
-// Copyright (C) 2009 Ben Asselstine
+// Copyright (C) 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
 
 #ifndef SETLIST_H
 #define SETLIST_H
-#include <string>
 #include "File.h"
 
 class SetList
@@ -25,7 +24,7 @@ class SetList
 public:
   SetList(){};
   ~SetList(){};
-  static std::string getConfigurationFilename(std::string dir, std::string subdir, std::string ext) {return File::add_slash_if_necessary(dir) + subdir + "/" + subdir + ext;};
+  static Glib::ustring getConfigurationFilename(Glib::ustring dir, Glib::ustring subdir, Glib::ustring ext) {return File::add_slash_if_necessary(dir) + subdir + "/" + subdir + ext;};
 
 };
 

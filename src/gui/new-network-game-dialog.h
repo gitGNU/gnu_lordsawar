@@ -19,7 +19,6 @@
 #define NEW_NETWORK_GAME_DIALOG_H
 
 #include <memory>
-#include <string>
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
 

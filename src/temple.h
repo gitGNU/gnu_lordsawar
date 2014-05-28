@@ -1,7 +1,7 @@
 // Copyright (C) 2001, 2003 Michael Bartl
 // Copyright (C) 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@
 
 #define DEFAULT_TEMPLE_NAME  "Shrine"
 
-#include <string>
 #include "NamedLocation.h"
 
 class Stack;
@@ -38,7 +37,7 @@ class Temple : public NamedLocation
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! Default constructor.
         /**
@@ -48,7 +47,7 @@ class Temple : public NamedLocation
 	 * @param type         The type of the temple.  This should always
 	 *                     be 0.
          */
-        Temple(Vector<int> pos, guint32 width, std::string name = DEFAULT_TEMPLE_NAME, 
+        Temple(Vector<int> pos, guint32 width, Glib::ustring name = DEFAULT_TEMPLE_NAME, 
 	       int type = 0);
 
 	//! Copy constructor.
@@ -95,7 +94,7 @@ class Temple : public NamedLocation
 	// Static Methods
 
 	//! Return the default name of any temple.
-	static std::string getDefaultName() {return _(DEFAULT_TEMPLE_NAME);};
+	static Glib::ustring getDefaultName() {return _(DEFAULT_TEMPLE_NAME);};
 
     protected:
 	

@@ -103,7 +103,7 @@ CreateScenario::~CreateScenario()
         delete d_scenario;
 }
 
-void CreateScenario::on_progress(double percent, std::string description)
+void CreateScenario::on_progress(double percent, Glib::ustring description)
 {
   progress.emit();
 }
@@ -132,21 +132,21 @@ void CreateScenario::setPercentages(int pgrass, int pwater, int pforest,
     d_generator->setPercentages(pwater, pforest, pswamp, phills, pmountains);
 }
 
-void CreateScenario::setMapTiles(std::string tilesname)
+void CreateScenario::setMapTiles(Glib::ustring tilesname)
 {
     debug("CreateScenario::setMapTiles")
     d_tilesname = tilesname;
     GameMap::getInstance()->setTileset(tilesname);
 }
 
-void CreateScenario::setShieldset(std::string shieldset)
+void CreateScenario::setShieldset(Glib::ustring shieldset)
 {
     debug("CreateScenario::setShieldset")
     d_shieldsname = shieldset;
     GameMap::getInstance()->setShieldset(shieldset);
 }
 
-void CreateScenario::setCityset(std::string citysetname)
+void CreateScenario::setCityset(Glib::ustring citysetname)
 {
     debug("CreateScenario::setCityset")
     d_citysetname = citysetname;
@@ -214,7 +214,7 @@ void CreateScenario::setHeight(int height)
     GameMap::setHeight(height);
 }
 
-Player* CreateScenario::addPlayer(std::string name, guint32 armyset,
+Player* CreateScenario::addPlayer(Glib::ustring name, guint32 armyset,
                                 Gdk::RGBA color, int type)
 {
     debug("CreateScenario::addPlayer")
@@ -226,7 +226,7 @@ Player* CreateScenario::addPlayer(std::string name, guint32 armyset,
     return p;
 }
 
-bool CreateScenario::addNeutral(std::string name, guint32 armyset,
+bool CreateScenario::addNeutral(Glib::ustring name, guint32 armyset,
                                 Gdk::RGBA color, int type)
 {
     // for consistency, we only allow exactly one neutral player
@@ -352,7 +352,7 @@ bool CreateScenario::create(const GameParameters &g)
     return true;
 }
 
-bool CreateScenario::dump(std::string filename) const
+bool CreateScenario::dump(Glib::ustring filename) const
 {
     debug("CreateScenario::dump")
 

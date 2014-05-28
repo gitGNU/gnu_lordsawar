@@ -20,7 +20,7 @@
 
 #include "chat-client.h"
 
-ChatClient::ChatClient(std::string nick)
+ChatClient::ChatClient(Glib::ustring nick)
 	: d_nickname(nick)
 {
 }
@@ -29,7 +29,7 @@ ChatClient::~ChatClient()
 {
 }
 
-void ChatClient::gotChatMessage(const std::string nickname, const std::string &payload)
+void ChatClient::gotChatMessage(const Glib::ustring nickname, const Glib::ustring &payload)
 {
   chat_message_received.emit(nickname, payload);
 }

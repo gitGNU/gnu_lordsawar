@@ -62,13 +62,13 @@ void NetworkServer::startListening(int port)
   server->start();
 }
 
-void NetworkServer::send(void *c, int type, const std::string &payload)
+void NetworkServer::send(void *c, int type, const Glib::ustring &payload)
 {
   NetworkConnection *conn = static_cast<NetworkConnection *>(c);
   conn->send(type, payload);
 }
 
-void NetworkServer::sendFile(void *c, int type, const std::string &payload)
+void NetworkServer::sendFile(void *c, int type, const Glib::ustring &payload)
 {
   NetworkConnection *conn = static_cast<NetworkConnection *>(c);
   conn->sendFile(type, payload);
@@ -92,7 +92,7 @@ bool NetworkServer::gotClientConnection(const Glib::RefPtr<Gio::SocketConnection
       conn->got_message.connect
         (sigc::bind<0>(sigc::mem_fun(got_message, 
                                      &sigc::signal<bool, void *, 
-                                     int, std::string>::emit), conn));
+                                     int, Glib::ustring>::emit), conn));
 
       return true;
     }
@@ -115,7 +115,7 @@ bool NetworkServer::isListening()
   return server->stop();
 }
   
-std::string NetworkServer::get_hostname(void *c) 
+Glib::ustring NetworkServer::get_hostname(void *c) 
 {
   NetworkConnection *conn = static_cast<NetworkConnection *>(c);
   return conn->get_peer_hostname();

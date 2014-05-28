@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2009 Ben Asselstine
+// Copyright (C) 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 
 #include "xmlhelper.h"
 
-std::string NetworkHistory::d_tag = "networkhistory";
+Glib::ustring NetworkHistory::d_tag = "networkhistory";
 
 NetworkHistory::NetworkHistory(History *history, guint32 owner)
   :OwnerId(owner)
@@ -49,10 +49,10 @@ bool NetworkHistory::save(XML_Helper* helper) const
   return retval;
 }
 
-std::string NetworkHistory::toString() const
+Glib::ustring NetworkHistory::toString() const
 {
   std::stringstream s;
-  std::string history= d_history->dump();
+  Glib::ustring history= d_history->dump();
   s <<"Player \""<< getOwner()->getName() << "\"--> ";
   s <<history;
     

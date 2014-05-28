@@ -1,4 +1,4 @@
-// Copyright (C) 2010, 2011 Ben Asselstine
+// Copyright (C) 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 //  02110-1301, USA.
 
 #include <libtar.h>
-#include <string>
+#include <glibmm.h>
 #include <iostream>
 #include <list>
 class Tar_Helper
@@ -24,42 +24,42 @@ class Tar_Helper
 public:
 
     //! Constructor
-    Tar_Helper(std::string file, std::ios::openmode mode, bool &broken);
+    Tar_Helper(Glib::ustring file, std::ios::openmode mode, bool &broken);
 
     //! Destructor
     ~Tar_Helper();
 
-    bool saveFile(std::string file, std::string destfile = "");
+    bool saveFile(Glib::ustring file, Glib::ustring destfile = "");
 
-    std::string getFile(std::string filename, bool &broken);
+    Glib::ustring getFile(Glib::ustring filename, bool &broken);
 
-    //std::string getFirstFile(bool &broken);
-    std::string getFirstFile(std::string extension, bool &broken);
-    std::string getFirstFile(std::list<std::string> exts, bool &broken);
+    //Glib::ustring getFirstFile(bool &broken);
+    Glib::ustring getFirstFile(Glib::ustring extension, bool &broken);
+    Glib::ustring getFirstFile(std::list<Glib::ustring> exts, bool &broken);
 
-    std::list<std::string> getFilenamesWithExtension(std::string ext);
+    std::list<Glib::ustring> getFilenamesWithExtension(Glib::ustring ext);
 
-    std::list<std::string> getFilenames();
+    std::list<Glib::ustring> getFilenames();
 
 
-    bool removeFile(std::string filename);
-    bool replaceFile(std::string old_filename, std::string new_filename);
+    bool removeFile(Glib::ustring filename);
+    bool replaceFile(Glib::ustring old_filename, Glib::ustring new_filename);
 
-    bool Open(std::string file, std::ios::openmode mode);
+    bool Open(Glib::ustring file, std::ios::openmode mode);
     void Close();
 
-    static bool is_tarfile (std::string file);
+    static bool is_tarfile (Glib::ustring file);
 
-    static std::string getFile(TAR *t, std::string filename, bool &broken, std::string tmpoutdir);
-    static std::list<std::string> getFilenames(TAR *t);
-    static bool saveFile(TAR *t, std::string filename, std::string destfile = "");
+    static Glib::ustring getFile(TAR *t, Glib::ustring filename, bool &broken, Glib::ustring tmpoutdir);
+    static std::list<Glib::ustring> getFilenames(TAR *t);
+    static bool saveFile(TAR *t, Glib::ustring filename, Glib::ustring destfile = "");
     //copies a tar file to another place, renaming one of the files inside.
-    static bool copy(std::string filename, std::string newfilename);
-    static void clean_tmp_dir(std::string filename);
+    static bool copy(Glib::ustring filename, Glib::ustring newfilename);
+    static void clean_tmp_dir(Glib::ustring filename);
 private:
 
     // DATA
     TAR *t;
     std::ios::openmode openmode;
-    std::string tmpoutdir;
+    Glib::ustring tmpoutdir;
 };

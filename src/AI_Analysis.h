@@ -22,7 +22,6 @@
 #define AI_ANALYSIS_H
 
 #include <gtkmm.h>
-#include <string>
 #include <map>
 #include "vector.h"
 

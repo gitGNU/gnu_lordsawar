@@ -20,7 +20,6 @@
 #ifndef TILE_H
 #define TILE_H
 
-#include <string>
 #include <gtkmm.h>
 
 #include "xmlhelper.h"
@@ -48,7 +47,7 @@ class Tile : public std::list<TileStyleSet*>
 {
     public:
 	//! The xml tag of this object in a tileset configuration file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
         //! Enumerate the kinds of terrain that a Stack can potentially move on.
         enum Type { 
@@ -95,7 +94,7 @@ class Tile : public std::list<TileStyleSet*>
         Type getType() const {return d_type;}
 
 	//! Get the name of this kind of tile (used in the editor).
-	std::string getName() const {return d_name;}
+	Glib::ustring getName() const {return d_name;}
 
 	int getTypeIndex() {return getTypeIndexForType(d_type);}
 
@@ -107,7 +106,7 @@ class Tile : public std::list<TileStyleSet*>
 	void setType(Type type) {d_type = type;}
 
 	//! Set the name of this kind of tile (used in the editor).
-	void setName(std::string name) {d_name = name;}
+	void setName(Glib::ustring name) {d_name = name;}
 
 	void setTypeByIndex(int idx);
 
@@ -160,10 +159,10 @@ class Tile : public std::list<TileStyleSet*>
 	// Static Methods
 
 	//! Convert a Tile::Type enumerated value to a string.
-	static std::string tileTypeToString(const Tile::Type type);
+	static Glib::ustring tileTypeToString(const Tile::Type type);
 
 	//! Convert a string represenation of a Tile::Type to an enum value.
-	static Tile::Type tileTypeFromString(const std::string str);
+	static Tile::Type tileTypeFromString(const Glib::ustring str);
 
 	//! If an army unit can move on these kinds of terrains, it is flying.
 	static guint32 isFlying() 
@@ -189,7 +188,7 @@ class Tile : public std::list<TileStyleSet*>
 	 * Equates to the tileset.tile.d_name XML entities in the tileset
 	 * configuration file.
 	 */
-	std::string d_name;
+	Glib::ustring d_name;
 
 	//! The number of movement points required to cross this tile.
 	/**

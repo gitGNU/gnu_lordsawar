@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 #include "vector.h"
 #include "ruinlist.h"
 #include "SightMap.h"
-#include <string>
 class Player;
 class Army;
 class ArmyProto;
@@ -53,7 +52,7 @@ class Reward
     public:
 
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! The different kinds of Reward objects.
         enum Type {
@@ -79,7 +78,7 @@ class Reward
 	 * @note This constructor is only used in the constructors of other 
 	 *       Reward objects, and shouldn't be called directly.
 	 */
-        Reward(Type type, std::string name = "");
+        Reward(Type type, Glib::ustring name = "");
 
 	//! Loading constructor.
 	/**
@@ -115,13 +114,13 @@ class Reward
         Type getType() const { return d_type; }
 
         //! Returns the name of the reward.
-        std::string getName() const {return d_name;}
+        Glib::ustring getName() const {return d_name;}
 
 
 	// Set Methods
 
 	//! Sets the name of the reward.
-	void setName(std::string name) {d_name = name;}
+	void setName(Glib::ustring name) {d_name = name;}
 
 
 	// Methods that operate on the class data but do not modify the class.
@@ -131,7 +130,7 @@ class Reward
 	 * This method inspects the underlying reward and generates an
 	 * appropriate description.
 	 */
-	std::string getDescription() const;
+	Glib::ustring getDescription() const;
 
 	//! Saves the data elements common to all rewards.
         /**
@@ -158,10 +157,10 @@ class Reward
         static Reward* handle_load(XML_Helper* helper);
 
 	//! Convert a Reward::Type enumerated value to a string.
-	static std::string rewardTypeToString(const Reward::Type type);
+	static Glib::ustring rewardTypeToString(const Reward::Type type);
 
 	//! Convert a Reward::Type string to an enumerated value.
-	static Reward::Type rewardTypeFromString(const std::string str);
+	static Reward::Type rewardTypeFromString(const Glib::ustring str);
 
 	//! deep copy a reward into another one
 	static Reward* copy(const Reward* r);
@@ -174,7 +173,7 @@ class Reward
         Type d_type;
 
 	//! The name of the reward.
-	std::string d_name;
+	Glib::ustring d_name;
 
 };
 
@@ -400,7 +399,7 @@ class Reward_Item: public Reward
 
     private:
 	//! Callback to load the Item object in the Reward_Item object.
-        bool loadItem(std::string tag, XML_Helper* helper);
+        bool loadItem(Glib::ustring tag, XML_Helper* helper);
 
 	// DATA
 
@@ -507,7 +506,7 @@ class Reward_Map: public Reward
 	 * @param height  The height of the revealed portion of the game map.
 	 * @param width   The width of the revealed portion of the game map.
 	 */
-        Reward_Map(Vector<int> pos, std::string name, 
+        Reward_Map(Vector<int> pos, Glib::ustring name, 
 		   guint32 height, guint32 width);
 
 	//! Loading constructor.
@@ -534,7 +533,7 @@ class Reward_Map: public Reward
 	// Set Methods
 
 	//! Set the name of the map in this reward.
-	void setMapName(std::string name) {d_sightmap->setName(name);};
+	void setMapName(Glib::ustring name) {d_sightmap->setName(name);};
 
 
 	// Get Methods
@@ -546,7 +545,7 @@ class Reward_Map: public Reward
 	SightMap * getSightMap() {return d_sightmap;};
 
 	//! Return the name of the map in this reward.
-	std::string getMapName() const {return d_sightmap->getName();};
+	Glib::ustring getMapName() const {return d_sightmap->getName();};
 
 	//! Get the height of the revealed portion of the game map.
 	guint32 getHeight() const {return d_sightmap->h;}
@@ -557,7 +556,7 @@ class Reward_Map: public Reward
 
 	// Methods that operate on the class data and modify the class.
 
-	bool loadMap(std::string tag, XML_Helper* helper);
+	bool loadMap(Glib::ustring tag, XML_Helper* helper);
 
 
 	// Methods that operate on the class data and do not modify the class.

@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <string>
 
 #include "FogMap.h"
 #include "SightMap.h"
@@ -25,7 +26,7 @@
 #include "xmlhelper.h"
 #include "GameScenarioOptions.h"
 
-std::string FogMap::d_tag = "fogmap";
+Glib::ustring FogMap::d_tag = "fogmap";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<flush;}
 #define debug(x)
@@ -45,11 +46,12 @@ FogMap::FogMap(int width, int height)
 
 FogMap::FogMap(XML_Helper* helper)
 {
-    std::string types;
+    Glib::ustring t;
     
     helper->getData(d_width, "width");
     helper->getData(d_height, "height");
-    helper->getData(types, "map");
+    helper->getData(t, "map");
+    std::string types = t.raw();
 
     //create the map
     d_fogmap = new FogType[d_width*d_height];

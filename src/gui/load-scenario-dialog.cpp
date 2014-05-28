@@ -59,13 +59,13 @@ LoadScenarioDialog::LoadScenarioDialog(Gtk::Window &parent)
     .connect(sigc::mem_fun(this, &LoadScenarioDialog::on_selection_changed));
   // add the scenarios
   add_scenario("random.map");
-  std::list<std::string> lm = File::scanMaps();
-  for (std::list<std::string>::iterator i = lm.begin(), end = lm.end();
+  std::list<Glib::ustring> lm = File::scanMaps();
+  for (std::list<Glib::ustring>::iterator i = lm.begin(), end = lm.end();
        i != end; ++i)
     add_scenario(File::getMapFile(*i));
   lm.clear();
   lm = File::scanUserMaps();
-  for (std::list<std::string>::iterator i = lm.begin(), end = lm.end();
+  for (std::list<Glib::ustring>::iterator i = lm.begin(), end = lm.end();
        i != end; ++i)
     add_scenario(File::getUserMapFile(*i));
 
@@ -102,12 +102,12 @@ void LoadScenarioDialog::run()
   dialog->get_size(width, height);
 }
 
-std::string LoadScenarioDialog::get_scenario_filename() 
+Glib::ustring LoadScenarioDialog::get_scenario_filename() 
 {
   return selected_filename;
 }
 
-void LoadScenarioDialog::add_scenario(std::string filename)
+void LoadScenarioDialog::add_scenario(Glib::ustring filename)
 {
   Gtk::TreeIter i = scenarios_list->append();
   (*i)[scenarios_columns.filename] = filename;
@@ -117,9 +117,9 @@ void LoadScenarioDialog::add_scenario(std::string filename)
       return;
     }
   bool broken = false;
-  std::string name = "", comment = "", id = "";
+  Glib::ustring name = "", comment = "", id = "";
   guint32 player_count = 0, city_count = 0;
-  selected_filename = std::string((*i)[scenarios_columns.filename]);
+  selected_filename = Glib::ustring((*i)[scenarios_columns.filename]);
   GameScenario::loadDetails(selected_filename, broken, player_count, city_count, name, comment, id);
   if (broken == false)
     (*i)[scenarios_columns.name] = name;
@@ -131,7 +131,7 @@ void LoadScenarioDialog::on_selection_changed()
 
   if (i)
     {
-      std::string filename = (*i)[scenarios_columns.filename];
+      Glib::ustring filename = (*i)[scenarios_columns.filename];
       if (filename == "random.map")
 	{
 	  load_button->set_sensitive(true);
@@ -146,7 +146,7 @@ void LoadScenarioDialog::on_selection_changed()
 
       selected_filename = filename;
       bool broken = false;
-      std::string name, comment, id;
+      Glib::ustring name, comment, id;
       guint32 player_count = 0, city_count = 0;
       GameScenario::loadDetails(filename, broken, player_count, city_count, name, comment, id);
 
@@ -188,8 +188,8 @@ void LoadScenarioDialog::on_add_scenario_clicked()
   load_map_filechooser->hide();
   if (res == Gtk::RESPONSE_ACCEPT) 
     {
-      std::string filename = load_map_filechooser->get_filename();
-      std::string mapname = Glib::path_get_basename (filename);
+      Glib::ustring filename = load_map_filechooser->get_filename();
+      Glib::ustring mapname = Glib::path_get_basename (filename);
       // copy it into our ~/.lordsawar/ dir.
       File::copy (filename, File::getUserMapFile(mapname));
       // add it to the list
@@ -209,7 +209,7 @@ void LoadScenarioDialog::on_remove_scenario_clicked()
   Gtk::TreeIter i = scenarios_treeview->get_selection()->get_selected();
   if (i)
     {
-      std::string filename = (*i)[scenarios_columns.filename];
+      Glib::ustring filename = (*i)[scenarios_columns.filename];
       if (filename == "random.map")
 	return;
       if (remove (filename.c_str()) == 0)

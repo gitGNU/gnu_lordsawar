@@ -40,7 +40,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
     public:
 
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	// Methods that operate on class data and modify the class.
 
@@ -395,7 +395,7 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 
     private:
         //! A callback for loading City objects into the list of cities.
-        bool load(std::string tag, XML_Helper* helper);
+        bool load(Glib::ustring tag, XML_Helper* helper);
 
         //! A static pointer for the singleton instance.
         static Citylist* s_instance;

@@ -19,8 +19,8 @@
 
 #include "xmlhelper.h"
 
-NamedLocation::NamedLocation(Vector<int> pos, guint32 size, std::string name,
-			     std::string desc)
+NamedLocation::NamedLocation(Vector<int> pos, guint32 size, Glib::ustring name,
+			     Glib::ustring desc)
   :Location(pos, size), Namable(name), d_description(desc)
 {
 }

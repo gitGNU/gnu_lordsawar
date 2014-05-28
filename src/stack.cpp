@@ -41,7 +41,7 @@
 #include "AI_Analysis.h"
 #include "ruin.h"
 
-std::string Stack::d_tag = "stack";
+Glib::ustring Stack::d_tag = "stack";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -556,7 +556,7 @@ bool Stack::save(XML_Helper* helper) const
   return retval;
 }
 
-bool Stack::load(std::string tag, XML_Helper* helper)
+bool Stack::load(Glib::ustring tag, XML_Helper* helper)
 {
   if (tag == Path::d_tag)
     {

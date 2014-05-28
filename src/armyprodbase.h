@@ -22,7 +22,6 @@
 #ifndef ARMY_PRODBASE_H
 #define ARMY_PRODBASE_H
 
-#include <string>
 
 
 #include "armyprotobase.h"
@@ -35,7 +34,7 @@ class ArmyProdBase: public ArmyProtoBase
     public:
 
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! Copy constructor.
         ArmyProdBase(const ArmyProdBase& prodbase);

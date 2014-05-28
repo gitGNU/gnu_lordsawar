@@ -61,13 +61,13 @@ public:
     // Get Methods
 
     //! Return a description of how well the quest to kill a hero is going.
-    std::string getProgress() const;
+    Glib::ustring getProgress() const;
 
     //! Return a queue of strings to show when the quest is compeleted.
-    void getSuccessMsg(std::queue<std::string>& msgs) const;
+    void getSuccessMsg(std::queue<Glib::ustring>& msgs) const;
 
     //! Return a queue of strings to show when the quest has expired.
-    void getExpiredMsg(std::queue<std::string>& msgs) const;
+    void getExpiredMsg(std::queue<Glib::ustring>& msgs) const;
 
     //! Returns the Id of the hunted hero object.
     guint32 getVictim() const {return d_victim;}

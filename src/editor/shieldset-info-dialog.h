@@ -28,8 +28,8 @@ class ShieldSetInfoDialog: public sigc::trackable
 {
  public:
     ShieldSetInfoDialog(Gtk::Window &parent, Shieldset *shieldset, 
-                        std::string dir, std::string file,
-                        bool readonly = false, std::string title = "");
+                        Glib::ustring dir, Glib::ustring file,
+                        bool readonly = false, Glib::ustring title = "");
     ~ShieldSetInfoDialog();
 
     int run();

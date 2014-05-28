@@ -59,13 +59,13 @@ class QuestPillageGold : public Quest, public sigc::trackable
 	// Get Methods
 
 	//! Return a description of how many gold pieces have been accrued.
-        std::string getProgress() const;
+        Glib::ustring getProgress() const;
 
 	//! Return a queue of strings to show when the quest is compeleted.
-        void getSuccessMsg(std::queue<std::string>& msgs) const;
+        void getSuccessMsg(std::queue<Glib::ustring>& msgs) const;
 
 	//! Return a queue of strings to show when the quest has expired.
-        void getExpiredMsg(std::queue<std::string>& msgs) const;
+        void getExpiredMsg(std::queue<Glib::ustring>& msgs) const;
 
         //! Returns the amount of gold to be pillaged.
         guint32 getGoldToPillage() {return d_to_pillage;}

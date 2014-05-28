@@ -1,4 +1,4 @@
-// Copyright (C) 2008, 2011 Ben Asselstine
+// Copyright (C) 2008, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -98,7 +98,7 @@ void GameStation::stopListeningForLocalEvents(Player *p)
     }
 }
 
-bool GameStation::get_message_lobby_activity (std::string payload, 
+bool GameStation::get_message_lobby_activity (Glib::ustring payload, 
                                              guint32 &player_id, 
                                              gint32 &action, bool &reported,
                                              Glib::ustring &remainder)
@@ -127,7 +127,7 @@ bool GameStation::get_message_lobby_activity (std::string payload,
   memset (buffer, 0, sizeof (buffer));
   spayload.get();
   spayload.rdbuf()->sgetn(buffer, sizeof (buffer));
-  remainder = std::string (buffer);
+  remainder = Glib::ustring (buffer);
   return true;
 }
 // End of file

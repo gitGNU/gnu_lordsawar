@@ -32,7 +32,7 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-std::string RecentlyPlayedGameList::d_tag = "recentlyplayedgamelist";
+Glib::ustring RecentlyPlayedGameList::d_tag = "recentlyplayedgamelist";
 
 RecentlyPlayedGameList* RecentlyPlayedGameList::s_instance = 0;
 
@@ -44,7 +44,7 @@ RecentlyPlayedGameList* RecentlyPlayedGameList::getInstance()
   return s_instance;
 }
 
-bool RecentlyPlayedGameList::saveToFile(std::string filename) const
+bool RecentlyPlayedGameList::saveToFile(Glib::ustring filename) const
 {
   bool retval = true;
   XML_Helper helper(filename, std::ios::out, false);
@@ -53,7 +53,7 @@ bool RecentlyPlayedGameList::saveToFile(std::string filename) const
   return retval;
 }
 
-bool RecentlyPlayedGameList::loadFromFile(std::string filename)
+bool RecentlyPlayedGameList::loadFromFile(Glib::ustring filename)
 {
   remove_all();
   std::ifstream in(filename.c_str());
@@ -122,7 +122,7 @@ bool RecentlyPlayedGameList::save(XML_Helper* helper) const
   return retval;
 }
 
-bool RecentlyPlayedGameList::load_tag(std::string tag, XML_Helper* helper)
+bool RecentlyPlayedGameList::load_tag(Glib::ustring tag, XML_Helper* helper)
 {
   if (helper->getVersion() != LORDSAWAR_RECENTLY_PLAYED_VERSION)
     {
@@ -137,7 +137,7 @@ bool RecentlyPlayedGameList::load_tag(std::string tag, XML_Helper* helper)
   return false;
 }
 
-void RecentlyPlayedGameList::addNetworkedEntry(GameScenario *game_scenario, Profile *p, std::string host, guint32 port)
+void RecentlyPlayedGameList::addNetworkedEntry(GameScenario *game_scenario, Profile *p, Glib::ustring host, guint32 port)
 {
   if (Configuration::s_remember_recent_games == false)
     return;
@@ -157,7 +157,7 @@ void RecentlyPlayedGameList::addNetworkedEntry(GameScenario *game_scenario, Prof
 }
 
 void RecentlyPlayedGameList::addEntry(GameScenario *game_scenario, Profile *p, 
-                                      std::string filename)
+                                      Glib::ustring filename)
 {
   if (Configuration::s_remember_recent_games == false)
     return;
@@ -282,7 +282,7 @@ void RecentlyPlayedGameList::pruneOldGames(int stale)
     }
 }
 
-bool RecentlyPlayedGameList::removeEntry(std::string id)
+bool RecentlyPlayedGameList::removeEntry(Glib::ustring id)
 {
   bool found = false;
   for (RecentlyPlayedGameList::iterator it = begin(); it != end();)
@@ -337,7 +337,7 @@ bool RecentlyPlayedGameList::save() const
   return saveToFile(File::getSavePath() + "/" + RECENTLY_PLAYED_LIST);
 }
 
-bool RecentlyPlayedGameList::upgrade(std::string filename, std::string old_version, std::string new_version)
+bool RecentlyPlayedGameList::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version)
 {
   return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
                                             FileCompat::RECENTLYPLAYEDGAMELIST, 

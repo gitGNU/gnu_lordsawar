@@ -33,7 +33,7 @@ class Renamable: private Named
 {
  public:
      //! Default constructor.
-     Renamable(std::string name);
+     Renamable(Glib::ustring name);
 
      //! Copy constructor.
      Renamable(const Renamable&);
@@ -47,7 +47,7 @@ class Renamable: private Named
      // Get Methods
 
      //! Return the name of the object on the game map.
-     std::string getName(bool translate = false) const 
+     Glib::ustring getName(bool translate = false) const 
        {
 	 if (translate == true) 
 	   return _(d_name.c_str());
@@ -58,7 +58,7 @@ class Renamable: private Named
      // Set Methods
 
      //! Set the name of the object on the game map.
-     void setName(std::string name) {d_name = name;}
+     void setName(Glib::ustring name) {d_name = name;}
 
 };
 

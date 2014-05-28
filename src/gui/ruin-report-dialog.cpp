@@ -136,7 +136,7 @@ void RuinReportDialog::fill_in_ruin_info()
         explored_label->set_text(_("Yes"));
       else
 	{
-	  std::string hint = "  ";
+	  Glib::ustring hint = "  ";
 	  explored_label->set_text(_("No"));
 	  //add the difficulty hint.
 	  if (ruin->getOccupant() != NULL)

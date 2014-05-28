@@ -28,7 +28,7 @@
 #include "action.h"
 #include "MapBackpack.h"
 
-std::string VectoredUnit::d_tag = "vectoredunit";
+Glib::ustring VectoredUnit::d_tag = "vectoredunit";
 
 VectoredUnit::VectoredUnit(Vector<int> pos, Vector<int> dest, ArmyProdBase *army, int duration, Player *player)
     :Ownable(player), LocationBox(pos), d_destination(dest), 
@@ -68,7 +68,7 @@ VectoredUnit::~VectoredUnit()
 bool VectoredUnit::save(XML_Helper* helper) const
 {
     bool retval = true;
-    std::string name = "";
+    Glib::ustring name = "";
 
     retval &= helper->openTag(VectoredUnit::d_tag);
     retval &= helper->saveData("x", getPos().x);

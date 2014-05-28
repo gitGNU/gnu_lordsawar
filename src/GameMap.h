@@ -62,10 +62,10 @@ class GameMap: public sigc::trackable
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! The xml tag of the itemstack subobject in a saved-game file.
-	static std::string d_itemstack_tag; 
+	static Glib::ustring d_itemstack_tag; 
 
         /** Singleton function to get the GameMap instance
           * 
@@ -78,9 +78,9 @@ class GameMap: public sigc::trackable
           * @param TilesetName      the name of the tileset to be used
           * @return singleton instance
           */
-        static GameMap* getInstance(std::string TilesetName,
-				    std::string Shieldsetname,
-				    std::string Citysetname);
+        static GameMap* getInstance(Glib::ustring TilesetName,
+				    Glib::ustring Shieldsetname,
+				    Glib::ustring Citysetname);
 
         /** Creates a new singleton instance from a savegame file
           * 
@@ -115,20 +115,20 @@ class GameMap: public sigc::trackable
         static Cityset* getCityset();
         static Shieldset* getShieldset();
 
-        void setTileset(std::string tileset);
+        void setTileset(Glib::ustring tileset);
 
         guint32 getTileSize() const;
 
         guint32 getTilesetId() const;
         guint32 getCitysetId() const;
         guint32 getShieldsetId() const;
-        std::string getTilesetName() const;
-        std::string getCitysetName() const;
-        std::string getShieldsetName() const;
+        Glib::ustring getTilesetName() const;
+        Glib::ustring getCitysetName() const;
+        Glib::ustring getShieldsetName() const;
 
-        void setShieldset(std::string shieldset);
+        void setShieldset(Glib::ustring shieldset);
 
-        void setCityset(std::string cityset);
+        void setCityset(Glib::ustring cityset);
 
 	//! Sets the tile object at position (x, y)
 	void setTile(int x, int y, Maptile *tile);
@@ -310,8 +310,8 @@ class GameMap: public sigc::trackable
         static bool neutralCitiesPresent();
     protected:
         //! Create the map with the given tileset
-        GameMap(std::string TilesetName = "", std::string ShieldsetName = "",
-		std::string Citysetname = "");
+        GameMap(Glib::ustring TilesetName = "", Glib::ustring ShieldsetName = "",
+		Glib::ustring Citysetname = "");
 
         //! Load the map using the given XML_Helper
         GameMap(XML_Helper* helper);
@@ -320,13 +320,13 @@ class GameMap: public sigc::trackable
         
     private:
         //! Callback for item loading used during loading.
-        bool loadItems(std::string tag, XML_Helper* helper);
+        bool loadItems(Glib::ustring tag, XML_Helper* helper);
         bool containsWater (Rectangle rect);
         bool isBlockedAvenue(int x, int y, int destx, int desty);
         bool isDock(Vector<int> pos);
 	void close_circles (int minx, int miny, int maxx, int maxy);
-	void processStyles(std::string styles, int chars_per_style);
-	int determineCharsPerStyle(std::string styles);
+	void processStyles(Glib::ustring styles, int chars_per_style);
+	int determineCharsPerStyle(Glib::ustring styles);
 
 	TileStyle *calculatePreferredStyle(int i, int j);
 	void demote_lone_tile(int minx, int miny, int maxx, int maxy, 
@@ -359,9 +359,9 @@ class GameMap: public sigc::trackable
         static Cityset* s_cityset; //not saved
         static Shieldset* s_shieldset; //not saved
 
-        std::string d_tileset;
-        std::string d_shieldset;
-        std::string d_cityset;
+        Glib::ustring d_tileset;
+        Glib::ustring d_shieldset;
+        Glib::ustring d_cityset;
 
         Maptile** d_map;
 };

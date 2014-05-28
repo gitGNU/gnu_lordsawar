@@ -86,7 +86,7 @@ class SmallmapEditorDialog
 
     void setup_terrain_radiobuttons();
     void setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> xml,
-	std::string prefix, std::string image_file,
+	Glib::ustring prefix, Glib::ustring image_file,
 	EditableSmallMap::Pointer pointer, int size);
     void setup_pointer_radiobuttons(Glib::RefPtr<Gtk::Builder> xml);
 

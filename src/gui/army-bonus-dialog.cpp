@@ -103,7 +103,7 @@ void ArmyBonusDialog::addArmyType(guint32 army_type)
     (*i)[armies_columns.move_image] = gc->getMoveBonusPic(b, false)->to_pixbuf();
     (*i)[armies_columns.bonus] = "-";
 
-    std::string s = a->getArmyBonusDescription();
+    Glib::ustring s = a->getArmyBonusDescription();
     if (s == "")
       (*i)[armies_columns.bonus] = "-";
     else

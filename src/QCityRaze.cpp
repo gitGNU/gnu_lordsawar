@@ -80,17 +80,17 @@ bool QuestCityRaze::save(XML_Helper* helper) const
   return retval;
 }
 
-std::string QuestCityRaze::getProgress() const
+Glib::ustring QuestCityRaze::getProgress() const
 {
   return _("You aren't afraid of doing it, are you?");
 }
 
-void QuestCityRaze::getSuccessMsg(std::queue<std::string>& msgs) const
+void QuestCityRaze::getSuccessMsg(std::queue<Glib::ustring>& msgs) const
 {
   msgs.push(_("The priests thank you for razing this evil place."));
 }
 
-void QuestCityRaze::getExpiredMsg(std::queue<std::string>& msgs) const
+void QuestCityRaze::getExpiredMsg(std::queue<Glib::ustring>& msgs) const
 {
   const City* c = getCity();
   msgs.push(String::ucompose

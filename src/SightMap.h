@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 #ifndef SIGHTMAP_H
 #define SIGHTMAP_H
 
-#include <string>
 #include <gtkmm.h>
 #include "rectangle.h"
 #include "Renamable.h"
@@ -35,7 +34,7 @@ class SightMap: public Rectangle, public Renamable
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! Loading constructor.
         SightMap(XML_Helper* helper);
@@ -47,7 +46,7 @@ class SightMap: public Rectangle, public Renamable
 	/**
 	 * @param pos  The top-left corner of the sightmap on the game map.
 	 */
-        SightMap(std::string name, Vector<int> pos, guint32 height, guint32 width);
+        SightMap(Glib::ustring name, Vector<int> pos, guint32 height, guint32 width);
 
         //! Destructor.
         ~SightMap();

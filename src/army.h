@@ -23,7 +23,6 @@
 #define ARMY_H
 
 #include <gtkmm.h>
-#include <string>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 
@@ -69,7 +68,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
     public:
 
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! Various kinds of statistics that an instance of Army unit has.
 	/**
@@ -239,7 +238,7 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	bool getDefendsRuins() const;
 
 	//! This army is of an army type that has this name.
-	virtual std::string getName() const;
+	virtual Glib::ustring getName() const;
 
         //! Does this army unit have wings?
         bool isFlyer();

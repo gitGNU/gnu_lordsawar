@@ -26,7 +26,6 @@
 #include <math.h>  
 #include <algorithm>
 #include <set>
-#include <string.h>
 
 //#include <boost/foreach.hpp>
 
@@ -284,9 +283,9 @@ bool MapGenerator::canPlaceBridge(Vector<int> pos, int type, Vector<int> &src, V
 
 void MapGenerator::makeBridges()
 {
-  std::string orig_tileset = GameMap::getInstance()->getTilesetName();
-  std::string orig_shieldset = GameMap::getInstance()->getShieldsetName();
-  std::string orig_cityset = GameMap::getInstance()->getCitysetName();
+  Glib::ustring orig_tileset = GameMap::getInstance()->getTilesetName();
+  Glib::ustring orig_shieldset = GameMap::getInstance()->getShieldsetName();
+  Glib::ustring orig_cityset = GameMap::getInstance()->getCitysetName();
   GameMap::deleteInstance();
   Citylist::deleteInstance();
   Roadlist::deleteInstance();
@@ -807,7 +806,7 @@ void MapGenerator::makeRivers()
 
     };
     //if(how_many>1)
-        //std::cout << "There are " << how_many << (how_many<4?(std::string(" seas")):(std::string(" lakes"))) << " on this map.\n";
+        //std::cout << "There are " << how_many << (how_many<4?(Glib::ustring(" seas")):(Glib::ustring(" lakes"))) << " on this map.\n";
     //else
         //std::cout << "There is 1 sea on this map.\n";
     //std::cout << "River style was: " << river_style << "\n";
@@ -1639,9 +1638,9 @@ std::vector<std::pair<int , Vector<int> > > MapGenerator::findBridgePlaces()
 
 void MapGenerator::makeRoads()
 {
-  std::string orig_tileset = GameMap::getInstance()->getTilesetName();
-  std::string orig_shieldset = GameMap::getInstance()->getShieldsetName();
-  std::string orig_cityset = GameMap::getInstance()->getCitysetName();
+  Glib::ustring orig_tileset = GameMap::getInstance()->getTilesetName();
+  Glib::ustring orig_shieldset = GameMap::getInstance()->getShieldsetName();
+  Glib::ustring orig_cityset = GameMap::getInstance()->getCitysetName();
   GameMap::deleteInstance();
   Citylist::deleteInstance();
   Roadlist::deleteInstance();

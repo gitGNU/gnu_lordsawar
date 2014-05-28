@@ -3,7 +3,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2004 David Barnsdale
 // Copyright (C) 2004 Andrea Paternesi
-// Copyright (C) 2006, 2007, 2008 Ben Asselstine
+// Copyright (C) 2006, 2007, 2008, 2014 Ben Asselstine
 // Copyright (C) 2008 Janek Kozicki
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -24,7 +24,6 @@
 #ifndef MAPGENERATOR_H
 #define MAPGENERATOR_H
 
-#include <string>
 #include <deque>
 #include "vector.h"
 #include <vector>
@@ -146,7 +145,7 @@ class MapGenerator
          * @param status   A description of what's being generated.
          */
         //! Emitted when the generator generates something
-        sigc::signal<void, double, std::string> progress;
+        sigc::signal<void, double, Glib::ustring> progress;
 
     protected:
         //! Fills the terrain map with grass

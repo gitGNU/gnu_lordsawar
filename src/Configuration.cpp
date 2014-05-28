@@ -39,18 +39,18 @@
 
 // define static variables
 
-std::string Configuration::d_tag = "lordsawarrc";
+Glib::ustring Configuration::d_tag = "lordsawarrc";
 bool Configuration::s_showNextPlayer = true;
 #ifndef __WIN32__
-std::string Configuration::configuration_file_path = std::string(getenv("HOME")) + "/.lordsawarrc";
-std::string Configuration::s_dataPath = LORDSAWAR_DATADIR;
-std::string Configuration::s_savePath = std::string(getenv("HOME"))+std::string("/.lordsawar/");
+Glib::ustring Configuration::configuration_file_path = Glib::ustring(getenv("HOME")) + "/.lordsawarrc";
+Glib::ustring Configuration::s_dataPath = LORDSAWAR_DATADIR;
+Glib::ustring Configuration::s_savePath = Glib::ustring(getenv("HOME"))+Glib::ustring("/.lordsawar/");
 #else
-std::string Configuration::configuration_file_path = "/.lordsawarrc";
-std::string Configuration::s_dataPath = "./data/";
-std::string Configuration::s_savePath = "./saves/";
+Glib::ustring Configuration::configuration_file_path = "/.lordsawarrc";
+Glib::ustring Configuration::s_dataPath = "./data/";
+Glib::ustring Configuration::s_savePath = "./saves/";
 #endif
-std::string Configuration::s_lang = "";
+Glib::ustring Configuration::s_lang = "";
 int Configuration::s_displaySpeedDelay = 3000;
 int Configuration::s_displayFightRoundDelayFast = 250;
 int Configuration::s_displayFightRoundDelaySlow = 500;
@@ -61,7 +61,7 @@ int Configuration::s_autosave_policy = 1;
 bool Configuration::s_musicenable = false;
 guint32 Configuration::s_musicvolume = 64;
 guint32 Configuration::s_musiccache = 10000000;
-std::string Configuration::s_filename = "";
+Glib::ustring Configuration::s_filename = "";
 bool Configuration::s_see_opponents_stacks = false;
 bool Configuration::s_see_opponents_production = false;
 GameParameters::QuestPolicy Configuration::s_play_with_quests = GameParameters::ONE_QUEST_PER_PLAYER;
@@ -78,9 +78,9 @@ bool Configuration::s_decorated = false;
 bool Configuration::s_remember_recent_games = true;
 bool Configuration::s_remember_recently_edited_files = true;
 guint32 Configuration::s_double_click_threshold = 400; //milliseconds
-std::string Configuration::s_gamelist_server_hostname = "lordsawar.com";
+Glib::ustring Configuration::s_gamelist_server_hostname = "lordsawar.com";
 guint32 Configuration::s_gamelist_server_port = LORDSAWAR_GAMELIST_PORT;
-std::string Configuration::s_gamehost_server_hostname = "lordsawar.com";
+Glib::ustring Configuration::s_gamehost_server_hostname = "lordsawar.com";
 guint32 Configuration::s_gamehost_server_port = LORDSAWAR_GAMEHOST_PORT;
 guint32 Configuration::s_ui_form_factor = Configuration::UI_FORM_FACTOR_DESKTOP;
 
@@ -97,7 +97,7 @@ Configuration::~Configuration()
 
 // check if file exists and parse it
 
-bool Configuration::loadConfigurationFile(std::string fileName)
+bool Configuration::loadConfigurationFile(Glib::ustring fileName)
 {
     debug("loadConfiguration()");
     s_filename=fileName;
@@ -117,7 +117,7 @@ bool Configuration::loadConfigurationFile(std::string fileName)
     else return false;
 }
 
-bool Configuration::saveConfigurationFile(std::string filename)
+bool Configuration::saveConfigurationFile(Glib::ustring filename)
 {
     bool retval = true;
 
@@ -133,7 +133,7 @@ bool Configuration::saveConfigurationFile(std::string filename)
     retval &= helper.saveData("lang", s_lang);
     retval &= helper.saveData("cachesize", s_cacheSize);
     retval &= helper.saveData("zipfiles", s_zipfiles);
-    std::string autosave_policy_str = savingPolicyToString(SavingPolicy(s_autosave_policy));
+    Glib::ustring autosave_policy_str = savingPolicyToString(SavingPolicy(s_autosave_policy));
     retval &= helper.saveData("autosave_policy", autosave_policy_str);
     retval &= helper.saveData("speeddelay", s_displaySpeedDelay);
     retval &= helper.saveData("fightrounddelayfast", s_displayFightRoundDelayFast);
@@ -145,18 +145,18 @@ bool Configuration::saveConfigurationFile(std::string filename)
     retval &= helper.saveData("musiccache", s_musiccache);
     retval &= helper.saveData("view_enemies", s_see_opponents_stacks);
     retval &= helper.saveData("view_production", s_see_opponents_production);
-    std::string quest_policy_str = questPolicyToString(GameParameters::QuestPolicy(s_play_with_quests));
+    Glib::ustring quest_policy_str = questPolicyToString(GameParameters::QuestPolicy(s_play_with_quests));
     retval &= helper.saveData("quests", quest_policy_str);
     retval &= helper.saveData("hidden_map", s_hidden_map);
     retval &= helper.saveData("diplomacy", s_diplomacy);
-    std::string neutral_cities_str = neutralCitiesToString(GameParameters::NeutralCities(s_neutral_cities));
+    Glib::ustring neutral_cities_str = neutralCitiesToString(GameParameters::NeutralCities(s_neutral_cities));
     retval &= helper.saveData("neutral_cities", neutral_cities_str);
-    std::string razing_cities_str = razingCitiesToString(GameParameters::RazingCities(s_razing_cities));
+    Glib::ustring razing_cities_str = razingCitiesToString(GameParameters::RazingCities(s_razing_cities));
     retval &= helper.saveData("razing_cities", razing_cities_str);
     retval &= helper.saveData("intense_combat", s_intense_combat);
     retval &= helper.saveData("military_advisor", s_military_advisor);
     retval &= helper.saveData("random_turns", s_random_turns);
-    std::string quick_start_str = quickStartPolicyToString(GameParameters::QuickStartPolicy(s_quick_start));
+    Glib::ustring quick_start_str = quickStartPolicyToString(GameParameters::QuickStartPolicy(s_quick_start));
     retval &= helper.saveData("quick_start", quick_start_str);
     retval &= helper.saveData("cusp_of_war", s_cusp_of_war);
     retval &= helper.saveData("decorated", s_decorated);
@@ -172,7 +172,7 @@ bool Configuration::saveConfigurationFile(std::string filename)
 			      s_gamehost_server_hostname);
     retval &= helper.saveData("gamehost_server_port", 
 			      s_gamehost_server_port);
-    std::string ui_str = 
+    Glib::ustring ui_str = 
       uiFormFactorToString(Configuration::UiFormFactor(s_ui_form_factor));
     retval &= helper.saveData("ui_form_factor", ui_str);
     retval &= helper.closeTag();
@@ -191,18 +191,18 @@ bool Configuration::saveConfigurationFile(std::string filename)
 
 // parse the configuration file and set the variables
 
-bool Configuration::parseConfiguration(std::string tag, XML_Helper* helper)
+bool Configuration::parseConfiguration(Glib::ustring tag, XML_Helper* helper)
 {
     debug("parseConfiguration()");
     
-    std::string temp;
+    Glib::ustring temp;
     bool retval, zipping;
     
     if (helper->getVersion() != LORDSAWAR_CONFIG_VERSION)
     {
       std::cerr << String::ucompose(_("Configuration file has wrong version.  expected %1, but got %2"), LORDSAWAR_CONFIG_VERSION, helper->getVersion()) << std::endl;
-            std::string orig = s_filename;
-            std::string dest = s_filename+".OLD";
+            Glib::ustring orig = s_filename;
+            Glib::ustring dest = s_filename+".OLD";
 	    //#ifndef __WIN32__
 	    //            string orig = "./"+s_filename;
 	    //            string dest = "./"+s_filename+".OLD";
@@ -254,7 +254,7 @@ bool Configuration::parseConfiguration(std::string tag, XML_Helper* helper)
         s_zipfiles = zipping;
 
     //parse when and how to save autosave files
-    std::string autosave_policy_str;
+    Glib::ustring autosave_policy_str;
     helper->getData(autosave_policy_str, "autosave_policy");
     s_autosave_policy = savingPolicyFromString(autosave_policy_str);
 
@@ -276,21 +276,21 @@ bool Configuration::parseConfiguration(std::string tag, XML_Helper* helper)
     
     helper->getData(s_see_opponents_stacks, "view_enemies");
     helper->getData(s_see_opponents_production, "view_production");
-    std::string quest_policy_str;
+    Glib::ustring quest_policy_str;
     helper->getData(quest_policy_str, "quests");
     s_play_with_quests = questPolicyFromString(quest_policy_str);
     helper->getData(s_hidden_map, "hidden_map");
     helper->getData(s_diplomacy, "diplomacy");
-    std::string neutral_cities_str;
+    Glib::ustring neutral_cities_str;
     helper->getData(neutral_cities_str, "neutral_cities");
     s_neutral_cities = neutralCitiesFromString(neutral_cities_str);
-    std::string razing_cities_str;
+    Glib::ustring razing_cities_str;
     helper->getData(razing_cities_str, "razing_cities");
     s_razing_cities = razingCitiesFromString(razing_cities_str);
     helper->getData(s_intense_combat, "intense_combat");
     helper->getData(s_military_advisor, "military_advisor");
     helper->getData(s_random_turns, "random_turns");
-    std::string quick_start_str;
+    Glib::ustring quick_start_str;
     helper->getData(quick_start_str, "quick_start");
     s_quick_start = quickStartPolicyFromString(quick_start_str);
     helper->getData(s_cusp_of_war, "cusp_of_war");
@@ -303,7 +303,7 @@ bool Configuration::parseConfiguration(std::string tag, XML_Helper* helper)
     helper->getData(s_gamelist_server_port, "gamelist_server_port");
     helper->getData(s_gamehost_server_hostname, "gamehost_server_hostname");
     helper->getData(s_gamehost_server_port, "gamehost_server_port");
-    std::string ui_str;
+    Glib::ustring ui_str;
     helper->getData(ui_str, "ui_form_factor");
     s_ui_form_factor = uiFormFactorFromString(ui_str);
     return true;
@@ -368,7 +368,7 @@ void initialize_configuration()
     }
 }
 
-std::string Configuration::neutralCitiesToString(const GameParameters::NeutralCities neutrals)
+Glib::ustring Configuration::neutralCitiesToString(const GameParameters::NeutralCities neutrals)
 {
   switch (neutrals)
     {
@@ -388,7 +388,7 @@ std::string Configuration::neutralCitiesToString(const GameParameters::NeutralCi
   return "GameParameters::AVERAGE";
 }
 
-GameParameters::NeutralCities Configuration::neutralCitiesFromString(std::string str)
+GameParameters::NeutralCities Configuration::neutralCitiesFromString(Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return GameParameters::NeutralCities(atoi(str.c_str()));
@@ -404,7 +404,7 @@ GameParameters::NeutralCities Configuration::neutralCitiesFromString(std::string
   return GameParameters::AVERAGE;
 }
 
-std::string Configuration::razingCitiesToString(const GameParameters::RazingCities razing)
+Glib::ustring Configuration::razingCitiesToString(const GameParameters::RazingCities razing)
 {
   switch (razing)
     {
@@ -421,7 +421,7 @@ std::string Configuration::razingCitiesToString(const GameParameters::RazingCiti
   return "GameParameters::ALWAYS";
 }
 
-GameParameters::RazingCities Configuration::razingCitiesFromString(std::string str)
+GameParameters::RazingCities Configuration::razingCitiesFromString(Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return GameParameters::RazingCities(atoi(str.c_str()));
@@ -435,7 +435,7 @@ GameParameters::RazingCities Configuration::razingCitiesFromString(std::string s
   return GameParameters::ALWAYS;
 }
 
-std::string Configuration::savingPolicyToString(const Configuration::SavingPolicy policy)
+Glib::ustring Configuration::savingPolicyToString(const Configuration::SavingPolicy policy)
 {
   switch (policy)
     {
@@ -452,7 +452,7 @@ std::string Configuration::savingPolicyToString(const Configuration::SavingPolic
   return "Configuration::NO_SAVING";
 }
 
-Configuration::SavingPolicy Configuration::savingPolicyFromString(std::string str)
+Configuration::SavingPolicy Configuration::savingPolicyFromString(Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Configuration::SavingPolicy(atoi(str.c_str()));
@@ -466,7 +466,7 @@ Configuration::SavingPolicy Configuration::savingPolicyFromString(std::string st
   return Configuration::WRITE_NUMBERED_AUTOSAVE_FILE;
 }
 
-std::string Configuration::quickStartPolicyToString(const GameParameters::QuickStartPolicy policy)
+Glib::ustring Configuration::quickStartPolicyToString(const GameParameters::QuickStartPolicy policy)
 {
   switch (policy)
     {
@@ -483,7 +483,7 @@ std::string Configuration::quickStartPolicyToString(const GameParameters::QuickS
   return "GameParameters::NO_QUICK_START";
 }
 
-GameParameters::QuickStartPolicy Configuration::quickStartPolicyFromString(std::string str)
+GameParameters::QuickStartPolicy Configuration::quickStartPolicyFromString(Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return GameParameters::QuickStartPolicy(atoi(str.c_str()));
@@ -497,7 +497,7 @@ GameParameters::QuickStartPolicy Configuration::quickStartPolicyFromString(std::
   return GameParameters::NO_QUICK_START;
 }
 
-std::string Configuration::questPolicyToString(const GameParameters::QuestPolicy quest)
+Glib::ustring Configuration::questPolicyToString(const GameParameters::QuestPolicy quest)
 {
   switch (quest)
     {
@@ -514,7 +514,7 @@ std::string Configuration::questPolicyToString(const GameParameters::QuestPolicy
   return "GameParameters::NO_QUESTING";
 }
 
-GameParameters::QuestPolicy Configuration::questPolicyFromString(std::string str)
+GameParameters::QuestPolicy Configuration::questPolicyFromString(Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return GameParameters::QuestPolicy(atoi(str.c_str()));
@@ -528,7 +528,7 @@ GameParameters::QuestPolicy Configuration::questPolicyFromString(std::string str
   return GameParameters::NO_QUESTING;
 }
 
-std::string Configuration::uiFormFactorToString(const Configuration::UiFormFactor factor)
+Glib::ustring Configuration::uiFormFactorToString(const Configuration::UiFormFactor factor)
 {
   switch (factor)
     {
@@ -545,7 +545,7 @@ std::string Configuration::uiFormFactorToString(const Configuration::UiFormFacto
   return "Configuration::UI_FORM_FACTOR_DESKTOP";
 }
 
-Configuration::UiFormFactor Configuration::uiFormFactorFromString(std::string str)
+Configuration::UiFormFactor Configuration::uiFormFactorFromString(Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Configuration::UiFormFactor(atoi(str.c_str()));
@@ -559,8 +559,8 @@ Configuration::UiFormFactor Configuration::uiFormFactorFromString(std::string st
   return Configuration::UI_FORM_FACTOR_DESKTOP;
 }
 
-bool Configuration::upgrade(std::string filename, std::string old_version,
-                            std::string new_version)
+bool Configuration::upgrade(Glib::ustring filename, Glib::ustring old_version,
+                            Glib::ustring new_version)
 {
   return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
                                             FileCompat::CONFIGURATION, 
@@ -569,7 +569,7 @@ bool Configuration::upgrade(std::string filename, std::string old_version,
 
 void Configuration::support_backward_compatibility()
 {
-  std::string ext = File::get_extension(Configuration::configuration_file_path);
+  Glib::ustring ext = File::get_extension(Configuration::configuration_file_path);
   FileCompat::getInstance()->support_type (FileCompat::CONFIGURATION, ext, 
                                            d_tag, false);
   FileCompat::getInstance()->support_version

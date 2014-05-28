@@ -61,13 +61,13 @@ class QuestCityRaze: public Quest, public sigc::trackable
          *
          * \param s here we append the progress information
          */
-        std::string getProgress() const;
+        Glib::ustring getProgress() const;
 
 	//! Return a description of how well the city razing quest is going.
-        void getSuccessMsg(std::queue<std::string>& msgs) const;
+        void getSuccessMsg(std::queue<Glib::ustring>& msgs) const;
 
 	//! Return a queue of strings to show when the quest is compeleted.
-        void getExpiredMsg(std::queue<std::string>& msgs) const;
+        void getExpiredMsg(std::queue<Glib::ustring>& msgs) const;
 
         //! Returns the id of the City object to be razed.
         guint32 getCityId() const {return d_city;}

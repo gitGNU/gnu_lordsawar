@@ -32,8 +32,8 @@
 #include "playerlist.h"
 #include "reward.h"
 
-#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
-//#define debug(x)
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
+#define debug(x)
 
 CreateScenarioRandomize::CreateScenarioRandomize()
 {
@@ -57,51 +57,51 @@ CreateScenarioRandomize::~CreateScenarioRandomize()
     debug("CreateScenarioRandomize::~CreateScenarioRandomize")
 }
 
-std::string CreateScenarioRandomize::popRandomCityName()
+Glib::ustring CreateScenarioRandomize::popRandomCityName()
 {
-  std::string name = d_citynames->popRandomName().c_str();
+  Glib::ustring name = d_citynames->popRandomName().c_str();
   if (name == "")
     return City::getDefaultName();
   return name;
 }
 
-void CreateScenarioRandomize::pushRandomCityName(std::string name)
+void CreateScenarioRandomize::pushRandomCityName(Glib::ustring name)
 {
   d_citynames->push_back(name);
 }
 
-std::string CreateScenarioRandomize::popRandomRuinName()
+Glib::ustring CreateScenarioRandomize::popRandomRuinName()
 {
-  std::string name = d_ruinnames->popRandomName().c_str();
+  Glib::ustring name = d_ruinnames->popRandomName().c_str();
   if (name == "")
     return Ruin::getDefaultName();
   return name;
 }
 
-void CreateScenarioRandomize::pushRandomRuinName(std::string name)
+void CreateScenarioRandomize::pushRandomRuinName(Glib::ustring name)
 {
   d_ruinnames->push_back(name);
 }
 
-std::string CreateScenarioRandomize::popRandomTempleName()
+Glib::ustring CreateScenarioRandomize::popRandomTempleName()
 {
-  std::string name = d_templenames->popRandomName().c_str();
+  Glib::ustring name = d_templenames->popRandomName().c_str();
   if (name == "")
     return Temple::getDefaultName();
   return name;
 }
 
-void CreateScenarioRandomize::pushRandomTempleName(std::string name)
+void CreateScenarioRandomize::pushRandomTempleName(Glib::ustring name)
 {
   d_templenames->push_back(name);
 }
 
-std::string CreateScenarioRandomize::popRandomSignpost()
+Glib::ustring CreateScenarioRandomize::popRandomSignpost()
 {
   return d_signposts->popRandomName().c_str();
 }
 
-void CreateScenarioRandomize::pushRandomSignpost(std::string name)
+void CreateScenarioRandomize::pushRandomSignpost(Glib::ustring name)
 {
   d_signposts->push_back(name);
 }
@@ -145,7 +145,7 @@ Glib::ustring CreateScenarioRandomize::get_direction(int xdir, int ydir)
   return _("nowhere");
 }
 
-std::string CreateScenarioRandomize::getDynamicSignpost(Signpost *signpost)
+Glib::ustring CreateScenarioRandomize::getDynamicSignpost(Signpost *signpost)
 {
   int xdir, ydir;
   Vector<int> signpostPos = signpost->getPos();
@@ -232,9 +232,9 @@ void CreateScenarioRandomize::getBaseGold (int difficulty, int *base_gold)
     *base_gold = 121;
 }
 
-std::string CreateScenarioRandomize::getPlayerName(Shield::Colour id)
+Glib::ustring CreateScenarioRandomize::getPlayerName(Shield::Colour id)
 {
-  std::string name = "";
+  Glib::ustring name = "";
   switch (id)
     {
     case Shield::WHITE: 

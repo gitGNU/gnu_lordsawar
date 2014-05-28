@@ -25,7 +25,7 @@
 
 #include "Item.h"
 
-std::string Backpack::d_tag = "backpack";
+Glib::ustring Backpack::d_tag = "backpack";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<flush;}
 #define debug(x)
@@ -72,7 +72,7 @@ bool Backpack::save(XML_Helper* helper) const
     return retval;
 }
 
-bool Backpack::loadItem(std::string tag, XML_Helper* helper)
+bool Backpack::loadItem(Glib::ustring tag, XML_Helper* helper)
 {
   if (tag == Backpack::d_tag)
     return true;

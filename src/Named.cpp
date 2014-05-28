@@ -19,7 +19,7 @@
 
 #include "xmlhelper.h"
 
-Named::Named(std::string name)
+Named::Named(Glib::ustring name)
   :d_name(name)
 {
 }

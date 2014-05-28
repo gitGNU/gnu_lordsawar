@@ -25,7 +25,7 @@
 #include "file-compat.h"
 #include "ucompose.hpp"
 
-std::string Itemlist::d_tag = "itemlist";
+Glib::ustring Itemlist::d_tag = "itemlist";
 
 Itemlist* Itemlist::d_instance = 0;
 
@@ -84,7 +84,7 @@ Itemlist::~Itemlist()
     flClear();
 }
 
-bool Itemlist::loadItemProto(std::string tag, XML_Helper* helper)
+bool Itemlist::loadItemProto(Glib::ustring tag, XML_Helper* helper)
 {
     if (tag != ItemProto::d_tag)
         return false;
@@ -140,7 +140,7 @@ void Itemlist::add(ItemProto *itemproto)
   (*this)[size()] = itemproto;
 }
 
-bool Itemlist::upgrade(std::string filename, std::string old_version, std::string new_version)
+bool Itemlist::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version)
 {
   return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
                                             FileCompat::ITEMLIST, 

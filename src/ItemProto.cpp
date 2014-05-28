@@ -25,7 +25,7 @@
 #include "armysetlist.h"
 #include "armyproto.h"
 
-std::string ItemProto::d_tag = "itemproto";
+Glib::ustring ItemProto::d_tag = "itemproto";
 
 ItemProto::ItemProto(XML_Helper* helper)
 	: Renamable (helper)
@@ -36,7 +36,7 @@ ItemProto::ItemProto(XML_Helper* helper)
     // from a savegame. They both differ a bit, more on that when we encounter
     // such a situation. First, let us deal with the common things.
 
-    std::string bonus_str;
+    Glib::ustring bonus_str;
     helper->getData(bonus_str, "bonus");
     d_bonus = bonusFlagsFromString(bonus_str);
 
@@ -50,7 +50,7 @@ ItemProto::ItemProto(XML_Helper* helper)
         if (d_bonus & ItemProto::SUMMON_MONSTER)
           {
             helper->getData(d_army_type_to_summon, "army_type_to_summon");
-            std::string str;
+            Glib::ustring str;
             helper->getData(str, "building_type_to_summon_on");
             d_building_type_to_summon_on = Maptile::buildingFromString(str);
           }
@@ -78,7 +78,7 @@ ItemProto::ItemProto(XML_Helper* helper)
       }
 }
 
-ItemProto::ItemProto(std::string name)
+ItemProto::ItemProto(Glib::ustring name)
 	: Renamable(name)
 {
   d_bonus = 0;
@@ -115,7 +115,7 @@ bool ItemProto::saveContents(XML_Helper* helper) const
   bool retval = true;
 
   retval &= helper->saveData("name", getName(false));
-  std::string bonus_str = bonusFlagsToString(d_bonus);
+  Glib::ustring bonus_str = bonusFlagsToString(d_bonus);
   retval &= helper->saveData("bonus", bonus_str);
   if (isUsable())
       {
@@ -129,7 +129,7 @@ bool ItemProto::saveContents(XML_Helper* helper) const
           {
             retval &= helper->saveData("army_type_to_summon", 
                                        d_army_type_to_summon);
-            std::string type_str = 
+            Glib::ustring type_str = 
               Maptile::buildingToString
               (Maptile::Building(d_building_type_to_summon_on));
             retval &= helper->saveData("building_type_to_summon_on", type_str);
@@ -177,7 +177,7 @@ void ItemProto::removeBonus(ItemProto::Bonus bonus)
   d_bonus ^= bonus;
 }
 
-std::string ItemProto::getBonusDescription() const
+Glib::ustring ItemProto::getBonusDescription() const
 {
   guint32 battle = 0;
   guint32 command = 0;
@@ -264,7 +264,7 @@ std::string ItemProto::getBonusDescription() const
   return str;
 }
 
-std::string ItemProto::bonusFlagToString(ItemProto::Bonus bonus)
+Glib::ustring ItemProto::bonusFlagToString(ItemProto::Bonus bonus)
 {
   switch (bonus)
     {
@@ -320,9 +320,9 @@ std::string ItemProto::bonusFlagToString(ItemProto::Bonus bonus)
   return "ItemProto::ADD1STR";
 }
 
-std::string ItemProto::bonusFlagsToString(guint32 bonus)
+Glib::ustring ItemProto::bonusFlagsToString(guint32 bonus)
 {
-  std::string bonuses;
+  Glib::ustring bonuses;
   if (bonus & ItemProto::ADD1STR)
     bonuses += " " + bonusFlagToString(ItemProto::ADD1STR);
   if (bonus & ItemProto::ADD2STR)
@@ -374,7 +374,7 @@ std::string ItemProto::bonusFlagsToString(guint32 bonus)
   return bonuses;
 }
 
-guint32 ItemProto::bonusFlagsFromString(std::string str)
+guint32 ItemProto::bonusFlagsFromString(Glib::ustring str)
 {
   guint32 total = 0;
   std::stringstream bonuses;
@@ -382,7 +382,7 @@ guint32 ItemProto::bonusFlagsFromString(std::string str)
 
   while (bonuses.eof() == false)
     {
-      std::string bonus;
+      Glib::ustring bonus;
       bonuses >> bonus;
       if (bonus.size() == 0)
 	break;
@@ -391,7 +391,7 @@ guint32 ItemProto::bonusFlagsFromString(std::string str)
   return total;
 }
 
-ItemProto::Bonus ItemProto::bonusFlagFromString(std::string str)
+ItemProto::Bonus ItemProto::bonusFlagFromString(Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return ItemProto::Bonus(atoi(str.c_str()));

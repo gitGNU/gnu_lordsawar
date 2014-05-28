@@ -26,7 +26,7 @@
 #include "shieldset.h"
 #include "tarhelper.h"
 
-std::string Shield::d_tag = "shield";
+Glib::ustring Shield::d_tag = "shield";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -83,7 +83,7 @@ Gdk::RGBA Shield::get_default_color_for_neutral()
   return color;
 }
 
-std::string Shield::colourToString(const Shield::Colour c)
+Glib::ustring Shield::colourToString(const Shield::Colour c)
 {
   switch (c)
     {
@@ -133,7 +133,7 @@ void Shield::instantiateImages(Shieldset *s, bool &broken)
     {
       if ((*it)->getImageName().empty() == false)
         {
-          std::string pngfile = t.getFile((*it)->getImageName() + ".png", 
+          Glib::ustring pngfile = t.getFile((*it)->getImageName() + ".png", 
                                           broken);
           if (broken == false)
             {

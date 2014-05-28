@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #define RECENTLY_PLAYED_GAME_H
 
 #include <gtkmm.h>
-#include <string>
 
 
 #include <sys/time.h>
@@ -37,7 +36,7 @@ class RecentlyPlayedGame
     public:
 
 	//! The xml tag of this object in a recently played game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! Loading constructor.
         /**
@@ -56,10 +55,10 @@ class RecentlyPlayedGame
 	 */
         RecentlyPlayedGame(GameScenario *game_scenario, Profile *profile);
         
-        RecentlyPlayedGame(std::string id, std::string profile_id, 
+        RecentlyPlayedGame(Glib::ustring id, Glib::ustring profile_id, 
                            guint32 round, guint32 num_cities, 
                            guint32 num_players, GameScenario::PlayMode mode, 
-                           std::string name);
+                           Glib::ustring name);
         //! Copy constructor.
         RecentlyPlayedGame(const RecentlyPlayedGame &orig);
 
@@ -69,10 +68,10 @@ class RecentlyPlayedGame
 	// Get Methods
 
         //! Get the scenario id of the recently played game entry.
-	std::string getId() const {return d_id;};
+	Glib::ustring getId() const {return d_id;};
 
         //! Get the id of the profile who made the entry.
-	std::string getProfileId() const {return d_profile_id;};
+	Glib::ustring getProfileId() const {return d_profile_id;};
 
 	//! Get time of when this game was last played (seconds past the epoch).
         Glib::TimeVal getTimeOfLastPlay() const { return d_last_played;};
@@ -90,7 +89,7 @@ class RecentlyPlayedGame
 	GameScenario::PlayMode getPlayMode() const {return d_playmode;};
 
 	//! Get the name of the scenario.
-	std::string getName() const {return d_name;};
+	Glib::ustring getName() const {return d_name;};
 
 
 	// Set Methods
@@ -135,7 +134,7 @@ class RecentlyPlayedGame
 	// DATA
 	
 	//! The id of the game.
-	std::string d_id;
+	Glib::ustring d_id;
 
 	//! When the game was last played.
         Glib::TimeVal d_last_played;
@@ -153,10 +152,10 @@ class RecentlyPlayedGame
 	GameScenario::PlayMode d_playmode;
 
 	//! The name of the game.
-	std::string d_name;
+	Glib::ustring d_name;
 
         //! The id of the profile who played the game.
-        std::string d_profile_id;
+        Glib::ustring d_profile_id;
 };
 
 class RecentlyPlayedHotseatGame : public RecentlyPlayedGame
@@ -184,10 +183,10 @@ class RecentlyPlayedHotseatGame : public RecentlyPlayedGame
 	// Methods that operate on the class data and modify it.
 
 	//! Assign the filename to the entry.
-	bool fillData(std::string filename);
+	bool fillData(Glib::ustring filename);
 
     private:
-	std::string d_filename;
+	Glib::ustring d_filename;
 };
 
 class RecentlyPlayedPbmGame : public RecentlyPlayedGame
@@ -215,13 +214,13 @@ class RecentlyPlayedPbmGame : public RecentlyPlayedGame
 	// Methods that operate on the class data and modify it.
 
 	//! Assign the filename to the entry.
-	bool fillData(std::string filename);
+	bool fillData(Glib::ustring filename);
     private:
 
 	// DATA
 	
 	//! The filename of the play-by-mail game for this entry.
-	std::string d_filename;
+	Glib::ustring d_filename;
 };
 
 class RecentlyPlayedNetworkedGame : public RecentlyPlayedGame
@@ -231,7 +230,7 @@ class RecentlyPlayedNetworkedGame : public RecentlyPlayedGame
 	RecentlyPlayedNetworkedGame(GameScenario *game_scenario, Profile *p);
 
         //! Make a new networked game entry with all of the gory details.
-        RecentlyPlayedNetworkedGame(std::string id, std::string profile_id, guint32 round, guint32 num_cities, guint32 num_players, GameScenario::PlayMode mode, std::string name, std::string host, guint32 port);
+        RecentlyPlayedNetworkedGame(Glib::ustring id, Glib::ustring profile_id, guint32 round, guint32 num_cities, guint32 num_players, GameScenario::PlayMode mode, Glib::ustring name, Glib::ustring host, guint32 port);
 
         //! Copy constructor
         RecentlyPlayedNetworkedGame(const RecentlyPlayedNetworkedGame &orig);
@@ -246,7 +245,7 @@ class RecentlyPlayedNetworkedGame : public RecentlyPlayedGame
 	// Get Methods
 	
 	//! Get the hostname associated with the game.
-	std::string getHost() const {return d_host;};
+	Glib::ustring getHost() const {return d_host;};
 
 	//! Get the port associated with the host, and game.
 	guint32 getPort() const {return d_port;};
@@ -260,16 +259,16 @@ class RecentlyPlayedNetworkedGame : public RecentlyPlayedGame
 
 	// Methods that operate on the class data and modify it.
 
-	bool fillData(std::string host, guint32 port);
+	bool fillData(Glib::ustring host, guint32 port);
 
-        void setHost(std::string host) {d_host = host;};
+        void setHost(Glib::ustring host) {d_host = host;};
 
     private:
 
 	// DATA
 	
 	//! The hostname that the network game was hosted at.
-	std::string d_host;
+	Glib::ustring d_host;
 
 	//! The port on the hostname that the network game was hosted at.
 	guint32 d_port;

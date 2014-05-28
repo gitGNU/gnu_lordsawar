@@ -35,26 +35,26 @@ class RecentlyPlayedGame;
 class GhsClientTool
 {
 public:
-    GhsClientTool(std::string host, int port, Profile *p, bool show_list, bool reload, std::string unhost, std::string file, bool terminate);
+    GhsClientTool(Glib::ustring host, int port, Profile *p, bool show_list, bool reload, Glib::ustring unhost, Glib::ustring file, bool terminate);
     virtual ~GhsClientTool();
 private:
   Profile *new_profile;
   Profile *profile;
-  std::string d_host;
+  Glib::ustring d_host;
   bool d_show_list;
   bool d_reload;
-  std::string d_unhost;
-  std::string d_file_to_host;
+  Glib::ustring d_unhost;
+  Glib::ustring d_file_to_host;
   bool d_terminate;
   guint32 request_count;
 
   //callbacks
-  void on_got_list_response(RecentlyPlayedGameList *list, std::string err);
-  void on_got_reload_response(std::string err);
-  void on_got_unhost_response(std::string id, std::string err);
+  void on_got_list_response(RecentlyPlayedGameList *list, Glib::ustring err);
+  void on_got_reload_response(Glib::ustring err);
+  void on_got_unhost_response(Glib::ustring id, Glib::ustring err);
 
-  void on_got_host_game_response(std::string scenario_id, std::string err, std::string file);
-  void on_game_hosted(std::string scenario_id, guint32 port, std::string err);
+  void on_got_host_game_response(Glib::ustring scenario_id, Glib::ustring err, Glib::ustring file);
+  void on_game_hosted(Glib::ustring scenario_id, guint32 port, Glib::ustring err);
   void on_could_not_connect();
   void on_connected();
   void on_connection_lost();

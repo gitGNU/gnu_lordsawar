@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 
 #include "xmlhelper.h"
 
-std::string NetworkAction::d_tag = "networkaction";
+Glib::ustring NetworkAction::d_tag = "networkaction";
 
 NetworkAction::NetworkAction(Action *action, guint32 owner)
   : OwnerId(owner)
@@ -47,10 +47,10 @@ bool NetworkAction::save(XML_Helper* helper) const
   return retval;
 }
 
-std::string NetworkAction::toString() const
+Glib::ustring NetworkAction::toString() const
 {
   std::stringstream s;
-  std::string action= d_action->dump();
+  Glib::ustring action= d_action->dump();
   s <<"Player \""<< d_owner_id << "\"--> ";
   s <<action;
     

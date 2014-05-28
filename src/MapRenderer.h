@@ -1,7 +1,7 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2004 Ulf Lorenz
 // Copyright (C) 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 #define MAPRENDERER_H
 
 #include <gtkmm.h>
-#include <string>
 #include "vector.h"
 
 /** Class which cares about rendering of the map.
@@ -60,10 +59,10 @@ class MapRenderer
 			 Cairo::RefPtr<Cairo::Context> context);
 
 	//! Save the current view of map tiles as an image (bmp file).
-	bool saveViewAsBitmap(std::string filename);
+	bool saveViewAsBitmap(Glib::ustring filename);
 
 	//! Save all of the map tiles as one big image (bmp file).
-	bool saveAsBitmap(std::string filename);
+	bool saveAsBitmap(Glib::ustring filename);
     private:
         //Data
 	Cairo::RefPtr<Cairo::Surface> d_surface;

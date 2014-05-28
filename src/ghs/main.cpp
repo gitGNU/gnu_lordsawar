@@ -36,8 +36,8 @@ int max_vector_width;
 int main(int argc, char* argv[])
 {
   bool foreground = false;
-  std::list<std::string> members;
-  std::string hostname = "";
+  std::list<Glib::ustring> members;
+  Glib::ustring hostname = "";
   srand(time(NULL));         // set the random seed
 
   initialize_configuration();
@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
     {
       for (int i = 2; i <= argc; i++)
 	{
-          std::string parameter(argv[i-1]); 
+          Glib::ustring parameter(argv[i-1]); 
 	  if (parameter == "--port" || parameter == "-p")
 	    {
 	      i++;

@@ -250,7 +250,7 @@ void RuinEditorDialog::on_keeper_clicked()
 
 void RuinEditorDialog::on_randomize_name_clicked()
 {
-  std::string existing_name = name_entry->get_text();
+  Glib::ustring existing_name = name_entry->get_text();
   if (existing_name == Ruin::getDefaultName())
     name_entry->set_text(d_randomizer->popRandomRuinName());
   else

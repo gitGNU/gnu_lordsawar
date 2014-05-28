@@ -37,7 +37,7 @@
 #include "history.h"
 #include "stackreflist.h"
 
-std::string QuestsManager::d_tag = "questlist";
+Glib::ustring QuestsManager::d_tag = "questlist";
 
 QuestsManager* QuestsManager::s_instance = NULL;
 
@@ -304,14 +304,14 @@ bool QuestsManager::save(XML_Helper* helper) const
   return retval;
 }
 
-bool QuestsManager::load(std::string tag, XML_Helper* helper)
+bool QuestsManager::load(Glib::ustring tag, XML_Helper* helper)
 {
   debug("QuestsManager: load tag = " << tag);
 
   if (tag == Quest::d_tag)
     {
       guint32  questType, hero;
-      std::string quest_type_str;
+      Glib::ustring quest_type_str;
       helper->getData(quest_type_str, "type");
       questType = Quest::questTypeFromString(quest_type_str);
       helper->getData(hero, "hero");

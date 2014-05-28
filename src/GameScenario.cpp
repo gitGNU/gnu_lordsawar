@@ -68,13 +68,13 @@
 #include "GraphicsCache.h"
 #include "file-compat.h"
 
-std::string GameScenario::d_tag = "scenario";
-std::string GameScenario::d_top_tag = PACKAGE;
+Glib::ustring GameScenario::d_tag = "scenario";
+Glib::ustring GameScenario::d_top_tag = PACKAGE;
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
+GameScenario::GameScenario(Glib::ustring name,Glib::ustring comment, bool turnmode,
 			   GameScenario::PlayMode playmode)
     :d_name(name),d_comment(comment), d_copyright(""), d_license(""),
     d_turnmode(turnmode), d_playmode(playmode), inhibit_autosave_removal(false),
@@ -91,7 +91,7 @@ GameScenario::GameScenario(std::string name,std::string comment, bool turnmode,
 }
 
 //savegame has an absolute path
-GameScenario::GameScenario(std::string savegame, bool& broken)
+GameScenario::GameScenario(Glib::ustring savegame, bool& broken)
   :d_turnmode(true), d_playmode(GameScenario::HOTSEAT), 
     inhibit_autosave_removal(false), loaded_game_filename("")
 {
@@ -103,10 +103,10 @@ GameScenario::GameScenario(std::string savegame, bool& broken)
       loadTilesets(&t);
       loadCitysets(&t);
       loadShieldsets(&t);
-      std::list<std::string> ext;
+      std::list<Glib::ustring> ext;
       ext.push_back(MAP_EXT);
       ext.push_back(SAVE_EXT);
-      std::string filename = t.getFirstFile(ext, broken);
+      Glib::ustring filename = t.getFirstFile(ext, broken);
       XML_Helper helper(filename, std::ios::in, Configuration::s_zipfiles);
       broken = loadWithHelper(helper);
       File::erase(filename);
@@ -125,9 +125,9 @@ GameScenario::GameScenario(std::string savegame, bool& broken)
 bool GameScenario::loadArmysets(Tar_Helper *t)
 {
   bool broken = false;
-  std::list<std::string> armysets;
+  std::list<Glib::ustring> armysets;
   armysets = t->getFilenamesWithExtension(Armyset::file_extension);
-  for (std::list<std::string>::iterator it = armysets.begin(); 
+  for (std::list<Glib::ustring>::iterator it = armysets.begin(); 
        it != armysets.end(); it++)
     {
       Armyset *armyset = Armysetlist::getInstance()->import(t, *it, broken);
@@ -140,10 +140,10 @@ bool GameScenario::loadArmysets(Tar_Helper *t)
 bool GameScenario::loadTilesets(Tar_Helper *t)
 {
   bool broken = false;
-  std::list<std::string> tilesets;
+  std::list<Glib::ustring> tilesets;
   tilesets = t->getFilenamesWithExtension(Tileset::file_extension);
   Tilesetlist *tlist = Tilesetlist::getInstance();
-  for (std::list<std::string>::iterator it = tilesets.begin(); 
+  for (std::list<Glib::ustring>::iterator it = tilesets.begin(); 
        it != tilesets.end(); it++)
     {
       Tileset *tileset = tlist->import(t, *it, broken);
@@ -156,10 +156,10 @@ bool GameScenario::loadTilesets(Tar_Helper *t)
 bool GameScenario::loadCitysets(Tar_Helper *t)
 {
   bool broken = false;
-  std::list<std::string> citysets;
+  std::list<Glib::ustring> citysets;
   citysets = t->getFilenamesWithExtension(Cityset::file_extension);
   Citysetlist *clist = Citysetlist::getInstance();
-  for (std::list<std::string>::iterator it = citysets.begin(); 
+  for (std::list<Glib::ustring>::iterator it = citysets.begin(); 
        it != citysets.end(); it++)
     {
       Cityset *cityset = clist->import(t, *it, broken);
@@ -172,10 +172,10 @@ bool GameScenario::loadCitysets(Tar_Helper *t)
 bool GameScenario::loadShieldsets(Tar_Helper *t)
 {
   bool broken = false;
-  std::list<std::string> shieldsets;
+  std::list<Glib::ustring> shieldsets;
   shieldsets = t->getFilenamesWithExtension(Shieldset::file_extension);
   Shieldsetlist *slist = Shieldsetlist::getInstance();
-  for (std::list<std::string>::iterator it = shieldsets.begin(); 
+  for (std::list<Glib::ustring>::iterator it = shieldsets.begin(); 
        it != shieldsets.end(); it++)
     {
       Shieldset *shieldset = slist->import(t, *it, broken);
@@ -556,30 +556,28 @@ GameScenario::~GameScenario()
   if (Configuration::s_autosave_policy == 1 && 
       inhibit_autosave_removal == false)
     {
-      std::string filename = File::getSavePath() + "autosave" + SAVE_EXT;
+      Glib::ustring filename = File::getSavePath() + "autosave" + SAVE_EXT;
       File::erase(filename);
     }
   clean_tmp_dir();
 } 
 
-std::string GameScenario::getName() const
+Glib::ustring GameScenario::getName() const
 {
   return d_name;
 }
 
-std::string GameScenario::getComment() const
+Glib::ustring GameScenario::getComment() const
 {
   return d_comment;
 }
 
-bool GameScenario::saveGame(std::string filename, std::string extension) const
+bool GameScenario::saveGame(Glib::ustring filename, Glib::ustring extension) const
 {
   bool retval = true;
-  std::string goodfilename = File::add_ext_if_necessary(filename, extension);
+  Glib::ustring goodfilename = File::add_ext_if_necessary(filename, extension);
 
-  std::string tmpfile = "lw.XXXX";
-  int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
-  close(fd);
+  Glib::ustring tmpfile = File::get_tmp_file();
   XML_Helper helper(tmpfile, std::ios::out, Configuration::s_zipfiles);
   retval &= saveWithHelper(helper);
   helper.close();
@@ -594,12 +592,12 @@ bool GameScenario::saveGame(std::string filename, std::string extension) const
 
   t.saveFile(tmpfile, File::get_basename(goodfilename, true));
   File::erase(tmpfile);
-  std::list<std::string> files;
+  std::list<Glib::ustring> files;
 
   Cityset *cs = GameMap::getCityset();
   cs->getFilenames(files);
   t.saveFile(cs->getConfigurationFile());
-  for (std::list<std::string>::iterator it = files.begin(); it !=files.end();
+  for (std::list<Glib::ustring>::iterator it = files.begin(); it !=files.end();
        it++)
     t.saveFile(cs->getFile(*it));
 
@@ -607,7 +605,7 @@ bool GameScenario::saveGame(std::string filename, std::string extension) const
   Shieldset *ss = GameMap::getShieldset();
   ss->getFilenames(files);
   t.saveFile(ss->getConfigurationFile());
-  for (std::list<std::string>::iterator it = files.begin(); it !=files.end();
+  for (std::list<Glib::ustring>::iterator it = files.begin(); it !=files.end();
        it++)
     t.saveFile(ss->getFile(*it));
 
@@ -615,7 +613,7 @@ bool GameScenario::saveGame(std::string filename, std::string extension) const
   Tileset *ts = GameMap::getTileset();
   ts->getFilenames(files);
   t.saveFile(ts->getConfigurationFile());
-  for (std::list<std::string>::iterator it = files.begin(); it !=files.end();
+  for (std::list<Glib::ustring>::iterator it = files.begin(); it !=files.end();
        it++)
     t.saveFile(ts->getFile(*it));
 
@@ -635,7 +633,7 @@ bool GameScenario::saveGame(std::string filename, std::string extension) const
       Armyset *as = Armysetlist::getInstance()->getArmyset(*it);
       t.saveFile(as->getConfigurationFile());
       as->getFilenames(files);
-      for (std::list<std::string>::iterator i = files.begin(); 
+      for (std::list<Glib::ustring>::iterator i = files.begin(); 
 	   i != files.end(); i++)
 	t.saveFile(as->getFile(*i));
     }
@@ -681,21 +679,21 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
   retval &= helper.saveData("turnmode", d_turnmode);
   retval &= helper.saveData("view_enemies", s_see_opponents_stacks);
   retval &= helper.saveData("view_production", s_see_opponents_production);
-  std::string quest_policy_str = Configuration::questPolicyToString(GameParameters::QuestPolicy(s_play_with_quests));
+  Glib::ustring quest_policy_str = Configuration::questPolicyToString(GameParameters::QuestPolicy(s_play_with_quests));
   retval &= helper.saveData("quests", quest_policy_str);
   retval &= helper.saveData("hidden_map", s_hidden_map);
   retval &= helper.saveData("diplomacy", s_diplomacy);
   retval &= helper.saveData("cusp_of_war", s_cusp_of_war);
-  std::string neutral_cities_str = Configuration::neutralCitiesToString(GameParameters::NeutralCities(s_neutral_cities));
+  Glib::ustring neutral_cities_str = Configuration::neutralCitiesToString(GameParameters::NeutralCities(s_neutral_cities));
   retval &= helper.saveData("neutral_cities", neutral_cities_str);
-  std::string razing_cities_str = Configuration::razingCitiesToString(GameParameters::RazingCities(s_razing_cities));
+  Glib::ustring razing_cities_str = Configuration::razingCitiesToString(GameParameters::RazingCities(s_razing_cities));
   retval &= helper.saveData("razing_cities", razing_cities_str);
   retval &= helper.saveData("intense_combat", s_intense_combat);
   retval &= helper.saveData("military_advisor", s_military_advisor);
   retval &= helper.saveData("random_turns", s_random_turns);
   retval &= helper.saveData("surrender_already_offered", 
 			    s_surrender_already_offered);
-  std::string playmode_str = playModeToString(GameScenario::PlayMode(d_playmode));
+  Glib::ustring playmode_str = playModeToString(GameScenario::PlayMode(d_playmode));
   retval &= helper.saveData("playmode", playmode_str);
 
   retval &= helper.closeTag();
@@ -705,7 +703,7 @@ bool GameScenario::saveWithHelper(XML_Helper &helper) const
   return retval;
 }
 
-bool GameScenario::load(std::string tag, XML_Helper* helper)
+bool GameScenario::load(Glib::ustring tag, XML_Helper* helper)
 {
   if (tag == d_top_tag)
     {
@@ -729,16 +727,16 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
       helper->getData(s_round, "turn");
       helper->getData(s_see_opponents_stacks, "view_enemies");
       helper->getData(s_see_opponents_production, "view_production");
-      std::string quest_policy_str;
+      Glib::ustring quest_policy_str;
       helper->getData(quest_policy_str, "quests");
       s_play_with_quests = Configuration::questPolicyFromString(quest_policy_str);
       helper->getData(s_hidden_map, "hidden_map");
       helper->getData(s_diplomacy, "diplomacy");
       helper->getData(s_cusp_of_war, "cusp_of_war");
-      std::string neutral_cities_str;
+      Glib::ustring neutral_cities_str;
       helper->getData(neutral_cities_str, "neutral_cities");
       s_neutral_cities = Configuration::neutralCitiesFromString(neutral_cities_str);
-      std::string razing_cities_str;
+      Glib::ustring razing_cities_str;
       helper->getData(razing_cities_str, "razing_cities");
       s_razing_cities = Configuration::razingCitiesFromString(razing_cities_str);
       helper->getData(s_intense_combat, "intense_combat");
@@ -746,7 +744,7 @@ bool GameScenario::load(std::string tag, XML_Helper* helper)
       helper->getData(s_random_turns, "random_turns");
       helper->getData(s_surrender_already_offered, 
 		      "surrender_already_offered");
-      std::string playmode_str;
+      Glib::ustring playmode_str;
       helper->getData(playmode_str, "playmode");
       d_playmode = GameScenario::playModeFromString(playmode_str);
 
@@ -874,8 +872,8 @@ bool GameScenario::autoSave()
       std::cerr<< "Autosave failed.\n";
       return false;
     }
-  if (rename(std::string(File::getSavePath() + "tmp" + SAVE_EXT).c_str(),
-	     std::string(File::getSavePath() + filename).c_str()))
+  if (rename(Glib::ustring(File::getSavePath() + "tmp" + SAVE_EXT).c_str(),
+	     Glib::ustring(File::getSavePath() + filename).c_str()))
     {
       char* err = strerror(errno);
       std::cerr << String::ucompose(_("Error! can't rename the temporary file `%1' to the autosave file `%2'.  %3"), File::getSavePath() + "tmp" + SAVE_EXT, File::getSavePath() + filename, err) << std::endl;
@@ -890,7 +888,7 @@ void GameScenario::nextRound()
   autoSave();
 }
 
-std::string GameScenario::playModeToString(const GameScenario::PlayMode mode)
+Glib::ustring GameScenario::playModeToString(const GameScenario::PlayMode mode)
 {
   switch (mode)
     {
@@ -907,7 +905,7 @@ std::string GameScenario::playModeToString(const GameScenario::PlayMode mode)
   return "GameScenario::HOTSEAT";
 }
 
-GameScenario::PlayMode GameScenario::playModeFromString(const std::string str)
+GameScenario::PlayMode GameScenario::playModeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return GameScenario::PlayMode(atoi(str.c_str()));
@@ -925,9 +923,9 @@ void GameScenario::setNewRandomId()
   d_id = generate_guid();
 }
 	
-bool GameScenario::validate(std::list<std::string> &errors, std::list<std::string> &warnings)
+bool GameScenario::validate(std::list<Glib::ustring> &errors, std::list<Glib::ustring> &warnings)
 {
-  std::string s;
+  Glib::ustring s;
   Playerlist *pl = Playerlist::getInstance();
   guint32 num = pl->countPlayersAlive();
   if (num < 2)
@@ -975,7 +973,7 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
     }
   if (count > 0)
     {
-      std::string s;
+      Glib::ustring s;
       s = String::ucompose(ngettext("There is %1 unnamed ruin", "There are %1 unnamed ruins", count), count);
       warnings.push_back(s);
     }
@@ -989,7 +987,7 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
     }
   if (count > 0)
     {
-      std::string s;
+      Glib::ustring s;
       s = String::ucompose(ngettext("There is %1 unnamed temple", "There are %1 unnamed temples", count), count);
       warnings.push_back(s);
     }
@@ -1003,7 +1001,7 @@ bool GameScenario::validate(std::list<std::string> &errors, std::list<std::strin
     }
   if (count > 0)
     {
-      std::string s;
+      Glib::ustring s;
       s = String::ucompose(ngettext("There is %1 neutral stack not in a city", "There are %1 neutral stacks not in cities", count), count);
       warnings.push_back(s);
     }
@@ -1062,14 +1060,14 @@ void GameScenario::initialize(GameParameters g)
 class ParamLoader
 {
 public:
-    ParamLoader(std::string filename, bool &broken) {
+    ParamLoader(Glib::ustring filename, bool &broken) {
       Tar_Helper t(filename, std::ios::in, broken);
       if (broken)
         return;
-      std::list<std::string> ext;
+      std::list<Glib::ustring> ext;
       ext.push_back(MAP_EXT);
       ext.push_back(SAVE_EXT);
-      std::string tmpfile = t.getFirstFile(ext, broken);
+      Glib::ustring tmpfile = t.getFirstFile(ext, broken);
       XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
       helper.registerTag(GameMap::d_tag, 
 			 sigc::mem_fun(this, &ParamLoader::loadParam));
@@ -1085,7 +1083,7 @@ public:
 	broken = !retval;
       helper.close();
     }
-    bool loadParam(std::string tag, XML_Helper* helper)
+    bool loadParam(Glib::ustring tag, XML_Helper* helper)
       {
 	if (tag == Playerlist::d_tag)
 	  {
@@ -1096,7 +1094,7 @@ public:
 	  {
 	    int type;
 	    int id;
-	    std::string name;
+	    Glib::ustring name;
 	    GameParameters::Player p;
 	    helper->getData(id, "id");
 	    p.id = id;
@@ -1147,18 +1145,18 @@ public:
 			    "view_enemies");
 	    helper->getData(game_params.see_opponents_production, 
 			    "view_production");
-	    std::string quest_policy_str;
+	    Glib::ustring quest_policy_str;
 	    helper->getData(quest_policy_str, "quests");
 	    game_params.play_with_quests = 
 	      Configuration::questPolicyFromString(quest_policy_str);
 	    helper->getData(game_params.hidden_map, "hidden_map");
 	    helper->getData(game_params.diplomacy, "diplomacy");
 	    helper->getData(game_params.cusp_of_war, "cusp_of_war");
-	    std::string neutral_cities_str;
+	    Glib::ustring neutral_cities_str;
 	    helper->getData(neutral_cities_str, "neutral_cities");
 	    game_params.neutral_cities = 
 	      Configuration::neutralCitiesFromString(neutral_cities_str);
-	    std::string razing_cities_str;
+	    Glib::ustring razing_cities_str;
 	    helper->getData(razing_cities_str, "razing_cities");
 	    game_params.razing_cities = 
 	      Configuration::razingCitiesFromString(razing_cities_str);
@@ -1174,7 +1172,7 @@ public:
     GameParameters game_params;
     guint32 d_neutral;
 };
-GameParameters GameScenario::loadGameParameters(std::string filename, bool &broken)
+GameParameters GameScenario::loadGameParameters(Glib::ustring filename, bool &broken)
 {
   ParamLoader loader(filename, broken);
   
@@ -1184,16 +1182,16 @@ GameParameters GameScenario::loadGameParameters(std::string filename, bool &brok
 class PlayModeLoader
 {
 public:
-    PlayModeLoader(std::string filename, bool &broken) {
+    PlayModeLoader(Glib::ustring filename, bool &broken) {
       play_mode = GameScenario::HOTSEAT;
       Tar_Helper t(filename, std::ios::in, broken);
       if (broken)
         return;
-      std::string file = File::get_basename(filename, true);
-      std::list<std::string> ext;
+      Glib::ustring file = File::get_basename(filename, true);
+      std::list<Glib::ustring> ext;
       ext.push_back(MAP_EXT);
       ext.push_back(SAVE_EXT);
-      std::string tmpfile = t.getFirstFile(ext, broken);
+      Glib::ustring tmpfile = t.getFirstFile(ext, broken);
       XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
       helper.registerTag(GameScenario::d_tag, 
 			 sigc::mem_fun(this, &PlayModeLoader::loadParam));
@@ -1203,11 +1201,11 @@ public:
 	broken = !retval;
       helper.close();
     }
-    bool loadParam(std::string tag, XML_Helper* helper)
+    bool loadParam(Glib::ustring tag, XML_Helper* helper)
       {
 	if (tag == GameScenario::d_tag)
 	  {
-	    std::string playmode_str;
+	    Glib::ustring playmode_str;
 	    helper->getData(playmode_str, "playmode");
 	    play_mode = GameScenario::playModeFromString(playmode_str);
 	    return true;
@@ -1217,7 +1215,7 @@ public:
     GameScenario::PlayMode play_mode;
 };
 
-GameScenario::PlayMode GameScenario::loadPlayMode(std::string filename, bool &broken)
+GameScenario::PlayMode GameScenario::loadPlayMode(Glib::ustring filename, bool &broken)
 {
   PlayModeLoader loader(filename, broken);
   if (broken)
@@ -1228,15 +1226,15 @@ GameScenario::PlayMode GameScenario::loadPlayMode(std::string filename, bool &br
 class DetailsLoader
 {
 public:
-    DetailsLoader(std::string filename, bool &broken) {
+    DetailsLoader(Glib::ustring filename, bool &broken) {
       player_count = 0; city_count = 0; name = ""; comment = "";
       Tar_Helper t(filename, std::ios::in, broken);
       if (broken)
         return;
-      std::list<std::string> ext;
+      std::list<Glib::ustring> ext;
       ext.push_back(MAP_EXT);
       ext.push_back(SAVE_EXT);
-      std::string tmpfile = t.getFirstFile(ext, broken);
+      Glib::ustring tmpfile = t.getFirstFile(ext, broken);
       XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
       helper.registerTag(GameScenario::d_tag, 
 			 sigc::mem_fun(this, &DetailsLoader::loadDetails));
@@ -1250,7 +1248,7 @@ public:
       File::erase(tmpfile);
     }
 
-    bool loadDetails(std::string tag, XML_Helper* helper)
+    bool loadDetails(Glib::ustring tag, XML_Helper* helper)
       {
 	if (tag == GameScenario::d_tag)
 	  {
@@ -1272,12 +1270,12 @@ public:
 	return false;
       };
     Tar_Helper *t;
-    std::string name, comment;
+    Glib::ustring name, comment;
     guint32 player_count, city_count;
-    std::string id;
+    Glib::ustring id;
 };
 
-void GameScenario::loadDetails(std::string filename, bool &broken, guint32 &player_count, guint32 &city_count, std::string &name, std::string &comment, std::string &id)
+void GameScenario::loadDetails(Glib::ustring filename, bool &broken, guint32 &player_count, guint32 &city_count, Glib::ustring &name, Glib::ustring &comment, Glib::ustring &id)
 {
   DetailsLoader loader(filename, broken);
   if (broken == false)
@@ -1297,7 +1295,7 @@ void GameScenario::clean_tmp_dir() const
     Tar_Helper::clean_tmp_dir(loaded_game_filename);
 }
 
-std::string GameScenario::generate_guid()
+Glib::ustring GameScenario::generate_guid()
 {
   Glib::TimeVal now;
   now.assign_current_time();
@@ -1309,7 +1307,7 @@ std::string GameScenario::generate_guid()
   //this is a very poor guid generator.
   snprintf (buf, sizeof (buf), "{%08X-%04X-%04X-%02X%02X-%02X%02X%02X%02X%02X%02X}", r.get_int(), rand() % 4096, r.get_int_range(0, 4096), r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256) % 256, r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256), r.get_int_range(0, 256));
 
-  return std::string(buf);
+  return Glib::ustring(buf);
 }
 
 void GameScenario::cleanup()
@@ -1335,7 +1333,7 @@ void GameScenario::cleanup()
   GameScenarioOptions::s_round = 0;
 }
 
-bool GameScenario::upgrade(std::string filename, std::string old_version, std::string new_version)
+bool GameScenario::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version)
 {
   return FileCompat::getInstance()->upgrade(filename, old_version, new_version,
                                             FileCompat::GAMESCENARIO, 

@@ -27,7 +27,7 @@
 #include "ruin.h"
 #include "Item.h"
 
-std::string History::d_tag = "history";
+Glib::ustring History::d_tag = "history";
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<< x << std::endl<<std::flush;}
 //#define debug(x)
@@ -43,7 +43,7 @@ History::~History()
 
 History* History::handle_load(XML_Helper* helper)
 {
-  std::string type_str;
+  Glib::ustring type_str;
   helper->getData(type_str, "type");
   History::Type t = historyTypeFromString(type_str);
 
@@ -188,7 +188,7 @@ History* History::copy(const History* a)
 
 History::History (XML_Helper *helper)
 {
-  std::string type_str;
+  Glib::ustring type_str;
   helper->getData(type_str, "type");
   d_type = historyTypeFromString(type_str);
 }
@@ -208,7 +208,7 @@ bool History::saveContents(XML_Helper* helper) const
 {
     bool retval = true;
 
-    std::string type_str = historyTypeToString(History::Type(d_type));
+    Glib::ustring type_str = historyTypeToString(History::Type(d_type));
     retval &= helper->saveData("type", type_str);
     retval &= doSave(helper);
 
@@ -237,7 +237,7 @@ History_StartTurn::~History_StartTurn()
 {
 }
 
-std::string History_StartTurn::dump() const
+Glib::ustring History_StartTurn::dump() const
 {
   std::stringstream s;
 
@@ -281,7 +281,7 @@ History_FoundSage::~History_FoundSage()
 {
 }
 
-std::string History_FoundSage::dump() const
+Glib::ustring History_FoundSage::dump() const
 {
   std::stringstream s;
 
@@ -328,7 +328,7 @@ History_GoldTotal::~History_GoldTotal()
 {
 }
 
-std::string History_GoldTotal::dump() const
+Glib::ustring History_GoldTotal::dump() const
 {
   std::stringstream s;
 
@@ -378,7 +378,7 @@ History_HeroEmerges::~History_HeroEmerges()
 {
 }
 
-std::string History_HeroEmerges::dump() const
+Glib::ustring History_HeroEmerges::dump() const
 {
   std::stringstream s;
 
@@ -429,7 +429,7 @@ History_CityWon::~History_CityWon()
 {
 }
 
-std::string History_CityWon::dump() const
+Glib::ustring History_CityWon::dump() const
 {
   std::stringstream s;
 
@@ -478,7 +478,7 @@ History_HeroCityWon::~History_HeroCityWon()
 {
 }
 
-std::string History_HeroCityWon::dump() const
+Glib::ustring History_HeroCityWon::dump() const
 {
   std::stringstream s;
 
@@ -529,7 +529,7 @@ History_CityRazed::~History_CityRazed()
 {
 }
 
-std::string History_CityRazed::dump() const
+Glib::ustring History_CityRazed::dump() const
 {
   std::stringstream s;
 
@@ -576,7 +576,7 @@ History_HeroQuestStarted::~History_HeroQuestStarted()
 {
 }
 
-std::string History_HeroQuestStarted::dump() const
+Glib::ustring History_HeroQuestStarted::dump() const
 {
   std::stringstream s;
 
@@ -623,7 +623,7 @@ History_HeroQuestCompleted::~History_HeroQuestCompleted()
 {
 }
 
-std::string History_HeroQuestCompleted::dump() const
+Glib::ustring History_HeroQuestCompleted::dump() const
 {
   std::stringstream s;
 
@@ -671,7 +671,7 @@ History_HeroKilledInCity::~History_HeroKilledInCity()
 {
 }
 
-std::string History_HeroKilledInCity::dump() const
+Glib::ustring History_HeroKilledInCity::dump() const
 {
   std::stringstream s;
 
@@ -720,7 +720,7 @@ History_HeroKilledInBattle::~History_HeroKilledInBattle()
 {
 }
 
-std::string History_HeroKilledInBattle::dump() const
+Glib::ustring History_HeroKilledInBattle::dump() const
 {
   std::stringstream s;
 
@@ -767,7 +767,7 @@ History_HeroKilledSearching::~History_HeroKilledSearching()
 {
 }
 
-std::string History_HeroKilledSearching::dump() const
+Glib::ustring History_HeroKilledSearching::dump() const
 {
   std::stringstream s;
 
@@ -814,7 +814,7 @@ History_Score::~History_Score()
 {
 }
 
-std::string History_Score::dump() const
+Glib::ustring History_Score::dump() const
 {
   std::stringstream s;
 
@@ -860,7 +860,7 @@ History_PlayerVanquished::~History_PlayerVanquished()
 {
 }
 
-std::string History_PlayerVanquished::dump() const
+Glib::ustring History_PlayerVanquished::dump() const
 {
   std::stringstream s;
 
@@ -899,7 +899,7 @@ History_DiplomacyPeace::~History_DiplomacyPeace()
 {
 }
 
-std::string History_DiplomacyPeace::dump() const
+Glib::ustring History_DiplomacyPeace::dump() const
 {
   std::stringstream s;
 
@@ -947,7 +947,7 @@ History_DiplomacyWar::~History_DiplomacyWar()
 {
 }
 
-std::string History_DiplomacyWar::dump() const
+Glib::ustring History_DiplomacyWar::dump() const
 {
   std::stringstream s;
 
@@ -995,7 +995,7 @@ History_DiplomacyTreachery::~History_DiplomacyTreachery()
 {
 }
 
-std::string History_DiplomacyTreachery::dump() const
+Glib::ustring History_DiplomacyTreachery::dump() const
 {
   std::stringstream s;
 
@@ -1043,7 +1043,7 @@ History_HeroFindsAllies::~History_HeroFindsAllies()
 {
 }
 
-std::string History_HeroFindsAllies::dump() const
+Glib::ustring History_HeroFindsAllies::dump() const
 {
   std::stringstream s;
 
@@ -1089,7 +1089,7 @@ History_EndTurn::~History_EndTurn()
 {
 }
 
-std::string History_EndTurn::dump() const
+Glib::ustring History_EndTurn::dump() const
 {
   std::stringstream s;
 
@@ -1133,7 +1133,7 @@ History_HeroRuinExplored::~History_HeroRuinExplored()
 {
 }
 
-std::string History_HeroRuinExplored::dump() const
+Glib::ustring History_HeroRuinExplored::dump() const
 {
   std::stringstream s;
 
@@ -1185,7 +1185,7 @@ History_HeroRewardRuin::~History_HeroRewardRuin()
 {
 }
 
-std::string History_HeroRewardRuin::dump() const
+Glib::ustring History_HeroRewardRuin::dump() const
 {
   std::stringstream s;
 
@@ -1248,7 +1248,7 @@ History_HeroUseItem::~History_HeroUseItem()
 {
 }
 
-std::string History_HeroUseItem::dump() const
+Glib::ustring History_HeroUseItem::dump() const
 {
   std::stringstream s;
 
@@ -1296,7 +1296,7 @@ bool History_HeroUseItem::fillData(Hero *hero, Item *item, Player *opponent,
   return true;
 }
 
-std::string History::historyTypeToString(const History::Type type)
+Glib::ustring History::historyTypeToString(const History::Type type)
 {
   switch (type)
     {
@@ -1348,7 +1348,7 @@ std::string History::historyTypeToString(const History::Type type)
   return "History::START_TURN";
 }
 
-History::Type History::historyTypeFromString(const std::string str)
+History::Type History::historyTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return History::Type(atoi(str.c_str()));

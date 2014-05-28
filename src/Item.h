@@ -1,6 +1,6 @@
 // Copyright (C) 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 Andrea Paternesi
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include <string>
 #include <gtkmm.h>
 #include "xmlhelper.h"
 #include "army.h"
@@ -51,7 +50,7 @@ class Item: public ItemProto, public UniquelyIdentified
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! Loading constructor.
         Item(XML_Helper* helper);
@@ -63,7 +62,7 @@ class Item: public ItemProto, public UniquelyIdentified
 	Item(const ItemProto &proto, guint32 type_id);
 
         //! Make an item from scratch.
-        Item(std::string name, bool plantable, Player *plantable_owner);
+        Item(Glib::ustring name, bool plantable, Player *plantable_owner);
 
         //! Destructor.
         ~Item();
@@ -96,7 +95,7 @@ class Item: public ItemProto, public UniquelyIdentified
     private:
 
 	//! non-default constructor to make an item with a particular id.
-	Item(std::string name, bool plantable, Player *plantable_owner,
+	Item(Glib::ustring name, bool plantable, Player *plantable_owner,
 	     guint32 id);
 
 	/**

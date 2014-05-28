@@ -19,7 +19,7 @@
 #include "Item.h"
 #include "xmlhelper.h"
 
-std::string MapBackpack::d_tag = "itemstack";
+Glib::ustring MapBackpack::d_tag = "itemstack";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)

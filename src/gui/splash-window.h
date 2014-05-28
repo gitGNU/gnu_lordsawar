@@ -47,11 +47,11 @@ class SplashWindow: public sigc::trackable
         
     Gtk::Window *get_window() {return window;}
 
-    sigc::signal<void, std::string, unsigned short, Profile*> new_remote_network_game_requested;
+    sigc::signal<void, Glib::ustring, unsigned short, Profile*> new_remote_network_game_requested;
     sigc::signal<void, GameParameters, int, Profile*, bool, bool > new_hosted_network_game_requested;
     sigc::signal<void, GameParameters> new_pbm_game_requested;
     sigc::signal<void, GameParameters> new_game_requested;
-    sigc::signal<void, std::string> load_requested;
+    sigc::signal<void, Glib::ustring> load_requested;
     sigc::signal<void> quit_requested;
 
  private:
@@ -67,7 +67,7 @@ class SplashWindow: public sigc::trackable
 	    
     bool on_delete_event(GdkEventAny *e);
   
-    std::string network_game_nickname;
+    Glib::ustring network_game_nickname;
     
     void on_new_network_game_clicked();
     void on_new_pbm_game_clicked();
@@ -80,7 +80,7 @@ class SplashWindow: public sigc::trackable
     void on_game_started(GameParameters g);
     void on_network_game_created(GameParameters g, Profile *profile, bool advertised, bool remotely_hosted);
     void on_pbm_game_created(GameParameters g);
-    void on_network_game_selected(std::string ip, unsigned short port, Profile  *profile);
+    void on_network_game_selected(Glib::ustring ip, unsigned short port, Profile  *profile);
 
 #if 0
     //! Separate network input thread

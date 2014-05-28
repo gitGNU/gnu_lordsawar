@@ -26,7 +26,7 @@
 #include "stacklist.h"
 #include "history.h"
 
-std::string Quest::d_tag = "quest";
+Glib::ustring Quest::d_tag = "quest";
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)
 
@@ -46,7 +46,7 @@ Quest::Quest(QuestsManager& q_mgr, guint32 hero, Type type)
 Quest::Quest(QuestsManager& q_mgr, XML_Helper* helper)
     :OwnerId(helper), d_q_mgr(q_mgr)
 {
-    std::string s;
+    Glib::ustring s;
     helper->getData(s, "type");
     d_type = questTypeFromString(s);
     helper->getData(d_hero, "hero");
@@ -82,7 +82,7 @@ bool Quest::save(XML_Helper* helper) const
 {
     bool retval = true;
 
-    std::string s;
+    Glib::ustring s;
     s = questTypeToString(Quest::Type(d_type));
     retval &= helper->saveData("type", s);
     retval &= helper->saveData("hero", d_hero);
@@ -93,12 +93,12 @@ bool Quest::save(XML_Helper* helper) const
     return retval;
 }
 
-std::string Quest::getHeroNameForDeadHero() const
+Glib::ustring Quest::getHeroNameForDeadHero() const
 {
   return getHeroNameForDeadHero(d_hero);
 }
 
-std::string Quest::getHeroNameForDeadHero(guint32 id)
+Glib::ustring Quest::getHeroNameForDeadHero(guint32 id)
 {
   std::list<History *>events;
   events = Playerlist::getInstance()->getHistoryForHeroId(id);
@@ -109,7 +109,7 @@ std::string Quest::getHeroNameForDeadHero(guint32 id)
   return event->getHeroName();
 }
 
-std::string Quest::questTypeToString(const Quest::Type type)
+Glib::ustring Quest::questTypeToString(const Quest::Type type)
 {
   switch (type)
     {
@@ -131,7 +131,7 @@ std::string Quest::questTypeToString(const Quest::Type type)
   return "Quest::KILLHERO";
 }
 
-Quest::Type Quest::questTypeFromString(std::string str)
+Quest::Type Quest::questTypeFromString(Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Quest::Type(atoi(str.c_str()));

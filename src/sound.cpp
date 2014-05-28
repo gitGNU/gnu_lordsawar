@@ -117,7 +117,7 @@ Sound::~Sound()
     disableBackground(false);
     
     // remove all music pieces
-    std::map<std::string, MusicItem*>::iterator it;
+    std::map<Glib::ustring, MusicItem*>::iterator it;
     for (it = d_musicMap.begin(); it != d_musicMap.end(); it++)
         delete (*it).second;
             
@@ -156,7 +156,7 @@ int Sound::getMusicVolume()
     return Configuration::s_musicvolume;
 }
 
-bool Sound::playMusic(std::string piece, int nloops, bool fade)
+bool Sound::playMusic(Glib::ustring piece, int nloops, bool fade)
 {
     debug("playing Music")
 #ifdef FL_SOUND
@@ -174,7 +174,7 @@ bool Sound::playMusic(std::string piece, int nloops, bool fade)
     if (!music)
     {
         //try to load an alternative
-        std::string alias = d_musicMap[piece]->alias;
+        Glib::ustring alias = d_musicMap[piece]->alias;
         music = Mix_LoadMUS(File::getMusicFile(d_musicMap[alias]->file).c_str());
         if (!music)
             return false;
@@ -296,7 +296,7 @@ void Sound::nextPiece()
 #endif
 }
 
-bool Sound::loadMusic(std::string tag, XML_Helper* helper)
+bool Sound::loadMusic(Glib::ustring tag, XML_Helper* helper)
 {
     if (tag != "piece")
     {
@@ -304,7 +304,7 @@ bool Sound::loadMusic(std::string tag, XML_Helper* helper)
         return false;
     }
 
-    std::string tagname;
+    Glib::ustring tagname;
     MusicItem* item = new MusicItem();
     
     bool retval = true;

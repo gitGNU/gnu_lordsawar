@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,9 +18,6 @@
 #ifndef HERO_PROTO_H
 #define HERO_PROTO_H
 
-#include <string>
-
-
 class XML_Helper;
 
 #include "armyproto.h"
@@ -34,7 +31,7 @@ class HeroProto : public ArmyProto, public OwnerId
     public:
 
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! Copy constructor.
         HeroProto(const HeroProto& heroproto);

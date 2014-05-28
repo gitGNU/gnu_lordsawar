@@ -27,7 +27,7 @@
 #include "xmlhelper.h"
 #include "armysetlist.h"
 
-std::string ArmyProdBase::d_tag = "armyprodbase";
+Glib::ustring ArmyProdBase::d_tag = "armyprodbase";
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)

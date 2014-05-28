@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2005 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -23,7 +23,6 @@
 #define ARMY_BASE_H
 
 #include <gtkmm.h>
-#include <string>
 
 
 class XML_Helper;
@@ -144,7 +143,7 @@ class ArmyBase
         guint32 getSight() const {return d_sight;}
 
 	//! Gets an easy to read string that represents the army's bonuses.
-	std::string getArmyBonusDescription() const;
+	Glib::ustring getArmyBonusDescription() const;
 
         //! Returns the number of XP that killing this Army garners it's killer.
         double getXpReward() const {return d_xp_value;}
@@ -157,7 +156,7 @@ class ArmyBase
 	 * or more ArmyBase::Bonus values to a bitwise OR'd value of those
 	 * ArmyBase::Bonus values.  The terms are separated with a pipe `|'.
 	 */
-	static guint32 bonusFlagsFromString(const std::string str);
+	static guint32 bonusFlagsFromString(const Glib::ustring str);
 
 	//! Convert a series of ArmyBase::Bonus enum values to a string.
 	/**
@@ -165,7 +164,7 @@ class ArmyBase
 	 * enumerated values into a string, where the terms are separated by a
 	 * pipe `|'.
 	 */
-	static std::string bonusFlagsToString(const guint32 bonus);
+	static Glib::ustring bonusFlagsToString(const guint32 bonus);
 
 	//! Convert an ArmyBase::Bonus string to it's enum value.
 	/**
@@ -173,10 +172,10 @@ class ArmyBase
 	 * ArmyBase::Bonus enumerated value, and converts it to it's enumerated
 	 * value.
 	 */
-	static ArmyBase::Bonus bonusFlagFromString(const std::string str);
+	static ArmyBase::Bonus bonusFlagFromString(const Glib::ustring str);
 
 	//! Convert an ArmyBase::Bonus enum value to a string.
-	static std::string bonusFlagToString(const ArmyBase::Bonus bonus);
+	static Glib::ustring bonusFlagToString(const ArmyBase::Bonus bonus);
 
 	//! Convert a Tile::Type string to a bitwise OR'd value.
 	/**
@@ -184,7 +183,7 @@ class ArmyBase
 	 * or more Tile::Type values to a bitwise OR'd value of those
 	 * Tile::Type values.  The terms are separated with a pipe `|'.
 	 */
-	static guint32 moveFlagsFromString(const std::string str);
+	static guint32 moveFlagsFromString(const Glib::ustring str);
 
 	//! Convert a series of Tile::Type enumerated values to a string.
 	/**
@@ -192,7 +191,7 @@ class ArmyBase
 	 * enumerated values into a string, where the terms are separated by a
 	 * pipe `|'.
 	 */
-	static std::string moveFlagsToString(const guint32 move_bonus);
+	static Glib::ustring moveFlagsToString(const guint32 move_bonus);
 
     protected:
 

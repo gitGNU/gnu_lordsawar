@@ -42,15 +42,15 @@ class Shieldset;
 class MaskedImageEditorDialog: public sigc::trackable
 {
  public:
-    MaskedImageEditorDialog(Gtk::Window &parent, std::string filename, int only_show_colour, Shieldset *shieldset = NULL);
+    MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int only_show_colour, Shieldset *shieldset = NULL);
     ~MaskedImageEditorDialog();
 
     void set_only_show_one(Shield::Colour c){only_show=true;only_show_colour=c;};
-    std::string get_selected_filename() {return target_filename;};
+    Glib::ustring get_selected_filename() {return target_filename;};
     int run();
     
  private:
-    std::string target_filename;
+    Glib::ustring target_filename;
     Gtk::Dialog* dialog;
     Gtk::FileChooserButton *filechooserbutton;
     Gtk::Image *image_white;
@@ -66,7 +66,7 @@ class MaskedImageEditorDialog: public sigc::trackable
     bool only_show;
     Shield::Colour only_show_colour;
     void on_image_chosen();
-    void show_image(std::string filename);
+    void show_image(Glib::ustring filename);
     void update_panel();
 
 };

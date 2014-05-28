@@ -34,12 +34,12 @@ int max_vector_width;
 int main(int argc, char* argv[])
 {
   Profile *profile = NULL;
-  std::string host;
+  Glib::ustring host;
   bool advertise = false;
   bool show_list = false;
   bool reload = false;
   bool terminate = false;
-  std::string remove_all;
+  Glib::ustring remove_all;
   srand(time(NULL));         // set the random seed
 
   initialize_configuration();
@@ -48,13 +48,13 @@ int main(int argc, char* argv[])
   setlocale(LC_ALL, Configuration::s_lang.c_str());
 
   int port = 0;
-  std::list<std::string> unadvertise;
+  std::list<Glib::ustring> unadvertise;
   Gtk::Main *gtk_main = new Gtk::Main(argc, argv);
   if (argc > 1)
     {
       for (int i = 2; i <= argc; i++)
 	{
-          std::string parameter(argv[i-1]); 
+          Glib::ustring parameter(argv[i-1]); 
 	  if (parameter == "--port" || parameter == "-p")
 	    {
 	      i++;

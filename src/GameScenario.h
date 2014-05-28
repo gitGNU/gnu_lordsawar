@@ -1,7 +1,7 @@
 // Copyright (C) 2000, 2001, 2002, 2003 Michael Bartl
 // Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004, 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2011, 2014 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -22,7 +22,6 @@
 #ifndef GAME_SCENARIO_H
 #define GAME_SCENARIO_H
 
-#include <string>
 #include <list>
 #include <sigc++/trackable.h>
 #include "game-parameters.h"
@@ -54,8 +53,8 @@ class GameScenario: public GameScenarioOptions
     public:
 
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag;
-	static std::string d_top_tag;
+	static Glib::ustring d_tag;
+	static Glib::ustring d_top_tag;
 
         enum PlayMode 
 	  {
@@ -64,8 +63,8 @@ class GameScenario: public GameScenarioOptions
 	    PLAY_BY_MAIL = 2,
 	  };
 
-	static std::string playModeToString(const GameScenario::PlayMode mode);
-	static GameScenario::PlayMode playModeFromString(const std::string str);
+	static Glib::ustring playModeToString(const GameScenario::PlayMode mode);
+	static GameScenario::PlayMode playModeFromString(const Glib::ustring str);
 
         /** Initializes an "empty" scenario
           * 
@@ -73,7 +72,7 @@ class GameScenario: public GameScenarioOptions
           * @param comment  the comment for the scenario
           * @param turnmode the turnmode (see NextTurn for description)
           */
-        GameScenario(std::string name, std::string comment, bool turnmode,
+        GameScenario(Glib::ustring name, Glib::ustring comment, bool turnmode,
 		     GameScenario::PlayMode playmode = GameScenario::HOTSEAT);
         
         /** Load the game scenario using a specified save game
@@ -81,7 +80,7 @@ class GameScenario: public GameScenarioOptions
           * @param savegame     the full name of the saved-game to load
           * @param broken       set to true if something goes wrong
           */
-        GameScenario(std::string savegame, bool& broken);
+        GameScenario(Glib::ustring savegame, bool& broken);
 
         GameScenario(XML_Helper &helper, bool &broken);
 
@@ -93,44 +92,44 @@ class GameScenario: public GameScenarioOptions
         //! Returns the turn mode. See NextTurn for a description.
         bool getTurnmode() const {return d_turnmode;}
         
-	std::string getId() const {return d_id;};
+	Glib::ustring getId() const {return d_id;};
 
 	void setNewRandomId();
 
         //! Returns the name of the scenario.
-        std::string getName() const;
+        Glib::ustring getName() const;
 
         //! Returns the comment for the scenario.
-        std::string getComment() const;
+        Glib::ustring getComment() const;
 
         //! Returns the copyright for the scenario.
-        std::string getCopyright() const {return d_copyright; };
+        Glib::ustring getCopyright() const {return d_copyright; };
 
         //! Returns the license of the scenario.
-        std::string getLicense() const {return d_license;};
+        Glib::ustring getLicense() const {return d_license;};
 
         //! Increments the turn number and does an autosave. Called by NextTurn
         //! via a signal.
         void nextRound();
 
         //! Sets the name of the scenario.
-        void setName(std::string name) {d_name = name;}
+        void setName(Glib::ustring name) {d_name = name;}
 
         //! Sets the description of the scenario.
-        void setComment(std::string comment) {d_comment = comment;}
+        void setComment(Glib::ustring comment) {d_comment = comment;}
         
         //! Sets the copyright of the scenario.
-        void setCopyright(std::string copy) {d_copyright = copy;}
+        void setCopyright(Glib::ustring copy) {d_copyright = copy;}
         
         //! Sets the license of the scenario.
-        void setLicense(std::string license) {d_license = license;}
+        void setLicense(Glib::ustring license) {d_license = license;}
         
         /** Saves the game. See XML_Helper for further explanations.
           * 
           * @param filename     the full name of the save game file
           * @return true if all went well, false otherwise
           */
-        bool saveGame(std::string filename, std::string extension = SAVE_EXT) const;
+        bool saveGame(Glib::ustring filename, Glib::ustring extension = SAVE_EXT) const;
         bool loadWithHelper(XML_Helper &helper);
         bool saveWithHelper(XML_Helper &helper) const;
 
@@ -138,23 +137,23 @@ class GameScenario: public GameScenarioOptions
 	guint32 getPlayMode() const {return d_playmode;};
 	void setPlayMode(GameScenario::PlayMode mode) {d_playmode = mode;};
 
-	bool validate(std::list<std::string> &errors, std::list<std::string> &warnings);
+	bool validate(std::list<Glib::ustring> &errors, std::list<Glib::ustring> &warnings);
 
         void clean_tmp_dir() const;
 
 	void initialize(GameParameters g);
 
-	static GameParameters loadGameParameters(std::string filename, bool &broken);
+	static GameParameters loadGameParameters(Glib::ustring filename, bool &broken);
 
-	static PlayMode loadPlayMode(std::string filename, bool &broken);
+	static PlayMode loadPlayMode(Glib::ustring filename, bool &broken);
 
-	static void loadDetails(std::string filename, bool &broken, guint32 &player_count, guint32 &city_count, std::string &name, std::string &comment, std::string &id);
+	static void loadDetails(Glib::ustring filename, bool &broken, guint32 &player_count, guint32 &city_count, Glib::ustring &name, Glib::ustring &comment, Glib::ustring &id);
 
-        static std::string generate_guid();
+        static Glib::ustring generate_guid();
 
         static void cleanup();
 
-        static bool upgrade(std::string filename, std::string old_version, std::string new_version);
+        static bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version);
         static void support_backward_compatibility();
 
 	void inhibitAutosaveRemoval(bool i) {inhibit_autosave_removal = i;}
@@ -165,7 +164,7 @@ class GameScenario: public GameScenarioOptions
 	   * @param helper   the helper for parsing the save game file
 	   * @return true if all went well, false otherwise.
 	   */
-	  bool load(std::string tag, XML_Helper* helper);
+	  bool load(Glib::ustring tag, XML_Helper* helper);
 	  void quickStartEvenlyDivided();
 	  void quickStartAIHeadStart();
 	  bool setupFog(bool hidden_map);
@@ -184,15 +183,15 @@ class GameScenario: public GameScenarioOptions
 	  bool loadShieldsets(Tar_Helper *t);
 
 	  // DATA
-	  std::string d_name;
-	  std::string d_comment;
-	  std::string d_copyright;
-	  std::string d_license;
+	  Glib::ustring d_name;
+	  Glib::ustring d_comment;
+	  Glib::ustring d_copyright;
+	  Glib::ustring d_license;
 	  bool d_turnmode; //see NextTurn for a description of this option
 	  guint32 d_playmode;
-	  std::string d_id; //globally unique id identifying the scenario
+	  Glib::ustring d_id; //globally unique id identifying the scenario
 	  bool inhibit_autosave_removal;
-          std::string loaded_game_filename;
+          Glib::ustring loaded_game_filename;
 };
 
 #endif // GAME_SCENARIO_H

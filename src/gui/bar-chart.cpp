@@ -43,7 +43,7 @@ bool BarChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
 
     // labels
     Glib::RefPtr<Pango::Layout> layout = Glib::wrap (pango_cairo_create_layout (cr->cobj ()));
-    std::string text_font = "Sans 8";
+    Glib::ustring text_font = "Sans 8";
     Pango::FontDescription font_desc (text_font);
     layout->set_font_description (font_desc);
     layout->set_text("0");

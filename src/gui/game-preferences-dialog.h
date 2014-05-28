@@ -34,18 +34,18 @@ class XML_Helper;
 class GamePreferencesDialog: public sigc::trackable
 {
  public:
-    GamePreferencesDialog(Gtk::Window &parent, std::string filename, GameScenario::PlayMode mode);
+    GamePreferencesDialog(Gtk::Window &parent, Glib::ustring filename, GameScenario::PlayMode mode);
     ~GamePreferencesDialog();
 
-    void set_title(std::string title);
+    void set_title(Glib::ustring title);
 
     sigc::signal<void, GameParameters> game_started;
     
-    bool run(std::string nickname = "guest");
+    bool run(Glib::ustring nickname = "guest");
     void hide();
     
  private:
-    void init(Gtk::Window &parent, std::string filename);
+    void init(Gtk::Window &parent, Glib::ustring filename);
     Gtk::Dialog* dialog;
     GameScenario::PlayMode mode;
 
@@ -86,7 +86,7 @@ class GamePreferencesDialog: public sigc::trackable
     void update_shields();
     void update_buttons();
     Glib::RefPtr<Gdk::Pixbuf> getShieldPic(guint32 type, guint32 owner);
-    std::string d_filename;
+    Glib::ustring d_filename;
     guint32 d_shieldset;
 };
 

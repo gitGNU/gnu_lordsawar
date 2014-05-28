@@ -53,7 +53,7 @@ class HeroTemplates
 	//! Destructor.
         ~HeroTemplates();
 
-	bool load(std::string tag, XML_Helper *helper);
+	bool load(Glib::ustring tag, XML_Helper *helper);
 
     private:
         /* the contents of the heronames data file */

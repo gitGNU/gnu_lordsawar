@@ -61,7 +61,7 @@ GamelistClient::~GamelistClient()
 {
 }
 
-void GamelistClient::start(std::string host, guint32 port, Profile *p)
+void GamelistClient::start(Glib::ustring host, guint32 port, Profile *p)
 {
   d_host = host;
   d_port = port;
@@ -95,7 +95,7 @@ void GamelistClient::onConnectionLost()
     client_could_not_connect.emit();
 }
 
-bool GamelistClient::onGotMessage(int type, std::string payload)
+bool GamelistClient::onGotMessage(int type, Glib::ustring payload)
 {
   size_t pos;
   debug("GamelistClient got message of type " << type);
@@ -118,7 +118,7 @@ bool GamelistClient::onGotMessage(int type, std::string payload)
     case GLS_MESSAGE_COULD_NOT_ADVERTISE_GAME:
         {
           pos = payload.find(' ');
-          if (pos == std::string::npos)
+          if (pos == Glib::ustring::npos)
             return false;
           received_advertising_response.emit(payload.substr(0, pos), 
                                              payload.substr(pos + 1));
@@ -127,7 +127,7 @@ bool GamelistClient::onGotMessage(int type, std::string payload)
     case GLS_MESSAGE_COULD_NOT_UNADVERTISE_GAME:
         {
           pos = payload.find(' ');
-          if (pos == std::string::npos)
+          if (pos == Glib::ustring::npos)
             return false;
           received_advertising_removal_response.emit
             (payload.substr(0, pos), payload.substr(pos + 1));
@@ -187,14 +187,14 @@ void GamelistClient::request_advertising(RecentlyPlayedGame *game)
     }
 }
 
-void GamelistClient::request_advertising_removal(std::string scenario_id)
+void GamelistClient::request_advertising_removal(Glib::ustring scenario_id)
 {
   network_connection->send(GLS_MESSAGE_UNADVERTISE_GAME, 
                            d_profile_id + " " + scenario_id);
 
 }
              
-bool GamelistClient::loadRecentlyPlayedGameList(std::string tag, XML_Helper *helper)
+bool GamelistClient::loadRecentlyPlayedGameList(Glib::ustring tag, XML_Helper *helper)
 {
   if (tag == RecentlyPlayedGameList::d_tag)
     {

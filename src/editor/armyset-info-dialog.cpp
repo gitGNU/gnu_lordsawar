@@ -32,7 +32,7 @@
 #include "File.h"
 
 
-ArmySetInfoDialog::ArmySetInfoDialog(Gtk::Window &parent, Armyset *armyset, std::string dir, std::string file, bool readonly, std::string title)
+ArmySetInfoDialog::ArmySetInfoDialog(Gtk::Window &parent, Armyset *armyset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
 {
   d_armyset = armyset;
   d_readonly = readonly;
@@ -62,10 +62,10 @@ ArmySetInfoDialog::ArmySetInfoDialog(Gtk::Window &parent, Armyset *armyset, std:
     else
       {
         guint32 num = 0;
-        std::string basename = Armysetlist::getInstance()->findFreeBaseName(_("untitled"), 100, num);
+        Glib::ustring basename = Armysetlist::getInstance()->findFreeBaseName(_("untitled"), 100, num);
         filename_entry->set_text(basename);
 
-        std::string name = String::ucompose("%1 %2", _("Untitled"), num);
+        Glib::ustring name = String::ucompose("%1 %2", _("Untitled"), num);
         name_entry->set_text(name);
       }
     if (readonly == false)
@@ -135,7 +135,7 @@ void ArmySetInfoDialog::update_buttons()
       return;
     }
 
-  std::string dir = File::getUserArmysetDir() + filename_entry->get_text();
+  Glib::ustring dir = File::getUserArmysetDir() + filename_entry->get_text();
   if (Armysetlist::getInstance()->getArmyset(filename_entry->get_text()))
     {
       accept_button->set_sensitive(false);

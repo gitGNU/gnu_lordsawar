@@ -36,10 +36,10 @@ class NewRandomMapDialog: public sigc::trackable
 
     int run();
 
-    std::string getRandomMapFilename() const {return d_filename;};
+    Glib::ustring getRandomMapFilename() const {return d_filename;};
 
-    //std::string create_and_dump_scenario(const std::string &file, const GameParameters &g);
-static std::string create_and_dump_scenario(const std::string &file,
+    //Glib::ustring create_and_dump_scenario(const Glib::ustring &file, const GameParameters &g);
+static Glib::ustring create_and_dump_scenario(const Glib::ustring &file,
                                                          const GameParameters &g, sigc::slot<void> *pulse);
     
  private:
@@ -52,10 +52,10 @@ static std::string create_and_dump_scenario(const std::string &file,
 	int grass, water, swamp, forest, hills, mountains;
 	int cities, ruins, temples;
 	int signposts;
-	std::string tileset;
-	std::string shieldset;
-	std::string cityset;
-	std::string armyset;
+	Glib::ustring tileset;
+	Glib::ustring shieldset;
+	Glib::ustring cityset;
+	Glib::ustring armyset;
     };
 
     Map map;
@@ -111,7 +111,7 @@ static std::string create_and_dump_scenario(const std::string &file,
     void on_tile_size_changed();
     void on_grass_changed();
     int dialog_response;
-    std::string d_filename;
+    Glib::ustring d_filename;
 };
 
 #endif

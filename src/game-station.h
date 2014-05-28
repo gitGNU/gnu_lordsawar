@@ -33,10 +33,10 @@ class GameStation: public GameClientDecoder
 {
 public:
         
-  sigc::signal<void, std::string> remote_participant_joins;
-  sigc::signal<void, Player*, std::string> player_sits;
-  sigc::signal<void, Player*, std::string> player_stands;
-  sigc::signal<void, std::string> remote_participant_departs;
+  sigc::signal<void, Glib::ustring> remote_participant_joins;
+  sigc::signal<void, Player*, Glib::ustring> player_sits;
+  sigc::signal<void, Player*, Glib::ustring> player_stands;
+  sigc::signal<void, Glib::ustring> remote_participant_departs;
   sigc::signal<void> playerlist_reorder_received;
   sigc::signal<void, Player*> local_player_moved;
   sigc::signal<void, Player*> local_player_died;
@@ -51,7 +51,7 @@ public:
   sigc::signal<void, Player *> start_player_turn;
 
   void listenForLocalEvents(Player *p);
-  std::string getProfileId() const {return d_profile_id;};
+  Glib::ustring getProfileId() const {return d_profile_id;};
 protected:
   GameStation();
   virtual ~GameStation();
@@ -65,17 +65,17 @@ protected:
   void stopListeningForLocalEvents(Player *p);
   void stopListeningForLocalEvents();
 
-  static bool get_message_lobby_activity (std::string payload, 
+  static bool get_message_lobby_activity (Glib::ustring payload, 
                                           guint32 &player_id, 
                                           gint32 &action, bool &reported,
                                           Glib::ustring &nickname);
 
-  void setProfileId(std::string id) {d_profile_id = id;};
+  void setProfileId(Glib::ustring id) {d_profile_id = id;};
 
 private:
   std::map<guint32, sigc::connection> action_listeners;
   std::map<guint32, sigc::connection> history_listeners;
-  std::string d_profile_id;
+  Glib::ustring d_profile_id;
 };
 
 #endif

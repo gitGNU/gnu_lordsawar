@@ -31,7 +31,7 @@ class Bridge: public Location
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
         enum Type 
 	  {
@@ -40,8 +40,8 @@ class Bridge: public Location
 	    CONNECTS_TO_WEST = 2,
 	    CONNECTS_TO_SOUTH = 3,
 	  };
-	static std::string bridgeTypeToString(const Bridge::Type type);
-	static Bridge::Type bridgeTypeFromString(const std::string str);
+	static Glib::ustring bridgeTypeToString(const Bridge::Type type);
+	static Bridge::Type bridgeTypeFromString(const Glib::ustring str);
 
 	//! Default constructor.
         /**

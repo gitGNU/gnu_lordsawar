@@ -1,4 +1,4 @@
-//  Copyright (C) 2011 Ben Asselstine
+//  Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #define GAMELIST_H
 
 #include <gtkmm.h>
-#include <string>
 #include <list>
 #include <sigc++/trackable.h>
 
@@ -44,7 +43,7 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
         static const int FIVE_MINUTES_OLD = 60 * 5;
 
 	//! The xml tag of this object in a game list file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 	
 	static const int TEN_DAYS_OLD = 864000; /* seconds */
 
@@ -56,7 +55,7 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
         bool save() const;
 
 	//! Save the game list to the given file.
-	bool saveToFile(std::string filename) const;
+	bool saveToFile(Glib::ustring filename) const;
 
 	//! Save the game list to an opened file.
 	bool save(XML_Helper* helper) const;
@@ -64,7 +63,7 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
         //! Get the list, with some identifying information removed.
         RecentlyPlayedGameList* getList(bool scrub_profile_id = true) const;
 
-        HostedGame *findGameByScenarioId(std::string scenario_id) const;
+        HostedGame *findGameByScenarioId(Glib::ustring scenario_id) const;
 
 	// Methods that operate on the class data and modify the class.
 
@@ -74,16 +73,16 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
         bool load();
 
 	//! Load the game list from the given file.
-	bool loadFromFile(std::string filename);
+	bool loadFromFile(Glib::ustring filename);
 
 	//! Add an entry to the list of games.
 	void addEntry(AdvertisedGame *advertised_game);
 
 	//! Touch the game in the games list.
-	void updateEntry(std::string scenario_id, guint32 round);
+	void updateEntry(Glib::ustring scenario_id, guint32 round);
 
 	//! Remove a game entry from the list, by it's scenario id.
-	bool removeEntry(std::string scenario_id);
+	bool removeEntry(Glib::ustring scenario_id);
 
 	//! Removes games from the list that are too old, or just too numerous.
 	void pruneGames();
@@ -102,7 +101,7 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
         static void deleteInstance();
 
         //! Rewrite an old file.
-        static bool upgrade(std::string filename, std::string old_version, std::string new_version);
+        static bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version);
         static void support_backward_compatibility();
 
     protected:
@@ -117,7 +116,7 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
 
     private:
         //! Callback for loading the games into this list.
-	bool load_tag(std::string tag, XML_Helper *helper);
+	bool load_tag(Glib::ustring tag, XML_Helper *helper);
 
 	//! Helper method to sort the list by it's last-played time.
 	static bool orderByTime(HostedGame*rhs, HostedGame *lhs);

@@ -72,7 +72,7 @@ int TilesetFlagEditorDialog::run()
       }
     else if (response == Gtk::RESPONSE_ACCEPT)
       response = Gtk::RESPONSE_CANCEL;
-    for (std::list<std::string>::iterator it = delfiles.begin(); 
+    for (std::list<Glib::ustring>::iterator it = delfiles.begin(); 
          it != delfiles.end(); it++)
       File::erase(*it);
     return response;
@@ -84,10 +84,10 @@ void TilesetFlagEditorDialog::setup_shield_theme_combobox(Gtk::Box *box)
   shield_theme_combobox = manage(new Gtk::ComboBoxText);
 
   Shieldsetlist *sl = Shieldsetlist::getInstance();
-  std::list<std::string> shield_themes = sl->getValidNames();
+  std::list<Glib::ustring> shield_themes = sl->getValidNames();
   int counter = 0;
   int default_id = 0;
-  for (std::list<std::string>::iterator i = shield_themes.begin(),
+  for (std::list<Glib::ustring>::iterator i = shield_themes.begin(),
        end = shield_themes.end(); i != end; ++i)
     {
       if (*i == _("Default"))
@@ -115,7 +115,7 @@ void TilesetFlagEditorDialog::on_image_chosen()
   show_preview_flags(selected_filename);
 }
 
-void TilesetFlagEditorDialog::show_preview_flags(std::string filename)
+void TilesetFlagEditorDialog::show_preview_flags(Glib::ustring filename)
 {
   //load it up and show in the colours of the selected shield theme
   if (heartbeat.connected())
@@ -146,14 +146,14 @@ void TilesetFlagEditorDialog::clearFlag()
   flags.clear();
 }
 
-bool TilesetFlagEditorDialog::loadFlag(std::string filename)
+bool TilesetFlagEditorDialog::loadFlag(Glib::ustring filename)
 {
   std::vector<PixMask *> images;
   std::vector<PixMask *> masks;
   bool success = GraphicsCache::loadFlagImages(filename, d_tileset->getTileSize(), images, masks);
   if (success)
     {
-      std::string subdir = Shieldsetlist::getInstance()->getShieldsetDir 
+      Glib::ustring subdir = Shieldsetlist::getInstance()->getShieldsetDir 
 	(Glib::filename_from_utf8(shield_theme_combobox->get_active_text()));
       Shieldset *shieldset = Shieldsetlist::getInstance()->getShieldset(subdir);
 
@@ -190,7 +190,7 @@ void TilesetFlagEditorDialog::update_flag_panel()
 {
   if (d_tileset->getFlagsFilename() != "")
     {
-      std::string filename = d_tileset->getFileFromConfigurationFile(d_tileset->getFlagsFilename() + ".png");
+      Glib::ustring filename = d_tileset->getFileFromConfigurationFile(d_tileset->getFlagsFilename() + ".png");
       delfiles.push_back(filename);
       flag_filechooserbutton->set_filename (filename);
     }

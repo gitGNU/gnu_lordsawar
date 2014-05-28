@@ -39,7 +39,7 @@ public:
   GameClientDecoder();
   ~GameClientDecoder();
 
-  sigc::signal<void, std::string> game_scenario_received;
+  sigc::signal<void, Glib::ustring> game_scenario_received;
   sigc::signal<void, Player *> remote_player_moved;
   sigc::signal<void, Player *> remote_player_starts_move;
   sigc::signal<void, Player *> remote_player_named;
@@ -49,7 +49,7 @@ protected:
   class ActionLoader 
     {
   public:
-      bool loadAction(std::string tag, XML_Helper* helper)
+      bool loadAction(Glib::ustring tag, XML_Helper* helper)
 	{
 	  if (tag == Action::d_tag)
 	    {
@@ -71,7 +71,7 @@ protected:
   class HistoryLoader 
     {
   public:
-      bool loadHistory(std::string tag, XML_Helper* helper)
+      bool loadHistory(Glib::ustring tag, XML_Helper* helper)
 	{
 	  if (tag == History::d_tag)
 	    {
@@ -93,9 +93,9 @@ protected:
 
 
 protected:
-  void gotActions(const std::string &payload);
-  void gotHistories(const std::string &payload);
-  void gotScenario(const std::string &payload);
+  void gotActions(const Glib::ustring &payload);
+  void gotHistories(const Glib::ustring &payload);
+  void gotScenario(const Glib::ustring &payload);
   int decodeActions(std::list<NetworkAction*> actions,
 		    Player *player);
   int decodeHistories(std::list<NetworkHistory*> histories);

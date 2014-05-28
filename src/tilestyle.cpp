@@ -23,7 +23,7 @@
 #include "ucompose.hpp"
 #include "defs.h"
 
-std::string TileStyle::d_tag = "tilestyle";
+Glib::ustring TileStyle::d_tag = "tilestyle";
 
 TileStyle::TileStyle()
   : d_image(0)
@@ -52,7 +52,7 @@ TileStyle::TileStyle(XML_Helper* helper)
 {
   int i;
   char *end = NULL;
-  std::string idstr;
+  Glib::ustring idstr;
 
   helper->getData(idstr, "id");
   unsigned long int val = 0;
@@ -82,12 +82,12 @@ bool TileStyle::save(XML_Helper *helper)
   return retval;
 }
 
-std::string TileStyle::getTypeName() const
+Glib::ustring TileStyle::getTypeName() const
 {
   return getTypeName(d_type);
 }
 
-std::string TileStyle::getTypeName(Type type)
+Glib::ustring TileStyle::getTypeName(Type type)
 {
   switch (type)
     {
@@ -150,7 +150,7 @@ std::string TileStyle::getTypeName(Type type)
     }
 }
 	
-TileStyle::Type TileStyle::typeNameToType(std::string name)
+TileStyle::Type TileStyle::typeNameToType(Glib::ustring name)
 {
   if (name == "Lone")
     return LONE;
@@ -204,7 +204,7 @@ guint32 TileStyle::calculateHexDigits(guint32 id)
     return 5;
 }
 
-std::string TileStyle::idToString(guint32 id, guint32 digits)
+Glib::ustring TileStyle::idToString(guint32 id, guint32 digits)
 {
   guint32 num_digits;
   if (digits != 0)

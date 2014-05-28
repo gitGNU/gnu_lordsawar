@@ -24,6 +24,7 @@
 #include <iostream>
 #include <string.h>
 #include <algorithm>
+#include <string>
 #include <glibmm/fileutils.h>
 #include <glibmm/ustring.h>
 #include <glibmm/convert.h>
@@ -49,16 +50,16 @@
 
 namespace
 {
-    std::list<std::string> get_files(std::string path, std::string ext)
+    std::list<Glib::ustring> get_files(Glib::ustring path, Glib::ustring ext)
     {
-	std::list<std::string> retlist;
+	std::list<Glib::ustring> retlist;
 	Glib::Dir dir(path);
     
 	for (Glib::Dir::iterator i = dir.begin(), end = dir.end(); i != end; ++i)
           {
-	    std::string entry = *i;
-	    std::string::size_type idx = entry.rfind(ext);
-	    if (idx != std::string::npos && 
+	    Glib::ustring entry = *i;
+	    Glib::ustring::size_type idx = entry.rfind(ext);
+	    if (idx != Glib::ustring::npos && 
                 idx == entry.length() - ext.length())
               retlist.push_back(Glib::filename_to_utf8(path + entry));
           }
@@ -66,17 +67,17 @@ namespace
     }
 }
 
-bool File::nameEndsWith(std::string filename, std::string extension)
+bool File::nameEndsWith(Glib::ustring filename, Glib::ustring extension)
 {
-  std::string::size_type idx = filename.rfind(extension);
-  if (idx == std::string::npos)
+  Glib::ustring::size_type idx = filename.rfind(extension);
+  if (idx == Glib::ustring::npos)
     return false;
   if (idx == filename.length() - extension.length())
     return true;
   return false;
 }
 
-std::string File::add_ext_if_necessary(std::string file, std::string ext)
+Glib::ustring File::add_ext_if_necessary(Glib::ustring file, Glib::ustring ext)
 {
   if (nameEndsWith(file, ext) == true)
     return file;
@@ -84,7 +85,7 @@ std::string File::add_ext_if_necessary(std::string file, std::string ext)
     return file + ext;
 }
 
-std::string File::add_slash_if_necessary(std::string dir)
+Glib::ustring File::add_slash_if_necessary(Glib::ustring dir)
 {
   if (dir.c_str()[strlen(dir.c_str())-1] == '/')
     return dir;
@@ -92,105 +93,105 @@ std::string File::add_slash_if_necessary(std::string dir)
     return dir + "/";
 }
 
-std::string File::getMiscFile(std::string filename)
+Glib::ustring File::getMiscFile(Glib::ustring filename)
 {
   return Configuration::s_dataPath + "/" + filename;
 }
 
-std::string File::getXSLTFile(guint32 type, std::string old_version, std::string new_version)
+Glib::ustring File::getXSLTFile(guint32 type, Glib::ustring old_version, Glib::ustring new_version)
 {
   FileCompat::Type t = FileCompat::Type(type);
   Glib::ustring filename = String::ucompose("%1-%2-%3",
                                             FileCompat::typeToCode(t), 
                                             old_version, new_version);
-  std::string file = getMiscFile("various/xslt/" + filename + ".xsl");
+  Glib::ustring file = getMiscFile("various/xslt/" + filename + ".xsl");
   if (File::exists(file))
     return file;
   else
     return "";
 }
 
-std::string File::getUserProfilesDescription()
+Glib::ustring File::getUserProfilesDescription()
 {
   return Configuration::s_savePath + "/" + PROFILE_LIST;
 }
 
-std::string File::getUserRecentlyPlayedGamesDescription()
+Glib::ustring File::getUserRecentlyPlayedGamesDescription()
 {
   return Configuration::s_savePath + "/" + RECENTLY_PLAYED_LIST;
 }
 
-std::string File::getUserRecentlyHostedGamesDescription()
+Glib::ustring File::getUserRecentlyHostedGamesDescription()
 {
   return Configuration::s_savePath + "/" + RECENTLY_HOSTED_LIST;
 }
 
-std::string File::getUserRecentlyAdvertisedGamesDescription()
+Glib::ustring File::getUserRecentlyAdvertisedGamesDescription()
 {
   return Configuration::s_savePath + "/" + RECENTLY_ADVERTISED_LIST;
 }
 
-std::string File::getUserRecentlyEditedFilesDescription()
+Glib::ustring File::getUserRecentlyEditedFilesDescription()
 {
   return Configuration::s_savePath + "/" + RECENTLY_EDITED_LIST;
 }
 
-std::string File::getItemDescription()
+Glib::ustring File::getItemDescription()
 {
   return Configuration::s_dataPath + "/various/items/items.xml";
 }
 
-std::string File::getEditorFile(std::string filename)
+Glib::ustring File::getEditorFile(Glib::ustring filename)
 {
   return Configuration::s_dataPath + "/various/editor/" + filename + ".png";
 }
 
-std::string File::getMusicFile(std::string filename)
+Glib::ustring File::getMusicFile(Glib::ustring filename)
 {
-  return std::string(Configuration::s_dataPath + "/music/" + filename.c_str());
+  return Glib::ustring(Configuration::s_dataPath + "/music/" + filename.c_str());
 }
 
-std::string File::getDataPath()
+Glib::ustring File::getDataPath()
 {
   return add_slash_if_necessary(Configuration::s_dataPath);
 }
 
-std::string File::getSavePath()
+Glib::ustring File::getSavePath()
 {
   return add_slash_if_necessary(Configuration::s_savePath);
 }
 
-std::string File::getUserMapDir()
+Glib::ustring File::getUserMapDir()
 {
   return add_slash_if_necessary(Configuration::s_savePath) + MAPDIR + "/";
 }
 
-std::string File::getMapDir()
+Glib::ustring File::getMapDir()
 {
   return add_slash_if_necessary(Configuration::s_dataPath) + MAPDIR + "/";
 }
 
-std::string File::getUserMapFile(std::string file)
+Glib::ustring File::getUserMapFile(Glib::ustring file)
 {
   return getUserMapDir() + file;
 }
 
-std::string File::getMapFile(std::string file)
+Glib::ustring File::getMapFile(Glib::ustring file)
 {
   return getMapDir() + file;
 }
-std::list<std::string> File::scanUserMaps()
+std::list<Glib::ustring> File::scanUserMaps()
 {
-  std::string path = File::getUserMapDir();
+  Glib::ustring path = File::getUserMapDir();
     
-    std::list<std::string> retlist;
+    std::list<Glib::ustring> retlist;
     Glib::Dir dir(path);
     
     for (Glib::Dir::iterator i = dir.begin(), end = dir.end(); i != end; ++i)
     {
-      std::string entry = *i;
-      std::string::size_type idx = entry.find(".map");
-      if (idx != std::string::npos)
+      Glib::ustring entry = *i;
+      Glib::ustring::size_type idx = entry.find(".map");
+      if (idx != Glib::ustring::npos)
 	{
 	  if (entry == "random.map")
 	    continue;
@@ -201,18 +202,18 @@ std::list<std::string> File::scanUserMaps()
     return retlist;
 }
 
-std::list<std::string> File::scanMaps()
+std::list<Glib::ustring> File::scanMaps()
 {
-  std::string path = File::getMapDir();
+  Glib::ustring path = File::getMapDir();
     
-    std::list<std::string> retlist;
+    std::list<Glib::ustring> retlist;
     Glib::Dir dir(path);
     
     for (Glib::Dir::iterator i = dir.begin(), end = dir.end(); i != end; ++i)
     {
-      std::string entry = *i;
-      std::string::size_type idx = entry.find(".map");
-      if (idx != std::string::npos)
+      Glib::ustring entry = *i;
+      Glib::ustring::size_type idx = entry.find(".map");
+      if (idx != Glib::ustring::npos)
 	{
 	    retlist.push_back(Glib::filename_to_utf8(entry));
 	}
@@ -227,13 +228,13 @@ std::list<std::string> File::scanMaps()
     return retlist;
 }
 
-std::string File::get_dirname(std::string path)
+Glib::ustring File::get_dirname(Glib::ustring path)
 {
   return Glib::path_get_dirname(path);
 }
-std::string File::get_basename(std::string path, bool keep_ext)
+Glib::ustring File::get_basename(Glib::ustring path, bool keep_ext)
 {
-  std::string file;
+  Glib::ustring file;
   file = Glib::path_get_basename(path);
   if (keep_ext)
     return file;
@@ -267,7 +268,7 @@ int File::copy (Glib::ustring from, Glib::ustring to)
 
   return 0;
 }
-bool File::create_dir(std::string dir)
+bool File::create_dir(Glib::ustring dir)
 {
     struct stat testdir;
 #ifndef __WIN32__
@@ -283,7 +284,7 @@ bool File::create_dir(std::string dir)
     return true;
 }
 	
-bool File::is_writable(std::string file)
+bool File::is_writable(Glib::ustring file)
 {
 #ifndef __WIN32__
   if (access (file.c_str(), W_OK) != 0)
@@ -294,7 +295,7 @@ bool File::is_writable(std::string file)
   return false;
 }
 
-bool File::exists(std::string f)
+bool File::exists(Glib::ustring f)
 {
   FILE *fileptr = fopen (f.c_str(), "r");
   bool retval = fileptr != NULL;
@@ -305,20 +306,20 @@ bool File::exists(std::string f)
 
 //armysets 
 
-std::string File::getArmysetDir()
+Glib::ustring File::getArmysetDir()
 {
   return add_slash_if_necessary(Configuration::s_dataPath) + ARMYSETDIR + "/";
 }
 
-std::string File::getUserArmysetDir()
+Glib::ustring File::getUserArmysetDir()
 {
-  std::string dir =  getSavePath() + ARMYSETDIR + "/";
+  Glib::ustring dir =  getSavePath() + ARMYSETDIR + "/";
   return dir;
 }
 
-std::list<std::string> File::scanForFiles(std::string dir, std::string extension)
+std::list<Glib::ustring> File::scanForFiles(Glib::ustring dir, Glib::ustring extension)
 {
-  std::list<std::string> files;
+  std::list<Glib::ustring> files;
   try
     {
       files = get_files (dir, extension);
@@ -331,52 +332,52 @@ std::list<std::string> File::scanForFiles(std::string dir, std::string extension
 }
 
 
-std::string File::getTilesetDir()
+Glib::ustring File::getTilesetDir()
 {
   return add_slash_if_necessary(Configuration::s_dataPath) + TILESETDIR + "/";
 }
 
-std::string File::getUserTilesetDir()
+Glib::ustring File::getUserTilesetDir()
 {
-  std::string dir = getSavePath() + TILESETDIR + "/";
+  Glib::ustring dir = getSavePath() + TILESETDIR + "/";
   return dir;
 }
 
 //shieldsets
-std::string File::getShieldsetDir()
+Glib::ustring File::getShieldsetDir()
 {
   return add_slash_if_necessary(Configuration::s_dataPath) + SHIELDSETDIR + "/";
 }
 
-std::string File::getUserShieldsetDir()
+Glib::ustring File::getUserShieldsetDir()
 {
-  std::string dir = getSavePath() + SHIELDSETDIR + "/";
+  Glib::ustring dir = getSavePath() + SHIELDSETDIR + "/";
   return dir;
 }
 
-std::string File::getCitysetDir()
+Glib::ustring File::getCitysetDir()
 {
   return add_slash_if_necessary(Configuration::s_dataPath) + CITYSETDIR + "/";
 }
 
-std::string File::getUserCitysetDir()
+Glib::ustring File::getUserCitysetDir()
 {
-  std::string dir = getSavePath() + CITYSETDIR + "/";
+  Glib::ustring dir = getSavePath() + CITYSETDIR + "/";
   return dir;
 }
 
 
-void File::erase(std::string filename)
+void File::erase(Glib::ustring filename)
 {
   remove(filename.c_str());
 }
 
-void File::erase_dir(std::string filename)
+void File::erase_dir(Glib::ustring filename)
 {
   rmdir(filename.c_str());
 }
 
-void File::clean_dir(std::string dirname)
+void File::clean_dir(Glib::ustring dirname)
 {
   if (File::exists(dirname) == false)
     return;
@@ -387,7 +388,7 @@ void File::clean_dir(std::string dirname)
   File::erase_dir(dirname);
 }
 
-std::string File::getSetConfigurationFilename(std::string dir, std::string subdir, std::string ext)
+Glib::ustring File::getSetConfigurationFilename(Glib::ustring dir, Glib::ustring subdir, Glib::ustring ext)
 {
   return add_slash_if_necessary(dir) + subdir + "/" + subdir + ext;
 }
@@ -415,7 +416,7 @@ char *File::sanify(const char *string)
   return result;
 }
   
-std::string File::get_tmp_file()
+Glib::ustring File::get_tmp_file()
 {
   std::string tmpfile = "lw.XXXX";
   int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
@@ -423,15 +424,15 @@ std::string File::get_tmp_file()
   return tmpfile;
 }
 
-std::string File::get_extension(std::string filename)
+Glib::ustring File::get_extension(Glib::ustring filename)
 {
-  if (filename.rfind('.') == std::string::npos)
+  if (filename.rfind('.') == Glib::ustring::npos)
     return "";
   return filename.substr(filename.rfind('.'));
 }
 
 //this method is from http://www.cplusplus.com/reference/list/list/sort/
-bool case_insensitive (const std::string& first, const std::string& second)
+bool case_insensitive (const Glib::ustring& first, const Glib::ustring& second)
 {
   unsigned int i = 0;
   while (i < first.length () && i < second.length ())

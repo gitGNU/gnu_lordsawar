@@ -80,17 +80,17 @@ bool QuestCitySack::save(XML_Helper* helper) const
   return retval;
 }
 
-std::string QuestCitySack::getProgress() const
+Glib::ustring QuestCitySack::getProgress() const
 {
   return _("You aren't afraid of doing it, are you?");
 }
 
-void QuestCitySack::getSuccessMsg(std::queue<std::string>& msgs) const
+void QuestCitySack::getSuccessMsg(std::queue<Glib::ustring>& msgs) const
 {
   msgs.push(_("The priests thank you for sacking this evil place."));
 }
 
-void QuestCitySack::getExpiredMsg(std::queue<std::string>& msgs) const
+void QuestCitySack::getExpiredMsg(std::queue<Glib::ustring>& msgs) const
 {
   const City* c = getCity();
   msgs.push(String::ucompose(_("The sacking of \"%1\" could not be accomplished."), 

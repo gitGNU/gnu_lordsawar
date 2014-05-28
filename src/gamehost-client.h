@@ -45,24 +45,24 @@ public:
   //! Deletes the singleton instance.
   static void deleteInstance();
 
-  void start(std::string host, guint32 port, Profile *p);
+  void start(Glib::ustring host, guint32 port, Profile *p);
   void disconnect();
 
   void request_game_list();
-  sigc::signal<void, RecentlyPlayedGameList*, std::string> received_game_list;
+  sigc::signal<void, RecentlyPlayedGameList*, Glib::ustring> received_game_list;
 
-  void request_game_host(std::string scenario_id);
-  sigc::signal<void, std::string, std::string> received_host_response;
+  void request_game_host(Glib::ustring scenario_id);
+  sigc::signal<void, Glib::ustring, Glib::ustring> received_host_response;
 
   void send_map(GameScenario *game_scenario);
-  void send_map_file(std::string file);
-  sigc::signal<void, std::string, guint32, std::string> received_map_response;
+  void send_map_file(Glib::ustring file);
+  sigc::signal<void, Glib::ustring, guint32, Glib::ustring> received_map_response;
 
-  void request_game_unhost(std::string scenario_id);
-  sigc::signal<void, std::string, std::string> received_unhost_response;
+  void request_game_unhost(Glib::ustring scenario_id);
+  sigc::signal<void, Glib::ustring, Glib::ustring> received_unhost_response;
 
   void request_reload();
-  sigc::signal<void, std::string> received_reload_response;
+  sigc::signal<void, Glib::ustring> received_reload_response;
 
   void request_server_terminate();
 
@@ -71,8 +71,8 @@ public:
   sigc::signal<void> client_forcibly_disconnected; //server went away
   sigc::signal<void> client_could_not_connect;
   
-  std::string getProfileId() const {return d_profile_id;};
-  std::string getHost() const{return d_host;};
+  Glib::ustring getProfileId() const {return d_profile_id;};
+  Glib::ustring getHost() const{return d_host;};
   guint32 getPort() const{return d_port;};
 
 protected:
@@ -84,14 +84,14 @@ private:
 
   void onConnected();
   void onConnectionLost();
-  bool onGotMessage(int type, std::string message);
-  bool loadRecentlyPlayedGameList(std::string tag, XML_Helper *helper);
+  bool onGotMessage(int type, Glib::ustring message);
+  bool loadRecentlyPlayedGameList(Glib::ustring tag, XML_Helper *helper);
 
   static GamehostClient * s_instance;
-  std::string d_host;
+  Glib::ustring d_host;
   guint32 d_port;
   bool d_connected;
-  std::string d_profile_id;
+  Glib::ustring d_profile_id;
   RecentlyPlayedGameList *d_recently_played_game_list;
  
 };

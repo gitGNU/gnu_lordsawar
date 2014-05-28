@@ -24,7 +24,6 @@
 #define CITY_H
 
 #include <list>
-#include <string>
 #include <vector>
 #include "Location.h"
 #include "Ownable.h"
@@ -69,7 +68,7 @@ class City : public Ownable, public Location, public Renamable,
     public:
 
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
 	//! Default constructor.
         /** 
@@ -82,7 +81,7 @@ class City : public Ownable, public Location, public Renamable,
 	  * @param numslots  The number of production slots for this city.
           */
         City(Vector<int> pos, guint32 width, 
-	     std::string name = DEFAULT_CITY_NAME, 
+	     Glib::ustring name = DEFAULT_CITY_NAME, 
 	     guint32 gold = DEFAULT_CITY_INCOME, 
 	     guint32 numslots = MAX_PRODUCTION_SLOTS_IN_A_CITY);
 
@@ -261,12 +260,12 @@ class City : public Ownable, public Location, public Renamable,
 	// Static Methods
 	
 	//! Get the default name of any city.
-	static std::string getDefaultName() {return _(DEFAULT_CITY_NAME);};
+	static Glib::ustring getDefaultName() {return _(DEFAULT_CITY_NAME);};
 
     private:
 
 	//! Callback for loading city objects from a saved-game file.
-	bool load(std::string tag, XML_Helper *helper);
+	bool load(Glib::ustring tag, XML_Helper *helper);
 
         //! Produces the currently active Army production base.
         Army * produceArmy(Stack *& stack);

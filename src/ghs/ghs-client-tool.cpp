@@ -31,7 +31,7 @@
 #include "GameScenario.h"
 #include "ghs-client-tool.h"
 
-GhsClientTool::GhsClientTool(std::string host, int port, Profile *p, bool show_list, bool reload, std::string unhost, std::string file, bool terminate)
+GhsClientTool::GhsClientTool(Glib::ustring host, int port, Profile *p, bool show_list, bool reload, Glib::ustring unhost, Glib::ustring file, bool terminate)
 {
   d_host = host;
   request_count = 0;
@@ -71,7 +71,7 @@ GhsClientTool::~GhsClientTool()
     delete new_profile;
 }
 
-void GhsClientTool::on_got_list_response(RecentlyPlayedGameList *l, std::string err)
+void GhsClientTool::on_got_list_response(RecentlyPlayedGameList *l, Glib::ustring err)
 {
   request_count--;
   if (err != "")
@@ -102,7 +102,7 @@ void GhsClientTool::on_got_list_response(RecentlyPlayedGameList *l, std::string 
   return;
 }
 
-void GhsClientTool::on_got_reload_response(std::string err)
+void GhsClientTool::on_got_reload_response(Glib::ustring err)
 {
   request_count--;
   if (err != "")
@@ -123,7 +123,7 @@ void GhsClientTool::on_connection_lost()
   exit(1);
 }
 
-void GhsClientTool::on_got_unhost_response(std::string id, std::string err)
+void GhsClientTool::on_got_unhost_response(Glib::ustring id, Glib::ustring err)
 {
   request_count--;
   if (err != "")
@@ -135,7 +135,7 @@ void GhsClientTool::on_got_unhost_response(std::string id, std::string err)
     Gtk::Main::quit();
 }
 
-void GhsClientTool::on_got_host_game_response(std::string scenario_id, std::string err, std::string file)
+void GhsClientTool::on_got_host_game_response(Glib::ustring scenario_id, Glib::ustring err, Glib::ustring file)
 {
   request_count--;
   if (err != "")
@@ -151,7 +151,7 @@ void GhsClientTool::on_got_host_game_response(std::string scenario_id, std::stri
   ghc->send_map_file(file);
 }
 
-void GhsClientTool::on_game_hosted(std::string scenario_id, guint32 port, std::string err)
+void GhsClientTool::on_game_hosted(Glib::ustring scenario_id, guint32 port, Glib::ustring err)
 {
   request_count--;
   if (err != "")
@@ -201,7 +201,7 @@ void GhsClientTool::on_connected()
       gamehostclient->received_host_response.connect
         (sigc::bind(sigc::mem_fun(*this, &GhsClientTool::on_got_host_game_response), d_file_to_host));
       bool broken = false;
-      std::string n, com, id;
+      Glib::ustring n, com, id;
       guint32 p, c;
       GameScenario::loadDetails(d_file_to_host, broken, p, c, n, com, id);
       if (broken == false)

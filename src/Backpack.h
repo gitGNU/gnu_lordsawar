@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2010 Ben Asselstine
+//  Copyright (C) 2008, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #define BACKPACK_H
 
 #include <list>
-#include <string>
 #include <gtkmm.h>
 
 class XML_Helper;
@@ -34,7 +33,7 @@ class Backpack: public std::list<Item*>
 {
     public:
 	//! The xml tag of this object in a saved-game file.
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
         //! Standard constructor: create a backpack.
 	/**
@@ -144,7 +143,7 @@ class Backpack: public std::list<Item*>
 	//! Tally the items that let stacks fly.
 	guint32 countStackFlightGivers();
     protected:
-	bool loadItem(std::string tag, XML_Helper* helper);
+	bool loadItem(Glib::ustring tag, XML_Helper* helper);
     private:
 
 };

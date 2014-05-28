@@ -41,7 +41,7 @@ class ItemlistDialog: public sigc::trackable
 
  private:
     Gtk::Dialog* dialog;
-    std::string current_save_filename;
+    Glib::ustring current_save_filename;
     Itemlist *d_itemlist; //current itemlist
     ItemProto *d_item; //current item
     Gtk::Entry *name_entry;

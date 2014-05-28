@@ -32,7 +32,7 @@
 #include "File.h"
 
 
-TileSetInfoDialog::TileSetInfoDialog(Gtk::Window &parent, Tileset *tileset, std::string dir, std::string file, bool readonly, std::string title)
+TileSetInfoDialog::TileSetInfoDialog(Gtk::Window &parent, Tileset *tileset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
 {
   d_tileset = tileset;
   d_readonly = readonly;
@@ -62,10 +62,10 @@ TileSetInfoDialog::TileSetInfoDialog(Gtk::Window &parent, Tileset *tileset, std:
     else
       {
         guint32 num = 0;
-        std::string basename = Tilesetlist::getInstance()->findFreeBaseName(_("untitled"), 100, num);
+        Glib::ustring basename = Tilesetlist::getInstance()->findFreeBaseName(_("untitled"), 100, num);
         filename_entry->set_text(basename);
 
-        std::string name = String::ucompose("%1 %2", _("Untitled"), num);
+        Glib::ustring name = String::ucompose("%1 %2", _("Untitled"), num);
         name_entry->set_text(name);
       }
     if (readonly == false)
@@ -135,7 +135,7 @@ void TileSetInfoDialog::update_buttons()
       return;
     }
 
-  std::string dir = File::getUserTilesetDir() + filename_entry->get_text();
+  Glib::ustring dir = File::getUserTilesetDir() + filename_entry->get_text();
   if (Tilesetlist::getInstance()->getTileset(filename_entry->get_text()))
     {
       accept_button->set_sensitive(false);

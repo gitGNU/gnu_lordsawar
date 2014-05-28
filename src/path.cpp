@@ -34,7 +34,7 @@
 #include "xmlhelper.h"
 #include "stack.h"
 
-std::string Path::d_tag = "path";
+Glib::ustring Path::d_tag = "path";
 
 struct node
 {
@@ -62,7 +62,7 @@ Path::Path(XML_Helper* helper)
 {
     int i;
     std::istringstream sx, sy;
-    std::string s;
+    Glib::ustring s;
 
     helper->getData(d_moves_exhausted_at_point, "moves_exhausted_at_point");
     helper->getData(i, "size");

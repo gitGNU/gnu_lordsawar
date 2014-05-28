@@ -44,7 +44,7 @@ class Itemlist : public std::map<guint32, ItemProto*>, public sigc::trackable
 	 * @note This tag appears in the items configuration file, or in a 
 	 * saved-game file.
 	 */
-	static std::string d_tag; 
+	static Glib::ustring d_tag; 
 
         //! Returns the singleton instance.
 	static Itemlist* getInstance();
@@ -65,7 +65,7 @@ class Itemlist : public std::map<guint32, ItemProto*>, public sigc::trackable
 	void remove(ItemProto *item);
         void add(ItemProto *item);
 
-        static bool upgrade(std::string filename, std::string old_version, std::string new_version);
+        static bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version);
         static void support_backward_compatibility();
     protected:
 	//! Default constructor.
@@ -78,7 +78,7 @@ class Itemlist : public std::map<guint32, ItemProto*>, public sigc::trackable
     private:
 
         //! Callback for loading an Item from an opened saved-game file.
-        bool loadItemProto(std::string tag, XML_Helper* helper);
+        bool loadItemProto(Glib::ustring tag, XML_Helper* helper);
 
         //! Erases an Item from the list and frees the Item too.
         void flErase(iterator it);

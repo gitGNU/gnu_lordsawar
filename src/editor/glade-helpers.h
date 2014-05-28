@@ -18,11 +18,9 @@
 #ifndef EDITOR_GLADE_HELPERS_H
 #define EDITOR_GLADE_HELPERS_H
 
-#include <string>
-
 #include "Configuration.h"
 
-inline std::string get_glade_path()
+inline Glib::ustring get_glade_path()
 {
     return Configuration::s_dataPath + "/glade/editor";
 }
