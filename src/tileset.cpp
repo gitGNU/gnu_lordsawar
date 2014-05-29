@@ -940,10 +940,7 @@ bool Tileset::addTileStyleSet(Tile *tile, Glib::ustring filename)
 {
   bool success = true;
   TileStyle::Type tilestyle_type;
-  if (tile->getType() == Tile::GRASS)
-    tilestyle_type = TileStyle::LONE;
-  else
-    tilestyle_type = TileStyle::UNKNOWN;
+  tilestyle_type = TileStyle::UNKNOWN;
   TileStyleSet *set = 
     new TileStyleSet(filename, d_tileSize, success, tilestyle_type);
   if (!success)
