@@ -274,11 +274,8 @@ src/editor/players-dialog.cpp
 src/editor/editorbigmap.cpp
 src/editor/editablesmallmap.cpp
 src/editor/smallmap-editor-dialog.cpp
-src/editor/tileset-main.cpp
 src/editor/city-editor-dialog.cpp
 src/editor/main-window.cpp
-src/editor/cityset-main.cpp
-src/editor/armyset-main.cpp
 src/editor/temple-editor-dialog.cpp
 src/editor/tileset-info-dialog.cpp
 src/editor/tile-preview-dialog.cpp
@@ -297,7 +294,6 @@ src/editor/stack-editor-dialog.cpp
 src/editor/hero-editor-dialog.cpp
 src/editor/backpack-editor-dialog.cpp
 src/editor/shieldset-info-dialog.cpp
-src/editor/shieldset-main.cpp
 src/editor/shieldset-window.cpp
 src/editor/tileset-flag-editor-dialog.cpp
 src/editor/tileset-selector-editor-dialog.cpp

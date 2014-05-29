@@ -19,7 +19,7 @@
 MAINTAINERCLEANFILES= Makefile.in
 
 if WANT_EDITOR
-bin_PROGRAMS = lordsawar-editor lordsawar-army-editor lordsawar-tile-editor lordsawar-city-editor lordsawar-shield-editor
+bin_PROGRAMS = lordsawar-editor
 
 noinst_LTLIBRARIES = libshieldsetwindow.la libarmysetwindow.la libcitysetwindow.la libtilesetwindow.la libeditutil.la
 
@@ -58,18 +58,6 @@ libtilesetwindow_la_SOURCES = \
 	tileset-smallmap-building-colors-dialog.cpp \
 	tileset-smallmap-building-colors-dialog.h\
 	image-editor-dialog.cpp image-editor-dialog.h
-
-lordsawar_army_editor_SOURCES = \
-	armyset-main.cpp 
-
-lordsawar_city_editor_SOURCES = \
-	cityset-main.cpp
-
-lordsawar_shield_editor_SOURCES = \
-	shieldset-main.cpp
-
-lordsawar_tile_editor_SOURCES = \
-	tileset-main.cpp
 
 lordsawar_editor_SOURCES = \
 	main.cpp \
@@ -118,53 +106,6 @@ lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(SDL_LIBS) -ltar -lz \
                          @LIBINTL@ -L$(top_builddir)/src
 
-lordsawar_shield_editor_LDADD =  \
-			 libshieldsetwindow.la \
-                         $(top_builddir)/src/gui/liblwgui.la \
-                         $(top_builddir)/src/liblordsawargfx.la \
-                         $(top_builddir)/src/liblordsawar.la \
-                         $(SDL_LIBS) -ltar -lz \
-                         $(GTKMM_LIBS) \
-    			 $(LIBXML_LIBS) \
-    			 $(XSLT_LIBS) \
-			 libeditutil.la \
-                         @LIBINTL@ -L$(top_builddir)/src
-
-lordsawar_city_editor_LDADD = \
-			 libcitysetwindow.la \
-                         $(top_builddir)/src/gui/liblwgui.la \
-                         $(top_builddir)/src/liblordsawargfx.la \
-                         $(top_builddir)/src/liblordsawar.la \
-                         $(SDL_LIBS) -ltar -lz \
-                         $(GTKMM_LIBS) \
-    			 $(LIBXML_LIBS) \
-    			 $(XSLT_LIBS) \
-			 libeditutil.la \
-                         @LIBINTL@ -L$(top_builddir)/src
-
-lordsawar_army_editor_LDADD = \
-			 libarmysetwindow.la \
-                         $(top_builddir)/src/gui/liblwgui.la \
-                         $(top_builddir)/src/liblordsawargfx.la \
-                         $(top_builddir)/src/liblordsawar.la \
-                         $(SDL_LIBS) -ltar -lz \
-                         $(GTKMM_LIBS) \
-    			 $(LIBXML_LIBS) \
-    			 $(XSLT_LIBS) \
-			 libeditutil.la \
-                         @LIBINTL@ -L$(top_builddir)/src
-
-lordsawar_tile_editor_LDADD = \
-			 libtilesetwindow.la \
-			 $(top_builddir)/src/gui/liblwgui.la \
-                         $(top_builddir)/src/liblordsawargfx.la \
-                         $(top_builddir)/src/liblordsawar.la \
-                         $(SDL_LIBS) -ltar -lz \
-                         $(GTKMM_LIBS) \
-    			 $(LIBXML_LIBS) \
-    			 $(XSLT_LIBS) \
-			 libeditutil.la \
-                         @LIBINTL@ -L$(top_builddir)/src
 endif
 
 
