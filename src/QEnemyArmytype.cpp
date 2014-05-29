@@ -19,12 +19,17 @@
 #include <sigc++/functors/mem_fun.h>
 #include "ucompose.hpp"
 
+#include "xmlhelper.h"
+#include "stack.h"
 #include "QEnemyArmytype.h"
 #include "QuestsManager.h"
 #include "playerlist.h"
 #include "stacklist.h"
 #include "armysetlist.h"
 #include "GameMap.h"
+#include "player.h"
+#include "armyproto.h"
+#include "hero.h"
 
 //go get an existing army type,
 //with the stipluation that player P's armies are not taken into consideration

@@ -26,6 +26,7 @@
 #include "playerlist.h"
 #include "ucompose.hpp"
 #include "maptile.h"
+#include "xmlhelper.h"
 
 Glib::ustring Item::d_tag = "item";
 
@@ -133,4 +134,9 @@ bool Item::use()
         return true;
     }
   return true;
+}
+	
+Player *Item::getPlantableOwner() const
+{
+  return Playerlist::getInstance()->getPlayer(d_plantable_owner_id);
 }

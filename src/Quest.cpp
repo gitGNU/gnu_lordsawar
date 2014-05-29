@@ -18,7 +18,9 @@
 //  02110-1301, USA.
 
 #include <iostream>
-
+#include "army.h"
+#include "xmlhelper.h"
+#include "stack.h"
 #include "Quest.h"
 #include "QuestsManager.h"
 #include "hero.h"

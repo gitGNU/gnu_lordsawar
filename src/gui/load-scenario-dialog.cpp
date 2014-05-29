@@ -18,6 +18,7 @@
 
 #include <config.h>
 #include <list>
+#include <iostream>
 #include <fstream>
 #include <sigc++/functors/mem_fun.h>
 #include <gtkmm.h>

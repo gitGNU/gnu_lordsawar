@@ -1,4 +1,4 @@
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
 #ifndef PORTLIST_H
 #define PORTLIST_H
 
+#include "port.h"
 #include <sigc++/trackable.h>
 #include "LocationList.h"
 
 class XML_Helper;
-class Port;
 
 //! A list of the Port objects on the game map.
 /** 

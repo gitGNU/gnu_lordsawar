@@ -21,9 +21,6 @@
 #include <list>
 #include <sigc++/trackable.h>
 #include "game-parameters.h"
-#include "GameScenarioOptions.h"
-
-class XML_Helper;
 
 //! A class to hold several scenario options.
 

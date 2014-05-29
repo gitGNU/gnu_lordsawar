@@ -26,6 +26,10 @@
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 
+#include "armyset.h"
+#include "tileset.h"
+#include "shieldset.h"
+#include "cityset.h"
 #include "xmlhelper.h"
 #include "Configuration.h"
 #include "defs.h"
@@ -41,16 +45,6 @@
 #define debug(x)
 
 FileCompat* FileCompat::s_instance = 0;
-
-class UpgradeDetails
-{
-public:
-  UpgradeDetails(Glib::ustring f, Glib::ustring t, FileCompat::Slot s) 
-    {from_version = f; to_version = t; slot = s;};
-  Glib::ustring from_version;
-  Glib::ustring to_version;
-  FileCompat::Slot slot;
-};
 
 FileCompat* FileCompat::getInstance()
 {
@@ -443,8 +437,6 @@ Glib::ustring FileCompat::typeToString(const FileCompat::Type type)
       return _("recently hosted or recently advertised games file");
     case RECENTLYEDITEDFILELIST:
       return _("recently edited documents file");
-    case PBMTURN:
-      return _("play-by-mail turn file");
     case ARMYSET:
       return _("armyset file");
     case TILESET:
@@ -477,8 +469,6 @@ Glib::ustring FileCompat::typeToCode(const FileCompat::Type type)
       return "gl";
     case RECENTLYEDITEDFILELIST:
       return "ref";
-    case PBMTURN:
-      return "pbm";
     case ARMYSET:
       return "as";
     case TILESET:

@@ -31,6 +31,7 @@
 #include "GraphicsCache.h"
 #include "hero.h"
 #include "shield.h"
+#include "playerlist.h"
 
 //give a hero some more abilities
 ArmyGainsLevelDialog::ArmyGainsLevelDialog(Gtk::Window &parent, Hero *a, bool show_sight_stat)

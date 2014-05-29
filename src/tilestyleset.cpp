@@ -23,6 +23,7 @@
 #include "GraphicsCache.h"
 #include "xmlhelper.h"
 #include "gui/image-helpers.h"
+#include "File.h"
 
 Glib::ustring TileStyleSet::d_tag = "tilestyleset";
 

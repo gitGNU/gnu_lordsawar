@@ -1460,7 +1460,6 @@ class Player: public sigc::trackable
         sigc::signal<void, Hero *, Glib::ustring, guint32> city_persuaded;
         sigc::signal<void, Hero *, Glib::ustring> stack_teleported;
         
-	void loadPbmGame();
 	//! Check the history to see if we ever conquered the given city.
 
 
@@ -1806,6 +1805,7 @@ class Player: public sigc::trackable
         bool computerSearch(Stack *s, MoveResult *r);
 };
 
+Fight::Result ruinfight (Stack **attacker, Stack **defender);
 #endif // PLAYER_H
 
 // End of file

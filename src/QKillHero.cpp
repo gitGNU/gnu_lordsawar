@@ -24,6 +24,9 @@
 #include <sigc++/functors/mem_fun.h>
 #include "ucompose.hpp"
 
+#include "hero.h"
+#include "stack.h"
+#include "xmlhelper.h"
 #include "history.h"
 #include "QKillHero.h"
 #include "QuestsManager.h"

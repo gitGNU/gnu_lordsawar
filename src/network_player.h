@@ -23,10 +23,57 @@
 #include <gtkmm.h>
 
 #include "player.h"
-#include "action.h"
 
-class MoveResult;
 class XML_Helper;
+class Action;
+class Action_Move;
+class Action_Split;
+class Action_Fight;
+class Action_Join;
+class Action_Ruin;
+class Action_Temple;
+class Action_Occupy;
+class Action_Pillage;
+class Action_Sack;
+class Action_Raze;
+class Action_Upgrade;
+class Action_Buy;
+class Action_Production;
+class Action_Reward;
+class Action_Quest;
+class Action_Equip;
+class Action_Level;
+class Action_Disband;
+class Action_ModifySignpost;
+class Action_RenameCity;
+class Action_Vector;
+class Action_FightOrder;
+class Action_Resign;
+class Action_Plant;
+class Action_Produce;
+class Action_ProduceVectored;
+class Action_DiplomacyState;
+class Action_DiplomacyProposal;
+class Action_DiplomacyScore;
+class Action_EndTurn;
+class Action_ConquerCity;
+class Action_RecruitHero;
+class Action_RenamePlayer;
+class Action_CityTooPoorToProduce;
+class Action_InitTurn;
+class Action_Loot;
+class Action_UseItem;
+class Action_ReorderArmies;
+class Action_ResetStacks;
+class Action_ResetRuins;
+class Action_CollectTaxesAndPayUpkeep;
+class Action_Kill;
+class Action_DefendStack;
+class Action_UndefendStack;
+class Action_ParkStack;
+class Action_UnparkStack;
+class Action_SelectStack;
+class Action_DeselectStack;
 
 /** This class implements the network player.
   */
@@ -123,6 +170,7 @@ class NetworkPlayer : public Player
 
 };
 
+Stack *findStackById(guint32 id);
 #endif // NETWORK_PLAYER_H
 
 // End of file

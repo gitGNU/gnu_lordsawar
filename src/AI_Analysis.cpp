@@ -28,6 +28,7 @@
 #include "stacklist.h"
 #include "ruinlist.h"
 #include "army.h"
+#include "city.h"
 #include "AICityInfo.h"
 #include "armysetlist.h"
 

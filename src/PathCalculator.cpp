@@ -19,6 +19,7 @@
 #include <string.h>
 #include <queue>
 #include "PathCalculator.h"
+#include "army.h"
 #include "GameMap.h"
 #include "path.h"
 #include "stack.h"

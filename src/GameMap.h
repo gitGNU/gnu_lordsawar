@@ -30,13 +30,13 @@
 #include "vector.h"
 #include "rectangle.h"
 #include "maptile.h"
-#include "stack.h"
-#include "Location.h"
-#include "shieldset.h"
-#include "cityset.h"
-#include "stackreflist.h"
-#include "LocationList.h"
 
+class ArmyProto;
+class Movable;
+class Stack;
+class Location;
+class Shieldset;
+class Cityset;
 class MapGenerator;
 class XML_Helper;
 class Port;
@@ -46,6 +46,9 @@ class Temple;
 class Bridge;
 class Ruin;
 class Armyset;
+class Signpost;
+class LocationBox;
+class Tileset;
 
 /** Class representing the map in the game
   * 
@@ -137,18 +140,18 @@ class GameMap: public sigc::trackable
         void setTile(Vector<int> p, Maptile *t) {return setTile(p.x, p.y, t);}
 
 	static City* getCity(Vector<int> pos);
-        static City* getCity(Movable *m) {return getCity(m->getPos());}
+        static City* getCity(Movable *m);
 
 	static City* getEnemyCity(Vector<int> pos);
 	static Ruin* getRuin(Vector<int> pos);
-        static Ruin* getRuin(Movable *m) {return getRuin(m->getPos());}
+        static Ruin* getRuin(Movable *m);
 	static Temple* getTemple(Vector<int> pos);
-        static Temple* getTemple(Movable *m) {return getTemple(m->getPos());}
+        static Temple* getTemple(Movable *m);
 	static Port* getPort(Vector<int> pos);
 	static Road* getRoad(Vector<int> pos);
 	static Bridge* getBridge(Vector<int> pos);
 	static Signpost* getSignpost(Vector<int> pos);
-        static Signpost* getSignpost(Movable *m) {return getSignpost(m->getPos());}
+        static Signpost* getSignpost(Movable *m);
 	static Stack* getStack(Vector<int> pos);
 	static StackTile* getStacks(Vector<int> pos);
 	static Stack *groupStacks(Vector<int> pos);

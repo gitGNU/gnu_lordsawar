@@ -22,8 +22,6 @@
 #include <list>
 #include <sigc++/trackable.h>
 
-#include "xmlhelper.h"
-
 class UpgradeDetails;
 
 class FileDetails
@@ -50,7 +48,6 @@ class FileCompat: public std::list<FileDetails>, public sigc::trackable
           RECENTLYPLAYEDGAMELIST,
           GAMELIST,
           RECENTLYEDITEDFILELIST,
-          PBMTURN,
           ARMYSET,
           TILESET,
           CITYSET,
@@ -119,6 +116,17 @@ class FileCompat: public std::list<FileDetails>, public sigc::trackable
         //! A static pointer for the singleton instance.
         static FileCompat* s_instance;
 };
+
+class UpgradeDetails
+{
+public:
+  UpgradeDetails(Glib::ustring f, Glib::ustring t, FileCompat::Slot s) 
+    {from_version = f; to_version = t; slot = s;};
+  Glib::ustring from_version;
+  Glib::ustring to_version;
+  FileCompat::Slot slot;
+};
+
 
 #endif // FILE_COMPAT_H
 

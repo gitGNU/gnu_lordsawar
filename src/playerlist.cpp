@@ -292,11 +292,6 @@ Playerlist::iterator Playerlist::flErase(Playerlist::iterator it)
     return erase (it);
 }
 
-struct rankable_t
-{
-  guint32 score;
-  Player *player;
-};
 
 bool compareDiplomaticScores (const struct rankable_t lhs,
 			      const struct rankable_t rhs)

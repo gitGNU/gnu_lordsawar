@@ -40,28 +40,10 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-// Helper class; the single units participating in the fight are saved with
-// additional information. This should be a struct, but I don't know how to
-// forward the declaration properly.
-//! A particpant in a Fight.
-class Fighter
-{
-    public:
-        Fighter(Army* a, Vector<int> p);
-        
-        Army* army;
-        Vector<int> pos;       // location on the map (needed to calculate boni)
-        int terrain_strength;
-	//! needed for sorting
-        //bool operator() ( const Fighter* f1, const Fighter* f2 );
-
-};
-
 Fighter::Fighter(Army* a, Vector<int> p)
     :army(a), pos(p)
 {
 }
-
 
 //take a list of stacks and create an ordered list of armies
 void Fight::orderArmies(std::list<Stack*> stacks, std::vector<Army*> &armies)
@@ -230,7 +212,7 @@ void Fight::battle(bool intense)
     }
 }
 
-Army *findArmyById(const std::list<Stack *> &l, guint32 id)
+Army *Fight::findArmyById(const std::list<Stack *> &l, guint32 id)
 {
   for (std::list<Stack *>::const_iterator i = l.begin(), end = l.end();
        i != end; ++i) {

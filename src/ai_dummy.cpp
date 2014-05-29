@@ -33,6 +33,7 @@
 #include "xmlhelper.h"
 #include "history.h"
 #include "GameScenarioOptions.h"
+#include "SightMap.h"
 #include "Sage.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<endl<<flush;}

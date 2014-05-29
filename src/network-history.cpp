@@ -16,8 +16,8 @@
 //  02110-1301, USA.
 
 #include <sstream>
-#include "network-history.h"
 #include "player.h"
+#include "network-history.h"
 
 #include "xmlhelper.h"
 

@@ -38,6 +38,7 @@
 #include "armysetlist.h"
 #include "buy-production-dialog.h"
 #include "destination-dialog.h"
+#include "tileset.h"
 #include "GameMap.h"
 #include "citylist.h"
 #include "playerlist.h"

@@ -20,6 +20,7 @@
 #include <assert.h>
 #include <string.h>
 
+#include <iostream>
 #include "rectangle.h"
 
 #include "GraphicsCache.h"

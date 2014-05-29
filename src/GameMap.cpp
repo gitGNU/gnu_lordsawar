@@ -30,6 +30,7 @@
 #include <math.h>
 
 #include "ucompose.hpp"
+#include "army.h"
 #include "GameMap.h"
 #include "citylist.h"
 #include "bridgelist.h"
@@ -59,6 +60,7 @@
 #include "armyset.h"
 #include "armysetlist.h"
 #include "CreateScenario.h"
+#include "SightMap.h"
 #include "reward.h"
 #include "rewardlist.h"
 
@@ -2580,4 +2582,24 @@ bool GameMap::checkBuildingTerrain(Maptile::Building b, bool land)
     }
 
   return found;
+}
+        
+City* GameMap::getCity(Movable *m)
+{
+  return getCity(m->getPos());
+}
+        
+Ruin* GameMap::getRuin(Movable *m)
+{
+  return getRuin(m->getPos());
+}
+        
+Temple* GameMap::getTemple(Movable *m)
+{
+  return getTemple(m->getPos());
+}
+        
+Signpost* GameMap::getSignpost(Movable *m)
+{
+  return getSignpost(m->getPos());
 }

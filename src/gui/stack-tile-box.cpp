@@ -37,6 +37,7 @@
 #include "player.h"
 #include "armysetlist.h"
 #include "GameMap.h"
+#include "army.h"
 
 Glib::ustring StackTileBox::get_file(Configuration::UiFormFactor factor)
 {

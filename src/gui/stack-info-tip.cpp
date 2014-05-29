@@ -34,6 +34,7 @@
 #include "File.h"
 #include "stacktile.h"
 #include "GameScenarioOptions.h"
+#include "playerlist.h"
 
 StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, StackTile *stile)
 {

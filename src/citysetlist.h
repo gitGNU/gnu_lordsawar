@@ -22,7 +22,6 @@
 #include <vector>
 #include <sigc++/trackable.h>
 
-#include "xmlhelper.h"
 #include "cityset.h"
 
 class Tar_Helper;

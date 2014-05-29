@@ -27,7 +27,6 @@
 #include "real_player.h"
 #include "AI_Analysis.h"
 #include "AI_Diplomacy.h"
-
 class XML_Helper;
 class City;
 

@@ -28,8 +28,9 @@
 #include <map>
 #include "PathCalculator.h"
 #include "vector.h"
-#include "GameMap.h"
-class Stack;
+#include "stack.h"
+#include "maptile.h"
+#include "Location.h"
 
 /** A list for object instances
   * 

@@ -24,6 +24,7 @@
 #include "tileset.h"
 #include "MapBackpack.h"
 #include "stacktile.h"
+#include "army.h"
 #include "GameMap.h"
 
 Maptile::Maptile(int x, int y, guint32 index, TileStyle *tileStyle)

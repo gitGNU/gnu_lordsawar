@@ -29,16 +29,7 @@
 #include "bigmap.h"
 #include "Tile.h"
 #include "GraphicsCache.h"
-
-class Stack;
-class MapRenderer;
-
-class City;
-class Ruin;
-class Signpost;
-class Temple;
-class UniquelyIdentified;
-
+#include "UniquelyIdentified.h"
 
 //! Scenario editor.  Specializatoin of the BigMap class for the editor.
 class EditorBigMap: public BigMap

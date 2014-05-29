@@ -20,6 +20,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <iostream>
 #include <sstream>
 #include <sigc++/functors/mem_fun.h>
 
@@ -35,6 +36,7 @@
 #include "city.h"
 #include "ruinlist.h"
 #include "ruin.h"
+#include "SightMap.h"
 #include "rewardlist.h"
 #include "Itemlist.h"
 #include "templelist.h"
@@ -52,6 +54,8 @@
 #include "tilesetlist.h"
 #include "shieldsetlist.h"
 #include "real_player.h"
+#include "AI_Analysis.h"
+#include "AI_Diplomacy.h"
 #include "ai_fast.h"
 #include "ai_smart.h"
 #include "ai_dummy.h"
@@ -61,6 +65,7 @@
 #include "Configuration.h"
 #include "FogMap.h"
 #include "history.h"
+#include "game-parameters.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)

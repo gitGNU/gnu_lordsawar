@@ -22,11 +22,16 @@
 #include <sigc++/functors/mem_fun.h>
 #include "ucompose.hpp"
 
+#include "army.h"
+#include "stack.h"
 #include "QEnemyArmies.h"
 #include "QuestsManager.h"
 #include "playerlist.h"
 #include "stacklist.h"
 #include "GameMap.h"
+#include "player.h"
+#include "hero.h"
+#include "xmlhelper.h"
 
 //go get an existing alive player,
 //with the stipluation that player P is not taken into consideration
@@ -169,4 +174,9 @@ void QuestEnemyArmies::cityAction(City *c, CityDefeatedAction action,
 				  bool heroIsCulprit, int gold)
 {
   ;//this quest doesn't care what happens to cities
+}
+    
+guint32 QuestEnemyArmies::getVictimPlayerId()
+{
+  return d_victim_player->getId();
 }

@@ -21,14 +21,13 @@
 #define ITEM_H
 
 #include <gtkmm.h>
-#include "xmlhelper.h"
-#include "army.h"
 
-#include "player.h"
-#include "playerlist.h"
 #include "UniquelyIdentified.h"
-
 #include "ItemProto.h"
+
+class XML_Helper;
+class Army;
+class Player;
 
 //! A carryable thing that confers special properties on it's holder.
 /** 
@@ -86,8 +85,7 @@ class Item: public ItemProto, public UniquelyIdentified
         bool getPlanted() const {return d_planted;}
 
 	//! Return the Player who can plant this particular Item.
-	Player *getPlantableOwner() const 
-	  {return Playerlist::getInstance()->getPlayer(d_plantable_owner_id);}
+	Player *getPlantableOwner() const; 
 
 	//! Return the type of this item.
 	guint32 getType() const {return d_type;};

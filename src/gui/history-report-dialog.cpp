@@ -40,6 +40,7 @@
 #include "network-history.h"
 #include "GraphicsCache.h"
 #include "boxcompose.h"
+#include "ItemProto.h"
 
 HistoryReportDialog::HistoryReportDialog(Gtk::Window &parent, Player *p, HistoryReportType type)
 {

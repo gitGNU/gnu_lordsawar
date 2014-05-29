@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //  Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -20,8 +20,8 @@
 #define HERO_TEMPLATES_H
 
 #include <vector>
-#include "defs.h"
 #include "hero.h"
+#include "defs.h"
 
 class ArmyProto;
 class HeroProto;

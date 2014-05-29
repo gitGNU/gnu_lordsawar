@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,9 +21,9 @@
 #include <sigc++/signal.h>
 
 #include "overviewmap.h"
-#include "input-events.h"
-#include "player.h"
+#include "vector.h"
 
+class Player;
 class Quest;
 
 //! Draw a Quest objective onto a miniature map graphic.

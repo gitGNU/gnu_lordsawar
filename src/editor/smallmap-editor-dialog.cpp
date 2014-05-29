@@ -27,6 +27,7 @@
 #include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
+#include "army.h"
 #include "GameMap.h"
 #include "GraphicsCache.h"
 #include "playerlist.h"

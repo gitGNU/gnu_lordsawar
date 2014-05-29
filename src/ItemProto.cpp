@@ -24,6 +24,7 @@
 #include "playerlist.h"
 #include "armysetlist.h"
 #include "armyproto.h"
+#include "xmlhelper.h"
 
 Glib::ustring ItemProto::d_tag = "itemproto";
 

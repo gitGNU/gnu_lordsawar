@@ -22,14 +22,16 @@
 
 #include <list>
 #include <queue>
-#include "xmlhelper.h"
-#include "stack.h"
 #include "callback-enums.h"
-#include "city.h"
 #include "OwnerId.h"
+#include "vector.h"
 
+class XML_Helper;
 class QuestsManager;
 class Hero;
+class Stack;
+class City;
+class Army;
 
 //! Base class for Quest objects.
 /** 

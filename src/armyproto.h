@@ -25,11 +25,10 @@
 #include <gtkmm.h>
 #include "PixMask.h"
 #include "shield.h"
-#include "hero.h"
 #include "armyprotobase.h"
+#include "hero.h"
 
 class XML_Helper;
-class Armyset;
 class Tar_Helper;
 
 class ArmyProto : public ArmyProtoBase

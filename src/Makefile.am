@@ -15,7 +15,7 @@
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 #   02110-1301, USA.
-SUBDIRS = gui . editor pbm gls ghs
+SUBDIRS = gui . editor gls ghs
 MAINTAINERCLEANFILES= Makefile.in
 
 bin_PROGRAMS = lordsawar lordsawar-upgrade-file
@@ -53,7 +53,7 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         network-history.cpp network-history.h \
         NextTurn.cpp NextTurn.h NextTurnHotseat.cpp NextTurnHotseat.h \
 	NextTurnNetworked.cpp NextTurnNetworked.h \
-        NextTurnPbm.cpp NextTurnPbm.h OwnerId.cpp OwnerId.h \
+        OwnerId.cpp OwnerId.h \
         Ownable.cpp Ownable.h path.cpp path.h \
         PathCalculator.cpp PathCalculator.h \
         RoadPathCalculator.cpp RoadPathCalculator.h \
@@ -98,9 +98,6 @@ liblordsawarnet_la_SOURCES = \
 	network-connection.cpp chat-client.cpp chat-client.h \
         network-connection.h network-common.h \
         network-server.cpp network-server.h \
-        pbm/pbm.cpp pbm/pbm.h \
-        pbm-game-client.cpp pbm-game-client.h \
-        pbm-game-server.cpp pbm-game-server.h \
 	profile.cpp profile.h \
        	profilelist.cpp profilelist.h 
 

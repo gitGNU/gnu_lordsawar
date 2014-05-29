@@ -38,6 +38,7 @@
 #include "vectoredunitlist.h"
 #include "vectoredunit.h"
 #include "action.h"
+#include "xmlhelper.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)

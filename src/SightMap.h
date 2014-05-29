@@ -21,7 +21,8 @@
 #include <gtkmm.h>
 #include "rectangle.h"
 #include "Renamable.h"
-#include "xmlhelper.h"
+
+class XML_Helper;
 
 //! An object that is given to a player that defogs a portion of the fog map.
 /** 

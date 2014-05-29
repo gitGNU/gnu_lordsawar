@@ -23,8 +23,7 @@
 #define FILE_H
 
 #include <list>
-
-#include "xmlhelper.h"
+#include <glibmm.h>
 
 /** \brief Miscellaneous functions for file access
   * 

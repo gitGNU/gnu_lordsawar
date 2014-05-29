@@ -20,8 +20,9 @@
 
 #include <gtkmm.h>
 
-#include "xmlhelper.h"
 #include "PixMask.h"
+
+class XML_Helper;
 
 //! Describes the look of a Tile.
 /**

@@ -346,4 +346,11 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         
 };
 
+struct rankable_t
+{
+  guint32 score;
+  Player *player;
+};
+
+bool compareDiplomaticScores (const struct rankable_t lhs, const struct rankable_t rhs);
 #endif // PLAYERLIST_H

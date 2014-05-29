@@ -24,14 +24,7 @@
 
 #include <list>
 #include <sigc++/trackable.h>
-#include "game-parameters.h"
 #include "GameScenarioOptions.h"
-#include "xmlhelper.h"
-
-#include "armysetlist.h"
-#include "armyset.h"
-#include "GameMap.h"
-#include "Configuration.h"
 
 class XML_Helper;
 class Tar_Helper;
@@ -60,7 +53,6 @@ class GameScenario: public GameScenarioOptions
 	  {
 	    HOTSEAT = 0, 
 	    NETWORKED = 1,
-	    PLAY_BY_MAIL = 2,
 	  };
 
 	static Glib::ustring playModeToString(const GameScenario::PlayMode mode);

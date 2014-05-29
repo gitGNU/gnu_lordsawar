@@ -27,7 +27,6 @@
 
 #include "map-tip-position.h"
 #include "editorbigmap.h"
-#include "RenamableLocation.h"
 
 class EditorBigMap;
 class SmallMap;

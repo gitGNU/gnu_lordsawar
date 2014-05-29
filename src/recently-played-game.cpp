@@ -108,8 +108,6 @@ RecentlyPlayedGame* RecentlyPlayedGame::handle_load(XML_Helper *helper)
     {
     case GameScenario::HOTSEAT:
       return new RecentlyPlayedHotseatGame(helper);
-    case GameScenario::PLAY_BY_MAIL:
-      return new RecentlyPlayedPbmGame(helper);
     case GameScenario::NETWORKED:
       return new RecentlyPlayedNetworkedGame(helper);
     }
@@ -157,42 +155,6 @@ bool RecentlyPlayedHotseatGame::doSave(XML_Helper *helper) const
 }
 
 bool RecentlyPlayedHotseatGame::fillData(Glib::ustring filename)
-{
-  d_filename = filename;
-  return true;
-}
-
-//-----------------------------------------------------------------------------
-//RecentlyPlayedPbmGame
-
-RecentlyPlayedPbmGame::RecentlyPlayedPbmGame(GameScenario *scen, Profile *p)
-	:RecentlyPlayedGame(scen, p), d_filename("")
-{
-}
-
-RecentlyPlayedPbmGame::RecentlyPlayedPbmGame(const RecentlyPlayedPbmGame &orig)
-: RecentlyPlayedGame(orig), d_filename(orig.d_filename)
-{
-}
-
-RecentlyPlayedPbmGame::RecentlyPlayedPbmGame(XML_Helper *helper)
-	:RecentlyPlayedGame(helper)
-{
-  helper->getData(d_filename, "filename");
-}
-
-RecentlyPlayedPbmGame::~RecentlyPlayedPbmGame()
-{
-}
-
-bool RecentlyPlayedPbmGame::doSave(XML_Helper *helper) const
-{
-  bool retval = true;
-  retval &= helper->saveData("filename", d_filename);
-  return retval;
-}
-
-bool RecentlyPlayedPbmGame::fillData(Glib::ustring filename)
 {
   d_filename = filename;
   return true;

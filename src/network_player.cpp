@@ -31,6 +31,7 @@
 #include "ruinlist.h"
 #include "signpostlist.h"
 #include "Itemlist.h"
+#include "SightMap.h"
 #include "rewardlist.h"
 #include "QuestsManager.h"
 #include "Quest.h"
@@ -52,6 +53,7 @@
 #include "Backpack.h"
 #include "MapBackpack.h"
 #include "stackreflist.h"
+#include "city.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)

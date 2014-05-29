@@ -22,10 +22,6 @@
 #include <list>
 #include <sigc++/trackable.h>
 
-#include "xmlhelper.h"
-
-class GameScenario;
-class Profile;
 class AdvertisedGame;
 class HostedGame;
 class RecentlyPlayedGameList;

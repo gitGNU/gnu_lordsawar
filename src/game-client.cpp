@@ -20,6 +20,7 @@
 #include <sstream>
 #include <fstream>
 
+#include "network-common.h"
 #include "game-client.h"
 
 #include "network-connection.h"

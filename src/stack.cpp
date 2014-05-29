@@ -40,6 +40,7 @@
 #include "Backpack.h"
 #include "AI_Analysis.h"
 #include "ruin.h"
+#include "Item.h"
 
 Glib::ustring Stack::d_tag = "stack";
 

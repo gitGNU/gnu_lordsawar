@@ -19,13 +19,14 @@
 #define REWARD_H
 
 #include <gtkmm.h>
+#include <glibmm.h>
 #include "vector.h"
 #include "ruinlist.h"
-#include "SightMap.h"
+
+class SightMap;
 class Player;
 class Army;
 class ArmyProto;
-class LocationBox;
 class Location;
 class Item;
 class XML_Helper;
@@ -533,25 +534,25 @@ class Reward_Map: public Reward
 	// Set Methods
 
 	//! Set the name of the map in this reward.
-	void setMapName(Glib::ustring name) {d_sightmap->setName(name);};
+	void setMapName(Glib::ustring name);
 
 
 	// Get Methods
 
 	//! Return the top left corner of the map in this reward.
-	Vector<int> getLocation() const {return d_sightmap->pos;};
+	Vector<int> getLocation() const;
 
 	//! Return the map in this reward.
-	SightMap * getSightMap() {return d_sightmap;};
+	SightMap * getSightMap();
 
 	//! Return the name of the map in this reward.
-	Glib::ustring getMapName() const {return d_sightmap->getName();};
+	Glib::ustring getMapName() const;
 
 	//! Get the height of the revealed portion of the game map.
-	guint32 getHeight() const {return d_sightmap->h;}
+	guint32 getHeight() const;
 
 	//! Get the width of the revealed portion of the game map.
-	guint32 getWidth() const {return d_sightmap->w;}
+	guint32 getWidth() const;
 
 
 	// Methods that operate on the class data and modify the class.

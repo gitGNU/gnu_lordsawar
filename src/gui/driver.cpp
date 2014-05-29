@@ -49,13 +49,9 @@
 #include "game-preferences-dialog.h"
 
 #include "game-client.h"
-#include "pbm-game-client.h"
 #include "game-server.h"
-#include "pbm-game-server.h"
 #include "NextTurnHotseat.h"
-#include "NextTurnPbm.h"
 #include "NextTurnNetworked.h"
-#include "pbm/pbm.h"
 #include "recently-played-game-list.h"
 #include "recently-played-game.h"
 #include "Backpack.h"
@@ -87,8 +83,6 @@ Driver::Driver(Glib::ustring load_filename)
 	sigc::mem_fun(*this, &Driver::on_new_hosted_network_game_requested));
     splash_window->new_remote_network_game_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_new_remote_network_game_requested));
-    splash_window->new_pbm_game_requested.connect(
-	sigc::mem_fun(*this, &Driver::on_new_pbm_game_requested));
     splash_window->load_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_load_requested));
     splash_window->quit_requested.connect(
@@ -329,41 +323,6 @@ void Driver::run()
       g.see_opponents_stacks = true;
       g.see_opponents_production = true;
       on_new_game_requested(g);
-    }
-  else if (Main::instance().turn_filename != "") 
-    {
-      PbmGameClient *pbm_game_client = PbmGameClient::getInstance();
-      GameScenario *game_scenario = load_game(d_load_filename);
-      if (game_scenario == NULL)
-	return;
-      //now apply the actions in the turn file
-      bool broken;
-
-      //if the active player isn't a network player than don't do anything
-      if (Playerlist::getActiveplayer()->getType() != Player::NETWORKED)
-	return;
-      //load the file, and decode them as we go.
-      XML_Helper helper(Main::instance().turn_filename, std::ios::in, 
-			Configuration::s_zipfiles);
-      NextTurnPbm *nextTurn;
-      nextTurn = new NextTurnPbm(game_scenario->getTurnmode(),
-			      game_scenario->s_random_turns);
-      broken = pbm_game_client->loadWithHelper (helper, 
-						Playerlist::getActiveplayer());
-      helper.close();
-      if (!broken)
-	{
-	  game_scenario->saveGame(d_load_filename);
-	  if (Playerlist::getActiveplayer()->getType() != Player::NETWORKED)
-	    {
-	      if (splash_window)
-		splash_window->hide();
-
-	      init_game_window();
-	      game_window->show();
-	      game_window->load_game(game_scenario, nextTurn);
-	    }
-	}
     }
   else if (Main::instance().start_robots != 0) 
     {
@@ -932,13 +891,6 @@ void Driver::on_load_requested(Glib::ustring filename)
       game_window->load_game
 	(game_scenario, new NextTurnHotseat(game_scenario->getTurnmode(),
 					    game_scenario->s_random_turns));
-    else if (game_scenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
-      {
-	PbmGameServer::getInstance()->start();
-	game_window->load_game
-	  (game_scenario, new NextTurnPbm(game_scenario->getTurnmode(),
-					  game_scenario->s_random_turns));
-      }
     else if (game_scenario->getPlayMode() == GameScenario::NETWORKED)
       {
 	TimedMessageDialog dialog(*splash_window->get_window(),
@@ -982,9 +934,7 @@ void Driver::on_game_ended()
     }
 
   GameClient::deleteInstance();
-  PbmGameClient::deleteInstance();
   GameServer::deleteInstance();
-  PbmGameServer::deleteInstance();
 
   GraphicsCache::deleteInstance();
   GamehostClient::getInstance()->disconnect();
@@ -1041,64 +991,6 @@ GameScenario *Driver::load_game(Glib::ustring file_path)
 	return NULL;
       }
     return game_scenario;
-}
-
-void Driver::on_new_pbm_game_requested(GameParameters g)
-{
-  Glib::ustring filename;
-  Glib::ustring temp_filename = File::getSavePath() + "pbmtmp" + SAVE_EXT;
-      
-  GameScenario *game_scenario = 
-    create_new_scenario(g, GameScenario::PLAY_BY_MAIL);
-  if (game_scenario == NULL)
-    {
-      TimedMessageDialog dialog(*splash_window->get_window(),
-				_("Corrupted saved game file."), 0);
-	dialog.run();
-	dialog.hide();
-      return;
-    }
-  game_scenario->saveGame(temp_filename);
-  Glib::ustring player_name = Playerlist::getActiveplayer()->getName();
-  delete game_scenario;
-  pbm play_by_mail;
-  play_by_mail.init(temp_filename);
-
-  Gtk::FileChooserDialog chooser(*splash_window->get_window(), _("Save the scenario and mail it to the first player"),
-				 Gtk::FILE_CHOOSER_ACTION_SAVE);
-  Glib::RefPtr<Gtk::FileFilter> sav_filter = Gtk::FileFilter::create();
-  sav_filter->set_name(_("LordsAWar Saved Games (*.sav)"));
-  sav_filter->add_pattern("*" + SAVE_EXT);
-  chooser.add_filter(sav_filter);
-  chooser.set_current_folder(Glib::get_home_dir());
-
-  chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
-  chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
-
-  chooser.show_all();
-  int res = chooser.run();
-  chooser.hide();
-
-  if (res == Gtk::RESPONSE_ACCEPT)
-    {
-      Glib::ustring filename = chooser.get_filename();
-
-      remove (filename.c_str());
-      if (rename(temp_filename.c_str(), filename.c_str()))
-	{
-	  char* err = strerror(errno);
-	  std::cerr <<_("Error while trying to rename the temporary file to ")
-	    << filename << std::endl;
-	  std::cerr <<_("Error: ") <<err <<std::endl;
-	}
-    }
-  Glib::ustring s = String::ucompose(_("Now send the saved-game file to %1"),
-				     player_name);
-  TimedMessageDialog dialog(*splash_window->get_window(), s, 0);
-  dialog.run();
-  dialog.hide();
-  return;
 }
 
 void Driver::stressTestNextRound()

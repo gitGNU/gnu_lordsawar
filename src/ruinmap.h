@@ -1,4 +1,4 @@
-// Copyright (C) 2007, 2008, 2009, 2012 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,8 +23,6 @@
 #include "overviewmap.h"
 #include "input-events.h"
 #include "NamedLocation.h"
-
-class Ruin;
 
 //! Draw the ruins and temples onto a miniature map graphic.
 /** 

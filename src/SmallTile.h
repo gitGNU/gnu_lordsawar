@@ -20,7 +20,7 @@
 
 #include <gtkmm.h>
 
-#include "xmlhelper.h"
+class XML_Helper;
 
 //! Describes the appearance of a tile on the miniature map.
 /** 

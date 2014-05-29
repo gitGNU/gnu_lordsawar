@@ -32,6 +32,7 @@
 #include "ruin.h"
 #include "ruinlist.h"
 #include "templelist.h"
+#include "playerlist.h"
 
 RuinReportDialog::RuinReportDialog(Gtk::Window &parent, Vector<int> pos)
 {

@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2004, 2005 Ulf Lorenz
 // Copyright (C) 2004 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -25,9 +25,9 @@
 
 #include <list>
 #include "Quest.h"
-#include "army.h"
-#include "player.h"
 
+class Army;
+class Player;
 
 //! A Quest to kill a certain number of another Player's Army objects.
 /**
@@ -74,8 +74,7 @@ public:
     guint32 getArmiesToKill() {return d_to_kill;}
 
     //! Returns the enemy player whose Army objects are to be killed.
-    guint32 getVictimPlayerId() {return d_victim_player->getId();}
-
+    guint32 getVictimPlayerId();
 
     // Methods that operate on the class data but do not modify the class.
 
@@ -141,5 +140,7 @@ private:
     //! The victim player who the Hero is targeting Army objects of.
     Player *d_victim_player;
 };
+
+Player* getVictimPlayer(Player *p);
 
 #endif

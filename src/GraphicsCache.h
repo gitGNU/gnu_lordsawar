@@ -27,11 +27,8 @@
 #include <cairomm/context.h>
 
 #include "player.h"
-#include "defs.h"
 #include "PixMask.h"
 #include "maptile.h"
-
-class Tileset;
 
 struct ArmyCacheItem;
 struct CircledArmyCacheItem;
@@ -41,7 +38,6 @@ struct TowerCacheItem;
 struct TempleCacheItem;
 struct RuinCacheItem;
 struct DiplomacyCacheItem;
-struct StoneCacheItem;
 struct RoadCacheItem;
 struct BridgeCacheItem;
 struct CursorCacheItem;

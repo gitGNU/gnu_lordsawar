@@ -36,9 +36,7 @@
 class Player;
 class Path;
 class Army;
-class ArmyProdBase;
 class XML_Helper;
-class Temple;
 class Hero;
 class Item;
 
@@ -524,6 +522,8 @@ static bool compareIds(const Army *lhs, const Army *rhs);
 	//! Whether or not this stack is in the midst of being deleted.
         bool d_deleting;
 };
+
+guint32 getFightOrder(std::list<guint32> values, guint32 value);
 
 #endif // STACK_H
 

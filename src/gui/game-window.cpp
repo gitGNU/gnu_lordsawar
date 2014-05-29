@@ -43,6 +43,7 @@
 #include "city-window.h"
 #include "army-gains-level-dialog.h"
 #include "hero-dialog.h"
+#include "SightMap.h"
 #include "sage-dialog.h"
 #include "ruin-rewarded-dialog.h"
 #include "hero-offer-dialog.h"
@@ -113,9 +114,7 @@
 #include "game-server.h"
 #include "game-client.h"
 #include "NextTurnHotseat.h"
-#include "NextTurnPbm.h"
 #include "NextTurnNetworked.h"
-#include "pbm-game-server.h"
 #include "network_player.h"
 #include "stacktile.h"
 #include "MapBackpack.h"
@@ -467,10 +466,6 @@ void GameWindow::setup_signals(GameScenario *game_scenario)
   setup_menuitem(end_turn_menuitem,
 		 sigc::mem_fun(game, &Game::end_turn),
 		 game->can_end_turn);
-  if (game_scenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
-    setup_menuitem(end_turn_menuitem,
-		   sigc::mem_fun(*this, &GameWindow::end_turn_play_by_mail),
-		   game->can_end_turn);
   if (game_scenario->getPlayMode() == GameScenario::NETWORKED)
     {
       load_game_menuitem->set_sensitive(false);
@@ -730,38 +725,6 @@ void GameWindow::show_city_production_report (bool destitute)
   ReportDialog d(*window, Playerlist::getActiveplayer(), ReportDialog::PRODUCTION);
   d.run();
   d.hide();
-}
-
-void GameWindow::end_turn_play_by_mail ()
-{
-  //prompt to save the turn file!
-  Gtk::FileChooserDialog chooser(*window, _("Save your Turn file and mail it back"),
-				 Gtk::FILE_CHOOSER_ACTION_SAVE);
-  Glib::RefPtr<Gtk::FileFilter> trn_filter = Gtk::FileFilter::create();
-  trn_filter->set_name(_("LordsAWar Turn files (*.trn)"));
-  trn_filter->add_pattern("*" + PBM_EXT);
-  chooser.add_filter(trn_filter);
-  chooser.set_current_folder(Glib::get_home_dir());
-
-  chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
-  chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
-
-  chooser.show_all();
-  int res = chooser.run();
-  chooser.hide();
-
-  if (res == Gtk::RESPONSE_ACCEPT)
-    {
-      Glib::ustring filename = chooser.get_filename();
-
-      game->saveTurnFile(filename);
-      TimedMessageDialog dialog
-	(*window, ("Now send the turn file back to the game master."), 0);
-      dialog.run();
-      dialog.hide();
-    }
-  game_ended.emit();
 }
 
 bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
@@ -1121,13 +1084,6 @@ void GameWindow::on_game_stopped()
 	load_game(game_scenario, 
 		  new NextTurnHotseat(game_scenario->getTurnmode(),
 				      game_scenario->s_random_turns));
-      else if (game_scenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
-	{
-	  PbmGameServer::getInstance()->start();
-	  load_game(game_scenario, 
-		    new NextTurnPbm(game_scenario->getTurnmode(),
-				    game_scenario->s_random_turns));
-	}
       else if (game_scenario->getPlayMode() == GameScenario::NETWORKED)
         {
           TimedMessageDialog dialog(*window, _("Can't load networked game from file."), 30);

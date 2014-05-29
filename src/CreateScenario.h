@@ -26,9 +26,9 @@
 #include <gtkmm.h>
 #include <sigc++/signal.h>
 #include "CreateScenarioRandomize.h"
-#include "game-parameters.h"
 #include "vector.h"
 
+class GameParameters;
 class MapGenerator;
 class GameScenario;
 class Player;

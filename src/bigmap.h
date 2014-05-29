@@ -29,7 +29,6 @@
 #include <gtkmm.h>
 
 #include "vector.h"
-#include "input-events.h"
 #include "map-tip-position.h"
 #include "rectangle.h"
 #include "PixMask.h"
@@ -37,12 +36,6 @@
 class Player;
 class Stack;
 class MapRenderer;
-class Item;
-class MapBackpack;
-class City;
-class Ruin;
-class Signpost;
-class Temple;
 class Location;
 
 /** The large map

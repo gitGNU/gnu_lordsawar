@@ -24,6 +24,7 @@
 #include "File.h"
 #include "tileset.h"
 #include "tarhelper.h"
+#include "xmlhelper.h"
 
 Glib::ustring Tile::d_tag = "tile";
 

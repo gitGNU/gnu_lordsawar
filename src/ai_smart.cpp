@@ -38,7 +38,9 @@
 #include "history.h"
 #include "citylist.h"
 #include "city.h"
+#include "SightMap.h"
 #include "Sage.h"
+#include "GameMap.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 //#define debug(x)

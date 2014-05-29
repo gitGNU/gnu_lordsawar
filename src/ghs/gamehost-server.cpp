@@ -34,6 +34,7 @@
 #include "advertised-game.h"
 #include "GameScenario.h"
 #include "profile.h"
+#include "File.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)

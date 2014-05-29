@@ -23,8 +23,6 @@
 #include <list>
 #include "Tile.h"
 #include "SmallTile.h"
-#include "tileset.h"
-#include "Item.h"
 #include "MapBackpack.h"
 class StackTile;
 

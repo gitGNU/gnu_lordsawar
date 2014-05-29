@@ -18,7 +18,6 @@
 #ifndef PRODSLOT_H
 #define PRODSLOT_H
 
-#include "vector.h"
 #include <glibmm.h>
 
 class XML_Helper;

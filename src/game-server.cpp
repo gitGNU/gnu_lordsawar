@@ -19,8 +19,10 @@
 #include <iostream>
 #include <sstream>
 #include <list>
+#include "game-parameters.h"
 #include "game-server.h"
 
+#include "File.h"
 #include "network-server.h"
 #include "game.h"
 #include "xmlhelper.h"
@@ -34,7 +36,6 @@
 #include "real_player.h"
 #include "GameScenarioOptions.h"
 #include "ucompose.hpp"
-#include "game-parameters.h"
 
 class NetworkAction;
 

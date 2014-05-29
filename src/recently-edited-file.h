@@ -28,7 +28,6 @@ class Shieldset;
 class Tileset;
 class Armyset;
 class Cityset;
-class GameScenario;
 
 //! A single file entry in the recently edited files list.
 /**

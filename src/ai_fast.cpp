@@ -25,6 +25,8 @@
 #include <fstream>
 #include <assert.h>
 
+#include "AI_Diplomacy.h"
+#include "AI_Analysis.h"
 #include "ai_fast.h"
 
 #include "playerlist.h"
@@ -39,7 +41,6 @@
 #include "Threatlist.h"
 #include "action.h"
 #include "xmlhelper.h"
-#include "AI_Diplomacy.h"
 #include "stack.h"
 #include "GameScenarioOptions.h"
 #include "hero.h"
@@ -49,6 +50,7 @@
 #include "armyprodbase.h"
 #include "QuestsManager.h"
 #include "Quest.h"
+#include "SightMap.h"
 #include "Sage.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}

@@ -20,14 +20,14 @@
 #ifndef SOUND_H
 #define SOUND_H
 
-#include "xmlhelper.h"
-
 #include <map>
 #include <vector>
 #include <sigc++/trackable.h>
 #ifdef FL_SOUND
 #include <SDL_mixer.h>
 #endif
+
+class XML_Helper;
 
 /** Sound class
   * 
@@ -171,4 +171,5 @@ class Sound : public sigc::trackable
         static Sound* s_instance;
 };
 
+void _startNext();
 #endif //SOUND_H

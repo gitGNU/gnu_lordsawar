@@ -24,8 +24,8 @@
 #include <sigc++/connection.h>
 #include <gtkmm.h>
 #include "tileset.h"
-#include "tile-preview-scene.h"
 
+class TilePreviewScene;
 
 //! Tileset explosion picture editor.  
 class TilesetExplosionPictureEditorDialog: public sigc::trackable

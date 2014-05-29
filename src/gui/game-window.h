@@ -300,7 +300,6 @@ class GameWindow: public sigc::trackable
     void on_monster_summoned(Hero *hero, Glib::ustring monster_name);
     void on_mp_added_to_hero_stack(Hero *hero, guint32 mp);
     void on_stack_moves(Stack *stack, Vector<int> pos);
-    void end_turn_play_by_mail ();
     void on_commentator_comments(Glib::ustring comment);
     Item* on_select_item(std::list<Item*> items);
     Player *on_select_item_victim_player();

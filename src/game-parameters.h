@@ -20,7 +20,8 @@
 #define GAME_PARAMETERS_H
 
 #include <vector>
-#include "player.h"
+#include <glibmm.h>
+#include "defs.h"
 
 class GameParameters
 {

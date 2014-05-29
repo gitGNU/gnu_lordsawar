@@ -261,7 +261,6 @@ void GameButtonBox::setup_signals(Game *game, guint32 factor)
   setup_button(center_button,
                sigc::mem_fun(game, &Game::center_selected_stack),
                game->can_center_selected_stack);
-  //FIXME: we need to somehow signal end_turn_play_by_mail if we're doing that.
   setup_button(nw_keypad_button,
                sigc::mem_fun(game, &Game::move_selected_stack_northwest),
                game->can_end_turn);

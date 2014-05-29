@@ -19,15 +19,17 @@
 
 #include <config.h>
 
+#include <glibmm.h>
 #include <iostream>
 #include <sigc++/functors/mem_fun.h>
 #include "sound.h"
 #include "File.h"
 #include "Configuration.h"
 #include "defs.h"
+#include "xmlhelper.h"
 
-#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
-//#define debug(x)
+//#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
+#define debug(x)
 
 
 Sound* Sound::s_instance = 0;
@@ -105,8 +107,8 @@ Sound::Sound()
 
     Mix_HookMusicFinished(_startNext);
 #endif
-    debug("Music list contains " <<d_musicMap.size() <<" entries.")
-    debug("background list has " <<d_bgMap.size() <<" entries.")
+    debug("Music list contains " <<d_musicMap.size <<" entries.")
+    debug("background list has " <<d_bgMap.size <<" entries.")
 }
 
 Sound::~Sound()

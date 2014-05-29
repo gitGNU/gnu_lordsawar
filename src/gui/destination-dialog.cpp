@@ -28,6 +28,8 @@
 #include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
+#include "army.h"
+#include "tileset.h"
 #include "GameMap.h"
 #include "city.h"
 #include "armysetlist.h"
@@ -37,6 +39,7 @@
 #include "vectoredunitlist.h"
 #include "vectoredunit.h"
 #include "shield.h"
+#include "playerlist.h"
 
 DestinationDialog::DestinationDialog(Gtk::Window &parent, City *c, bool *see_all)
 {

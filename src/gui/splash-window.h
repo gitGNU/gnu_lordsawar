@@ -49,7 +49,6 @@ class SplashWindow: public sigc::trackable
 
     sigc::signal<void, Glib::ustring, unsigned short, Profile*> new_remote_network_game_requested;
     sigc::signal<void, GameParameters, int, Profile*, bool, bool > new_hosted_network_game_requested;
-    sigc::signal<void, GameParameters> new_pbm_game_requested;
     sigc::signal<void, GameParameters> new_game_requested;
     sigc::signal<void, Glib::ustring> load_requested;
     sigc::signal<void> quit_requested;
@@ -61,7 +60,6 @@ class SplashWindow: public sigc::trackable
     Gtk::Button *load_scenario_button;
     Gtk::Button *quit_button;
     Gtk::Button *new_network_game_button;
-    Gtk::Button *new_pbm_game_button;
     Gtk::Button *preferences_button;
     Gtk::VBox *button_box; //crash button box
 	    
@@ -70,7 +68,6 @@ class SplashWindow: public sigc::trackable
     Glib::ustring network_game_nickname;
     
     void on_new_network_game_clicked();
-    void on_new_pbm_game_clicked();
     void on_load_game_clicked();
     void on_load_scenario_clicked();
     void on_preferences_clicked();
@@ -79,7 +76,6 @@ class SplashWindow: public sigc::trackable
 	
     void on_game_started(GameParameters g);
     void on_network_game_created(GameParameters g, Profile *profile, bool advertised, bool remotely_hosted);
-    void on_pbm_game_created(GameParameters g);
     void on_network_game_selected(Glib::ustring ip, unsigned short port, Profile  *profile);
 
 #if 0

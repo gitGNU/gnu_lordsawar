@@ -20,6 +20,7 @@
 #include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 
+#include "SightMap.h"
 #include "sage-dialog.h"
 
 #include "glade-helpers.h"
@@ -32,6 +33,8 @@
 #include "sound.h"
 #include "ruin.h"
 #include "rewardlist.h"
+#include "playerlist.h"
+#include "Item.h"
 
 SageDialog::SageDialog(Gtk::Window &parent, Sage *sage, Player *player, Hero *h, Ruin *r)
 {

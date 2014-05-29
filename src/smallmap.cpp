@@ -26,12 +26,13 @@
 #include <assert.h>
 
 #include "vector.h"
-
 #include "GameScenarioOptions.h"
 #include "smallmap.h"
 #include "timing.h"
+#include "army.h"
 #include "GameMap.h"
 #include "Configuration.h"
+#include "playerlist.h"
 
 SmallMap::SmallMap()
 {
@@ -153,7 +154,7 @@ void SmallMap::mouse_motion_event(MouseMotionEvent e)
     center_view_on_pixel(e.pos, false);
 }
 
-int slide (int x, int y)
+int SmallMap::slide (int x, int y)
 {
   int skip = 2;
   if (x < y)

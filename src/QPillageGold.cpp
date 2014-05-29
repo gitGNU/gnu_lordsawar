@@ -19,9 +19,13 @@
 #include <sigc++/functors/mem_fun.h>
 #include "ucompose.hpp"
 
+#include "army.h"
 #include "QPillageGold.h"
 #include "QuestsManager.h"
 #include "playerlist.h"
+#include "city.h"
+#include "xmlhelper.h"
+#include "hero.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)

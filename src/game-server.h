@@ -26,7 +26,6 @@
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 
-#include "network-common.h"
 #include "game-station.h"
 
 class NetworkServer;
@@ -36,6 +35,7 @@ class NetworkHistory;
 class Player;
 class XML_Helper;
 class GameScenario;
+class GameParameters;
 
 class GameServer: public GameStation
 {

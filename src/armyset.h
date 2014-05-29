@@ -23,11 +23,7 @@
 #include <vector>
 #include <sigc++/trackable.h>
 
-#include "xmlhelper.h"
 #include "armyproto.h"
-#include "defs.h"
-#include "shield.h"
-#include "File.h"
 #include "set.h"
 #include "hero.h"
 
@@ -370,5 +366,6 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	Glib::ustring d_bag_name;
 };
 
+bool weakest_quickest (const ArmyProto* first, const ArmyProto* second);
 #endif // ARMYSET_H
 

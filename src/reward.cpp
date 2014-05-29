@@ -20,6 +20,7 @@
 #include <vector>
 #include <sigc++/functors/mem_fun.h>
 
+#include "SightMap.h"
 #include "reward.h"
 #include "army.h"
 #include "armysetlist.h"
@@ -31,8 +32,8 @@
 #include "Item.h"
 #include "GameMap.h"
 #include "ucompose.hpp"
-#include "SightMap.h"
 #include "stackreflist.h"
+#include "xmlhelper.h"
 
 Glib::ustring Reward::d_tag = "reward";
 
@@ -531,4 +532,34 @@ Reward* Reward::copy(const Reward* r)
     }
 
   return 0;
+}
+	
+Glib::ustring Reward_Map::getMapName() const
+{
+  return d_sightmap->getName();
+}
+	
+guint32 Reward_Map::getHeight() const
+{
+  return d_sightmap->h;
+}
+	
+guint32 Reward_Map::getWidth() const 
+{
+  return d_sightmap->w;
+}
+	
+SightMap * Reward_Map::getSightMap()
+{
+  return d_sightmap;
+}
+	
+Vector<int> Reward_Map::getLocation() const
+{
+  return d_sightmap->pos;
+}
+	
+void Reward_Map::setMapName(Glib::ustring name)
+{
+  d_sightmap->setName(name);
 }

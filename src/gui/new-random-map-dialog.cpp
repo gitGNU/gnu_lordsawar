@@ -38,7 +38,7 @@
 #include "CreateScenarioRandomize.h"
 #include "CreateScenario.h"
 #include "counter.h"
-
+#include "player.h"
 
 NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
 {

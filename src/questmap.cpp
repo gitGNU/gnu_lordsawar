@@ -18,6 +18,7 @@
 #include "questmap.h"
 
 #include "gui/image-helpers.h"
+#include "xmlhelper.h"
 #include "Quest.h"
 #include "QuestsManager.h"
 #include "playerlist.h"
@@ -27,6 +28,7 @@
 #include "maptile.h"
 #include "citylist.h"
 #include "GameMap.h"
+#include "hero.h"
 
 QuestMap::QuestMap(Quest *q)
 {

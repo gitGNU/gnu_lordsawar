@@ -22,8 +22,7 @@
 #include <list>
 #include <sigc++/trackable.h>
 
-#include "xmlhelper.h"
-
+class XML_Helper;
 class RecentlyEditedFile;
 
 //! A list of files that we've recently edited.

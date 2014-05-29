@@ -30,6 +30,7 @@
 #include "signpost.h"
 #include "armysetlist.h"
 #include "playerlist.h"
+#include "SightMap.h"
 #include "reward.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}

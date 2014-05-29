@@ -75,19 +75,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="new_pbm_game_button">
-                    <property name="label" translatable="yes">New Play By Mail Game</property>
-                    <property name="sensitive">False</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="no_show_all">True</property>
-                    <property name="use_underline">True</property>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">4</property>
-                  </packing>
+                  <placeholder/>
                 </child>
                 <child>
                   <object class="GtkButton" id="load_game_button">

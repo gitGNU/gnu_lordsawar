@@ -23,11 +23,11 @@
 #include <vector>
 #include <sigc++/trackable.h>
 
-#include "xmlhelper.h"
 #include "shield.h"
 #include "set.h"
-
 #include "defs.h"
+
+class XML_Helper;
 
 //! A list of Shield graphic objects in a shield theme.
 /**

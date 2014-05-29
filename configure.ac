@@ -196,12 +196,6 @@ AC_ARG_ENABLE(editor,
             use_editor="$enableval", use_editor="yes")
 AM_CONDITIONAL([WANT_EDITOR], [test $use_editor = "yes"])
 
-dnl Do we want to compile the play by mail server?
-AC_ARG_ENABLE(pbm,
-            [  --enable-pbm     compile play-by-mail (default=yes)],
-            use_pbm="$enableval", use_pbm="yes")
-AM_CONDITIONAL([WANT_PBM], [test $use_pbm = "yes"])
-
 dnl Do we want to compile the game list server?
 AC_ARG_ENABLE(gls,
             [  --enable-gls     compile game list server (default=yes)],
@@ -328,7 +322,6 @@ AC_CONFIG_FILES([
         help/Makefile
         help/figures/Makefile
         src/editor/Makefile
-        src/pbm/Makefile
         src/gls/Makefile
         src/ghs/Makefile
         src/gui/Makefile])
@@ -339,7 +332,6 @@ echo ""
 echo "Configuration:"
 echo " Installation location : $prefix"
 echo " Editor compilation    : $use_editor"
-echo " Play-by-mail          : $use_pbm"
 echo " Sound support         : $use_sound"
 echo " Game-list Server      : $use_gls"
 echo " Game-host Server      : $use_ghs"

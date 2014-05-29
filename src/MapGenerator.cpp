@@ -30,6 +30,7 @@
 //#include <boost/foreach.hpp>
 
 #include "MapGenerator.h"
+#include "army.h"
 #include "GameMap.h"
 #include "stack.h"
 #include "path.h"
@@ -48,7 +49,6 @@
 #include "bridge.h"
 #include "armysetlist.h"
 #include "tilesetlist.h"
-#include "army.h"
 #include "vector.h"
 #include "RoadPathCalculator.h"
 #include "cityset.h"

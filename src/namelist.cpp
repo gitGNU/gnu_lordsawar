@@ -23,6 +23,7 @@
 #include "defs.h"
 #include "File.h"
 #include "ucompose.hpp"
+#include "xmlhelper.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 //#define debug(x)

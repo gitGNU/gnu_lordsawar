@@ -18,17 +18,16 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-#include "vector.h"
 #include <sigc++/trackable.h>
 
+#include <glibmm.h>
 class XML_Helper;
 
 class Hero;
-class HeroProto;
 class City;
 class Ruin;
 class Item;
-#include "army.h"
+class Player;
 
 //! A permanent record of an accomplishment during gameplay.
 /** 

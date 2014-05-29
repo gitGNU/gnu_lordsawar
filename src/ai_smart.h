@@ -30,7 +30,6 @@
 
 class Threatlist;
 class Threat;
-class AI_Analysis;
 class XML_Helper;
 class ArmyProdBase;
 class ArmyProto;

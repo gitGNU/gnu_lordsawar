@@ -35,6 +35,7 @@
 #include "FogMap.h"
 #include "citylist.h"
 #include "ruinlist.h"
+#include "SightMap.h"
 #include "rewardlist.h"
 #include "templelist.h"
 #include "bridgelist.h"
@@ -55,6 +56,8 @@
 #include "Configuration.h"
 #include "real_player.h"
 #include "ai_dummy.h"
+#include "AI_Diplomacy.h"
+#include "AI_Analysis.h"
 #include "ai_fast.h"
 #include "counter.h"
 #include "army.h"
@@ -67,6 +70,7 @@
 #include "stacktile.h"
 #include "GraphicsCache.h"
 #include "file-compat.h"
+#include "Item.h"
 
 Glib::ustring GameScenario::d_tag = "scenario";
 Glib::ustring GameScenario::d_top_tag = PACKAGE;
@@ -898,9 +902,6 @@ Glib::ustring GameScenario::playModeToString(const GameScenario::PlayMode mode)
       case GameScenario::NETWORKED:
 	return "GameScenario::NETWORKED";
 	break;
-      case GameScenario::PLAY_BY_MAIL:
-	return "GameScenario::PLAY_BY_MAIL";
-	break;
     }
   return "GameScenario::HOTSEAT";
 }
@@ -913,8 +914,6 @@ GameScenario::PlayMode GameScenario::playModeFromString(const Glib::ustring str)
     return GameScenario::HOTSEAT;
   else if (str == "GameScenario::NETWORKED")
     return GameScenario::NETWORKED;
-  else if (str == "GameScenario::PLAY_BY_MAIL")
-    return GameScenario::PLAY_BY_MAIL;
   return GameScenario::HOTSEAT;
 }
 	

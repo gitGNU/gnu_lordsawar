@@ -29,7 +29,6 @@
 
 #include "player.h"
 
-class MoveResult;
 class XML_Helper;
 class City;
 class HeroProto;

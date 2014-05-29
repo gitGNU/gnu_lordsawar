@@ -23,7 +23,6 @@
 #define ARMY_PROTO_BASE_H
 
 #include <gtkmm.h>
-
 #include "defs.h"
 
 class XML_Helper;

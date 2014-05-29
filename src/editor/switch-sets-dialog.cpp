@@ -38,7 +38,7 @@
 #include "armyset.h"
 #include "shieldset.h"
 #include "cityset.h"
-
+#include "playerlist.h"
 
 SwitchSetsDialog::SwitchSetsDialog(Gtk::Window &parent)
 {

@@ -17,6 +17,7 @@
 
 #include "SmallTile.h"
 #include <iostream>
+#include "xmlhelper.h"
 
 Glib::ustring SmallTile::d_tag = "smallmap";
 

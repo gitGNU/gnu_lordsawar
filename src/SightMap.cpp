@@ -17,6 +17,7 @@
 
 #include <sstream>
 #include "SightMap.h"
+#include "xmlhelper.h"
 
 Glib::ustring SightMap::d_tag = "sightmap";
 

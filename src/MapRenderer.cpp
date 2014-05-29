@@ -19,10 +19,12 @@
 //  02110-1301, USA.
 
 #include "MapRenderer.h"
+#include "army.h"
 #include "GameMap.h"
 #include "player.h"
 #include "FogMap.h"
 #include "GraphicsCache.h"
+#include "playerlist.h"
 
 MapRenderer::MapRenderer(Cairo::RefPtr<Cairo::Surface> surface)
 {

@@ -38,6 +38,7 @@
 #include "vectoredunitlist.h"
 #include "vectoredunit.h"
 #include "action.h"
+#include "xmlhelper.h"
 
 Glib::ustring City::d_tag = "city";
 

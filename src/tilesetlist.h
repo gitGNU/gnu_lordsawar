@@ -23,7 +23,6 @@
 #include <vector>
 #include <sigc++/trackable.h>
 
-#include "xmlhelper.h"
 #include "Tile.h"
 #include "tileset.h"
 #include "setlist.h"

@@ -19,6 +19,7 @@
 
 #include "NextTurn.h"
 #include "playerlist.h"
+#include "player.h"
 
 #define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 //#define debug(x)

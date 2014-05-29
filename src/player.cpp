@@ -28,6 +28,7 @@
 #include <sstream>
 #include <sigc++/functors/mem_fun.h>
 
+#include "MoveResult.h"
 #include "player.h"
 #include "playerlist.h"
 #include "stacklist.h"
@@ -77,7 +78,11 @@
 #include "QEnemyArmytype.h"
 #include "callback-enums.h"
 #include "stackreflist.h"
+#include "SightMap.h"
 #include "rewardlist.h"
+#include "Item.h"
+#include "ItemProto.h"
+#include "xmlhelper.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 #define debug(x)
@@ -3844,23 +3849,6 @@ guint32 Player::countEndTurnHistoryEntries() const
 	count++;
     }
   return count;
-}
-
-void Player::loadPbmGame() 
-{
-  for (std::list<Action*>::const_iterator it = d_actions.begin();
-       it != d_actions.end(); it++)
-    {
-      NetworkAction *copy = new NetworkAction(*it, getId());
-      acting.emit(copy);
-    }
-  std::list<History*> history = getHistoryForThisTurn();
-  for (std::list<History*>::const_iterator it = history.begin();
-       it != history.end(); it++)
-    {
-      NetworkHistory *copy = new NetworkHistory(*it, getId());
-      history_written.emit(copy);
-    }
 }
 
 void Player::saveNetworkActions(XML_Helper *helper) const

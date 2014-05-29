@@ -142,6 +142,7 @@ private:
      */
     virtual void after_draw();
 
+    int slide (int x, int y);
     // DATA
  
     //! The position and size of the little white box.

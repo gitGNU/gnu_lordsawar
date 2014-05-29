@@ -21,9 +21,8 @@
 #include <fstream>
 #include <vector>
 #include <gtkmm.h>
-#include "game-parameters.h"
-#include "namelist.h"
 #include "shield.h"
+#include "namelist.h"
 
 class Signpost;
 class Army;

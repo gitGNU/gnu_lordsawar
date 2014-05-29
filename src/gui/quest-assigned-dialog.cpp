@@ -22,12 +22,14 @@
 
 #include "quest-assigned-dialog.h"
 
+#include "army.h"
 #include "glade-helpers.h"
 #include "image-helpers.h"
 #include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "GameMap.h"
+#include "playerlist.h"
 
 QuestAssignedDialog::QuestAssignedDialog(Gtk::Window &parent, Hero *h, Quest *q)
 {

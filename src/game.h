@@ -25,15 +25,12 @@
 #include <memory>
 #include <list>
 
-#include "rectangle.h"
 #include "sidebar-stats.h"
 #include "map-tip-position.h"
 #include "callback-enums.h"
 #include "army.h"
 #include "fight.h"
-#include "game-parameters.h"
 #include "player.h"
-#include "defs.h"
 #include "select-city-map.h"
 
 class NextTurn;
@@ -97,7 +94,6 @@ class Game
     void stopGame(); // stop game flow, clean up
     // save current game, returns true if successful
     bool saveGame(Glib::ustring file);
-    bool saveTurnFile(Glib::ustring file);
 
     static GameScenario *getScenario();
     GameBigMap &get_bigmap();

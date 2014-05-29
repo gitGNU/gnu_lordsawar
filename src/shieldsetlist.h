@@ -23,11 +23,10 @@
 #include <vector>
 #include <sigc++/trackable.h>
 
-#include "xmlhelper.h"
-#include "shield.h"
 #include "shieldset.h"
 
 class Tar_Helper;
+class XML_Helper;
 
 //! A list of Shieldset objects available to the game.
 /** 

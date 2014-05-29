@@ -24,7 +24,6 @@
 #include <sigc++/signal.h>
 #include <glibmm.h>
 #include <giomm.h>
-
 #include "network-common.h"
 
 // a simple network connection for sending messages, encapsulates the protocol

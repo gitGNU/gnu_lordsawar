@@ -19,6 +19,7 @@
 #include <sstream>
 #include <sigc++/functors/mem_fun.h>
 
+#include "army.h"
 #include "history.h"
 #include "hero.h"
 #include "heroproto.h"
@@ -26,6 +27,7 @@
 #include "xmlhelper.h"
 #include "ruin.h"
 #include "Item.h"
+#include "player.h"
 
 Glib::ustring History::d_tag = "history";
 

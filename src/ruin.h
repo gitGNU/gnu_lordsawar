@@ -24,7 +24,6 @@
 #include <sigc++/trackable.h>
 #include "NamedLocation.h"
 #include "stack.h"
-#include "Namable.h"
 
 class Stack;
 class Reward;

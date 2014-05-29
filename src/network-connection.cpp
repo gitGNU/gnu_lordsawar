@@ -16,6 +16,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include "network-common.h"
 #include "network-connection.h"
 #include <iostream>
 #include <cstring>
@@ -26,7 +27,6 @@
 #include <sys/stat.h>
 #include "timing.h"
 
-#include "network-common.h"
 
 void NetworkConnection::setup_connection()
 {

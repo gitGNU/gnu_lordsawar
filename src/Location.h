@@ -20,15 +20,9 @@
 #ifndef LOCATION_H
 #define LOCATION_H
 
-#include "UniquelyIdentified.h"
 #include "vector.h"
-#include "stack.h"
 #include "LocationBox.h"
-#include "rectangle.h"
-
-class Player;
-class Location;
-class UniquelyIdentified;
+#include "UniquelyIdentified.h"
 
 //! A feature constructed on the game map.
 /** 

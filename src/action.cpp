@@ -45,6 +45,9 @@
 #include "Item.h"
 #include "stacklist.h" //remove me
 #include "ucompose.hpp"
+#include "SightMap.h"
+#include "reward.h"
+#include "xmlhelper.h"
 
 Glib::ustring Action::d_tag = "action";
 

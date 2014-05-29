@@ -91,6 +91,7 @@
 #include "tileset-window.h"
 #include "editor-quit-dialog.h"
 #include "smallmap-editor-dialog.h"
+#include "RenamableLocation.h"
 
 
 MainWindow::MainWindow(Glib::ustring load_filename)

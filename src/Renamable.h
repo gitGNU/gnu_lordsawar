@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,6 @@
 #ifndef RENAMABLE_H
 #define RENAMABLE_H
 
-#include "vector.h"
 #include "Named.h"
 
 #include "defs.h"

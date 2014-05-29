@@ -38,6 +38,7 @@
 #include "Backpack.h"
 #include "MapBackpack.h"
 #include "history.h"
+#include "playerlist.h"
 
 HeroDialog::HeroDialog(Gtk::Window &parent, Hero *h, Vector<int> p)
 {

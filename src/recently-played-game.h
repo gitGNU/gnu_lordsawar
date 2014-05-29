@@ -189,40 +189,6 @@ class RecentlyPlayedHotseatGame : public RecentlyPlayedGame
 	Glib::ustring d_filename;
 };
 
-class RecentlyPlayedPbmGame : public RecentlyPlayedGame
-{
-    public:
-	//! Make a new pbm game entry.
-	RecentlyPlayedPbmGame(GameScenario *game_scenario, Profile *p);
-
-	//! Load a new pbm game from an opened saved-game file.
-	RecentlyPlayedPbmGame(XML_Helper *helper);
-
-        //! Copy constructor.
-	RecentlyPlayedPbmGame(const RecentlyPlayedPbmGame &orig);
-
-	//! Destroy a pbm game entry.
-	~RecentlyPlayedPbmGame();
-
-
-	// Methods that operate on the class data but do not modify it.
-	
-	//! Save the play-by-mail game entry to an opened file.
-	virtual bool doSave(XML_Helper *helper) const;
-
-
-	// Methods that operate on the class data and modify it.
-
-	//! Assign the filename to the entry.
-	bool fillData(Glib::ustring filename);
-    private:
-
-	// DATA
-	
-	//! The filename of the play-by-mail game for this entry.
-	Glib::ustring d_filename;
-};
-
 class RecentlyPlayedNetworkedGame : public RecentlyPlayedGame
 {
     public:

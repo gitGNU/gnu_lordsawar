@@ -20,6 +20,7 @@
 #include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 
+#include "SightMap.h"
 #include "quest-completed-dialog.h"
 
 #include "glade-helpers.h"
@@ -30,6 +31,7 @@
 #include "defs.h"
 #include "ruin.h"
 #include "GameMap.h"
+#include "Item.h"
 
 QuestCompletedDialog::QuestCompletedDialog(Gtk::Window &parent, Quest *q, Reward *r)
 {

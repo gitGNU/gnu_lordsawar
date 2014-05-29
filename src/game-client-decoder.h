@@ -26,11 +26,10 @@
 #include <memory>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
-class XML_Helper;
+#include "xmlhelper.h"
 #include "network-action.h"
 #include "network-history.h"
 
-class GameScenario;
 class Player;
 
 class GameClientDecoder: public ChatClient

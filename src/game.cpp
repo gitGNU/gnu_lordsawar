@@ -34,11 +34,9 @@
 #include "GameScenario.h"
 #include "NextTurnNetworked.h"
 #include "NextTurnHotseat.h"
-#include "NextTurnPbm.h"
-
+#include "stackreflist.h"
 #include "gamebigmap.h"
 #include "smallmap.h"
-
 #include "army.h"
 #include "fight.h"
 #include "hero.h"
@@ -63,12 +61,10 @@
 #include "game-parameters.h"
 #include "FogMap.h"
 #include "history.h"
-#include "pbm-game-server.h"
 #include "LocationBox.h"
 #include "Backpack.h"
 #include "MapBackpack.h"
 #include "stacktile.h"
-
 #include "herotemplates.h"
 #include "GameScenarioOptions.h"
 #include "ai_fast.h"
@@ -76,6 +72,7 @@
 #include "Sage.h"
 #include "Commentator.h"
 #include "select-city-map.h"
+#include "Item.h"
 
 Game *Game::current_game = 0;
 
@@ -1116,9 +1113,6 @@ void Game::startGame()
 
 void Game::loadGame()
 {
-  //if pbm and human
-  //if pbm and not human, then bail
-
   Player *player = Playerlist::getActiveplayer();
   if (!player)
     {
@@ -1138,26 +1132,6 @@ void Game::loadGame()
       game_loaded.emit(player);
       if (player->getType() == Player::HUMAN)
 	d_nextTurn->setContinuingTurn();
-    }
-  else if (player->getType() == Player::HUMAN && 
-	   d_gameScenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
-    {
-      if (player->hasAlreadyInitializedTurn())
-	{
-	  unlock_inputs();
-	  player->setActivestack(0);
-	  center_view_on_city();
-	  update_sidebar_stats();
-	  update_control_panel();
-	  update_stack_info();
-	  game_loaded.emit(player);
-	  player->loadPbmGame();
-	  d_nextTurn->setContinuingTurn();
-	}
-      else
-	{
-	  lock_inputs();
-	}
     }
   else
     lock_inputs();
@@ -1489,15 +1463,6 @@ bool Game::recruitHero(HeroProto *hero, City *city, int gold)
   return retval;
 }
     
-bool Game::saveTurnFile(Glib::ustring turnfile)
-{
-  bool broken;
-  //trigger the GameServer to spit out a set of networkactions and networkhistory events for the active player, into a file.
-  if (d_gameScenario->getPlayMode() == GameScenario::PLAY_BY_MAIL)
-    PbmGameServer::getInstance()->endTurn(turnfile, broken);
-  return true;
-}
-
 void Game::inhibitAutosaveRemoval(bool inhibit)
 {
   if (d_gameScenario)

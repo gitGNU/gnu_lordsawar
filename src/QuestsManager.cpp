@@ -31,11 +31,13 @@
 #include "QEnemyArmytype.h"
 #include "QPillageGold.h"
 #include "stacklist.h"
+#include "SightMap.h"
 #include "rewardlist.h"
 #include "army.h"
 #include "xmlhelper.h"
 #include "history.h"
 #include "stackreflist.h"
+#include "hero.h"
 
 Glib::ustring QuestsManager::d_tag = "questlist";
 

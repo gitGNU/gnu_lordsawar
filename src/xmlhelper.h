@@ -85,7 +85,6 @@
 class XML_Helper;
 
 typedef sigc::slot<bool, Glib::ustring, XML_Helper*> XML_Slot;
-//return type (bool), parameters tag(string), this(XML_Helper)
 
 //! XML handling class.
 class XML_Helper

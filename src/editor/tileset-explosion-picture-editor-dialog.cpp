@@ -29,8 +29,8 @@
 #include "defs.h"
 #include "File.h"
 #include "GraphicsCache.h"
-#include "tile-preview-scene.h"
 #include "tarhelper.h"
+#include "tile-preview-scene.h"
 
 
 TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Gtk::Window &parent, Tileset *tileset)

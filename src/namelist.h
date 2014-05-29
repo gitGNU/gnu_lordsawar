@@ -20,10 +20,10 @@
 
 #include <map>
 #include <vector>
+#include <glibmm.h>
 #include <sigc++/trackable.h>
 
-#include "xmlhelper.h"
-
+class XML_Helper;
 
 //! A list of names for ruins, temples and cities available to the game.
 /** 

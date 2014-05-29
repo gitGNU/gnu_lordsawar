@@ -27,10 +27,12 @@
 #include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
+#include "army.h"
 #include "GameMap.h"
 #include "File.h"
 #include "GraphicsCache.h"
 #include "player.h"
+#include "playerlist.h"
 
 UseItemOnPlayerDialog::UseItemOnPlayerDialog(Gtk::Window &parent)
 {

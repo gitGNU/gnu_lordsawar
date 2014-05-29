@@ -81,9 +81,6 @@ SplashWindow::SplashWindow()
     xml->get_widget("new_network_game_button", new_network_game_button);
     new_network_game_button->signal_clicked().connect
       (sigc::mem_fun(*this, &SplashWindow::on_new_network_game_clicked));
-    xml->get_widget("new_pbm_game_button", new_pbm_game_button);
-    new_pbm_game_button->signal_clicked().connect
-      (sigc::mem_fun(*this, &SplashWindow::on_new_pbm_game_clicked));
     xml->get_widget("preferences_button", preferences_button);
     preferences_button->signal_clicked().connect
       (sigc::mem_fun(*this, &SplashWindow::on_preferences_clicked));
@@ -237,32 +234,6 @@ void SplashWindow::on_new_network_game_clicked()
 
 }
 
-void SplashWindow::on_new_pbm_game_clicked()
-{
-  LoadScenarioDialog d(*window);
-  d.run();
-
-  Glib::ustring filename = d.get_scenario_filename();
-  if (filename.empty())
-    return;
-  d.hide();
-  if (filename == "random.map")
-    {
-      NewRandomMapDialog nrmd(*window);
-      int res = nrmd.run();
-      if (res == Gtk::RESPONSE_ACCEPT)
-        filename = nrmd.getRandomMapFilename();
-      else
-	return;
-    }
-  GamePreferencesDialog gpd(*window, filename, GameScenario::PLAY_BY_MAIL);
-
-  gpd.set_title(_("New Play By Mail game"));
-  gpd.game_started.connect(sigc::mem_fun(*this, &SplashWindow::on_pbm_game_created));
-  gpd.run();
-  gpd.hide();
-}
-
 void SplashWindow::on_load_scenario_clicked()
 {
   LoadScenarioDialog d(*window);
@@ -305,11 +276,6 @@ void SplashWindow::on_network_game_created(GameParameters g, Profile *profile,
 {
   new_hosted_network_game_requested.emit(g, LORDSAWAR_PORT, profile,
                                          advertised, remotely_hosted);
-}
-
-void SplashWindow::on_pbm_game_created(GameParameters g)
-{
-  new_pbm_game_requested.emit(g);
 }
 
 void SplashWindow::on_preferences_clicked()

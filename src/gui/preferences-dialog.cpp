@@ -33,6 +33,9 @@
 #include "playerlist.h"
 #include "citylist.h"
 #include "ruinlist.h"
+#include "city.h"
+#include "AI_Diplomacy.h"
+#include "AI_Analysis.h"
 #include "ai_fast.h"
 #include "GraphicsCache.h"
 

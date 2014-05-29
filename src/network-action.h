@@ -1,4 +1,4 @@
-// Copyright (C) 2008 Ben Asselstine
+// Copyright (C) 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #define NETWORK_ACTION_H
 
 #include "action.h"
-#include "playerlist.h"
 #include "OwnerId.h"
 
 class NetworkAction: public OwnerId

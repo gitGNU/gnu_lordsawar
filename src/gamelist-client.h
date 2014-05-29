@@ -26,9 +26,6 @@
 #include <sigc++/signal.h>
 #include <glibmm.h>
 class XML_Helper;
-
-#include "network-gls-common.h"
-
 class NetworkConnection;
 class RecentlyPlayedGame;
 class RecentlyPlayedGameList;

@@ -20,6 +20,7 @@
 #include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 
+#include "SightMap.h"
 #include "quest-report-dialog.h"
 
 #include "glade-helpers.h"
@@ -29,6 +30,7 @@
 #include "hero.h"
 #include "defs.h"
 #include "GameMap.h"
+#include "playerlist.h"
 
 QuestReportDialog::QuestReportDialog(Gtk::Window &parent, std::vector<Quest *>q, Hero *hero)
 {

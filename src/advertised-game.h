@@ -19,11 +19,8 @@
 #define ADVERTISED_GAME_H
 
 #include <gtkmm.h>
-
-
 #include <sys/time.h>
 
-#include "GameScenario.h"
 #include "recently-played-game.h"
 class XML_Helper;
 class Profile;

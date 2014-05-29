@@ -24,6 +24,7 @@
 #include "defs.h"
 #include "file-compat.h"
 #include "ucompose.hpp"
+#include "xmlhelper.h"
 
 Glib::ustring Itemlist::d_tag = "itemlist";
 

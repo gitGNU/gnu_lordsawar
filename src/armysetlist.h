@@ -25,7 +25,6 @@
 #include <vector>
 #include <sigc++/trackable.h>
 
-#include "xmlhelper.h"
 #include "armyproto.h"
 #include "armyset.h"
 

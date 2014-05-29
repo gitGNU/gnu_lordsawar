@@ -22,6 +22,7 @@
 #include "tilestyle.h"
 #include "ucompose.hpp"
 #include "defs.h"
+#include "xmlhelper.h"
 
 Glib::ustring TileStyle::d_tag = "tilestyle";
 

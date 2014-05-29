@@ -28,6 +28,7 @@
 #include "tarhelper.h"
 #include "file-compat.h"
 #include "ucompose.hpp"
+#include "xmlhelper.h"
 
 Glib::ustring Shieldset::d_tag = "shieldset";
 Glib::ustring Shieldset::file_extension = SHIELDSET_EXT;

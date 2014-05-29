@@ -19,10 +19,9 @@
 #define ITEM_PROTO_H
 
 #include <gtkmm.h>
-#include "xmlhelper.h"
-#include "army.h"
 
 #include "Renamable.h"
+class XML_Helper;
 
 //! A carryable type of thing that confers special properties on it's holder.
 /** 

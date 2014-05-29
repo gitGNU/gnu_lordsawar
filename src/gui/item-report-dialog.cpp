@@ -32,6 +32,7 @@
 #include "stack.h"
 #include "MapBackpack.h"
 #include "itemmap.h"
+#include "playerlist.h"
 
 ItemReportDialog::ItemReportDialog(Gtk::Window &parent, std::list<Stack*> item_laden_stacks, std::list<MapBackpack*> bags_of_stuff)
 {

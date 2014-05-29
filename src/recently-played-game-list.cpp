@@ -28,6 +28,7 @@
 #include "profile.h"
 #include "profilelist.h"
 #include "file-compat.h"
+#include "File.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -167,14 +168,6 @@ void RecentlyPlayedGameList::addEntry(GameScenario *game_scenario, Profile *p,
 	  {
 	    RecentlyPlayedHotseatGame *g = NULL;
 	    g = new RecentlyPlayedHotseatGame(game_scenario, p);
-	    g->fillData(filename);
-	    push_back(g);
-	    break;
-	  }
-      case GameScenario::PLAY_BY_MAIL:
-	  {
-	    RecentlyPlayedPbmGame *g = NULL;
-	    g = new RecentlyPlayedPbmGame(game_scenario, p);
 	    g->fillData(filename);
 	    push_back(g);
 	    break;

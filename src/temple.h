@@ -25,9 +25,6 @@
 
 #include "NamedLocation.h"
 
-class Stack;
-class Quest;
-
 //! A temple on the game map.
 /** 
  * A temple is the place where heroes can get quests or have their armies

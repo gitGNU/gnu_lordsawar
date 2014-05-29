@@ -28,16 +28,12 @@
 #include "Location.h"
 #include "Ownable.h"
 #include "Renamable.h"
-#include "prodslot.h"
-#include "defs.h"
 #include "prodslotlist.h"
 
 class Player;
 class Stack;
 class Army;
 class ArmyProdBase;
-class ArmyProto;
-class Hero;
 
 #define DEFAULT_CITY_NAME "Noname"
 #define DEFAULT_CITY_INCOME 20
@@ -356,4 +352,5 @@ class City : public Ownable, public Location, public Renamable,
 	Player *d_capital_owner;
 };
 
+bool armyCompareStrength (const ArmyProdBase *lhs, const ArmyProdBase *rhs);
 #endif // CITY_H

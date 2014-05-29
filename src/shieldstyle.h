@@ -23,7 +23,6 @@
 #include "PixMask.h"
 
 
-class Player;
 class XML_Helper;
 class Shieldset;
 

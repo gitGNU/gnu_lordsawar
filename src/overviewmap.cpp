@@ -39,6 +39,7 @@
 #include "GameScenarioOptions.h"
 #include "tilesetlist.h"
 #include "Configuration.h"
+#include "shieldset.h"
 
 OverviewMap::OverviewMap()
 {

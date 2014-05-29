@@ -22,11 +22,9 @@
 
 #include <gtkmm.h>
 
-#include "xmlhelper.h"
-
 #include "tilestyleset.h"
 
-class Tileset;
+class XML_Helper;
 class SmallTile;
 class Tar_Helper;
 //! Describes a kind of tile that a Stack can traverse.

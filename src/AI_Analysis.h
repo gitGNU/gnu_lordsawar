@@ -24,16 +24,14 @@
 #include <gtkmm.h>
 #include <map>
 #include "vector.h"
+#include "AICityInfo.h"
 
 class Threatlist;
 class Player;
 class City;
-class Citylist;
-class Threat;
 class Stack;
 class Army;
 class StackReflist;
-class AICityInfo;
 
 typedef std::map<guint32, AICityInfo *> AICityMap;
 

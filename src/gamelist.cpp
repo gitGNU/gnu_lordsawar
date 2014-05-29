@@ -17,12 +17,12 @@
 
 #include <sigc++/functors/mem_fun.h>
 
+#include "xmlhelper.h"
 #include "gamelist.h"
 #include "hosted-game.h"
 #include <limits.h>
 #include <fstream>
 #include <iostream>
-#include "xmlhelper.h"
 #include "Configuration.h"
 #include "defs.h"
 #include "profile.h"
@@ -31,6 +31,7 @@
 #include "advertised-game.h"
 #include "recently-played-game-list.h"
 #include "recently-played-game.h"
+#include "File.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)

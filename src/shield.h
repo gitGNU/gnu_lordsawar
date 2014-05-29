@@ -24,7 +24,6 @@
 
 #include "shieldstyle.h"
 
-class Player;
 class XML_Helper;
 class Shieldset;
 

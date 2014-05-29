@@ -1,6 +1,6 @@
 // Copyright (C) 2003, 2005 Ulf Lorenz
 // Copyright (C) 2004 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -29,7 +29,6 @@
 #include "callback-enums.h"
 
 #include "player.h"
-#include "hero.h"
 
 class Quest;
 class XML_Helper;

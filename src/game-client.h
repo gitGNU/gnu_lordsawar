@@ -26,15 +26,12 @@
 #include <memory>
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
-class XML_Helper;
 class NetworkAction;
 class NetworkHistory;
 
-#include "network-common.h"
 #include "game-station.h"
 
 class NetworkConnection;
-class GameScenario;
 class Player;
 
 class GameClient: public GameStation

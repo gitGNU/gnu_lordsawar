@@ -29,6 +29,7 @@
 
 #include "army.h"
 #include "path.h"
+#include "Item.h"
 #include "stacklist.h"
 #include "stack.h"
 #include "citylist.h"

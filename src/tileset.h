@@ -25,7 +25,6 @@
 
 #include "Tile.h"
 #include "defs.h"
-#include "File.h"
 #include "set.h"
 #include "SmallTile.h"
 

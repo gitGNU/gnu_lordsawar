@@ -32,6 +32,7 @@
 #include "Configuration.h"
 #include "file-compat.h"
 #include "ucompose.hpp"
+#include "xmlhelper.h"
 
 Glib::ustring Armyset::d_tag = "armyset";
 Glib::ustring Armyset::file_extension = ARMYSET_EXT;

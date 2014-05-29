@@ -1,6 +1,6 @@
 // Copyright (C) 2001, 2003 Michael Bartl
 // Copyright (C) 2002, 2003, 2004, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -17,12 +17,13 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <stdlib.h>
 #include "ruin.h"
 #include "playerlist.h"
 #include "GameMap.h"
 #include "rewardlist.h"
-#include <stdlib.h>
 #include "Sage.h"
+#include "xmlhelper.h"
 
 Glib::ustring Ruin::d_tag = "ruin";
 

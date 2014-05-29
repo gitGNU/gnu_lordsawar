@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,7 +22,9 @@
 
 #include <list>
 #include "Quest.h"
-#include "city.h"
+
+class City;
+class Army;
 
 //! A Quest to accrue an amount of gold pieces from another Player.
 /**

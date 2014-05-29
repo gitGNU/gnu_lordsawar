@@ -2,7 +2,7 @@
 // Copyright (C) 2001, 2002, 2004, 2005, 2006 Ulf Lorenz
 // Copyright (C) 2004 Bryan Duff
 // Copyright (C) 2006 Andrea Paternesi
-// Copyright (C) 2007, 2008, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2011, 2014 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -27,12 +27,13 @@
 #include <list>
 #include <vector>
 #include <map>
+#include "vector.h"
+#include "LocationBox.h"
 
 class Stack;
 class Fighter;
 class Hero;
 class Army;
-class LocationBox;
 
 //! A description of a round of casualties during a Fight.
 /** 
@@ -198,6 +199,8 @@ class Fight
         void remove(Fighter* f);
 
         void fillInInitialHPs();
+
+        Army *findArmyById(const std::list<Stack *> &l, guint32 id);
         
         // DATA
 
@@ -230,6 +233,24 @@ class Fight
 	//! Whether or not we're rolling 24-sided dice or 20 sided dice.
 	bool d_intense_combat;
 };
+
+// Helper class; the single units participating in the fight are saved with
+// additional information. This should be a struct, but I don't know how to
+// forward the declaration properly.
+//! A particpant in a Fight.
+class Fighter
+{
+    public:
+        Fighter(Army* a, Vector<int> p);
+        
+        Army* army;
+        Vector<int> pos;       // location on the map (needed to calculate boni)
+        int terrain_strength;
+	//! needed for sorting
+        //bool operator() ( const Fighter* f1, const Fighter* f2 );
+
+};
+
 
 #endif // FIGHT_H
 

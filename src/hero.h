@@ -24,9 +24,9 @@
 #include <list>
 
 #include "army.h"
-#include "player.h"
 
 class Backpack;
+class HeroProto;
 
 //! A Hero is an Army unit capable of carrying items, going on quests and more.
 /** 

@@ -33,6 +33,7 @@
 #include "stacklist.h"
 #include "xmlhelper.h"
 #include "stack.h"
+#include "player.h"
 
 Glib::ustring Path::d_tag = "path";
 

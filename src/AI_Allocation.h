@@ -22,7 +22,6 @@
 
 #include <gtkmm.h>
 
-#include "MoveResult.h"
 #include "stackreflist.h"
 
 class AI_Analysis;

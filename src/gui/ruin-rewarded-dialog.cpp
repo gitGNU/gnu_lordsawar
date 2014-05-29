@@ -30,9 +30,11 @@
 #include "GameMap.h"
 #include "File.h"
 #include "sound.h"
+#include "SightMap.h"
 #include "reward.h"
 #include "ruin.h"
-
+#include "playerlist.h"
+#include "Item.h"
 
 RuinRewardedDialog::RuinRewardedDialog(Gtk::Window &parent, Reward_Ruin *reward)
 {
