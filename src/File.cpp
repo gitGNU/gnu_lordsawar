@@ -417,12 +417,12 @@ char *File::sanify(const char *string)
   return result;
 }
   
-Glib::ustring File::get_tmp_file()
+Glib::ustring File::get_tmp_file(Glib::ustring ext)
 {
   std::string tmpfile = "lw.XXXX";
   int fd = Glib::file_open_tmp(tmpfile, "lw.XXXX");
   close(fd);
-  return tmpfile;
+  return tmpfile + ext;
 }
 
 Glib::ustring File::get_extension(Glib::ustring filename)

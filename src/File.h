@@ -146,7 +146,7 @@ class File
 
         static char *sanify(const char *string);
 
-        static Glib::ustring get_tmp_file();
+        static Glib::ustring get_tmp_file(Glib::ustring ext = "");
 
         static Glib::ustring get_extension(Glib::ustring filename);
 };
