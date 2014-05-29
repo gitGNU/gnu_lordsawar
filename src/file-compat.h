@@ -65,18 +65,20 @@ class FileCompat: public std::list<FileDetails>, public sigc::trackable
 
         bool contains(FileCompat::Type type) const;
         FileCompat::Type getType(Glib::ustring filename) const;
-        FileCompat::Type getTypeByFileInspection(Glib::ustring filename) const;
+        FileCompat::Type getTypeByFileInspection(Glib::ustring filename, bool &tar) const;
 
         bool isTarFile(FileCompat::Type type) const;
 
         Glib::ustring getTag(FileCompat::Type type) const;
         FileCompat::Type getTypeByFileExtension(Glib::ustring ext) const;
         Glib::ustring getFileExtension(FileCompat::Type type) const;
+        std::list<Glib::ustring> getFileExtensions(FileCompat::Type type) const;
         bool get_tag_and_version_from_file(Glib::ustring filename, FileCompat::Type type, Glib::ustring &tag, Glib::ustring &version) const;
 
         bool upgrade(Glib::ustring filename, bool &same) const;
         bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version, FileCompat::Type t, Glib::ustring tag) const;
         bool rewrite_with_updated_version(Glib::ustring filename, FileCompat::Type type, Glib::ustring tag, Glib::ustring version) const;
+        bool upgradeGameScenario(Glib::ustring filename, Glib::ustring version, bool& upgraded_armyset, bool& upgraded_tileset, bool& upgraded_cityset, bool& upgraded_shieldset) const;
 
 	// Static Methods
         static void support_backward_compatibility_for_common_files();
@@ -100,8 +102,7 @@ class FileCompat: public std::list<FileDetails>, public sigc::trackable
         FileCompat::Type getTypeByXmlFileInspection(Glib::ustring filename) const;
         FileCompat::Type getTypeByTarFileInspection(Glib::ustring filename) const;
 
-        bool upgradeGameScenario(Glib::ustring filename, Glib::ustring old_version) const;
-        bool upgradeGameScenarioWithXslt(Glib::ustring filename, Glib::ustring xsl_file) const;
+        bool upgradeGameScenarioWithXslt(Glib::ustring filename, Glib::ustring xsl_file, bool& armyset_upgraded, bool& tileset_upgraded, bool &cityset_upgraded, bool &shieldset_upgraded) const;
 
         bool can_upgrade_to(FileCompat::Type type, Glib::ustring version) const;
         bool get_upgrade_method(FileCompat::Type type, Glib::ustring version, Glib::ustring &next_version, FileCompat::Slot &slot) const;

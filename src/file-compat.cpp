@@ -110,7 +110,8 @@ FileCompat::Type FileCompat::getType(Glib::ustring filename) const
           return FileCompat::Type((*i).type);
         }
     }
-  return getTypeByFileInspection(filename);
+  bool tar = false;
+  return getTypeByFileInspection(filename, tar);
 }
   
 FileCompat::Type FileCompat::getTypeByTarFileInspection(Glib::ustring filename) const
@@ -169,9 +170,10 @@ FileCompat::Type FileCompat::getTypeByXmlFileInspection(Glib::ustring filename) 
   return UNKNOWN;
 }
 
-FileCompat::Type FileCompat::getTypeByFileInspection(Glib::ustring filename) const
+FileCompat::Type FileCompat::getTypeByFileInspection(Glib::ustring filename, bool &tar) const
 {
   Type type = getTypeByTarFileInspection(filename);
+  tar = type != UNKNOWN;
   if (type == UNKNOWN)
     return getTypeByXmlFileInspection(filename);
   else
@@ -183,19 +185,30 @@ bool FileCompat::get_tag_and_version_from_file(Glib::ustring filename, FileCompa
   bool broken = false;
   if (isTarFile(type) == true)
     {
-      Glib::ustring ext = getFileExtension(type);
-      if (ext == "")
+      std::list<Glib::ustring> ext = getFileExtensions(type);
+      if (ext.empty() == true)
         return false;
       Tar_Helper t(filename, std::ios::in, broken);
       if (!broken)
         {
-          Glib::ustring tmpfile = t.getFirstFile(ext, broken);
-          XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
-          tag = XML_Helper::get_top_tag(tmpfile, Configuration::s_zipfiles);
-          VersionLoader l(tmpfile, tag, version, broken, 
-                          Configuration::s_zipfiles);
-          t.Close();
-          File::erase(tmpfile);
+          Glib::ustring tmpfile = "";
+          for (std::list<Glib::ustring>::iterator i = ext.begin(); 
+               i != ext.end(); ++i)
+            {
+              tmpfile = t.getFirstFile(*i, broken);
+              if (!broken && tmpfile.empty() == false)
+                {
+                  XML_Helper helper(tmpfile, std::ios::in, 
+                                    Configuration::s_zipfiles);
+                  tag = XML_Helper::get_top_tag(tmpfile, 
+                                                Configuration::s_zipfiles);
+                  VersionLoader l(tmpfile, tag, version, broken, 
+                                  Configuration::s_zipfiles);
+                  t.Close();
+                  File::erase(tmpfile);
+                  return !broken;
+                }
+            }
         }
     }
   else
@@ -241,7 +254,7 @@ bool FileCompat::upgrade(Glib::ustring filename, bool &same) const
     return false;
   if (get_tag_and_version_from_file (filename, type, tag, version) == false)
     return false;
-      
+
   //can we get there from here?
   Slot slot;
   Glib::ustring next_version;
@@ -313,7 +326,7 @@ bool FileCompat::rewrite_with_updated_version(Glib::ustring filename, FileCompat
             upgraded = XML_Helper::rewrite_version(tmpfile, tag, version, 
                                                    Configuration::s_zipfiles);
           if (upgraded)
-            t.replaceFile (t.getFilenamesWithExtension(ext).front(), tmpfile);
+            t.replaceFile (t.getFirstFilenameWithExtension(ext), tmpfile);
           t.Close();
           if (tmpfile != "")
             File::erase(tmpfile);
@@ -321,7 +334,11 @@ bool FileCompat::rewrite_with_updated_version(Glib::ustring filename, FileCompat
     }
   else if (isTarFile(type) && type == GAMESCENARIO)
     {
-      return upgradeGameScenario(filename, version);
+      bool upgraded_armyset = false, upgraded_tileset = false, 
+           upgraded_cityset = false, upgraded_shieldset = false;
+      return upgradeGameScenario(filename, version, upgraded_armyset, 
+                                 upgraded_tileset, upgraded_cityset,
+                                 upgraded_shieldset);
     }
   else if (isTarFile(type) == false)
     {
@@ -339,7 +356,7 @@ FileCompat::Type FileCompat::getTypeByFileExtension(Glib::ustring ext) const
   return UNKNOWN;
 }
 
-bool FileCompat::upgradeGameScenario(Glib::ustring filename, Glib::ustring version) const
+bool FileCompat::upgradeGameScenario(Glib::ustring filename, Glib::ustring version, bool& upgraded_armyset, bool& upgraded_tileset, bool& upgraded_cityset, bool& upgraded_shieldset) const
 {
   Glib::ustring ext = File::get_extension(filename);
   if (ext == "")
@@ -361,45 +378,73 @@ bool FileCompat::upgradeGameScenario(Glib::ustring filename, Glib::ustring versi
       if (upgraded)
         {
           bool same;
-          t.replaceFile (t.getFilenamesWithExtension(ext).front(), tmpfile);
+          t.replaceFile (t.getFirstFilenameWithExtension(ext), tmpfile);
           //now we need to upgrade the other files.
-          Glib::ustring f = t.getFilenamesWithExtension
-            (getFileExtension(ARMYSET)).front();
+          Glib::ustring f = t.getFirstFilenameWithExtension
+            (getFileExtension(ARMYSET));
           tmpfile = t.getFile(f, broken);
           if (tmpfile != "")
             {
+              same = false;
               if (upgrade(tmpfile, same))
-                t.replaceFile (f, tmpfile);
+                {
+                  if (!same)
+                    {
+                      upgraded_armyset = true;
+                      t.replaceFile (f, tmpfile);
+                    }
+                }
               delfiles.push_back(tmpfile);
             }
           tmpfile = t.getFirstFile(getFileExtension(TILESET), broken);
           if (tmpfile != "")
             {
+              same = false;
               if (upgrade(tmpfile, same))
-                t.replaceFile (t.getFilenamesWithExtension
-                               (getFileExtension(TILESET)).front(), tmpfile);
+                {
+                  if (!same)
+                    {
+                      upgraded_tileset = true;
+                      t.replaceFile (t.getFirstFilenameWithExtension
+                                     (getFileExtension(TILESET)), tmpfile);
+                    }
+                }
               delfiles.push_back(tmpfile);
             }
           tmpfile = t.getFirstFile(getFileExtension(CITYSET), broken);
           if (tmpfile != "")
             {
+              same = false;
               if (upgrade(tmpfile, same))
-                t.replaceFile (t.getFilenamesWithExtension
-                               (getFileExtension(CITYSET)).front(), tmpfile);
+                {
+                  if (!same)
+                    {
+                      upgraded_cityset = true;
+                      t.replaceFile (t.getFirstFilenameWithExtension
+                                     (getFileExtension(CITYSET)), tmpfile);
+                    }
+                }
               delfiles.push_back(tmpfile);
             }
           tmpfile = t.getFirstFile(getFileExtension(SHIELDSET), broken);
           if (tmpfile != "")
             {
+              same = false;
               if (upgrade(tmpfile, same))
-                t.replaceFile (t.getFilenamesWithExtension
-                               (getFileExtension(SHIELDSET)).front(), tmpfile);
+                {
+                  if (!same)
+                    {
+                      upgraded_shieldset = true;
+                      t.replaceFile (t.getFirstFilenameWithExtension
+                                     (getFileExtension(SHIELDSET)), tmpfile);
+                    }
+                }
               delfiles.push_back(tmpfile);
             }
         }
+      t.Close();
       for (std::list<Glib::ustring>::iterator i = delfiles.begin(); i != delfiles.end(); i++)
         File::erase(*i);
-      t.Close();
     }
   return upgraded;
 }
@@ -504,7 +549,7 @@ bool FileCompat::rewrite_with_xslt(Glib::ustring filename, FileCompat::Type type
           if (broken == false)
             upgraded = xsl_transform(tmpfile, xsl_file);
           if (upgraded)
-            t.replaceFile (t.getFilenamesWithExtension(ext).front(), tmpfile);
+            t.replaceFile (t.getFirstFilenameWithExtension(ext), tmpfile);
           t.Close();
           if (tmpfile != "")
             File::erase(tmpfile);
@@ -512,7 +557,11 @@ bool FileCompat::rewrite_with_xslt(Glib::ustring filename, FileCompat::Type type
     }
   else if (isTarFile(type) && type == GAMESCENARIO)
     {
-      return upgradeGameScenarioWithXslt(filename, xsl_file);
+      bool armyset_upgraded, tileset_upgraded, cityset_upgraded, 
+           shieldset_upgraded = false;
+      return upgradeGameScenarioWithXslt(filename, xsl_file, armyset_upgraded,
+                                         tileset_upgraded, cityset_upgraded,
+                                         shieldset_upgraded);
     }
   else if (isTarFile(type) == false)
     {
@@ -521,7 +570,7 @@ bool FileCompat::rewrite_with_xslt(Glib::ustring filename, FileCompat::Type type
   return upgraded;
 }
 
-bool FileCompat::upgradeGameScenarioWithXslt(Glib::ustring filename, Glib::ustring xsl_file) const
+bool FileCompat::upgradeGameScenarioWithXslt(Glib::ustring filename, Glib::ustring xsl_file, bool& armyset_upgraded, bool& tileset_upgraded, bool& cityset_upgraded, bool &shieldset_upgraded) const
 {
   Glib::ustring ext = File::get_extension(filename);
   if (ext == "")
@@ -542,39 +591,67 @@ bool FileCompat::upgradeGameScenarioWithXslt(Glib::ustring filename, Glib::ustri
       if (upgraded)
         {
           bool same;
-          t.replaceFile (t.getFilenamesWithExtension(ext).front(), tmpfile);
+          t.replaceFile (t.getFirstFilenameWithExtension(ext), tmpfile);
           //now we need to upgrade the other files.
-          Glib::ustring f = t.getFilenamesWithExtension
-            (getFileExtension(ARMYSET)).front();
+          Glib::ustring f = t.getFirstFilenameWithExtension
+            (getFileExtension(ARMYSET));
           tmpfile = t.getFile(f, broken);
           if (tmpfile != "")
             {
+              same = false;
               if (upgrade(tmpfile, same))
-                t.replaceFile (f, tmpfile);
+                {
+                  if (!same)
+                    {
+                      armyset_upgraded = true;
+                      t.replaceFile (f, tmpfile);
+                    }
+                }
               delfiles.push_back(tmpfile);
             }
           tmpfile = t.getFirstFile(getFileExtension(TILESET), broken);
           if (tmpfile != "")
             {
+              same = false;
               if (upgrade(tmpfile, same))
-                t.replaceFile (t.getFilenamesWithExtension
-                               (getFileExtension(TILESET)).front(), tmpfile);
+                {
+                  if (!same)
+                    {
+                      tileset_upgraded = true;
+                      t.replaceFile (t.getFirstFilenameWithExtension
+                                     (getFileExtension(TILESET)), tmpfile);
+                    }
+                }
               delfiles.push_back(tmpfile);
             }
           tmpfile = t.getFirstFile(getFileExtension(CITYSET), broken);
           if (tmpfile != "")
             {
+              same = false;
               if (upgrade(tmpfile, same))
-                t.replaceFile (t.getFilenamesWithExtension
-                               (getFileExtension(CITYSET)).front(), tmpfile);
+                {
+                  if (!same)
+                    {
+                      cityset_upgraded = true;
+                      t.replaceFile (t.getFirstFilenameWithExtension
+                                     (getFileExtension(CITYSET)), tmpfile);
+                    }
+                }
               delfiles.push_back(tmpfile);
             }
           tmpfile = t.getFirstFile(getFileExtension(SHIELDSET), broken);
           if (tmpfile != "")
             {
+              same = false;
               if (upgrade(tmpfile, same))
-                t.replaceFile (t.getFilenamesWithExtension
-                               (getFileExtension(SHIELDSET)).front(), tmpfile);
+                {
+                  if (!same)
+                    {
+                      shieldset_upgraded = true;
+                      t.replaceFile (t.getFirstFilenameWithExtension
+                                     (getFileExtension(SHIELDSET)), tmpfile);
+                    }
+                }
               delfiles.push_back(tmpfile);
             }
         }
@@ -629,6 +706,15 @@ bool FileCompat::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib
     return rewrite_with_xslt (filename, type, xsl_filename);
   else
     return rewrite_with_updated_version (filename, type, tag, new_version);
+}
+        
+std::list<Glib::ustring> FileCompat::getFileExtensions(FileCompat::Type type) const
+{
+  std::list<Glib::ustring> ext;
+  for (const_iterator i = begin(); i != end(); i++)
+    if ((*i).type == type)
+      ext.push_back((*i).file_extension);
+  return ext;
 }
 
 // End of file

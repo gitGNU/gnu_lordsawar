@@ -1,4 +1,4 @@
-// Copyright (C) 2010, 2011 Ben Asselstine
+// Copyright (C) 2010, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -220,10 +220,20 @@ std::list<Glib::ustring> Tar_Helper::getFilenames(TAR *t)
     }
   return result;
 }
+
 std::list<Glib::ustring> Tar_Helper::getFilenames()
 {
   return getFilenames(t);
 }
+
+Glib::ustring Tar_Helper::getFirstFilenameWithExtension(Glib::ustring ext)
+{
+  std::list<Glib::ustring> result = getFilenamesWithExtension(ext);
+  if (result.empty())
+    return "";
+  return result.front();
+}
+
 std::list<Glib::ustring> Tar_Helper::getFilenamesWithExtension(Glib::ustring ext)
 {
   std::list<Glib::ustring> result;

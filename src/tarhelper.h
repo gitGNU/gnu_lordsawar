@@ -38,6 +38,7 @@ public:
     Glib::ustring getFirstFile(std::list<Glib::ustring> exts, bool &broken);
 
     std::list<Glib::ustring> getFilenamesWithExtension(Glib::ustring ext);
+    Glib::ustring getFirstFilenameWithExtension(Glib::ustring ext);
 
     std::list<Glib::ustring> getFilenames();
 

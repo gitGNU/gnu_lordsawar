@@ -85,7 +85,8 @@ int main(int argc, char* argv[])
   FileCompat::support_backward_compatibility_for_common_files();
   if (identify_file == false && rewrite == "")
     {
-      Glib::ustring tmpfile = File::get_tmp_file();
+      Glib::ustring ext = File::get_extension(filename);
+      Glib::ustring tmpfile = File::get_tmp_file(ext);
       File::copy(filename, tmpfile);
       bool upgraded = FileCompat::getInstance()->upgrade(tmpfile, 
                                                          same_version);
@@ -94,6 +95,35 @@ int main(int argc, char* argv[])
         {
           std::cerr << String::ucompose(_("%1 is already the latest version."), 
                                    filename) << std::endl;
+
+          bool is_tar_file = false;
+          FileCompat::Type type = 
+            FileCompat::getInstance()->getTypeByFileInspection(tmpfile, 
+                                                               is_tar_file);
+          if (type == FileCompat::GAMESCENARIO && is_tar_file)
+            {
+              bool armyset = false, tileset = false, cityset = false, 
+                   shieldset = false;
+              std::cerr << _("Trying to upgrade the other files inside the tar file...") << std::endl;
+              upgraded = FileCompat::getInstance()->upgradeGameScenario
+                (tmpfile, LORDSAWAR_SAVEGAME_VERSION, 
+                 armyset, tileset, cityset, shieldset);
+              if (upgraded)
+                {
+                  if (armyset)
+                    std::cerr << _("Armyset has been upgraded.") << std::endl;
+                  if (tileset)
+                    std::cerr << _("Tileset has been upgraded.") << std::endl;
+                  if (cityset)
+                    std::cerr << _("Cityset has been upgraded.") << std::endl;
+                  if (shieldset)
+                    std::cerr << _("Shieldset has been upgraded.") << std::endl;
+                  if (armyset || tileset || cityset || shieldset)
+                    File::copy(tmpfile, filename);
+                  if (!armyset && !tileset && !cityset && !shieldset)
+                    std::cerr << _("None of the other files needed to be upgraded.") << std::endl;
+                }
+            }
           File::erase(tmpfile);
         }
       else if (!upgraded && !same_version)
