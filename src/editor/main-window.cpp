@@ -1216,10 +1216,9 @@ void MainWindow::setup_tile_style_buttons(Tile::Type terrain)
   auto_item.tile_style_id = -1;
   tile_style_items.push_back(auto_item);
 
-  int r = 0, c = 0, max_rows = 4;
+  int r = 0, c = 1, max_rows = 4;
   for (Tile::iterator it = tile->begin(); it != tile->end(); it++)
     {
-
       TileStyleSet *tilestyleset = *it;
       //loop through tile style sets
       for (unsigned int j = 0; j < tilestyleset->size(); j++)
