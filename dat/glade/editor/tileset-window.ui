@@ -2,40 +2,6 @@
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
-  <object class="GtkAdjustment" id="adjustment1">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-  </object>
-  <object class="GtkListStore" id="liststore1">
-    <columns>
-      <!-- column-name tilename -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">Grass</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Water</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Forest</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Hills</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Mountains</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Swamp</col>
-      </row>
-      <row>
-        <col id="0" translatable="yes">Void</col>
-      </row>
-    </data>
-  </object>
   <object class="GtkWindow" id="window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">LordsAWar! Tileset Editor</property>
@@ -569,7 +535,6 @@
                                                 <property name="secondary_icon_activatable">False</property>
                                                 <property name="primary_icon_sensitive">True</property>
                                                 <property name="secondary_icon_sensitive">True</property>
-                                                <property name="adjustment">adjustment1</property>
                                                 <property name="climb_rate">1</property>
                                               </object>
                                               <packing>
