@@ -86,6 +86,7 @@ TilesetSelectorEditorDialog::~TilesetSelectorEditorDialog()
 
 int TilesetSelectorEditorDialog::run()
 {
+  bool found = false;
     dialog->show_all();
     int response = dialog->run();
 
@@ -94,13 +95,19 @@ int TilesetSelectorEditorDialog::run()
       {
         d_tileset->replaceFileInConfigurationFile(d_tileset->getSmallSelectorFilename()+".png", small_filename);
         d_tileset->setSmallSelectorFilename(File::get_basename(small_filename));
+        found = true;
       }
+
     if (std::find(delfiles.begin(), delfiles.end(), large_filename)
         == delfiles.end() && response == Gtk::RESPONSE_ACCEPT)
       {
         d_tileset->replaceFileInConfigurationFile(d_tileset->getLargeSelectorFilename()+".png", large_filename);
         d_tileset->setLargeSelectorFilename(File::get_basename(large_filename));
+        found = true;
       }
+
+    if (response == Gtk::RESPONSE_ACCEPT && !found)
+      response = Gtk::RESPONSE_CANCEL;
     for (std::list<Glib::ustring>::iterator it = delfiles.begin(); 
          it != delfiles.end(); it++)
       File::erase(*it);
