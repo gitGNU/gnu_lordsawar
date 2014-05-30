@@ -49,6 +49,7 @@
 #include "tile-size-editor-dialog.h"
 #include "editor-quit-dialog.h"
 #include "editor-recover-dialog.h"
+#include "GameMap.h"
 
 
 CitySetWindow::CitySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
@@ -448,6 +449,19 @@ void CitySetWindow::on_save_as_activated()
 
 bool CitySetWindow::save_current_cityset()
 {
+  if (GameMap::getInstance()->getCitysetId() == d_cityset->getId() &&
+      d_cityset->validate() == false)
+    {
+      Glib::ustring errmsg = _("Cityset is invalid, and is also the current working cityset.");
+      Glib::ustring msg;
+      msg = _("Error!  Cityset could not be saved.");
+      msg += "\n" + current_save_filename + "\n" +
+        errmsg;
+      Gtk::MessageDialog dialog(*window, msg);
+      dialog.run();
+      dialog.hide();
+      return false;
+    }
   if (current_save_filename.empty())
     current_save_filename = d_cityset->getConfigurationFile();
   

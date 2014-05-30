@@ -51,6 +51,7 @@
 #include "recently-edited-file.h"
 #include "editor-quit-dialog.h"
 #include "editor-recover-dialog.h"
+#include "GameMap.h"
 
 
 ShieldSetWindow::ShieldSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
@@ -401,6 +402,19 @@ void ShieldSetWindow::on_save_as_activated()
 
 bool ShieldSetWindow::save_current_shieldset()
 {
+  if (GameMap::getInstance()->getShieldsetId() == d_shieldset->getId() &&
+      d_shieldset->validate() == false)
+    {
+      Glib::ustring errmsg = _("Shieldset is invalid, and is also the current working shieldset.");
+      Glib::ustring msg;
+      msg = _("Error!  Shieldset could not be saved.");
+      msg += "\n" + current_save_filename + "\n" +
+        errmsg;
+      Gtk::MessageDialog dialog(*window, msg);
+      dialog.run();
+      dialog.hide();
+      return false;
+    }
   if (current_save_filename.empty())
     current_save_filename = d_shieldset->getConfigurationFile();
   

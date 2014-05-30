@@ -54,6 +54,7 @@
 
 #include "glade-helpers.h"
 #include "image-editor-dialog.h"
+#include "playerlist.h"
 
 
 ArmySetWindow::ArmySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
@@ -681,6 +682,19 @@ void ArmySetWindow::on_save_as_activated()
 
 bool ArmySetWindow::save_current_armyset()
 {
+  if (Playerlist::getInstance()->hasArmyset(d_armyset->getId()) == true &&
+      d_armyset->validate() == false)
+    {
+      Glib::ustring errmsg = _("Armyset is invalid, and is also the current working armyset.");
+      Glib::ustring msg;
+      msg = _("Error!  Armyset could not be saved.");
+      msg += "\n" + current_save_filename + "\n" +
+        errmsg;
+      Gtk::MessageDialog dialog(*window, msg);
+      dialog.run();
+      dialog.hide();
+      return false;
+    }
   if (current_save_filename.empty())
     current_save_filename = d_armyset->getConfigurationFile();
   

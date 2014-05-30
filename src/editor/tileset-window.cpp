@@ -56,6 +56,7 @@
 #include "editor-recover-dialog.h"
 #include "tilestyle-organizer-dialog.h"
 #include "tileset-smallmap-building-colors-dialog.h"
+#include "GameMap.h"
 
 #include "glade-helpers.h"
 
@@ -627,6 +628,19 @@ void TileSetWindow::on_save_as_activated()
 
 bool TileSetWindow::save_current_tileset()
 {
+  if (GameMap::getInstance()->getTilesetId() == d_tileset->getId() &&
+      d_tileset->validate() == false)
+    {
+      Glib::ustring errmsg = _("Tileset is invalid, and is also the current working tileset.");
+      Glib::ustring msg;
+      msg = _("Error!  Tileset could not be saved.");
+      msg += "\n" + current_save_filename + "\n" +
+        errmsg;
+      Gtk::MessageDialog dialog(*window, msg);
+      dialog.run();
+      dialog.hide();
+      return false;
+    }
   if (current_save_filename.empty())
     current_save_filename = d_tileset->getConfigurationFile();
   
