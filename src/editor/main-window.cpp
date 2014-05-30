@@ -1132,8 +1132,6 @@ void MainWindow::on_edit_tileset_activated()
   Glib::ustring file = tileset->getConfigurationFile();
   TileSetWindow* tileset_window = new TileSetWindow (window, file);
   tileset_window->get_window().property_transient_for() = window;
-  tileset_window->get_window().set_modal();
-  tileset_window->get_window().set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
   tileset_window->tileset_saved.connect
     (sigc::mem_fun(this, &MainWindow::on_tileset_saved));
   kit->run(tileset_window->get_window());

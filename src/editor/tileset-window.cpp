@@ -270,9 +270,6 @@ TileSetWindow::TileSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
     update_tileset_menuitems();
     update_tile_preview_menuitem();
 
-    //tile_smallmap_surface = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(0), 32, 32, 24);
-    //tile_smallmap_surface_gc = Gdk::GC::create(tile_smallmap_surface);
-
     if (File::exists(autosave))
       {
         Glib::ustring m;
