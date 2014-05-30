@@ -230,16 +230,24 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkScrolledWindow" id="armies_scrolledwindow">
+                  <object class="GtkAlignment" id="alignment5">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="hadjustment">adjustment11</property>
-                    <property name="vadjustment">adjustment10</property>
-                    <property name="shadow_type">in</property>
+                    <property name="can_focus">False</property>
+                    <property name="top_padding">12</property>
+                    <property name="left_padding">12</property>
                     <child>
-                      <object class="GtkTreeView" id="armies_treeview">
+                      <object class="GtkScrolledWindow" id="armies_scrolledwindow">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="hadjustment">adjustment11</property>
+                        <property name="vadjustment">adjustment10</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <object class="GtkTreeView" id="armies_treeview">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
