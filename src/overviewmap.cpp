@@ -260,7 +260,7 @@ void OverviewMap::draw_terrain_tile(Cairo::RefPtr<Cairo::Surface> surf,
       case SmallTile::SUNKEN_STRIPED:
         if (shadowed == false)
 	  {
-	    if (j % 1 == 0)
+	    if (j % 2 == 0)
 	      draw_pixel(surf, gc, i, j, first);
 	    else
 	      draw_pixel(surf, gc, i, j, third);
