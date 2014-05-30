@@ -1024,8 +1024,6 @@ void MainWindow::on_edit_shieldset_activated()
   Glib::ustring file = shieldset->getConfigurationFile();
   shieldset_window = new ShieldSetWindow (window, file);
   shieldset_window->get_window().property_transient_for() = window;
-  shieldset_window->get_window().set_modal();
-  shieldset_window->get_window().set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
   shieldset_window->shieldset_saved.connect
     (sigc::mem_fun(this, &MainWindow::on_shieldset_saved));
   kit->run(shieldset_window->get_window());
@@ -1057,8 +1055,6 @@ void MainWindow::on_edit_armyset_activated()
  
   ArmySetWindow* armyset_window = new ArmySetWindow (window, file);
   armyset_window->get_window().property_transient_for() = window;
-  armyset_window->get_window().set_modal();
-  armyset_window->get_window().set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
   armyset_window->armyset_saved.connect
     (sigc::mem_fun(this, &MainWindow::on_armyset_saved));
   kit->run(armyset_window->get_window());
@@ -1089,8 +1085,6 @@ void MainWindow::on_edit_cityset_activated()
   Glib::ustring file = cityset->getConfigurationFile();
   CitySetWindow* cityset_window = new CitySetWindow (window, file);
   cityset_window->get_window().property_transient_for() = window;
-  cityset_window->get_window().set_modal();
-  cityset_window->get_window().set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
   cityset_window->cityset_saved.connect
     (sigc::mem_fun(this, &MainWindow::on_cityset_saved));
   kit->run(cityset_window->get_window());
