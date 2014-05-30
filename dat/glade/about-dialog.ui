@@ -55,6 +55,7 @@ Michael Scherer</property>
 Sune Theodorsen
 Mark Jones
 J. W. Bjerk
+David Baumgart
 Max Von Juntz (Music)</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
