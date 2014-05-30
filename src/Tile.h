@@ -168,13 +168,14 @@ class Tile : public std::list<TileStyleSet*>
 
 	static int getTypeIndexForType(Tile::Type type);
 
-    private:
-
 	//! Check to see if the grass tilestyles are suitable for in-game use.
 	bool validateGrass(std::list<TileStyle::Type> types) const;
 
 	//! Check to see if the other tilestyles are suitable for in-game use.
 	bool validateFeature(std::list<TileStyle::Type> types) const;
+
+    private:
+
 
         // DATA
 

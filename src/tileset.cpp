@@ -460,6 +460,18 @@ bool Tileset::validate() const
 	  return false;
 	}
     }
+  if (getIndex(Tile::GRASS) == -1)
+    return false;
+  if (getIndex(Tile::WATER) == -1)
+    return false;
+  if (getIndex(Tile::FOREST) == -1)
+    return false;
+  if (getIndex(Tile::HILLS) == -1)
+    return false;
+  if (getIndex(Tile::MOUNTAIN) == -1)
+    return false;
+  if (getIndex(Tile::SWAMP) == -1)
+    return false;
   return true;
 }
 
@@ -948,13 +960,13 @@ bool Tileset::addTileStyleSet(Tile *tile, Glib::ustring filename)
       delete set;
       return success;
     }
-  guint32 first_free_id = getFreeTileStyleId();
-  for (TileStyleSet::iterator it = set->begin(); it != set->end(); it++)
-    (*it)->setId(first_free_id);
-
   tile->push_back(set);
-  for (TileStyleSet::iterator it = ++set->begin(); it != set->end(); it++)
-    (*it)->setId(getFreeTileStyleId());
+  for (TileStyleSet::iterator it = set->begin(); it != set->end(); it++)
+    {
+      guint32 tile_style_id = getFreeTileStyleId();
+      d_tilestyles[tile_style_id] = (*it);
+      (*it)->setId(tile_style_id);
+    }
   return success;
 }
 

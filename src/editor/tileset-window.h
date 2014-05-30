@@ -71,6 +71,7 @@ class TileSetWindow: public sigc::trackable
     Gtk::MenuItem *load_tileset_menuitem;
     Gtk::MenuItem *save_tileset_menuitem;
     Gtk::MenuItem *save_as_menuitem;
+    Gtk::MenuItem *validate_tileset_menuitem;
     Gtk::MenuItem *edit_tileset_info_menuitem;
     Gtk::MenuItem *roads_picture_menuitem;
     Gtk::MenuItem *bridges_picture_menuitem;
@@ -142,6 +143,7 @@ class TileSetWindow: public sigc::trackable
     void on_load_tileset_activated();
     void on_save_tileset_activated();
     void on_save_as_activated();
+    void on_validate_tileset_activated();
     void on_quit_activated();
     bool on_window_closed(GdkEventAny *);
     bool quit();

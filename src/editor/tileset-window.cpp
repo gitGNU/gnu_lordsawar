@@ -172,6 +172,9 @@ TileSetWindow::TileSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
     xml->get_widget("save_as_menuitem", save_as_menuitem);
     save_as_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &TileSetWindow::on_save_as_activated));
+    xml->get_widget("validate_tileset_menuitem", validate_tileset_menuitem);
+    validate_tileset_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &TileSetWindow::on_validate_tileset_activated));
     xml->get_widget("quit_menuitem", quit_menuitem);
     quit_menuitem->signal_activate().connect
        (sigc::mem_fun(this, &TileSetWindow::on_quit_activated));
@@ -1451,4 +1454,74 @@ void TileSetWindow::update_window_title()
   title += " - ";
   title += _("LordsAWar! Tileset Editor");
   window->set_title(title);
+}
+
+void TileSetWindow::on_validate_tileset_activated()
+{
+  std::list<Glib::ustring> msgs;
+  if (d_tileset == NULL)
+    return;
+  bool valid;
+  valid = d_tileset->size() > 0;
+  if (!valid)
+    msgs.push_back(_("There must be at least tile in the tileset."));
+
+  if (d_tileset->getIndex(Tile::GRASS) == -1)
+    msgs.push_back(_("There must be a grass tile in the tileset."));
+  if (d_tileset->getIndex(Tile::WATER) == -1)
+    msgs.push_back(_("There must be a water tile in the tileset."));
+  if (d_tileset->getIndex(Tile::FOREST) == -1)
+    msgs.push_back(_("There must be a forest tile in the tileset."));
+  if (d_tileset->getIndex(Tile::HILLS) == -1)
+    msgs.push_back(_("There must be a hills tile in the tileset."));
+  if (d_tileset->getIndex(Tile::MOUNTAIN) == -1)
+    msgs.push_back(_("There must be a mountain tile in the tileset."));
+  if (d_tileset->getIndex(Tile::SWAMP) == -1)
+    msgs.push_back(_("There must be a swamp tile in the tileset."));
+  for (Tileset::iterator it = d_tileset->begin(); it != d_tileset->end(); ++it)
+    {
+      for (Tile::iterator j = (*it)->begin(); j != (*it)->end(); ++j)
+        {
+          if ((*j)->size() == 0)
+            msgs.push_back(String::ucompose(_("There must be at least one tilestyleset in the %1 tile."),(*j)->getName()));
+
+            if ((*j)->validate() == false)
+              msgs.push_back(String::ucompose(_("The image %1.png file of the %2 tile does not have a width as a multiple of its height."),(*j)->getName(),(*it)->getName()));
+        }
+
+      //fill up the tile style types so we can validate them.
+      std::list<TileStyle::Type> types;
+      for (Tile::const_iterator i = (*it)->begin(); i != (*it)->end(); ++i)
+        (*i)->getUniqueTileStyleTypes(types);
+
+      switch ((*it)->getType())
+        {
+        case Tile::GRASS:
+          if ((*it)->validateGrass(types) == false)
+            msgs.push_back(String::ucompose(_("The %1 tile does not have enough of the right kind of tile styles."),(*it)->getName()));
+          break;
+        case Tile::FOREST: case Tile::WATER: case Tile::HILLS: 
+        case Tile::SWAMP: case Tile::VOID: case Tile::MOUNTAIN:
+          if ((*it)->validateFeature(types) == false)
+            {
+              if ((*it)->validateGrass(types) == false)
+                msgs.push_back(String::ucompose(_("The %1 tile does not have enough of the right kind of tile styles."),(*it)->getName()));
+            }
+          break;
+        }
+    }
+
+  Glib::ustring msg = "";
+  for (std::list<Glib::ustring>::iterator it = msgs.begin(); it != msgs.end();
+       it++)
+    msg += (*it) + "\n";
+
+  if (msg == "")
+    msg = _("The tileset is valid.");
+      
+  Gtk::MessageDialog dialog(*window, msg);
+  dialog.run();
+  dialog.hide();
+
+  return;
 }
