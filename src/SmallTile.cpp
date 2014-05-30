@@ -37,6 +37,9 @@ SmallTile::SmallTile(const SmallTile &orig)
 
 SmallTile::SmallTile(XML_Helper* helper)
 {
+  d_color.set_rgba (0, 0, 0);
+  d_second_color.set_rgba(0, 0, 0);
+  d_third_color.set_rgba(0, 0, 0);
   helper->getData(d_color, "color");
 
   guint32 i;
