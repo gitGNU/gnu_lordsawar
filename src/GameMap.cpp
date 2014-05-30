@@ -2253,12 +2253,18 @@ guint32 GameMap::getTileSize() const
 
 guint32 GameMap::getTilesetId() const
 {
-  return GameMap::getTileset()->getId();
+  if (GameMap::getTileset())
+    return GameMap::getTileset()->getId();
+  else
+    return 0;
 }
 
 guint32 GameMap::getCitysetId() const
 {
-  return GameMap::getCityset()->getId();
+  if (GameMap::getCityset())
+    return GameMap::getCityset()->getId();
+  else
+    return 0;
 }
 
 guint32 GameMap::getShieldsetId() const
