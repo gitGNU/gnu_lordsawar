@@ -372,8 +372,11 @@ void EditorBigMap::change_map_under_cursor()
       break;
     case ERASE:
       // check if there is a building or a stack there and remove it
-
-      GameMap::getInstance()->eraseTile(tile);
+      if (GameMap::getInstance()->eraseTile(tile))
+        {
+          changed_tiles.pos = tile;
+          changed_tiles.dim = Vector<int>(1, 1);
+        }
       break;
 
     case STACK:
