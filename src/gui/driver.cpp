@@ -786,7 +786,6 @@ void Driver::on_game_scenario_received(Glib::ustring path, Profile *p)
 
   NextTurnNetworked *next_turn = new NextTurnNetworked(game_scenario->getTurnmode(), game_scenario->s_random_turns);
   game_client->start_player_turn.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start_player));
-  //game_client->round_begins.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::start));
   game_client->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
   if (game_lobby_dialog)
     delete game_lobby_dialog;
@@ -897,10 +896,6 @@ void Driver::on_load_requested(Glib::ustring filename)
 				  _("Can't load networked game from file."), 0);
 	dialog.run();
 	dialog.hide();
-        //well isn't this interesting.  we lack a game station.
-      //game_window->load_game
-	//(game_scenario, new NextTurnNetworked(game_scenario->getTurnmode(),
-					      //game_scenario->s_random_turns));
       }
 }
 
@@ -996,49 +991,8 @@ GameScenario *Driver::load_game(Glib::ustring file_path)
 void Driver::stressTestNextRound()
 {
   static int count = 1;
-  /*
-  static time_t prev_round_start = time(NULL);
-  if (count == 1)
-    {
-      FILE * fileptr = fopen("/tmp/crapola.csv", "w");
-      fclose(fileptr);
-    }
-  time_t now = time(NULL);
-  */
   count++;
   printf ("starting round %d!\n", count);
-  /*
-  FILE * fileptr = fopen("/tmp/crapola.csv", "a");
-  int total_fights = Playerlist::getInstance()->countFightsThisTurn();
-  int total_moves = Playerlist::getInstance()->countMovesThisTurn();
-  fprintf(fileptr, "%d, %d, %d, %d, %d, %d, %d, %d, %d, %d", count, 
-          now - prev_round_start,
-          Stacklist::getNoOfStacks(), 
-          Stacklist::getNoOfArmies(), 
-          total_fights,
-          total_moves,
-          Ruinlist::getInstance()->countUnexploredRuins(Playerlist::getInstance()->getNeutral()),
-          Playerlist::getInstance()->countBlessings(),
-          Citylist::getInstance()->countCities(Playerlist::getInstance()->getNeutral()), 
-          Playerlist::getInstance()->countPlayersAlive());
-  //if (Playerlist::getInstance()->countPlayersAlive() == 2)
-    {
-      Playerlist *pl = Playerlist::getInstance();
-      for (Playerlist::iterator it = pl->begin(); it != pl->end(); it++)
-        {
-          if ((*it)->isDead() == true)
-            continue;
-          if ((*it) == pl->getNeutral())
-            continue;
-          fprintf(fileptr,", %d: (%d %d)", (*it)->getId(), Citylist::getInstance()->countCities(*it), (*it)->getHeroes().size() + (*it)->countAllies());
-        }
-    }
-  fprintf(fileptr,"\n");
-  fclose(fileptr);
-      
-  prev_round_start = now;
-  sleep (1);
-  */
 }
 
 void Driver::stress_test()

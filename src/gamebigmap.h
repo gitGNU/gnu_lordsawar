@@ -1,5 +1,5 @@
 //  Copyright (C) 2007, Ole Laursen
-//  Copyright (C) 2007, 2008, 2009, 2011 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -80,14 +80,6 @@ class GameBigMap: public BigMap
     //draw a fight graphic, or not
     void setFighting(LocationBox ruckus) {d_fighting = ruckus;};
 
-    void reset_zoom();
-    void zoom_in();
-    void zoom_out();
-
-    static const double zoom_step = 10.0;
-    static const double max_magnification_factor = 200.0;
-    static const double min_magnification_factor = 50.0;
-
     void reset_path_calculator(Stack *s);
 
     bool d_intense_combat; 
@@ -113,7 +105,6 @@ class GameBigMap: public BigMap
     // for the marching ants around selected stack
     sigc::connection selection_timeout_handler;
     bool on_selection_timeout();
-    void zoom_view(double percent);
 
     virtual void after_draw();
     LocationBox d_fighting;

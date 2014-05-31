@@ -996,9 +996,6 @@ void Armyset::support_backward_compatibility()
 {
   FileCompat::getInstance()->support_type(FileCompat::ARMYSET, file_extension, 
                                           d_tag, true);
-  //FileCompat::getInstance()->support_version
-    //(FileCompat::ARMYSET, "0.2.0", "0.2.1",
-     //sigc::ptr_fun(&Armyset::upgrade));
   FileCompat::getInstance()->support_version
     (FileCompat::ARMYSET, "0.2.1", "0.3.0",
      sigc::ptr_fun(&Armyset::upgrade));

@@ -86,6 +86,7 @@ GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
      selection_timeout);
   shift_key_is_down = false;
   control_key_is_down = false;
+  magnification_factor = 1.0;
 }
 
 GameBigMap::~GameBigMap()
@@ -554,51 +555,8 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	  mouse_state = NONE;
 	}
     }
-  else if (e.button == MouseButtonEvent::WHEEL_UP)
-    {
-      //zoom_in();
-    }
-  else if (e.button == MouseButtonEvent::WHEEL_DOWN)
-    {
-      //zoom_out();
-    }
 }
 
-void GameBigMap::zoom_in()
-{
-  if (input_locked)
-    return;
-  if ((zoom_step / 100.0) + magnification_factor <= max_magnification_factor / 100.0)
-    {
-      int ts = GameMap::getInstance()->getTileSize();
-      Rectangle new_view;
-      double mag = magnification_factor + (zoom_step / 100.0);
-      new_view.w = image.get_width() / (ts * mag) + 1;
-      new_view.h = image.get_height() / (ts * mag) + 1;
-      if (new_view.w <= GameMap::getWidth() && 
-	  new_view.h <= GameMap::getHeight() && 
-	  new_view.w >= 0 && new_view.h >= 0)
-	zoom_view(zoom_step);
-    }
-}
-
-void GameBigMap::zoom_out()
-{
-  if (input_locked)
-    return;
-  if (magnification_factor - (zoom_step / 100.0) >= min_magnification_factor / 100.0)
-    {
-      int ts = GameMap::getInstance()->getTileSize();
-      Rectangle new_view;
-      double mag = magnification_factor - (zoom_step / 100.0);
-      new_view.w = image.get_width() / (ts * mag) + 1;
-      new_view.h = image.get_height() / (ts * mag) + 1;
-      if (new_view.w <= GameMap::getWidth() && 
-	  new_view.h <= GameMap::getHeight() && 
-	  new_view.w >= 0 && new_view.h >= 0)
-	zoom_view(-(const double)zoom_step);
-    }
-}
 
 void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 {
@@ -891,27 +849,6 @@ void GameBigMap::mouse_motion_event(MouseMotionEvent e)
 
   prev_mouse_pos = e.pos;
   last_tile = tile;
-}
-
-void GameBigMap::reset_zoom()
-{
-  magnification_factor = 1.0;
-  screen_size_changed(image);
-  draw(Playerlist::getViewingplayer(), true);
-  view_changed.emit(view);
-}
-
-void GameBigMap::zoom_view(double percent)
-{
-  magnification_factor += percent / 100.0;
-  //call with +2, or -2
-  //Rectangle new_view = view;
-  //new_view.dim += Vector<int>(tiles, tiles);
-  //new_view.pos += Vector<int>(tiles*-1/2, tiles*-1/2);
-  //set_view (new_view);
-  screen_size_changed(image);
-  draw(Playerlist::getViewingplayer(), true);
-  view_changed.emit(view);
 }
 
 void GameBigMap::after_draw()

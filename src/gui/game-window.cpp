@@ -145,9 +145,6 @@ GameWindow::GameWindow()
 
     xml->get_widget("menubar", menubar);
     xml->get_widget("bigmap_image", bigmap_image);
-    //bigmap_drawingarea->set_double_buffered(false);
-    bigmap_image->signal_draw().connect
-      (sigc::mem_fun(*this, &GameWindow::on_bigmap_exposed));
     bigmap_image->signal_size_allocate().connect
       (sigc::mem_fun(*this, &GameWindow::on_bigmap_surface_changed));
     bigmap_image->grab_focus();
@@ -175,9 +172,6 @@ GameWindow::GameWindow()
 
     // the map image
     xml->get_widget("smallmap_image", smallmap_image);
-    //map_drawingarea->set_double_buffered(false);
-    smallmap_image->signal_draw().connect
-      (sigc::mem_fun(*this, &GameWindow::on_smallmap_exposed));
     xml->get_widget("map_eventbox", map_eventbox);
     xml->get_widget("map_container", map_container);
     map_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
@@ -857,29 +851,6 @@ bool GameWindow::on_smallmap_mouse_motion_event(GdkEventMotion *e)
   return true;
 }
 
-bool GameWindow::on_smallmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr)
-{
-  return true;
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
-    Gdk::Pixbuf::create(game->get_smallmap().get_surface(), 0, 0, 
-                        game->get_smallmap().get_width(), 
-                        game->get_smallmap().get_height());
-  smallmap_image->property_pixbuf() = pixbuf;
-  return true;
-}
-
-bool GameWindow::on_bigmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr)
-{
-  return true;
-  //printf("drawing!\n");
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
-    Gdk::Pixbuf::create(game->get_bigmap().get_surface(), 0, 0, 
-                        bigmap_image->get_allocated_width(), 
-                        bigmap_image->get_allocated_height());
-  bigmap_image->property_pixbuf() = pixbuf;
-  return true;
-}
-
 void GameWindow::on_bigmap_surface_changed(Gtk::Allocation box)
 {
   static Gtk::Allocation last_box = Gtk::Allocation(0,0,1,1);
@@ -889,11 +860,8 @@ void GameWindow::on_bigmap_surface_changed(Gtk::Allocation box)
   }
 
   if (game) {
-    //if (box.get_width() != last_box.get_width() || box.get_height() != last_box.get_height())
-      {
-	game->get_bigmap().screen_size_changed(bigmap_image->get_allocation());
-	game->redraw();
-      }
+    game->get_bigmap().screen_size_changed(bigmap_image->get_allocation());
+    game->redraw();
   }
   last_box = box;
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
@@ -1088,9 +1056,6 @@ void GameWindow::on_game_stopped()
           dialog.show_all();
           dialog.run();
           dialog.hide();
-	//load_game(game_scenario, 
-		  //new NextTurnNetworked(game_scenario->getTurnmode(),
-					//game_scenario->s_random_turns));
         }
     }
 }

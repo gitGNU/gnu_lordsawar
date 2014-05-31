@@ -322,8 +322,6 @@ class GameWindow: public sigc::trackable
     
     void setup_menuitem(Gtk::MenuItem*, sigc::slot<void> , sigc::signal<void, bool> &);
     void on_bigmap_surface_changed(Gtk::Allocation box);
-    bool on_bigmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr);
-    bool on_smallmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr);
     void on_group_stack_toggled(bool lock);
 
     Player *game_winner;

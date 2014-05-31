@@ -1245,22 +1245,6 @@ int AI_Allocation::defaultStackMovements()
               // enemy city. Let's iterator through all cities and attack the first
               // one we can lay our hands on.
               debug("Mmmh, did not work.")
-                //sleep (10);
-                /*
-                   MoveResult *result = 0;
-                   for (Citylist::iterator cit = allCities->begin(); cit != allCities->end(); cit++)
-                   if ((*cit)->getOwner() != d_owner)
-                   {
-                   debug("Let's try "<<(*cit).getName() <<" instead.")
-                   result = moveStack(s, (*cit)->getPos());
-                   if (result && result->moveSucceeded())
-                   {
-                   debug("Worked")
-                   count++;
-                   break;
-                   }
-                   }
-                 */
             }
         }
       else

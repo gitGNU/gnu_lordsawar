@@ -206,15 +206,8 @@ void Game::addPlayer(Player *p)
   connections[p->getId()].push_back
     (p->ruinfight_started.connect (sigc::mem_fun(*this, &Game::on_ruinfight_started)));
 
-    //(p->ruinfight_started.connect
-     //(sigc::mem_fun
-      //(ruinfight_started, &sigc::signal<void, Stack *, Stack *>::emit)));
   connections[p->getId()].push_back
     (p->ruinfight_finished.connect (sigc::mem_fun(*this, &Game::on_ruinfight_finished)));
-  //connections[p->getId()].push_back
-    //(p->ruinfight_finished.connect
-     //(sigc::mem_fun
-      //(ruinfight_finished, &sigc::signal<void, Fight::Result>::emit)));
   connections[p->getId()].push_back
     (p->cityfight_finished.connect (sigc::mem_fun(*this, &Game::on_city_fight_finished))); 
   if (p->getType() == Player::NETWORKED && p == Playerlist::getActiveplayer())
@@ -960,7 +953,6 @@ void Game::invading_city(City* city, int gold)
 void Game::lock_inputs()
 {
   // don't accept modifying user input from now on
-  bigmap->reset_zoom();
   bigmap->set_input_locked(true);
   smallmap->set_input_locked(true);
   input_locked = true;
@@ -1137,17 +1129,6 @@ void Game::loadGame()
     lock_inputs();
 
   d_nextTurn->start();
-#if 0
-  else
-    {
-      lock_inputs();
-      update_sidebar_stats();
-      player->startTurn();
-      d_nextTurn->endTurn();
-      if (Playerlist::getInstance()->countPlayersAlive())
-	update_control_panel();
-    }
-#endif
 }
 
 void Game::stopGame()

@@ -3391,27 +3391,4 @@ PixMask* GraphicsCache::circled(PixMask* image, Gdk::RGBA colour, bool coloured,
   result->draw_pixbuf(image->to_pixbuf(), 0, 0, 0, 0, width, height);
   delete copy;
   return result;
-  //return image->copy();
-  /*
-  int width = image->get_width();
-  int height = image->get_height();
-  Glib::RefPtr<Gdk::Pixmap> pixmap = Gdk::Pixmap::create(Glib::RefPtr<Gdk::Drawable>(), width, height, 24);
-
-  Cairo::RefPtr<Cairo::Context> cr = pixmap->create_cairo_context();
-  draw_circle(cr, width_percent, width, height, colour, coloured, false);
-
-  Glib::RefPtr<Gdk::Bitmap> mask;
-  int size = width * height / 8;
-  char *data = (char*)malloc(size);
-  memset(data, 0, size);
-  mask = Gdk::Bitmap::create(data, width, height);
-  cr = mask->create_cairo_context();
-  //here we merge the mask of the army image with the circle mask
-  mask->draw_drawable(Gdk::GC::create(mask), image->get_mask(), 0, 0, 0, 0, width, height);
-  draw_circle(cr, width_percent, width, height, colour, coloured, true);
-  PixMask *result = PixMask::create(pixmap, mask);
-  result->draw_pixbuf(image->to_pixbuf(), 0, 0, 0, 0, width, height);
-  free(data);
-  return result;
-  */
 }
