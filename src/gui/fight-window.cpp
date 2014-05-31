@@ -219,117 +219,10 @@ int FightWindow::compute_max_rows(const armies_type &attackers,
 	}
     }
 
-#if 0
-    std::cerr << "used height " << old_height << std::endl;
-#endif
     // use old because the algorithm goes one step too far before it stops
     return old_height;
 }
 
-/*
-void FightWindow::add_army(Army *army, int initial_hp,
-			   std::vector<Gtk::HBox *> &hboxes,
-			   Gtk::VBox *vbox,
-			   int current_no, int max_rows)
-{
-    GraphicsCache *gc = GraphicsCache::getInstance();
-    // construct the army box
-    Gtk::VBox *army_box = manage(new Gtk::VBox);
-	
-    // image
-    Glib::RefPtr<Gdk::Pixbuf> pic = gc->getArmyPic(army)->to_pixbuf();
-    Gtk::Image *image = new Gtk::Image();
-    image->property_pixbuf() = pic;
-    army_box->add(*manage(image));
-    
-    Gtk::EventBox *ebox = new Gtk::EventBox();
-    Gtk::DrawingArea *drawing_area = new Gtk::DrawingArea();
-    drawing_area->property_width_request() = pic->get_width();
-    drawing_area->property_height_request() = 3;
-    if (army->getStat(Army::SHIP, false))
-      {
-        SmallTile *water = 
-          Tilesetlist::getInstance()->getSmallTile(GameMap::getTileset()->getBaseName(), Tile::WATER);
-        Gdk::RGBA watercolor = water->getColor();
-        drawing_area->override_background_color(watercolor, Gtk::STATE_FLAG_NORMAL);
-      }
-    ebox->add(*manage(drawing_area));
-    army_box->add(*manage(ebox));
-    // hit points graph
-    Gtk::HBox *pbox = manage(new Gtk::HBox);
-    Gtk::Alignment *palignment = manage(new Gtk::Alignment(Gtk::ALIGN_START));
-    Gtk::ProgressBar *progress = manage(new Gtk::ProgressBar);
-    progress->set_fraction(double(initial_hp) / army->getStat(Army::HP));
-    //progress->set_size_request(pic->get_width(), 12);
-    //progress->set_size_request(12, 12);
-    //progress->property_orientation() = Gtk::ORIENTATION_HORIZONTAL;
-    //army_box->pack_start(*progress, Gtk::PACK_SHRINK, 4);
-    progress->property_expand() = false;
-    palignment->property_expand() = false;
-    pbox->property_expand() = false;
-    progress->set_hexpand(false);
-    palignment->set_hexpand(false);
-    pbox->set_hexpand(false);
-    progress->set_vexpand(false);
-    palignment->set_vexpand(false);
-    pbox->set_vexpand(false);
-    army_box->pack_start(*pbox, Gtk::PACK_SHRINK, 0);
-    palignment->add(*pbox);
-    progress->property_width_request()=pic->get_width();
-    progress->property_height_request()=12;
-    pbox->pack_start(*progress, Gtk::PACK_SHRINK, 4);
-
-    // then add it to the right hbox
-    int current_row = (current_no / max_cols);
-    if (current_row >= int(hboxes.size()))
-    {
-	// add an hbox
-	Gtk::HBox *hbox = manage(new Gtk::HBox);
-	hbox->set_spacing(6);
-	hboxes.push_back(hbox);
-
-	Gtk::Alignment *a = manage(new Gtk::Alignment(Gtk::ALIGN_START));
-	a->property_xscale() = 0;
-	a->add(*hbox);
-	vbox->pack_start(*a, Gtk::PACK_SHRINK);
-    }
-
-    Gtk::HBox *hbox = hboxes[current_row];
-    hbox->pack_start(*army_box, Gtk::PACK_SHRINK);
-
-    // finally add an entry for later use
-    ArmyItem item;
-    item.army = army;
-    item.hp = initial_hp;
-    item.bar = progress;
-    item.box = ebox;
-    item.image = image;
-    item.exploding = false;
-    army_items.push_back(item);
-}
-*/
-Glib::ustring hp_progress(double progress)
-{
-  //Are we having fun yet?
-  /*
-  if (progress > 0.75)
-    return "████";
-  else if (progress > 0.50)
-    return "███";
-  else if (progress > 0.25)
-    return "██";
-  else if (progress > 0)
-    return "█";
-  else
-    return "";
-  */
-  if (progress > 0.50)
-    return "██";
-  else if (progress > 0)
-    return "█";
-  else
-    return "";
-}
 void FightWindow::add_army(Army *army, int initial_hp,
 			   std::vector<Gtk::HBox *> &hboxes,
 			   Gtk::VBox *vbox,
@@ -338,7 +231,6 @@ void FightWindow::add_army(Army *army, int initial_hp,
     Gtk::VBox *army_box;
     Gtk::Image *army_image;
     Gtk::DrawingArea *water_drawingarea;
-    Gtk::Label *hp_label;
     Gtk::EventBox *eventbox;
 
     Glib::RefPtr<Gtk::Builder> xml
@@ -348,7 +240,6 @@ void FightWindow::add_army(Army *army, int initial_hp,
     xml->get_widget("eventbox", eventbox);
     xml->get_widget("army_image", army_image);
     xml->get_widget("water_drawingarea", water_drawingarea);
-    xml->get_widget("hp_label", hp_label);
 	
     // image
     GraphicsCache *gc = GraphicsCache::getInstance();
@@ -364,11 +255,6 @@ void FightWindow::add_army(Army *army, int initial_hp,
         Gdk::RGBA watercolor = water->getColor();
         water_drawingarea->override_background_color(watercolor, Gtk::STATE_FLAG_NORMAL);
       }
-
-    // hit points graph
-    hp_label->set_text(hp_progress(double(initial_hp) / army->getStat(Army::HP)));
-    //hp_progressbar->property_width_request()=pic->get_width();
-    //hp_progressbar->property_height_request()=12;
 
     // then add it to the right hbox
     int current_row = (current_no / max_cols);
@@ -392,7 +278,6 @@ void FightWindow::add_army(Army *army, int initial_hp,
     ArmyItem item;
     item.army = army;
     item.hp = initial_hp;
-    item.bar = hp_label;
     item.box = eventbox;
     item.image = army_image;
     item.exploding = false;
@@ -433,11 +318,8 @@ bool FightWindow::do_round()
         if (i->hp < 0)
           i->hp = 0;
         double fraction = double(i->hp) / i->army->getStat(Army::HP);
-        //i->bar->set_fraction(fraction);
-        i->bar->set_text(hp_progress(fraction));
         if (fraction == 0.0)
         {
-          i->bar->hide();
           i->box->hide();
           i->image->property_pixbuf() = expl;
           i->exploding = true;

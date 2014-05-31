@@ -19,7 +19,6 @@
 #include <config.h>
 
 #include <iomanip>
-
 #include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 #include <vector>

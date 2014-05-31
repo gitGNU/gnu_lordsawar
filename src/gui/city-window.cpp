@@ -256,8 +256,6 @@ void CityWindow::fill_in_production_info()
     Glib::RefPtr<Gdk::Pixbuf> pic;
     GraphicsCache *gc = GraphicsCache::getInstance();
     int slot = city->getActiveProductionSlot();
-    //Glib::RefPtr<Gdk::Pixbuf> s
-	//= GraphicsCache::getInstance()->getCircledArmyPic(as, 0, player, NULL, false, Shield::NEUTRAL, true)->to_pixbuf();
     Glib::RefPtr<Gdk::Pixbuf> empty_pic =
       GraphicsCache::getInstance()->getCircledArmyPic(as, 0, player, NULL, false, Shield::NEUTRAL, false)->to_pixbuf();
     
@@ -321,10 +319,7 @@ void CityWindow::fill_in_production_info()
         destination_button->set_sensitive(false);
         on_hold_button->set_sensitive(false);
         for (unsigned int i = 0; i < production_toggles.size(); ++i) 
-          {
-           // production_toggles[i]->set_sensitive(false);
-	    production_toggles[i]->set_active(false);
-          }
+          production_toggles[i]->set_active(false);
         production_info_label1->hide();
         production_info_label2->hide();
       }
@@ -338,8 +333,6 @@ void CityWindow::fill_in_production_info()
         rename_button->set_sensitive(true);
         destination_button->set_sensitive(true);
         on_hold_button->set_sensitive(true);
-        //for (unsigned int i = 0; i < production_toggles.size(); ++i) 
-          //production_toggles[i]->set_sensitive(true);
         production_info_label1->show();
         production_info_label2->show();
       }
