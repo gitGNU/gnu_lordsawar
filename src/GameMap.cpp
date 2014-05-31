@@ -907,6 +907,8 @@ void GameMap::demote_lone_tile(int minx, int miny, int maxx, int maxy,
 	  {
 	    //if we're not connected in a square of
 	    //same types, then we're a lone tile.
+            if (getTile(j,i)->getBuilding())
+              continue;
 	    if (tile_is_connected_to_other_like_tiles(tile, i, j) == 0)
 	      {
 		//okay, this is a lone tile.
@@ -1163,6 +1165,12 @@ std::list<Stack*> GameMap::getEnemyStacks(std::list<Vector<int> > positions)
 
 std::list<Stack*> GameMap::getEnemyStacks(Vector<int> pos, Player *player)
 {
+  if (!getStacks(pos))
+    {
+      std::list<Stack*> empty;
+      return empty;
+    }
+
   if (player == NULL)
     player = Playerlist::getActiveplayer();
   return getStacks(pos)->getEnemyStacks(player);
@@ -1170,12 +1178,18 @@ std::list<Stack*> GameMap::getEnemyStacks(Vector<int> pos, Player *player)
 
 Stack* GameMap::getStack(Vector<int> pos)
 {
-  return getStacks(pos)->getStack();
+  if (getStacks(pos))
+    return getStacks(pos)->getStack();
+  else
+    return NULL;
 }
 	
 StackTile* GameMap::getStacks(Vector<int> pos)
 {
-  return getInstance()->getTile(pos)->getStacks();
+  if (getInstance()->getTile(pos))
+    return getInstance()->getTile(pos)->getStacks();
+  else
+    return NULL;
 }
 
 Stack *GameMap::groupStacks(Vector<int> pos)
@@ -1185,12 +1199,16 @@ Stack *GameMap::groupStacks(Vector<int> pos)
 
 Stack *GameMap::groupStacks(Vector<int> pos, Player *player)
 {
-  return getStacks(pos)->group(player);
+  if (getStacks(pos))
+    return getStacks(pos)->group(player);
+  else
+    return NULL;
 }
   
 void GameMap::groupStacks(Stack *stack)
 {
-  return getStacks(stack->getPos())->group(Playerlist::getActiveplayer(), stack);
+  if (getStacks(stack->getPos()))
+    return getStacks(stack->getPos())->group(Playerlist::getActiveplayer(), stack);
 }
   
 void GameMap::clearStackPositions()
@@ -1438,9 +1456,6 @@ bool GameMap::canPutBuilding(Maptile::Building bldg, guint32 size, Vector<int> t
   switch (bldg)
     {
       case Maptile::CITY: 
-      case Maptile::RUIN: 
-      case Maptile::TEMPLE: 
-      case Maptile::SIGNPOST:
 	//gotta be on grass.
 	  {
 	    if (making_islands)
@@ -1450,6 +1465,22 @@ bool GameMap::canPutBuilding(Maptile::Building bldg, guint32 size, Vector<int> t
 		{
 		  Vector<int> pos = to + Vector<int>(i, j);
 		  if (getTerrainType(pos) != Tile::GRASS)
+		    return false;
+		}
+	  }
+	break;
+      case Maptile::RUIN: 
+      case Maptile::TEMPLE: 
+      case Maptile::SIGNPOST:
+	  {
+	    if (making_islands)
+	      return true;
+	    for (unsigned int i = 0; i < size; i++)
+	      for (unsigned int j = 0; j < size; j++)
+		{
+		  Vector<int> pos = to + Vector<int>(i, j);
+		  if (getTerrainType(pos) == Tile::WATER ||
+                      getTerrainType(pos) == Tile::VOID)
 		    return false;
 		}
 	  }
@@ -1585,21 +1616,29 @@ bool GameMap::moveBuilding(Vector<int> from, Vector<int> to, guint32 new_width)
 
 Tile::Type GameMap::getTerrainType(Vector<int> tile)
 {
-  return getTile(tile)->getType();
+  if (getTile(tile))
+    return getTile(tile)->getType();
+  else
+    return Tile::NONE;
 }
 
 Maptile::Building GameMap::getBuilding(Vector<int> tile)
 {
-  return getTile(tile)->getBuilding();
+  if (getTile(tile))
+    return getTile(tile)->getBuilding();
+  return Maptile::NONE;
 }
 
 void GameMap::setBuilding(Vector<int> tile, Maptile::Building building)
 {
-  getTile(tile)->setBuilding(building);
+  if (getTile(tile))
+    getTile(tile)->setBuilding(building);
 }
 
 guint32 GameMap::getBuildingSize(Vector<int> tile)
 {
+  if (getTile(tile) == NULL)
+    return 0;
   switch (getTile(tile)->getBuilding())
     {
     case Maptile::CITY: return getCity(tile)->getSize(); break;
@@ -1648,7 +1687,10 @@ bool GameMap::moveStack(Stack *stack, Vector<int> to)
 	
 MapBackpack *GameMap::getBackpack(Vector<int> pos)
 {
-  return getInstance()->getTile(pos)->getBackpack();
+  if (getInstance()->getTile(pos))
+    return getInstance()->getTile(pos)->getBackpack();
+  else
+    return NULL;
 }
 		    
 void GameMap::moveBackpack(Vector<int> from, Vector<int> to)
@@ -1856,7 +1898,11 @@ Rectangle GameMap::putTerrain(Rectangle r, Tile::Type type, int tile_style_id, b
           continue;
 	if (t->getType() != type)
           {
-            t->setIndex(index);
+            //it's always grass under cities.
+            if (t->getBuilding() == Maptile::CITY)
+              t->setIndex(tileset->getIndex(Tile::GRASS));
+            else
+              t->setIndex(index);
             updateShips(Vector<int>(x,y));
             replaced = true;
           }
@@ -2074,7 +2120,9 @@ void GameMap::removeStack(Stack *s)
 	
 guint32 GameMap::countArmyUnits(Vector<int> pos)
 {
-  return getStacks(pos)->countNumberOfArmies(Playerlist::getActiveplayer());
+  if (getStacks(pos))
+    return getStacks(pos)->countNumberOfArmies(Playerlist::getActiveplayer());
+  return 0;
 }
 
 std::list<Stack*> GameMap::getNearbyFriendlyStacks(Vector<int> pos, int dist)
