@@ -147,23 +147,13 @@ bool Maptile::hasLandBuilding() const
       return false;
       break;
     case Maptile::CITY:
-      return true;
-      break;
     case Maptile::RUIN:
-      return true;
-      break;
     case Maptile::TEMPLE:
-      return true;
-      break;
     case Maptile::SIGNPOST:
-      return true;
-      break;
     case Maptile::ROAD:
       return true;
       break;
     case Maptile::PORT:
-      return false;
-      break;
     case Maptile::BRIDGE:
       return false;
       break;
@@ -179,23 +169,13 @@ bool Maptile::hasWaterBuilding() const
       return false;
       break;
     case Maptile::CITY:
-      return false;
-      break;
     case Maptile::RUIN:
-      return false;
-      break;
     case Maptile::TEMPLE:
-      return false;
-      break;
     case Maptile::SIGNPOST:
-      return false;
-      break;
     case Maptile::ROAD:
       return false;
       break;
     case Maptile::PORT:
-      return true;
-      break;
     case Maptile::BRIDGE:
       return true;
       break;
