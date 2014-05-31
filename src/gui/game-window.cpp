@@ -366,9 +366,6 @@ void GameWindow::show()
         status_box->show_stats();
       }
       
-    //seems unnecessary, but this is for starting up a second game after
-    //closing the first game window.
-    //fixme: find out why this line is necessary
     on_bigmap_surface_changed(bigmap_image->get_allocation());
 }
 
@@ -1170,9 +1167,6 @@ void GameWindow::on_stack_info_activated()
   Stack *s = d.get_selected_stack();
   d.hide();
   status_box->on_stack_info_changed(s);
-  //FIXME, armies don't stay selected in the right way.  to reproduce:
-  //go in with all three selected.  deselect middle one in stackinfodialog,
-  //then return.
 }
 
 void GameWindow::on_disband_activated()

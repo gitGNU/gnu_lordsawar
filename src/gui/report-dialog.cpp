@@ -96,10 +96,6 @@ ReportDialog::ReportDialog(Gtk::Window &parent, Player *player, ReportType type)
 		  		total), total);
   production_label->set_text(s);
 
-  Gtk::Button *close_button;
-  xml->get_widget("close_button", close_button);
-  close_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &ReportDialog::on_close_button));
   xml->get_widget("army_alignment", army_alignment);
   xml->get_widget("city_alignment", city_alignment);
   xml->get_widget("gold_alignment", gold_alignment);
@@ -109,7 +105,6 @@ ReportDialog::ReportDialog(Gtk::Window &parent, Player *player, ReportType type)
   updateCityChart();
   updateWinningChart();
   fill_in_info();
-  closing = false;
 }
 
 ReportDialog::~ReportDialog()
@@ -118,13 +113,6 @@ ReportDialog::~ReportDialog()
     delete vectormap;
     delete armymap;
     delete citymap;
-}
-
-void ReportDialog::on_close_button()
-{
-  closing = true;
-  //FIXME: find out why the page_switch events with crap data,
-  //and then remove this function, and the closing variable too.
 }
 
 void ReportDialog::hide()
@@ -182,8 +170,6 @@ void ReportDialog::on_vector_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 
 void ReportDialog::on_switch_page(Gtk::Widget *page, guint number)
 {
-  if (closing)
-    return;
   switch (number)
     {
     case ARMY:

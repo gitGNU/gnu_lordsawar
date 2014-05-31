@@ -87,14 +87,11 @@ class HistoryReportDialog: public sigc::trackable
     Gtk::VBox *events_list_box;
 
     void addHistoryEvent(NetworkHistory *event);
-    void on_close_button();
     void on_map_changed(Cairo::RefPtr<Cairo::Surface> map);
     void on_turn_changed(Gtk::Scale *scale);
     void fill_in_turn_info(guint32 turn);
     void on_switch_page(Gtk::Widget *page, guint number);
     void update_window_title();
-
-    bool closing;
 };
 
 #endif

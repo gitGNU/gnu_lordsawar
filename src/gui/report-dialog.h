@@ -89,8 +89,6 @@ class ReportDialog: public sigc::trackable
     const ArmiesColumns armies_columns;
     Glib::RefPtr<Gtk::ListStore> armies_list;
     void addProduction(const Action *action);
-    void on_close_button();
-    bool closing;
     void fill_in_info();
     void updateArmyChart();
     void updateCityChart();

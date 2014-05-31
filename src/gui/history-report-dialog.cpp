@@ -78,18 +78,7 @@ HistoryReportDialog::HistoryReportDialog(Gtk::Window &parent, Player *p, History
   xml->get_widget("gold_label", gold_label);
   xml->get_widget("winner_label", winner_label);
 
-  //events_list = Gtk::ListStore::create(events_columns);
-  //xml->get_widget("treeview", events_treeview);
-  //events_treeview->set_model(events_list);
-  //events_treeview->append_column("", events_columns.box);
-  //events_treeview->append_column("", events_columns.desc);
-
   xml->get_widget("events_list_box", events_list_box);
-  Gtk::Button *close_button;
-  xml->get_widget("close_button", close_button);
-  close_button->signal_clicked().connect
-    (sigc::mem_fun(*this, &HistoryReportDialog::on_close_button));
-  closing = false;
 
   xml->get_widget("city_alignment", city_alignment);
   xml->get_widget("ruin_alignment", ruin_alignment);
@@ -521,8 +510,6 @@ void HistoryReportDialog::fill_in_turn_info(guint32 turn)
 
 void HistoryReportDialog::on_switch_page(Gtk::Widget *page, guint number)
 {
-  if (closing)
-    return;
   update_window_title();
 }
 
@@ -684,12 +671,6 @@ void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
       events_list_box->pack_start(*manage(box), Gtk::PACK_SHRINK, 0);
       events_list_box->show_all();
     }
-}
-void HistoryReportDialog::on_close_button()
-{
-  closing = true;
-  //FIXME: find out why the page_switch events with crap data,
-  //and then remove this function, and the closing variable too.
 }
 
 void HistoryReportDialog::generatePastWinningCounts()
