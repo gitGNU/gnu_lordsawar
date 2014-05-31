@@ -154,7 +154,6 @@ private:
 
     void dumpNodeMap(Vector<int> dest);
     bool compareNodeMaps(void *map);
-    ArmyProto *makeScout();
     bool delete_stack;
 
 };
