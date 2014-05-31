@@ -111,7 +111,7 @@ GameScenario::GameScenario(Glib::ustring savegame, bool& broken)
       ext.push_back(MAP_EXT);
       ext.push_back(SAVE_EXT);
       Glib::ustring filename = t.getFirstFile(ext, broken);
-      XML_Helper helper(filename, std::ios::in, Configuration::s_zipfiles);
+      XML_Helper helper(filename, std::ios::in);
       broken = loadWithHelper(helper);
       File::erase(filename);
       helper.close();
@@ -582,7 +582,7 @@ bool GameScenario::saveGame(Glib::ustring filename, Glib::ustring extension) con
   Glib::ustring goodfilename = File::add_ext_if_necessary(filename, extension);
 
   Glib::ustring tmpfile = File::get_tmp_file();
-  XML_Helper helper(tmpfile, std::ios::out, Configuration::s_zipfiles);
+  XML_Helper helper(tmpfile, std::ios::out);
   retval &= saveWithHelper(helper);
   helper.close();
 
@@ -1067,7 +1067,7 @@ public:
       ext.push_back(MAP_EXT);
       ext.push_back(SAVE_EXT);
       Glib::ustring tmpfile = t.getFirstFile(ext, broken);
-      XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
+      XML_Helper helper(tmpfile, std::ios::in);
       helper.registerTag(GameMap::d_tag, 
 			 sigc::mem_fun(this, &ParamLoader::loadParam));
       helper.registerTag(GameScenario::d_tag, 
@@ -1191,7 +1191,7 @@ public:
       ext.push_back(MAP_EXT);
       ext.push_back(SAVE_EXT);
       Glib::ustring tmpfile = t.getFirstFile(ext, broken);
-      XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
+      XML_Helper helper(tmpfile, std::ios::in);
       helper.registerTag(GameScenario::d_tag, 
 			 sigc::mem_fun(this, &PlayModeLoader::loadParam));
       bool retval = helper.parse();
@@ -1234,7 +1234,7 @@ public:
       ext.push_back(MAP_EXT);
       ext.push_back(SAVE_EXT);
       Glib::ustring tmpfile = t.getFirstFile(ext, broken);
-      XML_Helper helper(tmpfile, std::ios::in, Configuration::s_zipfiles);
+      XML_Helper helper(tmpfile, std::ios::in);
       helper.registerTag(GameScenario::d_tag, 
 			 sigc::mem_fun(this, &DetailsLoader::loadDetails));
       helper.registerTag(Player::d_tag, 

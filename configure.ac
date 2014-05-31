@@ -214,18 +214,6 @@ AC_ARG_WITH(resolution,
             SCREEN_RESOLUTION="$withval", SCREEN_RESOLUTION="800x600")
 AC_SUBST(SCREEN_RESOLUTION)
 
-dnl ...do we want to zip (and by the way obfuscate) the save files...
-AC_ARG_ENABLE(zipfiles,
-             [  --enable-zipping    zip save files (experimental) [default=no]],
-             zipfiles="$enableval", zipfiles="no")
-
-ZIP_FILES="false"
-if test x$zipfiles = xyes; then
-    ZIP_FILES="true"
-fi
-AC_SUBST(ZIP_FILES)
-
-
 dnl ..do we want to disable optimizations? (useful only for some debugging cases)...
 AC_ARG_ENABLE(optimizations,
              [  --enable-optimizations    enable compiler optimizations (disable for debugging) [default=yes]],

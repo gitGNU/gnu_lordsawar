@@ -128,7 +128,7 @@ bool Armyset::save(Glib::ustring filename, Glib::ustring extension) const
   Glib::ustring goodfilename = File::add_ext_if_necessary(filename, extension);
 
   Glib::ustring tmpfile = File::get_tmp_file();
-  XML_Helper helper(tmpfile, std::ios::out, Configuration::s_zipfiles);
+  XML_Helper helper(tmpfile, std::ios::out);
   helper.begin(LORDSAWAR_ARMYSET_VERSION);
   broken = !save(&helper);
   helper.close();

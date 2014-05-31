@@ -97,9 +97,8 @@ class XML_Helper
           * 
           * @param filename     the filename where data read from/written to
           * @param openmode     either std::ios::in for reading or out for writing
-          * @param zip          when writing, obfuscate files or not
           */ 
-        XML_Helper(Glib::ustring filename, std::ios::openmode mode, bool zip);
+        XML_Helper(Glib::ustring filename, std::ios::openmode mode);
 
         /** This constructor reads from a given input stream.
           * 
@@ -213,8 +212,8 @@ class XML_Helper
         //! Used internally for the expat callback
         bool tag_close(Glib::ustring tag, Glib::ustring cdata = "");
 
-        static Glib::ustring get_top_tag(Glib::ustring filename, bool zip);
-        static bool rewrite_version(Glib::ustring filename, Glib::ustring tag, Glib::ustring new_version, bool zip);
+        static Glib::ustring get_top_tag(Glib::ustring filename);
+        static bool rewrite_version(Glib::ustring filename, Glib::ustring tag, Glib::ustring new_version);
         
     private:
         /** Prepends a number of tags (depending on the number of opened tags)
@@ -249,19 +248,18 @@ class XML_Helper
         XML_Parser d_parser;
 
         bool d_failed;
-        bool d_zip;
 };
 
 class VersionLoader 
 {
 public:
-    VersionLoader(Glib::ustring filename, Glib::ustring tag, Glib::ustring &version, bool &broken, bool zip = false)
+    VersionLoader(Glib::ustring filename, Glib::ustring tag, Glib::ustring &version, bool &broken)
       {
         std::ifstream in(filename.c_str());
         if (in)
           {
             d_tag = tag;
-            XML_Helper helper(filename.c_str(), std::ios::in, zip);
+            XML_Helper helper(filename.c_str(), std::ios::in);
             helper.registerTag(tag, sigc::mem_fun(*this, &VersionLoader::load));
             bool retval = helper.parse();
             if (!retval)

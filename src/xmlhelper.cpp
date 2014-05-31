@@ -23,7 +23,6 @@
 #include <algorithm>
 #include <stdlib.h>
 #include <string.h>
-#include <zlib.h>
 #include "xmlhelper.h"
 #include "defs.h"
 #include "File.h"
@@ -43,11 +42,11 @@ void start_handler(void* udata, const XML_Char* name, const XML_Char** atts);
 void character_handler(void* udata, const XML_Char* s, int len);
 void end_handler(void* udata, const XML_Char* name);
 
-XML_Helper::XML_Helper(Glib::ustring filename, std::ios::openmode mode, bool zip)
+XML_Helper::XML_Helper(Glib::ustring filename, std::ios::openmode mode)
   : d_inbuf(0), d_outbuf(0), d_fout(0), d_fin(0), d_out(0), d_in(0),
-    d_last_opened(""), d_version(""), d_failed(false), d_zip(zip)
+    d_last_opened(""), d_version(""), d_failed(false)
 {
-    debug("Constructor called  -- " << zip)
+    debug("Constructor called  -- ")
         
     // always use a helper either for reading or for writing. Doing both
     // is propably possible, but there is little point in using it anyway.
@@ -69,53 +68,8 @@ XML_Helper::XML_Helper(Glib::ustring filename, std::ios::openmode mode, bool zip
             exit(-1);
         }
 
-        char tmp;
-        d_fin->read(&tmp,1);
-        debug("IS ZIPPED ->" << tmp)                
-
-        if (d_fin->eof())
-        {
-            std::cerr << String::ucompose(_("Zip file `%1' is too short.  probably broken. Skipping load."), filename) << std::endl;
-            d_failed = true;
-        }
-
-        if (tmp=='Z') 
-        {  
-            std::cout <<filename << ": The file is obfuscated, attempting to read it....\n"; 
-            d_fin->seekg (0,std::ios::end);
-            long length = d_fin->tellg();
-            d_fin->seekg (1, std::ios::beg);    
-
-            uLongf destlen1=0;
-            (*d_fin) >> destlen1;
-
-            debug(destlen1 << " -- "<< length);
-
-            length--;
-            length-=sizeof(uLongf);
-
-            char * buffer = (char*) malloc(length);        
-            char * buf1 = (char *) malloc(destlen1);
-
-            d_fin->read(buffer,length);
-            d_fin->close();
-
-            uncompress((Bytef*)buf1,&destlen1,(Bytef*)buffer,length);
-
-            free(buffer);
-            debug(destlen1 << " -- "<< length);
-        
-            d_inbuf = new std::istringstream(buf1);
-
-            free(buf1);
-            d_in=d_inbuf;
-        }
-        else 
-        {
-            //std::cout <<filename <<_(": The file is not obfuscated, attempting to read it....\n"); 
-            d_fin->seekg(0, std::ios::beg);
-            d_in = d_fin;
-        }
+        d_fin->seekg(0, std::ios::beg);
+        d_in = d_fin;
     }
 
     if (mode & std::ios::out)
@@ -135,14 +89,14 @@ XML_Helper::XML_Helper(Glib::ustring filename, std::ios::openmode mode, bool zip
 
 XML_Helper::XML_Helper(std::ostream* output)
   : d_inbuf(0), d_outbuf(0), d_fout(0), d_fin(0), d_out(0), d_in(0),
-    d_last_opened(""), d_version(""), d_failed(false), d_zip(false)
+    d_last_opened(""), d_version(""), d_failed(false)
 {
   d_out = output;
 }
 
 XML_Helper::XML_Helper(std::istream* input)
   : d_inbuf(0), d_outbuf(0), d_fout(0), d_fin(0), d_out(0), d_in(0),
-    d_last_opened(""), d_version(""), d_failed(false), d_zip(false)
+    d_last_opened(""), d_version(""), d_failed(false)
 {
   d_in = input;
 }
@@ -359,47 +313,15 @@ bool XML_Helper::saveData(Glib::ustring name, unsigned long int value)
 bool XML_Helper::close()
 {
     if (d_outbuf)        
-    {
-        if (d_zip)        
-        {
-            debug("I zip IT")
-            debug("Saving game and obfuscating the Savefile.\n") 
-            Glib::ustring tmp = d_outbuf->str();
-            tmp+='\0';
+      {
+        std::string tmp = d_outbuf->str();
+        d_fout->write(tmp.c_str(), tmp.length());
+        d_fout->flush();
 
-            long origlength = tmp.length();
-            uLongf ziplength = static_cast<uLongf>(origlength + (12+0.01*origlength));
-            char *buf1= (char*) malloc(ziplength);
-         
-            compress2((Bytef*)buf1, &ziplength, (Bytef*)tmp.c_str(), 
-                      (uLong)origlength, 9);
-
-            (*d_fout) << 'Z';
-            (*d_fout) << origlength;
-
-            d_fout->write(buf1, ziplength);
-            d_fout->flush();
-
-            free(buf1);
-            delete d_outbuf;
-
-            d_outbuf = 0;
-            debug("destroyed d_outbuf")
-        }
-        else 
-        {
-            debug("I do not zip IT")
-            debug(_("Saving game without obfuscation.\n")) 
-
-            std::string tmp = d_outbuf->str();
-            d_fout->write(tmp.c_str(), tmp.length());
-            d_fout->flush();
-
-            delete d_outbuf;
-            d_outbuf = 0;
-            debug("destroyed d_outbuf")
-        }
-    }
+        delete d_outbuf;
+        d_outbuf = 0;
+        debug("destroyed d_outbuf")
+      }
 
     if (d_inbuf)        
     {
@@ -827,11 +749,8 @@ void character_handler(void* udata, const XML_Char* s, int len)
     
     memset (buffer, 0, sizeof (buffer));
     memcpy (buffer, s, len);
-    //strncpy(buffer, s, len);
-    //buffer[len] = '\0';
 
     //now add the string to the other one
-    //my_cdata += Glib::ustring(buffer);
     my_cdata += Glib::ustring((const char *) buffer);
 }
 
@@ -848,10 +767,10 @@ void end_handler(void* udata, const XML_Char* name)
     my_cdata = "";
 }
 
-Glib::ustring XML_Helper::get_top_tag(Glib::ustring filename, bool zip)
+Glib::ustring XML_Helper::get_top_tag(Glib::ustring filename)
 {
   char buffer[1024];
-  XML_Helper in(filename, std::ios::in, zip);
+  XML_Helper in(filename, std::ios::in);
   while (in.d_in->eof() == false)
     {
       in.d_in->getline(buffer, sizeof buffer);
@@ -871,14 +790,14 @@ Glib::ustring XML_Helper::get_top_tag(Glib::ustring filename, bool zip)
   return "";
 }
 
-bool XML_Helper::rewrite_version(Glib::ustring filename, Glib::ustring tag, Glib::ustring new_version, bool zip)
+bool XML_Helper::rewrite_version(Glib::ustring filename, Glib::ustring tag, Glib::ustring new_version)
 {
   Glib::ustring match = "<" + tag + " version=\"";
   bool found = false;
   char buffer[1024];
   Glib::ustring tmpfile = File::get_tmp_file();
-  XML_Helper in(filename, std::ios::in, zip);
-  XML_Helper out(tmpfile, std::ios::out, zip);
+  XML_Helper in(filename, std::ios::in);
+  XML_Helper out(tmpfile, std::ios::out);
   while (in.d_in->eof() == false)
     {
       in.d_in->getline(buffer, sizeof buffer);

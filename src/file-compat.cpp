@@ -155,10 +155,7 @@ FileCompat::Type FileCompat::getTypeByTarFileInspection(Glib::ustring filename) 
 
 FileCompat::Type FileCompat::getTypeByXmlFileInspection(Glib::ustring filename) const
 {
-  Glib::ustring tag = XML_Helper::get_top_tag(filename, 
-                                            Configuration::s_zipfiles);
-  if (tag == "")
-    tag = XML_Helper::get_top_tag(filename, !Configuration::s_zipfiles);
+  Glib::ustring tag = XML_Helper::get_top_tag(filename);
 
   if (tag == "")
     return UNKNOWN;
@@ -198,12 +195,9 @@ bool FileCompat::get_tag_and_version_from_file(Glib::ustring filename, FileCompa
               tmpfile = t.getFirstFile(*i, broken);
               if (!broken && tmpfile.empty() == false)
                 {
-                  XML_Helper helper(tmpfile, std::ios::in, 
-                                    Configuration::s_zipfiles);
-                  tag = XML_Helper::get_top_tag(tmpfile, 
-                                                Configuration::s_zipfiles);
-                  VersionLoader l(tmpfile, tag, version, broken, 
-                                  Configuration::s_zipfiles);
+                  XML_Helper helper(tmpfile, std::ios::in);
+                  tag = XML_Helper::get_top_tag(tmpfile);
+                  VersionLoader l(tmpfile, tag, version, broken);
                   t.Close();
                   File::erase(tmpfile);
                   return !broken;
@@ -323,8 +317,7 @@ bool FileCompat::rewrite_with_updated_version(Glib::ustring filename, FileCompat
         {
           Glib::ustring tmpfile = t.getFirstFile(ext, broken);
           if (broken == false && version != "")
-            upgraded = XML_Helper::rewrite_version(tmpfile, tag, version, 
-                                                   Configuration::s_zipfiles);
+            upgraded = XML_Helper::rewrite_version(tmpfile, tag, version);
           if (upgraded)
             t.replaceFile (t.getFirstFilenameWithExtension(ext), tmpfile);
           t.Close();
@@ -371,8 +364,7 @@ bool FileCompat::upgradeGameScenario(Glib::ustring filename, Glib::ustring versi
       Glib::ustring tmpfile = t.getFirstFile(ext, broken);
       if (broken == false)
         upgraded = XML_Helper::rewrite_version(tmpfile, getTag(GAMESCENARIO), 
-                                               version,
-                                               Configuration::s_zipfiles);
+                                               version);
       std::list<Glib::ustring> delfiles;
       delfiles.push_back(tmpfile);
       if (upgraded)
