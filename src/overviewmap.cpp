@@ -492,12 +492,6 @@ void OverviewMap::draw(Player *player)
     // of the surface when drawing. I will implcitely assume this during this
     // function.
     
-    //Gdk::RGBA black = Gdk::RGBA();
-    //black.set_rgb_p(0,0,0);
-    //surface_gc->set_rgb_fg_color(black);
-    //surface->draw_rectangle(surface_gc, true, 0, 0, -1, -1);
-    //Glib::RefPtr<Gdk::Pixbuf> buf = Gdk::Pixbuf::create(static_surface, 0, 0, -1, -1);
-    //surface->draw_drawable(surface_gc, static_surface, 0, 0, 0, 0, -1, -1);
     //put the static surface on the surface
     surface_gc->set_source(static_surface, 0, 0);
     surface_gc->paint();
