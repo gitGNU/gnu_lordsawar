@@ -1136,12 +1136,6 @@ Stack* GameMap::getFriendlyStack(Vector<int> pos)
   return getStacks(pos)->getFriendlyStack(Playerlist::getActiveplayer());
 }
 
-//StackReflist GameMap::getFriendlyStacks(Vector<int> pos, Player *player)
-//{
-  //if (player == NULL)
-    //player = Playerlist::getActiveplayer();
-  //return StackReflist(getStacks(pos)->getFriendlyStacks(player));
-//}
 std::list<Stack*> GameMap::getFriendlyStacks(Vector<int> pos, Player *player)
 {
   if (player == NULL)
@@ -1643,22 +1637,10 @@ bool GameMap::moveStack(Stack *stack, Vector<int> to)
 
   getStacks(stack->getPos())->leaving(stack);
   stack->setPos(to);
-  //Stack *new_stack = new Stack(*stack);
-  //new_stack->setPos(to);
-  //getStacks(stack->getPos())->leaving(stack);
-  //delete stack;
-  //if we dropped it on a city, then change the ownership.
   City *c = GameMap::getCity(to);
   if (c != NULL && stack->getOwner() != c->getOwner())
     stack = Stacklist::changeOwnership(stack, c->getOwner());
   getStacks(stack->getPos())->arriving(stack);
-  /*
-  bool ship = false;
-  if (getTerrainType(stack->getPos()) == Tile::WATER &&
-      getBuilding(stack->getPos()) != Maptile::PORT &&
-      getBuilding(stack->getPos()) != Maptile::BRIDGE)
-    ship = true;
-  */
   updateShips(stack->getPos());
 
   return moved;
