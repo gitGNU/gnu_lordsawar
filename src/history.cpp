@@ -16,7 +16,6 @@
 //  02110-1301, USA.
 
 #include <stdlib.h>
-#include <sstream>
 #include <sigc++/functors/mem_fun.h>
 
 #include "army.h"
@@ -28,6 +27,7 @@
 #include "ruin.h"
 #include "Item.h"
 #include "player.h"
+#include "ucompose.hpp"
 
 Glib::ustring History::d_tag = "history";
 
@@ -241,18 +241,12 @@ History_StartTurn::~History_StartTurn()
 
 Glib::ustring History_StartTurn::dump() const
 {
-  std::stringstream s;
-
-  s <<"player starts a turn" << "\n";
-
-  return s.str();
+  return "Player starts a turn.\n";
 }
 
 bool History_StartTurn::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  return retval;
+  return true;
 }
 
 bool History_StartTurn::fillData()
@@ -285,20 +279,12 @@ History_FoundSage::~History_FoundSage()
 
 Glib::ustring History_FoundSage::dump() const
 {
-  std::stringstream s;
-
-  s <<"player found a sage with hero " << d_hero<< "\n";
-
-  return s.str();
+  return String::ucompose("Player found a sage with hero %1.\n", d_hero);
 }
 
 bool History_FoundSage::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  retval &= helper->saveData("hero", d_hero);
-
-  return retval;
+  return helper->saveData("hero", d_hero);
 }
 
 bool History_FoundSage::fillData(Hero *hero)
@@ -332,20 +318,12 @@ History_GoldTotal::~History_GoldTotal()
 
 Glib::ustring History_GoldTotal::dump() const
 {
-  std::stringstream s;
-
-  s <<"player has " << d_gold<< " gold pieces in total\n";
-
-  return s.str();
+  return String::ucompose("Player has %1 gold pieces in total.\n", d_gold);
 }
 
 bool History_GoldTotal::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  retval &= helper->saveData("gold", d_gold);
-
-  return retval;
+  return helper->saveData("gold", d_gold);
 }
 
 bool History_GoldTotal::fillData(int gold)
@@ -382,11 +360,7 @@ History_HeroEmerges::~History_HeroEmerges()
 
 Glib::ustring History_HeroEmerges::dump() const
 {
-  std::stringstream s;
-
-  s <<"hero " << d_hero_id <<" (" << d_hero << ") emerges in " << d_city << "\n";
-
-  return s.str();
+  return String::ucompose("Hero %1 emerges in city %2.\n", d_hero, d_city);
 }
 
 bool History_HeroEmerges::doSave(XML_Helper* helper) const
@@ -433,21 +407,12 @@ History_CityWon::~History_CityWon()
 
 Glib::ustring History_CityWon::dump() const
 {
-  std::stringstream s;
-
-  s <<"city " << d_city << " has been won";
-  s <<"\n";
-
-  return s.str();
+  return String::ucompose("City %1 has been won.\n", d_city);
 }
 
 bool History_CityWon::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  retval &= helper->saveData("city", d_city);
-
-  return retval;
+  return helper->saveData("city", d_city);
 }
 
 bool History_CityWon::fillData(City *city)
@@ -482,13 +447,7 @@ History_HeroCityWon::~History_HeroCityWon()
 
 Glib::ustring History_HeroCityWon::dump() const
 {
-  std::stringstream s;
-
-  s <<"city " << d_city << " has been won";
-  s <<"  by " << d_hero;
-  s <<"\n";
-
-  return s.str();
+  return String::ucompose("City %1 has been won by hero %2.\n", d_city, d_hero);
 }
 
 bool History_HeroCityWon::doSave(XML_Helper* helper) const
@@ -533,20 +492,12 @@ History_CityRazed::~History_CityRazed()
 
 Glib::ustring History_CityRazed::dump() const
 {
-  std::stringstream s;
-
-  s <<"city " << d_city << " has been razed\n";
-
-  return s.str();
+  return String::ucompose("City %1 has been razed.\n", d_city);
 }
 
 bool History_CityRazed::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  retval &= helper->saveData("city", d_city);
-
-  return retval;
+  return helper->saveData("city", d_city);
 }
 
 bool History_CityRazed::fillData(City *city)
@@ -580,20 +531,12 @@ History_HeroQuestStarted::~History_HeroQuestStarted()
 
 Glib::ustring History_HeroQuestStarted::dump() const
 {
-  std::stringstream s;
-
-  s <<"hero " << d_hero<< " gets a quest\n";
-
-  return s.str();
+  return String::ucompose("Hero %1 gets a quest.\n", d_hero);
 }
 
 bool History_HeroQuestStarted::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  retval &= helper->saveData("hero", d_hero);
-
-  return retval;
+  return helper->saveData("hero", d_hero);
 }
 
 bool History_HeroQuestStarted::fillData(Hero *hero)
@@ -627,20 +570,12 @@ History_HeroQuestCompleted::~History_HeroQuestCompleted()
 
 Glib::ustring History_HeroQuestCompleted::dump() const
 {
-  std::stringstream s;
-
-  s <<"hero " << d_hero<< " gets a quest\n";
-
-  return s.str();
+  return String::ucompose("Hero %1 completes a quest.\n", d_hero);
 }
 
 bool History_HeroQuestCompleted::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  retval &= helper->saveData("hero", d_hero);
-
-  return retval;
+  return helper->saveData("hero", d_hero);
 }
 
 bool History_HeroQuestCompleted::fillData(Hero *hero)
@@ -675,11 +610,7 @@ History_HeroKilledInCity::~History_HeroKilledInCity()
 
 Glib::ustring History_HeroKilledInCity::dump() const
 {
-  std::stringstream s;
-
-  s <<"hero " << d_hero << " died in city " << d_city << "\n";
-
-  return s.str();
+  return String::ucompose("Hero %1 died in city %2.\n", d_hero, d_city);
 }
 
 bool History_HeroKilledInCity::doSave(XML_Helper* helper) const
@@ -724,20 +655,12 @@ History_HeroKilledInBattle::~History_HeroKilledInBattle()
 
 Glib::ustring History_HeroKilledInBattle::dump() const
 {
-  std::stringstream s;
-
-  s <<"hero " << d_hero<< " was killed in battle\n";
-
-  return s.str();
+  return String::ucompose("Hero %1 was killed in battle.\n", d_hero);
 }
 
 bool History_HeroKilledInBattle::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  retval &= helper->saveData("hero", d_hero);
-
-  return retval;
+  return helper->saveData("hero", d_hero);
 }
 
 bool History_HeroKilledInBattle::fillData(Hero *hero)
@@ -771,20 +694,12 @@ History_HeroKilledSearching::~History_HeroKilledSearching()
 
 Glib::ustring History_HeroKilledSearching::dump() const
 {
-  std::stringstream s;
-
-  s <<"hero " << d_hero<< " killed searching a ruin\n";
-
-  return s.str();
+  return String::ucompose("Hero %1 killed searching a ruin.\n", d_hero);
 }
 
 bool History_HeroKilledSearching::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  retval &= helper->saveData("hero", d_hero);
-
-  return retval;
+  return helper->saveData("hero", d_hero);
 }
 
 bool History_HeroKilledSearching::fillData(Hero *hero)
@@ -818,20 +733,12 @@ History_Score::~History_Score()
 
 Glib::ustring History_Score::dump() const
 {
-  std::stringstream s;
-
-  s <<"player has a score of " << d_score<< "\n";
-
-  return s.str();
+  return String::ucompose("Player has a score of %1.\n", d_score);
 }
 
 bool History_Score::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  retval &= helper->saveData("score", d_score);
-
-  return retval;
+  return helper->saveData("score", d_score);
 }
 
 bool History_Score::fillData(guint32 score)
@@ -864,18 +771,12 @@ History_PlayerVanquished::~History_PlayerVanquished()
 
 Glib::ustring History_PlayerVanquished::dump() const
 {
-  std::stringstream s;
-
-  s <<"player has been vanquished!\n";
-
-  return s.str();
+  return "Player has been vanquished!\n";
 }
 
 bool History_PlayerVanquished::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  return retval;
+  return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -903,21 +804,12 @@ History_DiplomacyPeace::~History_DiplomacyPeace()
 
 Glib::ustring History_DiplomacyPeace::dump() const
 {
-  std::stringstream s;
-
-  s <<"peace has been won with player " << d_opponent_id;
-  s <<"\n";
-
-  return s.str();
+  return String::ucompose("Peace has been won with player %1.\n", d_opponent_id);
 }
 
 bool History_DiplomacyPeace::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  retval &= helper->saveData("opponent_id", d_opponent_id);
-
-  return retval;
+  return helper->saveData("opponent_id", d_opponent_id);
 }
 
 bool History_DiplomacyPeace::fillData(Player *opponent)
@@ -951,21 +843,12 @@ History_DiplomacyWar::~History_DiplomacyWar()
 
 Glib::ustring History_DiplomacyWar::dump() const
 {
-  std::stringstream s;
-
-  s <<"war has been declared with player " << d_opponent_id;
-  s <<"\n";
-
-  return s.str();
+  return String::ucompose("War has been declared with player %1.\n", d_opponent_id);
 }
 
 bool History_DiplomacyWar::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  retval &= helper->saveData("opponent_id", d_opponent_id);
-
-  return retval;
+  return helper->saveData("opponent_id", d_opponent_id);
 }
 
 bool History_DiplomacyWar::fillData(Player *opponent)
@@ -999,21 +882,12 @@ History_DiplomacyTreachery::~History_DiplomacyTreachery()
 
 Glib::ustring History_DiplomacyTreachery::dump() const
 {
-  std::stringstream s;
-
-  s <<"treachery on player " << d_opponent_id;
-  s <<"\n";
-
-  return s.str();
+  return String::ucompose("Treachery on player %1.\n", d_opponent_id);
 }
 
 bool History_DiplomacyTreachery::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  retval &= helper->saveData("opponent_id", d_opponent_id);
-
-  return retval;
+  return helper->saveData("opponent_id", d_opponent_id);
 }
 
 bool History_DiplomacyTreachery::fillData(Player *opponent)
@@ -1047,20 +921,12 @@ History_HeroFindsAllies::~History_HeroFindsAllies()
 
 Glib::ustring History_HeroFindsAllies::dump() const
 {
-  std::stringstream s;
-
-  s <<"hero " << d_hero<< " finds some allies\n";
-
-  return s.str();
+  return String::ucompose("Hero %1 finds some allies.\n", d_hero);
 }
 
 bool History_HeroFindsAllies::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  retval &= helper->saveData("hero", d_hero);
-
-  return retval;
+  return helper->saveData("hero", d_hero);
 }
 
 bool History_HeroFindsAllies::fillData(Hero *hero)
@@ -1093,18 +959,12 @@ History_EndTurn::~History_EndTurn()
 
 Glib::ustring History_EndTurn::dump() const
 {
-  std::stringstream s;
-
-  s <<"player ends a turn" << "\n";
-
-  return s.str();
+  return "Player ends a turn.\n";
 }
 
 bool History_EndTurn::doSave(XML_Helper* helper) const
 {
-  bool retval = true;
-
-  return retval;
+  return true;
 }
 
 bool History_EndTurn::fillData()
@@ -1137,13 +997,7 @@ History_HeroRuinExplored::~History_HeroRuinExplored()
 
 Glib::ustring History_HeroRuinExplored::dump() const
 {
-  std::stringstream s;
-
-  s <<"ruin " << d_ruin << " has been searched";
-  s <<" by " << d_hero;
-  s <<"\n";
-
-  return s.str();
+  return String::ucompose("Ruin %1 has been searched by %2.\n", d_ruin, d_hero);
 }
 
 bool History_HeroRuinExplored::doSave(XML_Helper* helper) const
@@ -1189,13 +1043,8 @@ History_HeroRewardRuin::~History_HeroRewardRuin()
 
 Glib::ustring History_HeroRewardRuin::dump() const
 {
-  std::stringstream s;
-
-  s <<"the location of ruin " << d_ruin << " has been given ";
-  s <<"to " << d_hero;
-  s <<"\n";
-
-  return s.str();
+  return String::ucompose("The location of ruin %1 has been given to %2.\n",
+                          d_ruin, d_hero);
 }
 
 bool History_HeroRewardRuin::doSave(XML_Helper* helper) const
@@ -1252,14 +1101,7 @@ History_HeroUseItem::~History_HeroUseItem()
 
 Glib::ustring History_HeroUseItem::dump() const
 {
-  std::stringstream s;
-
-  s <<"hero " << d_hero_name << "uses " << d_item_name <<" on player " << d_opponent_id << ", friendly city " << d_friendly_city_id << ", enemy city " <<
-    d_enemy_city_id << ", neutral city " << d_neutral_city_id << ", city " <<
-    d_city_id;
-  s <<"\n";
-
-  return s.str();
+  return String::ucompose("Hero %1 uses item %2 on player %3, friendly city %4, enemy city %5, neutral city %6, city %7.\n", d_hero_name, d_item_name, d_opponent_id, d_friendly_city_id, d_enemy_city_id, d_neutral_city_id, d_city_id);
 }
 
 bool History_HeroUseItem::doSave(XML_Helper* helper) const
