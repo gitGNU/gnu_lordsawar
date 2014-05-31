@@ -102,7 +102,7 @@ bool Configuration::loadConfigurationFile(Glib::ustring fileName)
         //cout << _("Found configuration file: ") << fileName << endl;
 
         //parse the file
-        XML_Helper helper(fileName.c_str(), std::ios::in, false);
+        XML_Helper helper(fileName.c_str(), std::ios::in);
         helper.registerTag(d_tag,
 	    sigc::mem_fun(*this, &Configuration::parseConfiguration));
     
@@ -115,7 +115,7 @@ bool Configuration::saveConfigurationFile(Glib::ustring filename)
 {
     bool retval = true;
 
-    XML_Helper helper(filename, std::ios::out, Configuration::s_zipfiles);
+    XML_Helper helper(filename, std::ios::out);
 
     //start writing
     retval &= helper.begin(LORDSAWAR_CONFIG_VERSION);

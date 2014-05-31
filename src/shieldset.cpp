@@ -142,7 +142,7 @@ public:
           t.getFirstFile(Shieldset::file_extension, broken);
         if (broken)
           return;
-	XML_Helper helper(lwsfilename, std::ios::in, false);
+	XML_Helper helper(lwsfilename, std::ios::in);
 	helper.registerTag(Shieldset::d_tag, sigc::mem_fun((*this), &ShieldsetLoader::load));
 	if (!helper.parse())
 	  {

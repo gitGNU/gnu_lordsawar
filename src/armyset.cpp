@@ -488,7 +488,7 @@ public:
           t.getFirstFile(Armyset::file_extension, broken);
         if (broken)
           return;
-	XML_Helper helper(lwafilename, std::ios::in, false);
+	XML_Helper helper(lwafilename, std::ios::in);
 	helper.registerTag(Armyset::d_tag, sigc::mem_fun((*this), &ArmysetLoader::load));
 	if (!helper.parse())
 	  {

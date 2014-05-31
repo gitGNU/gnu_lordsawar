@@ -51,7 +51,7 @@ void Itemlist::createStandardInstance()
 {
     deleteInstance();
 
-    XML_Helper helper(File::getItemDescription(), std::ios::in, false);
+    XML_Helper helper(File::getItemDescription(), std::ios::in);
     d_instance = new Itemlist(&helper);
 
     if (!helper.parse())

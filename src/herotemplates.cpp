@@ -110,7 +110,7 @@ int HeroTemplates::loadHeroTemplates()
       d_female_heroes.push_back(female_hero);
     }
 
-  XML_Helper helper(File::getMiscFile("heronames.xml"), std::ios::in, false);
+  XML_Helper helper(File::getMiscFile("heronames.xml"), std::ios::in);
 
   helper.registerTag("herotemplate", sigc::mem_fun((*this), &HeroTemplates::load));
 

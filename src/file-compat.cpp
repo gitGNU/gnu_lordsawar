@@ -207,7 +207,7 @@ bool FileCompat::get_tag_and_version_from_file(Glib::ustring filename, FileCompa
     }
   else
     {
-      tag = XML_Helper::get_top_tag(filename, false);
+      tag = XML_Helper::get_top_tag(filename);
       VersionLoader l(filename, tag, version, broken);
     }
   return !broken;
@@ -336,7 +336,7 @@ bool FileCompat::rewrite_with_updated_version(Glib::ustring filename, FileCompat
   else if (isTarFile(type) == false)
     {
       if (version != "")
-        upgraded = XML_Helper::rewrite_version(filename, tag, version, false);
+        upgraded = XML_Helper::rewrite_version(filename, tag, version);
     }
   return upgraded;
 }

@@ -185,7 +185,7 @@ public:
           t.getFirstFile(Cityset::file_extension, broken);
         if (broken)
           return;
-	XML_Helper helper(lwcfilename, std::ios::in, false);
+	XML_Helper helper(lwcfilename, std::ios::in);
 	helper.registerTag(Cityset::d_tag, sigc::mem_fun((*this), &CitysetLoader::load));
 	if (!helper.parse())
 	  {

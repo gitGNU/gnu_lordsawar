@@ -32,7 +32,7 @@
 NameList::NameList(Glib::ustring filename, Glib::ustring item_tag)
 {
   d_item_tag = item_tag;
-  XML_Helper helper(File::getMiscFile(filename), std::ios::in, false);
+  XML_Helper helper(File::getMiscFile(filename), std::ios::in);
 
   helper.registerTag(d_item_tag, sigc::mem_fun((*this), &NameList::load));
 

@@ -94,7 +94,7 @@ Sound::Sound()
         return;
     }
     
-    XML_Helper helper(File::getMusicFile("music.xml"), std::ios::in, false);
+    XML_Helper helper(File::getMusicFile("music.xml"), std::ios::in);
     helper.registerTag("piece", sigc::mem_fun(this, &Sound::loadMusic));
 
     if (!helper.parse())

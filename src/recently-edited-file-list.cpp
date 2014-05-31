@@ -58,7 +58,7 @@ bool RecentlyEditedFileList::saveToFile(Glib::ustring filename) const
   if (filename == "")
     filename = File::getSavePath() + "/" + RECENTLY_EDITED_LIST;
   bool retval = true;
-  XML_Helper helper(filename, std::ios::out, false);
+  XML_Helper helper(filename, std::ios::out);
   retval &= save(&helper);
   helper.close();
   return retval;
@@ -71,7 +71,7 @@ bool RecentlyEditedFileList::loadFromFile(Glib::ustring filename)
   std::ifstream in(filename.c_str());
   if (in)
     {
-      XML_Helper helper(filename.c_str(), std::ios::in, false);
+      XML_Helper helper(filename.c_str(), std::ios::in);
       helper.registerTag(RecentlyEditedFile::d_tag, sigc::mem_fun(this, &RecentlyEditedFileList::load));
       bool retval = helper.parse();
       if (retval == false)

@@ -54,7 +54,7 @@ bool Profilelist::save() const
 bool Profilelist::saveToFile(Glib::ustring filename) const
 {
   bool retval = true;
-  XML_Helper helper(filename, std::ios::out, false);
+  XML_Helper helper(filename, std::ios::out);
   retval &= save(&helper);
   helper.close();
   return retval;
@@ -70,7 +70,7 @@ bool Profilelist::loadFromFile(Glib::ustring filename)
   std::ifstream in(filename.c_str());
   if (in)
     {
-      XML_Helper helper(filename.c_str(), std::ios::in, false);
+      XML_Helper helper(filename.c_str(), std::ios::in);
       helper.registerTag(Profile::d_tag, 
                          sigc::mem_fun(this, &Profilelist::load_tag));
       bool retval = helper.parse();

@@ -493,7 +493,7 @@ public:
           t.getFirstFile(Tileset::file_extension, broken);
         if (broken)
           return;
-	XML_Helper helper(lwtfilename, std::ios::in, false);
+	XML_Helper helper(lwtfilename, std::ios::in);
 	helper.registerTag(Tileset::d_tag, sigc::mem_fun((*this), &TilesetLoader::load));
 	if (!helper.parse())
 	  {
