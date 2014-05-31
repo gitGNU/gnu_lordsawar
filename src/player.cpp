@@ -757,8 +757,6 @@ bool Player::stackSplitAndMoveToJoin(Stack* s, Stack *join, Stack *& new_stack)
     {
       setActivestack(new_stack);
       return stackMove(new_stack);
-      //if (getActivestack() != NULL)
-	//GameMap::groupStacks(new_stack);
     }
   return false;
 }
@@ -1512,74 +1510,6 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
   supdatingStack.emit(0);
   return reward;
 }
-
-/*
-Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
-{
-  Reward *retReward = NULL;
-  debug("Player::stack_search_ruin");
-
-  //why are we checking this at all?
-  if (r->isSearched() || r->contains(s->getPos()) == false)
-    return NULL;
-
-  // start the action item
-  Action_Ruin* item = new Action_Ruin();
-  item->fillData(r, s);
-
-  Stack* keeper = r->getOccupant();
-
-  if (keeper)
-  {
-    std::list<History*> attacker_history, defender_history;
-    stackRuinFight(&s, &keeper, stackdied, attacker_history, defender_history);
-    for (std::list<History*>::iterator i = attacker_history.begin();
-         i != attacker_history.end(); i++)
-      addHistory(*i);
-    clearHistorylist(defender_history);
-
-
-    // did the explorer not win?
-    if (keeper && !keeper->empty())
-    {
-      item->setSearched(false);
-      addAction(item);
-      return NULL;
-    }
-
-    r->setOccupant(0);
-    if (keeper)
-      delete keeper;
-  }
-
-  if (r->hasSage())
-  {
-    History_FoundSage* history = new History_FoundSage();
-    history->fillData(dynamic_cast<Hero *>(s->getFirstHero()));
-    addHistory(history);
-  }
-  else
-  {
-    if (r->getReward() == NULL)
-      r->populateWithRandomReward();
-  }
-
-  retReward = r->getReward();
-
-  r->setSearched(true);
-  r->setOwner(s->getOwner());
-
-  item->setSearched(true);
-  addAction(item);
-
-  History_HeroRuinExplored *history_item = new History_HeroRuinExplored();
-  history_item->fillData(dynamic_cast<Hero*>(s->getFirstHero()), r);
-  addHistory(history_item);
-
-  supdatingStack.emit(0);
-  return retReward;
-}
-*/
 
 int Player::doStackVisitTemple(Stack *s, Temple *t)
 {
@@ -2416,7 +2346,6 @@ guint32 Player::removeDeadArmies(std::list<Stack*>& stacks,
 
     tallyDeadArmyTriumphs(stacks);
     handleDeadHeroes(stacks, history);
-    //healInjuredArmies(stacks);
     handleDeadArmiesForQuests(stacks, culprits);
 
     std::list<Stack*>::iterator it;
@@ -3057,7 +2986,6 @@ bool Player::AI_maybePickUpItems(Stack *s, int max_dist,
           return false;
         }
       d_stacklist->setActivestack(s);
-      printf("moving stack %d for bag!\n", s->getId());
       stack_moved = stackMove(s);
       //maybe we died -- an enemy stack was guarding the bag.
       if (!d_stacklist->getActivestack())
