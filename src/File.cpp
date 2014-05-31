@@ -32,9 +32,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <sys/stat.h>
-#ifndef __WIN32__
 #include <unistd.h>
-#endif
 
 #include "File.h"
 #include "Configuration.h"
@@ -272,28 +270,21 @@ int File::copy (Glib::ustring from, Glib::ustring to)
 bool File::create_dir(Glib::ustring dir)
 {
     struct stat testdir;
-#ifndef __WIN32__
     if (stat(dir.c_str(), &testdir) || !S_ISDIR(testdir.st_mode))
     {
         guint32 mask = 0755; //make directory only readable for user and group
         if (mkdir(dir.c_str(), mask))
 	  return false;
     }
-#else
-    return false;
-#endif
     return true;
 }
 	
 bool File::is_writable(Glib::ustring file)
 {
-#ifndef __WIN32__
   if (access (file.c_str(), W_OK) != 0)
     return false;
   else
     return true;
-#endif
-  return false;
 }
 
 bool File::exists(Glib::ustring f)

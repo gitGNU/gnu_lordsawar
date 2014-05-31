@@ -41,15 +41,9 @@
 
 Glib::ustring Configuration::d_tag = "lordsawarrc";
 bool Configuration::s_showNextPlayer = true;
-#ifndef __WIN32__
 Glib::ustring Configuration::configuration_file_path = Glib::ustring(getenv("HOME")) + "/.lordsawarrc";
 Glib::ustring Configuration::s_dataPath = LORDSAWAR_DATADIR;
 Glib::ustring Configuration::s_savePath = Glib::ustring(getenv("HOME"))+Glib::ustring("/.lordsawar/");
-#else
-Glib::ustring Configuration::configuration_file_path = "/.lordsawarrc";
-Glib::ustring Configuration::s_dataPath = "./data/";
-Glib::ustring Configuration::s_savePath = "./saves/";
-#endif
 Glib::ustring Configuration::s_lang = "";
 int Configuration::s_displaySpeedDelay = 3000;
 int Configuration::s_displayFightRoundDelayFast = 250;
@@ -203,42 +197,23 @@ bool Configuration::parseConfiguration(Glib::ustring tag, XML_Helper* helper)
       std::cerr << String::ucompose(_("Configuration file has wrong version.  expected %1, but got %2"), LORDSAWAR_CONFIG_VERSION, helper->getVersion()) << std::endl;
             Glib::ustring orig = s_filename;
             Glib::ustring dest = s_filename+".OLD";
-	    //#ifndef __WIN32__
-	    //            string orig = "./"+s_filename;
-	    //            string dest = "./"+s_filename+".OLD";
-	    //#else
-	    //            string orig = string(getenv("HOME"))+s_filename;
-	    //            string dest = string(getenv("HOME"))+s_filename+".OLD";
-	    //#endif
             std::cerr << String::ucompose(_("backing up config file `%1' to `%2'."), orig, dest) << std::endl;
 
             std::ofstream ofs(dest.c_str());
             std::ifstream ifs(orig.c_str());
 	    ofs << ifs.rdbuf();
 	    ofs.close();
-
-            //int ret= system(command.c_str());
-
-            //if (ret == -1)
-	    //{
-            //     std::cerr << _("An error occurred while executing command : ") << command << std::endl;
-            //     exit(-1);
-	    //}
             return false;
     }
    
     //get the paths
     retval = helper->getData(temp, "datapath");
     if (retval)
-    {
-        s_dataPath = temp;
-    }
+      s_dataPath = temp;
         
     retval = helper->getData(temp, "savepath");
     if (retval)
-    {
-        s_savePath = temp;
-    }
+      s_savePath = temp;
 
     if (helper->getData(temp, "lang"))
         s_lang = temp;
