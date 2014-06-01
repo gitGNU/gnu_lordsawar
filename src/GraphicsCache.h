@@ -135,9 +135,6 @@ class GraphicsCache
         //! Explicitely deletes the soliton instance
         static void deleteInstance();
 
-        //! Clears the whole cache.
-        void clear();
-
         //! Get the current cache size, the maximum is in Configuration::s_cacheSize
         guint32 getCacheSize() const {return d_cachesize;}
 
@@ -434,7 +431,7 @@ class GraphicsCache
           * @return a surface with player colors applied.
           */
 
-	PixMask* applyMask(PixMask* image, PixMask* mask, const Player* p);
+	static PixMask* applyMask(PixMask* image, PixMask* mask, const Player* p);
 
 	static PixMask* applyMask(PixMask* image, PixMask* mask, Gdk::RGBA colour, bool isNeutral);
 

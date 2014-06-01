@@ -40,6 +40,7 @@
 #include "FogMap.h"
 #include "hero.h"
 #include <cairomm/context.h>
+#include "PixMaskCache.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -342,9 +343,11 @@ GraphicsCache::GraphicsCache()
     d_small_temple = getMiscPicture("smalltemple.png");
 }
 
+
 GraphicsCache::~GraphicsCache()
 {
-    clear();
+
+    reset();
 
     for (unsigned int i = 0; i < PRODUCTION_SHIELD_TYPES; i++)
     {
@@ -2414,79 +2417,6 @@ MoveBonusCacheItem* GraphicsCache::addMoveBonusPic(guint32 type)
   checkPictures();
 
   return myitem;
-}
-
-
-void GraphicsCache::clear()
-{
-  while (!d_armylist.empty())
-    eraseLastArmyItem();
-
-  while (!d_circledarmylist.empty())
-    eraseLastCircledArmyItem();
-
-  while (!d_tilelist.empty())
-    eraseLastTileItem();
-
-  while (!d_templelist.empty())
-    eraseLastTempleItem();
-
-  while (!d_ruinlist.empty())
-    eraseLastRuinItem();
-
-  while (!d_diplomacylist.empty())
-    eraseLastDiplomacyItem();
-
-  while (!d_roadlist.empty())
-    eraseLastRoadItem();
-
-  while (!d_foglist.empty())
-    eraseLastFogItem();
-
-  while (!d_bridgelist.empty())
-    eraseLastBridgeItem();
-
-  while (!d_cursorlist.empty())
-    eraseLastCursorItem();
-
-  while (!d_citylist.empty())
-    eraseLastCityItem();
-
-  while (!d_towerlist.empty())
-    eraseLastTowerItem();
-
-  while (!d_shiplist.empty())
-    eraseLastShipItem();
-
-  while (!d_plantedstandardlist.empty())
-    eraseLastPlantedStandardItem();
-
-  while (!d_portlist.empty())
-    eraseLastPortItem();
-
-  while (!d_signpostlist.empty())
-    eraseLastSignpostItem();
-
-  while (!d_baglist.empty())
-    eraseLastBagItem();
-
-  while (!d_explosionlist.empty())
-    eraseLastExplosionItem();
-
-  while (!d_flaglist.empty())
-    eraseLastFlagItem();
-
-  while (!d_selectorlist.empty())
-    eraseLastSelectorItem();
-
-  while (!d_shieldlist.empty())
-    eraseLastShieldItem();
-
-  while (!d_prodshieldlist.empty())
-    eraseLastProdShieldItem();
-
-  while (!d_movebonuslist.empty())
-    eraseLastMoveBonusItem();
 }
 
 void GraphicsCache::eraseLastArmyItem()
