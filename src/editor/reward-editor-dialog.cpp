@@ -22,7 +22,6 @@
 
 #include "reward-editor-dialog.h"
 
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "reward.h"
@@ -36,6 +35,7 @@
 #include "armyproto.h"
 
 RewardEditorDialog::RewardEditorDialog(Gtk::Window &parent, Player *player, bool hidden_ruins, Reward *r)
+ : LwEditorDialog(parent, "reward-editor-dialog.ui")
 {
   d_player = player;
   d_hidden_ruins = hidden_ruins;
@@ -44,12 +44,6 @@ RewardEditorDialog::RewardEditorDialog(Gtk::Window &parent, Player *player, bool
   item = NULL;
   ally = NULL;
 
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path()
-				+ "/reward-editor-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(parent);
   xml->get_widget("gold_hbox", gold_hbox);
   xml->get_widget("gold_radiobutton", gold_radiobutton);
   gold_radiobutton->signal_toggled().connect
@@ -151,7 +145,6 @@ RewardEditorDialog::RewardEditorDialog(Gtk::Window &parent, Player *player, bool
 
 RewardEditorDialog::~RewardEditorDialog()
 {
-  delete dialog;
 }
 
 void RewardEditorDialog::fill_in_reward_info()

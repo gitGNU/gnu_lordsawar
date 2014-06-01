@@ -18,16 +18,14 @@
 #ifndef MAIN_PREFERENCES_DIALOG_H
 #define MAIN_PREFERENCES_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
-#include <sigc++/signal.h>
 #include <gtkmm.h>
 
 #include "vector.h"
+#include "lw-dialog.h"
 
 class Game;
 // dialog for showing sound and game preferences
-class MainPreferencesDialog: public sigc::trackable
+class MainPreferencesDialog: public LwDialog
 {
  public:
     MainPreferencesDialog(Gtk::Window &parent);
@@ -37,7 +35,6 @@ class MainPreferencesDialog: public sigc::trackable
     void hide();
 
  private:
-    Gtk::Dialog* dialog;
     Gtk::CheckButton *show_turn_popup_checkbutton;
     Gtk::CheckButton *commentator_checkbutton;
     Gtk::CheckButton *play_music_checkbutton;

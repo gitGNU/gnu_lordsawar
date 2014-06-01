@@ -18,15 +18,13 @@
 #ifndef SELECT_HIDDEN_RUIN_DIALOG_H
 #define SELECT_HIDDEN_RUIN_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
+#include "lw-editor-dialog.h"
 
 class Ruin;
 
 //! Scenario editor.  Select a hidden Ruin object in the scenario.
-class SelectHiddenRuinDialog: public sigc::trackable
+class SelectHiddenRuinDialog: public LwEditorDialog
 {
  public:
     SelectHiddenRuinDialog(Gtk::Window &parent);
@@ -37,7 +35,6 @@ class SelectHiddenRuinDialog: public sigc::trackable
       { return selected_hidden_ruin; }
     
  private:
-    Gtk::Dialog* dialog;
     Gtk::Button *select_button;
 
     const Ruin *selected_hidden_ruin;

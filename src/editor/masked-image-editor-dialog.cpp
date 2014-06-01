@@ -23,7 +23,6 @@
 
 #include "masked-image-editor-dialog.h"
 
-#include "glade-helpers.h"
 #include "gui/image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
@@ -34,6 +33,7 @@
 
 
 MaskedImageEditorDialog::MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int only, Shieldset *shieldset)
+ : LwEditorDialog(parent, "masked-image-editor-dialog.ui")
 {
   if (only >= 0)
     {
@@ -41,12 +41,6 @@ MaskedImageEditorDialog::MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustr
       only_show_colour = Shield::Colour(only);
     }
   d_shieldset = shieldset;
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/masked-image-editor-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("filechooserbutton", filechooserbutton);
     xml->get_widget("image_white", image_white);
     xml->get_widget("image_green", image_green);
@@ -66,7 +60,6 @@ MaskedImageEditorDialog::MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustr
 
 MaskedImageEditorDialog::~MaskedImageEditorDialog()
 {
-  delete dialog;
 }
 
 int MaskedImageEditorDialog::run()

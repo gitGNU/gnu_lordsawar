@@ -24,10 +24,6 @@
 #include "stack.h"
 #include "stack-army-button.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
-
 #include "army-info-tip.h"
 #include "ucompose.hpp"
 #include "defs.h"
@@ -45,13 +41,13 @@ Glib::ustring StackTileBox::get_file(Configuration::UiFormFactor factor)
   switch (factor)
     {
     case Configuration::UI_FORM_FACTOR_DESKTOP:
-      file = get_glade_path() + "/stack-tile-box-desktop.ui";
+      file = File::getUIFile("stack-tile-box-desktop.ui");
       break;
     case Configuration::UI_FORM_FACTOR_NETBOOK:
-      file = get_glade_path() + "/stack-tile-box-netbook.ui";
+      file = File::getUIFile("stack-tile-box-netbook.ui");
       break;
     case Configuration::UI_FORM_FACTOR_LARGE_SCREEN:
-      file = get_glade_path() + "/stack-tile-box-large-screen.ui";
+      file = File::getUIFile("stack-tile-box-large-screen.ui");
       break;
     }
   return file;

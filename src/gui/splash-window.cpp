@@ -26,7 +26,6 @@
 
 #include "game-preferences-dialog.h"
 #include "load-scenario-dialog.h"
-#include "glade-helpers.h"
 #include "Configuration.h"
 #include "defs.h"
 #include "sound.h"
@@ -41,19 +40,12 @@
 #include "new-network-game-dialog.h"
 #include "profile.h"
 
-//namespace
-//{
-  //void surface_attached_helper(GtkSDL *gtksdl, gpointer data)
-    //{
-      //static_cast<SplashWindow*>(data)->on_sdl_surface_changed();
-    //}
-//}
 SplashWindow::SplashWindow()
 {
   network_game_nickname = "";
 
     Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + "/splash-window.ui");
+	= Gtk::Builder::create_from_file(File::getUIFile("splash-window.ui"));
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));

@@ -19,8 +19,6 @@
 #include <gtkmm.h>
 
 #include "game-button-box.h"
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "GraphicsCache.h"
@@ -36,13 +34,13 @@ Glib::ustring GameButtonBox::get_file(Configuration::UiFormFactor factor)
   switch (factor)
     {
     case Configuration::UI_FORM_FACTOR_DESKTOP:
-      file = get_glade_path() + "/game-button-box-desktop.ui";
+      file = File::getUIFile("game-button-box-desktop.ui");
       break;
     case Configuration::UI_FORM_FACTOR_NETBOOK:
-      file = get_glade_path() + "/game-button-box-netbook.ui";
+      file = File::getUIFile("game-button-box-netbook.ui");
       break;
     case Configuration::UI_FORM_FACTOR_LARGE_SCREEN:
-      file = get_glade_path() + "/game-button-box-large-screen.ui";
+      file = File::getUIFile("game-button-box-large-screen.ui");
       break;
     }
   return file;

@@ -330,8 +330,6 @@ GraphicsCache::GraphicsCache()
       success = loadGameButtonPics(); //only for game.  not for editors.
     if (success)
         success = loadArrowPics(); //only for game.  not for editors.
-    if (success)
-      success = loadBackgroundPics(); //only for game.  not for editors.
 
     d_smallruinedcity = getMiscPicture("smallruinedcity.png");
     d_smallhero = getMiscPicture("hero.png");
@@ -389,15 +387,6 @@ GraphicsCache::~GraphicsCache()
         delete d_arrow[1][i];
       }
 
-    for (unsigned int i = 0; i < NUM_BACKGROUND_IMAGES; i++)
-      {
-        delete d_background[i];
-      }
-}
-
-PixMask* GraphicsCache::getBackgroundPic(guint32 type)
-{
-  return d_background[type];
 }
 
 PixMask* GraphicsCache::getGameButtonPic(guint32 type, int size)
@@ -3135,20 +3124,6 @@ bool GraphicsCache::loadArrowPics()
       d_arrow[1][count] = *it;
       count++;
     }
-  return true;
-}
-
-bool GraphicsCache::loadBackgroundPics()
-{
-  bool broken = false;
-  d_background[GAME_BACKGROUND] = 
-    PixMask::create(File::getMiscFile("various/background.png"), broken);
-  if (broken)
-    return false;
-  d_background[SPLASH_BACKGROUND] = 
-    PixMask::create(File::getMiscFile("various/back.bmp"), broken);
-  if (broken)
-    return false;
   return true;
 }
 

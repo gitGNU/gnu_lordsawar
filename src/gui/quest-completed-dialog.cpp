@@ -23,9 +23,6 @@
 #include "SightMap.h"
 #include "quest-completed-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "hero.h"
 #include "defs.h"
@@ -34,16 +31,11 @@
 #include "Item.h"
 
 QuestCompletedDialog::QuestCompletedDialog(Gtk::Window &parent, Quest *q, Reward *r)
+ : LwDialog(parent, "quest-assigned-dialog.ui")
 {
   reward = r;
   quest = q;
     
-  Glib::RefPtr<Gtk::Builder> xml
-      = Gtk::Builder::create_from_file(get_glade_path()
-				  + "/quest-assigned-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("map_image", map_image);
 
     questmap = new QuestMap(quest);
@@ -57,9 +49,8 @@ QuestCompletedDialog::QuestCompletedDialog(Gtk::Window &parent, Quest *q, Reward
                                        quest->getHero()->getName()));
 
     xml->get_widget("label", label);
-    Glib::ustring s;
-    s += String::ucompose(_("%1 completed the quest!"),
-			  quest->getHero()->getName());
+    Glib::ustring s = String::ucompose(_("%1 completed the quest!"),
+                                       quest->getHero()->getName());
     s += "\n\n";
     // add messages from the quest
     std::queue<Glib::ustring> msgs;
@@ -125,7 +116,6 @@ QuestCompletedDialog::QuestCompletedDialog(Gtk::Window &parent, Quest *q, Reward
 
 QuestCompletedDialog::~QuestCompletedDialog()
 {
-  delete dialog;
   delete questmap;
 }
 

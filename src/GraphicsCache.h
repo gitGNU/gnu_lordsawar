@@ -128,11 +128,6 @@ class GraphicsCache
       SOUTH,
       SOUTHEAST
     };
-  enum BackgroundType
-    {
-      SPLASH_BACKGROUND,
-      GAME_BACKGROUND
-    };
 
         //! Method for getting/creating the soliton instance.
         static GraphicsCache* getInstance();
@@ -427,9 +422,6 @@ class GraphicsCache
         //! get an image for one of an arrow, for the main game window.
         PixMask* getArrowPic(guint32 type, int size);
 
-        //! get an image for the background of a window or dialog.
-        PixMask* getBackgroundPic(guint32 type);
-
         /** Modify an image with player colors.
           * 
           * Take an arbitray surface and mask image, apply the player colors such
@@ -652,9 +644,6 @@ class GraphicsCache
         //! Loads the images for the arrows in the main game window.
         bool loadArrowPics();
         
-        //! Loads the background images that go behind dialogs and windows.
-        bool loadBackgroundPics();
-
         //! Loads the images for the cursor pictures.
         bool loadCursorPics();
 
@@ -755,7 +744,6 @@ class GraphicsCache
         PixMask *d_waypoint[NUM_WAYPOINTS];
         PixMask *d_gamebuttons[2][NUM_GAME_BUTTON_IMAGES];
         PixMask *d_arrow[2][NUM_ARROW_IMAGES];
-        PixMask *d_background[NUM_BACKGROUND_IMAGES];
 };
 
 bool operator <(ArmyCacheItem lhs, ArmyCacheItem rhs);

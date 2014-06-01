@@ -22,9 +22,6 @@
 
 #include "diplomacy-report-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
@@ -33,16 +30,11 @@
 #include "player.h"
 
 DiplomacyReportDialog::DiplomacyReportDialog(Gtk::Window &parent, Player *player)
+ : LwDialog(parent, "diplomacy-report-dialog.ui")
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   Playerlist *pl = Playerlist::getInstance();
   d_player = player;
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + 
-				"/diplomacy-report-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(parent);
   xml->get_widget("diplomacy_table", d_table);
 
   int order[MAX_PLAYERS];
@@ -97,17 +89,4 @@ DiplomacyReportDialog::DiplomacyReportDialog(Gtk::Window &parent, Player *player
 
 DiplomacyReportDialog::~DiplomacyReportDialog()
 {
-  delete dialog;
 }
-
-void DiplomacyReportDialog::hide()
-{
-  dialog->hide();
-}
-
-void DiplomacyReportDialog::run()
-{
-  dialog->show_all();
-  dialog->run();
-}
-

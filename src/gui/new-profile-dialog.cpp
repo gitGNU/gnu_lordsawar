@@ -22,19 +22,13 @@
 
 #include "new-profile-dialog.h"
 
-#include "glade-helpers.h"
-#include "input-helpers.h"
 #include "defs.h"
 #include "File.h"
 #include "ucompose.hpp"
 
 NewProfileDialog::NewProfileDialog(Gtk::Window &parent, Glib::ustring network_game_nickname)
+ : LwDialog(parent, "new-profile-dialog.ui")
 {
-  Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file
-    (get_glade_path() + "/new-profile-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(parent);
   xml->get_widget("accept_button", accept_button);
   xml->get_widget("nick_entry", nick_entry);
   nick_entry->set_activates_default(true);
@@ -45,7 +39,6 @@ NewProfileDialog::NewProfileDialog(Gtk::Window &parent, Glib::ustring network_ga
 	    
 NewProfileDialog::~NewProfileDialog()
 {
-  delete dialog;
 }
 
 void NewProfileDialog::on_nickname_changed()
@@ -66,17 +59,4 @@ void NewProfileDialog::update_buttons()
       nick_entry->property_activates_default() = true;
       accept_button->property_receives_default() = true;
     }
-}
-
-void NewProfileDialog::hide()
-{
-  dialog->hide();
-}
-
-bool NewProfileDialog::run()
-{
-  int response = dialog->run();
-  if (response == Gtk::RESPONSE_ACCEPT)
-    return true;
-  return false;
 }

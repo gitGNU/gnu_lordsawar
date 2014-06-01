@@ -23,10 +23,6 @@
 #include "stacktile.h"
 #include "stack.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
-
 #include "army-info-tip.h"
 #include "ucompose.hpp"
 #include "defs.h"
@@ -43,13 +39,13 @@ Glib::ustring StatusBox::get_file(Configuration::UiFormFactor factor)
   switch (factor)
     {
     case Configuration::UI_FORM_FACTOR_DESKTOP:
-      file = get_glade_path() + "/status-box-desktop.ui";
+      file = File::getUIFile("status-box-desktop.ui");
       break;
     case Configuration::UI_FORM_FACTOR_NETBOOK:
-      file = get_glade_path() + "/status-box-netbook.ui";
+      file = File::getUIFile("status-box-netbook.ui");
       break;
     case Configuration::UI_FORM_FACTOR_LARGE_SCREEN:
-      file = get_glade_path() + "/status-box-large-screen.ui";
+      file = File::getUIFile("status-box-large-screen.ui");
       break;
     }
   return file;

@@ -22,8 +22,7 @@
 
 #include "new-network-game-dialog.h"
 
-#include "glade-helpers.h"
-#include "input-helpers.h"
+#include "Configuration.h"
 #include "defs.h"
 #include "File.h"
 #include "ucompose.hpp"
@@ -32,12 +31,8 @@
 #include "new-profile-dialog.h"
 
 NewNetworkGameDialog::NewNetworkGameDialog(Gtk::Window &parent)
+ : LwDialog(parent, "new-network-game-dialog.ui")
 {
-  Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file
-    (get_glade_path() + "/new-network-game-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(parent);
   xml->get_widget("client_radiobutton", client_radiobutton);
   client_radiobutton->signal_toggled().connect(sigc::mem_fun(*this, &NewNetworkGameDialog::on_client_radiobutton_toggled));
   xml->get_widget("accept_button", accept_button);
@@ -114,7 +109,6 @@ void NewNetworkGameDialog::add_profile(Profile *profile)
 	    
 NewNetworkGameDialog::~NewNetworkGameDialog()
 {
-  delete dialog;
 }
 
 void NewNetworkGameDialog::update_buttons()
@@ -177,7 +171,7 @@ bool NewNetworkGameDialog::run()
 void NewNetworkGameDialog::on_add_button_clicked()
 {
   NewProfileDialog d(*dialog, "");
-  if (d.run())
+  if (d.run_and_hide() == Gtk::RESPONSE_ACCEPT)
     {
       Profile *profile = new Profile (d.getNickname());
       Profilelist::getInstance()->push_back(profile);

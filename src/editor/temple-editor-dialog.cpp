@@ -23,7 +23,6 @@
 
 #include "temple-editor-dialog.h"
 
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "CreateScenarioRandomize.h"
 #include "defs.h"
@@ -31,17 +30,11 @@
 #include "RenamableLocation.h"
 
 TempleEditorDialog::TempleEditorDialog(Gtk::Window &parent, Temple *t, CreateScenarioRandomize *randomizer)
+ : LwEditorDialog(parent, "temple-editor-dialog.ui")
 {
     d_randomizer = randomizer;
     temple = t;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/temple-editor-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
-
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(temple->getName());
 
@@ -57,7 +50,6 @@ TempleEditorDialog::TempleEditorDialog(Gtk::Window &parent, Temple *t, CreateSce
 
 TempleEditorDialog::~TempleEditorDialog()
 {
-  delete dialog;
 }
 
 int TempleEditorDialog::run()

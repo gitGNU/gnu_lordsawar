@@ -18,13 +18,11 @@
 #ifndef SWITCH_SETS_DIALOG_H
 #define SWITCH_SETS_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/signal.h>
 #include <gtkmm.h>
 
 #include "Tile.h"
 #include "game-parameters.h"
+#include "lw-editor-dialog.h"
 
 class Tileset;
 class Armyset;
@@ -32,7 +30,7 @@ class Cityset;
 class Shieldset;
 
 //! Scenario editor.  Change the army/tile/city/shieldsets of the map.
-class SwitchSetsDialog
+class SwitchSetsDialog: public LwEditorDialog
 {
  public:
     SwitchSetsDialog(Gtk::Window &parent);
@@ -51,8 +49,6 @@ class SwitchSetsDialog
     bool get_shieldset_changed() const {return shieldset_changed;};
     
  private:
-    Gtk::Dialog* dialog;
-
     Gtk::ComboBoxText *tile_size_combobox;
     Gtk::ComboBoxText *tile_theme_combobox;
     Gtk::ComboBoxText *city_theme_combobox;

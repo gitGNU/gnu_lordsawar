@@ -23,8 +23,6 @@
 
 #include "army-bonus-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "army.h"
@@ -34,14 +32,9 @@
 #include "File.h"
 
 ArmyBonusDialog::ArmyBonusDialog(Gtk::Window &parent, Player *p)
+ :LwDialog(parent, "army-bonus-dialog.ui")
 {
     d_player = p;
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/army-bonus-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
 
     armies_list = Gtk::ListStore::create(armies_columns);
     xml->get_widget("treeview", armies_treeview);
@@ -61,27 +54,6 @@ ArmyBonusDialog::ArmyBonusDialog(Gtk::Window &parent, Player *p)
 
 ArmyBonusDialog::~ArmyBonusDialog()
 {
-  delete dialog;
-}
-
-void ArmyBonusDialog::hide()
-{
-  dialog->hide();
-}
-
-void ArmyBonusDialog::run()
-{
-    static int width = -1;
-    static int height = -1;
-
-    if (width != -1 && height != -1)
-	dialog->set_default_size(width, height);
-    
-    dialog->show();
-    dialog->run();
-
-    dialog->get_size(width, height);
-
 }
 
 void ArmyBonusDialog::addArmyType(guint32 army_type)

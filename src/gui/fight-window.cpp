@@ -27,8 +27,6 @@
 
 #include "fight-window.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "ucompose.hpp"
 #include "timing.h"
 #include "File.h"
@@ -49,7 +47,7 @@
 FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
 {
     Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + "/fight-window.ui");
+	= Gtk::Builder::create_from_file(File::getUIFile("fight-window.ui"));
 
     xml->get_widget("window", window);
     window->set_transient_for(parent);
@@ -234,7 +232,7 @@ void FightWindow::add_army(Army *army, int initial_hp,
     Gtk::EventBox *eventbox;
 
     Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + "/fighter.ui");
+	= Gtk::Builder::create_from_file(File::getUIFile("fighter.ui"));
 
     xml->get_widget("army_box", army_box);
     xml->get_widget("eventbox", eventbox);

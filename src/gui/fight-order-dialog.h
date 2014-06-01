@@ -18,18 +18,16 @@
 #ifndef FIGHT_ORDER_DIALOG_H
 #define FIGHT_ORDER_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
-#include <sigc++/signal.h>
 #include <gtkmm.h>
 #include <list>
 
+#include "lw-dialog.h"
 class Stack;
 class Player;
 
 // dialog for showing and changing the order in which army types fight
 // in battle
-class FightOrderDialog: public sigc::trackable
+class FightOrderDialog: public LwDialog
 {
  public:
     FightOrderDialog(Gtk::Window &parent, Player *player);
@@ -39,8 +37,6 @@ class FightOrderDialog: public sigc::trackable
     void run();
 
  private:
-    Gtk::Dialog* dialog;
-
     Player *player;
     Gtk::TreeView *armies_treeview;
     Gtk::Button *reverse_button;

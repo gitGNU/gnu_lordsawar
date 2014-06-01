@@ -18,23 +18,18 @@
 #ifndef TILESET_SMALLMAP_BUILDING_COLORS_DIALOG_H
 #define TILESET_SMALLMAP_BUILDING_COLORS_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
+#include "lw-editor-dialog.h"
 class Tileset;
 
-class TilesetSmallmapBuildingColorsDialog: public sigc::trackable
+class TilesetSmallmapBuildingColorsDialog: public LwEditorDialog
 {
  public:
     TilesetSmallmapBuildingColorsDialog(Gtk::Window &parent, Tileset *tileset);
     ~TilesetSmallmapBuildingColorsDialog();
 
-    int run();
-    void hide();
-    
  private:
     Tileset *d_tileset;
-    Gtk::Dialog *dialog;
     Gtk::ColorButton *road_colorbutton;
     Gtk::ColorButton *ruin_colorbutton;
     Gtk::ColorButton *temple_colorbutton;

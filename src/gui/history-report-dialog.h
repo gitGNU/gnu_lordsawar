@@ -18,9 +18,7 @@
 #ifndef HISTORY_REPORT_DIALOG_H
 #define HISTORY_REPORT_DIALOG_H
 
-#include <memory>
 #include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "line-chart.h"
@@ -29,12 +27,13 @@
 #include "historymap.h"
 #include "history.h"
 #include "player.h"
+#include "lw-dialog.h"
 
 class Citylist;
 class City;
 class Player;
 
-class HistoryReportDialog: public sigc::trackable
+class HistoryReportDialog: public LwDialog
 {
  public:
     enum HistoryReportType {CITY = 0, RUIN, EVENTS, GOLD, WINNING};
@@ -53,7 +52,6 @@ class HistoryReportDialog: public sigc::trackable
     void hide();
     
  private:
-    Gtk::Dialog* dialog;
     HistoryMap* historymap;
 
     Player *d_player;

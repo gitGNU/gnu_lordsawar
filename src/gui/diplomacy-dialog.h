@@ -18,27 +18,20 @@
 #ifndef DIPLOMACY_DIALOG_H
 #define DIPLOMACY_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "player.h"
+#include "lw-dialog.h"
 
 //
 //
-class DiplomacyDialog: public sigc::trackable
+class DiplomacyDialog: public LwDialog
 {
  public:
     DiplomacyDialog(Gtk::Window &parent, Player *player);
     ~DiplomacyDialog();
 
-    void run();
-    void hide();
-    
  private:
-    Gtk::Dialog* dialog;
-
     void on_report_clicked();
     void on_proposal_toggled (Gtk::ToggleButton *toggle, Player *p, Player::DiplomaticProposal proposal);
 
@@ -49,7 +42,6 @@ class DiplomacyDialog: public sigc::trackable
     Gtk::Label *d_player_label;
     Gtk::Image *d_player_shield_image;
     Gtk::Button *d_report_button;
-
 };
 
 #endif

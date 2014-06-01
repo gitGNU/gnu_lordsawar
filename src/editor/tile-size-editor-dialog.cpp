@@ -21,20 +21,13 @@
 
 #include "tile-size-editor-dialog.h"
 
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "File.h"
 #include "defs.h"
 
-
 TileSizeEditorDialog::TileSizeEditorDialog(Gtk::Window &parent, guint32 current, guint32 suggested)
+ : LwEditorDialog(parent, "tile-size-editor-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/tile-size-editor-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("label", label);
     Glib::ustring msg = 
       String::ucompose(_("Do you want to change the tile size from %1 to %2?"),
@@ -46,7 +39,6 @@ TileSizeEditorDialog::TileSizeEditorDialog(Gtk::Window &parent, guint32 current,
 
 TileSizeEditorDialog::~TileSizeEditorDialog()
 {
-  delete dialog;
 }
 
 int TileSizeEditorDialog::run()

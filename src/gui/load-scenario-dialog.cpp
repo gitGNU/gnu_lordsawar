@@ -19,12 +19,10 @@
 #include <config.h>
 #include <list>
 #include <iostream>
-#include <fstream>
 #include <sigc++/functors/mem_fun.h>
 #include <gtkmm.h>
 
 #include "load-scenario-dialog.h"
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "Configuration.h"
@@ -32,13 +30,8 @@
 #include "GameScenario.h"
 
 LoadScenarioDialog::LoadScenarioDialog(Gtk::Window &parent)
+ : LwDialog(parent, "load-scenario-dialog.ui")
 {
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path()
-				+ "/load-scenario-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(parent);
   xml->get_widget("description_textview", description_textview);
   xml->get_widget("load_button", load_button);
   xml->get_widget("num_players_label", num_players_label);
@@ -79,7 +72,6 @@ LoadScenarioDialog::LoadScenarioDialog(Gtk::Window &parent)
 
 LoadScenarioDialog::~LoadScenarioDialog()
 {
-  delete dialog;
 }
 
 void LoadScenarioDialog::hide()

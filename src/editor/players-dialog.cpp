@@ -24,7 +24,6 @@
 
 #include "players-dialog.h"
 
-#include "glade-helpers.h"
 #include "defs.h"
 #include "File.h"
 #include "player.h"
@@ -52,18 +51,14 @@ namespace
 }
 
 PlayersDialog::PlayersDialog(Gtk::Window &parent, CreateScenarioRandomize *random, int width, int height)
-  : type_column(_("Type"), type_renderer),
+  : LwEditorDialog(parent, "players-dialog.ui"),
+    type_column(_("Type"), type_renderer),
     gold_column(_("Gold"), gold_renderer),
     name_column(_("Name"), name_renderer)
 {
   d_random = random;
   d_width = width;
   d_height = height;
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/players-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(parent);
 
   // setup the player settings
   player_list = Gtk::ListStore::create(player_columns);
@@ -157,7 +152,6 @@ PlayersDialog::PlayersDialog(Gtk::Window &parent, CreateScenarioRandomize *rando
 
 PlayersDialog::~PlayersDialog()
 {
-  delete dialog;
 }
 
 int PlayersDialog::run()

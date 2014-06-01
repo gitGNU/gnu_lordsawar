@@ -23,8 +23,6 @@
 
 #include "destination-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
@@ -42,16 +40,11 @@
 #include "playerlist.h"
 
 DestinationDialog::DestinationDialog(Gtk::Window &parent, City *c, bool *see_all)
+ : LwDialog(parent, "destination-dialog.ui")
 {
   d_see_all = see_all;
     city = c;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/destination-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("map_image", map_image);
     xml->get_widget("see_all_togglebutton", see_all_toggle);
     xml->get_widget("vector_togglebutton", vector_toggle);
@@ -94,7 +87,6 @@ DestinationDialog::DestinationDialog(Gtk::Window &parent, City *c, bool *see_all
 
 DestinationDialog::~DestinationDialog()
 {
-  delete dialog;
   delete vectormap;
 }
 

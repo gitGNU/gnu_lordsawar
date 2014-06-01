@@ -19,15 +19,13 @@
 #ifndef DESTINATION_DIALOG_H
 #define DESTINATION_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "vectormap.h"
+#include "lw-dialog.h"
 
 // dialog for choosing the destination of the production of a city
-class DestinationDialog: public sigc::trackable
+class DestinationDialog: public LwDialog
 {
  public:
     DestinationDialog(Gtk::Window &parent, City *city, bool *see_all);
@@ -37,7 +35,6 @@ class DestinationDialog: public sigc::trackable
     void hide();
     
  private:
-    Gtk::Dialog* dialog;
     VectorMap* vectormap;
 
     Gtk::Image *map_image;

@@ -19,29 +19,22 @@
 #ifndef HERO_LEVELS_DIALOG_H
 #define HERO_LEVELS_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
-#include <sigc++/signal.h>
 #include <gtkmm.h>
 #include <list>
+#include "lw-dialog.h"
 
 class Player;
 class Hero;
 
 // dialog for showing hero information
-class HeroLevelsDialog: public sigc::trackable
+class HeroLevelsDialog: public LwDialog
 {
  public:
     HeroLevelsDialog(Gtk::Window &parent, Player *player);
     HeroLevelsDialog(Gtk::Window &parent, std::list<Hero*> heroes);
     ~HeroLevelsDialog();
 
-    void run();
-    void hide();
-
  private:
-    Gtk::Dialog* dialog;
-
     Player *player;
     Gtk::TreeView *heroes_treeview;
 
@@ -63,7 +56,7 @@ class HeroLevelsDialog: public sigc::trackable
     Glib::RefPtr<Gtk::ListStore> heroes_list;
  private:
 
-    void init(Gtk::Window &parent, Player *theplayer);
+    void init(Player *theplayer);
     void addHero(Hero *h);
 };
 

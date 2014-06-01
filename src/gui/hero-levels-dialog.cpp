@@ -23,8 +23,6 @@
 
 #include "hero-levels-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "playerlist.h"
@@ -36,16 +34,10 @@
 #include "GraphicsCache.h"
 #include "shield.h"
 
-void HeroLevelsDialog::init(Gtk::Window &parent, Player *theplayer)
+void HeroLevelsDialog::init(Player *theplayer)
 {
     player = theplayer;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/hero-levels-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     heroes_list = Gtk::ListStore::create(heroes_columns);
     xml->get_widget("treeview", heroes_treeview);
     heroes_treeview->set_model(heroes_list);
@@ -60,17 +52,18 @@ void HeroLevelsDialog::init(Gtk::Window &parent, Player *theplayer)
 }
 
 HeroLevelsDialog::HeroLevelsDialog(Gtk::Window &parent, std::list<Hero*> heroes)
+ : LwDialog(parent, "hero-levels-dialog.ui")
 {
-  init (parent, (*heroes.front()).getOwner());
+  init ((*heroes.front()).getOwner());
           
   for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end(); it++)
     addHero(*it);
 }
 
 HeroLevelsDialog::HeroLevelsDialog(Gtk::Window &parent, Player *theplayer)
+ : LwDialog(parent, "hero-levels-dialog.ui")
 {
-
-  init (parent, theplayer);
+  init (theplayer);
   std::list<Hero*> heroes = theplayer->getHeroes();
   for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end(); it++)
     addHero(*it);
@@ -78,27 +71,6 @@ HeroLevelsDialog::HeroLevelsDialog(Gtk::Window &parent, Player *theplayer)
 
 HeroLevelsDialog::~HeroLevelsDialog()
 {
-  delete dialog;
-}
-
-void HeroLevelsDialog::hide()
-{
-  dialog->hide();
-}
-
-void HeroLevelsDialog::run()
-{
-    static int width = -1;
-    static int height = -1;
-
-    if (width != -1 && height != -1)
-	dialog->set_default_size(width, height);
-    
-    dialog->show();
-    dialog->run();
-
-    dialog->get_size(width, height);
-
 }
 
 void HeroLevelsDialog::addHero(Hero *h)

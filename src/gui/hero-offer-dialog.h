@@ -19,18 +19,16 @@
 #ifndef HERO_OFFER_DIALOG_H
 #define HERO_OFFER_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "heromap.h"
 #include "player.h"
 #include "hero.h"
 #include "heroproto.h"
+#include "lw-dialog.h"
 
 //! dialog for accepting/rejecting a hero
-class HeroOfferDialog: public sigc::trackable
+class HeroOfferDialog: public LwDialog
 {
  public:
     HeroOfferDialog(Gtk::Window &parent, Player *player, HeroProto *hero, City *city, int gold);
@@ -40,7 +38,6 @@ class HeroOfferDialog: public sigc::trackable
     void hide();
     
  private:
-    Gtk::Dialog* dialog;
     //! The smallmap that shows where the Hero is emerging.
     HeroMap* heromap;
 

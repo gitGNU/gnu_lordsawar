@@ -23,24 +23,17 @@
 
 #include "signpost-editor-dialog.h"
 
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "CreateScenarioRandomize.h"
 #include "signpost.h"
 
 SignpostEditorDialog::SignpostEditorDialog(Gtk::Window &parent, Signpost *s, CreateScenarioRandomize *randomizer)
+ : LwEditorDialog(parent, "signpost-editor-dialog.ui")
 {
     d_randomizer = randomizer;
     signpost = s;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/signpost-editor-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
-
     xml->get_widget("sign_textview", sign_textview);
     sign_textview->get_buffer()->set_text(s->getName());
     
@@ -51,7 +44,6 @@ SignpostEditorDialog::SignpostEditorDialog(Gtk::Window &parent, Signpost *s, Cre
 
 SignpostEditorDialog::~SignpostEditorDialog()
 {
-  delete dialog;
 }
 
 int SignpostEditorDialog::run()

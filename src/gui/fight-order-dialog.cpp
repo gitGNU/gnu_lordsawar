@@ -22,8 +22,6 @@
 #include "fight-order-dialog.h"
 
 #include <gtkmm.h>
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "playerlist.h"
@@ -34,15 +32,10 @@
 #include "armyset.h"
 
 FightOrderDialog::FightOrderDialog(Gtk::Window &parent, Player *theplayer)
+ : LwDialog(parent, "fight-order-dialog.ui")
 {
     player = theplayer;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/fight-order-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     armies_list = Gtk::ListStore::create(armies_columns);
     xml->get_widget("treeview", armies_treeview);
     armies_treeview->set_model(armies_list);
@@ -61,9 +54,9 @@ FightOrderDialog::FightOrderDialog(Gtk::Window &parent, Player *theplayer)
     reset_button->signal_clicked().connect
       (sigc::mem_fun (*this, &FightOrderDialog::on_reset_button_clicked));
 }
+
 FightOrderDialog::~FightOrderDialog()
 {
-  delete dialog;
 }
 
 void FightOrderDialog::hide()
@@ -73,16 +66,8 @@ void FightOrderDialog::hide()
 
 void FightOrderDialog::run()
 {
-    static int width = -1;
-    static int height = -1;
-
-    if (width != -1 && height != -1)
-	dialog->set_default_size(width, height);
-    
     dialog->show();
     int response = dialog->run();
-
-    dialog->get_size(width, height);
 
     if (response == Gtk::RESPONSE_ACCEPT)
       {
@@ -91,7 +76,6 @@ void FightOrderDialog::run()
 	     end = armies_list->children().end(); i != end; ++i) 
           fight_order.push_back((*i)[armies_columns.army_type]);
         player->setFightOrder(fight_order);
-
       }
 }
 

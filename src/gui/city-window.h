@@ -19,17 +19,16 @@
 #ifndef CITY_WINDOW_H
 #define CITY_WINDOW_H
 
-#include <memory>
 #include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 #include "vectormap.h"
 #include "army-info-tip.h"
+#include "lw-dialog.h"
 
 class City;
 
 // dialog for displaying a friendly city
-class CityWindow: public sigc::trackable
+class CityWindow: public LwDialog
 {
  public:
     CityWindow(Gtk::Window &parent, City *city, bool razing_possible, bool see_opponents_production);
@@ -42,7 +41,6 @@ class CityWindow: public sigc::trackable
     static bool on_raze_clicked (City *city, Gtk::Dialog *parent);
     
  private:
-    Gtk::Dialog* dialog;
     VectorMap* prodmap;
     ArmyInfoTip* army_info_tip;
     Gtk::Image *map_image;

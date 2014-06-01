@@ -23,8 +23,6 @@
 #include "stack.h"
 #include "army.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "input-helpers.h"
 
 #include "army-info-tip.h"
@@ -52,7 +50,7 @@ Glib::ustring StackArmyButton::get_file(Configuration::UiFormFactor factor)
       f = "large-screen";
       break;
     }
-  return String::ucompose("%1/stack-army-button-%2%3", get_glade_path(), f,
+  return String::ucompose("%1/stack-army-button-%2%3", File::getUIFile(""), f,
                           ".ui");
 }
 

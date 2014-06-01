@@ -22,8 +22,6 @@
 
 #include "tile-preview-dialog.h"
 
-#include "glade-helpers.h"
-#include "gui/image-helpers.h"
 #include "gui/input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
@@ -31,14 +29,8 @@
 #include "tilestyle.h"
 
 TilePreviewDialog::TilePreviewDialog(Gtk::Window &parent, Tile *tile, Tile *sec, guint32 tileSize)
+ : LwEditorDialog(parent, "tile-preview-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/tile-preview-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
-
     xml->get_widget("next_button", next_button);
     next_button->signal_clicked().connect
       (sigc::mem_fun(this, &TilePreviewDialog::on_next_clicked));
@@ -247,7 +239,6 @@ void TilePreviewDialog::on_tilestyle_id_hovered(guint32 id)
 
 TilePreviewDialog::~TilePreviewDialog()
 {
-  delete dialog;
 }
 
 void TilePreviewDialog::run()

@@ -20,25 +20,24 @@
 
 #include <memory>
 #include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
+#include "lw-dialog.h"
 class Item;
 
 //! Scenario editor.  Select an ItemProto object from the Itemlist.
-class UseItemDialog: public sigc::trackable
+class UseItemDialog: public LwDialog
 {
  public:
     UseItemDialog(Gtk::Window &parent, std::list<Item*> items);
     ~UseItemDialog();
 
+    Item *get_selected_item() { return selected_item; }
+
     void run();
     void hide();
-
-    Item *get_selected_item() { return selected_item; }
     
  private:
-    Gtk::Dialog* dialog;
     Gtk::Button *select_button;
 
     Item *selected_item;
@@ -56,9 +55,7 @@ class UseItemDialog: public sigc::trackable
     const ItemsColumns items_columns;
     Glib::RefPtr<Gtk::ListStore> items_list;
 
-
     void addItem(Item *item);
-    
     void set_select_button_state();
 };
 

@@ -22,8 +22,6 @@
 
 #include "smallmap-editor-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
@@ -34,14 +32,8 @@
 #include "tilesetlist.h"
 
 SmallmapEditorDialog::SmallmapEditorDialog(Gtk::Window &parent)
+ : LwEditorDialog(parent, "smallmap-editor-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/smallmap-editor-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
-
     xml->get_widget("smallmap_image", smallmap_image);
     smallmap_image->signal_event().connect
       (sigc::mem_fun(*this, &SmallmapEditorDialog::on_smallmap_exposed));
@@ -91,7 +83,6 @@ SmallmapEditorDialog::SmallmapEditorDialog(Gtk::Window &parent)
 
 SmallmapEditorDialog::~SmallmapEditorDialog()
 {
-  delete dialog;
   delete smallmap;
 }
 

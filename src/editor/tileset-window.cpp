@@ -38,10 +38,6 @@
 #include "tileset-explosion-picture-editor-dialog.h"
 #include "image-editor-dialog.h"
 
-#include "image-helpers.h"
-#include "input-helpers.h"
-#include "error-utils.h"
-
 #include "defs.h"
 #include "Configuration.h"
 #include "tilesetlist.h"
@@ -58,9 +54,6 @@
 #include "tileset-smallmap-building-colors-dialog.h"
 #include "GameMap.h"
 
-#include "glade-helpers.h"
-
-
 TileSetWindow::TileSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
 {
   autosave = File::getSavePath() + "autosave" + Tileset::file_extension;
@@ -68,7 +61,7 @@ TileSetWindow::TileSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
   inhibit_needs_saving = false;
   d_tileset = NULL;
     Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + "/tileset-window.ui");
+	= Gtk::Builder::create_from_file(File::getEditorUIFile("tileset-window.ui"));
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
@@ -290,8 +283,7 @@ TileSetWindow::TileSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
                                    r->getName(), r->getNumberOfTiles());
           }
         EditorRecoverDialog d(parent, m);
-        int response = d.run();
-        d.hide();
+        int response = d.run_and_hide();
         //ask if we want to recover the autosave.
         if (response == Gtk::RESPONSE_ACCEPT)
           {
@@ -692,8 +684,7 @@ bool TileSetWindow::quit()
   if (needs_saving)
     {
       EditorQuitDialog d(*window);
-      int response = d.run();
-      d.hide();
+      int response = d.run_and_hide();
       
       if (response == Gtk::RESPONSE_CANCEL) //we don't want to quit
 	return false;
@@ -742,7 +733,7 @@ void TileSetWindow::on_help_about_activated()
   Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/../about-dialog.ui");
+    = Gtk::Builder::create_from_file(File::getUIFile("about-dialog.ui"));
 
   xml->get_widget("dialog", dialog);
   dialog->set_transient_for(*window);
@@ -1195,14 +1186,14 @@ void TileSetWindow::on_organize_tilestyles_activated()
   TileStyleOrganizerDialog d(*window, get_selected_tile());
   d.tilestyle_selected.connect
     (sigc::mem_fun(this, &TileSetWindow::on_tilestyle_id_selected));
-  d.run();
+  d.run_and_hide();
   update_tilestyle_panel();
 }
 
 void TileSetWindow::on_smallmap_building_colors_activated()
 {
   TilesetSmallmapBuildingColorsDialog d(*window, d_tileset);
-  d.run();
+  d.run_and_hide();
 }
     
 void TileSetWindow::on_tilestyle_id_selected(guint32 id)

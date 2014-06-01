@@ -18,33 +18,23 @@
 #include <config.h>
 
 #include <gtkmm.h>
-#include <sigc++/functors/mem_fun.h>
 
 #include "surrender-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
 
 SurrenderDialog::SurrenderDialog(Gtk::Window &parent, int numEnemies)
+ : LwDialog (parent, "surrender-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/surrender-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     Gtk::Label *label;
     xml->get_widget("label", label);
     xml->get_widget("image", image);
     
-    Glib::ustring s;
-    s = ngettext("Your enemy grudgingly surrenders!\n",
-		 "Your enemies respectfully surrender!\n",
-		 numEnemies);
+    Glib::ustring s = ngettext("Your enemy grudgingly surrenders!\n",
+                               "Your enemies respectfully surrender!\n",
+                               numEnemies);
     s += _("Do you accept?");
     label->set_text(s);
     image->property_file()
@@ -53,15 +43,4 @@ SurrenderDialog::SurrenderDialog(Gtk::Window &parent, int numEnemies)
 
 SurrenderDialog::~SurrenderDialog()
 {
-  delete dialog;
-}
-
-void SurrenderDialog::hide()
-{
-  dialog->hide();
-}
-
-bool SurrenderDialog::run()
-{
-  return dialog->run() == Gtk::RESPONSE_ACCEPT;
 }

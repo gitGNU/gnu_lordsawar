@@ -22,8 +22,6 @@
 
 #include "main-preferences-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "Configuration.h"
@@ -31,13 +29,8 @@
 
 
 MainPreferencesDialog::MainPreferencesDialog(Gtk::Window &parent)
+ : LwDialog(parent, "main-preferences-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/main-preferences-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("show_turn_popup_checkbutton", show_turn_popup_checkbutton);
     xml->get_widget("commentator_checkbutton", commentator_checkbutton);
     xml->get_widget("ui_combobox", ui_combobox);
@@ -67,7 +60,6 @@ MainPreferencesDialog::MainPreferencesDialog(Gtk::Window &parent)
 
 MainPreferencesDialog::~MainPreferencesDialog()
 {
-  delete dialog;
 }
 
 void MainPreferencesDialog::hide()

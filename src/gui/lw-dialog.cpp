@@ -1,4 +1,4 @@
-//  Copyright (C) 2007 Ole Laursen
+//  Copyright (C) 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,14 +15,29 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef EDITOR_GLADE_HELPERS_H
-#define EDITOR_GLADE_HELPERS_H
+#include <config.h>
 
-#include "Configuration.h"
+#include <gtkmm.h>
 
-inline Glib::ustring get_glade_path()
+#include "lw-dialog.h"
+#include "File.h"
+
+LwDialog::LwDialog(Gtk::Window &parent, Glib::ustring file)
 {
-    return Configuration::s_dataPath + "/glade/editor";
+  xml = Gtk::Builder::create_from_file(File::getUIFile(file));
+  xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(parent);
 }
 
-#endif
+LwDialog::~LwDialog()
+{
+  delete dialog;
+}
+
+int LwDialog::run_and_hide()
+{
+  dialog->show_all();
+  int response = dialog->run();
+  dialog->hide();
+  return response;
+}

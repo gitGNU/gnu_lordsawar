@@ -21,34 +21,16 @@
 
 #include "editor-quit-dialog.h"
 
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "File.h"
 #include "defs.h"
 
 
 EditorQuitDialog::EditorQuitDialog(Gtk::Window &parent)
+ : LwEditorDialog(parent, "editor-quit-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/editor-quit-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
 }
 
 EditorQuitDialog::~EditorQuitDialog()
 {
-  delete dialog;
-}
-
-int EditorQuitDialog::run()
-{
-    dialog->show_all();
-    return dialog->run();
-}
-
-void EditorQuitDialog::hide()
-{
-  dialog->hide();
 }

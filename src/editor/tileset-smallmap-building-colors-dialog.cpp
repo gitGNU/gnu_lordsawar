@@ -21,7 +21,6 @@
 
 #include "tileset-smallmap-building-colors-dialog.h"
 
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "File.h"
 #include "defs.h"
@@ -29,15 +28,10 @@
 
 
 TilesetSmallmapBuildingColorsDialog::TilesetSmallmapBuildingColorsDialog(Gtk::Window &parent, Tileset *tileset)
+ : LwEditorDialog(parent, "tileset-smallmap-building-colors-dialog.ui")
 {
   d_tileset = tileset;
 
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file
-    (get_glade_path() + "/tileset-smallmap-building-colors-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(parent);
   xml->get_widget("road_colorbutton", road_colorbutton);
   road_colorbutton->set_rgba(tileset->getRoadColor());
   road_colorbutton->signal_color_set().connect
@@ -57,19 +51,6 @@ TilesetSmallmapBuildingColorsDialog::TilesetSmallmapBuildingColorsDialog(Gtk::Wi
 
 TilesetSmallmapBuildingColorsDialog::~TilesetSmallmapBuildingColorsDialog()
 {
-  delete dialog;
-}
-
-int TilesetSmallmapBuildingColorsDialog::run()
-{
-    dialog->show_all();
-    int response = dialog->run();
-    return response;
-}
-
-void TilesetSmallmapBuildingColorsDialog::hide()
-{
-  dialog->hide();
 }
 
 void TilesetSmallmapBuildingColorsDialog::on_road_color_chosen()

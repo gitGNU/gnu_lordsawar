@@ -23,8 +23,6 @@
 
 #include "preferences-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "Configuration.h"
@@ -41,14 +39,9 @@
 
 
 PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
+ : LwDialog(parent, "preferences-dialog.ui")
 {
   d_readonly = readonly;
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/preferences-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("commentator_checkbutton", commentator_checkbutton);
     xml->get_widget("speed_scale", speed_scale);
     xml->get_widget("ui_combobox", ui_combobox);
@@ -137,7 +130,6 @@ PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
 
 PreferencesDialog::~PreferencesDialog()
 {
-  delete dialog;
 }
 
 void PreferencesDialog::on_type_changed(Gtk::ComboBoxText *combo)

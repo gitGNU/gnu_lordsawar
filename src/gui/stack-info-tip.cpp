@@ -22,9 +22,6 @@
 
 #include "stack-info-tip.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-
 #include "ucompose.hpp"
 #include "vector.h"
 #include "defs.h"
@@ -40,8 +37,7 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, StackTile *
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
     Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/stack-info-window.ui");
+	= Gtk::Builder::create_from_file(File::getUIFile("stack-info-window.ui"));
 
     xml->get_widget("window", window);
     xml->get_widget("image_hbox", image_hbox);

@@ -18,23 +18,19 @@
 #ifndef TILESTYLE_ORGANIZER_DIALOG_H
 #define TILESTYLE_ORGANIZER_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 #include <sigc++/signal.h>
+#include "lw-editor-dialog.h"
 
 class Tile;
 class TileStyle;
 
-class TileStyleOrganizerDialog: public sigc::trackable
+class TileStyleOrganizerDialog: public LwEditorDialog
 {
  public:
     TileStyleOrganizerDialog(Gtk::Window &parent, Tile *tile);
     ~TileStyleOrganizerDialog();
 
-    int run();
-    void hide();
-    
     sigc::signal<void, guint32> tilestyle_selected;
 
  protected:
@@ -77,7 +73,6 @@ class TileStyleOrganizerDialog: public sigc::trackable
   Glib::RefPtr<Gtk::ListStore> unsorted_list;
  private:
     Tile *d_tile;
-    Gtk::Dialog *dialog;
     Gtk::IconView *categories_iconview;
     Gtk::IconView *category_iconview;
     Gtk::IconView *unsorted_iconview;

@@ -23,8 +23,6 @@
 
 #include "select-hidden-ruin-dialog.h"
 
-#include "glade-helpers.h"
-#include "gui/input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "ruin.h"
@@ -32,15 +30,9 @@
 #include "playerlist.h"
 
 SelectHiddenRuinDialog::SelectHiddenRuinDialog(Gtk::Window &parent)
+ : LwEditorDialog(parent, "select-hidden-ruin-dialog.ui")
 {
     selected_hidden_ruin = 0;
-    
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/select-hidden-ruin-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     
     xml->get_widget("select_button", select_button);
 
@@ -72,7 +64,6 @@ SelectHiddenRuinDialog::SelectHiddenRuinDialog(Gtk::Window &parent)
 
 SelectHiddenRuinDialog::~SelectHiddenRuinDialog()
 {
-  delete dialog;
 }
 
 void SelectHiddenRuinDialog::addHiddenRuin(Ruin *ruin)

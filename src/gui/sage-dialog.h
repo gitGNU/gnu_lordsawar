@@ -20,16 +20,16 @@
 
 #include <memory>
 #include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "ruinmap.h"
 #include "player.h"
 #include "hero.h"
 #include "Sage.h"
+#include "lw-dialog.h"
 
 // dialog for visiting a sage
-class SageDialog: public sigc::trackable
+class SageDialog: public LwDialog
 {
  public:
     SageDialog(Gtk::Window &parent, Sage *sage, Player *player, Hero *hero, Ruin *r);
@@ -39,7 +39,6 @@ class SageDialog: public sigc::trackable
     Reward *run();
     
  private:
-    Gtk::Dialog* dialog;
     RuinMap* ruinmap;
 
     Gtk::TreeView *rewards_treeview;

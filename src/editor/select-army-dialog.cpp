@@ -22,11 +22,9 @@
 #include <sigc++/functors/mem_fun.h>
 #include <assert.h>
 
+#include "gui/input-helpers.h"
 #include "select-army-dialog.h"
 
-#include "glade-helpers.h"
-#include "gui/image-helpers.h"
-#include "gui/input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "armyproto.h"
@@ -36,6 +34,7 @@
 SelectArmyDialog::SelectArmyDialog(Gtk::Window &parent, Player *p, 
                                    bool hero_too, bool defends_ruins, 
                                    bool awardable)
+ : LwEditorDialog(parent, "select-army-dialog.ui")
 {
   army_info_tip = NULL;
   d_hero_too = hero_too;
@@ -43,13 +42,6 @@ SelectArmyDialog::SelectArmyDialog(Gtk::Window &parent, Player *p,
     player = p;
     d_awardable = awardable;
     selected_army = 0;
-    
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/select-army-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     
     xml->get_widget("army_info_label1", army_info_label1);
     xml->get_widget("army_info_label2", army_info_label2);
@@ -62,7 +54,6 @@ SelectArmyDialog::SelectArmyDialog(Gtk::Window &parent, Player *p,
 
 SelectArmyDialog::~SelectArmyDialog()
 {
-  delete dialog;
 }
 
 void SelectArmyDialog::run()

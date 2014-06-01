@@ -22,8 +22,6 @@
 
 #include "use-item-on-city-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
@@ -35,13 +33,8 @@
 #include "playerlist.h"
 
 UseItemOnCityDialog::UseItemOnCityDialog(Gtk::Window &parent, SelectCityMap::Type type)
+ : LwDialog(parent, "use-item-on-city-dialog.ui")
 {
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path()
-                                     + "/use-item-on-city-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(parent);
   xml->get_widget("map_image", map_image);
   xml->get_widget("continue_button", continue_button);
 
@@ -80,7 +73,6 @@ UseItemOnCityDialog::UseItemOnCityDialog(Gtk::Window &parent, SelectCityMap::Typ
 
 UseItemOnCityDialog::~UseItemOnCityDialog()
 {
-  delete dialog;
   delete citymap;
 }
 
@@ -89,7 +81,7 @@ void UseItemOnCityDialog::hide()
   dialog->hide();
 }
 
-City*UseItemOnCityDialog::run()
+City* UseItemOnCityDialog::run()
 {
     citymap->resize();
     citymap->draw(Playerlist::getActiveplayer());

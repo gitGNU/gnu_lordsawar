@@ -18,21 +18,20 @@
 #ifndef GAME_LOBBY_DIALOG_H
 #define GAME_LOBBY_DIALOG_H
 
-#include <memory>
-#include <vector>
 #include <gtkmm.h>
 #include "citymap.h"
 #include "GameScenario.h"
 #include "game-station.h"
+#include "lw-dialog.h"
 
 class Player;
 class NextTurnNetworked;
 
 //! dialog for showing the scenario and who's joined
-class GameLobbyDialog: public sigc::trackable
+class GameLobbyDialog: public LwDialog
 {
  public:
-    GameLobbyDialog(Gtk::Window *parent, GameScenario *game_scenario, 
+    GameLobbyDialog(Gtk::Window &parent, GameScenario *game_scenario, 
 		    NextTurnNetworked *next_turn, 
 		    GameStation *game_station,
 		    bool has_ops);
@@ -53,7 +52,6 @@ class GameLobbyDialog: public sigc::trackable
   sigc::signal<void> game_may_begin;
 
  private:
-    Gtk::Dialog* dialog;
     //! The mini map that shows the scenario map
     CityMap* citymap;
     Gtk::Image *map_image;
@@ -61,7 +59,7 @@ class GameLobbyDialog: public sigc::trackable
     guint32 d_player_id_of_name_change_request;
     guint32 d_player_id_of_type_change_request;
 
-    void initDialog(Gtk::Window *parent, GameScenario *gamescenario, 
+    void initDialog(GameScenario *gamescenario, 
                     NextTurnNetworked *next_turn, GameStation *game_station);
     void on_map_changed(Cairo::RefPtr< Cairo::Surface> map);
     GameScenario *d_game_scenario;
@@ -202,7 +200,6 @@ class GameLobbyDialog: public sigc::trackable
     void sort_player_list_by_turn_order();
 
     void update_turn_indicator();
-
 };
 
 #endif

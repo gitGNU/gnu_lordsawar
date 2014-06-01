@@ -18,17 +18,15 @@
 #ifndef RUIN_REPORT_DIALOG_H
 #define RUIN_REPORT_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "ruinmap.h"
 #include "player.h"
+#include "lw-dialog.h"
 
 // dialog for showing all ruins and temples
 // the stack parameter is used as a starting position for showing ruins
-class RuinReportDialog: public sigc::trackable
+class RuinReportDialog: public LwDialog
 {
  public:
     RuinReportDialog(Gtk::Window &parent, Vector<int> pos);
@@ -38,7 +36,6 @@ class RuinReportDialog: public sigc::trackable
     void run();
     
  private:
-    Gtk::Dialog* dialog;
     RuinMap* ruinmap;
 
     Gtk::Image *map_image;

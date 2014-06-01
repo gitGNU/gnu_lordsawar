@@ -23,26 +23,17 @@
 #include "armyset-info-dialog.h"
 #include "armysetlist.h"
 
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
 
 
 ArmySetInfoDialog::ArmySetInfoDialog(Gtk::Window &parent, Armyset *armyset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
+ : LwEditorDialog(parent, "armyset-info-dialog.ui")
 {
   d_armyset = armyset;
   d_readonly = readonly;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/armyset-info-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     if (title != "")
       dialog->set_title(title);
 
@@ -105,7 +96,6 @@ void ArmySetInfoDialog::on_name_changed()
 
 ArmySetInfoDialog::~ArmySetInfoDialog()
 {
-  delete dialog;
 }
 
 int ArmySetInfoDialog::run()

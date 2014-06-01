@@ -22,20 +22,15 @@
 
 #include "item-bonus-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "ItemProto.h"
 #include "Itemlist.h"
+#include "lw-dialog.h"
 
 ItemBonusDialog::ItemBonusDialog(Gtk::Window &parent)
+ : LwDialog(parent, "item-bonus-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/item-bonus-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
     dialog->set_transient_for(parent);
     items_list = Gtk::ListStore::create(items_columns);
     xml->get_widget("treeview", items_treeview);
@@ -50,26 +45,6 @@ ItemBonusDialog::ItemBonusDialog(Gtk::Window &parent)
 
 ItemBonusDialog::~ItemBonusDialog()
 {
-  delete dialog;
-}
-
-void ItemBonusDialog::hide()
-{
-  dialog->hide();
-}
-void ItemBonusDialog::run()
-{
-    static int width = -1;
-    static int height = -1;
-
-    if (width != -1 && height != -1)
-	dialog->set_default_size(width, height);
-    
-    dialog->show();
-    dialog->run();
-
-    dialog->get_size(width, height);
-
 }
 
 void ItemBonusDialog::addItemProto(ItemProto *itemproto)

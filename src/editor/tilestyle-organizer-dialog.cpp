@@ -21,7 +21,6 @@
 
 #include "tilestyle-organizer-dialog.h"
 
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "File.h"
 #include "defs.h"
@@ -29,17 +28,12 @@
 #include "GraphicsCache.h"
 
 TileStyleOrganizerDialog::TileStyleOrganizerDialog(Gtk::Window &parent, Tile *tile)
+ : LwEditorDialog(parent, "tilestyle-organizer-dialog.ui")
 {
     d_tile = tile;
     std::vector<Gtk::TargetEntry> targets;
     targets.push_back(Gtk::TargetEntry("LordsawarTilestyleType", Gtk::TARGET_SAME_APP));
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/tilestyle-organizer-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("categories_iconview", categories_iconview);
     xml->get_widget("category_iconview", category_iconview);
     xml->get_widget("unsorted_iconview", unsorted_iconview);
@@ -228,21 +222,8 @@ void TileStyleOrganizerDialog::on_category_selected()
 
 TileStyleOrganizerDialog::~TileStyleOrganizerDialog()
 {
-  delete dialog;
 }
 
-int TileStyleOrganizerDialog::run()
-{
-    dialog->show_all();
-    int response = dialog->run();
-    return response;
-}
-
-void TileStyleOrganizerDialog::hide()
-{
-  dialog->hide();
-}
-    
 void TileStyleOrganizerDialog::on_categories_drop_drag_data_received(const Glib::RefPtr<Gdk::DragContext> &context, int x, int y, const Gtk::SelectionData& selection_data, guint c, guint time)
 {
   const int length = selection_data.get_length();

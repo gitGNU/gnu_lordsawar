@@ -18,17 +18,16 @@
 #ifndef TILESET_EXPLOSION_PICTURE_EDITOR_DIALOG_H
 #define TILESET_EXPLOSION_PICTURE_EDITOR_DIALOG_H
 
-#include <memory>
 #include <map>
-#include <sigc++/trackable.h>
 #include <sigc++/connection.h>
 #include <gtkmm.h>
 #include "tileset.h"
+#include "lw-editor-dialog.h"
 
 class TilePreviewScene;
 
 //! Tileset explosion picture editor.  
-class TilesetExplosionPictureEditorDialog: public sigc::trackable
+class TilesetExplosionPictureEditorDialog: public LwEditorDialog
 {
  public:
     TilesetExplosionPictureEditorDialog(Gtk::Window &parent, Tileset * tileset);
@@ -38,7 +37,6 @@ class TilesetExplosionPictureEditorDialog: public sigc::trackable
     int run();
     
  private:
-    Gtk::Dialog* dialog;
     Gtk::RadioButton *large_explosion_radiobutton;
     Gtk::RadioButton *small_explosion_radiobutton;
     Gtk::FileChooserButton *explosion_filechooserbutton;

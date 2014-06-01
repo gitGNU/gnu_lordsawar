@@ -18,21 +18,17 @@
 #ifndef EDITOR_RECOVER_DIALOG_H
 #define EDITOR_RECOVER_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
-class EditorRecoverDialog: public sigc::trackable
+#include "lw-editor-dialog.h"
+
+class EditorRecoverDialog: public LwEditorDialog
 {
  public:
     EditorRecoverDialog(Gtk::Window *parent, Glib::ustring question);
     ~EditorRecoverDialog();
 
-    int run();
-    void hide();
-    
  private:
-    Gtk::Dialog* dialog;
     Gtk::Label* label;
 };
 

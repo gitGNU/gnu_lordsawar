@@ -18,18 +18,16 @@
 #ifndef ITEM_REPORT_DIALOG_H
 #define ITEM_REPORT_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "itemmap.h"
 #include "player.h"
+#include "lw-dialog.h"
 
 class Stack;
 class MapBackpack;
 // dialog for showing where the items are
-class ItemReportDialog: public sigc::trackable
+class ItemReportDialog: public LwDialog
 {
  public:
     ItemReportDialog(Gtk::Window &parent, std::list<Stack*> item_laden_stacks, std::list<MapBackpack*> bags);
@@ -39,7 +37,6 @@ class ItemReportDialog: public sigc::trackable
     void run();
     
  private:
-    Gtk::Dialog* dialog;
     std::list<Stack*> stacks;
     std::list<MapBackpack*> bags;
     ItemMap* itemmap;

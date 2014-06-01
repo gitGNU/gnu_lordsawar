@@ -19,16 +19,15 @@
 #ifndef TEMPLE_EDITOR_DIALOG_H
 #define TEMPLE_EDITOR_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
+#include "lw-editor-dialog.h"
 
 class CreateScenarioRandomize;
 
 class Temple;
 
 //! Scenario editor.  Edits a Temple object.
-class TempleEditorDialog: public sigc::trackable
+class TempleEditorDialog: public LwEditorDialog
 {
  public:
     TempleEditorDialog(Gtk::Window &parent, Temple *temple, CreateScenarioRandomize *randomizer);
@@ -37,7 +36,6 @@ class TempleEditorDialog: public sigc::trackable
     int run();
     
  private:
-    Gtk::Dialog* dialog;
     Gtk::Entry *name_entry;
     Gtk::Entry *description_entry;
     Gtk::SpinButton *type_entry;

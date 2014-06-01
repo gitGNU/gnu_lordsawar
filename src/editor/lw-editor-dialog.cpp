@@ -1,5 +1,4 @@
-//  Copyright (C) 2007 Ole Laursen
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,23 +19,25 @@
 
 #include <gtkmm.h>
 
-#include "defs.h"
+#include "File.h"
+#include "lw-editor-dialog.h"
 
-
-void show_error(const Glib::ustring &msg)
+LwEditorDialog::LwEditorDialog(Gtk::Window &parent, Glib::ustring file)
 {
-    Gtk::MessageDialog d(msg, Gtk::MESSAGE_ERROR);
-
-    d.set_modal();
-    d.set_title(_("Fatal error"));
-
-    d.run();
+  xml = Gtk::Builder::create_from_file(File::getEditorUIFile(file));
+  xml->get_widget("dialog", dialog);
+  dialog->set_transient_for(parent);
 }
 
-void show_fatal_error(const Glib::ustring &msg)
+LwEditorDialog::~LwEditorDialog()
 {
-    show_error(msg);
-    
-    exit(1);
+  delete dialog;
 }
 
+int LwEditorDialog::run_and_hide()
+{
+  dialog->show_all();
+  int response = dialog->run();
+  dialog->hide();
+  return response;
+}

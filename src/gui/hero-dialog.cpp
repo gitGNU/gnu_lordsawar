@@ -25,8 +25,6 @@
 
 #include "hero-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
@@ -40,17 +38,12 @@
 #include "playerlist.h"
 
 HeroDialog::HeroDialog(Gtk::Window &parent, Hero *h, Vector<int> p)
+ : LwDialog(parent, "hero-dialog.ui")
 {
   inhibit_hero_changed = false;
     hero = h;
     pos = p;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/hero-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("map_image", map_image);
 
     std::list<Hero*> heroes;
@@ -140,8 +133,8 @@ HeroDialog::HeroDialog(Gtk::Window &parent, Hero *h, Vector<int> p)
 HeroDialog::~HeroDialog()
 {
   delete heroesmap;
-  delete dialog;
 }
+
 void HeroDialog::addHistoryEvent(History *history)
 {
   Glib::ustring s = "";

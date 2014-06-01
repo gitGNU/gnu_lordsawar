@@ -18,15 +18,13 @@
 #ifndef SELECT_ITEM_DIALOG_H
 #define SELECT_ITEM_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
+#include "lw-editor-dialog.h"
 
 class ItemProto;
 
 //! Scenario editor.  Select an ItemProto object from the Itemlist.
-class SelectItemDialog: public sigc::trackable
+class SelectItemDialog: public LwEditorDialog
 {
  public:
     SelectItemDialog(Gtk::Window &parent);
@@ -36,7 +34,6 @@ class SelectItemDialog: public sigc::trackable
     const ItemProto *get_selected_item(guint32 &id) { id = selected_item_type_id; return selected_item; }
     
  private:
-    Gtk::Dialog* dialog;
     Gtk::Button *select_button;
 
     const ItemProto *selected_item;

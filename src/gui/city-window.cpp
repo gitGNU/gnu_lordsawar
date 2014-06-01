@@ -25,8 +25,6 @@
 
 #include "city-window.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
@@ -46,15 +44,11 @@
 
 CityWindow::CityWindow(Gtk::Window &parent, City *c, bool razing_possible, 
 		       bool see_opponents_production)
+ : LwDialog(parent, "city-window.ui")
 {
   army_info_tip = NULL;
     city = c;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + "/city-window.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     dialog->set_title(c->getName());
     
     xml->get_widget("map_image", map_image);
@@ -119,7 +113,6 @@ CityWindow::CityWindow(Gtk::Window &parent, City *c, bool razing_possible,
 
 CityWindow::~CityWindow()
 {
-  delete dialog;
   delete prodmap;
   if (army_info_tip != NULL)
     delete army_info_tip;
@@ -433,28 +426,22 @@ void CityWindow::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 
 void CityWindow::on_rename_clicked ()
 {
-    Gtk::Dialog* subdialog;
-    
-    Glib::RefPtr<Gtk::Builder> renamexml
-	= Gtk::Builder::create_from_file(get_glade_path() + "/city-rename-dialog.ui");
-	
-    renamexml->get_widget("dialog", subdialog);
-    subdialog->set_transient_for(*dialog);
+  LwDialog subdialog(*dialog, "city-rename-dialog.ui");
     
     Glib::ustring s = _("Rename City");
 
+    Glib::RefPtr<Gtk::Builder> renamexml = subdialog.get_builder();
     Gtk::Label *l;
     renamexml->get_widget("label", l);
     Gtk::Entry *e;
     renamexml->get_widget("name_entry", e);
 
-    subdialog->set_title(s);
+    subdialog.set_title(s);
     s = _("Type the new name for this city:");
     l->set_text(s);
 
     e->set_text(city->getName());
-    subdialog->show_all();
-    int response = subdialog->run();
+    int response = subdialog.run_and_hide();
 
     if (response == Gtk::RESPONSE_ACCEPT)		// changed city name
       {
@@ -463,8 +450,6 @@ void CityWindow::on_rename_clicked ()
             (city, String::utrim(e->get_text()));
         fill_in_city_info();
       }
-    subdialog->hide();
-    delete subdialog;
   return;
 }
 
@@ -475,31 +460,22 @@ void CityWindow::on_raze_clicked ()
 
 bool CityWindow::on_raze_clicked (City *city, Gtk::Dialog *parent)
 {
-    Gtk::Dialog* subdialog;
-    
-    Glib::RefPtr<Gtk::Builder> razexml
-	= Gtk::Builder::create_from_file(get_glade_path() + "/city-raze-dialog.ui");
-	
-    razexml->get_widget("dialog", subdialog);
-    subdialog->set_transient_for(*parent);
+  LwDialog subdialog (*parent, "city-raze-dialog.ui");
     
     Glib::ustring s = _("Raze City");
+    Glib::RefPtr<Gtk::Builder> razexml = subdialog.get_builder();
 
     Gtk::Label *l;
     razexml->get_widget("label", l);
 
-    subdialog->set_title(s);
+    subdialog.set_title(s);
     s = String::ucompose(_("Are you sure that you want to raze %1?"), 
                            city->getName());
     s += "\n";
     s += _("You won't be popular!");
     l->set_text(s);
 
-    subdialog->show_all();
-    int response = subdialog->run();
-    subdialog->hide();
-    delete subdialog;
-
+    int response = subdialog.run_and_hide();
     if (response == Gtk::RESPONSE_ACCEPT) // burn it to the ground ralphie boy!
       {
 	Playerlist::getActiveplayer()->cityRaze(city);

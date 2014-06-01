@@ -20,17 +20,16 @@
 #define PREFERENCES_DIALOG_H
 
 #include <map>
-#include <memory>
-#include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 #include <gtkmm.h>
 
 #include "vector.h"
+#include "lw-dialog.h"
 
 class Game;
 class Player;
 // dialog for showing sound and game preferences
-class PreferencesDialog: public sigc::trackable
+class PreferencesDialog: public LwDialog
 {
  public:
     PreferencesDialog(Gtk::Window &parent, bool readonly);
@@ -42,7 +41,6 @@ class PreferencesDialog: public sigc::trackable
     sigc::signal<void, guint32> ui_form_factor_changed;
 
  private:
-    Gtk::Dialog* dialog;
     Gtk::CheckButton *commentator_checkbutton;
     Gtk::Scale *speed_scale;
     Gtk::ComboBox *ui_combobox;

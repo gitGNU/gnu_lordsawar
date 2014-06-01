@@ -22,9 +22,6 @@
 
 #include "triumphs-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
@@ -36,13 +33,9 @@
 #include "shield.h"
 
 TriumphsDialog::TriumphsDialog(Gtk::Window &parent, Player *player)
+ : LwDialog(parent, "triumphs-dialog.ui")
 {
   d_player = player;
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/triumphs-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(parent);
   Gtk::HBox *contents;
   xml->get_widget("outer_hbox", contents);
   notebook = Gtk::manage(new Gtk::Notebook());
@@ -54,17 +47,6 @@ TriumphsDialog::TriumphsDialog(Gtk::Window &parent, Player *player)
 
 TriumphsDialog::~TriumphsDialog()
 {
-  delete dialog;
-}
-
-void TriumphsDialog::hide()
-{
-  dialog->hide();
-}
-void TriumphsDialog::run()
-{
-  dialog->show_all();
-  dialog->run();
 }
 
 guint32 TriumphsDialog::tally(Player *p, Triumphs::TriumphType type)

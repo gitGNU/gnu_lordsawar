@@ -23,8 +23,6 @@
 
 #include "tileset-flag-editor-dialog.h"
 
-#include "glade-helpers.h"
-#include "gui/image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
@@ -32,14 +30,9 @@
 #include "GraphicsCache.h"
 
 TilesetFlagEditorDialog::TilesetFlagEditorDialog(Gtk::Window &parent, Tileset *tileset)
+ : LwEditorDialog(parent, "tileset-flag-editor-dialog.ui")
 {
   selected_filename = "";
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/tileset-flag-editor-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     d_tileset = tileset;
 
     Gtk::Box *box;
@@ -56,7 +49,6 @@ TilesetFlagEditorDialog::TilesetFlagEditorDialog(Gtk::Window &parent, Tileset *t
 
 TilesetFlagEditorDialog::~TilesetFlagEditorDialog()
 {
-  delete dialog;
 }
 
 int TilesetFlagEditorDialog::run()

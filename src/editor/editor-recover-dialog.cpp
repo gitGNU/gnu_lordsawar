@@ -21,36 +21,17 @@
 
 #include "editor-recover-dialog.h"
 
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "File.h"
 #include "defs.h"
 
 EditorRecoverDialog::EditorRecoverDialog(Gtk::Window *parent, Glib::ustring question)
+ : LwEditorDialog (*parent, "editor-recover-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/editor-recover-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    if (parent)
-      dialog->set_transient_for(*parent);
     xml->get_widget("label", label);
     label->set_text(question);
 }
 
 EditorRecoverDialog::~EditorRecoverDialog()
 {
-  delete dialog;
-}
-
-int EditorRecoverDialog::run()
-{
-    dialog->show_all();
-    return dialog->run();
-}
-
-void EditorRecoverDialog::hide()
-{
-  dialog->hide();
 }

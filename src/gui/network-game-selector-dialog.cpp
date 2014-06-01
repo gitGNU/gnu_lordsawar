@@ -24,8 +24,7 @@
 
 #include "recently-played-game-list.h"
 #include "recently-played-game.h"
-#include "glade-helpers.h"
-#include "input-helpers.h"
+#include "Configuration.h"
 #include "defs.h"
 #include "File.h"
 #include "profile.h"
@@ -33,14 +32,9 @@
 #include "gamelist-client.h"
 
 NetworkGameSelectorDialog::NetworkGameSelectorDialog(Gtk::Window &parent, Profile *p)
+ : LwDialog(parent, "pick-network-game-to-join-dialog.ui")
 {
     profile = p;
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file
-	(get_glade_path() + "/pick-network-game-to-join-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("hostname_entry", hostname_entry);
     xml->get_widget("port_spinbutton", port_spinbutton);
     hostname_entry->set_activates_default(true);
@@ -170,7 +164,6 @@ NetworkGameSelectorDialog::~NetworkGameSelectorDialog()
 {
   GamelistClient::getInstance()->disconnect();
   //GamelistClient::deleteInstance();
-  delete dialog;
 }
 
 void NetworkGameSelectorDialog::addGame(Glib::RefPtr<Gtk::ListStore> list, const GamesColumns &columns, RecentlyPlayedNetworkedGame*g)

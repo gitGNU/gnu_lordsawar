@@ -19,18 +19,16 @@
 #ifndef BUY_PRODUCTION_DIALOG_H
 #define BUY_PRODUCTION_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "army-info-tip.h"
-
 #include "armyproto.h"
+#include "lw-dialog.h"
+
 class City;
 
 // dialog for buying a production slot for a city
-class BuyProductionDialog: public sigc::trackable
+class BuyProductionDialog: public LwDialog
 {
  public:
     BuyProductionDialog(Gtk::Window &parent, City *city);
@@ -43,7 +41,6 @@ class BuyProductionDialog: public sigc::trackable
     int get_selected_army() { return selected_army == NO_ARMY_SELECTED ? NO_ARMY_SELECTED : purchasables[selected_army]->getId(); }
     
  private:
-    Gtk::Dialog* dialog;
     ArmyInfoTip* army_info_tip;
     Gtk::Label *production_info_label1;
     Gtk::Label *production_info_label2;

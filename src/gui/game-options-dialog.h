@@ -18,16 +18,14 @@
 #ifndef GAME_OPTIONS_DIALOG_H
 #define GAME_OPTIONS_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 #include <sigc++/signal.h>
 
 #include "game-parameters.h"
+#include "lw-dialog.h"
 
 // dialog for setting game options before the game starts
-class GameOptionsDialog: public sigc::trackable
+class GameOptionsDialog: public LwDialog
 {
  public:
     GameOptionsDialog(Gtk::Window &parent, bool readonly);
@@ -39,7 +37,6 @@ class GameOptionsDialog: public sigc::trackable
     sigc::signal<void> difficulty_option_changed;
 
  private:
-    Gtk::Dialog* dialog;
     Gtk::Table *difficultoptionstable;
     Gtk::Table *notdifficultoptionstable;
     Gtk::ComboBox *quests_combobox;

@@ -19,13 +19,12 @@
 #ifndef LOAD_SCENARIOS_DIALOG_H
 #define LOAD_SCENARIOS_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
-#include <sigc++/signal.h>
 #include <gtkmm.h>
 
+#include "lw-dialog.h"
+
 // dialog for choosing a scenario
-class LoadScenarioDialog: public sigc::trackable
+class LoadScenarioDialog: public LwDialog
 {
  public:
     LoadScenarioDialog(Gtk::Window &parent);
@@ -37,7 +36,6 @@ class LoadScenarioDialog: public sigc::trackable
     Glib::ustring get_scenario_filename();
 
  private:
-    Gtk::Dialog* dialog;
     Gtk::Button *load_button;
     Gtk::TextView *description_textview;
     Gtk::Label *num_players_label;

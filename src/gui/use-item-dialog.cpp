@@ -23,23 +23,16 @@
 
 #include "use-item-dialog.h"
 
-#include "glade-helpers.h"
-#include "gui/input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "Item.h"
 #include "Itemlist.h"
 
 UseItemDialog::UseItemDialog(Gtk::Window &parent, std::list<Item*> items)
+ : LwDialog(parent, "use-item-dialog.ui")
 {
     selected_item = 0;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/use-item-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("select_button", select_button);
     xml->get_widget("items_treeview", items_treeview);
     items_list = Gtk::ListStore::create(items_columns);
@@ -63,7 +56,6 @@ UseItemDialog::UseItemDialog(Gtk::Window &parent, std::list<Item*> items)
 
 UseItemDialog::~UseItemDialog()
 {
-  delete dialog;
 }
 void UseItemDialog::addItem(Item *item)
 {
@@ -77,6 +69,7 @@ void UseItemDialog::hide()
 {
   dialog->hide();
 }
+
 void UseItemDialog::run()
 {
     dialog->show_all();

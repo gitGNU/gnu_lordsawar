@@ -23,23 +23,15 @@
 
 #include "select-item-dialog.h"
 
-#include "glade-helpers.h"
-#include "gui/input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "Item.h"
 #include "Itemlist.h"
 
 SelectItemDialog::SelectItemDialog(Gtk::Window &parent)
+ : LwEditorDialog(parent, "select-item-dialog.ui")
 {
     selected_item = 0;
-    
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/select-item-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     
     xml->get_widget("select_button", select_button);
 
@@ -67,7 +59,6 @@ SelectItemDialog::SelectItemDialog(Gtk::Window &parent)
 
 SelectItemDialog::~SelectItemDialog()
 {
-  delete dialog;
 }
 
 void SelectItemDialog::addItemProto(ItemProto *item)

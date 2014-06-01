@@ -23,7 +23,6 @@
 
 #include "ruin-editor-dialog.h"
 
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "playerlist.h"
 #include "CreateScenarioRandomize.h"
@@ -39,6 +38,7 @@
 #include "RenamableLocation.h"
 
 RuinEditorDialog::RuinEditorDialog(Gtk::Window &parent, Ruin *r, CreateScenarioRandomize *randomizer)
+ : LwEditorDialog(parent, "ruin-editor-dialog.ui")
 {
     d_randomizer = randomizer;
     ruin = r;
@@ -51,13 +51,6 @@ RuinEditorDialog::RuinEditorDialog(Gtk::Window &parent, Ruin *r, CreateScenarioR
     else
 	keeper = new Stack(0, ruin->getPos());
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/ruin-editor-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
-
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(ruin->getName());
     xml->get_widget("description_entry", description_entry);
@@ -146,7 +139,6 @@ RuinEditorDialog::RuinEditorDialog(Gtk::Window &parent, Ruin *r, CreateScenarioR
 
 RuinEditorDialog::~RuinEditorDialog()
 {
-  delete dialog;
 }
 
 int RuinEditorDialog::run()

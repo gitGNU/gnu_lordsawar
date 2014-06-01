@@ -22,9 +22,6 @@
 
 #include "use-item-on-player-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "army.h"
@@ -35,13 +32,8 @@
 #include "playerlist.h"
 
 UseItemOnPlayerDialog::UseItemOnPlayerDialog(Gtk::Window &parent)
+ : LwDialog(parent, "use-item-on-player-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/use-item-on-player-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     players_list = Gtk::ListStore::create(players_columns);
     xml->get_widget("playertreeview", player_treeview);
     player_treeview->set_model(players_list);
@@ -72,7 +64,6 @@ UseItemOnPlayerDialog::UseItemOnPlayerDialog(Gtk::Window &parent)
 
 UseItemOnPlayerDialog::~UseItemOnPlayerDialog()
 {
-  delete dialog;
   delete citymap;
 }
 

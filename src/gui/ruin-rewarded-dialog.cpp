@@ -22,9 +22,6 @@
 
 #include "ruin-rewarded-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "GameMap.h"
@@ -37,13 +34,8 @@
 #include "Item.h"
 
 RuinRewardedDialog::RuinRewardedDialog(Gtk::Window &parent, Reward_Ruin *reward)
+: LwDialog(parent, "ruin-rewarded-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/ruin-rewarded-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("map_image", map_image);
 
     ruinmap = new RuinMap(reward->getRuin());
@@ -62,7 +54,6 @@ RuinRewardedDialog::RuinRewardedDialog(Gtk::Window &parent, Reward_Ruin *reward)
 RuinRewardedDialog::~RuinRewardedDialog()
 {
   delete ruinmap;
-  delete dialog;
 }
 
 void RuinRewardedDialog::hide()

@@ -21,7 +21,6 @@
 
 #include "editor-splash-window.h"
 
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "File.h"
 #include "defs.h"
@@ -36,8 +35,7 @@ EditorSplashWindow::EditorSplashWindow()
 {
     
     Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/splash-window.ui");
+	= Gtk::Builder::create_from_file(File::getEditorUIFile("splash-window.ui"));
 
     xml->get_widget("window", window);
     xml->get_widget("progressbar", progressbar);

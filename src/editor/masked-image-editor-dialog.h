@@ -18,12 +18,9 @@
 #ifndef MASKED_IMAGE_EDITOR_DIALOG_H
 #define MASKED_IMAGE_EDITOR_DIALOG_H
 
-#include <memory>
-#include <map>
-#include <sigc++/trackable.h>
-#include <sigc++/connection.h>
 #include <gtkmm.h>
 #include "shield.h"
+#include "lw-editor-dialog.h"
 
 
 //! general masked picture editor.  
@@ -39,7 +36,7 @@
  * Shield::Colour enumerations.
  */
 class Shieldset;
-class MaskedImageEditorDialog: public sigc::trackable
+class MaskedImageEditorDialog: public LwEditorDialog
 {
  public:
     MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int only_show_colour, Shieldset *shieldset = NULL);
@@ -51,7 +48,6 @@ class MaskedImageEditorDialog: public sigc::trackable
     
  private:
     Glib::ustring target_filename;
-    Gtk::Dialog* dialog;
     Gtk::FileChooserButton *filechooserbutton;
     Gtk::Image *image_white;
     Gtk::Image *image_green;

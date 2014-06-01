@@ -18,17 +18,15 @@
 #ifndef TILESET_FLAG_EDITOR_DIALOG_H
 #define TILESET_FLAG_EDITOR_DIALOG_H
 
-#include <memory>
 #include <map>
-#include <sigc++/trackable.h>
 #include <sigc++/connection.h>
 #include <gtkmm.h>
 #include "tileset.h"
-
+#include "lw-editor-dialog.h"
 
 //! Tileset flag editor.  
 //! Shows and manages the flags that appear on stacks
-class TilesetFlagEditorDialog: public sigc::trackable
+class TilesetFlagEditorDialog: public LwEditorDialog
 {
  public:
     TilesetFlagEditorDialog(Gtk::Window &parent, Tileset * tileset);
@@ -38,7 +36,6 @@ class TilesetFlagEditorDialog: public sigc::trackable
     int run();
     
  private:
-    Gtk::Dialog* dialog;
     Gtk::FileChooserButton *flag_filechooserbutton;
     Gtk::ComboBoxText *shield_theme_combobox;
     Gtk::Table *preview_table;

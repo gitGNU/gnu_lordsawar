@@ -23,8 +23,6 @@
 
 #include "tileset-explosion-picture-editor-dialog.h"
 
-#include "glade-helpers.h"
-#include "gui/image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
@@ -32,16 +30,10 @@
 #include "tarhelper.h"
 #include "tile-preview-scene.h"
 
-
 TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Gtk::Window &parent, Tileset *tileset)
+ : LwEditorDialog(parent, "tileset-explosion-picture-editor-dialog.ui")
 {
   selected_filename = "";
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/tileset-explosion-picture-editor-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     d_tileset = tileset;
 
     xml->get_widget("explosion_filechooserbutton", explosion_filechooserbutton);
@@ -68,7 +60,6 @@ TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Gtk::Wi
 
 TilesetExplosionPictureEditorDialog::~TilesetExplosionPictureEditorDialog()
 {
-  delete dialog;
 }
 
 int TilesetExplosionPictureEditorDialog::run()

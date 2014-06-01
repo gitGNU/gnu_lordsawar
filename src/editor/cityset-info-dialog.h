@@ -18,13 +18,12 @@
 #ifndef CITYSET_INFO_DIALOG_H
 #define CITYSET_INFO_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 #include "cityset.h"
+#include "lw-editor-dialog.h"
 
 //! Cityset Editor.  Edit the description of the Cityset.
-class CitySetInfoDialog: public sigc::trackable
+class CitySetInfoDialog: public LwEditorDialog
 {
  public:
     CitySetInfoDialog(Gtk::Window &parent, Cityset *cityset, Glib::ustring dir, 
@@ -35,7 +34,6 @@ class CitySetInfoDialog: public sigc::trackable
     int run();
     
  private:
-    Gtk::Dialog* dialog;
     Cityset *d_cityset;
     Gtk::Entry *name_entry;
     Gtk::TextView *copyright_textview;

@@ -23,7 +23,6 @@
 
 #include "switch-sets-dialog.h"
 
-#include "glade-helpers.h"
 #include "defs.h"
 #include "File.h"
 #include "tileset.h"
@@ -41,13 +40,8 @@
 #include "playerlist.h"
 
 SwitchSetsDialog::SwitchSetsDialog(Gtk::Window &parent)
+ :LwEditorDialog(parent, "switch-sets-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + "/switch-sets-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
-
     xml->get_widget("accept_button", accept_button);
 
     // fill in tile themes combobox
@@ -121,7 +115,6 @@ SwitchSetsDialog::SwitchSetsDialog(Gtk::Window &parent)
 
 SwitchSetsDialog::~SwitchSetsDialog()
 {
-  delete dialog;
 }
 
 guint32 SwitchSetsDialog::get_active_tile_size()

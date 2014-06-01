@@ -23,26 +23,17 @@
 #include "tileset-info-dialog.h"
 #include "tilesetlist.h"
 
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
 
 
 TileSetInfoDialog::TileSetInfoDialog(Gtk::Window &parent, Tileset *tileset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
+ : LwEditorDialog(parent, "tileset-info-dialog.ui")
 {
   d_tileset = tileset;
   d_readonly = readonly;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/tileset-info-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     if (title != "")
       dialog->set_title(title);
 
@@ -105,7 +96,6 @@ void TileSetInfoDialog::on_name_changed()
 
 TileSetInfoDialog::~TileSetInfoDialog()
 {
-  delete dialog;
 }
 
 int TileSetInfoDialog::run()

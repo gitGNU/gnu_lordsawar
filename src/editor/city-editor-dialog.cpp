@@ -23,7 +23,6 @@
 
 #include "city-editor-dialog.h"
 
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "city.h"
@@ -41,21 +40,15 @@
 
 
 CityEditorDialog::CityEditorDialog(Gtk::Window &parent, City *cit, CreateScenarioRandomize *randomizer)
-	: strength_column(_("Strength"), strength_renderer),
-	moves_column(_("Max Moves"), moves_renderer),
-	duration_column(_("Turns"), duration_renderer),
-	upkeep_column(_("Upkeep"), upkeep_renderer)
+ : LwEditorDialog(parent, "city-editor-dialog.ui"),
+    strength_column(_("Strength"), strength_renderer),
+    moves_column(_("Max Moves"), moves_renderer),
+    duration_column(_("Turns"), duration_renderer),
+    upkeep_column(_("Upkeep"), upkeep_renderer)
 {
     city = cit;
     d_randomizer = randomizer;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/city-editor-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
-
     xml->get_widget("capital_checkbutton", capital_checkbutton);
     capital_checkbutton->set_active(city->isCapital());
 
@@ -160,7 +153,6 @@ CityEditorDialog::CityEditorDialog(Gtk::Window &parent, City *cit, CreateScenari
 
 CityEditorDialog::~CityEditorDialog()
 {
-  delete dialog;
 }
 
 void CityEditorDialog::change_city_ownership()

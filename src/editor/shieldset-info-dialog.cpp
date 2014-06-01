@@ -23,26 +23,17 @@
 #include "shieldset-info-dialog.h"
 #include "shieldsetlist.h"
 
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
 
 
 ShieldSetInfoDialog::ShieldSetInfoDialog(Gtk::Window &parent, Shieldset *shieldset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
+ : LwEditorDialog(parent, "shieldset-info-dialog.ui")
 {
   d_shieldset = shieldset;
   d_readonly = readonly;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/shieldset-info-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     if (title != "")
       dialog->set_title(title);
 
@@ -105,7 +96,6 @@ void ShieldSetInfoDialog::on_name_changed()
 
 ShieldSetInfoDialog::~ShieldSetInfoDialog()
 {
-  delete dialog;
 }
 
 int ShieldSetInfoDialog::run()

@@ -32,13 +32,8 @@
 
 #include "game-window.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "input-helpers.h"
-#include "error-utils.h"
-
 #include "driver.h"
-
 #include "fight-window.h"
 #include "city-window.h"
 #include "army-gains-level-dialog.h"
@@ -72,7 +67,6 @@
 #include "use-item-on-city-dialog.h"
 #include "game-button-box.h"
 #include "status-box.h"
-
 #include "ucompose.hpp"
 #include "defs.h"
 #include "sound.h"
@@ -120,6 +114,7 @@
 #include "MapBackpack.h"
 #include "select-city-map.h"
 #include "shield.h"
+#include "lw-dialog.h"
 
 GameWindow::GameWindow()
 {
@@ -133,7 +128,7 @@ GameWindow::GameWindow()
     sdl_inited = false;
     
     Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + "/game-window.ui");
+	= Gtk::Builder::create_from_file(File::getUIFile("game-window.ui"));
 
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
@@ -906,7 +901,10 @@ void GameWindow::on_save_game_activated()
 	{
 	  bool success = game->saveGame(current_save_filename);
 	  if (!success)
-	    show_error(_("Game was not saved!"));
+            {
+              TimedMessageDialog dialog(*window, _("Game was not saved!"), 0);
+              dialog.run_and_hide();
+            }
 	}
     }
 }
@@ -939,44 +937,28 @@ void GameWindow::on_save_game_as_activated()
 	{
 	  bool success = game->saveGame(current_save_filename);
 	  if (!success)
-	    show_error(_("Error saving game!"));
+            {
+              TimedMessageDialog dialog(*window, _("Error saving game!"), 0);
+              dialog.run_and_hide();
+            }
 	}
     }
 }
 
 void GameWindow::on_new_game_activated()
 {
-  Gtk::Dialog* dialog;
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/game-quit-dialog.ui");
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-  int response = dialog->run();
-  dialog->hide();
-
+  LwDialog dialog(*window, "game-quit-dialog.ui");
+  int response = dialog.run_and_hide();
   if (response == Gtk::RESPONSE_ACCEPT) //end the game
-    {
-      stop_game("new");
-    }
-  delete dialog;
+    stop_game("new");
 }
 
 void GameWindow::on_quit_activated()
 {
-  Gtk::Dialog* dialog;
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/game-quit-dialog.ui");
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-
-  int response = dialog->run();
-  dialog->hide();
-
+  LwDialog dialog(*window, "game-quit-dialog.ui");
+  int response = dialog.run_and_hide();
   if (response == Gtk::RESPONSE_ACCEPT) //end the game
-    {
-      stop_game("quit");
-    }
-  delete dialog;
+    stop_game("quit");
 }
 
 void GameWindow::on_game_stopped()
@@ -1051,11 +1033,10 @@ void GameWindow::on_game_stopped()
 				      game_scenario->s_random_turns));
       else if (game_scenario->getPlayMode() == GameScenario::NETWORKED)
         {
-          TimedMessageDialog dialog(*window, _("Can't load networked game from file."), 30);
+          TimedMessageDialog dialog
+            (*window, _("Can't load networked game from file."), 30);
 
-          dialog.show_all();
-          dialog.run();
-          dialog.hide();
+          dialog.run_and_hide();
         }
     }
 }
@@ -1089,20 +1070,15 @@ void GameWindow::on_signpost_activated()
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  Gtk::Dialog* dialog;
-
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/signpost-change-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-  dialog->set_title(_("Signpost"));
   Stack *stack = Playerlist::getActiveplayer()->getActivestack();
   if (!stack)
     return;
   Signpost *s = GameMap::getSignpost(stack->getPos());
   if (!s)
     return;
+  LwDialog dialog(*window, "signpost-change-dialog.ui");
+  dialog.set_title(_("Signpost"));
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Label *l;
   xml->get_widget("label", l);
   l->set_text(_("Change the message on this sign:"));
@@ -1110,15 +1086,11 @@ void GameWindow::on_signpost_activated()
   xml->get_widget("message_entry", e);
   e->set_text(s->getName());
   e->set_activates_default(true);
-  dialog->show_all();
-  int response = dialog->run();
-  dialog->hide();
+  int response = dialog.run_and_hide();
 
   if (response == Gtk::RESPONSE_ACCEPT)
     Playerlist::getActiveplayer()->signpostChange(s, 
                                                   String::utrim(e->get_text()));
-
-  delete dialog;
   return;
 }
 
@@ -1128,9 +1100,8 @@ void GameWindow::on_stack_info_activated()
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
   StackInfoDialog d(*window, status_box->get_currently_selected_stack()->getPos());
-  d.run();
+  d.run_and_hide();
   Stack *s = d.get_selected_stack();
-  d.hide();
   status_box->on_stack_info_changed(s);
 }
 
@@ -1139,14 +1110,9 @@ void GameWindow::on_disband_activated()
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
   Stack *stack = Playerlist::getActiveplayer()->getActivestack();
-  Gtk::Dialog* dialog;
-
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/disband-stack-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-  dialog->set_title(_("Disband"));
+  LwDialog dialog(*window, "disband-stack-dialog.ui");
+  dialog.set_title(_("Disband"));
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Label *l;
   xml->get_widget("label", l);
 
@@ -1161,9 +1127,7 @@ void GameWindow::on_disband_activated()
 				      heroes.size()), heroes.size());
     }
   l->set_text(s);
-  dialog->show_all();
-  int response = dialog->run();
-  dialog->hide();
+  int response = dialog.run_and_hide();
 
   if (response == Gtk::RESPONSE_ACCEPT) //disband the active stack
     Playerlist::getActiveplayer()->stackDisband(NULL);
@@ -1173,19 +1137,8 @@ void GameWindow::on_disband_activated()
 
 void GameWindow::on_resignation_completed()
 {
-  Gtk::Dialog* dialog;
-
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + 
-				"/player-resign-completed-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-  dialog->show_all();
-  dialog->run();
-  dialog->hide();
-  delete dialog;
-
+  LwDialog dialog(*window, "player-resign-completed-dialog.ui");
+  dialog.run_and_hide();
   return;
 }
 
@@ -1194,30 +1147,18 @@ void GameWindow::on_resign_activated()
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
 
-  Gtk::Dialog* dialog;
-
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/player-resign-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-  dialog->set_title(_("Resign"));
-
+  LwDialog dialog(*window, "player-resign-dialog.ui");
+  dialog.set_title(_("Resign"));
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Label *l;
   xml->get_widget("label", l);
-
   l->set_text(_("Are you sure you want to resign?"));
-  dialog->show_all();
-  int response = dialog->run();
-
+  int response = dialog.run_and_hide();
   if (response == Gtk::RESPONSE_ACCEPT) //disband all stacks, raze all cities
     {
       Playerlist::getActiveplayer()->resign();
-      dialog->hide();
       on_resignation_completed();
     }
-
-  delete dialog;
   return;
 }
 
@@ -1344,8 +1285,7 @@ void GameWindow::on_levels_activated()
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
   HeroLevelsDialog d(*window, Playerlist::getActiveplayer());
-  d.run();
-  d.hide();
+  d.run_and_hide();
 }
 
 void GameWindow::on_ruin_report_activated()
@@ -1361,12 +1301,8 @@ void GameWindow::on_ruin_report_activated()
   if (Templelist::getInstance()->size() == 0 &&
       Ruinlist::getInstance()->size() == 0)
     {
-      Glib::ustring s = _("No ruins or temples to show!");
-      TimedMessageDialog dialog(*window, s, 30);
-
-      dialog.show_all();
-      dialog.run();
-      dialog.hide();
+      TimedMessageDialog dialog(*window, _("No ruins or temples to show!"), 30);
+      dialog.run_and_hide();
       return;
     }
   RuinReportDialog d(*window, pos);
@@ -1379,8 +1315,7 @@ void GameWindow::on_army_bonus_activated()
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
   ArmyBonusDialog d(*window, Playerlist::getActiveplayer());
-  d.run();
-  d.hide();
+  d.run_and_hide();
 }
 
 void GameWindow::on_item_bonus_activated()
@@ -1388,8 +1323,7 @@ void GameWindow::on_item_bonus_activated()
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
   ItemBonusDialog d(*window);
-  d.run();
-  d.hide();
+  d.run_and_hide();
 }
 
 void GameWindow::on_army_report_activated()
@@ -1503,8 +1437,7 @@ void GameWindow::on_triumphs_activated()
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
   TriumphsDialog d(*window, Playerlist::getActiveplayer());
-  d.run();
-  d.hide();
+  d.run_and_hide();
 }
 
 void GameWindow::on_help_about_activated()
@@ -1512,7 +1445,7 @@ void GameWindow::on_help_about_activated()
   Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/about-dialog.ui");
+    = Gtk::Builder::create_from_file(File::getUIFile("about-dialog.ui"));
 
   xml->get_widget("dialog", dialog);
   dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
@@ -1534,8 +1467,7 @@ void GameWindow::on_diplomacy_report_activated()
   if (GameScenario::s_diplomacy == false)
     return;
   DiplomacyReportDialog d(*window, Playerlist::getActiveplayer());
-  d.run();
-  d.hide();
+  d.run_and_hide();
 }
 
 void GameWindow::on_diplomacy_button_clicked()
@@ -1543,8 +1475,7 @@ void GameWindow::on_diplomacy_button_clicked()
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
   DiplomacyDialog d(*window, Playerlist::getActiveplayer());
-  d.run();
-  d.hide();
+  d.run_and_hide();
 }
 
 void GameWindow::stop_game(Glib::ustring action)
@@ -1564,14 +1495,8 @@ void GameWindow::stop_game(Glib::ustring action)
 
 void GameWindow::on_game_over(Player *winner)
 {
-
-  Gtk::Dialog* dialog;
-
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/game-over-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
+  LwDialog dialog(*window, "game-over-dialog.ui");
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Image *image;
   xml->get_widget("image", image);
 
@@ -1584,13 +1509,10 @@ void GameWindow::on_game_over(Player *winner)
 	winner->getName());
   label->set_markup("<b>" + s + "</b>");
 
-  dialog->show_all();
-  dialog->run();
-  dialog->hide();
+  dialog.run_and_hide();
 
   game_winner = winner;
   stop_game("game-over");
-  delete dialog;
 }
 
 void GameWindow::on_player_died(Player *player)
@@ -1610,10 +1532,7 @@ void GameWindow::on_player_died(Player *player)
     }
 
   TimedMessageDialog dialog(*window, s, 30);
-
-  dialog.show_all();
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
 }
 
 void GameWindow::on_message_requested(Glib::ustring msg)
@@ -1791,20 +1710,14 @@ void GameWindow::on_ruin_rewarded (Reward_Ruin *reward)
 
 void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
 {
-  Gtk::Dialog* dialog;
   if (ruin->hasSage())
     {
       if (reward->getType() == Reward::RUIN)
 	return on_ruin_rewarded(static_cast<Reward_Ruin*>(reward));
     }
-
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/ruin-searched-dialog.ui");
-
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-  dialog->set_title(ruin->getName());
+  LwDialog dialog(*window, "ruin-searched-dialog.ui");
+  dialog.set_title(ruin->getName());
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -1834,25 +1747,15 @@ void GameWindow::on_ruin_searched(Ruin *ruin, Stack *stack, Reward *reward)
     }
 
   label->set_text(s);
-
-  dialog->show_all();
-  dialog->run();
-  dialog->hide();
-  delete dialog;
+  dialog.run_and_hide();
 }
 
 void GameWindow::on_ruinfight_started(Stack *attackers, Stack *defenders)
 {
+  LwDialog dialog(*window, "ruinfight-started-dialog.ui");
   //so and so encounters a wolf...
-  Gtk::Dialog* dialog;
-
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/ruinfight-started-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-  dialog->set_title(_("Searching"));
-
+  dialog.set_title(_("Searching"));
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Label *label;
   xml->get_widget("label", label);
   Glib::ustring s = label->get_text();
@@ -1860,25 +1763,17 @@ void GameWindow::on_ruinfight_started(Stack *attackers, Stack *defenders)
   s += attackers->getFirstHero()->getName() + " encounters some ";
   s += defenders->getStrongestArmy()->getName() + "...";
   label->set_text(s);
-
-  dialog->show_all();
-  dialog->run();
-  dialog->hide();
-  delete dialog;
+  dialog.run_and_hide();
 }
+
 void GameWindow::on_ruinfight_finished(Fight::Result result)
 {
-  Gtk::Dialog* dialog;
-
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/ruinfight-finished-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
+  LwDialog dialog(*window, "ruinfight-finished-dialog.ui");
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   if (result == Fight::ATTACKER_WON)
-    dialog->set_title(_("Hero Victorious"));
+    dialog.set_title(_("Hero Victorious"));
   else
-    dialog->set_title(_("Hero Defeated"));
+    dialog.set_title(_("Hero Defeated"));
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -1897,10 +1792,7 @@ void GameWindow::on_ruinfight_finished(Fight::Result result)
   else
     image->property_file() = File::getMiscFile("various/ruin_1.png");
 
-  dialog->show_all();
-  dialog->run();
-  dialog->hide();
-  delete dialog;
+  dialog.run_and_hide();
 }
 
 void GameWindow::on_fight_started(LocationBox box, Fight &fight)
@@ -1919,26 +1811,16 @@ void GameWindow::on_fight_started(LocationBox box, Fight &fight)
 
 void GameWindow::on_hero_brings_allies (int numAllies)
 {
-  Gtk::Dialog* dialog;
-
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/hero-brings-allies-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-  dialog->set_title(_("Hero brings allies!"));
+  LwDialog dialog(*window, "hero-brings-allies-dialog.ui");
+  dialog.set_title(_("Hero brings allies!"));
   Gtk::Label *label;
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   xml->get_widget("label", label);
-  Glib::ustring s;
-  s = String::ucompose(
-		       ngettext("The hero brings %1 ally!",
-				"The hero brings %1 allies!", numAllies), numAllies);
+  Glib::ustring s = String::ucompose
+    (ngettext("The hero brings %1 ally!",
+              "The hero brings %1 allies!", numAllies), numAllies);
   label->set_text(s);
-
-  dialog->show_all();
-  dialog->run();
-  dialog->hide();
-  delete dialog;
+  dialog.run_and_hide();
 }
 
 bool GameWindow::on_hero_offers_service(Player *player, HeroProto *hero, City *city, int gold)
@@ -1952,9 +1834,7 @@ bool GameWindow::on_hero_offers_service(Player *player, HeroProto *hero, City *c
 bool GameWindow::on_enemy_offers_surrender(int numPlayers)
 {
   SurrenderDialog d(*window, numPlayers);
-  bool retval = d.run();
-  d.hide();
-  return retval;
+  return d.run_and_hide() == Gtk::RESPONSE_ACCEPT;
 }
 
 void GameWindow::on_surrender_answered (bool accepted)
@@ -1965,33 +1845,23 @@ void GameWindow::on_surrender_answered (bool accepted)
   else
     {
       SurrenderRefusedDialog d(*window);
-      d.run();
-      d.hide();
+      d.run_and_hide();
     }
 }
 
 bool GameWindow::on_stack_considers_treachery (Stack *stack, 
 					       Player *them, Vector<int> pos)
 {
-  Gtk::Dialog* dialog;
-
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/treachery-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
+  LwDialog dialog(*window, "treachery-dialog.ui");
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Label *label;
   xml->get_widget("label", label);
-  Glib::ustring s;
-  s = String::ucompose(_("Are you sure you want to attack %1?"), 
-		       them->getName());
+  Glib::ustring s = String::ucompose(_("Are you sure you want to attack %1?"), 
+                                     them->getName());
   s += "\n";
   s += _("Other players may not like this!");
   label->set_text(s);
-  dialog->show_all();
-  int response = dialog->run();
-  dialog->hide();
-  delete dialog;
+  int response = dialog.run_and_hide();
   if (response == Gtk::RESPONSE_DELETE_EVENT)
     return false;
   else if (response == Gtk::RESPONSE_ACCEPT)
@@ -2011,17 +1881,12 @@ void GameWindow::on_temple_visited(Temple *temple)
 bool GameWindow::on_temple_searched(Hero *hero, Temple *temple, int blessCount)
 {
   QuestsManager *qm = QuestsManager::getInstance();
-  Gtk::Dialog* dialog;
   bool hasHero = hero != NULL;
   bool ask_quest = false;
 
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/temple-visit-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-  dialog->set_title(temple->getName());
-
+  LwDialog dialog(*window, "temple-visit-dialog.ui");
+  dialog.set_title(temple->getName());
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Label *l;
   Gtk::Button *close_button;
   Gtk::Button *accept_button;
@@ -2059,11 +1924,10 @@ bool GameWindow::on_temple_searched(Hero *hero, Temple *temple, int blessCount)
       l->set_text(s);
     }
 
-  dialog->show_all();
-
   if (ask_quest == false)
     {
       close_button->hide();
+      close_button->set_no_show_all(true);
       s = _("_Close");
       accept_button->set_label(s);
     }
@@ -2071,9 +1935,7 @@ bool GameWindow::on_temple_searched(Hero *hero, Temple *temple, int blessCount)
   if (blessCount > 0)
     Sound::getInstance()->playMusic("bless", 1);
 
-  int response = dialog->run();
-  dialog->hide();
-  delete dialog;
+  int response = dialog.run_and_hide();
 
   if (ask_quest == false)
     response = Gtk::RESPONSE_CANCEL;
@@ -2164,17 +2026,13 @@ hero_has_quest_here (Stack *s, City *c, bool *pillage, bool *sack, bool *raze, b
 
 CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
 {
+  LwDialog dialog(*window, "city-defeated-dialog.ui");
   CityDefeatedAction retval = CITY_DEFEATED_OCCUPY;
   Gtk::Button *raze_button;
-  Gtk::Dialog* dialog;
   if (gold)
     on_city_looted (city, gold);
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/city-defeated-dialog.ui");
 
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Image *image;
   xml->get_widget("city_image", image);
   image->property_file() = File::getMiscFile("various/city_occupied.png");
@@ -2264,17 +2122,17 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
     b->hide();
   }
 
-  dialog->show();
+  dialog.get()->show();
 
   while (1)
     {
-      int response = dialog->run();
+      int response = dialog.get()->run();
       switch (response) 
 	{
 	case 1: retval = CITY_DEFEATED_OCCUPY; break;
 	case 2: 
 		{
-		  bool razed = CityWindow::on_raze_clicked(city, dialog);
+		  bool razed = CityWindow::on_raze_clicked(city, dialog.get());
 		  if (razed == false)
 		    continue;
 		  retval = CITY_DEFEATED_RAZE;
@@ -2287,23 +2145,15 @@ CityDefeatedAction GameWindow::on_city_defeated(City *city, int gold)
       if (retval)
 	break;
     }
-  dialog->hide();
-  delete dialog;
+  dialog.get()->hide();
   return retval;
 }
 
 void GameWindow::on_city_looted (City *city, int gold)
 {
-  Gtk::Dialog* dialog;
-
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/city-looted-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-
-  dialog->set_title(String::ucompose(_("%1 Looted"), city->getName()));
-
+  LwDialog dialog(*window, "city-looted-dialog.ui");
+  dialog.set_title(String::ucompose(_("%1 Looted"), city->getName()));
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Label *label;
   xml->get_widget("label", label);
   Glib::ustring s = label->get_text();
@@ -2312,27 +2162,19 @@ void GameWindow::on_city_looted (City *city, int gold)
 			ngettext("Your armies loot %1 gold piece.",
 				 "Your armies loot %1 gold pieces.", gold), gold);
   label->set_text(s);
-
-  dialog->show_all();
-  dialog->run();
-  dialog->hide();
-  delete dialog;
+  dialog.run_and_hide();
 }
+
 void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
 {
+  LwDialog dialog(*window, "city-pillaged-dialog.ui");
   GraphicsCache *gc = GraphicsCache::getInstance();
-  Gtk::Dialog* dialog;
   Player *player = city->getOwner();
   unsigned int as = player->getArmyset();
 
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/city-pillaged-dialog.ui");
-
+  dialog.set_title(String::ucompose(_("Pillaged %1"), city->getName()));
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Image *pillaged_army_type_image;
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-  dialog->set_title(String::ucompose(_("Pillaged %1"), city->getName()));
-
   Gtk::Label *pillaged_army_type_cost_label;
   xml->get_widget("pillaged_army_type_cost_label", pillaged_army_type_cost_label);
   xml->get_widget("pillaged_army_type_image", pillaged_army_type_image);
@@ -2362,29 +2204,22 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
 				 gold), gold);
   label->set_text(s);
 
-  dialog->show_all();
-  dialog->run();
-  dialog->hide();
-  delete dialog;
+  dialog.run_and_hide();
 }
 
 void GameWindow::on_city_sacked(City *city, int gold, std::list<guint32> sacked_types)
 {
+  LwDialog dialog(*window, "city-sacked-dialog.ui");
   GraphicsCache *gc = GraphicsCache::getInstance();
   Player *player = city->getOwner();
   unsigned int as = player->getArmyset();
-  Gtk::Dialog* dialog;
 
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/city-sacked-dialog.ui");
+  dialog.set_title(String::ucompose(_("Sacked %1"), city->getName()));
 
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-  dialog->set_title(String::ucompose(_("Sacked %1"), city->getName()));
-
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Label *label;
   xml->get_widget("label", label);
-  Glib::ustring s = label->get_text();
+  Glib::ustring s;
   s = String::ucompose("The city of %1 is sacked\nfor %2 gold!\n\n",
 		       city->getName(), gold);
   s += String::ucompose(
@@ -2460,33 +2295,20 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<guint32> sacked_
       sack_image->set(empty_pic);
       sack_label->set_text("");
     }
-  dialog->show_all();
-  dialog->run();
-  dialog->hide();
-  delete dialog;
+  dialog.run_and_hide();
 }
 
 void GameWindow::on_city_razed (City *city)
 {
-  Gtk::Dialog* dialog;
-
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/city-razed-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-  dialog->set_title(String::ucompose(_("Razed %1"), city->getName()));
-
+  LwDialog dialog(*window, "city-razed-dialog.ui");
+  dialog.set_title(String::ucompose(_("Razed %1"), city->getName()));
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Label *label;
   xml->get_widget("label", label);
-  Glib::ustring s;
-  s = String::ucompose(_("The city of %1 is in ruins!"), city->getName());
+  Glib::ustring s = 
+    String::ucompose(_("The city of %1 is in ruins!"), city->getName());
   label->set_text(s);
-
-  dialog->show_all();
-  dialog->run();
-  dialog->hide();
-  delete dialog;
+  dialog.run_and_hide();
 }
 
 void GameWindow::on_city_visited(City *city)
@@ -2546,8 +2368,6 @@ void GameWindow::on_remote_next_player_turn()
 
 void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 {
-  Gtk::Dialog* dialog;
-
   status_box->on_stack_info_changed(NULL);
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 
@@ -2558,13 +2378,10 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
       
   if (Configuration::s_showNextPlayer == true)
     {
-      Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + 
-				    "/next-player-turn-dialog.ui");
+  
+      LwDialog dialog (*window, "next-player-turn-dialog.ui");
 
-      xml->get_widget("dialog", dialog);
-      dialog->set_transient_for(*window);
-
+      Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
       Gtk::Image *image;
       xml->get_widget("image", image);
       image->property_file() = File::getMiscFile("various/ship.png");
@@ -2575,26 +2392,16 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 					 turn_number);
       label->set_text(s);
 
-      dialog->show_all();
-      dialog->run();
-      dialog->hide();
-      delete dialog;
+      dialog.run_and_hide();
       show();
     }
-
 }
 
 void GameWindow::on_medal_awarded_to_army(Army *army, int medaltype)
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
-  Gtk::Dialog* dialog;
-
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/medal-awarded-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-
+  LwDialog dialog(*window, "medal-awarded-dialog.ui");
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Image *image;
   xml->get_widget("image", image);
   Player *active = Playerlist::getInstance()->getActiveplayer();
@@ -2620,41 +2427,26 @@ void GameWindow::on_medal_awarded_to_army(Army *army, int medaltype)
     s += String::ucompose(_("Your unit of %1 is awarded a medal!"), army->getName());
   label->set_text(s);
 
-  dialog->show_all();
-  dialog->run();
-  dialog->hide();
-  delete dialog;
+  dialog.run_and_hide();
 }
 
 Army::Stat GameWindow::on_hero_gains_level(Hero *hero)
 {
   ArmyGainsLevelDialog d(*window, hero, GameScenario::s_hidden_map);
-  d.run();
-  d.hide();
-
+  d.run_and_hide();
   return d.get_selected_stat();
 }
 
 void GameWindow::on_game_loaded(Player *player)
 {
-  Gtk::Dialog* dialog;
-
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/game-loaded-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-
+  LwDialog dialog(*window, "game-loaded-dialog.ui");
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Label *label;
   xml->get_widget("label", label);
-  Glib::ustring s;
-  s += String::ucompose(_("%1, your turn continues."), player->getName());
+  Glib::ustring s = String::ucompose(_("%1, your turn continues."), 
+                                     player->getName());
   label->set_text(s);
-
-  dialog->show_all();
-  dialog->run();
-  dialog->hide();
-  delete dialog;
+  dialog.run_and_hide();
 }
 
 void GameWindow::on_quest_completed(Quest *quest, Reward *reward)
@@ -2670,19 +2462,13 @@ void GameWindow::on_quest_expired(Quest *quest)
 {
   if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
     return;
-  Gtk::Dialog* dialog;
+  LwDialog dialog(*window, "quest-expired-dialog.ui");
 
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/quest-expired-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Label *label;
   xml->get_widget("label", label);
-  Glib::ustring s;
-  s += String::ucompose(_("%1 did not complete the quest."),
-			quest->getHeroName());
+  Glib::ustring s = String::ucompose(_("%1 did not complete the quest."),
+                                     quest->getHeroName());
   s += "\n\n";
 
   // add messages from the quest
@@ -2698,10 +2484,7 @@ void GameWindow::on_quest_expired(Quest *quest)
 
   label->set_text(s);
 
-  dialog->show_all();
-  dialog->run();
-  dialog->hide();
-  delete dialog;
+  dialog.run_and_hide();
 }
 
 void GameWindow::on_inspect_activated ()
@@ -2756,16 +2539,11 @@ void GameWindow::on_advice_asked(float percent)
     return;
   //we asked for advice on a fight, and we're being told that we 
   //have a PERCENT chance of winning the fight
-  Gtk::Dialog* dialog;
+  LwDialog dialog(*window, "military-advisor-dialog.ui");
 
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/military-advisor-dialog.ui");
+  dialog.set_title(_("Advisor!"));
 
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(*window);
-
-  dialog->set_title(_("Advisor!"));
-
+  Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Label *label;
   xml->get_widget("label", label);
   Glib::ustring s;
@@ -2957,10 +2735,7 @@ void GameWindow::on_advice_asked(float percent)
     }
   label->set_text(s);
 
-  dialog->show_all();
-  dialog->run();
-  dialog->hide();
-  delete dialog;
+  dialog.run_and_hide();
   return;
 }
 
@@ -3091,8 +2866,7 @@ void GameWindow::on_commentator_comments(Glib::ustring comment)
     gc->getGameButtonPic(GraphicsCache::DIPLOMACY_NO_PROPOSALS, 1)->copy();
   PixMask::scale(img, 60, 60);
   dialog.set_image(img->to_pixbuf());
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
 }
       
 void GameWindow::on_abbreviated_fight_started(LocationBox box)
@@ -3134,100 +2908,75 @@ City *GameWindow::on_select_city_to_use_item_on(SelectCityMap::Type type)
     
 void GameWindow::on_gold_stolen(Player *victim, guint32 gold_pieces)
 {
-  Glib::ustring s = "";
-  s += 
+  Glib::ustring s = 
     String::ucompose(ngettext("%1 gold piece was stolen from %2!",
                               "%1 gold pieces were stolen from %2!", 
                               gold_pieces), gold_pieces, victim->getName());
   TimedMessageDialog dialog(*window, s, 30);
-
-  dialog.show_all();
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
   return;
 }
 
 void GameWindow::on_ships_sunk(Player *victim, guint32 num_armies)
 {
-  Glib::ustring s = "";
-  s += 
+  Glib::ustring s = 
     String::ucompose(ngettext("%1 army unit was sunk to the watery depths!",
                               "%1 army units were sunk to the watery depths!", 
                               num_armies), num_armies);
   TimedMessageDialog dialog(*window, s, 30);
-
-  dialog.show_all();
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
   return;
 }
 
 void GameWindow::on_bags_picked_up(Hero *hero, guint32 num_bags)
 {
-  Glib::ustring s = "";
-  s += 
+  Glib::ustring s = 
     String::ucompose(ngettext("%1 bag was retrieved by %2!",
                               "%1 bags were retrieved by %2!", 
                               num_bags), num_bags, hero->getName());
   TimedMessageDialog dialog(*window, s, 30);
-
-  dialog.show_all();
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
   return;
 }
 
 void GameWindow::on_bridge_burned(Hero *hero)
 {
-  Glib::ustring s = "";
-  s += 
+  Glib::ustring s = 
     String::ucompose(_("%1 has burned a bridge!  None shall pass this way again!"), hero->getName());
   TimedMessageDialog dialog(*window, s, 30);
-
-  dialog.show_all();
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
   return;
 }
 
 void GameWindow::on_keeper_captured(Hero *hero, Ruin *ruin, Glib::ustring name)
 {
-  Glib::ustring s = "";
-  s += String::ucompose(_("%1 has turned a unit of %2 from %3!"), 
-                        hero->getName(), name, ruin->getName());
+  Glib::ustring s = 
+    String::ucompose(_("%1 has turned a unit of %2 from %3!"), 
+                     hero->getName(), name, ruin->getName());
   TimedMessageDialog dialog(*window, s, 30);
-
-  dialog.show_all();
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
   return;
 }
 
 void GameWindow::on_city_diseased(Hero *hero, Glib::ustring name, guint32 num_armies)
 {
-  Glib::ustring s = "";
-  s += String::ucompose(ngettext("%1 unit in %2 have perished!",
-                                 "%1 units in %2 have perished!", num_armies),
-                        num_armies, name);
+  Glib::ustring s = 
+    String::ucompose(ngettext("%1 unit in %2 have perished!",
+                              "%1 units in %2 have perished!", num_armies),
+                     num_armies, name);
   TimedMessageDialog dialog(*window, s, 30);
-
-  dialog.show_all();
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
   return;
 }
 
 void GameWindow::on_city_defended(Hero *hero, Glib::ustring city_name, Glib::ustring army_name, guint32 num_armies)
 {
-  Glib::ustring s = "";
-  s += String::ucompose(ngettext("%1 unit of %2 have been raised in %3!",
-                                 "%1 units of %2 have been raised in %3!", num_armies),
-                        num_armies, army_name, city_name);
+  Glib::ustring s = 
+    String::ucompose(ngettext("%1 unit of %2 have been raised in %3!",
+                              "%1 units of %2 have been raised in %3!", 
+                              num_armies), num_armies, army_name, city_name);
   TimedMessageDialog dialog(*window, s, 30);
-
-  dialog.show_all();
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
   return;
 }
 
@@ -3235,77 +2984,59 @@ void GameWindow::on_city_persuaded(Hero *hero, Glib::ustring city_name, guint32 
 {
   if (game)
     game->redraw();
-  Glib::ustring s = "";
+  Glib::ustring s;
   if (num_armies != 0)
-    s += String::ucompose
+    s = String::ucompose
       (ngettext("%1 unit in %2 have been persuaded to fly your flag!",
                 "%1 units in %2 have been persuaded to fly your flag!", 
                 num_armies),
        num_armies, city_name);
   else
-    s += String::ucompose
+    s = String::ucompose
       (_("The citizens of %1 have been persuaded to fly your flag!"), 
        city_name);
   TimedMessageDialog dialog(*window, s, 30);
-
-  dialog.show_all();
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
   return;
 }
 
 void GameWindow::on_stack_teleported(Hero *hero, Glib::ustring city_name)
 {
-  Glib::ustring s = "";
-  s += String::ucompose(_("%1 has teleported to %2!"), 
-                        hero->getName(), city_name);
+  Glib::ustring s = String::ucompose(_("%1 has teleported to %2!"), 
+                                     hero->getName(), city_name);
   TimedMessageDialog dialog(*window, s, 30);
 
-  dialog.show_all();
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
   return;
 }
 
 void GameWindow::on_monster_summoned(Hero *hero, Glib::ustring name)
 {
-  Glib::ustring s = "";
-  s += String::ucompose(_("A unit of %1 has come to the aid of %2!"), 
-                        name, hero->getName());
+  Glib::ustring s = String::ucompose 
+    (_("A unit of %1 has come to the aid of %2!"), name, hero->getName());
   TimedMessageDialog dialog(*window, s, 30);
-
-  dialog.show_all();
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
   return;
 }
 
 void GameWindow::on_worms_killed(Hero *hero, Glib::ustring name, guint32 num_killed)
 {
-  Glib::ustring s = "";
-  s += 
+  Glib::ustring s = 
     String::ucompose(ngettext("%1 unit of %2 was banished by %3!",
                               "%1 units of %2 were banished by %3!", 
                               num_killed), num_killed, name, hero->getName());
   TimedMessageDialog dialog(*window, s, 30);
-
-  dialog.show_all();
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
   return;
 }
 
 void GameWindow::on_mp_added_to_hero_stack(Hero *hero, guint32 mp)
 {
-  Glib::ustring s = "";
-  s += 
+  Glib::ustring s =
     String::ucompose(ngettext("%1 movement point was added to %2 and accompanying units!",
                               "%1 movement points were added to %2 and accompanying units!", 
                               mp), mp, hero->getName());
   TimedMessageDialog dialog(*window, s, 30);
-
-  dialog.show_all();
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
   return;
 }

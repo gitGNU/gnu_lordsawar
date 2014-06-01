@@ -23,9 +23,6 @@
 
 #include "hero-offer-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "GameMap.h"
@@ -35,16 +32,11 @@
 #include "playerlist.h"
 
 HeroOfferDialog::HeroOfferDialog(Gtk::Window &parent, Player *player, HeroProto *h, City *c, int gold)
+ : LwDialog(parent, "hero-offer-dialog.ui")
 {
     city = c;
     hero = h;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/hero-offer-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("map_image", map_image);
 
     heromap = new HeroMap(city);
@@ -92,7 +84,6 @@ HeroOfferDialog::HeroOfferDialog(Gtk::Window &parent, Player *player, HeroProto 
 HeroOfferDialog::~HeroOfferDialog()
 {
   delete heromap;
-  delete dialog;
 }
 
 void HeroOfferDialog::update_buttons()

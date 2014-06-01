@@ -22,8 +22,6 @@
 
 #include "ruin-report-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
@@ -35,13 +33,8 @@
 #include "playerlist.h"
 
 RuinReportDialog::RuinReportDialog(Gtk::Window &parent, Vector<int> pos)
+ : LwDialog(parent, "ruin-report-dialog.ui")
 {
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path()
-				  + "/ruin-report-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(parent);
   xml->get_widget("map_image", map_image);
 
   NamedLocation *l = NULL;
@@ -82,7 +75,6 @@ RuinReportDialog::RuinReportDialog(Gtk::Window &parent, Vector<int> pos)
 
 RuinReportDialog::~RuinReportDialog()
 {
-  delete dialog;
   delete ruinmap;
 }
 
@@ -174,5 +166,4 @@ void RuinReportDialog::fill_in_ruin_info()
     }
   else
     type_label->set_text("");
-
 }

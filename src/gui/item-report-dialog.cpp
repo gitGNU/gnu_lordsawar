@@ -22,9 +22,6 @@
 
 #include "item-report-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "GameMap.h"
@@ -35,15 +32,10 @@
 #include "playerlist.h"
 
 ItemReportDialog::ItemReportDialog(Gtk::Window &parent, std::list<Stack*> item_laden_stacks, std::list<MapBackpack*> bags_of_stuff)
+ : LwDialog(parent, "item-report-dialog.ui")
 {
   stacks = item_laden_stacks;
   bags = bags_of_stuff;
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path()
-				  + "/item-report-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(parent);
   xml->get_widget("map_image", map_image);
 
   itemmap = new ItemMap(item_laden_stacks, bags);
@@ -57,7 +49,6 @@ ItemReportDialog::ItemReportDialog(Gtk::Window &parent, std::list<Stack*> item_l
 
 ItemReportDialog::~ItemReportDialog()
 {
-  delete dialog;
   delete itemmap;
 }
 

@@ -19,14 +19,13 @@
 #ifndef MAP_INFO_DIALOG_H
 #define MAP_INFO_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
+#include "lw-editor-dialog.h"
 
 class GameScenario;
 
 //! Scenario editor.  Edits the description of the scenario.
-class MapInfoDialog: public sigc::trackable
+class MapInfoDialog: public LwEditorDialog
 {
  public:
     MapInfoDialog(Gtk::Window &parent, GameScenario *game_scenario);
@@ -35,7 +34,6 @@ class MapInfoDialog: public sigc::trackable
     int run();
     
  private:
-    Gtk::Dialog* dialog;
     Gtk::Entry *name_entry;
     Gtk::TextView *description_textview;
     Gtk::TextView *copyright_textview;

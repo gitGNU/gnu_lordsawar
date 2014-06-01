@@ -18,12 +18,10 @@
 #ifndef IMAGE_EDITOR_DIALOG_H
 #define IMAGE_EDITOR_DIALOG_H
 
-#include <memory>
-#include <map>
-#include <sigc++/trackable.h>
 #include <sigc++/connection.h>
 #include <gtkmm.h>
 #include "PixMask.h"
+#include "lw-editor-dialog.h"
 
 
 //! general picture editor.  
@@ -32,7 +30,7 @@
  * being edited in each player colour.  The user can pick a new file to be
  * the new image.
  */
-class ImageEditorDialog: public sigc::trackable
+class ImageEditorDialog: public LwEditorDialog
 {
  public:
     ImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int num_frames);
@@ -47,7 +45,6 @@ class ImageEditorDialog: public sigc::trackable
     std::vector<PixMask*> frames;
     int active_frame;
     sigc::connection heartbeat;
-    Gtk::Dialog* dialog;
     Gtk::FileChooserButton *filechooserbutton;
     Gtk::Image *image;
     void on_image_chosen();

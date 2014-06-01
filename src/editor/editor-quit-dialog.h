@@ -18,21 +18,16 @@
 #ifndef EDITOR_QUIT_DIALOG_H
 #define EDITOR_QUIT_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
+#include "lw-editor-dialog.h"
 
-class EditorQuitDialog: public sigc::trackable
+class EditorQuitDialog: public LwEditorDialog
 {
  public:
     EditorQuitDialog(Gtk::Window &parent);
     ~EditorQuitDialog();
 
-    int run();
-    void hide();
-    
  private:
-    Gtk::Dialog* dialog;
 };
 
 #endif

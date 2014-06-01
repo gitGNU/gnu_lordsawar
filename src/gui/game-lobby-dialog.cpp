@@ -23,9 +23,6 @@
 
 #include "game-lobby-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
@@ -76,8 +73,7 @@ void GameLobbyDialog::update_city_map()
     }
 }
 
-void GameLobbyDialog::initDialog(Gtk::Window *parent, 
-                                 GameScenario *gamescenario, 
+void GameLobbyDialog::initDialog(GameScenario *gamescenario, 
 				 NextTurnNetworked *next_turn,
 				 GameStation *game_station)
 {
@@ -88,13 +84,7 @@ void GameLobbyDialog::initDialog(Gtk::Window *parent,
   d_next_turn = next_turn;
   d_play_message_received = false;
   citymap = NULL;
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/game-lobby-dialog.ui");
 
-    xml->get_widget("dialog", dialog);
-    if (parent)
-      dialog->set_transient_for(*parent);
     xml->get_widget("player_treeview", player_treeview);
     player_treeview->get_selection()->signal_changed().connect
           (sigc::mem_fun(*this, &GameLobbyDialog::on_player_selected));
@@ -171,7 +161,6 @@ void GameLobbyDialog::initDialog(Gtk::Window *parent,
     people_list = Gtk::ListStore::create(people_columns);
     // setup the player settings
     people_treeview->set_model(people_list);
-
 }
 
 void GameLobbyDialog::update_buttons()
@@ -323,19 +312,20 @@ void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
     player_stood_up.emit(player);
 }
 
-GameLobbyDialog::GameLobbyDialog(Gtk::Window *parent,
+GameLobbyDialog::GameLobbyDialog(Gtk::Window &parent,
                                  GameScenario *game_scenario, 
 				 NextTurnNetworked *next_turn, 
 				 GameStation *game_station,
 				 bool has_ops)
-:name_column(_("Name"), name_renderer),
+ : LwDialog(parent, "game-lobby-dialog.ui"),
+    name_column(_("Name"), name_renderer),
     type_column(_("Type"), type_renderer),
     sitting_column(_("Controlled"), sitting_renderer)
 {
   d_has_ops = has_ops;
   d_play_button_clicked = false;
   d_play_message_received = false;
-  initDialog(parent, game_scenario, next_turn, game_station);
+  initDialog(game_scenario, next_turn, game_station);
   update_scenario_details();
   d_player_id_of_sit_or_stand_request = MAX_PLAYERS + 1;
   d_player_id_of_name_change_request = MAX_PLAYERS + 1;
@@ -352,7 +342,6 @@ GameLobbyDialog::~GameLobbyDialog()
 {
   if (citymap)
     delete citymap;
-  delete dialog;
 }
 
 void GameLobbyDialog::update_scenario_details()

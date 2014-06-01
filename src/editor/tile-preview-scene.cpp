@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, 2009, 2010 Ben Asselstine
+//  Copyright (C) 2008, 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,9 +21,6 @@
 
 #include "tile-preview-scene.h"
 
-#include "glade-helpers.h"
-#include "gui/image-helpers.h"
-#include "gui/input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"

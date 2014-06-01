@@ -18,14 +18,13 @@
 #ifndef NEW_NETWORK_GAME_DIALOG_H
 #define NEW_NETWORK_GAME_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "ucompose.hpp"
+#include "lw-dialog.h"
 class Profile;
 // dialog for choosing between a hosted game and a game we connect to
-class NewNetworkGameDialog: public sigc::trackable
+class NewNetworkGameDialog: public LwDialog
 {
  public:
     NewNetworkGameDialog(Gtk::Window &parent);
@@ -39,7 +38,6 @@ class NewNetworkGameDialog: public sigc::trackable
     bool run();
     
  private:
-  Gtk::Dialog* dialog;
   Gtk::RadioButton *client_radiobutton;
   Gtk::Button *accept_button;
   Gtk::Button *add_button;

@@ -18,13 +18,12 @@
 #ifndef ARMYSET_INFO_DIALOG_H
 #define ARMYSET_INFO_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 #include "armyset.h"
+#include "lw-editor-dialog.h"
 
 //! Armyset Editor.  Edit the description of the Armyset.
-class ArmySetInfoDialog: public sigc::trackable
+class ArmySetInfoDialog: public LwEditorDialog
 {
  public:
     ArmySetInfoDialog(Gtk::Window &parent, Armyset *armyset, Glib::ustring dir, 
@@ -35,7 +34,6 @@ class ArmySetInfoDialog: public sigc::trackable
     int run();
     
  private:
-    Gtk::Dialog* dialog;
     Armyset *d_armyset;
     Gtk::Entry *name_entry;
     Gtk::TextView *copyright_textview;

@@ -23,23 +23,15 @@
 
 #include "tileset-selector-editor-dialog.h"
 
-#include "glade-helpers.h"
-#include "gui/image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
 #include "shieldsetlist.h"
 #include "GraphicsCache.h"
 
-
 TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Gtk::Window &parent, Tileset *tileset)
+ : LwEditorDialog(parent, "tileset-selector-editor-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/tileset-selector-editor-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     d_tileset = tileset;
     small_filename = "";
     if (d_tileset->getSmallSelectorFilename().empty() == false)
@@ -81,7 +73,6 @@ TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Gtk::Window &parent, Ti
 
 TilesetSelectorEditorDialog::~TilesetSelectorEditorDialog()
 {
-  delete dialog;
 }
 
 int TilesetSelectorEditorDialog::run()

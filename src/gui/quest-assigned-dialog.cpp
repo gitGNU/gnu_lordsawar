@@ -23,25 +23,17 @@
 #include "quest-assigned-dialog.h"
 
 #include "army.h"
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "GameMap.h"
 #include "playerlist.h"
 
 QuestAssignedDialog::QuestAssignedDialog(Gtk::Window &parent, Hero *h, Quest *q)
+ : LwDialog(parent, "quest-assigned-dialog.ui")
 {
   hero = h;
   quest = q;
     
-  Glib::RefPtr<Gtk::Builder> xml
-      = Gtk::Builder::create_from_file(get_glade_path()
-				  + "/quest-assigned-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("map_image", map_image);
 
     questmap = new QuestMap(quest);
@@ -65,7 +57,6 @@ QuestAssignedDialog::QuestAssignedDialog(Gtk::Window &parent, Hero *h, Quest *q)
 
 QuestAssignedDialog::~QuestAssignedDialog()
 {
-  delete dialog;
   delete questmap;
 }
 

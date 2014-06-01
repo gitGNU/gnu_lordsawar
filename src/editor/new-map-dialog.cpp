@@ -23,7 +23,6 @@
 #include <gtkmm.h>
 
 #include "new-map-dialog.h"
-#include "glade-helpers.h"
 #include "defs.h"
 #include "File.h"
 #include "tileset.h"
@@ -36,17 +35,11 @@
 
 
 NewMapDialog::NewMapDialog(Gtk::Window &parent)
+ : LwEditorDialog(parent, "new-map-dialog.ui")
 {
     map_set = false;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + "/new-map-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
-
     xml->get_widget("map_size_combobox", map_size_combobox);
-
     xml->get_widget("custom_size_table", custom_size_table);
     xml->get_widget("width_spinbutton", width_spinbutton);
     xml->get_widget("height_spinbutton", height_spinbutton);
@@ -166,7 +159,6 @@ NewMapDialog::NewMapDialog(Gtk::Window &parent)
 
 NewMapDialog::~NewMapDialog()
 {
-  delete dialog;
 }
 
 void NewMapDialog::run()

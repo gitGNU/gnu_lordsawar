@@ -43,8 +43,6 @@ various_DATA = \
     tileset_icon.png \
     parley_offered.png \
     parley_refused.png \
-    background.png \
-    back.bmp \
     hero-newlevel-female.png \
     hero-newlevel-male.png \
     tilestyles.png
@@ -90,8 +88,6 @@ EXTRA_DIST = \
     tileset_icon.png \
     parley_offered.png \
     parley_refused.png \
-    background.png \
-    back.bmp \
     hero-newlevel-female.png \
     hero-newlevel-male.png \
     tilestyles.png

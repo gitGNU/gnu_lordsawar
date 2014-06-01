@@ -23,8 +23,6 @@
 #include "SightMap.h"
 #include "quest-report-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "input-helpers.h"
 #include "ucompose.hpp"
 #include "hero.h"
@@ -33,15 +31,10 @@
 #include "playerlist.h"
 
 QuestReportDialog::QuestReportDialog(Gtk::Window &parent, std::vector<Quest *>q, Hero *hero)
+ : LwDialog(parent, "quest-report-dialog.ui")
 {
   quests = q;
-  dialog->set_transient_for(parent);
 
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path()
-                                     + "/quest-report-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
   xml->get_widget("map_image", map_image);
 
   questmap = NULL;
@@ -147,7 +140,6 @@ void QuestReportDialog::on_hero_changed()
 
 QuestReportDialog::~QuestReportDialog()
 {
-  delete dialog;
   delete questmap;
 }
 

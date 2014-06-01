@@ -20,15 +20,15 @@
 
 #include <memory>
 #include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "citymap.h"
+#include "lw-dialog.h"
 
 class Player;
 
 // dialog for targetting a player when using an item.
-class UseItemOnPlayerDialog: public sigc::trackable
+class UseItemOnPlayerDialog: public LwDialog
 {
  public:
     UseItemOnPlayerDialog(Gtk::Window &parent);
@@ -38,7 +38,6 @@ class UseItemOnPlayerDialog: public sigc::trackable
     Player *run();
     
  private:
-    Gtk::Dialog* dialog;
     CityMap* citymap;
 
     Gtk::TreeView *player_treeview;

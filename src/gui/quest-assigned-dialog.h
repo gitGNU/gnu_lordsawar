@@ -18,17 +18,15 @@
 #ifndef QUEST_ASSIGNED_DIALOG_H
 #define QUEST_ASSIGNED_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "questmap.h"
 #include "Quest.h"
 #include "hero.h"
+#include "lw-dialog.h"
 
 // dialog for depicting a quest
-class QuestAssignedDialog: public sigc::trackable
+class QuestAssignedDialog: public LwDialog
 {
  public:
     QuestAssignedDialog(Gtk::Window &parent, Hero *hero, Quest *quest);
@@ -38,7 +36,6 @@ class QuestAssignedDialog: public sigc::trackable
     void hide();
     
  private:
-    Gtk::Dialog* dialog;
     QuestMap* questmap;
 
     Gtk::Image *map_image;

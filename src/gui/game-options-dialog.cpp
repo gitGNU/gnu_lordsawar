@@ -22,8 +22,6 @@
 
 #include "game-options-dialog.h"
 
-#include "glade-helpers.h"
-#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
@@ -31,13 +29,8 @@
 #include "GameScenarioOptions.h"
 
 GameOptionsDialog::GameOptionsDialog(Gtk::Window &parent, bool readonly)
+ : LwDialog(parent, "game-options-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/game-options-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     d_readonly = readonly;
     xml->get_widget("difficultoptionstable", difficultoptionstable);
     xml->get_widget("notdifficultoptionstable", notdifficultoptionstable);
@@ -54,12 +47,10 @@ GameOptionsDialog::GameOptionsDialog(Gtk::Window &parent, bool readonly)
     xml->get_widget("cusp_of_war_checkbutton", cusp_of_war_checkbutton);
     xml->get_widget("intense_combat_checkbutton", intense_combat_checkbutton);
     xml->get_widget("random_turns_checkbutton", random_turns_checkbutton);
-	
 }
 
 GameOptionsDialog::~GameOptionsDialog()
 {
-  delete dialog;
 }
 
 void GameOptionsDialog::fill_in_options()

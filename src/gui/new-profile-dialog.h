@@ -18,13 +18,12 @@
 #ifndef NEW_PROFILE_DIALOG_H
 #define NEW_PROFILE_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "ucompose.hpp"
+#include "lw-dialog.h"
 // dialog for choosing between a hosted game and a game we connect to
-class NewProfileDialog: public sigc::trackable
+class NewProfileDialog: public LwDialog
 {
  public:
     NewProfileDialog(Gtk::Window &parent, Glib::ustring network_game_nickname);
@@ -35,7 +34,6 @@ class NewProfileDialog: public sigc::trackable
     bool run();
     
  private:
-  Gtk::Dialog* dialog;
   Gtk::Entry *nick_entry;
   Gtk::Button *accept_button;
 

@@ -24,8 +24,6 @@
 
 #include "buy-production-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
@@ -38,18 +36,13 @@
 #include "shield.h"
 
 BuyProductionDialog::BuyProductionDialog(Gtk::Window &parent, City *c)
+ : LwDialog(parent, "buy-production-dialog.ui")
 {
   army_info_tip = NULL;
     GraphicsCache *gc = GraphicsCache::getInstance();
     city = c;
     selected_army = NO_ARMY_SELECTED;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/buy-production-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("production_info_label1", production_info_label1);
     xml->get_widget("production_info_label2", production_info_label2);
     xml->get_widget("buy_button", buy_button);
@@ -118,7 +111,6 @@ BuyProductionDialog::~BuyProductionDialog()
 {
   if (army_info_tip)
     delete army_info_tip;
-  delete dialog;
 }
 
 void BuyProductionDialog::hide()
@@ -250,4 +242,3 @@ bool BuyProductionDialog::on_production_button_event(GdkEventButton *e, Gtk::Tog
     
     return false;
 }
-

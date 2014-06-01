@@ -19,19 +19,18 @@
 #ifndef SELECT_ARMY_DIALOG_H
 #define SELECT_ARMY_DIALOG_H
 
-#include <memory>
 #include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "gui/army-info-tip.h"
+#include "lw-editor-dialog.h"
 
 class ArmyProto;
 class City;
 class Player;
 
 //! Scenario editor.  Select an Army prototype.
-class SelectArmyDialog: public sigc::trackable
+class SelectArmyDialog: public LwEditorDialog
 {
  public:
     SelectArmyDialog(Gtk::Window &parent, Player *p, bool hero_too = false,
@@ -44,7 +43,6 @@ class SelectArmyDialog: public sigc::trackable
     const ArmyProto *get_selected_army() { return selected_army; }
     
  private:
-    Gtk::Dialog* dialog;
     ArmyInfoTip* army_info_tip;
     Gtk::Label *army_info_label1;
     Gtk::Label *army_info_label2;

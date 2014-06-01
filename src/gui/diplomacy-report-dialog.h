@@ -19,30 +19,22 @@
 #define DIPLOMACY_REPORT_DIALOG_H
 
 #include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "player.h"
+#include "lw-dialog.h"
 
 //
 //
-class DiplomacyReportDialog: public sigc::trackable
+class DiplomacyReportDialog: public LwDialog
 {
  public:
     DiplomacyReportDialog(Gtk::Window &parent, Player *player);
     ~DiplomacyReportDialog();
 
-    void run();
-    void hide();
-    
  private:
-    Gtk::Dialog* dialog;
-
     Player *d_player;
-
     Gtk::Table *d_table;
-
 };
 
 #endif

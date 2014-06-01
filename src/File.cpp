@@ -437,3 +437,13 @@ bool case_insensitive (const Glib::ustring& first, const Glib::ustring& second)
     }
   return (first.length() < second.length());
 }
+        
+Glib::ustring File::getUIFile(Glib::ustring file)
+{
+  return getMiscFile("/glade/" + file);
+}
+
+Glib::ustring File::getEditorUIFile(Glib::ustring file)
+{
+  return getMiscFile("/glade/editor/" + file);
+}

@@ -23,9 +23,6 @@
 #include "diplomacy-dialog.h"
 #include "diplomacy-report-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
@@ -34,15 +31,11 @@
 #include "player.h"
 
 DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
+ : LwDialog(parent, "diplomacy-dialog.ui")
 {
   GraphicsCache *gc = GraphicsCache::getInstance();
   Playerlist *pl = Playerlist::getInstance();
   d_player = player;
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/diplomacy-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(parent);
   xml->get_widget("proposals_table", d_proposals_table);
   xml->get_widget("offers_table", d_offers_table);
   xml->get_widget("player_label", d_player_label);
@@ -213,8 +206,8 @@ DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
 
 DiplomacyDialog::~DiplomacyDialog()
 {
-  delete dialog;
 }
+
 void DiplomacyDialog::on_proposal_toggled (Gtk::ToggleButton *toggle, 
 					   Player *player, 
 					   Player::DiplomaticProposal proposal)
@@ -226,17 +219,5 @@ void DiplomacyDialog::on_proposal_toggled (Gtk::ToggleButton *toggle,
 void DiplomacyDialog::on_report_clicked()
 {
   DiplomacyReportDialog d(*dialog, d_player);
-  d.run();
-  d.hide();
+  d.run_and_hide();
 }
-
-void DiplomacyDialog::hide()
-{
-  dialog->hide();
-}
-void DiplomacyDialog::run()
-{
-  dialog->show_all();
-  dialog->run();
-}
-

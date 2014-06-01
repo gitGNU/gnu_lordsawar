@@ -23,7 +23,6 @@
 
 #include "backpack-editor-dialog.h"
 
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "Item.h"
@@ -32,17 +31,11 @@
 #include "select-item-dialog.h"
 
 BackpackEditorDialog::BackpackEditorDialog(Gtk::Window &parent, Backpack *pack)
+ : LwEditorDialog(parent, "backpack-editor-dialog.ui")
 {
   backpack = pack;
   working = new Backpack(*pack);
     
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path()
-				     + "/backpack-editor-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
-
     xml->get_widget("remove_button", remove_button);
     xml->get_widget("add_button", add_button);
     remove_button->signal_clicked()
@@ -67,7 +60,6 @@ BackpackEditorDialog::BackpackEditorDialog(Gtk::Window &parent, Backpack *pack)
 BackpackEditorDialog::~BackpackEditorDialog()
 {
   delete working;
-  delete dialog;
 }
 
 void BackpackEditorDialog::hide()
@@ -125,7 +117,6 @@ void BackpackEditorDialog::on_add_item_clicked()
     }
 }
 
-
 void BackpackEditorDialog::add_item(Item *item)
 {
     Gtk::TreeIter i = item_list->append();
@@ -135,7 +126,6 @@ void BackpackEditorDialog::add_item(Item *item)
     
     (*i)[item_columns.item] = item;
 }
-
 
 void BackpackEditorDialog::fill_bag()
 {

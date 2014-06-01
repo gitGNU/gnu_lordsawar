@@ -22,9 +22,6 @@
 
 #include "history-report-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
 #include "line-chart.h"
 #include "report-dialog.h"
 #include "ucompose.hpp"
@@ -43,14 +40,9 @@
 #include "ItemProto.h"
 
 HistoryReportDialog::HistoryReportDialog(Gtk::Window &parent, Player *p, HistoryReportType type)
+ : LwDialog(parent, "history-report-dialog.ui")
 {
   d_player = p;
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path()
-				+ "/history-report-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(parent);
   generatePastCitylists();
   generatePastRuinlists();
   generatePastEventlists();
@@ -134,7 +126,6 @@ HistoryReportDialog::~HistoryReportDialog()
       for (; hit != hist.end(); hit++)
 	delete (*hit);
     }
-  delete dialog;
   delete historymap;
 }
 

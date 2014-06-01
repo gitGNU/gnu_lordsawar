@@ -19,15 +19,15 @@
 #ifndef SIGNPOST_EDITOR_DIALOG_H
 #define SIGNPOST_EDITOR_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
+
+#include "lw-editor-dialog.h"
 
 class Signpost;
 class CreateScenarioRandomize;
 
 //! Scenario editor.  Change the contents of a signpost.
-class SignpostEditorDialog: public sigc::trackable
+class SignpostEditorDialog: public LwEditorDialog
 {
  public:
     SignpostEditorDialog(Gtk::Window &parent, Signpost *signpost, CreateScenarioRandomize *randomizer);
@@ -36,7 +36,6 @@ class SignpostEditorDialog: public sigc::trackable
     int run();
     
  private:
-    Gtk::Dialog* dialog;
     Gtk::TextView *sign_textview;
     Signpost *signpost;
     Gtk::Button *randomize_button;

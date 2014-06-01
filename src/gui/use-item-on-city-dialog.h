@@ -20,15 +20,15 @@
 
 #include <memory>
 #include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "select-city-map.h"
+#include "lw-dialog.h"
 
 class City;
 
 // dialog for targetting a player when using an item.
-class UseItemOnCityDialog: public sigc::trackable
+class UseItemOnCityDialog: public LwDialog
 {
  public:
     UseItemOnCityDialog(Gtk::Window &parent, SelectCityMap::Type type);
@@ -38,7 +38,6 @@ class UseItemOnCityDialog: public sigc::trackable
     City *run();
     
  private:
-    Gtk::Dialog* dialog;
     SelectCityMap* citymap;
 
     Gtk::Image *map_image;

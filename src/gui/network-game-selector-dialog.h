@@ -18,15 +18,15 @@
 #ifndef NETWORK_GAME_SELECTOR_DIALOG_H
 #define NETWORK_GAME_SELECTOR_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
+#include <sigc++/signal.h>
+#include "lw-dialog.h"
 
 class Profile;
 class RecentlyPlayedNetworkedGame;
 class RecentlyPlayedGameList;
 // dialog for joining remote games
-class NetworkGameSelectorDialog: public sigc::trackable
+class NetworkGameSelectorDialog: public LwDialog
 {
  public:
     NetworkGameSelectorDialog(Gtk::Window &parent, Profile *p);
@@ -38,7 +38,6 @@ class NetworkGameSelectorDialog: public sigc::trackable
     
  private:
     Profile *profile;
-    Gtk::Dialog* dialog;
     Gtk::Entry *hostname_entry;
     Gtk::SpinButton *port_spinbutton;
     Gtk::Button *connect_button;

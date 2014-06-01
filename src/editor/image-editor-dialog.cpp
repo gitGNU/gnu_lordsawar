@@ -22,7 +22,6 @@
 #include <stdlib.h>
 
 #include "image-editor-dialog.h"
-#include "glade-helpers.h"
 #include "gui/image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
@@ -31,14 +30,9 @@
 #include "GraphicsCache.h"
 
 ImageEditorDialog::ImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int frames)
+ : LwEditorDialog(parent, "image-editor-dialog.ui")
 {
   num_frames = frames;
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/image-editor-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
 
     xml->get_widget("filechooserbutton", filechooserbutton);
     xml->get_widget("image", image);
@@ -51,7 +45,6 @@ ImageEditorDialog::ImageEditorDialog(Gtk::Window &parent, Glib::ustring filename
 
 ImageEditorDialog::~ImageEditorDialog()
 {
-  delete dialog;
 }
 
 int ImageEditorDialog::run()

@@ -25,7 +25,6 @@
 #include "driver.h"
 
 #include <iostream>
-#include "error-utils.h"
 #include "main.h"
 #include "splash-window.h"
 #include "game-window.h"
@@ -536,8 +535,7 @@ void Driver::on_could_not_connect_to_gamehost_server()
         (*splash_window->get_window(),
          String::ucompose(_("Could not connect to gamehost server:\n%1:%2"),
                           ghc->getHost(), ghc->getPort()), 0);
-      dialog.run();
-      dialog.hide();
+      dialog.run_and_hide();
     }
 }
 
@@ -559,8 +557,7 @@ void Driver::on_got_game_host_response(Glib::ustring scenario_id, Glib::ustring 
             String::ucompose(_("Gamehost Server Error: %1"), err);
           TimedMessageDialog dialog(*splash_window->get_window(), s, 0);
           dialog.set_title(_("Server Failure"));
-          dialog.run();
-          dialog.hide();
+          dialog.run_and_hide();
         }
       return;
     }
@@ -592,8 +589,7 @@ void Driver::on_remote_game_hosted(Glib::ustring scenario_id, guint32 port, Glib
             String::ucompose(_("Gamehost Server Error: %1"), err);
           TimedMessageDialog dialog(*splash_window->get_window(), s, 0);
           dialog.set_title(_("Server Failure"));
-          dialog.run();
-          dialog.hide();
+          dialog.run_and_hide();
         }
     return;
     }
@@ -618,8 +614,7 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
       {
 	TimedMessageDialog dialog(*splash_window->get_window(),
 				  _("Corrupted saved game file."), 0);
-	dialog.run();
-	dialog.hide();
+	dialog.run_and_hide();
 	return;
       }
     if (remotely_hosted)
@@ -649,7 +644,7 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
   next_turn->srequestAbort.connect(sigc::mem_fun(game_server, &GameServer::on_turn_aborted));
   if (game_lobby_dialog)
     delete game_lobby_dialog;
-  game_lobby_dialog = new GameLobbyDialog(splash_window->get_window(), 
+  game_lobby_dialog = new GameLobbyDialog(*splash_window->get_window(), 
                                           game_scenario, next_turn, 
                                           game_server, true);
   game_server->get_next_player.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::next));
@@ -701,8 +696,7 @@ void Driver::on_server_went_away()
   TimedMessageDialog dialog(*splash_window->get_window(), 
 			    _("Server went away."), 0);
   dialog.set_title(_("Disconnected"));
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
   GameClient::deleteInstance();
 }
 
@@ -720,8 +714,7 @@ void Driver::on_client_could_not_connect()
     (*splash_window->get_window(), 
      String::ucompose(_("Could not connect to server:\n%1 %2"),
                         gc->getHost(), gc->getPort()), 0);
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
   GameClient::deleteInstance();
 }
 
@@ -789,7 +782,7 @@ void Driver::on_game_scenario_received(Glib::ustring path, Profile *p)
   game_client->round_ends.connect(sigc::mem_fun(next_turn, &NextTurnNetworked::finishRound));
   if (game_lobby_dialog)
     delete game_lobby_dialog;
-  game_lobby_dialog = new GameLobbyDialog(splash_window->get_window(), game_scenario, next_turn, 
+  game_lobby_dialog = new GameLobbyDialog(*splash_window->get_window(), game_scenario, next_turn, 
 					      GameClient::getInstance(), false);
   game_lobby_dialog->player_sat_down.connect
     (sigc::mem_fun(this, &Driver::on_client_player_sat_down));
@@ -836,8 +829,7 @@ void Driver::on_new_game_requested(GameParameters g)
       {
 	TimedMessageDialog dialog(*splash_window->get_window(),
 				  _("Corrupted saved game file."), 0);
-	dialog.run();
-	dialog.hide();
+	dialog.run_and_hide();
 	splash_window->show();
 	return;
       }
@@ -854,8 +846,7 @@ void Driver::on_new_game_requested(GameParameters g)
 	  {
 	    printf ("error: %s\n", (*it).c_str());
 	  }
-	dialog.run();
-	dialog.hide();
+	dialog.run_and_hide();
 	splash_window->show();
 	return;
       }
@@ -894,8 +885,7 @@ void Driver::on_load_requested(Glib::ustring filename)
       {
 	TimedMessageDialog dialog(*splash_window->get_window(),
 				  _("Can't load networked game from file."), 0);
-	dialog.run();
-	dialog.hide();
+	dialog.run_and_hide();
       }
 }
 
@@ -981,8 +971,7 @@ GameScenario *Driver::load_game(Glib::ustring file_path)
       {
 	TimedMessageDialog dialog(*splash_window->get_window(),
 				  _("Corrupted saved game file."), 0);
-	dialog.run();
-	dialog.hide();
+	dialog.run_and_hide();
 	return NULL;
       }
     return game_scenario;
@@ -1236,8 +1225,7 @@ void Driver::on_could_not_bind_to_port (int port)
   Glib::ustring s = String::ucompose(_("Could not bind to port %1"), port);
   TimedMessageDialog dialog(*splash_window->get_window(), s, 0);
   dialog.set_title(_("Server Failure"));
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
 }
 
 void Driver::unadvertise_game(Glib::ustring scenario_id, Profile *p)

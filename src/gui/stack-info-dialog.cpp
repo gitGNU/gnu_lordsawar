@@ -22,9 +22,7 @@
 #include "stack-info-dialog.h"
 
 #include <gtkmm.h>
-#include "glade-helpers.h"
 #include "input-helpers.h"
-#include "image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "army.h"
@@ -39,17 +37,12 @@
 #include "GameMap.h"
 
 StackInfoDialog::StackInfoDialog(Gtk::Window &parent, Vector<int> pos)
+ : LwDialog(parent, "stack-info-dialog.ui")
 {
   army_info_tip = NULL;
   tile = pos;
   currently_selected_stack = NULL;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/stack-info-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("stack_table", stack_table);
     xml->get_widget("group_button", group_button);
     group_button->signal_clicked().connect
@@ -64,27 +57,6 @@ StackInfoDialog::~StackInfoDialog()
 {
   if (army_info_tip != NULL)
     delete army_info_tip;
-  delete dialog;
-}
-
-void StackInfoDialog::hide()
-{
-  dialog->hide();
-}
-
-void StackInfoDialog::run()
-{
-    static int width = -1;
-    static int height = -1;
-
-    if (width != -1 && height != -1)
-	dialog->set_default_size(width, height);
-    
-    dialog->show();
-    dialog->run();
-
-    dialog->get_size(width, height);
-
 }
 
 void StackInfoDialog::addStack(Stack *s, guint32 &idx)

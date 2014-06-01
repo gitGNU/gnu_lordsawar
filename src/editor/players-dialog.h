@@ -19,16 +19,15 @@
 #ifndef PLAYERS_DIALOG_H
 #define PLAYERS_DIALOG_H
 
-#include <memory>
 #include <vector>
-#include <sigc++/signal.h>
 #include <gtkmm.h>
+#include "lw-editor-dialog.h"
 
 class Player;
 class CreateScenarioRandomize;
 
 //! Scenario editor.  Edit Player objects in the scenario.
-class PlayersDialog
+class PlayersDialog: public LwEditorDialog
 {
  public:
     PlayersDialog(Gtk::Window &parent, CreateScenarioRandomize *randomizer, int width, int height);
@@ -37,8 +36,6 @@ class PlayersDialog
     int run();
     
  private:
-    Gtk::Dialog* dialog;
-
     Gtk::TreeView *player_treeview;
     
     class PlayerColumns: public Gtk::TreeModelColumnRecord {

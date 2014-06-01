@@ -18,15 +18,13 @@
 #ifndef SELECT_REWARD_DIALOG_H
 #define SELECT_REWARD_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
+#include "lw-editor-dialog.h"
 class Reward;
 
 //! Scenario editor.  Select a Reward from the Rewardlist.
-class SelectRewardDialog: public sigc::trackable
+class SelectRewardDialog: public LwEditorDialog
 {
  public:
     SelectRewardDialog(Gtk::Window &parent);
@@ -36,7 +34,6 @@ class SelectRewardDialog: public sigc::trackable
     const Reward *get_selected_reward() { return selected_reward; }
     
  private:
-    Gtk::Dialog* dialog;
     Gtk::Button *select_button;
 
     const Reward *selected_reward;

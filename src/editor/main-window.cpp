@@ -28,9 +28,7 @@
 #include <gtkmm.h>
 #include "main-window.h"
 
-#include "image-helpers.h"
 #include "input-helpers.h"
-#include "error-utils.h"
 
 #include "ucompose.hpp"
 #include "tileset.h"
@@ -68,7 +66,6 @@
 #include "MapGenerator.h"
 #include "counter.h"
 
-#include "glade-helpers.h"
 #include "editorbigmap.h"
 
 #include "signpost-editor-dialog.h"
@@ -103,7 +100,7 @@ MainWindow::MainWindow(Glib::ustring load_filename)
   d_create_scenario_names = NULL;
   needs_saving = false;
   Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/main-window.ui");
+    = Gtk::Builder::create_from_file(File::getEditorUIFile("main-window.ui"));
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
@@ -833,12 +830,14 @@ void MainWindow::on_load_map_activated()
 	d_create_scenario_names = new CreateScenarioRandomize();
 
 	if (broken)
-	{
-	    show_error(String::ucompose(_("Could not load map %1."),
-					current_save_filename));
-	    current_save_filename = "";
-	    return;
-	}
+          {
+            TimedMessageDialog dialog
+              (*window,String::ucompose(_("Could not load map %1."),
+                                        current_save_filename), 0);
+            dialog.run_and_hide();
+            current_save_filename = "";
+            return;
+          }
 
 	init_map_state();
 	bigmap->screen_size_changed(bigmap_image->get_allocation()); 
@@ -857,7 +856,8 @@ void MainWindow::on_save_map_activated()
 	bool success = game_scenario->saveGame(current_save_filename, MAP_EXT);
 	if (!success)
           {
-	    show_error(_("Map was not saved!"));
+            TimedMessageDialog dialog(*window, _("Map was not saved!"), 0);
+            dialog.run_and_hide();
             on_validate_activated();
           }
         else
@@ -893,7 +893,10 @@ void MainWindow::on_export_as_bitmap_activated()
 
 	bool success = bigmap->saveAsBitmap(current_save_filename);
 	if (!success)
-	    show_error(_("Map was not exported!"));
+          {
+            TimedMessageDialog dialog(*window, _("Map was not exported!"), 0);
+            dialog.run_and_hide();
+          }
     }
 }
 
@@ -922,7 +925,10 @@ void MainWindow::on_export_as_bitmap_no_game_objects_activated()
 
 	bool success = bigmap->saveUnderlyingMapAsBitmap(current_save_filename);
 	if (!success)
-	    show_error(_("Map was not exported!"));
+          {
+            TimedMessageDialog dialog(*window, _("Map was not exported!"), 0);
+            dialog.run_and_hide();
+          }
     }
 }
 
@@ -952,7 +958,8 @@ void MainWindow::on_save_map_as_activated()
 	bool success = game_scenario->saveGame(current_save_filename, MAP_EXT);
 	if (!success)
           {
-            show_error(_("Map was not saved!"));
+            TimedMessageDialog dialog(*window, _("Map was not saved!"), 0);
+            dialog.run_and_hide();
             on_validate_activated();
             current_save_filename = old_save_filename;
           }
@@ -969,8 +976,7 @@ bool MainWindow::quit()
   if (needs_saving)
     {
       EditorQuitDialog d(*window);
-      int response = d.run();
-      d.hide();
+      int response = d.run_and_hide();
       
       if (response == Gtk::RESPONSE_CANCEL) //we don't want to quit
 	return false;
@@ -1562,7 +1568,7 @@ void MainWindow::on_smooth_screen_activated()
 void MainWindow::on_edit_items_activated()
 {
   ItemlistDialog d(*window);
-  int response = d.run();
+  int response = d.run_and_hide();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       needs_saving = true;
@@ -1573,7 +1579,7 @@ void MainWindow::on_edit_items_activated()
 void MainWindow::on_edit_rewards_activated()
 {
   RewardlistDialog d(*window);
-  int response = d.run();
+  int response = d.run_and_hide();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       needs_saving = true;
@@ -1720,7 +1726,7 @@ void MainWindow::on_help_about_activated()
   Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/../about-dialog.ui");
+    = Gtk::Builder::create_from_file(File::getUIFile("about-dialog.ui"));
 
   xml->get_widget("dialog", dialog);
   dialog->set_transient_for(*window);
@@ -1755,9 +1761,7 @@ void MainWindow::on_validate_activated()
   if (warnings.size())
     s += String::ucompose(ngettext("\nThere is %1 warning", "\nThere are %1 warnings", warnings.size()), warnings.size());
   TimedMessageDialog dialog(*window, s, 0);
-  dialog.show_all();
-  dialog.run();
-  dialog.hide();
+  dialog.run_and_hide();
 }
       
 	
@@ -1805,8 +1809,10 @@ void MainWindow::on_import_map_activated()
 
 	if (broken)
 	{
-	    show_error(String::ucompose(_("Could not load game %1."),
-					filename));
+          TimedMessageDialog dialog
+            (*window, String::ucompose(_("Could not load game %1."),
+                                       filename), 0);
+          dialog.run_and_hide();
 	    current_save_filename = "";
 	    return;
 	}

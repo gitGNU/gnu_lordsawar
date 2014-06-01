@@ -52,17 +52,7 @@ TimedMessageDialog::~TimedMessageDialog()
   delete window;
 }
 
-void TimedMessageDialog::show_all()
-{
-    window->show_all();
-}
-
-void TimedMessageDialog::hide()
-{
-  window->hide();
-}
-
-void TimedMessageDialog::run()
+void TimedMessageDialog::run_and_hide()
 {
   if (d_timeout > 0)
     {
@@ -73,6 +63,7 @@ void TimedMessageDialog::run()
     window->show_all();
     main_loop = Glib::MainLoop::create();
     main_loop->run();
+  window->hide();
 }
 
 bool TimedMessageDialog::tick()

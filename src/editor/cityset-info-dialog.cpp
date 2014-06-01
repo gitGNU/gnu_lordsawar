@@ -19,28 +19,19 @@
 
 #include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
 
 #include "cityset-info-dialog.h"
 #include "citysetlist.h"
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
 
 CitySetInfoDialog::CitySetInfoDialog(Gtk::Window &parent, Cityset *cityset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
+ : LwEditorDialog(parent, "cityset-info-dialog.ui")
 {
   d_cityset = cityset;
   d_readonly = readonly;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/cityset-info-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     if (title != "")
       dialog->set_title(title);
 
@@ -103,7 +94,6 @@ void CitySetInfoDialog::on_name_changed()
 
 CitySetInfoDialog::~CitySetInfoDialog()
 {
-  delete dialog;
 }
 
 int CitySetInfoDialog::run()

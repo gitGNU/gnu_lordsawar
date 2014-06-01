@@ -18,13 +18,12 @@
 #ifndef SHIELDSET_INFO_DIALOG_H
 #define SHIELDSET_INFO_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 #include "shieldset.h"
+#include "lw-editor-dialog.h"
 
 //! Shieldset Editor.  Edit the description of the Shieldset.
-class ShieldSetInfoDialog: public sigc::trackable
+class ShieldSetInfoDialog: public LwEditorDialog
 {
  public:
     ShieldSetInfoDialog(Gtk::Window &parent, Shieldset *shieldset, 
@@ -35,7 +34,6 @@ class ShieldSetInfoDialog: public sigc::trackable
     int run();
     
  private:
-    Gtk::Dialog* dialog;
     Shieldset *d_shieldset;
     Gtk::Entry *name_entry;
     Gtk::TextView *copyright_textview;

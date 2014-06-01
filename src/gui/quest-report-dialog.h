@@ -26,9 +26,10 @@
 #include "questmap.h"
 #include "Quest.h"
 #include "reward.h"
+#include "lw-dialog.h"
 
 // dialog for depicting a quest
-class QuestReportDialog: public sigc::trackable
+class QuestReportDialog: public LwDialog
 {
  public:
     QuestReportDialog(Gtk::Window &parent, std::vector<Quest *>quests, Hero *preferred_hero);
@@ -36,9 +37,7 @@ class QuestReportDialog: public sigc::trackable
 
     void run();
     void hide();
-    
  private:
-    Gtk::Dialog* dialog;
     QuestMap* questmap;
 
     Gtk::Image *map_image;

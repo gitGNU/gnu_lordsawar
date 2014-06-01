@@ -1,4 +1,4 @@
-//  Copyright (C) 2007 Ole Laursen
+//  Copyright (C) 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,14 +15,26 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef GUI_GLADE_HELPERS_H
-#define GUI_GLADE_HELPERS_H
+#ifndef LW_DIALOG_H
+#define LW_DIALOG_H
 
-#include "Configuration.h"
+#include <sigc++/trackable.h>
+#include <gtkmm.h>
 
-inline Glib::ustring get_glade_path()
+class LwDialog: public sigc::trackable
 {
-    return Configuration::s_dataPath + "/glade";
-}
+ public:
+    LwDialog(Gtk::Window &parent, Glib::ustring file);
+    ~LwDialog();
+
+    int run_and_hide();
+
+    Glib::RefPtr<Gtk::Builder> get_builder() const {return xml;};
+    void set_title(Glib::ustring s) {dialog->set_title(s);};
+    Gtk::Dialog *get() {return dialog;};
+ protected:
+    Gtk::Dialog* dialog;
+    Glib::RefPtr<Gtk::Builder> xml;
+};
 
 #endif

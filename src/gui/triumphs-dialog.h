@@ -20,27 +20,22 @@
 
 #include <memory>
 #include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 class Player;
 
 #include "Triumphs.h"
+#include "lw-dialog.h"
 
 //
 //
-class TriumphsDialog: public sigc::trackable
+class TriumphsDialog: public LwDialog
 {
  public:
     TriumphsDialog(Gtk::Window &parent, Player *player);
     ~TriumphsDialog();
 
-    void run();
-    void hide();
-    
  private:
-    Gtk::Dialog* dialog;
-
     Player *d_player;
 
     Gtk::Notebook *notebook;

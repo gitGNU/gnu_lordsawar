@@ -23,7 +23,6 @@
 
 #include "stack-editor-dialog.h"
 
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "stack.h"
@@ -42,11 +41,13 @@
 
 namespace 
 {
+  //FIXME this should be MAX_STACK_SIZE from defs.h
     int const max_stack_size = 8;
 }
 
 StackEditorDialog::StackEditorDialog(Gtk::Window &parent, Stack *s, int m)
-	: strength_column(_("Strength"), strength_renderer),
+ : LwEditorDialog(parent, "stack-editor-dialog.ui"),
+    strength_column(_("Strength"), strength_renderer),
 	moves_column(_("Max Moves"), moves_renderer),
 	upkeep_column(_("Upkeep"), upkeep_renderer)
 {
@@ -54,13 +55,6 @@ StackEditorDialog::StackEditorDialog(Gtk::Window &parent, Stack *s, int m)
     min_size = m;
     player_combobox = 0;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/stack-editor-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
-
     if (stack->getOwner())
     {
 	// setup the player combo
@@ -148,7 +142,6 @@ StackEditorDialog::StackEditorDialog(Gtk::Window &parent, Stack *s, int m)
 
 StackEditorDialog::~StackEditorDialog()
 {
-  delete dialog;
 }
 
 int StackEditorDialog::run()

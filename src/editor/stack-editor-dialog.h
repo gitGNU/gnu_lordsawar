@@ -19,17 +19,15 @@
 #ifndef STACK_EDITOR_DIALOG_H
 #define STACK_EDITOR_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
-
+#include "lw-editor-dialog.h"
 
 class Stack;
 class Army;
 class Player;
 
 //! Scenario editor.  Change the contents of a Stack.
-class StackEditorDialog: public sigc::trackable
+class StackEditorDialog: public LwEditorDialog
 {
  public:
     StackEditorDialog(Gtk::Window &parent, Stack *stack, int min_size = 1);
@@ -38,7 +36,6 @@ class StackEditorDialog: public sigc::trackable
     int run();
     
  private:
-    Gtk::Dialog* dialog;
     Gtk::ComboBoxText *player_combobox;
 
     Gtk::TreeView *army_treeview;

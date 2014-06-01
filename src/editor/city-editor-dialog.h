@@ -19,10 +19,8 @@
 #ifndef CITY_EDITOR_DIALOG_H
 #define CITY_EDITOR_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
-
+#include "lw-editor-dialog.h"
 
 class CreateScenarioRandomize;
 class City;
@@ -30,7 +28,7 @@ class ArmyProdBase;
 class Player;
 
 //! Scenario editor.  Edits a City object.
-class CityEditorDialog: public sigc::trackable
+class CityEditorDialog: public LwEditorDialog
 {
  public:
     CityEditorDialog(Gtk::Window &parent, City *city, CreateScenarioRandomize *randomizer);
@@ -41,7 +39,6 @@ class CityEditorDialog: public sigc::trackable
  private:
     City *city;
     CreateScenarioRandomize *d_randomizer;
-    Gtk::Dialog* dialog;
     Gtk::ComboBoxText *player_combobox;
     Gtk::CheckButton *capital_checkbutton;
     Gtk::Entry *name_entry;

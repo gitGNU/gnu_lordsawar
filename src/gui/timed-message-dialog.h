@@ -32,9 +32,7 @@ class TimedMessageDialog: public sigc::trackable
 
     void set_title(Glib::ustring title);
     void set_image(Glib::RefPtr<Gdk::Pixbuf> picture);
-    void show_all();
-    void run();
-    void hide();
+    void run_and_hide();
     
  private:
     Gtk::MessageDialog *window;

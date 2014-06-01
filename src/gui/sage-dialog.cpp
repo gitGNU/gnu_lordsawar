@@ -23,9 +23,6 @@
 #include "SightMap.h"
 #include "sage-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "GameMap.h"
@@ -37,16 +34,11 @@
 #include "Item.h"
 
 SageDialog::SageDialog(Gtk::Window &parent, Sage *sage, Player *player, Hero *h, Ruin *r)
+ : LwDialog(parent, "sage-dialog.ui")
 {
     ruin = r;
     hero = h;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/sage-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     rewards_list = Gtk::ListStore::create(rewards_columns);
     xml->get_widget("rewardtreeview", rewards_treeview);
     rewards_treeview->set_model(rewards_list);
@@ -72,9 +64,9 @@ SageDialog::SageDialog(Gtk::Window &parent, Sage *sage, Player *player, Hero *h,
   continue_button->set_sensitive(false);
 
 }
+
 SageDialog::~SageDialog()
 {
-  delete dialog;
   delete ruinmap;
 }
 
@@ -89,7 +81,6 @@ Reward *SageDialog::grabSelectedReward()
 
 void SageDialog::hide()
 {
-  dialog->hide();
 }
 
 Reward *SageDialog::run()

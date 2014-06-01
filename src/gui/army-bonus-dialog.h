@@ -19,26 +19,19 @@
 #ifndef ARMY_BONUS_DIALOG_H
 #define ARMY_BONUS_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
-#include <sigc++/signal.h>
 #include <gtkmm.h>
-#include <list>
+
+#include "lw-dialog.h"
 class Player;
 
 // dialog for showing the bonuses that armies have
-class ArmyBonusDialog: public sigc::trackable
+class ArmyBonusDialog: public LwDialog
 {
  public:
     ArmyBonusDialog(Gtk::Window &parent, Player *p);
     ~ArmyBonusDialog();
 
-    void run();
-    void hide();
-
  private:
-    Gtk::Dialog* dialog;
-
     Gtk::TreeView *armies_treeview;
 
     class ArmiesColumns: public Gtk::TreeModelColumnRecord {

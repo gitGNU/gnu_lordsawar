@@ -19,9 +19,8 @@
 #ifndef RUIN_EDITOR_DIALOG_H
 #define RUIN_EDITOR_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
+#include "lw-editor-dialog.h"
 
 class Ruin;
 class Stack;
@@ -29,7 +28,7 @@ class CreateScenarioRandomize;
 class Reward;
 
 //! Scenario editor.  Edits Ruin objects.
-class RuinEditorDialog: public sigc::trackable
+class RuinEditorDialog: public LwEditorDialog
 {
  public:
     RuinEditorDialog(Gtk::Window &parent, Ruin *ruin, 
@@ -39,7 +38,6 @@ class RuinEditorDialog: public sigc::trackable
     int run();
     
  private:
-    Gtk::Dialog* dialog;
     Gtk::Entry *name_entry;
     Gtk::Entry *description_entry;
     Gtk::SpinButton *type_entry;

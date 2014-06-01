@@ -20,22 +20,18 @@
 
 #include <memory>
 #include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
+#include "lw-dialog.h"
 
 // dialog for showing the refusal of surrender
-class SurrenderRefusedDialog: public sigc::trackable
+class SurrenderRefusedDialog: public LwDialog
 {
  public:
     SurrenderRefusedDialog(Gtk::Window &parent);
     ~SurrenderRefusedDialog();
 
-    void run();
-    void hide();
-    
  private:
-    Gtk::Dialog* dialog;
     Gtk::Image *image;
 
 };

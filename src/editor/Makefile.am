@@ -27,7 +27,7 @@ libeditutil_la_SOURCES = \
 	editor-quit-dialog.cpp editor-quit-dialog.h \
 	editor-recover-dialog.cpp editor-recover-dialog.h \
 	tile-size-editor-dialog.cpp tile-size-editor-dialog.h \
-	glade-helpers.h
+	lw-editor-dialog.cpp lw-editor-dialog.h
 
 libshieldsetwindow_la_SOURCES = \
 	shieldset-window.cpp shieldset-window.h \

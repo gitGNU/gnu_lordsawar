@@ -23,8 +23,6 @@
 
 #include "army-gains-level-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "army.h"
@@ -35,16 +33,11 @@
 
 //give a hero some more abilities
 ArmyGainsLevelDialog::ArmyGainsLevelDialog(Gtk::Window &parent, Hero *a, bool show_sight_stat)
+ : LwDialog(parent, "army-gains-level-dialog.ui")
 {
     GraphicsCache *gc = GraphicsCache::getInstance();
     hero = a;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/army-gains-level-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     Gtk::Image *image;
     xml->get_widget("image", image);
     image->property_pixbuf() = 
@@ -79,18 +72,6 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Gtk::Window &parent, Hero *a, bool sh
 
 ArmyGainsLevelDialog::~ArmyGainsLevelDialog()
 {
-  delete dialog;
-}
-
-void ArmyGainsLevelDialog::hide()
-{
-  dialog->hide();
-}
-
-void ArmyGainsLevelDialog::run()
-{
-    dialog->show_all();
-    dialog->run();
 }
 
 void ArmyGainsLevelDialog::add_item(Army::Stat stat, Glib::ustring desc)

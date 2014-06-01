@@ -18,14 +18,13 @@
 #ifndef SMALLMAP_EDITOR_DIALOG_H
 #define SMALLMAP_EDITOR_DIALOG_H
 
-#include <memory>
 #include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "editablesmallmap.h"
+#include "lw-editor-dialog.h"
 
-class SmallmapEditorDialog
+class SmallmapEditorDialog: public LwEditorDialog
 {
  public:
     SmallmapEditorDialog(Gtk::Window &parent);
@@ -35,7 +34,6 @@ class SmallmapEditorDialog
     void hide();
     
  private:
-    Gtk::Dialog* dialog;
     EditableSmallMap* smallmap;
     bool d_needs_saving;
 

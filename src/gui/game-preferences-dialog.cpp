@@ -24,8 +24,6 @@
 
 #include "game-preferences-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
@@ -38,18 +36,14 @@
 #include "citysetlist.h"
 #include "player.h"
 #include "game-parameters.h"
+#include "Configuration.h"
 
 static bool inhibit_difficulty_combobox = false;
 
-void GamePreferencesDialog::init(Gtk::Window &parent, Glib::ustring filename)
+void GamePreferencesDialog::init(Glib::ustring filename)
 {
   d_filename = filename;
   bool broken = false;
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + "/game-preferences-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("dialog-vbox1", dialog_vbox);
     xml->get_widget("start_game_button", start_game_button);
     xml->get_widget("difficulty_label", difficulty_label);
@@ -136,9 +130,10 @@ void GamePreferencesDialog::init(Gtk::Window &parent, Glib::ustring filename)
 }
 
 GamePreferencesDialog::GamePreferencesDialog(Gtk::Window &parent, Glib::ustring filename, GameScenario::PlayMode play_mode)
+ : LwDialog (parent, "game-preferences-dialog.ui")
 {
   mode = play_mode;
-  init(parent, filename);
+  init(filename);
   if (mode != GameScenario::NETWORKED)
     {
       delete game_name_label;
@@ -150,7 +145,6 @@ GamePreferencesDialog::GamePreferencesDialog(Gtk::Window &parent, Glib::ustring 
 GamePreferencesDialog::~GamePreferencesDialog()
 {
   delete game_options_dialog;
-  delete dialog;
 }
 
 void GamePreferencesDialog::hide()
@@ -515,9 +509,4 @@ bool GamePreferencesDialog::is_greatest()
 	  GameScenarioOptions::s_razing_cities == GameParameters::NEVER &&
 	  GameScenarioOptions::s_diplomacy == true &&
 	  GameScenarioOptions::s_cusp_of_war == true);
-}
-
-void GamePreferencesDialog::set_title(Glib::ustring text)
-{
-  dialog->set_title(text);
 }

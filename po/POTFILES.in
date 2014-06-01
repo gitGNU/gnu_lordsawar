@@ -223,7 +223,6 @@ src/gui/main-preferences-dialog.cpp
 src/gui/quest-completed-dialog.cpp
 src/gui/fight-order-dialog.cpp
 src/gui/triumphs-dialog.cpp
-src/gui/error-utils.cpp
 src/gui/army-info-tip.cpp
 src/gui/game-preferences-dialog.cpp
 src/gui/buy-production-dialog.cpp

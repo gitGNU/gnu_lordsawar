@@ -21,23 +21,21 @@
 
 #include <memory>
 #include <vector>
-#include <sigc++/signal.h>
 #include <gtkmm.h>
 
 #include "game-parameters.h"
 #include "game-options-dialog.h"
 #include "GameScenario.h"
+#include "lw-dialog.h"
 
 class XML_Helper;
 
 // dialog for choosing parameters for starting a new game
-class GamePreferencesDialog: public sigc::trackable
+class GamePreferencesDialog: public LwDialog
 {
  public:
     GamePreferencesDialog(Gtk::Window &parent, Glib::ustring filename, GameScenario::PlayMode mode);
     ~GamePreferencesDialog();
-
-    void set_title(Glib::ustring title);
 
     sigc::signal<void, GameParameters> game_started;
     
@@ -45,8 +43,7 @@ class GamePreferencesDialog: public sigc::trackable
     void hide();
     
  private:
-    void init(Gtk::Window &parent, Glib::ustring filename);
-    Gtk::Dialog* dialog;
+    void init(Glib::ustring filename);
     GameScenario::PlayMode mode;
 
     Gtk::Box *dialog_vbox;

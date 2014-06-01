@@ -18,9 +18,8 @@
 #ifndef REWARD_EDITOR_DIALOG_H
 #define REWARD_EDITOR_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
+#include "lw-editor-dialog.h"
 
 class Reward;
 class Item;
@@ -29,7 +28,7 @@ class Ruin;
 class Player;
 
 //! Scenario editor.  Edits rewards.
-class RewardEditorDialog: public sigc::trackable
+class RewardEditorDialog: public LwEditorDialog
 {
  public:
     RewardEditorDialog(Gtk::Window &parent, Player *player, bool hidden_ruins, 
@@ -41,7 +40,6 @@ class RewardEditorDialog: public sigc::trackable
     Reward *get_reward() {return reward;}
     
  private:
-    Gtk::Dialog* dialog;
     Player *d_player;
     Reward *reward;
     Item *item;

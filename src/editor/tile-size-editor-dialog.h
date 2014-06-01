@@ -18,22 +18,21 @@
 #ifndef TILE_SIZE_EDITOR_DIALOG_H
 #define TILE_SIZE_EDITOR_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
+#include "lw-editor-dialog.h"
 
-class TileSizeEditorDialog: public sigc::trackable
+class TileSizeEditorDialog: public LwEditorDialog
 {
  public:
     TileSizeEditorDialog(Gtk::Window &parent, guint32 current, guint32 suggested);
     ~TileSizeEditorDialog();
 
-    int run();
     guint32 get_selected_tilesize() const {return d_tilesize;}
+
+    int run();
     void hide();
     
  private:
-    Gtk::Dialog *dialog;
     Gtk::Label *label;
     Gtk::SpinButton *tilesize_spinbutton;
     guint32 d_tilesize;

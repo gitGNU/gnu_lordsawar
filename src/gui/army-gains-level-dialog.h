@@ -19,27 +19,21 @@
 #ifndef ARMY_GAINS_LEVEL_DIALOG_H
 #define ARMY_GAINS_LEVEL_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "hero.h"
+#include "lw-dialog.h"
 
 // dialog for choosing what hero stat to boost when a level is gained
-class ArmyGainsLevelDialog: public sigc::trackable
+class ArmyGainsLevelDialog: public LwDialog
 {
  public:
     ArmyGainsLevelDialog(Gtk::Window &parent, Hero *h, bool show_sight_stat);
     ~ArmyGainsLevelDialog();
 
-    void run();
-    void hide();
-
     Army::Stat get_selected_stat() { return selected_stat; }
     
  private:
-    Gtk::Dialog* dialog;
     Gtk::VBox *stats_vbox;
 
     Hero *hero;

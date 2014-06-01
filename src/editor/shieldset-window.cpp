@@ -32,10 +32,6 @@
 #include "shieldset-info-dialog.h"
 #include "masked-image-editor-dialog.h"
 
-#include "image-helpers.h"
-#include "input-helpers.h"
-#include "error-utils.h"
-
 #include "defs.h"
 #include "Configuration.h"
 #include "GraphicsCache.h"
@@ -47,7 +43,6 @@
 
 #include "ucompose.hpp"
 
-#include "glade-helpers.h"
 #include "recently-edited-file.h"
 #include "editor-quit-dialog.h"
 #include "editor-recover-dialog.h"
@@ -60,7 +55,7 @@ ShieldSetWindow::ShieldSetWindow(Gtk::Window *parent, Glib::ustring load_filenam
   needs_saving = false;
   d_shieldset = NULL;
     Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + "/shieldset-window.ui");
+	= Gtk::Builder::create_from_file(File::getEditorUIFile("shieldset-window.ui"));
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
@@ -147,8 +142,7 @@ ShieldSetWindow::ShieldSetWindow(Gtk::Window *parent, Glib::ustring load_filenam
                  r->getImagesNeeded());
           }
         EditorRecoverDialog d(parent, m);
-        int response = d.run();
-        d.hide();
+        int response = d.run_and_hide();
         //ask if we want to recover the autosave.
         if (response == Gtk::RESPONSE_ACCEPT)
           {
@@ -468,7 +462,7 @@ void ShieldSetWindow::on_help_about_activated()
   Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/../about-dialog.ui");
+    = Gtk::Builder::create_from_file(File::getUIFile("about-dialog.ui"));
 
   xml->get_widget("dialog", dialog);
   dialog->set_transient_for(*window);
@@ -580,8 +574,7 @@ bool ShieldSetWindow::quit()
   if (needs_saving == true)
     {
       EditorQuitDialog d(*window);
-      int response = d.run();
-      d.hide();
+      int response = d.run_and_hide();
       
       if (response == Gtk::RESPONSE_CANCEL) //we don't want to quit
 	return false;

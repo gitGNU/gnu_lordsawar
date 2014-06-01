@@ -19,16 +19,15 @@
 #ifndef NEW_MAP_DIALOG_H
 #define NEW_MAP_DIALOG_H
 
-#include <memory>
 #include <vector>
-#include <sigc++/signal.h>
 #include <gtkmm.h>
+#include "lw-editor-dialog.h"
 
 #include "Tile.h"
 #include "game-parameters.h"
 
 //! Scenario editor.  Edit parameters to make a new map.
-class NewMapDialog
+class NewMapDialog: public LwEditorDialog
 {
  public:
     NewMapDialog(Gtk::Window &parent);
@@ -54,8 +53,6 @@ class NewMapDialog
     bool map_set;
     
  private:
-    Gtk::Dialog* dialog;
-
     Gtk::ComboBox *map_size_combobox;
     Gtk::Table *custom_size_table;
     Gtk::SpinButton *width_spinbutton;

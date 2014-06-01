@@ -18,9 +18,6 @@
 #ifndef REPORT_DIALOG_H
 #define REPORT_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "LocationList.h"
@@ -28,13 +25,14 @@
 #include "citymap.h"
 #include "armymap.h"
 #include "player.h"
+#include "lw-dialog.h"
 
 class Action;
 class BarChart;
 
 //
 //
-class ReportDialog: public sigc::trackable
+class ReportDialog: public LwDialog
 {
  public:
     enum ReportType {ARMY = 0, CITY, GOLD, PRODUCTION, WINNING};
@@ -47,7 +45,6 @@ class ReportDialog: public sigc::trackable
     void hide();
     
  private:
-    Gtk::Dialog* dialog;
     VectorMap* vectormap;
     ArmyMap* armymap;
     CityMap* citymap;

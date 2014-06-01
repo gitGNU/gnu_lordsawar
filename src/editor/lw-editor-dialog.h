@@ -1,4 +1,4 @@
-//  Copyright (C) 2007 Ole Laursen
+//  Copyright (C) 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,15 +15,23 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef GUI_ERROR_UTILS_H
-#define GUI_ERROR_UTILS_H
+#ifndef LW_EDITOR_DIALOG_H
+#define LW_EDITOR_DIALOG_H
 
-#include <glibmm/ustring.h>
+#include <sigc++/trackable.h>
+#include <gtkmm.h>
 
-// show error, blocking
-void show_error(const Glib::ustring &msg);
+class LwEditorDialog: public sigc::trackable
+{
+ public:
+    LwEditorDialog(Gtk::Window &parent, Glib::ustring file);
+    ~LwEditorDialog();
 
-// show error, blocking, then terminate program
-void show_fatal_error(const Glib::ustring &msg);
+    int run_and_hide();
+
+ protected:
+    Gtk::Dialog* dialog;
+    Glib::RefPtr<Gtk::Builder> xml;
+};
 
 #endif

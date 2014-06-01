@@ -18,16 +18,14 @@
 #ifndef TILE_PREVIEW_DIALOG_H
 #define TILE_PREVIEW_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 #include <gtkmm.h>
 #include "Tile.h"
 #include "tile-preview-scene.h"
-
+#include "lw-editor-dialog.h"
 
 //! Tile Preview Dialog.  Shows completeness and correctness of tilesets.
-class TilePreviewDialog: public sigc::trackable
+class TilePreviewDialog: public LwEditorDialog
 {
  public:
     TilePreviewDialog(Gtk::Window &parent, Tile *tile, Tile *secondary, guint32 tileSize);
@@ -39,7 +37,6 @@ class TilePreviewDialog: public sigc::trackable
     
  private:
     Tile *d_tile;
-    Gtk::Dialog* dialog;
     Gtk::Button *next_button;
     Gtk::Button *previous_button;
     Gtk::Button *refresh_button;

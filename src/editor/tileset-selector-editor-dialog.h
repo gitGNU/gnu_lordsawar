@@ -18,17 +18,15 @@
 #ifndef TILESET_SELECTOR_EDITOR_DIALOG_H
 #define TILESET_SELECTOR_EDITOR_DIALOG_H
 
-#include <memory>
 #include <map>
-#include <sigc++/trackable.h>
 #include <sigc++/connection.h>
 #include <gtkmm.h>
 #include "tileset.h"
-
+#include "lw-editor-dialog.h"
 
 //! Tileset selector editor.  
 //! Shows and manages the large and small army unit selector animation.
-class TilesetSelectorEditorDialog: public sigc::trackable
+class TilesetSelectorEditorDialog: public LwEditorDialog
 {
  public:
     TilesetSelectorEditorDialog(Gtk::Window &parent, Tileset * tileset);
@@ -39,7 +37,6 @@ class TilesetSelectorEditorDialog: public sigc::trackable
     int run();
     
  private:
-    Gtk::Dialog* dialog;
     Gtk::RadioButton *large_selector_radiobutton;
     Gtk::RadioButton *small_selector_radiobutton;
     Gtk::FileChooserButton *selector_filechooserbutton;

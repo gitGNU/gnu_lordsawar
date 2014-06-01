@@ -18,14 +18,13 @@
 #ifndef HERO_EDITOR_DIALOG_H
 #define HERO_EDITOR_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
+#include "lw-editor-dialog.h"
 
 class Hero;
 
 //! Scenario editor.  Change the attributes of a hero.
-class HeroEditorDialog
+class HeroEditorDialog: public LwEditorDialog
 {
  public:
     HeroEditorDialog(Gtk::Window &parent, Hero *hero);
@@ -34,7 +33,6 @@ class HeroEditorDialog
     void run();
     
  private:
-    Gtk::Dialog* dialog;
     Hero*d_hero;
     Gtk::Entry *name_entry;
     Gtk::RadioButton *male_radiobutton;

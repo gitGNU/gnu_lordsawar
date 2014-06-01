@@ -20,16 +20,16 @@
 
 #include <memory>
 #include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "ruinmap.h"
 #include "player.h"
+#include "lw-dialog.h"
 
 class Reward_Ruin;
 
 // dialog for visiting a sage
-class RuinRewardedDialog: public sigc::trackable
+class RuinRewardedDialog: public LwDialog
 {
  public:
     RuinRewardedDialog(Gtk::Window &parent, Reward_Ruin *reward);
@@ -39,7 +39,6 @@ class RuinRewardedDialog: public sigc::trackable
     void run();
     
  private:
-    Gtk::Dialog* dialog;
     RuinMap* ruinmap;
 
     Gtk::Image *map_image;

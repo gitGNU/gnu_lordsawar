@@ -18,26 +18,19 @@
 #ifndef GUI_REWARDLIST_DIALOG_H
 #define GUI_REWARDLIST_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/signal.h>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "rewardlist.h"
+#include "lw-editor-dialog.h"
 
 //! Scenario editor.  Manages Reward objects in the Rewardlist.
-class RewardlistDialog: public sigc::trackable
+class RewardlistDialog: public LwEditorDialog
 {
  public:
     RewardlistDialog(Gtk::Window &parent);
     ~RewardlistDialog();
 
-    int run();
-    Gtk::Dialog &get_dialog() { return *dialog; }
-
  private:
-    Gtk::Dialog* dialog;
     Reward *d_reward; //current reward
     Gtk::TreeView *rewards_treeview;
     Gtk::Button *add_button;

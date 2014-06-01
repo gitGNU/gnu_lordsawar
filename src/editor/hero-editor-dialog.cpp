@@ -22,7 +22,6 @@
 
 #include "hero-editor-dialog.h"
 
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "hero.h"
@@ -30,15 +29,9 @@
 #include "Backpack.h"
 
 HeroEditorDialog::HeroEditorDialog(Gtk::Window &parent, Hero *hero)
+ : LwEditorDialog(parent, "hero-editor-dialog.ui")
 {
   d_hero = hero;
-    
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/hero-editor-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     
     xml->get_widget("edit_backpack_button", edit_backpack_button);
     edit_backpack_button->signal_clicked().connect(
@@ -55,7 +48,6 @@ HeroEditorDialog::HeroEditorDialog(Gtk::Window &parent, Hero *hero)
 
 HeroEditorDialog::~HeroEditorDialog()
 {
-  delete dialog;
 }
 
 void HeroEditorDialog::run()

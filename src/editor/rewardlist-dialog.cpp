@@ -25,25 +25,16 @@
 #include <gtkmm.h>
 
 #include "rewardlist-dialog.h"
-#include "gui/input-helpers.h"
-#include "gui/error-utils.h"
 #include "defs.h"
 #include "Configuration.h"
 #include "rewardlist.h"
 #include "ucompose.hpp"
 #include "playerlist.h"
-#include "glade-helpers.h"
 #include "reward-editor-dialog.h"
 
 RewardlistDialog::RewardlistDialog(Gtk::Window &parent)
+ : LwEditorDialog(parent, "reward-list-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + 
-				    "/reward-list-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
-
     xml->get_widget("rewards_treeview", rewards_treeview);
     xml->get_widget("add_button", add_button);
     add_button->signal_clicked().connect
@@ -97,7 +88,6 @@ RewardlistDialog::update_rewardlist_buttons()
 
 RewardlistDialog::~RewardlistDialog()
 {
-  delete dialog;
 }
 
 void RewardlistDialog::addReward(Reward *reward)
@@ -173,10 +163,3 @@ void RewardlistDialog::on_edit_clicked()
     }
 
 }
-
-int RewardlistDialog::run()
-{
-    dialog->show_all();
-    return dialog->run();
-}
-

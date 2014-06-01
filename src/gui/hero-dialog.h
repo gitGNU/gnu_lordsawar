@@ -19,19 +19,18 @@
 #ifndef HERO_DIALOG_H
 #define HERO_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "vector.h"
 #include "heroesmap.h"
+#include "lw-dialog.h"
 
 class Hero;
 class Item;
 class History;
 
 // dialog for showing info about a hero, esp. about the hero's items
-class HeroDialog: public sigc::trackable
+class HeroDialog: public LwDialog
 {
  public:
     HeroDialog(Gtk::Window &parent, Hero *hero, Vector<int> pos);
@@ -41,7 +40,6 @@ class HeroDialog: public sigc::trackable
     void hide();
     
  private:
-    Gtk::Dialog* dialog;
     HeroesMap* heroesmap;
 
     Hero *hero;

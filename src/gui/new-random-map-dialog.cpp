@@ -24,8 +24,8 @@
 
 #include "new-random-map-dialog.h"
 
-#include "glade-helpers.h"
 #include "defs.h"
+#include "Configuration.h"
 #include "File.h"
 #include "tileset.h"
 #include "tilesetlist.h"
@@ -41,13 +41,8 @@
 #include "player.h"
 
 NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
+ : LwDialog(parent, "new-random-map-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + 
-					 "/new-random-map-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     xml->get_widget("dialog-vbox1", dialog_vbox);
     xml->get_widget("dialog-action_area1", dialog_action_area);
     xml->get_widget("map_size_combobox", map_size_combobox);
@@ -189,7 +184,6 @@ NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
 
 NewRandomMapDialog::~NewRandomMapDialog()
 {
-  delete dialog;
 }
 
 int NewRandomMapDialog::run()

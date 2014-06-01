@@ -18,13 +18,12 @@
 #ifndef TILESET_INFO_DIALOG_H
 #define TILESET_INFO_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 #include "tileset.h"
+#include "lw-editor-dialog.h"
 
 //! Tileset Editor.  Edit the description of the Tileset.
-class TileSetInfoDialog: public sigc::trackable
+class TileSetInfoDialog: public LwEditorDialog
 {
  public:
     TileSetInfoDialog(Gtk::Window &parent, Tileset *tileset, Glib::ustring dir, 
@@ -35,7 +34,6 @@ class TileSetInfoDialog: public sigc::trackable
     int run();
     
  private:
-    Gtk::Dialog* dialog;
     Tileset *d_tileset;
     Gtk::Entry *name_entry;
     Gtk::TextView *copyright_textview;

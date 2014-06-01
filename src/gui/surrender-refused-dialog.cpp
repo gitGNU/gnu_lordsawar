@@ -22,21 +22,13 @@
 
 #include "surrender-refused-dialog.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
 
 SurrenderRefusedDialog::SurrenderRefusedDialog(Gtk::Window &parent)
+ : LwDialog(parent, "surrender-refused-dialog.ui")
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/surrender-refused-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
     Gtk::Label *label;
     xml->get_widget("label", label);
     xml->get_widget("image", image);
@@ -48,16 +40,4 @@ SurrenderRefusedDialog::SurrenderRefusedDialog(Gtk::Window &parent)
 
 SurrenderRefusedDialog::~SurrenderRefusedDialog()
 {
-  delete dialog;
-}
-
-void SurrenderRefusedDialog::hide()
-{
-  dialog->hide();
-}
-
-void SurrenderRefusedDialog::run()
-{
-  dialog->run();
-  return;
 }

@@ -21,9 +21,6 @@
 #include <sigc++/functors/mem_fun.h>
 
 #include "report-dialog.h"
-#include "glade-helpers.h"
-#include "image-helpers.h"
-#include "input-helpers.h"
 #include "bar-chart.h"
 #include "ucompose.hpp"
 #include "defs.h"
@@ -39,13 +36,9 @@
 #include "shield.h"
 
 ReportDialog::ReportDialog(Gtk::Window &parent, Player *player, ReportType type)
+ : LwDialog(parent, "report-dialog.ui")
 {
   d_player = player;
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(get_glade_path() + "/report-dialog.ui");
-
-  xml->get_widget("dialog", dialog);
-  dialog->set_transient_for(parent);
   xml->get_widget("map_image", map_image);
   citymap = new CityMap();
   citymap->map_changed.connect
@@ -109,7 +102,6 @@ ReportDialog::ReportDialog(Gtk::Window &parent, Player *player, ReportType type)
 
 ReportDialog::~ReportDialog()
 {
-    delete dialog;
     delete vectormap;
     delete armymap;
     delete citymap;

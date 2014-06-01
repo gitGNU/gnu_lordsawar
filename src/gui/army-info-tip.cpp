@@ -22,9 +22,6 @@
 
 #include "army-info-tip.h"
 
-#include "glade-helpers.h"
-#include "image-helpers.h"
-
 #include "ucompose.hpp"
 #include "vector.h"
 #include "defs.h"
@@ -40,8 +37,7 @@
 ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
 {
     Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/army-info-window.ui");
+	= Gtk::Builder::create_from_file(File::getUIFile("army-info-window.ui"));
 
     xml->get_widget("window", window);
     Gtk::Image *army_image;
@@ -103,8 +99,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army,
 			 City *city)
 {
     Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/army-info-window.ui");
+	= Gtk::Builder::create_from_file(File::getUIFile("army-info-window.ui"));
 
     xml->get_widget("window", window);
     Gtk::Image *army_image;
@@ -163,8 +158,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army,
 ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army)
 {
     Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/army-info-window.ui");
+	= Gtk::Builder::create_from_file(File::getUIFile("army-info-window.ui"));
 
     xml->get_widget("window", window);
     Gtk::Image *army_image;

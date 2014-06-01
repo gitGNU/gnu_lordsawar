@@ -18,29 +18,19 @@
 #ifndef GUI_ITEMLIST_DIALOG_H
 #define GUI_ITEMLIST_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/signal.h>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
 
 #include "Itemlist.h"
+#include "lw-editor-dialog.h"
 
 //! Scenario editor.  Edits the global list of Item objects in the scenario.
-class ItemlistDialog: public sigc::trackable
+class ItemlistDialog: public LwEditorDialog
 {
  public:
     ItemlistDialog(Gtk::Window &parent);
     ~ItemlistDialog();
 
-    int run();
-    void show();
-    void hide();
-
-    Gtk::Dialog &get_dialog() { return *dialog; }
-
  private:
-    Gtk::Dialog* dialog;
     Glib::ustring current_save_filename;
     Itemlist *d_itemlist; //current itemlist
     ItemProto *d_item; //current item

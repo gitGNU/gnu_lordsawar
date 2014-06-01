@@ -24,6 +24,7 @@
 #include "tilestyle.h"
 #include <list>
 #include <vector>
+
 #include "gui/input-helpers.h"
 
 struct tile_model

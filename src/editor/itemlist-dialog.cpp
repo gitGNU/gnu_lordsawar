@@ -20,39 +20,26 @@
 #include <iostream>
 #include <iomanip>
 #include <assert.h>
-#include <libgen.h>
 
 #include <sigc++/functors/mem_fun.h>
-#include <sigc++/functors/ptr_fun.h>
-
 #include <gtkmm.h>
+
 #include "itemlist-dialog.h"
-
-#include "gui/input-helpers.h"
-#include "gui/error-utils.h"
-
 #include "defs.h"
 #include "Configuration.h"
 #include "Itemlist.h"
 #include "Tile.h"
 #include "playerlist.h"
 #include "armysetlist.h"
-
 #include "ucompose.hpp"
-
-#include "glade-helpers.h"
 #include "select-army-dialog.h"
 
 
+
 ItemlistDialog::ItemlistDialog(Gtk::Window &parent)
+ : LwEditorDialog(parent, "itemlist-dialog.ui")
 {
   d_itemlist = Itemlist::getInstance();
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path() + 
-				    "/itemlist-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
 
     xml->get_widget("name_entry", name_entry);
     name_entry->signal_changed().connect
@@ -245,17 +232,6 @@ ItemlistDialog::update_item_panel()
 
 ItemlistDialog::~ItemlistDialog()
 {
-  delete dialog;
-}
-
-void ItemlistDialog::show()
-{
-  dialog->show();
-}
-
-void ItemlistDialog::hide()
-{
-  dialog->hide();
 }
 
 void ItemlistDialog::addItemProto(ItemProto *itemproto)
@@ -371,12 +347,6 @@ void ItemlistDialog::on_remove_item_clicked()
       items_list->erase(iterrow);
       d_itemlist->remove(a);
     }
-}
-
-int ItemlistDialog::run()
-{
-    dialog->show_all();
-    return dialog->run();
 }
 
 void ItemlistDialog::on_checkbutton_toggled(Gtk::CheckButton *checkbutton, 

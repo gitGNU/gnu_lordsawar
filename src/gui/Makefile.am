@@ -33,7 +33,6 @@ liblwgui_la_SOURCES = \
     buy-production-dialog.cpp buy-production-dialog.h \
     city-window.cpp city-window.h \
     destination-dialog.cpp destination-dialog.h \
-    error-utils.cpp error-utils.h \
     fight-window.cpp fight-window.h \
     game-preferences-dialog.cpp game-preferences-dialog.h \
     game-options-dialog.cpp game-options-dialog.h \
@@ -63,7 +62,6 @@ liblwgui_la_SOURCES = \
     stack-info-dialog.cpp stack-info-dialog.h \
     splash-window.cpp splash-window.h \
     image-helpers.cpp image-helpers.h \
-    glade-helpers.h \
     input-helpers.h \
     timed-message-dialog.cpp timed-message-dialog.h \
     game-lobby-dialog.cpp game-lobby-dialog.h \
@@ -78,7 +76,8 @@ liblwgui_la_SOURCES = \
     game-button-box.cpp game-button-box.h \
     status-box.cpp status-box.h \
     stack-tile-box.cpp stack-tile-box.h \
-    stack-army-button.cpp stack-army-button.h
+    stack-army-button.cpp stack-army-button.h \
+    lw-dialog.cpp lw-dialog.h
 
 liblwgui_la_LIBADD = @LTLIBOBJS@
 

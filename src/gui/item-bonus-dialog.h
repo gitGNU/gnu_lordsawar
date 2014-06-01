@@ -18,26 +18,21 @@
 #ifndef ITEM_BONUS_DIALOG_H
 #define ITEM_BONUS_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
-#include <sigc++/signal.h>
 #include <gtkmm.h>
 #include <list>
+
+#include "lw-dialog.h"
+
 class ItemProto;
 
 // dialog for showing the bonuses that items have
-class ItemBonusDialog: public sigc::trackable
+class ItemBonusDialog: public LwDialog
 {
  public:
     ItemBonusDialog(Gtk::Window &parent);
     ~ItemBonusDialog();
 
-    void hide();
-    void run();
-
  private:
-    Gtk::Dialog* dialog;
-
     Gtk::TreeView *items_treeview;
 
     class ItemsColumns: public Gtk::TreeModelColumnRecord {

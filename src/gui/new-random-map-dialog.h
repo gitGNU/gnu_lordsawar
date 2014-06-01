@@ -19,16 +19,14 @@
 #ifndef NEW_RANDOM_MAP_DIALOG_H
 #define NEW_RANDOM_MAP_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/signal.h>
 #include <gtkmm.h>
 
 #include "Tile.h"
 #include "game-parameters.h"
+#include "lw-dialog.h"
 
 //! A dialog to let the user create a new random map.
-class NewRandomMapDialog: public sigc::trackable
+class NewRandomMapDialog: public LwDialog
 {
  public:
     NewRandomMapDialog(Gtk::Window &parent);
@@ -59,7 +57,6 @@ static Glib::ustring create_and_dump_scenario(const Glib::ustring &file,
     };
 
     Map map;
-    Gtk::Dialog* dialog;
 
     Gtk::Box *dialog_vbox;
     Gtk::ButtonBox *dialog_action_area;

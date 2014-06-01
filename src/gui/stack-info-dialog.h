@@ -18,9 +18,6 @@
 #ifndef STACK_INFO_DIALOG_H
 #define STACK_INFO_DIALOG_H
 
-#include <memory>
-#include <sigc++/trackable.h>
-#include <sigc++/signal.h>
 #include <gtkmm.h>
 #include <list>
 
@@ -30,21 +27,18 @@ class Stack;
 class Army;
 
 #include "vector.h"
+#include "lw-dialog.h"
 
 // dialog for showing hero information
-class StackInfoDialog: public sigc::trackable
+class StackInfoDialog: public LwDialog
 {
  public:
     StackInfoDialog(Gtk::Window &parent, Vector<int> pos);
     ~StackInfoDialog();
 
-    void run();
     Stack * get_selected_stack() {return currently_selected_stack;};
-    void hide();
 
  private:
-    Gtk::Dialog* dialog;
-
     Vector<int> tile;
     Gtk::Table *stack_table;
 

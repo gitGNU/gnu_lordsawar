@@ -18,14 +18,14 @@
 #ifndef BACKPACK_EDITOR_DIALOG_H
 #define BACKPACK_EDITOR_DIALOG_H
 
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
+#include "lw-editor-dialog.h"
 
 class Item;
 class Backpack;
 
 // dialog for showing info about a hero, esp. about the hero's items
-class BackpackEditorDialog
+class BackpackEditorDialog: public LwEditorDialog
 {
  public:
     BackpackEditorDialog(Gtk::Window &parent, Backpack *backpack);
@@ -37,7 +37,6 @@ class BackpackEditorDialog
  private:
     Backpack *backpack; //destination backpack
     Backpack *working; //the backpack we're going to work with before that
-    Gtk::Dialog* dialog;
 
     Gtk::TreeView *item_treeview;
     Gtk::Button *remove_button;

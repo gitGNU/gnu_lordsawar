@@ -18,25 +18,18 @@
 #ifndef SURRENDER_DIALOG_H
 #define SURRENDER_DIALOG_H
 
-#include <memory>
-#include <vector>
-#include <sigc++/trackable.h>
 #include <gtkmm.h>
+#include "lw-dialog.h"
 
 // dialog for accepting/rejecting surrender from computer players
-class SurrenderDialog: public sigc::trackable
+class SurrenderDialog: public LwDialog
 {
  public:
     SurrenderDialog(Gtk::Window &parent, int numPlayers);
     ~SurrenderDialog();
 
-    void hide();
-    bool run();
-    
  private:
-    Gtk::Dialog* dialog;
     Gtk::Image *image;
-
 };
 
 #endif

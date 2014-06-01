@@ -22,7 +22,6 @@
 
 #include "map-info-dialog.h"
 
-#include "glade-helpers.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "signpost.h"
@@ -30,16 +29,10 @@
 
 
 MapInfoDialog::MapInfoDialog(Gtk::Window &parent, GameScenario *g)
+ : LwEditorDialog(parent, "map-info-dialog.ui")
 {
     game_scenario = g;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(get_glade_path()
-				    + "/map-info-dialog.ui");
-
-    xml->get_widget("dialog", dialog);
-    dialog->set_transient_for(parent);
-
     xml->get_widget("name_entry", name_entry);
     name_entry->set_text(game_scenario->getName());
     
@@ -53,7 +46,6 @@ MapInfoDialog::MapInfoDialog(Gtk::Window &parent, GameScenario *g)
 
 MapInfoDialog::~MapInfoDialog()
 {
-  delete dialog;
 }
 
 int MapInfoDialog::run()
