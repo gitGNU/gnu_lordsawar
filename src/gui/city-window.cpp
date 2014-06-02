@@ -32,7 +32,7 @@
 #include "armyprodbase.h"
 #include "player.h"
 #include "city.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "armysetlist.h"
 #include "buy-production-dialog.h"
 #include "destination-dialog.h"
@@ -188,7 +188,7 @@ void CityWindow::update_toggle_picture(int slot)
   Player *player = city->getOwner();
   unsigned int as = player->getArmyset();
   Glib::RefPtr<Gdk::Pixbuf> pic;
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   Gtk::ToggleButton *toggle = production_toggles[slot];
   if (city->getArmytype(slot) == -1)
     pic = gc->getCircledArmyPic(as, 0, player, NULL, false, 
@@ -247,10 +247,10 @@ void CityWindow::fill_in_production_info()
     Player *player = city->getOwner();
     unsigned int as = player->getArmyset();
     Glib::RefPtr<Gdk::Pixbuf> pic;
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     int slot = city->getActiveProductionSlot();
     Glib::RefPtr<Gdk::Pixbuf> empty_pic =
-      GraphicsCache::getInstance()->getCircledArmyPic(as, 0, player, NULL, false, Shield::NEUTRAL, false)->to_pixbuf();
+      ImageCache::getInstance()->getCircledArmyPic(as, 0, player, NULL, false, Shield::NEUTRAL, false)->to_pixbuf();
     
     Glib::ustring s1, s2, s3;
     Glib::ustring s4 = _("Current:");

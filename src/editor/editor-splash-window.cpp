@@ -24,7 +24,7 @@
 #include "ucompose.hpp"
 #include "File.h"
 #include "defs.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "armysetlist.h"
 #include "tilesetlist.h"
 #include "citysetlist.h"
@@ -53,7 +53,7 @@ int EditorSplashWindow::run()
   progressbar->property_fraction() = 0.0;
   progressbar->property_text() = _("Loading Armysets");
   while (g_main_context_iteration(NULL, FALSE));
-  GraphicsCache::getInstance();
+  ImageCache::getInstance();
   Armysetlist::getInstance()->instantiateImages(broken);
   if (broken)
     return -1;

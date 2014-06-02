@@ -30,7 +30,7 @@
 #include "game-window.h"
 #include "game-lobby-dialog.h"
 #include "defs.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "GameScenario.h"
 #include "CreateScenario.h"
 #include "counter.h"
@@ -921,7 +921,7 @@ void Driver::on_game_ended()
   GameClient::deleteInstance();
   GameServer::deleteInstance();
 
-  GraphicsCache::deleteInstance();
+  ImageCache::deleteInstance();
   GamehostClient::getInstance()->disconnect();
   GamehostClient::deleteInstance();
   GamelistClient::getInstance()->disconnect();

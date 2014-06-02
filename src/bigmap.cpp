@@ -51,7 +51,7 @@
 #include "File.h"
 #include "GameMap.h"
 #include "Configuration.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "MapRenderer.h"
 #include "FogMap.h"
 #include "MapBackpack.h"
@@ -328,9 +328,9 @@ void BigMap::blit_object(const Location &obj, Vector<int> tile, PixMask *image, 
 void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> surface_gc)
 {
   //this routine is for drawing the active stack.
-  //for all other stacks see GraphicsCache::draw_tile_pic
+  //for all other stacks see ImageCache::draw_tile_pic
   GameMap *gm = GameMap::getInstance();
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   Vector<int> p = s->getPos();
   Player *player = s->getOwner();
 
@@ -445,7 +445,7 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> su
 {
   guint32 tilesize = GameMap::getInstance()->getTileSize();
   Player *viewing = Playerlist::getViewingplayer();
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   GameMap *gm = GameMap::getInstance();
   int tile_style_id = gm->getTile(tile)->getTileStyle()->getId();
   int fog_type_id = 0;

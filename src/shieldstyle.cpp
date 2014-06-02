@@ -18,7 +18,6 @@
 #include <iostream>
 #include <sstream>
 #include "shieldstyle.h"
-#include "GraphicsCache.h"
 #include "xmlhelper.h"
 #include "File.h"
 #include "shieldset.h"

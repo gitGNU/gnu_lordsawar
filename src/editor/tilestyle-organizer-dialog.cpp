@@ -25,7 +25,7 @@
 #include "File.h"
 #include "defs.h"
 #include "Tile.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 
 TileStyleOrganizerDialog::TileStyleOrganizerDialog(Gtk::Window &parent, Tile *tile)
  : LwEditorDialog(parent, "tilestyle-organizer-dialog.ui")
@@ -160,7 +160,7 @@ void TileStyleOrganizerDialog::fill_in_categories()
 
 void TileStyleOrganizerDialog::add_category(guint32 type)
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   Gtk::TreeModel::Row row = *(categories_list->append());
   row[categories_columns.image] = 
     gc->getDefaultTileStylePic(type, 80)->to_pixbuf();

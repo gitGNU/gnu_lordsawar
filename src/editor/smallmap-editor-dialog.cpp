@@ -27,7 +27,7 @@
 #include "defs.h"
 #include "army.h"
 #include "GameMap.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "playerlist.h"
 #include "tilesetlist.h"
 

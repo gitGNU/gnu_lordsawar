@@ -31,7 +31,6 @@
 #include "hero.h"
 #include "Item.h"
 #include "GameMap.h"
-#include "GraphicsCache.h"
 #include "Backpack.h"
 #include "MapBackpack.h"
 #include "history.h"

@@ -28,7 +28,7 @@
 #include "army.h"
 #include "GameMap.h"
 #include "File.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "city.h"
 #include "playerlist.h"
 

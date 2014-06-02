@@ -19,7 +19,7 @@
 
 #include "gui/image-helpers.h"
 #include "playerlist.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "stacklist.h"
 #include "player.h"
 #include "maptile.h"
@@ -36,7 +36,7 @@ RuinMap::RuinMap(NamedLocation *r)
 
 void RuinMap::draw_ruins (bool show_selected)
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
 
   // Draw all ruins as pictures over their location -- showing them as
   // explored/unexplored
@@ -50,13 +50,13 @@ void RuinMap::draw_ruins (bool show_selected)
         continue;
       PixMask *tmp;
       if ((*it)->isSearched())
-        tmp = gc->getSmallRuinExploredPic();
+        tmp = gc->getSmallRuinExploredImage();
       else
         {
           if ((*it)->getType() == Ruin::STRONGHOLD)
-            tmp = gc->getSmallStrongholdUnexploredPic();
+            tmp = gc->getSmallStrongholdUnexploredImage();
           else
-            tmp = gc->getSmallRuinUnexploredPic();
+            tmp = gc->getSmallRuinUnexploredImage();
         }
   
       Vector<int> pos = (*it)->getPos();
@@ -78,7 +78,7 @@ void RuinMap::draw_ruins (bool show_selected)
 
 void RuinMap::draw_temples (bool show_selected)
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
 
   // Draw all temples as pictures over their location
   for (Templelist::iterator it = Templelist::getInstance()->begin();
@@ -89,7 +89,7 @@ void RuinMap::draw_temples (bool show_selected)
   
       Vector<int> pos = (*it)->getPos();
       pos = mapToSurface(pos);
-      PixMask *templepic = gc->getSmallTemplePic();
+      PixMask *templepic = gc->getSmallTempleImage();
       templepic->blit_centered(surface, pos);
       if (show_selected)
         {

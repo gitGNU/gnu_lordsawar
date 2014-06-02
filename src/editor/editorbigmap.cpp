@@ -47,7 +47,7 @@
 #include "GameMap.h"
 #include "Configuration.h"
 #include "rewardlist.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "armysetlist.h"
 #include "CreateScenario.h"
 #include "Backpack.h"
@@ -676,46 +676,46 @@ void EditorBigMap::after_draw()
 	    break;
 
 	  case STACK:
-            pic = GraphicsCache::getInstance()->getArmyPic
+            pic = ImageCache::getInstance()->getArmyPic
 	       (Playerlist::getInstance()->getActiveplayer()->getArmyset(), 0,
                 Playerlist::getInstance()->getActiveplayer(), NULL);
 	    pic->blit(buffer, pos);
 	    break;
 
 	  case CITY:
-	    pic = GraphicsCache::getInstance()->getCityPic(0, Playerlist::getInstance()->getActiveplayer(), GameMap::getInstance()->getCitysetId());
+	    pic = ImageCache::getInstance()->getCityPic(0, Playerlist::getInstance()->getActiveplayer(), GameMap::getInstance()->getCitysetId());
 	    pic->blit(buffer, pos);
 	    break;
 
 	  case RUIN:
-	    pic = GraphicsCache::getInstance()->getRuinPic(0, GameMap::getInstance()->getCitysetId());
+	    pic = ImageCache::getInstance()->getRuinPic(0, GameMap::getInstance()->getCitysetId());
 	    pic->blit(buffer, pos);
 	    break;
 
 	  case TEMPLE:
-	    pic = GraphicsCache::getInstance()->getTemplePic(0, GameMap::getInstance()->getCitysetId());
+	    pic = ImageCache::getInstance()->getTemplePic(0, GameMap::getInstance()->getCitysetId());
 	    pic->blit(buffer, pos);
 	    break;
 
 	  case SIGNPOST:
-	    pic = GraphicsCache::getInstance()->getSignpostPic();
+	    pic = ImageCache::getInstance()->getSignpostPic();
 	    pic->blit(buffer, pos);
 	    break;
 
 	  case ROAD:
-	    pic = GraphicsCache::getInstance()->getRoadPic(CreateScenario::calculateRoadType(*i));
+	    pic = ImageCache::getInstance()->getRoadPic(CreateScenario::calculateRoadType(*i));
 	    pic->blit(buffer, pos);
 	    break;
 	  case PORT:
-	    pic = GraphicsCache::getInstance()->getPortPic();
+	    pic = ImageCache::getInstance()->getPortPic();
 	    pic->blit(buffer, pos);
 	    break;
 	  case BRIDGE:
-	    pic = GraphicsCache::getInstance()->getBridgePic(tile_to_bridge_type(*i));
+	    pic = ImageCache::getInstance()->getBridgePic(tile_to_bridge_type(*i));
 	    pic->blit(buffer, pos);
 	    break;
 	  case BAG:
-	    pic = GraphicsCache::getInstance()->getBagPic();
+	    pic = ImageCache::getInstance()->getBagPic();
 	    pic->blit(buffer, pos);
 	    break;
 	  }

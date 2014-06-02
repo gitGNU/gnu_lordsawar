@@ -23,7 +23,7 @@
 #include "GameMap.h"
 #include "player.h"
 #include "FogMap.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "playerlist.h"
 
 MapRenderer::MapRenderer(Cairo::RefPtr<Cairo::Surface> surface)
@@ -98,7 +98,7 @@ void MapRenderer::render_tile(Vector<int> draw, Vector<int> tile,
         type = style->getType();
       int tilesize = GameMap::getInstance()->getTileSize();
       PixMask *img = 
-        GraphicsCache::getInstance()->getDefaultTileStylePic(type,
+        ImageCache::getInstance()->getDefaultTileStylePic(type,
                                                              tilesize);
       if (img)
         img->blit(surface, draw.x, draw.y);

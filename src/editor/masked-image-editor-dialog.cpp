@@ -29,7 +29,7 @@
 #include "File.h"
 #include "shieldsetlist.h"
 #include "shieldset.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 
 
 MaskedImageEditorDialog::MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int only, Shieldset *shieldset)
@@ -126,7 +126,7 @@ void MaskedImageEditorDialog::show_image(Glib::ustring filename)
       if (d_shieldset == NULL)
         d_shieldset = Shieldsetlist::getInstance()->getShieldset(1);
       Gdk::RGBA colour = d_shieldset->getColor(i);
-      PixMask *army_image = GraphicsCache::applyMask(half[0],  half[1],
+      PixMask *army_image = ImageCache::applyMask(half[0],  half[1],
 						     colour, false);
       image->property_pixbuf() = army_image->to_pixbuf();
       delete army_image;

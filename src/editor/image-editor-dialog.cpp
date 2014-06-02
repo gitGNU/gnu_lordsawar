@@ -27,7 +27,6 @@
 #include "defs.h"
 #include "File.h"
 #include "shieldsetlist.h"
-#include "GraphicsCache.h"
 
 ImageEditorDialog::ImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int frames)
  : LwEditorDialog(parent, "image-editor-dialog.ui")

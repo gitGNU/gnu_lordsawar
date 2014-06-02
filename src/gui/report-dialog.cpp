@@ -30,7 +30,7 @@
 #include "citylist.h"
 #include "city.h"
 #include "action.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "armyprodbase.h"
 #include "armysetlist.h"
 #include "shield.h"
@@ -374,7 +374,7 @@ void ReportDialog::updateWinningChart()
 
 void ReportDialog::addProduction(const Action *action)
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   Player *p = d_player;
 
   int army_type = 0;

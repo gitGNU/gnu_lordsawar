@@ -181,7 +181,7 @@ src/QPillageGold.cpp
 src/citylist.cpp
 src/QCityOccupy.cpp
 src/game.cpp
-src/GraphicsCache.cpp
+src/ImageCache.cpp
 src/signpost.cpp
 src/counter.cpp
 src/AI_Allocation.cpp

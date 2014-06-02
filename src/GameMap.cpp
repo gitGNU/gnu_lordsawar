@@ -52,7 +52,6 @@
 #include "tilesetlist.h"
 #include "shieldsetlist.h"
 #include "citysetlist.h"
-#include "GraphicsCache.h"
 #include "MapBackpack.h"
 #include "stacktile.h"
 #include "armyprodbase.h"

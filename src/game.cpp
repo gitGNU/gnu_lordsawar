@@ -30,7 +30,6 @@
 #include "ucompose.hpp"
 #include "rectangle.h"
 #include "sound.h"
-#include "GraphicsCache.h"
 #include "GameScenario.h"
 #include "NextTurnNetworked.h"
 #include "NextTurnHotseat.h"

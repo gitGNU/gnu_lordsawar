@@ -25,7 +25,7 @@
 
 #include "vector.h"
 #include "input-events.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "bigmap.h"
 #include "LocationBox.h"
 #include "PixMask.h"
@@ -74,7 +74,7 @@ class GameBigMap: public BigMap
     // emitted when a path for a stack is set
     sigc::signal<void> path_set;
     // emitted when the cursor changes
-    sigc::signal<void, GraphicsCache::CursorType> cursor_changed;
+    sigc::signal<void, ImageCache::CursorType> cursor_changed;
 
     //the game object sets this when the active stack is fighting so we can 
     //draw a fight graphic, or not
@@ -99,7 +99,7 @@ class GameBigMap: public BigMap
     bool shift_key_is_down;
     bool control_key_is_down;
 	
-    GraphicsCache::CursorType d_cursor;
+    ImageCache::CursorType d_cursor;
     void determine_mouse_cursor(Stack *stack, Vector<int> tile);
 
     // for the marching ants around selected stack

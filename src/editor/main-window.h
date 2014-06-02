@@ -32,6 +32,9 @@ class EditorBigMap;
 class SmallMap;
 class GameScenario;
 class CreateScenarioRandomize;
+class City;
+class Signpost;
+class Ruin;
 
 #include "UniquelyIdentified.h"
 

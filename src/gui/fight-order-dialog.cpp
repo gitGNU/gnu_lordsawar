@@ -28,7 +28,7 @@
 #include "player.h"
 #include "army.h"
 #include "armysetlist.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "armyset.h"
 
 FightOrderDialog::FightOrderDialog(Gtk::Window &parent, Player *theplayer)
@@ -81,7 +81,7 @@ void FightOrderDialog::run()
 
 void FightOrderDialog::addArmyType(guint32 army_type)
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     Gtk::TreeIter i = armies_list->append();
     Armysetlist *alist = Armysetlist::getInstance();
     const ArmyProto *a = alist->getArmy(player->getArmyset(), army_type);

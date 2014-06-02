@@ -27,7 +27,7 @@
 #include "defs.h"
 #include "File.h"
 #include "shieldsetlist.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 
 TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Gtk::Window &parent, Tileset *tileset)
  : LwEditorDialog(parent, "tileset-selector-editor-dialog.ui")
@@ -187,7 +187,7 @@ bool TilesetSelectorEditorDialog::loadSelector(Glib::ustring filename)
 {
   std::vector<PixMask *> images;
   std::vector<PixMask *> masks;
-  bool success = GraphicsCache::loadSelectorImages(filename, d_tileset->getTileSize(), images, masks);
+  bool success = SelectorPixMaskCacheItem::loadSelectorImages(filename, d_tileset->getTileSize(), images, masks);
   if (success)
     {
       Glib::ustring subdir = Shieldsetlist::getInstance()->getShieldsetDir 
@@ -207,7 +207,7 @@ bool TilesetSelectorEditorDialog::loadSelector(Glib::ustring filename)
 	      if ((*sit)->getOwner() == 8) //ignore neutral
 		continue;
 		selectors[(*sit)->getOwner()]->push_back
-		  (GraphicsCache::applyMask(*it, *mit, (*sit)->getColor(), false)->to_pixbuf());
+		  (ImageCache::applyMask(*it, *mit, (*sit)->getColor(), false)->to_pixbuf());
 		
 		frame[(*sit)->getOwner()] = selectors[(*sit)->getOwner()]->begin();
 	    }

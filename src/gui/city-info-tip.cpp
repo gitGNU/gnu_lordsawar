@@ -22,7 +22,7 @@
 #include "ucompose.hpp"
 #include "vector.h"
 #include "defs.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "playerlist.h"
 #include "city.h"
 #include "File.h"
@@ -30,7 +30,7 @@
 
 CityInfoTip::CityInfoTip(Gtk::Widget *target, MapTipPosition mpos, const City *city)
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(File::getUIFile("city-info-window.ui"));
 

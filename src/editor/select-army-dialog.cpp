@@ -28,7 +28,7 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "armyproto.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "armysetlist.h"
 
 SelectArmyDialog::SelectArmyDialog(Gtk::Window &parent, Player *p, 
@@ -123,7 +123,7 @@ void SelectArmyDialog::fill_in_army_toggles()
 	Gtk::ToggleButton *toggle = manage(new Gtk::ToggleButton);
 
 	Glib::RefPtr<Gdk::Pixbuf> pixbuf
-	  = GraphicsCache::getInstance()->getArmyPic(armyset,
+	  = ImageCache::getInstance()->getArmyPic(armyset,
 						     selectable[i]->getId(),
 						     player, NULL)->to_pixbuf();
 

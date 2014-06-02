@@ -31,7 +31,7 @@
 #include "armysetlist.h"
 #include "stack.h"
 #include "hero.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "shield.h"
 
 void HeroLevelsDialog::init(Player *theplayer)
@@ -75,7 +75,7 @@ HeroLevelsDialog::~HeroLevelsDialog()
 
 void HeroLevelsDialog::addHero(Hero *h)
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     Gtk::TreeIter i = heroes_list->append();
     (*i)[heroes_columns.name] = h->getName();
     (*i)[heroes_columns.image] = 

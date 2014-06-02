@@ -28,7 +28,7 @@
 #include "army.h"
 #include "armysetlist.h"
 #include "player.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "File.h"
 
 ArmyBonusDialog::ArmyBonusDialog(Gtk::Window &parent, Player *p)
@@ -58,7 +58,7 @@ ArmyBonusDialog::~ArmyBonusDialog()
 
 void ArmyBonusDialog::addArmyType(guint32 army_type)
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     Player *p = d_player;
     const ArmyProto *a;
     a = Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);

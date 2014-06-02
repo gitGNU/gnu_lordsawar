@@ -26,7 +26,7 @@
 #include "defs.h"
 #include "File.h"
 #include "GameMap.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "armysetlist.h"
 #include "playerlist.h"
 #include "player.h"
@@ -73,7 +73,7 @@ guint32 TriumphsDialog::tally(Player *p, Triumphs::TriumphType type)
 
 void TriumphsDialog::fill_in_page(Player *p)
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   //here we tally up the stats, make a vbox and append it as a new page
   //tally it up differently when p == d_player
 	
@@ -124,7 +124,7 @@ void TriumphsDialog::fill_in_page(Player *p)
   Gtk::Label *ship_label = new Gtk::Label(s);
   Gtk::Image *ship_image = new Gtk::Image ();
   ship_image->property_pixbuf() = 
-    GraphicsCache::circled(gc->getShipPic(p), p->getColor(), 
+    ImageCache::circled(gc->getShipPic(p), p->getColor(), 
                            false)->to_pixbuf();
   Gtk::HBox *ship_hbox = new Gtk::HBox();
   ship_hbox->pack_start(*manage(ship_image), Gtk::PACK_SHRINK, 10);
@@ -191,7 +191,7 @@ void TriumphsDialog::fill_in_page(Player *p)
   Gtk::Label *flag_label = new Gtk::Label(s);
   Gtk::Image *flag_image = new Gtk::Image ();
   flag_image->property_pixbuf() = 
-    GraphicsCache::circled(gc->getPlantedStandardPic(p), p->getColor(), 
+    ImageCache::circled(gc->getPlantedStandardPic(p), p->getColor(), 
                            false)->to_pixbuf();
   Gtk::HBox *flag_hbox = new Gtk::HBox();
   flag_hbox->pack_start(*manage(flag_image), Gtk::PACK_SHRINK, 10);

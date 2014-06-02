@@ -28,7 +28,7 @@
 #include "army-info-tip.h"
 #include "ucompose.hpp"
 #include "defs.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "File.h"
 #include "playerlist.h"
 #include "player.h"
@@ -147,7 +147,7 @@ void StackArmyButton::fill_buttons()
 void StackArmyButton::fill_army_button()
 {
   Player *p = Playerlist::getActiveplayer();
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   if (d_army)
     {
       bool greyed_out = false;

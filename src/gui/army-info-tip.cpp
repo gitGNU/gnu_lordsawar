@@ -28,7 +28,7 @@
 #include "army.h"
 #include "armyprodbase.h"
 #include "armyproto.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "playerlist.h"
 #include "city.h"
 #include "File.h"
@@ -46,7 +46,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const Army *army)
     int armyset;
     p = army->getOwner();
     armyset = army->getArmyset();
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     army_image->property_pixbuf() = 
       gc->getCircledArmyPic(armyset, army->getTypeId(), p, 
                             army->getMedalBonuses(), false, Shield::NEUTRAL, 
@@ -107,7 +107,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProdBase *army,
     Player *p = city->getOwner();
     int armyset;
     armyset = army->getArmyset();
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     army_image->property_pixbuf() = 
       gc->getCircledArmyPic(armyset, army->getTypeId(), p, NULL, false,
                             Shield::NEUTRAL, true)->to_pixbuf();
@@ -166,7 +166,7 @@ ArmyInfoTip::ArmyInfoTip(Gtk::Widget *target, const ArmyProto *army)
     Player *p = Playerlist::getInstance()->getActiveplayer();
     int armyset;
     armyset = army->getArmyset();
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     army_image->property_pixbuf() = 
       gc->getCircledArmyPic(armyset, army->getId(), p, NULL, false,
                             Shield::NEUTRAL, true)->to_pixbuf();

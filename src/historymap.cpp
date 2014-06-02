@@ -29,7 +29,7 @@
 #include "city.h"
 #include "ruin.h"
 #include "GameMap.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "playerlist.h"
 
 HistoryMap::HistoryMap(LocationList<City*> *clist, LocationList<Ruin*> *rlist)
@@ -48,7 +48,7 @@ void HistoryMap::after_draw()
 
 void HistoryMap::drawRuins()
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
 
   // Draw all cities as shields over the city location, in the colors of
   // the players.
@@ -78,7 +78,7 @@ void HistoryMap::drawRuins()
 
 void HistoryMap::drawCities()
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
 
   // Draw all cities as shields over the city location, in the colors of
   // the players.
@@ -89,7 +89,7 @@ void HistoryMap::drawCities()
       if ((*it)->isVisible(Playerlist::getViewingplayer()) == false)
         continue;
       if ((*it)->isBurnt() == true)
-        tmp = gc->getSmallRuinedCityPic();
+        tmp = gc->getSmallRuinedCityImage();
       else
         tmp = gc->getShieldPic(0, (*it)->getOwner());
   

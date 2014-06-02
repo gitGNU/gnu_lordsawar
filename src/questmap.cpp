@@ -22,7 +22,7 @@
 #include "Quest.h"
 #include "QuestsManager.h"
 #include "playerlist.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "stacklist.h"
 #include "player.h"
 #include "maptile.h"
@@ -106,7 +106,7 @@ void QuestMap::draw_target(Vector<int> start, Vector<int> target)
 
 void QuestMap::after_draw()
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   if (!quest)
     {
       draw_cities(true);
@@ -156,7 +156,7 @@ void QuestMap::after_draw()
 
   start += Vector<int>(int (pixels_per_tile / 2), int (pixels_per_tile / 2));
 
-  PixMask *heropic = gc->getSmallHeroPic (true);
+  PixMask *heropic = gc->getSmallHeroImage(true);
   heropic->blit_centered(surface, start);
   map_changed.emit(surface);
 }

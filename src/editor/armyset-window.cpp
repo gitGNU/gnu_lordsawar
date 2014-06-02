@@ -34,7 +34,7 @@
 
 #include "defs.h"
 #include "Configuration.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "armysetlist.h"
 #include "Tile.h"
 #include "File.h"
@@ -824,7 +824,7 @@ void ArmySetWindow::on_help_about_activated()
   dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
-  dialog->set_logo(GraphicsCache::getMiscPicture("castle_icon.png")->to_pixbuf());
+  dialog->set_logo(ImageCache::loadMiscImage("castle_icon.png")->to_pixbuf());
   dialog->show_all();
   dialog->run();
   delete dialog;
@@ -868,7 +868,7 @@ void ArmySetWindow::fill_army_image(Gtk::Button *button, Gtk::Image *image, Shie
           Gdk::RGBA colour = Shieldsetlist::getInstance()->getColor(1, c);
           army->instantiateImages(d_armyset->getTileSize(), c, filename, 
                                   broken);
-          PixMask *army_image = GraphicsCache::applyMask(army->getImage(c), 
+          PixMask *army_image = ImageCache::applyMask(army->getImage(c), 
                                                          army->getMask(c), 
                                                          colour, false);
           image->property_pixbuf() = army_image->to_pixbuf();
@@ -1034,7 +1034,7 @@ void ArmySetWindow::on_image_changed(Gtk::Button *button, Gtk::Image *image, Shi
               Gdk::RGBA colour = Shieldsetlist::getInstance()->getColor(1, c);
               a->instantiateImages(d_armyset->getTileSize(), c, d.get_selected_filename(), broken);
 
-              PixMask *army_image = GraphicsCache::applyMask(a->getImage(c), 
+              PixMask *army_image = ImageCache::applyMask(a->getImage(c), 
                                                              a->getMask(c), 
                                                              colour, false);
               image->property_pixbuf() = army_image->to_pixbuf();
@@ -2087,7 +2087,7 @@ void ArmySetWindow::on_make_same_clicked()
       Gdk::RGBA colour = Shieldsetlist::getInstance()->getColor(1, s);
       a->instantiateImages(d_armyset->getTileSize(), s, white_filename, broken);
 
-      PixMask *army_image = GraphicsCache::applyMask(a->getImage(s), 
+      PixMask *army_image = ImageCache::applyMask(a->getImage(s), 
                                                      a->getMask(s), 
                                                      colour, false);
       switch (i)

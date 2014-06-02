@@ -35,7 +35,7 @@
 #include "AI_Diplomacy.h"
 #include "AI_Analysis.h"
 #include "ai_fast.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 
 
 PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
@@ -52,7 +52,7 @@ PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
     xml->get_widget("music_volume_hbox", music_volume_hbox);
     xml->get_widget("players_vbox", players_vbox);
     
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     for (unsigned int i = 0; i < MAX_PLAYERS; i++)
       {
 	Player *p = Playerlist::getInstance()->getPlayer(i);

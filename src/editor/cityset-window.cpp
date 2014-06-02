@@ -37,7 +37,7 @@
 #include "ucompose.hpp"
 
 #include "image-editor-dialog.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "citysetlist.h"
 #include "recently-edited-file.h"
 #include "recently-edited-file-list.h"
@@ -525,7 +525,7 @@ void CitySetWindow::on_help_about_activated()
   dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
-  dialog->set_logo(GraphicsCache::getMiscPicture("castle_icon.png")->to_pixbuf());
+  dialog->set_logo(ImageCache::loadMiscImage("castle_icon.png")->to_pixbuf());
   dialog->show_all();
   dialog->run();
   delete dialog;

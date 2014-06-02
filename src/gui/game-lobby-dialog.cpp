@@ -29,7 +29,7 @@
 #include "citylist.h"
 #include "playerlist.h"
 #include "game-options-dialog.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "network_player.h"
 #include "game-client.h"
 #include "game-server.h"
@@ -451,7 +451,7 @@ void GameLobbyDialog::cell_data_sitting(Gtk::CellRenderer *renderer,
 void GameLobbyDialog::add_player(guint32 order, const Glib::ustring &type,
 				 const Glib::ustring &name, Player *player)
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   Gtk::TreeIter i = player_list->append();
   (*i)[player_columns.order] = order;
   (*i)[player_columns.shield] = gc->getShieldPic(1, player)->to_pixbuf();
@@ -609,7 +609,7 @@ void GameLobbyDialog::on_local_player_ends_turn(Player *p)
 
 void GameLobbyDialog::update_turn_indicator()
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   Gtk::TreeModel::Children kids = player_list->children();
   for (Gtk::TreeModel::Children::iterator i = kids.begin(); 
        i != kids.end(); i++)
@@ -619,7 +619,7 @@ void GameLobbyDialog::update_turn_indicator()
       if (active)
         {
           if (row[player_columns.player_id] == active->getId())
-            (*i)[player_columns.turn] = gc->getCursorPic(GraphicsCache::SWORD)->to_pixbuf();
+            (*i)[player_columns.turn] = gc->getCursorPic(ImageCache::SWORD)->to_pixbuf();
           else
             {
               Glib::RefPtr<Gdk::Pixbuf> empty_pic

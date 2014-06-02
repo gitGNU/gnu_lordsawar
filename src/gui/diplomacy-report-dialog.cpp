@@ -25,14 +25,14 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "playerlist.h"
 #include "player.h"
 
 DiplomacyReportDialog::DiplomacyReportDialog(Gtk::Window &parent, Player *player)
  : LwDialog(parent, "diplomacy-report-dialog.ui")
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   Playerlist *pl = Playerlist::getInstance();
   d_player = player;
   xml->get_widget("diplomacy_table", d_table);

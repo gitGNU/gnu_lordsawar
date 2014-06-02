@@ -20,7 +20,6 @@
 #include <fstream>
 #include <sstream>
 #include "shield.h"
-#include "GraphicsCache.h"
 #include "xmlhelper.h"
 #include "ucompose.hpp"
 #include "shieldset.h"

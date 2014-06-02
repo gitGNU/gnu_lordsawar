@@ -37,7 +37,7 @@
 #include "defs.h"
 #include "sound.h"
 #include "File.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "smallmap.h"
 #include "GameScenario.h"
 #include "CreateScenarioRandomize.h"
@@ -677,7 +677,7 @@ void MainWindow::clear_map_state()
       delete d_create_scenario_names;
       d_create_scenario_names = NULL;
     }
-    GraphicsCache::deleteInstance();
+    ImageCache::deleteInstance();
 }
 
 void MainWindow::init_map_state()
@@ -1042,7 +1042,7 @@ void MainWindow::on_shieldset_saved(guint32 id)
   Shieldset *shieldset = GameMap::getShieldset();
   if (id == shieldset->getId())
     {
-      GraphicsCache::getInstance()->reset();
+      ImageCache::getInstance()->reset();
       GameMap::getInstance()->reloadShieldset();
       fill_players();
       bigmap->screen_size_changed(bigmap_image->get_allocation()); 
@@ -1072,7 +1072,7 @@ void MainWindow::on_armyset_saved(guint32 id)
   //did we save any of the active armysets?
   if (Playerlist::getInstance()->hasArmyset(id) == true)
     {
-      GraphicsCache::getInstance()->reset();
+      ImageCache::getInstance()->reset();
       //we're doing reload before, because we need the maps to be updated.
       //but then the armyset* gets changed and the switch has no effect.
       Armysetlist::getInstance()->reload(id);
@@ -1102,7 +1102,7 @@ void MainWindow::on_cityset_saved(guint32 id)
   //did we save the active cityset?
   if (id == GameMap::getInstance()->getCitysetId())
     {
-      GraphicsCache::getInstance()->reset();
+      ImageCache::getInstance()->reset();
       GameMap::getInstance()->reloadCityset();
       bigmap->screen_size_changed(bigmap_image->get_allocation()); 
       redraw();
@@ -1143,7 +1143,7 @@ void MainWindow::on_tileset_saved(guint32 id)
   //did we save the active tileset?
   if (id == GameMap::getInstance()->getTilesetId())
     {
-      GraphicsCache::getInstance()->reset();
+      ImageCache::getInstance()->reset();
       Tilesetlist::getInstance()->reload(id);
       GameMap::getInstance()->switchTileset(Tilesetlist::getInstance()->getTileset(id));
       smallmap->resize();
@@ -1733,7 +1733,7 @@ void MainWindow::on_help_about_activated()
   dialog->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
-  dialog->set_logo(GraphicsCache::getMiscPicture("castle_icon.png")->to_pixbuf());
+  dialog->set_logo(ImageCache::loadMiscImage("castle_icon.png")->to_pixbuf());
   dialog->show_all();
   dialog->run();
   delete dialog;
@@ -1844,7 +1844,7 @@ void MainWindow::on_switch_sets_activated()
     {
       needs_saving = true;
       update_window_title();
-      GraphicsCache::getInstance()->reset();
+      ImageCache::getInstance()->reset();
       bigmap->screen_size_changed(bigmap_image->get_allocation()); 
       if (d.get_tileset_changed())
         {
@@ -1881,7 +1881,7 @@ void MainWindow::fill_players()
 
       Gtk::Image *image = new Gtk::Image();
       image->property_pixbuf() = 
-	GraphicsCache::getInstance()->getShieldPic(1, *it)->to_pixbuf();
+	ImageCache::getInstance()->getShieldPic(1, *it)->to_pixbuf();
       toggle->add(*manage(image));
       toggle->show_all();
       if (*it == pl->getActiveplayer())

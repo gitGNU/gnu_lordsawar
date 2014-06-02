@@ -26,7 +26,7 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "army.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "hero.h"
 #include "shield.h"
 #include "playerlist.h"
@@ -35,7 +35,7 @@
 ArmyGainsLevelDialog::ArmyGainsLevelDialog(Gtk::Window &parent, Hero *a, bool show_sight_stat)
  : LwDialog(parent, "army-gains-level-dialog.ui")
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     hero = a;
     
     Gtk::Image *image;

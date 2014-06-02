@@ -35,7 +35,7 @@
 #include "playerlist.h"
 #include "stack.h"
 #include "army.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "Configuration.h"
 #include "sound.h"
 #include "GameMap.h"
@@ -91,7 +91,7 @@ FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
     }
     
     // fill in shield pictures
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     Player* p;
 
     Gtk::Image *defender_shield_image;
@@ -240,7 +240,7 @@ void FightWindow::add_army(Army *army, int initial_hp,
     xml->get_widget("water_drawingarea", water_drawingarea);
 	
     // image
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     Glib::RefPtr<Gdk::Pixbuf> pic = gc->getArmyPic(army)->to_pixbuf();
     army_image->property_pixbuf() = pic;
     
@@ -284,7 +284,7 @@ void FightWindow::add_army(Army *army, int initial_hp,
 
 bool FightWindow::do_round()
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   Glib::RefPtr<Gdk::Pixbuf> expl = gc->getExplosionPic()->to_pixbuf();
 
   // first we clear out any explosions

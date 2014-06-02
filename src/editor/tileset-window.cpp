@@ -44,7 +44,7 @@
 #include "Tile.h"
 #include "File.h"
 #include "overviewmap.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "recently-edited-file.h"
 #include "recently-edited-file-list.h"
 #include "tile-size-editor-dialog.h"
@@ -380,7 +380,7 @@ TileSetWindow::update_tilestyle_panel()
       tilestyle_image->property_pixbuf() = pixbuf;
       tilestyle_image->show_all();
       tilestyle_standard_image->property_pixbuf() = 
-        GraphicsCache::getInstance()->getDefaultTileStylePic(idx, d_tileset->getTileSize())->to_pixbuf();
+        ImageCache::getInstance()->getDefaultTileStylePic(idx, d_tileset->getTileSize())->to_pixbuf();
     }
 }
 
@@ -740,7 +740,7 @@ void TileSetWindow::on_help_about_activated()
   dialog->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
 
   dialog->set_version(PACKAGE_VERSION);
-  dialog->set_logo(GraphicsCache::getMiscPicture("tileset_icon.png")->to_pixbuf());
+  dialog->set_logo(ImageCache::loadMiscImage("tileset_icon.png")->to_pixbuf());
   dialog->show_all();
   dialog->run();
   dialog->hide();
@@ -1169,7 +1169,7 @@ void TileSetWindow::on_tilestyle_changed()
       t->setType(TileStyle::Type(tilestyle_combobox->get_active_row_number()));
       int idx = t->getType();
       tilestyle_standard_image->property_pixbuf() = 
-        GraphicsCache::getInstance()->getDefaultTileStylePic(idx, d_tileset->getTileSize())->to_pixbuf();
+        ImageCache::getInstance()->getDefaultTileStylePic(idx, d_tileset->getTileSize())->to_pixbuf();
     }
 }
 

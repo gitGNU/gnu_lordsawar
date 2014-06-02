@@ -29,7 +29,7 @@
 #include "defs.h"
 #include "army.h"
 #include "city.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "armysetlist.h"
 #include "playerlist.h"
 #include "File.h"
@@ -39,7 +39,7 @@ BuyProductionDialog::BuyProductionDialog(Gtk::Window &parent, City *c)
  : LwDialog(parent, "buy-production-dialog.ui")
 {
   army_info_tip = NULL;
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     city = c;
     selected_army = NO_ARMY_SELECTED;
     

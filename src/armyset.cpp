@@ -23,7 +23,7 @@
 
 #include "armyset.h"
 #include "File.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "shield.h"
 #include "gui/image-helpers.h"
 #include "armysetlist.h"

@@ -27,7 +27,7 @@
 #include "army.h"
 #include "GameMap.h"
 #include "File.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "player.h"
 #include "playerlist.h"
 
@@ -107,7 +107,7 @@ void UseItemOnPlayerDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 
 void UseItemOnPlayerDialog::addPlayer(Player *player)
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   Gtk::TreeIter i = players_list->append();
   (*i)[players_columns.name] = player->getName();
   (*i)[players_columns.image] = gc->getShieldPic(2, player)->to_pixbuf();

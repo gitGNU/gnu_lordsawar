@@ -28,7 +28,6 @@
 #include "input-events.h"
 #include "bigmap.h"
 #include "Tile.h"
-#include "GraphicsCache.h"
 #include "UniquelyIdentified.h"
 
 //! Scenario editor.  Specializatoin of the BigMap class for the editor.

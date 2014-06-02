@@ -26,7 +26,7 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "tarhelper.h"
 #include "tile-preview-scene.h"
 

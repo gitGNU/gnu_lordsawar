@@ -30,7 +30,7 @@
 #include "armyproto.h"
 #include "hero.h"
 #include "heroproto.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "playerlist.h"
 #include "stacklist.h"
 #include "hero-editor-dialog.h"
@@ -288,7 +288,7 @@ void StackEditorDialog::on_remove_clicked()
 
 void StackEditorDialog::add_army(Army *a)
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     Gtk::TreeIter i = army_list->append();
     (*i)[army_columns.army] = a;
     (*i)[army_columns.image] = gc->getArmyPic(a->getOwner()->getArmyset(),
@@ -341,7 +341,7 @@ void StackEditorDialog::on_fortified_toggled()
 	  
 void StackEditorDialog::on_player_changed()
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   Player *player = get_selected_player();
   if (player == Playerlist::getInstance()->getNeutral())
     fortified_checkbutton->set_active(false);

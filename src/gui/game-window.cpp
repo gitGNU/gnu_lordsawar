@@ -90,7 +90,7 @@
 #include "city.h"
 #include "Quest.h"
 #include "stack.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "QuestsManager.h"
 #include "QCitySack.h"
 #include "QCityRaze.h"
@@ -795,12 +795,12 @@ bool GameWindow::on_bigmap_scroll_event(GdkEventScroll* event)
   return true;
 }
 
-void GameWindow::on_bigmap_cursor_changed(GraphicsCache::CursorType cursor)
+void GameWindow::on_bigmap_cursor_changed(ImageCache::CursorType cursor)
 {
   bigmap_image->get_window()->set_cursor 
     (Gdk::Cursor::create
      (Gdk::Display::get_default(), 
-      GraphicsCache::getInstance()->getCursorPic (cursor)->to_pixbuf(), 4, 4));
+      ImageCache::getInstance()->getCursorPic (cursor)->to_pixbuf(), 4, 4));
 }
 
 bool GameWindow::on_bigmap_key_event(GdkEventKey *e)
@@ -839,8 +839,8 @@ bool GameWindow::on_smallmap_mouse_motion_event(GdkEventMotion *e)
       map_eventbox->get_window()->set_cursor 
 	(Gdk::Cursor::create
 	 (Gdk::Display::get_default(), 
-	  GraphicsCache::getInstance()->getCursorPic
-		      (GraphicsCache::MAGNIFYING_GLASS)->to_pixbuf(), 8, 5));
+	  ImageCache::getInstance()->getCursorPic
+		      (ImageCache::MAGNIFYING_GLASS)->to_pixbuf(), 8, 5));
     }
 
   return true;
@@ -1450,7 +1450,7 @@ void GameWindow::on_help_about_activated()
   xml->get_widget("dialog", dialog);
   dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
   dialog->set_version(PACKAGE_VERSION);
-  dialog->set_logo(GraphicsCache::getMiscPicture("castle_icon.png")->to_pixbuf());
+  dialog->set_logo(ImageCache::loadMiscImage("castle_icon.png")->to_pixbuf());
   dialog->set_transient_for(*window);
   dialog->show_all();
   dialog->run();
@@ -1500,7 +1500,7 @@ void GameWindow::on_game_over(Player *winner)
   Gtk::Image *image;
   xml->get_widget("image", image);
 
-  image->property_pixbuf() = GraphicsCache::getMiscPicture("win.png", false)->to_pixbuf();
+  image->property_pixbuf() = ImageCache::loadMiscImage("win.png")->to_pixbuf();
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -2168,7 +2168,7 @@ void GameWindow::on_city_looted (City *city, int gold)
 void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
 {
   LwDialog dialog(*window, "city-pillaged-dialog.ui");
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   Player *player = city->getOwner();
   unsigned int as = player->getArmyset();
 
@@ -2210,7 +2210,7 @@ void GameWindow::on_city_pillaged(City *city, int gold, int pillaged_army_type)
 void GameWindow::on_city_sacked(City *city, int gold, std::list<guint32> sacked_types)
 {
   LwDialog dialog(*window, "city-sacked-dialog.ui");
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   Player *player = city->getOwner();
   unsigned int as = player->getArmyset();
 
@@ -2331,7 +2331,7 @@ void GameWindow::on_ruin_visited(Ruin *ruin)
 void GameWindow::show_shield_turn() //show turn indicator
 {
   Playerlist* pl = Playerlist::getInstance();
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   unsigned int c = 0;
   for (Playerlist::iterator i = pl->begin(); i != pl->end(); ++i)
     {
@@ -2399,7 +2399,7 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 
 void GameWindow::on_medal_awarded_to_army(Army *army, int medaltype)
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   LwDialog dialog(*window, "medal-awarded-dialog.ui");
   Glib::RefPtr<Gtk::Builder> xml = dialog.get_builder();
   Gtk::Image *image;
@@ -2412,7 +2412,7 @@ void GameWindow::on_medal_awarded_to_army(Army *army, int medaltype)
   Gtk::Image *medal_image;
   xml->get_widget("medal_image", medal_image);
   medal_image->property_pixbuf() = 
-    gc->getMedalPic(true, medaltype)->to_pixbuf();
+    gc->getMedalImage(true, medaltype)->to_pixbuf();
 
   Gtk::Label *label;
   xml->get_widget("label", label);
@@ -2858,12 +2858,12 @@ void GameWindow::give_some_cheese(Player *winner)
 
 void GameWindow::on_commentator_comments(Glib::ustring comment)
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   TimedMessageDialog dialog (*window, comment, 0);
   dialog.set_title(_("The Warlord Says..."));
     
   PixMask *img = 
-    gc->getGameButtonPic(GraphicsCache::DIPLOMACY_NO_PROPOSALS, 1)->copy();
+    gc->getGameButtonImage(ImageCache::DIPLOMACY_NO_PROPOSALS, 1)->copy();
   PixMask::scale(img, 60, 60);
   dialog.set_image(img->to_pixbuf());
   dialog.run_and_hide();

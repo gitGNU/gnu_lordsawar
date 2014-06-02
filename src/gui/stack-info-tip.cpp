@@ -26,7 +26,7 @@
 #include "vector.h"
 #include "defs.h"
 #include "stack.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "map-tip-position.h"
 #include "File.h"
 #include "stacktile.h"
@@ -35,7 +35,7 @@
 
 StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, StackTile *stile)
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(File::getUIFile("stack-info-window.ui"));
 

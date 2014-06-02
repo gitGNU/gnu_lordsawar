@@ -1,4 +1,4 @@
-//  Copyright (C) 2010 Ben Asselstine
+//  Copyright (C) 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@
 #include "stack.h"
 #include "MapBackpack.h"
 #include "playerlist.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 
 ItemMap::ItemMap(std::list<Stack*> item_laden_stacks, std::list<MapBackpack*> bags_of_stuff)
 {
@@ -31,14 +31,14 @@ ItemMap::ItemMap(std::list<Stack*> item_laden_stacks, std::list<MapBackpack*> ba
 
 void ItemMap::draw_bag(Vector<int> pos)
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     Vector<int> start = pos;
 
     start = mapToSurface(start);
 
     start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
 
-    PixMask *bagpic = gc->getSmallBagPic();
+    PixMask *bagpic = gc->getSmallBagImage();
     bagpic->blit_centered(surface, start);
 }
 

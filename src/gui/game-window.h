@@ -37,7 +37,7 @@
 #include "callback-enums.h"
 #include "vector.h"
 #include "army.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "GameScenario.h"
 #include "select-city-map.h"
 
@@ -252,7 +252,7 @@ class GameWindow: public sigc::trackable
     void on_progress_changed();
     void on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map, Gdk::Rectangle r);
     void on_smallmap_slid(Rectangle view);
-    void on_bigmap_cursor_changed(GraphicsCache::CursorType cursor);
+    void on_bigmap_cursor_changed(ImageCache::CursorType cursor);
     void on_bigmap_changed(Cairo::RefPtr<Cairo::Surface> map);
     void on_stack_info_changed(Stack *s);
     void on_bigmap_tip_changed(Glib::ustring tip, MapTipPosition pos);

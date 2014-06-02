@@ -27,7 +27,7 @@
 #include "defs.h"
 #include "File.h"
 #include "shieldsetlist.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 
 TilesetFlagEditorDialog::TilesetFlagEditorDialog(Gtk::Window &parent, Tileset *tileset)
  : LwEditorDialog(parent, "tileset-flag-editor-dialog.ui")
@@ -142,7 +142,7 @@ bool TilesetFlagEditorDialog::loadFlag(Glib::ustring filename)
 {
   std::vector<PixMask *> images;
   std::vector<PixMask *> masks;
-  bool success = GraphicsCache::loadFlagImages(filename, d_tileset->getTileSize(), images, masks);
+  bool success = FlagPixMaskCacheItem::loadFlagImages(filename, d_tileset->getTileSize(), images, masks);
   if (success)
     {
       Glib::ustring subdir = Shieldsetlist::getInstance()->getShieldsetDir 
@@ -162,7 +162,7 @@ bool TilesetFlagEditorDialog::loadFlag(Glib::ustring filename)
 	      if ((*sit)->getOwner() == 8) //ignore neutral
 		continue;
 		flags[(*sit)->getOwner()]->push_back
-		  (GraphicsCache::applyMask(*it, *mit, (*sit)->getColor(), false)->to_pixbuf());
+		  (ImageCache::applyMask(*it, *mit, (*sit)->getColor(), false)->to_pixbuf());
 		
 		frame[(*sit)->getOwner()] = flags[(*sit)->getOwner()]->begin();
 	    }

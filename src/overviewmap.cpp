@@ -34,7 +34,7 @@
 #include "playerlist.h"
 #include "player.h"
 #include "GameMap.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "FogMap.h"
 #include "GameScenarioOptions.h"
 #include "tilesetlist.h"
@@ -628,7 +628,7 @@ void OverviewMap::draw_cities (bool all_razed)
       csize = 1;
       break;
     }
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
 
   // Draw all cities as shields over the city location, in the colors of
   // the players.
@@ -640,7 +640,7 @@ void OverviewMap::draw_cities (bool all_razed)
       if (c->isVisible(Playerlist::getViewingplayer()) == false)
         continue;
       if (c->isBurnt() == true || all_razed == true)
-        tmp = gc->getSmallRuinedCityPic();
+        tmp = gc->getSmallRuinedCityImage();
       else
         tmp = gc->getShieldPic(csize, c->getOwner());
   
@@ -659,14 +659,14 @@ void OverviewMap::blank(bool on)
 
 void OverviewMap::draw_hero(Vector<int> pos, bool white)
 {
-    GraphicsCache *gc = GraphicsCache::getInstance();
+    ImageCache *gc = ImageCache::getInstance();
     // draw the hero picture over top of the host city
 
     Vector<int> start = mapToSurface(pos);
 
     start += Vector<int>(int(pixels_per_tile/2), int(pixels_per_tile/2));
 
-    PixMask *heropic = gc->getSmallHeroPic(white);
+    PixMask *heropic = gc->getSmallHeroImage(white);
     heropic->blit_centered(surface, start);
 }
 

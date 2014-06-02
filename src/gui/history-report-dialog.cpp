@@ -35,7 +35,7 @@
 #include "playerlist.h"
 #include "history.h"
 #include "network-history.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "boxcompose.h"
 #include "ItemProto.h"
 
@@ -506,7 +506,7 @@ void HistoryReportDialog::on_switch_page(Gtk::Widget *page, guint number)
 
 void HistoryReportDialog::addHistoryEvent(NetworkHistory *event)
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   Playerlist *pl = Playerlist::getInstance();
   Player *p = event->getOwner();
 

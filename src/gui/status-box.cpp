@@ -26,7 +26,7 @@
 #include "army-info-tip.h"
 #include "ucompose.hpp"
 #include "defs.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "File.h"
 #include "playerlist.h"
 #include "player.h"

@@ -1,4 +1,4 @@
-//  Copyright (C) 2009 Ben Asselstine
+//  Copyright (C) 2009, 2014 Ben Asselstine
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 3 of the License, or
@@ -144,6 +144,14 @@ inline bool operator <(Vector<T> lhs, Vector<T> rhs)
   T l = lhs.y * max_vector_width + lhs.x;
   T r = rhs.y * max_vector_width + rhs.x;
   return r < l;
+}
+
+template <typename T>
+inline bool operator >(Vector<T> lhs, Vector<T> rhs)
+{
+  T l = lhs.y * max_vector_width + lhs.x;
+  T r = rhs.y * max_vector_width + rhs.x;
+  return r > l;
 }
 
 template <>

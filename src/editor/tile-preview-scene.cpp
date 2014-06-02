@@ -24,7 +24,7 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 
 TilePreviewScene::TilePreviewScene (Tile *tile, Tile *secondary_tile,
 				    guint32 height, guint32 width, 
@@ -87,7 +87,7 @@ void TilePreviewScene::regenerate()
 	d_view.push_back(tilestyle->getImage()->to_pixbuf());
       else
         {
-          PixMask *img = GraphicsCache::getInstance()->getDefaultTileStylePic(model.type, d_tilesize)->copy();
+          PixMask *img = ImageCache::getInstance()->getDefaultTileStylePic(model.type, d_tilesize)->copy();
           d_view.push_back(img->to_pixbuf());
         }
     }

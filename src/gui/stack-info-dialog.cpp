@@ -30,7 +30,7 @@
 #include "armysetlist.h"
 #include "playerlist.h"
 #include "stack.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "Tile.h"
 #include <assert.h>
 #include "stacktile.h"
@@ -89,7 +89,7 @@ void StackInfoDialog::addStack(Stack *s, guint32 &idx)
 
 void StackInfoDialog::addArmy (bool first, Stack *s, Army *h, guint32 modified_strength, int idx, guint32 colour_id)
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   Player *player = h->getOwner();
     
   bool greyed_out = s->getId() != currently_selected_stack->getId();

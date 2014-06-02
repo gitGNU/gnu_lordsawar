@@ -31,7 +31,7 @@
 #include "armysetlist.h"
 #include "shieldsetlist.h"
 #include "GameScenario.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "tilesetlist.h"
 #include "citysetlist.h"
 #include "player.h"
@@ -175,7 +175,7 @@ Glib::RefPtr<Gdk::Pixbuf> GamePreferencesDialog::getShieldPic(guint32 type, guin
   Shieldsetlist *sl = Shieldsetlist::getInstance();
 
   ShieldStyle *sh= sl->getShield(d_shieldset, type, owner);
-  return GraphicsCache::applyMask(sh->getImage(), sh->getMask(), 
+  return ImageCache::applyMask(sh->getImage(), sh->getMask(), 
 				  sl->getColor(d_shieldset, owner), false)->to_pixbuf();
 }
 

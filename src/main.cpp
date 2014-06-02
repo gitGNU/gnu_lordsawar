@@ -28,7 +28,6 @@
 
 #include "Configuration.h"
 #include "File.h"
-#include "GraphicsCache.h"
 #include "recently-played-game-list.h"
 #include "cityset.h"
 #include "tileset.h"

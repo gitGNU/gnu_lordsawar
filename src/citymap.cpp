@@ -1,4 +1,4 @@
-// Copyright (C) 2007 Ben Asselstine
+// Copyright (C) 2007, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 #include "playerlist.h"
 #include "stacklist.h"
 #include "stack.h"
-#include "GraphicsCache.h"
 #include "GameMap.h"
 #include <assert.h>
 

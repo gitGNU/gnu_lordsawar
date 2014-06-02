@@ -49,6 +49,7 @@ class Armyset;
 class Signpost;
 class LocationBox;
 class Tileset;
+class Army;
 
 /** Class representing the map in the game
   * 

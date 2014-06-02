@@ -21,7 +21,7 @@
 #include "city.h"
 #include "citylist.h"
 #include "playerlist.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "GameMap.h"
 #include "LocationBox.h"
 #include "shieldsetlist.h"
@@ -38,14 +38,14 @@ VectorMap::VectorMap(City *c, enum ShowVectoring v, bool see_opponents_productio
 void VectorMap::draw_planted_standard(Vector<int> flag)
 {
   //it can't possibly be fogged
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
 
   Vector<int> start;
   
   start = flag;
   start = mapToSurface(start);
       
-  PixMask *heropic = gc->getSmallHeroPic(true);
+  PixMask *heropic = gc->getSmallHeroImage(true);
   heropic->blit_centered(surface, start);
 }
 
@@ -64,10 +64,10 @@ void VectorMap::draw_city (City *c, guint32 &type, bool &prod)
 
   if (c->isVisible(Playerlist::getViewingplayer()) == false)
     return;
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   PixMask *tmp;
   if (c->isBurnt() == true)
-    tmp = gc->getSmallRuinedCityPic ();
+    tmp = gc->getSmallRuinedCityImage();
   //else if(type == 4 && prod == false)
     //tmp = gc->getProdShieldPic (type, prod);
   else

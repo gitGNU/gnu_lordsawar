@@ -68,7 +68,6 @@
 #include "xmlhelper.h"
 #include "tarhelper.h"
 #include "stacktile.h"
-#include "GraphicsCache.h"
 #include "file-compat.h"
 #include "Item.h"
 

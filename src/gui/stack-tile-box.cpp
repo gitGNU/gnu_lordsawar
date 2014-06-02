@@ -27,7 +27,7 @@
 #include "army-info-tip.h"
 #include "ucompose.hpp"
 #include "defs.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "File.h"
 #include "playerlist.h"
 #include "player.h"
@@ -264,7 +264,7 @@ void StackTileBox::toggle_group_ungroup()
 void StackTileBox::fill_in_group_info (StackTile *stile, Stack *s)
 {
   guint32 bonus = s->calculateMoveBonus();
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   terrain_image->property_pixbuf() = gc->getMoveBonusPic(bonus, s->hasShip())->to_pixbuf();
   group_moves_label->set_markup(String::ucompose("<b>%1</b>", s->getMoves()));
   group_ungroup_toggle->set_sensitive(false);

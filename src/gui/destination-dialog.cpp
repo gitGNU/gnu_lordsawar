@@ -33,7 +33,7 @@
 #include "armysetlist.h"
 #include "armyprodbase.h"
 #include "citylist.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "vectoredunitlist.h"
 #include "vectoredunit.h"
 #include "shield.h"
@@ -182,7 +182,7 @@ void DestinationDialog::on_change_toggled(Gtk::ToggleButton *toggle)
 
 void DestinationDialog::fill_in_vectoring_info()
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   std::list<VectoredUnit*> vectored;
   std::list<VectoredUnit*>::const_iterator it;
   VectoredUnitlist *vul = VectoredUnitlist::getInstance();

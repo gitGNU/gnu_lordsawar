@@ -33,7 +33,7 @@
 #include "stacklist.h"
 #include "citylist.h"
 #include "CreateScenarioRandomize.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "GameMap.h"
 
 #include "select-army-dialog.h"
@@ -292,7 +292,7 @@ void CityEditorDialog::on_randomize_income_clicked()
 void CityEditorDialog::add_army(const ArmyProdBase *a)
 {
   Player *player = get_selected_player();
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   Gtk::TreeIter i = army_list->append();
   (*i)[army_columns.army] = a;
   (*i)[army_columns.image] = gc->getArmyPic(player->getArmyset(),
@@ -420,7 +420,7 @@ Player *CityEditorDialog::get_selected_player()
 
 void CityEditorDialog::on_player_changed()
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   // set allegiance
   Player *player = get_selected_player();
   for (Gtk::TreeIter j = army_list->children().begin(),

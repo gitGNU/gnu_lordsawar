@@ -28,7 +28,7 @@
 #include "SmallTile.h"
 #include "xmlhelper.h"
 #include "gui/image-helpers.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "tilesetlist.h"
 #include "tarhelper.h"
 #include "Configuration.h"
@@ -701,8 +701,7 @@ void Tileset::instantiateImages(Glib::ustring explosion_filename,
       std::vector<PixMask* > flagpics;
       std::vector<PixMask* > maskpics;
       bool success;
-      success = GraphicsCache::loadFlagImages (flags_filename, d_tileSize, 
-                                               flagpics, maskpics);
+      success = FlagPixMaskCacheItem::loadFlagImages (flags_filename, d_tileSize, flagpics, maskpics);
       if (success)
         {
           for (unsigned int i = 0; i < flagpics.size(); i++)
@@ -719,7 +718,7 @@ void Tileset::instantiateImages(Glib::ustring explosion_filename,
   if (selector_filename.empty() == false && !broken)
     {
       bool success;
-      success = GraphicsCache::loadSelectorImages (selector_filename, 
+      success = SelectorPixMaskCacheItem::loadSelectorImages (selector_filename, 
                                                    d_tileSize, 
                                                    images, masks);
       if (success)
@@ -740,7 +739,7 @@ void Tileset::instantiateImages(Glib::ustring explosion_filename,
   if (small_selector_filename.empty() == false && !broken)
     {
       bool success;
-      success = GraphicsCache::loadSelectorImages (small_selector_filename, 
+      success = SelectorPixMaskCacheItem::loadSelectorImages (small_selector_filename, 
                                                    d_tileSize, images, masks);
       if (success)
         {

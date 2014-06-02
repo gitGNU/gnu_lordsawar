@@ -21,7 +21,7 @@
 #include "game-button-box.h"
 #include "ucompose.hpp"
 #include "defs.h"
-#include "GraphicsCache.h"
+#include "ImageCache.h"
 #include "File.h"
 #include "game.h"
 #include "GameScenario.h"
@@ -79,97 +79,97 @@ void GameButtonBox::pad_image(Gtk::Image *image)
 void GameButtonBox::add_pictures_to_buttons(guint32 factor)
 {
   d_factor = factor;
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   int s = get_icon_size(factor);
   Gtk::Image *button_image2 = new Gtk::Image();
   button_image2->property_pixbuf() = 
-    gc->getGameButtonPic(GraphicsCache::NEXT_MOVABLE_STACK, s)->to_pixbuf();
+    gc->getGameButtonImage(ImageCache::NEXT_MOVABLE_STACK, s)->to_pixbuf();
   pad_image(button_image2);
   next_movable_button->add(*manage(button_image2));
   Gtk::Image *button_image5 = new Gtk::Image();
   button_image5->property_pixbuf() = 
-    gc->getGameButtonPic(GraphicsCache::CENTER_ON_STACK, s)->to_pixbuf();
+    gc->getGameButtonImage(ImageCache::CENTER_ON_STACK, s)->to_pixbuf();
   pad_image(button_image5);
   center_button->add(*manage(button_image5));
   Gtk::Image *button_image0 = new Gtk::Image();
   button_image0->property_pixbuf() = 
-    gc->getGameButtonPic(GraphicsCache::DIPLOMACY_NO_PROPOSALS, s)->to_pixbuf();
+    gc->getGameButtonImage(ImageCache::DIPLOMACY_NO_PROPOSALS, s)->to_pixbuf();
   pad_image(button_image0);
   diplomacy_button->add(*manage(button_image0));
   Gtk::Image *button_image6 = new Gtk::Image();
   button_image6->property_pixbuf() = 
-    gc->getGameButtonPic(GraphicsCache::STACK_DEFEND, s)->to_pixbuf();
+    gc->getGameButtonImage(ImageCache::STACK_DEFEND, s)->to_pixbuf();
   pad_image(button_image6);
   defend_button->add(*manage(button_image6));
   Gtk::Image * button_image1 = new Gtk::Image();
   button_image1->property_pixbuf() = 
-    gc->getGameButtonPic(GraphicsCache::STACK_PARK, s)->to_pixbuf();
+    gc->getGameButtonImage(ImageCache::STACK_PARK, s)->to_pixbuf();
   pad_image(button_image1);
   park_button->add(*manage(button_image1));
   Gtk::Image * button_image7 = new Gtk::Image();
   button_image7->property_pixbuf() = 
-    gc->getGameButtonPic(GraphicsCache::STACK_DESELECT, s)->to_pixbuf();
+    gc->getGameButtonImage(ImageCache::STACK_DESELECT, s)->to_pixbuf();
   pad_image(button_image7);
   deselect_button->add(*manage(button_image7));
   Gtk::Image * button_image9 = new Gtk::Image();
   button_image9->property_pixbuf() = 
-    gc->getGameButtonPic(GraphicsCache::STACK_SEARCH, s)->to_pixbuf();
+    gc->getGameButtonImage(ImageCache::STACK_SEARCH, s)->to_pixbuf();
   pad_image(button_image9);
   search_button->add(*manage(button_image9));
   Gtk::Image * button_image3 = new Gtk::Image();
   button_image3->property_pixbuf() = 
-    gc->getGameButtonPic(GraphicsCache::STACK_MOVE, s)->to_pixbuf();
+    gc->getGameButtonImage(ImageCache::STACK_MOVE, s)->to_pixbuf();
   pad_image(button_image3);
   move_button->add(*manage(button_image3));
   Gtk::Image * button_image4 = new Gtk::Image();
   button_image4->property_pixbuf() = 
-    gc->getGameButtonPic(GraphicsCache::MOVE_ALL_STACKS, s)->to_pixbuf();
+    gc->getGameButtonImage(ImageCache::MOVE_ALL_STACKS, s)->to_pixbuf();
   pad_image(button_image4);
   move_all_button->add(*manage(button_image4));
   Gtk::Image * button_image10 = new Gtk::Image();
   button_image10->property_pixbuf() = 
-    gc->getGameButtonPic(GraphicsCache::END_TURN, s)->to_pixbuf();
+    gc->getGameButtonImage(ImageCache::END_TURN, s)->to_pixbuf();
   pad_image(button_image10);
   end_turn_button->add(*manage(button_image10));
 
   Gtk::Image * arrow_image0 = new Gtk::Image();
   arrow_image0->property_pixbuf() = 
-    gc->getArrowPic(GraphicsCache::NORTHWEST, s)->to_pixbuf();
+    gc->getArrowImage(ImageCache::NORTHWEST, s)->to_pixbuf();
   pad_image(arrow_image0);
   nw_keypad_button->add(*manage(arrow_image0));
   Gtk::Image * arrow_image1 = new Gtk::Image();
   arrow_image1->property_pixbuf() = 
-    gc->getArrowPic(GraphicsCache::NORTH, s)->to_pixbuf();
+    gc->getArrowImage(ImageCache::NORTH, s)->to_pixbuf();
   pad_image(arrow_image1);
   n_keypad_button->add(*manage(arrow_image1));
   Gtk::Image * arrow_image2 = new Gtk::Image();
   arrow_image2->property_pixbuf() = 
-    gc->getArrowPic(GraphicsCache::NORTHEAST, s)->to_pixbuf();
+    gc->getArrowImage(ImageCache::NORTHEAST, s)->to_pixbuf();
   pad_image(arrow_image2);
   ne_keypad_button->add(*manage(arrow_image2));
   Gtk::Image * arrow_image3 = new Gtk::Image();
   arrow_image3->property_pixbuf() = 
-    gc->getArrowPic(GraphicsCache::WEST, s)->to_pixbuf();
+    gc->getArrowImage(ImageCache::WEST, s)->to_pixbuf();
   pad_image(arrow_image3);
   e_keypad_button->add(*manage(arrow_image3));
   Gtk::Image * arrow_image4 = new Gtk::Image();
   arrow_image4->property_pixbuf() = 
-    gc->getArrowPic(GraphicsCache::EAST, s)->to_pixbuf();
+    gc->getArrowImage(ImageCache::EAST, s)->to_pixbuf();
   pad_image(arrow_image4);
   w_keypad_button->add(*manage(arrow_image4));
   Gtk::Image * arrow_image5 = new Gtk::Image();
   arrow_image5->property_pixbuf() = 
-    gc->getArrowPic(GraphicsCache::SOUTHWEST, s)->to_pixbuf();
+    gc->getArrowImage(ImageCache::SOUTHWEST, s)->to_pixbuf();
   pad_image(arrow_image5);
   sw_keypad_button->add(*manage(arrow_image5));
   Gtk::Image * arrow_image6 = new Gtk::Image();
   arrow_image6->property_pixbuf() = 
-    gc->getArrowPic(GraphicsCache::SOUTH, s)->to_pixbuf();
+    gc->getArrowImage(ImageCache::SOUTH, s)->to_pixbuf();
   pad_image(arrow_image6);
   s_keypad_button->add(*manage(arrow_image6));
   Gtk::Image * arrow_image7 = new Gtk::Image();
   arrow_image7->property_pixbuf() = 
-    gc->getArrowPic(GraphicsCache::SOUTHEAST, s)->to_pixbuf();
+    gc->getArrowImage(ImageCache::SOUTHEAST, s)->to_pixbuf();
   pad_image(arrow_image7);
   se_keypad_button->add(*manage(arrow_image7));
 }
@@ -319,14 +319,14 @@ void GameButtonBox::update_diplomacy_button (bool sensitive)
 
 void GameButtonBox::change_diplomacy_button_image (bool proposals_present)
 {
-  GraphicsCache *gc = GraphicsCache::getInstance();
+  ImageCache *gc = ImageCache::getInstance();
   /* switch up the image. */
   int s = GameButtonBox::get_icon_size(Configuration::s_ui_form_factor);
   if (proposals_present)
     {
       Gtk::Image *proposals_present_image = new Gtk::Image();
       proposals_present_image->property_pixbuf() = 
-        gc->getGameButtonPic(GraphicsCache::DIPLOMACY_NEW_PROPOSALS, s)->to_pixbuf();
+        gc->getGameButtonImage(ImageCache::DIPLOMACY_NEW_PROPOSALS, s)->to_pixbuf();
       pad_image(proposals_present_image);
       diplomacy_button->property_image() = proposals_present_image;
     }
@@ -334,7 +334,7 @@ void GameButtonBox::change_diplomacy_button_image (bool proposals_present)
     {
       Gtk::Image *proposals_not_present_image = new Gtk::Image();
       proposals_not_present_image->property_pixbuf() = 
-        gc->getGameButtonPic(GraphicsCache::DIPLOMACY_NO_PROPOSALS, s)->to_pixbuf();
+        gc->getGameButtonImage(ImageCache::DIPLOMACY_NO_PROPOSALS, s)->to_pixbuf();
       pad_image(proposals_not_present_image);
       diplomacy_button->property_image() = proposals_not_present_image;
     }
