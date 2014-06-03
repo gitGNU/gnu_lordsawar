@@ -99,6 +99,7 @@ StackInfoTip::StackInfoTip(Gtk::Widget *target, MapTipPosition mpos, StackTile *
     window->move(p.x, p.y);
     window->show();
 }
+
 StackInfoTip::~StackInfoTip()
 {
   delete window;

@@ -55,10 +55,6 @@ AI_Dummy::AI_Dummy(XML_Helper* helper)
 {
 }
 
-AI_Dummy::~AI_Dummy()
-{
-}
-
 void AI_Dummy::abortTurn()
 {
   abort_requested = true;

@@ -94,10 +94,6 @@ void ShieldSetInfoDialog::on_name_changed()
   update_buttons();
 }
 
-ShieldSetInfoDialog::~ShieldSetInfoDialog()
-{
-}
-
 int ShieldSetInfoDialog::run()
 {
     dialog->show_all();

@@ -25,7 +25,7 @@ class TileSizeEditorDialog: public LwEditorDialog
 {
  public:
     TileSizeEditorDialog(Gtk::Window &parent, guint32 current, guint32 suggested);
-    ~TileSizeEditorDialog();
+    ~TileSizeEditorDialog() {};
 
     guint32 get_selected_tilesize() const {return d_tilesize;}
 

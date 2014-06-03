@@ -61,7 +61,7 @@ class RealPlayer : public Player
         RealPlayer(XML_Helper* helper);
 
 	//! Destructor.
-        virtual ~RealPlayer();
+        virtual ~RealPlayer() {};
 
 	virtual bool isComputer() const {return false;};
 

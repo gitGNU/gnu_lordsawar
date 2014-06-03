@@ -46,6 +46,9 @@ public:
      */
     QuestEnemyArmytype(QuestsManager& q_mgr, guint32 hero);
 
+    //! Destructor.
+    ~QuestEnemyArmytype() {};
+
     //! Loading constructor.
     /**
      * @param q_mgr   The quests manager to associate this quest with.

@@ -49,8 +49,3 @@ void NextTurn::nextPlayer()
   abort.disconnect();
   abort = srequestAbort.connect(sigc::mem_fun(active, &Player::abortTurn));
 }
-
-NextTurn::~NextTurn()
-{
-}
-

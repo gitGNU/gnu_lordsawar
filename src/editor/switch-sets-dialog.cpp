@@ -113,10 +113,6 @@ SwitchSetsDialog::SwitchSetsDialog(Gtk::Window &parent)
     shieldset_changed = false;
 }
 
-SwitchSetsDialog::~SwitchSetsDialog()
-{
-}
-
 guint32 SwitchSetsDialog::get_active_tile_size()
 {
   return (guint32) atoi(tile_size_combobox->get_active_text().c_str());

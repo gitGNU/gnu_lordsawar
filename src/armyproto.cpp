@@ -91,10 +91,6 @@ ArmyProto::ArmyProto(XML_Helper* helper)
     }
 }
 
-ArmyProto::~ArmyProto()
-{
-}
-
 bool ArmyProto::save(XML_Helper* helper) const
 {
   bool retval = true;

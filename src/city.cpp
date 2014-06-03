@@ -117,10 +117,6 @@ City::City(const City& c, Vector<int> pos)
 {
 }
 
-City::~City()
-{
-}
-
 bool City::save(XML_Helper* helper) const
 {
     bool retval = true;

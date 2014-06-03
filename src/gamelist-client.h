@@ -68,7 +68,7 @@ public:
 
 protected:
   GamelistClient();
-  ~GamelistClient();
+  ~GamelistClient() {};
 
 private:
   std::auto_ptr<NetworkConnection> network_connection;

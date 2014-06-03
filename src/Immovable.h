@@ -44,7 +44,7 @@ class Immovable: private Positioned
      Immovable(XML_Helper* helper);
 
      //! Destructor.
-    ~Immovable();
+    ~Immovable() {};
     
     //! Return the position of the object on the game map.
     Vector<int> getPos() const {return d_pos;}

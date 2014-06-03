@@ -70,7 +70,7 @@ class LocationBox : public Immovable
      LocationBox(XML_Helper* helper, guint32 size = 1);
 
      //! Destructor.
-    virtual ~LocationBox();
+    virtual ~LocationBox() {};
     
     // Set Methods
 

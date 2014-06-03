@@ -29,7 +29,7 @@ class CitySetInfoDialog: public LwEditorDialog
     CitySetInfoDialog(Gtk::Window &parent, Cityset *cityset, Glib::ustring dir, 
                       Glib::ustring file, bool readonly = false, 
                       Glib::ustring title = "");
-    ~CitySetInfoDialog();
+    ~CitySetInfoDialog() {};
 
     int run();
     

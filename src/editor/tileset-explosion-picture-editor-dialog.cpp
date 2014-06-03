@@ -58,10 +58,6 @@ TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Gtk::Wi
     on_large_toggled();
 }
 
-TilesetExplosionPictureEditorDialog::~TilesetExplosionPictureEditorDialog()
-{
-}
-
 int TilesetExplosionPictureEditorDialog::run()
 {
     dialog->show_all();

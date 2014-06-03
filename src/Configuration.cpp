@@ -85,10 +85,6 @@ Configuration::Configuration()
 	Configuration::s_lang = s;
 }
 
-Configuration::~Configuration()
-{
-}
-
 // check if file exists and parse it
 
 bool Configuration::loadConfigurationFile(Glib::ustring fileName)

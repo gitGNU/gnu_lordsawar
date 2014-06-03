@@ -33,7 +33,7 @@ class TriumphsDialog: public LwDialog
 {
  public:
     TriumphsDialog(Gtk::Window &parent, Player *player);
-    ~TriumphsDialog();
+    ~TriumphsDialog() {};
 
  private:
     Player *d_player;

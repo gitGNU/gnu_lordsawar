@@ -94,10 +94,6 @@ void TileSetInfoDialog::on_name_changed()
   update_buttons();
 }
 
-TileSetInfoDialog::~TileSetInfoDialog()
-{
-}
-
 int TileSetInfoDialog::run()
 {
     dialog->show_all();

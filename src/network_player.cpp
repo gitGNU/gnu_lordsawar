@@ -79,10 +79,6 @@ NetworkPlayer::NetworkPlayer(XML_Helper* helper)
     d_abort_requested = false;
 }
 
-NetworkPlayer::~NetworkPlayer()
-{
-}
-
 bool NetworkPlayer::save(XML_Helper* helper) const
 {
     // This may seem a bit dumb, but allows derived players (especially

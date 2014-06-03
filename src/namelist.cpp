@@ -45,10 +45,6 @@ NameList::NameList(Glib::ustring filename, Glib::ustring item_tag)
   return;
 }
 
-NameList::~NameList()
-{
-}
-
 bool NameList::load(Glib::ustring tag, XML_Helper *helper)
 {
   if (tag == d_item_tag)

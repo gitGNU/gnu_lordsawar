@@ -39,10 +39,6 @@ MoveResult::MoveResult()
 {
 }
 
-MoveResult::~MoveResult()
-{
-}
-
 void MoveResult::fillData(Stack *s, int stepCount, bool searched_temple, bool searched_ruin, bool got_quest, bool picked_up)
 {
   if (s->getPath()->size() == 0)

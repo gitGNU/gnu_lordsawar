@@ -42,6 +42,9 @@ class ItemMap : public OverviewMap
       */
      ItemMap(std::list<Stack*> item_laden_stacks, std::list<MapBackpack*> bags);
 
+     //! Destructor.
+     ~ItemMap() {};
+
     //! Emitted when the icons are finished being drawn on the map surface.
     /**
      * Classes that use ItemMap must catch this signal to display the map.

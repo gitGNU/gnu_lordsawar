@@ -59,7 +59,7 @@ public:
     StackTile(Vector<int> pos);
 
     //! Destructor.
-    ~StackTile();
+    ~StackTile() {};
 
     // Methods that operate on the class data and modify the class.
 

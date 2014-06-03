@@ -47,6 +47,9 @@ public:
     //! Default constructor.  Make a new SmallMap.
     SmallMap();
 
+    //! Destructor.
+    ~SmallMap() {};
+
     // Set Methods
   
     //! Set whether or not the map can be clicked on.

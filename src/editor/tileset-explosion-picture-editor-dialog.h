@@ -31,7 +31,7 @@ class TilesetExplosionPictureEditorDialog: public LwEditorDialog
 {
  public:
     TilesetExplosionPictureEditorDialog(Gtk::Window &parent, Tileset * tileset);
-    ~TilesetExplosionPictureEditorDialog();
+    ~TilesetExplosionPictureEditorDialog() {};
 
     Glib::ustring get_selected_filename() {return selected_filename;};
     int run();

@@ -30,7 +30,7 @@ class ChatClient: public sigc::trackable
 {
 public:
   ChatClient(Glib::ustring nick = "guest");
-  ~ChatClient();
+  ~ChatClient() {};
 
   void gotChatMessage(const Glib::ustring nickname, const Glib::ustring &payload);
   void setNickname(Glib::ustring nick) {d_nickname = nick;};

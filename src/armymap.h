@@ -30,8 +30,11 @@
 class ArmyMap : public OverviewMap
 {
  public:
-     //! Default constructor.  Make a new ArmyMap.
-     ArmyMap();
+    //! Default constructor.  Make a new ArmyMap.
+    ArmyMap();
+
+    //! Destructor.
+    ~ArmyMap() {};
 
     //! Emitted when the Army units are finished being drawn on the map surface.
     /**

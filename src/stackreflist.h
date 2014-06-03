@@ -37,7 +37,7 @@ public:
     StackReflist(std::list<Stack*> stacks, bool skip_parked_stacks = false);
 
     //! Destructor.
-    ~StackReflist();
+    ~StackReflist() {};
 
     void addStack(Stack *s);
 

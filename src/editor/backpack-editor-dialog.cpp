@@ -54,7 +54,6 @@ BackpackEditorDialog::BackpackEditorDialog(Gtk::Window &parent, Backpack *pack)
     item_treeview->get_selection()->signal_changed()
 	.connect(sigc::mem_fun
 		 (this, &BackpackEditorDialog::on_item_selection_changed));
-
 }
 
 BackpackEditorDialog::~BackpackEditorDialog()

@@ -51,10 +51,6 @@ NextTurnNetworked::NextTurnNetworked(bool turnmode, bool random_turns)
     }
 }
 
-NextTurnNetworked::~NextTurnNetworked()
-{
-}
-
 Player* NextTurnNetworked::next()
 {
   nextPlayer();

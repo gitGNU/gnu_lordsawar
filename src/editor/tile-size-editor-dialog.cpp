@@ -37,10 +37,6 @@ TileSizeEditorDialog::TileSizeEditorDialog(Gtk::Window &parent, guint32 current,
     tilesize_spinbutton->set_value(double(suggested));
 }
 
-TileSizeEditorDialog::~TileSizeEditorDialog()
-{
-}
-
 int TileSizeEditorDialog::run()
 {
     dialog->show_all();

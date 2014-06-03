@@ -182,10 +182,6 @@ NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
     dialog_response = Gtk::RESPONSE_CANCEL;
 }
 
-NewRandomMapDialog::~NewRandomMapDialog()
-{
-}
-
 int NewRandomMapDialog::run()
 {
   dialog->show_all();

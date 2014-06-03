@@ -51,6 +51,9 @@ public:
     QuestEnemyArmies(QuestsManager& q_mgr, guint32 hero,
 		     guint32 armies_to_kill, guint32 victim_player);
 
+    //! Destructor.
+    ~QuestEnemyArmies() {};
+
     //! Loading constructor.
     /**
      * @param q_mgr   The quests manager to associate this quest with.

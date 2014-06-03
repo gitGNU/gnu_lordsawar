@@ -33,7 +33,6 @@ RuinMap::RuinMap(NamedLocation *r)
   ruin = r;
 }
 
-
 void RuinMap::draw_ruins (bool show_selected)
 {
   ImageCache *gc = ImageCache::getInstance();

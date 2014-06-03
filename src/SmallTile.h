@@ -127,7 +127,7 @@ oeeeeeee
         SmallTile(XML_Helper* helper);
 
 	//! Destructor.
-        ~SmallTile();
+        ~SmallTile() {};
 
 
 	// Get Methods

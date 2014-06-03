@@ -52,7 +52,7 @@ class Profile
         Profile(const Profile &orig);
 
 	//! Destructor.
-        virtual ~Profile();
+        virtual ~Profile() {};
 
 	// Get Methods
 

@@ -58,10 +58,6 @@ SelectRewardDialog::SelectRewardDialog(Gtk::Window &parent)
       select_button->set_sensitive(false);
 }
 
-SelectRewardDialog::~SelectRewardDialog()
-{
-}
-
 void SelectRewardDialog::addReward(Reward *reward)
 {
   Gtk::TreeIter i = rewards_list->append();

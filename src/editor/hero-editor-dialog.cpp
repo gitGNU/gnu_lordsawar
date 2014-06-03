@@ -46,10 +46,6 @@ HeroEditorDialog::HeroEditorDialog(Gtk::Window &parent, Hero *hero)
       male_radiobutton->set_active(true);
 }
 
-HeroEditorDialog::~HeroEditorDialog()
-{
-}
-
 void HeroEditorDialog::run()
 {
   dialog->show_all();

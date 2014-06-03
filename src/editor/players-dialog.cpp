@@ -150,10 +150,6 @@ PlayersDialog::PlayersDialog(Gtk::Window &parent, CreateScenarioRandomize *rando
       }
 }
 
-PlayersDialog::~PlayersDialog()
-{
-}
-
 int PlayersDialog::run()
 {
   dialog->show_all();

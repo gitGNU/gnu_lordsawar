@@ -54,9 +54,6 @@ UseItemDialog::UseItemDialog(Gtk::Window &parent, std::list<Item*> items)
       }
 }
 
-UseItemDialog::~UseItemDialog()
-{
-}
 void UseItemDialog::addItem(Item *item)
 {
   Gtk::TreeIter i = items_list->append();

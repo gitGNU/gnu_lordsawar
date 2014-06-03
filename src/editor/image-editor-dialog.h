@@ -34,7 +34,7 @@ class ImageEditorDialog: public LwEditorDialog
 {
  public:
     ImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int num_frames);
-    ~ImageEditorDialog();
+    ~ImageEditorDialog() {};
 
     Glib::ustring get_selected_filename() {return target_filename;};
     int run();

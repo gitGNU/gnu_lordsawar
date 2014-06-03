@@ -41,7 +41,7 @@ class Renamable: private Named
      Renamable(XML_Helper* helper);
 
      //! Destructor.
-     ~Renamable();
+     ~Renamable() {};
 
      // Get Methods
 

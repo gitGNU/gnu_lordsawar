@@ -48,10 +48,6 @@ TempleEditorDialog::TempleEditorDialog(Gtk::Window &parent, Temple *t, CreateSce
 	sigc::mem_fun(this, &TempleEditorDialog::on_randomize_name_clicked));
 }
 
-TempleEditorDialog::~TempleEditorDialog()
-{
-}
-
 int TempleEditorDialog::run()
 {
     dialog->show_all();

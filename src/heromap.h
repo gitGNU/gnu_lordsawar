@@ -40,6 +40,9 @@ class HeroMap : public OverviewMap
       */
      HeroMap(City *city);
 
+     //! Destructor.
+     ~HeroMap() {};
+
     //! Emitted when the Hero icon is finished being drawn on the map surface.
     /**
      * Classes that use HeroMap must catch this signal to display the map.

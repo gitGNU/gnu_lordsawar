@@ -21,7 +21,3 @@ RenamableLocation::RenamableLocation(Vector<int> pos)
   :Location(pos), Renamable(""), d_description("")
 {
 }
-
-RenamableLocation::~RenamableLocation()
-{
-}

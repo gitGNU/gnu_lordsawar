@@ -99,7 +99,7 @@ class City : public Ownable, public Location, public Renamable,
         City(XML_Helper* helper, guint32 width);
 
 	//! Destructor.
-        ~City();
+        ~City() {};
 
 	//Get Methods
 	

@@ -26,7 +26,7 @@ class EditorRecoverDialog: public LwEditorDialog
 {
  public:
     EditorRecoverDialog(Gtk::Window *parent, Glib::ustring question);
-    ~EditorRecoverDialog();
+    ~EditorRecoverDialog() {};
 
  private:
     Gtk::Label* label;

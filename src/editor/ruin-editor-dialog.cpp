@@ -137,10 +137,6 @@ RuinEditorDialog::RuinEditorDialog(Gtk::Window &parent, Ruin *r, CreateScenarioR
     set_reward_name();
 }
 
-RuinEditorDialog::~RuinEditorDialog()
-{
-}
-
 int RuinEditorDialog::run()
 {
     dialog->show_all();

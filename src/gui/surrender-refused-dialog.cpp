@@ -37,7 +37,3 @@ SurrenderRefusedDialog::SurrenderRefusedDialog(Gtk::Window &parent)
     image->property_file()
       = File::getMiscFile("various/parley_refused.png");
 }
-
-SurrenderRefusedDialog::~SurrenderRefusedDialog()
-{
-}

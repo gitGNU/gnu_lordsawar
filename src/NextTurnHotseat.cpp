@@ -48,10 +48,6 @@ NextTurnHotseat::NextTurnHotseat(bool turnmode, bool random_turns)
   }
 }
 
-NextTurnHotseat::~NextTurnHotseat()
-{
-}
-
 void NextTurnHotseat::start()
 {
     //We need the playerlist a lot, so maintain a copy of it.

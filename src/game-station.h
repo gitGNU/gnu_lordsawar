@@ -54,7 +54,7 @@ public:
   Glib::ustring getProfileId() const {return d_profile_id;};
 protected:
   GameStation();
-  virtual ~GameStation();
+  virtual ~GameStation() {};
 
   virtual void onActionDone(NetworkAction *action) = 0;
   virtual void onHistoryDone(NetworkHistory *history) = 0;

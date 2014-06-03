@@ -58,10 +58,6 @@ MaskedImageEditorDialog::MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustr
        (sigc::mem_fun(*this, &MaskedImageEditorDialog::on_image_chosen));
 }
 
-MaskedImageEditorDialog::~MaskedImageEditorDialog()
-{
-}
-
 int MaskedImageEditorDialog::run()
 {
     dialog->show_all();

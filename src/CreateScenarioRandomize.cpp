@@ -53,11 +53,6 @@ CreateScenarioRandomize::CreateScenarioRandomize()
     }
 }
 
-CreateScenarioRandomize::~CreateScenarioRandomize()
-{
-    debug("CreateScenarioRandomize::~CreateScenarioRandomize")
-}
-
 Glib::ustring CreateScenarioRandomize::popRandomCityName()
 {
   Glib::ustring name = d_citynames->popRandomName().c_str();

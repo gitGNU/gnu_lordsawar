@@ -78,10 +78,6 @@ RecentlyPlayedGame::RecentlyPlayedGame(const RecentlyPlayedGame &orig)
 {
 }
 
-RecentlyPlayedGame::~RecentlyPlayedGame()
-{
-}
-
 bool RecentlyPlayedGame::saveContents(XML_Helper *helper) const
 {
   bool retval = true;

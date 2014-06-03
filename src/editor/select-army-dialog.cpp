@@ -52,10 +52,6 @@ SelectArmyDialog::SelectArmyDialog(Gtk::Window &parent, Player *p,
   fill_in_army_toggles();
 }
 
-SelectArmyDialog::~SelectArmyDialog()
-{
-}
-
 void SelectArmyDialog::run()
 {
     dialog->show_all();

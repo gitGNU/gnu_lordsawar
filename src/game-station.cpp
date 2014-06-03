@@ -31,10 +31,6 @@ GameStation::GameStation()
 {
 }
 
-GameStation::~GameStation()
-{
-}
-
 void GameStation::clearNetworkActionlist(std::list<NetworkAction*> &a)
 {
   for (std::list<NetworkAction*>::iterator it = a.begin();

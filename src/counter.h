@@ -46,7 +46,7 @@ class FL_Counter : public sigc::trackable
 
         //! Load the counter. See XML_Helper for details.
         FL_Counter(XML_Helper* helper);
-        ~FL_Counter();
+        ~FL_Counter() {};
 
         //! Returns a unique id
         guint32 getNextId();

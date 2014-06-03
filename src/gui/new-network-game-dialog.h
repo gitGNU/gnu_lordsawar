@@ -28,7 +28,7 @@ class NewNetworkGameDialog: public LwDialog
 {
  public:
     NewNetworkGameDialog(Gtk::Window &parent);
-    ~NewNetworkGameDialog();
+    ~NewNetworkGameDialog() {};
 
     Profile* getProfile() const {return d_profile;};
     bool isClient() {return client_radiobutton->get_active();};

@@ -29,7 +29,7 @@ class MainPreferencesDialog: public LwDialog
 {
  public:
     MainPreferencesDialog(Gtk::Window &parent);
-    ~MainPreferencesDialog();
+    ~MainPreferencesDialog() {};
 
     void run();
     void hide();

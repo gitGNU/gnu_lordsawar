@@ -1,4 +1,4 @@
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ class Port: public Location
         Port(XML_Helper* helper);
 
 	//! Destructor.
-        ~Port();
+        ~Port() {};
 
 	// Methods that operate on the class data but do not modify the class.
 

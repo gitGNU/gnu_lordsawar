@@ -94,10 +94,6 @@ FileCompat::FileCompat()
 {
 }
 
-FileCompat::~FileCompat()
-{
-}
-
 FileCompat::Type FileCompat::getType(Glib::ustring filename) const
 {
   if (File::exists(filename) == false)

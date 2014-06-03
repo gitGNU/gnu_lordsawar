@@ -41,7 +41,7 @@ class Positioned
      Positioned(XML_Helper* helper);
 
      //! Destructor.
-    ~Positioned();
+    ~Positioned() {};
     
  protected:
     //! The position of the object on the game map.

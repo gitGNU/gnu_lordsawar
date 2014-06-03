@@ -42,6 +42,9 @@ class RuinMap : public OverviewMap
       */
      RuinMap(NamedLocation *ruin);
 
+     //! Destructor.
+     ~RuinMap() {};
+
      // Set Methods
 
      //! Change the Ruin or Temple object that is currently selected.

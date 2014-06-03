@@ -229,10 +229,6 @@ void TilePreviewDialog::on_tilestyle_id_hovered(guint32 id)
   selected_tilestyle_label->set_text("0x" + TileStyle::idToString(id));
 }
 
-TilePreviewDialog::~TilePreviewDialog()
-{
-}
-
 void TilePreviewDialog::run()
 {
     dialog->show_all();

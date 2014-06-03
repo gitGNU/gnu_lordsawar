@@ -43,7 +43,7 @@ class UniquelyIdentified
     UniquelyIdentified(XML_Helper* helper);
 
     //! Destructor.
-    virtual ~UniquelyIdentified();
+    virtual ~UniquelyIdentified() {};
 
 
     // Get Methods

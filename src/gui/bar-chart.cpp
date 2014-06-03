@@ -26,10 +26,6 @@ BarChart::BarChart(std::list<unsigned int> bars, std::list<Gdk::RGBA> colours,
   d_max_value = max_value;
 }
 
-BarChart::~BarChart()
-{
-}
-
 //bool BarChart::on_expose_event(GdkEventExpose* event)
 bool BarChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
 {

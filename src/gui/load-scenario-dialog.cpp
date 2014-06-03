@@ -70,10 +70,6 @@ LoadScenarioDialog::LoadScenarioDialog(Gtk::Window &parent)
     scenarios_treeview->get_selection()->select(row);
 }
 
-LoadScenarioDialog::~LoadScenarioDialog()
-{
-}
-
 void LoadScenarioDialog::hide()
 {
   dialog->hide();

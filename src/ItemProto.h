@@ -119,7 +119,7 @@ class ItemProto: public Renamable
         ItemProto(Glib::ustring name);
 
         //! Destructor.
-        virtual ~ItemProto();
+        virtual ~ItemProto() {};
         
         //! Save the item to the opened saved-game file.
         bool save(XML_Helper* helper) const;

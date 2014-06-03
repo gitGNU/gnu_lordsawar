@@ -29,7 +29,7 @@ class GameOptionsDialog: public LwDialog
 {
  public:
     GameOptionsDialog(Gtk::Window &parent, bool readonly);
-    ~GameOptionsDialog();
+    ~GameOptionsDialog() {};
 
     bool run();
     void hide();

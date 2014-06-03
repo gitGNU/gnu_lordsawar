@@ -62,10 +62,6 @@ AI_Smart::AI_Smart(XML_Helper* helper)
 {
 }
 
-AI_Smart::~AI_Smart()
-{
-}
-
 bool AI_Smart::startTurn()
 {
   sbusy.emit();

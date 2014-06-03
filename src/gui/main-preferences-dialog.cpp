@@ -58,10 +58,6 @@ MainPreferencesDialog::MainPreferencesDialog(Gtk::Window &parent)
     
 }
 
-MainPreferencesDialog::~MainPreferencesDialog()
-{
-}
-
 void MainPreferencesDialog::hide()
 {
   dialog->hide();

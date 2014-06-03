@@ -1,4 +1,4 @@
-//  Copyright (C) 2008 Ben Asselstine
+//  Copyright (C) 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ class Triumphs
 	Triumphs(const Triumphs&);
 
 	//! Destructor.
-        ~Triumphs();
+        ~Triumphs() {};
 
 
 	// Methods that operate on the class data but do not modify the class.

@@ -31,7 +31,7 @@ class NewMapDialog: public LwEditorDialog
 {
  public:
     NewMapDialog(Gtk::Window &parent);
-    ~NewMapDialog();
+    ~NewMapDialog() {};
 
     void run();
 

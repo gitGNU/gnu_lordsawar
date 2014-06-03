@@ -32,10 +32,6 @@ NewNetworkGameDownloadWindow::NewNetworkGameDownloadWindow(Glib::ustring title)
   show_all();
 }
 
-NewNetworkGameDownloadWindow::~NewNetworkGameDownloadWindow()
-{
-}
-
 void NewNetworkGameDownloadWindow::pulse()
 {
   m_pbar.pulse();

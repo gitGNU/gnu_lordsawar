@@ -21,10 +21,6 @@ Timing::Timing()
 {
 }
 
-Timing::~Timing()
-{
-}
-
 Timing &Timing::instance()
 {
     static Timing timing;

@@ -37,10 +37,6 @@ NewProfileDialog::NewProfileDialog(Gtk::Window &parent, Glib::ustring network_ga
   update_buttons();
 }
 	    
-NewProfileDialog::~NewProfileDialog()
-{
-}
-
 void NewProfileDialog::on_nickname_changed()
 {
   update_buttons();

@@ -44,10 +44,6 @@ MapInfoDialog::MapInfoDialog(Gtk::Window &parent, GameScenario *g)
     license_textview->get_buffer()->set_text(game_scenario->getLicense());
 }
 
-MapInfoDialog::~MapInfoDialog()
-{
-}
-
 int MapInfoDialog::run()
 {
     dialog->show_all();

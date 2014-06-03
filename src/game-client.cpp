@@ -62,10 +62,6 @@ GameClient::GameClient()
   player_id = -1;
 }
 
-GameClient::~GameClient()
-{
-}
-
 void GameClient::start(Glib::ustring host, guint32 port, Glib::ustring profile_id, Glib::ustring nick)
 {
   d_host = host;

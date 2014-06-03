@@ -57,10 +57,6 @@ SelectItemDialog::SelectItemDialog(Gtk::Window &parent)
       }
 }
 
-SelectItemDialog::~SelectItemDialog()
-{
-}
-
 void SelectItemDialog::addItemProto(ItemProto *item)
 {
   Gtk::TreeIter i = items_list->append();

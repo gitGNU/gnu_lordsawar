@@ -62,10 +62,6 @@ SelectHiddenRuinDialog::SelectHiddenRuinDialog(Gtk::Window &parent)
 
 }
 
-SelectHiddenRuinDialog::~SelectHiddenRuinDialog()
-{
-}
-
 void SelectHiddenRuinDialog::addHiddenRuin(Ruin *ruin)
 {
     

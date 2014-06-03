@@ -56,7 +56,7 @@ class Signpost: public Location, public Renamable
         Signpost(XML_Helper* helper);
 
 	//! Destructor.
-        ~Signpost();
+        ~Signpost() {};
 
 	// Methods that operate on the class data but do not modify the class
 

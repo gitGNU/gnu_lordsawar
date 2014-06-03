@@ -1,4 +1,4 @@
-// Copyright (C) 2009, 2010 Ben Asselstine
+// Copyright (C) 2009, 2010, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -42,10 +42,6 @@ StackReflist::StackReflist(std::list<Stack*> s, bool skip_parked_stacks)
         continue;
       addStack(*it);
     }
-}
-
-StackReflist::~StackReflist()
-{
 }
 
 Stack *StackReflist::getStackById(guint32 id) const

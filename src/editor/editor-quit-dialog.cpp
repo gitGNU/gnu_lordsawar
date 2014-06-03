@@ -30,7 +30,3 @@ EditorQuitDialog::EditorQuitDialog(Gtk::Window &parent)
  : LwEditorDialog(parent, "editor-quit-dialog.ui")
 {
 }
-
-EditorQuitDialog::~EditorQuitDialog()
-{
-}

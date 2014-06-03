@@ -77,10 +77,6 @@ Citylist::Citylist(XML_Helper* helper)
     helper->registerTag(City::d_tag, sigc::mem_fun(this, &Citylist::load));
 }
 
-Citylist::~Citylist()
-{
-}
-
 int Citylist::countCities() const
 {
     int cities = 0;

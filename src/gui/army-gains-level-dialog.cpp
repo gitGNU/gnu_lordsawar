@@ -70,10 +70,6 @@ ArmyGainsLevelDialog::ArmyGainsLevelDialog(Gtk::Window &parent, Hero *a, bool sh
     on_stat_toggled();
 }
 
-ArmyGainsLevelDialog::~ArmyGainsLevelDialog()
-{
-}
-
 void ArmyGainsLevelDialog::add_item(Army::Stat stat, Glib::ustring desc)
 {
     StatItem item;

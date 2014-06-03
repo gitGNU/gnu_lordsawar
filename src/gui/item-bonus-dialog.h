@@ -30,7 +30,7 @@ class ItemBonusDialog: public LwDialog
 {
  public:
     ItemBonusDialog(Gtk::Window &parent);
-    ~ItemBonusDialog();
+    ~ItemBonusDialog() {};
 
  private:
     Gtk::TreeView *items_treeview;

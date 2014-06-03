@@ -30,7 +30,7 @@ class DiplomacyReportDialog: public LwDialog
 {
  public:
     DiplomacyReportDialog(Gtk::Window &parent, Player *player);
-    ~DiplomacyReportDialog();
+    ~DiplomacyReportDialog() {};
 
  private:
     Player *d_player;

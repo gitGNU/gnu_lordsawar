@@ -29,7 +29,7 @@ class ArmyGainsLevelDialog: public LwDialog
 {
  public:
     ArmyGainsLevelDialog(Gtk::Window &parent, Hero *h, bool show_sight_stat);
-    ~ArmyGainsLevelDialog();
+    ~ArmyGainsLevelDialog() {};
 
     Army::Stat get_selected_stat() { return selected_stat; }
     

@@ -31,7 +31,7 @@ class SignpostEditorDialog: public LwEditorDialog
 {
  public:
     SignpostEditorDialog(Gtk::Window &parent, Signpost *signpost, CreateScenarioRandomize *randomizer);
-    ~SignpostEditorDialog();
+    ~SignpostEditorDialog() {};
 
     int run();
     

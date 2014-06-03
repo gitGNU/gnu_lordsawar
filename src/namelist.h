@@ -47,7 +47,7 @@ class NameList : public std::vector<Glib::ustring>, public sigc::trackable
     private:
         
         //! Destructor.
-        ~NameList();
+        ~NameList() {};
 
         //! Callback for loading names into the NameList.
 	bool load(Glib::ustring tag, XML_Helper *helper);

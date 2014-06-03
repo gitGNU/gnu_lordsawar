@@ -92,10 +92,6 @@ void CitySetInfoDialog::on_name_changed()
   update_buttons();
 }
 
-CitySetInfoDialog::~CitySetInfoDialog()
-{
-}
-
 int CitySetInfoDialog::run()
 {
     dialog->show_all();

@@ -82,10 +82,6 @@ Rewardlist::Rewardlist(XML_Helper* helper)
   load(Rewardlist::d_tag, helper);
 }
 
-Rewardlist::~Rewardlist()
-{
-}
-
 void Rewardlist::flClear()
 {
   for (iterator it = begin(); it != end(); it++)

@@ -28,7 +28,7 @@ class RewardlistDialog: public LwEditorDialog
 {
  public:
     RewardlistDialog(Gtk::Window &parent);
-    ~RewardlistDialog();
+    ~RewardlistDialog() {};
 
  private:
     Reward *d_reward; //current reward

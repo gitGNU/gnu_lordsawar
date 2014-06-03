@@ -86,7 +86,7 @@ class NetworkPlayer : public Player
                    Player::Type type = Player::HUMAN, int player_no = -1);
         NetworkPlayer(const Player&);
         NetworkPlayer(XML_Helper* helper);
-        ~NetworkPlayer();
+        ~NetworkPlayer() {};
 
         //! Saves the data
         virtual bool save(XML_Helper* helper) const;

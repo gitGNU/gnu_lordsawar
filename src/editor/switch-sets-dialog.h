@@ -34,7 +34,7 @@ class SwitchSetsDialog: public LwEditorDialog
 {
  public:
     SwitchSetsDialog(Gtk::Window &parent);
-    ~SwitchSetsDialog();
+    ~SwitchSetsDialog() {};
 
     int run();
 

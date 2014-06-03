@@ -29,7 +29,7 @@ class ShieldSetInfoDialog: public LwEditorDialog
     ShieldSetInfoDialog(Gtk::Window &parent, Shieldset *shieldset, 
                         Glib::ustring dir, Glib::ustring file,
                         bool readonly = false, Glib::ustring title = "");
-    ~ShieldSetInfoDialog();
+    ~ShieldSetInfoDialog() {};
 
     int run();
     

@@ -33,8 +33,3 @@ Namable::Namable(XML_Helper* helper)
   :Named(helper)
 {
 }
-
-Namable::~Namable()
-{
-}
-

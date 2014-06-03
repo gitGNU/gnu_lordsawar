@@ -80,10 +80,6 @@ ProdSlotlist::ProdSlotlist(const ProdSlotlist& c)
       push_back(*it);
 }
 
-ProdSlotlist::~ProdSlotlist()
-{
-}
-
 bool ProdSlotlist::save(XML_Helper* helper) const
 {
     bool retval = true;

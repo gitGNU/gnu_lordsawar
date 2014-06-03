@@ -1,4 +1,4 @@
-//  Copyright (C) 2009, 2012 Ben Asselstine
+//  Copyright (C) 2009, 2012, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -40,6 +40,9 @@ class HeroesMap : public OverviewMap
       * @param city  The city where the Hero has emerged.
       */
      HeroesMap(std::list<Hero*> heroes);
+
+     //! Destructor.
+     ~HeroesMap() {};
 
      //! Realize the mouse click.
      void mouse_button_event(MouseButtonEvent e);

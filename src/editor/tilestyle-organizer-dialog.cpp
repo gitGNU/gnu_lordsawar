@@ -220,10 +220,6 @@ void TileStyleOrganizerDialog::on_category_selected()
     empty_category();
 }
 
-TileStyleOrganizerDialog::~TileStyleOrganizerDialog()
-{
-}
-
 void TileStyleOrganizerDialog::on_categories_drop_drag_data_received(const Glib::RefPtr<Gdk::DragContext> &context, int x, int y, const Gtk::SelectionData& selection_data, guint c, guint time)
 {
   const int length = selection_data.get_length();

@@ -1,5 +1,5 @@
 // Copyright (C) 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012 Ben Asselstine
+// Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2014 Ben Asselstine
 // Copyright (C) 2007 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -58,7 +58,7 @@ class OverviewMap : public sigc::trackable
      OverviewMap();
 
      //! Destructor.
-     virtual ~OverviewMap();
+     virtual ~OverviewMap() {};
 
 
     //! Draw and scale the miniature map graphic to the given size.

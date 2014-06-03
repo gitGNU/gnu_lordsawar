@@ -57,7 +57,7 @@ class Location : public UniquelyIdentified, public LocationBox
      Location(XML_Helper* helper, guint32 size = 1);
 
      //! Destructor.
-    ~Location();
+    ~Location() {};
 };
 
 #endif

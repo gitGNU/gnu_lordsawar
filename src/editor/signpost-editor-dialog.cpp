@@ -42,10 +42,6 @@ SignpostEditorDialog::SignpostEditorDialog(Gtk::Window &parent, Signpost *s, Cre
 	sigc::mem_fun(this, &SignpostEditorDialog::on_randomize_clicked));
 }
 
-SignpostEditorDialog::~SignpostEditorDialog()
-{
-}
-
 int SignpostEditorDialog::run()
 {
   dialog->show_all();

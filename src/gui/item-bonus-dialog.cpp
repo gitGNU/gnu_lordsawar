@@ -43,10 +43,6 @@ ItemBonusDialog::ItemBonusDialog(Gtk::Window &parent)
       addItemProto((*iter).second);
 }
 
-ItemBonusDialog::~ItemBonusDialog()
-{
-}
-
 void ItemBonusDialog::addItemProto(ItemProto *itemproto)
 {
     Gtk::TreeIter i = items_list->append();

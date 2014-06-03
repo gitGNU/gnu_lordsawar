@@ -43,6 +43,9 @@ class HistoryMap: public OverviewMap
       */
      HistoryMap(LocationList<City*> *clist, LocationList<Ruin*> *rlist);
  
+     //! Destructor.
+     ~HistoryMap() {};
+
      //! Emitted when the cities are finished being drawn on the map surface.
      /**
       * Classes that use HistoryMap must catch this signal to display the map.

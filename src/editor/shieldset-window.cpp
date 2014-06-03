@@ -213,6 +213,7 @@ ShieldSetWindow::update_shield_panel()
       fill_shield_info(s);
     }
 }
+
 ShieldSetWindow::~ShieldSetWindow()
 {
   delete window;

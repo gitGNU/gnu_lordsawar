@@ -151,10 +151,6 @@ CityEditorDialog::CityEditorDialog(Gtk::Window &parent, City *cit, CreateScenari
     }
 }
 
-CityEditorDialog::~CityEditorDialog()
-{
-}
-
 void CityEditorDialog::change_city_ownership()
 {
   // set allegiance

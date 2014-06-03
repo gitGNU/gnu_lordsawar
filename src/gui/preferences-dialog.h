@@ -33,7 +33,7 @@ class PreferencesDialog: public LwDialog
 {
  public:
     PreferencesDialog(Gtk::Window &parent, bool readonly);
-    ~PreferencesDialog();
+    ~PreferencesDialog() {};
 
     void run(Game *game);
     void hide();

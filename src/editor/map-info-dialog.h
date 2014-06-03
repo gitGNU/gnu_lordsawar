@@ -29,7 +29,7 @@ class MapInfoDialog: public LwEditorDialog
 {
  public:
     MapInfoDialog(Gtk::Window &parent, GameScenario *game_scenario);
-    ~MapInfoDialog();
+    ~MapInfoDialog() {};
 
     int run();
     

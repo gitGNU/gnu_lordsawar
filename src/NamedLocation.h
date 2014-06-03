@@ -45,7 +45,7 @@ class NamedLocation: public Location, public Namable
      NamedLocation(XML_Helper* helper, guint32 size);
 
      //! Destructor.
-    virtual ~NamedLocation();
+    virtual ~NamedLocation() {};
 
     Glib::ustring getDescription() const {return d_description;};
  private:

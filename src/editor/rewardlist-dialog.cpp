@@ -86,10 +86,6 @@ RewardlistDialog::update_rewardlist_buttons()
     }
 }
 
-RewardlistDialog::~RewardlistDialog()
-{
-}
-
 void RewardlistDialog::addReward(Reward *reward)
 {
   Gtk::TreeIter i = rewards_list->append();

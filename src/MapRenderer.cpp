@@ -52,10 +52,6 @@ bool MapRenderer::saveViewAsBitmap(Glib::ustring filename)
   return true;
 }
 
-MapRenderer::~MapRenderer()
-{
-}
-
 void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 			 int columns, int rows)
 {

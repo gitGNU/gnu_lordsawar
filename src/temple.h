@@ -60,7 +60,7 @@ class Temple : public NamedLocation
         Temple(XML_Helper* helper, guint32 width);
 
 	//! Destructor.
-        ~Temple();
+        ~Temple() {};
 
 	// Get Methods
         

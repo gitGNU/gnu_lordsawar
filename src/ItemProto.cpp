@@ -107,10 +107,6 @@ ItemProto::ItemProto(const ItemProto& orig)
 {
 }
 
-ItemProto::~ItemProto()
-{
-}
-
 bool ItemProto::saveContents(XML_Helper* helper) const
 {
   bool retval = true;

@@ -128,10 +128,6 @@ PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
     
 }
 
-PreferencesDialog::~PreferencesDialog()
-{
-}
-
 void PreferencesDialog::on_type_changed(Gtk::ComboBoxText *combo)
 {
   for (PlayerTypeMap::iterator it = player_types.begin();

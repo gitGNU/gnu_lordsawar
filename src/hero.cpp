@@ -63,7 +63,6 @@ Hero::Hero(XML_Helper* helper)
 		      sigc::mem_fun(*this, &Hero::loadBackpack));
 }
 
-
 Hero::~Hero()
 {
   delete d_backpack;

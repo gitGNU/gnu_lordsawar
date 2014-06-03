@@ -35,7 +35,7 @@ class EditorBigMap: public BigMap
 {
  public:
     EditorBigMap();
-    ~EditorBigMap();
+    ~EditorBigMap() {};
 
     enum Pointer {
 	POINTER = 0, 

@@ -33,8 +33,3 @@ Immovable::Immovable(XML_Helper* helper)
   :Positioned(helper)
 {
 }
-
-Immovable::~Immovable()
-{
-}
-

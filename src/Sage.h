@@ -35,7 +35,7 @@ class Sage: public std::list<Reward*>
         Sage();
 
         //! Destructor.
-        virtual ~Sage();
+        virtual ~Sage() {};
 
         Reward *getSelectedReward() const {return reward;};
         void selectReward(Reward *r) {reward = r;};

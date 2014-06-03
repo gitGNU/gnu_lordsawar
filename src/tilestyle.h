@@ -282,7 +282,7 @@ ooooooo
         TileStyle(XML_Helper* helper);
 
 	//! Destructor.
-        ~TileStyle();
+        ~TileStyle() {};
 
 	// Get Methods
 

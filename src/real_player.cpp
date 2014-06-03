@@ -61,10 +61,6 @@ RealPlayer::RealPlayer(XML_Helper* helper)
 {
 }
 
-RealPlayer::~RealPlayer()
-{
-}
-
 bool RealPlayer::save(XML_Helper* helper) const
 {
     // This may seem a bit dumb, but allows derived players (especially

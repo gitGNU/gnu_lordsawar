@@ -49,10 +49,6 @@ Road::Road(const Road& s, Vector<int> pos)
 {
 }
 
-Road::~Road()
-{
-}
-
 bool Road::save(XML_Helper* helper) const
 {
     bool retval = true;

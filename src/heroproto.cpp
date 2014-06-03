@@ -43,10 +43,6 @@ HeroProto::HeroProto()
 {
 }
 
-HeroProto::~HeroProto()
-{
-}
-
 HeroProto::HeroProto(XML_Helper* helper)
   :ArmyProto(helper), OwnerId(helper)
 {

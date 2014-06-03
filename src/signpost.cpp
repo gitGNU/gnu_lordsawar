@@ -44,10 +44,6 @@ Signpost::Signpost(const Signpost& s, Vector<int> pos)
 {
 }
 
-Signpost::~Signpost()
-{
-}
-
 bool Signpost::save(XML_Helper* helper) const
 {
     bool retval = true;

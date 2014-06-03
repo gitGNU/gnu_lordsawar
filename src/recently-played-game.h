@@ -63,7 +63,7 @@ class RecentlyPlayedGame
         RecentlyPlayedGame(const RecentlyPlayedGame &orig);
 
 	//! Destructor.
-        virtual ~RecentlyPlayedGame();
+        virtual ~RecentlyPlayedGame() {};
 
 	// Get Methods
 

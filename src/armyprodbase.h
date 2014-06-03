@@ -46,7 +46,7 @@ class ArmyProdBase: public ArmyProtoBase
         ArmyProdBase(XML_Helper* helper);
         
 	//! Destructor.
-        ~ArmyProdBase();
+        ~ArmyProdBase() {};
 
 	// Methods that operate on the class data and modify the class.
 

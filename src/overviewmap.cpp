@@ -48,10 +48,6 @@ OverviewMap::OverviewMap()
   pixels_per_tile = 2.0;
 }
 
-OverviewMap::~OverviewMap()
-{
-}
-
 bool OverviewMap::isShadowed(Tile::Type type, int i, int j)
 {
   GameMap *gm = GameMap::getInstance();

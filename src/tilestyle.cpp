@@ -64,10 +64,6 @@ TileStyle::TileStyle(XML_Helper* helper)
 
 }
     
-TileStyle::~TileStyle()
-{
-}
-
 bool TileStyle::save(XML_Helper *helper)
 {
   bool retval = true;

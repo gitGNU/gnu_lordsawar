@@ -42,10 +42,6 @@ ImageEditorDialog::ImageEditorDialog(Gtk::Window &parent, Glib::ustring filename
        (sigc::mem_fun(*this, &ImageEditorDialog::on_image_chosen));
 }
 
-ImageEditorDialog::~ImageEditorDialog()
-{
-}
-
 int ImageEditorDialog::run()
 {
     dialog->show_all();

@@ -469,7 +469,6 @@ TileSetWindow::update_tile_panel()
 
 TileSetWindow::~TileSetWindow()
 {
-  //tile_smallmap_surface.reset();
   delete window;
 }
 

@@ -97,7 +97,7 @@ class ArmyBase
 	ArmyBase();
 
 	//! Destructor.
-        virtual ~ArmyBase();
+        virtual ~ArmyBase() {};
 
 
         // Set Methods

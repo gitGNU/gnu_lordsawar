@@ -74,10 +74,6 @@ Triumphs::Triumphs(const Triumphs& triumphs)
   memcpy (d_triumph, triumphs.d_triumph, sizeof (d_triumph));
 }
 
-Triumphs::~Triumphs()
-{
-}
-
 bool Triumphs::save(XML_Helper* helper) const
 {
   bool retval = true;

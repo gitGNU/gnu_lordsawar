@@ -140,10 +140,6 @@ StackEditorDialog::StackEditorDialog(Gtk::Window &parent, Stack *s, int m)
   set_button_sensitivity();
 }
 
-StackEditorDialog::~StackEditorDialog()
-{
-}
-
 int StackEditorDialog::run()
 {
     dialog->show_all();

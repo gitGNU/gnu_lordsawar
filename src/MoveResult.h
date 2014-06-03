@@ -32,7 +32,7 @@ class MoveResult
 {
     public:
         MoveResult();
-        ~MoveResult();
+        ~MoveResult() {};
 
         //! set the result of any fight that happened
         void setFightResult(Fight::Result d_fightResult);

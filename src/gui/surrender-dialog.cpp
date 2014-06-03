@@ -40,7 +40,3 @@ SurrenderDialog::SurrenderDialog(Gtk::Window &parent, int numEnemies)
     image->property_file()
       = File::getMiscFile("various/parley_offered.png");
 }
-
-SurrenderDialog::~SurrenderDialog()
-{
-}

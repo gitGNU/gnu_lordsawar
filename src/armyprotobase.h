@@ -43,7 +43,7 @@ class ArmyProtoBase : public ArmyBase
 	ArmyProtoBase();
 
 	//! Destructor.
-        ~ArmyProtoBase();
+        ~ArmyProtoBase() {};
 
         // Set Methods
         

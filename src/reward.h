@@ -106,7 +106,7 @@ class Reward
         Reward (const Reward& orig);
 
 	//! Destructor.
-        virtual ~Reward();
+        virtual ~Reward() {};
 
 
 	// Get Methods

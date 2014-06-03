@@ -47,10 +47,6 @@ Commentator::Commentator()
 {
 }
 
-Commentator::~Commentator()
-{
-}
-
 bool Commentator::hasComment() const
 {
   if ((rand() % MAX_PLAYERS) == 0)

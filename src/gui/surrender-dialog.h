@@ -26,7 +26,7 @@ class SurrenderDialog: public LwDialog
 {
  public:
     SurrenderDialog(Gtk::Window &parent, int numPlayers);
-    ~SurrenderDialog();
+    ~SurrenderDialog() {};
 
  private:
     Gtk::Image *image;

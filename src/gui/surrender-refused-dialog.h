@@ -29,7 +29,7 @@ class SurrenderRefusedDialog: public LwDialog
 {
  public:
     SurrenderRefusedDialog(Gtk::Window &parent);
-    ~SurrenderRefusedDialog();
+    ~SurrenderRefusedDialog() {};
 
  private:
     Gtk::Image *image;

@@ -29,7 +29,7 @@ class TilePreviewDialog: public LwEditorDialog
 {
  public:
     TilePreviewDialog(Gtk::Window &parent, Tile *tile, Tile *secondary, guint32 tileSize);
-    ~TilePreviewDialog();
+    ~TilePreviewDialog() {};
 
     void run();
 

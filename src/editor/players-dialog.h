@@ -31,7 +31,7 @@ class PlayersDialog: public LwEditorDialog
 {
  public:
     PlayersDialog(Gtk::Window &parent, CreateScenarioRandomize *randomizer, int width, int height);
-    ~PlayersDialog();
+    ~PlayersDialog() {};
 
     int run();
     

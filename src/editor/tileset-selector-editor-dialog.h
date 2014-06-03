@@ -30,7 +30,7 @@ class TilesetSelectorEditorDialog: public LwEditorDialog
 {
  public:
     TilesetSelectorEditorDialog(Gtk::Window &parent, Tileset * tileset);
-    ~TilesetSelectorEditorDialog();
+    ~TilesetSelectorEditorDialog() {};
 
     Glib::ustring get_small_selector_filename() {return small_filename;};
     Glib::ustring get_large_selector_filename() {return large_filename;};

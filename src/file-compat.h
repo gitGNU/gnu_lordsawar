@@ -96,7 +96,7 @@ class FileCompat: public std::list<FileDetails>, public sigc::trackable
         FileCompat();
 
         //! Destructor.
-        ~FileCompat();
+        ~FileCompat() {};
 
         // helpers
         FileCompat::Type getTypeByXmlFileInspection(Glib::ustring filename) const;

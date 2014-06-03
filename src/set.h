@@ -24,7 +24,7 @@ class Set
 public:
     enum Origin { SYSTEM, PERSONAL, SCENARIO, NONE};
     Set();
-    ~Set();
+    ~Set() {};
     Set(const Set &s);
 
     Set::Origin getOrigin() {return origin;};

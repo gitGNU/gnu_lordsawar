@@ -36,8 +36,3 @@ Sage::Sage()
   //but now we put in gold too
   push_back(new Reward_Gold(500 + rand() % 1000));
 }
-
-Sage::~Sage()
-{
-}
-

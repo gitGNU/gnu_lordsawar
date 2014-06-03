@@ -143,10 +143,6 @@ RewardEditorDialog::RewardEditorDialog(Gtk::Window &parent, Player *player, bool
     fill_in_reward_info();
 }
 
-RewardEditorDialog::~RewardEditorDialog()
-{
-}
-
 void RewardEditorDialog::fill_in_reward_info()
 {
   if (reward->getType() == Reward::GOLD)

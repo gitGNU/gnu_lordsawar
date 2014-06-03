@@ -29,7 +29,7 @@ class ArmyBonusDialog: public LwDialog
 {
  public:
     ArmyBonusDialog(Gtk::Window &parent, Player *p);
-    ~ArmyBonusDialog();
+    ~ArmyBonusDialog() {};
 
  private:
     Gtk::TreeView *armies_treeview;

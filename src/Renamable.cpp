@@ -33,8 +33,3 @@ Renamable::Renamable(XML_Helper* helper)
   :Named(helper)
 {
 }
-
-Renamable::~Renamable()
-{
-}
-

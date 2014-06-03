@@ -33,11 +33,6 @@ LineChart::LineChart(std::list<std::list<unsigned int> > lines,
   d_x_indicator = -1;
 }
 
-LineChart::~LineChart()
-{
-}
-
-//bool LineChart::on_expose_event(GdkEventExpose* event)
 bool LineChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
 {
   // This is where we draw on the window

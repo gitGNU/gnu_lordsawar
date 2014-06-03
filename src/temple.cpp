@@ -64,10 +64,6 @@ Temple::Temple(const Temple& t, Vector<int> pos)
 {
 }
 
-Temple::~Temple()
-{
-}
-
 bool Temple::save(XML_Helper* helper) const
 {
     bool retval = true;

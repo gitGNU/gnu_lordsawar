@@ -40,10 +40,6 @@ SightMap::SightMap(const SightMap& orig)
 {
 }
 
-SightMap::~SightMap()
-{
-}
-
 bool SightMap::save(XML_Helper* helper) const
 {
   bool retval = true;

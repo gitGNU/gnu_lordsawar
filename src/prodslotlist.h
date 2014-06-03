@@ -66,7 +66,7 @@ class ProdSlotlist: public std::vector<ProdSlot*>
         ProdSlotlist(XML_Helper* helper);
 
 	//! Destructor.
-        ~ProdSlotlist();
+        ~ProdSlotlist() {};
 
         
 	// Set Methods

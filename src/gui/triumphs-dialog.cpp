@@ -45,10 +45,6 @@ TriumphsDialog::TriumphsDialog(Gtk::Window &parent, Player *player)
   notebook->set_current_page(d_player->getId());
 }
 
-TriumphsDialog::~TriumphsDialog()
-{
-}
-
 guint32 TriumphsDialog::tally(Player *p, Triumphs::TriumphType type)
 {
   Playerlist *pl = Playerlist::getInstance();

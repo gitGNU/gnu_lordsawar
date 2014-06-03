@@ -29,7 +29,7 @@ class ArmySetInfoDialog: public LwEditorDialog
     ArmySetInfoDialog(Gtk::Window &parent, Armyset *armyset, Glib::ustring dir, 
                       Glib::ustring file, bool readonly = false, 
                       Glib::ustring title = "");
-    ~ArmySetInfoDialog();
+    ~ArmySetInfoDialog() {};
 
     int run();
     

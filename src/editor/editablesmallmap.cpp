@@ -38,10 +38,6 @@ EditableSmallMap::EditableSmallMap()
   road_finish = Vector<int>(-1,-1);
 }
 
-EditableSmallMap::~EditableSmallMap()
-{
-}
-
 void EditableSmallMap::after_draw()
 {
   OverviewMap::after_draw();

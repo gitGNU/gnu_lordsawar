@@ -49,7 +49,7 @@ class Commentator
         Commentator();
 
         //! Destructor.
-        virtual ~Commentator();
+        virtual ~Commentator() {};
     private:
 
         static Commentator* d_instance;

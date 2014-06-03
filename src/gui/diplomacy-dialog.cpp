@@ -204,10 +204,6 @@ DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
     }
 }
 
-DiplomacyDialog::~DiplomacyDialog()
-{
-}
-
 void DiplomacyDialog::on_proposal_toggled (Gtk::ToggleButton *toggle, 
 					   Player *player, 
 					   Player::DiplomaticProposal proposal)

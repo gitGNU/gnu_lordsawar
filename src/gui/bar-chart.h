@@ -25,7 +25,7 @@ class BarChart: public Gtk::Image
 public:
     BarChart(std::list<unsigned int> bars, std::list<Gdk::RGBA> colours,
 	     unsigned int max_value);
-    virtual ~BarChart();
+    virtual ~BarChart() {};
 
 protected:
     //Override default signal handler:

@@ -29,7 +29,7 @@ class DiplomacyDialog: public LwDialog
 {
  public:
     DiplomacyDialog(Gtk::Window &parent, Player *player);
-    ~DiplomacyDialog();
+    ~DiplomacyDialog() {};
 
  private:
     void on_report_clicked();

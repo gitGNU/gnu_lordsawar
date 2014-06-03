@@ -1,6 +1,6 @@
 // Copyright (C) 2003 Michael Bartl
 // Copyright (C) 2003, 2005 Ulf Lorenz
-// Copyright (C) 2007, 2008 Ben Asselstine
+// Copyright (C) 2007, 2008, 2014 Ben Asselstine
 // Copyright (C) 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -34,10 +34,6 @@ FL_Counter::FL_Counter(guint32 start)
 FL_Counter::FL_Counter(XML_Helper* helper)
 {
     helper->getData(d_curID, "curID");
-}
-
-FL_Counter::~FL_Counter()
-{
 }
 
 void FL_Counter::syncToId(guint32 id)

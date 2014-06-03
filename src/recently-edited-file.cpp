@@ -46,10 +46,6 @@ RecentlyEditedFile::RecentlyEditedFile(XML_Helper* helper)
   helper->getData(d_filename, "filename");
 }
 
-RecentlyEditedFile::~RecentlyEditedFile()
-{
-}
-
 bool RecentlyEditedFile::saveContents(XML_Helper *helper) const
 {
   bool retval = true;

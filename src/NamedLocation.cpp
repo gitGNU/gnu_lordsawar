@@ -40,8 +40,3 @@ NamedLocation::NamedLocation(XML_Helper* helper, guint32 size)
 {
   helper->getData(d_description, "description");
 }
-
-NamedLocation::~NamedLocation()
-{
-}
-

@@ -1,5 +1,5 @@
 // Copyright (C) 2003, 2004, 2005, 2006 Ulf Lorenz
-// Copyright (C) 2007, 2008, 2011 Ben Asselstine
+// Copyright (C) 2007, 2008, 2011, 2014 Ben Asselstine
 // Copyright (C) 2007, 2008 Ole Laursen
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -42,7 +42,7 @@ class NextTurnNetworked: public NextTurn
         /**
            \brief destructor
          */
-        virtual ~NextTurnNetworked();
+        virtual ~NextTurnNetworked() {};
         
         /**
            \brief start a new game

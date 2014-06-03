@@ -84,9 +84,4 @@ bool SmallTile::save(XML_Helper *helper) const
 
   return retval;
 }
-
-SmallTile::~SmallTile()
-{
-}
-
 // End of file

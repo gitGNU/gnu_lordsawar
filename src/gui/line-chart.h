@@ -29,13 +29,12 @@ class LineChart: public Gtk::Image
 {
 public:
     LineChart(std::list<std::list<unsigned int> > lines, std::list<Gdk::RGBA> colours, unsigned int max_height_value, Glib::ustring x_axis_description, Glib::ustring y_axis_description);
-    virtual ~LineChart();
+    virtual ~LineChart() {};
 
     void set_x_indicator(int x);
 
 protected:
     //Override default signal handler:
-    //virtual bool on_expose_event(GdkEventExpose* event);
     virtual bool on_draw (const Cairo::RefPtr<Cairo::Context> &cr);
 private:
     std::list<std::list<unsigned int> > d_lines;

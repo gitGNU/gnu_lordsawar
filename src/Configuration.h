@@ -49,7 +49,7 @@ class Configuration : public sigc::trackable
 
         // CREATORS
         Configuration();
-        ~Configuration();
+        ~Configuration() {};
 
         /** \brief Load a configuration file
           * 

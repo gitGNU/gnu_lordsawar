@@ -59,11 +59,6 @@ ShieldStyle::ShieldStyle(XML_Helper* helper)
   helper->getData(d_image_name, "image");
 }
 
-ShieldStyle::~ShieldStyle()
-{
-}
-
-        
 Glib::ustring ShieldStyle::shieldStyleTypeToString(const ShieldStyle::Type type)
 {
   switch (type)

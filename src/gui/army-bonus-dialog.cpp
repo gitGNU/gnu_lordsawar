@@ -52,10 +52,6 @@ ArmyBonusDialog::ArmyBonusDialog(Gtk::Window &parent, Player *p)
       addArmyType((*i)->getId());
 }
 
-ArmyBonusDialog::~ArmyBonusDialog()
-{
-}
-
 void ArmyBonusDialog::addArmyType(guint32 army_type)
 {
     ImageCache *gc = ImageCache::getInstance();

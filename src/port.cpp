@@ -45,10 +45,6 @@ Port::Port(const Port& s, Vector<int> pos)
 {
 }
 
-Port::~Port()
-{
-}
-
 bool Port::save(XML_Helper* helper) const
 {
     bool retval = true;

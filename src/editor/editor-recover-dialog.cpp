@@ -31,7 +31,3 @@ EditorRecoverDialog::EditorRecoverDialog(Gtk::Window *parent, Glib::ustring ques
     xml->get_widget("label", label);
     label->set_text(question);
 }
-
-EditorRecoverDialog::~EditorRecoverDialog()
-{
-}

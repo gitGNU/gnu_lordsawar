@@ -44,7 +44,7 @@ class HeroProto : public ArmyProto, public OwnerId
         HeroProto(XML_Helper* helper);
 
 	//! Destructor.
-        ~HeroProto();
+        ~HeroProto() {};
 
         //! Set the gender of the hero.
         void setGender(Hero::Gender gender){d_gender = gender;}

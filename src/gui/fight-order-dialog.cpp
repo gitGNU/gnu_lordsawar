@@ -55,10 +55,6 @@ FightOrderDialog::FightOrderDialog(Gtk::Window &parent, Player *theplayer)
       (sigc::mem_fun (*this, &FightOrderDialog::on_reset_button_clicked));
 }
 
-FightOrderDialog::~FightOrderDialog()
-{
-}
-
 void FightOrderDialog::hide()
 {
   dialog->hide();

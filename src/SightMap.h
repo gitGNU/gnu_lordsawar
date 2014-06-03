@@ -50,7 +50,7 @@ class SightMap: public Rectangle, public Renamable
         SightMap(Glib::ustring name, Vector<int> pos, guint32 height, guint32 width);
 
         //! Destructor.
-        ~SightMap();
+        ~SightMap() {};
         
 
 	// Methods that operate on class data but do not modify the class.

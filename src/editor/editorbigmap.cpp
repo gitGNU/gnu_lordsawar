@@ -72,10 +72,6 @@ EditorBigMap::EditorBigMap()
     show_tile_types_instead_of_tile_styles = false;
 }
 
-EditorBigMap::~EditorBigMap()
-{
-}
-
 void EditorBigMap::set_pointer(Pointer p, int size, Tile::Type t, 
 			       int tile_style_id)
 {

@@ -35,8 +35,3 @@ Named::Named(XML_Helper* helper)
     return;
   helper->getData(d_name, "name");
 }
-
-Named::~Named()
-{
-}
-

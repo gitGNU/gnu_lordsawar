@@ -38,8 +38,7 @@ class Threatlist : public std::list<Threat*>
         Threatlist();
 
 	//! Destructor.
-        ~Threatlist();
-
+        ~Threatlist() {};
 
 	// Methods that operate on class data and modify the class.
 

@@ -86,7 +86,3 @@ DiplomacyReportDialog::DiplomacyReportDialog(Gtk::Window &parent, Player *player
 	}
     }
 }
-
-DiplomacyReportDialog::~DiplomacyReportDialog()
-{
-}

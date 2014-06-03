@@ -1,4 +1,4 @@
-// Copyright (C) 2011 Ben Asselstine
+// Copyright (C) 2011, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -40,6 +40,9 @@ class SelectCityMap : public OverviewMap
      };
      //! Default constructor.  Make a new SelectCityMap.
     SelectCityMap(SelectCityMap::Type type);
+
+    //! Destructor
+    ~SelectCityMap() {};
 
     void setType(SelectCityMap::Type type) {d_type = type;};
     guint32 getType() const {return d_type;};

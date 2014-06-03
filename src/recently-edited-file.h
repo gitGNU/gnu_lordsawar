@@ -54,7 +54,7 @@ class RecentlyEditedFile
         RecentlyEditedFile(Glib::ustring filename);
         
 	//! Destructor.
-        virtual ~RecentlyEditedFile();
+        virtual ~RecentlyEditedFile() {};
 
 	// Get Methods
 

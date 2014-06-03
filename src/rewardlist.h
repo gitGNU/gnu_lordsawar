@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -92,7 +92,7 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
         Rewardlist(XML_Helper* helper);
 
 	//! Destructor.
-        ~Rewardlist();
+        ~Rewardlist() {};
 
     private:
         //! Callback function for loading rewards.

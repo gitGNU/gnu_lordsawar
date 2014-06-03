@@ -57,10 +57,6 @@ ArmyProtoBase::ArmyProtoBase(XML_Helper* helper)
   helper->getData(d_description, "description");
 }
 
-ArmyProtoBase::~ArmyProtoBase()
-{
-}
-
 bool ArmyProtoBase::saveData(XML_Helper* helper) const
 {
   bool retval = true;

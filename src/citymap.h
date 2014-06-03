@@ -30,8 +30,11 @@
 class CityMap : public OverviewMap
 {
  public:
-     //! Default constructor.  Make a new CityMap.
+    //! Default constructor.  Make a new CityMap.
     CityMap();
+
+    //! Destructor.
+    ~CityMap() {};
 
     //! Emitted when the cities are finished being drawn on the map surface.
     /**

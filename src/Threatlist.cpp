@@ -34,10 +34,6 @@ Threatlist::Threatlist()
 {
 }
 
-Threatlist::~Threatlist()
-{
-}
-
 bool Threatlist::compareValue(const Threat *lhs, const Threat *rhs)  
 {
   return lhs->getValue() > rhs->getValue(); 

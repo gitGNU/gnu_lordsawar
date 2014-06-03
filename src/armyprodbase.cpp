@@ -50,10 +50,6 @@ ArmyProdBase::ArmyProdBase(XML_Helper* helper)
   helper->getData(d_type_id, "type");
 }
 
-ArmyProdBase::~ArmyProdBase()
-{
-}
-
 bool ArmyProdBase::save(XML_Helper* helper) const
 {
   bool retval = true;

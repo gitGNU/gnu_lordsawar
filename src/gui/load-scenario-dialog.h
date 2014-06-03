@@ -28,7 +28,7 @@ class LoadScenarioDialog: public LwDialog
 {
  public:
     LoadScenarioDialog(Gtk::Window &parent);
-    ~LoadScenarioDialog();
+    ~LoadScenarioDialog() {};
 
     void run();
     void hide();

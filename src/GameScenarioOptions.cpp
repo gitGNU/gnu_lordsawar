@@ -44,11 +44,6 @@ GameScenarioOptions::GameScenarioOptions()
 {
 }
 
-
-GameScenarioOptions::~GameScenarioOptions()
-{
-} 
-
 int GameScenarioOptions::calculate_difficulty_rating(GameParameters g)
 {
   float total_difficulty = 0;

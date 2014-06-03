@@ -47,10 +47,6 @@ TilesetFlagEditorDialog::TilesetFlagEditorDialog(Gtk::Window &parent, Tileset *t
     update_flag_panel();
 }
 
-TilesetFlagEditorDialog::~TilesetFlagEditorDialog()
-{
-}
-
 int TilesetFlagEditorDialog::run()
 {
     dialog->show_all();

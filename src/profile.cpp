@@ -57,10 +57,6 @@ Profile::Profile(const Profile &orig)
 {
 }
 
-Profile::~Profile()
-{
-}
-
 bool Profile::saveContents(XML_Helper *helper) const
 {
   bool retval = true;

@@ -60,10 +60,6 @@ ArmyBase::ArmyBase(XML_Helper* helper)
   helper->getData(d_xp_value, "expvalue");
 }
 
-ArmyBase::~ArmyBase()
-{
-}
-
 bool ArmyBase::saveData(XML_Helper* helper) const
 {
   bool retval = true;

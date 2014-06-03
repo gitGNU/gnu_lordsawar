@@ -52,10 +52,6 @@ Ownable::Ownable(XML_Helper* helper)
   d_owner = result.d_owner;
 }
 
-Ownable::~Ownable()
-{
-}
-
 bool Ownable::isFriend(Player *opponent) const
 {
   return d_owner == opponent;

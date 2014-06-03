@@ -48,7 +48,7 @@ class MapBackpack: public Backpack, public Immovable, public UniquelyIdentified
      MapBackpack(XML_Helper* helper);
 
      //! Destructor.
-    ~MapBackpack();
+    ~MapBackpack() {};
 
     //! Save the MapBackpack object to an opened saved-game file.
     bool save(XML_Helper* helper) const;

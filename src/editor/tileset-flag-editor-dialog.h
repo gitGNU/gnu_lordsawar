@@ -30,7 +30,7 @@ class TilesetFlagEditorDialog: public LwEditorDialog
 {
  public:
     TilesetFlagEditorDialog(Gtk::Window &parent, Tileset * tileset);
-    ~TilesetFlagEditorDialog();
+    ~TilesetFlagEditorDialog() {};
 
     Glib::ustring get_selected_filename() {return selected_filename;};
     int run();

@@ -48,10 +48,6 @@ UniquelyIdentified::UniquelyIdentified(XML_Helper* helper)
     d_unique = true;
 }
 
-UniquelyIdentified::~UniquelyIdentified()
-{
-}
-
 void UniquelyIdentified::syncNewId()
 {
   //we sync to the one after, so we don't reuse the same id

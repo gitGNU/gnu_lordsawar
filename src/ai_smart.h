@@ -87,7 +87,7 @@ class AI_Smart : public RealPlayer
         //! Loading constructor. See XML_Helper for an explanation.
         AI_Smart(XML_Helper* helper);
 	//! Destructor.
-        ~AI_Smart();
+        ~AI_Smart() {};
 
 	virtual bool isComputer() const {return true;};
 	virtual void abortTurn();

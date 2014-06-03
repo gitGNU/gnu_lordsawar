@@ -36,7 +36,7 @@ class Named
      //! Loading constructor.
      Named(XML_Helper* helper);
      //! Destructor.
-    ~Named();
+    ~Named() {};
     
  protected:
     //! The name of the object.

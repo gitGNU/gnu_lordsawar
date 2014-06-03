@@ -94,10 +94,6 @@ void ArmySetInfoDialog::on_name_changed()
   update_buttons();
 }
 
-ArmySetInfoDialog::~ArmySetInfoDialog()
-{
-}
-
 int ArmySetInfoDialog::run()
 {
     dialog->show_all();

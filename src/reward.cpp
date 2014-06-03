@@ -55,10 +55,6 @@ Reward::Reward (const Reward& orig)
 {
 }
 
-Reward::~Reward()
-{
-}
-
 Reward* Reward::handle_load(XML_Helper* helper)
 {
     guint32 t;

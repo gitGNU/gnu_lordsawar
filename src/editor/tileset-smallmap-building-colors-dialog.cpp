@@ -49,10 +49,6 @@ TilesetSmallmapBuildingColorsDialog::TilesetSmallmapBuildingColorsDialog(Gtk::Wi
      (this, &TilesetSmallmapBuildingColorsDialog::on_temple_color_chosen));
 }
 
-TilesetSmallmapBuildingColorsDialog::~TilesetSmallmapBuildingColorsDialog()
-{
-}
-
 void TilesetSmallmapBuildingColorsDialog::on_road_color_chosen()
 {
   d_tileset->setRoadColor(road_colorbutton->get_rgba());

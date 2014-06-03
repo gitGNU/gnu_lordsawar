@@ -49,10 +49,6 @@ Bridge::Bridge(const Bridge& s, Vector<int> pos)
 {
 }
 
-Bridge::~Bridge()
-{
-}
-
 bool Bridge::save(XML_Helper* helper) const
 {
     bool retval = true;

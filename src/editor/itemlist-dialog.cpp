@@ -230,10 +230,6 @@ ItemlistDialog::update_item_panel()
     }
 }
 
-ItemlistDialog::~ItemlistDialog()
-{
-}
-
 void ItemlistDialog::addItemProto(ItemProto *itemproto)
 {
   Gtk::TreeIter i = items_list->append();

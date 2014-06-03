@@ -41,10 +41,6 @@ MapBackpack::MapBackpack(XML_Helper* helper)
   helper->registerTag(Item::d_tag, sigc::mem_fun(this, &MapBackpack::loadItem));
 }
 
-MapBackpack::~MapBackpack()
-{
-}
-
 bool MapBackpack::save(XML_Helper* helper) const
 {
   bool retval = true;

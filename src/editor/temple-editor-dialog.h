@@ -31,7 +31,7 @@ class TempleEditorDialog: public LwEditorDialog
 {
  public:
     TempleEditorDialog(Gtk::Window &parent, Temple *temple, CreateScenarioRandomize *randomizer);
-    ~TempleEditorDialog();
+    ~TempleEditorDialog() {};
 
     int run();
     

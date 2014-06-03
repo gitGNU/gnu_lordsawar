@@ -39,7 +39,7 @@ class MapRenderer
           * @param surface      the surface which is rendered with render()
           */
         MapRenderer(Cairo::RefPtr<Cairo::Surface> surface);
-        ~MapRenderer();
+        ~MapRenderer() {};
 
         /** Render a portion of the map.
           * 

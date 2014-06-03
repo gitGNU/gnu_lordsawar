@@ -44,6 +44,8 @@ class QuestMap : public OverviewMap
       */
     QuestMap(Quest *quest);
 
+    //! Destructor.
+    ~QuestMap() {};
 
     // Set Methods
 

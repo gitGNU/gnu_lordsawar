@@ -69,10 +69,6 @@ HeroLevelsDialog::HeroLevelsDialog(Gtk::Window &parent, Player *theplayer)
     addHero(*it);
 }
 
-HeroLevelsDialog::~HeroLevelsDialog()
-{
-}
-
 void HeroLevelsDialog::addHero(Hero *h)
 {
     ImageCache *gc = ImageCache::getInstance();

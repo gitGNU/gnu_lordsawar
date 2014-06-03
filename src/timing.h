@@ -32,7 +32,7 @@ class Timing: public boost::noncopyable
 {
  public:
     static Timing &instance();
-    ~Timing();
+    ~Timing() {};
 
     enum { STOP = false, CONTINUE = true };
     typedef sigc::slot<bool> timer_slot;

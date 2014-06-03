@@ -30,7 +30,7 @@ class NewRandomMapDialog: public LwDialog
 {
  public:
     NewRandomMapDialog(Gtk::Window &parent);
-    ~NewRandomMapDialog();
+    ~NewRandomMapDialog() {};
 
     int run();
 

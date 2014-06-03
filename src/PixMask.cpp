@@ -253,6 +253,3 @@ int PixMask::get_depth()
 {
     return 32;
 }
-PixMask::~PixMask()
-{
-}

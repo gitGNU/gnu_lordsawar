@@ -49,10 +49,6 @@ GameOptionsDialog::GameOptionsDialog(Gtk::Window &parent, bool readonly)
     xml->get_widget("random_turns_checkbutton", random_turns_checkbutton);
 }
 
-GameOptionsDialog::~GameOptionsDialog()
-{
-}
-
 void GameOptionsDialog::fill_in_options()
 {
     neutral_cities_combobox->set_active(GameScenarioOptions::s_neutral_cities);

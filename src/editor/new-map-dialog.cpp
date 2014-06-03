@@ -157,10 +157,6 @@ NewMapDialog::NewMapDialog(Gtk::Window &parent)
     height_spinbutton->set_value(MAP_SIZE_TINY_HEIGHT);
 }
 
-NewMapDialog::~NewMapDialog()
-{
-}
-
 void NewMapDialog::run()
 {
   dialog->show_all();

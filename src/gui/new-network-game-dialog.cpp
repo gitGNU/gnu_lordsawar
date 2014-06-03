@@ -107,10 +107,6 @@ void NewNetworkGameDialog::add_profile(Profile *profile)
     (*i)[profiles_columns.profile] = profile;
 }
 	    
-NewNetworkGameDialog::~NewNetworkGameDialog()
-{
-}
-
 void NewNetworkGameDialog::update_buttons()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = 

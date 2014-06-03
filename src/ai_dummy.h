@@ -59,7 +59,7 @@ class AI_Dummy : public RealPlayer
         //! Loading constructor. See XML_Helper.
         AI_Dummy(XML_Helper* helper);
 	//! Destructor.
-        ~AI_Dummy();
+        ~AI_Dummy() {};
         
 	virtual bool isComputer() const {return true;};
         virtual void abortTurn();

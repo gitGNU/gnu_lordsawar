@@ -43,7 +43,7 @@ class Namable: private Named
      Namable(XML_Helper* helper);
 
      //! Destructor.
-    ~Namable();
+    ~Namable() {};
     
     //! Return the name of the object on the game map.
     Glib::ustring getName(bool translate = false) const 

@@ -71,10 +71,6 @@ TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Gtk::Window &parent, Ti
       show_preview_selectors(large_filename);
 }
 
-TilesetSelectorEditorDialog::~TilesetSelectorEditorDialog()
-{
-}
-
 int TilesetSelectorEditorDialog::run()
 {
   bool found = false;

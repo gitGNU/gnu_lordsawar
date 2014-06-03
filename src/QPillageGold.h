@@ -47,6 +47,9 @@ class QuestPillageGold : public Quest, public sigc::trackable
 	 */
         QuestPillageGold(QuestsManager& q_mgr, guint32 hero);
 
+        //! Destructor.
+        ~QuestPillageGold() {};
+
 	//! Loading constructor.
 	/**
 	 * @param q_mgr   The quests manager to associate this quest with.

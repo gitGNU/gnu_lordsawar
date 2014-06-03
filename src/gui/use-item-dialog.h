@@ -30,7 +30,7 @@ class UseItemDialog: public LwDialog
 {
  public:
     UseItemDialog(Gtk::Window &parent, std::list<Item*> items);
-    ~UseItemDialog();
+    ~UseItemDialog() {};
 
     Item *get_selected_item() { return selected_item; }
 

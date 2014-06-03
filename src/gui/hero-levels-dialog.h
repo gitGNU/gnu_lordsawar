@@ -32,7 +32,7 @@ class HeroLevelsDialog: public LwDialog
  public:
     HeroLevelsDialog(Gtk::Window &parent, Player *player);
     HeroLevelsDialog(Gtk::Window &parent, std::list<Hero*> heroes);
-    ~HeroLevelsDialog();
+    ~HeroLevelsDialog() {};
 
  private:
     Player *player;
