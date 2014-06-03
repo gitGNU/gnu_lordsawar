@@ -105,7 +105,7 @@ class History
 	History (XML_Helper *helper);
 
 	//! Destructor.
-        virtual ~History();
+        virtual ~History() {};
 
         //! Returns debug information. Needs to be overwritten by derivatives
         virtual Glib::ustring dump() const = 0;
@@ -149,7 +149,7 @@ class History_StartTurn : public History
 	//! Load the historical event from an opened saved-game file.
         History_StartTurn(XML_Helper* helper);
 	//! Destructor.
-        ~History_StartTurn();
+        ~History_StartTurn() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -176,7 +176,7 @@ class History_FoundSage : public History
 	//! Load the historical event from an opened saved-game file.
         History_FoundSage(XML_Helper* helper);
 	//! Destructor.
-        ~History_FoundSage();
+        ~History_FoundSage() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -208,7 +208,7 @@ class History_GoldTotal : public History
 	//! Load the historical event from an opened saved-game file.
         History_GoldTotal(XML_Helper* helper);
 	//! Destructor.
-        ~History_GoldTotal();
+        ~History_GoldTotal() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -240,7 +240,7 @@ class History_HeroEmerges : public History
 	//! Load the historical event from an opened saved-game file.
         History_HeroEmerges(XML_Helper* helper);
 	//! Destructor.
-        ~History_HeroEmerges();
+        ~History_HeroEmerges() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -290,7 +290,7 @@ class History_CityWon : public History
 	//! Load the historical event from an opened saved-game file.
         History_CityWon(XML_Helper* helper);
 	//! Destructor.
-        ~History_CityWon();
+        ~History_CityWon() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -322,7 +322,7 @@ class History_HeroCityWon: public History
 	//! Load the historical event from an opened saved-game file.
         History_HeroCityWon(XML_Helper* helper);
 	//! Destructor.
-        ~History_HeroCityWon();
+        ~History_HeroCityWon() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -367,7 +367,7 @@ class History_CityRazed : public History
 	//! Load the historical event from an opened saved-game file.
         History_CityRazed(XML_Helper* helper);
 	//! Destructor.
-        ~History_CityRazed();
+        ~History_CityRazed() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -399,7 +399,7 @@ class History_HeroQuestStarted : public History
 	//! Load the historical event from an opened saved-game file.
         History_HeroQuestStarted(XML_Helper* helper);
 	//! Destructor.
-        ~History_HeroQuestStarted();
+        ~History_HeroQuestStarted() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -431,7 +431,7 @@ class History_HeroQuestCompleted: public History
 	//! Load the historical event from an opened saved-game file.
         History_HeroQuestCompleted(XML_Helper* helper);
 	//! Destructor.
-        ~History_HeroQuestCompleted();
+        ~History_HeroQuestCompleted() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -463,7 +463,7 @@ class History_HeroKilledInCity : public History
 	//! Load the historical event from an opened saved-game file.
         History_HeroKilledInCity(XML_Helper* helper);
 	//! Destructor.
-        ~History_HeroKilledInCity();
+        ~History_HeroKilledInCity() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -508,7 +508,7 @@ class History_HeroKilledInBattle: public History
 	//! Load the historical event from an opened saved-game file.
         History_HeroKilledInBattle(XML_Helper* helper);
 	//! Destructor.
-        ~History_HeroKilledInBattle();
+        ~History_HeroKilledInBattle() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -540,7 +540,7 @@ class History_HeroKilledSearching: public History
 	//! Load the historical event from an opened saved-game file.
         History_HeroKilledSearching(XML_Helper* helper);
 	//! Destructor.
-        ~History_HeroKilledSearching();
+        ~History_HeroKilledSearching() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -572,7 +572,7 @@ class History_Score: public History
 	//! Load the historical event from an opened saved-game file.
         History_Score(XML_Helper* helper);
 	//! Destructor.
-        ~History_Score();
+        ~History_Score() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -604,7 +604,7 @@ class History_PlayerVanquished: public History
 	//! Load the historical event from an opened saved-game file.
         History_PlayerVanquished(XML_Helper* helper);
 	//! Destructor.
-        ~History_PlayerVanquished();
+        ~History_PlayerVanquished() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -627,7 +627,7 @@ class History_DiplomacyPeace : public History
 	//! Load the historical event from an opened saved-game file.
         History_DiplomacyPeace(XML_Helper* helper);
 	//! Destructor.
-        ~History_DiplomacyPeace();
+        ~History_DiplomacyPeace() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -659,7 +659,7 @@ class History_DiplomacyWar: public History
 	//! Load the historical event from an opened saved-game file.
         History_DiplomacyWar(XML_Helper* helper);
 	//! Destructor.
-        ~History_DiplomacyWar();
+        ~History_DiplomacyWar() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -691,7 +691,7 @@ class History_DiplomacyTreachery: public History
 	//! Load the historical event from an opened saved-game file.
         History_DiplomacyTreachery(XML_Helper* helper);
 	//! Destructor.
-        ~History_DiplomacyTreachery();
+        ~History_DiplomacyTreachery() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -723,7 +723,7 @@ class History_HeroFindsAllies : public History
 	//! Load the historical event from an opened saved-game file.
         History_HeroFindsAllies(XML_Helper* helper);
 	//! Destructor.
-        ~History_HeroFindsAllies();
+        ~History_HeroFindsAllies() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -754,7 +754,7 @@ class History_EndTurn : public History
 	//! Load the historical event from an opened saved-game file.
 	History_EndTurn(XML_Helper* helper);
 	//! Destructor.
-	~History_EndTurn();
+	~History_EndTurn() {};
 
 	//! Return some debug information about this historical event.
 	Glib::ustring dump() const;
@@ -780,7 +780,7 @@ class History_HeroRuinExplored: public History
 	//! Load the historical event from an opened saved-game file.
         History_HeroRuinExplored(XML_Helper* helper);
 	//! Destructor.
-        ~History_HeroRuinExplored();
+        ~History_HeroRuinExplored() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -826,7 +826,7 @@ class History_HeroRewardRuin: public History
 	//! Load the historical event from an opened saved-game file.
         History_HeroRewardRuin(XML_Helper* helper);
 	//! Destructor.
-        ~History_HeroRewardRuin();
+        ~History_HeroRewardRuin() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;
@@ -871,7 +871,7 @@ class History_HeroUseItem: public History
 	//! Load the historical event from an opened saved-game file.
         History_HeroUseItem(XML_Helper* helper);
 	//! Destructor.
-        ~History_HeroUseItem();
+        ~History_HeroUseItem() {};
 
 	//! Return some debug information about this historical event.
         Glib::ustring dump() const;

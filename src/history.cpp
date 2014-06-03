@@ -39,10 +39,6 @@ History::History(Type type)
 {
 }
 
-History::~History()
-{
-}
-
 History* History::handle_load(XML_Helper* helper)
 {
   Glib::ustring type_str;
@@ -235,10 +231,6 @@ History_StartTurn::History_StartTurn(XML_Helper* helper)
 {
 }
 
-History_StartTurn::~History_StartTurn()
-{
-}
-
 Glib::ustring History_StartTurn::dump() const
 {
   return "Player starts a turn.\n";
@@ -271,10 +263,6 @@ History_FoundSage::History_FoundSage(XML_Helper* helper)
 :History(helper)
 {
   helper->getData(d_hero, "hero");
-}
-
-History_FoundSage::~History_FoundSage()
-{
 }
 
 Glib::ustring History_FoundSage::dump() const
@@ -310,10 +298,6 @@ History_GoldTotal::History_GoldTotal(XML_Helper* helper)
 :History(helper)
 {
   helper->getData(d_gold, "gold");
-}
-
-History_GoldTotal::~History_GoldTotal()
-{
 }
 
 Glib::ustring History_GoldTotal::dump() const
@@ -352,10 +336,6 @@ History_HeroEmerges::History_HeroEmerges(XML_Helper* helper)
   helper->getData(d_hero, "hero");
   helper->getData(d_city, "city");
   helper->getData(d_hero_id, "hero_id");
-}
-
-History_HeroEmerges::~History_HeroEmerges()
-{
 }
 
 Glib::ustring History_HeroEmerges::dump() const
@@ -401,10 +381,6 @@ History_CityWon::History_CityWon(XML_Helper* helper)
   helper->getData(d_city, "city");
 }
 
-History_CityWon::~History_CityWon()
-{
-}
-
 Glib::ustring History_CityWon::dump() const
 {
   return String::ucompose("City %1 has been won.\n", d_city);
@@ -439,10 +415,6 @@ History_HeroCityWon::History_HeroCityWon(XML_Helper* helper)
 {
   helper->getData(d_city, "city");
   helper->getData(d_hero, "hero");
-}
-
-History_HeroCityWon::~History_HeroCityWon()
-{
 }
 
 Glib::ustring History_HeroCityWon::dump() const
@@ -486,10 +458,6 @@ History_CityRazed::History_CityRazed(XML_Helper* helper)
   helper->getData(d_city, "city");
 }
 
-History_CityRazed::~History_CityRazed()
-{
-}
-
 Glib::ustring History_CityRazed::dump() const
 {
   return String::ucompose("City %1 has been razed.\n", d_city);
@@ -523,10 +491,6 @@ History_HeroQuestStarted::History_HeroQuestStarted(XML_Helper* helper)
 :History(helper)
 {
   helper->getData(d_hero, "hero");
-}
-
-History_HeroQuestStarted::~History_HeroQuestStarted()
-{
 }
 
 Glib::ustring History_HeroQuestStarted::dump() const
@@ -564,10 +528,6 @@ History_HeroQuestCompleted::History_HeroQuestCompleted(XML_Helper* helper)
   helper->getData(d_hero, "hero");
 }
 
-History_HeroQuestCompleted::~History_HeroQuestCompleted()
-{
-}
-
 Glib::ustring History_HeroQuestCompleted::dump() const
 {
   return String::ucompose("Hero %1 completes a quest.\n", d_hero);
@@ -602,10 +562,6 @@ History_HeroKilledInCity::History_HeroKilledInCity(XML_Helper* helper)
 {
   helper->getData(d_hero, "hero");
   helper->getData(d_city, "city");
-}
-
-History_HeroKilledInCity::~History_HeroKilledInCity()
-{
 }
 
 Glib::ustring History_HeroKilledInCity::dump() const
@@ -649,10 +605,6 @@ History_HeroKilledInBattle::History_HeroKilledInBattle(XML_Helper* helper)
   helper->getData(d_hero, "hero");
 }
 
-History_HeroKilledInBattle::~History_HeroKilledInBattle()
-{
-}
-
 Glib::ustring History_HeroKilledInBattle::dump() const
 {
   return String::ucompose("Hero %1 was killed in battle.\n", d_hero);
@@ -686,10 +638,6 @@ History_HeroKilledSearching::History_HeroKilledSearching(XML_Helper* helper)
 :History(helper)
 {
   helper->getData(d_hero, "hero");
-}
-
-History_HeroKilledSearching::~History_HeroKilledSearching()
-{
 }
 
 Glib::ustring History_HeroKilledSearching::dump() const
@@ -727,10 +675,6 @@ History_Score::History_Score(XML_Helper* helper)
   helper->getData(d_score, "score");
 }
 
-History_Score::~History_Score()
-{
-}
-
 Glib::ustring History_Score::dump() const
 {
   return String::ucompose("Player has a score of %1.\n", d_score);
@@ -765,10 +709,6 @@ History_PlayerVanquished::History_PlayerVanquished(XML_Helper* helper)
 {
 }
 
-History_PlayerVanquished::~History_PlayerVanquished()
-{
-}
-
 Glib::ustring History_PlayerVanquished::dump() const
 {
   return "Player has been vanquished!\n";
@@ -796,10 +736,6 @@ History_DiplomacyPeace::History_DiplomacyPeace(XML_Helper* helper)
 :History(helper)
 {
   helper->getData(d_opponent_id, "opponent_id");
-}
-
-History_DiplomacyPeace::~History_DiplomacyPeace()
-{
 }
 
 Glib::ustring History_DiplomacyPeace::dump() const
@@ -837,10 +773,6 @@ History_DiplomacyWar::History_DiplomacyWar(XML_Helper* helper)
   helper->getData(d_opponent_id, "opponent_id");
 }
 
-History_DiplomacyWar::~History_DiplomacyWar()
-{
-}
-
 Glib::ustring History_DiplomacyWar::dump() const
 {
   return String::ucompose("War has been declared with player %1.\n", d_opponent_id);
@@ -874,10 +806,6 @@ History_DiplomacyTreachery::History_DiplomacyTreachery(XML_Helper* helper)
 :History(helper)
 {
   helper->getData(d_opponent_id, "opponent_id");
-}
-
-History_DiplomacyTreachery::~History_DiplomacyTreachery()
-{
 }
 
 Glib::ustring History_DiplomacyTreachery::dump() const
@@ -915,10 +843,6 @@ History_HeroFindsAllies::History_HeroFindsAllies(XML_Helper* helper)
   helper->getData(d_hero, "hero");
 }
 
-History_HeroFindsAllies::~History_HeroFindsAllies()
-{
-}
-
 Glib::ustring History_HeroFindsAllies::dump() const
 {
   return String::ucompose("Hero %1 finds some allies.\n", d_hero);
@@ -950,10 +874,6 @@ History_EndTurn::History_EndTurn(const History_EndTurn &history)
 
 History_EndTurn::History_EndTurn(XML_Helper* helper)
 :History(helper)
-{
-}
-
-History_EndTurn::~History_EndTurn()
 {
 }
 
@@ -989,10 +909,6 @@ History_HeroRuinExplored::History_HeroRuinExplored(XML_Helper* helper)
 {
   helper->getData(d_ruin, "ruin");
   helper->getData(d_hero, "hero");
-}
-
-History_HeroRuinExplored::~History_HeroRuinExplored()
-{
 }
 
 Glib::ustring History_HeroRuinExplored::dump() const
@@ -1035,10 +951,6 @@ History_HeroRewardRuin::History_HeroRewardRuin(XML_Helper* helper)
 {
   helper->getData(d_ruin, "ruin");
   helper->getData(d_hero, "hero");
-}
-
-History_HeroRewardRuin::~History_HeroRewardRuin()
-{
 }
 
 Glib::ustring History_HeroRewardRuin::dump() const
@@ -1093,10 +1005,6 @@ History_HeroUseItem::History_HeroUseItem(XML_Helper* helper)
   helper->getData(d_enemy_city_id, "enemy_city_id");
   helper->getData(d_neutral_city_id, "neutral_city_id");
   helper->getData(d_city_id, "city_id");
-}
-
-History_HeroUseItem::~History_HeroUseItem()
-{
 }
 
 Glib::ustring History_HeroUseItem::dump() const

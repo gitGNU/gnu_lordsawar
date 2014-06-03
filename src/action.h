@@ -160,7 +160,7 @@ class Action
         Action(XML_Helper *helper);
 
 	//! Destructor.
-        virtual ~Action();
+        virtual ~Action() {};
 
         //! Returns debug information. Needs to be overwritten by derivatives.
         virtual Glib::ustring dump() const = 0;
@@ -210,7 +210,7 @@ class Action_Move : public Action
 	//! Load a new move action from an opened saved-game file.
         Action_Move(XML_Helper* helper);
 	//! Destroy a move action.
-        ~Action_Move();
+        ~Action_Move() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -247,7 +247,7 @@ class Action_Disband: public Action
 	//! Load a new disband action from an opened saved-game file.
         Action_Disband(XML_Helper* helper);
 	//! Destroy a disband action.
-        ~Action_Disband();
+        ~Action_Disband() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -286,7 +286,7 @@ class Action_Split : public Action
 	//! Load a new stack split action from an opened saved-game file.
         Action_Split(XML_Helper* helper);
 	//! Destroy a stack split action.
-        ~Action_Split();
+        ~Action_Split() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -327,7 +327,7 @@ class Action_Fight : public Action, public sigc::trackable
 	//! Load a new fight action from an opened saved-game file.
         Action_Fight(XML_Helper* helper);
 	//! Destroy a fight action.
-        ~Action_Fight();
+        ~Action_Fight() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -376,7 +376,7 @@ class Action_Join : public Action
 	//! Load a new stack join action from an opened saved-game file.
         Action_Join(XML_Helper* helper);
 	//! Destroy a stack join action.
-        ~Action_Join();
+        ~Action_Join() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -415,7 +415,7 @@ class Action_Ruin : public Action
 	//! Load a new ruin search attempted action from a saved-game file.
         Action_Ruin(XML_Helper* helper);
 	//! Destroy a ruin search attempted action.
-        ~Action_Ruin();
+        ~Action_Ruin() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -461,7 +461,7 @@ class Action_Temple : public Action
 	//! Load a new temple search action from a saved-game file.
         Action_Temple(XML_Helper* helper);
 	//! Destroy a temple search action.
-        ~Action_Temple();
+        ~Action_Temple() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -504,7 +504,7 @@ class Action_Occupy : public Action
 	//! Load a new city occupied action from an opened saved-game file.
         Action_Occupy(XML_Helper* helper);
 	//! Destroy a city occupy action.
-        ~Action_Occupy();
+        ~Action_Occupy() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -540,7 +540,7 @@ class Action_Pillage : public Action
 	//! Load a new city pillaged action from an opened saved-game file.
         Action_Pillage(XML_Helper* helper);
 	//! Destroy a city pillaged action.
-        ~Action_Pillage();
+        ~Action_Pillage() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -576,7 +576,7 @@ class Action_Sack : public Action
 	//! Load a new city sacked action from an opened saved-game file.
         Action_Sack(XML_Helper* helper);
 	//! Destroy a city sacked action.
-        ~Action_Sack();
+        ~Action_Sack() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -611,7 +611,7 @@ class Action_Raze : public Action
 	//! Load a new city razed action from an opened saved-game file.
         Action_Raze(XML_Helper* helper);
 	//! Destroy a city razed action.
-        ~Action_Raze();
+        ~Action_Raze() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -646,7 +646,7 @@ class Action_Upgrade : public Action
 	//! Load a new city upgraded action from an opened saved-game file.
         Action_Upgrade(XML_Helper* helper);
 	//! Destroy a city upgraded action.
-        ~Action_Upgrade();
+        ~Action_Upgrade() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -686,7 +686,7 @@ class Action_Buy : public Action
 	//! Load a new city buy production action from a saved-game file.
         Action_Buy(XML_Helper* helper);
 	//! Destroy a city buy production action.
-        ~Action_Buy();
+        ~Action_Buy() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -731,7 +731,7 @@ class Action_Production : public Action
 	//! Load a new city change production action from a saved-game file.
         Action_Production(XML_Helper* helper);
 	//! Destroy a city change production action.
-        ~Action_Production();
+        ~Action_Production() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -777,7 +777,7 @@ class Action_Reward : public Action
 	//! Load a new player rewarded action from a saved-game file.
         Action_Reward(XML_Helper* helper);
 	//! Destroy a player rewarded action.
-        ~Action_Reward();
+        ~Action_Reward() {};
         
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -817,7 +817,7 @@ class Action_Quest : public Action
 	//! Load a new hero quest assigned action from a saved-game file.
         Action_Quest(XML_Helper* helper);
 	//! Destroy a hero quest assigned action.
-        ~Action_Quest();
+        ~Action_Quest() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -866,7 +866,7 @@ class Action_Equip : public Action
 	//! Load a new item equipped action from an opened saved-game file.
         Action_Equip(XML_Helper* helper);
 	//! Destroy an item equipped action.
-        ~Action_Equip();
+        ~Action_Equip() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -913,7 +913,7 @@ class Action_Level : public Action
 	//! Load a new level advancement action from an opened saved-game file.
         Action_Level(XML_Helper* helper);
 	//! Destroy a level advancement action.
-        ~Action_Level();
+        ~Action_Level() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -956,7 +956,7 @@ class Action_ModifySignpost: public Action
 	//! Load a new change signpost action from an opened saved-game file.
         Action_ModifySignpost(XML_Helper* helper);
 	//! Destroy a change signpost action.
-        ~Action_ModifySignpost();
+        ~Action_ModifySignpost() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -993,7 +993,7 @@ class Action_RenameCity: public Action
 	//! Load a new city rename action from an opened saved-game file.
         Action_RenameCity(XML_Helper* helper);
 	//! Destroy a city rename action.
-        ~Action_RenameCity();
+        ~Action_RenameCity() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1031,7 +1031,7 @@ class Action_Vector: public Action
 	//! Load a new city vector action from an opened saved-game file.
         Action_Vector(XML_Helper* helper);
 	//! Destroy a city vector action.
-        ~Action_Vector();
+        ~Action_Vector() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1071,7 +1071,7 @@ class Action_FightOrder: public Action
 	//! Load a new fight order action from an opened saved-game file.
         Action_FightOrder(XML_Helper* helper);
 	//! Destroy a fight order action.
-        ~Action_FightOrder();
+        ~Action_FightOrder() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1106,7 +1106,7 @@ class Action_Resign: public Action
 	//! Load a new player resignation action from an opened saved-game file.
         Action_Resign(XML_Helper* helper);
 	//! Destroy a player resignation action.
-        ~Action_Resign();
+        ~Action_Resign() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1136,7 +1136,7 @@ class Action_Plant: public Action
 	//! Load a new item planted action from an opened saved-game file.
         Action_Plant(XML_Helper* helper);
 	//! Destroy a item planted action.
-        ~Action_Plant();
+        ~Action_Plant() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1301,7 +1301,7 @@ class Action_DiplomacyState: public Action
 	//! Load a new diplomatic state action from an opened saved-game file.
         Action_DiplomacyState(XML_Helper* helper);
 	//! Destroy a diplomatic state action.
-        ~Action_DiplomacyState();
+        ~Action_DiplomacyState() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1347,7 +1347,7 @@ class Action_DiplomacyProposal: public Action
 	//! Load a new diplomatic proposal action from a saved-game file.
         Action_DiplomacyProposal(XML_Helper* helper);
 	//! Destroy a diplomatic proposal action.
-        ~Action_DiplomacyProposal();
+        ~Action_DiplomacyProposal() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1393,7 +1393,7 @@ class Action_DiplomacyScore: public Action
 	//! Load a new diplomatic score action from an opened saved-game file.
         Action_DiplomacyScore(XML_Helper* helper);
 	//! Destroy a diplomatic score action.
-        ~Action_DiplomacyScore();
+        ~Action_DiplomacyScore() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1433,7 +1433,7 @@ class Action_EndTurn: public Action
 	//! Load a new end turn action from an opened saved-game file.
         Action_EndTurn(XML_Helper* helper);
 	//! Destroy a end turn action.
-        ~Action_EndTurn();
+        ~Action_EndTurn() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1454,7 +1454,7 @@ class Action_ConquerCity : public Action
 	//! Load a new city conquer action from an opened saved-game file.
         Action_ConquerCity(XML_Helper* helper);
 	//! Destroy a city conquer action.
-        ~Action_ConquerCity();
+        ~Action_ConquerCity() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1482,7 +1482,7 @@ class Action_RecruitHero : public Action
 	//! Load a new recruit hero action from an opened saved-game file.
         Action_RecruitHero(XML_Helper* helper);
 	//! Destroy a recruit hero action.
-        ~Action_RecruitHero();
+        ~Action_RecruitHero() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1518,7 +1518,7 @@ class Action_RenamePlayer: public Action
 	//! Load a new rename player action from an opened saved-game file.
         Action_RenamePlayer(XML_Helper* helper);
 	//! Destroy a rename player action.
-        ~Action_RenamePlayer();
+        ~Action_RenamePlayer() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1547,7 +1547,7 @@ class Action_CityTooPoorToProduce: public Action
 	//! Load a new too-poor action from an opened saved-game file.
         Action_CityTooPoorToProduce(XML_Helper* helper);
 	//! Destroy a too-poor action.
-        ~Action_CityTooPoorToProduce();
+        ~Action_CityTooPoorToProduce() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1578,7 +1578,7 @@ class Action_InitTurn: public Action
 	//! Load a new initialize turn action from an opened saved-game file.
         Action_InitTurn(XML_Helper* helper);
 	//! Destroy a initialize turn action.
-        ~Action_InitTurn();
+        ~Action_InitTurn() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1606,7 +1606,7 @@ class Action_Loot : public Action
 	//! Load a new city looting action from an opened saved-game file.
         Action_Loot(XML_Helper* helper);
 	//! Destroy a city looting action.
-        ~Action_Loot();
+        ~Action_Loot() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1647,7 +1647,7 @@ class Action_UseItem: public Action
 	//! Load a new use item action from a saved-game file.
         Action_UseItem(XML_Helper* helper);
 	//! Destroy a use item assigned action.
-        ~Action_UseItem();
+        ~Action_UseItem() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1695,7 +1695,7 @@ class Action_ReorderArmies: public Action
 	//! Load a new reorder armies action from a saved-game file.
         Action_ReorderArmies(XML_Helper* helper);
 	//! Destroy a reorder armies action.
-        ~Action_ReorderArmies();
+        ~Action_ReorderArmies() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1733,7 +1733,7 @@ class Action_ResetStacks: public Action
 	//! Load a new reset stacks action from a saved-game file.
         Action_ResetStacks(XML_Helper* helper);
 	//! Destroy a reset stacks action.
-        ~Action_ResetStacks();
+        ~Action_ResetStacks() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1767,7 +1767,7 @@ class Action_ResetRuins: public Action
 	//! Load a new reset ruins action from a saved-game file.
         Action_ResetRuins(XML_Helper* helper);
 	//! Destroy a reset ruins action.
-        ~Action_ResetRuins();
+        ~Action_ResetRuins() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1797,7 +1797,7 @@ class Action_CollectTaxesAndPayUpkeep: public Action
 	//! Load a new collect taxes and pay upkeep action from a saved-game file.
         Action_CollectTaxesAndPayUpkeep(XML_Helper* helper);
 	//! Destroy a collect taxes and pay upkeep action.
-        ~Action_CollectTaxesAndPayUpkeep();
+        ~Action_CollectTaxesAndPayUpkeep() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1826,7 +1826,7 @@ class Action_Kill: public Action
 	//! Load a new kill action from a saved-game file.
         Action_Kill(XML_Helper* helper);
 	//! Destroy a kill action.
-        ~Action_Kill();
+        ~Action_Kill() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1855,7 +1855,7 @@ class Action_DefendStack: public Action
 	//! Load a new defend stack action from a saved-game file.
         Action_DefendStack (XML_Helper* helper);
 	//! Destroy a defend stack action.
-        ~Action_DefendStack();
+        ~Action_DefendStack() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1889,7 +1889,7 @@ class Action_UndefendStack: public Action
 	//! Load a new undefend stack action from a saved-game file.
         Action_UndefendStack (XML_Helper* helper);
 	//! Destroy a undefend stack action.
-        ~Action_UndefendStack();
+        ~Action_UndefendStack() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1922,7 +1922,7 @@ class Action_ParkStack: public Action
 	//! Load a new park stack action from a saved-game file.
         Action_ParkStack (XML_Helper* helper);
 	//! Destroy a park stack action.
-        ~Action_ParkStack();
+        ~Action_ParkStack() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1956,7 +1956,7 @@ class Action_UnparkStack: public Action
 	//! Load a new unpark stack action from a saved-game file.
         Action_UnparkStack (XML_Helper* helper);
 	//! Destroy an unpark stack action.
-        ~Action_UnparkStack();
+        ~Action_UnparkStack() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -1987,7 +1987,7 @@ class Action_SelectStack: public Action
 	//! Load a new select stack action from a saved-game file.
         Action_SelectStack (XML_Helper* helper);
 	//! Destroy a select stack action.
-        ~Action_SelectStack();
+        ~Action_SelectStack() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
@@ -2020,7 +2020,7 @@ class Action_DeselectStack: public Action
 	//! Load a new deselect stack action from a saved-game file.
         Action_DeselectStack (XML_Helper* helper);
 	//! Destroy a deselect stack action.
-        ~Action_DeselectStack();
+        ~Action_DeselectStack() {};
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;
