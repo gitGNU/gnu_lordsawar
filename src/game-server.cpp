@@ -408,7 +408,7 @@ Participant *GameServer::findParticipantByConn(void *conn)
 void GameServer::onLocalNonNetworkedActionDone(NetworkAction *action)
 {
   Glib::ustring desc = action->toString();
-  std::cerr << String::ucompose(_("Game Server got action: %1 description: %2"), Action::actionTypeToString(action->getAction()->getType()), desc) << std::endl;
+  std::cerr << String::ucompose("Game Server got action: %1 description: %2", Action::actionTypeToString(action->getAction()->getType()), desc) << std::endl;
 
   if (action->getAction()->getType() == Action::END_TURN)
     local_player_moved.emit(action->getOwner());
@@ -444,7 +444,7 @@ void GameServer::onActionDone(NetworkAction *action)
 void GameServer::onLocalNonNetworkedHistoryDone(NetworkHistory *history)
 {
   Glib::ustring desc = history->toString();
-  std::cerr << String::ucompose(_("Game Server got history: %1 %2"), History::historyTypeToString(history->getHistory()->getType()), desc) << std::endl;
+  std::cerr << String::ucompose("Game Server got history: %1 %2", History::historyTypeToString(history->getHistory()->getType()), desc) << std::endl;
 
   if (history->getHistory()->getType() == History::PLAYER_VANQUISHED)
     local_player_died(history->getOwner());
@@ -473,12 +473,12 @@ void GameServer::onLocalNetworkedHistoryDone(NetworkHistory *history)
       if (history->getHistory()->getType() == History::GOLD_TOTAL ||
           history->getHistory()->getType() == History::SCORE)
         {
-          std::cerr << String::ucompose(_("Game Server got locally generated networked history event: %1"), desc) << std::endl;
+          std::cerr << String::ucompose("Game Server got locally generated networked history event: %1", desc) << std::endl;
           sendHistories(*i);
         }
       else
         {
-          std::cerr << String::ucompose(_("Game Server got locally generated networked history event but not sending: %1"), desc) << std::endl;
+          std::cerr << String::ucompose("Game Server got locally generated networked history event but not sending: %1", desc) << std::endl;
         }
 
       clearNetworkHistorylist((*i)->histories);
@@ -938,7 +938,7 @@ void GameServer::sendActions(Participant *part)
   for (std::list<NetworkAction *>::iterator i = part->actions.begin(),
        end = part->actions.end(); i != end; ++i)
     {
-      std::cerr << String::ucompose(_("Sending action: %1 from person %2 %3 to person %4"), Action::actionTypeToString((*i)->getAction()->getType()), d_nickname, Playerlist::getInstance()->getPlayer((*i)->getOwnerId())->getName(), part->nickname) << std::endl;
+      std::cerr << String::ucompose("Sending action: %1 from person %2 %3 to person %4", Action::actionTypeToString((*i)->getAction()->getType()), d_nickname, Playerlist::getInstance()->getPlayer((*i)->getOwnerId())->getName(), part->nickname) << std::endl;
     (**i).save(&helper);
     }
 
@@ -958,7 +958,7 @@ void GameServer::sendHistories(Participant *part)
   for (std::list<NetworkHistory *>::iterator i = part->histories.begin(),
        end = part->histories.end(); i != end; ++i)
     {
-      std::cerr << String::ucompose(_("sending history %1 from person %2 %3 to person %4"), History::historyTypeToString((*i)->getHistory()->getType()), d_nickname, Playerlist::getInstance()->getPlayer((*i)->getOwnerId())->getName(), part->nickname) << std::endl;
+      std::cerr << String::ucompose("sending history %1 from person %2 %3 to person %4", History::historyTypeToString((*i)->getHistory()->getType()), d_nickname, Playerlist::getInstance()->getPlayer((*i)->getOwnerId())->getName(), part->nickname) << std::endl;
       (**i).save(&helper);
     }
 

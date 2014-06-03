@@ -75,15 +75,9 @@ Stack::Stack(const Stack& s)
     for (const_iterator sit = s.begin(); sit != s.end(); sit++)
     {
 	if ((*sit)->isHero())
-	  {
-	    Army *h = new Hero(dynamic_cast<Hero&>(**sit));
-	    push_back(h);
-	  }
+          push_back(new Hero(dynamic_cast<Hero&>(**sit)));
 	else
-	  {
-	    Army *a = new Army((**sit), (*sit)->getOwner());
-	    push_back(a);
-	  }
+          push_back(new Army((**sit), (*sit)->getOwner()));
     }
 }
 
@@ -562,7 +556,6 @@ bool Stack::load(Glib::ustring tag, XML_Helper* helper)
   if (tag == Path::d_tag)
     {
       d_path = new Path(helper);
-
       return true;
     }
 
@@ -571,7 +564,6 @@ bool Stack::load(Glib::ustring tag, XML_Helper* helper)
       Army* a = new Army(helper);
       a->setOwner(d_owner);
       push_back(a);
-
       return true;
     }
 

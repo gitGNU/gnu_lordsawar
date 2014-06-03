@@ -154,9 +154,7 @@ void Playerlist::nextPlayer()
     iterator it;
 
     if (!d_activeplayer)
-    {
-        it = begin();
-    }
+      it = begin();
     else
     {
         for (it = begin(); it != end(); ++it)
@@ -190,9 +188,7 @@ Player* Playerlist::getPlayer(Glib::ustring name) const
 {
     debug("getPlayer()");
     for (const_iterator it = begin(); it != end(); ++it)
-    {
-        if ((*it)->getName() == name) return (*it);
-    }
+      if ((*it)->getName() == name) return (*it);
     return 0;
 }
 
@@ -846,9 +842,7 @@ void Playerlist::surrender()
   for (iterator it = begin(); it != end(); it++)
     {
       if ((*it)->getType() != Player::HUMAN)
-	{
-	  (*it)->setSurrendered(true);
-	}
+        (*it)->setSurrendered(true);
     }
 }
 
@@ -915,8 +909,7 @@ bool Playerlist::hasArmyset(guint32 id) const
 {
   for (const_iterator it = begin(); it != end(); it++)
     {
-      Player *p = (*it);
-      if (p->getArmyset() == id)
+      if ((*it)->getArmyset() == id)
         return true;
     }
   return false;
@@ -925,10 +918,7 @@ bool Playerlist::hasArmyset(guint32 id) const
 void Playerlist::setNewColours(Shieldset *shieldset)
 {
   for (iterator it = begin(); it != end(); it++)
-    {
-      Player *p = (*it);
-      p->setColor(shieldset->getColor(p->getId()));
-    }
+    (*it)->setColor(shieldset->getColor((*it)->getId()));
 }
 
 guint32 Playerlist::countBlessings() const

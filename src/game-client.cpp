@@ -32,7 +32,6 @@
 #include "network_player.h"
 #include "xmlhelper.h"
 #include "ucompose.hpp"
-  
 #include "real_player.h" 
 #include "network_player.h" 
 
@@ -147,7 +146,7 @@ void GameClient::stood_up(Player *player, Glib::ustring nickname)
 
 bool GameClient::onGotMessage(int type, Glib::ustring payload)
 {
-  std::cerr << String::ucompose(_("got message of type %1"), type) << std::endl;
+  std::cerr << String::ucompose("got message of type %1", type) << std::endl;
   switch (MessageType(type)) {
   case MESSAGE_TYPE_PING:
     network_connection->send(MESSAGE_TYPE_PONG, "PONGOGOGO");
@@ -167,12 +166,12 @@ bool GameClient::onGotMessage(int type, Glib::ustring payload)
     break;
 
   case MESSAGE_TYPE_PARTICIPANT_CONNECTED:
-    std::cerr << String::ucompose(_("message: %1 has data: %2"), type, payload) << std::endl;
+    std::cerr << String::ucompose("message: %1 has data: %2", type, payload) << std::endl;
     remote_participant_joins.emit(payload);
     break;
 
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECTED:
-    std::cerr << String::ucompose(_("message: %1 has data: %2"), type, payload) << std::endl;
+    std::cerr << String::ucompose("message: %1 has data: %2", type, payload) << std::endl;
     remote_participant_departs.emit(payload);
     break;
 
@@ -287,7 +286,7 @@ void GameClient::gotKillPlayer(Player *player)
 void GameClient::onHistoryDone(NetworkHistory *history)
 {
   Glib::ustring desc = history->toString();
-  std::cerr << String::ucompose(_("Game Client got %1"), desc) << std::endl;
+  std::cerr << String::ucompose("Game Client got %1", desc) << std::endl;
 
   if (history->getHistory()->getType() == History::PLAYER_VANQUISHED)
     local_player_died(history->getOwner());
@@ -300,7 +299,7 @@ void GameClient::onHistoryDone(NetworkHistory *history)
 void GameClient::onActionDone(NetworkAction *action)
 {
   Glib::ustring desc = action->toString();
-  std::cerr << String::ucompose(_("Game Client got %1"), desc) << std::endl;
+  std::cerr << String::ucompose("Game Client got %1", desc) << std::endl;
 
   if (action->getAction()->getType() == Action::END_TURN)
     local_player_moved(action->getOwner());

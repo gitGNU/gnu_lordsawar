@@ -182,9 +182,7 @@ unsigned int Stacklist::getNoOfStacks()
 
     for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
         pit != Playerlist::getInstance()->end(); pit++)
-    {
-        mysize += (*pit)->getStacklist()->size();
-    }
+      mysize += (*pit)->getStacklist()->size();
 
     return mysize;
 }
@@ -195,9 +193,7 @@ unsigned int Stacklist::getNoOfArmies()
 
     for (Playerlist::iterator pit = Playerlist::getInstance()->begin();
         pit != Playerlist::getInstance()->end(); pit++)
-    {
-        mysize += (*pit)->getStacklist()->countArmies();
-    }
+      mysize += (*pit)->getStacklist()->countArmies();
 
     return mysize;
 }
@@ -217,9 +213,7 @@ unsigned int Stacklist::countAllies() const
     unsigned int mysize = 0;
 
     for (const_iterator it = begin(); it != end(); it++)
-      {
-        mysize += (*it)->countAllies();
-      }
+      mysize += (*it)->countAllies();
 
     return mysize;
 }
@@ -233,16 +227,13 @@ Stacklist::Stacklist(Stacklist *stacklist)
     :d_activestack(0)
 {
     for (iterator it = stacklist->begin(); it != stacklist->end(); it++)
-    {
-        add(new Stack(**it));
-    }
+      add(new Stack(**it));
 }
 
 Stacklist::Stacklist(XML_Helper* helper)
     :d_activestack(0)
 {
     helper->registerTag(Stack::d_tag, sigc::mem_fun((*this), &Stacklist::load));
-
     load(Stacklist::d_tag, helper);
 }
 
@@ -257,10 +248,7 @@ Stacklist::~Stacklist()
 	(*lit).disconnect();
     }
   for (Stacklist::iterator it = begin(); it != end(); it++)
-    {
-      it = flErase(it);
-    }
-
+    it = flErase(it);
 }
 
 Stack* Stacklist::getNextMovable() const
@@ -320,8 +308,7 @@ Stack *Stacklist::getArmyStackById(guint32 army) const
   for (Stacklist::const_iterator i = begin(), e = end(); i != e; ++i)
     if ((*i)->getArmyById(army))
       return *i;
-  
-  return 0;
+  return NULL;
 }
 
 void Stacklist::flClear()
@@ -329,9 +316,7 @@ void Stacklist::flClear()
     d_activestack = 0;
 
     for (iterator it = begin(); it != end(); it++)
-    {
-        delete (*it);
-    }
+      delete (*it);
 
     clear();
 }
@@ -500,9 +485,7 @@ Hero *Stacklist::getNearestHero(Vector<int> pos, int dist) const
   std::list<Hero*> heroes = getHeroes();
   LocationList<Location*> hero_locales;
   for (std::list<Hero*>::iterator it = heroes.begin(); it != heroes.end(); it++)
-    {
-      hero_locales.push_back(new Location(getPosition((*it)->getId()), 1));
-    }
+    hero_locales.push_back(new Location(getPosition((*it)->getId()), 1));
   Location *hero_locale = hero_locales.getNearestObjectBefore(pos, dist);
   if (hero_locale)
     {
