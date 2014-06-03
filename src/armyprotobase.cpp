@@ -21,7 +21,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <algorithm>
 #include "armyprotobase.h"
 #include "xmlhelper.h"
 #include "defs.h"

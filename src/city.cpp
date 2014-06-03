@@ -21,8 +21,6 @@
 //  02110-1301, USA.
 
 #include <stdio.h>
-#include <algorithm>
-#include <stdlib.h>
 #include <sstream>
 #include "city.h"
 #include "path.h"

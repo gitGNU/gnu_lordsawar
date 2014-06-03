@@ -20,10 +20,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include <stdlib.h>
-#include <algorithm>
 #include <fstream>
-#include <assert.h>
 
 #include "AI_Diplomacy.h"
 #include "AI_Analysis.h"

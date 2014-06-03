@@ -20,7 +20,6 @@
 
 #include <assert.h>
 #include <math.h>
-#include <algorithm>
 #include <numeric>
 #include <vector>
 #include <gtkmm.h>

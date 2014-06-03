@@ -21,7 +21,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <algorithm>
 #include "army.h"
 #include "armyprodbase.h"
 #include "armyproto.h"

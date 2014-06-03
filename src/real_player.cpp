@@ -22,8 +22,6 @@
 //  02110-1301, USA.
 
 #include <fstream>
-#include <algorithm>
-#include <stdlib.h>
 
 #include "real_player.h"
 #include "action.h"

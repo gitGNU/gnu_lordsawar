@@ -17,8 +17,6 @@
 //  02110-1301, USA.
 
 #include <fstream>
-#include <algorithm>
-#include <stdlib.h>
 #include <assert.h>
 
 #include "network_player.h"

@@ -20,7 +20,6 @@
 #include "Tile.h"
 #include "SmallTile.h"
 #include <iostream>
-#include <algorithm>
 #include "File.h"
 #include "tileset.h"
 #include "tarhelper.h"

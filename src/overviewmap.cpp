@@ -19,7 +19,6 @@
 
 #include <assert.h>
 #include <math.h>
-#include <stdlib.h>
 #include <cairomm/context.h>
 #include "gui/image-helpers.h"
 

@@ -16,7 +16,6 @@
 //  02110-1301, USA.
 
 //#include <iostream>
-#include <algorithm>
 #include <fstream>
 #include <sstream>
 #include "recently-edited-file.h"

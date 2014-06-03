@@ -1,4 +1,4 @@
-//  Copyright (C) 2007, 2008, 2009 Ben Asselstine
+//  Copyright (C) 2007, 2008, 2009, 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -16,8 +16,6 @@
 //  02110-1301, USA.
 
 #include "vectoredunit.h"
-#include <stdlib.h>
-#include <string.h>
 #include <xmlhelper.h>
 
 #include "armysetlist.h"

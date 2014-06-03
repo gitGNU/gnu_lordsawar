@@ -21,7 +21,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <algorithm>
 #include "ucompose.hpp"
 #include "armybase.h"
 #include "xmlhelper.h"

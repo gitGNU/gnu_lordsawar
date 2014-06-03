@@ -23,7 +23,6 @@
 #include <config.h>
 
 #include <assert.h>
-#include <stdlib.h>
 
 #include "bigmap.h"
 

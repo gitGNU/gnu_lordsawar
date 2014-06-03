@@ -17,7 +17,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <algorithm>
 #include "armyproto.h"
 #include "heroproto.h"
 #include "xmlhelper.h"
@@ -70,4 +69,3 @@ bool HeroProto::save(XML_Helper* helper) const
 
   return retval;
 }
-

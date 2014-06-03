@@ -17,9 +17,6 @@
 
 #include <config.h>
 #include <iostream>
-#include <iomanip>
-#include <assert.h>
-#include <libgen.h>
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 #include <gtkmm.h>

@@ -24,7 +24,6 @@
 #include <fstream>
 #include <iostream>
 #include <string.h>
-#include <algorithm>
 #include <string>
 #include <glibmm/fileutils.h>
 #include <glibmm/ustring.h>

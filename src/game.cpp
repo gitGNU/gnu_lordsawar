@@ -18,7 +18,6 @@
 
 #include <config.h>
 
-#include <algorithm>
 #include <vector>
 #include <assert.h>
 #include <gtkmm.h>

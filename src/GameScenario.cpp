@@ -23,7 +23,6 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
-#include <stdlib.h>
 #include <errno.h>
 #include <sigc++/functors/mem_fun.h>
 #include <string.h>

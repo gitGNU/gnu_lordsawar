@@ -21,9 +21,7 @@
 //  02110-1301, USA.
 
 #include "fight.h"
-#include <algorithm>
 #include <assert.h>
-#include <stdlib.h>     // for random numbers
 #include <math.h>       // for has_hit()
 #include "army.h"
 #include "hero.h"

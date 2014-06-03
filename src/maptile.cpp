@@ -19,7 +19,6 @@
 //  02110-1301, USA.
 
 #include "maptile.h"
-#include <stdlib.h>
 #include <iostream>
 #include "tileset.h"
 #include "MapBackpack.h"

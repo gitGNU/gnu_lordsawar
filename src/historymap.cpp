@@ -17,9 +17,6 @@
 
 #include <config.h>
 
-#include <algorithm>
-#include <assert.h>
-
 #include "vector.h"
 #include "gui/image-helpers.h"
 #include <gtkmm.h>

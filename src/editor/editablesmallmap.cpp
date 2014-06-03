@@ -17,7 +17,6 @@
 
 #include <config.h>
 
-#include <algorithm>
 #include <assert.h>
 
 #include "vector.h"

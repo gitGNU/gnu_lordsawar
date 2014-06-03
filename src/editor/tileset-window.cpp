@@ -17,12 +17,7 @@
 
 #include <config.h>
 
-#include <algorithm>
 #include <iostream>
-#include <iomanip>
-#include <assert.h>
-#include <libgen.h>
-#include <string.h>
 #include <errno.h>
 
 #include <sigc++/functors/mem_fun.h>

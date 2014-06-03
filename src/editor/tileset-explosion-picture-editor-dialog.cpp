@@ -19,7 +19,6 @@
 
 #include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
-#include <stdlib.h>
 
 #include "tileset-explosion-picture-editor-dialog.h"
 

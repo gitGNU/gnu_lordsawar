@@ -18,7 +18,6 @@
 #include <config.h>
 
 #include <iostream>
-#include <stdlib.h>
 #include "Configuration.h"
 #include "xmlhelper.h"
 #include "tarhelper.h"

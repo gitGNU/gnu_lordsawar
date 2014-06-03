@@ -25,7 +25,6 @@
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/adaptors/bind.h>
 #include <assert.h>
-#include <algorithm>
 
 #include "stacklist.h"
 #include "stack.h"

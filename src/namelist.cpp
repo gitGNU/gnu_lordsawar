@@ -16,7 +16,6 @@
 //  02110-1301, USA.
 
 #include <iostream>
-#include <expat.h>
 #include <sigc++/functors/mem_fun.h>
 
 #include "namelist.h"

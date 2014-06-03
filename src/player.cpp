@@ -23,7 +23,6 @@
 
 #include <stdlib.h>
 #include <assert.h>
-#include <algorithm>
 #include <fstream>
 #include <sstream>
 #include <sigc++/functors/mem_fun.h>

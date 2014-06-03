@@ -19,8 +19,6 @@
 //  02110-1301, USA.
 
 #include <iostream>
-#include <algorithm>
-#include <expat.h>
 #include <gtkmm.h>
 #include <sigc++/functors/mem_fun.h>
 #include <assert.h>

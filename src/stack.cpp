@@ -23,7 +23,6 @@
 
 #include <sigc++/functors/mem_fun.h>
 #include <assert.h>
-#include <algorithm>
 
 #include "stack.h"
 #include "playerlist.h"

@@ -21,7 +21,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <algorithm>
 #include "armyproto.h"
 #include "xmlhelper.h"
 #include "armyset.h"

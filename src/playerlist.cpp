@@ -22,7 +22,6 @@
 
 #include <config.h>
 #include <sstream>
-#include <algorithm>
 #include <sigc++/functors/mem_fun.h>
 
 #include "playerlist.h"
