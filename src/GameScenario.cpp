@@ -895,12 +895,8 @@ Glib::ustring GameScenario::playModeToString(const GameScenario::PlayMode mode)
 {
   switch (mode)
     {
-      case GameScenario::HOTSEAT:
-	return "GameScenario::HOTSEAT";
-	break;
-      case GameScenario::NETWORKED:
-	return "GameScenario::NETWORKED";
-	break;
+      case GameScenario::HOTSEAT: return "GameScenario::HOTSEAT";
+      case GameScenario::NETWORKED: return "GameScenario::NETWORKED";
     }
   return "GameScenario::HOTSEAT";
 }
@@ -909,10 +905,9 @@ GameScenario::PlayMode GameScenario::playModeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return GameScenario::PlayMode(atoi(str.c_str()));
-  if (str == "GameScenario::HOTSEAT")
-    return GameScenario::HOTSEAT;
+  if (str == "GameScenario::HOTSEAT") return GameScenario::HOTSEAT;
   else if (str == "GameScenario::NETWORKED")
-    return GameScenario::NETWORKED;
+    return GameScenario::NETWORKED; 
   return GameScenario::HOTSEAT;
 }
 	

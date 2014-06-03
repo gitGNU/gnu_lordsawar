@@ -72,36 +72,21 @@ Glib::ustring Road::roadTypeToString(const Road::Type type)
 {
   switch (type)
     {
-    case Road::CONNECTS_EAST_AND_WEST:
-      return "Road::CONNECTS_EAST_AND_WEST";
-    case Road::CONNECTS_NORTH_AND_SOUTH:
-      return "Road::CONNECTS_NORTH_AND_SOUTH";
-    case Road::CONNECTS_ALL_DIRECTIONS:
-      return "Road::CONNECTS_ALL_DIRECTIONS";
-    case Road::CONNECTS_NORTH_AND_WEST:
-      return "Road::CONNECTS_NORTH_AND_WEST";
-    case Road::CONNECTS_NORTH_AND_EAST:
-      return "Road::CONNECTS_NORTH_AND_EAST";
-    case Road::CONNECTS_SOUTH_AND_EAST:
-      return "Road::CONNECTS_SOUTH_AND_EAST";
-    case Road::CONNECTS_WEST_AND_SOUTH:
-      return "Road::CONNECTS_WEST_AND_SOUTH";
-    case Road::CONNECTS_NORTH_AND_SOUTH_AND_EAST:
-      return "Road::CONNECTS_NORTH_AND_SOUTH_AND_EAST";
-    case Road::CONNECTS_EAST_WEST_AND_NORTH:
-      return "Road::CONNECTS_EAST_WEST_AND_NORTH";
-    case Road::CONNECTS_EAST_WEST_AND_SOUTH:
-      return "Road::CONNECTS_EAST_WEST_AND_SOUTH";
-    case Road::CONNECTS_NORTH_SOUTH_AND_WEST:
-      return "Road::CONNECTS_NORTH_SOUTH_AND_WEST";
-    case Road::CONNECTS_NORTH:
-      return "Road::CONNECTS_NORTH";
-    case Road::CONNECTS_SOUTH:
-      return "Road::CONNECTS_SOUTH";
-    case Road::CONNECTS_EAST:
-      return "Road::CONNECTS_EAST";
-    case Road::CONNECTS_WEST:
-      return "Road::CONNECTS_WEST";
+    case Road::CONNECTS_EAST_AND_WEST: return "Road::CONNECTS_EAST_AND_WEST";
+    case Road::CONNECTS_NORTH_AND_SOUTH: return "Road::CONNECTS_NORTH_AND_SOUTH";
+    case Road::CONNECTS_ALL_DIRECTIONS: return "Road::CONNECTS_ALL_DIRECTIONS";
+    case Road::CONNECTS_NORTH_AND_WEST: return "Road::CONNECTS_NORTH_AND_WEST";
+    case Road::CONNECTS_NORTH_AND_EAST: return "Road::CONNECTS_NORTH_AND_EAST";
+    case Road::CONNECTS_SOUTH_AND_EAST: return "Road::CONNECTS_SOUTH_AND_EAST";
+    case Road::CONNECTS_WEST_AND_SOUTH: return "Road::CONNECTS_WEST_AND_SOUTH";
+    case Road::CONNECTS_NORTH_AND_SOUTH_AND_EAST: return "Road::CONNECTS_NORTH_AND_SOUTH_AND_EAST";
+    case Road::CONNECTS_EAST_WEST_AND_NORTH: return "Road::CONNECTS_EAST_WEST_AND_NORTH";
+    case Road::CONNECTS_EAST_WEST_AND_SOUTH: return "Road::CONNECTS_EAST_WEST_AND_SOUTH";
+    case Road::CONNECTS_NORTH_SOUTH_AND_WEST: return "Road::CONNECTS_NORTH_SOUTH_AND_WEST";
+    case Road::CONNECTS_NORTH: return "Road::CONNECTS_NORTH";
+    case Road::CONNECTS_SOUTH: return "Road::CONNECTS_SOUTH";
+    case Road::CONNECTS_EAST: return "Road::CONNECTS_EAST";
+    case Road::CONNECTS_WEST: return "Road::CONNECTS_WEST";
     }
   return "Road::CONNECTS_EAST_AND_WEST";
 }
@@ -110,35 +95,20 @@ Road::Type Road::roadTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Road::Type(atoi(str.c_str()));
-  if (str == "Road::CONNECTS_EAST_AND_WEST")
-    return Road::CONNECTS_EAST_AND_WEST;
-  else if (str == "Road::CONNECTS_NORTH_AND_SOUTH")
-    return Road::CONNECTS_NORTH_AND_SOUTH;
-  else if (str == "Road::CONNECTS_ALL_DIRECTIONS")
-    return Road::CONNECTS_ALL_DIRECTIONS;
-  else if (str == "Road::CONNECTS_NORTH_AND_WEST")
-    return Road::CONNECTS_NORTH_AND_WEST;
-  else if (str == "Road::CONNECTS_NORTH_AND_EAST")
-    return Road::CONNECTS_NORTH_AND_EAST;
-  else if (str == "Road::CONNECTS_SOUTH_AND_EAST")
-    return Road::CONNECTS_SOUTH_AND_EAST;
-  else if (str == "Road::CONNECTS_WEST_AND_SOUTH")
-    return Road::CONNECTS_WEST_AND_SOUTH;
-  else if (str == "Road::CONNECTS_NORTH_AND_SOUTH_AND_EAST")
-    return Road::CONNECTS_NORTH_AND_SOUTH_AND_EAST;
-  else if (str == "Road::CONNECTS_EAST_WEST_AND_NORTH")
-    return Road::CONNECTS_EAST_WEST_AND_NORTH;
-  else if (str == "Road::CONNECTS_EAST_WEST_AND_SOUTH")
-    return Road::CONNECTS_EAST_WEST_AND_SOUTH;
-  else if (str == "Road::CONNECTS_NORTH_SOUTH_AND_WEST")
-    return Road::CONNECTS_NORTH_SOUTH_AND_WEST;
-  else if (str == "Road::CONNECTS_NORTH")
-    return Road::CONNECTS_NORTH;
-  else if (str == "Road::CONNECTS_SOUTH")
-    return Road::CONNECTS_SOUTH;
-  else if (str == "Road::CONNECTS_EAST")
-    return Road::CONNECTS_EAST;
-  else if (str == "Road::CONNECTS_WEST")
-    return Road::CONNECTS_WEST;
+  if (str == "Road::CONNECTS_EAST_AND_WEST") return Road::CONNECTS_EAST_AND_WEST;
+  else if (str == "Road::CONNECTS_NORTH_AND_SOUTH") return Road::CONNECTS_NORTH_AND_SOUTH;
+  else if (str == "Road::CONNECTS_ALL_DIRECTIONS") return Road::CONNECTS_ALL_DIRECTIONS;
+  else if (str == "Road::CONNECTS_NORTH_AND_WEST") return Road::CONNECTS_NORTH_AND_WEST;
+  else if (str == "Road::CONNECTS_NORTH_AND_EAST") return Road::CONNECTS_NORTH_AND_EAST;
+  else if (str == "Road::CONNECTS_SOUTH_AND_EAST") return Road::CONNECTS_SOUTH_AND_EAST;
+  else if (str == "Road::CONNECTS_WEST_AND_SOUTH") return Road::CONNECTS_WEST_AND_SOUTH;
+  else if (str == "Road::CONNECTS_NORTH_AND_SOUTH_AND_EAST") return Road::CONNECTS_NORTH_AND_SOUTH_AND_EAST;
+  else if (str == "Road::CONNECTS_EAST_WEST_AND_NORTH") return Road::CONNECTS_EAST_WEST_AND_NORTH;
+  else if (str == "Road::CONNECTS_EAST_WEST_AND_SOUTH") return Road::CONNECTS_EAST_WEST_AND_SOUTH;
+  else if (str == "Road::CONNECTS_NORTH_SOUTH_AND_WEST") return Road::CONNECTS_NORTH_SOUTH_AND_WEST;
+  else if (str == "Road::CONNECTS_NORTH") return Road::CONNECTS_NORTH;
+  else if (str == "Road::CONNECTS_SOUTH") return Road::CONNECTS_SOUTH;
+  else if (str == "Road::CONNECTS_EAST") return Road::CONNECTS_EAST;
+  else if (str == "Road::CONNECTS_WEST") return Road::CONNECTS_WEST;
   return Road::CONNECTS_EAST_AND_WEST;
 }

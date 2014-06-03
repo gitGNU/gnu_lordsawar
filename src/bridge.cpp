@@ -72,14 +72,10 @@ Glib::ustring Bridge::bridgeTypeToString(const Bridge::Type type)
 {
   switch (type)
     {
-    case Bridge::CONNECTS_TO_EAST:
-      return "Bridge::CONNECTS_TO_EAST";
-    case Bridge::CONNECTS_TO_NORTH:
-      return "Bridge::CONNECTS_TO_NORTH";
-    case Bridge::CONNECTS_TO_WEST:
-      return "Bridge::CONNECTS_TO_WEST";
-    case Bridge::CONNECTS_TO_SOUTH:
-      return "Bridge::CONNECTS_TO_SOUTH";
+    case Bridge::CONNECTS_TO_EAST: return "Bridge::CONNECTS_TO_EAST";
+    case Bridge::CONNECTS_TO_NORTH: return "Bridge::CONNECTS_TO_NORTH";
+    case Bridge::CONNECTS_TO_WEST: return "Bridge::CONNECTS_TO_WEST";
+    case Bridge::CONNECTS_TO_SOUTH: return "Bridge::CONNECTS_TO_SOUTH";
     }
   return "Bridge::CONNECTS_TO_EAST";
 }
@@ -88,14 +84,10 @@ Bridge::Type Bridge::bridgeTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Bridge::Type(atoi(str.c_str()));
-  if (str == "Bridge::CONNECTS_TO_EAST")
-    return Bridge::CONNECTS_TO_EAST;
-  else if (str == "Bridge::CONNECTS_TO_NORTH")
-    return Bridge::CONNECTS_TO_NORTH;
-  else if (str == "Bridge::CONNECTS_TO_WEST")
-    return Bridge::CONNECTS_TO_WEST;
-  else if (str == "Bridge::CONNECTS_TO_SOUTH")
-    return Bridge::CONNECTS_TO_SOUTH;
+  if (str == "Bridge::CONNECTS_TO_EAST") return Bridge::CONNECTS_TO_EAST;
+  else if (str == "Bridge::CONNECTS_TO_NORTH") return Bridge::CONNECTS_TO_NORTH;
+  else if (str == "Bridge::CONNECTS_TO_WEST") return Bridge::CONNECTS_TO_WEST;
+  else if (str == "Bridge::CONNECTS_TO_SOUTH") return Bridge::CONNECTS_TO_SOUTH;
   return Bridge::CONNECTS_TO_EAST;
 }
 

@@ -129,20 +129,13 @@ Glib::ustring Tile::tileTypeToString(const Tile::Type type)
 {
   switch (type)
     {
-    case Tile::GRASS:
-      return "Tile::GRASS";
-    case Tile::WATER:
-      return "Tile::WATER";
-    case Tile::FOREST:
-      return "Tile::FOREST";
-    case Tile::HILLS:
-      return "Tile::HILLS";
-    case Tile::MOUNTAIN:
-      return "Tile::MOUNTAIN";
-    case Tile::SWAMP:
-      return "Tile::SWAMP";
-    case Tile::VOID:
-      return "Tile::VOID";
+    case Tile::GRASS: return "Tile::GRASS";
+    case Tile::WATER: return "Tile::WATER";
+    case Tile::FOREST: return "Tile::FOREST";
+    case Tile::HILLS: return "Tile::HILLS";
+    case Tile::MOUNTAIN: return "Tile::MOUNTAIN";
+    case Tile::SWAMP: return "Tile::SWAMP";
+    case Tile::VOID: return "Tile::VOID";
     }
   return "Tile::GRASS";
 }
@@ -151,20 +144,13 @@ Tile::Type Tile::tileTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Tile::Type(atoi(str.c_str()));
-  if (str == "Tile::GRASS")
-    return Tile::GRASS;
-  else if (str == "Tile::WATER")
-    return Tile::WATER;
-  else if (str == "Tile::FOREST")
-    return Tile::FOREST;
-  else if (str == "Tile::HILLS")
-    return Tile::HILLS;
-  else if (str == "Tile::MOUNTAIN")
-    return Tile::MOUNTAIN;
-  else if (str == "Tile::SWAMP")
-    return Tile::SWAMP;
-  else if (str == "Tile::VOID")
-    return Tile::VOID;
+  if (str == "Tile::GRASS") return Tile::GRASS;
+  else if (str == "Tile::WATER") return Tile::WATER;
+  else if (str == "Tile::FOREST") return Tile::FOREST;
+  else if (str == "Tile::HILLS") return Tile::HILLS;
+  else if (str == "Tile::MOUNTAIN") return Tile::MOUNTAIN;
+  else if (str == "Tile::SWAMP") return Tile::SWAMP;
+  else if (str == "Tile::VOID") return Tile::VOID;
   return Tile::GRASS;
 }
 

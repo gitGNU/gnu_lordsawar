@@ -132,15 +132,9 @@ Glib::ustring Hero::genderToString(const Hero::Gender gender)
 {
   switch (gender)
     {
-    case Hero::NONE:
-      return "Hero::NONE";
-      break;
-    case Hero::MALE:
-      return "Hero::MALE";
-      break;
-    case Hero::FEMALE:
-      return "Hero::FEMALE";
-      break;
+    case Hero::NONE: return "Hero::NONE";
+    case Hero::MALE: return "Hero::MALE";
+    case Hero::FEMALE: return "Hero::FEMALE";
     }
   return "Hero::FEMALE";
 }
@@ -149,12 +143,9 @@ Hero::Gender Hero::genderFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Hero::Gender(atoi(str.c_str()));
-  if (str == "Hero::MALE")
-    return Hero::MALE;
-  else if (str == "Hero::NONE")
-    return Hero::NONE;
-  else if (str == "Hero::FEMALE")
-    return Hero::FEMALE;
+  if (str == "Hero::MALE") return Hero::MALE;
+  else if (str == "Hero::NONE") return Hero::NONE;
+  else if (str == "Hero::FEMALE") return Hero::FEMALE;
   return Hero::FEMALE;
 }
 

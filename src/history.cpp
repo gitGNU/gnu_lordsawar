@@ -923,50 +923,28 @@ Glib::ustring History::historyTypeToString(const History::Type type)
 {
   switch (type)
     {
-    case History::START_TURN:
-      return "History::START_TURN";
-    case History::FOUND_SAGE:
-      return "History::FOUND_SAGE";
-    case History::GOLD_TOTAL:
-      return "History::GOLD_TOTAL";
-    case History::HERO_EMERGES:
-      return "History::HERO_EMERGES";
-    case History::CITY_WON:
-      return "History::CITY_WON";
-    case History::HERO_CITY_WON:
-      return "History::HERO_CITY_WON";
-    case History::CITY_RAZED:
-      return "History::CITY_RAZED";
-    case History::HERO_QUEST_STARTED:
-      return "History::HERO_QUEST_STARTED";
-    case History::HERO_QUEST_COMPLETED:
-      return "History::HERO_QUEST_COMPLETED";
-    case History::HERO_KILLED_IN_CITY:
-      return "History::HERO_KILLED_IN_CITY";
-    case History::HERO_KILLED_IN_BATTLE:
-      return "History::HERO_KILLED_IN_BATTLE";
-    case History::HERO_KILLED_SEARCHING:
-      return "History::HERO_KILLED_SEARCHING";
-    case History::SCORE:
-      return "History::SCORE";
-    case History::PLAYER_VANQUISHED:
-      return "History::PLAYER_VANQUISHED";
-    case History::DIPLOMATIC_PEACE:
-      return "History::DIPLOMATIC_PEACE";
-    case History::DIPLOMATIC_WAR:
-      return "History::DIPLOMATIC_WAR";
-    case History::DIPLOMATIC_TREACHERY:
-      return "History::DIPLOMATIC_TREACHERY";
-    case History::HERO_FINDS_ALLIES:
-      return "History::HERO_FINDS_ALLIES";
-    case History::END_TURN:
-      return "History::END_TURN";
-    case History::HERO_RUIN_EXPLORED:
-      return "History::HERO_RUIN_EXPLORED";
-    case History::HERO_REWARD_RUIN:
-      return "History::HERO_REWARD_RUIN";
-    case History::USE_ITEM:
-      return "History::USE_ITEM";
+    case History::START_TURN: return "History::START_TURN";
+    case History::FOUND_SAGE: return "History::FOUND_SAGE";
+    case History::GOLD_TOTAL: return "History::GOLD_TOTAL";
+    case History::HERO_EMERGES: return "History::HERO_EMERGES";
+    case History::CITY_WON: return "History::CITY_WON";
+    case History::HERO_CITY_WON: return "History::HERO_CITY_WON";
+    case History::CITY_RAZED: return "History::CITY_RAZED";
+    case History::HERO_QUEST_STARTED: return "History::HERO_QUEST_STARTED";
+    case History::HERO_QUEST_COMPLETED: return "History::HERO_QUEST_COMPLETED";
+    case History::HERO_KILLED_IN_CITY: return "History::HERO_KILLED_IN_CITY";
+    case History::HERO_KILLED_IN_BATTLE: return "History::HERO_KILLED_IN_BATTLE";
+    case History::HERO_KILLED_SEARCHING: return "History::HERO_KILLED_SEARCHING";
+    case History::SCORE: return "History::SCORE";
+    case History::PLAYER_VANQUISHED: return "History::PLAYER_VANQUISHED";
+    case History::DIPLOMATIC_PEACE: return "History::DIPLOMATIC_PEACE";
+    case History::DIPLOMATIC_WAR: return "History::DIPLOMATIC_WAR";
+    case History::DIPLOMATIC_TREACHERY: return "History::DIPLOMATIC_TREACHERY";
+    case History::HERO_FINDS_ALLIES: return "History::HERO_FINDS_ALLIES";
+    case History::END_TURN: return "History::END_TURN";
+    case History::HERO_RUIN_EXPLORED: return "History::HERO_RUIN_EXPLORED";
+    case History::HERO_REWARD_RUIN: return "History::HERO_REWARD_RUIN";
+    case History::USE_ITEM: return "History::USE_ITEM";
     }
   return "History::START_TURN";
 }
@@ -975,49 +953,27 @@ History::Type History::historyTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return History::Type(atoi(str.c_str()));
-  if (str == "History::START_TURN")
-    return History::START_TURN;
-  else if (str == "History::FOUND_SAGE")
-    return History::FOUND_SAGE;
-  else if (str == "History::GOLD_TOTAL")
-    return History::GOLD_TOTAL;
-  else if (str == "History::HERO_EMERGES")
-    return History::HERO_EMERGES;
-  else if (str == "History::CITY_WON")
-    return History::CITY_WON;
-  else if (str== "History::HERO_CITY_WON")
-    return History::HERO_CITY_WON;
-  else if (str == "History::CITY_RAZED")
-    return History::CITY_RAZED;
-  else if (str == "History::HERO_QUEST_STARTED")
-    return History::HERO_QUEST_STARTED;
-  else if (str == "History::HERO_QUEST_COMPLETED")
-    return History::HERO_QUEST_COMPLETED;
-  else if (str == "History::HERO_KILLED_IN_CITY")
-    return History::HERO_KILLED_IN_CITY;
-  else if (str == "History::HERO_KILLED_IN_BATTLE")
-    return History::HERO_KILLED_IN_BATTLE;
-  else if (str == "History::HERO_KILLED_SEARCHING")
-    return History::HERO_KILLED_SEARCHING;
-  else if (str == "History::SCORE")
-    return History::SCORE;
-  else if (str == "History::PLAYER_VANQUISHED")
-    return History::PLAYER_VANQUISHED;
-  else if (str == "History::DIPLOMATIC_PEACE")
-    return History::DIPLOMATIC_PEACE;
-  else if (str == "History::DIPLOMATIC_WAR")
-    return History::DIPLOMATIC_WAR;
-  else if (str == "History::DIPLOMATIC_TREACHERY")
-    return History::DIPLOMATIC_TREACHERY;
-  else if (str == "History::HERO_FINDS_ALLIES")
-    return History::HERO_FINDS_ALLIES;
-  else if (str == "History::END_TURN")
-    return History::END_TURN;
-  else if (str == "History::HERO_RUIN_EXPLORED")
-    return History::HERO_RUIN_EXPLORED;
-  else if (str == "History::HERO_REWARD_RUIN")
-    return History::HERO_REWARD_RUIN;
-  else if (str == "History::USE_ITEM")
-    return History::USE_ITEM;
+  if (str == "History::START_TURN") return History::START_TURN;
+  else if (str == "History::FOUND_SAGE") return History::FOUND_SAGE;
+  else if (str == "History::GOLD_TOTAL") return History::GOLD_TOTAL;
+  else if (str == "History::HERO_EMERGES") return History::HERO_EMERGES;
+  else if (str == "History::CITY_WON") return History::CITY_WON;
+  else if (str== "History::HERO_CITY_WON") return History::HERO_CITY_WON;
+  else if (str == "History::CITY_RAZED") return History::CITY_RAZED;
+  else if (str == "History::HERO_QUEST_STARTED") return History::HERO_QUEST_STARTED;
+  else if (str == "History::HERO_QUEST_COMPLETED") return History::HERO_QUEST_COMPLETED;
+  else if (str == "History::HERO_KILLED_IN_CITY") return History::HERO_KILLED_IN_CITY;
+  else if (str == "History::HERO_KILLED_IN_BATTLE") return History::HERO_KILLED_IN_BATTLE;
+  else if (str == "History::HERO_KILLED_SEARCHING") return History::HERO_KILLED_SEARCHING;
+  else if (str == "History::SCORE") return History::SCORE;
+  else if (str == "History::PLAYER_VANQUISHED") return History::PLAYER_VANQUISHED;
+  else if (str == "History::DIPLOMATIC_PEACE") return History::DIPLOMATIC_PEACE;
+  else if (str == "History::DIPLOMATIC_WAR") return History::DIPLOMATIC_WAR;
+  else if (str == "History::DIPLOMATIC_TREACHERY") return History::DIPLOMATIC_TREACHERY;
+  else if (str == "History::HERO_FINDS_ALLIES") return History::HERO_FINDS_ALLIES;
+  else if (str == "History::END_TURN") return History::END_TURN;
+  else if (str == "History::HERO_RUIN_EXPLORED") return History::HERO_RUIN_EXPLORED;
+  else if (str == "History::HERO_REWARD_RUIN") return History::HERO_REWARD_RUIN;
+  else if (str == "History::USE_ITEM") return History::USE_ITEM;
   return History::START_TURN;
 }

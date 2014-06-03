@@ -192,15 +192,9 @@ Glib::ustring Ruin::ruinTypeToString(const Ruin::Type type)
 {
   switch (type)
     {
-      case Ruin::RUIN:
-	return "Ruin::RUIN";
-	break;
-      case Ruin::STRONGHOLD:
-	return "Ruin::STRONGHOLD";
-	break;
-      case Ruin::SAGE:
-	return "Ruin::SAGE";
-	break;
+      case Ruin::RUIN: return "Ruin::RUIN";
+      case Ruin::STRONGHOLD: return "Ruin::STRONGHOLD";
+      case Ruin::SAGE: return "Ruin::SAGE";
     }
   return "Ruin::RUIN";
 }
@@ -209,12 +203,9 @@ Ruin::Type Ruin::ruinTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Ruin::Type(atoi(str.c_str()));
-  if (str == "Ruin::RUIN")
-    return Ruin::RUIN;
-  else if (str == "Ruin::STRONGHOLD")
-    return Ruin::STRONGHOLD;
-  else if (str == "Ruin::SAGE")
-    return Ruin::SAGE;
+  if (str == "Ruin::RUIN") return Ruin::RUIN;
+  else if (str == "Ruin::STRONGHOLD") return Ruin::STRONGHOLD;
+  else if (str == "Ruin::SAGE") return Ruin::SAGE;
   return Ruin::RUIN;
 }
 

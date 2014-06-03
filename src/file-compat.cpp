@@ -460,30 +460,18 @@ Glib::ustring FileCompat::typeToString(const FileCompat::Type type)
 {
   switch (type)
     {
-    case UNKNOWN:
-      return _("unknown file");
-    case CONFIGURATION:
-      return _("primary configuration file");
-    case ITEMLIST:
-      return _("item description file");
-    case PROFILELIST:
-      return _("profiles file");
-    case RECENTLYPLAYEDGAMELIST:
-      return _("recently played games file");
-    case GAMELIST:
-      return _("recently hosted or recently advertised games file");
-    case RECENTLYEDITEDFILELIST:
-      return _("recently edited documents file");
-    case ARMYSET:
-      return _("armyset file");
-    case TILESET:
-      return _("tileset file");
-    case CITYSET:
-      return _("cityset file");
-    case SHIELDSET:
-      return _("shieldset file");
-    case GAMESCENARIO:
-      return _("map or saved-game file");
+    case UNKNOWN: return _("unknown file");
+    case CONFIGURATION: return _("primary configuration file");
+    case ITEMLIST: return _("item description file");
+    case PROFILELIST: return _("profiles file");
+    case RECENTLYPLAYEDGAMELIST: return _("recently played games file");
+    case GAMELIST: return _("recently hosted or recently advertised games file");
+    case RECENTLYEDITEDFILELIST: return _("recently edited documents file");
+    case ARMYSET: return _("armyset file");
+    case TILESET: return _("tileset file");
+    case CITYSET: return _("cityset file");
+    case SHIELDSET: return _("shieldset file");
+    case GAMESCENARIO: return _("map or saved-game file");
     }
   return _("unknown file");
 }
@@ -492,30 +480,18 @@ Glib::ustring FileCompat::typeToCode(const FileCompat::Type type)
 {
   switch (type)
     {
-    case UNKNOWN:
-      return "";
-    case CONFIGURATION:
-      return "c";
-    case ITEMLIST:
-      return "il";
-    case PROFILELIST:
-      return "pl";
-    case RECENTLYPLAYEDGAMELIST:
-      return "rpg";
-    case GAMELIST:
-      return "gl";
-    case RECENTLYEDITEDFILELIST:
-      return "ref";
-    case ARMYSET:
-      return "as";
-    case TILESET:
-      return "ts";
-    case CITYSET:
-      return "cs";
-    case SHIELDSET:
-      return "ss";
-    case GAMESCENARIO:
-      return "gs";
+    case UNKNOWN: return "";
+    case CONFIGURATION: return "c";
+    case ITEMLIST: return "il";
+    case PROFILELIST: return "pl";
+    case RECENTLYPLAYEDGAMELIST: return "rpg";
+    case GAMELIST: return "gl";
+    case RECENTLYEDITEDFILELIST: return "ref";
+    case ARMYSET: return "as";
+    case TILESET: return "ts";
+    case CITYSET: return "cs";
+    case SHIELDSET: return "ss";
+    case GAMESCENARIO: return "gs";
     }
   return "";
 }

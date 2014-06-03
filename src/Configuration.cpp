@@ -349,16 +349,12 @@ Glib::ustring Configuration::neutralCitiesToString(const GameParameters::Neutral
     {
       case GameParameters::AVERAGE:
 	return "GameParameters::AVERAGE";
-	break;
       case GameParameters::STRONG:
 	return "GameParameters::STRONG";
-	break;
       case GameParameters::ACTIVE:
 	return "GameParameters::ACTIVE";
-	break;
       case GameParameters::DEFENSIVE:
 	return "GameParameters::DEFENSIVE";
-	break;
     }
   return "GameParameters::AVERAGE";
 }
@@ -385,13 +381,10 @@ Glib::ustring Configuration::razingCitiesToString(const GameParameters::RazingCi
     {
       case GameParameters::NEVER:
 	return "GameParameters::NEVER";
-	break;
       case GameParameters::ON_CAPTURE:
 	return "GameParameters::ON_CAPTURE";
-	break;
       case GameParameters::ALWAYS:
 	return "GameParameters::ALWAYS";
-	break;
     }
   return "GameParameters::ALWAYS";
 }
@@ -416,13 +409,10 @@ Glib::ustring Configuration::savingPolicyToString(const Configuration::SavingPol
     {
     case Configuration::NO_SAVING:
       return "Configuration::NO_SAVING";
-      break;
     case Configuration::WRITE_UNNUMBERED_AUTOSAVE_FILE:
       return "Configuration::WRITE_UNNUMBERED_AUTOSAVE_FILE";
-      break;
     case Configuration::WRITE_NUMBERED_AUTOSAVE_FILE:
       return "Configuration::WRITE_NUMBERED_AUTOSAVE_FILE";
-      break;
     }
   return "Configuration::NO_SAVING";
 }
@@ -447,13 +437,10 @@ Glib::ustring Configuration::quickStartPolicyToString(const GameParameters::Quic
     {
     case GameParameters::NO_QUICK_START:
       return "GameParameters::NO_QUICK_START";
-      break;
     case GameParameters::EVENLY_DIVIDED:
       return "GameParameters::EVENLY_DIVIDED";
-      break;
     case GameParameters::AI_HEAD_START:
       return "GameParameters::AI_HEAD_START";
-      break;
     }
   return "GameParameters::NO_QUICK_START";
 }
@@ -478,13 +465,10 @@ Glib::ustring Configuration::questPolicyToString(const GameParameters::QuestPoli
     {
       case GameParameters::NO_QUESTING:
 	return "GameParameters::NO_QUESTING";
-	break;
       case GameParameters::ONE_QUEST_PER_PLAYER:
 	return "GameParameters::ONE_QUEST_PER_PLAYER";
-	break;
       case GameParameters::ONE_QUEST_PER_HERO:
 	return "GameParameters::ONE_QUEST_PER_HERO";
-	break;
     }
   return "GameParameters::NO_QUESTING";
 }
@@ -509,13 +493,10 @@ Glib::ustring Configuration::uiFormFactorToString(const Configuration::UiFormFac
     {
     case Configuration::UI_FORM_FACTOR_DESKTOP:
       return "Configuration::UI_FORM_FACTOR_DESKTOP";
-      break;
     case Configuration::UI_FORM_FACTOR_NETBOOK:
       return "Configuration::UI_FORM_FACTOR_NETBOOK";
-      break;
     case Configuration::UI_FORM_FACTOR_LARGE_SCREEN:
       return "Configuration::UI_FORM_FACTOR_LARGE_SCREEN";
-      break;
     }
   return "Configuration::UI_FORM_FACTOR_DESKTOP";
 }

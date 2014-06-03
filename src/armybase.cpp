@@ -163,34 +163,20 @@ Glib::ustring ArmyBase::bonusFlagToString(const ArmyBase::Bonus bonus)
 {
   switch (bonus)
     {
-    case ArmyBase::ADD1STRINOPEN:
-      return "ArmyBase::ADD1STRINOPEN";
-    case ArmyBase::ADD2STRINOPEN:
-      return "ArmyBase::ADD2STRINOPEN";
-    case ArmyBase::ADD1STRINFOREST:
-      return "ArmyBase::ADD1STRINFOREST";
-    case ArmyBase::ADD1STRINHILLS:
-      return "ArmyBase::ADD1STRINHILLS";
-    case ArmyBase::ADD1STRINCITY:
-      return "ArmyBase::ADD1STRINCITY";
-    case ArmyBase::ADD2STRINCITY:
-      return "ArmyBase::ADD2STRINCITY";
-    case ArmyBase::ADD1STACKINHILLS:
-      return "ArmyBase::ADD1STACKINHILLS";
-    case ArmyBase::SUBALLCITYBONUS:
-      return "ArmyBase::SUBALLCITYBONUS";
-    case ArmyBase::SUB1ENEMYSTACK:
-      return "ArmyBase::SUB1ENEMYSTACK";
-    case ArmyBase::ADD1STACK:
-      return "ArmyBase::ADD1STACK";
-    case ArmyBase::ADD2STACK:
-      return "ArmyBase::ADD2STACK";
-    case ArmyBase::SUBALLNONHEROBONUS:
-      return "ArmyBase::SUBALLNONHEROBONUS";
-    case ArmyBase::SUBALLHEROBONUS:
-      return "ArmyBase::SUBALLHEROBONUS";
-    case ArmyBase::FORTIFY:
-      return "ArmyBase::FORTIFY";
+    case ArmyBase::ADD1STRINOPEN: return "ArmyBase::ADD1STRINOPEN";
+    case ArmyBase::ADD2STRINOPEN: return "ArmyBase::ADD2STRINOPEN";
+    case ArmyBase::ADD1STRINFOREST: return "ArmyBase::ADD1STRINFOREST";
+    case ArmyBase::ADD1STRINHILLS: return "ArmyBase::ADD1STRINHILLS";
+    case ArmyBase::ADD1STRINCITY: return "ArmyBase::ADD1STRINCITY";
+    case ArmyBase::ADD2STRINCITY: return "ArmyBase::ADD2STRINCITY";
+    case ArmyBase::ADD1STACKINHILLS: return "ArmyBase::ADD1STACKINHILLS";
+    case ArmyBase::SUBALLCITYBONUS: return "ArmyBase::SUBALLCITYBONUS";
+    case ArmyBase::SUB1ENEMYSTACK: return "ArmyBase::SUB1ENEMYSTACK";
+    case ArmyBase::ADD1STACK: return "ArmyBase::ADD1STACK";
+    case ArmyBase::ADD2STACK: return "ArmyBase::ADD2STACK";
+    case ArmyBase::SUBALLNONHEROBONUS: return "ArmyBase::SUBALLNONHEROBONUS";
+    case ArmyBase::SUBALLHEROBONUS: return "ArmyBase::SUBALLHEROBONUS";
+    case ArmyBase::FORTIFY: return "ArmyBase::FORTIFY";
     }
   return "";
 }
@@ -250,33 +236,19 @@ ArmyBase::Bonus ArmyBase::bonusFlagFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return ArmyBase::Bonus(atoi(str.c_str()));
-  if (str == "ArmyBase::ADD1STRINOPEN")
-    return ArmyBase::ADD1STRINOPEN;
-  else if (str == "ArmyBase::ADD2STRINOPEN")
-    return ArmyBase::ADD2STRINOPEN;
-  else if (str == "ArmyBase::ADD1STRINFOREST")
-    return ArmyBase::ADD1STRINFOREST;
-  else if (str == "ArmyBase::ADD1STRINHILLS")
-    return ArmyBase::ADD1STRINHILLS;
-  else if (str == "ArmyBase::ADD1STRINCITY")
-    return ArmyBase::ADD1STRINCITY;
-  else if (str == "ArmyBase::ADD2STRINCITY")
-    return ArmyBase::ADD2STRINCITY;
-  else if (str == "ArmyBase::ADD1STACKINHILLS")
-    return ArmyBase::ADD1STACKINHILLS;
-  else if (str == "ArmyBase::SUBALLCITYBONUS")
-    return ArmyBase::SUBALLCITYBONUS;
-  else if (str == "ArmyBase::SUB1ENEMYSTACK")
-    return ArmyBase::SUB1ENEMYSTACK;
-  else if (str == "ArmyBase::ADD1STACK")
-    return ArmyBase::ADD1STACK;
-  else if (str == "ArmyBase::ADD2STACK")
-    return ArmyBase::ADD2STACK;
-  else if (str == "ArmyBase::SUBALLNONHEROBONUS")
-    return ArmyBase::SUBALLNONHEROBONUS;
-  else if (str == "ArmyBase::SUBALLHEROBONUS")
-    return ArmyBase::SUBALLHEROBONUS;
-  else if (str == "ArmyBase::FORTIFY")
-    return ArmyBase::FORTIFY;
+  if (str == "ArmyBase::ADD1STRINOPEN") return ArmyBase::ADD1STRINOPEN;
+  else if (str == "ArmyBase::ADD2STRINOPEN") return ArmyBase::ADD2STRINOPEN;
+  else if (str == "ArmyBase::ADD1STRINFOREST") return ArmyBase::ADD1STRINFOREST;
+  else if (str == "ArmyBase::ADD1STRINHILLS") return ArmyBase::ADD1STRINHILLS;
+  else if (str == "ArmyBase::ADD1STRINCITY") return ArmyBase::ADD1STRINCITY;
+  else if (str == "ArmyBase::ADD2STRINCITY") return ArmyBase::ADD2STRINCITY;
+  else if (str == "ArmyBase::ADD1STACKINHILLS") return ArmyBase::ADD1STACKINHILLS;
+  else if (str == "ArmyBase::SUBALLCITYBONUS") return ArmyBase::SUBALLCITYBONUS;
+  else if (str == "ArmyBase::SUB1ENEMYSTACK") return ArmyBase::SUB1ENEMYSTACK;
+  else if (str == "ArmyBase::ADD1STACK") return ArmyBase::ADD1STACK;
+  else if (str == "ArmyBase::ADD2STACK") return ArmyBase::ADD2STACK;
+  else if (str == "ArmyBase::SUBALLNONHEROBONUS") return ArmyBase::SUBALLNONHEROBONUS;
+  else if (str == "ArmyBase::SUBALLHEROBONUS") return ArmyBase::SUBALLHEROBONUS;
+  else if (str == "ArmyBase::FORTIFY") return ArmyBase::FORTIFY;
   return ArmyBase::ADD1STRINOPEN;
 }

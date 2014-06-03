@@ -479,21 +479,11 @@ Glib::ustring Reward::rewardTypeToString(const Reward::Type type)
 {
   switch (type)
     {
-      case Reward::GOLD:
-	return "Reward::GOLD";
-	break;
-      case Reward::ALLIES:
-	return "Reward::ALLIES";
-	break;
-      case Reward::ITEM:
-	return "Reward::ITEM";
-	break;
-      case Reward::RUIN:
-	return "Reward::RUIN";
-	break;
-      case Reward::MAP:
-	return "Reward::MAP";
-	break;
+      case Reward::GOLD: return "Reward::GOLD";
+      case Reward::ALLIES: return "Reward::ALLIES";
+      case Reward::ITEM: return "Reward::ITEM";
+      case Reward::RUIN: return "Reward::RUIN";
+      case Reward::MAP: return "Reward::MAP";
     }
   return "Reward::GOLD";
 }
@@ -502,16 +492,11 @@ Reward::Type Reward::rewardTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Reward::Type(atoi(str.c_str()));
-  if (str == "Reward::GOLD")
-    return Reward::GOLD;
-  else if (str == "Reward::ALLIES")
-    return Reward::ALLIES;
-  else if (str == "Reward::ITEM")
-    return Reward::ITEM;
-  else if (str == "Reward::RUIN")
-    return Reward::RUIN;
-  else if (str == "Reward::MAP")
-    return Reward::MAP;
+  if (str == "Reward::GOLD") return Reward::GOLD;
+  else if (str == "Reward::ALLIES") return Reward::ALLIES;
+  else if (str == "Reward::ITEM") return Reward::ITEM;
+  else if (str == "Reward::RUIN") return Reward::RUIN;
+  else if (str == "Reward::MAP") return Reward::MAP;
   return Reward::GOLD;
 }
 

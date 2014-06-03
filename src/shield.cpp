@@ -86,24 +86,15 @@ Glib::ustring Shield::colourToString(const Shield::Colour c)
 {
   switch (c)
     {
-    case Shield::WHITE:
-      return "Shield::WHITE"; break;
-    case Shield::GREEN:
-      return "Shield::GREEN"; break;
-    case Shield::YELLOW:
-      return "Shield::YELLOW"; break;
-    case Shield::LIGHT_BLUE:
-      return "Shield::LIGHT_BLUE"; break;
-    case Shield::RED:
-      return "Shield::RED"; break;
-    case Shield::DARK_BLUE:
-      return "Shield::DARK_BLUE"; break;
-    case Shield::ORANGE:
-      return "Shield::ORANGE"; break;
-    case Shield::BLACK:
-      return "Shield::BLACK"; break;
-    case Shield::NEUTRAL:
-      return "Shield::NEUTRAL"; break;
+    case Shield::WHITE: return "Shield::WHITE";
+    case Shield::GREEN: return "Shield::GREEN";
+    case Shield::YELLOW: return "Shield::YELLOW";
+    case Shield::LIGHT_BLUE: return "Shield::LIGHT_BLUE";
+    case Shield::RED: return "Shield::RED";
+    case Shield::DARK_BLUE: return "Shield::DARK_BLUE";
+    case Shield::ORANGE: return "Shield::ORANGE";
+    case Shield::BLACK: return "Shield::BLACK";
+    case Shield::NEUTRAL: return "Shield::NEUTRAL";
     }
   return "Shield::NEUTRAL";
 }

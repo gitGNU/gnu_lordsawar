@@ -68,15 +68,9 @@ Glib::ustring ShieldStyle::shieldStyleTypeToString(const ShieldStyle::Type type)
 {
   switch (type)
     {
-      case ShieldStyle::SMALL:
-	return "ShieldStyle::SMALL";
-	break;
-      case ShieldStyle::MEDIUM:
-	return "ShieldStyle::MEDIUM";
-	break;
-      case ShieldStyle::LARGE:
-	return "ShieldStyle::LARGE";
-	break;
+      case ShieldStyle::SMALL: return "ShieldStyle::SMALL";
+      case ShieldStyle::MEDIUM: return "ShieldStyle::MEDIUM";
+      case ShieldStyle::LARGE: return "ShieldStyle::LARGE";
     }
   return "ShieldStyle::SMALL";
 }
@@ -85,12 +79,9 @@ ShieldStyle::Type ShieldStyle::shieldStyleTypeFromString(const Glib::ustring str
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return ShieldStyle::Type(atoi(str.c_str()));
-  if (str == "ShieldStyle::SMALL")
-    return ShieldStyle::SMALL;
-  else if (str == "ShieldStyle::MEDIUM")
-    return ShieldStyle::MEDIUM;
-  else if (str == "ShieldStyle::LARGE")
-    return ShieldStyle::LARGE;
+  if (str == "ShieldStyle::SMALL") return ShieldStyle::SMALL;
+  else if (str == "ShieldStyle::MEDIUM") return ShieldStyle::MEDIUM;
+  else if (str == "ShieldStyle::LARGE") return ShieldStyle::LARGE;
   return ShieldStyle::SMALL;
 }
 

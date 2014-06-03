@@ -2412,102 +2412,54 @@ Glib::ustring Action::actionTypeToString(Action::Type type)
 {
   switch (type)
     {
-    case Action::STACK_MOVE:
-      return "Action::STACK_MOVE";
-    case Action::STACK_SPLIT:
-      return "Action::STACK_SPLIT";
-    case Action::STACK_FIGHT:
-      return "Action::STACK_FIGHT";
-    case Action::STACK_JOIN:
-      return "Action::STACK_JOIN";
-    case Action::RUIN_SEARCH:
-      return "Action::RUIN_SEARCH";
-    case Action::TEMPLE_SEARCH:
-      return "Action::TEMPLE_SEARCH";
-    case Action::CITY_OCCUPY:
-      return "Action::CITY_OCCUPY";
-    case Action::CITY_PILLAGE:
-      return "Action::CITY_PILLAGE";
-    case Action::CITY_SACK:
-      return "Action::CITY_SACK";
-    case Action::CITY_RAZE:
-      return "Action::CITY_RAZE";
-    case Action::CITY_UPGRADE:
-      return "Action::CITY_UPGRADE";
-    case Action::CITY_BUY:
-      return "Action::CITY_BUY";
-    case Action::CITY_PROD:
-      return "Action::CITY_PROD";
-    case Action::REWARD: 
-      return "Action::REWARD" ;
-    case Action::QUEST:
-      return "Action::QUEST";
-    case Action::HERO_EQUIP:
-      return "Action::HERO_EQUIP";
-    case Action::UNIT_ADVANCE:
-      return "Action::UNIT_ADVANCE";
-    case Action::STACK_DISBAND:
-      return "Action::STACK_DISBAND";
-    case Action::MODIFY_SIGNPOST:
-      return "Action::MODIFY_SIGNPOST";
-    case Action::CITY_RENAME:
-      return "Action::CITY_RENAME";
-    case Action::CITY_VECTOR:
-      return "Action::CITY_VECTOR";
-    case Action::FIGHT_ORDER:
-      return "Action::FIGHT_ORDER";
-    case Action::RESIGN:
-      return "Action::RESIGN";
-    case Action::ITEM_PLANT:
-      return "Action::ITEM_PLANT";
-    case Action::PRODUCE_UNIT:
-      return "Action::PRODUCE_UNIT";
-    case Action::PRODUCE_VECTORED_UNIT:
-      return "Action::PRODUCE_VECTORED_UNIT";
-    case Action::DIPLOMATIC_STATE:
-      return "Action::DIPLOMATIC_STATE";
-    case Action::DIPLOMATIC_PROPOSAL:
-      return "Action::DIPLOMATIC_PROPOSAL";
-    case Action::DIPLOMATIC_SCORE:
-      return "Action::DIPLOMATIC_SCORE";
-    case Action::END_TURN:
-      return "Action::END_TURN";
-    case Action::CITY_CONQUER:
-      return "Action::CITY_CONQUER";
-    case Action::RECRUIT_HERO:
-      return "Action::RECRUIT_HERO";
-    case Action::PLAYER_RENAME:
-      return "Action::PLAYER_RENAME";
-    case Action::CITY_DESTITUTE:
-      return "Action::CITY_DESTITUTE";
-    case Action::INIT_TURN:
-      return "Action::INIT_TURN";
-    case Action::CITY_LOOT:
-      return "Action::CITY_LOOT";
-    case Action::USE_ITEM:
-      return "Action::USE_ITEM";
-    case Action::STACK_ORDER:
-      return "Action::STACK_ORDER";
-    case Action::STACKS_RESET:
-      return "Action::STACKS_RESET";
-    case Action::RUINS_RESET:
-      return "Action::RUINS_RESET";
-    case Action::COLLECT_TAXES_AND_PAY_UPKEEP:
-      return "Action::COLLECT_TAXES_AND_PAY_UPKEEP";
-    case Action::KILL_PLAYER:
-      return "Action::KILL_PLAYER";
-    case Action::STACK_DEFEND:
-      return "Action::STACK_DEFEND";
-    case Action::STACK_UNDEFEND:
-      return "Action::STACK_UNDEFEND";
-    case Action::STACK_PARK:
-      return "Action::STACK_PARK";
-    case Action::STACK_UNPARK:
-      return "Action::STACK_UNPARK";
-    case Action::STACK_SELECT:
-      return "Action::STACK_SELECT";
-    case Action::STACK_DESELECT:
-      return "Action::STACK_DESELECT";
+    case Action::STACK_MOVE: return "Action::STACK_MOVE";
+    case Action::STACK_SPLIT: return "Action::STACK_SPLIT";
+    case Action::STACK_FIGHT: return "Action::STACK_FIGHT";
+    case Action::STACK_JOIN: return "Action::STACK_JOIN";
+    case Action::RUIN_SEARCH: return "Action::RUIN_SEARCH";
+    case Action::TEMPLE_SEARCH: return "Action::TEMPLE_SEARCH";
+    case Action::CITY_OCCUPY: return "Action::CITY_OCCUPY";
+    case Action::CITY_PILLAGE: return "Action::CITY_PILLAGE";
+    case Action::CITY_SACK: return "Action::CITY_SACK";
+    case Action::CITY_RAZE: return "Action::CITY_RAZE";
+    case Action::CITY_UPGRADE: return "Action::CITY_UPGRADE";
+    case Action::CITY_BUY: return "Action::CITY_BUY";
+    case Action::CITY_PROD: return "Action::CITY_PROD";
+    case Action::REWARD: return "Action::REWARD" ;
+    case Action::QUEST: return "Action::QUEST";
+    case Action::HERO_EQUIP: return "Action::HERO_EQUIP";
+    case Action::UNIT_ADVANCE: return "Action::UNIT_ADVANCE";
+    case Action::STACK_DISBAND: return "Action::STACK_DISBAND";
+    case Action::MODIFY_SIGNPOST: return "Action::MODIFY_SIGNPOST";
+    case Action::CITY_RENAME: return "Action::CITY_RENAME";
+    case Action::CITY_VECTOR: return "Action::CITY_VECTOR";
+    case Action::FIGHT_ORDER: return "Action::FIGHT_ORDER";
+    case Action::RESIGN: return "Action::RESIGN";
+    case Action::ITEM_PLANT: return "Action::ITEM_PLANT";
+    case Action::PRODUCE_UNIT: return "Action::PRODUCE_UNIT";
+    case Action::PRODUCE_VECTORED_UNIT: return "Action::PRODUCE_VECTORED_UNIT";
+    case Action::DIPLOMATIC_STATE: return "Action::DIPLOMATIC_STATE";
+    case Action::DIPLOMATIC_PROPOSAL: return "Action::DIPLOMATIC_PROPOSAL";
+    case Action::DIPLOMATIC_SCORE: return "Action::DIPLOMATIC_SCORE";
+    case Action::END_TURN: return "Action::END_TURN";
+    case Action::CITY_CONQUER: return "Action::CITY_CONQUER";
+    case Action::RECRUIT_HERO: return "Action::RECRUIT_HERO";
+    case Action::PLAYER_RENAME: return "Action::PLAYER_RENAME";
+    case Action::CITY_DESTITUTE: return "Action::CITY_DESTITUTE";
+    case Action::INIT_TURN: return "Action::INIT_TURN";
+    case Action::CITY_LOOT: return "Action::CITY_LOOT";
+    case Action::USE_ITEM: return "Action::USE_ITEM";
+    case Action::STACK_ORDER: return "Action::STACK_ORDER";
+    case Action::STACKS_RESET: return "Action::STACKS_RESET";
+    case Action::RUINS_RESET: return "Action::RUINS_RESET";
+    case Action::COLLECT_TAXES_AND_PAY_UPKEEP: return "Action::COLLECT_TAXES_AND_PAY_UPKEEP";
+    case Action::KILL_PLAYER: return "Action::KILL_PLAYER";
+    case Action::STACK_DEFEND: return "Action::STACK_DEFEND";
+    case Action::STACK_UNDEFEND: return "Action::STACK_UNDEFEND";
+    case Action::STACK_PARK: return "Action::STACK_PARK";
+    case Action::STACK_UNPARK: return "Action::STACK_UNPARK";
+    case Action::STACK_SELECT: return "Action::STACK_SELECT";
+    case Action::STACK_DESELECT: return "Action::STACK_DESELECT";
     }
       
   return "Action::MOVE";
@@ -2517,102 +2469,54 @@ Action::Type Action::actionTypeFromString(Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Action::Type(atoi(str.c_str()));
-  if (str == "Action::STACK_MOVE")
-    return Action::STACK_MOVE;
-  else if (str == "Action::STACK_SPLIT")
-    return Action::STACK_SPLIT;
-  else if (str == "Action::STACK_FIGHT")
-    return Action::STACK_FIGHT;
-  else if (str == "Action::STACK_JOIN")
-    return Action::STACK_JOIN;
-  else if (str == "Action::RUIN_SEARCH")
-    return Action::RUIN_SEARCH;
-  else if (str == "Action::TEMPLE_SEARCH")
-    return Action::TEMPLE_SEARCH;
-  else if (str == "Action::CITY_OCCUPY")
-    return Action::CITY_OCCUPY;
-  else if (str == "Action::CITY_PILLAGE")
-    return Action::CITY_PILLAGE;
-  else if (str == "Action::CITY_SACK")
-    return Action::CITY_SACK;
-  else if (str == "Action::CITY_RAZE")
-    return Action::CITY_RAZE;
-  else if (str == "Action::CITY_UPGRADE")
-    return Action::CITY_UPGRADE;
-  else if (str == "Action::CITY_BUY")
-    return Action::CITY_BUY;
-  else if (str == "Action::CITY_PROD")
-    return Action::CITY_PROD;
-  else if (str == "Action::REWARD" )
-    return Action::REWARD; 
-  else if (str == "Action::QUEST")
-    return Action::QUEST;
-  else if (str == "Action::HERO_EQUIP")
-    return Action::HERO_EQUIP;
-  else if (str == "Action::UNIT_ADVANCE")
-    return Action::UNIT_ADVANCE;
-  else if (str == "Action::STACK_DISBAND")
-    return Action::STACK_DISBAND;
-  else if (str == "Action::MODIFY_SIGNPOST")
-    return Action::MODIFY_SIGNPOST;
-  else if (str == "Action::CITY_RENAME")
-    return Action::CITY_RENAME;
-  else if (str == "Action::CITY_VECTOR")
-    return Action::CITY_VECTOR;
-  else if (str == "Action::FIGHT_ORDER")
-    return Action::FIGHT_ORDER;
-  else if (str == "Action::RESIGN")
-    return Action::RESIGN;
-  else if (str == "Action::ITEM_PLANT")
-    return Action::ITEM_PLANT;
-  else if (str == "Action::PRODUCE_UNIT")
-    return Action::PRODUCE_UNIT;
-  else if (str == "Action::PRODUCE_VECTORED_UNIT")
-    return Action::PRODUCE_VECTORED_UNIT;
-  else if (str == "Action::DIPLOMATIC_STATE")
-    return Action::DIPLOMATIC_STATE;
-  else if (str == "Action::DIPLOMATIC_PROPOSAL")
-    return Action::DIPLOMATIC_PROPOSAL;
-  else if (str == "Action::DIPLOMATIC_SCORE")
-    return Action::DIPLOMATIC_SCORE;
-  else if (str == "Action::END_TURN")
-    return Action::END_TURN;
-  else if (str == "Action::CITY_CONQUER")
-    return Action::CITY_CONQUER;
-  else if (str == "Action::RECRUIT_HERO")
-    return Action::RECRUIT_HERO;
-  else if (str == "Action::PLAYER_RENAME")
-    return Action::PLAYER_RENAME;
-  else if (str == "Action::CITY_DESTITUTE")
-    return Action::CITY_DESTITUTE;
-  else if (str == "Action::INIT_TURN")
-    return Action::INIT_TURN;
-  else if (str == "Action::CITY_LOOT")
-    return Action::CITY_LOOT;
-  else if (str == "Action::USE_ITEM")
-    return Action::USE_ITEM;
-  else if (str == "Action::STACK_ORDER")
-    return Action::STACK_ORDER;
-  else if (str == "Action::STACKS_RESET")
-    return Action::STACKS_RESET;
-  else if (str == "Action::RUINS_RESET")
-    return Action::RUINS_RESET;
-  else if (str == "Action::COLLECT_TAXES_AND_PAY_UPKEEP")
-    return Action::COLLECT_TAXES_AND_PAY_UPKEEP;
-  else if (str == "Action::KILL_PLAYER")
-    return Action::KILL_PLAYER;
-  else if (str == "Action::STACK_DEFEND")
-    return Action::STACK_DEFEND;
-  else if (str == "Action::STACK_UNDEFEND")
-    return Action::STACK_UNDEFEND;
-  else if (str == "Action::STACK_PARK")
-    return Action::STACK_PARK;
-  else if (str == "Action::STACK_UNPARK")
-    return Action::STACK_UNPARK;
-  else if (str == "Action::STACK_SELECT")
-    return Action::STACK_SELECT;
-  else if (str == "Action::STACK_DESELECT")
-    return Action::STACK_DESELECT;
+  if (str == "Action::STACK_MOVE") return Action::STACK_MOVE;
+  else if (str == "Action::STACK_SPLIT") return Action::STACK_SPLIT;
+  else if (str == "Action::STACK_FIGHT") return Action::STACK_FIGHT;
+  else if (str == "Action::STACK_JOIN") return Action::STACK_JOIN;
+  else if (str == "Action::RUIN_SEARCH") return Action::RUIN_SEARCH;
+  else if (str == "Action::TEMPLE_SEARCH") return Action::TEMPLE_SEARCH;
+  else if (str == "Action::CITY_OCCUPY") return Action::CITY_OCCUPY;
+  else if (str == "Action::CITY_PILLAGE") return Action::CITY_PILLAGE;
+  else if (str == "Action::CITY_SACK") return Action::CITY_SACK;
+  else if (str == "Action::CITY_RAZE") return Action::CITY_RAZE;
+  else if (str == "Action::CITY_UPGRADE") return Action::CITY_UPGRADE;
+  else if (str == "Action::CITY_BUY") return Action::CITY_BUY;
+  else if (str == "Action::CITY_PROD") return Action::CITY_PROD;
+  else if (str == "Action::REWARD" ) return Action::REWARD; 
+  else if (str == "Action::QUEST") return Action::QUEST;
+  else if (str == "Action::HERO_EQUIP") return Action::HERO_EQUIP;
+  else if (str == "Action::UNIT_ADVANCE") return Action::UNIT_ADVANCE;
+  else if (str == "Action::STACK_DISBAND") return Action::STACK_DISBAND;
+  else if (str == "Action::MODIFY_SIGNPOST") return Action::MODIFY_SIGNPOST;
+  else if (str == "Action::CITY_RENAME") return Action::CITY_RENAME;
+  else if (str == "Action::CITY_VECTOR") return Action::CITY_VECTOR;
+  else if (str == "Action::FIGHT_ORDER") return Action::FIGHT_ORDER;
+  else if (str == "Action::RESIGN") return Action::RESIGN;
+  else if (str == "Action::ITEM_PLANT") return Action::ITEM_PLANT;
+  else if (str == "Action::PRODUCE_UNIT") return Action::PRODUCE_UNIT;
+  else if (str == "Action::PRODUCE_VECTORED_UNIT") return Action::PRODUCE_VECTORED_UNIT;
+  else if (str == "Action::DIPLOMATIC_STATE") return Action::DIPLOMATIC_STATE;
+  else if (str == "Action::DIPLOMATIC_PROPOSAL") return Action::DIPLOMATIC_PROPOSAL;
+  else if (str == "Action::DIPLOMATIC_SCORE") return Action::DIPLOMATIC_SCORE;
+  else if (str == "Action::END_TURN") return Action::END_TURN;
+  else if (str == "Action::CITY_CONQUER") return Action::CITY_CONQUER;
+  else if (str == "Action::RECRUIT_HERO") return Action::RECRUIT_HERO;
+  else if (str == "Action::PLAYER_RENAME") return Action::PLAYER_RENAME;
+  else if (str == "Action::CITY_DESTITUTE") return Action::CITY_DESTITUTE;
+  else if (str == "Action::INIT_TURN") return Action::INIT_TURN;
+  else if (str == "Action::CITY_LOOT") return Action::CITY_LOOT;
+  else if (str == "Action::USE_ITEM") return Action::USE_ITEM;
+  else if (str == "Action::STACK_ORDER") return Action::STACK_ORDER;
+  else if (str == "Action::STACKS_RESET") return Action::STACKS_RESET;
+  else if (str == "Action::RUINS_RESET") return Action::RUINS_RESET;
+  else if (str == "Action::COLLECT_TAXES_AND_PAY_UPKEEP") return Action::COLLECT_TAXES_AND_PAY_UPKEEP;
+  else if (str == "Action::KILL_PLAYER") return Action::KILL_PLAYER;
+  else if (str == "Action::STACK_DEFEND") return Action::STACK_DEFEND;
+  else if (str == "Action::STACK_UNDEFEND") return Action::STACK_UNDEFEND;
+  else if (str == "Action::STACK_PARK") return Action::STACK_PARK;
+  else if (str == "Action::STACK_UNPARK") return Action::STACK_UNPARK;
+  else if (str == "Action::STACK_SELECT") return Action::STACK_SELECT;
+  else if (str == "Action::STACK_DESELECT") return Action::STACK_DESELECT;
   return Action::STACK_MOVE;
 }
 

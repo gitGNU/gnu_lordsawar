@@ -3547,16 +3547,11 @@ Glib::ustring Player::playerTypeToString(const Player::Type type)
 {
   switch (type)
     {
-    case Player::HUMAN:
-      return "Player::HUMAN";
-    case Player::AI_FAST:
-      return "Player::AI_FAST";
-    case Player::AI_DUMMY:
-      return "Player::AI_DUMMY";
-    case Player::AI_SMART:
-      return "Player::AI_SMART";
-    case Player::NETWORKED:
-      return "Player::NETWORKED";
+    case Player::HUMAN: return "Player::HUMAN";
+    case Player::AI_FAST: return "Player::AI_FAST";
+    case Player::AI_DUMMY: return "Player::AI_DUMMY";
+    case Player::AI_SMART: return "Player::AI_SMART";
+    case Player::NETWORKED: return "Player::NETWORKED";
     }
   return "Player::HUMAN";
 }
@@ -3565,16 +3560,11 @@ Player::Type Player::playerTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Player::Type(atoi(str.c_str()));
-  if (str == "Player::HUMAN")
-    return Player::HUMAN;
-  else if (str == "Player::AI_FAST")
-    return Player::AI_FAST;
-  else if (str == "Player::AI_DUMMY")
-    return Player::AI_DUMMY;
-  else if (str == "Player::AI_SMART")
-    return Player::AI_SMART;
-  else if (str == "Player::NETWORKED")
-    return Player::NETWORKED;
+  if (str == "Player::HUMAN") return Player::HUMAN;
+  else if (str == "Player::AI_FAST") return Player::AI_FAST;
+  else if (str == "Player::AI_DUMMY") return Player::AI_DUMMY;
+  else if (str == "Player::AI_SMART") return Player::AI_SMART;
+  else if (str == "Player::NETWORKED") return Player::NETWORKED;
   return Player::HUMAN;
 }
 

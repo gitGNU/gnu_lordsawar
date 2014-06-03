@@ -269,54 +269,30 @@ Glib::ustring ItemProto::bonusFlagToString(ItemProto::Bonus bonus)
 {
   switch (bonus)
     {
-    case ItemProto::ADD1STR:
-      return "ItemProto::ADD1STR";
-    case ItemProto::ADD2STR:
-      return "ItemProto::ADD2STR";
-    case ItemProto::ADD3STR:
-      return "ItemProto::ADD3STR";
-    case ItemProto::ADD1STACK:
-      return "ItemProto::ADD1STACK";
-    case ItemProto::ADD2STACK:
-      return "ItemProto::ADD2STACK";
-    case ItemProto::ADD3STACK:
-      return "ItemProto::ADD3STACK";
-    case ItemProto::FLYSTACK:
-      return "ItemProto::FLYSTACK";
-    case ItemProto::DOUBLEMOVESTACK:
-      return "ItemProto::DOUBLEMOVESTACK";
-    case ItemProto::ADD2GOLDPERCITY:
-      return "ItemProto::ADD2GOLDPERCITY";
-    case ItemProto::ADD3GOLDPERCITY:
-      return "ADD3GOLDPERCITY";
-    case ItemProto::ADD4GOLDPERCITY:
-      return "ItemProto::ADD4GOLDPERCITY";
-    case ItemProto::ADD5GOLDPERCITY:
-      return "ItemProto::ADD5GOLDPERCITY";
-    case ItemProto::STEAL_GOLD:
-      return "ItemProto::STEAL_GOLD";
-    case ItemProto::SINK_SHIPS:
-      return "ItemProto::SINK_SHIPS";
-    case ItemProto::PICK_UP_BAGS:
-      return "ItemProto::PICK_UP_BAGS";
-    case ItemProto::ADD_2MP_STACK:
-      return "ItemProto::ADD_2MP_STACK";
-    case ItemProto::BANISH_WORMS:
-      return "ItemProto::BANISH_WORMS";
-    case ItemProto::BURN_BRIDGE:
-      return "ItemProto::BURN_BRIDGE";
-    case ItemProto::CAPTURE_KEEPER:
-      return "ItemProto::CAPTURE_KEEPER";
-    case ItemProto::SUMMON_MONSTER:
-      return "ItemProto::SUMMON_MONSTER";
-    case ItemProto::DISEASE_CITY:
-      return "ItemProto::DISEASE_CITY";
-    case ItemProto::RAISE_DEFENDERS:
-      return "ItemProto::RAISE_DEFENDERS";
-    case ItemProto::PERSUADE_NEUTRALS:
-      return "ItemProto::PERSUADE_NEUTRALS";
-    case ItemProto::TELEPORT_TO_CITY:
-      return "ItemProto::TELEPORT_TO_CITY";
+    case ItemProto::ADD1STR: return "ItemProto::ADD1STR";
+    case ItemProto::ADD2STR: return "ItemProto::ADD2STR";
+    case ItemProto::ADD3STR: return "ItemProto::ADD3STR";
+    case ItemProto::ADD1STACK: return "ItemProto::ADD1STACK";
+    case ItemProto::ADD2STACK: return "ItemProto::ADD2STACK";
+    case ItemProto::ADD3STACK: return "ItemProto::ADD3STACK";
+    case ItemProto::FLYSTACK: return "ItemProto::FLYSTACK";
+    case ItemProto::DOUBLEMOVESTACK: return "ItemProto::DOUBLEMOVESTACK";
+    case ItemProto::ADD2GOLDPERCITY: return "ItemProto::ADD2GOLDPERCITY";
+    case ItemProto::ADD3GOLDPERCITY: return "ADD3GOLDPERCITY";
+    case ItemProto::ADD4GOLDPERCITY: return "ItemProto::ADD4GOLDPERCITY";
+    case ItemProto::ADD5GOLDPERCITY: return "ItemProto::ADD5GOLDPERCITY";
+    case ItemProto::STEAL_GOLD: return "ItemProto::STEAL_GOLD";
+    case ItemProto::SINK_SHIPS: return "ItemProto::SINK_SHIPS";
+    case ItemProto::PICK_UP_BAGS: return "ItemProto::PICK_UP_BAGS";
+    case ItemProto::ADD_2MP_STACK: return "ItemProto::ADD_2MP_STACK";
+    case ItemProto::BANISH_WORMS: return "ItemProto::BANISH_WORMS";
+    case ItemProto::BURN_BRIDGE: return "ItemProto::BURN_BRIDGE";
+    case ItemProto::CAPTURE_KEEPER: return "ItemProto::CAPTURE_KEEPER";
+    case ItemProto::SUMMON_MONSTER: return "ItemProto::SUMMON_MONSTER";
+    case ItemProto::DISEASE_CITY: return "ItemProto::DISEASE_CITY";
+    case ItemProto::RAISE_DEFENDERS: return "ItemProto::RAISE_DEFENDERS";
+    case ItemProto::PERSUADE_NEUTRALS: return "ItemProto::PERSUADE_NEUTRALS";
+    case ItemProto::TELEPORT_TO_CITY: return "ItemProto::TELEPORT_TO_CITY";
     }
   return "ItemProto::ADD1STR";
 }
@@ -396,54 +372,30 @@ ItemProto::Bonus ItemProto::bonusFlagFromString(Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return ItemProto::Bonus(atoi(str.c_str()));
-  if (str == "ItemProto::ADD1STR")
-    return ItemProto::ADD1STR;
-  else if (str == "ItemProto::ADD2STR")
-    return ItemProto::ADD2STR;
-  else if (str == "ItemProto::ADD3STR")
-    return ItemProto::ADD3STR;
-  else if (str == "ItemProto::ADD1STACK")
-    return ItemProto::ADD1STACK;
-  else if (str == "ItemProto::ADD2STACK")
-    return ItemProto::ADD2STACK;
-  else if (str == "ItemProto::ADD3STACK")
-    return ItemProto::ADD3STACK;
-  else if (str == "ItemProto::FLYSTACK")
-    return ItemProto::FLYSTACK;
-  else if (str == "ItemProto::DOUBLEMOVESTACK")
-    return ItemProto::DOUBLEMOVESTACK;
-  else if (str == "ItemProto::ADD2GOLDPERCITY")
-    return ItemProto::ADD2GOLDPERCITY;
-  else if (str == "ItemProto::ADD3GOLDPERCITY")
-    return ItemProto::ADD3GOLDPERCITY;
-  else if (str == "ItemProto::ADD4GOLDPERCITY")
-    return ItemProto::ADD4GOLDPERCITY;
-  else if (str == "ItemProto::ADD5GOLDPERCITY")
-    return ItemProto::ADD5GOLDPERCITY;
-  else if (str == "ItemProto::STEAL_GOLD")
-    return ItemProto::STEAL_GOLD;
-  else if (str == "ItemProto::SINK_SHIPS")
-    return ItemProto::SINK_SHIPS;
-  else if (str == "ItemProto::PICK_UP_BAGS")
-    return ItemProto::PICK_UP_BAGS;
-  else if (str == "ItemProto::ADD_2MP_STACK")
-    return ItemProto::ADD_2MP_STACK;
-  else if (str == "ItemProto::BANISH_WORMS")
-    return ItemProto::BANISH_WORMS;
-  else if (str == "ItemProto::BURN_BRIDGE")
-    return ItemProto::BURN_BRIDGE;
-  else if (str == "ItemProto::CAPTURE_KEEPER")
-    return ItemProto::CAPTURE_KEEPER;
-  else if (str == "ItemProto::SUMMON_MONSTER")
-    return ItemProto::SUMMON_MONSTER;
-  else if (str == "ItemProto::DISEASE_CITY")
-    return ItemProto::DISEASE_CITY;
-  else if (str == "ItemProto::RAISE_DEFENDERS")
-    return ItemProto::RAISE_DEFENDERS;
-  else if (str == "ItemProto::PERSUADE_NEUTRALS")
-    return ItemProto::PERSUADE_NEUTRALS;
-  else if (str == "ItemProto::TELEPORT_TO_CITY")
-    return ItemProto::TELEPORT_TO_CITY;
+  if (str == "ItemProto::ADD1STR") return ItemProto::ADD1STR;
+  else if (str == "ItemProto::ADD2STR") return ItemProto::ADD2STR;
+  else if (str == "ItemProto::ADD3STR") return ItemProto::ADD3STR;
+  else if (str == "ItemProto::ADD1STACK") return ItemProto::ADD1STACK;
+  else if (str == "ItemProto::ADD2STACK") return ItemProto::ADD2STACK;
+  else if (str == "ItemProto::ADD3STACK") return ItemProto::ADD3STACK;
+  else if (str == "ItemProto::FLYSTACK") return ItemProto::FLYSTACK;
+  else if (str == "ItemProto::DOUBLEMOVESTACK") return ItemProto::DOUBLEMOVESTACK;
+  else if (str == "ItemProto::ADD2GOLDPERCITY") return ItemProto::ADD2GOLDPERCITY;
+  else if (str == "ItemProto::ADD3GOLDPERCITY") return ItemProto::ADD3GOLDPERCITY;
+  else if (str == "ItemProto::ADD4GOLDPERCITY") return ItemProto::ADD4GOLDPERCITY;
+  else if (str == "ItemProto::ADD5GOLDPERCITY") return ItemProto::ADD5GOLDPERCITY;
+  else if (str == "ItemProto::STEAL_GOLD") return ItemProto::STEAL_GOLD;
+  else if (str == "ItemProto::SINK_SHIPS") return ItemProto::SINK_SHIPS;
+  else if (str == "ItemProto::PICK_UP_BAGS") return ItemProto::PICK_UP_BAGS;
+  else if (str == "ItemProto::ADD_2MP_STACK") return ItemProto::ADD_2MP_STACK;
+  else if (str == "ItemProto::BANISH_WORMS") return ItemProto::BANISH_WORMS;
+  else if (str == "ItemProto::BURN_BRIDGE") return ItemProto::BURN_BRIDGE;
+  else if (str == "ItemProto::CAPTURE_KEEPER") return ItemProto::CAPTURE_KEEPER;
+  else if (str == "ItemProto::SUMMON_MONSTER") return ItemProto::SUMMON_MONSTER;
+  else if (str == "ItemProto::DISEASE_CITY") return ItemProto::DISEASE_CITY;
+  else if (str == "ItemProto::RAISE_DEFENDERS") return ItemProto::RAISE_DEFENDERS;
+  else if (str == "ItemProto::PERSUADE_NEUTRALS") return ItemProto::PERSUADE_NEUTRALS;
+  else if (str == "ItemProto::TELEPORT_TO_CITY") return ItemProto::TELEPORT_TO_CITY;
   return ItemProto::ADD1STR;
 }
 

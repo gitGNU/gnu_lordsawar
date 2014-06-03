@@ -115,20 +115,13 @@ Glib::ustring Quest::questTypeToString(const Quest::Type type)
 {
   switch (type)
     {
-    case Quest::KILLHERO:
-      return "Quest::KILLHERO";
-    case Quest::KILLARMIES:
-      return "Quest::KILLARMIES";
-    case Quest::CITYSACK:
-      return "Quest::CITYSACK";
-    case Quest::CITYRAZE:
-      return "Quest::CITYRAZE";
-    case Quest::CITYOCCUPY:
-      return "Quest::CITYOCCUPY";
-    case Quest::KILLARMYTYPE:
-      return "Quest::KILLARMYTYPE";
-    case Quest::PILLAGEGOLD:
-      return "Quest::PILLAGEGOLD";
+    case Quest::KILLHERO: return "Quest::KILLHERO";
+    case Quest::KILLARMIES: return "Quest::KILLARMIES";
+    case Quest::CITYSACK: return "Quest::CITYSACK";
+    case Quest::CITYRAZE: return "Quest::CITYRAZE";
+    case Quest::CITYOCCUPY: return "Quest::CITYOCCUPY";
+    case Quest::KILLARMYTYPE: return "Quest::KILLARMYTYPE";
+    case Quest::PILLAGEGOLD: return "Quest::PILLAGEGOLD";
     }
   return "Quest::KILLHERO";
 }
@@ -137,20 +130,13 @@ Quest::Type Quest::questTypeFromString(Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Quest::Type(atoi(str.c_str()));
-  if (str == "Quest::KILLHERO")
-    return Quest::KILLHERO;
-  else if (str == "Quest::KILLARMIES")
-    return Quest::KILLARMIES;
-  else if (str == "Quest::CITYSACK")
-    return Quest::CITYSACK;
-  else if (str == "Quest::CITYRAZE")
-    return Quest::CITYRAZE;
-  else if (str == "Quest::CITYOCCUPY")
-    return Quest::CITYOCCUPY;
-  else if (str == "Quest::KILLARMYTYPE")
-    return Quest::KILLARMYTYPE;
-  else if (str == "Quest::PILLAGEGOLD")
-    return Quest::PILLAGEGOLD;
+  if (str == "Quest::KILLHERO") return Quest::KILLHERO;
+  else if (str == "Quest::KILLARMIES") return Quest::KILLARMIES;
+  else if (str == "Quest::CITYSACK") return Quest::CITYSACK;
+  else if (str == "Quest::CITYRAZE") return Quest::CITYRAZE;
+  else if (str == "Quest::CITYOCCUPY") return Quest::CITYOCCUPY;
+  else if (str == "Quest::KILLARMYTYPE") return Quest::KILLARMYTYPE;
+  else if (str == "Quest::PILLAGEGOLD") return Quest::PILLAGEGOLD;
     
   return Quest::KILLHERO;
 }

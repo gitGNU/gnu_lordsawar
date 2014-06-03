@@ -92,105 +92,50 @@ Glib::ustring TileStyle::getTypeName(Type type)
 {
   switch (type)
     {
-    case LONE:
-      return "Lone";
-      break;
-    case OUTERTOPLEFT:
-      return "Outer Top-Left";
-      break;
-    case OUTERTOPCENTER:
-      return "Outer Top-Centre";
-      break;
-    case OUTERTOPRIGHT:
-      return "Outer Top-Right";
-      break;
-    case OUTERBOTTOMLEFT:
-      return "Outer Bottom-Left";
-      break;
-    case OUTERBOTTOMCENTER:
-      return "Outer Bottom-Centre";
-      break;
-    case OUTERBOTTOMRIGHT:
-      return "Outer Bottom-Right";
-      break;
-    case OUTERMIDDLELEFT:
-      return "Outer Middle-Left";
-      break;
-    case INNERMIDDLECENTER:
-      return "Outer Middle-Centre";
-      break;
-    case OUTERMIDDLERIGHT:
-      return "Outer Middle-Right";
-      break;
-    case INNERTOPLEFT:
-      return "Inner Top-Left";
-      break;
-    case INNERTOPRIGHT:
-      return "Inner Top-Right";
-      break;
-    case INNERBOTTOMLEFT:
-      return "Inner Bottom-Left";
-      break;
-    case INNERBOTTOMRIGHT:
-      return "Inner Bottom-Right";
-      break;
-    case TOPLEFTTOBOTTOMRIGHTDIAGONAL:
-      return "Top-Left To Bottom-Right Diagonal";
-      break;
-    case BOTTOMLEFTTOTOPRIGHTDIAGONAL:
-      return "Bottom-Left to Top-Right Diagonal";
-      break;
-    case OTHER:
-      return "Other";
-      break;
-    case UNKNOWN:
-      return "Unknown";
-      break;
+    case LONE: return "Lone";
+    case OUTERTOPLEFT: return "Outer Top-Left";
+    case OUTERTOPCENTER: return "Outer Top-Centre";
+    case OUTERTOPRIGHT: return "Outer Top-Right";
+    case OUTERBOTTOMLEFT: return "Outer Bottom-Left";
+    case OUTERBOTTOMCENTER: return "Outer Bottom-Centre";
+    case OUTERBOTTOMRIGHT: return "Outer Bottom-Right";
+    case OUTERMIDDLELEFT: return "Outer Middle-Left";
+    case INNERMIDDLECENTER: return "Outer Middle-Centre";
+    case OUTERMIDDLERIGHT: return "Outer Middle-Right";
+    case INNERTOPLEFT: return "Inner Top-Left";
+    case INNERTOPRIGHT: return "Inner Top-Right";
+    case INNERBOTTOMLEFT: return "Inner Bottom-Left";
+    case INNERBOTTOMRIGHT: return "Inner Bottom-Right";
+    case TOPLEFTTOBOTTOMRIGHTDIAGONAL: return "Top-Left To Bottom-Right Diagonal";
+    case BOTTOMLEFTTOTOPRIGHTDIAGONAL: return "Bottom-Left to Top-Right Diagonal";
+    case OTHER: return "Other";
+    case UNKNOWN: return "Unknown";
     default:
       return "Unknown";
     }
 }
-	
+
 TileStyle::Type TileStyle::typeNameToType(Glib::ustring name)
 {
-  if (name == "Lone")
-    return LONE;
-  else if (name == "Outer Top-Left")
-    return OUTERTOPLEFT;
-  else if (name == "Outer Top-Centre")
-    return OUTERTOPCENTER;
-  else if (name == "Outer Top-Right")
-    return OUTERTOPRIGHT;
-  else if (name == "Outer Bottom-Left")
-    return OUTERBOTTOMLEFT;
-  else if (name == "Outer Bottom-Centre")
-    return OUTERBOTTOMCENTER;
-  else if (name == "Outer Bottom-Right")
-    return OUTERBOTTOMRIGHT;
-  else if (name == "Outer Middle-Left")
-    return OUTERMIDDLELEFT;
-  else if (name == "Outer Middle-Centre")
-    return INNERMIDDLECENTER;
-  else if (name == "Outer Middle-Right")
-    return OUTERMIDDLERIGHT;
-  else if (name == "Inner Top-Left")
-    return INNERTOPLEFT;
-  else if (name == "Inner Top-Right")
-    return INNERTOPRIGHT;
-  else if (name == "Inner Bottom-Left")
-    return INNERBOTTOMLEFT;
-  else if (name == "Inner Bottom-Right")
-    return INNERBOTTOMRIGHT;
-  else if (name == "Top-Left To Bottom-Right Diagonal")
-    return TOPLEFTTOBOTTOMRIGHTDIAGONAL;
-  else if (name == "Bottom-Left to Top-Right Diagonal")
-    return BOTTOMLEFTTOTOPRIGHTDIAGONAL;
-  else if (name == "Other")
-    return OTHER;
-  else if (name == "Unknown")
-    return UNKNOWN;
-  else
-    return UNKNOWN;
+  if (name == "Lone") return LONE;
+  else if (name == "Outer Top-Left") return OUTERTOPLEFT;
+  else if (name == "Outer Top-Centre") return OUTERTOPCENTER;
+  else if (name == "Outer Top-Right") return OUTERTOPRIGHT;
+  else if (name == "Outer Bottom-Left") return OUTERBOTTOMLEFT;
+  else if (name == "Outer Bottom-Centre") return OUTERBOTTOMCENTER;
+  else if (name == "Outer Bottom-Right") return OUTERBOTTOMRIGHT;
+  else if (name == "Outer Middle-Left") return OUTERMIDDLELEFT;
+  else if (name == "Outer Middle-Centre") return INNERMIDDLECENTER;
+  else if (name == "Outer Middle-Right") return OUTERMIDDLERIGHT;
+  else if (name == "Inner Top-Left") return INNERTOPLEFT;
+  else if (name == "Inner Top-Right") return INNERTOPRIGHT;
+  else if (name == "Inner Bottom-Left") return INNERBOTTOMLEFT;
+  else if (name == "Inner Bottom-Right") return INNERBOTTOMRIGHT;
+  else if (name == "Top-Left To Bottom-Right Diagonal") return TOPLEFTTOBOTTOMRIGHTDIAGONAL;
+  else if (name == "Bottom-Left to Top-Right Diagonal") return BOTTOMLEFTTOTOPRIGHTDIAGONAL;
+  else if (name == "Other") return OTHER;
+  else if (name == "Unknown") return UNKNOWN;
+  else return UNKNOWN;
 }
 
 guint32 TileStyle::calculateHexDigits(guint32 id)
