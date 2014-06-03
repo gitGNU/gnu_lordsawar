@@ -49,6 +49,9 @@ class ShieldSetWindow: public sigc::trackable
     Shield *d_shield; //current shield
     bool needs_saving;
     Gtk::TreeView *shields_treeview;
+    Gtk::Image *small_image;
+    Gtk::Image *medium_image;
+    Gtk::Image *large_image;
     Gtk::MenuItem *new_shieldset_menuitem;
     Gtk::MenuItem *load_shieldset_menuitem;
     Gtk::MenuItem *save_shieldset_menuitem;
@@ -100,6 +103,7 @@ class ShieldSetWindow: public sigc::trackable
     void addNewShield(Shield::Colour owner, Gdk::RGBA colour);
     void loadShield(Shield *shield);
     void update_window_title();
+    void show_shield(ShieldStyle *ss, Shield *s, Gtk::Image *image);
 };
 
 #endif

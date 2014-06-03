@@ -28,6 +28,7 @@
 #include "shieldset-info-dialog.h"
 #include "masked-image-editor-dialog.h"
 
+#include "gui/image-helpers.h"
 #include "defs.h"
 #include "Configuration.h"
 #include "ImageCache.h"
@@ -97,6 +98,10 @@ ShieldSetWindow::ShieldSetWindow(Gtk::Window *parent, Glib::ustring load_filenam
     xml->get_widget ("player_colorbutton", player_colorbutton);
     player_colorbutton->signal_color_set().connect
       (sigc::mem_fun(this, &ShieldSetWindow::on_player_color_changed));
+
+    xml->get_widget ("small_image", small_image);
+    xml->get_widget ("medium_image", medium_image);
+    xml->get_widget ("large_image", large_image);
 
     window->signal_delete_event().connect(
 	sigc::mem_fun(*this, &ShieldSetWindow::on_delete_event));
@@ -479,6 +484,34 @@ void ShieldSetWindow::on_shield_selected()
   update_shield_panel();
 }
 
+void ShieldSetWindow::show_shield(ShieldStyle *ss, Shield *s, Gtk::Image *image)
+{
+  bool broken = false;
+  if (!ss || !s)
+    {
+      image->clear();
+      return;
+    }
+  std::vector<PixMask*> h = disassemble_row
+    (d_shieldset->getFileFromConfigurationFile(ss->getImageName() + ".png"), 2,
+     broken);
+  if (!broken)
+    {
+      PixMask *i = ImageCache::applyMask(h[0], h[1], s->getColor(), false);
+      if (i)
+        {
+          image->property_pixbuf() = i->to_pixbuf();
+          delete i;
+        }
+      else
+        image->clear();
+      delete h[0]; 
+      delete h[1];
+    }
+  else
+    image->clear();
+}
+
 void ShieldSetWindow::fill_shield_info(Shield*shield)
 {
   if (shield)
@@ -491,19 +524,24 @@ void ShieldSetWindow::fill_shield_info(Shield*shield)
 	s = ss->getImageName() + ".png";
       else
 	s = none;
+      show_shield(ss, shield, small_image);
       change_smallpic_button->set_label(s);
+
       ss = shield->getFirstShieldstyle(ShieldStyle::MEDIUM);
       if (ss && ss->getImageName().empty() == false)
 	s = ss->getImageName() + ".png";
       else
 	s = none;
       change_mediumpic_button->set_label(s);
+      show_shield(ss, shield, medium_image);
+
       ss = shield->getFirstShieldstyle(ShieldStyle::LARGE);
       if (ss && ss->getImageName().empty() == false)
 	s = ss->getImageName() + ".png";
       else
 	s = none;
       change_largepic_button->set_label(s);
+      show_shield(ss, shield, large_image);
     }
 }
 
@@ -705,6 +743,7 @@ void ShieldSetWindow::on_player_color_changed()
       Gtk::TreeModel::Row row = *iterrow;
       Shield *s = row[shields_columns.shield];
       s->setColor(player_colorbutton->get_rgba());
+      update_shield_panel();
       needs_saving = true;
       update_window_title();
     }
