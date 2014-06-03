@@ -192,25 +192,8 @@ class ArmySetWindow: public sigc::trackable
     void on_gender_female_toggled();
     void on_awardable_toggled();
     void on_defends_ruins_toggled();
-
-    void on_move_forests_toggled();
-    void on_move_marshes_toggled();
-    void on_move_hills_toggled();
-    void on_move_mountains_toggled();
-    void on_can_fly_toggled();
-    void on_add1strinopen_toggled();
-    void on_add2strinopen_toggled();
-    void on_add1strinforest_toggled();
-    void on_add1strinhills_toggled();
-    void on_add1strincity_toggled();
-    void on_add2strincity_toggled();
-    void on_add1stackinhills_toggled();
-    void on_suballcitybonus_toggled();
-    void on_sub1enemystack_toggled();
-    void on_add1stack_toggled();
-    void on_add2stack_toggled();
-    void on_suballnonherobonus_toggled();
-    void on_suballherobonus_toggled();
+    void on_movebonus_toggled(Gtk::CheckButton *button, guint32 val);
+    void on_armybonus_toggled(Gtk::CheckButton *button, guint32 val);
     void on_add_army_clicked();
     void on_remove_army_clicked();
 
