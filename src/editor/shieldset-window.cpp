@@ -198,6 +198,9 @@ ShieldSetWindow::update_shield_panel()
       change_smallpic_button->set_label(none);
       change_mediumpic_button->set_label(none);
       change_largepic_button->set_label(none);
+      small_image->clear();
+      medium_image->clear();
+      large_image->clear();
       player_colorbutton->set_rgba(Gdk::RGBA("black"));
       return;
     }
@@ -250,10 +253,10 @@ void ShieldSetWindow::on_new_shieldset_activated()
       delete shieldset;
       return;
     }
+  shields_list->clear();
   if (d_shieldset)
     delete d_shieldset;
   d_shieldset = shieldset;
-  shields_list->clear();
   Glib::ustring dir = File::getUserShieldsetDir();
   d_shieldset->setDirectory(dir);
   current_save_filename = d_shieldset->getConfigurationFile();
@@ -270,6 +273,7 @@ void ShieldSetWindow::on_new_shieldset_activated()
 
   d_shieldset->save(autosave, Shieldset::file_extension);
   update_shield_panel();
+  shields_treeview->set_cursor (Gtk::TreePath ("0"));
   needs_saving = true;
   update_window_title();
 }
