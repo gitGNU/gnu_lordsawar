@@ -466,8 +466,6 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
                     continue;
                   if (!land && getTile(x, y)->getType() != Tile::WATER)
                     continue;
-                  if (land && getTile(x, y)->getType() == Tile::VOID)
-		    continue;
                   if (land && getTile(x, y)->getType() == Tile::MOUNTAIN &&
 		      (a->getStat(Army::MOVE_BONUS) & Tile::MOUNTAIN) == 0)
                     continue;
@@ -582,11 +580,6 @@ bool GameMap::isBlockedAvenue(int x, int y, int destx, int desty)
       if (from->getType() == Tile::MOUNTAIN &&
 	  getRoad(Vector<int>(x, y)) == NULL)
         return true;
-
-      if (from->getType() == Tile::VOID)
-	return true;
-      if (to->getType() == Tile::VOID)
-	return true;
     }
  return false;
 }
@@ -1478,16 +1471,14 @@ bool GameMap::canPutBuilding(Maptile::Building bldg, guint32 size, Vector<int> t
 	      for (unsigned int j = 0; j < size; j++)
 		{
 		  Vector<int> pos = to + Vector<int>(i, j);
-		  if (getTerrainType(pos) == Tile::WATER ||
-                      getTerrainType(pos) == Tile::VOID)
+		  if (getTerrainType(pos) == Tile::WATER)
 		    return false;
 		}
 	  }
 	break;
       case Maptile::ROAD: 
 	//can't be in the water
-	if (getTerrainType(to) == Tile::WATER ||
-	    getTerrainType(to) == Tile::VOID)
+	if (getTerrainType(to) == Tile::WATER)
 	  return false;
 	break;
       case Maptile::PORT: 

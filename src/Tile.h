@@ -63,8 +63,6 @@ class Tile : public std::list<TileStyleSet*>
 	  MOUNTAIN = 8, 
 	  //! Marshy terrain.
 	  SWAMP = 16,
-	  //! Terrain that no army units can cross, even when flying.
-	  VOID = 32
 	};
 
 	//! Default constructor.

@@ -1265,7 +1265,6 @@ void MainWindow::auto_select_appropriate_pointer()
     case Tile::FOREST:
     case Tile::SWAMP:
     case Tile::HILLS:
-    case Tile::VOID:
 	{
           Tileset *tileset = GameMap::getTileset();
 	  Tile *tile = (*tileset)[tileset->getIndex(get_terrain())];

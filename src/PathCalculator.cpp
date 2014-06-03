@@ -182,10 +182,6 @@ bool PathCalculator::calcFinalMoves(Vector<int> pos, Vector<int> next)
   printf("moves of source is %d\n", dxy);
   if (!flying && is_blocked_dir)
     return false;
-  //flyers can't go through the void
-  if (flying && is_blocked_dir &&
-      GameMap::getInstance()->getTile(next)->getType() == Tile::VOID)
-    return false;
 
   int dsxy = nodes[next.toIndex()].moves;
   printf("moves of dest is %d\n", dsxy);
@@ -244,10 +240,6 @@ bool PathCalculator::calcMoves(Vector<int> pos, Vector<int> next)
   //am i blocked from entering sx,sy from pos?
   bool is_blocked_dir = isBlockedDir(pos, next);
   if (!flying && is_blocked_dir)
-    return false;
-  //flyers can't go through the void
-  if (flying && is_blocked_dir &&
-      GameMap::getInstance()->getTile(next)->getType() == Tile::VOID)
     return false;
 
   int dsxy = nodes[next.toIndex()].moves;
@@ -458,9 +450,6 @@ bool PathCalculator::isBlocked(Vector<int> pos)
 bool PathCalculator::canMoveThere(Vector<int> dest)
 {
   Vector<int> pos = stack->getPos();
-  if (flying && isBlockedDir(pos, dest) &&
-      GameMap::getInstance()->getTile(dest)->getType() == Tile::VOID)
-    return false;
   if (isBlocked(pos))
     {
       //psst. if it's our last step we can step into cities.

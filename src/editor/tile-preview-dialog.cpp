@@ -205,14 +205,6 @@ TilePreviewDialog::TilePreviewDialog(Gtk::Window &parent, Tile *tile, Tile *sec,
 	s = new TilePreviewScene(tile, sec, 5, 5, scene, tileSize);
         add_scene(s);
 	break;
-      case Tile::VOID:
-	scene.clear();
-	scene += "bcd";
-	scene += "hij";
-	scene += "efg";
-	s = new TilePreviewScene(tile, sec, 3, 3, scene, tileSize);
-        add_scene(s);
-	break;
       }
     d_tile = tile;
     selected_tilestyle_label->set_text("");

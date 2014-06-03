@@ -114,8 +114,7 @@ void EditableSmallMap::change_map(Vector<int> tile)
       map_edited.emit();
       break;
     case PICK_NEW_ROAD_START: 
-      if (GameMap::getInstance()->getTile(tile)->getType() != Tile::WATER &&
-          GameMap::getInstance()->getTile(tile)->getType() != Tile::VOID)
+      if (GameMap::getInstance()->getTile(tile)->getType() != Tile::WATER)
         {
           road_start = tile;
           road_start_placed.emit(tile);
@@ -123,8 +122,7 @@ void EditableSmallMap::change_map(Vector<int> tile)
         }
       break;
     case PICK_NEW_ROAD_FINISH: 
-      if (GameMap::getInstance()->getTile(tile)->getType() != Tile::WATER &&
-          GameMap::getInstance()->getTile(tile)->getType() != Tile::VOID)
+      if (GameMap::getInstance()->getTile(tile)->getType() != Tile::WATER)
         {
           road_finish = tile;
           road_finish_placed.emit(tile);

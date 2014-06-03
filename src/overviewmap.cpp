@@ -448,8 +448,6 @@ Maptile* OverviewMap::getTile(int x, int y)
           favoured_tile = gm->getTile(pos);
         else if (gm->getTerrainType(pos) == Tile::MOUNTAIN)
           favoured_tile = gm->getTile(pos);
-        else if (gm->getTerrainType(pos) == Tile::VOID)
-          favoured_tile = gm->getTile(pos);
       }
   return favoured_tile;
 }

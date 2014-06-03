@@ -87,7 +87,6 @@ void Tile::setTypeByIndex(int idx)
     case 3: setType(HILLS); break;
     case 4: setType(MOUNTAIN); break;
     case 5: setType(SWAMP); break;
-    case 6: setType(VOID); break;
     }
 }
 
@@ -101,7 +100,6 @@ int Tile::getTypeIndexForType(Tile::Type type)
     case HILLS: return 3; break;
     case MOUNTAIN: return 4; break;
     case SWAMP: return 5; break;
-    case VOID: return 6; break;
     }
   return 0;
 }
@@ -135,7 +133,6 @@ Glib::ustring Tile::tileTypeToString(const Tile::Type type)
     case Tile::HILLS: return "Tile::HILLS";
     case Tile::MOUNTAIN: return "Tile::MOUNTAIN";
     case Tile::SWAMP: return "Tile::SWAMP";
-    case Tile::VOID: return "Tile::VOID";
     }
   return "Tile::GRASS";
 }
@@ -150,7 +147,6 @@ Tile::Type Tile::tileTypeFromString(const Glib::ustring str)
   else if (str == "Tile::HILLS") return Tile::HILLS;
   else if (str == "Tile::MOUNTAIN") return Tile::MOUNTAIN;
   else if (str == "Tile::SWAMP") return Tile::SWAMP;
-  else if (str == "Tile::VOID") return Tile::VOID;
   return Tile::GRASS;
 }
 
@@ -209,7 +205,7 @@ bool Tile::validate() const
 	return false;
       break;
     case Tile::FOREST: case Tile::WATER: case Tile::HILLS: 
-    case Tile::SWAMP: case Tile::VOID: case Tile::MOUNTAIN:
+    case Tile::SWAMP: case Tile::MOUNTAIN:
       if (validateFeature(types) == false)
 	{
 	  if (validateGrass(types) == false)

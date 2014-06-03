@@ -82,7 +82,6 @@ TileSetWindow::TileSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
     tile_type_combobox->append(_("Hills"));
     tile_type_combobox->append(_("Mountains"));
     tile_type_combobox->append(_("Swamp"));
-    tile_type_combobox->append(_("Void"));
     type_combo_container->add(*manage(tile_type_combobox));
     type_combo_container->show_all();
     tile_type_combobox->signal_changed().connect
@@ -1503,7 +1502,7 @@ void TileSetWindow::on_validate_tileset_activated()
             msgs.push_back(String::ucompose(_("The %1 tile does not have enough of the right kind of tile styles."),(*it)->getName()));
           break;
         case Tile::FOREST: case Tile::WATER: case Tile::HILLS: 
-        case Tile::SWAMP: case Tile::VOID: case Tile::MOUNTAIN:
+        case Tile::SWAMP: case Tile::MOUNTAIN:
           if ((*it)->validateFeature(types) == false)
             {
               if ((*it)->validateGrass(types) == false)

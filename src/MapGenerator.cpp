@@ -390,7 +390,6 @@ void MapGenerator::printMap(int j, int i)
         case Tile::FOREST  :  ch=adom_convention ? '&' : '$';break; // forest
         case Tile::GRASS   :  ch=adom_convention ? '.' : '.';break; // plains
         case Tile::SWAMP   :  ch=adom_convention ? '"' : '_';break; // swamps
-        case Tile::VOID    :  ch=adom_convention ? '?' : '?';break;
 
             // cannot print those, actually because they don't exist in Tile::Type
             //     ch='C';break; // city/castle
