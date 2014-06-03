@@ -46,7 +46,6 @@ class Ruin;
 class Signpost;
 class Fight;
 class Quest;
-class Stack;
 class Reward;
 class StackTile;
 class Sage;
