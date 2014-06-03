@@ -56,12 +56,6 @@
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 
-namespace 
-{
-    // controls speed of selector rotation
-    int selection_timeout = TIMER_BIGMAP_SELECTOR;
-}
-
 GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
 		       bool see_opponents_stacks, bool military_advisor)
 :d_fighting(LocationBox(Vector<int>(-1,-1)))
@@ -79,10 +73,9 @@ GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
   prev_mouse_pos = Vector<int>(0, 0);
 
   // setup timeout
-  selection_timeout_handler = 
-    Timing::instance().register_timer
+  selection_timeout_handler = Timing::instance().register_timer
     (sigc::mem_fun(*this, &GameBigMap::on_selection_timeout),
-     selection_timeout);
+     TIMER_BIGMAP_SELECTOR);
   shift_key_is_down = false;
   control_key_is_down = false;
   magnification_factor = 1.0;
@@ -461,7 +454,6 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	mouse_state = NONE;
     }
 
-
   // right mousebutton to get information about things on the map and to
   // unselect the active stack
   else if (e.button == MouseButtonEvent::RIGHT_BUTTON)
@@ -555,7 +547,6 @@ void GameBigMap::mouse_button_event(MouseButtonEvent e)
 	}
     }
 }
-
 
 void GameBigMap::determine_mouse_cursor(Stack *stack, Vector<int> tile)
 {

@@ -186,14 +186,7 @@ int FightWindow::compute_max_rows(const armies_type &attackers,
     while (true) {
 	int width = std::accumulate(widths.begin(), widths.end(), 0);
 	int height = *std::max_element(heights.begin(), heights.end());
-
 	double ratio = double(width) / height;
-#if 0
-	std::cerr << "WIDTH " << width
-		  << " HEIGHT " << height
-		  << " RATIO " << ratio << std::endl;
-#endif
-
 	double dist = std::abs(wanted_ratio - ratio);
 	if (dist >= old_dist)
 	    break;		// we passed the optimal point

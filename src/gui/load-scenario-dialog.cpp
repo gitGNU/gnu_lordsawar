@@ -200,14 +200,12 @@ void LoadScenarioDialog::on_remove_scenario_clicked()
     {
       Glib::ustring filename = (*i)[scenarios_columns.filename];
       if (filename == "random.map")
-	return;
-      if (remove (filename.c_str()) == 0)
-	{
-	  scenarios_list->erase(i);
-	  description_textview->get_buffer()->set_text("");
-	  num_players_label->set_text ("");
-	  num_cities_label->set_text ("");
-	}
+        return;
+      File::erase(filename);
+      scenarios_list->erase(i);
+      description_textview->get_buffer()->set_text("");
+      num_players_label->set_text ("");
+      num_cities_label->set_text ("");
     }
   return;
 }

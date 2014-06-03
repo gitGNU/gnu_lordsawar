@@ -77,20 +77,6 @@ class SplashWindow: public sigc::trackable
     void on_game_started(GameParameters g);
     void on_network_game_created(GameParameters g, Profile *profile, bool advertised, bool remotely_hosted);
     void on_network_game_selected(Glib::ustring ip, unsigned short port, Profile  *profile);
-
-#if 0
-    //! Separate network input thread
-    static void *networkThread(void *arg);
-
-    //! Callback for arrival of network data
-    bool networkInput();
-
-    //! Network data processing
-    void networkData();
-#endif
-        
- public:
-    //void on_sdl_surface_changed();
 };
 
 #endif

@@ -70,4 +70,3 @@ Glib::ustring NameList::popRandomName()
 
   return name;
 }
-

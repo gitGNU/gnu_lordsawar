@@ -179,6 +179,7 @@ Glib::ustring File::getMapFile(Glib::ustring file)
 {
   return getMapDir() + file;
 }
+
 std::list<Glib::ustring> File::scanUserMaps()
 {
   Glib::ustring path = File::getUserMapDir();
@@ -231,6 +232,7 @@ Glib::ustring File::get_dirname(Glib::ustring path)
 {
   return Glib::path_get_dirname(path);
 }
+
 Glib::ustring File::get_basename(Glib::ustring path, bool keep_ext)
 {
   Glib::ustring file;
@@ -323,7 +325,6 @@ std::list<Glib::ustring> File::scanForFiles(Glib::ustring dir, Glib::ustring ext
     return files;
 }
 
-
 Glib::ustring File::getTilesetDir()
 {
   return add_slash_if_necessary(Configuration::s_dataPath) + TILESETDIR + "/";
@@ -357,7 +358,6 @@ Glib::ustring File::getUserCitysetDir()
   Glib::ustring dir = getSavePath() + CITYSETDIR + "/";
   return dir;
 }
-
 
 void File::erase(Glib::ustring filename)
 {

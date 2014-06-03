@@ -253,14 +253,12 @@ Vector<int> BigMap::tile_to_buffer_pos(Vector<int> tile)
 Vector<int> BigMap::mouse_pos_to_tile(Vector<int> pos)
 {
     int ts = GameMap::getInstance()->getTileSize();
-
     return (view_pos + pos) / (ts * magnification_factor);
 }
 
 Vector<int> BigMap::mouse_pos_to_tile_offset(Vector<int> pos)
 {
     int ts = GameMap::getInstance()->getTileSize();
-
     return (view_pos + pos) % (int)rint(ts * magnification_factor);
 }
 
@@ -378,12 +376,8 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface, Cairo::
 	    }
 	}
 
-
       if (show_army)
-	{
-	  // draw flag
-          gc->getFlagPic(s)->blit(surface, p);
-	}
+        gc->getFlagPic(s)->blit(surface, p);
     }
 }
 
@@ -412,7 +406,7 @@ bool BigMap::saveViewAsBitmap(Glib::ustring filename)
 {
   int width = image.get_width();
   int height = image.get_height();
-  remove (filename.c_str());
+  File::erase(filename);
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create(buffer, 0, 0, width, height);
   pixbuf->save (filename, "png");
   return true;
@@ -633,10 +627,6 @@ Cairo::RefPtr<Cairo::Surface> BigMap::magnify(Cairo::RefPtr<Cairo::Surface> orig
                            height * magnification_factor);
   Glib::RefPtr<Gdk::Pixbuf> unzoomed_buffer;
   unzoomed_buffer = Gdk::Pixbuf::create(orig, 0, 0, width, height);
-
-  //Glib::RefPtr<Gdk::Pixbuf> zoomed_buffer;
-  //zoomed_buffer = unzoomed_buffer->scale_simple(width * magnification_factor, height * magnification_factor, Gdk::INTERP_BILINEAR);
-  //result->draw_pixbuf(zoomed_buffer, 0, 0, 0, 0, zoomed_buffer->get_width(), zoomed_buffer->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
 
   return result;
 }

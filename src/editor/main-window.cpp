@@ -725,23 +725,13 @@ bool MainWindow::on_bigmap_mouse_motion_event(GdkEventMotion *e)
 
 bool MainWindow::on_bigmap_key_event(GdkEventKey *e)
 {
-#if 0
-    if (bigmap) {
-	KeyPressEvent k;
-	bigmap->key_press_event(k);
-    }
-#endif
-    
     return true;
 }
 
 bool MainWindow::on_bigmap_leave_event(GdkEventCrossing *e)
 {
     if (bigmap)
-    {
-	bigmap->mouse_leave_event();
-    }
-    
+      bigmap->mouse_leave_event();
     return true;
 }
 

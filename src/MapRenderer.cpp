@@ -25,6 +25,7 @@
 #include "FogMap.h"
 #include "ImageCache.h"
 #include "playerlist.h"
+#include "File.h"
 
 MapRenderer::MapRenderer(Cairo::RefPtr<Cairo::Surface> surface)
 {
@@ -47,7 +48,7 @@ bool MapRenderer::saveAsBitmap(Glib::ustring filename)
 
 bool MapRenderer::saveViewAsBitmap(Glib::ustring filename)
 {
-  remove (filename.c_str());
+  File::erase(filename);
   d_surface->write_to_png(filename);
   return true;
 }
@@ -134,6 +135,4 @@ void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
     }
 
 }
-
-
 // End of file

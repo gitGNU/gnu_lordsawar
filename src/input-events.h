@@ -45,11 +45,4 @@ struct MouseMotionEvent
     bool pressed[END_MARKER];
 };
 
-// keyboard key pressed
-struct KeyPressEvent 
-{
-    // fill in
-};
-
-
 #endif
