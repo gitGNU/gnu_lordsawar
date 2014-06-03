@@ -141,25 +141,6 @@ AC_SUBST(XSLT_CFLAGS)
 AC_SUBST(XSLT_LIBS)
 
 
-dnl this is needed in cross-compile with mingw32
-AC_ARG_ENABLE(winlibs,             
-              [  --enable-winlibs         enable windows cross-compiling libs],
-              LIBS="-lmingw32 -lws2_32 -lintl -lz -lpthreadGC2 -lpthreadGCE2 $LIBS"
-              flrc=true;
-              ,flrc=false
-             )
-
-AM_CONDITIONAL(FL_RESRC, test x$flrc = xtrue)
-
-dnl Now check gettext.h
-#winnls=no
-#AC_ARG_ENABLE(winnls,             
-#              [  --enable-winnls         enable windows cross-compiling nls],
-#              USE_NLS=yes
-#              winnls=yes
-#              AC_SUBST(USE_NLS)
-#             )
-
 #if test $winnls = no ; then
 AM_GNU_GETTEXT_VERSION([0.18.3])
 AM_GNU_GETTEXT([external])
