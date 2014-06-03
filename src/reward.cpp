@@ -461,10 +461,9 @@ Glib::ustring Reward::getDescription() const
 	{
 	  const Reward_Map *m = dynamic_cast<const Reward_Map *>(this);
 	  s += String::ucompose(_("Map: %1,%2 %3x%4"), 
-				  m->getLocation().x,
-				  m->getLocation().y,
-				  m->getHeight(),
-				  m->getWidth());
+				  m->getLocation().x, m->getLocation().y,
+				  m->getSightMap()->h, 
+                                  m->getSightMap()->w);
 	  return s;
 	}
     }
@@ -520,17 +519,7 @@ Glib::ustring Reward_Map::getMapName() const
   return d_sightmap->getName();
 }
 	
-guint32 Reward_Map::getHeight() const
-{
-  return d_sightmap->h;
-}
-	
-guint32 Reward_Map::getWidth() const 
-{
-  return d_sightmap->w;
-}
-	
-SightMap * Reward_Map::getSightMap()
+SightMap * Reward_Map::getSightMap() const
 {
   return d_sightmap;
 }

@@ -33,6 +33,7 @@
 #include "select-army-dialog.h"
 #include "select-hidden-ruin-dialog.h"
 #include "armyproto.h"
+#include "SightMap.h"
 
 RewardEditorDialog::RewardEditorDialog(Gtk::Window &parent, Player *player, bool hidden_ruins, Reward *r)
  : LwEditorDialog(parent, "reward-editor-dialog.ui")
@@ -168,8 +169,8 @@ void RewardEditorDialog::fill_in_reward_info()
       Reward_Map *r = static_cast<Reward_Map*>(reward);
       map_x_spinbutton->set_value(r->getLocation().x);
       map_y_spinbutton->set_value(r->getLocation().y);
-      map_width_spinbutton->set_value(r->getWidth());
-      map_height_spinbutton->set_value(r->getHeight());
+      map_width_spinbutton->set_value(r->getSightMap()->w);
+      map_height_spinbutton->set_value(r->getSightMap()->h);
 	  map_radiobutton->set_active(true);
     }
   else if (reward->getType() == Reward::RUIN)

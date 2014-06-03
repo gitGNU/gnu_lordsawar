@@ -86,12 +86,6 @@ lordsawar_editor_SOURCES = \
 	hero-editor-dialog.cpp hero-editor-dialog.h \
 	editor-splash-window.cpp editor-splash-window.h
 	
-if FL_RESRC
-lordsawar_editor_SOURCES += editor.rc
-endif
-.rc.o:
-	i586-mingw32msvc-windres -o $@ $<
-
 lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(top_builddir)/src/liblordsawargfx.la \
                          $(top_builddir)/src/liblordsawar.la \

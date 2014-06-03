@@ -148,12 +148,6 @@ lordsawar_upgrade_file_DEPENDENCIES = \
   liblordsawargamelist.la \
   liblordsawargamehost.la
 
-if FL_RESRC
-lordsawar_SOURCES += lordsawar.rc
-endif
-.rc.o:
-	i586-mingw32msvc-windres -o $@ $<
-
 localedir = $(datadir)/locale
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 

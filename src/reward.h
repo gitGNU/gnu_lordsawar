@@ -543,17 +543,10 @@ class Reward_Map: public Reward
 	Vector<int> getLocation() const;
 
 	//! Return the map in this reward.
-	SightMap * getSightMap();
+	SightMap * getSightMap() const;
 
 	//! Return the name of the map in this reward.
 	Glib::ustring getMapName() const;
-
-	//! Get the height of the revealed portion of the game map.
-	guint32 getHeight() const;
-
-	//! Get the width of the revealed portion of the game map.
-	guint32 getWidth() const;
-
 
 	// Methods that operate on the class data and modify the class.
 
