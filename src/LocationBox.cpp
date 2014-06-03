@@ -174,7 +174,6 @@ bool LocationBox::contains(Vector<int> pos) const
       && (pos.y >= getPos().y) && (pos.y < getPos().y + (int) d_size);
 }
 
-    
 bool LocationBox::isCompletelyObscuredByFog(Player *p) const
 {
   for (unsigned int i = 0; i < d_size; i++)

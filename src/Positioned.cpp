@@ -33,9 +33,6 @@ Positioned::Positioned(XML_Helper* helper)
 {
   if (!helper)
     return;
-  int i;
-  helper->getData(i, "x");
-  d_pos.x = i;
-  helper->getData(i, "y");
-  d_pos.y = i;
+  helper->getData(d_pos.x, "x");
+  helper->getData(d_pos.y, "y");
 }

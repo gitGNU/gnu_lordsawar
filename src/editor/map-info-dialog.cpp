@@ -58,4 +58,3 @@ int MapInfoDialog::run()
     }
     return response;
 }
-

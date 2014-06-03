@@ -67,7 +67,5 @@ Player * OwnerId::getOwner() const
   
 bool OwnerId::save(XML_Helper *helper) const
 {
-  bool retval = true;
-  retval &= helper->saveData("owner", d_owner_id);
-  return retval;
+  return helper->saveData("owner", d_owner_id);
 }

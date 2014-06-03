@@ -119,18 +119,12 @@ public:
     }
   static GameParameters::Player::Type player_param_string_to_player_param(Glib::ustring s)
     {
-      if (s == HUMAN_PLAYER_TYPE)
-        return GameParameters::Player::HUMAN;
-      else if (s == EASY_PLAYER_TYPE)
-        return GameParameters::Player::EASY;
-      else if (s == HARD_PLAYER_TYPE)
-        return GameParameters::Player::HARD;
-      else if (s == NO_PLAYER_TYPE)
-        return GameParameters::Player::OFF;
-      else if (s == NETWORKED_PLAYER_TYPE)
-        return GameParameters::Player::NETWORKED;
-      else
-        return GameParameters::Player::HUMAN;
+      if (s == HUMAN_PLAYER_TYPE) return GameParameters::Player::HUMAN;
+      else if (s == EASY_PLAYER_TYPE) return GameParameters::Player::EASY;
+      else if (s == HARD_PLAYER_TYPE) return GameParameters::Player::HARD;
+      else if (s == NO_PLAYER_TYPE) return GameParameters::Player::OFF;
+      else if (s == NETWORKED_PLAYER_TYPE) return GameParameters::Player::NETWORKED;
+      else return GameParameters::Player::HUMAN;
     }
   static Glib::ustring player_param_to_string (guint32 type)
     {

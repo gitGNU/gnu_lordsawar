@@ -18,12 +18,7 @@
 #include <config.h>
 
 #include <iostream>
-#include <iomanip>
-#include <assert.h>
-#include <libgen.h>
-#include <string.h>
 #include <errno.h>
-
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 
@@ -506,7 +501,6 @@ void ArmySetWindow::hide()
 bool ArmySetWindow::on_delete_event(GdkEventAny *e)
 {
   hide();
-
   return true;
 }
 
@@ -572,7 +566,6 @@ void ArmySetWindow::on_load_armyset_activated()
 
   update_armyset_buttons();
   update_armyset_menuitems();
-  //update_army_panel();
 }
 
 void ArmySetWindow::on_validate_armyset_activated()
@@ -632,7 +625,6 @@ void ArmySetWindow::on_validate_armyset_activated()
   Gtk::MessageDialog dialog(*window, msg);
   dialog.run();
   dialog.hide();
-
   return;
 }
 
@@ -1088,6 +1080,7 @@ void ArmySetWindow::on_production_text_changed(const Glib::ustring &s, int* p)
   production_spinbutton->set_value(atoi(production_spinbutton->get_text().c_str()));
   on_production_changed();
 }
+
 void ArmySetWindow::on_production_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -1118,6 +1111,7 @@ void ArmySetWindow::on_cost_text_changed(const Glib::ustring &s, int* p)
   cost_spinbutton->set_value(atoi(cost_spinbutton->get_text().c_str()));
   on_cost_changed();
 }
+
 void ArmySetWindow::on_cost_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -1147,6 +1141,7 @@ void ArmySetWindow::on_new_cost_text_changed(const Glib::ustring &s, int* p)
   new_cost_spinbutton->set_value(atoi(new_cost_spinbutton->get_text().c_str()));
   on_new_cost_changed();
 }
+
 void ArmySetWindow::on_new_cost_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -1170,6 +1165,7 @@ void ArmySetWindow::on_upkeep_text_changed(const Glib::ustring &s, int* p)
   upkeep_spinbutton->set_value(atoi(upkeep_spinbutton->get_text().c_str()));
   on_upkeep_changed();
 }
+
 void ArmySetWindow::on_upkeep_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -1198,6 +1194,7 @@ void ArmySetWindow::on_strength_text_changed(const Glib::ustring &s, int* p)
   strength_spinbutton->set_value(atoi(strength_spinbutton->get_text().c_str()));
   on_strength_changed();
 }
+
 void ArmySetWindow::on_strength_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -1226,6 +1223,7 @@ void ArmySetWindow::on_moves_text_changed(const Glib::ustring &s, int* p)
   moves_spinbutton->set_value(atoi(moves_spinbutton->get_text().c_str()));
   on_moves_changed();
 }
+
 void ArmySetWindow::on_moves_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -1254,6 +1252,7 @@ void ArmySetWindow::on_exp_text_changed(const Glib::ustring &s, int* p)
   exp_spinbutton->set_value(atoi(exp_spinbutton->get_text().c_str()));
   on_exp_changed();
 }
+
 void ArmySetWindow::on_exp_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -1277,6 +1276,7 @@ void ArmySetWindow::on_sight_text_changed(const Glib::ustring &s, int* p)
   sight_spinbutton->set_value(atoi(sight_spinbutton->get_text().c_str()));
   on_sight_changed();
 }
+
 void ArmySetWindow::on_sight_changed()
 {
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
@@ -1318,7 +1318,6 @@ void ArmySetWindow::on_id_changed()
         }
     }
 }
-
 
 void ArmySetWindow::on_gender_none_toggled()
 {
@@ -1479,10 +1478,7 @@ void ArmySetWindow::on_add_army_clicked()
   needs_saving = true;
   update_window_title();
   if (d_armyset->empty() == false)
-    {
-      armies_treeview->get_selection()->select(i);
-    }
-
+    armies_treeview->get_selection()->select(i);
 }
 
 void ArmySetWindow::on_remove_army_clicked()
@@ -1632,6 +1628,16 @@ void ArmySetWindow::on_make_same_clicked()
   neutral_image_button->set_label(white_image_button->get_label());
         
   Glib::ustring white_filename = d_armyset->getFileFromConfigurationFile(a->getImageName(Shield::Colour(0)) + ".png");
+  Gtk::Image *images[MAX_PLAYERS];
+  images[0] = NULL;
+  images[1] = green_image;
+  images[2] = yellow_image;
+  images[3] = light_blue_image;
+  images[4] = red_image;
+  images[5] = dark_blue_image;
+  images[6] = orange_image;
+  images[7] = black_image;
+  images[8] = neutral_image;
   for (unsigned int i = Shield::GREEN; i <= Shield::NEUTRAL; i++)
     {
       Shield::Colour s = Shield::Colour(i);
@@ -1646,35 +1652,7 @@ void ArmySetWindow::on_make_same_clicked()
       PixMask *army_image = ImageCache::applyMask(a->getImage(s), 
                                                      a->getMask(s), 
                                                      colour, false);
-      switch (i)
-        {
-        case 0:
-          break;
-        case 1:
-          green_image->property_pixbuf() = army_image->to_pixbuf();
-          break;
-        case 2:
-          yellow_image->property_pixbuf() = army_image->to_pixbuf();
-          break;
-        case 3:
-          light_blue_image->property_pixbuf() = army_image->to_pixbuf();
-          break;
-        case 4:
-          red_image->property_pixbuf() = army_image->to_pixbuf();
-          break;
-        case 5:
-          dark_blue_image->property_pixbuf() = army_image->to_pixbuf();
-          break;
-        case 6:
-          orange_image->property_pixbuf() = army_image->to_pixbuf();
-          break;
-        case 7:
-          black_image->property_pixbuf() = army_image->to_pixbuf();
-          break;
-        case 8:
-          neutral_image->property_pixbuf() = army_image->to_pixbuf();
-          break;
-        }
+      images[i]->property_pixbuf() = army_image->to_pixbuf();
       delete army_image;
     }
 }
