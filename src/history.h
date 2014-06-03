@@ -35,12 +35,6 @@ class Player;
  *  player has accomplished.  This list is retained for the duration of 
  *  the game.
  * 
- * Each history item is derived from the abstract History class. It has to
- * contain three functions; A loading constructor (which takes an XML_Helper 
- * parameter), a save function which saves the data, a fillData function 
- * which takes some parameters and with these stores the data about what 
- * happened.
- *
  */
 class History
 {
@@ -157,9 +151,6 @@ class History_StartTurn : public History
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! This method doesn't need to be called for History_StartTurn.
-        bool fillData();
-    
     private:
 };
 
@@ -170,7 +161,7 @@ class History_FoundSage : public History
 {
     public:
 	//! Default constructor.
-        History_FoundSage();
+        History_FoundSage(Hero *hero);
 	//! Copy constructor.
 	History_FoundSage(const History_FoundSage &history);
 	//! Load the historical event from an opened saved-game file.
@@ -183,9 +174,6 @@ class History_FoundSage : public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with the Hero who found the sage.
-        bool fillData(Hero *hero);
 
 	//! Get the name of the Hero who found the sage.
 	Glib::ustring getHeroName() const {return d_hero;}
@@ -202,7 +190,7 @@ class History_GoldTotal : public History
 {
     public:
 	//! Default constructor.
-        History_GoldTotal();
+        History_GoldTotal(int gold);
 	//! Copy constructor.
 	History_GoldTotal(const History_GoldTotal &history);
 	//! Load the historical event from an opened saved-game file.
@@ -215,9 +203,6 @@ class History_GoldTotal : public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with the amount of gold pieces the Player has.
-        bool fillData(int gold);
 
 	//! Get the amount of gold associated with this event.
 	int getGold() const {return d_gold;}
@@ -234,7 +219,7 @@ class History_HeroEmerges : public History
 {
     public:
 	//! Default constructor.
-        History_HeroEmerges();
+        History_HeroEmerges(Hero *hero, City *city);
 	//! Copy constructor.
 	History_HeroEmerges(const History_HeroEmerges &history);
 	//! Load the historical event from an opened saved-game file.
@@ -247,16 +232,6 @@ class History_HeroEmerges : public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with pertinent data.
-	/**
-	 * Populate the event with the new Hero who has showed up and 
-	 * the City where it has appeared.
-	 *
-	 * @param hero    The Hero that has emergerd.
-	 * @param city    The City where the Hero has emerged.
-	 */
-        bool fillData(Hero *hero, City *city);
 
 	//! Get the name of the Hero who appeared.
 	Glib::ustring getHeroName() const {return d_hero;}
@@ -284,7 +259,7 @@ class History_CityWon : public History
 {
     public:
 	//! Default constructor.
-        History_CityWon();
+        History_CityWon(City *city);
 	//! Copy constructor.
 	History_CityWon(const History_CityWon &history);
 	//! Load the historical event from an opened saved-game file.
@@ -297,9 +272,6 @@ class History_CityWon : public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the record with the City that the Player defeated.
-        bool fillData(City *city);
 
 	//! Get the Id of the City object that was defeated.
 	guint32 getCityId() const {return d_city;}
@@ -316,7 +288,7 @@ class History_HeroCityWon: public History
 {
     public:
 	//! Default constructor.
-        History_HeroCityWon();
+        History_HeroCityWon(City *c, Hero *h);
 	//! Copy constructor.
 	History_HeroCityWon(const History_HeroCityWon &history);
 	//! Load the historical event from an opened saved-game file.
@@ -329,16 +301,6 @@ class History_HeroCityWon: public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with pertinent data.
-	/**
-	 * Populate the event with the City that was defeated and the
-	 * Hero that assisted in the conquering.
-	 *
-	 * @param city    The City that was conquered.
-	 * @param hero    The Hero who lead the conquering of the City.
-	 */
-        bool fillData(Hero *hero, City *city);
 
 	//! Get the name of the Hero who conquered the City.
 	Glib::ustring getHeroName() const {return d_hero;}
@@ -361,7 +323,7 @@ class History_CityRazed : public History
 {
     public:
 	//! Default constructor.
-        History_CityRazed();
+        History_CityRazed(City *c);
 	//! Copy constructor.
 	History_CityRazed(const History_CityRazed &history);
 	//! Load the historical event from an opened saved-game file.
@@ -374,9 +336,6 @@ class History_CityRazed : public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with the City that was razed.
-        bool fillData(City *city);
 
 	//! Get the Id of the City object that was razed.
 	guint32 getCityId() const {return d_city;}
@@ -393,7 +352,7 @@ class History_HeroQuestStarted : public History
 {
     public:
 	//! Default constructor.
-        History_HeroQuestStarted();
+        History_HeroQuestStarted(Hero *h);
 	//! Copy constructor.
 	History_HeroQuestStarted(const History_HeroQuestStarted &history);
 	//! Load the historical event from an opened saved-game file.
@@ -406,9 +365,6 @@ class History_HeroQuestStarted : public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with the Hero who initiated a new Quest.
-        bool fillData(Hero *hero);
 
 	//! Get the name of the Hero who started a Quest.
 	Glib::ustring getHeroName() const {return d_hero;}
@@ -425,7 +381,7 @@ class History_HeroQuestCompleted: public History
 {
     public:
 	//! Default constructor.
-        History_HeroQuestCompleted();
+        History_HeroQuestCompleted(Hero *h);
 	//! Copy constructor.
 	History_HeroQuestCompleted(const History_HeroQuestCompleted &history);
 	//! Load the historical event from an opened saved-game file.
@@ -438,9 +394,6 @@ class History_HeroQuestCompleted: public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with the Hero who finished a Quest.
-        bool fillData(Hero *hero);
 
 	//! Get the name of the Hero who finished a Quest.
 	Glib::ustring getHeroName() const {return d_hero;}
@@ -457,7 +410,7 @@ class History_HeroKilledInCity : public History
 {
     public:
 	//! Default constructor.
-        History_HeroKilledInCity();
+        History_HeroKilledInCity(Hero *h, City *c);
 	//! Copy constructor.
 	History_HeroKilledInCity(const History_HeroKilledInCity &history);
 	//! Load the historical event from an opened saved-game file.
@@ -470,16 +423,6 @@ class History_HeroKilledInCity : public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with pertinent data.
-	/**
-	 * Populate the event with the Hero who was killed and the City where
-	 * it happened.
-	 *
-	 * @param hero    The Hero who died.
-	 * @param city    The City that houses the Hero's broken corpse.
-	 */
-        bool fillData(Hero *hero, City *city);
 
 	//! Get the name of the Hero who died.
 	Glib::ustring getHeroName() const {return d_hero;}
@@ -502,7 +445,7 @@ class History_HeroKilledInBattle: public History
 {
     public:
 	//! Default constructor.
-        History_HeroKilledInBattle();
+        History_HeroKilledInBattle(Hero *h);
 	//! Copy constructor.
 	History_HeroKilledInBattle(const History_HeroKilledInBattle &history);
 	//! Load the historical event from an opened saved-game file.
@@ -515,9 +458,6 @@ class History_HeroKilledInBattle: public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with the Hero who was killed in battle.
-        bool fillData(Hero *hero);
 
 	//! Get the name of the Hero who died in battle outside of a City.
 	Glib::ustring getHeroName() const {return d_hero;}
@@ -534,7 +474,7 @@ class History_HeroKilledSearching: public History
 {
     public:
 	//! Default constructor.
-        History_HeroKilledSearching();
+        History_HeroKilledSearching(Hero *h);
 	//! Copy constructor.
 	History_HeroKilledSearching(const History_HeroKilledSearching &history);
 	//! Load the historical event from an opened saved-game file.
@@ -547,9 +487,6 @@ class History_HeroKilledSearching: public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with the Hero who was killed while searching.
-        bool fillData(Hero *hero);
 
 	//! Get the name of the Hero who died while searching a Ruin.
 	Glib::ustring getHeroName() const {return d_hero;}
@@ -566,7 +503,7 @@ class History_Score: public History
 {
     public:
 	//! Default constructor.
-        History_Score();
+        History_Score(guint32 score);
 	//! Copy constructor.
 	History_Score(const History_Score &history);
 	//! Load the historical event from an opened saved-game file.
@@ -579,9 +516,6 @@ class History_Score: public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with the player's score for this turn.
-        bool fillData(guint32 score);
 
 	//! Get the player's score for this turn.
 	guint32 getScore() const {return d_score;}
@@ -621,7 +555,7 @@ class History_DiplomacyPeace : public History
 {
     public:
 	//! Default constructor.
-        History_DiplomacyPeace();
+        History_DiplomacyPeace(Player *p);
 	//! Copy constructor.
 	History_DiplomacyPeace(const History_DiplomacyPeace &history);
 	//! Load the historical event from an opened saved-game file.
@@ -634,9 +568,6 @@ class History_DiplomacyPeace : public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with the Player who we are at peace with.
-        bool fillData(Player *opponent);
 
 	//! Get the Id of the Player object we are at peace with.
 	guint32 getOpponentId() const {return d_opponent_id;}
@@ -653,7 +584,7 @@ class History_DiplomacyWar: public History
 {
     public:
 	//! Default constructor.
-        History_DiplomacyWar();
+        History_DiplomacyWar(Player *p);
 	//! Copy constructor.
 	History_DiplomacyWar(const History_DiplomacyWar &history);
 	//! Load the historical event from an opened saved-game file.
@@ -666,9 +597,6 @@ class History_DiplomacyWar: public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with the Player who we are at war with.
-        bool fillData(Player *opponent);
 
 	//! Get the Id of the Player object we are at war with.
 	guint32 getOpponentId() const {return d_opponent_id;}
@@ -685,7 +613,7 @@ class History_DiplomacyTreachery: public History
 {
     public:
 	//! Default constructor.
-        History_DiplomacyTreachery();
+        History_DiplomacyTreachery(Player *p);
 	//! Copy constructor.
 	History_DiplomacyTreachery(const History_DiplomacyTreachery &history);
 	//! Load the historical event from an opened saved-game file.
@@ -698,9 +626,6 @@ class History_DiplomacyTreachery: public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with the Player we performed treachery on.
-        bool fillData(Player *opponent);
 
 	//! Get the Id of the Player object that we peformed treachery on.
 	guint32 getOpponentId() const {return d_opponent_id;}
@@ -717,7 +642,7 @@ class History_HeroFindsAllies : public History
 {
     public:
 	//! Default constructor.
-        History_HeroFindsAllies();
+        History_HeroFindsAllies(Hero *h);
 	//! Copy constructor.
 	History_HeroFindsAllies(const History_HeroFindsAllies &history);
 	//! Load the historical event from an opened saved-game file.
@@ -730,9 +655,6 @@ class History_HeroFindsAllies : public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with the name of the Hero who found allies.
-        bool fillData(Hero *hero);
 
 	//! Get the name of the Hero who found powerful allies.
 	Glib::ustring getHeroName() const {return d_hero;}
@@ -762,9 +684,6 @@ class History_EndTurn : public History
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! This method doesn't need to be called for History_EndTurn.
-	bool fillData();
-    
     private:
 };
 //-----------------------------------------------------------------------------
@@ -774,7 +693,7 @@ class History_HeroRuinExplored: public History
 {
     public:
 	//! Default constructor.
-        History_HeroRuinExplored();
+        History_HeroRuinExplored(Hero *h, Ruin *r);
 	//! Copy constructor.
 	History_HeroRuinExplored(const History_HeroRuinExplored &history);
 	//! Load the historical event from an opened saved-game file.
@@ -787,16 +706,6 @@ class History_HeroRuinExplored: public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with pertinent data.
-	/**
-	 * Populate the event with the Ruin that was searched and
-	 * the Hero that did the exploration.
-	 *
-	 * @param ruin    The Ruin that was explored.
-	 * @param hero    The Hero who did the exploration of the Ruin.
-	 */
-        bool fillData(Hero *hero, Ruin *ruin);
 
 	//! Get the name of the Hero who searched the Ruin.
 	Glib::ustring getHeroName() const {return d_hero;}
@@ -820,7 +729,7 @@ class History_HeroRewardRuin: public History
 {
     public:
 	//! Default constructor.
-        History_HeroRewardRuin();
+        History_HeroRewardRuin(Hero *h, Ruin *r);
 	//! Copy constructor.
 	History_HeroRewardRuin(const History_HeroRewardRuin&history);
 	//! Load the historical event from an opened saved-game file.
@@ -833,16 +742,6 @@ class History_HeroRewardRuin: public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with pertinent data.
-	/**
-	 * Populate the event with the Ruin that was exposed and
-	 * the Hero that received the location of the ruin.
-	 *
-	 * @param ruin    The Ruin that was exposed.
-	 * @param hero    The Hero who received the location of the Ruin.
-	 */
-        bool fillData(Hero *hero, Ruin *ruin);
 
 	//! Get the name of the Hero who was given the location of the Ruin.
 	Glib::ustring getHeroName() const {return d_hero;}
@@ -865,7 +764,9 @@ class History_HeroUseItem: public History
 {
     public:
 	//! Default constructor.
-        History_HeroUseItem();
+        History_HeroUseItem(Hero *h, Item *i, Player *opponent, 
+                            City *friendly_city, City *enemy_city, 
+                            City *neutral_city, City *c);
 	//! Copy constructor.
 	History_HeroUseItem(const History_HeroUseItem &history);
 	//! Load the historical event from an opened saved-game file.
@@ -878,9 +779,6 @@ class History_HeroUseItem: public History
 
 	//! Save the historical event to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the event with the hero name and the player we attacked.
-        bool fillData(Hero *hero, Item *item, Player *opponent, City *friendly_city, City *enemy_city, City *neutral_city, City *city);
 
         //! Get the name of the hero that used the object.
         Glib::ustring getHeroName() const {return d_hero_name;}

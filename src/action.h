@@ -44,12 +44,6 @@ class XML_Helper;
  * player then just has to decode and repeat the remote player's actions so
  * that the game state is synchronised.
  * 
- * Each action item is derived from the abstract Action class. It must
- * contain three functions; A loading constructor (which takes an 
- * XML_Helper parameter), a save function which saves the data to the
- * XML file, and a fillData function which takes some parameters and 
- * stores the pertinent data about what happened.
- *
  * Each Player has an Actionlist to which these actions belong.
  */
 
@@ -204,7 +198,10 @@ class Action_Move : public Action
 {
     public:
 	//! Make a new move action.
-        Action_Move();
+	/**
+         * Populate the move action with the stack and it's new position.
+         */
+        Action_Move(Stack* s, Vector<int> dest);
 	//! Copy constructor
         Action_Move(const Action_Move &action);
 	//! Load a new move action from an opened saved-game file.
@@ -218,9 +215,6 @@ class Action_Move : public Action
 	//! Save this move action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Populate the move action with the stack and it's new position.
-        bool fillData(Stack* s, Vector<int> dest);
-    
 	guint32 getStackId() const {return d_stack;};
 	Vector<int> getEndingPosition() const {return d_dest;};
 	Vector<int> getPositionDelta() const {return d_delta;};
@@ -229,39 +223,6 @@ class Action_Move : public Action
         guint32 d_stack;
         Vector<int> d_dest;
 	Vector<int> d_delta;
-};
-
-//! A temporary record of a Stack being disbanded.
-/**
- * The purpose of the Action_Disband class is to record when a stack has
- * removed from the game.  Disbanding is done to primarily to save the 
- * gold pieces paid out every turn as upkeep for the Army units in the Stack.
- */
-class Action_Disband: public Action
-{
-    public:
-	//! Make a new disband action.
-        Action_Disband();
-	//! Copy constructor
-	Action_Disband(const Action_Disband &action);
-	//! Load a new disband action from an opened saved-game file.
-        Action_Disband(XML_Helper* helper);
-	//! Destroy a disband action.
-        ~Action_Disband() {};
-
-	//! Return some debug information about this action.
-        Glib::ustring dump() const;
-
-	//! Save this disband action to an opened saved-game file.
-        virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the action with the Stack being removed.
-        bool fillData(Stack* s);
-    
-	guint32 getStackId() const {return d_stack;};
-
-        private:
-        guint32 d_stack;
 };
 
 //-----------------------------------------------------------------------------
@@ -280,7 +241,12 @@ class Action_Split : public Action
 {
     public:
 	//! Make a new stack split action.
-        Action_Split();
+        /** 
+	 * Populate the Action_Split class with the original Stack, and the 
+	 * new stack that has been added to the game.  Please note that the 
+	 * stacks have to be already split before this call.
+	 */
+        Action_Split(Stack* orig, Stack* added);
 	//! Copy constructor
 	Action_Split(const Action_Split &action);
 	//! Load a new stack split action from an opened saved-game file.
@@ -294,14 +260,6 @@ class Action_Split : public Action
 	//! Save this split action to an opened saved-game file.
         bool doSave (XML_Helper* helper) const;
 
-        /** 
-	 * Populate the Action_Split class with the original Stack, and the 
-	 * new stack that has been added to the game.  Please note that the 
-	 * stacks have to be already split before this call.
-	 */
-	//! Populate the action with pertinent data.
-        bool fillData(Stack* orig, Stack* added);
-    
 	guint32 getStackId() const {return d_orig;};
 	guint32 getNewStackId() const {return d_added;};
 	guint32 getGroupedArmyId(int idx) const {return d_armies_moved[idx];};
@@ -309,6 +267,40 @@ class Action_Split : public Action
         guint32 d_orig, d_added;
         guint32 d_armies_moved[MAX_STACK_SIZE];
 };
+
+//! A temporary record of a Stack being disbanded.
+/**
+ * The purpose of the Action_Disband class is to record when a stack has
+ * removed from the game.  Disbanding is done to primarily to save the 
+ * gold pieces paid out every turn as upkeep for the Army units in the Stack.
+ */
+class Action_Disband: public Action
+{
+    public:
+	//! Make a new disband action.
+	/**
+         * Populate the action with the Stack being removed.
+         */
+        Action_Disband(Stack *s);
+	//! Copy constructor
+	Action_Disband(const Action_Disband &action);
+	//! Load a new disband action from an opened saved-game file.
+        Action_Disband(XML_Helper* helper);
+	//! Destroy a disband action.
+        ~Action_Disband() {};
+
+	//! Return some debug information about this action.
+        Glib::ustring dump() const;
+
+	//! Save this disband action to an opened saved-game file.
+        virtual bool doSave(XML_Helper* helper) const;
+
+	guint32 getStackId() const {return d_stack;};
+
+        private:
+        guint32 d_stack;
+};
+
 
 //-----------------------------------------------------------------------------
 
@@ -321,7 +313,11 @@ class Action_Fight : public Action, public sigc::trackable
 {
     public:
 	//! Make a new fight action.
-        Action_Fight();
+	/**
+	 * Populate the action with the Fight.  Please note that the
+	 * Fight must have already been faught.
+	 */
+        Action_Fight(const Fight* f);
 	//! Copy constructor
 	Action_Fight(const Action_Fight &action);
 	//! Load a new fight action from an opened saved-game file.
@@ -334,14 +330,6 @@ class Action_Fight : public Action, public sigc::trackable
 
 	//! Save this fight action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	/**
-	 * Populate the action with the Fight.  Please note that the
-	 * Fight must have already been faught.
-	 */
-	//! Fill the action with pertinent data.
-        bool fillData(const Fight* f);
-
 
 	std::list<FightItem> getBattleHistory() const {return d_history;};
 	std::list<guint32> getAttackerStackIds() const {return d_attackers;};
@@ -370,7 +358,12 @@ class Action_Join : public Action
 {
     public:
 	//! Make a new stack join action.
-        Action_Join();
+        /** 
+	 * Populate the Action_Join class with the original Stack, and the 
+	 * stack that is merging into the original one.  Please note that
+	 * this method must be called before the merge takes place.
+	 */
+        Action_Join(Stack* orig, Stack* joining);
 	//! Copy constructor
 	Action_Join(const Action_Join &action);
 	//! Load a new stack join action from an opened saved-game file.
@@ -384,14 +377,6 @@ class Action_Join : public Action
 	//! Save this stack join action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-        /** 
-	 * Populate the Action_Join class with the original Stack, and the 
-	 * stack that is merging into the original one.  Please note that
-	 * this method must be called before the merge takes place.
-	 */
-	//! Populate the action with pertinent data.
-        bool fillData(Stack* orig, Stack* joining);
-    
 	guint32 getReceivingStackId() const {return d_orig_id;};
 	guint32 getJoiningStackId() const {return d_joining_id;};
         private:
@@ -409,7 +394,11 @@ class Action_Ruin : public Action
 {
     public:
 	//! Make a new ruin search attempted action.
-        Action_Ruin();
+	/**
+	 * Populate the Action_Ruin class with the Stack containing the
+	 * Hero Army unit, and the Ruin being searched.
+	 */
+        Action_Ruin(Ruin* r, Stack* explorers);
 	//! Copy constructor
 	Action_Ruin(const Action_Ruin&action);
 	//! Load a new ruin search attempted action from a saved-game file.
@@ -423,16 +412,6 @@ class Action_Ruin : public Action
 	//! Save this ruin search attempted action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	/**
-	 * Populate the Action_Ruin class with the Stack containing the
-	 * Hero Army unit, and the Ruin being searched.
-	 */
-	//! Populate the action with pertinent data.
-        bool fillData(Ruin* r, Stack* explorers);
-
-	//! Set whether or not the Stack was successful in searching the ruin.
-        void setSearched(bool searched) {d_searched = searched;}
-    
 	guint32 getRuinId() const {return d_ruin;};
 	guint32 getStackId() const {return d_stack;};
 	bool getSearchSuccessful() const {return d_searched;};
@@ -455,7 +434,11 @@ class Action_Temple : public Action
 {
     public:
 	//! Make a new temple search action.
-        Action_Temple();
+	/**
+	 * Populate the Action_Temple class with the Stack and the Temple
+	 * being searched.
+	 */
+        Action_Temple(Temple* t, Stack* s);
 	//! Copy constructor
 	Action_Temple(const Action_Temple &action);
 	//! Load a new temple search action from a saved-game file.
@@ -469,13 +452,6 @@ class Action_Temple : public Action
 	//! Save this temple search attempted action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	/**
-	 * Populate the Action_Temple class with the Stack and the Temple
-	 * being searched.
-	 */
-	//! Populate the action with pertinent data.
-        bool fillData(Temple* t, Stack* s);
-    
 	guint32 getTempleId() const {return d_temple;};
 	guint32 getStackId() const {return d_stack;};
 
@@ -498,7 +474,7 @@ class Action_Occupy : public Action
 {
     public:
 	//! Make a new city occupy action.
-        Action_Occupy();
+        Action_Occupy(City *c);
 	//! Copy constructor.
 	Action_Occupy(const Action_Occupy &action);
 	//! Load a new city occupied action from an opened saved-game file.
@@ -512,9 +488,6 @@ class Action_Occupy : public Action
 	//! Save this city occupied action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Populate the action with the City being occupied.
-        bool fillData (City* c);
-    
 	guint32 getCityId() const {return d_city;};
 
         private:
@@ -534,7 +507,7 @@ class Action_Pillage : public Action
 {
     public:
 	//! Make a new city pillaged action.
-        Action_Pillage();
+        Action_Pillage(City *c);
 	//! Copy constructor
 	Action_Pillage(const Action_Pillage &action);
 	//! Load a new city pillaged action from an opened saved-game file.
@@ -547,9 +520,6 @@ class Action_Pillage : public Action
 
 	//! Save this city pillaged action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the action with the City that has been pillaged.
-        bool fillData(City* c);
 
 	guint32 getCityId() const {return d_city;};
 
@@ -570,7 +540,7 @@ class Action_Sack : public Action
 {
     public:
 	//! Make a new city sacked action.
-        Action_Sack();
+        Action_Sack(City *c);
 	//! Copy constructor
 	Action_Sack(const Action_Sack &action);
 	//! Load a new city sacked action from an opened saved-game file.
@@ -583,9 +553,6 @@ class Action_Sack : public Action
 
 	//! Save this city sacked action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the action with the City that has been sacked.
-        bool fillData(City* c);
 
 	guint32 getCityId() const {return d_city;};
 
@@ -605,7 +572,7 @@ class Action_Raze : public Action
 {
     public:
 	//! Make a new city razed action.
-        Action_Raze();
+        Action_Raze(City *c);
 	//! Copy constructor
 	Action_Raze(const Action_Raze &action);
 	//! Load a new city razed action from an opened saved-game file.
@@ -619,9 +586,6 @@ class Action_Raze : public Action
 	//! Save this city razed action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Populate the action with the City that has been razed.
-        bool fillData (City* c);
-    
 	guint32 getCityId() const {return d_city;};
 
         private:
@@ -640,7 +604,10 @@ class Action_Upgrade : public Action
 {
     public:
 	//! Make a new city upgraded action.
-        Action_Upgrade();
+	/**
+         * Populate the action with the City that has been upgraded.
+         */
+        Action_Upgrade(City *c);
 	//! Copy constructor
 	Action_Upgrade(const Action_Upgrade &action);
 	//! Load a new city upgraded action from an opened saved-game file.
@@ -653,9 +620,6 @@ class Action_Upgrade : public Action
 
 	//! Save this city upgraded action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the action with the City that has been upgraded.
-        bool fillData(City* c);
 
 	guint32 getCityId() const {return d_city;};
 
@@ -680,7 +644,13 @@ class Action_Buy : public Action
 {
     public:
 	//! Make a new city buy production action.
-        Action_Buy();
+	/**
+	 * Populate the Action_Buy with City where the buy has happened.
+	 * Also populate it with the City's production slot that is now
+	 * producing the new Army unit type.  Lastly, populate the Action_Buy 
+	 * with the new Army unit type being produced.
+	 */
+        Action_Buy(City* c, int slot, const ArmyProto *prod);
 	//! Copy constructor
 	Action_Buy(const Action_Buy &action);
 	//! Load a new city buy production action from a saved-game file.
@@ -693,15 +663,6 @@ class Action_Buy : public Action
 
 	//! Save this city buy production action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	/**
-	 * Populate the Action_Buy with City where the buy has happened.
-	 * Also populate it with the City's production slot that is now
-	 * producing the new Army unit type.  Lastly, populate the Action_Buy 
-	 * with the new Army unit type being produced.
-	 */
-	//! Populate the action with pertinent data.
-        bool fillData(City* c, int slot, const ArmyProto *prod);
 
 	guint32 getCityId() const {return d_city;};
 	int getProductionSlot() const {return d_slot;};
@@ -725,7 +686,12 @@ class Action_Production : public Action
 {
     public:
 	//! Make a new city change production action.
-        Action_Production();
+	/**
+	 * Populate the Action_Production with City where the change
+	 * in production has taken place.  Also populate it with the newly
+	 * active production slot (-1 means stopped).
+	 */
+        Action_Production(City* c, int slot);
 	//! Copy constructor
 	Action_Production (const Action_Production &action);
 	//! Load a new city change production action from a saved-game file.
@@ -738,14 +704,6 @@ class Action_Production : public Action
 
 	//! Save this city change production action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	/**
-	 * Populate the Action_Production with City where the change
-	 * in production has taken place.  Also populate it with the newly
-	 * active production slot (-1 means stopped).
-	 */
-	//! Populate the action with pertinent data.
-        bool fillData(City* c, int slot);
 
 	guint32 getCityId() const {return d_city;};
 	int getSlot() const {return d_prod;};
@@ -771,7 +729,7 @@ class Action_Reward : public Action
 {
     public:
 	//! Make a new player rewarded action.
-        Action_Reward();
+        Action_Reward(Stack *stack, Reward *r);
 	//! Copy constructor
 	Action_Reward (const Action_Reward &action);
 	//! Load a new player rewarded action from a saved-game file.
@@ -785,10 +743,6 @@ class Action_Reward : public Action
 	//! Save this player rewarded action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Populate the Action_Reward with a Reward.
-        bool fillData (Stack *stack, Reward *r);
-    
-
 	Reward *getReward() const {return d_reward;};
 	guint32 getStackId() const {return d_stack;};
 
@@ -797,7 +751,6 @@ class Action_Reward : public Action
         guint32 d_stack;
 
         bool load(Glib::ustring tag, XML_Helper *helper);
-	
 };
 
 //-----------------------------------------------------------------------------
@@ -811,7 +764,7 @@ class Action_Quest : public Action
 {
     public:
 	//! Make a new hero quest assigned action.
-        Action_Quest();
+        Action_Quest(Quest* q);
 	//! Copy constructor
 	Action_Quest (const Action_Quest &action);
 	//! Load a new hero quest assigned action from a saved-game file.
@@ -824,9 +777,6 @@ class Action_Quest : public Action
 
 	//! Save this hero quest assigned action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the Action_Quest with a Quest.
-        bool fillData(Quest* q);
 
 	guint32 getHeroId() const {return d_hero;};
 	guint32 getQuestType() const {return d_questtype;};
@@ -860,7 +810,12 @@ class Action_Equip : public Action
             GROUND = 2};
         
 	//! Make a new item equipped action.
-        Action_Equip();
+	/**
+	 * Populate the Action_Equip class with the Id of the Hero,
+	 * the Id of the Item and the destination of the Item in terms of
+	 * it's Action_Equip::Slot.
+	 */
+        Action_Equip(Hero *hero, Item *item, Slot slot, Vector<int> pos);
 	//! Copy constructor
 	Action_Equip (const Action_Equip &action);
 	//! Load a new item equipped action from an opened saved-game file.
@@ -873,14 +828,6 @@ class Action_Equip : public Action
 
 	//! Save this item equipped action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	/**
-	 * Populate the Action_Equip class with the Id of the Hero,
-	 * the Id of the Item and the destination of the Item in terms of
-	 * it's Action_Equip::Slot.
-	 */
-	//! Populate the action with pertinent data.
-        bool fillData(Hero *hero, Item *item, Slot slot, Vector<int> pos);
 
 	guint32 getHeroId() const {return d_hero;};
 	guint32 getItemId() const {return d_item;};
@@ -907,7 +854,12 @@ class Action_Level : public Action
 {
     public:
 	//! Make a new level advancement action.
-        Action_Level();
+	/**
+	 * Populate the Action_Level class with the the Id of the Hero
+	 * Army unit, and also the Hero's stat that has been raised as a
+	 * result of the level advancement.
+	 */
+        Action_Level(Army *unit, Army::Stat raised);
 	//! Copy constructor
 	Action_Level (const Action_Level &action);
 	//! Load a new level advancement action from an opened saved-game file.
@@ -920,14 +872,6 @@ class Action_Level : public Action
 
 	//! Save this level advancement action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	/**
-	 * Populate the Action_Level class with the the Id of the Hero
-	 * Army unit, and also the Hero's stat that has been raised as a
-	 * result of the level advancement.
-	 */
-	//! Populate the action with pertinent data.
-        bool fillData(Army *unit, Army::Stat raised);
 
 	guint32 getArmyId() const {return d_army;};
 	guint32 getStatToIncrease() const {return d_stat;};
@@ -950,7 +894,10 @@ class Action_ModifySignpost: public Action
 {
     public:
 	//! Make a new change signpost action.
-        Action_ModifySignpost();
+	/**
+         * Populate the action with the signpost and the new message.
+         */
+        Action_ModifySignpost(Signpost * s, Glib::ustring message);
 	//! Copy constructor
 	Action_ModifySignpost(const Action_ModifySignpost &action);
 	//! Load a new change signpost action from an opened saved-game file.
@@ -964,9 +911,6 @@ class Action_ModifySignpost: public Action
 	//! Save this change signpost action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Populate the action with the signpost and the new message.
-        bool fillData(Signpost * s, Glib::ustring message);
-    
 	guint32 getSignpostId() const {return d_signpost;};
 	Glib::ustring getSignContents() const {return d_message;};
 
@@ -987,7 +931,10 @@ class Action_RenameCity: public Action
 {
     public:
 	//! Make a new city rename action.
-        Action_RenameCity();
+	/**
+         * Populate the action with the city being renamed and the new name.
+         */
+        Action_RenameCity(City* c, Glib::ustring name);
 	//! Copy constructor
 	Action_RenameCity(const Action_RenameCity &action);
 	//! Load a new city rename action from an opened saved-game file.
@@ -1001,9 +948,6 @@ class Action_RenameCity: public Action
 	//! Save this city rename action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Populate the action with the city being renamed and the new name.
-        bool fillData(City *c, Glib::ustring name);
-    
 	guint32 getCityId() const {return d_city;};
 	Glib::ustring getNewCityName() const {return d_name;};
         private:
@@ -1025,7 +969,11 @@ class Action_Vector: public Action
 {
     public:
 	//! Make a new city vector action.
-        Action_Vector();
+	/**
+	 * Populate the Action_Vector class with the City being vectored
+	 * from, and the destination position for the vectored units.
+	 */
+        Action_Vector(City* src, Vector<int> dest);
 	//! Copy constructor
 	Action_Vector(const Action_Vector &action);
 	//! Load a new city vector action from an opened saved-game file.
@@ -1039,13 +987,6 @@ class Action_Vector: public Action
 	//! Save this city vector action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	/**
-	 * Populate the Action_Vector class with the City being vectored
-	 * from, and the destination position for the vectored units.
-	 */
-	//! Populate the action with pertinent data.
-        bool fillData(City* src, Vector <int> dest);
-    
 	guint32 getCityId() const {return d_city;};
 	Vector<int> getVectoringDestination() const {return d_dest;};
 
@@ -1065,7 +1006,10 @@ class Action_FightOrder: public Action
 {
     public:
 	//! Make a new fight order action.
-        Action_FightOrder();
+	/**
+         * Populate the action with a list of ranks, one per Army unit type.
+         */
+        Action_FightOrder(std::list<guint32> order);
 	//! Copy constructor
 	Action_FightOrder(const Action_FightOrder &action);
 	//! Load a new fight order action from an opened saved-game file.
@@ -1079,9 +1023,6 @@ class Action_FightOrder: public Action
 	//! Save this fight order action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Populate the action with a list of ranks, one per Army unit type.
-        bool fillData(std::list<guint32> order);
-    
 	std::list<guint32> getFightOrder() const {return d_order;};
 
         private:
@@ -1113,9 +1054,6 @@ class Action_Resign: public Action
 
 	//! Save this player resignation action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! This method doesn't need to be called for Action_Resign actions.
-        bool fillData();
 };
 
 //-----------------------------------------------------------------------------
@@ -1130,7 +1068,10 @@ class Action_Plant: public Action
 {
     public:
 	//! Make a new item planted action.
-        Action_Plant();
+	/**
+         * Populate the action with the Id of the Hero and the Id of the Item.
+         */
+        Action_Plant(Hero *hero, Item *item);
 	//! Copy constructor
 	Action_Plant(const Action_Plant &action);
 	//! Load a new item planted action from an opened saved-game file.
@@ -1143,9 +1084,6 @@ class Action_Plant: public Action
 
 	//! Save this item planted action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the action with the Id of the Hero and the Id of the Item.
-        bool fillData(Hero *hero, Item *item);
 
 	guint32 getHeroId() const {return d_hero;};
 	guint32 getItemId() const {return d_item;};
@@ -1172,7 +1110,18 @@ class Action_Produce: public Action
 {
     public:
 	//! Make a new unit produced action.
-        Action_Produce();
+	/**
+	 * Populate the Action_Produce action with the army type being
+	 * produced, the City in which it has arrived, and also whether
+	 * or not this unit was prevented from showing up here because
+	 * it is being vectored elsewhere.
+	 *
+	 * pos is the vectored location if we're vectoring
+	 * or it's the position on the map where the newly produced army ended 
+	 * up.
+	 */
+        Action_Produce(const ArmyProdBase *army, City *city, bool vectored, 
+                       Vector<int> pos, guint32 army_id, guint32 stack_id);
 	//! Copy constructor
 	Action_Produce(const Action_Produce &action);
 	//! Load a new unit produced action from an opened saved-game file.
@@ -1185,19 +1134,6 @@ class Action_Produce: public Action
 
 	//! Save this unit produced action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	/**
-	 * Populate the Action_Produce action with the army type being
-	 * produced, the City in which it has arrived, and also whether
-	 * or not this unit was prevented from showing up here because
-	 * it is being vectored elsewhere.
-	 *
-	 * pos is the vectored location if we're vectoring
-	 * or it's the position on the map where the newly produced army ended 
-	 * up.
-	 */
-	//! Populate the action with pertinent data.
-        bool fillData(const ArmyProdBase *a, City *city, bool vectored, Vector<int> pos, guint32 army_id, guint32 stack_id);
 
 	//! Get the production details of the army that was produced.
 	ArmyProdBase * getArmy() const {return d_army;}
@@ -1244,7 +1180,13 @@ class Action_ProduceVectored: public Action
 {
     public:
 	//! Make a new vector arrival action.
-        Action_ProduceVectored();
+	/**
+	 * Populate the Action_ProduceVectored with the Id of the army
+	 * unit type being produced, and the position on the map where
+	 * it has showing up.
+	 */
+        Action_ProduceVectored(ArmyProdBase *army, Vector<int> dest, 
+                               Vector<int> src);
 	//! Copy constructor
 	Action_ProduceVectored(const Action_ProduceVectored &action);
 	//! Load a new vector arrival action from an opened saved-game file.
@@ -1257,14 +1199,6 @@ class Action_ProduceVectored: public Action
 
 	//! Save this vector arrival action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	/**
-	 * Populate the Action_ProduceVectored with the Id of the army
-	 * unit type being produced, and the position on the map where
-	 * it has showing up.
-	 */
-	//! Populate the action with pertinent data.
-        bool fillData(ArmyProdBase *army, Vector <int> dest, Vector<int> src);
 
 	//! Get the army type Id that has shown up.
 	ArmyProdBase *getArmy() const {return d_army;};
@@ -1295,7 +1229,12 @@ class Action_DiplomacyState: public Action
 {
     public:
 	//! Make a new diplomatic state action.
-        Action_DiplomacyState();
+	/**
+	 * Populate the Action_DiplomacyState class with the Player for
+	 * which we are in a state with.  Also populate the action with
+	 * the new diplomatic state.
+	 */
+        Action_DiplomacyState(Player *p, Player::DiplomaticState state);
 	//! Copy constructor
 	Action_DiplomacyState(const Action_DiplomacyState &action);
 	//! Load a new diplomatic state action from an opened saved-game file.
@@ -1308,14 +1247,6 @@ class Action_DiplomacyState: public Action
 
 	//! Save this diplomatic state action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	/**
-	 * Populate the Action_DiplomacyState class with the Player for
-	 * which we are in a state with.  Also populate the action with
-	 * the new diplomatic state.
-	 */
-	//! Populate action with pertinent data.
-        bool fillData(Player *player, Player::DiplomaticState state);
 
 	//! Get the Id of the Player that we have entered a new state for.
 	guint32 getOpponentId() const {return d_opponent_id;}
@@ -1341,7 +1272,12 @@ class Action_DiplomacyProposal: public Action
 {
     public:
 	//! Make a new diplomatic proposal action.
-        Action_DiplomacyProposal();
+	/**
+	 * Populate the Action_DiplomacyProposal class with the Player for
+	 * which we have a new proposal for.  Also populate the action with
+	 * the new diplomatic proposal.
+	 */
+        Action_DiplomacyProposal(Player *p, Player::DiplomaticProposal proposal);
 	//! Copy constructor
 	Action_DiplomacyProposal(const Action_DiplomacyProposal &action);
 	//! Load a new diplomatic proposal action from a saved-game file.
@@ -1354,14 +1290,6 @@ class Action_DiplomacyProposal: public Action
 
 	//! Save this diplomatic proposal action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	/**
-	 * Populate the Action_DiplomacyProposal class with the Player for
-	 * which we have a new proposal for.  Also populate the action with
-	 * the new diplomatic proposal.
-	 */
-	//! Populate action with pertinent data.
-        bool fillData(Player *player, Player::DiplomaticProposal proposal);
 
 	//! Get the Id of the Player that our proposal is for.
 	guint32 getOpponentId() const {return d_opponent_id;}
@@ -1387,7 +1315,14 @@ class Action_DiplomacyScore: public Action
 {
     public:
 	//! Make a new diplomatic score action.
-        Action_DiplomacyScore();
+	/**
+	 * Populate the Action_DiplomacyScore class with the Player for
+	 * which we have changed our opinion of.  Also populate the action
+	 * with the amount of change for that Player.  The change can be 
+	 * negative, and is added to the existing score to get the new 
+	 * score.
+	 */
+        Action_DiplomacyScore(Player *p, int amount);
 	//! Copy constructor.
 	Action_DiplomacyScore(const Action_DiplomacyScore &action);
 	//! Load a new diplomatic score action from an opened saved-game file.
@@ -1400,16 +1335,6 @@ class Action_DiplomacyScore: public Action
 
 	//! Save this diplomatic score action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	/**
-	 * Populate the Action_DiplomacyScore class with the Player for
-	 * which we have changed our opinion of.  Also populate the action
-	 * with the amount of change for that Player.  The change can be 
-	 * negative, and is added to the existing score to get the new 
-	 * score.
-	 */
-	//! Populate action with pertinent data.
-        bool fillData(Player *player, int amount);
 
 	//! Get the Id of the Player that our opinion has changed of.
 	guint32 getOpponentId() const {return d_opponent_id;}
@@ -1448,7 +1373,9 @@ class Action_ConquerCity : public Action
 {
     public:
 	//! Make a new city conquer action.
-        Action_ConquerCity();
+	/** Populate the action with the City being conquered.
+         */
+        Action_ConquerCity(City *c);
 	//! Copy constructor
 	Action_ConquerCity(const Action_ConquerCity &action);
 	//! Load a new city conquer action from an opened saved-game file.
@@ -1462,9 +1389,6 @@ class Action_ConquerCity : public Action
 	//! Save this city occupied action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Populate the action with the City being conquered.
-        bool fillData (City* c);
-    
 	guint32 getCityId() const {return d_city;};
         private:
         guint32 d_city;
@@ -1476,7 +1400,7 @@ class Action_RecruitHero : public Action
 {
     public:
 	//! Make a new recruit hero action.
-        Action_RecruitHero();
+        Action_RecruitHero(HeroProto* h, City *c, int cost, int alliesCount, const ArmyProto *ally);
 	//! Copy a new recruit hero action
 	Action_RecruitHero(const Action_RecruitHero &action);
 	//! Load a new recruit hero action from an opened saved-game file.
@@ -1490,9 +1414,6 @@ class Action_RecruitHero : public Action
 	//! Save this city occupied action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Populate the action.
-        bool fillData(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally);
-    
 	HeroProto* getHero() const {return d_hero;};
 	guint32 getCityId() const {return d_city;};
 	guint32 getCost() const {return d_cost;};
@@ -1512,7 +1433,7 @@ class Action_RenamePlayer: public Action
 {
     public:
 	//! Make a new rename player action
-        Action_RenamePlayer();
+        Action_RenamePlayer(Glib::ustring name);
 	//! Copy constructor
 	Action_RenamePlayer(const Action_RenamePlayer &action);
 	//! Load a new rename player action from an opened saved-game file.
@@ -1526,9 +1447,6 @@ class Action_RenamePlayer: public Action
 	//! Save this city occupied action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Populate the action.
-        bool fillData(Glib::ustring name);
-    
 	Glib::ustring getName() const {return d_name;};
 
         private:
@@ -1541,7 +1459,7 @@ class Action_CityTooPoorToProduce: public Action
 {
     public:
 	//! Make a new city-too-poor action
-        Action_CityTooPoorToProduce();
+        Action_CityTooPoorToProduce(City* c, const ArmyProdBase *army);
 	//! Copy constructor
 	Action_CityTooPoorToProduce(const Action_CityTooPoorToProduce &action);
 	//! Load a new too-poor action from an opened saved-game file.
@@ -1555,9 +1473,6 @@ class Action_CityTooPoorToProduce: public Action
 	//! Save this city occupied action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Populate the action.
-        bool fillData(City *city, const ArmyProdBase *army);
-    
 	guint32 getCityId() const {return d_city;}
 	guint32 getArmyType() const {return d_army_type;}
 
@@ -1600,7 +1515,11 @@ class Action_Loot : public Action
 {
     public:
 	//! Make a new city looting action.
-        Action_Loot();
+	/**
+         * Populate the action with the players involved and the amounts.
+         */
+        Action_Loot(Player *looting_player, Player *looted_player, 
+                    guint32 amount_to_add, guint32 amount_to_subtract);
 	//! Copy constructor
 	Action_Loot(const Action_Loot &action);
 	//! Load a new city looting action from an opened saved-game file.
@@ -1613,10 +1532,6 @@ class Action_Loot : public Action
 
 	//! Save this city looting action to an opened saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the action with the players involved and the amounts.
-        bool fillData(Player *looter, Player *looted, guint32 amount_to_add,
-		      guint32 amount_to_subtract);
 
 	guint32 getAmountToAdd() const { return d_gold_added;};
 	guint32 getAmountToSubtract() const { return d_gold_removed;};
@@ -1641,7 +1556,7 @@ class Action_UseItem: public Action
 {
     public:
 	//! Make a new use item action.
-        Action_UseItem();
+        Action_UseItem(Hero *hero, Item *item, Player *victim, City *friendly_city, City *enemy_city, City *neutral_city, City *city);
 	//! Copy constructor
 	Action_UseItem(const Action_UseItem &action);
 	//! Load a new use item action from a saved-game file.
@@ -1654,11 +1569,6 @@ class Action_UseItem: public Action
 
 	//! Save this use item action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the Action_UseItem with a hero and an item.
-        bool fillData(Hero *hero, Item *item, Player *victim, 
-                      City *friendly_city, City *enemy_city, 
-                      City *neutral_city, City *city);
 
 	guint32 getHeroId() const {return d_hero;};
 	guint32 getItemId() const {return d_item;};
@@ -1689,7 +1599,10 @@ class Action_ReorderArmies: public Action
 {
     public:
 	//! Make a new reorder armies action.
-        Action_ReorderArmies();
+	/**
+         * Populate the Action_ReorderArmies with the stack.
+         */
+        Action_ReorderArmies(Stack *s);
 	//! Copy constructor
 	Action_ReorderArmies(const Action_ReorderArmies &action);
 	//! Load a new reorder armies action from a saved-game file.
@@ -1702,9 +1615,6 @@ class Action_ReorderArmies: public Action
 
 	//! Save this reorder armies action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the Action_ReorderArmies with the stack.
-        bool fillData(Stack *stack);
 
         std::list<guint32> getArmyIds() const {return d_army_ids;};
 	guint32 getStackId() const {return d_stack_id;};
@@ -1727,7 +1637,7 @@ class Action_ResetStacks: public Action
 {
     public:
 	//! Make a new reset stacks action.
-        Action_ResetStacks();
+        Action_ResetStacks(Player *p);
 	//! Copy constructor
 	Action_ResetStacks(const Action_ResetStacks &action);
 	//! Load a new reset stacks action from a saved-game file.
@@ -1740,9 +1650,6 @@ class Action_ResetStacks: public Action
 
 	//! Save this reset stacks action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the Action_ResetStacks with the stack.
-        bool fillData(Player *p);
 
 	guint32 getPlayerId() const {return d_player_id;};
 
@@ -1774,9 +1681,6 @@ class Action_ResetRuins: public Action
 
 	//! Save this reset ruins action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! Populate the Action_ResetRuins with the stack.
-        bool fillData();
 };
 
 //-----------------------------------------------------------------------------
@@ -1804,9 +1708,6 @@ class Action_CollectTaxesAndPayUpkeep: public Action
 
 	//! Save this collect taxes and pay upkeep action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! The Action_CollectTaxesAndPayUpkeep doesn't need any info to fill.
-        bool fillData();
 };
 
 //-----------------------------------------------------------------------------
@@ -1833,9 +1734,6 @@ class Action_Kill: public Action
 
 	//! Save this kill action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! The Action_Kill doesn't take any info to fill.
-        bool fillData();
 };
 
 //-----------------------------------------------------------------------------
@@ -1849,7 +1747,10 @@ class Action_DefendStack: public Action
 {
     public:
 	//! Make a defend stack action.
-        Action_DefendStack();
+	/**
+         * Supply the stack that is being put into defend mode.
+         */
+        Action_DefendStack(Stack *s);
 	//! Copy constructor
 	Action_DefendStack (const Action_DefendStack &action);
 	//! Load a new defend stack action from a saved-game file.
@@ -1863,9 +1764,6 @@ class Action_DefendStack: public Action
 	//! Save this defend stack action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Supply the stack that is being put into defend mode.
-        bool fillData(Stack *s);
-	
         guint32 getStackId() const {return d_stack_id;};
     private:
         guint32 d_stack_id;
@@ -1883,7 +1781,10 @@ class Action_UndefendStack: public Action
 {
     public:
 	//! Make an undefend stack action.
-        Action_UndefendStack();
+	/**
+         * Supply the stack that is being taken out of defend mode.
+         */
+        Action_UndefendStack(Stack *s);
 	//! Copy constructor
 	Action_UndefendStack (const Action_UndefendStack &action);
 	//! Load a new undefend stack action from a saved-game file.
@@ -1897,9 +1798,6 @@ class Action_UndefendStack: public Action
 	//! Save this undefend stack action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Supply the stack that is being taken out of defend mode.
-        bool fillData(Stack *s);
-	
         guint32 getStackId() const {return d_stack_id;};
     private:
         guint32 d_stack_id;
@@ -1916,7 +1814,10 @@ class Action_ParkStack: public Action
 {
     public:
 	//! Make a park stack action.
-        Action_ParkStack();
+	/**
+         * Supply the stack that is being put into parked mode.
+         */
+        Action_ParkStack(Stack *s);
 	//! Copy constructor
 	Action_ParkStack (const Action_ParkStack &action);
 	//! Load a new park stack action from a saved-game file.
@@ -1930,9 +1831,6 @@ class Action_ParkStack: public Action
 	//! Save this park stack action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Supply the stack that is being put into parked mode.
-        bool fillData(Stack *s);
-	
         guint32 getStackId() const {return d_stack_id;};
     private:
         guint32 d_stack_id;
@@ -1950,7 +1848,10 @@ class Action_UnparkStack: public Action
 {
     public:
 	//! Make a unpark stack action.
-        Action_UnparkStack();
+	/**
+         * Supply the stack that is being taken out of parked mode.
+         */
+        Action_UnparkStack(Stack *s);
 	//! Copy constructor
 	Action_UnparkStack (const Action_UnparkStack &action);
 	//! Load a new unpark stack action from a saved-game file.
@@ -1964,9 +1865,6 @@ class Action_UnparkStack: public Action
 	//! Save this unpark stack action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Supply the stack that is being taken out of parked mode.
-        bool fillData(Stack *s);
-	
         guint32 getStackId() const {return d_stack_id;};
     private:
         guint32 d_stack_id;
@@ -1981,7 +1879,10 @@ class Action_SelectStack: public Action
 {
     public:
 	//! Make a select stack action.
-        Action_SelectStack();
+	/** 
+         * Supply the stack that is being selected
+         */
+        Action_SelectStack(Stack *s);
 	//! Copy constructor
 	Action_SelectStack (const Action_SelectStack &action);
 	//! Load a new select stack action from a saved-game file.
@@ -1995,9 +1896,6 @@ class Action_SelectStack: public Action
 	//! Save this select stack action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
 
-	//! Supply the stack that is being selected
-        bool fillData(Stack *s);
-	
         guint32 getStackId() const {return d_stack_id;};
     private:
         guint32 d_stack_id;
@@ -2027,9 +1925,6 @@ class Action_DeselectStack: public Action
 
 	//! Save this deslect stack action to a saved-game file.
         virtual bool doSave(XML_Helper* helper) const;
-
-	//! The Action_DeselectStack class doesn't take any info to fill.
-        bool fillData();
 };
 
 #endif //ACTION_H

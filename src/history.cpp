@@ -241,16 +241,11 @@ bool History_StartTurn::doSave(XML_Helper* helper) const
   return true;
 }
 
-bool History_StartTurn::fillData()
-{
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_FoundSage
 
-History_FoundSage::History_FoundSage()
-:History(History::FOUND_SAGE), d_hero("")
+History_FoundSage::History_FoundSage(Hero *hero)
+:History(History::FOUND_SAGE), d_hero(hero->getName())
 {
 }
 
@@ -275,17 +270,11 @@ bool History_FoundSage::doSave(XML_Helper* helper) const
   return helper->saveData("hero", d_hero);
 }
 
-bool History_FoundSage::fillData(Hero *hero)
-{
-  d_hero = hero->getName();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_GoldTotal
 
-History_GoldTotal::History_GoldTotal()
-:History(History::GOLD_TOTAL), d_gold(0)
+History_GoldTotal::History_GoldTotal(int gold)
+:History(History::GOLD_TOTAL), d_gold(gold)
 {
 }
 
@@ -310,23 +299,17 @@ bool History_GoldTotal::doSave(XML_Helper* helper) const
   return helper->saveData("gold", d_gold);
 }
 
-bool History_GoldTotal::fillData(int gold)
-{
-  d_gold = gold;
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_HeroEmerges
 
-History_HeroEmerges::History_HeroEmerges()
-:History(History::HERO_EMERGES), d_hero(""), d_hero_id(0), d_city("")
+History_HeroEmerges::History_HeroEmerges(Hero *hero, City *city)
+:History(History::HERO_EMERGES), d_hero(hero->getName()), 
+    d_hero_id(hero->getId()), d_city(city->getName())
 {
 }
 
-History_HeroEmerges::History_HeroEmerges(const History_HeroEmerges &history)
-:History(history), d_hero(history.d_hero), d_hero_id(history.d_hero_id), 
-    d_city(history.d_city)
+History_HeroEmerges::History_HeroEmerges(const History_HeroEmerges &h)
+:History(h), d_hero(h.d_hero), d_hero_id(h.d_hero_id), d_city(h.d_city)
 {
 }
 
@@ -354,19 +337,11 @@ bool History_HeroEmerges::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool History_HeroEmerges::fillData(Hero *hero, City *city)
-{
-  d_hero = hero->getName();
-  d_city = city->getName();
-  d_hero_id = hero->getId();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_CityWon
 
-History_CityWon::History_CityWon()
-:History(History::CITY_WON), d_city(0)
+History_CityWon::History_CityWon(City *city)
+:History(History::CITY_WON), d_city(city->getId())
 {
 }
 
@@ -391,17 +366,11 @@ bool History_CityWon::doSave(XML_Helper* helper) const
   return helper->saveData("city", d_city);
 }
 
-bool History_CityWon::fillData(City *city)
-{
-  d_city = city->getId();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_HeroCityWon
 
-History_HeroCityWon::History_HeroCityWon()
-:History(History::HERO_CITY_WON), d_hero(""), d_city("")
+History_HeroCityWon::History_HeroCityWon(City *c, Hero *h)
+:History(History::HERO_CITY_WON), d_hero(h->getName()), d_city(c->getName())
 {
 }
 
@@ -432,18 +401,11 @@ bool History_HeroCityWon::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool History_HeroCityWon::fillData(Hero *hero, City *city)
-{
-  d_city = city->getName();
-  d_hero = hero->getName();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_CityRazed
 
-History_CityRazed::History_CityRazed()
-:History(History::CITY_RAZED), d_city(0)
+History_CityRazed::History_CityRazed(City *c)
+:History(History::CITY_RAZED), d_city(c->getId())
 {
 }
 
@@ -468,17 +430,11 @@ bool History_CityRazed::doSave(XML_Helper* helper) const
   return helper->saveData("city", d_city);
 }
 
-bool History_CityRazed::fillData(City *city)
-{
-  d_city = city->getId();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_HeroQuestStarted
 
-History_HeroQuestStarted::History_HeroQuestStarted()
-:History(History::HERO_QUEST_STARTED), d_hero("")
+History_HeroQuestStarted::History_HeroQuestStarted(Hero *h)
+:History(History::HERO_QUEST_STARTED), d_hero(h->getName())
 {
 }
 
@@ -503,17 +459,11 @@ bool History_HeroQuestStarted::doSave(XML_Helper* helper) const
   return helper->saveData("hero", d_hero);
 }
 
-bool History_HeroQuestStarted::fillData(Hero *hero)
-{
-  d_hero = hero->getName();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_HeroQuestCompleted
 
-History_HeroQuestCompleted::History_HeroQuestCompleted()
-:History(History::HERO_QUEST_COMPLETED), d_hero("")
+History_HeroQuestCompleted::History_HeroQuestCompleted(Hero *h)
+:History(History::HERO_QUEST_COMPLETED), d_hero(h->getName())
 {
 }
 
@@ -538,17 +488,11 @@ bool History_HeroQuestCompleted::doSave(XML_Helper* helper) const
   return helper->saveData("hero", d_hero);
 }
 
-bool History_HeroQuestCompleted::fillData(Hero *hero)
-{
-  d_hero = hero->getName();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_HeroKilledInCity
 
-History_HeroKilledInCity::History_HeroKilledInCity()
-:History(History::HERO_KILLED_IN_CITY), d_hero(""), d_city("")
+History_HeroKilledInCity::History_HeroKilledInCity(Hero *h, City *c)
+:History(History::HERO_KILLED_IN_CITY), d_hero(h->getName()), d_city(c->getName())
 {
 }
 
@@ -579,18 +523,11 @@ bool History_HeroKilledInCity::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool History_HeroKilledInCity::fillData(Hero *hero, City *city)
-{
-  d_hero = hero->getName();
-  d_city = city->getName();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_HeroKilledInBattle
 
-History_HeroKilledInBattle::History_HeroKilledInBattle()
-:History(History::HERO_KILLED_IN_BATTLE), d_hero("")
+History_HeroKilledInBattle::History_HeroKilledInBattle(Hero *h)
+:History(History::HERO_KILLED_IN_BATTLE), d_hero(h->getName())
 {
 }
 
@@ -615,17 +552,11 @@ bool History_HeroKilledInBattle::doSave(XML_Helper* helper) const
   return helper->saveData("hero", d_hero);
 }
 
-bool History_HeroKilledInBattle::fillData(Hero *hero)
-{
-  d_hero = hero->getName();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_Hero KilledSearching
 
-History_HeroKilledSearching::History_HeroKilledSearching()
-:History(History::HERO_KILLED_SEARCHING), d_hero("")
+History_HeroKilledSearching::History_HeroKilledSearching(Hero *h)
+:History(History::HERO_KILLED_SEARCHING), d_hero(h->getName())
 {
 }
 
@@ -650,17 +581,11 @@ bool History_HeroKilledSearching::doSave(XML_Helper* helper) const
   return helper->saveData("hero", d_hero);
 }
 
-bool History_HeroKilledSearching::fillData(Hero *hero)
-{
-  d_hero = hero->getName();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_Score
 
-History_Score::History_Score()
-:History(History::SCORE), d_score(0)
+History_Score::History_Score(guint32 score)
+:History(History::SCORE), d_score(score)
 {
 }
 
@@ -683,12 +608,6 @@ Glib::ustring History_Score::dump() const
 bool History_Score::doSave(XML_Helper* helper) const
 {
   return helper->saveData("score", d_score);
-}
-
-bool History_Score::fillData(guint32 score)
-{
-  d_score = score;
-  return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -722,8 +641,8 @@ bool History_PlayerVanquished::doSave(XML_Helper* helper) const
 //-----------------------------------------------------------------------------
 //History_DiplomacyPeace
 
-History_DiplomacyPeace::History_DiplomacyPeace()
-:History(History::DIPLOMATIC_PEACE), d_opponent_id(0)
+History_DiplomacyPeace::History_DiplomacyPeace(Player *p)
+:History(History::DIPLOMATIC_PEACE), d_opponent_id(p->getId())
 {
 }
 
@@ -748,17 +667,11 @@ bool History_DiplomacyPeace::doSave(XML_Helper* helper) const
   return helper->saveData("opponent_id", d_opponent_id);
 }
 
-bool History_DiplomacyPeace::fillData(Player *opponent)
-{
-  d_opponent_id = opponent->getId();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_DiplomacyWar
 
-History_DiplomacyWar::History_DiplomacyWar()
-:History(History::DIPLOMATIC_WAR), d_opponent_id(0)
+History_DiplomacyWar::History_DiplomacyWar(Player *p)
+:History(History::DIPLOMATIC_WAR), d_opponent_id(p->getId())
 {
 }
 
@@ -783,17 +696,11 @@ bool History_DiplomacyWar::doSave(XML_Helper* helper) const
   return helper->saveData("opponent_id", d_opponent_id);
 }
 
-bool History_DiplomacyWar::fillData(Player *opponent)
-{
-  d_opponent_id = opponent->getId();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_DiplomacyTreachery
 
-History_DiplomacyTreachery::History_DiplomacyTreachery()
-:History(History::DIPLOMATIC_TREACHERY), d_opponent_id(0)
+History_DiplomacyTreachery::History_DiplomacyTreachery(Player *p)
+:History(History::DIPLOMATIC_TREACHERY), d_opponent_id(p->getId())
 {
 }
 
@@ -818,17 +725,11 @@ bool History_DiplomacyTreachery::doSave(XML_Helper* helper) const
   return helper->saveData("opponent_id", d_opponent_id);
 }
 
-bool History_DiplomacyTreachery::fillData(Player *opponent)
-{
-  d_opponent_id = opponent->getId();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_HeroFindsAllies
 
-History_HeroFindsAllies::History_HeroFindsAllies()
-:History(History::HERO_FINDS_ALLIES), d_hero("")
+History_HeroFindsAllies::History_HeroFindsAllies(Hero *h)
+:History(History::HERO_FINDS_ALLIES), d_hero(h->getName())
 {
 }
 
@@ -851,12 +752,6 @@ Glib::ustring History_HeroFindsAllies::dump() const
 bool History_HeroFindsAllies::doSave(XML_Helper* helper) const
 {
   return helper->saveData("hero", d_hero);
-}
-
-bool History_HeroFindsAllies::fillData(Hero *hero)
-{
-  d_hero = hero->getName();
-  return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -887,15 +782,11 @@ bool History_EndTurn::doSave(XML_Helper* helper) const
   return true;
 }
 
-bool History_EndTurn::fillData()
-{
-  return true;
-}
 //-----------------------------------------------------------------------------
 //History_HeroRuinExplored
 
-History_HeroRuinExplored::History_HeroRuinExplored()
-:History(History::HERO_RUIN_EXPLORED), d_hero(""), d_ruin(0)
+History_HeroRuinExplored::History_HeroRuinExplored(Hero *h, Ruin *r)
+:History(History::HERO_RUIN_EXPLORED), d_hero(h->getName()), d_ruin(r->getId())
 {
 }
 
@@ -926,18 +817,11 @@ bool History_HeroRuinExplored::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool History_HeroRuinExplored::fillData(Hero *hero, Ruin *ruin)
-{
-  d_ruin = ruin->getId();
-  d_hero = hero->getName();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_HeroRewardRuin
 
-History_HeroRewardRuin::History_HeroRewardRuin()
-:History(History::HERO_REWARD_RUIN), d_hero(""), d_ruin(0)
+History_HeroRewardRuin::History_HeroRewardRuin(Hero *h, Ruin *r)
+:History(History::HERO_REWARD_RUIN), d_hero(h->getName()), d_ruin(r->getId())
 {
 }
 
@@ -969,28 +853,35 @@ bool History_HeroRewardRuin::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool History_HeroRewardRuin::fillData(Hero *hero, Ruin *ruin)
-{
-  d_ruin = ruin->getId();
-  d_hero = hero->getName();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //History_HeroUseItem
-
-History_HeroUseItem::History_HeroUseItem()
-:History(History::USE_ITEM), d_hero_name(""), d_item_name(""), d_item_bonus(0), 
+History_HeroUseItem::History_HeroUseItem(Hero *h, Item *i, 
+                                         Player *opponent, City *friendly_city,
+                                         City *enemy_city, City *neutral_city,
+                                         City *c)
+:History(History::USE_ITEM), d_hero_name(h->getName()), 
+    d_item_name(i->getName()), d_item_bonus(i->getBonus()), 
     d_opponent_id(0), d_friendly_city_id(0), d_enemy_city_id(0), 
     d_neutral_city_id(0), d_city_id(0)
 {
+  if (opponent)
+    d_opponent_id = opponent->getId();
+  if (friendly_city)
+    d_friendly_city_id = friendly_city->getId();
+  if (enemy_city)
+    d_enemy_city_id = enemy_city->getId();
+  if (neutral_city)
+    d_neutral_city_id = neutral_city->getId();
+  if (c)
+    d_city_id = c->getId();
 }
 
-History_HeroUseItem::History_HeroUseItem(const History_HeroUseItem &history)
-:History(history), d_hero_name(history.d_hero_name), d_item_name(history.d_item_name), d_item_bonus(history.d_item_bonus), d_opponent_id(history.d_opponent_id),
-    d_friendly_city_id(history.d_friendly_city_id), 
-    d_enemy_city_id(history.d_enemy_city_id), 
-    d_neutral_city_id(history.d_neutral_city_id), d_city_id(history.d_city_id)
+History_HeroUseItem::History_HeroUseItem(const History_HeroUseItem &h)
+:History(h), d_hero_name(h.d_hero_name), d_item_name(h.d_item_name), 
+    d_item_bonus(h.d_item_bonus), d_opponent_id(h.d_opponent_id),
+    d_friendly_city_id(h.d_friendly_city_id), 
+    d_enemy_city_id(h.d_enemy_city_id), d_neutral_city_id(h.d_neutral_city_id),
+    d_city_id(h.d_city_id)
 {
 }
 
@@ -1026,26 +917,6 @@ bool History_HeroUseItem::doSave(XML_Helper* helper) const
   retval &= helper->saveData("city_id", d_city_id);
 
   return retval;
-}
-
-bool History_HeroUseItem::fillData(Hero *hero, Item *item, Player *opponent,
-                                   City *friendly_city, City *enemy_city,
-                                   City *neutral_city, City *city)
-{
-  d_hero_name = hero->getName();
-  d_item_name = item->getName();
-  d_item_bonus = item->getBonus();
-  if (opponent)
-    d_opponent_id = opponent->getId();
-  if (friendly_city)
-    d_friendly_city_id = friendly_city->getId();
-  if (enemy_city)
-    d_enemy_city_id = enemy_city->getId();
-  if (neutral_city)
-    d_neutral_city_id = neutral_city->getId();
-  if (city)
-    d_city_id = city->getId();
-  return true;
 }
 
 Glib::ustring History::historyTypeToString(const History::Type type)

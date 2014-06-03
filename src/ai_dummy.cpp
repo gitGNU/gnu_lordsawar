@@ -144,10 +144,7 @@ void AI_Dummy::heroGainsLevel(Hero * a)
 {
   Army::Stat stat = Army::STRENGTH;
   doHeroGainsLevel(a, stat);
-
-  Action_Level* item = new Action_Level();
-  item->fillData(a, stat);
-  addAction(item);
+  addAction(new Action_Level(a, stat));
 }
 
 bool AI_Dummy::chooseHero(HeroProto *hero, City *city, int gold)

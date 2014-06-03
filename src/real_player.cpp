@@ -140,10 +140,7 @@ void RealPlayer::heroGainsLevel(Hero* a)
     // the standard human player just asks the GUI what to do
     Army::Stat stat = sheroGainsLevel.emit(a);
     doHeroGainsLevel(a, stat);
-
-    Action_Level* item = new Action_Level();
-    item->fillData(a, stat);
-    addAction(item);
+    addAction(new Action_Level(a, stat));
 }
 
 bool RealPlayer::computerChooseVisitRuin(Stack *stack, Vector<int> dest, guint32 moves, guint32 turns)

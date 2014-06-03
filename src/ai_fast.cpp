@@ -332,10 +332,7 @@ void AI_Fast::heroGainsLevel(Hero * a)
     // increase the strength attack (uninnovative, but enough here)
     Army::Stat stat = Army::STRENGTH;
     doHeroGainsLevel(a, stat);
-
-    Action_Level* item = new Action_Level();
-    item->fillData(a, stat);
-    addAction(item);
+    addAction(new Action_Level(a, stat));
 }
 
 Stack *AI_Fast::findNearOwnStackToJoin(Stack *s, int max_distance)

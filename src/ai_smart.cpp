@@ -188,10 +188,7 @@ void AI_Smart::heroGainsLevel(Hero * a)
 {
     Army::Stat stat = Army::STRENGTH;
     doHeroGainsLevel(a, stat);
-
-    Action_Level* item = new Action_Level();
-    item->fillData(a, stat);
-    addAction(item);
+    addAction(new Action_Level(a, stat));
 }
 
 int AI_Smart::maybeBuyProduction(City *c, bool quick)

@@ -350,10 +350,9 @@ Action* Action::copy(const Action* a)
 //-----------------------------------------------------------------------------
 //Action_Move_Step
 
-Action_Move::Action_Move()
-    :Action(Action::STACK_MOVE), d_stack(0), d_dest(Vector<int>(0,0)),
-    d_delta(Vector<int>(0,0))
-
+Action_Move::Action_Move(Stack* s, Vector<int> dest)
+    :Action(Action::STACK_MOVE), d_stack(s->getId()), d_dest(dest),
+    d_delta(dest - s->getPos())
 {
 }
 
@@ -374,8 +373,8 @@ Action_Move::Action_Move(XML_Helper* helper)
 
 Glib::ustring Action_Move::dump() const
 {
-  return String::ucompose("Stack %1 moved to %2,%3\n", d_stack,
-                            d_dest.x, d_dest.y);
+  return String::ucompose("Stack %1 moved to %2,%3\n", d_stack, 
+                          d_dest.x, d_dest.y);
 }
 
 bool Action_Move::doSave(XML_Helper* helper) const
@@ -391,22 +390,21 @@ bool Action_Move::doSave(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_Move::fillData(Stack* s, Vector<int> dest)
-{
-    d_stack = s->getId();
-    d_dest = dest;
-    d_delta = dest - s->getPos();
-    return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_Split
 
-Action_Split::Action_Split()
-    :Action(Action::STACK_SPLIT), d_orig(0), d_added(0)
+Action_Split::Action_Split(Stack* orig, Stack* added)
+    :Action(Action::STACK_SPLIT), d_orig(orig->getId()), d_added(added->getId())
 {
-    for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
-        d_armies_moved[i] = 0;
+  if (orig->validate() == false || added->validate() == false)
+    {
+      std::cerr << String::ucompose("Action_Split: stacks don't validate!  orig has %1 units, and added has %2 units.", orig->size(), added->size()) << std::endl;
+      return;
+    }
+
+  Stack::iterator it = added->begin();
+  for (unsigned int i = 0; it != added->end(); it++, i++)
+    d_armies_moved[i] = (*it)->getId();
 }
 
 Action_Split::Action_Split(const Action_Split &action)
@@ -460,33 +458,24 @@ bool Action_Split::doSave(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_Split::fillData(Stack* orig, Stack* added)
-{
-  if (orig->validate() == false || added->validate() == false)
-    {
-      std::cerr << String::ucompose("Action_Split::fillData(): stacks don't validate!  orig has %1 units, and added has %2 units.", orig->size(), added->size()) << std::endl;
-        return false;
-    }
-    
-    debug("Action_Split::fillData()")
-
-    d_orig = orig->getId();
-    d_added = added->getId();
-
-    Stack::iterator it = added->begin();
-    for (int i = 0; it != added->end(); it++, i++)
-        d_armies_moved[i] = (*it)->getId();
-    
-    return true;
-}
-
-
 //-----------------------------------------------------------------------------
 //Action_Fight
 
-Action_Fight::Action_Fight()
+Action_Fight::Action_Fight(const Fight* f)
     :Action(Action::STACK_FIGHT)
 {
+  std::list<Stack*> list = f->getAttackers();
+  std::list<Stack*>::const_iterator it;
+
+  for (it = list.begin(); it != list.end(); it++)
+    d_attackers.push_back((*it)->getId());
+
+  list = f->getDefenders();
+
+  for (it = list.begin(); it != list.end(); it++)
+    d_defenders.push_back((*it)->getId());
+
+  d_history = f->getCourseOfEvents();
 }
 
 Action_Fight::Action_Fight(const Action_Fight &a)
@@ -571,24 +560,6 @@ bool Action_Fight::doSave(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_Fight::fillData(const Fight* f)
-{
-    std::list<Stack*> list = f->getAttackers();
-    std::list<Stack*>::const_iterator it;
-
-    for (it = list.begin(); it != list.end(); it++)
-        d_attackers.push_back((*it)->getId());
-        
-    list = f->getDefenders();
-
-    for (it = list.begin(); it != list.end(); it++)
-        d_defenders.push_back((*it)->getId());
-    
-    d_history = f->getCourseOfEvents();
-
-    return true;
-}
-
 bool Action_Fight::stack_ids_to_stacks(std::list<guint32> stack_ids, std::list<Stack*> &stacks, guint32 &stack_id) const
 {
   for (std::list<guint32>::iterator i = stack_ids.begin(); i != stack_ids.end(); i++)
@@ -652,9 +623,15 @@ bool Action_Fight::loadItem(Glib::ustring tag, XML_Helper* helper)
 //-----------------------------------------------------------------------------
 //Action_Join
 
-Action_Join::Action_Join()
-    :Action(Action::STACK_JOIN), d_orig_id(0), d_joining_id(0)
+Action_Join::Action_Join(Stack* o, Stack* j)
+    :Action(Action::STACK_JOIN), d_orig_id(o->getId()), d_joining_id(j->getId())
 {
+    if ((o->empty()) || (j->empty())
+        || (o->size() + j->size() > MAX_STACK_SIZE))
+    {
+      std::cerr << String::ucompose("Action_Join: wrong stack size.  expected %1, but got %2.", o->size(), j->size()) << std::endl;
+        return;
+    }
 }
 
 Action_Join::Action_Join(const Action_Join &a)
@@ -685,28 +662,15 @@ bool Action_Join::doSave(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_Join::fillData(Stack* orig, Stack* joining)
-{
-    if ((orig->empty()) || (joining->empty())
-        || (orig->size() + joining->size() > MAX_STACK_SIZE))
-    {
-      std::cerr << String::ucompose("Action_Join::fillData(): wrong stack size.  expected %1, but got %2.", orig->size(), joining->size()) << std::endl;
-        return false;
-    }
-    
-    debug("Action_Join::fillData")
-    
-    d_orig_id = orig->getId();
-    d_joining_id = joining->getId();
-    return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_Ruin
 
-Action_Ruin::Action_Ruin()
-    :Action(Action::RUIN_SEARCH), d_ruin(0), d_stack(0), d_searched(false)
+Action_Ruin::Action_Ruin(Ruin *r, Stack *explorers)
+    :Action(Action::RUIN_SEARCH), d_ruin(r->getId()), d_stack(0), 
+    d_searched(r->isSearched())
 {
+  if (explorers)
+    d_stack = explorers->getId();
 }
 
 Action_Ruin::Action_Ruin(const Action_Ruin&a)
@@ -746,21 +710,11 @@ bool Action_Ruin::doSave(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_Ruin::fillData(Ruin* r, Stack* explorers)
-{
-    d_ruin = r->getId();
-    
-    if (explorers)
-        d_stack = explorers->getId();
-
-    return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_Temple
 
-Action_Temple::Action_Temple()
-    :Action(Action::TEMPLE_SEARCH), d_temple(0), d_stack(0)
+Action_Temple::Action_Temple(Temple* t, Stack* s)
+    :Action(Action::TEMPLE_SEARCH), d_temple(t->getId()), d_stack(s->getId())
 {
 }
 
@@ -792,20 +746,11 @@ bool Action_Temple::doSave(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_Temple::fillData(Temple* t, Stack* s)
-{
-    d_temple = t->getId();
-    d_stack = s->getId();
-
-    return true;
-}
-
-
 //-----------------------------------------------------------------------------
 //Action_Occupy
 
-Action_Occupy::Action_Occupy()
-    :Action(Action::CITY_OCCUPY), d_city(0)
+Action_Occupy::Action_Occupy(City *c)
+    :Action(Action::CITY_OCCUPY), d_city(c->getId())
 {
 }
 
@@ -830,17 +775,11 @@ bool Action_Occupy::doSave(XML_Helper* helper) const
     return helper->saveData("city", d_city);
 }
 
-bool Action_Occupy::fillData(City* c)
-{
-    d_city = c->getId();
-    return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_Pillage
 
-Action_Pillage::Action_Pillage()
-    :Action(Action::CITY_PILLAGE), d_city(0)
+Action_Pillage::Action_Pillage(City *c)
+    :Action(Action::CITY_PILLAGE), d_city(c->getId())
 {
 }
 
@@ -865,17 +804,11 @@ bool Action_Pillage::doSave(XML_Helper* helper) const
     return helper->saveData("city", d_city);
 }
 
-bool Action_Pillage::fillData(City* c)
-{
-    d_city = c->getId();
-    return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_Sack
 
-Action_Sack::Action_Sack()
-    :Action(Action::CITY_SACK), d_city(0)
+Action_Sack::Action_Sack(City *c)
+    :Action(Action::CITY_SACK), d_city(c->getId())
 {
 }
 
@@ -900,17 +833,11 @@ bool Action_Sack::doSave(XML_Helper* helper) const
     return helper->saveData("city", d_city);
 }
 
-bool Action_Sack::fillData(City* c)
-{
-    d_city = c->getId();
-    return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_Raze
 
-Action_Raze::Action_Raze()
-    :Action(Action::CITY_RAZE), d_city(0)
+Action_Raze::Action_Raze(City *c)
+    :Action(Action::CITY_RAZE), d_city(c->getId())
 {
 }
 
@@ -935,17 +862,11 @@ bool Action_Raze::doSave(XML_Helper* helper) const
     return helper->saveData("city", d_city);
 }
 
-bool Action_Raze::fillData(City* c)
-{
-    d_city = c->getId();
-    return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_Upgrade
 
-Action_Upgrade::Action_Upgrade()
-    :Action(Action::CITY_UPGRADE), d_city(0)
+Action_Upgrade::Action_Upgrade(City *c)
+    :Action(Action::CITY_UPGRADE), d_city(c->getId())
 {
 }
 
@@ -970,17 +891,11 @@ bool Action_Upgrade::doSave(XML_Helper* helper) const
     return helper->saveData("city", d_city);
 }
 
-bool Action_Upgrade::fillData(City* c)
-{
-    d_city = c->getId();
-    return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_Buy
 
-Action_Buy::Action_Buy()
-    :Action(Action::CITY_BUY), d_city(0), d_slot(-1), d_prod(-1)
+Action_Buy::Action_Buy(City* c, int s, const ArmyProto *p)
+    :Action(Action::CITY_BUY), d_city(c->getId()), d_slot(s), d_prod(p->getId())
 {
 }
 
@@ -1014,20 +929,11 @@ bool Action_Buy::doSave(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_Buy::fillData(City* c, int slot, const ArmyProto *prod)
-{
-    d_city = c->getId();
-    d_slot = slot;
-    d_prod = prod->getId();
-
-    return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_Change_Production
 
-Action_Production::Action_Production()
-    :Action(Action::CITY_PROD), d_city(0), d_prod(0)
+Action_Production::Action_Production(City* c, int slot)
+    :Action(Action::CITY_PROD), d_city(c->getId()), d_prod(slot)
 {
 }
 
@@ -1059,21 +965,12 @@ bool Action_Production::doSave(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_Production::fillData(City* c, int slot)
-{
-    d_city = c->getId();
-    d_prod = slot;
-
-    return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_Reward
 
-Action_Reward::Action_Reward()
-    :Action(Action::REWARD)
+Action_Reward::Action_Reward(Stack *s, Reward* r)
+    :Action(Action::REWARD), d_reward(r), d_stack(s->getId())
 {
-  d_reward = NULL;
 }
 
 bool Action_Reward::load(Glib::ustring tag, XML_Helper *helper)
@@ -1120,13 +1017,6 @@ Action_Reward::Action_Reward(XML_Helper* helper)
   helper->registerTag(Reward::d_tag, sigc::mem_fun(this, &Action_Reward::load));
 }
 
-bool Action_Reward::fillData(Stack *s, Reward* r)
-{
-  d_stack = s->getId();
-  d_reward = r;
-  return true;
-}
-
 Glib::ustring Action_Reward::dump() const
 {
   return String::ucompose("Got a reward of type %1.\n", d_reward->getType());
@@ -1154,9 +1044,36 @@ bool Action_Reward::doSave(XML_Helper* helper) const
 //-----------------------------------------------------------------------------
 // Action_Quest
 
-Action_Quest::Action_Quest()
-:Action(Action::QUEST), d_hero(0), d_data(0), d_victim_player(0)
+Action_Quest::Action_Quest(Quest* q)
+:Action(Action::QUEST), d_hero(q->getHeroId()), d_questtype(q->getType()),
+    d_data(0), d_victim_player(0)
 {
+  // fill the data depending on the quest's type
+  switch (d_questtype)
+    {
+    case Quest::KILLHERO:
+      d_data = dynamic_cast<QuestKillHero*>(q)->getVictim();
+      break;
+    case Quest::KILLARMIES:
+      d_data = dynamic_cast<QuestEnemyArmies*>(q)->getArmiesToKill();
+      d_victim_player = dynamic_cast<QuestEnemyArmies*>(q)->getVictimPlayerId();
+      break;
+    case Quest::CITYSACK:
+      d_data = dynamic_cast<QuestCitySack*>(q)->getCityId();
+      break;
+    case Quest::CITYRAZE:
+      d_data = dynamic_cast<QuestCityRaze*>(q)->getCityId();
+      break;
+    case Quest::CITYOCCUPY:
+      d_data = dynamic_cast<QuestCityOccupy*>(q)->getCityId();
+      break;
+    case Quest::KILLARMYTYPE:
+      d_data = dynamic_cast<QuestEnemyArmytype*>(q)->getArmytypeToKill();
+      break;
+    case Quest::PILLAGEGOLD:
+      d_data = dynamic_cast<QuestPillageGold*>(q)->getGoldToPillage();
+      break;
+    }
 }
 
 Action_Quest::Action_Quest (const Action_Quest &a)
@@ -1195,46 +1112,12 @@ bool Action_Quest::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_Quest::fillData(Quest* q)
-{
-  d_hero = q->getHeroId();
-  d_questtype = q->getType();
-
-  // fill the data depending on the quest's type
-  switch (d_questtype)
-    {
-    case Quest::KILLHERO:
-      d_data = dynamic_cast<QuestKillHero*>(q)->getVictim();
-      break;
-    case Quest::KILLARMIES:
-      d_data = dynamic_cast<QuestEnemyArmies*>(q)->getArmiesToKill();
-      d_victim_player = dynamic_cast<QuestEnemyArmies*>(q)->getVictimPlayerId();
-      break;
-    case Quest::CITYSACK:
-      d_data = dynamic_cast<QuestCitySack*>(q)->getCityId();
-      break;
-    case Quest::CITYRAZE:
-      d_data = dynamic_cast<QuestCityRaze*>(q)->getCityId();
-      break;
-    case Quest::CITYOCCUPY:
-      d_data = dynamic_cast<QuestCityOccupy*>(q)->getCityId();
-      break;
-    case Quest::KILLARMYTYPE:
-      d_data = dynamic_cast<QuestEnemyArmytype*>(q)->getArmytypeToKill();
-      break;
-    case Quest::PILLAGEGOLD:
-      d_data = dynamic_cast<QuestPillageGold*>(q)->getGoldToPillage();
-      break;
-    }
-
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 // Action_Equip
 
-Action_Equip::Action_Equip()
-:Action(Action::HERO_EQUIP), d_hero(0), d_item(0), d_pos(Vector<int>(-1,-1))
+Action_Equip::Action_Equip(Hero *h, Item *i, Action_Equip::Slot slot, Vector<int> pos)
+:Action(Action::HERO_EQUIP), d_hero(h->getId()), d_item(i->getId()), 
+    d_slot(slot), d_pos(pos)
 {
 }
 
@@ -1278,22 +1161,11 @@ bool Action_Equip::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_Equip::fillData(Hero *hero, Item *item, Action_Equip::Slot slot,
-			    Vector<int> pos)
-{
-  d_hero = hero->getId();
-  d_item = item->getId();
-  d_slot = slot;
-  d_pos = pos;
-
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 // Action_Level
 
-Action_Level::Action_Level()
-:Action(Action::UNIT_ADVANCE), d_army(0)
+Action_Level::Action_Level(Army *unit, Army::Stat raised)
+:Action(Action::UNIT_ADVANCE), d_army(unit->getId()), d_stat(raised)
 {
 }
 
@@ -1324,19 +1196,11 @@ bool Action_Level::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_Level::fillData(Army *unit, Army::Stat raised)
-{
-  d_army = unit->getId();
-  d_stat = raised;
-
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_Disband
 
-Action_Disband::Action_Disband()
-:Action(Action::STACK_DISBAND), d_stack(0)
+Action_Disband::Action_Disband(Stack *s)
+:Action(Action::STACK_DISBAND), d_stack(s->getId())
 {
 }
 
@@ -1361,17 +1225,11 @@ bool Action_Disband::doSave(XML_Helper* helper) const
   return helper->saveData("stack", d_stack);
 }
 
-bool Action_Disband::fillData(Stack* s)
-{
-  d_stack = s->getId();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_ModifySignpost
 
-Action_ModifySignpost::Action_ModifySignpost()
-:Action(Action::MODIFY_SIGNPOST), d_signpost(0), d_message("")
+Action_ModifySignpost::Action_ModifySignpost(Signpost * s, Glib::ustring message)
+:Action(Action::MODIFY_SIGNPOST), d_signpost(s->getId()), d_message(message)
 {
 }
 
@@ -1402,18 +1260,11 @@ bool Action_ModifySignpost::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_ModifySignpost::fillData(Signpost * s, Glib::ustring message)
-{
-  d_signpost = s->getId();
-  d_message = message; 
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_RenameCity
 
-Action_RenameCity::Action_RenameCity()
-:Action(Action::CITY_RENAME), d_city(0), d_name("")
+Action_RenameCity::Action_RenameCity(City* c, Glib::ustring name)
+:Action(Action::CITY_RENAME), d_city(c->getId()), d_name(name)
 {
 }
 
@@ -1444,18 +1295,11 @@ bool Action_RenameCity::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_RenameCity::fillData(City* c, Glib::ustring name)
-{
-  d_city = c->getId();
-  d_name = name; 
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_Vector
 
-Action_Vector::Action_Vector()
-:Action(Action::CITY_VECTOR)
+Action_Vector::Action_Vector(City* src, Vector<int> dest)
+:Action(Action::CITY_VECTOR), d_city(src->getId()), d_dest(dest)
 {
 }
 
@@ -1468,11 +1312,8 @@ Action_Vector::Action_Vector(XML_Helper* helper)
 :Action(helper)
 {
   helper->getData(d_city, "city");
-  int i;
-  helper->getData(i, "x");
-  d_dest.x = i;
-  helper->getData(i, "y");
-  d_dest.y = i;
+  helper->getData(d_dest.x, "x");
+  helper->getData(d_dest.y, "y");
 }
 
 Glib::ustring Action_Vector::dump() const
@@ -1492,18 +1333,11 @@ bool Action_Vector::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_Vector::fillData(City* src, Vector <int> dest)
-{
-  d_city = src->getId();
-  d_dest = dest;
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_FightOrder
 
-Action_FightOrder::Action_FightOrder()
-:Action(Action::FIGHT_ORDER)
+Action_FightOrder::Action_FightOrder(std::list<guint32> order)
+:Action(Action::FIGHT_ORDER), d_order(order)
 {
 }
 
@@ -1552,12 +1386,6 @@ bool Action_FightOrder::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_FightOrder::fillData(std::list<guint32> order)
-{
-  d_order = order;
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_Resign
 
@@ -1588,16 +1416,11 @@ bool Action_Resign::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_Resign::fillData()
-{
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_Plant
 
-Action_Plant::Action_Plant()
-:Action(Action::ITEM_PLANT)
+Action_Plant::Action_Plant(Hero *hero, Item *item)
+:Action(Action::ITEM_PLANT), d_hero(hero->getId()), d_item(item->getId())
 {
 }
 
@@ -1628,20 +1451,16 @@ bool Action_Plant::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_Plant::fillData(Hero *hero, Item *item)
-{
-  d_hero = hero->getId();
-  d_item = item->getId();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_Produce
 
-Action_Produce::Action_Produce()
-:Action(Action::PRODUCE_UNIT)
+Action_Produce::Action_Produce(const ArmyProdBase *army, City *city, 
+                               bool vectored, Vector<int> pos, guint32 army_id,
+                               guint32 stack_id)
+:Action(Action::PRODUCE_UNIT), d_army(new ArmyProdBase(*army)), 
+    d_city(city->getId()), d_vectored(vectored), d_dest(pos), 
+    d_army_id(army_id), d_stack_id(stack_id)
 {
-  d_army = NULL;
 }
 
 Action_Produce::Action_Produce(const Action_Produce &a)
@@ -1711,26 +1530,16 @@ bool Action_Produce::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_Produce::fillData(const ArmyProdBase *army, City *city, bool vectored, Vector<int> pos, guint32 army_id, guint32 stack_id)
-{
-  d_army = new ArmyProdBase(*army);
-  d_city = city->getId();
-  d_vectored = vectored;
-  d_dest = pos;
-  d_army_id = army_id;
-  d_stack_id = stack_id;
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_ProduceVectored
 
-Action_ProduceVectored::Action_ProduceVectored()
-:Action(Action::PRODUCE_VECTORED_UNIT)
+Action_ProduceVectored::Action_ProduceVectored(ArmyProdBase *army, 
+                                               Vector<int> dest, 
+                                               Vector<int> src)
+:Action(Action::PRODUCE_VECTORED_UNIT), d_army(NULL), d_dest(dest), d_src(src)
 {
-  d_army = NULL;
-  d_dest = Vector<int>(-1,-1);
-  d_src = Vector<int>(-1,-1);
+  if (army)
+    d_army = new ArmyProdBase(*army);
 }
 
 Action_ProduceVectored::Action_ProduceVectored(const Action_ProduceVectored &a)
@@ -1745,15 +1554,10 @@ Action_ProduceVectored::Action_ProduceVectored(const Action_ProduceVectored &a)
 Action_ProduceVectored::Action_ProduceVectored(XML_Helper* helper)
 :Action(helper), d_army(NULL)
 {
-  int i;
-  helper->getData(i, "dest_x");
-  d_dest.x = i;
-  helper->getData(i, "dest_y");
-  d_dest.y = i;
-  helper->getData(i, "src_x");
-  d_src.x = i;
-  helper->getData(i, "src_y");
-  d_src.y = i;
+  helper->getData(d_dest.x, "dest_x");
+  helper->getData(d_dest.y, "dest_y");
+  helper->getData(d_src.x, "src_x");
+  helper->getData(d_src.y, "src_y");
   d_army = NULL;
   helper->registerTag(ArmyProdBase::d_tag, sigc::mem_fun(this, &Action_ProduceVectored::load));
 }
@@ -1793,21 +1597,13 @@ bool Action_ProduceVectored::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_ProduceVectored::fillData(ArmyProdBase *army, Vector<int> dest,
-				      Vector<int> src)
-{
-  if (army)
-    d_army = new ArmyProdBase (*army);
-  d_dest = dest;
-  d_src = src;
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_DiplomacyState
 
-Action_DiplomacyState::Action_DiplomacyState()
-:Action(Action::DIPLOMATIC_STATE)
+Action_DiplomacyState::Action_DiplomacyState(Player *p, 
+                                             Player::DiplomaticState state)
+:Action(Action::DIPLOMATIC_STATE), d_opponent_id(p->getId()),
+    d_diplomatic_state(state)
 {
 }
 
@@ -1849,20 +1645,15 @@ bool Action_DiplomacyState::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_DiplomacyState::fillData(Player *opponent, 
-				      Player::DiplomaticState state)
-{
-  d_opponent_id = opponent->getId();
-  d_diplomatic_state = state;
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_DiplomacyProposal
 
-Action_DiplomacyProposal::Action_DiplomacyProposal()
-:Action(Action::DIPLOMATIC_PROPOSAL)
+Action_DiplomacyProposal::Action_DiplomacyProposal(Player *p, 
+                                                   Player::DiplomaticProposal proposal)
+:Action(Action::DIPLOMATIC_PROPOSAL), d_opponent_id(p->getId()), 
+    d_diplomatic_proposal(proposal)
 {
+
 }
 
 Action_DiplomacyProposal::Action_DiplomacyProposal(const Action_DiplomacyProposal &a)
@@ -1904,19 +1695,11 @@ bool Action_DiplomacyProposal::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_DiplomacyProposal::fillData(Player *opponent, 
-					 Player::DiplomaticProposal proposal)
-{
-  d_opponent_id = opponent->getId();
-  d_diplomatic_proposal = proposal;
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_DiplomacyScore
 
-Action_DiplomacyScore::Action_DiplomacyScore()
-:Action(Action::DIPLOMATIC_SCORE)
+Action_DiplomacyScore::Action_DiplomacyScore(Player *p, int amount)
+:Action(Action::DIPLOMATIC_SCORE), d_opponent_id(p->getId()), d_amount(amount)
 {
 }
 
@@ -1948,13 +1731,6 @@ bool Action_DiplomacyScore::doSave(XML_Helper* helper) const
   retval &= helper->saveData("amount", d_amount);
 
   return retval;
-}
-
-bool Action_DiplomacyScore::fillData(Player *opponent, int amount)
-{
-  d_opponent_id = opponent->getId();
-  d_amount = amount;
-  return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -1990,8 +1766,8 @@ bool Action_EndTurn::doSave(XML_Helper* helper) const
 //-----------------------------------------------------------------------------
 //Action_ConquerCity
 
-Action_ConquerCity::Action_ConquerCity()
-  :Action(Action::CITY_CONQUER), d_city(0)
+Action_ConquerCity::Action_ConquerCity(City* c)
+  :Action(Action::CITY_CONQUER), d_city(c->getId())
 {
 }
 
@@ -2016,18 +1792,17 @@ bool Action_ConquerCity::doSave(XML_Helper* helper) const
     return helper->saveData("city", d_city);
 }
 
-bool Action_ConquerCity::fillData(City* c)
-{
-    d_city = c->getId();
-    return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_RecruitHero
 
-Action_RecruitHero::Action_RecruitHero()
-  :Action(Action::RECRUIT_HERO), d_hero(0)
+Action_RecruitHero::Action_RecruitHero(HeroProto* h, City *c, int cost, int alliesCount, const ArmyProto *ally)
+  :Action(Action::RECRUIT_HERO), d_hero(h), d_city(c->getId()), d_cost(cost),
+    d_allies(alliesCount)
 {
+    if (d_allies > 0)
+      d_ally_army_type = ally->getId();
+    else
+      d_ally_army_type = 0;
 }
 
 Action_RecruitHero::Action_RecruitHero(XML_Helper* helper)
@@ -2076,24 +1851,11 @@ bool Action_RecruitHero::doSave(XML_Helper* helper) const
     return retval;
 }
 
-bool Action_RecruitHero::fillData(HeroProto* hero, City *city, int cost, int alliesCount, const ArmyProto *ally)
-{
-    d_hero = hero;
-    d_city = city->getId();
-    d_cost = cost;
-    d_allies = alliesCount;
-    if (alliesCount > 0)
-      d_ally_army_type = ally->getId();
-    else
-      d_ally_army_type = 0;
-    return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_RenamePlayer
 
-Action_RenamePlayer::Action_RenamePlayer()
-  :Action(Action::PLAYER_RENAME), d_name("")
+Action_RenamePlayer::Action_RenamePlayer(Glib::ustring name)
+  :Action(Action::PLAYER_RENAME), d_name(name)
 {
 }
 
@@ -2118,17 +1880,12 @@ bool Action_RenamePlayer::doSave(XML_Helper* helper) const
     return helper->saveData("name", d_name);
 }
 
-bool Action_RenamePlayer::fillData(Glib::ustring name)
-{
-  d_name = name;
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 //Action_CityTooPoorToProduce
 
-Action_CityTooPoorToProduce::Action_CityTooPoorToProduce()
-    :Action(Action::CITY_DESTITUTE), d_city(0), d_army_type(0)
+Action_CityTooPoorToProduce::Action_CityTooPoorToProduce(City* c, const ArmyProdBase *army)
+    :Action(Action::CITY_DESTITUTE), d_city(c->getId()), 
+    d_army_type(army->getTypeId())
 {
 }
 
@@ -2158,14 +1915,6 @@ bool Action_CityTooPoorToProduce::doSave(XML_Helper* helper) const
     retval &= helper->saveData("army_type", d_army_type);
 
     return retval;
-}
-
-bool Action_CityTooPoorToProduce::fillData(City* c, const ArmyProdBase *army)
-{
-    d_city = c->getId();
-    d_army_type = army->getTypeId();
-
-    return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -2201,9 +1950,11 @@ bool Action_InitTurn::doSave(XML_Helper* helper) const
 //-----------------------------------------------------------------------------
 //Action_Loot
 
-Action_Loot::Action_Loot()
-    :Action(Action::CITY_LOOT), d_looting_player_id(0), d_looted_player_id(0),
-    d_gold_added(0), d_gold_removed(0)
+Action_Loot::Action_Loot(Player *looting_player, Player *looted_player, 
+                         guint32 amount_to_add, guint32 amount_to_subtract)
+    :Action(Action::CITY_LOOT), d_looting_player_id(looting_player->getId()), 
+    d_looted_player_id(looted_player->getId()), d_gold_added(amount_to_add), 
+    d_gold_removed(amount_to_subtract)
 {
 }
 
@@ -2243,24 +1994,24 @@ bool Action_Loot::doSave(XML_Helper* helper) const
     return retval;
 }
 
-        
-bool Action_Loot::fillData(Player *looter, Player *looted, guint32 amount_to_add,
-			   guint32 amount_to_subtract)
-{
-    d_looting_player_id = looter->getId();
-    d_looted_player_id = looted->getId();
-    d_gold_added = amount_to_add;
-    d_gold_removed = amount_to_subtract;
-    return true;
-}
-
 //-----------------------------------------------------------------------------
 // Action_UseItem
 
-Action_UseItem::Action_UseItem()
-:Action(Action::USE_ITEM), d_hero(0), d_item(0), d_victim_player(0),
-    d_friendly_city(0), d_enemy_city(0), d_neutral_city(0), d_city(0)
+Action_UseItem::Action_UseItem(Hero *hero, Item *item, Player *victim, City *friendly_city, City *enemy_city, City *neutral_city, City *city)
+:Action(Action::USE_ITEM), d_hero(hero->getId()), d_item(item->getId()), 
+    d_victim_player(0), d_friendly_city(0), d_enemy_city(0), d_neutral_city(0),
+    d_city(0)
 {
+  if (victim)
+    d_victim_player = victim->getId();
+  if (friendly_city)
+    d_friendly_city = friendly_city->getId();
+  if (enemy_city)
+    d_enemy_city = enemy_city->getId();
+  if (neutral_city)
+    d_neutral_city = neutral_city->getId();
+  if (city)
+    d_city = city->getId();
 }
 
 Action_UseItem::Action_UseItem(const Action_UseItem &a)
@@ -2304,32 +2055,15 @@ bool Action_UseItem::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_UseItem::fillData(Hero *hero, Item *item, Player *victim,
-                              City *friendly_city, City *enemy_city,
-                              City *neutral_city, City *city)
-{
-  d_hero = hero->getId();
-  d_item = item->getId();
-  if (victim)
-    d_victim_player = victim->getId();
-  if (friendly_city)
-    d_friendly_city = friendly_city->getId();
-  if (enemy_city)
-    d_enemy_city = enemy_city->getId();
-  if (neutral_city)
-    d_neutral_city = neutral_city->getId();
-  if (city)
-    d_city = city->getId();
-
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 // Action_ReorderArmies
 
-Action_ReorderArmies::Action_ReorderArmies()
-:Action(Action::STACK_ORDER), d_stack_id(0), d_player_id(MAX_PLAYERS + 1)
+Action_ReorderArmies::Action_ReorderArmies(Stack *s)
+:Action(Action::STACK_ORDER), d_stack_id(s->getId()), 
+    d_player_id(s->getOwner()->getId())
 {
+  for (Stack::iterator i = s->begin(); i != s->end(); i++)
+    d_army_ids.push_back((*i)->getId());
 }
 
 Action_ReorderArmies::Action_ReorderArmies(const Action_ReorderArmies &a)
@@ -2384,21 +2118,11 @@ bool Action_ReorderArmies::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_ReorderArmies::fillData(Stack *s)
-{
-  d_stack_id = s->getId();
-  d_player_id = s->getOwner()->getId();
-  for (Stack::iterator i = s->begin(); i != s->end(); i++)
-    d_army_ids.push_back((*i)->getId());
-
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 // Action_ResetStacks
 
-Action_ResetStacks::Action_ResetStacks()
-:Action(Action::STACKS_RESET), d_player_id(0)
+Action_ResetStacks::Action_ResetStacks(Player *p)
+:Action(Action::STACKS_RESET), d_player_id(p->getId())
 {
 }
 
@@ -2424,15 +2148,8 @@ bool Action_ResetStacks::doSave(XML_Helper* helper) const
   return helper->saveData("player_id", d_player_id);
 }
 
-bool Action_ResetStacks::fillData(Player *p)
-{
-  d_player_id = p->getId();
-
-  return true;
-}
-
 //-----------------------------------------------------------------------------
-// Action_ResetStack
+// Action_ResetRuins
 
 Action_ResetRuins::Action_ResetRuins()
 :Action(Action::RUINS_RESET)
@@ -2458,11 +2175,6 @@ bool Action_ResetRuins::doSave(XML_Helper* helper) const
 {
   bool retval = true;
   return retval;
-}
-
-bool Action_ResetRuins::fillData()
-{
-  return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -2494,11 +2206,6 @@ bool Action_CollectTaxesAndPayUpkeep::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_CollectTaxesAndPayUpkeep::fillData()
-{
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 // Action_Kill
 
@@ -2528,16 +2235,11 @@ bool Action_Kill::doSave(XML_Helper* helper) const
   return retval;
 }
 
-bool Action_Kill::fillData()
-{
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 // Action_DefendStack
 
-Action_DefendStack::Action_DefendStack()
-:Action(Action::STACK_DEFEND), d_stack_id(0)
+Action_DefendStack::Action_DefendStack(Stack *s)
+:Action(Action::STACK_DEFEND), d_stack_id(s->getId())
 {
 }
 
@@ -2562,17 +2264,11 @@ bool Action_DefendStack::doSave(XML_Helper* helper) const
   return helper->saveData("stack_id", d_stack_id);
 }
 
-bool Action_DefendStack::fillData(Stack *s)
-{
-  d_stack_id = s->getId();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 // Action_UndefendStack
 
-Action_UndefendStack::Action_UndefendStack()
-:Action(Action::STACK_UNDEFEND), d_stack_id(0)
+Action_UndefendStack::Action_UndefendStack(Stack *s)
+:Action(Action::STACK_UNDEFEND), d_stack_id(s->getId())
 {
 }
 
@@ -2597,17 +2293,11 @@ bool Action_UndefendStack::doSave(XML_Helper* helper) const
   return helper->saveData("stack_id", d_stack_id);
 }
 
-bool Action_UndefendStack::fillData(Stack *s)
-{
-  d_stack_id = s->getId();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 // Action_ParkStack
 
-Action_ParkStack::Action_ParkStack()
-:Action(Action::STACK_PARK), d_stack_id(0)
+Action_ParkStack::Action_ParkStack(Stack *s)
+:Action(Action::STACK_PARK), d_stack_id(s->getId())
 {
 }
 
@@ -2632,17 +2322,11 @@ bool Action_ParkStack::doSave(XML_Helper* helper) const
   return helper->saveData("stack_id", d_stack_id);
 }
 
-bool Action_ParkStack::fillData(Stack *s)
-{
-  d_stack_id = s->getId();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 // Action_UnparkStack
 
-Action_UnparkStack::Action_UnparkStack()
-:Action(Action::STACK_UNPARK), d_stack_id(0)
+Action_UnparkStack::Action_UnparkStack(Stack *s)
+:Action(Action::STACK_UNPARK), d_stack_id(s->getId())
 {
 }
 
@@ -2667,17 +2351,11 @@ bool Action_UnparkStack::doSave(XML_Helper* helper) const
   return helper->saveData("stack_id", d_stack_id);
 }
 
-bool Action_UnparkStack::fillData(Stack *s)
-{
-  d_stack_id = s->getId();
-  return true;
-}
-
 //-----------------------------------------------------------------------------
 // Action_SelectStack
 
-Action_SelectStack::Action_SelectStack()
-:Action(Action::STACK_SELECT), d_stack_id(0)
+Action_SelectStack::Action_SelectStack(Stack *s)
+:Action(Action::STACK_SELECT), d_stack_id(s->getId())
 {
 }
 
@@ -2700,12 +2378,6 @@ Glib::ustring Action_SelectStack::dump() const
 bool Action_SelectStack::doSave(XML_Helper* helper) const
 {
   return helper->saveData("stack_id", d_stack_id);
-}
-
-bool Action_SelectStack::fillData(Stack *s)
-{
-  d_stack_id = s->getId();
-  return true;
 }
 
 //-----------------------------------------------------------------------------
@@ -2732,11 +2404,6 @@ Glib::ustring Action_DeselectStack::dump() const
 }
 
 bool Action_DeselectStack::doSave(XML_Helper* helper) const
-{
-  return true;
-}
-
-bool Action_DeselectStack::fillData()
 {
   return true;
 }

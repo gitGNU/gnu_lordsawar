@@ -614,9 +614,7 @@ void Player::setFightOrder(std::list<guint32> order)
 {
   doSetFightOrder(order);
   
-  Action_FightOrder * item = new Action_FightOrder();
-  item->fillData(order);
-  addAction(item);
+  addAction(new Action_FightOrder(order));
 }
 
 bool Player::doStackSplitArmy(Stack *s, Army *a, Stack *& new_stack)
@@ -650,15 +648,9 @@ Stack *Player::stackSplitArmies(Stack *stack, std::list<guint32> armies)
   bool retval = doStackSplitArmies(stack, armies, new_stack);
   if (retval == true)
     {
-      Action_Split* item = new Action_Split();
-      item->fillData(stack, new_stack);
-      addAction(item);
-      Action_ReorderArmies *orig = new Action_ReorderArmies();
-      orig->fillData(stack);
-      addAction(orig);
-      Action_ReorderArmies *dest = new Action_ReorderArmies();
-      dest->fillData(new_stack);
-      addAction(dest);
+      addAction(new Action_Split(stack, new_stack));
+      addAction(new Action_ReorderArmies(stack));
+      addAction(new Action_ReorderArmies(new_stack));
     }
   return new_stack;
 }
@@ -669,12 +661,8 @@ Stack *Player::stackSplitArmy(Stack *stack, Army *a)
   bool retval = doStackSplitArmy(stack, a, new_stack);
   if (retval == true)
     {
-      Action_Split* item = new Action_Split();
-      item->fillData(stack, new_stack);
-      addAction(item);
-      Action_ReorderArmies *orig = new Action_ReorderArmies();
-      orig->fillData(stack);
-      addAction(orig);
+      addAction(new Action_Split(stack, new_stack));
+      addAction(new Action_ReorderArmies(stack));
     }
   return new_stack;
 }
@@ -699,15 +687,11 @@ bool Player::stackJoin(Stack* receiver, Stack* joining)
     if (GameMap::canJoin(joining, receiver) == false)
       return false;
     
-    Action_Join* item = new Action_Join();
-    item->fillData(receiver, joining);
-    addAction(item);
+    addAction(new Action_Join (receiver, joining));
 
     doStackJoin(receiver, joining);
       
-    Action_ReorderArmies *ordering = new Action_ReorderArmies();
-    ordering->fillData(receiver);
-    addAction(ordering);
+    addAction(new Action_ReorderArmies(receiver));
  
     supdatingStack.emit(0);
     return true;
@@ -1105,11 +1089,9 @@ bool Player::stackMoveOneStepOverTooLargeFriendlyStacks(Stack *s)
   if (d_stacklist->canJumpOverTooLargeStack(s) == false)
     return false;
 
-  Action_Move* item = new Action_Move();
-  item->fillData(s, dest);
+  addAction(new Action_Move(s, dest));
 
   s->moveOneStep(true);
-  addAction(item);
   return true;
 }
 
@@ -1208,11 +1190,9 @@ bool Player::stackMoveOneStep(Stack* s)
 	}
 
     }
-  Action_Move* item = new Action_Move();
-  item->fillData(s, dest);
+  addAction(new Action_Move(s, dest));
 
   s->moveOneStep();
-  addAction(item);
 
 
   return true;
@@ -1279,9 +1259,7 @@ Fight::Result Player::stackFight(Stack** attacker, Stack** defender)
     // cleanup
     
     // add a fight item about the combat
-    Action_Fight* item = new Action_Fight();
-    item->fillData(&fight);
-    addAction(item);
+    addAction(new Action_Fight(&fight));
 
 
     std::list<History*> attacker_history;
@@ -1296,19 +1274,11 @@ Fight::Result Player::stackFight(Stack** attacker, Stack** defender)
   
     for (std::list<Stack*>::iterator i = attackers.begin(); 
          i != attackers.end(); i++)
-      {
-        Action_ReorderArmies *ordering = new Action_ReorderArmies();
-        ordering->fillData(*i);
-        addAction(ordering);
-      }
+      addAction(new Action_ReorderArmies(*i));
 
     for (std::list<Stack*>::iterator i = defenders.begin(); 
          i != defenders.end(); i++)
-      {
-        Action_ReorderArmies *ordering = new Action_ReorderArmies();
-        ordering->fillData(*i);
-        addAction(ordering);
-      }
+      addAction(new Action_ReorderArmies(*i));
     
     // Set the attacker and defender stack to 0 if neccessary. This is a great
     // help for the functions calling stackFight (e.g. if a stack attacks
@@ -1476,10 +1446,7 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
       doStackSearchRuin(s, r, result);
       if (result == Fight::DEFENDER_WON)
         {
-          Action_Ruin* item = new Action_Ruin();
-          item->fillData(r, s);
-          item->setSearched(r->isSearched());
-          addAction(item);
+          addAction(new Action_Ruin(r,s));
           return NULL;
         }
     }
@@ -1491,21 +1458,14 @@ Reward* Player::stackSearchRuin(Stack* s, Ruin* r, bool &stackdied)
   reward = r->getReward();
   r->setReward(0);
 
-  Action_Ruin* item = new Action_Ruin();
-  item->fillData(r, s);
-  item->setSearched(r->isSearched());
-  addAction(item);
+  addAction(new Action_Ruin(r, s));
   if (r->isSearched())
     {
       if (r->hasSage())
         {
-          History_FoundSage* history = new History_FoundSage();
-          history->fillData(dynamic_cast<Hero *>(s->getFirstHero()));
-          addHistory(history);
+          addHistory(new History_FoundSage(dynamic_cast<Hero *>(s->getFirstHero())));
         }
-      History_HeroRuinExplored *history_item = new History_HeroRuinExplored();
-      history_item->fillData(dynamic_cast<Hero*>(s->getFirstHero()), r);
-      addHistory(history_item);
+      addHistory(new History_HeroRuinExplored(dynamic_cast<Hero*>(s->getFirstHero()), r));
     }
   supdatingStack.emit(0);
   return reward;
@@ -1525,9 +1485,7 @@ int Player::stackVisitTemple(Stack* s, Temple* t)
 {
   debug("Player::stackVisitTemple");
 
-  Action_Temple* item = new Action_Temple();
-  item->fillData(t, s);
-  addAction(item);
+  addAction(new Action_Temple(t,s));
   
   return doStackVisitTemple(s, t);
 }
@@ -1562,14 +1520,10 @@ Quest* Player::heroGetQuest(Hero *hero, Temple* t, bool except_raze)
     return q;
 
   // Now fill the action item
-  Action_Quest* action = new Action_Quest();
-  action->fillData(q);
-  addAction(action);
+  addAction(new Action_Quest(q));
 
   // and record it for posterity
-  History_HeroQuestStarted * history = new History_HeroQuestStarted();
-  history->fillData(hero);
-  addHistory(history);
+  addHistory(new History_HeroQuestStarted(hero));
   return q;
 }
 
@@ -1648,20 +1602,14 @@ void Player::doConquerCity(City *city)
 void Player::conquerCity(City *city, Stack *stack)
 {
   Player *original_owner = city->getOwner();
-  Action_ConquerCity *action = new Action_ConquerCity();
-  action->fillData(city);
-  addAction(action);
+  addAction(new Action_ConquerCity(city));
 
   doConquerCity(city);
-  History_CityWon *item = new History_CityWon();
-  item->fillData(city);
-  addHistory(item);
+  addHistory(new History_CityWon(city));
   if (stack && stack->hasHero())
   {
-    History_HeroCityWon *another = new History_HeroCityWon();
     Hero *hero = dynamic_cast<Hero *>(stack->getFirstHero());
-    another->fillData(hero, city);
-    addHistory(another);
+    addHistory(new History_HeroCityWon(city, hero));
   }
   if (original_owner != this)
     lootCity(city, original_owner);
@@ -1674,9 +1622,7 @@ void Player::lootCity(City *city, Player *looted)
   calculateLoot(looted, added, subtracted);
   sinvadingCity.emit(city, added);
   doLootCity(looted, added, subtracted);
-  Action_Loot *item = new Action_Loot();
-  item->fillData(this, looted, added, subtracted);
-  addAction(item);
+  addAction(new Action_Loot(this, looted, added, subtracted));
   return;
 }
 
@@ -1712,9 +1658,7 @@ void Player::cityOccupy(City* c)
   debug("cityOccupy");
   doCityOccupy(c);
 
-  Action_Occupy* item = new Action_Occupy();
-  item->fillData(c);
-  addAction(item);
+  addAction(new Action_Occupy(c));
 }
 
 void Player::doCityPillage(City *c, int& gold, int* pillaged_army_type)
@@ -1772,9 +1716,7 @@ void Player::cityPillage(City* c, int& gold, int* pillaged_army_type)
 {
   debug("Player::cityPillage");
   
-  Action_Pillage* item = new Action_Pillage();
-  item->fillData(c);
-  addAction(item);
+  addAction(new Action_Pillage(c));
 
   doCityPillage(c, gold, pillaged_army_type);
 }
@@ -1824,9 +1766,7 @@ void Player::citySack(City* c, int& gold, std::list<guint32> *sacked_types)
 {
   debug("Player::citySack");
 
-  Action_Sack* item = new Action_Sack();
-  item->fillData(c);
-  addAction(item);
+  addAction(new Action_Sack(c));
 
   doCitySack(c, gold, sacked_types);
 }
@@ -1846,13 +1786,9 @@ void Player::cityRaze(City* c)
 {
   debug("Player::cityRaze");
 
-  Action_Raze* action = new Action_Raze();
-  action->fillData(c);
-  addAction(action);
+  addAction(new Action_Raze(c));
 
-  History_CityRazed* history = new History_CityRazed();
-  history->fillData(c);
-  addHistory(history);
+  addHistory(new History_CityRazed(c));
 
   doCityRaze(c);
 }
@@ -1890,9 +1826,7 @@ bool Player::cityBuyProduction(City* c, int slot, int type)
   if (slot >= (int)c->getMaxNoOfProductionBases())
     return false;
   
-  Action_Buy* item = new Action_Buy();
-  item->fillData(c, slot, al->getArmy(as, type));
-  addAction(item);
+  addAction(new Action_Buy (c, slot, al->getArmy(as, type)));
 
   doCityBuyProduction(c, slot, type);
 
@@ -1907,11 +1841,7 @@ void Player::doCityChangeProduction(City* c, int slot)
 bool Player::cityChangeProduction(City* c, int slot)
 {
   doCityChangeProduction(c, slot);
-  
-  Action_Production* item = new Action_Production();
-  item->fillData(c, slot);
-  addAction(item);
-
+  addAction(new Action_Production(c, slot));
   return true;
 }
 
@@ -1958,16 +1888,12 @@ bool Player::giveReward(Stack *s, Reward *reward, StackReflist *stacks)
 
   doGiveReward(s, reward, stacks);
   
-  Action_Reward* item = new Action_Reward();
-  item->fillData(s, reward);
-  addAction(item);
+  addAction(new Action_Reward(s, reward));
 
   if (reward->getType() == Reward::RUIN)
     {
       Ruin *r = dynamic_cast<Reward_Ruin*>(reward)->getRuin();
-      History_HeroRewardRuin* history_item = new History_HeroRewardRuin();
-      history_item->fillData(dynamic_cast<Hero*>(s->getFirstHero()), r);
-      addHistory(history_item);
+      addHistory(new History_HeroRewardRuin(dynamic_cast<Hero*>(s->getFirstHero()), r));
     }
           
   schangingStats.emit();
@@ -1994,9 +1920,7 @@ bool Player::stackDisband(Stack* s)
     if (!s)
       s = getActivestack();
 
-  Action_Disband* item = new Action_Disband();
-  item->fillData(s);
-  addAction(item);
+  addAction(new Action_Disband(s));
 
   bool retval = doStackDisband(s);
   schangingStats.emit();
@@ -2023,11 +1947,7 @@ void Player::doHeroDropItem(Hero *h, Item *i, Vector<int> pos, bool &splash)
 bool Player::heroDropItem(Hero *h, Item *i, Vector<int> pos, bool &splash)
 {
   doHeroDropItem(h, i, pos, splash);
-  
-  Action_Equip* item = new Action_Equip();
-  item->fillData(h, i, Action_Equip::GROUND, pos);
-  addAction(item);
-  
+  addAction(new Action_Equip(h, i, Action_Equip::GROUND, pos));
   return true;
 }
 
@@ -2057,11 +1977,7 @@ void Player::doHeroPickupItem(Hero *h, Item *i, Vector<int> pos)
 bool Player::heroPickupItem(Hero *h, Item *i, Vector<int> pos)
 {
   doHeroPickupItem(h, i, pos);
-  
-  Action_Equip* item = new Action_Equip();
-  item->fillData(h, i, Action_Equip::BACKPACK, pos);
-  addAction(item);
-  
+  addAction(new Action_Equip(h, i, Action_Equip::BACKPACK, pos));
   return true;
 }
 
@@ -2084,9 +2000,7 @@ bool Player::heroPickupAllItems(Hero *h, Vector<int> pos)
 bool Player::heroCompletesQuest(Hero *h)
 {
   // record it for posterity
-  History_HeroQuestCompleted* item = new History_HeroQuestCompleted();
-  item->fillData(h);
-  addHistory(item);
+  addHistory(new History_HeroQuestCompleted(h));
   return true;
 }
 
@@ -2103,9 +2017,7 @@ void Player::doResign(std::list<History*> &histories)
       if ((*it)->getOwner() == this)
 	{
 	  (*it)->setBurnt(true);
-	  History_CityRazed* history = new History_CityRazed();
-	  history->fillData((*it));
-          histories.push_back(history);
+          histories.push_back(new History_CityRazed((*it)));
 	}
     }
   withdrawGold(getGold()); //empty the coffers!
@@ -2122,9 +2034,7 @@ void Player::resign()
        i++)
     addHistory(*i);
   
-  Action_Resign* item = new Action_Resign();
-  item->fillData();
-  addAction(item);
+  addAction(new Action_Resign());
   schangingStats.emit();
 }
 
@@ -2140,9 +2050,7 @@ bool Player::signpostChange(Signpost *s, Glib::ustring message)
   
   doSignpostChange(s, message);
   
-  Action_ModifySignpost* item = new Action_ModifySignpost();
-  item->fillData(s, message);
-  addAction(item);
+  addAction(new Action_ModifySignpost(s, message));
   return true;
 }
 
@@ -2158,9 +2066,7 @@ bool Player::cityRename(City *c, Glib::ustring name)
 
   doCityRename(c, name);
   
-  Action_RenameCity* item = new Action_RenameCity();
-  item->fillData(c, name);
-  addAction(item);
+  addAction(new Action_RenameCity(c, name));
   return true;
 }
 
@@ -2172,9 +2078,7 @@ void Player::doRename(Glib::ustring name)
 void Player::rename(Glib::ustring name)
 {
   doRename(name);
-  Action_RenamePlayer * item = new Action_RenamePlayer();
-  item->fillData(name);
-  addAction(item);
+  addAction(new Action_RenamePlayer(name));
   return;
 }
 
@@ -2194,9 +2098,7 @@ bool Player::vectorFromCity(City * c, Vector<int> dest)
     }
   doVectorFromCity(c, dest);
   
-  Action_Vector* item = new Action_Vector();
-  item->fillData(c, dest);
-  addAction(item);
+  addAction(new Action_Vector(c, dest));
   return true;
 }
 
@@ -2262,11 +2164,7 @@ bool Player::changeVectorDestination(Vector<int> src, Vector<int> dest)
 
   std::list<City*>::iterator it = vectored.begin();
   for (; it != vectored.end(); it++)
-    {
-      Action_Vector* item = new Action_Vector();
-      item->fillData((*it), dest);
-      addAction(item);
-    }
+    addAction(new Action_Vector((*it), dest));
   return true;
 }
 
@@ -2287,9 +2185,7 @@ bool Player::heroPlantStandard(Stack* s)
           //drop the item, and plant it
           doHeroPlantStandard(hero, item, s->getPos());
                   
-          Action_Plant * i = new Action_Plant();
-          i->fillData(hero, item);
-          addAction(i);
+          addAction(new Action_Plant(hero, item));
           return true;
         }
     }
@@ -2562,17 +2458,11 @@ void Player::recruitHero(HeroProto* heroproto, City *city, int cost, int alliesC
   h = HeroTemplates::getInstance()->getRandomHero(g, getId());
   h->setGender(g);
   h->setName(name);
-  Action_RecruitHero *action = new Action_RecruitHero();
-  action->fillData(h, city, cost, alliesCount, ally);
-  addAction(action);
+  addAction(new Action_RecruitHero(h, city, cost, alliesCount, ally));
 
   Hero *hero = doRecruitHero(h, city, cost, alliesCount, ally, stacks);
   if (hero)
-    {
-      History_HeroEmerges *item = new History_HeroEmerges();
-      item->fillData(hero, city);
-      addHistory(item);
-    }
+    addHistory(new History_HeroEmerges(hero, city));
 }
 
 void Player::doDeclareDiplomacy (DiplomaticState state, Player *player)
@@ -2591,35 +2481,21 @@ void Player::declareDiplomacy (DiplomaticState state, Player *player, bool treac
 {
   doDeclareDiplomacy(state, player);
 
-  Action_DiplomacyState * item = new Action_DiplomacyState();
-  item->fillData(player, state);
-  addAction(item);
+  addAction(new Action_DiplomacyState(player, state));
 
   switch (state)
     {
     case AT_PEACE:
-        {
-          History_DiplomacyPeace *item = new History_DiplomacyPeace();
-          item->fillData(player);
-          addHistory(item);
-        }
+      addHistory(new History_DiplomacyPeace(player));
       break;
     case AT_WAR_IN_FIELD:
       break;
     case AT_WAR:
-        {
-          History_DiplomacyWar *item = new History_DiplomacyWar();
-          item->fillData(player);
-          addHistory(item);
-        }
+      addHistory(new History_DiplomacyWar(player));
       break;
     }
   if (treachery)
-    {
-      History_DiplomacyTreachery *item = new History_DiplomacyTreachery();
-      item->fillData(player);
-      addHistory(item);
-    }
+    addHistory(new History_DiplomacyTreachery(player));
   // FIXME: update diplomatic scores? 
 }
 
@@ -2657,9 +2533,7 @@ void Player::proposeDiplomacy (DiplomaticProposal proposal, Player *player)
 {
   doProposeDiplomacy(proposal, player);
 
-  Action_DiplomacyProposal * item = new Action_DiplomacyProposal();
-  item->fillData(player, proposal);
-  addAction(item);
+  addAction(new Action_DiplomacyProposal(player, proposal));
 
   // FIXME: update diplomatic scores? 
 }
@@ -2776,9 +2650,7 @@ void Player::improveDiplomaticRelationship (Player *player, guint32 amount)
 
   alterDiplomaticRelationshipScore (player, amount);
 
-  Action_DiplomacyScore* item = new Action_DiplomacyScore();
-  item->fillData(player, amount);
-  addAction(item);
+  addAction(new Action_DiplomacyScore(player, amount));
 }
 
 void Player::deteriorateDiplomaticRelationship (Player *player, guint32 amount)
@@ -2789,9 +2661,7 @@ void Player::deteriorateDiplomaticRelationship (Player *player, guint32 amount)
 
   alterDiplomaticRelationshipScore (player, -amount);
 
-  Action_DiplomacyScore* item = new Action_DiplomacyScore();
-  item->fillData(player, -amount);
-  addAction(item);
+  addAction(new Action_DiplomacyScore(player, -amount));
 }
 
 void Player::deteriorateDiplomaticRelationship (guint32 amount)
@@ -3447,7 +3317,6 @@ const Army * Player::doCityProducesArmy(City *city, Stack *& s, bool &vectored)
 bool Player::cityProducesArmy(City *city)
 {
   assert(city->getOwner() == this);
-  Action_Produce *item = new Action_Produce();
   Stack *stack = NULL;
   bool vectored = false;
   const Army *army = doCityProducesArmy(city, stack, vectored);
@@ -3462,13 +3331,8 @@ bool Player::cityProducesArmy(City *city)
       source_army = city->getProductionBaseBelongingTo(army);
       if (stack)
         {
-          item->fillData(source_army, city, false, stack->getPos(), army->getId(),
-                         stack->getId());
-          addAction(item);
-
-          Action_ReorderArmies *ordering = new Action_ReorderArmies();
-          ordering->fillData(stack);
-          addAction(ordering);
+          addAction(new Action_Produce(source_army, city, false, stack->getPos(), army->getId(), stack->getId()));
+          addAction(new Action_ReorderArmies(stack));
         }
     }
   else
@@ -3477,8 +3341,8 @@ bool Player::cityProducesArmy(City *city)
         {
           //send vectoring action.
           const ArmyProdBase *source_army = city->getActiveProductionBase();
-          item->fillData(source_army, city, true, city->getVectoring(), 0, 0);
-          addAction(item);
+          addAction(new Action_Produce(source_army, city, true, 
+                                       city->getVectoring(), 0, 0));
         }
     }
   return true;
@@ -3492,9 +3356,8 @@ Army* Player::doVectoredUnitArrives(VectoredUnit *unit, Stack *& s)
 
 bool Player::vectoredUnitArrives(VectoredUnit *unit)
 {
-  Action_ProduceVectored *item = new Action_ProduceVectored();
-  item->fillData(unit->getArmy(), unit->getDestination(), unit->getPos());
-  addAction(item);
+  addAction(new Action_ProduceVectored(unit->getArmy(), unit->getDestination(),
+                                       unit->getPos()));
   Stack *stack = NULL;
   Army *army = doVectoredUnitArrives(unit, stack);
   printf("it landed in stack %p\n", stack);
@@ -3524,19 +3387,9 @@ bool Player::vectoredUnitArrives(VectoredUnit *unit)
 	      break;
 	    }
 	case History::CITY_WON:
-	    {
-	      //History_CityWon *event;
-	      //event = dynamic_cast<History_CityWon*>(*pit);
-	      //printf("on turn %d, player %s took %s\n", turn, dest->getOwner()->getName().c_str(), dest->getName().c_str());
-	      break;
-	    }
+          break;
 	case History::CITY_RAZED:
-	    {
-	      //History_CityRazed *event;
-	      //event = dynamic_cast<History_CityRazed*>(*pit);
-	      //printf("on turn %d, player %s razed %s\n", turn, dest->getOwner()->getName().c_str(), dest->getName().c_str());
-	      break;
-	    }
+          break;
 	default:
 	  break;
 	}
@@ -3579,9 +3432,7 @@ void Player::cityTooPoorToProduce(City *city, int slot)
 {
   cityChangeProduction(city, -1);
   const ArmyProdBase *a = city->getProductionBase(slot);
-  Action_CityTooPoorToProduce *action = new Action_CityTooPoorToProduce();
-  action->fillData(city, a);
-  addAction(action);
+  addAction(new Action_CityTooPoorToProduce(city, a));
 }
 
 void Player::pruneActionlist()
@@ -4498,14 +4349,10 @@ bool Player::heroUseItem(Hero *hero, Item *item, Player *victim,
   if (doHeroUseItem(hero, item, victim, friendly_city, enemy_city, 
                     neutral_city, city))
     {
-      Action_UseItem * action = new Action_UseItem();
-      action->fillData(hero, item, victim, friendly_city, enemy_city, 
-                       neutral_city, city);
-      addAction(action);
-      History_HeroUseItem * history = new History_HeroUseItem();
-      history->fillData(hero, item, victim, friendly_city, enemy_city,
-                        neutral_city, city);
-      addHistory (history);
+      addAction(new Action_UseItem(hero, item, victim, friendly_city, 
+                                   enemy_city, neutral_city, city));
+      addHistory (new History_HeroUseItem(hero, item, victim, friendly_city, 
+                                          enemy_city, neutral_city, city));
       return true;
     }
   return false;
@@ -4561,27 +4408,14 @@ void Player::tallyDeadArmyTriumphs(std::list<Stack*> &stacks)
 History* Player::handleDeadHero(Hero *h, Maptile *tile, Vector<int> pos)
 {
   if (tile->getBuilding() == Maptile::RUIN)
-    {
-      History_HeroKilledSearching* item;
-      item = new History_HeroKilledSearching();
-      item->fillData(h);
-      return item;
-    }
+    return new History_HeroKilledSearching(h);
   else if (tile->getBuilding() == Maptile::CITY)
     {
       City* c = GameMap::getCity(pos);
-      History_HeroKilledInCity* item;
-      item = new History_HeroKilledInCity();
-      item->fillData(h, c);
-      return item;
+      return new History_HeroKilledInCity(h, c);
     }
   else //somewhere else
-    {
-      History_HeroKilledInBattle* item;
-      item = new History_HeroKilledInBattle();
-      item->fillData(h);
-      return item;
-    }
+    return new History_HeroKilledInBattle(h);
   return NULL;
 }
 
@@ -4680,9 +4514,7 @@ void Player::doStacksReset()
 void Player::stacksReset()
 {
   doStacksReset();
-  Action_ResetStacks *item = new Action_ResetStacks();
-  item->fillData(this);
-  addAction(item);
+  addAction(new Action_ResetStacks(this));
 }
 
 void Player::doRuinsReset()
@@ -4701,8 +4533,7 @@ void Player::doRuinsReset()
 void Player::ruinsReset()
 {
   doRuinsReset();
-  Action_ResetRuins *item = new Action_ResetRuins();
-  addAction(item);
+  addAction(new Action_ResetRuins());
 }
 
 void Player::doCollectTaxesAndPayUpkeep()
@@ -4723,8 +4554,7 @@ void Player::collectTaxesAndPayUpkeep()
   if (hasAlreadyCollectedTaxesAndPaidUpkeep())
     return;
   doCollectTaxesAndPayUpkeep();
-  Action_CollectTaxesAndPayUpkeep *item = new Action_CollectTaxesAndPayUpkeep();
-  addAction(item);
+  addAction(new Action_CollectTaxesAndPayUpkeep());
 }
 
 void Player::doStackDefend(Stack *s)
@@ -4735,9 +4565,7 @@ void Player::doStackDefend(Stack *s)
 void Player::stackDefend(Stack *s)
 {
   doStackDefend(s);
-  Action_DefendStack *item = new Action_DefendStack();
-  item->fillData(s);
-  addAction(item);
+  addAction(new Action_DefendStack(s));
 }
 
 void Player::doStackUndefend(Stack *s)
@@ -4748,9 +4576,7 @@ void Player::doStackUndefend(Stack *s)
 void Player::stackUndefend(Stack *s)
 {
   doStackUndefend(s);
-  Action_UndefendStack *item = new Action_UndefendStack();
-  item->fillData(s);
-  addAction(item);
+  addAction(new Action_UndefendStack(s));
 }
 
 void Player::doStackPark(Stack *s)
@@ -4761,9 +4587,7 @@ void Player::doStackPark(Stack *s)
 void Player::stackPark(Stack *s)
 {
   doStackPark(s);
-  Action_ParkStack *item = new Action_ParkStack();
-  item->fillData(s);
-  addAction(item);
+  addAction(new Action_ParkStack(s));
 }
 
 void Player::doStackUnpark(Stack *s)
@@ -4774,9 +4598,7 @@ void Player::doStackUnpark(Stack *s)
 void Player::stackUnpark(Stack *s)
 {
   doStackUnpark(s);
-  Action_UnparkStack *item = new Action_UnparkStack();
-  item->fillData(s);
-  addAction(item);
+  addAction(new Action_UnparkStack(s));
 }
 
 void Player::doStackSelect(Stack *s)
@@ -4787,9 +4609,7 @@ void Player::doStackSelect(Stack *s)
 void Player::stackSelect(Stack *s)
 {
   doStackSelect(s);
-  Action_SelectStack *item = new Action_SelectStack();
-  item->fillData(s);
-  addAction(item);
+  addAction(new Action_SelectStack(s));
 }
 
 void Player::doStackDeselect ()
@@ -4800,19 +4620,13 @@ void Player::doStackDeselect ()
 void Player::stackDeselect ()
 {
   doStackDeselect();
-  Action_DeselectStack *item = new Action_DeselectStack();
-  addAction(item);
+  addAction(new Action_DeselectStack());
 }
 
 void Player::reportEndOfRound(guint32 score)
 {
-  History_Score *item = new History_Score();
-  item->fillData(score);
-  addHistory(item);
-
-  History_GoldTotal* gold = new History_GoldTotal();
-  gold->fillData(d_gold);
-  addHistory(gold);
+  addHistory(new History_Score(score));
+  addHistory(new History_GoldTotal(d_gold));
 }
 
 void Player::reportEndOfTurn()
@@ -4843,9 +4657,7 @@ Reward* Player::giveQuestReward(Quest *quest, Stack *stack)
           Reward_Allies *reward = new Reward_Allies(a, num);
           giveReward(stack, reward, stacks);
 
-          History_HeroFindsAllies* item = new History_HeroFindsAllies();
-          item->fillData(quest->getHero());
-          addHistory(item);
+          addHistory(new History_HeroFindsAllies(quest->getHero()));
           delete stacks;
           return reward;
         }
