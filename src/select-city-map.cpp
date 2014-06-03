@@ -15,14 +15,12 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <config.h>
 #include "select-city-map.h"
 
 #include "city.h"
 #include "citylist.h"
 #include "playerlist.h"
-#include "stacklist.h"
-#include "stack.h"
-#include "GameMap.h"
 #include <assert.h>
 
 SelectCityMap::SelectCityMap(SelectCityMap::Type type)

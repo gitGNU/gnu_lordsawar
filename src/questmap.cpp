@@ -15,18 +15,15 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <config.h>
 #include "questmap.h"
 
-#include "gui/image-helpers.h"
-#include "xmlhelper.h"
 #include "Quest.h"
 #include "QuestsManager.h"
-#include "playerlist.h"
 #include "ImageCache.h"
 #include "stacklist.h"
 #include "player.h"
 #include "maptile.h"
-#include "citylist.h"
 #include "GameMap.h"
 #include "hero.h"
 
@@ -36,7 +33,6 @@ QuestMap::QuestMap(Quest *q)
     d_target.x = -1;
     d_target.y = -1;
 }
-
 
 void QuestMap::draw_stacks(Player *p, std::list< Vector<int> > targets)
 {

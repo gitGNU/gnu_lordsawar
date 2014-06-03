@@ -19,20 +19,15 @@
 #include <config.h>
 
 #include <assert.h>
-#include <math.h>
 #include <numeric>
 #include <vector>
 #include <gtkmm.h>
 
 #include "fight-window.h"
 
-#include "ucompose.hpp"
 #include "timing.h"
 #include "File.h"
-#include "defs.h"
 #include "player.h"
-#include "playerlist.h"
-#include "stack.h"
 #include "army.h"
 #include "ImageCache.h"
 #include "Configuration.h"

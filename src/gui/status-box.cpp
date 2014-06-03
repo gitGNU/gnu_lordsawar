@@ -23,7 +23,6 @@
 #include "stacktile.h"
 #include "stack.h"
 
-#include "army-info-tip.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "ImageCache.h"

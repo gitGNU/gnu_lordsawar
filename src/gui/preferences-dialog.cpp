@@ -23,15 +23,11 @@
 
 #include "preferences-dialog.h"
 
-#include "ucompose.hpp"
 #include "defs.h"
 #include "Configuration.h"
 #include "sound.h"
 #include "game.h"
 #include "playerlist.h"
-#include "citylist.h"
-#include "ruinlist.h"
-#include "city.h"
 #include "AI_Diplomacy.h"
 #include "AI_Analysis.h"
 #include "ai_fast.h"

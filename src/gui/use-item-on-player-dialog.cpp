@@ -23,10 +23,6 @@
 #include "use-item-on-player-dialog.h"
 
 #include "ucompose.hpp"
-#include "defs.h"
-#include "army.h"
-#include "GameMap.h"
-#include "File.h"
 #include "ImageCache.h"
 #include "player.h"
 #include "playerlist.h"

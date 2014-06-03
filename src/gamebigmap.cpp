@@ -19,7 +19,6 @@
 #include <config.h>
 
 #include <assert.h>
-#include <glibmm/timeval.h>
 
 #include "gamebigmap.h"
 
@@ -30,23 +29,16 @@
 #include "ruin.h"
 #include "signpost.h"
 #include "temple.h"
-#include "roadlist.h"
 #include "road.h"
-#include "bridgelist.h"
 #include "bridge.h"
 #include "playerlist.h"
-#include "File.h"
 #include "GameMap.h"
-#include "game.h"
 #include "FogMap.h"
 #include "LocationBox.h"
 #include "Configuration.h"
-#include "gui/image-helpers.h"
 #include "PathCalculator.h"
 #include "stacktile.h"
-#include "action.h"
 #include "tileset.h"
-#include "tilesetlist.h"
 
 #include "timing.h"
 

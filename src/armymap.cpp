@@ -15,17 +15,17 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <config.h>
+#include <assert.h>
+
 #include "armymap.h"
 
-#include "city.h"
-#include "citylist.h"
 #include "playerlist.h"
 #include "stacklist.h"
 #include "stack.h"
 #include "ImageCache.h"
 #include "GameMap.h"
 #include "FogMap.h"
-#include <assert.h>
 
 ArmyMap::ArmyMap()
 {

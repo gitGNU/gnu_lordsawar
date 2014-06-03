@@ -27,7 +27,6 @@
 #include "hero.h"
 #include "defs.h"
 #include "ruin.h"
-#include "GameMap.h"
 #include "Item.h"
 
 QuestCompletedDialog::QuestCompletedDialog(Gtk::Window &parent, Quest *q, Reward *r)

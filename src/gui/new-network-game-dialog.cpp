@@ -24,7 +24,6 @@
 
 #include "Configuration.h"
 #include "defs.h"
-#include "File.h"
 #include "ucompose.hpp"
 #include "profile.h"
 #include "profilelist.h"

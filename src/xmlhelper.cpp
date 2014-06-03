@@ -18,10 +18,9 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <config.h>
 #include <iostream>
 #include <sstream>
-#include <stdlib.h>
-#include <string.h>
 #include "xmlhelper.h"
 #include "defs.h"
 #include "File.h"

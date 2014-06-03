@@ -25,8 +25,6 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "GameMap.h"
-#include "File.h"
-#include "sound.h"
 #include "SightMap.h"
 #include "reward.h"
 #include "ruin.h"

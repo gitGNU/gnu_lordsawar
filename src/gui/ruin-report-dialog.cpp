@@ -23,10 +23,8 @@
 #include "ruin-report-dialog.h"
 
 #include "input-helpers.h"
-#include "ucompose.hpp"
 #include "defs.h"
 #include "GameMap.h"
-#include "File.h"
 #include "ruin.h"
 #include "ruinlist.h"
 #include "templelist.h"

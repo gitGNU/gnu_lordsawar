@@ -22,14 +22,9 @@
 #include "fight-order-dialog.h"
 
 #include <gtkmm.h>
-#include "ucompose.hpp"
-#include "defs.h"
-#include "playerlist.h"
 #include "player.h"
-#include "army.h"
 #include "armysetlist.h"
 #include "ImageCache.h"
-#include "armyset.h"
 
 FightOrderDialog::FightOrderDialog(Gtk::Window &parent, Player *theplayer)
  : LwDialog(parent, "fight-order-dialog.ui")

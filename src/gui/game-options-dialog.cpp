@@ -22,9 +22,6 @@
 
 #include "game-options-dialog.h"
 
-#include "ucompose.hpp"
-#include "defs.h"
-#include "File.h"
 #include "Configuration.h"
 #include "GameScenarioOptions.h"
 

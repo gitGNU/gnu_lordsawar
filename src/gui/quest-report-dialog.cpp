@@ -23,11 +23,9 @@
 #include "SightMap.h"
 #include "quest-report-dialog.h"
 
-#include "input-helpers.h"
 #include "ucompose.hpp"
 #include "hero.h"
 #include "defs.h"
-#include "GameMap.h"
 #include "playerlist.h"
 
 QuestReportDialog::QuestReportDialog(Gtk::Window &parent, std::vector<Quest *>q, Hero *hero)

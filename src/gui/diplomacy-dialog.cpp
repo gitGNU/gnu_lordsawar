@@ -23,9 +23,7 @@
 #include "diplomacy-dialog.h"
 #include "diplomacy-report-dialog.h"
 
-#include "ucompose.hpp"
 #include "defs.h"
-#include "File.h"
 #include "ImageCache.h"
 #include "playerlist.h"
 #include "player.h"

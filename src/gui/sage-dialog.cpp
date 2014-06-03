@@ -23,10 +23,7 @@
 #include "SightMap.h"
 #include "sage-dialog.h"
 
-#include "ucompose.hpp"
 #include "defs.h"
-#include "GameMap.h"
-#include "File.h"
 #include "sound.h"
 #include "ruin.h"
 #include "rewardlist.h"

@@ -22,10 +22,6 @@
 
 #include "new-profile-dialog.h"
 
-#include "defs.h"
-#include "File.h"
-#include "ucompose.hpp"
-
 NewProfileDialog::NewProfileDialog(Gtk::Window &parent, Glib::ustring network_game_nickname)
  : LwDialog(parent, "new-profile-dialog.ui")
 {

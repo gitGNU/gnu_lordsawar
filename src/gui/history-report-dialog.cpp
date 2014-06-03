@@ -27,7 +27,6 @@
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
-#include "GameMap.h"
 #include "citylist.h"
 #include "ruinlist.h"
 #include "city.h"

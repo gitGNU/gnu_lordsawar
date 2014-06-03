@@ -17,15 +17,13 @@
 
 #include <config.h>
 
+#include "historymap.h"
 #include "vector.h"
-#include "gui/image-helpers.h"
 #include <gtkmm.h>
 #include <gdkmm.h>
 
-#include "historymap.h"
 #include "city.h"
 #include "ruin.h"
-#include "GameMap.h"
 #include "ImageCache.h"
 #include "playerlist.h"
 

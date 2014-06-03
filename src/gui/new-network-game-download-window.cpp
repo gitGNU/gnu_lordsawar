@@ -16,7 +16,6 @@
 //  02110-1301, USA.
 #include "new-network-game-download-window.h"
 #include "defs.h"
-#include "File.h"
 
 NewNetworkGameDownloadWindow::NewNetworkGameDownloadWindow(Glib::ustring title)
 : m_vbox(false,10)

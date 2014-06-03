@@ -22,8 +22,6 @@
 
 #include "main-preferences-dialog.h"
 
-#include "ucompose.hpp"
-#include "defs.h"
 #include "Configuration.h"
 #include "sound.h"
 

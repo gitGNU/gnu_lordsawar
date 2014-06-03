@@ -17,13 +17,11 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <config.h>
 #include <assert.h>
-#include <math.h>
 #include <cairomm/context.h>
-#include "gui/image-helpers.h"
 
 #include "overviewmap.h"
-#include "stacklist.h"
 #include "citylist.h"
 #include "ruinlist.h"
 #include "templelist.h"
@@ -36,9 +34,9 @@
 #include "ImageCache.h"
 #include "FogMap.h"
 #include "GameScenarioOptions.h"
-#include "tilesetlist.h"
 #include "Configuration.h"
 #include "shieldset.h"
+#include "tileset.h"
 
 OverviewMap::OverviewMap()
 {
@@ -640,7 +638,6 @@ void OverviewMap::draw_cities (bool all_razed)
       Vector<int> pos = c->getPos();
       pos = mapToSurface(pos);
       tmp->blit_centered(surface, pos);
-
   }
 }
 

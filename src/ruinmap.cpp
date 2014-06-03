@@ -15,17 +15,14 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <config.h>
 #include "ruinmap.h"
 
-#include "gui/image-helpers.h"
 #include "playerlist.h"
 #include "ImageCache.h"
-#include "stacklist.h"
 #include "player.h"
-#include "maptile.h"
 #include "ruinlist.h"
 #include "templelist.h"
-#include "citylist.h"
 #include "GameMap.h"
 
 RuinMap::RuinMap(NamedLocation *r)

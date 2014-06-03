@@ -24,16 +24,13 @@
 #include "army.h"
 
 #include "input-helpers.h"
-
 #include "army-info-tip.h"
 #include "ucompose.hpp"
-#include "defs.h"
 #include "ImageCache.h"
 #include "File.h"
 #include "playerlist.h"
 #include "player.h"
-#include "armysetlist.h"
-#include "GameMap.h"
+#include "shield.h"
 
 Glib::ustring StackArmyButton::get_file(Configuration::UiFormFactor factor)
 {

@@ -18,7 +18,6 @@
 
 #include <config.h>
 
-#include <sigc++/slot.h>
 #include <gtkmm.h>
 
 #include "splash-window.h"
@@ -31,7 +30,6 @@
 #include "sound.h"
 #include "File.h"
 #include "GameScenario.h"
-#include "playerlist.h"
 #include "network-game-selector-dialog.h"
 #include "main-preferences-dialog.h"
 #include "timed-message-dialog.h"

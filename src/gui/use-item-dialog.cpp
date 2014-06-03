@@ -18,15 +18,12 @@
 #include <config.h>
 
 #include <gtkmm.h>
-#include <sigc++/functors/mem_fun.h>
 #include <assert.h>
 
 #include "use-item-dialog.h"
 
 #include "ucompose.hpp"
-#include "defs.h"
 #include "Item.h"
-#include "Itemlist.h"
 
 UseItemDialog::UseItemDialog(Gtk::Window &parent, std::list<Item*> items)
  : LwDialog(parent, "use-item-dialog.ui")

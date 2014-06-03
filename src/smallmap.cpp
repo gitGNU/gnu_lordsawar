@@ -21,16 +21,12 @@
 //  02110-1301, USA.
 
 #include <config.h>
-
 #include <assert.h>
 
+#include "smallmap.h"
 #include "vector.h"
 #include "GameScenarioOptions.h"
-#include "smallmap.h"
-#include "timing.h"
-#include "army.h"
 #include "GameMap.h"
-#include "Configuration.h"
 #include "playerlist.h"
 
 SmallMap::SmallMap()

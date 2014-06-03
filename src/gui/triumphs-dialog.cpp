@@ -17,15 +17,11 @@
 
 #include <config.h>
 
-#include <sigc++/functors/mem_fun.h>
 #include <gtkmm.h>
 
 #include "triumphs-dialog.h"
 
 #include "ucompose.hpp"
-#include "defs.h"
-#include "File.h"
-#include "GameMap.h"
 #include "ImageCache.h"
 #include "armysetlist.h"
 #include "playerlist.h"

@@ -25,7 +25,6 @@
 #include "load-scenario-dialog.h"
 #include "ucompose.hpp"
 #include "defs.h"
-#include "Configuration.h"
 #include "File.h"
 #include "GameScenario.h"
 

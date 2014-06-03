@@ -24,8 +24,6 @@
 
 #include "ucompose.hpp"
 #include "defs.h"
-#include "GameMap.h"
-#include "File.h"
 #include "stack.h"
 #include "MapBackpack.h"
 #include "itemmap.h"

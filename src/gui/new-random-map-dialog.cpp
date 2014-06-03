@@ -33,12 +33,11 @@
 #include "citysetlist.h"
 #include "shieldsetlist.h"
 #include "ucompose.hpp"
-#include "GameMap.h"
 #include "GameScenarioOptions.h"
 #include "CreateScenarioRandomize.h"
 #include "CreateScenario.h"
-#include "counter.h"
 #include "player.h"
+#include "counter.h"
 
 NewRandomMapDialog::NewRandomMapDialog(Gtk::Window &parent)
  : LwDialog(parent, "new-random-map-dialog.ui")

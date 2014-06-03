@@ -25,11 +25,9 @@
 #include "recently-played-game-list.h"
 #include "recently-played-game.h"
 #include "Configuration.h"
-#include "defs.h"
-#include "File.h"
 #include "profile.h"
-#include "ucompose.hpp"
 #include "gamelist-client.h"
+#include "ucompose.hpp"
 
 NetworkGameSelectorDialog::NetworkGameSelectorDialog(Gtk::Window &parent, Profile *p)
  : LwDialog(parent, "pick-network-game-to-join-dialog.ui")

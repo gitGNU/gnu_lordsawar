@@ -24,16 +24,15 @@
 #include "bar-chart.h"
 #include "ucompose.hpp"
 #include "defs.h"
-#include "File.h"
 #include "GameMap.h"
 #include "playerlist.h"
 #include "citylist.h"
 #include "city.h"
 #include "action.h"
 #include "ImageCache.h"
-#include "armyprodbase.h"
 #include "armysetlist.h"
 #include "shield.h"
+#include "armyprodbase.h"
 
 ReportDialog::ReportDialog(Gtk::Window &parent, Player *player, ReportType type)
  : LwDialog(parent, "report-dialog.ui")
@@ -421,8 +420,6 @@ void ReportDialog::addProduction(const Action *action)
       s += " stops production!";
       city_id = act->getCityId();
     }
-  //const ArmyProto *a = 
-    //Armysetlist::getInstance()->getArmy(p->getArmyset(), army_type);
   Gtk::TreeIter i = armies_list->append();
   (*i)[armies_columns.city_id] = city_id;
   (*i)[armies_columns.image] = 

@@ -15,15 +15,13 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <config.h>
 #include "heroesmap.h"
 
-#include "city.h"
-#include "citylist.h"
 #include "playerlist.h"
 #include "player.h"
 #include "stacklist.h"
 #include "hero.h"
-#include "gui/image-helpers.h"
 
 HeroesMap::HeroesMap(std::list<Hero*> h)
 {
@@ -51,12 +49,11 @@ void HeroesMap::after_draw()
 
 void HeroesMap::mouse_button_event(MouseButtonEvent e)
 {
-  Player *active = Playerlist::getActiveplayer();
   if (e.button == MouseButtonEvent::LEFT_BUTTON && 
       e.state == MouseButtonEvent::PRESSED)
     {
-      Vector<int> dest;
-      dest = mapFromScreen(e.pos);
+      Player *active = Playerlist::getActiveplayer();
+      Vector<int> dest = mapFromScreen(e.pos);
 
       //is dest close to one of our heroes?
       Hero *hero = active->getStacklist()->getNearestHero(dest, 4);
@@ -66,5 +63,4 @@ void HeroesMap::mouse_button_event(MouseButtonEvent e)
 	  hero_selected.emit(hero);
 	}
     }
-
 }

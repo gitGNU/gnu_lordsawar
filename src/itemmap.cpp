@@ -15,12 +15,11 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <config.h>
 #include "itemmap.h"
 
-#include "gui/image-helpers.h"
 #include "stack.h"
 #include "MapBackpack.h"
-#include "playerlist.h"
 #include "ImageCache.h"
 
 ItemMap::ItemMap(std::list<Stack*> item_laden_stacks, std::list<MapBackpack*> bags_of_stuff)

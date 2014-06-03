@@ -18,11 +18,9 @@
 #include <config.h>
 
 #include <gtkmm.h>
-#include <sigc++/functors/mem_fun.h>
 
 #include "surrender-refused-dialog.h"
 
-#include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
 

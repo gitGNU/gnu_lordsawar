@@ -19,14 +19,12 @@
 #include <gtkmm.h>
 
 #include "game-button-box.h"
-#include "ucompose.hpp"
-#include "defs.h"
-#include "ImageCache.h"
 #include "File.h"
 #include "game.h"
 #include "GameScenario.h"
 #include "playerlist.h"
 #include "player.h"
+#include "ImageCache.h"
 
 Glib::ustring GameButtonBox::get_file(Configuration::UiFormFactor factor)
 {

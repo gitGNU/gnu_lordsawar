@@ -21,7 +21,6 @@
 
 #include "surrender-dialog.h"
 
-#include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
 

@@ -33,14 +33,10 @@
 #include "player.h"
 #include "city.h"
 #include "ImageCache.h"
-#include "armysetlist.h"
 #include "buy-production-dialog.h"
 #include "destination-dialog.h"
-#include "tileset.h"
-#include "GameMap.h"
 #include "citylist.h"
 #include "playerlist.h"
-#include "File.h"
 
 CityWindow::CityWindow(Gtk::Window &parent, City *c, bool razing_possible, 
 		       bool see_opponents_production)

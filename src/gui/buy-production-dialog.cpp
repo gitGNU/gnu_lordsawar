@@ -32,7 +32,6 @@
 #include "ImageCache.h"
 #include "armysetlist.h"
 #include "playerlist.h"
-#include "File.h"
 #include "shield.h"
 
 BuyProductionDialog::BuyProductionDialog(Gtk::Window &parent, City *c)

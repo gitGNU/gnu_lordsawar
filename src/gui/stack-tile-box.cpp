@@ -23,17 +23,17 @@
 #include "stacktile.h"
 #include "stack.h"
 #include "stack-army-button.h"
-
 #include "army-info-tip.h"
+
 #include "ucompose.hpp"
 #include "defs.h"
 #include "ImageCache.h"
 #include "File.h"
 #include "playerlist.h"
 #include "player.h"
-#include "armysetlist.h"
 #include "GameMap.h"
 #include "army.h"
+#include "shield.h"
 
 Glib::ustring StackTileBox::get_file(Configuration::UiFormFactor factor)
 {

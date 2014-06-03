@@ -15,12 +15,10 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
+#include <config.h>
 #include "heromap.h"
 
-#include "gui/image-helpers.h"
 #include "city.h"
-#include "citylist.h"
-#include "playerlist.h"
 
 HeroMap::HeroMap(City *c)
 {

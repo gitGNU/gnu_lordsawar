@@ -23,13 +23,9 @@
 
 #include "army-bonus-dialog.h"
 
-#include "ucompose.hpp"
-#include "defs.h"
-#include "army.h"
 #include "armysetlist.h"
 #include "player.h"
 #include "ImageCache.h"
-#include "File.h"
 
 ArmyBonusDialog::ArmyBonusDialog(Gtk::Window &parent, Player *p)
  :LwDialog(parent, "army-bonus-dialog.ui")

@@ -25,11 +25,8 @@
 
 #include "ucompose.hpp"
 #include "defs.h"
-#include "playerlist.h"
 #include "player.h"
 #include "army.h"
-#include "armysetlist.h"
-#include "stack.h"
 #include "hero.h"
 #include "ImageCache.h"
 #include "shield.h"

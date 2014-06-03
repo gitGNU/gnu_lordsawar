@@ -22,9 +22,7 @@
 
 #include "stack-info-tip.h"
 
-#include "ucompose.hpp"
 #include "vector.h"
-#include "defs.h"
 #include "stack.h"
 #include "ImageCache.h"
 #include "map-tip-position.h"
