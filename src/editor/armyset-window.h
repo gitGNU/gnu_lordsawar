@@ -160,15 +160,6 @@ class ArmySetWindow: public sigc::trackable
     void on_name_changed();
     void on_description_changed();
     void on_image_changed(Gtk::Button *button, Gtk::Image *image, Shield::Colour c);
-    void on_white_image_clicked();
-    void on_green_image_clicked();
-    void on_yellow_image_clicked();
-    void on_light_blue_image_clicked();
-    void on_red_image_clicked();
-    void on_dark_blue_image_clicked();
-    void on_orange_image_clicked();
-    void on_black_image_clicked();
-    void on_neutral_image_clicked();
     void on_production_changed();
     void on_production_text_changed(const Glib::ustring &s, int* p);
     void on_cost_changed();

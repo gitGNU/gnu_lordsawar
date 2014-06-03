@@ -88,32 +88,42 @@ ArmySetWindow::ArmySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
       (sigc::mem_fun(this, &ArmySetWindow::on_description_changed));
     xml->get_widget("white_image_button", white_image_button);
     white_image_button->signal_clicked().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_white_image_clicked));
+      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                  white_image_button, white_image, Shield::WHITE));
     xml->get_widget("green_image_button", green_image_button);
     green_image_button->signal_clicked().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_green_image_clicked));
+      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                  green_image_button, green_image, Shield::GREEN));
     xml->get_widget("yellow_image_button", yellow_image_button);
     yellow_image_button->signal_clicked().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_yellow_image_clicked));
+      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                  yellow_image_button, yellow_image, Shield::YELLOW));
     xml->get_widget("light_blue_image_button", light_blue_image_button);
     light_blue_image_button->signal_clicked().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_light_blue_image_clicked));
+      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                  light_blue_image_button, light_blue_image, 
+                  Shield::LIGHT_BLUE));
     xml->get_widget("red_image_button", red_image_button);
     red_image_button->signal_clicked().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_red_image_clicked));
+      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                  red_image_button, red_image, Shield::RED));
     xml->get_widget("dark_blue_image_button", 
 		    dark_blue_image_button);
     dark_blue_image_button->signal_clicked().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_dark_blue_image_clicked));
+      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                  dark_blue_image_button, dark_blue_image, Shield::DARK_BLUE));
     xml->get_widget("orange_image_button", orange_image_button);
     orange_image_button->signal_clicked().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_orange_image_clicked));
+      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                  orange_image_button, orange_image, Shield::ORANGE));
     xml->get_widget("black_image_button", black_image_button);
     black_image_button->signal_clicked().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_black_image_clicked));
+      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                  black_image_button, black_image, Shield::BLACK));
     xml->get_widget("neutral_image_button", neutral_image_button);
     neutral_image_button->signal_clicked().connect
-      (sigc::mem_fun(this, &ArmySetWindow::on_neutral_image_clicked));
+      (sigc::bind(sigc::mem_fun(this, &ArmySetWindow::on_image_changed),
+                  neutral_image_button, neutral_image, Shield::NEUTRAL));
     xml->get_widget("production_spinbutton", production_spinbutton);
     production_spinbutton->set_range
       (double(MIN_PRODUCTION_TURNS_FOR_ARMY_UNITS), 
@@ -1071,44 +1081,6 @@ void ArmySetWindow::on_image_changed(Gtk::Button *button, Gtk::Image *image, Shi
       else
         button->set_label(a->getImageName(c) + ".png");
     }
-}
-
-void ArmySetWindow::on_white_image_clicked()
-{
-  on_image_changed(white_image_button, white_image, Shield::WHITE);
-}
-void ArmySetWindow::on_green_image_clicked()
-{
-  on_image_changed(green_image_button, green_image, Shield::GREEN);
-}
-void ArmySetWindow::on_yellow_image_clicked()
-{
-  on_image_changed(yellow_image_button, yellow_image, Shield::YELLOW);
-}
-void ArmySetWindow::on_light_blue_image_clicked()
-{
-  on_image_changed(light_blue_image_button, light_blue_image, 
-                   Shield::LIGHT_BLUE);
-}
-void ArmySetWindow::on_red_image_clicked()
-{
-  on_image_changed(red_image_button, red_image, Shield::RED);
-}
-void ArmySetWindow::on_dark_blue_image_clicked()
-{
-  on_image_changed(dark_blue_image_button, dark_blue_image, Shield::DARK_BLUE);
-}
-void ArmySetWindow::on_orange_image_clicked()
-{
-  on_image_changed(orange_image_button, orange_image, Shield::ORANGE);
-}
-void ArmySetWindow::on_black_image_clicked()
-{
-  on_image_changed(black_image_button, black_image, Shield::BLACK);
-}
-void ArmySetWindow::on_neutral_image_clicked()
-{
-  on_image_changed(neutral_image_button, neutral_image, Shield::NEUTRAL);
 }
 
 void ArmySetWindow::on_production_text_changed(const Glib::ustring &s, int* p)
