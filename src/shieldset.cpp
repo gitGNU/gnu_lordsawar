@@ -37,7 +37,8 @@ Glib::ustring Shieldset::file_extension = SHIELDSET_EXT;
 
 Shieldset::Shieldset(guint32 id, Glib::ustring name)
  : d_id(id), d_name(name), d_copyright(""), d_license(""), d_info(""), 
-    d_basename("")
+    d_basename(""), d_small_width(0), d_small_height(0), d_medium_width(0), 
+    d_medium_height(0), d_large_width(0), d_large_height(0)
 {
 }
 
