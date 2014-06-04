@@ -87,7 +87,18 @@ void MaskedImageEditorDialog::update_panel()
 void MaskedImageEditorDialog::show_image(Glib::ustring filename)
 {
   if (filename == "")
-    return;
+    {
+      image_white->clear();
+      image_green->clear();
+      image_yellow->clear();
+      image_light_blue->clear();
+      image_red->clear();
+      image_dark_blue->clear();
+      image_orange->clear();
+      image_black->clear();
+      image_neutral->clear();
+      return;
+    }
   bool broken = false;
   std::vector<PixMask*> half = disassemble_row(filename, 2, broken);
   if (broken)
