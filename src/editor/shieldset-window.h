@@ -58,6 +58,7 @@ class ShieldSetWindow: public sigc::trackable
     Gtk::MenuItem *save_as_menuitem;
     Gtk::MenuItem *validate_shieldset_menuitem;
     Gtk::MenuItem *edit_shieldset_info_menuitem;
+    Gtk::MenuItem *edit_copy_shields_menuitem;
     Gtk::MenuItem *quit_menuitem;
     Gtk::MenuItem *help_about_menuitem;
     Gtk::Frame *shield_frame;
@@ -86,6 +87,7 @@ class ShieldSetWindow: public sigc::trackable
     bool on_delete_event(GdkEventAny *e);
     bool on_window_closed(GdkEventAny*);
     void on_edit_shieldset_info_activated();
+    void on_edit_copy_shields_activated();
     void on_help_about_activated();
     void on_shield_selected();
     void on_change_smallpic_clicked();

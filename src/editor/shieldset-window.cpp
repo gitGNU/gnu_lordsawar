@@ -83,6 +83,9 @@ ShieldSetWindow::ShieldSetWindow(Gtk::Window *parent, Glib::ustring load_filenam
     xml->get_widget("edit_shieldset_info_menuitem", edit_shieldset_info_menuitem);
     edit_shieldset_info_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &ShieldSetWindow::on_edit_shieldset_info_activated));
+    xml->get_widget("edit_copy_shields_menuitem", edit_copy_shields_menuitem);
+    edit_copy_shields_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &ShieldSetWindow::on_edit_copy_shields_activated));
     xml->get_widget ("help_about_menuitem", help_about_menuitem);
     help_about_menuitem->signal_activate().connect
        (sigc::mem_fun(this, &ShieldSetWindow::on_help_about_activated));
@@ -786,4 +789,12 @@ void ShieldSetWindow::update_window_title()
   title += " - ";
   title += _("LordsAWar! Shieldset Editor");
   window->set_title(title);
+}
+    
+void ShieldSetWindow::on_edit_copy_shields_activated()
+{
+  for (unsigned int i = Shield::WHITE+1; i <= Shield::NEUTRAL; i++)
+    for (unsigned int j = ShieldStyle::SMALL; j <= ShieldStyle::LARGE; j++)
+      d_shieldset->lookupShieldByTypeAndColour(j, i)->setImageName(d_shieldset->lookupShieldByTypeAndColour(j, Shield::WHITE)->getImageName());
+  update_shield_panel();
 }
