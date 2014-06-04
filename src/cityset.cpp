@@ -102,21 +102,21 @@ Cityset::Cityset(const Cityset& c)
 
   for (unsigned int i = 0; i < RUIN_TYPES; i++)
     {
-      if (ruinpics[i] != NULL)
+      if (c.ruinpics[i] != NULL)
         ruinpics[i] = c.ruinpics[i]->copy();
       else
         ruinpics[i] = NULL;
     }
   for (unsigned int i = 0; i < TEMPLE_TYPES; i++)
     {
-      if (templepics[i] != NULL)
+      if (c.templepics[i] != NULL)
         templepics[i] = c.templepics[i]->copy();
       else
         templepics[i] = NULL;
     }
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
-      if (towerpics[i] != NULL)
+      if (c.towerpics[i] != NULL)
         towerpics[i] = c.towerpics[i]->copy();
       else
         towerpics[i] = NULL;
