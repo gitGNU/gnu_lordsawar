@@ -43,7 +43,6 @@
 #include "recently-edited-file-list.h"
 #include "tile-size-editor-dialog.h"
 #include "editor-quit-dialog.h"
-#include "editor-recover-dialog.h"
 #include "GameMap.h"
 
 
@@ -132,46 +131,6 @@ CitySetWindow::CitySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
     if (load_filename != "")
       current_save_filename = load_filename;
     update_cityset_panel();
-
-    if (File::exists(autosave))
-      {
-        Glib::ustring m;
-        std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Cityset::file_extension);
-        if (files.size() == 0)
-          m = _("Do you want to recover the session?");
-        else
-          {
-            RecentlyEditedCitysetFile *r = dynamic_cast<RecentlyEditedCitysetFile*>(files.front());
-            if (r->getName() == "")
-              m = String::ucompose(_("Do you want to recover %1?"),
-                                   File::get_basename(r->getFileName(), true));
-            else if (r->getName() != "" && r->getImagesNeeded() > 0)
-              {
-                m = String::ucompose
-                  (_("Do you want to recover %1 (%2, %3 more images needed)?"),
-                                         File::get_basename(r->getFileName(), 
-                                                            true),
-                                         r->getName(),
-                                         r->getImagesNeeded());
-              }
-            else if (r->getName() != "" && r->getImagesNeeded() == 0)
-              {
-                m = String::ucompose(_("Do you want to recover %1 (%2)?"),
-                                     File::get_basename(r->getFileName(), true),
-                                     r->getName());
-              }
-          }
-        EditorRecoverDialog d(parent, m);
-        int response = d.run_and_hide();
-        //ask if we want to recover the autosave.
-        if (response == Gtk::RESPONSE_ACCEPT)
-          {
-            load_cityset (autosave);
-            update_cityset_menuitems();
-            update_cityset_panel();
-            return;
-          }
-      }
 
     if (load_filename.empty() == false)
       {

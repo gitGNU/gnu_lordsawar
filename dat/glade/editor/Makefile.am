@@ -34,7 +34,6 @@ image-editor-dialog.ui \
 editor-quit-dialog.ui \
 tile-size-editor-dialog.ui \
 tileset-smallmap-building-colors-dialog.ui \
-editor-recover-dialog.ui \
 cityset-info-dialog.ui \
 cityset-window.ui \
 shieldset-info-dialog.ui \

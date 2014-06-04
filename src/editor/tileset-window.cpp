@@ -44,7 +44,6 @@
 #include "recently-edited-file-list.h"
 #include "tile-size-editor-dialog.h"
 #include "editor-quit-dialog.h"
-#include "editor-recover-dialog.h"
 #include "tilestyle-organizer-dialog.h"
 #include "tileset-smallmap-building-colors-dialog.h"
 #include "GameMap.h"
@@ -256,35 +255,6 @@ TileSetWindow::TileSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
     update_tilestyleset_buttons();
     update_tileset_menuitems();
     update_tile_preview_menuitem();
-
-    if (File::exists(autosave))
-      {
-        Glib::ustring m;
-        std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Tileset::file_extension);
-        if (files.size() == 0)
-          m = _("Do you want to recover the session?");
-        else
-          {
-            RecentlyEditedTilesetFile *r = dynamic_cast<RecentlyEditedTilesetFile*>(files.front());
-            if (r->getName() == "")
-              m = String::ucompose(_("Do you want to recover %1 (%2 tiles)?"),
-                                   File::get_basename(r->getFileName(), true),
-                                   r->getNumberOfTiles());
-            else
-              m = String::ucompose
-                (_("Do you want to recover %1 (%2, %3 tiles)?"),
-                                   File::get_basename(r->getFileName(), true),
-                                   r->getName(), r->getNumberOfTiles());
-          }
-        EditorRecoverDialog d(parent, m);
-        int response = d.run_and_hide();
-        //ask if we want to recover the autosave.
-        if (response == Gtk::RESPONSE_ACCEPT)
-          {
-            load_tileset (autosave);
-            return;
-          }
-      }
 
     if (load_filename.empty() == false)
       load_tileset(load_filename);

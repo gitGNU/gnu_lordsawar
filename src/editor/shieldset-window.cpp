@@ -40,7 +40,6 @@
 #include "ucompose.hpp"
 #include "recently-edited-file.h"
 #include "editor-quit-dialog.h"
-#include "editor-recover-dialog.h"
 #include "GameMap.h"
 
 Glib::ustring small_none = N_("no small shield set");
