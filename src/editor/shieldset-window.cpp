@@ -793,8 +793,15 @@ void ShieldSetWindow::update_window_title()
     
 void ShieldSetWindow::on_edit_copy_shields_activated()
 {
+  for (unsigned int j = ShieldStyle::SMALL; j <= ShieldStyle::LARGE; j++)
+    d_shieldset->lookupShieldByTypeAndColour(j, Shield::WHITE)->uninstantiateImages();
   for (unsigned int i = Shield::WHITE+1; i <= Shield::NEUTRAL; i++)
     for (unsigned int j = ShieldStyle::SMALL; j <= ShieldStyle::LARGE; j++)
-      d_shieldset->lookupShieldByTypeAndColour(j, i)->setImageName(d_shieldset->lookupShieldByTypeAndColour(j, Shield::WHITE)->getImageName());
+      {
+        d_shieldset->lookupShieldByTypeAndColour(j, i)->setImageName(d_shieldset->lookupShieldByTypeAndColour(j, Shield::WHITE)->getImageName());
+        d_shieldset->lookupShieldByTypeAndColour(j, i)->uninstantiateImages();
+      }
+  needs_saving = true;
   update_shield_panel();
+  update_window_title();
 }
