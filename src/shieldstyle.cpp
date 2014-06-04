@@ -40,11 +40,11 @@ ShieldStyle::ShieldStyle(const ShieldStyle &s)
 {
   d_type = s.d_type;
   d_image_name = s.d_image_name;
-  if (d_image != NULL)
+  if (s.d_image != NULL)
     d_image = s.d_image->copy();
   else
     d_image = NULL;
-  if (d_mask != NULL)
+  if (s.d_mask != NULL)
     d_mask = s.d_mask->copy();
   else
     d_mask = NULL;
