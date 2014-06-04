@@ -106,6 +106,7 @@ class ShieldSetWindow: public sigc::trackable
     void loadShield(Shield *shield);
     void update_window_title();
     void show_shield(ShieldStyle *ss, Shield *s, Gtk::Image *image);
+    void refresh_shields();
 };
 
 #endif

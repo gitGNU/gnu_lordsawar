@@ -244,7 +244,6 @@ Glib::ustring Shieldsetlist::findFreeBaseName(Glib::ustring basename, guint32 ma
 bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, Glib::ustring &new_basename, guint32 &new_id)
 {
   //do we already have this one?
-      
   if (getShieldset(shieldset->getBaseName()) == getShieldset(shieldset->getId()) 
       && getShieldset(shieldset->getBaseName()) != NULL)
     {

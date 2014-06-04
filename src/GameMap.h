@@ -146,14 +146,14 @@ class GameMap: public sigc::trackable
         //! Return the id of the current Shieldset.  Returns zero if a valid shieldset hasn't been set yet.
         guint32 getShieldsetId() const;
 
-        //! Return the name of the current Tileset.
-        Glib::ustring getTilesetName() const;
+        //! Return the basename of the current Tileset.
+        Glib::ustring getTilesetBaseName() const;
 
-        //! Return the name of the current Cityset.
-        Glib::ustring getCitysetName() const;
+        //! Return the basename of the current Cityset.
+        Glib::ustring getCitysetBaseName() const;
 
-        //! Return the name of the current Shieldset.
-        Glib::ustring getShieldsetName() const;
+        //! Return the basename of the current Shieldset.
+        Glib::ustring getShieldsetBaseName() const;
 
         /** Change the map's Shieldset.
           * 
@@ -1455,9 +1455,9 @@ class GameMap: public sigc::trackable
         static Cityset* s_cityset; //not saved
         static Shieldset* s_shieldset; //not saved
 
-        Glib::ustring d_tileset;
-        Glib::ustring d_shieldset;
-        Glib::ustring d_cityset;
+        Glib::ustring d_tileset; //the basename, not the friendly name.
+        Glib::ustring d_shieldset; //the basename, not the friendly name.
+        Glib::ustring d_cityset; //the basename, not the friendly name.
 
         Maptile** d_map;
 };

@@ -485,4 +485,48 @@ Shieldset* Shieldset::copy(const Shieldset *shieldset)
     return NULL;
   return new Shieldset(*shieldset);
 }
+
+void Shieldset::setHeightsAndWidthsFromImages()
+{
+  d_small_width = 0;
+  d_small_height = 0;
+  d_medium_width = 0;
+  d_medium_height = 0;
+  d_large_width = 0;
+  d_large_height = 0;
+  for (iterator it = begin(); it != end(); it++)
+    for (Shield::iterator i = (*it)->begin(); i != (*it)->end(); i++)
+      {
+        PixMask *image = (*i)->getImage();
+        if (image == NULL)
+          continue;
+        guint32 height = 0;
+        if (image->get_height() > 0)
+          height = image->get_unscaled_height();
+        guint32 width = 0;
+        if (image->get_unscaled_width() > 0)
+          width = image->get_width();
+        if ((*i)->getType() == ShieldStyle::SMALL)
+          {
+            if (width > d_small_width)
+              d_small_width = width;
+            if (height > d_small_height)
+              d_small_height = height;
+          }
+        else if ((*i)->getType() == ShieldStyle::MEDIUM)
+          {
+            if (width > d_medium_width)
+              d_medium_width = width;
+            if (height > d_medium_height)
+              d_medium_height = height;
+          }
+        else if ((*i)->getType() == ShieldStyle::LARGE)
+          {
+            if (width > d_large_width)
+              d_large_width = width;
+            if (height > d_large_height)
+              d_large_height = height;
+          }
+      }
+}
 //End of file

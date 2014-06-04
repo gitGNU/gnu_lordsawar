@@ -1015,10 +1015,8 @@ void MainWindow::on_edit_map_info_activated()
 void MainWindow::on_edit_shieldset_activated()
 {
   Gtk::Main *kit = Gtk::Main::instance();;
-  ShieldSetWindow* shieldset_window;
-  Shieldset *shieldset = GameMap::getShieldset();
-  Glib::ustring file = shieldset->getConfigurationFile();
-  shieldset_window = new ShieldSetWindow (window, file);
+  ShieldSetWindow *shieldset_window = new ShieldSetWindow
+    (window, GameMap::getShieldset()->getConfigurationFile());
   shieldset_window->get_window().property_transient_for() = window;
   shieldset_window->shieldset_saved.connect
     (sigc::mem_fun(this, &MainWindow::on_shieldset_saved));

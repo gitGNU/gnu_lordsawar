@@ -2292,17 +2292,17 @@ guint32 GameMap::getShieldsetId() const
   return Shieldsetlist::getInstance()->getShieldsetId(d_shieldset);
 }
 
-Glib::ustring GameMap::getTilesetName() const
+Glib::ustring GameMap::getTilesetBaseName() const
 {
   return d_tileset;
 }
 
-Glib::ustring GameMap::getCitysetName() const
+Glib::ustring GameMap::getCitysetBaseName() const
 {
   return d_cityset;
 }
 
-Glib::ustring GameMap::getShieldsetName() const
+Glib::ustring GameMap::getShieldsetBaseName() const
 {
   return d_shieldset;
 }
@@ -2377,7 +2377,7 @@ bool GameMap::eraseTile(Vector<int> tile)
 Tileset* GameMap::getTileset()
 {
   if (s_tileset == 0)
-    s_tileset = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTilesetName());
+    s_tileset = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTilesetBaseName());
     
   return s_tileset;
 }
@@ -2385,7 +2385,7 @@ Tileset* GameMap::getTileset()
 Cityset* GameMap::getCityset()
 {
   if (s_cityset == 0)
-    s_cityset = Citysetlist::getInstance()->getCityset(GameMap::getInstance()->getCitysetName());
+    s_cityset = Citysetlist::getInstance()->getCityset(GameMap::getInstance()->getCitysetBaseName());
     
   return s_cityset;
 }
@@ -2393,7 +2393,7 @@ Cityset* GameMap::getCityset()
 Shieldset* GameMap::getShieldset()
 {
   if (s_shieldset == 0)
-    s_shieldset = Shieldsetlist::getInstance()->getShieldset(GameMap::getInstance()->getShieldsetName());
+    s_shieldset = Shieldsetlist::getInstance()->getShieldset(GameMap::getInstance()->getShieldsetBaseName());
     
   return s_shieldset;
 }

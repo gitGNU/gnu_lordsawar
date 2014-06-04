@@ -155,6 +155,9 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
         //! Load the shieldset again.
         void reload(bool &broken);
 
+        //! Set the dimensions based on the largest image of that shieldstyle.
+        void setHeightsAndWidthsFromImages();
+
 	// Methods that operate on the class data but do not modify the class.
 
 	bool save(XML_Helper *helper) const;

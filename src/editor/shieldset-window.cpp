@@ -22,12 +22,12 @@
 
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
+#include <algorithm>
 
 #include <gtkmm.h>
 #include "shieldset-window.h"
 #include "shieldset-info-dialog.h"
 #include "masked-image-editor-dialog.h"
-
 #include "gui/image-helpers.h"
 #include "defs.h"
 #include "Configuration.h"
@@ -37,18 +37,18 @@
 #include "File.h"
 #include "shield.h"
 #include "recently-edited-file-list.h"
-
 #include "ucompose.hpp"
-
 #include "recently-edited-file.h"
 #include "editor-quit-dialog.h"
 #include "editor-recover-dialog.h"
 #include "GameMap.h"
 
+Glib::ustring small_none = N_("no small shield set");
+Glib::ustring medium_none = N_("no medium shield set");
+Glib::ustring large_none = N_("no large shield set");
 
 ShieldSetWindow::ShieldSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
 {
-  autosave = File::getSavePath() + "autosave" + Shieldset::file_extension;
   needs_saving = false;
   d_shieldset = NULL;
     Glib::RefPtr<Gtk::Builder> xml
@@ -122,45 +122,9 @@ ShieldSetWindow::ShieldSetWindow(Gtk::Window *parent, Glib::ustring load_filenam
       current_save_filename = load_filename;
     update_shieldset_menuitems();
 
-    if (File::exists(autosave))
-      {
-        Glib::ustring m;
-        std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Shieldset::file_extension);
-        if (files.size() == 0)
-          m = _("Do you want to recover the session?");
-        else
-          {
-            RecentlyEditedShieldsetFile *r = dynamic_cast<RecentlyEditedShieldsetFile*>(files.front());
-            if (r->getName() == "")
-              m = String::ucompose(_("Do you want to recover %1?"),
-                                   File::get_basename(r->getFileName(), true));
-            else if (r->getName() != "" && r->getImagesNeeded() == 0)
-              m = String::ucompose(_("Do you want to recover %1 (%2)?"),
-                                   File::get_basename(r->getFileName(), true),
-                                   r->getName());
-            else if (r->getName() != "" && r->getImagesNeeded() > 0)
-              m = String::ucompose
-                (_("Do you want to recover %1 (%2, %3 images needed)?"),
-                 File::get_basename(r->getFileName(), true),
-                 r->getName(),
-                 r->getImagesNeeded());
-          }
-        EditorRecoverDialog d(parent, m);
-        int response = d.run_and_hide();
-        //ask if we want to recover the autosave.
-        if (response == Gtk::RESPONSE_ACCEPT)
-          {
-            load_shieldset (autosave);
-            update_shieldset_menuitems();
-            update_shield_panel();
-            return;
-          }
-      }
-
     if (load_filename.empty() == false)
       {
-	bool success = load_shieldset (load_filename);
-        if (success)
+	if (load_shieldset (load_filename))
           {
             update_shieldset_menuitems();
             update_shield_panel();
@@ -191,16 +155,15 @@ ShieldSetWindow::update_shieldset_menuitems()
 void
 ShieldSetWindow::update_shield_panel()
 {
-  Glib::ustring none = _("no image set");
   //if nothing selected in the treeview, then we don't show anything in
   //the shield panel
   if (shields_treeview->get_selection()->get_selected() == 0)
     {
       //clear all values
       shield_frame->set_sensitive(false);
-      change_smallpic_button->set_label(none);
-      change_mediumpic_button->set_label(none);
-      change_largepic_button->set_label(none);
+      change_smallpic_button->set_label(small_none);
+      change_mediumpic_button->set_label(medium_none);
+      change_largepic_button->set_label(large_none);
       small_image->clear();
       medium_image->clear();
       large_image->clear();
@@ -208,17 +171,10 @@ ShieldSetWindow::update_shield_panel()
       return;
     }
   shield_frame->set_sensitive(true);
-  Glib::RefPtr<Gtk::TreeSelection> selection = shields_treeview->get_selection();
-  Gtk::TreeModel::iterator iterrow = selection->get_selected();
-
+  Gtk::TreeModel::iterator iterrow = 
+    shields_treeview->get_selection()->get_selected();
   if (iterrow) 
-    {
-      // Row selected
-      Gtk::TreeModel::Row row = *iterrow;
-
-      Shield *s = row[shields_columns.shield];
-      fill_shield_info(s);
-    }
+    fill_shield_info((*iterrow)[shields_columns.shield]);
 }
 
 ShieldSetWindow::~ShieldSetWindow()
@@ -266,15 +222,24 @@ void ShieldSetWindow::on_new_shieldset_activated()
   RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
   refl->updateEntry(current_save_filename);
   refl->save();
-  d_shieldset->setDirectory(File::get_dirname(autosave));
-  d_shieldset->setBaseName(File::get_basename(autosave));
 
   //populate the list with initial entries.
   for (unsigned int i = Shield::WHITE; i <= Shield::NEUTRAL; i++)
-    addNewShield(Shield::Colour(i), Shield::get_default_color_for_no(i));
+    {
+      if (i != Shield::NEUTRAL)
+        addNewShield(Shield::Colour(i), Shield::get_default_color_for_no(i));
+      else
+        addNewShield(Shield::Colour(i), Shield::get_default_color_for_neutral());
+    }
+  //here we put a copy into the shieldsetlist, and keep d_shieldset as our
+  //current working shieldset.
+  Shieldset *copy = Shieldset::copy (d_shieldset);
+  Glib::ustring new_basename = copy->getBaseName();
+  guint32 new_id = copy->getId();
+  if (!Shieldsetlist::getInstance()->addToPersonalCollection(copy, new_basename, new_id))
+    delete copy;
   update_shieldset_menuitems();
 
-  d_shieldset->save(autosave, Shieldset::file_extension);
   update_shield_panel();
   shields_treeview->set_cursor (Gtk::TreePath ("0"));
   needs_saving = true;
@@ -300,9 +265,9 @@ void ShieldSetWindow::on_load_shieldset_activated()
 
   if (res == Gtk::RESPONSE_ACCEPT)
     {
-      bool success = load_shieldset(chooser.get_filename());
+      bool ok = load_shieldset(chooser.get_filename());
       chooser.hide();
-      if (success)
+      if (ok)
         {
           needs_saving = false;
           update_window_title();
@@ -327,13 +292,22 @@ void ShieldSetWindow::on_validate_shieldset_activated()
       valid = d_shieldset->validateShieldImages(Shield::Colour(i));
       if (!valid)
         {
-          Glib::ustring s;
-          s = String::ucompose(_("%1 must have all three images specified."),
-                               Shield::colourToString(Shield::Colour(i)));
+          Glib::ustring s = 
+            String::ucompose(_("%1 must have all three images specified."),
+                             Shield::colourToString(Shield::Colour(i)));
           msgs.push_back(s);
           break;
         }
     }
+  if (msgs.empty() == true &&
+      (!d_shieldset->getSmallWidth() || !d_shieldset->getSmallHeight()))
+    msgs.push_back(_("The height or width of a small shield image is zero."));
+  if (msgs.empty() == true &&
+      (!d_shieldset->getMediumWidth() || !d_shieldset->getMediumHeight()))
+    msgs.push_back(_("The height or width of a medium shield image is zero."));
+  if (msgs.empty() == true &&
+      (!d_shieldset->getLargeWidth() || !d_shieldset->getLargeHeight()))
+    msgs.push_back(_("The height or width of a large shield image is zero."));
 
   Glib::ustring msg = "";
   for (std::list<Glib::ustring>::iterator it = msgs.begin(); it != msgs.end();
@@ -342,11 +316,10 @@ void ShieldSetWindow::on_validate_shieldset_activated()
 
   if (msg == "")
     msg = _("The shieldset is valid.");
-      
+
   Gtk::MessageDialog dialog(*window, msg);
   dialog.run();
   dialog.hide();
-
   return;
 }
 
@@ -359,40 +332,52 @@ void ShieldSetWindow::on_save_as_activated()
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
-      Glib::ustring new_basename = copy->getBaseName();
+      Glib::ustring new_basename=copy->getBaseName();
       guint32 new_id = copy->getId();
-      Glib::ustring new_name = copy->getName();
-      save_shieldset_menuitem->set_sensitive(true);
-      current_save_filename = copy->getConfigurationFile();
-      //here we add the autosave to the personal collection.
-      //this is so that the images *with comments in them* come along.
-      Glib::ustring old_name = d_shieldset->getName();
+      copy->setDirectory(File::getUserShieldsetDir());
+      guint32 oldid = d_shieldset->getId();
+      Glib::ustring oldname = d_shieldset->getName();
+      Glib::ustring oldbasename = d_shieldset->getBaseName();
+      Glib::ustring olddir = d_shieldset->getDirectory();
+
+      Glib::ustring tmpdir = File::get_tmp_file();
+      File::erase(tmpdir);
+      tmpdir += Shieldset::file_extension;
+      File::create_dir(tmpdir);
       d_shieldset->setName(copy->getName());
-      bool success = Shieldsetlist::getInstance()->addToPersonalCollection(d_shieldset, new_basename, new_id);
-      if (success)
+      File::copy(d_shieldset->getConfigurationFile(), 
+                 tmpdir + "/" + copy->getBaseName() + Shieldset::file_extension);
+      d_shieldset->setBaseName(copy->getBaseName());
+      d_shieldset->setDirectory(tmpdir);
+      d_shieldset->setId(copy->getId());
+          
+      current_save_filename = copy->getConfigurationFile();
+      bool ok = Shieldsetlist::getInstance()->addToPersonalCollection(d_shieldset, new_basename, new_id);
+      File::erase(tmpdir + "/" + copy->getBaseName() + Shieldset::file_extension);
+      File::erase_dir(tmpdir);
+      if (ok)
         {
-          copy->setDirectory(d_shieldset->getDirectory());
+          save_shieldset_menuitem->set_sensitive(true);
           d_shieldset = copy;
+          //our shields in the treeview are now out of date.
+          refresh_shields(); //refresh them.
           RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
           refl->updateEntry(current_save_filename);
           refl->save();
-        }
-      else
-        d_shieldset->setName(old_name);
-
-      if (success)
-        {
           needs_saving = false;
           update_window_title();
           shieldset_saved.emit(d_shieldset->getId());
         }
       else
         {
+          d_shieldset->setName(oldname);
+          d_shieldset->setBaseName(oldbasename);
+          d_shieldset->setId(oldid);
+          d_shieldset->setDirectory(olddir);
           Glib::ustring errmsg = Glib::strerror(errno);
           Glib::ustring msg;
           msg = _("Error!  Shieldset could not be saved.");
-          msg += "\n" + current_save_filename + "\n" +
-            errmsg;
+          msg += "\n" + current_save_filename + "\n" + errmsg;
           Gtk::MessageDialog dialog(*window, msg);
           dialog.run();
           dialog.hide();
@@ -421,20 +406,16 @@ bool ShieldSetWindow::save_current_shieldset()
   if (current_save_filename.empty())
     current_save_filename = d_shieldset->getConfigurationFile();
   
-  bool success = d_shieldset->save(autosave, Shieldset::file_extension);
-  if (success)
+  bool ok = d_shieldset->save(current_save_filename, Shieldset::file_extension);
+  if (ok)
     {
-      success = Shieldset::copy (autosave, current_save_filename);
-      if (success == true)
-        {
-          RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
-          RecentlyEditedFileList::getInstance()->save();
-          needs_saving = false;
-          update_window_title();
-          shieldset_saved.emit(d_shieldset->getId());
-        }
+      RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
+      RecentlyEditedFileList::getInstance()->save();
+      needs_saving = false;
+      update_window_title();
+      shieldset_saved.emit(d_shieldset->getId());
     }
-  if (!success)
+  else
     {
       Glib::ustring errmsg = Glib::strerror(errno);
       Glib::ustring msg;
@@ -445,8 +426,9 @@ bool ShieldSetWindow::save_current_shieldset()
       dialog.run();
       dialog.hide();
     }
-  return success;
+  return ok;
 }
+
 void ShieldSetWindow::on_save_shieldset_activated()
 {
   save_current_shieldset();
@@ -482,7 +464,6 @@ void ShieldSetWindow::on_help_about_activated()
   dialog->show_all();
   dialog->run();
   delete dialog;
-
   return;
 }
 
@@ -523,14 +504,13 @@ void ShieldSetWindow::fill_shield_info(Shield*shield)
 {
   if (shield)
     {
-      Glib::ustring none = _("no image set");
       player_colorbutton->set_rgba(shield->getColor());
       Glib::ustring s;
       ShieldStyle* ss = shield->getFirstShieldstyle(ShieldStyle::SMALL);
       if (ss && ss->getImageName().empty() == false)
 	s = ss->getImageName() + ".png";
       else
-	s = none;
+	s = small_none;
       show_shield(ss, shield, small_image);
       change_smallpic_button->set_label(s);
 
@@ -538,7 +518,7 @@ void ShieldSetWindow::fill_shield_info(Shield*shield)
       if (ss && ss->getImageName().empty() == false)
 	s = ss->getImageName() + ".png";
       else
-	s = none;
+	s = medium_none;
       change_mediumpic_button->set_label(s);
       show_shield(ss, shield, medium_image);
 
@@ -546,7 +526,7 @@ void ShieldSetWindow::fill_shield_info(Shield*shield)
       if (ss && ss->getImageName().empty() == false)
 	s = ss->getImageName() + ".png";
       else
-	s = none;
+	s = large_none;
       change_largepic_button->set_label(s);
       show_shield(ss, shield, large_image);
     }
@@ -556,20 +536,11 @@ bool ShieldSetWindow::load_shieldset(Glib::ustring filename)
 {
   Glib::ustring old_current_save_filename = current_save_filename;
   current_save_filename = filename;
-  if (filename != autosave)
-    Shieldset::copy(current_save_filename, autosave);
-  else
-    {
-      //go get the real name of the file
-      std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Shieldset::file_extension);
-      if (files.size() > 0)
-        current_save_filename = files.front()->getFileName();
-    }
 
   Glib::ustring name = File::get_basename(filename);
 
   bool unsupported_version = false;
-  Shieldset *shieldset = Shieldset::create(autosave, unsupported_version);
+  Shieldset *shieldset = Shieldset::create(filename, unsupported_version);
   if (shieldset == NULL)
     {
       Glib::ustring msg;
@@ -583,29 +554,20 @@ bool ShieldSetWindow::load_shieldset(Glib::ustring filename)
       dialog.hide();
       return false;
     }
-  if (File::nameEndsWith(current_save_filename, "/autosave" + Shieldset::file_extension) == false)
-    {
-      RecentlyEditedFileList::getInstance()->addEntry(current_save_filename);
-      RecentlyEditedFileList::getInstance()->save();
-    }
+  RecentlyEditedFileList::getInstance()->addEntry(current_save_filename);
+  RecentlyEditedFileList::getInstance()->save();
   shields_list->clear();
   if (d_shieldset)
     delete d_shieldset;
   d_shieldset = shieldset;
 
   bool broken = false;
-  d_shieldset->setBaseName(File::get_basename(autosave));
   d_shieldset->instantiateImages(broken);
-  for(Shieldset::iterator i = d_shieldset->begin(); 
-      i != d_shieldset->end(); i++)
+  for (Shieldset::iterator i = d_shieldset->begin(); i != d_shieldset->end(); 
+       ++i)
     loadShield(*i);
   if (d_shieldset->size())
-    {
-      Gtk::TreeModel::Row row;
-      row = shields_treeview->get_model()->children()[0];
-      if(row)
-	shields_treeview->get_selection()->select(row);
-    }
+    shields_treeview->set_cursor (Gtk::TreePath ("0"));
   update_shield_panel();
   update_window_title();
   return true;
@@ -626,12 +588,10 @@ bool ShieldSetWindow::quit()
           if (save_current_shieldset() == false)
             return false;
         }
-      //else if (Response == Gtk::CLOSE) // don't save just quit
       window->hide();
     }
   else
     window->hide();
-  File::erase(autosave);
   if (d_shieldset)
     delete d_shieldset;
   return true;
@@ -649,8 +609,8 @@ void ShieldSetWindow::on_quit_activated()
     
 void ShieldSetWindow::on_change_smallpic_clicked()
 {
-  Glib::RefPtr<Gtk::TreeSelection> selection = shields_treeview->get_selection();
-  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+  Gtk::TreeModel::iterator iterrow = 
+    shields_treeview->get_selection()->get_selected();
 
   if (iterrow) 
     {
@@ -661,6 +621,7 @@ void ShieldSetWindow::on_change_smallpic_clicked()
       if (ss->getImageName() != "")
 	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
       MaskedImageEditorDialog d(*window, filename, shield->getOwner(), d_shieldset);
+      d.set_title(_("Change Small Shield"));
       d.run();
       if (filename != "")
         File::erase(filename);
@@ -669,8 +630,12 @@ void ShieldSetWindow::on_change_smallpic_clicked()
 	  Glib::ustring file = File::get_basename(d.get_selected_filename());
 	  if (d.get_selected_filename() != filename)
 	    {
+              bool broken = false;
               d_shieldset->replaceFileInConfigurationFile(ss->getImageName()+".png", d.get_selected_filename());
               ss->setImageName(file);
+              ss->instantiateImages(d.get_selected_filename(), d_shieldset, 
+                                    broken);
+              d_shieldset->setHeightsAndWidthsFromImages();
               needs_saving = true;
               update_window_title();
 	    }
@@ -681,8 +646,8 @@ void ShieldSetWindow::on_change_smallpic_clicked()
 
 void ShieldSetWindow::on_change_mediumpic_clicked()
 {
-  Glib::RefPtr<Gtk::TreeSelection> selection = shields_treeview->get_selection();
-  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+  Gtk::TreeModel::iterator iterrow = 
+    shields_treeview->get_selection()->get_selected();
 
   if (iterrow) 
     {
@@ -693,14 +658,19 @@ void ShieldSetWindow::on_change_mediumpic_clicked()
       if (ss->getImageName() != "")
 	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
       MaskedImageEditorDialog d(*window, filename, shield->getOwner(), d_shieldset);
+      d.set_title(_("Change Medium Shield"));
       d.run();
       if (d.get_selected_filename() != "")
 	{
 	  Glib::ustring file = File::get_basename(d.get_selected_filename());
 	  if (d.get_selected_filename() != d_shieldset->getFile(file))
             {
+              bool broken = false;
               d_shieldset->replaceFileInConfigurationFile(ss->getImageName()+".png", d.get_selected_filename());
               ss->setImageName(file);
+              ss->instantiateImages(d.get_selected_filename(), d_shieldset, 
+                                    broken);
+              d_shieldset->setHeightsAndWidthsFromImages();
               needs_saving = true;
               update_window_title();
             }
@@ -711,8 +681,8 @@ void ShieldSetWindow::on_change_mediumpic_clicked()
 
 void ShieldSetWindow::on_change_largepic_clicked()
 {
-  Glib::RefPtr<Gtk::TreeSelection> selection = shields_treeview->get_selection();
-  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+  Gtk::TreeModel::iterator iterrow = 
+    shields_treeview->get_selection()->get_selected();
 
   if (iterrow) 
     {
@@ -723,27 +693,31 @@ void ShieldSetWindow::on_change_largepic_clicked()
       if (ss->getImageName() != "")
 	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
       MaskedImageEditorDialog d(*window, filename, shield->getOwner(), d_shieldset);
+      d.set_title(_("Change Large Shield"));
       d.run();
       if (d.get_selected_filename() != "")
 	{
 	  Glib::ustring file = File::get_basename(d.get_selected_filename());
 	  if (d.get_selected_filename() != d_shieldset->getFile(file))
             {
+              bool broken = false;
               d_shieldset->replaceFileInConfigurationFile(ss->getImageName()+".png", d.get_selected_filename());
               ss->setImageName(file);
+              ss->instantiateImages(d.get_selected_filename(), d_shieldset, 
+                                    broken);
+              d_shieldset->setHeightsAndWidthsFromImages();
               needs_saving = true;
               update_window_title();
             }
 	  update_shield_panel();
 	}
-
     }
 }
 
 void ShieldSetWindow::on_player_color_changed()
 {
-  Glib::RefPtr<Gtk::TreeSelection> selection = shields_treeview->get_selection();
-  Gtk::TreeModel::iterator iterrow = selection->get_selected();
+  Gtk::TreeModel::iterator iterrow = 
+    shields_treeview->get_selection()->get_selected();
 
   if (iterrow) 
     {
@@ -794,7 +768,7 @@ void ShieldSetWindow::update_window_title()
 void ShieldSetWindow::on_edit_copy_shields_activated()
 {
   for (unsigned int j = ShieldStyle::SMALL; j <= ShieldStyle::LARGE; j++)
-    d_shieldset->lookupShieldByTypeAndColour(j, Shield::WHITE)->uninstantiateImages();
+    d_shieldset->lookupShieldByTypeAndColour(Shield::WHITE, j)->uninstantiateImages();
   for (unsigned int i = Shield::WHITE+1; i <= Shield::NEUTRAL; i++)
     for (unsigned int j = ShieldStyle::SMALL; j <= ShieldStyle::LARGE; j++)
       {
@@ -802,6 +776,23 @@ void ShieldSetWindow::on_edit_copy_shields_activated()
         d_shieldset->lookupShieldByTypeAndColour(j, i)->uninstantiateImages();
       }
   needs_saving = true;
+  bool broken = false;
+  d_shieldset->instantiateImages(broken);
+  d_shieldset->setHeightsAndWidthsFromImages();
+  d_shieldset->instantiateImages(broken);
   update_shield_panel();
   update_window_title();
+}
+
+void ShieldSetWindow::refresh_shields()
+{
+  Glib::RefPtr<Gtk::TreeSelection> selection = shields_treeview->get_selection();
+  for (Shieldset::iterator i = d_shieldset->begin(); i != d_shieldset->end();
+       i++)
+    {
+      shields_treeview->set_cursor(Gtk::TreePath 
+                                   (String::ucompose("%1", (*i)->getOwner())));
+      (*selection->get_selected())[shields_columns.shield] = *i;
+    }
+  shields_treeview->set_cursor (Gtk::TreePath ("0"));
 }

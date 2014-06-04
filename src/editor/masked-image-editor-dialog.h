@@ -42,6 +42,8 @@ class MaskedImageEditorDialog: public LwEditorDialog
     MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int only_show_colour, Shieldset *shieldset = NULL);
     ~MaskedImageEditorDialog() {};
 
+    void set_title(Glib::ustring t) {dialog->set_title(t);};
+
     void set_only_show_one(Shield::Colour c){only_show=true;only_show_colour=c;};
     Glib::ustring get_selected_filename() {return target_filename;};
     int run();

@@ -94,7 +94,7 @@ SwitchSetsDialog::SwitchSetsDialog(Gtk::Window &parent)
     for (std::list<Glib::ustring>::iterator i = shield_themes.begin(),
 	 end = shield_themes.end(); i != end; ++i)
       {
-	if (*i == GameMap::getInstance()->getShieldsetName())
+	if (*i == GameMap::getInstance()->getShieldset()->getName())
 	  default_id = counter;
 	shield_theme_combobox->append(Glib::filename_to_utf8(*i));
 	counter++;
@@ -218,12 +218,12 @@ int SwitchSetsDialog::run()
       cityset_changed = true;
       GameMap::getInstance()->switchCityset(selected_cityset);
     }
-  if (selected_shieldset->getBaseName() != GameMap::getInstance()->getShieldsetName())
+  if (selected_shieldset->getBaseName() != GameMap::getShieldset()->getBaseName())
     {
       shieldset_changed = true;
       GameMap::getInstance()->switchShieldset(selected_shieldset);
     }
-  if (selected_tileset->getBaseName() != GameMap::getInstance()->getTilesetName())
+  if (selected_tileset->getBaseName() != GameMap::getTileset()->getBaseName())
     {
       tileset_changed = true;
       GameMap::getInstance()->switchTileset(selected_tileset);
