@@ -1076,11 +1076,11 @@ the list of shields are potential seats in a scenario.
 Cityset files (.lwc) hold images for buildings, as well as number of tiles that some buildings occupy on the map.
 
 <cityset version="xxx">
-    <d_id> a unique numeric id among all shieldsets on the system. can't be zero. </d_id>
-    <d_name>a name of this shieldset, suitable for display</d_name>
+    <d_id> a unique numeric id among all citysets on the system. can't be zero. </d_id>
+    <d_name>a name of this cityset, suitable for display</d_name>
     <d_copyright>a place for copyright notices.</d_copyright>
     <d_license>a place for a license notice.</d_license>
-    <d_info>a description for this shieldset.</d_info>
+    <d_info>a description for this cityset.</d_info>
 
     <d_tilesize>the width and height of a tile.  in pixels.  <d_tilesize>
 
@@ -1118,3 +1118,168 @@ Cityset files (.lwc) hold images for buildings, as well as number of tiles that 
     <d_ruin_tile_width>how many tiles the ruins occupy.</d_ruin_tile_width>
 
 </cityset>
+
+
+Armyset files (.lwa) hold images for army unit types, as well as their properties.
+<armyset version="xxx">
+    <d_id> a unique numeric id among all armysets on the system. can't be zero. </d_id>
+    <d_name>a name of this armyset, suitable for display</d_name>
+    <d_copyright>a place for copyright notices.</d_copyright>
+    <d_license>a place for a license notice.</d_license>
+    <d_info>a description for this armyset.</d_info>
+
+    <d_tilesize>the width and height of a tile.  in pixels.  <d_tilesize>
+
+    now come some images.  when filenames are given, the .png extension is not included. nor is a path.  for example: "foo.png" is represented as just "foo".
+    each of these images come in two halves on a single row.  The white in the right half represents where the player's colour will be on the left half.
+    <d_stackship>the basename of the image for when a stack is in a boat.
+    </d_stackship>
+    <d_plantedstandard>the basename of the image for the hero's flag.
+    </d_plantedstandard>
+    <d_bag>the basename of the image for what items on the map look like.
+           this is the graphic for the bag of stuff.  
+           the bag image doesn't have two halves like the other images.
+           e.g. it is not coloured in the player's colour.  it is just a normal
+           brownish looking bag of stuff.
+    </d_bag>
+
+    now come the armies.  These are army Types, not instances of armies.
+    <armyproto>
+         <d_id>a unique numeric id among all other army types in this set.
+               starts at zero.  this is also a shared numeric id with army 
+               types in other armysets! when this id is the same as another 
+               id in another armyset, the armytypes are meant to be of the 
+               same kind.  0 is usually scouts.  You can give your ids high
+               values to avoid any collisions with someone else's ids, in the
+               case where you don't want any sort of compatibility with your 
+               armyset and someone elses's.
+         </d_id>
+         <d_name>a name for this army type, suitable for display.
+         </d_name>
+
+
+         now come the images for this army type.  these images have two halves.
+         where the white pixels on the right side of the image represent where
+         the player's colour will be on the left side of the image.
+         <d_image_white></d_image_white>
+         <d_image_green></d_image_green>
+         <d_image_yellow></d_image_yellow>
+         <d_image_light_blue></d_image_light_blue>
+         <d_image_red></d_image_red>
+         <d_image_dark_blue></d_image_dark_blue>
+         <d_image_orange></d_image_orange>
+         <d_image_black></d_image_black>
+         <d_image_neutral></d_image_neutral>
+
+         now come the properties for this army type.
+         <d_description>a place for some text describing this army type.  
+                        it isn't displayed in the game.  
+         </d_description>
+         <d_production>the number of turns needed to create one of these 
+                       army units in a city.
+         </d_production>
+         <d_new_production_cost>the number of gold pieces to bring this army type in as a new producible type of army unit in a city.  this is the price in the build production dialog.</d_new_production_cost>
+         <d_production_cost>the number of gold pieces to create a single instance of this army type in a city.</d_production_cost>
+         <d_upkeep>the number of gold pieces needed to sustain this army unit every turn.</d_upkeep>
+         <d_awardable>true or false.  Whether or not this army unit type is given to heroes as a reward.</d_awardable>
+         <d_defends_ruins>true or false.  Whether or not this army unit type is a monster that can inhabit a ruin.</d_defends_ruins>
+         <d_move_bonus> This is the movement bonus flags.  
+                        These can be bitwise OR'd.
+                        The movement bonus means that certain terrain types 
+                        can be moved through at a cost of 2, like grass.
+                        The bonus flags are:
+	                Tile::GRASS
+                            Open plains.
+	                Tile::WATER
+	                    A lake, ocean, river, puddle, moat, or anything 
+                            else that is watery.
+	                Tile::FOREST
+	                    Trees in great abundance, also includes shrubberies.
+	                Tile::HILLS
+	                    Hilly terrain, generally passable.
+	                Tile::MOUNTAIN
+	                    Very hilly terrain, generally not passable except
+                            by flight.
+	                Tile::SWAMP
+	                    Marshy terrain.
+
+                        To give the army unit the ability to pass through 
+                        forest and swamp, the values are bitwise OR'd like so:
+                            Tile::FOREST | Tile::SWAMP
+
+                        To give an army unit the gift of flight, the move bonus
+                        is a bitwise OR of all of these flags. 
+         </d_move_bonus>
+         <d_army_bonus>This is the army bonus flags, or fighting flags.  
+                       These can be bitwise OR'd.
+                       These bonuses mean the army unit has certain special
+                       abilities in battle.
+                       The bonus flags are:
+                       ArmyBase::ADD1STRINOPEN
+                            Provides +1 strength to the army when positioned 
+                            in the open.
+                       ArmyBase::ADD2STRINOPEN
+                            Provides +2 strength to the army when positioned 
+                            in the open.
+                       ArmyBase::ADD1STRINFOREST
+                            Provides +1 strength to the army when positioned 
+                            in the forest.
+                       ArmyBase::ADD1STRINHILLS
+                            Provides +1 strength to the army when positioned 
+                            in the hills.
+                       ArmyBase::ADD1STRINCITY
+                            Provides +1 strength to the army when positioned 
+                            in a city.
+                       ArmyBase::ADD2STRINCITY
+                            Provides +2 strength to the army when positioned 
+                            in a city.
+                       ArmyBase::ADD1STACKINHILLS
+                            Provides +1 strength to the stack when positioned 
+                            in the hills.
+                       ArmyBase::SUBALLCITYBONUS
+                            Negate any city bonuses from an enemy stack during 
+                            afFight.
+                       ArmyBase::SUB1ENEMYSTACK
+                            Negates 1 strength point from an enemy stack during
+                            a fight.
+                       ArmyBase::ADD1STACK
+                            Provides +1 strength to all army units in the stack.
+                       ArmyBase::ADD2STACK
+                            Provides +2 strength to all army units in the stack.
+                       ArmyBase::SUBALLNONHEROBONUS
+                            Negate all non-hero bonuses in an enemy stack 
+                            during a fight.
+                       ArmyBase::SUBALLHEROBONUS
+                            Negate all hero bonuses in an enemy atack during a 
+                            fight.
+                       ArmyBase::FORTIFY
+                            Provides a +1 strength to all army units in a 
+                            fortified stack.
+
+                       When an army unit has more than one army bonus, it is 
+                       bitwise OR'd like so:
+                            ArmyBase::ADD1STRINOPEN | ArmyBase::SUBALLHEROBONUS
+         </d_army_bonus>
+         <d_max_moves>The army unit receives this many movement points at the 
+                      beginning of a turn.  These movement points refer to the
+                      unit's movement ability on land or in the air, and not in
+                      a boat.
+                      A suitable minimum value for this is the maximum number 
+                      of points needed to cross the most taxing kind of terrain.
+                      e.g. so the unit can move one tile in the worst terrain.
+         </d_max_moves>
+         <d_gender>If this army type is a hero, the gender is Hero::MALE, or 
+                   Hero::FEMALE. Otherwise Hero::NONE.
+         </d_gender>
+         <d_strength>The power of this army unit.  minimum value of 1.
+         </d_strength>
+         <d_sight>The number of tiles this army unit can see on a fog map.  
+                  a value of 1 means a grid of 3x3 is seen around the player.  
+                  a value of 2 means 5x5.
+         </d_sight>
+         <d_expvalue>The number of experience points awarded for killing this 
+                     army type.
+         </d_expvalue>
+    </armyproto>
+    ...more armyproto objects...
+</armyset>
