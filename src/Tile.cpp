@@ -34,6 +34,11 @@ Tile::Tile()
   d_smalltile = new SmallTile();
 }
 
+Tile::Tile(Tile::Type type, Glib::ustring name, guint32 moves, SmallTile*small)
+ : d_name(name), d_moves(moves), d_type(type), d_smalltile(small)
+{
+}
+
 Tile::Tile(const Tile &t)
  : d_name(t.d_name), d_moves(t.d_moves), d_type(t.d_type)
 {
@@ -136,6 +141,20 @@ Glib::ustring Tile::tileTypeToString(const Tile::Type type)
   return "Tile::GRASS";
 }
 
+Glib::ustring Tile::tileTypeToFriendlyName(const Tile::Type type)
+{
+  switch (type)
+    {
+    case Tile::GRASS: return _("Grass");
+    case Tile::WATER: return _("Water");
+    case Tile::FOREST: return _("Forest");
+    case Tile::HILLS: return _("Hills");
+    case Tile::MOUNTAIN: return _("Mountain");
+    case Tile::SWAMP: return _("Swamp");
+    }
+  return _("Grass");
+}
+
 Tile::Type Tile::tileTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
@@ -181,9 +200,10 @@ bool Tile::consistsOnlyOfLoneAndOtherStyles() const
     (*i)->getUniqueTileStyleTypes(types);
       return validateGrass(types);
 }
+
 bool Tile::validate() const
 {
-  if (size() == 0)
+  if (empty())
     return false;
 
   for (Tile::const_iterator i = begin(); i != end(); ++i)
@@ -267,5 +287,41 @@ std::list<TileStyle*> Tile::getTileStyles(TileStyle::Type type) const
       if ((*j)->getType() == type)
         styles.push_back((*j));
   return styles;
+}
+
+Tile* Tile::get_default_grass()
+{
+  return new Tile(Tile::GRASS, Tile::tileTypeToFriendlyName(Tile::GRASS), 2, 
+                  SmallTile::get_default_grass());
+}
+
+Tile* Tile::get_default_water()
+{
+  return new Tile(Tile::WATER, Tile::tileTypeToFriendlyName(Tile::WATER), 2, 
+                  SmallTile::get_default_water());
+}
+
+Tile* Tile::get_default_forest()
+{
+  return new Tile(Tile::FOREST, Tile::tileTypeToFriendlyName(Tile::FOREST), 3, 
+                  SmallTile::get_default_forest());
+}
+
+Tile* Tile::get_default_hills()
+{
+  return new Tile(Tile::HILLS, Tile::tileTypeToFriendlyName(Tile::HILLS), 4, 
+                  SmallTile::get_default_hills());
+}
+
+Tile* Tile::get_default_mountains()
+{
+  return new Tile(Tile::MOUNTAIN, Tile::tileTypeToFriendlyName(Tile::MOUNTAIN),
+                  6, SmallTile::get_default_mountains());
+}
+
+Tile* Tile::get_default_swamp()
+{
+  return new Tile(Tile::SWAMP, Tile::tileTypeToFriendlyName(Tile::SWAMP), 8, 
+                  SmallTile::get_default_swamp());
 }
 // End of file

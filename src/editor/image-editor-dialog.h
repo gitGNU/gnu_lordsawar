@@ -38,6 +38,8 @@ class ImageEditorDialog: public LwEditorDialog
 
     Glib::ustring get_selected_filename() {return target_filename;};
     int run();
+
+    void set_title(Glib::ustring s) {dialog->set_title(s);};
     
  private:
     Glib::ustring target_filename;
@@ -51,7 +53,8 @@ class ImageEditorDialog: public LwEditorDialog
     void show_image(Glib::ustring filename);
     void update_panel();
     void on_heartbeat();
-
+void on_add(Gtk::Widget *widget);
+    void on_button_pressed();
 };
 
 #endif

@@ -68,6 +68,13 @@ class Tile : public std::list<TileStyleSet*>
 	//! Default constructor.
 	Tile();
 
+        //! Constructor to fill out some of the Tile's values.
+        /**
+         * the pointer to the SmallTile object is taken.  A duplicate SmallTile
+         * object is not copied from it.
+         */
+        Tile(Tile::Type type, Glib::ustring name, guint32 moves, SmallTile *s);
+
         //! Loading constructor.
 	/**
 	 * Loads the tileset.tile XML entities in the tileset configuration 
@@ -157,6 +164,9 @@ class Tile : public std::list<TileStyleSet*>
 	//! Convert a Tile::Type enumerated value to a string.
 	static Glib::ustring tileTypeToString(const Tile::Type type);
 
+        //! Convert a Tile::Type into a string that is nice to display.
+        static Glib::ustring tileTypeToFriendlyName(const Tile::Type type);
+
 	//! Convert a string represenation of a Tile::Type to an enum value.
 	static Tile::Type tileTypeFromString(const Glib::ustring str);
 
@@ -166,6 +176,12 @@ class Tile : public std::list<TileStyleSet*>
 
 	static int getTypeIndexForType(Tile::Type type);
 
+        static Tile * get_default_grass();
+        static Tile * get_default_water();
+        static Tile * get_default_forest();
+        static Tile * get_default_hills();
+        static Tile * get_default_mountains();
+        static Tile * get_default_swamp();
 	//! Check to see if the grass tilestyles are suitable for in-game use.
 	bool validateGrass(std::list<TileStyle::Type> types) const;
 

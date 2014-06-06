@@ -26,27 +26,37 @@
 #include "defs.h"
 #include "File.h"
 #include "shieldsetlist.h"
+#include "past-chooser.h"
 
 ImageEditorDialog::ImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int frames)
  : LwEditorDialog(parent, "image-editor-dialog.ui")
 {
   num_frames = frames;
 
-    xml->get_widget("filechooserbutton", filechooserbutton);
-    xml->get_widget("image", image);
-    show_image(filename);
-    target_filename = filename;
-    update_panel();
-    filechooserbutton->signal_file_set().connect
-       (sigc::mem_fun(*this, &ImageEditorDialog::on_image_chosen));
+  xml->get_widget("filechooserbutton", filechooserbutton);
+  xml->get_widget("image", image);
+  show_image(filename);
+  target_filename = filename;
+  update_panel();
+  filechooserbutton->signal_file_set().connect
+    (sigc::mem_fun(*this, &ImageEditorDialog::on_image_chosen));
+  filechooserbutton->signal_set_focus_child().connect
+    (sigc::mem_fun(*this, &ImageEditorDialog::on_add));
+  Glib::RefPtr<Gtk::FileFilter> png_filter = Gtk::FileFilter::create();
+  png_filter->set_name(_("PNG files (*.png)"));
+  png_filter->add_pattern("*.png");
+  filechooserbutton->add_filter(png_filter);
 }
 
 int ImageEditorDialog::run()
 {
+    filechooserbutton->set_title(dialog->get_title());
     dialog->show_all();
     int response = dialog->run();
     if (response != Gtk::RESPONSE_ACCEPT)
       target_filename = "";
+    else
+      PastChooser::getInstance()->set_dir(filechooserbutton);
 
     return response;
 }
@@ -71,7 +81,10 @@ void ImageEditorDialog::update_panel()
 void ImageEditorDialog::show_image(Glib::ustring filename)
 {
   if (filename == "")
-    return;
+    {
+      image->clear();
+      return;
+    }
 
   if (heartbeat.connected())
     heartbeat.disconnect();
@@ -98,4 +111,21 @@ void ImageEditorDialog::on_heartbeat()
   active_frame++;
   if (active_frame >= num_frames)
     active_frame = 0;
+}
+
+void ImageEditorDialog::on_add(Gtk::Widget *widget)
+{
+  if (widget)
+    {
+      Gtk::Button *button = dynamic_cast<Gtk::Button*>(widget);
+      button->signal_clicked().connect
+        (sigc::mem_fun(*this, &ImageEditorDialog::on_button_pressed));
+    }
+}
+
+void ImageEditorDialog::on_button_pressed()
+{
+  Glib::ustring d = PastChooser::getInstance()->get_dir(filechooserbutton);
+  if (d.empty() == false)
+    filechooserbutton->set_current_folder(d);
 }

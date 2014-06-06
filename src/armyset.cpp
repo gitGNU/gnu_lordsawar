@@ -174,7 +174,7 @@ bool Armyset::save(Glib::ustring filename, Glib::ustring extension) const
   t.Close();
   if (broken == false)
     {
-      if (File::copy(tmptar, goodfilename) == 0)
+      if (File::copy(tmptar, goodfilename) == true)
         File::erase(tmptar);
     }
 
@@ -937,10 +937,10 @@ bool Armyset::replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring n
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
   if (broken == false)
     {
-      broken = t.replaceFile(file, new_file);
+      broken = !t.replaceFile(file, new_file);
       t.Close();
     }
-  return broken;
+  return !broken;
 }
 
 guint32 Armyset::calculate_preferred_tile_size() const
@@ -957,7 +957,8 @@ guint32 Armyset::calculate_preferred_tile_size() const
   for (const_iterator it = begin(); it != end(); it++)
     {
       ArmyProto *a = (*it);
-      sizecounts[a->getImage(Shield::NEUTRAL)->get_unscaled_width()]++;
+      if (a->getImage(Shield::NEUTRAL) != NULL)
+        sizecounts[a->getImage(Shield::NEUTRAL)->get_unscaled_width()]++;
     }
 
   guint32 maxcount = 0;

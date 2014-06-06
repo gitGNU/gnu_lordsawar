@@ -21,6 +21,11 @@
 
 Glib::ustring SmallTile::d_tag = "smallmap";
 
+SmallTile::SmallTile(SmallTile::Pattern pattern, Gdk::RGBA first, Gdk::RGBA second, Gdk::RGBA third)
+:d_pattern(pattern), d_color(first), d_second_color(second),d_third_color(third)
+{
+}
+
 SmallTile::SmallTile()
 {
   d_pattern = SOLID;
@@ -83,5 +88,41 @@ bool SmallTile::save(XML_Helper *helper) const
   retval &= helper->closeTag();
 
   return retval;
+}
+
+SmallTile* SmallTile::get_default_grass()
+{
+  return new SmallTile(SmallTile::SOLID, Gdk::RGBA("#50AC1C"), 
+                       Gdk::RGBA("black"), Gdk::RGBA("black"));
+}
+
+SmallTile* SmallTile::get_default_water()
+{
+  return new SmallTile(SmallTile::SUNKEN_RADIAL, Gdk::RGBA("#63C8FC"),
+                       Gdk::RGBA("#0068DF"), Gdk::RGBA("#295BE8"));
+}
+
+SmallTile* SmallTile::get_default_forest()
+{
+  return new SmallTile(SmallTile::STIPPLED, Gdk::RGBA("#008C00"),
+                       Gdk::RGBA("#005800"), Gdk::RGBA("black"));
+}
+
+SmallTile* SmallTile::get_default_hills()
+{
+  return new SmallTile(SmallTile::SOLID, Gdk::RGBA("#008C00"),
+                       Gdk::RGBA("black"), Gdk::RGBA("black"));
+}
+
+SmallTile* SmallTile::get_default_mountains()
+{
+  return new SmallTile(SmallTile::RANDOMIZED, Gdk::RGBA("#909090"),
+                       Gdk::RGBA("#505050"), Gdk::RGBA("#707070"));
+}
+
+SmallTile* SmallTile::get_default_swamp()
+{
+  return new SmallTile(SmallTile::TABLECLOTH, Gdk::RGBA("#005CD0"),
+                       Gdk::RGBA("#2CB8FC"), Gdk::RGBA("#50AC1C"));
 }
 // End of file

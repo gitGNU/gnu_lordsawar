@@ -52,6 +52,8 @@ class TilesetExplosionPictureEditorDialog: public LwEditorDialog
     void update_panel();
 
     void update_scene(TilePreviewScene *scene, Glib::ustring filename);
+    void on_add(Gtk::Widget *widget);
+    void on_button_pressed();
 
 };
 

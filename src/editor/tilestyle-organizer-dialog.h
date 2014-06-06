@@ -89,8 +89,8 @@ class TileStyleOrganizerDialog: public LwEditorDialog
                                    Gtk::SelectionData &data, guint info, guint time);
     void on_unsorted_drag_data_get(const Glib::RefPtr<Gdk::DragContext> &drag_context,
                                    Gtk::SelectionData &data, guint info, guint time);
-    TileStyle* get_selected_unsorted_tilestyle ();
-    TileStyle* get_selected_category_tilestyle ();
+    std::list<TileStyle*> get_selected_unsorted_tilestyles();
+    std::list<TileStyle*> get_selected_category_tilestyles();
     int get_selected_category();
 
     void on_categories_drop_drag_data_received(const Glib::RefPtr<Gdk::DragContext> &context, int a, int b, const Gtk::SelectionData& selection_data, guint c, guint time);
@@ -99,6 +99,14 @@ class TileStyleOrganizerDialog: public LwEditorDialog
     void on_category_tilestyle_activated(const Gtk::TreeModel::Path &path);
     void on_unsorted_tilestyle_activated(const Gtk::TreeModel::Path &path);
 
+    void on_drag_begin(const Glib::RefPtr<Gdk::DragContext> &c, Gtk::IconView *i);
+    std::list<TileStyle*> selected_category_tilestyles;
+    void on_selection_made(Gtk::IconView *iconview);
+    Glib::TimeVal time_of_last_selection;
+    std::vector<Gtk::TreeModel::Path> last_multiple_selection;
+    bool inhibit_select;
+    sigc::connection selection_timeout_handler;
+    bool expire_selection();
 };
 
 #endif

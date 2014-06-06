@@ -63,6 +63,10 @@ class TilesetSelectorEditorDialog: public LwEditorDialog
     Glib::ustring small_filename;
     Glib::ustring large_filename;
 
+    void reset_filechooser();
+    void on_add(Gtk::Widget *widget);
+    void on_button_pressed();
+
 };
 
 #endif

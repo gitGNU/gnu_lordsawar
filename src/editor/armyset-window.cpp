@@ -48,7 +48,6 @@
 
 ArmySetWindow::ArmySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
 {
-  autosave = File::getSavePath() + "autosave" + Armyset::file_extension;
   needs_saving = false;
   inhibit_needs_saving = false;
   d_armyset = NULL;
@@ -339,6 +338,7 @@ ArmySetWindow::ArmySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
 	update_army_panel();
       }
     inhibit_scrolldown = false;
+    inhibit_updates = false;
 }
 
 void
@@ -485,6 +485,9 @@ void ArmySetWindow::on_new_armyset_activated()
       delete armyset;
       return;
     }
+  inhibit_updates = true;
+  armies_list->clear();
+  inhibit_updates = false;
   if (d_armyset)
     delete d_armyset;
   d_armyset = armyset;
@@ -494,12 +497,16 @@ void ArmySetWindow::on_new_armyset_activated()
   RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
   refl->updateEntry(current_save_filename);
   refl->save();
-  d_armyset->setDirectory(File::get_dirname(autosave));
-  d_armyset->setBaseName(File::get_basename(autosave));
+  //here we put a copy into the armysetlist, and keep d_armyset as our
+  //current working armyset.
+  Armyset *copy = Armyset::copy (d_armyset);
+  Glib::ustring new_basename = copy->getBaseName();
+  guint32 new_id = copy->getId();
+  if (!Armysetlist::getInstance()->addToPersonalCollection(copy, new_basename, new_id))
+    delete copy;
 
-  d_armyset->save(autosave, Armyset::file_extension);
-  armies_list->clear();
-
+  armies_treeview->set_cursor (Gtk::TreePath ("0"));
+  update_army_panel();
   update_armyset_buttons();
   update_armyset_menuitems();
 
@@ -621,38 +628,50 @@ void ArmySetWindow::on_save_as_activated()
     {
       Glib::ustring new_basename = copy->getBaseName();
       guint32 new_id = copy->getId();
-      Glib::ustring new_name = copy->getName();
-      save_armyset_menuitem->set_sensitive(true);
-      current_save_filename = copy->getConfigurationFile();
-      //here we add the autosave to the personal collection.
-      //this is so that the images *with comments in them* come along.
-      Glib::ustring old_name = d_armyset->getName();
+      copy->setDirectory(File::getUserArmysetDir());
+      guint32 oldid = d_armyset->getId();
+      Glib::ustring oldname = d_armyset->getName();
+      Glib::ustring oldbasename = d_armyset->getBaseName();
+      Glib::ustring olddir = d_armyset->getDirectory();
+
+      Glib::ustring tmpdir = File::get_tmp_file();
+      File::erase(tmpdir);
+      tmpdir += Armyset::file_extension;
+      File::create_dir(tmpdir);
       d_armyset->setName(copy->getName());
-      bool success = Armysetlist::getInstance()->addToPersonalCollection(d_armyset, new_basename, new_id);
-      if (success)
+      File::copy(d_armyset->getConfigurationFile(),
+                 tmpdir + "/" + copy->getBaseName() + Armyset::file_extension);
+      d_armyset->setBaseName(copy->getBaseName());
+      d_armyset->setDirectory(tmpdir);
+      d_armyset->setId(copy->getId());
+
+      current_save_filename = copy->getConfigurationFile();
+      bool ok = Armysetlist::getInstance()->addToPersonalCollection(d_armyset, new_basename, new_id);
+      File::erase(tmpdir + "/" + copy->getBaseName() + Armyset::file_extension);
+      File::erase_dir(tmpdir);
+      if (ok)
         {
-          copy->setDirectory(d_armyset->getDirectory());
+          save_armyset_menuitem->set_sensitive(true);
           d_armyset = copy;
+          //our tiles in the treeview are now out of date.
+          refresh_armies(); //refresh them.
           RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
           refl->updateEntry(current_save_filename);
           refl->save();
-        }
-      else
-        d_armyset->setName(old_name);
-
-      if (success)
-        {
           needs_saving = false;
           update_window_title();
           armyset_saved.emit(d_armyset->getId());
         }
       else
         {
+          d_armyset->setName(oldname);
+          d_armyset->setBaseName(oldbasename);
+          d_armyset->setId(oldid);
+          d_armyset->setDirectory(olddir);
           Glib::ustring errmsg = Glib::strerror(errno);
           Glib::ustring msg;
           msg = _("Error!  Armyset could not be saved.");
-          msg += "\n" + current_save_filename + "\n" +
-            errmsg;
+          msg += "\n" + current_save_filename + "\n" + errmsg;
           Gtk::MessageDialog dialog(*window, msg);
           dialog.run();
           dialog.hide();
@@ -695,20 +714,18 @@ bool ArmySetWindow::save_current_armyset()
        end = armies_list->children().end(); i != end; ++i) 
     d_armyset->push_back((*i)[armies_columns.army]);
 
-  bool success = d_armyset->save(autosave, Armyset::file_extension);
+  bool success = d_armyset->save(current_save_filename, Armyset::file_extension);
   if (success)
     {
-      success = Armyset::copy (autosave, current_save_filename);
-      if (success == true)
-        {
-          RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
-          RecentlyEditedFileList::getInstance()->save();
-          needs_saving = false;
-          update_window_title();
-          armyset_saved.emit(d_armyset->getId());
-        }
+      if (Armysetlist::getInstance()->reload(d_armyset->getId()))
+        refresh_armies();
+      RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
+      RecentlyEditedFileList::getInstance()->save();
+      needs_saving = false;
+      update_window_title();
+      armyset_saved.emit(d_armyset->getId());
     }
-  if (!success)
+  else
     {
       Glib::ustring errmsg = Glib::strerror(errno);
       Glib::ustring msg;
@@ -732,17 +749,23 @@ void ArmySetWindow::on_edit_ship_picture_activated()
   Glib::ustring filename = "";
   if (d_armyset->getShipImageName() != "")
     filename = d_armyset->getFileFromConfigurationFile(d_armyset->getShipImageName() +".png");
-  MaskedImageEditorDialog d(*window, filename, -1);
+  MaskedImageEditorDialog d(*window, filename);
+  d.set_title(_("Select a Ship image"));
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       if (d.get_selected_filename() != filename)
         {
           File::erase(filename);
-          d_armyset->replaceFileInConfigurationFile(d_armyset->getShipImageName()+".png", d.get_selected_filename());
-          d_armyset->setShipImageName(File::get_basename(d.get_selected_filename()));
-          needs_saving = true;
-          update_window_title();
+          Glib::ustring file = File::get_basename(d.get_selected_filename());
+          if (d_armyset->replaceFileInConfigurationFile(d_armyset->getShipImageName()+".png", d.get_selected_filename()))
+            {
+              d_armyset->setShipImageName(file);
+              needs_saving = true;
+              update_window_title();
+            }
+          else
+            show_add_file_error(d_armyset, *d.get_dialog(), file);
         }
     }
 }
@@ -752,17 +775,23 @@ void ArmySetWindow::on_edit_standard_picture_activated()
   Glib::ustring filename = "";
   if (d_armyset->getStandardImageName() != "")
     filename = d_armyset->getFileFromConfigurationFile(d_armyset->getStandardImageName() +".png");
-  MaskedImageEditorDialog d(*window, filename, -1);
+  MaskedImageEditorDialog d(*window, filename);
+  d.set_title(_("Select a Hero Flag image"));
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       if (d.get_selected_filename() != filename)
         {
           File::erase(filename);
-          d_armyset->replaceFileInConfigurationFile(d_armyset->getStandardImageName()+".png", d.get_selected_filename());
-          d_armyset->setStandardImageName(File::get_basename(d.get_selected_filename()));
-          needs_saving = true;
-          update_window_title();
+          Glib::ustring file = File::get_basename(d.get_selected_filename());
+          if (d_armyset->replaceFileInConfigurationFile(d_armyset->getStandardImageName()+".png", d.get_selected_filename()))
+            {
+              d_armyset->setStandardImageName(file);
+              needs_saving = true;
+              update_window_title();
+            }
+          else
+            show_add_file_error(d_armyset, *d.get_dialog(), file);
         }
     }
 }
@@ -773,16 +802,22 @@ void ArmySetWindow::on_edit_bag_picture_activated()
   if (d_armyset->getBagImageName().empty() == false)
     filename = d_armyset->getFileFromConfigurationFile(d_armyset->getBagImageName() +".png");
   ImageEditorDialog d(*window, filename, 1);
+  d.set_title(_("Select a Bag image"));
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       if (d.get_selected_filename() != filename)
         {
           File::erase(filename);
-          d_armyset->replaceFileInConfigurationFile(d_armyset->getBagImageName()+".png", d.get_selected_filename());
-          d_armyset->setBagImageName(File::get_basename(d.get_selected_filename()));
-          needs_saving = true;
-          update_window_title();
+          Glib::ustring file = File::get_basename(d.get_selected_filename());
+          if (d_armyset->replaceFileInConfigurationFile(d_armyset->getBagImageName()+".png", d.get_selected_filename()))
+            {
+              d_armyset->setBagImageName(file);
+              needs_saving = true;
+              update_window_title();
+            }
+          else
+            show_add_file_error(d_armyset, *d.get_dialog(), file);
         }
     }
 }
@@ -833,6 +868,8 @@ void ArmySetWindow::addArmyType(guint32 army_type)
 
 void ArmySetWindow::on_army_selected()
 {
+  if (inhibit_updates)
+    return;
   update_armyset_buttons();
   update_army_panel();
   armies_treeview->queue_draw();
@@ -999,7 +1036,6 @@ void ArmySetWindow::on_description_changed()
 
 void ArmySetWindow::on_image_changed(Gtk::Button *button, Gtk::Image *image, Shield::Colour c)
 {
-
   Glib::RefPtr<Gtk::TreeSelection> selection = armies_treeview->get_selection();
   Gtk::TreeModel::iterator iterrow = selection->get_selected();
 
@@ -1010,7 +1046,9 @@ void ArmySetWindow::on_image_changed(Gtk::Button *button, Gtk::Image *image, Shi
       Glib::ustring filename = "";
       if (a->getImageName(c) != "")
         filename = d_armyset->getFileFromConfigurationFile(a->getImageName(c) + ".png");
-      MaskedImageEditorDialog d(*window, filename, -1);
+      MaskedImageEditorDialog d(*window, filename);
+      d.set_title(String::ucompose(_("Select a %1 Army image"), 
+                                   Shield::colourToFriendlyName(c)));
       int response = d.run();
       if (response == Gtk::RESPONSE_ACCEPT)
         {
@@ -1018,22 +1056,27 @@ void ArmySetWindow::on_image_changed(Gtk::Button *button, Gtk::Image *image, Shi
             {
               File::erase(filename);
               bool broken = false;
-              d_armyset->replaceFileInConfigurationFile(a->getImageName(c)+".png", d.get_selected_filename());
-              a->setImageName(c, File::get_basename(d.get_selected_filename()));
-              Gdk::RGBA colour = Shieldsetlist::getInstance()->getColor(1, c);
-              a->instantiateImages(d_armyset->getTileSize(), c, d.get_selected_filename(), broken);
-
-              PixMask *army_image = ImageCache::applyMask(a->getImage(c), 
-                                                             a->getMask(c), 
-                                                             colour, false);
-              image->property_pixbuf() = army_image->to_pixbuf();
-              delete army_image;
-
-              if (inhibit_needs_saving == false)
+              Glib::ustring file =File::get_basename(d.get_selected_filename());
+              if (d_armyset->replaceFileInConfigurationFile(a->getImageName(c)+".png", d.get_selected_filename()))
                 {
-                  needs_saving = true;
-                  update_window_title();
+                  a->setImageName(c, file);
+                  Gdk::RGBA colour = Shieldsetlist::getInstance()->getColor(1, c);
+                  a->instantiateImages(d_armyset->getTileSize(), c, d.get_selected_filename(), broken);
+
+                  PixMask *army_image = ImageCache::applyMask(a->getImage(c), 
+                                                              a->getMask(c), 
+                                                              colour, false);
+                  image->property_pixbuf() = army_image->to_pixbuf();
+                  delete army_image;
+
+                  if (inhibit_needs_saving == false)
+                    {
+                      needs_saving = true;
+                      update_window_title();
+                    }
                 }
+              else
+                show_add_file_error(d_armyset, *d.get_dialog(), file);
             }
         }
       if (a->getImageName(c) == "")
@@ -1472,20 +1515,11 @@ bool ArmySetWindow::load_armyset(Glib::ustring filename)
   inhibit_scrolldown=true;
   Glib::ustring old_current_save_filename = current_save_filename;
   current_save_filename = filename;
-  if (filename != autosave)
-    Armyset::copy(current_save_filename, autosave);
-  else
-    {
-      //go get the real name of the file
-      std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Armyset::file_extension);
-      if (files.size() > 0)
-        current_save_filename = files.front()->getFileName();
-    }
 
   Glib::ustring name = File::get_basename(filename);
 
   bool unsupported_version;
-  Armyset *armyset = Armyset::create(autosave, unsupported_version);
+  Armyset *armyset = Armyset::create(current_save_filename, unsupported_version);
   if (armyset == NULL)
     {
       Glib::ustring msg;
@@ -1499,16 +1533,10 @@ bool ArmySetWindow::load_armyset(Glib::ustring filename)
       dialog.hide();
       return false;
     }
-  if (File::nameEndsWith(current_save_filename, "/autosave" + Armyset::file_extension) == false)
-    {
-      RecentlyEditedFileList::getInstance()->addEntry(current_save_filename);
-      RecentlyEditedFileList::getInstance()->save();
-    }
   armies_list->clear();
   if (d_armyset)
     delete d_armyset;
   d_armyset = armyset;
-  d_armyset->setBaseName(File::get_basename(autosave));
   bool broken = false;
   d_armyset->instantiateImages(broken);
   for (Armyset::iterator i = d_armyset->begin(); i != d_armyset->end(); ++i)
@@ -1546,7 +1574,6 @@ bool ArmySetWindow::quit()
     }
   else
     window->hide();
-  File::erase(autosave);
   if (d_armyset)
     delete d_armyset;
   return true;
@@ -1596,7 +1623,7 @@ void ArmySetWindow::on_make_same_clicked()
   neutral_image_button->set_label(white_image_button->get_label());
         
   Glib::ustring white_filename = d_armyset->getFileFromConfigurationFile(a->getImageName(Shield::Colour(0)) + ".png");
-  Gtk::Image *images[MAX_PLAYERS];
+  Gtk::Image *images[MAX_PLAYERS+1];
   images[0] = NULL;
   images[1] = green_image;
   images[2] = yellow_image;
@@ -1611,16 +1638,40 @@ void ArmySetWindow::on_make_same_clicked()
       Shield::Colour s = Shield::Colour(i);
       Glib::ustring filename = d_armyset->getFileFromConfigurationFile(a->getImageName(s) + ".png");
       File::erase(filename);
-      bool broken = false;
-      d_armyset->replaceFileInConfigurationFile(a->getImageName(s)+".png", white_filename);
-      a->setImageName(s, File::get_basename(white_filename));
-      Gdk::RGBA colour = Shieldsetlist::getInstance()->getColor(1, s);
-      a->instantiateImages(d_armyset->getTileSize(), s, white_filename, broken);
-
-      PixMask *army_image = ImageCache::applyMask(a->getImage(s), 
-                                                     a->getMask(s), 
-                                                     colour, false);
-      images[i]->property_pixbuf() = army_image->to_pixbuf();
-      delete army_image;
+      Glib::ustring file = File::get_basename(white_filename);
+      if (d_armyset->replaceFileInConfigurationFile(a->getImageName(s)+".png", white_filename))
+        {
+          a->setImageName(s, file);
+          bool broken = false;
+          Gdk::RGBA colour = Shieldsetlist::getInstance()->getColor(1, s);
+          a->instantiateImages(d_armyset->getTileSize(), s, white_filename, broken);
+          PixMask *army_image = ImageCache::applyMask(a->getImage(s), 
+                                                      a->getMask(s), 
+                                                      colour, false);
+          images[i]->property_pixbuf() = army_image->to_pixbuf();
+          delete army_image;
+        }
+      else
+        {
+          show_add_file_error(d_armyset, *window, file);
+          break;
+        }
     }
+}
+
+void ArmySetWindow::show_add_file_error(Armyset *a, Gtk::Window &d, Glib::ustring file)
+{
+  Glib::ustring m = String::ucompose(_("Couldn't add %1.png to:\n%2"), file, 
+                                     a->getConfigurationFile());
+  Gtk::MessageDialog td(d, m);
+  td.run();
+  td.hide();
+}
+
+void ArmySetWindow::refresh_armies()
+{
+  Armyset::iterator j = d_armyset->begin();
+  for (Gtk::TreeNodeChildren::iterator i = armies_list->children().begin();
+       i != armies_list->children().end(); i++, j++)
+    (*i)[armies_columns.army] = *j;
 }

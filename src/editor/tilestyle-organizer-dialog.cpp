@@ -18,6 +18,7 @@
 #include <config.h>
 
 #include <sigc++/functors/mem_fun.h>
+#include <sstream>
 
 #include "tilestyle-organizer-dialog.h"
 
@@ -26,6 +27,7 @@
 #include "defs.h"
 #include "Tile.h"
 #include "ImageCache.h"
+#include "timing.h"
 
 TileStyleOrganizerDialog::TileStyleOrganizerDialog(Gtk::Window &parent, Tile *tile)
  : LwEditorDialog(parent, "tilestyle-organizer-dialog.ui")
@@ -55,7 +57,7 @@ TileStyleOrganizerDialog::TileStyleOrganizerDialog(Gtk::Window &parent, Tile *ti
     category_iconview->set_pixbuf_column(tilestyle_columns.image);
     category_iconview->set_text_column(tilestyle_columns.name);
     category_iconview->enable_model_drag_dest(targets, Gdk::ACTION_MOVE);
-    category_iconview->enable_model_drag_source(targets, Gdk::MODIFIER_MASK, Gdk::ACTION_MOVE);
+    category_iconview->enable_model_drag_source(targets, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
     category_iconview->signal_drag_data_get().connect
       (sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_category_drag_data_get));
     category_iconview->signal_drag_data_received().connect
@@ -63,12 +65,18 @@ TileStyleOrganizerDialog::TileStyleOrganizerDialog(Gtk::Window &parent, Tile *ti
        (*this, &TileStyleOrganizerDialog::on_category_drop_drag_data_received));
     category_iconview->signal_item_activated().connect
       (sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_category_tilestyle_activated));
+
+    category_iconview->signal_selection_changed().connect
+      (sigc::bind(sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_selection_made), category_iconview));
+    category_iconview->signal_drag_begin().connect
+      (sigc::bind(sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_drag_begin), category_iconview));
     unsorted_list = Gtk::ListStore::create (tilestyle_columns);
     unsorted_iconview->set_model(unsorted_list); 
     unsorted_iconview->set_pixbuf_column(tilestyle_columns.image);
     unsorted_iconview->set_text_column(tilestyle_columns.name);
     unsorted_iconview->enable_model_drag_dest(targets, Gdk::ACTION_MOVE);
-    unsorted_iconview->enable_model_drag_source(targets, Gdk::MODIFIER_MASK, Gdk::ACTION_MOVE);
+    unsorted_iconview->drag_dest_set(targets, Gtk::DEST_DEFAULT_ALL, Gdk::ACTION_MOVE);
+    unsorted_iconview->enable_model_drag_source(targets, Gdk::BUTTON1_MASK, Gdk::ACTION_MOVE);
     unsorted_iconview->signal_drag_data_get().connect
       (sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_unsorted_drag_data_get));
     unsorted_iconview->signal_drag_data_received().connect
@@ -76,36 +84,47 @@ TileStyleOrganizerDialog::TileStyleOrganizerDialog(Gtk::Window &parent, Tile *ti
        (*this, &TileStyleOrganizerDialog::on_unsorted_drop_drag_data_received));
     unsorted_iconview->signal_item_activated().connect
       (sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_unsorted_tilestyle_activated));
+    unsorted_iconview->signal_drag_begin().connect
+      (sigc::bind(sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_drag_begin), unsorted_iconview));
+    unsorted_iconview->signal_selection_changed().connect
+      (sigc::bind(sigc::mem_fun(*this, &TileStyleOrganizerDialog::on_selection_made), unsorted_iconview));
+
+    if (d_tile->front())
+      if (d_tile->front()->front())
+        if (d_tile->front()->front()->getImage())
+          {
+          unsorted_iconview->property_item_width() =
+            d_tile->front()->front()->getImage()->get_width();
+          category_iconview->property_item_width() =
+            d_tile->front()->front()->getImage()->get_width();
+          }
 
     fill_category(TileStyle::UNKNOWN);
     categories_iconview->select_path(Gtk::TreeModel::Path("0"));
+    inhibit_select = false;
 }
       
-void TileStyleOrganizerDialog::on_category_drag_data_get(const Glib::RefPtr<Gdk::DragContext> &drag_context,
-                                             Gtk::SelectionData &data,
-                                             guint info, guint time)
+void TileStyleOrganizerDialog::on_category_drag_data_get(const Glib::RefPtr<Gdk::DragContext> &drag_context, Gtk::SelectionData &data, guint info, guint time)
 {
   drag_context->get_source_window()->show();
-
   Glib::ustring s;
-  TileStyle *style = get_selected_category_tilestyle();
-  if (!style)
+  std::list<TileStyle*> st = get_selected_category_tilestyles();
+  if (st.empty() == true)
     return;
-  s = String::ucompose("0x%1", TileStyle::idToString(style->getId()));
+  for (std::list<TileStyle*>::iterator i = st.begin(); i != st.end(); i++)
+    s += String::ucompose("0x%1 ", TileStyle::idToString((*i)->getId()));
   data.set(data.get_target(), 8, (const guchar*)s.c_str(), strlen(s.c_str()));
 }
 
-void TileStyleOrganizerDialog::on_unsorted_drag_data_get(const Glib::RefPtr<Gdk::DragContext> &drag_context,
-                                             Gtk::SelectionData &data,
-                                             guint info, guint time)
+void TileStyleOrganizerDialog::on_unsorted_drag_data_get(const Glib::RefPtr<Gdk::DragContext> &drag_context, Gtk::SelectionData &data, guint info, guint time)
 {
   drag_context->get_source_window()->show();
-
   Glib::ustring s;
-  TileStyle *style = get_selected_unsorted_tilestyle();
-  if (!style)
+  std::list<TileStyle*> st = get_selected_unsorted_tilestyles();
+  if (st.empty() == true)
     return;
-  s = String::ucompose("0x%1", TileStyle::idToString(style->getId()));
+  for (std::list<TileStyle*>::iterator i = st.begin(); i != st.end(); i++)
+    s += String::ucompose("0x%1 ", TileStyle::idToString((*i)->getId()));
   data.set(data.get_target(), 8, (const guchar*)s.c_str(), strlen(s.c_str()));
 }
 
@@ -123,32 +142,38 @@ int TileStyleOrganizerDialog::get_selected_category()
   return -1;
 }
 
-TileStyle * TileStyleOrganizerDialog::get_selected_category_tilestyle ()
+std::list<TileStyle*> TileStyleOrganizerDialog::get_selected_category_tilestyles ()
 {
-  typedef std::vector<Gtk::TreeModel::Path> type_list_paths;
-  type_list_paths selected = category_iconview->get_selected_items();
+  std::list<TileStyle*> styles;
+  typedef std::vector<Gtk::TreeModel::Path> paths;
+  paths selected = category_iconview->get_selected_items();
   if (!selected.empty())
     {
-      const Gtk::TreeModel::Path &path = *selected.begin();
-      Gtk::TreeModel::iterator iter = category_list->get_iter(path);
-      Gtk::TreeModel::Row row = *iter;
-      return row[tilestyle_columns.style];
+      for (paths::iterator i = selected.begin(); i != selected.end(); i++)
+        {
+          Gtk::TreeModel::iterator iter = category_list->get_iter(*i);
+          Gtk::TreeModel::Row row = *iter;
+          styles.push_back(row[tilestyle_columns.style]);
+        }
     }
-  return NULL;
+  return styles;
 }
 
-TileStyle * TileStyleOrganizerDialog::get_selected_unsorted_tilestyle ()
+std::list<TileStyle*> TileStyleOrganizerDialog::get_selected_unsorted_tilestyles ()
 {
-  typedef std::vector<Gtk::TreeModel::Path> type_list_paths;
-  type_list_paths selected = unsorted_iconview->get_selected_items();
+  std::list<TileStyle*> styles;
+  typedef std::vector<Gtk::TreeModel::Path> paths;
+  paths selected = unsorted_iconview->get_selected_items();
   if (!selected.empty())
     {
-      const Gtk::TreeModel::Path &path = *selected.begin();
-      Gtk::TreeModel::iterator iter = unsorted_list->get_iter(path);
-      Gtk::TreeModel::Row row = *iter;
-      return row[tilestyle_columns.style];
+      for (paths::iterator i = selected.begin(); i != selected.end(); i++)
+        {
+          Gtk::TreeModel::iterator iter = unsorted_list->get_iter(*i);
+          Gtk::TreeModel::Row row = *iter;
+          styles.push_back(row[tilestyle_columns.style]);
+        }
     }
-  return NULL;
+  return styles;
 }
 
 void TileStyleOrganizerDialog::fill_in_categories()
@@ -225,24 +250,33 @@ void TileStyleOrganizerDialog::on_categories_drop_drag_data_received(const Glib:
   const int length = selection_data.get_length();
   if (length >= 0 && selection_data.get_format() == 8)
     {
-      char *end = NULL;
-      unsigned long int id = 0;
-      id = strtoul (selection_data.get_data_as_string().c_str(), &end, 0);
-      //which category?
-      int nx = 0, ny = 0;
-      categories_iconview->convert_widget_to_bin_window_coords(x, y, nx, ny);
-      const Gtk::TreeModel::Path &path = 
-        categories_iconview->get_path_at_pos(nx, ny);
-      Gtk::TreeModel::iterator iter = categories_list->get_iter(path);
-      Gtk::TreeModel::Row row = *iter;
-      TileStyle *style = d_tile->getTileStyle(id);
-      if (style)
+      std::string idstr;
+      std::istringstream ids(selection_data.get_data_as_string());
+      while (1)
         {
-          guint32 type = row[categories_columns.type];
-          style->setType(TileStyle::Type(type));
-          if (get_selected_category() != -1)
-            fill_category(get_selected_category());
-          fill_category(TileStyle::UNKNOWN);
+          idstr = "";
+          ids >> idstr;
+          if (idstr.empty() == true)
+            break;
+          char *end = NULL;
+          unsigned long int id = 0;
+          id = strtoul (idstr.c_str(), &end, 0);
+          //which category?
+          int nx = 0, ny = 0;
+          categories_iconview->convert_widget_to_bin_window_coords(x, y, nx, ny);
+          const Gtk::TreeModel::Path &path = 
+            categories_iconview->get_path_at_pos(nx, ny);
+          Gtk::TreeModel::iterator iter = categories_list->get_iter(path);
+          Gtk::TreeModel::Row row = *iter;
+          TileStyle *style = d_tile->getTileStyle(id);
+          if (style)
+            {
+              guint32 type = row[categories_columns.type];
+              style->setType(TileStyle::Type(type));
+              if (get_selected_category() != -1)
+                fill_category(get_selected_category());
+              fill_category(TileStyle::UNKNOWN);
+            }
         }
     }
 
@@ -254,18 +288,27 @@ void TileStyleOrganizerDialog::on_category_drop_drag_data_received(const Glib::R
   const int length = selection_data.get_length();
   if (length >= 0 && selection_data.get_format() == 8)
     {
-      char *end = NULL;
-      unsigned long int id = 0;
-      id = strtoul (selection_data.get_data_as_string().c_str(), &end, 0);
-      TileStyle *style = d_tile->getTileStyle(id);
-      if (style)
+      std::string idstr;
+      std::istringstream ids(selection_data.get_data_as_string());
+      while (1)
         {
-          int type = get_selected_category();
-          if (type != -1)
+          idstr = "";
+          ids >> idstr;
+          if (idstr.empty() == true)
+            break;
+          char *end = NULL;
+          unsigned long int id = 0;
+          id = strtoul (idstr.c_str(), &end, 0);
+          TileStyle *style = d_tile->getTileStyle(id);
+          if (style)
             {
-              style->setType(TileStyle::Type(type));
-              fill_category(type);
-              fill_category(TileStyle::UNKNOWN);
+              int type = get_selected_category();
+              if (type != -1)
+                {
+                  style->setType(TileStyle::Type(type));
+                  fill_category(type);
+                  fill_category(TileStyle::UNKNOWN);
+                }
             }
         }
     }
@@ -277,17 +320,26 @@ void TileStyleOrganizerDialog::on_unsorted_drop_drag_data_received(const Glib::R
   const int length = selection_data.get_length();
   if (length >= 0 && selection_data.get_format() == 8)
     {
-      char *end = NULL;
-      unsigned long int id = 0;
-      id = strtoul (selection_data.get_data_as_string().c_str(), &end, 0);
-      TileStyle *style = d_tile->getTileStyle(id);
-      if (style)
+      std::string idstr;
+      std::istringstream ids(selection_data.get_data_as_string());
+      while (1)
         {
-          style->setType(TileStyle::UNKNOWN);
-          fill_category(TileStyle::UNKNOWN);
-          int type = get_selected_category();
-          if (type != -1)
-            fill_category(TileStyle::Type(type));
+          idstr = "";
+          ids >> idstr;
+          if (idstr.empty() == true)
+            break;
+          char *end = NULL;
+          unsigned long int id = 0;
+          id = strtoul (idstr.c_str(), &end, 0);
+          TileStyle *style = d_tile->getTileStyle(id);
+          if (style)
+            {
+              style->setType(TileStyle::UNKNOWN);
+              fill_category(TileStyle::UNKNOWN);
+              int type = get_selected_category();
+              if (type != -1)
+                fill_category(TileStyle::Type(type));
+            }
         }
     }
   context->drag_finish (false, false, time);
@@ -307,4 +359,62 @@ void TileStyleOrganizerDialog::on_unsorted_tilestyle_activated(const Gtk::TreeMo
   Gtk::TreeModel::Row row = *iter;
   TileStyle *style = row[tilestyle_columns.style];
   tilestyle_selected.emit(style->getId());
+}
+
+/**
+ * This is how we're getting multiple drag to work.
+ * 1. we remember the last multiple selection. (last_multiple_selection)
+ * 2. we remember the time we made it. (time_of_last_selection)
+ * 3. when we begin a drag, the icon we are dragging gets selected, thereby
+ * nullifying the multiple selection.  it's a good thing we already have it
+ * remembered!  so we check to see if that happened really recently, and if it
+ * did, we select what we had selected before the drag started.
+ * 4. we take special care to forget the multiple selections later on.
+ * 5. we deselect the other iconview when we make a selection, and then take
+ * special care not to let a zero selection mess up our state.
+ */
+void TileStyleOrganizerDialog::on_drag_begin(const Glib::RefPtr<Gdk::DragContext> &context, Gtk::IconView *iconview)
+{
+  Glib::TimeVal now;
+  now.assign_current_time();
+  now.subtract(time_of_last_selection);
+  double secs = now.as_double();
+  if (secs < 0.5)
+    {
+      inhibit_select = true;
+      for (unsigned int i = 0; i < last_multiple_selection.size(); i++)
+        iconview->select_path(last_multiple_selection[i]);
+      inhibit_select = false;
+    }
+  last_multiple_selection.clear();
+}
+
+void TileStyleOrganizerDialog::on_selection_made(Gtk::IconView *iconview)
+{
+  if (inhibit_select)
+    return;
+  if (iconview->get_selected_items().size() == 0)
+    return;
+  if (iconview->get_selected_items().size() > 0)
+    time_of_last_selection.assign_current_time();
+  if (iconview->get_selected_items().size() > 1)
+    {
+      selection_timeout_handler.disconnect();
+      last_multiple_selection = iconview->get_selected_items();
+    }
+  else
+    {
+      selection_timeout_handler.disconnect();
+      selection_timeout_handler = Timing::instance().register_timer (sigc::mem_fun(*this, &TileStyleOrganizerDialog::expire_selection), 1000);
+    }
+  if (iconview == unsorted_iconview)
+    category_iconview->unselect_all();
+  else
+    unsorted_iconview->unselect_all();
+}
+
+bool TileStyleOrganizerDialog::expire_selection()
+{
+  last_multiple_selection.clear();
+  return Timing::STOP;
 }

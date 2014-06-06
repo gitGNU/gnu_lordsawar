@@ -1,4 +1,4 @@
-//  Copyright (C) 2008, Ben Asselstine
+//  Copyright (C) 2008, 2014 2014 Ben Asselstine
 //
 //  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -15,8 +15,8 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef RENAMABLERUIN_H
-#define RENAMABLERUIN_H
+#ifndef RENAMABLE_LOCATION_H
+#define RENAMABLE_LOCATION_H
 
 #include "defs.h"
 #include "vector.h"

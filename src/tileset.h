@@ -189,6 +189,8 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 
 	Glib::ustring getConfigurationFile() const;
 
+        int countTilesWithPattern(SmallTile::Pattern pattern) const;
+
 	// Set Methods
 
 	//! Set the basename of where this Tileset resides on disk.
@@ -287,8 +289,15 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	void setNumberOfSmallSelectorFrames(guint32 s) {smallselector.reserve(s);smallselectormask.reserve(s); number_of_small_selector_frames = s;};
 
         Glib::ustring getFileFromConfigurationFile(Glib::ustring file);
+        //! Replaces file with new_file, or adds new_file if file not present.
+        /**
+         * @return returns True if successful.
+         */
         bool replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file);
         bool addFileInConfigurationFile(Glib::ustring new_file);
+
+        //! clear the tileset and add the normal tiles to it.
+        void populateWithDefaultTiles();
 
         //! Delete the tileset's temporary directory.
         void clean_tmp_dir() const;

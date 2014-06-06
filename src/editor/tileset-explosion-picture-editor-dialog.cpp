@@ -28,6 +28,8 @@
 #include "ImageCache.h"
 #include "tarhelper.h"
 #include "tile-preview-scene.h"
+#include "tileset-window.h"
+#include "past-chooser.h"
 
 TilesetExplosionPictureEditorDialog::TilesetExplosionPictureEditorDialog(Gtk::Window &parent, Tileset *tileset)
  : LwEditorDialog(parent, "tileset-explosion-picture-editor-dialog.ui")
@@ -62,11 +64,20 @@ int TilesetExplosionPictureEditorDialog::run()
     dialog->show_all();
     int response = dialog->run();
 
+    if (response == Gtk::RESPONSE_ACCEPT)
+      PastChooser::getInstance()->set_dir(explosion_filechooserbutton);
+
     if (std::find(delfiles.begin(), delfiles.end(), selected_filename)
         == delfiles.end() && response == Gtk::RESPONSE_ACCEPT)
       {
-        d_tileset->replaceFileInConfigurationFile(d_tileset->getExplosionFilename()+".png", selected_filename);
-        d_tileset->setExplosionFilename(File::get_basename(selected_filename));
+        Glib::ustring file = File::get_basename(selected_filename);
+        if (d_tileset->replaceFileInConfigurationFile(d_tileset->getExplosionFilename()+".png", selected_filename))
+          d_tileset->setExplosionFilename(file);
+        else
+          {
+            TileSetWindow::show_add_file_error (d_tileset, *dialog, file);
+            response =Gtk::RESPONSE_CANCEL;
+          }
       }
     else if (response == Gtk::RESPONSE_ACCEPT)
       response = Gtk::RESPONSE_CANCEL;
@@ -190,4 +201,23 @@ void TilesetExplosionPictureEditorDialog::update_scene(TilePreviewScene *scene,
   explosion->composite (scene_pixbuf, i, j, explosion->get_width(), explosion->get_height(), i, j, 1, 1, Gdk::INTERP_NEAREST, 255);
   scene_image->property_pixbuf() = scene_pixbuf;
   scene_image->queue_draw();
+}
+
+void TilesetExplosionPictureEditorDialog::on_add(Gtk::Widget *widget)
+{
+  if (widget)
+    {
+      Gtk::Button *button = dynamic_cast<Gtk::Button*>(widget);
+      button->signal_clicked().connect 
+        (sigc::mem_fun
+         (*this, &TilesetExplosionPictureEditorDialog::on_button_pressed));
+    }
+}
+
+void TilesetExplosionPictureEditorDialog::on_button_pressed()
+{
+  Glib::ustring d = 
+    PastChooser::getInstance()->get_dir(explosion_filechooserbutton);
+  if (d.empty() == false)
+    explosion_filechooserbutton->set_current_folder(d);
 }

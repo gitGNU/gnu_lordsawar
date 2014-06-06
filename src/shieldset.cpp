@@ -250,7 +250,7 @@ bool Shieldset::save(Glib::ustring filename, Glib::ustring extension) const
   File::erase(tmpfile);
   if (broken == false)
     {
-      if (File::copy(tmptar, goodfilename) == 0)
+      if (File::copy(tmptar, goodfilename) == true)
         File::erase(tmptar);
     }
 
@@ -434,10 +434,10 @@ bool Shieldset::replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
   if (broken == false)
     {
-      broken = t.replaceFile(file, new_file);
+      broken = !t.replaceFile(file, new_file);
       t.Close();
     }
-  return broken;
+  return !broken;
 }
 
 bool Shieldset::copy(Glib::ustring src, Glib::ustring dest)

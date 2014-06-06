@@ -31,20 +31,16 @@
  *
  * the shieldset is required to define the mask colours.
  *
- * the only parameter means don't show the masked image in all colours,
- * just show it in one colour.  -1 means all.  non-negative is one of the
- * Shield::Colour enumerations.
  */
 class Shieldset;
 class MaskedImageEditorDialog: public LwEditorDialog
 {
  public:
-    MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int only_show_colour, Shieldset *shieldset = NULL);
+    MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, Shieldset *shieldset = NULL);
     ~MaskedImageEditorDialog() {};
 
     void set_title(Glib::ustring t) {dialog->set_title(t);};
 
-    void set_only_show_one(Shield::Colour c){only_show=true;only_show_colour=c;};
     Glib::ustring get_selected_filename() {return target_filename;};
     int run();
     
@@ -61,11 +57,11 @@ class MaskedImageEditorDialog: public LwEditorDialog
     Gtk::Image *image_black;
     Gtk::Image *image_neutral;
     Shieldset * d_shieldset;
-    bool only_show;
-    Shield::Colour only_show_colour;
     void on_image_chosen();
     void show_image(Glib::ustring filename);
     void update_panel();
+    void on_add(Gtk::Widget *widget);
+    void on_button_pressed();
 
 };
 

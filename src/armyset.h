@@ -280,6 +280,10 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	const ArmyProto *getRandomAwardableAlly() const;
 
         Glib::ustring getFileFromConfigurationFile(Glib::ustring file);
+        //! Replaces file with new_file, or adds new_file if file not present.
+        /**
+         * @return returns True if successful.
+         */
         bool replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file);
         //! Load the armyset again.
         void reload(bool &broken);

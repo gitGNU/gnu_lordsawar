@@ -194,6 +194,10 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	bool validateShieldImages(Shield::Colour c) const;
 
         Glib::ustring getFileFromConfigurationFile(Glib::ustring file);
+        //! Replaces file with new_file, or adds new_file if file not present.
+        /**
+         * @return returns True if successful.
+         */
         bool replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file);
         guint32 countEmptyImageNames() const;
 

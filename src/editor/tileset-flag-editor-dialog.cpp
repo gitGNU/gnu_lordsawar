@@ -22,11 +22,13 @@
 
 #include "tileset-flag-editor-dialog.h"
 
+#include "tileset-window.h"
 #include "ucompose.hpp"
 #include "defs.h"
 #include "File.h"
 #include "shieldsetlist.h"
 #include "ImageCache.h"
+#include "past-chooser.h"
 
 TilesetFlagEditorDialog::TilesetFlagEditorDialog(Gtk::Window &parent, Tileset *tileset)
  : LwEditorDialog(parent, "tileset-flag-editor-dialog.ui")
@@ -51,11 +53,21 @@ int TilesetFlagEditorDialog::run()
     dialog->show_all();
     int response = dialog->run();
 
+    if (response == Gtk::RESPONSE_ACCEPT)
+      PastChooser::getInstance()->set_dir(flag_filechooserbutton);
+
+
     if (std::find(delfiles.begin(), delfiles.end(), selected_filename)
         == delfiles.end() && response == Gtk::RESPONSE_ACCEPT)
       {
-        d_tileset->replaceFileInConfigurationFile(d_tileset->getFlagsFilename()+".png", selected_filename);
-        d_tileset->setFlagsFilename(File::get_basename(selected_filename));
+        Glib::ustring file = File::get_basename(selected_filename);
+        if (d_tileset->replaceFileInConfigurationFile(d_tileset->getFlagsFilename()+".png", selected_filename))
+          d_tileset->setFlagsFilename(file);
+        else
+          {
+            TileSetWindow::show_add_file_error (d_tileset, *dialog, file);
+            response = Gtk::RESPONSE_CANCEL;
+          }
       }
     else if (response == Gtk::RESPONSE_ACCEPT)
       response = Gtk::RESPONSE_CANCEL;
@@ -215,4 +227,21 @@ void TilesetFlagEditorDialog::on_heartbeat()
     }
   preview_table->show_all();
 
+}
+
+void TilesetFlagEditorDialog::on_add(Gtk::Widget *widget)
+{
+  if (widget)
+    {
+      Gtk::Button *button = dynamic_cast<Gtk::Button*>(widget);
+      button->signal_clicked().connect
+        (sigc::mem_fun(*this, &TilesetFlagEditorDialog::on_button_pressed));
+    }
+}
+
+void TilesetFlagEditorDialog::on_button_pressed()
+{
+  Glib::ustring d = PastChooser::getInstance()->get_dir(flag_filechooserbutton);
+  if (d.empty() == false)
+    flag_filechooserbutton->set_current_folder(d);
 }

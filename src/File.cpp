@@ -247,26 +247,26 @@ Glib::ustring File::get_basename(Glib::ustring path, bool keep_ext)
   return file;
 }
 //copy_file taken from ardour-2.0rc2, gplv2+.
-int File::copy (Glib::ustring from, Glib::ustring to)
+bool File::copy (Glib::ustring from, Glib::ustring to)
 {
   std::ifstream in (from.c_str());
   std::ofstream out (to.c_str());
 
   if (!in)
-    return -1;
+    return false;
 
   if (!out)
-    return -1;
+    return false;
 
   out << in.rdbuf();
 
   if (!in || !out) 
     {
       unlink (to.c_str());
-      return -1;
+      return false;
     }
 
-  return 0;
+  return true;
 }
 bool File::create_dir(Glib::ustring dir)
 {

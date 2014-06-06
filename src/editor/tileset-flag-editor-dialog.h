@@ -56,6 +56,8 @@ class TilesetFlagEditorDialog: public LwEditorDialog
     std::map<guint32, std::list<Glib::RefPtr<Gdk::Pixbuf> >::iterator> frame;
 
     void on_heartbeat();
+    void on_add(Gtk::Widget *widget);
+    void on_button_pressed();
 
 };
 

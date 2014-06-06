@@ -42,7 +42,6 @@ class CitySetWindow: public sigc::trackable
  private:
     Gtk::Window* window;
     Glib::ustring current_save_filename;
-    Glib::ustring autosave; //filename
     Cityset *d_cityset; //current cityset
     bool needs_saving;
     Gtk::MenuItem *new_cityset_menuitem;
@@ -98,6 +97,7 @@ class CitySetWindow: public sigc::trackable
     void on_change_templepic_clicked();
     void on_change_towerpics_clicked();
     void update_window_title();
+    void show_add_file_error(Gtk::Dialog &d, Glib::ustring file);
 };
 
 #endif

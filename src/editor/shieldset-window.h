@@ -24,9 +24,10 @@
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
 
-#include "shield.h"
 #include "shieldset.h"
+#include "shieldstyle.h"
 
+class Shield;
 //! Shieldset Editor.  Edit an Shieldset.
 class ShieldSetWindow: public sigc::trackable
 {
@@ -37,14 +38,13 @@ class ShieldSetWindow: public sigc::trackable
     void show();
     void hide();
 
-    Gtk::Window &get_window() { return *window; }
+    Gtk::Window &get_window() { return *window; };
 
     sigc::signal<void, guint32> shieldset_saved;
 
  private:
     Gtk::Window* window;
     Glib::ustring current_save_filename;
-    Glib::ustring autosave; //filename
     Shieldset *d_shieldset; //current shieldset
     Shield *d_shield; //current shield
     bool needs_saving;
@@ -90,9 +90,7 @@ class ShieldSetWindow: public sigc::trackable
     void on_edit_copy_shields_activated();
     void on_help_about_activated();
     void on_shield_selected();
-    void on_change_smallpic_clicked();
-    void on_change_mediumpic_clicked();
-    void on_change_largepic_clicked();
+    void on_shieldpic_changed(ShieldStyle::Type type);
     void on_player_color_changed();
 
     void fill_shield_info(Shield *shield);
@@ -107,6 +105,8 @@ class ShieldSetWindow: public sigc::trackable
     void update_window_title();
     void show_shield(ShieldStyle *ss, Shield *s, Gtk::Image *image);
     void refresh_shields();
+    void process_shieldstyle(ShieldStyle *ss, Gtk::FileChooserDialog *d);
+    Gtk::FileChooserDialog* shield_filechooser (Shield *s, ShieldStyle::Type t);
 };
 
 #endif

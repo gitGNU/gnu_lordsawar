@@ -18,16 +18,15 @@
 #include <config.h>
 
 #include <iostream>
-#include <errno.h>
 
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 #include <algorithm>
+#include <errno.h>
 
 #include <gtkmm.h>
 #include "shieldset-window.h"
 #include "shieldset-info-dialog.h"
-#include "masked-image-editor-dialog.h"
 #include "gui/image-helpers.h"
 #include "defs.h"
 #include "Configuration.h"
@@ -41,6 +40,7 @@
 #include "recently-edited-file.h"
 #include "editor-quit-dialog.h"
 #include "GameMap.h"
+#include "past-chooser.h"
 
 Glib::ustring small_none = N_("no small shield set");
 Glib::ustring medium_none = N_("no medium shield set");
@@ -90,13 +90,16 @@ ShieldSetWindow::ShieldSetWindow(Gtk::Window *parent, Glib::ustring load_filenam
        (sigc::mem_fun(this, &ShieldSetWindow::on_help_about_activated));
     xml->get_widget ("change_smallpic_button", change_smallpic_button);
     change_smallpic_button->signal_clicked().connect(
-	sigc::mem_fun(this, &ShieldSetWindow::on_change_smallpic_clicked));
+	sigc::bind(sigc::mem_fun(this, &ShieldSetWindow::on_shieldpic_changed),
+                   ShieldStyle::SMALL));
     xml->get_widget ("change_mediumpic_button", change_mediumpic_button);
     change_mediumpic_button->signal_clicked().connect(
-	sigc::mem_fun(this, &ShieldSetWindow::on_change_mediumpic_clicked));
+	sigc::bind(sigc::mem_fun(this, &ShieldSetWindow::on_shieldpic_changed),
+                   ShieldStyle::MEDIUM));
     xml->get_widget ("change_largepic_button", change_largepic_button);
     change_largepic_button->signal_clicked().connect(
-	sigc::mem_fun(this, &ShieldSetWindow::on_change_largepic_clicked));
+	sigc::bind(sigc::mem_fun(this, &ShieldSetWindow::on_shieldpic_changed),
+                   ShieldStyle::LARGE));
     xml->get_widget ("player_colorbutton", player_colorbutton);
     player_colorbutton->signal_color_set().connect
       (sigc::mem_fun(this, &ShieldSetWindow::on_player_color_changed));
@@ -408,6 +411,8 @@ bool ShieldSetWindow::save_current_shieldset()
   bool ok = d_shieldset->save(current_save_filename, Shieldset::file_extension);
   if (ok)
     {
+      if (Shieldsetlist::getInstance()->reload(d_shieldset->getId()))
+        refresh_shields();
       RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
       RecentlyEditedFileList::getInstance()->save();
       needs_saving = false;
@@ -606,7 +611,7 @@ void ShieldSetWindow::on_quit_activated()
   quit();
 }
     
-void ShieldSetWindow::on_change_smallpic_clicked()
+void ShieldSetWindow::on_shieldpic_changed(ShieldStyle::Type type)
 {
   Gtk::TreeModel::iterator iterrow = 
     shields_treeview->get_selection()->get_selected();
@@ -616,100 +621,21 @@ void ShieldSetWindow::on_change_smallpic_clicked()
       Gtk::TreeModel::Row row = *iterrow;
       Shield *shield = row[shields_columns.shield];
       Glib::ustring filename = "";
-      ShieldStyle *ss = shield->getFirstShieldstyle(ShieldStyle::SMALL);
+      ShieldStyle *ss = shield->getFirstShieldstyle(type);
       if (ss->getImageName() != "")
 	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
-      MaskedImageEditorDialog d(*window, filename, shield->getOwner(), d_shieldset);
-      d.set_title(_("Change Small Shield"));
-      d.run();
+      Gtk::FileChooserDialog *d = shield_filechooser (shield, type);
+      int response = d->run();
       if (filename != "")
         File::erase(filename);
-      if (d.get_selected_filename() != "")
+      if (response == Gtk::RESPONSE_ACCEPT && d->get_filename() != "")
 	{
-	  Glib::ustring file = File::get_basename(d.get_selected_filename());
-	  if (d.get_selected_filename() != filename)
-	    {
-              bool broken = false;
-              d_shieldset->replaceFileInConfigurationFile(ss->getImageName()+".png", d.get_selected_filename());
-              ss->setImageName(file);
-              ss->instantiateImages(d.get_selected_filename(), d_shieldset, 
-                                    broken);
-              d_shieldset->setHeightsAndWidthsFromImages();
-              needs_saving = true;
-              update_window_title();
-	    }
+	  if (d->get_filename() != filename)
+            process_shieldstyle(ss, d);
 	  update_shield_panel();
 	}
-    }
-}
-
-void ShieldSetWindow::on_change_mediumpic_clicked()
-{
-  Gtk::TreeModel::iterator iterrow = 
-    shields_treeview->get_selection()->get_selected();
-
-  if (iterrow) 
-    {
-      Gtk::TreeModel::Row row = *iterrow;
-      Shield *shield = row[shields_columns.shield];
-      Glib::ustring filename = "";
-      ShieldStyle *ss = shield->getFirstShieldstyle(ShieldStyle::MEDIUM);
-      if (ss->getImageName() != "")
-	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
-      MaskedImageEditorDialog d(*window, filename, shield->getOwner(), d_shieldset);
-      d.set_title(_("Change Medium Shield"));
-      d.run();
-      if (d.get_selected_filename() != "")
-	{
-	  Glib::ustring file = File::get_basename(d.get_selected_filename());
-	  if (d.get_selected_filename() != d_shieldset->getFile(file))
-            {
-              bool broken = false;
-              d_shieldset->replaceFileInConfigurationFile(ss->getImageName()+".png", d.get_selected_filename());
-              ss->setImageName(file);
-              ss->instantiateImages(d.get_selected_filename(), d_shieldset, 
-                                    broken);
-              d_shieldset->setHeightsAndWidthsFromImages();
-              needs_saving = true;
-              update_window_title();
-            }
-	  update_shield_panel();
-	}
-    }
-}
-
-void ShieldSetWindow::on_change_largepic_clicked()
-{
-  Gtk::TreeModel::iterator iterrow = 
-    shields_treeview->get_selection()->get_selected();
-
-  if (iterrow) 
-    {
-      Gtk::TreeModel::Row row = *iterrow;
-      Shield *shield = row[shields_columns.shield];
-      Glib::ustring filename = "";
-      ShieldStyle *ss = shield->getFirstShieldstyle(ShieldStyle::LARGE);
-      if (ss->getImageName() != "")
-	filename = d_shieldset->getFileFromConfigurationFile(ss->getImageName() +".png");
-      MaskedImageEditorDialog d(*window, filename, shield->getOwner(), d_shieldset);
-      d.set_title(_("Change Large Shield"));
-      d.run();
-      if (d.get_selected_filename() != "")
-	{
-	  Glib::ustring file = File::get_basename(d.get_selected_filename());
-	  if (d.get_selected_filename() != d_shieldset->getFile(file))
-            {
-              bool broken = false;
-              d_shieldset->replaceFileInConfigurationFile(ss->getImageName()+".png", d.get_selected_filename());
-              ss->setImageName(file);
-              ss->instantiateImages(d.get_selected_filename(), d_shieldset, 
-                                    broken);
-              d_shieldset->setHeightsAndWidthsFromImages();
-              needs_saving = true;
-              update_window_title();
-            }
-	  update_shield_panel();
-	}
+      d->hide();
+      delete d;
     }
 }
 
@@ -731,7 +657,7 @@ void ShieldSetWindow::on_player_color_changed()
 
 void ShieldSetWindow::addNewShield(Shield::Colour owner, Gdk::RGBA colour)
 {
-  Glib::ustring name = Shield::colourToString(owner);
+  Glib::ustring name = Shield::colourToFriendlyName(owner);
   Shield *shield = new Shield(owner, colour);
   if (shield)
     {
@@ -747,7 +673,8 @@ void ShieldSetWindow::addNewShield(Shield::Colour owner, Gdk::RGBA colour)
 
 void ShieldSetWindow::loadShield(Shield *shield)
 {
-  Glib::ustring name = Shield::colourToString(Shield::Colour(shield->getOwner()));
+  Glib::ustring name = 
+    Shield::colourToFriendlyName(Shield::Colour(shield->getOwner()));
   Gtk::TreeIter i = shields_list->append();
   (*i)[shields_columns.name] = name;
   (*i)[shields_columns.shield] = shield;
@@ -794,4 +721,46 @@ void ShieldSetWindow::refresh_shields()
       (*selection->get_selected())[shields_columns.shield] = *i;
     }
   shields_treeview->set_cursor (Gtk::TreePath ("0"));
+}
+
+Gtk::FileChooserDialog* ShieldSetWindow::shield_filechooser(Shield *s, ShieldStyle::Type type)
+{
+  Glib::ustring title = String::ucompose 
+    (_("Choose a %1 %2 Shield image"), 
+     ShieldStyle::shieldStyleTypeToFriendlyName(type),
+     Shield::colourToFriendlyName(Shield::Colour(s->getOwner())));
+  Gtk::FileChooserDialog *d = new Gtk::FileChooserDialog(*window, title);
+  Glib::RefPtr<Gtk::FileFilter> png_filter = Gtk::FileFilter::create();
+  png_filter->set_name(_("PNG files (*.png)"));
+  png_filter->add_pattern("*.png");
+  d->add_filter(png_filter);
+  d->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  d->add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
+  d->set_default_response(Gtk::RESPONSE_ACCEPT);
+  d->set_current_folder(PastChooser::getInstance()->get_dir(d));
+  return d;
+}
+
+void ShieldSetWindow::process_shieldstyle(ShieldStyle *ss, Gtk::FileChooserDialog *d)
+{
+  PastChooser::getInstance()->set_dir(d);
+  Glib::ustring file = File::get_basename(d->get_filename());
+  if (d_shieldset->replaceFileInConfigurationFile(ss->getImageName()+".png", 
+                                                  d->get_filename()))
+    {
+      bool broken = false;
+      ss->setImageName(file);
+      ss->instantiateImages(d->get_filename(), d_shieldset, broken);
+      d_shieldset->setHeightsAndWidthsFromImages();
+      needs_saving = true;
+      update_window_title();
+    }
+  else
+    {
+      Gtk::MessageDialog 
+        td(*d, String::ucompose(_("Couldn't add %1.png to:\n%2"),
+                               file, d_shieldset->getConfigurationFile()));
+      td.run();
+      td.hide();
+    }
 }

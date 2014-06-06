@@ -29,16 +29,12 @@
 #include "shieldsetlist.h"
 #include "shieldset.h"
 #include "ImageCache.h"
+#include "past-chooser.h"
 
 
-MaskedImageEditorDialog::MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int only, Shieldset *shieldset)
+MaskedImageEditorDialog::MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, Shieldset *shieldset)
  : LwEditorDialog(parent, "masked-image-editor-dialog.ui")
 {
-  if (only >= 0)
-    {
-      only_show = true;
-      only_show_colour = Shield::Colour(only);
-    }
   d_shieldset = shieldset;
     xml->get_widget("filechooserbutton", filechooserbutton);
     xml->get_widget("image_white", image_white);
@@ -55,14 +51,23 @@ MaskedImageEditorDialog::MaskedImageEditorDialog(Gtk::Window &parent, Glib::ustr
     update_panel();
     filechooserbutton->signal_file_set().connect
        (sigc::mem_fun(*this, &MaskedImageEditorDialog::on_image_chosen));
+    filechooserbutton->signal_set_focus_child().connect
+      (sigc::mem_fun(*this, &MaskedImageEditorDialog::on_add));
+    Glib::RefPtr<Gtk::FileFilter> png_filter = Gtk::FileFilter::create();
+    png_filter->set_name(_("PNG files (*.png)"));
+    png_filter->add_pattern("*.png");
+    filechooserbutton->add_filter(png_filter);
 }
 
 int MaskedImageEditorDialog::run()
 {
+    filechooserbutton->set_title(dialog->get_title());
     dialog->show_all();
     int response = dialog->run();
     if (response != Gtk::RESPONSE_ACCEPT)
       target_filename = "";
+    else
+      PastChooser::getInstance()->set_dir(filechooserbutton);
 
     return response;
 }
@@ -120,15 +125,6 @@ void MaskedImageEditorDialog::show_image(Glib::ustring filename)
 	default : break;
 	}
 
-      if (only_show)
-        {
-          if (i != only_show_colour)
-            {
-              image->property_visible() = false;
-              image->property_no_show_all() = true;
-              continue;
-            }
-        }
       if (d_shieldset == NULL)
         d_shieldset = Shieldsetlist::getInstance()->getShieldset(1);
       Gdk::RGBA colour = d_shieldset->getColor(i);
@@ -139,4 +135,21 @@ void MaskedImageEditorDialog::show_image(Glib::ustring filename)
     }
   delete half[0];
   delete half[1];
+}
+
+void MaskedImageEditorDialog::on_add(Gtk::Widget *widget)
+{
+  if (widget)
+    {
+      Gtk::Button *button = dynamic_cast<Gtk::Button*>(widget);
+      button->signal_clicked().connect
+        (sigc::mem_fun(*this, &MaskedImageEditorDialog::on_button_pressed));
+    }
+}
+
+void MaskedImageEditorDialog::on_button_pressed()
+{
+  Glib::ustring d = PastChooser::getInstance()->get_dir(filechooserbutton);
+  if (d.empty() == false)
+    filechooserbutton->set_current_folder(d);
 }

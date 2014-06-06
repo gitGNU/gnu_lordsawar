@@ -42,14 +42,15 @@ class TileSetWindow: public sigc::trackable
 
     sigc::signal<void, guint32> tileset_saved;
 
+    static void show_add_file_error(Tileset *t, Gtk::Dialog &d, Glib::ustring file);
  private:
     Gtk::Window* window;
     Glib::ustring current_save_filename;
-    Glib::ustring autosave; //filename
     Tileset *d_tileset; //current tileset
     Tile *d_tile; //current tile
     bool needs_saving;
     bool inhibit_needs_saving;
+    bool inhibit_updates;
     Gtk::Frame *tilestyleset_frame;
     Gtk::Frame *tilestyle_frame;
     Gtk::Entry *name_entry;
@@ -196,6 +197,8 @@ class TileSetWindow: public sigc::trackable
     void select_tilestyleset(TileStyleSet *set);
     void select_tilestyle(TileStyle *style);
 
+    void refresh_tiles();
+    
 };
 
 #endif

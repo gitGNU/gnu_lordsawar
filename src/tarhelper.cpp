@@ -339,10 +339,14 @@ bool Tar_Helper::replaceFile(Glib::ustring filename, Glib::ustring newfilename)
   tar_close(new_tar);
   Close();
 
-  File::copy(new_tar_file, orig_tar_file);
-  File::erase(new_tar_file);
-  File::erase_dir(newtmpoutdir);
-  broken = Open (orig_tar_file, std::ios::in);
+  if (File::copy(new_tar_file, orig_tar_file) == false)
+    broken = true;
+  else
+    {
+      File::erase(new_tar_file);
+      File::erase_dir(newtmpoutdir);
+      broken = Open (orig_tar_file, std::ios::in);
+    }
   return !broken;
 }
 

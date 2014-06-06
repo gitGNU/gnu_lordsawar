@@ -117,7 +117,7 @@ Tileset::Tileset (const Tileset& t)
     }
   for (unsigned int i = 0; i < FLAG_TYPES; i++)
     {
-      if (flagmask[i])
+      if (t.flagmask[i])
         flagmask[i] = t.flagmask[i]->copy();
       else
         flagmask[i] = NULL;
@@ -164,7 +164,6 @@ Tileset::Tileset (const Tileset& t)
 	{
 	  for (std::vector<TileStyle*>::const_iterator k = (*j)->begin(); k != (*j)->end(); k++)
             {
-      
               d_tilestyles[(*k)->getId()] = *k;
             }
         }
@@ -390,7 +389,7 @@ bool Tileset::save(Glib::ustring filename, Glib::ustring extension) const
   File::erase(tmpfile);
   if (broken == false)
     {
-      if (File::copy(tmptar, goodfilename) == 0)
+      if (File::copy(tmptar, goodfilename) == true)
         File::erase(tmptar);
     }
 
@@ -452,14 +451,10 @@ bool Tileset::validate() const
   if (size() == 0)
     return false;
   for (Tileset::const_iterator i = begin(); i != end(); i++)
-    {
-      if ((*i)->validate() == false)
-	{
-	  fprintf (stderr, "`%s' tile fails validation in %s\n", 
-		   (*i)->getName().c_str(), getConfigurationFile().c_str());
-	  return false;
-	}
-    }
+    if ((*i)->validate() == false)
+      return false;
+  if (countTilesWithPattern(SmallTile::SUNKEN_RADIAL) > 1)
+    return false;
   if (getIndex(Tile::GRASS) == -1)
     return false;
   if (getIndex(Tile::WATER) == -1)
@@ -885,16 +880,17 @@ bool Tileset::addFileInConfigurationFile(Glib::ustring new_file)
 {
   return replaceFileInConfigurationFile("", new_file);
 }
+
 bool Tileset::replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file)
 {
   bool broken = false;
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
   if (broken == false)
     {
-      broken = t.replaceFile(file, new_file);
+      broken = !t.replaceFile(file, new_file);
       t.Close();
     }
-  return broken;
+  return !broken;
 }
 
 guint32 Tileset::calculate_preferred_tile_size() const
@@ -908,9 +904,9 @@ guint32 Tileset::calculate_preferred_tile_size() const
     sizecounts[bridgepic[0]->get_unscaled_width()]++;
   if (flagpic[0])
     sizecounts[flagpic[0]->get_unscaled_width()]++;
-  if (selector[0])
+  if (selector.empty() == false)
     sizecounts[selector[0]->get_unscaled_width()]++;
-  if (smallselector[0])
+  if (smallselector.empty() == false)
     sizecounts[smallselector[0]->get_unscaled_width()]++;
   if (fogpic[0])
     sizecounts[fogpic[0]->get_unscaled_width()]++;
@@ -1022,5 +1018,30 @@ Tileset* Tileset::copy(const Tileset *tileset)
   if (!tileset)
     return NULL;
   return new Tileset(*tileset);
+}
+
+void Tileset::populateWithDefaultTiles()
+{
+  uninstantiateImages();
+  for (unsigned int i=0; i < size(); i++)
+    delete (*this)[i];
+  clear();
+  push_back(Tile::get_default_grass());
+  push_back(Tile::get_default_water());
+  push_back(Tile::get_default_forest());
+  push_back(Tile::get_default_hills());
+  push_back(Tile::get_default_mountains());
+  push_back(Tile::get_default_swamp());
+}
+
+int Tileset::countTilesWithPattern(SmallTile::Pattern pattern) const
+{
+  int radial_count = 0;
+  for (Tileset::const_iterator i = begin(); i != end(); i++)
+    {
+      if ((*i)->getSmallTile()->getPattern() == pattern)
+        radial_count++;
+    }
+  return radial_count;
 }
 //End of file

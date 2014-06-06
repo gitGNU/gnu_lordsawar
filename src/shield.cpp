@@ -98,6 +98,23 @@ Glib::ustring Shield::colourToString(const Shield::Colour c)
   return "Shield::NEUTRAL";
 }
 
+Glib::ustring Shield::colourToFriendlyName (const Shield::Colour c)
+{
+  switch (c)
+    {
+    case Shield::WHITE: return _("White");
+    case Shield::GREEN: return _("Green");
+    case Shield::YELLOW: return _("Yellow");
+    case Shield::LIGHT_BLUE: return _("Light Blue");
+    case Shield::RED: return _("Red");
+    case Shield::DARK_BLUE: return _("Dark Blue");
+    case Shield::ORANGE: return _("Orange");
+    case Shield::BLACK: return _("Black");
+    case Shield::NEUTRAL: return _("Neutral");
+    }
+  return _("Neutral");
+}
+
 bool Shield::save(XML_Helper *helper) const
 {
   bool retval = true;

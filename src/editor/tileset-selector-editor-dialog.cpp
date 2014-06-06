@@ -27,6 +27,8 @@
 #include "File.h"
 #include "shieldsetlist.h"
 #include "ImageCache.h"
+#include "tileset-window.h"
+#include "past-chooser.h"
 
 TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Gtk::Window &parent, Tileset *tileset)
  : LwEditorDialog(parent, "tileset-selector-editor-dialog.ui")
@@ -52,19 +54,14 @@ TilesetSelectorEditorDialog::TilesetSelectorEditorDialog(Gtk::Window &parent, Ti
     setup_shield_theme_combobox(box);
     xml->get_widget("preview_table", preview_table);
     
-    xml->get_widget("selector_filechooserbutton", selector_filechooserbutton);
-	
-    if (large_filename.empty() == false)
-      selector_filechooserbutton->set_filename (large_filename);
-    selector_filechooserbutton->signal_selection_changed().connect
-       (sigc::mem_fun(*this, &TilesetSelectorEditorDialog::on_image_chosen));
-
     xml->get_widget("large_selector_radiobutton", large_selector_radiobutton);
     large_selector_radiobutton->signal_toggled().connect
       (sigc::mem_fun(*this, &TilesetSelectorEditorDialog::on_large_toggled));
     xml->get_widget("small_selector_radiobutton", small_selector_radiobutton);
     small_selector_radiobutton->signal_toggled().connect
       (sigc::mem_fun(*this, &TilesetSelectorEditorDialog::on_small_toggled));
+    xml->get_widget("selector_filechooserbutton", selector_filechooserbutton);
+    reset_filechooser();
 
     if (large_filename.empty() == false)
       show_preview_selectors(large_filename);
@@ -76,20 +73,33 @@ int TilesetSelectorEditorDialog::run()
     dialog->show_all();
     int response = dialog->run();
 
+    if (response == Gtk::RESPONSE_ACCEPT)
+      PastChooser::getInstance()->set_dir(selector_filechooserbutton);
+
     if (std::find(delfiles.begin(), delfiles.end(), small_filename)
         == delfiles.end() && response == Gtk::RESPONSE_ACCEPT)
       {
-        d_tileset->replaceFileInConfigurationFile(d_tileset->getSmallSelectorFilename()+".png", small_filename);
-        d_tileset->setSmallSelectorFilename(File::get_basename(small_filename));
-        found = true;
+        Glib::ustring file = File::get_basename(small_filename);
+        if (d_tileset->replaceFileInConfigurationFile(d_tileset->getSmallSelectorFilename()+".png", small_filename))
+          {
+            d_tileset->setSmallSelectorFilename(file);
+            found = true;
+          }
+        else
+          TileSetWindow::show_add_file_error (d_tileset, *dialog, file);
       }
 
     if (std::find(delfiles.begin(), delfiles.end(), large_filename)
         == delfiles.end() && response == Gtk::RESPONSE_ACCEPT)
       {
-        d_tileset->replaceFileInConfigurationFile(d_tileset->getLargeSelectorFilename()+".png", large_filename);
-        d_tileset->setLargeSelectorFilename(File::get_basename(large_filename));
-        found = true;
+        Glib::ustring file = File::get_basename(large_filename);
+        if (d_tileset->replaceFileInConfigurationFile(d_tileset->getLargeSelectorFilename()+".png", large_filename))
+          {
+            d_tileset->setLargeSelectorFilename(file);
+            found = true;
+          }
+        else
+          TileSetWindow::show_add_file_error (d_tileset, *dialog, file);
       }
 
     if (response == Gtk::RESPONSE_ACCEPT && !found)
@@ -235,14 +245,20 @@ void TilesetSelectorEditorDialog::update_selector_panel()
       if (large_filename.empty() == false)
 	selector_filechooserbutton->set_filename (large_filename);
       else
-	clearSelector();
+        {
+          reset_filechooser();
+          clearSelector();
+        }
     }
   else if (small_selector_radiobutton->get_active() == true)
     {
       if (small_filename.empty() == false)
 	selector_filechooserbutton->set_filename (small_filename);
       else
-	clearSelector();
+        {
+          reset_filechooser();
+          clearSelector();
+        }
     }
 }
 
@@ -278,4 +294,51 @@ void TilesetSelectorEditorDialog::on_heartbeat()
     }
   preview_table->show_all();
 
+}
+
+void TilesetSelectorEditorDialog::reset_filechooser()
+{
+  Gtk::Container *container = selector_filechooserbutton->get_parent();
+  delete selector_filechooserbutton;
+  selector_filechooserbutton = new Gtk::FileChooserButton();
+  Glib::RefPtr<Gtk::FileFilter> png_filter = Gtk::FileFilter::create();
+  png_filter->set_name(_("PNG files (*.png)"));
+  png_filter->add_pattern("*.png");
+  selector_filechooserbutton->add_filter(png_filter);
+  if (container->get_children().size() < 2)
+    container->add(*selector_filechooserbutton);
+  selector_filechooserbutton->show_all();
+
+  if (large_selector_radiobutton->get_active() == true)
+    {
+      if (large_filename.empty() == false)
+        selector_filechooserbutton->set_filename (large_filename);
+    }
+  else if (small_selector_radiobutton->get_active() == true)
+    {
+      if (small_filename.empty() == false)
+        selector_filechooserbutton->set_filename (small_filename);
+    }
+  selector_filechooserbutton->signal_selection_changed().connect
+    (sigc::mem_fun(*this, &TilesetSelectorEditorDialog::on_image_chosen));
+  selector_filechooserbutton->signal_set_focus_child().connect
+    (sigc::mem_fun(*this, &TilesetSelectorEditorDialog::on_add));
+}
+
+void TilesetSelectorEditorDialog::on_add(Gtk::Widget *widget)
+{
+  if (widget)
+    {
+      Gtk::Button *button = dynamic_cast<Gtk::Button*>(widget);
+      button->signal_clicked().connect
+        (sigc::mem_fun(*this, &TilesetSelectorEditorDialog::on_button_pressed));
+    }
+}
+
+void TilesetSelectorEditorDialog::on_button_pressed()
+{
+  Glib::ustring d = 
+    PastChooser::getInstance()->get_dir(selector_filechooserbutton);
+  if (d.empty() == false)
+    selector_filechooserbutton->set_current_folder(d);
 }

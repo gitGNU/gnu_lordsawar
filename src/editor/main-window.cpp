@@ -90,7 +90,7 @@
 #include "smallmap-editor-dialog.h"
 #include "RenamableLocation.h"
 
-
+    
 MainWindow::MainWindow(Glib::ustring load_filename)
 {
   d_load_filename = load_filename;

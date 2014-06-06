@@ -293,7 +293,7 @@ bool Cityset::save(Glib::ustring filename, Glib::ustring extension) const
   File::erase(tmpfile);
   if (broken == false)
     {
-      if (File::copy(tmptar, goodfilename) == 0)
+      if (File::copy(tmptar, goodfilename) == true)
         File::erase(tmptar);
     }
 
@@ -682,10 +682,10 @@ bool Cityset::replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring n
   Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
   if (broken == false)
     {
-      broken = t.replaceFile(file, new_file);
+      broken = !t.replaceFile(file, new_file);
       t.Close();
     }
-  return broken;
+  return !broken;
 }
 
 guint32 Cityset::calculate_preferred_tile_size() const

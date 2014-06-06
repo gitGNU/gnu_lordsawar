@@ -45,11 +45,11 @@ class ArmySetWindow: public sigc::trackable
  private:
     Gtk::Window* window;
     Glib::ustring current_save_filename;
-    Glib::ustring autosave; //filename
     Armyset *d_armyset; //current armyset
     ArmyProto *d_army; //current army
     bool needs_saving;
     bool inhibit_needs_saving;
+    bool inhibit_updates;
     Gtk::Image *white_image;
     Gtk::Image *green_image;
     Gtk::Image *yellow_image;
@@ -194,6 +194,9 @@ class ArmySetWindow: public sigc::trackable
     bool save_current_armyset();
     void update_window_title();
     void on_make_same_clicked();
+
+    void show_add_file_error(Armyset *a, Gtk::Window &d, Glib::ustring file);
+    void refresh_armies();
 };
 
 #endif

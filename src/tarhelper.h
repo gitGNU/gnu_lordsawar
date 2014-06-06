@@ -44,6 +44,12 @@ public:
 
 
     bool removeFile(Glib::ustring filename);
+    //! Replaces old_filename with new_filename, or adds it if not present.
+    /**
+     * delete old_filename from the archive if present.
+     * add new_filename to the archive.
+     * @return returns True if successful.
+     */
     bool replaceFile(Glib::ustring old_filename, Glib::ustring new_filename);
 
     bool Open(Glib::ustring file, std::ios::openmode mode);

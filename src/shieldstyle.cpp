@@ -70,6 +70,17 @@ Glib::ustring ShieldStyle::shieldStyleTypeToString(const ShieldStyle::Type type)
   return "ShieldStyle::SMALL";
 }
 
+Glib::ustring ShieldStyle::shieldStyleTypeToFriendlyName(const ShieldStyle::Type type)
+{
+  switch (type)
+    {
+      case ShieldStyle::SMALL: return _("Small");
+      case ShieldStyle::MEDIUM: return _("Medium");
+      case ShieldStyle::LARGE: return _("Large");
+    }
+  return _("Small");
+}
+
 ShieldStyle::Type ShieldStyle::shieldStyleTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))

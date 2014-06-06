@@ -120,6 +120,8 @@ class ShieldStyle : public sigc::trackable
 	
 	//! Convert a ShieldStyle::Type enumerated value to a string.
 	static Glib::ustring shieldStyleTypeToString(const ShieldStyle::Type type);
+        //! Convret a ShieldStyle::Type to a suitable string for display.
+        static Glib::ustring shieldStyleTypeToFriendlyName(const ShieldStyle::Type type);
 
 	//! Convert a ShieldStyle::Type string to an enumerated value.
 	static ShieldStyle::Type shieldStyleTypeFromString(const Glib::ustring str);

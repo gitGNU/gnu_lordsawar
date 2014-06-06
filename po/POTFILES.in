@@ -202,6 +202,7 @@ src/hero.cpp
 src/player.cpp
 src/maptile.cpp
 src/shield.cpp
+src/shieldstyle.cpp
 src/port.cpp
 src/ruin.cpp
 src/citymap.cpp
@@ -298,6 +299,8 @@ src/editor/tileset-selector-editor-dialog.cpp
 src/editor/editor-quit-dialog.cpp
 src/editor/tile-size-editor-dialog.cpp
 src/editor/editor-splash-window.cpp
+src/editor/image-editor-dialog.cpp
+src/editor/masked-image-editor-dialog.cpp
 src/gui/city-info-tip.cpp
 src/gui/game-lobby-dialog.cpp
 src/gui/new-network-game-download-window.cpp

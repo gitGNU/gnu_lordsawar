@@ -48,7 +48,6 @@
 
 CitySetWindow::CitySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
 {
-  autosave = File::getSavePath() + "autosave" + Cityset::file_extension;
   needs_saving = false;
   d_cityset = NULL;
     Glib::RefPtr<Gtk::Builder> xml
@@ -259,10 +258,14 @@ void CitySetWindow::on_new_cityset_activated()
   RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
   refl->updateEntry(current_save_filename);
   refl->save();
-  d_cityset->setDirectory(File::get_dirname(autosave));
-  d_cityset->setBaseName(File::get_basename(autosave));
 
-  d_cityset->save(autosave, Cityset::file_extension);
+  //here we put a copy into the citysetlist, and keep d_cityset as our
+  //current working cityset.
+  Cityset *copy = Cityset::copy (d_cityset);
+  Glib::ustring new_basename = copy->getBaseName();
+  guint32 new_id = copy->getId();
+  if (!Citysetlist::getInstance()->addToPersonalCollection(copy, new_basename, new_id))
+    delete copy;
   update_cityset_panel();
   update_cityset_menuitems();
   needs_saving = true;
@@ -352,44 +355,54 @@ void CitySetWindow::on_save_as_activated()
   Cityset *copy = Cityset::copy (d_cityset);
   copy->setId(Citysetlist::getNextAvailableId(d_cityset->getId()));
   CitySetInfoDialog d(*window, copy, File::getUserCitysetDir(), "", false,
-                        _("Save a Copy of a Cityset"));
+                      _("Save a Copy of a Cityset"));
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       Glib::ustring new_basename = copy->getBaseName();
       guint32 new_id = copy->getId();
-      Glib::ustring new_name = copy->getName();
-      save_cityset_menuitem->set_sensitive(true);
-      current_save_filename = copy->getConfigurationFile();
-      //here we add the autosave to the personal collection.
-      //this is so that the images *with comments in them* come along.
-      Glib::ustring old_name = d_cityset->getName();
+      copy->setDirectory(File::getUserCitysetDir());
+      guint32 oldid = d_cityset->getId();
+      Glib::ustring oldname = d_cityset->getName();
+      Glib::ustring oldbasename = d_cityset->getBaseName();
+      Glib::ustring olddir = d_cityset->getDirectory();
+
+      Glib::ustring tmpdir = File::get_tmp_file();
+      File::erase(tmpdir);
+      tmpdir += Cityset::file_extension;
+      File::create_dir(tmpdir);
       d_cityset->setName(copy->getName());
-      bool success = Citysetlist::getInstance()->addToPersonalCollection(d_cityset, new_basename, new_id);
-      if (success)
+      File::copy(d_cityset->getConfigurationFile(), 
+                 tmpdir + "/" + copy->getBaseName() + Cityset::file_extension);
+      d_cityset->setBaseName(copy->getBaseName());
+      d_cityset->setDirectory(tmpdir);
+      d_cityset->setId(copy->getId());
+          
+      current_save_filename = copy->getConfigurationFile();
+      bool ok = Citysetlist::getInstance()->addToPersonalCollection(d_cityset, new_basename, new_id);
+      File::erase(tmpdir + "/" + copy->getBaseName() + Cityset::file_extension);
+      File::erase_dir(tmpdir);
+      if (ok)
         {
-          copy->setDirectory(d_cityset->getDirectory());
+          save_cityset_menuitem->set_sensitive(true);
           d_cityset = copy;
           RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
           refl->updateEntry(current_save_filename);
           refl->save();
-        }
-      else
-        d_cityset->setName(old_name);
-
-      if (success)
-        {
           needs_saving = false;
           update_window_title();
           cityset_saved.emit(d_cityset->getId());
         }
       else
         {
+          d_cityset->setName(oldname);
+          d_cityset->setBaseName(oldbasename);
+          d_cityset->setId(oldid);
+          d_cityset->setDirectory(olddir);
           Glib::ustring errmsg = Glib::strerror(errno);
           Glib::ustring msg;
           msg = _("Error!  Cityset could not be saved.");
-          msg += "\n" + current_save_filename + "\n" +
-            errmsg;
+          msg += "\n" + current_save_filename + "\n" + errmsg;
           Gtk::MessageDialog dialog(*window, msg);
           dialog.run();
           dialog.hide();
@@ -427,26 +440,22 @@ bool CitySetWindow::save_current_cityset()
         d_cityset->setTileSize(d.get_selected_tilesize());
     }
 
-  bool success = d_cityset->save(autosave, Cityset::file_extension);
+  bool success = d_cityset->save(current_save_filename, Cityset::file_extension);
   if (success)
     {
-      success = Cityset::copy (autosave, current_save_filename);
-      if (success == true)
-        {
-          RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
-          RecentlyEditedFileList::getInstance()->save();
-          needs_saving = false;
-          update_window_title();
-          cityset_saved.emit(d_cityset->getId());
-        }
+      Citysetlist::getInstance()->reload(d_cityset->getId());
+      RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
+      RecentlyEditedFileList::getInstance()->save();
+      needs_saving = false;
+      update_window_title();
+      cityset_saved.emit(d_cityset->getId());
     }
-  if (!success)
+  else
     {
       Glib::ustring errmsg = Glib::strerror(errno);
       Glib::ustring msg;
       msg = _("Error!  Cityset could not be saved.");
-      msg += "\n" + current_save_filename + "\n" +
-        errmsg;
+      msg += "\n" + current_save_filename + "\n" + errmsg;
       Gtk::MessageDialog dialog(*window, msg);
       dialog.run();
       dialog.hide();
@@ -496,20 +505,10 @@ bool CitySetWindow::load_cityset(Glib::ustring filename)
 {
   Glib::ustring old_current_save_filename = current_save_filename;
   current_save_filename = filename;
-  if (filename != autosave)
-    Cityset::copy(current_save_filename, autosave);
-  else
-    {
-      //go get the real name of the file
-      std::list<RecentlyEditedFile*> files = RecentlyEditedFileList::getInstance()->getFilesWithExtension(Cityset::file_extension);
-      if (files.size() > 0)
-        current_save_filename = files.front()->getFileName();
-    }
-
   Glib::ustring name = File::get_basename(filename);
 
   bool unsupported_version = false;
-  Cityset *cityset = Cityset::create(autosave, unsupported_version);
+  Cityset *cityset = Cityset::create(filename, unsupported_version);
   if (cityset == NULL)
     {
       Glib::ustring msg;
@@ -523,17 +522,13 @@ bool CitySetWindow::load_cityset(Glib::ustring filename)
       dialog.hide();
       return false;
     }
-  if (File::nameEndsWith(current_save_filename, "/autosave" + Cityset::file_extension) == false)
-    {
-      RecentlyEditedFileList::getInstance()->addEntry(current_save_filename);
-      RecentlyEditedFileList::getInstance()->save();
-    }
+  RecentlyEditedFileList::getInstance()->addEntry(current_save_filename);
+  RecentlyEditedFileList::getInstance()->save();
   if (d_cityset)
     delete d_cityset;
   d_cityset = cityset;
 
   bool broken = false;
-  d_cityset->setBaseName(File::get_basename(autosave));
   d_cityset->instantiateImages(broken);
   update_window_title();
   return true;
@@ -559,7 +554,6 @@ bool CitySetWindow::quit()
     }
   else
     window->hide();
-  File::erase(autosave);
   if (d_cityset)
     delete d_cityset;
   return true;
@@ -626,6 +620,7 @@ void CitySetWindow::on_change_citypics_clicked()
   if (d_cityset->getCitiesFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getCitiesFilename() +".png");
   ImageEditorDialog d(*window, filename, MAX_PLAYERS + 1);
+  d.set_title(_("Select a Cities image"));
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -633,12 +628,15 @@ void CitySetWindow::on_change_citypics_clicked()
     {
       if (d.get_selected_filename() != filename)
         {
-          d_cityset->replaceFileInConfigurationFile(d_cityset->getCitiesFilename()+".png", d.get_selected_filename());
-
-          d_cityset->setCitiesFilename
-            (File::get_basename(d.get_selected_filename()));
-          needs_saving = true;
-          update_window_title();
+          Glib::ustring file = File::get_basename(d.get_selected_filename());
+          if (d_cityset->replaceFileInConfigurationFile(d_cityset->getCitiesFilename()+".png", d.get_selected_filename()))
+            {
+              d_cityset->setCitiesFilename (file);
+              needs_saving = true;
+              update_window_title();
+            }
+          else
+            show_add_file_error(*d.get_dialog(), file);
         }
       update_cityset_panel();
     }
@@ -650,6 +648,7 @@ void CitySetWindow::on_change_razedcitypics_clicked()
   if (d_cityset->getRazedCitiesFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getRazedCitiesFilename() +".png");
   ImageEditorDialog d(*window, filename, MAX_PLAYERS);
+  d.set_title(_("Select a Razed Cities image"));
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -657,11 +656,15 @@ void CitySetWindow::on_change_razedcitypics_clicked()
     {
       if (d.get_selected_filename() != filename)
         {
-          d_cityset->replaceFileInConfigurationFile(d_cityset->getRazedCitiesFilename()+".png", d.get_selected_filename());
-          d_cityset->setRazedCitiesFilename
-            (File::get_basename(d.get_selected_filename()));
-          needs_saving = true;
-          update_window_title();
+          Glib::ustring file = File::get_basename(d.get_selected_filename());
+          if (d_cityset->replaceFileInConfigurationFile(d_cityset->getRazedCitiesFilename()+".png", d.get_selected_filename()))
+            {
+              d_cityset->setRazedCitiesFilename (file);
+              needs_saving = true;
+              update_window_title();
+            }
+          else
+            show_add_file_error(*d.get_dialog(), file);
         }
       update_cityset_panel();
     }
@@ -673,6 +676,7 @@ void CitySetWindow::on_change_portpic_clicked()
   if (d_cityset->getPortFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getPortFilename() +".png");
   ImageEditorDialog d(*window, filename, 1);
+  d.set_title(_("Select a Port image"));
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -680,10 +684,15 @@ void CitySetWindow::on_change_portpic_clicked()
     {
       if (d.get_selected_filename() != filename)
         {
-          d_cityset->replaceFileInConfigurationFile(d_cityset->getPortFilename()+".png", d.get_selected_filename());
-          d_cityset->setPortFilename(File::get_basename(d.get_selected_filename()));
-          needs_saving = true;
-          update_window_title();
+          Glib::ustring file = File::get_basename(d.get_selected_filename());
+          if (d_cityset->replaceFileInConfigurationFile(d_cityset->getPortFilename()+".png", d.get_selected_filename()))
+            {
+              d_cityset->setPortFilename(file);
+              needs_saving = true;
+              update_window_title();
+            }
+          else
+            show_add_file_error(*d.get_dialog(), file);
         }
       update_cityset_panel();
     }
@@ -695,6 +704,7 @@ void CitySetWindow::on_change_signpostpic_clicked()
   if (d_cityset->getSignpostFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getSignpostFilename() +".png");
   ImageEditorDialog d(*window, filename, 1);
+  d.set_title(_("Select a Signpost image"));
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -702,12 +712,15 @@ void CitySetWindow::on_change_signpostpic_clicked()
     {
       if (d.get_selected_filename() != filename)
         {
-          d_cityset->replaceFileInConfigurationFile(d_cityset->getSignpostFilename()+".png", d.get_selected_filename());
-
-          d_cityset->setSignpostFilename
-            (File::get_basename(d.get_selected_filename()));
-          needs_saving = true;
-          update_window_title();
+          Glib::ustring file = File::get_basename(d.get_selected_filename());
+          if (d_cityset->replaceFileInConfigurationFile(d_cityset->getSignpostFilename()+".png", d.get_selected_filename()))
+            {
+              d_cityset->setSignpostFilename (file);
+              needs_saving = true;
+              update_window_title();
+            }
+          else
+            show_add_file_error(*d.get_dialog(), file);
         }
       update_cityset_panel();
     }
@@ -719,6 +732,7 @@ void CitySetWindow::on_change_ruinpics_clicked()
   if (d_cityset->getRuinsFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getRuinsFilename() +".png");
   ImageEditorDialog d(*window, filename, RUIN_TYPES);
+  d.set_title(_("Select a Ruins image"));
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -726,11 +740,15 @@ void CitySetWindow::on_change_ruinpics_clicked()
     {
       if (d.get_selected_filename() != filename)
         {
-          d_cityset->replaceFileInConfigurationFile(d_cityset->getRuinsFilename()+".png", d.get_selected_filename());
-          d_cityset->setRuinsFilename
-            (File::get_basename(d.get_selected_filename()));
-          needs_saving = true;
-          update_window_title();
+          Glib::ustring file = File::get_basename(d.get_selected_filename());
+          if (d_cityset->replaceFileInConfigurationFile(d_cityset->getRuinsFilename()+".png", d.get_selected_filename()))
+            {
+              d_cityset->setRuinsFilename (file);
+              needs_saving = true;
+              update_window_title();
+            }
+          else
+            show_add_file_error(*d.get_dialog(), file);
         }
       update_cityset_panel();
     }
@@ -742,6 +760,7 @@ void CitySetWindow::on_change_templepic_clicked()
   if (d_cityset->getTemplesFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getTemplesFilename() +".png");
   ImageEditorDialog d(*window, filename, TEMPLE_TYPES);
+  d.set_title(_("Select a Temples image"));
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -749,11 +768,15 @@ void CitySetWindow::on_change_templepic_clicked()
     {
       if (d.get_selected_filename() != filename)
         {
-          d_cityset->replaceFileInConfigurationFile(d_cityset->getTemplesFilename()+".png", d.get_selected_filename());
-          d_cityset->setTemplesFilename
-            (File::get_basename(d.get_selected_filename()));
-          needs_saving = true;
-          update_window_title();
+          Glib::ustring file = File::get_basename(d.get_selected_filename());
+          if (d_cityset->replaceFileInConfigurationFile(d_cityset->getTemplesFilename()+".png", d.get_selected_filename()))
+            {
+              d_cityset->setTemplesFilename (file);
+              needs_saving = true;
+              update_window_title();
+            }
+          else
+            show_add_file_error(*d.get_dialog(), file);
         }
       update_cityset_panel();
     }
@@ -765,6 +788,7 @@ void CitySetWindow::on_change_towerpics_clicked()
   if (d_cityset->getTowersFilename().empty() == false)
     filename = d_cityset->getFileFromConfigurationFile(d_cityset->getTowersFilename() +".png");
   ImageEditorDialog d(*window, filename, MAX_PLAYERS);
+  d.set_title(_("Select a Towers image"));
   int response = d.run();
   if (filename != "")
     File::erase(filename);
@@ -772,11 +796,15 @@ void CitySetWindow::on_change_towerpics_clicked()
     {
       if (d.get_selected_filename() != filename)
         {
-          d_cityset->replaceFileInConfigurationFile(d_cityset->getTowersFilename()+".png", d.get_selected_filename());
-          d_cityset->setTowersFilename
-            (File::get_basename(d.get_selected_filename()));
-          needs_saving = true;
-          update_window_title();
+          Glib::ustring file = File::get_basename(d.get_selected_filename());
+          if (d_cityset->replaceFileInConfigurationFile(d_cityset->getTowersFilename()+".png", d.get_selected_filename()))
+            {
+              d_cityset->setTowersFilename (file);
+              needs_saving = true;
+              update_window_title();
+            }
+          else
+            show_add_file_error(*d.get_dialog(), file);
         }
       update_cityset_panel();
     }
@@ -791,4 +819,14 @@ void CitySetWindow::update_window_title()
   title += " - ";
   title += _("LordsAWar! Cityset Editor");
   window->set_title(title);
+}
+
+void CitySetWindow::show_add_file_error(Gtk::Dialog &d, Glib::ustring file)
+{
+  Glib::ustring m = 
+    String::ucompose(_("Couldn't add %1.png to:\n%2"),
+                     file, d_cityset->getConfigurationFile());
+  Gtk::MessageDialog td(d, m);
+  td.run();
+  td.hide();
 }

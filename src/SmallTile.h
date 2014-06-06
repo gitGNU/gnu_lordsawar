@@ -115,6 +115,8 @@ oeeeeeee
 	//! Default constructor.
 	SmallTile();
 
+        //! Constructor to set some of the values.
+        SmallTile(SmallTile::Pattern pattern, Gdk::RGBA first, Gdk::RGBA second, Gdk::RGBA third);
 
         //! Copying constructor.
         SmallTile(const SmallTile &orig);
@@ -176,6 +178,13 @@ oeeeeeee
 	 */
 	bool save(XML_Helper *helper) const;
 
+        // Static methods
+        static SmallTile* get_default_grass();
+        static SmallTile* get_default_water();
+        static SmallTile* get_default_forest();
+        static SmallTile* get_default_hills();
+        static SmallTile* get_default_mountains();
+        static SmallTile* get_default_swamp();
     private:
 
 	//! The general appearance of the terrain tile on the OverviewMap.

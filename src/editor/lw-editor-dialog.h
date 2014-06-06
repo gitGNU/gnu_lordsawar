@@ -28,6 +28,8 @@ class LwEditorDialog: public sigc::trackable
     ~LwEditorDialog();
 
     int run_and_hide();
+    
+    Gtk::Dialog* get_dialog() {return dialog;};
 
  protected:
     Gtk::Dialog* dialog;

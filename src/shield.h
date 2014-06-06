@@ -118,6 +118,9 @@ class Shield : public std::list<ShieldStyle*>, public sigc::trackable
 	//! Convert the Shield::Colour enumerated value to a string.
 	static Glib::ustring colourToString(const Shield::Colour c);
 
+        //! Convert Shield::Colour into a string suitable for display.
+        static Glib::ustring colourToFriendlyName (const Shield::Colour c);
+
         static guint32 get_next_shield(guint32 type);
     protected:
 

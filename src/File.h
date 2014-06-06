@@ -110,7 +110,7 @@ class File
 
 
 	//! Copy a file from one place to another.
-	static int copy (Glib::ustring from, Glib::ustring to);
+	static bool copy (Glib::ustring from, Glib::ustring to);
 
 	//! make a directory if it doesn't already exist.
 	static bool create_dir(Glib::ustring dir);
