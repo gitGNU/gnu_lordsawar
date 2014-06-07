@@ -1441,5 +1441,6 @@ Tileset files (.lwt) hold images for the terrain, as well as tile properties.
     </tile>
     ...more tile objects...
 
-    To be a valid tileset...
+    To be a valid tileset, one kind of each tile needs to be present.  only 
+    one tile can use the sunken radial pattern.
 </tileset>
