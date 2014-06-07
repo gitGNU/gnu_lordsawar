@@ -1024,49 +1024,54 @@ The version of the savegame is encoded in the first opening "lordsawar" tag.
 Shieldset files (.lws) hold images for shields, as well as the default colours of players.  It has the following structure:
 
 <shieldset version="xxx">
-    <d_id> a unique numeric id among all shieldsets on the system. can't be zero. </d_id>
-    <d_name>a name of this shieldset, suitable for display</d_name>
-    <d_copyright>a place for copyright notices.</d_copyright>
-    <d_license>a place for a license notice.</d_license>
-    <d_info>a description for this shieldset.</d_info>
- 
+    <d_id> A unique numeric id among all shieldsets on the system. 
+           can't be zero.
+    </d_id>
+    <d_name> A name of this shieldset, suitable for display</d_name>
+    <d_copyright> A place for copyright notices.</d_copyright>
+    <d_license> A place for a license notice.</d_license>
+    <d_info> A description for this shieldset.</d_info>
   
-    the small shields are the turn indicator shields.
-    scale all small shield images to this height and width:
+    The small shields are the turn indicator shields.  Scale all small 
+    shield images to this height and width:
     <d_small_width></d_small_width>
     <d_small_height></d_small_height>
 
-    the medium shields are the city indicators on the small map.
-    scale all medium shield images to this height and width:
+    The medium shields are the city indicators on the small map.  Scale all 
+    medium shield images to this height and width:
     <d_medium_width></d_medium_width>
     <d_medium_height></d_medium_height>
 
-    the large shields are the player indicators in the fight window, and other places in the game.
-    scale all large shield images to this height and width:
+    The large shields are the player indicators in the fight window, and 
+    other places in the game.  Scale all large shield images to this 
+    height and width:
     <d_large_width></d_large_width>
     <d_large_height></d_large_height>
 
-the list of shields are potential seats in a scenario.
+    Now come the list of shields that are potential seats in a scenario...
     <shield>
-        <d_owner>the player id.  a unique numeric id that starts at zero.  
-                 the last one is the neutral player.  maximum value is 9.
+        <d_owner> The player id.  A unique numeric id that starts at zero.  
+                  The last one is the neutral player.  Maximum value is 9.
         </d_owner>
-        <d_color>the colour for this player.  the shields, armies, flags, and
-                 selectors are all coloured with this colour. 
-                 a hex string or a 3 numbers between 0-255 representing red,
-                 green and blue.
+        <d_color> The colour for this player.  The shields, armies, flags, and
+                  selectors are all coloured with this colour. 
+                  A hex string or a 3 numbers between 0-255 representing red,
+                  green and blue.
         </d_color>
         <shieldstyle>
              <d_type>ShieldStyle::SMALL</d_type>
-             <d_image>the basename of the image for the small white shield, minus the .png</d_image>
+             <d_image>The basename of the image for the small white shield.
+             </d_image>
         </shieldstyle>
         <shieldstyle>
              <d_type>ShieldStyle::MEDIUM</d_type>
-             <d_image>the basename of the image for the medum white shield, minus the .png</d_image>
+             <d_image> The basename of the image for the medum white shield
+             </d_image>
         </shieldstyle>
         <shieldstyle>
              <d_type>ShieldStyle::LARGE</d_type>
-             <d_image>the basename of the image for the large white shield, minus the .png</d_image>
+             <d_image> The basename of the image for the large white shield.
+             </d_image>
         </shieldstyle>
     </shield>
     ...more shield objects...
@@ -1076,91 +1081,100 @@ the list of shields are potential seats in a scenario.
 Cityset files (.lwc) hold images for buildings, as well as number of tiles that some buildings occupy on the map.
 
 <cityset version="xxx">
-    <d_id> a unique numeric id among all citysets on the system. can't be zero. </d_id>
-    <d_name>a name of this cityset, suitable for display</d_name>
-    <d_copyright>a place for copyright notices.</d_copyright>
-    <d_license>a place for a license notice.</d_license>
-    <d_info>a description for this cityset.</d_info>
+    <d_id> A unique numeric id among all citysets on the system. can't be zero. </d_id>
+    <d_name> A name of this cityset, suitable for display</d_name>
+    <d_copyright> A place for copyright notices.</d_copyright>
+    <d_license> A place for a license notice.</d_license>
+    <d_info> A description for this cityset.</d_info>
 
-    <d_tilesize>the width and height of a tile.  in pixels.  <d_tilesize>
+    <d_tilesize> The width and height of a tile.  in pixels.  <d_tilesize>
 
-    now come the images.  when more than one object is represented in an image file, it is on the same row.  the height must be a divisor of the width.  when filenames are given, the .png extension is not included. nor is a path.
+    Now come the images.  When more than one object is represented in an 
+    image file, it is on the same row.  the height must be a divisor of the 
+    width.  When filenames are given, the .png extension is not included; nor
+    is a path.
 
-    <d_cities>the basename of the image for the castles.  
-              must be an image holding 9 city images on the same row.  
-              the last image is the neutral city.
+    <d_cities> The basename of the image for the castles.  
+               Must be an image holding 9 city images on the same row.  
+               The last image is the neutral city.
     </d_cities>
-    <d_razed_cities>the basename of the image for the razed castles.  
-                    must be an image holding 8 city images on the same row.  
-                    neutral cities cannot be razed so there isn't an image for that.
+    <d_razed_cities> The basename of the image for the razed castles.  
+                     must be an image holding 8 city images on the same row.  
+                     neutral cities cannot be razed so there isn't an image 
+                     for that.
     </d_razed_cities>
-    <d_port>the basename of the image for a port icon.<d_port>
-    <d_ruins>the basename of the image for the ruins.  
-             must be an image holding 3 ruin images on the same row.
+    <d_port>The basename of the image for a port icon.<d_port>
+    <d_ruins> The basename of the image for the ruins.  
+              must be an image holding 3 ruin images on the same row.
     <d_ruins>
-    <d_temples>the basename of the image for a temple.<d_temples>
-    <d_towers>the basename of the image for towers.  
-              towers are what stacks go into after they've been in defend mode
-              for a turn.  must be an image holding 8 tower images on the same
-              row.  neutral towers do not exist.
+    <d_temples> The basename of the image for a temple.<d_temples>
+    <d_towers> The basename of the image for towers.  
+               towers are what stacks go into after they've been in defend mode
+               for a turn.  must be an image holding 8 tower images on the same
+               row.  neutral towers do not exist.
     </d_towers>
 
 
-    now come the tile widths:
-    how many tiles a building takes up on the big map. a 3 means 3x3.
-    the images for these buildings are scaled to be 3*40 (tile width*tilesize)
-    across and high, for example.  cities are normally 2x2.  ruins are 1x1.
-    <d_city_tile_width>
-             how many tiles the cities occupy. a numeric value above zero.  
-             the city image is scaled to this new width.
+    Now come the tile widths:
+    How many tiles a building takes up on the big map. a 3 means 3x3.
+    The images for these buildings are scaled to be 3*40 (tile width*tilesize)
+    across and high, for example.  Cities are normally 2x2.  Ruins are 1x1.
+    <d_city_tile_width> How many tiles the cities occupy.  Must be a numeric
+                        value above zero.  The city image is scaled to this
+                        new width.
     </d_city_tile_width>
-    <d_temple_tile_width>how many tiles the temples occupy.</d_temple_tile_width>
-    <d_ruin_tile_width>how many tiles the ruins occupy.</d_ruin_tile_width>
+    <d_temple_tile_width> How many tiles the temples occupy.
+    </d_temple_tile_width>
+    <d_ruin_tile_width> How many tiles the ruins occupy.</d_ruin_tile_width>
 
 </cityset>
 
 
 Armyset files (.lwa) hold images for army unit types, as well as their properties.
 <armyset version="xxx">
-    <d_id> a unique numeric id among all armysets on the system. can't be zero. </d_id>
-    <d_name>a name of this armyset, suitable for display</d_name>
-    <d_copyright>a place for copyright notices.</d_copyright>
-    <d_license>a place for a license notice.</d_license>
-    <d_info>a description for this armyset.</d_info>
+    <d_id> A unique numeric id among all armysets on the system. can't be zero. </d_id>
+    <d_name> A name of this armyset, suitable for display</d_name>
+    <d_copyright> A place for copyright notices.</d_copyright>
+    <d_license> A place for a license notice.</d_license>
+    <d_info> A description for this armyset.</d_info>
 
-    <d_tilesize>the width and height of a tile.  in pixels.  <d_tilesize>
+    <d_tilesize> The width and height of a tile.  in pixels.<d_tilesize>
 
-    now come some images.  when filenames are given, the .png extension is not included. nor is a path.  for example: "foo.png" is represented as just "foo".
-    each of these images come in two halves on a single row.  The white in the right half represents where the player's colour will be on the left half.
-    <d_stackship>the basename of the image for when a stack is in a boat.
+    Now come some images.  When filenames are given, the .png extension is not
+    included. nor is a path.  for example: "foo.png" is represented as "foo".
+    Wach of these images come in two halves on a single row.  The white in the
+    right half represents where the player's colour will be on the left half.
+    <d_stackship> The basename of the image for when a stack is in a boat.
     </d_stackship>
-    <d_plantedstandard>the basename of the image for the hero's flag.
+    <d_plantedstandard> The basename of the image for the hero's flag.
     </d_plantedstandard>
-    <d_bag>the basename of the image for what items on the map look like.
-           this is the graphic for the bag of stuff.  
-           the bag image doesn't have two halves like the other images.
-           e.g. it is not coloured in the player's colour.  it is just a normal
-           brownish looking bag of stuff.
+    <d_bag> The basename of the image for what items on the map look like.
+            This is the graphic for the bag of stuff.  
+            The bag image doesn't have two halves like the other images.
+            e.g. it is not coloured in the player's colour.  It is just a 
+            normal brownish looking bag of stuff.
     </d_bag>
 
-    now come the armies.  These are army Types, not instances of armies.
+    Now come the armies.  These are army Types, not instances of armies.
     <armyproto>
-         <d_id>a unique numeric id among all other army types in this set.
-               starts at zero.  this is also a shared numeric id with army 
-               types in other armysets! when this id is the same as another 
-               id in another armyset, the armytypes are meant to be of the 
-               same kind.  0 is usually scouts.  You can give your ids high
-               values to avoid any collisions with someone else's ids, in the
-               case where you don't want any sort of compatibility with your 
-               armyset and someone elses's.
+         <d_id> A unique numeric id among all other army types in this set.
+                starts at zero.  This is also a shared numeric id with army 
+                types in other armysets! when this id is the same as another 
+                id in another armyset, The armytypes are meant to be of the 
+                same kind.  0 is usually scouts.  You can give your ids high
+                values to avoid any collisions with someone else's ids, in the
+                case where you don't want any sort of compatibility with your 
+                armyset and someone else's.
          </d_id>
-         <d_name>a name for this army type, suitable for display.
+         <d_name> A name for this army type, suitable for display.
          </d_name>
 
 
-         now come the images for this army type.  these images have two halves.
+         Now come the images for this army type.  These images have two halves.
          where the white pixels on the right side of the image represent where
          the player's colour will be on the left side of the image.
+         Usually all of these point to the same image, but you can get fancy
+         and make different images for each player for the same army unit.
          <d_image_white></d_image_white>
          <d_image_green></d_image_green>
          <d_image_yellow></d_image_yellow>
@@ -1171,21 +1185,34 @@ Armyset files (.lwa) hold images for army unit types, as well as their propertie
          <d_image_black></d_image_black>
          <d_image_neutral></d_image_neutral>
 
-         now come the properties for this army type.
-         <d_description>a place for some text describing this army type.  
-                        it isn't displayed in the game.  
+         Now come the properties for this army type...
+         <d_description> A place for some text describing this army type.  
+                         it isn't displayed in the game.  
          </d_description>
-         <d_production>the number of turns needed to create one of these 
-                       army units in a city.
+         <d_production> The number of turns needed to create one of these 
+                        army units in a city.
          </d_production>
-         <d_new_production_cost>the number of gold pieces to bring this army type in as a new producible type of army unit in a city.  this is the price in the build production dialog.</d_new_production_cost>
-         <d_production_cost>the number of gold pieces to create a single instance of this army type in a city.</d_production_cost>
-         <d_upkeep>the number of gold pieces needed to sustain this army unit every turn.</d_upkeep>
-         <d_awardable>true or false.  Whether or not this army unit type is given to heroes as a reward.</d_awardable>
-         <d_defends_ruins>true or false.  Whether or not this army unit type is a monster that can inhabit a ruin.</d_defends_ruins>
+         <d_new_production_cost> The number of gold pieces to bring this army 
+                                 type in as a new producible type of army unit 
+                                 in a city.  This is the price in the build 
+                                 production dialog.  If this value is zero, 
+                                 this type of army unit is not purchasable.
+         </d_new_production_cost>
+         <d_production_cost> The number of gold pieces to create a single 
+                             instance of this army type in a city.
+         </d_production_cost>
+         <d_upkeep> The number of gold pieces needed to sustain this army 
+                    unit every turn.
+         </d_upkeep>
+         <d_awardable> true or false.  Whether or not this army unit type is 
+                       given to heroes as a reward.
+         </d_awardable>
+         <d_defends_ruins> true or false.  Whether or not this army unit type 
+                           is a monster that can inhabit a ruin.
+         </d_defends_ruins>
          <d_move_bonus> This is the movement bonus flags.  
                         These can be bitwise OR'd.
-                        The movement bonus means that certain terrain types 
+                        The movement bonus means that certain terrain types .
                         can be moved through at a cost of 2, like grass.
                         The bonus flags are:
 	                Tile::GRASS
@@ -1281,5 +1308,138 @@ Armyset files (.lwa) hold images for army unit types, as well as their propertie
                      army type.
          </d_expvalue>
     </armyproto>
+
     ...more armyproto objects...
+
+    To be a valid armyset, one of these armies needs to be a hero, one
+    army needs to be able to defend ruins, and one needs to be awardable.
+    Also, one army unit needs to have a new_production_cost set.
 </armyset>
+
+Tileset files (.lwt) hold images for the terrain, as well as tile properties.
+<tileset version="xxx">
+    <d_id> a unique numeric id among all tilesets on the system. can't be zero. </d_id>
+    <d_name>a name of this tileset, suitable for display</d_name>
+    <d_copyright>a place for copyright notices.</d_copyright>
+    <d_license>a place for a license notice.</d_license>
+    <d_info>a description for this tileset.</d_info>
+
+    <d_tilesize>the width and height of a tile.  in pixels.  <d_tilesize>
+
+    Now come some images associated with this tileset that go on top of 
+    terrain imagery.  The names are for files without paths, and without the 
+    trailing .png suffix.  Some of the images are shaded in the player's
+    colour, and some are not.
+
+    <d_large_selector> The basename of the image of the animated box selector 
+                       that encompasses the active stack.  The image is 6 
+                       columns by 2 rows.  The bottom row in white is the 
+                       portion that will be replaced with the player's colour
+                       in the top row.  Each box represents another frame in
+                       the 6 frame animation.
+    <d_large_selector>
+    <d_small_selector> The basename of the image of the animated box selector
+                       that encompasses the single selected army unit.  The
+                       image is 4 columns by 2 rows
+    </d_small_selector>
+    <d_explosion> The basename of the image of the fight explosion.  It is 
+                  sometimes shown scaled over 2x2 tiles, and sometimes at 1x1.
+    </d_explosion>
+    <d_roads> The basename of the image of the road tiles.  There are 15 
+              different road pictures in this image, all on the same row.  If
+              you make your own roads, the order of the road kinds in the image
+              has to be identical.
+    </d_roads>
+    <d_bridges> The basename of the image of the bridge tiles.  there are 
+                only 4 different bridge pictures in this image; horizontal, 
+                connecting west, horizontal connecting east, vertical 
+                connecting south, and vertical connecting north.  
+                e.g. connecting to road, not bridge.
+    </d_bridges>
+    <d_fog> The basename of the image of the fog tiles.  There are 15 different
+            fog tiles.  The purpose of these tiles is to obscure view of the 
+            map when we're playing with a hidden map.  These graphics get put 
+            on top of all other map graphics, so you really want parts of some
+            tiles to be opaque and other parts to be transparent.  
+    </d_fog>
+    <d_flags> The basename of the image of the stack flags.  There are 8 
+              different flags, each shaded in the player's colour.  The bottom
+              row in white represents where the player's colour will be shaded 
+              on the top row.  The flags represent the number of army units in
+              the stack.
+    </d_flags>
+
+    Now come a description of what some buildings look like on the smallmap...
+    <road_smallmap>
+         The colour of road lines on the small map.
+         <d_color>   The hex value for the colour.  e.g. #FCFCFC </d_color>
+    </road_smallmap>
+    <ruin_smallmap>
+         The colour of ruin dots on the small map.
+         <d_color>   The hex value for the colour.  e.g. #FFFFFF </d_color>
+    </ruin_smallmap>
+    <temple_smallmap>
+         The colour of temple dots on the small map.
+         <d_color>   The hex value for the colour.  e.g. #FFFFFF </d_color>
+    </temple_smallmap>
+
+    Now come the tiles that represent various terrain tiles on the map.  
+    There's one tile each for grass, water, forest, mountains, swamp and hills.
+    <tile>
+         <d_name> The name of the tile.  Shown in the editor. </d_name>
+         <d_type> The kind of terrain that this tile describes.  One of: 
+              Tile::GRASS Tile::WATER Tile::FOREST Tile::HILLS
+              Tile::MOUNTAIN Tile::SWAMP
+         </d_type>
+
+         The smallmap object defines how this tile looks on the mini-map.
+         <smallmap>
+              <d_pattern> The fill pattern for pixels of this terrain type.
+                          One of:
+                               SmallTile::SOLID
+                               SmallTile::STIPPLED
+                               SmallTile::RANDOMIZED
+                               SmallTile::SUNKEN
+                               SmallTile::TABLECLOTH
+                               SmallTile::DIAGONAL
+                               SmallTile::CROSSHATCH
+                               SmallTile::SUNKEN_STRIPED
+                               SmallTile::SUNKEN_RADIAL
+              </d_pattern>
+
+              Now come the colours for the pattern.  Some patterns use one 
+              colour (Solid), and some patterns use all three colours.
+              <d_color>   The hex value for the colour.  e.g. #FFFFFF </d_color>
+              <d_2nd_color>  </d_2nd_color>
+              <d_3rd_color>  </d_3rd_color>
+         </smallmap>
+
+         Now we have a bunch of tilestylesets.  They are images that define 
+         what this tile looks like on the big map.  Each image has a bunch of 
+         tile pictures on a single row.  It is important to not have any 
+         transparent regions in these images because there is nothing else
+         behind them.
+         <tilestyleset>
+              <d_name> The basename of the image for this tilestyleset. 
+              </d_name>
+
+              Now we have a bunch of tilestyle objects that define each square
+              in the row.  One for each square.
+              <tilestyle>
+                   <d_id> A unique id among all tilestyles in this file (not
+                          just this tilestyleset.)  It is necessary to supply
+                          this value in hexadecimal format.
+                   </d_id>
+                   <d_type>
+                       Equates to TileStyle::Type in src/tilestyle.h.
+                       See tile-transition.txt for more information.
+                   </d_type>
+              </tilestyle>
+              ...more tilestyle objects...
+         </tilestyleset>
+         ...more tilestyleset objects...
+    </tile>
+    ...more tile objects...
+
+    To be a valid tileset...
+</tileset>
