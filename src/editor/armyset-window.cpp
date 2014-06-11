@@ -337,7 +337,12 @@ ArmySetWindow::ArmySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
 	update_armyset_menuitems();
 	update_army_panel();
       }
-    inhibit_scrolldown = false;
+    inhibit_scrolldown = true;
+    //we only want inhibit scrolldown to be false when we click add, and we 
+    //want the scrolledwindow to scroll down to the bottom.
+    //the problem is that an army gets selected as a result of an add.
+    //which is fine, but then there are also other times when an army gets
+    //selected.  like the with the mouse.
     inhibit_updates = false;
 }
 
@@ -879,6 +884,7 @@ void ArmySetWindow::on_army_selected()
       armies_scrolledwindow->get_vadjustment()->set_value
         (armies_scrolledwindow->get_vadjustment()->get_upper());
     }
+  inhibit_scrolldown = true;
 }
 
 void ArmySetWindow::fill_army_image(Gtk::Button *button, Gtk::Image *image, Shield::Colour c, ArmyProto *army)
@@ -1474,6 +1480,7 @@ void ArmySetWindow::on_armybonus_toggled(Gtk::CheckButton *button, guint32 val)
 
 void ArmySetWindow::on_add_army_clicked()
 {
+  inhibit_scrolldown=false;
   //add a new empty army to the armyset
   ArmyProto *a = new ArmyProto();
   //add it to the treeview
