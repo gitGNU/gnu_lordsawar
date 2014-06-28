@@ -42,50 +42,72 @@ sigc::connection on_timer_registered(Timing::timer_slot s, int msecs_interval)
 int max_vector_width;
 int main(int argc, char* argv[])
 {
-    srand(time(NULL));         // set the random seed
+  std::string load_filename;
+  srand(time(NULL));         // set the random seed
 
-    initialize_configuration();
-    RecentlyEditedFileList::support_backward_compatibility();
-    FileCompat::getInstance()->initialize();
-    Vector<int>::setMaximumWidth(1000);
+  initialize_configuration();
+  RecentlyEditedFileList::support_backward_compatibility();
+  FileCompat::getInstance()->initialize();
+  Vector<int>::setMaximumWidth(1000);
 
-    setlocale(LC_ALL, Configuration::s_lang.c_str());
-    bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-    bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-    textdomain (GETTEXT_PACKAGE);
+  setlocale(LC_ALL, Configuration::s_lang.c_str());
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
 
-    // Check if armysets are in the path (otherwise exit)
-    Armyset::scanSystemCollection();
+  // Check if armysets are in the path (otherwise exit)
+  Armyset::scanSystemCollection();
 
-    // init GUI stuff
-    g_set_application_name(N_("LordsAWar! Scenario Editor"));
-    Timing::instance().timer_registered.connect(
-	sigc::ptr_fun(on_timer_registered));
+  // init GUI stuff
+  g_set_application_name(N_("LordsAWar! Scenario Editor"));
+  Timing::instance().timer_registered.connect(
+                                              sigc::ptr_fun(on_timer_registered));
 
-    RecentlyEditedFileList::getInstance()->loadFromFile();
-	
-    Gtk::Main kit(argc, argv);
+  RecentlyEditedFileList::getInstance()->loadFromFile();
 
-    EditorSplashWindow d;
-    d.run();
-    d.hide();
-    MainWindow* main_window = NULL;
-    try
+  Gtk::Main kit(argc, argv);
+  if (argc > 1)
     {
-	MainWindow* main_window;
-	if (argc > 1)
-	  main_window = new MainWindow (argv[1]);
-	else
-	  main_window = new MainWindow;
-	main_window->show();
-	
-	main_window->init();
-	kit.run(main_window->get_window());
+      for (int i = 2; i <= argc; i++)
+        {
+          Glib::ustring parameter(argv[i-1]); 
+          if (parameter == "--help" || parameter == "-h")
+            {
+              std::cout << Glib::get_prgname() << " [OPTION]... [FILE]" << std::endl << std::endl;
+              std::cout << "LordsAWar! " << _("version") << " " << VERSION << std::endl << std::endl;
+              std::cout << _("Options:") << std::endl << std::endl; 
+              std::cout << "  -h, --help                 " << _("Shows this help screen") <<std::endl;
+              std::cout << std::endl;
+              std::cout << _("FILE can be a saved game file (.sav), or a map (.map) file.") << std::endl;
+              std::cout << std::endl;
+              std::cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << std::endl;
+              exit(0);
+            }
+          else
+            load_filename = parameter;
+        }
     }
-    catch (const Glib::Error &ex) {
-	std::cerr << ex.what() << std::endl;
+
+  EditorSplashWindow d;
+  d.run();
+  d.hide();
+  MainWindow* main_window = NULL;
+  try
+    {
+      MainWindow* main_window;
+      if (argc > 1)
+        main_window = new MainWindow (load_filename);
+      else
+        main_window = new MainWindow;
+      main_window->show();
+
+      main_window->init();
+      kit.run(main_window->get_window());
     }
-    delete main_window;
-    
-    return EXIT_SUCCESS;
+  catch (const Glib::Error &ex) {
+    std::cerr << ex.what() << std::endl;
+  }
+  delete main_window;
+
+  return EXIT_SUCCESS;
 }
