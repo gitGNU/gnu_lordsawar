@@ -129,14 +129,14 @@ liblordsawargfx_la_SOURCES = \
 lordsawar_SOURCES = armymap.cpp armymap.h \
 	callback-enums.h defs.h game-parameters.h \
 	sidebar-stats.h game.cpp game.h gamebigmap.cpp gamebigmap.h \
-	sound.cpp sound.h main.cpp 
+	snd.cpp snd.h main.cpp 
 
 lordsawar_upgrade_file_SOURCES = upgrade-file.cpp
 
 lordsawar_upgrade_file_LDADD = liblordsawar.la \
     liblordsawargamelist.la \
     liblordsawargamehost.la \
-    $(SDLSOUND_LIBS) $(SDL_LIBS) \
+    $(GSTREAMER_LIBS) \
     $(GTKMM_LIBS) \
     $(LIBXML_LIBS) \
     $(XSLT_LIBS) \
@@ -165,7 +165,7 @@ lordsawar_LDADD = liblordsawar.la \
     liblordsawargfx.la \
     liblordsawargamelist.la \
     liblordsawargamehost.la \
-    $(SDLSOUND_LIBS) $(SDL_LIBS) \
+    $(GSTREAMER_LIBS) \
     $(GTKMM_LIBS) \
     $(LIBXML_LIBS) \
     $(XSLT_LIBS) \
@@ -182,7 +182,7 @@ lordsawar_DEPENDENCIES = \
   gui/liblwgui.la
 
 AM_CXXFLAGS = -Wall
-INCLUDES = $(SDL_CFLAGS) \
+INCLUDES = $(GSTREAMER_CFLAGS) \
     $(GTKMM_CFLAGS) \
     $(LIBXML_CFLAGS) \
     $(XSLT_CFLAGS) \

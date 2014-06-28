@@ -69,7 +69,7 @@
 #include "status-box.h"
 #include "ucompose.hpp"
 #include "defs.h"
-#include "sound.h"
+#include "snd.h"
 #include "File.h"
 #include "game.h"
 #include "gamebigmap.h"
@@ -717,8 +717,8 @@ bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
 {
   status_box->clear_selected_stack();
 
-  Sound::getInstance()->haltMusic(false);
-  Sound::getInstance()->enableBackground();
+  Snd::getInstance()->halt(true);
+  Snd::getInstance()->enableBackground();
 
   if (game)
     delete game;
@@ -866,7 +866,7 @@ void GameWindow::on_load_game_activated()
 {
   Gtk::FileChooserDialog chooser(*window, _("Choose Game to Load"));
   Glib::RefPtr<Gtk::FileFilter> sav_filter = Gtk::FileFilter::create();
-  sav_filter->set_name(_("LordsAWar Saved Games (*.sav)"));
+  sav_filter->set_name(_("Army Saved Games (*.sav)"));
   sav_filter->add_pattern("*" + SAVE_EXT);
   chooser.add_filter(sav_filter);
   chooser.set_current_folder(Configuration::s_savePath);
@@ -914,7 +914,7 @@ void GameWindow::on_save_game_as_activated()
   Gtk::FileChooserDialog chooser(*window, _("Choose a Name"),
 				 Gtk::FILE_CHOOSER_ACTION_SAVE);
   Glib::RefPtr<Gtk::FileFilter> sav_filter = Gtk::FileFilter::create();
-  sav_filter->set_name(_("LordsAWar Saved Games (*.sav)"));
+  sav_filter->set_name(_("Army Saved Games (*.sav)"));
   sav_filter->add_pattern("*" + SAVE_EXT);
   chooser.add_filter(sav_filter);
   chooser.set_current_folder(Configuration::s_savePath);
@@ -1481,7 +1481,7 @@ void GameWindow::on_diplomacy_button_clicked()
 void GameWindow::stop_game(Glib::ustring action)
 {
   stop_action = action;
-  Sound::getInstance()->disableBackground();
+  Snd::getInstance()->disableBackground();
   if (game)
     {
       if (action == "game-over" && game->getScenario()->getPlayMode() == GameScenario::NETWORKED)
@@ -1933,7 +1933,7 @@ bool GameWindow::on_temple_searched(Hero *hero, Temple *temple, int blessCount)
     }
 
   if (blessCount > 0)
-    Sound::getInstance()->playMusic("bless", 1);
+    Snd::getInstance()->play("bless", 1);
 
   int response = dialog.run_and_hide();
 

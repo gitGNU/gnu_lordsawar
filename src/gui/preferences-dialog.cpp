@@ -25,7 +25,7 @@
 
 #include "defs.h"
 #include "Configuration.h"
-#include "sound.h"
+#include "snd.h"
 #include "game.h"
 #include "playerlist.h"
 #include "AI_Diplomacy.h"
@@ -231,12 +231,12 @@ void PreferencesDialog::on_play_music_toggled()
 
     if (play_music)
     {
-        Sound::getInstance()->enableBackground();
+        Snd::getInstance()->enableBackground();
     }
     else
     {
-        Sound::getInstance()->haltMusic();
-        Sound::getInstance()->disableBackground();
+        Snd::getInstance()->halt();
+        Snd::getInstance()->disableBackground();
     }
     music_volume_hbox->set_sensitive(Configuration::s_musicenable);
 }
@@ -250,11 +250,8 @@ void PreferencesDialog::on_music_volume_changed()
 {
     int volume = int(music_volume_scale->get_value() / 100 * 128);
     
-#ifdef FL_SOUND
-    Mix_VolumeMusic(volume);
-#endif
-
     Configuration::s_musicvolume = volume;
+    Snd::getInstance()->updateVolume();
 }
 
 void PreferencesDialog::on_ui_form_factor_changed()

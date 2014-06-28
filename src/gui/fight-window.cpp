@@ -31,7 +31,7 @@
 #include "army.h"
 #include "ImageCache.h"
 #include "Configuration.h"
-#include "sound.h"
+#include "snd.h"
 #include "GameMap.h"
 #include "tileset.h"
 #include "tilesetlist.h"
@@ -105,14 +105,14 @@ FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
       Configuration::s_displayFightRoundDelayFast; //milliseconds
     normal_round_speed = 
       Configuration::s_displayFightRoundDelaySlow; //milliseconds
-    Sound::getInstance()->disableBackground(true);
-    Sound::getInstance()->playMusic("battle", -1, true);
+    Snd::getInstance()->disableBackground(true);
+    Snd::getInstance()->play("battle", -1, true);
 }
 
 FightWindow::~FightWindow()
 {
-  Sound::getInstance()->haltMusic(true);
-  Sound::getInstance()->enableBackground();
+  Snd::getInstance()->halt(true);
+  Snd::getInstance()->enableBackground();
   delete window;
 }
 

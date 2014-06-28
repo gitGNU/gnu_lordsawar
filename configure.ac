@@ -33,74 +33,10 @@ AC_SUBST([gppver])
 
 AC_PROG_LIBTOOL
 
-dnl The minimum SDL version required
-SDL_VERSION=1.2.0
+PKG_CHECK_MODULES(GSTREAMER, gstreamermm-0.10)
+AC_SUBST(GSTREAMER_CFLAGS)
+AC_SUBST(GSTREAMER_LIBS)
 
-ac_save_ldflags=$LDFLAGS
-dnl Check for SDL
-AM_PATH_SDL($SDL_VERSION,
-            :,
-	    AC_MSG_ERROR([*** SDL version $SDL_VERSION not found!])
-)
-	
-LDFLAGS=$ac_save_ldflags
-AC_SUBST(SDL_CFLAGS)
-
-dnl And check for SDL_mixer. In detail, we need .ogg support
-dnl we need some extended cflags or get problems
-ac_save_cflags=$CFLAGS
-ac_save_ldflags=$LDFLAGS
-ac_save_libs=$LIBS
-
-use_sound=1
-AC_ARG_ENABLE(sound, [  --enable-sound         Enable or disable sound usage (default on)],
-                use_sound="$enableval", use_sound="yes")
-
-SDLSOUND_LIBS=
-if test $use_sound = yes; then
-
-    CFLAGS="$CFLAGS $SDL_CFLAGS"
-    LDFLAGS="$LDFLAGS -lSDL_mixer"
-    LIBS="-lSDL_mixer $LIBS"
-    
-    dnl check if ogg vorbis support is enabled
-    dnl only under linux the SDL_mixer under windows supports it
-    dnl if test $CC = "gcc" || test $CXX = "g++"; then
-    if test ${CC##*/} = "gcc" || test ${CXX##*/} = "g++" || test ${CXX##*/} = "c++"; then
-
-       if test $enable_sdltest = yes; then
-
-       AC_TRY_RUN([
-       #include <SDL/SDL_mixer.h>
-       #include <stdio.h> 
-
-       int main()
-       {
-           if (!Mix_LoadMUS("${srcdir}" "/dat/music/victory.ogg"))
-               return -1;
-           return 0;
-       }
-       ],, AC_MSG_ERROR([*** SDL_mixer is not installed or has not been compiled
-                         *** with ogg vorbis support]),[])
-
-       AC_MSG_RESULT([Test SDL_Mixer Run OK.])
-
-       fi
-
-    else AC_MSG_WARN([Skipping SDL_Mixer Run. We are cross-compiling for windows!])
-    fi
-
-    AC_DEFINE([FL_SOUND], 1, [enables sound])
-
-    SDLSOUND_LIBS="-lSDL_mixer"
-
-    CFLAGS=$ac_save_cflags
-    LDFLAGS=$ac_save_ldflags
-    LIBS=$ac_save_libs
-fi
-AC_SUBST(SDLSOUND_LIBS)
-
-	
 dnl Check for expat
 expat=0
 AC_ARG_WITH(expat, [  --with-expat=<dir>      Use expat from here],
@@ -301,7 +237,6 @@ echo ""
 echo "Configuration:"
 echo " Installation location : $prefix"
 echo " Editor compilation    : $use_editor"
-echo " Sound support         : $use_sound"
 echo " Game-list Server      : $use_gls"
 echo " Game-host Server      : $use_ghs"
 echo ""

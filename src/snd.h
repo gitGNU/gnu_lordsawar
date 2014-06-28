@@ -17,19 +17,17 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#ifndef SOUND_H
-#define SOUND_H
+#ifndef SND_H
+#define SND_H
 
 #include <map>
 #include <vector>
 #include <sigc++/trackable.h>
-#ifdef FL_SOUND
-#include <SDL_mixer.h>
-#endif
+#include <gstreamermm/playbin2.h>
 
 class XML_Helper;
 
-/** Sound class
+/** Snd class
   * 
   * The purpose of putting the sound code into one class is (besides hiding the
   * internals and supplying a friendly interface) to put all these ugly ifdefs
@@ -44,7 +42,7 @@ class XML_Helper;
   * by looking through the databse of available background music pieces. On top
   * of that, it is possible to play other music pieces. In this case, the
   * background music fades out (maybe), the other music fades or pops in
-  * and goes away again with the backgroun dmusic taking its place again
+  * and goes away again with the background music taking its place again
   * afterwards.
   */
 
@@ -60,7 +58,7 @@ struct MusicItem
 
 
 //! This class manages sound within the game.
-class Sound : public sigc::trackable
+class Snd : public sigc::trackable
 {
     public:
 	// Get Methods
@@ -91,7 +89,7 @@ class Sound : public sigc::trackable
           *
           * The current (background) track will be stopped (faded out) if
           * neccessary and the new piece will be faded in. Each call to
-          * playMusic should be accompanied by a call to haltMusic(), otherwise the
+          * play should be accompanied by a call to halt(), otherwise the
           * background music wil not continue.
           * 
           * @param piece        the identifier(name) of the music track to play.
@@ -100,8 +98,10 @@ class Sound : public sigc::trackable
           * @param fade         if set to true, fade out a playing music piece 
           * @return false if any error occurred.
           */
-        bool playMusic(Glib::ustring piece, int nloops = -1, bool fade = true);
+        bool play(Glib::ustring piece, int nloops = -1, bool fade = true);
         
+        void updateVolume();
+
         /** Stops the current (event) music. Note that the background music might
           * continue with playing.
           *
@@ -109,7 +109,7 @@ class Sound : public sigc::trackable
           *
           * @return false on error.
           */
-        bool haltMusic(bool fade = true);
+        bool halt(bool fade = true);
 
         /** Enables background music.
           * 
@@ -132,17 +132,17 @@ class Sound : public sigc::trackable
 	// Static Methods
 
         //! Singleton getter
-        static Sound* getInstance();
+        static Snd* getInstance();
 
         //! Explicitely delete the singleton
         static void deleteInstance();
 
     private:
         //! Constructor.  Initializes the sound and loads the music data
-        Sound();
+        Snd();
 
         //! Destructor.  Deinitializes sound
-        ~Sound();
+        ~Snd();
 
         //! Callback for the music data, see XML_Helper
         bool loadMusic(Glib::ustring tag, XML_Helper* helper);
@@ -154,9 +154,11 @@ class Sound : public sigc::trackable
         std::vector<Glib::ustring> d_bgMap;  // shallow copy of background pieces
 
         // currently playing background and foreground piece
-#ifdef FL_SOUND
-        Mix_Music* d_music;
-#endif
+        Glib::RefPtr<Gst::PlayBin2> back;
+        Glib::RefPtr<Gst::PlayBin2> effect;
+
+        // how many more times we have to loop an effect.
+        gint32 d_nloops;
 
         // if initialization failed, set this to true => no music/sound played
         bool d_broken;
@@ -164,12 +166,13 @@ class Sound : public sigc::trackable
         // if set to true, play background music
         bool d_background;
 
-        // if set to true, don't continue with next piece
-        bool d_block;
+        // callbacks
+
+        bool on_bus_message(const Glib::RefPtr<Gst::Bus> &bus, const Glib::RefPtr<Gst::Message> & msg, Glib::RefPtr<Gst::Element> playbin);
+        bool on_effect_fade (double step);
 
         // static instanton pointer
-        static Sound* s_instance;
+        static Snd* s_instance;
 };
 
-void _startNext();
-#endif //SOUND_H
+#endif //SND_H

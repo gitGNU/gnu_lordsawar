@@ -312,7 +312,7 @@ src/herotemplates.cpp
 src/xmlhelper.cpp
 src/action.cpp
 src/historymap.cpp
-src/sound.cpp
+src/snd.cpp
 src/bigmap.cpp
 src/Renamable.cpp
 src/gamebigmap.cpp

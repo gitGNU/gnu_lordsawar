@@ -27,7 +27,7 @@
 #include "defs.h"
 #include "GameMap.h"
 #include "File.h"
-#include "sound.h"
+#include "snd.h"
 #include "city.h"
 #include "playerlist.h"
 
@@ -136,10 +136,10 @@ bool HeroOfferDialog::run()
     heromap->resize();
     heromap->draw(Playerlist::getActiveplayer());
 
-    Sound::getInstance()->playMusic("hero", 1);
+    Snd::getInstance()->play("hero", 1);
     dialog->show_all();
     int response = dialog->run();
-    Sound::getInstance()->haltMusic();
+    Snd::getInstance()->halt();
 
     if (response == Gtk::RESPONSE_ACCEPT)	// accepted
       {

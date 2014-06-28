@@ -24,6 +24,7 @@
 
 #include <iostream>
 #include <time.h>
+#include <gstreamermm/init.h>
 
 #include "Configuration.h"
 #include "File.h"
@@ -63,6 +64,7 @@ int main(int argc, char* argv[])
   #endif
 
   Main kit(argc, argv);
+
 
   if (argc > 1)
     {
@@ -191,6 +193,7 @@ int main(int argc, char* argv[])
   Cityset::scanSystemCollection();
 
 
+  Gst::init(argc, argv);
   kit.start_main_loop();
 
   return EXIT_SUCCESS;

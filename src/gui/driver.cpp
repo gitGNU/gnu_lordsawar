@@ -43,7 +43,7 @@
 #include "xmlhelper.h"
 #include "Configuration.h"
 #include "ucompose.hpp"
-#include "sound.h"
+#include "snd.h"
 #include "timed-message-dialog.h"
 #include "game-preferences-dialog.h"
 
@@ -92,7 +92,7 @@ Driver::Driver(Glib::ustring load_filename)
     //here are the command-line options that don't bring up the splash screen:
     if (Main::instance().start_stress_test) 
       {
-	Sound::deleteInstance();
+	Snd::deleteInstance();
 	stress_test();
 	exit(0);
       }
@@ -325,7 +325,7 @@ void Driver::run()
     }
   else if (Main::instance().start_robots != 0) 
     {
-      Sound::deleteInstance();
+      Snd::deleteInstance();
       lordsawaromatic("127.0.0.1", LORDSAWAR_PORT, Player::AI_FAST,
 		      Main::instance().start_robots);
     }

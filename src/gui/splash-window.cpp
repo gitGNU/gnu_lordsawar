@@ -27,7 +27,7 @@
 #include "load-scenario-dialog.h"
 #include "Configuration.h"
 #include "defs.h"
-#include "sound.h"
+#include "snd.h"
 #include "File.h"
 #include "GameScenario.h"
 #include "network-game-selector-dialog.h"
@@ -74,7 +74,7 @@ SplashWindow::SplashWindow()
     xml->get_widget("preferences_button", preferences_button);
     preferences_button->signal_clicked().connect
       (sigc::mem_fun(*this, &SplashWindow::on_preferences_clicked));
-    Sound::getInstance()->playMusic("intro");
+    Snd::getInstance()->play("intro");
 
     xml->get_widget("button_box", button_box);
     if (Configuration::s_autosave_policy == 1)
@@ -119,7 +119,7 @@ SplashWindow::SplashWindow()
 
 SplashWindow::~SplashWindow()
 {
-    Sound::deleteInstance();
+    Snd::deleteInstance();
     //clearData();
     delete window;
 }

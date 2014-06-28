@@ -7,11 +7,8 @@ Requirements:
 
 - libglibmm >= 2.4
 
-- SDL >= 1.2.0	 (used for sound)
-	to be found at http://www.libsdl.org
-
-- SDL_mixer >= 1.2.6 (used for sound)
-    there should be a link on the sdl home page
+- gstreamermm >= 0.10   (used for sound)
+        to be found at: https://git.gnome.org/browse/gstreamermm
 
 - expat
     an XML parser to be found under http://expat.sf.net.
@@ -37,13 +34,13 @@ Requirements:
 
 
 on Ubuntu you need the following packages: [this is outdated]
-sudo apt-get install automake autoconf libtool m4 autotools-dev g++ libsigc++-2.0-dev libglibmm-2.4-dev libgtkmm-2.4-dev gettext subversion libsdl1.2-dev libsdl-mixer1.2-dev libboost-dev intltool cvs libtar-dev libxml2-dev libxslt-dev
+sudo apt-get install automake autoconf libtool m4 autotools-dev g++ libsigc++-2.0-dev libglibmm-2.4-dev libgtkmm-2.4-dev gettext subversion libgstreamermm-0.10-dev libboost-dev intltool cvs libtar-dev libxml2-dev libxslt-dev
 
 on Fedora you need the following packages:
-yum install libglademm24-devel gtkmm30-devel gettext desktop-file-utils SDL-devel SDL_mixer-devel expat-devel libsigc++20-devel boost-devel libtiff-devel libvorbis-devel libjpeg-devel intltool automake autoconf m4 subversion cvs libtar-devel glade3 libxml2-devel libxslt-devel gcc-c++ boost-devel
+yum install libglademm24-devel gtkmm30-devel gettext desktop-file-utils gstreamermm-0.10-devel expat-devel libsigc++20-devel boost-devel libtiff-devel libvorbis-devel libjpeg-devel intltool automake autoconf m4 subversion cvs libtar-devel glade3 libxml2-devel libxslt-devel gcc-c++ boost-devel
 
 on OpenSUSE 11.2, you need to manually build and install libtar from the libtar URL listed above (I know of no OpenSUSE rpm for libtar), plus the followin packages:
-autoconf gettext-tools intltool automake libtool glimbmm2-devel gtkmm2-devel libSDL_mixer-devel libexpat-devel boost-devel libsigc++2-devel pkg-config make gcc-c++ libxml2-devel libxslt-devel
+autoconf gettext-tools intltool automake libtool glimbmm2-devel gtkmm2-devel gstreamermm-0.10-devel libexpat-devel boost-devel libsigc++2-devel pkg-config make gcc-c++ libxml2-devel libxslt-devel
 (Several other rpms are needed, but these others will automatically be present in any normal workstation build, or will automatically be pulled in by rpm dependenices for the packages listed here).
 
 Please report changes in these package installation commands if they fail to work for.  Send your mail to lordsawar-discuss@nongnu.org.

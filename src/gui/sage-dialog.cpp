@@ -24,7 +24,7 @@
 #include "sage-dialog.h"
 
 #include "defs.h"
-#include "sound.h"
+#include "snd.h"
 #include "ruin.h"
 #include "rewardlist.h"
 #include "playerlist.h"
@@ -85,10 +85,10 @@ Reward *SageDialog::run()
     ruinmap->resize();
     ruinmap->draw(Playerlist::getActiveplayer());
 
-    Sound::getInstance()->playMusic("hero", 1);
+    Snd::getInstance()->play("hero", 1);
     dialog->show_all();
     dialog->run();
-    Sound::getInstance()->haltMusic();
+    Snd::getInstance()->halt();
     //okay, we have a reward selected
    //now we return it (somehow)
   

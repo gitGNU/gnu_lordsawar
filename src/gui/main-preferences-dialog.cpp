@@ -23,7 +23,7 @@
 #include "main-preferences-dialog.h"
 
 #include "Configuration.h"
-#include "sound.h"
+#include "snd.h"
 
 
 MainPreferencesDialog::MainPreferencesDialog(Gtk::Window &parent)
@@ -82,14 +82,9 @@ void MainPreferencesDialog::on_play_music_toggled()
     Configuration::s_musicenable = play_music;
 
     if (play_music)
-    {
-        Sound::getInstance()->enableBackground();
-    }
+      Snd::getInstance()->play("intro", -1, false);
     else
-    {
-        Sound::getInstance()->haltMusic();
-        Sound::getInstance()->disableBackground();
-    }
+      Snd::getInstance()->halt(false);
     music_volume_hbox->set_sensitive(Configuration::s_musicenable);
 }
 
@@ -97,11 +92,8 @@ void MainPreferencesDialog::on_music_volume_changed()
 {
     int volume = int(music_volume_scale->get_value() / 100 * 128);
     
-#ifdef FL_SOUND
-    Mix_VolumeMusic(volume);
-#endif
-
     Configuration::s_musicvolume = volume;
+    Snd::getInstance()->updateVolume();
 }
 
 void MainPreferencesDialog::on_show_commentator_toggled()

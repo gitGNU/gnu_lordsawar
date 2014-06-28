@@ -19,7 +19,6 @@
 #include <config.h>
 
 #include <iomanip>
-#include <SDL_video.h>
 #include <assert.h>
 
 #include <sigc++/functors/mem_fun.h>
@@ -35,7 +34,6 @@
 #include "tilesetlist.h"
 #include "GameMap.h"
 #include "defs.h"
-#include "sound.h"
 #include "File.h"
 #include "ImageCache.h"
 #include "smallmap.h"
