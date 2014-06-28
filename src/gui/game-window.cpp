@@ -125,7 +125,6 @@ GameWindow::GameWindow()
   stack_tip = NULL;
   game = NULL;
   game_button_box = NULL;
-    sdl_inited = false;
     
     Glib::RefPtr<Gtk::Builder> xml
 	= Gtk::Builder::create_from_file(File::getUIFile("game-window.ui"));
@@ -849,10 +848,6 @@ bool GameWindow::on_smallmap_mouse_motion_event(GdkEventMotion *e)
 void GameWindow::on_bigmap_surface_changed(Gtk::Allocation box)
 {
   static Gtk::Allocation last_box = Gtk::Allocation(0,0,1,1);
-  if (!sdl_inited) {
-    sdl_inited = true;
-    sdl_initialized.emit();
-  }
 
   if (game) {
     game->get_bigmap().screen_size_changed(bigmap_image->get_allocation());

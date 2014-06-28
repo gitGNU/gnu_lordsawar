@@ -98,8 +98,6 @@ class GameWindow: public sigc::trackable
 
     sigc::signal<void> quit_requested;
 
-    sigc::signal<void> sdl_initialized;
-    
     Gtk::Window *get_window() const {return window;};
 
     void on_player_replaced(Player *p);
@@ -184,8 +182,6 @@ class GameWindow: public sigc::trackable
     Game* game;
     GameButtonBox *game_button_box;
     
-    bool sdl_inited;
-
     bool on_delete_event(GdkEventAny *e);
 
     bool on_bigmap_mouse_button_event(GdkEventButton *e);

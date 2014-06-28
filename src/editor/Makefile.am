@@ -97,7 +97,7 @@ lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(GTKMM_LIBS) \
     			 $(LIBXML_LIBS) \
     			 $(XSLT_LIBS) \
-                         $(SDL_LIBS) -ltar -lz \
+                         -ltar -lz \
                          @LIBINTL@ -L$(top_builddir)/src
 
 endif
@@ -111,5 +111,4 @@ AM_CXXFLAGS = -Wall
 AM_CPPFLAGS = $(GTKMM_CFLAGS) \
     $(LIBXML_CFLAGS) \
     $(XSLT_CFLAGS) \
-    $(SDL_CFLAGS) \
     -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' -I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/src/gui/
