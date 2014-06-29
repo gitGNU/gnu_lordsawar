@@ -37,22 +37,6 @@ PKG_CHECK_MODULES(GSTREAMER, gstreamermm-0.10)
 AC_SUBST(GSTREAMER_CFLAGS)
 AC_SUBST(GSTREAMER_LIBS)
 
-dnl Check for expat
-expat=0
-AC_ARG_WITH(expat, [  --with-expat=<dir>      Use expat from here],
-                      [
-                      expat=$withval
-                      CPPFLAGS="$CPPFLAGS -I$withval/include"
-                      LDFLAGS="$LDFLAGS -L$withval/lib"
-                      LIBS="$LIBS -lexpat"
-                      ]
-                      )
-#echo "EXPAT=$expat"
-if test $expat = 0 ; then
-   AC_CHECK_HEADERS(expat.h,[],AC_MSG_ERROR([*** Expat not found!]))
-   AC_CHECK_LIB(expat,XML_ParserCreate,[],[AC_MSG_ERROR([*** Expat not found!])])
-fi
-
 dnl Check for libtar
 libtar=0
 AC_ARG_WITH(libtar, [  --with-libtar=<dir>      Use libtar from here],
@@ -69,12 +53,8 @@ if test $libtar = 0 ; then
 fi
 
 dnl check for libxml and libxslt
-PKG_CHECK_MODULES(LIBXML, [libxml-2.0 >= 2.6.28])
 PKG_CHECK_MODULES(XSLT, [libxslt >= 1.1.20])
-AC_SUBST(LIBXML_CFLAGS)
-AC_SUBST(LIBXML_LIBS)
 AC_SUBST(XSLT_CFLAGS)
-AC_SUBST(XSLT_LIBS)
 
 
 #if test $winnls = no ; then
@@ -96,6 +76,10 @@ PKG_CHECK_MODULES(GTKMM, gtkmm-3.0)
 AC_SUBST(GTKMM_CFLAGS)
 AC_SUBST(GTKMM_LIBS)
 			     		      
+PKG_CHECK_MODULES(XMLPP, libxml++-2.6)
+AC_SUBST(XMLPP_CFLAGS)
+AC_SUBST(XMLPP_LIBS)
+
 dnl Finally, check for libsigc++
 PKG_CHECK_MODULES(LIBSIGC, sigc++-2.0)
 

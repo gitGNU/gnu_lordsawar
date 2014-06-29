@@ -138,7 +138,7 @@ lordsawar_upgrade_file_LDADD = liblordsawar.la \
     liblordsawargamehost.la \
     $(GSTREAMER_LIBS) \
     $(GTKMM_LIBS) \
-    $(LIBXML_LIBS) \
+    $(XMLPP_LIBS) \
     $(XSLT_LIBS) \
     $(LIBSIGC_LIBS) -ltar -lz \
     @LIBINTL@
@@ -167,7 +167,7 @@ lordsawar_LDADD = liblordsawar.la \
     liblordsawargamehost.la \
     $(GSTREAMER_LIBS) \
     $(GTKMM_LIBS) \
-    $(LIBXML_LIBS) \
+    $(XMLPP_LIBS) \
     $(XSLT_LIBS) \
     $(LIBSIGC_LIBS) -ltar -lz \
     gui/liblwgui.la \
@@ -184,7 +184,7 @@ lordsawar_DEPENDENCIES = \
 AM_CXXFLAGS = -Wall
 INCLUDES = $(GSTREAMER_CFLAGS) \
     $(GTKMM_CFLAGS) \
-    $(LIBXML_CFLAGS) \
+    $(XMLPP_CFLAGS) \
     $(XSLT_CFLAGS) \
     $(LIBSIGC_CFLAGS) \
     -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' \

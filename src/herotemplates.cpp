@@ -114,7 +114,7 @@ int HeroTemplates::loadHeroTemplates()
 
   helper.registerTag("herotemplate", sigc::mem_fun((*this), &HeroTemplates::load));
 
-  if (!helper.parse())
+  if (!helper.parseXML())
     {
       std::cerr << String::ucompose(_("Error!  can't load heronames file `%1'.  Exiting."), File::getMiscFile("heronames.xml")) << std::endl;
       exit(-1);

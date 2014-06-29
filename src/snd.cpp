@@ -65,7 +65,7 @@ Snd::Snd()
     XML_Helper helper(File::getMusicFile("music.xml"), std::ios::in);
     helper.registerTag("piece", sigc::mem_fun(this, &Snd::loadMusic));
 
-    if (!helper.parse())
+    if (!helper.parseXML())
     {
         std::cerr<< _("Error loading music descriptions; disabling music.") << std::endl;
         d_broken = true;

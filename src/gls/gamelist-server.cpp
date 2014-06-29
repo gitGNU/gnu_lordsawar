@@ -152,7 +152,7 @@ bool GamelistServer::onGotMessage(void *conn, int type, Glib::ustring payload)
              sigc::bind(sigc::mem_fun(this, 
                                       &GamelistServer::loadAdvertisedGame), 
                         conn));
-          helper.parse();
+          helper.parseXML();
           Gamelist::getInstance()->saveToFile(datafile);
         }
       break;

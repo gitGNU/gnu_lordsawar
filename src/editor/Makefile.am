@@ -95,7 +95,7 @@ lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
 			 libtilesetwindow.la \
 			 libeditutil.la \
                          $(GTKMM_LIBS) \
-    			 $(LIBXML_LIBS) \
+    			 $(XMLPP_LIBS) \
     			 $(XSLT_LIBS) \
                          -ltar -lz \
                          @LIBINTL@ -L$(top_builddir)/src
@@ -109,6 +109,6 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 AM_CXXFLAGS = -Wall
 AM_CPPFLAGS = $(GTKMM_CFLAGS) \
-    $(LIBXML_CFLAGS) \
+	      $(XMLPP_CFLAGS) \
     $(XSLT_CFLAGS) \
     -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' -I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/src/gui/

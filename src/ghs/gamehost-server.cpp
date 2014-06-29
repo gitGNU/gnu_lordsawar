@@ -318,7 +318,7 @@ void GamehostServer::get_profile_and_scenario_id(Glib::ustring payload, Profile 
     (Profile::d_tag, sigc::bind(sigc::mem_fun(this, 
                                               &GamehostServer::loadProfile), 
                                 profile));
-  if (!helper.parse())
+  if (!helper.parseXML())
     broken = true;
   helper.close();
   if (broken)

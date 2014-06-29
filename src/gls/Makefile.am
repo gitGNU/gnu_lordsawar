@@ -23,7 +23,7 @@ lordsawar_game_list_client_SOURCES = gls-client-main.cpp \
 				     gls-client-tool.cpp gls-client-tool.h
 
 lordsawar_game_list_client_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS) \
-    				   $(XSLT_LIBS) $(LIBXML_LIBS) \
+    				   $(XSLT_LIBS) $(XMLPP_LIBS) \
 				   -ltar -lz \
                                    $(top_builddir)/src/liblordsawar.la \
                                    $(top_builddir)/src/liblordsawargamelist.la \
@@ -35,7 +35,7 @@ lordsawar_game_list_server_SOURCES = main.cpp \
   gamelist-server.cpp gamelist-server.h 
 
 lordsawar_game_list_server_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS) \
-    				   $(XSLT_LIBS) $(LIBXML_LIBS) \
+    				   $(XSLT_LIBS) $(XMLPP_LIBS) \
 				   -ltar -lz \
                                    $(top_builddir)/src/liblordsawar.la \
                                    $(top_builddir)/src/liblordsawargamelist.la \
@@ -54,7 +54,7 @@ AM_CPPFLAGS = \
     $(SDL_CFLAGS) \
     $(LIBSIGC_CFLAGS) \
     $(GTKMM_CFLAGS) \
-    $(LIBXML_CFLAGS) \
+    $(XMLPP_CFLAGS) \
     $(XSLT_CFLAGS) \
     -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' \
     -I$(top_srcdir) -I$(top_srcdir)/src

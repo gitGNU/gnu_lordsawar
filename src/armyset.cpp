@@ -489,7 +489,7 @@ public:
           return;
 	XML_Helper helper(lwafilename, std::ios::in);
 	helper.registerTag(Armyset::d_tag, sigc::mem_fun((*this), &ArmysetLoader::load));
-	if (!helper.parse())
+	if (!helper.parseXML())
 	  {
             unsupported = unsupported_version;
             std::cerr << String::ucompose(_("Error!  can't load armyset `%1'."), filename) << std::endl;

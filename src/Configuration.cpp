@@ -101,7 +101,7 @@ bool Configuration::loadConfigurationFile(Glib::ustring fileName)
         helper.registerTag(d_tag,
 	    sigc::mem_fun(*this, &Configuration::parseConfiguration));
     
-        return helper.parse();
+        return helper.parseXML();
     }
     else return false;
 }

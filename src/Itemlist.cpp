@@ -54,7 +54,7 @@ void Itemlist::createStandardInstance()
     XML_Helper helper(File::getItemDescription(), std::ios::in);
     d_instance = new Itemlist(&helper);
 
-    if (!helper.parse())
+    if (!helper.parseXML())
     {
       std::cerr << String::ucompose(_("Could not parse item description file `%1'.  Exiting."), File::getItemDescription()) << std::endl;
         exit(-1);

@@ -28,21 +28,17 @@
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
-
-//they are only needed later for the expat callbacks
-Glib::ustring my_cdata;
-bool error = false;
-    
 Glib::ustring XML_Helper::xml_entity = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
 
 // forward declarations of the internally used functions
-void start_handler(void* udata, const XML_Char* name, const XML_Char** atts);
-void character_handler(void* udata, const XML_Char* s, int len);
-void end_handler(void* udata, const XML_Char* name);
+//void start_handler(void* udata, const XML_Char* name, const XML_Char** atts);
+//void character_handler(void* udata, const XML_Char* s, int len);
+//void end_handler(void* udata, const XML_Char* name);
 
 XML_Helper::XML_Helper(Glib::ustring filename, std::ios::openmode mode)
-  : d_inbuf(0), d_outbuf(0), d_fout(0), d_fin(0), d_out(0), d_in(0),
-    d_last_opened(""), d_version(""), d_failed(false)
+  : xmlpp::SaxParser(), d_inbuf(0), d_outbuf(0), d_fout(0), d_fin(0), 
+    d_out(0), d_in(0), d_last_opened(""), d_version(""), d_failed(false), 
+    my_cdata(""), error(false)
 {
     debug("Constructor called  -- ")
         
@@ -87,14 +83,16 @@ XML_Helper::XML_Helper(Glib::ustring filename, std::ios::openmode mode)
 
 XML_Helper::XML_Helper(std::ostream* output)
   : d_inbuf(0), d_outbuf(0), d_fout(0), d_fin(0), d_out(0), d_in(0),
-    d_last_opened(""), d_version(""), d_failed(false)
+    d_last_opened(""), d_version(""), d_failed(false), my_cdata(""), 
+    error(false)
 {
   d_out = output;
 }
 
 XML_Helper::XML_Helper(std::istream* input)
   : d_inbuf(0), d_outbuf(0), d_fout(0), d_fin(0), d_out(0), d_in(0),
-    d_last_opened(""), d_version(""), d_failed(false)
+    d_last_opened(""), d_version(""), d_failed(false), my_cdata(""), 
+    error(false)
 {
   d_in = input;
 }
@@ -102,8 +100,13 @@ XML_Helper::XML_Helper(std::istream* input)
 XML_Helper::~XML_Helper()
 {
     if (d_tags.size() != 0)
+      {
     // should never happen unless there was an error
-        std::cerr << "XML_Helper: dtags not empty!!\n";
+        std::cerr << "Error parsing: ";
+        for (std::list<Glib::ustring>::reverse_iterator i = d_tags.rbegin(); i != d_tags.rend(); i++)
+          std::cerr << (*i) << "/";
+        std::cerr << "\n";
+      }
     
     debug("Called destructor\n")    
     close();
@@ -533,51 +536,39 @@ bool XML_Helper::getData(double& data, Glib::ustring name)
     return true;
 }
 
-bool XML_Helper::parse()
+bool XML_Helper::parseXML()
 {
-    if (!d_in || d_failed)
-        return false;
-        //what's the use of parsing no or incorrect input?
+  if (!d_in || d_failed)
+    return false;
 
-    d_parser = XML_ParserCreate("utf-8");
+  char buffer[1024];
+    do 
+      {
+        memset (buffer, 0, sizeof (buffer));
+        d_in->read(buffer, sizeof (buffer) - 1);
+        Glib::ustring input(buffer);
+        parse_chunk(input);
+        if (d_failed)
+          break;
+      } while (*d_in);
+  
+  if (!d_failed)
+    finish_chunk_parsing();
 
-    //set handlers and data
-    XML_SetElementHandler(d_parser, start_handler, end_handler);
-    XML_SetCharacterDataHandler(d_parser, character_handler);
-    XML_SetUserData(d_parser, static_cast<void*>(this));
-
-    while (!d_in->eof() && !d_failed)
-    {
-        void * buffer = XML_GetBuffer(d_parser,1024);
-        d_in->read((char*)buffer, 1024);
-          int bytesread = d_in->gcount();
-        //int bytesread = d_in->getline(buffer, 1000);
-        bool my_eof = d_in->eof();
-
-        if (!XML_ParseBuffer(d_parser, bytesread, my_eof))
-        //error parsing
-        {
-            std::cerr << String::ucompose(_("Error parsing xml document.  Line %1\n%2"), XML_GetCurrentLineNumber(d_parser), XML_ErrorString(XML_GetErrorCode(d_parser))) << std::endl;
-            d_failed = true;
-        }
-    }
-
-    XML_ParserFree(d_parser);
-
-    return (!d_failed);
+  return (!d_failed);
 }
 
 //beginning with here is only internal stuff. Continue reading only if you are
 //interested in the xml parsing. :)
 
-/* Parsing works like this: We have three expat callback functions,
- * startelementhandler, endelementhandler and cdatahandler.
- * The startelement handler just calls XML_Helper::tag_open (an object is passed
- * as data), the cdata element handler just sums up the cdata, and the end
- * element handler calls XML_Helper::tag_close, giving it also the final cdata
+/* Parsing works like this: We have three callback functions,
+ * on_start_element, on_end_element and on_characters.
+ * The on_start_element just calls XML_Helper::tag_open, the on_characters 
+ * callback just sums up the cdata, and the on_end_element callback
+ * calls XML_Helper::tag_close, giving it also the final cdata
  * string (the string between opened tag and closed tag) to the XML_Helper.
  * Since data is always stored like "<mydata>data_value</mydata>", having
- * a startelementhandler encounter a non-null summed up cdata string is a
+ * on_start_element encounter a non-null summed up cdata string is a
  * serious error and results in a fail.
  *
  * Now the XML_Helper functions: 
@@ -712,59 +703,6 @@ bool XML_Helper::tag_close(Glib::ustring tag, Glib::ustring cdata)
     return true;
 }
 
-//these functions are the expat callbacks. Their main purpose is to set up
-//the parametres and call the tag_open and tag_close functions in XML_Helper.
-
-//the start handler, call open_tag and do misc init stuff
-void start_handler(void* udata, const XML_Char* name, const XML_Char** atts)
-{
-    if (error)
-        return;
-    
-    XML_Helper* helper = static_cast<XML_Helper*>(udata);
-    Glib::ustring version = "";
-    Glib::ustring lang = "";
-
-    //the only attribute we know and handle are version strings
-    if ((atts[0] != 0) && (Glib::ustring(atts[0]) == "version"))
-        version = Glib::ustring(atts[1]);
-
-    if ((atts[0] != 0) && (Glib::ustring(atts[0]) == "xml:lang"))
-        lang = Glib::ustring(atts[1]);
-
-    my_cdata = "";
-
-    error = !helper->tag_open(Glib::ustring(name), version, lang);
-}
-
-//the cdata handler, just sums up the string  s
-void character_handler(void* udata, const XML_Char* s, int len)
-{
-    if (error)
-        return;
-
-    XML_Char buffer[len+4];
-    
-    memset (buffer, 0, sizeof (buffer));
-    memcpy (buffer, s, len);
-
-    //now add the string to the other one
-    my_cdata += Glib::ustring((const char *) buffer);
-}
-
-//the end handler: call tag_close and dosome cleanup
-void end_handler(void* udata, const XML_Char* name)
-{
-    if (error)
-        return;
-    
-    XML_Helper* helper = static_cast<XML_Helper*>(udata);
-
-    error = !helper->tag_close(Glib::ustring(name), my_cdata);
-
-    my_cdata = "";
-}
-
 Glib::ustring XML_Helper::get_top_tag(Glib::ustring filename)
 {
   char buffer[1024];
@@ -833,4 +771,50 @@ bool XML_Helper::rewrite_version(Glib::ustring filename, Glib::ustring tag, Glib
   File::erase(filename);
   rename(tmpfile.c_str(), filename.c_str());
   return found;
+}
+
+void XML_Helper::on_start_element(const Glib::ustring& name, const AttributeList& a)
+{
+  Glib::ustring version, lang;
+  //the only attribute we know and handle are version and lang strings
+  for(xmlpp::SaxParser::AttributeList::const_iterator i = a.begin(); i != a.end(); ++i)
+    {
+      if ((*i).name == "version")
+        version = (*i).value;
+      else if((*i).name == "xml:lang")
+        lang = (*i).value;
+    }
+
+  my_cdata = "";
+
+  error = !tag_open(Glib::ustring(name), version, lang);
+
+}
+      
+void XML_Helper::on_end_element(const Glib::ustring& name)
+{
+  if (error)
+    return;
+
+  error = !tag_close(Glib::ustring(name), my_cdata);
+
+  my_cdata = "";
+
+}
+
+void XML_Helper::on_characters(const Glib::ustring& text)
+{
+  if (error)
+    return;
+  my_cdata += text;
+}
+
+void XML_Helper::on_fatal_error (const Glib::ustring & text)
+{
+  d_failed = true;
+}
+
+void XML_Helper::on_error (const Glib::ustring & text)
+{
+  d_failed = true;
 }

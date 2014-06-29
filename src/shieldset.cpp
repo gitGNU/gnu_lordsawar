@@ -144,7 +144,7 @@ public:
           return;
 	XML_Helper helper(lwsfilename, std::ios::in);
 	helper.registerTag(Shieldset::d_tag, sigc::mem_fun((*this), &ShieldsetLoader::load));
-	if (!helper.parse())
+	if (!helper.parseXML())
 	  {
             unsupported = unsupported_version;
             std::cerr << String::ucompose(_("Error!  can't load shieldet `%1'."), filename) << std::endl;

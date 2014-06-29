@@ -539,7 +539,7 @@ bool GameScenario::loadWithHelper(XML_Helper& helper)
   helper.registerTag(Portlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
   helper.registerTag(VectoredUnitlist::d_tag, sigc::mem_fun(this, &GameScenario::load));
 
-  if (!helper.parse())
+  if (!helper.parseXML())
     broken = true;
 
   if (!broken)
@@ -1069,7 +1069,7 @@ public:
 			 sigc::mem_fun(this, &ParamLoader::loadParam));
       helper.registerTag(Player::d_tag, 
 			 sigc::mem_fun(this, &ParamLoader::loadParam));
-      bool retval = helper.parse();
+      bool retval = helper.parseXML();
       File::erase(tmpfile);
       if (broken == false)
 	broken = !retval;
@@ -1187,7 +1187,7 @@ public:
       XML_Helper helper(tmpfile, std::ios::in);
       helper.registerTag(GameScenario::d_tag, 
 			 sigc::mem_fun(this, &PlayModeLoader::loadParam));
-      bool retval = helper.parse();
+      bool retval = helper.parseXML();
       File::erase(tmpfile);
       if (broken == false)
 	broken = !retval;
@@ -1234,7 +1234,7 @@ public:
 			 sigc::mem_fun(this, &DetailsLoader::loadDetails));
       helper.registerTag(City::d_tag, 
 		     sigc::mem_fun(this, &DetailsLoader::loadDetails));
-      bool retval = helper.parse();
+      bool retval = helper.parseXML();
       if (!broken)
 	broken = !retval;
       File::erase(tmpfile);

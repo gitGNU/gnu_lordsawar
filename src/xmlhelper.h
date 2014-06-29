@@ -80,14 +80,14 @@
 #include <list>
 #include <map>
 #include <sigc++/slot.h>
-#include <expat.h>
+#include <libxml++/libxml++.h>
     
 class XML_Helper;
 
 typedef sigc::slot<bool, Glib::ustring, XML_Helper*> XML_Slot;
 
 //! XML handling class.
-class XML_Helper
+class XML_Helper: public xmlpp::SaxParser
 {
     public:
 
@@ -198,23 +198,20 @@ class XML_Helper
         //! Returns the version number of the save file
         Glib::ustring getVersion() const {return d_version;}
         
-        
         //! Use this function to start reading a file or stream
-        bool parse();
-
-        //! Return the expat object. Only for debugging purposes.
-        XML_Parser getParser() {return d_parser;}
-
-        
-        //! Used internally for the expat callback
-        bool tag_open(Glib::ustring tag, Glib::ustring version, Glib::ustring lang);
-
-        //! Used internally for the expat callback
-        bool tag_close(Glib::ustring tag, Glib::ustring cdata = "");
+        bool parseXML();
 
         static Glib::ustring get_top_tag(Glib::ustring filename);
         static bool rewrite_version(Glib::ustring filename, Glib::ustring tag, Glib::ustring new_version);
         
+
+    protected:
+        virtual void on_start_element(const Glib::ustring& name,
+                                                                      const AttributeList& properties);
+        virtual void on_end_element(const Glib::ustring& name);
+        virtual void on_characters(const Glib::ustring& characters);
+        virtual void on_fatal_error (const Glib::ustring & text);
+        virtual void on_error (const Glib::ustring & text);
     private:
         /** Prepends a number of tags (depending on the number of opened tags)
           * to a line. Used for beautification.
@@ -222,8 +219,11 @@ class XML_Helper
         inline void addTabs();
 
 	bool lang_check(Glib::ustring lang);
-        
-        
+
+        bool tag_open(Glib::ustring tag, Glib::ustring version, Glib::ustring lang);
+
+        bool tag_close(Glib::ustring tag, Glib::ustring cdata = "");
+
         //streams, d_fout and d_fin are used when it comes to file
         //handling, d_in and d_out are used when actually reading or
         //writing data(either point to d_fout or d_fin or have a
@@ -245,9 +245,9 @@ class XML_Helper
         Glib::ustring d_last_opened;
         Glib::ustring d_version;
 
-        XML_Parser d_parser;
-
         bool d_failed;
+        Glib::ustring my_cdata;
+        bool error;
 };
 
 class VersionLoader 
@@ -261,7 +261,7 @@ public:
             d_tag = tag;
             XML_Helper helper(filename.c_str(), std::ios::in);
             helper.registerTag(tag, sigc::mem_fun(*this, &VersionLoader::load));
-            bool retval = helper.parse();
+            bool retval = helper.parseXML();
             if (!retval)
               broken = true;
             version = d_version;
@@ -279,6 +279,7 @@ public:
 
     Glib::ustring d_tag;
     Glib::ustring d_version;
+
 };
 
 #endif //XML_HELPER_H

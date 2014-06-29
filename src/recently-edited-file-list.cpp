@@ -73,7 +73,7 @@ bool RecentlyEditedFileList::loadFromFile(Glib::ustring filename)
     {
       XML_Helper helper(filename.c_str(), std::ios::in);
       helper.registerTag(RecentlyEditedFile::d_tag, sigc::mem_fun(this, &RecentlyEditedFileList::load));
-      bool retval = helper.parse();
+      bool retval = helper.parseXML();
       if (retval == false)
 	unlink(filename.c_str());
       return retval;

@@ -132,7 +132,7 @@ bool GamehostClient::onGotMessage(int type, Glib::ustring payload)
           helper.registerTag
             (RecentlyPlayedGameList::d_tag, 
              sigc::mem_fun(*this, &GamehostClient::loadRecentlyPlayedGameList));
-          helper.parse();
+          helper.parseXML();
           received_game_list.emit(d_recently_played_game_list, "");
         }
       break;
