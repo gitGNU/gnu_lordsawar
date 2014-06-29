@@ -19,9 +19,6 @@ Requirements:
 - libsigc++ >= 2.0
 	to be found at http://libsigc.sf.net
 
-- libxml2 >= 2.6.28
-        to be found at http://xmlsoft.org/
-
 - libxslt >= 1.1.20
         to be found at http://xmlsoft.org/
 
@@ -34,13 +31,13 @@ Requirements:
 
 
 on Ubuntu you need the following packages: [this is outdated]
-sudo apt-get install automake autoconf libtool m4 autotools-dev g++ libsigc++-2.0-dev libglibmm-2.4-dev libgtkmm-2.4-dev gettext subversion libgstreamermm-0.10-dev libboost-dev intltool cvs libtar-dev libxml2-dev libxslt-dev libxml++-2.6-dev
+sudo apt-get install automake autoconf libtool m4 autotools-dev g++ libsigc++-2.0-dev libglibmm-2.4-dev libgtkmm-2.4-dev gettext subversion libgstreamermm-0.10-dev libboost-dev intltool cvs libtar-dev libxslt-dev libxml++-2.6-dev
 
 on Fedora you need the following packages:
-yum install libglademm24-devel gtkmm30-devel gettext desktop-file-utils gstreamermm-0.10-devel libxml++-devel libsigc++20-devel boost-devel libtiff-devel libvorbis-devel libjpeg-devel intltool automake autoconf m4 subversion cvs libtar-devel glade3 libxml2-devel libxslt-devel gcc-c++ boost-devel
+yum install libglademm24-devel gtkmm30-devel gettext desktop-file-utils gstreamermm-0.10-devel libxml++-devel libsigc++20-devel boost-devel libtiff-devel libvorbis-devel libjpeg-devel intltool automake autoconf m4 subversion cvs libtar-devel glade3 libxslt-devel gcc-c++ boost-devel
 
 on OpenSUSE 11.2, you need to manually build and install libtar from the libtar URL listed above (I know of no OpenSUSE rpm for libtar), plus the followin packages:
-autoconf gettext-tools intltool automake libtool glimbmm2-devel gtkmm2-devel gstreamermm-0.10-devel libxml++-devel boost-devel libsigc++2-devel pkg-config make gcc-c++ libxml2-devel libxslt-devel
+autoconf gettext-tools intltool automake libtool glimbmm2-devel gtkmm2-devel gstreamermm-0.10-devel libxml++-devel boost-devel libsigc++2-devel pkg-config make gcc-c++ libxslt-devel
 (Several other rpms are needed, but these others will automatically be present in any normal workstation build, or will automatically be pulled in by rpm dependenices for the packages listed here).
 
 Please report changes in these package installation commands if they fail to work for.  Send your mail to lordsawar-discuss@nongnu.org.
