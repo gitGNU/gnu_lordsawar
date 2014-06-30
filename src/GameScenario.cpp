@@ -594,30 +594,15 @@ bool GameScenario::saveGame(Glib::ustring filename, Glib::ustring extension) con
 
   t.saveFile(tmpfile, File::get_basename(goodfilename, true));
   File::erase(tmpfile);
-  std::list<Glib::ustring> files;
 
   Cityset *cs = GameMap::getCityset();
-  cs->getFilenames(files);
   t.saveFile(cs->getConfigurationFile());
-  for (std::list<Glib::ustring>::iterator it = files.begin(); it !=files.end();
-       it++)
-    t.saveFile(cs->getFile(*it));
 
-  files.clear();
   Shieldset *ss = GameMap::getShieldset();
-  ss->getFilenames(files);
   t.saveFile(ss->getConfigurationFile());
-  for (std::list<Glib::ustring>::iterator it = files.begin(); it !=files.end();
-       it++)
-    t.saveFile(ss->getFile(*it));
 
-  files.clear();
   Tileset *ts = GameMap::getTileset();
-  ts->getFilenames(files);
   t.saveFile(ts->getConfigurationFile());
-  for (std::list<Glib::ustring>::iterator it = files.begin(); it !=files.end();
-       it++)
-    t.saveFile(ts->getFile(*it));
 
   Playerlist *plist = Playerlist::getInstance();
   std::list<guint32> armysets;
@@ -631,16 +616,10 @@ bool GameScenario::saveGame(Glib::ustring filename, Glib::ustring extension) con
   for (std::list<guint32>::iterator it = armysets.begin(); it!= armysets.end();
        it++)
     {
-      files.clear();
       Armyset *as = Armysetlist::getInstance()->getArmyset(*it);
       t.saveFile(as->getConfigurationFile());
-      as->getFilenames(files);
-      for (std::list<Glib::ustring>::iterator i = files.begin(); 
-	   i != files.end(); i++)
-	t.saveFile(as->getFile(*i));
     }
 
-  t.Close();
   return true;
 
 }
