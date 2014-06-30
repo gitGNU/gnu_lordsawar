@@ -3176,7 +3176,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 		<ruin>
 			<d_id>131</d_id>
 			<d_x>36</d_x>
-			<d_y>59</d_y>
+			<d_y>60</d_y>
 			<_d_name>Abandoned Town</_d_name>
 			<d_type>Ruin::RUIN</d_type>
 			<d_searched>false</d_searched>
@@ -3187,7 +3187,7 @@ fb070400060402090004040804000008080208040505030709050207000302060705050007060007
 			<stack>
 				<d_id>227</d_id>
 				<d_x>36</d_x>
-				<d_y>59</d_y>
+				<d_y>60</d_y>
 				<d_owner>-1</d_owner>
 				<d_defending>false</d_defending>
 				<d_parked>false</d_parked>
