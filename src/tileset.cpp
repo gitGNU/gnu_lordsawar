@@ -938,11 +938,6 @@ guint32 Tileset::calculate_preferred_tile_size() const
   return tilesize;
 }
 
-bool Tileset::copy(Glib::ustring src, Glib::ustring dest)
-{
-  return Tar_Helper::copy(src, dest);
-}
-        
 bool Tileset::addTileStyleSet(Tile *tile, Glib::ustring filename)
 {
   bool success = true;

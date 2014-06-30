@@ -378,9 +378,6 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	//! Return a list of tileset basenames in the system collection.
 	static std::list<Glib::ustring> scanSystemCollection();
 
-        //! Copy a tileset file from one place to another.
-        static bool copy(Glib::ustring src, Glib::ustring dest);
-
         //! Rewrite old tileset files.
         static bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version);
         static void support_backward_compatibility();

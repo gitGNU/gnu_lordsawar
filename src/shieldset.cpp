@@ -440,11 +440,6 @@ bool Shieldset::replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring
   return !broken;
 }
 
-bool Shieldset::copy(Glib::ustring src, Glib::ustring dest)
-{
-  return Tar_Helper::copy(src, dest);
-}
-
 guint32 Shieldset::countEmptyImageNames() const
 {
   guint32 count = 0;

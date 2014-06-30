@@ -976,11 +976,6 @@ guint32 Armyset::calculate_preferred_tile_size() const
   return tilesize;
 }
 
-bool Armyset::copy(Glib::ustring src, Glib::ustring dest)
-{
-  return Tar_Helper::copy(src, dest);
-}
-
 void Armyset::clean_tmp_dir() const
 {
   return Tar_Helper::clean_tmp_dir(getConfigurationFile());

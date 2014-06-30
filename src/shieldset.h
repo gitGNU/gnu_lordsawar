@@ -225,8 +225,6 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	//! Return a list of shieldset basenames in the users personal collection.
 	static std::list<Glib::ustring> scanUserCollection();
 
-        static bool copy(Glib::ustring src, Glib::ustring dest);
-
         //! rewrite old shieldset files.
         static bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version);
         static void support_backward_compatibility();

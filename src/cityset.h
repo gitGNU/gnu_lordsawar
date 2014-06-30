@@ -180,7 +180,6 @@ class Cityset : public sigc::trackable, public Set
 
 	static std::list<Glib::ustring> scanSystemCollection();
 	static std::list<Glib::ustring> scanUserCollection();
-        static bool copy(Glib::ustring src, Glib::ustring dest);
         guint32 countEmptyImageNames() const;
 	guint32 getCityTileWidth() {return d_city_tile_width;};
 	void setCityTileWidth(guint32 tiles) {d_city_tile_width = tiles;};

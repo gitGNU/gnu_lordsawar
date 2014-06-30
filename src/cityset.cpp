@@ -723,11 +723,6 @@ guint32 Cityset::calculate_preferred_tile_size() const
   return tilesize;
 }
 
-bool Cityset::copy(Glib::ustring src, Glib::ustring dest)
-{
-  return Tar_Helper::copy(src, dest);
-}
-
 guint32 Cityset::countEmptyImageNames() const
 {
   guint32 count = 0;
