@@ -37,21 +37,6 @@ PKG_CHECK_MODULES(GSTREAMER, gstreamermm-0.10)
 AC_SUBST(GSTREAMER_CFLAGS)
 AC_SUBST(GSTREAMER_LIBS)
 
-dnl Check for libtar
-libtar=0
-AC_ARG_WITH(libtar, [  --with-libtar=<dir>      Use libtar from here],
-                      [
-                      libtar=$withval
-                      CPPFLAGS="$CPPFLAGS -I$withval/include"
-                      LDFLAGS="$LDFLAGS -L$withval/lib"
-                      LIBS="$LIBS -ltar"
-                      ]
-                      )
-if test $libtar = 0 ; then
-   AC_CHECK_HEADERS(libtar.h,[],AC_MSG_ERROR([*** Libtar not found!]))
-   AC_CHECK_LIB(tar,tar_open,[],[AC_MSG_ERROR([*** Libtar not found!])])
-fi
-
 dnl check for libxml and libxslt
 PKG_CHECK_MODULES(XSLT, [libxslt >= 1.1.20])
 AC_SUBST(XSLT_CFLAGS)
@@ -79,6 +64,10 @@ AC_SUBST(GTKMM_LIBS)
 PKG_CHECK_MODULES(XMLPP, libxml++-2.6)
 AC_SUBST(XMLPP_CFLAGS)
 AC_SUBST(XMLPP_LIBS)
+
+PKG_CHECK_MODULES(ARCHIVE, [libarchive >= 0.28])
+AC_SUBST(ARCHIVE_CFLAGS)
+AC_SUBST(ARCHIVE_CFLAGS)
 
 dnl Finally, check for libsigc++
 PKG_CHECK_MODULES(LIBSIGC, sigc++-2.0)

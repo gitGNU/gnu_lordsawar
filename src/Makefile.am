@@ -140,7 +140,9 @@ lordsawar_upgrade_file_LDADD = liblordsawar.la \
     $(GTKMM_LIBS) \
     $(XMLPP_LIBS) \
     $(XSLT_LIBS) \
-    $(LIBSIGC_LIBS) -ltar -lz \
+    $(ARCHIVE_LIBS) \
+    $(LIBSIGC_LIBS) \
+    -lz \
     @LIBINTL@
 
 lordsawar_upgrade_file_DEPENDENCIES = \
@@ -169,7 +171,9 @@ lordsawar_LDADD = liblordsawar.la \
     $(GTKMM_LIBS) \
     $(XMLPP_LIBS) \
     $(XSLT_LIBS) \
-    $(LIBSIGC_LIBS) -ltar -lz \
+    $(ARCHIVE_LIBS) \
+    $(LIBSIGC_LIBS) \
+    -lz \
     gui/liblwgui.la \
     @LIBINTL@
 
@@ -186,6 +190,7 @@ INCLUDES = $(GSTREAMER_CFLAGS) \
     $(GTKMM_CFLAGS) \
     $(XMLPP_CFLAGS) \
     $(XSLT_CFLAGS) \
+    $(ARCHIVE_CFLAGS) \
     $(LIBSIGC_CFLAGS) \
     -DLORDSAWAR_DATADIR='"$(LORDSAWAR_DATADIR)"' \
     -I$(top_srcdir)

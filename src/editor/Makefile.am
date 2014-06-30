@@ -97,7 +97,8 @@ lordsawar_editor_LDADD = $(top_builddir)/src/gui/liblwgui.la \
                          $(GTKMM_LIBS) \
     			 $(XMLPP_LIBS) \
     			 $(XSLT_LIBS) \
-                         -ltar -lz \
+    			 $(ARCHIVE_LIBS) \
+                         -lz \
                          @LIBINTL@ -L$(top_builddir)/src
 
 endif

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2014-06-29 08:59-0400\n"
+"POT-Creation-Date: 2014-06-30 12:49-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3502,80 +3502,80 @@ msgstr ""
 msgid "Southeastern map"
 msgstr ""
 
-#: ../src/GameScenario.cpp:714
+#: ../src/GameScenario.cpp:693
 msgid "saved game file has wrong version.  expecting %1 but got %2."
 msgstr ""
 
-#: ../src/GameScenario.cpp:881
+#: ../src/GameScenario.cpp:860
 msgid ""
 "Error! can't rename the temporary file `%1' to the autosave file `%2'.  %3"
 msgstr ""
 
-#: ../src/GameScenario.cpp:924
+#: ../src/GameScenario.cpp:903
 msgid "There must be at least 2 players in the scenario."
 msgstr ""
 
-#: ../src/GameScenario.cpp:928
+#: ../src/GameScenario.cpp:907
 msgid "There must be at least 2 cities in the scenario."
 msgstr ""
 
-#: ../src/GameScenario.cpp:939
+#: ../src/GameScenario.cpp:918
 msgid "The player called `%1' lacks a starting city."
 msgstr ""
 
-#: ../src/GameScenario.cpp:955
+#: ../src/GameScenario.cpp:934
 msgid "There is %1 unnamed city"
 msgid_plural "There are %1 unnamed cities"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/GameScenario.cpp:969
+#: ../src/GameScenario.cpp:948
 msgid "There is %1 unnamed ruin"
 msgid_plural "There are %1 unnamed ruins"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/GameScenario.cpp:983
+#: ../src/GameScenario.cpp:962
 msgid "There is %1 unnamed temple"
 msgid_plural "There are %1 unnamed temples"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/GameScenario.cpp:997
+#: ../src/GameScenario.cpp:976
 msgid "There is %1 neutral stack not in a city"
 msgid_plural "There are %1 neutral stacks not in cities"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/GameScenario.cpp:1004
+#: ../src/GameScenario.cpp:983
 msgid "Not all cities are reachable by a non-flying unit."
 msgstr ""
 
-#: ../src/GameScenario.cpp:1008
+#: ../src/GameScenario.cpp:987
 msgid "One or more ports are on land."
 msgstr ""
 
-#: ../src/GameScenario.cpp:1010
+#: ../src/GameScenario.cpp:989
 msgid "One or more bridges are on land."
 msgstr ""
 
-#: ../src/GameScenario.cpp:1013
+#: ../src/GameScenario.cpp:992
 msgid "One or more cities are on water."
 msgstr ""
 
-#: ../src/GameScenario.cpp:1015
+#: ../src/GameScenario.cpp:994
 msgid "One or more roads are on water."
 msgstr ""
 
-#: ../src/GameScenario.cpp:1017
+#: ../src/GameScenario.cpp:996
 msgid "One or more ruins are on water."
 msgstr ""
 
-#: ../src/GameScenario.cpp:1019
+#: ../src/GameScenario.cpp:998
 msgid "One or more temples are on water."
 msgstr ""
 
-#: ../src/GameScenario.cpp:1021
+#: ../src/GameScenario.cpp:1000
 msgid "One or more signs are on water."
 msgstr ""
 

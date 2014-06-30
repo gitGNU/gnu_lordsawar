@@ -15,7 +15,7 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include <libtar.h>
+#include <archive.h>
 #include <glibmm.h>
 #include <iostream>
 #include <list>
@@ -57,16 +57,19 @@ public:
 
     static bool is_tarfile (Glib::ustring file);
 
-    static Glib::ustring getFile(TAR *t, Glib::ustring filename, bool &broken, Glib::ustring tmpoutdir);
-    static std::list<Glib::ustring> getFilenames(TAR *t);
-    static bool saveFile(TAR *t, Glib::ustring filename, Glib::ustring destfile = "");
-    //copies a tar file to another place, renaming one of the files inside.
-    static bool copy(Glib::ustring filename, Glib::ustring newfilename);
+    static Glib::ustring getFile(Tar_Helper *t, Glib::ustring filename, bool &broken, Glib::ustring tmpoutdir);
+    static std::list<Glib::ustring> getFilenames(Tar_Helper *t);
+    static bool saveFile(Tar_Helper *t, Glib::ustring filename, Glib::ustring destfile = "");
     static void clean_tmp_dir(Glib::ustring filename);
+    static void reopen(Tar_Helper *t);
+    static int dump_entry(struct archive *in, struct archive_entry *entry, struct archive *out);
+    static int dump_file_entry(struct archive *in, Glib::ustring filename, struct archive_entry *entry, Glib::ustring nameinarchive, struct archive *out);
 private:
 
     // DATA
-    TAR *t;
+    struct archive *t;
     std::ios::openmode openmode;
     Glib::ustring tmpoutdir;
+    Glib::ustring pathname;
+
 };

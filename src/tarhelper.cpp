@@ -24,11 +24,30 @@
 #include "File.h"
 #include <errno.h>
 #include "ucompose.hpp"
+#include <archive_entry.h>
 
+/*
+ * libarchive doesn't rewind.
+ * once you go through the entries, that's it.
+ * to do it again you have to reopen.
+ *
+ * the Tar_Helper class works around this by delicately opening and closing
+ * the tar file for every operation on it.
+ * this has the unfortunate side effect when we add N files to a tar file 
+ * using saveFile.  the file gets saved out N seperate times.
+ *
+ * this class was originally implemented with libtar.
+ */
 Tar_Helper::Tar_Helper(Glib::ustring file, std::ios::openmode mode, bool &broken)
 {
   t = NULL;
   broken = Open(file, mode);
+}
+
+void Tar_Helper::reopen(Tar_Helper *t)
+{
+  t->Close();
+  t->Open(t->pathname, t->openmode);
 }
 
 bool Tar_Helper::Open(Glib::ustring file, std::ios::openmode mode)
@@ -36,79 +55,125 @@ bool Tar_Helper::Open(Glib::ustring file, std::ios::openmode mode)
   t = NULL;
   bool broken = false;
   if (mode == std::ios::in && is_tarfile (file) == false)
-    {
-      broken = true;
-      return broken;
-    }
-  int m;
-  int perms = 0;
+    return true;
+  //int m;
+  //int perms = 0;
   openmode = mode;
   if (mode & std::ios::in) 
-    m = O_RDONLY;
+    {
+      t = archive_read_new ();
+      archive_read_support_format_tar(t);
+      int r = archive_read_open_filename(t, file.c_str(), 8192);
+      if (r != ARCHIVE_OK)
+        {
+          archive_read_free (t);
+          return true;
+        }
+    }
   else if (mode & std::ios::out)
     {
-      m = O_WRONLY|O_CREAT;
-      perms = 0644;
+      t = archive_write_new();
+      archive_write_add_filter_none(t);
+      archive_write_set_format_pax_restricted(t);
+      if (archive_write_open_filename(t, file.c_str()))
+        {
+          archive_write_free (t);
+          return true;
+        }
     }
   else
     return broken;
 
-  char *f = strdup(file.c_str());
-  int retval = tar_open (&t, f, NULL, m, perms, TAR_GNU);
-  if (retval < 0)
-    {
-      t = NULL;
-      broken = true;
-      return broken;
-    }
-      
   if (mode & std::ios::in)
     {
-      std::list<Glib::ustring> files = getFilenames();
-      tmpoutdir = String::ucompose("%1/%2.%3/", Glib::get_tmp_dir(), File::get_basename(f,true), getpid());
+      tmpoutdir = String::ucompose("%1/%2.%3/", Glib::get_tmp_dir(), File::get_basename(file,true), getpid());
       File::create_dir(tmpoutdir);
     }
   else
     tmpoutdir = "";
+  pathname = file;
   return broken;
 }
 
-bool Tar_Helper::saveFile(TAR *t, Glib::ustring filename, Glib::ustring destfile)
+int Tar_Helper::dump_entry(struct archive *in, struct archive_entry *entry, struct archive *out)
 {
-  char *f = strdup(filename.c_str());
-  char *b;
+  archive_write_header(out, entry);
+
+  char buff[8192];
+  ssize_t len = archive_read_data(in, buff, sizeof (buff));
+  while (len > 0)
+    {
+      archive_write_data (out, buff, len);
+      len = archive_read_data(in, buff, sizeof (buff));
+    }
+  archive_write_finish_entry (out);
+  return ARCHIVE_OK;
+}
+
+bool Tar_Helper::saveFile(Tar_Helper *t, Glib::ustring filename, Glib::ustring destfile)
+{
+  //save each already existing file entry out, and then add ours on the end.
+  //write the whole tar file to a temporary file and then copy it in place.
+  Glib::ustring tmp = File::get_tmp_file();
+  bool broken = false;
+  Tar_Helper out(tmp, std::ios::out, broken);
+  Tar_Helper in(t->pathname, std::ios::in, broken);
+  if (!broken)
+    {
+      struct archive_entry *in_entry = NULL;
+      while (1) 
+        {
+          int r = archive_read_next_header(in.t, &in_entry);
+          if (r == ARCHIVE_EOF || r != ARCHIVE_OK)
+            break;
+          dump_entry(in.t, in_entry, out.t);
+        }
+      in.Close();
+    }
+
+  Glib::ustring b;
   if (destfile == "")
-    b = strdup(File::get_basename(filename,true).c_str());
+    b = File::get_basename(filename, true);
   else
-    b = strdup(destfile.c_str());
-  int retval = tar_append_file(t, f, b);
-  free (f);
-  free (b);
-  if (retval != 0)
-    return false;
+    b = destfile;
+  struct archive_entry *entry = archive_entry_new();
+  dump_file_entry (in.t, filename, entry, b, out.t);
+  archive_entry_free (entry);
+
+  out.Close();
+  archive_write_free(t->t);
+  t->t = NULL;
+  File::copy(tmp, t->pathname);
+  File::erase(tmp);
   return true;
 }
 
 bool Tar_Helper::saveFile(Glib::ustring filename, Glib::ustring destfile)
 {
-  return saveFile(t, filename, destfile);
+  //archive_seek_data(t, 0, SEEK_SET);
+  return saveFile(this, filename, destfile);
 }
 
 void Tar_Helper::Close()
 {
   if (t)
     {
-      free (t->pathname);
       if (openmode & std::ios::out)
-	tar_append_eof(t);
-    
-      tar_close(t);
+        {
+          archive_write_close (t);
+          archive_write_free (t);
+        }
+      else if (openmode & std::ios::in)
+        {
+          archive_read_close (t);
+          archive_read_free (t);
+        }
       t = NULL;
       if (tmpoutdir != "")
-	File::erase_dir(tmpoutdir);
+        File::erase_dir(tmpoutdir);
     }
 }
-    
+
 Glib::ustring Tar_Helper::getFirstFile(std::list<Glib::ustring> exts, bool &broken)
 {
   for (std::list<Glib::ustring>::iterator i = exts.begin(); i != exts.end(); i++)
@@ -128,102 +193,90 @@ Glib::ustring Tar_Helper::getFirstFile(Glib::ustring extension, bool &broken)
   return getFile(files.front(), broken);
 }
 
-Glib::ustring Tar_Helper::getFile(TAR *t, Glib::ustring filename, bool &broken, Glib::ustring tmpoutdir)
+Glib::ustring Tar_Helper::getFile(Tar_Helper *t, Glib::ustring filename, bool &broken, Glib::ustring tmpoutdir)
 {
   if (File::exists(tmpoutdir + filename) == true)
     return tmpoutdir + filename;
-  char buf[T_BLOCKSIZE];
-  lseek(t->fd, 0, SEEK_SET);
-  int i, k;
+  struct archive_entry *entry = NULL;
   bool found = false;
-  //cycle through looking to find a file by that name.
-  while ((i = th_read(t)) == 0)
-    {
-      char *f = th_get_pathname(t);
-      if (strcmp(f, filename.c_str()) == 0)
-	  {
-	    found = true;
-	    break;
-	  }
-      int size = th_get_size(t);
-      for (int i = size; i > 0; i -= T_BLOCKSIZE)
-	{
-	  k = tar_block_read(t, buf);
-	  if (k != T_BLOCKSIZE)
-	    {
-	      broken = true;
-	      return "";
-	    }
-	}
-    }
-  if (!found)
-    {
-      broken = true;
-      return "";
-    }
 
-  int size = th_get_size(t);
-  char *data = (char* )malloc(size);
-  size_t bytesread = 0;
-  for (int i = size; i > 0; i -= T_BLOCKSIZE)
+  reopen(t);
+  while (1) 
     {
-      k = tar_block_read(t, buf);
-      if (k != T_BLOCKSIZE)
-	{
-	  broken = true;
-	  return "";
-	}
-      memcpy (&data[bytesread], buf, i > T_BLOCKSIZE ? T_BLOCKSIZE : i);
-      bytesread +=  (i > T_BLOCKSIZE) ? T_BLOCKSIZE : i;
+      int r = archive_read_next_header(t->t, &entry);
+      if (r == ARCHIVE_EOF)
+        break;
+      if (r != ARCHIVE_OK)
+        break;
+
+      if (filename == archive_entry_pathname(entry))
+        {
+          found = true;
+          break;
+        }
     }
-  Glib::ustring outfile = tmpoutdir + filename;
-  FILE *fileptr = fopen(outfile.c_str(), "w");
-  if (!fileptr)
+  if (found)
     {
-      broken = true;
-      outfile = "";
-    }
-  else
-    {
-      fwrite(data, 1, size, fileptr);
-      fclose(fileptr);
+      const void *buff = NULL;
+      size_t size = 0;
+      off_t offset = 0;
       broken = false;
+      struct archive *ext = archive_write_disk_new();
+      archive_write_disk_set_options(ext, 
+                                     ARCHIVE_EXTRACT_OWNER |
+                                     ARCHIVE_EXTRACT_PERM);
+      Glib::ustring outfile = tmpoutdir + filename;
+      archive_entry_copy_pathname(entry, outfile.c_str());
+
+      archive_write_header(ext, entry);
+
+      while (1)
+        {
+          int r = archive_read_data_block(t->t, &buff, &size, &offset);
+          if (r == ARCHIVE_EOF)
+            break;
+          if (r != ARCHIVE_OK)
+            break;
+          r = archive_write_data_block(ext, buff, size, offset);
+          if (r != ARCHIVE_OK)
+            break;
+        }
+      archive_write_finish_entry(ext);
+      archive_write_close(ext);
+      archive_write_free(ext);
+      return outfile;
     }
 
-  return outfile;
+  return "";
 }
 
 Glib::ustring Tar_Helper::getFile(Glib::ustring filename, bool &broken)
 {
-  return getFile(t, filename, broken, tmpoutdir);
+  return getFile(this, filename, broken, tmpoutdir);
 }
 
-std::list<Glib::ustring> Tar_Helper::getFilenames(TAR *t)
+std::list<Glib::ustring> Tar_Helper::getFilenames(Tar_Helper *t)
 {
+  reopen(t);
   std::list<Glib::ustring> result;
-  int i, k;
-  char buf[T_BLOCKSIZE];
-  lseek(t->fd, 0, SEEK_SET);
-  //cycle through looking to find files with that extension.
-  while ((i = th_read(t)) == 0)
+  //archive_seek_data(t, 0, SEEK_SET);
+  struct archive_entry *entry = NULL;
+  while (1) 
     {
-      char *f = th_get_pathname(t);
-      result.push_back(f);
-	
-      int size = th_get_size(t);
-      for (int i = size; i > 0; i -= T_BLOCKSIZE)
-	{
-	  k = tar_block_read(t, buf);
-	  if (k != T_BLOCKSIZE)
-	    return result;
-	}
+      int r = archive_read_next_header(t->t, &entry);
+      if (r == ARCHIVE_EOF)
+        break;
+      if (r != ARCHIVE_OK)
+        break;
+
+      result.push_back(archive_entry_pathname(entry));
     }
   return result;
 }
 
 std::list<Glib::ustring> Tar_Helper::getFilenames()
 {
-  return getFilenames(t);
+  return getFilenames(this);
 }
 
 Glib::ustring Tar_Helper::getFirstFilenameWithExtension(Glib::ustring ext)
@@ -237,23 +290,11 @@ Glib::ustring Tar_Helper::getFirstFilenameWithExtension(Glib::ustring ext)
 std::list<Glib::ustring> Tar_Helper::getFilenamesWithExtension(Glib::ustring ext)
 {
   std::list<Glib::ustring> result;
-  int i, k;
-  char buf[T_BLOCKSIZE];
-  lseek(t->fd, 0, SEEK_SET);
-  //cycle through looking to find files with that extension.
-  while ((i = th_read(t)) == 0)
+  std::list<Glib::ustring> f = getFilenames(this);
+  for (std::list<Glib::ustring>::iterator i = f.begin(); i != f.end(); i++)
     {
-      char *f = th_get_pathname(t);
-      if (File::nameEndsWith(f, ext) == true)
-	result.push_back(f);
-	
-      int size = th_get_size(t);
-      for (int i = size; i > 0; i -= T_BLOCKSIZE)
-	{
-	  k = tar_block_read(t, buf);
-	  if (k != T_BLOCKSIZE)
-	    return result;
-	}
+      if (File::nameEndsWith(*i, ext))
+        result.push_back(*i);
     }
   return result;
 }
@@ -266,24 +307,18 @@ Tar_Helper::~Tar_Helper()
 
 bool Tar_Helper::is_tarfile (Glib::ustring file)
 {
-  char *filename = strdup(file.c_str());
-
-  FILE *f = fopen (filename, "rb");
-  free(filename);
-  if (f == NULL)
-    return false;
-  bool retval = true;
-  struct tar_header header;
-  memset (&header, 0, sizeof (header));
-  size_t bytesread = fread (&header, sizeof (header), 1, f);
-  if (bytesread != 1)
-    retval = false;
-  else
+  bool retval = false;
+  struct archive *a = archive_read_new ();
+  archive_read_support_format_tar(a);
+  int r = archive_read_open_filename (a, file.c_str(), 10240);
+  struct archive_entry *entry = NULL;
+  archive_read_next_header(a, &entry);
+  if (r == ARCHIVE_OK)
     {
-      if (strncmp(header.magic, "ustar", 5) != 0)
-        retval = false;
+      retval = (archive_format (a) & ARCHIVE_FORMAT_TAR) > 0;
+      archive_read_close(a);
     }
-  fclose (f);
+  archive_read_free(a);
   return retval;
 }
 
@@ -292,103 +327,69 @@ bool Tar_Helper::removeFile(Glib::ustring filename)
   return replaceFile(filename, "");
 }
 
-bool Tar_Helper::replaceFile(Glib::ustring filename, Glib::ustring newfilename)
+int Tar_Helper::dump_file_entry (struct archive *in, Glib::ustring filename, struct archive_entry *entry, Glib::ustring nameinarchive, struct archive *out)
 {
-  bool broken = false;
-  //copy all files except this one into a new file
-  int m;
-  int perms = 0;
-  m = O_WRONLY|O_CREAT;
-  perms = 0644;
-  TAR *new_tar = NULL;
-  if (newfilename != "" && File::exists(newfilename) == false)
-    return false;
-  Glib::ustring newtmpoutdir = String::ucompose("%1/%2.%3.replace/", Glib::get_tmp_dir(), File::get_basename(t->pathname), getpid());
-  File::create_dir(newtmpoutdir);
-  Glib::ustring new_tar_file = newtmpoutdir +"/" + File::get_basename(t->pathname);
-  char *f = strdup (new_tar_file.c_str());
-  tar_open (&new_tar, f, NULL, m, perms, TAR_GNU);
-  free (f);
-  std::list<Glib::ustring> files = getFilenames();
-  std::list<Glib::ustring> delfiles;
-  for (std::list<Glib::ustring>::iterator it = files.begin(); it != files.end(); 
-       ++it)
-    {
-      if (*it == filename) //here we skip over the one we want to remove
-        continue;
-      Glib::ustring extracted_file = getFile(t, *it, broken, newtmpoutdir);
-      delfiles.push_back(extracted_file);
-      if (broken)
-        break;
-    }
-  for (std::list<Glib::ustring>::iterator it = delfiles.begin(); 
-       it != delfiles.end(); it++)
-    {
-      if (!broken)
-        saveFile(new_tar, *it);
-      File::erase(*it);
-    }
-  if (broken)
-    return false;
-  //now add the new file, if we specified one at all.
-  if (newfilename != "")
-    saveFile(new_tar, newfilename);
-  //okay, now we get rid of the old tar file and put the new one in it's place.
-  Glib::ustring orig_tar_file = t->pathname;
+    struct stat st;
+    stat(filename.c_str(), &st);
+    archive_entry_copy_stat(entry, &st);
+    archive_entry_set_pathname(entry, nameinarchive.c_str());
+    archive_write_header(out, entry);
+    int fd = open (filename.c_str(), O_RDONLY);
+    if (fd < 0)
+      return ARCHIVE_FATAL;
+    char buff[8192];
 
-  tar_close(new_tar);
-  Close();
-
-  if (File::copy(new_tar_file, orig_tar_file) == false)
-    broken = true;
-  else
-    {
-      File::erase(new_tar_file);
-      File::erase_dir(newtmpoutdir);
-      broken = Open (orig_tar_file, std::ios::in);
-    }
-  return !broken;
+    ssize_t len = read (fd, buff, sizeof (buff));
+    while (len > 0)
+      {
+        archive_write_data (out, buff, len);
+        len = read (fd, buff, sizeof (buff));
+      }
+    archive_write_finish_entry(out);
+    close(fd);
+    return ARCHIVE_OK;
 }
 
-bool Tar_Helper::copy(Glib::ustring oldfilename, Glib::ustring newfilename)
+bool Tar_Helper::replaceFile(Glib::ustring filename, Glib::ustring newfilename)
 {
+  if (newfilename != "" && File::exists(newfilename) == false)
+    return false;
+  //loop through existing file entries and copy them out.
+  //when we see the one we want to replace, we do so.
+  //unless newfilename is "", in which case we skip it (remove it).
+  //write the whole tar file to a temporary file and then copy it in place.
+  Glib::ustring tmp = File::get_tmp_file();
   bool broken = false;
-  Tar_Helper in(oldfilename, std::ios::in, broken);
-  if (broken)
-    return false;
-  Tar_Helper out(newfilename, std::ios::out, broken);
-  if (broken)
+  Tar_Helper out(tmp, std::ios::out, broken);
+  Tar_Helper in(pathname, std::ios::in, broken);
+  if (!broken)
     {
-      in.Close();
-      return false;
-    }
-  std::list<Glib::ustring> delfiles;
-  std::list<Glib::ustring> files = in.getFilenames();
-  for (std::list<Glib::ustring>::iterator i = files.begin(); i != files.end(); 
-       i++)
-    {
-      Glib::ustring filename = in.getFile (*i, broken);
-      if (broken)
-        break;
-      delfiles.push_back(filename);
-      bool success = false;
-      if (*i == File::get_basename(oldfilename, true))
-        success = out.saveFile(filename, File::get_basename(newfilename, true));
-      else
-        success = out.saveFile(filename, File::get_basename(filename, true));
-      if (success == false)
+      struct archive_entry *in_entry = NULL;
+      while (1) 
         {
-          broken = true;
-          break;
+          int r = archive_read_next_header(in.t, &in_entry);
+          if (r == ARCHIVE_EOF)
+            break;
+          if (r != ARCHIVE_OK)
+            break;
+          if (filename == archive_entry_pathname(in_entry) &&
+              newfilename != "")
+            {
+              //hey it's the one we want to replace
+              dump_file_entry (in.t, newfilename, in_entry, 
+                               File::get_basename(newfilename, true), out.t);
+            }
+          else
+            dump_entry(in.t, in_entry, out.t);
         }
+      in.Close();
     }
-  for (std::list<Glib::ustring>::iterator i = delfiles.begin(); 
-       i != delfiles.end(); i++)
-    File::erase(*i);
-  in.Close();
+
   out.Close();
-  if (broken)
-    return false;
+  archive_write_free(t);
+  t = NULL;
+  File::copy(tmp, pathname);
+  File::erase(tmp);
   return true;
 }
 
