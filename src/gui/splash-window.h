@@ -25,6 +25,7 @@
 #include <sigc++/signal.h>
 
 #include "game-parameters.h"
+#include "PixMask.h"
 
 class Profile;
 /** The opening window of the game
@@ -62,6 +63,7 @@ class SplashWindow: public sigc::trackable
     Gtk::Button *new_network_game_button;
     Gtk::Button *preferences_button;
     Gtk::VBox *button_box; //crash button box
+    Gtk::HBox *main_box; //crash button box
 	    
     bool on_delete_event(GdkEventAny *e);
   
@@ -77,6 +79,9 @@ class SplashWindow: public sigc::trackable
     void on_game_started(GameParameters g);
     void on_network_game_created(GameParameters g, Profile *profile, bool advertised, bool remotely_hosted);
     void on_network_game_selected(Glib::ustring ip, unsigned short port, Profile  *profile);
+    bool on_draw(const ::Cairo::RefPtr< ::Cairo::Context >& cr);
+  
+    PixMask *bg;
 };
 
 #endif

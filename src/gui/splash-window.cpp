@@ -47,18 +47,12 @@ SplashWindow::SplashWindow()
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
+    window->signal_draw().connect
+      (sigc::mem_fun(*this, &SplashWindow::on_draw));
     window->signal_delete_event().connect
       (sigc::mem_fun(*this, &SplashWindow::on_delete_event));
     
-    // load background
-    Gtk::Image *splash_image
-	= manage(new Gtk::Image(File::getMiscFile("/various/splash_screen.jpg")));
 
-    // the table is a hack to get the image shown behind the buttons
-    Gtk::Table *table = 0;
-    xml->get_widget("table", table);
-    table->attach(*splash_image, 0, 2, 0, 2, Gtk::EXPAND | Gtk::FILL);
-    
     xml->get_widget("load_game_button", load_game_button);
     load_game_button->signal_clicked().connect
       (sigc::mem_fun(*this, &SplashWindow::on_load_game_clicked));
@@ -76,6 +70,7 @@ SplashWindow::SplashWindow()
       (sigc::mem_fun(*this, &SplashWindow::on_preferences_clicked));
     Snd::getInstance()->play("intro");
 
+    xml->get_widget("box", main_box);
     xml->get_widget("button_box", button_box);
     if (Configuration::s_autosave_policy == 1)
       {
@@ -102,24 +97,36 @@ SplashWindow::SplashWindow()
 
     //set the window size.
     bool broken = false;
-    PixMask *p = PixMask::create
+    bg = PixMask::create
       (File::getMiscFile("/various/splash_screen.jpg"), broken);
     if (broken == false)
       {
         int decorations = 24 * 3;
         if (Gdk::Screen::get_default()->get_height() - decorations < 
-            p->get_height())
+            bg->get_height())
           window->set_default_size(Gdk::Screen::get_default()->get_width(),
                          Gdk::Screen::get_default()->get_height());
         else
-          window->set_default_size(p->get_width(), p->get_height() - 57);
-        delete p;
+          window->set_default_size(bg->get_width(), bg->get_height());
       }
+}
+
+bool SplashWindow::on_draw(const ::Cairo::RefPtr< ::Cairo::Context >& cr)
+{
+ cr->set_source(bg->get_pixmap(), 0, 0);
+ cr->rectangle(0, 0, bg->get_width(), bg->get_height());
+ cr->fill();
+    
+ Gtk::Allocation box = main_box->get_allocation();
+ cr->rectangle(box.get_x(), box.get_y(), box.get_width(), box.get_height());
+ gtk_widget_draw (GTK_WIDGET(main_box->gobj()), cr->cobj());
+ return true;
 }
 
 SplashWindow::~SplashWindow()
 {
     Snd::deleteInstance();
+    delete bg;
     //clearData();
     delete window;
 }
