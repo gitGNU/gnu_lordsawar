@@ -24,6 +24,7 @@
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">LordsAWar! Scenario Editor</property>
     <property name="window_position">center-always</property>
+    <property name="gravity">static</property>
     <child>
       <object class="GtkVBox" id="outermost_vbox">
         <property name="visible">True</property>
@@ -746,6 +747,42 @@
                         <property name="n_columns">6</property>
                         <property name="column_spacing">6</property>
                         <property name="row_spacing">6</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
                         <child>
                           <placeholder/>
                         </child>

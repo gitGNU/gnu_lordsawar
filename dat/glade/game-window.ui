@@ -5,6 +5,8 @@
   <object class="GtkWindow" id="window">
     <property name="can_focus">False</property>
     <property name="title">LordsAWar!</property>
+    <property name="window_position">center-always</property>
+    <property name="gravity">static</property>
     <child>
       <object class="GtkVBox" id="outermost_vbox">
         <property name="visible">True</property>

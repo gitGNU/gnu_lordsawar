@@ -22,6 +22,7 @@
     <property name="title" translatable="yes">LordsAWar! Cityset Editor</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
+    <property name="gravity">static</property>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>

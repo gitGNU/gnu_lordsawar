@@ -12,6 +12,7 @@
     <property name="title" translatable="yes">LordsAWar! Tileset Editor</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
+    <property name="gravity">static</property>
     <child>
       <object class="GtkVBox" id="outermost_vbox">
         <property name="visible">True</property>
