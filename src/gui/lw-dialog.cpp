@@ -27,6 +27,7 @@ LwDialog::LwDialog(Gtk::Window &parent, Glib::ustring file)
   xml = Gtk::Builder::create_from_file(File::getUIFile(file));
   xml->get_widget("dialog", dialog);
   dialog->set_transient_for(parent);
+  dialog->property_gravity() = Gdk::GRAVITY_STATIC;
 }
 
 LwDialog::~LwDialog()
