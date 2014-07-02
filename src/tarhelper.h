@@ -53,7 +53,7 @@ public:
     bool replaceFile(Glib::ustring old_filename, Glib::ustring new_filename);
 
     bool Open(Glib::ustring file, std::ios::openmode mode);
-    void Close();
+    void Close(bool clean = true);
 
     static bool is_tarfile (Glib::ustring file);
 

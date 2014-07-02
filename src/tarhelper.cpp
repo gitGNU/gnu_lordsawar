@@ -46,7 +46,7 @@ Tar_Helper::Tar_Helper(Glib::ustring file, std::ios::openmode mode, bool &broken
 
 void Tar_Helper::reopen(Tar_Helper *t)
 {
-  t->Close();
+  t->Close(false);
   t->Open(t->pathname, t->openmode);
 }
 
@@ -154,7 +154,7 @@ bool Tar_Helper::saveFile(Glib::ustring filename, Glib::ustring destfile)
   return saveFile(this, filename, destfile);
 }
 
-void Tar_Helper::Close()
+void Tar_Helper::Close(bool clean)
 {
   if (t)
     {
@@ -169,8 +169,8 @@ void Tar_Helper::Close()
           archive_read_free (t);
         }
       t = NULL;
-      if (tmpoutdir != "")
-        File::erase_dir(tmpoutdir);
+      if (tmpoutdir != "" && clean)
+        File::clean_dir(tmpoutdir);
     }
 }
 
