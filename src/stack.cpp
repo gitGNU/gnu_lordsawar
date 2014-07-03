@@ -520,6 +520,7 @@ void Stack::reset(bool recalculate_path)
 
   if (recalculate_path)
     d_path->recalculate(this);
+  setParked(false);
 }
 
 bool Stack::save(XML_Helper* helper) const
