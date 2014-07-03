@@ -520,6 +520,8 @@ void Stack::reset(bool recalculate_path)
 
   if (recalculate_path)
     d_path->recalculate(this);
+  //we need to unpark stacks here (at the end of a round), at the very least
+  //because it makes ai stacks move in the field after they've been parked.
   setParked(false);
 }
 
