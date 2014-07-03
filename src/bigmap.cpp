@@ -496,6 +496,8 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> su
                 {
                   has_ship = true;
                   stack_size = GameMap::getStacks(stack->getPos())->countNumberOfArmies(Playerlist::getInstance()->getPlayer(stack_player_id));
+                  if (stack_size > MAX_STACK_SIZE)
+                    stack_size = stack->size();
                   //here we show the number of armies on the tile.
                   //instead of the number of armies in the stack.
                   //so that stacks appear whole before we click on them.
@@ -505,6 +507,8 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> su
 		{
 		  army_type_id = (*stack->begin())->getTypeId();
                   stack_size = GameMap::getStacks(stack->getPos())->countNumberOfArmies(Playerlist::getInstance()->getPlayer(stack_player_id));
+                  if (stack_size > MAX_STACK_SIZE)
+                    stack_size = stack->size();
 		}
 	    }
 	}
