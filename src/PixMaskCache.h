@@ -91,6 +91,9 @@ public:
     guint32 discardHalf()
       {
         guint32 size = 0;
+        if (this->size() <= 1)
+          //this is necessary so we don't delete the pixmask we just created
+          return size;
         if (this->empty() == false)
           {
             guint32 half = cachesize / 2;
