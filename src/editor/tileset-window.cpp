@@ -556,7 +556,7 @@ void TileSetWindow::on_save_as_activated()
   Tileset *copy = Tileset::copy (d_tileset);
   copy->setId(Tilesetlist::getNextAvailableId(d_tileset->getId()));
   TileSetInfoDialog d(*window, copy, File::getUserTilesetDir(), "", false,
-                      _("Tile a Copy of a Tileset"));
+                      _("Save a Copy of a Tileset"));
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
@@ -1469,7 +1469,7 @@ void TileSetWindow::on_validate_tileset_activated()
   if (d_tileset == NULL)
     return;
   if (d_tileset->empty() == true)
-    msgs.push_back(_("There must be at least tile in the tileset."));
+    msgs.push_back(_("There must be at least one tile in the tileset."));
 
   if (d_tileset->getIndex(Tile::GRASS) == -1)
     msgs.push_back(_("There must be a grass tile in the tileset."));

@@ -197,7 +197,7 @@ Armyset *Armysetlist::loadArmyset(Glib::ustring name)
   if (d_armysetids.find(armyset->getId()) != d_armysetids.end())
     {
       Armyset *a = (*d_armysetids.find(armyset->getId())).second;
-      std::cerr << String::ucompose(_("Error!  armyset: `%1' sahres a duplicate armyset id with `%2'.  Skipping."), armyset->getConfigurationFile(), a->getConfigurationFile()) << std::endl;
+      std::cerr << String::ucompose(_("Error!  armyset: `%1' shares a duplicate armyset id with `%2'.  Skipping."), armyset->getConfigurationFile(), a->getConfigurationFile()) << std::endl;
       delete armyset;
       return NULL;
     }

@@ -130,7 +130,7 @@ Cityset *Citysetlist::loadCityset(Glib::ustring name)
   if (d_citysets.find(cityset->getBaseName()) != d_citysets.end())
     {
       Cityset *c = (*d_citysets.find(cityset->getBaseName())).second;
-      std::cerr << String::ucompose(_("Error!  cityset: `%1' sahres a duplicate cityset basename `%2' with `%3'.  Skipping."), cityset->getConfigurationFile(), c->getBaseName(), c->getConfigurationFile()) << std::endl;
+      std::cerr << String::ucompose(_("Error!  cityset: `%1' shares a duplicate cityset basename `%2' with `%3'.  Skipping."), cityset->getConfigurationFile(), c->getBaseName(), c->getConfigurationFile()) << std::endl;
       delete cityset;
       return NULL;
     }
@@ -146,7 +146,7 @@ Cityset *Citysetlist::loadCityset(Glib::ustring name)
   if (d_citysetids.find(cityset->getId()) != d_citysetids.end())
     {
       Cityset *c = (*d_citysetids.find(cityset->getId())).second;
-      std::cerr << String::ucompose(_("Error!  cityset: `%1' has a duplicate cityset id with `%2'.  Skipping"), cityset->getName(), c->getConfigurationFile()) << std::endl;
+      std::cerr << String::ucompose(_("Error!  cityset: `%1' has a duplicate cityset id with `%2'.  Skipping."), cityset->getName(), c->getConfigurationFile()) << std::endl;
       delete cityset;
       return NULL;
     }
