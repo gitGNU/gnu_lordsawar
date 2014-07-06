@@ -22,28 +22,36 @@ bin_PROGRAMS = lordsawar-game-host-server lordsawar-game-host-client
 lordsawar_game_host_client_SOURCES = ghs-client-main.cpp \
 				     ghs-client-tool.cpp ghs-client-tool.h
 
-lordsawar_game_host_client_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS) \
-    				   $(XSLT_LIBS) $(XMLPP_LIBS) $(ARCHIVE_LIBS) \
-				   -lz \
-                                   $(top_builddir)/src/liblordsawar.la \
-                                   $(top_builddir)/src/liblordsawargamelist.la \
-                                   $(top_builddir)/src/liblordsawargamehost.la \
-                                   $(top_builddir)/src/liblordsawarnet.la \
-                                   @LIBINTL@ \
-                                   -L$(top_builddir)/src
+lordsawar_game_host_client_LDADD = \
+                                  -L$(top_builddir)/src \
+                                  $(top_builddir)/src/liblordsawar.la \
+                                  $(top_builddir)/src/liblordsawargamelist.la \
+                                  $(top_builddir)/src/liblordsawargamehost.la \
+                                  $(top_builddir)/src/liblordsawarnet.la \
+                                  $(LIBSIGC_LIBS) \
+                                  $(GTKMM_LIBS) \
+                                  $(XSLT_LIBS) \
+                                  $(XMLPP_LIBS) \
+                                  $(ARCHIVE_LIBS) \
+                                  -lz \
+                                  @LIBINTL@
 
 lordsawar_game_host_server_SOURCES = main.cpp \
   gamehost-server.cpp gamehost-server.h 
 
-lordsawar_game_host_server_LDADD = $(LIBSIGC_LIBS) $(GTKMM_LIBS) \
-    				   $(XSLT_LIBS) $(XMLPP_LIBS) $(ARCHIVE_LIBS) \
-				   -lz \
-                                   $(top_builddir)/src/liblordsawar.la \
-                                   $(top_builddir)/src/liblordsawargamelist.la \
-                                   $(top_builddir)/src/liblordsawargamehost.la \
-                                   $(top_builddir)/src/liblordsawarnet.la \
-                                   @LIBINTL@ \
-                                   -L$(top_builddir)/src
+lordsawar_game_host_server_LDADD = \
+                                  -L$(top_builddir)/src \
+                                  $(top_builddir)/src/liblordsawar.la \
+                                  $(top_builddir)/src/liblordsawargamelist.la \
+                                  $(top_builddir)/src/liblordsawargamehost.la \
+                                  $(top_builddir)/src/liblordsawarnet.la \
+                                  $(LIBSIGC_LIBS) \
+                                  $(GTKMM_LIBS) \
+                                  $(XSLT_LIBS) \
+                                  $(XMLPP_LIBS) \
+                                  $(ARCHIVE_LIBS) \
+                                  -lz \
+                                  @LIBINTL@ 
 endif
 
 
