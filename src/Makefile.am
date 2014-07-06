@@ -186,7 +186,7 @@ lordsawar_DEPENDENCIES = \
   gui/liblwgui.la
 
 AM_CXXFLAGS = -Wall
-INCLUDES = $(GSTREAMER_CFLAGS) \
+AM_CPPFLAGS = $(GSTREAMER_CFLAGS) \
     $(GTKMM_CFLAGS) \
     $(XMLPP_CFLAGS) \
     $(XSLT_CFLAGS) \
