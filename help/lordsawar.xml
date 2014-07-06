@@ -39,6 +39,12 @@
                         To report a bug or make a suggestion regarding the game, the editors, or this documentation, see the <ulink type="help" url="http://sv.gnu.org/p/lordsawar">LordsAWar! Project Page</ulink> or send it in a mail to <ulink type="help" url="mailto:lordsawar-discuss@nongnu.org">lordsawar-discuss@nongnu.org</ulink>.  Go ahead and tell us how we're doing.  We like that.
 		</para>
 	</legalnotice>
+	<legalnotice id="alternatives"> 
+		<title>Alternative to Reading</title> 
+		<para>
+                        Watch the <ulink type="help" url="https://vimeo.com/95806152">introductory video.</ulink>  Because hey, maybe you don't want to read this manual.  You can watch a nine minute introduction video instead! The video is not as detailed as this manual is, but it serves as an introduction to the game.
+		</para>
+	</legalnotice>
 </articleinfo>
 
 <indexterm zone="index"> 
