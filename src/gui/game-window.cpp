@@ -29,7 +29,7 @@
 
 #include <gtkmm.h>
 #include <glib.h>
-#include <gtk/gtkshow.h>
+#include <gtk/gtk.h>
 
 #include "game-window.h"
 
