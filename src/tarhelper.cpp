@@ -219,7 +219,7 @@ Glib::ustring Tar_Helper::getFile(Tar_Helper *t, Glib::ustring filename, bool &b
     {
       const void *buff = NULL;
       size_t size = 0;
-      off_t offset = 0;
+      int64_t offset = 0;
       broken = false;
       struct archive *ext = archive_write_disk_new();
       archive_write_disk_set_options(ext, 
