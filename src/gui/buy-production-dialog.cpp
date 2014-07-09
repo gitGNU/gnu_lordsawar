@@ -164,9 +164,7 @@ void BuyProductionDialog::fill_in_production_info()
 	s1 += "\n";
 	s1 += String::ucompose(_("Duration: %1"), a->getProduction());
 	s1 += "\n";
-	// note to translators: %1 is melee strength, %2 is ranged strength
-	s1 += String::ucompose(_("Strength: %1"),
-			      a->getStrength());
+	s1 += String::ucompose(_("Strength: %1"), a->getStrength());
 	
 	// fill in second column
 	s2 += String::ucompose(_("Cost: %1"), a->getNewProductionCost());

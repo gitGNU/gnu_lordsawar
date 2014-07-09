@@ -58,7 +58,6 @@ DiplomacyDialog::DiplomacyDialog(Gtk::Window &parent, Player *player)
       Glib::RefPtr<Gdk::Pixbuf> pixbuf= gc->getShieldPic(2, p)->to_pixbuf();
       Gtk::Image *im = new Gtk::Image();
       im->property_pixbuf() = pixbuf;
-      //im->set_padding(11, 0);
       d_proposals_table->attach(*manage(im), i + 0, i + 1, 0, 1, 
 				Gtk::SHRINK, Gtk::SHRINK);
       i++;

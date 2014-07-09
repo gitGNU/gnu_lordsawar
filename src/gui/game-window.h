@@ -187,7 +187,6 @@ class GameWindow: public sigc::trackable
     bool on_bigmap_mouse_button_event(GdkEventButton *e);
     bool on_bigmap_mouse_motion_event(GdkEventMotion *e);
     bool on_bigmap_key_event(GdkEventKey *e);
-    bool on_bigmap_scroll_event(GdkEventScroll* event);
 
     bool on_smallmap_mouse_button_event(GdkEventButton *e);
     bool on_smallmap_mouse_motion_event(GdkEventMotion *e);

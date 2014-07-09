@@ -138,12 +138,12 @@ void SageDialog::addReward(Reward *reward)
 	    {
 	      switch (rand() % 6)
 		{
-		case 0: name = "parchment map"; break;
-		case 1: name = "vellum map"; break;
-		case 2: name = "paper map"; break;
-		case 3: name = "torn paper map"; break;
-		case 4: name = "dusty map"; break;
-		case 5: name = "blood-stained map"; break;
+		case 0: name = _("parchment map"); break;
+		case 1: name = _("vellum map"); break;
+		case 2: name = _("paper map"); break;
+		case 3: name = _("torn paper map"); break;
+		case 4: name = _("dusty map"); break;
+		case 5: name = _("blood-stained map"); break;
 		}
 	    }
 	    

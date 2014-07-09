@@ -157,8 +157,6 @@ GameWindow::GameWindow()
      (sigc::mem_fun(*this, &GameWindow::on_bigmap_mouse_button_event));
     bigmap_eventbox->signal_motion_notify_event().connect
      (sigc::mem_fun(*this, &GameWindow::on_bigmap_mouse_motion_event));
-    bigmap_eventbox->signal_scroll_event().connect
-       (sigc::mem_fun(*this, &GameWindow::on_bigmap_scroll_event));
     xml->get_widget("status_box_container", status_box_container);
 
     status_box = StatusBox::create(Configuration::s_ui_form_factor);
@@ -732,7 +730,7 @@ bool GameWindow::setup_game(GameScenario *game_scenario, NextTurn *nextTurn)
     (sigc::mem_fun(this, &GameWindow::on_group_stack_toggled));
   show_shield_turn();
       smallmap_image->set_size_request(game->get_smallmap().get_width(),
-                                                                            game->get_smallmap().get_height());
+                                       game->get_smallmap().get_height());
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
 
   return true;
@@ -777,24 +775,6 @@ bool GameWindow::on_bigmap_mouse_motion_event(GdkEventMotion *e)
   return true;
 }
     
-bool GameWindow::on_bigmap_scroll_event(GdkEventScroll* event)
-{
-  switch (event->direction) 
-    {
-    case GDK_SCROLL_SMOOTH:
-    case GDK_SCROLL_LEFT:
-    case GDK_SCROLL_RIGHT:
-      break;
-    case GDK_SCROLL_UP:
-      //game->get_bigmap().zoom_in();
-      break;
-    case GDK_SCROLL_DOWN:
-      //game->get_bigmap().zoom_out();
-      break;
-    }
-  return true;
-}
-
 void GameWindow::on_bigmap_cursor_changed(ImageCache::CursorType cursor)
 {
   bigmap_image->get_window()->set_cursor 
@@ -2216,13 +2196,12 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<guint32> sacked_
   Gtk::Label *label;
   xml->get_widget("label", label);
   Glib::ustring s;
-  s = String::ucompose("The city of %1 is sacked\nfor %2 gold!\n\n",
+  s = String::ucompose(_("The city of %1 is sacked\nfor %2 gold!\n\n"),
 		       city->getName(), gold);
   s += String::ucompose(
-			ngettext("Ability to produce %1 unit has been lost",
-				 "Ability to produce %1 units has been lost",
+			ngettext("Ability to produce %1 unit has been lost\nand only 1 unit remains",
+				 "Ability to produce %1 units has been lost\nand only 1 unit remains",
 				 sacked_types.size()), sacked_types.size());
-  s += "\nand only 1 unit remains";
   label->set_text(s);
 
   Gtk::Image *sacked_army_1_image;
@@ -2267,7 +2246,7 @@ void GameWindow::on_city_sacked(City *city, int gold, std::list<guint32> sacked_
       sack_image->property_pixbuf() = pic;
       const ArmyProto *a = 
 	Armysetlist::getInstance()->getArmy (player->getArmyset(), *it);
-      s = String::ucompose("%1 gp", a->getNewProductionCost() / 2);
+      s = String::ucompose(_("%1 gp"), a->getNewProductionCost() / 2);
       sack_label->set_text(s);
       i++;
     }

@@ -79,13 +79,13 @@ QuestCompletedDialog::QuestCompletedDialog(Gtk::Window &parent, Quest *q, Reward
     else if (reward->getType() == Reward::ITEM)
       {
 	Item *item = dynamic_cast<Reward_Item*>(reward)->getItem();
-	s += String::ucompose("You have been rewarded with the %1.", 
+	s += String::ucompose(_("You have been rewarded with the %1."), 
 			      item->getName());
       }
     else if (reward->getType() == Reward::RUIN)
       {
 	Ruin *ruin = dynamic_cast<Reward_Ruin*>(reward)->getRuin();
-	s += String::ucompose("You are shown the site of %1\n", 
+	s += String::ucompose(_("You are shown the site of %1\n"), 
 			      ruin->getName());
 	questmap->set_target(ruin->getPos());
 	if (ruin->getReward() == NULL)

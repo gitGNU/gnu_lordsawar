@@ -416,8 +416,7 @@ void ReportDialog::addProduction(const Action *action)
       act = dynamic_cast<const Action_CityTooPoorToProduce*>(action);
       army_type = act->getArmyType();
       City *c = Citylist::getInstance()->getById(act->getCityId());
-      s = c->getName();
-      s += " stops production!";
+      s = String::ucompose(_("%1 stops production!"), c->getName());
       city_id = act->getCityId();
     }
   Gtk::TreeIter i = armies_list->append();

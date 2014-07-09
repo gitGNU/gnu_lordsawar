@@ -285,7 +285,7 @@ void CityWindow::fill_in_production_info()
             Citylist *cl = Citylist::getInstance();
             City *dest = cl->getNearestFriendlyCity(city->getVectoring(), 4);
             s3 += String::ucompose(_(", then to %1"), 
-                                   dest ? dest->getName() : "Standard");
+                                   dest ? dest->getName() : _("Standard"));
           }
       pic = gc->getCircledArmyPic(as, a->getTypeId(), player, NULL, false,
                                   Shield::NEUTRAL, true)->to_pixbuf();

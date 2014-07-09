@@ -97,10 +97,8 @@ PreferencesDialog::PreferencesDialog(Gtk::Window &parent, bool readonly)
 				Gtk::PACK_SHRINK);
 	player_hbox->pack_start(*manage(type), Gtk::PACK_SHRINK, 10);
 	player_hbox->pack_start(*manage(observe), Gtk::PACK_SHRINK, 10);
-	//player_types.push_back(type);
 	player_types[p] = type;
 	player_observed[p] = observe;
-	//player_observed.push_back(observe);
 	Gtk::Label *player_name = new Gtk::Label(p->getName());
 	player_hbox->pack_start(*manage(player_name), Gtk::PACK_SHRINK, 10);
 	players_vbox->pack_start(*manage(player_hbox));
