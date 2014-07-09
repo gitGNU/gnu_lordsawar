@@ -704,7 +704,6 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
       debug("Player " << d_owner->getName() << " moved " << moved << " stacks in capacity building mode.");
       count+=moved;
     }
-  checkAmbiguities();
 
   sbusy.emit();
   if (d_owner->abortRequested())
@@ -717,7 +716,6 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
   debug("Player " << d_owner->getName() << " has " << d_stacks->size() << " stacks after assigning defenders");
   debug("Player " << d_owner->getName() << " moved " << count << " stacks in defensive mode.");
 
-  checkAmbiguities();
   if (d_stacks->size() == 0)
     {
       delete d_stacks;
@@ -735,7 +733,6 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
   debug("Player " << d_owner->getName() << " still has " << d_stacks->size() << " stacks after allocating stacks to threats")
     debug("Player " << d_owner->getName() << " moved " << moved << " stacks in offensive mode.");
 
-  checkAmbiguities();
   if (d_stacks->size() == 0)
     {
       delete d_stacks;
@@ -757,7 +754,6 @@ int AI_Allocation::move(City *first_city, bool take_neutrals)
     return count;
   //empty out the cities damnit.
   emptyOutCities();
-  checkAmbiguities();
   debug("Player " << d_owner->getName() << " moved totals: " << attack_moved << "," << capacity_moved <<"," <<defensive_moved<<"," << offensive_moved <<"," << default_moved <<".");
   debug("Player " << d_owner->getName() << " alloc totals: " << attack_alloc << "," << capacity_alloc <<"," <<defensive_alloc<<"," << offensive_alloc <<"," << default_alloc <<" (" << total <<").");
   delete d_stacks;
@@ -1563,35 +1559,4 @@ bool AI_Allocation::groupStacks(Stack *stack)
   return true;
 }
 
-bool AI_Allocation::checkAmbiguities()
-{
-  //Stack *bobo = d_owner->getStacklist()->getStackById(4416);
-  //if (bobo)
-    //{
-      //printf ("stack 4416 parked? %d\n", bobo->getParked());
-    //}
-  return false;
-    int count = 0;
-    Stacklist *sl = d_owner->getStacklist();
-    for (Stacklist::iterator it = sl->begin(); it != sl->end(); it++)
-      {
-        if (GameMap::getFriendlyStacks((*it)->getPos()).size() > 1)
-          {
-            printf("stack id %d at %d,%d sits on the same tile as:\n", 
-                   (*it)->getId(),
-                   (*it)->getPos().x, (*it)->getPos().y);
-            std::list<Stack*> o = GameMap::getFriendlyStacks((*it)->getPos());
-            for (std::list<Stack*>::iterator i = o.begin(); i != o.end(); i++)
-              {
-                if ((*i)->getId() == (*it)->getId())
-                  continue;
-                printf("stack %d\n", (*i)->getId());
-              }
-            count++;
-          }
-      }
-    if (count > 0)
-      exit(0);
-    return count != 0;
-}
 // End of file
