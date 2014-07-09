@@ -37,10 +37,10 @@ ArmyBonusDialog::ArmyBonusDialog(Gtk::Window &parent, Player *p)
     armies_treeview->set_model(armies_list);
     armies_treeview->append_column("", armies_columns.image);
     armies_treeview->append_column("", armies_columns.name);
-    armies_treeview->append_column("Str", armies_columns.str);
-    armies_treeview->append_column("Move", armies_columns.move);
+    armies_treeview->append_column(_("Str"), armies_columns.str);
+    armies_treeview->append_column(_("Move"), armies_columns.move);
     armies_treeview->append_column("", armies_columns.move_image);
-    armies_treeview->append_column("Bonus", armies_columns.bonus);
+    armies_treeview->append_column(_("Bonus"), armies_columns.bonus);
     armies_treeview->set_headers_visible(true);
 
     Armyset *as=Armysetlist::getInstance()->getArmyset(d_player->getArmyset());

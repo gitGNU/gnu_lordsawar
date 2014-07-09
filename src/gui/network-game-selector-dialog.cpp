@@ -50,12 +50,12 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Gtk::Window &parent, Profil
       Gtk::ListStore::create(recently_joined_games_columns);
     xml->get_widget("recent_treeview", recent_treeview);
     recent_treeview->set_model(recently_joined_games_list);
-    recent_treeview->append_column("Name", recently_joined_games_columns.name);
-    recent_treeview->append_column("Turn", recently_joined_games_columns.turn);
-    recent_treeview->append_column("Players", recently_joined_games_columns.number_of_players);
-    recent_treeview->append_column("Cities", recently_joined_games_columns.number_of_cities);
-    recent_treeview->append_column("Host", recently_joined_games_columns.host);
-    recent_treeview->append_column("Port", recently_joined_games_columns.port);
+    recent_treeview->append_column(_("Name"), recently_joined_games_columns.name);
+    recent_treeview->append_column(_("Turn"), recently_joined_games_columns.turn);
+    recent_treeview->append_column(_("Players"), recently_joined_games_columns.number_of_players);
+    recent_treeview->append_column(_("Cities"), recently_joined_games_columns.number_of_cities);
+    recent_treeview->append_column(_("Host"), recently_joined_games_columns.host);
+    recent_treeview->append_column(_("Port"), recently_joined_games_columns.port);
     recent_treeview->set_headers_visible(true);
     recent_treeview->get_selection()->signal_changed().connect
           (sigc::mem_fun(*this, &NetworkGameSelectorDialog::on_recent_game_selected));
@@ -69,12 +69,12 @@ NetworkGameSelectorDialog::NetworkGameSelectorDialog(Gtk::Window &parent, Profil
     xml->get_widget("notebook1", notebook);
     games_list = Gtk::ListStore::create(games_columns);
     games_treeview->set_model(games_list);
-    games_treeview->append_column("Name", games_columns.name);
-    games_treeview->append_column("Turn", games_columns.turn);
-    games_treeview->append_column("Players", games_columns.number_of_players);
-    games_treeview->append_column("Cities", games_columns.number_of_cities);
-    games_treeview->append_column("Host", games_columns.host);
-    games_treeview->append_column("Port", games_columns.port);
+    games_treeview->append_column(_("Name"), games_columns.name);
+    games_treeview->append_column(_("Turn"), games_columns.turn);
+    games_treeview->append_column(_("Players"), games_columns.number_of_players);
+    games_treeview->append_column(_("Cities"), games_columns.number_of_cities);
+    games_treeview->append_column(_("Host"), games_columns.host);
+    games_treeview->append_column(_("Port"), games_columns.port);
     games_treeview->set_headers_visible(true);
     games_treeview->get_selection()->signal_changed().connect
           (sigc::mem_fun(*this, &NetworkGameSelectorDialog::on_game_selected));

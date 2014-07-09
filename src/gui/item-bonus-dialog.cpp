@@ -36,7 +36,7 @@ ItemBonusDialog::ItemBonusDialog(Gtk::Window &parent)
     xml->get_widget("treeview", items_treeview);
     items_treeview->set_model(items_list);
     items_treeview->append_column("", items_columns.name);
-    items_treeview->append_column("Bonus", items_columns.bonus);
+    items_treeview->append_column(_("Bonus"), items_columns.bonus);
 
     Itemlist::iterator iter = Itemlist::getInstance()->begin();
     for (;iter != Itemlist::getInstance()->end(); iter++)
