@@ -48,8 +48,6 @@ bool LineChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
     unsigned int hoffs = 30;
     unsigned int voffs = 30;
 
-    //Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
-      
     // clip to the area indicated by the expose event so that we only redraw
     // the portion of the window that needs to be redrawn
     cr->rectangle(0, 0, width, height);
@@ -204,9 +202,7 @@ bool LineChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
     PangoContext *context;
     PangoFontMap *fontmap;
     fontmap = (PangoFontMap *) pango_cairo_font_map_get_default ();
-    //context = pango_cairo_font_map_create_context (fontmap);
     context = pango_font_map_create_context (fontmap);
-    //pango_font_map_create_context
     pango_context_set_base_gravity(context, PANGO_GRAVITY_EAST);
     pango_context_set_gravity_hint(context, PANGO_GRAVITY_HINT_STRONG);
     layout->context_changed();
@@ -228,19 +224,5 @@ void LineChart::set_x_indicator(int x)
   d_x_indicator = x;
   Glib::RefPtr<Gdk::Window> window = get_window();
   if(window)
-    {
-      queue_draw();
-      //show();
-      /*
-      Gtk::Allocation allocation = get_allocation();
-      const int width = allocation.get_width();
-      const int height = allocation.get_height();
-      GdkEventExpose event;
-      event.area.x = 0;
-      event.area.y = 0;
-      event.area.height = height;
-      event.area.width = width;
-      on_expose_event(&event);
-      */
-    }
+    queue_draw();
 }

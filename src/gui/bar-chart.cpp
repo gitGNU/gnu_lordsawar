@@ -26,7 +26,6 @@ BarChart::BarChart(std::list<unsigned int> bars, std::list<Gdk::RGBA> colours,
   d_max_value = max_value;
 }
 
-//bool BarChart::on_expose_event(GdkEventExpose* event)
 bool BarChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
 {
   // This is where we draw on the window
@@ -47,8 +46,6 @@ bool BarChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
     layout->get_pixel_size (w, h);
 
     unsigned int lw = 10;
-    //Cairo::RefPtr<Cairo::Surface> pixmap = Cairo::ImageSurface::create (Cairo::FORMAT_ARGB32, width, height);
-    //Cairo::RefPtr<Cairo::Context> cr = Cairo::Context::create(pixmap);
 
     // clip to the area indicated by the expose event so that we only redraw
     // the portion of the window that needs to be redrawn
@@ -172,9 +169,6 @@ bool BarChart::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
     cr->set_source_rgb (0.0, 0.0, 0.0);
     cr->set_operator (Cairo::OPERATOR_ATOP);
     pango_cairo_show_layout (cr->cobj (), layout->gobj ());
-
-    //property_surface() = pixmap;
-
   }
 
   return true;
