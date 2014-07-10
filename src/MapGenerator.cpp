@@ -226,10 +226,8 @@ void MapGenerator::makeMap(int width, int height, bool roads)
     makeBuildings(Maptile::SIGNPOST,d_nosignposts);
 
     debug("Done making map.");
-
-//    printMap();
 }
-        
+
 #define  NORTH_SOUTH_BRIDGE 1
 #define  EAST_WEST_BRIDGE 2
 
@@ -644,8 +642,6 @@ void MapGenerator::makeRivers()
                 if(box[J][I] != h)
                 // center doesn't necessarily fall on water tile, so fix this.
                 {
-                    //      // for debugging...
-                    //      box[J][I]+=5000;
                     int i_up=0,i_dn=0,j_up=0,j_dn=0;
                     while((I+i_up <  d_width-1 ) && (box[J     ][I+i_up] != h)) ++i_up;
                     while((I-i_dn >  0         ) && (box[J     ][I-i_dn] != h)) ++i_dn;
@@ -673,8 +669,6 @@ void MapGenerator::makeRivers()
                                     //MessageBox("Message from author: this is algorithmically a very interesting map, please make screenshot and send to cosurgi@gmail.com");
                                 }
                 }
-                //      // for debugging...
-                //      box[(int)(centers[h].x)][(int)(centers[h].y)]+=4000;
             }
         }
 
@@ -774,41 +768,8 @@ void MapGenerator::makeRivers()
                 distances[closest_h][closest_k].first = d_height*d_height;
             }
         }
-        //          // for debugging...   print whole box
-        //          std::cerr << how_many << " separate bodies of water found.\n";
-        //          std::cerr << the_biggest_area << " is the biggest\n";
-        //          std::cerr << second_biggest_area << " is second in size\n";
-        //          std::vector<int> a;
-        //          BOOST_FOREACH(a,box)
-        //          {
-        //              BOOST_FOREACH(int i,a)
-        //              {
-        //                  if(i<4000)
-        //                      std::cout << i << " ";
-        //                  else
-        //                      if(i<5000)
-        //                      std::cout << "X" << " ";
-        //                      else
-        //                      if(i<7000)
-        //                      std::cout << "%" << " ";
-        //                      else
-        //                      if(i<14000)
-        //                      std::cout << "!" << " ";
-        //                      else
-        //                      std::cout << "|" << " ";
-        //              }
-        //              std::cout << "\n";
-        //          }
-        //          std::cout << "\n";
-
-    };
-    //if(how_many>1)
-        //std::cout << "There are " << how_many << (how_many<4?(Glib::ustring(" seas")):(Glib::ustring(" lakes"))) << " on this map.\n";
-    //else
-        //std::cout << "There is 1 sea on this map.\n";
-    //std::cout << "River style was: " << river_style << "\n";
+    }
 }
-
 
 /**
  * Makes Terrains.
@@ -989,10 +950,8 @@ void MapGenerator::makeStreamer(Tile::Type t, int percent, int thick)
                       break;
                   }
             }
-
         }
     }
-
 }
 
 bool MapGenerator::seekPlain(int& x, int& y)
