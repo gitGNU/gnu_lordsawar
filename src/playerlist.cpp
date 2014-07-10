@@ -905,14 +905,6 @@ void Playerlist::setNewColours(Shieldset *shieldset)
     (*it)->setColor(shieldset->getColor((*it)->getId()));
 }
 
-guint32 Playerlist::countBlessings() const
-{
-  guint32 count = 0;
-  for (const_iterator it = begin(); it != end(); it++)
-    count += (*it)->getStacklist()->countBlessingsOnArmyUnits();
-  return count;
-}
-
 void Playerlist::clearAllActions()
 {
   for (iterator it = begin(); it != end(); it++)

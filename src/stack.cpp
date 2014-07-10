@@ -1286,14 +1286,6 @@ bool Stack::killArmies(guint32 army_type)
   return killed;
 }
 
-guint32 Stack::countBlessings() const
-{
-  int count = 0;
-  for (const_iterator it = begin(); it != end(); it++)
-    count += (*it)->countBlessings();
-  return count;
-}
-
 std::list<guint32> compare_ids;
 bool Stack::compareIds(const Army *lhs, const Army *rhs)
 {

@@ -674,13 +674,4 @@ bool Stacklist::getItemHolder(Item *item, Stack **stack, Hero **hero) const
     }
   return false;
 }
-
-guint32 Stacklist::countBlessingsOnArmyUnits() const
-{
-  guint32 count = 0;
-  for (const_iterator it = begin(); it != end(); it++)
-    count += (*it)->countBlessings();
-  return count;
-}
-
 // End of file

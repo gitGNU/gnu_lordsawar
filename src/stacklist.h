@@ -90,8 +90,6 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
         //! Returns the total number of armies in the list.
         unsigned int countArmies() const;
 
-        //! Count the number of blessings that army units have.
-        guint32 countBlessingsOnArmyUnits() const;
 	/**
 	 * Scan through the list of stacks to find one that is not defending, 
 	 * and not parked, and can move to another tile.

@@ -314,9 +314,6 @@ class Army :public ArmyBase, public UniquelyIdentified, public Ownable, public s
 	//! Returns whether or not the army was blessed at the given temple.
         bool blessedAtTemple(guint32 temple_id) const;
 
-        //! Returns how many temples we've been blessed at.
-        guint32 countBlessings() const;
-
         //! Saves the Army to an opened saved-game file.
         virtual bool save(XML_Helper* helper) const;
 

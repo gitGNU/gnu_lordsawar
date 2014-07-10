@@ -407,9 +407,6 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	//! Returns how many armies in the stack have visited the given temple.
 	guint32 countArmiesBlessedAtTemple(guint32 temple_id) const;
         
-	//! Returns how many blessings have been bestowed on units in the stack.
-        guint32 countBlessings() const;
-
         //! Returns how many items this stack has.
         guint32 countItems() const;
 
