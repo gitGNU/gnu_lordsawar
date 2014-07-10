@@ -288,7 +288,6 @@ Playerlist::iterator Playerlist::flErase(Playerlist::iterator it)
     return erase (it);
 }
 
-
 bool compareDiplomaticScores (const struct rankable_t lhs,
 			      const struct rankable_t rhs)
 {
@@ -703,11 +702,9 @@ void Playerlist::syncPlayer(GameParameters::Player player)
 
 void Playerlist::syncPlayers(std::vector<GameParameters::Player> players)
 {
-
   std::vector<GameParameters::Player>::const_iterator i = players.begin();
   for (; i != players.end(); i++)
     syncPlayer(*i);
-
 }
 	
 guint32 Playerlist::turnHumansIntoNetworkPlayers()
@@ -813,7 +810,6 @@ bool Playerlist::inGivenOrder(const Player *lhs, const Player *rhs)
   int rhs_rank = count;
   return lhs_rank < rhs_rank;
 }
-
 
 void Playerlist::reorder(std::list<guint32> order)
 {
