@@ -60,21 +60,19 @@ Reward* Reward::handle_load(XML_Helper* helper)
     Glib::ustring type_str;
     helper->getData(type_str, "type");
     t = rewardTypeFromString(type_str);
-
     switch (t)
-    {
-        case Reward::GOLD:
-            return (new Reward_Gold(helper));
-        case Reward::ALLIES:
-            return (new Reward_Allies(helper));
-        case Reward::ITEM:
-            return (new Reward_Item(helper));
-        case Reward::RUIN:
-            return (new Reward_Ruin(helper));
-        case Reward::MAP:
-            return (new Reward_Map(helper));
-    }
-
+      {
+      case Reward::GOLD:
+        return (new Reward_Gold(helper));
+      case Reward::ALLIES:
+        return (new Reward_Allies(helper));
+      case Reward::ITEM:
+        return (new Reward_Item(helper));
+      case Reward::RUIN:
+        return (new Reward_Ruin(helper));
+      case Reward::MAP:
+        return (new Reward_Map(helper));
+      }
     return 0;
 }
 
@@ -230,7 +228,6 @@ bool Reward_Allies::addAllies(Player *p, Location *l, const Army *army, guint32 
   return true;
 }
 
-
 Reward_Allies::~Reward_Allies()
 {
 }
@@ -309,6 +306,7 @@ Reward_Ruin::Reward_Ruin (const Reward_Ruin& orig)
 	:Reward(orig), d_ruin_pos(orig.d_ruin_pos)
 {
 }
+
 bool Reward_Ruin::save(XML_Helper* helper) const
 {
   bool retval = true;
@@ -380,7 +378,6 @@ bool Reward_Map::loadMap(Glib::ustring tag, XML_Helper* helper)
     
   return false;
 }
-
 
 Reward_Map::Reward_Map(XML_Helper* helper)
     :Reward(helper)
@@ -509,25 +506,24 @@ Reward* Reward::copy(const Reward* r)
     case Reward::MAP:
       return (new Reward_Map(*dynamic_cast<const Reward_Map*>(r)));
     }
-
   return 0;
 }
-	
+
 Glib::ustring Reward_Map::getMapName() const
 {
   return d_sightmap->getName();
 }
-	
+
 SightMap * Reward_Map::getSightMap() const
 {
   return d_sightmap;
 }
-	
+
 Vector<int> Reward_Map::getLocation() const
 {
   return d_sightmap->pos;
 }
-	
+
 void Reward_Map::setMapName(Glib::ustring name)
 {
   d_sightmap->setName(name);
