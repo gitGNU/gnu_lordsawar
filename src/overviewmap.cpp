@@ -554,7 +554,6 @@ void OverviewMap::draw(Player *player)
     }
     // let derived classes do their job
     after_draw();
-
 }
 
 Cairo::RefPtr<Cairo::Surface> OverviewMap::get_surface()
@@ -712,7 +711,6 @@ void OverviewMap::draw_radial_gradient(Cairo::RefPtr<Cairo::Surface> surface, Gd
 void OverviewMap::draw_radial_gradient(Gdk::RGBA inner, Gdk::RGBA outer, int width, int height)
 {
   return draw_radial_gradient(static_surface, inner, outer, width, height);
-
 }
 
 int OverviewMap::get_width()

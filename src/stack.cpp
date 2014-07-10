@@ -439,6 +439,7 @@ Vector<int> Stack::getLastReachablePointInPath() const
     }
   return Vector<int>(-1,-1);
 }
+
 Vector<int> Stack::getLastPointInPath() const
 {
   if (d_path->size() == 0)
@@ -791,6 +792,7 @@ std::list<guint32> Stack::determineStrongArmies(float strength) const
 {
   return determineArmiesByStrength(true, strength);
 }
+
 std::list<guint32> Stack::determineWeakArmies(float strength) const
 {
   return determineArmiesByStrength(false, strength);
