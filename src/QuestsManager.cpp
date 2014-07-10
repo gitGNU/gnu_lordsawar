@@ -270,7 +270,7 @@ std::vector<Quest*> QuestsManager::getPlayerQuests(const Player *player) const
     }
   return res;
 }
-        
+
 Quest* QuestsManager::getHeroQuest(guint32 hero_id) const
 {
   std::map<guint32, Quest*>::const_iterator qit;
@@ -353,10 +353,8 @@ bool QuestsManager::load(Glib::ustring tag, XML_Helper* helper)
 	  else
 	    d_quests[hero] = quest;
 	}
-
       return true;
     }
-
   return false;
 }
 
@@ -428,7 +426,6 @@ void QuestsManager::armyDied(Army *a, std::vector<guint32>& culprits)
   Quest *quest = d_quests[a->getId()];
   if (quest && quest->isPendingDeletion() == false)
     questExpired(a->getId());
-
 }
 
 void QuestsManager::cityAction(City *c, Stack *s, 
