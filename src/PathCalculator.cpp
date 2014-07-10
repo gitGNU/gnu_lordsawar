@@ -29,8 +29,6 @@
 #include "armysetlist.h"
 #include "armyprodbase.h"
 
-#define ENEMY_CITY_WEIGHT 10
-#define ENEMY_STACK_WEIGHT 10
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::flush<<std::endl;}
 #define debug(x)
 
@@ -153,7 +151,6 @@ PathCalculator::PathCalculator(const Stack &s, bool zig, int city_avoidance, int
   delete_stack = true;
   populateNodeMap();
 }
-
 
 PathCalculator::PathCalculator(const PathCalculator &p)
 :stack(new Stack(*p.stack)), flying(p.flying), d_bonus(p.d_bonus),
@@ -345,6 +342,7 @@ bool PathCalculator::load_or_unload(Vector<int> src, Vector<int> dest, bool &on_
   delete new_stack;
   return retval;
 }
+
 int PathCalculator::pointsToMoveTo(Vector<int> pos, Vector<int> next) const
 {
   guint32 moves;
@@ -382,6 +380,7 @@ PathCalculator::~PathCalculator()
   if (delete_stack)
     delete stack;
 }
+
 //am i blocked from entering destx,desty from x,y when i'm not flying?
 bool PathCalculator::isBlockedDir(Vector<int> pos, Vector<int> next)
 {
@@ -445,21 +444,6 @@ bool PathCalculator::isBlocked(const Stack *s, Vector<int> pos, bool enemy_citie
 bool PathCalculator::isBlocked(Vector<int> pos)
 {
   return isBlocked(stack, pos, enemy_city_avoidance < 0, enemy_stack_avoidance < 0);
-}
-
-bool PathCalculator::canMoveThere(Vector<int> dest)
-{
-  Vector<int> pos = stack->getPos();
-  if (isBlocked(pos))
-    {
-      //psst. if it's our last step we can step into cities.
-      //psst. if it's our last step we can step onto enemy stacks
-      //psst.  if it's our last step and we're a computer player who was diligently walking around friendly stacks, we can merge on our last step
-      return false;
-    }
-  if (isBlockedDir(pos, dest) && !flying)
-    return false;
-  return true;
 }
 
 int PathCalculator::calculate(Vector<int> dest, bool zigzag)

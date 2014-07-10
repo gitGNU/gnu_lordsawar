@@ -95,31 +95,6 @@ private:
 
     bool load_or_unload(Vector<int> src, Vector<int> dest, bool &on_ship);
 
-    /**
-     * The purpose of this method is to verify if the Stack can move 
-     * onto the Tile of the given destination point.
-     *
-     * @note This method does not calculate a path and it does not 
-     * consider the amount of movement points that the Stack has. 
-     *
-     * This method uses two shortcuts to check if it is impossible for 
-     * the given stack to travel to the given destination on the GameMap.  
-     * Firstly it checks to see if the destination terrain Tile::Type is 
-     * of a kind that the Stack can't travel on at all (e.g. Mountains, 
-     * and the Stack can't fly).  Secondly it checks to see if the tile 
-     * is both adjacent and blocked from that direction.
-     *
-     * This method is primarily used to assist in mouse cursor display.
-     *
-     * @param dest    The position on the map to see if the Stack can 
-     *                move to.
-     *
-     * @return True if the Stack can move to the given position on the 
-     *         GameMap.  Otherwise the return value is false.
-     */
-    //! Calculates if a Stack move to a position on the GameMap.
-    bool canMoveThere(Vector<int> dest);
-
     std::list<Vector<int> > calcMoves(Vector<int> pos);
     bool calcMoves(Vector<int> pos, Vector<int> next);
     bool calcFinalMoves(Vector<int> pos);
