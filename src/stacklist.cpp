@@ -207,16 +207,6 @@ unsigned int Stacklist::countArmies() const
     return mysize;
 }
 
-unsigned int Stacklist::countAllies() const
-{
-    unsigned int mysize = 0;
-
-    for (const_iterator it = begin(); it != end(); it++)
-      mysize += (*it)->countAllies();
-
-    return mysize;
-}
-
 Stacklist::Stacklist()
     :d_activestack(0)
 {

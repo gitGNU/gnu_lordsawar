@@ -104,8 +104,6 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
         //! How many army units can be put into this stack?
         guint32 getMaxArmiesToJoin() const;
 
-        guint32 countAllies() const;
-
         bool hasDeadArmies() const;
 
 

@@ -90,9 +90,6 @@ class Stacklist : public std::list<Stack*>, public sigc::trackable
         //! Returns the total number of armies in the list.
         unsigned int countArmies() const;
 
-        //! Returns the total number of armies in the list that are awardable.
-        unsigned int countAllies() const;
-
         //! Count the number of blessings that army units have.
         guint32 countBlessingsOnArmyUnits() const;
 	/**

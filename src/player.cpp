@@ -3483,8 +3483,6 @@ void Player::pruneCityProductions(std::list<Action*> actions)
 	  continue;
 	}
     }
-  //if (total)
-  //printf ("pruned %d city production actions.\n", total);
 }
 
 void Player::pruneCityVectorings(std::list<Action*> actions)
@@ -3531,8 +3529,6 @@ void Player::pruneCityVectorings(std::list<Action*> actions)
 	  continue;
 	}
     }
-  //if (total)
-  //printf ("pruned %d city vector actions.\n", total);
 }
 
 void Player::pruneActionlist(std::list<Action*> actions)
@@ -3594,19 +3590,6 @@ bool Player::hasAlreadyEndedTurn() const
   return false;
 }
 
-std::list<History*> Player::getHistoryForThisTurn() const
-{
-  std::list<History*> history;
-  for (std::list<History*>::const_reverse_iterator it = d_history.rbegin();
-       it != d_history.rend(); it++)
-    {
-      history.push_front(*it);
-      if ((*it)->getType() == History::START_TURN)
-	break;
-    }
-  return history;
-}
-
 guint32 Player::countEndTurnHistoryEntries() const
 {
   guint32 count = 0;
@@ -3617,16 +3600,6 @@ guint32 Player::countEndTurnHistoryEntries() const
 	count++;
     }
   return count;
-}
-
-void Player::saveNetworkActions(XML_Helper *helper) const
-{
-  for (std::list<Action*>::const_iterator it = d_actions.begin();
-       it != d_actions.end(); it++)
-    {
-      NetworkAction *copy = new NetworkAction(*it, getId());
-      copy->save(helper);
-    }
 }
 
 bool Player::searchedRuin(Ruin *r) const
@@ -3825,22 +3798,22 @@ void Player::setSurrendered(bool surr)
 {
   surrendered = surr;
 }
+
 std::list<Hero*> Player::getHeroes() const
 {
   return d_stacklist->getHeroes();
 }
+
 guint32 Player::countArmies() const
 {
   return d_stacklist->countArmies();
 }
-guint32 Player::countAllies() const
-{
-  return d_stacklist->countAllies();
-}
+
 Stack * Player::getActivestack() const
 {
   return d_stacklist->getActivestack();
 }
+
 void Player::setActivestack(Stack *s)
 {
   d_stacklist->setActivestack(s);
@@ -3866,7 +3839,6 @@ void Player::clearFogMap()
   d_fogmap->fill(FogMap::OPEN);
 }
 
-
 std::list<Action *> Player::getActionsThisTurn(int type) const
 {
   std::list<Action *> actions;
@@ -3878,26 +3850,12 @@ std::list<Action *> Player::getActionsThisTurn(int type) const
     }
   return actions;
 }
-std::list<Action *> Player::getFightsThisTurn() const
-{
-  return getActionsThisTurn(Action::STACK_FIGHT);
-}
-
-int Player::countFightsThisTurn() const
-{
-  return getFightsThisTurn().size();
-}
 
 std::list<Action *> Player::getMovesThisTurn() const
 {
   return getActionsThisTurn(Action::STACK_MOVE);
 }
 
-int Player::countMovesThisTurn() const
-{
-  return getMovesThisTurn().size();
-}
-        
 int Player::countDestituteCitiesThisTurn() const
 {
   return getActionsThisTurn(Action::CITY_DESTITUTE).size();
@@ -4432,22 +4390,6 @@ void Player::handleDeadHeroes(std::list<Stack*> &stacks, std::list<History*> &hi
                                           (*it)->getPos());
           if (item)
             history.push_back(item);
-        }
-    }
-  return;
-}
-
-void Player::healInjuredArmies(std::list<Stack*> &stacks)
-{
-  std::list<Stack*>::iterator it;
-  for (it = stacks.begin(); it != stacks.end(); it++)
-    {
-      if ((*it)->getOwner() == this)
-        continue;
-      for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
-        {
-          if ((*sit)->getHP() > 0)
-            (*sit)->heal((*sit)->getStat(Army::HP));
         }
     }
   return;

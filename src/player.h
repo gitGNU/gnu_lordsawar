@@ -312,16 +312,10 @@ class Player: public sigc::trackable
         //! Returns a list of the player's actions to show in a report.
 	std::list<Action *> getReportableActions() const;
 
-        //! Returns the number of times we fought so far this turn.
-        int countFightsThisTurn() const;
-        //! Returns the number of times we moved a stack this turn.
-        int countMovesThisTurn() const;
         //! Returns number of cities that were too poor to produce this turn.
         int countDestituteCitiesThisTurn() const;
 
-        //! Returns the battle actions for this turn.
-        std::list<Action *> getFightsThisTurn() const;
-        //! Returns the movement actions for this turn.
+        //! Returns all actions for this turn.
         std::list<Action *> getMovesThisTurn() const;
 
         //! Remove every Action from the list of the player's actions.
@@ -329,9 +323,6 @@ class Player: public sigc::trackable
 
         //! Show debugging information for the player's Action list.
         void dumpActionlist() const;
-
-	//! Wrap the player's actions for transport over the network.
-	void saveNetworkActions(XML_Helper *helper) const;
 
 	//! Check to see if it's our turn.
 	bool hasAlreadyInitializedTurn() const;
@@ -380,9 +371,6 @@ class Player: public sigc::trackable
 
 	//! Return the grand total of the player's armies.
 	guint32 countArmies() const;
-
-        //! Return the number of the player's armies that are awardable.
-	guint32 countAllies() const;
 
 	//! Return the player's currently selected stack.
 	Stack * getActivestack() const;
@@ -1710,7 +1698,6 @@ class Player: public sigc::trackable
 
 	void pruneActionlist();
 	static void pruneActionlist(std::list<Action*> actions);
-	std::list<History*> getHistoryForThisTurn() const;
 	    
     private:
         //! Loads the subdata of a player (actions and stacklist)
@@ -1751,8 +1738,6 @@ class Player: public sigc::trackable
 
         void handleDeadHeroes(std::list<Stack*> &stacks, std::list<History*> &history);
         History* handleDeadHero(Hero *h, Maptile *tile, Vector<int> pos);
-
-        void healInjuredArmies(std::list<Stack*> &stacks);
 
         void handleDeadArmiesForQuests(std::list<Stack*> &stacks, std::vector<guint32> &culprits);
         

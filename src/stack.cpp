@@ -1098,17 +1098,6 @@ bool Stack::hasArmyType(guint32 army_type) const
   return false;
 }
 
-guint32 Stack::countAllies() const
-{
-  guint32 count = 0;
-  for (const_iterator it = begin(); it != end(); it++)
-    {
-      if ((*it)->getAwardable() == true)
-        count++;
-    }
-  return count;
-}
-
 Hero *Stack::getFirstHeroWithoutAQuest() const
 {
   Hero *hero = NULL;
