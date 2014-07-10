@@ -683,18 +683,6 @@ class GameMap: public sigc::trackable
          */
         Vector<int> findPlantedStandard(Player *p);
 
-	//! go find the player's stack, the slow way.
-        /** Return the position of a Stack by id.
-         *
-         * @param id The unique identifier for a Stack object.
-         *
-         * \note This could return a stack not belonging to the active player.
-         *
-         * @return Returns the position of the stack on the map, or otherwise a 
-         * position of -1,-1 is returned if the stack is not be found anywhere.
-         */
-	Vector<int> findStack(guint32 id);
-
         /** Fill the map using the data supplied by a map generator.
           * 
           * @param generator A pointer to the MapGenrator which supplies the 

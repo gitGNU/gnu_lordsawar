@@ -30,6 +30,7 @@
 
 class History;
 class Shieldset;
+class Stack;
 
 #include "player.h"
 
@@ -240,6 +241,9 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
 
 	//! Return the list of activities that the given hero has accomplished.
 	std::list<History *>getHistoryForHeroId(guint32 id) const;
+
+        //! Return a stack belonging to any player with the given id.
+        Stack *getStackById(guint32 id) const;
 
 	/** 
 	  \brief Check to see if this is the end of the round or not.

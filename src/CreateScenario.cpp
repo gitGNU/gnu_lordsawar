@@ -243,49 +243,6 @@ bool CreateScenario::addNeutral(Glib::ustring name, guint32 armyset,
     return true;
 }
 
-int CreateScenario::getNoPlayers() const
-{
-    return Playerlist::getInstance()->size();
-}
-
-Player* CreateScenario::getPlayer(int number) const
-{
-    debug("CreateScenario::getPlayer")
-
-    if (number >= static_cast<int>(Playerlist::getInstance()->size()))
-        return 0;
-
-    Playerlist::iterator it;
-    for (it = Playerlist::getInstance()->begin(); number > 0; number--)
-        it++;
-
-    return (*it);
-}
-
-int CreateScenario::getNoCities() const
-{
-    if (!d_generator)
-        return -1;
-
-    return d_generator->getNoCities();
-}
-
-int CreateScenario::getNoRuins() const
-{
-    if (!d_generator)
-        return -1;
-
-    return d_generator->getNoRuins();
-}
-
-int CreateScenario::getNoTemples() const
-{
-    if (!d_generator)
-        return -1;
-
-    return d_generator->getNoTemples();
-}
-
 bool CreateScenario::create(const GameParameters &g)
 {
     debug("CreateScenario::create")
@@ -522,7 +479,6 @@ bool CreateScenario::setupCities(bool cities_can_produce_allies,
     return true;
 }
 
-
 bool CreateScenario::setupRoads()
 {
   Roadlist* rl = Roadlist::getInstance();
@@ -552,6 +508,7 @@ bool CreateScenario::setupTemples()
 
     return true;
 }
+
 bool CreateScenario::setupRuins(bool strongholds_invisible, int sage_factor,
 				int no_guardian_factor, int stronghold_factor)
 {
@@ -701,7 +658,7 @@ void CreateScenario::getRuinDifficulty (int difficulty, int *sage_factor,
       *stronghold_factor = 3;
     }
 }
-    
+
 void CreateScenario::getSignpostDifficulty (int difficulty, bool hidden_map, 
 					    int *signpost_ratio)
 {
@@ -724,7 +681,6 @@ void CreateScenario::getSignpostDifficulty (int difficulty, bool hidden_map,
     *signpost_ratio = 6;
 }
 
-    
 void CreateScenario::getCityDifficulty(int difficulty, 
 				       int *number_of_armies_factor)
 {
@@ -737,7 +693,7 @@ void CreateScenario::getCityDifficulty(int difficulty,
   else 
     *number_of_armies_factor = 0;
 }
-    
+
 int CreateScenario::calculateRoadType (Vector<int> t)
 {
     Roadlist *rl = Roadlist::getInstance();

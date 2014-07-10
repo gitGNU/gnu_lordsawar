@@ -42,6 +42,7 @@
 #include "shieldset.h"
 #include "shieldsetlist.h"
 #include "ucompose.hpp"
+#include "stack.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -928,4 +929,18 @@ void Playerlist::syncNeutral()
   Player *p = new AI_Dummy(*d_neutral);
   swap(d_neutral, p);
   d_neutral = p;
+}
+
+Stack *Playerlist::getStackById(guint32 id) const
+{
+  //this method checks each stacklist for the given stack id.
+  //the stack ids in each stacklist are in a std::map, so that's how the
+  //stack pointers are gotten.
+  for (const_iterator j = begin(), jend = end(); j != jend; ++j) 
+    {
+      Stack *s = (*j)->getStacklist()->getStackById(id);
+      if (s)
+        return s;
+    }
+  return NULL;
 }

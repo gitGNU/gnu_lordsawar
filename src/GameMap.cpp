@@ -619,24 +619,6 @@ void GameMap::calculateBlockedAvenues()
       calculateBlockedAvenue(i, j);
 }
 
-Vector<int> GameMap::findStack(guint32 id)
-{
-    Vector<int> pos = Vector<int>(-1,-1);
-    for (int x = 0; x < getWidth(); x++)
-      {
-        for (int y = 0; y < getHeight(); y++)
-          {
-	    StackTile *stile = getTile(x,y)->getStacks();
-	    if (stile->contains(id) == true)
-	      {
-		pos = Vector<int>(x,y);
-		break;
-	      }
-          }
-      }
-  return pos;
-}
-
 Vector<int> GameMap::findPlantedStandard(Player *p)
 {
     bool found = false;

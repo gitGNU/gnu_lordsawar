@@ -47,8 +47,6 @@ class City;
 class CreateScenario : public CreateScenarioRandomize
 {
     public:
-        //! This represents the class of the map (hills, islands etc.).
-        enum MapType { NORMAL };
     
         /** The Constructor
           * 
@@ -122,28 +120,6 @@ class CreateScenario : public CreateScenarioRandomize
           */
         bool addNeutral(Glib::ustring name, guint32 armyset, Gdk::RGBA color,
                         int type);
-
-        
-        //! Get the number of players already added
-        int getNoPlayers() const;
-
-        //! Get the n-th player
-        Player* getPlayer(int number) const;
-
-        //! Get the type of the map
-        MapType getMaptype() const {return NORMAL;};
-
-        //! Get the number of cities of the map
-        int getNoCities() const;
-
-        //! Get the number of ruins on the map
-        int getNoRuins() const;
-
-        //! Get the number of signposts on the map
-        int getNoSignposts() const;
-
-        //! Get the number of temples
-        int getNoTemples() const;
 
         /** Creates a map
           * 

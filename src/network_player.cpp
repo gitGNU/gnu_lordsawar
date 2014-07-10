@@ -97,8 +97,6 @@ void NetworkPlayer::abortTurn()
 
 bool NetworkPlayer::startTurn()
 {
-  //d_stacklist->setActivestack(0);
-
   return false;
 }
 
@@ -182,9 +180,7 @@ void NetworkPlayer::decodeActions(std::list<Action *> actions)
   std::list<Action*>::iterator it = actions.begin();
   pruneActionlist();
   for (; it != actions.end(); it++)
-    {
      decodeAction(*it);
-    }
 }
 
 void NetworkPlayer::decodeAction(const Action *a)
@@ -310,20 +306,6 @@ void NetworkPlayer::decodeAction(const Action *a)
   return;
 }
 
-// decode helpers
-  
-Stack *findStackById(guint32 id)
-{
-  for (Playerlist::iterator j = Playerlist::getInstance()->begin(), jend = Playerlist::getInstance()->end();
-       j != jend; ++j) {
-    Stack *s = (*j)->getStacklist()->getStackById(id);
-    if (s)
-      return s;
-  }
-  return 0;
-}
-
-
 // decoders
 
 void NetworkPlayer::decodeActionMove(const Action_Move *action)
@@ -399,7 +381,7 @@ void NetworkPlayer::decodeActionFight(const Action_Fight *action)
   std::list<guint32> defender_stack_ids = action->getDefenderStackIds();
   for (std::list<guint32>::const_iterator i = defender_stack_ids.begin(),
          end = defender_stack_ids.end(); i != end; ++i)
-    defenders.push_back(findStackById(*i));
+    defenders.push_back(Playerlist::getInstance()->getStackById(*i));
 
   Fight fight(attackers, defenders, action->getBattleHistory());
   Fight::Result result = fight.battleFromHistory();

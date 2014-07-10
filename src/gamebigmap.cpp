@@ -1077,7 +1077,7 @@ void GameBigMap::set_shift_key_down (bool down)
 	}
     }
 }
-    
+
 void GameBigMap::reset_path_calculator(Stack *s)
 {
   if (path_calculator)
