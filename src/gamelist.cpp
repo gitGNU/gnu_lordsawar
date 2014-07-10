@@ -198,23 +198,6 @@ void Gamelist::pruneOldGames(int stale)
     }
 }
 
-bool Gamelist::removeEntry(Glib::ustring id)
-{
-  bool found = false;
-  for (Gamelist::iterator it = begin(); it != end();)
-    {
-      if ((*it)->getAdvertisedGame()->getId() == id)
-	{
-	  delete *it;
-	  it = erase (it);
-	  found = true;
-	  continue;
-	}
-      it++;
-    }
-  return found;
-}
-
 void Gamelist::updateEntry(Glib::ustring scenario_id, guint32 round)
 {
   for (Gamelist::iterator it = begin(); it != end(); it++)

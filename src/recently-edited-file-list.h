@@ -62,9 +62,6 @@ class RecentlyEditedFileList: public std::list<RecentlyEditedFile*>, public sigc
 	//! Touch the file in the recently edited list.
 	void updateEntry(Glib::ustring filename);
 
-	//! Remove a file entry from the list, by it's scenario id.
-	bool removeEntry(Glib::ustring filename);
-
 	//! Removes files from the list that are too old, or just too numerous.
 	void pruneFiles();
 	

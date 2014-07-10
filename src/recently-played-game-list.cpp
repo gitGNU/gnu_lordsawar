@@ -275,23 +275,6 @@ void RecentlyPlayedGameList::pruneOldGames(int stale)
     }
 }
 
-bool RecentlyPlayedGameList::removeEntry(Glib::ustring id)
-{
-  bool found = false;
-  for (RecentlyPlayedGameList::iterator it = begin(); it != end();)
-    {
-      if ((*it)->getId() == id)
-	{
-	  delete *it;
-	  it = erase (it);
-	  found = true;
-	  continue;
-	}
-      it++;
-    }
-  return found;
-}
-
 void RecentlyPlayedGameList::updateEntry(GameScenario *game_scenario)
 {
   for (RecentlyPlayedGameList::iterator it = begin(); it != end(); it++)

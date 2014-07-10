@@ -77,9 +77,6 @@ class Gamelist: public std::list<HostedGame*>, public sigc::trackable
 	//! Touch the game in the games list.
 	void updateEntry(Glib::ustring scenario_id, guint32 round);
 
-	//! Remove a game entry from the list, by it's scenario id.
-	bool removeEntry(Glib::ustring scenario_id);
-
 	//! Removes games from the list that are too old, or just too numerous.
 	void pruneGames();
 	

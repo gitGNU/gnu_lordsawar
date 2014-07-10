@@ -71,9 +71,6 @@ class RecentlyPlayedGameList: public std::list<RecentlyPlayedGame*>, public sigc
 	//! Touch the game in the recently played list.
 	void updateEntry(GameScenario *game_scenario);
 
-	//! Remove a game entry from the list, by it's scenario id.
-	bool removeEntry(Glib::ustring id);
-
 	//! Removes all networked games from the list.
 	void removeAllNetworkedGames();
 

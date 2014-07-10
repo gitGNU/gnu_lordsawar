@@ -325,23 +325,6 @@ void RecentlyEditedFileList::pruneOldFiles(int stale)
     }
 }
 
-bool RecentlyEditedFileList::removeEntry(Glib::ustring filename)
-{
-  bool found = false;
-  for (iterator it = begin(); it != end();)
-    {
-      if ((*it)->getFileName() == filename)
-	{
-	  delete *it;
-	  it = erase (it);
-	  found = true;
-	  continue;
-	}
-      it++;
-    }
-  return found;
-}
-
 void RecentlyEditedFileList::updateEntry(Glib::ustring filename)
 {
   for (iterator it = begin(); it != end(); it++)
@@ -355,7 +338,6 @@ void RecentlyEditedFileList::updateEntry(Glib::ustring filename)
     }
 }
 
-        
 std::list<RecentlyEditedFile*> RecentlyEditedFileList::getFilesWithExtension(Glib::ustring ext) const
 {
   std::list<RecentlyEditedFile*> files;
