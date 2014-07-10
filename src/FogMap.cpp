@@ -229,7 +229,6 @@ void FogMap::smooth()
     calculateShadeMap();
 }
 
-
 bool FogMap::isFogged(Vector <int> pos)
 {
   if (getFogTile(pos) == FogMap::CLOSED)
