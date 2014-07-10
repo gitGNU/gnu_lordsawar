@@ -608,7 +608,6 @@ void Fight::fightArmies(Fighter* attacker, Fighter* defender)
 
   item.damage = damage;
   d_actions.push_back(item);
-
 }
 
 void Fight::remove(Fighter* f)
@@ -636,7 +635,7 @@ void Fight::remove(Fighter* f)
   // if the fighter wa sin no list, we are rather careful and don't do anything
   debug("Fight: fighter without list!")
 }
-	
+
 guint32 Fight::getModifiedStrengthBonus(Army *a)
 {
   std::list<Fighter*>::iterator it;
@@ -666,7 +665,6 @@ void Fight::setModifiedStrengthBonus(Army *a, guint32 str)
       }
 }
 
-
 void Fight::fillInInitialHPs()
 {
   for (std::list<Stack *>::iterator i = d_attackers.begin();
@@ -679,7 +677,7 @@ void Fight::fillInInitialHPs()
     for (Stack::iterator j = (*i)->begin(); j != (*i)->end(); ++j)
       initial_hps[(*j)->getId()] = (*j)->getHP();
 }
-	
+
 LocationBox Fight::calculateFightBox(Fight &fight)
 {
   Citylist *cl = Citylist::getInstance();
