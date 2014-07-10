@@ -818,3 +818,20 @@ void XML_Helper::on_error (const Glib::ustring & text)
 {
   d_failed = true;
 }
+
+guint32 XML_Helper::flagsFromString(Glib::ustring flags, guint32 (*flagStrToNum)(Glib::ustring))
+{
+  guint32 total = 0;
+  std::stringstream bonuses;
+  bonuses.str(flags);
+
+  while (bonuses.eof() == false)
+    {
+      Glib::ustring bonus;
+      bonuses >> bonus;
+      if (bonus.size() == 0)
+	break;
+      total += (*flagStrToNum)(bonus);
+    }
+  return total;
+}

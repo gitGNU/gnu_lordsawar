@@ -85,7 +85,6 @@ bool NetworkPlayer::save(XML_Helper* helper) const
     retval &= helper->openTag(Player::d_tag);
     retval &= Player::save(helper);
     retval &= helper->closeTag();
-
     return retval;
 }
 
@@ -302,7 +301,6 @@ void NetworkPlayer::decodeAction(const Action *a)
     case Action::STACK_DESELECT:
       return decodeActionDeselectStack(dynamic_cast<const Action_DeselectStack*>(a));
     }
-
   return;
 }
 
@@ -466,8 +464,7 @@ void NetworkPlayer::decodeActionTemple(const Action_Temple *action)
 
 void NetworkPlayer::decodeActionOccupy(const Action_Occupy *action)
 {
-  City *city = Citylist::getInstance()->getById(action->getCityId());
-  doCityOccupy(city);
+  doCityOccupy(Citylist::getInstance()->getById(action->getCityId()));
 }
 
 void NetworkPlayer::decodeActionPillage(const Action_Pillage *action)
@@ -489,8 +486,7 @@ void NetworkPlayer::decodeActionSack(const Action_Sack *action)
 
 void NetworkPlayer::decodeActionRaze(const Action_Raze *action)
 {
-  City *city = Citylist::getInstance()->getById(action->getCityId());
-  doCityRaze(city);
+  doCityRaze(Citylist::getInstance()->getById(action->getCityId()));
 }
 
 void NetworkPlayer::decodeActionUpgrade(const Action_Upgrade *action)
@@ -607,8 +603,8 @@ void NetworkPlayer::decodeActionModifySignpost(const Action_ModifySignpost *act)
 
 void NetworkPlayer::decodeActionRenameCity(const Action_RenameCity *action)
 {
-  City *city = Citylist::getInstance()->getById(action->getCityId());
-  doCityRename(city, action->getNewCityName());
+  doCityRename(Citylist::getInstance()->getById(action->getCityId()), 
+               action->getNewCityName());
 }
 
 void NetworkPlayer::decodeActionVector(const Action_Vector *action)
@@ -726,8 +722,7 @@ void NetworkPlayer::decodeActionEndTurn(const Action_EndTurn *action)
 
 void NetworkPlayer::decodeActionConquerCity(const Action_ConquerCity *action)
 {
-  City *city = Citylist::getInstance()->getById(action->getCityId());
-  doConquerCity(city);
+  doConquerCity(Citylist::getInstance()->getById(action->getCityId()));
 }
 
 void NetworkPlayer::decodeActionRecruitHero(const Action_RecruitHero *action)

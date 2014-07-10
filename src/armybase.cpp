@@ -20,7 +20,6 @@
 //  02110-1301, USA.
 
 #include <iostream>
-#include <sstream>
 #include "ucompose.hpp"
 #include "armybase.h"
 #include "xmlhelper.h"
@@ -137,19 +136,7 @@ Glib::ustring ArmyBase::moveFlagsToString(const guint32 bonus)
 
 guint32 ArmyBase::moveFlagsFromString(const Glib::ustring str)
 {
-  guint32 total = 0;
-  std::stringstream bonuses;
-  bonuses.str(str);
-
-  while (bonuses.eof() == false)
-    {
-      Glib::ustring bonus;
-      bonuses >> bonus;
-      if (bonus.size() == 0)
-	break;
-      total += Tile::tileTypeFromString(bonus);
-    }
-  return total;
+  return XML_Helper::flagsFromString(str, Tile::tileTypeFromString);
 }
 
 Glib::ustring ArmyBase::bonusFlagToString(const ArmyBase::Bonus bonus)
@@ -210,22 +197,10 @@ Glib::ustring ArmyBase::bonusFlagsToString(const guint32 bonus)
 
 guint32 ArmyBase::bonusFlagsFromString(const Glib::ustring str)
 {
-  guint32 total = 0;
-  std::stringstream bonuses;
-  bonuses.str(str);
-
-  while (bonuses.eof() == false)
-    {
-      Glib::ustring bonus;
-      bonuses >> bonus;
-      if (bonus.size() == 0)
-	break;
-      total += bonusFlagFromString(bonus);
-    }
-  return total;
+  return XML_Helper::flagsFromString(str, bonusFlagFromString);
 }
 
-ArmyBase::Bonus ArmyBase::bonusFlagFromString(const Glib::ustring str)
+guint32 ArmyBase::bonusFlagFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return ArmyBase::Bonus(atoi(str.c_str()));

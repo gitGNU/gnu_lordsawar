@@ -221,7 +221,7 @@ class ItemProto: public Renamable
     private:
 
 	static Glib::ustring bonusFlagToString(ItemProto::Bonus type);
-	static ItemProto::Bonus bonusFlagFromString(Glib::ustring str);
+	static guint32 bonusFlagFromString(Glib::ustring str);
 
 
 };

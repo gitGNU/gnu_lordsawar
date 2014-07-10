@@ -15,7 +15,6 @@
 //  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 
 //  02110-1301, USA.
 
-#include <sstream>
 #include <vector>
 #include "ItemProto.h"
 #include "ucompose.hpp"
@@ -349,22 +348,10 @@ Glib::ustring ItemProto::bonusFlagsToString(guint32 bonus)
 
 guint32 ItemProto::bonusFlagsFromString(Glib::ustring str)
 {
-  guint32 total = 0;
-  std::stringstream bonuses;
-  bonuses.str(str);
-
-  while (bonuses.eof() == false)
-    {
-      Glib::ustring bonus;
-      bonuses >> bonus;
-      if (bonus.size() == 0)
-	break;
-      total += bonusFlagFromString(bonus);
-    }
-  return total;
+  return XML_Helper::flagsFromString(str, bonusFlagFromString);
 }
 
-ItemProto::Bonus ItemProto::bonusFlagFromString(Glib::ustring str)
+guint32 ItemProto::bonusFlagFromString(Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return ItemProto::Bonus(atoi(str.c_str()));

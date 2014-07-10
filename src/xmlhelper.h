@@ -203,6 +203,7 @@ class XML_Helper: public xmlpp::SaxParser
 
         static Glib::ustring get_top_tag(Glib::ustring filename);
         static bool rewrite_version(Glib::ustring filename, Glib::ustring tag, Glib::ustring new_version);
+        static guint32 flagsFromString(Glib::ustring flags, guint32 (*flagStrToNum)(Glib::ustring));
         
 
     protected:

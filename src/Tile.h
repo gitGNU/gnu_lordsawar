@@ -168,7 +168,7 @@ class Tile : public std::list<TileStyleSet*>
         static Glib::ustring tileTypeToFriendlyName(const Tile::Type type);
 
 	//! Convert a string represenation of a Tile::Type to an enum value.
-	static Tile::Type tileTypeFromString(const Glib::ustring str);
+	static guint32 tileTypeFromString(const Glib::ustring str);
 
 	//! If an army unit can move on these kinds of terrains, it is flying.
 	static guint32 isFlying() 

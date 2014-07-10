@@ -117,7 +117,6 @@ guint32 Backpack::countStackStrengthBonuses()
   return bonus;
 }
 
-
 guint32 Backpack::countGoldBonuses()
 {
   guint32 bonus = 0;

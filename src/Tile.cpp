@@ -53,7 +53,7 @@ Tile::Tile(XML_Helper* helper)
     helper->getData(d_moves, "moves");
     Glib::ustring type_str;
     helper->getData(type_str, "type");
-    d_type = tileTypeFromString(type_str);
+    d_type = Tile::Type(tileTypeFromString(type_str));
 }
 
 bool Tile::save(XML_Helper *helper) const
@@ -155,7 +155,7 @@ Glib::ustring Tile::tileTypeToFriendlyName(const Tile::Type type)
   return _("Grass");
 }
 
-Tile::Type Tile::tileTypeFromString(const Glib::ustring str)
+guint32 Tile::tileTypeFromString(const Glib::ustring str)
 {
   if (str.size() > 0 && isdigit(str.c_str()[0]))
     return Tile::Type(atoi(str.c_str()));

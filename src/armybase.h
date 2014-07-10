@@ -172,7 +172,7 @@ class ArmyBase
 	 * ArmyBase::Bonus enumerated value, and converts it to it's enumerated
 	 * value.
 	 */
-	static ArmyBase::Bonus bonusFlagFromString(const Glib::ustring str);
+	static guint32 bonusFlagFromString(const Glib::ustring str);
 
 	//! Convert an ArmyBase::Bonus enum value to a string.
 	static Glib::ustring bonusFlagToString(const ArmyBase::Bonus bonus);
