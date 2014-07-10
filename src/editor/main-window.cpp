@@ -686,7 +686,6 @@ void MainWindow::init_map_state()
     on_terrain_radiobutton_toggled();
 }
 
-
 bool MainWindow::on_bigmap_mouse_button_event(GdkEventButton *e)
 {
     if (e->type != GDK_BUTTON_PRESS && e->type != GDK_BUTTON_RELEASE)
@@ -1142,7 +1141,6 @@ void MainWindow::on_tileset_saved(guint32 id)
     }
 }
 
-
 void MainWindow::on_fullscreen_activated()
 {
     if (fullscreen_menuitem->get_active())
@@ -1161,7 +1159,6 @@ void MainWindow::on_grid_toggled()
 {
   bigmap->toggle_grid();
 }
-
 
 void MainWindow::remove_tile_style_buttons()
 {
@@ -1372,7 +1369,6 @@ void MainWindow::on_smallmap_changed(Cairo::RefPtr<Cairo::Surface> map, Gdk::Rec
                         smallmap->get_width(), smallmap->get_height());
   smallmap_image->property_pixbuf() = pixbuf;
 }
-
 
 void MainWindow::init_maps()
 {
@@ -1749,7 +1745,6 @@ void MainWindow::on_validate_activated()
   dialog.run_and_hide();
 }
       
-	
 void MainWindow::clear_save_file_of_scenario_specific_data()
 {
   Playerlist *plist = Playerlist::getInstance();
