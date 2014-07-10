@@ -153,7 +153,6 @@ private:
     bool isBlocked(Vector<int> pos);
 
     void dumpNodeMap(Vector<int> dest);
-    bool compareNodeMaps(void *map);
     bool delete_stack;
 
 };

@@ -592,6 +592,7 @@ Path* PathCalculator::calculate(Vector<int> dest, guint32 &moves, guint32 &turns
   nodes[idx] = orig_dest;
   return path;
 }
+
 void PathCalculator::dumpNodeMap(Vector<int> dest)
 {
   int width = GameMap::getWidth();
@@ -617,24 +618,8 @@ void PathCalculator::dumpNodeMap(Vector<int> dest)
       }
   printf ("=======================================\n");
   return;
-} 
-bool PathCalculator::compareNodeMaps(void *map)
-{
-  bool found = false;
-  int width = GameMap::getWidth();
-  int height = GameMap::getHeight();
-  struct node * othernodes = (struct node *) map;
-  for (int i = 0; i < width; i++)
-    for (int j = 0; j < height; j++)
-      {
-	if (othernodes[j*width+i].moves != nodes[j*width+i].moves)
-	  {
-	  found = true;
-	  break;
-	  }
-      }
-  return found;
 }
+
 bool PathCalculator::isReachable(Vector<int> pos)
 {
   return nodes[pos.toIndex()].moves >= 0;
