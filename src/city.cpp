@@ -272,9 +272,7 @@ void City::nextTurn()
 	  d_owner->vectorFromCity(this, Vector<int>(-1,-1));
 	  return;
 	}
-
       d_owner->cityProducesArmy(this);
-
     }
 }
 
@@ -511,7 +509,7 @@ void City::setRandomArmytypes(bool produce_allies, int likely)
   sortProduction();
 }
 
-guint32 City::calculateDefenseLevel() const
+int City::getDefenseLevel() const
 {
   int num_production_bases = getNoOfProductionBases();
   if (isBurnt()) 

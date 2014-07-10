@@ -104,7 +104,7 @@ class City : public Ownable, public Location, public Renamable,
 	//Get Methods
 	
         //! Return the defense level of the city.
-        int getDefenseLevel() const {return calculateDefenseLevel();}
+        int getDefenseLevel() const;
 
         //! Return the income of the city per turn.
         guint32 getGold() const {return d_gold;}
@@ -282,13 +282,6 @@ class City : public Ownable, public Location, public Renamable,
 	 * @note Pnly use this prior to the start of game.
 	 */
 	void sortProduction();
-
-	//! Calculate defense level.
-	/**
-	 * The defense level is a function of how many production slots
-	 * the city has.
-	 */
-	guint32 calculateDefenseLevel() const;
 
         // DATA
 
