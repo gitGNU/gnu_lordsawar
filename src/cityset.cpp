@@ -550,7 +550,6 @@ std::list<Glib::ustring> Cityset::scanSystemCollection()
   return retlist;
 }
 
-	
 bool Cityset::validate()
 {
   bool valid = true;
@@ -576,66 +575,77 @@ bool Cityset::validate()
     return false;
   return valid;
 }
+
 bool Cityset::validateCitiesFilename()
 {
   if (getCitiesFilename().empty() == true)
     return false;
   return true;
 }
+
 bool Cityset::validateRazedCitiesFilename()
 {
   if (getRazedCitiesFilename().empty() == true)
     return false;
   return true;
 }
+
 bool Cityset::validateSignpostFilename()
 {
   if (getSignpostFilename().empty() == true)
     return false;
   return true;
 }
+
 bool Cityset::validatePortFilename()
 {
   if (getPortFilename().empty() == true)
     return false;
   return true;
 }
+
 bool Cityset::validateRuinsFilename()
 {
   if (getRuinsFilename().empty() == true)
     return false;
   return true;
 }
+
 bool Cityset::validateTemplesFilename()
 {
   if (getTemplesFilename().empty() == true)
     return false;
   return true;
 }
+
 bool Cityset::validateTowersFilename()
 {
   if (getTowersFilename().empty() == true)
     return false;
   return true;
 }
+
 bool Cityset::validateCityTileWidth()
 {
   if (getCityTileWidth() <= 0)
     return false;
   return true; 
 }
+
 bool Cityset::validateRuinTileWidth()
 {
   if (getRuinTileWidth() <= 0)
     return false;
   return true; 
 }
+
 bool Cityset::validateTempleTileWidth()
 {
   if (getTempleTileWidth() <= 0)
     return false;
   return true; 
 }
+
 bool Cityset::tileWidthsEqual(Cityset *cityset)
 {
   if (getCityTileWidth() == cityset->getCityTileWidth() &&
