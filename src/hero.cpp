@@ -125,7 +125,6 @@ guint32 Hero::calculateNaturalCommand()
   return command;
 }
 
-
 Glib::ustring Hero::genderToString(const Hero::Gender gender)
 {
   switch (gender)
@@ -207,7 +206,6 @@ int Hero::gainLevel(Stat stat)
     default:
       break;
     }
-
   return delta;
 }
 
@@ -215,4 +213,3 @@ bool Hero::hasQuest() const
 {
   return QuestsManager::getInstance()->getHeroQuest(getId()) != NULL;
 }
-
