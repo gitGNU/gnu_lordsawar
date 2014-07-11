@@ -299,9 +299,10 @@ void CityWindow::fill_in_production_info()
 
     if (city->getOwner () != Playerlist::getActiveplayer())
       {
-        turns_left_label->hide();
-        current_label->hide();
-        current_image->hide();
+        turns_left_label->set_text("");
+        current_label->set_text("");
+        pic->fill(0x00000000);
+        current_image->property_pixbuf() = pic;
         buy_button->set_sensitive(false);
         raze_button->set_sensitive(false);
         rename_button->set_sensitive(false);
@@ -309,8 +310,8 @@ void CityWindow::fill_in_production_info()
         on_hold_button->set_sensitive(false);
         for (unsigned int i = 0; i < production_toggles.size(); ++i) 
           production_toggles[i]->set_active(false);
-        production_info_label1->hide();
-        production_info_label2->hide();
+        production_info_label1->set_text("");
+        production_info_label2->set_text("");
       }
     else
       {
