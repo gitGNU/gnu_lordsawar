@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2014-07-09 09:57-0400\n"
+"POT-Creation-Date: 2014-07-09 10:19-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -366,6 +366,8 @@ msgstr ""
 #: ../dat/glade/preferences-dialog.ui.h:3
 #: ../dat/glade/editor/main-window.ui.h:16
 #: ../dat/glade/editor/players-dialog.ui.h:4
+#: ../src/gui/network-game-selector-dialog.cpp:55
+#: ../src/gui/network-game-selector-dialog.cpp:74
 msgid "Players"
 msgstr ""
 
@@ -729,6 +731,8 @@ msgstr ""
 
 #: ../dat/glade/game-window.ui.h:38 ../dat/glade/new-random-map-dialog.ui.h:18
 #: ../src/gui/history-report-dialog.cpp:95
+#: ../src/gui/network-game-selector-dialog.cpp:56
+#: ../src/gui/network-game-selector-dialog.cpp:75
 msgid "Cities"
 msgstr ""
 
@@ -781,6 +785,8 @@ msgstr ""
 #. if it's this player's turn
 #: ../dat/glade/game-window.ui.h:48 ../src/gui/game-window.cpp:1539
 #: ../src/gui/game-window.cpp:2340 ../src/gui/game-lobby-dialog.cpp:274
+#: ../src/gui/network-game-selector-dialog.cpp:54
+#: ../src/gui/network-game-selector-dialog.cpp:73
 msgid "Turn"
 msgstr ""
 
@@ -3886,7 +3892,8 @@ msgstr ""
 msgid "Road"
 msgstr ""
 
-#: ../src/maptile.cpp:226
+#: ../src/maptile.cpp:226 ../src/gui/network-game-selector-dialog.cpp:58
+#: ../src/gui/network-game-selector-dialog.cpp:77
 msgid "Port"
 msgstr ""
 
@@ -4423,6 +4430,8 @@ msgstr ""
 #: ../src/editor/stack-editor-dialog.cpp:114
 #: ../src/editor/backpack-editor-dialog.cpp:51
 #: ../src/gui/game-lobby-dialog.cpp:321
+#: ../src/gui/network-game-selector-dialog.cpp:53
+#: ../src/gui/network-game-selector-dialog.cpp:72
 msgid "Name"
 msgstr ""
 
@@ -6171,6 +6180,11 @@ msgstr ""
 
 #: ../src/gui/game-lobby-dialog.cpp:765
 msgid "People"
+msgstr ""
+
+#: ../src/gui/network-game-selector-dialog.cpp:57
+#: ../src/gui/network-game-selector-dialog.cpp:76
+msgid "Host"
 msgstr ""
 
 #: ../src/gui/new-network-game-download-window.cpp:29
