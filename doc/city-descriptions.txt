@@ -36,6 +36,7 @@ Currently in LordsAWar! cities do not have descriptions, because of the way it l
 5. CreateScenario needs to be modified to randomize the city descriptions too.
 6. Need to add a backwards compatibility path for scenarios without city descriptions.
 7. Modify 2ndpunic and dol scenarios.
+8. Change the City object from a Location to a NamedLocation.
 
 
 3. Sentence Structure of City Descriptions in Warlords 2
