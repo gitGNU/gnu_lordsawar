@@ -319,14 +319,6 @@ int Shieldsetlist::getNextAvailableId(int after)
   return -1;
 }
 
-bool Shieldsetlist::contains(Glib::ustring name) const
-{
-  for (const_iterator it = begin(); it != end(); it++)
-    if ((*it)->getName() == name)
-      return true;
-  return false;
-}
-
 guint32 Shieldsetlist::getShieldsetId(Glib::ustring basename) const
 {
   Shieldset *ss = getShieldset(basename);

@@ -309,14 +309,6 @@ int Citysetlist::getNextAvailableId(int after)
   return -1;
 }
 
-bool Citysetlist::contains(Glib::ustring name) const
-{
-  for (const_iterator it = begin(); it != end(); it++)
-    if ((*it)->getName() == name)
-      return true;
-  return false;
-}
-
 guint32 Citysetlist::getCitysetId(Glib::ustring basename) const
 {
   Cityset *cs = getCityset(basename);

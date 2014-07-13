@@ -98,9 +98,6 @@ class Armysetlist : public SetList<Armyset>, public sigc::trackable
         //! Returns the different tilesizes present in the armysetlist.
 	void getSizes(std::list<guint32> &sizes);
 
-        //! Returns whether the given name is also in our list of armysets.
-        bool contains(Glib::ustring name) const;
-
         //! Returns the names of armysets that have the given tile size.
 	std::list<Glib::ustring> getValidNames(guint32 tilesize);
 

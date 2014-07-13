@@ -416,14 +416,6 @@ Armyset *Armysetlist::import(Tar_Helper *t, Glib::ustring f, bool &broken)
   return armyset;
 }
 
-bool Armysetlist::contains(Glib::ustring name) const
-{
-  for (const_iterator it = begin(); it != end(); it++)
-    if ((*it)->getName() == name)
-      return true;
-  return false;
-}
-
 bool Armysetlist::reload(guint32 id) 
 {
   Armyset *armyset = getArmyset(id);

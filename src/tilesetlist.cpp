@@ -296,15 +296,6 @@ bool Tilesetlist::addToPersonalCollection(Tileset *tileset, Glib::ustring &new_b
   return true;
 }
 
-bool Tilesetlist::contains(Glib::ustring name) const
-{
-  for (const_iterator it = begin(); it != end(); it++)
-    if ((*it)->getName() == name)
-      return true;
-
-  return false;
-}
-
 guint32 Tilesetlist::getTilesetId(Glib::ustring basename) const
 {
   Tileset *ts = getTileset(basename);

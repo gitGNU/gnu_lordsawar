@@ -47,9 +47,6 @@ class Citysetlist : public SetList<Cityset>, public sigc::trackable
         //! Returns the names of citysets that have the given tile size.
 	std::list<Glib::ustring> getValidNames(guint32 tilesize);
 
-        //! Returns whether the given name is in our list of citysets.
-        bool contains(Glib::ustring name) const;
-
         //! Returns the different tilesizes present in the citysetlist.
 	void getSizes(std::list<guint32> &sizes);
 

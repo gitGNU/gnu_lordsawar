@@ -26,27 +26,37 @@ template<class T>
 class SetList: public std::list<T*>
 {
 public:
-  SetList(Glib::ustring ext){extension=ext;};
-  ~SetList(){};
-  static Glib::ustring getConfigurationFilename(Glib::ustring dir, Glib::ustring subdir, Glib::ustring ext) {return File::add_slash_if_necessary(dir) + subdir + "/" + subdir + ext;};
-static std::list<Glib::ustring> scan(Glib::ustring extension, bool system = true)
-{
-  if (system == false)
-    return File::scanForFiles(File::getSetDir(extension, false), extension);
-  else
-    {
-      std::list<Glib::ustring> retlist = 
-        File::scanForFiles(File::getSetDir(extension), extension);
-      if (retlist.empty())
-        {
-          //note to translators: %1 is a file extension, %2 is a directory.
-          std::cerr << String::ucompose(_("Couldn't find any *%1 files in `%2'."),extension, File::getSetDir(extension)) << std::endl;
-          std::cerr << _("Please check the path settings in ~/.lordsawarrc") << std::endl;
-          exit(-1);
-        }
-      return retlist;
-    }
-}
+    SetList(Glib::ustring ext){extension=ext;};
+    ~SetList(){};
+    static Glib::ustring getConfigurationFilename(Glib::ustring dir, Glib::ustring subdir, Glib::ustring ext) {return File::add_slash_if_necessary(dir) + subdir + "/" + subdir + ext;};
+    static std::list<Glib::ustring> scan(Glib::ustring extension, bool system = true)
+      {
+        if (system == false)
+          return File::scanForFiles(File::getSetDir(extension, false), extension);
+        else
+          {
+            std::list<Glib::ustring> retlist = 
+              File::scanForFiles(File::getSetDir(extension), extension);
+            if (retlist.empty())
+              {
+                //note to translators: %1 is a file extension, %2 is a directory.
+                std::cerr << String::ucompose(_("Couldn't find any *%1 files in `%2'."),extension, File::getSetDir(extension)) << std::endl;
+                std::cerr << _("Please check the path settings in ~/.lordsawarrc") << std::endl;
+                exit(-1);
+              }
+            return retlist;
+          }
+
+      }
+    bool contains(Glib::ustring name) const
+      {
+        for (class SetList<T>::const_iterator it = this->begin(); 
+             it != this->end(); it++)
+          if ((*it)->getName() == name)
+            return true;
+
+        return false;
+      }
 protected: 
     Glib::ustring extension;
 };

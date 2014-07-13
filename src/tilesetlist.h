@@ -44,9 +44,6 @@ class Tilesetlist : public SetList<Tileset>, public sigc::trackable
 
 	// Methods that operate on class data but do not modify the class.
 
-        //! Returns whether the given name is in the list of tilesets.
-        bool contains(Glib::ustring name) const;
-
         //! Returns the names of tilesets that have the given tile size.
 	std::list<Glib::ustring> getValidNames(guint32 tilesize) const;
 

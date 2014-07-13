@@ -45,9 +45,6 @@ class Shieldsetlist : public SetList<Shieldset>, public sigc::trackable
         //! Returns the names of all Shieldset objects available to the game.
 	std::list<Glib::ustring> getValidNames() const;
 
-        //! Returns whether the given name is our list of shieldset objects.
-        bool contains(Glib::ustring name) const;
-
 	//! Return the directory of a specific Shieldset by name.
         /**
 	 * Scan all of the Shieldset objects in the list for one with the 
