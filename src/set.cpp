@@ -47,7 +47,7 @@ Set::Set(Glib::ustring ext, XML_Helper* helper)
 
 bool Set::save(XML_Helper *helper) const
 {
-  bool retval = false;
+  bool retval = true;
   retval &= helper->saveData("id", d_id);
   retval &= helper->saveData("name", d_name);
   retval &= helper->saveData("copyright", d_copyright);
