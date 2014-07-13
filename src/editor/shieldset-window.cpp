@@ -204,7 +204,8 @@ void ShieldSetWindow::on_new_shieldset_activated()
   Glib::ustring name = "";
   int id = Shieldsetlist::getNextAvailableId(0);
   Shieldset *shieldset = new Shieldset(id, name);
-  ShieldSetInfoDialog d(*window, shieldset, File::getUserShieldsetDir(), "", 
+  ShieldSetInfoDialog d(*window, shieldset, 
+                        File::getSetDir(Shieldset::file_extension, false), "", 
                         false, _("Make a New Shieldset"));
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
@@ -216,7 +217,7 @@ void ShieldSetWindow::on_new_shieldset_activated()
   if (d_shieldset)
     delete d_shieldset;
   d_shieldset = shieldset;
-  Glib::ustring dir = File::getUserShieldsetDir();
+  Glib::ustring dir = File::getSetDir(Shieldset::file_extension, false);
   d_shieldset->setDirectory(dir);
   current_save_filename = d_shieldset->getConfigurationFile();
 
@@ -251,7 +252,7 @@ void ShieldSetWindow::on_load_shieldset_activated()
   lws_filter->set_name(_("LordsAWar Shieldsets (*.lws)"));
   lws_filter->add_pattern("*" + SHIELDSET_EXT);
   chooser.add_filter(lws_filter);
-  chooser.set_current_folder(File::getUserShieldsetDir());
+  chooser.set_current_folder(File::getSetDir(Shieldset::file_extension, false));
 
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
@@ -324,14 +325,15 @@ void ShieldSetWindow::on_save_as_activated()
 {
   Shieldset *copy = Shieldset::copy (d_shieldset);
   copy->setId(Shieldsetlist::getNextAvailableId(d_shieldset->getId()));
-  ShieldSetInfoDialog d(*window, copy, File::getUserShieldsetDir(), "", false,
-                        _("Save a Copy of a Shieldset"));
+  ShieldSetInfoDialog d(*window, copy, 
+                        File::getSetDir(Shieldset::file_extension, false), "", 
+                        false, _("Save a Copy of a Shieldset"));
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       Glib::ustring new_basename=copy->getBaseName();
       guint32 new_id = copy->getId();
-      copy->setDirectory(File::getUserShieldsetDir());
+      copy->setDirectory(File::getSetDir(Shieldset::file_extension, false));
       guint32 oldid = d_shieldset->getId();
       Glib::ustring oldname = d_shieldset->getName();
       Glib::ustring oldbasename = d_shieldset->getBaseName();

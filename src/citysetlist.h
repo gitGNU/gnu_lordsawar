@@ -43,9 +43,6 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
         //! Explicitly delete the singleton instance of this class.
         static void deleteInstance();
 
-        //! Returns the names of all citysets available to the game.
-	std::list<Glib::ustring> getValidNames() const;
-
         //! Returns the names of citysets that have the given tile size.
 	std::list<Glib::ustring> getValidNames(guint32 tilesize);
 
@@ -116,12 +113,6 @@ class Citysetlist : public std::list<Cityset*>, public sigc::trackable
         Cityset* loadCityset (Glib::ustring name);
         void loadCitysets (std::list<Glib::ustring> name);
         
-        //! Returns the names of all citysets available to the game.
-	std::list<Glib::ustring> getNames() const;
-
-        //! Returns the names of citysets that have the given tile size.
-	std::list<Glib::ustring> getNames(guint32 tilesize);
-
         typedef std::map<Glib::ustring, Glib::ustring> DirMap;
         typedef std::map<Glib::ustring, Cityset*> CitysetMap;
         typedef std::map<guint32, Cityset*> CitysetIdMap;

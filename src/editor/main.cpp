@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
   textdomain (GETTEXT_PACKAGE);
 
   // Check if armysets are in the path (otherwise exit)
-  Armyset::scanSystemCollection();
+  Set::scanCollection(Armyset::file_extension);
 
   // init GUI stuff
   g_set_application_name(N_("LordsAWar! Scenario Editor"));

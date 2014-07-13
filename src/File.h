@@ -37,29 +37,8 @@
 class File
 {
     public:
-	//! Get the directory where personal armysets live.
-	static Glib::ustring getUserArmysetDir();
 
-	//! Get the directory where system armysets live.
-	static Glib::ustring getArmysetDir();
-
-	//! Get the directory where personal tilesets live.
-	static Glib::ustring getUserTilesetDir();
-
-	//! Get the directory where system tilesets live.
-	static Glib::ustring getTilesetDir();
-
-	//! Get the directory where personal shieldsets live.
-	static Glib::ustring getUserShieldsetDir();
-
-	//! Get the directory where system shieldsets live.
-	static Glib::ustring getShieldsetDir();
-
-	//! Get the directory where personal citysets live.
-	static Glib::ustring getUserCitysetDir();
-
-	//! Get the directory where system citysets live.
-	static Glib::ustring getCitysetDir();
+        static Glib::ustring getSetDir(Glib::ustring ext, bool system = true);
 
         //! load misc file, e.g. hero names 
         static Glib::ustring getMiscFile(Glib::ustring filename);

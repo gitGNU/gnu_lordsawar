@@ -121,7 +121,7 @@ void ArmySetInfoDialog::update_buttons()
       return;
     }
 
-  Glib::ustring dir = File::getUserArmysetDir() + filename_entry->get_text();
+  Glib::ustring dir = File::getSetDir(Armyset::file_extension, false) + filename_entry->get_text();
   if (Armysetlist::getInstance()->getArmyset(filename_entry->get_text()))
     {
       accept_button->set_sensitive(false);

@@ -480,8 +480,9 @@ void ArmySetWindow::on_new_armyset_activated()
   Glib::ustring name = "";
   int id = Armysetlist::getNextAvailableId(0);
   Armyset *armyset = new Armyset(id, name);
-  ArmySetInfoDialog d(*window, armyset, File::getUserArmysetDir(), "", false,
-                      _("Make a New Armyset"));
+  ArmySetInfoDialog d(*window, armyset, 
+                      File::getSetDir(Armyset::file_extension, false), "", 
+                      false, _("Make a New Armyset"));
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
     {
@@ -494,7 +495,7 @@ void ArmySetWindow::on_new_armyset_activated()
   if (d_armyset)
     delete d_armyset;
   d_armyset = armyset;
-  Glib::ustring dir = File::getUserArmysetDir();
+  Glib::ustring dir = File::getSetDir(Armyset::file_extension, false);
   d_armyset->setDirectory(dir);
   current_save_filename = d_armyset->getConfigurationFile();
   //here we put a copy into the armysetlist, and keep d_armyset as our
@@ -522,7 +523,7 @@ void ArmySetWindow::on_load_armyset_activated()
   lwa_filter->set_name(_("LordsAWar Armysets (*.lwa)"));
   lwa_filter->add_pattern("*" + ARMYSET_EXT);
   chooser.add_filter(lwa_filter);
-  chooser.set_current_folder(File::getUserArmysetDir());
+  chooser.set_current_folder(File::getSetDir(Armyset::file_extension, false));
 
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
@@ -621,14 +622,14 @@ void ArmySetWindow::on_save_as_activated()
 
   Armyset *copy = Armyset::copy (d_armyset);
   copy->setId(Armysetlist::getNextAvailableId(d_armyset->getId()));
-  ArmySetInfoDialog d(*window, copy, File::getUserArmysetDir(), "", false,
+  ArmySetInfoDialog d(*window, copy, File::getSetDir(Armyset::file_extension, false), "", false,
                         _("Save a Copy of a Armyset"));
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       Glib::ustring new_basename = copy->getBaseName();
       guint32 new_id = copy->getId();
-      copy->setDirectory(File::getUserArmysetDir());
+      copy->setDirectory(File::getSetDir(Armyset::file_extension, false));
       guint32 oldid = d_armyset->getId();
       Glib::ustring oldname = d_armyset->getName();
       Glib::ustring oldbasename = d_armyset->getBaseName();

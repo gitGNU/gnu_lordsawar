@@ -85,16 +85,6 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 
 	// Get Methods
 
-	//! Get the unique identifier for this shieldset.
-	/**
-	 * Analagous to the shieldset.d_id XML entity in the shieldset
-	 * configuration file.
-	 */
-        guint32 getId() const {return d_id;}
-
-	//! Get the directory in which the shieldset configuration file resides.
-        Glib::ustring getBaseName() const {return d_basename;}
-
 	//! Return the mask colour for the given player.
 	Gdk::RGBA getColor(guint32 owner) const;
 
@@ -119,38 +109,8 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	//! Return the total number of shields in this shieldset.
         guint32 getSize() const {return size();}
 
-	//! Return the name of the Shieldset.
-        Glib::ustring getName() const {return _(d_name.c_str());}
-
-	//! Return the copyright holders of the shieldset.
-	Glib::ustring getCopyright() const {return d_copyright;};
-
-	//! Return the license of the shieldset.
-	Glib::ustring getLicense() const {return d_license;};
-
-        //! Returns the description of the shieldset.
-        Glib::ustring getInfo() const {return _(d_info.c_str());}
-
 
 	// Set Methods
-
-	//! Set the unique identifier for this shieldset.
-        void setId(guint32 id) {d_id = id;}
-
-	//! Set the name of the Shieldset.
-        void setName(Glib::ustring name) {d_name = name;}
-
-	//! Sets the description of the shieldset.
-	void setInfo(Glib::ustring description) {d_info = description;};
-
-	//! Set the copyright holders of the shieldset.
-	void setCopyright(Glib::ustring copy) {d_copyright = copy;};
-
-	//! Set the license of this shieldset.
-	void setLicense(Glib::ustring license) {d_license = license;};
-
-	//! Set the direction where the shieldset configuration file resides.
-        void setBaseName(Glib::ustring dir) {d_basename = dir;}
 
         //! Load the shieldset again.
         void reload(bool &broken);
@@ -181,9 +141,6 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	//! Get filenames in this shieldset, excepting the configuration file.
 	void getFilenames(std::list<Glib::ustring> &filenames) const;
 
-	//! Return the name of this shieldset's configuration file.
-	Glib::ustring getConfigurationFile() const;
-	
 	//! Check to see if this shieldset can be used in the game.
 	bool validate() const;
 
@@ -219,12 +176,6 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 
         static Shieldset *copy (const Shieldset *orig);
 
-	//! Return a list of shieldset basenames in the system collection.
-	static std::list<Glib::ustring> scanSystemCollection();
-
-	//! Return a list of shieldset basenames in the users personal collection.
-	static std::list<Glib::ustring> scanUserCollection();
-
         //! rewrite old shieldset files.
         static bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version);
         static void support_backward_compatibility();
@@ -235,39 +186,6 @@ class Shieldset: public std::list<Shield *>, public sigc::trackable, public Set
 	bool loadShield(Glib::ustring tag, XML_Helper* helper);
 
 	// DATA
-
-	//! A unique numeric identifier among all shieldset.
-	guint32 d_id;
-
-	//! The name of the Shieldset.
-	/**
-	 * This equates to the shieldset.d_name XML entity in the shieldset
-	 * configuration file.
-	 * This name appears in the dialogs where the user is asked to 
-	 * select a particular Shieldset.
-	 */
-        Glib::ustring d_name;
-
-	//! The copyright holders of the shieldset.
-	Glib::ustring d_copyright;
-
-	//! The license of the shieldset.
-	Glib::ustring d_license;
-
-	//! The description of the shieldset.
-	/**
-	 * Equates to the shieldset.d_info XML entity in the shieldset 
-	 * configuration file.
-	 */
-        Glib::ustring d_info;
-
-	//! The basename of the Shieldset.
-	/**
-	 * This is the basename of the file that the Shieldset files are
-	 * residing in.  It does not contain a path (e.g. no slashes).
-	 * Shieldset files sit in the shield/ directory.
-	 */
-        Glib::ustring d_basename;
 
 	//! The number of pixels high the small shield occupies onscreen.
 	/**

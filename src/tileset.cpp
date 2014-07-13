@@ -47,10 +47,8 @@ Glib::ustring Tileset::d_temple_smallmap_tag = "temple_smallmap";
 Glib::ustring Tileset::file_extension = TILESET_EXT;
 
 Tileset::Tileset(guint32 id, Glib::ustring name)
-	: Set(), d_name(name), d_copyright(""), d_license(""), d_id(id), 
-	d_tileSize(DEFAULT_TILE_SIZE), d_basename("")
+	: Set(TILESET_EXT, id, name), d_tileSize(DEFAULT_TILE_SIZE)
 {
-  d_info = "";
   d_large_selector = "";
   d_small_selector = "";
   d_fog = "";
@@ -80,11 +78,8 @@ Tileset::Tileset(guint32 id, Glib::ustring name)
 }
 
 Tileset::Tileset (const Tileset& t)
-  : Set(t), d_name(t.d_name), d_copyright(t.d_copyright), 
-    d_license(t.d_license), d_id(t.d_id), d_tileSize(t.d_tileSize), 
-    d_basename(t.d_basename)
+  : Set(t), d_tileSize(t.d_tileSize)
 {
-  d_info = t.d_info;
   d_large_selector = t.d_large_selector;
   d_small_selector = t.d_small_selector;
   d_fog = t.d_fog;
@@ -171,14 +166,9 @@ Tileset::Tileset (const Tileset& t)
 }
 
 Tileset::Tileset(XML_Helper *helper, Glib::ustring directory)
-	:Set()
+	:Set(TILESET_EXT, helper)
 {
   setDirectory(directory);
-  helper->getData(d_id, "id"); 
-  helper->getData(d_name, "name"); 
-  helper->getData(d_copyright, "copyright"); 
-  helper->getData(d_license, "license"); 
-  helper->getData(d_info, "info");
   helper->getData(d_tileSize, "tilesize");
   helper->getData(d_large_selector, "large_selector");
   helper->getData(d_small_selector, "small_selector");
@@ -310,11 +300,7 @@ bool Tileset::save(XML_Helper *helper) const
   bool retval = true;
 
   retval &= helper->openTag(d_tag);
-  retval &= helper->saveData("id", d_id);
-  retval &= helper->saveData("name", d_name);
-  retval &= helper->saveData("copyright", d_copyright);
-  retval &= helper->saveData("license", d_license);
-  retval &= helper->saveData("info", d_info);
+  retval &= Set::save(helper);
   retval &= helper->saveData("tilesize", d_tileSize);
   retval &= helper->saveData("large_selector", d_large_selector);
   retval &= helper->saveData("small_selector", d_small_selector);
@@ -436,11 +422,6 @@ int Tileset::getLargestTileStyleId() const
   return largest;
 }
 
-void Tileset::setBaseName(Glib::ustring bname)
-{
-  d_basename = bname;
-}
-
 guint32 Tileset::getDefaultTileSize()
 {
   return DEFAULT_TILE_SIZE;
@@ -525,7 +506,6 @@ public:
     Tileset *tileset;
     bool unsupported_version;
 };
-
 
 Tileset *Tileset::create(Glib::ustring file, bool &unsupported_version)
 {
@@ -809,31 +789,6 @@ void Tileset::instantiateImages(bool &broken)
   return;
 }
 
-Glib::ustring Tileset::getConfigurationFile() const
-{
-  return getDirectory() + d_basename + file_extension;
-}
-
-std::list<Glib::ustring> Tileset::scanUserCollection()
-{
-  return File::scanForFiles(File::getUserTilesetDir(), file_extension);
-}
-
-std::list<Glib::ustring> Tileset::scanSystemCollection()
-{
-  std::list<Glib::ustring> retlist = File::scanForFiles(File::getTilesetDir(), 
-                                                      file_extension);
-  if (retlist.empty())
-    {
-      //note to translators: %1 is a file extension, %2 is a directory.
-      std::cerr << String::ucompose(_("Couldn't find any tilesets (*%1) in `%2'."),file_extension, File::getTilesetDir()) << std::endl;
-      std::cerr << _("Please check the path settings in ~/.lordsawarrc") << std::endl;
-      exit(-1);
-    }
-
-  return retlist;
-}
-
 TileStyle *Tileset::getTileStyle(guint32 id) const
 {
   TileStyleIdMap::const_iterator it = d_tilestyles.find(id);
@@ -854,10 +809,10 @@ void Tileset::reload(bool &broken)
       uninstantiateImages();
       for (iterator it = begin(); it != end(); it++)
         delete *it;
-      Glib::ustring basename = d_basename;
+      Glib::ustring basename = getBaseName();
       *this = *d.tileset;
       instantiateImages(broken);
-      d_basename = basename;
+      setBaseName(basename);
     }
 }
 

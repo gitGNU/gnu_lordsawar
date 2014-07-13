@@ -44,9 +44,6 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 
 	// Methods that operate on class data but do not modify the class.
 
-        //! Returns the names of all tilesets available to the game.
-	std::list<Glib::ustring> getValidNames() const;
-
         //! Returns whether the given name is in the list of tilesets.
         bool contains(Glib::ustring name) const;
 
@@ -154,8 +151,6 @@ class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public S
 	//! Load the given tilesets into the list.
 	void loadTilesets(std::list<Glib::ustring> tilesets);
         
-	std::list<Glib::ustring> getNames() const;
-	std::list<Glib::ustring> getNames(guint32 tilesize) const;
 	// DATA
 
         typedef std::map<Glib::ustring, Glib::ustring> DirMap;

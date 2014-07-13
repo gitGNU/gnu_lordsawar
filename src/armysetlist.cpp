@@ -83,9 +83,9 @@ void Armysetlist::loadArmysets(std::list<Glib::ustring> armysets)
 Armysetlist::Armysetlist()
 {
   // load all armysets
-  std::list<Glib::ustring> armysets = Armyset::scanSystemCollection();
+  std::list<Glib::ustring> armysets = Set::scanCollection(Armyset::file_extension);
   loadArmysets(armysets);
-  armysets = Armyset::scanUserCollection();
+  armysets = Set::scanCollection(Armyset::file_extension, false);
   loadArmysets(armysets);
 
 }
@@ -126,40 +126,11 @@ ArmyProto* Armysetlist::lookupWeakestQuickestArmy(guint32 id) const
   return NULL;
 }
 
-std::list<Glib::ustring> Armysetlist::getValidNames() const
-{
-  std::list<Glib::ustring> names;
-  for (const_iterator it = begin(); it != end(); it++)
-    if ((*it)->validate() == true)
-      names.push_back((*it)->getName());
-  names.sort(case_insensitive);
-  return names;
-}
-
 std::list<Glib::ustring> Armysetlist::getValidNames(guint32 tilesize)
 {
   std::list<Glib::ustring> names;
   for (iterator it = begin(); it != end(); it++)
     if ((*it)->getTileSize() == tilesize && (*it)->validate() == true)
-      names.push_back((*it)->getName());
-  names.sort(case_insensitive);
-  return names;
-}
-
-std::list<Glib::ustring> Armysetlist::getNames() const
-{
-  std::list<Glib::ustring> names;
-  for (const_iterator it = begin(); it != end(); it++)
-    names.push_back((*it)->getName());
-  names.sort(case_insensitive);
-  return names;
-}
-
-std::list<Glib::ustring> Armysetlist::getNames(guint32 tilesize)
-{
-  std::list<Glib::ustring> names;
-  for (iterator it = begin(); it != end(); it++)
-    if ((*it)->getTileSize() == tilesize)
       names.push_back((*it)->getName());
   names.sort(case_insensitive);
   return names;
@@ -294,7 +265,7 @@ int Armysetlist::getNextAvailableId(int after)
 {
   bool unsupported_version;
   std::list<guint32> ids;
-  std::list<Glib::ustring> armysets = Armyset::scanSystemCollection();
+  std::list<Glib::ustring> armysets = Set::scanCollection(Armyset::file_extension);
   //there might be IDs in invalid armysets.
   for (std::list<Glib::ustring>::const_iterator i = armysets.begin(); 
        i != armysets.end(); i++)
@@ -306,7 +277,7 @@ int Armysetlist::getNextAvailableId(int after)
 	  delete armyset;
 	}
     }
-  armysets = Armyset::scanUserCollection();
+  armysets = Set::scanCollection(Armyset::file_extension, false);
   for (std::list<Glib::ustring>::const_iterator i = armysets.begin(); 
        i != armysets.end(); i++)
     {
@@ -416,7 +387,7 @@ bool Armysetlist::addToPersonalCollection(Armyset *armyset, Glib::ustring &new_b
     new_id = armyset->getId();
 
   //make the directory where the armyset is going to live.
-  Glib::ustring file = File::getUserArmysetDir() + new_basename + Armyset::file_extension;
+  Glib::ustring file = File::getSetDir(Armyset::file_extension, false) + new_basename + Armyset::file_extension;
 
   armyset->save(file, Armyset::file_extension);
 
@@ -446,12 +417,9 @@ Armyset *Armysetlist::import(Tar_Helper *t, Glib::ustring f, bool &broken)
 
 bool Armysetlist::contains(Glib::ustring name) const
 {
-  std::list<Glib::ustring> n = getNames();
-  for (std::list<Glib::ustring>::iterator it = n.begin(); it != n.end(); it++)
-    {
-      if (*it == name)
-        return true;
-    }
+  for (const_iterator it = begin(); it != end(); it++)
+    if ((*it)->getName() == name)
+      return true;
   return false;
 }
 

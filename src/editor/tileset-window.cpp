@@ -457,8 +457,9 @@ void TileSetWindow::on_new_tileset_activated()
   Glib::ustring name = "";
   int id = Tilesetlist::getNextAvailableId(0);
   Tileset *tileset = new Tileset(id, name);
-  TileSetInfoDialog d(*window, tileset, File::getUserTilesetDir(), "", false,
-                      _("Make a New Tileset"));
+  TileSetInfoDialog d(*window, tileset, 
+                      File::getSetDir(Tileset::file_extension, false), "", 
+                      false, _("Make a New Tileset"));
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
     {
@@ -481,7 +482,7 @@ void TileSetWindow::on_new_tileset_activated()
       (*j)[tiles_columns.name] = Tile::tileTypeToFriendlyName((*i)->getType());
       (*j)[tiles_columns.tile] = (*i);
     }
-  Glib::ustring dir = File::getUserTilesetDir();
+  Glib::ustring dir = File::getSetDir(Tileset::file_extension, false);
   d_tileset->setDirectory(dir);
   current_save_filename = d_tileset->getConfigurationFile();
   //here we put a copy into the tilesetlist, and keep d_tileset as our
@@ -513,7 +514,7 @@ void TileSetWindow::on_load_tileset_activated()
   lwt_filter->set_name(_("LordsAWar Tilesets (*.lwt)"));
   lwt_filter->add_pattern("*" + TILESET_EXT);
   chooser.add_filter(lwt_filter);
-  chooser.set_current_folder(File::getUserTilesetDir());
+  chooser.set_current_folder(File::getSetDir(Tileset::file_extension, false));
 
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
@@ -550,14 +551,15 @@ void TileSetWindow::on_save_as_activated()
 
   Tileset *copy = Tileset::copy (d_tileset);
   copy->setId(Tilesetlist::getNextAvailableId(d_tileset->getId()));
-  TileSetInfoDialog d(*window, copy, File::getUserTilesetDir(), "", false,
-                      _("Save a Copy of a Tileset"));
+  TileSetInfoDialog d(*window, copy, 
+                      File::getSetDir(Tileset::file_extension, false), "", 
+                      false, _("Save a Copy of a Tileset"));
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       Glib::ustring new_basename = copy->getBaseName();
       guint32 new_id = copy->getId();
-      copy->setDirectory(File::getUserTilesetDir());
+      copy->setDirectory(File::getSetDir(Tileset::file_extension, false));
       guint32 oldid = d_tileset->getId();
       Glib::ustring oldname = d_tileset->getName();
       Glib::ustring oldbasename = d_tileset->getBaseName();

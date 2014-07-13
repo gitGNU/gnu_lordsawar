@@ -63,9 +63,9 @@ void Citysetlist::loadCitysets(std::list<Glib::ustring> citysets)
 Citysetlist::Citysetlist()
 {
     // load all citysets
-    std::list<Glib::ustring> citysets = Cityset::scanSystemCollection();
+    std::list<Glib::ustring> citysets = Set::scanCollection(Cityset::file_extension);
     loadCitysets(citysets);
-    citysets = Cityset::scanUserCollection();
+    citysets = Set::scanCollection(Cityset::file_extension, false);
     loadCitysets(citysets);
 
 }
@@ -76,40 +76,11 @@ Citysetlist::~Citysetlist()
     delete (*it);
 }
 
-std::list<Glib::ustring> Citysetlist::getValidNames() const
-{
-  std::list<Glib::ustring> names;
-  for (const_iterator it = begin(); it != end(); it++)
-    if ((*it)->validate() == true)
-      names.push_back((*it)->getName());
-  names.sort(case_insensitive);
-  return names;
-}
-
 std::list<Glib::ustring> Citysetlist::getValidNames(guint32 tilesize)
 {
   std::list<Glib::ustring> names;
   for (iterator it = begin(); it != end(); it++)
     if ((*it)->getTileSize() == tilesize && (*it)->validate() == true)
-      names.push_back((*it)->getName());
-  names.sort(case_insensitive);
-  return names;
-}
-
-std::list<Glib::ustring> Citysetlist::getNames() const
-{
-  std::list<Glib::ustring> names;
-  for (const_iterator it = begin(); it != end(); it++)
-    names.push_back((*it)->getName());
-  names.sort(case_insensitive);
-  return names;
-}
-
-std::list<Glib::ustring> Citysetlist::getNames(guint32 tilesize)
-{
-  std::list<Glib::ustring> names;
-  for (iterator it = begin(); it != end(); it++)
-    if ((*it)->getTileSize() == tilesize)
       names.push_back((*it)->getName());
   names.sort(case_insensitive);
   return names;
@@ -290,7 +261,7 @@ bool Citysetlist::addToPersonalCollection(Cityset *cityset, Glib::ustring &new_b
     new_id = cityset->getId();
 
   //make the directory where the cityset is going to live.
-  Glib::ustring file = File::getUserCitysetDir() + new_basename + Cityset::file_extension;
+  Glib::ustring file = File::getSetDir(Cityset::file_extension, false) + new_basename + Cityset::file_extension;
 
   cityset->save(file, Cityset::file_extension);
 
@@ -305,7 +276,7 @@ int Citysetlist::getNextAvailableId(int after)
 {
   bool unsupported_version = false;
   std::list<guint32> ids;
-  std::list<Glib::ustring> citysets = Cityset::scanSystemCollection();
+  std::list<Glib::ustring> citysets = Set::scanCollection(Cityset::file_extension);
   //there might be IDs in invalid citysets.
   for (std::list<Glib::ustring>::const_iterator i = citysets.begin(); 
        i != citysets.end(); i++)
@@ -317,7 +288,7 @@ int Citysetlist::getNextAvailableId(int after)
 	  delete cityset;
 	}
     }
-  citysets = Cityset::scanUserCollection();
+  citysets = Set::scanCollection(Cityset::file_extension, false);
   for (std::list<Glib::ustring>::const_iterator i = citysets.begin(); 
        i != citysets.end(); i++)
     {
@@ -338,12 +309,9 @@ int Citysetlist::getNextAvailableId(int after)
 
 bool Citysetlist::contains(Glib::ustring name) const
 {
-  std::list<Glib::ustring> n = getNames();
-  for (std::list<Glib::ustring>::iterator it = n.begin(); it != n.end(); it++)
-    {
-      if (*it == name)
-        return true;
-    }
+  for (const_iterator it = begin(); it != end(); it++)
+    if ((*it)->getName() == name)
+      return true;
   return false;
 }
 

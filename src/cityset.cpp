@@ -38,8 +38,7 @@ Glib::ustring Cityset::file_extension = CITYSET_EXT;
 
 #define DEFAULT_CITY_TILE_SIZE 40
 Cityset::Cityset(guint32 id, Glib::ustring name)
-	: d_id(id), d_name(name), d_copyright(""), d_license(""), 
-	d_tileSize(DEFAULT_CITY_TILE_SIZE), d_basename("")
+	: Set(CITYSET_EXT, id, name), d_tileSize(DEFAULT_CITY_TILE_SIZE)
 {
 	d_cities_filename = "";
 	d_razedcities_filename = "";
@@ -67,9 +66,7 @@ Cityset::Cityset(guint32 id, Glib::ustring name)
 }
 
 Cityset::Cityset(const Cityset& c)
-  :Set(c), d_id(c.d_id), d_name(c.d_name), d_copyright(c.d_copyright),
-    d_license(c.d_license), d_info(c.d_info), d_tileSize(c.d_tileSize),
-    d_basename(c.d_basename), d_cities_filename(c.d_cities_filename),
+  :Set(c), d_tileSize(c.d_tileSize), d_cities_filename(c.d_cities_filename),
     d_razedcities_filename(c.d_razedcities_filename),
     d_port_filename(c.d_port_filename), 
     d_signpost_filename(c.d_signpost_filename),
@@ -128,14 +125,9 @@ Cityset::Cityset(const Cityset& c)
 }
 
 Cityset::Cityset(XML_Helper *helper, Glib::ustring directory)
-	:Set()
+	:Set(CITYSET_EXT, helper)
 {
   setDirectory(directory);
-  helper->getData(d_id, "id"); 
-  helper->getData(d_name, "name"); 
-  helper->getData(d_copyright, "copyright"); 
-  helper->getData(d_license, "license"); 
-  helper->getData(d_info, "info");
   helper->getData(d_tileSize, "tilesize");
   helper->getData(d_cities_filename, "cities");
   helper->getData(d_razedcities_filename, "razed_cities");
@@ -305,11 +297,7 @@ bool Cityset::save(XML_Helper *helper) const
   bool retval = true;
 
   retval &= helper->openTag(d_tag);
-  retval &= helper->saveData("id", d_id); 
-  retval &= helper->saveData("name", d_name); 
-  retval &= helper->saveData("copyright", d_copyright); 
-  retval &= helper->saveData("license", d_license); 
-  retval &= helper->saveData("info", d_info);
+  retval &= Set::save(helper);
   retval &= helper->saveData("tilesize", d_tileSize);
   retval &= helper->saveData("cities", d_cities_filename);
   retval &= helper->saveData("razed_cities", d_razedcities_filename);
@@ -525,31 +513,6 @@ void Cityset::instantiateImages(bool &broken)
   t.Close();
 }
 
-Glib::ustring Cityset::getConfigurationFile() const
-{
-  return getDirectory() + d_basename + file_extension;
-}
-
-std::list<Glib::ustring> Cityset::scanUserCollection()
-{
-  return File::scanForFiles(File::getUserCitysetDir(), file_extension);
-}
-
-std::list<Glib::ustring> Cityset::scanSystemCollection()
-{
-  std::list<Glib::ustring> retlist = File::scanForFiles(File::getCitysetDir(), 
-						      file_extension);
-  if (retlist.empty())
-    {
-      //note to translators: %1 is a file extension, %2 is a directory.
-      std::cerr << String::ucompose(_("Couldn't find any citysets (*%1) in `%2'."),file_extension, File::getCitysetDir()) << std::endl;
-      std::cerr << _("Please check the path settings in ~/.lordsawarrc") << std::endl;
-      exit(-1);
-    }
-
-  return retlist;
-}
-
 bool Cityset::validate()
 {
   bool valid = true;
@@ -664,10 +627,10 @@ void Cityset::reload(bool &broken)
     {
       //steal the values from d.cityset and then don't delete it.
       uninstantiateImages();
-      Glib::ustring basename = d_basename;
+      Glib::ustring basename = getBaseName();
       *this = *d.cityset;
       instantiateImages(broken);
-      d_basename = basename;
+      setBaseName(basename);
     }
 }
 

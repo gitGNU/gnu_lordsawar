@@ -36,16 +36,13 @@ Glib::ustring Shieldset::file_extension = SHIELDSET_EXT;
 //#define debug(x)
 
 Shieldset::Shieldset(guint32 id, Glib::ustring name)
- : d_id(id), d_name(name), d_copyright(""), d_license(""), d_info(""), 
-    d_basename(""), d_small_height(0), d_small_width(0), d_medium_height(0), 
-    d_medium_width(0), d_large_height(0), d_large_width(0)
+ : Set(SHIELDSET_EXT, id, name), d_small_height(0), d_small_width(0), 
+    d_medium_height(0), d_medium_width(0), d_large_height(0), d_large_width(0)
 {
 }
 
 Shieldset::Shieldset(const Shieldset& s)
-  :Set(s), d_id(s.d_id), d_name(s.d_name), d_copyright(s.d_copyright), 
-    d_license(s.d_license), d_info(s.d_info), d_basename(s.d_basename),
-    d_small_height(s.d_small_height), d_small_width(s.d_small_width),
+ : Set(s), d_small_height(s.d_small_height), d_small_width(s.d_small_width),
     d_medium_height(s.d_medium_height), d_medium_width(s.d_medium_width),
     d_large_height(s.d_large_height), d_large_width(s.d_large_width)
 {
@@ -54,14 +51,9 @@ Shieldset::Shieldset(const Shieldset& s)
 }
 
 Shieldset::Shieldset(XML_Helper *helper, Glib::ustring directory)
-	: d_basename("")
+ : Set(SHIELDSET_EXT, helper)
 {
   setDirectory(directory);
-  helper->getData(d_id, "id");
-  helper->getData(d_name, "name");
-  helper->getData(d_copyright, "copyright");
-  helper->getData(d_license, "license");
-  helper->getData(d_info, "info");
   helper->getData(d_small_width, "small_width");
   helper->getData(d_small_height, "small_height");
   helper->getData(d_medium_width, "medium_width");
@@ -262,11 +254,7 @@ bool Shieldset::save(XML_Helper *helper) const
   bool retval = true;
 
   retval &= helper->openTag(d_tag);
-  retval &= helper->saveData("id", d_id);
-  retval &= helper->saveData("name", d_name);
-  retval &= helper->saveData("copyright", d_copyright);
-  retval &= helper->saveData("license", d_license);
-  retval &= helper->saveData("info", d_info);
+  retval &= Set::save(helper);
   retval &= helper->saveData("small_width", d_small_width);
   retval &= helper->saveData("small_height", d_small_height);
   retval &= helper->saveData("medium_width", d_medium_width);
@@ -291,31 +279,6 @@ void Shieldset::uninstantiateImages()
     (*it)->uninstantiateImages();
 }
 
-Glib::ustring Shieldset::getConfigurationFile() const
-{
-  return getDirectory() + d_basename + file_extension;
-}
-
-std::list<Glib::ustring> Shieldset::scanUserCollection()
-{
-  return File::scanForFiles(File::getUserShieldsetDir(), file_extension);
-}
-
-std::list<Glib::ustring> Shieldset::scanSystemCollection()
-{
-  std::list<Glib::ustring> retlist = File::scanForFiles(File::getShieldsetDir(), 
-                                                      file_extension);
-  if (retlist.empty())
-    {
-      //note to translators: %1 is a file extension, %2 is a directory.
-      std::cerr << String::ucompose(_("Couldn't find any shieldsets (*%1) in `%2'."),file_extension, File::getShieldsetDir()) << std::endl;
-      std::cerr << _("Please check the path settings in ~/.lordsawarrc") << std::endl;
-      exit(-1);
-    }
-  return retlist;
-}
-
-	
 bool Shieldset::validate() const
 {
   bool valid = true;
@@ -406,10 +369,10 @@ void Shieldset::reload(bool &broken)
       uninstantiateImages();
       for (iterator it = begin(); it != end(); it++)
         delete *it;
-      Glib::ustring basename = d_basename;
+      Glib::ustring basename = getBaseName();
       *this = *d.shieldset;
       instantiateImages(broken);
-      d_basename = basename;
+      setBaseName(basename);
     }
 }
 

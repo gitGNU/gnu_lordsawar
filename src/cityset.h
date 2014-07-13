@@ -82,48 +82,6 @@ class Cityset : public sigc::trackable, public Set
 
         bool save(Glib::ustring filename, Glib::ustring extension) const;
 
-	//! Get the base name of the file holding the cityset configuration file.
-        Glib::ustring getBaseName() const {return d_basename;}
-
-	//! Set the base name of the shieldset configuration file.
-        void setBaseName(Glib::ustring base) {d_basename = base;}
-
-        //! Returns the name of the cityset.
-        Glib::ustring getName() const {return _(d_name.c_str());}
-
-        //! Returns the copyright holders for the cityset.
-        Glib::ustring getCopyright() const {return d_copyright;};
-
-        //! Returns the license for the cityset.
-        Glib::ustring getLicense() const {return d_license;};
-
-	/**
-	 * Analagous to the cityset.d_id XML entity in the cityset
-	 * configuration file.
-	 */
-        guint32 getId() const {return d_id;}
-
-	//! Set the unique identifier for this cityset.
-        void setId(guint32 id) {d_id = id;}
-
-	//! Set the name of the cityset.
-	/**
-	 * @note This method is only used in the cityset editor.
-	 */
-        void setName(Glib::ustring name) {d_name = name;}
-
-	//! Set the copyright holders on the cityset.
-	void setCopyright(Glib::ustring copy) {d_copyright = copy;};
-
-	//! Set the license for this cityset.
-	void setLicense(Glib::ustring license) {d_license = license;};
-
-        //! Returns the description of the cityset.
-        Glib::ustring getInfo() const {return _(d_info.c_str());}
-
-	//! Sets the description of the cityset.
-	void setInfo(Glib::ustring description) {d_info = description;};
-
         //! Returns the width and height in pixels of a square on the map.
         guint32 getTileSize() const {return d_tileSize;}
 
@@ -176,10 +134,6 @@ class Cityset : public sigc::trackable, public Set
                                bool &broken);
 	void uninstantiateImages();
 
-	Glib::ustring getConfigurationFile() const;
-
-	static std::list<Glib::ustring> scanSystemCollection();
-	static std::list<Glib::ustring> scanUserCollection();
         guint32 countEmptyImageNames() const;
 	guint32 getCityTileWidth() {return d_city_tile_width;};
 	void setCityTileWidth(guint32 tiles) {d_city_tile_width = tiles;};
@@ -216,31 +170,6 @@ class Cityset : public sigc::trackable, public Set
     private:
 
         // DATA
-	//! A unique numeric identifier among all citysets.
-	guint32 d_id;
-
-	//! The name of the cityset.
-	/**
-	 * This equates to the cityset.d_name XML entity in the cityset
-	 * configuration file.
-	 * This name appears in the dialogs where the user is asked to 
-	 * select a particular Cityset.
-	 */
-        Glib::ustring d_name;
-
-	//! The copyright holders for this cityset.
-	Glib::ustring d_copyright;
-
-	//! The license of this cityset.
-	Glib::ustring d_license;
-
-	//! The description of the cityset.
-	/**
-	 * Equates to the cityset.d_info XML entity in the cityset 
-	 * configuration file.
-	 * This value is not used.
-	 */
-        Glib::ustring d_info;
 
 	//! The size of each city image onscreen.
 	/**
@@ -250,15 +179,6 @@ class Cityset : public sigc::trackable, public Set
 	 * imagery onscreen.
 	 */
         guint32 d_tileSize;
-
-	//! The base name of the cityset.
-	/**
-         * The basename is the final portion of the file's path, but with the
-         * file extension removed.
-	 * Cityset directories sit in the citysets/ directory.
-	 */
-        Glib::ustring d_basename;
-
 
 	Glib::ustring d_cities_filename;
 	Glib::ustring d_razedcities_filename;

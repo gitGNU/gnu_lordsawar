@@ -18,12 +18,15 @@
 #ifndef SET_H
 #define SET_H
 #include "File.h"
+#include "defs.h"
+#include "xmlhelper.h"
 
 class Set
 {
 public:
     enum Origin { SYSTEM, PERSONAL, SCENARIO, NONE};
-    Set();
+    Set(Glib::ustring file_extension, guint32 id, Glib::ustring name);
+    Set(Glib::ustring file_extension, XML_Helper* helper);
     ~Set() {};
     Set(const Set &s);
 
@@ -34,10 +37,115 @@ public:
     void setDirectory(Glib::ustring d) {dir = File::add_slash_if_necessary(d);};
 
     Glib::ustring getFile(Glib::ustring file) const;
+    Glib::ustring getConfigurationFile() const;
+    std::list<Glib::ustring> scanUserCollection() const;
+    std::list<Glib::ustring> scanSystemCollection() const;
+    static std::list<Glib::ustring> scanCollection(Glib::ustring extension, bool system = true);
+
+
+	//! Get the unique identifier for this set.
+	/**
+	 * Analagous to the <d_id> XML entity in the set 
+	 * configuration file.
+	 */
+        guint32 getId() const {return d_id;}
+
+	//! Set the unique identifier for this set.
+        void setId(guint32 id) {d_id = id;}
+
+	//! Returns the name of the set.
+        /** 
+	 * Analagous to the <d_name> XML entity in the set 
+	 * configuration file.
+	 *
+         * @return The name or an empty string on error.
+         */
+        Glib::ustring getName() const {return _(d_name.c_str());}
+
+	//! Set the name of the set.
+	/**
+	 * @note This method is only used in the scenario editor.
+	 */
+        void setName(Glib::ustring name) {d_name = name;}
+
+	//! Get the copyright holders for this set.
+	Glib::ustring getCopyright() const {return d_copyright;};
+
+	//! Set the copyright holders on the set.
+	void setCopyright(Glib::ustring copy) {d_copyright = copy;};
+
+	//! Get the license of this set.
+	Glib::ustring getLicense() const {return d_license;};
+
+        //! Returns the description of the set.
+        Glib::ustring getInfo() const {return _(d_info.c_str());}
+
+	//! Set the license for this set.
+	void setLicense(Glib::ustring license) {d_license = license;};
+
+	//! Set the description of the set.
+	/**
+	 * @note This method is only used in the scenario editor.
+	 */
+        void setInfo(Glib::ustring info) {d_info = info;}
+
+	//! Get the base name of the set.
+	/**
+	 * This value does not contain a path (e.g. no slashes).  It is the
+	 * name of an set directory inside army/ or shield/ etc.
+	 *
+	 * @return The basename of the file that the set is held in.
+	 */
+        Glib::ustring getBaseName() const {return d_basename;}
+
+	//! Set the base name of the file that the set is in.
+        void setBaseName(Glib::ustring bname) {d_basename = bname;}
+
+
+        bool save(XML_Helper *helper) const;
 private:
 
     Origin origin;
     Glib::ustring dir;
+
+	//! The unique Id of this set.
+	/**
+	 * This Id is unique among all other sets.
+	 * It is analgous to <d_id> in the set configuration files.
+	 */
+        guint32 d_id;
+
+	//! The name of the set.
+	/**
+	 * This value appears in game configuration dialogs.
+	 * It is analgous to <d_name> in a set configuration file.
+	 */
+        Glib::ustring d_name;
+
+	//! The set has these copyright holders.
+	Glib::ustring d_copyright;
+
+	//! The license of the set.
+	Glib::ustring d_license;
+
+	//! The basename of the set.
+	/**
+	 * This is the base name of the file that the set files are
+	 * residing in.  It does not contain a path (e.g. no slashes).
+	 * set files sit in the army/, or shield/ etc directory.
+	 */
+        Glib::ustring d_basename;
+
+	//! The description of the set.
+	/**
+	 * Equates to the <d_info> XML entity in the set
+	 * configuration file.
+	 * This value is not used.
+	 */
+        Glib::ustring d_info;
+
+        //! The file extension of the set.
+        Glib::ustring extension;
 };
 
 #endif

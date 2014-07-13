@@ -299,17 +299,6 @@ bool File::exists(Glib::ustring f)
 
 //armysets 
 
-Glib::ustring File::getArmysetDir()
-{
-  return add_slash_if_necessary(Configuration::s_dataPath) + ARMYSETDIR + "/";
-}
-
-Glib::ustring File::getUserArmysetDir()
-{
-  Glib::ustring dir =  getSavePath() + ARMYSETDIR + "/";
-  return dir;
-}
-
 std::list<Glib::ustring> File::scanForFiles(Glib::ustring dir, Glib::ustring extension)
 {
   std::list<Glib::ustring> files;
@@ -324,38 +313,22 @@ std::list<Glib::ustring> File::scanForFiles(Glib::ustring dir, Glib::ustring ext
     return files;
 }
 
-Glib::ustring File::getTilesetDir()
-{
-  return add_slash_if_necessary(Configuration::s_dataPath) + TILESETDIR + "/";
-}
-
-Glib::ustring File::getUserTilesetDir()
-{
-  Glib::ustring dir = getSavePath() + TILESETDIR + "/";
-  return dir;
-}
-
 //shieldsets
-Glib::ustring File::getShieldsetDir()
-{
-  return add_slash_if_necessary(Configuration::s_dataPath) + SHIELDSETDIR + "/";
-}
 
-Glib::ustring File::getUserShieldsetDir()
+Glib::ustring File::getSetDir(Glib::ustring ext, bool system)
 {
-  Glib::ustring dir = getSavePath() + SHIELDSETDIR + "/";
-  return dir;
-}
-
-Glib::ustring File::getCitysetDir()
-{
-  return add_slash_if_necessary(Configuration::s_dataPath) + CITYSETDIR + "/";
-}
-
-Glib::ustring File::getUserCitysetDir()
-{
-  Glib::ustring dir = getSavePath() + CITYSETDIR + "/";
-  return dir;
+  Glib::ustring dir = add_slash_if_necessary(Configuration::s_dataPath);
+  if (system == false)
+    dir = getSavePath();
+  if (ext == ARMYSET_EXT)
+    return dir + ARMYSETDIR + "/";
+  else if (ext == CITYSET_EXT)
+    return dir + CITYSETDIR + "/";
+  else if (ext == TILESET_EXT)
+    return dir + TILESETDIR + "/";
+  else if (ext == SHIELDSET_EXT)
+    return dir + SHIELDSETDIR + "/";
+  return "";
 }
 
 void File::erase(Glib::ustring filename)

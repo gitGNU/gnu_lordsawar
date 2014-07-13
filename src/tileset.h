@@ -90,28 +90,6 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 
 	// Get Methods
 
-	//! Get the unique identifier for this tileset.
-	/**
-	 * Analagous to the tileset.d_id XML entity in the tileset 
-	 * configuration file.
-	 */
-        guint32 getId() const {return d_id;}
-
-	//! Return the basename of this Tileset.
-        Glib::ustring getBaseName() const {return d_basename;}
-
-        //! Returns the name of the tileset.
-        Glib::ustring getName() const {return _(d_name.c_str());}
-
-        //! Returns the copyright holders of the tileset.
-        Glib::ustring getCopyright () const {return d_copyright;};
-
-        //! Returns the license of the tileset.
-        Glib::ustring getLicense() const {return d_license;};
-
-        //! Returns the description of the tileset.
-        Glib::ustring getInfo() const {return _(d_info.c_str());}
-
         //! Returns the tilesize of the tileset.
         guint32 getTileSize() const {return d_tileSize;}
 
@@ -187,38 +165,9 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	//! Get filenames in this tileset, excepting the configuration file.
 	void getFilenames(std::list<Glib::ustring> &files);
 
-	Glib::ustring getConfigurationFile() const;
-
         int countTilesWithPattern(SmallTile::Pattern pattern) const;
 
 	// Set Methods
-
-	//! Set the basename of where this Tileset resides on disk.
-        void setBaseName(Glib::ustring dir);
-
-	//! Set the unique identifier for this tileset.
-	/**
-	 * @note This method is only used in the tileset editor.  
-	 */
-        void setId(guint32 id) {d_id = id;}
-
-	//! Set the name of the tileset.
-	/**
-	 * @note This method is only used in the tileset editor.
-	 */
-        void setName(Glib::ustring name) {d_name = name;}
-
-	//! Sets the copyright holders of the tileset.
-	void setCopyright(Glib::ustring copy) {d_copyright = copy;};
-
-	//! Sets the license of the tileset.
-	void setLicense(Glib::ustring license) {d_license = license;};
-
-	//! Set the description of the tileset.
-	/**
-	 * @note This method is only used in the tileset editor.
-	 */
-        void setInfo(Glib::ustring info) {d_info = info;}
 
 	//!  Sets the tilesize of the tileset.
 	void setTileSize(guint32 tileSize) {d_tileSize = tileSize;}
@@ -372,12 +321,6 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
         
         static Tileset *copy (const Tileset *orig);
 
-	//! Return a list of tileset basenames in the user's personal collection.
-	static std::list<Glib::ustring> scanUserCollection();
-
-	//! Return a list of tileset basenames in the system collection.
-	static std::list<Glib::ustring> scanSystemCollection();
-
         //! Rewrite old tileset files.
         static bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version);
         static void support_backward_compatibility();
@@ -397,32 +340,6 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
                                bool &broken);
         // DATA
 
-	//! The name of the Tileset.
-	/**
-	 * Equates to the tileset.d_name XML entity in the tileset 
-	 * configuration file.
-	 * This value appears in dialogs where the user is asked to select
-	 * a Tileset among all other Tileset objects available to the game.
-	 */
-        Glib::ustring d_name;
-
-	//! The copyright holders of the tileset.
-        Glib::ustring d_copyright;
-
-	//! The license of the tileset.
-        Glib::ustring d_license;
-
-	//! A unique numeric identifier among all tilesets.
-	guint32 d_id;
-
-	//! The description of the Tileset.
-	/**
-	 * Equates to the tileset.d_info XML entity in the tileset
-	 * configuration file.
-	 * This value is not used.
-	 */
-        Glib::ustring d_info;
-
 	//! The size of the graphic tiles in the Tileset.
 	/**
 	 * Equates to the tileset.d_tilesize XML entity in the tileset
@@ -431,14 +348,6 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	 * imagery onscreen.
 	 */
         guint32 d_tileSize;
-
-	//! The base name of the Tileset.
-	/**
-	 * This is the base name of the file that the Tileset files are
-	 * residing in.  It does not contain a path (e.g. no slashes).
-	 * Tileset files sit in the tileset/ directory.
-	 */
-        Glib::ustring d_basename;
 
 	//! The basename of the small selector image.
 	/**

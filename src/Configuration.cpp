@@ -304,15 +304,15 @@ void initialize_configuration()
         exit(-1);
     }
     //Check if the personal armyset directory exists. If not, try to create it.
-    if (File::create_dir(File::getUserArmysetDir()) == false)
+    if (File::create_dir(File::getSetDir(ARMYSET_EXT, false)) == false)
     {
-      std::cerr << String::ucompose(_("Error!  Couldn't create armyset directory `%1'.  Exiting."), File::getUserArmysetDir()) << std::endl;
+      std::cerr << String::ucompose(_("Error!  Couldn't create armyset directory `%1'.  Exiting."), File::getSetDir(ARMYSET_EXT, false)) << std::endl;
         exit(-1);
     }
     //Check if the personal tileset directory exists. If not, try to create it.
-    if (File::create_dir(File::getUserTilesetDir()) == false)
+    if (File::create_dir(File::getSetDir(TILESET_EXT, false)) == false)
     {
-      std::cerr << String::ucompose(_("Error!  Couldn't create tileset directory `%1'.  Exiting."), File::getUserTilesetDir()) << std::endl;
+      std::cerr << String::ucompose(_("Error!  Couldn't create tileset directory `%1'.  Exiting."), File::getSetDir(TILESET_EXT, false)) << std::endl;
         exit(-1);
     }
 
@@ -324,16 +324,16 @@ void initialize_configuration()
     }
 
     //Check if the personal shieldset directory exists. If not, try to make it.
-    if (File::create_dir(File::getUserShieldsetDir()) == false)
+    if (File::create_dir(File::getSetDir(SHIELDSET_EXT, false)) == false)
     {
-      std::cerr << String::ucompose(_("Error!  Couldn't create shieldset directory `%1'.  Exiting."), File::getUserShieldsetDir()) << std::endl;
+      std::cerr << String::ucompose(_("Error!  Couldn't create shieldset directory `%1'.  Exiting."), File::getSetDir(SHIELDSET_EXT, false)) << std::endl;
         exit(-1);
     }
 
     //Check if the personal cityset directory exists. If not, try to make it.
-    if (File::create_dir(File::getUserCitysetDir()) == false)
+    if (File::create_dir(File::getSetDir(CITYSET_EXT, false)) == false)
     {
-      std::cerr << String::ucompose(_("Error!  Couldn't create cityset directory `%1'.  Exiting."), File::getUserCitysetDir()) << std::endl;
+      std::cerr << String::ucompose(_("Error!  Couldn't create cityset directory `%1'.  Exiting."), File::getSetDir(CITYSET_EXT, false)) << std::endl;
         exit(-1);
     }
 }

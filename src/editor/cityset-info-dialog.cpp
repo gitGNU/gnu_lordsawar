@@ -119,7 +119,7 @@ void CitySetInfoDialog::update_buttons()
       return;
     }
 
-  Glib::ustring dir = File::getUserCitysetDir() + filename_entry->get_text();
+  Glib::ustring dir = File::getSetDir(Cityset::file_extension, false) + filename_entry->get_text();
   if (Citysetlist::getInstance()->getCityset(filename_entry->get_text()))
     {
       accept_button->set_sensitive(false);

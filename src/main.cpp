@@ -187,10 +187,10 @@ int main(int argc, char* argv[])
 
 
   // Check if armysets are in the path (otherwise exit)
-  Armyset::scanSystemCollection();
-  Tileset::scanSystemCollection();
-  Shieldset::scanSystemCollection();
-  Cityset::scanSystemCollection();
+  Set::scanCollection(Armyset::file_extension);
+  Set::scanCollection(Tileset::file_extension);
+  Set::scanCollection(Shieldset::file_extension);
+  Set::scanCollection(Cityset::file_extension);
 
 
   Gst::init(argc, argv);

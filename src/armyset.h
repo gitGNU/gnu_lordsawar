@@ -109,64 +109,6 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 
         void setTileSize(guint32 tile_size) {d_tilesize = tile_size;}
 
-	//! Get the unique identifier for this armyset.
-	/**
-	 * Analagous to the armyset.d_id XML entity in the armyset 
-	 * configuration file.
-	 */
-        guint32 getId() const {return d_id;}
-
-	//! Set the unique identifier for this armyset.
-        void setId(guint32 id) {d_id = id;}
-
-	//! Returns the name of the armyset.
-        /** 
-	 * Analagous to the armyset.d_name XML entity in the armyset 
-	 * configuration file.
-	 *
-         * @return The name or an empty string on error.
-         */
-        Glib::ustring getName() const {return _(d_name.c_str());}
-
-	//! Set the name of the armyset.
-	/**
-	 * @note This method is only used in the armyset editor.
-	 */
-        void setName(Glib::ustring name) {d_name = name;}
-
-	//! Get the copyright holders for this armyset.
-	Glib::ustring getCopyright() const {return d_copyright;};
-
-	//! Set the copyright holders on the armyset.
-	void setCopyright(Glib::ustring copy) {d_copyright = copy;};
-
-	//! Get the license of this armyset.
-	Glib::ustring getLicense() const {return d_license;};
-
-        //! Returns the description of the armyset.
-        Glib::ustring getInfo() const {return _(d_info.c_str());}
-
-	//! Set the license for this armyset.
-	void setLicense(Glib::ustring license) {d_license = license;};
-
-	//! Set the description of the armyset.
-	/**
-	 * @note This method is only used in the armyset editor.
-	 */
-        void setInfo(Glib::ustring info) {d_info = info;}
-
-	//! Get the base name of the armyset.
-	/**
-	 * This value does not contain a path (e.g. no slashes).  It is the
-	 * name of an armyset directory inside army/.
-	 *
-	 * @return The basename of the file that the Armyset is held in.
-	 */
-        Glib::ustring getBaseName() const {return d_basename;}
-
-	//! Set the base name of the file that the armyset is in.
-        void setBaseName(Glib::ustring bname) {d_basename = bname;}
-
 	//! Get the image of the stack in a ship (minus the mask).
 	PixMask* getShipPic() const {return d_ship;}
 
@@ -268,9 +210,6 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	void loadShipPic(Glib::ustring image_filename, bool &broken);
 	void loadBagPic(Glib::ustring image_filename, bool &broken);
 
-	Glib::ustring getConfigurationFile() const;
-	static std::list<Glib::ustring> scanUserCollection();
-	static std::list<Glib::ustring> scanSystemCollection();
 	static void switchArmyset(Army *army, const Armyset *armyset);
 	static void switchArmyset(ArmyProdBase *army, const Armyset *armyset);
 	static void switchArmysetForRuinKeeper(Army *army, const Armyset *armyset);
@@ -296,42 +235,6 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
         //! Callback function for the army tag (see XML_Helper)
         bool loadArmyProto(Glib::ustring tag, XML_Helper* helper);
         
-	//! The unique Id of this armyset.
-	/**
-	 * This Id is unique among all other armysets.
-	 * It is analgous to armyset.d_id in the armyset configuration files.
-	 */
-        guint32 d_id;
-
-	//! The name of the Armyset.
-	/**
-	 * This value appears in game configuration dialogs.
-	 * It is analgous to armyset.d_name in the armyset configuration files.
-	 */
-        Glib::ustring d_name;
-
-	//! The armyset has these copyright holders.
-	Glib::ustring d_copyright;
-
-	//! The license of the armyset.
-	Glib::ustring d_license;
-
-	//! The basename of the Armyset.
-	/**
-	 * This is the base name of the file that the Armyset files are
-	 * residing in.  It does not contain a path (e.g. no slashes).
-	 * Armyset files sit in the army/ directory.
-	 */
-        Glib::ustring d_basename;
-
-	//! The description of the Armyset.
-	/**
-	 * Equates to the armyset.d_info XML entity in the armyset
-	 * configuration file.
-	 * This value is not used.
-	 */
-        Glib::ustring d_info;
-
 	//! The size of each army tile as rendered in the game.
 	/**
 	 * The tile size represents the height and width in pixels of the 

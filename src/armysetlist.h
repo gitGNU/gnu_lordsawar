@@ -103,9 +103,6 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
         //! Returns the names of armysets that have the given tile size.
 	std::list<Glib::ustring> getValidNames(guint32 tilesize);
 
-        //! Returns the names of all Armyset objects available to the game.
-	std::list<Glib::ustring> getValidNames() const;
-
 
 
         /** Returns the Id of a specific armyset by name
@@ -180,12 +177,6 @@ class Armysetlist : public std::list<Armyset*>, public sigc::trackable
 	 * user's personal collection.
 	 */
 	void loadArmysets(std::list<Glib::ustring> armysets);
-
-        //! Returns the names of armysets that have the given tile size.
-	std::list<Glib::ustring> getNames(guint32 tilesize);
-
-        //! Returns the names of all Armyset objects available to the game.
-	std::list<Glib::ustring> getNames() const;
 
         typedef std::map<guint32, ArmyProto*> IdArmyPrototypeMap;
         typedef std::map<guint32, IdArmyPrototypeMap> ArmyPrototypeMap;

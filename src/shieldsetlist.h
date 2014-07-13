@@ -148,8 +148,6 @@ class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
 	//! Loads a bunch of shieldsets and puts them in this list.
 	void loadShieldsets(std::list<Glib::ustring> shieldsets);
 	
-        std::list<Glib::ustring> getNames() const;
-        
 	// DATA
 
         typedef std::map<Glib::ustring, Glib::ustring> DirMap;

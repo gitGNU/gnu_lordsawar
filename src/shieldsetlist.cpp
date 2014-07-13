@@ -64,9 +64,9 @@ void Shieldsetlist::loadShieldsets(std::list<Glib::ustring> shieldsets)
 Shieldsetlist::Shieldsetlist()
 {
     // load all shieldsets
-    std::list<Glib::ustring> shieldsets = Shieldset::scanSystemCollection();
+    std::list<Glib::ustring> shieldsets = Set::scanCollection(Shieldset::file_extension);
     loadShieldsets(shieldsets);
-    shieldsets = Shieldset::scanUserCollection();
+    shieldsets = Set::scanCollection(Shieldset::file_extension, false);
     loadShieldsets(shieldsets);
 
 }
@@ -75,15 +75,6 @@ Shieldsetlist::~Shieldsetlist()
 {
   for (iterator it = begin(); it != end(); it++)
     delete (*it);
-}
-
-std::list<Glib::ustring> Shieldsetlist::getNames() const
-{
-  std::list<Glib::ustring> names;
-  for (const_iterator it = begin(); it != end(); it++)
-    names.push_back((*it)->getName());
-  names.sort(case_insensitive);
-  return names;
 }
 
 std::list<Glib::ustring> Shieldsetlist::getValidNames() const
@@ -282,7 +273,7 @@ bool Shieldsetlist::addToPersonalCollection(Shieldset *shieldset, Glib::ustring 
     new_id = shieldset->getId();
 
   //make the directory where the shieldset is going to live.
-  Glib::ustring file = File::getUserShieldsetDir() + new_basename + Shieldset::file_extension;
+  Glib::ustring file = File::getSetDir(Shieldset::file_extension, false) + new_basename + Shieldset::file_extension;
 
   shieldset->save(file, Shieldset::file_extension);
 
@@ -297,7 +288,7 @@ int Shieldsetlist::getNextAvailableId(int after)
 {
   bool unsupported_version = false;
   std::list<guint32> ids;
-  std::list<Glib::ustring> shieldsets = Shieldset::scanSystemCollection();
+  std::list<Glib::ustring> shieldsets = Set::scanCollection(Shieldset::file_extension);
   for (std::list<Glib::ustring>::const_iterator i = shieldsets.begin(); 
        i != shieldsets.end(); i++)
     {
@@ -308,7 +299,7 @@ int Shieldsetlist::getNextAvailableId(int after)
 	  delete shieldset;
 	}
     }
-  shieldsets = Shieldset::scanUserCollection();
+  shieldsets = Set::scanCollection(Shieldset::file_extension, false);
   for (std::list<Glib::ustring>::const_iterator i = shieldsets.begin(); 
        i != shieldsets.end(); i++)
     {
@@ -329,12 +320,9 @@ int Shieldsetlist::getNextAvailableId(int after)
 
 bool Shieldsetlist::contains(Glib::ustring name) const
 {
-  std::list<Glib::ustring> n = getNames();
-  for (std::list<Glib::ustring>::iterator it = n.begin(); it != n.end(); it++)
-    {
-      if (*it == name)
-        return true;
-    }
+  for (const_iterator it = begin(); it != end(); it++)
+    if ((*it)->getName() == name)
+      return true;
   return false;
 }
 

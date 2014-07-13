@@ -239,8 +239,9 @@ void CitySetWindow::on_new_cityset_activated()
   Glib::ustring name = "";
   int id = Citysetlist::getNextAvailableId(0);
   Cityset *cityset = new Cityset(id, name);
-  CitySetInfoDialog d(*window, cityset, File::getUserCitysetDir(), "", false,
-                      _("Make a New Cityset"));
+  CitySetInfoDialog d(*window, cityset, 
+                      File::getSetDir(Cityset::file_extension, false), "", 
+                      false, _("Make a New Cityset"));
   int response = d.run();
   if (response != Gtk::RESPONSE_ACCEPT)
     {
@@ -250,7 +251,7 @@ void CitySetWindow::on_new_cityset_activated()
   if (d_cityset)
     delete d_cityset;
   d_cityset = cityset;
-  Glib::ustring dir = File::getUserCitysetDir();
+  Glib::ustring dir = File::getSetDir(Cityset::file_extension, false);
   d_cityset->setDirectory(dir);
   current_save_filename = d_cityset->getConfigurationFile();
 
@@ -275,7 +276,7 @@ void CitySetWindow::on_load_cityset_activated()
   lwc_filter->set_name(_("LordsAWar Citysets (*.lwc)"));
   lwc_filter->add_pattern("*" + CITYSET_EXT);
   chooser.add_filter(lwc_filter);
-  chooser.set_current_folder(File::getUserCitysetDir());
+  chooser.set_current_folder(File::getSetDir(Cityset::file_extension, false));
 
   chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   chooser.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
@@ -349,14 +350,15 @@ void CitySetWindow::on_save_as_activated()
     }
   Cityset *copy = Cityset::copy (d_cityset);
   copy->setId(Citysetlist::getNextAvailableId(d_cityset->getId()));
-  CitySetInfoDialog d(*window, copy, File::getUserCitysetDir(), "", false,
-                      _("Save a Copy of a Cityset"));
+  CitySetInfoDialog d(*window, copy, 
+                      File::getSetDir(Cityset::file_extension, false), "", 
+                      false, _("Save a Copy of a Cityset"));
   int response = d.run();
   if (response == Gtk::RESPONSE_ACCEPT)
     {
       Glib::ustring new_basename = copy->getBaseName();
       guint32 new_id = copy->getId();
-      copy->setDirectory(File::getUserCitysetDir());
+      copy->setDirectory(File::getSetDir(Cityset::file_extension, false));
       guint32 oldid = d_cityset->getId();
       Glib::ustring oldname = d_cityset->getName();
       Glib::ustring oldbasename = d_cityset->getBaseName();

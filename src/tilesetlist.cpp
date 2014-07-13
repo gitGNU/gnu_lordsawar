@@ -53,8 +53,8 @@ Tilesetlist::Tilesetlist()
 	:SetList()
 {
     // load all tilesets
-    loadTilesets(Tileset::scanSystemCollection());
-    loadTilesets(Tileset::scanUserCollection());
+    loadTilesets(Set::scanCollection(Tileset::file_extension));
+    loadTilesets(Set::scanCollection(Tileset::file_extension, false));
 }
 
 Tilesetlist::~Tilesetlist()
@@ -72,40 +72,11 @@ void Tilesetlist::getSizes(std::list<guint32> &sizes) const
     }
 }
 
-std::list<Glib::ustring> Tilesetlist::getValidNames() const
-{
-  std::list<Glib::ustring> names;
-  for (const_iterator it = begin(); it != end(); it++)
-    if ((*it)->validate() == true)
-      names.push_back((*it)->getName());
-  names.sort(case_insensitive);
-  return names;
-}
-
 std::list<Glib::ustring> Tilesetlist::getValidNames(guint32 tilesize) const
 {
   std::list<Glib::ustring> names;
   for (const_iterator it = begin(); it != end(); it++)
     if ((*it)->getTileSize() == tilesize && (*it)->validate() == true)
-      names.push_back((*it)->getName());
-  names.sort(case_insensitive);
-  return names;
-}
-
-std::list<Glib::ustring> Tilesetlist::getNames() const
-{
-  std::list<Glib::ustring> names;
-  for (const_iterator it = begin(); it != end(); it++)
-    names.push_back((*it)->getName());
-  names.sort(case_insensitive);
-  return names;
-}
-
-std::list<Glib::ustring> Tilesetlist::getNames(guint32 tilesize) const
-{
-  std::list<Glib::ustring> names;
-  for (const_iterator it = begin(); it != end(); it++)
-    if ((*it)->getTileSize() == tilesize)
       names.push_back((*it)->getName());
   names.sort(case_insensitive);
   return names;
@@ -174,7 +145,7 @@ int Tilesetlist::getNextAvailableId(int after)
 {
   bool unsupported_version = false;
   std::list<guint32> ids;
-  std::list<Glib::ustring> tilesets = Tileset::scanSystemCollection();
+  std::list<Glib::ustring> tilesets = Set::scanCollection(Tileset::file_extension);
   //there might be IDs in invalid tilesets.
   for (std::list<Glib::ustring>::const_iterator i = tilesets.begin(); 
        i != tilesets.end(); i++)
@@ -186,7 +157,7 @@ int Tilesetlist::getNextAvailableId(int after)
 	  delete tileset;
 	}
     }
-  tilesets = Tileset::scanUserCollection();
+  tilesets = Set::scanCollection(Tileset::file_extension, false);
   for (std::list<Glib::ustring>::const_iterator i = tilesets.begin(); 
        i != tilesets.end(); i++)
     {
@@ -313,7 +284,7 @@ bool Tilesetlist::addToPersonalCollection(Tileset *tileset, Glib::ustring &new_b
     new_id = tileset->getId();
 
   //make the directory where the tileset is going to live.
-  Glib::ustring file = File::getUserTilesetDir() + new_basename + Tileset::file_extension;
+  Glib::ustring file = File::getSetDir(Tileset::file_extension, false) + new_basename + Tileset::file_extension;
 
   tileset->save(file, Tileset::file_extension);
 
@@ -326,12 +297,10 @@ bool Tilesetlist::addToPersonalCollection(Tileset *tileset, Glib::ustring &new_b
 
 bool Tilesetlist::contains(Glib::ustring name) const
 {
-  std::list<Glib::ustring> n = getNames();
-  for (std::list<Glib::ustring>::iterator it = n.begin(); it != n.end(); it++)
-    {
-      if (*it == name)
-        return true;
-    }
+  for (const_iterator it = begin(); it != end(); it++)
+    if ((*it)->getName() == name)
+      return true;
+
   return false;
 }
 

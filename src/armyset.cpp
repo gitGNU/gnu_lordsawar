@@ -41,30 +41,22 @@ Glib::ustring Armyset::file_extension = ARMYSET_EXT;
 
 #define DEFAULT_ARMY_TILE_SIZE 40
 Armyset::Armyset(guint32 id, Glib::ustring name)
-	: d_id(id), d_name(name), d_copyright(""), d_license(""), d_basename(""), 
-	d_tilesize(DEFAULT_ARMY_TILE_SIZE), d_ship(0), d_shipmask(0), 
-	d_standard(0), d_standard_mask(0), d_bag(0)
+	: Set(ARMYSET_EXT, id, name), d_tilesize(DEFAULT_ARMY_TILE_SIZE), 
+        d_ship(0), d_shipmask(0), d_standard(0), d_standard_mask(0), d_bag(0)
 {
-  d_info = "";
   d_bag_name = "";
   d_stackship_name = "";
   d_standard_name = "";
 }
 
 Armyset::Armyset(XML_Helper *helper, Glib::ustring directory)
-    : d_id(0), d_name(""), d_copyright(""), d_license(""), d_basename(""), 
-    d_tilesize(DEFAULT_ARMY_TILE_SIZE), d_ship(0), d_shipmask(0), 
-    d_standard(0), d_standard_mask(0), d_bag(0)
+    : Set(ARMYSET_EXT, helper), d_tilesize(DEFAULT_ARMY_TILE_SIZE), d_ship(0), 
+    d_shipmask(0), d_standard(0), d_standard_mask(0), d_bag(0)
 {
   d_bag_name = "";
   d_stackship_name = "";
   d_standard_name = "";
   setDirectory(directory);
-  helper->getData(d_id, "id");
-  helper->getData(d_name, "name");
-  helper->getData(d_copyright, "copyright");
-  helper->getData(d_license, "license");
-  helper->getData(d_info, "info");
   helper->getData(d_tilesize, "tilesize");
   helper->getData(d_stackship_name, "stackship");
   helper->getData(d_standard_name, "plantedstandard");
@@ -74,9 +66,7 @@ Armyset::Armyset(XML_Helper *helper, Glib::ustring directory)
 }
 
 Armyset::Armyset(const Armyset& a)
-  :Set(a), d_id(a.d_id), d_name(a.d_name), d_copyright(a.d_copyright),
-    d_license(a.d_license), d_basename(a.d_basename), d_info(a.d_info),
-    d_tilesize(a.d_tilesize)
+  :Set(a), d_tilesize(a.d_tilesize)
 {
 
   if (a.d_ship)
@@ -187,11 +177,7 @@ bool Armyset::save(XML_Helper* helper) const
 
     retval &= helper->openTag(d_tag);
 
-    retval &= helper->saveData("id", d_id);
-    retval &= helper->saveData("name", d_name);
-    retval &= helper->saveData("copyright", d_copyright);
-    retval &= helper->saveData("license", d_license);
-    retval &= helper->saveData("info", d_info);
+    retval &= Set::save(helper);
     retval &= helper->saveData("tilesize", d_tilesize);
     retval &= helper->saveData("stackship", d_stackship_name);
     retval &= helper->saveData("plantedstandard", d_standard_name);
@@ -639,31 +625,6 @@ void Armyset::loadStandardPic(Glib::ustring image_filename, bool &broken)
       setStandardPic(half[0]);
       setStandardMask(half[1]);
     }
-}
-
-Glib::ustring Armyset::getConfigurationFile() const
-{
-  return getDirectory() + d_basename + file_extension;
-}
-
-std::list<Glib::ustring> Armyset::scanUserCollection()
-{
-  return File::scanForFiles(File::getUserArmysetDir(), file_extension);
-}
-
-std::list<Glib::ustring> Armyset::scanSystemCollection()
-{
-  std::list<Glib::ustring> retlist = File::scanForFiles(File::getArmysetDir(), 
-                                                      file_extension);
-  if (retlist.empty())
-    {
-      //note to translators: %1 is a file extension, %2 is a directory.
-      std::cerr << String::ucompose(_("Couldn't find any armysets (*%1) in `%2'."),file_extension, File::getArmysetDir()) << std::endl;
-      std::cerr << _("Please check the path settings in ~/.lordsawarrc") << std::endl;
-      exit(-1);
-    }
-
-  return retlist;
 }
 
 void Armyset::switchArmysetForRuinKeeper(Army *army, const Armyset *armyset)

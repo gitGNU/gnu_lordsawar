@@ -121,7 +121,7 @@ void TileSetInfoDialog::update_buttons()
       return;
     }
 
-  Glib::ustring dir = File::getUserTilesetDir() + filename_entry->get_text();
+  Glib::ustring dir = File::getSetDir(Tileset::file_extension, false) + filename_entry->get_text();
   if (Tilesetlist::getInstance()->getTileset(filename_entry->get_text()))
     {
       accept_button->set_sensitive(false);
