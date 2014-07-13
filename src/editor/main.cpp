@@ -26,9 +26,8 @@
 #include "Configuration.h"
 #include "File.h"
 #include "timing.h"
-#include "armyset.h"
+#include "armysetlist.h"
 #include "file-compat.h"
-#include "setlist.h"
 
 #include "main-window.h"
 #include "editor-splash-window.h"
@@ -55,7 +54,7 @@ int main(int argc, char* argv[])
   textdomain (GETTEXT_PACKAGE);
 
   // Check if armysets are in the path (otherwise exit)
-  SetList::scan(Armyset::file_extension);
+  Armysetlist::scan(Armyset::file_extension);
 
   // init GUI stuff
   g_set_application_name(N_("LordsAWar! Scenario Editor"));

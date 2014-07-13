@@ -51,7 +51,7 @@ void Tilesetlist::deleteInstance()
 }
 
 Tilesetlist::Tilesetlist()
-	:SetList()
+ : SetList(Tileset::file_extension)
 {
     // load all tilesets
     loadTilesets(SetList::scan(Tileset::file_extension));

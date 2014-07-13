@@ -27,6 +27,7 @@
 
 #include "armyproto.h"
 #include "armyset.h"
+#include "setlist.h"
 
 class Tar_Helper;
 
@@ -43,7 +44,7 @@ class Tar_Helper;
  * Since several classes access this class, it is implemented as a singleton.
  */
 
-class Armysetlist : public std::list<Armyset*>, public sigc::trackable
+class Armysetlist : public SetList<Armyset>, public sigc::trackable
 {
     public:
         //! Return the singleton instance of this class.

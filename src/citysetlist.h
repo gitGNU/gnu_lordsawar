@@ -21,6 +21,7 @@
 #include <map>
 #include <vector>
 #include <sigc++/trackable.h>
+#include "setlist.h"
 
 #include "cityset.h"
 
@@ -34,7 +35,7 @@ class Tar_Helper;
  * Cityset objects are usually referenced by the basename of the file
  * in which they reside on disk (inside the citysets/ directory).
  */
-class Citysetlist : public std::list<Cityset*>, public sigc::trackable
+class Citysetlist : public SetList<Cityset>, public sigc::trackable
 {
     public:
         //! Return the singleton instance of this class.

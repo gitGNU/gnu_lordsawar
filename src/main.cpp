@@ -29,14 +29,13 @@
 #include "Configuration.h"
 #include "File.h"
 #include "recently-played-game-list.h"
-#include "cityset.h"
-#include "tileset.h"
-#include "shieldset.h"
-#include "armyset.h"
+#include "citysetlist.h"
+#include "tilesetlist.h"
+#include "shieldsetlist.h"
+#include "armysetlist.h"
 #include "profilelist.h"
 #include "gamelist.h"
 #include "file-compat.h"
-#include "setlist.h"
 
 #include "gui/main.h"
 
@@ -188,10 +187,10 @@ int main(int argc, char* argv[])
 
 
   // Check if armysets are in the path (otherwise exit)
-  SetList::scan(Armyset::file_extension);
-  SetList::scan(Tileset::file_extension);
-  SetList::scan(Shieldset::file_extension);
-  SetList::scan(Cityset::file_extension);
+  Armysetlist::scan(Armyset::file_extension);
+  Tilesetlist::scan(Tileset::file_extension);
+  Shieldsetlist::scan(Shieldset::file_extension);
+  Citysetlist::scan(Cityset::file_extension);
 
 
   Gst::init(argc, argv);

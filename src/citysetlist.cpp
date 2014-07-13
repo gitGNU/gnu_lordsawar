@@ -62,6 +62,7 @@ void Citysetlist::loadCitysets(std::list<Glib::ustring> citysets)
 }
 
 Citysetlist::Citysetlist()
+ : SetList(Cityset::file_extension)
 {
     // load all citysets
     std::list<Glib::ustring> citysets = SetList::scan(Cityset::file_extension);

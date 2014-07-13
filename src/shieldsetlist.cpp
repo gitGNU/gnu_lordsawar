@@ -49,7 +49,6 @@ void Shieldsetlist::deleteInstance()
     s_instance = 0;
 }
 
-
 void Shieldsetlist::loadShieldsets(std::list<Glib::ustring> shieldsets)
 {
     for (std::list<Glib::ustring>::const_iterator i = shieldsets.begin(); 
@@ -63,6 +62,7 @@ void Shieldsetlist::loadShieldsets(std::list<Glib::ustring> shieldsets)
 }
 
 Shieldsetlist::Shieldsetlist()
+ : SetList(Shieldset::file_extension)
 {
     // load all shieldsets
     std::list<Glib::ustring> shieldsets = SetList::scan(Shieldset::file_extension);

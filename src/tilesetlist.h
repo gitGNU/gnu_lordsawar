@@ -38,7 +38,7 @@ class SmallTile;
  * Tileset objects are usually referenced by the name of the subdirectory
  * in which they reside on disk (inside the tilesets/ directory).
  */
-class Tilesetlist : public std::list<Tileset*>, public sigc::trackable, public SetList
+class Tilesetlist : public SetList<Tileset>, public sigc::trackable
 {
     public:
 

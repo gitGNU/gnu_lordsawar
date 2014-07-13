@@ -23,6 +23,7 @@
 #include <vector>
 #include <sigc++/trackable.h>
 
+#include "setlist.h"
 #include "shieldset.h"
 
 class Tar_Helper;
@@ -35,7 +36,7 @@ class XML_Helper;
  *
  * Other classes use it to lookup Shield and Shieldset objects.
  */
-class Shieldsetlist : public std::list<Shieldset*>, public sigc::trackable
+class Shieldsetlist : public SetList<Shieldset>, public sigc::trackable
 {
     public:
 

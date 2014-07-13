@@ -31,7 +31,7 @@ liblordsawar_la_SOURCES = action.cpp action.h AI_Analysis.cpp AI_Analysis.h \
         armyset.cpp armyset.h armyprotobase.cpp armyprotobase.h \
         bridge.cpp bridge.h bridgelist.cpp bridgelist.h \
         city.cpp city.h citylist.cpp citylist.h set.h set.cpp setlist.h \
-	setlist.cpp citysetlist.cpp citysetlist.h cityset.cpp cityset.h \
+	citysetlist.cpp citysetlist.h cityset.cpp cityset.h \
         Configuration.cpp Configuration.h counter.cpp counter.h \
         CreateScenario.cpp CreateScenario.h \
 	CreateScenarioRandomize.cpp CreateScenarioRandomize.h \

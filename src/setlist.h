@@ -17,16 +17,38 @@
 
 #ifndef SETLIST_H
 #define SETLIST_H
+#include <iostream>
 #include "File.h"
+#include "ucompose.hpp"
+#include "defs.h"
 
-class SetList
+template<class T>
+class SetList: public std::list<T*>
 {
 public:
-  SetList(){};
+  SetList(Glib::ustring ext){extension=ext;};
   ~SetList(){};
   static Glib::ustring getConfigurationFilename(Glib::ustring dir, Glib::ustring subdir, Glib::ustring ext) {return File::add_slash_if_necessary(dir) + subdir + "/" + subdir + ext;};
-    static std::list<Glib::ustring> scan(Glib::ustring extension, bool system = true);
-
+static std::list<Glib::ustring> scan(Glib::ustring extension, bool system = true)
+{
+  if (system == false)
+    return File::scanForFiles(File::getSetDir(extension, false), extension);
+  else
+    {
+      std::list<Glib::ustring> retlist = 
+        File::scanForFiles(File::getSetDir(extension), extension);
+      if (retlist.empty())
+        {
+          //note to translators: %1 is a file extension, %2 is a directory.
+          std::cerr << String::ucompose(_("Couldn't find any *%1 files in `%2'."),extension, File::getSetDir(extension)) << std::endl;
+          std::cerr << _("Please check the path settings in ~/.lordsawarrc") << std::endl;
+          exit(-1);
+        }
+      return retlist;
+    }
+}
+protected: 
+    Glib::ustring extension;
 };
 
 #endif

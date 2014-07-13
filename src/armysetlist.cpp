@@ -81,6 +81,7 @@ void Armysetlist::loadArmysets(std::list<Glib::ustring> armysets)
 }
 
 Armysetlist::Armysetlist()
+ : SetList(Armyset::file_extension)
 {
   // load all armysets
   std::list<Glib::ustring> armysets = SetList::scan(Armyset::file_extension);
