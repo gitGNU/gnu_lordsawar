@@ -145,6 +145,7 @@ src/network-connection.cpp
 src/road.cpp
 src/tilestyle.cpp
 src/armysetlist.cpp
+src/setlist.h
 src/bridgelist.cpp
 src/network-server.cpp
 src/AICityInfo.cpp
