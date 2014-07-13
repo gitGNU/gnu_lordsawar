@@ -38,9 +38,6 @@ public:
 
     Glib::ustring getFile(Glib::ustring file) const;
     Glib::ustring getConfigurationFile() const;
-    std::list<Glib::ustring> scanUserCollection() const;
-    std::list<Glib::ustring> scanSystemCollection() const;
-    static std::list<Glib::ustring> scanCollection(Glib::ustring extension, bool system = true);
 
 
 	//! Get the unique identifier for this set.

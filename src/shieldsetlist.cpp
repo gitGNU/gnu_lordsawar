@@ -26,6 +26,7 @@
 #include "defs.h"
 #include "ucompose.hpp"
 #include "tarhelper.h"
+#include "setlist.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -64,9 +65,9 @@ void Shieldsetlist::loadShieldsets(std::list<Glib::ustring> shieldsets)
 Shieldsetlist::Shieldsetlist()
 {
     // load all shieldsets
-    std::list<Glib::ustring> shieldsets = Set::scanCollection(Shieldset::file_extension);
+    std::list<Glib::ustring> shieldsets = SetList::scan(Shieldset::file_extension);
     loadShieldsets(shieldsets);
-    shieldsets = Set::scanCollection(Shieldset::file_extension, false);
+    shieldsets = SetList::scan(Shieldset::file_extension, false);
     loadShieldsets(shieldsets);
 
 }
@@ -288,7 +289,7 @@ int Shieldsetlist::getNextAvailableId(int after)
 {
   bool unsupported_version = false;
   std::list<guint32> ids;
-  std::list<Glib::ustring> shieldsets = Set::scanCollection(Shieldset::file_extension);
+  std::list<Glib::ustring> shieldsets = SetList::scan(Shieldset::file_extension);
   for (std::list<Glib::ustring>::const_iterator i = shieldsets.begin(); 
        i != shieldsets.end(); i++)
     {
@@ -299,7 +300,7 @@ int Shieldsetlist::getNextAvailableId(int after)
 	  delete shieldset;
 	}
     }
-  shieldsets = Set::scanCollection(Shieldset::file_extension, false);
+  shieldsets = SetList::scan(Shieldset::file_extension, false);
   for (std::list<Glib::ustring>::const_iterator i = shieldsets.begin(); 
        i != shieldsets.end(); i++)
     {

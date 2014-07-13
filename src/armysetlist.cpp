@@ -31,7 +31,7 @@
 #include "ucompose.hpp"
 #include "PixMask.h"
 #include "tarhelper.h"
-
+#include "setlist.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -83,9 +83,9 @@ void Armysetlist::loadArmysets(std::list<Glib::ustring> armysets)
 Armysetlist::Armysetlist()
 {
   // load all armysets
-  std::list<Glib::ustring> armysets = Set::scanCollection(Armyset::file_extension);
+  std::list<Glib::ustring> armysets = SetList::scan(Armyset::file_extension);
   loadArmysets(armysets);
-  armysets = Set::scanCollection(Armyset::file_extension, false);
+  armysets = SetList::scan(Armyset::file_extension, false);
   loadArmysets(armysets);
 
 }
@@ -265,7 +265,7 @@ int Armysetlist::getNextAvailableId(int after)
 {
   bool unsupported_version;
   std::list<guint32> ids;
-  std::list<Glib::ustring> armysets = Set::scanCollection(Armyset::file_extension);
+  std::list<Glib::ustring> armysets = SetList::scan(Armyset::file_extension);
   //there might be IDs in invalid armysets.
   for (std::list<Glib::ustring>::const_iterator i = armysets.begin(); 
        i != armysets.end(); i++)
@@ -277,7 +277,7 @@ int Armysetlist::getNextAvailableId(int after)
 	  delete armyset;
 	}
     }
-  armysets = Set::scanCollection(Armyset::file_extension, false);
+  armysets = SetList::scan(Armyset::file_extension, false);
   for (std::list<Glib::ustring>::const_iterator i = armysets.begin(); 
        i != armysets.end(); i++)
     {

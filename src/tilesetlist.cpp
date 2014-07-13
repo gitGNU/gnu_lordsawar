@@ -27,6 +27,7 @@
 #include "tileset.h"
 #include "tarhelper.h"
 #include "SmallTile.h"
+#include "setlist.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -53,8 +54,8 @@ Tilesetlist::Tilesetlist()
 	:SetList()
 {
     // load all tilesets
-    loadTilesets(Set::scanCollection(Tileset::file_extension));
-    loadTilesets(Set::scanCollection(Tileset::file_extension, false));
+    loadTilesets(SetList::scan(Tileset::file_extension));
+    loadTilesets(SetList::scan(Tileset::file_extension, false));
 }
 
 Tilesetlist::~Tilesetlist()
@@ -145,7 +146,7 @@ int Tilesetlist::getNextAvailableId(int after)
 {
   bool unsupported_version = false;
   std::list<guint32> ids;
-  std::list<Glib::ustring> tilesets = Set::scanCollection(Tileset::file_extension);
+  std::list<Glib::ustring> tilesets = SetList::scan(Tileset::file_extension);
   //there might be IDs in invalid tilesets.
   for (std::list<Glib::ustring>::const_iterator i = tilesets.begin(); 
        i != tilesets.end(); i++)
@@ -157,7 +158,7 @@ int Tilesetlist::getNextAvailableId(int after)
 	  delete tileset;
 	}
     }
-  tilesets = Set::scanCollection(Tileset::file_extension, false);
+  tilesets = SetList::scan(Tileset::file_extension, false);
   for (std::list<Glib::ustring>::const_iterator i = tilesets.begin(); 
        i != tilesets.end(); i++)
     {

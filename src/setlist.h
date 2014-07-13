@@ -25,6 +25,7 @@ public:
   SetList(){};
   ~SetList(){};
   static Glib::ustring getConfigurationFilename(Glib::ustring dir, Glib::ustring subdir, Glib::ustring ext) {return File::add_slash_if_necessary(dir) + subdir + "/" + subdir + ext;};
+    static std::list<Glib::ustring> scan(Glib::ustring extension, bool system = true);
 
 };
 

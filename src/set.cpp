@@ -16,7 +16,6 @@
 //  02110-1301, USA.
 
 #include "set.h"
-#include "ucompose.hpp"
 
 Set::Set(Glib::ustring ext, guint32 id, Glib::ustring name)
   : origin(SYSTEM), dir(""), d_id(id), d_name(name), d_license(""), 
@@ -60,32 +59,4 @@ bool Set::save(XML_Helper *helper) const
 Glib::ustring Set::getConfigurationFile() const
 {
   return getDirectory() + getBaseName() + extension;
-}
-
-std::list<Glib::ustring> Set::scanUserCollection() const
-{
-  return File::scanForFiles(File::getSetDir(extension, false), extension);
-}
-
-std::list<Glib::ustring> Set::scanSystemCollection() const
-{
-  std::list<Glib::ustring> retlist = 
-    File::scanForFiles(File::getSetDir(extension), extension);
-  if (retlist.empty())
-    {
-      //note to translators: %1 is a file extension, %2 is a directory.
-      std::cerr << String::ucompose(_("Couldn't find any *%1 files in `%2'."),extension, File::getSetDir(extension)) << std::endl;
-      std::cerr << _("Please check the path settings in ~/.lordsawarrc") << std::endl;
-      exit(-1);
-    }
-  return retlist;
-}
-
-std::list<Glib::ustring> Set::scanCollection(Glib::ustring extension, bool system)
-{
-  Set set(extension, 0, "");
-  if (system)
-    return set.scanSystemCollection();
-  else
-    return set.scanUserCollection();
 }

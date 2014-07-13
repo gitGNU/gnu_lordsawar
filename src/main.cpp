@@ -36,6 +36,7 @@
 #include "profilelist.h"
 #include "gamelist.h"
 #include "file-compat.h"
+#include "setlist.h"
 
 #include "gui/main.h"
 
@@ -187,10 +188,10 @@ int main(int argc, char* argv[])
 
 
   // Check if armysets are in the path (otherwise exit)
-  Set::scanCollection(Armyset::file_extension);
-  Set::scanCollection(Tileset::file_extension);
-  Set::scanCollection(Shieldset::file_extension);
-  Set::scanCollection(Cityset::file_extension);
+  SetList::scan(Armyset::file_extension);
+  SetList::scan(Tileset::file_extension);
+  SetList::scan(Shieldset::file_extension);
+  SetList::scan(Cityset::file_extension);
 
 
   Gst::init(argc, argv);

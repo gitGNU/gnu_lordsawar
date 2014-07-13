@@ -25,6 +25,7 @@
 #include "File.h"
 #include "defs.h"
 #include "tarhelper.h"
+#include "setlist.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -63,9 +64,9 @@ void Citysetlist::loadCitysets(std::list<Glib::ustring> citysets)
 Citysetlist::Citysetlist()
 {
     // load all citysets
-    std::list<Glib::ustring> citysets = Set::scanCollection(Cityset::file_extension);
+    std::list<Glib::ustring> citysets = SetList::scan(Cityset::file_extension);
     loadCitysets(citysets);
-    citysets = Set::scanCollection(Cityset::file_extension, false);
+    citysets = SetList::scan(Cityset::file_extension, false);
     loadCitysets(citysets);
 
 }
@@ -276,7 +277,7 @@ int Citysetlist::getNextAvailableId(int after)
 {
   bool unsupported_version = false;
   std::list<guint32> ids;
-  std::list<Glib::ustring> citysets = Set::scanCollection(Cityset::file_extension);
+  std::list<Glib::ustring> citysets = SetList::scan(Cityset::file_extension);
   //there might be IDs in invalid citysets.
   for (std::list<Glib::ustring>::const_iterator i = citysets.begin(); 
        i != citysets.end(); i++)
@@ -288,7 +289,7 @@ int Citysetlist::getNextAvailableId(int after)
 	  delete cityset;
 	}
     }
-  citysets = Set::scanCollection(Cityset::file_extension, false);
+  citysets = SetList::scan(Cityset::file_extension, false);
   for (std::list<Glib::ustring>::const_iterator i = citysets.begin(); 
        i != citysets.end(); i++)
     {
