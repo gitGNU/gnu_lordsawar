@@ -35,8 +35,6 @@
 #include "File.h"
 #include "shield.h"
 #include "shieldsetlist.h"
-#include "recently-edited-file.h"
-#include "recently-edited-file-list.h"
 #include "tile-size-editor-dialog.h"
 #include "editor-quit-dialog.h"
 
@@ -499,9 +497,6 @@ void ArmySetWindow::on_new_armyset_activated()
   Glib::ustring dir = File::getUserArmysetDir();
   d_armyset->setDirectory(dir);
   current_save_filename = d_armyset->getConfigurationFile();
-  RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
-  refl->updateEntry(current_save_filename);
-  refl->save();
   //here we put a copy into the armysetlist, and keep d_armyset as our
   //current working armyset.
   Armyset *copy = Armyset::copy (d_armyset);
@@ -660,9 +655,6 @@ void ArmySetWindow::on_save_as_activated()
           d_armyset = copy;
           //our tiles in the treeview are now out of date.
           refresh_armies(); //refresh them.
-          RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
-          refl->updateEntry(current_save_filename);
-          refl->save();
           needs_saving = false;
           update_window_title();
           armyset_saved.emit(d_armyset->getId());
@@ -724,8 +716,6 @@ bool ArmySetWindow::save_current_armyset()
     {
       if (Armysetlist::getInstance()->reload(d_armyset->getId()))
         refresh_armies();
-      RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
-      RecentlyEditedFileList::getInstance()->save();
       needs_saving = false;
       update_window_title();
       armyset_saved.emit(d_armyset->getId());

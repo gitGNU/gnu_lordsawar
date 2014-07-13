@@ -38,7 +38,6 @@
 #include "tarhelper.h"
 #include "GameScenario.h"
 #include "ucompose.hpp"
-#include "recently-edited-file-list.h"
 #include "Itemlist.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
@@ -76,8 +75,6 @@ void FileCompat::support_backward_compatibility_for_common_files()
     Configuration::support_backward_compatibility();
   if (FileCompat::getInstance()->contains(ITEMLIST) == false)
     Itemlist::support_backward_compatibility();
-  if (FileCompat::getInstance()->contains(RECENTLYEDITEDFILELIST) == false)
-    RecentlyEditedFileList::support_backward_compatibility();
   if (FileCompat::getInstance()->contains(ARMYSET) == false)
     Armyset::support_backward_compatibility();
   if (FileCompat::getInstance()->contains(TILESET) == false)
@@ -448,8 +445,6 @@ void FileCompat::initialize()
     upgrade(File::getUserProfilesDescription(), same);
   if (contains(RECENTLYPLAYEDGAMELIST))
     upgrade(File::getUserRecentlyPlayedGamesDescription(), same);
-  if (contains(RECENTLYEDITEDFILELIST))
-    upgrade(File::getUserRecentlyEditedFilesDescription(), same);
 }
 
 Glib::ustring FileCompat::typeToString(const FileCompat::Type type)
@@ -462,7 +457,6 @@ Glib::ustring FileCompat::typeToString(const FileCompat::Type type)
     case PROFILELIST: return _("profiles file");
     case RECENTLYPLAYEDGAMELIST: return _("recently played games file");
     case GAMELIST: return _("recently hosted or recently advertised games file");
-    case RECENTLYEDITEDFILELIST: return _("recently edited documents file");
     case ARMYSET: return _("armyset file");
     case TILESET: return _("tileset file");
     case CITYSET: return _("cityset file");
@@ -482,7 +476,6 @@ Glib::ustring FileCompat::typeToCode(const FileCompat::Type type)
     case PROFILELIST: return "pl";
     case RECENTLYPLAYEDGAMELIST: return "rpg";
     case GAMELIST: return "gl";
-    case RECENTLYEDITEDFILELIST: return "ref";
     case ARMYSET: return "as";
     case TILESET: return "ts";
     case CITYSET: return "cs";

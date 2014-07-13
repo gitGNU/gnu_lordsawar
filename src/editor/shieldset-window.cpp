@@ -35,9 +35,7 @@
 #include "Tile.h"
 #include "File.h"
 #include "shield.h"
-#include "recently-edited-file-list.h"
 #include "ucompose.hpp"
-#include "recently-edited-file.h"
 #include "editor-quit-dialog.h"
 #include "GameMap.h"
 #include "past-chooser.h"
@@ -221,9 +219,6 @@ void ShieldSetWindow::on_new_shieldset_activated()
   Glib::ustring dir = File::getUserShieldsetDir();
   d_shieldset->setDirectory(dir);
   current_save_filename = d_shieldset->getConfigurationFile();
-  RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
-  refl->updateEntry(current_save_filename);
-  refl->save();
 
   //populate the list with initial entries.
   for (unsigned int i = Shield::WHITE; i <= Shield::NEUTRAL; i++)
@@ -363,9 +358,6 @@ void ShieldSetWindow::on_save_as_activated()
           d_shieldset = copy;
           //our shields in the treeview are now out of date.
           refresh_shields(); //refresh them.
-          RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
-          refl->updateEntry(current_save_filename);
-          refl->save();
           needs_saving = false;
           update_window_title();
           shieldset_saved.emit(d_shieldset->getId());
@@ -413,8 +405,6 @@ bool ShieldSetWindow::save_current_shieldset()
     {
       if (Shieldsetlist::getInstance()->reload(d_shieldset->getId()))
         refresh_shields();
-      RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
-      RecentlyEditedFileList::getInstance()->save();
       needs_saving = false;
       update_window_title();
       shieldset_saved.emit(d_shieldset->getId());
@@ -558,8 +548,6 @@ bool ShieldSetWindow::load_shieldset(Glib::ustring filename)
       dialog.hide();
       return false;
     }
-  RecentlyEditedFileList::getInstance()->addEntry(current_save_filename);
-  RecentlyEditedFileList::getInstance()->save();
   shields_list->clear();
   if (d_shieldset)
     delete d_shieldset;

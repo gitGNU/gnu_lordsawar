@@ -47,7 +47,6 @@ class FileCompat: public std::list<FileDetails>, public sigc::trackable
           PROFILELIST,
           RECENTLYPLAYEDGAMELIST,
           GAMELIST,
-          RECENTLYEDITEDFILELIST,
           ARMYSET,
           TILESET,
           CITYSET,

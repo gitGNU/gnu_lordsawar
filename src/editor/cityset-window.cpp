@@ -39,8 +39,6 @@
 #include "image-editor-dialog.h"
 #include "ImageCache.h"
 #include "citysetlist.h"
-#include "recently-edited-file.h"
-#include "recently-edited-file-list.h"
 #include "tile-size-editor-dialog.h"
 #include "editor-quit-dialog.h"
 #include "GameMap.h"
@@ -255,9 +253,6 @@ void CitySetWindow::on_new_cityset_activated()
   Glib::ustring dir = File::getUserCitysetDir();
   d_cityset->setDirectory(dir);
   current_save_filename = d_cityset->getConfigurationFile();
-  RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
-  refl->updateEntry(current_save_filename);
-  refl->save();
 
   //here we put a copy into the citysetlist, and keep d_cityset as our
   //current working cityset.
@@ -386,9 +381,6 @@ void CitySetWindow::on_save_as_activated()
         {
           save_cityset_menuitem->set_sensitive(true);
           d_cityset = copy;
-          RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
-          refl->updateEntry(current_save_filename);
-          refl->save();
           needs_saving = false;
           update_window_title();
           cityset_saved.emit(d_cityset->getId());
@@ -444,8 +436,6 @@ bool CitySetWindow::save_current_cityset()
   if (success)
     {
       Citysetlist::getInstance()->reload(d_cityset->getId());
-      RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
-      RecentlyEditedFileList::getInstance()->save();
       needs_saving = false;
       update_window_title();
       cityset_saved.emit(d_cityset->getId());
@@ -522,8 +512,6 @@ bool CitySetWindow::load_cityset(Glib::ustring filename)
       dialog.hide();
       return false;
     }
-  RecentlyEditedFileList::getInstance()->addEntry(current_save_filename);
-  RecentlyEditedFileList::getInstance()->save();
   if (d_cityset)
     delete d_cityset;
   d_cityset = cityset;

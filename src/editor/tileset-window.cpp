@@ -40,8 +40,6 @@
 #include "File.h"
 #include "overviewmap.h"
 #include "ImageCache.h"
-#include "recently-edited-file.h"
-#include "recently-edited-file-list.h"
 #include "tile-size-editor-dialog.h"
 #include "editor-quit-dialog.h"
 #include "tilestyle-organizer-dialog.h"
@@ -486,9 +484,6 @@ void TileSetWindow::on_new_tileset_activated()
   Glib::ustring dir = File::getUserTilesetDir();
   d_tileset->setDirectory(dir);
   current_save_filename = d_tileset->getConfigurationFile();
-  RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
-  refl->updateEntry(current_save_filename);
-  refl->save();
   //here we put a copy into the tilesetlist, and keep d_tileset as our
   //current working tileset.
   Tileset *copy = Tileset::copy (d_tileset);
@@ -589,9 +584,6 @@ void TileSetWindow::on_save_as_activated()
           d_tileset = copy;
           //our tiles in the treeview are now out of date.
           refresh_tiles(); //refresh them.
-          RecentlyEditedFileList *refl = RecentlyEditedFileList::getInstance();
-          refl->updateEntry(current_save_filename);
-          refl->save();
           needs_saving = false;
           update_window_title();
           tileset_saved.emit(d_tileset->getId());
@@ -653,8 +645,6 @@ bool TileSetWindow::save_current_tileset()
     {
       if (Tilesetlist::getInstance()->reload(d_tileset->getId()))
         refresh_tiles(); //refresh them.
-      RecentlyEditedFileList::getInstance()->updateEntry(current_save_filename);
-      RecentlyEditedFileList::getInstance()->save();
       needs_saving = false;
       update_window_title();
       tileset_saved.emit(d_tileset->getId());
@@ -1420,8 +1410,6 @@ bool TileSetWindow::load_tileset(Glib::ustring filename)
       dialog.hide();
       return false;
     }
-  RecentlyEditedFileList::getInstance()->addEntry(current_save_filename);
-  RecentlyEditedFileList::getInstance()->save();
   if (d_tileset)
     delete d_tileset;
   d_tileset = tileset;

@@ -28,7 +28,6 @@
 #include "timing.h"
 #include "armyset.h"
 #include "file-compat.h"
-#include "recently-edited-file-list.h"
 
 #include "main-window.h"
 #include "editor-splash-window.h"
@@ -46,7 +45,6 @@ int main(int argc, char* argv[])
   srand(time(NULL));         // set the random seed
 
   initialize_configuration();
-  RecentlyEditedFileList::support_backward_compatibility();
   FileCompat::getInstance()->initialize();
   Vector<int>::setMaximumWidth(1000);
 
@@ -62,8 +60,6 @@ int main(int argc, char* argv[])
   g_set_application_name(N_("LordsAWar! Scenario Editor"));
   Timing::instance().timer_registered.connect(
                                               sigc::ptr_fun(on_timer_registered));
-
-  RecentlyEditedFileList::getInstance()->loadFromFile();
 
   Gtk::Main kit(argc, argv);
   if (argc > 1)
