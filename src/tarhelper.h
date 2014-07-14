@@ -19,6 +19,9 @@
 #include <glibmm.h>
 #include <iostream>
 #include <list>
+
+#ifndef TARHELPER_H
+#define TARHELPER_H
 class Tar_Helper
 {
 public:
@@ -73,3 +76,4 @@ private:
     Glib::ustring pathname;
 
 };
+#endif
