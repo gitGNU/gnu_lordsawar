@@ -22,6 +22,8 @@
 
 #ifndef TARHELPER_H
 #define TARHELPER_H
+
+//! An interface for operating on tar archive files.
 class Tar_Helper
 {
 public:

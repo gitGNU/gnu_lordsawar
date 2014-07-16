@@ -344,6 +344,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         
 };
 
+//! A helper struct in Playerlist to help with sorting Player objects by score.
 struct rankable_t
 {
   guint32 score;

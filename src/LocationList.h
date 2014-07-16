@@ -32,6 +32,7 @@
 #include "maptile.h"
 #include "Location.h"
 
+//! A template for holding and operatig on lists of Location objects.
 /** A list for object instances
   * 
   * This class extends the stl lists by adding the functions getObjectAt()

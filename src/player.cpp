@@ -105,7 +105,7 @@ Player::Player(Glib::ustring name, guint32 armyset, Gdk::RGBA color, int width,
 
     //initial fight order is the order in which the armies appear
     //in the default.xml file.
-    Armyset *as = Armysetlist::getInstance()->getArmyset(d_armyset);
+    Armyset *as = Armysetlist::getInstance()->get(d_armyset);
     for (Armyset::iterator i = as->begin(); i != as->end(); i++)
       d_fight_order.push_back((*i)->getId());
 
@@ -189,7 +189,7 @@ Player::Player(XML_Helper* helper)
     guint32 val;
     helper->getData(fight_order, "fight_order");
     sfight_order.str(fight_order);
-    Armyset *as = Armysetlist::getInstance()->getArmyset(d_armyset);
+    Armyset *as = Armysetlist::getInstance()->get(d_armyset);
     for (Armyset::iterator i = as->begin(); i != as->end(); ++i)
     {
             sfight_order >> val;

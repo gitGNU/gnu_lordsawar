@@ -51,15 +51,13 @@ class LocationBox;
 class Tileset;
 class Army;
 
+//! The model of the map and an interface to interacting with everything on it.
 /** Class representing the map in the game
   * 
   * GameMap represents a single map. In most cases this will be the map that is
   * currently played, but it might be used to preview a map in a mapeditor too.
   * Notes: GameMap was prefered over Map, because of the potential confusion 
   * with the std::map from the STL.
-  * In a previous design this has been a global variable, now it's a singleton.
-  * So if you need access to the game map, use one of the getInstance functions
-  * to get the singleton instance.
   */
 
 class GameMap: public sigc::trackable

@@ -50,6 +50,7 @@ class Reward;
 class StackTile;
 class Sage;
 
+//! Connects the various game classes with the GameWindow through signals.
 /** Controls a game.
   * 
   * Manages the big and small map, the game scenario and who's turn it is, etc.

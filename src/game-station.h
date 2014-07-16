@@ -29,6 +29,7 @@
 
 #include "game-client-decoder.h"
 
+//! A helper class for GameServer and GameClient objects.
 class GameStation: public GameClientDecoder 
 {
 public:

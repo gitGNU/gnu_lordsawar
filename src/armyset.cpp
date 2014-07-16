@@ -41,7 +41,7 @@ Glib::ustring Armyset::file_extension = ARMYSET_EXT;
 
 #define DEFAULT_ARMY_TILE_SIZE 40
 Armyset::Armyset(guint32 id, Glib::ustring name)
-	: Set(ARMYSET_EXT, id, name), d_tilesize(DEFAULT_ARMY_TILE_SIZE), 
+ : Set(ARMYSET_EXT, id, name, DEFAULT_ARMY_TILE_SIZE), 
         d_ship(0), d_shipmask(0), d_standard(0), d_standard_mask(0), d_bag(0)
 {
   d_bag_name = "";
@@ -50,14 +50,16 @@ Armyset::Armyset(guint32 id, Glib::ustring name)
 }
 
 Armyset::Armyset(XML_Helper *helper, Glib::ustring directory)
-    : Set(ARMYSET_EXT, helper), d_tilesize(DEFAULT_ARMY_TILE_SIZE), d_ship(0), 
-    d_shipmask(0), d_standard(0), d_standard_mask(0), d_bag(0)
+ : Set(ARMYSET_EXT, helper), d_ship(0), d_shipmask(0), d_standard(0), 
+    d_standard_mask(0), d_bag(0)
 {
   d_bag_name = "";
   d_stackship_name = "";
   d_standard_name = "";
   setDirectory(directory);
-  helper->getData(d_tilesize, "tilesize");
+  guint32 ts;
+  helper->getData(ts, "tilesize");
+  setTileSize(ts);
   helper->getData(d_stackship_name, "stackship");
   helper->getData(d_standard_name, "plantedstandard");
   helper->getData(d_bag_name, "bag");
@@ -66,7 +68,7 @@ Armyset::Armyset(XML_Helper *helper, Glib::ustring directory)
 }
 
 Armyset::Armyset(const Armyset& a)
-  :Set(a), d_tilesize(a.d_tilesize)
+ : Set(a)
 {
 
   if (a.d_ship)
@@ -123,51 +125,7 @@ bool Armyset::save(Glib::ustring filename, Glib::ustring extension) const
   helper.close();
   if (broken == true)
     return false;
-  Glib::ustring tmptar = tmpfile + ".tar";
-  Tar_Helper t(tmptar, std::ios::out, broken);
-  if (broken == true)
-    return false;
-  t.saveFile(tmpfile, File::get_basename(goodfilename, true));
-  //now the images, go get 'em from the tarball we were made from.
-  std::list<Glib::ustring> delfiles;
-  Tar_Helper orig(getConfigurationFile(), std::ios::in, broken);
-  if (broken == false)
-    {
-      std::list<Glib::ustring> files = orig.getFilenamesWithExtension(".png");
-      for (std::list<Glib::ustring>::iterator it = files.begin(); 
-           it != files.end(); it++)
-        {
-          Glib::ustring pngfile = orig.getFile(*it, broken);
-          if (broken == false)
-            {
-              bool success = t.saveFile(pngfile);
-              if (!success)
-                  broken = true;
-              delfiles.push_back(pngfile);
-            }
-          else
-            break;
-        }
-      orig.Close();
-    }
-  else
-    {
-      FILE *fileptr = fopen (getConfigurationFile().c_str(), "r");
-      if (fileptr)
-        fclose (fileptr);
-      else
-        broken = false;
-    }
-  for (std::list<Glib::ustring>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
-    File::erase(*it);
-  File::erase(tmpfile);
-  t.Close();
-  if (broken == false)
-    {
-      if (File::copy(tmptar, goodfilename) == true)
-        File::erase(tmptar);
-    }
-
+  broken = saveTar(tmpfile, tmpfile + ".tar", goodfilename);
   return !broken;
 }
 
@@ -178,7 +136,7 @@ bool Armyset::save(XML_Helper* helper) const
     retval &= helper->openTag(d_tag);
 
     retval &= Set::save(helper);
-    retval &= helper->saveData("tilesize", d_tilesize);
+    retval &= helper->saveData("tilesize", getTileSize());
     retval &= helper->saveData("stackship", d_stackship_name);
     retval &= helper->saveData("plantedstandard", d_standard_name);
     retval &= helper->saveData("bag", d_bag_name);
@@ -455,6 +413,7 @@ bool Armyset::validate()
   return valid;
 }
 
+//! Helper class for making a new Armyset object from an armyset file.
 class ArmysetLoader
 {
 public:
@@ -633,7 +592,7 @@ void Armyset::switchArmysetForRuinKeeper(Army *army, const Armyset *armyset)
  
   //go find an equivalent type in the new armyset.
   Armyset *old_armyset
-    = Armysetlist::getInstance()->getArmyset(army->getOwner()->getArmyset());
+    = Armysetlist::getInstance()->get(army->getOwner()->getArmyset());
   ArmyProto *old_armyproto = old_armyset->lookupArmyByType(army->getTypeId());
   if (old_armyproto == NULL)
     return;
@@ -664,7 +623,6 @@ void Armyset::switchArmysetForRuinKeeper(Army *army, const Armyset *armyset)
       army->morph(new_armyproto);
       return;
     }
-
 }
 
 void Armyset::switchArmyset(ArmyProdBase *army, const Armyset *armyset)
@@ -673,7 +631,7 @@ void Armyset::switchArmyset(ArmyProdBase *army, const Armyset *armyset)
 
   //go find an equivalent type in the new armyset.
   Armyset *old_armyset
-    = Armysetlist::getInstance()->getArmyset(army->getArmyset());
+    = Armysetlist::getInstance()->get(army->getArmyset());
   ArmyProto *old_armyproto = old_armyset->lookupArmyByType(army->getTypeId());
   if (old_armyproto == NULL)
     return;
@@ -738,7 +696,6 @@ void Armyset::switchArmyset(ArmyProdBase *army, const Armyset *armyset)
       army->morph(new_armyproto);
       return;
     }
-
 }
 
 void Armyset::switchArmyset(Army *army, const Armyset *armyset)
@@ -747,7 +704,7 @@ void Armyset::switchArmyset(Army *army, const Armyset *armyset)
 
   //go find an equivalent type in the new armyset.
   Armyset *old_armyset
-    = Armysetlist::getInstance()->getArmyset(army->getOwner()->getArmyset());
+    = Armysetlist::getInstance()->get(army->getOwner()->getArmyset());
   ArmyProto *old_armyproto = old_armyset->lookupArmyByType(army->getTypeId());
   if (!old_armyproto)
     return;
@@ -877,33 +834,6 @@ void Armyset::reload(bool &broken)
     }
 }
 
-Glib::ustring Armyset::getFileFromConfigurationFile(Glib::ustring file)
-{
-  bool broken = false;
-  Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
-  if (broken == false)
-    {
-      Glib::ustring filename = t.getFile(file, broken);
-      t.Close();
-  
-      if (broken == false)
-        return filename;
-    }
-  return "";
-}
-
-bool Armyset::replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file)
-{
-  bool broken = false;
-  Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
-  if (broken == false)
-    {
-      broken = !t.replaceFile(file, new_file);
-      t.Close();
-    }
-  return !broken;
-}
-
 guint32 Armyset::calculate_preferred_tile_size() const
 {
   guint32 tilesize = 0;
@@ -935,11 +865,6 @@ guint32 Armyset::calculate_preferred_tile_size() const
   if (tilesize == 0)
     tilesize = DEFAULT_ARMY_TILE_SIZE;
   return tilesize;
-}
-
-void Armyset::clean_tmp_dir() const
-{
-  return Tar_Helper::clean_tmp_dir(getConfigurationFile());
 }
 
 bool Armyset::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version)

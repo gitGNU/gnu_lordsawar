@@ -38,7 +38,7 @@ Glib::ustring Cityset::file_extension = CITYSET_EXT;
 
 #define DEFAULT_CITY_TILE_SIZE 40
 Cityset::Cityset(guint32 id, Glib::ustring name)
-	: Set(CITYSET_EXT, id, name), d_tileSize(DEFAULT_CITY_TILE_SIZE)
+ : Set(CITYSET_EXT, id, name, DEFAULT_CITY_TILE_SIZE)
 {
 	d_cities_filename = "";
 	d_razedcities_filename = "";
@@ -66,7 +66,7 @@ Cityset::Cityset(guint32 id, Glib::ustring name)
 }
 
 Cityset::Cityset(const Cityset& c)
-  :Set(c), d_tileSize(c.d_tileSize), d_cities_filename(c.d_cities_filename),
+ : Set(c), d_cities_filename(c.d_cities_filename), 
     d_razedcities_filename(c.d_razedcities_filename),
     d_port_filename(c.d_port_filename), 
     d_signpost_filename(c.d_signpost_filename),
@@ -125,10 +125,12 @@ Cityset::Cityset(const Cityset& c)
 }
 
 Cityset::Cityset(XML_Helper *helper, Glib::ustring directory)
-	:Set(CITYSET_EXT, helper)
+ : Set(CITYSET_EXT, helper)
 {
   setDirectory(directory);
-  helper->getData(d_tileSize, "tilesize");
+  guint32 ts;
+  helper->getData(ts, "tilesize");
+  setTileSize(ts);
   helper->getData(d_cities_filename, "cities");
   helper->getData(d_razedcities_filename, "razed_cities");
   helper->getData(d_port_filename, "port");
@@ -159,6 +161,7 @@ Cityset::~Cityset()
   clean_tmp_dir();
 }
 
+//! Helper class for making a new Cityset object from a cityset file.
 class CitysetLoader
 {
 public:
@@ -246,49 +249,7 @@ bool Cityset::save(Glib::ustring filename, Glib::ustring extension) const
   helper.close();
   if (broken == true)
     return false;
-  Glib::ustring tmptar = tmpfile + ".tar";
-  Tar_Helper t(tmptar, std::ios::out, broken);
-  if (broken == true)
-    return false;
-  t.saveFile(tmpfile, File::get_basename(goodfilename, true));
-  //now the images, go get 'em from the tarball we were made from.
-  std::list<Glib::ustring> delfiles;
-  Tar_Helper orig(getConfigurationFile(), std::ios::in, broken);
-  if (broken == false)
-    {
-      std::list<Glib::ustring> files = orig.getFilenamesWithExtension(".png");
-      for (std::list<Glib::ustring>::iterator it = files.begin(); 
-           it != files.end(); it++)
-        {
-          Glib::ustring pngfile = orig.getFile(*it, broken);
-          if (broken == false)
-            {
-              t.saveFile(pngfile);
-              delfiles.push_back(pngfile);
-            }
-          else
-            break;
-        }
-      orig.Close();
-    }
-  else
-    {
-      FILE *fileptr = fopen (getConfigurationFile().c_str(), "r");
-      if (fileptr)
-        fclose (fileptr);
-      else
-        broken = false;
-    }
-  t.Close();
-  for (std::list<Glib::ustring>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
-    File::erase(*it);
-  File::erase(tmpfile);
-  if (broken == false)
-    {
-      if (File::copy(tmptar, goodfilename) == true)
-        File::erase(tmptar);
-    }
-
+  broken = saveTar(tmpfile, tmpfile + ".tar", goodfilename);
   return !broken;
 }
 
@@ -298,7 +259,7 @@ bool Cityset::save(XML_Helper *helper) const
 
   retval &= helper->openTag(d_tag);
   retval &= Set::save(helper);
-  retval &= helper->saveData("tilesize", d_tileSize);
+  retval &= helper->saveData("tilesize", getTileSize());
   retval &= helper->saveData("cities", d_cities_filename);
   retval &= helper->saveData("razed_cities", d_razedcities_filename);
   retval &= helper->saveData("port", d_port_filename);
@@ -382,7 +343,7 @@ void Cityset::instantiateImages(Glib::ustring port_filename,
     setSignpostImage (PixMask::create(signpost_filename, broken));
 
       
-  int citysize = d_tileSize * d_city_tile_width;
+  int citysize = getTileSize() * d_city_tile_width;
   if (cities_filename.empty() == false && !broken)
     {
       std::vector<PixMask* > citypics;
@@ -422,8 +383,8 @@ void Cityset::instantiateImages(Glib::ustring port_filename,
         {
           for (unsigned int i = 0; i < MAX_PLAYERS; i++)
             {
-              if (towerpics[i]->get_width() != (int)d_tileSize)
-                PixMask::scale(towerpics[i], d_tileSize, d_tileSize);
+              if (towerpics[i]->get_width() != (int)getTileSize())
+                PixMask::scale(towerpics[i], getTileSize(), getTileSize());
               setTowerImage(i, towerpics[i]);
             }
         }
@@ -435,7 +396,7 @@ void Cityset::instantiateImages(Glib::ustring port_filename,
                                                         RUIN_TYPES, broken);
       if (!broken)
         {
-          int ruinsize = d_tileSize * d_ruin_tile_width;
+          int ruinsize = getTileSize() * d_ruin_tile_width;
           for (unsigned int i = 0; i < RUIN_TYPES ; i++)
             {
               if (ruinpics[i]->get_width() != ruinsize)
@@ -451,7 +412,7 @@ void Cityset::instantiateImages(Glib::ustring port_filename,
       templepics = disassemble_row(temples_filename, TEMPLE_TYPES, broken);
       if (!broken)
         {
-          int templesize = d_tileSize * d_temple_tile_width;
+          int templesize = getTileSize() * d_temple_tile_width;
           for (unsigned int i = 0; i < TEMPLE_TYPES ; i++)
             {
               if (templepics[i]->get_width() != templesize)
@@ -634,33 +595,6 @@ void Cityset::reload(bool &broken)
     }
 }
 
-Glib::ustring Cityset::getFileFromConfigurationFile(Glib::ustring file)
-{
-  bool broken = false;
-  Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
-  if (broken == false)
-    {
-      Glib::ustring filename = t.getFile(file, broken);
-      t.Close();
-  
-      if (broken == false)
-        return filename;
-    }
-  return "";
-}
-
-bool Cityset::replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file)
-{
-  bool broken = false;
-  Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
-  if (broken == false)
-    {
-      broken = !t.replaceFile(file, new_file);
-      t.Close();
-    }
-  return !broken;
-}
-
 guint32 Cityset::calculate_preferred_tile_size() const
 {
   guint32 tilesize = 0;
@@ -714,11 +648,6 @@ guint32 Cityset::countEmptyImageNames() const
   if (d_towers_filename.empty() == true)
     count++;
   return count;
-}
-
-void Cityset::clean_tmp_dir() const
-{
-  return Tar_Helper::clean_tmp_dir(getConfigurationFile());
 }
 
 bool Cityset::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version)

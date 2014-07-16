@@ -31,7 +31,33 @@
 #include "PixMask.h"
 #include "maptile.h"
 
+class SelectorPixMaskCacheItem;
+class ArmyPixMaskCacheItem;
+class FlagPixMaskCacheItem;
+class CircledArmyPixMaskCacheItem;
+class TilePixMaskCacheItem;
+class CityPixMaskCacheItem;
+class TowerPixMaskCacheItem;
+class TemplePixMaskCacheItem;
+class RuinPixMaskCacheItem;
+class DiplomacyPixMaskCacheItem;
+class RoadPixMaskCacheItem;
+class FogPixMaskCacheItem;
+class BridgePixMaskCacheItem;
+class CursorPixMaskCacheItem;
+class ShieldPixMaskCacheItem;
+class ProdShieldPixMaskCacheItem;
+class MoveBonusPixMaskCacheItem;
+class ShipPixMaskCacheItem;
+class PlantedStandardPixMaskCacheItem;
+class PortPixMaskCacheItem;
+class SignpostPixMaskCacheItem;
+class BagPixMaskCacheItem;
+class ExplosionPixMaskCacheItem;
+class NewLevelPixMaskCacheItem;
+class DefaultTileStylePixMaskCacheItem;
 
+//! Cache for generated army and map images.
 /** Soliton class for caching army and map images
   * 
   * With the introduction of player-specific colors, the problem of caching
@@ -59,33 +85,6 @@
   * @note For efficiency reasons, the class will not copy the surfaces it has,
   * so DON'T MODIFY THEM unless you know what you do!
   */
-
-class SelectorPixMaskCacheItem;
-class ArmyPixMaskCacheItem;
-class FlagPixMaskCacheItem;
-class CircledArmyPixMaskCacheItem;
-class TilePixMaskCacheItem;
-class CityPixMaskCacheItem;
-class TowerPixMaskCacheItem;
-class TemplePixMaskCacheItem;
-class RuinPixMaskCacheItem;
-class DiplomacyPixMaskCacheItem;
-class RoadPixMaskCacheItem;
-class FogPixMaskCacheItem;
-class BridgePixMaskCacheItem;
-class CursorPixMaskCacheItem;
-class ShieldPixMaskCacheItem;
-class ProdShieldPixMaskCacheItem;
-class MoveBonusPixMaskCacheItem;
-class ShipPixMaskCacheItem;
-class PlantedStandardPixMaskCacheItem;
-class PortPixMaskCacheItem;
-class SignpostPixMaskCacheItem;
-class BagPixMaskCacheItem;
-class ExplosionPixMaskCacheItem;
-class NewLevelPixMaskCacheItem;
-class DefaultTileStylePixMaskCacheItem;
-
 class ImageCache
 {
     public:
@@ -488,6 +487,11 @@ class ImageCache
         PixMask *d_arrow[2][NUM_ARROW_IMAGES];
 };
 
+//! Helper class for selector box items in the ImageCache.
+/**
+ * These selector box images appear around the active stack.
+ * It's a set of frames for an animation.
+ */
 class SelectorPixMaskCacheItem
 {
 public:
@@ -502,6 +506,10 @@ public:
     guint32 player_id;
 };
 
+//! Helper class for army items in the ImageCache.
+/**
+ * These army images appear on the big map as the leader of a stack.
+ */
 class ArmyPixMaskCacheItem
 {
 public:
@@ -516,6 +524,10 @@ public:
     bool greyed;
 };
 
+//! Helper class for stack flag items in the ImageCache.
+/**
+ * These stack flag images have 8 different sizes, and appear on the big map.
+ */
 class FlagPixMaskCacheItem
 {
 public:
@@ -529,6 +541,11 @@ public:
     guint32 player_id;
 };
 
+//! Helper class for circled army items in the ImageCache.
+/**
+ * These circled army images appear in various places in the gui.
+ * It's just an army unit with a coloured circle behind it.
+ */
 class CircledArmyPixMaskCacheItem
 {
 public:
@@ -545,6 +562,11 @@ public:
     bool show_army;
 };
 
+//! Helper class for big map tile items in the ImageCache.
+/**
+ * These tile images are the almalgmation of all the things on a given tile of
+ * the big map.
+ */
 class TilePixMaskCacheItem
 {
 public:
@@ -573,6 +595,10 @@ public:
   guint32 shieldset;
 };
 
+//! Helper class for city items in the ImageCache.
+/**
+ * These city images appear on the big map.
+ */
 class CityPixMaskCacheItem
 {
 public:
@@ -585,6 +611,10 @@ public:
     guint32 player_id;
 };
 
+//! Helper class for tower items in the ImageCache.
+/**
+ * These tower images appear on the big map when a stack goes into defend mode.
+ */
 class TowerPixMaskCacheItem
 {
 public:
@@ -596,6 +626,10 @@ public:
     guint32 player_id;
 };
 
+//! Helper class for temple items in the ImageCache.
+/**
+ * These temple images appear on the big map.
+ */
 class TemplePixMaskCacheItem
 {
 public:
@@ -607,6 +641,10 @@ public:
     int type;
 };
 
+//! Helper class for ruin items in the ImageCache.
+/**
+ * These ruin images appear on the big map.
+ */
 class RuinPixMaskCacheItem
 {
 public:
@@ -618,6 +656,10 @@ public:
     int type;
 };
 
+//! Helper class for diplomacy icon items in the ImageCache.
+/**
+ * These diplomacy icons appear in the diplomacy dialog.
+ */
 class DiplomacyPixMaskCacheItem
 {
 public:
@@ -629,6 +671,10 @@ public:
     Player::DiplomaticState state;
 };
 
+//! Helper class for road items in the ImageCache.
+/**
+ * These are the road images that appear on the big map.
+ */
 class RoadPixMaskCacheItem
 {
 public:
@@ -640,6 +686,11 @@ public:
     int type;
 };
 
+//! Helper class for fog items in the ImageCache.
+/**
+ * These are the black fog images that appear on top of the big map.
+ * E.g. more of the map gets exposed when army units move around.
+ */
 class FogPixMaskCacheItem
 {
 public:
@@ -651,6 +702,10 @@ public:
     int type;
 };
 
+//! Helper class for bridge items in the ImageCache.
+/**
+ * These are the bridge images that appear on the big map.
+ */
 class BridgePixMaskCacheItem
 {
 public:
@@ -662,6 +717,10 @@ public:
     int type;
 };
 
+//! Helper class for cursor items in the ImageCache.
+/**
+ * These are the black and white mouse cursor images.
+ */
 class CursorPixMaskCacheItem
 {
 public:
@@ -672,6 +731,10 @@ public:
     int type;
 };
 
+//! Helper class for shield items in the ImageCache.
+/**
+ * These shield images include the small, medium and large shield images.
+ */
 class ShieldPixMaskCacheItem
 {
 public:
@@ -684,6 +747,10 @@ public:
     guint32 colour;
 };
 
+//! Helper class for production icon items in the ImageCache.
+/**
+ * these icons appear on the smallmap.
+ */
 class ProdShieldPixMaskCacheItem
 {
 public:
@@ -696,6 +763,10 @@ public:
     bool prod;
 };
 
+//! Helper class for movement bonus icon items in the ImageCache.
+/**
+ * These icons appear in the gui, on stack tip infos, or in the stack box.
+ */
 class MoveBonusPixMaskCacheItem
 {
 public:
@@ -706,6 +777,11 @@ public:
     guint32 type; // 0=empty, 1=trees, 2=foothills, 3=hills+trees, 4=fly, 5=boat
 };
 
+//! Helper class for boat items in the ImageCache.
+/**
+ * ship images are for when a stack is in a boat.
+ * one ship image per army set, and drawn in the player's colour.
+ */
 class ShipPixMaskCacheItem
 {
 public:
@@ -717,6 +793,10 @@ public:
     guint32 armyset;
 };
 
+//! Helper class for planted standard items in the ImageCache.
+/**
+ * planted standard images are for when the hero plants a flag on the big map.
+ */
 class PlantedStandardPixMaskCacheItem
 {
 public:
@@ -728,6 +808,10 @@ public:
     guint32 armyset;
 };
 
+//! Helper class for port items in the ImageCache.
+/**
+ * port images are for the ship loading/unloading points on the big map.
+ */
 class PortPixMaskCacheItem
 {
 public:
@@ -738,6 +822,10 @@ public:
   guint32 cityset;
 };
 
+//! Helper class for signpost items in the ImageCache.
+/**
+ * signpost images are for the signs on the big map.
+ */
 class SignpostPixMaskCacheItem
 {
 public:
@@ -748,6 +836,11 @@ public:
   guint32 cityset;
 };
 
+//! Helper class for bag items in the ImageCache.
+/**
+ * Bags are the things that hold item objects on the big map.
+ * There is one bag image per army set.
+ */
 class BagPixMaskCacheItem
 {
 public:
@@ -758,6 +851,11 @@ public:
     guint32 armyset;
 };
 
+//! Helper class for explosion items in the ImageCache.
+/**
+ * Explosion images appear on the big map and in the fight window.
+ * Sometimes they appear in a 2x2 tile size, and sometimes in a 1x1 tile size.
+ */
 class ExplosionPixMaskCacheItem
 {
 public:
@@ -768,6 +866,11 @@ public:
     guint32 tileset;
 };
 
+//! Helper class for "new level" items in the ImageCache.
+/**
+ * New Level images are full-body images of the hero who is levelling up.  There
+ * is a male image and a female image.
+ */
 class NewLevelPixMaskCacheItem
 {
 public:
@@ -779,6 +882,10 @@ public:
     guint32 gender;
 };
 
+//! Helper class for default tile style items in the ImageCache.
+/**
+ * "default tile style" images are the black and white representations of TileStyle::Type.
+ */
 class DefaultTileStylePixMaskCacheItem
 {
 public:

@@ -43,7 +43,7 @@ ArmyBonusDialog::ArmyBonusDialog(Gtk::Window &parent, Player *p)
     armies_treeview->append_column(_("Bonus"), armies_columns.bonus);
     armies_treeview->set_headers_visible(true);
 
-    Armyset *as=Armysetlist::getInstance()->getArmyset(d_player->getArmyset());
+    Armyset *as=Armysetlist::getInstance()->get(d_player->getArmyset());
     for (Armyset::iterator i = as->begin(); i != as->end(); ++i)
       addArmyType((*i)->getId());
 }

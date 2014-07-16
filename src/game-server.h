@@ -37,6 +37,7 @@ class XML_Helper;
 class GameScenario;
 class GameParameters;
 
+//! A networked game server.  Talks to GameClient objects.
 class GameServer: public GameStation
 {
 public:

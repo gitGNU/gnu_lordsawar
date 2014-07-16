@@ -26,7 +26,7 @@
 class ShieldSetInfoDialog: public LwEditorDialog
 {
  public:
-    ShieldSetInfoDialog(Gtk::Window &parent, Shieldset *shieldset, 
+    ShieldSetInfoDialog(Gtk::Window &parent, Set *shieldset, 
                         Glib::ustring dir, Glib::ustring file,
                         bool readonly = false, Glib::ustring title = "");
     ~ShieldSetInfoDialog() {};
@@ -34,7 +34,7 @@ class ShieldSetInfoDialog: public LwEditorDialog
     int run();
     
  private:
-    Shieldset *d_shieldset;
+    Set *d_shieldset;
     Gtk::Entry *name_entry;
     Gtk::TextView *copyright_textview;
     Gtk::TextView *license_textview;

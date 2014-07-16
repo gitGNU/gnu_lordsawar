@@ -1348,6 +1348,7 @@ class Action_DiplomacyScore: public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record representing the ending of a turn.
 class Action_EndTurn: public Action
 {
     public:
@@ -1369,6 +1370,7 @@ class Action_EndTurn: public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record representing the taking-over of a city.
 class Action_ConquerCity : public Action
 {
     public:
@@ -1396,6 +1398,7 @@ class Action_ConquerCity : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record representing a new hero showing up in a city.
 class Action_RecruitHero : public Action
 {
     public:
@@ -1429,6 +1432,7 @@ class Action_RecruitHero : public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record representing the renaming of the player.
 class Action_RenamePlayer: public Action
 {
     public:
@@ -1455,6 +1459,7 @@ class Action_RenamePlayer: public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record representing a unit production failure due to bankruptcy.
 class Action_CityTooPoorToProduce: public Action
 {
     public:
@@ -1483,6 +1488,7 @@ class Action_CityTooPoorToProduce: public Action
 
 //-----------------------------------------------------------------------------
 
+//! A temporary record representing the beginning of a turn.
 class Action_InitTurn: public Action
 {
     public:

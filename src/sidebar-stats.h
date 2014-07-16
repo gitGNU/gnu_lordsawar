@@ -18,6 +18,7 @@
 #ifndef SIDEBAR_STATS_H
 #define SIDEBAR_STATS_H
 
+//! A helper struct for communicating the info at the bottom of the GameWindow.
 struct SidebarStats
 {
     Glib::ustring name;

@@ -419,18 +419,18 @@ GameParameters NewRandomMapDialog::getParams()
   Armysetlist *al = Armysetlist::getInstance();
   Shieldsetlist *sl = Shieldsetlist::getInstance();
   Citysetlist *cl = Citysetlist::getInstance();
-  g.tile_theme = tl->getTilesetDir 
+  g.tile_theme = tl->getSetDir 
     (Glib::filename_from_utf8(tile_theme_combobox->get_active_text()),
      get_active_tile_size());
 
-  g.army_theme = al->getArmysetDir
+  g.army_theme = al->getSetDir
     (Glib::filename_from_utf8(army_theme_combobox->get_active_text()),
      get_active_tile_size());
 
-  g.shield_theme = sl->getShieldsetDir 
+  g.shield_theme = sl->getSetDir 
     (Glib::filename_from_utf8(shield_theme_combobox->get_active_text()));
 
-  g.city_theme = cl->getCitysetDir 
+  g.city_theme = cl->getSetDir 
     (Glib::filename_from_utf8(city_theme_combobox->get_active_text()),
      get_active_tile_size());
 
@@ -495,9 +495,12 @@ Glib::ustring NewRandomMapDialog::create_and_dump_scenario(const Glib::ustring &
   CreateScenario creator (g.map.width, g.map.height);
 
   // then fill the other players
-  int army_id = Armysetlist::getInstance()->getArmyset(g.army_theme)->getId();
+  Armyset *as = Armysetlist::getInstance()->get(g.army_theme);
+  printf("as is %p\n", as);
+  printf("g.army_theme is -%s-\n", g.army_theme.c_str());
+  int army_id = as->getId();
   Shieldsetlist *ssl = Shieldsetlist::getInstance();
-  guint32 id = ssl->getShieldset(g.shield_theme)->getId();
+  guint32 id = ssl->get(g.shield_theme)->getId();
   for (std::vector<GameParameters::Player>::const_iterator
        i = g.players.begin(), end = g.players.end();
        i != end; ++i) {
@@ -588,18 +591,18 @@ void NewRandomMapDialog::on_accept_clicked()
     break;
   }
 
-  map.tileset = Tilesetlist::getInstance()->getTilesetDir
+  map.tileset = Tilesetlist::getInstance()->getSetDir
     (Glib::filename_from_utf8(tile_theme_combobox->get_active_text()),
      get_active_tile_size());
 
-  map.shieldset = Shieldsetlist::getInstance()->getShieldsetDir
+  map.shieldset = Shieldsetlist::getInstance()->getSetDir
     (Glib::filename_from_utf8(shield_theme_combobox->get_active_text()));
 
-  map.cityset = Citysetlist::getInstance()->getCitysetDir
+  map.cityset = Citysetlist::getInstance()->getSetDir
     (Glib::filename_from_utf8(city_theme_combobox->get_active_text()),
      get_active_tile_size());
 
-  map.armyset = Armysetlist::getInstance()->getArmysetDir
+  map.armyset = Armysetlist::getInstance()->getSetDir
     (Glib::filename_from_utf8(army_theme_combobox->get_active_text()),
      get_active_tile_size());
 

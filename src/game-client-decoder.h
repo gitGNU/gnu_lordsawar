@@ -32,6 +32,7 @@
 
 class Player;
 
+//! Helper class for sending NetworkAction objects to the NetworkPlayer.
 class GameClientDecoder: public ChatClient
 {
 public:

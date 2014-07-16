@@ -26,7 +26,7 @@
 #include "defs.h"
 #include "File.h"
 
-CitySetInfoDialog::CitySetInfoDialog(Gtk::Window &parent, Cityset *cityset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
+CitySetInfoDialog::CitySetInfoDialog(Gtk::Window &parent, Set *cityset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
  : LwEditorDialog(parent, "cityset-info-dialog.ui")
 {
   d_cityset = cityset;
@@ -119,8 +119,7 @@ void CitySetInfoDialog::update_buttons()
       return;
     }
 
-  Glib::ustring dir = File::getSetDir(Cityset::file_extension, false) + filename_entry->get_text();
-  if (Citysetlist::getInstance()->getCityset(filename_entry->get_text()))
+  if (Citysetlist::getInstance()->get(filename_entry->get_text()))
     {
       accept_button->set_sensitive(false);
       status_label->set_markup(String::ucompose("<b>%1</b>", 

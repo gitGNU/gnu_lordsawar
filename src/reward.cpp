@@ -185,11 +185,10 @@ const guint32 Reward_Allies::getRandomAmountOfAllies()
 
 const ArmyProto* Reward_Allies::randomArmyAlly()
 {
-  Armysetlist *al = Armysetlist::getInstance();
   Player *p = Playerlist::getInstance()->getActiveplayer();
   if (!p)
     p = Playerlist::getInstance()->getNeutral();
-  return al->getArmyset(p->getArmyset())->getRandomAwardableAlly();
+  return Armysetlist::getInstance()->get(p->getArmyset())->getRandomAwardableAlly();
 }
 
 bool Reward_Allies::addAllies(Player *p, Vector<int> pos, const ArmyProto *army, guint32 alliesCount, StackReflist *stacks)

@@ -34,6 +34,7 @@ class NetworkHistory;
 class NetworkConnection;
 class Player;
 
+//! A remotely connected user in a networked game.
 class GameClient: public GameStation
 {
 public:

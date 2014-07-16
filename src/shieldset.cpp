@@ -36,7 +36,7 @@ Glib::ustring Shieldset::file_extension = SHIELDSET_EXT;
 //#define debug(x)
 
 Shieldset::Shieldset(guint32 id, Glib::ustring name)
- : Set(SHIELDSET_EXT, id, name), d_small_height(0), d_small_width(0), 
+ : Set(SHIELDSET_EXT, id, name, 0), d_small_height(0), d_small_width(0), 
     d_medium_height(0), d_medium_width(0), d_large_height(0), d_large_width(0)
 {
 }
@@ -54,6 +54,7 @@ Shieldset::Shieldset(XML_Helper *helper, Glib::ustring directory)
  : Set(SHIELDSET_EXT, helper)
 {
   setDirectory(directory);
+  setTileSize(0);
   helper->getData(d_small_width, "small_width");
   helper->getData(d_small_height, "small_height");
   helper->getData(d_medium_width, "medium_width");
@@ -115,7 +116,7 @@ bool Shieldset::loadShield(Glib::ustring tag, XML_Helper* helper)
   return false;
 }
 
-
+//! Helper class for making a new Shieldset object from a shieldset file.
 class ShieldsetLoader
 {
 public:
@@ -203,49 +204,7 @@ bool Shieldset::save(Glib::ustring filename, Glib::ustring extension) const
   helper.close();
   if (broken == true)
     return false;
-  Glib::ustring tmptar = tmpfile + ".tar";
-  Tar_Helper t(tmptar, std::ios::out, broken);
-  if (broken == true)
-    return false;
-  t.saveFile(tmpfile, File::get_basename(goodfilename, true));
-  //now the images, go get 'em from the tarball we were made from.
-  std::list<Glib::ustring> delfiles;
-  Tar_Helper orig(getConfigurationFile(), std::ios::in, broken);
-  if (broken == false)
-    {
-      std::list<Glib::ustring> files = orig.getFilenamesWithExtension(".png");
-      for (std::list<Glib::ustring>::iterator it = files.begin(); 
-           it != files.end(); it++)
-        {
-          Glib::ustring pngfile = orig.getFile(*it, broken);
-          if (broken == false)
-            {
-              t.saveFile(pngfile);
-              delfiles.push_back(pngfile);
-            }
-          else
-            break;
-        }
-      orig.Close();
-    }
-  else
-    {
-      FILE *fileptr = fopen (getConfigurationFile().c_str(), "r");
-      if (fileptr)
-        fclose (fileptr);
-      else
-        broken = false;
-    }
-  t.Close();
-  for (std::list<Glib::ustring>::iterator it = delfiles.begin(); it != delfiles.end(); it++)
-    File::erase(*it);
-  File::erase(tmpfile);
-  if (broken == false)
-    {
-      if (File::copy(tmptar, goodfilename) == true)
-        File::erase(tmptar);
-    }
-
+  broken = saveTar(tmpfile, tmpfile + ".tar", goodfilename);
   return !broken;
 }
 
@@ -376,33 +335,6 @@ void Shieldset::reload(bool &broken)
     }
 }
 
-Glib::ustring Shieldset::getFileFromConfigurationFile(Glib::ustring file)
-{
-  bool broken = false;
-  Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
-  if (broken == false)
-    {
-      Glib::ustring filename = t.getFile(file, broken);
-      t.Close();
-  
-      if (broken == false)
-        return filename;
-    }
-  return "";
-}
-
-bool Shieldset::replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file)
-{
-  bool broken = false;
-  Tar_Helper t(getConfigurationFile(), std::ios::in, broken);
-  if (broken == false)
-    {
-      broken = !t.replaceFile(file, new_file);
-      t.Close();
-    }
-  return !broken;
-}
-
 guint32 Shieldset::countEmptyImageNames() const
 {
   guint32 count = 0;
@@ -415,11 +347,6 @@ guint32 Shieldset::countEmptyImageNames() const
         }
     }
   return count;
-}
-
-void Shieldset::clean_tmp_dir() const
-{
-  return Tar_Helper::clean_tmp_dir(getConfigurationFile());
 }
 
 bool Shieldset::upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version)

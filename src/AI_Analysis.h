@@ -35,6 +35,7 @@ class StackReflist;
 
 typedef std::map<guint32, AICityInfo *> AICityMap;
 
+//! Artificial intelligence for determining goals.
 /** An AI's analysis of the game situation.
   *
   * The class has an active part as it identifies enemy stacks, cities and ruins

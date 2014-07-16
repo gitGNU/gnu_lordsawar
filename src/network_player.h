@@ -75,9 +75,8 @@ class Action_UnparkStack;
 class Action_SelectStack;
 class Action_DeselectStack;
 
-/** This class implements the network player.
-  */
 
+//! A Player that is driven by Action objects coming over the NetworkConnection.
 class NetworkPlayer : public Player
 {
     public:

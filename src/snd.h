@@ -27,6 +27,19 @@
 
 class XML_Helper;
 
+//! A helper struct to represent a single item in the sound configuration file.
+struct MusicItem
+{
+    // The file where the sound piece can be loaded from
+    Glib::ustring file;
+    // Can it be played in the background?
+    bool background;
+    // If loading this file fails, we can define an alias to load instead.
+    Glib::ustring alias;
+};
+
+
+//! This class manages sound within the game.
 /** Snd class
   * 
   * The purpose of putting the sound code into one class is (besides hiding the
@@ -45,19 +58,6 @@ class XML_Helper;
   * and goes away again with the background music taking its place again
   * afterwards.
   */
-
-struct MusicItem
-{
-    // The file where the sound piece can be loaded from
-    Glib::ustring file;
-    // Can it be played in the background?
-    bool background;
-    // If loading this file fails, we can define an alias to load instead.
-    Glib::ustring alias;
-};
-
-
-//! This class manages sound within the game.
 class Snd : public sigc::trackable
 {
     public:

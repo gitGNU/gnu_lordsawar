@@ -35,6 +35,7 @@ class Threatlist;
 class City;
 class Quest;
 
+//! Artificial intelligence for assigning resources to goals.
 /** An AI's allocation of resources to goals identified in the analysis.
   */
 

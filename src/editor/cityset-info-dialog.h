@@ -26,7 +26,7 @@
 class CitySetInfoDialog: public LwEditorDialog
 {
  public:
-    CitySetInfoDialog(Gtk::Window &parent, Cityset *cityset, Glib::ustring dir, 
+    CitySetInfoDialog(Gtk::Window &parent, Set *cityset, Glib::ustring dir, 
                       Glib::ustring file, bool readonly = false, 
                       Glib::ustring title = "");
     ~CitySetInfoDialog() {};
@@ -34,7 +34,7 @@ class CitySetInfoDialog: public LwEditorDialog
     int run();
     
  private:
-    Cityset *d_cityset;
+    Set *d_cityset;
     Gtk::Entry *name_entry;
     Gtk::TextView *copyright_textview;
     Gtk::TextView *license_textview;

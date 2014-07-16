@@ -20,13 +20,13 @@
 #include <cmath>
 #include <stdlib.h>
 
+extern int max_vector_width;
 //! A simple 2d point structure.
 /**
  * Implements a lot of overloaded operators to ease calculations.
  * x is the axis in the left/right direction.
  * y is the axis in the up/down direction.
  */
-extern int max_vector_width;
 template <typename T>
 struct Vector
 {

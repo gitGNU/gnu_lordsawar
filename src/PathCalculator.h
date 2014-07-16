@@ -61,6 +61,7 @@ public:
     //! Return the positions on the map that are reachable in MP or less.
     std::list<Vector<int> > getReachablePositions(int mp = 0);
 private:
+    //! A PathCalculator helper struct for a weighted tile on the map.
     struct node
       {
 	int moves;

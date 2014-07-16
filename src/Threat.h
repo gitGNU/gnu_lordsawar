@@ -31,8 +31,8 @@ class Stack;
 class Player;
 class Ruin;
 
-/** Class which describes a threat to a player.
-  *
+//! Artificial intelligence for representing a threat to a Player.
+/** 
   * The smart AI player tries to assess all enemy stacks and cities and all
   * ruins and store the results in threats. A threat has three characteristic
   * figures:

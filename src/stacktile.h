@@ -21,9 +21,15 @@
 #include "vector.h"
 class Stack;
 class Player;
+//! A StackTile helper class for a single stack on a tile.
+struct StackTileRecord
+{
+  guint32 stack_id;
+  guint32 player_id;
+};
+
+//! Manages a set of Stack objects that share a Maptile on the map.
 /**
- * This class is about managing a set stacks that share a tile on the map.
- * 
  * A stacktile object is a temporary object that holds a number of non-empty 
  * stack objects belonging to the same player where their total number of 
  * armies doesn't exceed 8.  The actual value is related to the 
@@ -44,14 +50,6 @@ class Player;
  * A stack doesn't know what stacktile it's in but it knows Where it is on the 
  * map.  game map has a quick lookup of position to stacktile.
  */
-//! Allow a bunch of stacks to share a single tile.
-
-struct StackTileRecord
-{
-  guint32 stack_id;
-  guint32 player_id;
-};
-
 class StackTile: public std::list<StackTileRecord>
 {
 public:

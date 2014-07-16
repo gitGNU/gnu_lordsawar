@@ -195,9 +195,9 @@ bool TilesetSelectorEditorDialog::loadSelector(Glib::ustring filename)
   bool success = SelectorPixMaskCacheItem::loadSelectorImages(filename, d_tileset->getTileSize(), images, masks);
   if (success)
     {
-      Glib::ustring subdir = Shieldsetlist::getInstance()->getShieldsetDir 
+      Glib::ustring subdir = Shieldsetlist::getInstance()->getSetDir 
 	(Glib::filename_from_utf8(shield_theme_combobox->get_active_text()));
-      Shieldset *shieldset = Shieldsetlist::getInstance()->getShieldset(subdir);
+      Shieldset *shieldset = Shieldsetlist::getInstance()->get(subdir);
 
       for (unsigned int i = 0; i < MAX_PLAYERS; i++)
 	{

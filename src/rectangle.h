@@ -20,6 +20,7 @@
 
 #include "vector.h"
 
+//! A general purpose rectangle struct.
 struct Rectangle
 {
     Rectangle() : x(pos.x), y(pos.y), w(dim.x), h(dim.y) {}

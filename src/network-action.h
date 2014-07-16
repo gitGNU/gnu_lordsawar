@@ -21,6 +21,7 @@
 #include "action.h"
 #include "OwnerId.h"
 
+//! Just like Action, but explicitly associated with a Player.
 class NetworkAction: public OwnerId
 {
 public:

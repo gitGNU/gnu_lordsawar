@@ -82,10 +82,6 @@ class Cityset : public sigc::trackable, public Set
 
         bool save(Glib::ustring filename, Glib::ustring extension) const;
 
-        //! Returns the width and height in pixels of a square on the map.
-        guint32 getTileSize() const {return d_tileSize;}
-
-        void setTileSize(guint32 tile_size) {d_tileSize = tile_size;}
 
 	void setCitiesFilename(Glib::ustring s) {d_cities_filename = s;};
 	Glib::ustring getCitiesFilename() {return d_cities_filename;};
@@ -120,9 +116,6 @@ class Cityset : public sigc::trackable, public Set
 	//! get filenames in this cityset, excepting the configuration file.
 	void getFilenames(std::list<Glib::ustring> &files);
 
-        //! Delete the cityset's temporary directory.
-        void clean_tmp_dir() const;
-
 	void instantiateImages(bool &broken);
 	void instantiateImages(Glib::ustring port_filename,
 			       Glib::ustring signpost_filename,
@@ -153,12 +146,6 @@ class Cityset : public sigc::trackable, public Set
 	bool validateRuinTileWidth();
 	bool validateTempleTileWidth();
 	bool tileWidthsEqual(Cityset *cityset);
-        Glib::ustring getFileFromConfigurationFile(Glib::ustring file);
-        //! Replaces file with new_file, or adds new_file if file not present.
-        /**
-         * @return returns True if successful.
-         */
-        bool replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file);
 
         //! Callback to convert old files to new ones.
         static bool upgrade(Glib::ustring filename, Glib::ustring old_version, Glib::ustring new_version);
@@ -170,15 +157,6 @@ class Cityset : public sigc::trackable, public Set
     private:
 
         // DATA
-
-	//! The size of each city image onscreen.
-	/**
-	 * Equates to the cityset.d_tilesize XML entity in the cityset
-	 * configuration file.
-	 * It represents the size in pixels of the width and height of city
-	 * imagery onscreen.
-	 */
-        guint32 d_tileSize;
 
 	Glib::ustring d_cities_filename;
 	Glib::ustring d_razedcities_filename;

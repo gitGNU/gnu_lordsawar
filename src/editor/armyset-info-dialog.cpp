@@ -28,7 +28,7 @@
 #include "File.h"
 
 
-ArmySetInfoDialog::ArmySetInfoDialog(Gtk::Window &parent, Armyset *armyset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
+ArmySetInfoDialog::ArmySetInfoDialog(Gtk::Window &parent, Set *armyset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
  : LwEditorDialog(parent, "armyset-info-dialog.ui")
 {
   d_armyset = armyset;
@@ -121,8 +121,7 @@ void ArmySetInfoDialog::update_buttons()
       return;
     }
 
-  Glib::ustring dir = File::getSetDir(Armyset::file_extension, false) + filename_entry->get_text();
-  if (Armysetlist::getInstance()->getArmyset(filename_entry->get_text()))
+  if (Armysetlist::getInstance()->get(filename_entry->get_text()))
     {
       accept_button->set_sensitive(false);
       status_label->set_markup(String::ucompose("<b>%1</b>", 

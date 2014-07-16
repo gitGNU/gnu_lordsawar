@@ -39,6 +39,7 @@
 
 class NetworkAction;
 
+//! A helper class for GameServer.  A connected user in a network game.
 struct Participant
 {
   void *conn;

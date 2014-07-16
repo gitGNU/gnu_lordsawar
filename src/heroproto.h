@@ -24,6 +24,7 @@ class XML_Helper;
 #include "hero.h"
 #include "OwnerId.h"
 
+//! A prototype of a Hero object.
 class HeroProto : public ArmyProto, public OwnerId
 {
     public:

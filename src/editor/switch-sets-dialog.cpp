@@ -148,7 +148,7 @@ void SwitchSetsDialog::on_tile_size_changed()
   for (std::list<Glib::ustring>::iterator i = army_themes.begin(),
        end = army_themes.end(); i != end; ++i)
     {
-      if (*i == Armysetlist::getInstance()->getArmyset(armyset)->getName())
+      if (*i == Armysetlist::getInstance()->get(armyset)->getName())
 	default_id = counter;
       army_theme_combobox->append(Glib::filename_to_utf8(*i));
       counter++;
@@ -190,26 +190,26 @@ int SwitchSetsDialog::run()
   if (response != Gtk::RESPONSE_ACCEPT)	// accepted
     return response;
   Glib::ustring subdir;
-  subdir = Tilesetlist::getInstance()->getTilesetDir
+  subdir = Tilesetlist::getInstance()->getSetDir
     (Glib::filename_from_utf8(tile_theme_combobox->get_active_text()),
      get_active_tile_size());
-  selected_tileset = Tilesetlist::getInstance()->getTileset(subdir);
+  selected_tileset = Tilesetlist::getInstance()->get(subdir);
 
-  subdir = Shieldsetlist::getInstance()->getShieldsetDir
+  subdir = Shieldsetlist::getInstance()->getSetDir
     (Glib::filename_from_utf8(shield_theme_combobox->get_active_text()));
-  selected_shieldset = Shieldsetlist::getInstance()->getShieldset(subdir);
+  selected_shieldset = Shieldsetlist::getInstance()->get(subdir);
 
-  subdir = Citysetlist::getInstance()->getCitysetDir
+  subdir = Citysetlist::getInstance()->getSetDir
     (Glib::filename_from_utf8(city_theme_combobox->get_active_text()),
      get_active_tile_size());
-  selected_cityset = Citysetlist::getInstance()->getCityset(subdir);
+  selected_cityset = Citysetlist::getInstance()->get(subdir);
 
-  subdir = Armysetlist::getInstance()->getArmysetDir
+  subdir = Armysetlist::getInstance()->getSetDir
     (Glib::filename_from_utf8(army_theme_combobox->get_active_text()),
      get_active_tile_size());
-  selected_armyset = Armysetlist::getInstance()->getArmyset(subdir);
+  selected_armyset = Armysetlist::getInstance()->get(subdir);
 
-  Armyset *old_armyset = Armysetlist::getInstance()->getArmyset(Playerlist::getInstance()->getNeutral()->getArmyset());
+  Armyset *old_armyset = Armysetlist::getInstance()->get(Playerlist::getInstance()->getNeutral()->getArmyset());
   if (old_armyset->getId() != selected_armyset->getId())
     armyset_changed = true;
   GameMap::getInstance()->switchArmysets(selected_armyset);

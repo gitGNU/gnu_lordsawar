@@ -37,6 +37,7 @@ class Signpost;
 class Temple;
 class PathCalculator;
 
+//! like the BigMap but specifically for the game and not the scenario editor.
 /** Specialization of BigMap for the game (as opposed to the editor)
   */
 class GameBigMap: public BigMap

@@ -31,6 +31,7 @@
 
 class NetworkConnection;
 
+//! A helper class to GameServer.
 class NetworkServer
 {
 public:

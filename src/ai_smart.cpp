@@ -293,7 +293,7 @@ int AI_Smart::chooseArmyTypeToBuy(City *c, bool quick)
     bestScore = -1;
     bestTypeId = -1;
     
-    Armyset *as = al->getArmyset(getArmyset());
+    Armyset *as = al->get(getArmyset());
     for (Armyset::iterator i = as->begin(); i != as->end(); ++i)
     {
         const ArmyProto *proto = NULL;

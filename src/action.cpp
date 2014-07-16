@@ -1354,7 +1354,7 @@ Action_FightOrder::Action_FightOrder(XML_Helper* helper)
   helper->getData(fight_order, "order");
   sfight_order.str(fight_order);
   //XXX XXX XXX this business of looking up the first living seems wrong.
-  Armyset *as = Armysetlist::getInstance()->getArmyset(Playerlist::getInstance()->getFirstLiving()->getArmyset());
+  Armyset *as = Armysetlist::getInstance()->get(Playerlist::getInstance()->getFirstLiving()->getArmyset());
   for (Armyset::iterator i = as->begin(); i != as->end(); i++)
     {
       sfight_order >> val;

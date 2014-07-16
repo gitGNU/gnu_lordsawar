@@ -1339,7 +1339,7 @@ bool Stack::removeArmiesWithoutArmyType(guint32 armyset)
   bool removedArmy = false;
   for (iterator i = begin(); i != end(); i++)
     {
-      Armyset *a = Armysetlist::getInstance()->getArmyset(armyset);
+      Armyset *a = Armysetlist::getInstance()->get(armyset);
       ArmyProto *armyproto = a->lookupArmyByType((*i)->getTypeId());
       if (armyproto == NULL)
         {

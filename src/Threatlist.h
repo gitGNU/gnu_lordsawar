@@ -28,6 +28,7 @@ class Stack;
 class Ruin;
 class AICityInfo;
 
+//! Artificial intelligence for representing a list of threats to a Player.
 /** List of threats.
   */
 class Threatlist : public std::list<Threat*>

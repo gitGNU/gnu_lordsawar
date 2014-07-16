@@ -155,7 +155,7 @@ void CreateScenario::setCityset(Glib::ustring citysetname)
 {
     debug("CreateScenario::setCityset")
     d_citysetname = citysetname;
-    Cityset *cs = Citysetlist::getInstance()->getCityset(citysetname);
+    Cityset *cs = Citysetlist::getInstance()->get(citysetname);
     d_generator->setCityset(cs);
     GameMap::getInstance()->setCityset(citysetname);
 }
@@ -341,7 +341,7 @@ bool CreateScenario::createMap()
 
     //...and create cities, temples, ruins ,signposts
     map = d_generator->getBuildings(d_width, d_height);
-    Cityset *cityset = Citysetlist::getInstance()->getCityset(d_citysetname);
+    Cityset *cityset = Citysetlist::getInstance()->get(d_citysetname);
     
     for (int y = 0; y < d_height; y++)
         for (int x = 0; x < d_width; x++)

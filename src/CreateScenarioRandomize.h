@@ -29,6 +29,7 @@ class Army;
 class Player;
 class Reward;
 
+//! Generates random values for various map buildings.
 class CreateScenarioRandomize
 {
     public:

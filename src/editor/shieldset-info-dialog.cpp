@@ -28,7 +28,7 @@
 #include "File.h"
 
 
-ShieldSetInfoDialog::ShieldSetInfoDialog(Gtk::Window &parent, Shieldset *shieldset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
+ShieldSetInfoDialog::ShieldSetInfoDialog(Gtk::Window &parent, Set *shieldset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
  : LwEditorDialog(parent, "shieldset-info-dialog.ui")
 {
   d_shieldset = shieldset;
@@ -121,8 +121,7 @@ void ShieldSetInfoDialog::update_buttons()
       return;
     }
 
-  Glib::ustring dir = File::getSetDir(Shieldset::file_extension, false) + filename_entry->get_text();
-  if (Shieldsetlist::getInstance()->getShieldset(filename_entry->get_text()))
+  if (Shieldsetlist::getInstance()->get(filename_entry->get_text()))
     {
       accept_button->set_sensitive(false);
       status_label->set_markup(String::ucompose("<b>%1</b>", 

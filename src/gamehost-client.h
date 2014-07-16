@@ -32,6 +32,7 @@ class RecentlyPlayedGameList;
 class Profile;
 class GameScenario;
 
+//! Sends queries to and receives responses from the GamehostServer.
 class GamehostClient
 {
 public:

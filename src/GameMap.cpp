@@ -209,11 +209,11 @@ GameMap::GameMap(XML_Helper* helper)
     d_shieldset = s_dir;
     d_cityset = c_dir;
 
-    Tileset *tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+    Tileset *tileset = Tilesetlist::getInstance()->get(d_tileset);
     s_tileset = tileset;
-    Cityset *cityset = Citysetlist::getInstance()->getCityset(d_cityset);
+    Cityset *cityset = Citysetlist::getInstance()->get(d_cityset);
     s_cityset = cityset;
-    Shieldset *shieldset = Shieldsetlist::getInstance()->getShieldset(d_shieldset);
+    Shieldset *shieldset = Shieldsetlist::getInstance()->get(d_shieldset);
     s_shieldset = shieldset;
     Vector<int>::setMaximumWidth(s_width);
     //create the map
@@ -1232,7 +1232,7 @@ bool GameMap::canAddArmies(Vector<int> dest, guint32 stackSize)
 void GameMap::switchTileset(Tileset *tileset)
 {
   d_tileset = tileset->getBaseName();
-  s_tileset = Tilesetlist::getInstance()->getTileset(d_tileset);
+  s_tileset = Tilesetlist::getInstance()->get(d_tileset);
   for (int i = 0; i < s_width; i++)
     for (int j = 0; j < s_height; j++)
       {
@@ -1266,7 +1266,7 @@ void GameMap::switchShieldset(Shieldset *shieldset)
 {
   Playerlist::getInstance()->setNewColours(shieldset);
   d_shieldset = shieldset->getBaseName();
-  s_shieldset = Shieldsetlist::getInstance()->getShieldset(d_shieldset);
+  s_shieldset = Shieldsetlist::getInstance()->get(d_shieldset);
 }
 
 Vector<int> GameMap::findNearestAreaForBuilding(Maptile::Building building_type, Vector<int> pos, guint32 width)
@@ -2271,7 +2271,7 @@ guint32 GameMap::getCitysetId() const
 
 guint32 GameMap::getShieldsetId() const
 {
-  return Shieldsetlist::getInstance()->getShieldsetId(d_shieldset);
+  return Shieldsetlist::getInstance()->getSetId(d_shieldset);
 }
 
 Glib::ustring GameMap::getTilesetBaseName() const
@@ -2359,7 +2359,7 @@ bool GameMap::eraseTile(Vector<int> tile)
 Tileset* GameMap::getTileset()
 {
   if (s_tileset == 0)
-    s_tileset = Tilesetlist::getInstance()->getTileset(GameMap::getInstance()->getTilesetBaseName());
+    s_tileset = Tilesetlist::getInstance()->get(GameMap::getInstance()->getTilesetBaseName());
     
   return s_tileset;
 }
@@ -2367,7 +2367,7 @@ Tileset* GameMap::getTileset()
 Cityset* GameMap::getCityset()
 {
   if (s_cityset == 0)
-    s_cityset = Citysetlist::getInstance()->getCityset(GameMap::getInstance()->getCitysetBaseName());
+    s_cityset = Citysetlist::getInstance()->get(GameMap::getInstance()->getCitysetBaseName());
     
   return s_cityset;
 }
@@ -2375,7 +2375,7 @@ Cityset* GameMap::getCityset()
 Shieldset* GameMap::getShieldset()
 {
   if (s_shieldset == 0)
-    s_shieldset = Shieldsetlist::getInstance()->getShieldset(GameMap::getInstance()->getShieldsetBaseName());
+    s_shieldset = Shieldsetlist::getInstance()->get(GameMap::getInstance()->getShieldsetBaseName());
     
   return s_shieldset;
 }
@@ -2383,19 +2383,19 @@ Shieldset* GameMap::getShieldset()
 void GameMap::setTileset(Glib::ustring tileset)
 {
   d_tileset = tileset;
-  s_tileset = Tilesetlist::getInstance()->getTileset(tileset);
+  s_tileset = Tilesetlist::getInstance()->get(tileset);
 }
 
 void GameMap::setCityset(Glib::ustring cityset)
 {
   d_cityset = cityset;
-  s_cityset = Citysetlist::getInstance()->getCityset(cityset);
+  s_cityset = Citysetlist::getInstance()->get(cityset);
 }
 
 void GameMap::setShieldset(Glib::ustring shieldset)
 {
   d_shieldset = shieldset;
-  s_shieldset = Shieldsetlist::getInstance()->getShieldset(shieldset);
+  s_shieldset = Shieldsetlist::getInstance()->get(shieldset);
 }
 
 bool GameMap::can_search(Stack *stack)

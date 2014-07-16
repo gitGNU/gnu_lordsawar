@@ -98,17 +98,6 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
         
         bool save(Glib::ustring filename, Glib::ustring extension) const;
 
-	//! Get the tile size of the Armyset.
-	/**
-	 * The width and height of the Army graphic images as they appear
-	 * on the screen.
-	 * Analagous to the armyset.d_tilesize XML entity in the armyset 
-	 * configuration file.
-	 */
-        guint32 getTileSize() const {return d_tilesize;}
-
-        void setTileSize(guint32 tile_size) {d_tilesize = tile_size;}
-
 	//! Get the image of the stack in a ship (minus the mask).
 	PixMask* getShipPic() const {return d_ship;}
 
@@ -201,8 +190,6 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	bool validateArmyTypeIds();
 	//! get filenames in this armyset, excepting the configuration file.
 	void getFilenames(std::list<Glib::ustring> &files);
-        //! Delete the armyset's temporary directory.
-        void clean_tmp_dir() const;
 
 	void instantiateImages(bool &broken);
 	void uninstantiateImages();
@@ -216,12 +203,6 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	const ArmyProto * getRandomRuinKeeper() const;
 	const ArmyProto *getRandomAwardableAlly() const;
 
-        Glib::ustring getFileFromConfigurationFile(Glib::ustring file);
-        //! Replaces file with new_file, or adds new_file if file not present.
-        /**
-         * @return returns True if successful.
-         */
-        bool replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file);
         //! Load the armyset again.
         void reload(bool &broken);
         guint32 calculate_preferred_tile_size() const;
@@ -235,17 +216,6 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
         //! Callback function for the army tag (see XML_Helper)
         bool loadArmyProto(Glib::ustring tag, XML_Helper* helper);
         
-	//! The size of each army tile as rendered in the game.
-	/**
-	 * The tile size represents the height and width in pixels of the 
-	 * army picture.
-	 * The actual army picture holds the unshaded image, and then the
-	 * mask portion of the image to it's right.
-	 * The tilesize is the height of the army image file, and it is also
-	 * precisely equal to half of the image's width.
-	 */
-	guint32 d_tilesize;
-
 	//! The unshaded picture of the stack when it's in a boat.
 	PixMask* d_ship;
 

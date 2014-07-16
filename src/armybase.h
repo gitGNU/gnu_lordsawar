@@ -27,6 +27,7 @@
 
 class XML_Helper;
 
+//! The most basic set of attributes belonging to an army unit or army type.
 class ArmyBase
 {
     public:

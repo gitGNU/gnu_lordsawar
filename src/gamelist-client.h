@@ -31,6 +31,7 @@ class RecentlyPlayedGame;
 class RecentlyPlayedGameList;
 class Profile;
 
+//! Sends queries to and receives responses from the GamelistServer.
 class GamelistClient
 {
 public:

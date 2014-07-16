@@ -251,6 +251,7 @@ class XML_Helper: public xmlpp::SaxParser
         bool error;
 };
 
+//! A helper class for grabbing the version of a game file.
 class VersionLoader 
 {
 public:

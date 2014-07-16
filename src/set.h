@@ -21,11 +21,12 @@
 #include "defs.h"
 #include "xmlhelper.h"
 
+//! Base class for Armyset, Tileset, Shieldset, and Cityset objects.
 class Set
 {
 public:
     enum Origin { SYSTEM, PERSONAL, SCENARIO, NONE};
-    Set(Glib::ustring file_extension, guint32 id, Glib::ustring name);
+    Set(Glib::ustring file_extension, guint32 id, Glib::ustring name, guint32 ts);
     Set(Glib::ustring file_extension, XML_Helper* helper);
     ~Set() {};
     Set(const Set &s);
@@ -38,6 +39,11 @@ public:
 
     Glib::ustring getFile(Glib::ustring file) const;
     Glib::ustring getConfigurationFile() const;
+
+        //! Returns the width and height in pixels of a square on the map.
+        guint32 getTileSize() const {return d_tileSize;}
+
+        void setTileSize(guint32 tile_size) {d_tileSize = tile_size;}
 
 
 	//! Get the unique identifier for this set.
@@ -100,6 +106,14 @@ public:
 
 
         bool save(XML_Helper *helper) const;
+
+        Glib::ustring getFileFromConfigurationFile(Glib::ustring file);
+        bool replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file);
+        bool addFileInConfigurationFile(Glib::ustring new_file);
+
+        void clean_tmp_dir() const;
+
+        bool saveTar(Glib::ustring tmpfile, Glib::ustring tmptar, Glib::ustring dest) const;
 private:
 
     Origin origin;
@@ -143,6 +157,16 @@ private:
 
         //! The file extension of the set.
         Glib::ustring extension;
+
+	//! The size of the graphic tiles in the Tileset.
+	/**
+	 * Equates to the tileset.d_tilesize XML entity in the tileset
+	 * configuration file.
+	 * It represents the size in pixels of the width and height of tile
+	 * imagery onscreen.
+	 */
+        guint32 d_tileSize;
+
 };
 
 #endif

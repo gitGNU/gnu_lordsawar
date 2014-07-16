@@ -36,12 +36,6 @@
 
 Glib::ustring Path::d_tag = "path";
 
-struct node
-{
-  int moves;
-  int turns;
-  int moves_left;
-};
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
 

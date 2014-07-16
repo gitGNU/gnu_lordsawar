@@ -26,7 +26,7 @@
 class TileSetInfoDialog: public LwEditorDialog
 {
  public:
-    TileSetInfoDialog(Gtk::Window &parent, Tileset *tileset, Glib::ustring dir, 
+    TileSetInfoDialog(Gtk::Window &parent, Set *tileset, Glib::ustring dir, 
                       Glib::ustring file, bool readonly = false, 
                       Glib::ustring title = "");
     ~TileSetInfoDialog() {};
@@ -34,7 +34,7 @@ class TileSetInfoDialog: public LwEditorDialog
     int run();
     
  private:
-    Tileset *d_tileset;
+    Set *d_tileset;
     Gtk::Entry *name_entry;
     Gtk::TextView *copyright_textview;
     Gtk::TextView *license_textview;

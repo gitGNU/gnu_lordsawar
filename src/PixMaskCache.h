@@ -24,6 +24,7 @@
 #include <sigc++/slot.h>
 #include "PixMask.h"
 
+//! Template for caching PixMask objects along with a model of each object.
 template<class T> class PixMaskCache: public std::list<T>, public sigc::trackable
 {
 public:

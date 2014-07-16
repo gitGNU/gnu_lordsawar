@@ -91,7 +91,7 @@ void SelectArmyDialog::fill_in_army_toggles()
 
     // fill in selectable armies
     selectable.clear();
-    Armyset *as = al->getArmyset(armyset);
+    Armyset *as = al->get(armyset);
     for (Armyset::iterator j = as->begin(); j != as->end(); ++j)
     {
 	const ArmyProto *a = al->getArmy(armyset, (*j)->getId());

@@ -29,6 +29,7 @@ class XML_Helper;
 
 #include "armybase.h"
 
+//! A basic set of properties belonging to an army prototype.
 class ArmyProtoBase : public ArmyBase
 {
     public:

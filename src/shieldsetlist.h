@@ -45,78 +45,19 @@ class Shieldsetlist : public SetList<Shieldset>, public sigc::trackable
         //! Returns the names of all Shieldset objects available to the game.
 	std::list<Glib::ustring> getValidNames() const;
 
-	//! Return the directory of a specific Shieldset by name.
-        /**
-	 * Scan all of the Shieldset objects in the list for one with the 
-	 * given name.
-	 *
-         * @param name   The name of the shieldset to search for.
-	 *
-         * @return The name of the directory that holds the shieldset, or an
-	 *         empty string if a shieldset by that name could not be found.
-	 *         This value relates to Shieldset::d_dir.
-         */
-	Glib::ustring getShieldsetDir(Glib::ustring name) const;
-
-	//! Return a particular Shield object from a given shieldset.
-	/**
-	 * Scan the given shieldset for a Shield of the given type and colour.
-	 *
-	 * @param shieldset  The id the shieldset.  This value relates to the 
-	 *                   Shieldset::d_id member.
-	 * @param type       The size of the shield to search for.  This value
-	 *                   relates to the Shield::ShieldType enumeration.
-	 * @param colour     The player of the shield.  This value relates to
-	 *                   the Shield::ShieldColour enumeration.
-	 *
-	 * @return A pointer to a Shield in the given shieldset that matches
-	 *         the given parameters.  If no shield could be found, NULL
-	 *         is returned.
-	 */
-	ShieldStyle *getShield(guint32 shieldset, guint32 type, guint32 colour) const;
-
-        guint32 getShieldsetId(Glib::ustring basename) const;
-
-	//! Return the Shieldset object that is in the given directory.
-	Shieldset *getShieldset(Glib::ustring dir) const;
-
 	Gdk::RGBA getColor(guint32 shieldset, guint32 owner) const;
-
-	//! Return the Shieldset object by the id.
-	/**
-	 * @param id   A unique numeric identifier that identifies the 
-	 *             shieldset among all shieldsets in the shieldsetlist.
-	 */
-	Shieldset *getShieldset(guint32 id) const;
 
 
 	// Methods that operate on the class data and modify the class.
 
-	//! Add a shieldset to the list.  Use this instead of push_back.
-	void add(Shieldset *shieldset, Glib::ustring filename);
-
 	//! Destroy all of the images associated with shieldsets in this list.
 	void uninstantiateImages();
-        
-        bool reload(guint32 shieldset_id);
 
 	//! Load all of the images associated with all of the shieldsets.
 	void instantiateImages(bool &broken);
 
-	//! Add the given shieldset to the list, and copy files into place.
-	/**
-	 * This method tries hard to add the shieldset to this list.  The 
-	 * basename could be changed, or the id might also be changed so 
-	 * that it doesn't conflict with any other shieldsets in the list.
-	 *
-	 * @return Returns true if it was added successfully, and the
-	 *         new_basename and new_id parameters updated to reflect the
-	 *         changed basename and id.
-	 */
-	bool addToPersonalCollection(Shieldset *shieldset, Glib::ustring &new_basename, guint32 &new_id);
-	Shieldset *import(Tar_Helper *t, Glib::ustring f, bool &broken);
 
-
+        ShieldStyle *getShield(guint32 shieldset, guint32 type, guint32 colour) const;
 	// Static Methods
 
         //! Return the singleton instance of this class.
@@ -125,10 +66,6 @@ class Shieldsetlist : public SetList<Shieldset>, public sigc::trackable
         //! Explicitly delete the singleton instance of this class.
         static void deleteInstance();
 
-	//! Return a unique id for a shieldset.
-	static int getNextAvailableId(int after);
-
-        Glib::ustring findFreeBaseName(Glib::ustring basename, guint32 max, guint32 &num) const;
     private:
         //! Default Constructor.
 	/**
@@ -139,27 +76,6 @@ class Shieldsetlist : public SetList<Shieldset>, public sigc::trackable
         
         //! Destructor.
         ~Shieldsetlist();
-
-        //! Loads a specific shieldset.
-	Shieldset *loadShieldset(Glib::ustring name);
-
-	//! Loads a bunch of shieldsets and puts them in this list.
-	void loadShieldsets(std::list<Glib::ustring> shieldsets);
-	
-	// DATA
-
-        typedef std::map<Glib::ustring, Glib::ustring> DirMap;
-        typedef std::map<Glib::ustring, Shieldset*> ShieldsetMap;
-        typedef std::map<guint32, Shieldset*> ShieldsetIdMap;
-
-	//! A map that provides a basename when supplying a Shieldset name.
-        DirMap d_dirs;
-
-	//! A map that provides a Shieldset when supplying a basename name.
-        ShieldsetMap d_shieldsets;
-
-	//! A map that provides a Shieldset when supplying a shieldset id.
-        ShieldsetIdMap d_shieldsetids;
 
         //! A static pointer for the singleton instance.
         static Shieldsetlist* s_instance;

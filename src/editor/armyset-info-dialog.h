@@ -26,7 +26,7 @@
 class ArmySetInfoDialog: public LwEditorDialog
 {
  public:
-    ArmySetInfoDialog(Gtk::Window &parent, Armyset *armyset, Glib::ustring dir, 
+    ArmySetInfoDialog(Gtk::Window &parent, Set *armyset, Glib::ustring dir, 
                       Glib::ustring file, bool readonly = false, 
                       Glib::ustring title = "");
     ~ArmySetInfoDialog() {};
@@ -34,7 +34,7 @@ class ArmySetInfoDialog: public LwEditorDialog
     int run();
     
  private:
-    Armyset *d_armyset;
+    Set *d_armyset;
     Gtk::Entry *name_entry;
     Gtk::TextView *copyright_textview;
     Gtk::TextView *license_textview;

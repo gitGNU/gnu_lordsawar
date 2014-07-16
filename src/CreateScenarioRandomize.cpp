@@ -112,8 +112,7 @@ guint32 CreateScenarioRandomize::getRandomCityIncome(bool capital)
 
 Army * CreateScenarioRandomize::getRandomRuinKeeper(Player *p)
 {
-  Armysetlist *al = Armysetlist::getInstance();
-  const ArmyProto *a= al->getArmyset(p->getArmyset())->getRandomRuinKeeper();
+  const ArmyProto *a= Armysetlist::getInstance()->get(p->getArmyset())->getRandomRuinKeeper();
   if (a)
     return (new Army(*a, p));
 

@@ -126,7 +126,7 @@ void MaskedImageEditorDialog::show_image(Glib::ustring filename)
 	}
 
       if (d_shieldset == NULL)
-        d_shieldset = Shieldsetlist::getInstance()->getShieldset(1);
+        d_shieldset = Shieldsetlist::getInstance()->get(1);
       Gdk::RGBA colour = d_shieldset->getColor(i);
       PixMask *army_image = ImageCache::applyMask(half[0],  half[1],
 						     colour, false);

@@ -26,7 +26,7 @@
 #include <giomm.h>
 #include "network-common.h"
 
-// a simple network connection for sending messages, encapsulates the protocol
+//! A simple network connection for sending messages, encapsulates the protocol
 class NetworkConnection
 {
 public:

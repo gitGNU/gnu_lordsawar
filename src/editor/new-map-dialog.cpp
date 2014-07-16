@@ -190,18 +190,18 @@ void NewMapDialog::run()
       assert(row >= 0 && row < int(fill_style.size()));
       map.fill_style = fill_style[row];
 
-      map.tileset = Tilesetlist::getInstance()->getTilesetDir
+      map.tileset = Tilesetlist::getInstance()->getSetDir
 	(Glib::filename_from_utf8(tile_theme_combobox->get_active_text()),
 	 get_active_tile_size());
 
-      map.shieldset = Shieldsetlist::getInstance()->getShieldsetDir
+      map.shieldset = Shieldsetlist::getInstance()->getSetDir
 	(Glib::filename_from_utf8(shield_theme_combobox->get_active_text()));
 
-      map.cityset = Citysetlist::getInstance()->getCitysetDir
+      map.cityset = Citysetlist::getInstance()->getSetDir
 	(Glib::filename_from_utf8(city_theme_combobox->get_active_text()),
 	 get_active_tile_size());
 
-      map.armyset = Armysetlist::getInstance()->getArmysetDir
+      map.armyset = Armysetlist::getInstance()->getSetDir
 	(Glib::filename_from_utf8(army_theme_combobox->get_active_text()),
 	 get_active_tile_size());
 

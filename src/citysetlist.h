@@ -50,45 +50,9 @@ class Citysetlist : public SetList<Cityset>, public sigc::trackable
         //! Returns the different tilesizes present in the citysetlist.
 	void getSizes(std::list<guint32> &sizes);
 
-	//! Return the name of the basename for a given cityset.
-        /** 
-         * @param name          The name of the cityset to get the basename of.
-	 * @param tilesize      The size of the cityset to get the basename of.
-	 *
-         * @return The name of the directory that holds the cityset.  See 
-	 *         Cityset::d_dir for more information about the nature of 
-	 *         the return value.
-         */
-	Glib::ustring getCitysetDir(Glib::ustring name, guint32 tilesize) const;
-
-	//! Return the Cityset object by the basename.
-	/**
-	 * @param dir  The basename of the file where the Cityset resides on 
-         *             disk.  This value does not contain any slashes, and is
-	 *             presumed to be found inside the citysets/ directory.
-	 */
-	Cityset *getCityset(Glib::ustring bname) const;
-
-	guint32 getCitysetId(Glib::ustring bname) const;
-
-	//! Return the Cityset object by the id.
-	/**
-	 * @param id   A unique numeric identifier that identifies the cityset
-	 *             among all tilesets in the citysetlist.
-	 */
-	Cityset *getCityset(guint32 id) const;
-
-	void add(Cityset *cityset, Glib::ustring file);
 	void instantiateImages(bool &broken);
 	void uninstantiateImages();
-        bool reload(guint32 cityset_id);
 
-	bool addToPersonalCollection(Cityset *cityset, Glib::ustring &new_basename, guint32 &new_id);
-	Cityset *import(Tar_Helper *t, Glib::ustring f, bool &broken);
-
-	static int getNextAvailableId(int after = 0);
-
-        Glib::ustring findFreeBaseName(Glib::ustring basename, guint32 max, guint32 &num) const;
     private:
         //! Default constructor.  Loads all citysets it can find.
 	/**
@@ -98,35 +62,6 @@ class Citysetlist : public SetList<Cityset>, public sigc::trackable
         
         //! Destructor.
         ~Citysetlist();
-
-        //! Loads a specific Cityset.
-	/**
-	 * Load the Cityset from an cityset configuration file and add it to 
-	 * this list of Cityset objects.
-	 *
-	 * @param name  The basename of the file that the Cityset resides in.
-         *
-	 * @return the Cityset.  NULL otherwise.
-	 */
-        Cityset* loadCityset (Glib::ustring name);
-        void loadCitysets (std::list<Glib::ustring> name);
-        
-        typedef std::map<Glib::ustring, Glib::ustring> DirMap;
-        typedef std::map<Glib::ustring, Cityset*> CitysetMap;
-        typedef std::map<guint32, Cityset*> CitysetIdMap;
-
-	//! A map that provides a basename when supplying a Cityset name.
-	/**
-	 * the key for this map is actually the city name, a space, and then
-	 * the tile size.  e.g. "Default 80".
-	 */
-        DirMap d_dirs;
-
-	//! A map that provides a Cityset when supplying a basename.
-        CitysetMap d_citysets;
-
-	//! A map that provides a Cityset when supplying a cityset id.
-        CitysetIdMap d_citysetids;
 
         //! A static pointer for the singleton instance.
         static Citysetlist* s_instance;

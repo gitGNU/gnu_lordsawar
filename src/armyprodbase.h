@@ -29,6 +29,10 @@ class ArmyProto;
 
 class XML_Helper;
 
+//! A basic set of properties belonging to an army production base.
+/**
+ * An army production base is the army type in a city that can be instantiated.
+ */
 class ArmyProdBase: public ArmyProtoBase
 {
     public:

@@ -507,10 +507,9 @@ void MainWindow::set_filled_map(int width, int height, int fill_style, Glib::ust
 
     // ...however we need to do some of the setup by hand. We need to create a
     // neutral player to give cities a player upon creation...
-    guint32 armyset_id = 
-      Armysetlist::getInstance()->getArmyset(armyset)->getId();
+    guint32 armyset_id = Armysetlist::getInstance()->get(armyset)->getId();
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
-    Shieldset *ss = ssl->getShieldset(shieldset);
+    Shieldset *ss = ssl->get(shieldset);
     Glib::ustring name = d_create_scenario_names->getPlayerName(Shield::NEUTRAL);
     Player* neutral = new AI_Dummy(name, armyset_id, 
 				   ssl->getColor(ss->getId(), MAX_PLAYERS), 
@@ -557,11 +556,10 @@ void MainWindow::set_random_map(int width, int height,
     
     // We need to create a neutral player to give cities a player upon
     // creation...
-    guint32 armyset_id = 
-      Armysetlist::getInstance()->getArmyset(armyset)->getId();
+    guint32 armyset_id = Armysetlist::getInstance()->get(armyset)->getId();
     Citysetlist::getInstance();
     Shieldsetlist *ssl = Shieldsetlist::getInstance();
-    Shieldset *ss = ssl->getShieldset(shieldset);
+    Shieldset *ss = ssl->get(shieldset);
     Glib::ustring name = d_create_scenario_names->getPlayerName(Shield::NEUTRAL);
     Player* neutral = new AI_Dummy(name, armyset_id, 
 				   ssl->getColor(ss->getId(), MAX_PLAYERS), 
@@ -613,7 +611,7 @@ void MainWindow::set_random_map(int width, int height,
       delete d_create_scenario_names;
     d_create_scenario_names = new CreateScenarioRandomize();
     
-    Cityset *cs = Citysetlist::getInstance()->getCityset(cityset);
+    Cityset *cs = Citysetlist::getInstance()->get(cityset);
     // now fill the lists
     const Maptile::Building* build = gen.getBuildings(width, height);
     for (int j = 0; j < height; j++)
@@ -1041,7 +1039,7 @@ void MainWindow::on_edit_armyset_activated()
 {
   Gtk::Main *kit = Gtk::Main::instance();;
   guint32 army_set_id = Playerlist::getActiveplayer()->getArmyset();
-  Armyset *armyset = Armysetlist::getInstance()->getArmyset(army_set_id);
+  Armyset *armyset = Armysetlist::getInstance()->get(army_set_id);
   Glib::ustring file = armyset->getConfigurationFile();
  
   ArmySetWindow* armyset_window = new ArmySetWindow (window, file);
@@ -1061,7 +1059,7 @@ void MainWindow::on_armyset_saved(guint32 id)
       //we're doing reload before, because we need the maps to be updated.
       //but then the armyset* gets changed and the switch has no effect.
       Armysetlist::getInstance()->reload(id);
-      GameMap::getInstance()->switchArmysets(Armysetlist::getInstance()->getArmyset(id));
+      GameMap::getInstance()->switchArmysets(Armysetlist::getInstance()->get(id));
       bigmap->screen_size_changed(bigmap_image->get_allocation()); 
       redraw();
       needs_saving = true;
@@ -1130,7 +1128,7 @@ void MainWindow::on_tileset_saved(guint32 id)
     {
       ImageCache::getInstance()->reset();
       Tilesetlist::getInstance()->reload(id);
-      GameMap::getInstance()->switchTileset(Tilesetlist::getInstance()->getTileset(id));
+      GameMap::getInstance()->switchTileset(Tilesetlist::getInstance()->get(id));
       smallmap->resize();
       bigmap->screen_size_changed(bigmap_image->get_allocation()); 
       setup_terrain_radiobuttons();
@@ -1826,6 +1824,7 @@ void MainWindow::on_switch_sets_activated()
       update_window_title();
       ImageCache::getInstance()->reset();
       bigmap->screen_size_changed(bigmap_image->get_allocation()); 
+      smallmap->resize();
       if (d.get_tileset_changed())
         {
           setup_terrain_radiobuttons();

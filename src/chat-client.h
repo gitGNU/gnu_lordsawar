@@ -26,6 +26,7 @@
 #include <sigc++/trackable.h>
 #include <sigc++/signal.h>
 
+//! An object representing a person in the game lobby chat window.
 class ChatClient: public sigc::trackable
 {
 public:

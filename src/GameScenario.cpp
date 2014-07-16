@@ -134,7 +134,7 @@ bool GameScenario::loadArmysets(Tar_Helper *t)
     {
       Armyset *armyset = Armysetlist::getInstance()->import(t, *it, broken);
       if (armyset && !broken)
-        Armysetlist::getInstance()->getArmyset(armyset->getId())->instantiateImages(broken);
+        Armysetlist::getInstance()->get(armyset->getId())->instantiateImages(broken);
     }
   return !broken;
 }
@@ -150,7 +150,7 @@ bool GameScenario::loadTilesets(Tar_Helper *t)
     {
       Tileset *tileset = tlist->import(t, *it, broken);
       if (tileset && !broken)
-        tlist->getTileset(tileset->getId())->instantiateImages(broken);
+        tlist->get(tileset->getId())->instantiateImages(broken);
     }
   return !broken;
 }
@@ -166,7 +166,7 @@ bool GameScenario::loadCitysets(Tar_Helper *t)
     {
       Cityset *cityset = clist->import(t, *it, broken);
       if (cityset && !broken)
-        clist->getCityset(cityset->getId())->instantiateImages(broken);
+        clist->get(cityset->getId())->instantiateImages(broken);
     }
   return !broken;
 }
@@ -182,7 +182,7 @@ bool GameScenario::loadShieldsets(Tar_Helper *t)
     {
       Shieldset *shieldset = slist->import(t, *it, broken);
       if (shieldset)
-        slist->getShieldset(shieldset->getId())->instantiateImages(broken);
+        slist->get(shieldset->getId())->instantiateImages(broken);
     }
   return !broken;
 }
@@ -616,7 +616,7 @@ bool GameScenario::saveGame(Glib::ustring filename, Glib::ustring extension) con
   for (std::list<guint32>::iterator it = armysets.begin(); it!= armysets.end();
        it++)
     {
-      Armyset *as = Armysetlist::getInstance()->getArmyset(*it);
+      Armyset *as = Armysetlist::getInstance()->get(*it);
       t.saveFile(as->getConfigurationFile());
     }
 
@@ -1028,6 +1028,7 @@ void GameScenario::initialize(GameParameters g)
     }
 }
 
+//! Grabs the game option information out of a scenario file.
 class ParamLoader
 {
 public:
@@ -1097,7 +1098,7 @@ public:
 		int armyset_id;
 		helper->getData(armyset_id, "armyset");
 		Armysetlist *al = Armysetlist::getInstance();
-		Armyset *armyset = al->getArmyset(armyset_id);
+		Armyset *armyset = al->get(armyset_id);
 		game_params.army_theme = armyset->getBaseName();
 	      }
 
@@ -1150,6 +1151,7 @@ GameParameters GameScenario::loadGameParameters(Glib::ustring filename, bool &br
   return loader.game_params;
 }
 
+//! Grab the type of game from a saved-game file.  Either networked or hotseat.
 class PlayModeLoader
 {
 public:
@@ -1194,6 +1196,7 @@ GameScenario::PlayMode GameScenario::loadPlayMode(Glib::ustring filename, bool &
   return loader.play_mode;
 }
 
+//! Read in some basic information about a scenario from a scenario file.
 class DetailsLoader
 {
 public:

@@ -1385,7 +1385,7 @@ PixMask* ImageCache::circled(PixMask* image, Gdk::RGBA colour, bool coloured, do
 
 PixMask *SelectorPixMaskCacheItem::generate(SelectorPixMaskCacheItem i)
 {
-  Tileset *ts = Tilesetlist::getInstance()->getTileset(i.tileset);
+  Tileset *ts = Tilesetlist::getInstance()->get(i.tileset);
   Player *p = Playerlist::getInstance()->getPlayer(i.player_id);
   if (i.type == 0)
     return ImageCache::applyMask(ts->getSelectorImage(i.frame), 
@@ -1441,7 +1441,7 @@ bool SelectorPixMaskCacheItem::loadSelectorImages(Glib::ustring filename, guint3
 
 PixMask *FlagPixMaskCacheItem::generate(FlagPixMaskCacheItem i)
 {
-  Tileset *ts = Tilesetlist::getInstance()->getTileset(i.tileset);
+  Tileset *ts = Tilesetlist::getInstance()->get(i.tileset);
   Player *p = Playerlist::getInstance()->getPlayer(i.player_id);
   // size of stack starts at 1, but we need the index, which starts at 0
   return ImageCache::applyMask (ts->getFlagImage(i.size-1), 
@@ -1540,8 +1540,7 @@ PixMask *CircledArmyPixMaskCacheItem::generate(CircledArmyPixMaskCacheItem i)
     }
   else
     {
-      guint32 size = 
-        Armysetlist::getInstance()->getArmyset(i.armyset)->getTileSize();
+      guint32 size = Armysetlist::getInstance()->get(i.armyset)->getTileSize();
       Glib::RefPtr<Gdk::Pixbuf> pixbuf
         = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB, true, 8, size, size);
       pixbuf->fill(0x00000000);
@@ -1576,7 +1575,7 @@ int CircledArmyPixMaskCacheItem::comp(const CircledArmyPixMaskCacheItem item) co
 PixMask *TilePixMaskCacheItem::generate(TilePixMaskCacheItem i)
 {
   PixMask *s;
-  Tileset *t = Tilesetlist::getInstance()->getTileset(i.tileset);
+  Tileset *t = Tilesetlist::getInstance()->get(i.tileset);
   if (i.fog_type_id == FogMap::ALL)
     s = t->getFogImage(i.fog_type_id - 1)->copy();
   else
@@ -1709,7 +1708,7 @@ int TilePixMaskCacheItem::comp(const TilePixMaskCacheItem item) const
 
 PixMask *CityPixMaskCacheItem::generate(CityPixMaskCacheItem i)
 {
-  Cityset *cs = Citysetlist::getInstance()->getCityset(i.cityset);
+  Cityset *cs = Citysetlist::getInstance()->get(i.cityset);
   Player *p = Playerlist::getInstance()->getPlayer(i.player_id);
   if (i.type == -1)
     return cs->getRazedCityImage(p->getId())->copy();
@@ -1731,7 +1730,7 @@ int CityPixMaskCacheItem::comp(const CityPixMaskCacheItem item) const
 
 PixMask *TowerPixMaskCacheItem::generate(TowerPixMaskCacheItem i)
 {
-  Cityset *cs = Citysetlist::getInstance()->getCityset(i.cityset);
+  Cityset *cs = Citysetlist::getInstance()->get(i.cityset);
   return cs->getTowerImage(i.player_id)->copy();
 }
 
@@ -1747,7 +1746,7 @@ int TowerPixMaskCacheItem::comp(const TowerPixMaskCacheItem item) const
 
 PixMask *TemplePixMaskCacheItem::generate(TemplePixMaskCacheItem i)
 {
-  Cityset *cs = Citysetlist::getInstance()->getCityset(i.cityset);
+  Cityset *cs = Citysetlist::getInstance()->get(i.cityset);
   return cs->getTempleImage(i.type)->copy();
 }
 
@@ -1763,7 +1762,7 @@ int TemplePixMaskCacheItem::comp(const TemplePixMaskCacheItem item) const
 
 PixMask *RuinPixMaskCacheItem::generate(RuinPixMaskCacheItem i)
 {
-  Cityset *cs = Citysetlist::getInstance()->getCityset(i.cityset);
+  Cityset *cs = Citysetlist::getInstance()->get(i.cityset);
   return cs->getRuinImage(i.type)->copy();
 }
 
@@ -1794,7 +1793,7 @@ int DiplomacyPixMaskCacheItem::comp(const DiplomacyPixMaskCacheItem item) const
 
 PixMask *RoadPixMaskCacheItem::generate(RoadPixMaskCacheItem i)
 {
-  Tileset *ts = Tilesetlist::getInstance()->getTileset(i.tileset);
+  Tileset *ts = Tilesetlist::getInstance()->get(i.tileset);
   return ts->getRoadImage(i.type)->copy();
 }
 
@@ -1810,7 +1809,7 @@ int RoadPixMaskCacheItem::comp(const RoadPixMaskCacheItem item) const
 
 PixMask *FogPixMaskCacheItem::generate(FogPixMaskCacheItem i)
 {
-  Tileset *ts = Tilesetlist::getInstance()->getTileset(i.tileset);
+  Tileset *ts = Tilesetlist::getInstance()->get(i.tileset);
   return ts->getFogImage(i.type - 1)->copy();
 }
 
@@ -1826,7 +1825,7 @@ int FogPixMaskCacheItem::comp(const FogPixMaskCacheItem item) const
 
 PixMask *BridgePixMaskCacheItem::generate(BridgePixMaskCacheItem i)
 {
-  Tileset *ts = Tilesetlist::getInstance()->getTileset(i.tileset);
+  Tileset *ts = Tilesetlist::getInstance()->get(i.tileset);
   return ts->getBridgeImage(i.type)->copy();
 }
 
@@ -1972,7 +1971,7 @@ int PlantedStandardPixMaskCacheItem::comp(const PlantedStandardPixMaskCacheItem 
 
 PixMask *PortPixMaskCacheItem::generate(PortPixMaskCacheItem i)
 {
-  return Citysetlist::getInstance()->getCityset(i.cityset)->getPortImage()->copy();
+  return Citysetlist::getInstance()->get(i.cityset)->getPortImage()->copy();
 }
 
 int PortPixMaskCacheItem::comp(const PortPixMaskCacheItem item) const
@@ -1985,7 +1984,7 @@ int PortPixMaskCacheItem::comp(const PortPixMaskCacheItem item) const
 
 PixMask *SignpostPixMaskCacheItem::generate(SignpostPixMaskCacheItem i)
 {
-  return Citysetlist::getInstance()->getCityset(i.cityset)->getSignpostImage()->copy();
+  return Citysetlist::getInstance()->get(i.cityset)->getSignpostImage()->copy();
 }
 
 int SignpostPixMaskCacheItem::comp(const SignpostPixMaskCacheItem item) const
@@ -2011,7 +2010,7 @@ int BagPixMaskCacheItem::comp(const BagPixMaskCacheItem item) const
 
 PixMask *ExplosionPixMaskCacheItem::generate(ExplosionPixMaskCacheItem i)
 {
-  return Tilesetlist::getInstance()->getTileset(i.tileset)->getExplosionImage()->copy();
+  return Tilesetlist::getInstance()->get(i.tileset)->getExplosionImage()->copy();
 }
 
 int ExplosionPixMaskCacheItem::comp(const ExplosionPixMaskCacheItem item) const

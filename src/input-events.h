@@ -20,7 +20,7 @@
 
 #include "vector.h"
 
-// mouse button pressed or released
+//! A helper struct for representing an event involving the mouse button.
 struct MouseButtonEvent
 {
     Vector<int> pos;
@@ -35,7 +35,7 @@ struct MouseButtonEvent
     State state;
 };
 
-// mouse moved
+//! A helper struct for representing an event involving mouse pointer movement.
 struct MouseMotionEvent
 {
     Vector<int> pos;

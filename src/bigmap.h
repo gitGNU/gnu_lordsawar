@@ -38,6 +38,7 @@ class Stack;
 class MapRenderer;
 class Location;
 
+//! Draws the game objects and terrain on the large map.
 /** The large map
   * 
   * The detailed map in which all the action takes place. Handles scrolling

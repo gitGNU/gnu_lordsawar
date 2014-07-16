@@ -22,6 +22,7 @@
 
 class Player;
 
+//! Artificial intelligence for managing diplomatic relations.
 class AI_Diplomacy
 {
     public:

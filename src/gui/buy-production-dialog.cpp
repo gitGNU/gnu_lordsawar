@@ -53,7 +53,7 @@ BuyProductionDialog::BuyProductionDialog(Gtk::Window &parent, City *c)
 
     Player *p = Playerlist::getInstance()->getActiveplayer();
     // fill in purchasable armies
-    Armyset *as = al->getArmyset(p->getArmyset());
+    Armyset *as = al->get(p->getArmyset());
     for (Armyset::iterator j = as->begin(); j != as->end(); ++j)
       {
         const ArmyProto *a = al->getArmy (p->getArmyset(), (*j)->getId());

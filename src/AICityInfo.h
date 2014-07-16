@@ -23,6 +23,7 @@
 class Threatlist;
 class Threat;
 
+//! Artificial intelligence helper class for relating threats to a city.
 /** Class which contains some threat-related information about a city. It is
   * used by the smart AI.
   * 

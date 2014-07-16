@@ -24,6 +24,7 @@
 #include <gtkmm.h>
 #include "vector.h"
 
+//! A helper class to BigMap which renders individual tiles on a surface.
 /** Class which cares about rendering of the map.
   * 
   * This class is initalized with the drawing surface of the BigMap class. It

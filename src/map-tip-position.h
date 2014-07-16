@@ -20,9 +20,10 @@
 
 #include "vector.h"
 
+//! A helper struct to state where on the map a tooltip should be displayed.
 struct MapTipPosition
 {
-    // position in pixels in the SDL screen surface
+    // position in pixels in the GameBigMap screen surface
     Vector<int> pos;		
 
     // the requested justification

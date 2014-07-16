@@ -54,48 +54,30 @@ void Armysetlist::deleteInstance()
   s_instance = 0;
 }
 
-void Armysetlist::add(Armyset *armyset, Glib::ustring file)
-{
-  Glib::ustring basename = File::get_basename(file);
-  push_back(armyset); 
-  for (Armyset::iterator ait = armyset->begin(); ait != armyset->end(); ait++)
-    d_armies[armyset->getId()][(*ait)->getId()] = (*ait);
-  d_names[armyset->getId()] = armyset->getName();
-  d_ids[String::ucompose("%1 %2", armyset->getName(), armyset->getTileSize())] = armyset->getId();
-  armyset->setBaseName(basename);
-  d_armysets[basename] = armyset;
-  d_armysetids[armyset->getId()] = armyset;
-}
-
-void Armysetlist::loadArmysets(std::list<Glib::ustring> armysets)
-{
-  for (std::list<Glib::ustring>::const_iterator i = armysets.begin(); 
-       i != armysets.end(); i++)
-    {
-      Armyset *armyset = loadArmyset(*i);
-      if (!armyset)
-	continue;
-
-      add(armyset, *i);
-    }
-}
-
 Armysetlist::Armysetlist()
  : SetList(Armyset::file_extension)
 {
-  // load all armysets
-  std::list<Glib::ustring> armysets = SetList::scan(Armyset::file_extension);
-  loadArmysets(armysets);
-  armysets = SetList::scan(Armyset::file_extension, false);
-  loadArmysets(armysets);
+  signal_add().connect(sigc::mem_fun(this, &Armysetlist::on_armyset_added));
+  signal_reload().connect(sigc::mem_fun(this, &Armysetlist::on_armyset_reloaded));
+  loadSets(SetList::scan(Armyset::file_extension));
+  loadSets(SetList::scan(Armyset::file_extension, false));
+}
 
+void Armysetlist::on_armyset_added(Armyset *armyset)
+{
+  for (Armyset::iterator ait = armyset->begin(); ait != armyset->end(); ait++)
+    d_armies[armyset->getId()][(*ait)->getId()] = (*ait);
+}
+
+void Armysetlist::on_armyset_reloaded(Armyset *armyset)
+{
+  d_armies[armyset->getId()].clear();
+  for (Armyset::iterator ait = armyset->begin(); ait != armyset->end(); ait++)
+    d_armies[armyset->getId()][(*ait)->getId()] = (*ait);
 }
 
 Armysetlist::~Armysetlist()
 {
-  for (iterator it = begin(); it != end(); it++)
-    delete (*it);
-
   // remove all army entries
   for (ArmyPrototypeMap::iterator it = d_armies.begin(); 
        it != d_armies.end(); it++)
@@ -121,7 +103,7 @@ ArmyProto* Armysetlist::getArmy(guint32 id, guint32 type_id) const
 
 ArmyProto* Armysetlist::lookupWeakestQuickestArmy(guint32 id) const
 {
-  Armyset *a = getArmyset(id);
+  Armyset *a = get(id);
   if (a)
     return a->lookupWeakestQuickestArmy();
   return NULL;
@@ -135,55 +117,6 @@ std::list<Glib::ustring> Armysetlist::getValidNames(guint32 tilesize)
       names.push_back((*it)->getName());
   names.sort(case_insensitive);
   return names;
-}
-
-Glib::ustring Armysetlist::getName(guint32 id) const
-{
-  NameMap::const_iterator it = d_names.find(id);
-
-  // armyset does not exist
-  if (it == d_names.end())
-    return 0;
-
-  return (*it).second;
-}
-
-Armyset *Armysetlist::loadArmyset(Glib::ustring name)
-{
-  debug("Loading armyset " <<File::get_basename(name));
-  bool unsupported_version;
-  Armyset *armyset = Armyset::create(name, unsupported_version);
-  if (armyset == NULL)
-    {
-      std::cerr << String::ucompose (_("Error!  armyset: `%1' is malformed.  Skipping."),File::get_basename(name, true)) << std::endl;
-      return NULL;
-    }
-  if (d_armysets.find(armyset->getBaseName()) != d_armysets.end())
-    {
-      Armyset *a = (*d_armysets.find(armyset->getBaseName())).second;
-      std::cerr << String::ucompose(_("Error!  armyset: `%1' shares a duplicate armyset basename `%2' with `%3'.  Skipping."), armyset->getConfigurationFile(), a->getBaseName(), a->getConfigurationFile()) << std::endl;
-      delete armyset;
-      return NULL;
-    }
-    
-  if (d_armysetids.find(armyset->getId()) != d_armysetids.end())
-    {
-      Armyset *a = (*d_armysetids.find(armyset->getId())).second;
-      std::cerr << String::ucompose(_("Error!  armyset: `%1' shares a duplicate armyset id with `%2'.  Skipping."), armyset->getConfigurationFile(), a->getConfigurationFile()) << std::endl;
-      delete armyset;
-      return NULL;
-    }
-  return armyset;
-}
-
-PixMask* Armysetlist::getShipPic (guint32 id)
-{
-  for (iterator it = begin(); it != end(); it++)
-    {
-      if ((*it)->getId() == id)
-	return (*it)->getShipPic();
-    }
-  return NULL;
 }
 
 PixMask* Armysetlist::getShipMask (guint32 id)
@@ -245,58 +178,6 @@ void Armysetlist::getSizes(std::list<guint32> &sizes)
     }
 }
 
-int Armysetlist::getArmysetId(Glib::ustring armyset, guint32 tilesize) const
-{
-  IdMap::const_iterator it = 
-    d_ids.find(String::ucompose("%1 %2", armyset, tilesize));
-  if (it == d_ids.end())
-    return -1;
-  return (*it).second;
-}
-
-Glib::ustring Armysetlist::getArmysetDir(Glib::ustring name, guint32 tilesize) const
-{
-  int id = getArmysetId(name, tilesize);
-  if (id == -1)
-    return "";
-  return getArmyset(id)->getBaseName();
-}
-
-int Armysetlist::getNextAvailableId(int after)
-{
-  bool unsupported_version;
-  std::list<guint32> ids;
-  std::list<Glib::ustring> armysets = SetList::scan(Armyset::file_extension);
-  //there might be IDs in invalid armysets.
-  for (std::list<Glib::ustring>::const_iterator i = armysets.begin(); 
-       i != armysets.end(); i++)
-    {
-      Armyset *armyset = Armyset::create(*i, unsupported_version);
-      if (armyset != NULL)
-	{
-	  ids.push_back(armyset->getId());
-	  delete armyset;
-	}
-    }
-  armysets = SetList::scan(Armyset::file_extension, false);
-  for (std::list<Glib::ustring>::const_iterator i = armysets.begin(); 
-       i != armysets.end(); i++)
-    {
-      Armyset *armyset = Armyset::create(*i, unsupported_version);
-      if (armyset != NULL)
-	{
-	  ids.push_back(armyset->getId());
-	  delete armyset;
-	}
-    }
-  for (guint32 i = after + 1; i < 1000000; i++)
-    {
-      if (find(ids.begin(), ids.end(), i) == ids.end())
-	return i;
-    }
-  return -1;
-}
-
 void Armysetlist::instantiateImages(bool &broken)
 {
   broken = false;
@@ -313,124 +194,13 @@ void Armysetlist::uninstantiateImages()
     (*it)->uninstantiateImages();
 }
 
-Armyset *Armysetlist::getArmyset(guint32 id) const
+PixMask* Armysetlist::getShipPic (guint32 id)
 {
-  ArmysetIdMap::const_iterator it = d_armysetids.find(id);
-  if (it == d_armysetids.end())
-    return NULL;
-  return (*it).second;
-}
-
-Armyset *Armysetlist::getArmyset(Glib::ustring bname) const
-{ 
-  ArmysetMap::const_iterator it = d_armysets.find(bname);
-  if (it == d_armysets.end())
-    return NULL;
-  return (*it).second;
-}
-
-Glib::ustring Armysetlist::findFreeBaseName(Glib::ustring basename, guint32 max, guint32 &num) const
-{
-  Glib::ustring new_basename;
-  for (unsigned int count = 1; count < max; count++)
+  for (iterator it = begin(); it != end(); it++)
     {
-      new_basename = String::ucompose("%1%2", basename, count);
-      if (getArmyset(new_basename) == NULL)
-        {
-          num = count;
-          break;
-        }
-      else
-        new_basename = "";
+      if ((*it)->getId() == id)
+       return (*it)->getShipPic();
     }
-  return new_basename;
+  return NULL;
 }
 
-bool Armysetlist::addToPersonalCollection(Armyset *armyset, Glib::ustring &new_basename, guint32 &new_id)
-{
-  //do we already have this one?
-      
-  if (getArmyset(armyset->getBaseName()) == getArmyset(armyset->getId())
-      && getArmyset(armyset->getBaseName()) != NULL)
-    {
-      armyset->setDirectory(getArmyset(armyset->getId())->getDirectory());
-      return true;
-    }
-
-  //if the basename conflicts with any other basename, then change it.
-  if (getArmyset(armyset->getBaseName()) != NULL)
-    {
-      if (new_basename != "" && getArmyset(new_basename) == NULL)
-        ;
-      else
-        {
-          guint32 num = 0;
-          Glib::ustring new_basename = findFreeBaseName(armyset->getBaseName(), 100, num);
-          if (new_basename == "")
-            return false;
-        }
-    }
-  else if (new_basename == "")
-    new_basename = armyset->getBaseName();
-
-  //if the id conflicts with any other id, then change it
-  if (getArmyset(armyset->getId()) != NULL)
-    {
-      if (new_id != 0 && getArmyset(new_id) == NULL)
-        armyset->setId(new_id);
-      else
-        {
-          new_id = Armysetlist::getNextAvailableId(armyset->getId());
-          armyset->setId(new_id);
-        }
-    }
-  else
-    new_id = armyset->getId();
-
-  //make the directory where the armyset is going to live.
-  Glib::ustring file = File::getSetDir(Armyset::file_extension, false) + new_basename + Armyset::file_extension;
-
-  armyset->save(file, Armyset::file_extension);
-
-  if (new_basename != armyset->getBaseName())
-    armyset->setBaseName(new_basename);
-  armyset->setDirectory(File::get_dirname(file));
-  add (armyset, file);
-  return true;
-}
-
-Armyset *Armysetlist::import(Tar_Helper *t, Glib::ustring f, bool &broken)
-{
-  bool unsupported_version;
-  Glib::ustring filename = t->getFile(f, broken);
-  if (broken)
-    return NULL;
-  Armyset *armyset = Armyset::create(filename, unsupported_version);
-  assert (armyset != NULL);
-  armyset->setBaseName(File::get_basename(f));
-
-  Glib::ustring basename = "";
-  guint32 id = 0;
-  addToPersonalCollection(armyset, basename, id);
-
-  return armyset;
-}
-
-bool Armysetlist::reload(guint32 id) 
-{
-  Armyset *armyset = getArmyset(id);
-  if (!armyset)
-    return false;
-  bool broken = false;
-  armyset->reload(broken);
-  if (broken)
-    return false;
-  d_armies[armyset->getId()].clear();
-  for (Armyset::iterator ait = armyset->begin(); ait != armyset->end(); ait++)
-    d_armies[armyset->getId()][(*ait)->getId()] = (*ait);
-  d_names[armyset->getId()] = armyset->getName();
-  d_ids[String::ucompose("%1 %2", armyset->getName(), armyset->getTileSize())] = armyset->getId();
-  d_armysetids[armyset->getId()] = armyset;
-  d_armysets[armyset->getBaseName()] = armyset;
-  return true;
-}

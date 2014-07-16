@@ -86,7 +86,7 @@ void TriumphsDialog::fill_in_page(Player *p)
   const ArmyProto *hero = NULL;
   const Armysetlist* al = Armysetlist::getInstance();
   //let's go find the hero army
-  Armyset *as = al->getArmyset(p->getArmyset());
+  Armyset *as = al->get(p->getArmyset());
   for (Armyset::iterator j = as->begin(); j != as->end(); ++j)
     {
       const ArmyProto *a = al->getArmy (p->getArmyset(), (*j)->getId());

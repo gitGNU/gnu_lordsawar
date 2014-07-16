@@ -28,7 +28,7 @@
 #include "File.h"
 
 
-TileSetInfoDialog::TileSetInfoDialog(Gtk::Window &parent, Tileset *tileset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
+TileSetInfoDialog::TileSetInfoDialog(Gtk::Window &parent, Set *tileset, Glib::ustring dir, Glib::ustring file, bool readonly, Glib::ustring title)
  : LwEditorDialog(parent, "tileset-info-dialog.ui")
 {
   d_tileset = tileset;
@@ -121,8 +121,7 @@ void TileSetInfoDialog::update_buttons()
       return;
     }
 
-  Glib::ustring dir = File::getSetDir(Tileset::file_extension, false) + filename_entry->get_text();
-  if (Tilesetlist::getInstance()->getTileset(filename_entry->get_text()))
+  if (Tilesetlist::getInstance()->get(filename_entry->get_text()))
     {
       accept_button->set_sensitive(false);
       status_label->set_markup(String::ucompose("<b>%1</b>", 

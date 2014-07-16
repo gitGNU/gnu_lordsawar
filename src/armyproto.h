@@ -31,6 +31,7 @@
 class XML_Helper;
 class Tar_Helper;
 
+//! An army prototype object.  Appears in an armyset file.
 class ArmyProto : public ArmyProtoBase
 {
     public:

@@ -33,6 +33,9 @@
 #include "Tile.h"
 #include "maptile.h"
 
+class Cityset;
+
+//! Randomly generate terrain and buildings on a map.
 /** This class creates a map including the buildings (cities, ruins, temples).
   * It does NOT care about player setup and such. This is done in a second step
   * by the CreateScenario class. The parameters for map creation are set by
@@ -60,9 +63,6 @@
   * creates two data structures that may be useful elsewhere.
   * 
   */
-
-
-class Cityset;
 class MapGenerator
 {
     public :

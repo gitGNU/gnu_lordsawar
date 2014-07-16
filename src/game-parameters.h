@@ -23,6 +23,7 @@
 #include <glibmm.h>
 #include "defs.h"
 
+//! Scenario information that can be used to instantiate a new GameScenario.
 class GameParameters
 {
 public:

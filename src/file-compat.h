@@ -24,6 +24,7 @@
 
 class UpgradeDetails;
 
+//! A helper class for upgrading the schema of files.
 class FileDetails
 {
 public:
@@ -117,6 +118,7 @@ class FileCompat: public std::list<FileDetails>, public sigc::trackable
         static FileCompat* s_instance;
 };
 
+//! A helper class for providing backwards compatibility in game files.
 class UpgradeDetails
 {
 public:

@@ -90,9 +90,6 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 
 	// Get Methods
 
-        //! Returns the tilesize of the tileset.
-        guint32 getTileSize() const {return d_tileSize;}
-
 	//! Returns the basename of the file containing big selector images.
 	Glib::ustring getLargeSelectorFilename() {return d_large_selector;};
 
@@ -169,9 +166,6 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 
 	// Set Methods
 
-	//!  Sets the tilesize of the tileset.
-	void setTileSize(guint32 tileSize) {d_tileSize = tileSize;}
-
 	//! Sets the basename of the file containing the big selector images.
 	void setLargeSelectorFilename(Glib::ustring p){d_large_selector = p;};
 
@@ -237,19 +231,8 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 	//! Sets the number of animation frames in the small selector.
 	void setNumberOfSmallSelectorFrames(guint32 s) {smallselector.reserve(s);smallselectormask.reserve(s); number_of_small_selector_frames = s;};
 
-        Glib::ustring getFileFromConfigurationFile(Glib::ustring file);
-        //! Replaces file with new_file, or adds new_file if file not present.
-        /**
-         * @return returns True if successful.
-         */
-        bool replaceFileInConfigurationFile(Glib::ustring file, Glib::ustring new_file);
-        bool addFileInConfigurationFile(Glib::ustring new_file);
-
         //! clear the tileset and add the normal tiles to it.
         void populateWithDefaultTiles();
-
-        //! Delete the tileset's temporary directory.
-        void clean_tmp_dir() const;
 
 	//Methods that operate on class data and modify the class data.
 
@@ -339,15 +322,6 @@ class Tileset : public sigc::trackable, public std::vector<Tile*>, public Set
 			       Glib::ustring small_selector_filename,
                                bool &broken);
         // DATA
-
-	//! The size of the graphic tiles in the Tileset.
-	/**
-	 * Equates to the tileset.d_tilesize XML entity in the tileset
-	 * configuration file.
-	 * It represents the size in pixels of the width and height of tile
-	 * imagery onscreen.
-	 */
-        guint32 d_tileSize;
 
 	//! The basename of the small selector image.
 	/**

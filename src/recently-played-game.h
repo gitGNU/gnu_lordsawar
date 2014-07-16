@@ -158,6 +158,7 @@ class RecentlyPlayedGame
         Glib::ustring d_profile_id;
 };
 
+//! A helper class to RecentlyPlayedGameList to represent a hotseat game.
 class RecentlyPlayedHotseatGame : public RecentlyPlayedGame
 {
     public:
@@ -189,6 +190,7 @@ class RecentlyPlayedHotseatGame : public RecentlyPlayedGame
 	Glib::ustring d_filename;
 };
 
+//! A helper class to RecentlyPlayedGameList to represent a network game.
 class RecentlyPlayedNetworkedGame : public RecentlyPlayedGame
 {
     public:
