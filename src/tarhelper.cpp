@@ -16,6 +16,7 @@
 //  02110-1301, USA.
 
 #include "tarhelper.h"
+#include <iostream>
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>

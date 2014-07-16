@@ -18,6 +18,7 @@
 
 #include <sigc++/functors/mem_fun.h>
 
+#include <iostream>
 #include "Itemlist.h"
 
 #include "File.h"

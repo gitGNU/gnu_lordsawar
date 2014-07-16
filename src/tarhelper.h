@@ -17,7 +17,7 @@
 
 #include <archive.h>
 #include <glibmm.h>
-#include <iostream>
+#include <iosfwd>
 #include <list>
 
 #ifndef TARHELPER_H

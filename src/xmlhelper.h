@@ -75,7 +75,7 @@
 
 #include <gtkmm.h>
 #include <string>
-#include <iostream>
+#include <iosfwd>
 #include <fstream>
 #include <list>
 #include <map>
