@@ -33,7 +33,7 @@ class Stack;
 class City;
 class Army;
 
-//! Base class for Quest objects.
+//! Base class for Quest objects. Hero units go on quests for Reward objects.
 /** 
  * Quest objects are started by Hero objects by visiting a Temple object.  The
  * Quest has a given Quest::Type.  If the Hero can successfully complete the
