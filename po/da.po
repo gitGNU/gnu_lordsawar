@@ -26,10 +26,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: lordsawar 0.3.0-pre2\n"
+"Project-Id-Version: lordsawar 0.3.0-pre3\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2014-06-30 12:49-0400\n"
-"PO-Revision-Date: 2014-07-05 21:55-0400\n"
+"POT-Creation-Date: 2014-07-09 10:19-0400\n"
+"PO-Revision-Date: 2014-07-26 21:55-0400\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -402,6 +402,8 @@ msgstr "Netværksspil"
 #: ../dat/glade/preferences-dialog.ui.h:3
 #: ../dat/glade/editor/main-window.ui.h:16
 #: ../dat/glade/editor/players-dialog.ui.h:4
+#: ../src/gui/network-game-selector-dialog.cpp:55
+#: ../src/gui/network-game-selector-dialog.cpp:74
 msgid "Players"
 msgstr "Spillere"
 
@@ -657,13 +659,13 @@ msgstr "Orden"
 msgid "Move All"
 msgstr "Flyt alle"
 
-#: ../dat/glade/game-window.ui.h:11 ../src/gui/game-window.cpp:1109
+#: ../dat/glade/game-window.ui.h:11 ../src/gui/game-window.cpp:1090
 msgid "Disband"
 msgstr "Opløs"
 
 #: ../dat/glade/game-window.ui.h:12
 #: ../dat/glade/editor/signpost-editor-dialog.ui.h:4 ../src/maptile.cpp:224
-#: ../src/gui/game-window.cpp:1075 ../src/editor/main-window.cpp:1451
+#: ../src/gui/game-window.cpp:1056 ../src/editor/main-window.cpp:1451
 msgid "Signpost"
 msgstr "Vejskilt"
 
@@ -679,7 +681,7 @@ msgstr "Efterlad her"
 msgid "Next"
 msgstr "Næste"
 
-#: ../dat/glade/game-window.ui.h:16 ../src/gui/game-window.cpp:1146
+#: ../dat/glade/game-window.ui.h:16 ../src/gui/game-window.cpp:1127
 msgid "Resign"
 msgstr "Gå af"
 
@@ -775,6 +777,8 @@ msgstr "Byg"
 
 #: ../dat/glade/game-window.ui.h:38 ../dat/glade/new-random-map-dialog.ui.h:18
 #: ../src/gui/history-report-dialog.cpp:95
+#: ../src/gui/network-game-selector-dialog.cpp:56
+#: ../src/gui/network-game-selector-dialog.cpp:75
 msgid "Cities"
 msgstr "Byer"
 
@@ -825,8 +829,10 @@ msgid "Help"
 msgstr "Hjælp"
 
 #. if it's this player's turn
-#: ../dat/glade/game-window.ui.h:48 ../src/gui/game-window.cpp:1558
-#: ../src/gui/game-window.cpp:2360 ../src/gui/game-lobby-dialog.cpp:274
+#: ../dat/glade/game-window.ui.h:48 ../src/gui/game-window.cpp:1539
+#: ../src/gui/game-window.cpp:2340 ../src/gui/game-lobby-dialog.cpp:274
+#: ../src/gui/network-game-selector-dialog.cpp:54
+#: ../src/gui/network-game-selector-dialog.cpp:73
 msgid "Turn"
 msgstr "Runde"
 
@@ -3519,9 +3525,8 @@ msgstr "Fejl! hærsæt: »%1« er forkert udformet. Udelader."
 msgid "Error!  armyset: `%1' shares a duplicate armyset basename `%2' with `%3'.  Skipping."
 msgstr "Fejl! hærsæt: »%1« deler et duplikeret hærsæts basisnavn »%2« med »%3«. Udelader."
 
-# engelsk fejl
 #: ../src/armysetlist.cpp:200
-msgid "Error!  armyset: `%1' sahres a duplicate armyset id with `%2'.  Skipping."
+msgid "Error!  armyset: `%1' shares a duplicate armyset id with `%2'.  Skipping."
 msgstr "Fejl! hærsæt: »%1« deler et duplikeret hærsæt-id med »%2«. Udelader."
 
 #: ../src/GameScenario.cpp:344
@@ -3722,18 +3727,16 @@ msgstr "Fejl! Størrelsen på kortopretter og spilkortfelt er forskellig. %1 != 
 msgid "Error!  cityset: `%1' is malformed.  Skipping."
 msgstr "Fejl! bysæt: »%1« er forkert udformet. Udelader."
 
-# engelsk fejl
 #: ../src/citysetlist.cpp:133
-msgid "Error!  cityset: `%1' sahres a duplicate cityset basename `%2' with `%3'.  Skipping."
+msgid "Error!  cityset: `%1' shares a duplicate cityset basename `%2' with `%3'.  Skipping."
 msgstr "Fejl! bysæt: »%1« deler et duplikeret bysætbasisnavn »%2« med »%3«. Udelader."
 
 #: ../src/citysetlist.cpp:141
 msgid "Error!  cityset `%1' shares a duplicate cityset id with `%2'.  Skipping."
 msgstr "Fejl! bysæt »%1« deler et duplikeret bysæt-id med »%2«. Udelader."
 
-# engelsk fejl. mangler .
 #: ../src/citysetlist.cpp:149
-msgid "Error!  cityset: `%1' has a duplicate cityset id with `%2'.  Skipping"
+msgid "Error!  cityset: `%1' has a duplicate cityset id with `%2'.  Skipping."
 msgstr "Fejl! bysæt: »%1« har et duplikeret bysæt-id med »%2«. Udelader."
 
 #: ../src/QPillageGold.cpp:73
@@ -3932,7 +3935,8 @@ msgstr "Intet"
 msgid "Road"
 msgstr "Vej"
 
-#: ../src/maptile.cpp:226
+#: ../src/maptile.cpp:226 ../src/gui/network-game-selector-dialog.cpp:58
+#: ../src/gui/network-game-selector-dialog.cpp:77
 msgid "Port"
 msgstr "Port"
 
@@ -4060,7 +4064,7 @@ msgstr "Tid: %1"
 #. note to translators: %1 is melee strength, %2 is ranged strength
 #: ../src/gui/city-window.cpp:273 ../src/gui/army-info-tip.cpp:68
 #: ../src/gui/army-info-tip.cpp:128 ../src/gui/army-info-tip.cpp:187
-#: ../src/gui/buy-production-dialog.cpp:168 ../src/gui/hero-dialog.cpp:433
+#: ../src/gui/buy-production-dialog.cpp:167 ../src/gui/hero-dialog.cpp:433
 #: ../src/gui/army-gains-level-dialog.cpp:67
 #: ../src/editor/select-army-dialog.cpp:169
 msgid "Strength: %1"
@@ -4068,7 +4072,7 @@ msgstr "Styrke: %1"
 
 #. note to translators: %1 is total moves
 #: ../src/gui/city-window.cpp:278 ../src/gui/army-info-tip.cpp:132
-#: ../src/gui/buy-production-dialog.cpp:174
+#: ../src/gui/buy-production-dialog.cpp:172
 #: ../src/gui/army-gains-level-dialog.cpp:63
 #: ../src/editor/select-army-dialog.cpp:171
 msgid "Moves: %1"
@@ -4076,7 +4080,7 @@ msgstr "Bevægelser: %1"
 
 #. fill in second column
 #: ../src/gui/city-window.cpp:280 ../src/gui/army-info-tip.cpp:136
-#: ../src/gui/army-info-tip.cpp:195 ../src/gui/buy-production-dialog.cpp:172
+#: ../src/gui/army-info-tip.cpp:195 ../src/gui/buy-production-dialog.cpp:170
 msgid "Cost: %1"
 msgstr "Pris: %1"
 
@@ -4087,6 +4091,11 @@ msgstr "%1t"
 #: ../src/gui/city-window.cpp:287
 msgid ", then to %1"
 msgstr ", så til %1"
+
+# det er ikke et flag/fane det her?
+#: ../src/gui/city-window.cpp:288 ../src/gui/report-dialog.cpp:410
+msgid "Standard"
+msgstr "Standard"
 
 #: ../src/gui/city-window.cpp:427
 msgid "Rename City"
@@ -4117,8 +4126,8 @@ msgstr "Observer"
 #. * then we desensitize the associated checkbutton
 #. * otherwise, we presume that we want to observe it
 #.
-#: ../src/gui/preferences-dialog.cpp:72 ../src/gui/preferences-dialog.cpp:139
-#: ../src/gui/preferences-dialog.cpp:191 ../src/gui/preferences-dialog.cpp:205
+#: ../src/gui/preferences-dialog.cpp:72 ../src/gui/preferences-dialog.cpp:137
+#: ../src/gui/preferences-dialog.cpp:189 ../src/gui/preferences-dialog.cpp:203
 msgid "Human"
 msgstr "Menneske"
 
@@ -4151,6 +4160,14 @@ msgid "You have been rewarded with %1 ally."
 msgid_plural "You have been rewarded with %1 allies."
 msgstr[0] "Du er blevet belønnet med %1 allieret."
 msgstr[1] "Du er blevet belønnet med %1 allierede."
+
+#: ../src/gui/quest-completed-dialog.cpp:82
+msgid "You have been rewarded with the %1."
+msgstr "Du er blevet belønnet med %1."
+
+#: ../src/gui/quest-completed-dialog.cpp:88
+msgid "You are shown the site of %1\n"
+msgstr "Du får vist stedet %1\n"
 
 #: ../src/gui/quest-completed-dialog.cpp:95
 #: ../src/gui/ruin-rewarded-dialog.cpp:72
@@ -4248,7 +4265,7 @@ msgstr[1] "%1 faner erobret fra en knust fjende!"
 msgid "Moves: %1/%2"
 msgstr "Bevægelser: %1/%2"
 
-#: ../src/gui/army-info-tip.cpp:76 ../src/gui/buy-production-dialog.cpp:176
+#: ../src/gui/army-info-tip.cpp:76 ../src/gui/buy-production-dialog.cpp:174
 #: ../src/gui/hero-dialog.cpp:440 ../src/editor/select-army-dialog.cpp:175
 msgid "Upkeep: %1"
 msgstr "Vedligeholdelse: %1"
@@ -4261,6 +4278,21 @@ msgstr "Bevægelse: %1"
 #: ../src/gui/buy-production-dialog.cpp:165
 msgid "Duration: %1"
 msgstr "Varighed: %1"
+
+#: ../src/gui/army-bonus-dialog.cpp:40 ../src/gui/hero-levels-dialog.cpp:46
+#: ../src/gui/stack-info-dialog.cpp:209
+msgid "Str"
+msgstr "St"
+
+#: ../src/gui/army-bonus-dialog.cpp:41 ../src/gui/hero-levels-dialog.cpp:47
+#: ../src/gui/stack-info-dialog.cpp:213
+msgid "Move"
+msgstr "Flyt"
+
+#: ../src/gui/army-bonus-dialog.cpp:43 ../src/gui/stack-info-dialog.cpp:217
+#: ../src/gui/item-bonus-dialog.cpp:39
+msgid "Bonus"
+msgstr "Bonus"
 
 #: ../src/gui/quest-assigned-dialog.cpp:51
 msgid "This hero already has a quest."
@@ -4420,11 +4452,37 @@ msgstr "%1 %2 bruger %3!"
 msgid "A Sage!"
 msgstr "En vismand!"
 
+#: ../src/gui/sage-dialog.cpp:141
+msgid "parchment map"
+msgstr "pergamentkort"
+
+#: ../src/gui/sage-dialog.cpp:142
+msgid "vellum map"
+msgstr "velinkort"
+
+#: ../src/gui/sage-dialog.cpp:143
+msgid "paper map"
+msgstr "papirkort"
+
+#: ../src/gui/sage-dialog.cpp:144
+msgid "torn paper map"
+msgstr "iturevet papirkort"
+
+#: ../src/gui/sage-dialog.cpp:145
+msgid "dusty map"
+msgstr "støvet kort"
+
+#: ../src/gui/sage-dialog.cpp:146
+msgid "blood-stained map"
+msgstr "blodplettet kort"
+
 #: ../src/gui/hero-dialog.cpp:115 ../src/editor/players-dialog.cpp:57
 #: ../src/editor/city-editor-dialog.cpp:124
 #: ../src/editor/stack-editor-dialog.cpp:114
 #: ../src/editor/backpack-editor-dialog.cpp:51
 #: ../src/gui/game-lobby-dialog.cpp:321
+#: ../src/gui/network-game-selector-dialog.cpp:53
+#: ../src/gui/network-game-selector-dialog.cpp:72
 msgid "Name"
 msgstr "Navn"
 
@@ -4497,67 +4555,67 @@ msgstr "Niveau: %1"
 msgid "Experience: %1"
 msgstr "Erfaring: %1"
 
-#: ../src/gui/game-window.cpp:862 ../src/gui/splash-window.cpp:158
+#: ../src/gui/game-window.cpp:843 ../src/gui/splash-window.cpp:165
 msgid "Choose Game to Load"
 msgstr "Vælg spil til indlæsning"
 
-#: ../src/gui/game-window.cpp:864 ../src/gui/game-window.cpp:912
+#: ../src/gui/game-window.cpp:845 ../src/gui/game-window.cpp:893
 msgid "Army Saved Games (*.sav)"
 msgstr "Gemte spil for hære (*.sav)"
 
-#: ../src/gui/game-window.cpp:900
+#: ../src/gui/game-window.cpp:881
 msgid "Game was not saved!"
 msgstr "Spil blev ikke gemt!"
 
-#: ../src/gui/game-window.cpp:909 ../src/editor/main-window.cpp:861
+#: ../src/gui/game-window.cpp:890 ../src/editor/main-window.cpp:861
 #: ../src/editor/main-window.cpp:893 ../src/editor/main-window.cpp:925
 msgid "Choose a Name"
 msgstr "Vælg et navn"
 
-#: ../src/gui/game-window.cpp:936
+#: ../src/gui/game-window.cpp:917
 msgid "Error saving game!"
 msgstr "Fejl under gemning af spil!"
 
-#: ../src/gui/game-window.cpp:1021 ../src/gui/driver.cpp:616
+#: ../src/gui/game-window.cpp:1002 ../src/gui/driver.cpp:616
 #: ../src/gui/driver.cpp:831 ../src/gui/driver.cpp:973
 msgid "Corrupted saved game file."
 msgstr "Korrupt gemt spilfil."
 
-#: ../src/gui/game-window.cpp:1032 ../src/gui/driver.cpp:887
+#: ../src/gui/game-window.cpp:1013 ../src/gui/driver.cpp:887
 msgid "Can't load networked game from file."
 msgstr "Kan ikke indlæse netværksspil fra fil."
 
-#: ../src/gui/game-window.cpp:1079
+#: ../src/gui/game-window.cpp:1060
 msgid "Change the message on this sign:"
 msgstr "Ændr beskeden på dette vejskilt:"
 
-#: ../src/gui/game-window.cpp:1116
+#: ../src/gui/game-window.cpp:1097
 msgid "Are you sure you want to disband this group?"
 msgstr "Er du sikker på, at du ønsker at opløse denne gruppe?"
 
-#: ../src/gui/game-window.cpp:1120
+#: ../src/gui/game-window.cpp:1101
 msgid "(It contains %1 hero)."
 msgid_plural "(It contains %1 heroes)."
 msgstr[0] "(Den indeholder %1 helt)."
 msgstr[1] "(Den indeholder %1 helte)."
 
-#: ../src/gui/game-window.cpp:1150
+#: ../src/gui/game-window.cpp:1131
 msgid "Are you sure you want to resign?"
 msgstr "Er du sikker på, at du ønsker at trække dig tilbage?"
 
-#: ../src/gui/game-window.cpp:1299
+#: ../src/gui/game-window.cpp:1280
 msgid "No ruins or temples to show!"
 msgstr "Ingen ruiner eller templer at vise!"
 
-#: ../src/gui/game-window.cpp:1503
+#: ../src/gui/game-window.cpp:1484
 msgid "Congratulations to %1 for conquering the world!"
 msgstr "Tillykke til %1 for at erobre verden!"
 
-#: ../src/gui/game-window.cpp:1518
+#: ../src/gui/game-window.cpp:1499
 msgid "The rule of %1 has permanently ended!"
 msgstr "%1s regime er afsluttet!"
 
-#: ../src/gui/game-window.cpp:1524
+#: ../src/gui/game-window.cpp:1505
 msgid ""
 "No further human resistance is possible\n"
 "but the battle will continue!"
@@ -4565,7 +4623,7 @@ msgstr ""
 "Ingen yderligere menneskelig modstand er mulig,\n"
 "men slaget vil fortsætte!"
 
-#: ../src/gui/game-window.cpp:1526
+#: ../src/gui/game-window.cpp:1507
 msgid ""
 "Press `CTRL-P' to stop the war\n"
 "and visit the sites of thy old battles."
@@ -4573,146 +4631,168 @@ msgstr ""
 "Tryk Control+P for at afslutte krigen\n"
 "og besøge stederne for de gamle slag."
 
-#: ../src/gui/game-window.cpp:1722
+#: ../src/gui/game-window.cpp:1703
 msgid "%1 finds "
 msgstr "%1 finder "
 
-#: ../src/gui/game-window.cpp:1726
+#: ../src/gui/game-window.cpp:1707
 msgid "%1 gold pieces."
 msgstr "%1 guldstykker."
 
-#: ../src/gui/game-window.cpp:1731
+#: ../src/gui/game-window.cpp:1712
 msgid "%1 allies!"
 msgstr "%1 allierede!"
 
-#: ../src/gui/game-window.cpp:1736
+#: ../src/gui/game-window.cpp:1717
 msgid "the %1!"
 msgstr "%1!"
 
-#: ../src/gui/game-window.cpp:1741
+#: ../src/gui/game-window.cpp:1722
 msgid "a map!"
 msgstr "et kort!"
 
 #. so and so encounters a wolf...
-#: ../src/gui/game-window.cpp:1752
+#: ../src/gui/game-window.cpp:1733
 msgid "Searching"
 msgstr "Søger"
 
-#: ../src/gui/game-window.cpp:1769
+#: ../src/gui/game-window.cpp:1750
 msgid "Hero Victorious"
 msgstr "Helt vinder"
 
-#: ../src/gui/game-window.cpp:1771
+#: ../src/gui/game-window.cpp:1752
 msgid "Hero Defeated"
 msgstr "Helt besejret"
 
-#: ../src/gui/game-window.cpp:1778
+#: ../src/gui/game-window.cpp:1759
 msgid "...and is victorious!"
 msgstr "... og vinder!"
 
-#: ../src/gui/game-window.cpp:1780
+#: ../src/gui/game-window.cpp:1761
 msgid "...and is slain by it!"
 msgstr "... og dræbes!"
 
-#: ../src/gui/game-window.cpp:1810
+#: ../src/gui/game-window.cpp:1791
 msgid "Hero brings allies!"
 msgstr "Helt medbringer allierede!"
 
-#: ../src/gui/game-window.cpp:1815
+#: ../src/gui/game-window.cpp:1796
 msgid "The hero brings %1 ally!"
 msgid_plural "The hero brings %1 allies!"
 msgstr[0] "Helten medbringer %1 allieret!"
 msgstr[1] "Helten medbringer %1 allierede!"
 
-#: ../src/gui/game-window.cpp:1839
+#: ../src/gui/game-window.cpp:1820
 msgid "You graciously and benevolently accept their offer."
 msgstr "Du accepterer nådigt og velvilligt deres tilbud."
 
-#: ../src/gui/game-window.cpp:1854
+#: ../src/gui/game-window.cpp:1835
 msgid "Are you sure you want to attack %1?"
 msgstr "Er du sikker på, at du ønsker at angribe %1?"
 
-#: ../src/gui/game-window.cpp:1857
+#: ../src/gui/game-window.cpp:1838
 msgid "Other players may not like this!"
 msgstr "Andre spillere vil måske ikke bryde sig om det!"
 
-#: ../src/gui/game-window.cpp:1908
+#: ../src/gui/game-window.cpp:1889
 msgid "%1 army has been blessed!"
 msgid_plural "%1 armies have been blessed!"
 msgstr[0] "%1 hær er blevet velsignet!"
 msgstr[1] "%1 hære er blevet velsignet!"
 
-#: ../src/gui/game-window.cpp:1911
+#: ../src/gui/game-window.cpp:1892
 msgid "We have already blessed thee!"
 msgstr "Vi har allerede velsignet jer!"
 
-#: ../src/gui/game-window.cpp:1914
+#: ../src/gui/game-window.cpp:1895
 msgid "Seek more blessings in far temples!"
 msgstr "Søg yderligere velsignelser i fjerne templer!"
 
-#: ../src/gui/game-window.cpp:1918
+#: ../src/gui/game-window.cpp:1899
 msgid "Do you seek a quest?"
 msgstr "Søger du en mission?"
 
-#: ../src/gui/game-window.cpp:1926
+#: ../src/gui/game-window.cpp:1907
 msgid "_Close"
 msgstr "_Luk"
 
-#: ../src/gui/game-window.cpp:2053
+#: ../src/gui/game-window.cpp:2034
 msgid "%1, you have triumphed in the battle of %2."
 msgstr "%1, du har vundet i slaget %2."
 
-#: ../src/gui/game-window.cpp:2054
+#: ../src/gui/game-window.cpp:2035
 msgid "%1, you have claimed victory in the battle of %2."
 msgstr "%1, du har opnået sejr i slaget %2."
 
-#: ../src/gui/game-window.cpp:2055
+#: ../src/gui/game-window.cpp:2036
 msgid "%1, you have shown no mercy in the battle of %2."
 msgstr "%1, du har ikke vist nogen nåde i slaget %2."
 
-#: ../src/gui/game-window.cpp:2056
+#: ../src/gui/game-window.cpp:2037
 msgid "%1, you have slain the foe in the battle of %2."
 msgstr "%1, du har besejret fjenden i slaget %2."
 
-#: ../src/gui/game-window.cpp:2150
+#: ../src/gui/game-window.cpp:2131
 msgid "%1 Looted"
 msgstr "%1 plyndret"
 
-#: ../src/gui/game-window.cpp:2157
+#: ../src/gui/game-window.cpp:2138
 msgid "Your armies loot %1 gold piece."
 msgid_plural "Your armies loot %1 gold pieces."
 msgstr[0] "Dine hære plyndrer %1 guldstykke."
 msgstr[1] "Dine hære plyndrer %1 guldstykker."
 
-#: ../src/gui/game-window.cpp:2170
+#: ../src/gui/game-window.cpp:2151
 msgid "Pillaged %1"
 msgstr "Røvede %1"
 
-#: ../src/gui/game-window.cpp:2197
+#: ../src/gui/game-window.cpp:2178
 msgid "The loot is worth %1 gold piece."
 msgid_plural "The loot is worth %1 gold pieces."
 msgstr[0] "Byttet er %1 guldstykke værd."
 msgstr[1] "Byttet er %2 guldstykker værd."
 
-#: ../src/gui/game-window.cpp:2212
+#: ../src/gui/game-window.cpp:2193
 msgid "Sacked %1"
 msgstr "Plyndrede %1"
 
-#: ../src/gui/game-window.cpp:2221
-msgid "Ability to produce %1 unit has been lost"
-msgid_plural "Ability to produce %1 units has been lost"
-msgstr[0] "Muligheden for at producere %1 enhed er blevet tabt"
-msgstr[1] "Muligheden for at producere %1 enheder er blevet tabt"
+#: ../src/gui/game-window.cpp:2199
+msgid ""
+"The city of %1 is sacked\n"
+"for %2 gold!\n"
+"\n"
+msgstr ""
+"Byen %1 er brændt ned\n"
+"for %2 guld!\n"
+"\n"
 
-#: ../src/gui/game-window.cpp:2299
+#: ../src/gui/game-window.cpp:2202
+msgid ""
+"Ability to produce %1 unit has been lost\n"
+"and only 1 unit remains"
+msgid_plural ""
+"Ability to produce %1 units has been lost\n"
+"and only 1 unit remains"
+msgstr[0] ""
+"Muligheden for at producere %1 enhed er gået tabt\n"
+"og kun 1 enhed resterer"
+msgstr[1] ""
+"Muligheden for at producere %1 enheder er gået tabt\n"
+"og kun 1 enhed resterer"
+
+#: ../src/gui/game-window.cpp:2249
+msgid "%1 gp"
+msgstr "%1 guld"
+
+#: ../src/gui/game-window.cpp:2279
 msgid "Razed %1"
 msgstr "Brændte %1 ned"
 
-#: ../src/gui/game-window.cpp:2304
+#: ../src/gui/game-window.cpp:2284
 msgid "The city of %1 is in ruins!"
 msgstr "Byen %1 er i ruiner!"
 
-#: ../src/gui/game-window.cpp:2386
+#: ../src/gui/game-window.cpp:2366
 msgid ""
 "%1\n"
 "Turn %2"
@@ -4720,361 +4800,361 @@ msgstr ""
 "%1\n"
 "Runde %2"
 
-#: ../src/gui/game-window.cpp:2416
+#: ../src/gui/game-window.cpp:2396
 msgid "Your unit of %1 is awarded the avenger's medal of valour!"
 msgstr "Din enhed %1 tildeles hævnerens æresmedalje!"
 
-#: ../src/gui/game-window.cpp:2418
+#: ../src/gui/game-window.cpp:2398
 msgid "Your unit of %1 is awarded the defender's medal of bravery!"
 msgstr "Din enhed %1 tildeles forsvarerens medalje for mod!"
 
-#: ../src/gui/game-window.cpp:2420
+#: ../src/gui/game-window.cpp:2400
 msgid "Your unit of %1 is awarded the veteran's medal!"
 msgstr "Din enhed %1 tildeles veteranens medalje!"
 
-#: ../src/gui/game-window.cpp:2422
+#: ../src/gui/game-window.cpp:2402
 msgid "Your unit of %1 is awarded a medal!"
 msgstr "Din enhed %1 tildeles en medalje!"
 
-#: ../src/gui/game-window.cpp:2441
+#: ../src/gui/game-window.cpp:2421
 msgid "%1, your turn continues."
 msgstr "%1, din runde fortsætter."
 
-#: ../src/gui/game-window.cpp:2465
+#: ../src/gui/game-window.cpp:2445
 msgid "%1 did not complete the quest."
 msgstr "%1 færdiggjorde ikke missionen."
 
-#: ../src/gui/game-window.cpp:2539
+#: ../src/gui/game-window.cpp:2519
 msgid "Advisor!"
 msgstr "Rådgiver!"
 
-#: ../src/gui/game-window.cpp:2548
+#: ../src/gui/game-window.cpp:2528
 msgid "My Good Lord!"
 msgstr "Min fyrste!"
 
-#: ../src/gui/game-window.cpp:2550
+#: ../src/gui/game-window.cpp:2530
 msgid "Great and Worthy Lord!"
 msgstr "Storslået fyrste!"
 
-#: ../src/gui/game-window.cpp:2552
+#: ../src/gui/game-window.cpp:2532
 msgid "O Champion of Justice!"
 msgstr "Retfærdighedens mester!"
 
-#: ../src/gui/game-window.cpp:2554
+#: ../src/gui/game-window.cpp:2534
 msgid "O Mighty Leader!"
 msgstr "Store leder!"
 
-#: ../src/gui/game-window.cpp:2556
+#: ../src/gui/game-window.cpp:2536
 msgid "O Great Warlord!"
 msgstr "Store krigsherre!"
 
-#: ../src/gui/game-window.cpp:2564
+#: ../src/gui/game-window.cpp:2544
 msgid "This battle will surely be as simple as butchering sleeping cattle!"
 msgstr "Dette slag vil være så nemt som at slagte sovende kvæg!"
 
-#: ../src/gui/game-window.cpp:2566 ../src/gui/game-window.cpp:2572
+#: ../src/gui/game-window.cpp:2546 ../src/gui/game-window.cpp:2552
 msgid "A battle here would be as simple as butchering sleeping cattle!"
 msgstr "Et slag her vil være så nemt som at slagte sovende kvæg!"
 
-#: ../src/gui/game-window.cpp:2568
+#: ../src/gui/game-window.cpp:2548
 msgid "I believe this battle will surely be as simple as butchering sleeping cattle!"
 msgstr "Jeg tror, at dette slag vil være så nemt som at slagte sovende kvæg!"
 
-#: ../src/gui/game-window.cpp:2570
+#: ../src/gui/game-window.cpp:2550
 msgid "This battle would be as simple as butchering sleeping cattle!"
 msgstr "Dette slag vil være så nemt som at slagte sovende kvæg!"
 
-#: ../src/gui/game-window.cpp:2574
+#: ../src/gui/game-window.cpp:2554
 msgid "I believe this battle will be as simple as butchering sleeping cattle!"
 msgstr "Jeg tror, at dette slag vil være så nemt som at slagte sovende kvæg!"
 
-#: ../src/gui/game-window.cpp:2576
+#: ../src/gui/game-window.cpp:2556
 msgid "This battle shall be as simple as butchering sleeping cattle!"
 msgstr "Dette slag vil være så nemt som at slagte sovende kvæg!"
 
-#: ../src/gui/game-window.cpp:2581
+#: ../src/gui/game-window.cpp:2561
 msgid "This battle will surely be an easy victory!  We cannot lose!"
 msgstr "Dette slag bliver en nem sejr!  Vi kan ikke tabe!"
 
-#: ../src/gui/game-window.cpp:2583 ../src/gui/game-window.cpp:2589
+#: ../src/gui/game-window.cpp:2563 ../src/gui/game-window.cpp:2569
 msgid "A battle here would be an easy victory!  We cannot lose!"
 msgstr "Et slag her vil være en nem sejr!  Vi kan ikke tabe!"
 
-#: ../src/gui/game-window.cpp:2585
+#: ../src/gui/game-window.cpp:2565
 msgid "I believe this battle will surely be an easy victory!  We cannot lose!"
 msgstr "Jeg tror, at dette slag vil være en nem sejr!  Vi kan ikke tabe!"
 
-#: ../src/gui/game-window.cpp:2587
+#: ../src/gui/game-window.cpp:2567
 msgid "This battle would be an easy victory!  We cannot lose!"
 msgstr "Dette slag vil være en nem sejr!  Vi kan ikke tabe!"
 
-#: ../src/gui/game-window.cpp:2591
+#: ../src/gui/game-window.cpp:2571
 msgid "I believe this battle will be an easy victory!  We cannot lose!"
 msgstr "Jeg tror, at dette slag vil være en nem sejr!  Vi kan ikke tabe!"
 
-#: ../src/gui/game-window.cpp:2593
+#: ../src/gui/game-window.cpp:2573
 msgid "This battle shall be an easy victory!  We cannot lose!"
 msgstr "Dette slag vil være en nem sejr!  Vi kan ikke tabe!"
 
-#: ../src/gui/game-window.cpp:2598
+#: ../src/gui/game-window.cpp:2578
 msgid "This battle will surely be a comfortable victory!"
 msgstr "Dette slag vil helt sikkert være en komfortabel sejr!"
 
-#: ../src/gui/game-window.cpp:2600 ../src/gui/game-window.cpp:2606
+#: ../src/gui/game-window.cpp:2580 ../src/gui/game-window.cpp:2586
 msgid "A battle here would be a comfortable victory!"
 msgstr "Et slag her vil være en komfortabel sejr!"
 
-#: ../src/gui/game-window.cpp:2602
+#: ../src/gui/game-window.cpp:2582
 msgid "I believe this battle will surely be a comfortable victory!"
 msgstr "Jeg tror, at dette slag vil være en komfortabel sejr!"
 
-#: ../src/gui/game-window.cpp:2604
+#: ../src/gui/game-window.cpp:2584
 msgid "This battle would be a comfortable victory!"
 msgstr "Dette slag vil være en komfortabel sejr!"
 
-#: ../src/gui/game-window.cpp:2608
+#: ../src/gui/game-window.cpp:2588
 msgid "I believe this battle will be a comfortable victory!"
 msgstr "Jeg tror, dette slag vil være en komfortabel sejr!"
 
-#: ../src/gui/game-window.cpp:2610
+#: ../src/gui/game-window.cpp:2590
 msgid "This battle shall be a comfortable victory!"
 msgstr "Dette slag vil blive en komfortabel sejr!"
 
-#: ../src/gui/game-window.cpp:2615
+#: ../src/gui/game-window.cpp:2595
 msgid "This battle will surely be a hard fought victory! But we shall win!"
 msgstr "Dette slag vil blive en hårdt tilkæmpet sejr! Men vi vil vinde!"
 
-#: ../src/gui/game-window.cpp:2617 ../src/gui/game-window.cpp:2623
+#: ../src/gui/game-window.cpp:2597 ../src/gui/game-window.cpp:2603
 msgid "A battle here would be a hard fought victory! But we shall win!"
 msgstr "Et slag her vil være en hårdt tilkæmpet sejr! Men vi vil vinde!"
 
-#: ../src/gui/game-window.cpp:2619
+#: ../src/gui/game-window.cpp:2599
 msgid "I believe this battle will surely be a hard fought victory! But we shall win!"
 msgstr "Jeg tror, at dette slag vil være en hårdt tilkæmpet sejr! Men vi vil vinde!"
 
-#: ../src/gui/game-window.cpp:2621
+#: ../src/gui/game-window.cpp:2601
 msgid "This battle would be a hard fought victory! But we shall win!"
 msgstr "Dette slag vil være en hårdt tilkæmpet sejr! Men vi vil vinde!"
 
-#: ../src/gui/game-window.cpp:2625
+#: ../src/gui/game-window.cpp:2605
 msgid "I believe this battle will be a hard fought victory! But we shall win!"
 msgstr "Jeg tror, at dette slag vil være en hårdt tilkæmpet sejr! Men vi vil vinde!"
 
-#: ../src/gui/game-window.cpp:2627
+#: ../src/gui/game-window.cpp:2607
 msgid "This battle shall be a hard fought victory! But we shall win!"
 msgstr "Dette slag vil være en hårdt tilkæmpet sejr! Men vi vil vinde!"
 
-#: ../src/gui/game-window.cpp:2632
+#: ../src/gui/game-window.cpp:2612
 msgid "This battle will surely be very evenly matched!"
 msgstr "Dette slag vil helt sikkert være lige!"
 
-#: ../src/gui/game-window.cpp:2634 ../src/gui/game-window.cpp:2640
+#: ../src/gui/game-window.cpp:2614 ../src/gui/game-window.cpp:2620
 msgid "A battle here would be very evenly matched!"
 msgstr "Et slag her vil være meget lige!"
 
-#: ../src/gui/game-window.cpp:2636
+#: ../src/gui/game-window.cpp:2616
 msgid "I believe this battle will surely be very evenly matched!"
 msgstr "Jeg tror, at dette slag vil være meget lige!"
 
-#: ../src/gui/game-window.cpp:2638
+#: ../src/gui/game-window.cpp:2618
 msgid "This battle would be very evenly matched!"
 msgstr "Dette slag vil være meget lige!"
 
-#: ../src/gui/game-window.cpp:2642
+#: ../src/gui/game-window.cpp:2622
 msgid "I believe this battle will be very evenly matched!"
 msgstr "Jeg tror, at dette slag vil være meget lige!"
 
-#: ../src/gui/game-window.cpp:2644
+#: ../src/gui/game-window.cpp:2624
 msgid "This battle shall be very evenly matched!"
 msgstr "Dette slag vil være meget lige!"
 
-#: ../src/gui/game-window.cpp:2649
+#: ../src/gui/game-window.cpp:2629
 msgid "This battle will surely be difficult but not impossible to win!"
 msgstr "Dette slag vil helt sikkert være svært men ikke umulig at vinde!"
 
-#: ../src/gui/game-window.cpp:2651 ../src/gui/game-window.cpp:2657
+#: ../src/gui/game-window.cpp:2631 ../src/gui/game-window.cpp:2637
 msgid "A battle here would be difficult but not impossible to win!"
 msgstr "Et slag her vil være svært men ikke umulig at vinde!"
 
-#: ../src/gui/game-window.cpp:2653
+#: ../src/gui/game-window.cpp:2633
 msgid "I believe this battle will surely be difficult but not impossible to win!"
 msgstr "Jeg tror, at dette slag vil være svært men ikke umulig at vinde!"
 
-#: ../src/gui/game-window.cpp:2655
+#: ../src/gui/game-window.cpp:2635
 msgid "This battle would be difficult but not impossible to win!"
 msgstr "Dette slag vil være svært men ikke umulig at vinde!"
 
-#: ../src/gui/game-window.cpp:2659
+#: ../src/gui/game-window.cpp:2639
 msgid "I believe this battle will be difficult but not impossible to win!"
 msgstr "Jeg tror, at dette slag vil være svært men ikke umulig at vinde!"
 
-#: ../src/gui/game-window.cpp:2661
+#: ../src/gui/game-window.cpp:2641
 msgid "This battle shall be difficult but not impossible to win!"
 msgstr "Dette slag vil være svært men ikke umulig at vinde!"
 
-#: ../src/gui/game-window.cpp:2666
+#: ../src/gui/game-window.cpp:2646
 msgid "This battle will surely be a brave choice! I leave it to thee!"
 msgstr "Dette slag vil være et modigt valg! Jeg overlader det til dig!"
 
-#: ../src/gui/game-window.cpp:2668 ../src/gui/game-window.cpp:2674
+#: ../src/gui/game-window.cpp:2648 ../src/gui/game-window.cpp:2654
 msgid "A battle here would be a brave choice! I leave it to thee!"
 msgstr "Et slag her vil være et modigt valg! Jeg overlader det til dig!"
 
-#: ../src/gui/game-window.cpp:2670
+#: ../src/gui/game-window.cpp:2650
 msgid "I believe this battle will surely be a brave choice! I leave it to thee!"
 msgstr "Jeg tror, at dette slag vil være et modigt valg! Jeg overlader det til dig!"
 
-#: ../src/gui/game-window.cpp:2672
+#: ../src/gui/game-window.cpp:2652
 msgid "This battle would be a brave choice! I leave it to thee!"
 msgstr "Dette slag vil være et modigt valg! Jeg overlader det til dig!"
 
-#: ../src/gui/game-window.cpp:2676
+#: ../src/gui/game-window.cpp:2656
 msgid "I believe this battle will be a brave choice! I leave it to thee!"
 msgstr "Jeg tror, at dette slag vil være et modigt valg! Jeg overlader det til dig!"
 
-#: ../src/gui/game-window.cpp:2678
+#: ../src/gui/game-window.cpp:2658
 msgid "This battle shall be a brave choice! I leave it to thee!"
 msgstr "Dette slag vil være et modigt valg! Jeg overlader det til dig!"
 
-#: ../src/gui/game-window.cpp:2683
+#: ../src/gui/game-window.cpp:2663
 msgid "This battle will surely be a foolish decision!"
 msgstr "Dette slag vil helt sikkert være en tåbelig beslutning!"
 
-#: ../src/gui/game-window.cpp:2685 ../src/gui/game-window.cpp:2691
+#: ../src/gui/game-window.cpp:2665 ../src/gui/game-window.cpp:2671
 msgid "A battle here would be a foolish decision!"
 msgstr "Et slag her vil være en tåbelig beslutning!"
 
-#: ../src/gui/game-window.cpp:2687
+#: ../src/gui/game-window.cpp:2667
 msgid "I believe this battle will surely be a foolish decision!"
 msgstr "Jeg tror, at dette slag vil være en tåbelig beslutning!"
 
-#: ../src/gui/game-window.cpp:2689
+#: ../src/gui/game-window.cpp:2669
 msgid "This battle would be a foolish decision!"
 msgstr "Dette slag vil være en tåbelig beslutning!"
 
-#: ../src/gui/game-window.cpp:2693
+#: ../src/gui/game-window.cpp:2673
 msgid "I believe this battle will be a foolish decision!"
 msgstr "Jeg tror, dette slag vil være en tåbelig beslutning!"
 
-#: ../src/gui/game-window.cpp:2695
+#: ../src/gui/game-window.cpp:2675
 msgid "This battle shall be a foolish decision!"
 msgstr "Dette slag vil være en tåbelig beslutning!"
 
-#: ../src/gui/game-window.cpp:2700
+#: ../src/gui/game-window.cpp:2680
 msgid "This battle will surely be sheerest folly!  Thou shouldst not attack!"
 msgstr "Dette slag vil være den største tåbelighed!  Du skal ikke angribe!"
 
-#: ../src/gui/game-window.cpp:2702 ../src/gui/game-window.cpp:2708
+#: ../src/gui/game-window.cpp:2682 ../src/gui/game-window.cpp:2688
 msgid "A battle here would be sheerest folly!  Thou shouldst not attack!"
 msgstr "Et slag her vil være den største tåbelighed!  Du skal ikke angribe!"
 
-#: ../src/gui/game-window.cpp:2704
+#: ../src/gui/game-window.cpp:2684
 msgid "I believe this battle will surely be sheerest folly!  Thou shouldst not attack!"
 msgstr "Jeg tror, at dette slag vil være den største tåbelighed!  Du skal ikke angribe!"
 
-#: ../src/gui/game-window.cpp:2706
+#: ../src/gui/game-window.cpp:2686
 msgid "This battle would be sheerest folly!  Thou shouldst not attack!"
 msgstr "Dette slag vil være den største tåbelighed!  Du skal ikke angribe!"
 
-#: ../src/gui/game-window.cpp:2710
+#: ../src/gui/game-window.cpp:2690
 msgid "I believe this battle will be sheerest folly!  Thou shouldst not attack!"
 msgstr "Jeg tror, at dette slag vil være den største tåbelighed!  Du skal ikke angribe!"
 
-#: ../src/gui/game-window.cpp:2712
+#: ../src/gui/game-window.cpp:2692
 msgid "This battle shall be sheerest folly!  Thou shouldst not attack!"
 msgstr "Dette slag vil være den største tåbelighed!  Du skal ikke angribe!"
 
-#: ../src/gui/game-window.cpp:2717
+#: ../src/gui/game-window.cpp:2697
 msgid "This battle will surely be complete and utter suicide!"
 msgstr "Dette slag vil være det rene selvmord!"
 
-#: ../src/gui/game-window.cpp:2719 ../src/gui/game-window.cpp:2725
+#: ../src/gui/game-window.cpp:2699 ../src/gui/game-window.cpp:2705
 msgid "A battle here would be complete and utter suicide!"
 msgstr "Et slag her vil være det rene selvmord!"
 
-#: ../src/gui/game-window.cpp:2721
+#: ../src/gui/game-window.cpp:2701
 msgid "I believe this battle will surely be complete and utter suicide!"
 msgstr "Jeg tror, at dette slag vil være det rene selvmord!"
 
-#: ../src/gui/game-window.cpp:2723
+#: ../src/gui/game-window.cpp:2703
 msgid "This battle would be complete and utter suicide!"
 msgstr "Dette slag vil være det rene selvmord!"
 
-#: ../src/gui/game-window.cpp:2727
+#: ../src/gui/game-window.cpp:2707
 msgid "I believe this battle will be complete and utter suicide!"
 msgstr "Jeg tror, dette slag vil være det rene selvmord!"
 
-#: ../src/gui/game-window.cpp:2729
+#: ../src/gui/game-window.cpp:2709
 msgid "This battle shall be complete and utter suicide!"
 msgstr "Dette slag vil være det rene selvmord!"
 
-#: ../src/gui/game-window.cpp:2858
+#: ../src/gui/game-window.cpp:2758
 msgid "The Warlord Says..."
 msgstr "Krigsherren udtaler ..."
 
-#: ../src/gui/game-window.cpp:2907
+#: ../src/gui/game-window.cpp:2807
 msgid "%1 gold piece was stolen from %2!"
 msgid_plural "%1 gold pieces were stolen from %2!"
 msgstr[0] "%1 guldstykke blev stjålet fra %2!"
 msgstr[1] "%1 guldstykker blev stjålet fra %2!"
 
-#: ../src/gui/game-window.cpp:2918
+#: ../src/gui/game-window.cpp:2818
 msgid "%1 army unit was sunk to the watery depths!"
 msgid_plural "%1 army units were sunk to the watery depths!"
 msgstr[0] "%1 hærenhed blev sendt til havets dyb!"
 msgstr[1] "%1 hærenheder blev sendt til havets dyb!"
 
-#: ../src/gui/game-window.cpp:2929
+#: ../src/gui/game-window.cpp:2829
 msgid "%1 bag was retrieved by %2!"
 msgid_plural "%1 bags were retrieved by %2!"
 msgstr[0] "%1 sæk blev samlet op af %2!"
 msgstr[1] "%1 sække blev samlet op af %2!"
 
-#: ../src/gui/game-window.cpp:2940
+#: ../src/gui/game-window.cpp:2840
 msgid "%1 has burned a bridge!  None shall pass this way again!"
 msgstr "%1 har brændt en bro! Ingen kan længere komme forbi!"
 
-#: ../src/gui/game-window.cpp:2949
+#: ../src/gui/game-window.cpp:2849
 msgid "%1 has turned a unit of %2 from %3!"
 msgstr "%1 har omvendt en enhed %2 fra %3!"
 
-#: ../src/gui/game-window.cpp:2959
+#: ../src/gui/game-window.cpp:2859
 msgid "%1 unit in %2 have perished!"
 msgid_plural "%1 units in %2 have perished!"
 msgstr[0] "%1 enhed i %2 er omkommet!"
 msgstr[1] "%1 enheder i %2 er omkommet!"
 
-#: ../src/gui/game-window.cpp:2970
+#: ../src/gui/game-window.cpp:2870
 msgid "%1 unit of %2 have been raised in %3!"
 msgid_plural "%1 units of %2 have been raised in %3!"
 msgstr[0] "%1 enhed af %2 er vokset op i %3!"
 msgstr[1] "%1 enheder af %2 er vokset op i %3!"
 
-#: ../src/gui/game-window.cpp:2985
+#: ../src/gui/game-window.cpp:2885
 msgid "%1 unit in %2 have been persuaded to fly your flag!"
 msgid_plural "%1 units in %2 have been persuaded to fly your flag!"
 msgstr[0] "%1 enhed i %2 er blevet overtalt til at bære dit flag!"
 msgstr[1] "%1 enheder i %2 er blevet overtalt til at bære dit flag!"
 
-#: ../src/gui/game-window.cpp:2991
+#: ../src/gui/game-window.cpp:2891
 msgid "The citizens of %1 have been persuaded to fly your flag!"
 msgstr "Indbyggerne i %1 er blevet overtalt til at bære dit flag!"
 
-#: ../src/gui/game-window.cpp:3000
+#: ../src/gui/game-window.cpp:2900
 msgid "%1 has teleported to %2!"
 msgstr "%1 har teleporteret sig til %2!"
 
-#: ../src/gui/game-window.cpp:3011
+#: ../src/gui/game-window.cpp:2911
 msgid "A unit of %1 has come to the aid of %2!"
 msgstr "En enhed %1 er kommet til undsætning for %2¡"
 
-#: ../src/gui/game-window.cpp:3020
+#: ../src/gui/game-window.cpp:2920
 msgid "%1 unit of %2 was banished by %3!"
 msgid_plural "%1 units of %2 were banished by %3!"
 msgstr[0] "%1 enhed af %2 blev bandlyst af %3!"
 msgstr[1] "%1 enheder af %2 blev bandlyst af %3!"
 
-#: ../src/gui/game-window.cpp:3031
+#: ../src/gui/game-window.cpp:2931
 msgid "%1 movement point was added to %2 and accompanying units!"
 msgid_plural "%1 movement points were added to %2 and accompanying units!"
 msgstr[0] "%1 bevægelsespoint blev tilføjet til %2 og medrejsende enheder!"
@@ -5098,15 +5178,15 @@ msgstr "Vælg en scenariefil som skal tilføjes til biblioteket"
 msgid "LordsAWar Maps (*.map)"
 msgstr "LordsAWar - kort (*.map)"
 
-#: ../src/gui/diplomacy-dialog.cpp:144
+#: ../src/gui/diplomacy-dialog.cpp:143
 msgid "Propose peace"
 msgstr "Foreslå fred"
 
-#: ../src/gui/diplomacy-dialog.cpp:165
+#: ../src/gui/diplomacy-dialog.cpp:164
 msgid "Propose war on armies not in cities"
 msgstr "Foreslå krig med hære udenfor byer"
 
-#: ../src/gui/diplomacy-dialog.cpp:186
+#: ../src/gui/diplomacy-dialog.cpp:185
 msgid "Propose war"
 msgstr "Foreslå krig"
 
@@ -5171,14 +5251,6 @@ msgstr "Erf."
 msgid "Needs"
 msgstr "Behov"
 
-#: ../src/gui/hero-levels-dialog.cpp:46 ../src/gui/stack-info-dialog.cpp:209
-msgid "Str"
-msgstr "St"
-
-#: ../src/gui/hero-levels-dialog.cpp:47 ../src/gui/stack-info-dialog.cpp:213
-msgid "Move"
-msgstr "Flyt"
-
 #: ../src/gui/ruin-rewarded-dialog.cpp:68
 msgid "The sages show thee the site of %1\n"
 msgstr "Vismændene viser dig stedet for %1\n"
@@ -5196,10 +5268,6 @@ msgstr[1] "Dine fjender overgiver sig modvilligt!\n"
 #: ../src/gui/surrender-dialog.cpp:37
 msgid "Do you accept?"
 msgstr "Accepterer du?"
-
-#: ../src/gui/stack-info-dialog.cpp:217
-msgid "Bonus"
-msgstr "Bonus"
 
 #: ../src/gui/ruin-report-dialog.cpp:64
 msgid "Ruins and Temples"
@@ -5229,15 +5297,15 @@ msgstr "Knogler ligger spredt over dette sted."
 msgid "It is guarded."
 msgstr "Den er bevogtet."
 
-#: ../src/gui/splash-window.cpp:95
+#: ../src/gui/splash-window.cpp:90
 msgid "Rescue Crashed Game"
 msgstr "Red nedbrudt spil"
 
-#: ../src/gui/splash-window.cpp:160 ../src/editor/main-window.cpp:1771
+#: ../src/gui/splash-window.cpp:167 ../src/editor/main-window.cpp:1771
 msgid "LordsAWar Saved Games (*.sav)"
 msgstr "LordsAWar - gemte spil (*.sav)"
 
-#: ../src/gui/splash-window.cpp:214
+#: ../src/gui/splash-window.cpp:221
 msgid "New Networked Game"
 msgstr "Nyt netværksspil"
 
@@ -5337,10 +5405,9 @@ msgstr "ottende"
 msgid "You are coming %1"
 msgstr "Du er %1"
 
-# det er ikke et flag/fane det her?
-#: ../src/gui/report-dialog.cpp:410
-msgid "Standard"
-msgstr "Standard"
+#: ../src/gui/report-dialog.cpp:419
+msgid "%1 stops production!"
+msgstr "%1 stopper produktion!"
 
 #: ../src/gui/army-gains-level-dialog.cpp:54
 msgid "%1 has advanced to level %2!"
@@ -5983,10 +6050,9 @@ msgstr "Vælg et feltsæt til indlæsning"
 msgid "LordsAWar Tilesets (*.lwt)"
 msgstr "LordsAWar - feltsæt (*.lwt)"
 
-# hvad menes der dog her? Engelsk fejl? Er det noget med at kopiere et eksisterende felt
 #: ../src/editor/tileset-window.cpp:559
-msgid "Tile a Copy of a Tileset"
-msgstr "Gem en kopi af feltsættet"
+msgid "Save a Copy of a Tileset"
+msgstr "Gem en kopi af et feltsæt"
 
 #: ../src/editor/tileset-window.cpp:607 ../src/editor/tileset-window.cpp:626
 #: ../src/editor/tileset-window.cpp:666
@@ -6021,10 +6087,9 @@ msgstr "Fejl! Denne version af feltsættet er ikke understøttet."
 msgid "Error!  Tileset could not be loaded."
 msgstr "Fejl! Feltsæt kunne ikke indlæses."
 
-# engelsk fejl mangler 1
 #: ../src/editor/tileset-window.cpp:1472
-msgid "There must be at least tile in the tileset."
-msgstr "Der skal være mindst 1 felt i feltsættet."
+msgid "There must be at least one tile in the tileset."
+msgstr "Der skal være mindst et felt i feltsættet."
 
 #: ../src/editor/tileset-window.cpp:1475
 msgid "There must be a grass tile in the tileset."
@@ -6187,6 +6252,11 @@ msgstr "Under kontrol"
 #: ../src/gui/game-lobby-dialog.cpp:765
 msgid "People"
 msgstr "Folk"
+
+#: ../src/gui/network-game-selector-dialog.cpp:57
+#: ../src/gui/network-game-selector-dialog.cpp:76
+msgid "Host"
+msgstr "Vært"
 
 #: ../src/gui/new-network-game-download-window.cpp:29
 msgid "Downloading."
