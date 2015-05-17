@@ -726,6 +726,7 @@ void GameLobbyDialog::on_chatted(Glib::ustring nickname, Glib::ustring message)
   Glib::ustring new_text;
   new_text = chat_textview->get_buffer()->get_text() + "\n" + message;
   chat_textview->get_buffer()->set_text(new_text);
+  while (g_main_context_iteration(NULL, FALSE)); //doEvents
   chat_scrolledwindow->get_vadjustment()->set_value(chat_scrolledwindow->get_vadjustment()->get_upper());
 }
 
