@@ -401,6 +401,8 @@ Action_Split::Action_Split(Stack* orig, Stack* added)
       return;
     }
 
+  for (unsigned int i = 0; i < MAX_STACK_SIZE; i++)
+    d_armies_moved[i] = 0;
   Stack::iterator it = added->begin();
   for (unsigned int i = 0; it != added->end(); it++, i++)
     d_armies_moved[i] = (*it)->getId();
@@ -539,10 +541,9 @@ bool Action_Fight::doSave(XML_Helper* helper) const
       s += String::ucompose("%1 ", (*uit));
     retval &= helper->saveData("attackers", s);
 
-
     s = "";
     for (uit = d_defenders.begin(); uit != d_defenders.end(); uit++)
-      s + String::ucompose("%1 ", (*uit));
+      s += String::ucompose("%1 ", (*uit));
     retval &= helper->saveData("defenders", s);
 
     // save what happened
