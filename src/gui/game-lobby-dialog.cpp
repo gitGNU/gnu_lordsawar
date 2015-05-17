@@ -302,7 +302,6 @@ void GameLobbyDialog::on_sitting_changed(Gtk::CellEditable *editable,
       d_has_ops == false)
     return;
 
-  sitting_renderer.set_sensitive(false);
   player = pl->getPlayer((*iter)[player_columns.player_id]);
   d_player_id_of_sit_or_stand_request = player->getId();
 
