@@ -379,6 +379,7 @@ void GameWindow::new_network_game(GameScenario *game_scenario, NextTurn *next_tu
     return;
   setup_signals(game_scenario);
   game->redraw();
+  while (g_main_context_iteration(NULL, FALSE)); //doEvents
   game->startGame();
   if (Playerlist::getActiveplayer() && GameServer::getInstance()->isListening() == false)
     if (Playerlist::getActiveplayer()->getType() != Player::NETWORKED)
