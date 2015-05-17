@@ -162,7 +162,7 @@ bool GameClient::onGotMessage(int type, Glib::ustring payload)
     break;
 
   case MESSAGE_TYPE_SENDING_MAP:
-    gotScenario(payload);
+    game_scenario_received.emit(payload);
     break;
 
   case MESSAGE_TYPE_PARTICIPANT_CONNECTED:

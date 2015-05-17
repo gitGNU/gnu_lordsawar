@@ -21,7 +21,6 @@
 
 #include "game-client-decoder.h"
 
-#include "File.h"
 #include "action.h"
 #include "network-action.h"
 #include "network-history.h"
@@ -37,19 +36,6 @@ GameClientDecoder::GameClientDecoder()
 
 GameClientDecoder::~GameClientDecoder()
 {
-}
-
-void GameClientDecoder::gotScenario(const Glib::ustring &payload)
-{
-  Glib::ustring file = "clientnetwork" + SAVE_EXT;
-  Glib::ustring path = File::getSavePath();
-  path += file;
-  
-  std::ofstream f(path.c_str());
-  f << payload;
-  f.close();
-  
-  game_scenario_received.emit(path);
 }
 
 int GameClientDecoder::decodeActions(std::list<NetworkAction*> actions,

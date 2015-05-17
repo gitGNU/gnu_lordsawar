@@ -26,7 +26,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "timing.h"
-
+#include "File.h"
+#include "defs.h"
 
 void NetworkConnection::setup_connection()
 {
@@ -166,9 +167,23 @@ gssize NetworkConnection::on_payload_received(gssize len)
     return len;
 
   int type = payload[1];
-  bool keep_going = got_message.emit
-    (type, Glib::ustring(payload + MESSAGE_PREAMBLE_EXTRA_BYTES,
-                       payload_size - MESSAGE_PREAMBLE_EXTRA_BYTES));
+  bool keep_going;
+  if (type == MESSAGE_TYPE_SENDING_MAP)
+    {
+      Glib::ustring file = "clientnetwork" + SAVE_EXT;
+      Glib::ustring path = File::getSavePath();
+      path += file;
+
+      FILE *fp = fopen (path.c_str(), "wb");
+      fwrite (payload + MESSAGE_PREAMBLE_EXTRA_BYTES, 1, 
+              payload_size - MESSAGE_PREAMBLE_EXTRA_BYTES, fp);
+      fclose (fp);
+      keep_going = got_message.emit (type, path);
+    }
+  else
+    keep_going = got_message.emit
+      (type, Glib::ustring(payload + MESSAGE_PREAMBLE_EXTRA_BYTES,
+                           payload_size - MESSAGE_PREAMBLE_EXTRA_BYTES));
   free (payload);
   payload = NULL;
   if (keep_going == false)
