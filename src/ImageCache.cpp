@@ -1152,7 +1152,8 @@ PixMask *ImageCache::getNewLevelImage(bool female, bool mask)
     return d_newlevelmask_female;
   else if (female && !mask)
     return d_newlevel_female;
-  if (!female && !mask)
+
+  if (!female && mask)
     return d_newlevelmask_male;
   else if (!female && !mask)
     return d_newlevel_male;
