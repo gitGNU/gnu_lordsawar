@@ -225,6 +225,11 @@ void NetworkGameSelectorDialog::on_clear_clicked()
   rpgl->save();
   recently_joined_games_list->clear();
   recently_joined_games_list.reset();
+  recently_joined_games_list = 
+    Gtk::ListStore::create(recently_joined_games_columns);
+  recent_treeview->set_model(recently_joined_games_list);
+  hostname_entry->set_text("");
+  port_spinbutton->set_value(LORDSAWAR_PORT);
   update_buttons();
 }
 
