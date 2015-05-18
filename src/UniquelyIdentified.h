@@ -60,6 +60,7 @@ class UniquelyIdentified
     //! Go get a new unique identifier for this object.
     void assignNewId();
         
+    bool isUnique() {return d_unique;}
  protected:
 
     //! A unique numeric identifier for an object in the game.
