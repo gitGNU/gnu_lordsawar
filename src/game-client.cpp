@@ -59,11 +59,13 @@ GameClient::GameClient()
 {
   d_connected = false;
   player_id = -1;
+  network_connection = NULL;
 }
 
 GameClient::~GameClient()
 {
-  network_connection.reset();
+  delete network_connection;
+  network_connection = NULL;
 }
 
 void GameClient::start(Glib::ustring host, guint32 port, Glib::ustring profile_id, Glib::ustring nick)
@@ -73,7 +75,7 @@ void GameClient::start(Glib::ustring host, guint32 port, Glib::ustring profile_i
   player_id = -1;
   setNickname(nick);
   setProfileId(profile_id);
-  network_connection.reset(new NetworkConnection());
+  network_connection = new NetworkConnection();
   network_connection->connected.connect(
     sigc::mem_fun(this, &GameClient::onConnected));
   network_connection->connection_lost.connect(
@@ -151,7 +153,7 @@ void GameClient::stood_up(Player *player, Glib::ustring nickname)
 
 bool GameClient::onGotMessage(int type, Glib::ustring payload)
 {
-  std::cerr << String::ucompose("got message of type %1", type) << std::endl;
+  //std::cerr << String::ucompose("got message of type %1", type) << std::endl;
   switch (MessageType(type)) {
   case MESSAGE_TYPE_PING:
     network_connection->send(MESSAGE_TYPE_PONG, "PONGOGOGO");
@@ -442,6 +444,6 @@ void GameClient::gotTurnOrder (Glib::ustring payload)
 void GameClient::disconnect()
 {
   d_connected = false;
-  if (network_connection.get() != NULL)
+  if (network_connection)
     network_connection->send(MESSAGE_TYPE_PARTICIPANT_DISCONNECT, d_nickname);
 }
