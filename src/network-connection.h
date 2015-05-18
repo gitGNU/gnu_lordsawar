@@ -42,7 +42,7 @@ public:
   sigc::signal<void> connection_received_data;
   sigc::signal<bool, int, Glib::ustring> got_message;
 
-  void send(int type, const Glib::ustring &payload);
+  bool send(int type, const Glib::ustring &payload);
   void sendFile(int type, Glib::ustring filename);
   Glib::ustring get_peer_hostname();
 

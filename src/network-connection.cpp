@@ -235,21 +235,21 @@ void NetworkConnection::sendFile(int type, const Glib::ustring filename)
     }
 }
 
-void NetworkConnection::send(int type, const Glib::ustring &payload)
+bool NetworkConnection::send(int type, const Glib::ustring &payload)
 {
-  // write the preamble
-  gchar buf[MESSAGE_HEADER_SIZE];
+  // make the preamble
   guint32 l = g_htonl(MESSAGE_PREAMBLE_EXTRA_BYTES + payload.size());
+  gchar *buf = (gchar*) malloc ((MESSAGE_HEADER_SIZE  + payload.size())* sizeof (gchar));
   memcpy(buf, &l, MESSAGE_SIZE_BYTES);
   buf[MESSAGE_SIZE_BYTES] = MESSAGE_PROTOCOL_VERSION;
   buf[MESSAGE_SIZE_BYTES + 1] = type;
   
+  //concatenate the payload
+  memcpy (&buf[MESSAGE_HEADER_SIZE], payload.c_str(), payload.size());
   gsize bytessent = 0;
-  bool wrote_all = out->write_all (buf, sizeof (buf), bytessent);
-
-  if (wrote_all)
-    // write the payload
-    wrote_all = out->write_all (payload.c_str(), payload.size(), bytessent);
+  bool wrote_all = out->write_all (buf, (MESSAGE_HEADER_SIZE + payload.size()) * sizeof (gchar), bytessent);
+  free (buf);
+  return wrote_all;
 }
   
 bool NetworkConnection::on_connect_timeout()
