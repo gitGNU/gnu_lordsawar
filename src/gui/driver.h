@@ -48,6 +48,7 @@ class Driver: public sigc::trackable
     Glib::ustring d_load_filename;
     sigc::connection heartbeat_conn;
     sigc::connection upload_heartbeat_conn;
+    sigc::connection recv_conn;
     Player::Type robot_player_type;
     Glib::ustring d_advertised_scenario_id;
     unsigned int number_of_robots;
@@ -90,8 +91,8 @@ class Driver: public sigc::trackable
     void on_game_scenario_received_for_robots(Glib::ustring path);
   
 
-    void heartbeat();
-    void upload_heartbeat();
+    bool heartbeat();
+    bool upload_heartbeat();
 
     void on_client_player_chat(Glib::ustring message);
     void on_hosted_player_chat(Glib::ustring message);
