@@ -941,10 +941,7 @@ void GameServer::sendActions(Participant *part)
 
   for (std::list<NetworkAction *>::iterator i = part->actions.begin(),
        end = part->actions.end(); i != end; ++i)
-    {
-      std::cerr << String::ucompose("Sending action: %1 from person %2 %3 to person %4", Action::actionTypeToString((*i)->getAction()->getType()), d_nickname, Playerlist::getInstance()->getPlayer((*i)->getOwnerId())->getName(), part->nickname) << std::endl;
     (**i).save(&helper);
-    }
 
   helper.closeTag();
 
