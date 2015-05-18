@@ -67,7 +67,7 @@ public:
 
 protected:
   GameClient();
-  ~GameClient() {};
+  ~GameClient();
 
 private:
   std::auto_ptr<NetworkConnection> network_connection;
