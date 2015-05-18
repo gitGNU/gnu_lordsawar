@@ -161,7 +161,6 @@ GameWindow::GameWindow()
 
     status_box = StatusBox::create(Configuration::s_ui_form_factor);
     status_box->reparent(*status_box_container);
-    status_box_container->add(*manage(status_box));
 
     // the map image
     xml->get_widget("smallmap_image", smallmap_image);
@@ -178,7 +177,6 @@ GameWindow::GameWindow()
     xml->get_widget("control_panel_viewport", control_panel_viewport);
     game_button_box = GameButtonBox::create(Configuration::s_ui_form_factor);
     game_button_box->reparent(*control_panel_viewport);
-    control_panel_viewport->add(*manage(game_button_box));
 
     // the stats
     xml->get_widget("turn_label", turn_label);
@@ -379,7 +377,7 @@ void GameWindow::new_network_game(GameScenario *game_scenario, NextTurn *next_tu
     return;
   setup_signals(game_scenario);
   game->redraw();
-  while (g_main_context_iteration(NULL, FALSE)); //doEvents
+  while (g_main_context_iteration(NULL, FALSE)); //doEvents fixes temporary 40x40 smallmap
   game->startGame();
   if (Playerlist::getActiveplayer() && GameServer::getInstance()->isListening() == false)
     if (Playerlist::getActiveplayer()->getType() != Player::NETWORKED)
@@ -1206,7 +1204,6 @@ void GameWindow::on_ui_form_factor_changed(guint32 factor)
       control_panel_viewport->remove();
     }
   game_button_box = GameButtonBox::create(Configuration::s_ui_form_factor);
-  control_panel_viewport->add(*manage(game_button_box));
   game_button_box->reparent(*control_panel_viewport);
   game_button_box->setup_signals(game, Configuration::s_ui_form_factor);
   game_button_box->show_all();
@@ -1219,7 +1216,6 @@ void GameWindow::on_ui_form_factor_changed(guint32 factor)
     }
 
   status_box = StatusBox::create(Configuration::s_ui_form_factor);
-  status_box_container->pack_start(*manage(status_box), Gtk::PACK_SHRINK);
   status_box->reparent(*status_box_container);
   status_box->stack_composition_modified.connect
       (sigc::mem_fun(game, &Game::recalculate_moves_for_stack));
