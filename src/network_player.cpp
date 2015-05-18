@@ -912,7 +912,6 @@ void NetworkPlayer::decodeActionParkStack(const Action_ParkStack *action)
 
 void NetworkPlayer::decodeActionUnparkStack(const Action_UnparkStack *action)
 {
-  debug ("here i am, decoding unpark stack.\n");
   Stack *stack = d_stacklist->getStackById(action->getStackId());
   if (!stack)
     {
