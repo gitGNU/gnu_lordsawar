@@ -70,7 +70,7 @@ class Stack : public ::UniquelyIdentified, public Movable, public Ownable, publi
 	 * deep copy of the stack's Army units.
 	 */
         //! Copy constructor.
-        Stack(const Stack& s);
+        Stack(const Stack& s, bool unique = false);
 
         //! Loading constructor.
         Stack(XML_Helper* helper);

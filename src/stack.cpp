@@ -60,11 +60,12 @@ Stack::Stack(guint32 id, Player* player, Vector<int> pos)
     d_path = new Path();
 }
 
-Stack::Stack(const Stack& s)
+Stack::Stack(const Stack& s, bool unique)
     : UniquelyIdentified(s), Movable(s), Ownable(s), 
     d_defending(s.d_defending), d_parked(s.d_parked), 
     d_deleting(false)
 {
+  d_unique = unique;
   if (s.d_path == NULL)
     {
       printf("Stack %d has a null path!\n", d_id);

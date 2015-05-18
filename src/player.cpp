@@ -135,7 +135,7 @@ Player::Player(const Player& player)
     for (Stacklist::iterator it = player.d_stacklist->begin(); 
 	 it != player.d_stacklist->end(); it++)
     {
-        Stack* mine = new Stack(**it);
+        Stack* mine = new Stack(**it, true);
         // change the stack's loyalty
         mine->setPlayer(this);
         d_stacklist->add(mine);
@@ -1257,13 +1257,14 @@ Fight::Result Player::stackFight(Stack** attacker, Stack** defender)
     fight_started.emit(fight);
     // cleanup
     
-    // add a fight item about the combat
-    addAction(new Action_Fight(&fight));
-
 
     std::list<History*> attacker_history;
     std::list<History*> defender_history;
     cleanupAfterFight(attackers, defenders, attacker_history, defender_history);
+
+    // add a fight item about the combat
+    addAction(new Action_Fight(&fight));
+
     for (std::list<History*>::iterator i = attacker_history.begin();
          i != attacker_history.end(); i++)
       addHistory(*i);
