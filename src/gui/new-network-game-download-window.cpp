@@ -20,6 +20,7 @@
 NewNetworkGameDownloadWindow::NewNetworkGameDownloadWindow(Glib::ustring title)
 : m_vbox(false,10)
 {
+  set_position(Gtk::WIN_POS_CENTER);
   add(m_vbox);
   m_vbox.set_border_width(10);
   m_vbox.pack_start(m_label);
