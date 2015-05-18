@@ -70,7 +70,7 @@ protected:
   ~GameClient();
 
 private:
-  std::auto_ptr<NetworkConnection> network_connection;
+  NetworkConnection* network_connection;
   int player_id;
 
   void sit_or_stand (Player *player, bool sit);
