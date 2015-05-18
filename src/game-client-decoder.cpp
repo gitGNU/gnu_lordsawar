@@ -51,7 +51,7 @@ int GameClientDecoder::decodeActions(std::list<NetworkAction*> actions,
     Player *p = action->getOwner();
     //if (p != player && player)
       //continue;
-    std::cerr << String::ucompose(_("decoding action: %1"), desc) << std::endl;
+    std::cerr << String::ucompose(_("decoding action: %1"), desc);
     NetworkPlayer *np = static_cast<NetworkPlayer *>(p);
 
     if (!np) {
