@@ -41,6 +41,9 @@ void NetworkConnection::setup_connection()
   source->connect(sigc::mem_fun(*this, &NetworkConnection::on_got_input));
   header_size = MESSAGE_SIZE_BYTES;
   header_left = header_size;
+  memset (header, 0, sizeof (header));
+  payload_size = 0;
+  payload_left = 0;
   source->attach(Glib::MainContext::get_default());
 }
 
