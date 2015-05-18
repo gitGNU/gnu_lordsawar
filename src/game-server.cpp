@@ -79,6 +79,7 @@ GameServer::GameServer()
     (sigc::mem_fun(*this, &GameServer::on_player_finished_turn));
   local_player_moved.connect
     (sigc::mem_fun(*this, &GameServer::on_player_finished_turn));
+  d_stop = false;
 }
 
 void GameServer::notifyRoundOver()
@@ -422,8 +423,10 @@ void GameServer::onLocalNonNetworkedActionDone(NetworkAction *action)
       (*i)->actions.push_back(new NetworkAction (action->getAction(),
                                                  action->getOwnerId()));
       sendActions(*i);
-      clearNetworkActionlist((*i)->actions);
     }
+  for (std::list<Participant *>::iterator i = participants.begin(),
+       end = participants.end(); i != end; ++i) 
+    clearNetworkActionlist((*i)->actions);
 
   //do it here.
   delete action;
