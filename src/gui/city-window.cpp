@@ -299,9 +299,6 @@ void CityWindow::fill_in_production_info()
                                   Shield::NEUTRAL, true)->to_pixbuf();
     }
     
-    Glib::RefPtr<Gdk::Pixbuf> pixbuf = current_image->property_pixbuf();
-    if (pixbuf)
-      pixbuf->unreference();
     current_image->property_pixbuf() = pic;
     production_info_label1->set_markup(s1);
     production_info_label2->set_markup(s2);
