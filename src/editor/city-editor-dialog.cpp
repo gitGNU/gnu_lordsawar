@@ -427,4 +427,6 @@ void CityEditorDialog::on_player_changed()
 						a->getTypeId(), 
 						player, NULL)->to_pixbuf();
     }
+  if (capital_checkbutton->get_active())
+    capital_checkbutton->set_active(false);
 }
