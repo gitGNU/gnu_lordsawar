@@ -48,7 +48,9 @@ Commentator::Commentator()
 }
 
 bool Commentator::hasComment() const
+
 {
+return  true;
   if ((rand() % MAX_PLAYERS) == 0)
     return true;
   return false;
@@ -59,8 +61,8 @@ std::vector<Glib::ustring> Commentator::getComments(Player *player) const
   std::vector<Glib::ustring> comments;
   guint32 round = player->countEndTurnHistoryEntries();
 
-  if (round < 2)
-    return comments;
+  //if (round < 2)
+    //return comments; benfix
 
   if (player->getGold() < 100)
     comments.push_back(_("You are sadly in need of gold!"));
@@ -118,10 +120,10 @@ std::vector<Glib::ustring> Commentator::getComments(Player *player) const
     comments.push_back(_("Ahh, the expectation of a coming battle!"));
 
   if (attacking_enemy_cities > 4)
-    comments.push_back(_("Warlord... a might battle is brewing!"));
+    comments.push_back(_("Warlord... a mighty battle is brewing!"));
 
   City *capital_city = Citylist::getInstance()->getCapitalCity(player);
-  if (capital_city->getOwner() != player)
+  if (capital_city && capital_city->getOwner() != player)
     comments.push_back(_("As your capital city has fallen, so shall you!"));
   return comments;
 }
