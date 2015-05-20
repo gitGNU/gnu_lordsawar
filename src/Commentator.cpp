@@ -50,7 +50,6 @@ Commentator::Commentator()
 bool Commentator::hasComment() const
 
 {
-return  true;
   if ((rand() % MAX_PLAYERS) == 0)
     return true;
   return false;
@@ -61,8 +60,8 @@ std::vector<Glib::ustring> Commentator::getComments(Player *player) const
   std::vector<Glib::ustring> comments;
   guint32 round = player->countEndTurnHistoryEntries();
 
-  //if (round < 2)
-    //return comments; benfix
+  if (round < 2)
+    return comments;
 
   if (player->getGold() < 100)
     comments.push_back(_("You are sadly in need of gold!"));
