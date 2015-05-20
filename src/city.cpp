@@ -77,6 +77,8 @@ City::City(XML_Helper* helper, guint32 width)
         helper->getData(ui, "capital_owner");
         d_capital_owner = Playerlist::getInstance()->getPlayer(ui);
       }
+    else
+      d_capital_owner = NULL;
 
 
     std::istringstream svect;

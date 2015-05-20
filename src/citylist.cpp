@@ -602,7 +602,7 @@ City *Citylist::getCapitalCity(Player *player) const
   for (const_iterator it = begin(); it != end(); it++)
     {
       City *c = *it;
-      if (c->getCapitalOwner() &&
+      if (c->isCapital() && c->getCapitalOwner() &&
           c->getCapitalOwner()->getId() == player->getId())
         return c;
     }
