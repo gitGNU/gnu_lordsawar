@@ -102,6 +102,7 @@ const unsigned int BATTLE_DICE_SIDES_NORMAL = 20;
 const unsigned short LORDSAWAR_PORT = 14998;
 const unsigned short LORDSAWAR_GAMELIST_PORT = 18998;
 const unsigned short LORDSAWAR_GAMEHOST_PORT = 22998;
+const unsigned int MINIMUM_CACHE_SIZE = (1 << 21);
 #define HUMAN_PLAYER_TYPE _("Human")
 #define EASY_PLAYER_TYPE _("Easy")
 #define HARD_PLAYER_TYPE _("Hard")

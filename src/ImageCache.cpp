@@ -418,19 +418,9 @@ void ImageCache::reset()
 
 void ImageCache::checkPictures()
 {
-  // for security, we always take a minimum cache size of 2MB. This
-  // includes (at 4 byte color depth and assuming 64x64 pixel size)
-  // - 10 cities (each 64kb => 640kb)
-  // - 20 flags (each 16kb => 320kb)
-  // - 40 units (each 16kb => 640kb)
-  // + a bit more. The problem is that if we have less images than needed
-  // for a single rendering, the surfaces will become invalid before actually
-  // used. This should not be a problem with the normal map (the surfaces are
-  // copied and discarded), but when selecting armies from armyset, where
-  // you can have these images assigned to buttons.
   guint32 maxcache = Configuration::s_cacheSize;
-  if (maxcache < (1<<21))
-    maxcache = (1<<21);
+  if (maxcache < MINIMUM_CACHE_SIZE)
+    maxcache = MINIMUM_CACHE_SIZE;
 
   if (d_cachesize < maxcache)
     return;
@@ -439,28 +429,29 @@ void ImageCache::checkPictures()
   // given above and reduce the number of images. Let us start with the
   // cities
 
-  if (armycache.size() >= 15 * (MAX_PLAYERS+1))
+  unsigned int num_players = Playerlist::getInstance()->countPlayersAlive();
+  if (armycache.size() >= 15 * num_players)
     {
       d_cachesize -= armycache.discardHalf();
       if (d_cachesize < maxcache)
         return;
     }
 
-  if (circledarmycache.size() >= 15 * (MAX_PLAYERS+1))
+  if (circledarmycache.size() >= 15 * num_players)
     {
       d_cachesize -= circledarmycache.discardHalf();
       if (d_cachesize < maxcache)
         return;
     }
 
-  if (flagcache.size() >= (MAX_PLAYERS+1) * MAX_STACK_SIZE)
+  if (flagcache.size() >= num_players * MAX_STACK_SIZE)
     {
       d_cachesize -= flagcache.discardHalf();
       if (d_cachesize < maxcache)
         return;
     }
 
-  if (citycache.size() >= (MAX_PLAYERS+1))
+  if (citycache.size() >= num_players)
     {
       d_cachesize -= citycache.discardHalf();
       if (d_cachesize < maxcache)
@@ -495,7 +486,7 @@ void ImageCache::checkPictures()
         return;
     }
 
-  if (plantedstandardcache.size() >= MAX_PLAYERS)
+  if (plantedstandardcache.size() >= num_players)
     {
       d_cachesize -= plantedstandardcache.discardHalf();
       if (d_cachesize < maxcache)
@@ -509,7 +500,7 @@ void ImageCache::checkPictures()
         return;
     }
 
-  if (towercache.size() >= MAX_PLAYERS)
+  if (towercache.size() >= num_players)
     {
       d_cachesize -= towercache.discardHalf();
       if (d_cachesize < maxcache)
@@ -544,7 +535,7 @@ void ImageCache::checkPictures()
         return;
     }
 
-  if (selectorcache.size() >= MAX_PLAYERS * MAX_STACK_SIZE)
+  if (selectorcache.size() >= num_players * MAX_STACK_SIZE)
     {
       d_cachesize -= selectorcache.discardHalf();
       if (d_cachesize < maxcache)
@@ -572,7 +563,7 @@ void ImageCache::checkPictures()
         return;
     }
 
-  if (shieldcache.size() >= MAX_PLAYERS * 3)
+  if (shieldcache.size() >= num_players * 3)
     {
       d_cachesize -= shieldcache.discardHalf();
       if (d_cachesize < maxcache)
