@@ -35,6 +35,11 @@ ShieldStyle::ShieldStyle(ShieldStyle::Type type)
   d_image = NULL;
   d_mask = NULL;
 }
+        
+ShieldStyle::~ShieldStyle()
+{
+  uninstantiateImages();
+}
 
 ShieldStyle::ShieldStyle(const ShieldStyle &s)
 {
@@ -129,23 +134,18 @@ void ShieldStyle::instantiateImages(Glib::ustring filename, Shieldset *s, bool &
     {
       PixMask::scale(half[0], xsize, ysize);
       PixMask::scale(half[1], xsize, ysize);
+      setImage(half[0]);
+      setMask(half[1]);
     }
-  setImage(half[0]);
-  setMask(half[1]);
-
 }
 
 void ShieldStyle::uninstantiateImages()
 {
-  if (getImage() != NULL)
-    {
-      delete getImage();
-      setImage(NULL);
-    }
-  if (getMask() != NULL)
-    {
-      delete getMask();
-      setMask(NULL);
-    }
+  if (d_image != NULL)
+    delete d_image;
+  if (d_mask != NULL)
+    delete d_mask;
+  d_mask = NULL;
+  d_image = NULL;
 }
 

@@ -198,7 +198,7 @@ public:
             && get(set->getBaseName()) != NULL)
           {
             set->setDirectory(get(set->getId())->getDirectory());
-            return true;
+            return false;
           }
 
         //if the basename conflicts with any other basename, then change it.
@@ -244,21 +244,25 @@ public:
         return true;
       }
 
-    T *import(Tar_Helper *t, Glib::ustring f, bool &broken)
+    guint32 import(Tar_Helper *t, Glib::ustring f, bool &broken)
       {
         bool unsupported_version;
         Glib::ustring filename = t->getFile(f, broken);
         if (broken)
-          return NULL;
+          return 0;
         T*set = T::create(filename, unsupported_version);
         assert (set != NULL);
         set->setBaseName(File::get_basename(f));
 
         Glib::ustring basename = "";
         guint32 id = 0;
-        addToPersonalCollection(set, basename, id);
+        if (addToPersonalCollection(set, basename, id) == false)
+          {
+            id = set->getId();
+            delete set;
+          }
 
-        return set;
+        return id;
       }
 
     int getSetId(Glib::ustring bname) const

@@ -35,6 +35,8 @@ HeroProto::HeroProto(const ArmyProto& a)
     :ArmyProto(a), OwnerId()
 {
   d_gender = a.getGender();
+  if (d_gender == Hero::NONE)
+    d_gender = Hero::MALE;
 }
 
 HeroProto::HeroProto()
@@ -51,6 +53,11 @@ HeroProto::HeroProto(XML_Helper* helper)
   else
     d_gender = Hero::genderFromString(gender_str);
   helper->getData(d_armyset, "armyset");
+}
+
+HeroProto::~HeroProto()
+{
+  uninstantiateImages();
 }
 
 bool HeroProto::save(XML_Helper* helper) const

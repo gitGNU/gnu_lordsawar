@@ -210,6 +210,7 @@ Tileset::~Tileset()
   uninstantiateImages();
   for (unsigned int i=0; i < size(); i++)
     delete (*this)[i];
+  clear();
   clean_tmp_dir();
 }
 
@@ -503,73 +504,61 @@ void Tileset::uninstantiateImages()
   for (iterator it = begin(); it != end(); it++)
     (*it)->uninstantiateImages();
 
-  if (getExplosionImage() != NULL)
-    {
-      delete getExplosionImage();
-      setExplosionImage(NULL);
-    }
   for (unsigned int i = 0; i < ROAD_TYPES; i++)
     {
-      if (getRoadImage(i) != NULL)
-	{
-	  delete getRoadImage(i);
-	  setRoadImage(i, NULL);
-	}
+      if (roadpic[i] != NULL)
+        delete roadpic[i];
+      roadpic[i] = NULL;
     }
+
   for (unsigned int i = 0; i < BRIDGE_TYPES; i++)
     {
-      if (getBridgeImage(i) != NULL)
-	{
-	  delete getBridgeImage(i);
-	  setBridgeImage(i, NULL);
-	}
+      if (bridgepic[i] != NULL)
+        delete bridgepic[i];
+      bridgepic[i] = NULL;
     }
-  for (unsigned int i = 0; i < FOG_TYPES; i++)
+
+  for (unsigned int i = 0; i < FLAG_TYPES; i++)
     {
-      if (getFogImage(i) != NULL)
-	{
-	  delete getFogImage(i);
-	  setFogImage(i, NULL);
-	}
+      if (flagpic[i] != NULL)
+        delete flagpic[i];
+      if (flagmask[i] != NULL)
+        delete flagmask[i];
+      flagpic[i] = NULL;
+      flagmask[i] = NULL;
     }
+
   for (unsigned int i = 0; i < getNumberOfSelectorFrames(); i++)
     {
-      if (getSelectorImage(i) != NULL)
-	{
-	  delete getSelectorImage(i);
-	  setSelectorImage(i, NULL);
-	}
+      if (selector[i] != NULL)
+        delete selector[i];
+      if (selectormask[i] != NULL)
+        delete selectormask[i];
+      selector[i] = NULL;
+      selectormask[i] = NULL;
     }
+
   for (unsigned int i = 0; i < getNumberOfSmallSelectorFrames(); i++)
     {
-      if (getSmallSelectorImage(i) != NULL)
-	{
-	  delete getSmallSelectorImage(i);
-	  setSmallSelectorImage(i, NULL);
-	}
+      if (smallselector[i] != NULL)
+        delete smallselector[i];
+      if (smallselectormask[i] != NULL)
+        delete smallselectormask[i];
+      smallselector[i] = NULL;
+      smallselectormask[i] = NULL;
     }
-  for (unsigned int i = 0; i < getNumberOfSmallSelectorFrames(); i++)
+
+  if (explosion != NULL)
+    delete explosion;
+      
+  explosion = NULL;
+
+  for (unsigned int i = 0; i < FOG_TYPES; i++)
     {
-      if (getSmallSelectorMask(i) != NULL)
+      if (fogpic[i] != NULL)
 	{
-	  delete getSmallSelectorMask(i);
-	  setSmallSelectorMask(i, NULL);
-	}
-    }
-  for (unsigned int i = 0; i < FLAG_TYPES; i++)
-    {
-      if (getFlagImage(i) != NULL)
-	{
-	  delete getFlagImage(i);
-	  setFlagImage(i, NULL);
-	}
-    }
-  for (unsigned int i = 0; i < FLAG_TYPES; i++)
-    {
-      if (getFlagMask(i) != NULL)
-	{
-	  delete getFlagMask(i);
-	  setFlagMask(i, NULL);
+	  delete fogpic[i];
+          fogpic[i] = NULL;
 	}
     }
 }

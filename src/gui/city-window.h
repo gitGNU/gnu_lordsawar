@@ -44,6 +44,7 @@ class CityWindow: public LwDialog
     VectorMap* prodmap;
     ArmyInfoTip* army_info_tip;
     Gtk::Image *map_image;
+    Glib::RefPtr<Gdk::Pixbuf> map_pixbuf;
     Gtk::Label *city_label;
     Gtk::Label *status_label;
     Gtk::Label *production_info_label1;

@@ -76,9 +76,11 @@ bool Tile::save(XML_Helper *helper) const
 Tile::~Tile()
 {
   for (iterator it = begin(); it != end(); it++)
-      delete *it;
+    delete *it;
+  clear();
   if (d_smalltile)
     delete d_smalltile;
+  d_smalltile = NULL;
 }
 
 void Tile::setTypeByIndex(int idx)

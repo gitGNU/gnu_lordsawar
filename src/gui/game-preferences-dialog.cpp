@@ -164,15 +164,6 @@ bool GamePreferencesDialog::run(Glib::ustring nickname)
   return false;
 }
 
-Glib::RefPtr<Gdk::Pixbuf> GamePreferencesDialog::getShieldPic(guint32 type, guint32 owner)
-{
-  Shieldsetlist *sl = Shieldsetlist::getInstance();
-
-  ShieldStyle *sh= sl->getShield(d_shieldset, type, owner);
-  return ImageCache::applyMask(sh->getImage(), sh->getMask(), 
-				  sl->getColor(d_shieldset, owner), false)->to_pixbuf();
-}
-
 void GamePreferencesDialog::add_player(GameParameters::Player::Type type,
 				       const Glib::ustring &name)
 {
@@ -243,7 +234,8 @@ void GamePreferencesDialog::update_shields()
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
     {
       Gtk::Image *player_shield = new Gtk::Image ();
-      player_shield->property_pixbuf() = getShieldPic(2, i);
+      player_shield->property_pixbuf() = 
+        ImageCache::getInstance()->getShieldPic(d_shieldset, 2, i)->to_pixbuf();
       player_shields.push_back(player_shield);
       Gtk::HBox *player_hbox = static_cast<Gtk::HBox*>(list[i+1]);
       player_hbox->pack_start(*manage(player_shield), Gtk::PACK_SHRINK, 10);
@@ -369,8 +361,10 @@ void GamePreferencesDialog::on_start_game_clicked()
   g.diplomacy = GameScenarioOptions::s_diplomacy;
   g.random_turns = GameScenarioOptions::s_random_turns;
   g.quick_start = Configuration::s_quick_start;
+  g.cusp_of_war = GameScenarioOptions::s_cusp_of_war;
   g.intense_combat = GameScenarioOptions::s_intense_combat;
   g.military_advisor = GameScenarioOptions::s_military_advisor;
+  g.cities_can_produce_allies = false;
 
   g.difficulty = GameScenario::calculate_difficulty_rating(g);
 

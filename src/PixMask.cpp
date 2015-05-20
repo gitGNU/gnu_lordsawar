@@ -221,6 +221,7 @@ PixMask * PixMask::scale(int xsize, int ysize, Gdk::InterpType interp)
   PixMask *pix = PixMask::create(pixbuf->scale_simple(xsize, ysize, interp));
   pix->set_unscaled_width(get_unscaled_width());
   pix->set_unscaled_height(get_unscaled_height());
+  pixbuf.reset();
   return pix;
 }
 

@@ -341,6 +341,7 @@ GameLobbyDialog::~GameLobbyDialog()
 {
   if (citymap)
     delete citymap;
+  clean_up_players();
 }
 
 void GameLobbyDialog::update_scenario_details()
@@ -877,5 +878,4 @@ void GameLobbyDialog::sort_player_list_by_turn_order()
 void GameLobbyDialog::clean_up_players()
 {
   player_list->clear();
-  //player_list.reset();
 }

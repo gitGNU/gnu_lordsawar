@@ -228,6 +228,7 @@ bool Shieldset::save(XML_Helper *helper) const
 
 void Shieldset::instantiateImages(bool &broken)
 {
+  uninstantiateImages();
   for (iterator it = begin(); it != end(); it++)
     (*it)->instantiateImages(this, broken);
 }

@@ -1796,7 +1796,7 @@ bool Action_ConquerCity::doSave(XML_Helper* helper) const
 //Action_RecruitHero
 
 Action_RecruitHero::Action_RecruitHero(HeroProto* h, City *c, int cost, int alliesCount, const ArmyProto *ally)
-  :Action(Action::RECRUIT_HERO), d_hero(h), d_city(c->getId()), d_cost(cost),
+  :Action(Action::RECRUIT_HERO), d_hero(new HeroProto(*h)), d_city(c->getId()), d_cost(cost),
     d_allies(alliesCount)
 {
     if (d_allies > 0)
@@ -1820,6 +1820,13 @@ Action_RecruitHero::Action_RecruitHero(const Action_RecruitHero &a)
     d_ally_army_type(a.d_ally_army_type)
 {
   d_hero = new HeroProto(*a.d_hero);
+}
+
+Action_RecruitHero::~Action_RecruitHero()
+{
+  if (d_hero)
+    delete d_hero;
+  d_hero = NULL;
 }
 
 bool Action_RecruitHero::load(Glib::ustring tag, XML_Helper *helper)

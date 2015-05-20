@@ -51,7 +51,6 @@ ProdSlotlist::ProdSlotlist(guint32 numslots)
 
 ProdSlotlist::ProdSlotlist(XML_Helper* helper)
 {
-  clear();
   helper->getData(d_active_production_slot, "active_production_slot");
   helper->getData(d_duration, "duration");
   helper->registerTag(ProdSlot::d_tag, 
@@ -91,6 +90,13 @@ bool ProdSlotlist::save(XML_Helper* helper) const
 	  retval &= (*this)[i]->save(helper);
       }
     return retval;
+}
+
+ProdSlotlist::~ProdSlotlist()
+{
+  for (unsigned int i = 0; i < size(); i++)
+    delete (*this)[i];
+  clear();
 }
 
 guint32 ProdSlotlist::getNoOfProductionBases() const

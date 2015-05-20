@@ -60,9 +60,9 @@ class HeroTemplates
         std::vector<HeroProto*> d_herotemplates[MAX_PLAYERS];
 
 	//a list of male hero prototypes contained in the the army set.
-	std::vector<const ArmyProto*> d_male_heroes;
+	std::vector<ArmyProto*> d_male_heroes;
 	//a list of female hero prototypes contained in the the army set.
-	std::vector<const ArmyProto*> d_female_heroes;
+	std::vector<ArmyProto*> d_female_heroes;
 
         static HeroTemplates* d_instance;
 

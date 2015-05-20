@@ -245,12 +245,17 @@ Player::~Player()
 {
     if (d_stacklist)
     {
-        //d_stacklist->flClear();
         delete d_stacklist;
+        d_stacklist = NULL;
     }
     if (d_fogmap)
+      {
         delete d_fogmap;
+        d_fogmap = NULL;
+      }
 
+    delete d_triumphs;
+    d_triumphs = NULL;
     clearActionlist();
     clearHistorylist();
     d_fight_order.clear();

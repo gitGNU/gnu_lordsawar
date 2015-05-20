@@ -185,7 +185,7 @@ void City::produceStrongestProductionBase()
       int savep = d_active_production_slot;
       setActiveProductionSlot(strong_idx);
       Stack *s = NULL;
-      produceArmy(s);
+      Army *a = produceArmy(s);
       setActiveProductionSlot(savep);
       return;
     }

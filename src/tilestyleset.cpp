@@ -79,6 +79,7 @@ TileStyleSet::~TileStyleSet()
 {
   for (unsigned int i=0; i < size(); i++)
     delete (*this)[i];
+  clear();
 }
 
 bool TileStyleSet::save(XML_Helper *helper) const
@@ -111,13 +112,7 @@ bool TileStyleSet::validate() const
 void TileStyleSet::uninstantiateImages()
 {
   for (unsigned int i = 0; i < size(); i++)
-    {
-      if ((*this)[i]->getImage() != NULL)
-	{
-	  delete (*this)[i]->getImage();
-	  (*this)[i]->setImage(NULL);
-	}
-    }
+    (*this)[i]->uninstantiateImage();
 }
 
 void TileStyleSet::instantiateImages(int tilesize, Glib::ustring filename, bool &broken)

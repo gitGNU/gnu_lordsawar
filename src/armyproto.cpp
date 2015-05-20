@@ -35,7 +35,7 @@ Glib::ustring ArmyProto::d_tag = "armyproto";
 ArmyProto::ArmyProto(const ArmyProto& a)
     :ArmyProtoBase(a), d_id(a.d_id), d_defends_ruins(a.d_defends_ruins), 
      d_awardable(a.d_awardable), d_image_name(a.d_image_name),
-     d_gender(Hero::NONE)
+     d_gender(a.d_gender)
 {
   for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
     {
@@ -88,6 +88,10 @@ ArmyProto::ArmyProto(XML_Helper* helper)
       d_image[c] = NULL;
       d_mask[c] = NULL;
     }
+}
+
+ArmyProto::~ArmyProto()
+{
 }
 
 bool ArmyProto::save(XML_Helper* helper) const
@@ -175,16 +179,12 @@ void ArmyProto::uninstantiateImages()
 {
   for (unsigned int c = Shield::WHITE; c <= Shield::NEUTRAL; c++)
     {
-      if (getImage(Shield::Colour(c)))
-	{
-	  delete getImage(Shield::Colour(c));
-	  setImage(Shield::Colour(c), NULL);
-	}
-      if (getMask(Shield::Colour(c)))
-	{
-	  delete getMask(Shield::Colour(c));
-	  setMask(Shield::Colour(c), NULL);
-	}
+      if (d_image[c] != NULL)
+        delete d_image[c];
+      if (d_mask[c] != NULL)
+        delete d_mask[c];
+      d_image[c] = NULL;
+      d_mask[c] = NULL;
     }
 }
 

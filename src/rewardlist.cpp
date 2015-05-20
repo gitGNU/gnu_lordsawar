@@ -67,11 +67,33 @@ Rewardlist::Rewardlist()
 {
 }
 
+Rewardlist::~Rewardlist()
+{
+  flClear();
+}
+
 Rewardlist::Rewardlist(Rewardlist *rewardlist)
 {
   for (iterator it = rewardlist->begin(); it != rewardlist->end(); it++)
     {
-      push_back(*it);
+      switch ((*it)->getType())
+        {
+        case Reward::GOLD:
+          push_back(new Reward_Gold(*dynamic_cast<Reward_Gold*>(*it)));
+          break;
+        case Reward::ALLIES:
+          push_back(new Reward_Allies(*dynamic_cast<Reward_Allies*>(*it)));
+          break;
+        case Reward::ITEM:
+          push_back(new Reward_Item(*dynamic_cast<Reward_Item*>(*it)));
+          break;
+        case Reward::RUIN:
+          push_back(new Reward_Ruin(*dynamic_cast<Reward_Ruin*>(*it)));
+          break;
+        case Reward::MAP:
+          push_back(new Reward_Map(*dynamic_cast<Reward_Map*>(*it)));
+          break;
+        }
     }
 }
 
@@ -84,9 +106,7 @@ Rewardlist::Rewardlist(XML_Helper* helper)
 void Rewardlist::flClear()
 {
   for (iterator it = begin(); it != end(); it++)
-    {
-      delete (*it);
-    }
+    delete (*it);
 
   clear();
 }

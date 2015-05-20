@@ -71,7 +71,7 @@ class ShieldStyle : public sigc::trackable
 	ShieldStyle(ShieldStyle::Type type);
         
 	//! Destructor.
-        virtual ~ShieldStyle() {};
+        ~ShieldStyle();
 
         
         // Get Methods

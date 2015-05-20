@@ -55,9 +55,24 @@ HeroTemplates::HeroTemplates()
 HeroTemplates::~HeroTemplates()
 {
   for (unsigned int i = 0; i < MAX_PLAYERS; ++i)
-    for (std::vector<HeroProto *>::iterator j = d_herotemplates[i].begin();
+    {
+      for (std::vector<HeroProto *>::iterator j = d_herotemplates[i].begin();
            j != d_herotemplates[i].end(); ++j)
-      delete *j;
+        delete *j;
+      d_herotemplates[i].clear();
+    }
+  for (unsigned int i = 0; i < d_male_heroes.size(); i++)
+    {
+      d_male_heroes[i]->uninstantiateImages();
+      delete d_male_heroes[i];
+    }
+  d_male_heroes.clear();
+  for (unsigned int i = 0; i < d_female_heroes.size(); i++)
+    {
+      d_female_heroes[i]->uninstantiateImages();
+      delete d_female_heroes[i];
+    }
+  d_female_heroes.clear();
 }
 
 HeroProto *HeroTemplates::getRandomHero(Hero::Gender gender, int player_id)
@@ -97,9 +112,9 @@ int HeroTemplates::loadHeroTemplates()
       if (a->isHero())
 	{
 	  if (a->getGender() == Hero::FEMALE)
-	    d_female_heroes.push_back(a);
+	    d_female_heroes.push_back(new ArmyProto(*a));
 	  else
-	    d_male_heroes.push_back(a);
+	    d_male_heroes.push_back(new ArmyProto(*a));
 	}
     }
   if (d_female_heroes.size() == 0 && d_male_heroes.size() > 0)

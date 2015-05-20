@@ -127,8 +127,7 @@ GameWindow::GameWindow()
   game = NULL;
   game_button_box = NULL;
     
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(File::getUIFile("game-window.ui"));
+  Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(File::getUIFile("game-window.ui"));
 
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
@@ -306,6 +305,9 @@ GameWindow::~GameWindow()
   for (; it != connections.end(); it++) 
     (*it).disconnect();
   connections.clear();
+  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+    if (shield_pixbuf[i])
+      shield_pixbuf[i]->unreference();
     if (city_info_tip)
       {
 	delete city_info_tip;
@@ -1538,10 +1540,11 @@ void GameWindow::on_sidebar_stats_changed(SidebarStats s)
 
 void GameWindow::on_bigmap_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
+  Gtk::Allocation old = game->get_bigmap().get_allocation();
+  int width = bigmap_image->get_allocated_width();
+  int height = bigmap_image->get_allocated_height();
   Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
-    Gdk::Pixbuf::create(map, 0, 0, 
-                        bigmap_image->get_allocated_width(), 
-                        bigmap_image->get_allocated_height());
+    Gdk::Pixbuf::create(map, 0, 0, std::min(width, old.get_width()), std::min(height, old.get_height()));
   bigmap_image->property_pixbuf() = pixbuf;
   bigmap_image->queue_draw();
   //while (g_main_context_iteration(NULL, FALSE)); //doEvents
@@ -2317,9 +2320,10 @@ void GameWindow::show_shield_turn() //show turn indicator
 	  continue;
 	}
       if (*i == pl->getActiveplayer())
-	shield_image[c]->property_pixbuf()=gc->getShieldPic(1,(*i))->to_pixbuf();
+        shield_pixbuf[c] = gc->getShieldPic(1,(*i))->to_pixbuf();
       else
-	shield_image[c]->property_pixbuf()=gc->getShieldPic(0,(*i))->to_pixbuf();
+        shield_pixbuf[c] = gc->getShieldPic(0,(*i))->to_pixbuf();
+      shield_image[c]->property_pixbuf() = shield_pixbuf[c];
       shield_image[c]->property_tooltip_text() = (*i)->getName();
       c++;
     }
@@ -2366,6 +2370,8 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 
       dialog.run_and_hide();
       show();
+      Glib::RefPtr<Gdk::Pixbuf> pixbuf = image->property_pixbuf();
+      pixbuf->unreference();
     }
 }
 

@@ -132,9 +132,9 @@ bool GameScenario::loadArmysets(Tar_Helper *t)
   for (std::list<Glib::ustring>::iterator it = armysets.begin(); 
        it != armysets.end(); it++)
     {
-      Armyset *armyset = Armysetlist::getInstance()->import(t, *it, broken);
-      if (armyset && !broken)
-        Armysetlist::getInstance()->get(armyset->getId())->instantiateImages(broken);
+      guint32 id = Armysetlist::getInstance()->import(t, *it, broken);
+      if (!broken)
+        Armysetlist::getInstance()->get(id)->instantiateImages(broken);
     }
   return !broken;
 }
@@ -148,9 +148,9 @@ bool GameScenario::loadTilesets(Tar_Helper *t)
   for (std::list<Glib::ustring>::iterator it = tilesets.begin(); 
        it != tilesets.end(); it++)
     {
-      Tileset *tileset = tlist->import(t, *it, broken);
-      if (tileset && !broken)
-        tlist->get(tileset->getId())->instantiateImages(broken);
+      guint32 id = tlist->import(t, *it, broken);
+      if (!broken)
+        tlist->get(id)->instantiateImages(broken);
     }
   return !broken;
 }
@@ -164,9 +164,9 @@ bool GameScenario::loadCitysets(Tar_Helper *t)
   for (std::list<Glib::ustring>::iterator it = citysets.begin(); 
        it != citysets.end(); it++)
     {
-      Cityset *cityset = clist->import(t, *it, broken);
-      if (cityset && !broken)
-        clist->get(cityset->getId())->instantiateImages(broken);
+      guint32 id = clist->import(t, *it, broken);
+      if (!broken)
+        clist->get(id)->instantiateImages(broken);
     }
   return !broken;
 }
@@ -180,9 +180,9 @@ bool GameScenario::loadShieldsets(Tar_Helper *t)
   for (std::list<Glib::ustring>::iterator it = shieldsets.begin(); 
        it != shieldsets.end(); it++)
     {
-      Shieldset *shieldset = slist->import(t, *it, broken);
-      if (shieldset)
-        slist->get(shieldset->getId())->instantiateImages(broken);
+      guint32 id = slist->import(t, *it, broken);
+      if (!broken)
+        slist->get(id)->instantiateImages(broken);
     }
   return !broken;
 }
@@ -1016,7 +1016,10 @@ void GameScenario::initialize(GameParameters g)
     Playerlist::getInstance()->randomizeOrder();
   nextRound();
   if (d_playmode == GameScenario::NETWORKED)
-    Playerlist::getInstance()->turnHumansIntoNetworkPlayers();
+    {
+      GameMap::getInstance()->clearStackPositions();
+      Playerlist::getInstance()->turnHumansIntoNetworkPlayers();
+    }
   else
     autoSave();
   GameMap::getInstance()->updateStackPositions();

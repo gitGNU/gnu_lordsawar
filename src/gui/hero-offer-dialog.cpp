@@ -47,18 +47,13 @@ HeroOfferDialog::HeroOfferDialog(Gtk::Window &parent, Player *player, HeroProto 
 
     xml->get_widget("hero_image", hero_image);
     xml->get_widget("hero_male", male_radiobutton);
-    male_radiobutton->signal_clicked().connect(
-	sigc::mem_fun(this, &HeroOfferDialog::on_male_toggled));
     xml->get_widget("hero_female", female_radiobutton);
-    female_radiobutton->signal_clicked().connect(
-	sigc::mem_fun(this, &HeroOfferDialog::on_female_toggled));
-    
     male_radiobutton->set_active(hero->getGender() == Hero::MALE);
     female_radiobutton->set_active(hero->getGender() == Hero::FEMALE);
-    if (hero->getGender() == Hero::MALE)
-      on_male_toggled();
-    else if (hero->getGender() == Hero::FEMALE)
-      on_female_toggled();
+    male_radiobutton->signal_clicked().connect(
+	sigc::mem_fun(this, &HeroOfferDialog::on_toggled));
+    
+    on_toggled();
     
     xml->get_widget("name", name_entry);
     name_entry->set_text(hero->getName());
@@ -84,6 +79,9 @@ HeroOfferDialog::HeroOfferDialog(Gtk::Window &parent, Player *player, HeroProto 
 HeroOfferDialog::~HeroOfferDialog()
 {
   delete heromap;
+  map_pixbuf->unreference();
+  if (hero_pixbuf)
+    hero_pixbuf->unreference();
 }
 
 void HeroOfferDialog::update_buttons()
@@ -106,24 +104,17 @@ void HeroOfferDialog::on_name_changed()
   update_buttons();
 }
 
-void HeroOfferDialog::on_female_toggled()
+void HeroOfferDialog::on_toggled()
 {
-    if (female_radiobutton->get_active())
-	hero_image->property_file()
-	    = File::getMiscFile("various/recruit_female.png");
-    else
-	hero_image->property_file()
-	    = File::getMiscFile("various/recruit_male.png");
-}
+  if (hero_pixbuf)
+    ;//hero_pixbuf->unreference();
 
-void HeroOfferDialog::on_male_toggled()
-{
-    if (male_radiobutton->get_active())
-	hero_image->property_file()
-	    = File::getMiscFile("various/recruit_male.png");
-    else
-	hero_image->property_file()
-	    = File::getMiscFile("various/recruit_female.png");
+  if (male_radiobutton->get_active())
+    hero_pixbuf = Gdk::Pixbuf::create_from_file(File::getMiscFile("various/recruit_male.png"));
+  else
+    hero_pixbuf = Gdk::Pixbuf::create_from_file(File::getMiscFile("various/recruit_female.png"));
+
+  hero_image->property_pixbuf() = hero_pixbuf;
 }
 
 void HeroOfferDialog::hide()
@@ -158,8 +149,10 @@ bool HeroOfferDialog::run()
 
 void HeroOfferDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+  if (map_pixbuf)
+    map_pixbuf->unreference();
+  map_pixbuf = 
     Gdk::Pixbuf::create(map, 0, 0, heromap->get_width(), heromap->get_height());
-    map_image->property_pixbuf() = pixbuf;
+  map_image->property_pixbuf() = map_pixbuf;
 }
 

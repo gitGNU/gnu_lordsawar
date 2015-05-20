@@ -60,6 +60,10 @@ Tilesetlist::Tilesetlist()
 
 Tilesetlist::~Tilesetlist()
 {
+  uninstantiateImages();
+  for (iterator it = begin(); it != end(); it++)
+    delete *it;
+  clear();
 }
 
 void Tilesetlist::getSizes(std::list<guint32> &sizes) const

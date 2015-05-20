@@ -1409,7 +1409,7 @@ class Action_RecruitHero : public Action
 	//! Load a new recruit hero action from an opened saved-game file.
         Action_RecruitHero(XML_Helper* helper);
 	//! Destroy a recruit hero action.
-        ~Action_RecruitHero() {};
+        ~Action_RecruitHero();
 
 	//! Return some debug information about this action.
         Glib::ustring dump() const;

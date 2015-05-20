@@ -1192,18 +1192,24 @@ void GameMap::clearStackPositions()
     {
       Stacklist *sl = (*i)->getStacklist();
       for (Stacklist::iterator s = sl->begin(); s != sl->end(); s++)
-	getStacks((*s)->getPos())->clear();
+        {
+          Vector<int> pos = (*s)->getPos();
+          StackTile *st = getStacks(pos);
+          st->clear();
+        }
     }
 }
 void GameMap::updateStackPositions()
 {
   Playerlist *plist = Playerlist::getInstance();
-  //okay, clear them all first.
   for (Playerlist::iterator i = plist->begin(); i != plist->end(); i++)
     {
       Stacklist *sl = (*i)->getStacklist();
       for (Stacklist::iterator s = sl->begin(); s != sl->end(); s++)
-	getStacks((*s)->getPos())->add(*s);
+        {
+          Vector<int> pos = (*s)->getPos();
+          getStacks(pos)->add(*s);
+        }
     }
 }
 

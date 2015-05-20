@@ -48,6 +48,11 @@ TileStyle::TileStyle(guint32 id, TileStyle::Type type)
 {
 }
 
+TileStyle::~TileStyle()
+{
+  uninstantiateImage();
+}
+
 TileStyle::TileStyle(XML_Helper* helper)
   : d_image(0)
 {
@@ -82,6 +87,13 @@ bool TileStyle::save(XML_Helper *helper)
 Glib::ustring TileStyle::getTypeName() const
 {
   return getTypeName(d_type);
+}
+
+void TileStyle::uninstantiateImage()
+{
+  if (d_image != NULL)
+    delete d_image;
+  d_image = NULL;
 }
 
 Glib::ustring TileStyle::getTypeName(Type type)

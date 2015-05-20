@@ -99,6 +99,7 @@ Armyset::~Armyset()
   uninstantiateImages();
   for (iterator it = begin(); it != end(); it++)
     delete *it;
+  clear();
   clean_tmp_dir();
 }
 
@@ -536,6 +537,27 @@ void Armyset::uninstantiateImages()
 {
   for (iterator it = begin(); it != end(); it++)
     (*it)->uninstantiateImages();
+
+  if (d_ship)
+    delete d_ship;
+
+  if (d_shipmask)
+    delete d_shipmask;
+
+  if (d_standard)
+    delete d_standard;
+
+  if (d_standard_mask)
+    delete d_standard_mask;
+
+  if (d_bag)
+    delete d_bag;
+
+  d_ship = NULL;
+  d_shipmask = NULL;
+  d_standard = NULL;
+  d_standard_mask = NULL;
+  d_bag = NULL;
 }
 
 void Armyset::loadShipPic(Glib::ustring image_filename, bool &broken)
@@ -830,6 +852,7 @@ void Armyset::reload(bool &broken)
       clear();
       for (iterator it = d.armyset->begin(); it != d.armyset->end(); it++)
         push_back(new ArmyProto(*(*it)));
+      *this = *d.armyset;
       instantiateImages(broken);
     }
 }

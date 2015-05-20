@@ -58,6 +58,10 @@ Shieldsetlist::Shieldsetlist()
 
 Shieldsetlist::~Shieldsetlist()
 {
+  uninstantiateImages();
+  for (iterator it = begin(); it != end(); it++)
+    delete *it;
+  clear();
 }
 
 std::list<Glib::ustring> Shieldsetlist::getValidNames() const

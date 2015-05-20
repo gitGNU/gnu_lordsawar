@@ -92,7 +92,7 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
         Rewardlist(XML_Helper* helper);
 
 	//! Destructor.
-        ~Rewardlist() {};
+        ~Rewardlist();
 
     private:
         //! Callback function for loading rewards.

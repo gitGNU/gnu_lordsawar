@@ -151,13 +151,6 @@ class OverviewMap : public sigc::trackable
     int get_width();
     int get_height();
  private:
-    //! An SDL surface of the terrain without the features.
-    /**
-     * This is the cached surface after the resize method was called.
-     * It is cached so that we don't have recalculate it.
-     */
-    Cairo::RefPtr<Cairo::Surface> static_surface;
-    Cairo::RefPtr<Cairo::Context> static_surface_gc;
 
     //! Returns whether or not the given pixel appears sunken (Tile::SUNKEN).
     /**
@@ -242,6 +235,14 @@ class OverviewMap : public sigc::trackable
 
     //! Returns a maptile, but takes map_tiles_per_tile into account.
     Maptile* getTile(int x, int y);
+
+    //! An SDL surface of the terrain without the features.
+    /**
+     * This is the cached surface after the resize method was called.
+     * It is cached so that we don't have recalculate it.
+     */
+    Cairo::RefPtr<Cairo::Surface> static_surface;
+    Cairo::RefPtr<Cairo::Context> static_surface_gc;
 
     //! The surface containing the drawn map.
     Cairo::RefPtr<Cairo::Surface> surface;

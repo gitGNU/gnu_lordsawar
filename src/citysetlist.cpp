@@ -57,6 +57,10 @@ Citysetlist::Citysetlist()
 
 Citysetlist::~Citysetlist()
 {
+  uninstantiateImages();
+  for (iterator it = begin(); it != end(); it++)
+    delete *it;
+  clear();
 }
 
 std::list<Glib::ustring> Citysetlist::getValidNames(guint32 tilesize)

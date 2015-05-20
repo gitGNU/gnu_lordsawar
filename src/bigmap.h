@@ -60,6 +60,7 @@ class BigMap: public sigc::trackable
     // view the rectangle, measured in tiles
     void set_view(Rectangle rect);
     void screen_size_changed(Gtk::Allocation box);
+    Gtk::Allocation get_allocation() {return image;};
 
     // return a good position of a map tip given that it should be close to the
     // tiles in tile_area without covering them

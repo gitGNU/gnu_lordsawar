@@ -710,18 +710,21 @@ void Playerlist::syncPlayers(std::vector<GameParameters::Player> players)
 guint32 Playerlist::turnHumansIntoNetworkPlayers()
 {
   guint32 count = 0;
+  std::list<Player*> p;
   for (iterator i = begin(); i != end(); i++)
     {
       if ((*i)->getType() == Player::HUMAN)
 	{
           count++;
 	  NetworkPlayer *new_p = new NetworkPlayer(**i);
+          p.push_back(*i);
 	  swap((*i), new_p);
-	  //delete *i; fixme
 	  i = begin();
 	  continue;
 	}
     }
+  for (std::list<Player*>::iterator j = p.begin(); j != p.end(); j++)
+    delete *j;
   return count;
 }
 

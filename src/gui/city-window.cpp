@@ -102,6 +102,7 @@ CityWindow::CityWindow(Gtk::Window &parent, City *c, bool razing_possible,
 
     d_razing_possible = razing_possible;
     fill_in_city_info();
+
     fill_in_production_toggles();
 
     ignore_toggles = false;
@@ -112,6 +113,11 @@ CityWindow::~CityWindow()
   delete prodmap;
   if (army_info_tip != NULL)
     delete army_info_tip;
+  if (map_pixbuf)
+    map_pixbuf->unreference();
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = current_image->property_pixbuf();
+  if (pixbuf)
+    pixbuf->unreference();
 }
 
 bool CityWindow::on_map_mouse_button_event(GdkEventButton *e)
@@ -183,19 +189,21 @@ void CityWindow::update_toggle_picture(int slot)
 {
   Player *player = city->getOwner();
   unsigned int as = player->getArmyset();
-  Glib::RefPtr<Gdk::Pixbuf> pic;
   ImageCache *gc = ImageCache::getInstance();
   Gtk::ToggleButton *toggle = production_toggles[slot];
+  Glib::RefPtr<Gdk::Pixbuf> pic;
   if (city->getArmytype(slot) == -1)
-    pic = gc->getCircledArmyPic(as, 0, player, NULL, false, 
-                                Shield::NEUTRAL, false)->to_pixbuf();
+    pic = 
+      gc->getCircledArmyPic(as, 0, player, NULL, false, 
+                            Shield::NEUTRAL, false)->to_pixbuf();
   else
     {
       int type = city->getArmytype(slot);
-      pic = gc->getCircledArmyPic (as, type, player, NULL, false,
-                                   slot == city->getActiveProductionSlot() ? 
-                                   player->getId(): Shield::NEUTRAL, 
-                                   true)->to_pixbuf();
+      pic =
+        gc->getCircledArmyPic (as, type, player, NULL, false,
+                               slot == city->getActiveProductionSlot() ? 
+                               player->getId(): Shield::NEUTRAL, 
+                               true)->to_pixbuf();
     }
   Gtk::Image *image = new Gtk::Image();
   image->property_pixbuf() = pic;
@@ -291,6 +299,9 @@ void CityWindow::fill_in_production_info()
                                   Shield::NEUTRAL, true)->to_pixbuf();
     }
     
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf = current_image->property_pixbuf();
+    if (pixbuf)
+      pixbuf->unreference();
     current_image->property_pixbuf() = pic;
     production_info_label1->set_markup(s1);
     production_info_label2->set_markup(s2);
@@ -416,9 +427,11 @@ void CityWindow::on_destination_clicked()
 
 void CityWindow::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
+  if (map_pixbuf)
+    map_pixbuf->unreference();
+  map_pixbuf = 
     Gdk::Pixbuf::create(map, 0, 0, prodmap->get_width(), prodmap->get_height());
-  map_image->property_pixbuf() = pixbuf;
+  map_image->property_pixbuf() = map_pixbuf;
 }
 
 void CityWindow::on_rename_clicked ()

@@ -67,6 +67,9 @@
 #include "profilelist.h"
 #include "gamelist-client.h"
 #include "gamehost-client.h"
+#include "tilesetlist.h"
+#include "citysetlist.h"
+#include "herotemplates.h"
 
 Driver::Driver(Glib::ustring load_filename)
 {
@@ -672,13 +675,8 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
     
   if (response == false)
     {
-      if (d_advertised_scenario_id != "")
-        unadvertise_game (d_advertised_scenario_id, p);
-      GameServer::deleteInstance();
-
+      on_game_ended();
       delete game_scenario;
-      if (splash_window)
-        splash_window->show();
     }
 }
 
@@ -919,6 +917,12 @@ void Driver::on_game_ended()
   GamehostClient::deleteInstance();
   GamelistClient::getInstance()->disconnect();
   GamelistClient::deleteInstance();
+
+  Armysetlist::deleteInstance();
+  Shieldsetlist::deleteInstance();
+  Tilesetlist::deleteInstance();
+  Citysetlist::deleteInstance();
+  HeroTemplates::deleteInstance();
 
   splash_window->show();
 }

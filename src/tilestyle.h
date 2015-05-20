@@ -282,7 +282,7 @@ ooooooo
         TileStyle(XML_Helper* helper);
 
 	//! Destructor.
-        ~TileStyle() {};
+        ~TileStyle();
 
 	// Get Methods
 
@@ -316,6 +316,8 @@ ooooooo
 	//! Set the image for the tilestyle.
 	void setImage(PixMask* image) {d_image = image;};
 
+        //! Free up the image associated with this tilestyle.
+        void uninstantiateImage();
 
 	// Methods that operate on the class data but do not modify the class.
 

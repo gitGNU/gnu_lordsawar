@@ -48,7 +48,7 @@ class ArmyProto : public ArmyProtoBase
 	ArmyProto();
 
 	//! Destructor.
-        virtual ~ArmyProto() {};
+        ~ArmyProto();
 
 
         // Set Methods

@@ -78,11 +78,19 @@ void Armysetlist::on_armyset_reloaded(Armyset *armyset)
 
 Armysetlist::~Armysetlist()
 {
+  uninstantiateImages();
+  for (iterator it = begin(); it != end(); it++)
+    delete *it;
+  clear();
   // remove all army entries
+  /*
   for (ArmyPrototypeMap::iterator it = d_armies.begin(); 
        it != d_armies.end(); it++)
-    while (!(*it).second.empty())
-      delete (*((*it).second).begin()).second;
+    {
+      while (!(*it).second.empty())
+        delete (*((*it).second).begin()).second;
+    }
+    */
 }
 
 ArmyProto* Armysetlist::getArmy(guint32 id, guint32 type_id) const

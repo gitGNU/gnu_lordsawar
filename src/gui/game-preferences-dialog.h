@@ -82,7 +82,6 @@ class GamePreferencesDialog: public LwDialog
     void update_difficulty_rating();
     void update_shields();
     void update_buttons();
-    Glib::RefPtr<Gdk::Pixbuf> getShieldPic(guint32 type, guint32 owner);
     Glib::ustring d_filename;
     guint32 d_shieldset;
 };

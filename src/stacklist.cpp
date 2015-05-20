@@ -236,8 +236,7 @@ Stacklist::~Stacklist()
       for (std::list<sigc::connection>::iterator lit = list.begin(); lit != list.end(); lit++)
 	(*lit).disconnect();
     }
-  for (Stacklist::iterator it = begin(); it != end(); it++)
-    it = flErase(it);
+  flClear();
 }
 
 Stack* Stacklist::getNextMovable() const

@@ -1549,6 +1549,7 @@ PixMask *CircledArmyPixMaskCacheItem::generate(CircledArmyPixMaskCacheItem i)
       s = ImageCache::circled
         (empty, Shield::get_default_color_for_no(i.circle_colour_id), 
          i.circle_colour_id != Shield::NEUTRAL);
+      delete empty;
     }
   return s;
 }
@@ -1857,10 +1858,9 @@ PixMask *ShieldPixMaskCacheItem::generate(ShieldPixMaskCacheItem i)
 {
   ShieldStyle *sh = Shieldsetlist::getInstance()->getShield(i.shieldset, 
                                                             i.type, i.colour);
-  // copy the pixmap including player colors
-  //lookup the shieldstyle
-  return ImageCache::applyMask(sh->getImage(), sh->getMask(), 
-                               Playerlist::getInstance()->getPlayer (i.colour));
+  Gdk::RGBA colour = 
+    Shieldsetlist::getInstance()->getColor(i.shieldset, i.colour);
+  return ImageCache::applyMask(sh->getImage(), sh->getMask(), colour, i.colour == Shield::NEUTRAL);
 }
 
 int ShieldPixMaskCacheItem::comp(const ShieldPixMaskCacheItem item) const

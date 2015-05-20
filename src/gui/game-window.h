@@ -161,6 +161,7 @@ class GameWindow: public sigc::trackable
     Gtk::Label *turn_label;
     Gtk::HBox *turn_hbox;
     Gtk::Image *shield_image[MAX_PLAYERS];
+    Glib::RefPtr<Gdk::Pixbuf> shield_pixbuf[MAX_PLAYERS];
     
     // the button control panel
     Gtk::Viewport *control_panel_viewport;
