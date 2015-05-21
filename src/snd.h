@@ -134,7 +134,7 @@ class Snd : public sigc::trackable
         //! Singleton getter
         static Snd* getInstance();
 
-        //! Explicitely delete the singleton
+        //! Explicitly delete the singleton
         static void deleteInstance();
 
     private:

@@ -77,7 +77,7 @@ class Rewardlist : public std::list<Reward*>, public sigc::trackable
         //! Loads the singleton instance with a savegame.
         static Rewardlist* getInstance(XML_Helper* helper);
 
-        //! Explicitely deletes the singleton instance.
+        //! Explicitly deletes the singleton instance.
         static void deleteInstance();
         
     protected:    

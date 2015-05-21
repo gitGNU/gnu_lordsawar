@@ -132,7 +132,7 @@ class ImageCache
         //! Method for getting/creating the soliton instance.
         static ImageCache* getInstance();
 
-        //! Explicitely deletes the soliton instance
+        //! Explicitly deletes the soliton instance
         static void deleteInstance();
 
         //! Get the current cache size, the maximum is in Configuration::s_cacheSize

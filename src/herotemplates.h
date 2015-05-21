@@ -40,7 +40,7 @@ class HeroTemplates
         //! Returns the singleton instance.
 	static HeroTemplates* getInstance();
 
-        //! Explicitely deletes the singleton instance.
+        //! Explicitly deletes the singleton instance.
         static void deleteInstance();
 
         HeroProto *getRandomHero(int player_id);
