@@ -108,7 +108,7 @@ StatusBox::StatusBox(BaseObjectType* baseObject, const Glib::RefPtr<Gtk::Builder
   xml->get_widget("income_stats_label", income_stats_label);
   xml->get_widget("upkeep_stats_label", upkeep_stats_label);
   xml->get_widget("stack_tile_box_container", stack_tile_box_container);
-  stack_tile_box = StackTileBox::create(Configuration::s_ui_form_factor);
+  stack_tile_box = Gtk::manage(StackTileBox::create(Configuration::s_ui_form_factor));
   stack_tile_box->reparent(*stack_tile_box_container);
   stack_tile_box->stack_composition_modified.connect
     (sigc::mem_fun(stack_composition_modified, 
