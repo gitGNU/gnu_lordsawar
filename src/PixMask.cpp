@@ -38,6 +38,13 @@ PixMask::PixMask(Glib::RefPtr<Gdk::Pixbuf> pixbuf)
   height = unscaled_height;
 }
 
+PixMask::~PixMask()
+{
+  pixmap.clear();
+  mask.clear();
+  gc.clear();
+}
+
 PixMask::PixMask(Cairo::RefPtr<Cairo::Surface> p, Cairo::RefPtr<Cairo::Surface> m)
     : width(0), height(0)
 {

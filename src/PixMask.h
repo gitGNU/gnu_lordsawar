@@ -61,7 +61,7 @@ class PixMask
      void blit(Vector<int> tile, int ts, Cairo::RefPtr<Cairo::Surface> pixmap, Vector<int> dest = Vector<int>(0,0));
 
      //! Destructor.
-    ~PixMask() {};
+    ~PixMask();
  protected:
      //! Default constructor.
      PixMask(Glib::RefPtr<Gdk::Pixbuf> pixbuf);

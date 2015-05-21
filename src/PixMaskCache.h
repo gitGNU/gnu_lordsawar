@@ -30,7 +30,10 @@ template<class T> class PixMaskCache: public std::list<T>, public sigc::trackabl
 public:
     typedef sigc::slot<PixMask*, T> Generator;
     PixMaskCache(Generator g) {generate = g;cachesize=0;};
-    ~PixMaskCache(){};
+    ~PixMaskCache()
+      {
+        reset();
+      };
     guint32 getCacheSize() const {return cachesize;};
     guint32 eraseLeastRecentlyUsed()
       {
