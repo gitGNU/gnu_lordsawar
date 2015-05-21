@@ -50,6 +50,7 @@ LoadScenarioDialog::LoadScenarioDialog(Gtk::Window &parent)
 
   scenarios_treeview->get_selection()->signal_changed()
     .connect(sigc::mem_fun(this, &LoadScenarioDialog::on_selection_changed));
+  scenarios_treeview->signal_row_activated().connect(sigc::mem_fun(this, &LoadScenarioDialog::on_scenario_activated));
   // add the scenarios
   add_scenario("random.map");
   std::list<Glib::ustring> lm = File::scanMaps();
@@ -207,4 +208,9 @@ void LoadScenarioDialog::on_remove_scenario_clicked()
       num_cities_label->set_text ("");
     }
   return;
+}
+  
+void LoadScenarioDialog::on_scenario_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column)
+{
+  load_button->activate();
 }
