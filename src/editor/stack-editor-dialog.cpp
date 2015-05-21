@@ -175,6 +175,7 @@ int StackEditorDialog::run()
 	{
 	    Army *a = (*j)[army_columns.army];
 	    a->setStat(Army::STRENGTH, (*j)[army_columns.strength]);
+            a->setMaxMoves((*j)[army_columns.moves]);
 	    a->setStat(Army::MOVES, (*j)[army_columns.moves]);
 	    a->setUpkeep((*j)[army_columns.upkeep]);
 	}

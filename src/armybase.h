@@ -112,6 +112,8 @@ class ArmyBase
         //! Set how much XP this unit is worth when killed.
         void setXpReward(double xp_value){d_xp_value = xp_value;}
 
+        //! Set the maximum number of movement points.  for the scenario editor.
+        void setMaxMoves(guint32 max_moves) {d_max_moves = max_moves;}
 
         // Get Methods
         
