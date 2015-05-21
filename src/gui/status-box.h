@@ -64,16 +64,12 @@ class StatusBox: public Gtk::Box
     guint32 d_height_fudge_factor;
     static Glib::ustring get_file(Configuration::UiFormFactor factor);
     Gtk::Image *cities_stats_image;
-    Glib::RefPtr<Gdk::Pixbuf> cities_stats_pixbuf;
     Gtk::Label *cities_stats_label;
     Gtk::Image *gold_stats_image;
-    Glib::RefPtr<Gdk::Pixbuf> gold_stats_pixbuf;
     Gtk::Label *gold_stats_label;
     Gtk::Image *income_stats_image;
-    Glib::RefPtr<Gdk::Pixbuf> income_stats_pixbuf;
     Gtk::Label *income_stats_label;
     Gtk::Image *upkeep_stats_image;
-    Glib::RefPtr<Gdk::Pixbuf> upkeep_stats_pixbuf;
     Gtk::Label *upkeep_stats_label;
     Gtk::Box *stack_info_container;
     Gtk::Box *stack_tile_box_container;

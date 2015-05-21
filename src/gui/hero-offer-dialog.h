@@ -42,9 +42,7 @@ class HeroOfferDialog: public LwDialog
     HeroMap* heromap;
 
     Gtk::Image *map_image;
-    Glib::RefPtr<Gdk::Pixbuf> map_pixbuf;
     Gtk::Image *hero_image;
-    Glib::RefPtr<Gdk::Pixbuf> hero_pixbuf;
     Gtk::RadioButton *male_radiobutton;
     Gtk::RadioButton *female_radiobutton;
     Gtk::Entry *name_entry;

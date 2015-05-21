@@ -79,9 +79,6 @@ HeroOfferDialog::HeroOfferDialog(Gtk::Window &parent, Player *player, HeroProto 
 HeroOfferDialog::~HeroOfferDialog()
 {
   delete heromap;
-  map_pixbuf->unreference();
-  if (hero_pixbuf)
-    hero_pixbuf->unreference();
 }
 
 void HeroOfferDialog::update_buttons()
@@ -106,15 +103,13 @@ void HeroOfferDialog::on_name_changed()
 
 void HeroOfferDialog::on_toggled()
 {
-  if (hero_pixbuf)
-    ;//hero_pixbuf->unreference();
-
   if (male_radiobutton->get_active())
-    hero_pixbuf = Gdk::Pixbuf::create_from_file(File::getMiscFile("various/recruit_male.png"));
+    hero_image->property_pixbuf() = 
+      Gdk::Pixbuf::create_from_file(File::getMiscFile("various/recruit_male.png"));
   else
-    hero_pixbuf = Gdk::Pixbuf::create_from_file(File::getMiscFile("various/recruit_female.png"));
+    hero_image->property_pixbuf() =
+      Gdk::Pixbuf::create_from_file(File::getMiscFile("various/recruit_female.png"));
 
-  hero_image->property_pixbuf() = hero_pixbuf;
 }
 
 void HeroOfferDialog::hide()
@@ -149,10 +144,7 @@ bool HeroOfferDialog::run()
 
 void HeroOfferDialog::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  if (map_pixbuf)
-    map_pixbuf->unreference();
-  map_pixbuf = 
+  map_image->property_pixbuf() = 
     Gdk::Pixbuf::create(map, 0, 0, heromap->get_width(), heromap->get_height());
-  map_image->property_pixbuf() = map_pixbuf;
 }
 

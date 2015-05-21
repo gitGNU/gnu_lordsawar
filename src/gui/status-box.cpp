@@ -90,18 +90,18 @@ StatusBox::StatusBox(BaseObjectType* baseObject, const Glib::RefPtr<Gtk::Builder
   xml->get_widget("turn_progressbar", turn_progressbar);
   xml->get_widget("progress_status_label", progress_status_label);
   xml->get_widget("cities_stats_image", cities_stats_image);
-  cities_stats_pixbuf = Gdk::Pixbuf::create_from_file(File::getMiscFile("various/smallcity.png"));
-  cities_stats_image->property_pixbuf() = cities_stats_pixbuf;
+  cities_stats_image->property_pixbuf() = 
+    Gdk::Pixbuf::create_from_file(File::getMiscFile("various/smallcity.png"));
 
   xml->get_widget("gold_stats_image", gold_stats_image);
-  gold_stats_pixbuf = Gdk::Pixbuf::create_from_file(File::getMiscFile("various/smalltreasury.png"));
-  gold_stats_image->property_pixbuf() = gold_stats_pixbuf;
+  gold_stats_image->property_pixbuf() = 
+    Gdk::Pixbuf::create_from_file(File::getMiscFile("various/smalltreasury.png"));
   xml->get_widget("income_stats_image", income_stats_image);
-  income_stats_pixbuf = Gdk::Pixbuf::create_from_file(File::getMiscFile("various/smallincome.png"));
-  income_stats_image->property_pixbuf() = income_stats_pixbuf;
+  income_stats_image->property_pixbuf() = 
+    Gdk::Pixbuf::create_from_file(File::getMiscFile("various/smallincome.png"));
   xml->get_widget("upkeep_stats_image", upkeep_stats_image);
-  upkeep_stats_pixbuf = Gdk::Pixbuf::create_from_file(File::getMiscFile("various/smallupkeep.png"));
-  upkeep_stats_image->property_pixbuf() = upkeep_stats_pixbuf;
+  upkeep_stats_image->property_pixbuf() =
+    Gdk::Pixbuf::create_from_file(File::getMiscFile("various/smallupkeep.png"));
 
   xml->get_widget("cities_stats_label", cities_stats_label);
   xml->get_widget("gold_stats_label", gold_stats_label);
@@ -119,14 +119,6 @@ StatusBox::StatusBox(BaseObjectType* baseObject, const Glib::RefPtr<Gtk::Builder
 
 StatusBox::~StatusBox()
 {
-  if (gold_stats_pixbuf)
-    gold_stats_pixbuf->unreference();
-  if (cities_stats_pixbuf)
-    cities_stats_pixbuf->unreference();
-  if (income_stats_pixbuf)
-    income_stats_pixbuf->unreference();
-  if (upkeep_stats_pixbuf)
-    upkeep_stats_pixbuf->unreference();
 }
 
 void StatusBox::on_stack_info_changed(Stack *s)

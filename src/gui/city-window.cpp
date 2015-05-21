@@ -113,11 +113,6 @@ CityWindow::~CityWindow()
   delete prodmap;
   if (army_info_tip != NULL)
     delete army_info_tip;
-  if (map_pixbuf)
-    map_pixbuf->unreference();
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = current_image->property_pixbuf();
-  if (pixbuf)
-    pixbuf->unreference();
 }
 
 bool CityWindow::on_map_mouse_button_event(GdkEventButton *e)
@@ -424,11 +419,9 @@ void CityWindow::on_destination_clicked()
 
 void CityWindow::on_map_changed(Cairo::RefPtr<Cairo::Surface> map)
 {
-  if (map_pixbuf)
-    map_pixbuf->unreference();
-  map_pixbuf = 
+  Glib::RefPtr<Gdk::Pixbuf> pixbuf = 
     Gdk::Pixbuf::create(map, 0, 0, prodmap->get_width(), prodmap->get_height());
-  map_image->property_pixbuf() = map_pixbuf;
+  map_image->property_pixbuf() = pixbuf;
 }
 
 void CityWindow::on_rename_clicked ()

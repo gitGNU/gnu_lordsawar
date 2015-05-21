@@ -306,8 +306,6 @@ GameWindow::~GameWindow()
     (*it).disconnect();
   connections.clear();
   for (unsigned int i = 0; i < MAX_PLAYERS; i++)
-    if (shield_pixbuf[i])
-      shield_pixbuf[i]->unreference();
     if (city_info_tip)
       {
 	delete city_info_tip;
@@ -2320,10 +2318,11 @@ void GameWindow::show_shield_turn() //show turn indicator
 	  continue;
 	}
       if (*i == pl->getActiveplayer())
-        shield_pixbuf[c] = gc->getShieldPic(1,(*i))->to_pixbuf();
+        shield_image[c]->property_pixbuf() =
+          gc->getShieldPic(1,(*i))->to_pixbuf();
       else
-        shield_pixbuf[c] = gc->getShieldPic(0,(*i))->to_pixbuf();
-      shield_image[c]->property_pixbuf() = shield_pixbuf[c];
+        shield_image[c]->property_pixbuf() =
+          gc->getShieldPic(0,(*i))->to_pixbuf();
       shield_image[c]->property_tooltip_text() = (*i)->getName();
       c++;
     }
@@ -2370,8 +2369,6 @@ void GameWindow::on_next_player_turn(Player *player, unsigned int turn_number)
 
       dialog.run_and_hide();
       show();
-      Glib::RefPtr<Gdk::Pixbuf> pixbuf = image->property_pixbuf();
-      pixbuf->unreference();
     }
 }
 
