@@ -212,6 +212,7 @@ int CityEditorDialog::run()
 	  ArmyProdBase *army = new ArmyProdBase(*a);
 	  army->setStrength((*i)[army_columns.strength]);
 	  army->setProduction((*i)[army_columns.duration]);
+          army->setMaxMoves((*i)[army_columns.moves]);
 	  city->addProductionBase(c, army);
 
 	  // FIXME: use (*i)[army_columns.duration] to set special city
