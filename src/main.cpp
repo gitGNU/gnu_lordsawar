@@ -36,6 +36,7 @@
 #include "profilelist.h"
 #include "gamelist.h"
 #include "file-compat.h"
+#include "gui/builder-cache.h"
 
 #include "gui/main.h"
 
@@ -191,6 +192,7 @@ int main(int argc, char* argv[])
   Tilesetlist::scan(Tileset::file_extension);
   Shieldsetlist::scan(Shieldset::file_extension);
   Citysetlist::scan(Cityset::file_extension);
+  BuilderCache::getInstance();
 
 
   Gst::init(argc, argv);
