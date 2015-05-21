@@ -44,11 +44,11 @@ void BuilderCache::preloadAllBuilders()
     File::scanForFiles(File::getMiscFile("glade/"), ".ui");
   for (std::list<Glib::ustring>::iterator i = f.begin(); i != f.end(); i++)
     {
+      //for some reason when we load about-dialog.ui, it gets shown.
       if (File::get_basename ((*i)) == "about-dialog")
         continue;
       Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(*i);
       (*this)[File::get_basename(*i, true)] = xml;
-      printf("loaded %s\n", (*i).c_str());
     }
 }
 
@@ -67,8 +67,6 @@ Glib::RefPtr<Gtk::Builder> BuilderCache::get(Glib::ustring f)
   std::map<Glib::ustring,Glib::RefPtr<Gtk::Builder> >::iterator it = b->find(f);
   if (it == b->end())
     printf("couldn't find builder for '%s'\n", f.c_str());
-  else
-    printf("getting builder for '%s'\n", f.c_str());
   return (*getInstance())[f];
 }
 // End of file
