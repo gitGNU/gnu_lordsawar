@@ -105,7 +105,6 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
                                     <property name="headers_visible">False</property>
-                                    <property name="fixed_height_mode">True</property>
                                   </object>
                                 </child>
                               </object>
