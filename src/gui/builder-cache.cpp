@@ -48,7 +48,7 @@ void BuilderCache::preloadAllBuilders()
       if (File::get_basename ((*i)) == "about-dialog")
         continue;
       Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(*i);
-      (*this)[File::get_basename(*i, true)] = xml;
+      (*this)[File::get_basename(*i, true)] = Glib::RefPtr<Gtk::Builder>(xml);
     }
 }
 
@@ -63,6 +63,8 @@ BuilderCache::~BuilderCache()
 
 Glib::RefPtr<Gtk::Builder> BuilderCache::get(Glib::ustring f)
 {
+  //Crapola.  the builder files are being destroyed somehow.
+  return Gtk::Builder::create_from_file(File::getMiscFile("glade/" + f));
   BuilderCache *b = getInstance();
   Glib::ustring k = File::get_basename(f, true);
   std::map<Glib::ustring,Glib::RefPtr<Gtk::Builder> >::iterator i = b->find(k);
@@ -71,7 +73,7 @@ Glib::RefPtr<Gtk::Builder> BuilderCache::get(Glib::ustring f)
       Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(File::getMiscFile("glade/" + f));
       if (xml)
         {
-          (*getInstance())[k] = xml;
+          (*getInstance())[k] = Glib::RefPtr<Gtk::Builder>(xml);
           return (*getInstance())[k];
         }
       else
@@ -79,6 +81,6 @@ Glib::RefPtr<Gtk::Builder> BuilderCache::get(Glib::ustring f)
       Glib::RefPtr<Gtk::Builder> none;
       return none;
     }
-  return (*getInstance())[k];
+  return Glib::RefPtr<Gtk::Builder>((*getInstance())[k]);
 }
 // End of file
