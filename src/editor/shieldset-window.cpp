@@ -26,6 +26,7 @@
 
 #include <gtkmm.h>
 #include "shieldset-window.h"
+#include "builder-cache.h"
 #include "shieldset-info-dialog.h"
 #include "gui/image-helpers.h"
 #include "defs.h"
@@ -48,8 +49,8 @@ ShieldSetWindow::ShieldSetWindow(Gtk::Window *parent, Glib::ustring load_filenam
 {
   needs_saving = false;
   d_shieldset = NULL;
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(File::getEditorUIFile("shieldset-window.ui"));
+    Glib::RefPtr<Gtk::Builder> xml = 
+      BuilderCache::get("editor/shieldset-window.ui");
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
@@ -449,7 +450,7 @@ void ShieldSetWindow::on_help_about_activated()
   Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(File::getUIFile("about-dialog.ui"));
+    = Gtk::Builder::create_from_file(File::getMiscFile("glade/about-dialog.ui"));
 
   xml->get_widget("dialog", dialog);
   dialog->set_transient_for(*window);

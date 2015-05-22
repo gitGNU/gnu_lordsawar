@@ -24,6 +24,7 @@
 
 #include <gtkmm.h>
 #include "armyset-window.h"
+#include "builder-cache.h"
 #include "armyset-info-dialog.h"
 #include "masked-image-editor-dialog.h"
 
@@ -49,8 +50,8 @@ ArmySetWindow::ArmySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
   needs_saving = false;
   inhibit_needs_saving = false;
   d_armyset = NULL;
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(File::getEditorUIFile("armyset-window.ui"));
+    Glib::RefPtr<Gtk::Builder> xml = 
+      BuilderCache::get("editor/armyset-window.ui");
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));
@@ -837,7 +838,7 @@ void ArmySetWindow::on_help_about_activated()
   Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(File::getUIFile("about-dialog.ui"));
+    = Gtk::Builder::create_from_file(File::getMiscFile("glade/about-dialog.ui"));
 
   xml->get_widget("dialog", dialog);
   dialog->set_transient_for(*window);

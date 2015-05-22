@@ -19,6 +19,7 @@
 #include <gtkmm.h>
 
 #include "city-info-tip.h"
+#include "builder-cache.h"
 #include "ucompose.hpp"
 #include "vector.h"
 #include "defs.h"
@@ -31,8 +32,7 @@
 CityInfoTip::CityInfoTip(Gtk::Widget *target, MapTipPosition mpos, const City *city)
 {
     ImageCache *gc = ImageCache::getInstance();
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(File::getUIFile("city-info-window.ui"));
+    Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("city-info-window.ui");
 
     xml->get_widget("window", window);
     Gtk::Image *left_shield_image;

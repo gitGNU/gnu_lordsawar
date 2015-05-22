@@ -23,6 +23,7 @@
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/functors/ptr_fun.h>
 #include "ucompose.hpp"
+#include "builder-cache.h"
 
 #include <gtkmm.h>
 #include "tileset-window.h"
@@ -51,8 +52,8 @@ TileSetWindow::TileSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
   needs_saving = false;
   inhibit_needs_saving = false;
   d_tileset = NULL;
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(File::getEditorUIFile("tileset-window.ui"));
+    Glib::RefPtr<Gtk::Builder> xml = 
+      BuilderCache::get("editor/tileset-window.ui");
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
@@ -722,7 +723,7 @@ void TileSetWindow::on_help_about_activated()
   Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(File::getUIFile("about-dialog.ui"));
+    = Gtk::Builder::create_from_file(File::getMiscFile("glade/about-dialog.ui"));
 
   xml->get_widget("dialog", dialog);
   dialog->set_transient_for(*window);

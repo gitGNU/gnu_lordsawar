@@ -19,6 +19,7 @@
 #include <gtkmm.h>
 
 #include "game-button-box.h"
+#include "builder-cache.h"
 #include "File.h"
 #include "game.h"
 #include "GameScenario.h"
@@ -32,13 +33,13 @@ Glib::ustring GameButtonBox::get_file(Configuration::UiFormFactor factor)
   switch (factor)
     {
     case Configuration::UI_FORM_FACTOR_DESKTOP:
-      file = File::getUIFile("game-button-box-desktop.ui");
+      file = "game-button-box-desktop.ui";
       break;
     case Configuration::UI_FORM_FACTOR_NETBOOK:
-      file = File::getUIFile("game-button-box-netbook.ui");
+      file = "game-button-box-netbook.ui";
       break;
     case Configuration::UI_FORM_FACTOR_LARGE_SCREEN:
-      file = File::getUIFile("game-button-box-large-screen.ui");
+      file = "game-button-box-large-screen.ui";
       break;
     }
   return file;
@@ -47,7 +48,7 @@ Glib::ustring GameButtonBox::get_file(Configuration::UiFormFactor factor)
 GameButtonBox * GameButtonBox::create(guint32 factor)
 {
   Glib::ustring file = get_file(Configuration::UiFormFactor(factor));
-  Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(file);
+  Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get(file);
 
   GameButtonBox *box;
   xml->get_widget_derived("box", box);

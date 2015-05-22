@@ -24,6 +24,7 @@
 #include "stack.h"
 #include "stack-army-button.h"
 #include "army-info-tip.h"
+#include "builder-cache.h"
 
 #include "ucompose.hpp"
 #include "defs.h"
@@ -42,13 +43,13 @@ Glib::ustring StackTileBox::get_file(Configuration::UiFormFactor factor)
   switch (factor)
     {
     case Configuration::UI_FORM_FACTOR_DESKTOP:
-      file = File::getUIFile("stack-tile-box-desktop.ui");
+      file = "stack-tile-box-desktop.ui";
       break;
     case Configuration::UI_FORM_FACTOR_NETBOOK:
-      file = File::getUIFile("stack-tile-box-netbook.ui");
+      file = "stack-tile-box-netbook.ui";
       break;
     case Configuration::UI_FORM_FACTOR_LARGE_SCREEN:
-      file = File::getUIFile("stack-tile-box-large-screen.ui");
+      file = "stack-tile-box-large-screen.ui";
       break;
     }
   return file;
@@ -57,7 +58,7 @@ Glib::ustring StackTileBox::get_file(Configuration::UiFormFactor factor)
 StackTileBox * StackTileBox::create(guint32 factor)
 {
   Glib::ustring file = get_file(Configuration::UiFormFactor(factor));
-  Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(file);
+  Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get(file);
 
   StackTileBox *box;
   xml->get_widget_derived("box", box);

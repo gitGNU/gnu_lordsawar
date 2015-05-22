@@ -24,6 +24,7 @@
 #include "army.h"
 
 #include "input-helpers.h"
+#include "builder-cache.h"
 #include "army-info-tip.h"
 #include "ucompose.hpp"
 #include "ImageCache.h"
@@ -34,28 +35,27 @@
 
 Glib::ustring StackArmyButton::get_file(Configuration::UiFormFactor factor)
 {
-  Glib::ustring f = "";
+  Glib::ustring file = "";
   switch (factor)
     {
     case Configuration::UI_FORM_FACTOR_DESKTOP:
-      f = "desktop";
+      file = "stack-army-button-desktop.ui";
       break;
     case Configuration::UI_FORM_FACTOR_NETBOOK:
-      f = "netbook";
+      file = "stack-army-button-netbook.ui";
       break;
     case Configuration::UI_FORM_FACTOR_LARGE_SCREEN:
-      f = "large-screen";
+      file = "stack-army-button-large-screen.ui";
       break;
     }
-  return String::ucompose("%1/stack-army-button-%2%3", File::getUIFile(""), f,
-                          ".ui");
+  return file;
 }
 
 StackArmyButton * StackArmyButton::create(guint32 factor)
 {
   Glib::ustring file = 
     StackArmyButton::get_file (Configuration::UiFormFactor(factor));
-  Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(file);
+  Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get(file);
 
   StackArmyButton *box;
   xml->get_widget_derived("box", box);

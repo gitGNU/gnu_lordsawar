@@ -21,10 +21,11 @@
 
 #include "File.h"
 #include "lw-editor-dialog.h"
+#include "builder-cache.h"
 
 LwEditorDialog::LwEditorDialog(Gtk::Window &parent, Glib::ustring file)
 {
-  xml = Gtk::Builder::create_from_file(File::getEditorUIFile(file));
+  xml = BuilderCache::get("editor/" + file);
   xml->get_widget("dialog", dialog);
   dialog->set_transient_for(parent);
   dialog->property_gravity() = Gdk::GRAVITY_STATIC;

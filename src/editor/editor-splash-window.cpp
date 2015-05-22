@@ -20,6 +20,7 @@
 #include <sigc++/functors/mem_fun.h>
 
 #include "editor-splash-window.h"
+#include "builder-cache.h"
 
 #include "ucompose.hpp"
 #include "File.h"
@@ -30,12 +31,10 @@
 #include "citysetlist.h"
 #include "shieldsetlist.h"
 
-
 EditorSplashWindow::EditorSplashWindow()
 {
-    
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(File::getEditorUIFile("splash-window.ui"));
+    Glib::RefPtr<Gtk::Builder> xml = 
+      BuilderCache::get("editor/editor-splash-window.ui");
 
     xml->get_widget("window", window);
     xml->get_widget("progressbar", progressbar);

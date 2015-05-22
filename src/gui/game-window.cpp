@@ -116,6 +116,7 @@
 #include "select-city-map.h"
 #include "shield.h"
 #include "lw-dialog.h"
+#include "builder-cache.h"
 
 GameWindow::GameWindow()
 {
@@ -127,7 +128,7 @@ GameWindow::GameWindow()
   game = NULL;
   game_button_box = NULL;
     
-  Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(File::getUIFile("game-window.ui"));
+  Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("game-window.ui");
 
     Gtk::Window *w = 0;
     xml->get_widget("window", w);
@@ -1418,7 +1419,8 @@ void GameWindow::on_help_about_activated()
   Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(File::getUIFile("about-dialog.ui"));
+    = Gtk::Builder::create_from_file
+    (File::getMiscFile("/glade/about-dialog.ui"));
 
   xml->get_widget("dialog", dialog);
   dialog->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));

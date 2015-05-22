@@ -64,9 +64,21 @@ BuilderCache::~BuilderCache()
 Glib::RefPtr<Gtk::Builder> BuilderCache::get(Glib::ustring f)
 {
   BuilderCache *b = getInstance();
-  std::map<Glib::ustring,Glib::RefPtr<Gtk::Builder> >::iterator it = b->find(f);
-  if (it == b->end())
-    printf("couldn't find builder for '%s'\n", f.c_str());
-  return (*getInstance())[f];
+  Glib::ustring k = File::get_basename(f, true);
+  std::map<Glib::ustring,Glib::RefPtr<Gtk::Builder> >::iterator i = b->find(k);
+  if (i == b->end())
+    {
+      Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(File::getMiscFile("glade/" + f));
+      if (xml)
+        {
+          (*getInstance())[k] = xml;
+          return (*getInstance())[k];
+        }
+      else
+        fprintf(stderr, "Error, couldn't load builder file `%s'\n", f.c_str());
+      Glib::RefPtr<Gtk::Builder> none;
+      return none;
+    }
+  return (*getInstance())[k];
 }
 // End of file

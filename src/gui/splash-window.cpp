@@ -25,6 +25,7 @@
 
 #include "game-preferences-dialog.h"
 #include "load-scenario-dialog.h"
+#include "builder-cache.h"
 #include "Configuration.h"
 #include "defs.h"
 #include "snd.h"
@@ -42,8 +43,7 @@ SplashWindow::SplashWindow()
 {
   network_game_nickname = "";
 
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(File::getUIFile("splash-window.ui"));
+    Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("splash-window.ui");
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getMiscFile("various/castle_icon.png"));

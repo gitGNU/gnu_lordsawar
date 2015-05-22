@@ -79,8 +79,6 @@ class File
         static Glib::ustring getUserRecentlyAdvertisedGamesDescription();
         static Glib::ustring getUserRecentlyEditedFilesDescription();
 
-        static Glib::ustring getUIFile(Glib::ustring file);
-        static Glib::ustring getEditorUIFile(Glib::ustring file);
         // get the available scenarios
         static std::list<Glib::ustring> scanMaps();
 

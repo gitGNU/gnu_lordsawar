@@ -20,10 +20,11 @@
 #include <gtkmm.h>
 
 #include "status-box.h"
+#include "builder-cache.h"
+#include "ucompose.hpp"
+
 #include "stacktile.h"
 #include "stack.h"
-
-#include "ucompose.hpp"
 #include "defs.h"
 #include "ImageCache.h"
 #include "File.h"
@@ -38,13 +39,13 @@ Glib::ustring StatusBox::get_file(Configuration::UiFormFactor factor)
   switch (factor)
     {
     case Configuration::UI_FORM_FACTOR_DESKTOP:
-      file = File::getUIFile("status-box-desktop.ui");
+      file = "status-box-desktop.ui";
       break;
     case Configuration::UI_FORM_FACTOR_NETBOOK:
-      file = File::getUIFile("status-box-netbook.ui");
+      file = "status-box-netbook.ui";
       break;
     case Configuration::UI_FORM_FACTOR_LARGE_SCREEN:
-      file = File::getUIFile("status-box-large-screen.ui");
+      file = "status-box-large-screen.ui";
       break;
     }
   return file;
@@ -53,7 +54,7 @@ Glib::ustring StatusBox::get_file(Configuration::UiFormFactor factor)
 StatusBox * StatusBox::create(guint32 factor)
 {
   Glib::ustring file = get_file(Configuration::UiFormFactor(factor));
-  Glib::RefPtr<Gtk::Builder> xml = Gtk::Builder::create_from_file(file);
+  Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get(file);
 
   StatusBox *box;
   xml->get_widget_derived("box", box);

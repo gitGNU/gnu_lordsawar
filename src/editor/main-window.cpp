@@ -26,6 +26,7 @@
 
 #include <gtkmm.h>
 #include "main-window.h"
+#include "builder-cache.h"
 
 #include "input-helpers.h"
 
@@ -97,8 +98,8 @@ MainWindow::MainWindow(Glib::ustring load_filename)
   game_scenario = NULL;
   d_create_scenario_names = NULL;
   needs_saving = false;
-  Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(File::getEditorUIFile("main-window.ui"));
+  Glib::RefPtr<Gtk::Builder> xml = 
+    BuilderCache::get("editor/main-window.ui");
 
     xml->get_widget("window", window);
     window->set_icon_from_file(File::getMiscFile("various/tileset_icon.png"));
@@ -1705,7 +1706,7 @@ void MainWindow::on_help_about_activated()
   Gtk::AboutDialog* dialog;
 
   Glib::RefPtr<Gtk::Builder> xml
-    = Gtk::Builder::create_from_file(File::getUIFile("about-dialog.ui"));
+    = Gtk::Builder::create_from_file(File::getMiscFile("glade/about-dialog.ui"));
 
   xml->get_widget("dialog", dialog);
   dialog->set_transient_for(*window);

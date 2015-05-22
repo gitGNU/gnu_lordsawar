@@ -24,6 +24,7 @@
 #include <gtkmm.h>
 
 #include "fight-window.h"
+#include "builder-cache.h"
 
 #include "timing.h"
 #include "File.h"
@@ -40,8 +41,7 @@
 
 FightWindow::FightWindow(Gtk::Window &parent, Fight &fight)
 {
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(File::getUIFile("fight-window.ui"));
+    Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("fight-window.ui");
 
     xml->get_widget("window", window);
     window->set_transient_for(parent);
@@ -218,8 +218,7 @@ void FightWindow::add_army(Army *army, int initial_hp,
     Gtk::DrawingArea *water_drawingarea;
     Gtk::EventBox *eventbox;
 
-    Glib::RefPtr<Gtk::Builder> xml
-	= Gtk::Builder::create_from_file(File::getUIFile("fighter.ui"));
+    Glib::RefPtr<Gtk::Builder> xml = BuilderCache::get("fighter.ui");
 
     xml->get_widget("army_box", army_box);
     xml->get_widget("eventbox", eventbox);
