@@ -79,7 +79,7 @@ MapGenerator::~MapGenerator()
 
 int MapGenerator::setNoCities(int nocities)
 {
-    if (nocities <= 0)
+    if (nocities < 0)
         return -1;
 
     int tmp = d_nocities;
