@@ -207,7 +207,8 @@ class MainWindow: public sigc::trackable
 			int hills, int mountains,
 			int cities, int ruins, int temples, int signposts,
 			Glib::ustring tileset, Glib::ustring shieldset,
-			Glib::ustring cityset, Glib::ustring armyset);
+			Glib::ustring cityset, Glib::ustring armyset,
+                        bool generate_roads);
 
     void clear_map_state();
     void init_map_state();

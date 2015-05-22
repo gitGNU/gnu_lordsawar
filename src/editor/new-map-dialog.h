@@ -46,6 +46,7 @@ class NewMapDialog: public LwEditorDialog
 	Glib::ustring shieldset;
 	Glib::ustring cityset;
 	Glib::ustring armyset;
+        bool generate_roads;
     };
 
     Map map;
@@ -75,6 +76,7 @@ class NewMapDialog: public LwEditorDialog
     Gtk::Scale *temples_scale;
     Gtk::Scale *signposts_scale;
     Gtk::Button *accept_button;
+    Gtk::CheckButton *roads_checkbutton;
 
     enum { MAP_SIZE_NORMAL = 0, MAP_SIZE_SMALL, MAP_SIZE_TINY, 
       MAP_SIZE_CUSTOM };

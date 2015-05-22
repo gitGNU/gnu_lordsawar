@@ -541,7 +541,7 @@ void MainWindow::set_random_map(int width, int height,
 				int cities, int ruins, int temples,
 				int signposts, Glib::ustring tileset,
 				Glib::ustring shieldset, Glib::ustring cityset,
-				Glib::ustring armyset)
+				Glib::ustring armyset, bool generate_roads)
 {
     clear_map_state();
 
@@ -596,7 +596,7 @@ void MainWindow::set_random_map(int width, int height,
     gen.setPercentages(water, forest, swamp, hills, mountains);
     
     gen.setCityset(GameMap::getCityset());
-    gen.makeMap(width, height, false);
+    gen.makeMap(width, height, generate_roads);
     GameMap::deleteInstance();
     GameMap::setWidth(width);
     GameMap::setHeight(height);
@@ -773,7 +773,8 @@ void MainWindow::on_new_map_activated()
 			   d.map.hills, d.map.mountains,
 			   d.map.cities, d.map.ruins, d.map.temples, 
 			   d.map.signposts, d.map.tileset, 
-			   d.map.shieldset, d.map.cityset, d.map.armyset);
+			   d.map.shieldset, d.map.cityset, d.map.armyset,
+                           d.map.generate_roads);
 	else
 	    set_filled_map(d.map.width, d.map.height, d.map.fill_style, 
 			   d.map.tileset, d.map.shieldset, d.map.cityset,
