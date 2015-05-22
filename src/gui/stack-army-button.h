@@ -39,13 +39,15 @@ class StackArmyButton: public Gtk::Box
 
     bool get_active() const { return army_button->get_active();}
     void update_stack_button(bool selected);
+    void reset(); //go back to an empty disabled, untoggled button with the circle
+    void draw(Stack *s, Army *a, guint32 circle_colour_id, bool toggled);
 
     //Signals
     sigc::signal<void> stack_clicked;
     sigc::signal<void> army_toggled;
     
     //Statics
-    static StackArmyButton * create(guint32 factor, Stack *stack, Army *army, guint32 circle_colour_id, bool toggled);
+    static StackArmyButton * create(guint32 factor);
     static Glib::ustring get_file(Configuration::UiFormFactor factor);
 
  protected:
@@ -65,11 +67,15 @@ class StackArmyButton: public Gtk::Box
     Gtk::EventBox *eventbox;
     ArmyInfoTip *army_info_tip;
 
+    sigc::connection stack_conn;
+    sigc::connection army_conn[3];
+
     bool on_army_button_event(GdkEventButton *e);
     void fill_buttons();
     void fill_army_button();
     void fill_stack_button();
     void setup_signals();
+    void clear_signals();
 };
 
 #endif // STACK_ARMY_BUTTON

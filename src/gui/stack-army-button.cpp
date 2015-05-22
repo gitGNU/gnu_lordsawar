@@ -51,7 +51,7 @@ Glib::ustring StackArmyButton::get_file(Configuration::UiFormFactor factor)
                           ".ui");
 }
 
-StackArmyButton * StackArmyButton::create(guint32 factor, Stack *stack, Army *army, guint32 circle_colour_id, bool toggled)
+StackArmyButton * StackArmyButton::create(guint32 factor)
 {
   Glib::ustring file = 
     StackArmyButton::get_file (Configuration::UiFormFactor(factor));
@@ -60,15 +60,10 @@ StackArmyButton * StackArmyButton::create(guint32 factor, Stack *stack, Army *ar
   StackArmyButton *box;
   xml->get_widget_derived("box", box);
   box->d_factor = factor;
-  box->d_stack = stack;
-  box->d_army = army;
-  box->d_circle_colour_id = circle_colour_id;
-  box->fill_buttons();
-  if (stack == NULL)
-    box->stack_button_container->remove(*box->stack_button);
-
-  box->army_button->set_active(toggled);
-  box->setup_signals();
+  box->d_stack = NULL;
+  box->d_army = NULL;
+  box->d_circle_colour_id = 0;
+  box->army_button->set_active(false);
   return box;
 }
 
@@ -80,10 +75,11 @@ StackArmyButton::StackArmyButton(BaseObjectType* baseObject, const Glib::RefPtr<
   xml->get_widget("army_image", army_image);
   xml->get_widget("army_label", army_label);
   xml->get_widget("eventbox", eventbox);
-
+  eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
   xml->get_widget("stack_button", stack_button);
   xml->get_widget("stack_image", stack_image);
   xml->get_widget("stack_button_container", stack_button_container);
+  memset (army_conn, 0, sizeof (army_conn));
 }
 
 StackArmyButton::~StackArmyButton()
@@ -96,13 +92,14 @@ void StackArmyButton::update_stack_button(bool selected)
 {
   if (d_stack)
     {
+      stack_image->clear();
       if (selected)
         stack_image->property_pixbuf() = 
           stack_button->render_icon_pixbuf(Gtk::Stock::YES, Gtk::ICON_SIZE_MENU);
       else
         stack_image->property_pixbuf() = 
           stack_button->render_icon_pixbuf(Gtk::Stock::NO, Gtk::ICON_SIZE_MENU);
-      stack_image->show_all();
+      stack_button->show();
     }
   else
     stack_button->hide();
@@ -157,7 +154,6 @@ void StackArmyButton::fill_army_button()
                               !greyed_out ? p->getId() : d_circle_colour_id, 
                               true)->to_pixbuf();
 
-
       Pango::AttrList attrs;
       Pango::Attribute scale;
       switch (d_factor)
@@ -181,6 +177,9 @@ void StackArmyButton::fill_army_button()
       army_image->property_pixbuf() = 
         gc->getCircledArmyPic(p->getArmyset(), 0, p, NULL, false, 
                               Shield::NEUTRAL, false)->to_pixbuf();
+      
+      stack_image->clear();
+      army_label->set_text("");
     }
 }
 
@@ -190,22 +189,51 @@ void StackArmyButton::fill_stack_button()
     (d_stack == Playerlist::getActiveplayer()->getActivestack());
 }
 
+void StackArmyButton::clear_signals()
+{
+  //clear the old signals
+  stack_conn.disconnect();
+  for (unsigned int i = 0; i < 3; i++)
+    army_conn[i].disconnect();
+}
+
 void StackArmyButton::setup_signals()
 {
+
+  clear_signals();
   if (d_stack)
-    {
-      stack_button->signal_clicked().connect
-        (sigc::mem_fun(stack_clicked, &sigc::signal<void>::emit));
-    }
+    stack_conn = stack_button->signal_clicked().connect
+      (sigc::mem_fun(stack_clicked, &sigc::signal<void>::emit));
   if (d_army)
     {
-  
-      army_button->signal_toggled().connect
+      army_conn[0] = army_button->signal_toggled().connect
         (sigc::mem_fun(army_toggled, &sigc::signal<void>::emit));
-      eventbox->add_events(Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK);
-      army_button->signal_button_press_event().connect
+      army_conn[1] = army_button->signal_button_press_event().connect
         (sigc::mem_fun(*this, &StackArmyButton::on_army_button_event), false);
-      army_button->signal_button_release_event().connect
+      army_conn[2] = army_button->signal_button_release_event().connect
         (sigc::mem_fun(*this, &StackArmyButton::on_army_button_event), false);
     }
+}
+
+void StackArmyButton::reset()
+{
+  clear_signals();
+  army_button->set_sensitive(true);
+  stack_button->set_sensitive(true);
+  draw(NULL, NULL, 0, false);
+  army_button->set_sensitive(false);
+  stack_button->set_sensitive(false);
+}
+    
+void StackArmyButton::draw(Stack *s, Army *a, guint32 circle_colour_id, bool toggled)
+{
+  d_stack = s;
+  d_army = a;
+  d_circle_colour_id = circle_colour_id;
+  army_button->set_sensitive(true);
+  stack_button->set_sensitive(true);
+  if (army_button->get_active() != toggled)
+    army_button->set_active(toggled);
+  fill_buttons();
+  setup_signals();
 }

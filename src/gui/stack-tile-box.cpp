@@ -35,6 +35,7 @@
 #include "army.h"
 #include "shield.h"
 
+
 Glib::ustring StackTileBox::get_file(Configuration::UiFormFactor factor)
 {
   Glib::ustring file = "";
@@ -96,26 +97,44 @@ StackTileBox::StackTileBox(BaseObjectType* baseObject, const Glib::RefPtr<Gtk::B
     (sigc::bind(sigc::mem_fun(*this, &StackTileBox::on_group_toggled),
                 group_ungroup_toggle));
   xml->get_widget("terrain_image", terrain_image);
+
+  //okay let's make our army buttons.
+  for (unsigned int i = 0; i < MAX_ARMIES_ON_A_SINGLE_TILE; i++)
+    {
+      //we put them in a vbox so that the buttons don't expand horizontally.
+      StackArmyButton *button = StackArmyButton::create(Configuration::s_ui_form_factor);
+      button->get_parent()->remove(*button);
+      Gtk::VBox *box = new Gtk::VBox();
+      box->pack_start(*Gtk::manage(button), Gtk::PACK_SHRINK);
+      button->reparent(*box);
+      stack_army_buttons.push_back(button);
+      stack_info_box->pack_start(*Gtk::manage(box), Gtk::PACK_SHRINK);
+    }
+  memset (army_conn, 0, sizeof (army_conn));
+  memset (stack_conn, 0, sizeof (stack_conn));
+  d_inhibit_group_toggle = false;
 }
 
-void StackTileBox::drop_connections()
+void StackTileBox::reset_army_buttons()
 {
-  std::list<sigc::connection>::iterator it = connections.begin();
-  for (; it != connections.end(); it++) 
-    (*it).disconnect();
-  connections.clear();
+  for (unsigned int i = 0; i < stack_army_buttons.size(); i++)
+    stack_army_buttons[i]->reset();
+  for (unsigned int i = 0; i < MAX_ARMIES_ON_A_SINGLE_TILE; i++)
+    {
+      army_conn[i].disconnect();
+      stack_conn[i].disconnect();
+    }
 }
 
 StackTileBox::~StackTileBox()
 {
-  drop_connections();
   if (army_info_tip)
     delete army_info_tip;
 }
 
 void StackTileBox::on_stack_toggled(StackArmyButton *radio, Stack *stack)
 {
-  if (d_inhibit)
+  if (d_inhibit || d_inhibit_group_toggle)
     return;
   if (stack == currently_selected_stack)
     return;
@@ -127,7 +146,7 @@ void StackTileBox::on_stack_toggled(StackArmyButton *radio, Stack *stack)
 
 void StackTileBox::on_army_toggled(StackArmyButton *toggle, Stack *stack, Army *army)
 {
-  if (d_inhibit)
+  if (d_inhibit || d_inhibit_group_toggle)
     return;
   for (stack_army_buttons_type::iterator i = stack_army_buttons.begin(),
        end = stack_army_buttons.end(); i != end; ++i)
@@ -159,11 +178,11 @@ void StackTileBox::on_army_toggled(StackArmyButton *toggle, Stack *stack, Army *
 
 void StackTileBox::on_group_toggled(Gtk::ToggleButton *toggle)
 {
+  if (d_inhibit_group_toggle)
+    return;
   if (toggle->get_sensitive() == false)
     return;
   bool active = toggle->get_active();
-      
-  clear_army_buttons();
       
   StackTile *s = GameMap::getStacks(currently_selected_stack->getPos());
   stack_tile_group_toggle.emit(true);
@@ -180,18 +199,10 @@ void StackTileBox::on_group_toggled(Gtk::ToggleButton *toggle)
   stack_composition_modified.emit(currently_selected_stack);
 }
 
-void StackTileBox::clear_army_buttons()
-{
-  for (stack_army_buttons_type::iterator i = stack_army_buttons.begin(),
-       end = stack_army_buttons.end(); i != end; ++i)
-    delete *i;
-  stack_army_buttons.clear();
-}
-
 void StackTileBox::show_stack(StackTile *s)
 {
+  reset_army_buttons();
   Player *p = Playerlist::getActiveplayer();
-  stack_army_buttons.clear(); 
   std::list<Stack *> stks;
   stks = s->getFriendlyStacks(p);
   unsigned int count= 0;
@@ -203,57 +214,35 @@ void StackTileBox::show_stack(StackTile *s)
     {
       bool first = true;
       for (Stack::iterator i = (*j)->begin(); i != (*j)->end(); ++i)
-	{
+        {
           Stack *stack = NULL;
-	  if (first == true)
+          if (first == true)
             {
               first = false;
               stack = *j;
             }
 
-          bool toggled = (*j) == currently_selected_stack;
-          StackArmyButton *button = 
-            StackArmyButton::create(d_factor, stack, *i, 
-                                    toggled ? p->getId() : colour_id, 
-                                    toggled);
-          if (stack)
-            button->update_stack_button((*j) == currently_selected_stack);
-          Gtk::VBox *box = new Gtk::VBox();
-          button->get_parent()->remove(*button);
-          box->pack_start(*Gtk::manage(button), Gtk::PACK_SHRINK);
-          button->reparent(*box);
-	  button->army_toggled.connect
-	    (sigc::bind(sigc::mem_fun(*this, &StackTileBox::on_army_toggled),
-			button, *j, *i));
-          button->stack_clicked.connect
+          StackArmyButton *button = stack_army_buttons[count];
+          button->draw(stack, *i, colour_id, (*j) == currently_selected_stack);
+          army_conn[count].disconnect();
+          army_conn[count] = 
+            button->army_toggled.connect
+            (sigc::bind(sigc::mem_fun(*this, &StackTileBox::on_army_toggled),
+                        button, *j, *i));
+          stack_conn[count].disconnect();
+          stack_conn[count] = 
+            button->stack_clicked.connect
             (sigc::bind(sigc::mem_fun(*this, &StackTileBox::on_stack_toggled),
                         button, *j));
-          stack_army_buttons.push_back(button);
-          stack_info_box->pack_start(*Gtk::manage(box), Gtk::PACK_SHRINK);
-	  count++;
-	}
+          count++;
+        }
 
       colour_id = Shield::get_next_shield(colour_id);
       if (colour_id== p->getId())
         colour_id = Shield::get_next_shield(colour_id);
     }
 
-  for (unsigned int i = count ; i < MAX_ARMIES_ON_A_SINGLE_TILE; i++)
-    {
-      StackArmyButton *button = StackArmyButton::create(d_factor, NULL, NULL,
-                                                        Shield::NEUTRAL, false);
-      Gtk::VBox *box = new Gtk::VBox();
-      button->get_parent()->remove(*button);
-      box->pack_start(*Gtk::manage(button), Gtk::PACK_SHRINK);
-      button->reparent(*box);
-      button->set_sensitive(false);
-      stack_army_buttons.push_back(button);
-      stack_info_box->pack_start(*Gtk::manage(box), Gtk::PACK_SHRINK);
-    }
-
-  stack_info_box->show_all();
   fill_in_group_info(s, currently_selected_stack);
-  stack_info_container->show_all();
 }
 
 void StackTileBox::toggle_group_ungroup()
@@ -268,6 +257,7 @@ void StackTileBox::fill_in_group_info (StackTile *stile, Stack *s)
   terrain_image->property_pixbuf() = gc->getMoveBonusPic(bonus, s->hasShip())->to_pixbuf();
   group_moves_label->set_markup(String::ucompose("<b>%1</b>", s->getMoves()));
   group_ungroup_toggle->set_sensitive(false);
+  d_inhibit_group_toggle = true;
   if (stile->getFriendlyStacks(s->getOwner()).size() != 1)
     group_ungroup_toggle->set_active(false);
   else
@@ -277,17 +267,11 @@ void StackTileBox::fill_in_group_info (StackTile *stile, Stack *s)
   else
     group_ungroup_toggle->set_label(_("Grp"));
   group_ungroup_toggle->set_sensitive(true);
+  d_inhibit_group_toggle = false;
 }
 
-void StackTileBox::reset()
-{
-  clear_army_buttons();
-}
-  
 void StackTileBox::on_stack_info_changed(Stack *s)
 {
-  clear_army_buttons();
-
   set_selected_stack(s);
 
   if (s->getOwner()->getType() == Player::HUMAN)

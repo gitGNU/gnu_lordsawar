@@ -18,18 +18,17 @@
 #ifndef STACK_TILE_BOX_H
 #define STACK_TILE_BOX_H
 
-#include <memory>
 #include <sigc++/trackable.h>
 #include <gtkmm.h>
 #include <glibmm.h>
 #include "Configuration.h"
-#include "sidebar-stats.h"
 
 class StackTile;
 class Stack;
 class ArmyInfoTip;
 class Army;
 class StackArmyButton;
+
 // shows the listing of army units that coexist on a single map tile.
 class StackTileBox: public Gtk::Box
 {
@@ -41,24 +40,20 @@ class StackTileBox: public Gtk::Box
     ~StackTileBox();
 
     static StackTileBox * create(guint32 factor);
-
     void on_stack_info_changed(Stack *s);
     void setInhibit(bool inhibit) {d_inhibit = inhibit;};
     Stack * get_currently_selected_stack() const {return currently_selected_stack;};
-
     void show_stack(StackTile *s);
     void clear_selected_stack() {currently_selected_stack = NULL;};
     void set_selected_stack(Stack*s) {currently_selected_stack =s;};
-    void reset();
-
     void toggle_group_ungroup();
+
     //! Signals
     sigc::signal<void, Stack*> stack_composition_modified;
     sigc::signal<void, bool> stack_tile_group_toggle;
  protected:
 
  private:
-    std::list<sigc::connection> connections;
     guint32 d_factor;
     bool d_inhibit;
     Stack *currently_selected_stack;
@@ -71,16 +66,17 @@ class StackTileBox: public Gtk::Box
     Gtk::Label *group_moves_label;
     Gtk::Image *terrain_image;
     Gtk::ToggleButton *group_ungroup_toggle;
+    bool d_inhibit_group_toggle;
 
-    void drop_connections();
+    sigc::connection army_conn[MAX_ARMIES_ON_A_SINGLE_TILE];
+    sigc::connection stack_conn[MAX_ARMIES_ON_A_SINGLE_TILE];
+
     void pad_image(Gtk::Image *image);
-
     void fill_in_group_info (StackTile *stile, Stack *s);
     void on_army_toggled(StackArmyButton *toggle, Stack *stack, Army *army);
     void on_stack_toggled(StackArmyButton *radio, Stack *stack);
     void on_group_toggled(Gtk::ToggleButton *toggle);
-
-    void clear_army_buttons();
+    void reset_army_buttons();
 
 };
 

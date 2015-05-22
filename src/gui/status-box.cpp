@@ -123,8 +123,6 @@ StatusBox::~StatusBox()
 
 void StatusBox::on_stack_info_changed(Stack *s)
 {
-  stack_tile_box->reset();
-
   stack_tile_box->set_selected_stack(s);
 
   if (!s)

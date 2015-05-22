@@ -264,7 +264,6 @@ void StackTile::ungroup(Player *owner)
 	    }
 	}
     }
-
 }
     
 void StackTile::setDefending(Player *owner, bool defending)
