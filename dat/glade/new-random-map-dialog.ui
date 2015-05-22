@@ -3,6 +3,7 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkAdjustment" id="adjustment1">
+    <property name="lower">8</property>
     <property name="upper">99</property>
     <property name="value">11</property>
     <property name="step_increment">1</property>
