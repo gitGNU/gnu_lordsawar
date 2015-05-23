@@ -59,8 +59,9 @@ ReportDialog::ReportDialog(Gtk::Window &parent, Player *player, ReportType type)
 
   xml->get_widget("report_notebook", report_notebook);
   report_notebook->set_current_page(type);
-  report_notebook->signal_switch_page().connect(
-	sigc::mem_fun(*this, &ReportDialog::on_switch_page));
+  switch_conn = 
+    report_notebook->signal_switch_page().connect
+    (sigc::mem_fun(*this, &ReportDialog::on_switch_page));
 
   armies_list = Gtk::ListStore::create(armies_columns);
   xml->get_widget("treeview", armies_treeview);
@@ -101,9 +102,10 @@ ReportDialog::ReportDialog(Gtk::Window &parent, Player *player, ReportType type)
 
 ReportDialog::~ReportDialog()
 {
-    delete vectormap;
-    delete armymap;
-    delete citymap;
+  switch_conn.disconnect();
+  delete vectormap;
+  delete armymap;
+  delete citymap;
 }
 
 void ReportDialog::hide()

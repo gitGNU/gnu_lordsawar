@@ -34,7 +34,7 @@ class ArmyMap : public OverviewMap
     ArmyMap();
 
     //! Destructor.
-    ~ArmyMap() {};
+    //~ArmyMap() {};
 
     //! Emitted when the Army units are finished being drawn on the map surface.
     /**

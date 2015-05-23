@@ -65,6 +65,7 @@ class ReportDialog: public LwDialog
     BarChart *gold_chart;
     Gtk::Alignment *winning_alignment;
     BarChart *winning_chart;
+    sigc::connection switch_conn;
 
     Player *d_player;
     void on_army_map_changed(Cairo::RefPtr<Cairo::Surface> map);
