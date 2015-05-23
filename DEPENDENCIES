@@ -30,8 +30,8 @@ Requirements:
     Should be distributed with the Linux distribution.
 
 
-on Ubuntu you need the following packages: [this is outdated]
-sudo apt-get install automake autoconf libtool m4 autotools-dev g++ libsigc++-2.0-dev libglibmm-2.4-dev libgtkmm-2.4-dev gettext subversion libgstreamermm-0.10-dev libboost-dev intltool cvs libarchive-dev libxslt-dev libxml++-2.6-dev
+on Ubuntu you need the following packages:
+sudo apt-get install automake autoconf libtool m4 autotools-dev autopoint g++ libsigc++-2.0-dev libglibmm-2.4-dev libgtkmm-3.0-dev gettext subversion libgstreamermm-0.10-dev libboost-dev intltool cvs libarchive-dev libxslt-dev libxml++2.6-dev
 
 on Fedora you need the following packages:
 yum install libglademm24-devel gtkmm30-devel gettext desktop-file-utils gstreamermm-0.10-devel libxml++-devel libsigc++20-devel boost-devel libtiff-devel libvorbis-devel libjpeg-devel intltool automake autoconf m4 subversion cvs libarchive-devel glade3 libxslt-devel gcc-c++ boost-devel
