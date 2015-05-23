@@ -78,7 +78,7 @@ liblwgui_la_SOURCES = \
     stack-tile-box.cpp stack-tile-box.h \
     stack-army-button.cpp stack-army-button.h \
     lw-dialog.cpp lw-dialog.h \
-    builder-cache.cpp builder.cache.h
+    builder-cache.cpp builder-cache.h
 
 liblwgui_la_LIBADD = @LTLIBOBJS@
 
