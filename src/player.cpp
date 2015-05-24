@@ -1844,6 +1844,8 @@ bool Player::cityBuyProduction(City* c, int slot, int type)
 void Player::doCityChangeProduction(City* c, int slot)
 {
   c->setActiveProductionSlot(slot);
+  if (slot < 0)
+    c->setVectoring(Vector<int>(-1,-1));
 }
 
 bool Player::cityChangeProduction(City* c, int slot)
