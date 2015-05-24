@@ -4033,28 +4033,12 @@ bool Player::maybeRecruitHero ()
       if (gold_needed == 0)
 	{
 	  //we do it this way because maybe quickstart is on.
-	  Citylist* cl = Citylist::getInstance();
-	  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-	    if (!(*it)->isBurnt() && (*it)->getOwner() == this &&
-		(*it)->getCapitalOwner() == this && (*it)->isCapital())
-	      {
-		city = *it;
-		break;
-	      }
-	  if (!city) //no capital cities
-	    city = Citylist::getInstance()->getFirstCity(this);
+          city = Citylist::getInstance()->getCapitalCity(this);
+          if (city->isBurnt() == true)
+	    city = getFirstCity();
 	}
       else
-	{
-	  std::vector<City*> cities;
-	  Citylist* cl = Citylist::getInstance();
-	  for (Citylist::iterator it = cl->begin(); it != cl->end(); ++it)
-	    if (!(*it)->isBurnt() && (*it)->getOwner() == this)
-	      cities.push_back((*it));
-	  if (cities.empty())
-	    return false;
-	  city = cities[rand() % cities.size()];
-	}
+        city = Citylist::getInstance()->getRandomCityForHero(this);
 
       if (srecruitingHero.empty())
         accepted = true;
@@ -4650,6 +4634,22 @@ Reward* Player::giveQuestReward(Quest *quest, Stack *stack)
       break;
     }
   delete stacks;
+  return NULL;
+}
+
+City *Player::getFirstCity() const
+{
+  std::list<History*>::const_iterator it;
+  for (it = d_history.begin(); it != d_history.end(); it++)
+    {
+      if ((*it)->getType() == History::CITY_WON)
+        {
+          History_CityWon *h = dynamic_cast<History_CityWon*>(*it);
+          City *c = Citylist::getInstance()->getById(h->getCityId());
+          if (c->isBurnt() == false && c->getOwner() == this)
+            return c;
+        }
+    }
   return NULL;
 }
 // End of file

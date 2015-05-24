@@ -228,7 +228,7 @@ void GameScenario::quickStartEvenlyDivided()
 	    continue;
 	  if (p == plist->getNeutral())
 	    continue;
-	  pos = clist->getFirstCity(p)->getPos();
+	  pos = clist->getCapitalCity(p)->getPos();
 	  City *c = clist->getNearestNeutralCity(pos);
 	  if (c)
 	    {
@@ -277,7 +277,7 @@ void GameScenario::quickStartAIHeadStart()
 	    continue;
 	  if (p->getType() == Player::HUMAN)
 	    continue;
-	  pos = clist->getFirstCity(p)->getPos();
+	  pos = clist->getCapitalCity(p)->getPos();
 	  City *c = clist->getNearestNeutralCity(pos);
 	  if (c)
 	    {
@@ -431,7 +431,7 @@ bool GameScenario::setupCities(GameParameters::QuickStartPolicy quick_start)
     {
       if ((*it) == Playerlist::getInstance()->getNeutral())
 	continue;
-      City *city = Citylist::getInstance()->getFirstCity(*it);
+      City *city = Citylist::getInstance()->getCapitalCity(*it);
       if (city)
 	{
 	  city->deFog(city->getOwner());
@@ -912,10 +912,11 @@ bool GameScenario::validate(std::list<Glib::ustring> &errors, std::list<Glib::us
 	continue;
       if ((*it)->isDead() == true)
 	continue;
-      if (Citylist::getInstance()->getFirstCity(*it) == NULL)
+      if (Citylist::getInstance()->getCapitalCity(*it) == NULL ||
+          Citylist::getInstance()->getCapitalCity(*it)->isBurnt() == true)
 	{
 	  s = String::ucompose
-	    (_("The player called `%1' lacks a starting city."), 
+	    (_("The player called `%1' lacks a capital city."), 
 	     (*it)->getName().c_str());
 	  errors.push_back(s);
 	  break;

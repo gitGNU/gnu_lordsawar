@@ -110,7 +110,7 @@ bool AI_Fast::startTurn()
     sbusy.emit();
     if (getStacklist()->getHeroes().size() == 0 &&
         Citylist::getInstance()->countCities(this) == 1)
-      AI_maybeBuyScout(Citylist::getInstance()->getFirstCity(this));
+      AI_maybeBuyScout(getFirstCity());
     sbusy.emit();
 
     debug(getName() << ": AI_Fast::start_turn")

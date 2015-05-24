@@ -45,7 +45,7 @@ ReportDialog::ReportDialog(Gtk::Window &parent, Player *player, ReportType type)
   armymap = new ArmyMap();
   armymap->map_changed.connect
     (sigc::mem_fun(this, &ReportDialog::on_army_map_changed));
-  City *c = Citylist::getInstance()->getFirstCity(d_player);
+  City *c = d_player->getFirstCity();
   vectormap = new VectorMap(c, VectorMap::SHOW_ALL_VECTORING, false);
   vectormap->map_changed.connect
     (sigc::mem_fun(this, &ReportDialog::on_vector_map_changed));

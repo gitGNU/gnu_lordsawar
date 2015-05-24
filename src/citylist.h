@@ -98,18 +98,6 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 	//! Count the total number of inhabitable cities.
 	int countCities() const;
 
-	/**
-	 * Scans the list of city objects for the first one that is owned by
-	 * the given player.
-	 *
-	 * @param player  The owner of the City to search for.
-	 *
-	 * @return A pointer to a City object owned by the given player, or
-	 *         NULL if the given player doesn't own any city objects.
-	 */
-        //! Returns the first City object owned by the given player.
-        City* getFirstCity(Player* player) const;
-
 	//! Have each of the cities owned by the given player, pay gold pieces.
 	/**
 	 * This method increases the player's treasury.
@@ -361,6 +349,9 @@ class Citylist : public LocationList<City*>, public sigc::trackable
 
         //! Get the capital city of the given player.
         City *getCapitalCity(Player *player) const;
+
+        //! Pick a random city for a hero to be recruited in.
+        City *getRandomCityForHero(Player *player) const;
 
 	// Static Methods
 

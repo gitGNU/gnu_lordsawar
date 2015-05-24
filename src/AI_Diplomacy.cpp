@@ -121,7 +121,7 @@ void AI_Diplomacy::neutralsDwindlingNeedFirstEnemy()
       if (at_war == false)
 	{
 	  // not at war?  great.  let's pick a player to attack.
-	  City *first_city = cl->getFirstCity(d_owner);
+	  City *first_city = d_owner->getFirstCity();
 	  if (first_city)
 	    {
 	      City *c;

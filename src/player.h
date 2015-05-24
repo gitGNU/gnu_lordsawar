@@ -318,6 +318,9 @@ class Player: public sigc::trackable
         //! Returns all actions for this turn.
         std::list<Action *> getMovesThisTurn() const;
 
+        //! Returns the first city conquered that is still ours and not razed.
+        City *getFirstCity() const;
+
         //! Remove every Action from the list of the player's actions.
         void clearActionlist();
 

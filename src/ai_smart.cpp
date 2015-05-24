@@ -66,7 +66,7 @@ bool AI_Smart::startTurn()
 
   if (getStacklist()->getHeroes().size() == 0 &&
       Citylist::getInstance()->countCities(this) == 1)
-    AI_maybeBuyScout(Citylist::getInstance()->getFirstCity(this));
+    AI_maybeBuyScout(getFirstCity());
   
     debug("Player " << getName() << " starts a turn.")
 
@@ -89,7 +89,7 @@ bool AI_Smart::startTurn()
         
     AI_Analysis *analysis = new AI_Analysis(this);
     const Threatlist *threats = analysis->getThreatsInOrder();
-    City *first_city = Citylist::getInstance()->getFirstCity(this);
+    City *first_city = getFirstCity();
     bool build_capacity = false;
     if (first_city)
       {

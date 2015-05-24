@@ -417,15 +417,6 @@ City* Citylist::getNearestFriendlyVectorableCity(const Vector<int>& pos) const
   return getNearestObject(pos, &filters);
 }
 
-City* Citylist::getFirstCity(Player* p) const
-{
-    for (const_iterator it = begin(); it != end(); it++)
-        if ((*it)->getOwner() == p)
-            return (*it);
-
-    return 0;
-}
-
 bool Citylist::save(XML_Helper* helper) const
 {
     bool retval = true;
@@ -557,7 +548,7 @@ std::list<City*> Citylist::getNearestFriendlyCities(Player *player, Vector<int> 
   std::list<int> distances;
 
   if (pos == Vector<int>(-1,-1))
-    pos = getFirstCity(player)->getPos();
+    pos = player->getFirstCity()->getPos();
 
   for (std::list<City*>::iterator it = cities.begin(); it != cities.end(); it++)
     distances.push_back(dist((*it)->getNearestPos(pos), pos));
@@ -607,5 +598,16 @@ City *Citylist::getCapitalCity(Player *player) const
         return c;
     }
   return NULL;
+}
+
+City *Citylist::getRandomCityForHero(Player *player) const
+{
+  std::vector<City*> cities;
+  for (const_iterator it = begin(); it != end(); it++)
+    if (!(*it)->isBurnt() && (*it)->getOwner() == player)
+      cities.push_back((*it));
+  if (cities.empty())
+    return NULL;
+  return cities[rand() % cities.size()];
 }
 // End of file

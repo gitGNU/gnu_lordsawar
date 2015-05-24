@@ -1150,7 +1150,7 @@ void GameWindow::on_vectoring_activated()
       city = Citylist::getInstance()->getNearestVisibleFriendlyCity(pos);
     }
   else
-    city = Citylist::getInstance()->getFirstCity(Playerlist::getActiveplayer());
+    city = Playerlist::getActiveplayer()->getFirstCity();
 
   if (!city)
     return;
@@ -1173,7 +1173,7 @@ void GameWindow::on_production_activated()
       city = Citylist::getInstance()->getNearestVisibleFriendlyCity(pos);
     }
   else
-    city = Citylist::getInstance()->getFirstCity(Playerlist::getActiveplayer());
+    city = Playerlist::getActiveplayer()->getFirstCity();
 
   if (!city)
     return;
