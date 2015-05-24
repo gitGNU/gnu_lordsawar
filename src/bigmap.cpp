@@ -366,7 +366,22 @@ void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface, Cairo::
 	}
 
       if (show_army)
-        gc->getFlagPic(s)->blit(surface, p);
+        {
+          //does our position have us on that stacktile?
+          /*
+           * sometimes the stack tile isn't updated right away.
+           */
+          StackTile *st = GameMap::getStacks(s->getPos());
+          guint32 stacksize;
+          if (!st->contains(s->getId()))
+            stacksize = st->countNumberOfArmies(player) + s->size();
+          else
+            stacksize = st->countNumberOfArmies(player);
+          if (stacksize > MAX_STACK_SIZE)
+            stacksize = MAX_STACK_SIZE;
+          if (stacksize > 0)
+            gc->getFlagPic(stacksize, player)->blit(surface, p);
+        }
     }
 }
 
