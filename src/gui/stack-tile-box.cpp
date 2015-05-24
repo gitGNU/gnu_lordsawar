@@ -222,6 +222,8 @@ void StackTileBox::show_stack(StackTile *s)
               first = false;
               stack = *j;
             }
+          if (count >= MAX_ARMIES_ON_A_SINGLE_TILE)
+            break;
 
           StackArmyButton *button = stack_army_buttons[count];
           button->draw(stack, *i, colour_id, (*j) == currently_selected_stack);
