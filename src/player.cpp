@@ -631,6 +631,7 @@ bool Player::doStackSplitArmy(Stack *s, Army *a, Stack *& new_stack)
     {
       debug("1. split stack " << new_stack->getId() << " from stack " << s->getId());
       addStack(new_stack);
+      supdatingStack.emit(0);
       return true;
     }
   return false;
