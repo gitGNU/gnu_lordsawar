@@ -4034,7 +4034,7 @@ bool Player::maybeRecruitHero ()
 	{
 	  //we do it this way because maybe quickstart is on.
           city = Citylist::getInstance()->getCapitalCity(this);
-          if (city->isBurnt() == true)
+          if (!city || city->isBurnt() == true)
 	    city = getFirstCity();
 	}
       else
