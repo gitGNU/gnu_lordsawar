@@ -581,11 +581,14 @@ guint32 Player::getScore() const
 {
   //go get our last published score in the history
   guint32 score = 0;
-  std::list<History*>::const_iterator it = d_history.begin();
-  for (; it != d_history.end(); it++)
+  std::list<History*>::const_reverse_iterator it = d_history.rbegin();
+  for (; it != d_history.rend(); it++)
     {
       if ((*it)->getType() == History::SCORE)
-	score = static_cast<History_Score*>(*it)->getScore();
+        {
+          score = static_cast<History_Score*>(*it)->getScore();
+          break;
+        }
     }
   return score;
 }

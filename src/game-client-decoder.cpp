@@ -100,7 +100,7 @@ int GameClientDecoder::decodeHistories(std::list<NetworkHistory *> histories)
     std::cerr << String::ucompose(_("received history: %1"), desc) << std::endl;
     
     //just add it to the player's history list.
-    Player *p = Playerlist::getInstance()->getActiveplayer();
+    Player *p = history->getOwner();
     p->getHistorylist()->push_back(History::copy(history->getHistory()));
     count++;
     if (history->getHistory()->getType() == History::PLAYER_VANQUISHED)
