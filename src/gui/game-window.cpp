@@ -1767,6 +1767,7 @@ void GameWindow::on_ruinfight_finished(Fight::Result result)
     image->property_file() = File::getMiscFile("various/ruin_2.png");
   else
     image->property_file() = File::getMiscFile("various/ruin_1.png");
+  image->show();
 
   dialog.run_and_hide();
 }
