@@ -52,7 +52,7 @@ guint32 TriumphsDialog::tally(Player *p, Triumphs::TriumphType type)
 	{
 	  if ((*it) == Playerlist::getInstance()->getNeutral())
 	    continue;
-	  count += p->getTriumphs()->getTriumphTally(*it, type);
+          count += (*it)->getTriumphs()->getTriumphTally(p, type);
 	}
     }
   else
@@ -172,8 +172,8 @@ void TriumphsDialog::fill_in_page(Player *p)
 
   count = tally(p, Triumphs::TALLY_FLAG);
   if (p == d_player)
-    s = String::ucompose (ngettext ("%1 standard betrayed by it's guardian!",
-				    "%1 standards betrayed by it's guardian!",
+    s = String::ucompose (ngettext ("%1 standard betrayed by its guardian!",
+				    "%1 standards betrayed by its guardian!",
 				    count), count);
   else
     s = String::ucompose (ngettext 
