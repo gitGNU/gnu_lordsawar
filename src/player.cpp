@@ -4321,8 +4321,6 @@ void Player::tallyDeadArmyTriumphs(std::list<Stack*> &stacks)
   std::list<Stack*>::iterator it;
   for (it = stacks.begin(); it != stacks.end(); it++)
     {
-      if ((*it)->getOwner() == this)
-        continue;
       for (Stack::iterator sit = (*it)->begin(); sit != (*it)->end(); sit++)
         {
           if ((*sit)->getHP() > 0)
@@ -4331,10 +4329,6 @@ void Player::tallyDeadArmyTriumphs(std::list<Stack*> &stacks)
           Player *enemy = (*sit)->getOwner();
           if ((*sit)->getAwardable()) //hey a special ally died
             d_triumphs->tallyTriumph(enemy, Triumphs::TALLY_SPECIAL);
-          else if ((*sit)->isHero() == false)
-            d_triumphs->tallyTriumph(enemy, Triumphs::TALLY_NORMAL);
-          else if ((*sit)->getStat(Army::SHIP, false)) //hey it was on a boat
-            d_triumphs->tallyTriumph(enemy, Triumphs::TALLY_SHIP);
           else if ((*sit)->isHero())
             {
               d_triumphs->tallyTriumph(enemy, Triumphs::TALLY_HERO);
@@ -4343,6 +4337,10 @@ void Player::tallyDeadArmyTriumphs(std::list<Stack*> &stacks)
               for (guint32 i = 0; i < count; i++)
                 d_triumphs->tallyTriumph(enemy, Triumphs::TALLY_FLAG);
             }
+          else if ((*sit)->getStat(Army::SHIP, false)) //hey it was on a boat
+            d_triumphs->tallyTriumph(enemy, Triumphs::TALLY_SHIP);
+          else if ((*sit)->isHero() == false)
+            d_triumphs->tallyTriumph(enemy, Triumphs::TALLY_NORMAL);
         }
     }
   return;
