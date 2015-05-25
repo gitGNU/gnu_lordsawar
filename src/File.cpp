@@ -273,9 +273,9 @@ bool File::create_dir(Glib::ustring dir)
     struct stat testdir;
     if (stat(dir.c_str(), &testdir) || !S_ISDIR(testdir.st_mode))
     {
-        guint32 mask = 0755; //make directory only readable for user and group
-        if (mkdir(dir.c_str(), mask))
-	  return false;
+      Glib::RefPtr<Gio::File> f = Gio::File::create_for_path(dir);
+      if (f->make_directory() == false)
+        return false;
     }
     return true;
 }
