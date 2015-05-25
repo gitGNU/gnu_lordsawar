@@ -447,6 +447,8 @@ bool GameScenario::setupCities(GameParameters::QuickStartPolicy quick_start)
   for (Citylist::iterator it = Citylist::getInstance()->begin();
        it != Citylist::getInstance()->end(); it++)
     {
+      if ((*it)->isBurnt())
+        continue;
       if ((*it)->getOwner() == Playerlist::getInstance()->getNeutral())
 	{
 	  switch (GameScenario::s_neutral_cities)
@@ -479,7 +481,6 @@ bool GameScenario::setupCities(GameParameters::QuickStartPolicy quick_start)
 
 	  (*it)->setActiveProductionSlot(0);
 	}
-
     }
 
   return true;
