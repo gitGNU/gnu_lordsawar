@@ -112,8 +112,10 @@ int main(int argc, char* argv[])
 
   if (foreground == false)
     {
+#ifndef __MINGW32__
       if (daemon (0, 0) == -1)
         std::cerr << _("Could not detach from controlling terminal.") << std::endl;
+#endif
     }
 
   GamehostServer *gamehostserver = GamehostServer::getInstance();
