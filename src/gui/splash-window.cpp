@@ -186,7 +186,7 @@ void SplashWindow::on_load_game_clicked()
 
 void SplashWindow::on_new_network_game_clicked()
 {
-  NewNetworkGameDialog nngd(*window);
+  NewNetworkGameDialog nngd(*window, false);
   if (nngd.run())
     {
       nngd.hide();

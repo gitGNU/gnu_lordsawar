@@ -27,7 +27,7 @@ class Profile;
 class NewNetworkGameDialog: public LwDialog
 {
  public:
-    NewNetworkGameDialog(Gtk::Window &parent);
+    NewNetworkGameDialog(Gtk::Window &parent, bool force_server);
     ~NewNetworkGameDialog() {};
 
     Profile* getProfile() const {return d_profile;};
@@ -39,6 +39,7 @@ class NewNetworkGameDialog: public LwDialog
     
  private:
   Gtk::RadioButton *client_radiobutton;
+  Gtk::RadioButton *server_radiobutton;
   Gtk::Button *accept_button;
   Gtk::Button *add_button;
   Gtk::Button *remove_button;

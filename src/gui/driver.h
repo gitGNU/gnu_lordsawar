@@ -59,6 +59,8 @@ class Driver: public sigc::trackable
     void on_new_game_requested(GameParameters g);
     void on_new_remote_network_game_requested(Glib::ustring host, unsigned short port, Profile *p);
     void on_new_hosted_network_game_requested(GameParameters g, int port, Profile *p, bool advertised, bool remotely_hosted);
+    void on_load_hosted_network_game_requested(GameScenario *game_scenario, int port, Profile *p, bool advertised, bool remotely_hosted);
+    void on_game_ended_and_load_network_game(Glib::ustring filename, int port, Profile *p, bool advertised, bool remotely_hosted);
     void on_new_pbm_game_requested(GameParameters g);
     void on_game_scenario_downloaded(Glib::ustring filename);
     void on_game_scenario_received(Glib::ustring path, Profile *p);

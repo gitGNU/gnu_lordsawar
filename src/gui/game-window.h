@@ -56,6 +56,7 @@ class Reward_Ruin;
 class NextTurn;
 class LocationBox;
 class StatusBox;
+class Profile;
 
 /** The main window in which all the game action is going on.
   *
@@ -97,6 +98,8 @@ class GameWindow: public sigc::trackable
     sigc::signal<void> show_lobby;
 
     sigc::signal<void> quit_requested;
+
+    sigc::signal<void,Glib::ustring,int,Profile*,bool,bool> load_hosted_network_game;
 
     Gtk::Window *get_window() const {return window;};
 

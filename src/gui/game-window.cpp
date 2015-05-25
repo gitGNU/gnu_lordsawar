@@ -117,6 +117,7 @@
 #include "shield.h"
 #include "lw-dialog.h"
 #include "builder-cache.h"
+#include "new-network-game-dialog.h"
 
 GameWindow::GameWindow()
 {
@@ -1009,10 +1010,16 @@ void GameWindow::on_game_stopped()
 				      game_scenario->s_random_turns));
       else if (game_scenario->getPlayMode() == GameScenario::NETWORKED)
         {
-          TimedMessageDialog dialog
-            (*window, _("Can't load networked game from file."), 30);
-
-          dialog.run_and_hide();
+          NewNetworkGameDialog nngd(*get_window(), true);
+          bool retval = nngd.run();
+          nngd.hide();
+          hide();
+          if (retval)
+            {
+             load_hosted_network_game.emit 
+                (d_load_filename, LORDSAWAR_PORT, nngd.getProfile(), 
+                 nngd.isAdvertised(), nngd.isRemotelyHosted());
+            }
         }
     }
 }
@@ -1459,12 +1466,12 @@ void GameWindow::stop_game(Glib::ustring action)
   Snd::getInstance()->disableBackground();
   if (game)
     {
+      current_save_filename = "";
       if (action == "game-over" && game->getScenario()->getPlayMode() == GameScenario::NETWORKED)
         give_some_cheese(game_winner);
       else
         game->stopGame();
 
-      current_save_filename = "";
     }
 }
 

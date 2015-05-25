@@ -70,6 +70,7 @@
 #include "tilesetlist.h"
 #include "citysetlist.h"
 #include "herotemplates.h"
+#include "new-network-game-dialog.h"
 
 Driver::Driver(Glib::ustring load_filename)
 {
@@ -620,11 +621,31 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
 	dialog.run_and_hide();
 	return;
       }
-    if (remotely_hosted)
-      {
-        remotely_serve (game_scenario, p);
-        return;
-      }
+    on_load_hosted_network_game_requested(game_scenario, port, p, advertised,
+                                          remotely_hosted);
+}
+void Driver::on_game_ended_and_load_network_game(Glib::ustring filename, int port, Profile *p, bool advertised, bool remotely_hosted)
+{
+  on_game_ended();
+  bool broken = false;
+  GameScenario* game_scenario = new GameScenario(filename, broken);
+  splash_window->hide();
+  if (game_window)
+    delete game_window;
+  game_window = NULL;
+  on_load_hosted_network_game_requested(game_scenario, port, p, advertised, remotely_hosted);
+}
+
+void Driver::on_load_hosted_network_game_requested(GameScenario *game_scenario,
+                                                   int port, Profile *p, 
+                                                   bool advertised,
+                                                   bool remotely_hosted)
+{
+  if (remotely_hosted)
+    {
+      remotely_serve (game_scenario, p);
+      return;
+    }
 
   GameServer *game_server = GameServer::getInstance();
   game_server->port_in_use.connect(sigc::mem_fun(*this, &Driver::on_could_not_bind_to_port));
@@ -672,7 +693,7 @@ void Driver::on_new_hosted_network_game_requested(GameParameters g, int port,
   game_lobby_dialog->show();
   bool response = game_lobby_dialog->run();
   game_lobby_dialog->hide();
-    
+
   if (response == false)
     {
       on_game_ended();
@@ -866,18 +887,29 @@ void Driver::on_load_requested(Glib::ustring filename)
 	return;
       }
 
-    init_game_window();
-    
-    game_window->show();
     if (game_scenario->getPlayMode() == GameScenario::HOTSEAT)
-      game_window->load_game
-	(game_scenario, new NextTurnHotseat(game_scenario->getTurnmode(),
-					    game_scenario->s_random_turns));
+      {
+        init_game_window();
+
+        game_window->show();
+        game_window->load_game
+          (game_scenario, new NextTurnHotseat(game_scenario->getTurnmode(),
+                                              game_scenario->s_random_turns));
+      }
     else if (game_scenario->getPlayMode() == GameScenario::NETWORKED)
       {
-	TimedMessageDialog dialog(*splash_window->get_window(),
-				  _("Can't load networked game from file."), 0);
-	dialog.run_and_hide();
+        NewNetworkGameDialog nngd(*splash_window->get_window(), true);
+        bool retval = nngd.run();
+        nngd.hide();
+        if (retval == false)
+          splash_window->show();
+        else
+          {
+            on_load_hosted_network_game_requested(game_scenario, LORDSAWAR_PORT,
+						  nngd.getProfile(), 
+                                                  nngd.isAdvertised(),
+                                                  nngd.isRemotelyHosted());
+          }
       }
 }
 
@@ -947,6 +979,8 @@ void Driver::init_game_window()
 	sigc::mem_fun(*this, &Driver::on_show_lobby_requested));
     game_window->quit_requested.connect(
 	sigc::mem_fun(*this, &Driver::on_quit_requested));
+    game_window->load_hosted_network_game.connect(
+	sigc::mem_fun(*this, &Driver::on_game_ended_and_load_network_game));
 
     //make the width+height suitable for the screen size.
     Glib::RefPtr<Gdk::Screen> screen = Gdk::Display::get_default()->get_default_screen();

@@ -29,10 +29,11 @@
 #include "profilelist.h"
 #include "new-profile-dialog.h"
 
-NewNetworkGameDialog::NewNetworkGameDialog(Gtk::Window &parent)
+NewNetworkGameDialog::NewNetworkGameDialog(Gtk::Window &parent, bool force_server)
  : LwDialog(parent, "new-network-game-dialog.ui")
 {
   xml->get_widget("client_radiobutton", client_radiobutton);
+  xml->get_widget("server_radiobutton", server_radiobutton);
   client_radiobutton->signal_toggled().connect(sigc::mem_fun(*this, &NewNetworkGameDialog::on_client_radiobutton_toggled));
   xml->get_widget("accept_button", accept_button);
   xml->get_widget("add_button", add_button);
@@ -76,6 +77,12 @@ NewNetworkGameDialog::NewNetworkGameDialog(Gtk::Window &parent)
   update_buttons();
   profiles_treeview->get_selection()->signal_changed().connect
     (sigc::mem_fun(*this, &NewNetworkGameDialog::on_profile_selected));
+  if (force_server)
+    {
+      server_radiobutton->set_active(true);
+      server_radiobutton->set_sensitive(false);
+      client_radiobutton->set_sensitive(false);
+    }
 }
 
 void NewNetworkGameDialog::select_preferred_profile(Glib::ustring user)
