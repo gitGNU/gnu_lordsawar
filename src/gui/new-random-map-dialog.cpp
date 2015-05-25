@@ -496,8 +496,6 @@ Glib::ustring NewRandomMapDialog::create_and_dump_scenario(const Glib::ustring &
 
   // then fill the other players
   Armyset *as = Armysetlist::getInstance()->get(g.army_theme);
-  printf("as is %p\n", as);
-  printf("g.army_theme is -%s-\n", g.army_theme.c_str());
   int army_id = as->getId();
   Shieldsetlist *ssl = Shieldsetlist::getInstance();
   guint32 id = ssl->get(g.shield_theme)->getId();
