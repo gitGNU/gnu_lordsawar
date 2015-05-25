@@ -255,8 +255,11 @@ void FightWindow::add_army(Army *army, int initial_hp,
     }
 
     Gtk::HBox *hbox = hboxes[current_row];
-    army_box->reparent(*hbox);
-    hbox->pack_start(*army_box, Gtk::PACK_SHRINK);
+    army_box->get_parent()->remove(*army_box);
+    Gtk::VBox *box = new Gtk::VBox();
+    box->pack_start(*army_box, Gtk::PACK_SHRINK);
+    army_box->reparent(*box);
+    hbox->pack_start(*Gtk::manage(box), Gtk::PACK_SHRINK);
 
     // finally add an entry for later use
     ArmyItem item;
