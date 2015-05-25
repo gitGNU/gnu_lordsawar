@@ -270,31 +270,31 @@ bool File::copy (Glib::ustring from, Glib::ustring to)
 }
 bool File::create_dir(Glib::ustring dir)
 {
-    struct stat testdir;
-    if (stat(dir.c_str(), &testdir) || !S_ISDIR(testdir.st_mode))
-    {
-      Glib::RefPtr<Gio::File> f = Gio::File::create_for_path(dir);
-      if (f->make_directory() == false)
-        return false;
-    }
+  if (Glib::file_test(dir, Glib::FILE_TEST_IS_DIR) == true)
     return true;
+  bool retval = false;
+  try
+    {
+      Glib::RefPtr<Gio::File> directory = Gio::File::create_for_path(dir);
+      retval = directory->make_directory();
+    }
+  catch (Gio::Error::Exception &ex)
+    {
+      ;
+    }
+  return retval;
 }
 	
 bool File::is_writable(Glib::ustring file)
 {
-  if (access (file.c_str(), W_OK) != 0)
-    return false;
-  else
-    return true;
+  Glib::RefPtr<Gio::File> f = Gio::File::create_for_path(file);
+  Glib::RefPtr<Gio::FileInfo> info = f->query_info("access::can-write");
+  return info->get_attribute_boolean("access::can-write");
 }
 
 bool File::exists(Glib::ustring f)
 {
-  FILE *fileptr = fopen (f.c_str(), "r");
-  bool retval = fileptr != NULL;
-  if (fileptr)
-    fclose(fileptr);
-  return retval;
+  return Glib::file_test(f, Glib::FILE_TEST_EXISTS);
 }
 
 //armysets 
@@ -333,12 +333,17 @@ Glib::ustring File::getSetDir(Glib::ustring ext, bool system)
 
 void File::erase(Glib::ustring filename)
 {
-  remove(filename.c_str());
+  if (File::exists(filename))
+    {
+      Glib::RefPtr<Gio::File> file = Gio::File::create_for_path(filename);
+      file->remove();
+    }
 }
 
 void File::erase_dir(Glib::ustring filename)
 {
-  rmdir(filename.c_str());
+  if (Glib::file_test(filename, Glib::FILE_TEST_IS_DIR) == true)
+    erase(filename);
 }
 
 void File::clean_dir(Glib::ustring dirname)
