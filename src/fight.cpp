@@ -34,6 +34,7 @@
 #include "city.h"
 #include "stack.h"
 #include "Backpack.h"
+#include "stacktile.h"
 
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -88,6 +89,21 @@ Fight::Fight(Stack* attacker, Stack* defender, FightType type)
          */
         std::vector<Stack*> stacks = city->getDefenders();
         for (std::vector<Stack*>::iterator it = stacks.begin(); 
+             it != stacks.end(); it++)
+          {
+            Stack *s = *it;
+            if (s == d_defenders.front())
+              continue;
+            d_defenders.push_back(s);
+          }
+      }
+    else if ((!city || city->isBurnt() == true) &&
+             defender->getOwner() != Playerlist::getInstance()->getNeutral())
+      {
+        Vector<int> pos = defender->getPos();
+        std::list<Stack*> stacks = 
+          GameMap::getStacks(pos)->getEnemyStacks(attacker->getOwner());
+        for (std::list<Stack*>::iterator it = stacks.begin(); 
              it != stacks.end(); it++)
           {
             Stack *s = *it;
