@@ -44,6 +44,7 @@ NewNetworkGameDialog::NewNetworkGameDialog(Gtk::Window &parent, bool force_serve
   profiles_list = Gtk::ListStore::create(profiles_columns);
   profiles_treeview->set_model(profiles_list);
   profiles_treeview->append_column("", profiles_columns.nickname);
+  profiles_treeview->signal_row_activated().connect(sigc::mem_fun(this, &NewNetworkGameDialog::on_profile_activated));
 
   if (Profilelist::getInstance()->empty() == true)
     Profilelist::getInstance()->push_back(new Profile(Glib::get_user_name()));
@@ -216,4 +217,9 @@ void NewNetworkGameDialog::on_client_radiobutton_toggled()
 void NewNetworkGameDialog::on_remote_checkbutton_toggled()
 {
   update_buttons();
+}
+
+void NewNetworkGameDialog::on_profile_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column)
+{
+  accept_button->activate();
 }
