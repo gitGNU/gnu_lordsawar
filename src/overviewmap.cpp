@@ -355,7 +355,7 @@ Vector<int> OverviewMap::calculate_smallmap_size()
 {
   Vector<int> max_dimensions = GameMap::get_dim() * calculatePixelsPerTile();
   Vector<int> d;
-  int p = d.x / double(GameMap::get_dim().x);
+  double p = max_dimensions.x / double(GameMap::get_dim().x);
   d.x = max_dimensions.x;
   d.y = int(round(GameMap::get_dim().y * p));
   if (d.y > max_dimensions.y)
