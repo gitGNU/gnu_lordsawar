@@ -146,6 +146,8 @@ class OverviewMap : public sigc::trackable
     static int calculatePixelsPerTile(int width, int height);
     static int calculatePixelsPerTile();
 
+    static Vector<int> calculate_smallmap_size();
+
     static void draw_radial_gradient(Cairo::RefPtr<Cairo::Surface> surface, Gdk::RGBA inner, Gdk::RGBA outer, int height, int width);
 
     int get_width();

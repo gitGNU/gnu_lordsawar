@@ -364,6 +364,9 @@ void GameWindow::hide()
 void GameWindow::init(int width, int height)
 {
     bigmap_image->set_size_request(width, height);
+
+    Vector<int> d = SmallMap::calculate_smallmap_size();
+    smallmap_image->set_size_request(d.x, d.y);
 }
 
 void GameWindow::new_network_game(GameScenario *game_scenario, NextTurn *next_turn)

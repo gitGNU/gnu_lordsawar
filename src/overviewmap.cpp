@@ -351,6 +351,22 @@ void OverviewMap::resize()
          GameMap::calculateTilesPerOverviewMapTile());
 }
 
+Vector<int> OverviewMap::calculate_smallmap_size()
+{
+  Vector<int> max_dimensions = GameMap::get_dim() * calculatePixelsPerTile();
+  Vector<int> d;
+  int p = d.x / double(GameMap::get_dim().x);
+  d.x = max_dimensions.x;
+  d.y = int(round(GameMap::get_dim().y * p));
+  if (d.y > max_dimensions.y)
+    {
+	p = max_dimensions.y / double(GameMap::get_dim().y);
+	d.x = int(round(GameMap::get_dim().x * p));
+	d.y = max_dimensions.y;
+    }
+  return d;
+}
+
 void OverviewMap::resize(Vector<int> max_dimensions, float scale)
 {
   surface.clear();
