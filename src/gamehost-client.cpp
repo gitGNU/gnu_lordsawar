@@ -30,6 +30,7 @@
 #include "recently-played-game-list.h"
 #include "recently-played-game.h"
 #include "File.h"
+#include "connection-manager.h"
   
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -54,7 +55,7 @@ void GamehostClient::deleteInstance()
 
 GamehostClient::GamehostClient()
 {
-  network_connection.reset();
+  network_connection = NULL;
 }
 
 GamehostClient::~GamehostClient()
@@ -66,7 +67,12 @@ void GamehostClient::start(Glib::ustring host, guint32 port, Profile *p)
   d_host = host;
   d_port = port;
   d_profile_id = p->getId();
-  network_connection.reset(new NetworkConnection());
+  if (network_connection)
+    network_connection->tear_down_connection();
+
+  network_connection = ConnectionManager::create_connection();
+  network_connection->torn_down.connect(
+    sigc::mem_fun(this, &GamehostClient::on_torn_down));
   network_connection->connected.connect(
     sigc::mem_fun(this, &GamehostClient::onConnected));
   network_connection->connection_lost.connect(
@@ -180,7 +186,7 @@ bool GamehostClient::onGotMessage(int type, Glib::ustring payload)
 
 void GamehostClient::disconnect()
 {
-  if (network_connection.get())
+  if (network_connection)
     network_connection->disconnect();
   d_connected = false;
 }
@@ -251,4 +257,9 @@ void GamehostClient::send_map_file(Glib::ustring file)
 void GamehostClient::request_server_terminate()
 {
   network_connection->send(GHS_MESSAGE_REQUEST_TERMINATION, "");
+}
+
+void GamehostClient::on_torn_down()
+{
+  network_connection = NULL;
 }

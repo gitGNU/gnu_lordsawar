@@ -46,8 +46,7 @@ ConnectionManager::ConnectionManager()
 ConnectionManager::~ConnectionManager()
 {
   for (iterator i = begin(); i != end(); i++)
-    delete (*i);
-  clear();
+    (*i)->tear_down_connection();
 }
 
 void ConnectionManager::manage(NetworkConnection*conn)
@@ -87,11 +86,11 @@ void ConnectionManager::on_messages_flushed(NetworkConnection*conn)
     erase(i);
   if (threads[conn])
     Glib::signal_idle().connect_once(sigc::bind(sigc::mem_fun(this, &ConnectionManager::join), conn));
-  delete conn;
 }
 
 void ConnectionManager::join(NetworkConnection *nc)
 {
   threads[nc]->join();
+  delete nc;
 }
 // End of file

@@ -34,6 +34,7 @@
 #include "ucompose.hpp"
 #include "real_player.h" 
 #include "network_player.h" 
+#include "connection-manager.h"
 
 
 GameClient * GameClient::s_instance = 0;
@@ -64,8 +65,6 @@ GameClient::GameClient()
 
 GameClient::~GameClient()
 {
-  delete network_connection;
-  network_connection = NULL;
 }
 
 void GameClient::start(Glib::ustring host, guint32 port, Glib::ustring profile_id, Glib::ustring nick)
@@ -75,7 +74,11 @@ void GameClient::start(Glib::ustring host, guint32 port, Glib::ustring profile_i
   player_id = -1;
   setNickname(nick);
   setProfileId(profile_id);
-  network_connection = new NetworkConnection();
+  if (network_connection)
+    network_connection->tear_down_connection();
+  network_connection = ConnectionManager::create_connection();
+  network_connection->torn_down.connect(
+    sigc::mem_fun(this, &GameClient::on_torn_down));
   network_connection->connected.connect(
     sigc::mem_fun(this, &GameClient::onConnected));
   network_connection->connection_lost.connect(
@@ -173,12 +176,12 @@ bool GameClient::onGotMessage(int type, Glib::ustring payload)
     break;
 
   case MESSAGE_TYPE_PARTICIPANT_CONNECTED:
-    std::cerr << String::ucompose("message: %1 has data: %2", type, payload) << std::endl;
+    //std::cerr << String::ucompose("message: %1 has data: %2", type, payload) << std::endl;
     remote_participant_joins.emit(payload);
     break;
 
   case MESSAGE_TYPE_PARTICIPANT_DISCONNECTED:
-    std::cerr << String::ucompose("message: %1 has data: %2", type, payload) << std::endl;
+    //std::cerr << String::ucompose("message: %1 has data: %2", type, payload) << std::endl;
     remote_participant_departs.emit(payload);
     break;
 
@@ -446,4 +449,8 @@ void GameClient::disconnect()
   d_connected = false;
   if (network_connection)
     network_connection->send(MESSAGE_TYPE_PARTICIPANT_DISCONNECT, d_nickname);
+}
+void GameClient::on_torn_down()
+{
+  network_connection = NULL;
 }

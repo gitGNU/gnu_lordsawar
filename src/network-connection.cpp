@@ -28,6 +28,7 @@
 #include "timing.h"
 #include "File.h"
 #include "defs.h"
+#include "connection-manager.h"
 
 void NetworkConnection::setup_connection()
 {
@@ -61,6 +62,10 @@ void NetworkConnection::tear_down_connection()
         //conn.reset();
       }
     }
+  d_stop = true;
+  cond_push.signal();
+  cond_pop.signal();
+  torn_down.emit();
 }
 
 bool NetworkConnection::on_got_input(Glib::IOCondition cond)
@@ -77,10 +82,11 @@ bool NetworkConnection::on_got_input(Glib::IOCondition cond)
       //break;  fallthrough here on purpose.
     case Glib::IO_ERR:
     case Glib::IO_HUP:
+    case Glib::IO_NVAL:
       if (len <= 0)
         {
-          tear_down_connection();
           connection_lost.emit();
+          tear_down_connection();
           return false;
         }
       break;
@@ -91,10 +97,8 @@ bool NetworkConnection::on_got_input(Glib::IOCondition cond)
 }
 
 NetworkConnection::NetworkConnection(const Glib::RefPtr<Gio::SocketConnection> &c)
+ : payload(NULL), d_host(""), d_port(0), d_stop(false)
 {
-  d_host = "";
-  d_port = 0;
-  payload = NULL;
   //okay, i've been asked to create a SERVER side network connection.
   client = Gio::SocketClient::create();
   client->set_protocol(Gio::SOCKET_PROTOCOL_TCP);
@@ -107,17 +111,14 @@ NetworkConnection::NetworkConnection(const Glib::RefPtr<Gio::SocketConnection> &
 }
 
 NetworkConnection::NetworkConnection()
+ : payload(NULL), d_host(""), d_port(0), d_stop(false)
 {
-  d_host = "";
-  d_port = 0;
-  payload = NULL;
   client = Gio::SocketClient::create();
   client->set_protocol(Gio::SOCKET_PROTOCOL_TCP);
 }
 
 NetworkConnection::~NetworkConnection()
 {
-  tear_down_connection();
 }
 
 void NetworkConnection::on_connect_connected(Glib::RefPtr<Gio::AsyncResult> &result)
@@ -165,10 +166,14 @@ gssize NetworkConnection::on_payload_received(gssize len)
   in->read(payload + (payload_size - payload_left), len);
   payload_left -= len;
 
-  connection_received_data.emit();
   if (payload_left > 0)
     return len;
 
+  /*
+   * ok, this next bit of code is definitely out of place.
+   * the network connection object shouldn't have to treat certain
+   * types of messages any differently, but it is.
+   */
   int type = payload[1];
   bool keep_going;
   if (type == MESSAGE_TYPE_SENDING_MAP)
@@ -195,6 +200,8 @@ gssize NetworkConnection::on_payload_received(gssize len)
       return -1;
     }
   header_left = header_size; //set things up for the next header.
+  payload_left = 0;
+  payload_size = 0;
   return len;
 }
 
@@ -211,7 +218,17 @@ void NetworkConnection::connectToHost(Glib::ustring host, int port)
                                &NetworkConnection::on_connect_connected));
 }
 
-void NetworkConnection::sendFile(int type, const Glib::ustring filename)
+void NetworkConnection::send(int type, const Glib::ustring &payload)
+{
+  queue_message (type, payload);
+}
+
+void NetworkConnection::sendFile(int type, const Glib::ustring &filename)
+{
+  queue_message (type, filename);
+}
+
+void NetworkConnection::sendFileMessage(int type, const Glib::ustring filename)
 {
   FILE *fileptr = fopen (filename.c_str(), "r");
   if (fileptr == NULL)
@@ -236,9 +253,10 @@ void NetworkConnection::sendFile(int type, const Glib::ustring filename)
       wrote_all = out->write_all (buffer, bytesread, bytessent);
       free (buffer);
     }
+  File::erase(filename);
 }
 
-bool NetworkConnection::send(int type, const Glib::ustring &payload)
+bool NetworkConnection::sendMessage(int type, const Glib::ustring &payload)
 {
   // make the preamble
   guint32 l = g_htonl(MESSAGE_PREAMBLE_EXTRA_BYTES + payload.size());
@@ -280,4 +298,60 @@ void NetworkConnection::disconnect()
       if (conn->get_socket()->is_closed() == false)
         conn->get_socket()->close();
     }
+}
+
+void NetworkConnection::queue_message(int type, const Glib::ustring &payload)
+{
+  Glib::Threads::Mutex::Lock lock (mutex);
+
+  while(messages.size() >= 256)
+    {
+      if (d_stop)
+        break;
+      cond_pop.wait(mutex);
+      if (d_stop)
+        break;
+    }
+  if (d_stop)
+    return;
+  struct Message m;
+  m.type = type;
+  m.payload = payload;
+  messages.push(m);
+  cond_push.signal();
+}
+
+void NetworkConnection::send_queued_messages()
+{
+  for(;;)
+    {
+        {
+          if (d_stop)
+            break;
+          Glib::Threads::Mutex::Lock lock (mutex);
+          while(messages.empty())
+            {
+              if (d_stop)
+                break;
+              cond_push.wait(mutex);
+              if (d_stop)
+                break;
+            }
+          if (d_stop)
+            break;
+          struct Message m = messages.front();
+          messages.pop();
+
+          if (d_stop)
+            break;
+          if (m.type == MESSAGE_TYPE_SENDING_MAP)
+            sendFileMessage (m.type, m.payload);
+          else
+            sendMessage (m.type, m.payload);
+          if (d_stop)
+            break;
+          cond_pop.signal();
+        }
+    }
+  queue_flushed.emit();
 }

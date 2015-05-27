@@ -96,6 +96,7 @@ liblordsawarnet_la_SOURCES = \
 	network-connection.cpp chat-client.cpp chat-client.h \
         network-connection.h network-common.h \
         network-server.cpp network-server.h \
+	connection-manager.cpp connection-manager.h \
 	profile.cpp profile.h \
        	profilelist.cpp profilelist.h 
 

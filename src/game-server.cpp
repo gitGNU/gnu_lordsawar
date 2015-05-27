@@ -920,7 +920,7 @@ void GameServer::sendMap(Participant *part)
 
   std::cerr << "sending map" << std::endl;
   network_server->sendFile(part->conn, MESSAGE_TYPE_SENDING_MAP, tmpfile);
-  File::erase (tmpfile);
+  //file get erased in NetworkConnection::sendFileMessage
 
   // unhack the players
   std::vector<Player*>::iterator j = players.begin();

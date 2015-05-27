@@ -77,6 +77,7 @@ private:
   void onConnected();
   void onConnectionLost();
   bool onGotMessage(int type, Glib::ustring message);
+  void on_torn_down();
 
   void onActionDone(NetworkAction *action);
   void sendActions();

@@ -22,6 +22,7 @@
 #include "xmlhelper.h"
 #include "profile.h"
 #include "network-connection.h"
+#include "connection-manager.h"
 
 
 Glib::ustring AdvertisedGame::d_tag_name = "advertisedgame";
@@ -105,7 +106,7 @@ bool AdvertisedGame::loadProfile(Glib::ustring tag, XML_Helper *helper)
         
 void AdvertisedGame::ping()
 {
-  NetworkConnection *conn = new NetworkConnection();
+  NetworkConnection *conn = ConnectionManager::create_connection();
 
   conn->connected.connect
     (sigc::bind(sigc::mem_fun(*this, &AdvertisedGame::on_connected_to_game), 
@@ -119,13 +120,13 @@ void AdvertisedGame::ping()
 
 void AdvertisedGame::on_connected_to_game(NetworkConnection *conn)
 {
-  delete conn;
+  conn->tear_down_connection();
   d_last_pinged_date.assign_current_time();
   pinged.emit(true);
 }
 
 void AdvertisedGame::on_could_not_connect_to_game(NetworkConnection *conn)
 {
-  delete conn;
+  conn->tear_down_connection();
   pinged.emit(false);
 }

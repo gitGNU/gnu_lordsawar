@@ -30,6 +30,7 @@
 #include "advertised-game.h"
 #include "recently-played-game-list.h"
 #include "recently-played-game.h"
+#include "connection-manager.h"
   
 //#define debug(x) {std::cerr<<__FILE__<<": "<<__LINE__<<": "<<x<<std::endl<<std::flush;}
 #define debug(x)
@@ -54,7 +55,7 @@ void GamelistClient::deleteInstance()
 
 GamelistClient::GamelistClient()
 {
-  network_connection.reset();
+  network_connection = NULL;
 }
 
 void GamelistClient::start(Glib::ustring host, guint32 port, Profile *p)
@@ -62,7 +63,11 @@ void GamelistClient::start(Glib::ustring host, guint32 port, Profile *p)
   d_host = host;
   d_port = port;
   d_profile_id = p->getId();
-  network_connection.reset(new NetworkConnection());
+  if (network_connection)
+    network_connection->tear_down_connection();
+  network_connection = ConnectionManager::create_connection();
+  network_connection->torn_down.connect(
+    sigc::mem_fun(this, &GamelistClient::on_torn_down));
   network_connection->connected.connect(
     sigc::mem_fun(this, &GamelistClient::onConnected));
   network_connection->connection_lost.connect(
@@ -70,8 +75,14 @@ void GamelistClient::start(Glib::ustring host, guint32 port, Profile *p)
   network_connection->got_message.connect(
     sigc::mem_fun(this, &GamelistClient::onGotMessage));
   network_connection->connection_failed.connect
-    (sigc::mem_fun(this->client_could_not_connect, &sigc::signal<void>::emit));
+    (sigc::mem_fun(this, &GamelistClient::onConnectionFailed));
   network_connection->connectToHost(host, port);
+}
+
+void GamelistClient::onConnectionFailed()
+{
+  network_connection->tear_down_connection();
+  client_could_not_connect.emit();
 }
 
 void GamelistClient::onConnected() 
@@ -154,7 +165,7 @@ bool GamelistClient::onGotMessage(int type, Glib::ustring payload)
 
 void GamelistClient::disconnect()
 {
-  if (network_connection.get())
+  if (network_connection)
     network_connection->disconnect();
   d_connected = false;
 }
@@ -214,4 +225,9 @@ void GamelistClient::request_reload()
 void GamelistClient::request_server_terminate()
 {
   network_connection->send(GLS_MESSAGE_REQUEST_TERMINATION, "");
+}
+
+void GamelistClient::on_torn_down()
+{
+  network_connection = NULL;
 }

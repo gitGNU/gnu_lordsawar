@@ -60,7 +60,6 @@ class ConnectionManager: public std::list<NetworkConnection*>
 
         void on_messages_flushed (NetworkConnection *conn);
 
-
         void launch_thread(NetworkConnection *nc);
         void join(NetworkConnection *nc);
 	// DATA

@@ -21,15 +21,19 @@
 
 #include <config.h>
 
+#include <queue>
 #include <sigc++/signal.h>
 #include <glibmm.h>
 #include <giomm.h>
+#include <gtkmm.h>
+#include <glibmm/threads.h>
 #include "network-common.h"
 
 //! A simple network connection for sending messages, encapsulates the protocol
 class NetworkConnection
 {
 public:
+
   NetworkConnection(const Glib::RefPtr<Gio::SocketConnection> &conn);
   NetworkConnection();
   ~NetworkConnection();
@@ -41,14 +45,21 @@ public:
   sigc::signal<void> connection_failed;
   sigc::signal<void> connection_received_data;
   sigc::signal<bool, int, Glib::ustring> got_message;
+  sigc::signal<void> queue_flushed;
+  sigc::signal<void> torn_down;
 
-  bool send(int type, const Glib::ustring &payload);
-  void sendFile(int type, Glib::ustring filename);
+  void send(int type, const Glib::ustring &payload);
+  void sendFile(int type, const Glib::ustring &filename);
   Glib::ustring get_peer_hostname();
 
+  void tear_down_connection();
   void disconnect();
   Glib::ustring getHost() const {return d_host;};
   guint32 getPort() const {return d_port;};
+
+  //Glib::Threads::Thread * consumer;
+  void send_queued_messages();
+
 private:
   Glib::RefPtr<Gio::SocketClient> client; //this is client-side connections.
   Glib::RefPtr<Gio::SocketConnection> conn;
@@ -65,13 +76,30 @@ private:
   Glib::ustring d_host;
   guint32 d_port;
 
+  Glib::Threads::Mutex mutex;
+  Glib::Threads::Cond cond_push;
+  Glib::Threads::Cond cond_pop;
+
+  bool d_stop;
+
+  struct Message
+    {
+      int type;
+      Glib::ustring payload;
+    };
+  std::queue<struct Message> messages;
+
   void setup_connection();
   void on_connect_connected(Glib::RefPtr<Gio::AsyncResult> &result);
   gssize on_header_received(gssize len);
   gssize on_payload_received(gssize len);
   bool on_got_input(Glib::IOCondition cond);
-  void tear_down_connection();
   bool on_connect_timeout();
+
+  void queue_message(int type, const Glib::ustring &payload);
+  bool sendMessage(int type, const Glib::ustring &payload);
+  void sendFileMessage(int type, Glib::ustring filename);
+
 };
 
 #endif

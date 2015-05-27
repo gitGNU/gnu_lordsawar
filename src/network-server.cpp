@@ -24,6 +24,7 @@
 
 #include "network-common.h"
 #include "network-connection.h"
+#include "connection-manager.h"
 
 NetworkServer::NetworkServer()
 {
@@ -32,10 +33,6 @@ NetworkServer::NetworkServer()
 
 NetworkServer::~NetworkServer()
 {
-  //for (std::list<NetworkConnection *>::iterator i = connections.begin(),
-         //end = connections.end(); i != end; ++i)
-    //delete *i;
-  
   if (server)
     {
       if (server->is_active())
@@ -79,7 +76,7 @@ bool NetworkServer::gotClientConnection(const Glib::RefPtr<Gio::SocketConnection
   if (c) 
     {
       c->reference();
-      NetworkConnection *conn = new NetworkConnection(c);
+      NetworkConnection *conn = ConnectionManager::create_connection(c);
       connections.push_back(conn);
 
       conn->connection_lost.connect
@@ -103,7 +100,6 @@ void NetworkServer::onConnectionLost(NetworkConnection *c)
 {
   if (std::find (connections.begin(), connections.end(), c) != connections.end())
     connections.remove(c);
-  delete c;
 }
   
 bool NetworkServer::isListening()

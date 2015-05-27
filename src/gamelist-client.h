@@ -72,11 +72,13 @@ protected:
   ~GamelistClient() {};
 
 private:
-  std::auto_ptr<NetworkConnection> network_connection;
+  NetworkConnection* network_connection;
 
   void onConnected();
+  void onConnectionFailed();
   void onConnectionLost();
   bool onGotMessage(int type, Glib::ustring message);
+  void on_torn_down();
   bool loadRecentlyPlayedGameList(Glib::ustring tag, XML_Helper *helper);
 
   static GamelistClient * s_instance;
