@@ -2743,7 +2743,8 @@ void GameWindow::on_online_help_activated()
 
 void GameWindow::on_player_replaced(Player *p)
 {
-  game->addPlayer(p);
+  if (game)
+    game->addPlayer(p);
 }
 
 void GameWindow::on_grid_toggled()

@@ -927,10 +927,17 @@ void Driver::on_quit_requested()
 void Driver::on_game_ended()
 {
   if (game_lobby_dialog)
-    game_lobby_dialog->clean_up_players();
+    {
+      delete game_lobby_dialog;
+      game_lobby_dialog = NULL;
+    }
 
   if (game_window)
-    game_window->hide();
+    {
+      game_window->hide();
+      delete game_window;
+      game_window = NULL;
+    }
 
   if (GameServer::getInstance()->isListening() &&
       d_advertised_scenario_id != "")
