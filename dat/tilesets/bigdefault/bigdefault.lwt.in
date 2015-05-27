@@ -66,10 +66,10 @@
 	</smallmap>
 	<tilestyleset>
 		<d_name>water</d_name>
-		<tilestyle> <d_id>0x14</d_id> <d_type>0</d_type> </tilestyle>
-		<tilestyle> <d_id>0x15</d_id> <d_type>0</d_type> </tilestyle>
-		<tilestyle> <d_id>0x16</d_id> <d_type>0</d_type> </tilestyle>
-		<tilestyle> <d_id>0x17</d_id> <d_type>0</d_type> </tilestyle>
+		<tilestyle> <d_id>0x14</d_id> <d_type>16</d_type> </tilestyle>
+		<tilestyle> <d_id>0x15</d_id> <d_type>16</d_type> </tilestyle>
+		<tilestyle> <d_id>0x16</d_id> <d_type>16</d_type> </tilestyle>
+		<tilestyle> <d_id>0x17</d_id> <d_type>16</d_type> </tilestyle>
 		<tilestyle> <d_id>0x18</d_id> <d_type>1</d_type> </tilestyle>
 		<tilestyle> <d_id>0x19</d_id> <d_type>1</d_type> </tilestyle>
 		<tilestyle> <d_id>0x1a</d_id> <d_type>2</d_type> </tilestyle>
