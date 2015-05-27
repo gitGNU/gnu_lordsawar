@@ -317,7 +317,10 @@ bool GameMap::save(XML_Helper* helper) const
     for (int i = 0; i < s_height; i++)
     {
         for (int j = 0; j < s_width; j++)
-            types << getTile(j, i)->getIndex();
+          {
+            guint32 tile_type = getTile(j, i)->getIndex();
+            types << (guint32) tile_type;
+          }
         types <<std::endl;
     }
 
