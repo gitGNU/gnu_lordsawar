@@ -183,6 +183,9 @@ class GameMap: public sigc::trackable
           * \note A new TileStyle is automatically assigned to the Maptile.
           */
 	void setTile(int x, int y, Maptile *tile);
+
+        //! just like setTile, but it doesn't update the tilestyle.
+        void updateTile(int x, int y, Maptile *tile);
         
         /** Change a Maptile on the map.
           * 

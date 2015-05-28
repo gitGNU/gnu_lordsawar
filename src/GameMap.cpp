@@ -374,6 +374,12 @@ bool GameMap::loadItems(Glib::ustring tag, XML_Helper* helper)
     return true;
 }
 
+void GameMap::updateTile(int x, int y, Maptile *tile)
+{
+    delete d_map[y*s_width + x];
+    d_map[y*s_width + x] = tile;
+}
+
 void GameMap::setTile(int x, int y, Maptile *tile)
 {
     delete d_map[y*s_width + x];
@@ -961,8 +967,14 @@ void GameMap::surroundMountains(int minx, int miny, int maxx, int maxy)
 		  if(getTile((j+J), (i+I))->getType() != Tile::WATER)
 		    {
 		      if (idx != -1)
-			setTile(j+J, i+I, 
-				new Maptile (j+J, i+I, (guint32)idx, NULL));
+                        {
+                          Maptile::Building b =
+                            getTile(j+J, i+I)->getBuilding();
+                          setTile(j+J, i+I,
+                                  new Maptile (j+J, i+I, (guint32)idx, NULL));
+                          if (b)
+                            setBuilding(Vector<int>(j+J,i+I), b);
+                        }
 		    }
 		  else 
 		    {
