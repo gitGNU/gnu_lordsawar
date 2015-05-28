@@ -83,8 +83,6 @@ class BigMap: public sigc::trackable
     //! Save the whole map, but not the game objects on top of it.
     bool saveUnderlyingMapAsBitmap(Glib::ustring filename);
 
-    //! Save the current view as an image (bmp file).
-    bool saveViewAsBitmap(Glib::ustring filename);
     void toggle_grid();
     
     Cairo::RefPtr<Cairo::Surface> get_surface() const {return outgoing;}

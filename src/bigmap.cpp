@@ -406,16 +406,6 @@ void BigMap::draw_buffer()
 
 }
 
-bool BigMap::saveViewAsBitmap(Glib::ustring filename)
-{
-  int width = image.get_width();
-  int height = image.get_height();
-  File::erase(filename);
-  Glib::RefPtr<Gdk::Pixbuf> pixbuf = Gdk::Pixbuf::create(buffer, 0, 0, width, height);
-  pixbuf->save (filename, "png");
-  return true;
-}
-
 bool BigMap::saveUnderlyingMapAsBitmap(Glib::ustring filename)
 {
   return d_renderer->saveAsBitmap(filename);

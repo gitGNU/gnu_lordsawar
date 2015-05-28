@@ -59,9 +59,6 @@ class MapRenderer
 			 Cairo::RefPtr<Cairo::Surface> surface, 
 			 Cairo::RefPtr<Cairo::Context> context);
 
-	//! Save the current view of map tiles as an image (bmp file).
-	bool saveViewAsBitmap(Glib::ustring filename);
-
 	//! Save all of the map tiles as one big image (bmp file).
 	bool saveAsBitmap(Glib::ustring filename);
     private:

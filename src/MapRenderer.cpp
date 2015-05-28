@@ -46,13 +46,6 @@ bool MapRenderer::saveAsBitmap(Glib::ustring filename)
   return true;
 }
 
-bool MapRenderer::saveViewAsBitmap(Glib::ustring filename)
-{
-  File::erase(filename);
-  d_surface->write_to_png(filename);
-  return true;
-}
-
 void MapRenderer::render(int x, int y, int tileStartX, int tileStartY,
 			 int columns, int rows)
 {
