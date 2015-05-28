@@ -374,12 +374,6 @@ bool GameMap::loadItems(Glib::ustring tag, XML_Helper* helper)
     return true;
 }
 
-void GameMap::updateTile(int x, int y, Maptile *tile)
-{
-    delete d_map[y*s_width + x];
-    d_map[y*s_width + x] = tile;
-}
-
 void GameMap::setTile(int x, int y, Maptile *tile)
 {
     delete d_map[y*s_width + x];

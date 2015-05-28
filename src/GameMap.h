@@ -184,9 +184,6 @@ class GameMap: public sigc::trackable
           */
 	void setTile(int x, int y, Maptile *tile);
 
-        //! just like setTile, but it doesn't update the tilestyle.
-        void updateTile(int x, int y, Maptile *tile);
-        
         /** Change a Maptile on the map.
           * 
           * @param p The position on the map to modify.
