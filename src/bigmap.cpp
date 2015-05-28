@@ -426,8 +426,7 @@ bool BigMap::saveAsBitmap(Glib::ustring filename)
   int tilesize = GameMap::getInstance()->getTileSize();
   int width = GameMap::getWidth() * tilesize;
   int height = GameMap::getHeight() * tilesize;
-  Cairo::RefPtr<Cairo::Surface> empty;
-  Cairo::RefPtr<Cairo::Surface> surf = Cairo::Surface::create(empty, Cairo::CONTENT_COLOR_ALPHA, width, height);
+  Cairo::RefPtr<Cairo::Surface> surf = Cairo::ImageSurface::create(Cairo::FORMAT_ARGB32, width, height);
   
   bool orig_grid = d_grid_toggled;
   d_grid_toggled = false;
