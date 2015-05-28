@@ -101,6 +101,9 @@ class File
 	//! does a file exist?
 	static bool exists(Glib::ustring f);
 
+        //! does a directory exist
+        static bool directory_exists(Glib::ustring d);
+
 	//! does filename end with extension?
 	static bool nameEndsWith(Glib::ustring filename, Glib::ustring extension);
 

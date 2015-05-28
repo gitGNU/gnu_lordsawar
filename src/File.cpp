@@ -292,6 +292,11 @@ bool File::is_writable(Glib::ustring file)
   return info->get_attribute_boolean("access::can-write");
 }
 
+bool File::directory_exists(Glib::ustring d)
+{
+  return Glib::file_test(d, Glib::FILE_TEST_IS_DIR);
+}
+
 bool File::exists(Glib::ustring f)
 {
   return Glib::file_test(f, Glib::FILE_TEST_EXISTS);
