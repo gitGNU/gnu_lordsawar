@@ -159,3 +159,9 @@ void Itemlist::support_backward_compatibility()
      sigc::ptr_fun(&Itemlist::upgrade));
 }
 
+void Itemlist::create()
+{
+    deleteInstance();
+    getInstance();
+}
+

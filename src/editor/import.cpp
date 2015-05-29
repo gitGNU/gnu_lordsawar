@@ -18,6 +18,7 @@
 #include <config.h>
 
 #include <iostream>
+#include <algorithm>
 #include "Configuration.h"
 #include "File.h"
 #include "vector.h"
@@ -49,6 +50,8 @@
 #include "signpost.h"
 #include "portlist.h"
 #include "port.h"
+#include "ItemProto.h"
+#include "Itemlist.h"
 
 int max_vector_width;
       
@@ -866,8 +869,103 @@ long get_sgn_offset (Glib::ustring filename)
   return 0;
 }
 
+static bool 
+convert_item_code (int code, int value, ItemProto::Bonus &bonus)
+{
+  switch (code)
+    {
+    case 1: //battle
+      switch (value)
+        {
+        case 1:
+          bonus = ItemProto::ADD1STR; break;
+        case 2:
+          bonus = ItemProto::ADD2STR; break;
+        case 3:
+          bonus = ItemProto::ADD3STR; break;
+        default:
+          return false;
+        }
+      break;
+    case 2: //command
+      switch (value)
+        {
+        case 1:
+          bonus = ItemProto::ADD1STACK; break;
+        case 2:
+          bonus = ItemProto::ADD2STACK; break;
+        case 3:
+          bonus = ItemProto::ADD3STACK; break;
+        default:
+          return false;
+        }
+      break;
+    case 5:
+      bonus = ItemProto::FLYSTACK;
+      break;
+    case 6:
+      bonus = ItemProto::DOUBLEMOVESTACK;
+      break;
+    case 7:
+      switch (value)
+        {
+        case 1:
+          // whoopsie, better than nothing
+          bonus = ItemProto::ADD2GOLDPERCITY; break;
+        case 2:
+          bonus = ItemProto::ADD2GOLDPERCITY; break;
+        case 3:
+          bonus = ItemProto::ADD3GOLDPERCITY; break;
+        case 4:
+          bonus = ItemProto::ADD4GOLDPERCITY; break;
+        case 5:
+          bonus = ItemProto::ADD5GOLDPERCITY; break;
+        case 6:
+          bonus = ItemProto::Bonus(ItemProto::ADD4GOLDPERCITY |
+                                   ItemProto::ADD2GOLDPERCITY);
+          break;
+        default:
+          return false;
+        }
+      break;
+    default:
+      return false;
+    }
+  return true;
+}
+
+static void
+import_items (FILE *it)
+{
+  Itemlist::create();
+  char *line = NULL;
+  size_t len = 0;
+  getline (&line, &len, it);
+  int num_items = atoi (line);
+  for (int i = 0; i < num_items; i++)
+    {
+      getdelim (&line, &len, ' ', it);
+      std::string item_name = std::string(line);
+      std::replace (item_name.begin(), item_name.end(), ' ', '\0');
+      std::replace (item_name.begin(), item_name.end(), '_', ' ');
+      getline (&line, &len, it);
+      int code, value;
+      sscanf (line, "%d %d", &code, &value);
+      ItemProto::Bonus bonus;
+      if (convert_item_code (code, value, bonus))
+        {
+          ItemProto *item = new ItemProto(Glib::ustring(item_name));
+          item->addBonus(bonus);
+          Itemlist::getInstance()->add(item);
+        }
+      else
+        std::cerr << String::ucompose(_("Error: couldn't convert item %1 code %2, %3"), item_name, code, value) << std::endl;
+    }
+  free (line);
+}
+
 static void 
-import (FILE *map, FILE *scn, FILE *rd, FILE *sg, Glib::ustring name)
+import (FILE *map, FILE *scn, FILE *rd, FILE *sg, FILE *it, Glib::ustring name)
 {
   GameScenario *g = setup_new_map (name);
 
@@ -886,6 +984,7 @@ import (FILE *map, FILE *scn, FILE *rd, FILE *sg, Glib::ustring name)
   set_capital_cities (scn);
   fseek (scn, at, SEEK_SET);
   import_signposts (sg);
+  import_items (it);
 
   bool success = g->saveGame(name, MAP_EXT);
   if (!success)
@@ -959,12 +1058,19 @@ int main(int argc, char* argv[])
           std::cerr << String::ucompose (_("Error: Could not find a .SGN file in `%1'"), filename) << std::endl;
           exit (EXIT_FAILURE);
         }
+      std::list<Glib::ustring> items = File::scanForFiles(filename, ".ITM");
+      if (items.size() == 0)
+        {
+          std::cerr << String::ucompose (_("Error: Could not find a .ITM file in `%1'"), filename) << std::endl;
+          exit (EXIT_FAILURE);
+        }
       FILE *m = fopen (map.front().c_str(), "rb");
       FILE *s = fopen (scn.front().c_str(), "rb");
       FILE *r = fopen (rd.front().c_str(), "rb");
       FILE *sg = fopen (signs.front().c_str(), "rb");
+      FILE *it = fopen (items.front().c_str(), "rb");
       Glib::ustring name = File::get_basename(map.front());
-      import(m, s, r, sg, name);
+      import(m, s, r, sg, it, name);
       fclose (m);
       fclose (s);
       fclose (r);
@@ -981,7 +1087,9 @@ int main(int argc, char* argv[])
       fseek (r, 0x10DED, SEEK_SET);
       FILE *sg = fopen (filename.c_str(), "rb");
       fseek (sg, get_sgn_offset (filename), SEEK_SET);
-      import (m, s, r, sg, name);
+      FILE *it = fopen (filename.c_str(), "rb");
+      fseek (r, 0x15241, SEEK_SET);
+      import (m, s, r, sg, it, name);
       fclose (m);
       fclose (s);
       fclose (r);
