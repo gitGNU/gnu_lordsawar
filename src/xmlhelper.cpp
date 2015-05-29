@@ -215,7 +215,7 @@ bool XML_Helper::saveData(Glib::ustring name, Glib::ustring value)
     }
 
     addTabs();
-    (*d_out) <<"<" <<name <<">" <<value <<"</" <<name <<">\n";
+    (*d_out) <<"<" <<name <<">" <<Glib::Markup::escape_text(value) <<"</" <<name <<">\n";
     return true;
 }
 
