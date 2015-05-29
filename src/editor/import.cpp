@@ -47,6 +47,8 @@
 #include "city.h"
 #include "signpostlist.h"
 #include "signpost.h"
+#include "portlist.h"
+#include "port.h"
 
 int max_vector_width;
       
@@ -578,6 +580,14 @@ import_terrain (FILE *map)
               Maptile *mtile = GameMap::getInstance()->getTile(Vector<int>(j,i));
               mtile->setIndex(tileset->getIndex(Tile::Type(type)));
               mtile->setTileStyle(style);
+            }
+
+          char port;
+          memcpy (&port, (((char *)&tile)+1), 1);
+          if (port == (char)0x80)
+            {
+              Port *p = new Port (Vector<int>(j, i));
+              Portlist::getInstance()->add(p);
             }
         }
     }
