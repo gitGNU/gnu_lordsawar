@@ -6,7 +6,8 @@ noinst_DATA = legal.xml lordsawar.xml manual.map
 
 man_MANS = lordsawar.6 lordsawar-editor.6 \
 	   lordsawar-game-list-server.6 lordsawar-game-list-client.6 \
-	   lordsawar-game-host-server.6 lordsawar-game-host-client.6
+	   lordsawar-game-host-server.6 lordsawar-game-host-client.6 \
+	   lordsawar-import.6
 
 ## for html publishing install docbook-utils:
 ## cd into this directory

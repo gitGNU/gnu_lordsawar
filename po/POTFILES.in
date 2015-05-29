@@ -302,6 +302,7 @@ src/editor/tile-size-editor-dialog.cpp
 src/editor/editor-splash-window.cpp
 src/editor/image-editor-dialog.cpp
 src/editor/masked-image-editor-dialog.cpp
+src/editor/import.cpp
 src/gui/city-info-tip.cpp
 src/gui/game-lobby-dialog.cpp
 src/gui/network-game-selector-dialog.cpp

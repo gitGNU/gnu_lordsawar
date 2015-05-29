@@ -19,9 +19,21 @@
 MAINTAINERCLEANFILES= Makefile.in
 
 if WANT_EDITOR
-bin_PROGRAMS = lordsawar-editor
+bin_PROGRAMS = lordsawar-editor lordsawar-import
 
 noinst_LTLIBRARIES = libshieldsetwindow.la libarmysetwindow.la libcitysetwindow.la libtilesetwindow.la libeditutil.la
+
+lordsawar_import_SOURCES = import.cpp
+lordsawar_import_LDADD = $(top_builddir)/src/gui/liblwgui.la \
+			$(top_builddir)/src/liblordsawargfx.la \
+			$(top_builddir)/src/liblordsawar.la \
+			$(GTKMM_LIBS) \
+			$(XMLPP_LIBS) \
+			$(XSLT_LIBS) \
+			$(ARCHIVE_LIBS) \
+			-lz \
+			@LIBINTL@ -L$(top_builddir)/src
+
 
 libeditutil_la_SOURCES = \
 	editor-quit-dialog.cpp editor-quit-dialog.h \
