@@ -1631,6 +1631,7 @@ void GameWindow::show_map_tip(Glib::ustring msg, MapTipPosition pos)
   f->property_shadow_type() = Gtk::SHADOW_ETCHED_OUT;
 
   Gtk::Label *l = manage(new Gtk::Label);
+  l->set_justify(Gtk::JUSTIFY_CENTER);
   l->set_padding(6, 6);
   l->set_text(msg);
   f->add(*l);
