@@ -48,6 +48,9 @@ class NamedLocation: public Location, public Namable
     virtual ~NamedLocation() {};
 
     Glib::ustring getDescription() const {return d_description;};
+
+    void setDescription(Glib::ustring d) {d_description = d;};
+
  private:
     Glib::ustring d_description;
 };

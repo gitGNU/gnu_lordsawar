@@ -755,7 +755,7 @@ import_players (FILE *scn)
 }
 
 static void 
-import_ruins_and_temples (FILE *scn)
+import_ruins_and_temples (FILE *scn, FILE *spc)
 {
   fseek (scn, 0x80f, SEEK_CUR);
   unsigned short num_ruins = 0;
@@ -764,6 +764,8 @@ import_ruins_and_temples (FILE *scn)
   unsigned int i;
   for (i = 0; i < num_ruins; i++)
     {
+      char * line = NULL;
+      size_t len = 0;
       short x, y;
       unsigned short type;
       char name[21];
@@ -774,18 +776,26 @@ import_ruins_and_temples (FILE *scn)
       fread (name, sizeof (char), 20, scn);
       fread (&type, sizeof (unsigned short), 1, scn);
       fread (&unused, sizeof (char), 5, scn);
+      getdelim (&line, &len, '|', spc);
+      getline (&line, &len, spc);
+      std::string m(line);
+      std::replace (m.begin(), m.end(), '|', ' ');
+      std::replace (m.begin(), m.end(), '\r', '\0');
       if (type == 1)
         {
           Temple *t = new Temple (Vector<int>(x,y), 1, Glib::ustring(name));
+          t->setDescription(m);
           Templelist::getInstance()->add(t);
         }
       else if (type == 2)
         {
           Ruin *r = new Ruin (Vector<int>(x,y), 1, Glib::ustring(name));
+          r->setDescription(m);
           Ruinlist::getInstance()->add(r);
         }
       else
         std::cerr << String::ucompose(_("Error: We got an unknkown temple/ruin type of %1 for %2 at %3,%4"), type, Glib::ustring(name),x,y) << std::endl;
+      free (line);
     }
 }
 
@@ -998,7 +1008,7 @@ import_items (FILE *it)
 }
 
 static void 
-import (FILE *map, FILE *scn, FILE *rd, FILE *sg, FILE *it, Glib::ustring name)
+import (FILE *map, FILE *scn, FILE *rd, FILE *sg, FILE *it, FILE *sp, Glib::ustring name)
 {
   GameScenario *g = setup_new_map (name);
 
@@ -1010,7 +1020,7 @@ import (FILE *map, FILE *scn, FILE *rd, FILE *sg, FILE *it, Glib::ustring name)
   at = ftell (scn);
   import_players (scn);
   fseek (scn, at, SEEK_SET);
-  import_ruins_and_temples (scn);
+  import_ruins_and_temples (scn, sp);
   fseek (scn, at, SEEK_SET);
   import_cities (scn);
   fseek (scn, at, SEEK_SET);
@@ -1098,18 +1108,26 @@ main (int argc, char* argv[])
           std::cerr << String::ucompose (_("Error: Could not find a .ITM file in `%1'"), filename) << std::endl;
           exit (EXIT_FAILURE);
         }
+      std::list<Glib::ustring> spc = File::scanForFiles(filename, ".SPC");
+      if (spc.size() == 0)
+        {
+          std::cerr << String::ucompose (_("Error: Could not find a .SPC file in `%1'"), filename) << std::endl;
+          exit (EXIT_FAILURE);
+        }
       FILE *m = fopen (map.front().c_str(), "rb");
       FILE *s = fopen (scn.front().c_str(), "rb");
       FILE *r = fopen (rd.front().c_str(), "rb");
       FILE *sg = fopen (signs.front().c_str(), "rb");
       FILE *it = fopen (items.front().c_str(), "rb");
+      FILE *sp = fopen (spc.front().c_str(), "rb");
       Glib::ustring name = File::get_basename(map.front());
-      import(m, s, r, sg, it, name);
+      import (m, s, r, sg, it, sp, name);
       fclose (m);
       fclose (s);
       fclose (r);
       fclose (sg);
       fclose (it);
+      fclose (sp);
     }
   else if (File::exists (filename) == true)
     {
@@ -1124,12 +1142,15 @@ main (int argc, char* argv[])
       fseek (sg, get_offset (filename, ".SGN"), SEEK_SET);
       FILE *it = fopen (filename.c_str(), "rb");
       fseek (it, get_offset(filename, ".ITM"), SEEK_SET);
-      import (m, s, r, sg, it, name);
+      FILE *sp = fopen (filename.c_str(), "rb");
+      fseek (sp, get_offset(filename, ".SPC"), SEEK_SET);
+      import (m, s, r, sg, it, sp, name);
       fclose (m);
       fclose (s);
       fclose (r);
       fclose (it);
       fclose (sg);
+      fclose (sp);
     }
   else
     {
