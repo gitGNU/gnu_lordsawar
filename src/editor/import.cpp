@@ -730,6 +730,7 @@ import_players (FILE *scn)
       fread (&names[i][0], sizeof(char), 20, scn);
       if (strcmp (names[i], "Not Used") == 0)
         continue;
+  std::cout << String::ucompose (_("Importing player %1."), Glib::ustring(names[i])) << std::endl;
       Player *player = 
         new RealPlayer(Glib::ustring(names[i]),
                        Armysetlist::getInstance()->get("default")->getId(),
@@ -745,7 +746,7 @@ import_players (FILE *scn)
   Glib::ustring neutral_name = d_random->getPlayerName(Shield::NEUTRAL);
   Player* neutral = 
     new AI_Dummy(neutral_name, 
-                 Armysetlist::getInstance()->get("default")->getId(), 
+                 Armysetlist::getInstance()->get("default")->getId(),
                  Shield::get_default_color_for_neutral(), 
                  GameMap::getWidth(), GameMap::getHeight(), MAX_PLAYERS);
   Playerlist::getInstance()->add(neutral);
@@ -759,6 +760,7 @@ import_ruins_and_temples (FILE *scn)
   fseek (scn, 0x80f, SEEK_CUR);
   unsigned short num_ruins = 0;
   fread (&num_ruins, sizeof (unsigned short), 1, scn);
+  std::cout << String::ucompose (_("Importing %1 ruins & temples."), num_ruins) << std::endl;
   unsigned int i;
   for (i = 0; i < num_ruins; i++)
     {
@@ -793,21 +795,52 @@ import_cities (FILE *scn)
   fseek (scn, 0x157b, SEEK_CUR);
   unsigned short num_cities = 0;
   fread (&num_cities, sizeof (unsigned short), 1, scn);
+  std::cout << String::ucompose (_("Importing %1 cities."), num_cities) << std::endl;
   for (unsigned int i = 0; i < num_cities; i++)
     {
       short x, y;
       char name[17];
-      char unused1[22];
+      char unused1[2];
+      char armies[4];
+      char unused2[16];
       short income;
-      char unused2[21];
+      char unused3[21];
       fread (&x, sizeof (short), 1, scn);
       fread (&y, sizeof (short), 1, scn);
       memset (name, 0, sizeof (name));
       fread (name, sizeof (char), 16, scn);
-      fread (&unused1, sizeof (char), 22, scn);
+      fread (&unused1, sizeof (char), 2, scn);
+      fread (armies, sizeof (char), 4, scn);
+      fread (&unused2, sizeof (char), 16, scn);
       fread (&income, sizeof (short), 1, scn);
-      fread (&unused2, sizeof (char), 21, scn);
+      fread (&unused3, sizeof (char), 21, scn);
       City *city = new City (Vector<int>(x,y), 2, Glib::ustring(name), income);
+
+      for (int i = 0; i < 4; i++)
+        {
+          if (armies[i] != (char) 0xff)
+            {
+              //these values start counting at zero, and they are
+              //indices into an army file somewhere.
+              //
+              //they aren't in the same order that you see army units in
+              //the cities.  the game sorts them by strength.  for example,
+              //an index for bats could appear in the 4th array spot, but
+              //appear first in the city window.
+              //
+              //the indices don't appear to be in the normal fight order.
+              //if true, we'll have to find a fight order somewhere.
+              //
+              //sometimes there is an ARMYNAME.DAT file which contains a 
+              //lowercase basename of another file that holds the armies.
+              //for example, ARMYNAME.DAT says erythea, and the army file is
+              //ERYTHEA.DAT.
+              //
+              //if there isn't an ARMYNAME.DAT file, the game goes out
+              //and gets the army file from somewhere.  where exactly
+              //depends on the version of warlords.
+            }
+        }
       city->setOwner(Playerlist::getInstance()->getNeutral());
       Citylist::getInstance()->add(city);
     }
@@ -840,6 +873,7 @@ import_signposts (FILE *sg)
 {
   unsigned short num_signs = 0;
   fread (&num_signs, sizeof (unsigned short), 1, sg);
+  std::cout << String::ucompose (_("Importing %1 signposts."), num_signs) << std::endl;
   for (unsigned int i = 0; i < num_signs; i++)
     {
       short x, y;
@@ -858,15 +892,13 @@ import_signposts (FILE *sg)
     }
 }
 
-long get_sgn_offset (Glib::ustring filename)
+long get_offset (Glib::ustring filename, Glib::ustring ext)
 {
+  Glib::ustring name = File::get_basename(filename) + ext;
   std::ifstream ifs(filename.c_str(), std::ios::binary);
   std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-  size_t pos = str.find(".SGN");
-
-  if (pos != std::string::npos)
-    return long(pos) + 8 +4;
-  return 0;
+  size_t pos = str.find(name);
+  return long(pos) + 18;
 }
 
 static bool 
@@ -942,6 +974,7 @@ import_items (FILE *it)
   size_t len = 0;
   getline (&line, &len, it);
   int num_items = atoi (line);
+  std::cout << String::ucompose (_("Importing %1 items."), num_items) << std::endl;
   for (int i = 0; i < num_items; i++)
     {
       getdelim (&line, &len, ' ', it);
@@ -990,12 +1023,13 @@ import (FILE *map, FILE *scn, FILE *rd, FILE *sg, FILE *it, Glib::ustring name)
   if (!success)
     std::cerr << String::ucompose(_("Error: Could not save `%1%2'"), name, MAP_EXT) << std::endl;
   else
-    std::cout << String::ucompose(_("Saved to %1.map"), name) << std::endl;
+    std::cout << String::ucompose(_("Saved to %1.map."), name) << std::endl;
   delete g;
   return;
 }
 
-int main(int argc, char* argv[])
+int
+main (int argc, char* argv[])
 {
   Glib::ustring filename;
   initialize_configuration();
@@ -1075,24 +1109,26 @@ int main(int argc, char* argv[])
       fclose (s);
       fclose (r);
       fclose (sg);
+      fclose (it);
     }
   else if (File::exists (filename) == true)
     {
       Glib::ustring name = File::get_basename (filename);
       FILE *m = fopen (filename.c_str(), "rb");
-      fseek (m, 0x02F69, SEEK_SET);
+      fseek (m, get_offset(filename, ".MAP"), SEEK_SET);
       FILE *s = fopen (filename.c_str(), "rb");
-      fseek (s, 0x00074, SEEK_SET);
+      fseek (s, get_offset (filename, ".SCN"), SEEK_SET);
       FILE *r = fopen (filename.c_str(), "rb");
-      fseek (r, 0x10DED, SEEK_SET);
+      fseek (r, get_offset (filename, ".RD"), SEEK_SET);
       FILE *sg = fopen (filename.c_str(), "rb");
-      fseek (sg, get_sgn_offset (filename), SEEK_SET);
+      fseek (sg, get_offset (filename, ".SGN"), SEEK_SET);
       FILE *it = fopen (filename.c_str(), "rb");
-      fseek (r, 0x15241, SEEK_SET);
+      fseek (it, get_offset(filename, ".ITM"), SEEK_SET);
       import (m, s, r, sg, it, name);
       fclose (m);
       fclose (s);
       fclose (r);
+      fclose (it);
       fclose (sg);
     }
   else
