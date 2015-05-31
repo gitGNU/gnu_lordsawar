@@ -764,8 +764,6 @@ import_ruins_and_temples (FILE *scn, FILE *spc)
   unsigned int i;
   for (i = 0; i < num_ruins; i++)
     {
-      char * line = NULL;
-      size_t len = 0;
       short x, y;
       unsigned short type;
       char name[21];
@@ -776,8 +774,9 @@ import_ruins_and_temples (FILE *scn, FILE *spc)
       fread (name, sizeof (char), 20, scn);
       fread (&type, sizeof (unsigned short), 1, scn);
       fread (&unused, sizeof (char), 5, scn);
-      getdelim (&line, &len, '|', spc);
-      getline (&line, &len, spc);
+      fread (&unused, sizeof (char), 5, spc);
+      char line[256];
+      fgets (line, sizeof (line), spc);
       std::string m(line);
       std::replace (m.begin(), m.end(), '|', ' ');
       std::replace (m.begin(), m.end(), '\r', '\0');
@@ -795,7 +794,6 @@ import_ruins_and_temples (FILE *scn, FILE *spc)
         }
       else
         std::cerr << String::ucompose(_("Error: We got an unknkown temple/ruin type of %1 for %2 at %3,%4"), type, Glib::ustring(name),x,y) << std::endl;
-      free (line);
     }
 }
 
@@ -980,20 +978,18 @@ static void
 import_items (FILE *it)
 {
   Itemlist::create();
-  char *line = NULL;
-  size_t len = 0;
-  getline (&line, &len, it);
-  int num_items = atoi (line);
+  int num_items;
+  fscanf (it, "%d", &num_items);
   std::cout << String::ucompose (_("Importing %1 items."), num_items) << std::endl;
   for (int i = 0; i < num_items; i++)
     {
-      getdelim (&line, &len, ' ', it);
-      std::string item_name = std::string(line);
+      char name[21];
+      int code, value;
+      memset (name, 0, sizeof (name));
+      fscanf (it, "%s %d %d", name, &code, &value);
+      std::string item_name = std::string(name);
       std::replace (item_name.begin(), item_name.end(), ' ', '\0');
       std::replace (item_name.begin(), item_name.end(), '_', ' ');
-      getline (&line, &len, it);
-      int code, value;
-      sscanf (line, "%d %d", &code, &value);
       ItemProto::Bonus bonus;
       if (convert_item_code (code, value, bonus))
         {
@@ -1004,7 +1000,6 @@ import_items (FILE *it)
       else
         std::cerr << String::ucompose(_("Error: couldn't convert item %1 code %2, %3"), item_name, code, value) << std::endl;
     }
-  free (line);
 }
 
 static void 
