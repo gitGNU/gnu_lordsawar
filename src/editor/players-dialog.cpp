@@ -148,6 +148,7 @@ PlayersDialog::PlayersDialog(Gtk::Window &parent, CreateScenarioRandomize *rando
 	add_player(NO_PLAYER_TYPE, *current_name, gold, 0);
 	++current_name;
       }
+  player_treeview->set_cursor (Gtk::TreePath ("0"));
 }
 
 int PlayersDialog::run()
