@@ -135,14 +135,14 @@ class GameLobbyDialog: public LwDialog
     void on_type_edited(const Glib::ustring &path,
 			const Glib::ustring &new_text);
 
-    Gtk::CellRendererToggle sitting_renderer;
+    Gtk::CellRendererCombo sitting_renderer;
     Gtk::TreeViewColumn sitting_column;
     class PlayerSittingColumns: public Gtk::TreeModelColumnRecord {
     public:
 	PlayerSittingColumns()
 	    { add(sitting); }
 	
-	Gtk::TreeModelColumn<bool> sitting;
+	Gtk::TreeModelColumn<Glib::ustring> sitting;
     };
     const PlayerSittingColumns player_sitting_columns;
     Glib::RefPtr<Gtk::ListStore> player_sitting_list;
@@ -177,7 +177,7 @@ class GameLobbyDialog: public LwDialog
     void on_player_died(Player *p);
     void on_play_clicked();
     void on_cancel_clicked();
-    void on_sitting_changed(Gtk::CellEditable *editable, const Glib::ustring &path);
+    void on_sitting_edited(const Glib::ustring &path, const Glib::ustring &new_text);
     void on_name_changed(Gtk::CellEditable *editable, const Glib::ustring &path);
 
     void on_chat_key_pressed(GdkEventKey *event);
