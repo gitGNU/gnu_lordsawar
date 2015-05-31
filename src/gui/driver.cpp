@@ -701,11 +701,17 @@ void Driver::on_load_hosted_network_game_requested(GameScenario *game_scenario,
     }
 }
 
-  
 void Driver::on_server_went_away()
 {
   upload_heartbeat_conn.disconnect();
   heartbeat_conn.disconnect();
+  if (game_window)
+    {
+      //hide() isn't sufficient here because we need to close any open dialogs.
+      //they're all set as "destroy with parent" so deleting works.
+      delete game_window;
+      game_window = NULL;
+    }
   if (game_lobby_dialog)
     game_lobby_dialog->hide();
   if (download_window)
