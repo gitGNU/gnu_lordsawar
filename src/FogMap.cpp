@@ -52,6 +52,8 @@ FogMap::FogMap(XML_Helper* helper)
     helper->getData(d_height, "height");
     helper->getData(t, "map");
     std::string types = t.raw();
+    types.erase (std::remove(types.begin(), types.end(), '\n'), types.end());
+    types.erase (std::remove(types.begin(), types.end(), '\r'), types.end());
 
     //create the map
     d_fogmap = new FogType[d_width*d_height];
