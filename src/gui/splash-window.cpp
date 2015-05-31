@@ -92,6 +92,8 @@ SplashWindow::SplashWindow()
 		crash_button->signal_clicked().connect(sigc::mem_fun(*this, &SplashWindow::on_rescue_crashed_game_clicked));
 		button_box->reorder_child(*crash_button, 0);
 	      }
+            else if (broken == true)
+              File::erase (File::getSavePath() + "autosave" + SAVE_EXT);
 	  }
       }
 

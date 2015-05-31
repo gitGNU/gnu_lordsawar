@@ -1170,6 +1170,11 @@ public:
       ext.push_back(MAP_EXT);
       ext.push_back(SAVE_EXT);
       Glib::ustring tmpfile = t.getFirstFile(ext, broken);
+      if (tmpfile == "")
+        {
+          broken = true;
+          return;
+        }
       XML_Helper helper(tmpfile, std::ios::in);
       helper.registerTag(GameScenario::d_tag, 
 			 sigc::mem_fun(this, &PlayModeLoader::loadParam));
