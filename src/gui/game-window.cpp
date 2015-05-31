@@ -1359,7 +1359,8 @@ void GameWindow::on_production_report_activated()
 
 void GameWindow::on_winning_report_activated()
 {
-  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+      !Playerlist::getInstance()->getWinningPlayer())
     return;
   ReportDialog d(*window, Playerlist::getActiveplayer(), ReportDialog::WINNING);
   d.run();
@@ -1368,7 +1369,8 @@ void GameWindow::on_winning_report_activated()
 
 void GameWindow::on_city_history_activated()
 {
-  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+      !Playerlist::getInstance()->getWinningPlayer())
     return;
   HistoryReportDialog d(*window, Playerlist::getActiveplayer(), 
 			HistoryReportDialog::CITY);
@@ -1378,7 +1380,8 @@ void GameWindow::on_city_history_activated()
 
 void GameWindow::on_ruin_history_activated()
 {
-  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+      !Playerlist::getInstance()->getWinningPlayer())
     return;
   HistoryReportDialog d(*window, Playerlist::getActiveplayer(), 
 			HistoryReportDialog::RUIN);
@@ -1388,7 +1391,8 @@ void GameWindow::on_ruin_history_activated()
 
 void GameWindow::on_event_history_activated()
 {
-  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+      !Playerlist::getInstance()->getWinningPlayer())
     return;
   HistoryReportDialog d(*window, Playerlist::getActiveplayer(),
 			HistoryReportDialog::EVENTS);
@@ -1398,7 +1402,8 @@ void GameWindow::on_event_history_activated()
 
 void GameWindow::on_gold_history_activated()
 {
-  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+      !Playerlist::getInstance()->getWinningPlayer())
     return;
   HistoryReportDialog d(*window ,Playerlist::getActiveplayer(),
 			HistoryReportDialog::GOLD);
@@ -1408,7 +1413,8 @@ void GameWindow::on_gold_history_activated()
 
 void GameWindow::on_winner_history_activated()
 {
-  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN)
+  if (Playerlist::getActiveplayer()->getType() != Player::HUMAN &&
+      !Playerlist::getInstance()->getWinningPlayer())
     return;
   HistoryReportDialog d(*window, Playerlist::getActiveplayer(),
 			HistoryReportDialog::WINNING);

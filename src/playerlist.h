@@ -65,7 +65,7 @@ class Playerlist : public std::list<Player*>, public sigc::trackable
         //! Returns the neutral player.
         Player* getNeutral() const {return d_neutral;}
 
-        //! Return the player with the highest score.
+        //! The game is over and this is the winner.
         Player *getWinningPlayer() const;
 
 
