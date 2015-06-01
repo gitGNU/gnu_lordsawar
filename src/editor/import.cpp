@@ -1033,6 +1033,176 @@ import (FILE *map, FILE *scn, FILE *rd, FILE *sg, FILE *it, FILE *sp, Glib::ustr
   return;
 }
 
+struct army_t
+{
+  unsigned short idx;
+  char name[20];
+  unsigned short ptime;
+  unsigned short strength;
+  unsigned short cost;
+  unsigned short moves;
+  unsigned short newcost;
+  unsigned short cityplus;
+  unsigned short plainsplus;
+  unsigned short woodsplus;
+  unsigned short hillsplus;
+  unsigned short allplus;
+  unsigned short allplus2;
+  unsigned short allplus3;
+  unsigned short allplus4;
+  unsigned short ally;
+  unsigned short enemyminus;
+  unsigned short cancel;
+  unsigned short flight;
+  unsigned short forest;
+  unsigned short hills;
+  unsigned short boat;
+};
+
+static int
+compare_army_records(const void *lhs, const void *rhs)
+{
+  struct army_t *l = (struct army_t*) lhs;
+  struct army_t *r = (struct army_t*) rhs;
+  return l->idx > r->idx;
+}
+
+static void
+import_armyset (FILE *a, Glib::ustring name)
+{
+  Armyset *armyset = new Armyset(Armysetlist::getNextAvailableId(1), name);
+  struct army_t armies[29];
+  fread (armies, sizeof (struct army_t), 29, a);
+  qsort (armies, 29, sizeof (struct army_t), compare_army_records);
+
+  for (int i = 0; i < 29; i++)
+    {
+      struct army_t ar = armies[i];
+      if (ar.boat)
+        continue;
+      ArmyProto *army = new ArmyProto();
+      army->setId(ar.idx + 1);
+      army->setProduction(ar.ptime);
+      army->setStrength(ar.strength);
+      army->setProductionCost(ar.cost);
+      army->setMaxMoves(ar.moves);
+      if (ar.newcost < (unsigned short)1000000)
+        army->setNewProductionCost(ar.newcost);
+      guint32 move_bonus = Tile::NONE;
+      if (ar.hills)
+        move_bonus |= Tile::HILLS;
+      if (ar.forest)
+        move_bonus |= Tile::FOREST;
+      if (ar.flight)
+        move_bonus |= Tile::WATER | Tile::FOREST | Tile::HILLS | 
+          Tile::MOUNTAIN | Tile::SWAMP;
+      army->setMoveBonus(move_bonus);
+
+      int army_bonus = 0;
+      switch (ar.cityplus)
+        {
+        case 0: break;
+        case 1: army_bonus |= ArmyBase::ADD1STRINCITY; break;
+        case 2: army_bonus |= ArmyBase::ADD2STRINCITY; break;
+        case 3: army_bonus |= ArmyBase::ADD1STRINCITY | ArmyBase::ADD2STRINCITY; break;
+        default:
+          std::cerr << String::ucompose(_("Warning: unrecognized city bonus of %1"), ar.cityplus) << std::endl;
+          army_bonus |= ArmyBase::ADD1STRINCITY;
+          break;
+        }
+      switch (ar.plainsplus)
+        {
+        case 0: break;
+        case 1: army_bonus |= ArmyBase::ADD1STRINOPEN; break;
+        case 2: army_bonus |= ArmyBase::ADD2STRINOPEN; break;
+        case 3: army_bonus |= ArmyBase::ADD1STRINOPEN | ArmyBase::ADD2STRINOPEN; break;
+        default:
+          std::cerr << String::ucompose(_("Warning: unrecognized open bonus of %1"), ar.plainsplus) << std::endl;
+          army_bonus |= ArmyBase::ADD1STRINOPEN;
+          break;
+        }
+      switch (ar.woodsplus)
+        {
+        case 0: break;
+        case 1: army_bonus |= ArmyBase::ADD1STRINFOREST; break;
+        /*
+        case 2: army_bonus |= ArmyBase::ADD2STRINFOREST; break;
+        case 3: army_bonus |= ArmyBase::ADD1STRINFOREST | ArmyBase::ADD2STRINFOREST; break; */
+        default:
+          std::cerr << String::ucompose(_("Warning: unrecognized forest bonus of %1"), ar.woodsplus) << std::endl;
+          army_bonus |= ArmyBase::ADD1STRINFOREST;
+          break;
+        }
+      switch (ar.hillsplus)
+        {
+        case 0: break;
+        case 1: army_bonus |= ArmyBase::ADD1STRINHILLS; break;
+        /*
+        case 2: army_bonus |= ArmyBase::ADD2STRINHILLS; break;
+        case 3: army_bonus |= ArmyBase::ADD1STRINHILLS | ArmyBase::ADD2STRINHILLS; break; */
+        default:
+          std::cerr << String::ucompose(_("Warning: unrecognized hills bonus of %1"), ar.hillsplus) << std::endl;
+          army_bonus |= ArmyBase::ADD1STRINHILLS;
+          break;
+        }
+      if (ar.enemyminus)
+        {
+          int minus = ar.enemyminus ? 65536-ar.enemyminus : 0;
+          switch (minus)
+            {
+            case 0: break;
+            case 1: army_bonus |= ArmyBase::SUB1ENEMYSTACK; break;
+            /*
+            case 2: army_bonus |= ArmyBase::SUB2ENEMYSTACK; break;
+            case 3: army_bonus |= ArmyBase::SUB1ENEMYSTACK | ArmyBase::SUB2ENEMYSTACK; break; */
+            default:
+              std::cerr << String::ucompose(_("Warning: unrecognized enemy minus bonus of %1"), minus) << std::endl;
+              break;
+            }
+        }
+      switch (ar.cancel)
+        {
+        case 0: break;
+        case 1: army_bonus |= ArmyBase::SUBALLCITYBONUS; break;
+        case 2: army_bonus |= ArmyBase::SUBALLHEROBONUS; break;
+        case 3: army_bonus |= ArmyBase::SUBALLNONHEROBONUS; break;
+        default:
+          std::cerr << String::ucompose(_("Warning: unrecognized cancel bonus of %1"), ar.cancel) << std::endl;
+          break;
+        }
+      int allplus = ar.allplus | ar.allplus2 | ar.allplus3 | ar.allplus4;
+      switch (allplus)
+        {
+        case 0: break;
+        case 1: army_bonus |= ArmyBase::ADD1STACK; break;
+        case 2: army_bonus |= ArmyBase::ADD2STACK; break;
+        case 3: army_bonus |= ArmyBase::ADD1STACK | ArmyBase::ADD2STACK; break;
+        default:
+          std::cerr << String::ucompose(_("Warning: unrecognized city plus flag of %1"), allplus) << std::endl;
+          break;
+        }
+      army->setArmyBonus(army_bonus);
+      switch (ar.ally)
+        {
+        case 0: break;
+        case 1: // ally
+          army->setAwardable(true);
+          break;
+        case 2: // temple ally
+          army->setAwardable(true);
+          army->setDefendsRuins(true); //not the best, but what the hey.
+          break;
+        default:
+          std::cerr << String::ucompose(_("Warning: unrecognized ally flag of %1"), ar.ally) << std::endl;
+          break;
+        }
+
+      armyset->push_back(army);
+      delete army;
+    }
+  delete armyset;
+}
+
 int
 main (int argc, char* argv[])
 {
