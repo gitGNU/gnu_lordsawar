@@ -94,12 +94,15 @@ class ArmySetWindow: public sigc::trackable
     Gtk::CheckButton *add1strinopen_checkbutton;
     Gtk::CheckButton *add2strinopen_checkbutton;
     Gtk::CheckButton *add1strinforest_checkbutton;
+    Gtk::CheckButton *add2strinforest_checkbutton;
     Gtk::CheckButton *add1strinhills_checkbutton;
+    Gtk::CheckButton *add2strinhills_checkbutton;
     Gtk::CheckButton *add1strincity_checkbutton;
     Gtk::CheckButton *add2strincity_checkbutton;
     Gtk::CheckButton *add1stackinhills_checkbutton;
     Gtk::CheckButton *suballcitybonus_checkbutton;
     Gtk::CheckButton *sub1enemystack_checkbutton;
+    Gtk::CheckButton *sub2enemystack_checkbutton;
     Gtk::CheckButton *add1stack_checkbutton;
     Gtk::CheckButton *add2stack_checkbutton;
     Gtk::CheckButton *suballnonherobonus_checkbutton;

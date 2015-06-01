@@ -157,6 +157,9 @@ Glib::ustring ArmyBase::bonusFlagToString(const ArmyBase::Bonus bonus)
     case ArmyBase::SUBALLNONHEROBONUS: return "ArmyBase::SUBALLNONHEROBONUS";
     case ArmyBase::SUBALLHEROBONUS: return "ArmyBase::SUBALLHEROBONUS";
     case ArmyBase::FORTIFY: return "ArmyBase::FORTIFY";
+    case ArmyBase::ADD2STRINFOREST: return "ArmyBase::ADD2STRINFOREST";
+    case ArmyBase::ADD2STRINHILLS: return "ArmyBase::ADD2STRINHILLS";
+    case ArmyBase::SUB2ENEMYSTACK: return "ArmyBase::SUB2ENEMYSTACK";
     }
   return "";
 }
@@ -192,6 +195,12 @@ Glib::ustring ArmyBase::bonusFlagsToString(const guint32 bonus)
     bonuses += " " + bonusFlagToString(ArmyBase::SUBALLHEROBONUS);
   if (bonus & ArmyBase::FORTIFY)
     bonuses += " " + bonusFlagToString(ArmyBase::FORTIFY);
+  if (bonus & ArmyBase::ADD2STRINFOREST)
+    bonuses += " " + bonusFlagToString(ArmyBase::ADD2STRINFOREST);
+  if (bonus & ArmyBase::ADD2STRINHILLS)
+    bonuses += " " + bonusFlagToString(ArmyBase::ADD2STRINHILLS);
+  if (bonus & ArmyBase::SUB2ENEMYSTACK)
+    bonuses += " " + bonusFlagToString(ArmyBase::SUB2ENEMYSTACK);
   return bonuses;
 }
 
@@ -218,5 +227,8 @@ guint32 ArmyBase::bonusFlagFromString(const Glib::ustring str)
   else if (str == "ArmyBase::SUBALLNONHEROBONUS") return ArmyBase::SUBALLNONHEROBONUS;
   else if (str == "ArmyBase::SUBALLHEROBONUS") return ArmyBase::SUBALLHEROBONUS;
   else if (str == "ArmyBase::FORTIFY") return ArmyBase::FORTIFY;
+  else if (str == "ArmyBase::ADD2STRINFOREST") return ArmyBase::ADD2STRINFOREST;
+  else if (str == "ArmyBase::ADD2STRINHILLS") return ArmyBase::ADD2STRINHILLS;
+  else if (str == "ArmyBase::SUB2ENEMYSTACK") return ArmyBase::SUB2ENEMYSTACK;
   return ArmyBase::ADD1STRINOPEN;
 }

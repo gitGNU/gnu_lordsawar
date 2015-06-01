@@ -227,10 +227,18 @@ ArmySetWindow::ArmySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
     add1strinforest_checkbutton->signal_toggled().connect
       (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
        add1strinforest_checkbutton, Army::ADD1STRINFOREST));
+    xml->get_widget("add2strinforest_checkbutton", add2strinforest_checkbutton);
+    add2strinforest_checkbutton->signal_toggled().connect
+      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+       add2strinforest_checkbutton, Army::ADD2STRINFOREST));
     xml->get_widget("add1strinhills_checkbutton", add1strinhills_checkbutton);
     add1strinhills_checkbutton->signal_toggled().connect
       (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
        add1strinhills_checkbutton, Army::ADD1STRINHILLS));
+    xml->get_widget("add2strinhills_checkbutton", add2strinhills_checkbutton);
+    add2strinhills_checkbutton->signal_toggled().connect
+      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+       add2strinhills_checkbutton, Army::ADD2STRINHILLS));
     xml->get_widget("add1strincity_checkbutton", add1strincity_checkbutton);
     add1strincity_checkbutton->signal_toggled().connect
       (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
@@ -252,6 +260,10 @@ ArmySetWindow::ArmySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
     sub1enemystack_checkbutton->signal_toggled().connect
       (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
        sub1enemystack_checkbutton, Army::SUB1ENEMYSTACK));
+    xml->get_widget("sub2enemystack_checkbutton", sub2enemystack_checkbutton);
+    sub2enemystack_checkbutton->signal_toggled().connect
+      (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),
+       sub2enemystack_checkbutton, Army::SUB2ENEMYSTACK));
     xml->get_widget("add1stack_checkbutton", add1stack_checkbutton);
     add1stack_checkbutton->signal_toggled().connect
       (sigc::bind(sigc::mem_fun (this, &ArmySetWindow::on_armybonus_toggled),

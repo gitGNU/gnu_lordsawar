@@ -322,9 +322,17 @@ void Fight::calculateTerrainModifiers(std::list<Fighter*> fighters, bool tower)
 	  mtile->getType() == Tile::FOREST && !mtile->isCityTerrain() && !tower)
 	(*fit)->terrain_strength += 1;
 
+      if (army_bonus & Army::ADD2STRINFOREST && 
+	  mtile->getType() == Tile::FOREST && !mtile->isCityTerrain() && !tower)
+	(*fit)->terrain_strength += 2;
+
       if (army_bonus & Army::ADD1STRINHILLS && mtile->isHillyTerrain() && 
           !tower)
 	(*fit)->terrain_strength += 1;
+
+      if (army_bonus & Army::ADD2STRINHILLS && mtile->isHillyTerrain() && 
+          !tower)
+	(*fit)->terrain_strength += 2;
 
       if (army_bonus & Army::ADD1STRINCITY && (mtile->isCityTerrain() || tower))
 	(*fit)->terrain_strength += 1;
@@ -492,13 +500,19 @@ void Fight::calculateFinalStrengths (std::list<Fighter*> friendly, std::list<Fig
   for (efit = enemy.begin(); efit != enemy.end(); efit++)
     {
       army_bonus = (*efit)->army->getStat(Army::ARMY_BONUS);
-      if (army_bonus & Army::SUB1ENEMYSTACK)
+      if (army_bonus & Army::SUB1ENEMYSTACK ||
+          army_bonus & Army::SUB2ENEMYSTACK)
 	{
+          int dec = 0;
+          if (army_bonus & Army::SUB1ENEMYSTACK)
+            dec += 1;
+          if (army_bonus & Army::SUB2ENEMYSTACK)
+            dec += 2;
 	  for (ffit = friendly.begin(); ffit != friendly.end(); ffit++)
             {
               if ((*ffit)->army->getStat(Army::SHIP))
                 continue;
-              (*ffit)->terrain_strength -= 1;
+              (*ffit)->terrain_strength -= dec;
               if ((*ffit)->terrain_strength <= 0)
                 (*ffit)->terrain_strength = 1;
             }

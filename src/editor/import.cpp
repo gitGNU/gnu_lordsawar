@@ -1125,9 +1125,8 @@ import_armyset (FILE *a, Glib::ustring name)
         {
         case 0: break;
         case 1: army_bonus |= ArmyBase::ADD1STRINFOREST; break;
-        /*
         case 2: army_bonus |= ArmyBase::ADD2STRINFOREST; break;
-        case 3: army_bonus |= ArmyBase::ADD1STRINFOREST | ArmyBase::ADD2STRINFOREST; break; */
+        case 3: army_bonus |= ArmyBase::ADD1STRINFOREST | ArmyBase::ADD2STRINFOREST; break;
         default:
           std::cerr << String::ucompose(_("Warning: unrecognized forest bonus of %1"), ar.woodsplus) << std::endl;
           army_bonus |= ArmyBase::ADD1STRINFOREST;
@@ -1137,9 +1136,8 @@ import_armyset (FILE *a, Glib::ustring name)
         {
         case 0: break;
         case 1: army_bonus |= ArmyBase::ADD1STRINHILLS; break;
-        /*
         case 2: army_bonus |= ArmyBase::ADD2STRINHILLS; break;
-        case 3: army_bonus |= ArmyBase::ADD1STRINHILLS | ArmyBase::ADD2STRINHILLS; break; */
+        case 3: army_bonus |= ArmyBase::ADD1STRINHILLS | ArmyBase::ADD2STRINHILLS; break;
         default:
           std::cerr << String::ucompose(_("Warning: unrecognized hills bonus of %1"), ar.hillsplus) << std::endl;
           army_bonus |= ArmyBase::ADD1STRINHILLS;
@@ -1152,9 +1150,8 @@ import_armyset (FILE *a, Glib::ustring name)
             {
             case 0: break;
             case 1: army_bonus |= ArmyBase::SUB1ENEMYSTACK; break;
-            /*
             case 2: army_bonus |= ArmyBase::SUB2ENEMYSTACK; break;
-            case 3: army_bonus |= ArmyBase::SUB1ENEMYSTACK | ArmyBase::SUB2ENEMYSTACK; break; */
+            case 3: army_bonus |= ArmyBase::SUB1ENEMYSTACK | ArmyBase::SUB2ENEMYSTACK; break;
             default:
               std::cerr << String::ucompose(_("Warning: unrecognized enemy minus bonus of %1"), minus) << std::endl;
               break;

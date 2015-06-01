@@ -62,6 +62,12 @@ class ArmyBase
 	  SUBALLHEROBONUS    = 0x00001000, //0 enemy hero bonus
 	  //! Provides a +1 strength to all Army units in a fortified Stack.
 	  FORTIFY            = 0x00002000,
+          //! Provides a +2 strength to army units in the woods.
+	  ADD2STRINFOREST    = 0x00004000,
+          //! Provides a +2 strength to army units in the hills.
+	  ADD2STRINHILLS     = 0x00008000, 
+	  //! Negates 2 strength points from an enemy Stack during a Fight.
+	  SUB2ENEMYSTACK     = 0x00010000, 
         };
         
 	//! Various kinds of statistics that an instance of Army unit has.
