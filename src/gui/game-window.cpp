@@ -1754,8 +1754,9 @@ void GameWindow::on_ruinfight_started(Stack *attackers, Stack *defenders)
   xml->get_widget("label", label);
   Glib::ustring s = label->get_text();
   s = "\n\n";
-  s += attackers->getFirstHero()->getName() + " encounters some ";
-  s += defenders->getStrongestArmy()->getName() + "...";
+  s += String::ucompose(_("%1 encounters some %2..."),
+                        attackers->getFirstHero()->getName(),
+                        defenders->getStrongestArmy()->getName());
   label->set_text(s);
   dialog.run_and_hide();
 }
