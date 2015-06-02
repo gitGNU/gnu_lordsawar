@@ -221,7 +221,7 @@ ArmyProto * Armyset::lookupArmyByName(Glib::ustring name) const
 {
   for (const_iterator it = begin(); it != end(); it++)
     {
-      if ((*it)->getName() == name)
+      if ((*it)->getName().uppercase() == name.uppercase())
 	return *it;
     }
   return NULL;
