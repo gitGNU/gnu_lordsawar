@@ -651,6 +651,11 @@ PixMask* ImageCache::getArmyPic(guint32 armyset, guint32 army_id,
       i.medals[j] = false;
   i.greyed = greyed;
   PixMask *s = armycache.get(i, added);
+  if (!s)
+    {
+      guint32 size = Armysetlist::getInstance()->get(i.armyset)->getTileSize();
+      s = getDefaultTileStylePic(DEFAULT_TILESTYLE_TYPES-1, size);
+    }
   d_cachesize += added;
   if (added)
     checkPictures();
@@ -990,6 +995,11 @@ PixMask* ImageCache::getShipPic(const Player* p)
   i.player_id = p->getId();
   i.armyset = p->getArmyset();
   PixMask *s = shipcache.get(i, added);
+  if (!s)
+    {
+      guint32 size = Armysetlist::getInstance()->get(i.armyset)->getTileSize();
+      s = getDefaultTileStylePic(DEFAULT_TILESTYLE_TYPES-1, size);
+    }
   d_cachesize += added;
   if (added)
     checkPictures();
@@ -1003,6 +1013,11 @@ PixMask* ImageCache::getPlantedStandardPic(const Player* p)
   i.player_id = p->getId();
   i.armyset = p->getArmyset();
   PixMask *s = plantedstandardcache.get(i, added);
+  if (!s)
+    {
+      guint32 size = Armysetlist::getInstance()->get(i.armyset)->getTileSize();
+      s = getDefaultTileStylePic(DEFAULT_TILESTYLE_TYPES-1, size);
+    }
   d_cachesize += added;
   if (added)
     checkPictures();
@@ -1055,6 +1070,11 @@ PixMask* ImageCache::getBagPic(guint32 armyset)
   BagPixMaskCacheItem i;
   i.armyset = armyset;
   PixMask *s = bagcache.get(i, added);
+  if (!s)
+    {
+      guint32 size = Armysetlist::getInstance()->get(i.armyset)->getTileSize();
+      s = getDefaultTileStylePic(DEFAULT_TILESTYLE_TYPES-1, size);
+    }
   d_cachesize += added;
   if (added)
     checkPictures();
@@ -1483,6 +1503,8 @@ PixMask *ArmyPixMaskCacheItem::generate(ArmyPixMaskCacheItem i)
   // copy the pixmap including player colors
   Player *p = Playerlist::getInstance()->getPlayer(i.player_id);
   Shield::Colour c = Shield::Colour(i.player_id);
+  if (basearmy->getImage(c) == NULL || basearmy->getMask(c) == NULL)
+    return NULL;
   PixMask *coloured = ImageCache::applyMask(basearmy->getImage(c), 
                                             basearmy->getMask(c), p);
   if (i.greyed)
