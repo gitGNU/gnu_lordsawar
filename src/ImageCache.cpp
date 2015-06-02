@@ -283,6 +283,10 @@ bool ImageCache::loadGameButtonImages()
     (File::getMiscFile("various/buttons.png"), NUM_GAME_BUTTON_IMAGES, broken);
   if (broken)
     return false;
+  int w = 0, h = 0;
+  Gtk::IconSize::lookup(Gtk::IconSize(Gtk::ICON_SIZE_BUTTON), w, h);
+  for (unsigned int i = 0; i < NUM_GAME_BUTTON_IMAGES; i++)
+    PixMask::scale(images[i], w, h); 
   for (unsigned int i = 0; i < NUM_GAME_BUTTON_IMAGES; i++)
     d_gamebuttons[0][i] = images[i]; 
 
@@ -291,6 +295,9 @@ bool ImageCache::loadGameButtonImages()
                            NUM_GAME_BUTTON_IMAGES, broken);
   if (broken)
     return false;
+  Gtk::IconSize::lookup(Gtk::IconSize(Gtk::ICON_SIZE_LARGE_TOOLBAR), w, h);
+  for (unsigned int i = 0; i < NUM_GAME_BUTTON_IMAGES; i++)
+    PixMask::scale(images[i], w, h); 
   for (unsigned int i = 0; i < NUM_GAME_BUTTON_IMAGES; i++)
     d_gamebuttons[1][i] = images[i];
   return true;
@@ -304,6 +311,12 @@ bool ImageCache::loadArrowImages()
                     NUM_ARROW_IMAGES, broken);
   if (broken)
     return false;
+  int w = 0, h = 0;
+  Gtk::IconSize::lookup(Gtk::IconSize(Gtk::ICON_SIZE_SMALL_TOOLBAR), w, h);
+  w /= 2;
+  h /= 2;
+  for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
+    PixMask::scale(images[i], w, h); 
   for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
     d_arrow[0][i] = images[i];
   images.clear();
@@ -311,6 +324,11 @@ bool ImageCache::loadArrowImages()
                            NUM_ARROW_IMAGES, broken);
   if (broken)
     return false;
+  Gtk::IconSize::lookup(Gtk::IconSize(Gtk::ICON_SIZE_LARGE_TOOLBAR), w, h);
+  w /= 2;
+  h /= 2;
+  for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
+    PixMask::scale(images[i], w, h); 
 
   for (unsigned int i = 0; i < NUM_ARROW_IMAGES; i++)
     d_arrow[1][i] = images[i];

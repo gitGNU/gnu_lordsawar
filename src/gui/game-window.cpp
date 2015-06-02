@@ -178,6 +178,7 @@ GameWindow::GameWindow()
     xml->get_widget("control_panel_viewport", control_panel_viewport);
     game_button_box = GameButtonBox::create(Configuration::s_ui_form_factor);
     game_button_box->reparent(*control_panel_viewport);
+    game_button_box->property_halign() = Gtk::ALIGN_CENTER;
 
     // the stats
     xml->get_widget("turn_label", turn_label);
