@@ -478,13 +478,13 @@ import_terrain (FILE *map)
             {
               fprintf(stderr, 
                       _("Error: Terrain code %02hhx at %d,%d is unknown\n").c_str(), 
-                      code, i, j);
+                      code, j, i);
             }
           else if (tilestyle == TileStyle::UNKNOWN)
             fprintf(stderr, 
                     _("Error: Terrain code %02hhx at %d,%d "
                       "is unknown type %s\n").c_str(), 
-                    code, i, j, Tile::tileTypeToString(Tile::Type(type)).c_str());
+                    code, j, i, Tile::tileTypeToString(Tile::Type(type)).c_str());
           if (success)
             {
               Tileset *tileset = GameMap::getTileset();
@@ -818,12 +818,39 @@ import_signposts (FILE *sg)
     }
 }
 
-long get_offset (Glib::ustring filename, Glib::ustring ext)
+static long 
+get_offset (Glib::ustring filename, Glib::ustring ext, bool prepend_basename)
 {
-  Glib::ustring name = File::get_basename(filename) + ext;
+  Glib::ustring name;
+  if (prepend_basename)
+    name = File::get_basename(filename) + ext;
+  else
+    name = ext;
   std::ifstream ifs(filename.c_str(), std::ios::binary);
   std::string str((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
   size_t pos = str.find(name);
+  if (pos == std::string::npos)
+    return 0;
+  if (prepend_basename)
+    return long(pos) + 18;
+
+  if (ext[0] != '.')
+    return long(pos) + 18;
+
+  //we don't know where we matched in the filename.
+  FILE *f = fopen (filename.c_str(), "rb");
+  fseek (f, pos-9, SEEK_SET);
+  char bytes[10];
+  fread (bytes, 10, sizeof (char), f);
+  for (int i = 0; i < 10; i++)
+    {
+      if (isalpha (bytes[i]))
+        {
+          pos = pos -9 + i;
+          break;
+        }
+    }
+  fclose (f);
   return long(pos) + 18;
 }
 
@@ -916,7 +943,7 @@ import_items (FILE *it)
           Itemlist::getInstance()->add(item);
         }
       else
-        std::cerr << String::ucompose(_("Error: couldn't convert item %1 code %2, %3"), item_name, code, value) << std::endl;
+        std::cerr << String::ucompose(_("Error: couldn't convert item number %1"), i) << std::endl;
     }
 }
 
@@ -1263,7 +1290,7 @@ open_armyset_file (Glib::ustring directory, Glib::ustring name)
 static long
 get_armyset_offset (Glib::ustring filename)
 {
-  long offset = get_offset (filename, "ARMYNAME.DAT");
+  long offset = get_offset (filename, "ARMYNAME.DAT", false);
   if (!offset)
     return 0;
   FILE *a = fopen (filename.c_str(), "r");
@@ -1273,7 +1300,7 @@ get_armyset_offset (Glib::ustring filename)
   if (name.length() == 0)
     return 0;
   std::transform (name.begin(), name.end(), name.begin(), ::toupper);
-  return get_offset (filename, name);
+  return get_offset (filename, name, false);
 }
 
 int
@@ -1305,12 +1332,12 @@ main (int argc, char* argv[])
                 " " << VERSION << std::endl << std::endl;
               std::cout << _("Options:") << std::endl << std::endl; 
               std::cout << "  -?, --help                 " << _("Display this help and exit") <<std::endl;
-              std::cout << "  -a, --armyset FILE         " << _("Use this WL2 army file") <<std::endl;
+              std::cout << "  -a, --army-file FILE       " << _("Use this WL2 army file") <<std::endl;
               std::cout << std::endl;
               std::cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << std::endl;
 	      exit(0);
 	    }
-          else if (parameter == "--armyset" || parameter == "-a")
+          else if (parameter == "--army-file" || parameter == "-a")
             {
               i++;
               armyset_filename = argv[i-1];
@@ -1390,17 +1417,29 @@ main (int argc, char* argv[])
     {
       Glib::ustring name = File::get_basename (filename);
       FILE *m = fopen (filename.c_str(), "rb");
-      fseek (m, get_offset(filename, ".MAP"), SEEK_SET);
+      fseek (m, get_offset(filename, ".MAP", true), SEEK_SET);
+      if (ftell (m) == 0)
+        fseek (m, get_offset(filename, ".MAP", false), SEEK_SET);
       FILE *s = fopen (filename.c_str(), "rb");
-      fseek (s, get_offset (filename, ".SCN"), SEEK_SET);
+      fseek (s, get_offset (filename, ".SCN", true), SEEK_SET);
+      if (ftell (s) == 0)
+        fseek (s, get_offset(filename, ".SCN", false), SEEK_SET);
       FILE *r = fopen (filename.c_str(), "rb");
-      fseek (r, get_offset (filename, ".RD"), SEEK_SET);
+      fseek (r, get_offset (filename, ".RD", true), SEEK_SET);
+      if (ftell (r) == 0)
+        fseek (r, get_offset(filename, ".RD", false), SEEK_SET);
       FILE *sg = fopen (filename.c_str(), "rb");
-      fseek (sg, get_offset (filename, ".SGN"), SEEK_SET);
+      fseek (sg, get_offset (filename, ".SGN", true), SEEK_SET);
+      if (ftell (sg) == 0)
+        fseek (sg, get_offset(filename, ".SGN", false), SEEK_SET);
       FILE *it = fopen (filename.c_str(), "rb");
-      fseek (it, get_offset(filename, ".ITM"), SEEK_SET);
+      fseek (it, get_offset(filename, ".ITM", true), SEEK_SET);
+      if (ftell (it) == 0)
+        fseek (it, get_offset(filename, ".ITM", false), SEEK_SET);
       FILE *sp = fopen (filename.c_str(), "rb");
-      fseek (sp, get_offset(filename, ".SPC"), SEEK_SET);
+      fseek (sp, get_offset(filename, ".SPC", true), SEEK_SET);
+      if (ftell (sp) == 0)
+        fseek (sp, get_offset(filename, ".SPC", false), SEEK_SET);
       FILE *a;
       if (armyset_filename != "")
         a = fopen (armyset_filename.c_str(), "rb");
