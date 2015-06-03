@@ -104,7 +104,15 @@ bool Configuration::loadConfigurationFile(Glib::ustring fileName)
         helper.registerTag(d_tag,
 	    sigc::mem_fun(*this, &Configuration::parseConfiguration));
     
-        return helper.parseXML();
+        bool ret = false;
+        try {
+          ret = helper.parseXML();
+        } catch (xmlpp::parse_error e)
+          {
+            std::cerr << _("Okay, we're throwing your .lordsawarrc away.") <<
+              "  " << e.what() << std::endl;
+          }
+        return ret;
     }
     else return false;
 }
@@ -175,7 +183,6 @@ bool Configuration::saveConfigurationFile(Glib::ustring filename)
         return false;
     }
     
-    //    retval &= helper.closeTag();
     helper.close();
 
     return true;
@@ -296,7 +303,7 @@ void initialize_configuration()
           exit(-1);
 	}
 	else
-          std::cerr << String::ucompose(_("created default configuration file `%1'."), Configuration::configuration_file_path) << std::endl;
+          std::cerr << String::ucompose(_("Created default configuration file `%1'."), Configuration::configuration_file_path) << std::endl;
     }
     
     //Check if the save game directory exists. If not, try to create it.
