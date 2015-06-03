@@ -1391,6 +1391,7 @@ class GameMap: public sigc::trackable
         static bool friendlyCitiesPresent();
         static bool enemyCitiesPresent();
         static bool neutralCitiesPresent();
+        static Stack* getStrongestStack(Vector<int> pos);
     protected:
         //! Create the map with the given tileset
         GameMap(Glib::ustring TilesetName = "", Glib::ustring ShieldsetName = "",
@@ -1432,6 +1433,8 @@ class GameMap: public sigc::trackable
 	static std::list<Stack*> getNearbyStacks(Vector<int> pos, int dist, bool friendly);
 
 	static bool offmap(int x, int y);
+
+        static bool compareStackStrength(Stack *lhs, Stack *rhs);
 
         // Data
         static GameMap* s_instance;

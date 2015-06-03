@@ -1159,6 +1159,34 @@ std::list<Stack*> GameMap::getEnemyStacks(Vector<int> pos, Player *player)
   return getStacks(pos)->getEnemyStacks(player);
 }
 
+
+bool GameMap::compareStackStrength(Stack *lhs, Stack *rhs)
+{
+  Army *lhero = lhs->getStrongestHero();
+  Army *rhero = rhs->getStrongestHero();
+  if (lhero && rhero)
+    return 
+      lhero->getStat(Army::STRENGTH) > rhero->getStat(Army::STRENGTH);
+  else if (!lhero && rhero)
+    return false;
+  else if (lhero && !rhero)
+    return true;
+
+  Army *larmy = lhs->getStrongestArmy();
+  Army *rarmy = rhs->getStrongestArmy();
+  return larmy->getStat(Army::STRENGTH) > rarmy->getStat(Army::STRENGTH);
+}
+
+Stack* GameMap::getStrongestStack(Vector<int> pos)
+{
+  StackTile *s = getStacks(pos);
+  std::list<Stack*> stacks = s->getStacks();
+  if (stacks.empty())
+    return NULL;
+  stacks.sort(compareStackStrength);
+  return stacks.front();
+}
+
 Stack* GameMap::getStack(Vector<int> pos)
 {
   if (getStacks(pos))

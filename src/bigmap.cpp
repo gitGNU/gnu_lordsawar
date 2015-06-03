@@ -482,7 +482,7 @@ void BigMap::draw_buffer_tile(Vector<int> tile, Cairo::RefPtr<Cairo::Surface> su
 	has_bag = true;
     }
 
-  Stack *stack = GameMap::getStack(tile);
+  Stack *stack = GameMap::getStrongestStack(tile);
   if (stack)
     {
       if (viewing->getFogMap()->isCompletelyObscuredFogTile(tile) == false)
