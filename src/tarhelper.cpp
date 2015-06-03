@@ -373,7 +373,7 @@ bool Tar_Helper::replaceFile(Glib::ustring filename, Glib::ustring newfilename)
             break;
           if (r != ARCHIVE_OK)
             break;
-          if (filename == archive_entry_pathname(in_entry) &&
+          if (filename == Glib::ustring(archive_entry_pathname(in_entry)) &&
               newfilename != "")
             {
               //hey it's the one we want to replace
@@ -387,6 +387,12 @@ bool Tar_Helper::replaceFile(Glib::ustring filename, Glib::ustring newfilename)
     }
 
   out.Close();
+  if (filename == "")
+    {
+      Tar_Helper in(tmp, std::ios::in, broken);
+      saveFile (&in, newfilename, "");
+      in.Close();
+    }
   archive_write_free(t);
   t = NULL;
   File::copy(tmp, pathname);
