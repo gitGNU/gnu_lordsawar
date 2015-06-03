@@ -40,9 +40,9 @@
 
 Glib::ustring Configuration::d_tag = "lordsawarrc";
 bool Configuration::s_showNextPlayer = true;
-Glib::ustring Configuration::configuration_file_path = Glib::ustring(getenv("HOME")) + "/.lordsawarrc";
+Glib::ustring Configuration::configuration_file_path;
 Glib::ustring Configuration::s_dataPath = LORDSAWAR_DATADIR;
-Glib::ustring Configuration::s_savePath = Glib::ustring(getenv("HOME"))+Glib::ustring("/.lordsawar/");
+Glib::ustring Configuration::s_savePath;
 Glib::ustring Configuration::s_lang = "";
 int Configuration::s_displaySpeedDelay = 3000;
 int Configuration::s_displayFightRoundDelayFast = 250;
@@ -79,6 +79,9 @@ guint32 Configuration::s_ui_form_factor = Configuration::UI_FORM_FACTOR_DESKTOP;
 
 Configuration::Configuration()
 {
+  configuration_file_path = Glib::get_home_dir() + "/.lordsawarrc";
+  s_savePath = Glib::get_home_dir() + Glib::ustring("/.lordsawar/");
+
     char *s = setlocale(LC_ALL, "");
     if (s)
 	Configuration::s_lang = s;
