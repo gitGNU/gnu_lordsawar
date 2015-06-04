@@ -1797,6 +1797,8 @@ void GameWindow::on_fight_started(LocationBox box, Fight &fight)
 
   game->get_bigmap().setFighting(box);
   game->get_bigmap().draw(Playerlist::getViewingplayer());
+  while (g_main_context_iteration(NULL, FALSE)); //doEvents
+  Glib::usleep (TIMER_BIGMAP_SELECTOR * 10000);
   d.run(&d_quick_fights);
   d.hide();
   game->get_bigmap().setFighting(LocationBox(Vector<int>(-1,-1)));
@@ -2792,7 +2794,7 @@ void GameWindow::on_abbreviated_fight_started(LocationBox box)
   game->get_bigmap().setFighting(box);
   game->get_bigmap().draw(Playerlist::getViewingplayer());
   while (g_main_context_iteration(NULL, FALSE)); //doEvents
-  Glib::usleep(TIMER_BIGMAP_SELECTOR * 1000);
+  Glib::usleep (TIMER_BIGMAP_SELECTOR * 10000);
   game->get_bigmap().setFighting(LocationBox(Vector<int>(-1,-1)));
   game->get_bigmap().draw(Playerlist::getViewingplayer());
 }
