@@ -932,6 +932,7 @@ void MainWindow::on_save_map_as_activated()
     chooser.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
     chooser.add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_ACCEPT);
     chooser.set_default_response(Gtk::RESPONSE_ACCEPT);
+    chooser.set_do_overwrite_confirmation();
     
     chooser.show_all();
     int res = chooser.run();
