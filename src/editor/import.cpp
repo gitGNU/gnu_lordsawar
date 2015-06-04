@@ -763,7 +763,11 @@ import_cities (FILE *scn)
                   if (army->getName().uppercase() == "NAVY")
                     continue;
                   if (army)
-                    city->addProductionBase(i, new ArmyProdBase(*army));
+                    {
+                      ArmyProdBase *prodbase = new ArmyProdBase(*army);
+                      prodbase->setArmyset(as);
+                      city->addProductionBase(i, prodbase);
+                    }
                 }
             }
         }
