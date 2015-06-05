@@ -1323,6 +1323,19 @@ get_armyset_offset (Glib::ustring filename)
   return get_offset (filename, name, false);
 }
 
+void show_help(Glib::ustring progname)
+{
+  std::cout << String::ucompose(_("Usage: %1 [OPTION]... FILE"), progname) << std::endl;
+  std::cout << String::ucompose("  or:  %1 [OPTION]... DIRECTORY", progname) << std::endl << std::endl;
+  std::cout << "LordsAWar! Warlords 2 Scenario Importing Tool " << _("version") << 
+    " " << VERSION << std::endl << std::endl;
+  std::cout << _("Options:") << std::endl << std::endl; 
+  std::cout << "  -?, --help                 " << _("Display this help and exit") <<std::endl;
+  std::cout << "  -a, --army-file FILE       " << _("Use this WL2 army file") <<std::endl;
+  std::cout << std::endl;
+  std::cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << std::endl;
+}
+
 int
 main (int argc, char* argv[])
 {
@@ -1339,6 +1352,12 @@ main (int argc, char* argv[])
   textdomain (GETTEXT_PACKAGE);
   #endif
 
+  if (argc == 1)
+    {
+      show_help(argv[0]);
+      exit (0);
+    }
+
   if (argc > 1)
     {
       for (int i = 2; i <= argc; i++)
@@ -1346,15 +1365,7 @@ main (int argc, char* argv[])
           Glib::ustring parameter(argv[i-1]); 
 	  if (parameter == "--help" || parameter == "-?")
 	    {
-              std::cout << String::ucompose(_("Usage: %1 [OPTION]... FILE"), Glib::ustring(argv[0])) << std::endl;
-              std::cout << String::ucompose("  or:  %1 [OPTION]... DIRECTORY", Glib::ustring(argv[0])) << std::endl << std::endl;
-              std::cout << "LordsAWar! Warlords 2 Scenario Importing Tool " << _("version") << 
-                " " << VERSION << std::endl << std::endl;
-              std::cout << _("Options:") << std::endl << std::endl; 
-              std::cout << "  -?, --help                 " << _("Display this help and exit") <<std::endl;
-              std::cout << "  -a, --army-file FILE       " << _("Use this WL2 army file") <<std::endl;
-              std::cout << std::endl;
-              std::cout << _("Report bugs to") << " <" << PACKAGE_BUGREPORT ">." << std::endl;
+              show_help(argv[0]);
 	      exit(0);
 	    }
           else if (parameter == "--army-file" || parameter == "-a")
