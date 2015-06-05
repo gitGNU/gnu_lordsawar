@@ -760,8 +760,6 @@ import_cities (FILE *scn)
                 {
                   ArmyProto *army = 
                     Armysetlist::getInstance()->getArmy(as, armies[i]);
-                  if (army->getName().uppercase() == "NAVY")
-                    continue;
                   if (army)
                     {
                       ArmyProdBase *prodbase = new ArmyProdBase(*army);
@@ -1055,6 +1053,8 @@ import_armyset (FILE *a, Glib::ustring name)
   for (int i = 0; i < 29; i++)
     {
       struct army_t ar = armies[i];
+      if (ar.boat)
+        continue;
       ArmyProto *army = new ArmyProto();
       army->setName(ar.name);
       army->setId(ar.idx);
@@ -1200,17 +1200,35 @@ import_armyset (FILE *a, Glib::ustring name)
 }
 
 static void
-import_fight_order (FILE *scn)
+import_fight_order (FILE *scn, Armyset *armyset)
 {
   fseek (scn, 0x60b, SEEK_CUR);
   char fight_order[29];
+  char fight_order_no_boat[28];
   fread (fight_order, sizeof (char), 29, scn);
-  std::list<guint32> order;
+
+  int c = 0;
   for (int i = 0; i < 29; i++)
-    order.push_back(fight_order[i]);
+    {
+      if (fight_order[i] == 28)
+        continue;
+      fight_order_no_boat[c] = fight_order[i];
+      c++;
+    }
+  std::vector<int> order = std::vector<int>();
+  order.reserve(29);
+  for (int i = 0; i < 29; i++)
+    order[i] = -1;
+  c = 0;
+  for (Armyset::iterator i = armyset->begin(); i != armyset->end(); i++, c++)
+    order[fight_order_no_boat[c]] = (*i)->getId();
+  std::list<guint32> order_list;
+  for (unsigned int i = 0; i < order.capacity(); i++)
+    if (order[i] != -1)
+      order_list.push_back(order[i]);
   Playerlist *pl = Playerlist::getInstance();
   for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
-    (*i)->setFightOrder(order);
+    (*i)->setFightOrder(order_list);
 }
 
 static void 
@@ -1240,7 +1258,7 @@ import (FILE *map, FILE *scn, FILE *rd, FILE *sg, FILE *it, FILE *sp, FILE *a, G
   at = ftell (scn);
   import_players (scn, armyset);
   fseek (scn, at, SEEK_SET);
-  import_fight_order (scn);
+  import_fight_order (scn, armyset);
   fseek (scn, at, SEEK_SET);
   import_ruins_and_temples (scn, sp);
   fseek (scn, at, SEEK_SET);
