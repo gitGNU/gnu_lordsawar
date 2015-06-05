@@ -78,6 +78,7 @@ class MainWindow: public sigc::trackable
     Gtk::MenuItem *edit_armyset_menuitem;
     Gtk::MenuItem *edit_cityset_menuitem;
     Gtk::MenuItem *edit_tileset_menuitem;
+    Gtk::MenuItem *edit_fight_order_menuitem;
     Gtk::MenuItem *toggle_tile_graphics_menuitem;
     Gtk::MenuItem *toggle_grid_menuitem;
     Gtk::MenuItem *smooth_map_menuitem;
@@ -144,6 +145,7 @@ class MainWindow: public sigc::trackable
     void on_switch_sets_activated();
     void on_edit_items_activated();
     void on_edit_rewards_activated();
+    void on_edit_fight_order_activated();
 
     void on_fullscreen_activated();
     void on_tile_graphics_toggled();

@@ -88,8 +88,8 @@
 #include "editor-quit-dialog.h"
 #include "smallmap-editor-dialog.h"
 #include "RenamableLocation.h"
+#include "fight-order-editor-dialog.h"
 
-    
 MainWindow::MainWindow(Glib::ustring load_filename)
 {
   d_load_filename = load_filename;
@@ -240,6 +240,9 @@ MainWindow::MainWindow(Glib::ustring load_filename)
     xml->get_widget("edit_smallmap_menuitem", edit_smallmap_menuitem);
     edit_smallmap_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &MainWindow::on_edit_smallmap_activated));
+    xml->get_widget("edit_fight_order_menuitem", edit_fight_order_menuitem);
+    edit_fight_order_menuitem->signal_activate().connect
+      (sigc::mem_fun(this, &MainWindow::on_edit_fight_order_activated));
     
     xml->get_widget("fullscreen_menuitem", fullscreen_menuitem);
     fullscreen_menuitem->signal_activate().connect
@@ -1915,4 +1918,13 @@ void MainWindow::on_bag_selected(Vector<int> tile)
     GameMap::getInstance()->getTile(tile)->getBackpack();
   BackpackEditorDialog d(*window, dynamic_cast<Backpack*>(bag));
   d.run();
+}
+
+void MainWindow::on_edit_fight_order_activated()
+{
+  FightOrderEditorDialog d(*window);
+  d.run();
+  if (d.get_modified())
+    needs_saving = true;
+
 }

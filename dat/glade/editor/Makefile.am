@@ -40,7 +40,8 @@ shieldset-info-dialog.ui \
 tilestyle-organizer-dialog.ui \
 shieldset-window.ui \
 smallmap-editor-dialog.ui \
-editor-splash-window.ui
+editor-splash-window.ui \
+fight-order-editor-dialog.ui
 
 EXTRA_DIST = $(glade_DATA) \
 README
