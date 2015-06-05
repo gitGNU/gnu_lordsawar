@@ -118,6 +118,7 @@
 [type: gettext/glade]dat/glade/editor/shieldset-info-dialog.ui
 [type: gettext/glade]dat/glade/editor/smallmap-editor-dialog.ui
 [type: gettext/glade]dat/glade/editor/editor-splash-window.ui
+[type: gettext/glade]dat/glade/editor/fight-order-editor-dialog.ui
 [type: gettext/glade]dat/glade/game-button-box-desktop.ui
 [type: gettext/glade]dat/glade/game-button-box-large-screen.ui
 [type: gettext/glade]dat/glade/game-button-box-netbook.ui
@@ -302,6 +303,7 @@ src/editor/tile-size-editor-dialog.cpp
 src/editor/editor-splash-window.cpp
 src/editor/image-editor-dialog.cpp
 src/editor/masked-image-editor-dialog.cpp
+src/editor/fight-order-editor-dialog.cpp
 src/editor/import.cpp
 src/gui/city-info-tip.cpp
 src/gui/game-lobby-dialog.cpp
