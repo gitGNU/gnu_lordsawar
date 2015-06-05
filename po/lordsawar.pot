@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2015-05-26 20:34-0400\n"
+"POT-Creation-Date: 2015-06-05 17:49-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -73,6 +73,7 @@ msgstr ""
 #: ../dat/glade/editor/tilestyle-organizer-dialog.ui.h:2
 #: ../dat/glade/editor/tileset-smallmap-building-colors-dialog.ui.h:2
 #: ../dat/glade/editor/smallmap-editor-dialog.ui.h:2
+#: ../dat/glade/editor/fight-order-editor-dialog.ui.h:2
 msgid "Close"
 msgstr ""
 
@@ -222,7 +223,7 @@ msgstr ""
 #: ../dat/glade/hero-offer-dialog.ui.h:3
 #: ../dat/glade/ruin-report-dialog.ui.h:3
 #: ../dat/glade/editor/armyset-info-dialog.ui.h:5
-#: ../dat/glade/editor/armyset-window.ui.h:61
+#: ../dat/glade/editor/armyset-window.ui.h:64
 #: ../dat/glade/editor/city-editor-dialog.ui.h:7
 #: ../dat/glade/editor/itemlist-dialog.ui.h:11
 #: ../dat/glade/editor/map-info-dialog.ui.h:5
@@ -343,6 +344,7 @@ msgid "Diplomacy Report"
 msgstr ""
 
 #: ../dat/glade/fight-order-dialog.ui.h:1 ../dat/glade/game-window.ui.h:9
+#: ../dat/glade/editor/main-window.ui.h:28
 msgid "Fight Order"
 msgstr ""
 
@@ -569,12 +571,13 @@ msgstr ""
 #: ../dat/glade/game-quit-dialog.ui.h:2
 #: ../dat/glade/temple-visit-dialog.ui.h:1
 #: ../src/gui/ruin-report-dialog.cpp:131 ../src/gui/ruin-report-dialog.cpp:163
+#: ../src/gui/game-lobby-dialog.cpp:42
 msgid "No"
 msgstr ""
 
 #: ../dat/glade/game-quit-dialog.ui.h:3
 #: ../dat/glade/temple-visit-dialog.ui.h:2
-#: ../src/gui/ruin-report-dialog.cpp:127
+#: ../src/gui/ruin-report-dialog.cpp:127 ../src/gui/game-lobby-dialog.cpp:41
 msgid "Yes"
 msgstr ""
 
@@ -614,13 +617,13 @@ msgstr ""
 msgid "Move All"
 msgstr ""
 
-#: ../dat/glade/game-window.ui.h:11 ../src/gui/game-window.cpp:1100
+#: ../dat/glade/game-window.ui.h:11 ../src/gui/game-window.cpp:1104
 msgid "Disband"
 msgstr ""
 
 #: ../dat/glade/game-window.ui.h:12
 #: ../dat/glade/editor/signpost-editor-dialog.ui.h:4 ../src/maptile.cpp:224
-#: ../src/gui/game-window.cpp:1066 ../src/editor/main-window.cpp:1447
+#: ../src/gui/game-window.cpp:1070 ../src/editor/main-window.cpp:1454
 msgid "Signpost"
 msgstr ""
 
@@ -636,7 +639,7 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: ../dat/glade/game-window.ui.h:16 ../src/gui/game-window.cpp:1137
+#: ../dat/glade/game-window.ui.h:16 ../src/gui/game-window.cpp:1141
 msgid "Resign"
 msgstr ""
 
@@ -651,7 +654,7 @@ msgstr ""
 #: ../dat/glade/game-window.ui.h:19 ../dat/glade/history-report-dialog.ui.h:2
 #: ../dat/glade/report-dialog.ui.h:5
 #: ../dat/glade/editor/city-editor-dialog.ui.h:4 ../src/maptile.cpp:221
-#: ../src/editor/main-window.cpp:1443
+#: ../src/editor/main-window.cpp:1450
 msgid "City"
 msgstr ""
 
@@ -707,12 +710,12 @@ msgstr ""
 msgid "Use Item"
 msgstr ""
 
-#: ../dat/glade/game-window.ui.h:32 ../dat/glade/editor/main-window.ui.h:37
+#: ../dat/glade/game-window.ui.h:32 ../dat/glade/editor/main-window.ui.h:38
 #: ../dat/glade/editor/tileset-window.ui.h:19
 msgid "View"
 msgstr ""
 
-#: ../dat/glade/game-window.ui.h:33 ../dat/glade/editor/main-window.ui.h:38
+#: ../dat/glade/game-window.ui.h:33 ../dat/glade/editor/main-window.ui.h:39
 msgid "Fullscreen"
 msgstr ""
 
@@ -722,7 +725,7 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: ../dat/glade/game-window.ui.h:35 ../dat/glade/editor/main-window.ui.h:40
+#: ../dat/glade/game-window.ui.h:35 ../dat/glade/editor/main-window.ui.h:41
 msgid "Toggle Grid"
 msgstr ""
 
@@ -748,7 +751,7 @@ msgstr ""
 
 #: ../dat/glade/game-window.ui.h:41 ../dat/glade/stack-info-dialog.ui.h:2
 #: ../dat/glade/editor/stack-editor-dialog.ui.h:4
-#: ../src/editor/main-window.cpp:1441
+#: ../src/editor/main-window.cpp:1448
 msgid "Stack"
 msgstr ""
 
@@ -759,7 +762,7 @@ msgstr ""
 
 #: ../dat/glade/game-window.ui.h:43 ../dat/glade/history-report-dialog.ui.h:3
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:4 ../src/maptile.cpp:222
-#: ../src/gui/ruin-report-dialog.cpp:122 ../src/editor/main-window.cpp:1445
+#: ../src/gui/ruin-report-dialog.cpp:122 ../src/editor/main-window.cpp:1452
 msgid "Ruin"
 msgstr ""
 
@@ -776,7 +779,7 @@ msgid "Triumphs"
 msgstr ""
 
 #: ../dat/glade/game-window.ui.h:47 ../dat/glade/editor/armyset-window.ui.h:15
-#: ../dat/glade/editor/main-window.ui.h:41
+#: ../dat/glade/editor/main-window.ui.h:42
 #: ../dat/glade/editor/tileset-window.ui.h:21
 #: ../dat/glade/editor/cityset-window.ui.h:11
 #: ../dat/glade/editor/shieldset-window.ui.h:12
@@ -784,8 +787,8 @@ msgid "Help"
 msgstr ""
 
 #. if it's this player's turn
-#: ../dat/glade/game-window.ui.h:48 ../src/gui/game-window.cpp:1548
-#: ../src/gui/game-window.cpp:2353 ../src/gui/game-lobby-dialog.cpp:274
+#: ../dat/glade/game-window.ui.h:48 ../src/gui/game-window.cpp:1558
+#: ../src/gui/game-window.cpp:2367 ../src/gui/game-lobby-dialog.cpp:286
 #: ../src/gui/network-game-selector-dialog.cpp:54
 #: ../src/gui/network-game-selector-dialog.cpp:74
 msgid "Turn"
@@ -1321,7 +1324,7 @@ msgid "Mountains"
 msgstr ""
 
 #: ../dat/glade/new-random-map-dialog.ui.h:19
-#: ../dat/glade/editor/main-window.ui.h:28
+#: ../dat/glade/editor/main-window.ui.h:29
 #: ../src/editor/new-map-dialog.cpp:133
 msgid "Random"
 msgstr ""
@@ -1416,7 +1419,7 @@ msgid "radiobutton"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-window.ui.h:2
-#: ../src/editor/armyset-window.cpp:1598
+#: ../src/editor/armyset-window.cpp:1610
 msgid "LordsAWar! Armyset Editor"
 msgstr ""
 
@@ -1605,107 +1608,119 @@ msgid "+1 Str in Forest"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-window.ui.h:49
-msgid "+1 Str in Hills"
+msgid "+2 Str in Forest"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-window.ui.h:50
-msgid "+1 Str in City"
+msgid "+1 Str in Hills"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-window.ui.h:51
-msgid "+2 Str in City"
+msgid "+2 Str in Hills"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-window.ui.h:52
-msgid "+1 to Stack in Hills"
+msgid "+1 Str in City"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-window.ui.h:53
-msgid "Subtract All City Bonus"
+msgid "+2 Str in City"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-window.ui.h:54
-msgid "-1 Str to Enemy Stack"
+msgid "+1 to Stack in Hills"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-window.ui.h:55
-msgid "+1 Str to Stack"
+msgid "Subtract All City Bonus"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-window.ui.h:56
-msgid "+2 Str to Stack"
+msgid "-1 Str to Enemy Stack"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-window.ui.h:57
-msgid "Subtract All Non-Hero Bonuses"
+msgid "-2 Str to Enemy Stack"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-window.ui.h:58
-msgid "Subtract all Hero Bonuses"
+msgid "+1 Str to Stack"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-window.ui.h:59
-msgid "Fighting Bonus"
+msgid "+2 Str to Stack"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-window.ui.h:60
-msgid "Capabilities"
+msgid "Subtract All Non-Hero Bonuses"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:61
+msgid "Subtract all Hero Bonuses"
 msgstr ""
 
 #: ../dat/glade/editor/armyset-window.ui.h:62
+msgid "Fighting Bonus"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:63
+msgid "Capabilities"
+msgstr ""
+
+#: ../dat/glade/editor/armyset-window.ui.h:65
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:7
 #: ../dat/glade/editor/temple-editor-dialog.ui.h:7
 msgid "Description:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:63
+#: ../dat/glade/editor/armyset-window.ui.h:66
 msgid "Neutral Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:64
-#: ../src/editor/armyset-window.cpp:907 ../src/editor/armyset-window.cpp:1081
+#: ../dat/glade/editor/armyset-window.ui.h:67
+#: ../src/editor/armyset-window.cpp:919 ../src/editor/armyset-window.cpp:1093
 #: ../src/editor/cityset-window.cpp:165 ../src/editor/tileset-window.cpp:355
 #: ../src/editor/tileset-window.cpp:367 ../src/editor/tileset-window.cpp:376
 msgid "no image set"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:65
+#: ../dat/glade/editor/armyset-window.ui.h:68
 msgid "Black Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:66
+#: ../dat/glade/editor/armyset-window.ui.h:69
 msgid "Orange Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:67
+#: ../dat/glade/editor/armyset-window.ui.h:70
 msgid "Dark Blue Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:68
+#: ../dat/glade/editor/armyset-window.ui.h:71
 msgid "White Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:69
+#: ../dat/glade/editor/armyset-window.ui.h:72
 msgid "Green Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:70
+#: ../dat/glade/editor/armyset-window.ui.h:73
 msgid "Yellow Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:71
+#: ../dat/glade/editor/armyset-window.ui.h:74
 msgid "Light Blue Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:72
+#: ../dat/glade/editor/armyset-window.ui.h:75
 msgid "Red Picture:"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:73
+#: ../dat/glade/editor/armyset-window.ui.h:76
 msgid "Same for all"
 msgstr ""
 
-#: ../dat/glade/editor/armyset-window.ui.h:74
+#: ../dat/glade/editor/armyset-window.ui.h:77
 msgid "Appearance"
 msgstr ""
 
@@ -1892,7 +1907,7 @@ msgid "toolbutton"
 msgstr ""
 
 #. init GUI stuff
-#: ../dat/glade/editor/main-window.ui.h:2 ../src/editor/main-window.cpp:1895
+#: ../dat/glade/editor/main-window.ui.h:2 ../src/editor/main-window.cpp:1902
 #: ../src/editor/main.cpp:60 ../dat/lordsawar-editor.desktop.in.in.h:1
 msgid "LordsAWar! Scenario Editor"
 msgstr ""
@@ -1979,103 +1994,103 @@ msgstr ""
 msgid "Miniature Map"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:29
+#: ../dat/glade/editor/main-window.ui.h:30
 msgid "All Cities"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:30
+#: ../dat/glade/editor/main-window.ui.h:31
 msgid "Unnamed Cities"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:31
+#: ../dat/glade/editor/main-window.ui.h:32
 msgid "All Ruins"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:32
+#: ../dat/glade/editor/main-window.ui.h:33
 msgid "Unnamed Ruins"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:33
+#: ../dat/glade/editor/main-window.ui.h:34
 msgid "All Temples"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:34
+#: ../dat/glade/editor/main-window.ui.h:35
 msgid "Unnamed Temples"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:35
+#: ../dat/glade/editor/main-window.ui.h:36
 msgid "All Signs"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:36
+#: ../dat/glade/editor/main-window.ui.h:37
 msgid "Unnamed Signs"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:39
+#: ../dat/glade/editor/main-window.ui.h:40
 msgid "Toggle Tile Graphics"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:42
+#: ../dat/glade/editor/main-window.ui.h:43
 msgid "Pointer.  Click to inspect objects."
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:43
+#: ../dat/glade/editor/main-window.ui.h:44
 msgid "Draw 1x1 terrain"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:44
+#: ../dat/glade/editor/main-window.ui.h:45
 msgid "Draw 2x2 terrain"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:45
+#: ../dat/glade/editor/main-window.ui.h:46
 msgid "Draw 3x3 terrain"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:46
+#: ../dat/glade/editor/main-window.ui.h:47
 msgid "Draw 6x6 terrain"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:47
+#: ../dat/glade/editor/main-window.ui.h:48
 msgid "Remove object"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:48
+#: ../dat/glade/editor/main-window.ui.h:49
 msgid "Move object"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:49
+#: ../dat/glade/editor/main-window.ui.h:50
 msgid "Add a stack"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:50
+#: ../dat/glade/editor/main-window.ui.h:51
 msgid "Add a city"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:51
+#: ../dat/glade/editor/main-window.ui.h:52
 msgid "Add a ruin"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:52
+#: ../dat/glade/editor/main-window.ui.h:53
 msgid "Add a temple"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:53
+#: ../dat/glade/editor/main-window.ui.h:54
 msgid "Add a port"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:54
+#: ../dat/glade/editor/main-window.ui.h:55
 msgid "Add a sign"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:55
+#: ../dat/glade/editor/main-window.ui.h:56
 msgid "Add a road"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:56
+#: ../dat/glade/editor/main-window.ui.h:57
 msgid "Add a bridge"
 msgstr ""
 
-#: ../dat/glade/editor/main-window.ui.h:57
+#: ../dat/glade/editor/main-window.ui.h:58
 msgid "Add a bag"
 msgstr ""
 
@@ -2175,7 +2190,7 @@ msgid "Edit Ruin"
 msgstr ""
 
 #: ../dat/glade/editor/ruin-editor-dialog.ui.h:8
-#: ../src/editor/players-dialog.cpp:55 ../src/gui/game-lobby-dialog.cpp:321
+#: ../src/editor/players-dialog.cpp:55 ../src/gui/game-lobby-dialog.cpp:337
 msgid "Type"
 msgstr ""
 
@@ -2253,7 +2268,7 @@ msgid "Edit Temple"
 msgstr ""
 
 #: ../dat/glade/editor/temple-editor-dialog.ui.h:4 ../src/maptile.cpp:223
-#: ../src/gui/ruin-report-dialog.cpp:162 ../src/editor/main-window.cpp:1449
+#: ../src/gui/ruin-report-dialog.cpp:162 ../src/editor/main-window.cpp:1456
 msgid "Temple"
 msgstr ""
 
@@ -2667,6 +2682,14 @@ msgstr ""
 
 #: ../dat/glade/editor/editor-splash-window.ui.h:2
 msgid "Please Wait..."
+msgstr ""
+
+#: ../dat/glade/editor/fight-order-editor-dialog.ui.h:1
+msgid "Edit Fight Order"
+msgstr ""
+
+#: ../dat/glade/editor/fight-order-editor-dialog.ui.h:3
+msgid "Copy Order To All"
 msgstr ""
 
 #: ../dat/glade/game-button-box-desktop.ui.h:1
@@ -3723,39 +3746,43 @@ msgstr ""
 msgid "Unexplored"
 msgstr ""
 
-#: ../src/Configuration.cpp:192
+#: ../src/Configuration.cpp:112
+msgid "Okay, we're throwing your .lordsawarrc away."
+msgstr ""
+
+#: ../src/Configuration.cpp:202
 msgid "Configuration file has wrong version.  expected %1, but got %2"
 msgstr ""
 
-#: ../src/Configuration.cpp:195
+#: ../src/Configuration.cpp:205
 msgid "backing up config file `%1' to `%2'."
 msgstr ""
 
-#: ../src/Configuration.cpp:292
+#: ../src/Configuration.cpp:302
 msgid "Error!  couldn't save configuration file `%1'.  Exiting."
 msgstr ""
 
-#: ../src/Configuration.cpp:296
-msgid "created default configuration file `%1'."
+#: ../src/Configuration.cpp:306
+msgid "Created default configuration file `%1'."
 msgstr ""
 
-#: ../src/Configuration.cpp:309
+#: ../src/Configuration.cpp:319
 msgid "Error!  Couldn't create armyset directory `%1'.  Exiting."
 msgstr ""
 
-#: ../src/Configuration.cpp:315
+#: ../src/Configuration.cpp:325
 msgid "Error!  Couldn't create tileset directory `%1'.  Exiting."
 msgstr ""
 
-#: ../src/Configuration.cpp:322
+#: ../src/Configuration.cpp:332
 msgid "Error!  Couldn't create map directory `%1'.  Exiting."
 msgstr ""
 
-#: ../src/Configuration.cpp:329
+#: ../src/Configuration.cpp:339
 msgid "Error!  Couldn't create shieldset directory `%1'.  Exiting."
 msgstr ""
 
-#: ../src/Configuration.cpp:336
+#: ../src/Configuration.cpp:346
 msgid "Error!  Couldn't create cityset directory `%1'.  Exiting."
 msgstr ""
 
@@ -4380,7 +4407,7 @@ msgstr ""
 #: ../src/editor/city-editor-dialog.cpp:124
 #: ../src/editor/stack-editor-dialog.cpp:114
 #: ../src/editor/backpack-editor-dialog.cpp:51
-#: ../src/gui/game-lobby-dialog.cpp:320
+#: ../src/gui/game-lobby-dialog.cpp:336
 #: ../src/gui/network-game-selector-dialog.cpp:53
 #: ../src/gui/network-game-selector-dialog.cpp:73
 msgid "Name"
@@ -4455,207 +4482,211 @@ msgstr ""
 msgid "Experience: %1"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:847 ../src/gui/splash-window.cpp:165
+#: ../src/gui/game-window.cpp:851 ../src/gui/splash-window.cpp:167
 msgid "Choose Game to Load"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:849 ../src/gui/game-window.cpp:897
+#: ../src/gui/game-window.cpp:853 ../src/gui/game-window.cpp:901
 msgid "Army Saved Games (*.sav)"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:885
+#: ../src/gui/game-window.cpp:889
 msgid "Game was not saved!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:894 ../src/editor/main-window.cpp:860
-#: ../src/editor/main-window.cpp:892 ../src/editor/main-window.cpp:924
+#: ../src/gui/game-window.cpp:898 ../src/editor/main-window.cpp:866
+#: ../src/editor/main-window.cpp:898 ../src/editor/main-window.cpp:930
 msgid "Choose a Name"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:921
+#: ../src/gui/game-window.cpp:925
 msgid "Error saving game!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1006 ../src/gui/driver.cpp:620
-#: ../src/gui/driver.cpp:844 ../src/gui/driver.cpp:1011
+#: ../src/gui/game-window.cpp:1010 ../src/gui/driver.cpp:620
+#: ../src/gui/driver.cpp:850 ../src/gui/driver.cpp:1017
 msgid "Corrupted saved game file."
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1070
+#: ../src/gui/game-window.cpp:1074
 msgid "Change the message on this sign:"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1107
+#: ../src/gui/game-window.cpp:1111
 msgid "Are you sure you want to disband this group?"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1111
+#: ../src/gui/game-window.cpp:1115
 msgid "(It contains %1 hero)."
 msgid_plural "(It contains %1 heroes)."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/game-window.cpp:1141
+#: ../src/gui/game-window.cpp:1145
 msgid "Are you sure you want to resign?"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1288
+#: ../src/gui/game-window.cpp:1292
 msgid "No ruins or temples to show!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1493
+#: ../src/gui/game-window.cpp:1503
 msgid "Congratulations to %1 for conquering the world!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1508
+#: ../src/gui/game-window.cpp:1518
 msgid "The rule of %1 has permanently ended!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1514
+#: ../src/gui/game-window.cpp:1524
 msgid ""
 "No further human resistance is possible\n"
 "but the battle will continue!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1516
+#: ../src/gui/game-window.cpp:1526
 msgid ""
 "Press `CTRL-P' to stop the war\n"
 "and visit the sites of thy old battles."
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1713
+#: ../src/gui/game-window.cpp:1724
 msgid "%1 finds "
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1717
+#: ../src/gui/game-window.cpp:1728
 msgid "%1 gold pieces."
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1722
+#: ../src/gui/game-window.cpp:1733
 msgid "%1 allies!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1727
+#: ../src/gui/game-window.cpp:1738
 msgid "the %1!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1732
+#: ../src/gui/game-window.cpp:1743
 msgid "a map!"
 msgstr ""
 
 #. so and so encounters a wolf...
-#: ../src/gui/game-window.cpp:1743
+#: ../src/gui/game-window.cpp:1754
 msgid "Searching"
 msgstr ""
 
 #: ../src/gui/game-window.cpp:1760
+msgid "%1 encounters some %2..."
+msgstr ""
+
+#: ../src/gui/game-window.cpp:1772
 msgid "Hero Victorious"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1762
+#: ../src/gui/game-window.cpp:1774
 msgid "Hero Defeated"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1769
+#: ../src/gui/game-window.cpp:1781
 msgid "...and is victorious!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1771
+#: ../src/gui/game-window.cpp:1783
 msgid "...and is slain by it!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1802
+#: ../src/gui/game-window.cpp:1816
 msgid "Hero brings allies!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1807
+#: ../src/gui/game-window.cpp:1821
 msgid "The hero brings %1 ally!"
 msgid_plural "The hero brings %1 allies!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/game-window.cpp:1831
+#: ../src/gui/game-window.cpp:1845
 msgid "You graciously and benevolently accept their offer."
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1846
+#: ../src/gui/game-window.cpp:1860
 msgid "Are you sure you want to attack %1?"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1849
+#: ../src/gui/game-window.cpp:1863
 msgid "Other players may not like this!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1900
+#: ../src/gui/game-window.cpp:1914
 msgid "%1 army has been blessed!"
 msgid_plural "%1 armies have been blessed!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/game-window.cpp:1903
+#: ../src/gui/game-window.cpp:1917
 msgid "We have already blessed thee!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1906
+#: ../src/gui/game-window.cpp:1920
 msgid "Seek more blessings in far temples!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1910
+#: ../src/gui/game-window.cpp:1924
 msgid "Do you seek a quest?"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:1918
+#: ../src/gui/game-window.cpp:1932
 msgid "_Close"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2045
+#: ../src/gui/game-window.cpp:2059
 msgid "%1, you have triumphed in the battle of %2."
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2046
+#: ../src/gui/game-window.cpp:2060
 msgid "%1, you have claimed victory in the battle of %2."
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2047
+#: ../src/gui/game-window.cpp:2061
 msgid "%1, you have shown no mercy in the battle of %2."
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2048
+#: ../src/gui/game-window.cpp:2062
 msgid "%1, you have slain the foe in the battle of %2."
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2142
+#: ../src/gui/game-window.cpp:2156
 msgid "%1 Looted"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2149
+#: ../src/gui/game-window.cpp:2163
 msgid "Your armies loot %1 gold piece."
 msgid_plural "Your armies loot %1 gold pieces."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/game-window.cpp:2162
+#: ../src/gui/game-window.cpp:2176
 msgid "Pillaged %1"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2189
+#: ../src/gui/game-window.cpp:2203
 msgid "The loot is worth %1 gold piece."
 msgid_plural "The loot is worth %1 gold pieces."
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/game-window.cpp:2204
+#: ../src/gui/game-window.cpp:2218
 msgid "Sacked %1"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2210
+#: ../src/gui/game-window.cpp:2224
 msgid ""
 "The city of %1 is sacked\n"
 "for %2 gold!\n"
 "\n"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2213
+#: ../src/gui/game-window.cpp:2227
 msgid ""
 "Ability to produce %1 unit has been lost\n"
 "and only 1 unit remains"
@@ -4665,386 +4696,386 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/game-window.cpp:2260
+#: ../src/gui/game-window.cpp:2274
 msgid "%1 gp"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2290
+#: ../src/gui/game-window.cpp:2304
 msgid "Razed %1"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2295
+#: ../src/gui/game-window.cpp:2309
 msgid "The city of %1 is in ruins!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2379
+#: ../src/gui/game-window.cpp:2393
 msgid ""
 "%1\n"
 "Turn %2"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2409
+#: ../src/gui/game-window.cpp:2423
 msgid "Your unit of %1 is awarded the avenger's medal of valour!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2411
+#: ../src/gui/game-window.cpp:2425
 msgid "Your unit of %1 is awarded the defender's medal of bravery!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2413
+#: ../src/gui/game-window.cpp:2427
 msgid "Your unit of %1 is awarded the veteran's medal!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2415
+#: ../src/gui/game-window.cpp:2429
 msgid "Your unit of %1 is awarded a medal!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2434
+#: ../src/gui/game-window.cpp:2448
 msgid "%1, your turn continues."
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2458
+#: ../src/gui/game-window.cpp:2472
 msgid "%1 did not complete the quest."
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2532
+#: ../src/gui/game-window.cpp:2546
 msgid "Advisor!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2541
+#: ../src/gui/game-window.cpp:2555
 msgid "My Good Lord!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2543
+#: ../src/gui/game-window.cpp:2557
 msgid "Great and Worthy Lord!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2545
+#: ../src/gui/game-window.cpp:2559
 msgid "O Champion of Justice!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2547
+#: ../src/gui/game-window.cpp:2561
 msgid "O Mighty Leader!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2549
+#: ../src/gui/game-window.cpp:2563
 msgid "O Great Warlord!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2557
+#: ../src/gui/game-window.cpp:2571
 msgid "This battle will surely be as simple as butchering sleeping cattle!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2559 ../src/gui/game-window.cpp:2565
+#: ../src/gui/game-window.cpp:2573 ../src/gui/game-window.cpp:2579
 msgid "A battle here would be as simple as butchering sleeping cattle!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2561
+#: ../src/gui/game-window.cpp:2575
 msgid ""
 "I believe this battle will surely be as simple as butchering sleeping cattle!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2563
+#: ../src/gui/game-window.cpp:2577
 msgid "This battle would be as simple as butchering sleeping cattle!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2567
+#: ../src/gui/game-window.cpp:2581
 msgid "I believe this battle will be as simple as butchering sleeping cattle!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2569
+#: ../src/gui/game-window.cpp:2583
 msgid "This battle shall be as simple as butchering sleeping cattle!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2574
+#: ../src/gui/game-window.cpp:2588
 msgid "This battle will surely be an easy victory!  We cannot lose!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2576 ../src/gui/game-window.cpp:2582
+#: ../src/gui/game-window.cpp:2590 ../src/gui/game-window.cpp:2596
 msgid "A battle here would be an easy victory!  We cannot lose!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2578
+#: ../src/gui/game-window.cpp:2592
 msgid "I believe this battle will surely be an easy victory!  We cannot lose!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2580
+#: ../src/gui/game-window.cpp:2594
 msgid "This battle would be an easy victory!  We cannot lose!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2584
+#: ../src/gui/game-window.cpp:2598
 msgid "I believe this battle will be an easy victory!  We cannot lose!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2586
+#: ../src/gui/game-window.cpp:2600
 msgid "This battle shall be an easy victory!  We cannot lose!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2591
+#: ../src/gui/game-window.cpp:2605
 msgid "This battle will surely be a comfortable victory!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2593 ../src/gui/game-window.cpp:2599
+#: ../src/gui/game-window.cpp:2607 ../src/gui/game-window.cpp:2613
 msgid "A battle here would be a comfortable victory!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2595
+#: ../src/gui/game-window.cpp:2609
 msgid "I believe this battle will surely be a comfortable victory!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2597
+#: ../src/gui/game-window.cpp:2611
 msgid "This battle would be a comfortable victory!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2601
+#: ../src/gui/game-window.cpp:2615
 msgid "I believe this battle will be a comfortable victory!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2603
+#: ../src/gui/game-window.cpp:2617
 msgid "This battle shall be a comfortable victory!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2608
+#: ../src/gui/game-window.cpp:2622
 msgid "This battle will surely be a hard fought victory! But we shall win!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2610 ../src/gui/game-window.cpp:2616
+#: ../src/gui/game-window.cpp:2624 ../src/gui/game-window.cpp:2630
 msgid "A battle here would be a hard fought victory! But we shall win!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2612
+#: ../src/gui/game-window.cpp:2626
 msgid ""
 "I believe this battle will surely be a hard fought victory! But we shall win!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2614
+#: ../src/gui/game-window.cpp:2628
 msgid "This battle would be a hard fought victory! But we shall win!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2618
+#: ../src/gui/game-window.cpp:2632
 msgid "I believe this battle will be a hard fought victory! But we shall win!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2620
+#: ../src/gui/game-window.cpp:2634
 msgid "This battle shall be a hard fought victory! But we shall win!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2625
+#: ../src/gui/game-window.cpp:2639
 msgid "This battle will surely be very evenly matched!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2627 ../src/gui/game-window.cpp:2633
+#: ../src/gui/game-window.cpp:2641 ../src/gui/game-window.cpp:2647
 msgid "A battle here would be very evenly matched!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2629
+#: ../src/gui/game-window.cpp:2643
 msgid "I believe this battle will surely be very evenly matched!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2631
+#: ../src/gui/game-window.cpp:2645
 msgid "This battle would be very evenly matched!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2635
+#: ../src/gui/game-window.cpp:2649
 msgid "I believe this battle will be very evenly matched!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2637
+#: ../src/gui/game-window.cpp:2651
 msgid "This battle shall be very evenly matched!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2642
+#: ../src/gui/game-window.cpp:2656
 msgid "This battle will surely be difficult but not impossible to win!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2644 ../src/gui/game-window.cpp:2650
+#: ../src/gui/game-window.cpp:2658 ../src/gui/game-window.cpp:2664
 msgid "A battle here would be difficult but not impossible to win!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2646
+#: ../src/gui/game-window.cpp:2660
 msgid ""
 "I believe this battle will surely be difficult but not impossible to win!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2648
+#: ../src/gui/game-window.cpp:2662
 msgid "This battle would be difficult but not impossible to win!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2652
+#: ../src/gui/game-window.cpp:2666
 msgid "I believe this battle will be difficult but not impossible to win!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2654
+#: ../src/gui/game-window.cpp:2668
 msgid "This battle shall be difficult but not impossible to win!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2659
+#: ../src/gui/game-window.cpp:2673
 msgid "This battle will surely be a brave choice! I leave it to thee!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2661 ../src/gui/game-window.cpp:2667
+#: ../src/gui/game-window.cpp:2675 ../src/gui/game-window.cpp:2681
 msgid "A battle here would be a brave choice! I leave it to thee!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2663
+#: ../src/gui/game-window.cpp:2677
 msgid ""
 "I believe this battle will surely be a brave choice! I leave it to thee!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2665
+#: ../src/gui/game-window.cpp:2679
 msgid "This battle would be a brave choice! I leave it to thee!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2669
+#: ../src/gui/game-window.cpp:2683
 msgid "I believe this battle will be a brave choice! I leave it to thee!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2671
+#: ../src/gui/game-window.cpp:2685
 msgid "This battle shall be a brave choice! I leave it to thee!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2676
+#: ../src/gui/game-window.cpp:2690
 msgid "This battle will surely be a foolish decision!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2678 ../src/gui/game-window.cpp:2684
+#: ../src/gui/game-window.cpp:2692 ../src/gui/game-window.cpp:2698
 msgid "A battle here would be a foolish decision!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2680
+#: ../src/gui/game-window.cpp:2694
 msgid "I believe this battle will surely be a foolish decision!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2682
+#: ../src/gui/game-window.cpp:2696
 msgid "This battle would be a foolish decision!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2686
+#: ../src/gui/game-window.cpp:2700
 msgid "I believe this battle will be a foolish decision!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2688
+#: ../src/gui/game-window.cpp:2702
 msgid "This battle shall be a foolish decision!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2693
+#: ../src/gui/game-window.cpp:2707
 msgid "This battle will surely be sheerest folly!  Thou shouldst not attack!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2695 ../src/gui/game-window.cpp:2701
+#: ../src/gui/game-window.cpp:2709 ../src/gui/game-window.cpp:2715
 msgid "A battle here would be sheerest folly!  Thou shouldst not attack!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2697
+#: ../src/gui/game-window.cpp:2711
 msgid ""
 "I believe this battle will surely be sheerest folly!  Thou shouldst not "
 "attack!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2699
+#: ../src/gui/game-window.cpp:2713
 msgid "This battle would be sheerest folly!  Thou shouldst not attack!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2703
+#: ../src/gui/game-window.cpp:2717
 msgid ""
 "I believe this battle will be sheerest folly!  Thou shouldst not attack!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2705
+#: ../src/gui/game-window.cpp:2719
 msgid "This battle shall be sheerest folly!  Thou shouldst not attack!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2710
+#: ../src/gui/game-window.cpp:2724
 msgid "This battle will surely be complete and utter suicide!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2712 ../src/gui/game-window.cpp:2718
+#: ../src/gui/game-window.cpp:2726 ../src/gui/game-window.cpp:2732
 msgid "A battle here would be complete and utter suicide!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2714
+#: ../src/gui/game-window.cpp:2728
 msgid "I believe this battle will surely be complete and utter suicide!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2716
+#: ../src/gui/game-window.cpp:2730
 msgid "This battle would be complete and utter suicide!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2720
+#: ../src/gui/game-window.cpp:2734
 msgid "I believe this battle will be complete and utter suicide!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2722
+#: ../src/gui/game-window.cpp:2736
 msgid "This battle shall be complete and utter suicide!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2772
+#: ../src/gui/game-window.cpp:2786
 msgid "The Warlord Says..."
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2821
+#: ../src/gui/game-window.cpp:2835
 msgid "%1 gold piece was stolen from %2!"
 msgid_plural "%1 gold pieces were stolen from %2!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/game-window.cpp:2832
+#: ../src/gui/game-window.cpp:2846
 msgid "%1 army unit was sunk to the watery depths!"
 msgid_plural "%1 army units were sunk to the watery depths!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/game-window.cpp:2843
+#: ../src/gui/game-window.cpp:2857
 msgid "%1 bag was retrieved by %2!"
 msgid_plural "%1 bags were retrieved by %2!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/game-window.cpp:2854
+#: ../src/gui/game-window.cpp:2868
 msgid "%1 has burned a bridge!  None shall pass this way again!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2863
+#: ../src/gui/game-window.cpp:2877
 msgid "%1 has turned a unit of %2 from %3!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2873
+#: ../src/gui/game-window.cpp:2887
 msgid "%1 unit in %2 have perished!"
 msgid_plural "%1 units in %2 have perished!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/game-window.cpp:2884
+#: ../src/gui/game-window.cpp:2898
 msgid "%1 unit of %2 have been raised in %3!"
 msgid_plural "%1 units of %2 have been raised in %3!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/game-window.cpp:2899
+#: ../src/gui/game-window.cpp:2913
 msgid "%1 unit in %2 have been persuaded to fly your flag!"
 msgid_plural "%1 units in %2 have been persuaded to fly your flag!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/game-window.cpp:2905
+#: ../src/gui/game-window.cpp:2919
 msgid "The citizens of %1 have been persuaded to fly your flag!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2914
+#: ../src/gui/game-window.cpp:2928
 msgid "%1 has teleported to %2!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2925
+#: ../src/gui/game-window.cpp:2939
 msgid "A unit of %1 has come to the aid of %2!"
 msgstr ""
 
-#: ../src/gui/game-window.cpp:2934
+#: ../src/gui/game-window.cpp:2948
 msgid "%1 unit of %2 was banished by %3!"
 msgid_plural "%1 units of %2 were banished by %3!"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/gui/game-window.cpp:2945
+#: ../src/gui/game-window.cpp:2959
 msgid "%1 movement point was added to %2 and accompanying units!"
 msgid_plural "%1 movement points were added to %2 and accompanying units!"
 msgstr[0] ""
@@ -5065,8 +5096,8 @@ msgstr ""
 msgid "Select a scenario file to add to the library"
 msgstr ""
 
-#: ../src/gui/load-scenario-dialog.cpp:173 ../src/editor/main-window.cpp:791
-#: ../src/editor/main-window.cpp:927
+#: ../src/gui/load-scenario-dialog.cpp:173 ../src/editor/main-window.cpp:797
+#: ../src/editor/main-window.cpp:933
 msgid "LordsAWar Maps (*.map)"
 msgstr ""
 
@@ -5093,7 +5124,7 @@ msgid "Gamehost Server Error: %1"
 msgstr ""
 
 #: ../src/gui/driver.cpp:563 ../src/gui/driver.cpp:595
-#: ../src/gui/driver.cpp:1264
+#: ../src/gui/driver.cpp:1270
 msgid "Server Failure"
 msgstr ""
 
@@ -5101,27 +5132,27 @@ msgstr ""
 msgid "Uploading."
 msgstr ""
 
-#: ../src/gui/driver.cpp:716
+#: ../src/gui/driver.cpp:722
 msgid "Server went away."
 msgstr ""
 
-#: ../src/gui/driver.cpp:717
+#: ../src/gui/driver.cpp:723
 msgid "Disconnected"
 msgstr ""
 
-#: ../src/gui/driver.cpp:734
+#: ../src/gui/driver.cpp:740
 msgid ""
 "Could not connect to server:\n"
 "%1 %2"
 msgstr ""
 
-#: ../src/gui/driver.cpp:855
+#: ../src/gui/driver.cpp:861
 msgid ""
 "Invalid map file.\n"
 "Please validate it in the scenario editor."
 msgstr ""
 
-#: ../src/gui/driver.cpp:1262
+#: ../src/gui/driver.cpp:1268
 msgid "Could not bind to port %1"
 msgstr ""
 
@@ -5187,11 +5218,11 @@ msgstr ""
 msgid "Rescue Crashed Game"
 msgstr ""
 
-#: ../src/gui/splash-window.cpp:167 ../src/editor/main-window.cpp:1766
+#: ../src/gui/splash-window.cpp:169 ../src/editor/main-window.cpp:1773
 msgid "LordsAWar Saved Games (*.sav)"
 msgstr ""
 
-#: ../src/gui/splash-window.cpp:221
+#: ../src/gui/splash-window.cpp:223
 msgid "New Networked Game"
 msgstr ""
 
@@ -5423,8 +5454,8 @@ msgstr ""
 #: ../src/editor/itemlist-dialog.cpp:323 ../src/editor/itemlist-dialog.cpp:327
 #: ../src/editor/armyset-info-dialog.cpp:59
 #: ../src/editor/cityset-info-dialog.cpp:57
-#: ../src/editor/armyset-window.cpp:1480 ../src/editor/main-window.cpp:500
-#: ../src/editor/main-window.cpp:610 ../src/editor/tileset-info-dialog.cpp:59
+#: ../src/editor/armyset-window.cpp:1492 ../src/editor/main-window.cpp:506
+#: ../src/editor/main-window.cpp:616 ../src/editor/tileset-info-dialog.cpp:59
 #: ../src/editor/tileset-window.cpp:809
 #: ../src/editor/shieldset-info-dialog.cpp:59 ../src/armyprotobase.cpp:40
 msgid "Untitled"
@@ -5457,106 +5488,106 @@ msgstr ""
 msgid "That name is already in use."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:486
+#: ../src/editor/armyset-window.cpp:498
 msgid "Make a New Armyset"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:522
+#: ../src/editor/armyset-window.cpp:534
 msgid "Choose an Armyset to Load"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:524
+#: ../src/editor/armyset-window.cpp:536
 msgid "LordsAWar Armysets (*.lwa)"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:556
+#: ../src/editor/armyset-window.cpp:568
 msgid "There must be at least one army unit in the armyset."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:559
+#: ../src/editor/armyset-window.cpp:571
 msgid "There must be at least one hero in the armyset."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:562
+#: ../src/editor/armyset-window.cpp:574
 msgid ""
 "There must be at least one army unit with a production cost of more than "
 "zero."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:565
+#: ../src/editor/armyset-window.cpp:577
 msgid "There must be at least one army unit than can defend a ruin."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:568
+#: ../src/editor/armyset-window.cpp:580
 msgid "There must be at least one army unit than can be awarded to a hero."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:571
+#: ../src/editor/armyset-window.cpp:583
 msgid "The ship image must be set."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:574
+#: ../src/editor/armyset-window.cpp:586
 msgid "The hero's standard (the flag) image must be set."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:577
+#: ../src/editor/armyset-window.cpp:589
 msgid "The picture for the bag of items must be set."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:585
+#: ../src/editor/armyset-window.cpp:597
 msgid "%1 does not have an image set for the %2 player"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:592
+#: ../src/editor/armyset-window.cpp:604
 msgid "An army unit does not have a name."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:600
+#: ../src/editor/armyset-window.cpp:612
 msgid "The armyset is valid."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:627
+#: ../src/editor/armyset-window.cpp:639
 msgid "Save a Copy of a Armyset"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:672 ../src/editor/armyset-window.cpp:691
-#: ../src/editor/armyset-window.cpp:729
+#: ../src/editor/armyset-window.cpp:684 ../src/editor/armyset-window.cpp:703
+#: ../src/editor/armyset-window.cpp:741
 msgid "Error!  Armyset could not be saved."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:689
+#: ../src/editor/armyset-window.cpp:701
 msgid "Armyset is invalid, and is also the current working armyset."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:750
+#: ../src/editor/armyset-window.cpp:762
 msgid "Select a Ship image"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:776
+#: ../src/editor/armyset-window.cpp:788
 msgid "Select a Hero Flag image"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:802
+#: ../src/editor/armyset-window.cpp:814
 msgid "Select a Bag image"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:827
+#: ../src/editor/armyset-window.cpp:839
 msgid "Edit Armyset Information"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:1048
+#: ../src/editor/armyset-window.cpp:1060
 msgid "Select a %1 Army image"
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:1526
+#: ../src/editor/armyset-window.cpp:1538
 msgid "Error!  The version of the armyset is unsupported."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:1528
+#: ../src/editor/armyset-window.cpp:1540
 msgid "Error!  Armyset could not be loaded."
 msgstr ""
 
-#: ../src/editor/armyset-window.cpp:1663 ../src/editor/cityset-window.cpp:818
+#: ../src/editor/armyset-window.cpp:1675 ../src/editor/cityset-window.cpp:818
 #: ../src/editor/tileset-window.cpp:1537
 #: ../src/editor/shieldset-window.cpp:752
 msgid ""
@@ -5680,23 +5711,23 @@ msgstr ""
 msgid "Upkeep"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:500 ../src/editor/main-window.cpp:610
+#: ../src/editor/main-window.cpp:506 ../src/editor/main-window.cpp:616
 msgid "No description"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:789
+#: ../src/editor/main-window.cpp:795
 msgid "Choose Map to Load"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:822
+#: ../src/editor/main-window.cpp:828
 msgid "Could not load map %1."
 msgstr ""
 
-#: ../src/editor/main-window.cpp:846 ../src/editor/main-window.cpp:948
+#: ../src/editor/main-window.cpp:852 ../src/editor/main-window.cpp:955
 msgid "Map was not saved!"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:863 ../src/editor/main-window.cpp:895
+#: ../src/editor/main-window.cpp:869 ../src/editor/main-window.cpp:901
 #: ../src/editor/tileset-window.cpp:1035
 #: ../src/editor/shieldset-window.cpp:725
 #: ../src/editor/tileset-selector-editor-dialog.cpp:305
@@ -5705,28 +5736,28 @@ msgstr ""
 msgid "PNG files (*.png)"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:884 ../src/editor/main-window.cpp:916
+#: ../src/editor/main-window.cpp:890 ../src/editor/main-window.cpp:922
 msgid "Map was not exported!"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:1190
+#: ../src/editor/main-window.cpp:1197
 msgid "Auto"
 msgstr ""
 
 #. note to translators: this is a coordinate pair (x, y)
-#: ../src/editor/main-window.cpp:1419
+#: ../src/editor/main-window.cpp:1426
 msgid "(%1, %2)"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:1451
+#: ../src/editor/main-window.cpp:1458
 msgid "Bag"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:1738
+#: ../src/editor/main-window.cpp:1745
 msgid "No errors."
 msgstr ""
 
-#: ../src/editor/main-window.cpp:1741
+#: ../src/editor/main-window.cpp:1748
 msgid ""
 "\n"
 "There is %1 more error"
@@ -5736,7 +5767,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/editor/main-window.cpp:1743
+#: ../src/editor/main-window.cpp:1750
 msgid ""
 "\n"
 "There is %1 warning"
@@ -5746,11 +5777,11 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../src/editor/main-window.cpp:1764
+#: ../src/editor/main-window.cpp:1771
 msgid "Choose Game to Load Map from"
 msgstr ""
 
-#: ../src/editor/main-window.cpp:1793
+#: ../src/editor/main-window.cpp:1800
 msgid "Could not load game %1."
 msgstr ""
 
@@ -5778,15 +5809,17 @@ msgstr ""
 msgid "No Ruin"
 msgstr ""
 
-#: ../src/editor/main.cpp:73 ../src/main.cpp:144 ../src/gls/main.cpp:83
-#: ../src/gls/gls-client-main.cpp:112 ../src/ghs/main.cpp:91
-#: ../src/ghs/ghs-client-main.cpp:105 ../src/upgrade-file.cpp:64
+#: ../src/editor/main.cpp:73 ../src/editor/import.cpp:1348 ../src/main.cpp:144
+#: ../src/gls/main.cpp:83 ../src/gls/gls-client-main.cpp:112
+#: ../src/ghs/main.cpp:91 ../src/ghs/ghs-client-main.cpp:105
+#: ../src/upgrade-file.cpp:64
 msgid "version"
 msgstr ""
 
-#: ../src/editor/main.cpp:74 ../src/main.cpp:145 ../src/gls/main.cpp:84
-#: ../src/gls/gls-client-main.cpp:113 ../src/ghs/main.cpp:92
-#: ../src/ghs/ghs-client-main.cpp:106 ../src/upgrade-file.cpp:66
+#: ../src/editor/main.cpp:74 ../src/editor/import.cpp:1350 ../src/main.cpp:145
+#: ../src/gls/main.cpp:84 ../src/gls/gls-client-main.cpp:113
+#: ../src/ghs/main.cpp:92 ../src/ghs/ghs-client-main.cpp:106
+#: ../src/upgrade-file.cpp:66
 msgid "Options:"
 msgstr ""
 
@@ -5798,9 +5831,10 @@ msgstr ""
 msgid "FILE can be a saved game file (.sav), or a map (.map) file."
 msgstr ""
 
-#: ../src/editor/main.cpp:79 ../src/main.cpp:157 ../src/gls/main.cpp:89
-#: ../src/gls/gls-client-main.cpp:128 ../src/ghs/main.cpp:99
-#: ../src/ghs/ghs-client-main.cpp:118 ../src/upgrade-file.cpp:71
+#: ../src/editor/main.cpp:79 ../src/editor/import.cpp:1354 ../src/main.cpp:157
+#: ../src/gls/main.cpp:89 ../src/gls/gls-client-main.cpp:128
+#: ../src/ghs/main.cpp:99 ../src/ghs/ghs-client-main.cpp:118
+#: ../src/upgrade-file.cpp:71
 msgid "Report bugs to"
 msgstr ""
 
@@ -6109,6 +6143,147 @@ msgstr ""
 msgid "Loading Shieldsets"
 msgstr ""
 
+#: ../src/editor/import.cpp:67
+msgid "a scenario called %1 converted by lordsawar-import version %2"
+msgstr ""
+
+#: ../src/editor/import.cpp:480
+#, c-format
+msgid "Error: Terrain code %02hhx at %d,%d is unknown\n"
+msgstr ""
+
+#: ../src/editor/import.cpp:485
+#, c-format
+msgid "Error: Terrain code %02hhx at %d,%d is unknown type %s\n"
+msgstr ""
+
+#: ../src/editor/import.cpp:644
+msgid "Importing player %1."
+msgstr ""
+
+#: ../src/editor/import.cpp:673
+msgid "Importing %1 ruins & temples."
+msgstr ""
+
+#: ../src/editor/import.cpp:706
+msgid "Error: We got an unknkown temple/ruin type of %1 for %2 at %3,%4"
+msgstr ""
+
+#: ../src/editor/import.cpp:731
+msgid "Importing %1 cities."
+msgstr ""
+
+#: ../src/editor/import.cpp:804
+msgid "Importing %1 signposts."
+msgstr ""
+
+#: ../src/editor/import.cpp:930
+msgid "Importing %1 items."
+msgstr ""
+
+#: ../src/editor/import.cpp:948
+msgid "Error: couldn't convert item number %1"
+msgstr ""
+
+#: ../src/editor/import.cpp:1039
+msgid "Importing armyset %1."
+msgstr ""
+
+#: ../src/editor/import.cpp:1048
+msgid "An armyset called %1 converted by lordsawar-import %2."
+msgstr ""
+
+#: ../src/editor/import.cpp:1086
+msgid "Warning: unrecognized city bonus of %1 for %2"
+msgstr ""
+
+#: ../src/editor/import.cpp:1097
+msgid "Warning: unrecognized open bonus of %1 for %2"
+msgstr ""
+
+#: ../src/editor/import.cpp:1108
+msgid "Warning: unrecognized forest bonus of %1 for %2"
+msgstr ""
+
+#: ../src/editor/import.cpp:1119
+msgid "Warning: unrecognized hills bonus of %1 for %2"
+msgstr ""
+
+#: ../src/editor/import.cpp:1133
+msgid "Warning: unrecognized enemy minus bonus of %1 for %2"
+msgstr ""
+
+#: ../src/editor/import.cpp:1145
+msgid "Warning: unrecognized cancel bonus of %1 for %2"
+msgstr ""
+
+#: ../src/editor/import.cpp:1156
+msgid "Warning: unrecognized city plus flag of %1 for %2"
+msgstr ""
+
+#: ../src/editor/import.cpp:1175
+msgid "Warning: unrecognized ally flag of %1 for %2"
+msgstr ""
+
+#: ../src/editor/import.cpp:1254
+msgid "Warning: no army file found.  Using default armyset."
+msgstr ""
+
+#: ../src/editor/import.cpp:1274
+msgid "Error: Could not save `%1%2'"
+msgstr ""
+
+#: ../src/editor/import.cpp:1276
+#, c-format
+msgid "Saved to %1.map."
+msgstr ""
+
+#: ../src/editor/import.cpp:1346
+msgid "Usage: %1 [OPTION]... FILE"
+msgstr ""
+
+#: ../src/editor/import.cpp:1351 ../src/gls/main.cpp:85
+#: ../src/gls/gls-client-main.cpp:114 ../src/ghs/main.cpp:93
+#: ../src/ghs/ghs-client-main.cpp:107 ../src/upgrade-file.cpp:67
+msgid "Display this help and exit"
+msgstr ""
+
+#: ../src/editor/import.cpp:1352
+msgid "Use this WL2 army file"
+msgstr ""
+
+#: ../src/editor/import.cpp:1395
+msgid "Error: Couldn't open `%1' for reading."
+msgstr ""
+
+#: ../src/editor/import.cpp:1410
+msgid "Error, Could not find a .MAP file in %1"
+msgstr ""
+
+#: ../src/editor/import.cpp:1416
+msgid "Error: Could not find a .SCN file in `%1'"
+msgstr ""
+
+#: ../src/editor/import.cpp:1422
+msgid "Error: Could not find a .RD file in `%1'"
+msgstr ""
+
+#: ../src/editor/import.cpp:1428
+msgid "Error: Could not find a .SGN file in `%1'"
+msgstr ""
+
+#: ../src/editor/import.cpp:1434
+msgid "Error: Could not find a .ITM file in `%1'"
+msgstr ""
+
+#: ../src/editor/import.cpp:1440
+msgid "Error: Could not find a .SPC file in `%1'"
+msgstr ""
+
+#: ../src/editor/import.cpp:1517
+msgid "Error: Could not open `%1'"
+msgstr ""
+
 #: ../src/gui/city-info-tip.cpp:60
 msgid "Razed!"
 msgstr ""
@@ -6117,15 +6292,15 @@ msgstr ""
 msgid "Capital of\n"
 msgstr ""
 
-#: ../src/gui/game-lobby-dialog.cpp:236
+#: ../src/gui/game-lobby-dialog.cpp:248
 msgid "Person"
 msgstr ""
 
-#: ../src/gui/game-lobby-dialog.cpp:322
+#: ../src/gui/game-lobby-dialog.cpp:338
 msgid "Controlled"
 msgstr ""
 
-#: ../src/gui/game-lobby-dialog.cpp:766
+#: ../src/gui/game-lobby-dialog.cpp:785
 msgid "People"
 msgstr ""
 
@@ -6526,12 +6701,6 @@ msgstr ""
 
 #: ../src/PixMask.cpp:138
 msgid "Could not load image file `%1'."
-msgstr ""
-
-#: ../src/gls/main.cpp:85 ../src/gls/gls-client-main.cpp:114
-#: ../src/ghs/main.cpp:93 ../src/ghs/ghs-client-main.cpp:107
-#: ../src/upgrade-file.cpp:67
-msgid "Display this help and exit"
 msgstr ""
 
 #: ../src/gls/main.cpp:86 ../src/ghs/main.cpp:94
