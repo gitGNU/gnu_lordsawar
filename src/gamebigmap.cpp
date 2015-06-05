@@ -59,7 +59,6 @@ GameBigMap::GameBigMap(bool intense_combat, bool see_opponents_production,
 
   current_tile.x = current_tile.y = 0;
   mouse_state = NONE;
-  input_locked = false;
 
   prev_mouse_pos = Vector<int>(0, 0);
 
@@ -1083,4 +1082,12 @@ void GameBigMap::reset_path_calculator(Stack *s)
   if (path_calculator)
     delete path_calculator;
   path_calculator = new PathCalculator(s);
+}
+
+void GameBigMap::update_mouse_cursor()
+{
+  Vector<int> tile = mouse_pos_to_tile(prev_mouse_pos);
+  current_tile = tile;
+  determine_mouse_cursor (Playerlist::getActiveplayer()->getActivestack(),
+                          current_tile);
 }

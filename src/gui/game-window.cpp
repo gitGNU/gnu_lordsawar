@@ -147,7 +147,7 @@ GameWindow::GameWindow()
     xml->get_widget("bigmap_eventbox", bigmap_eventbox);
     bigmap_eventbox->add_events(Gdk::KEY_PRESS_MASK | 
 		  Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK |
-	          Gdk::POINTER_MOTION_MASK);
+	          Gdk::POINTER_MOTION_MASK | Gdk::SCROLL_MASK);
     bigmap_eventbox->signal_key_press_event().connect(
 	sigc::mem_fun(*this, &GameWindow::on_bigmap_key_event));
     bigmap_eventbox->signal_key_release_event().connect(
@@ -158,6 +158,9 @@ GameWindow::GameWindow()
      (sigc::mem_fun(*this, &GameWindow::on_bigmap_mouse_button_event));
     bigmap_eventbox->signal_motion_notify_event().connect
      (sigc::mem_fun(*this, &GameWindow::on_bigmap_mouse_motion_event));
+    bigmap_eventbox->signal_scroll_event().connect
+      (sigc::mem_fun(*this, &GameWindow::on_bigmap_scrolled));
+
     xml->get_widget("status_box_container", status_box_container);
 
     status_box = StatusBox::create(Configuration::s_ui_form_factor);
@@ -2959,4 +2962,13 @@ void GameWindow::on_mp_added_to_hero_stack(Hero *hero, guint32 mp)
   TimedMessageDialog dialog(*window, s, 30);
   dialog.run_and_hide();
   return;
+}
+
+bool GameWindow::on_bigmap_scrolled(GdkEventScroll* event)
+{
+  if (!game)
+    return true;
+  bool ret = game->get_bigmap().scroll(event);
+  game->get_bigmap().update_mouse_cursor();
+  return ret;
 }

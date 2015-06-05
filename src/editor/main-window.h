@@ -235,6 +235,7 @@ class MainWindow: public sigc::trackable
     bool on_smallmap_exposed(const Cairo::RefPtr<Cairo::Context>& cr);
     void on_bigmap_surface_changed(Gtk::Allocation box);
     void on_save_as_activated(Gtk::FileChooserDialog *chooser);
+    bool on_bigmap_scrolled(GdkEventScroll* event);
     void redraw();
     void fill_players();
 

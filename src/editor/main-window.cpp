@@ -120,7 +120,8 @@ MainWindow::MainWindow(Glib::ustring load_filename)
     bigmap_eventbox->add_events(Gdk::BUTTON_PRESS_MASK | 
 				Gdk::BUTTON_RELEASE_MASK | 
 				Gdk::POINTER_MOTION_MASK |
-				Gdk::KEY_PRESS_MASK);
+				Gdk::KEY_PRESS_MASK | 
+                                Gdk::SCROLL_MASK);
     bigmap_eventbox->signal_button_press_event().connect(
 	sigc::mem_fun(*this, &MainWindow::on_bigmap_mouse_button_event));
     bigmap_eventbox->signal_button_release_event().connect(
@@ -131,6 +132,8 @@ MainWindow::MainWindow(Glib::ustring load_filename)
 	sigc::mem_fun(*this, &MainWindow::on_bigmap_key_event));
     bigmap_eventbox->signal_leave_notify_event().connect(
 	sigc::mem_fun(*this, &MainWindow::on_bigmap_leave_event));
+    bigmap_eventbox->signal_scroll_event().connect
+      (sigc::mem_fun(*this, &MainWindow::on_bigmap_scrolled));
     xml->get_widget("smallmap_image", smallmap_image);
     smallmap_image->signal_draw().connect
       (sigc::mem_fun(*this, &MainWindow::on_smallmap_exposed));
@@ -1927,4 +1930,11 @@ void MainWindow::on_edit_fight_order_activated()
   if (d.get_modified())
     needs_saving = true;
 
+}
+
+bool MainWindow::on_bigmap_scrolled(GdkEventScroll* event)
+{
+  if (bigmap)
+    return bigmap->scroll(event);
+  return true;
 }

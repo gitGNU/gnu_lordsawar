@@ -58,7 +58,7 @@ BigMap::BigMap()
     view.x = view.y = 0;
     view.w = 0;
     view.h = 0;
-
+    input_locked = false;
     d_grid_toggled = false;
 
     blank_screen = false;
@@ -639,4 +639,46 @@ void BigMap::blank(bool on)
 {
   blank_screen = on;
   draw (Playerlist::getViewingplayer());
+}
+
+bool BigMap::scroll(GdkEventScroll *event)
+{
+  if (input_locked)
+    return true;
+  Rectangle n = view;
+  int amt = 1;
+  int max_height = GameMap::getHeight() * GameMap::getInstance()->getTileSize();
+  int max_width = GameMap::getWidth() * GameMap::getInstance()->getTileSize();
+  switch (event->direction)
+    {
+    case GDK_SCROLL_UP:
+      if (n.y > amt)
+        n.y -= amt;
+      else
+        n.y = 0;
+      break;
+      break;
+    case GDK_SCROLL_DOWN:
+      if (n.y + amt < max_height)
+        n.y += amt;
+      else
+        n.y = max_height;
+      break;
+    case GDK_SCROLL_RIGHT:
+      if (n.x + amt < max_width)
+        n.x += amt;
+      else
+        n.x = max_width;
+      break;
+    case GDK_SCROLL_LEFT:
+      if (n.x > amt)
+        n.x -= amt;
+      else
+        n.x = 0;
+    default:
+      break;
+    }
+  set_view(n);
+  view_changed.emit(view);
+  return true;
 }

@@ -84,6 +84,7 @@ class BigMap: public sigc::trackable
     bool saveUnderlyingMapAsBitmap(Glib::ustring filename);
 
     void toggle_grid();
+    bool scroll(GdkEventScroll *event);
     
     Cairo::RefPtr<Cairo::Surface> get_surface() const {return outgoing;}
  protected:

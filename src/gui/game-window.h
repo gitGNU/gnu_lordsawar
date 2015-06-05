@@ -302,6 +302,7 @@ class GameWindow: public sigc::trackable
     Item* on_select_item(std::list<Item*> items);
     Player *on_select_item_victim_player();
     City *on_select_city_to_use_item_on(SelectCityMap::Type type);
+    bool on_bigmap_scrolled(GdkEventScroll* event);
 
     // quest manager callbacks
     void on_quest_completed(Quest *quest, Reward *reward);

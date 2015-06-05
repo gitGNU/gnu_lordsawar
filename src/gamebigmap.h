@@ -56,6 +56,7 @@ class GameBigMap: public BigMap
     bool is_shift_key_down () const {return control_key_is_down;}
     void set_control_key_down (bool down);
     bool is_control_key_down () const {return control_key_is_down;}
+    void update_mouse_cursor();
 
     // whether the map accepts input events
     void set_input_locked(bool locked) { input_locked = locked; }
@@ -90,8 +91,6 @@ class GameBigMap: public BigMap
  private:
     Vector<int> current_tile, prev_mouse_pos;
     
-    bool input_locked;
-	
     enum mouse_state_enum {
 	NONE, DRAGGING_MAP, SHOWING_CITY, SHOWING_RUIN,
 	SHOWING_TEMPLE, SHOWING_SIGNPOST, SHOWING_STACK,
