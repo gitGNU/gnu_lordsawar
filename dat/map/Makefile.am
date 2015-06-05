@@ -1,2 +1,2 @@
-SUBDIRS = 2ndPunic37 dol
+SUBDIRS = dol
 MANTAINERCLEANFILES= Makefile.in

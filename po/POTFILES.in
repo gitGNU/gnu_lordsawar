@@ -138,7 +138,6 @@
 [type: gettext/xml]dat/tilesets/bigstark/bigstark.lwt.in
 [type: gettext/xml]dat/tilesets/wesnoth/wesnoth.lwt.in
 [type: gettext/xml]dat/tilesets/bigwesnoth/bigwesnoth.lwt.in
-[type: gettext/xml]dat/map/2ndPunic37/2ndPunic37.map.in
 [type: gettext/xml]dat/map/dol/dol.map.in
 src/FogMap.cpp
 src/templelist.cpp
