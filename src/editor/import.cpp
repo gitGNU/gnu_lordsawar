@@ -1199,6 +1199,20 @@ import_armyset (FILE *a, Glib::ustring name)
   return armyset;
 }
 
+static void
+import_fight_order (FILE *scn)
+{
+  fseek (scn, 0x60b, SEEK_CUR);
+  char fight_order[29];
+  fread (fight_order, sizeof (char), 29, scn);
+  std::list<guint32> order;
+  for (int i = 0; i < 29; i++)
+    order.push_back(fight_order[i]);
+  Playerlist *pl = Playerlist::getInstance();
+  for (Playerlist::iterator i = pl->begin(); i != pl->end(); i++)
+    (*i)->setFightOrder(order);
+}
+
 static void 
 import (FILE *map, FILE *scn, FILE *rd, FILE *sg, FILE *it, FILE *sp, FILE *a, Glib::ustring name)
 {
@@ -1225,6 +1239,8 @@ import (FILE *map, FILE *scn, FILE *rd, FILE *sg, FILE *it, FILE *sp, FILE *a, G
 
   at = ftell (scn);
   import_players (scn, armyset);
+  fseek (scn, at, SEEK_SET);
+  import_fight_order (scn);
   fseek (scn, at, SEEK_SET);
   import_ruins_and_temples (scn, sp);
   fseek (scn, at, SEEK_SET);
