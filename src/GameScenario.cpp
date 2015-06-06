@@ -454,7 +454,7 @@ bool GameScenario::setupCities(GameParameters::QuickStartPolicy quick_start)
 	  switch (GameScenario::s_neutral_cities)
 	    {
 	    case GameParameters::AVERAGE:
-	      (*it)->produceWeakestQuickestArmyInArmyset();
+              (*it)->produceWeakestProductionBase();
 	      break;
 	    case GameParameters::STRONG:
 	      (*it)->produceStrongestProductionBase();
