@@ -1244,6 +1244,27 @@ static bool compare_strength (const ArmyProto* first, const ArmyProto* second)
   return false;
 }
 
+static void
+import_initial_gold (FILE *scn)
+{
+  fseek(scn, 0x183, SEEK_CUR);
+  struct rec_t
+    {
+      short player_id;
+      short gold;
+      char unused[16];
+    };
+  struct  rec_t recs[8];
+  fread (recs, sizeof (struct rec_t), 8, scn);
+  for (int i = 0; i < 8; i++)
+    {
+      int id = convert_player_id (recs[i].player_id);
+      Player *p = Playerlist::getInstance()->getPlayer(id);
+      if (p)
+        p->setGold(recs[i].gold);
+    }
+}
+
 static void 
 import (FILE *map, FILE *scn, FILE *rd, FILE *sg, FILE *it, FILE *sp, FILE *a, Glib::ustring name)
 {
@@ -1270,6 +1291,8 @@ import (FILE *map, FILE *scn, FILE *rd, FILE *sg, FILE *it, FILE *sp, FILE *a, G
 
   at = ftell (scn);
   import_players (scn, armyset);
+  fseek (scn, at, SEEK_SET);
+  import_initial_gold(scn);
   fseek (scn, at, SEEK_SET);
   import_fight_order (scn, armyset);
   if (a)
