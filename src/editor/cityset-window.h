@@ -62,7 +62,7 @@ class CitySetWindow: public sigc::trackable
     Gtk::SpinButton *city_tile_width_spinbutton;
     Gtk::SpinButton *ruin_tile_width_spinbutton;
     Gtk::SpinButton *temple_tile_width_spinbutton;
-    Gtk::Frame *cityset_frame;
+    Gtk::Alignment *cityset_alignment;
 
     bool on_delete_event(GdkEventAny *e);
 

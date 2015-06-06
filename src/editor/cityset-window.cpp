@@ -57,7 +57,7 @@ CitySetWindow::CitySetWindow(Gtk::Window *parent, Glib::ustring load_filename)
     window->signal_delete_event().connect
       (sigc::mem_fun(*this, &CitySetWindow::on_window_closed));
 
-    xml->get_widget("cityset_frame", cityset_frame);
+    xml->get_widget("cityset_alignment", cityset_alignment);
     xml->get_widget("new_cityset_menuitem", new_cityset_menuitem);
     new_cityset_menuitem->signal_activate().connect
       (sigc::mem_fun(this, &CitySetWindow::on_new_cityset_activated));
@@ -161,7 +161,7 @@ CitySetWindow::update_cityset_menuitems()
 void
 CitySetWindow::update_cityset_panel()
 {
-  cityset_frame->set_sensitive(d_cityset != NULL);
+  cityset_alignment->set_sensitive(d_cityset != NULL);
   Glib::ustring no_image = _("no image set");
   Glib::ustring s;
   if (d_cityset && d_cityset->getCitiesFilename().empty() == false)

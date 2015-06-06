@@ -57,7 +57,7 @@ ShieldSetWindow::ShieldSetWindow(Gtk::Window *parent, Glib::ustring load_filenam
     window->signal_delete_event().connect
       (sigc::mem_fun(*this, &ShieldSetWindow::on_window_closed));
 
-    xml->get_widget("shield_frame", shield_frame);
+    xml->get_widget("shield_alignment", shield_alignment);
     xml->get_widget("shields_treeview", shields_treeview);
     // connect callbacks for the menu
     xml->get_widget("new_shieldset_menuitem", new_shieldset_menuitem);
@@ -161,7 +161,7 @@ ShieldSetWindow::update_shield_panel()
   if (shields_treeview->get_selection()->get_selected() == 0)
     {
       //clear all values
-      shield_frame->set_sensitive(false);
+      shield_alignment->set_sensitive(false);
       change_smallpic_button->set_label(small_none);
       change_mediumpic_button->set_label(medium_none);
       change_largepic_button->set_label(large_none);
@@ -171,7 +171,7 @@ ShieldSetWindow::update_shield_panel()
       player_colorbutton->set_rgba(Gdk::RGBA("black"));
       return;
     }
-  shield_frame->set_sensitive(true);
+  shield_alignment->set_sensitive(true);
   Gtk::TreeModel::iterator iterrow = 
     shields_treeview->get_selection()->get_selected();
   if (iterrow) 

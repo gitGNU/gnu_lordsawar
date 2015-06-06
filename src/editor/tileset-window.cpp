@@ -233,8 +233,8 @@ TileSetWindow::TileSetWindow(Gtk::Window *parent, Glib::ustring load_filename)
     xml->get_widget("remove_tilestyleset_button", remove_tilestyleset_button);
     remove_tilestyleset_button->signal_clicked().connect
       (sigc::mem_fun(this, &TileSetWindow::on_remove_tilestyleset_clicked));
-    xml->get_widget("tilestyleset_frame", tilestyleset_frame);
-    xml->get_widget("tilestyle_frame", tilestyle_frame);
+    xml->get_widget("tilestyleset_alignment", tilestyleset_alignment);
+    xml->get_widget("tilestyle_alignment", tilestyle_alignment);
     xml->get_widget("image_button", image_button);
     image_button->signal_clicked().connect
       (sigc::mem_fun(*this, &TileSetWindow::on_image_chosen));
@@ -324,7 +324,7 @@ TileSetWindow::update_tilestyle_panel()
   if (tilestyles_treeview->get_selection()->get_selected() == 0)
     {
       //clear all values
-      tilestyle_frame->set_sensitive(false);
+      tilestyle_alignment->set_sensitive(false);
       tilestyle_combobox->set_active(0);
       tilestyle_image->clear();
       tilestyle_standard_image->clear();
@@ -332,7 +332,7 @@ TileSetWindow::update_tilestyle_panel()
 	  
       return;
     }
-  tilestyle_frame->set_sensitive(true);
+  tilestyle_alignment->set_sensitive(true);
   TileStyle *t = get_selected_tilestyle ();
   if (t)
     {
@@ -389,14 +389,14 @@ void TileSetWindow::fill_tilestyleset_info(TileStyleSet *t)
 void
 TileSetWindow::update_tilestyleset_panel()
 {
-  tilestyleset_frame->set_sensitive(true);
+  tilestyleset_alignment->set_sensitive(true);
   TileStyleSet *t = get_selected_tilestyleset ();
   if (t)
     fill_tilestyleset_info(t);
   else
     {
       fill_tilestyleset_info(NULL);
-      tilestyleset_frame->set_sensitive(false);
+      tilestyleset_alignment->set_sensitive(false);
     }
 }
 

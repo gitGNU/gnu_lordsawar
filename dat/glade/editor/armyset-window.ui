@@ -979,110 +979,92 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
                                 <child>
-                                  <object class="GtkFrame" id="frame2">
+                                  <object class="GtkAlignment" id="alignment2">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label_xalign">0</property>
-                                    <property name="shadow_type">none</property>
+                                    <property name="top_padding">6</property>
+                                    <property name="bottom_padding">12</property>
+                                    <property name="left_padding">12</property>
+                                    <property name="right_padding">12</property>
                                     <child>
-                                      <object class="GtkAlignment" id="alignment2">
+                                      <object class="GtkVBox" id="vbox3">
                                         <property name="visible">True</property>
                                         <property name="can_focus">False</property>
-                                        <property name="top_padding">6</property>
-                                        <property name="bottom_padding">12</property>
-                                        <property name="left_padding">12</property>
-                                        <property name="right_padding">12</property>
                                         <child>
-                                          <object class="GtkVBox" id="vbox3">
+                                          <object class="GtkCheckButton" id="move_forests_checkbutton">
+                                            <property name="label" translatable="yes">Travels faster in forests</property>
                                             <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <child>
-                                              <object class="GtkCheckButton" id="move_forests_checkbutton">
-                                                <property name="label" translatable="yes">Travels faster in forests</property>
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="receives_default">False</property>
-                                                <property name="use_underline">True</property>
-                                                <property name="draw_indicator">True</property>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">False</property>
-                                                <property name="position">0</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <object class="GtkCheckButton" id="move_marshes_checkbutton">
-                                                <property name="label" translatable="yes">Travels faster in marshland</property>
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="receives_default">False</property>
-                                                <property name="use_underline">True</property>
-                                                <property name="draw_indicator">True</property>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">False</property>
-                                                <property name="position">1</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <object class="GtkCheckButton" id="move_hills_checkbutton">
-                                                <property name="label" translatable="yes">Travels faster in hills</property>
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="receives_default">False</property>
-                                                <property name="use_underline">True</property>
-                                                <property name="draw_indicator">True</property>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">False</property>
-                                                <property name="position">2</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <object class="GtkCheckButton" id="move_mountains_checkbutton">
-                                                <property name="label" translatable="yes">Travels faster in mountains</property>
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="receives_default">False</property>
-                                                <property name="use_underline">True</property>
-                                                <property name="draw_indicator">True</property>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">False</property>
-                                                <property name="position">3</property>
-                                              </packing>
-                                            </child>
-                                            <child>
-                                              <object class="GtkCheckButton" id="can_fly_checkbutton">
-                                                <property name="label" translatable="yes">Can Fly</property>
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="receives_default">False</property>
-                                                <property name="use_underline">True</property>
-                                                <property name="draw_indicator">True</property>
-                                              </object>
-                                              <packing>
-                                                <property name="expand">False</property>
-                                                <property name="fill">False</property>
-                                                <property name="position">4</property>
-                                              </packing>
-                                            </child>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">False</property>
+                                            <property name="use_underline">True</property>
+                                            <property name="draw_indicator">True</property>
                                           </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                            <property name="position">0</property>
+                                          </packing>
                                         </child>
-                                      </object>
-                                    </child>
-                                    <child type="label">
-                                      <object class="GtkLabel" id="label14">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">Movement Bonus</property>
-                                        <attributes>
-                                          <attribute name="weight" value="bold"/>
-                                        </attributes>
+                                        <child>
+                                          <object class="GtkCheckButton" id="move_marshes_checkbutton">
+                                            <property name="label" translatable="yes">Travels faster in marshland</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">False</property>
+                                            <property name="use_underline">True</property>
+                                            <property name="draw_indicator">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkCheckButton" id="move_hills_checkbutton">
+                                            <property name="label" translatable="yes">Travels faster in hills</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">False</property>
+                                            <property name="use_underline">True</property>
+                                            <property name="draw_indicator">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                            <property name="position">2</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkCheckButton" id="move_mountains_checkbutton">
+                                            <property name="label" translatable="yes">Travels faster in mountains</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">False</property>
+                                            <property name="use_underline">True</property>
+                                            <property name="draw_indicator">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                            <property name="position">3</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkCheckButton" id="can_fly_checkbutton">
+                                            <property name="label" translatable="yes">Can Fly</property>
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">True</property>
+                                            <property name="receives_default">False</property>
+                                            <property name="use_underline">True</property>
+                                            <property name="draw_indicator">True</property>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">False</property>
+                                            <property name="position">4</property>
+                                          </packing>
+                                        </child>
                                       </object>
                                     </child>
                                   </object>
@@ -1093,287 +1075,269 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkFrame" id="frame3">
+                                  <object class="GtkAlignment" id="alignment3">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="label_xalign">0</property>
-                                    <property name="shadow_type">none</property>
+                                    <property name="top_padding">6</property>
+                                    <property name="left_padding">12</property>
                                     <child>
-                                      <object class="GtkAlignment" id="alignment3">
+                                      <object class="GtkScrolledWindow" id="scrolledwindow3">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="top_padding">6</property>
-                                        <property name="left_padding">12</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="hscrollbar_policy">never</property>
                                         <child>
-                                          <object class="GtkScrolledWindow" id="scrolledwindow3">
+                                          <object class="GtkViewport" id="viewport1">
                                             <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="hscrollbar_policy">never</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="resize_mode">queue</property>
                                             <child>
-                                              <object class="GtkViewport" id="viewport1">
+                                              <object class="GtkVBox" id="vbox4">
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">False</property>
-                                                <property name="resize_mode">queue</property>
                                                 <child>
-                                                  <object class="GtkVBox" id="vbox4">
+                                                  <object class="GtkCheckButton" id="add1strinopen_checkbutton">
+                                                    <property name="label" translatable="yes">+1 Str in Open</property>
                                                     <property name="visible">True</property>
-                                                    <property name="can_focus">False</property>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="add1strinopen_checkbutton">
-                                                        <property name="label" translatable="yes">+1 Str in Open</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">0</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="add2strinopen_checkbutton">
-                                                        <property name="label" translatable="yes">+2 Str in Open</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">1</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="add1strinforest_checkbutton">
-                                                        <property name="label" translatable="yes">+1 Str in Forest</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">2</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="add2strinforest_checkbutton">
-                                                        <property name="label" translatable="yes">+2 Str in Forest</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">3</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="add1strinhills_checkbutton">
-                                                        <property name="label" translatable="yes">+1 Str in Hills</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">4</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="add2strinhills_checkbutton">
-                                                        <property name="label" translatable="yes">+2 Str in Hills</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">5</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="add1strincity_checkbutton">
-                                                        <property name="label" translatable="yes">+1 Str in City</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">6</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="add2strincity_checkbutton">
-                                                        <property name="label" translatable="yes">+2 Str in City</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">7</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="add1stackinhills_checkbutton">
-                                                        <property name="label" translatable="yes">+1 to Stack in Hills</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">8</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="suballcitybonus_checkbutton">
-                                                        <property name="label" translatable="yes">Subtract All City Bonus</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">9</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="sub1enemystack_checkbutton">
-                                                        <property name="label" translatable="yes">-1 Str to Enemy Stack</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">10</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="sub2enemystack_checkbutton">
-                                                        <property name="label" translatable="yes">-2 Str to Enemy Stack</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">11</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="add1stack_checkbutton">
-                                                        <property name="label" translatable="yes">+1 Str to Stack</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">12</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="add2stack_checkbutton">
-                                                        <property name="label" translatable="yes">+2 Str to Stack</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">13</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="suballnonherobonus_checkbutton">
-                                                        <property name="label" translatable="yes">Subtract All Non-Hero Bonuses</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">14</property>
-                                                      </packing>
-                                                    </child>
-                                                    <child>
-                                                      <object class="GtkCheckButton" id="suballherobonus_checkbutton">
-                                                        <property name="label" translatable="yes">Subtract all Hero Bonuses</property>
-                                                        <property name="visible">True</property>
-                                                        <property name="can_focus">True</property>
-                                                        <property name="receives_default">False</property>
-                                                        <property name="use_underline">True</property>
-                                                        <property name="draw_indicator">True</property>
-                                                      </object>
-                                                      <packing>
-                                                        <property name="expand">False</property>
-                                                        <property name="fill">False</property>
-                                                        <property name="position">15</property>
-                                                      </packing>
-                                                    </child>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
                                                   </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">0</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="add2strinopen_checkbutton">
+                                                    <property name="label" translatable="yes">+2 Str in Open</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">1</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="add1strinforest_checkbutton">
+                                                    <property name="label" translatable="yes">+1 Str in Forest</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">2</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="add2strinforest_checkbutton">
+                                                    <property name="label" translatable="yes">+2 Str in Forest</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">3</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="add1strinhills_checkbutton">
+                                                    <property name="label" translatable="yes">+1 Str in Hills</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">4</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="add2strinhills_checkbutton">
+                                                    <property name="label" translatable="yes">+2 Str in Hills</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">5</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="add1strincity_checkbutton">
+                                                    <property name="label" translatable="yes">+1 Str in City</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">6</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="add2strincity_checkbutton">
+                                                    <property name="label" translatable="yes">+2 Str in City</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">7</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="add1stackinhills_checkbutton">
+                                                    <property name="label" translatable="yes">+1 to Stack in Hills</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">8</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="suballcitybonus_checkbutton">
+                                                    <property name="label" translatable="yes">Subtract All City Bonus</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">9</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="sub1enemystack_checkbutton">
+                                                    <property name="label" translatable="yes">-1 Str to Enemy Stack</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">10</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="sub2enemystack_checkbutton">
+                                                    <property name="label" translatable="yes">-2 Str to Enemy Stack</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">11</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="add1stack_checkbutton">
+                                                    <property name="label" translatable="yes">+1 Str to Stack</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">12</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="add2stack_checkbutton">
+                                                    <property name="label" translatable="yes">+2 Str to Stack</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">13</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="suballnonherobonus_checkbutton">
+                                                    <property name="label" translatable="yes">Subtract All Non-Hero Bonuses</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">14</property>
+                                                  </packing>
+                                                </child>
+                                                <child>
+                                                  <object class="GtkCheckButton" id="suballherobonus_checkbutton">
+                                                    <property name="label" translatable="yes">Subtract all Hero Bonuses</property>
+                                                    <property name="visible">True</property>
+                                                    <property name="can_focus">True</property>
+                                                    <property name="receives_default">False</property>
+                                                    <property name="use_underline">True</property>
+                                                    <property name="draw_indicator">True</property>
+                                                  </object>
+                                                  <packing>
+                                                    <property name="expand">False</property>
+                                                    <property name="fill">False</property>
+                                                    <property name="position">15</property>
+                                                  </packing>
                                                 </child>
                                               </object>
                                             </child>
                                           </object>
                                         </child>
-                                      </object>
-                                    </child>
-                                    <child type="label">
-                                      <object class="GtkLabel" id="label15">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="label" translatable="yes">Fighting Bonus</property>
-                                        <attributes>
-                                          <attribute name="weight" value="bold"/>
-                                        </attributes>
                                       </object>
                                     </child>
                                   </object>

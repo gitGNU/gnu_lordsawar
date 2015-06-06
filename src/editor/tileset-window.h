@@ -51,8 +51,6 @@ class TileSetWindow: public sigc::trackable
     bool needs_saving;
     bool inhibit_needs_saving;
     bool inhibit_updates;
-    Gtk::Frame *tilestyleset_frame;
-    Gtk::Frame *tilestyle_frame;
     Gtk::Entry *name_entry;
     Gtk::TreeView *tiles_treeview;
     Gtk::Button *add_tile_button;
@@ -88,6 +86,8 @@ class TileSetWindow: public sigc::trackable
     Gtk::ComboBoxText *tilestyle_combobox;
     Gtk::Image *tilestyle_image;
     Gtk::Button *image_button;
+    Gtk::Alignment *tilestyle_alignment;
+    Gtk::Alignment *tilestyleset_alignment;
 
     std::vector<PixMask* > tilestyle_images;
     Gtk::Image *tilestyle_standard_image;

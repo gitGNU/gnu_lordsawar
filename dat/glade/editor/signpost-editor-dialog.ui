@@ -67,30 +67,9 @@
                 <property name="can_focus">False</property>
                 <property name="spacing">12</property>
                 <child>
-                  <object class="GtkLabel" id="label">
-                    <property name="width_request">250</property>
+                  <object class="GtkAlignment" id="alignment1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
-                    <property name="yalign">0</property>
-                    <property name="label" translatable="yes">Signpost</property>
-                    <property name="wrap">True</property>
-                    <attributes>
-                      <attribute name="weight" value="bold"/>
-                    </attributes>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkFrame" id="text_frame">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label_xalign">0</property>
-                    <property name="shadow_type">in</property>
                     <child>
                       <object class="GtkTextView" id="sign_textview">
                         <property name="height_request">100</property>
@@ -104,8 +83,11 @@
                   <packing>
                     <property name="expand">True</property>
                     <property name="fill">True</property>
-                    <property name="position">1</property>
+                    <property name="position">0</property>
                   </packing>
+                </child>
+                <child>
+                  <placeholder/>
                 </child>
                 <child>
                   <object class="GtkHBox" id="hbox1">

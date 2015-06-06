@@ -61,11 +61,11 @@ class ShieldSetWindow: public sigc::trackable
     Gtk::MenuItem *edit_copy_shields_menuitem;
     Gtk::MenuItem *quit_menuitem;
     Gtk::MenuItem *help_about_menuitem;
-    Gtk::Frame *shield_frame;
     Gtk::Button *change_smallpic_button;
     Gtk::Button *change_mediumpic_button;
     Gtk::Button *change_largepic_button;
     Gtk::ColorButton *player_colorbutton;
+    Gtk::Alignment *shield_alignment;
 
     class ShieldsColumns: public Gtk::TreeModelColumnRecord {
     public:

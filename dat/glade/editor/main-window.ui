@@ -711,15 +711,13 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkEventBox" id="map_eventbox">
+                      <object class="GtkAlignment" id="alignment3">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkFrame" id="map_frame">
+                          <object class="GtkEventBox" id="map_eventbox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="label_xalign">0</property>
-                            <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkImage" id="smallmap_image">
                                 <property name="visible">True</property>
@@ -755,6 +753,42 @@
                         <property name="n_columns">6</property>
                         <property name="column_spacing">6</property>
                         <property name="row_spacing">6</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
                         <child>
                           <placeholder/>
                         </child>
