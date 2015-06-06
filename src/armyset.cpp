@@ -68,7 +68,8 @@ Armyset::Armyset(XML_Helper *helper, Glib::ustring directory)
 }
 
 Armyset::Armyset(const Armyset& a)
- : Set(a)
+ : Set(a), d_ship(0), d_shipmask(0), d_standard(0), 
+    d_standard_mask(0), d_bag(0)
 {
 
   if (a.d_ship)
@@ -923,8 +924,10 @@ guint32 Armyset::getMaxId() const
 
 bool weakest_quickest (const ArmyProto* first, const ArmyProto* second)
 {
-  int f = (first->getStrength() * 100) + (first->getProduction() * 101);
-  int s = (second->getStrength() * 100) + (second->getProduction() * 101);
+  int ffly = first->getMoveBonus() == Tile::isFlying();
+  int sfly = second->getMoveBonus() == Tile::isFlying();
+  int f = (first->getStrength() * 100) + (first->getProduction() * 101) + (ffly * 1000);
+  int s = (second->getStrength() * 100) + (second->getProduction() * 101) + (sfly * 1000);
   if (f < s)
     return true;
   return false;
