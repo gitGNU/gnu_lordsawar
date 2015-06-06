@@ -1231,6 +1231,19 @@ import_fight_order (FILE *scn, Armyset *armyset)
     (*i)->setFightOrder(order_list);
 }
 
+static bool compare_strength (const ArmyProto* first, const ArmyProto* second)
+{
+  int ffly = first->getMoveBonus() == Tile::isFlying();
+  int sfly = second->getMoveBonus() == Tile::isFlying();
+  int fhero = first->isHero();
+  int rhero = first->isHero();
+  int f = (first->getStrength() * 100) + (first->getProduction() * 101) + (ffly * 10) + (fhero * 100000);
+  int s = (second->getStrength() * 100) + (second->getProduction() * 101) + (sfly * 10) + (rhero * 100000);
+  if (f < s)
+    return true;
+  return false;
+}
+
 static void 
 import (FILE *map, FILE *scn, FILE *rd, FILE *sg, FILE *it, FILE *sp, FILE *a, Glib::ustring name)
 {
@@ -1259,6 +1272,14 @@ import (FILE *map, FILE *scn, FILE *rd, FILE *sg, FILE *it, FILE *sp, FILE *a, G
   import_players (scn, armyset);
   fseek (scn, at, SEEK_SET);
   import_fight_order (scn, armyset);
+  if (a)
+    {
+      //pretty hacky here.
+      //we can sort it before we do fight order
+      armyset->sort(compare_strength);
+      armyset->save("/tmp/" + name, ARMYSET_EXT);
+      Armysetlist::getInstance()->add(armyset, "/tmp/" + name + ARMYSET_EXT);
+    }
   fseek (scn, at, SEEK_SET);
   import_ruins_and_temples (scn, sp);
   fseek (scn, at, SEEK_SET);
