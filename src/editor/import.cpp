@@ -1033,6 +1033,22 @@ sort_by_index (ArmyProto *lhs, ArmyProto *rhs)
 {
   return lhs->getId() < rhs->getId();
 }
+
+static void
+copy_other_armyset_images (Armyset *default_armyset, Armyset *armyset)
+{
+  Glib::ustring f =
+    default_armyset->getFileFromConfigurationFile(default_armyset->getBagImageName() + ".png");
+  armyset->setBagImageName(default_armyset->getBagImageName());
+  armyset->addFileInConfigurationFile(f);
+  f = default_armyset->getFileFromConfigurationFile(default_armyset->getShipImageName() + ".png");
+  armyset->addFileInConfigurationFile(f);
+  armyset->setShipImageName(default_armyset->getShipImageName());
+  f = default_armyset->getFileFromConfigurationFile(default_armyset->getStandardImageName() + ".png");
+  armyset->setStandardImageName(default_armyset->getStandardImageName());
+  armyset->addFileInConfigurationFile(f);
+}
+
 static Armyset* 
 import_armyset (FILE *a, Glib::ustring name)
 {
@@ -1188,13 +1204,7 @@ import_armyset (FILE *a, Glib::ustring name)
     }
   armyset->sort(sort_by_index);
   //now copy the bag, the stackship and the planted standard
-  Glib::ustring f =
-    default_armyset->getFileFromConfigurationFile(default_armyset->getBagImageName() + ".png");
-  armyset->addFileInConfigurationFile(f);
-  f = default_armyset->getFileFromConfigurationFile(default_armyset->getShipImageName() + ".png");
-  armyset->addFileInConfigurationFile(f);
-  f = default_armyset->getFileFromConfigurationFile(default_armyset->getStandardImageName() + ".png");
-  armyset->addFileInConfigurationFile(f);
+  copy_other_armyset_images(default_armyset, armyset);
   set_ruin_defenders(armyset);
   return armyset;
 }
