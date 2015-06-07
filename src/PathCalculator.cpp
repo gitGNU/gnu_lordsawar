@@ -334,11 +334,11 @@ std::list<Vector<int> > PathCalculator::calcMoves(Vector<int> pos)
   return process;
 }
 
-bool PathCalculator::load_or_unload(Vector<int> src, Vector<int> dest, bool &on_ship)
+bool PathCalculator::load_or_unload(Vector<int> src, Vector<int> dest, bool &ship)
 {
   Stack *new_stack = Stack::createNonUniqueStack(stack->getOwner(), src);
   //do we load or unload if we step from SRC to DEST?
-  bool retval = new_stack->isMovingToOrFromAShip(dest, on_ship);
+  bool retval = new_stack->isMovingToOrFromAShip(dest, ship);
   delete new_stack;
   return retval;
 }
@@ -446,11 +446,11 @@ bool PathCalculator::isBlocked(Vector<int> pos)
   return isBlocked(stack, pos, enemy_city_avoidance < 0, enemy_stack_avoidance < 0);
 }
 
-int PathCalculator::calculate(Vector<int> dest, bool zigzag)
+int PathCalculator::calculate(Vector<int> dest, bool zig)
 {
   int retval = 0;
   guint32 moves = 0, turns = 0, left = 0;
-  Path *p = calculate(dest, moves, turns, left, zigzag);
+  Path *p = calculate(dest, moves, turns, left, zig);
   if (p->size() == 0)
     retval = -1;
   delete p;
@@ -459,7 +459,7 @@ int PathCalculator::calculate(Vector<int> dest, bool zigzag)
   return retval;
 }
 
-Path* PathCalculator::calculate(Vector<int> dest, guint32 &moves, guint32 &turns, guint32 &left, bool zigzag)
+Path* PathCalculator::calculate(Vector<int> dest, guint32 &moves, guint32 &turns, guint32 &left, bool zig)
 {
   Path *path = new Path();
   int width = GameMap::getWidth();
@@ -504,7 +504,7 @@ Path* PathCalculator::calculate(Vector<int> dest, guint32 &moves, guint32 &turns
   // choose the order in which we process directions so as to favour
   // diagonals over straight lines
   std::list<Vector<int> > diffs;
-  if (zigzag)
+  if (zig)
     {
       diffs.push_back(Vector<int>(-1, -1));
       diffs.push_back(Vector<int>(-1, 1));
@@ -557,9 +557,9 @@ Path* PathCalculator::calculate(Vector<int> dest, guint32 &moves, guint32 &turns
   guint32 moves_left = stack->getMoves();
   for (Path::iterator it = path->begin(); it != path->end(); it++)
     {
-      guint32 moves = stack->calculateTileMovementCost(*it);
-      if (moves_left >= moves)
-	moves_left -= moves;
+      guint32 tile_moves = stack->calculateTileMovementCost(*it);
+      if (moves_left >= tile_moves)
+	moves_left -= tile_moves;
       else
 	break;
       pathcount++;
@@ -609,7 +609,7 @@ bool PathCalculator::isReachable(Vector<int> pos)
   return nodes[pos.toIndex()].moves >= 0;
 }
 
-Path *PathCalculator::calculateToCity (City *c, guint32 &moves, guint32 &turns, guint32 &left, bool zigzag)
+Path *PathCalculator::calculateToCity (City *c, guint32 &moves, guint32 &turns, guint32 &left, bool zig)
 {
   int min_dist = -1;
   Vector<int> shortest = c->getPos();
@@ -634,7 +634,7 @@ Path *PathCalculator::calculateToCity (City *c, guint32 &moves, guint32 &turns, 
 	      }
 	  }
       }
-  Path *p = calculate(shortest, moves, turns, left, zigzag);
+  Path *p = calculate(shortest, moves, turns, left, zig);
   if (p->size() > 0)
     return p;
   delete p;
@@ -650,8 +650,7 @@ Path *PathCalculator::calculateToCity (City *c, guint32 &moves, guint32 &turns, 
 	    if (other_stack && GameMap::canJoin(stack, other_stack) == false)
 	      continue;
 	  }
-	p = calculate(c->getPos() + Vector<int>(i,j), moves, turns, left,
-                      zigzag);
+	p = calculate(c->getPos() + Vector<int>(i,j), moves, turns, left, zig);
 	int dist = (int) moves;
 	delete p;
 	if (dist > 0)
@@ -663,7 +662,7 @@ Path *PathCalculator::calculateToCity (City *c, guint32 &moves, guint32 &turns, 
 	      }
 	  }
       }
-  return calculate(shortest, moves, turns, left, zigzag);
+  return calculate(shortest, moves, turns, left, zig);
 }
 
 std::list<Vector<int> > PathCalculator::getReachablePositions(int mp)

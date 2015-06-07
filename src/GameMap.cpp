@@ -483,13 +483,13 @@ Stack* GameMap::addArmyAtPos(Vector<int> pos, Army *a)
                     }
                   else 
                     {
-                      Vector<int> pos(x, y);
+                      Vector<int> p(x, y);
 		      //hmm. no nifty stacks here.  anybody else's?
-		      s = getEnemyStack(pos);
+		      s = getEnemyStack(p);
 		      if (s)
 			continue;
 		      //okay, no stacks here at all.  make one.
-                      s = new Stack(a->getOwner(), pos);
+                      s = new Stack(a->getOwner(), p);
 		      s->add(a);
                       a->getOwner()->addStack(s);
                     }
@@ -1862,8 +1862,9 @@ bool GameMap::putRoad(Road *r)
           continue;
 
 	Vector<int> pos(x, y);
-	if (Road *r = Roadlist::getInstance()->getObjectAt(pos))
+	if (Roadlist::getInstance()->getObjectAt(pos))
 	  {
+            r = Roadlist::getInstance()->getObjectAt(pos);
 	    int newtype = CreateScenario::calculateRoadType(pos);
 	    r->setType(newtype);
 	  }

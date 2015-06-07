@@ -60,12 +60,12 @@ Stack::Stack(guint32 id, Player* player, Vector<int> pos)
     d_path = new Path();
 }
 
-Stack::Stack(const Stack& s, bool unique)
+Stack::Stack(const Stack& s, bool uniq)
     : UniquelyIdentified(s), Movable(s), Ownable(s), 
     d_defending(s.d_defending), d_parked(s.d_parked), 
     d_deleting(false)
 {
-  d_unique = unique;
+  d_unique = uniq;
   if (s.d_path == NULL)
     {
       printf("Stack %d has a null path!\n", d_id);
@@ -258,8 +258,8 @@ int Stack::getMinTileMoves() const
 
   int min = -1;
 
-  for (std::vector<Vector<int> >::iterator i = tiles.begin(), end = tiles.end();
-       i != end; ++i)
+  for (std::vector<Vector<int> >::iterator i = tiles.begin(); i != tiles.end();
+       ++i)
     if (is_inside(bounds, *i))
       {
 	int v = map->getTile(i->x, i->y)->getMoves();
@@ -711,17 +711,17 @@ bool Stack::armyCompareFightOrder (const Army *lhs, const Army *rhs)
   return lhs_rank < rhs_rank; 
 }
 
-void Stack::sortByStrength(bool reverse)
+void Stack::sortByStrength(bool rev)
 {
   sort(armyCompareStrength);
-  if (reverse)
+  if (rev)
     std::reverse(begin(), end());
 }
 
-void Stack::sortForViewing (bool reverse)
+void Stack::sortForViewing (bool rev)
 {
   sort(armyCompareFightOrder);
-  if (reverse)
+  if (rev)
     std::reverse(begin(), end());
 }
 
@@ -1024,11 +1024,11 @@ Stack *Stack::splitArmiesWithMovement(guint32 mp)
   return splitArmies(armies);
 }
 
-void Stack::join(Stack *join)
+void Stack::join(Stack *s)
 {
-  for (iterator i = join->begin(); i != join->end(); i++)
+  for (iterator i = s->begin(); i != s->end(); i++)
     push_back(*i);
-  join->clear();
+  s->clear();
 }
 
 bool Stack::validate() const

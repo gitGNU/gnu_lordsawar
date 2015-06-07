@@ -37,7 +37,7 @@ public:
     guint32 getCacheSize() const {return cachesize;};
     guint32 eraseLeastRecentlyUsed()
       {
-        guint32 size = 0;
+        guint32 siz = 0;
         if (this->empty() == false)
           {
             T item = *(this->begin());
@@ -49,13 +49,13 @@ public:
                 surfaces.erase(i);
                 if (s)
                   {
-                    size = s->get_depth()/8 * (s->get_width() * s->get_height());
-                    cachesize -= size;
+                    siz = s->get_depth()/8 * (s->get_width() * s->get_height());
+                    cachesize -= siz;
                     delete s;
                   }
               }
           }
-        return size;
+        return siz;
       };
     void reset()
       {
@@ -94,17 +94,17 @@ public:
 
     guint32 discardHalf()
       {
-        guint32 size = 0;
+        guint32 siz = 0;
         if (this->size() <= 1)
           //this is necessary so we don't delete the pixmask we just created
-          return size;
+          return siz;
         if (this->empty() == false)
           {
             guint32 half = cachesize / 2;
             while (cachesize > half)
-              size += this->eraseLeastRecentlyUsed();
+              siz += this->eraseLeastRecentlyUsed();
           }
-        return size;
+        return siz;
       };
 private:
     std::map<T, PixMask *> surfaces;

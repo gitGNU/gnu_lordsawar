@@ -591,7 +591,7 @@ void ArmySetWindow::on_validate_armyset_activated()
   for (Armyset::iterator it = d_armyset->begin(); it != d_armyset->end(); it++)
     {
       Shield::Colour c;
-      bool valid = d_armyset->validateArmyUnitImage(*it, c);
+      valid = d_armyset->validateArmyUnitImage(*it, c);
       if (!valid)
 	{
 	  msgs.push_back(String::ucompose(_("%1 does not have an image set for the %2 player"), (*it)->getName(), Shield::colourToString(c)));

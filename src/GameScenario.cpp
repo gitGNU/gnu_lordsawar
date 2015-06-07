@@ -241,9 +241,9 @@ void GameScenario::quickStartEvenlyDivided()
 		      StackTile *stile = 
 			GameMap::getStacks(c->getPos() + Vector<int>(x,y));
 		      std::list<Stack*> stks = stile->getStacks();
-		      for (std::list<Stack *>::iterator i = stks.begin(); 
-			   i != stks.end(); i++)
-			Stacklist::changeOwnership(*i, p);
+		      for (std::list<Stack *>::iterator k = stks.begin();
+			   k != stks.end(); k++)
+			Stacklist::changeOwnership(*k, p);
 		    }
 		}
 
@@ -290,9 +290,9 @@ void GameScenario::quickStartAIHeadStart()
 		      StackTile *stile = 
 			GameMap::getStacks(c->getPos() + Vector<int>(x,y));
 		      std::list<Stack*> stks = stile->getStacks();
-		      for (std::list<Stack *>::iterator i = stks.begin(); 
-			   i != stks.end(); i++)
-			Stacklist::changeOwnership(*i, p);
+		      for (std::list<Stack *>::iterator k = stks.begin(); 
+			   k != stks.end(); k++)
+			Stacklist::changeOwnership(*k, p);
 		    }
 		}
 
@@ -946,7 +946,6 @@ bool GameScenario::validate(std::list<Glib::ustring> &errors, std::list<Glib::us
     }
   if (count > 0)
     {
-      Glib::ustring s;
       s = String::ucompose(ngettext("There is %1 unnamed ruin", "There are %1 unnamed ruins", count), count);
       warnings.push_back(s);
     }
@@ -960,7 +959,6 @@ bool GameScenario::validate(std::list<Glib::ustring> &errors, std::list<Glib::us
     }
   if (count > 0)
     {
-      Glib::ustring s;
       s = String::ucompose(ngettext("There is %1 unnamed temple", "There are %1 unnamed temples", count), count);
       warnings.push_back(s);
     }
@@ -974,7 +972,6 @@ bool GameScenario::validate(std::list<Glib::ustring> &errors, std::list<Glib::us
     }
   if (count > 0)
     {
-      Glib::ustring s;
       s = String::ucompose(ngettext("There is %1 neutral stack not in a city", "There are %1 neutral stacks not in cities", count), count);
       warnings.push_back(s);
     }
@@ -1212,20 +1209,20 @@ class DetailsLoader
 public:
     DetailsLoader(Glib::ustring filename, bool &broken) {
       player_count = 0; city_count = 0; name = ""; comment = "";
-      Tar_Helper t(filename, std::ios::in, broken);
+      Tar_Helper tar(filename, std::ios::in, broken);
       if (broken)
         return;
       std::list<Glib::ustring> ext;
       ext.push_back(MAP_EXT);
       ext.push_back(SAVE_EXT);
-      Glib::ustring tmpfile = t.getFirstFile(ext, broken);
+      Glib::ustring tmpfile = tar.getFirstFile(ext, broken);
       XML_Helper helper(tmpfile, std::ios::in);
       helper.registerTag(GameScenario::d_tag, 
 			 sigc::mem_fun(this, &DetailsLoader::loadDetails));
       helper.registerTag(Player::d_tag, 
 			 sigc::mem_fun(this, &DetailsLoader::loadDetails));
       helper.registerTag(City::d_tag, 
-		     sigc::mem_fun(this, &DetailsLoader::loadDetails));
+                         sigc::mem_fun(this, &DetailsLoader::loadDetails));
       bool retval = helper.parseXML();
       if (!broken)
 	broken = !retval;

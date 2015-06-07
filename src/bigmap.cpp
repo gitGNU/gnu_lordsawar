@@ -304,12 +304,12 @@ MapTipPosition BigMap::map_tip_position(Rectangle tile_area)
     return m;
 }
 
-void BigMap::blit_object(const Location &obj, Vector<int> tile, PixMask *image, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> surface_gc)
+void BigMap::blit_object(const Location &obj, Vector<int> tile, PixMask *im, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> surface_gc)
 {
   Vector<int> diff = tile - obj.getPos();
   int tilesize = GameMap::getInstance()->getTileSize();
   Vector<int> p = tile_to_buffer_pos(tile);
-  image->blit(diff, tilesize, surface, p);
+  im->blit(diff, tilesize, surface, p);
 }
 
 void BigMap::draw_stack(Stack *s, Cairo::RefPtr<Cairo::Surface> surface, Cairo::RefPtr<Cairo::Context> surface_gc)

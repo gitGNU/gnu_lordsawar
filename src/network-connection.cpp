@@ -218,9 +218,9 @@ void NetworkConnection::connectToHost(Glib::ustring host, int port)
                                &NetworkConnection::on_connect_connected));
 }
 
-void NetworkConnection::send(int type, const Glib::ustring &payload)
+void NetworkConnection::send(int type, const Glib::ustring &pay)
 {
-  queue_message (type, payload);
+  queue_message (type, pay);
 }
 
 void NetworkConnection::sendFile(int type, const Glib::ustring &filename)
@@ -256,19 +256,19 @@ void NetworkConnection::sendFileMessage(int type, const Glib::ustring filename)
   File::erase(filename);
 }
 
-bool NetworkConnection::sendMessage(int type, const Glib::ustring &payload)
+bool NetworkConnection::sendMessage(int type, const Glib::ustring &pay)
 {
   // make the preamble
-  guint32 l = g_htonl(MESSAGE_PREAMBLE_EXTRA_BYTES + payload.size());
-  gchar *buf = (gchar*) malloc ((MESSAGE_HEADER_SIZE  + payload.size())* sizeof (gchar));
+  guint32 l = g_htonl(MESSAGE_PREAMBLE_EXTRA_BYTES + pay.size());
+  gchar *buf = (gchar*) malloc ((MESSAGE_HEADER_SIZE  + pay.size())* sizeof (gchar));
   memcpy(buf, &l, MESSAGE_SIZE_BYTES);
   buf[MESSAGE_SIZE_BYTES] = MESSAGE_PROTOCOL_VERSION;
   buf[MESSAGE_SIZE_BYTES + 1] = type;
   
   //concatenate the payload
-  memcpy (&buf[MESSAGE_HEADER_SIZE], payload.c_str(), payload.size());
+  memcpy (&buf[MESSAGE_HEADER_SIZE], pay.c_str(), pay.size());
   gsize bytessent = 0;
-  bool wrote_all = out->write_all (buf, (MESSAGE_HEADER_SIZE + payload.size()) * sizeof (gchar), bytessent);
+  bool wrote_all = out->write_all (buf, (MESSAGE_HEADER_SIZE + pay.size()) * sizeof (gchar), bytessent);
   free (buf);
   return wrote_all;
 }
@@ -300,7 +300,7 @@ void NetworkConnection::disconnect()
     }
 }
 
-void NetworkConnection::queue_message(int type, const Glib::ustring &payload)
+void NetworkConnection::queue_message(int type, const Glib::ustring &pay)
 {
   Glib::Threads::Mutex::Lock lock (mutex);
 
@@ -316,7 +316,7 @@ void NetworkConnection::queue_message(int type, const Glib::ustring &payload)
     return;
   struct Message m;
   m.type = type;
-  m.payload = payload;
+  m.payload = pay;
   messages.push(m);
   cond_push.signal();
 }

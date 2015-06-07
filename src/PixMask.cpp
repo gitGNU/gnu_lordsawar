@@ -206,10 +206,10 @@ void PixMask::blit(Rectangle src, Cairo::RefPtr<Cairo::Surface> p, Vector<int> d
   context->restore();
 }
 
-void PixMask::blit(Vector<int> tile, int ts, Cairo::RefPtr<Cairo::Surface> pixmap, Vector<int> dest)
+void PixMask::blit(Vector<int> tile, int ts, Cairo::RefPtr<Cairo::Surface> p, Vector<int> dest)
 {
   Vector<int> src = tile * ts;
-  blit (Rectangle(src.x, src.y, ts, ts), pixmap, dest);
+  blit (Rectangle(src.x, src.y, ts, ts), p, dest);
 }
 
 void PixMask::scale(PixMask*& p, int xsize, int ysize, Gdk::InterpType interp)
@@ -239,18 +239,18 @@ Glib::RefPtr<Gdk::Pixbuf> PixMask::to_pixbuf()
   return alphabuf;
 }
       
-void PixMask::draw_pixbuf(Glib::RefPtr<Gdk::Pixbuf> pixbuf, int src_x, int src_y, int dest_x, int dest_y, int width, int height)
+void PixMask::draw_pixbuf(Glib::RefPtr<Gdk::Pixbuf> pixbuf, int src_x, int src_y, int dest_x, int dest_y, int w, int h)
 {
 
   Cairo::RefPtr<Cairo::Context> context = Cairo::Context::create(pixmap);
   // Select the clipping rectangle
-  context->rectangle(dest_x, dest_y, width, height);
+  context->rectangle(dest_x, dest_y, w, h);
 
   context->clip();
   context->save();
   PixMask *p = create(pixbuf);
   context->set_source (p->get_pixmap(), src_x, src_y);
-  context->rectangle (src_x, src_y, width, height);
+  context->rectangle (src_x, src_y, w, h);
   context->clip();
   context->paint();
   context->restore();

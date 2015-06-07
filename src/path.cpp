@@ -264,9 +264,9 @@ void Path::calculate (Stack* s, Vector<int> dest, guint32 &moves, guint32 &turns
   guint32 moves_left = s->getMoves();
   for (iterator it = begin(); it != end(); it++)
     {
-      guint32 moves = s->calculateTileMovementCost(*it);
-      if (moves_left >= moves)
-	moves_left -= moves;
+      guint32 tile_moves = s->calculateTileMovementCost(*it);
+      if (moves_left >= tile_moves)
+	moves_left -= tile_moves;
       else
 	break;
       pathcount++;

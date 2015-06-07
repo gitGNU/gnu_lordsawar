@@ -389,9 +389,9 @@ bool Tar_Helper::replaceFile(Glib::ustring filename, Glib::ustring newfilename)
   out.Close();
   if (filename == "")
     {
-      Tar_Helper in(tmp, std::ios::in, broken);
-      saveFile (&in, newfilename, "");
-      in.Close();
+      Tar_Helper i(tmp, std::ios::in, broken);
+      saveFile (&i, newfilename, "");
+      i.Close();
     }
   archive_write_free(t);
   t = NULL;

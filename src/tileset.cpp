@@ -328,10 +328,10 @@ bool Tileset::save(XML_Helper *helper) const
   return retval;
 }
 
-bool Tileset::save(Glib::ustring filename, Glib::ustring extension) const
+bool Tileset::save(Glib::ustring filename, Glib::ustring ext) const
 {
   bool broken = false;
-  Glib::ustring goodfilename = File::add_ext_if_necessary(filename, extension);
+  Glib::ustring goodfilename = File::add_ext_if_necessary(filename, ext);
   Glib::ustring tmpfile = File::get_tmp_file();
   XML_Helper helper(tmpfile, std::ios::out);
   helper.begin(LORDSAWAR_TILESET_VERSION);
@@ -682,7 +682,7 @@ void Tileset::instantiateImages(Glib::ustring explosion_filename,
 
 void Tileset::instantiateImages(bool &broken)
 {
-  int size = getTileSize();
+  int siz = getTileSize();
   debug("Loading images for tileset " << getName());
   uninstantiateImages();
   broken = false;
@@ -692,7 +692,7 @@ void Tileset::instantiateImages(bool &broken)
   for (iterator it = begin(); it != end(); it++)
     {
       if (!broken)
-        (*it)->instantiateImages(size, &t, broken);
+        (*it)->instantiateImages(siz, &t, broken);
     }
   Glib::ustring explosion_filename = "";
   Glib::ustring roads_filename = "";

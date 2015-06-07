@@ -58,7 +58,7 @@ public:
   Glib::ustring getHostname() const {return hostname;};
 
   //set functions
-  void setHostname(Glib::ustring host) {hostname = host;};
+  void setHostname(Glib::ustring h) {hostname = h;};
   void setMembers(std::list<Glib::ustring> profile_ids) {members = profile_ids;};
 
   // signals

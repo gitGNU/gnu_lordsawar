@@ -39,8 +39,8 @@ Ruin::Ruin(Vector<int> pos, guint32 width, Glib::ustring name, int type, Stack* 
     for (unsigned int i = 0; i < getSize(); i++)
       for (unsigned int j = 0; j < getSize(); j++)
 	{
-	  Vector<int> pos = getPos() + Vector<int>(i, j);
-	  GameMap::getInstance()->getTile(pos)->setBuilding(Maptile::RUIN);
+	  Vector<int> p = getPos() + Vector<int>(i, j);
+	  GameMap::getInstance()->getTile(p)->setBuilding(Maptile::RUIN);
 	}
 }
 

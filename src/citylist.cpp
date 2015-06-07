@@ -283,7 +283,7 @@ City* Citylist::getNearestFriendlyCity(const Vector<int>& pos) const
     return getNearestCity (pos, p);
 }
 
-City* Citylist::getNearestCity(const Vector<int>& pos, Player *p) const
+City* Citylist::getNearestCity(const Vector<int>& pos, Player *player) const
 {
     int diff = -1;
     const_iterator diffit;
@@ -293,7 +293,7 @@ City* Citylist::getNearestCity(const Vector<int>& pos, Player *p) const
         if ((*it)->isBurnt())
             continue;
 
-        if ((*it)->getOwner() == p)
+        if ((*it)->getOwner() == player)
         {
             Vector<int> p = (*it)->getPos();
             int delta = abs(p.x - pos.x);

@@ -193,10 +193,10 @@ void Shieldset::getFilenames(std::list<Glib::ustring> &files) const
       }
 }
 
-bool Shieldset::save(Glib::ustring filename, Glib::ustring extension) const
+bool Shieldset::save(Glib::ustring filename, Glib::ustring ext) const
 {
   bool broken = false;
-  Glib::ustring goodfilename = File::add_ext_if_necessary(filename, extension);
+  Glib::ustring goodfilename = File::add_ext_if_necessary(filename, ext);
   Glib::ustring tmpfile = File::get_tmp_file();
   XML_Helper helper(tmpfile, std::ios::out);
   helper.begin(LORDSAWAR_SHIELDSET_VERSION);

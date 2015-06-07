@@ -169,9 +169,9 @@ int AI_Allocation::continueQuests()
   if (GameScenarioOptions::s_play_with_quests == GameParameters::NO_QUESTING)
     return count;
 
-  std::vector<Quest*> quest = 
+  std::vector<Quest*> quests =
     QuestsManager::getInstance()->getPlayerQuests(d_owner);
-  for (std::vector<Quest*>::iterator i = quest.begin(); i != quest.end(); i++)
+  for (std::vector<Quest*>::iterator i = quests.begin(); i != quests.end(); i++)
     {
       Quest *quest = *i;
       if (quest == NULL)
@@ -563,8 +563,8 @@ int AI_Allocation::oldPickupItems()
   for (std::vector<Vector<int> >::iterator i = items.begin(); i != items.end();
        i++)
     {
-      std::list<Stack*> s = GameMap::getNearbyFriendlyStacks(*i, 8);
-      for (std::list<Stack*>::iterator j = s.begin(); j != s.end(); j++)
+      std::list<Stack*> stks = GameMap::getNearbyFriendlyStacks(*i, 8);
+      for (std::list<Stack*>::iterator j = stks.begin(); j != stks.end(); j++)
         {
           Stack *s = *j;
           if (s->hasHero() == false)
@@ -1015,11 +1015,11 @@ Vector<int> AI_Allocation::getFreeOtherSpotInCity(City *city, Stack *stack)
         std::list<Stack*> f = GameMap::getFriendlyStacks(pos);
         if (f.size() > 0)
           {
-            for (std::list<Stack*>::iterator i = f.begin(); i != f.end(); i++)
+            for (std::list<Stack*>::iterator k = f.begin(); k != f.end(); k++)
               {
-                if ((*i)->size() > size)
+                if ((*k)->size() > size)
                   {
-                    size = (*i)->size();
+                    size = (*k)->size();
                     best = pos;
                   }
               }

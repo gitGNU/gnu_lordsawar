@@ -377,10 +377,10 @@ void Playerlist::calculateDiplomaticRankings()
             used_titles[j] = 1;
 	}
     }
-  for (unsigned int i = 0; i < MAX_PLAYERS; i++)
+  for (unsigned int j = 0; j < MAX_PLAYERS; j++)
     {
-      if (used_titles[i] != 1)
-	available_titles.push_back (get_title(i));
+      if (used_titles[j] != 1)
+	available_titles.push_back (get_title(j));
     }
 
   for (const_iterator it = begin (); it != end (); it++)

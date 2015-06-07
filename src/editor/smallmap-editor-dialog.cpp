@@ -225,48 +225,47 @@ void SmallmapEditorDialog::on_terrain_radiobutton_toggled()
     }
 }
 
-void SmallmapEditorDialog::setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> xml,
+void SmallmapEditorDialog::setup_pointer_radiobutton(Glib::RefPtr<Gtk::Builder> b,
                                                      Glib::ustring prefix,
                                                      Glib::ustring image_file,
                                                      EditableSmallMap::Pointer pointer,
-                                                     int size)
+                                                     int siz)
 {
     PointerItem item;
-    xml->get_widget(prefix + "_radiobutton", item.button);
+    b->get_widget(prefix + "_radiobutton", item.button);
     if (prefix == "pointer")
 	pointer_radiobutton = item.button;
     item.button->signal_toggled().connect(
 	sigc::mem_fun(this, &SmallmapEditorDialog::on_pointer_radiobutton_toggled));
     item.pointer = pointer;
-    item.size = size;
+    item.size = siz;
     pointer_items.push_back(item);
 
     Gtk::Image *image;
-    xml->get_widget(prefix + "_image", image);
+    b->get_widget(prefix + "_image", image);
     image->property_file() = File::getEditorFile(image_file);
     item.button->property_draw_indicator() = false;
 }
 
-    
-void SmallmapEditorDialog::setup_pointer_radiobuttons(Glib::RefPtr<Gtk::Builder> xml)
+void SmallmapEditorDialog::setup_pointer_radiobuttons(Glib::RefPtr<Gtk::Builder> b)
 {
-    setup_pointer_radiobutton(xml, "pointer", "button_selector",
+    setup_pointer_radiobutton(b, "pointer", "button_selector",
 			      EditableSmallMap::POINTER, 1);
-    setup_pointer_radiobutton(xml, "draw_2", "button_2x2",
+    setup_pointer_radiobutton(b, "draw_2", "button_2x2",
 			      EditableSmallMap::TERRAIN, 2);
-    setup_pointer_radiobutton(xml, "draw_3", "button_3x3",
+    setup_pointer_radiobutton(b, "draw_3", "button_3x3",
 			      EditableSmallMap::TERRAIN, 3);
-    setup_pointer_radiobutton(xml, "draw_6", "button_6x6",
+    setup_pointer_radiobutton(b, "draw_6", "button_6x6",
 			      EditableSmallMap::TERRAIN, 6);
-    setup_pointer_radiobutton(xml, "draw_12", "button_12x12",
+    setup_pointer_radiobutton(b, "draw_12", "button_12x12",
 			      EditableSmallMap::TERRAIN, 12);
-    setup_pointer_radiobutton(xml, "draw_ruin", "button_ruin",
+    setup_pointer_radiobutton(b, "draw_ruin", "button_ruin",
 			      EditableSmallMap::RUIN, 1);
-    setup_pointer_radiobutton(xml, "draw_temple", "button_temple",
+    setup_pointer_radiobutton(b, "draw_temple", "button_temple",
 			      EditableSmallMap::TEMPLE, 1);
-    setup_pointer_radiobutton(xml, "draw_city", "button_castle",
+    setup_pointer_radiobutton(b, "draw_city", "button_castle",
 			      EditableSmallMap::CITY, 1);
-    setup_pointer_radiobutton(xml, "erase", "button_erase",
+    setup_pointer_radiobutton(b, "erase", "button_erase",
 			      EditableSmallMap::ERASE, 1);
 }
 

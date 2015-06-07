@@ -1439,9 +1439,9 @@ bool MapGenerator::makeAccessible(int src_x, int src_y, int dest_x, int dest_y)
     {
       s.clear();
       delete a;
-      ArmyProto *basearmy = ArmyProto::createBat();
-      a = Army::createNonUniqueArmy(*basearmy);
-      delete basearmy;
+      ArmyProto *bat = ArmyProto::createBat();
+      a = Army::createNonUniqueArmy(*bat);
+      delete bat;
       s.push_back(a);
       moves = p->calculate(&s, dest, false);
     }

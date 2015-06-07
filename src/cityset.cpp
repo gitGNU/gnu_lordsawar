@@ -238,10 +238,10 @@ void Cityset::getFilenames(std::list<Glib::ustring> &files)
   files.push_back(d_towers_filename);
 }
 
-bool Cityset::save(Glib::ustring filename, Glib::ustring extension) const
+bool Cityset::save(Glib::ustring filename, Glib::ustring ext) const
 {
   bool broken = false;
-  Glib::ustring goodfilename = File::add_ext_if_necessary(filename, extension);
+  Glib::ustring goodfilename = File::add_ext_if_necessary(filename, ext);
   Glib::ustring tmpfile = File::get_tmp_file();
   XML_Helper helper(tmpfile, std::ios::out);
   helper.begin(LORDSAWAR_CITYSET_VERSION);
@@ -346,78 +346,77 @@ void Cityset::instantiateImages(Glib::ustring port_filename,
   int citysize = getTileSize() * d_city_tile_width;
   if (cities_filename.empty() == false && !broken)
     {
-      std::vector<PixMask* > citypics;
-      citypics = disassemble_row(cities_filename, MAX_PLAYERS + 1, broken);
+      std::vector<PixMask* > pics;
+      pics = disassemble_row(cities_filename, MAX_PLAYERS + 1, broken);
       if (!broken)
         {
           for (unsigned int i = 0; i < MAX_PLAYERS + 1; i++)
             {
-              if (citypics[i]->get_width() != citysize)
-                PixMask::scale(citypics[i], citysize, citysize);
-              setCityImage(i, citypics[i]);
+              if (pics[i]->get_width() != citysize)
+                PixMask::scale(pics[i], citysize, citysize);
+              setCityImage(i, pics[i]);
             }
         }
     }
 
   if (razed_cities_filename.empty() == false && !broken)
     {
-      std::vector<PixMask* > razedcitypics;
-      razedcitypics = disassemble_row(razed_cities_filename, MAX_PLAYERS, 
-                                      broken);
+      std::vector<PixMask* > pics;
+      pics = disassemble_row(razed_cities_filename, MAX_PLAYERS, broken);
       if (!broken)
         {
           for (unsigned int i = 0; i < MAX_PLAYERS; i++)
             {
-              if (razedcitypics[i]->get_width() != citysize)
-                PixMask::scale(razedcitypics[i], citysize, citysize);
-              setRazedCityImage(i, razedcitypics[i]);
+              if (pics[i]->get_width() != citysize)
+                PixMask::scale(pics[i], citysize, citysize);
+              setRazedCityImage(i, pics[i]);
             }
         }
     }
 
   if (towers_filename.empty() == false && !broken)
     {
-      std::vector<PixMask* > towerpics = disassemble_row(towers_filename, 
-							 MAX_PLAYERS, broken);
+      std::vector<PixMask* > pics = disassemble_row(towers_filename,
+                                                    MAX_PLAYERS, broken);
       if (!broken)
         {
           for (unsigned int i = 0; i < MAX_PLAYERS; i++)
             {
-              if (towerpics[i]->get_width() != (int)getTileSize())
-                PixMask::scale(towerpics[i], getTileSize(), getTileSize());
-              setTowerImage(i, towerpics[i]);
+              if (pics[i]->get_width() != (int)getTileSize())
+                PixMask::scale(pics[i], getTileSize(), getTileSize());
+              setTowerImage(i, pics[i]);
             }
         }
     }
 
   if (ruins_filename.empty() == false && !broken)
     {
-      std::vector<PixMask* > ruinpics = disassemble_row(ruins_filename, 
+      std::vector<PixMask* > pics = disassemble_row(ruins_filename,
                                                         RUIN_TYPES, broken);
       if (!broken)
         {
           int ruinsize = getTileSize() * d_ruin_tile_width;
           for (unsigned int i = 0; i < RUIN_TYPES ; i++)
             {
-              if (ruinpics[i]->get_width() != ruinsize)
-                PixMask::scale(ruinpics[i], ruinsize, ruinsize);
-              setRuinImage(i, ruinpics[i]);
+              if (pics[i]->get_width() != ruinsize)
+                PixMask::scale(pics[i], ruinsize, ruinsize);
+              setRuinImage(i, pics[i]);
             }
         }
     }
 
   if (temples_filename.empty() == false && !broken)
     {
-      std::vector<PixMask* > templepics;
-      templepics = disassemble_row(temples_filename, TEMPLE_TYPES, broken);
+      std::vector<PixMask* > pics;
+      pics = disassemble_row(temples_filename, TEMPLE_TYPES, broken);
       if (!broken)
         {
           int templesize = getTileSize() * d_temple_tile_width;
           for (unsigned int i = 0; i < TEMPLE_TYPES ; i++)
             {
-              if (templepics[i]->get_width() != templesize)
-                PixMask::scale(templepics[i], templesize, templesize);
-              setTempleImage(i, templepics[i]);
+              if (pics[i]->get_width() != templesize)
+                PixMask::scale(pics[i], templesize, templesize);
+              setTempleImage(i, pics[i]);
             }
         }
     }

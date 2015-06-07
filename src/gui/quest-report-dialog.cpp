@@ -71,11 +71,11 @@ QuestReportDialog::QuestReportDialog(Gtk::Window &parent, std::vector<Quest *>q,
     fill_quest_info(NULL);
 }
 
-void QuestReportDialog::add_questing_hero(Quest *quest, Hero *h)
+void QuestReportDialog::add_questing_hero(Quest *q, Hero *h)
 {
     Gtk::TreeIter i = heroes_list->append();
     (*i)[heroes_columns.hero_name] = h->getName();
-    (*i)[heroes_columns.quest] = quest;
+    (*i)[heroes_columns.quest] = q;
 }
 
 void QuestReportDialog::fill_quest_info(Quest *q)
@@ -130,8 +130,8 @@ void QuestReportDialog::on_hero_changed()
   if (iterrow)
     {
       Gtk::TreeModel::Row row = *iterrow;
-      Quest *quest = row[heroes_columns.quest];
-      fill_quest_info(quest);
+      Quest *q = row[heroes_columns.quest];
+      fill_quest_info(q);
     }
 
 }

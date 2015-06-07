@@ -55,8 +55,8 @@ City::City(Vector<int> pos, guint32 width, Glib::ustring name, guint32 gold,
   for (unsigned int i = 0; i < getSize(); i++)
     for (unsigned int j = 0; j < getSize(); j++)
       {
-	Vector<int> pos = getPos() + Vector<int>(i, j);
-	GameMap::getInstance()->getTile(pos)->setBuilding(Maptile::CITY);
+	Vector<int> npos = getPos() + Vector<int>(i, j);
+	GameMap::getInstance()->getTile(npos)->setBuilding(Maptile::CITY);
       }
 }
 
@@ -187,7 +187,7 @@ void City::produceStrongestProductionBase()
       int savep = d_active_production_slot;
       setActiveProductionSlot(strong_idx);
       Stack *s = NULL;
-      Army *a = produceArmy(s);
+      produceArmy(s);
       setActiveProductionSlot(savep);
       return;
     }
@@ -349,8 +349,8 @@ std::vector<Stack *> City::getDefenders() const
 {
   if (isBurnt() == true)
     {
-      std::vector<Stack *> empty;
-      return empty;
+      std::vector<Stack *> e;
+      return e;
     }
   return getOwner()->getStacklist()->getDefendersInCity(this);
 }

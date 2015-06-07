@@ -72,13 +72,13 @@ void SmallMap::draw_selection()
     draw_rect(pos.x-1, pos.y-1, w+2,  h+2, SELECTOR_BOX_COLOUR);
 }
 
-void SmallMap::center_view_on_tile(Vector<int> pos, bool slide)
+void SmallMap::center_view_on_tile(Vector<int> pos, bool slide_me)
 {
   pos = clip(Vector<int>(0,0), pos - view.dim / 2, 
              GameMap::get_dim() - view.dim);
 
   sliding = false;
-  if (slide)
+  if (slide_me)
     slide_view(Rectangle(pos.x, pos.y, view.w, view.h));
   else
     set_view(Rectangle(pos.x, pos.y, view.w, view.h));
@@ -86,7 +86,7 @@ void SmallMap::center_view_on_tile(Vector<int> pos, bool slide)
   view_changed.emit(view);
 }
 
-void SmallMap::center_view_on_pixel(Vector<int> pos, bool slide)
+void SmallMap::center_view_on_pixel(Vector<int> pos, bool slide_me)
 {
   pos.x = int(round(pos.x / pixels_per_tile));
   pos.y = int(round(pos.y / pixels_per_tile));
@@ -95,7 +95,7 @@ void SmallMap::center_view_on_pixel(Vector<int> pos, bool slide)
 
   pos = clip(Vector<int>(0, 0), pos, GameMap::get_dim() - view.dim);
 
-  if (slide)
+  if (slide_me)
     slide_view(Rectangle(pos.x, pos.y, view.w, view.h));
   else
     set_view(Rectangle(pos.x, pos.y, view.w, view.h));

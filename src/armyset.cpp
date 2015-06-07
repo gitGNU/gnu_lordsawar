@@ -115,10 +115,10 @@ bool Armyset::loadArmyProto(Glib::ustring tag, XML_Helper* helper)
     return true;
 }
 
-bool Armyset::save(Glib::ustring filename, Glib::ustring extension) const
+bool Armyset::save(Glib::ustring filename, Glib::ustring ext) const
 {
   bool broken = false;
-  Glib::ustring goodfilename = File::add_ext_if_necessary(filename, extension);
+  Glib::ustring goodfilename = File::add_ext_if_necessary(filename, ext);
 
   Glib::ustring tmpfile = File::get_tmp_file();
   XML_Helper helper(tmpfile, std::ios::out);
@@ -572,9 +572,9 @@ void Armyset::loadShipPic(Glib::ustring image_filename, bool &broken)
   half = disassemble_row(image_filename, 2, broken);
   if (!broken)
     {
-      int size = getTileSize();
-      PixMask::scale(half[0], size, size);
-      PixMask::scale(half[1], size, size);
+      int s = getTileSize();
+      PixMask::scale(half[0], s, s);
+      PixMask::scale(half[1], s, s);
       setShipImage(half[0]);
       setShipMask(half[1]);
     }
@@ -601,9 +601,9 @@ void Armyset::loadStandardPic(Glib::ustring image_filename, bool &broken)
   std::vector<PixMask*> half = disassemble_row(image_filename, 2, broken);
   if (!broken)
     {
-      int size = getTileSize();
-      PixMask::scale(half[0], size, size);
-      PixMask::scale(half[1], size, size);
+      int s = getTileSize();
+      PixMask::scale(half[0], s, s);
+      PixMask::scale(half[1], s, s);
       setStandardPic(half[0]);
       setStandardMask(half[1]);
     }

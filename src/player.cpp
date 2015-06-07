@@ -4114,8 +4114,9 @@ bool Player::setPathOfStackToPreviousDestination(Stack *stack)
       if (dest != Vector<int>(-1,-1))
         {
           PathCalculator *path_calculator = new PathCalculator(stack);
-          guint32 moves = 0, turns = 0, left = 0;
-          Path *new_path = path_calculator->calculate(dest, moves, turns, left, true);
+          guint32 total_moves = 0, turns = 0, left = 0;
+          Path *new_path = path_calculator->calculate(dest, total_moves, turns,
+                                                      left, true);
           if (new_path->size())
             stack->setPath(*new_path);
           delete new_path;

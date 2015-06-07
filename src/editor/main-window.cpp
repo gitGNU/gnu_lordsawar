@@ -1469,9 +1469,9 @@ void MainWindow::on_objects_selected(std::vector<UniquelyIdentified *> objects)
 
 void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 {
-    if (Stack *o = dynamic_cast<Stack *>(object))
+    if (Stack *s = dynamic_cast<Stack *>(object))
     {
-	StackEditorDialog d(*window, o);
+	StackEditorDialog d(*window, s);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
           {
@@ -1482,9 +1482,9 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 	// we might have changed something visible
 	redraw();
     }
-    else if (City *o = dynamic_cast<City *>(object))
+    else if (City *c = dynamic_cast<City *>(object))
     {
-	CityEditorDialog d(*window, o, d_create_scenario_names);
+	CityEditorDialog d(*window, c, d_create_scenario_names);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
           {
@@ -1495,9 +1495,9 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
 	// we might have changed something visible
 	redraw();
     }
-    else if (Ruin *o = dynamic_cast<Ruin *>(object))
+    else if (Ruin *r = dynamic_cast<Ruin *>(object))
     {
-	RuinEditorDialog d(*window, o, d_create_scenario_names);
+	RuinEditorDialog d(*window, r, d_create_scenario_names);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
           {
@@ -1506,9 +1506,9 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
           }
 	redraw();
     }
-    else if (Signpost *o = dynamic_cast<Signpost *>(object))
+    else if (Signpost *si = dynamic_cast<Signpost *>(object))
     {
-	SignpostEditorDialog d(*window, o, d_create_scenario_names);
+	SignpostEditorDialog d(*window, si, d_create_scenario_names);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
           {
@@ -1516,9 +1516,9 @@ void MainWindow::popup_dialog_for_object(UniquelyIdentified *object)
             update_window_title();
           }
     }
-    else if (Temple *o = dynamic_cast<Temple *>(object))
+    else if (Temple *t = dynamic_cast<Temple *>(object))
     {
-	TempleEditorDialog d(*window, o, d_create_scenario_names);
+	TempleEditorDialog d(*window, t, d_create_scenario_names);
 	int response = d.run();
 	if (response == Gtk::RESPONSE_ACCEPT)
           {

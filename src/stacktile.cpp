@@ -40,11 +40,11 @@ bool StackTile::canAdd(const Stack *stack)
   return canAdd(stack->size(), stack->getOwner());
 }
     
-bool StackTile::canAdd(guint32 size, Player *owner)
+bool StackTile::canAdd(guint32 siz, Player *owner)
 {
-  if (size == 0)
+  if (siz == 0)
     return false;
-  if (countNumberOfArmies(owner) + size > MAX_ARMIES_ON_A_SINGLE_TILE)
+  if (countNumberOfArmies(owner) + siz > MAX_ARMIES_ON_A_SINGLE_TILE)
     return false;
   return true;
 }

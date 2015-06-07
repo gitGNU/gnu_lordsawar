@@ -28,10 +28,10 @@
 #include "shieldsetlist.h"
 #include "past-chooser.h"
 
-ImageEditorDialog::ImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int frames)
+ImageEditorDialog::ImageEditorDialog(Gtk::Window &parent, Glib::ustring filename, int no_frames)
  : LwEditorDialog(parent, "image-editor-dialog.ui")
 {
-  num_frames = frames;
+  num_frames = no_frames;
 
   xml->get_widget("filechooserbutton", filechooserbutton);
   xml->get_widget("image", image);

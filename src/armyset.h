@@ -96,7 +96,7 @@ class Armyset: public std::list<ArmyProto *>, public sigc::trackable, public Set
 	//! Save the Armyset to an Armyset configuration file.
 	bool save(XML_Helper* helper) const;
         
-        bool save(Glib::ustring filename, Glib::ustring extension) const;
+        bool save(Glib::ustring filename, Glib::ustring ext) const;
 
 	//! Get the image of the stack in a ship (minus the mask).
 	PixMask* getShipPic() const {return d_ship;}

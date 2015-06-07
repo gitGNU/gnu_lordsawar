@@ -754,17 +754,17 @@ import_cities (FILE *scn)
         {
           // only bring in the armies if we also have an armyset.
           qsort (armies, 4, sizeof (char), compare_army_strengths);
-          for (int i = 0; i < 4; i++)
+          for (int j = 0; j < 4; j++)
             {
-              if (armies[i] != (char) 0xff)
+              if (armies[j] != (char) 0xff)
                 {
                   ArmyProto *army = 
-                    Armysetlist::getInstance()->getArmy(as, armies[i]);
+                    Armysetlist::getInstance()->getArmy(as, armies[j]);
                   if (army)
                     {
                       ArmyProdBase *prodbase = new ArmyProdBase(*army);
                       prodbase->setArmyset(as);
-                      city->addProductionBase(i, prodbase);
+                      city->addProductionBase(j, prodbase);
                     }
                 }
             }

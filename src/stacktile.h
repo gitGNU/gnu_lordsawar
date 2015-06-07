@@ -65,7 +65,7 @@ public:
     bool canAdd(const Stack *stack);
 
     //! Check to see if a stack with the given size and owner can be added here.
-    bool canAdd(guint32 size, Player *owner);
+    bool canAdd(guint32 siz, Player *owner);
 
     //! Remove the given stack from this stacktile.
     bool leaving(Stack *stack);

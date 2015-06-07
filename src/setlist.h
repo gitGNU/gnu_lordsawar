@@ -209,8 +209,7 @@ public:
             else
               {
                 guint32 num = 0;
-                Glib::ustring new_basename = 
-                  findFreeBaseName(set->getBaseName(), 100, num);
+                new_basename = findFreeBaseName(set->getBaseName(), 100, num);
                 if (new_basename == "")
                   return false;
               }

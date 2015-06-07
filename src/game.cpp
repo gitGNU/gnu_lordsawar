@@ -668,11 +668,12 @@ void Game::search_stack(Stack *stack, bool &gotquest, bool &stackdied)
               gotquest = true;
               if (player->isComputer() == false)
                 {
-                  Hero *hero;
                   Army *a = stack->getArmyById(q->getHeroId());
                   if (a)
-                    hero = dynamic_cast<Hero*>(a);
-                  quest_assigned.emit(hero, q);
+                    {
+                      Hero *h = dynamic_cast<Hero*>(a);
+                      quest_assigned.emit(h, q);
+                    }
                 }
             }
 	}

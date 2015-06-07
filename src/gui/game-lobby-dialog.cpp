@@ -288,9 +288,9 @@ GameLobbyDialog::update_player_details()
   Playerlist *pl = Playerlist::getInstance();
 
   guint32 count = 0;
-  for (Playerlist::iterator i = pl->begin(), end = pl->end(); i != end; ++i)
+  for (Playerlist::iterator k = pl->begin(), end = pl->end(); k != end; ++k)
     {
-      Player *player = *i;
+      Player *player = *k;
       if (player == pl->getNeutral())
 	continue;
       if (player->isDead())

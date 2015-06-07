@@ -90,7 +90,6 @@ int main(int argc, char* argv[])
   MainWindow* main_window = NULL;
   try
     {
-      MainWindow* main_window;
       if (argc > 1)
         main_window = new MainWindow (load_filename);
       else

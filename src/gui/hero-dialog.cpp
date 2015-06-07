@@ -51,9 +51,9 @@ HeroDialog::HeroDialog(Gtk::Window &parent, Hero *h, Vector<int> p)
       heroesmap->setSelectedHero(hero);
     else
       {
-	Player *p = Playerlist::getActiveplayer();
+	Player *player = Playerlist::getActiveplayer();
 	hero = *heroes.begin();
-	pos = p->getPositionOfArmyById(hero->getId());
+	pos = player->getPositionOfArmyById(hero->getId());
 	heroesmap->setSelectedHero(hero);
       }
     heroesmap->map_changed.connect(

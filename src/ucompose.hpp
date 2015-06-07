@@ -119,10 +119,10 @@ namespace UStringPrivate
   {
     os << obj;
 
-    std::wstring str = os.str();
+    std::wstring s = os.str();
     
-    return Glib::convert(std::string(reinterpret_cast<const char *>(str.data()),
-				     str.size() * sizeof(wchar_t)),
+    return Glib::convert(std::string(reinterpret_cast<const char *>(s.data()),
+				     s.size() * sizeof(wchar_t)),
 			 "UTF-8", "WCHAR_T");
   }
 
@@ -224,13 +224,13 @@ namespace UStringPrivate
   inline Glib::ustring Composition::str() const
   {
     // assemble string
-    std::string str;
+    std::string s;
   
     for (output_list::const_iterator i = output.begin(), end = output.end();
 	 i != end; ++i)
-      str += *i;
+      s += *i;
   
-    return str;
+    return s;
   }
 }
 

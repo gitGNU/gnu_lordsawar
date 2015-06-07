@@ -107,9 +107,9 @@ void StackArmyButton::update_stack_button(bool selected)
 
 bool StackArmyButton::on_army_button_event(GdkEventButton *e)
 {
-  MouseButtonEvent event = to_input_event(e);
-  if (event.button == MouseButtonEvent::RIGHT_BUTTON
-      && event.state == MouseButtonEvent::PRESSED) {
+  MouseButtonEvent ev = to_input_event(e);
+  if (ev.button == MouseButtonEvent::RIGHT_BUTTON
+      && ev.state == MouseButtonEvent::PRESSED) {
 
     if (army_info_tip)
       delete army_info_tip;
@@ -117,8 +117,8 @@ bool StackArmyButton::on_army_button_event(GdkEventButton *e)
 
     return true;
   }
-  else if (event.button == MouseButtonEvent::RIGHT_BUTTON
-	   && event.state == MouseButtonEvent::RELEASED) {
+  else if (ev.button == MouseButtonEvent::RIGHT_BUTTON
+	   && ev.state == MouseButtonEvent::RELEASED) {
       {
 	if (army_info_tip)
 	  {
@@ -131,7 +131,7 @@ bool StackArmyButton::on_army_button_event(GdkEventButton *e)
 
   return false;
 }
-    
+
 void StackArmyButton::fill_buttons()
 {
   fill_army_button();

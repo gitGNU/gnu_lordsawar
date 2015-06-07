@@ -79,8 +79,8 @@ class PixMask
       */
      PixMask(Glib::ustring filename, bool &broken);
 
-     void set_unscaled_width(guint32 width) {unscaled_width = width;};
-     void set_unscaled_height(guint32 height) {unscaled_height = height;};
+     void set_unscaled_width(guint32 w) {unscaled_width = w;};
+     void set_unscaled_height(guint32 h) {unscaled_height = h;};
     
  private:
      Cairo::RefPtr<Cairo::Surface> pixmap;

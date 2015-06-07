@@ -125,9 +125,9 @@ PlayersDialog::PlayersDialog(Gtk::Window &parent, CreateScenarioRandomize *rando
 
   // merge defined players with predefined
   std::vector<Player *> players_to_add(default_player_names.size(), 0);
-  for (Playerlist::iterator i = pl->begin(), end = pl->end(); i != end; ++i)
+  for (Playerlist::iterator j = pl->begin(); j != pl->end(); ++j)
     {
-      Player *player = *i;
+      Player *player = *j;
       if (player == pl->getNeutral())
 	continue;
       players_to_add[player->getId()] = player;

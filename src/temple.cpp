@@ -36,8 +36,8 @@ Temple::Temple(Vector<int> pos, guint32 width, Glib::ustring name, int type)
     for (unsigned int i = 0; i < getSize(); i++)
       for (unsigned int j = 0; j < getSize(); j++)
 	{
-	  Vector<int> pos = getPos() + Vector<int>(i, j);
-	  GameMap::getInstance()->getTile(pos)->setBuilding(Maptile::TEMPLE);
+	  Vector<int> p = getPos() + Vector<int>(i, j);
+	  GameMap::getInstance()->getTile(p)->setBuilding(Maptile::TEMPLE);
 	}
 }
 

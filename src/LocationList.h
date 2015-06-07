@@ -57,9 +57,9 @@ template<class T> class LocationList : public std::list<T>
     {
       this->push_back(t);
       d_id[t->getId()] = t;
-      int size = t->getSize();
-      for (int i = 0; i < size; i++)
-	for (int j = 0; j < size; j++)
+      int s = t->getSize();
+      for (int i = 0; i < s; i++)
+	for (int j = 0; j < s; j++)
 	  {
 	    Vector<int> pos = t->getPos() + Vector<int>(i,j);
 	    d_object[pos] = t;
@@ -69,9 +69,9 @@ template<class T> class LocationList : public std::list<T>
     {
       this->erase(std::find(this->begin(), this->end(), t));
       d_id.erase(d_id.find(t->getId()));
-      int size = t->getSize();
-      for (int i = 0; i < size; i++)
-	for (int j = 0; j < size; j++)
+      int s = t->getSize();
+      for (int i = 0; i < s; i++)
+	for (int j = 0; j < s; j++)
 	  {
 	    Vector<int> pos = t->getPos() + Vector<int>(i,j);
             if (d_object.find(pos) != d_object.end())
