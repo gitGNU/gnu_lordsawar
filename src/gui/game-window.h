@@ -168,7 +168,6 @@ class GameWindow: public sigc::trackable
     // the button control panel
     Gtk::Viewport *control_panel_viewport;
 
-    ArmyInfoTip* army_info_tip;
     CityInfoTip* city_info_tip;
     StackInfoTip* stack_info_tip;
     typedef std::vector<Gtk::ToggleButton *> army_buttons_type;
