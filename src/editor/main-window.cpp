@@ -1546,11 +1546,13 @@ void MainWindow::on_smooth_map_activated()
   GameMap::getInstance()->applyTileStyles(0, 0, GameMap::getHeight(), 
 					  GameMap::getWidth(), true);
   redraw();
+  needs_saving = true;
 }
 
 void MainWindow::on_smooth_screen_activated()
 {
   bigmap->smooth_view();
+  needs_saving = true;
 }
 
 void MainWindow::on_edit_items_activated()
